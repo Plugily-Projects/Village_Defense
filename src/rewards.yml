@@ -1,0 +1,114 @@
+#
+#
+#Setup rewards in this file for Village Defense!
+# Magical words are:
+#  %PLAYER%    -   Gets replaced by the playersname
+#  %WAVE%      -   Current wave number
+#  %MAPNAME%   -   Mapname
+#  %ARENA-ID   -   Arena ID
+#  %PLAYERAMOUNT% -  Gets replaced by the number of players ingame
+#
+#
+# Add "p:" If placed infront of the command, the command will be performed by the player, else by the console
+#  For example:
+#         - p:spawn  #Will teleport the player to spawn. The player will perform /spawn. NOTE that there is NO space.
+#         - spawn    # Console will perform the /spawn command.. but this is useless
+#
+#
+#
+#
+rewards:
+#Perform a command when the game is finished. When all the villagers are killed:
+  endgame:
+    - say %MAPNAME% is done playing and reached wave %WAVE%
+    - say this is a second command example
+#Perform a command when a wave ends. this will be performed after every wave round! If u don't want to give rewards after a wave, just delete the wave out of the list.
+#If u want to add rewards for waves higher than 40, just add them to the list.
+  endwave:
+    1:
+      - say You reached wave %WAVE%!
+    2:
+      - say You reached wave %WAVE%!
+    3:
+      - say You reached wave %WAVE%!
+    4:
+      - say You reached wave %WAVE%!
+    5:
+      - say You reached wave %WAVE%!
+    6:
+      - say You reached wave %WAVE%!
+    7:
+      - say You reached wave %WAVE%!
+    8:
+      - say You reached wave %WAVE%!
+    9:
+      - say You reached wave %WAVE%!
+    10:
+      - say You reached wave %WAVE%!
+    11:
+      - say You reached wave %WAVE%!
+    12:
+      - say You reached wave %WAVE%!
+    13:
+      - say You reached wave %WAVE%!
+    14:
+      - say You reached wave %WAVE%!
+    15:
+      - say You reached wave %WAVE%!
+    16:
+      - say You reached wave %WAVE%!
+    17:
+      - say You reached wave %WAVE%!
+    18:
+      - say You reached wave %WAVE%!
+    19:
+      - say You reached wave %WAVE%!
+    20:
+      - say You reached wave %WAVE%!
+    21:
+      - say You reached wave %WAVE%!
+    22:
+      - say You reached wave %WAVE%!
+    23:
+      - say You reached wave %WAVE%!
+    24:
+      - say You reached wave %WAVE%!
+    25:
+      - say You reached wave %WAVE%!
+    26:
+      - say You reached wave %WAVE%!
+    27:
+      - say You reached wave %WAVE%!
+    28:
+      - say You reached wave %WAVE%!
+    29:
+      - say You reached wave %WAVE%!
+    30:
+      - say You reached wave %WAVE%!
+    31:
+      - say You reached wave %WAVE%!
+    32:
+      - say You reached wave %WAVE%!
+    33:
+      - say You reached wave %WAVE%!
+    34:
+      - say You reached wave %WAVE%!
+    35:
+      - say You reached wave %WAVE%!
+    36:
+      - say You reached wave %WAVE%!
+    37:
+      - say You reached wave %WAVE%!
+    38:
+      - say You reached wave %WAVE%!
+    39:
+      - say You reached wave %WAVE%!
+    40:
+      - say You reached wave %WAVE%!
+
+
+
+#When a player kills a zombie:
+  zombiekill:
+    - give %PLAYER% 100
+
