@@ -9,7 +9,7 @@ import org.bukkit.event.block.BlockPlaceEvent;
 /**
  * Created by Tom on 9/08/2014.
  */
-public class onBuild  implements Listener{
+public class onBuild implements Listener {
 
     private GameAPI plugin;
 
@@ -18,7 +18,7 @@ public class onBuild  implements Listener{
     }
 
     @EventHandler
-    public void onPlace(BlockPlaceEvent event){
+    public void onPlace(BlockPlaceEvent event) {
         if(plugin.getAllowBuilding())
             return;
         if(plugin.getGameInstanceManager().getGameInstance(event.getPlayer()) == null)
@@ -29,7 +29,7 @@ public class onBuild  implements Listener{
     }
 
     @EventHandler
-    public void onBreak(BlockBreakEvent event){
+    public void onBreak(BlockBreakEvent event) {
         if(plugin.getAllowBuilding())
             return;
         if(plugin.getGameInstanceManager().getGameInstance(event.getPlayer()) == null)

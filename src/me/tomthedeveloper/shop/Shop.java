@@ -13,60 +13,60 @@ import org.bukkit.inventory.ItemStack;
  */
 public class Shop {
 
-	public static Main plugin;
-	private static IconMenu iconMenu;
-	private Chest chest;
+    public static Main plugin;
+    private static IconMenu iconMenu;
+    private Chest chest;
 
-	public Shop() {
-		setup();
-	}
+    public Shop() {
+        setup();
+    }
 
-	public static void openShop(Player player) {
-		if (iconMenu == null) {
-			if(Main.isDebugged()) {
-				System.out.print("[Village Debugger] Set up the shop or the shopchest first please!");
-			}
-			return;
-		}
+    public static void openShop(Player player) {
+        if(iconMenu == null) {
+            if(Main.isDebugged()) {
+                System.out.print("[Village Debugger] Set up the shop or the shopchest first please!");
+            }
+            return;
+        }
 
-		iconMenu.open(player);
-	}
+        iconMenu.open(player);
+    }
 
-	public static void closeShop(Player player) {
-		player.closeInventory();
-	}
+    public static void closeShop(Player player) {
+        player.closeInventory();
+    }
 
-	private void setup() {
-		if (!plugin.getConfig().contains("shop.location")) {
-			if(Main.isDebugged()) {
-				System.out.print("[Village Debugger] NO SHOP FOUND FOR THE GAME!!!!");
-			}
-			return;
-		}
-		Location location = plugin.getGameAPI().getLocation("shop.location");
-		if (!(location.getBlock().getState() instanceof Chest)) {
-			if(Main.isDebugged()) {
-				System.out.print("[Village Debugger] Location for shop isn't a chest!");
-			}
-			return;
-		}
+    private void setup() {
+        if(!plugin.getConfig().contains("shop.location")) {
+            if(Main.isDebugged()) {
+                System.out.print("[Village Debugger] NO SHOP FOUND FOR THE GAME!!!!");
+            }
+            return;
+        }
+        Location location = plugin.getGameAPI().getLocation("shop.location");
+        if(!(location.getBlock().getState() instanceof Chest)) {
+            if(Main.isDebugged()) {
+                System.out.print("[Village Debugger] Location for shop isn't a chest!");
+            }
+            return;
+        }
 
-		chest = (Chest) location.getBlock().getState();
-		int i = 0;
-		for (ItemStack itemStack : chest.getInventory().getContents()) {
-			//if (itemStack != null)
-			i++;
-		}
-		iconMenu = new IconMenu("shop", i);
-		i = 0;
-		for (ItemStack itemStack : chest.getInventory().getContents()) {
+        chest = (Chest) location.getBlock().getState();
+        int i = 0;
+        for(ItemStack itemStack : chest.getInventory().getContents()) {
+            //if (itemStack != null)
+            i++;
+        }
+        iconMenu = new IconMenu("shop", i);
+        i = 0;
+        for(ItemStack itemStack : chest.getInventory().getContents()) {
 
-			if (itemStack != null && itemStack.getType() != Material.REDSTONE_BLOCK)
-				iconMenu.addOption(itemStack, i);
-			i++;
-		}
+            if(itemStack != null && itemStack.getType() != Material.REDSTONE_BLOCK)
+                iconMenu.addOption(itemStack, i);
+            i++;
+        }
 
-	}
+    }
 
 
 }

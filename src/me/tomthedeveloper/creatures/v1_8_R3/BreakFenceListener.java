@@ -27,24 +27,24 @@ public class BreakFenceListener extends BukkitRunnable {
 
     @Override
     public void run() {
-        for (World world : Bukkit.getServer().getWorlds()) {
-            for (Entity entity : world.getEntities()) {
-                if (!(entity.getType() == EntityType.ZOMBIE))
+        for(World world : Bukkit.getServer().getWorlds()) {
+            for(Entity entity : world.getEntities()) {
+                if(!(entity.getType() == EntityType.ZOMBIE))
                     continue;
                 Queue<Block> blocks = Util.getLineOfSight((LivingEntity) entity, null, 1, 1);
-                for (Block block : blocks) {
+                for(Block block : blocks) {
 
-                    if (block.getType() == Material.WOOD_DOOR || block.getType() == Material.WOODEN_DOOR /*|| block.getType() == Material.FENCE*/) {
+                    if(block.getType() == Material.WOOD_DOOR || block.getType() == Material.WOODEN_DOOR /*|| block.getType() == Material.FENCE*/) {
                         ParticleEffect.BLOCK_CRACK.display(new ParticleEffect.BlockData(Material.WOODEN_DOOR, (byte) 0), (float) 0.1, (float) 0.1, (float) 0.1, 1, 50, block.getLocation(), 100);
-                        if (this.is1_9_R1()) {
+                        if(this.is1_9_R1()) {
                             block.getWorld().playSound(block.getLocation(), Sound.ENTITY_ZOMBIE_ATTACK_DOOR_WOOD, 1, 1);
                         } else {
                             // block.getWorld().playSound(block.getLocation(), Sound.ZOMBIE_WOOD, 5F, 5F);
                         }
                         this.particleDoor(block);
-                        if (random.nextInt(15) == 5) {
+                        if(random.nextInt(15) == 5) {
                             breakDoor(block);
-                            if (this.is1_9_R1()) {
+                            if(this.is1_9_R1()) {
                                 block.getWorld().playSound(block.getLocation(), Sound.ENTITY_ZOMBIE_BREAK_DOOR_WOOD, 1, 1);
                             } else {
                                 //  block.getWorld().playSound(block.getLocation(), Sound.ZOMBIE_WOOD, 5F, 5F);
@@ -63,8 +63,8 @@ public class BreakFenceListener extends BukkitRunnable {
     }
 
     public void particleDoor(Block block) {
-        for (BlockFace blockFace : BlockFace.values()) {
-            if (block.getRelative(blockFace).getType() == Material.WOOD_DOOR || block.getRelative(blockFace).getType() == Material.WOODEN_DOOR || block.getType() == Material.FENCE) {
+        for(BlockFace blockFace : BlockFace.values()) {
+            if(block.getRelative(blockFace).getType() == Material.WOOD_DOOR || block.getRelative(blockFace).getType() == Material.WOODEN_DOOR || block.getType() == Material.FENCE) {
                 ParticleEffect.BLOCK_CRACK.display(new ParticleEffect.BlockData(Material.WOODEN_DOOR, (byte) 0), (float) 0.1, (float) 0.1, (float) 0.1, 1, 50, block.getLocation(), 100);
 
 
@@ -73,8 +73,8 @@ public class BreakFenceListener extends BukkitRunnable {
     }
 
     public void breakDoor(Block block) {
-        for (BlockFace blockFace : BlockFace.values()) {
-            if (block.getRelative(blockFace).getType() == Material.WOOD_DOOR || block.getRelative(blockFace).getType() == Material.WOODEN_DOOR) {
+        for(BlockFace blockFace : BlockFace.values()) {
+            if(block.getRelative(blockFace).getType() == Material.WOOD_DOOR || block.getRelative(blockFace).getType() == Material.WOODEN_DOOR) {
                 ParticleEffect.BLOCK_CRACK.display(new ParticleEffect.BlockData(Material.WOODEN_DOOR, (byte) 0), (float) 0.1, (float) 0.1, (float) 0.1, 1, 50, block.getLocation(), 100);
 
                 block.setType(Material.AIR);
@@ -88,8 +88,8 @@ public class BreakFenceListener extends BukkitRunnable {
     }
 
     public void destroyFence(Block block) {
-        for (BlockFace blockFace : BlockFace.values()) {
-            if (block.getRelative(blockFace).getType() == Material.FENCE) {
+        for(BlockFace blockFace : BlockFace.values()) {
+            if(block.getRelative(blockFace).getType() == Material.FENCE) {
                 block.getRelative(blockFace).setType(Material.AIR);
                 destroyFence(block.getRelative(blockFace));
 

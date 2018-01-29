@@ -16,13 +16,13 @@ public abstract class Kit {
     private boolean unlockedOnDefault = false;
     private String[] description = {""};
 
-    protected Kit(){
+    protected Kit() {
 
     }
 
-    public  abstract boolean isUnlockedByPlayer(Player p);
+    public abstract boolean isUnlockedByPlayer(Player p);
 
-    public Kit(String name){
+    public Kit(String name) {
         this.name = name;
     }
 
@@ -35,9 +35,7 @@ public abstract class Kit {
     }
 
 
-
-
-    public String getName(){
+    public String getName() {
         return name;
     }
 
@@ -49,7 +47,7 @@ public abstract class Kit {
         this.description = description;
     }
 
-    public void setName(String name){
+    public void setName(String name) {
         this.name = name;
     }
 
@@ -65,21 +63,13 @@ public abstract class Kit {
         return item;
     }
 
-    public ItemStack getItemStack(){
-       ItemStack itemStack = new ItemStack(getMaterial());
+    public ItemStack getItemStack() {
+        ItemStack itemStack = new ItemStack(getMaterial());
         setItemNameAndLore(itemStack, getName(), getDescription());
         return itemStack;
     }
 
     public abstract void reStock(Player player);
-
-
-
-
-
-
-
-
 
 
 }

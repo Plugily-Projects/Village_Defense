@@ -46,21 +46,21 @@ public class GolemFriendKit extends LevelKit {
         ArmorHelper.setColouredArmor(Color.WHITE, player);
         player.getInventory().addItem(new ItemStack(Material.GRILLED_PORK, 8));
         GameInstance gameInstance = plugin.getGameAPI().getGameInstanceManager().getGameInstance(player);
-        if (gameInstance == null)
+        if(gameInstance == null)
             return;
-        if (!(gameInstance instanceof InvasionInstance)) {
+        if(!(gameInstance instanceof InvasionInstance)) {
             return;
         }
-        if (plugin.is1_8_R3()) {
+        if(plugin.is1_8_R3()) {
             InvasionInstance1_8_R3 invasionInstance1_8_r3 = (InvasionInstance1_8_R3) gameInstance;
             invasionInstance1_8_r3.spawnGolem(invasionInstance1_8_r3.getStartLocation(), player);
         }
-        if (plugin.is1_7_R4()) {
+        if(plugin.is1_7_R4()) {
             InvasionInstance1_7_10 invasionInstance1_8_r3 = (InvasionInstance1_7_10) gameInstance;
             invasionInstance1_8_r3.spawnGolem(invasionInstance1_8_r3.getStartLocation(), player);
 
         }
-        if (plugin.is1_12_R1()) {
+        if(plugin.is1_12_R1()) {
             InvasionInstance1_12_R1 invasionInstance1_8_r3 = (InvasionInstance1_12_R1) gameInstance;
             invasionInstance1_8_r3.spawnGolem(invasionInstance1_8_r3.getStartLocation(), player);
 

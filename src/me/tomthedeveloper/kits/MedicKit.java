@@ -62,19 +62,19 @@ public class MedicKit extends PremiumKit implements Listener {
 
     @EventHandler
     public void onZombieHit(EntityDamageByEntityEvent event) {
-        if (event.getDamager().getType() != EntityType.PLAYER)
+        if(event.getDamager().getType() != EntityType.PLAYER)
             return;
-        if (event.getEntity().getType() != EntityType.ZOMBIE)
+        if(event.getEntity().getType() != EntityType.ZOMBIE)
             return;
         User user = UserManager.getUser(event.getDamager().getUniqueId());
-        if (!(user.getKit() instanceof MedicKit))
+        if(!(user.getKit() instanceof MedicKit))
             return;
-        if (Math.random() <= 0.1) {
-            for (Entity entity : user.toPlayer().getNearbyEntities(5, 5, 5)) {
-                if (entity.getType() == EntityType.PLAYER) {
+        if(Math.random() <= 0.1) {
+            for(Entity entity : user.toPlayer().getNearbyEntities(5, 5, 5)) {
+                if(entity.getType() == EntityType.PLAYER) {
                     Player player = (Player) entity;
                     player.setHealth(player.getMaxHealth() != player.getHealth() ? player.getHealth() + 1 : 0);
-                    if (!plugin.is1_12_R1()) {
+                    if(!plugin.is1_12_R1()) {
                         ParticleEffect.HEART.display(0, 0, 0, 0, 10, player.getEyeLocation(), 255);
                     } else {
                         player.getEyeLocation().getWorld().spawnParticle(Particle.HEART, player.getEyeLocation(), 20, 1, 1, 1, 1);

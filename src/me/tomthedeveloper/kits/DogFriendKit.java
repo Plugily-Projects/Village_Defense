@@ -46,18 +46,18 @@ public class DogFriendKit extends PremiumKit {
         player.getInventory().addItem(new ItemStack(Material.GRILLED_PORK, 8));
         player.getInventory().addItem(new ItemStack(Material.SADDLE));
         GameInstance gameInstance = plugin.getGameAPI().getGameInstanceManager().getGameInstance(player);
-        if (gameInstance == null)
+        if(gameInstance == null)
             return;
-        if (!(gameInstance instanceof InvasionInstance)) {
+        if(!(gameInstance instanceof InvasionInstance)) {
             return;
         }
-        if (plugin.is1_8_R3()) {
+        if(plugin.is1_8_R3()) {
             InvasionInstance1_8_R3 invasionInstance1_8_r3 = (InvasionInstance1_8_R3) gameInstance;
             invasionInstance1_8_r3.spawnWolf(invasionInstance1_8_r3.getStartLocation(), player);
             invasionInstance1_8_r3.spawnWolf(invasionInstance1_8_r3.getStartLocation(), player);
             invasionInstance1_8_r3.spawnWolf(invasionInstance1_8_r3.getStartLocation(), player);
         }
-        if (plugin.is1_12_R1()) {
+        if(plugin.is1_12_R1()) {
             InvasionInstance1_12_R1 invasionInstance1_8_r3 = (InvasionInstance1_12_R1) gameInstance;
             invasionInstance1_8_r3.spawnWolf(invasionInstance1_8_r3.getStartLocation(), player);
             invasionInstance1_8_r3.spawnWolf(invasionInstance1_8_r3.getStartLocation(), player);
@@ -73,16 +73,16 @@ public class DogFriendKit extends PremiumKit {
     @Override
     public void reStock(Player player) {
         GameInstance gameInstance = plugin.getGameAPI().getGameInstanceManager().getGameInstance(player);
-        if (gameInstance == null)
+        if(gameInstance == null)
             return;
-        if (!(gameInstance instanceof InvasionInstance)) {
+        if(!(gameInstance instanceof InvasionInstance)) {
             return;
         }
-        if (plugin.is1_8_R3()) {
+        if(plugin.is1_8_R3()) {
             InvasionInstance1_8_R3 invasionInstance1_8_r3 = (InvasionInstance1_8_R3) gameInstance;
             invasionInstance1_8_r3.spawnWolf(invasionInstance1_8_r3.getStartLocation(), player);
         }
-        if (plugin.is1_12_R1()) {
+        if(plugin.is1_12_R1()) {
             InvasionInstance1_12_R1 invasionInstance1_12_R1 = (InvasionInstance1_12_R1) gameInstance;
             invasionInstance1_12_R1.spawnWolf(invasionInstance1_12_R1.getStartLocation(), player);
         }

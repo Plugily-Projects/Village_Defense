@@ -28,7 +28,7 @@ public enum VillageDefenseStats {
         Collections.sort(list, (Comparator) (o1, o2) -> ((Comparable) ((Map.Entry) (o1)).getValue())
                 .compareTo(((Map.Entry) (o2)).getValue()));
         Map sortedMap = new LinkedHashMap();
-        for (Object aList : list) {
+        for(Object aList : list) {
             Map.Entry entry = (Map.Entry) aList;
             sortedMap.put(entry.getKey(), entry.getValue());
         }
@@ -36,12 +36,12 @@ public enum VillageDefenseStats {
     }
 
     public Map<UUID, Integer> getStats() {
-        if (plugin.isDatabaseActivated())
+        if(plugin.isDatabaseActivated())
             return plugin.getMySQLDatabase().getColumn(name);
         else {
             FileConfiguration config = ConfigurationManager.getConfig("STATS");
             Map<UUID, Integer> stats = new LinkedHashMap<>();
-            for (String string : config.getKeys(false)) {
+            for(String string : config.getKeys(false)) {
                 stats.put(UUID.fromString(string), config.getInt(string + "." + name));
             }
             return sortByValue(stats);

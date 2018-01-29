@@ -24,21 +24,21 @@ public class SetupInventory {
     private HashMap<ItemStack, String> linkedcommands = new HashMap<>();
     public static List<ItemStack> ITEMS_TO_ADD = new ArrayList<>();
 
-    public SetupInventory(GameInstance gameInstance){
+    public SetupInventory(GameInstance gameInstance) {
         this.gameInstance = gameInstance;
 
-        this.inventory = Bukkit.createInventory(null,9*2, "Arena: " + gameInstance.getID());
+        this.inventory = Bukkit.createInventory(null, 9 * 2, "Arena: " + gameInstance.getID());
 
         addItem(new ItemBuilder(new ItemStack(Material.REDSTONE_BLOCK))
-                    .name(ChatColor.GOLD + "Set End Location")
-                    .lore(ChatColor.GRAY + "Click to set the end location.")
-                    .lore(ChatColor.GRAY + "on the place where you are standing")
-                    .build(), gameInstance.getPlugin().getAbreviation() + " " + gameInstance.getID() + " set ENDLOC");
+                .name(ChatColor.GOLD + "Set End Location")
+                .lore(ChatColor.GRAY + "Click to set the end location.")
+                .lore(ChatColor.GRAY + "on the place where you are standing")
+                .build(), gameInstance.getPlugin().getAbreviation() + " " + gameInstance.getID() + " set ENDLOC");
         addItem(new ItemBuilder(new ItemStack(Material.LAPIS_BLOCK))
-                    .name(ChatColor.GOLD + "Set Lobby Location")
-                    .lore(ChatColor.GRAY + "Click to set the lobby location")
-                    .lore(ChatColor.GRAY + "on the place where you are standing")
-                    .build(), gameInstance.getPlugin().getAbreviation() + " " + gameInstance.getID() + " set LOBBYLOC");
+                .name(ChatColor.GOLD + "Set Lobby Location")
+                .lore(ChatColor.GRAY + "Click to set the lobby location")
+                .lore(ChatColor.GRAY + "on the place where you are standing")
+                .build(), gameInstance.getPlugin().getAbreviation() + " " + gameInstance.getID() + " set LOBBYLOC");
 
         addItem(new ItemBuilder(new ItemStack(Material.EMERALD_BLOCK))
                 .name(ChatColor.GOLD + "Set Start Location")
@@ -55,7 +55,7 @@ public class SetupInventory {
                 .lore(ChatColor.GRAY + "LEFT click to decrease")
                 .lore(ChatColor.GRAY + "RIGHT click to increase")
                 .build(), gameInstance.getPlugin().getAbreviation() + " " + gameInstance.getID() + " set MAXPLAYERS " + gameInstance.getMAX_PLAYERS());
-        if(!gameInstance.getPlugin().isBungeeActivated()){
+        if(!gameInstance.getPlugin().isBungeeActivated()) {
             addItem(new ItemBuilder(new ItemStack(Material.SIGN))
                     .name(ChatColor.GOLD + "Add signs")
                     .lore(ChatColor.GRAY + "Select a region with your")
@@ -64,11 +64,11 @@ public class SetupInventory {
                     .build(), "addsigns");
         }
         addItem(new ItemBuilder(new ItemStack(Material.NAME_TAG))
-                .name(ChatColor.GOLD + "Set a mapname (currently: " + gameInstance.getMapName() == null? "not set yet":gameInstance.getMapName())
+                .name(ChatColor.GOLD + "Set a mapname (currently: " + gameInstance.getMapName() == null ? "not set yet" : gameInstance.getMapName())
                 .lore(ChatColor.GRAY + "Replace this nametag with another nametag")
                 .lore(ChatColor.GRAY + "that is named as the mapname")
                 .build(), gameInstance.getPlugin().getAbreviation() + " " + gameInstance.getID() + " set MAPNAME <NAME>");
-       
+
         addItem(new ItemBuilder(new ItemStack(Material.MONSTER_EGG, 1, (byte) 120))
                 .name(ChatColor.GOLD + "Add villager spawns")
                 .lore(ChatColor.GRAY + "Click to add a villager spawn")
@@ -83,32 +83,32 @@ public class SetupInventory {
                 .lore(ChatColor.GRAY + "wand and click")
                 .build()));
         inventory.addItem(new ItemBuilder(new ItemStack(Material.CHEST))
-                .name(ChatColor.GOLD +"Set the chest shop")
+                .name(ChatColor.GOLD + "Set the chest shop")
                 .lore(ChatColor.GRAY + "Set the chest where in you ")
                 .lore(ChatColor.GRAY + "will put the shop items.")
                 .lore(ChatColor.GRAY + "Look at the chest")
                 .lore(ChatColor.GRAY + "and click this")
                 .build());
         if(Main.isDebugged()) {
-        	System.out.println("[Village Debugger] Setup items generated!");
+            System.out.println("[Village Debugger] Setup items generated!");
         }
 
     }
 
-    public void addItem(ItemStack itemStack, String command){
+    public void addItem(ItemStack itemStack, String command) {
         inventory.addItem(new ItemBuilder(itemStack).lore(ChatColor.RED + "Command: " + ChatColor.GRAY + "/" + command)
                 .build());
     }
 
-    public void addItem(ItemStack itemStack){
+    public void addItem(ItemStack itemStack) {
         inventory.addItem(itemStack);
     }
 
-    public Inventory getInventory(){
+    public Inventory getInventory() {
         return inventory;
     }
 
-    public void openInventory(Player player){
+    public void openInventory(Player player) {
         player.openInventory(inventory);
     }
 

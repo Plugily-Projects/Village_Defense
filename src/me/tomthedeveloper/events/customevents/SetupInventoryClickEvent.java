@@ -19,13 +19,12 @@ public class SetupInventoryClickEvent extends Event {
     private boolean cancel = false;
 
 
-    public SetupInventoryClickEvent(GameInstance gameInstance,ItemStack itemStack, Player player, ClickType clickType){
+    public SetupInventoryClickEvent(GameInstance gameInstance, ItemStack itemStack, Player player, ClickType clickType) {
         this.player = player;
         this.gameInstance = gameInstance;
         this.itemStack = itemStack;
         this.clickType = clickType;
     }
-
 
 
     public Player getPlayer() {
@@ -43,9 +42,6 @@ public class SetupInventoryClickEvent extends Event {
     public ClickType getClickType() {
         return clickType;
     }
-
-
-
 
 
     public void setCancelled(Boolean cancelled) {

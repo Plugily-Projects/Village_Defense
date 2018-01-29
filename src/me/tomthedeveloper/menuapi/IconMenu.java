@@ -12,7 +12,7 @@ import java.util.Arrays;
 /**
  * Created by Tom on 27/07/2014.
  */
-public class IconMenu  {
+public class IconMenu {
 
 
     private Inventory inventory;
@@ -20,44 +20,42 @@ public class IconMenu  {
     private int size;
     private ConfigurationManager configurationManager;
 
-    protected static int serializeInt(int i){
-        if((i%9)== 0)
+    protected static int serializeInt(int i) {
+        if((i % 9) == 0)
             return i;
         else
-            return (int) ((Math.ceil(i / 9)*9) + 9);
+            return (int) ((Math.ceil(i / 9) * 9) + 9);
     }
 
     public IconMenu(String name, int size) {
         this.name = name;
         this.size = size;
-         size = serializeInt(size);
+        size = serializeInt(size);
 
         inventory = Bukkit.createInventory(null, size, name);
 
     }
 
-    public Inventory getIventory(){
+    public Inventory getIventory() {
         return inventory;
     }
 
 
-
-
-    public void open(Player p){
+    public void open(Player p) {
         p.openInventory(inventory);
-       
+
     }
 
-    public void close(Player p){
+    public void close(Player p) {
         p.closeInventory();
     }
 
-    public void addOption(ItemStack itemStack){
-      inventory.addItem(itemStack);
+    public void addOption(ItemStack itemStack) {
+        inventory.addItem(itemStack);
     }
 
-    public void addOption(ItemStack itemStack, int position){
-        if(position> size)
+    public void addOption(ItemStack itemStack, int position) {
+        if(position > size)
             throw new IllegalArgumentException("Number of position to big!");
         else
             inventory.setItem(position, itemStack);

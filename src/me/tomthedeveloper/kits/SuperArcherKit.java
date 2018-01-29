@@ -27,7 +27,7 @@ import java.util.List;
 public class SuperArcherKit extends PremiumKit implements Listener {
 
     public SuperArcherKit() {
-    	setName(ChatManager.colorMessage("kits.Super-Archer.Kit-Name"));
+        setName(ChatManager.colorMessage("kits.Super-Archer.Kit-Name"));
         List<String> description = Util.splitString(ChatManager.colorMessage("kits.Super-Archer.Kit-Description"), 40);
         this.setDescription(description.toArray(new String[description.size()]));
 
@@ -60,11 +60,11 @@ public class SuperArcherKit extends PremiumKit implements Listener {
 
     @EventHandler
     public void ShootArrow(PlayerInteractEvent e) {
-        if (e.getAction() == Action.LEFT_CLICK_AIR || e.getAction() == Action.LEFT_CLICK_BLOCK) {
-            if (e.getPlayer().getItemInHand() != null) {
-                if (e.getPlayer().getItemInHand().getType() == Material.BOW) {
-                    if (UserManager.getUser(e.getPlayer().getUniqueId()).getKit() instanceof SuperArcherKit && !UserManager.getUser(e.getPlayer().getUniqueId()).isSpectator()) {
-                        if (e.getPlayer().getInventory().contains(Material.ARROW)) {
+        if(e.getAction() == Action.LEFT_CLICK_AIR || e.getAction() == Action.LEFT_CLICK_BLOCK) {
+            if(e.getPlayer().getItemInHand() != null) {
+                if(e.getPlayer().getItemInHand().getType() == Material.BOW) {
+                    if(UserManager.getUser(e.getPlayer().getUniqueId()).getKit() instanceof SuperArcherKit && !UserManager.getUser(e.getPlayer().getUniqueId()).isSpectator()) {
+                        if(e.getPlayer().getInventory().contains(Material.ARROW)) {
                             Projectile pr = e.getPlayer().launchProjectile(Arrow.class);
                             pr.setVelocity(e.getPlayer().getLocation().getDirection().multiply(3));
                             e.setCancelled(true);

@@ -4,12 +4,12 @@ import java.lang.reflect.Field;
 
 /**
  * @author Plajer
- *
+ * <p>
  * Created at 17 lis 2017
  */
 public class CreatureUtils {
 
-	public static Object getPrivateField(String fieldName, Class clazz, Object object) {
+    public static Object getPrivateField(String fieldName, Class clazz, Object object) {
         Field field;
         Object o = null;
         try {
@@ -18,12 +18,12 @@ public class CreatureUtils {
             field.setAccessible(true);
 
             o = field.get(object);
-        } catch (NoSuchFieldException e) {
+        } catch(NoSuchFieldException e) {
             e.printStackTrace();
-        } catch (IllegalAccessException e) {
+        } catch(IllegalAccessException e) {
             e.printStackTrace();
         }
         return o;
     }
-	
+
 }

@@ -6,17 +6,12 @@ package me.tomthedeveloper.menuapi;
 public class SubIconMenu extends IconMenu {
 
 
-
     public SubIconMenu(String name, int size) {
         super(name, size);
-        getIventory().setItem(serializeInt(size),MenuItems.getGoBackItem());
+        getIventory().setItem(serializeInt(size), MenuItems.getGoBackItem());
 
 
     }
-
-
-
-
 
 
 }

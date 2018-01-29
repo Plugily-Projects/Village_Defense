@@ -47,7 +47,7 @@ public class SpecialItem {
         FileConfiguration config = ConfigurationManager.getConfig("SpecialItems");
 
 
-        if (!config.contains(name)) {
+        if(!config.contains(name)) {
             config.set(name + ".data", 0);
             config.set(name + ".displayname", displayName);
             config.set(name + ".lore", Arrays.asList(lore));
@@ -56,8 +56,8 @@ public class SpecialItem {
         }
         try {
             config.save(ConfigurationManager.getFile("SpecialItems"));
-        } catch (IOException e) {
-        	ChatManager.sendErrorHeader("saving SpecialItems.yml file");
+        } catch(IOException e) {
+            ChatManager.sendErrorHeader("saving SpecialItems.yml file");
             e.printStackTrace();
             Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "Don't panic! Try to do this steps:");
             Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "- restart the server");
@@ -159,7 +159,7 @@ public class SpecialItem {
 
     public ItemStack getItemStack() {
         ItemStack itemStack;
-        if (data != null) {
+        if(data != null) {
             itemStack = new ItemStack(getMaterial(), 1, getData());
         } else {
             itemStack = new ItemStack(getMaterial());

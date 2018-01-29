@@ -1,6 +1,5 @@
-package me.tomthedeveloper;
+package me.tomthedeveloper.utils;
 
-import com.sk89q.worldedit.blocks.metadata.MobType;
 import net.minecraft.server.v1_12_R1.*;
 import net.minecraft.server.v1_12_R1.BiomeBase.BiomeMeta;
 import org.bukkit.Bukkit;
@@ -34,12 +33,9 @@ public class NMSUtils {
      * Registers an Item (Not an ItemStack!) to be available for use. an ItemStack
      * can then be created using <code>new ItemStack(item)</code>.
      *
-     * @param name
-     *            - The name of the item, can be anything
-     * @param id
-     *            - The ID of the item, will be rendered depending on this
-     * @param item
-     *            - The net.minecraft.server.version.Item itself
+     * @param name - The name of the item, can be anything
+     * @param id   - The ID of the item, will be rendered depending on this
+     * @param item - The net.minecraft.server.version.Item itself
      */
     public static void registerItem(final Plugin provider, final String name, final int id, final Item item) {
         Item.REGISTRY.a(id, new MinecraftKey(provider.getName(), name), item);
@@ -63,26 +59,25 @@ public class NMSUtils {
      *            {@link Biome#COLLECTION_ALL} for all of them.
      */
     public static boolean addRandomSpawn(final Type type, final SpawnData data, final Biome... biomes) {
-        if (type.isSpecial()) {
+        if(type.isSpecial()) {
             return false;
         }
         final Field field;
-        if ((field = type.getMeta().getField()) == null) {
+        if((field = type.getMeta().getField()) == null) {
             return false;
         }
         try {
             field.setAccessible(true);
-            for (final Biome biome : biomes) {
+            for(final Biome biome : biomes) {
                 final BiomeBase[] array = biome.getNMSBiomeArray();
-                for (final BiomeBase base : array) {
-                    @SuppressWarnings("unchecked")
-                    final List<BiomeMeta> list = (List<BiomeMeta>) field.get(base);
+                for(final BiomeBase base : array) {
+                    @SuppressWarnings("unchecked") final List<BiomeMeta> list = (List<BiomeMeta>) field.get(base);
                     list.add(data);
                     field.set(base, list);
                 }
             }
             return true;
-        } catch (final Exception e) {
+        } catch(final Exception e) {
             e.printStackTrace();
         }
         return false;
@@ -91,13 +86,10 @@ public class NMSUtils {
     /**
      * Registers the custom class to be available for use.
      *
-     * @param type
-     *            - The type of your mob
-     * @param customClass
-     *            - Your custom class that'll be used
-     * @param biomes
-     *            - Should your mob be set as a default in each biome? Only one
-     *            custom entity of this type entity can have this set as 'true'.
+     * @param type        - The type of your mob
+     * @param customClass - Your custom class that'll be used
+     * @param biomes      - Should your mob be set as a default in each biome? Only one
+     *                    custom entity of this type entity can have this set as 'true'.
      */
     public static void registerEntity(final Plugin provider, final Type type, final Class<? extends Entity> customClass,
                                       final boolean biomes) {
@@ -107,18 +99,13 @@ public class NMSUtils {
     /**
      * Registers the custom class to be available for use.
      *
-     * @param id
-     *            - The mob id. BE CAREFUL with this. Your Minecraft client renders
-     *            the entity based on this, and if used improperly, will cause
-     *            unexpected behavior!
-     * @param name
-     *            - The 'savegame id' of the mob.
-     * @param type
-     *            - The type of your mob
-     * @param customClass
-     *            - Your custom class that'll be used
-     * @param biomes
-     *            - The array of biomes to make the mob spawn in.
+     * @param id          - The mob id. BE CAREFUL with this. Your Minecraft client renders
+     *                    the entity based on this, and if used improperly, will cause
+     *                    unexpected behavior!
+     * @param name        - The 'savegame id' of the mob.
+     * @param type        - The type of your mob
+     * @param customClass - Your custom class that'll be used
+     * @param biomes      - The array of biomes to make the mob spawn in.
      * @see EntityType#getName() EntityType#getName() for the savegame id.
      */
     @SuppressWarnings("unchecked")
@@ -126,31 +113,31 @@ public class NMSUtils {
                                       final Class<? extends Entity> customClass, final Biome... biomes) {
         final MinecraftKey key = new MinecraftKey(provider.getName(), name);
         EntityTypes.b.a(id, key, customClass);
-        if (!EntityTypes.d.contains(key)) {
+        if(!EntityTypes.d.contains(key)) {
             EntityTypes.d.add(key);
         }
-        if (biomes.length == 0 || type.isSpecial()) {
+        if(biomes.length == 0 || type.isSpecial()) {
             return;
         }
         final Field field;
-        if ((field = type.getMeta().getField()) == null) {
+        if((field = type.getMeta().getField()) == null) {
             return;
         }
         try {
             field.setAccessible(true);
-            for (final Biome biome : biomes) {
+            for(final Biome biome : biomes) {
                 final BiomeBase[] array = biome.getNMSBiomeArray();
-                for (final BiomeBase base : array) {
+                for(final BiomeBase base : array) {
                     final List<BiomeMeta> list = (List<BiomeMeta>) field.get(base);
-                    for (final BiomeMeta meta : list) {
-                        if (meta.b == type.getNMSClass()) {
+                    for(final BiomeMeta meta : list) {
+                        if(meta.b == type.getNMSClass()) {
                             meta.b = (Class<? extends EntityInsentient>) customClass;
                             break;
                         }
                     }
                 }
             }
-        } catch (final Exception e) {
+        } catch(final Exception e) {
             e.printStackTrace();
         }
     }
@@ -158,15 +145,11 @@ public class NMSUtils {
     /**
      * Registers the custom class to be available for use.
      *
-     * @param name
-     *            - The 'savegame id' of the mob.
-     * @param type
-     *            - The type of your mob
-     * @param customClass
-     *            - Your custom class that'll be used
-     * @param biomes
-     *            - Should your mob be set as a default in each biome? Only one
-     *            custom entity of this type entity can have this set as 'true'.
+     * @param name        - The 'savegame id' of the mob.
+     * @param type        - The type of your mob
+     * @param customClass - Your custom class that'll be used
+     * @param biomes      - Should your mob be set as a default in each biome? Only one
+     *                    custom entity of this type entity can have this set as 'true'.
      * @see EntityType#getName() EntityType#getName() for the savegame id.
      */
     @SuppressWarnings("unchecked")
@@ -174,29 +157,29 @@ public class NMSUtils {
                                       final Class<? extends Entity> customClass, final boolean biomes) {
         final MinecraftKey key = new MinecraftKey(provider.getName(), name);
         EntityTypes.b.a(type.getId(), key, customClass);
-        if (!EntityTypes.d.contains(key)) {
+        if(!EntityTypes.d.contains(key)) {
             EntityTypes.d.add(key);
         }
-        if (!biomes || type.isSpecial()) {
+        if(!biomes || type.isSpecial()) {
             return;
         }
         final Field field;
-        if ((field = type.getMeta().getField()) == null) {
+        if((field = type.getMeta().getField()) == null) {
             return;
         }
         try {
             field.setAccessible(true);
-            for (final BiomeBase base : NMSUtils.BIOMES) {
+            for(final BiomeBase base : NMSUtils.BIOMES) {
                 final List<BiomeMeta> list = (List<BiomeMeta>) field.get(base);
-                for (final BiomeMeta meta : list) {
-                    if (meta.b == type.getNMSClass()) {
+                for(final BiomeMeta meta : list) {
+                    if(meta.b == type.getNMSClass()) {
                         meta.b = (Class<? extends EntityInsentient>) customClass;
                         break;
                     }
                 }
             }
             field.setAccessible(false);
-        } catch (final Exception e) {
+        } catch(final Exception e) {
             e.printStackTrace();
         }
     }
@@ -205,7 +188,6 @@ public class NMSUtils {
      * An enum containing all the biomes of Minecraft. The descriptions are taken
      * from the <a href="http://minecraft.gamepedia.com/Biome">Minecraft Wiki
      * Page</a>, which also has images for each biome.
-     *
      */
     public enum Biome {
 
@@ -345,7 +327,7 @@ public class NMSUtils {
          * Mushroom islands are most often adjacent to an ocean and are often found
          * isolated from other biomes. It is one of the only biomes where huge mushrooms
          * can generate naturally, and where mushrooms can grow in full sunlight.
-         *
+         * <p>
          * <p>
          * Technically no mobs other than mooshrooms spawn naturally in this biome,
          * including the usual night-time hostile mobs. This also applies to caves,
@@ -489,7 +471,7 @@ public class NMSUtils {
          * clay are scarce. However, finding mesa biomes can be difficult due to their
          * rarity. On the other hand, it offers great variety - there are a total of 6
          * variations of this biome to explore.
-         *
+         * <p>
          * <p>
          * Mesas can contain above ground abandoned mineshafts. They also allow gold ore
          * to generate near surface levels, rather than just at layer 32 and below.
@@ -712,7 +694,7 @@ public class NMSUtils {
         private Biome(final int... ids) {
             assert ids.length > 0;
             this.biomes = new BiomeBase[ids.length];
-            for (int i = 0; i < this.biomes.length; ++i) {
+            for(int i = 0; i < this.biomes.length; ++i) {
                 this.biomes[i] = BiomeBase.REGISTRY_ID.getId(ids[i]);
             }
             this.biome = this.biomes[0];
@@ -732,7 +714,7 @@ public class NMSUtils {
 
         static {
             final Biome[] values = Biome.values();
-            for (final Biome biome : values) {
+            for(final Biome biome : values) {
                 Biome.ID_LOOKUP_TABLE[BiomeBase.REGISTRY_ID.a(biome.biome)] = biome;
             }
         }
@@ -1160,9 +1142,9 @@ public class NMSUtils {
 
         /**
          * @return the BiomeMeta list field of this entity.
-         *         <p>
-         *         <b>Undefined will not be accepted and returns null.</b>
-         *         </p>
+         * <p>
+         * <b>Undefined will not be accepted and returns null.</b>
+         * </p>
          */
         public Field getField() {
             return this.field;
@@ -1216,8 +1198,8 @@ public class NMSUtils {
 
         /**
          * @return the IAttribute value of this type, used in place of
-         *         <code>GenericAttributes.h</code> (for Attributes.ARMOR as an
-         *         example).
+         * <code>GenericAttributes.h</code> (for Attributes.ARMOR as an
+         * example).
          */
         public IAttribute asIAttribute() {
             return this.attribute;
@@ -1230,14 +1212,10 @@ public class NMSUtils {
          * Creates a new instance of SpawnData, and at the same time, a new instanceof
          * BiomeMeta, used to add random spawns and such.
          *
-         * @param customClass
-         *            - Your class to spawn
-         * @param spawnWeight
-         *            - The chance for the mob(s) to spawn.
-         * @param minSpawns
-         *            - The minimum amount of entities spawned at once.
-         * @param maxSpawns
-         *            - The maximum amount of entities spawned at once.
+         * @param customClass - Your class to spawn
+         * @param spawnWeight - The chance for the mob(s) to spawn.
+         * @param minSpawns   - The minimum amount of entities spawned at once.
+         * @param maxSpawns   - The maximum amount of entities spawned at once.
          */
         public SpawnData(final Class<? extends EntityInsentient> customClass, final int spawnWeight,
                          final int minSpawns, final int maxSpawns) {
@@ -1275,7 +1253,7 @@ public class NMSUtils {
             creature = clazz.getDeclaredField("u");
             water = clazz.getDeclaredField("v");
             ambient = clazz.getDeclaredField("w");
-        } catch (final Exception e) {
+        } catch(final Exception e) {
             Bukkit.getLogger().warning("Wrong server version / software; BiomeMeta fields not found, aborting.");
         }
         META_LIST_MONSTER = monster;
@@ -1287,7 +1265,7 @@ public class NMSUtils {
         BIOMES = new BiomeBase[BiomeBase.i.a()];
         final Iterator<BiomeBase> iterator = BiomeBase.i.iterator();
         int index = 0;
-        while (iterator.hasNext()) {
+        while(iterator.hasNext()) {
             NMSUtils.BIOMES[index++] = iterator.next();
         }
     }

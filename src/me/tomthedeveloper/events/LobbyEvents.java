@@ -23,8 +23,8 @@ public class LobbyEvents implements Listener {
     }
 
 
-    @EventHandler (priority = EventPriority.HIGHEST)
-    public void onFoodLose(FoodLevelChangeEvent event){
+    @EventHandler(priority = EventPriority.HIGHEST)
+    public void onFoodLose(FoodLevelChangeEvent event) {
         if(event.getEntity().getType() != EntityType.PLAYER)
             return;
         Player player = (Player) event.getEntity();

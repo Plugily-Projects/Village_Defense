@@ -6,7 +6,4 @@ package me.tomthedeveloper.kitapi.basekits;
 public abstract class FreeKit extends Kit {
 
 
-
-
-
 }

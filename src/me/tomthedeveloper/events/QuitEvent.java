@@ -18,10 +18,10 @@ public class QuitEvent implements Listener {
     }
 
     @EventHandler
-    public void onQuit(PlayerQuitEvent event){
+    public void onQuit(PlayerQuitEvent event) {
         if(plugin.getGameInstanceManager().getGameInstance(event.getPlayer()) == null)
             return;
         if(!plugin.isBungeeActivated())
-         plugin.getGameInstanceManager().getGameInstance(event.getPlayer()).leaveAttempt(event.getPlayer());
+            plugin.getGameInstanceManager().getGameInstance(event.getPlayer()).leaveAttempt(event.getPlayer());
     }
 }

@@ -5,7 +5,9 @@ import me.tomthedeveloper.Main;
 import me.tomthedeveloper.game.GameInstance;
 import me.tomthedeveloper.handlers.ChatManager;
 import me.tomthedeveloper.handlers.UserManager;
-import org.bukkit.*;
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -32,20 +34,20 @@ public class SpectatorItemEvents implements Listener {
 
     @EventHandler
     public void onSpectatorItemClick(PlayerInteractEvent e) {
-        if (e.getAction() == Action.RIGHT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_BLOCK) {
-            if (gameAPI.getGameInstanceManager().getGameInstance(e.getPlayer()) == null)
+        if(e.getAction() == Action.RIGHT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_BLOCK) {
+            if(gameAPI.getGameInstanceManager().getGameInstance(e.getPlayer()) == null)
                 return;
-            if (!(e.getPlayer().getItemInHand() == null)) {
-                if (e.getPlayer().getItemInHand().hasItemMeta()) {
-                    if (e.getPlayer().getItemInHand().getItemMeta().getDisplayName() == null)
+            if(!(e.getPlayer().getItemInHand() == null)) {
+                if(e.getPlayer().getItemInHand().hasItemMeta()) {
+                    if(e.getPlayer().getItemInHand().getItemMeta().getDisplayName() == null)
                         return;
 
-                    if (e.getPlayer().getItemInHand().getItemMeta().getDisplayName().equalsIgnoreCase(ChatManager.colorMessage("In-game.Spectator.Spectator-Item-Name"))) {
+                    if(e.getPlayer().getItemInHand().getItemMeta().getDisplayName().equalsIgnoreCase(ChatManager.colorMessage("In-game.Spectator.Spectator-Item-Name"))) {
                         openSpectatorMenu(e.getPlayer().getWorld(), e.getPlayer());
                     }
                 }
             }
-            if (e.getPlayer().getItemInHand().getType() == Material.ENDER_PEARL) {
+            if(e.getPlayer().getItemInHand().getType() == Material.ENDER_PEARL) {
                 e.setCancelled(true);
             }
 

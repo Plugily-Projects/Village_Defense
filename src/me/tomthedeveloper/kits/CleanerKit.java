@@ -69,33 +69,33 @@ public class CleanerKit extends PremiumKit implements Listener {
 
     @EventHandler
     public void onClean(PlayerInteractEvent event) {
-        if (!event.hasItem())
+        if(!event.hasItem())
             return;
-        if (event.getItem().getType() != Material.BLAZE_ROD)
+        if(event.getItem().getType() != Material.BLAZE_ROD)
             return;
-        if (!(event.getItem().hasItemMeta()))
+        if(!(event.getItem().hasItemMeta()))
             return;
-        if (!(event.getItem().getItemMeta().hasDisplayName()))
+        if(!(event.getItem().getItemMeta().hasDisplayName()))
             return;
-        if (!(event.getItem().getItemMeta().getDisplayName().contains(ChatManager.colorMessage("kits.Cleaner.Game-Item-Name"))))
+        if(!(event.getItem().getItemMeta().getDisplayName().contains(ChatManager.colorMessage("kits.Cleaner.Game-Item-Name"))))
             return;
-        if (plugin.getGameAPI().getGameInstanceManager().getGameInstance(event.getPlayer()) == null)
+        if(plugin.getGameAPI().getGameInstanceManager().getGameInstance(event.getPlayer()) == null)
             return;
-        if (UserManager.getUser(event.getPlayer().getUniqueId()).isSpectator()) {
+        if(UserManager.getUser(event.getPlayer().getUniqueId()).isSpectator()) {
             event.getPlayer().sendMessage(ChatManager.colorMessage("kits.Cleaner.Spectator-Warning"));
             return;
         }
         InvasionInstance invasionInstance = (InvasionInstance) plugin.getGameAPI().getGameInstanceManager().getGameInstance(event.getPlayer());
 
-        if (UserManager.getUser(event.getPlayer().getUniqueId()).getCooldown("clean") > 0 && !UserManager.getUser(event.getPlayer().getUniqueId()).isSpectator()) {
-        	String msgstring = ChatManager.colorMessage("kits.Ability-Still-On-Cooldown");
-        	msgstring = msgstring.replaceFirst("%COOLDOWN%",Long.toString( UserManager.getUser(event.getPlayer().getUniqueId()).getCooldown("clean")));
-        	event.getPlayer().sendMessage(msgstring);
+        if(UserManager.getUser(event.getPlayer().getUniqueId()).getCooldown("clean") > 0 && !UserManager.getUser(event.getPlayer().getUniqueId()).isSpectator()) {
+            String msgstring = ChatManager.colorMessage("kits.Ability-Still-On-Cooldown");
+            msgstring = msgstring.replaceFirst("%COOLDOWN%", Long.toString(UserManager.getUser(event.getPlayer().getUniqueId()).getCooldown("clean")));
+            event.getPlayer().sendMessage(msgstring);
             return;
         }
-        if (invasionInstance.getZombies() != null) {
-            for (Zombie zombie : invasionInstance.getZombies()) {
-                if (!plugin.is1_12_R1()) {
+        if(invasionInstance.getZombies() != null) {
+            for(Zombie zombie : invasionInstance.getZombies()) {
+                if(!plugin.is1_12_R1()) {
                     ParticleEffect.LAVA.display(1, 1, 1, 1, 20, zombie.getLocation(), 100);
                 } else {
                     zombie.getWorld().spawnParticle(Particle.LAVA, zombie.getLocation(), 20, 1, 1, 1);
@@ -107,7 +107,7 @@ public class CleanerKit extends PremiumKit implements Listener {
             event.getPlayer().sendMessage(ChatManager.colorMessage("kits.Cleaner.Nothing-To-Clean"));
             return;
         }
-        if (plugin.is1_9_R1() || plugin.is1_12_R1()) {
+        if(plugin.is1_9_R1() || plugin.is1_12_R1()) {
             event.getPlayer().playSound(event.getPlayer().getLocation(), Sound.ENTITY_ZOMBIE_DEATH, 1, 1);
         } else {
             event.getPlayer().playSound(event.getPlayer().getLocation(), Sound.valueOf("ZOMBIE_DEATH"), 1, 1);

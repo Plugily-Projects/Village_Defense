@@ -60,15 +60,15 @@ public class LooterKit extends LevelKit implements Listener {
 
     @EventHandler
     public void onDeath(EntityDeathEvent event) {
-        if (event.getEntity().getType() != EntityType.ZOMBIE)
+        if(event.getEntity().getType() != EntityType.ZOMBIE)
             return;
-        if (event.getEntity().getKiller() == null)
+        if(event.getEntity().getKiller() == null)
             return;
         Player player = event.getEntity().getKiller();
-        if (plugin.getGameAPI().getGameInstanceManager().getGameInstance(player) == null)
+        if(plugin.getGameAPI().getGameInstanceManager().getGameInstance(player) == null)
             return;
         User user = UserManager.getUser(player.getUniqueId());
-        if (user.getKit() instanceof LooterKit) {
+        if(user.getKit() instanceof LooterKit) {
             player.getInventory().addItem(new ItemStack(Material.ROTTEN_FLESH, 1));
         }
 

@@ -75,8 +75,8 @@ public class TeleporterKit extends PremiumKit implements Listener {
     public void OpenAndCreateTeleportationMenu(World world, Player p) {
         GameInstance gameInstance = gameAPI.getGameInstanceManager().getGameInstance(p);
         Inventory inventory = plugin.getServer().createInventory(null, 18, ChatManager.colorMessage("kits.Teleporter.Game-Item-Menu-Name"));
-        for (Player player : world.getPlayers()) {
-            if (gameAPI.getGameInstanceManager().getGameInstance(player) != null && !UserManager.getUser(player.getUniqueId()).isFakeDead()) {
+        for(Player player : world.getPlayers()) {
+            if(gameAPI.getGameInstanceManager().getGameInstance(player) != null && !UserManager.getUser(player.getUniqueId()).isFakeDead()) {
                 ItemStack skull = new ItemStack(397, 1, (short) 3);
 
                 SkullMeta meta = (SkullMeta) skull.getItemMeta();
@@ -87,7 +87,7 @@ public class TeleporterKit extends PremiumKit implements Listener {
                 inventory.addItem(skull);
             }
         }
-        for (Villager villager : ((InvasionInstance) gameInstance).getVillagers()) {
+        for(Villager villager : ((InvasionInstance) gameInstance).getVillagers()) {
 
 
             ItemStack villageritem = new ItemStack(Material.EMERALD);
@@ -102,20 +102,20 @@ public class TeleporterKit extends PremiumKit implements Listener {
 
     @EventHandler
     public void OpenInventoryRightClickEnderPearl(PlayerInteractEvent e) {
-        if (e.getAction() == Action.RIGHT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_BLOCK) {
-            if (gameAPI.getGameInstanceManager().getGameInstance(e.getPlayer()) == null)
+        if(e.getAction() == Action.RIGHT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_BLOCK) {
+            if(gameAPI.getGameInstanceManager().getGameInstance(e.getPlayer()) == null)
                 return;
-            if (!(e.getPlayer().getItemInHand() == null)) {
-                if (e.getPlayer().getItemInHand().hasItemMeta()) {
-                    if (e.getPlayer().getItemInHand().getItemMeta().getDisplayName() == null)
+            if(!(e.getPlayer().getItemInHand() == null)) {
+                if(e.getPlayer().getItemInHand().hasItemMeta()) {
+                    if(e.getPlayer().getItemInHand().getItemMeta().getDisplayName() == null)
                         return;
 
-                    if (e.getPlayer().getItemInHand().getItemMeta().getDisplayName().equalsIgnoreCase(ChatManager.colorMessage("kits.Teleporter.Game-Item-Name"))) {
+                    if(e.getPlayer().getItemInHand().getItemMeta().getDisplayName().equalsIgnoreCase(ChatManager.colorMessage("kits.Teleporter.Game-Item-Name"))) {
                         OpenAndCreateTeleportationMenu(e.getPlayer().getWorld(), e.getPlayer());
                     }
                 }
             }
-            if (e.getPlayer().getItemInHand().getType() == Material.ENDER_PEARL) {
+            if(e.getPlayer().getItemInHand().getType() == Material.ENDER_PEARL) {
                 e.setCancelled(true);
             }
 
@@ -126,35 +126,35 @@ public class TeleporterKit extends PremiumKit implements Listener {
     @EventHandler
     public void PlayerClickToTeleport(InventoryClickEvent e) {
         Player p = (Player) e.getWhoClicked();
-        if (gameAPI.getGameInstanceManager().getGameInstance(p) == null)
+        if(gameAPI.getGameInstanceManager().getGameInstance(p) == null)
             return;
         GameInstance gameInstance = gameAPI.getGameInstanceManager().getGameInstance(p);
-        if (e.getCurrentItem() == null)
+        if(e.getCurrentItem() == null)
             return;
-        if (!e.getCurrentItem().hasItemMeta())
+        if(!e.getCurrentItem().hasItemMeta())
             return;
-        if (!e.getCurrentItem().getItemMeta().hasDisplayName())
+        if(!e.getCurrentItem().getItemMeta().hasDisplayName())
             return;
-        if (!e.getCurrentItem().getItemMeta().hasLore())
+        if(!e.getCurrentItem().getItemMeta().hasLore())
             return;
-        if (e.getCurrentItem().hasItemMeta()) {
-            if (e.getInventory().getName().equalsIgnoreCase(ChatManager.colorMessage("kits.Teleporter.Game-Item-Menu-Name"))) {
+        if(e.getCurrentItem().hasItemMeta()) {
+            if(e.getInventory().getName().equalsIgnoreCase(ChatManager.colorMessage("kits.Teleporter.Game-Item-Menu-Name"))) {
                 e.setCancelled(true);
-                if ((e.isLeftClick() || e.isRightClick())) {
-                    if (e.getCurrentItem().getType() == Material.EMERALD) {
+                if((e.isLeftClick() || e.isRightClick())) {
+                    if(e.getCurrentItem().getType() == Material.EMERALD) {
                         boolean villagerfound = false;
-                        for (Villager villager : ((InvasionInstance) gameInstance).getVillagers()) {
-                            if (villager.getCustomName() == null) {
+                        for(Villager villager : ((InvasionInstance) gameInstance).getVillagers()) {
+                            if(villager.getCustomName() == null) {
                                 villager.remove();
                             }
-                            if (villager.getCustomName().equalsIgnoreCase(e.getCurrentItem().getItemMeta().getDisplayName()) && villager.getUniqueId().toString().equalsIgnoreCase(ChatColor.stripColor(e.getCurrentItem().getItemMeta().getLore().get(0)))) {
+                            if(villager.getCustomName().equalsIgnoreCase(e.getCurrentItem().getItemMeta().getDisplayName()) && villager.getUniqueId().toString().equalsIgnoreCase(ChatColor.stripColor(e.getCurrentItem().getItemMeta().getLore().get(0)))) {
                                 e.getWhoClicked().teleport(villager.getLocation());
                                 if(plugin.is1_9_R1() || plugin.is1_12_R1()) {
                                     p.getWorld().playSound(p.getLocation(), Sound.ENTITY_ENDERMEN_TELEPORT, 1, 1);
                                 } else {
                                     p.getWorld().playSound(p.getLocation(), Sound.valueOf("ENDERMAN_TELEPORT"), 1, 1);
                                 }
-                                if (!plugin.is1_12_R1())
+                                if(!plugin.is1_12_R1())
                                     ParticleEffect.PORTAL.display(1, 1, 1, 10, 30, p.getLocation(), 100);
                                 else {
                                     p.getWorld().spawnParticle(Particle.PORTAL, p.getLocation(), 30, 1, 1, 1);
@@ -164,7 +164,7 @@ public class TeleporterKit extends PremiumKit implements Listener {
                                 break;
                             }
                         }
-                        if (!villagerfound) {
+                        if(!villagerfound) {
                             p.sendMessage(ChatManager.colorMessage("kits.Teleporter.Villager-Warning"));
                         }
                         villagerfound = false;
@@ -172,16 +172,16 @@ public class TeleporterKit extends PremiumKit implements Listener {
                     } else { /*if(e.getCurrentItem().getType() == Material.SKULL_ITEM || e.getCurrentItem().getType() == Material.SKULL)*/
 
                         ItemMeta meta = e.getCurrentItem().getItemMeta();
-                        for (Player player : gameInstance.getPlayers()) {
-                            if (player.getName().equalsIgnoreCase(meta.getDisplayName()) || ChatColor.stripColor(meta.getDisplayName()).contains(player.getName())) {
+                        for(Player player : gameInstance.getPlayers()) {
+                            if(player.getName().equalsIgnoreCase(meta.getDisplayName()) || ChatColor.stripColor(meta.getDisplayName()).contains(player.getName())) {
                                 p.sendMessage(ChatManager.formatMessage(ChatManager.colorMessage("kits.Teleporter.Teleported-To-Player"), player));
                                 p.teleport(player);
-                                if (plugin.is1_9_R1() || plugin.is1_12_R1()) {
+                                if(plugin.is1_9_R1() || plugin.is1_12_R1()) {
                                     p.getWorld().playSound(p.getLocation(), Sound.ENTITY_ENDERMEN_TELEPORT, 1, 1);
                                 } else {
                                     p.getWorld().playSound(p.getLocation(), Sound.valueOf("ENDERMAN_TELEPORT"), 1, 1);
                                 }
-                                if (!plugin.is1_12_R1())
+                                if(!plugin.is1_12_R1())
                                     ParticleEffect.PORTAL.display(1, 1, 1, 10, 30, p.getLocation(), 100);
                                 else {
                                     p.getWorld().spawnParticle(Particle.PORTAL, p.getLocation(), 30, 1, 1, 1);

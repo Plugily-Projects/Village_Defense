@@ -51,22 +51,22 @@ public class RidableIronGolem extends EntityIronGolem {
     public void g(float f, float f1) {
 
 
-        if (this.passenger != null && this.passenger instanceof EntityLiving) {
+        if(this.passenger != null && this.passenger instanceof EntityLiving) {
             this.lastYaw = this.yaw = this.passenger.yaw;
             this.pitch = this.passenger.pitch * 0.5F;
             setYawPitch(this.yaw, this.pitch);
             this.aI = this.aG = this.yaw;
             f = ((EntityLiving) this.passenger).aZ * 0.5F;
             f1 = ((EntityLiving) this.passenger).ba;
-            if (f1 <= 0.0F) {
+            if(f1 <= 0.0F) {
                 f1 *= 0.25F;
             }
 
 
-            if (!this.world.isClientSide) {
+            if(!this.world.isClientSide) {
                 this.k((float) this.getAttributeInstance(GenericAttributes.MOVEMENT_SPEED).getValue());
                 this.S = 1.0F;
-                if (f1 <= 0.0F) {
+                if(f1 <= 0.0F) {
                     f1 *= 0.25F;    // Make backwards slower
                 }
                 f *= 0.75F;    // Also make sideways slower
@@ -76,7 +76,7 @@ public class RidableIronGolem extends EntityIronGolem {
                 super.g(f, f1);
             }
 
-            if (this.onGround) {
+            if(this.onGround) {
 
                 this.j(false);
             }
@@ -86,7 +86,7 @@ public class RidableIronGolem extends EntityIronGolem {
             double d1 = this.locZ - this.lastZ;
             float f4 = MathHelper.sqrt(d0 * d0 + d1 * d1) * 4.0F;
 
-            if (f4 > 1.0F) {
+            if(f4 > 1.0F) {
                 f4 = 1.0F;
             }
 
@@ -97,7 +97,7 @@ public class RidableIronGolem extends EntityIronGolem {
             this.aK = 0.02F;
             // this.S = 1.0F;
 
-            if (f1 <= 0.0F) {
+            if(f1 <= 0.0F) {
                 f1 *= 0.25F;    // Make backwards slower
             }
             f *= 0.75F;    // Also make sideways slower

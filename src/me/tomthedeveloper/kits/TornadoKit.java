@@ -44,8 +44,8 @@ public class TornadoKit extends PremiumKit implements Listener {
         this.setDescription(description.toArray(new String[description.size()]));
         plugin.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, () -> {
             ArrayList<Tornado> removeAfter = new ArrayList<>();
-            for (Tornado tornado : tornados) {
-                if (tornado.getTimes() > 75) {
+            for(Tornado tornado : tornados) {
+                if(tornado.getTimes() > 75) {
                     removeAfter.add(tornado);
                 }
                 tornado.update();
@@ -88,20 +88,20 @@ public class TornadoKit extends PremiumKit implements Listener {
 
     @EventHandler
     public void onTornadoSpawn(PlayerInteractEvent event) {
-        if (event.getAction() != Action.RIGHT_CLICK_AIR && event.getAction() != Action.RIGHT_CLICK_BLOCK)
+        if(event.getAction() != Action.RIGHT_CLICK_AIR && event.getAction() != Action.RIGHT_CLICK_BLOCK)
             return;
         Player player = event.getPlayer();
-        if (player.getItemInHand() == null)
+        if(player.getItemInHand() == null)
             return;
-        if (plugin.getGameAPI().getGameInstanceManager().getGameInstance(player) == null)
+        if(plugin.getGameAPI().getGameInstanceManager().getGameInstance(player) == null)
             return;
-        if (!player.getItemInHand().hasItemMeta())
+        if(!player.getItemInHand().hasItemMeta())
             return;
-        if (!player.getItemInHand().getItemMeta().hasDisplayName())
+        if(!player.getItemInHand().getItemMeta().hasDisplayName())
             return;
-        if (!player.getItemInHand().getItemMeta().getDisplayName().equalsIgnoreCase(ChatManager.colorMessage("kits.Tornado.Game-Item-Name")))
+        if(!player.getItemInHand().getItemMeta().getDisplayName().equalsIgnoreCase(ChatManager.colorMessage("kits.Tornado.Game-Item-Name")))
             return;
-        if (player.getItemInHand().getAmount() <= 1) {
+        if(player.getItemInHand().getAmount() <= 1) {
             player.setItemInHand(new ItemStack(Material.AIR));
 
         } else {
@@ -152,8 +152,8 @@ public class TornadoKit extends PremiumKit implements Listener {
 
         public void update() {
             times++;
-            for (int l = 0; l < lines; l++) {
-                for (double y = 0; y < max_height; y += height_increasement) {
+            for(int l = 0; l < lines; l++) {
+                for(double y = 0; y < max_height; y += height_increasement) {
                     double radius = y * radius_increasement;
                     double x = Math.cos(Math.toRadians(360 / lines * l + y * 25 - angle)) * radius;
                     double z = Math.sin(Math.toRadians(360 / lines * l + y * 25 - angle)) * radius;
@@ -163,15 +163,15 @@ public class TornadoKit extends PremiumKit implements Listener {
             }
 
 
-            if (!plugin.is1_7_R4()) {
-                for (Entity entity : getLocation().getWorld().getNearbyEntities(getLocation(), 2, 2, 2)) {
-                    if (entity.getType() == EntityType.ZOMBIE) {
+            if(!plugin.is1_7_R4()) {
+                for(Entity entity : getLocation().getWorld().getNearbyEntities(getLocation(), 2, 2, 2)) {
+                    if(entity.getType() == EntityType.ZOMBIE) {
                         entity.setVelocity(getVector().multiply(2).setY(0).add(new Vector(0, 1, 0)));
                     }
                 }
             } else {
-                for (Entity entity : Util.getNearbyEntities(getLocation(), 2)) {
-                    if (entity.getType() == EntityType.ZOMBIE && entity.getWorld().getName().equals(entity.getWorld().getName())) {
+                for(Entity entity : Util.getNearbyEntities(getLocation(), 2)) {
+                    if(entity.getType() == EntityType.ZOMBIE && entity.getWorld().getName().equals(entity.getWorld().getName())) {
                         entity.setVelocity(getVector().multiply(2).setY(0).add(new Vector(0, 1, 0)));
                     }
                 }

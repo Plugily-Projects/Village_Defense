@@ -24,7 +24,7 @@ public class GolemBuster extends EntityZombie {
     public int damage;
     private float bw;
 
-    @SuppressWarnings({ "rawtypes", "unchecked" })
+    @SuppressWarnings({"rawtypes", "unchecked"})
     public GolemBuster(World world) {
         super(((CraftWorld) world).getHandle());
         this.bw = Main.ZOMBIE_SPEED; //Change this to your liking. this is were you set the speed
@@ -73,9 +73,9 @@ public class GolemBuster extends EntityZombie {
     }
 
     @SuppressWarnings("unused")
-	@Override
+    @Override
     public boolean damageEntity(DamageSource damagesource, float f) {
-        if (damagesource != null && damagesource.getEntity() != null && damagesource.getEntity().getBukkitEntity().getType() == EntityType.IRON_GOLEM) {
+        if(damagesource != null && damagesource.getEntity() != null && damagesource.getEntity().getBukkitEntity().getType() == EntityType.IRON_GOLEM) {
             this.die();
             this.die();
             ItemStack[] itemStack = new ItemStack[]{new ItemStack(Material.ROTTEN_FLESH)};

@@ -23,7 +23,7 @@ public class TerminatorKit extends LevelKit {
 
 
     public TerminatorKit() {
-    	setName(ChatManager.colorMessage("kits.Terminator.Kit-Name"));
+        setName(ChatManager.colorMessage("kits.Terminator.Kit-Name"));
         List<String> description = Util.splitString(ChatManager.colorMessage("kits.Terminator.Kit-Description"), 40);
         this.setDescription(description.toArray(new String[description.size()]));
         setLevel(20);
@@ -52,7 +52,7 @@ public class TerminatorKit extends LevelKit {
 
     @Override
     public void reStock(Player player) {
-        for (int i = 0; i < 2; i++) {
+        for(int i = 0; i < 2; i++) {
             player.getInventory().addItem(Items.getPotion(PotionType.STRENGTH, 2, true, 1));
         }
 

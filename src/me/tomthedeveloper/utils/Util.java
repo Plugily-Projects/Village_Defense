@@ -27,44 +27,44 @@ public class Util {
 
     public static void addLore(ItemStack itemStack, String string) {
 
-            ItemMeta meta = itemStack.getItemMeta();
-            List<String> lore;
-            if(meta != null &&meta.hasLore()) {
-                lore = meta.getLore();
-            }else{
-                lore = new ArrayList<>();
-            }
-            lore.add(string);
-            meta.setLore(lore);
-            itemStack.setItemMeta(meta);
+        ItemMeta meta = itemStack.getItemMeta();
+        List<String> lore;
+        if(meta != null && meta.hasLore()) {
+            lore = meta.getLore();
+        } else {
+            lore = new ArrayList<>();
+        }
+        lore.add(string);
+        meta.setLore(lore);
+        itemStack.setItemMeta(meta);
 
 
     }
 
     public static Queue<Block> getLineOfSight(LivingEntity entity, HashSet<Byte> transparent, int maxDistance, int maxLength) {
-        if (maxDistance > 120) {
+        if(maxDistance > 120) {
             maxDistance = 120;
         }
 
 
         Queue<Block> blocks = new LinkedList<>();
         Iterator<Block> itr = new BlockIterator(entity, maxDistance);
-        while (itr.hasNext()) {
+        while(itr.hasNext()) {
             Block block = itr.next();
             blocks.add(block);
 
-            if (maxLength != 0 && blocks.size() > maxLength) {
+            if(maxLength != 0 && blocks.size() > maxLength) {
                 blocks.remove(0);
             }
             int id = block.getTypeId();
-            if (transparent == null) {
-                if (id != 0 && id != 50 && id != 59 && id != 31 && id != 175 && id != 38 && id != 37 && id != 6 && id != 106
+            if(transparent == null) {
+                if(id != 0 && id != 50 && id != 59 && id != 31 && id != 175 && id != 38 && id != 37 && id != 6 && id != 106
                         ) {
 
                     break;
                 }
             } else {
-                if (!transparent.contains((byte) id))
+                if(!transparent.contains((byte) id))
                     break;
             }
 
@@ -76,13 +76,13 @@ public class Util {
 
         int chunkRadius = radius < 16 ? 1 : radius / 16;
         HashSet<Entity> radiusEntities = new HashSet<>();
-        for (int chX = 0 - chunkRadius; chX <= chunkRadius; chX++) {
-            for (int chZ = 0 - chunkRadius; chZ <= chunkRadius; chZ++) {
+        for(int chX = 0 - chunkRadius; chX <= chunkRadius; chX++) {
+            for(int chZ = 0 - chunkRadius; chZ <= chunkRadius; chZ++) {
                 int x = (int) l.getX(), y = (int) l.getY(), z = (int) l.getZ();
-                for (Entity e : new Location(l.getWorld(), x + chX * 16, y, z + chZ * 16).getChunk().getEntities()) {
-                    if (!(l.getWorld().getName().equalsIgnoreCase(e.getWorld().getName())))
+                for(Entity e : new Location(l.getWorld(), x + chX * 16, y, z + chZ * 16).getChunk().getEntities()) {
+                    if(!(l.getWorld().getName().equalsIgnoreCase(e.getWorld().getName())))
                         continue;
-                    if (e.getLocation().distanceSquared(l) <= radius * radius && e.getLocation().getBlock() != l
+                    if(e.getLocation().distanceSquared(l) <= radius * radius && e.getLocation().getBlock() != l
                             .getBlock()) {
                         radiusEntities.add(e);
                     }
@@ -124,6 +124,7 @@ public class Util {
                 + ":" + (seconds < 10 ? "0" : "") + seconds);
 
     }
+
     public static void setLocation(FileConfiguration config, Location location, String path) {
 
 
@@ -143,8 +144,6 @@ public class Util {
     public static void spawnRandomFirework(Location location) {
 
 
-
-
         Firework fw = (Firework) location.getWorld().spawnEntity(location, EntityType.FIREWORK);
         FireworkMeta fwm = fw.getFireworkMeta();
 
@@ -154,11 +153,11 @@ public class Util {
         //Get the type
         int rt = r.nextInt(4) + 1;
         FireworkEffect.Type type = FireworkEffect.Type.BALL;
-        if (rt == 1) type = FireworkEffect.Type.BALL;
-        if (rt == 2) type = FireworkEffect.Type.BALL_LARGE;
-        if (rt == 3) type = FireworkEffect.Type.BURST;
-        if (rt == 4) type = FireworkEffect.Type.CREEPER;
-        if (rt == 5) type = FireworkEffect.Type.STAR;
+        if(rt == 1) type = FireworkEffect.Type.BALL;
+        if(rt == 2) type = FireworkEffect.Type.BALL_LARGE;
+        if(rt == 3) type = FireworkEffect.Type.BURST;
+        if(rt == 4) type = FireworkEffect.Type.CREEPER;
+        if(rt == 5) type = FireworkEffect.Type.STAR;
 
         //Get our random colours
         int r1i = r.nextInt(250) + 1;
@@ -180,18 +179,15 @@ public class Util {
     }
 
 
-    public static List<String> splitString(String string, int max){
+    public static List<String> splitString(String string, int max) {
         List<String> matchList = new ArrayList<>();
         Pattern regex = Pattern.compile(".{1," + max + "}(?:\\s|$)", Pattern.DOTALL);
         Matcher regexMatcher = regex.matcher(string);
-        while (regexMatcher.find()) {
+        while(regexMatcher.find()) {
             matchList.add(ChatColor.translateAlternateColorCodes('&', "&7") + regexMatcher.group());
         }
         return matchList;
     }
-
-
-
 
 
 }

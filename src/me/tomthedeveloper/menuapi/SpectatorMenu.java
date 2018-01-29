@@ -19,27 +19,27 @@ public abstract class SpectatorMenu {
 
     private IconMenu iconMenu;
     private GameInstance GameInstance;
-    private static String  specatorMenuName;
+    private static String specatorMenuName;
 
     public SpectatorMenu(GameInstance GameInstance) {
 
         this.GameInstance = GameInstance;
         FileConfiguration configuration = ConfigurationManager.getConfig("language");
-        if(!configuration.contains("SpectatorMenuName")){
+        if(!configuration.contains("SpectatorMenuName")) {
             configuration.set("SpectatorMenuName", "Spectator Menu");
             try {
                 configuration.save(ConfigurationManager.getFile("language"));
-            } catch (IOException e) {
+            } catch(IOException e) {
                 e.printStackTrace();
             }
         }
         specatorMenuName = configuration.getString("SpectatorMenuName");
     }
 
-    private void createMenu(){
+    private void createMenu() {
 
         iconMenu = new IconMenu(specatorMenuName, GameInstance.getPlayers().size());
-        for(Player player: GameInstance.getPlayersLeft()){
+        for(Player player : GameInstance.getPlayersLeft()) {
             ItemStack itemStack = new ItemStack(Material.SKULL_ITEM);
             SkullMeta skullMeta = (SkullMeta) itemStack.getItemMeta();
             boolean b = skullMeta.setOwner(player.getName());
@@ -53,18 +53,16 @@ public abstract class SpectatorMenu {
 
     }
 
-    public Inventory getInventory(){
+    public Inventory getInventory() {
         return iconMenu.getIventory();
     }
 
-    public void open(Player player){
+    public void open(Player player) {
         createMenu();
         iconMenu.open(player);
     }
 
     public abstract String[] getDescription(Player player);
-
-
 
 
 }

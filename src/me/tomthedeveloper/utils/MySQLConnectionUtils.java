@@ -14,17 +14,17 @@ import java.sql.SQLException;
 
 /**
  * @author Plajer
- *
+ * <p>
  * Created at 18 lis 2017
  */
 public class MySQLConnectionUtils {
 
-	public static void loadPlayerStats(Player player, Main plugin) {
-		boolean b = false;
+    public static void loadPlayerStats(Player player, Main plugin) {
+        boolean b = false;
         MySQLDatabase database = plugin.getMySQLDatabase();
         ResultSet resultSet = database.executeQuery("SELECT UUID from playerstats WHERE UUID='" + player.getUniqueId().toString() + "'");
         try {
-            if (!resultSet.next()) {
+            if(!resultSet.next()) {
                 database.insertPlayer(player.getUniqueId().toString());
                 b = true;
             }
@@ -52,7 +52,7 @@ public class MySQLConnectionUtils {
             user.setInt("level", level);
             user.setInt("orbs", orbs);
             b = true;
-        } catch (SQLException e1) {
+        } catch(SQLException e1) {
             System.out.print("CONNECTION FAILED FOR PLAYER " + player.getName());
             ChatManager.sendErrorHeader("saving player data in MySQL database");
             e1.printStackTrace();
@@ -62,9 +62,9 @@ public class MySQLConnectionUtils {
             Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "- contact the developer");
             //e1.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
-        if (b = false) {
+        if(b = false) {
             try {
-                if (!resultSet.next()) {
+                if(!resultSet.next()) {
                     database.insertPlayer(player.getUniqueId().toString());
                     b = true;
                 }
@@ -92,7 +92,7 @@ public class MySQLConnectionUtils {
                 user.setInt("level", level);
                 user.setInt("orbs", orbs);
                 b = true;
-            } catch (SQLException e1) {
+            } catch(SQLException e1) {
                 System.out.print("CONNECTION FAILED TWICE FOR PLAYER " + player.getName());
                 ChatManager.sendErrorHeader("saving player data in MySQL database");
                 e1.printStackTrace();
@@ -103,6 +103,6 @@ public class MySQLConnectionUtils {
                 //e1.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
             }
         }
-	}
-	
+    }
+
 }

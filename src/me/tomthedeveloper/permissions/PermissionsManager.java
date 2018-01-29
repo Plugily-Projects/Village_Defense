@@ -11,7 +11,7 @@ public class PermissionsManager {
     private static String mvpperm = "villagedefense.mvp";
     private static String eliteperm = "villagedefense.elite";
     private static String editperm = "villagedefense.edit";
-    
+
     public static String getJoinFullGames() {
         return joinfullperm;
     }

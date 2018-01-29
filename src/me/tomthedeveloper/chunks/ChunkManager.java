@@ -18,13 +18,13 @@ public class ChunkManager implements Listener {
     }
 
     public static ChunkManager getInstance() {
-        if (instance == null)
+        if(instance == null)
             instance = new ChunkManager();
         return instance;
     }
 
     public void keepLoaded(Chunk chunk) {
-        if (!chunk.isLoaded())
+        if(!chunk.isLoaded())
             chunk.load();
         chunks.add(chunk);
     }
@@ -35,7 +35,7 @@ public class ChunkManager implements Listener {
 
     @EventHandler
     public void onChunkUnload(ChunkUnloadEvent event) {
-        if (chunks.contains(event.getChunk()))
+        if(chunks.contains(event.getChunk()))
             event.setCancelled(true);
     }
 

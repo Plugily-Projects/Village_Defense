@@ -32,16 +32,15 @@ import java.util.List;
 public class ItemBuilder implements Listener {
 
 
-    private static boolean listener	= false;
-    private static final HashMap<String, PotionEffect>	effects	= new HashMap<>();
+    private static boolean listener = false;
+    private static final HashMap<String, PotionEffect> effects = new HashMap<>();
 
     private final ItemStack is;
 
     /**
      * Inits the builder with the given {@link org.bukkit.Material}
      *
-     * @param mat
-     *            the {@link org.bukkit.Material} to start the builder from
+     * @param mat the {@link org.bukkit.Material} to start the builder from
      * @since 1.0
      */
     public ItemBuilder(final Material mat) {
@@ -51,8 +50,7 @@ public class ItemBuilder implements Listener {
     /**
      * Inits the builder with the given {@link org.bukkit.inventory.ItemStack}
      *
-     * @param is
-     *            the {@link org.bukkit.inventory.ItemStack} to start the builder from
+     * @param is the {@link org.bukkit.inventory.ItemStack} to start the builder from
      * @since 1.0
      */
     public ItemBuilder(final ItemStack is) {
@@ -62,8 +60,7 @@ public class ItemBuilder implements Listener {
     /**
      * Changes the amount of the {@link org.bukkit.inventory.ItemStack}
      *
-     * @param amount
-     *            the new amount to set
+     * @param amount the new amount to set
      * @return this builder for chaining
      * @since 1.0
      */
@@ -75,8 +72,7 @@ public class ItemBuilder implements Listener {
     /**
      * Changes the display name of the {@link org.bukkit.inventory.ItemStack}
      *
-     * @param name
-     *            the new display name to set
+     * @param name the new display name to set
      * @return this builder for chaining
      * @since 1.0
      */
@@ -89,16 +85,17 @@ public class ItemBuilder implements Listener {
 
     /**
      * Adds a new line to the lore of the {@link org.bukkit.inventory.ItemStack}
+     * <p>
+     * <p>
+     * the new line to add
      *
-
-     *            the new line to add
      * @return this builder for chaining
      * @since 1.0
      */
     public ItemBuilder lore(final String name) {
         final ItemMeta meta = is.getItemMeta();
         List<String> lore = meta.getLore();
-        if (lore == null) {
+        if(lore == null) {
             lore = new ArrayList<>();
         }
         lore.add(name);
@@ -110,8 +107,7 @@ public class ItemBuilder implements Listener {
     /**
      * Changes the durability of the {@link org.bukkit.inventory.ItemStack}
      *
-     * @param durability
-     *            the new durability to set
+     * @param durability the new durability to set
      * @return this builder for chaining
      * @since 1.0
      */
@@ -123,8 +119,7 @@ public class ItemBuilder implements Listener {
     /**
      * Changes the data of the {@link org.bukkit.inventory.ItemStack}
      *
-     * @param data
-     *            the new data to set
+     * @param data the new data to set
      * @return this builder for chaining
      * @since 1.0
      */
@@ -137,10 +132,8 @@ public class ItemBuilder implements Listener {
     /**
      * Adds an {@link org.bukkit.enchantments.Enchantment} with the given level to the {@link org.bukkit.inventory.ItemStack}
      *
-     * @param enchantment
-     *            the enchantment to add
-     * @param level
-     *            the level of the enchantment
+     * @param enchantment the enchantment to add
+     * @param level       the level of the enchantment
      * @return this builder for chaining
      * @since 1.0
      */
@@ -152,8 +145,7 @@ public class ItemBuilder implements Listener {
     /**
      * Adds an {@link org.bukkit.enchantments.Enchantment} with the level 1 to the {@link org.bukkit.inventory.ItemStack}
      *
-     * @param enchantment
-     *            the enchantment to add
+     * @param enchantment the enchantment to add
      * @return this builder for chaining
      * @since 1.0
      */
@@ -164,8 +156,9 @@ public class ItemBuilder implements Listener {
 
     /**
      * Changes the {@link org.bukkit.Material} of the {@link org.bukkit.inventory.ItemStack}
+     * <p>
+     * the new material to set
      *
-     *            the new material to set
      * @return this builder for chaining
      * @since 1.0
      */
@@ -194,7 +187,7 @@ public class ItemBuilder implements Listener {
      * @since 1.0
      */
     public ItemBuilder clearEnchantments() {
-        for (final Enchantment e : is.getEnchantments().keySet()) {
+        for(final Enchantment e : is.getEnchantments().keySet()) {
             is.removeEnchantment(e);
         }
         return this;
@@ -203,13 +196,12 @@ public class ItemBuilder implements Listener {
     /**
      * Sets the {@link org.bukkit.Color} of a part of leather armor
      *
-     * @param color
-     *            the {@link org.bukkit.Color} to use
+     * @param color the {@link org.bukkit.Color} to use
      * @return this builder for chaining
      * @since 1.1
      */
     public ItemBuilder color(Color color) {
-        if (is.getType() == Material.LEATHER_BOOTS || is.getType() == Material.LEATHER_CHESTPLATE || is.getType() == Material.LEATHER_HELMET
+        if(is.getType() == Material.LEATHER_BOOTS || is.getType() == Material.LEATHER_CHESTPLATE || is.getType() == Material.LEATHER_HELMET
                 || is.getType() == Material.LEATHER_LEGGINGS) {
             LeatherArmorMeta meta = (LeatherArmorMeta) is.getItemMeta();
             meta.setColor(color);
@@ -232,10 +224,10 @@ public class ItemBuilder implements Listener {
 
     @EventHandler
     public void onItemConsume(PlayerItemConsumeEvent e) {
-        if (e.getItem().hasItemMeta()) {
+        if(e.getItem().hasItemMeta()) {
             @SuppressWarnings("unchecked") HashMap<String, PotionEffect> copy = (HashMap<String, PotionEffect>) effects.clone();
             String name = e.getItem().getItemMeta().getDisplayName();
-            while (copy.containsKey(name)) {
+            while(copy.containsKey(name)) {
                 e.getPlayer().addPotionEffect(copy.get(name), true);
                 copy.remove(name);
                 name += "#";

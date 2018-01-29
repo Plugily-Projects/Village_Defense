@@ -21,7 +21,7 @@ public class InvasionInstance1_12_R1 extends InvasionInstance {
 
     public InvasionInstance1_12_R1(String ID) {
         super(ID);
-        
+
     }
 
     public void spawnFastZombie(Random random) {

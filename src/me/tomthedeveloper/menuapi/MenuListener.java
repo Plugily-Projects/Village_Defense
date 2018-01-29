@@ -11,7 +11,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 public class MenuListener implements Listener {
 
     @EventHandler
-    public void onClickToSubMenu(InventoryClickEvent event){
+    public void onClickToSubMenu(InventoryClickEvent event) {
         if(event.getInventory().getHolder() == null)
             event.setCancelled(true);
         if(!event.getCurrentItem().hasItemMeta())

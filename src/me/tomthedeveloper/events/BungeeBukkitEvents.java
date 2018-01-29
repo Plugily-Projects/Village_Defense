@@ -15,10 +15,10 @@ public class BungeeBukkitEvents implements Listener {
     private GameAPI plugin;
 
     @EventHandler
-    public void onJoinEvent(PlayerJoinEvent event){
-        if(plugin.getGameInstanceManager().getGameInstances().get(0).needsPlayers()){
+    public void onJoinEvent(PlayerJoinEvent event) {
+        if(plugin.getGameInstanceManager().getGameInstances().get(0).needsPlayers()) {
             plugin.getGameInstanceManager().getGameInstances().get(0).joinAttempt(event.getPlayer());
-        } else{
+        } else {
             ByteArrayDataOutput out = ByteStreams.newDataOutput();
             out.writeUTF("Connect");
             out.writeUTF("Argument");

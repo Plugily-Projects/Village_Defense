@@ -17,7 +17,7 @@ public class PlayerAddSpawnCommandEvent extends Event {
 
     public PlayerAddSpawnCommandEvent(Player player, String string, String ID) {
         this.player = player;
-        this.argument= string;
+        this.argument = string;
         this.ID = ID;
     }
 
@@ -29,11 +29,11 @@ public class PlayerAddSpawnCommandEvent extends Event {
         this.player = player;
     }
 
-    public String getSpawnName(){
+    public String getSpawnName() {
         return argument;
     }
 
-    public String getArenaID(){
+    public String getArenaID() {
         return ID;
     }
 

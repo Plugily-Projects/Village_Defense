@@ -20,7 +20,7 @@ import java.util.List;
 public class PuncherKit extends LevelKit {
 
     public PuncherKit() {
-    	setName(ChatManager.colorMessage("kits.Puncher.Kit-Name"));
+        setName(ChatManager.colorMessage("kits.Puncher.Kit-Name"));
         List<String> description = Util.splitString(ChatManager.colorMessage("kits.Puncher.Kit-Description"), 40);
         this.setDescription(description.toArray(new String[description.size()]));
         setLevel(4);

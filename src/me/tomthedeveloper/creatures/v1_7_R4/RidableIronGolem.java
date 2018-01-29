@@ -12,7 +12,7 @@ import java.util.List;
 public class RidableIronGolem extends EntityIronGolem {
 
     @SuppressWarnings("rawtypes")
-	public RidableIronGolem(org.bukkit.World world) {
+    public RidableIronGolem(org.bukkit.World world) {
         super(((CraftWorld) world).getHandle());
 
 
@@ -42,7 +42,7 @@ public class RidableIronGolem extends EntityIronGolem {
     }
 
     public void e(float f, float f1) {
-        if ((this.passenger != null) && ((this.passenger instanceof EntityLiving))) {
+        if((this.passenger != null) && ((this.passenger instanceof EntityLiving))) {
             this.lastYaw = (this.yaw = this.passenger.yaw);
             this.pitch = (this.passenger.pitch * 0.5F);
             b(this.yaw, this.pitch);
@@ -53,7 +53,7 @@ public class RidableIronGolem extends EntityIronGolem {
 
             this.W = 1.0F;
             this.aQ = (bl() * 0.1F);
-            if (!this.world.isStatic) {
+            if(!this.world.isStatic) {
                 i((float) getAttributeInstance(GenericAttributes.d).getValue());
                 super.e(f, f1);
             }
@@ -62,7 +62,7 @@ public class RidableIronGolem extends EntityIronGolem {
             double d0 = this.locX - this.lastX;
             double d1 = this.locZ - this.lastZ;
             float f4 = MathHelper.sqrt(d0 * d0 + d1 * d1) * 4.0F;
-            if (f4 > 1.0F) {
+            if(f4 > 1.0F) {
                 f4 = 1.0F;
             }
             this.aF += (f4 - this.aF) * 0.4F;

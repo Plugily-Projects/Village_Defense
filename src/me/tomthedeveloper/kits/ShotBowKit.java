@@ -28,7 +28,7 @@ public class ShotBowKit extends PremiumKit implements Listener {
 
 
     public ShotBowKit() {
-    	setName(ChatManager.colorMessage("kits.Shot-Bow.Kit-Name"));
+        setName(ChatManager.colorMessage("kits.Shot-Bow.Kit-Name"));
         List<String> description = Util.splitString(ChatManager.colorMessage("kits.Shot-Bow.Kit-Description"), 40);
         this.setDescription(description.toArray(new String[description.size()]));
 
@@ -62,24 +62,24 @@ public class ShotBowKit extends PremiumKit implements Listener {
 
     @EventHandler
     public void ShootArrow(PlayerInteractEvent e) {
-        if (e.getAction() == Action.LEFT_CLICK_AIR || e.getAction() == Action.LEFT_CLICK_BLOCK) {
-            if (e.getPlayer().getItemInHand() != null) {
-                if (e.getPlayer().getItemInHand().getType() == Material.BOW) {
-                    if (e.getPlayer().getInventory().contains(Material.ARROW) && UserManager.getUser(e.getPlayer().getUniqueId()).getKit() instanceof ShotBowKit && !UserManager.getUser(e.getPlayer().getUniqueId()).isSpectator()) {
-                        if (UserManager.getUser(e.getPlayer().getUniqueId()).getCooldown("shotbow") == 0) {
-                            for (int i = 0; i < 4; i++) {
+        if(e.getAction() == Action.LEFT_CLICK_AIR || e.getAction() == Action.LEFT_CLICK_BLOCK) {
+            if(e.getPlayer().getItemInHand() != null) {
+                if(e.getPlayer().getItemInHand().getType() == Material.BOW) {
+                    if(e.getPlayer().getInventory().contains(Material.ARROW) && UserManager.getUser(e.getPlayer().getUniqueId()).getKit() instanceof ShotBowKit && !UserManager.getUser(e.getPlayer().getUniqueId()).isSpectator()) {
+                        if(UserManager.getUser(e.getPlayer().getUniqueId()).getCooldown("shotbow") == 0) {
+                            for(int i = 0; i < 4; i++) {
                                 Projectile pr = e.getPlayer().launchProjectile(Arrow.class);
                                 pr.setVelocity(e.getPlayer().getLocation().getDirection().multiply(3));
 
-                                if (e.getPlayer().getInventory().contains(Material.ARROW))
+                                if(e.getPlayer().getInventory().contains(Material.ARROW))
                                     e.getPlayer().getInventory().removeItem(new ItemStack(Material.ARROW, 1));
                             }
                             e.setCancelled(true);
                             UserManager.getUser(e.getPlayer().getUniqueId()).setCooldown("shotbow", 5);
                         } else {
-                        	String msgstring = ChatManager.colorMessage("kits.Ability-Still-On-Cooldown");
-                        	msgstring = msgstring.replaceFirst("%COOLDOWN%",Long.toString( UserManager.getUser(e.getPlayer().getUniqueId()).getCooldown("shotbow")));
-                        	e.getPlayer().sendMessage(msgstring);
+                            String msgstring = ChatManager.colorMessage("kits.Ability-Still-On-Cooldown");
+                            msgstring = msgstring.replaceFirst("%COOLDOWN%", Long.toString(UserManager.getUser(e.getPlayer().getUniqueId()).getCooldown("shotbow")));
+                            e.getPlayer().sendMessage(msgstring);
                         }
                     }
                 }

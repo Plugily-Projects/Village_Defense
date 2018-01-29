@@ -137,27 +137,27 @@ public class RidableVillager extends EntityVillager {
     @Override
     public void g(float f, float f1) {
 
-        if (this.passengers.isEmpty())
+        if(this.passengers.isEmpty())
             return;
         net.minecraft.server.v1_9_R1.Entity passenger = this.passengers.get(0);
-        if (passenger == null)
+        if(passenger == null)
             return;
-        if (passenger != null && passenger instanceof EntityLiving) {
+        if(passenger != null && passenger instanceof EntityLiving) {
             this.lastYaw = this.yaw = passenger.yaw;
             this.pitch = passenger.pitch * 0.5F;
             setYawPitch(this.yaw, this.pitch);
             this.aI = this.aG = this.yaw;
             f = ((EntityLiving) passenger).az * 0.5F;
             f1 = ((EntityLiving) passenger).bd;
-            if (f1 <= 0.0F) {
+            if(f1 <= 0.0F) {
                 f1 *= 0.25F;
             }
 
 
-            if (!this.world.isClientSide) {
+            if(!this.world.isClientSide) {
                 this.k((float) this.getAttributeInstance(GenericAttributes.MOVEMENT_SPEED).getValue());
                 this.R = 1.0F;
-                if (f1 <= 0.0F) {
+                if(f1 <= 0.0F) {
                     f1 *= 0.25F;    // Make backwards slower
                 }
                 f *= 0.75F;    // Also make sideways slower
@@ -167,7 +167,7 @@ public class RidableVillager extends EntityVillager {
                 super.g(f, f1);
             }
 
-            if (this.onGround) {
+            if(this.onGround) {
 
                 this.j(false);
             }
@@ -177,7 +177,7 @@ public class RidableVillager extends EntityVillager {
             double d1 = this.locZ - this.lastZ;
             float f4 = MathHelper.sqrt(d0 * d0 + d1 * d1) * 4.0F;
 
-            if (f4 > 1.0F) {
+            if(f4 > 1.0F) {
                 f4 = 1.0F;
             }
 
@@ -188,7 +188,7 @@ public class RidableVillager extends EntityVillager {
             this.aK = 0.02F;
             // this.S = 1.0F;
 
-            if (f1 <= 0.0F) {
+            if(f1 <= 0.0F) {
                 f1 *= 0.25F;    // Make backwards slower
             }
             f *= 0.75F;    // Also make sideways slower

@@ -14,7 +14,7 @@ public class KitHandler {
     private List<Kit> kits = new ArrayList<>();
     private Kit defaultKit = null;
 
-    public void registerKit(Kit kit){
+    public void registerKit(Kit kit) {
         kits.add(kit);
     }
 
@@ -26,39 +26,31 @@ public class KitHandler {
         this.defaultKit = defaultKit;
     }
 
-    public List<Kit> getKits(){
+    public List<Kit> getKits() {
         return kits;
     }
 
-    public void removeKit(Kit kit){
+    public void removeKit(Kit kit) {
         if(kits.contains(kit))
             kits.remove(kit);
         else
             System.out.print("ERROR: Kit isn't existing!");
     }
 
-    public Kit getKit(ItemStack itemStack){
+    public Kit getKit(ItemStack itemStack) {
         Kit returnkit = getDefaultKit();
-        for(Kit kit:kits) {
-            if (itemStack.getType() == kit.getMaterial()){
+        for(Kit kit : kits) {
+            if(itemStack.getType() == kit.getMaterial()) {
                 returnkit = kit;
                 break;
             }
         }
-        if(returnkit == null){
+        if(returnkit == null) {
             throw new NullPointerException("ERROR: kit doesn't exist!");
-        }else {
+        } else {
             return returnkit;
         }
     }
-
-
-
-
-
-
-
-
 
 
 }

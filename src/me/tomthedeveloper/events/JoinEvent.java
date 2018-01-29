@@ -14,17 +14,17 @@ public class JoinEvent implements Listener {
 
     private GameAPI plugin;
 
-    public JoinEvent(GameAPI plugin){
+    public JoinEvent(GameAPI plugin) {
         this.plugin = plugin;
     }
 
 
     @EventHandler
-    public void onJoin(PlayerJoinEvent event){
+    public void onJoin(PlayerJoinEvent event) {
         if(plugin.isBungeeActivated())
             return;
-        for(Player player : plugin.getPlugin().getServer().getOnlinePlayers()){
-            if(plugin.getGameInstanceManager().getGameInstance(player)== null)
+        for(Player player : plugin.getPlugin().getServer().getOnlinePlayers()) {
+            if(plugin.getGameInstanceManager().getGameInstance(player) == null)
                 continue;
             player.hidePlayer(event.getPlayer());
             event.getPlayer().hidePlayer(player);

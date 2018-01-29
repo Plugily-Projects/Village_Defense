@@ -16,7 +16,7 @@ public class PlayerAddCommandEvent extends Event {
 
     public PlayerAddCommandEvent(Player player, String[] arguments, String ID) {
         this.player = player;
-        this.argument= arguments;
+        this.argument = arguments;
         this.ID = ID;
     }
 
@@ -28,16 +28,13 @@ public class PlayerAddCommandEvent extends Event {
         this.player = player;
     }
 
-    public String[] getArguments(){
+    public String[] getArguments() {
         return argument;
     }
 
-    public String getArenaID(){
+    public String getArenaID() {
         return ID;
     }
-
-
-
 
 
     public void setCancelled(Boolean cancelled) {

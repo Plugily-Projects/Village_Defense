@@ -14,10 +14,9 @@ import java.io.IOException;
 public abstract class LevelKit extends Kit {
 
 
-
     int level;
 
-    public void setLevel(int level){
+    public void setLevel(int level) {
         this.level = level;
         FileConfiguration config = ConfigurationManager.getConfig("kits");
         String name = getClass().getName().substring(getClass().getName().indexOf("K"));
@@ -25,22 +24,22 @@ public abstract class LevelKit extends Kit {
             config.set("Required-Level." + name, level);
             try {
                 config.save(ConfigurationManager.getFile("kits"));
-            } catch (IOException e) {
+            } catch(IOException e) {
                 e.printStackTrace();
             }
-        } else{
+        } else {
             this.level = config.getInt("Required-Level." + name);
         }
     }
 
-    public int getLevel(){
+    public int getLevel() {
         return level;
     }
 
-    public ItemStack getItemStack(){
+    public ItemStack getItemStack() {
         ItemStack itemStack = new ItemStack(getMaterial());
         setItemNameAndLore(itemStack, getName(), getDescription());
-        Util.addLore(itemStack, ChatManager.colorMessage("kits.Kit-Menu.Locked-Lores.Unlock-At-Level").replaceAll("%NUMBER%",Integer.toString(getLevel())));
+        Util.addLore(itemStack, ChatManager.colorMessage("kits.Kit-Menu.Locked-Lores.Unlock-At-Level").replaceAll("%NUMBER%", Integer.toString(getLevel())));
         return itemStack;
     }
 }

@@ -17,35 +17,35 @@ import java.io.IOException;
  */
 public class FileStats {
 
-	public Main plugin;
-	private FileConfiguration config;
+    public Main plugin;
+    private FileConfiguration config;
 
-	public FileStats(Main plugin) {
-		this.plugin = plugin;
-		config = ConfigurationManager.getConfig("STATS");
-	}
+    public FileStats(Main plugin) {
+        this.plugin = plugin;
+        config = ConfigurationManager.getConfig("STATS");
+    }
 
-	public void saveStat(Player player, String stat) {
-		User user = UserManager.getUser(player.getUniqueId());
-		config.set(player.getUniqueId().toString() + "." + stat, user.getInt(stat));
-		try {
-			config.save(ConfigurationManager.getFile("STATS"));
-		} catch (IOException e) {
-			ChatManager.sendErrorHeader("saving STATS.yml file");
-			e.printStackTrace();
-			Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "Don't panic! Try to do this steps:");
-			Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "- restart the server");
-			Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "- create blank file named STATS.yml");
-			Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "- contact the developer");
-		}
-	}
+    public void saveStat(Player player, String stat) {
+        User user = UserManager.getUser(player.getUniqueId());
+        config.set(player.getUniqueId().toString() + "." + stat, user.getInt(stat));
+        try {
+            config.save(ConfigurationManager.getFile("STATS"));
+        } catch(IOException e) {
+            ChatManager.sendErrorHeader("saving STATS.yml file");
+            e.printStackTrace();
+            Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "Don't panic! Try to do this steps:");
+            Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "- restart the server");
+            Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "- create blank file named STATS.yml");
+            Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "- contact the developer");
+        }
+    }
 
-	public void loadStat(Player player, String stat) {
-		User user = UserManager.getUser(player.getUniqueId());
-		if (config.contains(player.getUniqueId().toString() + "." + stat))
-			user.setInt(stat, config.getInt(player.getUniqueId().toString() + "." + stat));
-		else
-			user.setInt(stat, 0);
-	}
+    public void loadStat(Player player, String stat) {
+        User user = UserManager.getUser(player.getUniqueId());
+        if(config.contains(player.getUniqueId().toString() + "." + stat))
+            user.setInt(stat, config.getInt(player.getUniqueId().toString() + "." + stat));
+        else
+            user.setInt(stat, 0);
+    }
 
 }

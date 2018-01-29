@@ -28,7 +28,7 @@ public class SetupInventoryEvents implements Listener {
 
 
     @EventHandler
-    public void onClick(InventoryClickEvent event){
+    public void onClick(InventoryClickEvent event) {
         if(event.getWhoClicked().getType() != EntityType.PLAYER)
             return;
         Player player = (Player) event.getWhoClicked();
@@ -48,9 +48,9 @@ public class SetupInventoryEvents implements Listener {
         String name = event.getCurrentItem().getItemMeta().getDisplayName();
 
         GameInstance gameInstance = plugin.getGameInstanceManager().getGameInstance(event.getInventory().getName().replace("Arena: ", ""));
-        if(event.getCurrentItem().getType() == Material.NAME_TAG && event.getCursor().getType() == Material.NAME_TAG){
+        if(event.getCurrentItem().getType() == Material.NAME_TAG && event.getCursor().getType() == Material.NAME_TAG) {
             event.setCancelled(true);
-            if(!event.getCursor().hasItemMeta()){
+            if(!event.getCursor().hasItemMeta()) {
                 player.sendMessage(ChatColor.RED + "This item doesn't has a name!");
                 return;
             }
@@ -70,7 +70,7 @@ public class SetupInventoryEvents implements Listener {
             player.performCommand(plugin.getGameName() + " " + gameInstance.getID() + " set ENDLOC");
             return;
         }
-        if(name.contains("Start Location")){
+        if(name.contains("Start Location")) {
             event.setCancelled(true);
 
             player.performCommand(plugin.getGameName() + " " + gameInstance.getID() + " set STARTLOC");
@@ -81,7 +81,7 @@ public class SetupInventoryEvents implements Listener {
             player.performCommand(plugin.getGameName() + " " + gameInstance.getID() + " set LOBBYLOC");
             return;
         }
-        if(name.contains("max players")){
+        if(name.contains("max players")) {
             event.setCancelled(true);
             if(clickType.isRightClick()) {
                 event.getCurrentItem().setAmount(event.getCurrentItem().getAmount() + 1);
@@ -89,7 +89,7 @@ public class SetupInventoryEvents implements Listener {
                 player.performCommand(plugin.getGameName() + " " + gameInstance.getID() + " set MAXPLAYERS " + event.getCurrentItem().getAmount());
                 return;
             }
-            if(clickType.isLeftClick()){
+            if(clickType.isLeftClick()) {
                 event.getCurrentItem().setAmount(event.getCurrentItem().getAmount() - 1);
                 player.updateInventory();
                 player.performCommand(plugin.getGameName() + " " + gameInstance.getID() + " set MAXPLAYERS " + event.getCurrentItem().getAmount());
@@ -97,7 +97,7 @@ public class SetupInventoryEvents implements Listener {
             }
         }
 
-        if(name.contains("min players")){
+        if(name.contains("min players")) {
             event.setCancelled(true);
             if(clickType.isRightClick()) {
                 event.getCurrentItem().setAmount(event.getCurrentItem().getAmount() + 1);
@@ -105,14 +105,14 @@ public class SetupInventoryEvents implements Listener {
                 player.performCommand(plugin.getGameName() + " " + gameInstance.getID() + " set MINPLAYERS " + event.getCurrentItem().getAmount());
                 return;
             }
-            if(clickType.isLeftClick()){
+            if(clickType.isLeftClick()) {
                 event.getCurrentItem().setAmount(event.getCurrentItem().getAmount() - 1);
                 player.updateInventory();
                 player.performCommand(plugin.getGameName() + " " + gameInstance.getID() + " set MINPLAYERS " + event.getCurrentItem().getAmount());
                 return;
             }
         }
-        if(name.contains("Add signs")){
+        if(name.contains("Add signs")) {
             event.setCancelled(true);
             player.performCommand("addsigns");
             return;
@@ -120,9 +120,7 @@ public class SetupInventoryEvents implements Listener {
         if(event.getCurrentItem().getType() != Material.NAME_TAG) {
             event.setCancelled(true);
         }
-        Bukkit.getPluginManager().callEvent(new SetupInventoryClickEvent(gameInstance, event.getCurrentItem(),player,clickType));
-
-
+        Bukkit.getPluginManager().callEvent(new SetupInventoryClickEvent(gameInstance, event.getCurrentItem(), player, clickType));
 
 
     }

@@ -64,7 +64,7 @@ public class PlayerBuster extends EntityZombie {
 
     @Override
     public boolean damageEntity(DamageSource damagesource, float f) {
-        if (damagesource != null && damagesource.getEntity() != null && damagesource.getEntity().getBukkitEntity().getType() == EntityType.PLAYER) {
+        if(damagesource != null && damagesource.getEntity() != null && damagesource.getEntity().getBukkitEntity().getType() == EntityType.PLAYER) {
 
             Player golem = (Player) damagesource.getEntity().getBukkitEntity();
             org.bukkit.inventory.ItemStack[] itemStack = new org.bukkit.inventory.ItemStack[]{new org.bukkit.inventory.ItemStack(org.bukkit.Material.ROTTEN_FLESH)};

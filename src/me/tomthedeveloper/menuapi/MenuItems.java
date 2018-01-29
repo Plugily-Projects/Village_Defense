@@ -13,14 +13,13 @@ import java.util.Arrays;
 public class MenuItems {
 
 
-
-    public static ItemStack getGoBackItem(){
+    public static ItemStack getGoBackItem() {
         ItemStack itemStack = new ItemStack(Material.PAPER);
         setItemNameAndLore(itemStack, ChatColor.RED + "Previous Menu", "This opens the previous menu!");
         return itemStack;
     }
 
-    public static ItemStack getCloseItem(){
+    public static ItemStack getCloseItem() {
         ItemStack itemStack = new ItemStack(Material.REDSTONE);
         setItemNameAndLore(itemStack, ChatColor.RED + "Close Menu", "This closes the menu");
         return itemStack;

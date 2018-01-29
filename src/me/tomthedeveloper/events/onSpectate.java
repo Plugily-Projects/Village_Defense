@@ -23,59 +23,59 @@ public class onSpectate implements Listener {
     }
 
     @EventHandler(priority = EventPriority.HIGH)
-    public void onSpectatorTarget(EntityTargetEvent e){
-        if(!(e.getTarget() instanceof Player)){
+    public void onSpectatorTarget(EntityTargetEvent e) {
+        if(!(e.getTarget() instanceof Player)) {
             return;
         }
-        if(UserManager.getUser(e.getTarget().getUniqueId()).isSpectator()){
+        if(UserManager.getUser(e.getTarget().getUniqueId()).isSpectator()) {
             e.setCancelled(true);
         }
     }
 
-    @EventHandler (priority = EventPriority.HIGH)
-    public void onBlockPlace(BlockPlaceEvent event){
+    @EventHandler(priority = EventPriority.HIGH)
+    public void onBlockPlace(BlockPlaceEvent event) {
         if(UserManager.getUser(event.getPlayer().getUniqueId()).isSpectator())
             event.setCancelled(true);
     }
 
     @EventHandler(priority = EventPriority.HIGH)
-    public void onBlockBreak(BlockBreakEvent event){
+    public void onBlockBreak(BlockBreakEvent event) {
         if(UserManager.getUser(event.getPlayer().getUniqueId()).isSpectator())
             event.setCancelled(true);
     }
 
     @EventHandler(priority = EventPriority.HIGH)
-    public void onDropItem(PlayerDropItemEvent event){
+    public void onDropItem(PlayerDropItemEvent event) {
         if(UserManager.getUser(event.getPlayer().getUniqueId()).isSpectator())
             event.setCancelled(true);
     }
 
     @EventHandler(priority = EventPriority.HIGH)
-    public void onBucketEmpty(PlayerBucketEmptyEvent event){
+    public void onBucketEmpty(PlayerBucketEmptyEvent event) {
         if(UserManager.getUser(event.getPlayer().getUniqueId()).isSpectator())
             event.setCancelled(true);
     }
 
     @EventHandler(priority = EventPriority.HIGH)
-    public void onInteract(PlayerInteractEntityEvent event){
+    public void onInteract(PlayerInteractEntityEvent event) {
         if(UserManager.getUser(event.getPlayer().getUniqueId()).isSpectator())
             event.setCancelled(true);
     }
 
     @EventHandler(priority = EventPriority.HIGH)
-    public void onShear(PlayerShearEntityEvent event){
+    public void onShear(PlayerShearEntityEvent event) {
         if(UserManager.getUser(event.getPlayer().getUniqueId()).isSpectator())
             event.setCancelled(true);
     }
 
     @EventHandler(priority = EventPriority.HIGH)
-    public void onConsume(PlayerItemConsumeEvent event){
+    public void onConsume(PlayerItemConsumeEvent event) {
         if(UserManager.getUser(event.getPlayer().getUniqueId()).isSpectator())
             event.setCancelled(true);
     }
 
     @EventHandler(priority = EventPriority.HIGH)
-    public void onFoodLevelChange(FoodLevelChangeEvent event){
+    public void onFoodLevelChange(FoodLevelChangeEvent event) {
         if(!(event.getEntity() instanceof Player))
             return;
         Player player = (Player) event.getEntity();
@@ -84,7 +84,7 @@ public class onSpectate implements Listener {
     }
 
     @EventHandler(priority = EventPriority.HIGH)
-    public void onDamage(EntityDamageEvent event){
+    public void onDamage(EntityDamageEvent event) {
         if(!(event.getEntity() instanceof Player))
             return;
         Player player = (Player) event.getEntity();
@@ -98,7 +98,7 @@ public class onSpectate implements Listener {
     }
 
     @EventHandler(priority = EventPriority.HIGH)
-    public void onDamageByBlock(EntityDamageByBlockEvent event){
+    public void onDamageByBlock(EntityDamageByBlockEvent event) {
         if(!(event.getEntity() instanceof Player))
             return;
         Player player = (Player) event.getEntity();
@@ -107,7 +107,7 @@ public class onSpectate implements Listener {
     }
 
     @EventHandler(priority = EventPriority.HIGH)
-    public void onDamageByEntity(EntityDamageByEntityEvent event){
+    public void onDamageByEntity(EntityDamageByEntityEvent event) {
         if(!(event.getDamager() instanceof Player))
             return;
         Player player = (Player) event.getDamager();
@@ -116,9 +116,9 @@ public class onSpectate implements Listener {
     }
 
     @EventHandler(priority = EventPriority.HIGH)
-    public void onPickup(PlayerPickupItemEvent event){
-    	if(UserManager.getUser(event.getPlayer().getUniqueId()).isSpectator())
-    		event.setCancelled(true);
+    public void onPickup(PlayerPickupItemEvent event) {
+        if(UserManager.getUser(event.getPlayer().getUniqueId()).isSpectator())
+            event.setCancelled(true);
     }
 
 }

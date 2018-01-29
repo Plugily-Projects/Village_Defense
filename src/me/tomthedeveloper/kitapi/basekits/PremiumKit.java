@@ -20,13 +20,12 @@ public abstract class PremiumKit extends Kit {
     }
 
 
-
     public void setPointsNeeded(int pointsNeeded) {
         this.pointsNeeded = pointsNeeded;
     }
 
     @Override
-    public ItemStack getItemStack(){
+    public ItemStack getItemStack() {
         ItemStack itemStack = new ItemStack(getMaterial());
         setItemNameAndLore(itemStack, getName(), getDescription());
         Util.addLore(itemStack, ChatManager.colorMessage("kits.Kit-Menu.Locked-Lores.Unlock-In-Store"));

@@ -30,9 +30,9 @@ public class Bungee implements Listener {
     public static GameAPI plugin;
 
     private FileConfiguration motdsconfig;
-    private HashMap<GameState,String> motds = new HashMap<>();
+    private HashMap<GameState, String> motds = new HashMap<>();
 
-    public Bungee(){
+    public Bungee() {
         motdsconfig = ConfigurationManager.getConfig("MOTD");
         if(!motdsconfig.contains("WAITING_FOR_PLAYERS")) {
             motds.put(GameState.WAITING_FOR_PLAYERS, "WAITING_FOR_PLAYERS");
@@ -47,15 +47,15 @@ public class Bungee implements Listener {
             motdsconfig.set("RESTARTING", "RESTARTING");
             try {
                 motdsconfig.save(ConfigurationManager.getFile("MOTD"));
-            } catch (IOException e) {
-            	ChatManager.sendErrorHeader("saving MOTD file");
+            } catch(IOException e) {
+                ChatManager.sendErrorHeader("saving MOTD file");
                 e.printStackTrace();
                 Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "Don't panic! Try to do this steps:");
                 Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "- create blank file named MOTD.yml if it doesn't exists");
                 Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "- disable bungee option in config (Bungeecord support will not work)");
                 Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "- contact the developer");
             }
-        } else{
+        } else {
             motds.put(GameState.WAITING_FOR_PLAYERS, motdsconfig.getString("WAITING_FOR_PLAYERS"));
             motds.put(GameState.STARTING, motdsconfig.getString("STARTING"));
             motds.put(GameState.INGAME, motdsconfig.getString("INGAME"));
@@ -64,38 +64,37 @@ public class Bungee implements Listener {
         }
     }
 
-    public static void connectToHub(Player player){
+    public static void connectToHub(Player player) {
         ByteArrayDataOutput out = ByteStreams.newDataOutput();
         out.writeUTF("Connect");
         out.writeUTF(getHubServerName());
         player.sendPluginMessage(plugin.getPlugin(), "BungeeCord", out.toByteArray());
     }
 
-    private String getMotD(){
+    private String getMotD() {
         GameInstance gameInstance = plugin.getGameInstanceManager().getGameInstances().get(0);
-       if(gameInstance.getGameState() == GameState.STARTING && (gameInstance.getTimer() <=3)){
+        if(gameInstance.getGameState() == GameState.STARTING && (gameInstance.getTimer() <= 3)) {
             return motds.get(GameState.INGAME);
-        }else {
+        } else {
             return motds.get(gameInstance.getGameState());
         }
     }
 
 
-
-    public static String getHubServerName(){
+    public static String getHubServerName() {
         return ConfigurationManager.getConfig("bungee").getString("Hub");
     }
 
-    @EventHandler (priority = EventPriority.HIGHEST)
-    public void onServerListPing(ServerListPingEvent event){
+    @EventHandler(priority = EventPriority.HIGHEST)
+    public void onServerListPing(ServerListPingEvent event) {
         if(plugin.getGameInstanceManager() == null)
             return;
         if(plugin.getGameInstanceManager().getGameInstances().isEmpty())
             return;
-        if(plugin.getGameInstanceManager().getGameInstances() == null){
-        	if(Main.isDebugged()) {
-        		System.out.print("[Village Debugger] NO GAMEINSTANCE FOUND! FIRST CONFIGURE AN ARENA BEFORE ACTIVATING BUNGEEEMODE!");
-        	}
+        if(plugin.getGameInstanceManager().getGameInstances() == null) {
+            if(Main.isDebugged()) {
+                System.out.print("[Village Debugger] NO GAMEINSTANCE FOUND! FIRST CONFIGURE AN ARENA BEFORE ACTIVATING BUNGEEEMODE!");
+            }
             return;
         }
         event.setMaxPlayers(plugin.getGameInstanceManager().getGameInstances().get(0).getMAX_PLAYERS());
@@ -104,18 +103,18 @@ public class Bungee implements Listener {
 
 
     @EventHandler(priority = EventPriority.HIGHEST)
-    public void onJoin(final PlayerJoinEvent event){
-    	event.setJoinMessage("");
-    	plugin.getPlugin().getServer().getScheduler().runTaskLater(plugin.getPlugin(), () -> {
-		    plugin.getGameInstanceManager().getGameInstances().get(0).joinAttempt(event.getPlayer());
-	    }, 1L);
+    public void onJoin(final PlayerJoinEvent event) {
+        event.setJoinMessage("");
+        plugin.getPlugin().getServer().getScheduler().runTaskLater(plugin.getPlugin(), () -> {
+            plugin.getGameInstanceManager().getGameInstances().get(0).joinAttempt(event.getPlayer());
+        }, 1L);
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
-    public void onQuit(PlayerQuitEvent event){
+    public void onQuit(PlayerQuitEvent event) {
         event.setQuitMessage("");
         if(plugin.getGameInstanceManager().getGameInstance(event.getPlayer()) != null)
-        plugin.getGameInstanceManager().getGameInstances().get(0).leaveAttempt(event.getPlayer());
+            plugin.getGameInstanceManager().getGameInstances().get(0).leaveAttempt(event.getPlayer());
 
     }
 

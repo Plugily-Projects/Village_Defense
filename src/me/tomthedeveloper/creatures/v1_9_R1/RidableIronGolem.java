@@ -103,7 +103,7 @@ public class RidableIronGolem extends EntityIronGolem {
 
     @Override
     public void g(float f, float f1) {
-        if ((isVehicle()) && (cK())) {
+        if((isVehicle()) && (cK())) {
             EntityLiving entityliving = (EntityLiving) bt();
 
             this.lastYaw = (this.yaw = entityliving.yaw);
@@ -112,20 +112,20 @@ public class RidableIronGolem extends EntityIronGolem {
             this.aO = (this.aM = this.yaw);
             f = entityliving.bd * 0.5F;
             f1 = entityliving.be;
-            if (f1 <= 0.0F) {
+            if(f1 <= 0.0F) {
                 f1 *= 0.25F;
             }
-            if ((this.onGround)) {
+            if((this.onGround)) {
                 f = 0.0F;
                 f1 = 0.0F;
             }
 
             this.P = 1.0F;
             this.aQ = (ck() * 0.1F);
-            if (bx()) {
+            if(bx()) {
                 l((float) getAttributeInstance(GenericAttributes.MOVEMENT_SPEED).getValue());
                 super.g(f, f1);
-            } else if ((entityliving instanceof EntityHuman)) {
+            } else if((entityliving instanceof EntityHuman)) {
                 this.motX = 0.0D;
                 this.motY = 0.0D;
                 this.motZ = 0.0D;
@@ -135,7 +135,7 @@ public class RidableIronGolem extends EntityIronGolem {
             double d0 = this.locX - this.lastX;
             double d1 = this.locZ - this.lastZ;
             float f4 = MathHelper.sqrt(d0 * d0 + d1 * d1) * 4.0F;
-            if (f4 > 1.0F) {
+            if(f4 > 1.0F) {
                 f4 = 1.0F;
             }
             this.aF += (f4 - this.aF) * 0.4F;

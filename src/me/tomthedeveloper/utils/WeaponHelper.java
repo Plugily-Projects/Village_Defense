@@ -13,29 +13,18 @@ import java.util.Map;
 public class WeaponHelper {
 
 
-    public static ItemStack getEnchantedBow(Enchantment enchantment, int level){
+    public static ItemStack getEnchantedBow(Enchantment enchantment, int level) {
 
         ItemStack itemStack = new ItemStack(Material.BOW);
         itemStack.addUnsafeEnchantment(enchantment, level);
         return itemStack;
     }
 
-    public static ItemStack getEnchantedBow(Enchantment[] enchantments,int[] levels ){
-       ItemStack itemStack = new ItemStack(Material.BOW);
+    public static ItemStack getEnchantedBow(Enchantment[] enchantments, int[] levels) {
+        ItemStack itemStack = new ItemStack(Material.BOW);
         Map<Enchantment, Integer> enchantmentsmap = new HashMap<>();
         int i = 0;
-        for(Enchantment enchantment: enchantments){
-           enchantmentsmap.put(enchantment, levels[i]);
-                   i++;
-        }
-        itemStack.addUnsafeEnchantments(enchantmentsmap);
-        return itemStack;
-    }
-
-    public static ItemStack getEnchanted(ItemStack itemStack, Enchantment[] enchantments, int[] levels){
-        Map<Enchantment, Integer> enchantmentsmap = new HashMap<>();
-        int i = 0;
-        for(Enchantment enchantment: enchantments){
+        for(Enchantment enchantment : enchantments) {
             enchantmentsmap.put(enchantment, levels[i]);
             i++;
         }
@@ -43,9 +32,20 @@ public class WeaponHelper {
         return itemStack;
     }
 
-    public static ItemStack getUnBreakingSword(ResourceType type, int level){
+    public static ItemStack getEnchanted(ItemStack itemStack, Enchantment[] enchantments, int[] levels) {
+        Map<Enchantment, Integer> enchantmentsmap = new HashMap<>();
+        int i = 0;
+        for(Enchantment enchantment : enchantments) {
+            enchantmentsmap.put(enchantment, levels[i]);
+            i++;
+        }
+        itemStack.addUnsafeEnchantments(enchantmentsmap);
+        return itemStack;
+    }
+
+    public static ItemStack getUnBreakingSword(ResourceType type, int level) {
         ItemStack itemStack;
-        switch (type){
+        switch(type) {
             case WOOD:
                 itemStack = new ItemStack(Material.WOOD_SWORD);
                 itemStack.addUnsafeEnchantment(Enchantment.DURABILITY, level);
@@ -72,10 +72,9 @@ public class WeaponHelper {
     }
 
 
-
-        public enum ResourceType{
-            WOOD, GOLD, STONE, DIAMOND, IRON;
-        }
+    public enum ResourceType {
+        WOOD, GOLD, STONE, DIAMOND, IRON;
+    }
 
 
 }

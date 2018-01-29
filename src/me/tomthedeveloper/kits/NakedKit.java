@@ -66,29 +66,29 @@ public class NakedKit extends PremiumKit implements Listener {
 
     @EventHandler
     public void onArmor(InventoryClickEvent event) {
-        if (!(UserManager.getUser(event.getWhoClicked().getUniqueId()).getKit() instanceof NakedKit))
+        if(!(UserManager.getUser(event.getWhoClicked().getUniqueId()).getKit() instanceof NakedKit))
             return;
-        if (event.getInventory().getType() != InventoryType.PLAYER)
+        if(event.getInventory().getType() != InventoryType.PLAYER)
             return;
         PlayerInventory inventory = (PlayerInventory) event.getInventory();
         boolean b = false;
-        for (ItemStack itemStack : inventory.getArmorContents()) {
-            if (itemStack != null) {
+        for(ItemStack itemStack : inventory.getArmorContents()) {
+            if(itemStack != null) {
                 itemStack.setType(Material.AIR);
                 b = true;
             }
         }
-        if (b = true) {
+        if(b = true) {
             event.getWhoClicked().sendMessage(ChatColor.RED + "You can't equip armor with the " + ChatManager.HIGHLIGHTED + "Wild Naked kit" + ChatColor.RED + "!");
         }
-        if (!getAllArmorTypes().contains(event.getCurrentItem()))
+        if(!getAllArmorTypes().contains(event.getCurrentItem()))
             return;
-        if ((event.getClick() == ClickType.SHIFT_RIGHT)) {
+        if((event.getClick() == ClickType.SHIFT_RIGHT)) {
             event.setCancelled(true);
             event.getWhoClicked().sendMessage(ChatColor.RED + "You can't wear armor with the Wild Naked kit!");
             return;
         }
-        if (Arrays.asList(100, 101, 102, 103).contains(event.getSlot()) || Arrays.asList(100, 101, 102, 103).contains(event.getRawSlot())) {
+        if(Arrays.asList(100, 101, 102, 103).contains(event.getSlot()) || Arrays.asList(100, 101, 102, 103).contains(event.getRawSlot())) {
             event.setCancelled(true);
             event.getWhoClicked().sendMessage(ChatColor.RED + "You can't wear armor with the Wild Naked kit!");
 
@@ -98,11 +98,11 @@ public class NakedKit extends PremiumKit implements Listener {
 
     @EventHandler
     public void onArmorClick(PlayerInteractEvent event) {
-        if (!(UserManager.getUser(event.getPlayer().getUniqueId()).getKit() instanceof NakedKit))
+        if(!(UserManager.getUser(event.getPlayer().getUniqueId()).getKit() instanceof NakedKit))
             return;
-        if (!event.hasItem())
+        if(!event.hasItem())
             return;
-        if (getAllArmorTypes().contains(event.getItem().getType())) {
+        if(getAllArmorTypes().contains(event.getItem().getType())) {
             event.setCancelled(true);
             event.getPlayer().sendMessage(ChatColor.RED + "You can't wear armor with the Wild Naked kit!");
         }
