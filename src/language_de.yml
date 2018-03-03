@@ -1,0 +1,266 @@
+#
+#                    WARNING!
+#      This file is not meant to be edited!
+#   Every time language.yml gets updated this file
+#      will be regenerated with updated messages!
+# Modify langauge.yml if you want to use custom messages
+#
+#  Use 'locale: de' in config.yml to enable this locale
+
+
+
+Commands:
+  Teleported-To-The-Lobby: "Teleportiert zur Lobby!"
+  No-Arena-Like-That: "&cKeine Arena mit dieser ID gefunden!"
+  Type-Arena-Name: "&cBitte tippe die Arena ID ein!"
+  Only-By-Player: "&cDu kannst den Command nur als Spieler ausführen!"
+  Not-Playing: "&cDu must im Spiel sein um diesen Command ausführen zukönnen!"
+  No-Permission: "&cDu hast keine Permission um diesen Command auszuführen!"
+  Admin-Commands:
+    Player-Not-Found: "&cSpieler nicht gefunden!"
+    Added-Orbs: "&7Orbs wurden dem Spieler hinzugefügt!"
+  Stats-Command:
+    Header: "&l-----Deine Stats-----"
+    Footer: "&l--------------------"
+    Kills: "&aZombie Kills: &e"
+    Deaths: "&aTode: &e"
+    Games-Played: "&aSpieler gespielt: &e"
+    Highest-Wave: "&aHöchste Welle: &e"
+    Level: "&aLevel: &e"
+    Exp: "&aExp: &e"
+    Next-Level-Exp: "&aExp für Level-Up &e"
+  Main-Command:
+    Header: "&6----------------{VillageDefense commands}----------"
+    Description: "&aSpiel Commands:\n
+    &b/vd stats: &7Zeige deine Statistik!\n
+    &b/vd leave: &7Verlasse die aktuellen Arena!\n
+    &b/vd join <arena>: &7Betrete die spezifische Arena!"
+    Admin-Bonus-Description: "\n&b/vd admin: &7Zeige alle Admin-Commands"
+    Footer: "&6-------------------------------------------------"
+
+Scoreboard:
+  Header: "&6Dorf-Verteidigung"
+  Villagers-Left: "&aVillager:"
+  Zombies-Left: "&cZombies:"
+  Players: "&bSpieler:"
+  Players-Left: "&7Spieler übrig:"
+  Minimum-Players: "&bMin Spieler:"
+  Starting-In: "&bStarte in:"
+  Next-Wave-In: "&7Nächste Welle in:"
+  Orbs: "&bOrbs:"
+  Rotten-Flesh: "&2Verdorbenes Fleisch:"
+
+Kits:
+  Kit-Menu:
+    Title: "Kit-Menü"
+    Unlocked-Kit-Lore: "&aFREIGESCHALTET!"
+    Locked-Lores:
+      Locked-Lore: "&cGESPERRT!"
+      Unlock-At-Level: "&aFreigeschaltet ab Level %NUMBER%"
+      Unlock-In-Store: "&bSchalte es im Shop frei!"
+  Not-Unlocked-Message: "&cDu hast dieses &b%KIT%&c noch nicht freigeschaltet!"
+  Choose-Message: "&aDu hast ausgewählt: &b%KIT%&a!"
+  Kit-Menu-Item-Name: "Kit-Menü"
+  Open-Kit-Menu: "Öffne Kit-Menü"
+  Ability-Still-On-Cooldown: "&cDie Fähigkeit ist am regenerieren! Warte noch %COOLDOWN% Sekunden!"
+  Cleaner:
+    Kit-Name: "&bAufräumer"
+    Kit-Description: "&7Der Aufräumer hat eine Fähigkeit. Mit dieser kann er alle Zombies töten. Dies erfordert jedoch eine Menge Aufwand!"
+    Game-Item-Name: "&6Sauberer Zauberstab!"
+    Game-Item-Lore: "&7Recht-Klick um alle Zombies zu töten! Regeneration: 400 Sekunden"
+    Cleaned-Map: "&b%PLAYER% hat die Map aufgeräumt!"
+    Nothing-To-Clean: "&aDie Map ist schon leer!" #WARNING: used for admin clean commands too!!!
+    Spectator-Warning: "&cDu kannst die Map jetzt nicht säubern! Du bist Zuschauer! Du wirst respawnen beim Begin der nächsten Welle!"
+  Zombie-Teleporter:
+    Kit-Name: "&2Zombie Teleporter"
+    Kit-Description: "&7Teleportiere Zombies zu dir! Viele Leute denken, dass dies das schlechteste Kit ist! Ich muss zugeben, dass sie völlig falsch liegen!"
+    Game-Item-Name: "Zombie Teleporter" #WARNING: this is Zombie Teleporter GUI name too!
+    Game-Item-Lore: "&7Teleportiere Zombies zu dir!"
+  Knight:
+    Kit-Name: "&2Ritter"
+    Kit-Description: "&7Das ist das einzigste Ritter-Kit! Viele Leute denken, dass dies das schlechteste Kit ist! Ich muss zugeben, dass sie völlig falsch liegen!"
+  Light-Tank:
+    Kit-Name: "&2Leichter Tank"
+    Kit-Description: "&7Du bist ein Baby-Tank!"
+  Archer:
+    Kit-Name: "&6Bogenschütze"
+    Kit-Description: "&7Starte mit einem Bogen, Leder-Rüstung und einem Holzschwert. Bogenschützen lieben die Villager, weiß das!"
+  Puncher:
+    Kit-Name: "&6Schläger"
+    Kit-Description: "&7Schlage deine Gegner weg mit deiner Schaufel! Rückstoß V ist dir nicht unbekannt!"
+  Healer:
+    Kit-Name: "&6Heiler"
+    Kit-Description: "&7Ein Heiler zu sein, ist dasselbe wie geliebt zu werden. Du kannst deine Teamkameraden und Dorfbewohner heilen! Erhält jede Welle eine Aufstockung!"
+  Looter:
+    Kit-Name: "&6Looter"
+    Kit-Description: "&7Bekomme zusätzlich Verrottetes Fleisch, wenn du einen Zombie killst!"
+  Runner:
+    Kit-Name: "&6Läufer"
+    Kit-Description: "&7Parkour ist deine Leidenschaft! Du kannst schneller laufen als alle anderen. Sie haben auch die Fähigkeit, höher zu springen."
+  Medium-Tank:
+    Kit-Name: "&6Mittlerer Tank"
+    Kit-Description: "&7Starte mit 6 Herzen mehr! Hab keine Angst! Du hast viele Herzen zu verlieren!"
+  Worker:
+    Kit-Name: "&6Arbeiter"
+    Kit-Description: "&7Bekomme jede Welle eine Tür und starte mit 2 Türen. Du kannst Türen platzieren bzw. umplatzieren!"
+    Game-Item-Place-Message: "&aTür platziert!"
+  Dog-Friend:
+    Kit-Name: "&bHunde Freund"
+    Kit-Description: "&7Starte mit 3 Hunden und zusätzlich 1 Hund jede Welle!"
+  Hardcore:
+    Kit-Name: "&6Hardcore"
+    Kit-Description: "&7Du wirst sehen warum es Hardcore heißt"
+  Golem-Friend:
+    Kit-Name: "&6Golem Freund"
+    Kit-Description: "&7Starte mit einen Golem!"
+  Tornado:
+    Kit-Name: "&bTornado"
+    Kit-Description: "&7Spawne einen genialen Tornado!"
+    Game-Item-Name: "Tornado Zeit"
+    Game-Item-Lore: "&7Recht-Klick um einen Tornado an deiner Position zu entwickeln!"
+  Terminator:
+    Kit-Name: "&6Terminator"
+    Kit-Description: "&7Kille leicht deine Zombies mit Stärke!"
+  Teleporter:
+    Kit-Name: "&bTeleporter"
+    Kit-Description: "Jeder ist erstaunt über deine Teleportation. Niemand außer dir weiß, wie es geht! Aus diesem Grund kannst du dich zu Dorfbewohnern teleportieren
+   der gerade Hilfe braucht!"
+    Game-Item-Name: "&rTeleportations Menü"
+    Game-Item-Lore: "&7Recht-Klick um das Teleportations Menü zu öffnen!"
+    Game-Item-Menu-Name: "Teleporter Menü"
+    Teleported-To-Villager: "&aTeleportiert!"
+    Spectator-Warning: "&cDu kannst dich jetzt nicht teleportieren! Du bist Zuschauer! Du wirst zu Begin der nächsten Welle respawnen!"
+    Villager-Warning: "&4Der Village wurde nicht gefunden! Der Villager ist warscheinlich schon Tod!"
+    Teleported-To-Player: "&aTeleportiert zu %PLAYER%"
+    Player-Not-Found: "&cSpieler nicht gefunden! Versuche es erneut!"
+  Heavy-Tank:
+    Kit-Name: "&bSchwerer Tank"
+    Kit-Description: "&7Starte mit Eisen-Rüstung und doppelten Herzen!
+  Ja, das stimmt, du wirst der letzte Mann sein!"
+  Shot-Bow:
+    Kit-Name: "&bSchussbogenmeister"
+    Kit-Description: "&7Du hast einen verrückten Schussbogen erfunden!"
+  Blocker:
+    Kit-Name: "&bBlocker"
+    Kit-Description: "&7Halte die Zombies mit deinen Barriere zurück. Die Barriere ist für 10 Sekunden da"
+    Game-Item-Name: "Blockade"
+    Game-Item-Lore: "&7Halte die Zombies mit deinen Barriere zurück. Die Barriere ist für 10 Sekunden da"
+    Game-Item-Place-Message: "&aBarriere platziert!"
+    Game-Item-Place-Fail: "&cKann hier nicht platziert werden"
+  Premium-Hardcore:
+    Kit-Name: "&bPremium Hardcore Meister"
+    Kit-Description: "&7One-Hit die meisten Zombies mit deinem OP-Schwert! Aber sei vorsichtig. Dieses Kit ist nur für die Profis! Benutze es nicht, wenn du kein Profi bist!"
+  Medic:
+    Kit-Name: "&6Mediziner"
+    Kit-Description: "&7Dieses Kit aktiviert eine PASSIVE Fähigkeit. Jedes mal wenn du einen Zombie schlägst,
+  hast du eine Chance von 1/10, dass deine Mit-Spieler in einem 5 Blöcke-Radius geheilt werden."
+  Wild-Naked:
+    Kit-Name: "&bWild-Nackt"
+    Kit-Description: "&7Du bist der ultimative Meister! Du bgeinnst mit einem eisernen Schärfe VI und Schlag II Schwert!"
+    Cannot-Wear-Armor: "&cDu kannst keine Rüstung mit dem Kit tragen!"
+  Wizard:
+    Kit-Name: "&bZauberer"
+    Kit-Description: "&7Du bist halb Blut. Du bist in das Dorf gekommen, um Dorfbewohner vor Horden von Untoten zu beschützen. Benutze deine dunklen Kräfte, um sie alle zu töten!"
+    Staff-Item-Name: "Zauberstab"
+    Staff-Item-Lore: "&7Recht-Klick um Dunkle Materie zu werfen"
+    Essence-Item-Name: "Dunkle Essenz"
+    Essence-Item-Lore: "&7Klicke, um die umgebene Materie aufzunehmen und benutze sie als dein persönliches Dornenschild! Hält 5 Sekunden lang an"
+
+In-Game:
+  Villager-Names: "Anna,Max,Anton,Marie,Maria,Hans,Hannes,Manfred,Tim,Matteo,Daniel,Julian,Jonathan,Florian,Florentin,Marlene,David,Markus,Niko,Mustafa,Lea,Nina,Tom,Ivan,Felix,Leonie,Dieter,Sarah,Lara,Larissa,Adam"
+  Plugin-Prefix: "&a[VillageDefense] "
+  Already-Playing: "&cDu bist schon in der Warteschleife für ein Spiel! Du kannst leaven mit /leave."
+  Join-No-Permission: "&cDu hast keine Permission um der Arena beizutreten!"
+  Full-Game-No-Permission: "&cDu hast keine Permission um einer vollen Arena zu joinen!"
+  No-Slots-For-Premium: "&cDas Spiel ist schon voll mit Premium-Spielern! Sorry!"
+  Dead-Tag-On-Death: "&8TOD"
+  Game-Chat-Format: "&6[&5%level%&6]&6[%kit%&6] %player%: &f%message%"
+  Death-Screen: "Du bist gestorben!"
+  Died-Respawn-In-Next-Wave: "&e&lNICHT LEAVEN! &aDu wirst RESPAWNEN zu Begin der nächsten Welle!"
+  Back-In-Game: "&aDu bist kein Zuschauer mehr! Du bist zurück im Spiel!"
+  You-Are-Spectator: "&cDu bist nun ein Zuschauer! Du kannst nun Fliegen!"
+  You-Leveled-Up: "&7LEVEL-UP! Du bist nun Level %NUMBER%!"
+  Rotten-Flesh-Level-Up: "&bDie Götter bedanken sich für das Verdorbene Fleisch! &bDafür geben sie euch ein EXTRA-HERZ!"
+  Only-Command-Ingame-Is-Leave: "&cDu must das Spiel verlassen um Commands benutzen zu können. Nur /leave funktioniert!"
+  Golem-Upgrades:
+    Upgrade-Inventory: "&e&lUpgrade GOLEM"
+    Cant-Upgrade-Others: "&cDu kannst nicht andere GOLEMS upgraden!"
+    Upgrade-Tier1: "&aTier 1 Upgrade"
+    Upgrade-Tier1-Lore: "&cVon: &a+0 Herzen &e> Zu: &e+20 Herzen;&e&lKostet: &7400 Orbs;&7Klicke zum Upgraden"
+    Upgrade-Tier2: "&eTier 2 Upgrade"
+    Upgrade-Tier2-Lore: "&cVon: &a+20 Herzen &e> Zu: &e+40 Herzen;&e&lKostet: &7800 Orbs;&7Klicke zum Upgraden"
+    Upgrade-Tier3: "&e&lTier 3 Upgrade"
+    Upgrade-Tier3-Lore: "&cVon: &a+40 Herzen &e> Zu: &e+60 Herzen;&e&lKostet: &71200 Orbs;&7Klicke zum Upgraden"
+    Upgrade-Heal: "&aHeile deinen GOLEM"
+    Upgrade-Heal-Lore: "&7Heile deinen GOLEM komplett;&e&lKostet: &7300 Orbs;&7Klicke zum Kaufen"
+    Upgrade-Heal-Full: "&cGOLEM wurde vollständig geheilt!"
+    Upgrade-Already-Purchased: "&cDu hast das Upgrade für den GOLEM bereits gekauft!"
+    Upgrade-Applied: "&aUpgrade wurde erfolgreich dem GOLEM zugeschrieben! Lang Lebe das Dorf!"
+    Health: "&e&lGOLEM-LEBEN: &7%health%"
+  Spawned-Wolf-Name: "%player%'s Wolf"
+  Spawned-Golem-Name: "%player%'s Golem"
+  #Join cancelled via external plugin that uses VD3 api.
+  Join-Cancelled-Via-API: "&cDu kannst dem Spiel nicht beitreten!"
+  Spectator:
+    Spectator-Item-Name: "&7Spieler-Liste"
+    Spectator-Menu-Name: "&lZuschauer-Menü"
+  Messages:
+    Lobby-Messages:
+      Start-In: "&7Das Spiel startet in &b%TIME%&7 Sekunden!"
+      Waiting-For-Players: "&7Warte auf Spieler... Wir brauchen mindestens &b%MINPLAYERS%&7 Spieler um zu starten."
+      Enough-Players-To-Start: "&7Wir haben jetzt genug Spieler. Spiel startet gleich!"
+      Game-Started: "&7Das Spiel startet! Verteidige die Villager gegen die Wellen von Zombies!"
+      Kicked-For-Premium-Slot: "&c%PLAYER% wurde entfernt für einen Premium-Spieler!"
+      You-Were-Kicked-For-Premium-Slot: "&cDu wurdest aus der Runde geworfen um einen Premium-Spieler Platz zu machen!"
+    Join: "&b%PLAYER%&7 ist dem Spiel beigetreten (%PLAYERSIZE%/%MAXPLAYERS%)!"
+    Leave: "&b%PLAYER% &7hat das Spiel verlassen (%PLAYERSIZE%/%MAXPLAYERS%)!"
+    Death: "&b%PLAYER% &7ist gestorben!"
+    Next-Wave-In: "&7Nächste Welle startet in &b%NUMBER%&7 Sekunden!"
+    Wave-Started: "&7Welle &b%NUMBER%&7 startet!"
+    Villager-Died: "&cEin Villager ist gestorben!"
+    You-Feel-Refreshed: "&aDu wurdest regeneriert!"
+    Cant-Ride-Others-Golem: "&cDu kannst keinen Golem von jemanden anderen reiten!"
+    Golem-Spawned: "&aGolem ist im Dorf gespawnt!"
+    Wolf-Spawned: "&aWolf ist im Dorf gespawnt!"
+    Zombie-Got-Stuck-In-The-Map: "&cEs sieht so aus als würde der letzte Zombie sich verlaufen haben. Kein Problem! Die Götter haben ihn für dich gekillt!"
+    Shop-Messages:
+      Shop-GUI-Name: "&lShop"
+      Golem-Item-Name: "Spawn Golem"
+      Not-Enough-Orbs: "&cDu benötigst mehr Orbs um dir das zu kaufen!"
+      Currency-In-Shop: "orbs"
+      No-Shop-Defined: "&cShop wurde nicht gesetzt! Kontakt Server-Team!"
+    Game-End-Messages:
+      All-Players-Died: "&cAlle Spieler sind gestorben!"
+      All-Villagers-Died: "&cAlle Villager sind gestorben! Ihr habt das Spiel verloren!"
+      Reached-Wave-X: "&7Du hast Welle &b%NUMBER%&7 erreicht!"
+      Teleporting-To-Lobby-In-10-Seconds: "&7Du wirst zurück zur Lobby in &b10 &7Sekunden teleportiert!"
+      Teleporting-To-Lobby-In-X-Seconds: "&7Du wirst zurück zur Lobby in &b%TIME% &7Sekunden teleportiert"
+    Admin-Messages:
+      Set-Starting-In-To-0: "&bEin Server-Teammitglied hat die Start-Zeit auf 0 gestellt. Das Spiel startet jetzt!"
+      Removed-Zombies: "&b%PLAYER% hat die Zombies bereinigt!"
+      Removed-Villagers: "&b%PLAYER% hat alle Villager entfernt!"
+      Removed-Golems: "&b%PLAYER% hat alle Golems bereinigt!"
+      Removed-Zombies: "&b%PLAYER% hat die Zombies entfernt!"
+      Changed-Wave: "&bServer-Teammitglied hat die Welle zu %NUMBER% geändert"
+
+Signs:
+  Please-Type-Arena-Name: "&cBitte schreibe einen Arena-Namen in die 2. Zeile!"
+  Arena-Doesnt-Exists: "&cArena mit diesen Namen existiert nicht!"
+  Sign-Created: "&aSchild erfolgreich aufgestellt!"
+  Sign-Removed: "&aSchild erfolgreich entfernt!"
+  Game-States:
+    Inactive: "&lInaktive..."
+    In-Game: "&lIm-Spiel"
+    Starting: "&e&lStarte"
+    Full-Game: "&4&lVOLL"
+    Ending: "&lEnde"
+    Restarting: "&c&lRestarting"
+  Lines:
+    - "&a&lVillageDefense"
+    - "%state%"
+    - "%mapname%"
+    - "&5[%playersize%/%maxplayers%]"
+
+
+#You don't want to change this m8 >:)
+File-Version-Do-Not-Edit: 0

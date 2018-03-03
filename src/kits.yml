@@ -1,0 +1,44 @@
+#Only kits that inherits level kit feature will be available to modify here.
+#Filling here other kits won't change anything as they inherits premium or free kit.
+Required-Level:
+  ZombieFinder: 1
+  Archer: 2
+  Puncher: 4
+  Healer: 6
+  Looter: 8
+  Runner: 10
+  MediumTank: 12
+  Worker: 15
+  GolemFriend: 18
+  Terminator: 20
+  Hardcore: 100
+
+#Here you can disable Village Defense preconfigured kits.
+#Set 'false' to disable.
+Enabled-Game-Kits:
+  Archer: true
+  Blocker: true
+  Cleaner: true
+  DogFriend: true
+  GolemFriend: true
+  Hardcore: true
+  Healer: true
+  HeavyTank: true
+  #Knight is default kit, it cannot be disabled
+  #Knight: true
+  LightTank: true
+  Looter: true
+  Medic: true
+  MediumTank: true
+  Naked: true
+  PremiumHardcore: true
+  Puncher: true
+  Runner: true
+  ShotBow: true
+  SuperArcher: true
+  Teleporter: true
+  Terminator: true
+  Tornado: true
+  Wizard: true
+  Worker: true
+  ZombieFinder: true

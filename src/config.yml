@@ -1,0 +1,117 @@
+#     VillageDefense 3 configuration file
+#
+#    You can edit here basic things of VD 3
+#      Please read everything CAREFULLY!
+#   You don't want to break anything, do you?
+
+
+#Locale of VD 3 language. By default it's english.
+#Available localizations:
+#default - uses messages from 'language.yml' file
+#de - Deutsche sprache. Uses messages from 'language_de.yml' file
+#pl - Jêzyk Polski. TODO implement me asap
+locale: default
+
+#Should we hook into bungee cord? (If you wanna use arena per server option)
+BungeeActivated: false
+
+#Should we save inventories of players when they join game? It can be useful if you runs this minigame for example on factions etc. servers
+InventoryManager: false
+
+#Respawn players when wave ends/starts?
+Respawn-After-Wave: true
+
+#Game instances, don't modify via this configuration!
+#TODO move me
+instances:
+  default:
+    lobbylocation: world,364.0,63.0,-72.0,0.0,0.0
+    Startlocation: world,364.0,63.0,-72.0,0.0,0.0
+    Endlocation: world,364.0,63.0,-72.0,0.0,0.0
+    minimumplayers: 2
+    maximumplayers: 10
+    mapname: mapname
+    world: worldname
+
+#TODO move me
+signs:
+  - world,364.0,63.0,-72.0,0.0,0.0
+
+#You can create custom players permissions here.
+#Player with your custom permission will get % bonus orbs
+#when he lift up experience from killed zombie.
+CustomPermissions:
+  #Player with permission my-permission-one get 10% more orbs
+  my-permission-one: 10
+
+#Basic permissions for game, every permission explained at plugin's page
+Basic-Permissions:
+  Full-Games-Permission: "villagedefense.fullgames"
+  Vip-Permission: "villagedefense.vip"
+  Mvp-Permission: "villagedefense.mvp"
+  Elite-Permission: "villagedefense.elite"
+  Arena-Edit-Permission: "villagedefense.edit"
+  #<arena> represents arena name (NOT MAP NAME!), for example: 'villagedefense.join.VD02'
+  #use 'villagedefense.join.*' to enable access to all arenas
+  Join-Permission: "villagedefense.join.<arena>"
+
+#Should /leave command be blocked?
+Disable-Leave-Command: false
+
+#Enable this option when you're using MySQL, otherwise it won't work.
+DatabaseActivated: false
+
+#How many seconds game should take to start.
+Starting-Waiting-Time: 60
+
+#Speed of baby zombie. Suggested: between 1.8 and 2.0
+Mini-Zombie-Speed: 2.0
+
+#Speed of normal zombies. Suggested: between 1.2 and 1.4
+Zombie-Speed: 1.3
+
+#Enable in game rewards? See rewards.yml for more...
+Rewards-Enabled: false
+
+#Enable in game (eg. '[KIT][LEVEL] Plajer: hey') special formatting?
+#Formatting configurable in language.yml
+ChatFormat-Enabled: true
+
+#Amount of orbs given to player when game starts
+Orbs-Starting-Amount: 20
+
+#Should we block every not Village Defense associated commands in-game?
+Block-Commands-In-Game: true
+
+Update-Notifier:
+  #Should we check for updates on plugin start/after admin join?
+  #You REALLY should have this true!
+  Enabled: true
+  #Should we inform you when beta version is out?
+  #BETA IS NOT ALWAYS STABLE AS NORMAL RELEASE!
+  Notify-Beta-Versions: true
+
+#Should plugin send 'debug spam' to console? IT CAN HELP IF YOU OCCUR SOME WEIRD BEHAVIOUR FROM PLUGIN
+Debug: false
+
+#Should we fire some cool fireworks at location of every player after the game ends?
+Firework-When-Game-Ends: true
+
+#Are golems upgrades enabled when you click your iron golem?
+Golem-Upgrades-Enabled: true
+
+#Cost of golem heart upgrades
+Golem-Upgrade-Tier1-Cost: 200
+Golem-Upgrade-Tier2-Cost: 400
+Golem-Upgrade-Tier3-Cost: 800
+
+#Cost of golem full heal
+Golem-Upgrade-Heal-Cost: 150
+
+#Enable very simple health bar for zombies?
+#They will have health instead of their names
+#It will show percentage of health left.
+Simple-Zombie-Health-Bar-Enabled: true
+
+#Don't modify.
+Version: 1

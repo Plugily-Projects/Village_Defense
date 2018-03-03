@@ -1,0 +1,36 @@
+name: VillageDefense
+main: pl.plajer.villagedefense3.Main
+version: 3.0.0b build 22
+softdepend: [WorldEdit]
+
+commands:
+  VillageDefense:
+    description: VD 3 commands
+    usage: "\u00A76Correct usage: /vd [stats/leave/join]"
+    aliases: [vd, villaged]
+  VillageDefenseAdmin:
+    description:
+    usage: "\u00A76Correct usage: /vda [option]"
+    aliases: [vda, villageadmin]
+
+permissions:
+  villagedefense.admin.*:
+    default: op
+    children:
+      villagedefense.admin: true
+      villagedefense.admin.setup: true
+      villagedefense.admin.setshopchest: true
+      villagedefense.admin.setprice: true
+      villagedefense.admin.create: true
+      villagedefense.admin.delete: true
+      villagedefense.admin.spychat: true
+      villagedefense.admin.stopgame: true
+      villagedefense.admin.forcestart: true
+      villagedefense.admin.respawn: true
+      villagedefense.admin.repsawn.others: true
+      villagedefense.admin.addsign: true
+      villagedefense.admin.clear: true
+      villagedefense.admin.addorbs: true
+      villagedefense.admin.addorbs.others: true
+      villagedefense.admin.setwave: true
+
