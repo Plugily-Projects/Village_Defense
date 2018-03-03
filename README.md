@@ -1,6 +1,19 @@
 # Village Defense 3
 
-[![](https://img.shields.io/badge/javadocs-latest-green.svg)](https://plajer.github.io/Village_Defense/)
+[![](https://img.shields.io/badge/javadocs-latest-green.svg)](https://plajer.github.io/Village_Defense/) [![](https://img.shields.io/badge/wiki-click-blue.svg)](https://github.com/Plajer/Village_Defense/wiki)
 
-This project was built 2 years ago and is very very messy after all those bug fixes. If you want to adjust something in it but can't figure stuff out, just contact me and I'll point you in the right direction.
-I don't like the code and neither will you. Good luck!
+Harder, better, faster, stronger - motto of Village Defense 3.
+
+Village Defense 3 is improved version of VD 2 created by TomTheDeveloper. New version created by me (Plajer) contains major changes.
+Have fun using it! Leave a good rating if you really like it.
+
+## Want to contribute in this project?
+#### 🉑 Code changes:
+Fork this project and create pull request!
+
+#### 💣 Issues reporting:
+[Create new issue here!](https://github.com/Plajer/Village_Defense/issues/new)
+
+***
+
+👾 **Our discord:** https://discord.gg/UXzUdTP
