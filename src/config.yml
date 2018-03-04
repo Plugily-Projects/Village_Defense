@@ -9,7 +9,7 @@
 #Available localizations:
 #default - uses messages from 'language.yml' file
 #de - Deutsche sprache. Uses messages from 'language_de.yml' file
-#pl - Jêzyk Polski. TODO implement me asap
+#pl - JÃªzyk Polski. TODO implement me asap
 locale: default
 
 #Should we hook into bungee cord? (If you wanna use arena per server option)
@@ -44,7 +44,7 @@ CustomPermissions:
   #Player with permission my-permission-one get 10% more orbs
   my-permission-one: 10
 
-#Basic permissions for game, every permission explained at plugin's page
+#Basic permissions for game, every permission is explained at plugin's page
 Basic-Permissions:
   Full-Games-Permission: "villagedefense.fullgames"
   Vip-Permission: "villagedefense.vip"
@@ -74,13 +74,13 @@ Zombie-Speed: 1.3
 Rewards-Enabled: false
 
 #Enable in game (eg. '[KIT][LEVEL] Plajer: hey') special formatting?
-#Formatting configurable in language.yml
+#Formatting is configurable in language.yml
 ChatFormat-Enabled: true
 
 #Amount of orbs given to player when game starts
 Orbs-Starting-Amount: 20
 
-#Should we block every not Village Defense associated commands in-game?
+#Should we block every not Village Defense associated commands in game?
 Block-Commands-In-Game: true
 
 Update-Notifier:
@@ -88,7 +88,7 @@ Update-Notifier:
   #You REALLY should have this true!
   Enabled: true
   #Should we inform you when beta version is out?
-  #BETA IS NOT ALWAYS STABLE AS NORMAL RELEASE!
+  #BETA IS NOT ALWAYS AS STABLE AS NORMAL RELEASE!
   Notify-Beta-Versions: true
 
 #Should plugin send 'debug spam' to console? IT CAN HELP IF YOU OCCUR SOME WEIRD BEHAVIOUR FROM PLUGIN
@@ -111,6 +111,8 @@ Golem-Upgrade-Heal-Cost: 150
 #Enable very simple health bar for zombies?
 #They will have health instead of their names
 #It will show percentage of health left.
+#It's kinda buggy, you should use external plugin
+#if you got one.
 Simple-Zombie-Health-Bar-Enabled: true
 
 #Don't modify.
