@@ -6,6 +6,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import pl.plajer.villagedefense3.Main;
 import pl.plajer.villagedefense3.game.GameInstance;
@@ -37,6 +38,18 @@ public class LobbyEvents implements Listener {
 
     @EventHandler
     public void onLobbyHurt(EntityDamageByEntityEvent event) {
+        if(event.getEntity().getType() != EntityType.PLAYER)
+            return;
+        Player player = (Player) event.getEntity();
+        GameInstance gameInstance = plugin.getGameInstanceManager().getGameInstance(player);
+        if(gameInstance == null || gameInstance.getGameState() == GameState.IN_GAME)
+            return;
+        event.setCancelled(true);
+        player.setHealth(player.getMaxHealth());
+    }
+
+    @EventHandler
+    public void onLobbyDamage(EntityDamageEvent event) {
         if(event.getEntity().getType() != EntityType.PLAYER)
             return;
         Player player = (Player) event.getEntity();

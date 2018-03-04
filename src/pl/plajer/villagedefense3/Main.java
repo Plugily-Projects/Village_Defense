@@ -68,6 +68,7 @@ public class Main extends JavaPlugin implements Listener {
     private RewardsHandler rewardsHandler;
     private boolean inventoryManagerEnabled = false;
     private List<String> fileNames = Arrays.asList("bungee", "rewards", "stats", "lobbyitems", "mysql", "kits");
+    private List<String> migratable = Arrays.asList("bungee", "config", "kits", "language", "lobbyitems", "mysql");
     private List<Class> classKitNames = Arrays.asList(LightTankKit.class, ZombieFinderKit.class, ArcherKit.class, PuncherKit.class,
             HealerKit.class, LooterKit.class, RunnerKit.class, MediumTankKit.class, WorkerKit.class, GolemFriendKit.class,
             TerminatorKit.class, HardcoreKit.class, CleanerKit.class, TeleporterKit.class,
@@ -156,6 +157,7 @@ public class Main extends JavaPlugin implements Listener {
     @Override
     public void onEnable() {
         version = Bukkit.getServer().getClass().getPackage().getName().replace(".", ",").split(",")[3];
+        new ConfigurationManager(this);
         LanguageManager.init(this);
         LanguageManager.saveDefaultLanguageFile();
         saveDefaultConfig();
@@ -173,6 +175,14 @@ public class Main extends JavaPlugin implements Listener {
             Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "Your server software is not supported by Village Defense!");
             Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "We support only Spigot and Spigot forks only! Shutting off...");
             getServer().getPluginManager().disablePlugin(this);
+        }
+        //check if using releases before 2.1.0
+        if(LanguageManager.getLanguageFile().isSet("STATS-AboveLine") && LanguageManager.getLanguageFile().isSet("SCOREBOARD-Zombies")){
+            migrateToNewFormat();
+        }
+        //check if using releases 2.1.0+
+        if(LanguageManager.getLanguageFile().isSet("File-Version") && getConfig().isSet("Config-Version")){
+            migrateToNewFormat();
         }
         debug = getConfig().getBoolean("Debug");
         if(Main.isDebugged()) {
@@ -248,7 +258,6 @@ public class Main extends JavaPlugin implements Listener {
     }
 
     private void initializeClasses() {
-        new ConfigurationManager(this);
         gameInstanceManager = new GameInstanceManager();
         GameInstance.plugin = this;
         bungeeEnabled = getConfig().getBoolean("BungeeActivated");
@@ -297,17 +306,47 @@ public class Main extends JavaPlugin implements Listener {
     }
 
     private void setupLocale() {
+        saveResource("language_de.yml", true);
         String locale = getConfig().getString("locale");
         if(locale.equalsIgnoreCase("default") || locale.equalsIgnoreCase("english")) {
             pluginLocale = VDLocale.DEFAULT;
         } else if(locale.equalsIgnoreCase("de") || locale.equalsIgnoreCase("deutsch")) {
             pluginLocale = VDLocale.DEUTSCH;
+            if(!ConfigurationManager.getConfig("language_de").get("File-Version-Do-Not-Edit").equals(ConfigurationManager.getConfig("language_de").get("Language-Version"))){
+                Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "[Village Defense] Locale DEUTSCH is outdated! Not every message will be in german.");
+            }
+            if(!LanguageManager.getDefaultLanguageMessage("File-Version-Do-Not-Edit").equals(LanguageManager.getLanguageMessage("File-Version-Do-Not-Edit"))){
+                Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "[Village Defense] Locale DEUTSCH is invalid! Using DEFAULT locale instead...");
+                pluginLocale = VDLocale.DEFAULT;
+            }
         } else if(locale.equalsIgnoreCase("pl") || locale.equalsIgnoreCase("polski")) {
             pluginLocale = VDLocale.POLSKI;
+            if(!ConfigurationManager.getConfig("language_pl").get("File-Version-Do-Not-Edit").equals(ConfigurationManager.getConfig("language_pl").get("Language-Version"))){
+                Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "[Village Defense] Locale POLSKI is outdated! Not every message will be in polish.");
+            }
+            if(!LanguageManager.getDefaultLanguageMessage("File-Version-Do-Not-Edit").equals(LanguageManager.getLanguageMessage("File-Version-Do-Not-Edit"))){
+                Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "[Village Defense] Locale POLSKI is invalid! Using DEFAULT locale instead...");
+                pluginLocale = VDLocale.DEFAULT;
+                return;
+            }
         } else {
             Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "[Village Defense] Plugin locale is invalid! Using default one...");
             pluginLocale = VDLocale.DEFAULT;
         }
+    }
+
+    private void migrateToNewFormat(){
+        BigTextUtils.gottaMigrate();
+        Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "Village Defense 3 is migrating all files to the new file format...");
+        Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "Don't worry! Old files will be renamed not overridden!");
+        for(String file : migratable){
+            if(ConfigurationManager.getFile(file).exists()){
+                ConfigurationManager.getFile(file).renameTo(new File("VD2_" + file));
+                ConfigurationManager.getConfig(file);
+                Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "Renamed file " + file + ".yml");
+            }
+        }
+        Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "Done! Enabling VD3...");
     }
 
     public RewardsHandler getRewardsHandler() {
@@ -365,7 +404,7 @@ public class Main extends JavaPlugin implements Listener {
                 if(inventoryManagerEnabled)
                     inventoryManager.loadInventory(player);
             }
-            ((ArenaInstance) invasionInstance).stopGame();
+            ((ArenaInstance) invasionInstance).stopGame(true);
             ((ArenaInstance) invasionInstance).clearVillagers();
             invasionInstance.teleportAllToEndLocation();
         }

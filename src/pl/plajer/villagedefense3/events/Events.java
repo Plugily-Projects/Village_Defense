@@ -295,7 +295,7 @@ public class Events implements Listener {
         event.setCancelled(true);
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGH)
     public void onZombieHurt(EntityDamageEvent e) {
         if(plugin.getConfig().getBoolean("Simple-Zombie-Health-Bar-Enabled")) {
             if(!(e.getEntity() instanceof Zombie)) {
@@ -429,45 +429,21 @@ public class Events implements Listener {
         UserManager.getUser(player.getUniqueId()).setInt("orbs", UserManager.getUser(player.getUniqueId()).getInt("orbs") - price);
     }
 
-
     @EventHandler(priority = EventPriority.HIGH)
-    public void onDoorPlace(BlockPlaceEvent event) {
-        GameInstance gameInstance = plugin.getGameInstanceManager().getGameInstance(event.getPlayer());
-        if(gameInstance == null)
-            return;
-        User user = UserManager.getUser(event.getPlayer().getUniqueId());
-        if(user.isSpectator()) {
-            event.setCancelled(true);
-            return;
-        }
-        if(event.getPlayer().getItemInHand() == null) {
-            event.setCancelled(true);
-            return;
-        }
-        if(!(event.getPlayer().getItemInHand().getType() == Material.WOOD_DOOR || event.getPlayer().getItemInHand().getType() == Material.WOODEN_DOOR)) {
-            event.setCancelled(true);
-            return;
-        }
-        ArenaInstance arenaInstance = (ArenaInstance) plugin.getGameInstanceManager().getGameInstance(event.getPlayer());
-
-        if(!arenaInstance.getDoorLocations().containsKey(event.getBlock().getLocation())) {
-            event.setCancelled(true);
-            return;
-        }
-        event.getPlayer().sendMessage(ChatManager.colorMessage("Kits.Worker.Game-Item-Place-Message"));
-    }
-
-
-    @EventHandler
+    //highest priority to fully protecc our game (i didn't set it because my test server was destroyed, n-no......)
     public void onBlockBreakEvent(BlockBreakEvent event) {
         GameInstance gameInstance = plugin.getGameInstanceManager().getGameInstance(event.getPlayer());
         if(gameInstance == null)
             return;
-        User user = UserManager.getUser(event.getPlayer().getUniqueId());
-        if(user.isFakeDead()) {
-            event.setCancelled(true);
+        event.setCancelled(true);
+    }
+
+    @EventHandler(priority = EventPriority.HIGH)
+    //highest priority to fully protecc our game (i didn't set it because my test server was destroyed, n-no......)
+    public void onBuild(BlockPlaceEvent event) {
+        GameInstance gameInstance = plugin.getGameInstanceManager().getGameInstance(event.getPlayer());
+        if(gameInstance == null)
             return;
-        }
         event.setCancelled(true);
     }
 

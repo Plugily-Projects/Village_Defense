@@ -4,8 +4,15 @@ import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.inventory.ItemStack;
+import pl.plajer.villagedefense3.ArenaInstance;
 import pl.plajer.villagedefense3.Main;
+import pl.plajer.villagedefense3.User;
+import pl.plajer.villagedefense3.game.GameInstance;
 import pl.plajer.villagedefense3.handlers.ChatManager;
 import pl.plajer.villagedefense3.handlers.ConfigurationManager;
 import pl.plajer.villagedefense3.handlers.UserManager;
@@ -19,14 +26,18 @@ import java.util.List;
 /**
  * Created by Tom on 19/07/2015.
  */
-public class WorkerKit extends LevelKit {
+public class WorkerKit extends LevelKit implements Listener {
+
+    private Main plugin;
 
     public WorkerKit(Main plugin) {
+        this.plugin = plugin;
         this.setLevel(ConfigurationManager.getConfig("kits").getInt("Required-Level.Worker"));
         this.setName(ChatManager.colorMessage("Kits.Worker.Kit-Name"));
         List<String> description = Util.splitString(ChatManager.colorMessage("Kits.Worker.Kit-Description"), 40);
         this.setDescription(description.toArray(new String[description.size()]));
         plugin.getKitRegistry().registerKit(this);
+        plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 
 
@@ -54,4 +65,32 @@ public class WorkerKit extends LevelKit {
     public void reStock(Player player) {
         player.getInventory().addItem(new ItemStack(Material.WOOD_DOOR));
     }
+
+    @EventHandler(priority = EventPriority.HIGHEST)
+    public void onDoorPlace(BlockPlaceEvent event) {
+        GameInstance gameInstance = plugin.getGameInstanceManager().getGameInstance(event.getPlayer());
+        if(gameInstance == null)
+            return;
+        User user = UserManager.getUser(event.getPlayer().getUniqueId());
+        if(user.isSpectator()) {
+            event.setCancelled(true);
+            return;
+        }
+        if(event.getPlayer().getItemInHand() == null) {
+            event.setCancelled(true);
+            return;
+        }
+        if(!(event.getPlayer().getItemInHand().getType() == Material.WOOD_DOOR || event.getPlayer().getItemInHand().getType() == Material.WOODEN_DOOR)) {
+            event.setCancelled(true);
+            return;
+        }
+        ArenaInstance arenaInstance = (ArenaInstance) plugin.getGameInstanceManager().getGameInstance(event.getPlayer());
+
+        if(!arenaInstance.getDoorLocations().containsKey(event.getBlock().getLocation())) {
+            event.setCancelled(true);
+            return;
+        }
+        event.getPlayer().sendMessage(ChatManager.colorMessage("Kits.Worker.Game-Item-Place-Message"));
+    }
+
 }

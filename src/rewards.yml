@@ -106,8 +106,6 @@ rewards:
     40:
       - say You reached wave %WAVE%!
 
-
-
 #When a player kills a zombie:
   zombiekill:
     - give %PLAYER% 100

@@ -64,7 +64,7 @@ public class FileStats {
                 for(String s : temp) {
                     loadStat(player, s);
                 }
-                return;
+                continue;
             }
             Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> MySQLConnectionUtils.loadPlayerStats(player, plugin));
         }

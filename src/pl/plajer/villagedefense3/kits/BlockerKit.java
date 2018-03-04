@@ -1,9 +1,6 @@
 package pl.plajer.villagedefense3.kits;
 
-import org.bukkit.Color;
-import org.bukkit.Effect;
-import org.bukkit.Location;
-import org.bukkit.Material;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -49,7 +46,11 @@ public class BlockerKit extends PremiumKit implements Listener {
                 zombieBarrier.decrementSeconds();
                 if(zombieBarrier.getSeconds() <= 0) {
                     zombieBarrier.getLocation().getBlock().setType(Material.AIR);
-                    zombieBarrier.getLocation().getWorld().playEffect(zombieBarrier.getLocation(), Effect.FIREWORKS_SPARK, 20);
+                    if(plugin.is1_8_R3()) {
+                        zombieBarrier.getLocation().getWorld().playEffect(zombieBarrier.getLocation(), Effect.FIREWORKS_SPARK, 20);
+                    } else{
+                        zombieBarrier.getLocation().getWorld().spawnParticle(Particle.FIREWORKS_SPARK, zombieBarrier.getLocation(), 20);
+                    }
                     removeAfter.add(zombieBarrier);
                 }
             }

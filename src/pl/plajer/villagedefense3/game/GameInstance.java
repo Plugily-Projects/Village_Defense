@@ -3,6 +3,7 @@ package pl.plajer.villagedefense3.game;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
+import org.bukkit.potion.PotionEffect;
 import org.bukkit.scheduler.BukkitRunnable;
 import pl.plajer.villagedefense3.Main;
 import pl.plajer.villagedefense3.User;
@@ -208,6 +209,13 @@ public abstract class GameInstance extends BukkitRunnable {
 
     public void teleportToLobby(Player player) {
         Location location = getLobbyLocation();
+        player.setMaxHealth(20.0);
+        player.setFoodLevel(20);
+        player.setFlying(false);
+        player.setAllowFlight(false);
+        for(PotionEffect effect : player.getActivePotionEffects()) {
+            player.removePotionEffect(effect.getType());
+        }
         if(location == null) {
             System.out.print("LobbyLocation isn't intialized for arena " + getID());
         }
@@ -237,6 +245,13 @@ public abstract class GameInstance extends BukkitRunnable {
             player.teleport(startLoc);
         else
             System.out.print("Startlocation for arena " + getID() + " isn't intialized!");
+        player.setMaxHealth(20.0);
+        player.setFoodLevel(20);
+        player.setFlying(false);
+        player.setAllowFlight(false);
+        for(PotionEffect effect : player.getActivePotionEffects()) {
+            player.removePotionEffect(effect.getType());
+        }
     }
 
     public void teleportAllToStartLocation() {
@@ -245,6 +260,13 @@ public abstract class GameInstance extends BukkitRunnable {
                 player.teleport(startLoc);
             else
                 System.out.print("Startlocation for arena " + getID() + " isn't intialized!");
+            player.setMaxHealth(20.0);
+            player.setFoodLevel(20);
+            player.setFlying(false);
+            player.setAllowFlight(false);
+            for(PotionEffect effect : player.getActivePotionEffects()) {
+                player.removePotionEffect(effect.getType());
+            }
         }
     }
 

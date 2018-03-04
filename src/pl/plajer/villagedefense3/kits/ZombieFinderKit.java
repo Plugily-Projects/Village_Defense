@@ -1,5 +1,6 @@
 package pl.plajer.villagedefense3.kits;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.enchantments.Enchantment;
@@ -9,6 +10,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import pl.plajer.villagedefense3.ArenaInstance;
 import pl.plajer.villagedefense3.Main;
 import pl.plajer.villagedefense3.handlers.ChatManager;
@@ -97,10 +100,13 @@ public class ZombieFinderKit extends LevelKit implements Listener {
             event.getPlayer().sendMessage(msgstring);
             return;
         }
-        if(arenaInstance.getZombies() != null) {
-            arenaInstance.getZombies().get(new Random().nextInt(arenaInstance.getZombies().size())).teleport(event.getPlayer());
+        if(arenaInstance.getZombies() != null || !arenaInstance.getZombies().isEmpty() || !(arenaInstance.getZombies().size() == 0)) {
+            Integer rand = new Random().nextInt(arenaInstance.getZombies().size());
+            arenaInstance.getZombies().get(rand).teleport(event.getPlayer());
+            arenaInstance.getZombies().get(rand).addPotionEffect(new PotionEffect(PotionEffectType.WEAKNESS, 20 * 30, 1));
+            event.getPlayer().sendMessage(ChatManager.colorMessage("Kits.Zombie-Telelporter.Zombie-Teleported"));
         } else {
-            event.getPlayer().sendMessage(ChatManager.colorMessage("Kits.Cleaner.Nothing-To-Clean"));
+            event.getPlayer().sendMessage(ChatManager.colorMessage("Kits.Zombie-Teleporter.No-Available-Zombies"));
             return;
         }
         if(plugin.is1_9_R1() || plugin.is1_11_R1() || plugin.is1_12_R1()) {

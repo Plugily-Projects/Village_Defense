@@ -179,7 +179,7 @@ public abstract class ArenaInstance extends GameInstance implements Listener {
                 }
                 if(getVillagers().size() <= 0 || getPlayersLeft().size() <= 0) {
                     clearZombies();
-                    this.stopGame();
+                    this.stopGame(false);
                     this.setGameState(GameState.ENDING);
                     if(getVillagers().size() <= 0) {
                         showPlayers();
@@ -323,7 +323,7 @@ public abstract class ArenaInstance extends GameInstance implements Listener {
         this.rottenFleshLevel = 0;
     }
 
-    public void stopGame() {
+    public void stopGame(boolean quickStop) {
         VillageGameStopEvent villageGameStopEvent = new VillageGameStopEvent(this);
         Bukkit.getPluginManager().callEvent(villageGameStopEvent);
         if(getPlayersLeft().size() > 0) {
@@ -344,19 +344,20 @@ public abstract class ArenaInstance extends GameInstance implements Listener {
             addStat(player, wave);
 
             UserManager.getUser(player.getUniqueId()).removeScoreboard();
+            if(!quickStop) {
+                if(plugin.getConfig().getBoolean("Firework-When-Game-Ends")) {
+                    new BukkitRunnable() {
+                        int i = 0;
 
-            if(plugin.getConfig().getBoolean("Firework-When-Game-Ends")) {
-                new BukkitRunnable() {
-                    int i = 0;
-
-                    @Override
-                    public void run() {
-                        if(i == 4) this.cancel();
-                        if(!getPlayers().contains(player)) this.cancel();
-                        Util.spawnRandomFirework(player.getLocation());
-                        i++;
-                    }
-                }.runTaskTimer(plugin, 30, 30);
+                        @Override
+                        public void run() {
+                            if(i == 4) this.cancel();
+                            if(!getPlayers().contains(player)) this.cancel();
+                            Util.spawnRandomFirework(player.getLocation());
+                            i++;
+                        }
+                    }.runTaskTimer(plugin, 30, 30);
+                }
             }
         }
         this.resetRottenFlesh();
@@ -535,9 +536,11 @@ public abstract class ArenaInstance extends GameInstance implements Listener {
             p.sendMessage(ChatManager.PLUGINPREFIX + ChatManager.colorMessage("In-Game.Join-Cancelled-Via-API"));
             return;
         }
-        if(!p.hasPermission(PermissionsManager.getJoinPerm().replaceAll("<arena>", "*")) || !p.hasPermission(PermissionsManager.getJoinPerm().replaceAll("<arena>", this.getID()))) {
-            p.sendMessage(ChatManager.PLUGINPREFIX + ChatManager.colorMessage("In-Game.Join-No-Permission"));
-            return;
+        if(!plugin.isBungeeActivated()) {
+            if(!p.hasPermission(PermissionsManager.getJoinPerm().replaceAll("<arena>", "*")) || !p.hasPermission(PermissionsManager.getJoinPerm().replaceAll("<arena>", this.getID()))) {
+                p.sendMessage(ChatManager.PLUGINPREFIX + ChatManager.colorMessage("In-Game.Join-No-Permission"));
+                return;
+            }
         }
         if(Main.isDebugged()) {
             System.out.println("[Village Debugger] Player " + p.getName() + " attemping to join arena!");

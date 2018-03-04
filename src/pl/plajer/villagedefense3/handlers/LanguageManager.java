@@ -22,6 +22,13 @@ public class LanguageManager {
         plugin = pl;
     }
 
+    public static String getDefaultLanguageMessage(String message){
+        if(ConfigurationManager.getConfig("language").isSet(message)) {
+            return ConfigurationManager.getConfig("language").getString(message);
+        }
+        return null;
+    }
+
     public static String getLanguageMessage(String message) {
         switch(plugin.getPluginLocale()) {
             case DEFAULT:

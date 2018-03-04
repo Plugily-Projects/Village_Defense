@@ -58,6 +58,7 @@ public class ChatEvents implements Listener {
             return;
         }
         if(plugin.isChatFormatEnabled()) {
+            event.setCancelled(true);
             Iterator<Player> iterator = event.getRecipients().iterator();
             List<Player> remove = new ArrayList<>();
             while(iterator.hasNext()) {
@@ -97,6 +98,7 @@ public class ChatEvents implements Listener {
             }
             Bukkit.getConsoleSender().sendMessage(message);
         } else {
+            event.setCancelled(true);
             GameInstance gameInstance = plugin.getGameInstanceManager().getGameInstance(event.getPlayer());
             event.getRecipients().clear();
             event.getRecipients().addAll(new ArrayList<>(gameInstance.getPlayers()));

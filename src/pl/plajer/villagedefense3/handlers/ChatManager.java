@@ -31,7 +31,7 @@ public class ChatManager {
             e1.printStackTrace();
             BigTextUtils.errorOccured();
             Bukkit.getConsoleSender().sendMessage("Game message not found!");
-            Bukkit.getConsoleSender().sendMessage("Please regenerate your language.yml file then report it to the developer!");
+            Bukkit.getConsoleSender().sendMessage("Please regenerate your language.yml file! If error still occurs report it to the developer!");
             Bukkit.getConsoleSender().sendMessage("Access string: " + message);
             return "ERR_MESSAGE_NOT_FOUND";
         }

@@ -113,6 +113,6 @@ public class CleanerKit extends PremiumKit implements Listener {
         for(Player player1 : plugin.getGameInstanceManager().getGameInstance(event.getPlayer()).getPlayers()) {
             player1.sendMessage(ChatManager.PLUGINPREFIX + message);
         }
-        UserManager.getUser(event.getPlayer().getUniqueId()).setCooldown("clean", 1000);
+        UserManager.getUser(event.getPlayer().getUniqueId()).setCooldown("clean", 180);
     }
 }

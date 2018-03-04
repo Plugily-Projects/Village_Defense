@@ -178,6 +178,8 @@ public class MainCommand implements CommandExecutor {
             }
             if(args.length > 1) {
                 if(args[1].equalsIgnoreCase("set") || args[1].equalsIgnoreCase("addspawn") || args[1].equalsIgnoreCase("edit")) {
+                    if(checkSenderIsConsole(sender)) return true;
+                    if(!hasPermission((Player) sender, "villagedefense.admin.create")) return true;
                     adminCommands.performSetup(sender, args);
                     return true;
                 }

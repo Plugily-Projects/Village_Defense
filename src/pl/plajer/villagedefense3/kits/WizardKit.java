@@ -120,7 +120,9 @@ public class WizardKit extends PremiumKit implements Listener {
                 } else {
                     p.getItemInHand().setAmount(p.getItemInHand().getAmount() - 1);
                 }
-                p.getWorld().playEffect(p.getLocation(), Effect.MAGIC_CRIT, 15);
+                if(plugin.is1_9_R1() || plugin.is1_11_R1() || plugin.is1_12_R1()) {
+                    p.getWorld().spawnParticle(Particle.CRIT_MAGIC, p.getLocation(), 30, 1, 1, 1);
+                }
                 for(Entity en : p.getNearbyEntities(2, 2, 2)) {
                     if(en instanceof Zombie) {
                         ((Zombie) en).damage(9.0);
@@ -152,7 +154,9 @@ public class WizardKit extends PremiumKit implements Listener {
                         double y = direction.getY() * t + 1.5;
                         double z = direction.getZ() * t;
                         loc.add(x, y, z);
-                        p.getWorld().playEffect(p.getLocation(), Effect.VOID_FOG, 5);
+                        if(plugin.is1_9_R1() || plugin.is1_11_R1() || plugin.is1_12_R1()) {
+                            p.getWorld().spawnParticle(Particle.TOWN_AURA, loc, 5);
+                        }
                         for(Entity en : loc.getChunk().getEntities()) {
                             if(!(en instanceof LivingEntity && en instanceof Zombie)) continue;
                             if(en.getLocation().distance(loc) < 1.0) {

@@ -67,7 +67,7 @@ Kits:
     Kit-Name: "&bCleaner"
     Kit-Description: "&7The cleaner has a special ability. With this ability, he can make all the zombies disappear. However, it takes a lot of effort to do this!"
     Game-Item-Name: "&6Cleaner Wand!"
-    Game-Item-Lore: "&7Right click to kill all zombies! Cooldown: 400 seconds"
+    Game-Item-Lore: "&7Right click to kill all zombies! Cooldown: 180 seconds"
     Cleaned-Map: "&b%PLAYER% has cleaned the map!"
     Nothing-To-Clean: "&aThe map is already empty!" #WARNING: used for admin clean commands too!!!
     Spectator-Warning: "&cYou can't clean the map now! You are a spectator! You'll respawn at the start of the next wave!"
@@ -76,6 +76,8 @@ Kits:
     Kit-Description: "&7Teleport those zombies to you! Many people think this is the worst kit! I must admit they are totally wrong!"
     Game-Item-Name: "Zombie Teleporter" #WARNING: this is Zombie Teleporter GUI name too!
     Game-Item-Lore: "&7Teleport zombies to you!"
+    Zombie-Teleported: "&aTeleported weakened zombie to you!"
+    No-Available-Zombies: "&cThere are no zombies to teleport!"
   Knight:
     Kit-Name: "&2Knight"
     Kit-Description: "&7This is the one and only knight kit! Many people think this is the worst kit! I must admit they are totally wrong!"

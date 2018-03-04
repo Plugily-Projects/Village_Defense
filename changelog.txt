@@ -158,7 +158,7 @@ Commit 20
 
 TODO move managers into other packages (there are too many classes there)
 TODO remove unused entries + spellings in creatures package and not only there
-TODO migrator to rename files to VD2_<file>.yml and generate new one to prevent errors
+ODO migrator to rename files to VD2_<file>.yml and generate new one to prevent errors
 
 Commit 21
 + Added door break particles (only for 1.9+)
@@ -179,7 +179,7 @@ Commit 21
 + Bring back BoneCP again lel (is that a feature?)
 
 TODO override bungee join arena permission
-FIXME shotbow and super archer have same represented items
+IXME shotbow and super archer have same represented items
 
 Commit 22
 + Naked Kit armor error when not in game
@@ -190,3 +190,25 @@ Commit 22
 + Added localization
 + Added full particle support for 1.8
 + Added alias for /vd admin > /vda
++ Added locale version check
++ Added VD 2 > VD 3 migration
++ Added build prorities to highest
++ Added block place block
++ Again kit fix
++ Fixed respawn again
++ Fixed food restore on game end
++ Added small interval between shotbow skill shot because 1 of 4 arrows hurt zombie only
+
+ODO check weird stats lose after plugin reload maybe uuids problem?
+ODO ixme https://pastebin.com/MpjbLRGq
+
+Commit 23
++ Fixed Naked Kit error
++ Fixed weird stats lose
++ Buffed cleaner kit (1000 secs cooldown (16 mins)...) changed to 180 secs (3 mins)
++ CRITICAL file stats save bugfix!!!!!!!!!!!!!!!!!!! data was lost!
++ Buffed zombie finder kit a little (teleported zombie is weakened)
++ Zombie finder teleport error when no zombies fix
++ Fixed german locale encoding
++ Fixed locale setup
++ Now you can join games without checking permissions in bungee mode

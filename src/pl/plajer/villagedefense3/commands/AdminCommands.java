@@ -45,14 +45,15 @@ public class AdminCommands extends MainCommand {
         sender.sendMessage(ChatManager.PREFIX + "/vda respawn" + ChatColor.GRAY + ": Respawns you if u are dead");
         sender.sendMessage(ChatManager.PREFIX + "/vda respawn <player>" + ChatColor.GRAY + ": Respawns the named if he is dead");
         sender.sendMessage(ChatManager.PREFIX + "/vda spychat" + ChatColor.GRAY + ": Toggle all games chat visibility (only multi-arena)");
+        sender.sendMessage(ChatManager.PREFIX + "/vda setprice <amount>" + ChatColor.GRAY + ": Sets holding item price (for shop)");
         sender.sendMessage(ChatManager.PREFIX + "/vda reload" + ChatColor.GRAY + ": Stops and reloads all game instances");
         sender.sendMessage(ChatManager.PREFIX + "/vda setshopchest" + ChatColor.GRAY + ": Sets game shop");
         sender.sendMessage(ChatManager.PREFIX + "/vda addsign <arena>" + ChatColor.GRAY + ": Adds target sign as arena game sign");
         sender.sendMessage(ChatManager.PREFIX + "/vda delete <arena>" + ChatColor.GRAY + ": Removes arena");
         sender.sendMessage(ChatManager.PREFIX + "/vda tp <arena> <location type>" + ChatColor.GRAY + ": Teleports to provided arena location");
-        sender.sendMessage(ChatManager.PREFIX + "/vda clear zombies" + ChatColor.GRAY + ": Clears the zombies in the arena");
-        sender.sendMessage(ChatManager.PREFIX + "/vda clear villagers" + ChatColor.GRAY + ": Clears the villagers in the arena");
-        sender.sendMessage(ChatManager.PREFIX + "/vda clear golems" + ChatColor.GRAY + ": Clears the golems in the arena");
+        sender.sendMessage(ChatManager.PREFIX + "/vda clear zombie" + ChatColor.GRAY + ": Clears the zombies in the arena");
+        sender.sendMessage(ChatManager.PREFIX + "/vda clear villager" + ChatColor.GRAY + ": Clears the villagers in the arena");
+        sender.sendMessage(ChatManager.PREFIX + "/vda clear golem" + ChatColor.GRAY + ": Clears the golems in the arena");
         sender.sendMessage(ChatManager.PREFIX + "/vda addorbs <amount>" + ChatColor.GRAY + ": Gives u the given amount of orbs");
         sender.sendMessage(ChatManager.PREFIX + "/vda addorbs <amount> <player>" + ChatColor.GRAY + ": Gives the named player the given amount of orbs");
         sender.sendMessage(ChatManager.PREFIX + "/vda setwave <number>" + ChatColor.GRAY + ": Sets the number from a wave");
@@ -62,7 +63,7 @@ public class AdminCommands extends MainCommand {
         if(checkSenderIsConsole(sender)) return;
         if(!hasPermission((Player) sender, "villagedefense.admin.stopgame")) return;
         if(!checkIsInGameInstance((Player) sender)) return;
-        ((ArenaInstance) plugin.getGameInstanceManager().getGameInstance((Player) sender)).stopGame();
+        ((ArenaInstance) plugin.getGameInstanceManager().getGameInstance((Player) sender)).stopGame(false);
     }
 
     public void forceStartGame(CommandSender sender) {
@@ -94,7 +95,7 @@ public class AdminCommands extends MainCommand {
         player.setAllowFlight(false);
         instance.showPlayer(player);
         player.getInventory().clear();
-        plugin.getKitManager().giveKitMenuItem(player);
+        user.getKit().giveKitItems(player);
         player.sendMessage(ChatManager.colorMessage("In-Game.Back-In-Game"));
     }
 
@@ -116,7 +117,7 @@ public class AdminCommands extends MainCommand {
                 loopPlayer.setAllowFlight(false);
                 arenaInstance.showPlayer(loopPlayer);
                 loopPlayer.getInventory().clear();
-                plugin.getKitManager().giveKitMenuItem(loopPlayer);
+                user.getKit().giveKitItems(loopPlayer);
                 loopPlayer.sendMessage(ChatManager.colorMessage("In-Game.Back-In-Game"));
                 return;
             }
@@ -185,7 +186,7 @@ public class AdminCommands extends MainCommand {
             sender.sendMessage(ChatManager.PLUGINPREFIX + ChatManager.colorMessage("Commands.No-Arena-Like-That"));
             return;
         }
-        arenaInstance.stopGame();
+        arenaInstance.stopGame(false);
         plugin.getConfig().set("instances." + arena, null);
         plugin.getGameInstanceManager().unregisterGameInstance(arenaInstance);
         sender.sendMessage(ChatManager.PLUGINPREFIX + "§Successfully removed game instance!");

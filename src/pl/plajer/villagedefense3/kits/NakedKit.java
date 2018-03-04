@@ -12,6 +12,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionType;
 import pl.plajer.villagedefense3.Main;
+import pl.plajer.villagedefense3.game.GameInstance;
 import pl.plajer.villagedefense3.handlers.ChatManager;
 import pl.plajer.villagedefense3.handlers.PermissionsManager;
 import pl.plajer.villagedefense3.handlers.UserManager;
@@ -27,7 +28,10 @@ import java.util.List;
  */
 public class NakedKit extends PremiumKit implements Listener {
 
+    private Main plugin;
+
     public NakedKit(Main plugin) {
+        this.plugin = plugin;
         List<String> description = Util.splitString(ChatManager.colorMessage("Kits.Wild-Naked.Kit-Description"), 40);
         this.setDescription(description.toArray(new String[description.size()]));
         setName(ChatManager.colorMessage("Kits.Wild-Naked.Kit-Name"));
@@ -64,6 +68,9 @@ public class NakedKit extends PremiumKit implements Listener {
     public void onArmor(InventoryClickEvent event) {
         if(UserManager.getUser(event.getWhoClicked().getUniqueId()) == null)
             return;
+        GameInstance gameInstance = plugin.getGameInstanceManager().getGameInstance((Player) event.getWhoClicked());
+        if(gameInstance == null)
+            return;
         if(!(UserManager.getUser(event.getWhoClicked().getUniqueId()).getKit() instanceof NakedKit))
             return;
         if(!(event.getInventory().getType().equals(InventoryType.PLAYER) || event.getInventory().getType().equals(InventoryType.CRAFTING))) {
@@ -88,6 +95,9 @@ public class NakedKit extends PremiumKit implements Listener {
 
     @EventHandler
     public void onArmorClick(PlayerInteractEvent event) {
+        GameInstance gameInstance = plugin.getGameInstanceManager().getGameInstance(event.getPlayer());
+        if(gameInstance == null)
+            return;
         if(UserManager.getUser(event.getPlayer().getUniqueId()) == null)
             return;
         if(!(UserManager.getUser(event.getPlayer().getUniqueId()).getKit() instanceof NakedKit))
