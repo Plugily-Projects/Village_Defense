@@ -9,13 +9,15 @@
 #Available localizations:
 #default - uses messages from 'language.yml' file
 #de - Deutsche sprache. Uses messages from 'language_de.yml' file
-#pl - Jêzyk Polski. TODO implement me asap
+#pl - Język Polski. TODO implement me asap
 locale: default
 
 #Should we hook into bungee cord? (If you wanna use arena per server option)
 BungeeActivated: false
 
-#Should we save inventories of players when they join game? It can be useful if you runs this minigame for example on factions etc. servers
+#Enable Inventory Manager for your games? (VERY USEFUL feature for MULTI ARENA)
+#This saves inventory of players and restores it after player leaves arena.
+#Saved elements: max health, health, food, experience, full inventory, armor contents, fire ticks, active potions
 InventoryManager: false
 
 #Respawn players when wave ends/starts?

@@ -211,4 +211,9 @@ Commit 23
 + Zombie finder teleport error when no zombies fix
 + Fixed german locale encoding
 + Fixed locale setup
+
+Commit 24
 + Now you can join games without checking permissions in bungee mode
++ Fixed player full heal after game he leave/finish game
++ Fixed player food restore after game ends
++ Improved InventoryManager (saving max health, health, food, potions and fire ticks now!)

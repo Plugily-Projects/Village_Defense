@@ -245,13 +245,6 @@ public abstract class GameInstance extends BukkitRunnable {
             player.teleport(startLoc);
         else
             System.out.print("Startlocation for arena " + getID() + " isn't intialized!");
-        player.setMaxHealth(20.0);
-        player.setFoodLevel(20);
-        player.setFlying(false);
-        player.setAllowFlight(false);
-        for(PotionEffect effect : player.getActivePotionEffects()) {
-            player.removePotionEffect(effect.getType());
-        }
     }
 
     public void teleportAllToStartLocation() {
@@ -260,13 +253,6 @@ public abstract class GameInstance extends BukkitRunnable {
                 player.teleport(startLoc);
             else
                 System.out.print("Startlocation for arena " + getID() + " isn't intialized!");
-            player.setMaxHealth(20.0);
-            player.setFoodLevel(20);
-            player.setFlying(false);
-            player.setAllowFlight(false);
-            for(PotionEffect effect : player.getActivePotionEffects()) {
-                player.removePotionEffect(effect.getType());
-            }
         }
     }
 

@@ -35,9 +35,9 @@ import java.util.*;
 public abstract class ArenaInstance extends GameInstance implements Listener {
 
     public static Main plugin;
-    private LinkedHashMap<Location, Byte> doorBlocks = new LinkedHashMap<>();
     protected List<Location> zombieSpawns = new ArrayList<>();
     protected int zombiesToSpawn;
+    private LinkedHashMap<Location, Byte> doorBlocks = new LinkedHashMap<>();
     private List<Location> villagerSpawnPoints = new ArrayList<>();
     private List<Zombie> zombies = new ArrayList<>();
     private List<Wolf> wolfs = new ArrayList<>();
@@ -249,6 +249,9 @@ public abstract class ArenaInstance extends GameInstance implements Listener {
                         // if (plugin.isBungeeActivated())
                         //BossbarAPI.removeBar(player);
                         player.setMaxHealth(20.0);
+                        player.setHealth(player.getMaxHealth());
+                        player.setFireTicks(0);
+                        player.setFoodLevel(20);
                         for(Player players : plugin.getServer().getOnlinePlayers()) {
                             if(plugin.getGameInstanceManager().getGameInstance(players) != null)
                                 players.showPlayer(player);
@@ -1013,7 +1016,6 @@ public abstract class ArenaInstance extends GameInstance implements Listener {
         p.getInventory().clear();
         ArmorHelper.clearArmor(p);
 
-
         this.removePlayer(p);
         if(!user.isSpectator()) {
             getChatManager().broadcastLeaveMessage(p);
@@ -1031,6 +1033,7 @@ public abstract class ArenaInstance extends GameInstance implements Listener {
         //    BossbarAPI.removeBar(p);
 
         p.setMaxHealth(20.0);
+        p.setHealth(p.getMaxHealth());
         p.setFoodLevel(20);
         p.setFlying(false);
         p.setAllowFlight(false);
