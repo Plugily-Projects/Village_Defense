@@ -4,7 +4,7 @@
 
 Harder, better, faster, stronger - motto of Village Defense 3.
 
-![](https://imgur.com/wz5Wg5a)
+![](https://i.imgur.com/wz5Wg5a.png)
 
 Village Defense 3 is improved version of VD 2 created by TomTheDeveloper. New version created by me (Plajer) contains major changes.
 Have fun using it! Leave a good rating if you really like it.
