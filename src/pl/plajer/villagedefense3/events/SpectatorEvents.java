@@ -28,13 +28,25 @@ public class SpectatorEvents implements Listener {
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 
-    @EventHandler(priority = EventPriority.HIGH)
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onSpectatorTarget(EntityTargetEvent e) {
         if(!(e.getTarget() instanceof Player)) {
             return;
         }
         if(UserManager.getUser(e.getTarget().getUniqueId()).isSpectator()) {
             e.setCancelled(true);
+            e.setTarget(null);
+        }
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST)
+    public void onSpectatorTarget(EntityTargetLivingEntityEvent e) {
+        if(!(e.getTarget() instanceof Player)) {
+            return;
+        }
+        if(UserManager.getUser(e.getTarget().getUniqueId()).isSpectator()) {
+            e.setCancelled(true);
+            e.setTarget(null);
         }
     }
 

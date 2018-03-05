@@ -14,7 +14,7 @@ import pl.plajer.villagedefense3.utils.Util;
  */
 public class ChatManager {
 
-    public static final String PLUGINPREFIX = colorMessage("In-Game.Plugin-Prefix");
+    public static String PLUGINPREFIX = colorMessage("In-Game.Plugin-Prefix");
     public static ChatColor PREFIX = ChatColor.GOLD;
     public static ChatColor NORMAL = ChatColor.GRAY;
     public static ChatColor HIGHLIGHTED = ChatColor.AQUA;

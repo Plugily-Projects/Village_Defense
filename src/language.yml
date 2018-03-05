@@ -50,6 +50,15 @@ Scoreboard:
   Orbs: "&bOrbs:"
   Rotten-Flesh: "&2Rotten Flesh:"
 
+#Has usage only when bossbar is enabled in config.yml
+Bossbar:
+  Main-Title: "&a&lVillage Defense &6- www.spigotmc.org"
+  Starting-In: "&f&lStarting in: &e&l%time%"
+  Waiting-For-Players: "&4&lWaiting for more players..."
+  In-Game-Wave: "&f&lCurrent wave: &e&l%wave%"
+  In-Game-Info: "&e&lPlaying &f&lVILLAGE DEFENSE &e&lon &b&lSPIGOTMC.ORG"
+  Game-Ended: "&c&lGame has ended! You were playing on &b&lSPIGOTMC.ORG"
+
 Kits:
   Kit-Menu:
     Title: "Kit Menu"

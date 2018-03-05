@@ -217,3 +217,9 @@ Commit 24
 + Fixed player full heal after game he leave/finish game
 + Fixed player food restore after game ends
 + Improved InventoryManager (saving max health, health, food, potions and fire ticks now!)
+
+Commit 25
++ Added bossbar support (1.9+ only) in config.yml
++ Small fix for language file regeneration without restart only reload
++ Fianlly fixed zombies targeting specators
++ ShotBow kit ability arrows will have user as shooter (zombies after hit still targeted villagers instead of user)

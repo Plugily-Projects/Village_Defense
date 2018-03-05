@@ -77,6 +77,7 @@ public class ShotBowKit extends PremiumKit implements Listener {
                                     Projectile pr = e.getPlayer().launchProjectile(Arrow.class);
                                     pr.setVelocity(e.getPlayer().getLocation().getDirection().multiply(3));
                                     pr.setBounce(false);
+                                    pr.setShooter(e.getPlayer());
                                     ((Arrow) pr).setCritical(true);
 
                                     if(e.getPlayer().getInventory().contains(Material.ARROW))

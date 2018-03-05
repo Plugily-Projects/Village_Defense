@@ -50,6 +50,14 @@ Scoreboard:
   Orbs: "&bOrbs:"
   Rotten-Flesh: "&2Verdorbenes Fleisch:"
 
+Bossbar:
+  Main-Title: "&a&lVillage Defense &6- www.spigotmc.org"
+  Starting-In: "&f&lStarte in: &e&l%time%"
+  Waiting-For-Players: "&4&lWarte auf mehr Spieler..."
+  In-Game-Wave: "&f&lAktuelle Welle: &e&l%wave%"
+  In-Game-Info: "&e&lDu spielst &f&lVILLAGE DEFENSE &e&lauf &b&lSPIGOTMC.ORG"
+  Game-Ended: "&c&lSpiel beendet! Du spielst auf &b&lSPIGOTMC.ORG"
+
 Kits:
   Kit-Menu:
     Title: "Kit-Menü"

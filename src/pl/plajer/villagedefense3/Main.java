@@ -65,6 +65,7 @@ public class Main extends JavaPlugin implements Listener {
     private ChunkManager chunkManager;
     private boolean bungeeEnabled;
     private boolean chatFormat = true;
+    private boolean bossbarEnabled;
     private RewardsHandler rewardsHandler;
     private boolean inventoryManagerEnabled = false;
     private List<String> fileNames = Arrays.asList("bungee", "rewards", "stats", "lobbyitems", "mysql", "kits");
@@ -100,6 +101,10 @@ public class Main extends JavaPlugin implements Listener {
 
     public boolean isInventoryManagerEnabled() {
         return inventoryManagerEnabled;
+    }
+
+    public boolean isBossbarEnabled() {
+        return bossbarEnabled;
     }
 
     public boolean isBungeeActivated() {
@@ -231,6 +236,10 @@ public class Main extends JavaPlugin implements Listener {
             fileStats = new FileStats(this);
             fileStats.loadStatsForPlayersOnline();
         }
+        bossbarEnabled = getConfig().getBoolean("Bossbar-Enabled");
+        if(is1_8_R3()){
+            bossbarEnabled = false;
+        }
 
         getServer().getPluginManager().registerEvents(this, this);
 
@@ -254,6 +263,8 @@ public class Main extends JavaPlugin implements Listener {
             }
         }
         StatsStorage.plugin = this;
+        //set prefix again
+        ChatManager.PLUGINPREFIX = ChatManager.colorMessage("In-Game.Plugin-Prefix");
         setupPermissions();
     }
 
