@@ -1,0 +1,276 @@
+#
+#                    WARNING!
+#      This file is not meant to be edited!
+#   Every time language.yml gets updated this file
+#      will be regenerated with updated messages!
+# Modify langauge.yml if you want to use custom messages
+#
+#  Use 'locale: pl' in config.yml to enable this locale
+#
+#
+
+
+#todo finish me
+Commands:
+  Teleported-To-The-Lobby: "Przeniesiono do lobby!"
+  No-Arena-Like-That: "&cArena o takim ID nie istnieje!"
+  Type-Arena-Name: "&cProsze podac ID areny!"
+  Only-By-Player: "&cTa komende moze wykonac jedynie gracz!"
+  Not-Playing: "&cMusisz byc w grze by wykonac ta komende!"
+  No-Permission: "&cNie posiadasz uprawnien do tej komendy!"
+  Admin-Commands:
+    Player-Not-Found: "&cGracz nie znaleziony!"
+    Added-Orbs: "&7Dodano kulki graczowi!"
+  Stats-Command:
+    Header: "&l-----TWOJE STATY-----"
+    Footer: "&l--------------------"
+    Kills: "&aZabitych zombie: &e"
+    Deaths: "&aSmierci: &e"
+    Games-Played: "&aZagranych gier: &e"
+    Highest-Wave: "&aNajwyzsza fala: &e"
+    Level: "&aPoziom: &e"
+    Exp: "&aExp: &e"
+    Next-Level-Exp: "&aExp do awansu &e"
+  Main-Command:
+    Header: "&6----------------{Komendy VillageDefense}----------"
+    Description: "&aKomendy podstawowe:\n
+    &b/vd stats: &7Wyswietla twoje statystyki!\n
+    &b/vd leave: &7Opuszcza aktualna arene!\n
+    &b/vd join <arena>: &7Dolacza na wybrana arene!"
+    Admin-Bonus-Description: "\n&b/vd admin: &7Komendy administratora"
+    Footer: "&6-------------------------------------------------"
+
+Scoreboard:
+  Header: "&6Village Defense"
+  Villagers-Left: "&aWiesniakow:"
+  Zombies-Left: "&cZombie:"
+  Players: "&bGraczy:"
+  Players-Left: "&7Zywych graczy:"
+  Minimum-Players: "&bMinimum graczy:"
+  Starting-In: "&bStart za:"
+  Next-Wave-In: "&7Nastepna fala za:"
+  Orbs: "&bKulek:"
+  Rotten-Flesh: "&2Zgnilego miesa:"
+
+Bossbar:
+  Main-Title: "&a&lVillage Defense &6- www.spigotmc.org"
+  Starting-In: "&f&lStart za: &e&l%time%"
+  Waiting-For-Players: "&4&lOczekuje na graczy..."
+  In-Game-Wave: "&f&lAktualna fala: &e&l%wave%"
+  In-Game-Info: "&e&lGrasz na trybie &f&lVILLAGE DEFENSE &e&lserwera &b&lSPIGOTMC.ORG"
+  Game-Ended: "&c&lGra zakonczona! Grales na serwerze &b&lSPIGOTMC.ORG"
+
+Kits:
+  Kit-Menu:
+    Title: "Menu Zestawow"
+    Unlocked-Kit-Lore: "&aODBLOKOWANE!"
+    Locked-Lores:
+      Locked-Lore: "&cZABLOKOWANE!"
+      Unlock-At-Level: "&aDostepny od poziomu %NUMBER%"
+      Unlock-In-Store: "&bOdblokuj w sklepie!"
+  Not-Unlocked-Message: "&cNie odblokowales jeszcze zestawu &b%KIT%&c!"
+  Choose-Message: "&aWybrales zestaw: &b%KIT%&a!"
+  Kit-Menu-Item-Name: "Menu Zestawow"
+  Open-Kit-Menu: "Otworz Menu Zestawow"
+  Ability-Still-On-Cooldown: "&cTa umiejetnosc sie laduje! Poczekaj jeszcze %COOLDOWN% sekund!"
+  Cleaner:
+    Kit-Name: "&bCzysciciel"
+    Kit-Description: "&7Czysciciel posiada specjalna umiejetnosc. Ta umiejetnosc pozwala na usuwanie zombie. Jednakze wymaga ona duzo wysilku!"
+    Game-Item-Name: "&6Rozdzka Czysciciela!"
+    Game-Item-Lore: "&7Kliknij prawym by zabic wszystkie zombie! Ladowanie: 180 sekund"
+    Cleaned-Map: "&b%PLAYER% wyczyscil mape!"
+    Nothing-To-Clean: "&aMapa jest juz pusta!" #WARNING: used for admin clean commands too!!!
+    Spectator-Warning: "&cNie mozesz wyczyscic teraz mapy! Jestes widzem! Odrodzisz sie na start nowej fali!"
+  Zombie-Teleporter:
+    Kit-Name: "&2Teleporter Zombie"
+    Kit-Description: "&7Teleportuj zombiaki do siebie! Wielu uwaza ten zestaw za najgorszy! Udowodnij im ze tak nie jest!"
+    Game-Item-Name: "Teleporter Zombie" #WARNING: this is Zombie Teleporter GUI name too!
+    Game-Item-Lore: "&7Teleportuj zombie do siebie!"
+    Zombie-Teleported: "&aTeleportowano oslabionego zombie do ciebie!"
+    No-Available-Zombies: "&cNie ma wiecej zombie do teleportacji!"
+  Knight:
+    Kit-Name: "&2Rycerz"
+    Kit-Description: "&7Jedyny w swoim rodzaju! Wielu uwaza go za najgorszego! Udowodnij im ze tak nie jest!"
+  Light-Tank:
+    Kit-Name: "&2Aspirujacy Tanker"
+    Kit-Description: "&7Jestes aspirujacym tankerem!"
+  Archer:
+    Kit-Name: "&6Lucznik"
+    Kit-Description: "&7Zaczynasz gre z lukiem, skorzana zbroja i drewnianym mieczem. Lucznicy sa uwielbiani przez wiesniakow, zapamietaj to!"
+  Puncher:
+    Kit-Name: "&6Popychadlo"
+    Kit-Description: "&7Zepchnij te zombiaki gdzie pieprz rosnie! Odrzut V nie jest dla ciebie nowoscia!"
+  Healer:
+    Kit-Name: "&6Znachor"
+    Kit-Description: "&7Jestes uwielbianym znachorem tej wioski. Potrafisz leczyc sojusznikow oraz wiesniakows! Otrzymujesz zaopatrzenie co fale!"
+  Looter:
+    Kit-Name: "&6Lupiezca"
+    Kit-Description: "&7Otrzymuj dodatkowe zgnile mieso za kazdego zombiaka!"
+  Runner:
+    Kit-Name: "&6Biegacz"
+    Kit-Description: "&7Parkour to twoja pasja! Biegasz szybciej niz ktokolwiek inny. Potrafisz takze skakac wyzej niz inni."
+  Medium-Tank:
+    Kit-Name: "&6Obeznany Tanker"
+    Kit-Description: "&7Startujesz z dodatkowymi 6 serduszkami! Nie lekaj sie! Masz wiele serc do stracenia!"
+  Worker:
+    Kit-Name: "&6Budowniczy"
+    Kit-Description: "&7Startujesz dwoma drzwiami i otrzymujesz nowe co fale. W ten sposob mozesz naprawiac drzwi w wiosce!"
+    Game-Item-Place-Message: "&aDrzwi postawione!"
+  Dog-Friend:
+    Kit-Name: "&bPrzyjaciel Psow"
+    Kit-Description: "&7Startujesz z trzema pieskami i dostajesz nowego co runde!"
+  Hardcore:
+    Kit-Name: "&6Hardkor"
+    Kit-Description: "&7Zobaczysz sam dlaczego tak sie nazywa"
+  Golem-Friend:
+    Kit-Name: "&6Przyjaciel Golemow"
+    Kit-Description: "&7Zaczynasz gre z golemem!"
+  Tornado:
+    Kit-Name: "&bTornado"
+    Kit-Description: "&7Tworz wspaniale tornada!"
+    Game-Item-Name: "Czas na Tornado"
+    Game-Item-Lore: "&7Kliknij prawym by utworzyc tornado!"
+  Terminator:
+    Kit-Name: "&6Terminator"
+    Kit-Description: "&7Szybko i latwo zabijaj zombiaki ze swoimi superowymi mocami!"
+  Teleporter:
+    Kit-Name: "&bTeleporter"
+    Kit-Description: "&7Wszyscy sa zaskoczeni twoimi umiejetnosciami. Nikt poza toba nie wie jak ich uzywac! Z tego powodu mozesz teleportowac
+ sie do wiesniakow praktycznie naraz!"
+    Game-Item-Name: "&rMenu Teleportacji"
+    Game-Item-Lore: "&7Kliknij prawym by otworzyc menu teleportacji!"
+    Game-Item-Menu-Name: "Menu teleportacji"
+    Teleported-To-Villager: "&aTeleportowano!"
+    Spectator-Warning: "&cNie mozesz sie teraz teleportowac! Jestes widzem! Odrodzisz sie na start nowej fali!"
+    Villager-Warning: "&4Nie znalezionio takiego wiesniaka! Prawdopodobnie jest juz martwy!"
+    Teleported-To-Player: "&aTeleportowano do %PLAYER%"
+    Player-Not-Found: "&cGracz nie znaleziony! Sprobuj ponownie!"
+  Heavy-Tank:
+    Kit-Name: "&bGrozny Tanker"
+    Kit-Description: "&7Startujesz z zelazna zbroja i podwojna iloscia serc!
+  Tak to prawda, walczysz do ostatniej kropli krwi!"
+  Shot-Bow:
+    Kit-Name: "&bMistrz Lucznictwa"
+    Kit-Description: "&7Wynalazles wspanialy luk!"
+  Blocker:
+    Kit-Name: "&bBloker"
+    Kit-Description: "&7Trzymaj zombiaki z daleka swoimi specjalnymi barierami. Sa wytrzymale na 10 sekund"
+    Game-Item-Name: "Bariera"
+    Game-Item-Lore: "&7Postaw ja by zatrzymac zombiaki! Wytrzymala na 10 sekund"
+    Game-Item-Place-Message: "&aBariera postawiona!"
+    Game-Item-Place-Fail: "&cNie mozna tutaj postawic bariery"
+  Premium-Hardcore:
+    Kit-Name: "&bWysoki Mistrz Hardkoru"
+    Kit-Description: "&7Zabijaj zombiaki za jednym ciosem ze swoim OP mieczem! Jednakze uwazaj, zestaw ten jest tylko dla pro'sow! Nie uzywaj go jesli nim nie jestes!"
+  Medic:
+    Kit-Name: "&6Medyk"
+    Kit-Description: "&7Zestaw ten aktywuje twoje pasywne umiejetnosci. Za kazdym razem gdy uderzysz zombiaka,
+  masz 1/10 szansy na uleczenie sojusznikow znajdujacych sie w zasiegu 5 kratek."
+  Wild-Naked:
+    Kit-Name: "&bDziki golas"
+    Kit-Description: "&7Jestes dzikim tarzanem! Zaczynasz z zelaznym mieczem ostrosc VI, pogromca nieumarlych II!"
+    Cannot-Wear-Armor: "&cNie mozesz nosic zadnej zbroi z tym zestawem!"
+  Wizard:
+    Kit-Name: "&bCzarnoksieznik"
+    Kit-Description: "&7Jestes polkrwi. Przybyles do wioski chronic wiesniakow przed hordami nieumarlych. Uzyj swoich mrocznych mocy by ich pokonac!"
+    Staff-Item-Name: "Magiczna rozdzka"
+    Staff-Item-Lore: "&7Kliknij prawym by zaatakowac czarna materia"
+    Essence-Item-Name: "Mroczna esencja"
+    Essence-Item-Lore: "&7Kliknij by pochlonac znajdujaca sie wokolo materie i zamienic ja we wlasna ciernista zbroje! Czas trwania: 5 sekund"
+
+In-Game:
+  Villager-Names: "Alicja,Adam,Maciek,Robert,Jan,Juliusz,Katarzyna,Martyna,Natalia,Barbara,Blazej,Andrzej,Dominik,Gertruda,Bartek,Cecylia,Danuta,Emilia,Ewa,Filip,Halina,Iza,Jozef,Kamil,Karolina,Maja,Marta,Maciej,Milena,Norbert"
+  Plugin-Prefix: "&a[Village Defense] "
+  Already-Playing: "&cJuz grasz! Mozesz wyjsc wpisujac /leave."
+  Join-No-Permission: "&cNie masz uprawnien by dolaczyc na ta arene!"
+  Full-Game-No-Permission: "&cNie masz uprawnien by dolaczac na pelne areny!"
+  No-Slots-For-Premium: "&cTa gra jest juz pelna graczy premium! Przepraszamy."
+  Dead-Tag-On-Death: "&8Martwy"
+  Game-Chat-Format: "&6[&5%level%&6]&6[%kit%&6] %player%: &f%message%"
+  Death-Screen: "Zginales!"
+  Died-Respawn-In-Next-Wave: "&e&lNIE WYCHODZ! &aOdrodzisz sie w nastepnej fali!"
+  Back-In-Game: "&aNie jestes juz widzem! Wrociles do gry!"
+  You-Are-Spectator: "&cJestes teraz widzem! Mozesz latac!"
+  You-Leveled-Up: "&7Awansowales! Twoj nowy poziom: %NUMBER%!"
+  Rotten-Flesh-Level-Up: "&bBogowie sa zadowoleni ze zginlego miesa! &bDali wam za to dodatkowe serce!"
+  Only-Command-Ingame-Is-Leave: "&cMusisz wpierw wyjsc by wykonac ta komende. Jedyna komenda ktora dziala to /leave!"
+  Golem-Upgrades:
+    Upgrade-Inventory: "&e&lUlepsz golema"
+    Cant-Upgrade-Others: "&cNie mozesz ulepszyc golema innej osoby!"
+    Upgrade-Tier1: "&aUlepszenie I"
+    Upgrade-Tier1-Lore: "&cZ: &a+0 serc &e> Do: &e+20 serc;&e&lKoszt: &7400 kul;&7Kliknij by ulepszyc"
+    Upgrade-Tier2: "&eUlepszenie II"
+    Upgrade-Tier2-Lore: "&cZ: &a+20 serc &e> Do: &e+40 serc;&e&lKoszt: &7800 kul;&7Kliknij by ulepszyc"
+    Upgrade-Tier3: "&e&lUlepszenie III"
+    Upgrade-Tier3-Lore: "&cZ: &a+40 serc &e> Do: &e+60 serc;&e&lKoszt: &71200 kul;&7Kliknij by ulepszyc"
+    Upgrade-Heal: "&aUlecz swojego golema"
+    Upgrade-Heal-Lore: "&7W pelni leczy golema;&e&lKoszt: &7300 kul;&7Kliknij by zakupic"
+    Upgrade-Heal-Full: "&cGolem jest w pelni zdrowy!"
+    Upgrade-Already-Purchased: "&cJuz zakupiles te ulepszenie golemowi!"
+    Upgrade-Applied: "&aUlepszenie pomyslnie nadane golemowi! Wiwat wiosce!"
+    Health: "&e&lZdrowie golema: &7%health%"
+  Spawned-Wolf-Name: "Pies gracza %player%"
+  Spawned-Golem-Name: "Golem gracza %player%"
+  #Join cancelled via external plugin that uses VD3 api.
+  Join-Cancelled-Via-API: "&cNie mozesz dolaczyc do gry!"
+  Spectator:
+    Spectator-Item-Name: "&7Lista graczy"
+    Spectator-Menu-Name: "&lMenu widza"
+  Messages:
+    Lobby-Messages:
+      Start-In: "&7Gra rozpoczyna sie za &b%TIME%&7 sekund!"
+      Waiting-For-Players: "&7Oczekuje na graczy... Potrzeba co najmniej &b%MINPLAYERS%&7 graczy do startu."
+      Enough-Players-To-Start: "&7Mamy juz wystarczajaco duzo graczy. Gra rozpoczyna sie za chwile!"
+      Game-Started: "&7Gra zostala rozpoczeta! Chron wioske przed hordami zombiakow!"
+      Kicked-For-Premium-Slot: "&c%PLAYER% zostal usuniety by zrobic miejsce dla graczy premium!"
+      You-Were-Kicked-For-Premium-Slot: "&cUsunieto cie z gry by zrobic miejsce dla gracza premium!"
+    Join: "&b%PLAYER% &7dolaczyl do gry (%PLAYERSIZE%/%MAXPLAYERS%)!"
+    Leave: "&b%PLAYER% &7opuscil gre (%PLAYERSIZE%/%MAXPLAYERS%)!"
+    Death: "&b%PLAYER% &7zginal!"
+    Next-Wave-In: "&7Nastepna fala za &b%NUMBER%&7 sekund!"
+    Wave-Started: "&7Fala &b%NUMBER%&7 rozpoczyna sie!"
+    Villager-Died: "&cWiesniak zginal! [*]"
+    You-Feel-Refreshed: "&aNabierasz nowych sil!"
+    Cant-Ride-Others-Golem: "&cNie mozesz jezdzic na nie swoim golemie!"
+    Golem-Spawned: "&aGolem pojawil sie w wiosce!"
+    Wolf-Spawned: "&aPies pojawil sie w wiosce!"
+    Zombie-Got-Stuck-In-The-Map: "&cWyglada na to ze ostatni zombie gdzies utknal. Bez obaw! Bogowie zabli go za was!"
+    Shop-Messages:
+      Shop-GUI-Name: "&lSklep"
+      Golem-Item-Name: "Przywolaj Golema"
+      Not-Enough-Orbs: "&cPotrzebujesz wiecej kul by zakupic ten przedmiot!"
+      Currency-In-Shop: "kul"
+      No-Shop-Defined: "&cSklep nie zostal ustawiony! Powiadom administracje!"
+    Game-End-Messages:
+      All-Players-Died: "&cWszyscy gracze zgineli!"
+      All-Villagers-Died: "&cWszyscy wiesniacy zgineli! Przegraliscie!"
+      Reached-Wave-X: "&7Dotrwales do fali &b%NUMBER%&7!"
+      Teleporting-To-Lobby-In-10-Seconds: "&7Zostaniesz przeniesiony do lobby za &b10 &7sekund!"
+      Teleporting-To-Lobby-In-X-Seconds: "&7Zostaniesz przeniesiony do lobby za &b%TIME% &7sekund"
+    Admin-Messages:
+      Set-Starting-In-To-0: "&bAdmin ustawil czas oczekiwania na 0. Rozpoczynamy gre!"
+      Removed-Villagers: "&b%PLAYER% usunal wszystkie wiesniaki!"
+      Removed-Golems: "&b%PLAYER% usunal wszystkie golemy!"
+      Removed-Zombies: "&b%PLAYER% wyczyscil zombie z mapy!"
+      Changed-Wave: "&bAdmin zmienil fale na %NUMBER%"
+
+Signs:
+  Please-Type-Arena-Name: "&cProsze podac nazwe areny w drugiej linii!"
+  Arena-Doesnt-Exists: "&cArena o takiej nazwie nie istnieje!"
+  Sign-Created: "&aTablicza stworzona pomyslnie!"
+  Sign-Removed: "&aTabliczka pomyslnie usunieta!"
+  Game-States:
+    Inactive: "&lOczekuje..."
+    In-Game: "&lW grze"
+    Starting: "&e&lStartuje"
+    Full-Game: "&4&lPELNA"
+    Ending: "&lZakonczona"
+    Restarting: "&c&lRestart"
+  Lines:
+    - "&a&lVillage Defense"
+    - "%state%"
+    - "%mapname%"
+    - "&5[%playersize%/%maxplayers%]"
+
+#You don't want to change this m8 >:)
+File-Version-Do-Not-Edit: 0
