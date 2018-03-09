@@ -16,9 +16,14 @@ Commands:
   No-Permission: "&cYou don't have permission to use this command!"
   Admin-Commands:
     Player-Not-Found: "&cPlayer not found!"
-    Added-Orbs: "&7Added orbs to t player!"
+    Added-Orbs: "&7Added orbs to the player!"
+    List-Command:
+      Header: "&aVillage Defense &6arenas:"
+      Format: "&a%arena% &e%status% &6%players%/%maxplayers%"
+      No-Arenas: "&cThere are no game instances!"
   Stats-Command:
     Header: "&l-----YOUR STATS-----"
+    Header-Other: "&l-----STATS FOR %player%-----"
     Footer: "&l--------------------"
     Kills: "&aZombie kills: &e"
     Deaths: "&aDeaths: &e"
@@ -123,7 +128,7 @@ Kits:
     Kit-Description: "&7You'll see yourself why this is hardcore"
   Golem-Friend:
     Kit-Name: "&6Golem Friend"
-    Kit-Description: "&7Start with a golem!"
+    Kit-Description: "&7Start with a golem and get new every 5 waves!"
   Tornado:
     Kit-Name: "&bTornado"
     Kit-Description: "&7Spawn in an awesome tornado!"
@@ -202,7 +207,7 @@ In-Game:
     Upgrade-Tier1-Lore: "&cFrom: &a+0 hearts &e> To: &e+20 hearts;&e&lCost: &7400 orbs;&7Click to upgrade"
     Upgrade-Tier2: "&eTier 2 upgrade"
     Upgrade-Tier2-Lore: "&cFrom: &a+20 hearts &e> To: &e+40 hearts;&e&lCost: &7800 orbs;&7Click to upgrade"
-    Upgrade-Tier3: "&e&lTier 1 upgrade"
+    Upgrade-Tier3: "&e&lTier 3 upgrade"
     Upgrade-Tier3-Lore: "&cFrom: &a+40 hearts &e> To: &e+60 hearts;&e&lCost: &71200 orbs;&7Click to upgrade"
     Upgrade-Heal: "&aHeal your golem"
     Upgrade-Heal-Lore: "&7Fully heals your golem;&e&lCost: &7300 orbs;&7Click to purchase"
@@ -250,7 +255,6 @@ In-Game:
       Teleporting-To-Lobby-In-X-Seconds: "&7You will be teleported to the lobby in &b%TIME% &7seconds"
     Admin-Messages:
       Set-Starting-In-To-0: "&bAn admin set waiting time to 0. The game starts now!"
-      Removed-Zombies: "&b%PLAYER% has cleared the zombies!"
       Removed-Villagers: "&b%PLAYER% has removed all the villagers!"
       Removed-Golems: "&b%PLAYER% has removed all the golems!"
       Removed-Zombies: "&b%PLAYER% has cleared the zombies!"
@@ -274,6 +278,10 @@ Signs:
     - "%mapname%"
     - "&5[%playersize%/%maxplayers%]"
 
+Validator:
+  Invalid-Arena-Configuration: "[Village Defense] Arena %arena% has invaild configuration! Missing node: %error%"
+  Instance-Started: "[Village Defense] Arena %arena% instance successfully started!"
+  No-Instances-Created: "[Village Defense] There are no arena instances created in configuration!"
 
 #You don't want to change this m8 >:)
 File-Version-Do-Not-Edit: 0

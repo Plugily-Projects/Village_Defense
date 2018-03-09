@@ -51,9 +51,6 @@ public class GolemFriendKit extends LevelKit {
         GameInstance gameInstance = plugin.getGameInstanceManager().getGameInstance(player);
         if(gameInstance == null)
             return;
-        if(!(gameInstance instanceof ArenaInstance)) {
-            return;
-        }
         if(plugin.is1_8_R3()) {
             ArenaInstance1_8_R3 invasionInstance1_8_r3 = (ArenaInstance1_8_R3) gameInstance;
             invasionInstance1_8_r3.spawnGolem(invasionInstance1_8_r3.getStartLocation(), player);
@@ -69,7 +66,6 @@ public class GolemFriendKit extends LevelKit {
         if(plugin.is1_12_R1()) {
             ArenaInstance1_12_R1 invasionInstance1_8_r3 = (ArenaInstance1_12_R1) gameInstance;
             invasionInstance1_8_r3.spawnGolem(invasionInstance1_8_r3.getStartLocation(), player);
-
         }
 
     }
@@ -81,6 +77,24 @@ public class GolemFriendKit extends LevelKit {
 
     @Override
     public void reStock(Player player) {
-
+        ArenaInstance gameInstance = (ArenaInstance) plugin.getGameInstanceManager().getGameInstance(player);
+        if(gameInstance.getWave() % 5 == 0){
+            if(plugin.is1_8_R3()) {
+                ArenaInstance1_8_R3 invasionInstance1_8_r3 = (ArenaInstance1_8_R3) gameInstance;
+                invasionInstance1_8_r3.spawnGolem(invasionInstance1_8_r3.getStartLocation(), player);
+            }
+            if(plugin.is1_9_R1()) {
+                ArenaInstance1_9_R1 invasionInstance1_8_r3 = (ArenaInstance1_9_R1) gameInstance;
+                invasionInstance1_8_r3.spawnGolem(invasionInstance1_8_r3.getStartLocation(), player);
+            }
+            if(plugin.is1_11_R1()) {
+                ArenaInstance1_11_R1 invasionInstance1_8_r3 = (ArenaInstance1_11_R1) gameInstance;
+                invasionInstance1_8_r3.spawnGolem(invasionInstance1_8_r3.getStartLocation(), player);
+            }
+            if(plugin.is1_12_R1()) {
+                ArenaInstance1_12_R1 invasionInstance1_8_r3 = (ArenaInstance1_12_R1) gameInstance;
+                invasionInstance1_8_r3.spawnGolem(invasionInstance1_8_r3.getStartLocation(), player);
+            }
+        }
     }
 }

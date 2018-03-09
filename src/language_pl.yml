@@ -21,8 +21,13 @@ Commands:
   Admin-Commands:
     Player-Not-Found: "&cGracz nie znaleziony!"
     Added-Orbs: "&7Dodano kulki graczowi!"
+    List-Command:
+      Header: "&6Areny &aVillage Defense&6:"
+      Format: "&a%arena% &e%status% &6%players%/%maxplayers%"
+      No-Arenas: "&cNie ma zadnych aren!"
   Stats-Command:
     Header: "&l-----TWOJE STATY-----"
+    Header-Other: "&l-----STATY DLA %player%-----"
     Footer: "&l--------------------"
     Kills: "&aZabitych zombie: &e"
     Deaths: "&aSmierci: &e"
@@ -124,7 +129,7 @@ Kits:
     Kit-Description: "&7Zobaczysz sam dlaczego tak sie nazywa"
   Golem-Friend:
     Kit-Name: "&6Przyjaciel Golemow"
-    Kit-Description: "&7Zaczynasz gre z golemem!"
+    Kit-Description: "&7Zaczynasz gre z golemem i dostajesz nowego co 5 fal!"
   Tornado:
     Kit-Name: "&bTornado"
     Kit-Description: "&7Tworz wspaniale tornada!"
@@ -272,5 +277,11 @@ Signs:
     - "%mapname%"
     - "&5[%playersize%/%maxplayers%]"
 
+Validator:
+  Invalid-Arena-Configuration: "[Village Defense] Arena %arena% jest blednie skonfigurowana! Brakujacy element: %error%"
+  Instance-Started: "[Village Defense] Arena %arena% zostala pomyslnie zainicjowana!"
+  No-Instances-Created: "[Village Defense] Nie ma zadnych aren w konfiguracji!"
+
 #You don't want to change this m8 >:)
 File-Version-Do-Not-Edit: 0
+Language-Version: 0

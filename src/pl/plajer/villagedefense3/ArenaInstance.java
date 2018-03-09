@@ -58,7 +58,7 @@ public abstract class ArenaInstance extends GameInstance implements Listener {
     public ArenaInstance(String ID) {
         super(ID);
         random = new Random();
-        if(plugin.isBossbarEnabled()){
+        if(plugin.isBossbarEnabled()) {
             gameBar = Bukkit.createBossBar(ChatManager.colorMessage("Bossbar.Main-Title"), BarColor.BLUE, BarStyle.SOLID);
         }
     }
@@ -110,12 +110,14 @@ public abstract class ArenaInstance extends GameInstance implements Listener {
                 if(plugin.isBossbarEnabled()) {
                     gameBar.setTitle(ChatManager.colorMessage("Bossbar.Starting-In").replaceAll("%time%", String.valueOf(getTimer())));
                     gameBar.setProgress(getTimer() / plugin.getConfig().getDouble("Starting-Waiting-Time"));
-                    }
+                }
                 if(getTimer() == 0) {
                     VillageGameStartEvent villageGameStartEvent = new VillageGameStartEvent(this);
                     Bukkit.getPluginManager().callEvent(villageGameStartEvent);
                     setGameState(GameState.IN_GAME);
-                    gameBar.setProgress(1.0);
+                    if(plugin.isBossbarEnabled()) {
+                        gameBar.setProgress(1.0);
+                    }
                     setTimer(5);
                     teleportAllToStartLocation();
                     for(Player player : getPlayers()) {
@@ -272,7 +274,7 @@ public abstract class ArenaInstance extends GameInstance implements Listener {
                         player.getInventory().clear();
 
                         ArmorHelper.clearArmor(player);
-                        if(plugin.isBossbarEnabled()){
+                        if(plugin.isBossbarEnabled()) {
                             gameBar.removePlayer(player);
                         }
                         player.setMaxHealth(20.0);
@@ -1024,8 +1026,8 @@ public abstract class ArenaInstance extends GameInstance implements Listener {
         }
 
         //tryin to untarget dead player bcuz they will still target him
-        for(Zombie zombie : getZombies()){
-            if(zombie.getTarget() != null){
+        for(Zombie zombie : getZombies()) {
+            if(zombie.getTarget() != null) {
                 if(zombie.getTarget().equals(player)) {
                     //set new target as villager so zombies won't stay still waiting for nothing
                     for(Villager villager : getVillagers()) {
@@ -1071,7 +1073,7 @@ public abstract class ArenaInstance extends GameInstance implements Listener {
                     ironGolem.remove();
             }
         }
-        if(plugin.isBossbarEnabled()){
+        if(plugin.isBossbarEnabled()) {
             gameBar.removePlayer(p);
         }
         p.setMaxHealth(20.0);

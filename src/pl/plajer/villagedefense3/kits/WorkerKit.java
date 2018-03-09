@@ -90,6 +90,7 @@ public class WorkerKit extends LevelKit implements Listener {
             event.setCancelled(true);
             return;
         }
+        event.setCancelled(false);
         event.getPlayer().sendMessage(ChatManager.colorMessage("Kits.Worker.Game-Item-Place-Message"));
     }
 

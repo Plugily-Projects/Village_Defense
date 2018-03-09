@@ -1,5 +1,6 @@
 package pl.plajer.villagedefense3.commands;
 
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import pl.plajer.villagedefense3.Main;
@@ -26,6 +27,24 @@ public class GameCommands extends MainCommand {
         if(checkSenderIsConsole(sender)) return;
         User user = UserManager.getUser(((Player) sender).getUniqueId());
         sender.sendMessage(ChatManager.colorMessage("Commands.Stats-Command.Header"));
+        sender.sendMessage(ChatManager.colorMessage("Commands.Stats-Command.Kills") + user.getInt("kills"));
+        sender.sendMessage(ChatManager.colorMessage("Commands.Stats-Command.Deaths") + user.getInt("deaths"));
+        sender.sendMessage(ChatManager.colorMessage("Commands.Stats-Command.Games-Played") + user.getInt("gamesplayed"));
+        sender.sendMessage(ChatManager.colorMessage("Commands.Stats-Command.Highest-Wave") + user.getInt("highestwave"));
+        sender.sendMessage(ChatManager.colorMessage("Commands.Stats-Command.Level") + user.getInt("level"));
+        sender.sendMessage(ChatManager.colorMessage("Commands.Stats-Command.Exp") + user.getInt("xp"));
+        sender.sendMessage(ChatManager.colorMessage("Commands.Stats-Command.Next-Level-Exp") + Math.ceil(Math.pow(50 * user.getInt("level"), 1.5)));
+        sender.sendMessage(ChatManager.colorMessage("Commands.Stats-Command.Footer"));
+    }
+
+    public void sendStatsOther(CommandSender sender, String p){
+        Player player = Bukkit.getPlayerExact(p);
+        if(player == null || UserManager.getUser(player.getUniqueId()) == null){
+            sender.sendMessage(ChatManager.PLUGINPREFIX + ChatManager.colorMessage("Commands.Admin-Commands.Player-Not-Found"));
+            return;
+        }
+        User user = UserManager.getUser(player.getUniqueId());
+        sender.sendMessage(ChatManager.colorMessage("Commands.Stats-Command.Header-Other").replaceAll("%player%", player.getName()));
         sender.sendMessage(ChatManager.colorMessage("Commands.Stats-Command.Kills") + user.getInt("kills"));
         sender.sendMessage(ChatManager.colorMessage("Commands.Stats-Command.Deaths") + user.getInt("deaths"));
         sender.sendMessage(ChatManager.colorMessage("Commands.Stats-Command.Games-Played") + user.getInt("gamesplayed"));

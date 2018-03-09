@@ -1,16 +1,11 @@
 package pl.plajer.villagedefense3;
 
-import com.sk89q.worldedit.Vector;
 import com.sk89q.worldedit.bukkit.WorldEditPlugin;
-import com.sk89q.worldedit.bukkit.selections.CuboidSelection;
-import com.sk89q.worldedit.bukkit.selections.Selection;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -20,8 +15,6 @@ import pl.plajer.villagedefense3.creatures.EntityRegistry;
 import pl.plajer.villagedefense3.database.FileStats;
 import pl.plajer.villagedefense3.database.MySQLDatabase;
 import pl.plajer.villagedefense3.events.*;
-import pl.plajer.villagedefense3.events.customevents.PlayerAddSpawnCommandEvent;
-import pl.plajer.villagedefense3.events.customevents.SetupInventoryEvents;
 import pl.plajer.villagedefense3.game.GameInstance;
 import pl.plajer.villagedefense3.handlers.*;
 import pl.plajer.villagedefense3.items.SpecialItem;
@@ -68,7 +61,7 @@ public class Main extends JavaPlugin implements Listener {
     private boolean bossbarEnabled;
     private RewardsHandler rewardsHandler;
     private boolean inventoryManagerEnabled = false;
-    private List<String> fileNames = Arrays.asList("bungee", "rewards", "stats", "lobbyitems", "mysql", "kits");
+    private List<String> fileNames = Arrays.asList("arenas", "bungee", "rewards", "stats", "lobbyitems", "mysql", "kits");
     private List<String> migratable = Arrays.asList("bungee", "config", "kits", "language", "lobbyitems", "mysql");
     private List<Class> classKitNames = Arrays.asList(LightTankKit.class, ZombieFinderKit.class, ArcherKit.class, PuncherKit.class,
             HealerKit.class, LooterKit.class, RunnerKit.class, MediumTankKit.class, WorkerKit.class, GolemFriendKit.class,
@@ -182,11 +175,11 @@ public class Main extends JavaPlugin implements Listener {
             getServer().getPluginManager().disablePlugin(this);
         }
         //check if using releases before 2.1.0
-        if(LanguageManager.getLanguageFile().isSet("STATS-AboveLine") && LanguageManager.getLanguageFile().isSet("SCOREBOARD-Zombies")){
+        if(LanguageManager.getLanguageFile().isSet("STATS-AboveLine") && LanguageManager.getLanguageFile().isSet("SCOREBOARD-Zombies")) {
             migrateToNewFormat();
         }
         //check if using releases 2.1.0+
-        if(LanguageManager.getLanguageFile().isSet("File-Version") && getConfig().isSet("Config-Version")){
+        if(LanguageManager.getLanguageFile().isSet("File-Version") && getConfig().isSet("Config-Version")) {
             migrateToNewFormat();
         }
         debug = getConfig().getBoolean("Debug");
@@ -237,7 +230,7 @@ public class Main extends JavaPlugin implements Listener {
             fileStats.loadStatsForPlayersOnline();
         }
         bossbarEnabled = getConfig().getBoolean("Bossbar-Enabled");
-        if(is1_8_R3()){
+        if(is1_8_R3()) {
             bossbarEnabled = false;
         }
 
@@ -318,24 +311,25 @@ public class Main extends JavaPlugin implements Listener {
 
     private void setupLocale() {
         saveResource("language_de.yml", true);
+        saveResource("language_pl.yml", true);
         String locale = getConfig().getString("locale");
         if(locale.equalsIgnoreCase("default") || locale.equalsIgnoreCase("english")) {
             pluginLocale = VDLocale.DEFAULT;
         } else if(locale.equalsIgnoreCase("de") || locale.equalsIgnoreCase("deutsch")) {
             pluginLocale = VDLocale.DEUTSCH;
-            if(!ConfigurationManager.getConfig("language_de").get("File-Version-Do-Not-Edit").equals(ConfigurationManager.getConfig("language_de").get("Language-Version"))){
+            if(!ConfigurationManager.getConfig("language_de").get("File-Version-Do-Not-Edit").equals(ConfigurationManager.getConfig("language_de").get("Language-Version"))) {
                 Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "[Village Defense] Locale DEUTSCH is outdated! Not every message will be in german.");
             }
-            if(!LanguageManager.getDefaultLanguageMessage("File-Version-Do-Not-Edit").equals(LanguageManager.getLanguageMessage("File-Version-Do-Not-Edit"))){
+            if(!LanguageManager.getDefaultLanguageMessage("File-Version-Do-Not-Edit").equals(LanguageManager.getLanguageMessage("File-Version-Do-Not-Edit"))) {
                 Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "[Village Defense] Locale DEUTSCH is invalid! Using DEFAULT locale instead...");
                 pluginLocale = VDLocale.DEFAULT;
             }
         } else if(locale.equalsIgnoreCase("pl") || locale.equalsIgnoreCase("polski")) {
             pluginLocale = VDLocale.POLSKI;
-            if(!ConfigurationManager.getConfig("language_pl").get("File-Version-Do-Not-Edit").equals(ConfigurationManager.getConfig("language_pl").get("Language-Version"))){
+            if(!ConfigurationManager.getConfig("language_pl").get("File-Version-Do-Not-Edit").equals(ConfigurationManager.getConfig("language_pl").get("Language-Version"))) {
                 Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "[Village Defense] Locale POLSKI is outdated! Not every message will be in polish.");
             }
-            if(!LanguageManager.getDefaultLanguageMessage("File-Version-Do-Not-Edit").equals(LanguageManager.getLanguageMessage("File-Version-Do-Not-Edit"))){
+            if(!LanguageManager.getDefaultLanguageMessage("File-Version-Do-Not-Edit").equals(LanguageManager.getLanguageMessage("File-Version-Do-Not-Edit"))) {
                 Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "[Village Defense] Locale POLSKI is invalid! Using DEFAULT locale instead...");
                 pluginLocale = VDLocale.DEFAULT;
                 return;
@@ -346,12 +340,12 @@ public class Main extends JavaPlugin implements Listener {
         }
     }
 
-    private void migrateToNewFormat(){
+    private void migrateToNewFormat() {
         BigTextUtils.gottaMigrate();
         Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "Village Defense 3 is migrating all files to the new file format...");
         Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "Don't worry! Old files will be renamed not overridden!");
-        for(String file : migratable){
-            if(ConfigurationManager.getFile(file).exists()){
+        for(String file : migratable) {
+            if(ConfigurationManager.getFile(file).exists()) {
                 ConfigurationManager.getFile(file).renameTo(new File("VD2_" + file));
                 ConfigurationManager.getConfig(file);
                 Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "Renamed file " + file + ".yml");
@@ -456,9 +450,7 @@ public class Main extends JavaPlugin implements Listener {
         }
         gameInstanceManager.getGameInstances().clear();
         if(!getConfig().contains("instances")) {
-            if(isDebugged()) {
-                System.out.print(ChatColor.RED + "[Village Debugger] There are no instances in config.yml!");
-            }
+            Bukkit.getConsoleSender().sendMessage(ChatManager.colorMessage("Validator.No-Instances-Created"));
             return;
         }
 
@@ -467,7 +459,6 @@ public class Main extends JavaPlugin implements Listener {
             String s = "instances." + ID + ".";
             if(s.contains("default"))
                 continue;
-
             if(is1_8_R3()) {
                 arenaInstance = new ArenaInstance1_8_R3(ID);
             } else if(is1_9_R1()) {
@@ -490,9 +481,7 @@ public class Main extends JavaPlugin implements Listener {
                     arenaInstance.addZombieSpawn(Util.getLocation(true, path));
                 }
             } else {
-                if(isDebugged()) {
-                    System.out.print(ChatColor.RED + "[Village Debugger] ARENA " + ID + " DOESN'T HAS ZOMBIESPAWN(S)!");
-                }
+                Bukkit.getConsoleSender().sendMessage(ChatManager.colorMessage("Validator.Invalid-Arena-Configuration").replaceAll("%arena%", ID).replaceAll("%error%", "ZOMBIE SPAWNS"));
                 gameInstanceManager.registerGameInstance(arenaInstance);
                 continue;
             }
@@ -503,113 +492,25 @@ public class Main extends JavaPlugin implements Listener {
                     arenaInstance.addVillagerSpawn(Util.getLocation(true, path));
                 }
             } else {
-                if(isDebugged()) {
-                    System.out.print(ChatColor.RED + "[Village Debugger] ARENA " + ID + " DOESN'T HAS VILLAGERSPAWN(S)!");
-                }
+                Bukkit.getConsoleSender().sendMessage(ChatManager.colorMessage("Validator.Invalid-Arena-Configuration").replaceAll("%arena%", ID).replaceAll("%error%", "VILLAGER SPAWNS"));
                 gameInstanceManager.registerGameInstance(arenaInstance);
-
                 continue;
             }
             if(getConfig().contains(s + "doors")) {
                 for(String string : getConfig().getConfigurationSection(s + "doors").getKeys(false)) {
                     String path = s + "doors." + string + ".";
-
                     arenaInstance.addDoor(Util.getLocation(true, path + "location"), (byte) getConfig().getInt(path + "byte"));
 
                 }
             } else {
-                if(isDebugged()) {
-                    System.out.print(ChatColor.RED + "[Village Debugger] ARENA " + ID + "DOESN'T HAS DOORS?");
-                }
+                Bukkit.getConsoleSender().sendMessage(ChatManager.colorMessage("Validator.Invalid-Arena-Configuration").replaceAll("%arena%", ID).replaceAll("%error%", "DOORS"));
                 gameInstanceManager.registerGameInstance(arenaInstance);
                 continue;
             }
-
             gameInstanceManager.registerGameInstance(arenaInstance);
-
-
             arenaInstance.start();
             getServer().getPluginManager().registerEvents(arenaInstance, this);
-            if(isDebugged()) {
-                System.out.print(ChatColor.RED + "[Village Debugger] INSTANCE " + ID + " STARTED!");
-            }
-        }
-
-    }
-
-    @EventHandler
-    public void onAddSpawn(PlayerAddSpawnCommandEvent event) {
-        if(event.getSpawnName().equalsIgnoreCase("zombie")) {
-            int i;
-            if(!getConfig().contains("instances." + event.getArenaID() + ".zombiespawns")) {
-                i = 0;
-            } else {
-                i = getConfig().getConfigurationSection("instances." + event.getArenaID() + ".zombiespawns").getKeys(false).size();
-            }
-            i++;
-            Util.saveLoc("instances." + event.getArenaID() + ".zombiespawns." + i, event.getPlayer().getLocation());
-            event.getPlayer().sendMessage(ChatColor.GREEN + "Zombie spawn added!");
-            return;
-        }
-        if(event.getSpawnName().equalsIgnoreCase("villager")) {
-            int i;
-            if(!getConfig().contains("instances." + event.getArenaID() + ".villagerspawns")) {
-                i = 0;
-            } else {
-                i = getConfig().getConfigurationSection("instances." + event.getArenaID() + ".villagerspawns").getKeys(false).size();
-            }
-
-            i++;
-            Util.saveLoc("instances." + event.getArenaID() + ".villagerspawns." + i, event.getPlayer().getLocation());
-            event.getPlayer().sendMessage(ChatColor.GREEN + "Villager spawn added!");
-        }
-        if(event.getSpawnName().equalsIgnoreCase("doors")) {
-            String ID = event.getArenaID();
-            int counter = 0;
-            int i;
-            if(getWorldEditPlugin().getSelection(event.getPlayer()) == null)
-                return;
-            if(!getConfig().contains("instances." + ID + ".doors")) {
-                i = 0;
-            } else {
-                i = getConfig().getConfigurationSection("instances." + ID + ".doors").getKeys(false).size();
-            }
-            i++;
-            Selection selection = getWorldEditPlugin().getSelection(event.getPlayer());
-            if(selection instanceof CuboidSelection) {
-                CuboidSelection cuboidSelection = (CuboidSelection) selection;
-                Vector min = cuboidSelection.getNativeMinimumPoint();
-                Vector max = cuboidSelection.getNativeMaximumPoint();
-                for(int x = min.getBlockX(); x <= max.getBlockX(); x = x + 1) {
-                    for(int y = min.getBlockY(); y <= max.getBlockY(); y = y + 1) {
-                        for(int z = min.getBlockZ(); z <= max.getBlockZ(); z = z + 1) {
-                            Location temporaryBlock = new Location(event.getPlayer().getWorld(), x, y, z);
-                            if(temporaryBlock.getBlock().getType() == Material.WOODEN_DOOR) {
-                                Util.saveLoc("instances." + ID + ".doors." + i + ".location", temporaryBlock);
-                                getConfig().set("instances." + ID + ".doors." + i + ".byte", temporaryBlock.getBlock().getData());
-                                counter++;
-                                i++;
-                            }
-
-                        }
-                    }
-                }
-            } else {
-                if(selection.getMaximumPoint().getBlock().getType() == Material.WOODEN_DOOR) {
-                    Util.saveLoc("instances." + ID + ".doors" + i + ".location", selection.getMaximumPoint());
-                    getConfig().set("instances." + ID + ".doors." + i + ".byte", selection.getMaximumPoint().getBlock().getData());
-                    counter++;
-                    i++;
-                }
-                if(selection.getMinimumPoint().getBlock().getType() == Material.WOODEN_DOOR) {
-                    Util.saveLoc("instances." + ID + ".doors" + i + ".location", selection.getMinimumPoint());
-                    getConfig().set("instances." + ID + ".doors." + i + ".byte", selection.getMinimumPoint().getBlock().getData());
-                    counter++;
-                    i++;
-                }
-            }
-            saveConfig();
-            event.getPlayer().sendMessage(ChatColor.GREEN + "" + Math.ceil(counter / 2) + " doors added!");
+            Bukkit.getConsoleSender().sendMessage(ChatManager.colorMessage("Validator.Instance-Started").replaceAll("%arena%", ID));
         }
     }
 

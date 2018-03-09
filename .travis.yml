@@ -1,5 +1,0 @@
-language: java
-notifications:
-  webhooks:
-    urls:
-      - https://discordapp.com/api/webhooks/420595510156722186/d1D5m4i_t0fY2rdGjdjAAJiUWukzAPYRdT56F8OKLr_hkkUIVqywZYLAZW5Nacpg2Wro

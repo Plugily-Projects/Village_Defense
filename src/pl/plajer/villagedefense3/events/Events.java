@@ -3,7 +3,6 @@ package pl.plajer.villagedefense3.events;
 import org.bukkit.ChatColor;
 import org.bukkit.Effect;
 import org.bukkit.Material;
-import org.bukkit.block.Block;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -22,7 +21,6 @@ import org.bukkit.inventory.meta.ItemMeta;
 import pl.plajer.villagedefense3.ArenaInstance;
 import pl.plajer.villagedefense3.Main;
 import pl.plajer.villagedefense3.User;
-import pl.plajer.villagedefense3.events.customevents.SetupInventoryClickEvent;
 import pl.plajer.villagedefense3.game.GameInstance;
 import pl.plajer.villagedefense3.game.GameState;
 import pl.plajer.villagedefense3.handlers.ChatManager;
@@ -141,41 +139,6 @@ public class Events implements Listener {
         for(GameInstance gameInstance : plugin.getGameInstanceManager().getGameInstances()) {
             if(gameInstance.getStartLocation().getWorld().getName().equals(event.getLocation().getWorld().getName()) && gameInstance.getStartLocation().distance(event.getLocation()) < 300)
                 event.blockList().clear();
-        }
-    }
-
-    @EventHandler
-    public void onSetupClick(SetupInventoryClickEvent event) {
-        String name = event.getItemStack().getItemMeta().getDisplayName();
-        if(name.contains("Add villager")) {
-            event.setCancelled(true);
-            event.getPlayer().performCommand("vd " + event.getGameInstance().getID() + " addspawn villager");
-            event.getPlayer().closeInventory();
-            return;
-
-        }
-        if(name.contains("Add zombie")) {
-            event.setCancelled(true);
-            event.getPlayer().performCommand("vd " + event.getGameInstance().getID() + " addspawn zombie");
-            event.getPlayer().closeInventory();
-        }
-        if(name.contains("Add doors")) {
-            event.setCancelled(true);
-            event.getPlayer().performCommand("vd " + event.getGameInstance().getID() + " addspawn doors");
-            event.getPlayer().closeInventory();
-            return;
-
-        }
-        if(name.contains("Set the chest shop")) {
-            event.setCancelled(true);
-            Block targetBlock;
-            targetBlock = event.getPlayer().getTargetBlock(null, 100);
-            if(targetBlock == null || targetBlock.getType() != Material.CHEST) {
-                event.getPlayer().sendMessage(ChatColor.RED + "Look at the chest! You are targeting something else!");
-                return;
-            }
-            Util.saveLoc("shop.location", targetBlock.getLocation());
-            event.getPlayer().sendMessage(ChatColor.GREEN + "shop for chest set!");
         }
     }
 

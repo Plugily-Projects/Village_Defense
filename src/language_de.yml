@@ -6,6 +6,11 @@
 # Modify langauge.yml if you want to use custom messages
 #
 #  Use 'locale: de' in config.yml to enable this locale
+#
+#
+#        Translation done by Tigerkatze
+# (https://www.spigotmc.org/members/tigerkatze.414545/)
+#               Thanks a lot!!
 
 
 
@@ -19,8 +24,13 @@ Commands:
   Admin-Commands:
     Player-Not-Found: "&cSpieler nicht gefunden!"
     Added-Orbs: "&7Orbs wurden dem Spieler hinzugefügt!"
+    List-Command:
+      Header: "&aVillage Defense &6arenas:"
+      Format: "&a%arena% &e%status% &6%players%/%maxplayers%"
+      No-Arenas: "&cThere are no game instances!"
   Stats-Command:
     Header: "&l-----Deine Stats-----"
+    Header-Other: "&l-----STATS FOR %player%-----"
     Footer: "&l--------------------"
     Kills: "&aZombie Kills: &e"
     Deaths: "&aTode: &e"
@@ -247,7 +257,6 @@ In-Game:
       Teleporting-To-Lobby-In-X-Seconds: "&7Du wirst zurück zur Lobby in &b%TIME% &7Sekunden teleportiert"
     Admin-Messages:
       Set-Starting-In-To-0: "&bEin Server-Teammitglied hat die Start-Zeit auf 0 gestellt. Das Spiel startet jetzt!"
-      Removed-Zombies: "&b%PLAYER% hat die Zombies bereinigt!"
       Removed-Villagers: "&b%PLAYER% hat alle Villager entfernt!"
       Removed-Golems: "&b%PLAYER% hat alle Golems bereinigt!"
       Removed-Zombies: "&b%PLAYER% hat die Zombies entfernt!"
@@ -270,6 +279,11 @@ Signs:
     - "%state%"
     - "%mapname%"
     - "&5[%playersize%/%maxplayers%]"
+
+Validator:
+  Invalid-Arena-Configuration: "[Village Defense] Arena %arena% has invaild configuration! Missing node: %error%"
+  Instance-Started: "[Village Defense] Arena %arena% instance successfully started!"
+  No-Instances-Created: "[Village Defense] There are no arena instances created in configuration!"
 
 File-Version-Do-Not-Edit: 0
 Language-Version: 0

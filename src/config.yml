@@ -28,19 +28,10 @@ Respawn-After-Wave: true
 
 #Game instances, don't modify via this configuration!
 #TODO move me
-instances:
-  default:
-    lobbylocation: world,364.0,63.0,-72.0,0.0,0.0
-    Startlocation: world,364.0,63.0,-72.0,0.0,0.0
-    Endlocation: world,364.0,63.0,-72.0,0.0,0.0
-    minimumplayers: 2
-    maximumplayers: 10
-    mapname: mapname
-    world: worldname
+instances: {}
 
 #TODO move me
-signs:
-  - world,364.0,63.0,-72.0,0.0,0.0
+signs: {}
 
 #You can create custom players permissions here.
 #Player with your custom permission will get % bonus orbs

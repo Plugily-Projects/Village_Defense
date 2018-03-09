@@ -30,12 +30,8 @@ public class Util {
 
     public static void addLore(ItemStack itemStack, String string) {
         ItemMeta meta = itemStack.getItemMeta();
-        List<String> lore;
-        if(meta != null && meta.hasLore()) {
-            lore = meta.getLore();
-        } else {
-            lore = new ArrayList<>();
-        }
+        List<String> lore = new ArrayList<>();
+        if(meta != null && meta.hasLore()) lore.addAll(meta.getLore());
         lore.add(string);
         meta.setLore(lore);
         itemStack.setItemMeta(meta);

@@ -125,7 +125,7 @@ public class WizardKit extends PremiumKit implements Listener {
                 }
                 for(Entity en : p.getNearbyEntities(2, 2, 2)) {
                     if(en instanceof Zombie) {
-                        ((Zombie) en).damage(9.0);
+                        ((Zombie) en).damage(9.0, p);
                     }
                 }
                 Bukkit.getScheduler().runTaskLater(plugin, () -> wizardsOnDuty.remove(p), 20 * 15);
@@ -161,7 +161,7 @@ public class WizardKit extends PremiumKit implements Listener {
                             if(!(en instanceof LivingEntity && en instanceof Zombie)) continue;
                             if(en.getLocation().distance(loc) < 1.0) {
                                 if(!en.equals(p)) {
-                                    ((LivingEntity) en).damage(6.0);
+                                    ((LivingEntity) en).damage(6.0, p);
                                 }
                             }
                         }

@@ -8,6 +8,7 @@ import pl.plajer.villagedefense3.handlers.ChatManager;
 import pl.plajer.villagedefense3.handlers.ConfigurationManager;
 import pl.plajer.villagedefense3.handlers.UserManager;
 import pl.plajer.villagedefense3.kits.kitapi.basekits.LevelKit;
+import pl.plajer.villagedefense3.utils.ArmorHelper;
 import pl.plajer.villagedefense3.utils.Util;
 import pl.plajer.villagedefense3.utils.WeaponHelper;
 
@@ -17,7 +18,6 @@ import java.util.List;
  * Created by Tom on 19/08/2014.
  */
 public class MediumTankKit extends LevelKit {
-
 
     public MediumTankKit(Main plugin) {
         setName(ChatManager.colorMessage("Kits.Medium-Tank.Kit-Name"));
@@ -36,6 +36,7 @@ public class MediumTankKit extends LevelKit {
     public void giveKitItems(Player player) {
         player.getInventory().addItem(WeaponHelper.getUnBreakingSword(WeaponHelper.ResourceType.WOOD, 10));
         player.getInventory().addItem(new ItemStack(Material.GRILLED_PORK, 8));
+        ArmorHelper.setArmor(player, ArmorHelper.ArmorType.IRON);
         player.setMaxHealth(32.0);
         player.setHealth(32.0);
 

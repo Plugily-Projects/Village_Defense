@@ -1,6 +1,6 @@
 name: VillageDefense
 main: pl.plajer.villagedefense3.Main
-version: 3.0.0b build 25
+version: 3.0.0b build 26
 softdepend: [WorldEdit]
 
 commands:
@@ -23,6 +23,7 @@ permissions:
       villagedefense.admin.setprice: true
       villagedefense.admin.create: true
       villagedefense.admin.delete: true
+      villagedefense.admin.list: true
       villagedefense.admin.spychat: true
       villagedefense.admin.stopgame: true
       villagedefense.admin.forcestart: true

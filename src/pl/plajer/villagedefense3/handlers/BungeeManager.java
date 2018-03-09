@@ -22,16 +22,11 @@ import java.util.HashMap;
 public class BungeeManager implements Listener {
 
     private Main plugin;
-    private HashMap<GameState, String> motds = new HashMap<>();
 
     public BungeeManager(Main plugin) {
         this.plugin = plugin;
         plugin.getServer().getMessenger().registerOutgoingPluginChannel(plugin, "BungeeCord");
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
-        FileConfiguration motdsConfig = ConfigurationManager.getConfig("bungee");
-        for(String motd : motdsConfig.getConfigurationSection("motds").getKeys(false)) {
-            motds.put(GameState.valueOf(motd), motdsConfig.getString("motds." + motd));
-        }
     }
 
     public void connectToHub(Player player) {
@@ -44,9 +39,9 @@ public class BungeeManager implements Listener {
     private String getMotD() {
         GameInstance gameInstance = plugin.getGameInstanceManager().getGameInstances().get(0);
         if(gameInstance.getGameState() == GameState.STARTING && (gameInstance.getTimer() <= 3)) {
-            return motds.get(GameState.IN_GAME);
+            return GameState.IN_GAME.toString();
         } else {
-            return motds.get(gameInstance.getGameState());
+            return gameInstance.getGameState().toString();
         }
     }
 

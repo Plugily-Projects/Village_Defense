@@ -24,6 +24,10 @@ public class ChatManager {
         ChatManager.gameInstance = gameInstance;
     }
 
+    public static String colorRawMessage(String message){
+        return ChatColor.translateAlternateColorCodes('&', message);
+    }
+
     public static String colorMessage(String message) {
         try {
             return ChatColor.translateAlternateColorCodes('&', LanguageManager.getLanguageMessage(message));

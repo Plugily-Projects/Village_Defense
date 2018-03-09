@@ -6,6 +6,7 @@ import org.bukkit.inventory.ItemStack;
 import pl.plajer.villagedefense3.Main;
 import pl.plajer.villagedefense3.handlers.ChatManager;
 import pl.plajer.villagedefense3.kits.kitapi.basekits.FreeKit;
+import pl.plajer.villagedefense3.utils.ArmorHelper;
 import pl.plajer.villagedefense3.utils.Util;
 import pl.plajer.villagedefense3.utils.WeaponHelper;
 
@@ -32,6 +33,7 @@ public class LightTankKit extends FreeKit {
     public void giveKitItems(Player player) {
         player.getInventory().addItem(WeaponHelper.getUnBreakingSword(WeaponHelper.ResourceType.WOOD, 10));
         player.getInventory().addItem(new ItemStack(Material.GRILLED_PORK, 8));
+        ArmorHelper.setArmor(player, ArmorHelper.ArmorType.IRON);
         player.setMaxHealth(26.0);
         player.setHealth(26.0);
     }

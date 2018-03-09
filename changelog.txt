@@ -178,7 +178,7 @@ Commit 21
 + Added missing plugin prefixes to some commands
 + Bring back BoneCP again lel (is that a feature?)
 
-TODO override bungee join arena permission
+ODO override bungee join arena permission
 IXME shotbow and super archer have same represented items
 
 Commit 22
@@ -223,3 +223,20 @@ Commit 25
 + Small fix for language file regeneration without restart only reload
 + Fianlly fixed zombies targeting specators
 + ShotBow kit ability arrows will have user as shooter (zombies after hit still targeted villagers instead of user)
++ Finished pl-PL locale
++ Some little translations for admin commands
+
+Commit 26
++ Validator added, debug is now not needed for invaild arena creation output
++ Updated /vd stats - now you can target online player ex. /vd stats Plajer
++ Updated arena editor GUI
++ Wizard staff and essence zombie kills will now count to /vd stats
++ Removed useless arena editor classes
++ Saving polish locale by default now
++ 1.8 bossbar fix
++ Fixed doors place with world guard override
++ Fixed /vda setprice command not setting price
++ Now inserting price at 1 line of lore for items that already contains lores (to prevent game errors)
++ Added /vda list command
++ Buffed golem friend kit - spawns new golem every 5 waves
++ Buffed Medium and Light tanks with iron equipment on start
