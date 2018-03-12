@@ -29,8 +29,7 @@ import java.util.*;
 public class BlockerKit extends PremiumKit implements Listener {
 
     private Main plugin;
-    private List<ZombieBarrier> zombiebarriers = new ArrayList<>();
-
+    private List<ZombieBarrier> zombieBarriers = new ArrayList<>();
 
     public BlockerKit(final Main plugin) {
         this.plugin = plugin;
@@ -38,7 +37,7 @@ public class BlockerKit extends PremiumKit implements Listener {
         List<String> description = Util.splitString(ChatManager.colorMessage("Kits.Blocker.Kit-Description"), 40);
         this.setDescription(description.toArray(new String[description.size()]));
         plugin.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, () -> {
-            Iterator<ZombieBarrier> iterator = zombiebarriers.iterator();
+            Iterator<ZombieBarrier> iterator = zombieBarriers.iterator();
             List<ZombieBarrier> removeAfter = new ArrayList<>();
             while(iterator.hasNext()) {
 
@@ -54,7 +53,7 @@ public class BlockerKit extends PremiumKit implements Listener {
                     removeAfter.add(zombieBarrier);
                 }
             }
-            zombiebarriers.removeAll(removeAfter);
+            zombieBarriers.removeAll(removeAfter);
         }, 20L, 20L);
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
         plugin.getKitRegistry().registerKit(this);
@@ -103,7 +102,7 @@ public class BlockerKit extends PremiumKit implements Listener {
         Player player = event.getPlayer();
         if(player.getItemInHand() == null)
             return;
-        if(plugin.getGameInstanceManager().getGameInstance(player) == null)
+        if(plugin.getArenaRegistry().getArena(player) == null)
             return;
         if(!player.getItemInHand().hasItemMeta())
             return;
@@ -131,7 +130,7 @@ public class BlockerKit extends PremiumKit implements Listener {
         ZombieBarrier zombieBarrier = new ZombieBarrier();
         zombieBarrier.setUuid(user.getUuid());
         zombieBarrier.setLocation(block.getLocation());
-        zombiebarriers.add(zombieBarrier);
+        zombieBarriers.add(zombieBarrier);
         zombieBarrier.getLocation().getWorld().playEffect(zombieBarrier.getLocation(), Effect.FIREWORKS_SPARK, 20);
         block.setType(Material.FENCE);
     }

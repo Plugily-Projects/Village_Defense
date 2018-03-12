@@ -9,8 +9,7 @@ import pl.plajer.villagedefense3.utils.Util;
  */
 public abstract class PremiumKit extends Kit {
 
-    protected PremiumKit() {
-    }
+    protected PremiumKit() {}
 
     @Override
     public ItemStack getItemStack() {

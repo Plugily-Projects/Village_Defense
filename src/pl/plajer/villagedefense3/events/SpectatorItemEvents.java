@@ -14,8 +14,8 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
+import pl.plajer.villagedefense3.arena.Arena;
 import pl.plajer.villagedefense3.Main;
-import pl.plajer.villagedefense3.game.GameInstance;
 import pl.plajer.villagedefense3.handlers.ChatManager;
 import pl.plajer.villagedefense3.handlers.UserManager;
 import pl.plajer.villagedefense3.utils.Util;
@@ -34,7 +34,7 @@ public class SpectatorItemEvents implements Listener {
     @EventHandler
     public void onSpectatorItemClick(PlayerInteractEvent e) {
         if(e.getAction() == Action.RIGHT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_BLOCK) {
-            if(plugin.getGameInstanceManager().getGameInstance(e.getPlayer()) == null)
+            if(plugin.getArenaRegistry().getArena(e.getPlayer()) == null)
                 return;
             if(!(e.getPlayer().getItemInHand() == null)) {
                 if(e.getPlayer().getItemInHand().hasItemMeta()) {
@@ -51,9 +51,9 @@ public class SpectatorItemEvents implements Listener {
     }
 
     public void openSpectatorMenu(World world, Player p) {
-        Inventory inventory = plugin.getServer().createInventory(null, Util.serializeInt(plugin.getGameInstanceManager().getGameInstance(p).getPlayers().size()), ChatManager.colorMessage("In-Game.Spectator.Spectator-Menu-Name"));
+        Inventory inventory = plugin.getServer().createInventory(null, Util.serializeInt(plugin.getArenaRegistry().getArena(p).getPlayers().size()), ChatManager.colorMessage("In-Game.Spectator.Spectator-Menu-Name"));
         for(Player player : world.getPlayers()) {
-            if(plugin.getGameInstanceManager().getGameInstance(player) != null && !UserManager.getUser(player.getUniqueId()).isFakeDead()) {
+            if(plugin.getArenaRegistry().getArena(player) != null && !UserManager.getUser(player.getUniqueId()).isFakeDead()) {
                 ItemStack skull = new ItemStack(Material.SKULL_ITEM, 1);
 
                 SkullMeta meta = (SkullMeta) skull.getItemMeta();
@@ -71,9 +71,9 @@ public class SpectatorItemEvents implements Listener {
     @EventHandler
     public void onSpectatorInventoryClick(InventoryClickEvent e) {
         Player p = (Player) e.getWhoClicked();
-        if(plugin.getGameInstanceManager().getGameInstance(p) == null)
+        if(plugin.getArenaRegistry().getArena(p) == null)
             return;
-        GameInstance gameInstance = plugin.getGameInstanceManager().getGameInstance(p);
+        Arena arena = plugin.getArenaRegistry().getArena(p);
         if(e.getCurrentItem() == null)
             return;
         if(!e.getCurrentItem().hasItemMeta())
@@ -87,9 +87,9 @@ public class SpectatorItemEvents implements Listener {
                 e.setCancelled(true);
                 if((e.isLeftClick() || e.isRightClick())) {
                     ItemMeta meta = e.getCurrentItem().getItemMeta();
-                    for(Player player : gameInstance.getPlayers()) {
+                    for(Player player : arena.getPlayers()) {
                         if(player.getName().equalsIgnoreCase(meta.getDisplayName()) || ChatColor.stripColor(meta.getDisplayName()).contains(player.getName())) {
-                            p.sendMessage(ChatManager.formatMessage(ChatManager.colorMessage("Kits.Teleporter.Teleported-To-Player"), player));
+                            p.sendMessage(ChatManager.formatMessage(arena, ChatManager.colorMessage("Kits.Teleporter.Teleported-To-Player"), player));
                             p.teleport(player);
                             p.closeInventory();
                             e.setCancelled(true);

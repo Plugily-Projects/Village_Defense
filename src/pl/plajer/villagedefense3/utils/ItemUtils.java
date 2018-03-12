@@ -3,6 +3,7 @@ package pl.plajer.villagedefense3.utils;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.PotionMeta;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.Potion;
 import org.bukkit.potion.PotionData;
 import org.bukkit.potion.PotionType;
@@ -13,10 +14,10 @@ import pl.plajer.villagedefense3.Main;
  */
 public class ItemUtils {
 
-    public static Main villageDefense;
+    private static Main plugin = JavaPlugin.getPlugin(Main.class);
 
     public static ItemStack getPotion(PotionType type, int tier, boolean splash, int amount) {
-        if(villageDefense.is1_8_R3()) {
+        if(plugin.is1_8_R3()) {
             Potion potion = new Potion(type);
             potion.setLevel(tier);
             potion.setSplash(splash);

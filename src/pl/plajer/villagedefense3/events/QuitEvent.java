@@ -27,16 +27,16 @@ public class QuitEvent implements Listener {
 
     @EventHandler
     public void onQuit(PlayerQuitEvent event) {
-        if(plugin.getGameInstanceManager().getGameInstance(event.getPlayer()) == null)
+        if(plugin.getArenaRegistry().getArena(event.getPlayer()) == null)
             return;
         if(!plugin.isBungeeActivated())
-            plugin.getGameInstanceManager().getGameInstance(event.getPlayer()).leaveAttempt(event.getPlayer());
+            plugin.getArenaRegistry().getArena(event.getPlayer()).leaveAttempt(event.getPlayer());
     }
 
     @EventHandler
     public void onQuitSaveStats(PlayerQuitEvent event) {
-        if(plugin.getGameInstanceManager().getGameInstance(event.getPlayer()) != null) {
-            plugin.getGameInstanceManager().getGameInstance(event.getPlayer()).leaveAttempt(event.getPlayer());
+        if(plugin.getArenaRegistry().getArena(event.getPlayer()) != null) {
+            plugin.getArenaRegistry().getArena(event.getPlayer()).leaveAttempt(event.getPlayer());
         }
         final User user = UserManager.getUser(event.getPlayer().getUniqueId());
         final Player player = event.getPlayer();

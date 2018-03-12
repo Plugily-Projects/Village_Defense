@@ -1,10 +1,11 @@
-package pl.plajer.villagedefense3.versions;
+package pl.plajer.villagedefense3.arena;
 
-import net.minecraft.server.v1_11_R1.GenericAttributes;
+
+import net.minecraft.server.v1_9_R1.GenericAttributes;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.craftbukkit.v1_11_R1.CraftWorld;
+import org.bukkit.craftbukkit.v1_9_R1.CraftWorld;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Villager;
 import org.bukkit.entity.Wolf;
@@ -13,22 +14,28 @@ import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
-import pl.plajer.villagedefense3.ArenaInstance;
-import pl.plajer.villagedefense3.creatures.v1_11_R1.*;
+import pl.plajer.villagedefense3.Main;
+import pl.plajer.villagedefense3.creatures.v1_9_R1.*;
 import pl.plajer.villagedefense3.handlers.ChatManager;
 import pl.plajer.villagedefense3.utils.PercentageUtils;
 
 import java.util.Random;
 
-public class ArenaInstance1_11_R1 extends ArenaInstance {
+/**
+ * Created by Tom on 13/03/2016.
+ */
+public class ArenaInitializer1_9_R1 extends Arena {
 
-    public ArenaInstance1_11_R1(String ID) {
-        super(ID);
+    private Main plugin;
+
+    public ArenaInitializer1_9_R1(String ID, Main plugin) {
+        super(ID, plugin);
+        this.plugin = plugin;
     }
 
     public void spawnFastZombie(Random random) {
-        Location location = zombieSpawns.get(random.nextInt(zombieSpawns.size()));
-        net.minecraft.server.v1_11_R1.World McWorld = ((CraftWorld) location.getWorld()).getHandle();
+        Location location = zombieSpawns.get(random.nextInt(zombieSpawns.size() - 1));
+        net.minecraft.server.v1_9_R1.World McWorld = ((CraftWorld) location.getWorld()).getHandle();
         FastZombie fastZombie = new FastZombie(location.getWorld());
         fastZombie.setPosition(location.getX(), location.getY(), location.getZ());
         McWorld.addEntity(fastZombie, CreatureSpawnEvent.SpawnReason.CUSTOM);
@@ -45,8 +52,8 @@ public class ArenaInstance1_11_R1 extends ArenaInstance {
 
     @Override
     public void spawnHalfInvisibleZombie(Random random) {
-        Location location = zombieSpawns.get(random.nextInt(zombieSpawns.size()));
-        net.minecraft.server.v1_11_R1.World McWorld = ((CraftWorld) location.getWorld()).getHandle();
+        Location location = zombieSpawns.get(random.nextInt(zombieSpawns.size() - 1));
+        net.minecraft.server.v1_9_R1.World McWorld = ((CraftWorld) location.getWorld()).getHandle();
         FastZombie fastZombie = new FastZombie(location.getWorld());
         fastZombie.setPosition(location.getX(), location.getY(), location.getZ());
         McWorld.addEntity(fastZombie, CreatureSpawnEvent.SpawnReason.CUSTOM);
@@ -65,8 +72,8 @@ public class ArenaInstance1_11_R1 extends ArenaInstance {
 
     @Override
     public void spawnKnockbackResistantZombies(Random random) {
-        Location location = zombieSpawns.get(random.nextInt(zombieSpawns.size()));
-        net.minecraft.server.v1_11_R1.World McWorld = ((CraftWorld) location.getWorld()).getHandle();
+        Location location = zombieSpawns.get(random.nextInt(zombieSpawns.size() - 1));
+        net.minecraft.server.v1_9_R1.World McWorld = ((CraftWorld) location.getWorld()).getHandle();
         TankerZombie fastZombie = new TankerZombie(location.getWorld());
         fastZombie.getAttributeInstance(GenericAttributes.c).setValue(Double.MAX_VALUE);
         fastZombie.setPosition(location.getX(), location.getY(), location.getZ());
@@ -88,8 +95,8 @@ public class ArenaInstance1_11_R1 extends ArenaInstance {
     }
 
     public void spawnBabyZombie(Random random) {
-        Location location = zombieSpawns.get(random.nextInt(zombieSpawns.size()));
-        net.minecraft.server.v1_11_R1.World McWorld = ((CraftWorld) location.getWorld()).getHandle();
+        Location location = zombieSpawns.get(random.nextInt(zombieSpawns.size() - 1));
+        net.minecraft.server.v1_9_R1.World McWorld = ((CraftWorld) location.getWorld()).getHandle();
         BabyZombie fastZombie = new BabyZombie(location.getWorld());
         fastZombie.setPosition(location.getX(), location.getY(), location.getZ());
         Zombie zombie = (Zombie) fastZombie.getBukkitEntity();
@@ -107,8 +114,8 @@ public class ArenaInstance1_11_R1 extends ArenaInstance {
     }
 
     public void spawnHardZombie(Random random) {
-        Location location = zombieSpawns.get(random.nextInt(zombieSpawns.size()));
-        net.minecraft.server.v1_11_R1.World McWorld = ((CraftWorld) location.getWorld()).getHandle();
+        Location location = zombieSpawns.get(random.nextInt(zombieSpawns.size() - 1));
+        net.minecraft.server.v1_9_R1.World McWorld = ((CraftWorld) location.getWorld()).getHandle();
         HardZombie fastZombie = new HardZombie(location.getWorld());
         fastZombie.setPosition(location.getX(), location.getY(), location.getZ());
         McWorld.addEntity(fastZombie, CreatureSpawnEvent.SpawnReason.CUSTOM);
@@ -128,8 +135,8 @@ public class ArenaInstance1_11_R1 extends ArenaInstance {
 
     @Override
     public void spawnSoftHardZombie(Random random) {
-        Location location = zombieSpawns.get(random.nextInt(zombieSpawns.size()));
-        net.minecraft.server.v1_11_R1.World McWorld = ((CraftWorld) location.getWorld()).getHandle();
+        Location location = zombieSpawns.get(random.nextInt(zombieSpawns.size() - 1));
+        net.minecraft.server.v1_9_R1.World McWorld = ((CraftWorld) location.getWorld()).getHandle();
         HardZombie fastZombie = new HardZombie(location.getWorld());
         fastZombie.setPosition(location.getX(), location.getY(), location.getZ());
         McWorld.addEntity(fastZombie, CreatureSpawnEvent.SpawnReason.CUSTOM);
@@ -148,8 +155,8 @@ public class ArenaInstance1_11_R1 extends ArenaInstance {
     }
 
     public void spawnGolemBuster(Random random) {
-        Location location = zombieSpawns.get(random.nextInt(zombieSpawns.size()));
-        net.minecraft.server.v1_11_R1.World McWorld = ((CraftWorld) location.getWorld()).getHandle();
+        Location location = zombieSpawns.get(random.nextInt(zombieSpawns.size() - 1));
+        net.minecraft.server.v1_9_R1.World McWorld = ((CraftWorld) location.getWorld()).getHandle();
         GolemBuster fastZombie = new GolemBuster(location.getWorld());
         fastZombie.setPosition(location.getX(), location.getY(), location.getZ());
         McWorld.addEntity(fastZombie, CreatureSpawnEvent.SpawnReason.CUSTOM);
@@ -168,8 +175,8 @@ public class ArenaInstance1_11_R1 extends ArenaInstance {
     }
 
     public void spawnPlayerBuster(Random random) {
-        Location location = zombieSpawns.get(random.nextInt(zombieSpawns.size()));
-        net.minecraft.server.v1_11_R1.World McWorld = ((CraftWorld) location.getWorld()).getHandle();
+        Location location = zombieSpawns.get(random.nextInt(zombieSpawns.size() - 1));
+        net.minecraft.server.v1_9_R1.World McWorld = ((CraftWorld) location.getWorld()).getHandle();
         PlayerBuster fastZombie = new PlayerBuster(location.getWorld());
         fastZombie.setPosition(location.getX(), location.getY(), location.getZ());
         McWorld.addEntity(fastZombie, CreatureSpawnEvent.SpawnReason.CUSTOM);
@@ -190,7 +197,7 @@ public class ArenaInstance1_11_R1 extends ArenaInstance {
     }
 
     public void spawnVillager(Location location) {
-        net.minecraft.server.v1_11_R1.World McWorld = ((CraftWorld) location.getWorld()).getHandle();
+        net.minecraft.server.v1_9_R1.World McWorld = ((CraftWorld) location.getWorld()).getHandle();
         RidableVillager ridableVillager = new RidableVillager(location.getWorld());
         ridableVillager.setPosition(location.getX(), location.getY(), location.getZ());
         McWorld.addEntity(ridableVillager, CreatureSpawnEvent.SpawnReason.CUSTOM);
@@ -200,7 +207,7 @@ public class ArenaInstance1_11_R1 extends ArenaInstance {
     }
 
     public void spawnGolem(Location location, Player player) {
-        net.minecraft.server.v1_11_R1.World McWorld = ((CraftWorld) location.getWorld()).getHandle();
+        net.minecraft.server.v1_9_R1.World McWorld = ((CraftWorld) location.getWorld()).getHandle();
         IronGolem ironGolem = new IronGolem(location.getWorld());
         ironGolem.setPosition(location.getX(), location.getY(), location.getZ());
         ironGolem.setCustomName(ChatManager.colorMessage("In-Game.Spawned-Golem-Name").replaceAll("%player%", player.getName()));
@@ -212,16 +219,15 @@ public class ArenaInstance1_11_R1 extends ArenaInstance {
     }
 
     public void spawnWolf(Location location, Player player) {
-        net.minecraft.server.v1_11_R1.World McWorld = ((CraftWorld) location.getWorld()).getHandle();
+        net.minecraft.server.v1_9_R1.World McWorld = ((CraftWorld) location.getWorld()).getHandle();
         WorkingWolf wolf = new WorkingWolf(location.getWorld());
         wolf.setPosition(location.getX(), location.getY(), location.getZ());
         McWorld.addEntity(wolf, CreatureSpawnEvent.SpawnReason.CUSTOM);
         wolf.setCustomName(ChatManager.colorMessage("In-Game.Spawned-Wolf-Name").replaceAll("%player%", player.getName()));
         wolf.setCustomNameVisible(true);
         wolf.setInvisible(false);
-        ((Wolf) wolf.getBukkitEntity()).setOwner(player);
+
 
         this.addWolf((Wolf) wolf.getBukkitEntity());
     }
 }
-

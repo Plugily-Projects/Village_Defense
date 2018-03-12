@@ -2,29 +2,29 @@ package pl.plajer.villagedefense3.villagedefenseapi;
 
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
-import pl.plajer.villagedefense3.game.GameInstance;
+import pl.plajer.villagedefense3.arena.Arena;
 
 /**
  * @author Plajer
  * @since 3.0.0-ALPHA build 14
  * <p>
- * Called when game instance has started.
+ * Called when arena has started.
  */
 public class VillageGameStartEvent extends Event {
 
     private static final HandlerList HANDLERS = new HandlerList();
-    private final GameInstance gameInstance;
+    private final Arena arena;
 
-    public VillageGameStartEvent(GameInstance gameInstance) {
-        this.gameInstance = gameInstance;
+    public VillageGameStartEvent(Arena arena) {
+        this.arena = arena;
     }
 
     public static HandlerList getHandlerList() {
         return HANDLERS;
     }
 
-    public GameInstance getGameInstance() {
-        return gameInstance;
+    public Arena getArena() {
+        return arena;
     }
 
     public HandlerList getHandlers() {

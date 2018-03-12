@@ -32,9 +32,9 @@ public class TornadoKit extends PremiumKit implements Listener {
     private double max_radius = 4;
     private int lines = 3;
     private double height_increasement = 0.5;
-    private double radius_increasement = max_radius / max_height;
+    private double radius_increment = max_radius / max_height;
     private Main plugin;
-    private List<Tornado> tornados = new ArrayList<>();
+    private List<Tornado> tornadoes = new ArrayList<>();
 
 
     public TornadoKit(Main plugin) {
@@ -44,14 +44,14 @@ public class TornadoKit extends PremiumKit implements Listener {
         this.setDescription(description.toArray(new String[description.size()]));
         plugin.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, () -> {
             ArrayList<Tornado> removeAfter = new ArrayList<>();
-            for(Tornado tornado : tornados) {
+            for(Tornado tornado : tornadoes) {
                 if(tornado.getTimes() > 75) {
                     removeAfter.add(tornado);
                 }
                 tornado.update();
 
             }
-            tornados.removeAll(removeAfter);
+            tornadoes.removeAll(removeAfter);
         }, 1L, 1L);
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
         plugin.getKitRegistry().registerKit(this);
@@ -95,7 +95,7 @@ public class TornadoKit extends PremiumKit implements Listener {
         Player player = event.getPlayer();
         if(player.getItemInHand() == null)
             return;
-        if(plugin.getGameInstanceManager().getGameInstance(player) == null)
+        if(plugin.getArenaRegistry().getArena(player) == null)
             return;
         if(!player.getItemInHand().hasItemMeta())
             return;
@@ -110,7 +110,7 @@ public class TornadoKit extends PremiumKit implements Listener {
             player.getItemInHand().setAmount(player.getItemInHand().getAmount() - 1);
         }
         event.setCancelled(true);
-        tornados.add(new Tornado(player.getLocation()));
+        tornadoes.add(new Tornado(player.getLocation()));
 
     }
 
@@ -156,7 +156,7 @@ public class TornadoKit extends PremiumKit implements Listener {
             times++;
             for(int l = 0; l < lines; l++) {
                 for(double y = 0; y < max_height; y += height_increasement) {
-                    double radius = y * radius_increasement;
+                    double radius = y * radius_increment;
                     double x = Math.cos(Math.toRadians(360 / lines * l + y * 25 - angle)) * radius;
                     double z = Math.sin(Math.toRadians(360 / lines * l + y * 25 - angle)) * radius;
                     getLocation().getWorld().spigot().playEffect(getLocation().clone().add(x, y, z), Effect.CLOUD, 0, 0, 0, 0, 0, 0, 1, 255);

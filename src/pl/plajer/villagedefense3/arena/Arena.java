@@ -1,4 +1,4 @@
-package pl.plajer.villagedefense3;
+package pl.plajer.villagedefense3.arena;
 
 import org.bukkit.*;
 import org.bukkit.block.Block;
@@ -18,8 +18,8 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Score;
-import pl.plajer.villagedefense3.game.GameInstance;
-import pl.plajer.villagedefense3.game.GameState;
+import pl.plajer.villagedefense3.Main;
+import pl.plajer.villagedefense3.User;
 import pl.plajer.villagedefense3.handlers.*;
 import pl.plajer.villagedefense3.items.SpecialItemManager;
 import pl.plajer.villagedefense3.kits.GolemFriendKit;
@@ -32,64 +32,72 @@ import java.util.*;
 /**
  * Created by Tom on 12/08/2014.
  */
-public abstract class ArenaInstance extends GameInstance implements Listener {
+public abstract class Arena extends BukkitRunnable implements Listener {
 
-    public static Main plugin;
-    protected List<Location> zombieSpawns = new ArrayList<>();
-    protected int zombiesToSpawn;
-    private LinkedHashMap<Location, Byte> doorBlocks = new LinkedHashMap<>();
-    private List<Location> villagerSpawnPoints = new ArrayList<>();
-    private List<Zombie> zombies = new ArrayList<>();
-    private List<Wolf> wolfs = new ArrayList<>();
-    private List<Villager> villagers = new ArrayList<>();
-    private List<IronGolem> ironGolems = new ArrayList<>();
+    final List<Location> zombieSpawns = new ArrayList<>();
+    private final Main plugin;
+    private final LinkedHashMap<Location, Byte> doorBlocks = new LinkedHashMap<>();
+    private final List<Location> villagerSpawnPoints = new ArrayList<>();
+    private final List<Zombie> zombies = new ArrayList<>();
+    private final List<Wolf> wolfs = new ArrayList<>();
+    private final List<Villager> villagers = new ArrayList<>();
+    private final List<IronGolem> ironGolems = new ArrayList<>();
+    private final Random random;
+    private final List<Zombie> glitchedZombies = new ArrayList<>();
+    private final HashMap<Zombie, Location> zombieCheckerLocations = new HashMap<>();
+    private final HashSet<UUID> players;
+    int zombiesToSpawn;
     private boolean isFighting;
     private int wave;
     private int barToggle = 0;
     private int rottenFleshAmount;
     private int rottenFleshLevel;
     private int zombieChecker = 0;
-    private Random random;
-    private List<Zombie> glitchedZombies = new ArrayList<>();
     private int spawnCounter = 0;
     private BossBar gameBar;
-    private HashMap<Zombie, Location> zombieCheckerLocations = new HashMap<>();
+    private ArenaState arenaState;
+    private int minimumPlayers = 2;
+    private int maximumPlayers = 10;
+    private String mapName = "";
+    private int timer;
+    private String ID;
+    private Location lobbyLoc = null;
+    private Location startLoc = null;
+    private Location endLoc = null;
 
-    public ArenaInstance(String ID) {
-        super(ID);
+    public Arena(String ID, Main plugin) {
+        this.plugin = plugin;
+        arenaState = ArenaState.WAITING_FOR_PLAYERS;
+        this.ID = ID;
+        players = new HashSet<>();
         random = new Random();
         if(plugin.isBossbarEnabled()) {
             gameBar = Bukkit.createBossBar(ChatManager.colorMessage("Bossbar.Main-Title"), BarColor.BLUE, BarStyle.SOLID);
         }
     }
 
+    /**
+     * Location of game doors
+     *
+     * @return all game doors
+     */
     public HashMap<Location, Byte> getDoorLocations() {
         return doorBlocks;
     }
 
-    @Override
-    public boolean needsPlayers() {
-        //Tom do you think is it a good code? :thinking:
-        if(getGameState() == GameState.STARTING || getGameState() == GameState.WAITING_FOR_PLAYERS)
-            return true;
-        else
-            return true;
-    }
-
-    @Override
     public void run() {
         User.handleCooldowns();
         updateScoreboard();
-        switch(getGameState()) {
+        switch(getArenaState()) {
             case WAITING_FOR_PLAYERS:
                 if(plugin.isBungeeActivated())
                     plugin.getServer().setWhitelist(false);
-                if(getPlayers().size() < getMIN_PLAYERS()) {
+                if(getPlayers().size() < getMinimumPlayers()) {
                     if(getTimer() <= 0) {
                         setTimer(15);
-                        String message = ChatManager.formatMessage(ChatManager.colorMessage("In-Game.Messages.Lobby-Messages.Waiting-For-Players"), getMIN_PLAYERS());
+                        String message = ChatManager.formatMessage(this, ChatManager.colorMessage("In-Game.Messages.Lobby-Messages.Waiting-For-Players"), getMinimumPlayers());
                         for(Player player1 : getPlayers()) {
-                            player1.sendMessage(ChatManager.PLUGINPREFIX + message);
+                            player1.sendMessage(ChatManager.PLUGIN_PREFIX + message);
                         }
                         return;
                     }
@@ -98,9 +106,9 @@ public abstract class ArenaInstance extends GameInstance implements Listener {
                         gameBar.setTitle(ChatManager.colorMessage("Bossbar.Waiting-For-Players"));
                     }
                     for(Player p : getPlayers()) {
-                        p.sendMessage(ChatManager.PLUGINPREFIX + ChatManager.colorMessage("In-Game.Messages.Lobby-Messages.Enough-Players-To-Start"));
+                        p.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Messages.Lobby-Messages.Enough-Players-To-Start"));
                     }
-                    setGameState(GameState.STARTING);
+                    setArenaState(ArenaState.STARTING);
                     setTimer(Main.STARTING_TIMER_TIME);
                     this.showPlayers();
                 }
@@ -114,7 +122,7 @@ public abstract class ArenaInstance extends GameInstance implements Listener {
                 if(getTimer() == 0) {
                     VillageGameStartEvent villageGameStartEvent = new VillageGameStartEvent(this);
                     Bukkit.getPluginManager().callEvent(villageGameStartEvent);
-                    setGameState(GameState.IN_GAME);
+                    setArenaState(ArenaState.IN_GAME);
                     if(plugin.isBossbarEnabled()) {
                         gameBar.setProgress(1.0);
                     }
@@ -134,7 +142,7 @@ public abstract class ArenaInstance extends GameInstance implements Listener {
                         addStat(player, "gamesplayed");
                         addStat(player, 10);
                         setTimer(25);
-                        player.sendMessage(ChatManager.PLUGINPREFIX + ChatManager.colorMessage("In-Game.Messages.Lobby-Messages.Game-Started"));
+                        player.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Messages.Lobby-Messages.Game-Started"));
                     }
                     isFighting = false;
                 }
@@ -154,7 +162,7 @@ public abstract class ArenaInstance extends GameInstance implements Listener {
                     }
                 }
                 if(plugin.isBungeeActivated()) {
-                    if(getMAX_PLAYERS() <= getPlayers().size()) {
+                    if(getMaximumPlayers() <= getPlayers().size()) {
                         plugin.getServer().setWhitelist(true);
                     } else {
                         plugin.getServer().setWhitelist(false);
@@ -205,7 +213,7 @@ public abstract class ArenaInstance extends GameInstance implements Listener {
                 if(getVillagers().size() <= 0 || getPlayersLeft().size() <= 0) {
                     clearZombies();
                     this.stopGame(false);
-                    this.setGameState(GameState.ENDING);
+                    this.setArenaState(ArenaState.ENDING);
                     if(getVillagers().size() <= 0) {
                         showPlayers();
                         this.setTimer(10);
@@ -226,7 +234,7 @@ public abstract class ArenaInstance extends GameInstance implements Listener {
                                 clearZombies();
                                 zombiesToSpawn = 0;
                                 for(Player p : getPlayers()) {
-                                    p.sendMessage(ChatManager.PLUGINPREFIX + ChatManager.colorMessage("In-Game.Messages.Zombie-Got-Stuck-In-The-Map"));
+                                    p.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Messages.Zombie-Got-Stuck-In-The-Map"));
                                 }
                             } else {
                                 getZombies().clear();
@@ -282,7 +290,7 @@ public abstract class ArenaInstance extends GameInstance implements Listener {
                         player.setFireTicks(0);
                         player.setFoodLevel(20);
                         for(Player players : plugin.getServer().getOnlinePlayers()) {
-                            if(plugin.getGameInstanceManager().getGameInstance(players) != null)
+                            if(plugin.getArenaRegistry().getArena(players) != null)
                                 players.showPlayer(player);
                             player.showPlayer(players);
                         }
@@ -297,10 +305,10 @@ public abstract class ArenaInstance extends GameInstance implements Listener {
                     }
 
                     for(Player p : getPlayers()) {
-                        p.sendMessage(ChatManager.PLUGINPREFIX + ChatManager.colorMessage("Commands.Teleported-To-The-Lobby"));
+                        p.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("Commands.Teleported-To-The-Lobby"));
                     }
 
-                    setGameState(GameState.RESTARTING);
+                    setArenaState(ArenaState.RESTARTING);
 
 
                     for(User user : UserManager.getUsers(this)) {
@@ -323,7 +331,7 @@ public abstract class ArenaInstance extends GameInstance implements Listener {
 
                 getPlayers().clear();
 
-                setGameState(GameState.WAITING_FOR_PLAYERS);
+                setArenaState(ArenaState.WAITING_FOR_PLAYERS);
 
                 wave = 1;
                 if(plugin.isBungeeActivated()) {
@@ -342,33 +350,39 @@ public abstract class ArenaInstance extends GameInstance implements Listener {
 
         if(Math.pow(50 * user.getInt("level"), 1.5) < user.getInt("xp")) {
             user.addInt("level", 1);
-            player.sendMessage(ChatManager.PLUGINPREFIX + ChatManager.formatMessage(ChatManager.colorMessage("In-Game.You-Leveled-Up"), user.getInt("level")));
+            player.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.formatMessage(this, ChatManager.colorMessage("In-Game.You-Leveled-Up"), user.getInt("level")));
         }
     }
 
-    public void setZombieAmount() {
+    private void setZombieAmount() {
         zombiesToSpawn = (int) Math.ceil((getPlayers().size() * 0.5) * (wave * wave) / 2);
     }
 
-    public void resetRottenFlesh() {
+    private void resetRottenFlesh() {
         this.rottenFleshAmount = 0;
         this.rottenFleshLevel = 0;
     }
 
+    /**
+     * Stops current arena. Calls VillageGameStopEvent event
+     *
+     * @param quickStop should arena be stopped immediately? (use only in important cases)
+     * @see VillageGameStopEvent
+     */
     public void stopGame(boolean quickStop) {
         VillageGameStopEvent villageGameStopEvent = new VillageGameStopEvent(this);
         Bukkit.getPluginManager().callEvent(villageGameStopEvent);
         if(getPlayersLeft().size() > 0) {
             for(Player p : getPlayers()) {
-                p.sendMessage(ChatManager.PLUGINPREFIX + ChatManager.colorMessage("In-Game.Messages.Game-End-Messages.All-Villagers-Died"));
-                p.sendMessage(ChatManager.PLUGINPREFIX + ChatManager.colorMessage("In-Game.Messages.Game-End-Messages.Reached-Wave-X").replaceAll("%NUMBER%", String.valueOf(getWave())));
-                p.sendMessage(ChatManager.PLUGINPREFIX + ChatManager.colorMessage("In-Game.Messages.Game-End-Messages.Teleporting-To-Lobby-In-10-Seconds"));
+                p.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Messages.Game-End-Messages.All-Villagers-Died"));
+                p.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Messages.Game-End-Messages.Reached-Wave-X").replaceAll("%NUMBER%", String.valueOf(getWave())));
+                p.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Messages.Game-End-Messages.Teleporting-To-Lobby-In-10-Seconds"));
             }
         } else {
             for(Player p : getPlayers()) {
-                p.sendMessage(ChatManager.PLUGINPREFIX + ChatManager.colorMessage("In-Game.Messages.Game-End-Messages.All-Players-Died"));
-                p.sendMessage(ChatManager.PLUGINPREFIX + ChatManager.colorMessage("In-Game.Messages.Game-End-Messages.Reached-Wave-X").replaceAll("%NUMBER%", String.valueOf(getWave())));
-                p.sendMessage(ChatManager.PLUGINPREFIX + ChatManager.colorMessage("In-Game.Messages.Game-End-Messages.Teleporting-To-Lobby-In-10-Seconds"));
+                p.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Messages.Game-End-Messages.All-Players-Died"));
+                p.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Messages.Game-End-Messages.Reached-Wave-X").replaceAll("%NUMBER%", String.valueOf(getWave())));
+                p.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Messages.Game-End-Messages.Teleporting-To-Lobby-In-10-Seconds"));
             }
         }
         for(final Player player : getPlayers()) {
@@ -381,7 +395,6 @@ public abstract class ArenaInstance extends GameInstance implements Listener {
                     new BukkitRunnable() {
                         int i = 0;
 
-                        @Override
                         public void run() {
                             if(i == 4) this.cancel();
                             if(!getPlayers().contains(player)) this.cancel();
@@ -423,7 +436,7 @@ public abstract class ArenaInstance extends GameInstance implements Listener {
         }
     }
 
-    public void restoreMap() {
+    private void restoreMap() {
         this.restoreDoors();
         for(Zombie zombie : getZombies()) {
             zombie.remove();
@@ -446,7 +459,7 @@ public abstract class ArenaInstance extends GameInstance implements Listener {
 
     }
 
-    public void spawnVillagers() {
+    private void spawnVillagers() {
         if(getVillagers().size() > 10) {
         } else if(getVillagerSpawns() == null || getVillagerSpawns().size() <= 0) {
             if(Main.isDebugged()) {
@@ -466,15 +479,322 @@ public abstract class ArenaInstance extends GameInstance implements Listener {
         }
     }
 
+    /**
+     * Get arena identifier used to get arenas by string
+     *
+     * @return arena name
+     * @see ArenaRegistry#getArena(String)
+     */
+    public String getID() {
+        return ID;
+    }
+
+    /**
+     * Set arena identifier
+     *
+     * @param ID name of arena
+     */
+    public void setID(String ID) {
+        this.ID = ID;
+    }
+
+    /**
+     * Get minimum players needed
+     *
+     * @return minimum players needed to start arena
+     */
+    public int getMinimumPlayers() {
+        return minimumPlayers;
+    }
+
+    /**
+     * Set minimum players needed
+     *
+     * @param minimumPlayers players needed to start arena
+     */
+    public void setMinimumPlayers(int minimumPlayers) {
+        this.minimumPlayers = minimumPlayers;
+    }
+
+    /**
+     * Get arena map name
+     *
+     * @return arena map name, [b]it's not arena ID[/b]
+     * @see #getID()
+     */
+    public String getMapName() {
+        return mapName;
+    }
+
+    /**
+     * Set arena map name
+     *
+     * @param mapname new map name, [b] it's not arena ID[/b]
+     * @see #setID(String)
+     */
+    public void setMapName(String mapname) {
+        this.mapName = mapname;
+    }
+
+
+    private void addPlayer(Player player) {
+        players.add(player.getUniqueId());
+    }
+
+
+    private void removePlayer(Player player) {
+        if(player == null)
+            return;
+        if(player.getUniqueId() == null)
+            return;
+        if(players.contains(player.getUniqueId()))
+            players.remove(player.getUniqueId());
+    }
+
+
+    private void clearPlayers() {
+        players.clear();
+    }
+
+    /**
+     * Get timer of arena
+     *
+     * @return timer of lobby time / time to next wave
+     */
+    public int getTimer() {
+        return timer;
+    }
+
+    /**
+     * Modify game timer
+     *
+     * @param timer timer of lobby / time to next wave
+     */
+    public void setTimer(int timer) {
+        this.timer = timer;
+    }
+
+
+    /**
+     * Return maximum players arena can handle
+     *
+     * @return maximum players arena can handle
+     */
+    public int getMaximumPlayers() {
+        return maximumPlayers;
+    }
+
+    /**
+     * Set maximum players arena can handle
+     *
+     * @param maximumPlayers how many players arena can handle
+     */
+    public void setMaximumPlayers(int maximumPlayers) {
+        this.maximumPlayers = maximumPlayers;
+    }
+
+    /**
+     * Return game state of arena
+     *
+     * @return game state of arena
+     * @see ArenaState
+     */
+    public ArenaState getArenaState() {
+        return arenaState;
+    }
+
+    /**
+     * Set game state of arena
+     *
+     * @param arenaState new game state of arena
+     * @see ArenaState
+     */
+    public void setArenaState(ArenaState arenaState) {
+        this.arenaState = arenaState;
+    }
+
+
+    private void showPlayers() {
+        for(Player player : getPlayers()) {
+            for(Player p : getPlayers()) {
+                player.showPlayer(p);
+                p.showPlayer(player);
+            }
+        }
+    }
+
+    /**
+     * Get all players in arena
+     *
+     * @return set of players in arena
+     */
+    public HashSet<Player> getPlayers() {
+        HashSet<Player> list = new HashSet<>();
+        for(UUID uuid : players) {
+            list.add(Bukkit.getPlayer(uuid));
+        }
+        return list;
+    }
+
+
+    private List<Player> getPlayersLeft() {
+        List<Player> players = new ArrayList<>();
+        for(User user : UserManager.getUsers(this)) {
+            if(!user.isFakeDead())
+                players.add(user.toPlayer());
+        }
+        return players;
+    }
+
+
+    private void hidePlayer(Player p) {
+        for(Player player : getPlayers()) {
+            player.hidePlayer(p);
+        }
+    }
+
+
+    public void showPlayer(Player p) {
+        for(Player player : getPlayers()) {
+            player.showPlayer(p);
+        }
+    }
+
+    public void teleportToLobby(Player player) {
+        Location location = getLobbyLocation();
+        player.setMaxHealth(20.0);
+        player.setFoodLevel(20);
+        player.setFlying(false);
+        player.setAllowFlight(false);
+        for(PotionEffect effect : player.getActivePotionEffects()) {
+            player.removePotionEffect(effect.getType());
+        }
+        if(location == null) {
+            System.out.print("LobbyLocation isn't intialized for arena " + getID());
+        }
+        player.teleport(location);
+    }
+
+    /**
+     * Get lobby location of arena
+     *
+     * @return lobby location of arena
+     */
+    public Location getLobbyLocation() {
+        return lobbyLoc;
+    }
+
+    /**
+     * Set lobby location of arena
+     *
+     * @param loc new lobby location of arena
+     */
+    public void setLobbyLocation(Location loc) {
+        this.lobbyLoc = loc;
+    }
+
+    /**
+     * Get start location of arena
+     *
+     * @return start location of arena
+     */
+    public Location getStartLocation() {
+        return startLoc;
+    }
+
+    /**
+     * Set start location of arena
+     *
+     * @param location new start location of arena
+     */
+    public void setStartLocation(Location location) {
+        startLoc = location;
+    }
+
+
+    public void teleportToStartLocation(Player player) {
+        if(startLoc != null)
+            player.teleport(startLoc);
+        else
+            System.out.print("Startlocation for arena " + getID() + " isn't intialized!");
+    }
+
+
+    private void teleportAllToStartLocation() {
+        for(Player player : getPlayers()) {
+            if(startLoc != null)
+                player.teleport(startLoc);
+            else
+                System.out.print("Startlocation for arena " + getID() + " isn't intialized!");
+        }
+    }
+
+
+    public void teleportAllToEndLocation() {
+        if(plugin.isBungeeActivated()) {
+            for(Player player : getPlayers()) {
+                plugin.getBungeeManager().connectToHub(player);
+            }
+            return;
+        }
+        Location location = getEndLocation();
+
+        if(location == null) {
+            location = getLobbyLocation();
+            System.out.print("EndLocation for arena " + getID() + " isn't intialized!");
+        }
+        for(Player player : getPlayers()) {
+            player.teleport(location);
+        }
+    }
+
+
+    public void teleportToEndLocation(Player player) {
+        if(plugin.isBungeeActivated()) {
+            plugin.getBungeeManager().connectToHub(player);
+            return;
+        }
+        Location location = getEndLocation();
+        if(location == null) {
+            location = getLobbyLocation();
+            System.out.print("EndLocation for arena " + getID() + " isn't intialized!");
+        }
+
+        player.teleport(location);
+    }
+
+    /**
+     * Get end location of arena
+     *
+     * @return end location of arena
+     */
+    public Location getEndLocation() {
+        return endLoc;
+    }
+
+    /**
+     * Set end location of arena
+     *
+     * @param endLoc new end location of arena
+     */
+    public void setEndLocation(Location endLoc) {
+        this.endLoc = endLoc;
+    }
 
     public void start() {
         this.runTaskTimer(plugin, 20L, 20L);
-        this.setGameState(GameState.RESTARTING);
+        this.setArenaState(ArenaState.RESTARTING);
         for(Location location : villagerSpawnPoints) {
             plugin.getChunkManager().keepLoaded(location.getChunk());
         }
     }
 
+    /**
+     * Get list of already spawned zombies
+     * [b]This will only return alive zombies not total zombies in current wave[/b]
+     *
+     * @return list of spawned zombies in arena
+     */
     public List<Zombie> getZombies() {
         return zombies;
     }
@@ -484,7 +804,7 @@ public abstract class ArenaInstance extends GameInstance implements Listener {
             zombies.remove(zombie);
     }
 
-    public List<Location> getVillagerSpawns() {
+    private List<Location> getVillagerSpawns() {
         return villagerSpawnPoints;
     }
 
@@ -517,11 +837,11 @@ public abstract class ArenaInstance extends GameInstance implements Listener {
         zombies.clear();
     }
 
-    public void addZombie(Zombie zombie) {
+    void addZombie(Zombie zombie) {
         zombies.add(zombie);
     }
 
-    public void startWave() {
+    private void startWave() {
         VillageWaveStartEvent villageWaveStartEvent = new VillageWaveStartEvent(this, wave);
         Bukkit.getPluginManager().callEvent(villageWaveStartEvent);
         setZombieAmount();
@@ -530,13 +850,18 @@ public abstract class ArenaInstance extends GameInstance implements Listener {
         for(User user : UserManager.getUsers(this)) {
             user.getKit().reStock(user.toPlayer());
         }
-        String message = ChatManager.formatMessage(ChatManager.colorMessage("In-Game.Messages.Wave-Started"), wave);
+        String message = ChatManager.formatMessage(this, ChatManager.colorMessage("In-Game.Messages.Wave-Started"), wave);
         for(Player player1 : getPlayers()) {
-            player1.sendMessage(ChatManager.PLUGINPREFIX + message);
+            player1.sendMessage(ChatManager.PLUGIN_PREFIX + message);
         }
     }
 
-
+    /**
+     * End wave in game.
+     * Calls VillageWaveEndEvent event
+     *
+     * @see VillageWaveEndEvent
+     */
     public void endWave() {
         plugin.getRewardsHandler().performEndWaveRewards(this, wave);
         setTimer(25);
@@ -544,12 +869,12 @@ public abstract class ArenaInstance extends GameInstance implements Listener {
         wave = wave + 1;
         VillageWaveEndEvent villageWaveEndEvent = new VillageWaveEndEvent(this, wave);
         Bukkit.getPluginManager().callEvent(villageWaveEndEvent);
-        String message = ChatManager.formatMessage(ChatManager.colorMessage("In-Game.Messages.Next-Wave-In"), getTimer());
+        String message = ChatManager.formatMessage(this, ChatManager.colorMessage("In-Game.Messages.Next-Wave-In"), getTimer());
         for(Player player1 : getPlayers()) {
-            player1.sendMessage(ChatManager.PLUGINPREFIX + message);
+            player1.sendMessage(ChatManager.PLUGIN_PREFIX + message);
         }
         for(Player player : getPlayers()) {
-            player.sendMessage(ChatManager.PLUGINPREFIX + ChatManager.colorMessage("In-Game.Messages.You-Feel-Refreshed"));
+            player.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Messages.You-Feel-Refreshed"));
             player.setHealth(player.getMaxHealth());
             UserManager.getUser(player.getUniqueId()).addInt("orbs", wave * 10);
         }
@@ -560,24 +885,31 @@ public abstract class ArenaInstance extends GameInstance implements Listener {
         }
     }
 
-    @Override
+    /**
+     * Attempts player to join arena.
+     * Calls VillageGameJoinAttemptEvent.
+     * Can be cancelled only via above-mentioned event
+     *
+     * @param p player to join
+     * @see VillageGameJoinAttemptEvent
+     */
     public void joinAttempt(Player p) {
         VillageGameJoinAttemptEvent villageGameJoinAttemptEvent = new VillageGameJoinAttemptEvent(p, this);
         Bukkit.getPluginManager().callEvent(villageGameJoinAttemptEvent);
         if(villageGameJoinAttemptEvent.isCancelled()) {
-            p.sendMessage(ChatManager.PLUGINPREFIX + ChatManager.colorMessage("In-Game.Join-Cancelled-Via-API"));
+            p.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Join-Cancelled-Via-API"));
             return;
         }
         if(!plugin.isBungeeActivated()) {
             if(!p.hasPermission(PermissionsManager.getJoinPerm().replaceAll("<arena>", "*")) || !p.hasPermission(PermissionsManager.getJoinPerm().replaceAll("<arena>", this.getID()))) {
-                p.sendMessage(ChatManager.PLUGINPREFIX + ChatManager.colorMessage("In-Game.Join-No-Permission"));
+                p.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Join-No-Permission"));
                 return;
             }
         }
         if(Main.isDebugged()) {
             System.out.println("[Village Debugger] Player " + p.getName() + " attemping to join arena!");
         }
-        if((getGameState() == GameState.IN_GAME || (getGameState() == GameState.STARTING && getTimer() <= 3) || getGameState() == GameState.ENDING)) {
+        if((getArenaState() == ArenaState.IN_GAME || (getArenaState() == ArenaState.STARTING && getTimer() <= 3) || getArenaState() == ArenaState.ENDING)) {
             if(plugin.isInventoryManagerEnabled()) {
                 p.setLevel(0);
                 plugin.getInventoryManager().saveInventoryToFile(p);
@@ -638,11 +970,11 @@ public abstract class ArenaInstance extends GameInstance implements Listener {
             gameBar.addPlayer(p);
         }
         if(!UserManager.getUser(p.getUniqueId()).isSpectator())
-            getChatManager().broadcastJoinMessage(p);
+            ChatManager.broadcastJoinMessage(this, p);
         User user = UserManager.getUser(p.getUniqueId());
         user.setKit(plugin.getKitRegistry().getDefaultKit());
         plugin.getKitManager().giveKitMenuItem(p);
-        if(getGameState() == GameState.STARTING || getGameState() == GameState.WAITING_FOR_PLAYERS)
+        if(getArenaState() == ArenaState.STARTING || getArenaState() == ArenaState.WAITING_FOR_PLAYERS)
             p.getInventory().setItem(SpecialItemManager.getSpecialItem("Leave").getSlot(), SpecialItemManager.getSpecialItem("Leave").getItemStack());
         p.updateInventory();
         for(Player player : getPlayers()) {
@@ -652,7 +984,7 @@ public abstract class ArenaInstance extends GameInstance implements Listener {
     }
 
 
-    public int getZombiesLeft() {
+    private int getZombiesLeft() {
         return zombiesToSpawn + getZombies().size();
 
     }
@@ -685,7 +1017,7 @@ public abstract class ArenaInstance extends GameInstance implements Listener {
         }
     }
 
-    public void spawnZombies() {
+    private void spawnZombies() {
         Random random = new Random();
         if(getZombies() == null || getZombies().size() <= 0) {
             for(int i = 0; i <= wave; i++) {
@@ -766,18 +1098,25 @@ public abstract class ArenaInstance extends GameInstance implements Listener {
             for(int i = 0; i < (wave - 4); i++) {
                 if(zombiesToSpawn > 0)
                     spawnGolemBuster(random);
-
             }
-
         }
-
-
     }
 
+    /**
+     * Get current game wave
+     *
+     * @return current game wave
+     */
     public int getWave() {
         return wave;
     }
 
+    /**
+     * Should be used with endWave.
+     *
+     * @param i new game wave
+     * @see #endWave()
+     */
     public void setWave(int i) {
         wave = i;
     }
@@ -804,11 +1143,11 @@ public abstract class ArenaInstance extends GameInstance implements Listener {
 
     public abstract void spawnKnockbackResistantZombies(Random random);
 
-    public void addWolf(Wolf wolf) {
+    void addWolf(Wolf wolf) {
         wolfs.add(wolf);
     }
 
-    public List<Wolf> getWolfs() {
+    private List<Wolf> getWolfs() {
         return wolfs;
     }
 
@@ -816,24 +1155,25 @@ public abstract class ArenaInstance extends GameInstance implements Listener {
         return ironGolems;
     }
 
+    /**
+     * Get alive villagers
+     *
+     * @return alive villagers in game
+     */
     public List<Villager> getVillagers() {
         return villagers;
     }
 
-    public void addVillager(Villager villager) {
+    void addVillager(Villager villager) {
         villagers.add(villager);
 
     }
 
-    public void removeVillager(Villager villager) {
+    private void removeVillager(Villager villager) {
         if(villagers.contains(villager)) {
-
             villager.remove();
-
             villager.setHealth(0);
-
             villagers.remove(villager);
-
         }
     }
 
@@ -845,7 +1185,7 @@ public abstract class ArenaInstance extends GameInstance implements Listener {
         villagers.clear();
     }
 
-    public void addIronGolem(IronGolem ironGolem) {
+    void addIronGolem(IronGolem ironGolem) {
         ironGolems.add(ironGolem);
     }
 
@@ -853,18 +1193,16 @@ public abstract class ArenaInstance extends GameInstance implements Listener {
         this.doorBlocks.put(location, data);
     }
 
-    public void restoreDoors() {
+    private void restoreDoors() {
         for(Location location : doorBlocks.keySet()) {
-
             Block block = location.getBlock();
             Byte doorData = doorBlocks.get(location);
             int id = Material.WOODEN_DOOR.getId();
             block.setTypeIdAndData(id, doorData, false);
-
         }
     }
 
-    public void updateScoreboard() {
+    private void updateScoreboard() {
         if(getPlayers().size() == 0)
             return;
         for(Player p : getPlayers()) {
@@ -876,51 +1214,51 @@ public abstract class ArenaInstance extends GameInstance implements Listener {
                 user.getScoreboard().registerNewObjective("ingame2", "dummy");
 
             }
-            switch(getGameState()) {
+            switch(getArenaState()) {
                 case WAITING_FOR_PLAYERS:
                 case STARTING:
                     Objective startingobj = user.getScoreboard().getObjective("starting");
                     startingobj.setDisplayName(ChatManager.colorMessage("Scoreboard.Header"));
                     startingobj.setDisplaySlot(DisplaySlot.SIDEBAR);
-                    if(getGameState() == GameState.STARTING) {
-                        Score timerscore = startingobj.getScore(ChatManager.formatMessage(ChatManager.colorMessage("Scoreboard.Starting-In")));
+                    if(getArenaState() == ArenaState.STARTING) {
+                        Score timerscore = startingobj.getScore(ChatManager.formatMessage(this, ChatManager.colorMessage("Scoreboard.Starting-In")));
                         timerscore.setScore(getTimer());
                     }
-                    Score playerscore = startingobj.getScore(ChatManager.formatMessage(ChatManager.colorMessage("Scoreboard.Players")));
+                    Score playerscore = startingobj.getScore(ChatManager.formatMessage(this, ChatManager.colorMessage("Scoreboard.Players")));
                     playerscore.setScore(getPlayers().size());
-                    Score minplayerscore = startingobj.getScore(ChatManager.formatMessage(ChatManager.colorMessage("Scoreboard.Minimum-Players")));
-                    minplayerscore.setScore(getMIN_PLAYERS());
+                    Score minplayerscore = startingobj.getScore(ChatManager.formatMessage(this, ChatManager.colorMessage("Scoreboard.Minimum-Players")));
+                    minplayerscore.setScore(getMinimumPlayers());
                     break;
                 case IN_GAME:
                     if(isFighting) {
                         Objective ingameobj = user.getScoreboard().getObjective("ingame");
                         ingameobj.setDisplayName(ChatManager.colorMessage("Scoreboard.Header"));
                         ingameobj.setDisplaySlot(DisplaySlot.SIDEBAR);
-                        Score playerleftscore = ingameobj.getScore(ChatManager.formatMessage(ChatManager.colorMessage("Scoreboard.Players-Left")));
+                        Score playerleftscore = ingameobj.getScore(ChatManager.formatMessage(this, ChatManager.colorMessage("Scoreboard.Players-Left")));
                         playerleftscore.setScore(this.getPlayersLeft().size());
 
-                        Score villagersscore = ingameobj.getScore(ChatManager.formatMessage(ChatManager.colorMessage("Scoreboard.Villagers-Left")));
+                        Score villagersscore = ingameobj.getScore(ChatManager.formatMessage(this, ChatManager.colorMessage("Scoreboard.Villagers-Left")));
                         villagersscore.setScore(getVillagers().size());
-                        Score orbsscore = ingameobj.getScore(ChatManager.formatMessage(ChatManager.colorMessage("Scoreboard.Orbs")));
+                        Score orbsscore = ingameobj.getScore(ChatManager.formatMessage(this, ChatManager.colorMessage("Scoreboard.Orbs")));
                         orbsscore.setScore(user.getInt("orbs"));
-                        Score zombiesscore = ingameobj.getScore(ChatManager.formatMessage(ChatManager.colorMessage("Scoreboard.Zombies-Left")));
+                        Score zombiesscore = ingameobj.getScore(ChatManager.formatMessage(this, ChatManager.colorMessage("Scoreboard.Zombies-Left")));
                         zombiesscore.setScore(getZombiesLeft());
-                        Score rottenfleshscore = ingameobj.getScore(ChatManager.formatMessage(ChatManager.colorMessage("Scoreboard.Rotten-Flesh")));
+                        Score rottenfleshscore = ingameobj.getScore(ChatManager.formatMessage(this, ChatManager.colorMessage("Scoreboard.Rotten-Flesh")));
                         rottenfleshscore.setScore(getRottenFlesh());
                     } else {
                         Objective ingame2obj = user.getScoreboard().getObjective("ingame2");
                         ingame2obj.setDisplayName(ChatManager.colorMessage("Scoreboard.Header"));
                         ingame2obj.setDisplaySlot(DisplaySlot.SIDEBAR);
-                        Score playerleftscore = ingame2obj.getScore(ChatManager.formatMessage(ChatManager.colorMessage("Scoreboard.Players-Left")));
+                        Score playerleftscore = ingame2obj.getScore(ChatManager.formatMessage(this, ChatManager.colorMessage("Scoreboard.Players-Left")));
                         playerleftscore.setScore(this.getPlayersLeft().size());
 
-                        Score villagersscore = ingame2obj.getScore(ChatManager.formatMessage(ChatManager.colorMessage("Scoreboard.Villagers-Left")));
+                        Score villagersscore = ingame2obj.getScore(ChatManager.formatMessage(this, ChatManager.colorMessage("Scoreboard.Villagers-Left")));
                         villagersscore.setScore(getVillagers().size());
-                        Score orbsscore = ingame2obj.getScore(ChatManager.formatMessage(ChatManager.colorMessage("Scoreboard.Orbs")));
+                        Score orbsscore = ingame2obj.getScore(ChatManager.formatMessage(this, ChatManager.colorMessage("Scoreboard.Orbs")));
                         orbsscore.setScore(user.getInt("orbs"));
-                        Score nextwavescore = ingame2obj.getScore(ChatManager.formatMessage(ChatManager.colorMessage("Scoreboard.Next-Wave-In")));
+                        Score nextwavescore = ingame2obj.getScore(ChatManager.formatMessage(this, ChatManager.colorMessage("Scoreboard.Next-Wave-In")));
                         nextwavescore.setScore(getTimer());
-                        Score rottenfleshscore = ingame2obj.getScore(ChatManager.formatMessage(ChatManager.colorMessage("Scoreboard.Rotten-Flesh")));
+                        Score rottenfleshscore = ingame2obj.getScore(ChatManager.formatMessage(this, ChatManager.colorMessage("Scoreboard.Rotten-Flesh")));
                         rottenfleshscore.setScore(getRottenFlesh());
                     }
                     break;
@@ -930,12 +1268,10 @@ public abstract class ArenaInstance extends GameInstance implements Listener {
                 case RESTARTING:
                     break;
                 default:
-                    setGameState(GameState.WAITING_FOR_PLAYERS);
+                    setArenaState(ArenaState.WAITING_FOR_PLAYERS);
             }
             user.setScoreboard(user.getScoreboard());
         }
-
-
     }
 
     @EventHandler
@@ -944,7 +1280,7 @@ public abstract class ArenaInstance extends GameInstance implements Listener {
             if(getZombies().contains(event.getEntity()))
                 removeZombie((Zombie) event.getEntity());
             if(event.getEntity().getKiller() != null) {
-                if(GameInstance.plugin.getGameInstanceManager().getGameInstance(event.getEntity().getKiller()) != null) {
+                if(plugin.getArenaRegistry().getArena(event.getEntity().getKiller()) != null) {
                     addStat(event.getEntity().getKiller(), "kills");
                     addStat(event.getEntity().getKiller(), 2);
                 }
@@ -955,11 +1291,10 @@ public abstract class ArenaInstance extends GameInstance implements Listener {
                 getStartLocation().getWorld().strikeLightningEffect(event.getEntity().getLocation());
                 removeVillager((Villager) event.getEntity());
                 for(Player p : getPlayers()) {
-                    p.sendMessage(ChatManager.PLUGINPREFIX + ChatManager.colorMessage("In-Game.Messages.Villager-Died"));
+                    p.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Messages.Villager-Died"));
                 }
             }
         }
-
     }
 
     @EventHandler
@@ -974,13 +1309,12 @@ public abstract class ArenaInstance extends GameInstance implements Listener {
         this.onDeath(event.getEntity());
     }
 
-
-    public void onDeath(final Player player) {
-        if(getGameState() == GameState.STARTING) {
+    private void onDeath(final Player player) {
+        if(getArenaState() == ArenaState.STARTING) {
             player.teleport(this.getStartLocation());
             return;
         }
-        if(getGameState() == GameState.ENDING || getGameState() == GameState.RESTARTING) {
+        if(getArenaState() == ArenaState.ENDING || getArenaState() == ArenaState.RESTARTING) {
             player.getInventory().clear();
             player.setFlying(false);
             player.setAllowFlight(false);
@@ -1005,13 +1339,13 @@ public abstract class ArenaInstance extends GameInstance implements Listener {
             hidePlayer(player);
             player.setAllowFlight(true);
             player.getInventory().clear();
-            MessageHandler.sendTitle(player, ChatColor.stripColor(ChatManager.formatMessage("In-Game.Death-Screen")), 0, 5 * 20, 0, ChatColor.RED);
+            MessageHandler.sendTitle(player, ChatColor.stripColor(ChatManager.formatMessage(this, "In-Game.Death-Screen")), 0, 5 * 20, 0, ChatColor.RED);
             Bukkit.getScheduler().runTaskTimer(plugin, () -> {
                 if(user.isSpectator()) {
-                    MessageHandler.sendActionBar(player, ChatManager.formatMessage(ChatManager.colorMessage("In-Game.Died-Respawn-In-Next-Wave")));
+                    MessageHandler.sendActionBar(player, ChatManager.formatMessage(this, ChatManager.colorMessage("In-Game.Died-Respawn-In-Next-Wave")));
                 }
             }, 20, 20);
-            getChatManager().broadcastDeathMessage(player);
+            ChatManager.broadcastDeathMessage(this, player);
 
             teleportToStartLocation(player);
 
@@ -1024,7 +1358,6 @@ public abstract class ArenaInstance extends GameInstance implements Listener {
             spectatorItem.setItemMeta(spectatorMeta);
             player.getInventory().addItem(spectatorItem);
         }
-
         //tryin to untarget dead player bcuz they will still target him
         for(Zombie zombie : getZombies()) {
             if(zombie.getTarget() != null) {
@@ -1039,7 +1372,7 @@ public abstract class ArenaInstance extends GameInstance implements Listener {
 
     }
 
-    public void hidePlayersOutsideTheGame(Player player) {
+    private void hidePlayersOutsideTheGame(Player player) {
         for(Player players : plugin.getServer().getOnlinePlayers()) {
             if(getPlayers().contains(players))
                 continue;
@@ -1048,7 +1381,13 @@ public abstract class ArenaInstance extends GameInstance implements Listener {
         }
     }
 
-    @Override
+    /**
+     * Attempts player to leave arena.
+     * Calls VillageGameLeaveAttemptEvent event.
+     *
+     * @param p player to join
+     * @see VillageGameLeaveAttemptEvent
+     */
     public void leaveAttempt(Player p) {
         VillageGameLeaveAttemptEvent villageGameLeaveAttemptEvent = new VillageGameLeaveAttemptEvent(p, this);
         Bukkit.getPluginManager().callEvent(villageGameLeaveAttemptEvent);
@@ -1062,7 +1401,7 @@ public abstract class ArenaInstance extends GameInstance implements Listener {
 
         this.removePlayer(p);
         if(!user.isSpectator()) {
-            getChatManager().broadcastLeaveMessage(p);
+            ChatManager.broadcastLeaveMessage(this, p);
         }
         user.setFakeDead(false);
         user.setSpectator(false);
@@ -1086,27 +1425,24 @@ public abstract class ArenaInstance extends GameInstance implements Listener {
         }
         p.setFireTicks(0);
         if(getPlayers().size() == 0) {
-            this.setGameState(GameState.RESTARTING);
+            this.setArenaState(ArenaState.RESTARTING);
         }
 
 
         p.setGameMode(GameMode.SURVIVAL);
         for(Player players : plugin.getServer().getOnlinePlayers()) {
-            if(GameInstance.plugin.getGameInstanceManager().getGameInstance(players) != null)
+            if(plugin.getArenaRegistry().getArena(players) != null)
                 players.showPlayer(p);
             p.showPlayer(players);
         }
-
         this.teleportToEndLocation(p);
         if(!plugin.isBungeeActivated() && plugin.isInventoryManagerEnabled()) {
             plugin.getInventoryManager().loadInventory(p);
 
         }
-
-
     }
 
-    public void onRespawn(Player player) {
+    private void onRespawn(Player player) {
         User user = UserManager.getUser(player.getUniqueId());
         if(user.isFakeDead()) {
             teleportToStartLocation(player);
@@ -1121,16 +1457,14 @@ public abstract class ArenaInstance extends GameInstance implements Listener {
             player.setAllowFlight(true);
             player.setFlying(true);
             user.setInt("orbs", 0);
-
         }
-
     }
 
     public void addRottenFlesh(int i) {
         rottenFleshAmount = rottenFleshAmount + i;
     }
 
-    public int getRottenFlesh() {
+    private int getRottenFlesh() {
         return rottenFleshAmount;
     }
 
@@ -1146,7 +1480,6 @@ public abstract class ArenaInstance extends GameInstance implements Listener {
         return false;
     }
 
-
     @EventHandler
     public void onRespawn(PlayerRespawnEvent event) {
         if(getPlayers().contains(event.getPlayer())) {
@@ -1155,7 +1488,7 @@ public abstract class ArenaInstance extends GameInstance implements Listener {
         }
     }
 
-    public void bringDeathPlayersBack() {
+    private void bringDeathPlayersBack() {
         for(Player player : getPlayers()) {
             if(!getPlayersLeft().contains(player)) {
 
@@ -1175,6 +1508,5 @@ public abstract class ArenaInstance extends GameInstance implements Listener {
 
         }
     }
-
 
 }

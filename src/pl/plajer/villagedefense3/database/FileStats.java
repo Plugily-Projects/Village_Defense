@@ -51,7 +51,7 @@ public class FileStats {
     public void loadStatsForPlayersOnline() {
         for(final Player player : plugin.getServer().getOnlinePlayers()) {
             if(plugin.isBungeeActivated())
-                plugin.getGameInstanceManager().getGameInstances().get(0).teleportToLobby(player);
+                plugin.getArenaRegistry().getArenas().get(0).teleportToLobby(player);
             if(!plugin.isDatabaseActivated()) {
                 List<String> temp = new ArrayList<>();
                 temp.add("gamesplayed");

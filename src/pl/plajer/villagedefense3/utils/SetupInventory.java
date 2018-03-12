@@ -3,16 +3,12 @@ package pl.plajer.villagedefense3.utils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.plugin.java.JavaPlugin;
+import pl.plajer.villagedefense3.arena.Arena;
 import pl.plajer.villagedefense3.Main;
-import pl.plajer.villagedefense3.game.GameInstance;
-
-import java.util.List;
 
 /**
  * Created by Tom on 15/06/2015.
@@ -20,11 +16,10 @@ import java.util.List;
 public class SetupInventory {
 
     private Inventory inventory;
-    private Main plugin;
+    private Main plugin = JavaPlugin.getPlugin(Main.class);
 
-    public SetupInventory(GameInstance gameInstance) {
-        this.plugin = GameInstance.getPlugin();
-        this.inventory = Bukkit.createInventory(null, 9 * 2, "Arena: " + gameInstance.getID());
+    public SetupInventory(Arena arena) {
+        this.inventory = Bukkit.createInventory(null, 9 * 2, "Arena: " + arena.getID());
 
         addItem(new ItemBuilder(new ItemStack(Material.REDSTONE_BLOCK))
                 .name(ChatColor.GOLD + "► Set" + ChatColor.RED + " ending " + ChatColor.GOLD + "location")
@@ -32,14 +27,14 @@ public class SetupInventory {
                 .lore(ChatColor.GRAY + "on the place where you are standing.")
                 .lore(ChatColor.DARK_GRAY + "(location where players will be teleported")
                 .lore(ChatColor.DARK_GRAY + "after the game)")
-                .lore(isOptionDoneBool("instances." + gameInstance.getID() + ".Endlocation"))
-                .build(), "vd " + gameInstance.getID() + " set ENDLOC");
+                .lore(isOptionDoneBool("instances." + arena.getID() + ".Endlocation"))
+                .build(), "vd " + arena.getID() + " set ENDLOC");
         addItem(new ItemBuilder(new ItemStack(Material.LAPIS_BLOCK))
                 .name(ChatColor.GOLD + "►Set" + ChatColor.WHITE + " lobby " + ChatColor.GOLD + "location")
                 .lore(ChatColor.GRAY + "Click to set the lobby location")
                 .lore(ChatColor.GRAY + "on the place where you are standing")
-                .lore(isOptionDoneBool("instances." + gameInstance.getID() + ".lobbylocation"))
-                .build(), "vd " + gameInstance.getID() + " set LOBBYLOC");
+                .lore(isOptionDoneBool("instances." + arena.getID() + ".lobbylocation"))
+                .build(), "vd " + arena.getID() + " set LOBBYLOC");
 
         addItem(new ItemBuilder(new ItemStack(Material.EMERALD_BLOCK))
                 .name(ChatColor.GOLD + "► Set" + ChatColor.YELLOW + " starting " + ChatColor.GOLD + "location")
@@ -47,48 +42,48 @@ public class SetupInventory {
                 .lore(ChatColor.GRAY + "on the place where you are standing.")
                 .lore(ChatColor.DARK_GRAY + "(location where players will be teleported")
                 .lore(ChatColor.DARK_GRAY + "when game starts)")
-                .lore(isOptionDoneBool("instances." + gameInstance.getID() + ".Startlocation"))
-                .build(), "vd " + gameInstance.getID() + " set STARTLOC");
-        addItem(new ItemBuilder(new ItemStack(Material.COAL, gameInstance.getMIN_PLAYERS()))
+                .lore(isOptionDoneBool("instances." + arena.getID() + ".Startlocation"))
+                .build(), "vd " + arena.getID() + " set STARTLOC");
+        addItem(new ItemBuilder(new ItemStack(Material.COAL, arena.getMinimumPlayers()))
                 .name(ChatColor.GOLD + "► Set" + ChatColor.DARK_GREEN + " minimum players " + ChatColor.GOLD + "size")
                 .lore(ChatColor.GRAY + "LEFT click to decrease")
                 .lore(ChatColor.GRAY + "RIGHT click to increase")
                 .lore(ChatColor.DARK_GRAY + "(how many players are needed")
                 .lore(ChatColor.DARK_GRAY + "for game to start lobby countdown)")
-                .lore(isOptionDone("instances." + gameInstance.getID() + ".minimumplayers"))
-                .build(), "vd " + gameInstance.getID() + " set MINPLAYERS " + gameInstance.getMIN_PLAYERS());
-        addItem(new ItemBuilder(new ItemStack(Material.REDSTONE, gameInstance.getMAX_PLAYERS()))
+                .lore(isOptionDone("instances." + arena.getID() + ".minimumplayers"))
+                .build(), "vd " + arena.getID() + " set MINPLAYERS " + arena.getMinimumPlayers());
+        addItem(new ItemBuilder(new ItemStack(Material.REDSTONE, arena.getMaximumPlayers()))
                 .name(ChatColor.GOLD + "► Set" + ChatColor.GREEN + " maximum players " + ChatColor.GOLD + "size")
                 .lore(ChatColor.GRAY + "LEFT click to decrease")
                 .lore(ChatColor.GRAY + "RIGHT click to increase")
                 .lore(ChatColor.DARK_GRAY + "(how many players arena can hold)")
-                .lore(isOptionDone("instances." + gameInstance.getID() + ".maximumplayers"))
-                .build(), "vd " + gameInstance.getID() + " set MAXPLAYERS " + gameInstance.getMAX_PLAYERS());
+                .lore(isOptionDone("instances." + arena.getID() + ".maximumplayers"))
+                .build(), "vd " + arena.getID() + " set MAXPLAYERS " + arena.getMaximumPlayers());
         if(!plugin.isBungeeActivated()) {
             addItem(new ItemBuilder(new ItemStack(Material.SIGN))
                     .name(ChatColor.GOLD + "► Add game" + ChatColor.AQUA + " sign")
                     .lore(ChatColor.GRAY + "Target a sign and click this.")
                     .lore(ChatColor.DARK_GRAY + "(this will set target sign as game sign)")
-                    .build(), "vda addsign " + gameInstance.getID());
+                    .build(), "vda addsign " + arena.getID());
         }
         addItem(new ItemBuilder(new ItemStack(Material.NAME_TAG))
-                .name(ChatColor.GOLD + "► Set" + ChatColor.RED + " map name " + ChatColor.GOLD + "(currently: " + gameInstance.getMapName() + ")")
+                .name(ChatColor.GOLD + "► Set" + ChatColor.RED + " map name " + ChatColor.GOLD + "(currently: " + arena.getMapName() + ")")
                 .lore(ChatColor.GRAY + "Replace this name tag with named name tag.")
                 .lore(ChatColor.GRAY + "It will be set as arena name.")
                 .lore(ChatColor.RED + "" + ChatColor.BOLD + "Drop name tag here don't move")
                 .lore(ChatColor.RED + "" + ChatColor.BOLD + "it and replace with new!!!")
-                .build(), "vd " + gameInstance.getID() + " set MAPNAME <NAME>");
+                .build(), "vd " + arena.getID() + " set MAPNAME <NAME>");
         addItem(new ItemBuilder(new ItemStack(Material.EMERALD, 1))
                 .name(ChatColor.GOLD + "► Add" + ChatColor.GREEN + " villager " + ChatColor.GOLD + "spawn")
                 .lore(ChatColor.GRAY + "Add new villager spawn")
                 .lore(ChatColor.GRAY + "on the place you're standing")
-                .lore(isOptionDoneList("instances." + gameInstance.getID() + ".villagerspawns"))
+                .lore(isOptionDoneList("instances." + arena.getID() + ".villagerspawns"))
                 .build());
         inventory.addItem((new ItemBuilder(new ItemStack(Material.ROTTEN_FLESH))
                 .name(ChatColor.GOLD + "► Add" + ChatColor.BLUE + " zombie " + ChatColor.GOLD + "spawn")
                 .lore(ChatColor.GRAY + "Add new villager spawn")
                 .lore(ChatColor.GRAY + "on the place you're standing")
-                .lore(isOptionDoneList("instances." + gameInstance.getID() + ".zombiespawns"))
+                .lore(isOptionDoneList("instances." + arena.getID() + ".zombiespawns"))
                 .build()));
         inventory.addItem((new ItemBuilder(new ItemStack(Material.WOOD_DOOR))
                 .name(ChatColor.GOLD + "► Add doors")
@@ -97,7 +92,7 @@ public class SetupInventory {
                 .lore(ChatColor.GRAY + "arena opposite selections with wand)")
                 .lore(ChatColor.GRAY + "And click this. Plugin will search")
                 .lore(ChatColor.GRAY + "for doors in your selection automatically.")
-                .lore(isOptionDoneList("instances." + gameInstance.getID() + ".doors"))
+                .lore(isOptionDoneList("instances." + arena.getID() + ".doors"))
                 .build()));
         inventory.addItem(new ItemBuilder(new ItemStack(Material.CHEST))
                 .name(ChatColor.GOLD + "► Set" + ChatColor.LIGHT_PURPLE + " chest " + ChatColor.GOLD + "shop")

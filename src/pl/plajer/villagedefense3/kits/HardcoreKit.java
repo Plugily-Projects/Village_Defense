@@ -22,7 +22,6 @@ import java.util.List;
  */
 public class HardcoreKit extends LevelKit {
 
-
     public HardcoreKit(Main plugin) {
         setName(ChatManager.colorMessage("Kits.Hardcore.Kit-Name"));
         List<String> description = Util.splitString(ChatManager.colorMessage("Kits.Hardcore.Kit-Description"), 40);

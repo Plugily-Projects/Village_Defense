@@ -12,9 +12,8 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
-import pl.plajer.villagedefense3.ArenaInstance;
+import pl.plajer.villagedefense3.arena.Arena;
 import pl.plajer.villagedefense3.Main;
-import pl.plajer.villagedefense3.game.GameInstance;
 import pl.plajer.villagedefense3.handlers.ChatManager;
 import pl.plajer.villagedefense3.handlers.PermissionsManager;
 import pl.plajer.villagedefense3.handlers.UserManager;
@@ -24,6 +23,7 @@ import pl.plajer.villagedefense3.utils.Util;
 import pl.plajer.villagedefense3.utils.WeaponHelper;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -71,25 +71,25 @@ public class TeleporterKit extends PremiumKit implements Listener {
     }
 
     private void openAndCreateTeleportationMenu(World world, Player p) {
-        GameInstance gameInstance = plugin.getGameInstanceManager().getGameInstance(p);
+        Arena arena = plugin.getArenaRegistry().getArena(p);
         Inventory inventory = plugin.getServer().createInventory(null, 18, ChatManager.colorMessage("Kits.Teleporter.Game-Item-Menu-Name"));
         for(Player player : world.getPlayers()) {
-            if(plugin.getGameInstanceManager().getGameInstance(player) != null && !UserManager.getUser(player.getUniqueId()).isFakeDead()) {
+            if(plugin.getArenaRegistry().getArena(player) != null && !UserManager.getUser(player.getUniqueId()).isFakeDead()) {
                 ItemStack skull = new ItemStack(397, 1, (short) 3);
 
                 SkullMeta meta = (SkullMeta) skull.getItemMeta();
                 meta.setOwner(player.getName());
                 meta.setDisplayName(player.getName());
-                meta.setLore(Arrays.asList(""));
+                meta.setLore(Collections.singletonList(""));
                 skull.setItemMeta(meta);
                 inventory.addItem(skull);
             }
         }
-        for(Villager villager : ((ArenaInstance) gameInstance).getVillagers()) {
-            ItemStack villageritem = new ItemStack(Material.EMERALD);
-            this.setItemNameAndLore(villageritem, villager.getCustomName(), new String[]{villager.getUniqueId().toString()});
+        for(Villager villager : arena.getVillagers()) {
+            ItemStack villagerItem = new ItemStack(Material.EMERALD);
+            this.setItemNameAndLore(villagerItem, villager.getCustomName(), new String[]{villager.getUniqueId().toString()});
 
-            inventory.addItem(villageritem);
+            inventory.addItem(villagerItem);
 
         }
         p.openInventory(inventory);
@@ -97,9 +97,9 @@ public class TeleporterKit extends PremiumKit implements Listener {
 
 
     @EventHandler
-    public void OpenInventoryRightClickEnderPearl(PlayerInteractEvent e) {
+    public void onRightClick(PlayerInteractEvent e) {
         if(e.getAction() == Action.RIGHT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_BLOCK) {
-            if(plugin.getGameInstanceManager().getGameInstance(e.getPlayer()) == null)
+            if(plugin.getArenaRegistry().getArena(e.getPlayer()) == null)
                 return;
             if(!(e.getPlayer().getItemInHand() == null)) {
                 if(e.getPlayer().getItemInHand().hasItemMeta()) {
@@ -116,11 +116,11 @@ public class TeleporterKit extends PremiumKit implements Listener {
 
 
     @EventHandler
-    public void PlayerClickToTeleport(InventoryClickEvent e) {
+    public void onInventoryClick(InventoryClickEvent e) {
         Player p = (Player) e.getWhoClicked();
-        if(plugin.getGameInstanceManager().getGameInstance(p) == null)
+        if(plugin.getArenaRegistry().getArena(p) == null)
             return;
-        GameInstance gameInstance = plugin.getGameInstanceManager().getGameInstance(p);
+        Arena arena = plugin.getArenaRegistry().getArena(p);
         if(e.getCurrentItem() == null)
             return;
         if(!e.getCurrentItem().hasItemMeta())
@@ -135,7 +135,7 @@ public class TeleporterKit extends PremiumKit implements Listener {
                 if((e.isLeftClick() || e.isRightClick())) {
                     if(e.getCurrentItem().getType() == Material.EMERALD) {
                         boolean villagerfound = false;
-                        for(Villager villager : ((ArenaInstance) gameInstance).getVillagers()) {
+                        for(Villager villager : arena.getVillagers()) {
                             if(villager.getCustomName() == null) {
                                 villager.remove();
                             }
@@ -159,9 +159,9 @@ public class TeleporterKit extends PremiumKit implements Listener {
                     } else { /*if(e.getCurrentItem().getType() == Material.SKULL_ITEM || e.getCurrentItem().getType() == Material.SKULL)*/
 
                         ItemMeta meta = e.getCurrentItem().getItemMeta();
-                        for(Player player : gameInstance.getPlayers()) {
+                        for(Player player : arena.getPlayers()) {
                             if(player.getName().equalsIgnoreCase(meta.getDisplayName()) || ChatColor.stripColor(meta.getDisplayName()).contains(player.getName())) {
-                                p.sendMessage(ChatManager.formatMessage(ChatManager.colorMessage("Kits.Teleporter.Teleported-To-Player"), player));
+                                p.sendMessage(ChatManager.formatMessage(arena, ChatManager.colorMessage("Kits.Teleporter.Teleported-To-Player"), player));
                                 p.teleport(player);
                                 if(plugin.is1_9_R1() || plugin.is1_11_R1() || plugin.is1_12_R1()) {
                                     p.getWorld().playSound(p.getLocation(), Sound.ENTITY_ENDERMEN_TELEPORT, 1, 1);

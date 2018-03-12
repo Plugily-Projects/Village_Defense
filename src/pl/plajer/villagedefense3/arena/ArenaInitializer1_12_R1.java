@@ -1,4 +1,4 @@
-package pl.plajer.villagedefense3.versions;
+package pl.plajer.villagedefense3.arena;
 
 import net.minecraft.server.v1_12_R1.GenericAttributes;
 import org.bukkit.ChatColor;
@@ -13,7 +13,7 @@ import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
-import pl.plajer.villagedefense3.ArenaInstance;
+import pl.plajer.villagedefense3.Main;
 import pl.plajer.villagedefense3.creatures.v1_12_R1.*;
 import pl.plajer.villagedefense3.handlers.ChatManager;
 import pl.plajer.villagedefense3.utils.PercentageUtils;
@@ -23,10 +23,13 @@ import java.util.Random;
 /**
  * Created by TomVerschueren on 9/06/2017.
  */
-public class ArenaInstance1_12_R1 extends ArenaInstance {
+public class ArenaInitializer1_12_R1 extends Arena {
 
-    public ArenaInstance1_12_R1(String ID) {
-        super(ID);
+    private Main plugin;
+
+    public ArenaInitializer1_12_R1(String ID, Main plugin) {
+        super(ID, plugin);
+        this.plugin = plugin;
     }
 
     public void spawnFastZombie(Random random) {

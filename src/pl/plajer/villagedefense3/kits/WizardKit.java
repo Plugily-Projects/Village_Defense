@@ -87,7 +87,7 @@ public class WizardKit extends PremiumKit implements Listener {
     public void onWizardDamage(EntityDamageByEntityEvent e) {
         if(e.getDamager() instanceof Zombie && e.getEntity() instanceof Player) {
             if(!wizardsOnDuty.contains(e.getEntity())) return;
-            if(plugin.getGameInstanceManager().getGameInstance((Player) e.getEntity()) == null) return;
+            if(plugin.getArenaRegistry().getArena((Player) e.getEntity()) == null) return;
             ((Zombie) e.getDamager()).damage(2.0);
         }
     }
@@ -97,7 +97,7 @@ public class WizardKit extends PremiumKit implements Listener {
         final Player p = e.getPlayer();
         ItemStack is = e.getPlayer().getItemInHand();
         if(is != null && is.hasItemMeta() && is.getItemMeta().hasDisplayName()) {
-            if(plugin.getGameInstanceManager().getGameInstance(e.getPlayer()) == null)
+            if(plugin.getArenaRegistry().getArena(e.getPlayer()) == null)
                 return;
             if(is.getItemMeta().getDisplayName().equals(ChatManager.colorMessage("Kits.Wizard.Essence-Item-Name"))) {
                 if(UserManager.getUser(e.getPlayer().getUniqueId()).getCooldown("essence") > 0 && !UserManager.getUser(e.getPlayer().getUniqueId()).isSpectator()) {

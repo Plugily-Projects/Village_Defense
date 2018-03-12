@@ -38,12 +38,12 @@ public class GolemEvents implements Listener {
 
     @EventHandler
     public void onGolemClick(PlayerInteractEntityEvent e) {
-        if(!plugin.getGameInstanceManager().isInGameInstance(e.getPlayer()) || !(e.getRightClicked() instanceof IronGolem)) {
+        if(!plugin.getArenaRegistry().isInGameInstance(e.getPlayer()) || !(e.getRightClicked() instanceof IronGolem)) {
             return;
         }
         if(UserManager.getUser(e.getPlayer().getUniqueId()).isSpectator()) return;
         if(e.getRightClicked().getCustomName() == null || !(e.getRightClicked().getCustomName().contains(e.getPlayer().getName()))) {
-            e.getPlayer().sendMessage(ChatManager.PLUGINPREFIX + ChatManager.colorMessage("In-Game.Golem-Upgrades.Cant-Upgrade-Others"));
+            e.getPlayer().sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Golem-Upgrades.Cant-Upgrade-Others"));
             return;
         }
         Inventory inv = Bukkit.createInventory(null, 3 * 9, ChatManager.colorMessage("In-Game.Golem-Upgrades.Upgrade-Inventory"));
@@ -85,27 +85,27 @@ public class GolemEvents implements Listener {
             for(int i = 1; i <= 3; i++) {
                 if(e.getCurrentItem().getItemMeta().getDisplayName().equals(ChatManager.colorMessage("In-Game.Golem-Upgrades.Upgrade-Tier" + i))) {
                     if(golemHealth == 160.0) {
-                        e.getWhoClicked().sendMessage(ChatManager.PLUGINPREFIX + ChatManager.colorMessage("In-Game.Golem-Upgrades.Upgrade-Already-Purchased"));
+                        e.getWhoClicked().sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Golem-Upgrades.Upgrade-Already-Purchased"));
                         e.getWhoClicked().closeInventory();
                         return;
                     }
                     Integer price = plugin.getConfig().getInt("Golem-Upgrade-Tier" + i + "-Cost");
                     if(orbs >= price) {
                         if(golemHealth >= 100.0 + (20 * i)) {
-                            e.getWhoClicked().sendMessage(ChatManager.PLUGINPREFIX + ChatManager.colorMessage("In-Game.Golem-Upgrades.Upgrade-Already-Purchased"));
+                            e.getWhoClicked().sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Golem-Upgrades.Upgrade-Already-Purchased"));
                             e.getWhoClicked().closeInventory();
                             return;
                         }
                         clickedGolem.get(e.getWhoClicked()).setMaxHealth(100.0 + (20.0 * i));
                         clickedGolem.get(e.getWhoClicked()).setHealth(clickedGolem.get(e.getWhoClicked()).getMaxHealth());
-                        e.getWhoClicked().sendMessage(ChatManager.PLUGINPREFIX + ChatManager.colorMessage("In-Game.Golem-Upgrades.Upgrade-Applied"));
+                        e.getWhoClicked().sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Golem-Upgrades.Upgrade-Applied"));
                         UserManager.getUser(e.getWhoClicked().getUniqueId()).setInt("orbs", orbs - price);
                         clickedGolem.get(e.getWhoClicked()).getWorld().playEffect(e.getWhoClicked().getLocation(), Effect.LAVA_POP, 20);
                         clickedGolem.remove(e.getWhoClicked());
                         e.getWhoClicked().closeInventory();
                         return;
                     } else {
-                        e.getWhoClicked().sendMessage(ChatManager.PLUGINPREFIX + ChatManager.colorMessage("In-Game.Messages.Shop-Messages.Not-Enough-Orbs"));
+                        e.getWhoClicked().sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Messages.Shop-Messages.Not-Enough-Orbs"));
                         e.getWhoClicked().closeInventory();
                         return;
                     }
@@ -114,20 +114,20 @@ public class GolemEvents implements Listener {
             //checking for heal upgrade
             if(e.getCurrentItem().getItemMeta().getDisplayName().equals(ChatManager.colorMessage("In-Game.Golem-Upgrades.Upgrade-Heal"))) {
                 if(clickedGolem.get(e.getWhoClicked()).getHealth() == clickedGolem.get(e.getWhoClicked()).getMaxHealth()) {
-                    e.getWhoClicked().sendMessage(ChatManager.PLUGINPREFIX + ChatManager.colorMessage("In-Game.Golem-Upgrades.Upgrade-Heal-Full"));
+                    e.getWhoClicked().sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Golem-Upgrades.Upgrade-Heal-Full"));
                     e.getWhoClicked().closeInventory();
                     return;
                 }
                 Integer price = plugin.getConfig().getInt("Golem-Upgrade-Heal-Cost");
                 if(orbs >= price) {
                     clickedGolem.get(e.getWhoClicked()).setHealth(clickedGolem.get(e.getWhoClicked()).getMaxHealth());
-                    e.getWhoClicked().sendMessage(ChatManager.PLUGINPREFIX + ChatManager.colorMessage("In-Game.Golem-Upgrades.Upgrade-Applied"));
+                    e.getWhoClicked().sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Golem-Upgrades.Upgrade-Applied"));
                     UserManager.getUser(e.getWhoClicked().getUniqueId()).setInt("orbs", orbs - price);
                     clickedGolem.get(e.getWhoClicked()).getWorld().playEffect(e.getWhoClicked().getLocation(), Effect.LAVA_POP, 20);
                     clickedGolem.remove(e.getWhoClicked());
                     e.getWhoClicked().closeInventory();
                 } else {
-                    e.getWhoClicked().sendMessage(ChatManager.PLUGINPREFIX + ChatManager.colorMessage("In-Game.Messages.Shop-Messages.Not-Enough-Orbs"));
+                    e.getWhoClicked().sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Messages.Shop-Messages.Not-Enough-Orbs"));
                     e.getWhoClicked().closeInventory();
                 }
             }

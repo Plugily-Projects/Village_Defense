@@ -3,9 +3,9 @@ package pl.plajer.villagedefense3.commands;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import pl.plajer.villagedefense3.arena.Arena;
 import pl.plajer.villagedefense3.Main;
 import pl.plajer.villagedefense3.User;
-import pl.plajer.villagedefense3.game.GameInstance;
 import pl.plajer.villagedefense3.handlers.ChatManager;
 import pl.plajer.villagedefense3.handlers.UserManager;
 
@@ -37,10 +37,10 @@ public class GameCommands extends MainCommand {
         sender.sendMessage(ChatManager.colorMessage("Commands.Stats-Command.Footer"));
     }
 
-    public void sendStatsOther(CommandSender sender, String p){
+    public void sendStatsOther(CommandSender sender, String p) {
         Player player = Bukkit.getPlayerExact(p);
-        if(player == null || UserManager.getUser(player.getUniqueId()) == null){
-            sender.sendMessage(ChatManager.PLUGINPREFIX + ChatManager.colorMessage("Commands.Admin-Commands.Player-Not-Found"));
+        if(player == null || UserManager.getUser(player.getUniqueId()) == null) {
+            sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("Commands.Admin-Commands.Player-Not-Found"));
             return;
         }
         User user = UserManager.getUser(player.getUniqueId());
@@ -60,23 +60,23 @@ public class GameCommands extends MainCommand {
         if(!plugin.getConfig().getBoolean("Disable-Leave-Command")) {
             Player p = (Player) sender;
             if(!checkIsInGameInstance((Player) sender)) return;
-            p.sendMessage(ChatManager.PLUGINPREFIX + ChatManager.colorMessage("Commands.Teleported-To-The-Lobby"));
+            p.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("Commands.Teleported-To-The-Lobby"));
             if(plugin.isBungeeActivated()) {
                 plugin.getBungeeManager().connectToHub(p);
                 System.out.print(p.getName() + " is teleported to the Hub Server");
             } else {
-                plugin.getGameInstanceManager().getGameInstance(p).teleportToEndLocation(p);
-                plugin.getGameInstanceManager().getGameInstance(p).leaveAttempt(p);
+                plugin.getArenaRegistry().getArena(p).teleportToEndLocation(p);
+                plugin.getArenaRegistry().getArena(p).leaveAttempt(p);
                 System.out.print(p.getName() + " has left the arena! He is teleported to the end location.");
             }
         }
     }
 
-    public void joinGame(CommandSender sender, String arena) {
+    public void joinGame(CommandSender sender, String arenaString) {
         if(checkSenderIsConsole(sender)) return;
-        for(GameInstance gameInstance : plugin.getGameInstanceManager().getGameInstances()) {
-            if(arena.equalsIgnoreCase(gameInstance.getID())) {
-                gameInstance.joinAttempt((Player) sender);
+        for(Arena arena : plugin.getArenaRegistry().getArenas()) {
+            if(arenaString.equalsIgnoreCase(arena.getID())) {
+                arena.joinAttempt((Player) sender);
                 return;
             }
         }

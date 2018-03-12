@@ -6,9 +6,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
+import pl.plajer.villagedefense3.arena.Arena;
 import pl.plajer.villagedefense3.Main;
 import pl.plajer.villagedefense3.UpdateChecker;
-import pl.plajer.villagedefense3.game.GameInstance;
 import pl.plajer.villagedefense3.utils.MySQLConnectionUtils;
 
 import java.util.ArrayList;
@@ -31,7 +31,7 @@ public class JoinEvent implements Listener {
         if(plugin.isBungeeActivated())
             return;
         for(Player player : plugin.getServer().getOnlinePlayers()) {
-            if(plugin.getGameInstanceManager().getGameInstance(player) == null)
+            if(plugin.getArenaRegistry().getArena(player) == null)
                 continue;
             player.hidePlayer(event.getPlayer());
             event.getPlayer().hidePlayer(player);
@@ -72,11 +72,11 @@ public class JoinEvent implements Listener {
             }
         }, 25);
         if(plugin.isBungeeActivated())
-            plugin.getGameInstanceManager().getGameInstances().get(0).teleportToLobby(event.getPlayer());
-        for(GameInstance instance : plugin.getGameInstanceManager().getGameInstances()) {
-            if(event.getPlayer().getWorld().equals(instance.getStartLocation().getWorld())) {
+            plugin.getArenaRegistry().getArenas().get(0).teleportToLobby(event.getPlayer());
+        for(Arena arena : plugin.getArenaRegistry().getArenas()) {
+            if(event.getPlayer().getWorld().equals(arena.getStartLocation().getWorld())) {
                 plugin.getInventoryManager().loadInventory(event.getPlayer());
-                event.getPlayer().teleport(plugin.getGameInstanceManager().getGameInstances().get(0).getEndLocation());
+                event.getPlayer().teleport(plugin.getArenaRegistry().getArenas().get(0).getEndLocation());
             }
         }
         if(!plugin.isDatabaseActivated()) {

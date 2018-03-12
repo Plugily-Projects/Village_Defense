@@ -2,9 +2,8 @@ package pl.plajer.villagedefense3.handlers;
 
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
-import pl.plajer.villagedefense3.ArenaInstance;
+import pl.plajer.villagedefense3.arena.Arena;
 import pl.plajer.villagedefense3.Main;
-import pl.plajer.villagedefense3.game.GameInstance;
 
 /**
  * Created by Tom on 30/01/2016.
@@ -22,18 +21,18 @@ public class RewardsHandler {
         config = ConfigurationManager.getConfig("rewards");
     }
 
-    public void performEndGameRewards(ArenaInstance gameInstance) {
+    public void performEndGameRewards(Arena arena) {
         if(!enabled) return;
         for(String string : config.getStringList("rewards.endgame")) {
-            performCommand(gameInstance, string);
+            performCommand(arena, string);
         }
     }
 
-    public void performEndWaveRewards(ArenaInstance arenaInstance, int wave) {
+    public void performEndWaveRewards(Arena arena, int wave) {
         if(!enabled) return;
         if(!config.contains("rewards.endwave." + wave)) return;
         for(String string : config.getStringList("rewards.endwave." + wave))
-            performCommand(arenaInstance, string);
+            performCommand(arena, string);
     }
 
     public void performZombieKillReward(Player player) {
@@ -44,14 +43,14 @@ public class RewardsHandler {
     }
 
 
-    private void performCommand(ArenaInstance gameInstance, String string) {
+    private void performCommand(Arena arena, String string) {
         if(!enabled)
             return;
-        String command = string.replaceAll("%ARENA-ID%", gameInstance.getID())
-                .replaceAll("%MAPNAME%", gameInstance.getMapName())
-                .replaceAll("%PLAYERAMOUNT%", String.valueOf(gameInstance.getPlayers().size()))
-                .replaceAll("%WAVE%", String.valueOf(gameInstance.getWave()));
-        for(Player player : gameInstance.getPlayers()) {
+        String command = string.replaceAll("%ARENA-ID%", arena.getID())
+                .replaceAll("%MAPNAME%", arena.getMapName())
+                .replaceAll("%PLAYERAMOUNT%", String.valueOf(arena.getPlayers().size()))
+                .replaceAll("%WAVE%", String.valueOf(arena.getWave()));
+        for(Player player : arena.getPlayers()) {
             if(command.contains("p:")) {
                 player.performCommand(command.substring(2, command.length())
                         .replaceAll("%PLAYER%", player.getName()));
@@ -65,13 +64,13 @@ public class RewardsHandler {
     private void performCommand(Player player, String string) {
         if(!enabled)
             return;
-        GameInstance gameInstance = plugin.getGameInstanceManager().getGameInstance(player);
-        if(gameInstance == null)
+        Arena arena = plugin.getArenaRegistry().getArena(player);
+        if(arena == null)
             return;
-        String command = string.replaceAll("%ARENA-ID%", gameInstance.getID())
-                .replaceAll("%MAPNAME%", gameInstance.getMapName())
-                .replaceAll("%PLAYERAMOUNT%", String.valueOf(gameInstance.getPlayers().size()))
-                .replaceAll("%WAVE%", String.valueOf(((ArenaInstance) gameInstance).getWave()));
+        String command = string.replaceAll("%ARENA-ID%", arena.getID())
+                .replaceAll("%MAPNAME%", arena.getMapName())
+                .replaceAll("%PLAYERAMOUNT%", String.valueOf(arena.getPlayers().size()))
+                .replaceAll("%WAVE%", String.valueOf(arena.getWave()));
         if(command.contains("p:")) {
             player.performCommand(command.substring(2, command.length())
                     .replaceAll("%PLAYER%", player.getName()));

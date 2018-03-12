@@ -6,8 +6,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
+import pl.plajer.villagedefense3.arena.Arena;
 import pl.plajer.villagedefense3.Main;
-import pl.plajer.villagedefense3.game.GameInstance;
 import pl.plajer.villagedefense3.handlers.ChatManager;
 import pl.plajer.villagedefense3.handlers.LanguageManager;
 import pl.plajer.villagedefense3.handlers.UserManager;
@@ -32,23 +32,24 @@ public class ChatEvents implements Listener {
 
     @EventHandler
     public void onChat(AsyncPlayerChatEvent event) {
-        if(plugin.getGameInstanceManager().getGameInstance(event.getPlayer()) == null) {
+        if(plugin.getArenaRegistry().getArena(event.getPlayer()) == null) {
             for(Player player : event.getRecipients()) {
-                if(plugin.getGameInstanceManager().getGameInstance(event.getPlayer()) == null)
+                if(plugin.getArenaRegistry().getArena(event.getPlayer()) == null)
                     return;
                 event.getRecipients().remove(player);
 
             }
         }
         event.getRecipients().clear();
-        event.getRecipients().addAll(plugin.getGameInstanceManager().getGameInstance(event.getPlayer()).getPlayers());
+        event.getRecipients().addAll(plugin.getArenaRegistry().getArena(event.getPlayer()).getPlayers());
     }
 
     @EventHandler
     public void onChatIngame(AsyncPlayerChatEvent event) {
-        if(plugin.getGameInstanceManager().getGameInstance(event.getPlayer()) == null) {
-            for(GameInstance gameInstance : plugin.getGameInstanceManager().getGameInstances()) {
-                for(Player player : gameInstance.getPlayers()) {
+        Arena arena = plugin.getArenaRegistry().getArena(event.getPlayer());
+        if(arena == null) {
+            for(Arena loopArena : plugin.getArenaRegistry().getArenas()) {
+                for(Player player : loopArena.getPlayers()) {
                     if(event.getRecipients().contains(player)) {
                         if(!plugin.isSpyChatEnabled(player))
                             event.getRecipients().remove(player);
@@ -70,7 +71,6 @@ public class ChatEvents implements Listener {
                 event.getRecipients().remove(player);
             }
             remove.clear();
-            GameInstance gameInstance = plugin.getGameInstanceManager().getGameInstance(event.getPlayer());
             String message;
             String eventMessage = event.getMessage();
             for(String regexChar : regexChars) {
@@ -89,19 +89,17 @@ public class ChatEvents implements Listener {
                 message = ChatColor.translateAlternateColorCodes('&',
                         LanguageManager.getLanguageMessage("In-Game.Game-Chat-Format")
                                 .replaceAll("%level%", UserManager.getUser(event.getPlayer().getUniqueId()).getInt("level") + "")
-                                .replaceAll("%kit%", ChatManager.formatMessage(LanguageManager.getLanguageMessage("In-Game.Dead-Tag-On-Death")))
+                                .replaceAll("%kit%", ChatManager.formatMessage(arena, LanguageManager.getLanguageMessage("In-Game.Dead-Tag-On-Death")))
                                 .replaceAll("%player%", event.getPlayer().getName())
                                 .replaceAll("%message%", eventMessage));
             }
-            for(Player player : gameInstance.getPlayers()) {
+            for(Player player : arena.getPlayers()) {
                 player.sendMessage(message);
             }
             Bukkit.getConsoleSender().sendMessage(message);
         } else {
-            event.setCancelled(true);
-            GameInstance gameInstance = plugin.getGameInstanceManager().getGameInstance(event.getPlayer());
             event.getRecipients().clear();
-            event.getRecipients().addAll(new ArrayList<>(gameInstance.getPlayers()));
+            event.getRecipients().addAll(new ArrayList<>(arena.getPlayers()));
             event.setMessage(event.getMessage().replaceAll("%kit%", UserManager.getUser(event.getPlayer().getUniqueId()).getKit().getName()));
         }
     }

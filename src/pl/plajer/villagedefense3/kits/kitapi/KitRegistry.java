@@ -57,22 +57,17 @@ public class KitRegistry {
      * Get registered kit by it's represented item stack
      *
      * @param itemStack itemstack that kit represents
-     * @return Registered kit
-     * @throws NullPointerException When itemstack doesn't represent any registered kit
+     * @return Registered kit or default if not found
      */
     public Kit getKit(ItemStack itemStack) {
-        Kit returnkit = getDefaultKit();
+        Kit returnKit = getDefaultKit();
         for(Kit kit : kits) {
             if(itemStack.getType() == kit.getMaterial()) {
-                returnkit = kit;
+                returnKit = kit;
                 break;
             }
         }
-        if(returnkit == null) {
-            throw new NullPointerException("ERROR: kit doesn't exist!");
-        } else {
-            return returnkit;
-        }
+        return returnKit;
     }
 
 

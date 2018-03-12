@@ -9,26 +9,21 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
+import pl.plajer.villagedefense3.arena.*;
 import pl.plajer.villagedefense3.commands.MainCommand;
 import pl.plajer.villagedefense3.creatures.BreakFenceListener;
 import pl.plajer.villagedefense3.creatures.EntityRegistry;
 import pl.plajer.villagedefense3.database.FileStats;
 import pl.plajer.villagedefense3.database.MySQLDatabase;
 import pl.plajer.villagedefense3.events.*;
-import pl.plajer.villagedefense3.game.GameInstance;
 import pl.plajer.villagedefense3.handlers.*;
 import pl.plajer.villagedefense3.items.SpecialItem;
 import pl.plajer.villagedefense3.kits.*;
 import pl.plajer.villagedefense3.kits.kitapi.KitManager;
 import pl.plajer.villagedefense3.kits.kitapi.KitRegistry;
 import pl.plajer.villagedefense3.utils.BigTextUtils;
-import pl.plajer.villagedefense3.utils.ItemUtils;
 import pl.plajer.villagedefense3.utils.MetricsLite;
 import pl.plajer.villagedefense3.utils.Util;
-import pl.plajer.villagedefense3.versions.ArenaInstance1_11_R1;
-import pl.plajer.villagedefense3.versions.ArenaInstance1_12_R1;
-import pl.plajer.villagedefense3.versions.ArenaInstance1_8_R3;
-import pl.plajer.villagedefense3.versions.ArenaInstance1_9_R1;
 import pl.plajer.villagedefense3.villagedefenseapi.StatsStorage;
 
 import java.io.File;
@@ -51,7 +46,7 @@ public class Main extends JavaPlugin implements Listener {
     private FileStats fileStats;
     private SignManager signManager;
     private InventoryManager inventoryManager;
-    private GameInstanceManager gameInstanceManager;
+    private ArenaRegistry arenaRegistry;
     private BungeeManager bungeeManager;
     private KitRegistry kitRegistry;
     private KitManager kitManager;
@@ -124,8 +119,8 @@ public class Main extends JavaPlugin implements Listener {
         return customPermissions;
     }
 
-    public GameInstanceManager getGameInstanceManager() {
-        return gameInstanceManager;
+    public ArenaRegistry getArenaRegistry() {
+        return arenaRegistry;
     }
 
     public VDLocale getPluginLocale() {
@@ -190,8 +185,6 @@ public class Main extends JavaPlugin implements Listener {
         setupFiles();
         debugChecker();
         LanguageMigrator.languageFileUpdate();
-        ArenaInstance.plugin = this;
-        ItemUtils.villageDefense = this;
         initializeClasses();
 
         String currentVersion = "v" + Bukkit.getPluginManager().getPlugin("VillageDefense").getDescription().getVersion();
@@ -242,7 +235,7 @@ public class Main extends JavaPlugin implements Listener {
         setupGameKits();
 
         SpecialItem.loadAll();
-        loadInstances();
+        registerArenas();
         //we must start it after instances load!
         signManager = new SignManager(this);
 
@@ -256,16 +249,14 @@ public class Main extends JavaPlugin implements Listener {
             }
         }
         StatsStorage.plugin = this;
-        //set prefix again
-        ChatManager.PLUGINPREFIX = ChatManager.colorMessage("In-Game.Plugin-Prefix");
         setupPermissions();
     }
 
     private void initializeClasses() {
-        gameInstanceManager = new GameInstanceManager();
-        GameInstance.plugin = this;
+        arenaRegistry = new ArenaRegistry();
         bungeeEnabled = getConfig().getBoolean("BungeeActivated");
         if(getConfig().getBoolean("BungeeActivated")) bungeeManager = new BungeeManager(this);
+        new ChatManager(ChatManager.colorMessage("In-Game.Plugin-Prefix"));
         User.plugin = this;
         new Util(this);
         new MainCommand(this, true);
@@ -332,7 +323,6 @@ public class Main extends JavaPlugin implements Listener {
             if(!LanguageManager.getDefaultLanguageMessage("File-Version-Do-Not-Edit").equals(LanguageManager.getLanguageMessage("File-Version-Do-Not-Edit"))) {
                 Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "[Village Defense] Locale POLSKI is invalid! Using DEFAULT locale instead...");
                 pluginLocale = VDLocale.DEFAULT;
-                return;
             }
         } else {
             Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "[Village Defense] Plugin locale is invalid! Using default one...");
@@ -403,14 +393,14 @@ public class Main extends JavaPlugin implements Listener {
             }
             UserManager.removeUser(player.getUniqueId());
         }
-        for(GameInstance invasionInstance : gameInstanceManager.getGameInstances()) {
+        for(Arena invasionInstance : arenaRegistry.getArenas()) {
             for(Player player : invasionInstance.getPlayers()) {
                 invasionInstance.teleportToEndLocation(player);
                 if(inventoryManagerEnabled)
                     inventoryManager.loadInventory(player);
             }
-            ((ArenaInstance) invasionInstance).stopGame(true);
-            ((ArenaInstance) invasionInstance).clearVillagers();
+            invasionInstance.stopGame(true);
+            invasionInstance.clearVillagers();
             invasionInstance.teleportAllToEndLocation();
         }
         if(isDatabaseActivated()) getMySQLDatabase().closeDatabase();
@@ -436,80 +426,79 @@ public class Main extends JavaPlugin implements Listener {
         getKitManager().setDescription(new String[]{ChatManager.colorMessage("Kits.Open-Kit-Menu")});
     }
 
-    public void loadInstances() {
-        if(gameInstanceManager.getGameInstances() != null) {
-            if(gameInstanceManager.getGameInstances().size() > 0) {
-                for(GameInstance gameInstance : gameInstanceManager.getGameInstances()) {
-                    ArenaInstance arenaInstance = (ArenaInstance) gameInstance;
-                    arenaInstance.clearZombies();
-                    arenaInstance.clearVillagers();
-                    arenaInstance.clearWolfs();
-                    arenaInstance.clearGolems();
+    public void registerArenas() {
+        if(arenaRegistry.getArenas() != null) {
+            if(arenaRegistry.getArenas().size() > 0) {
+                for(Arena arena : arenaRegistry.getArenas()) {
+                    arena.clearZombies();
+                    arena.clearVillagers();
+                    arena.clearWolfs();
+                    arena.clearGolems();
                 }
             }
         }
-        gameInstanceManager.getGameInstances().clear();
+        arenaRegistry.getArenas().clear();
         if(!getConfig().contains("instances")) {
             Bukkit.getConsoleSender().sendMessage(ChatManager.colorMessage("Validator.No-Instances-Created"));
             return;
         }
 
         for(String ID : getConfig().getConfigurationSection("instances").getKeys(false)) {
-            ArenaInstance arenaInstance;
+            Arena arena;
             String s = "instances." + ID + ".";
             if(s.contains("default"))
                 continue;
             if(is1_8_R3()) {
-                arenaInstance = new ArenaInstance1_8_R3(ID);
+                arena = new ArenaInitializer1_8_R3(ID, this);
             } else if(is1_9_R1()) {
-                arenaInstance = new ArenaInstance1_9_R1(ID);
+                arena = new ArenaInitializer1_9_R1(ID, this);
             } else if(is1_11_R1()) {
-                arenaInstance = new ArenaInstance1_11_R1(ID);
+                arena = new ArenaInitializer1_11_R1(ID, this);
             } else {
-                arenaInstance = new ArenaInstance1_12_R1(ID);
+                arena = new ArenaInitializer1_12_R1(ID, this);
             }
-            arenaInstance.setMIN_PLAYERS(getConfig().getInt(s + "minimumplayers"));
-            arenaInstance.setMAX_PLAYERS(getConfig().getInt(s + "maximumplayers"));
-            arenaInstance.setMapName(getConfig().getString(s + "mapname"));
-            arenaInstance.setLobbyLocation(Util.getLocation(true, s + "lobbylocation"));
-            arenaInstance.setStartLocation(Util.getLocation(true, s + "Startlocation"));
-            arenaInstance.setEndLocation(Util.getLocation(true, s + "Endlocation"));
+            arena.setMinimumPlayers(getConfig().getInt(s + "minimumplayers"));
+            arena.setMaximumPlayers(getConfig().getInt(s + "maximumplayers"));
+            arena.setMapName(getConfig().getString(s + "mapname"));
+            arena.setLobbyLocation(Util.getLocation(true, s + "lobbylocation"));
+            arena.setStartLocation(Util.getLocation(true, s + "Startlocation"));
+            arena.setEndLocation(Util.getLocation(true, s + "Endlocation"));
 
             if(getConfig().contains(s + "zombiespawns")) {
                 for(String string : getConfig().getConfigurationSection(s + "zombiespawns").getKeys(false)) {
                     String path = s + "zombiespawns." + string;
-                    arenaInstance.addZombieSpawn(Util.getLocation(true, path));
+                    arena.addZombieSpawn(Util.getLocation(true, path));
                 }
             } else {
                 Bukkit.getConsoleSender().sendMessage(ChatManager.colorMessage("Validator.Invalid-Arena-Configuration").replaceAll("%arena%", ID).replaceAll("%error%", "ZOMBIE SPAWNS"));
-                gameInstanceManager.registerGameInstance(arenaInstance);
+                arenaRegistry.registerArena(arena);
                 continue;
             }
 
             if(getConfig().contains(s + "villagerspawns")) {
                 for(String string : getConfig().getConfigurationSection(s + "villagerspawns").getKeys(false)) {
                     String path = s + "villagerspawns." + string;
-                    arenaInstance.addVillagerSpawn(Util.getLocation(true, path));
+                    arena.addVillagerSpawn(Util.getLocation(true, path));
                 }
             } else {
                 Bukkit.getConsoleSender().sendMessage(ChatManager.colorMessage("Validator.Invalid-Arena-Configuration").replaceAll("%arena%", ID).replaceAll("%error%", "VILLAGER SPAWNS"));
-                gameInstanceManager.registerGameInstance(arenaInstance);
+                arenaRegistry.registerArena(arena);
                 continue;
             }
             if(getConfig().contains(s + "doors")) {
                 for(String string : getConfig().getConfigurationSection(s + "doors").getKeys(false)) {
                     String path = s + "doors." + string + ".";
-                    arenaInstance.addDoor(Util.getLocation(true, path + "location"), (byte) getConfig().getInt(path + "byte"));
+                    arena.addDoor(Util.getLocation(true, path + "location"), (byte) getConfig().getInt(path + "byte"));
 
                 }
             } else {
                 Bukkit.getConsoleSender().sendMessage(ChatManager.colorMessage("Validator.Invalid-Arena-Configuration").replaceAll("%arena%", ID).replaceAll("%error%", "DOORS"));
-                gameInstanceManager.registerGameInstance(arenaInstance);
+                arenaRegistry.registerArena(arena);
                 continue;
             }
-            gameInstanceManager.registerGameInstance(arenaInstance);
-            arenaInstance.start();
-            getServer().getPluginManager().registerEvents(arenaInstance, this);
+            arenaRegistry.registerArena(arena);
+            arena.start();
+            getServer().getPluginManager().registerEvents(arena, this);
             Bukkit.getConsoleSender().sendMessage(ChatManager.colorMessage("Validator.Instance-Started").replaceAll("%arena%", ID));
         }
     }

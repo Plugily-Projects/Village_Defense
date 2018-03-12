@@ -29,11 +29,7 @@ import java.util.List;
  */
 public class MedicKit extends PremiumKit implements Listener {
 
-
-    private Main plugin;
-
     public MedicKit(Main plugin) {
-        this.plugin = plugin;
         setName(ChatManager.colorMessage("Kits.Medic.Kit-Name"));
         List<String> description = Util.splitString(ChatManager.colorMessage("Kits.Medic.Kit-Description"), 40);
         this.setDescription(description.toArray(new String[description.size()]));
@@ -60,10 +56,7 @@ public class MedicKit extends PremiumKit implements Listener {
     }
 
     @Override
-    public void reStock(Player player) {
-
-    }
-
+    public void reStock(Player player) {}
 
     @EventHandler
     public void onZombieHit(EntityDamageByEntityEvent event) {

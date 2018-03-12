@@ -11,8 +11,8 @@ import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionType;
+import pl.plajer.villagedefense3.arena.Arena;
 import pl.plajer.villagedefense3.Main;
-import pl.plajer.villagedefense3.game.GameInstance;
 import pl.plajer.villagedefense3.handlers.ChatManager;
 import pl.plajer.villagedefense3.handlers.PermissionsManager;
 import pl.plajer.villagedefense3.handlers.UserManager;
@@ -66,16 +66,11 @@ public class NakedKit extends PremiumKit implements Listener {
 
     @EventHandler
     public void onArmor(InventoryClickEvent event) {
-        if(UserManager.getUser(event.getWhoClicked().getUniqueId()) == null)
-            return;
-        GameInstance gameInstance = plugin.getGameInstanceManager().getGameInstance((Player) event.getWhoClicked());
-        if(gameInstance == null)
-            return;
-        if(!(UserManager.getUser(event.getWhoClicked().getUniqueId()).getKit() instanceof NakedKit))
-            return;
-        if(!(event.getInventory().getType().equals(InventoryType.PLAYER) || event.getInventory().getType().equals(InventoryType.CRAFTING))) {
-            return;
-        }
+        if(UserManager.getUser(event.getWhoClicked().getUniqueId()) == null) return;
+        Arena arena = plugin.getArenaRegistry().getArena((Player) event.getWhoClicked());
+        if(arena == null) return;
+        if(!(UserManager.getUser(event.getWhoClicked().getUniqueId()).getKit() instanceof NakedKit)) return;
+        if(!(event.getInventory().getType().equals(InventoryType.PLAYER) || event.getInventory().getType().equals(InventoryType.CRAFTING))) return;
         Bukkit.getScheduler().runTaskLater(Main.getPlugin(Main.class), () -> {
             for(ItemStack is : event.getWhoClicked().getInventory().getArmorContents()) {
                 if(is != null) {
@@ -95,22 +90,16 @@ public class NakedKit extends PremiumKit implements Listener {
 
     @EventHandler
     public void onArmorClick(PlayerInteractEvent event) {
-        GameInstance gameInstance = plugin.getGameInstanceManager().getGameInstance(event.getPlayer());
-        if(gameInstance == null)
-            return;
-        if(UserManager.getUser(event.getPlayer().getUniqueId()) == null)
-            return;
-        if(!(UserManager.getUser(event.getPlayer().getUniqueId()).getKit() instanceof NakedKit))
-            return;
-        if(!event.hasItem())
-            return;
+        Arena arena = plugin.getArenaRegistry().getArena(event.getPlayer());
+        if(arena == null) return;
+        if(UserManager.getUser(event.getPlayer().getUniqueId()) == null) return;
+        if(!(UserManager.getUser(event.getPlayer().getUniqueId()).getKit() instanceof NakedKit)) return;
+        if(!event.hasItem()) return;
         if(getAllArmorTypes().contains(event.getItem().getType())) {
             event.setCancelled(true);
             event.getPlayer().sendMessage(ChatManager.colorMessage("Kits.Wild-Naked.Cannot-Wear-Armor"));
         }
-
     }
-
 
     private List<Material> getAllArmorTypes() {
         List<Material> list = new ArrayList<>();

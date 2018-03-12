@@ -11,9 +11,9 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import pl.plajer.villagedefense3.arena.Arena;
 import pl.plajer.villagedefense3.Main;
-import pl.plajer.villagedefense3.game.GameInstance;
-import pl.plajer.villagedefense3.game.GameState;
+import pl.plajer.villagedefense3.arena.ArenaState;
 import pl.plajer.villagedefense3.utils.Util;
 
 import java.util.HashMap;
@@ -24,16 +24,16 @@ public class SignManager implements Listener {
 
     public static String[] signLines = new String[]{"--------", "Waiting", "", "--------"};
     private Main plugin;
-    private Map<Sign, GameInstance> loadedSigns = new HashMap<>();
-    private Map<GameState, String> gameStateToString = new HashMap<>();
+    private Map<Sign, Arena> loadedSigns = new HashMap<>();
+    private Map<ArenaState, String> gameStateToString = new HashMap<>();
 
     public SignManager(Main plugin) {
         this.plugin = plugin;
-        gameStateToString.put(GameState.WAITING_FOR_PLAYERS, ChatManager.colorMessage("Signs.Game-States.Inactive"));
-        gameStateToString.put(GameState.STARTING, ChatManager.colorMessage("Signs.Game-States.Starting"));
-        gameStateToString.put(GameState.IN_GAME, ChatManager.colorMessage("Signs.Game-States.In-Game"));
-        gameStateToString.put(GameState.ENDING, ChatManager.colorMessage("Signs.Game-States.Ending"));
-        gameStateToString.put(GameState.RESTARTING, ChatManager.colorMessage("Signs.Game-States.Restarting"));
+        gameStateToString.put(ArenaState.WAITING_FOR_PLAYERS, ChatManager.colorMessage("Signs.Game-States.Inactive"));
+        gameStateToString.put(ArenaState.STARTING, ChatManager.colorMessage("Signs.Game-States.Starting"));
+        gameStateToString.put(ArenaState.IN_GAME, ChatManager.colorMessage("Signs.Game-States.In-Game"));
+        gameStateToString.put(ArenaState.ENDING, ChatManager.colorMessage("Signs.Game-States.Ending"));
+        gameStateToString.put(ArenaState.RESTARTING, ChatManager.colorMessage("Signs.Game-States.Restarting"));
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
         loadSigns();
         updateSignScheduler();
@@ -43,16 +43,16 @@ public class SignManager implements Listener {
     public void onSignChange(SignChangeEvent e) {
         if(e.getLine(0).equalsIgnoreCase("[villagedefense]")) {
             if(e.getLine(1).isEmpty()) {
-                e.getPlayer().sendMessage(ChatManager.PLUGINPREFIX + ChatManager.colorMessage("Signs.Please-Type-Arena-Name"));
+                e.getPlayer().sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("Signs.Please-Type-Arena-Name"));
                 return;
             }
-            for(GameInstance instance : plugin.getGameInstanceManager().getGameInstances()) {
-                if(instance.getID().equalsIgnoreCase(e.getLine(1))) {
+            for(Arena arena : plugin.getArenaRegistry().getArenas()) {
+                if(arena.getID().equalsIgnoreCase(e.getLine(1))) {
                     for(int i = 0; i < LanguageManager.getLanguageFile().getStringList("Signs.Lines").size(); i++) {
                         if(i == 1) {
                             //maybe not needed
                             e.setLine(i, ChatColor.translateAlternateColorCodes('&', LanguageManager.getLanguageFile().getStringList("Signs.Lines").get(i)
-                                    .replaceAll("%mapname%", instance.getMapName())));
+                                    .replaceAll("%mapname%", arena.getMapName())));
                         }
                         if(LanguageManager.getLanguageFile().getStringList("Signs.Lines").get(i).contains("%state%")) {
                             e.setLine(i, LanguageManager.getLanguageFile().getStringList("Signs.Lines").get(i)
@@ -60,12 +60,12 @@ public class SignManager implements Listener {
                         }
                         if(LanguageManager.getLanguageFile().getStringList("Signs.Lines").get(i).contains("%playersize%")) {
                             e.setLine(i, LanguageManager.getLanguageFile().getStringList("Signs.Lines").get(i)
-                                    .replaceAll("%playersize%", String.valueOf(instance.getPlayers().size()))
-                                    .replaceAll("%maxplayers%", String.valueOf(instance.getMAX_PLAYERS())));
+                                    .replaceAll("%playersize%", String.valueOf(arena.getPlayers().size()))
+                                    .replaceAll("%maxplayers%", String.valueOf(arena.getMaximumPlayers())));
                         }
                     }
-                    loadedSigns.put((Sign) e.getBlock().getState(), instance);
-                    e.getPlayer().sendMessage(ChatManager.PLUGINPREFIX + ChatManager.colorMessage("Signs.Sign-Created"));
+                    loadedSigns.put((Sign) e.getBlock().getState(), arena);
+                    e.getPlayer().sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("Signs.Sign-Created"));
                     String location = e.getBlock().getWorld().getName() + "," + e.getBlock().getX() + "," + e.getBlock().getY() + "," + e.getBlock().getZ() + ",0.0,0.0";
                     List<String> locs = plugin.getConfig().getStringList("signs");
                     locs.add(location);
@@ -74,7 +74,7 @@ public class SignManager implements Listener {
                     return;
                 }
             }
-            e.getPlayer().sendMessage(ChatManager.PLUGINPREFIX + ChatManager.colorMessage("Signs.Arena-Doesnt-Exists"));
+            e.getPlayer().sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("Signs.Arena-Doesnt-Exists"));
         }
     }
 
@@ -85,9 +85,9 @@ public class SignManager implements Listener {
         String location = e.getBlock().getWorld().getName() + "," + e.getBlock().getX() + "," + e.getBlock().getY() + "," + e.getBlock().getZ() + "," + "0.0,0.0";
         if(plugin.getConfig().getStringList("signs").contains(location)) {
             plugin.getConfig().getStringList("signs").remove(location);
-            e.getPlayer().sendMessage(ChatManager.PLUGINPREFIX + ChatManager.colorMessage("Signs.Sign-Removed"));
+            e.getPlayer().sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("Signs.Sign-Removed"));
         }
-        e.getPlayer().sendMessage(ChatManager.PLUGINPREFIX + "§cCouldn't remove sign from configuration! Please do this manually!");
+        e.getPlayer().sendMessage(ChatManager.PLUGIN_PREFIX + ChatColor.RED + "Couldn't remove sign from configuration! Please do this manually!");
     }
 
     @EventHandler
@@ -95,56 +95,46 @@ public class SignManager implements Listener {
         if(e.getAction() == Action.RIGHT_CLICK_BLOCK &&
                 e.getClickedBlock().getState() instanceof Sign && loadedSigns.containsKey(e.getClickedBlock().getState())) {
 
-            GameInstance instance = loadedSigns.get(e.getClickedBlock().getState());
-
-            if(instance == null) {
-                Location location = e.getClickedBlock().getLocation();
-                for(GameInstance gameInstance : plugin.getGameInstanceManager().getGameInstances()) {
-                    if(gameInstance.getSigns().contains(location)) {
-                        instance = gameInstance;
-                        break;
-                    }
-                }
-            }
-            if(instance != null) {
-                for(GameInstance gameInstance : plugin.getGameInstanceManager().getGameInstances()) {
-                    if(gameInstance.getPlayers().contains(e.getPlayer())) {
-                        e.getPlayer().sendMessage(ChatManager.PLUGINPREFIX + ChatManager.colorMessage("In-Game.Already-Playing"));
+            Arena arena = loadedSigns.get(e.getClickedBlock().getState());
+            if(arena != null) {
+                for(Arena loopArena : plugin.getArenaRegistry().getArenas()) {
+                    if(loopArena.getPlayers().contains(e.getPlayer())) {
+                        e.getPlayer().sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Already-Playing"));
                         return;
                     }
                 }
 
-                if(instance.getMAX_PLAYERS() <= instance.getPlayers().size()) {
+                if(arena.getMaximumPlayers() <= arena.getPlayers().size()) {
 
                     if((e.getPlayer().hasPermission(PermissionsManager.getVip()) || e.getPlayer().hasPermission(PermissionsManager.getJoinFullGames()))) {
 
                         boolean b = false;
-                        for(Player player : instance.getPlayers()) {
+                        for(Player player : arena.getPlayers()) {
                             if(!player.hasPermission(PermissionsManager.getVip()) || !player.hasPermission(PermissionsManager.getJoinFullGames())) {
-                                if((instance.getGameState() == GameState.STARTING || instance.getGameState() == GameState.WAITING_FOR_PLAYERS)) {
-                                    instance.leaveAttempt(player);
-                                    player.sendMessage(ChatManager.PLUGINPREFIX + ChatManager.colorMessage("In-Game.Messages.Lobby-Messages.You-Were-Kicked-For-Premium-Slot"));
-                                    String message = ChatManager.formatMessage(ChatManager.colorMessage("In-Game.Messages.Lobby-Messages.Kicked-For-Premium-Slot"), player);
-                                    for(Player p : instance.getPlayers()) {
-                                        p.sendMessage(ChatManager.PLUGINPREFIX + message);
+                                if((arena.getArenaState() == ArenaState.STARTING || arena.getArenaState() == ArenaState.WAITING_FOR_PLAYERS)) {
+                                    arena.leaveAttempt(player);
+                                    player.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Messages.Lobby-Messages.You-Were-Kicked-For-Premium-Slot"));
+                                    String message = ChatManager.formatMessage(arena, ChatManager.colorMessage("In-Game.Messages.Lobby-Messages.Kicked-For-Premium-Slot"), player);
+                                    for(Player p : arena.getPlayers()) {
+                                        p.sendMessage(ChatManager.PLUGIN_PREFIX + message);
                                     }
-                                    instance.joinAttempt(e.getPlayer());
+                                    arena.joinAttempt(e.getPlayer());
                                     return;
                                 } else {
-                                    instance.joinAttempt(e.getPlayer());
+                                    arena.joinAttempt(e.getPlayer());
                                     return;
                                 }
                             }
 
                         }
                         if(!b) {
-                            e.getPlayer().sendMessage(ChatManager.PLUGINPREFIX + ChatManager.colorMessage("In-Game.No-Slots-For-Premium"));
+                            e.getPlayer().sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.No-Slots-For-Premium"));
                         }
                     } else {
-                        e.getPlayer().sendMessage(ChatManager.PLUGINPREFIX + ChatManager.colorMessage("In-Game.Full-Game-No-Permission"));
+                        e.getPlayer().sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Full-Game-No-Permission"));
                     }
                 } else {
-                    instance.joinAttempt(e.getPlayer());
+                    arena.joinAttempt(e.getPlayer());
                 }
             }
         }
@@ -160,7 +150,7 @@ public class SignManager implements Listener {
             }
             if(loc.getBlock().getState() instanceof Sign) {
                 String mapName = ((Sign) loc.getBlock().getState()).getLine(2);
-                for(GameInstance inst : plugin.getGameInstanceManager().getGameInstances()) {
+                for(Arena inst : plugin.getArenaRegistry().getArenas()) {
                     if(inst.getMapName().equals(mapName)) {
                         loadedSigns.put((Sign) loc.getBlock().getState(), inst);
                     }
@@ -179,29 +169,29 @@ public class SignManager implements Listener {
     private void updateSignScheduler() {
         Bukkit.getScheduler().runTaskTimer(plugin, () -> {
             for(Sign s : loadedSigns.keySet()) {
-                GameInstance inst = loadedSigns.get(s);
-                GameState gameState;
-                if(inst == null) {
-                    gameState = GameState.WAITING_FOR_PLAYERS;
+                Arena arena = loadedSigns.get(s);
+                ArenaState arenaState;
+                if(arena == null) {
+                    arenaState = ArenaState.WAITING_FOR_PLAYERS;
                 } else {
-                    gameState = inst.getGameState();
+                    arenaState = arena.getArenaState();
                 }
                 s.setLine(0, ChatColor.translateAlternateColorCodes('&', LanguageManager.getLanguageFile().getStringList("Signs.Lines").get(0)));
-                if(inst.getPlayers().size() == inst.getMAX_PLAYERS()) {
+                if(arena.getPlayers().size() == arena.getMaximumPlayers()) {
                     s.setLine(1, ChatColor.translateAlternateColorCodes('&', LanguageManager.getLanguageFile().getStringList("Signs.Lines").get(1).replaceAll("%state%", ChatManager.colorMessage("Signs.Game-States.Full-Game"))));
                 } else {
-                    s.setLine(1, ChatColor.translateAlternateColorCodes('&', LanguageManager.getLanguageFile().getStringList("Signs.Lines").get(1).replaceAll("%state%", gameStateToString.get(gameState))));
+                    s.setLine(1, ChatColor.translateAlternateColorCodes('&', LanguageManager.getLanguageFile().getStringList("Signs.Lines").get(1).replaceAll("%state%", gameStateToString.get(arenaState))));
                 }
-                s.setLine(2, ChatColor.translateAlternateColorCodes('&', LanguageManager.getLanguageFile().getStringList("Signs.Lines").get(2).replaceAll("%mapname%", inst.getMapName())));
+                s.setLine(2, ChatColor.translateAlternateColorCodes('&', LanguageManager.getLanguageFile().getStringList("Signs.Lines").get(2).replaceAll("%mapname%", arena.getMapName())));
                 s.setLine(3, ChatColor.translateAlternateColorCodes('&', LanguageManager.getLanguageFile().getStringList("Signs.Lines").get(3)
-                        .replaceAll("%maxplayers%", String.valueOf(inst.getMAX_PLAYERS()))
-                        .replaceAll("%playersize%", String.valueOf(inst.getPlayers().size()))));
+                        .replaceAll("%maxplayers%", String.valueOf(arena.getMaximumPlayers()))
+                        .replaceAll("%playersize%", String.valueOf(arena.getPlayers().size()))));
                 s.update();
             }
         }, 10, 10);
     }
 
-    public Map<Sign, GameInstance> getLoadedSigns() {
+    public Map<Sign, Arena> getLoadedSigns() {
         return loadedSigns;
     }
 }

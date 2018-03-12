@@ -3,19 +3,14 @@ package pl.plajer.villagedefense3.kits;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import pl.plajer.villagedefense3.ArenaInstance;
 import pl.plajer.villagedefense3.Main;
-import pl.plajer.villagedefense3.game.GameInstance;
+import pl.plajer.villagedefense3.arena.*;
 import pl.plajer.villagedefense3.handlers.ChatManager;
 import pl.plajer.villagedefense3.handlers.PermissionsManager;
 import pl.plajer.villagedefense3.kits.kitapi.basekits.PremiumKit;
 import pl.plajer.villagedefense3.utils.ArmorHelper;
 import pl.plajer.villagedefense3.utils.Util;
 import pl.plajer.villagedefense3.utils.WeaponHelper;
-import pl.plajer.villagedefense3.versions.ArenaInstance1_11_R1;
-import pl.plajer.villagedefense3.versions.ArenaInstance1_12_R1;
-import pl.plajer.villagedefense3.versions.ArenaInstance1_8_R3;
-import pl.plajer.villagedefense3.versions.ArenaInstance1_9_R1;
 
 import java.util.List;
 
@@ -47,35 +42,28 @@ public class DogFriendKit extends PremiumKit {
         ArmorHelper.setArmor(player, ArmorHelper.ArmorType.LEATHER);
         player.getInventory().addItem(new ItemStack(Material.GRILLED_PORK, 8));
         player.getInventory().addItem(new ItemStack(Material.SADDLE));
-        GameInstance gameInstance = plugin.getGameInstanceManager().getGameInstance(player);
-        if(gameInstance == null)
-            return;
-        if(!(gameInstance instanceof ArenaInstance)) {
-            return;
-        }
+        Arena arena = plugin.getArenaRegistry().getArena(player);
+        if(arena == null) return;
         if(plugin.is1_8_R3()) {
-            ArenaInstance1_8_R3 invasionInstance1_8_r3 = (ArenaInstance1_8_R3) gameInstance;
-            invasionInstance1_8_r3.spawnWolf(invasionInstance1_8_r3.getStartLocation(), player);
-            invasionInstance1_8_r3.spawnWolf(invasionInstance1_8_r3.getStartLocation(), player);
-            invasionInstance1_8_r3.spawnWolf(invasionInstance1_8_r3.getStartLocation(), player);
-        }
-        if(plugin.is1_9_R1()) {
-            ArenaInstance1_9_R1 invasionInstance1_8_r3 = (ArenaInstance1_9_R1) gameInstance;
-            invasionInstance1_8_r3.spawnWolf(invasionInstance1_8_r3.getStartLocation(), player);
-            invasionInstance1_8_r3.spawnWolf(invasionInstance1_8_r3.getStartLocation(), player);
-            invasionInstance1_8_r3.spawnWolf(invasionInstance1_8_r3.getStartLocation(), player);
-        }
-        if(plugin.is1_11_R1()) {
-            ArenaInstance1_11_R1 invasionInstance1_8_r3 = (ArenaInstance1_11_R1) gameInstance;
-            invasionInstance1_8_r3.spawnWolf(invasionInstance1_8_r3.getStartLocation(), player);
-            invasionInstance1_8_r3.spawnWolf(invasionInstance1_8_r3.getStartLocation(), player);
-            invasionInstance1_8_r3.spawnWolf(invasionInstance1_8_r3.getStartLocation(), player);
-        }
-        if(plugin.is1_12_R1()) {
-            ArenaInstance1_12_R1 invasionInstance1_8_r3 = (ArenaInstance1_12_R1) gameInstance;
-            invasionInstance1_8_r3.spawnWolf(invasionInstance1_8_r3.getStartLocation(), player);
-            invasionInstance1_8_r3.spawnWolf(invasionInstance1_8_r3.getStartLocation(), player);
-            invasionInstance1_8_r3.spawnWolf(invasionInstance1_8_r3.getStartLocation(), player);
+            ArenaInitializer1_8_R3 initializer = (ArenaInitializer1_8_R3) arena;
+            initializer.spawnWolf(initializer.getStartLocation(), player);
+            initializer.spawnWolf(initializer.getStartLocation(), player);
+            initializer.spawnWolf(initializer.getStartLocation(), player);
+        } else if(plugin.is1_9_R1()) {
+            ArenaInitializer1_9_R1 initializer = (ArenaInitializer1_9_R1) arena;
+            initializer.spawnWolf(initializer.getStartLocation(), player);
+            initializer.spawnWolf(initializer.getStartLocation(), player);
+            initializer.spawnWolf(initializer.getStartLocation(), player);
+        } else if(plugin.is1_11_R1()) {
+            ArenaInitializer1_11_R1 initializer = (ArenaInitializer1_11_R1) arena;
+            initializer.spawnWolf(initializer.getStartLocation(), player);
+            initializer.spawnWolf(initializer.getStartLocation(), player);
+            initializer.spawnWolf(initializer.getStartLocation(), player);
+        } else if(plugin.is1_12_R1()) {
+            ArenaInitializer1_12_R1 initializer = (ArenaInitializer1_12_R1) arena;
+            initializer.spawnWolf(initializer.getStartLocation(), player);
+            initializer.spawnWolf(initializer.getStartLocation(), player);
+            initializer.spawnWolf(initializer.getStartLocation(), player);
         }
     }
 
@@ -86,27 +74,20 @@ public class DogFriendKit extends PremiumKit {
 
     @Override
     public void reStock(Player player) {
-        GameInstance gameInstance = plugin.getGameInstanceManager().getGameInstance(player);
-        if(gameInstance == null)
-            return;
-        if(!(gameInstance instanceof ArenaInstance)) {
-            return;
-        }
+        Arena arena = plugin.getArenaRegistry().getArena(player);
+        if(arena == null) return;
         if(plugin.is1_8_R3()) {
-            ArenaInstance1_8_R3 invasionInstance1_8_r3 = (ArenaInstance1_8_R3) gameInstance;
-            invasionInstance1_8_r3.spawnWolf(invasionInstance1_8_r3.getStartLocation(), player);
-        }
-        if(plugin.is1_9_R1()) {
-            ArenaInstance1_9_R1 invasionInstance1_12_R1 = (ArenaInstance1_9_R1) gameInstance;
-            invasionInstance1_12_R1.spawnWolf(invasionInstance1_12_R1.getStartLocation(), player);
-        }
-        if(plugin.is1_11_R1()) {
-            ArenaInstance1_11_R1 invasionInstance1_12_R1 = (ArenaInstance1_11_R1) gameInstance;
-            invasionInstance1_12_R1.spawnWolf(invasionInstance1_12_R1.getStartLocation(), player);
-        }
-        if(plugin.is1_12_R1()) {
-            ArenaInstance1_12_R1 invasionInstance1_12_R1 = (ArenaInstance1_12_R1) gameInstance;
-            invasionInstance1_12_R1.spawnWolf(invasionInstance1_12_R1.getStartLocation(), player);
+            ArenaInitializer1_8_R3 initializer = (ArenaInitializer1_8_R3) arena;
+            initializer.spawnWolf(initializer.getStartLocation(), player);
+        } else if(plugin.is1_9_R1()) {
+            ArenaInitializer1_9_R1 initializer = (ArenaInitializer1_9_R1) arena;
+            initializer.spawnWolf(initializer.getStartLocation(), player);
+        } else if(plugin.is1_11_R1()) {
+            ArenaInitializer1_11_R1 initializer = (ArenaInitializer1_11_R1) arena;
+            initializer.spawnWolf(initializer.getStartLocation(), player);
+        } else if(plugin.is1_12_R1()) {
+            ArenaInitializer1_12_R1 initializer = (ArenaInitializer1_12_R1) arena;
+            initializer.spawnWolf(initializer.getStartLocation(), player);
         }
     }
 }

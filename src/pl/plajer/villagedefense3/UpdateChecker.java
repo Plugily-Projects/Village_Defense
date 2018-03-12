@@ -13,8 +13,8 @@ public class UpdateChecker {
 
     private static boolean checkHigher(String currentVersion, String newVersion) {
         String current = toReadable(currentVersion);
-        String newVers = toReadable(newVersion);
-        return current.compareTo(newVers) < 0;
+        String newVer = toReadable(newVersion);
+        return current.compareTo(newVer) < 0;
     }
 
     public static void checkUpdate(String currentVersion) {

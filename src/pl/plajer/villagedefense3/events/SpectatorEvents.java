@@ -10,10 +10,10 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.*;
 import org.bukkit.event.player.*;
+import pl.plajer.villagedefense3.arena.Arena;
 import pl.plajer.villagedefense3.Main;
 import pl.plajer.villagedefense3.User;
-import pl.plajer.villagedefense3.game.GameInstance;
-import pl.plajer.villagedefense3.game.GameState;
+import pl.plajer.villagedefense3.arena.ArenaState;
 import pl.plajer.villagedefense3.handlers.UserManager;
 
 /**
@@ -108,10 +108,10 @@ public class SpectatorEvents implements Listener {
         Player player = (Player) event.getEntity();
         if(!UserManager.getUser(player.getUniqueId()).isSpectator())
             return;
-        if(plugin.getGameInstanceManager().getGameInstance(player) == null)
+        if(plugin.getArenaRegistry().getArena(player) == null)
             return;
         if(player.getLocation().getY() < 1)
-            player.teleport(plugin.getGameInstanceManager().getGameInstance(player).getStartLocation());
+            player.teleport(plugin.getArenaRegistry().getArena(player).getStartLocation());
         event.setCancelled(true);
     }
 
@@ -168,10 +168,10 @@ public class SpectatorEvents implements Listener {
 
     @EventHandler
     public void onSpectate(PlayerDropItemEvent event) {
-        GameInstance gameInstance = plugin.getGameInstanceManager().getGameInstance(event.getPlayer());
-        if(gameInstance == null)
+        Arena arena = plugin.getArenaRegistry().getArena(event.getPlayer());
+        if(arena == null)
             return;
-        if(gameInstance.getGameState() != GameState.IN_GAME)
+        if(arena.getArenaState() != ArenaState.IN_GAME)
             event.setCancelled(true);
         if(UserManager.getUser(event.getPlayer().getUniqueId()).isFakeDead())
             event.setCancelled(true);
@@ -187,8 +187,8 @@ public class SpectatorEvents implements Listener {
 
     @EventHandler
     public void onRightClick(PlayerInteractEvent event) {
-        GameInstance gameInstance = plugin.getGameInstanceManager().getGameInstance(event.getPlayer());
-        if(gameInstance != null && UserManager.getUser(event.getPlayer().getUniqueId()).isSpectator())
+        Arena arena = plugin.getArenaRegistry().getArena(event.getPlayer());
+        if(arena != null && UserManager.getUser(event.getPlayer().getUniqueId()).isSpectator())
             event.setCancelled(true);
     }
 

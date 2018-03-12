@@ -12,9 +12,7 @@ import java.util.Map;
  */
 public class WeaponHelper {
 
-
     public static ItemStack getEnchantedBow(Enchantment enchantment, int level) {
-
         ItemStack itemStack = new ItemStack(Material.BOW);
         itemStack.addUnsafeEnchantment(enchantment, level);
         return itemStack;
@@ -74,6 +72,5 @@ public class WeaponHelper {
     public enum ResourceType {
         WOOD, GOLD, STONE, DIAMOND, IRON
     }
-
 
 }

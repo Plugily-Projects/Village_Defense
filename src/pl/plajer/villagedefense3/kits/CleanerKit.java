@@ -10,7 +10,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
-import pl.plajer.villagedefense3.ArenaInstance;
+import pl.plajer.villagedefense3.arena.Arena;
 import pl.plajer.villagedefense3.Main;
 import pl.plajer.villagedefense3.handlers.ChatManager;
 import pl.plajer.villagedefense3.handlers.PermissionsManager;
@@ -80,13 +80,13 @@ public class CleanerKit extends PremiumKit implements Listener {
             return;
         if(!(event.getItem().getItemMeta().getDisplayName().contains(ChatManager.colorMessage("Kits.Cleaner.Game-Item-Name"))))
             return;
-        if(plugin.getGameInstanceManager().getGameInstance(event.getPlayer()) == null)
+        if(plugin.getArenaRegistry().getArena(event.getPlayer()) == null)
             return;
         if(UserManager.getUser(event.getPlayer().getUniqueId()).isSpectator()) {
             event.getPlayer().sendMessage(ChatManager.colorMessage("Kits.Cleaner.Spectator-Warning"));
             return;
         }
-        ArenaInstance arenaInstance = (ArenaInstance) plugin.getGameInstanceManager().getGameInstance(event.getPlayer());
+        Arena arena = plugin.getArenaRegistry().getArena(event.getPlayer());
 
         if(UserManager.getUser(event.getPlayer().getUniqueId()).getCooldown("clean") > 0 && !UserManager.getUser(event.getPlayer().getUniqueId()).isSpectator()) {
             String msgstring = ChatManager.colorMessage("Kits.Ability-Still-On-Cooldown");
@@ -94,12 +94,12 @@ public class CleanerKit extends PremiumKit implements Listener {
             event.getPlayer().sendMessage(msgstring);
             return;
         }
-        if(arenaInstance.getZombies() != null) {
-            for(Zombie zombie : arenaInstance.getZombies()) {
+        if(arena.getZombies() != null) {
+            for(Zombie zombie : arena.getZombies()) {
                 zombie.getWorld().playEffect(zombie.getLocation(), Effect.LAVA_POP, 20);
                 zombie.remove();
             }
-            arenaInstance.getZombies().clear();
+            arena.getZombies().clear();
         } else {
             event.getPlayer().sendMessage(ChatManager.colorMessage("Kits.Cleaner.Nothing-To-Clean"));
             return;
@@ -109,9 +109,9 @@ public class CleanerKit extends PremiumKit implements Listener {
         } else {
             event.getPlayer().playSound(event.getPlayer().getLocation(), Sound.valueOf("ZOMBIE_DEATH"), 1, 1);
         }
-        String message = ChatManager.formatMessage(ChatManager.colorMessage("Kits.Cleaner.Cleaned-Map"), event.getPlayer());
-        for(Player player1 : plugin.getGameInstanceManager().getGameInstance(event.getPlayer()).getPlayers()) {
-            player1.sendMessage(ChatManager.PLUGINPREFIX + message);
+        String message = ChatManager.formatMessage(arena, ChatManager.colorMessage("Kits.Cleaner.Cleaned-Map"), event.getPlayer());
+        for(Player player1 : plugin.getArenaRegistry().getArena(event.getPlayer()).getPlayers()) {
+            player1.sendMessage(ChatManager.PLUGIN_PREFIX + message);
         }
         UserManager.getUser(event.getPlayer().getUniqueId()).setCooldown("clean", 180);
     }

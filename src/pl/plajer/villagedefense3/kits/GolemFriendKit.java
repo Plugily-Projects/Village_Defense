@@ -4,9 +4,8 @@ import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import pl.plajer.villagedefense3.ArenaInstance;
 import pl.plajer.villagedefense3.Main;
-import pl.plajer.villagedefense3.game.GameInstance;
+import pl.plajer.villagedefense3.arena.*;
 import pl.plajer.villagedefense3.handlers.ChatManager;
 import pl.plajer.villagedefense3.handlers.ConfigurationManager;
 import pl.plajer.villagedefense3.handlers.UserManager;
@@ -14,10 +13,6 @@ import pl.plajer.villagedefense3.kits.kitapi.basekits.LevelKit;
 import pl.plajer.villagedefense3.utils.ArmorHelper;
 import pl.plajer.villagedefense3.utils.Util;
 import pl.plajer.villagedefense3.utils.WeaponHelper;
-import pl.plajer.villagedefense3.versions.ArenaInstance1_11_R1;
-import pl.plajer.villagedefense3.versions.ArenaInstance1_12_R1;
-import pl.plajer.villagedefense3.versions.ArenaInstance1_8_R3;
-import pl.plajer.villagedefense3.versions.ArenaInstance1_9_R1;
 
 import java.util.List;
 
@@ -27,7 +22,6 @@ import java.util.List;
 public class GolemFriendKit extends LevelKit {
 
     private Main plugin;
-
 
     public GolemFriendKit(Main plugin) {
         this.plugin = plugin;
@@ -48,26 +42,21 @@ public class GolemFriendKit extends LevelKit {
         player.getInventory().addItem(WeaponHelper.getUnBreakingSword(WeaponHelper.ResourceType.STONE, 10));
         ArmorHelper.setColouredArmor(Color.WHITE, player);
         player.getInventory().addItem(new ItemStack(Material.GRILLED_PORK, 8));
-        GameInstance gameInstance = plugin.getGameInstanceManager().getGameInstance(player);
-        if(gameInstance == null)
-            return;
+        Arena arena = plugin.getArenaRegistry().getArena(player);
+        if(arena == null) return;
         if(plugin.is1_8_R3()) {
-            ArenaInstance1_8_R3 invasionInstance1_8_r3 = (ArenaInstance1_8_R3) gameInstance;
-            invasionInstance1_8_r3.spawnGolem(invasionInstance1_8_r3.getStartLocation(), player);
+            ArenaInitializer1_8_R3 initializer = (ArenaInitializer1_8_R3) arena;
+            initializer.spawnGolem(initializer.getStartLocation(), player);
+        } else if(plugin.is1_9_R1()) {
+            ArenaInitializer1_9_R1 initializer = (ArenaInitializer1_9_R1) arena;
+            initializer.spawnGolem(initializer.getStartLocation(), player);
+        } else if(plugin.is1_11_R1()) {
+            ArenaInitializer1_11_R1 initializer = (ArenaInitializer1_11_R1) arena;
+            initializer.spawnGolem(initializer.getStartLocation(), player);
+        } else if(plugin.is1_12_R1()) {
+            ArenaInitializer1_12_R1 initializer = (ArenaInitializer1_12_R1) arena;
+            initializer.spawnGolem(initializer.getStartLocation(), player);
         }
-        if(plugin.is1_9_R1()) {
-            ArenaInstance1_9_R1 invasionInstance1_8_r3 = (ArenaInstance1_9_R1) gameInstance;
-            invasionInstance1_8_r3.spawnGolem(invasionInstance1_8_r3.getStartLocation(), player);
-        }
-        if(plugin.is1_11_R1()) {
-            ArenaInstance1_11_R1 invasionInstance1_8_r3 = (ArenaInstance1_11_R1) gameInstance;
-            invasionInstance1_8_r3.spawnGolem(invasionInstance1_8_r3.getStartLocation(), player);
-        }
-        if(plugin.is1_12_R1()) {
-            ArenaInstance1_12_R1 invasionInstance1_8_r3 = (ArenaInstance1_12_R1) gameInstance;
-            invasionInstance1_8_r3.spawnGolem(invasionInstance1_8_r3.getStartLocation(), player);
-        }
-
     }
 
     @Override
@@ -77,23 +66,20 @@ public class GolemFriendKit extends LevelKit {
 
     @Override
     public void reStock(Player player) {
-        ArenaInstance gameInstance = (ArenaInstance) plugin.getGameInstanceManager().getGameInstance(player);
-        if(gameInstance.getWave() % 5 == 0){
+        Arena arena = plugin.getArenaRegistry().getArena(player);
+        if(arena.getWave() % 5 == 0) {
             if(plugin.is1_8_R3()) {
-                ArenaInstance1_8_R3 invasionInstance1_8_r3 = (ArenaInstance1_8_R3) gameInstance;
-                invasionInstance1_8_r3.spawnGolem(invasionInstance1_8_r3.getStartLocation(), player);
-            }
-            if(plugin.is1_9_R1()) {
-                ArenaInstance1_9_R1 invasionInstance1_8_r3 = (ArenaInstance1_9_R1) gameInstance;
-                invasionInstance1_8_r3.spawnGolem(invasionInstance1_8_r3.getStartLocation(), player);
-            }
-            if(plugin.is1_11_R1()) {
-                ArenaInstance1_11_R1 invasionInstance1_8_r3 = (ArenaInstance1_11_R1) gameInstance;
-                invasionInstance1_8_r3.spawnGolem(invasionInstance1_8_r3.getStartLocation(), player);
-            }
-            if(plugin.is1_12_R1()) {
-                ArenaInstance1_12_R1 invasionInstance1_8_r3 = (ArenaInstance1_12_R1) gameInstance;
-                invasionInstance1_8_r3.spawnGolem(invasionInstance1_8_r3.getStartLocation(), player);
+                ArenaInitializer1_8_R3 initializer = (ArenaInitializer1_8_R3) arena;
+                initializer.spawnGolem(initializer.getStartLocation(), player);
+            } else if(plugin.is1_9_R1()) {
+                ArenaInitializer1_9_R1 initializer = (ArenaInitializer1_9_R1) arena;
+                initializer.spawnGolem(initializer.getStartLocation(), player);
+            } else if(plugin.is1_11_R1()) {
+                ArenaInitializer1_11_R1 initializer = (ArenaInitializer1_11_R1) arena;
+                initializer.spawnGolem(initializer.getStartLocation(), player);
+            } else if(plugin.is1_12_R1()) {
+                ArenaInitializer1_12_R1 initializer = (ArenaInitializer1_12_R1) arena;
+                initializer.spawnGolem(initializer.getStartLocation(), player);
             }
         }
     }

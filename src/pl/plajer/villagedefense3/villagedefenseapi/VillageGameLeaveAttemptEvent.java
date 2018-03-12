@@ -3,31 +3,31 @@ package pl.plajer.villagedefense3.villagedefenseapi;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
-import pl.plajer.villagedefense3.game.GameInstance;
+import pl.plajer.villagedefense3.arena.Arena;
 
 /**
  * @author Plajer
  * @since 3.0.0-ALPHA build 13
  * <p>
- * Called when player is attempting to leave game instance.
+ * Called when player is attempting to leave arena.
  */
 public class VillageGameLeaveAttemptEvent extends Event {
 
     private static final HandlerList HANDLERS = new HandlerList();
     private final Player player;
-    private final GameInstance gameInstance;
+    private final Arena arena;
 
-    public VillageGameLeaveAttemptEvent(Player player, GameInstance gameInstance) {
+    public VillageGameLeaveAttemptEvent(Player player, Arena arena) {
         this.player = player;
-        this.gameInstance = gameInstance;
+        this.arena = arena;
     }
 
     public static HandlerList getHandlerList() {
         return HANDLERS;
     }
 
-    public GameInstance getGameInstance() {
-        return gameInstance;
+    public Arena getArena() {
+        return arena;
     }
 
     public Player getPlayer() {

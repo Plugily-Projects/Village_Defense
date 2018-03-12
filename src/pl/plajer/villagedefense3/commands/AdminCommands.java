@@ -11,11 +11,10 @@ import org.bukkit.entity.Villager;
 import org.bukkit.entity.Zombie;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import pl.plajer.villagedefense3.ArenaInstance;
+import pl.plajer.villagedefense3.arena.Arena;
 import pl.plajer.villagedefense3.Main;
 import pl.plajer.villagedefense3.User;
-import pl.plajer.villagedefense3.game.GameInstance;
-import pl.plajer.villagedefense3.game.GameState;
+import pl.plajer.villagedefense3.arena.ArenaState;
 import pl.plajer.villagedefense3.handlers.ChatManager;
 import pl.plajer.villagedefense3.handlers.UserManager;
 import pl.plajer.villagedefense3.utils.Util;
@@ -65,10 +64,10 @@ public class AdminCommands extends MainCommand {
         if(!hasPermission(sender, "villagedefense.admin.list")) return;
         sender.sendMessage(ChatManager.colorMessage("Commands.Admin-Commands.List-Command.Header"));
         int i = 0;
-        for(GameInstance instance : plugin.getGameInstanceManager().getGameInstances()) {
-            sender.sendMessage(ChatManager.colorMessage("Commands.Admin-Commands.List-Command.Format").replaceAll("%arena%", instance.getID())
-                    .replaceAll("%status%", instance.getGameState().getFormattedName()).replaceAll("%players%", String.valueOf(instance.getPlayers().size()))
-                    .replaceAll("%maxplayers%", String.valueOf(instance.getMAX_PLAYERS())));
+        for(Arena arena : plugin.getArenaRegistry().getArenas()) {
+            sender.sendMessage(ChatManager.colorMessage("Commands.Admin-Commands.List-Command.Format").replaceAll("%arena%", arena.getID())
+                    .replaceAll("%status%", arena.getArenaState().getFormattedName()).replaceAll("%players%", String.valueOf(arena.getPlayers().size()))
+                    .replaceAll("%maxplayers%", String.valueOf(arena.getMaximumPlayers())));
             i++;
         }
         if(i == 0) sender.sendMessage("Commands.Admin-Commands.List-Command.No-Arenas");
@@ -78,19 +77,19 @@ public class AdminCommands extends MainCommand {
         if(checkSenderIsConsole(sender)) return;
         if(!hasPermission(sender, "villagedefense.admin.stopgame")) return;
         if(!checkIsInGameInstance((Player) sender)) return;
-        ((ArenaInstance) plugin.getGameInstanceManager().getGameInstance((Player) sender)).stopGame(false);
+        plugin.getArenaRegistry().getArena((Player) sender).stopGame(false);
     }
 
     public void forceStartGame(CommandSender sender) {
         if(checkSenderIsConsole(sender)) return;
         if(!hasPermission(sender, "villagedefense.admin.forcestart")) return;
         if(!checkIsInGameInstance((Player) sender)) return;
-        ArenaInstance arenaInstance = (ArenaInstance) plugin.getGameInstanceManager().getGameInstance((Player) sender);
-        if(arenaInstance.getGameState() == GameState.WAITING_FOR_PLAYERS || arenaInstance.getGameState() == GameState.STARTING) {
-            arenaInstance.setGameState(GameState.STARTING);
-            arenaInstance.setTimer(0);
-            for(Player p1 : plugin.getGameInstanceManager().getGameInstance((Player) sender).getPlayers()) {
-                p1.sendMessage(ChatManager.PLUGINPREFIX + ChatManager.colorMessage("In-Game.Messages.Admin-Messages.Set-Starting-In-To-0"));
+        Arena arena = plugin.getArenaRegistry().getArena((Player) sender);
+        if(arena.getArenaState() == ArenaState.WAITING_FOR_PLAYERS || arena.getArenaState() == ArenaState.STARTING) {
+            arena.setArenaState(ArenaState.STARTING);
+            arena.setTimer(0);
+            for(Player p1 : plugin.getArenaRegistry().getArena((Player) sender).getPlayers()) {
+                p1.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Messages.Admin-Messages.Set-Starting-In-To-0"));
             }
         }
     }
@@ -100,15 +99,15 @@ public class AdminCommands extends MainCommand {
         Player player = (Player) sender;
         if(!hasPermission(player, "villagedefense.admin.respawn")) return;
         if(!checkIsInGameInstance(player)) return;
-        ArenaInstance instance = (ArenaInstance) plugin.getGameInstanceManager().getGameInstance(player);
+        Arena arena = plugin.getArenaRegistry().getArena(player);
         player.setGameMode(GameMode.SURVIVAL);
         User user = UserManager.getUser(player.getUniqueId());
         user.setFakeDead(false);
         user.setSpectator(false);
-        instance.teleportToStartLocation(player);
+        arena.teleportToStartLocation(player);
         player.setFlying(false);
         player.setAllowFlight(false);
-        instance.showPlayer(player);
+        arena.showPlayer(player);
         player.getInventory().clear();
         user.getKit().giveKitItems(player);
         player.sendMessage(ChatManager.colorMessage("In-Game.Back-In-Game"));
@@ -118,8 +117,8 @@ public class AdminCommands extends MainCommand {
         if(checkSenderIsConsole(sender)) return;
         if(!checkIsInGameInstance((Player) sender)) return;
         if(!hasPermission(sender, "villagedefense.admin.respawn.others")) return;
-        ArenaInstance arenaInstance = (ArenaInstance) plugin.getGameInstanceManager().getGameInstance((Player) sender);
-        for(Player loopPlayer : arenaInstance.getPlayers()) {
+        Arena arena = plugin.getArenaRegistry().getArena((Player) sender);
+        for(Player loopPlayer : arena.getPlayers()) {
             if(player.equalsIgnoreCase(loopPlayer.getName())) {
                 loopPlayer.setGameMode(GameMode.SURVIVAL);
                 User user = UserManager.getUser(loopPlayer.getUniqueId());
@@ -127,17 +126,17 @@ public class AdminCommands extends MainCommand {
                 user.setSpectator(false);
 
                 sender.sendMessage(ChatColor.GREEN + "Player respawned!");
-                arenaInstance.teleportToStartLocation(loopPlayer);
+                arena.teleportToStartLocation(loopPlayer);
                 loopPlayer.setFlying(false);
                 loopPlayer.setAllowFlight(false);
-                arenaInstance.showPlayer(loopPlayer);
+                arena.showPlayer(loopPlayer);
                 loopPlayer.getInventory().clear();
                 user.getKit().giveKitItems(loopPlayer);
                 loopPlayer.sendMessage(ChatManager.colorMessage("In-Game.Back-In-Game"));
                 return;
             }
         }
-        sender.sendMessage(ChatManager.PLUGINPREFIX + ChatManager.colorMessage("Commands.Admin-Commands.Player-Not-Found"));
+        sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("Commands.Admin-Commands.Player-Not-Found"));
     }
 
     public void toggleSpyChat(CommandSender sender) {
@@ -145,13 +144,13 @@ public class AdminCommands extends MainCommand {
         if(!hasPermission(sender, "villagedefense.admin.spychat")) return;
         boolean bool = !plugin.getSpyChatEnabled().getOrDefault(((Player) sender).getUniqueId(), false);
         plugin.getSpyChatEnabled().put(((Player) sender).getUniqueId(), bool);
-        sender.sendMessage(ChatManager.PLUGINPREFIX + ChatColor.GREEN + "Game spy chat toggled to " + bool);
+        sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatColor.GREEN + "Game spy chat toggled to " + bool);
     }
 
     public void reloadInstances(CommandSender sender) {
         if(!hasPermission(sender, "villagedefense.admin.reload")) return;
-        plugin.loadInstances();
-        sender.sendMessage(ChatManager.PLUGINPREFIX + "Instances reloaded!");
+        plugin.registerArenas();
+        sender.sendMessage(ChatManager.PLUGIN_PREFIX + "Instances reloaded!");
     }
 
     public void setShopChest(CommandSender sender) {
@@ -172,13 +171,13 @@ public class AdminCommands extends MainCommand {
         if(checkSenderIsConsole(sender)) return;
         Player player = (Player) sender;
         if(!hasPermission(sender, "villagedefense.admin.addsign")) return;
-        if(plugin.getGameInstanceManager().getGameInstance(arena) == null) {
-            player.sendMessage(ChatManager.PLUGINPREFIX + ChatManager.colorMessage("Commands.No-Arena-Like-That"));
+        if(plugin.getArenaRegistry().getArena(arena) == null) {
+            player.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("Commands.No-Arena-Like-That"));
         } else {
             Location location = player.getTargetBlock(null, 10).getLocation();
             if(location.getBlock().getState() instanceof Sign) {
-                plugin.getSignManager().getLoadedSigns().put((Sign) location.getBlock().getState(), plugin.getGameInstanceManager().getGameInstance(arena));
-                player.sendMessage(ChatManager.PLUGINPREFIX + ChatManager.colorMessage("Signs.Sign-Created"));
+                plugin.getSignManager().getLoadedSigns().put((Sign) location.getBlock().getState(), plugin.getArenaRegistry().getArena(arena));
+                player.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("Signs.Sign-Created"));
                 String loc = location.getBlock().getWorld().getName() + "," + location.getBlock().getX() + "," + location.getBlock().getY() + "," + location.getBlock().getZ() + ",0.0,0.0";
                 List<String> locs = plugin.getConfig().getStringList("signs");
                 locs.add(loc);
@@ -190,21 +189,19 @@ public class AdminCommands extends MainCommand {
         }
     }
 
-    public void deleteArena(CommandSender sender, String arena) {
+    public void deleteArena(CommandSender sender, String arenaString) {
         if(checkSenderIsConsole(sender)) return;
         Player player = (Player) sender;
-        if(!checkIsInGameInstance(player)) return;
-        if(!checkIsInGameInstance(player)) return;
         if(!hasPermission(sender, "villagedefense.admin.delete")) return;
-        ArenaInstance arenaInstance = (ArenaInstance) plugin.getGameInstanceManager().getGameInstance(player);
-        if(plugin.getGameInstanceManager().getGameInstance(arena) == null) {
-            sender.sendMessage(ChatManager.PLUGINPREFIX + ChatManager.colorMessage("Commands.No-Arena-Like-That"));
+        Arena arena = plugin.getArenaRegistry().getArena(arenaString);
+        if(arena == null) {
+            sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("Commands.No-Arena-Like-That"));
             return;
         }
-        arenaInstance.stopGame(false);
+        arena.stopGame(false);
         plugin.getConfig().set("instances." + arena, null);
-        plugin.getGameInstanceManager().unregisterGameInstance(arenaInstance);
-        sender.sendMessage(ChatManager.PLUGINPREFIX + "�Successfully removed game instance!");
+        plugin.getArenaRegistry().unregisterArena(arena);
+        sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatColor.RED + "Successfully removed game instance!");
     }
 
     public void setItemPrice(CommandSender sender, String price) {
@@ -236,7 +233,7 @@ public class AdminCommands extends MainCommand {
         }
     }
 
-    public void teleportToInstance(CommandSender sender, String arena, String locationType) {
+    public void teleportToInstance(CommandSender sender, String arenaString, String locationType) {
         if(checkSenderIsConsole(sender)) return;
         if(!hasPermission(sender, "villagedefense.admin.teleport")) return;
         Player player = (Player) sender;
@@ -246,9 +243,9 @@ public class AdminCommands extends MainCommand {
             sender.sendMessage(ChatColor.RED + "Location to teleport is invalid!");
             return;
         }
-        for(GameInstance instance : plugin.getGameInstanceManager().getGameInstances()) {
-            if(instance.getID().equalsIgnoreCase(arena)) {
-                super.onTpCommand(player, arena, LocationType.valueOf(locationType.toUpperCase()));
+        for(Arena arena : plugin.getArenaRegistry().getArenas()) {
+            if(arena.getID().equalsIgnoreCase(arenaString)) {
+                super.onTpCommand(player, arenaString, LocationType.valueOf(locationType.toUpperCase()));
             }
         }
     }
@@ -257,21 +254,21 @@ public class AdminCommands extends MainCommand {
         if(checkSenderIsConsole(sender)) return;
         if(!hasPermission(sender, "villagedefense.admin.clear")) return;
         if(!checkIsInGameInstance((Player) sender)) return;
-        ArenaInstance arenaInstance = (ArenaInstance) plugin.getGameInstanceManager().getGameInstance((Player) sender);
-        if(arenaInstance.getZombies() != null) {
-            for(Zombie zombie : arenaInstance.getZombies()) {
+        Arena arena = plugin.getArenaRegistry().getArena((Player) sender);
+        if(arena.getZombies() != null) {
+            for(Zombie zombie : arena.getZombies()) {
                 zombie.getWorld().playEffect(zombie.getLocation(), Effect.LAVA_POP, 20);
                 zombie.remove();
             }
-            arenaInstance.getZombies().clear();
+            arena.getZombies().clear();
         } else {
             sender.sendMessage(ChatManager.colorMessage("Kits.Cleaner.Nothing-To-Clean"));
             return;
         }
         sendSound((Player) sender, "ENTITY_ZOMBIE_DEATH", "ZOMBIE_DEATH");
-        for(Player loopPlayer : arenaInstance.getPlayers()) {
-            String message = ChatManager.formatMessage(ChatManager.colorMessage("In-Game.Messages.Admin-Messages.Removed-Zombies"), new Player[]{(loopPlayer)});
-            loopPlayer.sendMessage(ChatManager.PLUGINPREFIX + message);
+        for(Player loopPlayer : arena.getPlayers()) {
+            String message = ChatManager.formatMessage(arena, ChatManager.colorMessage("In-Game.Messages.Admin-Messages.Removed-Zombies"), new Player[]{(loopPlayer)});
+            loopPlayer.sendMessage(ChatManager.PLUGIN_PREFIX + message);
         }
     }
 
@@ -279,21 +276,21 @@ public class AdminCommands extends MainCommand {
         if(checkSenderIsConsole(sender)) return;
         if(!hasPermission(sender, "villagedefense.admin.clear")) return;
         if(!checkIsInGameInstance((Player) sender)) return;
-        ArenaInstance arenaInstance = (ArenaInstance) plugin.getGameInstanceManager().getGameInstance((Player) sender);
-        if(arenaInstance.getVillagers() != null) {
-            for(Villager villager : arenaInstance.getVillagers()) {
+        Arena arena = plugin.getArenaRegistry().getArena((Player) sender);
+        if(arena.getVillagers() != null) {
+            for(Villager villager : arena.getVillagers()) {
                 villager.getWorld().playEffect(villager.getLocation(), Effect.LAVA_POP, 20);
                 villager.remove();
             }
-            arenaInstance.getVillagers().clear();
+            arena.getVillagers().clear();
         } else {
             sender.sendMessage(ChatManager.colorMessage("Kits.Cleaner.Nothing-To-Clean"));
             return;
         }
         sendSound((Player) sender, "ENTITY_VILLAGER_DEATH", "VILLAGER_DEATH");
-        for(Player loopPlayer : arenaInstance.getPlayers()) {
-            String message = ChatManager.formatMessage(ChatManager.colorMessage("In-Game.Messages.Admin-Messages.Removed-Villagers"), new Player[]{(loopPlayer)});
-            loopPlayer.sendMessage(ChatManager.PLUGINPREFIX + message);
+        for(Player loopPlayer : arena.getPlayers()) {
+            String message = ChatManager.formatMessage(arena, ChatManager.colorMessage("In-Game.Messages.Admin-Messages.Removed-Villagers"), new Player[]{(loopPlayer)});
+            loopPlayer.sendMessage(ChatManager.PLUGIN_PREFIX + message);
         }
     }
 
@@ -301,22 +298,22 @@ public class AdminCommands extends MainCommand {
         if(checkSenderIsConsole(sender)) return;
         if(!hasPermission(sender, "villagedefense.admin.clear")) return;
         if(!checkIsInGameInstance((Player) sender)) return;
-        ArenaInstance arenaInstance = (ArenaInstance) plugin.getGameInstanceManager().getGameInstance((Player) sender);
-        if(arenaInstance.getIronGolems() != null) {
-            for(IronGolem golem : arenaInstance.getIronGolems()) {
+        Arena arena = plugin.getArenaRegistry().getArena((Player) sender);
+        if(arena.getIronGolems() != null) {
+            for(IronGolem golem : arena.getIronGolems()) {
                 golem.getWorld().playEffect(golem.getLocation(), Effect.LAVA_POP, 20);
                 golem.remove();
             }
-            arenaInstance.getIronGolems().clear();
+            arena.getIronGolems().clear();
 
         } else {
             sender.sendMessage(ChatManager.colorMessage("Kits.Cleaner.Nothing-To-Clean"));
             return;
         }
         sendSound((Player) sender, "ENTITY_IRONGOLEM_DEATH", "IRONGOLEM_DEATH");
-        for(Player loopPlayer : arenaInstance.getPlayers()) {
-            String message = ChatManager.formatMessage(ChatManager.colorMessage("In-Game.Messages.Admin-Messages.Removed-Golems"), new Player[]{(loopPlayer)});
-            loopPlayer.sendMessage(ChatManager.PLUGINPREFIX + message);
+        for(Player loopPlayer : arena.getPlayers()) {
+            String message = ChatManager.formatMessage(arena, ChatManager.colorMessage("In-Game.Messages.Admin-Messages.Removed-Golems"), new Player[]{(loopPlayer)});
+            loopPlayer.sendMessage(ChatManager.PLUGIN_PREFIX + message);
         }
     }
 
@@ -326,7 +323,7 @@ public class AdminCommands extends MainCommand {
         if(NumberUtils.isNumber(number)) {
             User user = UserManager.getUser(((Player) sender).getUniqueId());
             user.setInt("orbs", user.getInt("orbs") + Integer.parseInt(number));
-            sender.sendMessage(ChatManager.PLUGINPREFIX + ChatManager.colorMessage("Commands.Admin-Commands.Added-Orbs"));
+            sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("Commands.Admin-Commands.Added-Orbs"));
         } else {
             sender.sendMessage(ChatColor.RED + "Wrong usage. Do /villagedefense addorbs <amount>");
         }
@@ -343,7 +340,7 @@ public class AdminCommands extends MainCommand {
         if(NumberUtils.isNumber(number)) {
             User user = UserManager.getUser(player.getUniqueId());
             user.setInt("orbs", user.getInt("orbs") + Integer.parseInt(number));
-            sender.sendMessage(ChatManager.PLUGINPREFIX + ChatManager.colorMessage("Commands.Admin-Commands.Added-Orbs"));
+            sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("Commands.Admin-Commands.Added-Orbs"));
         } else {
             sender.sendMessage(ChatColor.RED + "Wrong usage. Do /villagedefense addorbs <player> <amount>");
         }
@@ -359,28 +356,28 @@ public class AdminCommands extends MainCommand {
         if(checkSenderIsConsole(sender)) return;
         if(!checkIsInGameInstance((Player) sender)) return;
         if(!hasPermission(sender, "villagedefense.admin.setwave")) return;
-        ArenaInstance arenaInstance = (ArenaInstance) plugin.getGameInstanceManager().getGameInstance((Player) sender);
+        Arena arena = plugin.getArenaRegistry().getArena((Player) sender);
         if(NumberUtils.isNumber(number)) {
-            arenaInstance.setWave(Integer.parseInt(number) - 1);
-            arenaInstance.endWave();
-            String message = ChatManager.formatMessage(ChatManager.colorMessage("In-Game.Messages.Admin-Messages.Changed-Wave"), arenaInstance.getWave());
-            for(Player player1 : arenaInstance.getPlayers()) {
-                player1.sendMessage(ChatManager.PLUGINPREFIX + message);
+            arena.setWave(Integer.parseInt(number) - 1);
+            arena.endWave();
+            String message = ChatManager.formatMessage(arena, ChatManager.colorMessage("In-Game.Messages.Admin-Messages.Changed-Wave"), arena.getWave());
+            for(Player player1 : arena.getPlayers()) {
+                player1.sendMessage(ChatManager.PLUGIN_PREFIX + message);
             }
-            if(arenaInstance.getZombies() != null) {
-                for(Zombie zombie : arenaInstance.getZombies()) {
+            if(arena.getZombies() != null) {
+                for(Zombie zombie : arena.getZombies()) {
                     zombie.getWorld().playEffect(zombie.getLocation(), Effect.LAVA_POP, 20);
                     zombie.remove();
                 }
-                arenaInstance.getZombies().clear();
+                arena.getZombies().clear();
             } else {
                 sender.sendMessage(ChatManager.colorMessage("Kits.Cleaner.Nothing-To-Clean"));
                 return;
             }
             sendSound((Player) sender, "ENTITY_ZOMBIE_DEATH", "ZOMBIE_DEATH");
-            for(Player loopPlayer : arenaInstance.getPlayers()) {
-                String message1 = ChatManager.formatMessage(ChatManager.colorMessage("In-Game.Messages.Admin-Messages.Removed-Zombies"), new Player[]{(loopPlayer)});
-                loopPlayer.sendMessage(ChatManager.PLUGINPREFIX + message1);
+            for(Player loopPlayer : arena.getPlayers()) {
+                String message1 = ChatManager.formatMessage(arena, ChatManager.colorMessage("In-Game.Messages.Admin-Messages.Removed-Zombies"), new Player[]{(loopPlayer)});
+                loopPlayer.sendMessage(ChatManager.PLUGIN_PREFIX + message1);
             }
         } else {
             sender.sendMessage(ChatColor.RED + "Wave needs to be number! Do /villagedefense set wave <number>");

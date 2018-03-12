@@ -1,6 +1,5 @@
 package pl.plajer.villagedefense3.events;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -10,8 +9,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import pl.plajer.villagedefense3.arena.Arena;
 import pl.plajer.villagedefense3.Main;
-import pl.plajer.villagedefense3.game.GameInstance;
 import pl.plajer.villagedefense3.handlers.PermissionsManager;
 import pl.plajer.villagedefense3.utils.Util;
 
@@ -48,7 +47,7 @@ public class SetupInventoryEvents implements Listener {
         String name = event.getCurrentItem().getItemMeta().getDisplayName();
         name = ChatColor.stripColor(name);
 
-        GameInstance gameInstance = plugin.getGameInstanceManager().getGameInstance(event.getInventory().getName().replace("Arena: ", ""));
+        Arena arena = plugin.getArenaRegistry().getArena(event.getInventory().getName().replace("Arena: ", ""));
         if(event.getCurrentItem().getType() == Material.NAME_TAG && event.getCursor().getType() == Material.NAME_TAG) {
             event.setCancelled(true);
             if(!event.getCursor().hasItemMeta()) {
@@ -60,7 +59,7 @@ public class SetupInventoryEvents implements Listener {
                 return;
             }
 
-            player.performCommand("vd " + gameInstance.getID() + " set MAPNAME " + event.getCursor().getItemMeta().getDisplayName());
+            player.performCommand("vd " + arena.getID() + " set MAPNAME " + event.getCursor().getItemMeta().getDisplayName());
             event.getCurrentItem().getItemMeta().setDisplayName(ChatColor.GOLD + "Set a mapname (currently: " + event.getCursor().getItemMeta().getDisplayName());
             return;
         }
@@ -68,18 +67,18 @@ public class SetupInventoryEvents implements Listener {
         if(name.contains("ending location")) {
             event.setCancelled(true);
 
-            player.performCommand("vd " + gameInstance.getID() + " set ENDLOC");
+            player.performCommand("vd " + arena.getID() + " set ENDLOC");
             return;
         }
         if(name.contains("starting location")) {
             event.setCancelled(true);
 
-            player.performCommand("vd " + gameInstance.getID() + " set STARTLOC");
+            player.performCommand("vd " + arena.getID() + " set STARTLOC");
             return;
         }
         if(name.contains("lobby location")) {
             event.setCancelled(true);
-            player.performCommand("vd " + gameInstance.getID() + " set LOBBYLOC");
+            player.performCommand("vd " + arena.getID() + " set LOBBYLOC");
             return;
         }
         if(name.contains("maximum players")) {
@@ -87,13 +86,13 @@ public class SetupInventoryEvents implements Listener {
             if(clickType.isRightClick()) {
                 event.getCurrentItem().setAmount(event.getCurrentItem().getAmount() + 1);
                 player.updateInventory();
-                player.performCommand("vd " + gameInstance.getID() + " set MAXPLAYERS " + event.getCurrentItem().getAmount());
+                player.performCommand("vd " + arena.getID() + " set MAXPLAYERS " + event.getCurrentItem().getAmount());
                 return;
             }
             if(clickType.isLeftClick()) {
                 event.getCurrentItem().setAmount(event.getCurrentItem().getAmount() - 1);
                 player.updateInventory();
-                player.performCommand("vd " + gameInstance.getID() + " set MAXPLAYERS " + event.getCurrentItem().getAmount());
+                player.performCommand("vd " + arena.getID() + " set MAXPLAYERS " + event.getCurrentItem().getAmount());
                 return;
             }
         }
@@ -103,19 +102,19 @@ public class SetupInventoryEvents implements Listener {
             if(clickType.isRightClick()) {
                 event.getCurrentItem().setAmount(event.getCurrentItem().getAmount() + 1);
                 player.updateInventory();
-                player.performCommand("vd " + gameInstance.getID() + " set MINPLAYERS " + event.getCurrentItem().getAmount());
+                player.performCommand("vd " + arena.getID() + " set MINPLAYERS " + event.getCurrentItem().getAmount());
                 return;
             }
             if(clickType.isLeftClick()) {
                 event.getCurrentItem().setAmount(event.getCurrentItem().getAmount() - 1);
                 player.updateInventory();
-                player.performCommand("vd " + gameInstance.getID() + " set MINPLAYERS " + event.getCurrentItem().getAmount());
+                player.performCommand("vd " + arena.getID() + " set MINPLAYERS " + event.getCurrentItem().getAmount());
                 return;
             }
         }
         if(name.contains("Add game sign")) {
             event.setCancelled(true);
-            player.performCommand("vda addsign " + gameInstance.getID());
+            player.performCommand("vda addsign " + arena.getID());
             return;
         }
         if(event.getCurrentItem().getType() != Material.NAME_TAG) {
@@ -123,19 +122,19 @@ public class SetupInventoryEvents implements Listener {
         }
         if(name.contains("Add villager spawn")) {
             event.setCancelled(true);
-            player.performCommand("vd " + gameInstance.getID() + " addspawn villager");
+            player.performCommand("vd " + arena.getID() + " addspawn villager");
             player.closeInventory();
             return;
 
         }
         if(name.contains("Add zombie spawn")) {
             event.setCancelled(true);
-            player.performCommand("vd " + gameInstance.getID() + " addspawn zombie");
+            player.performCommand("vd " + arena.getID() + " addspawn zombie");
             player.closeInventory();
         }
         if(name.contains("Add doors")) {
             event.setCancelled(true);
-            player.performCommand("vd " + gameInstance.getID() + " addspawn doors");
+            player.performCommand("vd " + arena.getID() + " addspawn doors");
             player.closeInventory();
             return;
 

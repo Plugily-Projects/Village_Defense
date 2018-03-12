@@ -240,3 +240,7 @@ Commit 26
 + Added /vda list command
 + Buffed golem friend kit - spawns new golem every 5 waves
 + Buffed Medium and Light tanks with iron equipment on start
+
+Commit 27
++ Code refactor
++ API update

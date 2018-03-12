@@ -18,11 +18,10 @@ import org.bukkit.event.player.*;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import pl.plajer.villagedefense3.ArenaInstance;
+import pl.plajer.villagedefense3.arena.Arena;
 import pl.plajer.villagedefense3.Main;
 import pl.plajer.villagedefense3.User;
-import pl.plajer.villagedefense3.game.GameInstance;
-import pl.plajer.villagedefense3.game.GameState;
+import pl.plajer.villagedefense3.arena.ArenaState;
 import pl.plajer.villagedefense3.handlers.ChatManager;
 import pl.plajer.villagedefense3.handlers.PermissionsManager;
 import pl.plajer.villagedefense3.handlers.ShopManager;
@@ -51,8 +50,8 @@ public class Events implements Listener {
 
     @EventHandler
     public void onSpawn(CreatureSpawnEvent event) {
-        for(GameInstance instance : plugin.getGameInstanceManager().getGameInstances()) {
-            if(event.getEntity().getWorld().equals(instance.getStartLocation().getWorld())) {
+        for(Arena arena : plugin.getArenaRegistry().getArenas()) {
+            if(event.getEntity().getWorld().equals(arena.getStartLocation().getWorld())) {
                 if(event.getSpawnReason() != CreatureSpawnEvent.SpawnReason.CUSTOM)
                     event.setCancelled(true);
             }
@@ -61,8 +60,8 @@ public class Events implements Listener {
 
     @EventHandler
     public void onItemPickup(PlayerExpChangeEvent event) {
-        GameInstance gameInstance = plugin.getGameInstanceManager().getGameInstance(event.getPlayer());
-        if(gameInstance == null)
+        Arena arena = plugin.getArenaRegistry().getArena(event.getPlayer());
+        if(arena == null)
             return;
         User user = UserManager.getUser(event.getPlayer().getUniqueId());
         event.setAmount((int) Math.ceil(event.getAmount() * 1.6));
@@ -90,8 +89,8 @@ public class Events implements Listener {
 
     @EventHandler
     public void onPickUp(PlayerPickupItemEvent event) {
-        GameInstance gameInstance = plugin.getGameInstanceManager().getGameInstance(event.getPlayer());
-        if(gameInstance == null)
+        Arena arena = plugin.getArenaRegistry().getArena(event.getPlayer());
+        if(arena == null)
             return;
         if(UserManager.getUser(event.getPlayer().getUniqueId()).isFakeDead()) {
             event.setCancelled(true);
@@ -101,8 +100,8 @@ public class Events implements Listener {
     @EventHandler
     public void onKitMenuItemClick(InventoryClickEvent event) {
         ItemStack inv = event.getCurrentItem();
-        GameInstance gameInstance = plugin.getGameInstanceManager().getGameInstance((Player) event.getWhoClicked());
-        if(gameInstance == null)
+        Arena arena = plugin.getArenaRegistry().getArena((Player) event.getWhoClicked());
+        if(arena == null)
             return;
         if(inv == null || !inv.hasItemMeta() || !inv.getItemMeta().hasDisplayName() || inv.getType() != plugin.getKitManager().getMaterial() || !inv.getItemMeta().getDisplayName().equalsIgnoreCase(plugin.getKitManager().getItemName()))
             return;
@@ -112,8 +111,8 @@ public class Events implements Listener {
     @EventHandler
     public void KitMenuItemClick(InventoryClickEvent event) {
         ItemStack inv = event.getCursor();
-        GameInstance gameInstance = plugin.getGameInstanceManager().getGameInstance((Player) event.getWhoClicked());
-        if(gameInstance == null)
+        Arena arena = plugin.getArenaRegistry().getArena((Player) event.getWhoClicked());
+        if(arena == null)
             return;
         if(inv == null || !inv.hasItemMeta() || !inv.getItemMeta().hasDisplayName() || inv.getType() != plugin.getKitManager().getMaterial() || !inv.getItemMeta().getDisplayName().equalsIgnoreCase(plugin.getKitManager().getItemName()))
             return;
@@ -122,8 +121,8 @@ public class Events implements Listener {
 
     @EventHandler
     public void onDrop(PlayerDropItemEvent event) {
-        GameInstance gameInstance = plugin.getGameInstanceManager().getGameInstance(event.getPlayer());
-        if(gameInstance == null)
+        Arena arena = plugin.getArenaRegistry().getArena(event.getPlayer());
+        if(arena == null)
             return;
         if(UserManager.getUser(event.getPlayer().getUniqueId()).isFakeDead()) {
             event.setCancelled(true);
@@ -136,16 +135,16 @@ public class Events implements Listener {
 
     @EventHandler
     public void ExplosionCancel(EntityExplodeEvent event) {
-        for(GameInstance gameInstance : plugin.getGameInstanceManager().getGameInstances()) {
-            if(gameInstance.getStartLocation().getWorld().getName().equals(event.getLocation().getWorld().getName()) && gameInstance.getStartLocation().distance(event.getLocation()) < 300)
+        for(Arena arena : plugin.getArenaRegistry().getArenas()) {
+            if(arena.getStartLocation().getWorld().getName().equals(event.getLocation().getWorld().getName()) && arena.getStartLocation().distance(event.getLocation()) < 300)
                 event.blockList().clear();
         }
     }
 
     @EventHandler
     public void onEntityInteractEntity(PlayerInteractEntityEvent event) {
-        GameInstance gameInstance = plugin.getGameInstanceManager().getGameInstance(event.getPlayer());
-        if(gameInstance == null)
+        Arena arena = plugin.getArenaRegistry().getArena(event.getPlayer());
+        if(arena == null)
             return;
         User user = UserManager.getUser(event.getPlayer().getUniqueId());
         if(user.isFakeDead()) {
@@ -167,20 +166,20 @@ public class Events implements Listener {
             if(ironGolem.getCustomName() != null && ironGolem.getCustomName().contains(event.getPlayer().getName())) {
                 event.getRightClicked().setPassenger(event.getPlayer());
             } else {
-                event.getPlayer().sendMessage(ChatManager.PLUGINPREFIX + ChatManager.colorMessage("In-Game.Messages.Cant-Ride-Others-Golem"));
+                event.getPlayer().sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Messages.Cant-Ride-Others-Golem"));
             }
         }
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void disableCommands(PlayerCommandPreprocessEvent event) {
-        GameInstance gameInstance = plugin.getGameInstanceManager().getGameInstance(event.getPlayer());
-        if(gameInstance == null) return;
+        Arena arena = plugin.getArenaRegistry().getArena(event.getPlayer());
+        if(arena == null) return;
         if(!plugin.getConfig().getBoolean("Block-Commands-In-Game")) return;
         if(event.getMessage().contains("leave") || event.getMessage().contains("stats")) return;
         if(event.getPlayer().isOp() || event.getPlayer().hasPermission(PermissionsManager.getEditGames())) return;
         event.setCancelled(true);
-        event.getPlayer().sendMessage(ChatManager.PLUGINPREFIX + ChatManager.colorMessage("In-Game.Only-Command-Ingame-Is-Leave"));
+        event.getPlayer().sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Only-Command-Ingame-Is-Leave"));
     }
 
     @EventHandler
@@ -188,7 +187,7 @@ public class Events implements Listener {
         if(event.getEntity().getItemStack().getType() == Material.WOOD_DOOR) {
             for(Entity entity : Util.getNearbyEntities(event.getLocation(), 20)) {
                 if(entity.getType() == EntityType.PLAYER) {
-                    if(plugin.getGameInstanceManager().getGameInstance((Player) entity) != null) {
+                    if(plugin.getArenaRegistry().getArena((Player) entity) != null) {
                         event.getEntity().remove();
                     }
                 }
@@ -200,8 +199,8 @@ public class Events implements Listener {
     public void onLeave(PlayerInteractEvent event) {
         if(event.getAction() == Action.LEFT_CLICK_AIR || event.getAction() == Action.LEFT_CLICK_BLOCK)
             return;
-        GameInstance gameInstance = plugin.getGameInstanceManager().getGameInstance(event.getPlayer());
-        if(gameInstance == null)
+        Arena arena = plugin.getArenaRegistry().getArena(event.getPlayer());
+        if(arena == null)
             return;
         ItemStack itemStack = event.getPlayer().getItemInHand();
         if(itemStack == null || itemStack.getItemMeta() == null || itemStack.getItemMeta().getDisplayName() == null)
@@ -214,7 +213,7 @@ public class Events implements Listener {
             if(plugin.isBungeeActivated()) {
                 plugin.getBungeeManager().connectToHub(event.getPlayer());
             } else {
-                gameInstance.leaveAttempt(event.getPlayer());
+                arena.leaveAttempt(event.getPlayer());
             }
         }
     }
@@ -222,17 +221,16 @@ public class Events implements Listener {
     @EventHandler
     public void onZombieDeath(EntityDeathEvent event) {
         if(event.getEntity().getType() == EntityType.ZOMBIE) {
-            for(GameInstance gameInstance : plugin.getGameInstanceManager().getGameInstances()) {
-                ArenaInstance instance = (ArenaInstance) gameInstance;
+            for(Arena arena : plugin.getArenaRegistry().getArenas()) {
                 Zombie zombie = (Zombie) event.getEntity();
-                if(instance.getZombies().contains(zombie)) {
-                    instance.removeZombie(zombie);
+                if(arena.getZombies().contains(zombie)) {
+                    arena.removeZombie(zombie);
                     if(event.getEntity().getKiller() == null)
                         return;
                     if(event.getEntity().getKiller().getType() == EntityType.PLAYER) {
                         Player player = event.getEntity().getKiller();
 
-                        if(plugin.getGameInstanceManager().getGameInstance(player) != null)
+                        if(plugin.getArenaRegistry().getArena(player) != null)
                             plugin.getRewardsHandler().performZombieKillReward(player);
                     }
                     return;
@@ -245,8 +243,8 @@ public class Events implements Listener {
     public void onFriendHurt(EntityDamageByEntityEvent event) {
         if(!(event.getDamager() instanceof Player))
             return;
-        GameInstance gameInstance = plugin.getGameInstanceManager().getGameInstance((Player) event.getDamager());
-        if(gameInstance == null)
+        Arena arena = plugin.getArenaRegistry().getArena((Player) event.getDamager());
+        if(arena == null)
             return;
         User user = UserManager.getUser(event.getDamager().getUniqueId());
         if(user.isFakeDead()) {
@@ -264,9 +262,8 @@ public class Events implements Listener {
             if(!(e.getEntity() instanceof Zombie)) {
                 return;
             }
-            for(GameInstance gameInstance : plugin.getGameInstanceManager().getGameInstances()) {
-                ArenaInstance arenaInstance = (ArenaInstance) gameInstance;
-                if(arenaInstance.getZombies().contains(e.getEntity())) {
+            for(Arena arena : plugin.getArenaRegistry().getArenas()) {
+                if(arena.getZombies().contains(e.getEntity())) {
                     e.getEntity().setCustomName(PercentageUtils.getProgressBar((int) ((Zombie) e.getEntity()).getHealth(), (int) ((Zombie) e.getEntity()).getMaxHealth(), 50, "|", ChatColor.YELLOW + "", ChatColor.GRAY + ""));
                 }
             }
@@ -287,8 +284,8 @@ public class Events implements Listener {
             return;
         if(!(arrow.getShooter() instanceof Player))
             return;
-        GameInstance gameInstance = plugin.getGameInstanceManager().getGameInstance((Player) arrow.getShooter());
-        if(gameInstance == null)
+        Arena arena = plugin.getArenaRegistry().getArena((Player) arrow.getShooter());
+        if(arena == null)
             return;
         if(user.isFakeDead() || user.isSpectator()) {
             event.setCancelled(true);
@@ -310,10 +307,10 @@ public class Events implements Listener {
     public void onFoodLevelChange(FoodLevelChangeEvent event) {
         if(event.getEntity().getType() != EntityType.PLAYER)
             return;
-        GameInstance gameInstance = plugin.getGameInstanceManager().getGameInstance((Player) event.getEntity());
-        if(gameInstance == null)
+        Arena arena = plugin.getArenaRegistry().getArena((Player) event.getEntity());
+        if(arena == null)
             return;
-        if(gameInstance.getGameState() == GameState.STARTING || gameInstance.getGameState() == GameState.WAITING_FOR_PLAYERS || gameInstance.getGameState() == GameState.ENDING) {
+        if(arena.getArenaState() == ArenaState.STARTING || arena.getArenaState() == ArenaState.WAITING_FOR_PLAYERS || arena.getArenaState() == ArenaState.ENDING) {
             event.setFoodLevel(20);
             event.setCancelled(true);
         }
@@ -325,8 +322,8 @@ public class Events implements Listener {
             return;
         Player player = (Player) event.getWhoClicked();
         Inventory inv = event.getInventory();
-        GameInstance gameInstance = plugin.getGameInstanceManager().getGameInstance((Player) event.getWhoClicked());
-        if(gameInstance == null)
+        Arena arena = plugin.getArenaRegistry().getArena((Player) event.getWhoClicked());
+        if(arena == null)
             return;
         User user = UserManager.getUser(player.getUniqueId());
         if(user.isFakeDead()) {
@@ -353,13 +350,13 @@ public class Events implements Listener {
         }
         int price = Integer.parseInt(string.split(" ")[0]);
         if(price > UserManager.getUser(player.getUniqueId()).getInt("orbs")) {
-            player.sendMessage(ChatManager.PLUGINPREFIX + ChatManager.colorMessage("In-Game.Messages.Shop-Messages.Not-Enough-Orbs"));
+            player.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Messages.Shop-Messages.Not-Enough-Orbs"));
             return;
         }
         if(event.getCurrentItem().hasItemMeta() && event.getCurrentItem().getItemMeta().hasDisplayName()) {
             if(event.getCurrentItem().getItemMeta().getDisplayName().contains(ChatManager.colorMessage("In-Game.Messages.Shop-Messages.Golem-Item-Name"))) {
-                ((ArenaInstance) gameInstance).spawnGolem(gameInstance.getStartLocation(), player);
-                player.sendMessage(ChatManager.PLUGINPREFIX + ChatManager.colorMessage("In-Game.Messages.Golem-Spawned"));
+                arena.spawnGolem(arena.getStartLocation(), player);
+                player.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Messages.Golem-Spawned"));
                 UserManager.getUser(player.getUniqueId()).setInt("orbs", UserManager.getUser(player.getUniqueId()).getInt("orbs") - price);
                 return;
 
@@ -369,8 +366,8 @@ public class Events implements Listener {
              * Add translatable message for 'Spawn Wolf' item
              */
             if(event.getCurrentItem().getItemMeta().getDisplayName().contains("Spawn Wolf")) {
-                ((ArenaInstance) gameInstance).spawnWolf(gameInstance.getStartLocation(), player);
-                player.sendMessage(ChatManager.PLUGINPREFIX + ChatManager.colorMessage("In-Game.Messages.Wolf-Spawned"));
+                arena.spawnWolf(arena.getStartLocation(), player);
+                player.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Messages.Wolf-Spawned"));
                 UserManager.getUser(player.getUniqueId()).setInt("orbs", UserManager.getUser(player.getUniqueId()).getInt("orbs") - price);
                 return;
             }
@@ -395,8 +392,8 @@ public class Events implements Listener {
     @EventHandler(priority = EventPriority.HIGH)
     //highest priority to fully protecc our game (i didn't set it because my test server was destroyed, n-no......)
     public void onBlockBreakEvent(BlockBreakEvent event) {
-        GameInstance gameInstance = plugin.getGameInstanceManager().getGameInstance(event.getPlayer());
-        if(gameInstance == null)
+        Arena arena = plugin.getArenaRegistry().getArena(event.getPlayer());
+        if(arena == null)
             return;
         event.setCancelled(true);
     }
@@ -404,16 +401,16 @@ public class Events implements Listener {
     @EventHandler(priority = EventPriority.HIGH)
     //highest priority to fully protecc our game (i didn't set it because my test server was destroyed, n-no......)
     public void onBuild(BlockPlaceEvent event) {
-        GameInstance gameInstance = plugin.getGameInstanceManager().getGameInstance(event.getPlayer());
-        if(gameInstance == null)
+        Arena arena = plugin.getArenaRegistry().getArena(event.getPlayer());
+        if(arena == null)
             return;
         event.setCancelled(true);
     }
 
     @EventHandler
     public void onCraft(PlayerInteractEvent event) {
-        GameInstance gameInstance = plugin.getGameInstanceManager().getGameInstance(event.getPlayer());
-        if(gameInstance == null) return;
+        Arena arena = plugin.getArenaRegistry().getArena(event.getPlayer());
+        if(arena == null) return;
         if(event.getPlayer().getTargetBlock(null, 7).getType() == Material.WORKBENCH)
             event.setCancelled(true);
     }
@@ -427,25 +424,23 @@ public class Events implements Listener {
             if(!(entity instanceof Player)) {
                 continue;
             }
-            if(plugin.getGameInstanceManager().getGameInstance((Player) entity) != null) {
+            if(plugin.getArenaRegistry().getArena((Player) entity) != null) {
                 if(event.getItem().getItemStack().getType() != Material.ROTTEN_FLESH) {
                     continue;
                 }
-                GameInstance gameInstance = plugin.getGameInstanceManager().getGameInstance((Player) entity);
-                if(gameInstance == null)
-                    continue;
-                ArenaInstance arenaInstance = (ArenaInstance) plugin.getGameInstanceManager().getGameInstance(((Player) entity));
-                arenaInstance.addRottenFlesh(event.getItem().getItemStack().getAmount());
+                Arena arena = plugin.getArenaRegistry().getArena(((Player) entity));
+                if(arena == null) continue;
+                arena.addRottenFlesh(event.getItem().getItemStack().getAmount());
                 event.getItem().remove();
                 event.getInventory().clear();
                 event.getItem().getLocation().getWorld().spigot().playEffect(event.getItem().getLocation(), Effect.CLOUD, 0, 0, 2, 2, 2, 1, 50, 100);
-                if(arenaInstance.checkLevelUpRottenFlesh()) {
-                    for(Player player : arenaInstance.getPlayers()) {
+                if(arena.checkLevelUpRottenFlesh()) {
+                    for(Player player : arena.getPlayers()) {
                         player.setMaxHealth(player.getMaxHealth() + 2.0);
                     }
-                    for(Player player1 : gameInstance.getPlayers()) {
-                        String message = ChatManager.formatMessage(ChatManager.colorMessage("In-Game.Rotten-Flesh-Level-Up"), player1);
-                        player1.sendMessage(ChatManager.PLUGINPREFIX + message);
+                    for(Player player1 : arena.getPlayers()) {
+                        String message = ChatManager.formatMessage(arena, ChatManager.colorMessage("In-Game.Rotten-Flesh-Level-Up"), player1);
+                        player1.sendMessage(ChatManager.PLUGIN_PREFIX + message);
                     }
                 }
             }

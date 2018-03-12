@@ -23,7 +23,6 @@ import java.util.List;
  */
 public class TerminatorKit extends LevelKit {
 
-
     public TerminatorKit(Main plugin) {
         setName(ChatManager.colorMessage("Kits.Terminator.Kit-Name"));
         List<String> description = Util.splitString(ChatManager.colorMessage("Kits.Terminator.Kit-Description"), 40);

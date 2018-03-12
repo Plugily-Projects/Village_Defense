@@ -10,7 +10,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import pl.plajer.villagedefense3.Main;
-import pl.plajer.villagedefense3.game.GameInstance;
+import pl.plajer.villagedefense3.arena.Arena;
 import pl.plajer.villagedefense3.handlers.ChatManager;
 import pl.plajer.villagedefense3.utils.SetupInventory;
 import pl.plajer.villagedefense3.utils.Util;
@@ -43,8 +43,8 @@ public class MainCommand implements CommandExecutor {
     }
 
     boolean checkIsInGameInstance(Player player) {
-        if(plugin.getGameInstanceManager().getGameInstance(player) == null) {
-            player.sendMessage(ChatManager.PLUGINPREFIX + ChatManager.colorMessage("Commands.Not-Playing"));
+        if(plugin.getArenaRegistry().getArena(player) == null) {
+            player.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("Commands.Not-Playing"));
             return false;
         }
         return true;
@@ -54,7 +54,7 @@ public class MainCommand implements CommandExecutor {
         if(sender.hasPermission(perm)) {
             return true;
         }
-        sender.sendMessage(ChatManager.PLUGINPREFIX + ChatManager.colorMessage("Commands.No-Permission"));
+        sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("Commands.No-Permission"));
         return false;
     }
 
@@ -102,37 +102,37 @@ public class MainCommand implements CommandExecutor {
                 if(args.length != 1) {
                     adminCommands.addSign(sender, args[1]);
                 } else {
-                    sender.sendMessage(ChatManager.PLUGINPREFIX + ChatManager.colorMessage("Commands.Type-Arena-Name"));
+                    sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("Commands.Type-Arena-Name"));
                 }
                 return true;
             } else if(args[0].equalsIgnoreCase("delete")) {
                 if(args.length != 1) {
                     adminCommands.deleteArena(sender, args[1]);
                 } else {
-                    sender.sendMessage(ChatManager.PLUGINPREFIX + ChatManager.colorMessage("Commands.Type-Arena-Name"));
+                    sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("Commands.Type-Arena-Name"));
                 }
                 return true;
             } else if(args[0].equalsIgnoreCase("setprice")) {
                 if(args.length != 1) {
                     adminCommands.setItemPrice(sender, args[1]);
                 } else {
-                    sender.sendMessage(ChatManager.PLUGINPREFIX + ChatColor.RED + "Please type price of item!");
+                    sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatColor.RED + "Please type price of item!");
                 }
                 return true;
             } else if(args[0].equalsIgnoreCase("tp")) {
                 if(args.length == 1) {
-                    sender.sendMessage(ChatManager.PLUGINPREFIX + ChatManager.colorMessage("Commands.Type-Arena-Name"));
+                    sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("Commands.Type-Arena-Name"));
                     return true;
                 }
                 if(args.length == 2) {
-                    sender.sendMessage(ChatManager.PLUGINPREFIX + ChatColor.RED + "Please type location type: END, START, LOBBY");
+                    sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatColor.RED + "Please type location type: END, START, LOBBY");
                     return true;
                 }
                 adminCommands.teleportToInstance(sender, args[1], args[2]);
                 return true;
             } else if(args[0].equalsIgnoreCase("clear")) {
                 if(args.length == 1) {
-                    sender.sendMessage(ChatManager.PLUGINPREFIX + ChatColor.RED + "Please type valid mob type to clear: VILLAGER, ZOMBIE, GOLEM");
+                    sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatColor.RED + "Please type valid mob type to clear: VILLAGER, ZOMBIE, GOLEM");
                     return true;
                 }
                 if(args[1].equalsIgnoreCase("villager")) {
@@ -142,13 +142,13 @@ public class MainCommand implements CommandExecutor {
                 } else if(args[1].equalsIgnoreCase("golem")) {
                     adminCommands.clearGolems(sender);
                 } else {
-                    sender.sendMessage(ChatManager.PLUGINPREFIX + ChatColor.RED + "Please type valid mob type to clear: VILLAGER, ZOMBIE, GOLEM");
+                    sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatColor.RED + "Please type valid mob type to clear: VILLAGER, ZOMBIE, GOLEM");
                     return true;
                 }
                 return true;
             } else if(args[0].equalsIgnoreCase("addorbs")) {
                 if(args.length == 1) {
-                    sender.sendMessage(ChatManager.PLUGINPREFIX + ChatColor.RED + "Please type number of orbs to give!");
+                    sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatColor.RED + "Please type number of orbs to give!");
                     return true;
                 }
                 if(args.length == 2) {
@@ -159,7 +159,7 @@ public class MainCommand implements CommandExecutor {
                 return true;
             } else if(args[0].equalsIgnoreCase("setwave")) {
                 if(args.length == 1) {
-                    sender.sendMessage(ChatManager.PLUGINPREFIX + ChatColor.RED + "Please type number of wave to set!");
+                    sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatColor.RED + "Please type number of wave to set!");
                     return true;
                 }
                 adminCommands.setWave(sender, args[1]);
@@ -181,7 +181,7 @@ public class MainCommand implements CommandExecutor {
             if(args.length > 1) {
                 if(args[1].equalsIgnoreCase("set") || args[1].equalsIgnoreCase("addspawn") || args[1].equalsIgnoreCase("edit")) {
                     if(checkSenderIsConsole(sender)) return true;
-                    if(!hasPermission((Player) sender, "villagedefense.admin.create")) return true;
+                    if(!hasPermission(sender, "villagedefense.admin.create")) return true;
                     adminCommands.performSetup(sender, args);
                     return true;
                 }
@@ -243,37 +243,37 @@ public class MainCommand implements CommandExecutor {
                     if(args.length != 2) {
                         adminCommands.addSign(sender, args[2]);
                     } else {
-                        sender.sendMessage(ChatManager.PLUGINPREFIX + ChatManager.colorMessage("Commands.Type-Arena-Name"));
+                        sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("Commands.Type-Arena-Name"));
                     }
                     return true;
                 } else if(args[1].equalsIgnoreCase("delete")) {
                     if(args.length != 2) {
                         adminCommands.deleteArena(sender, args[2]);
                     } else {
-                        sender.sendMessage(ChatManager.PLUGINPREFIX + ChatManager.colorMessage("Commands.Type-Arena-Name"));
+                        sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("Commands.Type-Arena-Name"));
                     }
                     return true;
                 } else if(args[1].equalsIgnoreCase("setprice")) {
                     if(args.length != 2) {
                         adminCommands.setItemPrice(sender, args[2]);
                     } else {
-                        sender.sendMessage(ChatManager.PLUGINPREFIX + ChatColor.RED + "Please type price of item!");
+                        sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatColor.RED + "Please type price of item!");
                     }
                     return true;
                 } else if(args[1].equalsIgnoreCase("tp")) {
                     if(args.length == 2) {
-                        sender.sendMessage(ChatManager.PLUGINPREFIX + ChatManager.colorMessage("Commands.Type-Arena-Name"));
+                        sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("Commands.Type-Arena-Name"));
                         return true;
                     }
                     if(args.length == 3) {
-                        sender.sendMessage(ChatManager.PLUGINPREFIX + ChatColor.RED + "Please type location type: END, START, LOBBY");
+                        sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatColor.RED + "Please type location type: END, START, LOBBY");
                         return true;
                     }
                     adminCommands.teleportToInstance(sender, args[2], args[3]);
                     return true;
                 } else if(args[1].equalsIgnoreCase("clear")) {
                     if(args.length == 2) {
-                        sender.sendMessage(ChatManager.PLUGINPREFIX + ChatColor.RED + "Please type valid mob type to clear: VILLAGER, ZOMBIE, GOLEM");
+                        sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatColor.RED + "Please type valid mob type to clear: VILLAGER, ZOMBIE, GOLEM");
                         return true;
                     }
                     if(args[2].equalsIgnoreCase("villager")) {
@@ -283,13 +283,13 @@ public class MainCommand implements CommandExecutor {
                     } else if(args[2].equalsIgnoreCase("golem")) {
                         adminCommands.clearGolems(sender);
                     } else {
-                        sender.sendMessage(ChatManager.PLUGINPREFIX + ChatColor.RED + "Please type valid mob type to clear: VILLAGER, ZOMBIE, GOLEM");
+                        sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatColor.RED + "Please type valid mob type to clear: VILLAGER, ZOMBIE, GOLEM");
                         return true;
                     }
                     return true;
                 } else if(args[1].equalsIgnoreCase("addorbs")) {
                     if(args.length == 2) {
-                        sender.sendMessage(ChatManager.PLUGINPREFIX + ChatColor.RED + "Please type number of orbs to give!");
+                        sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatColor.RED + "Please type number of orbs to give!");
                         return true;
                     }
                     if(args.length == 3) {
@@ -300,7 +300,7 @@ public class MainCommand implements CommandExecutor {
                     return true;
                 } else if(args[1].equalsIgnoreCase("setwave")) {
                     if(args.length == 2) {
-                        sender.sendMessage(ChatManager.PLUGINPREFIX + ChatColor.RED + "Please type number of wave to set!");
+                        sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatColor.RED + "Please type number of wave to set!");
                         return true;
                     }
                     adminCommands.setWave(sender, args[2]);
@@ -315,33 +315,33 @@ public class MainCommand implements CommandExecutor {
 
     void onTpCommand(Player player, String ID, LocationType type) {
         if(!plugin.getConfig().contains("instances." + ID)) {
-            player.sendMessage(ChatManager.PLUGINPREFIX + ChatManager.colorMessage("Commands.No-Arena-Like-That"));
+            player.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("Commands.No-Arena-Like-That"));
             return;
         }
-        GameInstance gameInstance = plugin.getGameInstanceManager().getGameInstance(ID);
+        Arena arena = plugin.getArenaRegistry().getArena(ID);
         switch(type) {
             case LOBBY:
-                if(gameInstance.getLobbyLocation() == null) {
+                if(arena.getLobbyLocation() == null) {
                     player.sendMessage(ChatColor.RED + "Lobby location isn't set for this arena!");
                     return;
                 }
-                gameInstance.teleportToLobby(player);
+                arena.teleportToLobby(player);
                 player.sendMessage(ChatColor.GRAY + "Teleported to LOBBY location from arena" + ID);
                 break;
             case START:
-                if(gameInstance.getLobbyLocation() == null) {
+                if(arena.getLobbyLocation() == null) {
                     player.sendMessage(ChatColor.RED + "Start location isn't set for this arena!");
                     return;
                 }
-                gameInstance.teleportToStartLocation(player);
+                arena.teleportToStartLocation(player);
                 player.sendMessage(ChatColor.GRAY + "Teleported to START location from arena" + ID);
                 break;
             case END:
-                if(gameInstance.getLobbyLocation() == null) {
+                if(arena.getLobbyLocation() == null) {
                     player.sendMessage(ChatColor.RED + "End location isn't set for this arena!");
                     return;
                 }
-                gameInstance.teleportToEndLocation(player);
+                arena.teleportToEndLocation(player);
                 player.sendMessage(ChatColor.GRAY + "Teleported to END location from arena" + ID);
                 break;
             default:
@@ -352,18 +352,18 @@ public class MainCommand implements CommandExecutor {
     //TODO optimize me / change me
     void performSetup(Player player, String[] args) {
         if(args[1].equalsIgnoreCase("setup") || args[1].equals("edit")) {
-            if(plugin.getGameInstanceManager().getGameInstance(args[0]) == null) {
-                player.sendMessage(ChatManager.PLUGINPREFIX + ChatManager.colorMessage("Commands.No-Arena-Like-That"));
+            if(plugin.getArenaRegistry().getArena(args[0]) == null) {
+                player.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("Commands.No-Arena-Like-That"));
                 return;
             }
-            new SetupInventory(plugin.getGameInstanceManager().getGameInstance(args[0])).openInventory(player);
+            new SetupInventory(plugin.getArenaRegistry().getArena(args[0])).openInventory(player);
             return;
         }
         if(!(args.length > 2))
             return;
 
         if(!plugin.getConfig().contains("instances." + args[0])) {
-            player.sendMessage(ChatManager.PLUGINPREFIX + ChatManager.colorMessage("Commands.No-Arena-Like-That"));
+            player.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("Commands.No-Arena-Like-That"));
             player.sendMessage(ChatColor.RED + "Usage: /vd < ARENA ID > set <MINPLAYRS | MAXPLAYERS | MAPNAME | SCHEMATIC | LOBBYLOCATION | EndLOCATION | STARTLOCATION  >  < VALUE>");
             return;
         }
@@ -479,7 +479,7 @@ public class MainCommand implements CommandExecutor {
                         exists = true;
                 }
                 if(!exists) {
-                    player.sendMessage(ChatManager.PLUGINPREFIX + ChatColor.RED + "That world doesn't exists!");
+                    player.sendMessage(ChatManager.PLUGIN_PREFIX + ChatColor.RED + "That world doesn't exists!");
                     return;
                 }
                 plugin.getConfig().set("instances." + args[0] + ".world", args[3]);
@@ -492,27 +492,27 @@ public class MainCommand implements CommandExecutor {
         plugin.saveConfig();
     }
 
-    void createArenaCommand(Player player, String[] strings) {
-        for(GameInstance gameInstance : plugin.getGameInstanceManager().getGameInstances()) {
-            if(gameInstance.getID().equalsIgnoreCase(strings[1])) {
+    void createArenaCommand(Player player, String[] args) {
+        for(Arena arena : plugin.getArenaRegistry().getArenas()) {
+            if(arena.getID().equalsIgnoreCase(args[1])) {
                 player.sendMessage(ChatColor.DARK_RED + "Arena with that ID already exists!");
                 player.sendMessage(ChatColor.DARK_RED + "Usage: /vd create <ID>");
                 return;
             }
         }
-        if(plugin.getConfig().contains("instances." + strings[1])) {
+        if(plugin.getConfig().contains("instances." + args[1])) {
             player.sendMessage(ChatColor.DARK_RED + "Instance/Arena already exists! Use another ID or delete it first!");
         } else {
-            createInstanceInConfig(strings[1], player.getWorld().getName());
+            createInstanceInConfig(args[1], player.getWorld().getName());
             player.sendMessage(ChatColor.GREEN + "Instances/Arena successfully created! Restart or reload the server to start the arena!");
             player.sendMessage(ChatColor.BOLD + "--------------- INFORMATION --------------- ");
-            player.sendMessage(ChatColor.GREEN + "WORLD: " + ChatColor.RED + strings[1]);
+            player.sendMessage(ChatColor.GREEN + "WORLD: " + ChatColor.RED + args[1]);
             player.sendMessage(ChatColor.GREEN + "MAX PLAYERS: " + ChatColor.RED + plugin.getConfig().getInt("instances.default.minimumplayers"));
             player.sendMessage(ChatColor.GREEN + "MIN PLAYERS: " + ChatColor.RED + plugin.getConfig().getInt("instances.default.maximumplayers"));
             player.sendMessage(ChatColor.GREEN + "MAP NAME: " + ChatColor.RED + plugin.getConfig().getInt("instances.default.mapname"));
-            player.sendMessage(ChatColor.GREEN + "LOBBY LOCATION " + ChatColor.RED + Util.locationToString(Util.getLocation(true, "instances." + strings[1] + ".lobbylocation")));
-            player.sendMessage(ChatColor.GREEN + "Start LOCATION " + ChatColor.RED + Util.locationToString(Util.getLocation(true, "instances." + strings[1] + ".Startlocation")));
-            player.sendMessage(ChatColor.GREEN + "End LOCATION " + ChatColor.RED + Util.locationToString(Util.getLocation(true, "instances." + strings[1] + ".Endlocation")));
+            player.sendMessage(ChatColor.GREEN + "LOBBY LOCATION " + ChatColor.RED + Util.locationToString(Util.getLocation(true, "instances." + args[1] + ".lobbylocation")));
+            player.sendMessage(ChatColor.GREEN + "Start LOCATION " + ChatColor.RED + Util.locationToString(Util.getLocation(true, "instances." + args[1] + ".Startlocation")));
+            player.sendMessage(ChatColor.GREEN + "End LOCATION " + ChatColor.RED + Util.locationToString(Util.getLocation(true, "instances." + args[1] + ".Endlocation")));
             player.sendMessage(ChatColor.BOLD + "------------------------------------------- ");
             player.sendMessage(ChatColor.RED + "You can edit this game instances in the config!");
         }
@@ -523,13 +523,13 @@ public class MainCommand implements CommandExecutor {
         Util.saveLoc(path + "lobbylocation", Bukkit.getServer().getWorlds().get(0).getSpawnLocation());
         Util.saveLoc(path + "Startlocation", Bukkit.getServer().getWorlds().get(0).getSpawnLocation());
         Util.saveLoc(path + "Endlocation", Bukkit.getServer().getWorlds().get(0).getSpawnLocation());
-        plugin.getConfig().set(path + "minimumplayers", plugin.getConfig().getInt("instances.default.minimumplayers"));
-        plugin.getConfig().set(path + "maximumplayers", plugin.getConfig().getInt("instances.default.maximumplayers"));
-        plugin.getConfig().set(path + "mapname", plugin.getConfig().getInt("instances.default.mapname"));
+        plugin.getConfig().set(path + "minimumplayers", 1);
+        plugin.getConfig().set(path + "maximumplayers", 10);
+        plugin.getConfig().set(path + "mapname", ID);
 
         plugin.getConfig().set(path + "world", worldName);
         plugin.saveConfig();
-        plugin.loadInstances();
+        plugin.registerArenas();
     }
 
     enum LocationType {

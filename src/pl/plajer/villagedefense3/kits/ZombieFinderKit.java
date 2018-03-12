@@ -1,6 +1,5 @@
 package pl.plajer.villagedefense3.kits;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.enchantments.Enchantment;
@@ -12,7 +11,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
-import pl.plajer.villagedefense3.ArenaInstance;
+import pl.plajer.villagedefense3.arena.Arena;
 import pl.plajer.villagedefense3.Main;
 import pl.plajer.villagedefense3.handlers.ChatManager;
 import pl.plajer.villagedefense3.handlers.ConfigurationManager;
@@ -29,7 +28,6 @@ import java.util.Random;
  * Created by Tom on 21/07/2015.
  */
 public class ZombieFinderKit extends LevelKit implements Listener {
-
 
     private Main plugin;
 
@@ -82,7 +80,7 @@ public class ZombieFinderKit extends LevelKit implements Listener {
             return;
         if(!(event.getItem().getItemMeta().getDisplayName().contains(ChatManager.colorMessage("Kits.Zombie-Teleporter.Game-Item-Name"))))
             return;
-        if(plugin.getGameInstanceManager().getGameInstance(event.getPlayer()) == null)
+        if(plugin.getArenaRegistry().getArena(event.getPlayer()) == null)
             return;
         if(UserManager.getUser(event.getPlayer().getUniqueId()).isSpectator()) {
             /*
@@ -92,7 +90,7 @@ public class ZombieFinderKit extends LevelKit implements Listener {
             event.getPlayer().sendMessage(ChatManager.colorMessage("Kits.Teleporter.Spectator-Warning"));
             return;
         }
-        ArenaInstance arenaInstance = (ArenaInstance) plugin.getGameInstanceManager().getGameInstance(event.getPlayer());
+        Arena arena = plugin.getArenaRegistry().getArena(event.getPlayer());
 
         if(UserManager.getUser(event.getPlayer().getUniqueId()).getCooldown("zombie") > 0 && !UserManager.getUser(event.getPlayer().getUniqueId()).isSpectator()) {
             String msgstring = ChatManager.colorMessage("Kits.Ability-Still-On-Cooldown");
@@ -100,10 +98,10 @@ public class ZombieFinderKit extends LevelKit implements Listener {
             event.getPlayer().sendMessage(msgstring);
             return;
         }
-        if(arenaInstance.getZombies() != null || !arenaInstance.getZombies().isEmpty() || !(arenaInstance.getZombies().size() == 0)) {
-            Integer rand = new Random().nextInt(arenaInstance.getZombies().size());
-            arenaInstance.getZombies().get(rand).teleport(event.getPlayer());
-            arenaInstance.getZombies().get(rand).addPotionEffect(new PotionEffect(PotionEffectType.WEAKNESS, 20 * 30, 1));
+        if(arena.getZombies() != null || !arena.getZombies().isEmpty() || !(arena.getZombies().size() == 0)) {
+            Integer rand = new Random().nextInt(arena.getZombies().size());
+            arena.getZombies().get(rand).teleport(event.getPlayer());
+            arena.getZombies().get(rand).addPotionEffect(new PotionEffect(PotionEffectType.WEAKNESS, 20 * 30, 1));
             event.getPlayer().sendMessage(ChatManager.colorMessage("Kits.Zombie-Telelporter.Zombie-Teleported"));
         } else {
             event.getPlayer().sendMessage(ChatManager.colorMessage("Kits.Zombie-Teleporter.No-Available-Zombies"));

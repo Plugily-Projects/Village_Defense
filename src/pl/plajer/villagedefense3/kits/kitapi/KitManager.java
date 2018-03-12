@@ -36,14 +36,14 @@ public class KitManager implements Listener {
     private String[] description;
     private String menuName;
 
-    private String UNLOCKED;
-    private String LOCKED;
+    private String unlockedString;
+    private String lockedString;
 
     public KitManager(Main plugin) {
         itemName = ChatManager.colorMessage("Kits.Kit-Menu-Item-Name");
         this.plugin = plugin;
-        UNLOCKED = ChatManager.colorMessage("Kits.Kit-Menu.Unlocked-Kit-Lore");
-        LOCKED = ChatManager.colorMessage("Kits.Kit-Menu.Locked-Lores.Locked-Lore");
+        unlockedString = ChatManager.colorMessage("Kits.Kit-Menu.Unlocked-Kit-Lore");
+        lockedString = ChatManager.colorMessage("Kits.Kit-Menu.Locked-Lores.Locked-Lore");
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 
@@ -70,9 +70,9 @@ public class KitManager implements Listener {
         for(Kit kit : plugin.getKitRegistry().getKits()) {
             ItemStack itemStack = kit.getItemStack();
             if(kit.isUnlockedByPlayer(player))
-                Util.addLore(itemStack, UNLOCKED);
+                Util.addLore(itemStack, unlockedString);
             else
-                Util.addLore(itemStack, LOCKED);
+                Util.addLore(itemStack, lockedString);
 
             invMenu.addItem(itemStack);
         }

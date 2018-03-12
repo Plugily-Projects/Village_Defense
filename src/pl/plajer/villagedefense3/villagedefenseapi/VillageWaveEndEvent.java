@@ -2,22 +2,22 @@ package pl.plajer.villagedefense3.villagedefenseapi;
 
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
-import pl.plajer.villagedefense3.game.GameInstance;
+import pl.plajer.villagedefense3.arena.Arena;
 
 /**
  * @author Plajer
  * @since 3.0.0-ALPHA build 13
  * <p>
- * Called when wave in game instance has ended.
+ * Called when wave in arena has ended.
  */
 public class VillageWaveEndEvent extends Event {
 
     private static final HandlerList HANDLERS = new HandlerList();
     private final Integer waveNumber;
-    private final GameInstance gameInstance;
+    private final Arena arena;
 
-    public VillageWaveEndEvent(GameInstance gameInstance, Integer waveNumber) {
-        this.gameInstance = gameInstance;
+    public VillageWaveEndEvent(Arena arena, Integer waveNumber) {
+        this.arena = arena;
         this.waveNumber = waveNumber;
     }
 
@@ -29,8 +29,8 @@ public class VillageWaveEndEvent extends Event {
         return waveNumber;
     }
 
-    public GameInstance getGameInstance() {
-        return gameInstance;
+    public Arena getArena() {
+        return arena;
     }
 
     public HandlerList getHandlers() {

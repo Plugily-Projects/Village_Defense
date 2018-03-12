@@ -72,8 +72,6 @@ public class ConfigurationManager {
                 Bukkit.getServer().shutdown();
                 ex.printStackTrace();
             }
-
-
         }
         ConfigFile = new File(plugin.getDataFolder(), filename + ".yml");
         YamlConfiguration config = new YamlConfiguration();

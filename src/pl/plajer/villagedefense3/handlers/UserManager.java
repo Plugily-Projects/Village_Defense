@@ -1,8 +1,8 @@
 package pl.plajer.villagedefense3.handlers;
 
 import org.bukkit.entity.Player;
+import pl.plajer.villagedefense3.arena.Arena;
 import pl.plajer.villagedefense3.User;
-import pl.plajer.villagedefense3.game.GameInstance;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -25,7 +25,7 @@ public class UserManager {
         }
     }
 
-    public static List<User> getUsers(GameInstance GameInstance) {
+    public static List<User> getUsers(Arena GameInstance) {
         List<User> users = new ArrayList<>();
         for(Player player : GameInstance.getPlayers()) {
             users.add(getUser(player.getUniqueId()));

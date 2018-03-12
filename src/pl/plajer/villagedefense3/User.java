@@ -4,7 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.ScoreboardManager;
-import pl.plajer.villagedefense3.game.GameInstance;
+import pl.plajer.villagedefense3.arena.Arena;
 import pl.plajer.villagedefense3.kits.kitapi.basekits.Kit;
 
 import java.util.HashMap;
@@ -56,8 +56,8 @@ public class User {
         Bukkit.getPlayer(uuid).setScoreboard(scoreboard);
     }
 
-    public GameInstance getGameInstance() {
-        return plugin.getGameInstanceManager().getGameInstance(Bukkit.getPlayer(uuid));
+    public Arena getArena() {
+        return plugin.getArenaRegistry().getArena(Bukkit.getPlayer(uuid));
     }
 
     public UUID getUuid() {

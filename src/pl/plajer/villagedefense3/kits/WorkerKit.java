@@ -9,10 +9,9 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.inventory.ItemStack;
-import pl.plajer.villagedefense3.ArenaInstance;
+import pl.plajer.villagedefense3.arena.Arena;
 import pl.plajer.villagedefense3.Main;
 import pl.plajer.villagedefense3.User;
-import pl.plajer.villagedefense3.game.GameInstance;
 import pl.plajer.villagedefense3.handlers.ChatManager;
 import pl.plajer.villagedefense3.handlers.ConfigurationManager;
 import pl.plajer.villagedefense3.handlers.UserManager;
@@ -68,9 +67,8 @@ public class WorkerKit extends LevelKit implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onDoorPlace(BlockPlaceEvent event) {
-        GameInstance gameInstance = plugin.getGameInstanceManager().getGameInstance(event.getPlayer());
-        if(gameInstance == null)
-            return;
+        Arena arena = plugin.getArenaRegistry().getArena(event.getPlayer());
+        if(arena == null) return;
         User user = UserManager.getUser(event.getPlayer().getUniqueId());
         if(user.isSpectator()) {
             event.setCancelled(true);
@@ -84,9 +82,8 @@ public class WorkerKit extends LevelKit implements Listener {
             event.setCancelled(true);
             return;
         }
-        ArenaInstance arenaInstance = (ArenaInstance) plugin.getGameInstanceManager().getGameInstance(event.getPlayer());
 
-        if(!arenaInstance.getDoorLocations().containsKey(event.getBlock().getLocation())) {
+        if(!arena.getDoorLocations().containsKey(event.getBlock().getLocation())) {
             event.setCancelled(true);
             return;
         }

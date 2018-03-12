@@ -68,7 +68,7 @@ public class LooterKit extends LevelKit implements Listener {
         if(event.getEntity().getKiller() == null)
             return;
         Player player = event.getEntity().getKiller();
-        if(plugin.getGameInstanceManager().getGameInstance(player) == null)
+        if(plugin.getArenaRegistry().getArena(player) == null)
             return;
         User user = UserManager.getUser(player.getUniqueId());
         if(user.getKit() instanceof LooterKit) {
