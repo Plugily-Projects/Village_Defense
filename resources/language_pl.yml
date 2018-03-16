@@ -10,7 +10,6 @@
 #
 
 
-#todo finish me
 Commands:
   Teleported-To-The-Lobby: "Przeniesiono do lobby!"
   No-Arena-Like-That: "&cArena o takim ID nie istnieje!"
@@ -197,6 +196,7 @@ In-Game:
   Back-In-Game: "&aNie jestes juz widzem! Wrociles do gry!"
   You-Are-Spectator: "&cJestes teraz widzem! Mozesz latac!"
   You-Leveled-Up: "&7Awansowales! Twoj nowy poziom: %NUMBER%!"
+  Orbs-Pickup: "&6+ %number% kul"
   Rotten-Flesh-Level-Up: "&bBogowie sa zadowoleni ze zginlego miesa! &bDali wam za to dodatkowe serce!"
   Only-Command-Ingame-Is-Leave: "&cMusisz wpierw wyjsc by wykonac ta komende. Jedyna komenda ktora dziala to /leave!"
   Golem-Upgrades:
@@ -216,8 +216,8 @@ In-Game:
     Health: "&e&lZdrowie golema: &7%health%"
   Spawned-Wolf-Name: "Pies gracza %player%"
   Spawned-Golem-Name: "Golem gracza %player%"
-  #Join cancelled via external plugin that uses VD3 api.
   Join-Cancelled-Via-API: "&cNie mozesz dolaczyc do gry!"
+  Arena-Not-Configured: "&cArena nie zostala skonfigurowana! Poinformuj admina!"
   Spectator:
     Spectator-Item-Name: "&7Lista graczy"
     Spectator-Menu-Name: "&lMenu widza"
@@ -243,6 +243,7 @@ In-Game:
     Shop-Messages:
       Shop-GUI-Name: "&lSklep"
       Golem-Item-Name: "Przywolaj Golema"
+      Wolf-Item-Name: "Przywolaj Psa"
       Not-Enough-Orbs: "&cPotrzebujesz wiecej kul by zakupic ten przedmiot!"
       Currency-In-Shop: "kul"
       No-Shop-Defined: "&cSklep nie zostal ustawiony! Powiadom administracje!"
@@ -262,7 +263,7 @@ In-Game:
 Signs:
   Please-Type-Arena-Name: "&cProsze podac nazwe areny w drugiej linii!"
   Arena-Doesnt-Exists: "&cArena o takiej nazwie nie istnieje!"
-  Sign-Created: "&aTablicza stworzona pomyslnie!"
+  Sign-Created: "&aTabliczka stworzona pomyslnie!"
   Sign-Removed: "&aTabliczka pomyslnie usunieta!"
   Game-States:
     Inactive: "&lOczekuje..."

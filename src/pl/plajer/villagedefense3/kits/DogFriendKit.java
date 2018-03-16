@@ -7,6 +7,7 @@ import pl.plajer.villagedefense3.Main;
 import pl.plajer.villagedefense3.arena.*;
 import pl.plajer.villagedefense3.handlers.ChatManager;
 import pl.plajer.villagedefense3.handlers.PermissionsManager;
+import pl.plajer.villagedefense3.kits.kitapi.KitRegistry;
 import pl.plajer.villagedefense3.kits.kitapi.basekits.PremiumKit;
 import pl.plajer.villagedefense3.utils.ArmorHelper;
 import pl.plajer.villagedefense3.utils.Util;
@@ -26,7 +27,7 @@ public class DogFriendKit extends PremiumKit {
         this.setName(ChatManager.colorMessage("Kits.Dog-Friend.Kit-Name"));
         List<String> description = Util.splitString(ChatManager.colorMessage("Kits.Dog-Friend.Kit-Description"), 40);
         this.setDescription(description.toArray(new String[description.size()]));
-        plugin.getKitRegistry().registerKit(this);
+        KitRegistry.registerKit(this);
     }
 
 
@@ -42,7 +43,7 @@ public class DogFriendKit extends PremiumKit {
         ArmorHelper.setArmor(player, ArmorHelper.ArmorType.LEATHER);
         player.getInventory().addItem(new ItemStack(Material.GRILLED_PORK, 8));
         player.getInventory().addItem(new ItemStack(Material.SADDLE));
-        Arena arena = plugin.getArenaRegistry().getArena(player);
+        Arena arena = ArenaRegistry.getArena(player);
         if(arena == null) return;
         if(plugin.is1_8_R3()) {
             ArenaInitializer1_8_R3 initializer = (ArenaInitializer1_8_R3) arena;
@@ -74,7 +75,7 @@ public class DogFriendKit extends PremiumKit {
 
     @Override
     public void reStock(Player player) {
-        Arena arena = plugin.getArenaRegistry().getArena(player);
+        Arena arena = ArenaRegistry.getArena(player);
         if(arena == null) return;
         if(plugin.is1_8_R3()) {
             ArenaInitializer1_8_R3 initializer = (ArenaInitializer1_8_R3) arena;

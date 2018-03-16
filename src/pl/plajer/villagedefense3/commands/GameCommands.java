@@ -3,9 +3,10 @@ package pl.plajer.villagedefense3.commands;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import pl.plajer.villagedefense3.arena.Arena;
 import pl.plajer.villagedefense3.Main;
 import pl.plajer.villagedefense3.User;
+import pl.plajer.villagedefense3.arena.Arena;
+import pl.plajer.villagedefense3.arena.ArenaRegistry;
 import pl.plajer.villagedefense3.handlers.ChatManager;
 import pl.plajer.villagedefense3.handlers.UserManager;
 
@@ -65,8 +66,8 @@ public class GameCommands extends MainCommand {
                 plugin.getBungeeManager().connectToHub(p);
                 System.out.print(p.getName() + " is teleported to the Hub Server");
             } else {
-                plugin.getArenaRegistry().getArena(p).teleportToEndLocation(p);
-                plugin.getArenaRegistry().getArena(p).leaveAttempt(p);
+                ArenaRegistry.getArena(p).teleportToEndLocation(p);
+                ArenaRegistry.getArena(p).leaveAttempt(p);
                 System.out.print(p.getName() + " has left the arena! He is teleported to the end location.");
             }
         }
@@ -74,7 +75,7 @@ public class GameCommands extends MainCommand {
 
     public void joinGame(CommandSender sender, String arenaString) {
         if(checkSenderIsConsole(sender)) return;
-        for(Arena arena : plugin.getArenaRegistry().getArenas()) {
+        for(Arena arena : ArenaRegistry.getArenas()) {
             if(arenaString.equalsIgnoreCase(arena.getID())) {
                 arena.joinAttempt((Player) sender);
                 return;

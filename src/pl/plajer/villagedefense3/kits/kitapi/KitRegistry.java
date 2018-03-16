@@ -14,15 +14,15 @@ import java.util.List;
  */
 public class KitRegistry {
 
-    private List<Kit> kits = new ArrayList<>();
-    private Kit defaultKit = null;
+    private static List<Kit> kits = new ArrayList<>();
+    private static Kit defaultKit = null;
 
     /**
      * Method for registering new kit
      *
      * @param kit Kit to register
      */
-    public void registerKit(Kit kit) {
+    public static void registerKit(Kit kit) {
         kits.add(kit);
     }
 
@@ -31,7 +31,7 @@ public class KitRegistry {
      *
      * @return default game kit
      */
-    public Kit getDefaultKit() {
+    public static Kit getDefaultKit() {
         return defaultKit;
     }
 
@@ -40,8 +40,8 @@ public class KitRegistry {
      *
      * @param defaultKit default kit to set, must be FreeKit
      */
-    public void setDefaultKit(FreeKit defaultKit) {
-        this.defaultKit = defaultKit;
+    public static void setDefaultKit(FreeKit defaultKit) {
+        KitRegistry.defaultKit = defaultKit;
     }
 
     /**
@@ -49,7 +49,7 @@ public class KitRegistry {
      *
      * @return list of all registered kits
      */
-    public List<Kit> getKits() {
+    public static List<Kit> getKits() {
         return kits;
     }
 
@@ -59,7 +59,7 @@ public class KitRegistry {
      * @param itemStack itemstack that kit represents
      * @return Registered kit or default if not found
      */
-    public Kit getKit(ItemStack itemStack) {
+    public static Kit getKit(ItemStack itemStack) {
         Kit returnKit = getDefaultKit();
         for(Kit kit : kits) {
             if(itemStack.getType() == kit.getMaterial()) {

@@ -10,9 +10,10 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.*;
 import org.bukkit.event.player.*;
-import pl.plajer.villagedefense3.arena.Arena;
 import pl.plajer.villagedefense3.Main;
 import pl.plajer.villagedefense3.User;
+import pl.plajer.villagedefense3.arena.Arena;
+import pl.plajer.villagedefense3.arena.ArenaRegistry;
 import pl.plajer.villagedefense3.arena.ArenaState;
 import pl.plajer.villagedefense3.handlers.UserManager;
 
@@ -108,10 +109,10 @@ public class SpectatorEvents implements Listener {
         Player player = (Player) event.getEntity();
         if(!UserManager.getUser(player.getUniqueId()).isSpectator())
             return;
-        if(plugin.getArenaRegistry().getArena(player) == null)
+        if(ArenaRegistry.getArena(player) == null)
             return;
         if(player.getLocation().getY() < 1)
-            player.teleport(plugin.getArenaRegistry().getArena(player).getStartLocation());
+            player.teleport(ArenaRegistry.getArena(player).getStartLocation());
         event.setCancelled(true);
     }
 
@@ -168,7 +169,7 @@ public class SpectatorEvents implements Listener {
 
     @EventHandler
     public void onSpectate(PlayerDropItemEvent event) {
-        Arena arena = plugin.getArenaRegistry().getArena(event.getPlayer());
+        Arena arena = ArenaRegistry.getArena(event.getPlayer());
         if(arena == null)
             return;
         if(arena.getArenaState() != ArenaState.IN_GAME)
@@ -187,7 +188,7 @@ public class SpectatorEvents implements Listener {
 
     @EventHandler
     public void onRightClick(PlayerInteractEvent event) {
-        Arena arena = plugin.getArenaRegistry().getArena(event.getPlayer());
+        Arena arena = ArenaRegistry.getArena(event.getPlayer());
         if(arena != null && UserManager.getUser(event.getPlayer().getUniqueId()).isSpectator())
             event.setCancelled(true);
     }

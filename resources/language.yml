@@ -198,6 +198,7 @@ In-Game:
   Back-In-Game: "&aYou're not a spectator anymore! You're back in the game!"
   You-Are-Spectator: "&cYou're now a spectator! You can fly now!"
   You-Leveled-Up: "&7You leveled up! You're now level %NUMBER%!"
+  Orbs-Pickup: "&6+ %number% orbs"
   Rotten-Flesh-Level-Up: "&bThe gods were happy with the rotten flesh! &bTherefor they gave you an extra heart!"
   Only-Command-Ingame-Is-Leave: "&cYou have to leave the game first to perform commands. The only command that works is /leave!"
   Golem-Upgrades:
@@ -219,6 +220,7 @@ In-Game:
   Spawned-Golem-Name: "%player%'s Golem"
   #Join cancelled via external plugin that uses VD3 api.
   Join-Cancelled-Via-API: "&cYou can't join this game!"
+  Arena-Not-Configured: "&cArena is not configured yet! Contact staff!"
   Spectator:
     Spectator-Item-Name: "&7Players list"
     Spectator-Menu-Name: "&lSpectator menu"
@@ -244,6 +246,7 @@ In-Game:
     Shop-Messages:
       Shop-GUI-Name: "&lShop"
       Golem-Item-Name: "Spawn Golem"
+      Wolf-Item-Name: "Spawn Wolf"
       Not-Enough-Orbs: "&cYou need more orbs to buy this item!"
       Currency-In-Shop: "orbs"
       No-Shop-Defined: "&cShop wasn't set up! Contact staff!"

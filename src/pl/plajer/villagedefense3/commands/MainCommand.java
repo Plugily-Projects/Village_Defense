@@ -8,12 +8,19 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import pl.plajer.villagedefense3.Main;
 import pl.plajer.villagedefense3.arena.Arena;
+import pl.plajer.villagedefense3.arena.ArenaRegistry;
 import pl.plajer.villagedefense3.handlers.ChatManager;
+import pl.plajer.villagedefense3.handlers.ConfigurationManager;
 import pl.plajer.villagedefense3.utils.SetupInventory;
 import pl.plajer.villagedefense3.utils.Util;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
 
 /**
  * Created by Tom on 7/08/2014.
@@ -43,7 +50,7 @@ public class MainCommand implements CommandExecutor {
     }
 
     boolean checkIsInGameInstance(Player player) {
-        if(plugin.getArenaRegistry().getArena(player) == null) {
+        if(ArenaRegistry.getArena(player) == null) {
             player.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("Commands.Not-Playing"));
             return false;
         }
@@ -314,11 +321,11 @@ public class MainCommand implements CommandExecutor {
     }
 
     void onTpCommand(Player player, String ID, LocationType type) {
-        if(!plugin.getConfig().contains("instances." + ID)) {
+        if(!ConfigurationManager.getConfig("arenas").contains("instances." + ID)) {
             player.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("Commands.No-Arena-Like-That"));
             return;
         }
-        Arena arena = plugin.getArenaRegistry().getArena(ID);
+        Arena arena = ArenaRegistry.getArena(ID);
         switch(type) {
             case LOBBY:
                 if(arena.getLobbyLocation() == null) {
@@ -352,17 +359,18 @@ public class MainCommand implements CommandExecutor {
     //TODO optimize me / change me
     void performSetup(Player player, String[] args) {
         if(args[1].equalsIgnoreCase("setup") || args[1].equals("edit")) {
-            if(plugin.getArenaRegistry().getArena(args[0]) == null) {
+            if(ArenaRegistry.getArena(args[0]) == null) {
                 player.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("Commands.No-Arena-Like-That"));
                 return;
             }
-            new SetupInventory(plugin.getArenaRegistry().getArena(args[0])).openInventory(player);
+            new SetupInventory(ArenaRegistry.getArena(args[0])).openInventory(player);
             return;
         }
         if(!(args.length > 2))
             return;
+        FileConfiguration config = ConfigurationManager.getConfig("arenas");
 
-        if(!plugin.getConfig().contains("instances." + args[0])) {
+        if(!config.contains("instances." + args[0])) {
             player.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("Commands.No-Arena-Like-That"));
             player.sendMessage(ChatColor.RED + "Usage: /vd < ARENA ID > set <MINPLAYRS | MAXPLAYERS | MAPNAME | SCHEMATIC | LOBBYLOCATION | EndLOCATION | STARTLOCATION  >  < VALUE>");
             return;
@@ -372,27 +380,28 @@ public class MainCommand implements CommandExecutor {
         if(args[1].equalsIgnoreCase("addspawn")) {
             if(args[2].equalsIgnoreCase("zombie")) {
                 int i;
-                if(!plugin.getConfig().contains("instances." + args[0] + ".zombiespawns")) {
+                if(!config.contains("instances." + args[0] + ".zombiespawns")) {
                     i = 0;
                 } else {
-                    i = plugin.getConfig().getConfigurationSection("instances." + args[0] + ".zombiespawns").getKeys(false).size();
+                    i = config.getConfigurationSection("instances." + args[0] + ".zombiespawns").getKeys(false).size();
                 }
                 i++;
-                Util.saveLoc("instances." + args[0] + ".zombiespawns." + i, player.getLocation());
+                Util.saveLoc("instances." + args[0] + ".zombiespawns." + i, player.getLocation(), false);
                 player.sendMessage(ChatColor.GREEN + "Zombie spawn added!");
                 return;
             }
             if(args[2].equalsIgnoreCase("villager")) {
                 int i;
-                if(!plugin.getConfig().contains("instances." + args[0] + ".villagerspawns")) {
+                if(!config.contains("instances." + args[0] + ".villagerspawns")) {
                     i = 0;
                 } else {
-                    i = plugin.getConfig().getConfigurationSection("instances." + args[0] + ".villagerspawns").getKeys(false).size();
+                    i = config.getConfigurationSection("instances." + args[0] + ".villagerspawns").getKeys(false).size();
                 }
 
                 i++;
-                Util.saveLoc("instances." + args[0] + ".villagerspawns." + i, player.getLocation());
+                Util.saveLoc("instances." + args[0] + ".villagerspawns." + i, player.getLocation(), false);
                 player.sendMessage(ChatColor.GREEN + "Villager spawn added!");
+                return;
             }
             if(args[2].equalsIgnoreCase("doors")) {
                 String ID = args[0];
@@ -400,10 +409,10 @@ public class MainCommand implements CommandExecutor {
                 int i;
                 if(plugin.getWorldEditPlugin().getSelection(player) == null)
                     return;
-                if(!plugin.getConfig().contains("instances." + ID + ".doors")) {
+                if(!config.contains("instances." + ID + ".doors")) {
                     i = 0;
                 } else {
-                    i = plugin.getConfig().getConfigurationSection("instances." + ID + ".doors").getKeys(false).size();
+                    i = config.getConfigurationSection("instances." + ID + ".doors").getKeys(false).size();
                 }
                 i++;
                 Selection selection = plugin.getWorldEditPlugin().getSelection(player);
@@ -416,8 +425,9 @@ public class MainCommand implements CommandExecutor {
                             for(int z = min.getBlockZ(); z <= max.getBlockZ(); z = z + 1) {
                                 Location temporaryBlock = new Location(player.getWorld(), x, y, z);
                                 if(temporaryBlock.getBlock().getType() == Material.WOODEN_DOOR) {
-                                    Util.saveLoc("instances." + ID + ".doors." + i + ".location", temporaryBlock);
-                                    plugin.getConfig().set("instances." + ID + ".doors." + i + ".byte", temporaryBlock.getBlock().getData());
+                                    String location = temporaryBlock.getWorld().getName() + "," + temporaryBlock.getX() + "," + temporaryBlock.getY() + "," + temporaryBlock.getZ() + "," + temporaryBlock.getYaw() + "," + temporaryBlock.getPitch();
+                                    config.set("instances." + ID + ".doors." + i + ".location", location);
+                                    config.set("instances." + ID + ".doors." + i + ".byte", temporaryBlock.getBlock().getData());
                                     counter++;
                                     i++;
                                 }
@@ -427,35 +437,39 @@ public class MainCommand implements CommandExecutor {
                     }
                 } else {
                     if(selection.getMaximumPoint().getBlock().getType() == Material.WOODEN_DOOR) {
-                        Util.saveLoc("instances." + ID + ".doors" + i + ".location", selection.getMaximumPoint());
-                        plugin.getConfig().set("instances." + ID + ".doors." + i + ".byte", selection.getMaximumPoint().getBlock().getData());
+                        String location = selection.getMaximumPoint().getWorld().getName() + "," + selection.getMaximumPoint().getX() + "," + selection.getMaximumPoint().getY() + "," + selection.getMaximumPoint().getZ() + "," + selection.getMaximumPoint().getYaw() + "," + selection.getMaximumPoint().getPitch();
+                        config.set("instances." + ID + ".doors." + i + ".location", location);
+                        config.set("instances." + ID + ".doors." + i + ".byte", selection.getMaximumPoint().getBlock().getData());
                         counter++;
                         i++;
                     }
                     if(selection.getMinimumPoint().getBlock().getType() == Material.WOODEN_DOOR) {
-                        Util.saveLoc("instances." + ID + ".doors" + i + ".location", selection.getMinimumPoint());
-                        plugin.getConfig().set("instances." + ID + ".doors." + i + ".byte", selection.getMinimumPoint().getBlock().getData());
+                        String location = selection.getMaximumPoint().getWorld().getName() + "," + selection.getMaximumPoint().getX() + "," + selection.getMaximumPoint().getY() + "," + selection.getMaximumPoint().getZ() + "," + selection.getMaximumPoint().getYaw() + "," + selection.getMaximumPoint().getPitch();
+                        config.set("instances." + ID + ".doors." + i + ".location", location);
+                        config.set("instances." + ID + ".doors." + i + ".byte", selection.getMinimumPoint().getBlock().getData());
                         counter++;
                         i++;
                     }
                 }
-                plugin.saveConfig();
-                player.sendMessage(ChatColor.GREEN + "" + Math.ceil(counter / 2) + " doors added!");
+                player.sendMessage(ChatColor.GREEN + "" + (int) Math.ceil(counter / 2) + " doors were added!");
             }
-            plugin.saveConfig();
+            ConfigurationManager.saveConfig(config, "arenas");
             return;
         }
         if(!(args[1].equalsIgnoreCase("set")))
             return;
         if(args.length == 3) {
             if(args[2].equalsIgnoreCase("lobbylocation") || args[2].equalsIgnoreCase("lobbyloc")) {
-                Util.saveLoc("instances." + args[0] + ".lobbylocation", player.getLocation());
+                String location = player.getLocation().getWorld().getName() + "," + player.getLocation().getX() + "," + player.getLocation().getY() + "," + player.getLocation().getZ() + "," + player.getLocation().getYaw() + "," + player.getLocation().getPitch();
+                config.set("instances." + args[0] + ".lobbylocation", location);
                 player.sendMessage("VillageDefense: Lobby location for arena/instance " + args[0] + " set to " + Util.locationToString(player.getLocation()));
             } else if(args[2].equalsIgnoreCase("Startlocation") || args[2].equalsIgnoreCase("Startloc")) {
-                Util.saveLoc("instances." + args[0] + ".Startlocation", player.getLocation());
+                String location = player.getLocation().getWorld().getName() + "," + player.getLocation().getX() + "," + player.getLocation().getY() + "," + player.getLocation().getZ() + "," + player.getLocation().getYaw() + "," + player.getLocation().getPitch();
+                config.set("instances." + args[0] + ".Startlocation", location);
                 player.sendMessage("VillageDefense: Start location for arena/instance " + args[0] + " set to " + Util.locationToString(player.getLocation()));
             } else if(args[2].equalsIgnoreCase("Endlocation") || args[2].equalsIgnoreCase("Endloc")) {
-                Util.saveLoc("instances." + args[0] + ".Endlocation", player.getLocation());
+                String location = player.getLocation().getWorld().getName() + "," + player.getLocation().getX() + "," + player.getLocation().getY() + "," + player.getLocation().getZ() + "," + player.getLocation().getYaw() + "," + player.getLocation().getPitch();
+                config.set("instances." + args[0] + ".Endlocation", location);
                 player.sendMessage("VillageDefense: End location for arena/instance " + args[0] + " set to " + Util.locationToString(player.getLocation()));
             } else {
                 player.sendMessage(ChatColor.RED + "Invalid Command!");
@@ -463,14 +477,14 @@ public class MainCommand implements CommandExecutor {
             }
         } else if(args.length == 4) {
             if(args[2].equalsIgnoreCase("MAXPLAYERS") || args[2].equalsIgnoreCase("maximumplayers")) {
-                plugin.getConfig().set("instances." + args[0] + ".maximumplayers", Integer.parseInt(args[3]));
+                config.set("instances." + args[0] + ".maximumplayers", Integer.parseInt(args[3]));
                 player.sendMessage("VillageDefense: Maximum players for arena/instance " + args[0] + " set to " + Integer.parseInt(args[3]));
 
             } else if(args[2].equalsIgnoreCase("MINPLAYERS") || args[2].equalsIgnoreCase("minimumplayers")) {
-                plugin.getConfig().set("instances." + args[0] + ".minimumplayers", Integer.parseInt(args[3]));
+                config.set("instances." + args[0] + ".minimumplayers", Integer.parseInt(args[3]));
                 player.sendMessage("VillageDefense: Minimum players for arena/instance " + args[0] + " set to " + Integer.parseInt(args[3]));
             } else if(args[2].equalsIgnoreCase("MAPNAME") || args[2].equalsIgnoreCase("NAME")) {
-                plugin.getConfig().set("instances." + args[0] + ".mapname", args[3]);
+                config.set("instances." + args[0] + ".mapname", args[3]);
                 player.sendMessage("VillageDefense: Map name for arena/instance " + args[0] + " set to " + args[3]);
             } else if(args[2].equalsIgnoreCase("WORLD") || args[2].equalsIgnoreCase("MAP")) {
                 boolean exists = false;
@@ -482,53 +496,51 @@ public class MainCommand implements CommandExecutor {
                     player.sendMessage(ChatManager.PLUGIN_PREFIX + ChatColor.RED + "That world doesn't exists!");
                     return;
                 }
-                plugin.getConfig().set("instances." + args[0] + ".world", args[3]);
+                config.set("instances." + args[0] + ".world", args[3]);
                 player.sendMessage("VillageDefense: World for arena/instance " + args[0] + " set to " + args[3]);
             } else {
                 player.sendMessage(ChatColor.RED + "Invalid Command!");
                 player.sendMessage(ChatColor.RED + "Usage: /vd set <MINPLAYERS | MAXPLAYERS> <value>");
             }
         }
-        plugin.saveConfig();
+        ConfigurationManager.saveConfig(config, "arenas");
     }
 
     void createArenaCommand(Player player, String[] args) {
-        for(Arena arena : plugin.getArenaRegistry().getArenas()) {
+        for(Arena arena : ArenaRegistry.getArenas()) {
             if(arena.getID().equalsIgnoreCase(args[1])) {
                 player.sendMessage(ChatColor.DARK_RED + "Arena with that ID already exists!");
                 player.sendMessage(ChatColor.DARK_RED + "Usage: /vd create <ID>");
                 return;
             }
         }
-        if(plugin.getConfig().contains("instances." + args[1])) {
+        if(ConfigurationManager.getConfig("arenas").contains("instances." + args[1])) {
             player.sendMessage(ChatColor.DARK_RED + "Instance/Arena already exists! Use another ID or delete it first!");
         } else {
             createInstanceInConfig(args[1], player.getWorld().getName());
-            player.sendMessage(ChatColor.GREEN + "Instances/Arena successfully created! Restart or reload the server to start the arena!");
-            player.sendMessage(ChatColor.BOLD + "--------------- INFORMATION --------------- ");
-            player.sendMessage(ChatColor.GREEN + "WORLD: " + ChatColor.RED + args[1]);
-            player.sendMessage(ChatColor.GREEN + "MAX PLAYERS: " + ChatColor.RED + plugin.getConfig().getInt("instances.default.minimumplayers"));
-            player.sendMessage(ChatColor.GREEN + "MIN PLAYERS: " + ChatColor.RED + plugin.getConfig().getInt("instances.default.maximumplayers"));
-            player.sendMessage(ChatColor.GREEN + "MAP NAME: " + ChatColor.RED + plugin.getConfig().getInt("instances.default.mapname"));
-            player.sendMessage(ChatColor.GREEN + "LOBBY LOCATION " + ChatColor.RED + Util.locationToString(Util.getLocation(true, "instances." + args[1] + ".lobbylocation")));
-            player.sendMessage(ChatColor.GREEN + "Start LOCATION " + ChatColor.RED + Util.locationToString(Util.getLocation(true, "instances." + args[1] + ".Startlocation")));
-            player.sendMessage(ChatColor.GREEN + "End LOCATION " + ChatColor.RED + Util.locationToString(Util.getLocation(true, "instances." + args[1] + ".Endlocation")));
+            player.sendMessage(ChatColor.BOLD + "------------------------------------------");
+            player.sendMessage(ChatColor.YELLOW + "      Instance " + args[1] + " created!");
+            player.sendMessage("");
+            player.sendMessage(ChatColor.GREEN + "Edit this arena via " + ChatColor.GOLD + "/vd " + args[1] + " edit" + ChatColor.GREEN + "!");
             player.sendMessage(ChatColor.BOLD + "------------------------------------------- ");
-            player.sendMessage(ChatColor.RED + "You can edit this game instances in the config!");
         }
     }
 
     private void createInstanceInConfig(String ID, String worldName) {
         String path = "instances." + ID + ".";
-        Util.saveLoc(path + "lobbylocation", Bukkit.getServer().getWorlds().get(0).getSpawnLocation());
-        Util.saveLoc(path + "Startlocation", Bukkit.getServer().getWorlds().get(0).getSpawnLocation());
-        Util.saveLoc(path + "Endlocation", Bukkit.getServer().getWorlds().get(0).getSpawnLocation());
-        plugin.getConfig().set(path + "minimumplayers", 1);
-        plugin.getConfig().set(path + "maximumplayers", 10);
-        plugin.getConfig().set(path + "mapname", ID);
+        Util.saveLoc(path + "lobbylocation", Bukkit.getServer().getWorlds().get(0).getSpawnLocation(), false);
+        Util.saveLoc(path + "Startlocation", Bukkit.getServer().getWorlds().get(0).getSpawnLocation(), false);
+        Util.saveLoc(path + "Endlocation", Bukkit.getServer().getWorlds().get(0).getSpawnLocation(), false);
+        FileConfiguration config = ConfigurationManager.getConfig("arenas");
+        config.set(path + "minimumplayers", 1);
+        config.set(path + "maximumplayers", 10);
+        config.set(path + "mapname", ID);
+        config.set(path + "signs", new ArrayList<>());
+        config.set(path + "isdone", false);
+        config.set(path + "world", worldName);
+        ConfigurationManager.saveConfig(config, "arenas");
 
-        plugin.getConfig().set(path + "world", worldName);
-        plugin.saveConfig();
+        //TODO FIXME do not register all (and clear), just register not ready arena!!!!!!!!
         plugin.registerArenas();
     }
 

@@ -9,12 +9,14 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.inventory.ItemStack;
-import pl.plajer.villagedefense3.arena.Arena;
 import pl.plajer.villagedefense3.Main;
 import pl.plajer.villagedefense3.User;
+import pl.plajer.villagedefense3.arena.Arena;
+import pl.plajer.villagedefense3.arena.ArenaRegistry;
 import pl.plajer.villagedefense3.handlers.ChatManager;
 import pl.plajer.villagedefense3.handlers.ConfigurationManager;
 import pl.plajer.villagedefense3.handlers.UserManager;
+import pl.plajer.villagedefense3.kits.kitapi.KitRegistry;
 import pl.plajer.villagedefense3.kits.kitapi.basekits.LevelKit;
 import pl.plajer.villagedefense3.utils.ArmorHelper;
 import pl.plajer.villagedefense3.utils.Util;
@@ -35,7 +37,7 @@ public class WorkerKit extends LevelKit implements Listener {
         this.setName(ChatManager.colorMessage("Kits.Worker.Kit-Name"));
         List<String> description = Util.splitString(ChatManager.colorMessage("Kits.Worker.Kit-Description"), 40);
         this.setDescription(description.toArray(new String[description.size()]));
-        plugin.getKitRegistry().registerKit(this);
+        KitRegistry.registerKit(this);
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 
@@ -67,7 +69,7 @@ public class WorkerKit extends LevelKit implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onDoorPlace(BlockPlaceEvent event) {
-        Arena arena = plugin.getArenaRegistry().getArena(event.getPlayer());
+        Arena arena = ArenaRegistry.getArena(event.getPlayer());
         if(arena == null) return;
         User user = UserManager.getUser(event.getPlayer().getUniqueId());
         if(user.isSpectator()) {

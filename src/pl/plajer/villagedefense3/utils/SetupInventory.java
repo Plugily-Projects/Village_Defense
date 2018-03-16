@@ -7,8 +7,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
-import pl.plajer.villagedefense3.arena.Arena;
 import pl.plajer.villagedefense3.Main;
+import pl.plajer.villagedefense3.arena.Arena;
+import pl.plajer.villagedefense3.handlers.ConfigurationManager;
 
 /**
  * Created by Tom on 15/06/2015.
@@ -28,13 +29,13 @@ public class SetupInventory {
                 .lore(ChatColor.DARK_GRAY + "(location where players will be teleported")
                 .lore(ChatColor.DARK_GRAY + "after the game)")
                 .lore(isOptionDoneBool("instances." + arena.getID() + ".Endlocation"))
-                .build(), "vd " + arena.getID() + " set ENDLOC");
+                .build());
         addItem(new ItemBuilder(new ItemStack(Material.LAPIS_BLOCK))
-                .name(ChatColor.GOLD + "►Set" + ChatColor.WHITE + " lobby " + ChatColor.GOLD + "location")
+                .name(ChatColor.GOLD + "► Set" + ChatColor.WHITE + " lobby " + ChatColor.GOLD + "location")
                 .lore(ChatColor.GRAY + "Click to set the lobby location")
                 .lore(ChatColor.GRAY + "on the place where you are standing")
                 .lore(isOptionDoneBool("instances." + arena.getID() + ".lobbylocation"))
-                .build(), "vd " + arena.getID() + " set LOBBYLOC");
+                .build());
 
         addItem(new ItemBuilder(new ItemStack(Material.EMERALD_BLOCK))
                 .name(ChatColor.GOLD + "► Set" + ChatColor.YELLOW + " starting " + ChatColor.GOLD + "location")
@@ -43,28 +44,28 @@ public class SetupInventory {
                 .lore(ChatColor.DARK_GRAY + "(location where players will be teleported")
                 .lore(ChatColor.DARK_GRAY + "when game starts)")
                 .lore(isOptionDoneBool("instances." + arena.getID() + ".Startlocation"))
-                .build(), "vd " + arena.getID() + " set STARTLOC");
-        addItem(new ItemBuilder(new ItemStack(Material.COAL, arena.getMinimumPlayers()))
+                .build());
+        addItem(new ItemBuilder(new ItemStack(Material.COAL, ConfigurationManager.getConfig("arenas").getInt("instances." + arena.getID() + ".minimumplayers")))
                 .name(ChatColor.GOLD + "► Set" + ChatColor.DARK_GREEN + " minimum players " + ChatColor.GOLD + "size")
                 .lore(ChatColor.GRAY + "LEFT click to decrease")
                 .lore(ChatColor.GRAY + "RIGHT click to increase")
                 .lore(ChatColor.DARK_GRAY + "(how many players are needed")
                 .lore(ChatColor.DARK_GRAY + "for game to start lobby countdown)")
                 .lore(isOptionDone("instances." + arena.getID() + ".minimumplayers"))
-                .build(), "vd " + arena.getID() + " set MINPLAYERS " + arena.getMinimumPlayers());
-        addItem(new ItemBuilder(new ItemStack(Material.REDSTONE, arena.getMaximumPlayers()))
+                .build());
+        addItem(new ItemBuilder(new ItemStack(Material.REDSTONE, ConfigurationManager.getConfig("arenas").getInt("instances." + arena.getID() + ".maximumplayers")))
                 .name(ChatColor.GOLD + "► Set" + ChatColor.GREEN + " maximum players " + ChatColor.GOLD + "size")
                 .lore(ChatColor.GRAY + "LEFT click to decrease")
                 .lore(ChatColor.GRAY + "RIGHT click to increase")
                 .lore(ChatColor.DARK_GRAY + "(how many players arena can hold)")
                 .lore(isOptionDone("instances." + arena.getID() + ".maximumplayers"))
-                .build(), "vd " + arena.getID() + " set MAXPLAYERS " + arena.getMaximumPlayers());
+                .build());
         if(!plugin.isBungeeActivated()) {
             addItem(new ItemBuilder(new ItemStack(Material.SIGN))
                     .name(ChatColor.GOLD + "► Add game" + ChatColor.AQUA + " sign")
                     .lore(ChatColor.GRAY + "Target a sign and click this.")
                     .lore(ChatColor.DARK_GRAY + "(this will set target sign as game sign)")
-                    .build(), "vda addsign " + arena.getID());
+                    .build());
         }
         addItem(new ItemBuilder(new ItemStack(Material.NAME_TAG))
                 .name(ChatColor.GOLD + "► Set" + ChatColor.RED + " map name " + ChatColor.GOLD + "(currently: " + arena.getMapName() + ")")
@@ -72,7 +73,7 @@ public class SetupInventory {
                 .lore(ChatColor.GRAY + "It will be set as arena name.")
                 .lore(ChatColor.RED + "" + ChatColor.BOLD + "Drop name tag here don't move")
                 .lore(ChatColor.RED + "" + ChatColor.BOLD + "it and replace with new!!!")
-                .build(), "vd " + arena.getID() + " set MAPNAME <NAME>");
+                .build());
         addItem(new ItemBuilder(new ItemStack(Material.EMERALD, 1))
                 .name(ChatColor.GOLD + "► Add" + ChatColor.GREEN + " villager " + ChatColor.GOLD + "spawn")
                 .lore(ChatColor.GRAY + "Add new villager spawn")
@@ -99,34 +100,35 @@ public class SetupInventory {
                 .lore(ChatColor.GRAY + "Target chest with configured game items")
                 .lore(ChatColor.GRAY + "and click this.")
                 .build());
+        inventory.addItem(new ItemBuilder(new ItemStack(Material.FIREWORK))
+                .name(ChatColor.GOLD + "► " + ChatColor.GREEN + "Register arena")
+                .lore(ChatColor.GRAY + "Click this when you're done with configuration.")
+                .lore(ChatColor.GRAY + "It will validate and register arena.")
+                .build());
     }
 
     private String isOptionDoneList(String path){
-        if(plugin.getConfig().isSet(path)) {
-            return ChatColor.GOLD + "" + ChatColor.BOLD + "Done: " + ChatColor.GREEN + "Yes " + ChatColor.GRAY + "(value: " + plugin.getConfig().getConfigurationSection(path).getKeys(false).size() + ")";
+        if(ConfigurationManager.getConfig("arenas").isSet(path)) {
+            return ChatColor.GOLD + "" + ChatColor.BOLD + "Done: " + ChatColor.GREEN + "Yes " + ChatColor.GRAY + "(value: " + ConfigurationManager.getConfig("arenas").getConfigurationSection(path).getKeys(false).size() + ")";
         }
         return ChatColor.GOLD + "" + ChatColor.BOLD + "Done: " + ChatColor.RED + "No";
     }
 
-    private String isOptionDone(String path) {
-        if(plugin.getConfig().isSet(path)) {
-            return ChatColor.GOLD + "" + ChatColor.BOLD + "Done: " + ChatColor.GREEN + "Yes " + ChatColor.GRAY + "(value: " + plugin.getConfig().getString(path) + ")";
+    public static String isOptionDone(String path) {
+        if(ConfigurationManager.getConfig("arenas").isSet(path)) {
+            return ChatColor.GOLD + "" + ChatColor.BOLD + "Done: " + ChatColor.GREEN + "Yes " + ChatColor.GRAY + "(value: " + ConfigurationManager.getConfig("arenas").getString(path) + ")";
         }
         return ChatColor.GOLD + "" + ChatColor.BOLD + "Done: " + ChatColor.RED + "No";
     }
 
     private String isOptionDoneBool(String path){
-        if(plugin.getConfig().isSet(path)) {
-            if(Util.getLocation(false, plugin.getConfig().getString(path)).equals(Bukkit.getServer().getWorlds().get(0).getSpawnLocation())){
+        if(ConfigurationManager.getConfig("arenas").isSet(path)) {
+            if(Bukkit.getServer().getWorlds().get(0).getSpawnLocation().equals(Util.getLocation(false, ConfigurationManager.getConfig("arenas").getString(path)))){
                 return ChatColor.GOLD + "" + ChatColor.BOLD + "Done: " + ChatColor.RED + "No";
             }
+            return ChatColor.GOLD + "" + ChatColor.BOLD + "Done: " + ChatColor.GREEN + "Yes";
         }
         return ChatColor.GOLD + "" + ChatColor.BOLD + "Done: " + ChatColor.RED + "No";
-    }
-
-    public void addItem(ItemStack itemStack, String command) {
-        inventory.addItem(new ItemBuilder(itemStack).lore(ChatColor.RED + "Command: " + ChatColor.GRAY + "/" + command)
-                .build());
     }
 
     public void addItem(ItemStack itemStack) {

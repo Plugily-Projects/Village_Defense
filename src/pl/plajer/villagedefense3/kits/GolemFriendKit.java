@@ -9,6 +9,7 @@ import pl.plajer.villagedefense3.arena.*;
 import pl.plajer.villagedefense3.handlers.ChatManager;
 import pl.plajer.villagedefense3.handlers.ConfigurationManager;
 import pl.plajer.villagedefense3.handlers.UserManager;
+import pl.plajer.villagedefense3.kits.kitapi.KitRegistry;
 import pl.plajer.villagedefense3.kits.kitapi.basekits.LevelKit;
 import pl.plajer.villagedefense3.utils.ArmorHelper;
 import pl.plajer.villagedefense3.utils.Util;
@@ -29,7 +30,7 @@ public class GolemFriendKit extends LevelKit {
         List<String> description = Util.splitString(ChatManager.colorMessage("Kits.Golem-Friend.Kit-Description"), 40);
         this.setDescription(description.toArray(new String[description.size()]));
         setLevel(ConfigurationManager.getConfig("kits").getInt("Required-Level.GolemFriend"));
-        plugin.getKitRegistry().registerKit(this);
+        KitRegistry.registerKit(this);
     }
 
     @Override
@@ -42,7 +43,7 @@ public class GolemFriendKit extends LevelKit {
         player.getInventory().addItem(WeaponHelper.getUnBreakingSword(WeaponHelper.ResourceType.STONE, 10));
         ArmorHelper.setColouredArmor(Color.WHITE, player);
         player.getInventory().addItem(new ItemStack(Material.GRILLED_PORK, 8));
-        Arena arena = plugin.getArenaRegistry().getArena(player);
+        Arena arena = ArenaRegistry.getArena(player);
         if(arena == null) return;
         if(plugin.is1_8_R3()) {
             ArenaInitializer1_8_R3 initializer = (ArenaInitializer1_8_R3) arena;
@@ -66,7 +67,7 @@ public class GolemFriendKit extends LevelKit {
 
     @Override
     public void reStock(Player player) {
-        Arena arena = plugin.getArenaRegistry().getArena(player);
+        Arena arena = ArenaRegistry.getArena(player);
         if(arena.getWave() % 5 == 0) {
             if(plugin.is1_8_R3()) {
                 ArenaInitializer1_8_R3 initializer = (ArenaInitializer1_8_R3) arena;

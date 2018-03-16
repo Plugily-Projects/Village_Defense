@@ -98,4 +98,15 @@ public class ConfigurationManager {
         return config;
     }
 
+    public static void saveConfig(FileConfiguration config, String name){
+        try {
+            config.save(new File(plugin.getDataFolder(), name + ".yml"));
+        } catch(IOException e) {
+            e.printStackTrace();
+            BigTextUtils.errorOccured();
+            Bukkit.getConsoleSender().sendMessage("Cannot save file " + name + ".yml!");
+            Bukkit.getConsoleSender().sendMessage("Create blank file " + name  + ".yml or restart the server!");
+        }
+    }
+
 }

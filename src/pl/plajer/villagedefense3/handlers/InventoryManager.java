@@ -79,9 +79,8 @@ public class InventoryManager {
         }
     }
 
-    public Inventory getInventoryFromFile(String UUID) {
+    private Inventory getInventoryFromFile(String UUID) {
         File file = new File(plugin.getDataFolder() + File.separator + "inventorys" + File.separator + UUID + ".invsave");
-        if(file == null) return null;
         if(!file.exists() || file.isDirectory() || !file.getAbsolutePath().endsWith(".invsave")) return null;
         try {
             FileConfiguration invConfig = YamlConfiguration.loadConfiguration(file);
@@ -120,7 +119,6 @@ public class InventoryManager {
 
     public void loadInventory(Player player) {
         File file = new File(plugin.getDataFolder() + File.separator + "inventorys" + File.separator + player.getUniqueId().toString() + ".invsave");
-        if(file == null) return;
         if(!file.exists() || file.isDirectory() || !file.getAbsolutePath().endsWith(".invsave")) return;
         try {
             FileConfiguration invConfig = YamlConfiguration.loadConfiguration(file);

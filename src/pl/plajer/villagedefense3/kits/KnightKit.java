@@ -5,6 +5,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import pl.plajer.villagedefense3.Main;
 import pl.plajer.villagedefense3.handlers.ChatManager;
+import pl.plajer.villagedefense3.kits.kitapi.KitRegistry;
 import pl.plajer.villagedefense3.kits.kitapi.basekits.FreeKit;
 import pl.plajer.villagedefense3.utils.ArmorHelper;
 import pl.plajer.villagedefense3.utils.Util;
@@ -21,7 +22,7 @@ public class KnightKit extends FreeKit {
         this.setName(ChatManager.colorMessage("Kits.Knight.Kit-Name"));
         List<String> description = Util.splitString(ChatManager.colorMessage("Kits.Knight.Kit-Description"), 40);
         this.setDescription(description.toArray(new String[description.size()]));
-        plugin.getKitRegistry().registerKit(this);
+        KitRegistry.registerKit(this);
     }
 
     @Override

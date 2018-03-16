@@ -13,9 +13,11 @@ import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
 import pl.plajer.villagedefense3.Main;
 import pl.plajer.villagedefense3.User;
+import pl.plajer.villagedefense3.arena.ArenaRegistry;
 import pl.plajer.villagedefense3.handlers.ChatManager;
 import pl.plajer.villagedefense3.handlers.PermissionsManager;
 import pl.plajer.villagedefense3.handlers.UserManager;
+import pl.plajer.villagedefense3.kits.kitapi.KitRegistry;
 import pl.plajer.villagedefense3.kits.kitapi.basekits.PremiumKit;
 import pl.plajer.villagedefense3.utils.ArmorHelper;
 import pl.plajer.villagedefense3.utils.Util;
@@ -56,7 +58,7 @@ public class BlockerKit extends PremiumKit implements Listener {
             zombieBarriers.removeAll(removeAfter);
         }, 20L, 20L);
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
-        plugin.getKitRegistry().registerKit(this);
+        KitRegistry.registerKit(this);
     }
 
     @Override
@@ -102,7 +104,7 @@ public class BlockerKit extends PremiumKit implements Listener {
         Player player = event.getPlayer();
         if(player.getItemInHand() == null)
             return;
-        if(plugin.getArenaRegistry().getArena(player) == null)
+        if(ArenaRegistry.getArena(player) == null)
             return;
         if(!player.getItemInHand().hasItemMeta())
             return;

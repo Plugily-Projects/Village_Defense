@@ -66,8 +66,8 @@ public class KitManager implements Listener {
     }
 
     private void createKitMenu(Player player) {
-        invMenu = Bukkit.createInventory(null, Util.serializeInt(plugin.getKitRegistry().getKits().size()), getMenuName());
-        for(Kit kit : plugin.getKitRegistry().getKits()) {
+        invMenu = Bukkit.createInventory(null, Util.serializeInt(KitRegistry.getKits().size()), getMenuName());
+        for(Kit kit : KitRegistry.getKits()) {
             ItemStack itemStack = kit.getItemStack();
             if(kit.isUnlockedByPlayer(player))
                 Util.addLore(itemStack, unlockedString);
@@ -165,7 +165,7 @@ public class KitManager implements Listener {
             return;
         if(!event.getCurrentItem().hasItemMeta())
             return;
-        VillagePlayerChooseKitEvent villagePlayerChooseKitEvent = new VillagePlayerChooseKitEvent(player, plugin.getKitRegistry().getKit(event.getCurrentItem()));
+        VillagePlayerChooseKitEvent villagePlayerChooseKitEvent = new VillagePlayerChooseKitEvent(player, KitRegistry.getKit(event.getCurrentItem()));
         Bukkit.getPluginManager().callEvent(villagePlayerChooseKitEvent);
     }
 

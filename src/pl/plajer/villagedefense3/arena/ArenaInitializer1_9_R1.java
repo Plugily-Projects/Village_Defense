@@ -6,19 +6,19 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.craftbukkit.v1_9_R1.CraftWorld;
-import org.bukkit.entity.Player;
-import org.bukkit.entity.Villager;
-import org.bukkit.entity.Wolf;
-import org.bukkit.entity.Zombie;
+import org.bukkit.entity.*;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import pl.plajer.villagedefense3.Main;
 import pl.plajer.villagedefense3.creatures.v1_9_R1.*;
+import pl.plajer.villagedefense3.creatures.v1_9_R1.IronGolem;
 import pl.plajer.villagedefense3.handlers.ChatManager;
 import pl.plajer.villagedefense3.utils.PercentageUtils;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.Random;
 
 /**
@@ -47,7 +47,7 @@ public class ArenaInitializer1_9_R1 extends Arena {
         }
         this.addZombie((Zombie) fastZombie.getBukkitEntity());
 
-        zombiesToSpawn--;
+        super.subtractZombiesToSpawn();
     }
 
     @Override
@@ -67,7 +67,7 @@ public class ArenaInitializer1_9_R1 extends Arena {
         }
         this.addZombie((Zombie) fastZombie.getBukkitEntity());
 
-        zombiesToSpawn--;
+        super.subtractZombiesToSpawn();
     }
 
     @Override
@@ -91,7 +91,7 @@ public class ArenaInitializer1_9_R1 extends Arena {
         }
         this.addZombie((Zombie) fastZombie.getBukkitEntity());
 
-        zombiesToSpawn--;
+        super.subtractZombiesToSpawn();
     }
 
     public void spawnBabyZombie(Random random) {
@@ -110,7 +110,7 @@ public class ArenaInitializer1_9_R1 extends Arena {
 
         this.addZombie((Zombie) fastZombie.getBukkitEntity());
 
-        zombiesToSpawn--;
+        super.subtractZombiesToSpawn();
     }
 
     public void spawnHardZombie(Random random) {
@@ -130,7 +130,7 @@ public class ArenaInitializer1_9_R1 extends Arena {
             zombie.setCustomName(PercentageUtils.getProgressBar((int) zombie.getMaxHealth(), (int) zombie.getMaxHealth(), 50, "|", ChatColor.YELLOW + "", ChatColor.GRAY + ""));
         }
         this.addZombie(zombie);
-        zombiesToSpawn--;
+        super.subtractZombiesToSpawn();
     }
 
     @Override
@@ -151,7 +151,7 @@ public class ArenaInitializer1_9_R1 extends Arena {
             zombie.setCustomName(PercentageUtils.getProgressBar((int) zombie.getMaxHealth(), (int) zombie.getMaxHealth(), 50, "|", ChatColor.YELLOW + "", ChatColor.GRAY + ""));
         }
         this.addZombie(zombie);
-        zombiesToSpawn--;
+        super.subtractZombiesToSpawn();
     }
 
     public void spawnGolemBuster(Random random) {
@@ -171,7 +171,7 @@ public class ArenaInitializer1_9_R1 extends Arena {
         }
         this.addZombie(zombie);
 
-        zombiesToSpawn--;
+        super.subtractZombiesToSpawn();
     }
 
     public void spawnPlayerBuster(Random random) {
@@ -193,7 +193,7 @@ public class ArenaInitializer1_9_R1 extends Arena {
         }
         this.addZombie(zombie);
 
-        zombiesToSpawn--;
+        super.subtractZombiesToSpawn();
     }
 
     public void spawnVillager(Location location) {
@@ -226,7 +226,6 @@ public class ArenaInitializer1_9_R1 extends Arena {
         wolf.setCustomName(ChatManager.colorMessage("In-Game.Spawned-Wolf-Name").replaceAll("%player%", player.getName()));
         wolf.setCustomNameVisible(true);
         wolf.setInvisible(false);
-
 
         this.addWolf((Wolf) wolf.getBukkitEntity());
     }

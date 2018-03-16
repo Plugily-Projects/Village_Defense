@@ -5,6 +5,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.ScoreboardManager;
 import pl.plajer.villagedefense3.arena.Arena;
+import pl.plajer.villagedefense3.arena.ArenaRegistry;
+import pl.plajer.villagedefense3.kits.kitapi.KitRegistry;
 import pl.plajer.villagedefense3.kits.kitapi.basekits.Kit;
 
 import java.util.HashMap;
@@ -30,7 +32,7 @@ public class User {
         scoreboard = scoreboardManager.getNewScoreboard();
         this.uuid = uuid;
 
-        kit = plugin.getKitRegistry().getDefaultKit();
+        kit = KitRegistry.getDefaultKit();
     }
 
     public static void handleCooldowns() {
@@ -57,15 +59,11 @@ public class User {
     }
 
     public Arena getArena() {
-        return plugin.getArenaRegistry().getArena(Bukkit.getPlayer(uuid));
+        return ArenaRegistry.getArena(Bukkit.getPlayer(uuid));
     }
 
     public UUID getUuid() {
         return uuid;
-    }
-
-    public void setUuid(UUID uuid) {
-        this.uuid = uuid;
     }
 
     public boolean isFakeDead() {

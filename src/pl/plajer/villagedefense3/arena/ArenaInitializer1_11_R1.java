@@ -43,7 +43,7 @@ public class ArenaInitializer1_11_R1 extends Arena {
         }
         this.addZombie((Zombie) fastZombie.getBukkitEntity());
 
-        zombiesToSpawn--;
+        super.subtractZombiesToSpawn();
     }
 
     @Override
@@ -63,7 +63,7 @@ public class ArenaInitializer1_11_R1 extends Arena {
         }
         this.addZombie((Zombie) fastZombie.getBukkitEntity());
 
-        zombiesToSpawn--;
+        super.subtractZombiesToSpawn();
     }
 
     @Override
@@ -87,7 +87,7 @@ public class ArenaInitializer1_11_R1 extends Arena {
         }
         this.addZombie((Zombie) fastZombie.getBukkitEntity());
 
-        zombiesToSpawn--;
+        super.subtractZombiesToSpawn();
     }
 
     public void spawnBabyZombie(Random random) {
@@ -106,7 +106,7 @@ public class ArenaInitializer1_11_R1 extends Arena {
 
         this.addZombie((Zombie) fastZombie.getBukkitEntity());
 
-        zombiesToSpawn--;
+        super.subtractZombiesToSpawn();
     }
 
     public void spawnHardZombie(Random random) {
@@ -126,7 +126,7 @@ public class ArenaInitializer1_11_R1 extends Arena {
             zombie.setCustomName(PercentageUtils.getProgressBar((int) zombie.getMaxHealth(), (int) zombie.getMaxHealth(), 50, "|", ChatColor.YELLOW + "", ChatColor.GRAY + ""));
         }
         this.addZombie(zombie);
-        zombiesToSpawn--;
+        super.subtractZombiesToSpawn();
     }
 
     @Override
@@ -147,7 +147,7 @@ public class ArenaInitializer1_11_R1 extends Arena {
             zombie.setCustomName(PercentageUtils.getProgressBar((int) zombie.getMaxHealth(), (int) zombie.getMaxHealth(), 50, "|", ChatColor.YELLOW + "", ChatColor.GRAY + ""));
         }
         this.addZombie(zombie);
-        zombiesToSpawn--;
+        super.subtractZombiesToSpawn();
     }
 
     public void spawnGolemBuster(Random random) {
@@ -167,7 +167,7 @@ public class ArenaInitializer1_11_R1 extends Arena {
         }
         this.addZombie(zombie);
 
-        zombiesToSpawn--;
+        super.subtractZombiesToSpawn();
     }
 
     public void spawnPlayerBuster(Random random) {
@@ -189,7 +189,7 @@ public class ArenaInitializer1_11_R1 extends Arena {
         }
         this.addZombie(zombie);
 
-        zombiesToSpawn--;
+        super.subtractZombiesToSpawn();
     }
 
     public void spawnVillager(Location location) {

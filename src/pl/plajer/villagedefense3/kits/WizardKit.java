@@ -14,9 +14,11 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 import pl.plajer.villagedefense3.Main;
+import pl.plajer.villagedefense3.arena.ArenaRegistry;
 import pl.plajer.villagedefense3.handlers.ChatManager;
 import pl.plajer.villagedefense3.handlers.PermissionsManager;
 import pl.plajer.villagedefense3.handlers.UserManager;
+import pl.plajer.villagedefense3.kits.kitapi.KitRegistry;
 import pl.plajer.villagedefense3.kits.kitapi.basekits.PremiumKit;
 import pl.plajer.villagedefense3.utils.ArmorHelper;
 import pl.plajer.villagedefense3.utils.Util;
@@ -38,7 +40,7 @@ public class WizardKit extends PremiumKit implements Listener {
         setName(ChatManager.colorMessage("Kits.Wizard.Kit-Name"));
         List<String> description = Util.splitString(ChatManager.colorMessage("Kits.Wizard.Kit-Description"), 40);
         this.setDescription(description.toArray(new String[description.size()]));
-        plugin.getKitRegistry().registerKit(this);
+        KitRegistry.registerKit(this);
         this.plugin = plugin;
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
@@ -87,7 +89,7 @@ public class WizardKit extends PremiumKit implements Listener {
     public void onWizardDamage(EntityDamageByEntityEvent e) {
         if(e.getDamager() instanceof Zombie && e.getEntity() instanceof Player) {
             if(!wizardsOnDuty.contains(e.getEntity())) return;
-            if(plugin.getArenaRegistry().getArena((Player) e.getEntity()) == null) return;
+            if(ArenaRegistry.getArena((Player) e.getEntity()) == null) return;
             ((Zombie) e.getDamager()).damage(2.0);
         }
     }
@@ -97,7 +99,7 @@ public class WizardKit extends PremiumKit implements Listener {
         final Player p = e.getPlayer();
         ItemStack is = e.getPlayer().getItemInHand();
         if(is != null && is.hasItemMeta() && is.getItemMeta().hasDisplayName()) {
-            if(plugin.getArenaRegistry().getArena(e.getPlayer()) == null)
+            if(ArenaRegistry.getArena(e.getPlayer()) == null)
                 return;
             if(is.getItemMeta().getDisplayName().equals(ChatManager.colorMessage("Kits.Wizard.Essence-Item-Name"))) {
                 if(UserManager.getUser(e.getPlayer().getUniqueId()).getCooldown("essence") > 0 && !UserManager.getUser(e.getPlayer().getUniqueId()).isSpectator()) {

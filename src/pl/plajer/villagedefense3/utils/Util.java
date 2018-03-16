@@ -2,6 +2,7 @@ package pl.plajer.villagedefense3.utils;
 
 import org.bukkit.*;
 import org.bukkit.block.Block;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Firework;
@@ -11,7 +12,10 @@ import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.util.BlockIterator;
 import pl.plajer.villagedefense3.Main;
+import pl.plajer.villagedefense3.handlers.ConfigurationManager;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -147,10 +151,16 @@ public class Util {
         return matchList;
     }
 
-    public static void saveLoc(String path, Location loc) {
+    public static void saveLoc(String path, Location loc, boolean inConfig) {
         String location = loc.getWorld().getName() + "," + loc.getX() + "," + loc.getY() + "," + loc.getZ() + "," + loc.getYaw() + "," + loc.getPitch();
-        plugin.getConfig().set(path, location);
-        plugin.saveConfig();
+        if(inConfig) {
+            plugin.getConfig().set(path, location);
+            plugin.saveConfig();
+        } else{
+            FileConfiguration config = ConfigurationManager.getConfig("arenas");
+            config.set(path, location);
+            ConfigurationManager.saveConfig(config, "arenas");
+        }
     }
 
     public static Location getLocation(boolean configUsage, String path) {

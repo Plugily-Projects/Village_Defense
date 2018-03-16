@@ -14,6 +14,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import pl.plajer.villagedefense3.Main;
+import pl.plajer.villagedefense3.arena.ArenaRegistry;
 import pl.plajer.villagedefense3.handlers.ChatManager;
 import pl.plajer.villagedefense3.handlers.UserManager;
 
@@ -38,7 +39,7 @@ public class GolemEvents implements Listener {
 
     @EventHandler
     public void onGolemClick(PlayerInteractEntityEvent e) {
-        if(!plugin.getArenaRegistry().isInGameInstance(e.getPlayer()) || !(e.getRightClicked() instanceof IronGolem)) {
+        if(!ArenaRegistry.isInGameInstance(e.getPlayer()) || !(e.getRightClicked() instanceof IronGolem)) {
             return;
         }
         if(UserManager.getUser(e.getPlayer().getUniqueId()).isSpectator()) return;

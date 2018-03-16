@@ -6,23 +6,19 @@ import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
 import org.bukkit.entity.*;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
-import org.bukkit.event.entity.EntityDeathEvent;
-import org.bukkit.event.entity.PlayerDeathEvent;
-import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.scoreboard.DisplaySlot;
-import org.bukkit.scoreboard.Objective;
-import org.bukkit.scoreboard.Score;
 import pl.plajer.villagedefense3.Main;
 import pl.plajer.villagedefense3.User;
-import pl.plajer.villagedefense3.handlers.*;
+import pl.plajer.villagedefense3.handlers.ChatManager;
+import pl.plajer.villagedefense3.handlers.ConfigurationManager;
+import pl.plajer.villagedefense3.handlers.PermissionsManager;
+import pl.plajer.villagedefense3.handlers.UserManager;
 import pl.plajer.villagedefense3.items.SpecialItemManager;
 import pl.plajer.villagedefense3.kits.GolemFriendKit;
+import pl.plajer.villagedefense3.kits.kitapi.KitRegistry;
 import pl.plajer.villagedefense3.utils.ArmorHelper;
 import pl.plajer.villagedefense3.utils.Util;
 import pl.plajer.villagedefense3.villagedefenseapi.*;
@@ -32,7 +28,7 @@ import java.util.*;
 /**
  * Created by Tom on 12/08/2014.
  */
-public abstract class Arena extends BukkitRunnable implements Listener {
+public abstract class Arena extends BukkitRunnable {
 
     final List<Location> zombieSpawns = new ArrayList<>();
     private final Main plugin;
@@ -46,8 +42,8 @@ public abstract class Arena extends BukkitRunnable implements Listener {
     private final List<Zombie> glitchedZombies = new ArrayList<>();
     private final HashMap<Zombie, Location> zombieCheckerLocations = new HashMap<>();
     private final HashSet<UUID> players;
-    int zombiesToSpawn;
-    private boolean isFighting;
+    private int zombiesToSpawn;
+    private boolean isFighting = false;
     private int wave;
     private int barToggle = 0;
     private int rottenFleshAmount;
@@ -64,6 +60,7 @@ public abstract class Arena extends BukkitRunnable implements Listener {
     private Location lobbyLoc = null;
     private Location startLoc = null;
     private Location endLoc = null;
+    private boolean isReady = true;
 
     public Arena(String ID, Main plugin) {
         this.plugin = plugin;
@@ -74,6 +71,22 @@ public abstract class Arena extends BukkitRunnable implements Listener {
         if(plugin.isBossbarEnabled()) {
             gameBar = Bukkit.createBossBar(ChatManager.colorMessage("Bossbar.Main-Title"), BarColor.BLUE, BarStyle.SOLID);
         }
+    }
+
+    public boolean isReady() {
+        return isReady;
+    }
+
+    public void setReady(boolean ready) {
+        isReady = ready;
+    }
+
+    public boolean isFighting() {
+        return isFighting;
+    }
+
+    public void subtractZombiesToSpawn() {
+        this.zombiesToSpawn--;
     }
 
     /**
@@ -87,7 +100,7 @@ public abstract class Arena extends BukkitRunnable implements Listener {
 
     public void run() {
         User.handleCooldowns();
-        updateScoreboard();
+        ArenaUtils.updateScoreboard(this);
         switch(getArenaState()) {
             case WAITING_FOR_PLAYERS:
                 if(plugin.isBungeeActivated())
@@ -132,11 +145,11 @@ public abstract class Arena extends BukkitRunnable implements Listener {
                         player.getInventory().clear();
                         player.setGameMode(GameMode.SURVIVAL);
                         UserManager.getUser(player.getUniqueId()).setInt("orbs", plugin.getConfig().getInt("Orbs-Starting-Amount"));
-                        hidePlayersOutsideTheGame(player);
+                        ArenaUtils.hidePlayersOutsideTheGame(player, this);
                         if(UserManager.getUser(player.getUniqueId()).getKit() != null) {
                             UserManager.getUser(player.getUniqueId()).getKit().giveKitItems(player);
                         } else {
-                            plugin.getKitRegistry().getDefaultKit().giveKitItems(player);
+                            KitRegistry.getDefaultKit().giveKitItems(player);
                         }
                         player.updateInventory();
                         addStat(player, "gamesplayed");
@@ -290,7 +303,7 @@ public abstract class Arena extends BukkitRunnable implements Listener {
                         player.setFireTicks(0);
                         player.setFoodLevel(20);
                         for(Player players : plugin.getServer().getOnlinePlayers()) {
-                            if(plugin.getArenaRegistry().getArena(players) != null)
+                            if(ArenaRegistry.getArena(players) != null)
                                 players.showPlayer(player);
                             player.showPlayer(players);
                         }
@@ -316,8 +329,8 @@ public abstract class Arena extends BukkitRunnable implements Listener {
                         user.setInt("orbs", 0);
                         user.setFakeDead(false);
                     }
-                    clearPlayers();
                     plugin.getRewardsHandler().performEndGameRewards(this);
+                    clearPlayers();
                     if(plugin.isBungeeActivated()) {
                         if(ConfigurationManager.getConfig("bungee").getBoolean("Shutdown-When-Game-Ends"))
                             plugin.getServer().shutdown();
@@ -342,15 +355,6 @@ public abstract class Arena extends BukkitRunnable implements Listener {
                 break;
             default:
                 break; //o.o?
-        }
-    }
-
-    private void updateLevelStat(Player player) {
-        User user = UserManager.getUser(player.getUniqueId());
-
-        if(Math.pow(50 * user.getInt("level"), 1.5) < user.getInt("xp")) {
-            user.addInt("level", 1);
-            player.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.formatMessage(this, ChatManager.colorMessage("In-Game.You-Leveled-Up"), user.getInt("level")));
         }
     }
 
@@ -614,7 +618,7 @@ public abstract class Arena extends BukkitRunnable implements Listener {
     }
 
 
-    private void showPlayers() {
+    void showPlayers() {
         for(Player player : getPlayers()) {
             for(Player p : getPlayers()) {
                 player.showPlayer(p);
@@ -637,27 +641,13 @@ public abstract class Arena extends BukkitRunnable implements Listener {
     }
 
 
-    private List<Player> getPlayersLeft() {
+    List<Player> getPlayersLeft() {
         List<Player> players = new ArrayList<>();
         for(User user : UserManager.getUsers(this)) {
             if(!user.isFakeDead())
                 players.add(user.toPlayer());
         }
         return players;
-    }
-
-
-    private void hidePlayer(Player p) {
-        for(Player player : getPlayers()) {
-            player.hidePlayer(p);
-        }
-    }
-
-
-    public void showPlayer(Player p) {
-        for(Player player : getPlayers()) {
-            player.showPlayer(p);
-        }
     }
 
     public void teleportToLobby(Player player) {
@@ -846,7 +836,7 @@ public abstract class Arena extends BukkitRunnable implements Listener {
         Bukkit.getPluginManager().callEvent(villageWaveStartEvent);
         setZombieAmount();
         if(plugin.getConfig().getBoolean("Respawn-After-Wave"))
-            this.bringDeathPlayersBack();
+            ArenaUtils.bringDeathPlayersBack(this);
         for(User user : UserManager.getUsers(this)) {
             user.getKit().reStock(user.toPlayer());
         }
@@ -879,7 +869,7 @@ public abstract class Arena extends BukkitRunnable implements Listener {
             UserManager.getUser(player.getUniqueId()).addInt("orbs", wave * 10);
         }
         if(plugin.getConfig().getBoolean("Respawn-After-Wave"))
-            this.bringDeathPlayersBack();
+            ArenaUtils.bringDeathPlayersBack(this);
         for(Player player : getPlayersLeft()) {
             this.addStat(player, 5);
         }
@@ -896,6 +886,10 @@ public abstract class Arena extends BukkitRunnable implements Listener {
     public void joinAttempt(Player p) {
         VillageGameJoinAttemptEvent villageGameJoinAttemptEvent = new VillageGameJoinAttemptEvent(p, this);
         Bukkit.getPluginManager().callEvent(villageGameJoinAttemptEvent);
+        if(!isReady) {
+            p.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Arena-Not-Configured"));
+            return;
+        }
         if(villageGameJoinAttemptEvent.isCancelled()) {
             p.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Join-Cancelled-Via-API"));
             return;
@@ -940,7 +934,7 @@ public abstract class Arena extends BukkitRunnable implements Listener {
             user.setSpectator(true);
             user.setFakeDead(true);
             user.setInt("orbs", 0);
-            this.hidePlayer(p);
+            ArenaUtils.hidePlayer(p, this);
 
             for(Player spectator : this.getPlayers()) {
                 if(UserManager.getUser(spectator.getUniqueId()).isSpectator()) {
@@ -949,7 +943,7 @@ public abstract class Arena extends BukkitRunnable implements Listener {
                     p.showPlayer(spectator);
                 }
             }
-            hidePlayersOutsideTheGame(p);
+            ArenaUtils.hidePlayersOutsideTheGame(p, this);
             return;
         }
         if(plugin.isInventoryManagerEnabled()) {
@@ -972,24 +966,24 @@ public abstract class Arena extends BukkitRunnable implements Listener {
         if(!UserManager.getUser(p.getUniqueId()).isSpectator())
             ChatManager.broadcastJoinMessage(this, p);
         User user = UserManager.getUser(p.getUniqueId());
-        user.setKit(plugin.getKitRegistry().getDefaultKit());
+        user.setKit(KitRegistry.getDefaultKit());
         plugin.getKitManager().giveKitMenuItem(p);
         if(getArenaState() == ArenaState.STARTING || getArenaState() == ArenaState.WAITING_FOR_PLAYERS)
             p.getInventory().setItem(SpecialItemManager.getSpecialItem("Leave").getSlot(), SpecialItemManager.getSpecialItem("Leave").getItemStack());
         p.updateInventory();
         for(Player player : getPlayers()) {
-            showPlayer(player);
+            ArenaUtils.showPlayer(player, this);
         }
         showPlayers();
     }
 
 
-    private int getZombiesLeft() {
+    int getZombiesLeft() {
         return zombiesToSpawn + getZombies().size();
 
     }
 
-    private void addStat(Player player, int i) {
+    void addStat(Player player, int i) {
         User user = UserManager.getUser(player.getUniqueId());
         user.addInt("xp", i);
         if(player.hasPermission(PermissionsManager.getVip())) {
@@ -1001,13 +995,13 @@ public abstract class Arena extends BukkitRunnable implements Listener {
         if(player.hasPermission(PermissionsManager.getElite())) {
             user.addInt("xp", (int) Math.ceil(i / 2));
         }
-        this.updateLevelStat(player);
+        ArenaUtils.updateLevelStat(player, this);
     }
 
-    private void addStat(Player player, String stat) {
+    void addStat(Player player, String stat) {
         User user = UserManager.getUser(player.getUniqueId());
         user.addInt(stat, 1);
-        this.updateLevelStat(player);
+        ArenaUtils.updateLevelStat(player, this);
     }
 
     private void setStat(Player player, String stat, int i) {
@@ -1169,14 +1163,13 @@ public abstract class Arena extends BukkitRunnable implements Listener {
 
     }
 
-    private void removeVillager(Villager villager) {
+    void removeVillager(Villager villager) {
         if(villagers.contains(villager)) {
             villager.remove();
             villager.setHealth(0);
             villagers.remove(villager);
         }
     }
-
 
     public void clearVillagers() {
         for(Villager villager : villagers) {
@@ -1199,185 +1192,6 @@ public abstract class Arena extends BukkitRunnable implements Listener {
             Byte doorData = doorBlocks.get(location);
             int id = Material.WOODEN_DOOR.getId();
             block.setTypeIdAndData(id, doorData, false);
-        }
-    }
-
-    private void updateScoreboard() {
-        if(getPlayers().size() == 0)
-            return;
-        for(Player p : getPlayers()) {
-            User user = UserManager.getUser(p.getUniqueId());
-            if(user.getScoreboard().getObjective("waiting") == null) {
-                user.getScoreboard().registerNewObjective("waiting", "dummy");
-                user.getScoreboard().registerNewObjective("starting", "dummy");
-                user.getScoreboard().registerNewObjective("ingame", "dummy");
-                user.getScoreboard().registerNewObjective("ingame2", "dummy");
-
-            }
-            switch(getArenaState()) {
-                case WAITING_FOR_PLAYERS:
-                case STARTING:
-                    Objective startingobj = user.getScoreboard().getObjective("starting");
-                    startingobj.setDisplayName(ChatManager.colorMessage("Scoreboard.Header"));
-                    startingobj.setDisplaySlot(DisplaySlot.SIDEBAR);
-                    if(getArenaState() == ArenaState.STARTING) {
-                        Score timerscore = startingobj.getScore(ChatManager.formatMessage(this, ChatManager.colorMessage("Scoreboard.Starting-In")));
-                        timerscore.setScore(getTimer());
-                    }
-                    Score playerscore = startingobj.getScore(ChatManager.formatMessage(this, ChatManager.colorMessage("Scoreboard.Players")));
-                    playerscore.setScore(getPlayers().size());
-                    Score minplayerscore = startingobj.getScore(ChatManager.formatMessage(this, ChatManager.colorMessage("Scoreboard.Minimum-Players")));
-                    minplayerscore.setScore(getMinimumPlayers());
-                    break;
-                case IN_GAME:
-                    if(isFighting) {
-                        Objective ingameobj = user.getScoreboard().getObjective("ingame");
-                        ingameobj.setDisplayName(ChatManager.colorMessage("Scoreboard.Header"));
-                        ingameobj.setDisplaySlot(DisplaySlot.SIDEBAR);
-                        Score playerleftscore = ingameobj.getScore(ChatManager.formatMessage(this, ChatManager.colorMessage("Scoreboard.Players-Left")));
-                        playerleftscore.setScore(this.getPlayersLeft().size());
-
-                        Score villagersscore = ingameobj.getScore(ChatManager.formatMessage(this, ChatManager.colorMessage("Scoreboard.Villagers-Left")));
-                        villagersscore.setScore(getVillagers().size());
-                        Score orbsscore = ingameobj.getScore(ChatManager.formatMessage(this, ChatManager.colorMessage("Scoreboard.Orbs")));
-                        orbsscore.setScore(user.getInt("orbs"));
-                        Score zombiesscore = ingameobj.getScore(ChatManager.formatMessage(this, ChatManager.colorMessage("Scoreboard.Zombies-Left")));
-                        zombiesscore.setScore(getZombiesLeft());
-                        Score rottenfleshscore = ingameobj.getScore(ChatManager.formatMessage(this, ChatManager.colorMessage("Scoreboard.Rotten-Flesh")));
-                        rottenfleshscore.setScore(getRottenFlesh());
-                    } else {
-                        Objective ingame2obj = user.getScoreboard().getObjective("ingame2");
-                        ingame2obj.setDisplayName(ChatManager.colorMessage("Scoreboard.Header"));
-                        ingame2obj.setDisplaySlot(DisplaySlot.SIDEBAR);
-                        Score playerleftscore = ingame2obj.getScore(ChatManager.formatMessage(this, ChatManager.colorMessage("Scoreboard.Players-Left")));
-                        playerleftscore.setScore(this.getPlayersLeft().size());
-
-                        Score villagersscore = ingame2obj.getScore(ChatManager.formatMessage(this, ChatManager.colorMessage("Scoreboard.Villagers-Left")));
-                        villagersscore.setScore(getVillagers().size());
-                        Score orbsscore = ingame2obj.getScore(ChatManager.formatMessage(this, ChatManager.colorMessage("Scoreboard.Orbs")));
-                        orbsscore.setScore(user.getInt("orbs"));
-                        Score nextwavescore = ingame2obj.getScore(ChatManager.formatMessage(this, ChatManager.colorMessage("Scoreboard.Next-Wave-In")));
-                        nextwavescore.setScore(getTimer());
-                        Score rottenfleshscore = ingame2obj.getScore(ChatManager.formatMessage(this, ChatManager.colorMessage("Scoreboard.Rotten-Flesh")));
-                        rottenfleshscore.setScore(getRottenFlesh());
-                    }
-                    break;
-                case ENDING:
-                    user.removeScoreboard();
-                    break;
-                case RESTARTING:
-                    break;
-                default:
-                    setArenaState(ArenaState.WAITING_FOR_PLAYERS);
-            }
-            user.setScoreboard(user.getScoreboard());
-        }
-    }
-
-    @EventHandler
-    public void onDieEntity(EntityDeathEvent event) {
-        if(event.getEntity().getType() == EntityType.ZOMBIE) {
-            if(getZombies().contains(event.getEntity()))
-                removeZombie((Zombie) event.getEntity());
-            if(event.getEntity().getKiller() != null) {
-                if(plugin.getArenaRegistry().getArena(event.getEntity().getKiller()) != null) {
-                    addStat(event.getEntity().getKiller(), "kills");
-                    addStat(event.getEntity().getKiller(), 2);
-                }
-            }
-        }
-        if(event.getEntity().getType() == EntityType.VILLAGER) {
-            if(getVillagers().contains(event.getEntity())) {
-                getStartLocation().getWorld().strikeLightningEffect(event.getEntity().getLocation());
-                removeVillager((Villager) event.getEntity());
-                for(Player p : getPlayers()) {
-                    p.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Messages.Villager-Died"));
-                }
-            }
-        }
-    }
-
-    @EventHandler
-    public void onPlayerDie(PlayerDeathEvent event) {
-        if(!getPlayers().contains(event.getEntity()))
-            return;
-        if(getPlayers().contains(event.getEntity()))
-            this.onDeath(event.getEntity());
-        if(event.getEntity().isDead())
-            event.getEntity().setHealth(event.getEntity().getMaxHealth());
-        event.setDeathMessage("");
-        this.onDeath(event.getEntity());
-    }
-
-    private void onDeath(final Player player) {
-        if(getArenaState() == ArenaState.STARTING) {
-            player.teleport(this.getStartLocation());
-            return;
-        }
-        if(getArenaState() == ArenaState.ENDING || getArenaState() == ArenaState.RESTARTING) {
-            player.getInventory().clear();
-            player.setFlying(false);
-            player.setAllowFlight(false);
-            User user = UserManager.getUser(player.getUniqueId());
-            user.setInt("orbs", 0);
-            player.teleport(this.getEndLocation());
-            return;
-        }
-        User user = UserManager.getUser(player.getUniqueId());
-        addStat(player, "deaths");
-
-        if(user.isFakeDead()) {
-            player.setAllowFlight(true);
-            player.setGameMode(GameMode.SURVIVAL);
-            teleportToStartLocation(player);
-        } else {
-            teleportToStartLocation(player);
-            user.setSpectator(true);
-            player.setGameMode(GameMode.SURVIVAL);
-            user.setFakeDead(true);
-            user.setInt("orbs", 0);
-            hidePlayer(player);
-            player.setAllowFlight(true);
-            player.getInventory().clear();
-            MessageHandler.sendTitle(player, ChatColor.stripColor(ChatManager.formatMessage(this, "In-Game.Death-Screen")), 0, 5 * 20, 0, ChatColor.RED);
-            Bukkit.getScheduler().runTaskTimer(plugin, () -> {
-                if(user.isSpectator()) {
-                    MessageHandler.sendActionBar(player, ChatManager.formatMessage(this, ChatManager.colorMessage("In-Game.Died-Respawn-In-Next-Wave")));
-                }
-            }, 20, 20);
-            ChatManager.broadcastDeathMessage(this, player);
-
-            teleportToStartLocation(player);
-
-            player.setAllowFlight(true);
-            player.setFlying(true);
-
-            ItemStack spectatorItem = new ItemStack(Material.COMPASS, 1);
-            ItemMeta spectatorMeta = spectatorItem.getItemMeta();
-            spectatorMeta.setDisplayName(ChatManager.colorMessage("In-Game.Spectator.Spectator-Item-Name"));
-            spectatorItem.setItemMeta(spectatorMeta);
-            player.getInventory().addItem(spectatorItem);
-        }
-        //tryin to untarget dead player bcuz they will still target him
-        for(Zombie zombie : getZombies()) {
-            if(zombie.getTarget() != null) {
-                if(zombie.getTarget().equals(player)) {
-                    //set new target as villager so zombies won't stay still waiting for nothing
-                    for(Villager villager : getVillagers()) {
-                        zombie.setTarget(villager);
-                    }
-                }
-            }
-        }
-
-    }
-
-    private void hidePlayersOutsideTheGame(Player player) {
-        for(Player players : plugin.getServer().getOnlinePlayers()) {
-            if(getPlayers().contains(players))
-                continue;
-            player.hidePlayer(players);
-            players.hidePlayer(player);
         }
     }
 
@@ -1428,35 +1242,15 @@ public abstract class Arena extends BukkitRunnable implements Listener {
             this.setArenaState(ArenaState.RESTARTING);
         }
 
-
         p.setGameMode(GameMode.SURVIVAL);
         for(Player players : plugin.getServer().getOnlinePlayers()) {
-            if(plugin.getArenaRegistry().getArena(players) != null)
+            if(ArenaRegistry.getArena(players) != null)
                 players.showPlayer(p);
             p.showPlayer(players);
         }
         this.teleportToEndLocation(p);
         if(!plugin.isBungeeActivated() && plugin.isInventoryManagerEnabled()) {
             plugin.getInventoryManager().loadInventory(p);
-
-        }
-    }
-
-    private void onRespawn(Player player) {
-        User user = UserManager.getUser(player.getUniqueId());
-        if(user.isFakeDead()) {
-            teleportToStartLocation(player);
-            player.setAllowFlight(true);
-            player.setFlying(true);
-
-        } else {
-            teleportToStartLocation(player);
-            user.setSpectator(true);
-            player.setGameMode(GameMode.SURVIVAL);
-            user.setFakeDead(true);
-            player.setAllowFlight(true);
-            player.setFlying(true);
-            user.setInt("orbs", 0);
         }
     }
 
@@ -1464,7 +1258,7 @@ public abstract class Arena extends BukkitRunnable implements Listener {
         rottenFleshAmount = rottenFleshAmount + i;
     }
 
-    private int getRottenFlesh() {
+    int getRottenFlesh() {
         return rottenFleshAmount;
     }
 
@@ -1478,35 +1272,6 @@ public abstract class Arena extends BukkitRunnable implements Listener {
             return true;
         }
         return false;
-    }
-
-    @EventHandler
-    public void onRespawn(PlayerRespawnEvent event) {
-        if(getPlayers().contains(event.getPlayer())) {
-            this.onRespawn(event.getPlayer());
-            event.setRespawnLocation(this.getStartLocation());
-        }
-    }
-
-    private void bringDeathPlayersBack() {
-        for(Player player : getPlayers()) {
-            if(!getPlayersLeft().contains(player)) {
-
-                User user = UserManager.getUser(player.getUniqueId());
-                user.setFakeDead(false);
-                user.setSpectator(false);
-
-                teleportToStartLocation(player);
-                player.setFlying(false);
-                player.setAllowFlight(false);
-                player.setGameMode(GameMode.SURVIVAL);
-                this.showPlayers();
-                player.getInventory().clear();
-                user.getKit().giveKitItems(player);
-                player.sendMessage(ChatManager.colorMessage("In-Game.Back-In-Game"));
-            }
-
-        }
     }
 
 }

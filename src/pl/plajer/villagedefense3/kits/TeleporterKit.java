@@ -12,17 +12,18 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
-import pl.plajer.villagedefense3.arena.Arena;
 import pl.plajer.villagedefense3.Main;
+import pl.plajer.villagedefense3.arena.Arena;
+import pl.plajer.villagedefense3.arena.ArenaRegistry;
 import pl.plajer.villagedefense3.handlers.ChatManager;
 import pl.plajer.villagedefense3.handlers.PermissionsManager;
 import pl.plajer.villagedefense3.handlers.UserManager;
+import pl.plajer.villagedefense3.kits.kitapi.KitRegistry;
 import pl.plajer.villagedefense3.kits.kitapi.basekits.PremiumKit;
 import pl.plajer.villagedefense3.utils.ArmorHelper;
 import pl.plajer.villagedefense3.utils.Util;
 import pl.plajer.villagedefense3.utils.WeaponHelper;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -39,7 +40,7 @@ public class TeleporterKit extends PremiumKit implements Listener {
         List<String> description = Util.splitString(ChatManager.colorMessage("Kits.Teleporter.Kit-Description"), 40);
         this.setDescription(description.toArray(new String[description.size()]));
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
-        plugin.getKitRegistry().registerKit(this);
+        KitRegistry.registerKit(this);
     }
 
     @Override
@@ -71,10 +72,10 @@ public class TeleporterKit extends PremiumKit implements Listener {
     }
 
     private void openAndCreateTeleportationMenu(World world, Player p) {
-        Arena arena = plugin.getArenaRegistry().getArena(p);
+        Arena arena = ArenaRegistry.getArena(p);
         Inventory inventory = plugin.getServer().createInventory(null, 18, ChatManager.colorMessage("Kits.Teleporter.Game-Item-Menu-Name"));
         for(Player player : world.getPlayers()) {
-            if(plugin.getArenaRegistry().getArena(player) != null && !UserManager.getUser(player.getUniqueId()).isFakeDead()) {
+            if(ArenaRegistry.getArena(player) != null && !UserManager.getUser(player.getUniqueId()).isFakeDead()) {
                 ItemStack skull = new ItemStack(397, 1, (short) 3);
 
                 SkullMeta meta = (SkullMeta) skull.getItemMeta();
@@ -99,7 +100,7 @@ public class TeleporterKit extends PremiumKit implements Listener {
     @EventHandler
     public void onRightClick(PlayerInteractEvent e) {
         if(e.getAction() == Action.RIGHT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_BLOCK) {
-            if(plugin.getArenaRegistry().getArena(e.getPlayer()) == null)
+            if(ArenaRegistry.getArena(e.getPlayer()) == null)
                 return;
             if(!(e.getPlayer().getItemInHand() == null)) {
                 if(e.getPlayer().getItemInHand().hasItemMeta()) {
@@ -118,9 +119,9 @@ public class TeleporterKit extends PremiumKit implements Listener {
     @EventHandler
     public void onInventoryClick(InventoryClickEvent e) {
         Player p = (Player) e.getWhoClicked();
-        if(plugin.getArenaRegistry().getArena(p) == null)
+        if(ArenaRegistry.getArena(p) == null)
             return;
-        Arena arena = plugin.getArenaRegistry().getArena(p);
+        Arena arena = ArenaRegistry.getArena(p);
         if(e.getCurrentItem() == null)
             return;
         if(!e.getCurrentItem().hasItemMeta())

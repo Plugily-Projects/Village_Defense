@@ -8,64 +8,52 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import pl.plajer.villagedefense3.Main;
+import pl.plajer.villagedefense3.arena.Arena;
+import pl.plajer.villagedefense3.arena.ArenaRegistry;
 import pl.plajer.villagedefense3.utils.Util;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by Tom on 16/08/2014.
  */
+//TODO make me per arena
 public class ShopManager {
 
-    private static Main plugin;
-    private static Inventory invMenu;
-    private Chest chest;
+    private static Map<Arena, Inventory> arenaShop = new HashMap<>();
 
-    public ShopManager(Main plugin) {
-        ShopManager.plugin = plugin;
-        setup();
+    public ShopManager(){
+        for(Arena a : ArenaRegistry.getArenas()){
+            if(ConfigurationManager.getConfig("arenas").isSet("instances." + a.getID() + ".shop")){
+                Location location = Util.getLocation(false, ConfigurationManager.getConfig("arenas").getString("instances." + a.getID() + ".shop"));
+                if(!(location.getBlock().getState() instanceof Chest)) {
+                    if(Main.isDebugged()) {
+                        System.out.print("[Village Debugger] Location for shop isn't a chest!");
+                    }
+                    continue;
+                }
+                int i = ((Chest) location.getBlock().getState()).getInventory().getContents().length;
+                Inventory inventory = Bukkit.createInventory(null, Util.serializeInt(i), ChatManager.colorMessage("In-Game.Messages.Shop-Messages.Shop-GUI-Name"));
+                i = 0;
+                for(ItemStack itemStack : ((Chest) location.getBlock().getState()).getInventory().getContents()) {
+                    if(itemStack != null && itemStack.getType() != Material.REDSTONE_BLOCK)
+                        inventory.setItem(i, itemStack);
+                    i++;
+                }
+                arenaShop.put(a, inventory);
+            }
+        }
     }
 
     public static void openShop(Player player) {
-        if(invMenu == null) {
-            if(Main.isDebugged()) {
-                System.out.print("[Village Debugger] Set up the shop or the shopchest first please!");
-            }
+        Arena arena = ArenaRegistry.getArena(player);
+        if(arena == null) return;
+        if(arenaShop.get(arena) == null) {
             player.sendMessage(ChatManager.colorMessage("In-Game.Messages.Shop-Messages.No-Shop-Defined"));
             return;
         }
-
-        player.openInventory(invMenu);
-    }
-
-    public static void closeShop(Player player) {
-        player.closeInventory();
-    }
-
-    private void setup() {
-        if(!plugin.getConfig().contains("shop.location")) {
-            if(Main.isDebugged()) {
-                System.out.print("[Village Debugger] NO SHOP FOUND FOR THE GAME!!!!");
-            }
-            return;
-        }
-        Location location = Util.getLocation(true, "shop.location");
-        if(!(location.getBlock().getState() instanceof Chest)) {
-            if(Main.isDebugged()) {
-                System.out.print("[Village Debugger] Location for shop isn't a chest!");
-            }
-            return;
-        }
-
-        chest = (Chest) location.getBlock().getState();
-        int i = chest.getInventory().getContents().length;
-        invMenu = Bukkit.createInventory(null, Util.serializeInt(i), ChatManager.colorMessage("In-Game.Messages.Shop-Messages.Shop-GUI-Name"));
-        i = 0;
-        for(ItemStack itemStack : chest.getInventory().getContents()) {
-
-            if(itemStack != null && itemStack.getType() != Material.REDSTONE_BLOCK)
-                invMenu.setItem(i, itemStack);
-            i++;
-        }
-
+        player.openInventory(arenaShop.get(arena));
     }
 
 

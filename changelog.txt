@@ -192,7 +192,7 @@ Commit 22
 + Added alias for /vd admin > /vda
 + Added locale version check
 + Added VD 2 > VD 3 migration
-+ Added build prorities to highest
++ Added build priorities to highest
 + Added block place block
 + Again kit fix
 + Fixed respawn again
@@ -221,13 +221,13 @@ Commit 24
 Commit 25
 + Added bossbar support (1.9+ only) in config.yml
 + Small fix for language file regeneration without restart only reload
-+ Fianlly fixed zombies targeting specators
++ Finally fixed zombies targeting spectators
 + ShotBow kit ability arrows will have user as shooter (zombies after hit still targeted villagers instead of user)
 + Finished pl-PL locale
 + Some little translations for admin commands
 
 Commit 26
-+ Validator added, debug is now not needed for invaild arena creation output
++ Validator added, debug is now not needed for invalid arena creation output
 + Updated /vd stats - now you can target online player ex. /vd stats Plajer
 + Updated arena editor GUI
 + Wizard staff and essence zombie kills will now count to /vd stats
@@ -244,3 +244,14 @@ Commit 26
 Commit 27
 + Code refactor
 + API update
++ Rewards game end rewards fix
++ Optimized scoreboard
++ Updated german locale
++ Added new message In-Game.Arena-Not-Configured
++ Added arena validator to check if arena is properly configured
++ Arena setup fixes
++ Added message In-Game.Orbs-Pickup for pickup
+
+Commit 28 (RC 1)
++ Shop per arena added
++ Fix for arena setup signs join (maybe)

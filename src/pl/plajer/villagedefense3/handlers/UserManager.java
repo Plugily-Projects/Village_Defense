@@ -1,8 +1,8 @@
 package pl.plajer.villagedefense3.handlers;
 
 import org.bukkit.entity.Player;
-import pl.plajer.villagedefense3.arena.Arena;
 import pl.plajer.villagedefense3.User;
+import pl.plajer.villagedefense3.arena.Arena;
 
 import java.util.ArrayList;
 import java.util.HashMap;

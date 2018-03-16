@@ -7,8 +7,9 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityCombustByBlockEvent;
 import org.bukkit.event.entity.EntityCombustByEntityEvent;
 import org.bukkit.event.entity.EntityCombustEvent;
-import pl.plajer.villagedefense3.arena.Arena;
 import pl.plajer.villagedefense3.Main;
+import pl.plajer.villagedefense3.arena.Arena;
+import pl.plajer.villagedefense3.arena.ArenaRegistry;
 
 /**
  * Created by TomVerschueren on 6/02/2018.
@@ -34,7 +35,7 @@ public class CombustDayLightEvent implements Listener {
         if(!(e.getEntity() instanceof Zombie)) return;
         if(e.getEntity().getWorld().getEnvironment() != World.Environment.NORMAL) return;
 
-        for(Arena arena : plugin.getArenaRegistry().getArenas()) {
+        for(Arena arena : ArenaRegistry.getArenas()) {
             if(arena.getZombies().contains(e.getEntity())) {
                 e.setCancelled(true);
             }

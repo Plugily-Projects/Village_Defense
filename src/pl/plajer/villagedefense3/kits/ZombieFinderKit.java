@@ -11,11 +11,13 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
-import pl.plajer.villagedefense3.arena.Arena;
 import pl.plajer.villagedefense3.Main;
+import pl.plajer.villagedefense3.arena.Arena;
+import pl.plajer.villagedefense3.arena.ArenaRegistry;
 import pl.plajer.villagedefense3.handlers.ChatManager;
 import pl.plajer.villagedefense3.handlers.ConfigurationManager;
 import pl.plajer.villagedefense3.handlers.UserManager;
+import pl.plajer.villagedefense3.kits.kitapi.KitRegistry;
 import pl.plajer.villagedefense3.kits.kitapi.basekits.LevelKit;
 import pl.plajer.villagedefense3.utils.Util;
 import pl.plajer.villagedefense3.utils.WeaponHelper;
@@ -38,7 +40,7 @@ public class ZombieFinderKit extends LevelKit implements Listener {
         this.setDescription(description.toArray(new String[description.size()]));
         this.setLevel(ConfigurationManager.getConfig("kits").getInt("Required-Level.ZombieFinder"));
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
-        plugin.getKitRegistry().registerKit(this);
+        KitRegistry.registerKit(this);
     }
 
     @Override
@@ -80,7 +82,7 @@ public class ZombieFinderKit extends LevelKit implements Listener {
             return;
         if(!(event.getItem().getItemMeta().getDisplayName().contains(ChatManager.colorMessage("Kits.Zombie-Teleporter.Game-Item-Name"))))
             return;
-        if(plugin.getArenaRegistry().getArena(event.getPlayer()) == null)
+        if(ArenaRegistry.getArena(event.getPlayer()) == null)
             return;
         if(UserManager.getUser(event.getPlayer().getUniqueId()).isSpectator()) {
             /*
@@ -90,7 +92,7 @@ public class ZombieFinderKit extends LevelKit implements Listener {
             event.getPlayer().sendMessage(ChatManager.colorMessage("Kits.Teleporter.Spectator-Warning"));
             return;
         }
-        Arena arena = plugin.getArenaRegistry().getArena(event.getPlayer());
+        Arena arena = ArenaRegistry.getArena(event.getPlayer());
 
         if(UserManager.getUser(event.getPlayer().getUniqueId()).getCooldown("zombie") > 0 && !UserManager.getUser(event.getPlayer().getUniqueId()).isSpectator()) {
             String msgstring = ChatManager.colorMessage("Kits.Ability-Still-On-Cooldown");

@@ -5,6 +5,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import pl.plajer.villagedefense3.Main;
 import pl.plajer.villagedefense3.User;
+import pl.plajer.villagedefense3.arena.ArenaRegistry;
 import pl.plajer.villagedefense3.handlers.ConfigurationManager;
 import pl.plajer.villagedefense3.handlers.UserManager;
 import pl.plajer.villagedefense3.utils.BigTextUtils;
@@ -51,7 +52,7 @@ public class FileStats {
     public void loadStatsForPlayersOnline() {
         for(final Player player : plugin.getServer().getOnlinePlayers()) {
             if(plugin.isBungeeActivated())
-                plugin.getArenaRegistry().getArenas().get(0).teleportToLobby(player);
+                ArenaRegistry.getArenas().get(0).teleportToLobby(player);
             if(!plugin.isDatabaseActivated()) {
                 List<String> temp = new ArrayList<>();
                 temp.add("gamesplayed");

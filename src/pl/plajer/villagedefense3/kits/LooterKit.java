@@ -10,9 +10,11 @@ import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.inventory.ItemStack;
 import pl.plajer.villagedefense3.Main;
 import pl.plajer.villagedefense3.User;
+import pl.plajer.villagedefense3.arena.ArenaRegistry;
 import pl.plajer.villagedefense3.handlers.ChatManager;
 import pl.plajer.villagedefense3.handlers.ConfigurationManager;
 import pl.plajer.villagedefense3.handlers.UserManager;
+import pl.plajer.villagedefense3.kits.kitapi.KitRegistry;
 import pl.plajer.villagedefense3.kits.kitapi.basekits.LevelKit;
 import pl.plajer.villagedefense3.utils.ArmorHelper;
 import pl.plajer.villagedefense3.utils.Util;
@@ -35,7 +37,7 @@ public class LooterKit extends LevelKit implements Listener {
         this.setDescription(description.toArray(new String[description.size()]));
         setLevel(ConfigurationManager.getConfig("kits").getInt("Required-Level.Looter"));
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
-        plugin.getKitRegistry().registerKit(this);
+        KitRegistry.registerKit(this);
     }
 
     @Override
@@ -68,7 +70,7 @@ public class LooterKit extends LevelKit implements Listener {
         if(event.getEntity().getKiller() == null)
             return;
         Player player = event.getEntity().getKiller();
-        if(plugin.getArenaRegistry().getArena(player) == null)
+        if(ArenaRegistry.getArena(player) == null)
             return;
         User user = UserManager.getUser(player.getUniqueId());
         if(user.getKit() instanceof LooterKit) {

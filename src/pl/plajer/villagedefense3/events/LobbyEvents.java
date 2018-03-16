@@ -8,8 +8,9 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
-import pl.plajer.villagedefense3.arena.Arena;
 import pl.plajer.villagedefense3.Main;
+import pl.plajer.villagedefense3.arena.Arena;
+import pl.plajer.villagedefense3.arena.ArenaRegistry;
 import pl.plajer.villagedefense3.arena.ArenaState;
 
 /**
@@ -29,9 +30,9 @@ public class LobbyEvents implements Listener {
         if(event.getEntity().getType() != EntityType.PLAYER)
             return;
         Player player = (Player) event.getEntity();
-        if(plugin.getArenaRegistry().getArena(player) == null)
+        if(ArenaRegistry.getArena(player) == null)
             return;
-        Arena arena = plugin.getArenaRegistry().getArena(player);
+        Arena arena = ArenaRegistry.getArena(player);
         if(arena.getArenaState() == ArenaState.STARTING || arena.getArenaState() == ArenaState.WAITING_FOR_PLAYERS) event.setCancelled(true);
     }
 
@@ -39,7 +40,7 @@ public class LobbyEvents implements Listener {
     public void onLobbyHurt(EntityDamageByEntityEvent event) {
         if(event.getEntity().getType() != EntityType.PLAYER) return;
         Player player = (Player) event.getEntity();
-        Arena arena = plugin.getArenaRegistry().getArena(player);
+        Arena arena = ArenaRegistry.getArena(player);
         if(arena == null || arena.getArenaState() == ArenaState.IN_GAME) return;
         event.setCancelled(true);
         player.setHealth(player.getMaxHealth());
@@ -49,7 +50,7 @@ public class LobbyEvents implements Listener {
     public void onLobbyDamage(EntityDamageEvent event) {
         if(event.getEntity().getType() != EntityType.PLAYER) return;
         Player player = (Player) event.getEntity();
-        Arena arena = plugin.getArenaRegistry().getArena(player);
+        Arena arena = ArenaRegistry.getArena(player);
         if(arena == null || arena.getArenaState() == ArenaState.IN_GAME) return;
         event.setCancelled(true);
         player.setHealth(player.getMaxHealth());

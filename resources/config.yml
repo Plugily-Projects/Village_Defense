@@ -9,7 +9,7 @@
 #Available localizations:
 #default - uses messages from 'language.yml' file
 #de - Deutsche sprache. Uses messages from 'language_de.yml' file
-#pl - Język Polski. TODO implement me asap
+#pl - Jezyk Polski.
 locale: default
 
 #Enable 1.9+ ONLY bossbar support?
@@ -25,13 +25,6 @@ InventoryManager: false
 
 #Respawn players when wave ends/starts?
 Respawn-After-Wave: true
-
-#Game instances, don't modify via this configuration!
-#TODO move me
-instances: {}
-
-#TODO move me
-signs: {}
 
 #You can create custom players permissions here.
 #Player with your custom permission will get % bonus orbs

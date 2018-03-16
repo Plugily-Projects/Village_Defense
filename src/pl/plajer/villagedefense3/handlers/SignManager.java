@@ -4,6 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.block.Sign;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -11,18 +12,20 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
-import pl.plajer.villagedefense3.arena.Arena;
 import pl.plajer.villagedefense3.Main;
+import pl.plajer.villagedefense3.arena.Arena;
+import pl.plajer.villagedefense3.arena.ArenaRegistry;
 import pl.plajer.villagedefense3.arena.ArenaState;
 import pl.plajer.villagedefense3.utils.Util;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class SignManager implements Listener {
 
-    public static String[] signLines = new String[]{"--------", "Waiting", "", "--------"};
     private Main plugin;
     private Map<Sign, Arena> loadedSigns = new HashMap<>();
     private Map<ArenaState, String> gameStateToString = new HashMap<>();
@@ -46,7 +49,7 @@ public class SignManager implements Listener {
                 e.getPlayer().sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("Signs.Please-Type-Arena-Name"));
                 return;
             }
-            for(Arena arena : plugin.getArenaRegistry().getArenas()) {
+            for(Arena arena : ArenaRegistry.getArenas()) {
                 if(arena.getID().equalsIgnoreCase(e.getLine(1))) {
                     for(int i = 0; i < LanguageManager.getLanguageFile().getStringList("Signs.Lines").size(); i++) {
                         if(i == 1) {
@@ -67,10 +70,11 @@ public class SignManager implements Listener {
                     loadedSigns.put((Sign) e.getBlock().getState(), arena);
                     e.getPlayer().sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("Signs.Sign-Created"));
                     String location = e.getBlock().getWorld().getName() + "," + e.getBlock().getX() + "," + e.getBlock().getY() + "," + e.getBlock().getZ() + ",0.0,0.0";
-                    List<String> locs = plugin.getConfig().getStringList("signs");
+                    List<String> locs = ConfigurationManager.getConfig("arenas").getStringList("instances." + arena.getID() + ".signs");
                     locs.add(location);
-                    plugin.getConfig().set("signs", locs);
-                    plugin.saveConfig();
+                    FileConfiguration config = ConfigurationManager.getConfig("arenas");
+                    config.set("instances." + arena.getID() + ".signs", locs);
+                    ConfigurationManager.saveConfig(config, "arenas");
                     return;
                 }
             }
@@ -83,9 +87,18 @@ public class SignManager implements Listener {
         if(loadedSigns.get(e.getBlock().getState()) == null) return;
         loadedSigns.remove(e.getBlock().getState());
         String location = e.getBlock().getWorld().getName() + "," + e.getBlock().getX() + "," + e.getBlock().getY() + "," + e.getBlock().getZ() + "," + "0.0,0.0";
-        if(plugin.getConfig().getStringList("signs").contains(location)) {
-            plugin.getConfig().getStringList("signs").remove(location);
-            e.getPlayer().sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("Signs.Sign-Removed"));
+        for(String arena : ConfigurationManager.getConfig("arenas").getConfigurationSection("instances").getKeys(false)){
+            for(String sign : ConfigurationManager.getConfig("arenas").getStringList("instances." + arena + ".signs")){
+                if(sign.equals(location)){
+                    List<String> signs = ConfigurationManager.getConfig("arenas").getStringList("instances." + arena + ".signs");
+                    signs.remove(location);
+                    FileConfiguration config = ConfigurationManager.getConfig("arenas");
+                    config.set(arena + ".signs", signs);
+                    ConfigurationManager.saveConfig(config, "arenas");
+                    e.getPlayer().sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("Signs.Sign-Removed"));
+                    return;
+                }
+            }
         }
         e.getPlayer().sendMessage(ChatManager.PLUGIN_PREFIX + ChatColor.RED + "Couldn't remove sign from configuration! Please do this manually!");
     }
@@ -97,17 +110,14 @@ public class SignManager implements Listener {
 
             Arena arena = loadedSigns.get(e.getClickedBlock().getState());
             if(arena != null) {
-                for(Arena loopArena : plugin.getArenaRegistry().getArenas()) {
+                for(Arena loopArena : ArenaRegistry.getArenas()) {
                     if(loopArena.getPlayers().contains(e.getPlayer())) {
                         e.getPlayer().sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Already-Playing"));
                         return;
                     }
                 }
-
                 if(arena.getMaximumPlayers() <= arena.getPlayers().size()) {
-
                     if((e.getPlayer().hasPermission(PermissionsManager.getVip()) || e.getPlayer().hasPermission(PermissionsManager.getJoinFullGames()))) {
-
                         boolean b = false;
                         for(Player player : arena.getPlayers()) {
                             if(!player.hasPermission(PermissionsManager.getVip()) || !player.hasPermission(PermissionsManager.getJoinFullGames())) {
@@ -125,7 +135,6 @@ public class SignManager implements Listener {
                                     return;
                                 }
                             }
-
                         }
                         if(!b) {
                             e.getPlayer().sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.No-Slots-For-Premium"));
@@ -140,27 +149,30 @@ public class SignManager implements Listener {
         }
     }
 
-    private void loadSigns() {
-        for(String path : plugin.getConfig().getStringList("signs")) {
-            Location loc = Util.getLocation(false, path);
-            if(loc == null) {
-                if(Main.isDebugged()) {
-                    System.out.println("[Village Debugger] Location of sign is null!");
-                }
-            }
-            if(loc.getBlock().getState() instanceof Sign) {
-                String mapName = ((Sign) loc.getBlock().getState()).getLine(2);
-                for(Arena inst : plugin.getArenaRegistry().getArenas()) {
-                    if(inst.getMapName().equals(mapName)) {
-                        loadedSigns.put((Sign) loc.getBlock().getState(), inst);
+    public void loadSigns() {
+        loadedSigns.clear();
+        for(String path : ConfigurationManager.getConfig("arenas").getConfigurationSection("instances").getKeys(false)) {
+            for(String sign : ConfigurationManager.getConfig("arenas").getStringList(path + ".signs")) {
+                Location loc = Util.getLocation(false, sign);
+                if(loc == null) {
+                    if(Main.isDebugged()) {
+                        System.out.println("[Village Debugger] Location of sign is null!");
                     }
                 }
-                if(Main.isDebugged()) {
-                    System.out.println("[Village Debugger] Broken game sign at location " + path + "!");
-                }
-            } else {
-                if(Main.isDebugged()) {
-                    System.out.println("[Village Debugger] Block at given location " + path + " isn't a sign!");
+                if(loc.getBlock().getState() instanceof Sign) {
+                    String mapName = ((Sign) loc.getBlock().getState()).getLine(2);
+                    for(Arena inst : ArenaRegistry.getArenas()) {
+                        if(inst.getMapName().equals(mapName)) {
+                            loadedSigns.put((Sign) loc.getBlock().getState(), inst);
+                        }
+                    }
+                    if(Main.isDebugged()) {
+                        System.out.println("[Village Debugger] Broken game sign at location " + path + "!");
+                    }
+                } else {
+                    if(Main.isDebugged()) {
+                        System.out.println("[Village Debugger] Block at given location " + path + " isn't a sign!");
+                    }
                 }
             }
         }

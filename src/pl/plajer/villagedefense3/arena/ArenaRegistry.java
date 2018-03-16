@@ -10,11 +10,7 @@ import java.util.List;
  */
 public class ArenaRegistry {
 
-    private List<Arena> arenas = new ArrayList<>();
-
-    public List<Arena> getArenas() {
-        return arenas;
-    }
+    private static List<Arena> arenas = new ArrayList<>();
 
     /**
      * Checks if player is in any arena
@@ -22,7 +18,7 @@ public class ArenaRegistry {
      * @param player player to check
      * @return [b]true[/b] when player is in arena, [b]false[/b] if otherwise
      */
-    public boolean isInGameInstance(Player player) {
+    public static boolean isInGameInstance(Player player) {
         boolean b = false;
         for(Arena arena : arenas) {
             if(arena.getPlayers().contains(player)) {
@@ -35,11 +31,12 @@ public class ArenaRegistry {
 
     /**
      * Returns arena where the player is
+     *
      * @param p target player
      * @return Arena or null if not playing
      * @see #isInGameInstance(Player) to check if player is playing
      */
-    public Arena getArena(Player p) {
+    public static Arena getArena(Player p) {
         Arena arena = null;
         if(p == null)
             return null;
@@ -56,20 +53,21 @@ public class ArenaRegistry {
         return arena;
     }
 
-    public void registerArena(Arena arena) {
+    public static void registerArena(Arena arena) {
         arenas.add(arena);
     }
 
-    public void unregisterArena(Arena arena) {
+    public static void unregisterArena(Arena arena) {
         arenas.remove(arena);
     }
 
     /**
      * Returns arena based by ID
+     *
      * @param ID name of arena
      * @return Arena or null if not found
      */
-    public Arena getArena(String ID) {
+    public static Arena getArena(String ID) {
         Arena arena = null;
         for(Arena loopArena : arenas) {
             if(loopArena.getID().equalsIgnoreCase(ID)) {
@@ -78,6 +76,10 @@ public class ArenaRegistry {
             }
         }
         return arena;
+    }
+
+    public static List<Arena> getArenas() {
+        return arenas;
     }
 
 }

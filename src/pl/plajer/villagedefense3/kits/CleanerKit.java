@@ -10,11 +10,13 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
-import pl.plajer.villagedefense3.arena.Arena;
 import pl.plajer.villagedefense3.Main;
+import pl.plajer.villagedefense3.arena.Arena;
+import pl.plajer.villagedefense3.arena.ArenaRegistry;
 import pl.plajer.villagedefense3.handlers.ChatManager;
 import pl.plajer.villagedefense3.handlers.PermissionsManager;
 import pl.plajer.villagedefense3.handlers.UserManager;
+import pl.plajer.villagedefense3.kits.kitapi.KitRegistry;
 import pl.plajer.villagedefense3.kits.kitapi.basekits.PremiumKit;
 import pl.plajer.villagedefense3.utils.ArmorHelper;
 import pl.plajer.villagedefense3.utils.Util;
@@ -35,7 +37,7 @@ public class CleanerKit extends PremiumKit implements Listener {
         List<String> description = Util.splitString(ChatManager.colorMessage("Kits.Cleaner.Kit-Description"), 40);
         this.setDescription(description.toArray(new String[description.size()]));
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
-        plugin.getKitRegistry().registerKit(this);
+        KitRegistry.registerKit(this);
     }
 
     @Override
@@ -80,13 +82,13 @@ public class CleanerKit extends PremiumKit implements Listener {
             return;
         if(!(event.getItem().getItemMeta().getDisplayName().contains(ChatManager.colorMessage("Kits.Cleaner.Game-Item-Name"))))
             return;
-        if(plugin.getArenaRegistry().getArena(event.getPlayer()) == null)
+        if(ArenaRegistry.getArena(event.getPlayer()) == null)
             return;
         if(UserManager.getUser(event.getPlayer().getUniqueId()).isSpectator()) {
             event.getPlayer().sendMessage(ChatManager.colorMessage("Kits.Cleaner.Spectator-Warning"));
             return;
         }
-        Arena arena = plugin.getArenaRegistry().getArena(event.getPlayer());
+        Arena arena = ArenaRegistry.getArena(event.getPlayer());
 
         if(UserManager.getUser(event.getPlayer().getUniqueId()).getCooldown("clean") > 0 && !UserManager.getUser(event.getPlayer().getUniqueId()).isSpectator()) {
             String msgstring = ChatManager.colorMessage("Kits.Ability-Still-On-Cooldown");
@@ -110,7 +112,7 @@ public class CleanerKit extends PremiumKit implements Listener {
             event.getPlayer().playSound(event.getPlayer().getLocation(), Sound.valueOf("ZOMBIE_DEATH"), 1, 1);
         }
         String message = ChatManager.formatMessage(arena, ChatManager.colorMessage("Kits.Cleaner.Cleaned-Map"), event.getPlayer());
-        for(Player player1 : plugin.getArenaRegistry().getArena(event.getPlayer()).getPlayers()) {
+        for(Player player1 : ArenaRegistry.getArena(event.getPlayer()).getPlayers()) {
             player1.sendMessage(ChatManager.PLUGIN_PREFIX + message);
         }
         UserManager.getUser(event.getPlayer().getUniqueId()).setCooldown("clean", 180);

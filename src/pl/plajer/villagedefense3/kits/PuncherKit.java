@@ -9,6 +9,7 @@ import pl.plajer.villagedefense3.Main;
 import pl.plajer.villagedefense3.handlers.ChatManager;
 import pl.plajer.villagedefense3.handlers.ConfigurationManager;
 import pl.plajer.villagedefense3.handlers.UserManager;
+import pl.plajer.villagedefense3.kits.kitapi.KitRegistry;
 import pl.plajer.villagedefense3.kits.kitapi.basekits.LevelKit;
 import pl.plajer.villagedefense3.utils.ArmorHelper;
 import pl.plajer.villagedefense3.utils.Util;
@@ -26,7 +27,7 @@ public class PuncherKit extends LevelKit {
         List<String> description = Util.splitString(ChatManager.colorMessage("Kits.Puncher.Kit-Description"), 40);
         this.setDescription(description.toArray(new String[description.size()]));
         setLevel(ConfigurationManager.getConfig("kits").getInt("Required-Level.Puncher"));
-        plugin.getKitRegistry().registerKit(this);
+        KitRegistry.registerKit(this);
     }
 
     @Override

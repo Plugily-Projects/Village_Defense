@@ -16,6 +16,7 @@ import pl.plajer.villagedefense3.User;
 import pl.plajer.villagedefense3.handlers.ChatManager;
 import pl.plajer.villagedefense3.handlers.PermissionsManager;
 import pl.plajer.villagedefense3.handlers.UserManager;
+import pl.plajer.villagedefense3.kits.kitapi.KitRegistry;
 import pl.plajer.villagedefense3.kits.kitapi.basekits.PremiumKit;
 import pl.plajer.villagedefense3.utils.ArmorHelper;
 import pl.plajer.villagedefense3.utils.ItemUtils;
@@ -34,7 +35,7 @@ public class MedicKit extends PremiumKit implements Listener {
         List<String> description = Util.splitString(ChatManager.colorMessage("Kits.Medic.Kit-Description"), 40);
         this.setDescription(description.toArray(new String[description.size()]));
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
-        plugin.getKitRegistry().registerKit(this);
+        KitRegistry.registerKit(this);
     }
 
     @Override

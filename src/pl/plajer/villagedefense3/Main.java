@@ -4,7 +4,9 @@ import com.sk89q.worldedit.bukkit.WorldEditPlugin;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
@@ -236,6 +238,7 @@ public class Main extends JavaPlugin implements Listener {
 
         SpecialItem.loadAll();
         registerArenas();
+        new ShopManager();
         //we must start it after instances load!
         signManager = new SignManager(this);
 
@@ -262,6 +265,7 @@ public class Main extends JavaPlugin implements Listener {
         new MainCommand(this, true);
         new GolemEvents(this);
         new EntityRegistry(this);
+        new ArenaEvents(this);
         inventoryManager = new InventoryManager(this);
         kitRegistry = new KitRegistry();
         kitManager = new KitManager(this);
@@ -274,7 +278,6 @@ public class Main extends JavaPlugin implements Listener {
         new Events(this);
         new MessageHandler(this);
         new CombustDayLightEvent(this);
-        new ShopManager(this);
         new LobbyEvents(this);
         new SpectatorItemEvents(this);
         chunkManager = new ChunkManager(this);
@@ -393,14 +396,14 @@ public class Main extends JavaPlugin implements Listener {
             }
             UserManager.removeUser(player.getUniqueId());
         }
-        for(Arena invasionInstance : arenaRegistry.getArenas()) {
+        for(Arena invasionInstance : ArenaRegistry.getArenas()) {
             for(Player player : invasionInstance.getPlayers()) {
                 invasionInstance.teleportToEndLocation(player);
                 if(inventoryManagerEnabled)
                     inventoryManager.loadInventory(player);
             }
-            invasionInstance.stopGame(true);
             invasionInstance.clearVillagers();
+            invasionInstance.stopGame(true);
             invasionInstance.teleportAllToEndLocation();
         }
         if(isDatabaseActivated()) getMySQLDatabase().closeDatabase();
@@ -419,7 +422,7 @@ public class Main extends JavaPlugin implements Listener {
             }
         }
 
-        getKitRegistry().setDefaultKit(knightkit);
+        KitRegistry.setDefaultKit(knightkit);
         getKitManager().setMaterial(Material.NETHER_STAR);
         getKitManager().setItemName(ChatManager.colorMessage("Kits.Kit-Menu-Item-Name"));
         getKitManager().setMenuName(ChatManager.colorMessage("Kits.Kit-Menu.Title"));
@@ -427,9 +430,9 @@ public class Main extends JavaPlugin implements Listener {
     }
 
     public void registerArenas() {
-        if(arenaRegistry.getArenas() != null) {
-            if(arenaRegistry.getArenas().size() > 0) {
-                for(Arena arena : arenaRegistry.getArenas()) {
+        if(ArenaRegistry.getArenas() != null) {
+            if(ArenaRegistry.getArenas().size() > 0) {
+                for(Arena arena : ArenaRegistry.getArenas()) {
                     arena.clearZombies();
                     arena.clearVillagers();
                     arena.clearWolfs();
@@ -437,13 +440,13 @@ public class Main extends JavaPlugin implements Listener {
                 }
             }
         }
-        arenaRegistry.getArenas().clear();
-        if(!getConfig().contains("instances")) {
+        ArenaRegistry.getArenas().clear();
+        if(!ConfigurationManager.getConfig("arenas").contains("instances")) {
             Bukkit.getConsoleSender().sendMessage(ChatManager.colorMessage("Validator.No-Instances-Created"));
             return;
         }
 
-        for(String ID : getConfig().getConfigurationSection("instances").getKeys(false)) {
+        for(String ID : ConfigurationManager.getConfig("arenas").getConfigurationSection("instances").getKeys(false)) {
             Arena arena;
             String s = "instances." + ID + ".";
             if(s.contains("default"))
@@ -457,48 +460,56 @@ public class Main extends JavaPlugin implements Listener {
             } else {
                 arena = new ArenaInitializer1_12_R1(ID, this);
             }
-            arena.setMinimumPlayers(getConfig().getInt(s + "minimumplayers"));
-            arena.setMaximumPlayers(getConfig().getInt(s + "maximumplayers"));
-            arena.setMapName(getConfig().getString(s + "mapname"));
-            arena.setLobbyLocation(Util.getLocation(true, s + "lobbylocation"));
-            arena.setStartLocation(Util.getLocation(true, s + "Startlocation"));
-            arena.setEndLocation(Util.getLocation(true, s + "Endlocation"));
+            arena.setMinimumPlayers(ConfigurationManager.getConfig("arenas").getInt(s + "minimumplayers"));
+            arena.setMaximumPlayers(ConfigurationManager.getConfig("arenas").getInt(s + "maximumplayers"));
+            arena.setMapName(ConfigurationManager.getConfig("arenas").getString(s + "mapname"));
+            arena.setLobbyLocation(Util.getLocation(false, ConfigurationManager.getConfig("arenas").getString(s + "lobbylocation")));
+            arena.setStartLocation(Util.getLocation(false, ConfigurationManager.getConfig("arenas").getString(s + "Startlocation")));
+            arena.setEndLocation(Util.getLocation(false, ConfigurationManager.getConfig("arenas").getString(s + "Endlocation")));
 
-            if(getConfig().contains(s + "zombiespawns")) {
-                for(String string : getConfig().getConfigurationSection(s + "zombiespawns").getKeys(false)) {
+            if(!ConfigurationManager.getConfig("arenas").getBoolean(s + "isdone")) {
+                Bukkit.getConsoleSender().sendMessage(ChatManager.colorMessage("Validator.Invalid-Arena-Configuration").replaceAll("%arena%", ID).replaceAll("%error%", "NOT VALIDATED"));
+                arena.setReady(false);
+                ArenaRegistry.registerArena(arena);
+                continue;
+            }
+
+            if(ConfigurationManager.getConfig("arenas").contains(s + "zombiespawns")) {
+                for(String string : ConfigurationManager.getConfig("arenas").getConfigurationSection(s + "zombiespawns").getKeys(false)) {
                     String path = s + "zombiespawns." + string;
-                    arena.addZombieSpawn(Util.getLocation(true, path));
+                    arena.addZombieSpawn(Util.getLocation(false, ConfigurationManager.getConfig("arenas").getString(path)));
                 }
             } else {
                 Bukkit.getConsoleSender().sendMessage(ChatManager.colorMessage("Validator.Invalid-Arena-Configuration").replaceAll("%arena%", ID).replaceAll("%error%", "ZOMBIE SPAWNS"));
-                arenaRegistry.registerArena(arena);
+                arena.setReady(false);
+                ArenaRegistry.registerArena(arena);
                 continue;
             }
 
-            if(getConfig().contains(s + "villagerspawns")) {
-                for(String string : getConfig().getConfigurationSection(s + "villagerspawns").getKeys(false)) {
+            if(ConfigurationManager.getConfig("arenas").contains(s + "villagerspawns")) {
+                for(String string : ConfigurationManager.getConfig("arenas").getConfigurationSection(s + "villagerspawns").getKeys(false)) {
                     String path = s + "villagerspawns." + string;
-                    arena.addVillagerSpawn(Util.getLocation(true, path));
+                    arena.addVillagerSpawn(Util.getLocation(false, ConfigurationManager.getConfig("arenas").getString(path)));
                 }
             } else {
                 Bukkit.getConsoleSender().sendMessage(ChatManager.colorMessage("Validator.Invalid-Arena-Configuration").replaceAll("%arena%", ID).replaceAll("%error%", "VILLAGER SPAWNS"));
-                arenaRegistry.registerArena(arena);
+                arena.setReady(false);
+                ArenaRegistry.registerArena(arena);
                 continue;
             }
-            if(getConfig().contains(s + "doors")) {
-                for(String string : getConfig().getConfigurationSection(s + "doors").getKeys(false)) {
+            if(ConfigurationManager.getConfig("arenas").contains(s + "doors")) {
+                for(String string : ConfigurationManager.getConfig("arenas").getConfigurationSection(s + "doors").getKeys(false)) {
                     String path = s + "doors." + string + ".";
-                    arena.addDoor(Util.getLocation(true, path + "location"), (byte) getConfig().getInt(path + "byte"));
-
+                    arena.addDoor(Util.getLocation(false, ConfigurationManager.getConfig("arenas").getString(path + "location")), (byte) ConfigurationManager.getConfig("arenas").getInt(path + "byte"));
                 }
             } else {
                 Bukkit.getConsoleSender().sendMessage(ChatManager.colorMessage("Validator.Invalid-Arena-Configuration").replaceAll("%arena%", ID).replaceAll("%error%", "DOORS"));
-                arenaRegistry.registerArena(arena);
+                arena.setReady(false);
+                ArenaRegistry.registerArena(arena);
                 continue;
             }
-            arenaRegistry.registerArena(arena);
+            ArenaRegistry.registerArena(arena);
             arena.start();
-            getServer().getPluginManager().registerEvents(arena, this);
             Bukkit.getConsoleSender().sendMessage(ChatManager.colorMessage("Validator.Instance-Started").replaceAll("%arena%", ID));
         }
     }

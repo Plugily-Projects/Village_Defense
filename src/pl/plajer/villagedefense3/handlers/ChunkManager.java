@@ -6,8 +6,9 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.world.ChunkLoadEvent;
 import org.bukkit.event.world.ChunkUnloadEvent;
-import pl.plajer.villagedefense3.arena.Arena;
 import pl.plajer.villagedefense3.Main;
+import pl.plajer.villagedefense3.arena.Arena;
+import pl.plajer.villagedefense3.arena.ArenaRegistry;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,7 +42,7 @@ public class ChunkManager implements Listener {
     @EventHandler
     public void onChunkLoad(ChunkLoadEvent event) {
         for(Entity entity : event.getChunk().getEntities()) {
-            for(Arena arena : plugin.getArenaRegistry().getArenas()) {
+            for(Arena arena : ArenaRegistry.getArenas()) {
                 if(entity.getWorld().getName().equals(arena.getStartLocation().getWorld().getName()) && entity.getLocation().distance(arena.getStartLocation()) < 300) {
                     if(entity instanceof Player || entity instanceof Wolf || entity instanceof IronGolem || entity instanceof Villager || entity instanceof Zombie) {
                         entity.remove();
