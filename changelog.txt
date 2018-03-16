@@ -254,4 +254,10 @@ Commit 27
 
 Commit 28 (RC 1)
 + Shop per arena added
-+ Fix for arena setup signs join (maybe)
++ Fix for arena setup signs join
++ Fix arena setup
+
+RC 2
++ Fixed arena deleting
++ Fixed not loading signs at startup
++ Removed debug message with broken game sign but sign wasn't broken...

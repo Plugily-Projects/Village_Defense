@@ -152,7 +152,7 @@ public class SignManager implements Listener {
     public void loadSigns() {
         loadedSigns.clear();
         for(String path : ConfigurationManager.getConfig("arenas").getConfigurationSection("instances").getKeys(false)) {
-            for(String sign : ConfigurationManager.getConfig("arenas").getStringList(path + ".signs")) {
+            for(String sign : ConfigurationManager.getConfig("arenas").getStringList("instances." + path + ".signs")) {
                 Location loc = Util.getLocation(false, sign);
                 if(loc == null) {
                     if(Main.isDebugged()) {
@@ -165,9 +165,6 @@ public class SignManager implements Listener {
                         if(inst.getMapName().equals(mapName)) {
                             loadedSigns.put((Sign) loc.getBlock().getState(), inst);
                         }
-                    }
-                    if(Main.isDebugged()) {
-                        System.out.println("[Village Debugger] Broken game sign at location " + path + "!");
                     }
                 } else {
                     if(Main.isDebugged()) {

@@ -25,6 +25,7 @@ import pl.plajer.villagedefense3.utils.Util;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -198,7 +199,6 @@ public class AdminCommands extends MainCommand {
 
     public void deleteArena(CommandSender sender, String arenaString) {
         if(checkSenderIsConsole(sender)) return;
-        Player player = (Player) sender;
         if(!hasPermission(sender, "villagedefense.admin.delete")) return;
         Arena arena = ArenaRegistry.getArena(arenaString);
         if(arena == null) {
@@ -207,7 +207,7 @@ public class AdminCommands extends MainCommand {
         }
         arena.stopGame(false);
         FileConfiguration config = ConfigurationManager.getConfig("arenas");
-        config.set("instances." + arena, null);
+        config.set("instances." + arenaString, null);
         ConfigurationManager.saveConfig(config, "arenas");
         ArenaRegistry.unregisterArena(arena);
         sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatColor.RED + "Successfully removed game instance!");
