@@ -222,7 +222,6 @@ public class Main extends JavaPlugin implements Listener {
             database = new MySQLDatabase(this);
         } else {
             fileStats = new FileStats(this);
-            fileStats.loadStatsForPlayersOnline();
         }
         bossbarEnabled = getConfig().getBoolean("Bossbar-Enabled");
         if(is1_8_R3()) {
@@ -251,6 +250,10 @@ public class Main extends JavaPlugin implements Listener {
                 System.out.println("[Village Debugger] Loaded custom permission " + key + "!");
             }
         }
+        for(Player p : Bukkit.getOnlinePlayers()){
+            UserManager.registerUser(p.getUniqueId());
+        }
+        fileStats.loadStatsForPlayersOnline();
         StatsStorage.plugin = this;
         setupPermissions();
     }
@@ -260,7 +263,6 @@ public class Main extends JavaPlugin implements Listener {
         bungeeEnabled = getConfig().getBoolean("BungeeActivated");
         if(getConfig().getBoolean("BungeeActivated")) bungeeManager = new BungeeManager(this);
         new ChatManager(ChatManager.colorMessage("In-Game.Plugin-Prefix"));
-        User.plugin = this;
         new Util(this);
         new MainCommand(this, true);
         new GolemEvents(this);

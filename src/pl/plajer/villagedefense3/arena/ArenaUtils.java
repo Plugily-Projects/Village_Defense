@@ -78,7 +78,13 @@ public class ArenaUtils {
                 //fighting stage of IN_GAME state
                 user.getScoreboard().registerNewObjective("vd_state_2F", "dummy");
             }
-            Objective gameObjective = user.getScoreboard().getObjective("vd_state_" + arena.getArenaState().ordinal() + (arena.isFighting() ? "F" : ""));
+            Objective gameObjective;
+            if(arena.getArenaState() == ArenaState.IN_GAME){
+                gameObjective = user.getScoreboard().getObjective("vd_state_" + arena.getArenaState().ordinal() + (arena.isFighting() ? "F" : ""));
+            } else{
+                gameObjective = user.getScoreboard().getObjective("vd_state_" + arena.getArenaState().ordinal());
+            }
+            if(gameObjective == null) return;
             gameObjective.setDisplayName(ChatManager.colorMessage("Scoreboard.Header"));
             gameObjective.setDisplaySlot(DisplaySlot.SIDEBAR);
             switch(arena.getArenaState()) {

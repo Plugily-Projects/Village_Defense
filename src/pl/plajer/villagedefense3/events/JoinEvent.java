@@ -10,6 +10,7 @@ import pl.plajer.villagedefense3.Main;
 import pl.plajer.villagedefense3.UpdateChecker;
 import pl.plajer.villagedefense3.arena.Arena;
 import pl.plajer.villagedefense3.arena.ArenaRegistry;
+import pl.plajer.villagedefense3.handlers.UserManager;
 import pl.plajer.villagedefense3.utils.MySQLConnectionUtils;
 
 import java.util.ArrayList;
@@ -80,6 +81,7 @@ public class JoinEvent implements Listener {
                 event.getPlayer().teleport(ArenaRegistry.getArenas().get(0).getEndLocation());
             }
         }
+        UserManager.registerUser(event.getPlayer().getUniqueId());
         if(!plugin.isDatabaseActivated()) {
             List<String> temp = new ArrayList<>();
             temp.add("gamesplayed");

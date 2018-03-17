@@ -1,6 +1,7 @@
 package pl.plajer.villagedefense3.handlers;
 
 import org.bukkit.entity.Player;
+import pl.plajer.villagedefense3.Main;
 import pl.plajer.villagedefense3.User;
 import pl.plajer.villagedefense3.arena.Arena;
 
@@ -15,6 +16,13 @@ import java.util.UUID;
 public class UserManager {
 
     private static HashMap<UUID, User> users = new HashMap<>();
+
+    public static void registerUser(UUID uuid){
+        if(Main.isDebugged()){
+            System.out.println("[Village Debugger] Registered new user with UUID: " + uuid);
+        }
+        users.put(uuid, new User(uuid));
+    }
 
     public static User getUser(UUID uuid) {
         if(users.containsKey(uuid)) {

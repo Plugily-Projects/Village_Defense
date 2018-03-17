@@ -6,6 +6,7 @@ import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.ScoreboardManager;
 import pl.plajer.villagedefense3.arena.Arena;
 import pl.plajer.villagedefense3.arena.ArenaRegistry;
+import pl.plajer.villagedefense3.kits.KnightKit;
 import pl.plajer.villagedefense3.kits.kitapi.KitRegistry;
 import pl.plajer.villagedefense3.kits.kitapi.basekits.Kit;
 
@@ -17,22 +18,19 @@ import java.util.UUID;
  */
 public class User {
 
-    public static Main plugin;
     private static long cooldownCounter = 0;
     private ScoreboardManager scoreboardManager = Bukkit.getScoreboardManager();
     private Scoreboard scoreboard;
     private UUID uuid;
     private boolean fakeDead = false;
     private boolean spectator = false;
-    private Kit kit;
+    private Kit kit = KitRegistry.getDefaultKit();
     private HashMap<String, Integer> ints = new HashMap<>();
     private HashMap<String, Long> cooldowns = new HashMap<>();
 
     public User(UUID uuid) {
         scoreboard = scoreboardManager.getNewScoreboard();
         this.uuid = uuid;
-
-        kit = KitRegistry.getDefaultKit();
     }
 
     public static void handleCooldowns() {

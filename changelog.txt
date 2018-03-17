@@ -261,3 +261,5 @@ RC 2
 + Fixed arena deleting
 + Fixed not loading signs at startup
 + Removed debug message with broken game sign but sign wasn't broken...
++ Fixed stop game scoreboard null error
++ Added support for reloads

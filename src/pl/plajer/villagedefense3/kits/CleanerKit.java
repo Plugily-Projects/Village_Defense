@@ -53,9 +53,8 @@ public class CleanerKit extends PremiumKit implements Listener {
         List<String> cleanerWandLore = Util.splitString(ChatManager.colorMessage("Kits.Cleaner.Game-Item-Lore"), 40);
         String[] cleanerWandLoreArray = cleanerWandLore.toArray(new String[cleanerWandLore.size()]);
 
-        ItemStack itemStack = this.setItemNameAndLore(cleaneritem, ChatManager.colorMessage("Kits.Cleaner.Game-Item-Name"), cleanerWandLoreArray);
+        this.setItemNameAndLore(cleaneritem, ChatManager.colorMessage("Kits.Cleaner.Game-Item-Name"), cleanerWandLoreArray);
         player.getInventory().addItem(cleaneritem);
-        player.getInventory().addItem(new ItemStack(Material.ARROW, 64));
         player.getInventory().addItem(new ItemStack(Material.COOKED_BEEF, 10));
         player.getInventory().addItem(new ItemStack(Material.SADDLE));
     }
