@@ -12,19 +12,13 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 import pl.plajer.villagedefense3.Main;
 import pl.plajer.villagedefense3.arena.*;
 import pl.plajer.villagedefense3.handlers.ConfigurationManager;
 import pl.plajer.villagedefense3.handlers.PermissionsManager;
-import pl.plajer.villagedefense3.utils.BigTextUtils;
-import pl.plajer.villagedefense3.utils.ItemBuilder;
 import pl.plajer.villagedefense3.utils.SetupInventory;
 import pl.plajer.villagedefense3.utils.Util;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,7 +34,6 @@ public class SetupInventoryEvents implements Listener {
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 
-    //TODO make me shorter?
     @EventHandler
     public void onClick(InventoryClickEvent event) {
         if(event.getWhoClicked().getType() != EntityType.PLAYER)

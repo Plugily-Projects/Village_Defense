@@ -18,8 +18,6 @@ import pl.plajer.villagedefense3.arena.ArenaRegistry;
 import pl.plajer.villagedefense3.arena.ArenaState;
 import pl.plajer.villagedefense3.utils.Util;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -168,7 +166,7 @@ public class SignManager implements Listener {
                     }
                 } else {
                     if(Main.isDebugged()) {
-                        System.out.println("[Village Debugger] Block at given location " + path + " isn't a sign!");
+                        System.out.println("[Village Debugger] Block at location " + loc + " for arena " + path + " isn't a sign!");
                     }
                 }
             }

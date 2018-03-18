@@ -11,15 +11,12 @@ import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import pl.plajer.villagedefense3.Main;
-import pl.plajer.villagedefense3.arena.Arena;
-import pl.plajer.villagedefense3.arena.ArenaRegistry;
+import pl.plajer.villagedefense3.arena.*;
 import pl.plajer.villagedefense3.handlers.ChatManager;
 import pl.plajer.villagedefense3.handlers.ConfigurationManager;
 import pl.plajer.villagedefense3.utils.SetupInventory;
 import pl.plajer.villagedefense3.utils.Util;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -356,7 +353,6 @@ public class MainCommand implements CommandExecutor {
         }
     }
 
-    //TODO optimize me / change me
     void performSetup(Player player, String[] args) {
         if(args[1].equalsIgnoreCase("setup") || args[1].equals("edit")) {
             if(ArenaRegistry.getArena(args[0]) == null) {
@@ -540,8 +536,27 @@ public class MainCommand implements CommandExecutor {
         config.set(path + "world", worldName);
         ConfigurationManager.saveConfig(config, "arenas");
 
-        //TODO FIXME do not register all (and clear), just register not ready arena!!!!!!!!
-        plugin.registerArenas();
+        Arena arena;
+
+        if(plugin.is1_8_R3()) {
+            arena = new ArenaInitializer1_8_R3(ID, plugin);
+        } else if(plugin.is1_9_R1()) {
+            arena = new ArenaInitializer1_9_R1(ID, plugin);
+        } else if(plugin.is1_11_R1()) {
+            arena = new ArenaInitializer1_11_R1(ID, plugin);
+        } else {
+            arena = new ArenaInitializer1_12_R1(ID, plugin);
+        }
+
+        arena.setMinimumPlayers(ConfigurationManager.getConfig("arenas").getInt(path + "minimumplayers"));
+        arena.setMaximumPlayers(ConfigurationManager.getConfig("arenas").getInt(path + "maximumplayers"));
+        arena.setMapName(ConfigurationManager.getConfig("arenas").getString(path + "mapname"));
+        arena.setLobbyLocation(Util.getLocation(false, ConfigurationManager.getConfig("arenas").getString(path + "lobbylocation")));
+        arena.setStartLocation(Util.getLocation(false, ConfigurationManager.getConfig("arenas").getString(path + "Startlocation")));
+        arena.setEndLocation(Util.getLocation(false, ConfigurationManager.getConfig("arenas").getString(path + "Endlocation")));
+        arena.setReady(false);
+
+        ArenaRegistry.registerArena(arena);
     }
 
     enum LocationType {

@@ -85,10 +85,6 @@ public class ZombieFinderKit extends LevelKit implements Listener {
         if(ArenaRegistry.getArena(event.getPlayer()) == null)
             return;
         if(UserManager.getUser(event.getPlayer().getUniqueId()).isSpectator()) {
-            /*
-             * TODO
-             * Change it from Teleporter to Zombie-Teleporter kit
-             */
             event.getPlayer().sendMessage(ChatManager.colorMessage("Kits.Teleporter.Spectator-Warning"));
             return;
         }

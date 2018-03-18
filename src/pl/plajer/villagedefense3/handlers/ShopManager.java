@@ -18,7 +18,6 @@ import java.util.Map;
 /**
  * Created by Tom on 16/08/2014.
  */
-//TODO make me per arena
 public class ShopManager {
 
     private static Map<Arena, Inventory> arenaShop = new HashMap<>();

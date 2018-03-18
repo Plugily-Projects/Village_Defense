@@ -1,6 +1,7 @@
 package pl.plajer.villagedefense3.handlers;
 
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -45,7 +46,10 @@ public class InventoryManager {
             invConfig.set("Current health", player.getHealth());
             invConfig.set("Max health", player.getMaxHealth());
             invConfig.set("Food", player.getFoodLevel());
+            invConfig.set("Saturation", player.getSaturation());
             invConfig.set("Fire ticks", player.getFireTicks());
+            invConfig.set("GameMode", player.getGameMode().toString());
+            invConfig.set("Allow flight", player.getAllowFlight());
 
             invConfig.set("Size", inventory.getSize());
             invConfig.set("Max stack size", inventory.getMaxStackSize());
@@ -132,7 +136,10 @@ public class InventoryManager {
                 player.setMaxHealth(invConfig.getDouble("Max health"));
                 player.setHealth(invConfig.getDouble("Current health"));
                 player.setFoodLevel(invConfig.getInt("Food"));
+                player.setSaturation((float) invConfig.get("Saturation"));
                 player.setFireTicks(invConfig.getInt("Fire ticks"));
+                player.setGameMode(GameMode.valueOf(invConfig.getString("GameMode")));
+                player.setAllowFlight(invConfig.getBoolean("Allow flight"));
                 List<String> activePotions = invConfig.getStringList("Active potion effects");
                 for(String potion : activePotions){
                     String[] splited = potion.split("#");

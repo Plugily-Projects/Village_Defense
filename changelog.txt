@@ -137,8 +137,8 @@ Commit 19
 + Renamed InvasionInstance to ArenaInstance
 + Code cleanup
 
-TODO make shop per arena
-TODO moar translatable messages
+ODO make shop per arena
+ODO moar translatable messages
 ODO change bonecp to hikaricp
 
 Commit 20
@@ -156,8 +156,8 @@ Commit 20
 + Attribute generic follow range for iron golems was added for 1.9-1.12 versions (1.8 had it already)
 + Implemented weird 1.11.2 villager riding feature (W moves left S moves right xd)
 
-TODO move managers into other packages (there are too many classes there)
-TODO remove unused entries + spellings in creatures package and not only there
+ODO move managers into other packages (there are too many classes there)
+ODO remove unused entries + spellings in creatures package and not only there
 ODO migrator to rename files to VD2_<file>.yml and generate new one to prevent errors
 
 Commit 21
@@ -263,3 +263,10 @@ RC 2
 + Removed debug message with broken game sign but sign wasn't broken...
 + Fixed stop game scoreboard null error
 + Added support for reloads
+
+RC 3
++ Fixed players were dropping their inventory on death
++ Fixed debug message with invalid sign
++ Creating new arena doesn't reload all arenas now
++ Added game mode, flying state and saturation saving in inventory manager
++ Fixed zombie teleporter errors

@@ -64,7 +64,6 @@ public class LanguageManager {
     }
 
 
-    //TODO remove meeee or edit to return locale based file
     public static FileConfiguration getLanguageFile() {
         if(languageConfig == null) {
             reloadLanguageFile();
