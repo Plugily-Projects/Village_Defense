@@ -152,8 +152,6 @@ public class Main extends JavaPlugin implements Listener {
         version = Bukkit.getServer().getClass().getPackage().getName().replace(".", ",").split(",")[3];
         new ConfigurationManager(this);
         LanguageManager.init(this);
-        LanguageManager.saveDefaultLanguageFile();
-        saveDefaultConfig();
         if(!(getVersion().equalsIgnoreCase("v1_8_R3") || getVersion().equalsIgnoreCase("v1_9_R1") ||
                 getVersion().equalsIgnoreCase("v1_11_R1") || getVersion().equalsIgnoreCase("v1_12_R1"))) {
             BigTextUtils.thisVersionIsNotSupported();
@@ -177,6 +175,8 @@ public class Main extends JavaPlugin implements Listener {
         if(LanguageManager.getLanguageFile().isSet("File-Version") && getConfig().isSet("Config-Version")) {
             migrateToNewFormat();
         }
+        LanguageManager.saveDefaultLanguageFile();
+        saveDefaultConfig();
         debug = getConfig().getBoolean("Debug");
         if(Main.isDebugged()) {
             System.out.println("[Village Debugger] Village Defense setup started!");
@@ -334,13 +334,12 @@ public class Main extends JavaPlugin implements Listener {
     }
 
     private void migrateToNewFormat() {
-        BigTextUtils.gottaMigrate();
+        BigTextUtils.gonnaMigrate();
         Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "Village Defense 3 is migrating all files to the new file format...");
         Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "Don't worry! Old files will be renamed not overridden!");
         for(String file : migratable) {
             if(ConfigurationManager.getFile(file).exists()) {
-                ConfigurationManager.getFile(file).renameTo(new File("VD2_" + file));
-                ConfigurationManager.getConfig(file);
+                ConfigurationManager.getFile(file).renameTo(new File(getDataFolder(), "VD2_" + file + ".yml"));
                 Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "Renamed file " + file + ".yml");
             }
         }

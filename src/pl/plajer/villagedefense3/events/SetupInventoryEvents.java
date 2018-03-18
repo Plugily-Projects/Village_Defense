@@ -185,6 +185,7 @@ public class SetupInventoryEvents implements Listener {
             config.set("instances." + arena.getID() + ".isdone", true);
             ConfigurationManager.saveConfig(config, "arenas");
             List<Sign> signsToUpdate = new ArrayList<>();
+            ArenaRegistry.unregisterArena(arena);
             if(plugin.getSignManager().getLoadedSigns().containsValue(arena)){
                 for(Sign s : plugin.getSignManager().getLoadedSigns().keySet()){
                     if(plugin.getSignManager().getLoadedSigns().get(s).equals(arena)){

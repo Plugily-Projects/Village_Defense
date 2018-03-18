@@ -46,7 +46,7 @@ public class BigTextUtils {
         Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "         |_|                                 ");
     }
 
-    public static void gottaMigrate(){
+    public static void gonnaMigrate(){
         Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "  __  __   _                          _     _                    ");
         Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + " |  \\/  | (_)   __ _   _ __    __ _  | |_  (_)  _ __     __ _             ");
         Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + " | |\\/| | | |  / _` | | '__|  / _` | | __| | | | '_ \\   / _` |            ");
