@@ -14,6 +14,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 import pl.plajer.villagedefense3.Main;
+import pl.plajer.villagedefense3.arena.Arena;
 import pl.plajer.villagedefense3.arena.ArenaRegistry;
 import pl.plajer.villagedefense3.handlers.ChatManager;
 import pl.plajer.villagedefense3.handlers.PermissionsManager;
@@ -96,11 +97,12 @@ public class WizardKit extends PremiumKit implements Listener {
 
     @EventHandler
     public void onStaffUse(PlayerInteractEvent e) {
+        if(UserManager.getUser(e.getPlayer().getUniqueId()) == null) return;
+        if(ArenaRegistry.getArena(e.getPlayer()) == null) return;
+        if(!(UserManager.getUser(e.getPlayer().getUniqueId()).getKit() instanceof WizardKit)) return;
         final Player p = e.getPlayer();
         ItemStack is = e.getPlayer().getItemInHand();
         if(is != null && is.hasItemMeta() && is.getItemMeta().hasDisplayName()) {
-            if(ArenaRegistry.getArena(e.getPlayer()) == null)
-                return;
             if(is.getItemMeta().getDisplayName().equals(ChatManager.colorMessage("Kits.Wizard.Essence-Item-Name"))) {
                 if(UserManager.getUser(e.getPlayer().getUniqueId()).getCooldown("essence") > 0 && !UserManager.getUser(e.getPlayer().getUniqueId()).isSpectator()) {
                     String msgstring = ChatManager.colorMessage("Kits.Ability-Still-On-Cooldown");

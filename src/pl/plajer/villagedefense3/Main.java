@@ -23,6 +23,7 @@ import pl.plajer.villagedefense3.kits.kitapi.KitManager;
 import pl.plajer.villagedefense3.kits.kitapi.KitRegistry;
 import pl.plajer.villagedefense3.utils.BigTextUtils;
 import pl.plajer.villagedefense3.utils.MetricsLite;
+import pl.plajer.villagedefense3.utils.MySQLConnectionUtils;
 import pl.plajer.villagedefense3.utils.Util;
 import pl.plajer.villagedefense3.villagedefenseapi.StatsStorage;
 
@@ -251,7 +252,13 @@ public class Main extends JavaPlugin implements Listener {
         for(Player p : Bukkit.getOnlinePlayers()){
             UserManager.registerUser(p.getUniqueId());
         }
-        fileStats.loadStatsForPlayersOnline();
+        if(databaseActivated){
+            for(Player p : Bukkit.getOnlinePlayers()){
+                MySQLConnectionUtils.loadPlayerStats(p, this);
+            }
+        } else {
+            fileStats.loadStatsForPlayersOnline();
+        }
         StatsStorage.plugin = this;
         setupPermissions();
     }

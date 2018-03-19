@@ -76,13 +76,11 @@ public class PlayerBuster extends EntityZombie {
     @Override
     public boolean damageEntity(DamageSource damagesource, float f) {
         if(damagesource != null && damagesource.getEntity() != null && damagesource.getEntity().getBukkitEntity().getType() == EntityType.PLAYER) {
-
             ItemStack[] itemStack = new ItemStack[]{new ItemStack(Material.ROTTEN_FLESH)};
             Bukkit.getServer().getPluginManager().callEvent(new EntityDeathEvent((LivingEntity) this.getBukkitEntity(), Arrays.asList(itemStack), expToDrop));
             Player player = (Player) damagesource.getEntity().getBukkitEntity();
-            org.bukkit.entity.Entity primed = getBukkitEntity().getWorld().spawnEntity(getBukkitEntity().getLocation(), EntityType.PRIMED_TNT);
+            getBukkitEntity().getWorld().spawnEntity(getBukkitEntity().getLocation(), EntityType.PRIMED_TNT);
             this.die();
-
 
             return true;
 

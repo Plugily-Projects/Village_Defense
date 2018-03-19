@@ -66,11 +66,9 @@ public class ArenaEvents implements Listener {
     public void onPlayerDie(PlayerDeathEvent e) {
         Arena arena = ArenaRegistry.getArena(e.getEntity());
         if(arena == null) return;
-        if(!arena.getPlayers().contains(e.getEntity())) return;
         if(arena.getPlayers().contains(e.getEntity())) this.onDeath(e.getEntity(), arena);
         if(e.getEntity().isDead()) e.getEntity().setHealth(e.getEntity().getMaxHealth());
         e.setDeathMessage("");
-        this.onDeath(e.getEntity(), arena);
         e.getDrops().clear();
         e.setDroppedExp(0);
     }
