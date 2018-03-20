@@ -71,6 +71,7 @@ public class ArenaEvents implements Listener {
         e.setDeathMessage("");
         e.getDrops().clear();
         e.setDroppedExp(0);
+        this.onDeath(e.getEntity(), arena);
     }
 
     private void onDeath(final Player player, Arena arena) {
@@ -89,7 +90,6 @@ public class ArenaEvents implements Listener {
         }
         User user = UserManager.getUser(player.getUniqueId());
         arena.addStat(player, "deaths");
-
         if(user.isFakeDead()) {
             player.setAllowFlight(true);
             player.setGameMode(GameMode.SURVIVAL);

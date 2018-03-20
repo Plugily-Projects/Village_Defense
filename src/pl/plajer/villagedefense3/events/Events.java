@@ -1,14 +1,17 @@
 package pl.plajer.villagedefense3.events;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Effect;
 import org.bukkit.Material;
+import org.bukkit.block.Hopper;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockDispenseEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.*;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -74,22 +77,22 @@ public class Events implements Listener {
         //bonus orbs with custom permissions
         for(String perm : plugin.getCustomPermissions().keySet()) {
             if(event.getPlayer().hasPermission(perm)) {
-                amount =+ (int) Math.ceil(event.getAmount() * (plugin.getCustomPermissions().get(perm) / 100));
+                amount = +(int) Math.ceil(event.getAmount() * (plugin.getCustomPermissions().get(perm) / 100));
                 user.addInt("orbs", (int) Math.ceil(event.getAmount() * (plugin.getCustomPermissions().get(perm) / 100)));
             }
         }
 
         if(event.getPlayer().hasPermission(PermissionsManager.getElite())) {
-            amount =+ (int) Math.ceil(event.getAmount() * 1.5);
+            amount = +(int) Math.ceil(event.getAmount() * 1.5);
             user.addInt("orbs", (int) Math.ceil(event.getAmount() * 1.5));
         } else if(event.getPlayer().hasPermission(PermissionsManager.getMvp())) {
-            amount =+ (int) Math.ceil(event.getAmount() * 1.0);
+            amount = +(int) Math.ceil(event.getAmount() * 1.0);
             user.addInt("orbs", (int) Math.ceil(event.getAmount() * 1.0));
         } else if(event.getPlayer().hasPermission(PermissionsManager.getVip())) {
-            amount =+ (int) Math.ceil(event.getAmount() * 0.5);
+            amount = +(int) Math.ceil(event.getAmount() * 0.5);
             user.addInt("orbs", (int) Math.ceil(event.getAmount() * 0.5));
         } else {
-            amount =+ event.getAmount();
+            amount = +event.getAmount();
             user.addInt("orbs", event.getAmount());
         }
         event.getPlayer().sendMessage(ChatManager.colorMessage("In-Game.Orbs-Pickup").replaceAll("%number%", String.valueOf(amount)));
@@ -419,23 +422,20 @@ public class Events implements Listener {
             event.setCancelled(true);
     }
 
-
     @EventHandler
     public void onRottenFleshDrop(InventoryPickupItemEvent event) {
-        if(event.getInventory().getType() != InventoryType.HOPPER)
+        if(event.getInventory().getType() != InventoryType.HOPPER && !event.getItem().getItemStack().getType().equals(Material.ROTTEN_FLESH))
             return;
         for(Entity entity : Util.getNearbyEntities(event.getItem().getLocation(), 20)) {
             if(!(entity instanceof Player)) {
                 continue;
             }
             if(ArenaRegistry.getArena((Player) entity) != null) {
-                if(event.getItem().getItemStack().getType() != Material.ROTTEN_FLESH) {
-                    continue;
-                }
                 Arena arena = ArenaRegistry.getArena(((Player) entity));
                 if(arena == null) continue;
                 arena.addRottenFlesh(event.getItem().getItemStack().getAmount());
                 event.getItem().remove();
+                event.setCancelled(true);
                 event.getInventory().clear();
                 event.getItem().getLocation().getWorld().spigot().playEffect(event.getItem().getLocation(), Effect.CLOUD, 0, 0, 2, 2, 2, 1, 50, 100);
                 if(arena.checkLevelUpRottenFlesh()) {

@@ -1,6 +1,6 @@
 name: VillageDefense
 main: pl.plajer.villagedefense3.Main
-version: 3.0.1
+version: 3.1.0
 softdepend: [WorldEdit]
 
 commands:
@@ -34,4 +34,6 @@ permissions:
       villagedefense.admin.addorbs: true
       villagedefense.admin.addorbs.others: true
       villagedefense.admin.setwave: true
+      villagedefense.admin.sign.create: true
+      villagedefense.admin.sign.break: true
 

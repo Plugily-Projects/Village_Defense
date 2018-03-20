@@ -921,10 +921,10 @@ public abstract class Arena extends BukkitRunnable {
 
             for(PotionEffect potionEffect : p.getActivePotionEffects()) {
                 p.removePotionEffect(potionEffect.getType());
-
             }
 
             this.addPlayer(p);
+            p.setMaxHealth(p.getMaxHealth() + rottenFleshLevel);
             p.setHealth(p.getMaxHealth());
             p.setFoodLevel(20);
             p.setGameMode(GameMode.SURVIVAL);
