@@ -67,9 +67,7 @@ public class TeleporterKit extends PremiumKit implements Listener {
     }
 
     @Override
-    public void reStock(Player player) {
-
-    }
+    public void reStock(Player player) {}
 
     private void openAndCreateTeleportationMenu(World world, Player p) {
         Arena arena = ArenaRegistry.getArena(p);

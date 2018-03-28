@@ -49,7 +49,5 @@ public class MediumTankKit extends LevelKit {
     }
 
     @Override
-    public void reStock(Player player) {
-
-    }
+    public void reStock(Player player) {}
 }

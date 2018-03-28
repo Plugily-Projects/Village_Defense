@@ -54,7 +54,5 @@ public class HardcoreKit extends LevelKit {
     @Override
     public void reStock(Player player) {
         player.getInventory().addItem(ItemUtils.getPotion(PotionType.INSTANT_HEAL, 2, true, 1));
-
-
     }
 }

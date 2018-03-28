@@ -1,5 +1,6 @@
 package pl.plajer.villagedefense3.arena;
 
+import lombok.Getter;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -10,6 +11,7 @@ import java.util.List;
  */
 public class ArenaRegistry {
 
+    @Getter
     private static List<Arena> arenas = new ArrayList<>();
 
     /**
@@ -76,10 +78,6 @@ public class ArenaRegistry {
             }
         }
         return arena;
-    }
-
-    public static List<Arena> getArenas() {
-        return arenas;
     }
 
 }

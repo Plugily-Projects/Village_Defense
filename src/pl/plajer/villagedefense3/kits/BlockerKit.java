@@ -11,6 +11,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.scheduler.BukkitRunnable;
 import pl.plajer.villagedefense3.Main;
 import pl.plajer.villagedefense3.User;
 import pl.plajer.villagedefense3.arena.ArenaRegistry;
@@ -31,32 +32,12 @@ import java.util.*;
 public class BlockerKit extends PremiumKit implements Listener {
 
     private Main plugin;
-    private List<ZombieBarrier> zombieBarriers = new ArrayList<>();
 
-    public BlockerKit(final Main plugin) {
+    public BlockerKit(Main plugin) {
         this.plugin = plugin;
         setName(ChatManager.colorMessage("Kits.Blocker.Kit-Name"));
         List<String> description = Util.splitString(ChatManager.colorMessage("Kits.Blocker.Kit-Description"), 40);
         this.setDescription(description.toArray(new String[description.size()]));
-        plugin.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, () -> {
-            Iterator<ZombieBarrier> iterator = zombieBarriers.iterator();
-            List<ZombieBarrier> removeAfter = new ArrayList<>();
-            while(iterator.hasNext()) {
-
-                ZombieBarrier zombieBarrier = iterator.next();
-                zombieBarrier.decrementSeconds();
-                if(zombieBarrier.getSeconds() <= 0) {
-                    zombieBarrier.getLocation().getBlock().setType(Material.AIR);
-                    if(plugin.is1_8_R3()) {
-                        zombieBarrier.getLocation().getWorld().playEffect(zombieBarrier.getLocation(), Effect.FIREWORKS_SPARK, 20);
-                    } else{
-                        zombieBarrier.getLocation().getWorld().spawnParticle(Particle.FIREWORKS_SPARK, zombieBarrier.getLocation(), 20);
-                    }
-                    removeAfter.add(zombieBarrier);
-                }
-            }
-            zombieBarriers.removeAll(removeAfter);
-        }, 20L, 20L);
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
         KitRegistry.registerKit(this);
     }
@@ -130,30 +111,33 @@ public class BlockerKit extends PremiumKit implements Listener {
 
         user.toPlayer().sendMessage(ChatManager.colorMessage("Kits.Blocker.Game-Item-Place-Message"));
         ZombieBarrier zombieBarrier = new ZombieBarrier();
-        zombieBarrier.setUuid(user.getUuid());
         zombieBarrier.setLocation(block.getLocation());
-        zombieBarriers.add(zombieBarrier);
         zombieBarrier.getLocation().getWorld().playEffect(zombieBarrier.getLocation(), Effect.FIREWORKS_SPARK, 20);
+        new BukkitRunnable(){
+            @Override
+            public void run() {
+                zombieBarrier.decrementSeconds();
+                if(zombieBarrier.getSeconds() <= 0) {
+                    zombieBarrier.getLocation().getBlock().setType(Material.AIR);
+                    if(plugin.is1_8_R3()) {
+                        zombieBarrier.getLocation().getWorld().playEffect(zombieBarrier.getLocation(), Effect.FIREWORKS_SPARK, 20);
+                    } else{
+                        zombieBarrier.getLocation().getWorld().spawnParticle(Particle.FIREWORKS_SPARK, zombieBarrier.getLocation(), 20);
+                    }
+                    this.cancel();
+                }
+            }
+        }.runTaskTimer(plugin, 20, 20);
         block.setType(Material.FENCE);
     }
 
 
     private class ZombieBarrier {
-
-        private UUID uuid;
         private Location location;
         private int seconds;
 
         ZombieBarrier() {
             seconds = 10;
-        }
-
-        public UUID getUuid() {
-            return uuid;
-        }
-
-        void setUuid(UUID uuid) {
-            this.uuid = uuid;
         }
 
         Location getLocation() {
@@ -166,10 +150,6 @@ public class BlockerKit extends PremiumKit implements Listener {
 
         int getSeconds() {
             return seconds;
-        }
-
-        public void setSeconds(int seconds) {
-            this.seconds = seconds;
         }
 
         void decrementSeconds() {

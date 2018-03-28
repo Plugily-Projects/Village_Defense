@@ -30,15 +30,34 @@ import java.util.List;
  */
 public class NakedKit extends PremiumKit implements Listener {
 
-    private Main plugin;
+    private List<Material> armorTypes = new ArrayList<>();
 
     public NakedKit(Main plugin) {
-        this.plugin = plugin;
         List<String> description = Util.splitString(ChatManager.colorMessage("Kits.Wild-Naked.Kit-Description"), 40);
         this.setDescription(description.toArray(new String[description.size()]));
         setName(ChatManager.colorMessage("Kits.Wild-Naked.Kit-Name"));
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
         KitRegistry.registerKit(this);
+        armorTypes.add(Material.LEATHER_BOOTS);
+        armorTypes.add(Material.LEATHER_CHESTPLATE);
+        armorTypes.add(Material.LEATHER_LEGGINGS);
+        armorTypes.add(Material.LEATHER_HELMET);
+        armorTypes.add(Material.GOLD_BOOTS);
+        armorTypes.add(Material.GOLD_CHESTPLATE);
+        armorTypes.add(Material.GOLD_LEGGINGS);
+        armorTypes.add(Material.GOLD_HELMET);
+        armorTypes.add(Material.DIAMOND_BOOTS);
+        armorTypes.add(Material.DIAMOND_LEGGINGS);
+        armorTypes.add(Material.DIAMOND_CHESTPLATE);
+        armorTypes.add(Material.DIAMOND_HELMET);
+        armorTypes.add(Material.IRON_CHESTPLATE);
+        armorTypes.add(Material.IRON_BOOTS);
+        armorTypes.add(Material.IRON_HELMET);
+        armorTypes.add(Material.IRON_LEGGINGS);
+        armorTypes.add(Material.CHAINMAIL_BOOTS);
+        armorTypes.add(Material.CHAINMAIL_LEGGINGS);
+        armorTypes.add(Material.CHAINMAIL_CHESTPLATE);
+        armorTypes.add(Material.CHAINMAIL_HELMET);
     }
 
     @Override
@@ -69,14 +88,13 @@ public class NakedKit extends PremiumKit implements Listener {
     @EventHandler
     public void onArmor(InventoryClickEvent event) {
         if(UserManager.getUser(event.getWhoClicked().getUniqueId()) == null) return;
-        Arena arena = ArenaRegistry.getArena((Player) event.getWhoClicked());
-        if(arena == null) return;
+        if(!ArenaRegistry.isInGameInstance((Player) event.getWhoClicked())) return;
         if(!(UserManager.getUser(event.getWhoClicked().getUniqueId()).getKit() instanceof NakedKit)) return;
         if(!(event.getInventory().getType().equals(InventoryType.PLAYER) || event.getInventory().getType().equals(InventoryType.CRAFTING))) return;
         Bukkit.getScheduler().runTaskLater(Main.getPlugin(Main.class), () -> {
             for(ItemStack is : event.getWhoClicked().getInventory().getArmorContents()) {
                 if(is != null) {
-                    if(getAllArmorTypes().contains(is.getType())) {
+                    if(armorTypes.contains(is.getType())) {
                         //we cannot cancel event using scheduler, we must remove all armor contents from inventory manually
                         event.getWhoClicked().sendMessage(ChatManager.colorMessage("Kits.Wild-Naked.Cannot-Wear-Armor"));
                         event.getWhoClicked().getInventory().setHelmet(new ItemStack(Material.AIR, 1));
@@ -97,34 +115,9 @@ public class NakedKit extends PremiumKit implements Listener {
         if(UserManager.getUser(event.getPlayer().getUniqueId()) == null) return;
         if(!(UserManager.getUser(event.getPlayer().getUniqueId()).getKit() instanceof NakedKit)) return;
         if(!event.hasItem()) return;
-        if(getAllArmorTypes().contains(event.getItem().getType())) {
+        if(armorTypes.contains(event.getItem().getType())) {
             event.setCancelled(true);
             event.getPlayer().sendMessage(ChatManager.colorMessage("Kits.Wild-Naked.Cannot-Wear-Armor"));
         }
-    }
-
-    private List<Material> getAllArmorTypes() {
-        List<Material> list = new ArrayList<>();
-        list.add(Material.LEATHER_BOOTS);
-        list.add(Material.LEATHER_CHESTPLATE);
-        list.add(Material.LEATHER_LEGGINGS);
-        list.add(Material.LEATHER_HELMET);
-        list.add(Material.GOLD_BOOTS);
-        list.add(Material.GOLD_CHESTPLATE);
-        list.add(Material.GOLD_LEGGINGS);
-        list.add(Material.GOLD_HELMET);
-        list.add(Material.DIAMOND_BOOTS);
-        list.add(Material.DIAMOND_LEGGINGS);
-        list.add(Material.DIAMOND_CHESTPLATE);
-        list.add(Material.DIAMOND_HELMET);
-        list.add(Material.IRON_CHESTPLATE);
-        list.add(Material.IRON_BOOTS);
-        list.add(Material.IRON_HELMET);
-        list.add(Material.IRON_LEGGINGS);
-        list.add(Material.CHAINMAIL_BOOTS);
-        list.add(Material.CHAINMAIL_LEGGINGS);
-        list.add(Material.CHAINMAIL_CHESTPLATE);
-        list.add(Material.CHAINMAIL_HELMET);
-        return list;
     }
 }

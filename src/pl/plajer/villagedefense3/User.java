@@ -59,10 +59,6 @@ public class User {
         return ArenaRegistry.getArena(Bukkit.getPlayer(uuid));
     }
 
-    public UUID getUuid() {
-        return uuid;
-    }
-
     public boolean isFakeDead() {
         return fakeDead;
     }

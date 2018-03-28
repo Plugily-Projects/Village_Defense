@@ -22,8 +22,8 @@ public class DogFriendKit extends PremiumKit {
 
     private Main plugin;
 
-    public DogFriendKit(Main invasion) {
-        this.plugin = invasion;
+    public DogFriendKit(Main plugin) {
+        this.plugin = plugin;
         this.setName(ChatManager.colorMessage("Kits.Dog-Friend.Kit-Name"));
         List<String> description = Util.splitString(ChatManager.colorMessage("Kits.Dog-Friend.Kit-Description"), 40);
         this.setDescription(description.toArray(new String[description.size()]));
@@ -38,7 +38,6 @@ public class DogFriendKit extends PremiumKit {
 
     @Override
     public void giveKitItems(Player player) {
-
         player.getInventory().addItem(WeaponHelper.getUnBreakingSword(WeaponHelper.ResourceType.STONE, 10));
         ArmorHelper.setArmor(player, ArmorHelper.ArmorType.LEATHER);
         player.getInventory().addItem(new ItemStack(Material.GRILLED_PORK, 8));

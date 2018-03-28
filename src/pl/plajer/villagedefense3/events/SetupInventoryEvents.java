@@ -16,6 +16,7 @@ import pl.plajer.villagedefense3.Main;
 import pl.plajer.villagedefense3.arena.*;
 import pl.plajer.villagedefense3.handlers.ConfigurationManager;
 import pl.plajer.villagedefense3.handlers.PermissionsManager;
+import pl.plajer.villagedefense3.handlers.ShopManager;
 import pl.plajer.villagedefense3.utils.SetupInventory;
 import pl.plajer.villagedefense3.utils.Util;
 
@@ -153,6 +154,7 @@ public class SetupInventoryEvents implements Listener {
                 return;
             }
             Util.saveLoc("instances." + arena.getID() + ".shop", targetBlock.getLocation(), false);
+            ShopManager.registerShop(arena);
             player.sendMessage(ChatColor.GREEN + "shop for chest set!");
         }
         if(name.contains("Register arena")){

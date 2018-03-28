@@ -65,12 +65,6 @@ public class GolemBuster extends EntityZombie {
     }
 
     @Override
-    public void setOnFire(int i) {
-        // don't set on fire
-        super.setOnFire(i);
-    }
-
-    @Override
     public boolean damageEntity(DamageSource damagesource, float f) {
         if(damagesource != null && damagesource.getEntity() != null && damagesource.getEntity().getBukkitEntity().getType() == EntityType.IRON_GOLEM) {
             this.die();

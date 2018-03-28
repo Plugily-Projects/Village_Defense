@@ -45,7 +45,7 @@ Commands:
     Footer: "&6-------------------------------------------------"
 
 Scoreboard:
-  Header: "&6Village Defense"
+  Header: "&6&lVillage Defense"
   Villagers-Left: "&aWiesniakow:"
   Zombies-Left: "&cZombie:"
   Players: "&bGraczy:"
@@ -55,6 +55,7 @@ Scoreboard:
   Next-Wave-In: "&7Nastepna fala za:"
   Orbs: "&bKulek:"
   Rotten-Flesh: "&2Zgnilego miesa:"
+  Footer: "&ewww.spigotmc.org"
 
 Bossbar:
   Main-Title: "&a&lVillage Defense &6- www.spigotmc.org"
@@ -220,7 +221,8 @@ In-Game:
   Arena-Not-Configured: "&cArena nie zostala skonfigurowana! Poinformuj admina!"
   Spectator:
     Spectator-Item-Name: "&7Lista graczy"
-    Spectator-Menu-Name: "&lMenu widza"
+    Spectator-Menu-Name: "Zywi gracze"
+    Target-Player-Health: "&cZdrowia: &7%health%"
   Messages:
     Lobby-Messages:
       Start-In: "&7Gra rozpoczyna sie za &b%TIME%&7 sekund!"
@@ -284,5 +286,5 @@ Validator:
   No-Instances-Created: "[Village Defense] Nie ma zadnych aren w konfiguracji!"
 
 #You don't want to change this m8 >:)
-File-Version-Do-Not-Edit: 0
-Language-Version: 0
+File-Version-Do-Not-Edit: 1
+Language-Version: 1

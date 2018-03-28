@@ -56,9 +56,4 @@ public class TankerZombie extends EntityZombie {
         this.getAttributeInstance(GenericAttributes.c).setValue(0D);
     }
 
-    @Override
-    public void setOnFire(int i) {
-        // don't set on fire
-        super.setOnFire(i);
-    }
 }

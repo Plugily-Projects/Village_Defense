@@ -5,7 +5,6 @@ package pl.plajer.villagedefense3.handlers;
  */
 public class PermissionsManager {
 
-
     private static String joinFullPerm = "villagedefense.fullgames";
     private static String vipPerm = "villagedefense.vip";
     private static String mvpPerm = "villagedefense.mvp";

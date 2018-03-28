@@ -77,13 +77,13 @@ public class SetupInventory {
         addItem(new ItemBuilder(new ItemStack(Material.EMERALD, 1))
                 .name(ChatColor.GOLD + "► Add" + ChatColor.GREEN + " villager " + ChatColor.GOLD + "spawn")
                 .lore(ChatColor.GRAY + "Add new villager spawn")
-                .lore(ChatColor.GRAY + "on the place you're standing")
+                .lore(ChatColor.GRAY + "on the place you're standing at.")
                 .lore(isOptionDoneList("instances." + arena.getID() + ".villagerspawns"))
                 .build());
         inventory.addItem((new ItemBuilder(new ItemStack(Material.ROTTEN_FLESH))
                 .name(ChatColor.GOLD + "► Add" + ChatColor.BLUE + " zombie " + ChatColor.GOLD + "spawn")
-                .lore(ChatColor.GRAY + "Add new villager spawn")
-                .lore(ChatColor.GRAY + "on the place you're standing")
+                .lore(ChatColor.GRAY + "Add new zombie spawn")
+                .lore(ChatColor.GRAY + "on the place you're standing at.")
                 .lore(isOptionDoneList("instances." + arena.getID() + ".zombiespawns"))
                 .build()));
         inventory.addItem((new ItemBuilder(new ItemStack(Material.WOOD_DOOR))

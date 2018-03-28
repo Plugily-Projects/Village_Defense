@@ -44,7 +44,5 @@ public class KnightKit extends FreeKit {
     }
 
     @Override
-    public void reStock(Player player) {
-
-    }
+    public void reStock(Player player) {}
 }

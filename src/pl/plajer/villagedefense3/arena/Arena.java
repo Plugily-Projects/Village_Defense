@@ -9,6 +9,7 @@ import org.bukkit.entity.*;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import pl.plajer.villagedefense3.Main;
 import pl.plajer.villagedefense3.User;
@@ -153,7 +154,7 @@ public abstract class Arena extends BukkitRunnable {
                         }
                         player.updateInventory();
                         addStat(player, "gamesplayed");
-                        addStat(player, 10);
+                        addExperience(player, 10);
                         setTimer(25);
                         player.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Messages.Lobby-Messages.Game-Started"));
                     }
@@ -391,7 +392,7 @@ public abstract class Arena extends BukkitRunnable {
         }
         for(final Player player : getPlayers()) {
             setStat(player, "highestwave", wave);
-            addStat(player, wave);
+            addExperience(player, wave);
 
             UserManager.getUser(player.getUniqueId()).removeScoreboard();
             if(!quickStop) {
@@ -871,7 +872,7 @@ public abstract class Arena extends BukkitRunnable {
         if(plugin.getConfig().getBoolean("Respawn-After-Wave"))
             ArenaUtils.bringDeathPlayersBack(this);
         for(Player player : getPlayersLeft()) {
-            this.addStat(player, 5);
+            this.addExperience(player, 5);
         }
     }
 
@@ -917,7 +918,9 @@ public abstract class Arena extends BukkitRunnable {
             ItemMeta spectatorMeta = spectatorItem.getItemMeta();
             spectatorMeta.setDisplayName(ChatManager.colorMessage("In-Game.Spectator.Spectator-Item-Name"));
             spectatorItem.setItemMeta(spectatorMeta);
-            p.getInventory().addItem(spectatorItem);
+            p.getInventory().setItem(0, spectatorItem);
+
+            p.getInventory().setItem(8, SpecialItemManager.getSpecialItem("Leave").getItemStack());
 
             for(PotionEffect potionEffect : p.getActivePotionEffects()) {
                 p.removePotionEffect(potionEffect.getType());
@@ -934,6 +937,7 @@ public abstract class Arena extends BukkitRunnable {
             user.setSpectator(true);
             user.setFakeDead(true);
             user.setInt("orbs", 0);
+            p.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, Integer.MAX_VALUE, 1));
             ArenaUtils.hidePlayer(p, this);
 
             for(Player spectator : this.getPlayers()) {
@@ -983,7 +987,7 @@ public abstract class Arena extends BukkitRunnable {
 
     }
 
-    void addStat(Player player, int i) {
+    void addExperience(Player player, int i) {
         User user = UserManager.getUser(player.getUniqueId());
         user.addInt("xp", i);
         if(player.hasPermission(PermissionsManager.getVip())) {

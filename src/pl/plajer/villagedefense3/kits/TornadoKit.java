@@ -11,6 +11,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 import pl.plajer.villagedefense3.Main;
 import pl.plajer.villagedefense3.arena.ArenaRegistry;
@@ -22,7 +23,6 @@ import pl.plajer.villagedefense3.utils.ArmorHelper;
 import pl.plajer.villagedefense3.utils.Util;
 import pl.plajer.villagedefense3.utils.WeaponHelper;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -32,11 +32,8 @@ public class TornadoKit extends PremiumKit implements Listener {
 
     private int max_height = 5;
     private double max_radius = 4;
-    private int lines = 3;
-    private double height_increasement = 0.5;
     private double radius_increment = max_radius / max_height;
     private Main plugin;
-    private List<Tornado> tornadoes = new ArrayList<>();
 
 
     public TornadoKit(Main plugin) {
@@ -44,17 +41,6 @@ public class TornadoKit extends PremiumKit implements Listener {
         setName(ChatManager.colorMessage("Kits.Tornado.Kit-Name"));
         List<String> description = Util.splitString(ChatManager.colorMessage("Kits.Tornado.Kit-Description"), 40);
         this.setDescription(description.toArray(new String[description.size()]));
-        plugin.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, () -> {
-            ArrayList<Tornado> removeAfter = new ArrayList<>();
-            for(Tornado tornado : tornadoes) {
-                if(tornado.getTimes() > 75) {
-                    removeAfter.add(tornado);
-                }
-                tornado.update();
-
-            }
-            tornadoes.removeAll(removeAfter);
-        }, 1L, 1L);
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
         KitRegistry.registerKit(this);
     }
@@ -71,10 +57,10 @@ public class TornadoKit extends PremiumKit implements Listener {
 
         player.getInventory().addItem(new ItemStack(Material.COOKED_BEEF, 10));
         player.getInventory().addItem(new ItemStack(Material.SADDLE));
-        ItemStack enderpealteleporter = new ItemStack(Material.WEB, 5);
-        List<String> teleporationlore = Util.splitString(ChatManager.colorMessage("Kits.Tornado.Game-Item-Lore"), 40);
-        this.setItemNameAndLore(enderpealteleporter, ChatManager.colorMessage("Kits.Tornado.Game-Item-Name"), teleporationlore.toArray(new String[teleporationlore.size()]));
-        player.getInventory().addItem(enderpealteleporter);
+        ItemStack tornado = new ItemStack(Material.WEB, 5);
+        List<String> tornadoLore = Util.splitString(ChatManager.colorMessage("Kits.Tornado.Game-Item-Lore"), 40);
+        this.setItemNameAndLore(tornado, ChatManager.colorMessage("Kits.Tornado.Game-Item-Name"), tornadoLore.toArray(new String[tornadoLore.size()]));
+        player.getInventory().addItem(tornado);
     }
 
     @Override
@@ -84,10 +70,10 @@ public class TornadoKit extends PremiumKit implements Listener {
 
     @Override
     public void reStock(Player player) {
-        ItemStack enderpealteleporter = new ItemStack(Material.WEB, 5);
-        List<String> teleporationlore = Util.splitString(ChatManager.colorMessage("Kits.Tornado.Game-Item-Lore"), 40);
-        this.setItemNameAndLore(enderpealteleporter, ChatManager.colorMessage("Kits.Tornado.Game-Item-Name"), teleporationlore.toArray(new String[teleporationlore.size()]));
-        player.getInventory().addItem(enderpealteleporter);
+        ItemStack tornado = new ItemStack(Material.WEB, 5);
+        List<String> tornadoLore = Util.splitString(ChatManager.colorMessage("Kits.Tornado.Game-Item-Lore"), 40);
+        this.setItemNameAndLore(tornado, ChatManager.colorMessage("Kits.Tornado.Game-Item-Name"), tornadoLore.toArray(new String[tornadoLore.size()]));
+        player.getInventory().addItem(tornado);
     }
 
     @EventHandler
@@ -107,22 +93,25 @@ public class TornadoKit extends PremiumKit implements Listener {
             return;
         if(player.getItemInHand().getAmount() <= 1) {
             player.setItemInHand(new ItemStack(Material.AIR));
-
         } else {
             player.getItemInHand().setAmount(player.getItemInHand().getAmount() - 1);
         }
         event.setCancelled(true);
-        tornadoes.add(new Tornado(player.getLocation()));
-
+        Tornado tornado = new Tornado(player.getLocation());
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                tornado.update();
+                if(tornado.getTimes() > 75) this.cancel();
+            }
+        }.runTaskTimer(plugin, 1, 1);
     }
 
     private class Tornado {
-
         private Location location;
         private Vector vector;
         private int angle;
         private int times;
-
 
         Tornado(Location location) {
             this.location = location;
@@ -134,16 +123,8 @@ public class TornadoKit extends PremiumKit implements Listener {
             return times;
         }
 
-        public void setTimes(int times) {
-            this.times = times;
-        }
-
         Vector getVector() {
             return vector;
-        }
-
-        public void setVector(Vector vector) {
-            this.vector = vector;
         }
 
         Location getLocation() {
@@ -156,8 +137,10 @@ public class TornadoKit extends PremiumKit implements Listener {
 
         void update() {
             times++;
+            int lines = 3;
             for(int l = 0; l < lines; l++) {
-                for(double y = 0; y < max_height; y += height_increasement) {
+                double height_increase = 0.5;
+                for(double y = 0; y < max_height; y += height_increase) {
                     double radius = y * radius_increment;
                     double x = Math.cos(Math.toRadians(360 / lines * l + y * 25 - angle)) * radius;
                     double z = Math.sin(Math.toRadians(360 / lines * l + y * 25 - angle)) * radius;

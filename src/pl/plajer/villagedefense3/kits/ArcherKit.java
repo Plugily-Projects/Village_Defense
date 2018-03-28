@@ -33,7 +33,6 @@ public class ArcherKit extends LevelKit {
     @Override
     public boolean isUnlockedByPlayer(Player player) {
         return UserManager.getUser(player.getUniqueId()).getInt("level") >= this.getLevel() || player.hasPermission("villagefense.kit.archer");
-
     }
 
     @Override
@@ -52,6 +51,6 @@ public class ArcherKit extends LevelKit {
 
     @Override
     public void reStock(Player player) {
-        player.getInventory().addItem(new ItemStack(Material.ARROW, 5));
+        player.getInventory().addItem(new ItemStack(Material.ARROW, 15));
     }
 }

@@ -45,7 +45,5 @@ public class LightTankKit extends FreeKit {
     }
 
     @Override
-    public void reStock(Player player) {
-
-    }
+    public void reStock(Player player) {}
 }

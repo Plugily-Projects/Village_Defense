@@ -14,6 +14,8 @@ import org.bukkit.util.BlockIterator;
 import pl.plajer.villagedefense3.Main;
 import pl.plajer.villagedefense3.handlers.ConfigurationManager;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -28,7 +30,6 @@ public class Util {
     public Util(Main plugin){
         Util.plugin = plugin;
     }
-
 
     public static void addLore(ItemStack itemStack, String string) {
         ItemMeta meta = itemStack.getItemMeta();
@@ -61,7 +62,6 @@ public class Util {
                 if(!transparent.contains((byte) id))
                     break;
             }
-
         }
         return blocks;
     }
@@ -90,7 +90,13 @@ public class Util {
                 seconds = secsIn % 60;
         return ((minutes < 10 ? "0" : "") + minutes
                 + ":" + (seconds < 10 ? "0" : "") + seconds);
+    }
 
+    public static double round(double value, int places) {
+        if(places < 0) return value;
+        BigDecimal bd = new BigDecimal(value);
+        bd = bd.setScale(places, RoundingMode.HALF_UP);
+        return bd.doubleValue();
     }
 
     public static int serializeInt(Integer i) {
@@ -101,7 +107,7 @@ public class Util {
     }
 
     public static String locationToString(Location location) {
-        return location.getWorld().getName() + " , " + location.getX() + " , " + location.getY() + ", " + location.getZ();
+        return location.getWorld().getName() + "," + location.getX() + "," + location.getY() + "," + location.getZ();
     }
 
     public static void spawnRandomFirework(Location location) {

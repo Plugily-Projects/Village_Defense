@@ -8,11 +8,9 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import pl.plajer.villagedefense3.Main;
 import pl.plajer.villagedefense3.User;
 import pl.plajer.villagedefense3.arena.ArenaRegistry;
+import pl.plajer.villagedefense3.database.FileStats;
 import pl.plajer.villagedefense3.handlers.UserManager;
 import pl.plajer.villagedefense3.utils.BigTextUtils;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Tom on 11/08/2014.
@@ -41,17 +39,9 @@ public class QuitEvent implements Listener {
         }
         final User user = UserManager.getUser(event.getPlayer().getUniqueId());
         final Player player = event.getPlayer();
-        List<String> temp = new ArrayList<>();
-        temp.add("gamesplayed");
-        temp.add("kills");
-        temp.add("deaths");
-        temp.add("highestwave");
-        temp.add("xp");
-        temp.add("level");
-        temp.add("orbs");
         if(plugin.isDatabaseActivated()) {
             Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
-                for(final String s : temp) {
+                for(final String s : FileStats.STATISTICS) {
                     int i;
                     try {
                         i = plugin.getMySQLDatabase().getStat(player.getUniqueId().toString(), s);
@@ -72,7 +62,7 @@ public class QuitEvent implements Listener {
                 }
             });
         } else {
-            for(String s : temp) {
+            for(String s : FileStats.STATISTICS) {
                 plugin.getFileStats().saveStat(player, s);
             }
         }

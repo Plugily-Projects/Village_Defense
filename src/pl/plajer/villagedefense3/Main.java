@@ -21,10 +21,7 @@ import pl.plajer.villagedefense3.items.SpecialItem;
 import pl.plajer.villagedefense3.kits.*;
 import pl.plajer.villagedefense3.kits.kitapi.KitManager;
 import pl.plajer.villagedefense3.kits.kitapi.KitRegistry;
-import pl.plajer.villagedefense3.utils.BigTextUtils;
-import pl.plajer.villagedefense3.utils.MetricsLite;
-import pl.plajer.villagedefense3.utils.MySQLConnectionUtils;
-import pl.plajer.villagedefense3.utils.Util;
+import pl.plajer.villagedefense3.utils.*;
 import pl.plajer.villagedefense3.villagedefenseapi.StatsStorage;
 
 import java.io.File;
@@ -49,7 +46,6 @@ public class Main extends JavaPlugin implements Listener {
     private InventoryManager inventoryManager;
     private ArenaRegistry arenaRegistry;
     private BungeeManager bungeeManager;
-    private KitRegistry kitRegistry;
     private KitManager kitManager;
     private ChunkManager chunkManager;
     private boolean bungeeEnabled;
@@ -140,10 +136,6 @@ public class Main extends JavaPlugin implements Listener {
         return version;
     }
 
-    public KitRegistry getKitRegistry() {
-        return kitRegistry;
-    }
-
     public KitManager getKitManager() {
         return kitManager;
     }
@@ -182,10 +174,10 @@ public class Main extends JavaPlugin implements Listener {
         if(Main.isDebugged()) {
             System.out.println("[Village Debugger] Village Defense setup started!");
         }
-        setupLocale();
         setupFiles();
         debugChecker();
         LanguageMigrator.languageFileUpdate();
+        setupLocale();
         initializeClasses();
 
         String currentVersion = "v" + Bukkit.getPluginManager().getPlugin("VillageDefense").getDescription().getVersion();
@@ -274,7 +266,6 @@ public class Main extends JavaPlugin implements Listener {
         new EntityRegistry(this);
         new ArenaEvents(this);
         inventoryManager = new InventoryManager(this);
-        kitRegistry = new KitRegistry();
         kitManager = new KitManager(this);
         new SpectatorEvents(this);
         new QuitEvent(this);
@@ -283,7 +274,7 @@ public class Main extends JavaPlugin implements Listener {
         new ChatEvents(this);
         new MetricsLite(this);
         new Events(this);
-        new MessageHandler(this);
+        new MessageHandler();
         new CombustDayLightEvent(this);
         new LobbyEvents(this);
         new SpectatorItemEvents(this);
@@ -385,19 +376,11 @@ public class Main extends JavaPlugin implements Listener {
     public void onDisable() {
         for(Player player : getServer().getOnlinePlayers()) {
             User user = UserManager.getUser(player.getUniqueId());
-            List<String> temp = new ArrayList<>();
-            temp.add("gamesplayed");
-            temp.add("kills");
-            temp.add("deaths");
-            temp.add("highestwave");
-            temp.add("xp");
-            temp.add("level");
-            temp.add("orbs");
-            for(String s : temp) {
+            for(String s : FileStats.STATISTICS) {
                 if(isDatabaseActivated()) {
                     getMySQLDatabase().setStat(player.getUniqueId().toString(), s, user.getInt(s));
                 } else {
-                    getFileStats().saveStat(player, s);
+                    getFileStats().saveStat (player, s);
                 }
             }
             UserManager.removeUser(player.getUniqueId());
@@ -405,8 +388,12 @@ public class Main extends JavaPlugin implements Listener {
         for(Arena invasionInstance : ArenaRegistry.getArenas()) {
             for(Player player : invasionInstance.getPlayers()) {
                 invasionInstance.teleportToEndLocation(player);
-                if(inventoryManagerEnabled)
+                if(inventoryManagerEnabled) {
                     inventoryManager.loadInventory(player);
+                } else{
+                    player.getInventory().clear();
+                    ArmorHelper.clearArmor(player);
+                }
             }
             invasionInstance.clearVillagers();
             invasionInstance.stopGame(true);
@@ -528,23 +515,7 @@ public class Main extends JavaPlugin implements Listener {
     }
 
     public enum VDLocale {
-        DEFAULT("English", "en-GB"), DEUTSCH("Deutsch", "de-DE"), POLSKI("Polski", "pl-PL");
-
-        String formattedName;
-        String countryCode;
-
-        VDLocale(String formattedName, String countryCode) {
-            this.formattedName = formattedName;
-            this.countryCode = countryCode;
-        }
-
-        public String getFormattedName() {
-            return formattedName;
-        }
-
-        public String getCountryCode() {
-            return countryCode;
-        }
+        DEFAULT, DEUTSCH, POLSKI
     }
 
 }

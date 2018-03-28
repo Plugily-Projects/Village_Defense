@@ -10,11 +10,9 @@ import pl.plajer.villagedefense3.Main;
 import pl.plajer.villagedefense3.UpdateChecker;
 import pl.plajer.villagedefense3.arena.Arena;
 import pl.plajer.villagedefense3.arena.ArenaRegistry;
+import pl.plajer.villagedefense3.database.FileStats;
 import pl.plajer.villagedefense3.handlers.UserManager;
 import pl.plajer.villagedefense3.utils.MySQLConnectionUtils;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Tom on 10/07/2015.
@@ -83,15 +81,7 @@ public class JoinEvent implements Listener {
         }
         UserManager.registerUser(event.getPlayer().getUniqueId());
         if(!plugin.isDatabaseActivated()) {
-            List<String> temp = new ArrayList<>();
-            temp.add("gamesplayed");
-            temp.add("kills");
-            temp.add("deaths");
-            temp.add("highestwave");
-            temp.add("xp");
-            temp.add("level");
-            temp.add("orbs");
-            for(String s : temp) {
+            for(String s : FileStats.STATISTICS) {
                 plugin.getFileStats().loadStat(event.getPlayer(), s);
             }
             return;

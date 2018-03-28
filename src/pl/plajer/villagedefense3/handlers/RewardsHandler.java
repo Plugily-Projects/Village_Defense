@@ -11,7 +11,6 @@ import pl.plajer.villagedefense3.arena.ArenaRegistry;
  */
 public class RewardsHandler {
 
-
     private FileConfiguration config;
     private Main plugin;
     private boolean enabled;

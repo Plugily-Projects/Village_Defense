@@ -52,9 +52,4 @@ public class FastZombie extends EntityZombie {
         this.getAttributeInstance(GenericAttributes.FOLLOW_RANGE).setValue(100.0D);
     }
 
-    @Override
-    public void setOnFire(int i) {
-        // don't set on fire
-        super.setOnFire(i);
-    }
 }

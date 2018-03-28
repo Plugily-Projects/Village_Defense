@@ -78,10 +78,14 @@ public class ArenaUtils {
                 //fighting stage of IN_GAME state
                 user.getScoreboard().registerNewObjective("vd_state_2F", "dummy");
             }
+            if(arena.getArenaState() == ArenaState.ENDING){
+                user.removeScoreboard();
+                return;
+            }
             Objective gameObjective;
-            if(arena.getArenaState() == ArenaState.IN_GAME){
+            if(arena.getArenaState() == ArenaState.IN_GAME) {
                 gameObjective = user.getScoreboard().getObjective("vd_state_" + arena.getArenaState().ordinal() + (arena.isFighting() ? "F" : ""));
-            } else{
+            } else {
                 gameObjective = user.getScoreboard().getObjective("vd_state_" + arena.getArenaState().ordinal());
             }
             if(gameObjective == null) return;
@@ -89,6 +93,7 @@ public class ArenaUtils {
             gameObjective.setDisplaySlot(DisplaySlot.SIDEBAR);
             switch(arena.getArenaState()) {
                 case WAITING_FOR_PLAYERS:
+                    break;
                 case STARTING:
                     Score timer = gameObjective.getScore(ChatManager.formatMessage(arena, ChatManager.colorMessage("Scoreboard.Starting-In")));
                     timer.setScore(arena.getTimer());
@@ -114,14 +119,16 @@ public class ArenaUtils {
                     Score rottenFlesh = gameObjective.getScore(ChatManager.formatMessage(arena, ChatManager.colorMessage("Scoreboard.Rotten-Flesh")));
                     rottenFlesh.setScore(arena.getRottenFlesh());
                     break;
-                case ENDING:
-                    user.removeScoreboard();
-                    break;
                 case RESTARTING:
                     break;
                 default:
                     arena.setArenaState(ArenaState.WAITING_FOR_PLAYERS);
+                    break;
             }
+            Score empty = gameObjective.getScore("");
+            empty.setScore(-1);
+            Score footer = gameObjective.getScore(ChatManager.colorMessage("Scoreboard.Footer"));
+            footer.setScore(-2);
             user.setScoreboard(user.getScoreboard());
         }
     }

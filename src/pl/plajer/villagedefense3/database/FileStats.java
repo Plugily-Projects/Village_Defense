@@ -22,11 +22,23 @@ public class FileStats {
 
     private Main plugin;
     private FileConfiguration config;
+    public final static List<String> STATISTICS = new ArrayList<>();
 
     public FileStats(Main plugin) {
         this.plugin = plugin;
         config = ConfigurationManager.getConfig("stats");
     }
+
+    static {
+        STATISTICS.add("gamesplayed");
+        STATISTICS.add("kills");
+        STATISTICS.add("deaths");
+        STATISTICS.add("highestwave");
+        STATISTICS.add("xp");
+        STATISTICS.add("level");
+        STATISTICS.add("orbs");
+    }
+
 
     public void saveStat(Player player, String stat) {
         User user = UserManager.getUser(player.getUniqueId());
@@ -54,15 +66,7 @@ public class FileStats {
             if(plugin.isBungeeActivated())
                 ArenaRegistry.getArenas().get(0).teleportToLobby(player);
             if(!plugin.isDatabaseActivated()) {
-                List<String> temp = new ArrayList<>();
-                temp.add("gamesplayed");
-                temp.add("kills");
-                temp.add("deaths");
-                temp.add("highestwave");
-                temp.add("xp");
-                temp.add("level");
-                temp.add("orbs");
-                for(String s : temp) {
+                for(String s : FileStats.STATISTICS) {
                     loadStat(player, s);
                 }
                 continue;

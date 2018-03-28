@@ -1,6 +1,6 @@
 name: VillageDefense
 main: pl.plajer.villagedefense3.Main
-version: 3.1.0
+version: 3.1.1
 softdepend: [WorldEdit]
 
 commands:

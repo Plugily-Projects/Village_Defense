@@ -38,8 +38,7 @@ public class PuncherKit extends LevelKit {
     @Override
     public void giveKitItems(Player player) {
         player.getInventory().addItem(WeaponHelper.getEnchanted(new ItemStack(Material.DIAMOND_SPADE), new Enchantment[]{
-                Enchantment.DURABILITY, Enchantment.KNOCKBACK, Enchantment.DAMAGE_ALL
-        }, new int[]{10, 5, 2}));
+                Enchantment.DURABILITY, Enchantment.KNOCKBACK, Enchantment.DAMAGE_ALL}, new int[]{10, 5, 2}));
         ArmorHelper.setColouredArmor(Color.BLACK, player);
         player.getInventory().addItem(WeaponHelper.getEnchantedBow(Enchantment.DURABILITY, 5));
         player.getInventory().addItem(new ItemStack(Material.ARROW, 25));

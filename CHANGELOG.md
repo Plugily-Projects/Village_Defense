@@ -15,3 +15,18 @@
 * Added permissions for signs creating and breaking
 * Now you properly get Spectator menu on death
 * Now players that join running arena gets bonus hearts that were added before from rotten fleshes
+
+### 3.1.1 Release (28.03.2018)
+* Fixed zombie kills stats counting X times on zombie death (based on created arenas size)
+* Now wolf owner will get stat for killing zombie
+* Optimized Tornado and Blocker kits schedulers (even if kits were unused)
+* Buffed Archer kit's arrows amount per wave from 5 to 15
+* Fixed small memory leak
+* Fixed bStats new config generation in bStats/resources/ folder
+* Improved auto respawn
+* Added messages In-Game.Spectator.Target-Player-Health and Scoreboard.Footer
+* Properly clearing player inventory when server is closed/plugin gets disabled
+* Hypixelized plugin (sort of)
+* Fixed some typos in setup menu
+* Added night vision for spectators
+* Fixed restart needed after shop was created

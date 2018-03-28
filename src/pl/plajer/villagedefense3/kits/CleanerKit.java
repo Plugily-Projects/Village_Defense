@@ -65,9 +65,7 @@ public class CleanerKit extends PremiumKit implements Listener {
     }
 
     @Override
-    public void reStock(Player player) {
-
-    }
+    public void reStock(Player player) {}
 
     @EventHandler
     public void onClean(PlayerInteractEvent event) {

@@ -67,7 +67,7 @@ public class ShotBowKit extends PremiumKit implements Listener {
     }
 
     @EventHandler
-    public void ShootArrow(PlayerInteractEvent e) {
+    public void onBowInteract(PlayerInteractEvent e) {
         if(e.getAction() == Action.LEFT_CLICK_AIR || e.getAction() == Action.LEFT_CLICK_BLOCK) {
             if(e.getPlayer().getItemInHand() != null) {
                 if(e.getPlayer().getItemInHand().getType() == Material.BOW) {

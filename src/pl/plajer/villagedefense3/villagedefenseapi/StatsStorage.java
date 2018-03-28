@@ -20,8 +20,7 @@ public class StatsStorage {
 
     private static Map sortByValue(Map unsortMap) {
         List list = new LinkedList(unsortMap.entrySet());
-        Collections.sort(list, (Comparator) (o1, o2) -> ((Comparable) ((Map.Entry) (o1)).getValue())
-                .compareTo(((Map.Entry) (o2)).getValue()));
+        list.sort((o1, o2) -> ((Comparable) ((Map.Entry) (o1)).getValue()).compareTo(((Map.Entry) (o2)).getValue()));
         Map sortedMap = new LinkedHashMap();
         for(Object aList : list) {
             Map.Entry entry = (Map.Entry) aList;

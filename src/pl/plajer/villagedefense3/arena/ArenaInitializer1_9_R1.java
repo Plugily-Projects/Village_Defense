@@ -2,7 +2,6 @@ package pl.plajer.villagedefense3.arena;
 
 
 import net.minecraft.server.v1_9_R1.GenericAttributes;
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.craftbukkit.v1_9_R1.CraftWorld;
@@ -15,9 +14,9 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import pl.plajer.villagedefense3.Main;
+import pl.plajer.villagedefense3.creatures.CreatureUtils;
 import pl.plajer.villagedefense3.creatures.v1_9_R1.*;
 import pl.plajer.villagedefense3.handlers.ChatManager;
-import pl.plajer.villagedefense3.utils.PercentageUtils;
 
 import java.util.Random;
 
@@ -41,10 +40,7 @@ public class ArenaInitializer1_9_R1 extends Arena {
         McWorld.addEntity(fastZombie, CreatureSpawnEvent.SpawnReason.CUSTOM);
         Zombie zombie = (Zombie) fastZombie.getBukkitEntity();
         zombie.setRemoveWhenFarAway(false);
-        if(plugin.getConfig().getBoolean("Simple-Zombie-Health-Bar-Enabled")) {
-            zombie.setCustomNameVisible(true);
-            zombie.setCustomName(PercentageUtils.getProgressBar((int) zombie.getMaxHealth(), (int) zombie.getMaxHealth(), 50, "|", ChatColor.YELLOW + "", ChatColor.GRAY + ""));
-        }
+        CreatureUtils.applyHealthBar(zombie);
         this.addZombie((Zombie) fastZombie.getBukkitEntity());
 
         super.subtractZombiesToSpawn();
@@ -61,10 +57,7 @@ public class ArenaInitializer1_9_R1 extends Arena {
         zombie.setRemoveWhenFarAway(false);
         zombie.getEquipment().setBoots(new ItemStack(Material.CHAINMAIL_BOOTS));
         zombie.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, Integer.MAX_VALUE, 1));
-        if(plugin.getConfig().getBoolean("Simple-Zombie-Health-Bar-Enabled")) {
-            zombie.setCustomNameVisible(true);
-            zombie.setCustomName(PercentageUtils.getProgressBar((int) zombie.getMaxHealth(), (int) zombie.getMaxHealth(), 50, "|", ChatColor.YELLOW + "", ChatColor.GRAY + ""));
-        }
+        CreatureUtils.applyHealthBar(zombie);
         this.addZombie((Zombie) fastZombie.getBukkitEntity());
 
         super.subtractZombiesToSpawn();
@@ -85,10 +78,7 @@ public class ArenaInitializer1_9_R1 extends Arena {
         zombie.getEquipment().setChestplate(new ItemStack(Material.DIAMOND_CHESTPLATE));
         zombie.getEquipment().setHelmet(new ItemStack(Material.DIAMOND_HELMET));
         zombie.setRemoveWhenFarAway(false);
-        if(plugin.getConfig().getBoolean("Simple-Zombie-Health-Bar-Enabled")) {
-            zombie.setCustomNameVisible(true);
-            zombie.setCustomName(PercentageUtils.getProgressBar((int) zombie.getMaxHealth(), (int) zombie.getMaxHealth(), 50, "|", ChatColor.YELLOW + "", ChatColor.GRAY + ""));
-        }
+        CreatureUtils.applyHealthBar(zombie);
         this.addZombie((Zombie) fastZombie.getBukkitEntity());
 
         super.subtractZombiesToSpawn();
@@ -100,11 +90,7 @@ public class ArenaInitializer1_9_R1 extends Arena {
         BabyZombie fastZombie = new BabyZombie(location.getWorld());
         fastZombie.setPosition(location.getX(), location.getY(), location.getZ());
         Zombie zombie = (Zombie) fastZombie.getBukkitEntity();
-        if(plugin.getConfig().getBoolean("Simple-Zombie-Health-Bar-Enabled")) {
-            zombie.setCustomNameVisible(true);
-            zombie.setCustomName(PercentageUtils.getProgressBar((int) zombie.getMaxHealth(), (int) zombie.getMaxHealth(), 50, "|", ChatColor.YELLOW + "", ChatColor.GRAY + ""));
-        }
-
+        CreatureUtils.applyHealthBar(zombie);
         zombie.setRemoveWhenFarAway(false);
         McWorld.addEntity(fastZombie, CreatureSpawnEvent.SpawnReason.CUSTOM);
 
@@ -125,10 +111,7 @@ public class ArenaInitializer1_9_R1 extends Arena {
         zombie.getEquipment().setChestplate(new ItemStack(Material.DIAMOND_CHESTPLATE));
         zombie.getEquipment().setHelmet(new ItemStack(Material.DIAMOND_HELMET));
         zombie.setRemoveWhenFarAway(false);
-        if(plugin.getConfig().getBoolean("Simple-Zombie-Health-Bar-Enabled")) {
-            zombie.setCustomNameVisible(true);
-            zombie.setCustomName(PercentageUtils.getProgressBar((int) zombie.getMaxHealth(), (int) zombie.getMaxHealth(), 50, "|", ChatColor.YELLOW + "", ChatColor.GRAY + ""));
-        }
+        CreatureUtils.applyHealthBar(zombie);
         this.addZombie(zombie);
         super.subtractZombiesToSpawn();
     }
@@ -146,10 +129,7 @@ public class ArenaInitializer1_9_R1 extends Arena {
         zombie.getEquipment().setChestplate(new ItemStack(Material.IRON_CHESTPLATE));
         zombie.getEquipment().setHelmet(new ItemStack(Material.IRON_HELMET));
         zombie.setRemoveWhenFarAway(false);
-        if(plugin.getConfig().getBoolean("Simple-Zombie-Health-Bar-Enabled")) {
-            zombie.setCustomNameVisible(true);
-            zombie.setCustomName(PercentageUtils.getProgressBar((int) zombie.getMaxHealth(), (int) zombie.getMaxHealth(), 50, "|", ChatColor.YELLOW + "", ChatColor.GRAY + ""));
-        }
+        CreatureUtils.applyHealthBar(zombie);
         this.addZombie(zombie);
         super.subtractZombiesToSpawn();
     }
@@ -165,10 +145,7 @@ public class ArenaInitializer1_9_R1 extends Arena {
         zombie.getEquipment().setHelmetDropChance(0.0F);
         zombie.getEquipment().setItemInHandDropChance(0F);
         zombie.setRemoveWhenFarAway(false);
-        if(plugin.getConfig().getBoolean("Simple-Zombie-Health-Bar-Enabled")) {
-            zombie.setCustomNameVisible(true);
-            zombie.setCustomName(PercentageUtils.getProgressBar((int) zombie.getMaxHealth(), (int) zombie.getMaxHealth(), 50, "|", ChatColor.YELLOW + "", ChatColor.GRAY + ""));
-        }
+        CreatureUtils.applyHealthBar(zombie);
         this.addZombie(zombie);
 
         super.subtractZombiesToSpawn();
@@ -187,10 +164,7 @@ public class ArenaInitializer1_9_R1 extends Arena {
         zombie.getEquipment().setBoots(new ItemStack(Material.GOLD_BOOTS));
         zombie.getEquipment().setLeggings(new ItemStack(Material.GOLD_LEGGINGS));
         zombie.getEquipment().setChestplate(new ItemStack(Material.GOLD_CHESTPLATE));
-        if(plugin.getConfig().getBoolean("Simple-Zombie-Health-Bar-Enabled")) {
-            zombie.setCustomNameVisible(true);
-            zombie.setCustomName(PercentageUtils.getProgressBar((int) zombie.getMaxHealth(), (int) zombie.getMaxHealth(), 50, "|", ChatColor.YELLOW + "", ChatColor.GRAY + ""));
-        }
+        CreatureUtils.applyHealthBar(zombie);
         this.addZombie(zombie);
 
         super.subtractZombiesToSpawn();

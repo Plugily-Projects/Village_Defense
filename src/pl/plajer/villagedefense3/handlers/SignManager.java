@@ -1,5 +1,6 @@
 package pl.plajer.villagedefense3.handlers;
 
+import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -25,6 +26,7 @@ import java.util.Map;
 public class SignManager implements Listener {
 
     private Main plugin;
+    @Getter
     private Map<Sign, Arena> loadedSigns = new HashMap<>();
     private Map<ArenaState, String> gameStateToString = new HashMap<>();
 
@@ -198,9 +200,5 @@ public class SignManager implements Listener {
                 s.update();
             }
         }, 10, 10);
-    }
-
-    public Map<Sign, Arena> getLoadedSigns() {
-        return loadedSigns;
     }
 }

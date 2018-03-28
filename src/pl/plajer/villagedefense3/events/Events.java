@@ -1,17 +1,14 @@
 package pl.plajer.villagedefense3.events;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Effect;
 import org.bukkit.Material;
-import org.bukkit.block.Hopper;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.event.block.BlockDispenseEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.*;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -231,16 +228,21 @@ public class Events implements Listener {
 
     @EventHandler
     public void onZombieDeath(EntityDeathEvent event) {
+        if(event.getEntity().getLastDamageCause() == null) return;
+        Entity killer = event.getEntity().getLastDamageCause().getEntity();
         if(event.getEntity().getType() == EntityType.ZOMBIE) {
             for(Arena arena : ArenaRegistry.getArenas()) {
                 Zombie zombie = (Zombie) event.getEntity();
                 if(arena.getZombies().contains(zombie)) {
                     arena.removeZombie(zombie);
-                    if(event.getEntity().getKiller() == null)
-                        return;
-                    if(event.getEntity().getKiller().getType() == EntityType.PLAYER) {
+                    if(killer == null) return;
+                    if(killer.getType() == EntityType.WOLF){
+                        Player player = (Player) ((Wolf) killer).getOwner();
+                        if(ArenaRegistry.getArena(player) != null)
+                            plugin.getRewardsHandler().performZombieKillReward(player);
+                    }
+                    if(killer.getType() == EntityType.PLAYER) {
                         Player player = event.getEntity().getKiller();
-
                         if(ArenaRegistry.getArena(player) != null)
                             plugin.getRewardsHandler().performZombieKillReward(player);
                     }
@@ -383,11 +385,9 @@ public class Events implements Listener {
         ItemStack itemStack = event.getCurrentItem().clone();
         ItemMeta itemMeta = itemStack.getItemMeta();
         List<String> lore = new ArrayList<>();
-        Iterator iterator = lore.iterator();
-        while(iterator.hasNext()) {
-            String s = (String) iterator.next();
-            if(s.contains(ChatManager.colorMessage("In-Game.Messages.Shop-Messages.Currency-In-Shop"))) {
-                lore.remove(s);
+        for(String loopLore : lore) {
+            if(loopLore.contains(ChatManager.colorMessage("In-Game.Messages.Shop-Messages.Currency-In-Shop"))) {
+                lore.remove(loopLore);
             }
         }
         itemMeta.setLore(lore);

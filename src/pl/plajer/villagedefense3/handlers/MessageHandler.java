@@ -1,7 +1,5 @@
 package pl.plajer.villagedefense3.handlers;
 
-import net.md_5.bungee.api.ChatMessageType;
-import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -16,12 +14,6 @@ import java.lang.reflect.Constructor;
  */
 public class MessageHandler {
 
-    private static Main plugin;
-
-    public MessageHandler(Main plugin) {
-        MessageHandler.plugin = plugin;
-    }
-
     public static void sendTitle(Player player, String text, int fadeInTime, int showTime, int fadeOutTime, ChatColor color) {
         try {
             Object chatTitle = getNMSClass("IChatBaseComponent").getDeclaredClasses()[0].getMethod("a", String.class).invoke(null, "{\"text\": \"" + text + "\",color:" + color.name().toLowerCase() + "}");
@@ -31,12 +23,6 @@ public class MessageHandler {
 
             sendPacket(player, packet);
         } catch(Exception ignored) {
-        }
-    }
-
-    public static void sendActionBar(Player player, String text) {
-        if(plugin.is1_9_R1() || plugin.is1_11_R1() || plugin.is1_12_R1()) {
-            player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(text));
         }
     }
 

@@ -44,7 +44,7 @@ Commands:
 #In-game scoreboard messages.
 #Please do not use more than 48 chars here! COLOR CODES INCLUDED.
 Scoreboard:
-  Header: "&6Village Defense"
+  Header: "&6&lVillage Defense"
   Villagers-Left: "&aVillagers:"
   Zombies-Left: "&cZombies:"
   Players: "&bPlayers:"
@@ -54,6 +54,7 @@ Scoreboard:
   Next-Wave-In: "&7Next wave in:"
   Orbs: "&bOrbs:"
   Rotten-Flesh: "&2Rotten Flesh:"
+  Footer: "&ewww.spigotmc.org"
 
 #Has usage only when bossbar is enabled in config.yml
 Bossbar:
@@ -118,7 +119,7 @@ Kits:
     Kit-Description: "&7Start off with 6 more hearts! Don't be afraid! You have plenty hearts left to lose!"
   Worker:
     Kit-Name: "&6Worker"
-    Kit-Description: "&7Get each round a door and start off with 2 additional doors. This way u can replace the doors!"
+    Kit-Description: "&7Get each round a door and start off with 2 additional doors. This way you can replace the doors!"
     Game-Item-Place-Message: "&aDoor placed!"
   Dog-Friend:
     Kit-Name: "&bDog Friend"
@@ -223,7 +224,8 @@ In-Game:
   Arena-Not-Configured: "&cArena is not configured yet! Contact staff!"
   Spectator:
     Spectator-Item-Name: "&7Players list"
-    Spectator-Menu-Name: "&lSpectator menu"
+    Spectator-Menu-Name: "Alive players list"
+    Target-Player-Health: "&cHealth: &7%health%"
   Messages:
     Lobby-Messages:
       Start-In: "&7The game starts in &b%TIME%&7 seconds!"
@@ -287,4 +289,4 @@ Validator:
   No-Instances-Created: "[Village Defense] There are no arena instances created in configuration!"
 
 #You don't want to change this m8 >:)
-File-Version-Do-Not-Edit: 0
+File-Version-Do-Not-Edit: 1
