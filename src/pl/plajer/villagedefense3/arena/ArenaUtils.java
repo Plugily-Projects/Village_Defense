@@ -93,6 +93,10 @@ public class ArenaUtils {
             gameObjective.setDisplaySlot(DisplaySlot.SIDEBAR);
             switch(arena.getArenaState()) {
                 case WAITING_FOR_PLAYERS:
+                    Score playersTotal1 = gameObjective.getScore(ChatManager.formatMessage(arena, ChatManager.colorMessage("Scoreboard.Players")));
+                    playersTotal1.setScore(arena.getPlayers().size());
+                    Score neededPlayers2 = gameObjective.getScore(ChatManager.formatMessage(arena, ChatManager.colorMessage("Scoreboard.Minimum-Players")));
+                    neededPlayers2.setScore(arena.getMinimumPlayers());
                     break;
                 case STARTING:
                     Score timer = gameObjective.getScore(ChatManager.formatMessage(arena, ChatManager.colorMessage("Scoreboard.Starting-In")));
