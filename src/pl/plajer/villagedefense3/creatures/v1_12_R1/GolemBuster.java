@@ -17,12 +17,17 @@ import java.util.LinkedHashSet;
  * Created by Tom on 14/08/2014.
  */
 public class GolemBuster extends EntityZombie {
+
     public int damage;
     private float bw;
 
+    public GolemBuster(org.bukkit.World world){
+        this(((CraftWorld) world).getHandle());
+    }
+
     @SuppressWarnings("rawtypes")
-    public GolemBuster(org.bukkit.World world) {
-        super(((CraftWorld) world).getHandle());
+    public GolemBuster(World world) {
+        super(world);
         this.bw = Main.ZOMBIE_SPEED; //Change this to your liking. this is were you set the speed
         this.damage = 15; // set the damage
         //There's also a ton of options of you do this. play around with it

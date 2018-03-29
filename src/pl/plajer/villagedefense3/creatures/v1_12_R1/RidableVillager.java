@@ -1,6 +1,27 @@
 package pl.plajer.villagedefense3.creatures.v1_12_R1;
 
-import net.minecraft.server.v1_12_R1.*;
+import net.minecraft.server.v1_12_R1.Entity;
+import net.minecraft.server.v1_12_R1.EntityAgeable;
+import net.minecraft.server.v1_12_R1.EntityHuman;
+import net.minecraft.server.v1_12_R1.EntityInsentient;
+import net.minecraft.server.v1_12_R1.EntityLiving;
+import net.minecraft.server.v1_12_R1.EntityVillager;
+import net.minecraft.server.v1_12_R1.GenericAttributes;
+import net.minecraft.server.v1_12_R1.Navigation;
+import net.minecraft.server.v1_12_R1.PathfinderGoalFloat;
+import net.minecraft.server.v1_12_R1.PathfinderGoalInteract;
+import net.minecraft.server.v1_12_R1.PathfinderGoalLookAtPlayer;
+import net.minecraft.server.v1_12_R1.PathfinderGoalLookAtTradingPlayer;
+import net.minecraft.server.v1_12_R1.PathfinderGoalMakeLove;
+import net.minecraft.server.v1_12_R1.PathfinderGoalMoveIndoors;
+import net.minecraft.server.v1_12_R1.PathfinderGoalMoveTowardsRestriction;
+import net.minecraft.server.v1_12_R1.PathfinderGoalOpenDoor;
+import net.minecraft.server.v1_12_R1.PathfinderGoalPlay;
+import net.minecraft.server.v1_12_R1.PathfinderGoalRandomStroll;
+import net.minecraft.server.v1_12_R1.PathfinderGoalRestrictOpenDoor;
+import net.minecraft.server.v1_12_R1.PathfinderGoalSelector;
+import net.minecraft.server.v1_12_R1.PathfinderGoalTradeWithPlayer;
+import net.minecraft.server.v1_12_R1.World;
 import org.bukkit.craftbukkit.v1_12_R1.CraftWorld;
 import pl.plajer.villagedefense3.creatures.CreatureUtils;
 import pl.plajer.villagedefense3.handlers.LanguageManager;
@@ -53,10 +74,39 @@ public class RidableVillager extends EntityVillager {
         this.setCustomNameVisible(true);
     }
 
+    public void a(float f, float f1, float f2) {
+        EntityLiving entityliving = null;
+        for(final Entity e : passengers) {
+            if(e instanceof EntityHuman) {
+                entityliving = (EntityLiving) e;
+                break;
+            }
+        }
+        if(entityliving == null) {
+            this.P = 0.5F;
+            this.aR = 0.02F;
+            this.k((float) 0.12);
+            super.a(f, f1, f2);
+            return;
+        }
+        this.lastYaw = this.yaw = entityliving.yaw;
+        this.pitch = entityliving.pitch * 0.5F;
+        this.setYawPitch(this.yaw, this.pitch);
+        this.aO = this.aM = this.yaw;
+
+        f = entityliving.be * 0.5F * 0.75F;
+        f2 = entityliving.bg;
+        if(f2 <= 0.0f) {
+            f2 *= 0.25F;
+        }
+        k(0.12f);
+        super.a(f, f1, f2);
+        P = (float) 1.0;
+    }
+
     @Override
     public EntityAgeable createChild(EntityAgeable entityAgeable) {
         return this.b(entityAgeable);
     }
-
 
 }

@@ -1,7 +1,7 @@
-package pl.plajer.villagedefense3.creatures.v1_11_R1;
+package pl.plajer.villagedefense3.creatures.v1_12_R1;
 
-import net.minecraft.server.v1_11_R1.*;
-import org.bukkit.craftbukkit.v1_11_R1.CraftWorld;
+import net.minecraft.server.v1_12_R1.*;
+import org.bukkit.craftbukkit.v1_12_R1.CraftWorld;
 import pl.plajer.villagedefense3.creatures.CreatureUtils;
 
 import java.util.LinkedHashSet;
@@ -9,11 +9,14 @@ import java.util.LinkedHashSet;
 /**
  * Created by Tom on 17/08/2014.
  */
-public class IronGolem extends EntityIronGolem {
+public class RidableIronGolem extends EntityIronGolem {
 
-    public IronGolem(org.bukkit.World world) {
-        super(((CraftWorld) world).getHandle());
+    public RidableIronGolem(org.bukkit.World world){
+        this(((CraftWorld) world).getHandle());
+    }
 
+    public RidableIronGolem(World world) {
+        super(world);
 
         LinkedHashSet goalB = (LinkedHashSet) CreatureUtils.getPrivateField("b", PathfinderGoalSelector.class, goalSelector);
         goalB.clear();
@@ -39,6 +42,36 @@ public class IronGolem extends EntityIronGolem {
         this.targetSelector.a(2, new PathfinderGoalHurtByTarget(this, false));
         this.targetSelector.a(3, new PathfinderGoalNearestAttackableTarget(this, EntityHuman.class, 0, false, true, IMonster.e));
         this.setHealth(500);
+    }
+
+    public void a(float f, float f1, float f2) {
+        EntityLiving entityliving = null;
+        for(final Entity e : passengers) {
+            if(e instanceof EntityHuman) {
+                entityliving = (EntityLiving) e;
+                break;
+            }
+        }
+        if(entityliving == null) {
+            this.P = 0.5F;
+            this.aR = 0.02F;
+            this.k((float) 0.12);
+            super.a(f, f1, f2);
+            return;
+        }
+        this.lastYaw = this.yaw = entityliving.yaw;
+        this.pitch = entityliving.pitch * 0.5F;
+        this.setYawPitch(this.yaw, this.pitch);
+        this.aO = this.aM = this.yaw;
+
+        f = entityliving.be * 0.5F * 0.75F;
+        f2 = entityliving.bg;
+        if(f2 <= 0.0f) {
+            f2 *= 0.25F;
+        }
+        k(0.12f);
+        super.a(f, f1, f2);
+        P = (float) 1.0;
     }
 
     @Override

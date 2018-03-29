@@ -1,7 +1,7 @@
-package pl.plajer.villagedefense3.creatures.v1_12_R1;
+package pl.plajer.villagedefense3.creatures.v1_11_R1;
 
-import net.minecraft.server.v1_12_R1.*;
-import org.bukkit.craftbukkit.v1_12_R1.CraftWorld;
+import net.minecraft.server.v1_11_R1.*;
+import org.bukkit.craftbukkit.v1_11_R1.CraftWorld;
 import pl.plajer.villagedefense3.creatures.CreatureUtils;
 
 import java.util.LinkedHashSet;
@@ -9,11 +9,14 @@ import java.util.LinkedHashSet;
 /**
  * Created by Tom on 17/08/2014.
  */
-public class IronGolem extends EntityIronGolem {
+public class RidableIronGolem extends EntityIronGolem {
 
-    public IronGolem(org.bukkit.World world) {
-        super(((CraftWorld) world).getHandle());
+    public RidableIronGolem(org.bukkit.World world){
+        this(((CraftWorld) world).getHandle());
+    }
 
+    public RidableIronGolem(World world) {
+        super(world);
 
         LinkedHashSet goalB = (LinkedHashSet) CreatureUtils.getPrivateField("b", PathfinderGoalSelector.class, goalSelector);
         goalB.clear();
@@ -48,20 +51,37 @@ public class IronGolem extends EntityIronGolem {
     }
 
     @Override
-    protected void dropDeathLoot(boolean flag, int i) {
-     /*   int j = this.random.nextInt(3);
+    protected void dropDeathLoot(boolean flag, int i) {}
 
-        int k;
-
-        for (k = 0; k < j; ++k) {
-            this.a(Item.getItemOf(Blocks.RED_ROSE), 1, 0.0F);
+    @Override
+    public void g(float f, float f1) {
+        EntityLiving entityliving = (EntityLiving) bw();
+        if(entityliving == null) {
+            // search first human passenger
+            for(final Entity e : passengers) {
+                if(e instanceof EntityHuman) {
+                    entityliving = (EntityLiving) e;
+                    break;
+                }
+            }
+            if(entityliving == null) {
+                this.l((float) 0.12);
+                super.g(f, f1);
+                return;
+            }
         }
-
-        k = 3 + this.random.nextInt(3);
-
-        for (int l = 0; l < k; ++l) {
-            this.a(ItemUtils.IRON_INGOT, 1);
-        } */
+        this.lastYaw = this.yaw = entityliving.yaw;
+        this.pitch = entityliving.pitch * 0.5F;
+        this.setYawPitch(this.yaw, this.pitch);
+        this.aQ = this.aO = this.yaw;
+        f = entityliving.be * 0.75F;
+        f1 = entityliving.bf;
+        if(f1 <= 0.0f) {
+            f1 *= 0.25F;
+        }
+        this.l((float) 0.12);
+        super.g(f, f1);
+        P = (float) 1.0;
     }
 
 }

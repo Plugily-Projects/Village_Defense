@@ -30,3 +30,12 @@
 * Fixed some typos in setup menu
 * Added night vision for spectators
 * Fixed restart needed after shop was created
+
+### 3.1.2 Release (28.03.2018)
+* Fixed scoreboard issue
+
+### 3.1.3 Release (29.03.2018)
+* Fixed zombies spawning warning in console
+* You can now ride villagers properly in 1.11
+* Removed usage of /vda setshopchest command, now you can set shop chest via setup menu only
+* Implemented iron golems riding in 1.8, 1.9 and 1.11 versions

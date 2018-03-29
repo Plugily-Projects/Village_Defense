@@ -15,9 +15,13 @@ public class HardZombie extends EntityZombie {
     public int damage;
     private float bw;
 
-    @SuppressWarnings("rawtypes")
     public HardZombie(org.bukkit.World world) {
-        super(((CraftWorld) world).getHandle());
+        this(((CraftWorld) world).getHandle());
+    }
+
+    @SuppressWarnings("rawtypes")
+    public HardZombie(World world) {
+        super(world);
         this.bw = Main.ZOMBIE_SPEED; //Change this to your liking. this is were you set the speed
         this.damage = 15; // set the damage
         //There's also a ton of options of you do this. play around with it

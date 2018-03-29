@@ -9,10 +9,14 @@ import java.util.Set;
 /**
  * Created by Tom on 17/08/2014.
  */
-public class IronGolem extends EntityIronGolem {
+public class RidableIronGolem extends EntityIronGolem {
 
-    public IronGolem(org.bukkit.World world) {
-        super(((CraftWorld) world).getHandle());
+    public RidableIronGolem(org.bukkit.World world){
+        this(((CraftWorld) world).getHandle());
+    }
+
+    public RidableIronGolem(World world) {
+        super(world);
 
         Set goalB = (Set) CreatureUtils.getPrivateField("b", PathfinderGoalSelector.class, goalSelector);
         goalB.clear();
@@ -46,20 +50,41 @@ public class IronGolem extends EntityIronGolem {
     }
 
     @Override
-    protected void dropDeathLoot(boolean flag, int i) {
-     /*   int j = this.random.nextInt(3);
+    protected void dropDeathLoot(boolean flag, int i) {}
 
-        int k;
-
-        for (k = 0; k < j; ++k) {
-            this.a(Item.getItemOf(Blocks.RED_ROSE), 1, 0.0F);
+    @Override
+    public void g(float f, float f1) {
+        EntityLiving entityliving = (EntityLiving) bt();
+        if(entityliving == null) {
+            for(final Entity e : passengers) {
+                if(e instanceof EntityHuman) {
+                    entityliving = (EntityLiving) e;
+                    break;
+                }
+            }
+            if(entityliving == null) {
+                P = 0.5f;
+                this.l((float) 0.12);
+                super.g(f, f1);
+                return;
+            }
         }
-
-        k = 3 + this.random.nextInt(3);
-
-        for (int l = 0; l < k; ++l) {
-            this.a(ItemUtils.IRON_INGOT, 1);
-        } */
+        final float yaw = entityliving.yaw;
+        this.yaw = yaw;
+        lastYaw = yaw;
+        pitch = entityliving.pitch * 0.5f;
+        setYawPitch(this.yaw, pitch);
+        final float yaw2 = this.yaw;
+        aM = yaw2;
+        aO = yaw2;
+        f = entityliving.bd * 0.75F;
+        f1 = entityliving.be;
+        if(f1 <= 0.0f) {
+            f1 *= 0.25F;
+        }
+        this.l((float) 0.12);
+        super.g(f, f1);
+        P = 1.0F;
     }
 
 }

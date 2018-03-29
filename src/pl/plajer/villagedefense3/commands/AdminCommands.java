@@ -158,17 +158,7 @@ public class AdminCommands extends MainCommand {
     }
 
     public void setShopChest(CommandSender sender) {
-        if(checkSenderIsConsole(sender)) return;
-        Player player = (Player) sender;
-        if(!hasPermission(player, "villagedefense.admin.setshopchest")) return;
-        Block targetBlock;
-        targetBlock = player.getTargetBlock(null, 100);
-        if(targetBlock == null || targetBlock.getType() != Material.CHEST) {
-            player.sendMessage(ChatColor.RED + "Look at the chest! You are targeting something else!");
-            return;
-        }
-        Util.saveLoc("shop.location", targetBlock.getLocation(), false);
-        player.sendMessage(ChatColor.GREEN + "Shop for chest set!");
+        sender.sendMessage(ChatColor.GREEN + "Please use Setup menu to set shop chest!");
     }
 
     public void addSign(CommandSender sender, String arena) {

@@ -11,9 +11,12 @@ import java.util.LinkedHashSet;
  */
 public class WorkingWolf extends EntityWolf {
 
-    public WorkingWolf(org.bukkit.World world) {
-        super(((CraftWorld) world).getHandle());
+    public WorkingWolf(org.bukkit.World world){
+        this(((CraftWorld) world).getHandle());
+    }
 
+    public WorkingWolf(World world) {
+        super(world);
 
         LinkedHashSet goalB = (LinkedHashSet) CreatureUtils.getPrivateField("b", PathfinderGoalSelector.class, goalSelector);
         goalB.clear();

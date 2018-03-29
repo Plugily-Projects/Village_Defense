@@ -23,10 +23,13 @@ public class PlayerBuster extends EntityZombie {
     public int damage;
     private float bw;
 
-    @SuppressWarnings("rawtypes")
-    public PlayerBuster(org.bukkit.World world) {
+    public PlayerBuster(org.bukkit.World world){
+        this(((CraftWorld) world).getHandle());
+    }
 
-        super(((CraftWorld) world).getHandle());
+    @SuppressWarnings("rawtypes")
+    public PlayerBuster(World world) {
+        super(world);
         this.bw = Main.ZOMBIE_SPEED; //Change this to your liking. this is were you set the speed
         this.damage = 15; // set the damage
         //There's also a ton of options of you do this. play around with it

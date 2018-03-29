@@ -15,9 +15,14 @@ public class BabyZombie extends EntityZombie {
     public int damage;
     private float bw;
 
+    public BabyZombie(org.bukkit.World world){
+        this(((CraftWorld) world).getHandle());
+    }
+
+
     @SuppressWarnings("rawtypes")
-    public BabyZombie(org.bukkit.World world) {
-        super(((CraftWorld) world).getHandle());
+    public BabyZombie(World world) {
+        super(world);
         this.bw = Main.MINI_ZOMBIE_SPEED; //Change this to your liking. this is were you set the speed
         this.damage = 15; // set the damage
         //There's also a ton of options of you do this. play around with it

@@ -182,7 +182,7 @@ public class ArenaInitializer1_9_R1 extends Arena {
 
     public void spawnGolem(Location location, Player player) {
         net.minecraft.server.v1_9_R1.World McWorld = ((CraftWorld) location.getWorld()).getHandle();
-        IronGolem ironGolem = new IronGolem(location.getWorld());
+        RidableIronGolem ironGolem = new RidableIronGolem(location.getWorld());
         ironGolem.setPosition(location.getX(), location.getY(), location.getZ());
         ironGolem.setCustomName(ChatManager.colorMessage("In-Game.Spawned-Golem-Name").replaceAll("%player%", player.getName()));
         ironGolem.setCustomNameVisible(true);

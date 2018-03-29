@@ -14,9 +14,13 @@ public class TankerZombie extends EntityZombie {
     public int damage;
     private float bw;
 
+    public TankerZombie(org.bukkit.World world){
+        this(((CraftWorld) world).getHandle());
+    }
+
     @SuppressWarnings("rawtypes")
-    public TankerZombie(org.bukkit.World world) {
-        super(((CraftWorld) world).getHandle());
+    public TankerZombie(World world) {
+        super(world);
         this.bw = 1.5F; //Change this to your liking. This is were you set the speed
         this.damage = 15; // set the damage
         //There's also a ton of options of you do this. play around with it

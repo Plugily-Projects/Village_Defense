@@ -1,7 +1,28 @@
 package pl.plajer.villagedefense3.creatures.v1_11_R1;
 
-import net.minecraft.server.v1_11_R1.*;
+import net.minecraft.server.v1_11_R1.Entity;
+import net.minecraft.server.v1_11_R1.EntityAgeable;
+import net.minecraft.server.v1_11_R1.EntityHuman;
+import net.minecraft.server.v1_11_R1.EntityInsentient;
+import net.minecraft.server.v1_11_R1.EntityLiving;
+import net.minecraft.server.v1_11_R1.EntityVillager;
+import net.minecraft.server.v1_11_R1.Navigation;
+import net.minecraft.server.v1_11_R1.PathfinderGoalFloat;
+import net.minecraft.server.v1_11_R1.PathfinderGoalInteract;
+import net.minecraft.server.v1_11_R1.PathfinderGoalLookAtPlayer;
+import net.minecraft.server.v1_11_R1.PathfinderGoalLookAtTradingPlayer;
+import net.minecraft.server.v1_11_R1.PathfinderGoalMakeLove;
+import net.minecraft.server.v1_11_R1.PathfinderGoalMoveIndoors;
+import net.minecraft.server.v1_11_R1.PathfinderGoalMoveTowardsRestriction;
+import net.minecraft.server.v1_11_R1.PathfinderGoalOpenDoor;
+import net.minecraft.server.v1_11_R1.PathfinderGoalPlay;
+import net.minecraft.server.v1_11_R1.PathfinderGoalRandomStroll;
+import net.minecraft.server.v1_11_R1.PathfinderGoalRestrictOpenDoor;
+import net.minecraft.server.v1_11_R1.PathfinderGoalSelector;
+import net.minecraft.server.v1_11_R1.PathfinderGoalTradeWithPlayer;
+import net.minecraft.server.v1_11_R1.World;
 import org.bukkit.craftbukkit.v1_11_R1.CraftWorld;
+import org.bukkit.util.Vector;
 import pl.plajer.villagedefense3.creatures.CreatureUtils;
 import pl.plajer.villagedefense3.handlers.LanguageManager;
 
@@ -56,15 +77,15 @@ public class RidableVillager extends EntityVillager {
     @Override
     public void g(float f, float f1) {
         EntityLiving entityliving = (EntityLiving) bw();
-        if (entityliving == null) {
+        if(entityliving == null) {
             // search first human passenger
-            for (final Entity e : passengers) {
-                if (e instanceof EntityHuman) {
+            for(final Entity e : passengers) {
+                if(e instanceof EntityHuman) {
                     entityliving = (EntityLiving) e;
                     break;
                 }
             }
-            if (entityliving == null) {
+            if(entityliving == null) {
                 this.l((float) 0.12);
                 super.g(f, f1);
                 return;
@@ -74,9 +95,9 @@ public class RidableVillager extends EntityVillager {
         this.pitch = entityliving.pitch * 0.5F;
         this.setYawPitch(this.yaw, this.pitch);
         this.aQ = this.aO = this.yaw;
-        f = entityliving.bf * 0.75F;
-        f1 = entityliving.bg;
-        if (f1 <= 0.0f) {
+        f = entityliving.be * 0.75F;
+        f1 = entityliving.bf;
+        if(f1 <= 0.0f) {
             f1 *= 0.25F;
         }
         this.l((float) 0.12);

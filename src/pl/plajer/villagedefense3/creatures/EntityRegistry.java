@@ -19,7 +19,7 @@ import java.util.Map;
 public class EntityRegistry {
 
     public EntityRegistry(Main plugin) {
-        List<String> classes = Arrays.asList("FastZombie", "BabyZombie", "PlayerBuster", "GolemBuster", "HardZombie", "RidableVillager", "IronGolem", "WorkingWolf", "TankerZombie");
+        List<String> classes = Arrays.asList("FastZombie", "BabyZombie", "PlayerBuster", "GolemBuster", "HardZombie", "RidableVillager", "RidableIronGolem", "WorkingWolf", "TankerZombie");
         String version = plugin.getVersion();
         if(version.equalsIgnoreCase("v1_8_R3") || version.equalsIgnoreCase("v1_11_R1") || version.equalsIgnoreCase("v1_9_R1") || version.equalsIgnoreCase("v1_12_R1")) {
             try {
