@@ -14,7 +14,15 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import pl.plajer.villagedefense3.Main;
 import pl.plajer.villagedefense3.creatures.CreatureUtils;
-import pl.plajer.villagedefense3.creatures.v1_8_R3.*;
+import pl.plajer.villagedefense3.creatures.v1_8_R3.BabyZombie;
+import pl.plajer.villagedefense3.creatures.v1_8_R3.FastZombie;
+import pl.plajer.villagedefense3.creatures.v1_8_R3.GolemBuster;
+import pl.plajer.villagedefense3.creatures.v1_8_R3.HardZombie;
+import pl.plajer.villagedefense3.creatures.v1_8_R3.PlayerBuster;
+import pl.plajer.villagedefense3.creatures.v1_8_R3.RidableIronGolem;
+import pl.plajer.villagedefense3.creatures.v1_8_R3.RidableVillager;
+import pl.plajer.villagedefense3.creatures.v1_8_R3.TankerZombie;
+import pl.plajer.villagedefense3.creatures.v1_8_R3.WorkingWolf;
 import pl.plajer.villagedefense3.handlers.ChatManager;
 
 import java.util.Random;

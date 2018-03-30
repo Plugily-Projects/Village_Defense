@@ -34,8 +34,12 @@
 ### 3.1.2 Release (28.03.2018)
 * Fixed scoreboard issue
 
-### 3.1.3 Release (29.03.2018)
-* Fixed zombies spawning warning in console
+### 3.1.3 Release (30.03.2018)
+* Fixed zombies spawning warning in console (reported by transportowiec96)
 * You can now ride villagers properly in 1.11
 * Removed usage of /vda setshopchest command, now you can set shop chest via setup menu only
 * Implemented iron golems riding in 1.8, 1.9 and 1.11 versions
+* Improved Villagers pathfinders, now they will avoid zombies
+* Fixed zombie kills stats counting
+* Fixed zombie kills stats counting by wolves
+* Fixed shop registering when reloading arenas via /vda reload

@@ -2,11 +2,12 @@ package pl.plajer.villagedefense3.arena;
 
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Villager;
 import org.bukkit.entity.Wolf;
@@ -14,12 +15,12 @@ import org.bukkit.entity.Zombie;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import pl.plajer.villagedefense3.Main;
@@ -44,27 +45,33 @@ public class ArenaEvents implements Listener {
     }
 
     @EventHandler
+    public void onDieEntity(EntityDamageByEntityEvent e) {
+        if(e.getEntity() instanceof LivingEntity && e.getDamager() instanceof Wolf && e.getEntity() instanceof Zombie) {
+            //trick to get non player killer of zombie
+            if(e.getDamage() >= ((LivingEntity) e.getEntity()).getHealth()) {
+                for(Arena arena : ArenaRegistry.getArenas()) {
+                    if(arena.getZombies().contains(e.getEntity())) {
+                        Player player = (Player) ((Wolf) e.getDamager()).getOwner();
+                        if(player == null) return;
+                        if(ArenaRegistry.getArena(player) != null) {
+                            arena.addStat(player, "kills");
+                            arena.addExperience(player, 2);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    @EventHandler
     public void onDieEntity(EntityDeathEvent event) {
-        if(event.getEntity().getLastDamageCause() == null) return;
-        Entity killer = event.getEntity().getLastDamageCause().getEntity();
         if(event.getEntity().getType() == EntityType.ZOMBIE) {
             for(Arena arena : ArenaRegistry.getArenas()) {
                 if(arena.getZombies().contains(event.getEntity())) {
                     arena.removeZombie((Zombie) event.getEntity());
-                    if(killer != null) {
-                        if(killer.getType() == EntityType.WOLF) {
-                            Player player = (Player) ((Wolf) event.getEntity()).getOwner();
-                            if(ArenaRegistry.getArena(player) != null) {
-                                arena.addStat((Player) killer, "kills");
-                                arena.addExperience((Player) killer, 2);
-                                return;
-                            }
-                        }
-                    } else {
-                        if(ArenaRegistry.getArena(event.getEntity().getKiller()) != null) {
-                            arena.addStat(event.getEntity().getKiller(), "kills");
-                            arena.addExperience(event.getEntity().getKiller(), 2);
-                        }
+                    if(ArenaRegistry.getArena(event.getEntity().getKiller()) != null) {
+                        arena.addStat(event.getEntity().getKiller(), "kills");
+                        arena.addExperience(event.getEntity().getKiller(), 2);
                     }
                     return;
                 }

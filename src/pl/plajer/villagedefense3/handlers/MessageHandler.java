@@ -3,7 +3,6 @@ package pl.plajer.villagedefense3.handlers;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
-import pl.plajer.villagedefense3.Main;
 
 import java.lang.reflect.Constructor;
 

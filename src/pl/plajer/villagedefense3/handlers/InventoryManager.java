@@ -54,7 +54,7 @@ public class InventoryManager {
             invConfig.set("Size", inventory.getSize());
             invConfig.set("Max stack size", inventory.getMaxStackSize());
             List<String> activePotions = new ArrayList<>();
-            for(PotionEffect potion : player.getActivePotionEffects()){
+            for(PotionEffect potion : player.getActivePotionEffects()) {
                 activePotions.add(potion.getType().getName() + "#" + potion.getDuration() + "#" + potion.getAmplifier());
             }
             invConfig.set("Active potion effects", activePotions);
@@ -141,7 +141,7 @@ public class InventoryManager {
                 player.setGameMode(GameMode.valueOf(invConfig.getString("GameMode")));
                 player.setAllowFlight(invConfig.getBoolean("Allow flight"));
                 List<String> activePotions = invConfig.getStringList("Active potion effects");
-                for(String potion : activePotions){
+                for(String potion : activePotions) {
                     String[] splited = potion.split("#");
                     player.addPotionEffect(new PotionEffect(PotionEffectType.getByName(splited[0]), Integer.valueOf(splited[1]), Integer.valueOf(splited[2])));
                 }
@@ -152,8 +152,7 @@ public class InventoryManager {
         Inventory inventory = this.getInventoryFromFile(player.getUniqueId().toString());
 
         for(Integer i = 0; i < inventory.getContents().length; i++) {
-            if(inventory.getItem(i) != null)
-                player.getInventory().setItem(i, inventory.getItem(i));
+            if(inventory.getItem(i) != null) player.getInventory().setItem(i, inventory.getItem(i));
         }
 
         player.updateInventory();

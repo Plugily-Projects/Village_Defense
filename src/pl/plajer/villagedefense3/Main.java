@@ -9,24 +9,82 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
-import pl.plajer.villagedefense3.arena.*;
+import pl.plajer.villagedefense3.arena.Arena;
+import pl.plajer.villagedefense3.arena.ArenaEvents;
+import pl.plajer.villagedefense3.arena.ArenaInitializer1_11_R1;
+import pl.plajer.villagedefense3.arena.ArenaInitializer1_12_R1;
+import pl.plajer.villagedefense3.arena.ArenaInitializer1_8_R3;
+import pl.plajer.villagedefense3.arena.ArenaInitializer1_9_R1;
+import pl.plajer.villagedefense3.arena.ArenaRegistry;
 import pl.plajer.villagedefense3.commands.MainCommand;
 import pl.plajer.villagedefense3.creatures.BreakFenceListener;
 import pl.plajer.villagedefense3.creatures.EntityRegistry;
 import pl.plajer.villagedefense3.database.FileStats;
 import pl.plajer.villagedefense3.database.MySQLDatabase;
-import pl.plajer.villagedefense3.events.*;
-import pl.plajer.villagedefense3.handlers.*;
+import pl.plajer.villagedefense3.events.ChatEvents;
+import pl.plajer.villagedefense3.events.CombustDayLightEvent;
+import pl.plajer.villagedefense3.events.Events;
+import pl.plajer.villagedefense3.events.GolemEvents;
+import pl.plajer.villagedefense3.events.JoinEvent;
+import pl.plajer.villagedefense3.events.LobbyEvents;
+import pl.plajer.villagedefense3.events.QuitEvent;
+import pl.plajer.villagedefense3.events.SetupInventoryEvents;
+import pl.plajer.villagedefense3.events.SpectatorEvents;
+import pl.plajer.villagedefense3.events.SpectatorItemEvents;
+import pl.plajer.villagedefense3.handlers.BungeeManager;
+import pl.plajer.villagedefense3.handlers.ChatManager;
+import pl.plajer.villagedefense3.handlers.ChunkManager;
+import pl.plajer.villagedefense3.handlers.ConfigurationManager;
+import pl.plajer.villagedefense3.handlers.InventoryManager;
+import pl.plajer.villagedefense3.handlers.LanguageManager;
+import pl.plajer.villagedefense3.handlers.LanguageMigrator;
+import pl.plajer.villagedefense3.handlers.MessageHandler;
+import pl.plajer.villagedefense3.handlers.PermissionsManager;
+import pl.plajer.villagedefense3.handlers.RewardsHandler;
+import pl.plajer.villagedefense3.handlers.ShopManager;
+import pl.plajer.villagedefense3.handlers.SignManager;
+import pl.plajer.villagedefense3.handlers.UserManager;
 import pl.plajer.villagedefense3.items.SpecialItem;
-import pl.plajer.villagedefense3.kits.*;
+import pl.plajer.villagedefense3.kits.ArcherKit;
+import pl.plajer.villagedefense3.kits.BlockerKit;
+import pl.plajer.villagedefense3.kits.CleanerKit;
+import pl.plajer.villagedefense3.kits.DogFriendKit;
+import pl.plajer.villagedefense3.kits.GolemFriendKit;
+import pl.plajer.villagedefense3.kits.HardcoreKit;
+import pl.plajer.villagedefense3.kits.HealerKit;
+import pl.plajer.villagedefense3.kits.HeavyTankKit;
+import pl.plajer.villagedefense3.kits.KnightKit;
+import pl.plajer.villagedefense3.kits.LightTankKit;
+import pl.plajer.villagedefense3.kits.LooterKit;
+import pl.plajer.villagedefense3.kits.MedicKit;
+import pl.plajer.villagedefense3.kits.MediumTankKit;
+import pl.plajer.villagedefense3.kits.NakedKit;
+import pl.plajer.villagedefense3.kits.PremiumHardcoreKit;
+import pl.plajer.villagedefense3.kits.PuncherKit;
+import pl.plajer.villagedefense3.kits.RunnerKit;
+import pl.plajer.villagedefense3.kits.ShotBowKit;
+import pl.plajer.villagedefense3.kits.TeleporterKit;
+import pl.plajer.villagedefense3.kits.TerminatorKit;
+import pl.plajer.villagedefense3.kits.TornadoKit;
+import pl.plajer.villagedefense3.kits.WizardKit;
+import pl.plajer.villagedefense3.kits.WorkerKit;
+import pl.plajer.villagedefense3.kits.ZombieFinderKit;
 import pl.plajer.villagedefense3.kits.kitapi.KitManager;
 import pl.plajer.villagedefense3.kits.kitapi.KitRegistry;
-import pl.plajer.villagedefense3.utils.*;
+import pl.plajer.villagedefense3.utils.ArmorHelper;
+import pl.plajer.villagedefense3.utils.BigTextUtils;
+import pl.plajer.villagedefense3.utils.MetricsLite;
+import pl.plajer.villagedefense3.utils.MySQLConnectionUtils;
+import pl.plajer.villagedefense3.utils.Util;
 import pl.plajer.villagedefense3.villagedefenseapi.StatsStorage;
 
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 
 /**
@@ -505,6 +563,7 @@ public class Main extends JavaPlugin implements Listener {
             arena.start();
             Bukkit.getConsoleSender().sendMessage(ChatManager.colorMessage("Validator.Instance-Started").replaceAll("%arena%", ID));
         }
+        new ShopManager();
     }
 
     public WorldEditPlugin getWorldEditPlugin() {

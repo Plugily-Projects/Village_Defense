@@ -6,7 +6,9 @@ import net.minecraft.server.v1_11_R1.EntityHuman;
 import net.minecraft.server.v1_11_R1.EntityInsentient;
 import net.minecraft.server.v1_11_R1.EntityLiving;
 import net.minecraft.server.v1_11_R1.EntityVillager;
+import net.minecraft.server.v1_11_R1.EntityZombie;
 import net.minecraft.server.v1_11_R1.Navigation;
+import net.minecraft.server.v1_11_R1.PathfinderGoalAvoidTarget;
 import net.minecraft.server.v1_11_R1.PathfinderGoalFloat;
 import net.minecraft.server.v1_11_R1.PathfinderGoalInteract;
 import net.minecraft.server.v1_11_R1.PathfinderGoalLookAtPlayer;
@@ -22,7 +24,6 @@ import net.minecraft.server.v1_11_R1.PathfinderGoalSelector;
 import net.minecraft.server.v1_11_R1.PathfinderGoalTradeWithPlayer;
 import net.minecraft.server.v1_11_R1.World;
 import org.bukkit.craftbukkit.v1_11_R1.CraftWorld;
-import org.bukkit.util.Vector;
 import pl.plajer.villagedefense3.creatures.CreatureUtils;
 import pl.plajer.villagedefense3.handlers.LanguageManager;
 
@@ -57,7 +58,7 @@ public class RidableVillager extends EntityVillager {
         ((Navigation) getNavigation()).b(true);
         ((Navigation) getNavigation()).a(true);
         this.goalSelector.a(0, new PathfinderGoalFloat(this));
-        // this.goalSelector.a(1, new PathfinderGoalAvoidTarget(this, new EntityZom(this), 8.0F, 0.6D, 0.6D));
+        this.goalSelector.a(1, new PathfinderGoalAvoidTarget(this, EntityZombie.class, 8.0F, 0.6D, 0.6D));
         this.goalSelector.a(1, new PathfinderGoalTradeWithPlayer(this));
         this.goalSelector.a(1, new PathfinderGoalLookAtTradingPlayer(this));
         this.goalSelector.a(2, new PathfinderGoalMoveIndoors(this));

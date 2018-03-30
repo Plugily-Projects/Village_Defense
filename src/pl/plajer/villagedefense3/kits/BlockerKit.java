@@ -1,6 +1,10 @@
 package pl.plajer.villagedefense3.kits;
 
-import org.bukkit.*;
+import org.bukkit.Color;
+import org.bukkit.Effect;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.Particle;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -24,7 +28,8 @@ import pl.plajer.villagedefense3.utils.ArmorHelper;
 import pl.plajer.villagedefense3.utils.Util;
 import pl.plajer.villagedefense3.utils.WeaponHelper;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Created by Tom on 17/12/2015.
