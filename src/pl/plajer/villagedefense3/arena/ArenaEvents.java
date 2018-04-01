@@ -2,7 +2,6 @@ package pl.plajer.villagedefense3.arena;
 
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
@@ -48,16 +47,14 @@ public class ArenaEvents implements Listener {
     public void onDieEntity(EntityDamageByEntityEvent e) {
         if(e.getEntity() instanceof LivingEntity && e.getDamager() instanceof Wolf && e.getEntity() instanceof Zombie) {
             //trick to get non player killer of zombie
+            if(!e.getEntity().hasMetadata("VillageEntity")) return;
             if(e.getDamage() >= ((LivingEntity) e.getEntity()).getHealth()) {
-                for(Arena arena : ArenaRegistry.getArenas()) {
-                    if(arena.getZombies().contains(e.getEntity())) {
-                        Player player = (Player) ((Wolf) e.getDamager()).getOwner();
-                        if(player == null) return;
-                        if(ArenaRegistry.getArena(player) != null) {
-                            arena.addStat(player, "kills");
-                            arena.addExperience(player, 2);
-                        }
-                    }
+                Arena arena = ArenaRegistry.getArena(e.getEntity().getMetadata("PlayingArena").get(0).asString());
+                Player player = (Player) ((Wolf) e.getDamager()).getOwner();
+                if(player == null) return;
+                if(ArenaRegistry.getArena(player) != null) {
+                    arena.addStat(player, "kills");
+                    arena.addExperience(player, 2);
                 }
             }
         }
@@ -65,28 +62,21 @@ public class ArenaEvents implements Listener {
 
     @EventHandler
     public void onDieEntity(EntityDeathEvent event) {
+        if(!event.getEntity().hasMetadata("VillageEntity")) return;
+        Arena arena = ArenaRegistry.getArena(event.getEntity().getMetadata("PlayingArena").get(0).asString());
         if(event.getEntity().getType() == EntityType.ZOMBIE) {
-            for(Arena arena : ArenaRegistry.getArenas()) {
-                if(arena.getZombies().contains(event.getEntity())) {
-                    arena.removeZombie((Zombie) event.getEntity());
-                    if(ArenaRegistry.getArena(event.getEntity().getKiller()) != null) {
-                        arena.addStat(event.getEntity().getKiller(), "kills");
-                        arena.addExperience(event.getEntity().getKiller(), 2);
-                    }
-                    return;
-                }
+            arena.removeZombie((Zombie) event.getEntity());
+            if(ArenaRegistry.getArena(event.getEntity().getKiller()) != null) {
+                arena.addStat(event.getEntity().getKiller(), "kills");
+                arena.addExperience(event.getEntity().getKiller(), 2);
             }
+            return;
         }
         if(event.getEntity().getType() == EntityType.VILLAGER) {
-            for(Arena arena : ArenaRegistry.getArenas()) {
-                if(arena.getVillagers().contains(event.getEntity())) {
-                    arena.getStartLocation().getWorld().strikeLightningEffect(event.getEntity().getLocation());
-                    arena.removeVillager((Villager) event.getEntity());
-                    for(Player p : arena.getPlayers()) {
-                        p.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Messages.Villager-Died"));
-                    }
-                    return;
-                }
+            arena.getStartLocation().getWorld().strikeLightningEffect(event.getEntity().getLocation());
+            arena.removeVillager((Villager) event.getEntity());
+            for(Player p : arena.getPlayers()) {
+                p.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Messages.Villager-Died"));
             }
         }
     }

@@ -32,11 +32,8 @@ import java.util.Random;
  */
 public class ArenaInitializer1_8_R3 extends Arena {
 
-    private Main plugin;
-
     public ArenaInitializer1_8_R3(String ID, Main plugin) {
         super(ID, plugin);
-        this.plugin = plugin;
     }
 
     public void spawnFastZombie(Random random) {
@@ -49,6 +46,7 @@ public class ArenaInitializer1_8_R3 extends Arena {
         zombie.setRemoveWhenFarAway(false);
         CreatureUtils.applyHealthBar(zombie);
         this.addZombie((Zombie) fastZombie.getBukkitEntity());
+        CreatureUtils.applyMetadata(fastZombie.getBukkitEntity(), this);
 
         super.subtractZombiesToSpawn();
     }
@@ -66,6 +64,7 @@ public class ArenaInitializer1_8_R3 extends Arena {
         zombie.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, Integer.MAX_VALUE, 1));
         CreatureUtils.applyHealthBar(zombie);
         this.addZombie((Zombie) fastZombie.getBukkitEntity());
+        CreatureUtils.applyMetadata(fastZombie.getBukkitEntity(), this);
 
         super.subtractZombiesToSpawn();
     }
@@ -87,6 +86,7 @@ public class ArenaInitializer1_8_R3 extends Arena {
         zombie.setRemoveWhenFarAway(false);
         CreatureUtils.applyHealthBar(zombie);
         this.addZombie((Zombie) fastZombie.getBukkitEntity());
+        CreatureUtils.applyMetadata(fastZombie.getBukkitEntity(), this);
 
         super.subtractZombiesToSpawn();
     }
@@ -100,8 +100,8 @@ public class ArenaInitializer1_8_R3 extends Arena {
         CreatureUtils.applyHealthBar(zombie);
         zombie.setRemoveWhenFarAway(false);
         McWorld.addEntity(fastZombie, CreatureSpawnEvent.SpawnReason.CUSTOM);
-
         this.addZombie((Zombie) fastZombie.getBukkitEntity());
+        CreatureUtils.applyMetadata(fastZombie.getBukkitEntity(), this);
 
         super.subtractZombiesToSpawn();
     }
@@ -120,6 +120,7 @@ public class ArenaInitializer1_8_R3 extends Arena {
         zombie.setRemoveWhenFarAway(false);
         CreatureUtils.applyHealthBar(zombie);
         this.addZombie(zombie);
+        CreatureUtils.applyMetadata(fastZombie.getBukkitEntity(), this);
         super.subtractZombiesToSpawn();
     }
 
@@ -138,6 +139,7 @@ public class ArenaInitializer1_8_R3 extends Arena {
         zombie.setRemoveWhenFarAway(false);
         CreatureUtils.applyHealthBar(zombie);
         this.addZombie(zombie);
+        CreatureUtils.applyMetadata(fastZombie.getBukkitEntity(), this);
         super.subtractZombiesToSpawn();
     }
 
@@ -154,6 +156,7 @@ public class ArenaInitializer1_8_R3 extends Arena {
         zombie.setRemoveWhenFarAway(false);
         CreatureUtils.applyHealthBar(zombie);
         this.addZombie(zombie);
+        CreatureUtils.applyMetadata(fastZombie.getBukkitEntity(), this);
 
         super.subtractZombiesToSpawn();
     }
@@ -173,6 +176,7 @@ public class ArenaInitializer1_8_R3 extends Arena {
         zombie.getEquipment().setChestplate(new ItemStack(Material.GOLD_CHESTPLATE));
         CreatureUtils.applyHealthBar(zombie);
         this.addZombie(zombie);
+        CreatureUtils.applyMetadata(fastZombie.getBukkitEntity(), this);
 
         super.subtractZombiesToSpawn();
     }
@@ -185,6 +189,7 @@ public class ArenaInitializer1_8_R3 extends Arena {
         Villager villager = (Villager) ridableVillager.getBukkitEntity();
         villager.setRemoveWhenFarAway(false);
         this.addVillager((Villager) ridableVillager.getBukkitEntity());
+        CreatureUtils.applyMetadata(villager, this);
     }
 
     public void spawnGolem(Location location, Player player) {
@@ -193,10 +198,9 @@ public class ArenaInitializer1_8_R3 extends Arena {
         ironGolem.setPosition(location.getX(), location.getY(), location.getZ());
         ironGolem.setCustomName(ChatManager.colorMessage("In-Game.Spawned-Golem-Name").replaceAll("%player%", player.getName()));
         ironGolem.setCustomNameVisible(true);
-
         McWorld.addEntity(ironGolem, CreatureSpawnEvent.SpawnReason.CUSTOM);
-
         this.addIronGolem((org.bukkit.entity.IronGolem) ironGolem.getBukkitEntity());
+        CreatureUtils.applyMetadata(ironGolem.getBukkitEntity(), this);
     }
 
     public void spawnWolf(Location location, Player player) {
@@ -208,6 +212,7 @@ public class ArenaInitializer1_8_R3 extends Arena {
         wolf.setCustomNameVisible(true);
         wolf.setInvisible(false);
         ((Wolf) wolf.getBukkitEntity()).setOwner(player);
+        CreatureUtils.applyMetadata(wolf.getBukkitEntity(), this);
 
         this.addWolf((Wolf) wolf.getBukkitEntity());
     }

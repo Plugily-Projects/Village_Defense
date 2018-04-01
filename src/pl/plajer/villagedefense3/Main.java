@@ -92,6 +92,7 @@ import java.util.UUID;
  */
 public class Main extends JavaPlugin implements Listener {
 
+    private boolean forceDisable = false;
     public static int STARTING_TIMER_TIME = 60;
     public static float MINI_ZOMBIE_SPEED;
     public static float ZOMBIE_SPEED;
@@ -208,7 +209,9 @@ public class Main extends JavaPlugin implements Listener {
             BigTextUtils.thisVersionIsNotSupported();
             Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "Your server version is not supported by Village Defense!");
             Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "Sadly, we must shut off. Maybe you consider changing your server version?");
+            forceDisable = true;
             getServer().getPluginManager().disablePlugin(this);
+            return;
         }
         try {
             Class.forName("org.spigotmc.SpigotConfig");
@@ -216,7 +219,9 @@ public class Main extends JavaPlugin implements Listener {
             BigTextUtils.thisVersionIsNotSupported();
             Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "Your server software is not supported by Village Defense!");
             Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "We support only Spigot and Spigot forks only! Shutting off...");
+            forceDisable = true;
             getServer().getPluginManager().disablePlugin(this);
+            return;
         }
         //check if using releases before 2.1.0
         if(LanguageManager.getLanguageFile().isSet("STATS-AboveLine") && LanguageManager.getLanguageFile().isSet("SCOREBOARD-Zombies")) {
@@ -432,6 +437,7 @@ public class Main extends JavaPlugin implements Listener {
 
     @Override
     public void onDisable() {
+        if(forceDisable) return;
         for(Player player : getServer().getOnlinePlayers()) {
             User user = UserManager.getUser(player.getUniqueId());
             for(String s : FileStats.STATISTICS) {

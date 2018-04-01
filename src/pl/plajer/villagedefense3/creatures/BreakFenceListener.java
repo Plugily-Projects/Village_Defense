@@ -32,8 +32,7 @@ public class BreakFenceListener extends BukkitRunnable {
     public void run() {
         for(World world : Bukkit.getServer().getWorlds()) {
             for(Entity entity : world.getEntities()) {
-                if(!(entity.getType() == EntityType.ZOMBIE))
-                    continue;
+                if(!(entity.getType() == EntityType.ZOMBIE)) continue;
                 Queue<Block> blocks = Util.getLineOfSight((LivingEntity) entity, null, 1, 1);
                 for(Block block : blocks) {
                     if(block.getType() == Material.WOOD_DOOR || block.getType() == Material.WOODEN_DOOR /*|| block.getType() == Material.FENCE*/) {

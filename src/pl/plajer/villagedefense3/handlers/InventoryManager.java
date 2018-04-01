@@ -14,6 +14,7 @@ import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import pl.plajer.villagedefense3.Main;
 import pl.plajer.villagedefense3.utils.BigTextUtils;
 
 import java.io.File;
@@ -25,17 +26,17 @@ import java.util.List;
  */
 public class InventoryManager {
 
-    private JavaPlugin plugin;
+    private Main plugin;
 
-    public InventoryManager(JavaPlugin gameAPI) {
-        plugin = gameAPI;
+    public InventoryManager(Main plugin) {
+        this.plugin = plugin;
     }
 
     public boolean saveInventoryToFile(Player player) {
         String UUID = player.getUniqueId().toString();
         PlayerInventory inventory = player.getInventory();
         File path = new File(plugin.getDataFolder() + File.separator + "inventorys");
-        if(inventory == null || path == null || UUID == null) return false;
+        if(inventory == null || path == null) return false;
         try {
             File invFile = new File(plugin.getDataFolder() + File.separator + "inventorys" + File.separator, UUID + ".invsave");
             if(!path.exists()) path.mkdir();
