@@ -47,3 +47,4 @@
 ### 3.2.0b Release (1.04.2018)
 * Small fix for plugin loading errors when dependencies weren't installed and plugin was disabled
 * Using metadata for village defense entities
+* Fixed permission villagedefense.join.<arena_name>

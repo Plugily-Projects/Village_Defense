@@ -917,7 +917,7 @@ public abstract class Arena extends BukkitRunnable {
             return;
         }
         if(!plugin.isBungeeActivated()) {
-            if(!p.hasPermission(PermissionsManager.getJoinPerm().replaceAll("<arena>", "*")) || !p.hasPermission(PermissionsManager.getJoinPerm().replaceAll("<arena>", this.getID()))) {
+            if(!(p.hasPermission(PermissionsManager.getJoinPerm().replaceAll("<arena>", "*")) || p.hasPermission(PermissionsManager.getJoinPerm().replaceAll("<arena>", this.getID())))) {
                 p.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Join-No-Permission"));
                 return;
             }
