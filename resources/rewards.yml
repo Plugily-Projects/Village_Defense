@@ -1,29 +1,30 @@
 #
 #
-#Setup rewards in this file for Village Defense!
-# Magical words are:
-#  %PLAYER%    -   Gets replaced by the playersname
-#  %WAVE%      -   Current wave number
-#  %MAPNAME%   -   Mapname
-#  %ARENA-ID   -   Arena ID
-#  %PLAYERAMOUNT% -  Gets replaced by the number of players ingame
+# Setup rewards in this file for Village Defense!
+#  Magical words are:
+#   %PLAYER%    -   Gets replaced by the players name
+#   %WAVE%      -   Current wave number
+#   %MAPNAME%   -   Name of map
+#   %ARENA-ID   -   Arena ID
+#   %PLAYERAMOUNT% -  Number of current players in game
 #
 #
-# Add "p:" If placed infront of the command, the command will be performed by the player, else by the console
+# Add "p:" If placed in front of the command, the command will be performed by the player, else by the console
 #  For example:
-#         - p:spawn  #Will teleport the player to spawn. The player will perform /spawn. NOTE that there is NO space.
+#         - p:spawn  # Will teleport the player to spawn. The player will perform /spawn. NOTE that there is NO space.
 #         - spawn    # Console will perform the /spawn command.. but this is useless
 #
 #
 #
 #
 rewards:
-#Perform a command when the game is finished. When all the villagers are killed:
+# Perform a command when the game is finished. When all the villagers are killed:
   endgame:
     - say %MAPNAME% is done playing and reached wave %WAVE%
     - say this is a second command example
-#Perform a command when a wave ends. this will be performed after every wave round! If u don't want to give rewards after a wave, just delete the wave out of the list.
-#If u want to add rewards for waves higher than 40, just add them to the list.
+# Perform a command when a wave ends. this will be performed after every wave round!
+# If you don't want to give rewards after a wave, just delete the wave out of the list.
+# If you want to add rewards for waves higher than 40, just add them to the list.
   endwave:
     1:
       - say You reached wave %WAVE%!
@@ -106,7 +107,7 @@ rewards:
     40:
       - say You reached wave %WAVE%!
 
-#When a player kills a zombie:
+# When a player kills a zombie:
   zombiekill:
     - give %PLAYER% 100
 

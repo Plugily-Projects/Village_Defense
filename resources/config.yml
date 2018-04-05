@@ -3,106 +3,118 @@
 #    You can edit here basic things of VD 3
 #      Please read everything CAREFULLY!
 #   You don't want to break anything, do you?
+#
 
 
-#Locale of VD 3 language. By default it's english.
-#Available localizations:
-#default - uses messages from 'language.yml' file
-#de - Deutsche sprache. Uses messages from 'language_de.yml' file
-#pl - Jezyk Polski.
+# Locale of VD 3 language. By default it's english.
+# Available localizations:
+# default - uses messages from 'language.yml' file
+# de - Deutsche sprache. Uses messages from 'language_de.yml' file
+# pl - Jezyk Polski. Uses messages from 'language_pl.yml' file
+#
+# DO NOT MODIFY LOCALE FILES (language_de/pl.yml), THEY ARE OVERRIDDEN EVERY RESTART
+# TO EDIT THEM, COPY THEIR CONTENTS INTO language.yml FILE!
+#
 locale: default
 
-#Enable 1.9+ ONLY bossbar support?
+# Enable 1.9+ ONLY bossbar support?
 Bossbar-Enabled: true
 
-#Should we hook into bungee cord? (If you wanna use arena per server option)
+# Should we hook into bungee cord? (If you wanna use arena per server option)
+# You STILL need to use external addon for HUB server game signs
+# Village Defense doesn't offer that addon.
+# Check here for more info: https://github.com/Plajer/Village_Defense/wiki/Addons#bungee-signs-not-official
 BungeeActivated: false
 
-#Enable Inventory Manager for your games? (VERY USEFUL feature for MULTI ARENA)
-#This saves inventory of players and restores it after player leaves arena.
-#Saved elements: max health, health, food, experience, full inventory, armor contents, fire ticks, active potions
+# Enable Inventory Manager for your games? (VERY USEFUL feature for MULTI ARENA)
+# This saves inventory of players and restores it after player leaves arena.
+# Saved elements: max health, health, food, experience, full inventory, armor contents, fire ticks, active potions
 InventoryManager: false
 
-#Respawn players when wave ends/starts?
+# Respawn players when wave ends/starts?
 Respawn-After-Wave: true
 
-#You can create custom players permissions here.
-#Player with your custom permission will get % bonus orbs
-#when he lift up experience from killed zombie.
+# You can create custom players permissions here.
+# Player with your custom permission will get % bonus orbs
+# when he lift up experience from killed zombie.
 CustomPermissions:
-  #Player with permission my-permission-one get 10% more orbs
+  # Player with permission my-permission-one get 10% more orbs
+  # Do not use dots (.), they won't work.
   my-permission-one: 10
 
-#Basic permissions for game, every permission is explained at plugin's page
+# Basic permissions for game, every permission is explained at plugin's page
 Basic-Permissions:
   Full-Games-Permission: "villagedefense.fullgames"
   Vip-Permission: "villagedefense.vip"
   Mvp-Permission: "villagedefense.mvp"
   Elite-Permission: "villagedefense.elite"
   Arena-Edit-Permission: "villagedefense.edit"
-  #<arena> represents arena name (NOT MAP NAME!), for example: 'villagedefense.join.VD02'
-  #use 'villagedefense.join.*' to enable access to all arenas
+  # <arena> represents arena name (NOT MAP NAME!), for example: 'villagedefense.join.VD02'
+  # use 'villagedefense.join.*' to enable access to all arenas
   Join-Permission: "villagedefense.join.<arena>"
 
-#Should /leave command be blocked?
+# Should /leave command be blocked?
 Disable-Leave-Command: false
 
-#Enable this option when you're using MySQL, otherwise it won't work.
+# Enable this option when you're using MySQL, otherwise it won't work.
+# Be careful when changing this because there is NO migrator between
+# flat file and MySQL for player stats.
 DatabaseActivated: false
 
-#How many seconds game should take to start.
+# How many seconds game should take to start.
 Starting-Waiting-Time: 60
 
-#Speed of baby zombie. Suggested: between 1.8 and 2.0
+# Speed of baby zombie. Suggested: between 1.8 and 2.0
 Mini-Zombie-Speed: 2.0
 
-#Speed of normal zombies. Suggested: between 1.2 and 1.4
+# Speed of normal zombies. Suggested: between 1.2 and 1.4
 Zombie-Speed: 1.3
 
-#Enable in game rewards? See rewards.yml for more...
+# Enable in game rewards? See rewards.yml for more...
 Rewards-Enabled: false
 
-#Enable in game (eg. '[KIT][LEVEL] Plajer: hey') special formatting?
-#Formatting is configurable in language.yml
+# Enable in game (eg. '[KIT][LEVEL] Plajer: hey') special formatting?
+# Formatting is configurable in language.yml
 ChatFormat-Enabled: true
 
-#Amount of orbs given to player when game starts
+# Amount of orbs given to player when game starts
 Orbs-Starting-Amount: 20
 
-#Should we block every not Village Defense associated commands in game?
+# Should we block every not Village Defense associated commands in game?
 Block-Commands-In-Game: true
 
 Update-Notifier:
-  #Should we check for updates on plugin start/after admin join?
-  #You REALLY should have this true!
+  # Should we check for updates on plugin start/after admin join?
+  # You REALLY should have this true!
   Enabled: true
-  #Should we inform you when beta version is out?
-  #BETA IS NOT ALWAYS AS STABLE AS NORMAL RELEASE!
+  # Should we inform you when beta version is out?
+  # BETA IS NOT ALWAYS AS STABLE AS NORMAL RELEASE!
   Notify-Beta-Versions: true
 
-#Should plugin send 'debug spam' to console? IT CAN HELP IF YOU OCCUR SOME WEIRD BEHAVIOUR FROM PLUGIN
+# Should plugin send 'debug spam' to console? IT CAN HELP IF YOU OCCUR SOME WEIRD BEHAVIOUR FROM PLUGIN
 Debug: false
 
-#Should we fire some cool fireworks at location of every player after the game ends?
+# Should we fire some cool fireworks at location of every player after the game ends?
 Firework-When-Game-Ends: true
 
-#Are golems upgrades enabled when you click your iron golem?
+# Are golems upgrades enabled when you click your iron golem?
 Golem-Upgrades-Enabled: true
 
-#Cost of golem heart upgrades
+# Cost of golem heart upgrades
 Golem-Upgrade-Tier1-Cost: 200
 Golem-Upgrade-Tier2-Cost: 400
 Golem-Upgrade-Tier3-Cost: 800
 
-#Cost of golem full heal
+# Cost of golem full heal
 Golem-Upgrade-Heal-Cost: 150
 
-#Enable very simple health bar for zombies?
-#They will have health instead of their names
-#It will show percentage of health left.
-#It's kinda buggy, you should use external plugin
-#if you got one.
+# Enable very simple health bar for zombies?
+# They will have health instead of their names
+# It will show percentage of health left.
+# It's kinda buggy, you should use external plugin if you got one.
 Simple-Zombie-Health-Bar-Enabled: true
 
-#Don't modify.
+# Don't modify.
 Version: 1
+
+# No way! You've reached the end! But... where's the dragon!?

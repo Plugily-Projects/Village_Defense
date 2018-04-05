@@ -1,17 +1,17 @@
-#MySQL database configuration, you no need to touch this unless you enabled MySQL support.
-#To enable MySQL support go to > config.yml and set 'DatabaseEnabled' to true
+# MySQL database configuration, you no need to touch this unless you enabled MySQL support.
+# To enable MySQL support go to > config.yml and set 'DatabaseEnabled' to true
 
-#Replace <databasename> with your database
+# Replace <databasename> with your database
 address: jdbc:mysql://localhost:3306/<databasename>
 
-#MySQL user name
+# MySQL user name
 user: <user>
 
-#MySQL user password
+# MySQL user password
 password: <password>
 
-#Minimum connections to database.
+# Minimum connections to database.
 min-connections: 2
 
-#Maximum connections to database.
+# Maximum connections to database.
 max-connections: 10

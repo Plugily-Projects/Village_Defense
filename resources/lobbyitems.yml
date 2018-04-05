@@ -1,5 +1,5 @@
-#Custom in-game lobby items.
-#Probably you will only translate displayname and lore so don't mess with it.
+# Custom in-game lobby items.
+# Probably you will only translate displayname and lore so don't mess with it.
 
 Leave:
   data: 0

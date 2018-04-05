@@ -6,7 +6,7 @@
 #     Some messages support their own placeholders
 #           like %player%, %kit% etc.
 
-#Village Defense commands messages
+# Village Defense commands messages
 Commands:
   Teleported-To-The-Lobby: "Teleported to the lobby!"
   No-Arena-Like-That: "&cNo arena with that ID!"
@@ -41,8 +41,8 @@ Commands:
     Admin-Bonus-Description: "\n&b/vd admin: &7Shows all the admin commands"
     Footer: "&6-------------------------------------------------"
 
-#In-game scoreboard messages.
-#Please do not use more than 48 chars here! COLOR CODES INCLUDED.
+# In-game scoreboard messages.
+# Please do not use more than 48 chars here! COLOR CODES INCLUDED.
 Scoreboard:
   Header: "&6&lVillage Defense"
   Villagers-Left: "&aVillagers:"
@@ -56,7 +56,7 @@ Scoreboard:
   Rotten-Flesh: "&2Rotten Flesh:"
   Footer: "&ewww.spigotmc.org"
 
-#Has usage only when bossbar is enabled in config.yml
+# Has usage only when bossbar is enabled in config.yml
 Bossbar:
   Main-Title: "&a&lVillage Defense &6- www.spigotmc.org"
   Starting-In: "&f&lStarting in: &e&l%time%"
@@ -184,7 +184,7 @@ Kits:
     Essence-Item-Lore: "&7Click to absorb surrounded matter and use it as your personal thorn shield! Lasts for 5 seconds"
 
 In-Game:
-  #Do not use spaces between villager names. No limit in names size :)
+  # Do not use spaces between villager names. No limit in names size and amount :)
   Villager-Names: "Jagger,Kelsey,Kelton,Haylie,Harlow,Howard,Wulffric,Winfred,Ashley,Bailey,Beckett,Alfredo,Alfred,Adair,Edgar,ED,Eadwig,Edgaras,Buckley,Stanley,Nuffley,Mary,Jeffry,Rosaly,Elliot,Harry,Sam,Rosaline,Tom,Ivan,Kevin,Adam"
   #Used in most game messages.
   Plugin-Prefix: "&a[Village Defense] "
@@ -219,7 +219,7 @@ In-Game:
     Health: "&e&lGolem's health: &7%health%"
   Spawned-Wolf-Name: "%player%'s Wolf"
   Spawned-Golem-Name: "%player%'s Golem"
-  #Join cancelled via external plugin that uses VD3 api.
+  # Join cancelled via external plugin that uses VD3 api.
   Join-Cancelled-Via-API: "&cYou can't join this game!"
   Arena-Not-Configured: "&cArena is not configured yet! Contact staff!"
   Spectator:
@@ -288,5 +288,6 @@ Validator:
   Instance-Started: "[Village Defense] Arena %arena% instance successfully started!"
   No-Instances-Created: "[Village Defense] There are no arena instances created in configuration!"
 
-#You don't want to change this m8 >:)
+# Don't edit it. But who's stopping you? It's your server!
+# Really, don't edit ;p
 File-Version-Do-Not-Edit: 1
