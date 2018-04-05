@@ -1,3 +1,8 @@
+#
+#    Did you know that you can create your own custom kits?
+#               You can check addon here:
+# https://www.spigotmc.org/resources/village-defense-custom-kits-1-8-8-1-12.55010/
+
 #Only kits that inherits level kit feature will be available to modify here.
 #Filling here other kits won't change anything as they inherits premium or free kit.
 Required-Level:
