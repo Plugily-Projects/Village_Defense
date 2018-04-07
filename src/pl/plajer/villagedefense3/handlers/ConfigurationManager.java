@@ -26,7 +26,6 @@ public class ConfigurationManager {
         return new File(plugin.getDataFolder() + File.separator + filename + ".yml");
     }
 
-    //TODO test me if i still need to use #saveConfig method bcuz i'm saving it after loading
     public static FileConfiguration getConfig(String filename) {
         File file = new File(plugin.getDataFolder() + File.separator + filename + ".yml");
         if(!file.exists()) {
@@ -50,7 +49,6 @@ public class ConfigurationManager {
             BigTextUtils.errorOccured();
             Bukkit.getConsoleSender().sendMessage("Cannot save file " + filename + ".yml!");
             Bukkit.getConsoleSender().sendMessage("Create blank file " + filename + ".yml or restart the server!");
-            return new YamlConfiguration();
         }
         return config;
     }

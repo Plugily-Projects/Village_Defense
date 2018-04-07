@@ -75,26 +75,6 @@ public class MySQLConnectionManager {
         return conn;
     }
 
-    public void closeStatement(Statement stmt) {
-        try {
-            if(stmt != null)
-                stmt.close();
-        } catch(Exception e) {
-            e.printStackTrace();
-        }
-
-    }
-
-    public void closeResultSet(ResultSet rSet) {
-        try {
-            if(rSet != null)
-                rSet.close();
-        } catch(Exception e) {
-            e.printStackTrace();
-        }
-
-    }
-
     public void closeConnection(Connection conn) {
         try {
             if(conn != null)
