@@ -307,7 +307,7 @@ public class Main extends JavaPlugin implements Listener {
             fileStats.loadStatsForPlayersOnline();
         }
         StatsStorage.plugin = this;
-        setupPermissions();
+        PermissionsManager.init();
     }
 
     private void initializeClasses() {
@@ -345,16 +345,6 @@ public class Main extends JavaPlugin implements Listener {
                 saveResource(fileName + ".yml", false);
             }
         }
-    }
-
-    private void setupPermissions() {
-        PermissionsManager.setEditGames(getConfig().getString("Basic-Permissions.Arena-Edit-Permission"));
-        PermissionsManager.setJoinFullGames(getConfig().getString("Basic-Permissions.Full-Games-Permission"));
-        PermissionsManager.setVip(getConfig().getString("Basic-Permissions.Vip-Permission"));
-        PermissionsManager.setMvp(getConfig().getString("Basic-Permissions.Mvp-Permission"));
-        PermissionsManager.setElite(getConfig().getString("Basic-Permissions.Elite-Permission"));
-        PermissionsManager.setJoinPerm(getConfig().getString("Basic-Permissions.Join-Permission"));
-        if(Main.isDebugged()) System.out.println("[Village Debugger] Basic permissions from config.yml properly set!");
     }
 
     private void migrateToNewFormat() {
