@@ -3,7 +3,6 @@ package pl.plajer.villagedefense3;
 import com.sk89q.worldedit.bukkit.WorldEditPlugin;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
@@ -12,10 +11,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.PotionEffect;
 import pl.plajer.villagedefense3.arena.Arena;
 import pl.plajer.villagedefense3.arena.ArenaEvents;
-import pl.plajer.villagedefense3.arena.ArenaInitializer1_11_R1;
-import pl.plajer.villagedefense3.arena.ArenaInitializer1_12_R1;
-import pl.plajer.villagedefense3.arena.ArenaInitializer1_8_R3;
-import pl.plajer.villagedefense3.arena.ArenaInitializer1_9_R1;
 import pl.plajer.villagedefense3.arena.ArenaRegistry;
 import pl.plajer.villagedefense3.commands.MainCommand;
 import pl.plajer.villagedefense3.creatures.BreakFenceListener;
@@ -37,43 +32,19 @@ import pl.plajer.villagedefense3.handlers.ChatManager;
 import pl.plajer.villagedefense3.handlers.ChunkManager;
 import pl.plajer.villagedefense3.handlers.ConfigurationManager;
 import pl.plajer.villagedefense3.handlers.InventoryManager;
-import pl.plajer.villagedefense3.language.LanguageManager;
-import pl.plajer.villagedefense3.language.LanguageMigrator;
 import pl.plajer.villagedefense3.handlers.MessageHandler;
 import pl.plajer.villagedefense3.handlers.PermissionsManager;
 import pl.plajer.villagedefense3.handlers.PowerupManager;
 import pl.plajer.villagedefense3.handlers.RewardsHandler;
 import pl.plajer.villagedefense3.handlers.ShopManager;
 import pl.plajer.villagedefense3.handlers.SignManager;
-import pl.plajer.villagedefense3.user.UserManager;
 import pl.plajer.villagedefense3.items.SpecialItem;
-import pl.plajer.villagedefense3.kits.ArcherKit;
-import pl.plajer.villagedefense3.kits.BlockerKit;
-import pl.plajer.villagedefense3.kits.CleanerKit;
-import pl.plajer.villagedefense3.kits.DogFriendKit;
-import pl.plajer.villagedefense3.kits.GolemFriendKit;
-import pl.plajer.villagedefense3.kits.HardcoreKit;
-import pl.plajer.villagedefense3.kits.HealerKit;
-import pl.plajer.villagedefense3.kits.HeavyTankKit;
-import pl.plajer.villagedefense3.kits.KnightKit;
-import pl.plajer.villagedefense3.kits.LightTankKit;
-import pl.plajer.villagedefense3.kits.LooterKit;
-import pl.plajer.villagedefense3.kits.MedicKit;
-import pl.plajer.villagedefense3.kits.MediumTankKit;
-import pl.plajer.villagedefense3.kits.NakedKit;
-import pl.plajer.villagedefense3.kits.PremiumHardcoreKit;
-import pl.plajer.villagedefense3.kits.PuncherKit;
-import pl.plajer.villagedefense3.kits.RunnerKit;
-import pl.plajer.villagedefense3.kits.ShotBowKit;
-import pl.plajer.villagedefense3.kits.TeleporterKit;
-import pl.plajer.villagedefense3.kits.TerminatorKit;
-import pl.plajer.villagedefense3.kits.TornadoKit;
-import pl.plajer.villagedefense3.kits.WizardKit;
-import pl.plajer.villagedefense3.kits.WorkerKit;
-import pl.plajer.villagedefense3.kits.ZombieFinderKit;
 import pl.plajer.villagedefense3.kits.kitapi.KitManager;
 import pl.plajer.villagedefense3.kits.kitapi.KitRegistry;
+import pl.plajer.villagedefense3.language.LanguageManager;
+import pl.plajer.villagedefense3.language.LanguageMigrator;
 import pl.plajer.villagedefense3.user.User;
+import pl.plajer.villagedefense3.user.UserManager;
 import pl.plajer.villagedefense3.utils.ArmorHelper;
 import pl.plajer.villagedefense3.utils.BigTextUtils;
 import pl.plajer.villagedefense3.utils.MetricsLite;
@@ -82,7 +53,6 @@ import pl.plajer.villagedefense3.utils.Util;
 import pl.plajer.villagedefense3.villagedefenseapi.StatsStorage;
 
 import java.io.File;
-import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -116,7 +86,6 @@ public class Main extends JavaPlugin implements Listener {
     private RewardsHandler rewardsHandler;
     private boolean inventoryManagerEnabled = false;
     private List<String> fileNames = Arrays.asList("arenas", "bungee", "rewards", "stats", "lobbyitems", "mysql", "kits");
-    private List<String> migratable = Arrays.asList("bungee", "config", "kits", "language", "lobbyitems", "mysql");
     private Map<String, Integer> customPermissions = new HashMap<>();
     private HashMap<UUID, Boolean> spyChatEnabled = new HashMap<>();
     private String version;
@@ -218,11 +187,11 @@ public class Main extends JavaPlugin implements Listener {
         }
         //check if using releases before 2.1.0
         if(LanguageManager.getLanguageFile().isSet("STATS-AboveLine") && LanguageManager.getLanguageFile().isSet("SCOREBOARD-Zombies")) {
-            migrateToNewFormat();
+            LanguageMigrator.migrateToNewFormat();
         }
         //check if using releases 2.1.0+
         if(LanguageManager.getLanguageFile().isSet("File-Version") && getConfig().isSet("Config-Version")) {
-            migrateToNewFormat();
+            LanguageMigrator.migrateToNewFormat();
         }
         LanguageManager.saveDefaultLanguageFile();
         saveDefaultConfig();
@@ -347,19 +316,6 @@ public class Main extends JavaPlugin implements Listener {
         }
     }
 
-    private void migrateToNewFormat() {
-        BigTextUtils.gonnaMigrate();
-        Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "Village Defense 3 is migrating all files to the new file format...");
-        Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "Don't worry! Old files will be renamed not overridden!");
-        for(String file : migratable) {
-            if(ConfigurationManager.getFile(file).exists()) {
-                ConfigurationManager.getFile(file).renameTo(new File(getDataFolder(), "VD2_" + file + ".yml"));
-                Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "Renamed file " + file + ".yml");
-            }
-        }
-        Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "Done! Enabling VD3...");
-    }
-
     public RewardsHandler getRewardsHandler() {
         return rewardsHandler;
     }
@@ -414,7 +370,7 @@ public class Main extends JavaPlugin implements Listener {
                 } else {
                     player.getInventory().clear();
                     ArmorHelper.clearArmor(player);
-                    for(PotionEffect pe : player.getActivePotionEffects()){
+                    for(PotionEffect pe : player.getActivePotionEffects()) {
                         player.removePotionEffect(pe.getType());
                     }
                 }
