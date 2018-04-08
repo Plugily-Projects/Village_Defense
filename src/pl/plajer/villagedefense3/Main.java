@@ -117,7 +117,6 @@ public class Main extends JavaPlugin implements Listener {
     private boolean inventoryManagerEnabled = false;
     private List<String> fileNames = Arrays.asList("arenas", "bungee", "rewards", "stats", "lobbyitems", "mysql", "kits");
     private List<String> migratable = Arrays.asList("bungee", "config", "kits", "language", "lobbyitems", "mysql");
-    private List<Class> classKitNames = Arrays.asList(LightTankKit.class, ZombieFinderKit.class, ArcherKit.class, PuncherKit.class, HealerKit.class, LooterKit.class, RunnerKit.class, MediumTankKit.class, WorkerKit.class, GolemFriendKit.class, TerminatorKit.class, HardcoreKit.class, CleanerKit.class, TeleporterKit.class, HeavyTankKit.class, ShotBowKit.class, DogFriendKit.class, PremiumHardcoreKit.class, TornadoKit.class, BlockerKit.class, MedicKit.class, NakedKit.class, WizardKit.class);
     private Map<String, Integer> customPermissions = new HashMap<>();
     private HashMap<UUID, Boolean> spyChatEnabled = new HashMap<>();
     private String version;
@@ -280,7 +279,7 @@ public class Main extends JavaPlugin implements Listener {
         BreakFenceListener listener = new BreakFenceListener();
         listener.runTaskTimer(this, 1L, 20L);
 
-        setupGameKits();
+        KitRegistry.init();
 
         SpecialItem.loadAll();
         ArenaRegistry.registerArenas();
@@ -435,26 +434,6 @@ public class Main extends JavaPlugin implements Listener {
             invasionInstance.teleportAllToEndLocation();
         }
         if(isDatabaseActivated()) getMySQLDatabase().closeDatabase();
-    }
-
-    private void setupGameKits() {
-        KnightKit knightkit = new KnightKit(this);
-        for(Class kitClass : classKitNames) {
-            if(ConfigurationManager.getConfig("kits").getBoolean("Enabled-Game-Kits." + kitClass.getSimpleName().replaceAll("Kit", ""))) {
-                try {
-                    Class.forName(kitClass.getName()).getConstructor(Main.class).newInstance(this);
-                } catch(ClassNotFoundException | NoSuchMethodException | IllegalAccessException | InvocationTargetException | InstantiationException e) {
-                    e.printStackTrace();
-                    System.out.println("[VillageDefense] FATAL ERROR! COULDN'T REGISTER EXISTING KIT! REPORT THIS TO THE DEVELOPER!");
-                }
-            }
-        }
-
-        KitRegistry.setDefaultKit(knightkit);
-        getKitManager().setMaterial(Material.NETHER_STAR);
-        getKitManager().setItemName(ChatManager.colorMessage("Kits.Kit-Menu-Item-Name"));
-        getKitManager().setMenuName(ChatManager.colorMessage("Kits.Kit-Menu.Title"));
-        getKitManager().setDescription(new String[]{ChatManager.colorMessage("Kits.Open-Kit-Menu")});
     }
 
     public WorldEditPlugin getWorldEditPlugin() {
