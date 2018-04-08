@@ -20,11 +20,9 @@ import java.util.List;
 
 public class ChunkManager implements Listener {
 
-    private Main plugin;
     private List<Chunk> chunks = new ArrayList<>();
 
     public ChunkManager(Main plugin) {
-        this.plugin = plugin;
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 
@@ -32,10 +30,6 @@ public class ChunkManager implements Listener {
         if(!chunk.isLoaded())
             chunk.load();
         chunks.add(chunk);
-    }
-
-    public void removeChunk(Chunk chunk) {
-        chunks.remove(chunk);
     }
 
     @EventHandler

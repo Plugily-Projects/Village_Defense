@@ -37,15 +37,15 @@ import pl.plajer.villagedefense3.handlers.ChatManager;
 import pl.plajer.villagedefense3.handlers.ChunkManager;
 import pl.plajer.villagedefense3.handlers.ConfigurationManager;
 import pl.plajer.villagedefense3.handlers.InventoryManager;
-import pl.plajer.villagedefense3.handlers.LanguageManager;
-import pl.plajer.villagedefense3.handlers.LanguageMigrator;
+import pl.plajer.villagedefense3.language.LanguageManager;
+import pl.plajer.villagedefense3.language.LanguageMigrator;
 import pl.plajer.villagedefense3.handlers.MessageHandler;
 import pl.plajer.villagedefense3.handlers.PermissionsManager;
 import pl.plajer.villagedefense3.handlers.PowerupManager;
 import pl.plajer.villagedefense3.handlers.RewardsHandler;
 import pl.plajer.villagedefense3.handlers.ShopManager;
 import pl.plajer.villagedefense3.handlers.SignManager;
-import pl.plajer.villagedefense3.handlers.UserManager;
+import pl.plajer.villagedefense3.user.UserManager;
 import pl.plajer.villagedefense3.items.SpecialItem;
 import pl.plajer.villagedefense3.kits.ArcherKit;
 import pl.plajer.villagedefense3.kits.BlockerKit;
@@ -73,6 +73,7 @@ import pl.plajer.villagedefense3.kits.WorkerKit;
 import pl.plajer.villagedefense3.kits.ZombieFinderKit;
 import pl.plajer.villagedefense3.kits.kitapi.KitManager;
 import pl.plajer.villagedefense3.kits.kitapi.KitRegistry;
+import pl.plajer.villagedefense3.user.User;
 import pl.plajer.villagedefense3.utils.ArmorHelper;
 import pl.plajer.villagedefense3.utils.BigTextUtils;
 import pl.plajer.villagedefense3.utils.MetricsLite;
@@ -99,7 +100,6 @@ public class Main extends JavaPlugin implements Listener {
     public static float ZOMBIE_SPEED;
     private static boolean debug;
     private boolean forceDisable = false;
-    private VDLocale pluginLocale;
     private boolean databaseActivated = false;
     private MySQLDatabase database;
     private FileStats fileStats;
@@ -178,10 +178,6 @@ public class Main extends JavaPlugin implements Listener {
         return arenaRegistry;
     }
 
-    public VDLocale getPluginLocale() {
-        return pluginLocale;
-    }
-
     private void debugChecker() {
         if(!getConfig().isSet("Debug")) {
             getConfig().set("Debug", false);
@@ -238,7 +234,6 @@ public class Main extends JavaPlugin implements Listener {
         setupFiles();
         debugChecker();
         LanguageMigrator.languageFileUpdate();
-        setupLocale();
         initializeClasses();
 
         String currentVersion = "v" + Bukkit.getPluginManager().getPlugin("VillageDefense").getDescription().getVersion();
@@ -361,36 +356,6 @@ public class Main extends JavaPlugin implements Listener {
         PermissionsManager.setElite(getConfig().getString("Basic-Permissions.Elite-Permission"));
         PermissionsManager.setJoinPerm(getConfig().getString("Basic-Permissions.Join-Permission"));
         if(Main.isDebugged()) System.out.println("[Village Debugger] Basic permissions from config.yml properly set!");
-    }
-
-    private void setupLocale() {
-        saveResource("language_de.yml", true);
-        saveResource("language_pl.yml", true);
-        String locale = getConfig().getString("locale");
-        if(locale.equalsIgnoreCase("default") || locale.equalsIgnoreCase("english")) {
-            pluginLocale = VDLocale.DEFAULT;
-        } else if(locale.equalsIgnoreCase("de") || locale.equalsIgnoreCase("deutsch")) {
-            pluginLocale = VDLocale.DEUTSCH;
-            if(!ConfigurationManager.getConfig("language_de").get("File-Version-Do-Not-Edit").equals(ConfigurationManager.getConfig("language_de").get("Language-Version"))) {
-                Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "[Village Defense] Locale DEUTSCH is outdated! Not every message will be in german.");
-            }
-            if(!LanguageManager.getDefaultLanguageMessage("File-Version-Do-Not-Edit").equals(LanguageManager.getLanguageMessage("File-Version-Do-Not-Edit"))) {
-                Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "[Village Defense] Locale DEUTSCH is invalid! Using DEFAULT locale instead...");
-                pluginLocale = VDLocale.DEFAULT;
-            }
-        } else if(locale.equalsIgnoreCase("pl") || locale.equalsIgnoreCase("polski")) {
-            pluginLocale = VDLocale.POLSKI;
-            if(!ConfigurationManager.getConfig("language_pl").get("File-Version-Do-Not-Edit").equals(ConfigurationManager.getConfig("language_pl").get("Language-Version"))) {
-                Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "[Village Defense] Locale POLSKI is outdated! Not every message will be in polish.");
-            }
-            if(!LanguageManager.getDefaultLanguageMessage("File-Version-Do-Not-Edit").equals(LanguageManager.getLanguageMessage("File-Version-Do-Not-Edit"))) {
-                Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "[Village Defense] Locale POLSKI is invalid! Using DEFAULT locale instead...");
-                pluginLocale = VDLocale.DEFAULT;
-            }
-        } else {
-            Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "[Village Defense] Plugin locale is invalid! Using default one...");
-            pluginLocale = VDLocale.DEFAULT;
-        }
     }
 
     private void migrateToNewFormat() {
@@ -581,10 +546,6 @@ public class Main extends JavaPlugin implements Listener {
         Plugin p = Bukkit.getServer().getPluginManager().getPlugin("WorldEdit");
         if(p instanceof WorldEditPlugin) return (WorldEditPlugin) p;
         return null;
-    }
-
-    public enum VDLocale {
-        DEFAULT, DEUTSCH, POLSKI
     }
 
 }

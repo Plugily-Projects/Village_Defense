@@ -1,4 +1,4 @@
-package pl.plajer.villagedefense3;
+package pl.plajer.villagedefense3.user;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;

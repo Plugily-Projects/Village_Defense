@@ -16,7 +16,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import pl.plajer.villagedefense3.Main;
 import pl.plajer.villagedefense3.arena.ArenaRegistry;
 import pl.plajer.villagedefense3.handlers.ChatManager;
-import pl.plajer.villagedefense3.handlers.UserManager;
+import pl.plajer.villagedefense3.user.UserManager;
 
 import java.util.Arrays;
 import java.util.HashMap;

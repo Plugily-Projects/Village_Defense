@@ -5,6 +5,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import pl.plajer.villagedefense3.arena.Arena;
 import pl.plajer.villagedefense3.kits.kitapi.basekits.Kit;
+import pl.plajer.villagedefense3.language.LanguageManager;
 import pl.plajer.villagedefense3.utils.BigTextUtils;
 import pl.plajer.villagedefense3.utils.Util;
 

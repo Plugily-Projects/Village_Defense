@@ -3,9 +3,9 @@ package pl.plajer.villagedefense3.utils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import pl.plajer.villagedefense3.Main;
-import pl.plajer.villagedefense3.User;
+import pl.plajer.villagedefense3.user.User;
 import pl.plajer.villagedefense3.database.MySQLDatabase;
-import pl.plajer.villagedefense3.handlers.UserManager;
+import pl.plajer.villagedefense3.user.UserManager;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

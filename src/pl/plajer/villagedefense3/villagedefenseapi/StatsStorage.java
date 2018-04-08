@@ -4,7 +4,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import pl.plajer.villagedefense3.Main;
 import pl.plajer.villagedefense3.handlers.ConfigurationManager;
-import pl.plajer.villagedefense3.handlers.UserManager;
+import pl.plajer.villagedefense3.user.UserManager;
 
 import java.util.LinkedHashMap;
 import java.util.LinkedList;

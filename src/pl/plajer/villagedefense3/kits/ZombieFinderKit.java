@@ -16,7 +16,7 @@ import pl.plajer.villagedefense3.arena.Arena;
 import pl.plajer.villagedefense3.arena.ArenaRegistry;
 import pl.plajer.villagedefense3.handlers.ChatManager;
 import pl.plajer.villagedefense3.handlers.ConfigurationManager;
-import pl.plajer.villagedefense3.handlers.UserManager;
+import pl.plajer.villagedefense3.user.UserManager;
 import pl.plajer.villagedefense3.kits.kitapi.KitRegistry;
 import pl.plajer.villagedefense3.kits.kitapi.basekits.LevelKit;
 import pl.plajer.villagedefense3.utils.Util;

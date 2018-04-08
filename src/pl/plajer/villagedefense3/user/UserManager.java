@@ -1,8 +1,8 @@
-package pl.plajer.villagedefense3.handlers;
+package pl.plajer.villagedefense3.user;
 
 import org.bukkit.entity.Player;
 import pl.plajer.villagedefense3.Main;
-import pl.plajer.villagedefense3.User;
+import pl.plajer.villagedefense3.user.User;
 import pl.plajer.villagedefense3.arena.Arena;
 
 import java.util.ArrayList;

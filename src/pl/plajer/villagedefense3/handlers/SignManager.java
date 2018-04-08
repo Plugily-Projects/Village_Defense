@@ -17,6 +17,7 @@ import pl.plajer.villagedefense3.Main;
 import pl.plajer.villagedefense3.arena.Arena;
 import pl.plajer.villagedefense3.arena.ArenaRegistry;
 import pl.plajer.villagedefense3.arena.ArenaState;
+import pl.plajer.villagedefense3.language.LanguageManager;
 import pl.plajer.villagedefense3.utils.Util;
 
 import java.util.HashMap;

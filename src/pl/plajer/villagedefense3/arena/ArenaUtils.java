@@ -7,9 +7,9 @@ import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Score;
 import pl.plajer.villagedefense3.Main;
-import pl.plajer.villagedefense3.User;
+import pl.plajer.villagedefense3.user.User;
 import pl.plajer.villagedefense3.handlers.ChatManager;
-import pl.plajer.villagedefense3.handlers.UserManager;
+import pl.plajer.villagedefense3.user.UserManager;
 
 /**
  * @author Plajer

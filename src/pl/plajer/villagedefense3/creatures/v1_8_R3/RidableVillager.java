@@ -26,7 +26,7 @@ import net.minecraft.server.v1_8_R3.PathfinderGoalTradeWithPlayer;
 import net.minecraft.server.v1_8_R3.World;
 import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
 import pl.plajer.villagedefense3.creatures.CreatureUtils;
-import pl.plajer.villagedefense3.handlers.LanguageManager;
+import pl.plajer.villagedefense3.language.LanguageManager;
 
 import java.util.List;
 import java.util.Random;

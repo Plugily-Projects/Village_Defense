@@ -4,10 +4,10 @@ import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import pl.plajer.villagedefense3.Main;
-import pl.plajer.villagedefense3.User;
+import pl.plajer.villagedefense3.user.User;
 import pl.plajer.villagedefense3.arena.ArenaRegistry;
 import pl.plajer.villagedefense3.handlers.ConfigurationManager;
-import pl.plajer.villagedefense3.handlers.UserManager;
+import pl.plajer.villagedefense3.user.UserManager;
 import pl.plajer.villagedefense3.utils.BigTextUtils;
 import pl.plajer.villagedefense3.utils.MySQLConnectionUtils;
 

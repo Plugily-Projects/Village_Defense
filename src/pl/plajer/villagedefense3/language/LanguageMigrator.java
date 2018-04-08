@@ -1,4 +1,4 @@
-package pl.plajer.villagedefense3.handlers;
+package pl.plajer.villagedefense3.language;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
