@@ -2,7 +2,7 @@ package pl.plajer.villagedefense3.creatures;
 
 import org.bukkit.Bukkit;
 import pl.plajer.villagedefense3.Main;
-import pl.plajer.villagedefense3.utils.BigTextUtils;
+import pl.plajer.villagedefense3.utils.MessageUtils;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -55,7 +55,7 @@ public class EntityRegistry {
 
         } catch(Exception e) {
             e.printStackTrace();
-            BigTextUtils.errorOccured();
+            MessageUtils.errorOccured();
             Bukkit.getConsoleSender().sendMessage("Entities has failed to register!");
             Bukkit.getConsoleSender().sendMessage("Restart server or change your server version!");
         }
@@ -75,7 +75,7 @@ public class EntityRegistry {
             ((Map<Class<? extends net.minecraft.server.v1_9_R1.EntityInsentient>, Integer>) dataMaps.get(3)).put(customClass, id);
         } catch(Exception e) {
             e.printStackTrace();
-            BigTextUtils.errorOccured();
+            MessageUtils.errorOccured();
             Bukkit.getConsoleSender().sendMessage("Entities has failed to register!");
             Bukkit.getConsoleSender().sendMessage("Restart server or change your server version!");
         }

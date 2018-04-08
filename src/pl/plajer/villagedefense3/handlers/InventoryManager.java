@@ -11,11 +11,10 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
-import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import pl.plajer.villagedefense3.Main;
-import pl.plajer.villagedefense3.utils.BigTextUtils;
+import pl.plajer.villagedefense3.utils.MessageUtils;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -77,7 +76,7 @@ public class InventoryManager {
             return true;
         } catch(Exception ex) {
             ex.printStackTrace();
-            BigTextUtils.errorOccured();
+            MessageUtils.errorOccured();
             Bukkit.getConsoleSender().sendMessage("Cannot save inventory of player!");
             Bukkit.getConsoleSender().sendMessage("Disable inventory saving option in config.yml or restart the server!");
             return false;
@@ -107,7 +106,7 @@ public class InventoryManager {
 
             } catch(Exception ex) {
                 ex.printStackTrace();
-                BigTextUtils.errorOccured();
+                MessageUtils.errorOccured();
                 Bukkit.getConsoleSender().sendMessage("Cannot save inventory of player! Could not get armor!");
                 Bukkit.getConsoleSender().sendMessage("Disable inventory saving option in config.yml or restart the server!");
             }
@@ -115,7 +114,7 @@ public class InventoryManager {
             return inventory;
         } catch(Exception ex) {
             ex.printStackTrace();
-            BigTextUtils.errorOccured();
+            MessageUtils.errorOccured();
             Bukkit.getConsoleSender().sendMessage("Cannot save inventory of player!");
             Bukkit.getConsoleSender().sendMessage("Disable inventory saving option in config.yml or restart the server!");
             return null;

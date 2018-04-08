@@ -5,7 +5,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
 import pl.plajer.villagedefense3.Main;
 import pl.plajer.villagedefense3.handlers.ConfigurationManager;
-import pl.plajer.villagedefense3.utils.BigTextUtils;
+import pl.plajer.villagedefense3.utils.MessageUtils;
 
 import java.io.File;
 import java.util.Arrays;
@@ -30,7 +30,7 @@ public class LanguageMigrator {
     }
 
     public static void migrateToNewFormat() {
-        BigTextUtils.gonnaMigrate();
+        MessageUtils.gonnaMigrate();
         Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "Village Defense 3 is migrating all files to the new file format...");
         Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "Don't worry! Old files will be renamed not overridden!");
         for(String file : migratable) {

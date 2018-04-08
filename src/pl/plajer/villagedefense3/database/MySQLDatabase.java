@@ -2,7 +2,7 @@ package pl.plajer.villagedefense3.database;
 
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
-import pl.plajer.villagedefense3.utils.BigTextUtils;
+import pl.plajer.villagedefense3.utils.MessageUtils;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -42,7 +42,7 @@ public class MySQLDatabase {
             manager.closeConnection(connection);
         } catch(SQLException e) {
             e.printStackTrace();
-            BigTextUtils.errorOccured();
+            MessageUtils.errorOccured();
             Bukkit.getConsoleSender().sendMessage("Cannot save contents to MySQL database!");
             Bukkit.getConsoleSender().sendMessage("Check configuration of mysql.yml file or disable mysql option in config.yml");
         }

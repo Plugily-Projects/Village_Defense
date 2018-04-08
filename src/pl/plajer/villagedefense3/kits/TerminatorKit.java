@@ -13,7 +13,6 @@ import pl.plajer.villagedefense3.user.UserManager;
 import pl.plajer.villagedefense3.kits.kitapi.KitRegistry;
 import pl.plajer.villagedefense3.kits.kitapi.basekits.LevelKit;
 import pl.plajer.villagedefense3.utils.ArmorHelper;
-import pl.plajer.villagedefense3.utils.ItemUtils;
 import pl.plajer.villagedefense3.utils.Util;
 import pl.plajer.villagedefense3.utils.WeaponHelper;
 
@@ -43,8 +42,8 @@ public class TerminatorKit extends LevelKit {
         player.getInventory().addItem(WeaponHelper.getEnchanted(new ItemStack(Material.BONE), new Enchantment[]{Enchantment.DAMAGE_ALL, Enchantment.KNOCKBACK}, new int[]{3, 7}));
         ArmorHelper.setColouredArmor(Color.BLACK, player);
         player.getInventory().addItem(new ItemStack(Material.GRILLED_PORK, 8));
-        player.getInventory().addItem(ItemUtils.getPotion(PotionType.STRENGTH, 2, true, 1));
-        player.getInventory().addItem(ItemUtils.getPotion(PotionType.REGEN, 1, true, 1));
+        player.getInventory().addItem(Util.getPotion(PotionType.STRENGTH, 2, true, 1));
+        player.getInventory().addItem(Util.getPotion(PotionType.REGEN, 1, true, 1));
 
     }
 
@@ -56,7 +55,7 @@ public class TerminatorKit extends LevelKit {
     @Override
     public void reStock(Player player) {
         for(int i = 0; i < 2; i++) {
-            player.getInventory().addItem(ItemUtils.getPotion(PotionType.STRENGTH, 2, true, 1));
+            player.getInventory().addItem(Util.getPotion(PotionType.STRENGTH, 2, true, 1));
         }
 
     }

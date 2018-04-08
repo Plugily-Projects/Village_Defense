@@ -117,7 +117,7 @@ public class MetricsLite {
                 startSubmitting();
             }
         } else {
-            BigTextUtils.weAreSadSadSad();
+            MessageUtils.weAreSadSadSad();
             Bukkit.getConsoleSender().sendMessage("We are really sad that you have disabled bStats! We put a lot of effort into");
             Bukkit.getConsoleSender().sendMessage("our plugins and we want to know how users like our work. Please consider");
             Bukkit.getConsoleSender().sendMessage("enabling bStats again :) Appreciate our work, and help us develop our plugins.");

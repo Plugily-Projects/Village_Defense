@@ -4,6 +4,7 @@
 * Added Powerups (BETA)
 * Fixed titles weren't displaying (bug since 2.1.x)
 * Now removing potion effects from player after force server stop
+* Organised code
 
 ### 3.2.0 Release (1.04.2018)
 * Small fix for plugin loading errors when dependencies weren't installed and plugin was disabled

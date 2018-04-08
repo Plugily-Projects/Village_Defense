@@ -53,7 +53,7 @@ public class MySQLConnectionUtils {
         } catch(SQLException e1) {
             System.out.print("CONNECTION FAILED FOR PLAYER " + player.getName());
             e1.printStackTrace();
-            BigTextUtils.errorOccured();
+            MessageUtils.errorOccured();
             Bukkit.getConsoleSender().sendMessage("Cannot save contents to MySQL database!");
             Bukkit.getConsoleSender().sendMessage("Check configuration of mysql.yml file or disable mysql option in config.yml");
         }
@@ -88,7 +88,7 @@ public class MySQLConnectionUtils {
             } catch(SQLException e1) {
                 System.out.print("CONNECTION FAILED TWICE FOR PLAYER " + player.getName());
                 e1.printStackTrace();
-                BigTextUtils.errorOccured();
+                MessageUtils.errorOccured();
                 Bukkit.getConsoleSender().sendMessage("Cannot save contents to MySQL database!");
                 Bukkit.getConsoleSender().sendMessage("Check configuration of mysql.yml file or disable mysql option in config.yml");
             }

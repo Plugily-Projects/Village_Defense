@@ -8,11 +8,10 @@ import org.bukkit.potion.PotionType;
 import pl.plajer.villagedefense3.Main;
 import pl.plajer.villagedefense3.handlers.ChatManager;
 import pl.plajer.villagedefense3.handlers.ConfigurationManager;
-import pl.plajer.villagedefense3.user.UserManager;
 import pl.plajer.villagedefense3.kits.kitapi.KitRegistry;
 import pl.plajer.villagedefense3.kits.kitapi.basekits.LevelKit;
+import pl.plajer.villagedefense3.user.UserManager;
 import pl.plajer.villagedefense3.utils.ArmorHelper;
-import pl.plajer.villagedefense3.utils.ItemUtils;
 import pl.plajer.villagedefense3.utils.Util;
 import pl.plajer.villagedefense3.utils.WeaponHelper;
 
@@ -40,7 +39,7 @@ public class HardcoreKit extends LevelKit {
     public void giveKitItems(Player player) {
         player.getInventory().addItem(WeaponHelper.getUnBreakingSword(WeaponHelper.ResourceType.WOOD, 10));
         ArmorHelper.setColouredArmor(Color.WHITE, player);
-        player.getInventory().addItem(ItemUtils.getPotion(PotionType.INSTANT_HEAL, 2, true, 1));
+        player.getInventory().addItem(Util.getPotion(PotionType.INSTANT_HEAL, 2, true, 1));
         player.getInventory().addItem(new ItemStack(Material.COOKIE, 10));
         player.setMaxHealth(10.0);
 
@@ -53,6 +52,6 @@ public class HardcoreKit extends LevelKit {
 
     @Override
     public void reStock(Player player) {
-        player.getInventory().addItem(ItemUtils.getPotion(PotionType.INSTANT_HEAL, 2, true, 1));
+        player.getInventory().addItem(Util.getPotion(PotionType.INSTANT_HEAL, 2, true, 1));
     }
 }

@@ -25,9 +25,9 @@ import org.bukkit.scheduler.BukkitRunnable;
 import pl.plajer.villagedefense3.Main;
 import pl.plajer.villagedefense3.user.User;
 import pl.plajer.villagedefense3.handlers.ChatManager;
-import pl.plajer.villagedefense3.handlers.MessageHandler;
 import pl.plajer.villagedefense3.user.UserManager;
 import pl.plajer.villagedefense3.items.SpecialItemManager;
+import pl.plajer.villagedefense3.utils.MessageUtils;
 
 /**
  * @author Plajer
@@ -119,7 +119,7 @@ public class ArenaEvents implements Listener {
         ArenaUtils.hidePlayer(player, arena);
         player.setAllowFlight(true);
         player.getInventory().clear();
-        MessageHandler.sendTitle(player, ChatColor.stripColor(ChatManager.formatMessage(arena, "In-Game.Death-Screen")), 0, 5 * 20, 0, ChatColor.RED);
+        MessageUtils.sendTitle(player, ChatColor.stripColor(ChatManager.formatMessage(arena, "In-Game.Death-Screen")), 0, 5 * 20, 0, ChatColor.RED);
         if(plugin.is1_9_R1() || plugin.is1_11_R1() || plugin.is1_12_R1()) {
             new BukkitRunnable() {
                 @Override

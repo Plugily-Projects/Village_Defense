@@ -5,10 +5,9 @@ import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import pl.plajer.villagedefense3.Main;
-import pl.plajer.villagedefense3.utils.BigTextUtils;
+import pl.plajer.villagedefense3.utils.MessageUtils;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
 /**
@@ -34,7 +33,7 @@ public class ConfigurationManager {
                 file.createNewFile();
             } catch(IOException ex) {
                 ex.printStackTrace();
-                BigTextUtils.errorOccured();
+                MessageUtils.errorOccured();
                 Bukkit.getConsoleSender().sendMessage("Cannot save file " + filename + ".yml!");
                 Bukkit.getConsoleSender().sendMessage("Create blank file " + filename + ".yml or restart the server!");
             }
@@ -46,7 +45,7 @@ public class ConfigurationManager {
             config.save(file);
         } catch(InvalidConfigurationException | IOException ex) {
             ex.printStackTrace();
-            BigTextUtils.errorOccured();
+            MessageUtils.errorOccured();
             Bukkit.getConsoleSender().sendMessage("Cannot save file " + filename + ".yml!");
             Bukkit.getConsoleSender().sendMessage("Create blank file " + filename + ".yml or restart the server!");
         }
@@ -58,7 +57,7 @@ public class ConfigurationManager {
             config.save(new File(plugin.getDataFolder(), name + ".yml"));
         } catch(IOException e) {
             e.printStackTrace();
-            BigTextUtils.errorOccured();
+            MessageUtils.errorOccured();
             Bukkit.getConsoleSender().sendMessage("Cannot save file " + name + ".yml!");
             Bukkit.getConsoleSender().sendMessage("Create blank file " + name  + ".yml or restart the server!");
         }

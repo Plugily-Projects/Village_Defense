@@ -8,7 +8,7 @@ import pl.plajer.villagedefense3.user.User;
 import pl.plajer.villagedefense3.arena.ArenaRegistry;
 import pl.plajer.villagedefense3.handlers.ConfigurationManager;
 import pl.plajer.villagedefense3.user.UserManager;
-import pl.plajer.villagedefense3.utils.BigTextUtils;
+import pl.plajer.villagedefense3.utils.MessageUtils;
 import pl.plajer.villagedefense3.utils.MySQLConnectionUtils;
 
 import java.io.IOException;
@@ -47,7 +47,7 @@ public class FileStats {
             config.save(ConfigurationManager.getFile("stats"));
         } catch(IOException e) {
             e.printStackTrace();
-            BigTextUtils.errorOccured();
+            MessageUtils.errorOccured();
             Bukkit.getConsoleSender().sendMessage("Cannot save stats.yml file!");
             Bukkit.getConsoleSender().sendMessage("Restart the server, file COULD BE OVERRIDDEN!");
         }

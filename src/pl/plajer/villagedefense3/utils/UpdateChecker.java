@@ -1,4 +1,6 @@
-package pl.plajer.villagedefense3;
+package pl.plajer.villagedefense3.utils;
+
+import pl.plajer.villagedefense3.Main;
 
 import java.io.BufferedReader;
 import java.io.IOException;

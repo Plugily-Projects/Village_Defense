@@ -6,7 +6,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import pl.plajer.villagedefense3.Main;
 import pl.plajer.villagedefense3.handlers.ConfigurationManager;
-import pl.plajer.villagedefense3.utils.BigTextUtils;
+import pl.plajer.villagedefense3.utils.MessageUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -120,7 +120,7 @@ public class LanguageManager {
             }
         } catch(Exception e) {
             e.printStackTrace();
-            BigTextUtils.errorOccured();
+            MessageUtils.errorOccured();
             Bukkit.getConsoleSender().sendMessage("Cannot reload language.yml file!");
             Bukkit.getConsoleSender().sendMessage("Restart the server!");
         }
@@ -135,7 +135,7 @@ public class LanguageManager {
         } catch(IOException ex) {
             plugin.getLogger().log(Level.SEVERE, "Could not save file to " + languageConfigFile, ex);
             ex.printStackTrace();
-            BigTextUtils.errorOccured();
+            MessageUtils.errorOccured();
             Bukkit.getConsoleSender().sendMessage("Cannot save language.yml file!");
             Bukkit.getConsoleSender().sendMessage("Restart the server!");
         }

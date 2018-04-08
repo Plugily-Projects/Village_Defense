@@ -32,7 +32,6 @@ import pl.plajer.villagedefense3.handlers.ChatManager;
 import pl.plajer.villagedefense3.handlers.ChunkManager;
 import pl.plajer.villagedefense3.handlers.ConfigurationManager;
 import pl.plajer.villagedefense3.handlers.InventoryManager;
-import pl.plajer.villagedefense3.handlers.MessageHandler;
 import pl.plajer.villagedefense3.handlers.PermissionsManager;
 import pl.plajer.villagedefense3.handlers.PowerupManager;
 import pl.plajer.villagedefense3.handlers.RewardsHandler;
@@ -46,9 +45,10 @@ import pl.plajer.villagedefense3.language.LanguageMigrator;
 import pl.plajer.villagedefense3.user.User;
 import pl.plajer.villagedefense3.user.UserManager;
 import pl.plajer.villagedefense3.utils.ArmorHelper;
-import pl.plajer.villagedefense3.utils.BigTextUtils;
+import pl.plajer.villagedefense3.utils.MessageUtils;
 import pl.plajer.villagedefense3.utils.MetricsLite;
 import pl.plajer.villagedefense3.utils.MySQLConnectionUtils;
+import pl.plajer.villagedefense3.utils.UpdateChecker;
 import pl.plajer.villagedefense3.utils.Util;
 import pl.plajer.villagedefense3.villagedefenseapi.StatsStorage;
 
@@ -168,7 +168,7 @@ public class Main extends JavaPlugin implements Listener {
         new ConfigurationManager(this);
         LanguageManager.init(this);
         if(!(getVersion().equalsIgnoreCase("v1_8_R3") || getVersion().equalsIgnoreCase("v1_9_R1") || getVersion().equalsIgnoreCase("v1_11_R1") || getVersion().equalsIgnoreCase("v1_12_R1"))) {
-            BigTextUtils.thisVersionIsNotSupported();
+            MessageUtils.thisVersionIsNotSupported();
             Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "Your server version is not supported by Village Defense!");
             Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "Sadly, we must shut off. Maybe you consider changing your server version?");
             forceDisable = true;
@@ -178,7 +178,7 @@ public class Main extends JavaPlugin implements Listener {
         try {
             Class.forName("org.spigotmc.SpigotConfig");
         } catch(Exception e) {
-            BigTextUtils.thisVersionIsNotSupported();
+            MessageUtils.thisVersionIsNotSupported();
             Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "Your server software is not supported by Village Defense!");
             Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "We support only Spigot and Spigot forks only! Shutting off...");
             forceDisable = true;
@@ -215,7 +215,7 @@ public class Main extends JavaPlugin implements Listener {
                         Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "[VillageDefense] Your software is ready for update! However it's a BETA VERSION. Proceed with caution.");
                         Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "[VillageDefense] Current version %old%, latest version %new%".replaceAll("%old%", currentVersion).replaceAll("%new%", latestVersion));
                     } else {
-                        BigTextUtils.updateIsHere();
+                        MessageUtils.updateIsHere();
                         Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "Your Village Defense plugin is up to date! Download it to keep with latest changes and fixes.");
                         Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "Disable this option in config.yml if you wish.");
                         Bukkit.getConsoleSender().sendMessage(ChatColor.YELLOW + "Current version: " + ChatColor.RED + currentVersion + ChatColor.YELLOW + " Latest version: " + ChatColor.GREEN + latestVersion);
@@ -298,7 +298,6 @@ public class Main extends JavaPlugin implements Listener {
         new ChatEvents(this);
         new MetricsLite(this);
         new Events(this);
-        new MessageHandler();
         new CombustDayLightEvent(this);
         new LobbyEvents(this);
         new SpectatorItemEvents(this);

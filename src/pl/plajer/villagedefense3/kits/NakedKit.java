@@ -19,7 +19,6 @@ import pl.plajer.villagedefense3.handlers.PermissionsManager;
 import pl.plajer.villagedefense3.user.UserManager;
 import pl.plajer.villagedefense3.kits.kitapi.KitRegistry;
 import pl.plajer.villagedefense3.kits.kitapi.basekits.PremiumKit;
-import pl.plajer.villagedefense3.utils.ItemUtils;
 import pl.plajer.villagedefense3.utils.Util;
 
 import java.util.ArrayList;
@@ -82,7 +81,7 @@ public class NakedKit extends PremiumKit implements Listener {
 
     @Override
     public void reStock(Player player) {
-        player.getInventory().addItem(ItemUtils.getPotion(PotionType.INSTANT_HEAL, 1, true, 1));
+        player.getInventory().addItem(Util.getPotion(PotionType.INSTANT_HEAL, 1, true, 1));
     }
 
     @EventHandler

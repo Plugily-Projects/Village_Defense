@@ -6,7 +6,7 @@ import org.bukkit.entity.Player;
 import pl.plajer.villagedefense3.arena.Arena;
 import pl.plajer.villagedefense3.kits.kitapi.basekits.Kit;
 import pl.plajer.villagedefense3.language.LanguageManager;
-import pl.plajer.villagedefense3.utils.BigTextUtils;
+import pl.plajer.villagedefense3.utils.MessageUtils;
 import pl.plajer.villagedefense3.utils.Util;
 
 /**
@@ -32,7 +32,7 @@ public class ChatManager {
             return ChatColor.translateAlternateColorCodes('&', LanguageManager.getLanguageMessage(message));
         } catch(NullPointerException e1) {
             e1.printStackTrace();
-            BigTextUtils.errorOccured();
+            MessageUtils.errorOccured();
             Bukkit.getConsoleSender().sendMessage("Game message not found!");
             Bukkit.getConsoleSender().sendMessage("Please regenerate your language.yml file! If error still occurs report it to the developer!");
             Bukkit.getConsoleSender().sendMessage("Access string: " + message);

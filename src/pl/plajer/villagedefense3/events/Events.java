@@ -45,7 +45,6 @@ import pl.plajer.villagedefense3.handlers.PermissionsManager;
 import pl.plajer.villagedefense3.handlers.ShopManager;
 import pl.plajer.villagedefense3.user.UserManager;
 import pl.plajer.villagedefense3.items.SpecialItemManager;
-import pl.plajer.villagedefense3.utils.PercentageUtils;
 import pl.plajer.villagedefense3.utils.Util;
 
 import java.util.ArrayList;
@@ -267,7 +266,7 @@ public class Events implements Listener {
             }
             for(Arena arena : ArenaRegistry.getArenas()) {
                 if(arena.getZombies().contains(e.getEntity())) {
-                    e.getEntity().setCustomName(PercentageUtils.getProgressBar((int) ((Zombie) e.getEntity()).getHealth(), (int) ((Zombie) e.getEntity()).getMaxHealth(), 50, "|", ChatColor.YELLOW + "", ChatColor.GRAY + ""));
+                    e.getEntity().setCustomName(Util.getProgressBar((int) ((Zombie) e.getEntity()).getHealth(), (int) ((Zombie) e.getEntity()).getMaxHealth(), 50, "|", ChatColor.YELLOW + "", ChatColor.GRAY + ""));
                 }
             }
         }

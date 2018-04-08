@@ -8,7 +8,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import pl.plajer.villagedefense3.handlers.ConfigurationManager;
-import pl.plajer.villagedefense3.utils.BigTextUtils;
+import pl.plajer.villagedefense3.utils.MessageUtils;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -54,7 +54,7 @@ public class SpecialItem {
             config.save(ConfigurationManager.getFile("lobbyitems"));
         } catch(IOException e) {
             e.printStackTrace();
-            BigTextUtils.errorOccured();
+            MessageUtils.errorOccured();
             Bukkit.getConsoleSender().sendMessage("Cannot save file lobbyitems.yml!");
             Bukkit.getConsoleSender().sendMessage("Create blank file lobbyitems.yml or restart the server!");
         }

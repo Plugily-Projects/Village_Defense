@@ -10,7 +10,7 @@ import pl.plajer.villagedefense3.user.User;
 import pl.plajer.villagedefense3.arena.ArenaRegistry;
 import pl.plajer.villagedefense3.database.FileStats;
 import pl.plajer.villagedefense3.user.UserManager;
-import pl.plajer.villagedefense3.utils.BigTextUtils;
+import pl.plajer.villagedefense3.utils.MessageUtils;
 
 /**
  * Created by Tom on 11/08/2014.
@@ -49,7 +49,7 @@ public class QuitEvent implements Listener {
                         i = 0;
                         System.out.print("COULDN'T GET STATS FROM PLAYER: " + player.getName());
                         npe.printStackTrace();
-                        BigTextUtils.errorOccured();
+                        MessageUtils.errorOccured();
                         Bukkit.getConsoleSender().sendMessage("Cannot get stats from MySQL database!");
                         Bukkit.getConsoleSender().sendMessage("Check configuration of mysql.yml file or disable mysql option in config.yml");
                     }
