@@ -50,3 +50,8 @@
 * Fixed permission villagedefense.join.<arena_name>
 * Fixed client kick when trying to get spawn eggs
 * Fixed compatibility with plugins like Citizens
+
+### 3.3.0 Release (04.08.2018)
+* Added Powerups (BETA)
+* Fixed titles weren't displaying (bug since 2.1.x)
+* Now removing potion effects from player after force server stop

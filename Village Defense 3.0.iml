@@ -30,5 +30,6 @@
       </library>
     </orderEntry>
     <orderEntry type="library" name="org.projectlombok:lombok:1.16.4" level="project" />
+    <orderEntry type="library" name="HolographicDisplays" level="project" />
   </component>
 </module>

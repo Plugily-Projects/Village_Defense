@@ -9,7 +9,6 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.IronGolem;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Villager;
-import org.bukkit.entity.Wolf;
 import org.bukkit.entity.Zombie;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -20,7 +19,6 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.entity.ItemSpawnEvent;
@@ -240,32 +238,6 @@ public class Events implements Listener {
                 plugin.getBungeeManager().connectToHub(event.getPlayer());
             } else {
                 arena.leaveAttempt(event.getPlayer());
-            }
-        }
-    }
-
-    @EventHandler
-    public void onZombieDeath(EntityDeathEvent event) {
-        if(event.getEntity().getLastDamageCause() == null) return;
-        Entity killer = event.getEntity().getLastDamageCause().getEntity();
-        if(event.getEntity().getType() == EntityType.ZOMBIE) {
-            for(Arena arena : ArenaRegistry.getArenas()) {
-                Zombie zombie = (Zombie) event.getEntity();
-                if(arena.getZombies().contains(zombie)) {
-                    arena.removeZombie(zombie);
-                    if(killer == null) return;
-                    if(killer.getType() == EntityType.WOLF){
-                        Player player = (Player) ((Wolf) killer).getOwner();
-                        if(ArenaRegistry.getArena(player) != null)
-                            plugin.getRewardsHandler().performZombieKillReward(player);
-                    }
-                    if(killer.getType() == EntityType.PLAYER) {
-                        Player player = event.getEntity().getKiller();
-                        if(ArenaRegistry.getArena(player) != null)
-                            plugin.getRewardsHandler().performZombieKillReward(player);
-                    }
-                    return;
-                }
             }
         }
     }

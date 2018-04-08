@@ -265,6 +265,25 @@ In-Game:
       Removed-Zombies: "&b%PLAYER% has cleared the zombies!"
       Changed-Wave: "&bAdmin changed the wave to %NUMBER%"
 
+Powerups:
+  Map-Clean-Powerup:
+    Name: "&e&lMAP CLEANER"
+    # Used as sub title description
+    Description: "&7Map has been cleaned!"
+  Double-Damage-Powerup:
+    Name: "&c&lDOUBLE DAMAGE"
+    Description: "&7Double damage for %time% seconds!"
+  Healing-Powerup:
+    Name: "&6&lREJUVENATION"
+    Description: "&7Healing for %time% seconds!"
+  Golem-Raid-Powerup:
+    Name: "&a&lIRONBOUND RAID"
+    Description: "&7Golems have invaded this village!"
+  One-Shot-One-Kill-Powerup:
+    Name: "&b&lFRENZY"
+    Description: "&7Every zombie for 1 hit!"
+  Powerup-Ended-Title-Message: "&4Powerup %powerup% has ended!"
+
 Signs:
   Please-Type-Arena-Name: "&cPlease type arena name in second line!"
   Arena-Doesnt-Exists: "&cArena with that name doesn't exists!"
@@ -290,4 +309,4 @@ Validator:
 
 # Don't edit it. But who's stopping you? It's your server!
 # Really, don't edit ;p
-File-Version-Do-Not-Edit: 1
+File-Version-Do-Not-Edit: 2

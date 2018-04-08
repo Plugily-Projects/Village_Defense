@@ -267,6 +267,25 @@ In-Game:
       Removed-Zombies: "&b%PLAYER% hat die Zombies entfernt!"
       Changed-Wave: "&bServer-Teammitglied hat die Welle zu %NUMBER% geändert"
 
+Powerups:
+  Map-Clean-Powerup:
+    Name: "&e&lMAP REINIGER"
+    # Used as sub title description
+    Description: "&7Map wurde bereinigt!"
+  Double-Damage-Powerup:
+    Name: "&C&LDOPPELTER SCHADEN"
+    Description: "&7Doppelter Schaden für %time% Sekunden !"
+  Healing-Powerup:
+    Name: "&6&lHEILUNG"
+    Description: "&7Heilung für %time% Sekunden !"
+  Golem-Raid-Powerup:
+    Name: "&a&lBESCHÜTZER"
+    Description: "&7Golems sind erschienen im Dorf!"
+  One-Shot-One-Kill-Powerup:
+    Name: "&b&lONE-HIT"
+    Description: "&7Jeder Zombie ist One-Hit"
+  Powerup-Ended-Title-Message: "&4Powerup %powerup% ist abgelaufen!"
+
 Signs:
   Please-Type-Arena-Name: "&cBitte schreibe einen Arena-Namen in die 2. Zeile!"
   Arena-Doesnt-Exists: "&cArena mit diesen Namen existiert nicht!"
@@ -290,5 +309,5 @@ Validator:
   Instance-Started: "[Village Defense] Arena %arena% Instanz erfolgreich gestartet!"
   No-Instances-Created: "[Village Defense] Keine Arena Instanzen gefunden in der Konfiguration!"
 
-File-Version-Do-Not-Edit: 1
-Language-Version: 0
+File-Version-Do-Not-Edit: 2
+Language-Version: 2

@@ -262,6 +262,24 @@ In-Game:
       Removed-Zombies: "&b%PLAYER% wyczyscil zombie z mapy!"
       Changed-Wave: "&bAdmin zmienil fale na %NUMBER%"
 
+Powerups:
+  Map-Clean-Powerup:
+    Name: "&e&lCZYSCICIEL"
+    Description: "&7Mapa zostala wyczyszczona!"
+  Double-Damage-Powerup:
+    Name: "&c&lPODWOJNE OBRAZENIA"
+    Description: "&7Podwojne obrazenia na %time% sekund!"
+  Healing-Powerup:
+    Name: "&6&lREGENERACJA"
+    Description: "&7Regeneracja na %time% sekund!"
+  Golem-Raid-Powerup:
+    Name: "&a&lNAJAZD GOLEMOW"
+    Description: "&7Golemy najechaly wioske!"
+  One-Shot-One-Kill-Powerup:
+    Name: "&b&lSZAL"
+    Description: "&7Kazdy zombie pada po ciosie!"
+  Powerup-Ended-Title-Message: "&4Umiejetnosc %powerup% sie skonczyla!"
+
 Signs:
   Please-Type-Arena-Name: "&cProsze podac nazwe areny w drugiej linii!"
   Arena-Doesnt-Exists: "&cArena o takiej nazwie nie istnieje!"
@@ -286,5 +304,5 @@ Validator:
   No-Instances-Created: "[Village Defense] Nie ma zadnych aren w konfiguracji!"
 
 #You don't want to change this m8 >:)
-File-Version-Do-Not-Edit: 1
-Language-Version: 1
+File-Version-Do-Not-Edit: 2
+Language-Version: 2

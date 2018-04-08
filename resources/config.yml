@@ -83,21 +83,11 @@ Orbs-Starting-Amount: 20
 # Should we block every not Village Defense associated commands in game?
 Block-Commands-In-Game: true
 
-Update-Notifier:
-  # Should we check for updates on plugin start/after admin join?
-  # You REALLY should have this true!
-  Enabled: true
-  # Should we inform you when beta version is out?
-  # BETA IS NOT ALWAYS AS STABLE AS NORMAL RELEASE!
-  Notify-Beta-Versions: true
-
-# Should plugin send 'debug spam' to console? IT CAN HELP IF YOU OCCUR SOME WEIRD BEHAVIOUR FROM PLUGIN
-Debug: false
-
 # Should we fire some cool fireworks at location of every player after the game ends?
 Firework-When-Game-Ends: true
 
 # Are golems upgrades enabled when you click your iron golem?
+# If you want to have classic Village Defense game mode i recommend to disable this.
 Golem-Upgrades-Enabled: true
 
 # Cost of golem heart upgrades
@@ -114,7 +104,46 @@ Golem-Upgrade-Heal-Cost: 150
 # It's kinda buggy, you should use external plugin if you got one.
 Simple-Zombie-Health-Bar-Enabled: true
 
+# Power ups section. If you want to have classic Village Defense game mode i recommend to disable this.
+Powerups:
+  # Do you want to enable in-game power ups?
+  # This will make zombies to drop some power ups when they're killed
+  # REQUIRES Holographic Displays otherwise it won't be enabled!
+  Enabled: true
+  # Modify powerup drop chance here
+  Drop-Chance: 1.0 #1% chance by default
+  #Enable or disable specific power ups here.
+  List:
+    Map-Clean: true
+    Double-Damage-For-Players:
+      Enabled: true
+      Time: 15 #seconds
+    Healing-For-Players:
+      Enabled: true
+      Amplifier: 1
+      Time-Of-Healing: 10 #seconds
+    # Spawns X golems in village
+    # Owner of golems is person who picked up power up
+    Golem-Raid:
+      Enabled: true
+      Golems-Amount: 3
+    # Every zombie can be killed for one hit
+    One-Shot-One-Kill:
+      Enabled: true
+      Time: 15 #seconds
+
+Update-Notifier:
+  # Should we check for updates on plugin start/after admin join?
+  # You REALLY should have this true!
+  Enabled: true
+  # Should we inform you when beta version is out?
+  # BETA IS NOT ALWAYS AS STABLE AS NORMAL RELEASE!
+  Notify-Beta-Versions: true
+
+# Should plugin send 'debug spam' to console? IT CAN HELP IF YOU OCCUR SOME WEIRD BEHAVIOUR FROM PLUGIN
+Debug: false
+
 # Don't modify.
-Version: 1
+Version: 2
 
 # No way! You've reached the end! But... where's the dragon!?

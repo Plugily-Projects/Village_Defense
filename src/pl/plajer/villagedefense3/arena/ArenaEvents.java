@@ -69,6 +69,8 @@ public class ArenaEvents implements Listener {
             if(ArenaRegistry.getArena(event.getEntity().getKiller()) != null) {
                 arena.addStat(event.getEntity().getKiller(), "kills");
                 arena.addExperience(event.getEntity().getKiller(), 2);
+                plugin.getRewardsHandler().performZombieKillReward(event.getEntity().getKiller());
+                plugin.getPowerupManager().spawnPowerup(event.getEntity().getLocation(), ArenaRegistry.getArena(event.getEntity().getKiller()));
             }
             return;
         }

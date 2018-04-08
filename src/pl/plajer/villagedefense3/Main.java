@@ -9,6 +9,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.potion.PotionEffect;
 import pl.plajer.villagedefense3.arena.Arena;
 import pl.plajer.villagedefense3.arena.ArenaEvents;
 import pl.plajer.villagedefense3.arena.ArenaInitializer1_11_R1;
@@ -40,6 +41,7 @@ import pl.plajer.villagedefense3.handlers.LanguageManager;
 import pl.plajer.villagedefense3.handlers.LanguageMigrator;
 import pl.plajer.villagedefense3.handlers.MessageHandler;
 import pl.plajer.villagedefense3.handlers.PermissionsManager;
+import pl.plajer.villagedefense3.handlers.PowerupManager;
 import pl.plajer.villagedefense3.handlers.RewardsHandler;
 import pl.plajer.villagedefense3.handlers.ShopManager;
 import pl.plajer.villagedefense3.handlers.SignManager;
@@ -92,11 +94,11 @@ import java.util.UUID;
  */
 public class Main extends JavaPlugin implements Listener {
 
-    private boolean forceDisable = false;
     public static int STARTING_TIMER_TIME = 60;
     public static float MINI_ZOMBIE_SPEED;
     public static float ZOMBIE_SPEED;
     private static boolean debug;
+    private boolean forceDisable = false;
     private VDLocale pluginLocale;
     private boolean databaseActivated = false;
     private MySQLDatabase database;
@@ -107,6 +109,7 @@ public class Main extends JavaPlugin implements Listener {
     private BungeeManager bungeeManager;
     private KitManager kitManager;
     private ChunkManager chunkManager;
+    private PowerupManager powerupManager;
     private boolean bungeeEnabled;
     private boolean chatFormat = true;
     private boolean bossbarEnabled;
@@ -114,11 +117,7 @@ public class Main extends JavaPlugin implements Listener {
     private boolean inventoryManagerEnabled = false;
     private List<String> fileNames = Arrays.asList("arenas", "bungee", "rewards", "stats", "lobbyitems", "mysql", "kits");
     private List<String> migratable = Arrays.asList("bungee", "config", "kits", "language", "lobbyitems", "mysql");
-    private List<Class> classKitNames = Arrays.asList(LightTankKit.class, ZombieFinderKit.class, ArcherKit.class, PuncherKit.class,
-            HealerKit.class, LooterKit.class, RunnerKit.class, MediumTankKit.class, WorkerKit.class, GolemFriendKit.class,
-            TerminatorKit.class, HardcoreKit.class, CleanerKit.class, TeleporterKit.class,
-            HeavyTankKit.class, ShotBowKit.class, DogFriendKit.class, PremiumHardcoreKit.class, TornadoKit.class,
-            BlockerKit.class, MedicKit.class, NakedKit.class, WizardKit.class);
+    private List<Class> classKitNames = Arrays.asList(LightTankKit.class, ZombieFinderKit.class, ArcherKit.class, PuncherKit.class, HealerKit.class, LooterKit.class, RunnerKit.class, MediumTankKit.class, WorkerKit.class, GolemFriendKit.class, TerminatorKit.class, HardcoreKit.class, CleanerKit.class, TeleporterKit.class, HeavyTankKit.class, ShotBowKit.class, DogFriendKit.class, PremiumHardcoreKit.class, TornadoKit.class, BlockerKit.class, MedicKit.class, NakedKit.class, WizardKit.class);
     private Map<String, Integer> customPermissions = new HashMap<>();
     private HashMap<UUID, Boolean> spyChatEnabled = new HashMap<>();
     private String version;
@@ -204,8 +203,7 @@ public class Main extends JavaPlugin implements Listener {
         version = Bukkit.getServer().getClass().getPackage().getName().replace(".", ",").split(",")[3];
         new ConfigurationManager(this);
         LanguageManager.init(this);
-        if(!(getVersion().equalsIgnoreCase("v1_8_R3") || getVersion().equalsIgnoreCase("v1_9_R1") ||
-                getVersion().equalsIgnoreCase("v1_11_R1") || getVersion().equalsIgnoreCase("v1_12_R1"))) {
+        if(!(getVersion().equalsIgnoreCase("v1_8_R3") || getVersion().equalsIgnoreCase("v1_9_R1") || getVersion().equalsIgnoreCase("v1_11_R1") || getVersion().equalsIgnoreCase("v1_12_R1"))) {
             BigTextUtils.thisVersionIsNotSupported();
             Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "Your server version is not supported by Village Defense!");
             Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "Sadly, we must shut off. Maybe you consider changing your server version?");
@@ -304,11 +302,11 @@ public class Main extends JavaPlugin implements Listener {
                 System.out.println("[Village Debugger] Loaded custom permission " + key + "!");
             }
         }
-        for(Player p : Bukkit.getOnlinePlayers()){
+        for(Player p : Bukkit.getOnlinePlayers()) {
             UserManager.registerUser(p.getUniqueId());
         }
-        if(databaseActivated){
-            for(Player p : Bukkit.getOnlinePlayers()){
+        if(databaseActivated) {
+            for(Player p : Bukkit.getOnlinePlayers()) {
                 MySQLConnectionUtils.loadPlayerStats(p, this);
             }
         } else {
@@ -341,6 +339,7 @@ public class Main extends JavaPlugin implements Listener {
         new CombustDayLightEvent(this);
         new LobbyEvents(this);
         new SpectatorItemEvents(this);
+        powerupManager = new PowerupManager(this);
         chunkManager = new ChunkManager(this);
         rewardsHandler = new RewardsHandler(this);
     }
@@ -435,6 +434,10 @@ public class Main extends JavaPlugin implements Listener {
         return database;
     }
 
+    public PowerupManager getPowerupManager() {
+        return powerupManager;
+    }
+
     @Override
     public void onDisable() {
         if(forceDisable) return;
@@ -444,7 +447,7 @@ public class Main extends JavaPlugin implements Listener {
                 if(isDatabaseActivated()) {
                     getMySQLDatabase().setStat(player.getUniqueId().toString(), s, user.getInt(s));
                 } else {
-                    getFileStats().saveStat (player, s);
+                    getFileStats().saveStat(player, s);
                 }
             }
             UserManager.removeUser(player.getUniqueId());
@@ -454,9 +457,12 @@ public class Main extends JavaPlugin implements Listener {
                 invasionInstance.teleportToEndLocation(player);
                 if(inventoryManagerEnabled) {
                     inventoryManager.loadInventory(player);
-                } else{
+                } else {
                     player.getInventory().clear();
                     ArmorHelper.clearArmor(player);
+                    for(PotionEffect pe : player.getActivePotionEffects()){
+                        player.removePotionEffect(pe.getType());
+                    }
                 }
             }
             invasionInstance.clearVillagers();
@@ -506,8 +512,7 @@ public class Main extends JavaPlugin implements Listener {
         for(String ID : ConfigurationManager.getConfig("arenas").getConfigurationSection("instances").getKeys(false)) {
             Arena arena;
             String s = "instances." + ID + ".";
-            if(s.contains("default"))
-                continue;
+            if(s.contains("default")) continue;
             if(is1_8_R3()) {
                 arena = new ArenaInitializer1_8_R3(ID, this);
             } else if(is1_9_R1()) {
@@ -574,8 +579,7 @@ public class Main extends JavaPlugin implements Listener {
 
     public WorldEditPlugin getWorldEditPlugin() {
         Plugin p = Bukkit.getServer().getPluginManager().getPlugin("WorldEdit");
-        if(p instanceof WorldEditPlugin)
-            return (WorldEditPlugin) p;
+        if(p instanceof WorldEditPlugin) return (WorldEditPlugin) p;
         return null;
     }
 
