@@ -157,7 +157,7 @@ public class AdminCommands extends MainCommand {
 
     public void reloadInstances(CommandSender sender) {
         if(!hasPermission(sender, "villagedefense.admin.reload")) return;
-        plugin.registerArenas();
+        ArenaRegistry.registerArenas();
         sender.sendMessage(ChatManager.PLUGIN_PREFIX + "Arenas reloaded!");
     }
 
