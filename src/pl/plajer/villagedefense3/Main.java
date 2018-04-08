@@ -368,7 +368,7 @@ public class Main extends JavaPlugin implements Listener {
                     inventoryManager.loadInventory(player);
                 } else {
                     player.getInventory().clear();
-                    ArmorHelper.clearArmor(player);
+                    player.getInventory().setArmorContents(null);
                     for(PotionEffect pe : player.getActivePotionEffects()) {
                         player.removePotionEffect(pe.getType());
                     }

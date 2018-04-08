@@ -65,13 +65,6 @@ public class ArmorHelper {
         player.getInventory().setBoots(boots);
     }
 
-    public static void clearArmor(Player player) {
-        player.getInventory().setHelmet(null);
-        player.getInventory().setChestplate(null);
-        player.getInventory().setLeggings(null);
-        player.getInventory().setBoots(null);
-    }
-
     public enum ArmorType {
         LEATHER, IRON, DIAMOND, GOLD
     }

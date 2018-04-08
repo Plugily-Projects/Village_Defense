@@ -316,7 +316,7 @@ public abstract class Arena extends BukkitRunnable {
                         player.setAllowFlight(false);
                         player.getInventory().clear();
 
-                        ArmorHelper.clearArmor(player);
+                        player.getInventory().setArmorContents(null);
                         if(plugin.isBossbarEnabled()) {
                             gameBar.removePlayer(player);
                         }
@@ -1236,7 +1236,7 @@ public abstract class Arena extends BukkitRunnable {
         User user = UserManager.getUser(p.getUniqueId());
         user.setInt("orbs", 0);
         p.getInventory().clear();
-        ArmorHelper.clearArmor(p);
+        p.getInventory().setArmorContents(null);
 
         this.removePlayer(p);
         if(!user.isSpectator()) {
