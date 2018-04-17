@@ -18,9 +18,7 @@ public class UserManager {
     private static HashMap<UUID, User> users = new HashMap<>();
 
     public static void registerUser(UUID uuid){
-        if(Main.isDebugged()){
-            System.out.println("[Village Debugger] Registered new user with UUID: " + uuid);
-        }
+        Main.debug("Registering new user with UUID: " + uuid, System.currentTimeMillis());
         users.put(uuid, new User(uuid));
     }
 

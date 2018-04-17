@@ -35,9 +35,7 @@ public class ShopManager {
     public static void registerShop(Arena a){
         Location location = Util.getLocation(false, ConfigurationManager.getConfig("arenas").getString("instances." + a.getID() + ".shop"));
         if(!(location.getBlock().getState() instanceof Chest)) {
-            if(Main.isDebugged()) {
-                System.out.print("[Village Debugger] Location for shop isn't a chest!");
-            }
+            Main.debug("Shop failed to load, invalid location for loc " + location, System.currentTimeMillis());
             return;
         }
         int i = ((Chest) location.getBlock().getState()).getInventory().getContents().length;

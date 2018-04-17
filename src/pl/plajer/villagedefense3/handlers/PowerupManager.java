@@ -41,9 +41,7 @@ public class PowerupManager {
         if(plugin.getServer().getPluginManager().getPlugin("HolographicDisplays") == null) return;
         enabled = true;
         this.plugin = plugin;
-        if(Main.isDebugged()) {
-            System.out.println("[Village Debugger] Registering power ups module...");
-        }
+        Main.debug("Registering power ups module!", System.currentTimeMillis());
         PowerupType.CLEANER.setName(ChatManager.colorMessage("Powerups.Map-Clean-Powerup.Name"));
         PowerupType.CLEANER.setEnabled(plugin.getConfig().getBoolean("Powerups.List.Map-Clean"));
 
@@ -66,9 +64,7 @@ public class PowerupManager {
             }
         }
         if(powerups.size() == PowerupType.values().length) {
-            if(Main.isDebugged()) {
-                System.out.println("[Village Debugger] All power ups are disabled, disabing module...");
-            }
+            Main.debug("Disabling power up module, all power ups disabled", System.currentTimeMillis());
             enabled = false;
         }
     }

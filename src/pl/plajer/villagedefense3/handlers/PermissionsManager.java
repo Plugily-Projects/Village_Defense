@@ -75,7 +75,7 @@ public class PermissionsManager {
         PermissionsManager.setMvp(plugin.getConfig().getString("Basic-Permissions.Mvp-Permission"));
         PermissionsManager.setElite(plugin.getConfig().getString("Basic-Permissions.Elite-Permission"));
         PermissionsManager.setJoinPerm(plugin.getConfig().getString("Basic-Permissions.Join-Permission"));
-        if(Main.isDebugged()) System.out.println("[Village Debugger] Basic permissions from config.yml properly set!");
+        Main.debug("Basic permissions registered", System.currentTimeMillis());
     }
 
 }

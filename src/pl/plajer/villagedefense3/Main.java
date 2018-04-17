@@ -44,7 +44,6 @@ import pl.plajer.villagedefense3.language.LanguageManager;
 import pl.plajer.villagedefense3.language.LanguageMigrator;
 import pl.plajer.villagedefense3.user.User;
 import pl.plajer.villagedefense3.user.UserManager;
-import pl.plajer.villagedefense3.utils.ArmorHelper;
 import pl.plajer.villagedefense3.utils.MessageUtils;
 import pl.plajer.villagedefense3.utils.MetricsLite;
 import pl.plajer.villagedefense3.utils.MySQLConnectionUtils;
@@ -90,8 +89,22 @@ public class Main extends JavaPlugin implements Listener {
     private HashMap<UUID, Boolean> spyChatEnabled = new HashMap<>();
     private String version;
 
-    public static boolean isDebugged() {
-        return debug;
+    public static void debug(String thing, long millis) {
+        long elapsed = System.currentTimeMillis() - millis;
+        ChatColor color;
+        if(elapsed < 5) {
+            color = ChatColor.GRAY;
+        } else if(elapsed > 5 && elapsed < 10) {
+            color = ChatColor.YELLOW;
+        } else {
+            color = ChatColor.RED;
+        }
+        if(debug) {
+            Bukkit.getConsoleSender().sendMessage(color + "[Village Debugger] Task '" + thing + "' took " + elapsed + "ms");
+        }
+        if(elapsed > 15){
+            Bukkit.getConsoleSender().sendMessage(color + "[Village Defense] Slow system response for task '" + thing + "' took over " + elapsed + "ms");
+        }
     }
 
     public boolean is1_8_R3() {
@@ -196,9 +209,7 @@ public class Main extends JavaPlugin implements Listener {
         LanguageManager.saveDefaultLanguageFile();
         saveDefaultConfig();
         debug = getConfig().getBoolean("Debug");
-        if(Main.isDebugged()) {
-            System.out.println("[Village Debugger] Village Defense setup started!");
-        }
+        debug("Setup started", System.currentTimeMillis());
         setupFiles();
         debugChecker();
         LanguageMigrator.languageFileUpdate();
@@ -261,9 +272,7 @@ public class Main extends JavaPlugin implements Listener {
         ConfigurationSection cs = getConfig().getConfigurationSection("CustomPermissions");
         for(String key : cs.getKeys(false)) {
             customPermissions.put(key, getConfig().getInt("CustomPermissions." + key));
-            if(isDebugged()) {
-                System.out.println("[Village Debugger] Loaded custom permission " + key + "!");
-            }
+            debug("Loaded custom permission " + key, System.currentTimeMillis());
         }
         for(Player p : Bukkit.getOnlinePlayers()) {
             UserManager.registerUser(p.getUniqueId());
@@ -277,6 +286,7 @@ public class Main extends JavaPlugin implements Listener {
         }
         StatsStorage.plugin = this;
         PermissionsManager.init();
+        debug("Setup done", System.currentTimeMillis());
     }
 
     private void initializeClasses() {

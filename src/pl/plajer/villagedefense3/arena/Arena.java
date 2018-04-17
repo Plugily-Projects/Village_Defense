@@ -488,9 +488,7 @@ public abstract class Arena extends BukkitRunnable {
     private void spawnVillagers() {
         if(getVillagers().size() > 10) {
         } else if(getVillagerSpawns() == null || getVillagerSpawns().size() <= 0) {
-            if(Main.isDebugged()) {
-                System.out.print(ChatColor.RED + "[Village Debugger] NO VILLAGERSPAWNS DEFINED FOR ARENA " + this.getID() + "! ARENA CAN'T RUN WITHOUT VILLAGER SPAWNS! PLEASE ADD VILLAGER SPAWNS!");
-            }
+            Main.debug("No villager spawns for " + getID() + ", game won't start", System.currentTimeMillis());
         } else {
             for(Location location : getVillagerSpawns()) {
                 spawnVillager(location);
@@ -498,9 +496,7 @@ public abstract class Arena extends BukkitRunnable {
             if(getVillagers().size() != 0) {
                 spawnVillagers();
             } else {
-                if(Main.isDebugged()) {
-                    System.out.print("[Village Debugger] UNABLE TO SPAWN VILLAGERS! PLEASE CONTACT THE DEV TO SOLVE this PROBLEM!!");
-                }
+                Main.debug("Villager spawns can't be set up!", System.currentTimeMillis());
             }
         }
     }
@@ -922,9 +918,7 @@ public abstract class Arena extends BukkitRunnable {
                 return;
             }
         }
-        if(Main.isDebugged()) {
-            System.out.println("[Village Debugger] Player " + p.getName() + " attemping to join arena!");
-        }
+        Main.debug("Join attempt of " + p.getName(), System.currentTimeMillis());
         if((getArenaState() == ArenaState.IN_GAME || (getArenaState() == ArenaState.STARTING && getTimer() <= 3) || getArenaState() == ArenaState.ENDING)) {
             if(plugin.isInventoryManagerEnabled()) {
                 p.setLevel(0);
@@ -1230,9 +1224,7 @@ public abstract class Arena extends BukkitRunnable {
     public void leaveAttempt(Player p) {
         VillageGameLeaveAttemptEvent villageGameLeaveAttemptEvent = new VillageGameLeaveAttemptEvent(p, this);
         Bukkit.getPluginManager().callEvent(villageGameLeaveAttemptEvent);
-        if(Main.isDebugged()) {
-            System.out.println("[Village Debugger] Player " + p.getName() + " is attemping to leave arena!");
-        }
+        Main.debug("Leave attempt of " + p.getName(), System.currentTimeMillis());
         User user = UserManager.getUser(p.getUniqueId());
         user.setInt("orbs", 0);
         p.getInventory().clear();

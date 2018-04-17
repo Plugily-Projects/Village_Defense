@@ -55,9 +55,7 @@ public class BungeeManager implements Listener {
         if(ArenaRegistry.getArenas().isEmpty())
             return;
         if(ArenaRegistry.getArenas() == null) {
-            if(Main.isDebugged()) {
-                System.out.print("[Village Debugger] NO GAMEINSTANCE FOUND! FIRST CONFIGURE AN ARENA BEFORE ACTIVATING BUNGEEEMODE!");
-            }
+            Main.debug("No ready arena found! Please create one before activating bungee mode!", System.currentTimeMillis());
             return;
         }
         event.setMaxPlayers(ArenaRegistry.getArenas().get(0).getMaximumPlayers());

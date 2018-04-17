@@ -40,6 +40,7 @@ public class StatsStorage {
      * @return Map with players statistics
      */
     public static Map<UUID, Integer> getStats(Player player) {
+        Main.debug("Village API getStats(Player) run", System.currentTimeMillis());
         if(plugin.isDatabaseActivated())
             return plugin.getMySQLDatabase().getColumn(player.getName());
         else {
@@ -60,6 +61,7 @@ public class StatsStorage {
      * @return Integer of statistic
      */
     public static int getUserStats(Player player, StatisticType statisticType) {
+        Main.debug("Village API getUserStats(Player, StatisticType) run", System.currentTimeMillis());
         return UserManager.getUser(player.getUniqueId()).getInt(statisticType.name);
     }
 

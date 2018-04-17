@@ -157,11 +157,6 @@ public class SignManager implements Listener {
         for(String path : ConfigurationManager.getConfig("arenas").getConfigurationSection("instances").getKeys(false)) {
             for(String sign : ConfigurationManager.getConfig("arenas").getStringList("instances." + path + ".signs")) {
                 Location loc = Util.getLocation(false, sign);
-                if(loc == null) {
-                    if(Main.isDebugged()) {
-                        System.out.println("[Village Debugger] Location of sign is null!");
-                    }
-                }
                 if(loc.getBlock().getState() instanceof Sign) {
                     String mapName = ((Sign) loc.getBlock().getState()).getLine(2);
                     for(Arena inst : ArenaRegistry.getArenas()) {
@@ -170,9 +165,7 @@ public class SignManager implements Listener {
                         }
                     }
                 } else {
-                    if(Main.isDebugged()) {
-                        System.out.println("[Village Debugger] Block at location " + loc + " for arena " + path + " isn't a sign!");
-                    }
+                    Main.debug("Block at loc " + loc + " for arena " + path + " not a sign", System.currentTimeMillis());
                 }
             }
         }
