@@ -6,6 +6,7 @@
 * Now removing potion effects from player after force server stop
 * Organised code
 * Enhanced Village Debugger
+* Added generic VillageEvent event class
 
 ### 3.2.0 Release (1.04.2018)
 * Small fix for plugin loading errors when dependencies weren't installed and plugin was disabled

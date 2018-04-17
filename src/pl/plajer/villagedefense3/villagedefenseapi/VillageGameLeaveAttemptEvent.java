@@ -11,13 +11,14 @@ import pl.plajer.villagedefense3.arena.Arena;
  * <p>
  * Called when player is attempting to leave arena.
  */
-public class VillageGameLeaveAttemptEvent extends Event {
+public class VillageGameLeaveAttemptEvent extends VillageEvent {
 
     private static final HandlerList HANDLERS = new HandlerList();
     private final Player player;
     private final Arena arena;
 
     public VillageGameLeaveAttemptEvent(Player player, Arena arena) {
+        super(arena);
         this.player = player;
         this.arena = arena;
     }

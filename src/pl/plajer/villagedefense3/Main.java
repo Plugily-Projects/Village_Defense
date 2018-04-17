@@ -364,9 +364,9 @@ public class Main extends JavaPlugin implements Listener {
             }
             UserManager.removeUser(player.getUniqueId());
         }
-        for(Arena invasionInstance : ArenaRegistry.getArenas()) {
-            for(Player player : invasionInstance.getPlayers()) {
-                invasionInstance.teleportToEndLocation(player);
+        for(Arena arena : ArenaRegistry.getArenas()) {
+            for(Player player : arena.getPlayers()) {
+                arena.teleportToEndLocation(player);
                 if(inventoryManagerEnabled) {
                     inventoryManager.loadInventory(player);
                 } else {
@@ -377,9 +377,9 @@ public class Main extends JavaPlugin implements Listener {
                     }
                 }
             }
-            invasionInstance.clearVillagers();
-            invasionInstance.stopGame(true);
-            invasionInstance.teleportAllToEndLocation();
+            arena.clearVillagers();
+            arena.stopGame(true);
+            arena.teleportAllToEndLocation();
         }
         if(isDatabaseActivated()) getMySQLDatabase().closeDatabase();
     }

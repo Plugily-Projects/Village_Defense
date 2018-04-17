@@ -10,13 +10,14 @@ import pl.plajer.villagedefense3.arena.Arena;
  * <p>
  * Called when wave in arena has ended.
  */
-public class VillageWaveEndEvent extends Event {
+public class VillageWaveEndEvent extends VillageEvent {
 
     private static final HandlerList HANDLERS = new HandlerList();
     private final Integer waveNumber;
     private final Arena arena;
 
     public VillageWaveEndEvent(Arena arena, Integer waveNumber) {
+        super(arena);
         this.arena = arena;
         this.waveNumber = waveNumber;
     }

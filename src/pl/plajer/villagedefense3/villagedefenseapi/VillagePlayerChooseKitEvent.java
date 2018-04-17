@@ -4,6 +4,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
+import pl.plajer.villagedefense3.arena.Arena;
 import pl.plajer.villagedefense3.kits.kitapi.basekits.Kit;
 
 /**
@@ -12,14 +13,15 @@ import pl.plajer.villagedefense3.kits.kitapi.basekits.Kit;
  * <p>
  * Called when player chose kit in game.
  */
-public class VillagePlayerChooseKitEvent extends Event implements Cancellable {
+public class VillagePlayerChooseKitEvent extends VillageEvent implements Cancellable {
 
     private static final HandlerList handlers = new HandlerList();
     private final Player player;
     private final Kit kit;
     private boolean isCancelled;
 
-    public VillagePlayerChooseKitEvent(Player player, Kit kit) {
+    public VillagePlayerChooseKitEvent(Player player, Kit kit, Arena arena) {
+        super(arena);
         this.player = player;
         this.kit = kit;
         this.isCancelled = false;

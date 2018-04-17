@@ -12,6 +12,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import pl.plajer.villagedefense3.Main;
+import pl.plajer.villagedefense3.arena.ArenaRegistry;
 import pl.plajer.villagedefense3.user.User;
 import pl.plajer.villagedefense3.handlers.ChatManager;
 import pl.plajer.villagedefense3.user.UserManager;
@@ -165,7 +166,9 @@ public class KitManager implements Listener {
             return;
         if(!event.getCurrentItem().hasItemMeta())
             return;
-        VillagePlayerChooseKitEvent villagePlayerChooseKitEvent = new VillagePlayerChooseKitEvent(player, KitRegistry.getKit(event.getCurrentItem()));
+        if(!ArenaRegistry.isInGameInstance(player))
+            return;
+        VillagePlayerChooseKitEvent villagePlayerChooseKitEvent = new VillagePlayerChooseKitEvent(player, KitRegistry.getKit(event.getCurrentItem()), ArenaRegistry.getArena(player));
         Bukkit.getPluginManager().callEvent(villagePlayerChooseKitEvent);
     }
 

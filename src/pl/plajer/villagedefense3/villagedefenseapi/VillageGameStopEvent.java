@@ -10,12 +10,13 @@ import pl.plajer.villagedefense3.arena.Arena;
  * <p>
  * Called when arena is stopped (game has ended).
  */
-public class VillageGameStopEvent extends Event {
+public class VillageGameStopEvent extends VillageEvent {
 
     private static final HandlerList HANDLERS = new HandlerList();
     private final Arena arena;
 
     public VillageGameStopEvent(Arena arena) {
+        super(arena);
         this.arena = arena;
     }
 

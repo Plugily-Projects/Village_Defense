@@ -10,12 +10,13 @@ import pl.plajer.villagedefense3.arena.Arena;
  * <p>
  * Called when arena has started.
  */
-public class VillageGameStartEvent extends Event {
+public class VillageGameStartEvent extends VillageEvent {
 
     private static final HandlerList HANDLERS = new HandlerList();
     private final Arena arena;
 
     public VillageGameStartEvent(Arena arena) {
+        super(arena);
         this.arena = arena;
     }
 

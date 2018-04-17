@@ -12,7 +12,7 @@ import pl.plajer.villagedefense3.arena.Arena;
  * <p>
  * Called when player is attempting to join arena.
  */
-public class VillageGameJoinAttemptEvent extends Event implements Cancellable {
+public class VillageGameJoinAttemptEvent extends VillageEvent implements Cancellable {
 
     private static final HandlerList HANDLERS = new HandlerList();
     private final Player player;
@@ -20,6 +20,7 @@ public class VillageGameJoinAttemptEvent extends Event implements Cancellable {
     private boolean isCancelled;
 
     public VillageGameJoinAttemptEvent(Player player, Arena targetArena) {
+        super(targetArena);
         this.player = player;
         this.targetArena = targetArena;
         this.isCancelled = false;
