@@ -38,7 +38,10 @@ public class PowerupManager {
 
     public PowerupManager(Main plugin) {
         if(!plugin.getConfig().getBoolean("Powerups.Enabled")) return;
-        if(plugin.getServer().getPluginManager().getPlugin("HolographicDisplays") == null) return;
+        if(plugin.getServer().getPluginManager().getPlugin("HolographicDisplays") == null) {
+            Main.debug("Power up module: Holographic Displays dependency not found, disabling", System.currentTimeMillis());
+            return;
+        }
         enabled = true;
         this.plugin = plugin;
         Main.debug("Registering power ups module!", System.currentTimeMillis());
