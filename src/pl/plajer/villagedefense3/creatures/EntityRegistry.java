@@ -19,6 +19,7 @@ import java.util.Map;
 public class EntityRegistry {
 
     public EntityRegistry(Main plugin) {
+        Main.debug("Initial entity registry startup", System.currentTimeMillis());
         List<String> classes = Arrays.asList("FastZombie", "BabyZombie", "PlayerBuster", "GolemBuster", "HardZombie", "RidableVillager", "RidableIronGolem", "WorkingWolf", "TankerZombie");
         String version = plugin.getVersion();
         if(version.equalsIgnoreCase("v1_8_R3") || version.equalsIgnoreCase("v1_11_R1") || version.equalsIgnoreCase("v1_9_R1") || version.equalsIgnoreCase("v1_12_R1")) {
@@ -36,6 +37,7 @@ public class EntityRegistry {
                 e.printStackTrace();
             }
         }
+        Main.debug("Entities registering completed", System.currentTimeMillis());
     }
 
     @SuppressWarnings("unused")

@@ -91,19 +91,11 @@ public class Main extends JavaPlugin implements Listener {
 
     public static void debug(String thing, long millis) {
         long elapsed = System.currentTimeMillis() - millis;
-        ChatColor color;
-        if(elapsed < 5) {
-            color = ChatColor.GRAY;
-        } else if(elapsed > 5 && elapsed < 10) {
-            color = ChatColor.YELLOW;
-        } else {
-            color = ChatColor.RED;
-        }
         if(debug) {
-            Bukkit.getConsoleSender().sendMessage(color + "[Village Debugger] Task '" + thing + "' took " + elapsed + "ms");
+            Bukkit.getConsoleSender().sendMessage(ChatColor.YELLOW + "[Village Debugger] Running task '" + thing + "'");
         }
         if(elapsed > 15){
-            Bukkit.getConsoleSender().sendMessage(color + "[Village Defense] Slow system response for task '" + thing + "' took over " + elapsed + "ms");
+            Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "[Village Debugger] Slow server response, games may be affected.");
         }
     }
 
@@ -209,7 +201,7 @@ public class Main extends JavaPlugin implements Listener {
         LanguageManager.saveDefaultLanguageFile();
         saveDefaultConfig();
         debug = getConfig().getBoolean("Debug");
-        debug("Setup started", System.currentTimeMillis());
+        debug("Main setup start", System.currentTimeMillis());
         setupFiles();
         debugChecker();
         LanguageMigrator.languageFileUpdate();
@@ -286,7 +278,7 @@ public class Main extends JavaPlugin implements Listener {
         }
         StatsStorage.plugin = this;
         PermissionsManager.init();
-        debug("Setup done", System.currentTimeMillis());
+        debug("Main setup done", System.currentTimeMillis());
     }
 
     private void initializeClasses() {
@@ -360,6 +352,7 @@ public class Main extends JavaPlugin implements Listener {
     @Override
     public void onDisable() {
         if(forceDisable) return;
+        debug("System disable", System.currentTimeMillis());
         for(Player player : getServer().getOnlinePlayers()) {
             User user = UserManager.getUser(player.getUniqueId());
             for(String s : FileStats.STATISTICS) {

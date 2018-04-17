@@ -2,6 +2,7 @@ package pl.plajer.villagedefense3.database;
 
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
+import pl.plajer.villagedefense3.Main;
 import pl.plajer.villagedefense3.utils.MessageUtils;
 
 import java.sql.Connection;
@@ -20,13 +21,13 @@ public class MySQLDatabase {
     public MySQLDatabase(JavaPlugin javaPlugin) {
         this.plugin = javaPlugin;
         this.manager = new MySQLConnectionManager(plugin);
-        plugin.getLogger().info("Configuring connection pool...");
+        Main.debug("Configuring MySQL connection", System.currentTimeMillis());
         manager.configureConnPool();
 
         try {
             Connection connection = manager.getConnection();
             if(connection == null) {
-                System.out.print("CONNECTION TO DATABASE FAILED!");
+                Main.debug("Failed to connect to database", System.currentTimeMillis());
                 return;
             }
             connection.createStatement().executeUpdate("CREATE TABLE IF NOT EXISTS `playerstats` (\n" +

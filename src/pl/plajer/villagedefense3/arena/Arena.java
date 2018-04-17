@@ -396,6 +396,7 @@ public abstract class Arena extends BukkitRunnable {
      * @see VillageGameStopEvent
      */
     public void stopGame(boolean quickStop) {
+        Main.debug("Game stop event initiate, arena " + this.getID(), System.currentTimeMillis());
         VillageGameStopEvent villageGameStopEvent = new VillageGameStopEvent(this);
         Bukkit.getPluginManager().callEvent(villageGameStopEvent);
         if(getPlayersLeft().size() > 0) {
@@ -460,6 +461,7 @@ public abstract class Arena extends BukkitRunnable {
                 if(entity.getType() != EntityType.PLAYER)
                     entity.remove();
         }
+        Main.debug("Game stop event finish, arena " + this.getID(), System.currentTimeMillis());
     }
 
     private void restoreMap() {
@@ -790,6 +792,7 @@ public abstract class Arena extends BukkitRunnable {
     }
 
     public void start() {
+        Main.debug("Game instance started, arena " + this.getID(), System.currentTimeMillis());
         this.runTaskTimer(plugin, 20L, 20L);
         this.setArenaState(ArenaState.RESTARTING);
         for(Location location : villagerSpawnPoints) {
@@ -902,6 +905,7 @@ public abstract class Arena extends BukkitRunnable {
      * @see VillageGameJoinAttemptEvent
      */
     public void joinAttempt(Player p) {
+        Main.debug("Initial join attempt, " + p.getName(), System.currentTimeMillis());
         VillageGameJoinAttemptEvent villageGameJoinAttemptEvent = new VillageGameJoinAttemptEvent(p, this);
         Bukkit.getPluginManager().callEvent(villageGameJoinAttemptEvent);
         if(!isReady) {
@@ -918,7 +922,7 @@ public abstract class Arena extends BukkitRunnable {
                 return;
             }
         }
-        Main.debug("Join attempt of " + p.getName(), System.currentTimeMillis());
+        Main.debug("Final join attempt, " + p.getName(), System.currentTimeMillis());
         if((getArenaState() == ArenaState.IN_GAME || (getArenaState() == ArenaState.STARTING && getTimer() <= 3) || getArenaState() == ArenaState.ENDING)) {
             if(plugin.isInventoryManagerEnabled()) {
                 p.setLevel(0);
@@ -999,7 +1003,6 @@ public abstract class Arena extends BukkitRunnable {
 
     int getZombiesLeft() {
         return zombiesToSpawn + getZombies().size();
-
     }
 
     void addExperience(Player player, int i) {
@@ -1222,9 +1225,9 @@ public abstract class Arena extends BukkitRunnable {
      * @see VillageGameLeaveAttemptEvent
      */
     public void leaveAttempt(Player p) {
+        Main.debug("Initial leave attempt, " + p.getName(), System.currentTimeMillis());
         VillageGameLeaveAttemptEvent villageGameLeaveAttemptEvent = new VillageGameLeaveAttemptEvent(p, this);
         Bukkit.getPluginManager().callEvent(villageGameLeaveAttemptEvent);
-        Main.debug("Leave attempt of " + p.getName(), System.currentTimeMillis());
         User user = UserManager.getUser(p.getUniqueId());
         user.setInt("orbs", 0);
         p.getInventory().clear();
