@@ -30,7 +30,6 @@ import java.util.concurrent.ThreadLocalRandom;
  * <p>
  * Created at 08.04.2018
  */
-//TODO config and language files updater add
 public class PowerupManager {
 
     private boolean enabled = false;
