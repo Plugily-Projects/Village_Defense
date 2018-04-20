@@ -1,7 +1,7 @@
 # Village Defense 3 Changelog
 
-### 3.3.0 Beta (04.08.2018)
-* Added Powerups (BETA)
+### 3.3.0 Release (20.08.2018)
+* Added Powerups
 * Fixed titles weren't displaying (bug since 2.1.x)
 * Now removing potion effects from player after force server stop
 * Organised code
