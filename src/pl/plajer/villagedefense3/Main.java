@@ -198,12 +198,12 @@ public class Main extends JavaPlugin implements Listener {
         if(LanguageManager.getLanguageFile().isSet("File-Version") && getConfig().isSet("Config-Version")) {
             LanguageMigrator.migrateToNewFormat();
         }
-        LanguageManager.saveDefaultLanguageFile();
         saveDefaultConfig();
         debug = getConfig().getBoolean("Debug");
         debug("Main setup start", System.currentTimeMillis());
         setupFiles();
         debugChecker();
+        LanguageMigrator.configUpdate();
         LanguageMigrator.languageFileUpdate();
         initializeClasses();
 
@@ -219,7 +219,7 @@ public class Main extends JavaPlugin implements Listener {
                         Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "[VillageDefense] Current version %old%, latest version %new%".replaceAll("%old%", currentVersion).replaceAll("%new%", latestVersion));
                     } else {
                         MessageUtils.updateIsHere();
-                        Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "Your Village Defense plugin is up to date! Download it to keep with latest changes and fixes.");
+                        Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "Your Village Defense plugin is outdated! Download it to keep with latest changes and fixes.");
                         Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "Disable this option in config.yml if you wish.");
                         Bukkit.getConsoleSender().sendMessage(ChatColor.YELLOW + "Current version: " + ChatColor.RED + currentVersion + ChatColor.YELLOW + " Latest version: " + ChatColor.GREEN + latestVersion);
                     }

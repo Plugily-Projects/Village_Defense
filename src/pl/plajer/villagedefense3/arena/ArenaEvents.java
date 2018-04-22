@@ -64,6 +64,8 @@ public class ArenaEvents implements Listener {
     public void onDieEntity(EntityDeathEvent event) {
         if(!event.getEntity().hasMetadata("VillageEntity")) return;
         Arena arena = ArenaRegistry.getArena(event.getEntity().getMetadata("PlayingArena").get(0).asString());
+        event.getEntity().removeMetadata("VillageEntity", plugin);
+        event.getEntity().removeMetadata("PlayingArena", plugin);
         if(event.getEntity().getType() == EntityType.ZOMBIE) {
             arena.removeZombie((Zombie) event.getEntity());
             if(ArenaRegistry.getArena(event.getEntity().getKiller()) != null) {
@@ -119,7 +121,7 @@ public class ArenaEvents implements Listener {
         ArenaUtils.hidePlayer(player, arena);
         player.setAllowFlight(true);
         player.getInventory().clear();
-        MessageUtils.sendTitle(player, ChatColor.stripColor(ChatManager.formatMessage(arena, "In-Game.Death-Screen")), 0, 5 * 20, 0, ChatColor.RED);
+        MessageUtils.sendTitle(player, ChatColor.stripColor(ChatManager.formatMessage(arena, ChatManager.colorMessage("In-Game.Death-Screen"))), 0, 5 * 20, 0, ChatColor.RED);
         if(plugin.is1_9_R1() || plugin.is1_11_R1() || plugin.is1_12_R1()) {
             new BukkitRunnable() {
                 @Override

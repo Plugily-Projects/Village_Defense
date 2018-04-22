@@ -23,6 +23,7 @@ public class LanguageManager {
 
     public static void init(Main pl) {
         plugin = pl;
+        saveDefaultLanguageFile();
         setupLocale();
     }
 

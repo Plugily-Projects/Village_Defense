@@ -225,6 +225,8 @@ public abstract class Arena extends BukkitRunnable {
                             removeAfterLoop.add(zombie);
                             zombieCheckerLocations.remove(zombie);
                             zombie.remove();
+                            zombie.removeMetadata("VillageEntity", plugin);
+                            zombie.removeMetadata("PlayingArena", plugin);
                         }
                         if(zombieCheckerLocations.get(zombie) == null) {
                             zombieCheckerLocations.put(zombie, zombie.getLocation());
@@ -822,6 +824,8 @@ public abstract class Arena extends BukkitRunnable {
     public void clearGolems() {
         for(IronGolem ironGolem : ironGolems) {
             ironGolem.remove();
+            ironGolem.removeMetadata("VillageEntity", plugin);
+            ironGolem.removeMetadata("PlayingArena", plugin);
         }
         this.ironGolems.clear();
     }
@@ -829,6 +833,8 @@ public abstract class Arena extends BukkitRunnable {
     public void clearWolfs() {
         for(Wolf wolf : wolfs) {
             wolf.remove();
+            wolf.removeMetadata("VillageEntity", plugin);
+            wolf.removeMetadata("PlayingArena", plugin);
         }
         this.wolfs.clear();
     }
@@ -844,6 +850,8 @@ public abstract class Arena extends BukkitRunnable {
     public void clearZombies() {
         for(Zombie zombie : zombies) {
             zombie.remove();
+            zombie.removeMetadata("VillageEntity", plugin);
+            zombie.removeMetadata("PlayingArena", plugin);
         }
         zombies.clear();
     }
@@ -1188,6 +1196,8 @@ public abstract class Arena extends BukkitRunnable {
     void removeVillager(Villager villager) {
         if(villagers.contains(villager)) {
             villager.remove();
+            villager.removeMetadata("VillageEntity", plugin);
+            villager.removeMetadata("PlayingArena", plugin);
             villager.setHealth(0);
             villagers.remove(villager);
         }
@@ -1196,6 +1206,8 @@ public abstract class Arena extends BukkitRunnable {
     public void clearVillagers() {
         for(Villager villager : villagers) {
             villager.remove();
+            villager.removeMetadata("VillageEntity", plugin);
+            villager.removeMetadata("PlayingArena", plugin);
         }
         villagers.clear();
     }

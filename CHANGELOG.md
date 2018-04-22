@@ -1,6 +1,12 @@
 # Village Defense 3 Changelog
 
-### 3.3.0 Release (20.08.2018)
+### 3.4.0 Release (22.04.2018)
+* Fixed major memory leak since 3.2.0
+* Fixed setup errors on clean installation
+* Fixed title message on death not displaying properly
+* Fixed typo "plugin is up to date" instead of "plugin is outdated"
+
+### 3.3.0 Release (20.04.2018)
 * Added Powerups
 * Fixed titles weren't displaying (bug since 2.1.x)
 * Now removing potion effects from player after force server stop
