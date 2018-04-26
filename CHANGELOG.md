@@ -1,5 +1,9 @@
 # Village Defense 3 Changelog
 
+### 3.4.1 Release (26.04.2018)
+* Fixed #3 bug
+* Fixed some small memory leaks
+
 ### 3.4.0 Release (22.04.2018)
 * Fixed major memory leak since 3.2.0
 * Fixed setup errors on clean installation

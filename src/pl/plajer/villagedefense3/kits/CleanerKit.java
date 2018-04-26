@@ -96,6 +96,8 @@ public class CleanerKit extends PremiumKit implements Listener {
         if(arena.getZombies() != null) {
             for(Zombie zombie : arena.getZombies()) {
                 zombie.getWorld().playEffect(zombie.getLocation(), Effect.LAVA_POP, 20);
+                zombie.removeMetadata("VillageEntity", plugin);
+                zombie.removeMetadata("PlayingArena", plugin);
                 zombie.remove();
             }
             arena.getZombies().clear();
