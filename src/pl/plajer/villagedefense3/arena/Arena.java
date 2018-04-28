@@ -222,8 +222,6 @@ public abstract class Arena extends BukkitRunnable {
                         if(glitchedZombies.contains(zombie) && zombie.getLocation().distance(zombieCheckerLocations.get(zombie)) <= 1) {
                             removeAfterLoop.add(zombie);
                             zombieCheckerLocations.remove(zombie);
-                            zombie.removeMetadata("VillageEntity", plugin);
-                            zombie.removeMetadata("PlayingArena", plugin);
                             zombie.remove();
                         }
                         if(zombieCheckerLocations.get(zombie) == null) {
@@ -433,26 +431,18 @@ public abstract class Arena extends BukkitRunnable {
         this.resetRottenFlesh();
         this.restoreDoors();
         for(Zombie zombie : getZombies()) {
-            zombie.removeMetadata("VillageEntity", plugin);
-            zombie.removeMetadata("PlayingArena", plugin);
             zombie.remove();
         }
         zombies.clear();
         for(IronGolem ironGolem : getIronGolems()) {
-            ironGolem.removeMetadata("VillageEntity", plugin);
-            ironGolem.removeMetadata("PlayingArena", plugin);
             ironGolem.remove();
         }
         ironGolems.clear();
         for(Villager villager : getVillagers()) {
-            villager.removeMetadata("VillageEntity", plugin);
-            villager.removeMetadata("PlayingArena", plugin);
             villager.remove();
         }
         villagers.clear();
         for(Wolf wolf : getWolfs()) {
-            wolf.removeMetadata("VillageEntity", plugin);
-            wolf.removeMetadata("PlayingArena", plugin);
             wolf.remove();
         }
         wolfs.clear();
@@ -472,23 +462,15 @@ public abstract class Arena extends BukkitRunnable {
     private void restoreMap() {
         this.restoreDoors();
         for(Zombie zombie : getZombies()) {
-            zombie.removeMetadata("VillageEntity", plugin);
-            zombie.removeMetadata("PlayingArena", plugin);
             zombie.remove();
         }
         for(IronGolem ironGolem : getIronGolems()) {
-            ironGolem.removeMetadata("VillageEntity", plugin);
-            ironGolem.removeMetadata("PlayingArena", plugin);
             ironGolem.remove();
         }
         for(Villager villager : getVillagers()) {
-            villager.removeMetadata("VillageEntity", plugin);
-            villager.removeMetadata("PlayingArena", plugin);
             villager.remove();
         }
         for(Wolf wolf : getWolfs()) {
-            wolf.removeMetadata("VillageEntity", plugin);
-            wolf.removeMetadata("PlayingArena", plugin);
             wolf.remove();
         }
         clearZombies();
@@ -833,8 +815,6 @@ public abstract class Arena extends BukkitRunnable {
 
     public void clearGolems() {
         for(IronGolem ironGolem : ironGolems) {
-            ironGolem.removeMetadata("VillageEntity", plugin);
-            ironGolem.removeMetadata("PlayingArena", plugin);
             ironGolem.remove();
         }
         this.ironGolems.clear();
@@ -842,8 +822,6 @@ public abstract class Arena extends BukkitRunnable {
 
     public void clearWolfs() {
         for(Wolf wolf : wolfs) {
-            wolf.removeMetadata("VillageEntity", plugin);
-            wolf.removeMetadata("PlayingArena", plugin);
             wolf.remove();
         }
         this.wolfs.clear();
@@ -860,8 +838,6 @@ public abstract class Arena extends BukkitRunnable {
 
     public void clearZombies() {
         for(Zombie zombie : zombies) {
-            zombie.removeMetadata("VillageEntity", plugin);
-            zombie.removeMetadata("PlayingArena", plugin);
             zombie.remove();
         }
         zombies.clear();
@@ -1206,8 +1182,6 @@ public abstract class Arena extends BukkitRunnable {
 
     void removeVillager(Villager villager) {
         if(villagers.contains(villager)) {
-            villager.removeMetadata("VillageEntity", plugin);
-            villager.removeMetadata("PlayingArena", plugin);
             villager.remove();
             villager.setHealth(0);
             villagers.remove(villager);
@@ -1216,8 +1190,6 @@ public abstract class Arena extends BukkitRunnable {
 
     public void clearVillagers() {
         for(Villager villager : villagers) {
-            villager.removeMetadata("VillageEntity", plugin);
-            villager.removeMetadata("PlayingArena", plugin);
             villager.remove();
         }
         villagers.clear();
@@ -1266,8 +1238,6 @@ public abstract class Arena extends BukkitRunnable {
         if(user.getKit() instanceof GolemFriendKit) {
             for(IronGolem ironGolem : getIronGolems()) {
                 if(ironGolem.getCustomName().contains(user.toPlayer().getName())) {
-                    ironGolem.removeMetadata("VillageEntity", plugin);
-                    ironGolem.removeMetadata("PlayingArena", plugin);
                     ironGolem.remove();
                 }
             }
@@ -1286,6 +1256,7 @@ public abstract class Arena extends BukkitRunnable {
         p.setFireTicks(0);
         if(getPlayers().size() == 0) {
             this.setArenaState(ArenaState.ENDING);
+            setTimer(0);
         }
 
         p.setGameMode(GameMode.SURVIVAL);

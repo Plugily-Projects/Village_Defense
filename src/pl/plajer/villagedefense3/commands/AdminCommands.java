@@ -258,8 +258,6 @@ public class AdminCommands extends MainCommand {
         if(arena.getZombies() != null) {
             for(Zombie zombie : arena.getZombies()) {
                 zombie.getWorld().playEffect(zombie.getLocation(), Effect.LAVA_POP, 20);
-                zombie.removeMetadata("VillageEntity", plugin);
-                zombie.removeMetadata("PlayingArena", plugin);
                 zombie.remove();
             }
             arena.getZombies().clear();
@@ -282,8 +280,6 @@ public class AdminCommands extends MainCommand {
         if(arena.getVillagers() != null) {
             for(Villager villager : arena.getVillagers()) {
                 villager.getWorld().playEffect(villager.getLocation(), Effect.LAVA_POP, 20);
-                villager.removeMetadata("VillageEntity", plugin);
-                villager.removeMetadata("PlayingArena", plugin);
                 villager.remove();
             }
             arena.getVillagers().clear();
@@ -306,8 +302,6 @@ public class AdminCommands extends MainCommand {
         if(arena.getIronGolems() != null) {
             for(IronGolem golem : arena.getIronGolems()) {
                 golem.getWorld().playEffect(golem.getLocation(), Effect.LAVA_POP, 20);
-                golem.removeMetadata("VillageEntity", plugin);
-                golem.removeMetadata("PlayingArena", plugin);
                 golem.remove();
             }
             arena.getIronGolems().clear();
@@ -373,8 +367,6 @@ public class AdminCommands extends MainCommand {
             if(arena.getZombies() != null) {
                 for(Zombie zombie : arena.getZombies()) {
                     zombie.getWorld().playEffect(zombie.getLocation(), Effect.LAVA_POP, 20);
-                    zombie.removeMetadata("VillageEntity", plugin);
-                    zombie.removeMetadata("PlayingArena", plugin);
                     zombie.remove();
                 }
                 arena.getZombies().clear();

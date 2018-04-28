@@ -2,6 +2,7 @@ package pl.plajer.villagedefense3.kits;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
+import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
@@ -128,7 +129,9 @@ public class WizardKit extends PremiumKit implements Listener {
                     p.getItemInHand().setAmount(p.getItemInHand().getAmount() - 1);
                 }
                 if(plugin.is1_9_R1() || plugin.is1_11_R1() || plugin.is1_12_R1()) {
-                    p.getWorld().spawnParticle(Particle.CRIT_MAGIC, p.getLocation(), 30, 1, 1, 1);
+                    p.getWorld().spawnParticle(Particle.CRIT_MAGIC, p.getLocation(), 40, 1, 1, 1);
+                } else if(plugin.is1_8_R3()){
+                    p.getWorld().spigot().playEffect(p.getLocation(), Effect.MAGIC_CRIT, 0, 0, 1, 1, 1, 1, 40, 50);
                 }
                 for(Entity en : p.getNearbyEntities(2, 2, 2)) {
                     if(en instanceof Zombie) {
@@ -163,6 +166,8 @@ public class WizardKit extends PremiumKit implements Listener {
                         loc.add(x, y, z);
                         if(plugin.is1_9_R1() || plugin.is1_11_R1() || plugin.is1_12_R1()) {
                             p.getWorld().spawnParticle(Particle.TOWN_AURA, loc, 5);
+                        } else if(plugin.is1_8_R3()){
+                            p.getWorld().spigot().playEffect(loc, Effect.VOID_FOG, 0, 0, 0, 0, 0, 1, 50, 50);
                         }
                         for(Entity en : loc.getChunk().getEntities()) {
                             if(!(en instanceof LivingEntity && en instanceof Zombie)) continue;

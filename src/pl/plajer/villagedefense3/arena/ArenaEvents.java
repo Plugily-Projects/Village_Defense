@@ -47,14 +47,16 @@ public class ArenaEvents implements Listener {
     public void onDieEntity(EntityDamageByEntityEvent e) {
         if(e.getEntity() instanceof LivingEntity && e.getDamager() instanceof Wolf && e.getEntity() instanceof Zombie) {
             //trick to get non player killer of zombie
-            if(!e.getEntity().hasMetadata("VillageEntity")) return;
-            if(e.getDamage() >= ((LivingEntity) e.getEntity()).getHealth()) {
-                Arena arena = ArenaRegistry.getArena(e.getEntity().getMetadata("PlayingArena").get(0).asString());
-                Player player = (Player) ((Wolf) e.getDamager()).getOwner();
-                if(player == null) return;
-                if(ArenaRegistry.getArena(player) != null) {
-                    arena.addStat(player, "kills");
-                    arena.addExperience(player, 2);
+            for(Arena a : ArenaRegistry.getArenas()){
+                if(a.getZombies().contains(e.getEntity())){
+                    if(e.getDamage() >= ((LivingEntity) e.getEntity()).getHealth()) {
+                        Player player = (Player) ((Wolf) e.getDamager()).getOwner();
+                        if(player == null) return;
+                        if(ArenaRegistry.getArena(player) != null) {
+                            a.addStat(player, "kills");
+                            a.addExperience(player, 2);
+                        }
+                    }
                 }
             }
         }
@@ -62,25 +64,29 @@ public class ArenaEvents implements Listener {
 
     @EventHandler
     public void onDieEntity(EntityDeathEvent event) {
-        if(!event.getEntity().hasMetadata("VillageEntity")) return;
-        Arena arena = ArenaRegistry.getArena(event.getEntity().getMetadata("PlayingArena").get(0).asString());
-        event.getEntity().removeMetadata("VillageEntity", plugin);
-        event.getEntity().removeMetadata("PlayingArena", plugin);
-        if(event.getEntity().getType() == EntityType.ZOMBIE) {
-            arena.removeZombie((Zombie) event.getEntity());
-            if(ArenaRegistry.getArena(event.getEntity().getKiller()) != null) {
-                arena.addStat(event.getEntity().getKiller(), "kills");
-                arena.addExperience(event.getEntity().getKiller(), 2);
-                plugin.getRewardsHandler().performZombieKillReward(event.getEntity().getKiller());
-                plugin.getPowerupManager().spawnPowerup(event.getEntity().getLocation(), ArenaRegistry.getArena(event.getEntity().getKiller()));
-            }
-            return;
-        }
-        if(event.getEntity().getType() == EntityType.VILLAGER) {
-            arena.getStartLocation().getWorld().strikeLightningEffect(event.getEntity().getLocation());
-            arena.removeVillager((Villager) event.getEntity());
-            for(Player p : arena.getPlayers()) {
-                p.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Messages.Villager-Died"));
+        if(event.getEntity().getType() == EntityType.ZOMBIE || event.getEntity().getType() == EntityType.VILLAGER) {
+            for(Arena a : ArenaRegistry.getArenas()) {
+                if(a.getZombies().contains(event.getEntity())) {
+                    if(event.getEntity().getType() == EntityType.ZOMBIE) {
+                        a.removeZombie((Zombie) event.getEntity());
+                        if(ArenaRegistry.getArena(event.getEntity().getKiller()) != null) {
+                            a.addStat(event.getEntity().getKiller(), "kills");
+                            a.addExperience(event.getEntity().getKiller(), 2);
+                            plugin.getRewardsHandler().performZombieKillReward(event.getEntity().getKiller());
+                            plugin.getPowerupManager().spawnPowerup(event.getEntity().getLocation(), ArenaRegistry.getArena(event.getEntity().getKiller()));
+                        }
+                        return;
+                    }
+                }
+                if(a.getVillagers().contains(event.getEntity())) {
+                    if(event.getEntity().getType() == EntityType.VILLAGER) {
+                        a.getStartLocation().getWorld().strikeLightningEffect(event.getEntity().getLocation());
+                        a.removeVillager((Villager) event.getEntity());
+                        for(Player p : a.getPlayers()) {
+                            p.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Messages.Villager-Died"));
+                        }
+                    }
+                }
             }
         }
     }

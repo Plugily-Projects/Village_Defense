@@ -53,7 +53,7 @@ Basic-Permissions:
   # use 'villagedefense.join.*' to enable access to all arenas
   Join-Permission: "villagedefense.join.<arena>"
 
-# Should /leave command be blocked?
+# Should /vd leave command be blocked?
 Disable-Leave-Command: false
 
 # Enable this option when you're using MySQL, otherwise it won't work.

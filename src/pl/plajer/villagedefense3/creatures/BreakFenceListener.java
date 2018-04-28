@@ -36,6 +36,7 @@ public class BreakFenceListener extends BukkitRunnable {
                 Queue<Block> blocks = Util.getLineOfSight((LivingEntity) entity, null, 1, 1);
                 for(Block block : blocks) {
                     if(block.getType() == Material.WOOD_DOOR || block.getType() == Material.WOODEN_DOOR /*|| block.getType() == Material.FENCE*/) {
+
                         if(plugin.is1_9_R1() || plugin.is1_11_R1() || plugin.is1_12_R1()) {
                             block.getWorld().spawnParticle(Particle.BLOCK_CRACK, block.getLocation(), 10, 0.1, 0.1, 0.1, new MaterialData(Material.WOODEN_DOOR));
                         } else {

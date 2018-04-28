@@ -117,7 +117,11 @@ public class BlockerKit extends PremiumKit implements Listener {
         user.toPlayer().sendMessage(ChatManager.colorMessage("Kits.Blocker.Game-Item-Place-Message"));
         ZombieBarrier zombieBarrier = new ZombieBarrier();
         zombieBarrier.setLocation(block.getLocation());
-        zombieBarrier.getLocation().getWorld().playEffect(zombieBarrier.getLocation(), Effect.FIREWORKS_SPARK, 20);
+        if(plugin.is1_8_R3()) {
+            zombieBarrier.getLocation().getWorld().spigot().playEffect(zombieBarrier.getLocation(), Effect.FIREWORKS_SPARK, 0, 0, 0, 0, 0, 1, 20, 50);
+        } else{
+            zombieBarrier.getLocation().getWorld().spawnParticle(Particle.FIREWORKS_SPARK, zombieBarrier.getLocation(), 20);
+        }
         new BukkitRunnable(){
             @Override
             public void run() {
@@ -125,7 +129,7 @@ public class BlockerKit extends PremiumKit implements Listener {
                 if(zombieBarrier.getSeconds() <= 0) {
                     zombieBarrier.getLocation().getBlock().setType(Material.AIR);
                     if(plugin.is1_8_R3()) {
-                        zombieBarrier.getLocation().getWorld().playEffect(zombieBarrier.getLocation(), Effect.FIREWORKS_SPARK, 20);
+                        zombieBarrier.getLocation().getWorld().spigot().playEffect(zombieBarrier.getLocation(), Effect.FIREWORKS_SPARK, 0, 0, 0, 0, 0, 1, 20, 50);
                     } else{
                         zombieBarrier.getLocation().getWorld().spawnParticle(Particle.FIREWORKS_SPARK, zombieBarrier.getLocation(), 20);
                     }

@@ -1,6 +1,6 @@
 name: VillageDefense
 main: pl.plajer.villagedefense3.Main
-version: 3.4.1
+version: 3.5.0
 softdepend: [WorldEdit, HolographicDisplays]
 
 commands:

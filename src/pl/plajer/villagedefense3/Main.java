@@ -151,14 +151,6 @@ public class Main extends JavaPlugin implements Listener {
         return arenaRegistry;
     }
 
-    private void debugChecker() {
-        if(!getConfig().isSet("Debug")) {
-            getConfig().set("Debug", false);
-            saveConfig();
-        }
-        debug = getConfig().getBoolean("Debug");
-    }
-
     public String getVersion() {
         return version;
     }
@@ -172,6 +164,7 @@ public class Main extends JavaPlugin implements Listener {
         version = Bukkit.getServer().getClass().getPackage().getName().replace(".", ",").split(",")[3];
         new ConfigurationManager(this);
         LanguageManager.init(this);
+        saveDefaultConfig();
         if(!(getVersion().equalsIgnoreCase("v1_8_R3") || getVersion().equalsIgnoreCase("v1_9_R1") || getVersion().equalsIgnoreCase("v1_11_R1") || getVersion().equalsIgnoreCase("v1_12_R1"))) {
             MessageUtils.thisVersionIsNotSupported();
             Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "Your server version is not supported by Village Defense!");
@@ -198,11 +191,9 @@ public class Main extends JavaPlugin implements Listener {
         if(LanguageManager.getLanguageFile().isSet("File-Version") && getConfig().isSet("Config-Version")) {
             LanguageMigrator.migrateToNewFormat();
         }
-        saveDefaultConfig();
         debug = getConfig().getBoolean("Debug");
         debug("Main setup start", System.currentTimeMillis());
         setupFiles();
-        debugChecker();
         LanguageMigrator.configUpdate();
         LanguageMigrator.languageFileUpdate();
         initializeClasses();
