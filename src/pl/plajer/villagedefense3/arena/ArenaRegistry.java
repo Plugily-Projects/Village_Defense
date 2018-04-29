@@ -29,14 +29,12 @@ public class ArenaRegistry {
      * @return [b]true[/b] when player is in arena, [b]false[/b] if otherwise
      */
     public static boolean isInGameInstance(Player player) {
-        boolean b = false;
         for(Arena arena : arenas) {
             if(arena.getPlayers().contains(player)) {
-                b = true;
-                break;
+                return true;
             }
         }
-        return b;
+        return false;
     }
 
     /**

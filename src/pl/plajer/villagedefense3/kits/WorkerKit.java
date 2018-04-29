@@ -72,20 +72,8 @@ public class WorkerKit extends LevelKit implements Listener {
         Arena arena = ArenaRegistry.getArena(event.getPlayer());
         if(arena == null) return;
         User user = UserManager.getUser(event.getPlayer().getUniqueId());
-        if(user.isSpectator()) {
-            event.setCancelled(true);
-            return;
-        }
-        if(event.getPlayer().getItemInHand() == null) {
-            event.setCancelled(true);
-            return;
-        }
-        if(!(event.getPlayer().getItemInHand().getType() == Material.WOOD_DOOR || event.getPlayer().getItemInHand().getType() == Material.WOODEN_DOOR)) {
-            event.setCancelled(true);
-            return;
-        }
-
-        if(!arena.getDoorLocations().containsKey(event.getBlock().getLocation())) {
+        if(user.isSpectator() || event.getPlayer().getItemInHand() == null || !arena.getDoorLocations().containsKey(event.getBlock().getLocation())
+                || !(event.getPlayer().getItemInHand().getType() == Material.WOOD_DOOR || event.getPlayer().getItemInHand().getType() == Material.WOODEN_DOOR)) {
             event.setCancelled(true);
             return;
         }

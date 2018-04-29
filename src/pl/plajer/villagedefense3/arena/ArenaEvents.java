@@ -23,10 +23,10 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import pl.plajer.villagedefense3.Main;
-import pl.plajer.villagedefense3.user.User;
 import pl.plajer.villagedefense3.handlers.ChatManager;
-import pl.plajer.villagedefense3.user.UserManager;
 import pl.plajer.villagedefense3.items.SpecialItemManager;
+import pl.plajer.villagedefense3.user.User;
+import pl.plajer.villagedefense3.user.UserManager;
 import pl.plajer.villagedefense3.utils.MessageUtils;
 
 /**
@@ -47,8 +47,8 @@ public class ArenaEvents implements Listener {
     public void onDieEntity(EntityDamageByEntityEvent e) {
         if(e.getEntity() instanceof LivingEntity && e.getDamager() instanceof Wolf && e.getEntity() instanceof Zombie) {
             //trick to get non player killer of zombie
-            for(Arena a : ArenaRegistry.getArenas()){
-                if(a.getZombies().contains(e.getEntity())){
+            for(Arena a : ArenaRegistry.getArenas()) {
+                if(a.getZombies().contains(e.getEntity())) {
                     if(e.getDamage() >= ((LivingEntity) e.getEntity()).getHealth()) {
                         Player player = (Player) ((Wolf) e.getDamager()).getOwner();
                         if(player == null) return;
@@ -66,26 +66,29 @@ public class ArenaEvents implements Listener {
     public void onDieEntity(EntityDeathEvent event) {
         if(event.getEntity().getType() == EntityType.ZOMBIE || event.getEntity().getType() == EntityType.VILLAGER) {
             for(Arena a : ArenaRegistry.getArenas()) {
-                if(a.getZombies().contains(event.getEntity())) {
-                    if(event.getEntity().getType() == EntityType.ZOMBIE) {
-                        a.removeZombie((Zombie) event.getEntity());
-                        if(ArenaRegistry.getArena(event.getEntity().getKiller()) != null) {
-                            a.addStat(event.getEntity().getKiller(), "kills");
-                            a.addExperience(event.getEntity().getKiller(), 2);
-                            plugin.getRewardsHandler().performZombieKillReward(event.getEntity().getKiller());
-                            plugin.getPowerupManager().spawnPowerup(event.getEntity().getLocation(), ArenaRegistry.getArena(event.getEntity().getKiller()));
+                switch(event.getEntityType()) {
+                    case ZOMBIE:
+                        if(a.getZombies().contains(event.getEntity())) {
+                            a.removeZombie((Zombie) event.getEntity());
+                            if(ArenaRegistry.getArena(event.getEntity().getKiller()) != null) {
+                                a.addStat(event.getEntity().getKiller(), "kills");
+                                a.addExperience(event.getEntity().getKiller(), 2);
+                                plugin.getRewardsHandler().performZombieKillReward(event.getEntity().getKiller());
+                                plugin.getPowerupManager().spawnPowerup(event.getEntity().getLocation(), ArenaRegistry.getArena(event.getEntity().getKiller()));
+                            }
+                            return;
                         }
-                        return;
-                    }
-                }
-                if(a.getVillagers().contains(event.getEntity())) {
-                    if(event.getEntity().getType() == EntityType.VILLAGER) {
-                        a.getStartLocation().getWorld().strikeLightningEffect(event.getEntity().getLocation());
-                        a.removeVillager((Villager) event.getEntity());
-                        for(Player p : a.getPlayers()) {
-                            p.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Messages.Villager-Died"));
+                        break;
+                    case VILLAGER:
+                        if(a.getVillagers().contains(event.getEntity())) {
+                            a.getStartLocation().getWorld().strikeLightningEffect(event.getEntity().getLocation());
+                            a.removeVillager((Villager) event.getEntity());
+                            for(Player p : a.getPlayers()) {
+                                p.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Messages.Villager-Died"));
+                            }
+                            return;
                         }
-                    }
+                        break;
                 }
             }
         }
@@ -100,15 +103,11 @@ public class ArenaEvents implements Listener {
         e.getDrops().clear();
         e.setDroppedExp(0);
         e.getEntity().spigot().respawn();
-        this.onDeath(e.getEntity(), arena);
-    }
-
-    private void onDeath(final Player player, Arena arena) {
+        Player player = e.getEntity();
         if(arena.getArenaState() == ArenaState.STARTING) {
             player.teleport(arena.getStartLocation());
             return;
-        }
-        if(arena.getArenaState() == ArenaState.ENDING || arena.getArenaState() == ArenaState.RESTARTING) {
+        } else if(arena.getArenaState() == ArenaState.ENDING || arena.getArenaState() == ArenaState.RESTARTING) {
             player.getInventory().clear();
             player.setFlying(false);
             player.setAllowFlight(false);
@@ -126,6 +125,7 @@ public class ArenaEvents implements Listener {
         user.setInt("orbs", 0);
         ArenaUtils.hidePlayer(player, arena);
         player.setAllowFlight(true);
+        player.setFlying(true);
         player.getInventory().clear();
         MessageUtils.sendTitle(player, ChatColor.stripColor(ChatManager.formatMessage(arena, ChatManager.colorMessage("In-Game.Death-Screen"))), 0, 5 * 20, 0, ChatColor.RED);
         if(plugin.is1_9_R1() || plugin.is1_11_R1() || plugin.is1_12_R1()) {
@@ -139,11 +139,6 @@ public class ArenaEvents implements Listener {
             }.runTaskTimer(plugin, 20, 20);
         }
         ChatManager.broadcastDeathMessage(arena, player);
-
-        arena.teleportToStartLocation(player);
-
-        player.setAllowFlight(true);
-        player.setFlying(true);
 
         ItemStack spectatorItem = new ItemStack(Material.COMPASS, 1);
         ItemMeta spectatorMeta = spectatorItem.getItemMeta();
@@ -166,31 +161,25 @@ public class ArenaEvents implements Listener {
     }
 
     @EventHandler
-    public void onRespawn(PlayerRespawnEvent event) {
-        Arena arena = ArenaRegistry.getArena(event.getPlayer());
+    public void onRespawn(PlayerRespawnEvent e) {
+        Arena arena = ArenaRegistry.getArena(e.getPlayer());
         if(arena == null) return;
-        if(arena.getPlayers().contains(event.getPlayer())) {
-            this.onRespawn(event.getPlayer(), arena);
-            event.setRespawnLocation(arena.getStartLocation());
-        }
-    }
-
-    private void onRespawn(Player player, Arena arena) {
-        User user = UserManager.getUser(player.getUniqueId());
-        if(user.isFakeDead()) {
-            arena.teleportToStartLocation(player);
+        if(arena.getPlayers().contains(e.getPlayer())) {
+            Player player = e.getPlayer();
+            User user = UserManager.getUser(player.getUniqueId());
             player.setAllowFlight(true);
             player.setFlying(true);
-
-        } else {
-            arena.teleportToStartLocation(player);
-            user.setSpectator(true);
-            player.setGameMode(GameMode.SURVIVAL);
-            player.removePotionEffect(PotionEffectType.NIGHT_VISION);
-            user.setFakeDead(true);
-            player.setAllowFlight(true);
-            player.setFlying(true);
-            user.setInt("orbs", 0);
+            if(user.isFakeDead()) {
+                arena.teleportToStartLocation(player);
+            } else {
+                arena.teleportToStartLocation(player);
+                user.setSpectator(true);
+                player.setGameMode(GameMode.SURVIVAL);
+                player.removePotionEffect(PotionEffectType.NIGHT_VISION);
+                user.setFakeDead(true);
+                user.setInt("orbs", 0);
+            }
+            e.setRespawnLocation(arena.getStartLocation());
         }
     }
 

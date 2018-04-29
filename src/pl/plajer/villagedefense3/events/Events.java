@@ -32,19 +32,18 @@ import org.bukkit.event.player.PlayerExpChangeEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import pl.plajer.villagedefense3.Main;
-import pl.plajer.villagedefense3.user.User;
 import pl.plajer.villagedefense3.arena.Arena;
 import pl.plajer.villagedefense3.arena.ArenaRegistry;
 import pl.plajer.villagedefense3.arena.ArenaState;
 import pl.plajer.villagedefense3.handlers.ChatManager;
 import pl.plajer.villagedefense3.handlers.PermissionsManager;
 import pl.plajer.villagedefense3.handlers.ShopManager;
-import pl.plajer.villagedefense3.user.UserManager;
 import pl.plajer.villagedefense3.items.SpecialItemManager;
+import pl.plajer.villagedefense3.user.User;
+import pl.plajer.villagedefense3.user.UserManager;
 import pl.plajer.villagedefense3.utils.Util;
 
 import java.util.ArrayList;
@@ -76,8 +75,7 @@ public class Events implements Listener {
 
     @EventHandler
     public void onItemPickup(PlayerExpChangeEvent event) {
-        Arena arena = ArenaRegistry.getArena(event.getPlayer());
-        if(arena == null)
+        if(ArenaRegistry.getArena(event.getPlayer()) == null)
             return;
         int amount = (int) Math.ceil(event.getAmount() * 1.6);
         User user = UserManager.getUser(event.getPlayer().getUniqueId());
@@ -95,16 +93,16 @@ public class Events implements Listener {
         }
 
         if(event.getPlayer().hasPermission(PermissionsManager.getElite())) {
-            amount = +(int) Math.ceil(event.getAmount() * 1.5);
+            amount += (int) Math.ceil(event.getAmount() * 1.5);
             user.addInt("orbs", (int) Math.ceil(event.getAmount() * 1.5));
         } else if(event.getPlayer().hasPermission(PermissionsManager.getMvp())) {
-            amount = +(int) Math.ceil(event.getAmount() * 1.0);
+            amount += (int) Math.ceil(event.getAmount() * 1.0);
             user.addInt("orbs", (int) Math.ceil(event.getAmount() * 1.0));
         } else if(event.getPlayer().hasPermission(PermissionsManager.getVip())) {
-            amount = +(int) Math.ceil(event.getAmount() * 0.5);
+            amount += (int) Math.ceil(event.getAmount() * 0.5);
             user.addInt("orbs", (int) Math.ceil(event.getAmount() * 0.5));
         } else {
-            amount = +event.getAmount();
+            amount += event.getAmount();
             user.addInt("orbs", event.getAmount());
         }
         event.getPlayer().sendMessage(ChatManager.colorMessage("In-Game.Orbs-Pickup").replaceAll("%number%", String.valueOf(amount)));
@@ -195,7 +193,7 @@ public class Events implements Listener {
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
-    public void disableCommands(PlayerCommandPreprocessEvent event) {
+    public void onCommandExecute(PlayerCommandPreprocessEvent event) {
         Arena arena = ArenaRegistry.getArena(event.getPlayer());
         if(arena == null) return;
         if(!plugin.getConfig().getBoolean("Block-Commands-In-Game")) return;
@@ -248,8 +246,7 @@ public class Events implements Listener {
         Arena arena = ArenaRegistry.getArena((Player) event.getDamager());
         if(arena == null)
             return;
-        User user = UserManager.getUser(event.getDamager().getUniqueId());
-        if(user.isFakeDead()) {
+        if(UserManager.getUser(event.getDamager().getUniqueId()).isFakeDead()) {
             event.setCancelled(true);
             return;
         }
@@ -319,29 +316,20 @@ public class Events implements Listener {
     }
 
     @EventHandler
-    public void onShop(InventoryClickEvent event) {
-        if(!(event.getWhoClicked() instanceof Player))
+    public void onShop(InventoryClickEvent e) {
+        if(!(e.getWhoClicked() instanceof Player))
             return;
-        Player player = (Player) event.getWhoClicked();
-        Inventory inv = event.getInventory();
-        Arena arena = ArenaRegistry.getArena((Player) event.getWhoClicked());
-        if(arena == null)
+        Player player = (Player) e.getWhoClicked();
+        Arena arena = ArenaRegistry.getArena((Player) e.getWhoClicked());
+        if(arena == null || e.getInventory().getName() == null || !e.getInventory().getName().equalsIgnoreCase(ChatManager.colorMessage("In-Game.Messages.Shop-Messages.Shop-GUI-Name")))
             return;
-        User user = UserManager.getUser(player.getUniqueId());
-        if(user.isFakeDead()) {
-            event.setCancelled(true);
+        e.setCancelled(true);
+        if(e.getCurrentItem() == null || !e.getCurrentItem().hasItemMeta() || !e.getCurrentItem().getItemMeta().hasLore())
             return;
-        }
-        if(inv.getName() == null || !inv.getName().equalsIgnoreCase(ChatManager.colorMessage("In-Game.Messages.Shop-Messages.Shop-GUI-Name")))
-            return;
-        event.setCancelled(true);
-        if(event.getCurrentItem() == null || !event.getCurrentItem().hasItemMeta() || !event.getCurrentItem().getItemMeta().hasLore())
-            return;
-        String string = event.getCurrentItem().getItemMeta().getLore().get(0);
-        string = ChatColor.stripColor(string);
+        String string = ChatColor.stripColor(e.getCurrentItem().getItemMeta().getLore().get(0));
         if(!(string.contains(ChatManager.colorMessage("In-Game.Messages.Shop-Messages.Currency-In-Shop")) || string.contains("orbs"))) {
             boolean b = false;
-            for(String s : event.getCurrentItem().getItemMeta().getLore()) {
+            for(String s : e.getCurrentItem().getItemMeta().getLore()) {
                 if(string.contains(ChatManager.colorMessage("In-Game.Messages.Shop-Messages.Currency-In-Shop")) || string.contains("orbs")) {
                     string = s;
                     b = true;
@@ -355,15 +343,14 @@ public class Events implements Listener {
             player.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Messages.Shop-Messages.Not-Enough-Orbs"));
             return;
         }
-        if(event.getCurrentItem().hasItemMeta() && event.getCurrentItem().getItemMeta().hasDisplayName()) {
-            if(event.getCurrentItem().getItemMeta().getDisplayName().contains(ChatManager.colorMessage("In-Game.Messages.Shop-Messages.Golem-Item-Name"))) {
+        if(e.getCurrentItem().hasItemMeta() && e.getCurrentItem().getItemMeta().hasDisplayName()) {
+            if(e.getCurrentItem().getItemMeta().getDisplayName().contains(ChatManager.colorMessage("In-Game.Messages.Shop-Messages.Golem-Item-Name"))) {
                 arena.spawnGolem(arena.getStartLocation(), player);
                 player.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Messages.Golem-Spawned"));
                 UserManager.getUser(player.getUniqueId()).setInt("orbs", UserManager.getUser(player.getUniqueId()).getInt("orbs") - price);
                 return;
 
-            }
-            if(event.getCurrentItem().getItemMeta().getDisplayName().contains(ChatManager.colorMessage("In-Game.Messages.Shop-Messages.Wolf-Item-Name"))) {
+            } else if(e.getCurrentItem().getItemMeta().getDisplayName().contains(ChatManager.colorMessage("In-Game.Messages.Shop-Messages.Wolf-Item-Name"))) {
                 arena.spawnWolf(arena.getStartLocation(), player);
                 player.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Messages.Wolf-Spawned"));
                 UserManager.getUser(player.getUniqueId()).setInt("orbs", UserManager.getUser(player.getUniqueId()).getInt("orbs") - price);
@@ -371,7 +358,7 @@ public class Events implements Listener {
             }
         }
 
-        ItemStack itemStack = event.getCurrentItem().clone();
+        ItemStack itemStack = e.getCurrentItem().clone();
         ItemMeta itemMeta = itemStack.getItemMeta();
         List<String> lore = new ArrayList<>();
         for(String loopLore : lore) {
@@ -388,25 +375,20 @@ public class Events implements Listener {
     @EventHandler(priority = EventPriority.HIGH)
     //highest priority to fully protecc our game (i didn't set it because my test server was destroyed, n-no......)
     public void onBlockBreakEvent(BlockBreakEvent event) {
-        Arena arena = ArenaRegistry.getArena(event.getPlayer());
-        if(arena == null)
-            return;
+        if(!ArenaRegistry.isInGameInstance(event.getPlayer())) return;
         event.setCancelled(true);
     }
 
     @EventHandler(priority = EventPriority.HIGH)
     //highest priority to fully protecc our game (i didn't set it because my test server was destroyed, n-no......)
     public void onBuild(BlockPlaceEvent event) {
-        Arena arena = ArenaRegistry.getArena(event.getPlayer());
-        if(arena == null)
-            return;
+        if(!ArenaRegistry.isInGameInstance(event.getPlayer())) return;
         event.setCancelled(true);
     }
 
     @EventHandler
     public void onCraft(PlayerInteractEvent event) {
-        Arena arena = ArenaRegistry.getArena(event.getPlayer());
-        if(arena == null) return;
+        if(!ArenaRegistry.isInGameInstance(event.getPlayer())) return;
         if(event.getPlayer().getTargetBlock(null, 7).getType() == Material.WORKBENCH)
             event.setCancelled(true);
     }

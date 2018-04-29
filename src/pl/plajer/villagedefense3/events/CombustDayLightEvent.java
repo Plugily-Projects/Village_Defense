@@ -38,6 +38,7 @@ public class CombustDayLightEvent implements Listener {
         for(Arena arena : ArenaRegistry.getArenas()) {
             if(arena.getZombies().contains(e.getEntity())) {
                 e.setCancelled(true);
+                return;
             }
         }
     }
