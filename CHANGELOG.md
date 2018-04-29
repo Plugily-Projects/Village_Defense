@@ -1,5 +1,8 @@
 # Village Defense 3 Changelog
 
+### 3.5.1 Release (29.04.2018)
+* Code improvements
+
 ### 3.5.0 Release (28.04.2018)
 * Fixed #3 bug
 * Fixed particles in 1.8
