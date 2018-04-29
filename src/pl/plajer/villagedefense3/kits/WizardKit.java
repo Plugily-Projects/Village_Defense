@@ -171,7 +171,7 @@ public class WizardKit extends PremiumKit implements Listener {
                         }
                         for(Entity en : loc.getChunk().getEntities()) {
                             if(!(en instanceof LivingEntity && en instanceof Zombie)) continue;
-                            if(en.getLocation().distance(loc) < 1.0) {
+                            if(en.getLocation().distance(loc) < 1.5) {
                                 if(!en.equals(p)) {
                                     ((LivingEntity) en).damage(6.0, p);
                                 }

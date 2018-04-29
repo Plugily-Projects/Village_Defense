@@ -5,6 +5,7 @@
 * Fixed particles in 1.8
 * Fixed files generation without comments
 * Fixed TPS loss
+* Now wizard staff's attack will damage zombie if zombie is in front of you (less than 1 block away)
 
 ### 3.4.0 Release (22.04.2018)
 * Fixed major memory leak since 3.2.0
