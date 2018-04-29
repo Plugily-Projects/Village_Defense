@@ -140,8 +140,7 @@ public class WizardKit extends PremiumKit implements Listener {
                 }
                 Bukkit.getScheduler().runTaskLater(plugin, () -> wizardsOnDuty.remove(p), 20 * 15);
                 UserManager.getUser(e.getPlayer().getUniqueId()).setCooldown("essence", 15);
-            }
-            if(is.getItemMeta().getDisplayName().equals(ChatManager.colorMessage("Kits.Wizard.Staff-Item-Name"))) {
+            } else if(is.getItemMeta().getDisplayName().equals(ChatManager.colorMessage("Kits.Wizard.Staff-Item-Name"))) {
                 if(UserManager.getUser(e.getPlayer().getUniqueId()).isSpectator()) {
                     e.getPlayer().sendMessage(ChatManager.colorMessage("Kits.Cleaner.Spectator-Warning"));
                     return;

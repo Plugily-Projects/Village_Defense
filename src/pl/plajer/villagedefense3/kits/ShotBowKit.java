@@ -15,9 +15,9 @@ import org.bukkit.inventory.ItemStack;
 import pl.plajer.villagedefense3.Main;
 import pl.plajer.villagedefense3.handlers.ChatManager;
 import pl.plajer.villagedefense3.handlers.PermissionsManager;
-import pl.plajer.villagedefense3.user.UserManager;
 import pl.plajer.villagedefense3.kits.kitapi.KitRegistry;
 import pl.plajer.villagedefense3.kits.kitapi.basekits.PremiumKit;
+import pl.plajer.villagedefense3.user.UserManager;
 import pl.plajer.villagedefense3.utils.ArmorHelper;
 import pl.plajer.villagedefense3.utils.Util;
 import pl.plajer.villagedefense3.utils.WeaponHelper;
@@ -69,34 +69,30 @@ public class ShotBowKit extends PremiumKit implements Listener {
     @EventHandler
     public void onBowInteract(PlayerInteractEvent e) {
         if(e.getAction() == Action.LEFT_CLICK_AIR || e.getAction() == Action.LEFT_CLICK_BLOCK) {
-            if(e.getPlayer().getItemInHand() != null) {
-                if(e.getPlayer().getItemInHand().getType() == Material.BOW) {
-                    if(e.getPlayer().getInventory().contains(Material.ARROW) && UserManager.getUser(e.getPlayer().getUniqueId()).getKit() instanceof ShotBowKit && !UserManager.getUser(e.getPlayer().getUniqueId()).isSpectator()) {
-                        if(UserManager.getUser(e.getPlayer().getUniqueId()).getCooldown("shotbow") == 0) {
-                            for(int i = 0; i < 4; i++) {
-                                Bukkit.getScheduler().runTaskLater(plugin, () -> {
-                                    Projectile pr = e.getPlayer().launchProjectile(Arrow.class);
-                                    pr.setVelocity(e.getPlayer().getLocation().getDirection().multiply(3));
-                                    pr.setBounce(false);
-                                    pr.setShooter(e.getPlayer());
-                                    ((Arrow) pr).setCritical(true);
+            if(e.getPlayer().getItemInHand() == null || e.getPlayer().getItemInHand().getType() != Material.BOW ||
+                    (e.getPlayer().getInventory().contains(Material.ARROW) && UserManager.getUser(e.getPlayer().getUniqueId()).getKit() instanceof ShotBowKit && !UserManager.getUser(e.getPlayer().getUniqueId()).isSpectator()))
+                return;
+            if(UserManager.getUser(e.getPlayer().getUniqueId()).getCooldown("shotbow") == 0) {
+                for(int i = 0; i < 4; i++) {
+                    Bukkit.getScheduler().runTaskLater(plugin, () -> {
+                        Projectile pr = e.getPlayer().launchProjectile(Arrow.class);
+                        pr.setVelocity(e.getPlayer().getLocation().getDirection().multiply(3));
+                        pr.setBounce(false);
+                        pr.setShooter(e.getPlayer());
+                        ((Arrow) pr).setCritical(true);
 
-                                    if(e.getPlayer().getInventory().contains(Material.ARROW))
-                                        e.getPlayer().getInventory().removeItem(new ItemStack(Material.ARROW, 1));
-                                }, 2 * (2 * i));
-                            }
-                            e.setCancelled(true);
-                            UserManager.getUser(e.getPlayer().getUniqueId()).setCooldown("shotbow", 5);
-                        } else {
-                            String msgstring = ChatManager.colorMessage("Kits.Ability-Still-On-Cooldown");
-                            msgstring = msgstring.replaceFirst("%COOLDOWN%", Long.toString(UserManager.getUser(e.getPlayer().getUniqueId()).getCooldown("shotbow")));
-                            e.getPlayer().sendMessage(msgstring);
-                        }
-                    }
+                        if(e.getPlayer().getInventory().contains(Material.ARROW))
+                            e.getPlayer().getInventory().removeItem(new ItemStack(Material.ARROW, 1));
+                    }, 2 * (2 * i));
                 }
+                e.setCancelled(true);
+                UserManager.getUser(e.getPlayer().getUniqueId()).setCooldown("shotbow", 5);
+            } else {
+                String msgstring = ChatManager.colorMessage("Kits.Ability-Still-On-Cooldown");
+                msgstring = msgstring.replaceFirst("%COOLDOWN%", Long.toString(UserManager.getUser(e.getPlayer().getUniqueId()).getCooldown("shotbow")));
+                e.getPlayer().sendMessage(msgstring);
             }
         }
     }
-
 
 }

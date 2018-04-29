@@ -72,24 +72,14 @@ public class ZombieFinderKit extends LevelKit implements Listener {
 
     @EventHandler
     public void onClean(PlayerInteractEvent event) {
-        if(!event.hasItem())
-            return;
-        if(event.getItem().getType() != Material.BOOK)
-            return;
-        if(!(event.getItem().hasItemMeta()))
-            return;
-        if(!(event.getItem().getItemMeta().hasDisplayName()))
-            return;
-        if(!(event.getItem().getItemMeta().getDisplayName().contains(ChatManager.colorMessage("Kits.Zombie-Teleporter.Game-Item-Name"))))
-            return;
-        if(ArenaRegistry.getArena(event.getPlayer()) == null)
+        if(!event.hasItem() || event.getItem().getType() != Material.BOOK || !(event.getItem().hasItemMeta()) || !(event.getItem().getItemMeta().hasDisplayName())
+            || !(event.getItem().getItemMeta().getDisplayName().contains(ChatManager.colorMessage("Kits.Zombie-Teleporter.Game-Item-Name")) || !ArenaRegistry.isInArena(event.getPlayer())))
             return;
         if(UserManager.getUser(event.getPlayer().getUniqueId()).isSpectator()) {
             event.getPlayer().sendMessage(ChatManager.colorMessage("Kits.Teleporter.Spectator-Warning"));
             return;
         }
         Arena arena = ArenaRegistry.getArena(event.getPlayer());
-
         if(UserManager.getUser(event.getPlayer().getUniqueId()).getCooldown("zombie") > 0 && !UserManager.getUser(event.getPlayer().getUniqueId()).isSpectator()) {
             String msgstring = ChatManager.colorMessage("Kits.Ability-Still-On-Cooldown");
             msgstring = msgstring.replaceFirst("%COOLDOWN%", Long.toString(UserManager.getUser(event.getPlayer().getUniqueId()).getCooldown("zombie")));

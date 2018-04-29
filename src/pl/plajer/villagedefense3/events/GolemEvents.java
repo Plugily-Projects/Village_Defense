@@ -37,7 +37,7 @@ public class GolemEvents implements Listener {
 
     @EventHandler
     public void onGolemClick(PlayerInteractEntityEvent e) {
-        if(!ArenaRegistry.isInGameInstance(e.getPlayer()) || !(e.getRightClicked() instanceof IronGolem)) {
+        if(!ArenaRegistry.isInArena(e.getPlayer()) || !(e.getRightClicked() instanceof IronGolem)) {
             return;
         }
         if(UserManager.getUser(e.getPlayer().getUniqueId()).isSpectator()) return;

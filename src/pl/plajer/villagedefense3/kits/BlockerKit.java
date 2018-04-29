@@ -88,15 +88,8 @@ public class BlockerKit extends PremiumKit implements Listener {
         if(event.getAction() != Action.RIGHT_CLICK_AIR && event.getAction() != Action.RIGHT_CLICK_BLOCK)
             return;
         Player player = event.getPlayer();
-        if(player.getItemInHand() == null)
-            return;
-        if(ArenaRegistry.getArena(player) == null)
-            return;
-        if(!player.getItemInHand().hasItemMeta())
-            return;
-        if(!player.getItemInHand().getItemMeta().hasDisplayName())
-            return;
-        if(!player.getItemInHand().getItemMeta().getDisplayName().equalsIgnoreCase(ChatManager.colorMessage("Kits.Blocker.Game-Item-Name")))
+        if(!ArenaRegistry.isInArena(player) || player.getItemInHand() == null || !player.getItemInHand().hasItemMeta() || !player.getItemInHand().getItemMeta().hasDisplayName() ||
+                !player.getItemInHand().getItemMeta().getDisplayName().equalsIgnoreCase(ChatManager.colorMessage("Kits.Blocker.Game-Item-Name")))
             return;
         Block block = null;
         for(Block blocks : player.getLastTwoTargetBlocks(null, 5)) {

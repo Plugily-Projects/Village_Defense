@@ -166,7 +166,7 @@ public class KitManager implements Listener {
             return;
         if(!event.getCurrentItem().hasItemMeta())
             return;
-        if(!ArenaRegistry.isInGameInstance(player))
+        if(!ArenaRegistry.isInArena(player))
             return;
         VillagePlayerChooseKitEvent villagePlayerChooseKitEvent = new VillagePlayerChooseKitEvent(player, KitRegistry.getKit(event.getCurrentItem()), ArenaRegistry.getArena(player));
         Bukkit.getPluginManager().callEvent(villagePlayerChooseKitEvent);

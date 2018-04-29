@@ -81,15 +81,8 @@ public class TornadoKit extends PremiumKit implements Listener {
         if(event.getAction() != Action.RIGHT_CLICK_AIR && event.getAction() != Action.RIGHT_CLICK_BLOCK)
             return;
         Player player = event.getPlayer();
-        if(player.getItemInHand() == null)
-            return;
-        if(ArenaRegistry.getArena(player) == null)
-            return;
-        if(!player.getItemInHand().hasItemMeta())
-            return;
-        if(!player.getItemInHand().getItemMeta().hasDisplayName())
-            return;
-        if(!player.getItemInHand().getItemMeta().getDisplayName().equalsIgnoreCase(ChatManager.colorMessage("Kits.Tornado.Game-Item-Name")))
+        if(player.getItemInHand() == null || !player.getItemInHand().hasItemMeta() || !player.getItemInHand().getItemMeta().hasDisplayName() ||
+                !player.getItemInHand().getItemMeta().getDisplayName().equalsIgnoreCase(ChatManager.colorMessage("Kits.Tornado.Game-Item-Name")) || !ArenaRegistry.isInArena(player))
             return;
         if(player.getItemInHand().getAmount() <= 1) {
             player.setItemInHand(new ItemStack(Material.AIR));

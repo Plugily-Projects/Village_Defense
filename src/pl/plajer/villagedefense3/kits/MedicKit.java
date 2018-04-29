@@ -6,6 +6,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Zombie;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -59,12 +60,10 @@ public class MedicKit extends PremiumKit implements Listener {
     public void reStock(Player player) {}
 
     @EventHandler
-    public void onZombieHit(EntityDamageByEntityEvent event) {
-        if(event.getDamager().getType() != EntityType.PLAYER)
+    public void onZombieHit(EntityDamageByEntityEvent e) {
+        if(!(e.getEntity() instanceof Zombie && e.getDamager() instanceof Player))
             return;
-        if(event.getEntity().getType() != EntityType.ZOMBIE)
-            return;
-        User user = UserManager.getUser(event.getDamager().getUniqueId());
+        User user = UserManager.getUser(e.getDamager().getUniqueId());
         if(!(user.getKit() instanceof MedicKit))
             return;
         if(Math.random() <= 0.1) {

@@ -12,7 +12,6 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionType;
 import pl.plajer.villagedefense3.Main;
-import pl.plajer.villagedefense3.arena.Arena;
 import pl.plajer.villagedefense3.arena.ArenaRegistry;
 import pl.plajer.villagedefense3.handlers.ChatManager;
 import pl.plajer.villagedefense3.handlers.PermissionsManager;
@@ -87,7 +86,7 @@ public class NakedKit extends PremiumKit implements Listener {
     @EventHandler
     public void onArmor(InventoryClickEvent event) {
         if(UserManager.getUser(event.getWhoClicked().getUniqueId()) == null) return;
-        if(!ArenaRegistry.isInGameInstance((Player) event.getWhoClicked())) return;
+        if(!ArenaRegistry.isInArena((Player) event.getWhoClicked())) return;
         if(!(UserManager.getUser(event.getWhoClicked().getUniqueId()).getKit() instanceof NakedKit)) return;
         if(!(event.getInventory().getType().equals(InventoryType.PLAYER) || event.getInventory().getType().equals(InventoryType.CRAFTING))) return;
         Bukkit.getScheduler().runTaskLater(Main.getPlugin(Main.class), () -> {
@@ -109,8 +108,7 @@ public class NakedKit extends PremiumKit implements Listener {
 
     @EventHandler
     public void onArmorClick(PlayerInteractEvent event) {
-        Arena arena = ArenaRegistry.getArena(event.getPlayer());
-        if(arena == null) return;
+        if(!ArenaRegistry.isInArena(event.getPlayer())) return;
         if(UserManager.getUser(event.getPlayer().getUniqueId()) == null) return;
         if(!(UserManager.getUser(event.getPlayer().getUniqueId()).getKit() instanceof NakedKit)) return;
         if(!event.hasItem()) return;

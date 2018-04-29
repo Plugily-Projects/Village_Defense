@@ -68,29 +68,19 @@ public class CleanerKit extends PremiumKit implements Listener {
     public void reStock(Player player) {}
 
     @EventHandler
-    public void onClean(PlayerInteractEvent event) {
-        if(!event.hasItem())
+    public void onClean(PlayerInteractEvent e) {
+        Arena arena = ArenaRegistry.getArena(e.getPlayer());
+        if(!e.hasItem() || e.getItem().getType() != Material.BLAZE_ROD || !(e.getItem().hasItemMeta()) || !(e.getItem().getItemMeta().hasDisplayName()) ||
+                !(e.getItem().getItemMeta().getDisplayName().contains(ChatManager.colorMessage("Kits.Cleaner.Game-Item-Name"))) || arena == null)
             return;
-        if(event.getItem().getType() != Material.BLAZE_ROD)
-            return;
-        if(!(event.getItem().hasItemMeta()))
-            return;
-        if(!(event.getItem().getItemMeta().hasDisplayName()))
-            return;
-        if(!(event.getItem().getItemMeta().getDisplayName().contains(ChatManager.colorMessage("Kits.Cleaner.Game-Item-Name"))))
-            return;
-        if(ArenaRegistry.getArena(event.getPlayer()) == null)
-            return;
-        if(UserManager.getUser(event.getPlayer().getUniqueId()).isSpectator()) {
-            event.getPlayer().sendMessage(ChatManager.colorMessage("Kits.Cleaner.Spectator-Warning"));
+        if(UserManager.getUser(e.getPlayer().getUniqueId()).isSpectator()) {
+            e.getPlayer().sendMessage(ChatManager.colorMessage("Kits.Cleaner.Spectator-Warning"));
             return;
         }
-        Arena arena = ArenaRegistry.getArena(event.getPlayer());
-
-        if(UserManager.getUser(event.getPlayer().getUniqueId()).getCooldown("clean") > 0 && !UserManager.getUser(event.getPlayer().getUniqueId()).isSpectator()) {
+        if(UserManager.getUser(e.getPlayer().getUniqueId()).getCooldown("clean") > 0 && !UserManager.getUser(e.getPlayer().getUniqueId()).isSpectator()) {
             String msgstring = ChatManager.colorMessage("Kits.Ability-Still-On-Cooldown");
-            msgstring = msgstring.replaceFirst("%COOLDOWN%", Long.toString(UserManager.getUser(event.getPlayer().getUniqueId()).getCooldown("clean")));
-            event.getPlayer().sendMessage(msgstring);
+            msgstring = msgstring.replaceFirst("%COOLDOWN%", Long.toString(UserManager.getUser(e.getPlayer().getUniqueId()).getCooldown("clean")));
+            e.getPlayer().sendMessage(msgstring);
             return;
         }
         if(arena.getZombies() != null) {
@@ -100,18 +90,18 @@ public class CleanerKit extends PremiumKit implements Listener {
             }
             arena.getZombies().clear();
         } else {
-            event.getPlayer().sendMessage(ChatManager.colorMessage("Kits.Cleaner.Nothing-To-Clean"));
+            e.getPlayer().sendMessage(ChatManager.colorMessage("Kits.Cleaner.Nothing-To-Clean"));
             return;
         }
         if(plugin.is1_9_R1() || plugin.is1_11_R1() || plugin.is1_12_R1()) {
-            event.getPlayer().playSound(event.getPlayer().getLocation(), Sound.ENTITY_ZOMBIE_DEATH, 1, 1);
+            e.getPlayer().playSound(e.getPlayer().getLocation(), Sound.ENTITY_ZOMBIE_DEATH, 1, 1);
         } else {
-            event.getPlayer().playSound(event.getPlayer().getLocation(), Sound.valueOf("ZOMBIE_DEATH"), 1, 1);
+            e.getPlayer().playSound(e.getPlayer().getLocation(), Sound.valueOf("ZOMBIE_DEATH"), 1, 1);
         }
-        String message = ChatManager.formatMessage(arena, ChatManager.colorMessage("Kits.Cleaner.Cleaned-Map"), event.getPlayer());
-        for(Player player1 : ArenaRegistry.getArena(event.getPlayer()).getPlayers()) {
+        String message = ChatManager.formatMessage(arena, ChatManager.colorMessage("Kits.Cleaner.Cleaned-Map"), e.getPlayer());
+        for(Player player1 : ArenaRegistry.getArena(e.getPlayer()).getPlayers()) {
             player1.sendMessage(ChatManager.PLUGIN_PREFIX + message);
         }
-        UserManager.getUser(event.getPlayer().getUniqueId()).setCooldown("clean", 180);
+        UserManager.getUser(e.getPlayer().getUniqueId()).setCooldown("clean", 180);
     }
 }

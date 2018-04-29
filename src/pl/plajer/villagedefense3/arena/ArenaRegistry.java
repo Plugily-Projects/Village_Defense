@@ -28,7 +28,7 @@ public class ArenaRegistry {
      * @param player player to check
      * @return [b]true[/b] when player is in arena, [b]false[/b] if otherwise
      */
-    public static boolean isInGameInstance(Player player) {
+    public static boolean isInArena(Player player) {
         for(Arena arena : arenas) {
             if(arena.getPlayers().contains(player)) {
                 return true;
@@ -42,7 +42,7 @@ public class ArenaRegistry {
      *
      * @param p target player
      * @return Arena or null if not playing
-     * @see #isInGameInstance(Player) to check if player is playing
+     * @see #isInArena(Player) to check if player is playing
      */
     public static Arena getArena(Player p) {
         Arena arena = null;

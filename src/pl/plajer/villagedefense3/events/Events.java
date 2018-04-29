@@ -375,20 +375,20 @@ public class Events implements Listener {
     @EventHandler(priority = EventPriority.HIGH)
     //highest priority to fully protecc our game (i didn't set it because my test server was destroyed, n-no......)
     public void onBlockBreakEvent(BlockBreakEvent event) {
-        if(!ArenaRegistry.isInGameInstance(event.getPlayer())) return;
+        if(!ArenaRegistry.isInArena(event.getPlayer())) return;
         event.setCancelled(true);
     }
 
     @EventHandler(priority = EventPriority.HIGH)
     //highest priority to fully protecc our game (i didn't set it because my test server was destroyed, n-no......)
     public void onBuild(BlockPlaceEvent event) {
-        if(!ArenaRegistry.isInGameInstance(event.getPlayer())) return;
+        if(!ArenaRegistry.isInArena(event.getPlayer())) return;
         event.setCancelled(true);
     }
 
     @EventHandler
     public void onCraft(PlayerInteractEvent event) {
-        if(!ArenaRegistry.isInGameInstance(event.getPlayer())) return;
+        if(!ArenaRegistry.isInArena(event.getPlayer())) return;
         if(event.getPlayer().getTargetBlock(null, 7).getType() == Material.WORKBENCH)
             event.setCancelled(true);
     }
