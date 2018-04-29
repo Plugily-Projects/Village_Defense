@@ -95,7 +95,7 @@ public class WizardKit extends PremiumKit implements Listener {
         if(e.getDamager() instanceof Zombie && e.getEntity() instanceof Player) {
             if(!wizardsOnDuty.contains(e.getEntity())) return;
             if(ArenaRegistry.getArena((Player) e.getEntity()) == null) return;
-            ((Zombie) e.getDamager()).damage(2.0);
+            ((Zombie) e.getDamager()).damage(2.0, e.getEntity());
         }
     }
 
