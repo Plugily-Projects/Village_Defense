@@ -2,6 +2,7 @@
 
 ### 3.5.1 Release (29.04.2018)
 * Code improvements
+* Fixed another bug from early 2.x versions with cooldown drop faster depending on arenas number (ex. 2 arenas = 2 cooldown seconds less per second!)
 
 ### 3.5.0 Release (28.04.2018)
 * Fixed #3 bug

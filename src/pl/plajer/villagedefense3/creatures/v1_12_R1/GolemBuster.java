@@ -36,7 +36,7 @@ public class GolemBuster extends EntityZombie {
     public int damage;
     private float bw;
 
-    public GolemBuster(org.bukkit.World world){
+    public GolemBuster(org.bukkit.World world) {
         this(((CraftWorld) world).getHandle());
     }
 

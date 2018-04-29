@@ -16,7 +16,7 @@ public class PermissionsManager {
     private static String editPerm = "villagedefense.edit";
     private static String joinPerm = "villagedefense.join.<arena>";
 
-    public static void init(){
+    public static void init() {
         setupPermissions();
     }
 

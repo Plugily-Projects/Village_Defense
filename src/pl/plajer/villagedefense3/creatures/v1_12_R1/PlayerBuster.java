@@ -38,7 +38,7 @@ public class PlayerBuster extends EntityZombie {
     public int damage;
     private float bw;
 
-    public PlayerBuster(org.bukkit.World world){
+    public PlayerBuster(org.bukkit.World world) {
         this(((CraftWorld) world).getHandle());
     }
 

@@ -90,9 +90,9 @@ public class SignManager implements Listener {
         if(loadedSigns.get(e.getBlock().getState()) == null) return;
         loadedSigns.remove(e.getBlock().getState());
         String location = e.getBlock().getWorld().getName() + "," + e.getBlock().getX() + "," + e.getBlock().getY() + "," + e.getBlock().getZ() + "," + "0.0,0.0";
-        for(String arena : ConfigurationManager.getConfig("arenas").getConfigurationSection("instances").getKeys(false)){
-            for(String sign : ConfigurationManager.getConfig("arenas").getStringList("instances." + arena + ".signs")){
-                if(sign.equals(location)){
+        for(String arena : ConfigurationManager.getConfig("arenas").getConfigurationSection("instances").getKeys(false)) {
+            for(String sign : ConfigurationManager.getConfig("arenas").getStringList("instances." + arena + ".signs")) {
+                if(sign.equals(location)) {
                     List<String> signs = ConfigurationManager.getConfig("arenas").getStringList("instances." + arena + ".signs");
                     signs.remove(location);
                     FileConfiguration config = ConfigurationManager.getConfig("arenas");

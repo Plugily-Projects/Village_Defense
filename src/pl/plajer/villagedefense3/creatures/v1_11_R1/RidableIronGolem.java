@@ -30,7 +30,7 @@ import java.util.LinkedHashSet;
  */
 public class RidableIronGolem extends EntityIronGolem {
 
-    public RidableIronGolem(org.bukkit.World world){
+    public RidableIronGolem(org.bukkit.World world) {
         this(((CraftWorld) world).getHandle());
     }
 

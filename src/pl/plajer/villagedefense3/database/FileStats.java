@@ -4,9 +4,9 @@ import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import pl.plajer.villagedefense3.Main;
-import pl.plajer.villagedefense3.user.User;
 import pl.plajer.villagedefense3.arena.ArenaRegistry;
 import pl.plajer.villagedefense3.handlers.ConfigurationManager;
+import pl.plajer.villagedefense3.user.User;
 import pl.plajer.villagedefense3.user.UserManager;
 import pl.plajer.villagedefense3.utils.MessageUtils;
 import pl.plajer.villagedefense3.utils.MySQLConnectionUtils;
@@ -20,14 +20,7 @@ import java.util.List;
  */
 public class FileStats {
 
-    private Main plugin;
-    private FileConfiguration config;
     public final static List<String> STATISTICS = new ArrayList<>();
-
-    public FileStats(Main plugin) {
-        this.plugin = plugin;
-        config = ConfigurationManager.getConfig("stats");
-    }
 
     static {
         STATISTICS.add("gamesplayed");
@@ -39,6 +32,13 @@ public class FileStats {
         STATISTICS.add("orbs");
     }
 
+    private Main plugin;
+    private FileConfiguration config;
+
+    public FileStats(Main plugin) {
+        this.plugin = plugin;
+        config = ConfigurationManager.getConfig("stats");
+    }
 
     public void saveStat(Player player, String stat) {
         User user = UserManager.getUser(player.getUniqueId());

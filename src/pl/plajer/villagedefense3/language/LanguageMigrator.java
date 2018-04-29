@@ -16,8 +16,8 @@ public class LanguageMigrator {
     private static Main plugin = JavaPlugin.getPlugin(Main.class);
     private static List<String> migratable = Arrays.asList("bungee", "config", "kits", "language", "lobbyitems", "mysql");
 
-    public static void configUpdate(){
-        if(plugin.getConfig().getString("Version").equals("1")){
+    public static void configUpdate() {
+        if(plugin.getConfig().getString("Version").equals("1")) {
             Bukkit.getConsoleSender().sendMessage(ChatColor.YELLOW + "[Village Defense] System notify >> Your config file is outdated! Updating...");
             plugin.getConfig().set("Powerups.Enabled", true);
             plugin.getConfig().set("Powerups.Drop-Chance", 1.0);
@@ -48,7 +48,7 @@ public class LanguageMigrator {
             LanguageManager.saveLanguageFile();
             Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "[Village Defense] System notify >> Language file updated! Nice!");
         }
-        if(LanguageManager.getDefaultLanguageMessage("File-Version-Do-Not-Edit").equals("1")){
+        if(LanguageManager.getDefaultLanguageMessage("File-Version-Do-Not-Edit").equals("1")) {
             Bukkit.getConsoleSender().sendMessage(ChatColor.YELLOW + "[Village Defense] System notify >> Your language file is outdated! Updating...");
             LanguageManager.getLanguageFile().set("Powerups.Map-Clean-Powerup.Name", "&e&lMAP CLEANER");
             LanguageManager.getLanguageFile().set("Powerups.Map-Clean-Powerup.Description", "&7Map has been cleaned!");

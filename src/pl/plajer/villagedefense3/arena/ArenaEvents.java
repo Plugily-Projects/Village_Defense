@@ -56,6 +56,7 @@ public class ArenaEvents implements Listener {
                             a.addStat(player, "kills");
                             a.addExperience(player, 2);
                         }
+                        return;
                     }
                 }
             }

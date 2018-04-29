@@ -162,10 +162,10 @@ public class SetupInventoryEvents implements Listener {
             ShopManager.registerShop(arena);
             player.sendMessage(ChatColor.GREEN + "shop for chest set!");
         }
-        if(name.contains("Register arena")){
+        if(name.contains("Register arena")) {
             event.setCancelled(true);
             event.getWhoClicked().closeInventory();
-            if(ArenaRegistry.getArena(arena.getID()).isReady()){
+            if(ArenaRegistry.getArena(arena.getID()).isReady()) {
                 event.getWhoClicked().sendMessage(ChatColor.GREEN + "This arena was already validated and is ready to use!");
                 return;
             }
@@ -177,13 +177,13 @@ public class SetupInventoryEvents implements Listener {
                     return;
                 }
             }
-            for(String s : spawns){
-                if(!ConfigurationManager.getConfig("arenas").isSet("instances." + arena.getID() + "." + s) || ConfigurationManager.getConfig("arenas").getConfigurationSection("instances." + arena.getID() + "." + s).getKeys(false).size() < 2){
+            for(String s : spawns) {
+                if(!ConfigurationManager.getConfig("arenas").isSet("instances." + arena.getID() + "." + s) || ConfigurationManager.getConfig("arenas").getConfigurationSection("instances." + arena.getID() + "." + s).getKeys(false).size() < 2) {
                     event.getWhoClicked().sendMessage(ChatColor.RED + "Arena validation failed! Please configure following mob spawns properly: " + s + " (must be minimum 2 spawns)");
                     return;
                 }
             }
-            if(ConfigurationManager.getConfig("arenas").getConfigurationSection("instances." + arena.getID() + ".doors") == null){
+            if(ConfigurationManager.getConfig("arenas").getConfigurationSection("instances." + arena.getID() + ".doors") == null) {
                 event.getWhoClicked().sendMessage(ChatColor.RED + "Arena validation failed! Please configure doors properly");
                 return;
             }
@@ -193,9 +193,9 @@ public class SetupInventoryEvents implements Listener {
             ConfigurationManager.saveConfig(config, "arenas");
             List<Sign> signsToUpdate = new ArrayList<>();
             ArenaRegistry.unregisterArena(arena);
-            if(plugin.getSignManager().getLoadedSigns().containsValue(arena)){
-                for(Sign s : plugin.getSignManager().getLoadedSigns().keySet()){
-                    if(plugin.getSignManager().getLoadedSigns().get(s).equals(arena)){
+            if(plugin.getSignManager().getLoadedSigns().containsValue(arena)) {
+                for(Sign s : plugin.getSignManager().getLoadedSigns().keySet()) {
+                    if(plugin.getSignManager().getLoadedSigns().get(s).equals(arena)) {
                         signsToUpdate.add(s);
                     }
                 }
@@ -221,7 +221,7 @@ public class SetupInventoryEvents implements Listener {
                 arena.addZombieSpawn(Util.getLocation(false, ConfigurationManager.getConfig("arenas").getString(path)));
             }
             for(String string : ConfigurationManager.getConfig("arenas").getConfigurationSection("instances." + arena.getID() + ".villagerspawns").getKeys(false)) {
-                String path = "instances." + arena.getID()+ ".villagerspawns." + string;
+                String path = "instances." + arena.getID() + ".villagerspawns." + string;
                 arena.addVillagerSpawn(Util.getLocation(false, ConfigurationManager.getConfig("arenas").getString(path)));
             }
             for(String string : ConfigurationManager.getConfig("arenas").getConfigurationSection("instances." + arena.getID() + ".doors").getKeys(false)) {
@@ -230,7 +230,7 @@ public class SetupInventoryEvents implements Listener {
             }
             ArenaRegistry.registerArena(arena);
             arena.start();
-            for(Sign s : signsToUpdate){
+            for(Sign s : signsToUpdate) {
                 plugin.getSignManager().getLoadedSigns().put(s, arena);
             }
         }

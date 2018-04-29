@@ -118,13 +118,13 @@ public class SpecialItem {
         return lore;
     }
 
-    public void setLore(String[] lore) {
-        this.lore = lore;
-    }
-
     public void setLore(List<String> lore) {
 
         this.lore = lore.toArray(new String[lore.size()]);
+    }
+
+    public void setLore(String[] lore) {
+        this.lore = lore;
     }
 
     public String getDisplayName() {

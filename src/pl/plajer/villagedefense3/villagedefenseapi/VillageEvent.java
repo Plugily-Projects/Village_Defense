@@ -16,6 +16,7 @@ public abstract class VillageEvent extends Event {
 
     /**
      * Returns event arena
+     *
      * @return event arena
      */
     public Arena getArena() {

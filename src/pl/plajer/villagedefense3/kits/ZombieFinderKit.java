@@ -16,9 +16,9 @@ import pl.plajer.villagedefense3.arena.Arena;
 import pl.plajer.villagedefense3.arena.ArenaRegistry;
 import pl.plajer.villagedefense3.handlers.ChatManager;
 import pl.plajer.villagedefense3.handlers.ConfigurationManager;
-import pl.plajer.villagedefense3.user.UserManager;
 import pl.plajer.villagedefense3.kits.kitapi.KitRegistry;
 import pl.plajer.villagedefense3.kits.kitapi.basekits.LevelKit;
+import pl.plajer.villagedefense3.user.UserManager;
 import pl.plajer.villagedefense3.utils.Util;
 import pl.plajer.villagedefense3.utils.WeaponHelper;
 
@@ -73,7 +73,7 @@ public class ZombieFinderKit extends LevelKit implements Listener {
     @EventHandler
     public void onClean(PlayerInteractEvent event) {
         if(!event.hasItem() || event.getItem().getType() != Material.BOOK || !(event.getItem().hasItemMeta()) || !(event.getItem().getItemMeta().hasDisplayName())
-            || !(event.getItem().getItemMeta().getDisplayName().contains(ChatManager.colorMessage("Kits.Zombie-Teleporter.Game-Item-Name")) || !ArenaRegistry.isInArena(event.getPlayer())))
+                || !(event.getItem().getItemMeta().getDisplayName().contains(ChatManager.colorMessage("Kits.Zombie-Teleporter.Game-Item-Name")) || !ArenaRegistry.isInArena(event.getPlayer())))
             return;
         if(UserManager.getUser(event.getPlayer().getUniqueId()).isSpectator()) {
             event.getPlayer().sendMessage(ChatManager.colorMessage("Kits.Teleporter.Spectator-Warning"));

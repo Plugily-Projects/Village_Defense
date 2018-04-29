@@ -26,7 +26,7 @@ import java.util.List;
  */
 public class WorkingWolf extends EntityWolf {
 
-    public WorkingWolf(org.bukkit.World world){
+    public WorkingWolf(org.bukkit.World world) {
         this(((CraftWorld) world).getHandle());
     }
 

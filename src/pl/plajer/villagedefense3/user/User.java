@@ -2,8 +2,10 @@ package pl.plajer.villagedefense3.user;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.ScoreboardManager;
+import pl.plajer.villagedefense3.Main;
 import pl.plajer.villagedefense3.arena.Arena;
 import pl.plajer.villagedefense3.arena.ArenaRegistry;
 import pl.plajer.villagedefense3.kits.kitapi.KitRegistry;
@@ -17,6 +19,7 @@ import java.util.UUID;
  */
 public class User {
 
+    private static Main plugin = JavaPlugin.getPlugin(Main.class);
     private static long cooldownCounter = 0;
     private ScoreboardManager scoreboardManager = Bukkit.getScoreboardManager();
     private Scoreboard scoreboard;
@@ -32,8 +35,8 @@ public class User {
         this.uuid = uuid;
     }
 
-    public static void handleCooldowns() {
-        cooldownCounter++;
+    public static void cooldownHandlerTask() {
+        Bukkit.getScheduler().runTaskTimerAsynchronously(plugin, () -> cooldownCounter++, 20, 20);
     }
 
     public Kit getKit() {

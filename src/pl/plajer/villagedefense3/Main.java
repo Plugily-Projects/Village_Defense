@@ -94,7 +94,7 @@ public class Main extends JavaPlugin implements Listener {
         if(debug) {
             Bukkit.getConsoleSender().sendMessage(ChatColor.YELLOW + "[Village Debugger] Running task '" + thing + "'");
         }
-        if(elapsed > 15){
+        if(elapsed > 15) {
             Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "[Village Debugger] Slow server response, games may be affected.");
         }
     }
@@ -297,6 +297,7 @@ public class Main extends JavaPlugin implements Listener {
         powerupManager = new PowerupManager(this);
         chunkManager = new ChunkManager(this);
         rewardsHandler = new RewardsHandler(this);
+        User.cooldownHandlerTask();
     }
 
     private void setupFiles() {

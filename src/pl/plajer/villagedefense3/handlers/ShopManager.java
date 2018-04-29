@@ -24,15 +24,15 @@ public class ShopManager {
     @Getter
     private static Map<Arena, Inventory> arenaShop = new HashMap<>();
 
-    public ShopManager(){
-        for(Arena a : ArenaRegistry.getArenas()){
-            if(ConfigurationManager.getConfig("arenas").isSet("instances." + a.getID() + ".shop")){
+    public ShopManager() {
+        for(Arena a : ArenaRegistry.getArenas()) {
+            if(ConfigurationManager.getConfig("arenas").isSet("instances." + a.getID() + ".shop")) {
                 registerShop(a);
             }
         }
     }
 
-    public static void registerShop(Arena a){
+    public static void registerShop(Arena a) {
         Location location = Util.getLocation(false, ConfigurationManager.getConfig("arenas").getString("instances." + a.getID() + ".shop"));
         if(!(location.getBlock().getState() instanceof Chest)) {
             Main.debug("Shop failed to load, invalid location for loc " + location, System.currentTimeMillis());

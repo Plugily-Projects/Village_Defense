@@ -30,7 +30,7 @@ public class HardZombie extends EntityZombie {
     public int damage;
     private float bw;
 
-    public HardZombie(org.bukkit.World world){
+    public HardZombie(org.bukkit.World world) {
         this(((CraftWorld) world).getHandle());
     }
 

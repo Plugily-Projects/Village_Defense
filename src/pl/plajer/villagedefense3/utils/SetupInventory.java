@@ -107,13 +107,6 @@ public class SetupInventory {
                 .build());
     }
 
-    private String isOptionDoneList(String path){
-        if(ConfigurationManager.getConfig("arenas").isSet(path)) {
-            return ChatColor.GOLD + "" + ChatColor.BOLD + "Done: " + ChatColor.GREEN + "Yes " + ChatColor.GRAY + "(value: " + ConfigurationManager.getConfig("arenas").getConfigurationSection(path).getKeys(false).size() + ")";
-        }
-        return ChatColor.GOLD + "" + ChatColor.BOLD + "Done: " + ChatColor.RED + "No";
-    }
-
     public static String isOptionDone(String path) {
         if(ConfigurationManager.getConfig("arenas").isSet(path)) {
             return ChatColor.GOLD + "" + ChatColor.BOLD + "Done: " + ChatColor.GREEN + "Yes " + ChatColor.GRAY + "(value: " + ConfigurationManager.getConfig("arenas").getString(path) + ")";
@@ -121,9 +114,16 @@ public class SetupInventory {
         return ChatColor.GOLD + "" + ChatColor.BOLD + "Done: " + ChatColor.RED + "No";
     }
 
-    private String isOptionDoneBool(String path){
+    private String isOptionDoneList(String path) {
         if(ConfigurationManager.getConfig("arenas").isSet(path)) {
-            if(Bukkit.getServer().getWorlds().get(0).getSpawnLocation().equals(Util.getLocation(false, ConfigurationManager.getConfig("arenas").getString(path)))){
+            return ChatColor.GOLD + "" + ChatColor.BOLD + "Done: " + ChatColor.GREEN + "Yes " + ChatColor.GRAY + "(value: " + ConfigurationManager.getConfig("arenas").getConfigurationSection(path).getKeys(false).size() + ")";
+        }
+        return ChatColor.GOLD + "" + ChatColor.BOLD + "Done: " + ChatColor.RED + "No";
+    }
+
+    private String isOptionDoneBool(String path) {
+        if(ConfigurationManager.getConfig("arenas").isSet(path)) {
+            if(Bukkit.getServer().getWorlds().get(0).getSpawnLocation().equals(Util.getLocation(false, ConfigurationManager.getConfig("arenas").getString(path)))) {
                 return ChatColor.GOLD + "" + ChatColor.BOLD + "Done: " + ChatColor.RED + "No";
             }
             return ChatColor.GOLD + "" + ChatColor.BOLD + "Done: " + ChatColor.GREEN + "Yes";

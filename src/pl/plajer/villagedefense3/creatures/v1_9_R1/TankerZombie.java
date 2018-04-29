@@ -29,7 +29,7 @@ public class TankerZombie extends EntityZombie {
     public int damage;
     private float bw;
 
-    public TankerZombie(org.bukkit.World world){
+    public TankerZombie(org.bukkit.World world) {
         this(((CraftWorld) world).getHandle());
     }
 

@@ -2,7 +2,6 @@ package pl.plajer.villagedefense3.user;
 
 import org.bukkit.entity.Player;
 import pl.plajer.villagedefense3.Main;
-import pl.plajer.villagedefense3.user.User;
 import pl.plajer.villagedefense3.arena.Arena;
 
 import java.util.ArrayList;
@@ -17,7 +16,7 @@ public class UserManager {
 
     private static HashMap<UUID, User> users = new HashMap<>();
 
-    public static void registerUser(UUID uuid){
+    public static void registerUser(UUID uuid) {
         Main.debug("Registering new user with UUID: " + uuid, System.currentTimeMillis());
         users.put(uuid, new User(uuid));
     }

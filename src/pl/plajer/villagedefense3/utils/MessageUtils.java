@@ -29,7 +29,7 @@ public class MessageUtils {
             } catch(Exception ignored) {
             }
         } else {
-            if(plugin.is1_9_R1()){
+            if(plugin.is1_9_R1()) {
                 player.sendTitle(text, null);
             } else {
                 player.sendTitle(text, null, fadeInTime, showTime, fadeOutTime);
@@ -49,7 +49,7 @@ public class MessageUtils {
             } catch(Exception ignored) {
             }
         } else {
-            if(plugin.is1_9_R1()){
+            if(plugin.is1_9_R1()) {
                 player.sendTitle(null, text);
             } else {
                 player.sendTitle(null, text, fadeInTime, showTime, fadeOutTime);
@@ -101,7 +101,7 @@ public class MessageUtils {
         Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "                                                                                               ");
     }
 
-    public static void updateIsHere(){
+    public static void updateIsHere() {
         Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "  _   _               _           _          ");
         Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + " | | | |  _ __     __| |   __ _  | |_    ___ ");
         Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + " | | | | | '_ \\   / _` |  / _` | | __|  / _ \\");
@@ -110,7 +110,7 @@ public class MessageUtils {
         Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "         |_|                                 ");
     }
 
-    public static void gonnaMigrate(){
+    public static void gonnaMigrate() {
         Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "  __  __   _                          _     _                    ");
         Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + " |  \\/  | (_)   __ _   _ __    __ _  | |_  (_)  _ __     __ _             ");
         Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + " | |\\/| | | |  / _` | | '__|  / _` | | __| | | | '_ \\   / _` |            ");

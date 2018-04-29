@@ -20,6 +20,9 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scoreboard.DisplaySlot;
+import org.bukkit.scoreboard.Objective;
+import org.bukkit.scoreboard.Score;
 import pl.plajer.villagedefense3.Main;
 import pl.plajer.villagedefense3.handlers.ChatManager;
 import pl.plajer.villagedefense3.handlers.ConfigurationManager;
@@ -101,7 +104,7 @@ public abstract class Arena extends BukkitRunnable {
         isReady = ready;
     }
 
-    public boolean isFighting() {
+    private boolean isFighting() {
         return isFighting;
     }
 
@@ -119,8 +122,8 @@ public abstract class Arena extends BukkitRunnable {
     }
 
     public void run() {
-        User.handleCooldowns();
-        ArenaUtils.updateScoreboard(this);
+        if(getPlayers().size() == 0 && getArenaState() == ArenaState.WAITING_FOR_PLAYERS) return;
+        updateScoreboard();
         switch(getArenaState()) {
             case WAITING_FOR_PLAYERS:
                 if(plugin.isBungeeActivated())
@@ -376,6 +379,76 @@ public abstract class Arena extends BukkitRunnable {
         }
     }
 
+    private void updateScoreboard() {
+        if(getPlayers().size() == 0) return;
+        for(Player p : getPlayers()) {
+            User user = UserManager.getUser(p.getUniqueId());
+            if(user.getScoreboard().getObjective("vd_state_0") == null) {
+                for(ArenaState state : ArenaState.values()) {
+                    user.getScoreboard().registerNewObjective("vd_state_" + state.ordinal(), "dummy");
+                }
+                //fighting stage of IN_GAME state
+                user.getScoreboard().registerNewObjective("vd_state_2F", "dummy");
+            }
+            if(getArenaState() == ArenaState.ENDING) {
+                user.removeScoreboard();
+                return;
+            }
+            Objective gameObjective;
+            if(getArenaState() == ArenaState.IN_GAME) {
+                gameObjective = user.getScoreboard().getObjective("vd_state_" + getArenaState().ordinal() + (isFighting() ? "F" : ""));
+            } else {
+                gameObjective = user.getScoreboard().getObjective("vd_state_" + getArenaState().ordinal());
+            }
+            if(gameObjective == null) return;
+            gameObjective.setDisplayName(ChatManager.colorMessage("Scoreboard.Header"));
+            gameObjective.setDisplaySlot(DisplaySlot.SIDEBAR);
+            switch(getArenaState()) {
+                case WAITING_FOR_PLAYERS:
+                    Score playersTotal1 = gameObjective.getScore(ChatManager.formatMessage(this, ChatManager.colorMessage("Scoreboard.Players")));
+                    playersTotal1.setScore(getPlayers().size());
+                    Score neededPlayers2 = gameObjective.getScore(ChatManager.formatMessage(this, ChatManager.colorMessage("Scoreboard.Minimum-Players")));
+                    neededPlayers2.setScore(getMinimumPlayers());
+                    break;
+                case STARTING:
+                    Score timer = gameObjective.getScore(ChatManager.formatMessage(this, ChatManager.colorMessage("Scoreboard.Starting-In")));
+                    timer.setScore(getTimer());
+                    Score playersTotal = gameObjective.getScore(ChatManager.formatMessage(this, ChatManager.colorMessage("Scoreboard.Players")));
+                    playersTotal.setScore(getPlayers().size());
+                    Score neededPlayers = gameObjective.getScore(ChatManager.formatMessage(this, ChatManager.colorMessage("Scoreboard.Minimum-Players")));
+                    neededPlayers.setScore(getMinimumPlayers());
+                    break;
+                case IN_GAME:
+                    Score playersLeft = gameObjective.getScore(ChatManager.formatMessage(this, ChatManager.colorMessage("Scoreboard.Players-Left")));
+                    playersLeft.setScore(getPlayersLeft().size());
+                    Score villagersLeft = gameObjective.getScore(ChatManager.formatMessage(this, ChatManager.colorMessage("Scoreboard.Villagers-Left")));
+                    villagersLeft.setScore(getVillagers().size());
+                    Score orbs = gameObjective.getScore(ChatManager.formatMessage(this, ChatManager.colorMessage("Scoreboard.Orbs")));
+                    orbs.setScore(user.getInt("orbs"));
+                    if(isFighting()) {
+                        Score zombiesLeft = gameObjective.getScore(ChatManager.formatMessage(this, ChatManager.colorMessage("Scoreboard.Zombies-Left")));
+                        zombiesLeft.setScore(getZombiesLeft());
+                    } else {
+                        Score nextWaveIn = gameObjective.getScore(ChatManager.formatMessage(this, ChatManager.colorMessage("Scoreboard.Next-Wave-In")));
+                        nextWaveIn.setScore(getTimer());
+                    }
+                    Score rottenFlesh = gameObjective.getScore(ChatManager.formatMessage(this, ChatManager.colorMessage("Scoreboard.Rotten-Flesh")));
+                    rottenFlesh.setScore(getRottenFlesh());
+                    break;
+                case RESTARTING:
+                    break;
+                default:
+                    setArenaState(ArenaState.WAITING_FOR_PLAYERS);
+                    break;
+            }
+            Score empty = gameObjective.getScore("");
+            empty.setScore(-1);
+            Score footer = gameObjective.getScore(ChatManager.colorMessage("Scoreboard.Footer"));
+            footer.setScore(-2);
+            user.setScoreboard(user.getScoreboard());
+        }
+    }
+
     private void setZombieAmount() {
         zombiesToSpawn = (int) Math.ceil((getPlayers().size() * 0.5) * (wave * wave) / 2);
     }
@@ -482,8 +555,7 @@ public abstract class Arena extends BukkitRunnable {
     }
 
     private void spawnVillagers() {
-        if(getVillagers().size() > 10) {
-        } else if(getVillagerSpawns() == null || getVillagerSpawns().size() <= 0) {
+        if(getVillagerSpawns() == null || getVillagerSpawns().size() <= 0) {
             Main.debug("No villager spawns for " + getID() + ", game won't start", System.currentTimeMillis());
         } else {
             for(Location location : getVillagerSpawns()) {
@@ -565,8 +637,7 @@ public abstract class Arena extends BukkitRunnable {
             return;
         if(player.getUniqueId() == null)
             return;
-        if(players.contains(player.getUniqueId()))
-            players.remove(player.getUniqueId());
+        players.remove(player.getUniqueId());
     }
 
 
@@ -805,8 +876,7 @@ public abstract class Arena extends BukkitRunnable {
     }
 
     public void removeZombie(Zombie zombie) {
-        if(zombies.contains(zombie))
-            zombies.remove(zombie);
+        zombies.remove(zombie);
     }
 
     private List<Location> getVillagerSpawns() {
@@ -996,7 +1066,7 @@ public abstract class Arena extends BukkitRunnable {
     }
 
 
-    int getZombiesLeft() {
+    private int getZombiesLeft() {
         return zombiesToSpawn + getZombies().size();
     }
 
@@ -1275,7 +1345,7 @@ public abstract class Arena extends BukkitRunnable {
         rottenFleshAmount = rottenFleshAmount + i;
     }
 
-    int getRottenFlesh() {
+    private int getRottenFlesh() {
         return rottenFleshAmount;
     }
 

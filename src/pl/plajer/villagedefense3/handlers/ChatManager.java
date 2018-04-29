@@ -14,16 +14,16 @@ import pl.plajer.villagedefense3.utils.Util;
  */
 public class ChatManager {
 
-    public static String PLUGIN_PREFIX;
     public final static ChatColor PREFIX = ChatColor.GOLD;
     public final static ChatColor NORMAL = ChatColor.GRAY;
     public final static ChatColor HIGHLIGHTED = ChatColor.AQUA;
+    public static String PLUGIN_PREFIX;
 
-    public ChatManager(String prefix){
+    public ChatManager(String prefix) {
         PLUGIN_PREFIX = prefix;
     }
 
-    public static String colorRawMessage(String message){
+    public static String colorRawMessage(String message) {
         return ChatColor.translateAlternateColorCodes('&', message);
     }
 

@@ -30,7 +30,7 @@ public class BabyZombie extends EntityZombie {
     public int damage;
     private float bw;
 
-    public BabyZombie(org.bukkit.World world){
+    public BabyZombie(org.bukkit.World world) {
         this(((CraftWorld) world).getHandle());
     }
 

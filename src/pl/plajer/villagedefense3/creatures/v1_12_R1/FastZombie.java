@@ -28,7 +28,7 @@ public class FastZombie extends net.minecraft.server.v1_12_R1.EntityZombie {
     public int damage;
     private float bw;
 
-    public FastZombie(org.bukkit.World world){
+    public FastZombie(org.bukkit.World world) {
         this(((CraftWorld) world).getHandle());
     }
 

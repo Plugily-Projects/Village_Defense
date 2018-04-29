@@ -17,13 +17,13 @@ import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 import pl.plajer.villagedefense3.Main;
-import pl.plajer.villagedefense3.user.User;
 import pl.plajer.villagedefense3.arena.ArenaRegistry;
 import pl.plajer.villagedefense3.handlers.ChatManager;
 import pl.plajer.villagedefense3.handlers.PermissionsManager;
-import pl.plajer.villagedefense3.user.UserManager;
 import pl.plajer.villagedefense3.kits.kitapi.KitRegistry;
 import pl.plajer.villagedefense3.kits.kitapi.basekits.PremiumKit;
+import pl.plajer.villagedefense3.user.User;
+import pl.plajer.villagedefense3.user.UserManager;
 import pl.plajer.villagedefense3.utils.ArmorHelper;
 import pl.plajer.villagedefense3.utils.Util;
 import pl.plajer.villagedefense3.utils.WeaponHelper;
@@ -112,10 +112,10 @@ public class BlockerKit extends PremiumKit implements Listener {
         zombieBarrier.setLocation(block.getLocation());
         if(plugin.is1_8_R3()) {
             zombieBarrier.getLocation().getWorld().spigot().playEffect(zombieBarrier.getLocation(), Effect.FIREWORKS_SPARK, 0, 0, 0, 0, 0, 1, 20, 50);
-        } else{
+        } else {
             zombieBarrier.getLocation().getWorld().spawnParticle(Particle.FIREWORKS_SPARK, zombieBarrier.getLocation(), 20);
         }
-        new BukkitRunnable(){
+        new BukkitRunnable() {
             @Override
             public void run() {
                 zombieBarrier.decrementSeconds();
@@ -123,7 +123,7 @@ public class BlockerKit extends PremiumKit implements Listener {
                     zombieBarrier.getLocation().getBlock().setType(Material.AIR);
                     if(plugin.is1_8_R3()) {
                         zombieBarrier.getLocation().getWorld().spigot().playEffect(zombieBarrier.getLocation(), Effect.FIREWORKS_SPARK, 0, 0, 0, 0, 0, 1, 20, 50);
-                    } else{
+                    } else {
                         zombieBarrier.getLocation().getWorld().spawnParticle(Particle.FIREWORKS_SPARK, zombieBarrier.getLocation(), 20);
                     }
                     this.cancel();

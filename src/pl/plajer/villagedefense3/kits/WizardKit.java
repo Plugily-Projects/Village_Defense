@@ -22,9 +22,9 @@ import pl.plajer.villagedefense3.Main;
 import pl.plajer.villagedefense3.arena.ArenaRegistry;
 import pl.plajer.villagedefense3.handlers.ChatManager;
 import pl.plajer.villagedefense3.handlers.PermissionsManager;
-import pl.plajer.villagedefense3.user.UserManager;
 import pl.plajer.villagedefense3.kits.kitapi.KitRegistry;
 import pl.plajer.villagedefense3.kits.kitapi.basekits.PremiumKit;
+import pl.plajer.villagedefense3.user.UserManager;
 import pl.plajer.villagedefense3.utils.ArmorHelper;
 import pl.plajer.villagedefense3.utils.Util;
 
@@ -130,7 +130,7 @@ public class WizardKit extends PremiumKit implements Listener {
                 }
                 if(plugin.is1_9_R1() || plugin.is1_11_R1() || plugin.is1_12_R1()) {
                     p.getWorld().spawnParticle(Particle.CRIT_MAGIC, p.getLocation(), 40, 1, 1, 1);
-                } else if(plugin.is1_8_R3()){
+                } else if(plugin.is1_8_R3()) {
                     p.getWorld().spigot().playEffect(p.getLocation(), Effect.MAGIC_CRIT, 0, 0, 1, 1, 1, 1, 40, 50);
                 }
                 for(Entity en : p.getNearbyEntities(2, 2, 2)) {
@@ -165,7 +165,7 @@ public class WizardKit extends PremiumKit implements Listener {
                         loc.add(x, y, z);
                         if(plugin.is1_9_R1() || plugin.is1_11_R1() || plugin.is1_12_R1()) {
                             p.getWorld().spawnParticle(Particle.TOWN_AURA, loc, 5);
-                        } else if(plugin.is1_8_R3()){
+                        } else if(plugin.is1_8_R3()) {
                             p.getWorld().spigot().playEffect(loc, Effect.VOID_FOG, 0, 0, 0, 0, 0, 1, 50, 50);
                         }
                         for(Entity en : loc.getChunk().getEntities()) {

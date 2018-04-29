@@ -41,6 +41,15 @@ public class EntityRegistry {
     }
 
     @SuppressWarnings("unused")
+    public static void registerv1_11_R1Entity(String name, int id, final Class<? extends net.minecraft.server.v1_11_R1.EntityInsentient> customClass) {
+        final net.minecraft.server.v1_11_R1.MinecraftKey key = new net.minecraft.server.v1_11_R1.MinecraftKey(name);
+        net.minecraft.server.v1_11_R1.EntityTypes.b.a(id, key, customClass);
+        if(!net.minecraft.server.v1_11_R1.EntityTypes.d.contains(key)) {
+            net.minecraft.server.v1_11_R1.EntityTypes.d.add(key);
+        }
+    }
+
+    @SuppressWarnings("unused")
     public void registerv1_8_R3Entity(String name, int id, Class<? extends net.minecraft.server.v1_8_R3.EntityInsentient> customClass) {
         try {
 
@@ -80,15 +89,6 @@ public class EntityRegistry {
             MessageUtils.errorOccured();
             Bukkit.getConsoleSender().sendMessage("Entities has failed to register!");
             Bukkit.getConsoleSender().sendMessage("Restart server or change your server version!");
-        }
-    }
-
-    @SuppressWarnings("unused")
-    public static void registerv1_11_R1Entity(String name, int id, final Class<? extends net.minecraft.server.v1_11_R1.EntityInsentient> customClass) {
-        final net.minecraft.server.v1_11_R1.MinecraftKey key = new net.minecraft.server.v1_11_R1.MinecraftKey(name);
-        net.minecraft.server.v1_11_R1.EntityTypes.b.a(id, key, customClass);
-        if(!net.minecraft.server.v1_11_R1.EntityTypes.d.contains(key)) {
-            net.minecraft.server.v1_11_R1.EntityTypes.d.add(key);
         }
     }
 

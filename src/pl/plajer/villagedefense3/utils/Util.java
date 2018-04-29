@@ -43,7 +43,7 @@ public class Util {
 
     private static Main plugin;
 
-    public Util(Main plugin){
+    public Util(Main plugin) {
         Util.plugin = plugin;
     }
 
@@ -176,7 +176,7 @@ public class Util {
         if(inConfig) {
             plugin.getConfig().set(path, location);
             plugin.saveConfig();
-        } else{
+        } else {
             FileConfiguration config = ConfigurationManager.getConfig("arenas");
             config.set(path, location);
             ConfigurationManager.saveConfig(config, "arenas");

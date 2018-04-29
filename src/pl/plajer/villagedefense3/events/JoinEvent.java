@@ -7,12 +7,12 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import pl.plajer.villagedefense3.Main;
-import pl.plajer.villagedefense3.utils.UpdateChecker;
 import pl.plajer.villagedefense3.arena.Arena;
 import pl.plajer.villagedefense3.arena.ArenaRegistry;
 import pl.plajer.villagedefense3.database.FileStats;
 import pl.plajer.villagedefense3.user.UserManager;
 import pl.plajer.villagedefense3.utils.MySQLConnectionUtils;
+import pl.plajer.villagedefense3.utils.UpdateChecker;
 
 /**
  * Created by Tom on 10/07/2015.

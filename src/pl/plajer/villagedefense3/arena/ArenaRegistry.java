@@ -88,7 +88,7 @@ public class ArenaRegistry {
         return arena;
     }
 
-    public static void registerArenas(){
+    public static void registerArenas() {
         Main.debug("Initial arenas registration", System.currentTimeMillis());
         if(ArenaRegistry.getArenas() != null) {
             if(ArenaRegistry.getArenas().size() > 0) {
