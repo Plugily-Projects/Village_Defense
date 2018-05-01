@@ -191,7 +191,7 @@ public class Events implements Listener {
             return;
         }
         if(event.getPlayer().getItemInHand().getType() == Material.SADDLE) {
-            if(event.getRightClicked().getType() == EntityType.IRON_GOLEM || event.getRightClicked().getType() == EntityType.VILLAGER) {
+            if(event.getRightClicked().getType() == EntityType.IRON_GOLEM || event.getRightClicked().getType() == EntityType.VILLAGER || event.getRightClicked().getType() == EntityType.WOLF) {
                 event.getRightClicked().setPassenger(event.getPlayer());
                 event.setCancelled(true);
                 return;
