@@ -18,11 +18,14 @@
 
 package pl.plajer.villagedefense3.creatures.v1_11_R1;
 
+import net.minecraft.server.v1_11_R1.Entity;
 import net.minecraft.server.v1_11_R1.EntityHuman;
+import net.minecraft.server.v1_11_R1.EntityLiving;
 import net.minecraft.server.v1_11_R1.EntityWolf;
 import net.minecraft.server.v1_11_R1.EntityZombie;
 import net.minecraft.server.v1_11_R1.GenericAttributes;
 import net.minecraft.server.v1_11_R1.Navigation;
+import net.minecraft.server.v1_11_R1.PathfinderGoalFloat;
 import net.minecraft.server.v1_11_R1.PathfinderGoalFollowOwner;
 import net.minecraft.server.v1_11_R1.PathfinderGoalHurtByTarget;
 import net.minecraft.server.v1_11_R1.PathfinderGoalLeapAtTarget;
@@ -62,6 +65,7 @@ public class WorkingWolf extends EntityWolf {
 
         this.a(1.4F, 2.9F);
         ((Navigation) getNavigation()).a(true);
+        this.goalSelector.a(0, new PathfinderGoalFloat(this));
         this.goalSelector.a(3, new PathfinderGoalLeapAtTarget(this, 0.4F));
         this.goalSelector.a(4, new PathfinderGoalMeleeAttack(this, 1.0D, true));
         this.goalSelector.a(5, new PathfinderGoalFollowOwner(this, 1.0D, 10.0F, 2.0F));
@@ -75,66 +79,37 @@ public class WorkingWolf extends EntityWolf {
 
     }
 
-  /*  @Override
-    public void e(float f, float f1) {
-
-
-        if (this.passenger != null && this.passenger instanceof EntityLiving) {
-            this.lastYaw = this.yaw = this.passenger.yaw;
-            this.pitch = this.passenger.pitch * 0.5F;
-            this.b(this.yaw, this.pitch);
-            this.aO = this.aM = this.yaw;
-            f = ((EntityLiving) this.passenger).bd * 0.5F;
-            f1 = ((EntityLiving) this.passenger).be;
-            if (f1 <= 0.0F) {
-                f1 *= 0.25F;
-            }
-
-
-            if (!this.world.isStatic) {
-                this.i((float) this.getAttributeInstance(GenericAttributes.d).getValue());
-                this.Y = 1.0F;
-                if (f1 <= 0.0F) {
-                    f1 *= 0.25F;    // Make backwards slower
+    @Override
+    public void g(float f, float f1) {
+        EntityLiving entityliving = (EntityLiving) bw();
+        if(entityliving == null) {
+            // search first human passenger
+            for(final Entity e : passengers) {
+                if(e instanceof EntityHuman) {
+                    entityliving = (EntityLiving) e;
+                    break;
                 }
-                f *= 0.75F;    // Also make sideways slower
-
-                float speed = 0.12F;    // 0.2 is the default entity speed. I made it slightly faster so that riding is better than walking
-                this.i(speed);    // Apply the speed
-                super.e(f, f1);
             }
-
-            if (this.onGround) {
-
-                this.h(false);
+            if(entityliving == null) {
+                this.l((float) 0.12);
+                super.g(f, f1);
+                return;
             }
-
-            this.aE = this.aF;
-            double d0 = this.locX - this.lastX;
-            double d1 = this.locZ - this.lastZ;
-            float f4 = MathHelper.sqrt(d0 * d0 + d1 * d1) * 4.0F;
-
-            if (f4 > 1.0F) {
-                f4 = 1.0F;
-            }
-
-            this.aF += (f4 - this.aF) * 0.4F;
-            this.aG += this.aF;
-        } else {
-            this.W = 0.5F;
-            this.aQ = 0.02F;
-            this.Y = 1.0F;
-
-            if (f1 <= 0.0F) {
-                f1 *= 0.25F;    // Make backwards slower
-            }
-            f *= 0.75F;    // Also make sideways slower
-
-            float speed = 0.12F;    // 0.2 is the default entity speed. I made it slightly faster so that riding is better than walking
-            this.i(speed);    // Apply the speed
-            super.e(f, f1);
         }
-    } */
+        this.lastYaw = this.yaw = entityliving.yaw;
+        this.pitch = entityliving.pitch * 0.5F;
+        this.setYawPitch(this.yaw, this.pitch);
+        this.aQ = this.aO = this.yaw;
+        f = entityliving.be * 0.75F;
+        f1 = entityliving.bf;
+        if(f1 <= 0.0f) {
+            f1 *= 0.25F;
+        }
+        this.l((float) 0.12);
+        super.g(f, f1);
+        P = (float) 1.0;
+    }
+
 
     @Override
     protected void initAttributes() {

@@ -19,10 +19,13 @@
 package pl.plajer.villagedefense3.creatures.v1_8_R3;
 
 import net.minecraft.server.v1_8_R3.EntityHuman;
+import net.minecraft.server.v1_8_R3.EntityLiving;
 import net.minecraft.server.v1_8_R3.EntityWolf;
 import net.minecraft.server.v1_8_R3.EntityZombie;
 import net.minecraft.server.v1_8_R3.GenericAttributes;
+import net.minecraft.server.v1_8_R3.MathHelper;
 import net.minecraft.server.v1_8_R3.Navigation;
+import net.minecraft.server.v1_8_R3.PathfinderGoalFloat;
 import net.minecraft.server.v1_8_R3.PathfinderGoalFollowOwner;
 import net.minecraft.server.v1_8_R3.PathfinderGoalHurtByTarget;
 import net.minecraft.server.v1_8_R3.PathfinderGoalLeapAtTarget;
@@ -62,6 +65,7 @@ public class WorkingWolf extends EntityWolf {
 
         this.a(1.4F, 2.9F);
         ((Navigation) getNavigation()).a(true);
+        this.goalSelector.a(0, new PathfinderGoalFloat(this));
         this.goalSelector.a(3, new PathfinderGoalLeapAtTarget(this, 0.4F));
         this.goalSelector.a(4, new PathfinderGoalMeleeAttack(this, 1.0D, true));
         this.goalSelector.a(5, new PathfinderGoalFollowOwner(this, 1.0D, 10.0F, 2.0F));
@@ -75,66 +79,65 @@ public class WorkingWolf extends EntityWolf {
         this.setHealth(500);
     }
 
-  /*  @Override
-    public void e(float f, float f1) {
-
-
-        if (this.passenger != null && this.passenger instanceof EntityLiving) {
+    @Override
+    public void g(float f, float f1) {
+        if(this.passenger != null && this.passenger instanceof EntityLiving) {
             this.lastYaw = this.yaw = this.passenger.yaw;
             this.pitch = this.passenger.pitch * 0.5F;
-            this.b(this.yaw, this.pitch);
-            this.aO = this.aM = this.yaw;
-            f = ((EntityLiving) this.passenger).bd * 0.5F;
-            f1 = ((EntityLiving) this.passenger).be;
-            if (f1 <= 0.0F) {
+            setYawPitch(this.yaw, this.pitch);
+            this.aI = this.aG = this.yaw;
+            f = ((EntityLiving) this.passenger).aZ * 0.5F;
+            f1 = ((EntityLiving) this.passenger).ba;
+            if(f1 <= 0.0F) {
                 f1 *= 0.25F;
             }
 
 
-            if (!this.world.isStatic) {
-                this.i((float) this.getAttributeInstance(GenericAttributes.d).getValue());
-                this.Y = 1.0F;
-                if (f1 <= 0.0F) {
+            if(!this.world.isClientSide) {
+                this.k((float) this.getAttributeInstance(GenericAttributes.MOVEMENT_SPEED).getValue());
+                this.S = 1.0F;
+                if(f1 <= 0.0F) {
                     f1 *= 0.25F;    // Make backwards slower
                 }
                 f *= 0.75F;    // Also make sideways slower
 
                 float speed = 0.12F;    // 0.2 is the default entity speed. I made it slightly faster so that riding is better than walking
-                this.i(speed);    // Apply the speed
-                super.e(f, f1);
+                this.k(speed);    // Apply the speed
+                super.g(f, f1);
             }
 
-            if (this.onGround) {
+            if(this.onGround) {
 
-                this.h(false);
+                this.j(false);
             }
 
-            this.aE = this.aF;
+            this.ay = this.az;
             double d0 = this.locX - this.lastX;
             double d1 = this.locZ - this.lastZ;
             float f4 = MathHelper.sqrt(d0 * d0 + d1 * d1) * 4.0F;
 
-            if (f4 > 1.0F) {
+            if(f4 > 1.0F) {
                 f4 = 1.0F;
             }
 
-            this.aF += (f4 - this.aF) * 0.4F;
-            this.aG += this.aF;
+            this.az += (f4 - this.az) * 0.4F;
+            this.aA += this.az;
         } else {
-            this.W = 0.5F;
-            this.aQ = 0.02F;
-            this.Y = 1.0F;
+            this.S = 0.5F;
+            this.aK = 0.02F;
+            // this.S = 1.0F;
 
-            if (f1 <= 0.0F) {
+            if(f1 <= 0.0F) {
                 f1 *= 0.25F;    // Make backwards slower
             }
             f *= 0.75F;    // Also make sideways slower
 
             float speed = 0.12F;    // 0.2 is the default entity speed. I made it slightly faster so that riding is better than walking
-            this.i(speed);    // Apply the speed
-            super.e(f, f1);
+            this.k(speed);    // Apply the speed
+            super.g(f, f1);
+            this.S = 1.0F;
         }
-    } */
+    }
 
     @Override
     protected void initAttributes() {
