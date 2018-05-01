@@ -27,6 +27,7 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.IronGolem;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Villager;
+import org.bukkit.entity.Wolf;
 import org.bukkit.entity.Zombie;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -206,6 +207,11 @@ public class Events implements Listener {
                 event.getRightClicked().setPassenger(event.getPlayer());
             } else {
                 event.getPlayer().sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Messages.Cant-Ride-Others-Golem"));
+            }
+        } else if(event.getRightClicked().getType() == EntityType.WOLF) {
+            Wolf wolf = (Wolf) event.getRightClicked();
+            if(wolf.getCustomName() != null && wolf.getCustomName().contains(event.getPlayer().getName())) {
+                event.getRightClicked().setPassenger(event.getPlayer());
             }
         }
     }
