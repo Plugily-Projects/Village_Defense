@@ -30,19 +30,13 @@ import pl.plajer.villagedefense3.arena.Arena;
 public class VillageGameStartEvent extends VillageEvent {
 
     private static final HandlerList HANDLERS = new HandlerList();
-    private final Arena arena;
 
     public VillageGameStartEvent(Arena arena) {
         super(arena);
-        this.arena = arena;
     }
 
     public static HandlerList getHandlerList() {
         return HANDLERS;
-    }
-
-    public Arena getArena() {
-        return arena;
     }
 
     public HandlerList getHandlers() {

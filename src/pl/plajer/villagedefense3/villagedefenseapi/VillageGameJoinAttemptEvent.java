@@ -33,13 +33,11 @@ public class VillageGameJoinAttemptEvent extends VillageEvent implements Cancell
 
     private static final HandlerList HANDLERS = new HandlerList();
     private final Player player;
-    private final Arena targetArena;
     private boolean isCancelled;
 
     public VillageGameJoinAttemptEvent(Player player, Arena targetArena) {
         super(targetArena);
         this.player = player;
-        this.targetArena = targetArena;
         this.isCancelled = false;
     }
 
@@ -53,10 +51,6 @@ public class VillageGameJoinAttemptEvent extends VillageEvent implements Cancell
 
     public void setCancelled(boolean isCancelled) {
         this.isCancelled = isCancelled;
-    }
-
-    public Arena getTargetArena() {
-        return targetArena;
     }
 
     public Player getPlayer() {

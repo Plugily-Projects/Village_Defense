@@ -32,20 +32,14 @@ public class VillageGameLeaveAttemptEvent extends VillageEvent {
 
     private static final HandlerList HANDLERS = new HandlerList();
     private final Player player;
-    private final Arena arena;
 
     public VillageGameLeaveAttemptEvent(Player player, Arena arena) {
         super(arena);
         this.player = player;
-        this.arena = arena;
     }
 
     public static HandlerList getHandlerList() {
         return HANDLERS;
-    }
-
-    public Arena getArena() {
-        return arena;
     }
 
     public Player getPlayer() {

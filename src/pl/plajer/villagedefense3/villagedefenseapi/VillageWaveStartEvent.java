@@ -31,11 +31,9 @@ public class VillageWaveStartEvent extends VillageEvent {
 
     private static final HandlerList HANDLERS = new HandlerList();
     private final Integer waveNumber;
-    private final Arena arena;
 
     public VillageWaveStartEvent(Arena arena, Integer waveNumber) {
         super(arena);
-        this.arena = arena;
         this.waveNumber = waveNumber;
     }
 
@@ -45,10 +43,6 @@ public class VillageWaveStartEvent extends VillageEvent {
 
     public Integer getWaveNumber() {
         return waveNumber;
-    }
-
-    public Arena getArena() {
-        return arena;
     }
 
     public HandlerList getHandlers() {

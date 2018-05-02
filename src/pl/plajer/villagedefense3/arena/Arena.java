@@ -126,7 +126,7 @@ public abstract class Arena extends BukkitRunnable {
         return isFighting;
     }
 
-    public void subtractZombiesToSpawn() {
+    void subtractZombiesToSpawn() {
         this.zombiesToSpawn--;
     }
 
@@ -903,6 +903,9 @@ public abstract class Arena extends BukkitRunnable {
         return villagerSpawnPoints;
     }
 
+    /**
+     * Clear all golems in arena
+     */
     public void clearGolems() {
         for(IronGolem ironGolem : ironGolems) {
             ironGolem.remove();
@@ -910,6 +913,9 @@ public abstract class Arena extends BukkitRunnable {
         this.ironGolems.clear();
     }
 
+    /**
+     * Clear all wolves in arena
+     */
     public void clearWolfs() {
         for(Wolf wolf : wolfs) {
             wolf.remove();
@@ -926,6 +932,9 @@ public abstract class Arena extends BukkitRunnable {
         zombieSpawns.add(location);
     }
 
+    /**
+     * Clear all zombies in arena
+     */
     public void clearZombies() {
         for(Zombie zombie : zombies) {
             zombie.remove();
@@ -1261,6 +1270,11 @@ public abstract class Arena extends BukkitRunnable {
         return wolfs;
     }
 
+    /**
+     * Get alive iron golems
+     *
+     * @return alive iron golems in game
+     */
     public List<IronGolem> getIronGolems() {
         return ironGolems;
     }
@@ -1287,6 +1301,9 @@ public abstract class Arena extends BukkitRunnable {
         }
     }
 
+    /**
+     * Clear all villagers in arena
+     */
     public void clearVillagers() {
         for(Villager villager : villagers) {
             villager.remove();
