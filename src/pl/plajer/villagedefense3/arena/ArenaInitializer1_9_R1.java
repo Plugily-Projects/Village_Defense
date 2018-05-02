@@ -41,6 +41,7 @@ import pl.plajer.villagedefense3.creatures.v1_9_R1.PlayerBuster;
 import pl.plajer.villagedefense3.creatures.v1_9_R1.RidableIronGolem;
 import pl.plajer.villagedefense3.creatures.v1_9_R1.RidableVillager;
 import pl.plajer.villagedefense3.creatures.v1_9_R1.TankerZombie;
+import pl.plajer.villagedefense3.creatures.v1_9_R1.VillagerSlayer;
 import pl.plajer.villagedefense3.creatures.v1_9_R1.WorkingWolf;
 import pl.plajer.villagedefense3.handlers.ChatManager;
 
@@ -186,6 +187,25 @@ public class ArenaInitializer1_9_R1 extends Arena {
         zombie.getEquipment().setBoots(new ItemStack(Material.GOLD_BOOTS));
         zombie.getEquipment().setLeggings(new ItemStack(Material.GOLD_LEGGINGS));
         zombie.getEquipment().setChestplate(new ItemStack(Material.GOLD_CHESTPLATE));
+        CreatureUtils.applyHealthBar(zombie);
+        this.addZombie(zombie);
+
+        super.subtractZombiesToSpawn();
+    }
+
+    public void spawnVillagerSlayer(Random random) {
+        Location location = zombieSpawns.get(random.nextInt(zombieSpawns.size() - 1));
+        net.minecraft.server.v1_9_R1.World McWorld = ((CraftWorld) location.getWorld()).getHandle();
+        VillagerSlayer villagerSlayer = new VillagerSlayer(location.getWorld());
+        villagerSlayer.setPosition(location.getX(), location.getY(), location.getZ());
+        McWorld.addEntity(villagerSlayer, CreatureSpawnEvent.SpawnReason.CUSTOM);
+        Zombie zombie = (Zombie) villagerSlayer.getBukkitEntity();
+        zombie.getEquipment().setItemInHand(new ItemStack(Material.EMERALD));
+        zombie.getEquipment().setItemInHandDropChance(0F);
+        zombie.getEquipment().setBoots(new ItemStack(Material.CHAINMAIL_BOOTS));
+        zombie.getEquipment().setLeggings(new ItemStack(Material.CHAINMAIL_LEGGINGS));
+        zombie.getEquipment().setChestplate(new ItemStack(Material.CHAINMAIL_CHESTPLATE));
+        zombie.getEquipment().setHelmet(new ItemStack(Material.CHAINMAIL_HELMET));
         CreatureUtils.applyHealthBar(zombie);
         this.addZombie(zombie);
 

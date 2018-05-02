@@ -1150,6 +1150,9 @@ public abstract class Arena extends BukkitRunnable {
                         } else if(wave > 20) {
                             if(random.nextInt(3) == 1)
                                 spawnKnockbackResistantZombies(random);
+                        } else if(wave > 23) {
+                            if(random.nextInt(4) == 1)
+                                spawnVillagerSlayer(random);
                         } else {
                             spawnFastZombie(random);
                         }
@@ -1194,6 +1197,10 @@ public abstract class Arena extends BukkitRunnable {
                 if(zombiesToSpawn > 0)
                     spawnHalfInvisibleZombie(random);
             }
+        }
+        if(random.nextInt(8) == 0 && wave > 23) {
+            if(zombiesToSpawn > 0)
+                spawnHalfInvisibleZombie(random);
         }
         if(random.nextInt(8) == 0 && getIronGolems().size() > 0 && wave >= 6) {
             for(int i = 0; i < (wave - 4); i++) {
@@ -1243,6 +1250,8 @@ public abstract class Arena extends BukkitRunnable {
     public abstract void spawnHalfInvisibleZombie(Random random);
 
     public abstract void spawnKnockbackResistantZombies(Random random);
+
+    public abstract void spawnVillagerSlayer(Random random);
 
     void addWolf(Wolf wolf) {
         wolfs.add(wolf);

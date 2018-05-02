@@ -87,8 +87,8 @@ public class ShotBowKit extends PremiumKit implements Listener {
     @EventHandler
     public void onBowInteract(PlayerInteractEvent e) {
         if(e.getAction() == Action.LEFT_CLICK_AIR || e.getAction() == Action.LEFT_CLICK_BLOCK) {
-            if(e.getPlayer().getItemInHand() == null || e.getPlayer().getItemInHand().getType() != Material.BOW ||
-                    (e.getPlayer().getInventory().contains(Material.ARROW) && UserManager.getUser(e.getPlayer().getUniqueId()).getKit() instanceof ShotBowKit && !UserManager.getUser(e.getPlayer().getUniqueId()).isSpectator()))
+            if(e.getPlayer().getItemInHand() == null || e.getPlayer().getItemInHand().getType() != Material.BOW || !e.getPlayer().getInventory().contains(Material.ARROW) ||
+                    !(UserManager.getUser(e.getPlayer().getUniqueId()).getKit() instanceof ShotBowKit) || UserManager.getUser(e.getPlayer().getUniqueId()).isSpectator())
                 return;
             if(UserManager.getUser(e.getPlayer().getUniqueId()).getCooldown("shotbow") == 0) {
                 for(int i = 0; i < 4; i++) {
