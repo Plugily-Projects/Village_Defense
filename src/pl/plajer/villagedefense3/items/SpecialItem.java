@@ -112,10 +112,6 @@ public class SpecialItem {
         this.enabled = enabled;
     }
 
-    public void setData(Byte data) {
-        this.data = data;
-    }
-
     public Material getMaterial() {
         return material;
     }

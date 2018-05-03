@@ -18,6 +18,10 @@
 
 package pl.plajer.villagedefense3.commands;
 
+import net.md_5.bungee.api.chat.ClickEvent;
+import net.md_5.bungee.api.chat.ComponentBuilder;
+import net.md_5.bungee.api.chat.HoverEvent;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.apache.commons.lang.math.NumberUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -45,6 +49,7 @@ import pl.plajer.villagedefense3.user.User;
 import pl.plajer.villagedefense3.user.UserManager;
 import pl.plajer.villagedefense3.utils.Util;
 
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -55,35 +60,69 @@ import java.util.List;
 public class AdminCommands extends MainCommand {
 
     private Main plugin;
+    private static List<CommandData> command = new LinkedList<>();
+    //private static List<String> command = new LinkedList<>();
+    private static List<String> commandDesc = new LinkedList<>();
+    private static List<String> commandCommand = new LinkedList<>();
 
     public AdminCommands(Main plugin) {
         super(plugin, false);
         this.plugin = plugin;
     }
 
+    static {
+        ChatColor gray = ChatColor.GRAY;
+        ChatColor gold = ChatColor.GOLD;
+        command.add(new CommandData("/vd create " + gold + "<arena>", "/vd create <arena>",
+                gray + "Create new arena\n" + gold + "Permission: " + gray + "villagedefense.admin.create"));
+        command.add(new CommandData("/vd " + gold + "<arena>" + ChatColor.WHITE + " edit", "/vd <arena> edit",
+                gray + "Edit existing arena\n" + gold + "Permission: " + gray + "villagedefense.admin.edit"));
+        command.add(new CommandData("/vda list", "/vda list",
+                gray + "Shows list with all loaded arenas\n" + gold + "Permission: " + gray + "villagedefense.admin.list"));
+        command.add(new CommandData("/vda stop", "/vda stop",
+                gray + "Stops the arena you're in\n" + gray + "" + ChatColor.BOLD + "You must be in target arena!\n" + gold + "Permission: " + gray + "villagedefense.admin.stop"));
+        command.add(new CommandData("/vda forcestart", "/vda forcestart",
+                gray + "Force starts arena you're in\n" + gold + "Permission: " + gray + "villagedefense.admin.forcestart"));
+        command.add(new CommandData("/vda respawn " + ChatColor.RED + "[player]", "/vda respawn",
+                gray + "Respawn yourself or target player in game\n" + gold + "Permission: " + gray + "villagedefense.admin.respawn (for yourself)\n" +
+                        gold + "Permission: " + gray + "villagedefense.admin.respawn.others (for others)"));
+        command.add(new CommandData("/vda spychat", "/vda spychat",
+                gray + "Toggles spy chat for all available arenas\n" + gray + "You will see all messages from these games\n" + gold + "Permission: " +
+                        gray + "villagedefense.admin.spychat"));
+        command.add(new CommandData("/vda setprice " + ChatColor.GOLD + "<amount>", "/vda setprice <amount>",
+                gray + "Set price of holding item, it's required for game shop\n" + gold + "Permission: " + gray + "villagedefense.admin.setprice"));
+        command.add(new CommandData("/vda reload", "/vda reload", gray + "Reload all game arenas\n" + gray + "" + ChatColor.BOLD +
+                "They will be stopped!\n" + gold + "Permission: " + gray + "villagedefense.admin.reload"));
+        command.add(new CommandData("/vda addsign " + ChatColor.GOLD + "<arena>", "/vda addsign <arena>",
+                gray + "Set sign you look at as a target arena sign\n" + gold + "Permission: " + gray + "villagedefense.admin.addsign\n" +
+                    gold + "Permission: " + gray + "villagedefense.admin.sign.create (for creating signs manually)\n" + gold + "Permission: " +
+                    gray + "villagedefense.admin.sign.break (for breaking arena signs)"));
+        command.add(new CommandData("/vda delete " + ChatColor.GOLD + "<arena>", "/vda delete <arena>" ,
+                gray + "Deletes specified arena\n" + gold + "Permission: " + gray + "villagedefense.admin.delete"));
+        command.add(new CommandData("/vda tp " + ChatColor.GOLD + "<arena> <location type>", "/vda tp <arena> <location>",
+                gray + "Teleport you to provided arena location\n" + gray + "Valid locations:\n" + gray + "• LOBBY - lobby location\n" + gray +
+                    "• START - starting location\n" + gray + "• END - ending location\n" + gold + "Permission: " + gray + "villagedefense.admin.teleport"));
+        command.add(new CommandData("/vda clear " + ChatColor.GOLD + "<zombie/villager/golem>", "/vda clear <mob>",
+                gray + "Clear specific mob type from arena you're in\n" + gray + "Valid mob types:\n" + gray + "• ZOMBIE - clear spawned zombies\n" +
+                    gray + "• VILLAGER - clear alive villagers\n" + gray + "• GOLEM - clear spawned golems\n" + gold + "Permission: " + gray + "villagedefense.admin.clear"));
+        command.add(new CommandData("/vda addorbs " + ChatColor.GOLD + "<amount>" + ChatColor.RED + " [player]", "/vda addorbs <amount>",
+                gray + "Add orbs (game currency) to yourself or target player\n" + gray + "Can be used from console too\n" + gold +
+                        "Permission: " + gray + "villagedefense.admin.addorbs (for yourself)\n" + gold + "Permission: " + gray + "villagedefense.admin.addorbs.others (for others)"));
+        command.add(new CommandData("/vda setwave " + ChatColor.GOLD + "<number>", "/vda setwave <num>",
+                gray + "Set wave number in arena you're in\n" + gold + "Permission: " + gray + "villagedefense.admin.setwave"));
+    }
+
     public void sendHelp(CommandSender sender) {
         if(!sender.hasPermission("villagedefense.admin")) return;
-        sender.sendMessage(ChatManager.HIGHLIGHTED + "--------{Admin commands}-----------");
-        sender.sendMessage(ChatManager.PREFIX + "/vd create <arena>" + ChatColor.GRAY + ": Create new arena");
-        sender.sendMessage(ChatManager.PREFIX + "/vd <arena> edit" + ChatColor.GRAY + ": Edits existing arena");
-        sender.sendMessage(ChatManager.PREFIX + "/vda list" + ChatColor.GRAY + ": Prints all loaded instances");
-        sender.sendMessage(ChatManager.PREFIX + "/vda stop" + ChatColor.GRAY + ": Stops the arena");
-        sender.sendMessage(ChatManager.PREFIX + "/vda forcestart" + ChatColor.GRAY + ": ForceStarts the arena");
-        sender.sendMessage(ChatManager.PREFIX + "/vda respawn" + ChatColor.GRAY + ": Respawns you if u are dead");
-        sender.sendMessage(ChatManager.PREFIX + "/vda respawn <player>" + ChatColor.GRAY + ": Respawns the named if he is dead");
-        sender.sendMessage(ChatManager.PREFIX + "/vda spychat" + ChatColor.GRAY + ": Toggle all games chat visibility (only multi-arena)");
-        sender.sendMessage(ChatManager.PREFIX + "/vda setprice <amount>" + ChatColor.GRAY + ": Sets holding item price (for shop)");
-        sender.sendMessage(ChatManager.PREFIX + "/vda reload" + ChatColor.GRAY + ": Stops and reloads all game instances");
-        sender.sendMessage(ChatManager.PREFIX + "/vda setshopchest" + ChatColor.GRAY + ": Sets game shop");
-        sender.sendMessage(ChatManager.PREFIX + "/vda addsign <arena>" + ChatColor.GRAY + ": Adds target sign as arena game sign");
-        sender.sendMessage(ChatManager.PREFIX + "/vda delete <arena>" + ChatColor.GRAY + ": Removes arena");
-        sender.sendMessage(ChatManager.PREFIX + "/vda tp <arena> <location type>" + ChatColor.GRAY + ": Teleports to provided arena location");
-        sender.sendMessage(ChatManager.PREFIX + "/vda clear zombie" + ChatColor.GRAY + ": Clears the zombies in the arena");
-        sender.sendMessage(ChatManager.PREFIX + "/vda clear villager" + ChatColor.GRAY + ": Clears the villagers in the arena");
-        sender.sendMessage(ChatManager.PREFIX + "/vda clear golem" + ChatColor.GRAY + ": Clears the golems in the arena");
-        sender.sendMessage(ChatManager.PREFIX + "/vda addorbs <amount>" + ChatColor.GRAY + ": Gives u the given amount of orbs");
-        sender.sendMessage(ChatManager.PREFIX + "/vda addorbs <amount> <player>" + ChatColor.GRAY + ": Gives the named player the given amount of orbs");
-        sender.sendMessage(ChatManager.PREFIX + "/vda setwave <number>" + ChatColor.GRAY + ": Sets the number from a wave");
+        sender.sendMessage(ChatColor.GREEN + "  " + ChatColor.BOLD + "Village Defense " + ChatColor.GRAY + plugin.getDescription().getVersion());
+        sender.sendMessage(ChatColor.RED + " []" + ChatColor.GRAY + " = optional  " + ChatColor.GOLD + "<>" + ChatColor.GRAY + " = required");
+        sender.sendMessage(ChatColor.GRAY + "Hover command to see more, click command to suggest it.");
+        for(CommandData data : command){
+            TextComponent component = new TextComponent(data.getText());
+            component.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, data.getCommand()));
+            component.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(data.getDescription()).create()));
+            sender.spigot().sendMessage(component);
+        }
     }
 
     public void printList(CommandSender sender) {

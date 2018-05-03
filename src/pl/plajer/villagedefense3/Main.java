@@ -23,7 +23,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.PotionEffect;
@@ -80,14 +79,12 @@ import java.util.UUID;
 /**
  * Created by Tom on 12/08/2014.
  */
-public class Main extends JavaPlugin implements Listener {
+public class Main extends JavaPlugin {
 
     public static int STARTING_TIMER_TIME = 60;
     public static float MINI_ZOMBIE_SPEED;
     public static float ZOMBIE_SPEED;
     private static boolean debug;
-    private boolean forceDisable = false;
-    private boolean databaseActivated = false;
     private MySQLDatabase database;
     private FileStats fileStats;
     private SignManager signManager;
@@ -97,10 +94,12 @@ public class Main extends JavaPlugin implements Listener {
     private KitManager kitManager;
     private ChunkManager chunkManager;
     private PowerupManager powerupManager;
+    private RewardsHandler rewardsHandler;
+    private boolean forceDisable = false;
+    private boolean databaseActivated = false;
     private boolean bungeeEnabled;
     private boolean chatFormat = true;
     private boolean bossbarEnabled;
-    private RewardsHandler rewardsHandler;
     private boolean inventoryManagerEnabled = false;
     private List<String> fileNames = Arrays.asList("arenas", "bungee", "rewards", "stats", "lobbyitems", "mysql", "kits");
     private Map<String, Integer> customPermissions = new HashMap<>();
@@ -118,19 +117,19 @@ public class Main extends JavaPlugin implements Listener {
     }
 
     public boolean is1_8_R3() {
-        return getVersion().equalsIgnoreCase("v1_8_R3");
+        return version.equalsIgnoreCase("v1_8_R3");
     }
 
     public boolean is1_9_R1() {
-        return getVersion().equalsIgnoreCase("v1_9_R1");
+        return version.equalsIgnoreCase("v1_9_R1");
     }
 
     public boolean is1_11_R1() {
-        return getVersion().equalsIgnoreCase("v1_11_R1");
+        return version.equalsIgnoreCase("v1_11_R1");
     }
 
     public boolean is1_12_R1() {
-        return getVersion().equalsIgnoreCase("v1_12_R1");
+        return version.equalsIgnoreCase("v1_12_R1");
     }
 
     public boolean isInventoryManagerEnabled() {
@@ -169,12 +168,12 @@ public class Main extends JavaPlugin implements Listener {
         return arenaRegistry;
     }
 
-    public String getVersion() {
-        return version;
-    }
-
     public KitManager getKitManager() {
         return kitManager;
+    }
+
+    public String getVersion() {
+        return version;
     }
 
     @Override
@@ -183,7 +182,7 @@ public class Main extends JavaPlugin implements Listener {
         new ConfigurationManager(this);
         LanguageManager.init(this);
         saveDefaultConfig();
-        if(!(getVersion().equalsIgnoreCase("v1_8_R3") || getVersion().equalsIgnoreCase("v1_9_R1") || getVersion().equalsIgnoreCase("v1_11_R1") || getVersion().equalsIgnoreCase("v1_12_R1"))) {
+        if(!(version.equalsIgnoreCase("v1_8_R3") || version.equalsIgnoreCase("v1_9_R1") || version.equalsIgnoreCase("v1_11_R1") || version.equalsIgnoreCase("v1_12_R1"))) {
             MessageUtils.thisVersionIsNotSupported();
             Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "Your server version is not supported by Village Defense!");
             Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "Sadly, we must shut off. Maybe you consider changing your server version?");
@@ -201,12 +200,9 @@ public class Main extends JavaPlugin implements Listener {
             getServer().getPluginManager().disablePlugin(this);
             return;
         }
-        //check if using releases before 2.1.0
-        if(LanguageManager.getLanguageFile().isSet("STATS-AboveLine") && LanguageManager.getLanguageFile().isSet("SCOREBOARD-Zombies")) {
-            LanguageMigrator.migrateToNewFormat();
-        }
-        //check if using releases 2.1.0+
-        if(LanguageManager.getLanguageFile().isSet("File-Version") && getConfig().isSet("Config-Version")) {
+        //check if using releases before 2.1.0 or 2.1.0+
+        if((LanguageManager.getLanguageFile().isSet("STATS-AboveLine") && LanguageManager.getLanguageFile().isSet("SCOREBOARD-Zombies")) ||
+                (LanguageManager.getLanguageFile().isSet("File-Version") && getConfig().isSet("Config-Version"))) {
             LanguageMigrator.migrateToNewFormat();
         }
         debug = getConfig().getBoolean("Debug");
@@ -254,8 +250,6 @@ public class Main extends JavaPlugin implements Listener {
         if(is1_8_R3()) {
             bossbarEnabled = false;
         }
-
-        getServer().getPluginManager().registerEvents(this, this);
 
         BreakFenceListener listener = new BreakFenceListener();
         listener.runTaskTimer(this, 1L, 20L);

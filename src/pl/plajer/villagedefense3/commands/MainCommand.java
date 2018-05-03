@@ -21,6 +21,7 @@ package pl.plajer.villagedefense3.commands;
 import com.sk89q.worldedit.Vector;
 import com.sk89q.worldedit.bukkit.selections.CuboidSelection;
 import com.sk89q.worldedit.bukkit.selections.Selection;
+import org.apache.commons.lang3.Validate;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -249,7 +250,7 @@ public class MainCommand implements CommandExecutor {
                 if(args[1].equalsIgnoreCase("stop")) {
                     adminCommands.stopGame(sender);
                     return true;
-                } else if(args[0].equalsIgnoreCase("list")) {
+                } else if(args[1].equalsIgnoreCase("list")) {
                     adminCommands.printList(sender);
                     return true;
                 } else if(args[1].equalsIgnoreCase("forcestart")) {

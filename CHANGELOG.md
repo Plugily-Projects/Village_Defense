@@ -7,6 +7,7 @@
 * Golems and wolves won't get drowned now, they can swim!
 * Added new zombie spawning randomly in waves higher than 21! Villager Slayer.
 * Fixed shotbow bow ability was working for every different kit
+* Fixed /vd admin list command
 
 ### 3.5.0 Release (28.04.2018)
 * Fixed #3 bug

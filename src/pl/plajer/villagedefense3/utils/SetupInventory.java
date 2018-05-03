@@ -125,7 +125,7 @@ public class SetupInventory {
                 .build());
     }
 
-    public static String isOptionDone(String path) {
+    private static String isOptionDone(String path) {
         if(ConfigurationManager.getConfig("arenas").isSet(path)) {
             return ChatColor.GOLD + "" + ChatColor.BOLD + "Done: " + ChatColor.GREEN + "Yes " + ChatColor.GRAY + "(value: " + ConfigurationManager.getConfig("arenas").getString(path) + ")";
         }
