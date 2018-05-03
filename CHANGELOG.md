@@ -8,6 +8,7 @@
 * Added new zombie spawning randomly in waves higher than 21! Villager Slayer.
 * Fixed shotbow bow ability was working for every different kit
 * Fixed /vd admin list command
+* Prettified admin commands, now you don't need wiki for extended information about commands :)
 
 ### 3.5.0 Release (28.04.2018)
 * Fixed #3 bug

@@ -89,7 +89,6 @@ public class Main extends JavaPlugin {
     private FileStats fileStats;
     private SignManager signManager;
     private InventoryManager inventoryManager;
-    private ArenaRegistry arenaRegistry;
     private BungeeManager bungeeManager;
     private KitManager kitManager;
     private ChunkManager chunkManager;
@@ -162,10 +161,6 @@ public class Main extends JavaPlugin {
 
     public Map<String, Integer> getCustomPermissions() {
         return customPermissions;
-    }
-
-    public ArenaRegistry getArenaRegistry() {
-        return arenaRegistry;
     }
 
     public KitManager getKitManager() {
@@ -285,7 +280,6 @@ public class Main extends JavaPlugin {
     }
 
     private void initializeClasses() {
-        arenaRegistry = new ArenaRegistry();
         bungeeEnabled = getConfig().getBoolean("BungeeActivated");
         if(getConfig().getBoolean("BungeeActivated")) bungeeManager = new BungeeManager(this);
         new ChatManager(ChatManager.colorMessage("In-Game.Plugin-Prefix"));

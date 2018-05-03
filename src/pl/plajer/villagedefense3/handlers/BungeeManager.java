@@ -68,8 +68,6 @@ public class BungeeManager implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onServerListPing(ServerListPingEvent event) {
-        if(plugin.getArenaRegistry() == null)
-            return;
         if(ArenaRegistry.getArenas().isEmpty())
             return;
         if(ArenaRegistry.getArenas() == null) {
