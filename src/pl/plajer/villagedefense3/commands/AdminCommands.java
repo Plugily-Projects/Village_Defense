@@ -116,12 +116,18 @@ public class AdminCommands extends MainCommand {
         if(!sender.hasPermission("villagedefense.admin")) return;
         sender.sendMessage(ChatColor.GREEN + "  " + ChatColor.BOLD + "Village Defense " + ChatColor.GRAY + plugin.getDescription().getVersion());
         sender.sendMessage(ChatColor.RED + " []" + ChatColor.GRAY + " = optional  " + ChatColor.GOLD + "<>" + ChatColor.GRAY + " = required");
-        sender.sendMessage(ChatColor.GRAY + "Hover command to see more, click command to suggest it.");
-        for(CommandData data : command){
-            TextComponent component = new TextComponent(data.getText());
-            component.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, data.getCommand()));
-            component.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(data.getDescription()).create()));
-            sender.spigot().sendMessage(component);
+        if(!plugin.is1_8_R3()) {
+            sender.sendMessage(ChatColor.GRAY + "Hover command to see more, click command to suggest it.");
+            for(CommandData data : command){
+                TextComponent component = new TextComponent(data.getText());
+                component.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, data.getCommand()));
+                component.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(data.getDescription()).create()));
+                sender.spigot().sendMessage(component);
+            }
+        } else {
+            for(CommandData data : command){
+                sender.sendMessage(data.getText());
+            }
         }
     }
 
