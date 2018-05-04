@@ -18,6 +18,7 @@
 
 package pl.plajer.villagedefense3.events;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Effect;
 import org.bukkit.Material;
@@ -419,8 +420,12 @@ public class Events implements Listener {
 
     @EventHandler
     public void onRottenFleshDrop(InventoryPickupItemEvent event) {
-        if(event.getInventory().getType() != InventoryType.HOPPER && !event.getItem().getItemStack().getType().equals(Material.ROTTEN_FLESH))
+        if(event.getInventory().getType() != InventoryType.HOPPER) {
             return;
+        }
+        if(event.getItem().getItemStack().getType() != Material.ROTTEN_FLESH) {
+            return;
+        }
         for(Entity entity : Util.getNearbyEntities(event.getItem().getLocation(), 20)) {
             if(!(entity instanceof Player)) {
                 continue;
