@@ -424,6 +424,13 @@ public class Events implements Listener {
             return;
         }
         if(event.getItem().getItemStack().getType() != Material.ROTTEN_FLESH) {
+            for(Arena arena : ArenaRegistry.getArenas()) {
+                if(event.getItem().getWorld().equals(arena.getStartLocation().getWorld())) {
+                    event.getItem().remove();
+                    event.getInventory().clear();
+                    return;
+                }
+            }
             return;
         }
         for(Entity entity : Util.getNearbyEntities(event.getItem().getLocation(), 20)) {

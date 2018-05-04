@@ -1,6 +1,6 @@
 # Village Defense 3 Changelog
 
-### 3.5.1 Release (29.04.2018)
+### 3.6.0 Release (04.05.2018)
 * Code improvements
 * Fixed another bug from early 2.x versions with cooldown drop faster depending on arenas number (ex. 2 arenas = 2 cooldown seconds less per second!)
 * Wolves are rideable now
@@ -9,6 +9,7 @@
 * Fixed shotbow bow ability was working for every different kit
 * Fixed /vd admin list command
 * Prettified admin commands, now you don't need wiki for extended information about commands :)
+* Fixed bug where you could throw any items to the secret well
 
 ### 3.5.0 Release (28.04.2018)
 * Fixed #3 bug
