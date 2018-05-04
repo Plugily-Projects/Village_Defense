@@ -62,7 +62,7 @@ import pl.plajer.villagedefense3.language.LanguageMigrator;
 import pl.plajer.villagedefense3.user.User;
 import pl.plajer.villagedefense3.user.UserManager;
 import pl.plajer.villagedefense3.utils.MessageUtils;
-import pl.plajer.villagedefense3.utils.MetricsLite;
+import pl.plajer.villagedefense3.utils.Metrics;
 import pl.plajer.villagedefense3.utils.MySQLConnectionUtils;
 import pl.plajer.villagedefense3.utils.UpdateChecker;
 import pl.plajer.villagedefense3.utils.Util;
@@ -295,7 +295,44 @@ public class Main extends JavaPlugin {
         new SetupInventoryEvents(this);
         new JoinEvent(this);
         new ChatEvents(this);
-        new MetricsLite(this);
+        Metrics metrics = new Metrics(this);
+        metrics.addCustomChart(new Metrics.SimplePie("database_enabled", () -> getConfig().getString("DatabaseActivated", "false")));
+        metrics.addCustomChart(new Metrics.SimplePie("bungeecord_hooked", () -> getConfig().getString("BungeeActivated", "false")));
+        metrics.addCustomChart(new Metrics.SimplePie("locale_used", () -> {
+            switch(getConfig().getString("locale", "default")){
+                case "default":
+                    return "English";
+                case "en":
+                    return "English";
+                case "pl":
+                    return "Polish";
+                case "de":
+                    return "German";
+                default:
+                    return "English";
+            }
+        }));
+        metrics.addCustomChart(new Metrics.SimplePie("update_notifier", () -> {
+            if(getConfig().getBoolean("Update-Notifier.Enabled", true)){
+                if(getConfig().getBoolean("Update-Notifier.Notify-Beta-Versions", true)){
+                    return "Enabled with beta notifier";
+                } else {
+                    return "Enabled";
+                }
+            } else {
+                if(getConfig().getBoolean("Update-Notifier.Notify-Beta-Versions", true)){
+                    return "Beta notifier only";
+                } else {
+                    return "Disabled";
+                }
+            }
+        }));
+        metrics.addCustomChart(new Metrics.SimplePie("hooked_addons", () -> {
+            if(getServer().getPluginManager().getPlugin("VillageDefense-CustomKits") != null){
+                return "Custom Kits";
+            }
+            return "None";
+        }));
         new Events(this);
         new CombustDayLightEvent(this);
         new LobbyEvents(this);
