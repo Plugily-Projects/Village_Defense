@@ -1,5 +1,13 @@
 # Village Defense 3 Changelog
 
+### 3.6.2 Release (04.05.2018)
+* Fixed /vd create command without argument gave an error
+* Added PlaceholderAPI support
+* Fixed permissions for Worker and Blocker kits (villagedefense.kit.%kit name% wasn't working for them)
+
+### 3.6.1 Hotfix (04.05.2018)
+* Fixed /vda command not working on 1.8
+
 ### 3.6.0 Release (04.05.2018)
 * Code improvements
 * Fixed another bug from early 2.x versions with cooldown drop faster depending on arenas number (ex. 2 arenas = 2 cooldown seconds less per second!)
