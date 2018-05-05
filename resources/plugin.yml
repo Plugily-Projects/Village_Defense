@@ -1,11 +1,12 @@
 name: VillageDefense
 main: pl.plajer.villagedefense3.Main
-version: 3.6.1
-softdepend: [WorldEdit, HolographicDisplays]
+author: [TomTheDeveloper, Plajer]
+version: 3.6.2
+softdepend: [WorldEdit, HolographicDisplays, PlaceholderAPI]
 
 commands:
   VillageDefense:
-    description: VD 3 commands
+    description: VD 3 Commands
     usage: "\u00A76Correct usage: /vd [stats/leave/join]"
     aliases: [vd, villaged]
   VillageDefenseAdmin:

@@ -50,6 +50,7 @@ import pl.plajer.villagedefense3.handlers.ChunkManager;
 import pl.plajer.villagedefense3.handlers.ConfigurationManager;
 import pl.plajer.villagedefense3.handlers.InventoryManager;
 import pl.plajer.villagedefense3.handlers.PermissionsManager;
+import pl.plajer.villagedefense3.handlers.PlaceholderManager;
 import pl.plajer.villagedefense3.handlers.PowerupManager;
 import pl.plajer.villagedefense3.handlers.RewardsHandler;
 import pl.plajer.villagedefense3.handlers.ShopManager;
@@ -299,7 +300,7 @@ public class Main extends JavaPlugin {
         metrics.addCustomChart(new Metrics.SimplePie("database_enabled", () -> getConfig().getString("DatabaseActivated", "false")));
         metrics.addCustomChart(new Metrics.SimplePie("bungeecord_hooked", () -> getConfig().getString("BungeeActivated", "false")));
         metrics.addCustomChart(new Metrics.SimplePie("locale_used", () -> {
-            switch(getConfig().getString("locale", "default")){
+            switch(getConfig().getString("locale", "default")) {
                 case "default":
                     return "English";
                 case "en":
@@ -313,14 +314,14 @@ public class Main extends JavaPlugin {
             }
         }));
         metrics.addCustomChart(new Metrics.SimplePie("update_notifier", () -> {
-            if(getConfig().getBoolean("Update-Notifier.Enabled", true)){
-                if(getConfig().getBoolean("Update-Notifier.Notify-Beta-Versions", true)){
+            if(getConfig().getBoolean("Update-Notifier.Enabled", true)) {
+                if(getConfig().getBoolean("Update-Notifier.Notify-Beta-Versions", true)) {
                     return "Enabled with beta notifier";
                 } else {
                     return "Enabled";
                 }
             } else {
-                if(getConfig().getBoolean("Update-Notifier.Notify-Beta-Versions", true)){
+                if(getConfig().getBoolean("Update-Notifier.Notify-Beta-Versions", true)) {
                     return "Beta notifier only";
                 } else {
                     return "Disabled";
@@ -328,11 +329,15 @@ public class Main extends JavaPlugin {
             }
         }));
         metrics.addCustomChart(new Metrics.SimplePie("hooked_addons", () -> {
-            if(getServer().getPluginManager().getPlugin("VillageDefense-CustomKits") != null){
+            if(getServer().getPluginManager().getPlugin("VillageDefense-CustomKits") != null) {
                 return "Custom Kits";
             }
             return "None";
         }));
+        if(Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
+            Main.debug("Hooking into PlaceholderAPI", System.currentTimeMillis());
+            new PlaceholderManager().register();
+        }
         new Events(this);
         new CombustDayLightEvent(this);
         new LobbyEvents(this);
