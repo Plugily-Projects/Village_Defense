@@ -62,7 +62,7 @@ public class StatsStorage {
      * @return Map of UUID keys and Integer values sorted in ascending order of requested statistic type
      */
     public static Map<UUID, Integer> getStats(StatisticType stat) {
-        Main.debug("Village API getStats(" + stat + ") run", System.currentTimeMillis());
+        Main.debug("Village API getStats(" + stat.getName() + ") run", System.currentTimeMillis());
         if(plugin.isDatabaseActivated())
             return plugin.getMySQLDatabase().getColumn(stat.getName());
         else {
@@ -84,7 +84,7 @@ public class StatsStorage {
      * @return int of statistic
      */
     public static int getUserStats(Player player, StatisticType statisticType) {
-        Main.debug("Village API getUserStats(Player, StatisticType) run", System.currentTimeMillis());
+        Main.debug("Village API getUserStats(" + player.getName() + ", " + statisticType.getName() + ") run", System.currentTimeMillis());
         return UserManager.getUser(player.getUniqueId()).getInt(statisticType.name);
     }
 

@@ -4,6 +4,7 @@
 * Fixed /vd create command without argument gave an error
 * Added PlaceholderAPI support
 * Fixed permissions for Worker and Blocker kits (villagedefense.kit.%kit name% wasn't working for them)
+* Updated Java Docs and API for getting sorted statistics
 
 ### 3.6.1 Hotfix (04.05.2018)
 * Fixed /vda command not working on 1.8

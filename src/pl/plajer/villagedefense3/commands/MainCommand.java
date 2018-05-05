@@ -214,14 +214,6 @@ public class MainCommand implements CommandExecutor {
                 sender.sendMessage(ChatManager.colorMessage("Commands.Main-Command.Footer"));
                 return true;
             }
-            //todo remove
-            if(args[0].equalsIgnoreCase("test")){
-                Map<UUID, Integer> map = StatsStorage.getStats("kills");
-                for(UUID u : map.keySet()){
-                    Bukkit.broadcastMessage(u.toString() + " stat: " + map.get(u));
-                }
-                return true;
-            }
             if(args.length > 1) {
                 if(args[1].equalsIgnoreCase("set") || args[1].equalsIgnoreCase("addspawn") || args[1].equalsIgnoreCase("edit")) {
                     if(checkSenderIsConsole(sender)) return true;
