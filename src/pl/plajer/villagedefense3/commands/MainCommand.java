@@ -216,7 +216,7 @@ public class MainCommand implements CommandExecutor {
             }
             //todo remove
             if(args[0].equalsIgnoreCase("test")){
-                Map<UUID, Integer> map = StatsStorage.getStats((Player) sender);
+                Map<UUID, Integer> map = StatsStorage.getStats("kills");
                 for(UUID u : map.keySet()){
                     Bukkit.broadcastMessage(u.toString() + " stat: " + map.get(u));
                 }

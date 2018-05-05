@@ -24,10 +24,14 @@ import pl.plajer.villagedefense3.Main;
 import pl.plajer.villagedefense3.handlers.ConfigurationManager;
 import pl.plajer.villagedefense3.user.UserManager;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 import java.util.UUID;
 
 /**
@@ -52,31 +56,32 @@ public class StatsStorage {
     }
 
     /**
-     * Returns map of all statistics of player
+     * Get all UUID's sorted ascending by Statistic Type
      *
-     * @param player event player
-     * @return Map with players statistics
+     * @param stat Statistic type to get (kills, deaths etc.)
+     * @return Map of UUID keys and Integer values sorted in ascending order of requested statistic type
      */
-    public static Map<UUID, Integer> getStats(Player player) {
-        Main.debug("Village API getStats(Player) run", System.currentTimeMillis());
+    public static Map<UUID, Integer> getStats(StatisticType stat) {
+        Main.debug("Village API getStats(" + stat + ") run", System.currentTimeMillis());
         if(plugin.isDatabaseActivated())
-            return plugin.getMySQLDatabase().getColumn(player.getName());
+            return plugin.getMySQLDatabase().getColumn(stat.getName());
         else {
             FileConfiguration config = ConfigurationManager.getConfig("stats");
-            Map<UUID, Integer> stats = new LinkedHashMap<>();
+            Map<UUID, Integer> stats = new TreeMap<>();
             for(String string : config.getKeys(false)) {
-                stats.put(UUID.fromString(string), config.getInt(string + "." + player.getName()));
+                stats.put(UUID.fromString(string), config.getInt(string + "." + stat));
             }
             return sortByValue(stats);
         }
     }
 
     /**
-     * Returns user statistics.
+     * Get user statistic based on StatisticType
      *
-     * @param player        event player
-     * @param statisticType type of stat to return
-     * @return Integer of statistic
+     * @param player Online player to get data from
+     * @param statisticType Statistic type to get (kills, deaths etc.)
+     * @see StatisticType
+     * @return int of statistic
      */
     public static int getUserStats(Player player, StatisticType statisticType) {
         Main.debug("Village API getUserStats(Player, StatisticType) run", System.currentTimeMillis());

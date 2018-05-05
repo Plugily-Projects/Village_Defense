@@ -123,18 +123,18 @@ public class MySQLDatabase {
                 return 0;
             return (set.getInt(1));
         } catch(SQLException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            e.printStackTrace();
             return 0;
         }
 
     }
 
-    public Map<UUID, Integer> getColumn(String statistic) {
-        ResultSet set = executeQuery("SELECT UUID, " + statistic + " FROM playerstats ORDER BY " + statistic + " DESC;");
+    public Map<UUID, Integer> getColumn(String player) {
+        ResultSet set = executeQuery("SELECT UUID, " + player + " FROM playerstats ORDER BY " + player + " ASC;");
         Map<UUID, Integer> column = new LinkedHashMap<>();
         try {
             while(set.next()) {
-                column.put(java.util.UUID.fromString(set.getString("UUID")), set.getInt(statistic));
+                column.put(java.util.UUID.fromString(set.getString("UUID")), set.getInt(player));
             }
         } catch(SQLException e) {
             e.printStackTrace();
