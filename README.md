@@ -27,6 +27,6 @@ Fork this project and create pull request!
 ### 👾 Join our discord to be up to date with updates and developement beta builds!
 https://discord.gg/UXzUdTP
 
-**Project is using HikariCP library**: https://github.com/brettwooldridge/HikariCP
+**Project is using BoneCP library**: https://github.com/wwadge/bonecp
 
 <img align="right" src="https://i.imgur.com/Wbu54gv.png">
