@@ -45,8 +45,11 @@ import pl.plajer.villagedefense3.handlers.ChatManager;
 import pl.plajer.villagedefense3.handlers.ConfigurationManager;
 import pl.plajer.villagedefense3.utils.SetupInventory;
 import pl.plajer.villagedefense3.utils.Util;
+import pl.plajer.villagedefense3.villagedefenseapi.StatsStorage;
 
 import java.util.ArrayList;
+import java.util.Map;
+import java.util.UUID;
 
 /**
  * Created by Tom on 7/08/2014.
@@ -211,6 +214,14 @@ public class MainCommand implements CommandExecutor {
                 sender.sendMessage(ChatManager.colorMessage("Commands.Main-Command.Footer"));
                 return true;
             }
+            //todo remove
+            if(args[0].equalsIgnoreCase("test")){
+                Map<UUID, Integer> map = StatsStorage.getStats((Player) sender);
+                for(UUID u : map.keySet()){
+                    Bukkit.broadcastMessage(u.toString() + " stat: " + map.get(u));
+                }
+                return true;
+            }
             if(args.length > 1) {
                 if(args[1].equalsIgnoreCase("set") || args[1].equalsIgnoreCase("addspawn") || args[1].equalsIgnoreCase("edit")) {
                     if(checkSenderIsConsole(sender)) return true;
@@ -239,7 +250,11 @@ public class MainCommand implements CommandExecutor {
                 return true;
             }
             if(args[0].equalsIgnoreCase("create")) {
-                adminCommands.createArena(sender, args);
+                if(args.length == 2) {
+                    adminCommands.createArena(sender, args);
+                    return true;
+                }
+                sender.sendMessage(ChatManager.colorMessage("Commands.Type-Arena-Name"));
                 return true;
             }
             if(args[0].equalsIgnoreCase("admin")) {

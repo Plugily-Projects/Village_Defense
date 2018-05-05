@@ -129,12 +129,12 @@ public class MySQLDatabase {
 
     }
 
-    public Map<UUID, Integer> getColumn(String stat) {
-        ResultSet set = executeQuery("SELECT UUID, " + stat + " FROM playerstats ORDER BY " + stat + " DESC;");
-        Map<java.util.UUID, java.lang.Integer> column = new LinkedHashMap<>();
+    public Map<UUID, Integer> getColumn(String statistic) {
+        ResultSet set = executeQuery("SELECT UUID, " + statistic + " FROM playerstats ORDER BY " + statistic + " DESC;");
+        Map<UUID, Integer> column = new LinkedHashMap<>();
         try {
             while(set.next()) {
-                column.put(java.util.UUID.fromString(set.getString("UUID")), set.getInt(stat));
+                column.put(java.util.UUID.fromString(set.getString("UUID")), set.getInt(statistic));
             }
         } catch(SQLException e) {
             e.printStackTrace();
