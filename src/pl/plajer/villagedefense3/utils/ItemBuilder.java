@@ -67,17 +67,6 @@ public class ItemBuilder implements Listener {
         return this;
     }
 
-    public ItemBuilder durability(final int durability) {
-        is.setDurability((short) durability);
-        return this;
-    }
-
-    @SuppressWarnings("deprecation")
-    public ItemBuilder data(final int data) {
-        is.setData(new MaterialData(is.getType(), (byte) data));
-        return this;
-    }
-
     public ItemBuilder enchantment(final Enchantment enchantment, final int level) {
         is.addUnsafeEnchantment(enchantment, level);
         return this;

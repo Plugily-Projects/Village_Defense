@@ -53,7 +53,7 @@ public class InventoryManager {
         String UUID = player.getUniqueId().toString();
         PlayerInventory inventory = player.getInventory();
         File path = new File(plugin.getDataFolder() + File.separator + "inventorys");
-        if(inventory == null || path == null) return false;
+        if(inventory == null) return false;
         try {
             File invFile = new File(plugin.getDataFolder() + File.separator + "inventorys" + File.separator, UUID + ".invsave");
             if(!path.exists()) path.mkdir();
@@ -103,7 +103,9 @@ public class InventoryManager {
 
     private Inventory getInventoryFromFile(String UUID) {
         File file = new File(plugin.getDataFolder() + File.separator + "inventorys" + File.separator + UUID + ".invsave");
-        if(!file.exists() || file.isDirectory() || !file.getAbsolutePath().endsWith(".invsave")) return null;
+        if(!file.exists() || file.isDirectory() || !file.getAbsolutePath().endsWith(".invsave")){
+            return Bukkit.createInventory(null, 9);
+        }
         try {
             FileConfiguration invConfig = YamlConfiguration.loadConfiguration(file);
             Inventory inventory;
@@ -135,7 +137,7 @@ public class InventoryManager {
             MessageUtils.errorOccured();
             Bukkit.getConsoleSender().sendMessage("Cannot save inventory of player!");
             Bukkit.getConsoleSender().sendMessage("Disable inventory saving option in config.yml or restart the server!");
-            return null;
+            return Bukkit.createInventory(null, 9);
         }
     }
 

@@ -176,12 +176,7 @@ public class SignManager implements Listener {
             for(String sign : ConfigurationManager.getConfig("arenas").getStringList("instances." + path + ".signs")) {
                 Location loc = Util.getLocation(false, sign);
                 if(loc.getBlock().getState() instanceof Sign) {
-                    String mapName = ((Sign) loc.getBlock().getState()).getLine(2);
-                    for(Arena inst : ArenaRegistry.getArenas()) {
-                        if(inst.getMapName().equals(mapName)) {
-                            loadedSigns.put((Sign) loc.getBlock().getState(), inst);
-                        }
-                    }
+                    loadedSigns.put((Sign) loc.getBlock().getState(), ArenaRegistry.getArena(path));
                 } else {
                     Main.debug("Block at loc " + loc + " for arena " + path + " not a sign", System.currentTimeMillis());
                 }

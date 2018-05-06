@@ -42,7 +42,7 @@ public class PermissionsManager {
         return joinFullPerm;
     }
 
-    public static void setJoinFullGames(String joinFullGames) {
+    private static void setJoinFullGames(String joinFullGames) {
         PermissionsManager.joinFullPerm = joinFullGames;
     }
 
@@ -50,7 +50,7 @@ public class PermissionsManager {
         return vipPerm;
     }
 
-    public static void setVip(String VIP) {
+    private static void setVip(String VIP) {
         PermissionsManager.vipPerm = VIP;
     }
 
@@ -58,7 +58,7 @@ public class PermissionsManager {
         return mvpPerm;
     }
 
-    public static void setMvp(String MVP) {
+    private static void setMvp(String MVP) {
         PermissionsManager.mvpPerm = MVP;
     }
 
@@ -66,7 +66,7 @@ public class PermissionsManager {
         return elitePerm;
     }
 
-    public static void setElite(String ELITE) {
+    private static void setElite(String ELITE) {
         PermissionsManager.elitePerm = ELITE;
     }
 
@@ -74,7 +74,7 @@ public class PermissionsManager {
         return editPerm;
     }
 
-    public static void setEditGames(String editGames) {
+    private static void setEditGames(String editGames) {
         PermissionsManager.editPerm = editGames;
     }
 
@@ -82,7 +82,7 @@ public class PermissionsManager {
         return joinPerm;
     }
 
-    public static void setJoinPerm(String joinPerm) {
+    private static void setJoinPerm(String joinPerm) {
         PermissionsManager.joinPerm = joinPerm;
     }
 

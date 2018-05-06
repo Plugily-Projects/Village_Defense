@@ -61,8 +61,7 @@ public class BungeeManager implements Listener {
         }
     }
 
-
-    public String getHubServerName() {
+    private String getHubServerName() {
         return ConfigurationManager.getConfig("bungee").getString("Hub");
     }
 

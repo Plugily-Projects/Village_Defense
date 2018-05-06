@@ -63,7 +63,9 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
+import java.util.Set;
 import java.util.UUID;
 
 /**
@@ -81,8 +83,8 @@ public abstract class Arena extends BukkitRunnable {
     private final List<IronGolem> ironGolems = new ArrayList<>();
     private final Random random;
     private final List<Zombie> glitchedZombies = new ArrayList<>();
-    private final HashMap<Zombie, Location> zombieCheckerLocations = new HashMap<>();
-    private final HashSet<UUID> players;
+    private final Map<Zombie, Location> zombieCheckerLocations = new HashMap<>();
+    private final Set<UUID> players = new HashSet<>();
     private int zombiesToSpawn;
     private boolean isFighting = false;
     private int wave;
@@ -107,7 +109,6 @@ public abstract class Arena extends BukkitRunnable {
         this.plugin = plugin;
         arenaState = ArenaState.WAITING_FOR_PLAYERS;
         this.ID = ID;
-        players = new HashSet<>();
         random = new Random();
         if(plugin.isBossbarEnabled()) {
             gameBar = Bukkit.createBossBar(ChatManager.colorMessage("Bossbar.Main-Title"), BarColor.BLUE, BarStyle.SOLID);
