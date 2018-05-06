@@ -5,6 +5,8 @@
 * Added PlaceholderAPI support
 * Fixed permissions for Worker and Blocker kits (villagedefense.kit.%kit name% wasn't working for them)
 * Updated Java Docs and API for getting sorted statistics
+* Fixed errors in console when offline player's wolves killed zombies
+* Update notify permission for admins with villagedefense.admin.* added
 
 ### 3.6.1 Hotfix (04.05.2018)
 * Fixed /vda command not working on 1.8

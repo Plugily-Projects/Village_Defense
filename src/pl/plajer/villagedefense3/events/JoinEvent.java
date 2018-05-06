@@ -60,6 +60,11 @@ public class JoinEvent implements Listener {
     public void onJoinCheckVersion(final PlayerJoinEvent event) {
         //we want to be the first :)
         Bukkit.getScheduler().runTaskLater(plugin, () -> {
+            if(event.getPlayer().isOp() && !plugin.isDataEnabled()){
+                event.getPlayer().sendMessage(ChatColor.RED + "[VillageDefense] It seems that you've disabled bStats statistics.");
+                event.getPlayer().sendMessage(ChatColor.RED + "Please consider enabling it to help us develop our plugins better!");
+                event.getPlayer().sendMessage(ChatColor.RED + "Enable it in plugins/bStats/config.yml file");
+            }
             if(event.getPlayer().hasPermission("villagedefense.updatenotify")) {
                 if(plugin.getConfig().getBoolean("Update-Notifier.Enabled")) {
                     String currentVersion = "v" + Bukkit.getPluginManager().getPlugin("VillageDefense").getDescription().getVersion();

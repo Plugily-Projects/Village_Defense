@@ -68,8 +68,9 @@ public class ArenaEvents implements Listener {
             for(Arena a : ArenaRegistry.getArenas()) {
                 if(a.getZombies().contains(e.getEntity())) {
                     if(e.getDamage() >= ((LivingEntity) e.getEntity()).getHealth()) {
+                        //prevent offline player cast error
+                        if(((Wolf) e.getDamager()).getOwner() == null || !(((Wolf) e.getDamager()).getOwner() instanceof Player)) return;
                         Player player = (Player) ((Wolf) e.getDamager()).getOwner();
-                        if(player == null) return;
                         if(ArenaRegistry.getArena(player) != null) {
                             a.addStat(player, "kills");
                             a.addExperience(player, 2);

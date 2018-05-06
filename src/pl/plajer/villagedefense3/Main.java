@@ -98,6 +98,7 @@ public class Main extends JavaPlugin {
     private boolean forceDisable = false;
     private boolean databaseActivated = false;
     private boolean bungeeEnabled;
+    private boolean dataEnabled = false;
     private boolean chatFormat = true;
     private boolean bossbarEnabled;
     private boolean inventoryManagerEnabled = false;
@@ -170,6 +171,14 @@ public class Main extends JavaPlugin {
 
     public String getVersion() {
         return version;
+    }
+
+    public boolean isDataEnabled() {
+        return dataEnabled;
+    }
+
+    public void setDataEnabled(boolean dataEnabled) {
+        this.dataEnabled = dataEnabled;
     }
 
     @Override

@@ -26,6 +26,7 @@ import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import pl.plajer.villagedefense3.Main;
 
 import javax.net.ssl.HttpsURLConnection;
 import java.io.ByteArrayOutputStream;
@@ -141,7 +142,9 @@ public class Metrics {
                 // We are the first!
                 startSubmitting();
             }
+            JavaPlugin.getPlugin(Main.class).setDataEnabled(true);
         } else {
+            JavaPlugin.getPlugin(Main.class).setDataEnabled(false);
             MessageUtils.weAreSadSadSad();
             Bukkit.getConsoleSender().sendMessage("We are really sad that you have disabled bStats! We put a lot of effort into");
             Bukkit.getConsoleSender().sendMessage("our plugins and we want to know how users like our work. Please consider");

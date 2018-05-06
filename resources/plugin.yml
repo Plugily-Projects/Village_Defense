@@ -18,6 +18,7 @@ permissions:
   villagedefense.admin.*:
     default: op
     children:
+      villagedefense.updatenotify: true
       villagedefense.admin: true
       villagedefense.admin.setup: true
       villagedefense.admin.setshopchest: true
