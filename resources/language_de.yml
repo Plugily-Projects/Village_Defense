@@ -18,6 +18,11 @@ Commands:
   Teleported-To-The-Lobby: "Teleportiert zur Lobby!"
   No-Arena-Like-That: "&cKeine Arena mit dieser ID gefunden!"
   Type-Arena-Name: "&cBitte tippe die Arena ID ein!"
+  Statistics:
+    Type-Name: "&cBitte tippe den Statistik Namen ein, um ihn zu sehen!"
+    Invalid-Name: "&cName von Statistik falsch! Type: kills, deaths, games_played, highest_wave, level"
+    Header: "&8&m-------------------[&6 Top 10 &8&m]-------------------"
+    Format: "&e#%position% %name% - %value% &7%statistic%"
   Only-By-Player: "&cDu kannst den Command nur als Spieler ausführen!"
   Not-Playing: "&cDu must im Spiel sein um diesen Command ausführen zukönnen!"
   No-Permission: "&cDu hast keine Permission um diesen Command auszuführen!"
@@ -309,5 +314,5 @@ Validator:
   Instance-Started: "[Village Defense] Arena %arena% Instanz erfolgreich gestartet!"
   No-Instances-Created: "[Village Defense] Keine Arena Instanzen gefunden in der Konfiguration!"
 
-File-Version-Do-Not-Edit: 2
-Language-Version: 2
+File-Version-Do-Not-Edit: 3
+Language-Version: 3

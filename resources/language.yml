@@ -11,6 +11,12 @@ Commands:
   Teleported-To-The-Lobby: "Teleported to the lobby!"
   No-Arena-Like-That: "&cNo arena with that ID!"
   Type-Arena-Name: "&cPlease type arena ID!"
+  Statistics:
+    Type-Name: "&cPlease type statistic name to view!"
+    Invalid-Name: "&cName of statistic is invalid! Type: kills, deaths, games_played, highest_wave, level"
+    Header: "&8&m-------------------[&6 Top 10 &8&m]-------------------"
+    Format: "&e#%position% %name% - %value% &7%statistic%"
+  Type-Statistic-Name: "&cPlease type statistic name to view!"
   Only-By-Player: "&cYou can execute this command only as player!"
   Not-Playing: "&cYou must play to execute this command!"
   No-Permission: "&cYou don't have permission to use this command!"
@@ -309,4 +315,4 @@ Validator:
 
 # Don't edit it. But who's stopping you? It's your server!
 # Really, don't edit ;p
-File-Version-Do-Not-Edit: 2
+File-Version-Do-Not-Edit: 3

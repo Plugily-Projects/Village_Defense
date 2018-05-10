@@ -21,7 +21,6 @@ package pl.plajer.villagedefense3.commands;
 import com.sk89q.worldedit.Vector;
 import com.sk89q.worldedit.bukkit.selections.CuboidSelection;
 import com.sk89q.worldedit.bukkit.selections.Selection;
-import org.apache.commons.lang3.Validate;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -45,11 +44,8 @@ import pl.plajer.villagedefense3.handlers.ChatManager;
 import pl.plajer.villagedefense3.handlers.ConfigurationManager;
 import pl.plajer.villagedefense3.utils.SetupInventory;
 import pl.plajer.villagedefense3.utils.Util;
-import pl.plajer.villagedefense3.villagedefenseapi.StatsStorage;
 
 import java.util.ArrayList;
-import java.util.Map;
-import java.util.UUID;
 
 /**
  * Created by Tom on 7/08/2014.
@@ -235,6 +231,14 @@ public class MainCommand implements CommandExecutor {
                     gameCommands.sendStatsOther(sender, args[1]);
                 }
                 gameCommands.sendStats(sender);
+                return true;
+            }
+            if(args[0].equalsIgnoreCase("top")) {
+                if(args.length == 2) {
+                    gameCommands.sendTopStatistics(sender, args[1]);
+                } else {
+                    sender.sendMessage(ChatManager.colorMessage("Commands.Statistics.Type-Name"));
+                }
                 return true;
             }
             if(args[0].equalsIgnoreCase("leave")) {

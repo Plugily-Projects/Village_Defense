@@ -18,7 +18,9 @@
 
 package pl.plajer.villagedefense3.commands;
 
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import pl.plajer.villagedefense3.Main;
@@ -27,6 +29,10 @@ import pl.plajer.villagedefense3.arena.ArenaRegistry;
 import pl.plajer.villagedefense3.handlers.ChatManager;
 import pl.plajer.villagedefense3.user.User;
 import pl.plajer.villagedefense3.user.UserManager;
+import pl.plajer.villagedefense3.villagedefenseapi.StatsStorage;
+
+import java.util.LinkedHashMap;
+import java.util.UUID;
 
 /**
  * @author Plajer
@@ -72,6 +78,37 @@ public class GameCommands extends MainCommand {
         sender.sendMessage(ChatManager.colorMessage("Commands.Stats-Command.Exp") + user.getInt("xp"));
         sender.sendMessage(ChatManager.colorMessage("Commands.Stats-Command.Next-Level-Exp") + Math.ceil(Math.pow(50 * user.getInt("level"), 1.5)));
         sender.sendMessage(ChatManager.colorMessage("Commands.Stats-Command.Footer"));
+    }
+
+    public void sendTopStatistics(CommandSender sender, String stat) {
+        try {
+            StatsStorage.StatisticType statisticType = StatsStorage.StatisticType.valueOf(stat.toUpperCase());
+            if(statisticType == StatsStorage.StatisticType.XP) {
+                sender.sendMessage(ChatManager.colorMessage("Commands.Statistics.Invalid-Name"));
+                return;
+            }
+            LinkedHashMap<UUID, Integer> stats = (LinkedHashMap<UUID, Integer>) StatsStorage.getStats(statisticType);
+            sender.sendMessage(ChatManager.colorMessage("Commands.Statistics.Header"));
+            for(int i = 0; i < 10; i++) {
+                try {
+                    UUID current = (UUID) stats.keySet().toArray()[stats.keySet().toArray().length - 1];
+                    sender.sendMessage(ChatManager.colorMessage("Commands.Statistics.Format")
+                            .replaceAll("%position%", String.valueOf(i + 1))
+                            .replaceAll("%name%", Bukkit.getOfflinePlayer(current).getName())
+                            .replaceAll("%value%", String.valueOf(stats.get(current)))
+                            .replaceAll("%statistic%", StringUtils.capitalize(statisticType.toString().toLowerCase().replaceAll("_", " ")))); //Games_played > Games played etc
+                    stats.remove(current);
+                } catch(IndexOutOfBoundsException ex) {
+                    sender.sendMessage(ChatManager.colorMessage("Commands.Statistics.Format")
+                            .replaceAll("%position%", String.valueOf(i + 1))
+                            .replaceAll("%name%", "Empty")
+                            .replaceAll("%value%", "0")
+                            .replaceAll("%statistic%", StringUtils.capitalize(statisticType.toString().toLowerCase().replaceAll("_", " "))));
+                }
+            }
+        } catch(IllegalArgumentException e) {
+            sender.sendMessage(ChatManager.colorMessage("Commands.Statistics.Invalid-Name"));
+        }
     }
 
     public void leaveGame(CommandSender sender) {

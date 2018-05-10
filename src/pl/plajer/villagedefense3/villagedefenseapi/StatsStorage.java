@@ -18,6 +18,7 @@
 
 package pl.plajer.villagedefense3.villagedefenseapi;
 
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import pl.plajer.villagedefense3.Main;
@@ -69,7 +70,7 @@ public class StatsStorage {
             FileConfiguration config = ConfigurationManager.getConfig("stats");
             Map<UUID, Integer> stats = new TreeMap<>();
             for(String string : config.getKeys(false)) {
-                stats.put(UUID.fromString(string), config.getInt(string + "." + stat));
+                stats.put(UUID.fromString(string), config.getInt(string + "." + stat.getName()));
             }
             return sortByValue(stats);
         }

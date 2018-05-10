@@ -14,6 +14,11 @@ Commands:
   Teleported-To-The-Lobby: "Przeniesiono do lobby!"
   No-Arena-Like-That: "&cArena o takim ID nie istnieje!"
   Type-Arena-Name: "&cProsze podac ID areny!"
+  Statistics:
+    Type-Name: "&cProsze podac nazwe statystyki"
+    Invalid-Name: "&cTyp statystiki jest bledny! Uzyj: kills, deaths, games_played, highest_wave, level"
+    Header: "&8&m-------------------[&6 Top 10 &8&m]-------------------"
+    Format: "&e#%position% %name% - %value% &7%statistic%"
   Only-By-Player: "&cTa komende moze wykonac jedynie gracz!"
   Not-Playing: "&cMusisz byc w grze by wykonac ta komende!"
   No-Permission: "&cNie posiadasz uprawnien do tej komendy!"
@@ -304,5 +309,5 @@ Validator:
   No-Instances-Created: "[Village Defense] Nie ma zadnych aren w konfiguracji!"
 
 #You don't want to change this m8 >:)
-File-Version-Do-Not-Edit: 2
-Language-Version: 2
+File-Version-Do-Not-Edit: 3
+Language-Version: 3

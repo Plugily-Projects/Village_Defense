@@ -24,6 +24,7 @@ import com.gmail.filoghost.holographicdisplays.api.line.ItemLine;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Effect;
 import org.bukkit.Location;
@@ -151,6 +152,9 @@ public class PowerupManager {
             }
             hologram.delete();
         });
+        Bukkit.getScheduler().runTaskLater(plugin, () -> {
+            if(!hologram.isDeleted()) hologram.delete();
+        }, /* remove after 40 seconds to prevent staying even if arena is finished */ 20 * 40);
     }
 
     @Getter
