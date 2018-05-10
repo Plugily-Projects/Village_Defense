@@ -1,6 +1,6 @@
 ![](https://i.imgur.com/wz5Wg5a.png)
 
-# Village Defense 3 [![](https://img.shields.io/badge/javadocs-latest-green.svg)](https://plajer.github.io/Village_Defense/) [![](https://img.shields.io/badge/wiki-click-blue.svg)](https://github.com/Plajer/Village_Defense/wiki)
+# Village Defense 3 [![](https://img.shields.io/badge/javadocs-latest-green.svg)](https://plajer-lair.github.io/Village_Defense/) [![](https://img.shields.io/badge/wiki-click-blue.svg)](https://github.com/Plajer/Village_Defense/wiki)
 Harder, better, faster, stronger - motto of Village Defense 3.
 
 Village Defense is a Minecraft minigame designed for small and big servers. This minigame is unique and very configurable, 100% free and open source! 
@@ -15,7 +15,7 @@ Have fun using it! Leave a good rating if you really like it.
 Fork this project and create pull request!
 
 #### 💣 Issues reporting:
-[Create new issue here!](https://github.com/Plajer/Village_Defense/issues/new)
+[Create new issue here!](https://github.com/Plajer-Lair/Village_Defense/issues/new)
 
 #### ❤️ Support the author:
 [Rate the plugin at SpigotMC](https://www.spigotmc.org/resources/41869/rate?rating=5)

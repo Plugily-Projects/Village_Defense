@@ -7,6 +7,7 @@
 * Updated Java Docs and API for getting sorted statistics
 * Fixed errors in console when offline player's wolves killed zombies
 * Update notify permission for admins with villagedefense.admin.* added
+* Now doors amount in setup menu will be normal (was 2x more because 1 door is 2 blocks)
 
 ### 3.6.1 Hotfix (04.05.2018)
 * Fixed /vda command not working on 1.8
