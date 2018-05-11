@@ -73,7 +73,7 @@ public class ZombieFinderKit extends LevelKit implements Listener {
         ItemStack zombieteleporter = WeaponHelper.getEnchanted(new ItemStack(Material.BOOK), new Enchantment[]{Enchantment.DAMAGE_ALL}, new int[]{1});
         ItemMeta im = zombieteleporter.getItemMeta();
         im.setDisplayName(ChatManager.colorMessage("Kits.Zombie-Teleporter.Game-Item-Name"));
-        im.setLore(Collections.singletonList(ChatManager.colorMessage("Kits.Zombie-Teleporter.Game-Item-Lore")));
+        im.setLore(Util.splitString(ChatManager.colorMessage("Kits.Zombie-Teleporter.Game-Item-Lore"), 40));
         zombieteleporter.setItemMeta(im);
         player.getInventory().addItem(zombieteleporter);
     }

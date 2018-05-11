@@ -1,13 +1,17 @@
-#   You can translate Village Defense 3 messages here.
-#          Color codes supported.
+#    You can translate Village Defense 3 messages here.
+#             Color codes (&) supported.
 #
-#          Use \n to make new line
+#              Use \n to make new line
+#        Some messages like kit and kit items
+#        descriptions dont't support new lines
+# they are wrapped every 40 characters automatically
 #
 #     Some messages support their own placeholders
-#           like %player%, %kit% etc.
+#            like %player%, %kit% etc.
 
 # Village Defense commands messages
 Commands:
+  Did-You-Mean: "&6Did you mean &e/%command%&6?"
   Teleported-To-The-Lobby: "Teleported to the lobby!"
   No-Arena-Like-That: "&cNo arena with that ID!"
   Type-Arena-Name: "&cPlease type arena ID!"
@@ -84,6 +88,7 @@ Kits:
   Kit-Menu-Item-Name: "Kit-Menu"
   Open-Kit-Menu: "Open Kit Menu"
   Ability-Still-On-Cooldown: "&cThis ability is on cooldown! Wait %COOLDOWN% more seconds!"
+  # Kit descriptions and kit items wraps their descriptions every 40 characters and don't support \n character
   Cleaner:
     Kit-Name: "&bCleaner"
     Kit-Description: "&7The cleaner has a special ability. With this ability, he can make all the zombies disappear. However, it takes a lot of effort to do this!"
@@ -200,7 +205,7 @@ In-Game:
   No-Slots-For-Premium: "&cThis game is already full of premium players! Sorry"
   Dead-Tag-On-Death: "&8Dead"
   Game-Chat-Format: "&6[&5%level%&6]&6[%kit%&6] %player%: &f%message%"
-  Death-Screen: "You died!"
+  Death-Screen: "&cYou died!"
   Died-Respawn-In-Next-Wave: "&e&lDON'T LEAVE! &aYou'll respawn next once the wave ends!"
   Back-In-Game: "&aYou're not a spectator anymore! You're back in the game!"
   You-Are-Spectator: "&cYou're now a spectator! You can fly now!"
@@ -315,4 +320,4 @@ Validator:
 
 # Don't edit it. But who's stopping you? It's your server!
 # Really, don't edit ;p
-File-Version-Do-Not-Edit: 3
+File-Version-Do-Not-Edit: 4

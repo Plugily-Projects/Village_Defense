@@ -1,6 +1,13 @@
 # Village Defense 3 Changelog
 
-### 3.6.2 Release (04.05.2018)
+### 3.6.3 Release (11.05.2018)
+* Added did you mean to help with wrong commands (ex. /vd leaveve > Did you mean /vd leave?)
+* Added line wrapping for blocker kit and some new comments in language.yml file
+* Fixed #4 bug, mysql users should be aware of that problem especially users with cloud management systems
+* Now removing boss bar of player when plugin gets disabled while games are on
+* Re-commented rewards.yml file and added chance condition
+
+### 3.6.2 Release (04/10.05.2018)
 * Fixed /vd create command without argument gave an error
 * Added PlaceholderAPI support
 * Fixed permissions for Worker and Blocker kits (villagedefense.kit.%kit name% wasn't working for them)

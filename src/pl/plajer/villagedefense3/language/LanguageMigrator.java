@@ -84,13 +84,21 @@ public class LanguageMigrator {
             Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "[Village Defense] System notify >> Language file updated! Nice!");
             return;
         }
-        if(LanguageManager.getDefaultLanguageMessage("File-Version-Do-Not-Edit").equals("2")){
+        if(LanguageManager.getDefaultLanguageMessage("File-Version-Do-Not-Edit").equals("2")) {
             Bukkit.getConsoleSender().sendMessage(ChatColor.YELLOW + "[Village Defense] System notify >> Your language file is outdated! Updating...");
             LanguageManager.getLanguageFile().set("Commands.Statistics.Type-Name", "&cPlease type statistic name to view!");
             LanguageManager.getLanguageFile().set("Commands.Statistics.Invalid-Name", "&cName of statistic is invalid! Type: kills, deaths, games_played, highest_wave, level");
             LanguageManager.getLanguageFile().set("Commands.Statistics.Header", "&8&m-------------------[&6 Top 10 &8&m]-------------------");
             LanguageManager.getLanguageFile().set("Commands.Statistics.Format", "&e#%position% %name% - %value% &7%statistic%");
             LanguageManager.getLanguageFile().set("File-Version-Do-Not-Edit", 3);
+            LanguageManager.saveLanguageFile();
+            Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "[Village Defense] System notify >> Language file updated! Nice!");
+            return;
+        }
+        if(LanguageManager.getDefaultLanguageMessage("File-Version-Do-Not-Edit").equals("3")) {
+            Bukkit.getConsoleSender().sendMessage(ChatColor.YELLOW + "[Village Defense] System notify >> Your language file is outdated! Updating...");
+            LanguageManager.getLanguageFile().set("Commands.Did-You-Mean", "&6Did you mean &7/%command%&6?");
+            LanguageManager.getLanguageFile().set("File-Version-Do-Not-Edit", 4);
             LanguageManager.saveLanguageFile();
             Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "[Village Defense] System notify >> Language file updated! Nice!");
             return;

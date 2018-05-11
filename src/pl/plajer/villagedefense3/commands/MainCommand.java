@@ -43,9 +43,12 @@ import pl.plajer.villagedefense3.arena.ArenaRegistry;
 import pl.plajer.villagedefense3.handlers.ChatManager;
 import pl.plajer.villagedefense3.handlers.ConfigurationManager;
 import pl.plajer.villagedefense3.utils.SetupInventory;
+import pl.plajer.villagedefense3.utils.StringMatcher;
 import pl.plajer.villagedefense3.utils.Util;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Created by Tom on 7/08/2014.
@@ -198,6 +201,11 @@ public class MainCommand implements CommandExecutor {
                 return true;
             }
             adminCommands.sendHelp(sender);
+            List<StringMatcher.Match> matches = StringMatcher.match(args[0], Arrays.asList("stop", "list", "forcestart", "respawn", "spychat",
+                    "reload", "setshopchest", "addsign", "delete", "setprice", "tp", "clear", "addorbs", "setwave"));
+            if(!matches.isEmpty()) {
+                sender.sendMessage(ChatManager.colorMessage("Commands.Did-You-Mean").replaceAll("%command%", "vda " + matches.get(0).getMatch()));
+            }
             return true;
         }
         if(cmd.getName().equalsIgnoreCase("villagedefense")) {
@@ -225,35 +233,30 @@ public class MainCommand implements CommandExecutor {
                 }
                 sender.sendMessage(ChatManager.colorMessage("Commands.Type-Arena-Name"));
                 return true;
-            }
-            if(args[0].equalsIgnoreCase("stats")) {
+            } else if(args[0].equalsIgnoreCase("stats")) {
                 if(args.length == 2) {
                     gameCommands.sendStatsOther(sender, args[1]);
                 }
                 gameCommands.sendStats(sender);
                 return true;
-            }
-            if(args[0].equalsIgnoreCase("top")) {
+            } else if(args[0].equalsIgnoreCase("top")) {
                 if(args.length == 2) {
                     gameCommands.sendTopStatistics(sender, args[1]);
                 } else {
                     sender.sendMessage(ChatManager.colorMessage("Commands.Statistics.Type-Name"));
                 }
                 return true;
-            }
-            if(args[0].equalsIgnoreCase("leave")) {
+            } else if(args[0].equalsIgnoreCase("leave")) {
                 gameCommands.leaveGame(sender);
                 return true;
-            }
-            if(args[0].equalsIgnoreCase("create")) {
+            } else if(args[0].equalsIgnoreCase("create")) {
                 if(args.length == 2) {
                     adminCommands.createArena(sender, args);
                     return true;
                 }
                 sender.sendMessage(ChatManager.colorMessage("Commands.Type-Arena-Name"));
                 return true;
-            }
-            if(args[0].equalsIgnoreCase("admin")) {
+            } else if(args[0].equalsIgnoreCase("admin")) {
                 if(args.length == 1) {
                     adminCommands.sendHelp(sender);
                     return true;
@@ -351,6 +354,17 @@ public class MainCommand implements CommandExecutor {
                     return true;
                 }
                 adminCommands.sendHelp(sender);
+                List<StringMatcher.Match> matches = StringMatcher.match(args[1], Arrays.asList("stop", "list", "forcestart", "respawn", "spychat",
+                        "reload", "setshopchest", "addsign", "delete", "setprice", "tp", "clear", "addorbs", "setwave"));
+                if(!matches.isEmpty()) {
+                    sender.sendMessage(ChatManager.colorMessage("Commands.Did-You-Mean").replaceAll("%command%", "vd admin " + matches.get(0).getMatch()));
+                }
+                return true;
+            } else {
+                List<StringMatcher.Match> matches = StringMatcher.match(args[0], Arrays.asList("join", "leave", "stats", "top", "admin", "create"));
+                if(!matches.isEmpty()) {
+                    sender.sendMessage(ChatManager.colorMessage("Commands.Did-You-Mean").replaceAll("%command%", "vd " + matches.get(0).getMatch()));
+                }
                 return true;
             }
         }

@@ -15,6 +15,7 @@
 
 
 Commands:
+  Did-You-Mean: "&6Meintest du &e/%command%&6?"
   Teleported-To-The-Lobby: "Teleportiert zur Lobby!"
   No-Arena-Like-That: "&cKeine Arena mit dieser ID gefunden!"
   Type-Arena-Name: "&cBitte tippe die Arena ID ein!"
@@ -314,5 +315,5 @@ Validator:
   Instance-Started: "[Village Defense] Arena %arena% Instanz erfolgreich gestartet!"
   No-Instances-Created: "[Village Defense] Keine Arena Instanzen gefunden in der Konfiguration!"
 
-File-Version-Do-Not-Edit: 3
-Language-Version: 3
+File-Version-Do-Not-Edit: 4
+Language-Version: 4

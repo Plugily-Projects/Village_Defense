@@ -46,6 +46,7 @@ import pl.plajer.villagedefense3.utils.ArmorHelper;
 import pl.plajer.villagedefense3.utils.Util;
 import pl.plajer.villagedefense3.utils.WeaponHelper;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -78,7 +79,7 @@ public class BlockerKit extends PremiumKit implements Listener {
         ItemStack is = new ItemStack(Material.FENCE, 3);
         ItemMeta im = is.getItemMeta();
         im.setDisplayName(ChatManager.colorMessage("Kits.Blocker.Game-Item-Name"));
-        im.setLore(Collections.singletonList(ChatManager.colorMessage("Kits.Blocker.Game-Item-Lore")));
+        im.setLore(Arrays.asList(ChatManager.colorMessage("Kits.Blocker.Game-Item-Lore").split("\n")));
         is.setItemMeta(im);
         player.getInventory().addItem(is);
         player.getInventory().addItem(new ItemStack(Material.SADDLE));
@@ -96,7 +97,7 @@ public class BlockerKit extends PremiumKit implements Listener {
         ItemStack is = new ItemStack(Material.FENCE, 3);
         ItemMeta im = is.getItemMeta();
         im.setDisplayName(ChatManager.colorMessage("Kits.Blocker.Game-Item-Name"));
-        im.setLore(Collections.singletonList(ChatManager.colorMessage("Kits.Blocker.Game-Item-Lore")));
+        im.setLore(Util.splitString(ChatManager.colorMessage("Kits.Blocker.Game-Item-Lore"), 40));
         is.setItemMeta(im);
         inventory.addItem(is);
     }

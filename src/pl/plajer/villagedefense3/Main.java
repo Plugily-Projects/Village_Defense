@@ -415,6 +415,7 @@ public class Main extends JavaPlugin {
         }
         for(Arena arena : ArenaRegistry.getArenas()) {
             for(Player player : arena.getPlayers()) {
+                arena.getGameBar().removePlayer(player);
                 arena.teleportToEndLocation(player);
                 if(inventoryManagerEnabled) {
                     inventoryManager.loadInventory(player);

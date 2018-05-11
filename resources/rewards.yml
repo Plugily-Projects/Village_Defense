@@ -1,113 +1,46 @@
 #
+#           Village Defense 3 rewards configuration
 #
-# Setup rewards in this file for Village Defense!
-#  Magical words are:
-#   %PLAYER%    -   Gets replaced by the players name
-#   %WAVE%      -   Current wave number
-#   %MAPNAME%   -   Name of map
-#   %ARENA-ID   -   Arena ID
-#   %PLAYERAMOUNT% -  Number of current players in game
+#                    Placeholders list:
+#             %PLAYER% - Current player name
+#             %WAVE% - Current wave number
+#             %MAPNAME% - Name of map
+#             %ARENA-ID% - Arena Identifier
+#             %PLAYERAMOUNT% - Number of players in game
 #
+#        Commands are executed by default BY CONSOLE, use "p:" to preform command by player
+#  Since 3.6.3 you can use chance to execute command adding "chance(NUMBER):" (ex chance(10):) at the beginning of command
+# WARNING: Please don't mix NUMBERS when using chance!!!! It can cause weird chance behaviour! PLACEHOLDERS LIKE %WAVE% INCLUDED!!!
 #
-# Add "p:" If placed in front of the command, the command will be performed by the player, else by the console
-#  For example:
-#         - p:spawn  # Will teleport the player to spawn. The player will perform /spawn. NOTE that there is NO space.
-#         - spawn    # Console will perform the /spawn command.. but this is useless
+#  Commands examples:
+#    - p:say Hello everyone in %MAPNAME%!     # Player will say "Hello everyone in <map name here>"
+#    - broadcast Game %ARENA-ID% has ended!   # Will broadcast "Game <arena name here> has ended" message
+#    - chance(1):p:say I was very lucky!              # Player has 1% chance to say "I was very lucky!"
+#    - p:chance(99):spawn                             # Player has 99% chance to teleport to spawn
+#       ^ YOU CAN EVEN SWAP CHANCE WITH PLAYER!
+#    - chance(50):eco give %PLAYER% 10                # Console has 10% chance to give player 10$
 #
-#
-#
-#
+
+# Rewards must be enabled via config.yml first!
 rewards:
-# Perform a command when the game is finished. When all the villagers are killed:
+  # Commands performed when game is finished
   endgame:
-    - say %MAPNAME% is done playing and reached wave %WAVE%
-    - say this is a second command example
-# Perform a command when a wave ends. this will be performed after every wave round!
-# If you don't want to give rewards after a wave, just delete the wave out of the list.
-# If you want to add rewards for waves higher than 40, just add them to the list.
+    - say %MAPNAME% has ended, reached wave %WAVE%
+    - say Ooh and there were playing %PLAYERAMOUNT% players
+  # Commands performed every wave end
+  # Use "WAVE NUMBER:" to execute command in specific wave (ex. 1:)
+  # Delete everything if you don't want to use this section
   endwave:
     1:
-      - say You reached wave %WAVE%!
-    2:
-      - say You reached wave %WAVE%!
-    3:
-      - say You reached wave %WAVE%!
-    4:
-      - say You reached wave %WAVE%!
+      - say You reached wave %WAVE%, nice!
     5:
-      - say You reached wave %WAVE%!
-    6:
-      - say You reached wave %WAVE%!
-    7:
-      - say You reached wave %WAVE%!
-    8:
-      - say You reached wave %WAVE%!
-    9:
-      - say You reached wave %WAVE%!
+      - say You reached wave %WAVE%, good job!
+      - eco give %PLAYER% 5
     10:
-      - say You reached wave %WAVE%!
-    11:
-      - say You reached wave %WAVE%!
-    12:
-      - say You reached wave %WAVE%!
-    13:
-      - say You reached wave %WAVE%!
-    14:
-      - say You reached wave %WAVE%!
-    15:
-      - say You reached wave %WAVE%!
-    16:
-      - say You reached wave %WAVE%!
-    17:
-      - say You reached wave %WAVE%!
-    18:
-      - say You reached wave %WAVE%!
-    19:
-      - say You reached wave %WAVE%!
-    20:
-      - say You reached wave %WAVE%!
-    21:
-      - say You reached wave %WAVE%!
-    22:
-      - say You reached wave %WAVE%!
-    23:
-      - say You reached wave %WAVE%!
-    24:
-      - say You reached wave %WAVE%!
-    25:
-      - say You reached wave %WAVE%!
-    26:
-      - say You reached wave %WAVE%!
-    27:
-      - say You reached wave %WAVE%!
-    28:
-      - say You reached wave %WAVE%!
-    29:
-      - say You reached wave %WAVE%!
-    30:
-      - say You reached wave %WAVE%!
-    31:
-      - say You reached wave %WAVE%!
-    32:
-      - say You reached wave %WAVE%!
-    33:
-      - say You reached wave %WAVE%!
-    34:
-      - say You reached wave %WAVE%!
-    35:
-      - say You reached wave %WAVE%!
-    36:
-      - say You reached wave %WAVE%!
-    37:
-      - say You reached wave %WAVE%!
-    38:
-      - say You reached wave %WAVE%!
-    39:
-      - say You reached wave %WAVE%!
-    40:
-      - say You reached wave %WAVE%!
-
-# When a player kills a zombie:
+      - broadcast Woah! %MAPNAME% reached wave %WAVE%!
+    99:
+      - say Nice try %PLAYER%...
+  # Commands executed when zombie is killed
   zombiekill:
-    - give %PLAYER% 100
+    - eco give %PLAYER% 2
 

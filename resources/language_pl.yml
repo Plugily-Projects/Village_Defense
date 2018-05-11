@@ -11,6 +11,7 @@
 
 
 Commands:
+  Did-You-Mean: "&6Czy chodzi o &e/%command%&6?"
   Teleported-To-The-Lobby: "Przeniesiono do lobby!"
   No-Arena-Like-That: "&cArena o takim ID nie istnieje!"
   Type-Arena-Name: "&cProsze podac ID areny!"
@@ -309,5 +310,5 @@ Validator:
   No-Instances-Created: "[Village Defense] Nie ma zadnych aren w konfiguracji!"
 
 #You don't want to change this m8 >:)
-File-Version-Do-Not-Edit: 3
-Language-Version: 3
+File-Version-Do-Not-Edit: 4
+Language-Version: 4

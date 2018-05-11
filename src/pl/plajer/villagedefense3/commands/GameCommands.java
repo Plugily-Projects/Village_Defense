@@ -104,6 +104,13 @@ public class GameCommands extends MainCommand {
                             .replaceAll("%name%", "Empty")
                             .replaceAll("%value%", "0")
                             .replaceAll("%statistic%", StringUtils.capitalize(statisticType.toString().toLowerCase().replaceAll("_", " "))));
+                } catch(NullPointerException ex){
+                    UUID current = (UUID) stats.keySet().toArray()[stats.keySet().toArray().length - 1];
+                    sender.sendMessage(ChatManager.colorMessage("Commands.Statistics.Format")
+                            .replaceAll("%position%", String.valueOf(i + 1))
+                            .replaceAll("%name%", "Unknown Player")
+                            .replaceAll("%value%", String.valueOf(stats.get(current)))
+                            .replaceAll("%statistic%", StringUtils.capitalize(statisticType.toString().toLowerCase().replaceAll("_", " "))));
                 }
             }
         } catch(IllegalArgumentException e) {

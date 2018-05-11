@@ -18,11 +18,16 @@
 
 package pl.plajer.villagedefense3.handlers;
 
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import pl.plajer.villagedefense3.Main;
 import pl.plajer.villagedefense3.arena.Arena;
 import pl.plajer.villagedefense3.arena.ArenaRegistry;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * Created by Tom on 30/01/2016.
@@ -67,10 +72,22 @@ public class RewardsHandler {
                 .replaceAll("%MAPNAME%", arena.getMapName())
                 .replaceAll("%PLAYERAMOUNT%", String.valueOf(arena.getPlayers().size()))
                 .replaceAll("%WAVE%", String.valueOf(arena.getWave()));
+        if(command.contains("chance(")){
+            String chanceStr = command.replaceAll("[^0-9]+", "");
+            // prevent accidental additional numbers insert into string ex. by placeholders
+            if(chanceStr.toCharArray().length >= 3 && Long.parseLong(chanceStr) != 100){
+                for(int i = 0; i < chanceStr.toCharArray().length - 2; i++) {
+                    chanceStr = chanceStr.substring(0, chanceStr.toCharArray().length - 1);
+                }
+            }
+            int chance = Integer.parseInt(chanceStr);
+            command = command.replace("chance(" + chanceStr + "):", "");
+            if(ThreadLocalRandom.current().nextInt(0, 100) > chance) return;
+        }
         if(command.contains("p:") || command.contains("%PLAYER%")) {
             for(Player player : arena.getPlayers()) {
                 if(command.contains("p:")) {
-                    player.performCommand(command.substring(2, command.length())
+                    player.performCommand(command.replaceFirst("p:", "")
                             .replaceAll("%PLAYER%", player.getName()));
                 } else {
                     plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), command.replaceAll("%PLAYER%", player.getName()));
@@ -88,8 +105,20 @@ public class RewardsHandler {
                 .replaceAll("%MAPNAME%", arena.getMapName())
                 .replaceAll("%PLAYERAMOUNT%", String.valueOf(arena.getPlayers().size()))
                 .replaceAll("%WAVE%", String.valueOf(arena.getWave()));
+        if(command.contains("chance(")){
+            String chanceStr = command.replaceAll("[^0-9]+", "");
+            // prevent accidental additional numbers insert into string ex. by placeholders
+            if(chanceStr.toCharArray().length >= 3 && Integer.parseInt(chanceStr) != 100){
+                for(int i = 0; i < chanceStr.toCharArray().length - 2; i++) {
+                    chanceStr = chanceStr.substring(0, chanceStr.toCharArray().length - 1);
+                }
+            }
+            int chance = Integer.parseInt(chanceStr);
+            command = command.replace("chance(" + chanceStr + ")", "");
+            if(ThreadLocalRandom.current().nextInt(0, 100) > chance) return;
+        }
         if(command.contains("p:")) {
-            player.performCommand(command.substring(2, command.length())
+            player.performCommand(command.replaceFirst("p:", "")
                     .replaceAll("%PLAYER%", player.getName()));
         } else {
             plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), command.replaceAll("%PLAYER%", player.getName()));

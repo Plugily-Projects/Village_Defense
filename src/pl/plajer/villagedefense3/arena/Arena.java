@@ -131,6 +131,10 @@ public abstract class Arena extends BukkitRunnable {
         this.zombiesToSpawn--;
     }
 
+    public BossBar getGameBar() {
+        return gameBar;
+    }
+
     /**
      * Location of game doors
      *
