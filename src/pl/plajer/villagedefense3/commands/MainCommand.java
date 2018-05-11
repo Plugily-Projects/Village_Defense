@@ -64,8 +64,11 @@ public class MainCommand implements CommandExecutor {
         if(register) {
             adminCommands = new AdminCommands(plugin);
             gameCommands = new GameCommands(plugin);
+            TabCompletion completion = new TabCompletion();
             plugin.getCommand("villagedefense").setExecutor(this);
+            plugin.getCommand("villagedefense").setTabCompleter(completion);
             plugin.getCommand("villagedefenseadmin").setExecutor(this);
+            plugin.getCommand("villagedefenseadmin").setTabCompleter(completion);
         }
     }
 
