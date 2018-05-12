@@ -47,7 +47,6 @@ import pl.plajer.villagedefense3.utils.Util;
 import pl.plajer.villagedefense3.utils.WeaponHelper;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 /**

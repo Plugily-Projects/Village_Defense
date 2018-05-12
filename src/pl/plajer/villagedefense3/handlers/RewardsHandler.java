@@ -18,15 +18,12 @@
 
 package pl.plajer.villagedefense3.handlers;
 
-import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import pl.plajer.villagedefense3.Main;
 import pl.plajer.villagedefense3.arena.Arena;
 import pl.plajer.villagedefense3.arena.ArenaRegistry;
 
-import java.util.Arrays;
-import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
@@ -72,14 +69,13 @@ public class RewardsHandler {
                 .replaceAll("%MAPNAME%", arena.getMapName())
                 .replaceAll("%PLAYERAMOUNT%", String.valueOf(arena.getPlayers().size()))
                 .replaceAll("%WAVE%", String.valueOf(arena.getWave()));
-        if(command.contains("chance(")){
+        if(command.contains("chance(")) {
             int loc = command.indexOf(")");
-            if(loc == -1){
+            if(loc == -1) {
                 plugin.getLogger().warning("rewards.yml configuration is broken! Make sure you don't forget using ')' character in chance condition!");
                 return;
             }
             String chanceStr = command.substring(0, loc).replaceAll("[^0-9]+", "");
-            Bukkit.broadcastMessage(chanceStr + " before");
             int chance = Integer.parseInt(chanceStr);
             command = command.replace("chance(" + chanceStr + "):", "");
             if(ThreadLocalRandom.current().nextInt(0, 100) > chance) return;
@@ -105,14 +101,13 @@ public class RewardsHandler {
                 .replaceAll("%MAPNAME%", arena.getMapName())
                 .replaceAll("%PLAYERAMOUNT%", String.valueOf(arena.getPlayers().size()))
                 .replaceAll("%WAVE%", String.valueOf(arena.getWave()));
-        if(command.contains("chance(")){
+        if(command.contains("chance(")) {
             int loc = command.indexOf(")");
-            if(loc == -1){
+            if(loc == -1) {
                 plugin.getLogger().warning("rewards.yml configuration is broken! Make sure you don't forget using ')' character in chance condition!");
                 return;
             }
             String chanceStr = command.substring(0, loc).replaceAll("[^0-9]+", "");
-            Bukkit.broadcastMessage(chanceStr + " before");
             int chance = Integer.parseInt(chanceStr);
             command = command.replace("chance(" + chanceStr + "):", "");
             if(ThreadLocalRandom.current().nextInt(0, 100) > chance) return;

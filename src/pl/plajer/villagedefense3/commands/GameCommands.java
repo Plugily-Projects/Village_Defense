@@ -20,7 +20,6 @@ package pl.plajer.villagedefense3.commands;
 
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import pl.plajer.villagedefense3.Main;
@@ -104,7 +103,7 @@ public class GameCommands extends MainCommand {
                             .replaceAll("%name%", "Empty")
                             .replaceAll("%value%", "0")
                             .replaceAll("%statistic%", StringUtils.capitalize(statisticType.toString().toLowerCase().replaceAll("_", " "))));
-                } catch(NullPointerException ex){
+                } catch(NullPointerException ex) {
                     UUID current = (UUID) stats.keySet().toArray()[stats.keySet().toArray().length - 1];
                     sender.sendMessage(ChatManager.colorMessage("Commands.Statistics.Format")
                             .replaceAll("%position%", String.valueOf(i + 1))

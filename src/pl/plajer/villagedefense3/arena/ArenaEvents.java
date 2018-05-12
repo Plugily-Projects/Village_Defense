@@ -63,10 +63,10 @@ public class ArenaEvents implements Listener {
 
     //override WorldGuard build deny flag where villagers cannot be damaged
     @EventHandler(priority = EventPriority.HIGHEST)
-    public void onVillagerDamage(EntityDamageByEntityEvent e){
-        if(e.getEntity() instanceof Villager && e.getDamager() instanceof Zombie){
-            for(Arena a : ArenaRegistry.getArenas()){
-                if(a.getVillagers().contains(e.getEntity()) && a.getZombies().contains(e.getDamager())){
+    public void onVillagerDamage(EntityDamageByEntityEvent e) {
+        if(e.getEntity() instanceof Villager && e.getDamager() instanceof Zombie) {
+            for(Arena a : ArenaRegistry.getArenas()) {
+                if(a.getVillagers().contains(e.getEntity()) && a.getZombies().contains(e.getDamager())) {
                     e.setCancelled(false);
                 }
             }

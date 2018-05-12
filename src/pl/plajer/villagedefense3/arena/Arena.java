@@ -146,7 +146,7 @@ public abstract class Arena extends BukkitRunnable {
 
     public void run() {
         //idle task
-        if(getPlayers().size() == 0 && getArenaState() == ArenaState.WAITING_FOR_PLAYERS)return;
+        if(getPlayers().size() == 0 && getArenaState() == ArenaState.WAITING_FOR_PLAYERS) return;
         updateScoreboard();
         switch(getArenaState()) {
             case WAITING_FOR_PLAYERS:

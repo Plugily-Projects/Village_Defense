@@ -103,7 +103,7 @@ public class InventoryManager {
 
     private Inventory getInventoryFromFile(String UUID) {
         File file = new File(plugin.getDataFolder() + File.separator + "inventorys" + File.separator + UUID + ".invsave");
-        if(!file.exists() || file.isDirectory() || !file.getAbsolutePath().endsWith(".invsave")){
+        if(!file.exists() || file.isDirectory() || !file.getAbsolutePath().endsWith(".invsave")) {
             return Bukkit.createInventory(null, 9);
         }
         try {

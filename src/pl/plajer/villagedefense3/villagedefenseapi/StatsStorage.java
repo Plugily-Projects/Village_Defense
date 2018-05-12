@@ -18,16 +18,12 @@
 
 package pl.plajer.villagedefense3.villagedefenseapi;
 
-import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import pl.plajer.villagedefense3.Main;
 import pl.plajer.villagedefense3.handlers.ConfigurationManager;
 import pl.plajer.villagedefense3.user.UserManager;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -79,10 +75,10 @@ public class StatsStorage {
     /**
      * Get user statistic based on StatisticType
      *
-     * @param player Online player to get data from
+     * @param player        Online player to get data from
      * @param statisticType Statistic type to get (kills, deaths etc.)
-     * @see StatisticType
      * @return int of statistic
+     * @see StatisticType
      */
     public static int getUserStats(Player player, StatisticType statisticType) {
         Main.debug("Village API getUserStats(" + player.getName() + ", " + statisticType.getName() + ") run", System.currentTimeMillis());

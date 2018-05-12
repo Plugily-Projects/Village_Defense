@@ -59,16 +59,10 @@ import java.util.List;
  */
 public class AdminCommands extends MainCommand {
 
-    private Main plugin;
     private static List<CommandData> command = new LinkedList<>();
     //private static List<String> command = new LinkedList<>();
     private static List<String> commandDesc = new LinkedList<>();
     private static List<String> commandCommand = new LinkedList<>();
-
-    public AdminCommands(Main plugin) {
-        super(plugin, false);
-        this.plugin = plugin;
-    }
 
     static {
         ChatColor gray = ChatColor.GRAY;
@@ -95,21 +89,28 @@ public class AdminCommands extends MainCommand {
                 "They will be stopped!\n" + gold + "Permission: " + gray + "villagedefense.admin.reload"));
         command.add(new CommandData("/vda addsign " + ChatColor.GOLD + "<arena>", "/vda addsign <arena>",
                 gray + "Set sign you look at as a target arena sign\n" + gold + "Permission: " + gray + "villagedefense.admin.addsign\n" +
-                    gold + "Permission: " + gray + "villagedefense.admin.sign.create (for creating signs manually)\n" + gold + "Permission: " +
-                    gray + "villagedefense.admin.sign.break (for breaking arena signs)"));
-        command.add(new CommandData("/vda delete " + ChatColor.GOLD + "<arena>", "/vda delete <arena>" ,
+                        gold + "Permission: " + gray + "villagedefense.admin.sign.create (for creating signs manually)\n" + gold + "Permission: " +
+                        gray + "villagedefense.admin.sign.break (for breaking arena signs)"));
+        command.add(new CommandData("/vda delete " + ChatColor.GOLD + "<arena>", "/vda delete <arena>",
                 gray + "Deletes specified arena\n" + gold + "Permission: " + gray + "villagedefense.admin.delete"));
         command.add(new CommandData("/vda tp " + ChatColor.GOLD + "<arena> <location type>", "/vda tp <arena> <location>",
                 gray + "Teleport you to provided arena location\n" + gray + "Valid locations:\n" + gray + "• LOBBY - lobby location\n" + gray +
-                    "• START - starting location\n" + gray + "• END - ending location\n" + gold + "Permission: " + gray + "villagedefense.admin.teleport"));
+                        "• START - starting location\n" + gray + "• END - ending location\n" + gold + "Permission: " + gray + "villagedefense.admin.teleport"));
         command.add(new CommandData("/vda clear " + ChatColor.GOLD + "<zombie/villager/golem>", "/vda clear <mob>",
                 gray + "Clear specific mob type from arena you're in\n" + gray + "Valid mob types:\n" + gray + "• ZOMBIE - clear spawned zombies\n" +
-                    gray + "• VILLAGER - clear alive villagers\n" + gray + "• GOLEM - clear spawned golems\n" + gold + "Permission: " + gray + "villagedefense.admin.clear"));
+                        gray + "• VILLAGER - clear alive villagers\n" + gray + "• GOLEM - clear spawned golems\n" + gold + "Permission: " + gray + "villagedefense.admin.clear"));
         command.add(new CommandData("/vda addorbs " + ChatColor.GOLD + "<amount>" + ChatColor.RED + " [player]", "/vda addorbs <amount>",
                 gray + "Add orbs (game currency) to yourself or target player\n" + gray + "Can be used from console too\n" + gold +
                         "Permission: " + gray + "villagedefense.admin.addorbs (for yourself)\n" + gold + "Permission: " + gray + "villagedefense.admin.addorbs.others (for others)"));
         command.add(new CommandData("/vda setwave " + ChatColor.GOLD + "<number>", "/vda setwave <num>",
                 gray + "Set wave number in arena you're in\n" + gold + "Permission: " + gray + "villagedefense.admin.setwave"));
+    }
+
+    private Main plugin;
+
+    public AdminCommands(Main plugin) {
+        super(plugin, false);
+        this.plugin = plugin;
     }
 
     public void sendHelp(CommandSender sender) {
@@ -118,14 +119,14 @@ public class AdminCommands extends MainCommand {
         sender.sendMessage(ChatColor.RED + " []" + ChatColor.GRAY + " = optional  " + ChatColor.GOLD + "<>" + ChatColor.GRAY + " = required");
         if(!plugin.is1_8_R3()) {
             sender.sendMessage(ChatColor.GRAY + "Hover command to see more, click command to suggest it.");
-            for(CommandData data : command){
+            for(CommandData data : command) {
                 TextComponent component = new TextComponent(data.getText());
                 component.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, data.getCommand()));
                 component.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(data.getDescription()).create()));
                 sender.spigot().sendMessage(component);
             }
         } else {
-            for(CommandData data : command){
+            for(CommandData data : command) {
                 sender.sendMessage(data.getText());
             }
         }

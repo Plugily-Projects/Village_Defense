@@ -24,7 +24,6 @@ import net.minecraft.server.v1_11_R1.GenericAttributes;
 import net.minecraft.server.v1_11_R1.Navigation;
 import net.minecraft.server.v1_11_R1.PathfinderGoalBreakDoor;
 import net.minecraft.server.v1_11_R1.PathfinderGoalFloat;
-import net.minecraft.server.v1_11_R1.PathfinderGoalHurtByTarget;
 import net.minecraft.server.v1_11_R1.PathfinderGoalMeleeAttack;
 import net.minecraft.server.v1_11_R1.PathfinderGoalMoveTowardsRestriction;
 import net.minecraft.server.v1_11_R1.PathfinderGoalNearestAttackableTarget;
