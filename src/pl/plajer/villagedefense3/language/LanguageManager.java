@@ -79,7 +79,7 @@ public class LanguageManager {
         if(ConfigurationManager.getConfig("language").isSet(message)) {
             return ConfigurationManager.getConfig("language").getString(message);
         }
-        return null;
+        return "NULL_MESSAGE";
     }
 
     public static String getLanguageMessage(String message) {

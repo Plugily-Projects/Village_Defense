@@ -1,6 +1,6 @@
 # Village Defense 3 Changelog
 
-### 3.6.3 Release (11.05.2018)
+### 3.6.3 Release (11/12.05.2018)
 * Added did you mean to help with wrong commands (ex. /vd leaveve > Did you mean /vd leave?)
 * Added line wrapping for blocker kit and some new comments in language.yml file
 * Fixed #4 bug, mysql users should be aware of that problem especially users with cloud management systems
@@ -8,6 +8,7 @@
 * Re-commented rewards.yml file and added chance condition
 * Overriding WorldGuard build deny flag which disallow Villager damage by zombies
 * Fixed bug where flaming arrows from player could set on fire another player
+* Reworked files migrator, now it will update config and language files without losing comments!
 
 ### 3.6.2 Release (04/10.05.2018)
 * Fixed /vd create command without argument gave an error
