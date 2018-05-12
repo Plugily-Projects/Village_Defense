@@ -1,6 +1,7 @@
 # Village Defense 3 Changelog
 
 ### 3.6.3 Release (11/12.05.2018)
+* Added tab completer
 * Added did you mean to help with wrong commands (ex. /vd leaveve > Did you mean /vd leave?)
 * Added line wrapping for blocker kit and some new comments in language.yml file
 * Fixed #4 bug, mysql users should be aware of that problem especially users with cloud management systems
