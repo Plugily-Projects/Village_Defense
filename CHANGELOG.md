@@ -6,6 +6,8 @@
 * Fixed #4 bug, mysql users should be aware of that problem especially users with cloud management systems
 * Now removing boss bar of player when plugin gets disabled while games are on
 * Re-commented rewards.yml file and added chance condition
+* Overriding WorldGuard build deny flag which disallow Villager damage by zombies
+* Fixed bug where flaming arrows from player could set on fire another player
 
 ### 3.6.2 Release (04/10.05.2018)
 * Fixed /vd create command without argument gave an error

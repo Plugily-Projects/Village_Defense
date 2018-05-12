@@ -73,13 +73,13 @@ public class RewardsHandler {
                 .replaceAll("%PLAYERAMOUNT%", String.valueOf(arena.getPlayers().size()))
                 .replaceAll("%WAVE%", String.valueOf(arena.getWave()));
         if(command.contains("chance(")){
-            String chanceStr = command.replaceAll("[^0-9]+", "");
-            // prevent accidental additional numbers insert into string ex. by placeholders
-            if(chanceStr.toCharArray().length >= 3 && Long.parseLong(chanceStr) != 100){
-                for(int i = 0; i < chanceStr.toCharArray().length - 2; i++) {
-                    chanceStr = chanceStr.substring(0, chanceStr.toCharArray().length - 1);
-                }
+            int loc = command.indexOf(")");
+            if(loc == -1){
+                plugin.getLogger().warning("rewards.yml configuration is broken! Make sure you don't forget using ')' character in chance condition!");
+                return;
             }
+            String chanceStr = command.substring(0, loc).replaceAll("[^0-9]+", "");
+            Bukkit.broadcastMessage(chanceStr + " before");
             int chance = Integer.parseInt(chanceStr);
             command = command.replace("chance(" + chanceStr + "):", "");
             if(ThreadLocalRandom.current().nextInt(0, 100) > chance) return;
@@ -106,15 +106,15 @@ public class RewardsHandler {
                 .replaceAll("%PLAYERAMOUNT%", String.valueOf(arena.getPlayers().size()))
                 .replaceAll("%WAVE%", String.valueOf(arena.getWave()));
         if(command.contains("chance(")){
-            String chanceStr = command.replaceAll("[^0-9]+", "");
-            // prevent accidental additional numbers insert into string ex. by placeholders
-            if(chanceStr.toCharArray().length >= 3 && Integer.parseInt(chanceStr) != 100){
-                for(int i = 0; i < chanceStr.toCharArray().length - 2; i++) {
-                    chanceStr = chanceStr.substring(0, chanceStr.toCharArray().length - 1);
-                }
+            int loc = command.indexOf(")");
+            if(loc == -1){
+                plugin.getLogger().warning("rewards.yml configuration is broken! Make sure you don't forget using ')' character in chance condition!");
+                return;
             }
+            String chanceStr = command.substring(0, loc).replaceAll("[^0-9]+", "");
+            Bukkit.broadcastMessage(chanceStr + " before");
             int chance = Integer.parseInt(chanceStr);
-            command = command.replace("chance(" + chanceStr + ")", "");
+            command = command.replace("chance(" + chanceStr + "):", "");
             if(ThreadLocalRandom.current().nextInt(0, 100) > chance) return;
         }
         if(command.contains("p:")) {

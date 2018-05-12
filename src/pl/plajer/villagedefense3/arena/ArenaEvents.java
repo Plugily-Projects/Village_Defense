@@ -61,6 +61,18 @@ public class ArenaEvents implements Listener {
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 
+    //override WorldGuard build deny flag where villagers cannot be damaged
+    @EventHandler(priority = EventPriority.HIGHEST)
+    public void onVillagerDamage(EntityDamageByEntityEvent e){
+        if(e.getEntity() instanceof Villager && e.getDamager() instanceof Zombie){
+            for(Arena a : ArenaRegistry.getArenas()){
+                if(a.getVillagers().contains(e.getEntity()) && a.getZombies().contains(e.getDamager())){
+                    e.setCancelled(false);
+                }
+            }
+        }
+    }
+
     @EventHandler
     public void onDieEntity(EntityDamageByEntityEvent e) {
         if(e.getEntity() instanceof LivingEntity && e.getDamager() instanceof Wolf && e.getEntity() instanceof Zombie) {

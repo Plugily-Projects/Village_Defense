@@ -18,7 +18,6 @@
 
 package pl.plajer.villagedefense3.events;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Effect;
 import org.bukkit.Material;
@@ -37,6 +36,7 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.CreatureSpawnEvent;
+import org.bukkit.event.entity.EntityCombustByEntityEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
@@ -262,6 +262,14 @@ public class Events implements Listener {
                 arena.leaveAttempt(event.getPlayer());
             }
         }
+    }
+
+    @EventHandler
+    public void onFriendCombust(EntityCombustByEntityEvent e) {
+        if(!(e.getEntity() instanceof Player) || !(e.getCombuster() instanceof Arrow)) return;
+        Arrow arrow = (Arrow) e.getCombuster();
+        if(!(arrow.getShooter() instanceof Player)) return;
+        if(ArenaRegistry.getArena((Player) arrow.getShooter()).equals(ArenaRegistry.getArena((Player) e.getEntity()))) e.setCancelled(true);
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)

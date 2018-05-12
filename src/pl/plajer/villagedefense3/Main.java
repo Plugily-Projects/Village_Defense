@@ -18,6 +18,8 @@
 
 package pl.plajer.villagedefense3;
 
+import com.gmail.filoghost.holographicdisplays.api.Hologram;
+import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
 import com.sk89q.worldedit.bukkit.WorldEditPlugin;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -431,6 +433,7 @@ public class Main extends JavaPlugin {
             arena.stopGame(true);
             arena.teleportAllToEndLocation();
         }
+        for(Hologram holo : HologramsAPI.getHolograms(this)) holo.delete();
         if(isDatabaseActivated()) getMySQLDatabase().closeDatabase();
     }
 

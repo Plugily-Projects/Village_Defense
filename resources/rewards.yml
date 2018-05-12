@@ -10,8 +10,6 @@
 #
 #        Commands are executed by default BY CONSOLE, use "p:" to preform command by player
 #  Since 3.6.3 you can use chance to execute command adding "chance(NUMBER):" (ex chance(10):) at the beginning of command
-# WARNING: Please don't mix NUMBERS when using chance!!!! It can cause weird chance behaviour! PLACEHOLDERS LIKE %WAVE% INCLUDED!!!
-#             Use max 2 additional numbers to avoid this problem!
 #
 #  Commands examples:
 #    - p:say Hello everyone in %MAPNAME%!     # Player will say "Hello everyone in <map name here>"
