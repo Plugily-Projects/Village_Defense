@@ -30,6 +30,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.PotionEffect;
 import pl.plajer.villagedefense3.arena.Arena;
 import pl.plajer.villagedefense3.arena.ArenaEvents;
+import pl.plajer.villagedefense3.arena.ArenaManager;
 import pl.plajer.villagedefense3.arena.ArenaRegistry;
 import pl.plajer.villagedefense3.commands.MainCommand;
 import pl.plajer.villagedefense3.creatures.BreakFenceListener;
@@ -430,7 +431,7 @@ public class Main extends JavaPlugin {
                 }
             }
             arena.clearVillagers();
-            arena.stopGame(true);
+            ArenaManager.stopGame(true, arena);
             arena.teleportAllToEndLocation();
         }
         for(Hologram holo : HologramsAPI.getHolograms(this)) holo.delete();

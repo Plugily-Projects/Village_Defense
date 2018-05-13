@@ -33,6 +33,7 @@ import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import pl.plajer.villagedefense3.Main;
 import pl.plajer.villagedefense3.arena.Arena;
+import pl.plajer.villagedefense3.arena.ArenaManager;
 import pl.plajer.villagedefense3.arena.ArenaRegistry;
 import pl.plajer.villagedefense3.arena.ArenaState;
 import pl.plajer.villagedefense3.language.LanguageManager;
@@ -143,16 +144,15 @@ public class SignManager implements Listener {
                         for(Player player : arena.getPlayers()) {
                             if(!player.hasPermission(PermissionsManager.getVip()) || !player.hasPermission(PermissionsManager.getJoinFullGames())) {
                                 if((arena.getArenaState() == ArenaState.STARTING || arena.getArenaState() == ArenaState.WAITING_FOR_PLAYERS)) {
-                                    arena.leaveAttempt(player);
+                                    ArenaManager.leaveAttempt(player, arena);
                                     player.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Messages.Lobby-Messages.You-Were-Kicked-For-Premium-Slot"));
-                                    String message = ChatManager.formatMessage(arena, ChatManager.colorMessage("In-Game.Messages.Lobby-Messages.Kicked-For-Premium-Slot"), player);
                                     for(Player p : arena.getPlayers()) {
-                                        p.sendMessage(ChatManager.PLUGIN_PREFIX + message);
+                                        p.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.formatMessage(arena, ChatManager.colorMessage("In-Game.Messages.Lobby-Messages.Kicked-For-Premium-Slot"), player));
                                     }
-                                    arena.joinAttempt(e.getPlayer());
+                                    ArenaManager.joinAttempt(e.getPlayer(), arena);
                                     return;
                                 } else {
-                                    arena.joinAttempt(e.getPlayer());
+                                    ArenaManager.joinAttempt(e.getPlayer(), arena);
                                     return;
                                 }
                             }
@@ -164,7 +164,7 @@ public class SignManager implements Listener {
                         e.getPlayer().sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Full-Game-No-Permission"));
                     }
                 } else {
-                    arena.joinAttempt(e.getPlayer());
+                    ArenaManager.joinAttempt(e.getPlayer(), arena);
                 }
             }
         }

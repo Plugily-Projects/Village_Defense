@@ -20,6 +20,7 @@ package pl.plajer.villagedefense3.language;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.configuration.file.FileConfiguration;
 import pl.plajer.villagedefense3.Main;
 import pl.plajer.villagedefense3.handlers.ConfigurationManager;
 import pl.plajer.villagedefense3.utils.MessageUtils;
@@ -62,6 +63,19 @@ public class LanguageManager {
         } else {
             Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "[Village Defense] Plugin locale is invalid! Using default one...");
             pluginLocale = VDLocale.DEFAULT;
+        }
+    }
+
+    public static FileConfiguration getLanguageFile(){
+        switch(pluginLocale){
+            case DEFAULT:
+                return ConfigurationManager.getConfig("language");
+            case DEUTSCH:
+                return ConfigurationManager.getConfig("language_de");
+            case POLSKI:
+                return ConfigurationManager.getConfig("language_pl");
+            default:
+                return ConfigurationManager.getConfig("language");
         }
     }
 

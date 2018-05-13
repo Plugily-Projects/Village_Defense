@@ -26,17 +26,12 @@ import org.bukkit.block.Block;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.IronGolem;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Villager;
 import org.bukkit.entity.Wolf;
 import org.bukkit.entity.Zombie;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
@@ -45,18 +40,10 @@ import pl.plajer.villagedefense3.Main;
 import pl.plajer.villagedefense3.handlers.ChatManager;
 import pl.plajer.villagedefense3.handlers.ConfigurationManager;
 import pl.plajer.villagedefense3.handlers.PermissionsManager;
-import pl.plajer.villagedefense3.items.SpecialItemManager;
-import pl.plajer.villagedefense3.kits.GolemFriendKit;
 import pl.plajer.villagedefense3.kits.kitapi.KitRegistry;
 import pl.plajer.villagedefense3.user.User;
 import pl.plajer.villagedefense3.user.UserManager;
-import pl.plajer.villagedefense3.utils.Util;
-import pl.plajer.villagedefense3.villagedefenseapi.VillageGameJoinAttemptEvent;
-import pl.plajer.villagedefense3.villagedefenseapi.VillageGameLeaveAttemptEvent;
 import pl.plajer.villagedefense3.villagedefenseapi.VillageGameStartEvent;
-import pl.plajer.villagedefense3.villagedefenseapi.VillageGameStopEvent;
-import pl.plajer.villagedefense3.villagedefenseapi.VillageWaveEndEvent;
-import pl.plajer.villagedefense3.villagedefenseapi.VillageWaveStartEvent;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -86,7 +73,7 @@ public abstract class Arena extends BukkitRunnable {
     private final Map<Zombie, Location> zombieCheckerLocations = new HashMap<>();
     private final Set<UUID> players = new HashSet<>();
     private int zombiesToSpawn;
-    private boolean isFighting = false;
+    private boolean fighting = false;
     private int wave;
     private int barToggle = 0;
     private int rottenFleshAmount;
@@ -103,7 +90,7 @@ public abstract class Arena extends BukkitRunnable {
     private Location lobbyLoc = null;
     private Location startLoc = null;
     private Location endLoc = null;
-    private boolean isReady = true;
+    private boolean ready = true;
 
     public Arena(String ID, Main plugin) {
         this.plugin = plugin;
@@ -116,19 +103,24 @@ public abstract class Arena extends BukkitRunnable {
     }
 
     public boolean isReady() {
-        return isReady;
+        return ready;
     }
 
     public void setReady(boolean ready) {
-        isReady = ready;
+        this.ready = ready;
     }
 
-    private boolean isFighting() {
-        return isFighting;
+    /**
+     * Get current rotten flesh level in arena
+     *
+     * @return rotten flesh level (additional hearts)
+     */
+    public int getRottenFleshLevel() {
+        return rottenFleshLevel;
     }
 
-    void subtractZombiesToSpawn() {
-        this.zombiesToSpawn--;
+    void setRottenFleshLevel(int rottenFleshLevel) {
+        this.rottenFleshLevel = rottenFleshLevel;
     }
 
     public BossBar getGameBar() {
@@ -156,8 +148,8 @@ public abstract class Arena extends BukkitRunnable {
                     if(getTimer() <= 0) {
                         setTimer(15);
                         String message = ChatManager.formatMessage(this, ChatManager.colorMessage("In-Game.Messages.Lobby-Messages.Waiting-For-Players"), getMinimumPlayers());
-                        for(Player player1 : getPlayers()) {
-                            player1.sendMessage(ChatManager.PLUGIN_PREFIX + message);
+                        for(Player p : getPlayers()) {
+                            p.sendMessage(ChatManager.PLUGIN_PREFIX + message);
                         }
                         return;
                     }
@@ -204,7 +196,7 @@ public abstract class Arena extends BukkitRunnable {
                         setTimer(25);
                         player.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Messages.Lobby-Messages.Game-Started"));
                     }
-                    isFighting = false;
+                    fighting = false;
                 }
                 setTimer(getTimer() - 1);
                 break;
@@ -273,17 +265,17 @@ public abstract class Arena extends BukkitRunnable {
                 if(getVillagers().size() <= 0 || getPlayersLeft().size() <= 0) {
                     clearZombies();
                     this.setArenaState(ArenaState.ENDING);
-                    this.stopGame(false);
+                    ArenaManager.stopGame(false, this);
                     if(getVillagers().size() <= 0) {
                         showPlayers();
                         this.setTimer(10);
                     } else this.setTimer(5);
                     return;
                 }
-                if(isFighting) {
+                if(fighting) {
                     if(getZombiesLeft() <= 0) {
-                        isFighting = false;
-                        endWave();
+                        fighting = false;
+                        ArenaManager.endWave(this);
                     }
                     if(zombiesToSpawn > 0) {
                         spawnZombies();
@@ -309,8 +301,8 @@ public abstract class Arena extends BukkitRunnable {
 
                 } else {
                     if(getTimer() <= 0) {
-                        isFighting = true;
-                        startWave();
+                        fighting = true;
+                        ArenaManager.startWave(this);
                     }
                 }
                 setTimer(getTimer() - 1);
@@ -374,7 +366,7 @@ public abstract class Arena extends BukkitRunnable {
                         user.setFakeDead(false);
                     }
                     plugin.getRewardsHandler().performEndGameRewards(this);
-                    clearPlayers();
+                    players.clear();
                     if(plugin.isBungeeActivated()) {
                         if(ConfigurationManager.getConfig("bungee").getBoolean("Shutdown-When-Game-Ends"))
                             plugin.getServer().shutdown();
@@ -420,7 +412,7 @@ public abstract class Arena extends BukkitRunnable {
             }
             Objective gameObjective;
             if(getArenaState() == ArenaState.IN_GAME) {
-                gameObjective = user.getScoreboard().getObjective("vd_state_" + getArenaState().ordinal() + (isFighting() ? "F" : ""));
+                gameObjective = user.getScoreboard().getObjective("vd_state_" + getArenaState().ordinal() + (fighting ? "F" : ""));
             } else {
                 gameObjective = user.getScoreboard().getObjective("vd_state_" + getArenaState().ordinal());
             }
@@ -431,7 +423,7 @@ public abstract class Arena extends BukkitRunnable {
                 case WAITING_FOR_PLAYERS:
                     Score playersTotal1 = gameObjective.getScore(ChatManager.colorMessage("Scoreboard.Players"));
                     playersTotal1.setScore(getPlayers().size());
-                    Score neededPlayers2 = gameObjective.getScore( ChatManager.colorMessage("Scoreboard.Minimum-Players"));
+                    Score neededPlayers2 = gameObjective.getScore(ChatManager.colorMessage("Scoreboard.Minimum-Players"));
                     neededPlayers2.setScore(getMinimumPlayers());
                     break;
                 case STARTING:
@@ -449,7 +441,7 @@ public abstract class Arena extends BukkitRunnable {
                     villagersLeft.setScore(getVillagers().size());
                     Score orbs = gameObjective.getScore(ChatManager.colorMessage("Scoreboard.Orbs"));
                     orbs.setScore(user.getInt("orbs"));
-                    if(isFighting()) {
+                    if(fighting) {
                         Score zombiesLeft = gameObjective.getScore(ChatManager.colorMessage("Scoreboard.Zombies-Left"));
                         zombiesLeft.setScore(getZombiesLeft());
                     } else {
@@ -471,89 +463,6 @@ public abstract class Arena extends BukkitRunnable {
             footer.setScore(-2);
             user.setScoreboard(user.getScoreboard());
         }
-    }
-
-    private void setZombieAmount() {
-        zombiesToSpawn = (int) Math.ceil((getPlayers().size() * 0.5) * (wave * wave) / 2);
-    }
-
-    private void resetRottenFlesh() {
-        this.rottenFleshAmount = 0;
-        this.rottenFleshLevel = 0;
-    }
-
-    /**
-     * Stops current arena. Calls VillageGameStopEvent event
-     *
-     * @param quickStop should arena be stopped immediately? (use only in important cases)
-     * @see VillageGameStopEvent
-     */
-    public void stopGame(boolean quickStop) {
-        Main.debug("Game stop event initiate, arena " + this.getID(), System.currentTimeMillis());
-        VillageGameStopEvent villageGameStopEvent = new VillageGameStopEvent(this);
-        Bukkit.getPluginManager().callEvent(villageGameStopEvent);
-        if(getPlayersLeft().size() > 0) {
-            for(Player p : getPlayers()) {
-                p.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Messages.Game-End-Messages.All-Villagers-Died"));
-                p.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Messages.Game-End-Messages.Reached-Wave-X").replaceAll("%NUMBER%", String.valueOf(getWave())));
-                p.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Messages.Game-End-Messages.Teleporting-To-Lobby-In-10-Seconds"));
-            }
-        } else {
-            for(Player p : getPlayers()) {
-                p.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Messages.Game-End-Messages.All-Players-Died"));
-                p.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Messages.Game-End-Messages.Reached-Wave-X").replaceAll("%NUMBER%", String.valueOf(getWave())));
-                p.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Messages.Game-End-Messages.Teleporting-To-Lobby-In-10-Seconds"));
-            }
-        }
-        for(final Player player : getPlayers()) {
-            setStat(player, "highestwave", wave);
-            addExperience(player, wave);
-
-            UserManager.getUser(player.getUniqueId()).removeScoreboard();
-            if(!quickStop) {
-                if(plugin.getConfig().getBoolean("Firework-When-Game-Ends")) {
-                    new BukkitRunnable() {
-                        int i = 0;
-
-                        public void run() {
-                            if(i == 4) this.cancel();
-                            if(!getPlayers().contains(player)) this.cancel();
-                            Util.spawnRandomFirework(player.getLocation());
-                            i++;
-                        }
-                    }.runTaskTimer(plugin, 30, 30);
-                }
-            }
-        }
-        this.resetRottenFlesh();
-        this.restoreDoors();
-        for(Zombie zombie : getZombies()) {
-            zombie.remove();
-        }
-        zombies.clear();
-        for(IronGolem ironGolem : getIronGolems()) {
-            ironGolem.remove();
-        }
-        ironGolems.clear();
-        for(Villager villager : getVillagers()) {
-            villager.remove();
-        }
-        villagers.clear();
-        for(Wolf wolf : getWolfs()) {
-            wolf.remove();
-        }
-        wolfs.clear();
-        clearZombies();
-        clearGolems();
-        clearVillagers();
-        clearWolfs();
-        for(Entity entity : getStartLocation().getWorld().getEntities()) {
-            if(entity.getWorld().getName().equalsIgnoreCase(getStartLocation().getWorld().getName())
-                    && entity.getLocation().distance(getStartLocation()) < 300)
-                if(entity.getType() != EntityType.PLAYER)
-                    entity.remove();
-        }
-        Main.debug("Game stop event finish, arena " + this.getID(), System.currentTimeMillis());
     }
 
     private void restoreMap() {
@@ -652,25 +561,6 @@ public abstract class Arena extends BukkitRunnable {
         this.mapName = mapname;
     }
 
-
-    private void addPlayer(Player player) {
-        players.add(player.getUniqueId());
-    }
-
-
-    private void removePlayer(Player player) {
-        if(player == null)
-            return;
-        if(player.getUniqueId() == null)
-            return;
-        players.remove(player.getUniqueId());
-    }
-
-
-    private void clearPlayers() {
-        players.clear();
-    }
-
     /**
      * Get timer of arena
      *
@@ -688,7 +578,6 @@ public abstract class Arena extends BukkitRunnable {
     public void setTimer(int timer) {
         this.timer = timer;
     }
-
 
     /**
      * Return maximum players arena can handle
@@ -728,16 +617,6 @@ public abstract class Arena extends BukkitRunnable {
         this.arenaState = arenaState;
     }
 
-
-    void showPlayers() {
-        for(Player player : getPlayers()) {
-            for(Player p : getPlayers()) {
-                player.showPlayer(p);
-                p.showPlayer(player);
-            }
-        }
-    }
-
     /**
      * Get all players in arena
      *
@@ -749,16 +628,6 @@ public abstract class Arena extends BukkitRunnable {
             list.add(Bukkit.getPlayer(uuid));
         }
         return list;
-    }
-
-
-    List<Player> getPlayersLeft() {
-        List<Player> players = new ArrayList<>();
-        for(User user : UserManager.getUsers(this)) {
-            if(!user.isFakeDead())
-                players.add(user.toPlayer());
-        }
-        return players;
     }
 
     public void teleportToLobby(Player player) {
@@ -812,14 +681,12 @@ public abstract class Arena extends BukkitRunnable {
         startLoc = location;
     }
 
-
     public void teleportToStartLocation(Player player) {
         if(startLoc != null)
             player.teleport(startLoc);
         else
             System.out.print("Startlocation for arena " + getID() + " isn't intialized!");
     }
-
 
     private void teleportAllToStartLocation() {
         for(Player player : getPlayers()) {
@@ -829,7 +696,6 @@ public abstract class Arena extends BukkitRunnable {
                 System.out.print("Startlocation for arena " + getID() + " isn't intialized!");
         }
     }
-
 
     public void teleportAllToEndLocation() {
         if(plugin.isBungeeActivated()) {
@@ -848,7 +714,6 @@ public abstract class Arena extends BukkitRunnable {
             player.teleport(location);
         }
     }
-
 
     public void teleportToEndLocation(Player player) {
         if(plugin.isBungeeActivated()) {
@@ -933,7 +798,6 @@ public abstract class Arena extends BukkitRunnable {
         this.villagerSpawnPoints.add(location);
     }
 
-
     public void addZombieSpawn(Location location) {
         zombieSpawns.add(location);
     }
@@ -948,189 +812,8 @@ public abstract class Arena extends BukkitRunnable {
         zombies.clear();
     }
 
-    void addZombie(Zombie zombie) {
-        zombies.add(zombie);
-    }
-
-    private void startWave() {
-        VillageWaveStartEvent villageWaveStartEvent = new VillageWaveStartEvent(this, wave);
-        Bukkit.getPluginManager().callEvent(villageWaveStartEvent);
-        setZombieAmount();
-        if(plugin.getConfig().getBoolean("Respawn-After-Wave"))
-            ArenaUtils.bringDeathPlayersBack(this);
-        for(User user : UserManager.getUsers(this)) {
-            user.getKit().reStock(user.toPlayer());
-        }
-        String message = ChatManager.formatMessage(this, ChatManager.colorMessage("In-Game.Messages.Wave-Started"), wave);
-        for(Player player1 : getPlayers()) {
-            player1.sendMessage(ChatManager.PLUGIN_PREFIX + message);
-        }
-    }
-
-    /**
-     * End wave in game.
-     * Calls VillageWaveEndEvent event
-     *
-     * @see VillageWaveEndEvent
-     */
-    public void endWave() {
-        plugin.getRewardsHandler().performEndWaveRewards(this, wave);
-        setTimer(25);
-        zombieCheckerLocations.clear();
-        wave = wave + 1;
-        VillageWaveEndEvent villageWaveEndEvent = new VillageWaveEndEvent(this, wave);
-        Bukkit.getPluginManager().callEvent(villageWaveEndEvent);
-        String message = ChatManager.formatMessage(this, ChatManager.colorMessage("In-Game.Messages.Next-Wave-In"), getTimer());
-        for(Player player1 : getPlayers()) {
-            player1.sendMessage(ChatManager.PLUGIN_PREFIX + message);
-        }
-        for(Player player : getPlayers()) {
-            player.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Messages.You-Feel-Refreshed"));
-            player.setHealth(player.getMaxHealth());
-            UserManager.getUser(player.getUniqueId()).addInt("orbs", wave * 10);
-        }
-        if(plugin.getConfig().getBoolean("Respawn-After-Wave"))
-            ArenaUtils.bringDeathPlayersBack(this);
-        for(Player player : getPlayersLeft()) {
-            this.addExperience(player, 5);
-        }
-    }
-
-    /**
-     * Attempts player to join arena.
-     * Calls VillageGameJoinAttemptEvent.
-     * Can be cancelled only via above-mentioned event
-     *
-     * @param p player to join
-     * @see VillageGameJoinAttemptEvent
-     */
-    public void joinAttempt(Player p) {
-        Main.debug("Initial join attempt, " + p.getName(), System.currentTimeMillis());
-        VillageGameJoinAttemptEvent villageGameJoinAttemptEvent = new VillageGameJoinAttemptEvent(p, this);
-        Bukkit.getPluginManager().callEvent(villageGameJoinAttemptEvent);
-        if(!isReady) {
-            p.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Arena-Not-Configured"));
-            return;
-        }
-        if(villageGameJoinAttemptEvent.isCancelled()) {
-            p.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Join-Cancelled-Via-API"));
-            return;
-        }
-        if(!plugin.isBungeeActivated()) {
-            if(!(p.hasPermission(PermissionsManager.getJoinPerm().replaceAll("<arena>", "*")) || p.hasPermission(PermissionsManager.getJoinPerm().replaceAll("<arena>", this.getID())))) {
-                p.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Join-No-Permission"));
-                return;
-            }
-        }
-        Main.debug("Final join attempt, " + p.getName(), System.currentTimeMillis());
-        if((getArenaState() == ArenaState.IN_GAME || (getArenaState() == ArenaState.STARTING && getTimer() <= 3) || getArenaState() == ArenaState.ENDING)) {
-            if(plugin.isInventoryManagerEnabled()) {
-                p.setLevel(0);
-                plugin.getInventoryManager().saveInventoryToFile(p);
-
-            }
-            this.teleportToStartLocation(p);
-            p.sendMessage(ChatManager.colorMessage("In-Game.You-Are-Spectator"));
-            p.getInventory().clear();
-
-            ItemStack spectatorItem = new ItemStack(Material.COMPASS, 1);
-            ItemMeta spectatorMeta = spectatorItem.getItemMeta();
-            spectatorMeta.setDisplayName(ChatManager.colorMessage("In-Game.Spectator.Spectator-Item-Name"));
-            spectatorItem.setItemMeta(spectatorMeta);
-            p.getInventory().setItem(0, spectatorItem);
-
-            p.getInventory().setItem(8, SpecialItemManager.getSpecialItem("Leave").getItemStack());
-
-            for(PotionEffect potionEffect : p.getActivePotionEffects()) {
-                p.removePotionEffect(potionEffect.getType());
-            }
-
-            this.addPlayer(p);
-            p.setMaxHealth(p.getMaxHealth() + rottenFleshLevel);
-            p.setHealth(p.getMaxHealth());
-            p.setFoodLevel(20);
-            p.setGameMode(GameMode.SURVIVAL);
-            p.setAllowFlight(true);
-            p.setFlying(true);
-            User user = UserManager.getUser(p.getUniqueId());
-            user.setSpectator(true);
-            user.setFakeDead(true);
-            user.setInt("orbs", 0);
-            p.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, Integer.MAX_VALUE, 1));
-            ArenaUtils.hidePlayer(p, this);
-
-            for(Player spectator : this.getPlayers()) {
-                if(UserManager.getUser(spectator.getUniqueId()).isSpectator()) {
-                    p.hidePlayer(spectator);
-                } else {
-                    p.showPlayer(spectator);
-                }
-            }
-            ArenaUtils.hidePlayersOutsideTheGame(p, this);
-            return;
-        }
-        if(plugin.isInventoryManagerEnabled()) {
-            p.setLevel(0);
-            plugin.getInventoryManager().saveInventoryToFile(p);
-
-        }
-        teleportToLobby(p);
-        this.addPlayer(p);
-        p.setHealth(p.getMaxHealth());
-        p.setFoodLevel(20);
-        p.getInventory().setArmorContents(new ItemStack[]{new ItemStack(Material.AIR), new ItemStack(Material.AIR), new ItemStack(Material.AIR), new ItemStack(Material.AIR)});
-        p.setFlying(false);
-        p.setAllowFlight(false);
-        p.getInventory().clear();
-        showPlayers();
-        if(plugin.isBossbarEnabled()) {
-            gameBar.addPlayer(p);
-        }
-        if(!UserManager.getUser(p.getUniqueId()).isSpectator())
-            ChatManager.broadcastAction(this, p, ChatManager.ActionType.JOIN);
-        User user = UserManager.getUser(p.getUniqueId());
-        user.setKit(KitRegistry.getDefaultKit());
-        plugin.getKitManager().giveKitMenuItem(p);
-        if(getArenaState() == ArenaState.STARTING || getArenaState() == ArenaState.WAITING_FOR_PLAYERS)
-            p.getInventory().setItem(SpecialItemManager.getSpecialItem("Leave").getSlot(), SpecialItemManager.getSpecialItem("Leave").getItemStack());
-        p.updateInventory();
-        for(Player player : getPlayers()) {
-            ArenaUtils.showPlayer(player, this);
-        }
-        showPlayers();
-    }
-
-
     private int getZombiesLeft() {
         return zombiesToSpawn + getZombies().size();
-    }
-
-    void addExperience(Player player, int i) {
-        User user = UserManager.getUser(player.getUniqueId());
-        user.addInt("xp", i);
-        if(player.hasPermission(PermissionsManager.getVip())) {
-            user.addInt("xp", (int) Math.ceil(i / 2));
-        }
-        if(player.hasPermission(PermissionsManager.getMvp())) {
-            user.addInt("xp", (int) Math.ceil(i / 2));
-        }
-        if(player.hasPermission(PermissionsManager.getElite())) {
-            user.addInt("xp", (int) Math.ceil(i / 2));
-        }
-        ArenaUtils.updateLevelStat(player, this);
-    }
-
-    void addStat(Player player, String stat) {
-        User user = UserManager.getUser(player.getUniqueId());
-        user.addInt(stat, 1);
-        ArenaUtils.updateLevelStat(player, this);
-    }
-
-    private void setStat(Player player, String stat, int i) {
-        User user = UserManager.getUser(player.getUniqueId());
-        if(user.getInt(stat) <= i) {
-            user.setInt(stat, i);
-        }
     }
 
     private void spawnZombies() {
@@ -1140,16 +823,13 @@ public abstract class Arena extends BukkitRunnable {
                 if(zombiesToSpawn > 0) {
                     spawnFastZombie(random);
                 }
-
             }
         }
         spawnCounter++;
         if(spawnCounter == 20)
             spawnCounter = 0;
-
-        if(zombiesToSpawn < 5) {
-            if(zombiesToSpawn > 0)
-                spawnFastZombie(random);
+        if(zombiesToSpawn < 5 && zombiesToSpawn > 0) {
+            spawnFastZombie(random);
             return;
         }
         if(spawnCounter == 5) {
@@ -1238,7 +918,7 @@ public abstract class Arena extends BukkitRunnable {
      * Should be used with endWave.
      *
      * @param i new game wave
-     * @see #endWave()
+     * @see ArenaManager#endWave(Arena)
      */
     public void setWave(int i) {
         wave = i;
@@ -1272,7 +952,12 @@ public abstract class Arena extends BukkitRunnable {
         wolfs.add(wolf);
     }
 
-    private List<Wolf> getWolfs() {
+    /**
+     * Get alive wolves
+     *
+     * @return alive wolves in game
+     */
+    public List<Wolf> getWolfs() {
         return wolfs;
     }
 
@@ -1294,19 +979,6 @@ public abstract class Arena extends BukkitRunnable {
         return villagers;
     }
 
-    void addVillager(Villager villager) {
-        villagers.add(villager);
-
-    }
-
-    void removeVillager(Villager villager) {
-        if(villagers.contains(villager)) {
-            villager.remove();
-            villager.setHealth(0);
-            villagers.remove(villager);
-        }
-    }
-
     /**
      * Clear all villagers in arena
      */
@@ -1317,80 +989,8 @@ public abstract class Arena extends BukkitRunnable {
         villagers.clear();
     }
 
-    void addIronGolem(IronGolem ironGolem) {
-        ironGolems.add(ironGolem);
-    }
-
     public void addDoor(Location location, byte data) {
         this.doorBlocks.put(location, data);
-    }
-
-    private void restoreDoors() {
-        for(Location location : doorBlocks.keySet()) {
-            Block block = location.getBlock();
-            Byte doorData = doorBlocks.get(location);
-            int id = Material.WOODEN_DOOR.getId();
-            block.setTypeIdAndData(id, doorData, false);
-        }
-    }
-
-    /**
-     * Attempts player to leave arena.
-     * Calls VillageGameLeaveAttemptEvent event.
-     *
-     * @param p player to join
-     * @see VillageGameLeaveAttemptEvent
-     */
-    public void leaveAttempt(Player p) {
-        Main.debug("Initial leave attempt, " + p.getName(), System.currentTimeMillis());
-        VillageGameLeaveAttemptEvent villageGameLeaveAttemptEvent = new VillageGameLeaveAttemptEvent(p, this);
-        Bukkit.getPluginManager().callEvent(villageGameLeaveAttemptEvent);
-        User user = UserManager.getUser(p.getUniqueId());
-        user.setInt("orbs", 0);
-        p.getInventory().clear();
-        p.getInventory().setArmorContents(null);
-
-        this.removePlayer(p);
-        if(!user.isSpectator()) {
-            ChatManager.broadcastAction(this, p, ChatManager.ActionType.LEAVE);
-        }
-        user.setFakeDead(false);
-        user.setSpectator(false);
-        user.removeScoreboard();
-        if(user.getKit() instanceof GolemFriendKit) {
-            for(IronGolem ironGolem : getIronGolems()) {
-                if(ironGolem.getCustomName().contains(user.toPlayer().getName())) {
-                    ironGolem.remove();
-                }
-            }
-        }
-        if(plugin.isBossbarEnabled()) {
-            gameBar.removePlayer(p);
-        }
-        p.setMaxHealth(20.0);
-        p.setHealth(p.getMaxHealth());
-        p.setFoodLevel(20);
-        p.setFlying(false);
-        p.setAllowFlight(false);
-        for(PotionEffect effect : p.getActivePotionEffects()) {
-            p.removePotionEffect(effect.getType());
-        }
-        p.setFireTicks(0);
-        if(getPlayers().size() == 0) {
-            this.setArenaState(ArenaState.ENDING);
-            setTimer(0);
-        }
-
-        p.setGameMode(GameMode.SURVIVAL);
-        for(Player players : plugin.getServer().getOnlinePlayers()) {
-            if(ArenaRegistry.getArena(players) != null)
-                players.showPlayer(p);
-            p.showPlayer(players);
-        }
-        this.teleportToEndLocation(p);
-        if(!plugin.isBungeeActivated() && plugin.isInventoryManagerEnabled()) {
-            plugin.getInventoryManager().loadInventory(p);
-        }
     }
 
     public void addRottenFlesh(int i) {
@@ -1411,6 +1011,103 @@ public abstract class Arena extends BukkitRunnable {
             return true;
         }
         return false;
+    }
+
+    Map<Zombie, Location> getZombieCheckerLocations() {
+        return zombieCheckerLocations;
+    }
+
+    void subtractZombiesToSpawn() {
+        this.zombiesToSpawn--;
+    }
+
+    void setRottenFleshAmount(int rottenFleshAmount) {
+        this.rottenFleshAmount = rottenFleshAmount;
+    }
+
+    void setZombieAmount() {
+        zombiesToSpawn = (int) Math.ceil((getPlayers().size() * 0.5) * (wave * wave) / 2);
+    }
+
+    void addPlayer(Player player) {
+        players.add(player.getUniqueId());
+    }
+
+    void removePlayer(Player player) {
+        if(player == null)
+            return;
+        if(player.getUniqueId() == null)
+            return;
+        players.remove(player.getUniqueId());
+    }
+
+    List<Player> getPlayersLeft() {
+        List<Player> players = new ArrayList<>();
+        for(User user : UserManager.getUsers(this)) {
+            if(!user.isFakeDead())
+                players.add(user.toPlayer());
+        }
+        return players;
+    }
+
+    void showPlayers() {
+        for(Player player : getPlayers()) {
+            for(Player p : getPlayers()) {
+                player.showPlayer(p);
+                p.showPlayer(player);
+            }
+        }
+    }
+
+    void addZombie(Zombie zombie) {
+        zombies.add(zombie);
+    }
+
+    void addExperience(Player player, int i) {
+        User user = UserManager.getUser(player.getUniqueId());
+        user.addInt("xp", i);
+        if(player.hasPermission(PermissionsManager.getVip())) {
+            user.addInt("xp", (int) Math.ceil(i / 2));
+        }
+        if(player.hasPermission(PermissionsManager.getMvp())) {
+            user.addInt("xp", (int) Math.ceil(i / 2));
+        }
+        if(player.hasPermission(PermissionsManager.getElite())) {
+            user.addInt("xp", (int) Math.ceil(i / 2));
+        }
+        ArenaUtils.updateLevelStat(player, this);
+    }
+
+    void addStat(Player player, String stat) {
+        User user = UserManager.getUser(player.getUniqueId());
+        user.addInt(stat, 1);
+        ArenaUtils.updateLevelStat(player, this);
+    }
+
+    void addVillager(Villager villager) {
+        villagers.add(villager);
+
+    }
+
+    void removeVillager(Villager villager) {
+        if(villagers.contains(villager)) {
+            villager.remove();
+            villager.setHealth(0);
+            villagers.remove(villager);
+        }
+    }
+
+    void addIronGolem(IronGolem ironGolem) {
+        ironGolems.add(ironGolem);
+    }
+
+    void restoreDoors() {
+        for(Location location : doorBlocks.keySet()) {
+            Block block = location.getBlock();
+            Byte doorData = doorBlocks.get(location);
+            int id = Material.WOODEN_DOOR.getId();
+            block.setTypeIdAndData(id, doorData, false);
+        }
     }
 
 }

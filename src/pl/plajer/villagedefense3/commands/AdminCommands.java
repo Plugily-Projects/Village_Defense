@@ -40,6 +40,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import pl.plajer.villagedefense3.Main;
 import pl.plajer.villagedefense3.arena.Arena;
+import pl.plajer.villagedefense3.arena.ArenaManager;
 import pl.plajer.villagedefense3.arena.ArenaRegistry;
 import pl.plajer.villagedefense3.arena.ArenaState;
 import pl.plajer.villagedefense3.arena.ArenaUtils;
@@ -149,7 +150,7 @@ public class AdminCommands extends MainCommand {
         if(checkSenderIsConsole(sender)) return;
         if(!hasPermission(sender, "villagedefense.admin.stopgame")) return;
         if(!checkIsInGameInstance((Player) sender)) return;
-        ArenaRegistry.getArena((Player) sender).stopGame(false);
+        ArenaManager.stopGame(false, ArenaRegistry.getArena((Player) sender));
     }
 
     public void forceStartGame(CommandSender sender) {
@@ -260,7 +261,7 @@ public class AdminCommands extends MainCommand {
             sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("Commands.No-Arena-Like-That"));
             return;
         }
-        arena.stopGame(false);
+        ArenaManager.stopGame(false, arena);
         FileConfiguration config = ConfigurationManager.getConfig("arenas");
         config.set("instances." + arenaString, null);
         ConfigurationManager.saveConfig(config, "arenas");
@@ -423,7 +424,7 @@ public class AdminCommands extends MainCommand {
         Arena arena = ArenaRegistry.getArena((Player) sender);
         if(NumberUtils.isNumber(number)) {
             arena.setWave(Integer.parseInt(number) - 1);
-            arena.endWave();
+            ArenaManager.endWave(arena);
             String message = ChatManager.formatMessage(arena, ChatManager.colorMessage("In-Game.Messages.Admin-Messages.Changed-Wave"), arena.getWave());
             for(Player player1 : arena.getPlayers()) {
                 player1.sendMessage(ChatManager.PLUGIN_PREFIX + message);

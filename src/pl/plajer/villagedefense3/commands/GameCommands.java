@@ -24,6 +24,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import pl.plajer.villagedefense3.Main;
 import pl.plajer.villagedefense3.arena.Arena;
+import pl.plajer.villagedefense3.arena.ArenaManager;
 import pl.plajer.villagedefense3.arena.ArenaRegistry;
 import pl.plajer.villagedefense3.handlers.ChatManager;
 import pl.plajer.villagedefense3.user.User;
@@ -128,7 +129,7 @@ public class GameCommands extends MainCommand {
                 System.out.print(p.getName() + " is teleported to the Hub Server");
             } else {
                 ArenaRegistry.getArena(p).teleportToEndLocation(p);
-                ArenaRegistry.getArena(p).leaveAttempt(p);
+                ArenaManager.leaveAttempt(p, ArenaRegistry.getArena(p));
                 System.out.print(p.getName() + " has left the arena! He is teleported to the end location.");
             }
         }
@@ -138,7 +139,7 @@ public class GameCommands extends MainCommand {
         if(checkSenderIsConsole(sender)) return;
         for(Arena arena : ArenaRegistry.getArenas()) {
             if(arenaString.equalsIgnoreCase(arena.getID())) {
-                arena.joinAttempt((Player) sender);
+                ArenaManager.joinAttempt((Player) sender, arena);
                 return;
             }
         }

@@ -48,9 +48,9 @@ public class UserManager {
         }
     }
 
-    public static List<User> getUsers(Arena GameInstance) {
+    public static List<User> getUsers(Arena arena) {
         List<User> users = new ArrayList<>();
-        for(Player player : GameInstance.getPlayers()) {
+        for(Player player : arena.getPlayers()) {
             users.add(getUser(player.getUniqueId()));
         }
         return users;
