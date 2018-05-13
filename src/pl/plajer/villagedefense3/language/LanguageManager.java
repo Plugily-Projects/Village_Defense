@@ -35,13 +35,11 @@ import java.util.logging.Level;
 public class LanguageManager {
 
     private static Main plugin;
-    private static FileConfiguration languageConfig = null;
-    private static File languageConfigFile = null;
     private static VDLocale pluginLocale;
 
     public static void init(Main pl) {
         plugin = pl;
-        saveDefaultLanguageFile();
+        plugin.saveResource("language.yml", false);
         setupLocale();
     }
 
@@ -104,59 +102,6 @@ public class LanguageManager {
                     return ConfigurationManager.getConfig("language").getString(message);
                 }
                 return null;
-        }
-    }
-
-    public static void saveDefaultLanguageFile() {
-        if(languageConfigFile == null) {
-            languageConfigFile = new File(plugin.getDataFolder(), "language.yml");
-        }
-        if(!languageConfigFile.exists()) {
-            plugin.saveResource("language.yml", false);
-        }
-    }
-
-
-    public static FileConfiguration getLanguageFile() {
-        if(languageConfig == null) {
-            reloadLanguageFile();
-        }
-        return languageConfig;
-    }
-
-    public static void reloadLanguageFile() {
-        if(languageConfigFile == null) {
-            languageConfigFile = new File(plugin.getDataFolder(), "language.yml");
-        }
-        languageConfig = YamlConfiguration.loadConfiguration(languageConfigFile);
-
-        // Look for defaults in the jar
-        try {
-            Reader defConfigStream = new InputStreamReader(plugin.getResource("language.yml"));
-            if(defConfigStream != null) {
-                YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(defConfigStream);
-                languageConfig.setDefaults(defConfig);
-            }
-        } catch(Exception e) {
-            e.printStackTrace();
-            MessageUtils.errorOccured();
-            Bukkit.getConsoleSender().sendMessage("Cannot reload language.yml file!");
-            Bukkit.getConsoleSender().sendMessage("Restart the server!");
-        }
-    }
-
-    public static void saveLanguageFile() {
-        if(languageConfig == null || languageConfigFile == null) {
-            return;
-        }
-        try {
-            getLanguageFile().save(languageConfigFile);
-        } catch(IOException ex) {
-            plugin.getLogger().log(Level.SEVERE, "Could not save file to " + languageConfigFile, ex);
-            ex.printStackTrace();
-            MessageUtils.errorOccured();
-            Bukkit.getConsoleSender().sendMessage("Cannot save language.yml file!");
-            Bukkit.getConsoleSender().sendMessage("Restart the server!");
         }
     }
 

@@ -208,8 +208,8 @@ public class Main extends JavaPlugin {
             return;
         }
         //check if using releases before 2.1.0 or 2.1.0+
-        if((LanguageManager.getLanguageFile().isSet("STATS-AboveLine") && LanguageManager.getLanguageFile().isSet("SCOREBOARD-Zombies")) ||
-                (LanguageManager.getLanguageFile().isSet("File-Version") && getConfig().isSet("Config-Version"))) {
+        if((ConfigurationManager.getConfig("language").isSet("STATS-AboveLine") && ConfigurationManager.getConfig("language").isSet("SCOREBOARD-Zombies")) ||
+                (ConfigurationManager.getConfig("language").isSet("File-Version") && getConfig().isSet("Config-Version"))) {
             LanguageMigrator.migrateToNewFormat();
         }
         debug = getConfig().getBoolean("Debug");
