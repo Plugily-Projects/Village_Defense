@@ -108,7 +108,7 @@ public class ChatEvents implements Listener {
                 message = ChatColor.translateAlternateColorCodes('&',
                         LanguageManager.getLanguageMessage("In-Game.Game-Chat-Format")
                                 .replaceAll("%level%", UserManager.getUser(event.getPlayer().getUniqueId()).getInt("level") + "")
-                                .replaceAll("%kit%", ChatManager.formatMessage(arena, LanguageManager.getLanguageMessage("In-Game.Dead-Tag-On-Death")))
+                                .replaceAll("%kit%", ChatManager.colorMessage("In-Game.Dead-Tag-On-Death"))
                                 .replaceAll("%player%", event.getPlayer().getName())
                                 .replaceAll("%message%", eventMessage));
             }

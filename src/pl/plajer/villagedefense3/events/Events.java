@@ -456,10 +456,7 @@ public class Events implements Listener {
                 if(arena.checkLevelUpRottenFlesh()) {
                     for(Player player : arena.getPlayers()) {
                         player.setMaxHealth(player.getMaxHealth() + 2.0);
-                    }
-                    for(Player player1 : arena.getPlayers()) {
-                        String message = ChatManager.formatMessage(arena, ChatManager.colorMessage("In-Game.Rotten-Flesh-Level-Up"), player1);
-                        player1.sendMessage(ChatManager.PLUGIN_PREFIX + message);
+                        player.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Rotten-Flesh-Level-Up"));
                     }
                 }
             }

@@ -429,34 +429,34 @@ public abstract class Arena extends BukkitRunnable {
             gameObjective.setDisplaySlot(DisplaySlot.SIDEBAR);
             switch(getArenaState()) {
                 case WAITING_FOR_PLAYERS:
-                    Score playersTotal1 = gameObjective.getScore(ChatManager.formatMessage(this, ChatManager.colorMessage("Scoreboard.Players")));
+                    Score playersTotal1 = gameObjective.getScore(ChatManager.colorMessage("Scoreboard.Players"));
                     playersTotal1.setScore(getPlayers().size());
-                    Score neededPlayers2 = gameObjective.getScore(ChatManager.formatMessage(this, ChatManager.colorMessage("Scoreboard.Minimum-Players")));
+                    Score neededPlayers2 = gameObjective.getScore( ChatManager.colorMessage("Scoreboard.Minimum-Players"));
                     neededPlayers2.setScore(getMinimumPlayers());
                     break;
                 case STARTING:
-                    Score timer = gameObjective.getScore(ChatManager.formatMessage(this, ChatManager.colorMessage("Scoreboard.Starting-In")));
+                    Score timer = gameObjective.getScore(ChatManager.colorMessage("Scoreboard.Starting-In"));
                     timer.setScore(getTimer());
-                    Score playersTotal = gameObjective.getScore(ChatManager.formatMessage(this, ChatManager.colorMessage("Scoreboard.Players")));
+                    Score playersTotal = gameObjective.getScore(ChatManager.colorMessage("Scoreboard.Players"));
                     playersTotal.setScore(getPlayers().size());
-                    Score neededPlayers = gameObjective.getScore(ChatManager.formatMessage(this, ChatManager.colorMessage("Scoreboard.Minimum-Players")));
+                    Score neededPlayers = gameObjective.getScore(ChatManager.colorMessage("Scoreboard.Minimum-Players"));
                     neededPlayers.setScore(getMinimumPlayers());
                     break;
                 case IN_GAME:
-                    Score playersLeft = gameObjective.getScore(ChatManager.formatMessage(this, ChatManager.colorMessage("Scoreboard.Players-Left")));
+                    Score playersLeft = gameObjective.getScore(ChatManager.colorMessage("Scoreboard.Players-Left"));
                     playersLeft.setScore(getPlayersLeft().size());
-                    Score villagersLeft = gameObjective.getScore(ChatManager.formatMessage(this, ChatManager.colorMessage("Scoreboard.Villagers-Left")));
+                    Score villagersLeft = gameObjective.getScore(ChatManager.colorMessage("Scoreboard.Villagers-Left"));
                     villagersLeft.setScore(getVillagers().size());
-                    Score orbs = gameObjective.getScore(ChatManager.formatMessage(this, ChatManager.colorMessage("Scoreboard.Orbs")));
+                    Score orbs = gameObjective.getScore(ChatManager.colorMessage("Scoreboard.Orbs"));
                     orbs.setScore(user.getInt("orbs"));
                     if(isFighting()) {
-                        Score zombiesLeft = gameObjective.getScore(ChatManager.formatMessage(this, ChatManager.colorMessage("Scoreboard.Zombies-Left")));
+                        Score zombiesLeft = gameObjective.getScore(ChatManager.colorMessage("Scoreboard.Zombies-Left"));
                         zombiesLeft.setScore(getZombiesLeft());
                     } else {
-                        Score nextWaveIn = gameObjective.getScore(ChatManager.formatMessage(this, ChatManager.colorMessage("Scoreboard.Next-Wave-In")));
+                        Score nextWaveIn = gameObjective.getScore(ChatManager.colorMessage("Scoreboard.Next-Wave-In"));
                         nextWaveIn.setScore(getTimer());
                     }
-                    Score rottenFlesh = gameObjective.getScore(ChatManager.formatMessage(this, ChatManager.colorMessage("Scoreboard.Rotten-Flesh")));
+                    Score rottenFlesh = gameObjective.getScore(ChatManager.colorMessage("Scoreboard.Rotten-Flesh"));
                     rottenFlesh.setScore(getRottenFlesh());
                     break;
                 case RESTARTING:
@@ -1087,7 +1087,7 @@ public abstract class Arena extends BukkitRunnable {
             gameBar.addPlayer(p);
         }
         if(!UserManager.getUser(p.getUniqueId()).isSpectator())
-            ChatManager.broadcastJoinMessage(this, p);
+            ChatManager.broadcastAction(this, p, ChatManager.ActionType.JOIN);
         User user = UserManager.getUser(p.getUniqueId());
         user.setKit(KitRegistry.getDefaultKit());
         plugin.getKitManager().giveKitMenuItem(p);
@@ -1352,7 +1352,7 @@ public abstract class Arena extends BukkitRunnable {
 
         this.removePlayer(p);
         if(!user.isSpectator()) {
-            ChatManager.broadcastLeaveMessage(this, p);
+            ChatManager.broadcastAction(this, p, ChatManager.ActionType.LEAVE);
         }
         user.setFakeDead(false);
         user.setSpectator(false);

@@ -159,18 +159,18 @@ public class ArenaEvents implements Listener {
         player.setAllowFlight(true);
         player.setFlying(true);
         player.getInventory().clear();
-        MessageUtils.sendTitle(player, ChatColor.stripColor(ChatManager.formatMessage(arena, ChatManager.colorMessage("In-Game.Death-Screen"))), 0, 5 * 20, 0, ChatColor.RED);
+        MessageUtils.sendTitle(player, ChatColor.stripColor(ChatManager.colorMessage("In-Game.Death-Screen")), 0, 5 * 20, 0, ChatColor.RED);
         if(plugin.is1_9_R1() || plugin.is1_11_R1() || plugin.is1_12_R1()) {
             new BukkitRunnable() {
                 @Override
                 public void run() {
                     if(user.isSpectator())
-                        player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(ChatManager.formatMessage(arena, ChatManager.colorMessage("In-Game.Died-Respawn-In-Next-Wave"))));
+                        player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(ChatManager.colorMessage("In-Game.Died-Respawn-In-Next-Wave")));
                     else this.cancel();
                 }
             }.runTaskTimer(plugin, 20, 20);
         }
-        ChatManager.broadcastDeathMessage(arena, player);
+        ChatManager.broadcastAction(arena, player, ChatManager.ActionType.DEATH);
 
         ItemStack spectatorItem = new ItemStack(Material.COMPASS, 1);
         ItemMeta spectatorMeta = spectatorItem.getItemMeta();

@@ -51,11 +51,8 @@ import java.util.Random;
  */
 public class ArenaInitializer1_12_R1 extends Arena {
 
-    private Main plugin;
-
     public ArenaInitializer1_12_R1(String ID, Main plugin) {
         super(ID, plugin);
-        this.plugin = plugin;
     }
 
     public void spawnFastZombie(Random random) {

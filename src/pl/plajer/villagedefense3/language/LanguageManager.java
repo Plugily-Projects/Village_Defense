@@ -20,17 +20,9 @@ package pl.plajer.villagedefense3.language;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
 import pl.plajer.villagedefense3.Main;
 import pl.plajer.villagedefense3.handlers.ConfigurationManager;
 import pl.plajer.villagedefense3.utils.MessageUtils;
-
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.util.logging.Level;
 
 public class LanguageManager {
 
@@ -77,7 +69,11 @@ public class LanguageManager {
         if(ConfigurationManager.getConfig("language").isSet(message)) {
             return ConfigurationManager.getConfig("language").getString(message);
         }
-        return "NULL_MESSAGE";
+        MessageUtils.errorOccured();
+        Bukkit.getConsoleSender().sendMessage("Game message not found!");
+        Bukkit.getConsoleSender().sendMessage("Please regenerate your language.yml file! If error still occurs report it to the developer!");
+        Bukkit.getConsoleSender().sendMessage("Access string: " + message);
+        return "ERR_MESSAGE_NOT_FOUND";
     }
 
     public static String getLanguageMessage(String message) {

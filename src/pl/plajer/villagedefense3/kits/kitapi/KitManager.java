@@ -157,50 +157,47 @@ public class KitManager implements Listener {
 
 
     @EventHandler
-    private void onKitMenuItemClick(PlayerInteractEvent event) {
-        if(!(event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK))
+    private void onKitMenuItemClick(PlayerInteractEvent e) {
+        if(!(e.getAction() == Action.RIGHT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_BLOCK))
             return;
-        if(event.getPlayer().getItemInHand().getType() != getMaterial())
+        if(e.getPlayer().getItemInHand().getType() != getMaterial())
             return;
-        if(!event.getPlayer().getItemInHand().hasItemMeta())
+        if(!e.getPlayer().getItemInHand().hasItemMeta())
             return;
-        if(!event.getPlayer().getItemInHand().getItemMeta().hasLore())
+        if(!e.getPlayer().getItemInHand().getItemMeta().hasLore())
             return;
-        if(!event.getPlayer().getItemInHand().getItemMeta().getDisplayName().equalsIgnoreCase(getItemName())) return;
-        openKitMenu(event.getPlayer());
+        if(!e.getPlayer().getItemInHand().getItemMeta().getDisplayName().equalsIgnoreCase(getItemName())) return;
+        openKitMenu(e.getPlayer());
     }
 
     @EventHandler
-    public void onKitChoose(InventoryClickEvent event) {
-        if(!event.getInventory().getName().equalsIgnoreCase(getMenuName()))
+    public void onKitChoose(InventoryClickEvent e) {
+        if(!e.getInventory().getName().equalsIgnoreCase(getMenuName()))
             return;
-        if(!(event.getWhoClicked() instanceof Player))
+        if(!(e.getWhoClicked() instanceof Player))
             return;
-        Player player = (Player) event.getWhoClicked();
-        event.setCancelled(true);
-        if(event.getCurrentItem() == null)
+        Player player = (Player) e.getWhoClicked();
+        e.setCancelled(true);
+        if(e.getCurrentItem() == null)
             return;
-        if(!(event.isLeftClick() || event.isRightClick()))
+        if(!(e.isLeftClick() || e.isRightClick()))
             return;
-        if(!event.getCurrentItem().hasItemMeta())
+        if(!e.getCurrentItem().hasItemMeta())
             return;
         if(!ArenaRegistry.isInArena(player))
             return;
-        VillagePlayerChooseKitEvent villagePlayerChooseKitEvent = new VillagePlayerChooseKitEvent(player, KitRegistry.getKit(event.getCurrentItem()), ArenaRegistry.getArena(player));
+        VillagePlayerChooseKitEvent villagePlayerChooseKitEvent = new VillagePlayerChooseKitEvent(player, KitRegistry.getKit(e.getCurrentItem()), ArenaRegistry.getArena(player));
         Bukkit.getPluginManager().callEvent(villagePlayerChooseKitEvent);
     }
 
     @EventHandler
-    public void checkIfIsUnlocked(VillagePlayerChooseKitEvent event) {
-        if(event.getKit().isUnlockedByPlayer(event.getPlayer())) {
-            User user = UserManager.getUser(event.getPlayer().getUniqueId());
-            user.setKit(event.getKit());
-            String chosenkitmessage = ChatManager.colorMessage("Kits.Choose-Message");
-            chosenkitmessage = ChatManager.formatMessage(chosenkitmessage, event.getKit());
-            event.getPlayer().sendMessage(chosenkitmessage);
+    public void checkIfIsUnlocked(VillagePlayerChooseKitEvent e) {
+        if(e.getKit().isUnlockedByPlayer(e.getPlayer())) {
+            User user = UserManager.getUser(e.getPlayer().getUniqueId());
+            user.setKit(e.getKit());
+            e.getPlayer().sendMessage(ChatManager.colorMessage("Kits.Choose-Message").replaceAll("%KIT%", e.getKit().getName()));
         } else {
-            String chosenKitMessageButNotUnlocked = ChatManager.colorMessage("Kits.Not-Unlocked-Message");
-            event.getPlayer().sendMessage(ChatManager.formatMessage(chosenKitMessageButNotUnlocked, event.getKit()));
+            e.getPlayer().sendMessage(ChatManager.colorMessage("Kits.Not-Unlocked-Message").replaceAll("%KIT%", e.getKit().getName()));
         }
 
     }
