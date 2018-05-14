@@ -56,6 +56,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import pl.plajer.villagedefense3.Main;
 import pl.plajer.villagedefense3.arena.Arena;
+import pl.plajer.villagedefense3.arena.ArenaManager;
 import pl.plajer.villagedefense3.arena.ArenaRegistry;
 import pl.plajer.villagedefense3.arena.ArenaState;
 import pl.plajer.villagedefense3.handlers.ChatManager;
@@ -259,7 +260,7 @@ public class Events implements Listener {
             if(plugin.isBungeeActivated()) {
                 plugin.getBungeeManager().connectToHub(event.getPlayer());
             } else {
-                arena.leaveAttempt(event.getPlayer());
+                ArenaManager.leaveAttempt(event.getPlayer(), arena);
             }
         }
     }

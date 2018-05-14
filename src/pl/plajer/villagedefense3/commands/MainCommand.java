@@ -72,6 +72,10 @@ public class MainCommand implements CommandExecutor {
         }
     }
 
+    public AdminCommands getAdminCommands() {
+        return adminCommands;
+    }
+
     boolean checkSenderIsConsole(CommandSender sender) {
         if(sender instanceof ConsoleCommandSender) {
             sender.sendMessage(ChatManager.colorMessage("Commands.Only-By-Player"));
@@ -135,13 +139,6 @@ public class MainCommand implements CommandExecutor {
                 return true;
             } else if(args[0].equalsIgnoreCase("setshopchest")) {
                 adminCommands.setShopChest(sender);
-                return true;
-            } else if(args[0].equalsIgnoreCase("addsign")) {
-                if(args.length != 1) {
-                    adminCommands.addSign(sender, args[1]);
-                } else {
-                    sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("Commands.Type-Arena-Name"));
-                }
                 return true;
             } else if(args[0].equalsIgnoreCase("delete")) {
                 if(args.length != 1) {

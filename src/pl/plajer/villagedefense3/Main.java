@@ -98,6 +98,7 @@ public class Main extends JavaPlugin {
     private ChunkManager chunkManager;
     private PowerupManager powerupManager;
     private RewardsHandler rewardsHandler;
+    private MainCommand mainCommand;
     private boolean forceDisable = false;
     private boolean databaseActivated = false;
     private boolean bungeeEnabled;
@@ -162,6 +163,10 @@ public class Main extends JavaPlugin {
 
     public ChunkManager getChunkManager() {
         return chunkManager;
+    }
+
+    public MainCommand getMainCommand() {
+        return mainCommand;
     }
 
     public Map<String, Integer> getCustomPermissions() {
@@ -297,7 +302,7 @@ public class Main extends JavaPlugin {
         if(getConfig().getBoolean("BungeeActivated")) bungeeManager = new BungeeManager(this);
         new ChatManager(ChatManager.colorMessage("In-Game.Plugin-Prefix"));
         new Util(this);
-        new MainCommand(this, true);
+        mainCommand = new MainCommand(this, true);
         new GolemEvents(this);
         new EntityRegistry(this);
         new ArenaEvents(this);

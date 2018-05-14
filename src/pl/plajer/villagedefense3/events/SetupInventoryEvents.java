@@ -37,6 +37,7 @@ import pl.plajer.villagedefense3.arena.ArenaInitializer1_12_R1;
 import pl.plajer.villagedefense3.arena.ArenaInitializer1_8_R3;
 import pl.plajer.villagedefense3.arena.ArenaInitializer1_9_R1;
 import pl.plajer.villagedefense3.arena.ArenaRegistry;
+import pl.plajer.villagedefense3.commands.MainCommand;
 import pl.plajer.villagedefense3.handlers.ConfigurationManager;
 import pl.plajer.villagedefense3.handlers.PermissionsManager;
 import pl.plajer.villagedefense3.handlers.ShopManager;
@@ -143,7 +144,7 @@ public class SetupInventoryEvents implements Listener {
         }
         if(name.contains("Add game sign")) {
             event.setCancelled(true);
-            player.performCommand("vda addsign " + arena.getID());
+            plugin.getMainCommand().getAdminCommands().addSign(player, arena.getID());
             return;
         }
         if(event.getCurrentItem().getType() != Material.NAME_TAG) {

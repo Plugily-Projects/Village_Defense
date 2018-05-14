@@ -1,5 +1,8 @@
 # Village Defense 3 Changelog
 
+### 3.6.4 Release (14.05.2018)
+* /vda addsign is now deprecated, use Setup menu instead - changed due to some problems
+
 ### 3.6.3 Release (11/12.05.2018)
 * Added tab completer
 * Added did you mean to help with wrong commands (ex. /vd leaveve > Did you mean /vd leave?)
