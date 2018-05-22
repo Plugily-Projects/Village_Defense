@@ -61,9 +61,6 @@ import java.util.List;
 public class AdminCommands extends MainCommand {
 
     private static List<CommandData> command = new LinkedList<>();
-    //private static List<String> command = new LinkedList<>();
-    private static List<String> commandDesc = new LinkedList<>();
-    private static List<String> commandCommand = new LinkedList<>();
 
     static {
         ChatColor gray = ChatColor.GRAY;

@@ -196,7 +196,7 @@ Kits:
 In-Game:
   Villager-Names: "Anna,Max,Anton,Marie,Maria,Hans,Hannes,Manfred,Tim,Matteo,Daniel,Julian,Jonathan,Florian,Florentin,Marlene,David,Markus,Niko,Mustafa,Lea,Nina,Tom,Ivan,Felix,Leonie,Dieter,Sarah,Lara,Larissa,Adam"
   Plugin-Prefix: "&a[VillageDefense] "
-  Already-Playing: "&cDu bist schon in der Warteschleife für ein Spiel! Du kannst leaven mit /leave."
+  Already-Playing: "&cDu bist schon in der Warteschleife für ein Spiel! Du kannst leaven mit /vd leave."
   Join-No-Permission: "&cDu hast keine Permission um der Arena beizutreten!"
   Full-Game-No-Permission: "&cDu hast keine Permission um einer vollen Arena zu joinen!"
   No-Slots-For-Premium: "&cDas Spiel ist schon voll mit Premium-Spielern! Sorry!"
@@ -209,7 +209,7 @@ In-Game:
   You-Leveled-Up: "&7LEVEL-UP! Du bist nun Level %NUMBER%!"
   Orbs-Pickup: "&6+ %number% Orbs"
   Rotten-Flesh-Level-Up: "&bDie Götter bedanken sich für das Verdorbene Fleisch! &bDafür geben sie euch ein EXTRA-HERZ!"
-  Only-Command-Ingame-Is-Leave: "&cDu must das Spiel verlassen um Commands benutzen zu können. Nur /leave funktioniert!"
+  Only-Command-Ingame-Is-Leave: "&cDu must das Spiel verlassen um Commands benutzen zu können. Nur /vd leave funktioniert!"
   Golem-Upgrades:
     Upgrade-Inventory: "&e&lUpgrade GOLEM"
     Cant-Upgrade-Others: "&cDu kannst nicht andere GOLEMS upgraden!"

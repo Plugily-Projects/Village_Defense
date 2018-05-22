@@ -99,25 +99,23 @@ public class SpectatorItemEvents implements Listener {
             return;
         if(!e.getCurrentItem().getItemMeta().hasLore())
             return;
-        if(e.getCurrentItem().hasItemMeta()) {
-            if(e.getInventory().getName().equalsIgnoreCase(ChatManager.colorMessage("In-Game.Spectator.Spectator-Menu-Name"))) {
-                e.setCancelled(true);
-                if((e.isLeftClick() || e.isRightClick())) {
-                    ItemMeta meta = e.getCurrentItem().getItemMeta();
-                    for(Player player : arena.getPlayers()) {
-                        if(player.getName().equalsIgnoreCase(meta.getDisplayName()) || ChatColor.stripColor(meta.getDisplayName()).contains(player.getName())) {
-                            p.sendMessage(ChatManager.formatMessage(arena, ChatManager.colorMessage("Kits.Teleporter.Teleported-To-Player"), player));
-                            p.teleport(player);
-                            p.closeInventory();
-                            e.setCancelled(true);
-                            return;
+        if(e.getInventory().getName().equalsIgnoreCase(ChatManager.colorMessage("In-Game.Spectator.Spectator-Menu-Name"))) {
+            e.setCancelled(true);
+            if((e.isLeftClick() || e.isRightClick())) {
+                ItemMeta meta = e.getCurrentItem().getItemMeta();
+                for(Player player : arena.getPlayers()) {
+                    if(player.getName().equalsIgnoreCase(meta.getDisplayName()) || ChatColor.stripColor(meta.getDisplayName()).contains(player.getName())) {
+                        p.sendMessage(ChatManager.formatMessage(arena, ChatManager.colorMessage("Kits.Teleporter.Teleported-To-Player"), player));
+                        p.teleport(player);
+                        p.closeInventory();
+                        e.setCancelled(true);
+                        return;
 
-                        }
                     }
-                    p.sendMessage(ChatManager.colorMessage("Kits.Teleporter.Player-Not-Found"));
                 }
-                e.setCancelled(true);
+                p.sendMessage(ChatManager.colorMessage("Kits.Teleporter.Player-Not-Found"));
             }
+            e.setCancelled(true);
         }
     }
 }

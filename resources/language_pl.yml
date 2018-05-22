@@ -192,7 +192,7 @@ Kits:
 In-Game:
   Villager-Names: "Alicja,Adam,Maciek,Robert,Jan,Juliusz,Katarzyna,Martyna,Natalia,Barbara,Blazej,Andrzej,Dominik,Gertruda,Bartek,Cecylia,Danuta,Emilia,Ewa,Filip,Halina,Iza,Jozef,Kamil,Karolina,Maja,Marta,Maciej,Milena,Norbert"
   Plugin-Prefix: "&a[Village Defense] "
-  Already-Playing: "&cJuz grasz! Mozesz wyjsc wpisujac /leave."
+  Already-Playing: "&cJuz grasz! Mozesz wyjsc wpisujac /vd leave."
   Join-No-Permission: "&cNie masz uprawnien by dolaczyc na ta arene!"
   Full-Game-No-Permission: "&cNie masz uprawnien by dolaczac na pelne areny!"
   No-Slots-For-Premium: "&cTa gra jest juz pelna graczy premium! Przepraszamy."
@@ -205,7 +205,7 @@ In-Game:
   You-Leveled-Up: "&7Awansowales! Twoj nowy poziom: %NUMBER%!"
   Orbs-Pickup: "&6+ %number% kul"
   Rotten-Flesh-Level-Up: "&bBogowie sa zadowoleni ze zginlego miesa! &bDali wam za to dodatkowe serce!"
-  Only-Command-Ingame-Is-Leave: "&cMusisz wpierw wyjsc by wykonac ta komende. Jedyna komenda ktora dziala to /leave!"
+  Only-Command-Ingame-Is-Leave: "&cMusisz wpierw wyjsc by wykonac ta komende. Jedyna komenda ktora dziala to /vd leave!"
   Golem-Upgrades:
     Upgrade-Inventory: "&e&lUlepsz golema"
     Cant-Upgrade-Others: "&cNie mozesz ulepszyc golema innej osoby!"

@@ -199,7 +199,7 @@ In-Game:
   Villager-Names: "Jagger,Kelsey,Kelton,Haylie,Harlow,Howard,Wulffric,Winfred,Ashley,Bailey,Beckett,Alfredo,Alfred,Adair,Edgar,ED,Eadwig,Edgaras,Buckley,Stanley,Nuffley,Mary,Jeffry,Rosaly,Elliot,Harry,Sam,Rosaline,Tom,Ivan,Kevin,Adam"
   #Used in most game messages.
   Plugin-Prefix: "&a[Village Defense] "
-  Already-Playing: "&cYou are already queued for a game! You can leave a game with /leave."
+  Already-Playing: "&cYou are already queued for a game! You can leave a game with /vd leave."
   Join-No-Permission: "&cYou don't have permission to join this arena!"
   Full-Game-No-Permission: "&cYou don't have the permission to join full games!"
   No-Slots-For-Premium: "&cThis game is already full of premium players! Sorry"
@@ -212,7 +212,7 @@ In-Game:
   You-Leveled-Up: "&7You leveled up! You're now level %NUMBER%!"
   Orbs-Pickup: "&6+ %number% orbs"
   Rotten-Flesh-Level-Up: "&bThe gods were happy with the rotten flesh! &bTherefor they gave you an extra heart!"
-  Only-Command-Ingame-Is-Leave: "&cYou have to leave the game first to perform commands. The only command that works is /leave!"
+  Only-Command-Ingame-Is-Leave: "&cYou have to leave the game first to perform commands. The only command that works is /vd leave!"
   Golem-Upgrades:
     Upgrade-Inventory: "&e&lUpgrade golem"
     Cant-Upgrade-Others: "&cYou can't upgrade others golem!"

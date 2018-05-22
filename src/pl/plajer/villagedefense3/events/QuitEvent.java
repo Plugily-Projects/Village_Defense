@@ -24,6 +24,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
 import pl.plajer.villagedefense3.Main;
+import pl.plajer.villagedefense3.arena.ArenaManager;
 import pl.plajer.villagedefense3.arena.ArenaRegistry;
 import pl.plajer.villagedefense3.database.FileStats;
 import pl.plajer.villagedefense3.user.User;
@@ -47,13 +48,13 @@ public class QuitEvent implements Listener {
         if(ArenaRegistry.getArena(event.getPlayer()) == null)
             return;
         if(!plugin.isBungeeActivated())
-            ArenaRegistry.getArena(event.getPlayer()).leaveAttempt(event.getPlayer());
+            ArenaManager.leaveAttempt(event.getPlayer(), ArenaRegistry.getArena(event.getPlayer()));
     }
 
     @EventHandler
     public void onQuitSaveStats(PlayerQuitEvent event) {
         if(ArenaRegistry.getArena(event.getPlayer()) != null) {
-            ArenaRegistry.getArena(event.getPlayer()).leaveAttempt(event.getPlayer());
+            ArenaManager.leaveAttempt(event.getPlayer(), ArenaRegistry.getArena(event.getPlayer()));
         }
         final User user = UserManager.getUser(event.getPlayer().getUniqueId());
         final Player player = event.getPlayer();

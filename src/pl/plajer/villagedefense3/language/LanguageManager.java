@@ -25,6 +25,8 @@ import pl.plajer.villagedefense3.Main;
 import pl.plajer.villagedefense3.handlers.ConfigurationManager;
 import pl.plajer.villagedefense3.utils.MessageUtils;
 
+import java.io.File;
+
 public class LanguageManager {
 
     private static Main plugin;
@@ -32,7 +34,9 @@ public class LanguageManager {
 
     public static void init(Main pl) {
         plugin = pl;
-        plugin.saveResource("language.yml", false);
+        if(!new File(plugin.getDataFolder() + File.separator + "language.yml").exists()) {
+            plugin.saveResource("language.yml", false);
+        }
         setupLocale();
     }
 
