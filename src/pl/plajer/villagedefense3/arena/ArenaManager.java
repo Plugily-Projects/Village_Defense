@@ -177,7 +177,6 @@ public class ArenaManager {
         user.setInt("orbs", 0);
         p.getInventory().clear();
         p.getInventory().setArmorContents(null);
-
         arena.removePlayer(p);
         if(!user.isSpectator()) {
             ChatManager.broadcastAction(arena, p, ChatManager.ActionType.LEAVE);
@@ -251,8 +250,8 @@ public class ArenaManager {
                     new BukkitRunnable() {
                         int i = 0;
                         public void run() {
-                            if(i == 4) arena.cancel();
-                            if(!arena.getPlayers().contains(p)) arena.cancel();
+                            if(i == 4) this.cancel();
+                            if(!arena.getPlayers().contains(p)) this.cancel();
                             Util.spawnRandomFirework(p.getLocation());
                             i++;
                         }
@@ -305,7 +304,8 @@ public class ArenaManager {
             player.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.formatMessage(arena, ChatManager.colorMessage("In-Game.Messages.Next-Wave-In"), arena.getTimer()));
             player.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Messages.You-Feel-Refreshed"));
             player.setHealth(player.getMaxHealth());
-            UserManager.getUser(player.getUniqueId()).addInt("orbs", arena.getWave() * 10);
+            User user = UserManager.getUser(player.getUniqueId());
+            user.addInt("orbs", arena.getWave() * 10);
         }
         if(plugin.getConfig().getBoolean("Respawn-After-Wave"))
             ArenaUtils.bringDeathPlayersBack(arena);

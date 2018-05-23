@@ -54,17 +54,43 @@ Commands:
 # In-game scoreboard messages.
 # Please do not use more than 48 chars here! COLOR CODES INCLUDED.
 Scoreboard:
-  Header: "&6&lVillage Defense"
-  Villagers-Left: "&aVillagers:"
-  Zombies-Left: "&cZombies:"
-  Players: "&bPlayers:"
-  Players-Left: "&7Players Left:"
-  Minimum-Players: "&bMin Players:"
-  Starting-In: "&bStarting In:"
-  Next-Wave-In: "&7Next wave in:"
-  Orbs: "&bOrbs:"
-  Rotten-Flesh: "&2Rotten Flesh:"
-  Footer: "&ewww.spigotmc.org"
+  Title: "&a&lVillage Defense"
+  Content:
+    # Contents of scoreboard while wave is running
+    Playing:
+      - "&fVillagers Left: &e%VILLAGERS%"
+      - "&fPlayers Left: &e%PLAYERS_LEFT%"
+      - "&fZombies Left: &e%ZOMBIES%"
+      - ""
+      - "&fRotten Flesh: &e%ROTTEN_FLESH%"
+      - "&fOrbs: &e%ORBS%"
+      - ""
+      - "&ewww.spigotmc.org"
+    # Contents while players are waiting for the wave
+    Playing-Waiting:
+      - "&fVillagers Left: &e%VILLAGERS%"
+      - "&fPlayers Left: &e%PLAYERS_LEFT%"
+      - ""
+      - "&fNext Wave In: &e%TIME%"
+      - ""
+      - "&fRotten Flesh: &e%ROTTEN_FLESH%"
+      - "&fOrbs: &e%ORBS%"
+      - ""
+      - "&ewww.spigotmc.org"
+    Waiting:
+      - "&fPlayers: &e%PLAYERS%"
+      - ""
+      - "&fMinimum Players: &e%MIN_PLAYERS%"
+      - ""
+      - "&ewww.spigotmc.org"
+    Starting:
+      - "&fStarting In: &e%TIME%"
+      - ""
+      - "&fPlayers: &e%PLAYERS%"
+      - ""
+      - "&fMinimum Players: &e%MIN_PLAYERS%"
+      - ""
+      - "&ewww.spigotmc.org"
 
 # Has usage only when bossbar is enabled in config.yml
 Bossbar:
@@ -320,4 +346,4 @@ Validator:
 
 # Don't edit it. But who's stopping you? It's your server!
 # Really, don't edit ;p
-File-Version-Do-Not-Edit: 4
+File-Version-Do-Not-Edit: 5

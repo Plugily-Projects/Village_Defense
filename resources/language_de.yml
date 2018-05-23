@@ -55,17 +55,41 @@ Commands:
     Footer: "&6-------------------------------------------------"
 
 Scoreboard:
-  Header: "&6&lVillage Defense"
-  Villagers-Left: "&aVillager:"
-  Zombies-Left: "&cZombies:"
-  Players: "&bSpieler:"
-  Players-Left: "&7Spieler übrig:"
-  Minimum-Players: "&bMin Spieler:"
-  Starting-In: "&bStarte in:"
-  Next-Wave-In: "&7Nächste Welle in:"
-  Orbs: "&bOrbs:"
-  Rotten-Flesh: "&2Verdorbenes Fleisch:"
-  Footer: "&ewww.spigotmc.org"
+  Title: "&a&lVillage Defense"
+  Content:
+    Playing:
+      - "&fVillagers übrig: &e%VILLAGERS%"
+      - "&fSpieler übrig: &e%PLAYERS_LEFT%"
+      - "&fZombies übrig: &e%ZOMBIES%"
+      - ""
+      - "&fVerrottetes Fleisch: &e%ROTTEN_FLESH%"
+      - "&fOrbs: &e%ORBS%"
+      - ""
+      - "&ewww.spigotmc.org"
+    Playing-Waiting:
+      - "&fVillagers übrig: &e%VILLAGERS%"
+      - "&fPlayers übrig: &e%PLAYERS_LEFT%"
+      - ""
+      - "&fNext Wave In: &e%TIME%"
+      - ""
+      - "&fVerrottetes Fleisch: &e%ROTTEN_FLESH%"
+      - "&fOrbs: &e%ORBS%"
+      - ""
+      - "&ewww.spigotmc.org"
+    Waiting:
+      - "&fSpieler: &e%PLAYERS%"
+      - ""
+      - "&fMinimum Spieler: &e%MIN_PLAYERS%"
+      - ""
+      - "&ewww.spigotmc.org"
+    Starting:
+      - "&fStarte in: &e%TIME%"
+      - ""
+      - "&fSpieler: &e%PLAYERS%"
+      - ""
+      - "&fMinimum Spieler: &e%MIN_PLAYERS%"
+      - ""
+      - "&ewww.spigotmc.org"
 
 Bossbar:
   Main-Title: "&a&lVillage Defense &6- www.spigotmc.org"
@@ -315,5 +339,5 @@ Validator:
   Instance-Started: "[Village Defense] Arena %arena% Instanz erfolgreich gestartet!"
   No-Instances-Created: "[Village Defense] Keine Arena Instanzen gefunden in der Konfiguration!"
 
-File-Version-Do-Not-Edit: 4
-Language-Version: 4
+File-Version-Do-Not-Edit: 5
+Language-Version: 5

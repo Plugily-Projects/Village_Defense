@@ -51,17 +51,43 @@ Commands:
     Footer: "&6-------------------------------------------------"
 
 Scoreboard:
-  Header: "&6&lVillage Defense"
-  Villagers-Left: "&aWiesniakow:"
-  Zombies-Left: "&cZombie:"
-  Players: "&bGraczy:"
-  Players-Left: "&7Zywych graczy:"
-  Minimum-Players: "&bMinimum graczy:"
-  Starting-In: "&bStart za:"
-  Next-Wave-In: "&7Nastepna fala za:"
-  Orbs: "&bKulek:"
-  Rotten-Flesh: "&2Zgnilego miesa:"
-  Footer: "&ewww.spigotmc.org"
+  Header: "&a&lVillage Defense"
+  Content:
+    # Contents of scoreboard while wave is running
+    Playing:
+      - "&fWiesniakow: &e%VILLAGERS%"
+      - "&fGraczy: &e%PLAYERS_LEFT%"
+      - "&fZombie: &e%ZOMBIES%"
+      - ""
+      - "&fZgnilego Miesa: &e%ROTTEN_FLESH%"
+      - "&fKulek: &e%ORBS%"
+      - ""
+      - "&ewww.spigotmc.org"
+    # Contents while players are waiting for the wave
+    Playing-Waiting:
+      - "&fWiesniakow: &e%VILLAGERS%"
+      - "&fGraczy: &e%PLAYERS_LEFT%"
+      - ""
+      - "&fAtak Za: &e%TIME%"
+      - ""
+      - "&fZgnilego Miesa: &e%ROTTEN_FLESH%"
+      - "&fKulek: &e%ORBS%"
+      - ""
+      - "&ewww.spigotmc.org"
+    Waiting:
+      - "&fGraczy: &e%PLAYERS%"
+      - ""
+      - "&fPotrzeba: &e%MIN_PLAYERS%"
+      - ""
+      - "&ewww.spigotmc.org"
+    Starting:
+      - "&fStart Za: &e%TIME%"
+      - ""
+      - "&fGraczy: &e%PLAYERS%"
+      - ""
+      - "&fPotrzeba: &e%MIN_PLAYERS%"
+      - ""
+      - "&ewww.spigotmc.org"
 
 Bossbar:
   Main-Title: "&a&lVillage Defense &6- www.spigotmc.org"
@@ -310,5 +336,5 @@ Validator:
   No-Instances-Created: "[Village Defense] Nie ma zadnych aren w konfiguracji!"
 
 #You don't want to change this m8 >:)
-File-Version-Do-Not-Edit: 4
-Language-Version: 4
+File-Version-Do-Not-Edit: 5
+Language-Version: 5

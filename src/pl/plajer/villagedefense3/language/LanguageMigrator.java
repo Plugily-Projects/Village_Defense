@@ -40,7 +40,7 @@ import java.util.stream.Collectors;
  */
 public class LanguageMigrator {
 
-    public static final int LANGUAGE_FILE_VERSION = 4;
+    public static final int LANGUAGE_FILE_VERSION = 5;
     private static Main plugin = JavaPlugin.getPlugin(Main.class);
     private static List<String> migratable = Arrays.asList("bungee", "config", "kits", "language", "lobbyitems", "mysql");
 
@@ -48,24 +48,19 @@ public class LanguageMigrator {
         if(plugin.getConfig().getString("Version").equals("1")) {
             Bukkit.getConsoleSender().sendMessage(ChatColor.YELLOW + "[Village Defense] System notify >> Your config file is outdated! Updating...");
             File file = new File(plugin.getDataFolder() + "/config.yml");
-            try {
-                LanguageMigrator.removeLineFromFile(file, "# Don't modify.");
-                LanguageMigrator.removeLineFromFile(file, "Version: 1");
-                LanguageMigrator.removeLineFromFile(file, "# No way! You've reached the end! But... where's the dragon!?");
-                LanguageMigrator.addNewLines(file, "# Power ups section. If you want to have classic Village Defense game mode i recommend to disable this.\r\nPowerups:\r\n" +
-                        "  # Do you want to enable in-game power ups?\r\n  # This will make zombies to drop some power ups when they're killed\r\n" +
-                        "  # REQUIRES Holographic Displays otherwise it won't be enabled!\r\n  Enabled: true\r\n  # Modify powerup drop chance here\r\n" +
-                        "  Drop-Chance: 1.0 # 1% chance by default\r\n  # Enable or disable specific power ups here.\r\n  List:\r\n" +
-                        "    Map-Clean: true\r\n    Double-Damage-For-Players:\r\n      Enabled: true\r\n      Time: 15 # seconds\r\n" +
-                        "    Healing-For-Players:\r\n      Enabled: true\r\n      Amplifier: 1\r\n      Time-Of-Healing: 10 # seconds\r\n" +
-                        "    # Spawns X golems in village\r\n    # Owner of golems is person who picked up power up\r\n    Golem-Raid:\r\n" +
-                        "      Enabled: true\r\n      Golems-Amount: 3\r\n    # Every zombie can be killed for one hit\r\n    One-Shot-One-Kill:\r\n" +
-                        "      Enabled: true\r\n      Time: 15 # seconds\r\n\r\n" +
-                        "# Don't modify\r\nVersion: 2\r\n\r\n# No way! You've reached the end! But... where's the dragon!?");
-            } catch(IOException e) {
-                e.printStackTrace();
-                plugin.getLogger().warning("Something went horribly wrong with migration! Please contact author!");
-            }
+            LanguageMigrator.removeLineFromFile(file, "# Don't modify.");
+            LanguageMigrator.removeLineFromFile(file, "Version: 1");
+            LanguageMigrator.removeLineFromFile(file, "# No way! You've reached the end! But... where's the dragon!?");
+            LanguageMigrator.addNewLines(file, "# Power ups section. If you want to have classic Village Defense game mode i recommend to disable this.\r\nPowerups:\r\n" +
+                    "  # Do you want to enable in-game power ups?\r\n  # This will make zombies to drop some power ups when they're killed\r\n" +
+                    "  # REQUIRES Holographic Displays otherwise it won't be enabled!\r\n  Enabled: true\r\n  # Modify powerup drop chance here\r\n" +
+                    "  Drop-Chance: 1.0 # 1% chance by default\r\n  # Enable or disable specific power ups here.\r\n  List:\r\n" +
+                    "    Map-Clean: true\r\n    Double-Damage-For-Players:\r\n      Enabled: true\r\n      Time: 15 # seconds\r\n" +
+                    "    Healing-For-Players:\r\n      Enabled: true\r\n      Amplifier: 1\r\n      Time-Of-Healing: 10 # seconds\r\n" +
+                    "    # Spawns X golems in village\r\n    # Owner of golems is person who picked up power up\r\n    Golem-Raid:\r\n" +
+                    "      Enabled: true\r\n      Golems-Amount: 3\r\n    # Every zombie can be killed for one hit\r\n    One-Shot-One-Kill:\r\n" +
+                    "      Enabled: true\r\n      Time: 15 # seconds\r\n\r\n" +
+                    "# Don't modify\r\nVersion: 2\r\n\r\n# No way! You've reached the end! But... where's the dragon!?");
             Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "[Village Defense] System notify >> Config updated, no comments were removed :)");
             return;
         }
@@ -97,6 +92,16 @@ public class LanguageMigrator {
                 LanguageMigrator.insertAfterLine(file, "Statistics:", "    Invalid-Name: \"&cName of statistic is invalid! Type: kills, deaths, games_played, highest_wave, level\"");
                 LanguageMigrator.insertAfterLine(file, "Statistics:", "    Type-Name: \"&cPlease type statistic name to view!\"");
                 LanguageMigrator.insertAfterLine(file, "Commands:", "  Did-You-Mean: \"&6Did you mean &7/%command%&6?\"");
+                LanguageMigrator.insertAfterLine(file, "Scoreboard:", "  Content:\r\n    # Contents of scoreboard while wave is running\r\n    Playing:\r\n" +
+                        "      - \"&fVillagers Left: &e%VILLAGERS%\"\r\n      - \"&fPlayers Left: &e%PLAYERS_LEFT%\"\r\n      - \"&fZombies Left: &e%ZOMBIES%\"\r\n" +
+                        "      - \"\"\r\n      - \"&fRotten Flesh: &e%ROTTEN_FLESH%\"\r\n      - \"&fOrbs: &e%ORBS%\"\r\n      - \"\"\r\n      - \"&ewww.spigotmc.org\"\r\n" +
+                        "    # Contents while players are waiting for the wave\r\n    Playing-Waiting:\r\n      - \"&fVillagers Left: &e%VILLAGERS%\"\r\n" +
+                        "      - \"&fPlayers Left: &e%PLAYERS_LEFT%\"\r\n      - \"\"\r\n      - \"&fNext Wave In: &e%TIME%\"\r\n      - \"\"\r\n      - \"&fRotten Flesh: &e%ROTTEN_FLESH%\"\r\n" +
+                        "      - \"&fOrbs: &e%ORBS%\"\r\n      - \"\"\r\n      - \"&ewww.spigotmc.org\"\r\n    Waiting:\r\n      - \"&fPlayers: &e%PLAYERS%\"\r\n      - \"\"\r\n" +
+                        "      - \"&fMinimum Players: &e%MIN_PLAYERS%\"\r\n      - \"\"\r\n      - \"&ewww.spigotmc.org\"\r\n    Starting:\r\n      - \"&fStarting In: &e%TIME%\"\r\n" +
+                        "      - \"\"\r\n      - \"&fPlayers: &e%PLAYERS%\"\r\n      - \"\"\r\n      - \"&fMinimum Players: &e%MIN_PLAYERS%\"\r\n      - \"&fMinimum Players: &e%MIN_PLAYERS%\"\r\n" +
+                        "      - \"&ewww.spigotmc.org\"");
+                LanguageMigrator.insertAfterLine(file, "Scoreboard:", "  Title: \"&a&lVillage Defense\"");
                 break;
             case 1:
                 LanguageMigrator.addNewLines(file, "\r\nPowerups:\r\n  Map-Clean-Powerup:\r\n    Name: \"&e&lMAP CLEANER\"\r\n    # Used as sub title description\r\n" +
@@ -110,6 +115,16 @@ public class LanguageMigrator {
                 LanguageMigrator.insertAfterLine(file, "Statistics:", "    Invalid-Name: \"&cName of statistic is invalid! Type: kills, deaths, games_played, highest_wave, level\"");
                 LanguageMigrator.insertAfterLine(file, "Statistics:", "    Type-Name: \"&cPlease type statistic name to view!\"");
                 LanguageMigrator.insertAfterLine(file, "Commands:", "  Did-You-Mean: \"&6Did you mean &7/%command%&6?\"");
+                LanguageMigrator.insertAfterLine(file, "Scoreboard:", "  Content:\r\n    # Contents of scoreboard while wave is running\r\n    Playing:\r\n" +
+                        "      - \"&fVillagers Left: &e%VILLAGERS%\"\r\n      - \"&fPlayers Left: &e%PLAYERS_LEFT%\"\r\n      - \"&fZombies Left: &e%ZOMBIES%\"\r\n" +
+                        "      - \"\"\r\n      - \"&fRotten Flesh: &e%ROTTEN_FLESH%\"\r\n      - \"&fOrbs: &e%ORBS%\"\r\n      - \"\"\r\n      - \"&ewww.spigotmc.org\"\r\n" +
+                        "    # Contents while players are waiting for the wave\r\n    Playing-Waiting:\r\n      - \"&fVillagers Left: &e%VILLAGERS%\"\r\n" +
+                        "      - \"&fPlayers Left: &e%PLAYERS_LEFT%\"\r\n      - \"\"\r\n      - \"&fNext Wave In: &e%TIME%\"\r\n      - \"\"\r\n      - \"&fRotten Flesh: &e%ROTTEN_FLESH%\"\r\n" +
+                        "      - \"&fOrbs: &e%ORBS%\"\r\n      - \"\"\r\n      - \"&ewww.spigotmc.org\"\r\n    Waiting:\r\n      - \"&fPlayers: &e%PLAYERS%\"\r\n      - \"\"\r\n" +
+                        "      - \"&fMinimum Players: &e%MIN_PLAYERS%\"\r\n      - \"\"\r\n      - \"&ewww.spigotmc.org\"\r\n    Starting:\r\n      - \"&fStarting In: &e%TIME%\"\r\n" +
+                        "      - \"\"\r\n      - \"&fPlayers: &e%PLAYERS%\"\r\n      - \"\"\r\n      - \"&fMinimum Players: &e%MIN_PLAYERS%\"\r\n      - \"&fMinimum Players: &e%MIN_PLAYERS%\"\r\n" +
+                        "      - \"&ewww.spigotmc.org\"");
+                LanguageMigrator.insertAfterLine(file, "Scoreboard:", "  Title: \"&a&lVillage Defense\"");
                 break;
             case 2:
                 LanguageMigrator.insertAfterLine(file, "Commands:", "  Statistics:");
@@ -118,9 +133,41 @@ public class LanguageMigrator {
                 LanguageMigrator.insertAfterLine(file, "Statistics:", "    Invalid-Name: \"&cName of statistic is invalid! Type: kills, deaths, games_played, highest_wave, level\"");
                 LanguageMigrator.insertAfterLine(file, "Statistics:", "    Type-Name: \"&cPlease type statistic name to view!\"");
                 LanguageMigrator.insertAfterLine(file, "Commands:", "  Did-You-Mean: \"&6Did you mean &7/%command%&6?\"");
+                LanguageMigrator.insertAfterLine(file, "Scoreboard:", "  Content:\r\n    # Contents of scoreboard while wave is running\r\n    Playing:\r\n" +
+                        "      - \"&fVillagers Left: &e%VILLAGERS%\"\r\n      - \"&fPlayers Left: &e%PLAYERS_LEFT%\"\r\n      - \"&fZombies Left: &e%ZOMBIES%\"\r\n" +
+                        "      - \"\"\r\n      - \"&fRotten Flesh: &e%ROTTEN_FLESH%\"\r\n      - \"&fOrbs: &e%ORBS%\"\r\n      - \"\"\r\n      - \"&ewww.spigotmc.org\"\r\n" +
+                        "    # Contents while players are waiting for the wave\r\n    Playing-Waiting:\r\n      - \"&fVillagers Left: &e%VILLAGERS%\"\r\n" +
+                        "      - \"&fPlayers Left: &e%PLAYERS_LEFT%\"\r\n      - \"\"\r\n      - \"&fNext Wave In: &e%TIME%\"\r\n      - \"\"\r\n      - \"&fRotten Flesh: &e%ROTTEN_FLESH%\"\r\n" +
+                        "      - \"&fOrbs: &e%ORBS%\"\r\n      - \"\"\r\n      - \"&ewww.spigotmc.org\"\r\n    Waiting:\r\n      - \"&fPlayers: &e%PLAYERS%\"\r\n      - \"\"\r\n" +
+                        "      - \"&fMinimum Players: &e%MIN_PLAYERS%\"\r\n      - \"\"\r\n      - \"&ewww.spigotmc.org\"\r\n    Starting:\r\n      - \"&fStarting In: &e%TIME%\"\r\n" +
+                        "      - \"\"\r\n      - \"&fPlayers: &e%PLAYERS%\"\r\n      - \"\"\r\n      - \"&fMinimum Players: &e%MIN_PLAYERS%\"\r\n      - \"&fMinimum Players: &e%MIN_PLAYERS%\"\r\n" +
+                        "      - \"&ewww.spigotmc.org\"");
+                LanguageMigrator.insertAfterLine(file, "Scoreboard:", "  Title: \"&a&lVillage Defense\"");
                 break;
             case 3:
                 LanguageMigrator.insertAfterLine(file, "Commands:", "  Did-You-Mean: \"&6Did you mean &7/%command%&6?\"");
+                LanguageMigrator.insertAfterLine(file, "Scoreboard:", "  Content:\r\n    # Contents of scoreboard while wave is running\r\n    Playing:\r\n" +
+                        "      - \"&fVillagers Left: &e%VILLAGERS%\"\r\n      - \"&fPlayers Left: &e%PLAYERS_LEFT%\"\r\n      - \"&fZombies Left: &e%ZOMBIES%\"\r\n" +
+                        "      - \"\"\r\n      - \"&fRotten Flesh: &e%ROTTEN_FLESH%\"\r\n      - \"&fOrbs: &e%ORBS%\"\r\n      - \"\"\r\n      - \"&ewww.spigotmc.org\"\r\n" +
+                        "    # Contents while players are waiting for the wave\r\n    Playing-Waiting:\r\n      - \"&fVillagers Left: &e%VILLAGERS%\"\r\n" +
+                        "      - \"&fPlayers Left: &e%PLAYERS_LEFT%\"\r\n      - \"\"\r\n      - \"&fNext Wave In: &e%TIME%\"\r\n      - \"\"\r\n      - \"&fRotten Flesh: &e%ROTTEN_FLESH%\"\r\n" +
+                        "      - \"&fOrbs: &e%ORBS%\"\r\n      - \"\"\r\n      - \"&ewww.spigotmc.org\"\r\n    Waiting:\r\n      - \"&fPlayers: &e%PLAYERS%\"\r\n      - \"\"\r\n" +
+                        "      - \"&fMinimum Players: &e%MIN_PLAYERS%\"\r\n      - \"\"\r\n      - \"&ewww.spigotmc.org\"\r\n    Starting:\r\n      - \"&fStarting In: &e%TIME%\"\r\n" +
+                        "      - \"\"\r\n      - \"&fPlayers: &e%PLAYERS%\"\r\n      - \"\"\r\n      - \"&fMinimum Players: &e%MIN_PLAYERS%\"\r\n      - \"&fMinimum Players: &e%MIN_PLAYERS%\"\r\n" +
+                        "      - \"&ewww.spigotmc.org\"");
+                LanguageMigrator.insertAfterLine(file, "Scoreboard:", "  Title: \"&a&lVillage Defense\"");
+                break;
+            case 4:
+                LanguageMigrator.insertAfterLine(file, "Scoreboard:", "  Content:\r\n    # Contents of scoreboard while wave is running\r\n    Playing:\r\n" +
+                        "      - \"&fVillagers Left: &e%VILLAGERS%\"\r\n      - \"&fPlayers Left: &e%PLAYERS_LEFT%\"\r\n      - \"&fZombies Left: &e%ZOMBIES%\"\r\n" +
+                        "      - \"\"\r\n      - \"&fRotten Flesh: &e%ROTTEN_FLESH%\"\r\n      - \"&fOrbs: &e%ORBS%\"\r\n      - \"\"\r\n      - \"&ewww.spigotmc.org\"\r\n" +
+                        "    # Contents while players are waiting for the wave\r\n    Playing-Waiting:\r\n      - \"&fVillagers Left: &e%VILLAGERS%\"\r\n" +
+                        "      - \"&fPlayers Left: &e%PLAYERS_LEFT%\"\r\n      - \"\"\r\n      - \"&fNext Wave In: &e%TIME%\"\r\n      - \"\"\r\n      - \"&fRotten Flesh: &e%ROTTEN_FLESH%\"\r\n" +
+                        "      - \"&fOrbs: &e%ORBS%\"\r\n      - \"\"\r\n      - \"&ewww.spigotmc.org\"\r\n    Waiting:\r\n      - \"&fPlayers: &e%PLAYERS%\"\r\n      - \"\"\r\n" +
+                        "      - \"&fMinimum Players: &e%MIN_PLAYERS%\"\r\n      - \"\"\r\n      - \"&ewww.spigotmc.org\"\r\n    Starting:\r\n      - \"&fStarting In: &e%TIME%\"\r\n" +
+                        "      - \"\"\r\n      - \"&fPlayers: &e%PLAYERS%\"\r\n      - \"\"\r\n      - \"&fMinimum Players: &e%MIN_PLAYERS%\"\r\n      - \"&fMinimum Players: &e%MIN_PLAYERS%\"\r\n" +
+                        "      - \"&ewww.spigotmc.org\"");
+                LanguageMigrator.insertAfterLine(file, "Scoreboard:", "  Title: \"&a&lVillage Defense\"");
                 break;
         }
         Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "[Village Defense] System notify >> Language file updated! Nice!");
@@ -140,10 +187,15 @@ public class LanguageMigrator {
         Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "Done! Enabling VD3...");
     }
 
-    private static void removeLineFromFile(File file, String lineToRemove) throws IOException {
-        List<String> lines = FileUtils.readLines(file);
-        List<String> updatedLines = lines.stream().filter(s -> !s.contains(lineToRemove)).collect(Collectors.toList());
-        FileUtils.writeLines(file, updatedLines, false);
+    private static void removeLineFromFile(File file, String lineToRemove) {
+        try {
+            List<String> lines = FileUtils.readLines(file);
+            List<String> updatedLines = lines.stream().filter(s -> !s.contains(lineToRemove)).collect(Collectors.toList());
+            FileUtils.writeLines(file, updatedLines, false);
+        } catch(IOException e) {
+            e.printStackTrace();
+            plugin.getLogger().warning("Something went horribly wrong with migration! Please contact author!");
+        }
     }
 
     private static void insertAfterLine(File file, String search, String text) {
@@ -164,16 +216,11 @@ public class LanguageMigrator {
     }
 
     private static void updateLanguageVersionControl(int oldVersion) {
-        try {
-            File file = new File(plugin.getDataFolder() + "/language.yml");
-            LanguageMigrator.removeLineFromFile(file, "# Don't edit it. But who's stopping you? It's your server!");
-            LanguageMigrator.removeLineFromFile(file, "# Really, don't edit ;p");
-            LanguageMigrator.removeLineFromFile(file, "File-Version-Do-Not-Edit: " + oldVersion);
-            LanguageMigrator.addNewLines(file, "# Don't edit it. But who's stopping you? It's your server!\n# Really, don't edit ;p\nFile-Version-Do-Not-Edit: " + LANGUAGE_FILE_VERSION);
-        } catch(IOException e) {
-            e.printStackTrace();
-            plugin.getLogger().warning("Something went horribly wrong with migration! Please contact author!");
-        }
+        File file = new File(plugin.getDataFolder() + "/language.yml");
+        LanguageMigrator.removeLineFromFile(file, "# Don't edit it. But who's stopping you? It's your server!");
+        LanguageMigrator.removeLineFromFile(file, "# Really, don't edit ;p");
+        LanguageMigrator.removeLineFromFile(file, "File-Version-Do-Not-Edit: " + oldVersion);
+        LanguageMigrator.addNewLines(file, "# Don't edit it. But who's stopping you? It's your server!\n# Really, don't edit ;p\nFile-Version-Do-Not-Edit: " + LANGUAGE_FILE_VERSION);
     }
 
     private static void addNewLines(File file, String newLines) {

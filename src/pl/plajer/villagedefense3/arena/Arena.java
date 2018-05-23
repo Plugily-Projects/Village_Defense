@@ -33,14 +33,12 @@ import org.bukkit.entity.Wolf;
 import org.bukkit.entity.Zombie;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.scoreboard.DisplaySlot;
-import org.bukkit.scoreboard.Objective;
-import org.bukkit.scoreboard.Score;
 import pl.plajer.villagedefense3.Main;
 import pl.plajer.villagedefense3.handlers.ChatManager;
 import pl.plajer.villagedefense3.handlers.ConfigurationManager;
 import pl.plajer.villagedefense3.handlers.PermissionsManager;
 import pl.plajer.villagedefense3.kits.kitapi.KitRegistry;
+import pl.plajer.villagedefense3.language.LanguageManager;
 import pl.plajer.villagedefense3.user.User;
 import pl.plajer.villagedefense3.user.UserManager;
 import pl.plajer.villagedefense3.villagedefenseapi.VillageGameStartEvent;
@@ -85,6 +83,7 @@ public abstract class Arena extends BukkitRunnable {
     private int minimumPlayers = 2;
     private int maximumPlayers = 10;
     private String mapName = "";
+    private Map<String, ArenaBoard> statesBoard = new HashMap<>();
     private int timer;
     private String ID;
     private Location lobbyLoc = null;
@@ -96,6 +95,27 @@ public abstract class Arena extends BukkitRunnable {
         this.plugin = plugin;
         arenaState = ArenaState.WAITING_FOR_PLAYERS;
         this.ID = ID;
+        for(ArenaState state : ArenaState.values()) {
+            if(state == ArenaState.ENDING || state == ArenaState.RESTARTING) continue;
+            ArenaBoard board = new ArenaBoard("VD3", String.valueOf(state.ordinal()), ChatManager.colorMessage("Scoreboard.Title"));
+            Bukkit.broadcastMessage("Register new board for " + state.getFormattedName() + " state!");
+            List<String> lines = LanguageManager.getLanguageFile().getStringList("Scoreboard.Content." + state.getFormattedName());
+            for(int i = 0; i < lines.size(); i++) {
+                board.addRow(String.valueOf(i));
+                Bukkit.broadcastMessage("New row " + i);
+            }
+            board.finish();
+            statesBoard.put(state.getFormattedName(), board);
+        }
+        ArenaBoard board = new ArenaBoard("VD3", String.valueOf(ArenaState.IN_GAME.ordinal() + "_Waiting"), ChatManager.colorMessage("Scoreboard.Title"));
+        Bukkit.broadcastMessage("Register new board for fight" + " state!");
+        List<String> lines = LanguageManager.getLanguageFile().getStringList("Scoreboard.Content.Playing-Waiting");
+        for(int i = 0; i < lines.size(); i++) {
+            board.addRow(String.valueOf(i));
+            Bukkit.broadcastMessage("New row " + i);
+        }
+        board.finish();
+        statesBoard.put("Playing-Waiting", board);
         random = new Random();
         if(plugin.isBossbarEnabled()) {
             gameBar = Bukkit.createBossBar(ChatManager.colorMessage("Bossbar.Main-Title"), BarColor.BLUE, BarStyle.SOLID);
@@ -183,7 +203,8 @@ public abstract class Arena extends BukkitRunnable {
                     for(Player player : getPlayers()) {
                         player.getInventory().clear();
                         player.setGameMode(GameMode.SURVIVAL);
-                        UserManager.getUser(player.getUniqueId()).setInt("orbs", plugin.getConfig().getInt("Orbs-Starting-Amount"));
+                        User user = UserManager.getUser(player.getUniqueId());
+                        user.setInt("orbs", plugin.getConfig().getInt("Orbs-Starting-Amount"));
                         ArenaUtils.hidePlayersOutsideTheGame(player, this);
                         if(UserManager.getUser(player.getUniqueId()).getKit() != null) {
                             UserManager.getUser(player.getUniqueId()).getKit().giveKitItems(player);
@@ -396,59 +417,44 @@ public abstract class Arena extends BukkitRunnable {
     }
 
     private void updateScoreboard() {
-        if(getPlayers().size() == 0) return;
+        if(getPlayers().size() == 0 || getArenaState() == ArenaState.RESTARTING) return;
         for(Player p : getPlayers()) {
             User user = UserManager.getUser(p.getUniqueId());
-            if(user.getScoreboard().getObjective("vd_state_0") == null) {
-                for(ArenaState state : ArenaState.values()) {
-                    user.getScoreboard().registerNewObjective("vd_state_" + state.ordinal(), "dummy");
-                }
-                //fighting stage of IN_GAME state
-                user.getScoreboard().registerNewObjective("vd_state_2F", "dummy");
-            }
             if(getArenaState() == ArenaState.ENDING) {
                 user.removeScoreboard();
                 return;
             }
-            Objective gameObjective;
+            ArenaBoard displayBoard = new ArenaBoard("temp", "0", ChatManager.colorMessage("Scoreboard.Title"));
+            List<String> lines;
             if(getArenaState() == ArenaState.IN_GAME) {
-                gameObjective = user.getScoreboard().getObjective("vd_state_" + getArenaState().ordinal() + (fighting ? "F" : ""));
+                if(fighting) {
+                    lines = LanguageManager.getLanguageFile().getStringList("Scoreboard.Content.Playing");
+                } else {
+                    lines = LanguageManager.getLanguageFile().getStringList("Scoreboard.Content.Playing-Waiting");
+                }
             } else {
-                gameObjective = user.getScoreboard().getObjective("vd_state_" + getArenaState().ordinal());
+                lines = LanguageManager.getLanguageFile().getStringList("Scoreboard.Content." + getArenaState().getFormattedName());
             }
-            if(gameObjective == null) return;
-            gameObjective.setDisplayName(ChatManager.colorMessage("Scoreboard.Header"));
-            gameObjective.setDisplaySlot(DisplaySlot.SIDEBAR);
-            switch(getArenaState()) {
-                case WAITING_FOR_PLAYERS:
-                case STARTING:
-                    if(getArenaState() == ArenaState.STARTING) {
-                        gameObjective.getScore(ChatManager.colorMessage("Scoreboard.Starting-In")).setScore(getTimer());
-                    }
-                    gameObjective.getScore(ChatManager.colorMessage("Scoreboard.Players")).setScore(getPlayers().size());
-                    gameObjective.getScore(ChatManager.colorMessage("Scoreboard.Minimum-Players")).setScore(getMinimumPlayers());
-                    break;
-                case IN_GAME:
-                    gameObjective.getScore(ChatManager.colorMessage("Scoreboard.Players-Left")).setScore(getPlayersLeft().size());
-                    gameObjective.getScore(ChatManager.colorMessage("Scoreboard.Villagers-Left")).setScore(getVillagers().size());
-                    gameObjective.getScore(ChatManager.colorMessage("Scoreboard.Orbs")).setScore(user.getInt("orbs"));
-                    if(fighting) {
-                        gameObjective.getScore(ChatManager.colorMessage("Scoreboard.Zombies-Left")).setScore(getZombiesLeft());
-                    } else {
-                        gameObjective.getScore(ChatManager.colorMessage("Scoreboard.Next-Wave-In")).setScore(getTimer());
-                    }
-                    gameObjective.getScore(ChatManager.colorMessage("Scoreboard.Rotten-Flesh")).setScore(getRottenFlesh());
-                    break;
-                case RESTARTING:
-                    break;
-                default:
-                    setArenaState(ArenaState.WAITING_FOR_PLAYERS);
-                    break;
+            for(String line : lines) {
+                displayBoard.addRow(formatScoreboardLine(line, user));
             }
-            gameObjective.getScore("").setScore(-1);
-            gameObjective.getScore(ChatManager.colorMessage("Scoreboard.Footer")).setScore(-2);
-            user.setScoreboard(user.getScoreboard());
+            displayBoard.finish();
+            displayBoard.display(p);
         }
+    }
+
+    private String formatScoreboardLine(String line, User user) {
+        String formattedLine = line;
+        formattedLine = formattedLine.replace("%TIME%", String.valueOf(getTimer()));
+        formattedLine = formattedLine.replace("%PLAYERS%", String.valueOf(getPlayers().size()));
+        formattedLine = formattedLine.replace("%MIN_PLAYERS%", String.valueOf(getMinimumPlayers()));
+        formattedLine = formattedLine.replace("%PLAYERS_LEFT%", String.valueOf(getPlayersLeft().size()));
+        formattedLine = formattedLine.replace("%VILLAGERS%", String.valueOf(getVillagers().size()));
+        formattedLine = formattedLine.replace("%ORBS%", String.valueOf(user.getInt("orbs")));
+        formattedLine = formattedLine.replace("%ZOMBIES%", String.valueOf(getZombiesLeft()));
+        formattedLine = formattedLine.replace("%ROTTEN_FLESH%", String.valueOf(getRottenFlesh()));
+        formattedLine = ChatManager.colorRawMessage(formattedLine);
+        return formattedLine;
     }
 
     private void restoreMap() {
