@@ -83,7 +83,6 @@ public abstract class Arena extends BukkitRunnable {
     private int minimumPlayers = 2;
     private int maximumPlayers = 10;
     private String mapName = "";
-    private Map<String, ArenaBoard> statesBoard = new HashMap<>();
     private int timer;
     private String ID;
     private Location lobbyLoc = null;
@@ -95,27 +94,6 @@ public abstract class Arena extends BukkitRunnable {
         this.plugin = plugin;
         arenaState = ArenaState.WAITING_FOR_PLAYERS;
         this.ID = ID;
-        for(ArenaState state : ArenaState.values()) {
-            if(state == ArenaState.ENDING || state == ArenaState.RESTARTING) continue;
-            ArenaBoard board = new ArenaBoard("VD3", String.valueOf(state.ordinal()), ChatManager.colorMessage("Scoreboard.Title"));
-            Bukkit.broadcastMessage("Register new board for " + state.getFormattedName() + " state!");
-            List<String> lines = LanguageManager.getLanguageFile().getStringList("Scoreboard.Content." + state.getFormattedName());
-            for(int i = 0; i < lines.size(); i++) {
-                board.addRow(String.valueOf(i));
-                Bukkit.broadcastMessage("New row " + i);
-            }
-            board.finish();
-            statesBoard.put(state.getFormattedName(), board);
-        }
-        ArenaBoard board = new ArenaBoard("VD3", String.valueOf(ArenaState.IN_GAME.ordinal() + "_Waiting"), ChatManager.colorMessage("Scoreboard.Title"));
-        Bukkit.broadcastMessage("Register new board for fight" + " state!");
-        List<String> lines = LanguageManager.getLanguageFile().getStringList("Scoreboard.Content.Playing-Waiting");
-        for(int i = 0; i < lines.size(); i++) {
-            board.addRow(String.valueOf(i));
-            Bukkit.broadcastMessage("New row " + i);
-        }
-        board.finish();
-        statesBoard.put("Playing-Waiting", board);
         random = new Random();
         if(plugin.isBossbarEnabled()) {
             gameBar = Bukkit.createBossBar(ChatManager.colorMessage("Bossbar.Main-Title"), BarColor.BLUE, BarStyle.SOLID);
@@ -424,14 +402,10 @@ public abstract class Arena extends BukkitRunnable {
                 user.removeScoreboard();
                 return;
             }
-            ArenaBoard displayBoard = new ArenaBoard("temp", "0", ChatManager.colorMessage("Scoreboard.Title"));
+            ArenaBoard displayBoard = new ArenaBoard("VD3", "board", ChatManager.colorMessage("Scoreboard.Title"));
             List<String> lines;
             if(getArenaState() == ArenaState.IN_GAME) {
-                if(fighting) {
-                    lines = LanguageManager.getLanguageFile().getStringList("Scoreboard.Content.Playing");
-                } else {
-                    lines = LanguageManager.getLanguageFile().getStringList("Scoreboard.Content.Playing-Waiting");
-                }
+                lines = LanguageManager.getLanguageFile().getStringList("Scoreboard.Content.Playing" + (fighting ? "-Waiting" : ""));
             } else {
                 lines = LanguageManager.getLanguageFile().getStringList("Scoreboard.Content." + getArenaState().getFormattedName());
             }

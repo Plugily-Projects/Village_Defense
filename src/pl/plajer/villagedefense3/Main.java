@@ -439,7 +439,8 @@ public class Main extends JavaPlugin {
             ArenaManager.stopGame(true, arena);
             arena.teleportAllToEndLocation();
         }
-        for(Hologram holo : HologramsAPI.getHolograms(this)) holo.delete();
+        if(getServer().getPluginManager().isPluginEnabled("HolographicDisplays"))
+            for(Hologram holo : HologramsAPI.getHolograms(this)) holo.delete();
         if(isDatabaseActivated()) getMySQLDatabase().closeDatabase();
     }
 

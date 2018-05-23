@@ -49,6 +49,7 @@ public class SignManager implements Listener {
     @Getter
     private Map<Sign, Arena> loadedSigns = new HashMap<>();
     private Map<ArenaState, String> gameStateToString = new HashMap<>();
+    private List<String> signLines;
 
     public SignManager(Main plugin) {
         this.plugin = plugin;
@@ -57,6 +58,7 @@ public class SignManager implements Listener {
         gameStateToString.put(ArenaState.IN_GAME, ChatManager.colorMessage("Signs.Game-States.In-Game"));
         gameStateToString.put(ArenaState.ENDING, ChatManager.colorMessage("Signs.Game-States.Ending"));
         gameStateToString.put(ArenaState.RESTARTING, ChatManager.colorMessage("Signs.Game-States.Restarting"));
+        signLines = LanguageManager.getLanguageFile().getStringList("Signs.Lines");
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
         loadSigns();
         updateSignScheduler();
@@ -65,42 +67,42 @@ public class SignManager implements Listener {
     @EventHandler
     public void onSignChange(SignChangeEvent e) {
         if(!e.getPlayer().hasPermission("villagedefense.admin.sign.create")) return;
-        if(e.getLine(0).equalsIgnoreCase("[villagedefense]")) {
-            if(e.getLine(1).isEmpty()) {
-                e.getPlayer().sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("Signs.Please-Type-Arena-Name"));
+        if(!e.getLine(0).equalsIgnoreCase("[villagedefense]")) return;
+        if(e.getLine(1).isEmpty()) {
+            e.getPlayer().sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("Signs.Please-Type-Arena-Name"));
+            return;
+        }
+        for(Arena arena : ArenaRegistry.getArenas()) {
+            if(arena.getID().equalsIgnoreCase(e.getLine(1))) {
+                for(int i = 0; i < signLines.size(); i++) {
+                    e.setLine(i, formatSign(signLines.get(i), arena));
+                }
+                loadedSigns.put((Sign) e.getBlock().getState(), arena);
+                e.getPlayer().sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("Signs.Sign-Created"));
+                String location = e.getBlock().getWorld().getName() + "," + e.getBlock().getX() + "," + e.getBlock().getY() + "," + e.getBlock().getZ() + ",0.0,0.0";
+                List<String> locs = ConfigurationManager.getConfig("arenas").getStringList("instances." + arena.getID() + ".signs");
+                locs.add(location);
+                FileConfiguration config = ConfigurationManager.getConfig("arenas");
+                config.set("instances." + arena.getID() + ".signs", locs);
+                ConfigurationManager.saveConfig(config, "arenas");
                 return;
             }
-            for(Arena arena : ArenaRegistry.getArenas()) {
-                if(arena.getID().equalsIgnoreCase(e.getLine(1))) {
-                    for(int i = 0; i < LanguageManager.getLanguageFile().getStringList("Signs.Lines").size(); i++) {
-                        if(i == 1) {
-                            //maybe not needed
-                            e.setLine(i, ChatColor.translateAlternateColorCodes('&', LanguageManager.getLanguageFile().getStringList("Signs.Lines").get(i)
-                                    .replaceAll("%mapname%", arena.getMapName())));
-                        }
-                        if(LanguageManager.getLanguageFile().getStringList("Signs.Lines").get(i).contains("%state%")) {
-                            e.setLine(i, LanguageManager.getLanguageFile().getStringList("Signs.Lines").get(i)
-                                    .replaceAll("%state%", ChatManager.colorMessage("Signs.Game-States.Inactive")));
-                        }
-                        if(LanguageManager.getLanguageFile().getStringList("Signs.Lines").get(i).contains("%playersize%")) {
-                            e.setLine(i, LanguageManager.getLanguageFile().getStringList("Signs.Lines").get(i)
-                                    .replaceAll("%playersize%", String.valueOf(arena.getPlayers().size()))
-                                    .replaceAll("%maxplayers%", String.valueOf(arena.getMaximumPlayers())));
-                        }
-                    }
-                    loadedSigns.put((Sign) e.getBlock().getState(), arena);
-                    e.getPlayer().sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("Signs.Sign-Created"));
-                    String location = e.getBlock().getWorld().getName() + "," + e.getBlock().getX() + "," + e.getBlock().getY() + "," + e.getBlock().getZ() + ",0.0,0.0";
-                    List<String> locs = ConfigurationManager.getConfig("arenas").getStringList("instances." + arena.getID() + ".signs");
-                    locs.add(location);
-                    FileConfiguration config = ConfigurationManager.getConfig("arenas");
-                    config.set("instances." + arena.getID() + ".signs", locs);
-                    ConfigurationManager.saveConfig(config, "arenas");
-                    return;
-                }
-            }
-            e.getPlayer().sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("Signs.Arena-Doesnt-Exists"));
         }
+        e.getPlayer().sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("Signs.Arena-Doesnt-Exists"));
+    }
+
+    private String formatSign(String msg, Arena a) {
+        String formatted = msg;
+        formatted = formatted.replace("%mapname%", a.getMapName());
+        if(a.getPlayers().size() >= a.getMaximumPlayers()) {
+            formatted = formatted.replace("%state%", ChatManager.colorMessage("Signs.Game-States.Full-Game"));
+        } else {
+            formatted = formatted.replace("%state%", gameStateToString.get(a.getArenaState()));
+        }
+        formatted = formatted.replace("%playersize%", String.valueOf(a.getPlayers().size()));
+        formatted = formatted.replace("%maxplayers%", String.valueOf(a.getMaximumPlayers()));
+        formatted = ChatManager.colorRawMessage(formatted);
+        return formatted;
     }
 
     @EventHandler
@@ -131,41 +133,35 @@ public class SignManager implements Listener {
                 e.getClickedBlock().getState() instanceof Sign && loadedSigns.containsKey(e.getClickedBlock().getState())) {
 
             Arena arena = loadedSigns.get(e.getClickedBlock().getState());
-            if(arena != null) {
-                for(Arena loopArena : ArenaRegistry.getArenas()) {
-                    if(loopArena.getPlayers().contains(e.getPlayer())) {
-                        e.getPlayer().sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Already-Playing"));
-                        return;
-                    }
-                }
-                if(arena.getMaximumPlayers() <= arena.getPlayers().size()) {
-                    if((e.getPlayer().hasPermission(PermissionsManager.getVip()) || e.getPlayer().hasPermission(PermissionsManager.getJoinFullGames()))) {
-                        boolean b = false;
-                        for(Player player : arena.getPlayers()) {
-                            if(!player.hasPermission(PermissionsManager.getVip()) || !player.hasPermission(PermissionsManager.getJoinFullGames())) {
-                                if((arena.getArenaState() == ArenaState.STARTING || arena.getArenaState() == ArenaState.WAITING_FOR_PLAYERS)) {
-                                    ArenaManager.leaveAttempt(player, arena);
-                                    player.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Messages.Lobby-Messages.You-Were-Kicked-For-Premium-Slot"));
-                                    for(Player p : arena.getPlayers()) {
-                                        p.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.formatMessage(arena, ChatManager.colorMessage("In-Game.Messages.Lobby-Messages.Kicked-For-Premium-Slot"), player));
-                                    }
-                                    ArenaManager.joinAttempt(e.getPlayer(), arena);
-                                    return;
-                                } else {
-                                    ArenaManager.joinAttempt(e.getPlayer(), arena);
-                                    return;
-                                }
+            if(arena == null) return;
+            if(ArenaRegistry.isInArena(e.getPlayer())) {
+                e.getPlayer().sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Already-Playing"));
+                return;
+            }
+            if(!(arena.getPlayers().size() >= arena.getMaximumPlayers())){
+                ArenaManager.joinAttempt(e.getPlayer(), arena);
+                return;
+            }
+            if(PermissionsManager.isPremium(e.getPlayer()) || e.getPlayer().hasPermission(PermissionsManager.getJoinFullGames())) {
+                for(Player player : arena.getPlayers()) {
+                    if(!PermissionsManager.isPremium(player) || !player.hasPermission(PermissionsManager.getJoinFullGames())) {
+                        if(arena.getArenaState() == ArenaState.STARTING || arena.getArenaState() == ArenaState.WAITING_FOR_PLAYERS) {
+                            ArenaManager.leaveAttempt(player, arena);
+                            player.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Messages.Lobby-Messages.You-Were-Kicked-For-Premium-Slot"));
+                            for(Player p : arena.getPlayers()) {
+                                p.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.formatMessage(arena, ChatManager.colorMessage("In-Game.Messages.Lobby-Messages.Kicked-For-Premium-Slot"), player));
                             }
+                            ArenaManager.joinAttempt(e.getPlayer(), arena);
+                            return;
+                        } else {
+                            ArenaManager.joinAttempt(e.getPlayer(), arena);
+                            return;
                         }
-                        if(!b) {
-                            e.getPlayer().sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.No-Slots-For-Premium"));
-                        }
-                    } else {
-                        e.getPlayer().sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Full-Game-No-Permission"));
                     }
-                } else {
-                    ArenaManager.joinAttempt(e.getPlayer(), arena);
                 }
+                e.getPlayer().sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.No-Slots-For-Premium"));
+            } else {
+                e.getPlayer().sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Full-Game-No-Permission"));
             }
         }
     }
@@ -187,23 +183,9 @@ public class SignManager implements Listener {
     private void updateSignScheduler() {
         Bukkit.getScheduler().runTaskTimer(plugin, () -> {
             for(Sign s : loadedSigns.keySet()) {
-                Arena arena = loadedSigns.get(s);
-                ArenaState arenaState;
-                if(arena == null) {
-                    arenaState = ArenaState.WAITING_FOR_PLAYERS;
-                } else {
-                    arenaState = arena.getArenaState();
+                for(int i = 0; i < signLines.size(); i++) {
+                    s.setLine(i, formatSign(signLines.get(i), loadedSigns.get(s)));
                 }
-                s.setLine(0, ChatColor.translateAlternateColorCodes('&', LanguageManager.getLanguageFile().getStringList("Signs.Lines").get(0)));
-                if(arena.getPlayers().size() == arena.getMaximumPlayers()) {
-                    s.setLine(1, ChatColor.translateAlternateColorCodes('&', LanguageManager.getLanguageFile().getStringList("Signs.Lines").get(1).replaceAll("%state%", ChatManager.colorMessage("Signs.Game-States.Full-Game"))));
-                } else {
-                    s.setLine(1, ChatColor.translateAlternateColorCodes('&', LanguageManager.getLanguageFile().getStringList("Signs.Lines").get(1).replaceAll("%state%", gameStateToString.get(arenaState))));
-                }
-                s.setLine(2, ChatColor.translateAlternateColorCodes('&', LanguageManager.getLanguageFile().getStringList("Signs.Lines").get(2).replaceAll("%mapname%", arena.getMapName())));
-                s.setLine(3, ChatColor.translateAlternateColorCodes('&', LanguageManager.getLanguageFile().getStringList("Signs.Lines").get(3)
-                        .replaceAll("%maxplayers%", String.valueOf(arena.getMaximumPlayers()))
-                        .replaceAll("%playersize%", String.valueOf(arena.getPlayers().size()))));
                 s.update();
             }
         }, 10, 10);

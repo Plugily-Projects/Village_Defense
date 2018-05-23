@@ -18,6 +18,7 @@
 
 package pl.plajer.villagedefense3.handlers;
 
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import pl.plajer.villagedefense3.Main;
 
@@ -84,6 +85,10 @@ public class PermissionsManager {
 
     private static void setJoinPerm(String joinPerm) {
         PermissionsManager.joinPerm = joinPerm;
+    }
+
+    public static boolean isPremium(Player p){
+        return p.hasPermission(vipPerm) || p.hasPermission(mvpPerm) || p.hasPermission(elitePerm);
     }
 
     private static void setupPermissions() {
