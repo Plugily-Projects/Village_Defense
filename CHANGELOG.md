@@ -3,6 +3,9 @@
 ### 3.7.0 Release (23.05.2018)
 * New modernized and customizable scoreboard
 * /vda addsign is now deprecated, use Setup menu instead - changed due to some problems
+* Now signs accept %state%, %players% etc placeholders in different lines! You can swap them how you want.
+* Players with MVP and Elite permissions will be able to join full arenas now (only Vip permission worked)
+* By default level kits were unlocked to operator players, now they won't
 
 ### 3.6.3 Release (11/12.05.2018)
 * Added tab completer

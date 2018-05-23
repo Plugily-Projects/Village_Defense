@@ -58,7 +58,7 @@ public class MedicKit extends PremiumKit implements Listener {
 
     @Override
     public boolean isUnlockedByPlayer(Player player) {
-        return player.hasPermission(PermissionsManager.getVip()) || player.hasPermission(PermissionsManager.getMvp()) || player.hasPermission(PermissionsManager.getElite()) || player.hasPermission("villagedefense.kit.medic");
+        return PermissionsManager.isPremium(player) || player.hasPermission("villagedefense.kit.medic");
     }
 
     @Override

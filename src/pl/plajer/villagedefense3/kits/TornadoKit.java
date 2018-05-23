@@ -65,7 +65,7 @@ public class TornadoKit extends PremiumKit implements Listener {
 
     @Override
     public boolean isUnlockedByPlayer(Player player) {
-        return player.hasPermission("villagedefense.kit.tornado") || player.hasPermission(PermissionsManager.getVip()) || player.hasPermission(PermissionsManager.getMvp()) || player.hasPermission(PermissionsManager.getElite());
+        return player.hasPermission("villagedefense.kit.tornado") || PermissionsManager.isPremium(player);
     }
 
     @Override

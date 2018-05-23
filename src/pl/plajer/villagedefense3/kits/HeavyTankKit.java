@@ -47,7 +47,7 @@ public class HeavyTankKit extends PremiumKit {
 
     @Override
     public boolean isUnlockedByPlayer(Player player) {
-        return player.hasPermission(PermissionsManager.getVip()) || player.hasPermission(PermissionsManager.getMvp()) || player.hasPermission(PermissionsManager.getElite()) || player.hasPermission("villagedefense.kit.heavytank");
+        return PermissionsManager.isPremium(player) || player.hasPermission("villagedefense.kit.heavytank");
     }
 
     @Override

@@ -78,7 +78,7 @@ public class NakedKit extends PremiumKit implements Listener {
 
     @Override
     public boolean isUnlockedByPlayer(Player player) {
-        return player.hasPermission("villagedefense.kit.naked") || player.hasPermission(PermissionsManager.getVip()) || player.hasPermission(PermissionsManager.getMvp()) || player.hasPermission(PermissionsManager.getElite());
+        return player.hasPermission("villagedefense.kit.naked") || PermissionsManager.isPremium(player);
     }
 
     @Override
