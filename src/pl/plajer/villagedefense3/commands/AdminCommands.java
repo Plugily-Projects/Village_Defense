@@ -38,6 +38,7 @@ import org.bukkit.entity.Villager;
 import org.bukkit.entity.Zombie;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.potion.PotionEffectType;
 import pl.plajer.villagedefense3.Main;
 import pl.plajer.villagedefense3.arena.Arena;
 import pl.plajer.villagedefense3.arena.ArenaManager;
@@ -171,6 +172,7 @@ public class AdminCommands extends MainCommand {
         if(!checkIsInGameInstance(player)) return;
         Arena arena = ArenaRegistry.getArena(player);
         player.setGameMode(GameMode.SURVIVAL);
+        player.removePotionEffect(PotionEffectType.NIGHT_VISION);
         User user = UserManager.getUser(player.getUniqueId());
         user.setFakeDead(false);
         user.setSpectator(false);
@@ -191,6 +193,7 @@ public class AdminCommands extends MainCommand {
         for(Player loopPlayer : arena.getPlayers()) {
             if(player.equalsIgnoreCase(loopPlayer.getName())) {
                 loopPlayer.setGameMode(GameMode.SURVIVAL);
+                loopPlayer.removePotionEffect(PotionEffectType.NIGHT_VISION);
                 User user = UserManager.getUser(loopPlayer.getUniqueId());
                 user.setFakeDead(false);
                 user.setSpectator(false);

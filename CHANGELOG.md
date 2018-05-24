@@ -6,6 +6,7 @@
 * Now signs accept %state%, %players% etc placeholders in different lines! You can swap them how you want.
 * Players with MVP and Elite permissions will be able to join full arenas now (only Vip permission worked)
 * By default level kits were unlocked to operator players, now they won't
+* Now spectators will not have night vision after respawn
 
 ### 3.6.3 Release (11/12.05.2018)
 * Added tab completer
