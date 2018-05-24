@@ -405,7 +405,7 @@ public abstract class Arena extends BukkitRunnable {
             ArenaBoard displayBoard = new ArenaBoard("VD3", "board", ChatManager.colorMessage("Scoreboard.Title"));
             List<String> lines;
             if(getArenaState() == ArenaState.IN_GAME) {
-                lines = LanguageManager.getLanguageFile().getStringList("Scoreboard.Content.Playing" + (fighting ? "-Waiting" : ""));
+                lines = LanguageManager.getLanguageFile().getStringList("Scoreboard.Content.Playing" + (fighting ? "" : "-Waiting"));
             } else {
                 lines = LanguageManager.getLanguageFile().getStringList("Scoreboard.Content." + getArenaState().getFormattedName());
             }

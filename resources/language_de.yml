@@ -50,7 +50,8 @@ Commands:
     Description: "&aSpiel Commands:\n
     &b/vd stats: &7Zeige deine Statistik!\n
     &b/vd leave: &7Verlasse die aktuellen Arena!\n
-    &b/vd join <arena>: &7Betrete die spezifische Arena!"
+    &b/vd join <arena>: &7Betrete die spezifische Arena!\n
+    &b/vd top <statistik>: &7Zeigt die Top 10 Spieler!"
     Admin-Bonus-Description: "\n&b/vd admin: &7Zeige alle Admin-Commands"
     Footer: "&6-------------------------------------------------"
 
