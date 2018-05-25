@@ -69,9 +69,9 @@ Scoreboard:
       - "&ewww.spigotmc.org"
     Playing-Waiting:
       - "&fVillagers übrig: &e%VILLAGERS%"
-      - "&fPlayers übrig: &e%PLAYERS_LEFT%"
+      - "&fSpieler übrig: &e%PLAYERS_LEFT%"
       - ""
-      - "&fNext Wave In: &e%TIME%"
+      - "&fNächste Welle in: &e%TIME%"
       - ""
       - "&fVerrottetes Fleisch: &e%ROTTEN_FLESH%"
       - "&fOrbs: &e%ORBS%"
