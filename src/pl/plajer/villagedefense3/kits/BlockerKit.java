@@ -123,6 +123,7 @@ public class BlockerKit extends PremiumKit implements Listener {
         } else {
             player.getItemInHand().setAmount(player.getItemInHand().getAmount() - 1);
         }
+        event.setCancelled(false);
         User user = UserManager.getUser(event.getPlayer().getUniqueId());
 
         user.toPlayer().sendMessage(ChatManager.colorMessage("Kits.Blocker.Game-Item-Place-Message"));

@@ -1,5 +1,8 @@
 # Village Defense 3 Changelog
 
+### 3.7.1 Release (25.05.2018)
+* Full games permission now works for BungeeCord
+
 ### 3.7.0 Release (23.05.2018)
 * New modernized and customizable scoreboard
 * /vda addsign is now deprecated, use Setup menu instead - changed due to some problems

@@ -23,11 +23,13 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import pl.plajer.villagedefense3.Main;
 import pl.plajer.villagedefense3.arena.Arena;
 import pl.plajer.villagedefense3.arena.ArenaRegistry;
 import pl.plajer.villagedefense3.database.FileStats;
+import pl.plajer.villagedefense3.handlers.PermissionsManager;
 import pl.plajer.villagedefense3.user.UserManager;
 import pl.plajer.villagedefense3.utils.MySQLConnectionUtils;
 import pl.plajer.villagedefense3.utils.UpdateChecker;
@@ -42,6 +44,14 @@ public class JoinEvent implements Listener {
     public JoinEvent(Main plugin) {
         this.plugin = plugin;
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
+    }
+
+    @EventHandler
+    public void onPreLogin(AsyncPlayerPreLoginEvent e){
+        if(!plugin.isBungeeActivated() && !plugin.getServer().hasWhitelist()) return;
+        if(e.getLoginResult() != AsyncPlayerPreLoginEvent.Result.KICK_WHITELIST) return;
+        if(Bukkit.getPlayer(e.getUniqueId()) == null) return;
+        if(Bukkit.getPlayer(e.getUniqueId()).hasPermission(PermissionsManager.getJoinFullGames())) e.setLoginResult(AsyncPlayerPreLoginEvent.Result.ALLOWED);
     }
 
     @EventHandler
