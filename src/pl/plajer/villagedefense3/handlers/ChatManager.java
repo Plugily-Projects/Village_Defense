@@ -88,9 +88,9 @@ public class ChatManager {
         return returnString;
     }
 
-    public static void broadcastAction(Arena a, Player p, ActionType action){
+    public static void broadcastAction(Arena a, Player p, ActionType action) {
         String message;
-        switch(action){
+        switch(action) {
             case JOIN:
                 message = formatMessage(a, ChatManager.colorMessage("In-Game.Messages.Join"), p);
                 break;
@@ -100,7 +100,8 @@ public class ChatManager {
             case DEATH:
                 message = formatMessage(a, ChatManager.colorMessage("In-Game.Messages.Death"), p);
                 break;
-            default: return; //likely won't ever happen
+            default:
+                return; //likely won't ever happen
         }
         for(Player player : a.getPlayers()) {
             player.sendMessage(PLUGIN_PREFIX + message);

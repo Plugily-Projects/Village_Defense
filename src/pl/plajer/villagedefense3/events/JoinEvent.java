@@ -23,7 +23,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
 import pl.plajer.villagedefense3.Main;
@@ -48,7 +47,7 @@ public class JoinEvent implements Listener {
     }
 
     @EventHandler
-    public void onLogin(PlayerLoginEvent e){
+    public void onLogin(PlayerLoginEvent e) {
         if(!plugin.isBungeeActivated() && !plugin.getServer().hasWhitelist())
             return;
         if(e.getResult() != PlayerLoginEvent.Result.KICK_WHITELIST)

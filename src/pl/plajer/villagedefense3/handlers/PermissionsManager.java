@@ -87,7 +87,7 @@ public class PermissionsManager {
         PermissionsManager.joinPerm = joinPerm;
     }
 
-    public static boolean isPremium(Player p){
+    public static boolean isPremium(Player p) {
         return p.hasPermission(vipPerm) || p.hasPermission(mvpPerm) || p.hasPermission(elitePerm);
     }
 

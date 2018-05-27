@@ -139,7 +139,7 @@ public class SignManager implements Listener {
                 e.getPlayer().sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Already-Playing"));
                 return;
             }
-            if(!(arena.getPlayers().size() >= arena.getMaximumPlayers())){
+            if(!(arena.getPlayers().size() >= arena.getMaximumPlayers())) {
                 ArenaManager.joinAttempt(e.getPlayer(), arena);
                 return;
             }

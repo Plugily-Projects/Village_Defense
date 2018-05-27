@@ -249,6 +249,7 @@ public class ArenaManager {
                 if(plugin.getConfig().getBoolean("Firework-When-Game-Ends")) {
                     new BukkitRunnable() {
                         int i = 0;
+
                         public void run() {
                             if(i == 4) this.cancel();
                             if(!arena.getPlayers().contains(p)) this.cancel();

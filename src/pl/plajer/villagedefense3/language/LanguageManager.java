@@ -70,8 +70,8 @@ public class LanguageManager {
         }
     }
 
-    public static FileConfiguration getLanguageFile(){
-        switch(pluginLocale){
+    public static FileConfiguration getLanguageFile() {
+        switch(pluginLocale) {
             case DEFAULT:
                 return ConfigurationManager.getConfig("language");
             case DEUTSCH:
