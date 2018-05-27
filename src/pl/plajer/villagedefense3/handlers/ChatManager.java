@@ -18,6 +18,7 @@
 
 package pl.plajer.villagedefense3.handlers;
 
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -57,7 +58,7 @@ public class ChatManager {
     public static String formatMessage(Arena arena, String message, Player[] players) {
         String returnString = message;
         for(Player player : players) {
-            returnString = returnString.replaceFirst("%PLAYER%", player.getName());
+            returnString = StringUtils.replace(returnString, "%PLAYER%", player.getName());
         }
         returnString = colorRawMessage(formatPlaceholders(returnString, arena));
         return returnString;
@@ -65,26 +66,26 @@ public class ChatManager {
 
     public static String formatMessage(Arena arena, String message, int integer) {
         String returnString = message;
-        returnString = returnString.replaceAll("%NUMBER%", Integer.toString(integer));
+        returnString = StringUtils.replace(returnString, "%NUMBER%", Integer.toString(integer));
         returnString = colorRawMessage(formatPlaceholders(returnString, arena));
         return returnString;
     }
 
     public static String formatMessage(Arena arena, String message, Player player) {
         String returnString = message;
-        returnString = returnString.replaceAll("%PLAYER%", player.getName());
+        returnString = StringUtils.replace(returnString, "%PLAYER%", player.getName());
         returnString = colorRawMessage(formatPlaceholders(returnString, arena));
         return returnString;
     }
 
     private static String formatPlaceholders(String message, Arena arena) {
-        String returnstring = message;
-        returnstring = returnstring.replaceAll("%TIME%", Integer.toString(arena.getTimer()));
-        returnstring = returnstring.replaceAll("%FORMATTEDTIME%", Util.formatIntoMMSS((arena.getTimer())));
-        returnstring = returnstring.replaceAll("%PLAYERSIZE%", Integer.toString(arena.getPlayers().size()));
-        returnstring = returnstring.replaceAll("%MAXPLAYERS%", Integer.toString(arena.getMaximumPlayers()));
-        returnstring = returnstring.replaceAll("%MINPLAYERS%", Integer.toString(arena.getMinimumPlayers()));
-        return returnstring;
+        String returnString = message;
+        returnString = StringUtils.replace(returnString, "%TIME%", Integer.toString(arena.getTimer()));
+        returnString = StringUtils.replace(returnString, "%FORMATTEDTIME%", Util.formatIntoMMSS((arena.getTimer())));
+        returnString = StringUtils.replace(returnString, "%PLAYERSIZE%", Integer.toString(arena.getPlayers().size()));
+        returnString = StringUtils.replace(returnString, "%MAXPLAYERS%", Integer.toString(arena.getMaximumPlayers()));
+        returnString = StringUtils.replace(returnString, "%MINPLAYERS%", Integer.toString(arena.getMinimumPlayers()));
+        return returnString;
     }
 
     public static void broadcastAction(Arena a, Player p, ActionType action){

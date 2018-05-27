@@ -19,6 +19,7 @@
 package pl.plajer.villagedefense3.handlers;
 
 import lombok.Getter;
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -93,14 +94,14 @@ public class SignManager implements Listener {
 
     private String formatSign(String msg, Arena a) {
         String formatted = msg;
-        formatted = formatted.replace("%mapname%", a.getMapName());
+        formatted = StringUtils.replace(formatted, "%mapname%", a.getMapName());
         if(a.getPlayers().size() >= a.getMaximumPlayers()) {
-            formatted = formatted.replace("%state%", ChatManager.colorMessage("Signs.Game-States.Full-Game"));
+            formatted = StringUtils.replace(formatted, "%state%", ChatManager.colorMessage("Signs.Game-States.Full-Game"));
         } else {
-            formatted = formatted.replace("%state%", gameStateToString.get(a.getArenaState()));
+            formatted = StringUtils.replace(formatted, "%state%", gameStateToString.get(a.getArenaState()));
         }
-        formatted = formatted.replace("%playersize%", String.valueOf(a.getPlayers().size()));
-        formatted = formatted.replace("%maxplayers%", String.valueOf(a.getMaximumPlayers()));
+        formatted = StringUtils.replace(formatted, "%playersize%", String.valueOf(a.getPlayers().size()));
+        formatted = StringUtils.replace(formatted, "%maxplayers%", String.valueOf(a.getMaximumPlayers()));
         formatted = ChatManager.colorRawMessage(formatted);
         return formatted;
     }
