@@ -2,6 +2,7 @@
 
 ### 3.7.1 Release (25.05.2018)
 * Full games permission now works for BungeeCord
+* Can't combust villagers, iron golems and wolves now using flaming arrows
 
 ### 3.7.0 Release (23.05.2018)
 * New modernized and customizable scoreboard

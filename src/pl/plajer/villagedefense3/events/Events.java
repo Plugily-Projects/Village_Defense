@@ -266,11 +266,23 @@ public class Events implements Listener {
     }
 
     @EventHandler
-    public void onFriendCombust(EntityCombustByEntityEvent e) {
-        if(!(e.getEntity() instanceof Player) || !(e.getCombuster() instanceof Arrow)) return;
+    public void onEntityCombust(EntityCombustByEntityEvent e) {
+        if(!(e.getCombuster() instanceof Arrow)) return;
         Arrow arrow = (Arrow) e.getCombuster();
         if(!(arrow.getShooter() instanceof Player)) return;
-        if(ArenaRegistry.getArena((Player) arrow.getShooter()).equals(ArenaRegistry.getArena((Player) e.getEntity()))) e.setCancelled(true);
+        if(e.getEntity() instanceof Player) {
+            if(ArenaRegistry.getArena((Player) arrow.getShooter()).equals(ArenaRegistry.getArena((Player) e.getEntity()))) e.setCancelled(true);
+        } else if(e.getEntity() instanceof IronGolem || e.getEntity() instanceof Villager || e.getEntity() instanceof Wolf) {
+            for(Arena a : ArenaRegistry.getArenas()) {
+                if(e.getEntity() instanceof IronGolem) {
+                    if(a.getIronGolems().contains(e.getEntity())) e.setCancelled(true);
+                } else if(e.getEntity() instanceof Villager) {
+                    if(a.getVillagers().contains(e.getEntity())) e.setCancelled(true);
+                } else {
+                    if(a.getWolfs().contains(e.getEntity())) e.setCancelled(true);
+                }
+            }
+        }
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
