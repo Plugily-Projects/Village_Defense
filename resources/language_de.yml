@@ -252,7 +252,6 @@ In-Game:
     Health: "&e&lGOLEM-LEBEN: &7%health%"
   Spawned-Wolf-Name: "%player%'s Wolf"
   Spawned-Golem-Name: "%player%'s Golem"
-  #Join cancelled via external plugin that uses VD3 api.
   Join-Cancelled-Via-API: "&cDu kannst dem Spiel nicht beitreten!"
   Arena-Not-Configured: "&cArena ist nicht konfiguriert ! Kontaktiere Teammitglieder!"
   Spectator:
