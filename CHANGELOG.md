@@ -1,5 +1,8 @@
 # Village Defense 3 Changelog
 
+### 3.7.2 Release (04.06.2018)
+* Added sign block states of the game
+
 ### 3.7.1 Release (25.05.2018)
 * Full games permission now works for BungeeCord
 * Can't combust villagers, iron golems and wolves now using flaming arrows
