@@ -86,6 +86,15 @@ Block-Commands-In-Game: true
 # Should we fire some cool fireworks at location of every player after the game ends?
 Firework-When-Game-Ends: true
 
+# Should blocks behind game signs change their color based on game state?
+# They will change color to:
+# - white (waiting for players) stained glass
+# - yellow (starting) stained glass
+# - orange (in game) stained glass
+# - gray (ending) stained glass
+# - black (restarting) stained glass
+Signs-Block-States-Enabled: true
+
 # Are golems upgrades enabled when you click your iron golem?
 # If you want to have classic Village Defense game mode i recommend to disable this.
 Golem-Upgrades-Enabled: true
@@ -144,6 +153,6 @@ Update-Notifier:
 Debug: false
 
 # Don't modify.
-Version: 2
+Version: 3
 
 # No way! You've reached the end! But... where's the dragon!?
