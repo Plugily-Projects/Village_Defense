@@ -125,9 +125,21 @@ public class AdminCommands extends MainCommand {
                 sender.spigot().sendMessage(component);
             }
         } else {
-            for(CommandData data : command) {
-                sender.sendMessage(data.getText());
-            }
+            //must be updated manually
+            sender.sendMessage(ChatColor.WHITE + "/vd create " + ChatColor.GOLD + "<arena>" + ChatColor.GRAY + ": Create new arena");
+            sender.sendMessage(ChatColor.WHITE + "/vd " + ChatColor.GOLD + "<arena>" + ChatColor.WHITE + " edit" + ChatColor.GRAY + ": Edit existing arena");
+            sender.sendMessage(ChatColor.WHITE + "/vda list" + ChatColor.GRAY + ": Print all loaded instances");
+            sender.sendMessage(ChatColor.WHITE + "/vda stop" + ChatColor.GRAY + ": Stop the arena");
+            sender.sendMessage(ChatColor.WHITE + "/vda forcestart" + ChatColor.GRAY + ": Force start the arena");
+            sender.sendMessage(ChatColor.WHITE + "/vda respawn " + ChatColor.RED + "[player]" + ChatColor.GRAY + ": Respawn yourself or target player");
+            sender.sendMessage(ChatColor.WHITE + "/vda spychat" + ChatColor.GRAY + ": Toggle all games chat visibility (only multi-arena)");
+            sender.sendMessage(ChatColor.WHITE + "/vda setprice " + ChatColor.GOLD + "<amount>" + ChatColor.GRAY + ": Sets holding item price (for shop)");
+            sender.sendMessage(ChatColor.WHITE + "/vda reload" + ChatColor.GRAY + ": Stops and reloads all game instances");
+            sender.sendMessage(ChatColor.WHITE + "/vda delete " + ChatColor.GOLD + "<arena>" + ChatColor.GRAY + ": Remove existing arena");
+            sender.sendMessage(ChatColor.WHITE + "/vda tp " + ChatColor.GOLD + "<arena> <location type>" + ChatColor.GRAY + ": Teleport you to provided arena location");
+            sender.sendMessage(ChatColor.WHITE + "/vda clear " + ChatColor.GOLD + "<zombie/villager/golem>" + ChatColor.GRAY + ": Remove target mob type from your arena");
+            sender.sendMessage(ChatColor.WHITE + "/vda addorbs " + ChatColor.GOLD + "<amount> " + ChatColor.RED + "[player]" + ChatColor.GRAY + ": Give yourself or player the given amount of orbs");
+            sender.sendMessage(ChatColor.WHITE + "/vda setwave " + ChatColor.GOLD + "<number>" + ChatColor.GRAY + ": Set the wave number");
         }
     }
 

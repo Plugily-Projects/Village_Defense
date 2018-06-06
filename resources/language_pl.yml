@@ -47,7 +47,8 @@ Commands:
     &b/vd stats: &7Wyswietla twoje statystyki!\n
     &b/vd leave: &7Opuszcza aktualna arene!\n
     &b/vd join <arena>: &7Dolacza na wybrana arene!\n
-    &b/vd top <statystyka>: &7Pokazuje top 10 graczy"
+    &b/vd top <statystyka>: &7Pokazuje top 10 graczy\n
+    &b/vd selectkit: &7Wybierz nowy zestaw do gry"
     Admin-Bonus-Description: "\n&b/vd admin: &7Komendy administratora"
     Footer: "&6-------------------------------------------------"
 

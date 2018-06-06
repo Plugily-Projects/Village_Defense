@@ -202,7 +202,7 @@ public class MainCommand implements CommandExecutor {
             }
             adminCommands.sendHelp(sender);
             List<StringMatcher.Match> matches = StringMatcher.match(args[0], Arrays.asList("stop", "list", "forcestart", "respawn", "spychat",
-                    "reload", "setshopchest", "addsign", "delete", "setprice", "tp", "clear", "addorbs", "setwave"));
+                    "reload", "setshopchest", "delete", "setprice", "tp", "clear", "addorbs", "setwave"));
             if(!matches.isEmpty()) {
                 sender.sendMessage(ChatManager.colorMessage("Commands.Did-You-Mean").replaceAll("%command%", "vda " + matches.get(0).getMatch()));
             }
@@ -358,13 +358,13 @@ public class MainCommand implements CommandExecutor {
                 }
                 adminCommands.sendHelp(sender);
                 List<StringMatcher.Match> matches = StringMatcher.match(args[1], Arrays.asList("stop", "list", "forcestart", "respawn", "spychat",
-                        "reload", "setshopchest", "addsign", "delete", "setprice", "tp", "clear", "addorbs", "setwave"));
+                        "reload", "setshopchest", "delete", "setprice", "tp", "clear", "addorbs", "setwave"));
                 if(!matches.isEmpty()) {
                     sender.sendMessage(ChatManager.colorMessage("Commands.Did-You-Mean").replaceAll("%command%", "vd admin " + matches.get(0).getMatch()));
                 }
                 return true;
             } else {
-                List<StringMatcher.Match> matches = StringMatcher.match(args[0], Arrays.asList("join", "leave", "stats", "top", "admin", "create"));
+                List<StringMatcher.Match> matches = StringMatcher.match(args[0], Arrays.asList("join", "leave", "stats", "top", "admin", "create", "selectkit"));
                 if(!matches.isEmpty()) {
                     sender.sendMessage(ChatManager.colorMessage("Commands.Did-You-Mean").replaceAll("%command%", "vd " + matches.get(0).getMatch()));
                 }

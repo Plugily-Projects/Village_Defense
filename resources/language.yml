@@ -48,7 +48,8 @@ Commands:
     &b/vd stats: &7Shows your stats!\n
     &b/vd leave: &7Quits current arena!\n
     &b/vd join <arena>: &7Joins specified arena!\n
-    &b/vd top <statistic>: &7Shows top 10 players!"
+    &b/vd top <statistic>: &7Shows top 10 players!\n
+    &b/vd selectkit: &7Select new game kit!"
     Admin-Bonus-Description: "\n&b/vd admin: &7Shows all the admin commands"
     Footer: "&6-------------------------------------------------"
 
