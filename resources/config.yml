@@ -17,7 +17,7 @@
 #
 locale: default
 
-# Enable 1.9+ ONLY bossbar support?
+# Enable bossbar support?
 Bossbar-Enabled: true
 
 # Should we hook into bungee cord? (If you wanna use arena per server option)
