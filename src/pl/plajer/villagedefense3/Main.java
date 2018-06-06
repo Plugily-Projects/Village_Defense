@@ -65,6 +65,7 @@ import pl.plajer.villagedefense3.language.LanguageManager;
 import pl.plajer.villagedefense3.language.LanguageMigrator;
 import pl.plajer.villagedefense3.user.User;
 import pl.plajer.villagedefense3.user.UserManager;
+import pl.plajer.villagedefense3.utils.BossBarUtil;
 import pl.plajer.villagedefense3.utils.MessageUtils;
 import pl.plajer.villagedefense3.utils.Metrics;
 import pl.plajer.villagedefense3.utils.MySQLConnectionUtils;
@@ -423,7 +424,13 @@ public class Main extends JavaPlugin {
         }
         for(Arena arena : ArenaRegistry.getArenas()) {
             for(Player player : arena.getPlayers()) {
-                arena.getGameBar().removePlayer(player);
+                if(bossbarEnabled) {
+                    if(is1_8_R3()) {
+                        BossBarUtil.removeBar(player);
+                    } else {
+                        arena.getGameBar().removePlayer(player);
+                    }
+                }
                 arena.teleportToEndLocation(player);
                 if(inventoryManagerEnabled) {
                     inventoryManager.loadInventory(player);

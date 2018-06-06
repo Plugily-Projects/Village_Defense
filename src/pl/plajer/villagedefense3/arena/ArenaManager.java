@@ -21,6 +21,7 @@ package pl.plajer.villagedefense3.arena;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
+import org.bukkit.boss.BossBar;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.IronGolem;
@@ -42,6 +43,7 @@ import pl.plajer.villagedefense3.kits.GolemFriendKit;
 import pl.plajer.villagedefense3.kits.kitapi.KitRegistry;
 import pl.plajer.villagedefense3.user.User;
 import pl.plajer.villagedefense3.user.UserManager;
+import pl.plajer.villagedefense3.utils.BossBarUtil;
 import pl.plajer.villagedefense3.utils.Util;
 import pl.plajer.villagedefense3.villagedefenseapi.VillageGameJoinAttemptEvent;
 import pl.plajer.villagedefense3.villagedefenseapi.VillageGameLeaveAttemptEvent;
@@ -146,7 +148,11 @@ public class ArenaManager {
         p.getInventory().clear();
         arena.showPlayers();
         if(plugin.isBossbarEnabled()) {
-            arena.getGameBar().addPlayer(p);
+            if(plugin.is1_8_R3()){
+                BossBarUtil.setBar(p, ChatManager.colorMessage("Bossbar.Main-Title"), 100);
+            } else {
+                arena.getGameBar().addPlayer(p);
+            }
         }
         if(!UserManager.getUser(p.getUniqueId()).isSpectator())
             ChatManager.broadcastAction(arena, p, ChatManager.ActionType.JOIN);
@@ -192,7 +198,11 @@ public class ArenaManager {
             }
         }
         if(plugin.isBossbarEnabled()) {
-            arena.getGameBar().removePlayer(p);
+            if(plugin.is1_8_R3()){
+                BossBarUtil.removeBar(p);
+            } else {
+                arena.getGameBar().removePlayer(p);
+            }
         }
         p.setMaxHealth(20.0);
         p.setHealth(p.getMaxHealth());

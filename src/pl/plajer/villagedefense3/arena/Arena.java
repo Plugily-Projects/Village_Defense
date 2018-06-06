@@ -41,6 +41,7 @@ import pl.plajer.villagedefense3.kits.kitapi.KitRegistry;
 import pl.plajer.villagedefense3.language.LanguageManager;
 import pl.plajer.villagedefense3.user.User;
 import pl.plajer.villagedefense3.user.UserManager;
+import pl.plajer.villagedefense3.utils.BossBarUtil;
 import pl.plajer.villagedefense3.villagedefenseapi.VillageGameStartEvent;
 
 import java.util.ArrayList;
@@ -153,7 +154,13 @@ public abstract class Arena extends BukkitRunnable {
                     }
                 } else {
                     if(plugin.isBossbarEnabled()) {
-                        gameBar.setTitle(ChatManager.colorMessage("Bossbar.Waiting-For-Players"));
+                        if(plugin.is1_8_R3()){
+                            for(Player p : getPlayers()) {
+                                BossBarUtil.updateBar(p, ChatManager.colorMessage("Bossbar.Waiting-For-Players"), 100);
+                            }
+                        } else {
+                            gameBar.setTitle(ChatManager.colorMessage("Bossbar.Waiting-For-Players"));
+                        }
                     }
                     for(Player p : getPlayers()) {
                         p.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Messages.Lobby-Messages.Enough-Players-To-Start"));
@@ -166,15 +173,28 @@ public abstract class Arena extends BukkitRunnable {
                 break;
             case STARTING:
                 if(plugin.isBossbarEnabled()) {
-                    gameBar.setTitle(ChatManager.colorMessage("Bossbar.Starting-In").replaceAll("%time%", String.valueOf(getTimer())));
-                    gameBar.setProgress(getTimer() / plugin.getConfig().getDouble("Starting-Waiting-Time"));
+                    if(plugin.is1_8_R3()){
+                        for(Player p : getPlayers()) {
+                            BossBarUtil.updateBar(p, ChatManager.colorMessage("Bossbar.Waiting-For-Players"), -1);
+                            BossBarUtil.updateHealth(p, (float) (getTimer() / plugin.getConfig().getDouble("Starting-Waiting-Time")));
+                        }
+                    } else {
+                        gameBar.setTitle(ChatManager.colorMessage("Bossbar.Starting-In").replaceAll("%time%", String.valueOf(getTimer())));
+                        gameBar.setProgress(getTimer() / plugin.getConfig().getDouble("Starting-Waiting-Time"));
+                    }
                 }
                 if(getTimer() == 0) {
                     VillageGameStartEvent villageGameStartEvent = new VillageGameStartEvent(this);
                     Bukkit.getPluginManager().callEvent(villageGameStartEvent);
                     setArenaState(ArenaState.IN_GAME);
                     if(plugin.isBossbarEnabled()) {
-                        gameBar.setProgress(1.0);
+                        if(plugin.is1_8_R3()){
+                            for(Player p : getPlayers()) {
+                                BossBarUtil.updateHealth(p, 100);
+                            }
+                        } else {
+                            gameBar.setProgress(1.0);
+                        }
                     }
                     setTimer(5);
                     teleportAllToStartLocation();
@@ -202,13 +222,25 @@ public abstract class Arena extends BukkitRunnable {
             case IN_GAME:
                 if(plugin.isBossbarEnabled()) {
                     if(barToggle > 5) {
-                        gameBar.setTitle(ChatManager.colorMessage("Bossbar.In-Game-Wave").replaceAll("%wave%", String.valueOf(getWave())));
+                        if(plugin.is1_8_R3()) {
+                            for(Player p : getPlayers()) {
+                                BossBarUtil.updateBar(p, ChatManager.colorMessage("Bossbar.In-Game-Wave").replaceAll("%wave%", String.valueOf(getWave())), -1);
+                            }
+                        } else {
+                            gameBar.setTitle(ChatManager.colorMessage("Bossbar.In-Game-Wave").replaceAll("%wave%", String.valueOf(getWave())));
+                        }
                         barToggle++;
                         if(barToggle > 10) {
                             barToggle = 0;
                         }
                     } else {
-                        gameBar.setTitle(ChatManager.colorMessage("Bossbar.In-Game-Info").replaceAll("%wave%", String.valueOf(getWave())));
+                        if(plugin.is1_8_R3()){
+                            for(Player p : getPlayers()) {
+                                BossBarUtil.updateBar(p, ChatManager.colorMessage("Bossbar.In-Game-Info").replaceAll("%wave%", String.valueOf(getWave())), -1);
+                            }
+                        } else {
+                            gameBar.setTitle(ChatManager.colorMessage("Bossbar.In-Game-Info").replaceAll("%wave%", String.valueOf(getWave())));
+                        }
                         barToggle++;
                     }
                 }
@@ -311,7 +343,13 @@ public abstract class Arena extends BukkitRunnable {
                     plugin.getServer().setWhitelist(false);
                 if(getTimer() <= 0) {
                     if(plugin.isBossbarEnabled()) {
-                        gameBar.setTitle(ChatManager.colorMessage("Bossbar.Game-Ended"));
+                        if(plugin.is1_8_R3()){
+                            for(Player p : getPlayers()) {
+                                BossBarUtil.updateBar(p, ChatManager.colorMessage("Bossbar.Game-Ended"), -1);
+                            }
+                        } else {
+                            gameBar.setTitle(ChatManager.colorMessage("Bossbar.Game-Ended"));
+                        }
                     }
                     clearVillagers();
                     clearZombies();
@@ -334,7 +372,11 @@ public abstract class Arena extends BukkitRunnable {
 
                         player.getInventory().setArmorContents(null);
                         if(plugin.isBossbarEnabled()) {
-                            gameBar.removePlayer(player);
+                            if(plugin.is1_8_R3()){
+                                BossBarUtil.removeBar(player);
+                            } else {
+                                gameBar.removePlayer(player);
+                            }
                         }
                         player.setMaxHealth(20.0);
                         player.setHealth(player.getMaxHealth());

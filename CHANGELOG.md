@@ -2,6 +2,8 @@
 
 ### 3.7.2 Release (04.06.2018)
 * Added sign block states of the game
+* Added /vd selectkit command to select kit in game (permission villagedefense.command.selectkit)
+* Fixed last Dark essence of Wizard kit wasn't removed when used
 
 ### 3.7.1 Release (25.05.2018)
 * Full games permission now works for BungeeCord
