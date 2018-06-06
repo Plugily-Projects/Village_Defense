@@ -105,7 +105,7 @@ public class WizardKit extends PremiumKit implements Listener {
 
     @EventHandler
     public void onQuit(PlayerQuitEvent e) {
-        if(wizardsOnDuty.contains(e.getPlayer())) wizardsOnDuty.remove(e.getPlayer());
+        wizardsOnDuty.remove(e.getPlayer());
     }
 
     @EventHandler
@@ -139,10 +139,7 @@ public class WizardKit extends PremiumKit implements Listener {
                     p.setHealth(p.getMaxHealth());
                 }
                 if(p.getItemInHand().getAmount() <= 1) {
-                    ItemStack essenceOfDarkness = new ItemStack(Material.INK_SACK, 1);
-                    List<String> essenceLore = Util.splitString(ChatManager.colorMessage("Kits.Wizard.Essence-Item-Lore"), 40);
-                    this.setItemNameAndLore(essenceOfDarkness, ChatManager.colorMessage("Kits.Wizard.Essence-Item-Name"), essenceLore.toArray(new String[essenceLore.size()]));
-                    p.setItemInHand(essenceOfDarkness);
+                    p.setItemInHand(new ItemStack(Material.AIR));
                 } else {
                     p.getItemInHand().setAmount(p.getItemInHand().getAmount() - 1);
                 }
