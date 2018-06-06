@@ -249,6 +249,9 @@ public class MainCommand implements CommandExecutor {
             } else if(args[0].equalsIgnoreCase("leave")) {
                 gameCommands.leaveGame(sender);
                 return true;
+            } else if(args[0].equalsIgnoreCase("selectkit")) {
+                gameCommands.openKitMenu(sender);
+                return true;
             } else if(args[0].equalsIgnoreCase("create")) {
                 if(args.length == 2) {
                     adminCommands.createArena(sender, args);

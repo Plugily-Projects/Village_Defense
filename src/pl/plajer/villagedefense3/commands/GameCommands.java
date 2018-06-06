@@ -27,6 +27,7 @@ import pl.plajer.villagedefense3.arena.Arena;
 import pl.plajer.villagedefense3.arena.ArenaManager;
 import pl.plajer.villagedefense3.arena.ArenaRegistry;
 import pl.plajer.villagedefense3.handlers.ChatManager;
+import pl.plajer.villagedefense3.kits.kitapi.KitManager;
 import pl.plajer.villagedefense3.user.User;
 import pl.plajer.villagedefense3.user.UserManager;
 import pl.plajer.villagedefense3.villagedefenseapi.StatsStorage;
@@ -144,6 +145,13 @@ public class GameCommands extends MainCommand {
             }
         }
         sender.sendMessage(ChatManager.colorMessage("Commands.No-Arena-Like-That"));
+    }
+
+    public void openKitMenu(CommandSender sender) {
+        if(checkSenderIsConsole(sender)) return;
+        if(!checkIsInGameInstance((Player) sender)) return;
+        if(!hasPermission(sender, "villagedefense.command.selectkit")) return;
+        plugin.getKitManager().openKitMenu((Player) sender);
     }
 
 }
