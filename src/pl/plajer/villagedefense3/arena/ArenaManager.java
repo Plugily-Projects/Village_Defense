@@ -21,7 +21,6 @@ package pl.plajer.villagedefense3.arena;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
-import org.bukkit.boss.BossBar;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.IronGolem;
@@ -148,7 +147,7 @@ public class ArenaManager {
         p.getInventory().clear();
         arena.showPlayers();
         if(plugin.isBossbarEnabled()) {
-            if(plugin.is1_8_R3()){
+            if(plugin.is1_8_R3()) {
                 BossBarUtil.setBar(p, ChatManager.colorMessage("Bossbar.Main-Title"), 100);
             } else {
                 arena.getGameBar().addPlayer(p);
@@ -198,7 +197,7 @@ public class ArenaManager {
             }
         }
         if(plugin.isBossbarEnabled()) {
-            if(plugin.is1_8_R3()){
+            if(plugin.is1_8_R3()) {
                 BossBarUtil.removeBar(p);
             } else {
                 arena.getGameBar().removePlayer(p);

@@ -154,7 +154,7 @@ public abstract class Arena extends BukkitRunnable {
                     }
                 } else {
                     if(plugin.isBossbarEnabled()) {
-                        if(plugin.is1_8_R3()){
+                        if(plugin.is1_8_R3()) {
                             for(Player p : getPlayers()) {
                                 BossBarUtil.updateBar(p, ChatManager.colorMessage("Bossbar.Waiting-For-Players"), 100);
                             }
@@ -173,7 +173,7 @@ public abstract class Arena extends BukkitRunnable {
                 break;
             case STARTING:
                 if(plugin.isBossbarEnabled()) {
-                    if(plugin.is1_8_R3()){
+                    if(plugin.is1_8_R3()) {
                         for(Player p : getPlayers()) {
                             BossBarUtil.updateBar(p, ChatManager.colorMessage("Bossbar.Waiting-For-Players"), -1);
                             BossBarUtil.updateHealth(p, (float) (getTimer() / plugin.getConfig().getDouble("Starting-Waiting-Time")));
@@ -188,7 +188,7 @@ public abstract class Arena extends BukkitRunnable {
                     Bukkit.getPluginManager().callEvent(villageGameStartEvent);
                     setArenaState(ArenaState.IN_GAME);
                     if(plugin.isBossbarEnabled()) {
-                        if(plugin.is1_8_R3()){
+                        if(plugin.is1_8_R3()) {
                             for(Player p : getPlayers()) {
                                 BossBarUtil.updateHealth(p, 100);
                             }
@@ -234,7 +234,7 @@ public abstract class Arena extends BukkitRunnable {
                             barToggle = 0;
                         }
                     } else {
-                        if(plugin.is1_8_R3()){
+                        if(plugin.is1_8_R3()) {
                             for(Player p : getPlayers()) {
                                 BossBarUtil.updateBar(p, ChatManager.colorMessage("Bossbar.In-Game-Info").replaceAll("%wave%", String.valueOf(getWave())), -1);
                             }
@@ -343,7 +343,7 @@ public abstract class Arena extends BukkitRunnable {
                     plugin.getServer().setWhitelist(false);
                 if(getTimer() <= 0) {
                     if(plugin.isBossbarEnabled()) {
-                        if(plugin.is1_8_R3()){
+                        if(plugin.is1_8_R3()) {
                             for(Player p : getPlayers()) {
                                 BossBarUtil.updateBar(p, ChatManager.colorMessage("Bossbar.Game-Ended"), -1);
                             }
@@ -372,7 +372,7 @@ public abstract class Arena extends BukkitRunnable {
 
                         player.getInventory().setArmorContents(null);
                         if(plugin.isBossbarEnabled()) {
-                            if(plugin.is1_8_R3()){
+                            if(plugin.is1_8_R3()) {
                                 BossBarUtil.removeBar(player);
                             } else {
                                 gameBar.removePlayer(player);

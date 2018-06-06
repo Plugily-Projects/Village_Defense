@@ -54,7 +54,7 @@ public class LanguageMigrator {
         LanguageMigrator.removeLineFromFile(file, "Version: " + plugin.getConfig().getInt("Version"));
         LanguageMigrator.removeLineFromFile(file, "# No way! You've reached the end! But... where's the dragon!?");
 
-        switch(plugin.getConfig().getInt("Version")){
+        switch(plugin.getConfig().getInt("Version")) {
             case 1:
                 LanguageMigrator.addNewLines(file, "# Power ups section. If you want to have classic Village Defense game mode i recommend to disable this.\r\nPowerups:\r\n" +
                         "  # Do you want to enable in-game power ups?\r\n  # This will make zombies to drop some power ups when they're killed\r\n" +
