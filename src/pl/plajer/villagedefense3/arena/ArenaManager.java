@@ -42,7 +42,6 @@ import pl.plajer.villagedefense3.kits.GolemFriendKit;
 import pl.plajer.villagedefense3.kits.kitapi.KitRegistry;
 import pl.plajer.villagedefense3.user.User;
 import pl.plajer.villagedefense3.user.UserManager;
-import pl.plajer.villagedefense3.utils.BossBarUtil;
 import pl.plajer.villagedefense3.utils.Util;
 import pl.plajer.villagedefense3.villagedefenseapi.VillageGameJoinAttemptEvent;
 import pl.plajer.villagedefense3.villagedefenseapi.VillageGameLeaveAttemptEvent;
@@ -135,7 +134,6 @@ public class ArenaManager {
         if(plugin.isInventoryManagerEnabled()) {
             p.setLevel(0);
             plugin.getInventoryManager().saveInventoryToFile(p);
-
         }
         arena.teleportToLobby(p);
         arena.addPlayer(p);
@@ -147,11 +145,7 @@ public class ArenaManager {
         p.getInventory().clear();
         arena.showPlayers();
         if(plugin.isBossbarEnabled()) {
-            if(plugin.is1_8_R3()) {
-                BossBarUtil.setBar(p, ChatManager.colorMessage("Bossbar.Main-Title"), 100);
-            } else {
-                arena.getGameBar().addPlayer(p);
-            }
+            arena.getArenaBar().addPlayer(p);
         }
         if(!UserManager.getUser(p.getUniqueId()).isSpectator())
             ChatManager.broadcastAction(arena, p, ChatManager.ActionType.JOIN);
@@ -197,11 +191,7 @@ public class ArenaManager {
             }
         }
         if(plugin.isBossbarEnabled()) {
-            if(plugin.is1_8_R3()) {
-                BossBarUtil.removeBar(p);
-            } else {
-                arena.getGameBar().removePlayer(p);
-            }
+            arena.getArenaBar().removePlayer(p);
         }
         p.setMaxHealth(20.0);
         p.setHealth(p.getMaxHealth());

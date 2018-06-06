@@ -41,7 +41,6 @@ import pl.plajer.villagedefense3.kits.kitapi.KitRegistry;
 import pl.plajer.villagedefense3.language.LanguageManager;
 import pl.plajer.villagedefense3.user.User;
 import pl.plajer.villagedefense3.user.UserManager;
-import pl.plajer.villagedefense3.utils.BossBarUtil;
 import pl.plajer.villagedefense3.villagedefenseapi.VillageGameStartEvent;
 
 import java.util.ArrayList;
@@ -79,7 +78,7 @@ public abstract class Arena extends BukkitRunnable {
     private int rottenFleshLevel;
     private int zombieChecker = 0;
     private int spawnCounter = 0;
-    private BossBar gameBar;
+    private ArenaBossBar arenaBar;
     private ArenaState arenaState;
     private int minimumPlayers = 2;
     private int maximumPlayers = 10;
@@ -97,7 +96,7 @@ public abstract class Arena extends BukkitRunnable {
         this.ID = ID;
         random = new Random();
         if(plugin.isBossbarEnabled()) {
-            gameBar = Bukkit.createBossBar(ChatManager.colorMessage("Bossbar.Main-Title"), BarColor.BLUE, BarStyle.SOLID);
+            arenaBar = new ArenaBossBar(plugin, ChatManager.colorMessage("Bossbar.Main-Title"));
         }
     }
 
@@ -122,8 +121,8 @@ public abstract class Arena extends BukkitRunnable {
         this.rottenFleshLevel = rottenFleshLevel;
     }
 
-    public BossBar getGameBar() {
-        return gameBar;
+    public ArenaBossBar getArenaBar() {
+        return arenaBar;
     }
 
     /**
@@ -154,13 +153,7 @@ public abstract class Arena extends BukkitRunnable {
                     }
                 } else {
                     if(plugin.isBossbarEnabled()) {
-                        if(plugin.is1_8_R3()) {
-                            for(Player p : getPlayers()) {
-                                BossBarUtil.updateBar(p, ChatManager.colorMessage("Bossbar.Waiting-For-Players"), 100);
-                            }
-                        } else {
-                            gameBar.setTitle(ChatManager.colorMessage("Bossbar.Waiting-For-Players"));
-                        }
+                        arenaBar.setTitle(ChatManager.colorMessage("Bossbar.Waiting-For-Players"));
                     }
                     for(Player p : getPlayers()) {
                         p.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Messages.Lobby-Messages.Enough-Players-To-Start"));
@@ -173,28 +166,15 @@ public abstract class Arena extends BukkitRunnable {
                 break;
             case STARTING:
                 if(plugin.isBossbarEnabled()) {
-                    if(plugin.is1_8_R3()) {
-                        for(Player p : getPlayers()) {
-                            BossBarUtil.updateBar(p, ChatManager.colorMessage("Bossbar.Waiting-For-Players"), -1);
-                            BossBarUtil.updateHealth(p, (float) (getTimer() / plugin.getConfig().getDouble("Starting-Waiting-Time")));
-                        }
-                    } else {
-                        gameBar.setTitle(ChatManager.colorMessage("Bossbar.Starting-In").replaceAll("%time%", String.valueOf(getTimer())));
-                        gameBar.setProgress(getTimer() / plugin.getConfig().getDouble("Starting-Waiting-Time"));
-                    }
+                    arenaBar.setTitle(ChatManager.colorMessage("Bossbar.Starting-In").replaceAll("%time%", String.valueOf(getTimer())));
+                    arenaBar.setProgress(getTimer() / plugin.getConfig().getDouble("Starting-Waiting-Time"));
                 }
                 if(getTimer() == 0) {
                     VillageGameStartEvent villageGameStartEvent = new VillageGameStartEvent(this);
                     Bukkit.getPluginManager().callEvent(villageGameStartEvent);
                     setArenaState(ArenaState.IN_GAME);
                     if(plugin.isBossbarEnabled()) {
-                        if(plugin.is1_8_R3()) {
-                            for(Player p : getPlayers()) {
-                                BossBarUtil.updateHealth(p, 100);
-                            }
-                        } else {
-                            gameBar.setProgress(1.0);
-                        }
+                        arenaBar.setProgress(1.0);
                     }
                     setTimer(5);
                     teleportAllToStartLocation();
@@ -222,25 +202,13 @@ public abstract class Arena extends BukkitRunnable {
             case IN_GAME:
                 if(plugin.isBossbarEnabled()) {
                     if(barToggle > 5) {
-                        if(plugin.is1_8_R3()) {
-                            for(Player p : getPlayers()) {
-                                BossBarUtil.updateBar(p, ChatManager.colorMessage("Bossbar.In-Game-Wave").replaceAll("%wave%", String.valueOf(getWave())), -1);
-                            }
-                        } else {
-                            gameBar.setTitle(ChatManager.colorMessage("Bossbar.In-Game-Wave").replaceAll("%wave%", String.valueOf(getWave())));
-                        }
+                        arenaBar.setTitle(ChatManager.colorMessage("Bossbar.In-Game-Wave").replaceAll("%wave%", String.valueOf(getWave())));
                         barToggle++;
                         if(barToggle > 10) {
                             barToggle = 0;
                         }
                     } else {
-                        if(plugin.is1_8_R3()) {
-                            for(Player p : getPlayers()) {
-                                BossBarUtil.updateBar(p, ChatManager.colorMessage("Bossbar.In-Game-Info").replaceAll("%wave%", String.valueOf(getWave())), -1);
-                            }
-                        } else {
-                            gameBar.setTitle(ChatManager.colorMessage("Bossbar.In-Game-Info").replaceAll("%wave%", String.valueOf(getWave())));
-                        }
+                        arenaBar.setTitle(ChatManager.colorMessage("Bossbar.In-Game-Info").replaceAll("%wave%", String.valueOf(getWave())));
                         barToggle++;
                     }
                 }
@@ -343,13 +311,7 @@ public abstract class Arena extends BukkitRunnable {
                     plugin.getServer().setWhitelist(false);
                 if(getTimer() <= 0) {
                     if(plugin.isBossbarEnabled()) {
-                        if(plugin.is1_8_R3()) {
-                            for(Player p : getPlayers()) {
-                                BossBarUtil.updateBar(p, ChatManager.colorMessage("Bossbar.Game-Ended"), -1);
-                            }
-                        } else {
-                            gameBar.setTitle(ChatManager.colorMessage("Bossbar.Game-Ended"));
-                        }
+                        arenaBar.setTitle(ChatManager.colorMessage("Bossbar.Game-Ended"));
                     }
                     clearVillagers();
                     clearZombies();
@@ -372,11 +334,7 @@ public abstract class Arena extends BukkitRunnable {
 
                         player.getInventory().setArmorContents(null);
                         if(plugin.isBossbarEnabled()) {
-                            if(plugin.is1_8_R3()) {
-                                BossBarUtil.removeBar(player);
-                            } else {
-                                gameBar.removePlayer(player);
-                            }
+                            arenaBar.removePlayer(player);
                         }
                         player.setMaxHealth(20.0);
                         player.setHealth(player.getMaxHealth());
