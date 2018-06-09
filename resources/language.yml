@@ -234,7 +234,7 @@ In-Game:
   Dead-Tag-On-Death: "&8Dead"
   Game-Chat-Format: "&6[&5%level%&6]&6[%kit%&6] %player%: &f%message%"
   Death-Screen: "&cYou died!"
-  Died-Respawn-In-Next-Wave: "&e&lDON'T LEAVE! &aYou'll respawn next once the wave ends!"
+  Died-Respawn-In-Next-Wave: "&e&lDON'T LEAVE! &aYou'll respawn once the next wave ends!"
   Back-In-Game: "&aYou're not a spectator anymore! You're back in the game!"
   You-Are-Spectator: "&cYou're now a spectator! You can fly now!"
   You-Leveled-Up: "&7You leveled up! You're now level %NUMBER%!"
@@ -342,7 +342,7 @@ Signs:
     - "&5[%playersize%/%maxplayers%]"
 
 Validator:
-  Invalid-Arena-Configuration: "[Village Defense] Arena %arena% has invaild configuration! Missing node: %error%"
+  Invalid-Arena-Configuration: "[Village Defense] Arena %arena% has invalid configuration! Missing node: %error%"
   Instance-Started: "[Village Defense] Arena %arena% instance successfully started!"
   No-Instances-Created: "[Village Defense] There are no arena instances created in configuration!"
 
