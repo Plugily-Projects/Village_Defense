@@ -1,6 +1,6 @@
 #     VillageDefense 3 configuration file
 #
-#    You can edit here basic things of VD 3
+#    You can edit here the basic things of VD 3
 #      Please read everything CAREFULLY!
 #   You don't want to break anything, do you?
 #
@@ -116,7 +116,7 @@ Simple-Zombie-Health-Bar-Enabled: true
 # Power ups section. If you want to have classic Village Defense game mode i recommend to disable this.
 Powerups:
   # Do you want to enable in-game power ups?
-  # This will make zombies to drop some power ups when they're killed
+  # This will make zombies drop some power ups when they're killed
   # REQUIRES Holographic Displays otherwise it won't be enabled!
   Enabled: true
   # Modify powerup drop chance here
@@ -149,7 +149,7 @@ Update-Notifier:
   # BETA IS NOT ALWAYS AS STABLE AS NORMAL RELEASE!
   Notify-Beta-Versions: true
 
-# Should plugin send 'debug spam' to console? IT CAN HELP IF YOU OCCUR SOME WEIRD BEHAVIOUR FROM PLUGIN
+# Should plugin send 'debug spam' to console? IT CAN HELP IF THERE IS SOME WEIRD BEHAVIOUR OCCURRING CAUSED BY THIS PLUGIN
 Debug: false
 
 # Don't modify.
