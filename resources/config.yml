@@ -5,12 +5,11 @@
 #   You don't want to break anything, do you?
 #
 
-
-# Locale of VD 3 language. By default it's english.
-# Available localizations:
-# default - uses messages from 'language.yml' file
-# de - Deutsche sprache. Uses messages from 'language_de.yml' file
-# pl - Jezyk Polski. Uses messages from 'language_pl.yml' file
+# Select locale of VD 3, default it's English.
+# Available locales:
+#    default - English language. Uses 'language.yml'.
+#    de - Deutsche sprache. Uses 'language_de.yml'
+#    pl - Język Polski. Uses 'language_pl.yml'
 #
 # DO NOT MODIFY LOCALE FILES (language_de/pl.yml), THEY ARE OVERRIDDEN EVERY RESTART
 # TO EDIT THEM, COPY THEIR CONTENTS INTO language.yml FILE!
@@ -37,12 +36,13 @@ Respawn-After-Wave: true
 # You can create custom players permissions here.
 # Player with your custom permission will get % bonus orbs
 # when he lift up experience from killed zombie.
+# More here: https://github.com/Plajer-Lair/Village_Defense/wiki/Commands-and-Permissions#custom-permissions
 CustomPermissions:
   # Player with permission my-permission-one get 10% more orbs
   # Do not use dots (.), they won't work.
   my-permission-one: 10
 
-# Basic permissions for game, every permission is explained at plugin's page
+# Basic permissions for game, permissions explained here: https://github.com/Plajer-Lair/Village_Defense/wiki/Commands-and-Permissions#basic-permissions
 Basic-Permissions:
   Full-Games-Permission: "villagedefense.fullgames"
   Vip-Permission: "villagedefense.vip"
