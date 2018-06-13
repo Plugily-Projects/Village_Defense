@@ -5,6 +5,7 @@
 * Added /vd selectkit command to select kit in game (permission villagedefense.command.selectkit)
 * Fixed last Dark essence of Wizard kit wasn't removed when used
 * Prettified commands now work properly at 1.9 and are available at 1.8
+* Added BossBar for 1.8 versions
 
 ### 3.7.1 Release (25.05.2018)
 * Full games permission now works for BungeeCord
