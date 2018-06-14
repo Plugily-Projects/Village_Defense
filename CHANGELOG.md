@@ -1,5 +1,8 @@
 # Village Defense 3 Changelog
 
+### 3.7.3 Release (14.06.2018)
+* Fixed boss bar startup errors
+
 ### 3.7.2 Release (04.06.2018)
 * Added sign block states of the game
 * Added /vd selectkit command to select kit in game (permission villagedefense.command.selectkit)
