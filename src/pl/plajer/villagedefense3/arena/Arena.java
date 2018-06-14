@@ -23,9 +23,6 @@ import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.boss.BarColor;
-import org.bukkit.boss.BarStyle;
-import org.bukkit.boss.BossBar;
 import org.bukkit.entity.IronGolem;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Villager;
@@ -38,7 +35,7 @@ import pl.plajer.villagedefense3.handlers.ChatManager;
 import pl.plajer.villagedefense3.handlers.ConfigurationManager;
 import pl.plajer.villagedefense3.handlers.PermissionsManager;
 import pl.plajer.villagedefense3.kits.kitapi.KitRegistry;
-import pl.plajer.villagedefense3.language.LanguageManager;
+import pl.plajer.villagedefense3.handlers.language.LanguageManager;
 import pl.plajer.villagedefense3.user.User;
 import pl.plajer.villagedefense3.user.UserManager;
 import pl.plajer.villagedefense3.villagedefenseapi.VillageGameStartEvent;
@@ -58,7 +55,7 @@ import java.util.UUID;
  */
 public abstract class Arena extends BukkitRunnable {
 
-    final List<Location> zombieSpawns = new ArrayList<>();
+    protected final List<Location> zombieSpawns = new ArrayList<>();
     private final Main plugin;
     private final LinkedHashMap<Location, Byte> doorBlocks = new LinkedHashMap<>();
     private final List<Location> villagerSpawnPoints = new ArrayList<>();
@@ -914,7 +911,7 @@ public abstract class Arena extends BukkitRunnable {
 
     public abstract void spawnVillagerSlayer(Random random);
 
-    void addWolf(Wolf wolf) {
+    protected void addWolf(Wolf wolf) {
         wolfs.add(wolf);
     }
 
@@ -983,7 +980,7 @@ public abstract class Arena extends BukkitRunnable {
         return zombieCheckerLocations;
     }
 
-    void subtractZombiesToSpawn() {
+    protected void subtractZombiesToSpawn() {
         this.zombiesToSpawn--;
     }
 
@@ -1025,7 +1022,7 @@ public abstract class Arena extends BukkitRunnable {
         }
     }
 
-    void addZombie(Zombie zombie) {
+    protected void addZombie(Zombie zombie) {
         zombies.add(zombie);
     }
 
@@ -1050,7 +1047,7 @@ public abstract class Arena extends BukkitRunnable {
         ArenaUtils.updateLevelStat(player, this);
     }
 
-    void addVillager(Villager villager) {
+    protected void addVillager(Villager villager) {
         villagers.add(villager);
 
     }
@@ -1063,7 +1060,7 @@ public abstract class Arena extends BukkitRunnable {
         }
     }
 
-    void addIronGolem(IronGolem ironGolem) {
+    protected void addIronGolem(IronGolem ironGolem) {
         ironGolems.add(ironGolem);
     }
 

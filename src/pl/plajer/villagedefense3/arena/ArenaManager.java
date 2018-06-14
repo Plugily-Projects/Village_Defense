@@ -37,12 +37,12 @@ import org.bukkit.scheduler.BukkitRunnable;
 import pl.plajer.villagedefense3.Main;
 import pl.plajer.villagedefense3.handlers.ChatManager;
 import pl.plajer.villagedefense3.handlers.PermissionsManager;
-import pl.plajer.villagedefense3.items.SpecialItemManager;
-import pl.plajer.villagedefense3.kits.GolemFriendKit;
+import pl.plajer.villagedefense3.handlers.items.SpecialItemManager;
+import pl.plajer.villagedefense3.kits.level.GolemFriendKit;
 import pl.plajer.villagedefense3.kits.kitapi.KitRegistry;
 import pl.plajer.villagedefense3.user.User;
 import pl.plajer.villagedefense3.user.UserManager;
-import pl.plajer.villagedefense3.utils.Util;
+import pl.plajer.villagedefense3.utils.Utils;
 import pl.plajer.villagedefense3.villagedefenseapi.VillageGameJoinAttemptEvent;
 import pl.plajer.villagedefense3.villagedefenseapi.VillageGameLeaveAttemptEvent;
 import pl.plajer.villagedefense3.villagedefenseapi.VillageGameStopEvent;
@@ -252,7 +252,7 @@ public class ArenaManager {
                         public void run() {
                             if(i == 4) this.cancel();
                             if(!arena.getPlayers().contains(p)) this.cancel();
-                            Util.spawnRandomFirework(p.getLocation());
+                            Utils.spawnRandomFirework(p.getLocation());
                             i++;
                         }
                     }.runTaskTimer(plugin, 30, 30);

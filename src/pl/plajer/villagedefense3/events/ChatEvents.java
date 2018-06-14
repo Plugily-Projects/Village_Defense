@@ -28,7 +28,7 @@ import pl.plajer.villagedefense3.Main;
 import pl.plajer.villagedefense3.arena.Arena;
 import pl.plajer.villagedefense3.arena.ArenaRegistry;
 import pl.plajer.villagedefense3.handlers.ChatManager;
-import pl.plajer.villagedefense3.language.LanguageManager;
+import pl.plajer.villagedefense3.handlers.language.LanguageManager;
 import pl.plajer.villagedefense3.user.UserManager;
 
 import java.util.ArrayList;

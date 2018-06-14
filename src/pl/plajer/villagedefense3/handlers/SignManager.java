@@ -39,8 +39,8 @@ import pl.plajer.villagedefense3.arena.Arena;
 import pl.plajer.villagedefense3.arena.ArenaManager;
 import pl.plajer.villagedefense3.arena.ArenaRegistry;
 import pl.plajer.villagedefense3.arena.ArenaState;
-import pl.plajer.villagedefense3.language.LanguageManager;
-import pl.plajer.villagedefense3.utils.Util;
+import pl.plajer.villagedefense3.handlers.language.LanguageManager;
+import pl.plajer.villagedefense3.utils.Utils;
 
 import java.util.HashMap;
 import java.util.List;
@@ -173,7 +173,7 @@ public class SignManager implements Listener {
         loadedSigns.clear();
         for(String path : ConfigurationManager.getConfig("arenas").getConfigurationSection("instances").getKeys(false)) {
             for(String sign : ConfigurationManager.getConfig("arenas").getStringList("instances." + path + ".signs")) {
-                Location loc = Util.getLocation(false, sign);
+                Location loc = Utils.getLocation(false, sign);
                 if(loc.getBlock().getState() instanceof Sign) {
                     loadedSigns.put((Sign) loc.getBlock().getState(), ArenaRegistry.getArena(path));
                 } else {

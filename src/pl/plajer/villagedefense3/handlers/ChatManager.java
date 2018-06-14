@@ -23,9 +23,9 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import pl.plajer.villagedefense3.arena.Arena;
-import pl.plajer.villagedefense3.language.LanguageManager;
+import pl.plajer.villagedefense3.handlers.language.LanguageManager;
 import pl.plajer.villagedefense3.utils.MessageUtils;
-import pl.plajer.villagedefense3.utils.Util;
+import pl.plajer.villagedefense3.utils.Utils;
 
 /**
  * Created by Tom on 27/07/2014.
@@ -81,7 +81,7 @@ public class ChatManager {
     private static String formatPlaceholders(String message, Arena arena) {
         String returnString = message;
         returnString = StringUtils.replace(returnString, "%TIME%", Integer.toString(arena.getTimer()));
-        returnString = StringUtils.replace(returnString, "%FORMATTEDTIME%", Util.formatIntoMMSS((arena.getTimer())));
+        returnString = StringUtils.replace(returnString, "%FORMATTEDTIME%", Utils.formatIntoMMSS((arena.getTimer())));
         returnString = StringUtils.replace(returnString, "%PLAYERSIZE%", Integer.toString(arena.getPlayers().size()));
         returnString = StringUtils.replace(returnString, "%MAXPLAYERS%", Integer.toString(arena.getMaximumPlayers()));
         returnString = StringUtils.replace(returnString, "%MINPLAYERS%", Integer.toString(arena.getMinimumPlayers()));

@@ -31,7 +31,7 @@ import pl.plajer.villagedefense3.arena.ArenaRegistry;
 import pl.plajer.villagedefense3.database.FileStats;
 import pl.plajer.villagedefense3.handlers.PermissionsManager;
 import pl.plajer.villagedefense3.user.UserManager;
-import pl.plajer.villagedefense3.utils.MySQLConnectionUtils;
+import pl.plajer.villagedefense3.database.MySQLConnectionUtils;
 import pl.plajer.villagedefense3.utils.UpdateChecker;
 
 /**

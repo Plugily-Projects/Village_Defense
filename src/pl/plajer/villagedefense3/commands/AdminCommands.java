@@ -49,7 +49,7 @@ import pl.plajer.villagedefense3.handlers.ChatManager;
 import pl.plajer.villagedefense3.handlers.ConfigurationManager;
 import pl.plajer.villagedefense3.user.User;
 import pl.plajer.villagedefense3.user.UserManager;
-import pl.plajer.villagedefense3.utils.Util;
+import pl.plajer.villagedefense3.utils.Utils;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -305,7 +305,7 @@ public class AdminCommands extends MainCommand {
             item.setItemMeta(meta);
             player.sendMessage(ChatColor.GREEN + "Command succesfully executed, item updated!");
         } else {
-            Util.addLore(item, ChatColor.GOLD + price + " " + ChatManager.colorMessage("In-Game.Messages.Shop-Messages.Currency-In-Shop"));
+            Utils.addLore(item, ChatColor.GOLD + price + " " + ChatManager.colorMessage("In-Game.Messages.Shop-Messages.Currency-In-Shop"));
             player.sendMessage(ChatColor.GREEN + "Command succesfully executed!");
         }
     }

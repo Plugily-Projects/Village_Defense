@@ -35,16 +35,16 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import pl.plajer.villagedefense3.Main;
 import pl.plajer.villagedefense3.arena.Arena;
-import pl.plajer.villagedefense3.arena.ArenaInitializer1_11_R1;
-import pl.plajer.villagedefense3.arena.ArenaInitializer1_12_R1;
-import pl.plajer.villagedefense3.arena.ArenaInitializer1_8_R3;
-import pl.plajer.villagedefense3.arena.ArenaInitializer1_9_R1;
+import pl.plajer.villagedefense3.arena.initializers.ArenaInitializer1_11_R1;
+import pl.plajer.villagedefense3.arena.initializers.ArenaInitializer1_12_R1;
+import pl.plajer.villagedefense3.arena.initializers.ArenaInitializer1_8_R3;
+import pl.plajer.villagedefense3.arena.initializers.ArenaInitializer1_9_R1;
 import pl.plajer.villagedefense3.arena.ArenaRegistry;
 import pl.plajer.villagedefense3.handlers.ChatManager;
 import pl.plajer.villagedefense3.handlers.ConfigurationManager;
-import pl.plajer.villagedefense3.utils.SetupInventory;
+import pl.plajer.villagedefense3.handlers.setup.SetupInventory;
 import pl.plajer.villagedefense3.utils.StringMatcher;
-import pl.plajer.villagedefense3.utils.Util;
+import pl.plajer.villagedefense3.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -439,7 +439,7 @@ public class MainCommand implements CommandExecutor {
                     i = config.getConfigurationSection("instances." + args[0] + ".zombiespawns").getKeys(false).size();
                 }
                 i++;
-                Util.saveLoc("instances." + args[0] + ".zombiespawns." + i, player.getLocation(), false);
+                Utils.saveLoc("instances." + args[0] + ".zombiespawns." + i, player.getLocation(), false);
                 player.sendMessage(ChatColor.GREEN + "Zombie spawn added!");
                 return;
             }
@@ -452,7 +452,7 @@ public class MainCommand implements CommandExecutor {
                 }
 
                 i++;
-                Util.saveLoc("instances." + args[0] + ".villagerspawns." + i, player.getLocation(), false);
+                Utils.saveLoc("instances." + args[0] + ".villagerspawns." + i, player.getLocation(), false);
                 player.sendMessage(ChatColor.GREEN + "Villager spawn added!");
                 return;
             }
@@ -515,15 +515,15 @@ public class MainCommand implements CommandExecutor {
             if(args[2].equalsIgnoreCase("lobbylocation") || args[2].equalsIgnoreCase("lobbyloc")) {
                 String location = player.getLocation().getWorld().getName() + "," + player.getLocation().getX() + "," + player.getLocation().getY() + "," + player.getLocation().getZ() + "," + player.getLocation().getYaw() + "," + player.getLocation().getPitch();
                 config.set("instances." + args[0] + ".lobbylocation", location);
-                player.sendMessage("VillageDefense: Lobby location for arena/instance " + args[0] + " set to " + Util.locationToString(player.getLocation()));
+                player.sendMessage("VillageDefense: Lobby location for arena/instance " + args[0] + " set to " + Utils.locationToString(player.getLocation()));
             } else if(args[2].equalsIgnoreCase("Startlocation") || args[2].equalsIgnoreCase("Startloc")) {
                 String location = player.getLocation().getWorld().getName() + "," + player.getLocation().getX() + "," + player.getLocation().getY() + "," + player.getLocation().getZ() + "," + player.getLocation().getYaw() + "," + player.getLocation().getPitch();
                 config.set("instances." + args[0] + ".Startlocation", location);
-                player.sendMessage("VillageDefense: Start location for arena/instance " + args[0] + " set to " + Util.locationToString(player.getLocation()));
+                player.sendMessage("VillageDefense: Start location for arena/instance " + args[0] + " set to " + Utils.locationToString(player.getLocation()));
             } else if(args[2].equalsIgnoreCase("Endlocation") || args[2].equalsIgnoreCase("Endloc")) {
                 String location = player.getLocation().getWorld().getName() + "," + player.getLocation().getX() + "," + player.getLocation().getY() + "," + player.getLocation().getZ() + "," + player.getLocation().getYaw() + "," + player.getLocation().getPitch();
                 config.set("instances." + args[0] + ".Endlocation", location);
-                player.sendMessage("VillageDefense: End location for arena/instance " + args[0] + " set to " + Util.locationToString(player.getLocation()));
+                player.sendMessage("VillageDefense: End location for arena/instance " + args[0] + " set to " + Utils.locationToString(player.getLocation()));
             } else {
                 player.sendMessage(ChatColor.RED + "Invalid Command!");
                 player.sendMessage(ChatColor.RED + "Usage: /vd <ARENA > set <StartLOCTION | LOBBYLOCATION | EndLOCATION>");
@@ -581,9 +581,9 @@ public class MainCommand implements CommandExecutor {
 
     private void createInstanceInConfig(String ID, String worldName) {
         String path = "instances." + ID + ".";
-        Util.saveLoc(path + "lobbylocation", Bukkit.getServer().getWorlds().get(0).getSpawnLocation(), false);
-        Util.saveLoc(path + "Startlocation", Bukkit.getServer().getWorlds().get(0).getSpawnLocation(), false);
-        Util.saveLoc(path + "Endlocation", Bukkit.getServer().getWorlds().get(0).getSpawnLocation(), false);
+        Utils.saveLoc(path + "lobbylocation", Bukkit.getServer().getWorlds().get(0).getSpawnLocation(), false);
+        Utils.saveLoc(path + "Startlocation", Bukkit.getServer().getWorlds().get(0).getSpawnLocation(), false);
+        Utils.saveLoc(path + "Endlocation", Bukkit.getServer().getWorlds().get(0).getSpawnLocation(), false);
         FileConfiguration config = ConfigurationManager.getConfig("arenas");
         config.set(path + "minimumplayers", 1);
         config.set(path + "maximumplayers", 10);
@@ -608,9 +608,9 @@ public class MainCommand implements CommandExecutor {
         arena.setMinimumPlayers(ConfigurationManager.getConfig("arenas").getInt(path + "minimumplayers"));
         arena.setMaximumPlayers(ConfigurationManager.getConfig("arenas").getInt(path + "maximumplayers"));
         arena.setMapName(ConfigurationManager.getConfig("arenas").getString(path + "mapname"));
-        arena.setLobbyLocation(Util.getLocation(false, ConfigurationManager.getConfig("arenas").getString(path + "lobbylocation")));
-        arena.setStartLocation(Util.getLocation(false, ConfigurationManager.getConfig("arenas").getString(path + "Startlocation")));
-        arena.setEndLocation(Util.getLocation(false, ConfigurationManager.getConfig("arenas").getString(path + "Endlocation")));
+        arena.setLobbyLocation(Utils.getLocation(false, ConfigurationManager.getConfig("arenas").getString(path + "lobbylocation")));
+        arena.setStartLocation(Utils.getLocation(false, ConfigurationManager.getConfig("arenas").getString(path + "Startlocation")));
+        arena.setEndLocation(Utils.getLocation(false, ConfigurationManager.getConfig("arenas").getString(path + "Endlocation")));
         arena.setReady(false);
 
         ArenaRegistry.registerArena(arena);

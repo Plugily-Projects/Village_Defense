@@ -27,7 +27,6 @@ import pl.plajer.villagedefense3.handlers.ConfigurationManager;
 import pl.plajer.villagedefense3.user.User;
 import pl.plajer.villagedefense3.user.UserManager;
 import pl.plajer.villagedefense3.utils.MessageUtils;
-import pl.plajer.villagedefense3.utils.MySQLConnectionUtils;
 
 import java.io.IOException;
 import java.util.ArrayList;

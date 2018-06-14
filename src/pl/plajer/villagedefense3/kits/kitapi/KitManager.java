@@ -35,7 +35,7 @@ import pl.plajer.villagedefense3.handlers.ChatManager;
 import pl.plajer.villagedefense3.kits.kitapi.basekits.Kit;
 import pl.plajer.villagedefense3.user.User;
 import pl.plajer.villagedefense3.user.UserManager;
-import pl.plajer.villagedefense3.utils.Util;
+import pl.plajer.villagedefense3.utils.Utils;
 import pl.plajer.villagedefense3.villagedefenseapi.VillagePlayerChooseKitEvent;
 
 import java.util.Arrays;
@@ -85,13 +85,13 @@ public class KitManager implements Listener {
     }
 
     private void createKitMenu(Player player) {
-        invMenu = Bukkit.createInventory(null, Util.serializeInt(KitRegistry.getKits().size()), getMenuName());
+        invMenu = Bukkit.createInventory(null, Utils.serializeInt(KitRegistry.getKits().size()), getMenuName());
         for(Kit kit : KitRegistry.getKits()) {
             ItemStack itemStack = kit.getItemStack();
             if(kit.isUnlockedByPlayer(player))
-                Util.addLore(itemStack, unlockedString);
+                Utils.addLore(itemStack, unlockedString);
             else
-                Util.addLore(itemStack, lockedString);
+                Utils.addLore(itemStack, lockedString);
 
             invMenu.addItem(itemStack);
         }

@@ -43,7 +43,7 @@ import net.minecraft.server.v1_9_R1.PathfinderGoalTradeWithPlayer;
 import net.minecraft.server.v1_9_R1.World;
 import org.bukkit.craftbukkit.v1_9_R1.CraftWorld;
 import pl.plajer.villagedefense3.creatures.CreatureUtils;
-import pl.plajer.villagedefense3.language.LanguageManager;
+import pl.plajer.villagedefense3.handlers.language.LanguageManager;
 
 import java.util.Random;
 import java.util.Set;

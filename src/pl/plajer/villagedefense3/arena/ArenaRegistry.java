@@ -23,10 +23,14 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import pl.plajer.villagedefense3.Main;
+import pl.plajer.villagedefense3.arena.initializers.ArenaInitializer1_11_R1;
+import pl.plajer.villagedefense3.arena.initializers.ArenaInitializer1_12_R1;
+import pl.plajer.villagedefense3.arena.initializers.ArenaInitializer1_8_R3;
+import pl.plajer.villagedefense3.arena.initializers.ArenaInitializer1_9_R1;
 import pl.plajer.villagedefense3.handlers.ChatManager;
 import pl.plajer.villagedefense3.handlers.ConfigurationManager;
 import pl.plajer.villagedefense3.handlers.ShopManager;
-import pl.plajer.villagedefense3.utils.Util;
+import pl.plajer.villagedefense3.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -140,9 +144,9 @@ public class ArenaRegistry {
             arena.setMinimumPlayers(ConfigurationManager.getConfig("arenas").getInt(s + "minimumplayers"));
             arena.setMaximumPlayers(ConfigurationManager.getConfig("arenas").getInt(s + "maximumplayers"));
             arena.setMapName(ConfigurationManager.getConfig("arenas").getString(s + "mapname"));
-            arena.setLobbyLocation(Util.getLocation(false, ConfigurationManager.getConfig("arenas").getString(s + "lobbylocation")));
-            arena.setStartLocation(Util.getLocation(false, ConfigurationManager.getConfig("arenas").getString(s + "Startlocation")));
-            arena.setEndLocation(Util.getLocation(false, ConfigurationManager.getConfig("arenas").getString(s + "Endlocation")));
+            arena.setLobbyLocation(Utils.getLocation(false, ConfigurationManager.getConfig("arenas").getString(s + "lobbylocation")));
+            arena.setStartLocation(Utils.getLocation(false, ConfigurationManager.getConfig("arenas").getString(s + "Startlocation")));
+            arena.setEndLocation(Utils.getLocation(false, ConfigurationManager.getConfig("arenas").getString(s + "Endlocation")));
 
             if(!ConfigurationManager.getConfig("arenas").getBoolean(s + "isdone")) {
                 Bukkit.getConsoleSender().sendMessage(ChatManager.colorMessage("Validator.Invalid-Arena-Configuration").replaceAll("%arena%", ID).replaceAll("%error%", "NOT VALIDATED"));
@@ -154,7 +158,7 @@ public class ArenaRegistry {
             if(ConfigurationManager.getConfig("arenas").contains(s + "zombiespawns")) {
                 for(String string : ConfigurationManager.getConfig("arenas").getConfigurationSection(s + "zombiespawns").getKeys(false)) {
                     String path = s + "zombiespawns." + string;
-                    arena.addZombieSpawn(Util.getLocation(false, ConfigurationManager.getConfig("arenas").getString(path)));
+                    arena.addZombieSpawn(Utils.getLocation(false, ConfigurationManager.getConfig("arenas").getString(path)));
                 }
             } else {
                 Bukkit.getConsoleSender().sendMessage(ChatManager.colorMessage("Validator.Invalid-Arena-Configuration").replaceAll("%arena%", ID).replaceAll("%error%", "ZOMBIE SPAWNS"));
@@ -166,7 +170,7 @@ public class ArenaRegistry {
             if(ConfigurationManager.getConfig("arenas").contains(s + "villagerspawns")) {
                 for(String string : ConfigurationManager.getConfig("arenas").getConfigurationSection(s + "villagerspawns").getKeys(false)) {
                     String path = s + "villagerspawns." + string;
-                    arena.addVillagerSpawn(Util.getLocation(false, ConfigurationManager.getConfig("arenas").getString(path)));
+                    arena.addVillagerSpawn(Utils.getLocation(false, ConfigurationManager.getConfig("arenas").getString(path)));
                 }
             } else {
                 Bukkit.getConsoleSender().sendMessage(ChatManager.colorMessage("Validator.Invalid-Arena-Configuration").replaceAll("%arena%", ID).replaceAll("%error%", "VILLAGER SPAWNS"));
@@ -177,7 +181,7 @@ public class ArenaRegistry {
             if(ConfigurationManager.getConfig("arenas").contains(s + "doors")) {
                 for(String string : ConfigurationManager.getConfig("arenas").getConfigurationSection(s + "doors").getKeys(false)) {
                     String path = s + "doors." + string + ".";
-                    arena.addDoor(Util.getLocation(false, ConfigurationManager.getConfig("arenas").getString(path + "location")), (byte) ConfigurationManager.getConfig("arenas").getInt(path + "byte"));
+                    arena.addDoor(Utils.getLocation(false, ConfigurationManager.getConfig("arenas").getString(path + "location")), (byte) ConfigurationManager.getConfig("arenas").getInt(path + "byte"));
                 }
             } else {
                 Bukkit.getConsoleSender().sendMessage(ChatManager.colorMessage("Validator.Invalid-Arena-Configuration").replaceAll("%arena%", ID).replaceAll("%error%", "DOORS"));

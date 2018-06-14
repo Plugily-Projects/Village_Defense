@@ -62,10 +62,10 @@ import pl.plajer.villagedefense3.arena.ArenaState;
 import pl.plajer.villagedefense3.handlers.ChatManager;
 import pl.plajer.villagedefense3.handlers.PermissionsManager;
 import pl.plajer.villagedefense3.handlers.ShopManager;
-import pl.plajer.villagedefense3.items.SpecialItemManager;
+import pl.plajer.villagedefense3.handlers.items.SpecialItemManager;
 import pl.plajer.villagedefense3.user.User;
 import pl.plajer.villagedefense3.user.UserManager;
-import pl.plajer.villagedefense3.utils.Util;
+import pl.plajer.villagedefense3.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -232,7 +232,7 @@ public class Events implements Listener {
     @EventHandler
     public void onDoorDrop(ItemSpawnEvent event) {
         if(event.getEntity().getItemStack().getType() == Material.WOOD_DOOR) {
-            for(Entity entity : Util.getNearbyEntities(event.getLocation(), 20)) {
+            for(Entity entity : Utils.getNearbyEntities(event.getLocation(), 20)) {
                 if(entity.getType() == EntityType.PLAYER) {
                     if(ArenaRegistry.getArena((Player) entity) != null) {
                         event.getEntity().remove();
@@ -309,7 +309,7 @@ public class Events implements Listener {
             }
             for(Arena arena : ArenaRegistry.getArenas()) {
                 if(arena.getZombies().contains(e.getEntity())) {
-                    e.getEntity().setCustomName(Util.getProgressBar((int) ((Zombie) e.getEntity()).getHealth(), (int) ((Zombie) e.getEntity()).getMaxHealth(), 50, "|", ChatColor.YELLOW + "", ChatColor.GRAY + ""));
+                    e.getEntity().setCustomName(Utils.getProgressBar((int) ((Zombie) e.getEntity()).getHealth(), (int) ((Zombie) e.getEntity()).getMaxHealth(), 50, "|", ChatColor.YELLOW + "", ChatColor.GRAY + ""));
                 }
             }
         }
@@ -454,7 +454,7 @@ public class Events implements Listener {
             }
             return;
         }
-        for(Entity entity : Util.getNearbyEntities(event.getItem().getLocation(), 20)) {
+        for(Entity entity : Utils.getNearbyEntities(event.getItem().getLocation(), 20)) {
             if(!(entity instanceof Player)) {
                 continue;
             }

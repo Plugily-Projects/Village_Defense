@@ -29,7 +29,7 @@ import org.bukkit.inventory.ItemStack;
 import pl.plajer.villagedefense3.Main;
 import pl.plajer.villagedefense3.arena.Arena;
 import pl.plajer.villagedefense3.arena.ArenaRegistry;
-import pl.plajer.villagedefense3.utils.Util;
+import pl.plajer.villagedefense3.utils.Utils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -51,13 +51,13 @@ public class ShopManager {
     }
 
     public static void registerShop(Arena a) {
-        Location location = Util.getLocation(false, ConfigurationManager.getConfig("arenas").getString("instances." + a.getID() + ".shop"));
+        Location location = Utils.getLocation(false, ConfigurationManager.getConfig("arenas").getString("instances." + a.getID() + ".shop"));
         if(!(location.getBlock().getState() instanceof Chest)) {
             Main.debug("Shop failed to load, invalid location for loc " + location, System.currentTimeMillis());
             return;
         }
         int i = ((Chest) location.getBlock().getState()).getInventory().getContents().length;
-        Inventory inventory = Bukkit.createInventory(null, Util.serializeInt(i), ChatManager.colorMessage("In-Game.Messages.Shop-Messages.Shop-GUI-Name"));
+        Inventory inventory = Bukkit.createInventory(null, Utils.serializeInt(i), ChatManager.colorMessage("In-Game.Messages.Shop-Messages.Shop-GUI-Name"));
         i = 0;
         for(ItemStack itemStack : ((Chest) location.getBlock().getState()).getInventory().getContents()) {
             if(itemStack != null && itemStack.getType() != Material.REDSTONE_BLOCK)
