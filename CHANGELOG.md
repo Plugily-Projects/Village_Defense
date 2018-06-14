@@ -2,6 +2,7 @@
 
 ### 3.7.3 Release (14.06.2018)
 * Fixed boss bar startup errors
+* Removed usage of basic permission "arena edit"
 
 ### 3.7.2 Release (04.06.2018)
 * Added sign block states of the game

@@ -44,6 +44,7 @@ import pl.plajer.villagedefense3.user.User;
 import pl.plajer.villagedefense3.user.UserManager;
 import pl.plajer.villagedefense3.villagedefenseapi.VillageGameStartEvent;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -127,10 +128,12 @@ public abstract class Arena extends BukkitRunnable {
         this.rottenFleshLevel = rottenFleshLevel;
     }
 
+    @Nullable
     public BossBar getGameBar() {
         return gameBar;
     }
 
+    @Nullable
     public Bar_v1_8_R3 getGameBar_v1_8_R3() {
         return gameBar_v1_8_r3;
     }

@@ -224,7 +224,7 @@ public class Events implements Listener {
         if(arena == null) return;
         if(!plugin.getConfig().getBoolean("Block-Commands-In-Game")) return;
         if(event.getMessage().contains("leave") || event.getMessage().contains("stats")) return;
-        if(event.getPlayer().isOp() || event.getPlayer().hasPermission(PermissionsManager.getEditGames())) return;
+        if(event.getPlayer().isOp()) return;
         event.setCancelled(true);
         event.getPlayer().sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Only-Command-Ingame-Is-Leave"));
     }

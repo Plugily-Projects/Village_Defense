@@ -48,7 +48,6 @@ Basic-Permissions:
   Vip-Permission: "villagedefense.vip"
   Mvp-Permission: "villagedefense.mvp"
   Elite-Permission: "villagedefense.elite"
-  Arena-Edit-Permission: "villagedefense.edit"
   # <arena> represents arena name (NOT MAP NAME!), for example: 'villagedefense.join.VD02'
   # use 'villagedefense.join.*' to enable access to all arenas
   Join-Permission: "villagedefense.join.<arena>"

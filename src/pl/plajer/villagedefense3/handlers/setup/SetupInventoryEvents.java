@@ -62,7 +62,7 @@ public class SetupInventoryEvents implements Listener {
         if(event.getWhoClicked().getType() != EntityType.PLAYER)
             return;
         Player player = (Player) event.getWhoClicked();
-        if(!player.hasPermission(PermissionsManager.getEditGames()))
+        if(!player.hasPermission("villagedefense.admin.create"))
             return;
         if(!event.getInventory().getName().contains("Arena:"))
             return;

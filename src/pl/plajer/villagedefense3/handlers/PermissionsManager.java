@@ -32,7 +32,6 @@ public class PermissionsManager {
     private static String vipPerm = "villagedefense.vip";
     private static String mvpPerm = "villagedefense.mvp";
     private static String elitePerm = "villagedefense.elite";
-    private static String editPerm = "villagedefense.edit";
     private static String joinPerm = "villagedefense.join.<arena>";
 
     public static void init() {
@@ -71,14 +70,6 @@ public class PermissionsManager {
         PermissionsManager.elitePerm = ELITE;
     }
 
-    public static String getEditGames() {
-        return editPerm;
-    }
-
-    private static void setEditGames(String editGames) {
-        PermissionsManager.editPerm = editGames;
-    }
-
     public static String getJoinPerm() {
         return joinPerm;
     }
@@ -92,7 +83,6 @@ public class PermissionsManager {
     }
 
     private static void setupPermissions() {
-        PermissionsManager.setEditGames(plugin.getConfig().getString("Basic-Permissions.Arena-Edit-Permission"));
         PermissionsManager.setJoinFullGames(plugin.getConfig().getString("Basic-Permissions.Full-Games-Permission"));
         PermissionsManager.setVip(plugin.getConfig().getString("Basic-Permissions.Vip-Permission"));
         PermissionsManager.setMvp(plugin.getConfig().getString("Basic-Permissions.Mvp-Permission"));
