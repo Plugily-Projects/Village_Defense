@@ -421,7 +421,11 @@ public class Main extends JavaPlugin {
         for(Arena arena : ArenaRegistry.getArenas()) {
             for(Player player : arena.getPlayers()) {
                 if(bossbarEnabled) {
-                    arena.getArenaBar().removePlayer(player);
+                    if(is1_8_R3()){
+                        arena.getGameBar_v1_8_R3().removePlayer(player);
+                    } else {
+                        arena.getGameBar().removePlayer(player);
+                    }
                 }
                 arena.teleportToEndLocation(player);
                 if(inventoryManagerEnabled) {

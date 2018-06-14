@@ -145,7 +145,11 @@ public class ArenaManager {
         p.getInventory().clear();
         arena.showPlayers();
         if(plugin.isBossbarEnabled()) {
-            arena.getArenaBar().addPlayer(p);
+            if(plugin.is1_8_R3()){
+                arena.getGameBar_v1_8_R3().addPlayer(p);
+            } else {
+                arena.getGameBar().addPlayer(p);
+            }
         }
         if(!UserManager.getUser(p.getUniqueId()).isSpectator())
             ChatManager.broadcastAction(arena, p, ChatManager.ActionType.JOIN);
@@ -191,7 +195,11 @@ public class ArenaManager {
             }
         }
         if(plugin.isBossbarEnabled()) {
-            arena.getArenaBar().removePlayer(p);
+            if(plugin.is1_8_R3()){
+                arena.getGameBar_v1_8_R3().removePlayer(p);
+            } else {
+                arena.getGameBar().removePlayer(p);
+            }
         }
         p.setMaxHealth(20.0);
         p.setHealth(p.getMaxHealth());
