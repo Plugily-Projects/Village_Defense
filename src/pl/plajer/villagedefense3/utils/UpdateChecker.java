@@ -40,7 +40,7 @@ public class UpdateChecker {
     public static void checkUpdate(String currentVersion) {
         String version = getVersion();
         if(version.contains("b")) {
-            if(!Main.getPlugin(Main.class).getConfig().getBoolean("Update-Notifier.Notify-Beta-Versions")) return;
+            if(!Main.getPlugin(Main.class).getConfig().getBoolean("Update-Notifier.Notify-Beta-Versions", true)) return;
         }
         if(checkHigher(currentVersion, version))
             latestVersion = version;

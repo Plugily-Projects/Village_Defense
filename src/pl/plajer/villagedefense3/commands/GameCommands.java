@@ -120,7 +120,7 @@ public class GameCommands extends MainCommand {
 
     public void leaveGame(CommandSender sender) {
         if(checkSenderIsConsole(sender)) return;
-        if(!plugin.getConfig().getBoolean("Disable-Leave-Command")) {
+        if(!plugin.getConfig().getBoolean("Disable-Leave-Command", false)) {
             Player p = (Player) sender;
             if(!checkIsInGameInstance((Player) sender)) return;
             p.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("Commands.Teleported-To-The-Lobby"));

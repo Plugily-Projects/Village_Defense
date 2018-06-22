@@ -55,7 +55,7 @@ public class PowerupManager {
     private Main plugin;
 
     public PowerupManager(Main plugin) {
-        if(!plugin.getConfig().getBoolean("Powerups.Enabled")) return;
+        if(!plugin.getConfig().getBoolean("Powerups.Enabled", true)) return;
         if(plugin.getServer().getPluginManager().getPlugin("HolographicDisplays") == null) {
             Main.debug("Power up module: Holographic Displays dependency not found, disabling", System.currentTimeMillis());
             return;
@@ -64,19 +64,19 @@ public class PowerupManager {
         this.plugin = plugin;
         Main.debug("Registering power ups module!", System.currentTimeMillis());
         PowerupType.CLEANER.setName(ChatManager.colorMessage("Powerups.Map-Clean-Powerup.Name"));
-        PowerupType.CLEANER.setEnabled(plugin.getConfig().getBoolean("Powerups.List.Map-Clean"));
+        PowerupType.CLEANER.setEnabled(plugin.getConfig().getBoolean("Powerups.List.Map-Clean", true));
 
         PowerupType.DOUBLE_DAMAGE.setName(ChatManager.colorMessage("Powerups.Double-Damage-Powerup.Name"));
-        PowerupType.DOUBLE_DAMAGE.setEnabled(plugin.getConfig().getBoolean("Powerups.List.Double-Damage-For-Players.Enabled"));
+        PowerupType.DOUBLE_DAMAGE.setEnabled(plugin.getConfig().getBoolean("Powerups.List.Double-Damage-For-Players.Enabled", true));
 
         PowerupType.GOLEM_RAID.setName(ChatManager.colorMessage("Powerups.Golem-Raid-Powerup.Name"));
-        PowerupType.GOLEM_RAID.setEnabled(plugin.getConfig().getBoolean("Powerups.List.Golem-Raid.Enabled"));
+        PowerupType.GOLEM_RAID.setEnabled(plugin.getConfig().getBoolean("Powerups.List.Golem-Raid.Enabled", true));
 
         PowerupType.HEALING.setName(ChatManager.colorMessage("Powerups.Healing-Powerup.Name"));
-        PowerupType.HEALING.setEnabled(plugin.getConfig().getBoolean("Powerups.List.Healing-For-Players.Enabled"));
+        PowerupType.HEALING.setEnabled(plugin.getConfig().getBoolean("Powerups.List.Healing-For-Players.Enabled", true));
 
         PowerupType.ONE_SHOT_ONE_KILL.setName(ChatManager.colorMessage("Powerups.One-Shot-One-Kill-Powerup.Name"));
-        PowerupType.DOUBLE_DAMAGE.setEnabled(plugin.getConfig().getBoolean("Powerups.List.One-Shot-One-Kill.Enabled"));
+        PowerupType.DOUBLE_DAMAGE.setEnabled(plugin.getConfig().getBoolean("Powerups.List.One-Shot-One-Kill.Enabled", true));
 
         List<PowerupType> powerups = new ArrayList<>();
         for(PowerupType pt : PowerupType.values()) {
@@ -96,7 +96,7 @@ public class PowerupManager {
         if(!powerupType.isEnabled()) {
             spawnPowerup(loc, arena);
         }
-        if(!(ThreadLocalRandom.current().nextDouble(0.0, 100.0) <= plugin.getConfig().getDouble("Powerups.Drop-Chance"))) return;
+        if(!(ThreadLocalRandom.current().nextDouble(0.0, 100.0) <= plugin.getConfig().getDouble("Powerups.Drop-Chance", 1.0))) return;
         final PowerupType finalPowerUp = powerupType;
         String text = powerupType.getName();
         ItemStack icon = new ItemStack(powerupType.getMaterial());
@@ -122,28 +122,28 @@ public class PowerupManager {
                 case DOUBLE_DAMAGE:
                     for(Player p : arena.getPlayers()) {
                         p.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 20 *
-                                plugin.getConfig().getInt("Powerups.List.Double-Damage-For-Players.Time"), 1, false, false));
+                                plugin.getConfig().getInt("Powerups.List.Double-Damage-For-Players.Time", 15), 1, false, false));
                     }
-                    subTitle = subTitle.replaceAll("%time%", plugin.getConfig().getString("Powerups.List.Double-Damage-For-Players.Time"));
+                    subTitle = subTitle.replaceAll("%time%", plugin.getConfig().getString("Powerups.List.Double-Damage-For-Players.Time", "15"));
                     break;
                 case HEALING:
                     for(Player p : arena.getPlayers()) {
                         p.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 20 *
-                                plugin.getConfig().getInt("Powerups.List.Healing-For-Players.Time-Of-Healing"), 1, false, false));
+                                plugin.getConfig().getInt("Powerups.List.Healing-For-Players.Time-Of-Healing", 10), 1, false, false));
                     }
-                    subTitle = subTitle.replaceAll("%time%", plugin.getConfig().getString("Powerups.List.Healing-For-Players.Time-Of-Healing"));
+                    subTitle = subTitle.replaceAll("%time%", plugin.getConfig().getString("Powerups.List.Healing-For-Players.Time-Of-Healing", "10"));
                     break;
                 case GOLEM_RAID:
-                    for(int i = 0; i < plugin.getConfig().getInt("Powerups.List.Golem-Raid.Golems-Amount"); i++) {
+                    for(int i = 0; i < plugin.getConfig().getInt("Powerups.List.Golem-Raid.Golems-Amount", 3); i++) {
                         arena.spawnGolem(arena.getStartLocation(), player);
                     }
                     break;
                 case ONE_SHOT_ONE_KILL:
                     for(Player p : arena.getPlayers()) {
                         p.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 20 *
-                                plugin.getConfig().getInt("Powerups.List.One-Shot-One-Kill.Time"), 255, false, false));
+                                plugin.getConfig().getInt("Powerups.List.One-Shot-One-Kill.Time", 15), 255, false, false));
                     }
-                    subTitle = subTitle.replaceAll("%time%", plugin.getConfig().getString("Powerups.List.One-Shot-One-Kill.Time"));
+                    subTitle = subTitle.replaceAll("%time%", plugin.getConfig().getString("Powerups.List.One-Shot-One-Kill.Time", "15"));
                     break;
             }
             for(Player p : arena.getPlayers()) {

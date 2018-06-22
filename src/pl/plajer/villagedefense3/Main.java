@@ -218,7 +218,7 @@ public class Main extends JavaPlugin {
                 (ConfigurationManager.getConfig("language").isSet("File-Version") && getConfig().isSet("Config-Version"))) {
             LanguageMigrator.migrateToNewFormat();
         }
-        debug = getConfig().getBoolean("Debug");
+        debug = getConfig().getBoolean("Debug", false);
         debug("Main setup start", System.currentTimeMillis());
         setupFiles();
         LanguageMigrator.configUpdate();
@@ -226,7 +226,7 @@ public class Main extends JavaPlugin {
         initializeClasses();
 
         String currentVersion = "v" + Bukkit.getPluginManager().getPlugin("VillageDefense").getDescription().getVersion();
-        if(getConfig().getBoolean("Update-Notifier.Enabled")) {
+        if(getConfig().getBoolean("Update-Notifier.Enabled", true)) {
             try {
                 UpdateChecker.checkUpdate(currentVersion);
                 String latestVersion = UpdateChecker.getLatestVersion();
@@ -249,17 +249,17 @@ public class Main extends JavaPlugin {
             }
         }
 
-        STARTING_TIMER_TIME = getConfig().getInt("Starting-Waiting-Time");
-        MINI_ZOMBIE_SPEED = (float) getConfig().getDouble("Mini-Zombie-Speed");
-        ZOMBIE_SPEED = (float) getConfig().getDouble("Zombie-Speed");
-        databaseActivated = getConfig().getBoolean("DatabaseActivated");
-        inventoryManagerEnabled = getConfig().getBoolean("InventoryManager");
+        STARTING_TIMER_TIME = getConfig().getInt("Starting-Waiting-Time", 60);
+        MINI_ZOMBIE_SPEED = (float) getConfig().getDouble("Mini-Zombie-Speed", 2.0);
+        ZOMBIE_SPEED = (float) getConfig().getDouble("Zombie-Speed", 1.3);
+        databaseActivated = getConfig().getBoolean("DatabaseActivated", false);
+        inventoryManagerEnabled = getConfig().getBoolean("InventoryManager", false);
         if(databaseActivated) {
             database = new MySQLDatabase(this);
         } else {
             fileStats = new FileStats(this);
         }
-        bossbarEnabled = getConfig().getBoolean("Bossbar-Enabled");
+        bossbarEnabled = getConfig().getBoolean("Bossbar-Enabled", true);
 
         BreakFenceListener listener = new BreakFenceListener();
         listener.runTaskTimer(this, 1L, 20L);
@@ -272,7 +272,7 @@ public class Main extends JavaPlugin {
         //we must start it after instances load!
         signManager = new SignManager(this);
 
-        chatFormat = getConfig().getBoolean("ChatFormat-Enabled");
+        chatFormat = getConfig().getBoolean("ChatFormat-Enabled", true);
 
         ConfigurationSection cs = getConfig().getConfigurationSection("CustomPermissions");
         for(String key : cs.getKeys(false)) {
@@ -295,8 +295,8 @@ public class Main extends JavaPlugin {
     }
 
     private void initializeClasses() {
-        bungeeEnabled = getConfig().getBoolean("BungeeActivated");
-        if(getConfig().getBoolean("BungeeActivated")) bungeeManager = new BungeeManager(this);
+        bungeeEnabled = getConfig().getBoolean("BungeeActivated", false);
+        if(getConfig().getBoolean("BungeeActivated", false)) bungeeManager = new BungeeManager(this);
         new ChatManager(ChatManager.colorMessage("In-Game.Plugin-Prefix"));
         new Utils(this);
         mainCommand = new MainCommand(this, true);

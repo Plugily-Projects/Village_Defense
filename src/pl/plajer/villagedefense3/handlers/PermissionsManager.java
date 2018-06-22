@@ -83,11 +83,11 @@ public class PermissionsManager {
     }
 
     private static void setupPermissions() {
-        PermissionsManager.setJoinFullGames(plugin.getConfig().getString("Basic-Permissions.Full-Games-Permission"));
-        PermissionsManager.setVip(plugin.getConfig().getString("Basic-Permissions.Vip-Permission"));
-        PermissionsManager.setMvp(plugin.getConfig().getString("Basic-Permissions.Mvp-Permission"));
-        PermissionsManager.setElite(plugin.getConfig().getString("Basic-Permissions.Elite-Permission"));
-        PermissionsManager.setJoinPerm(plugin.getConfig().getString("Basic-Permissions.Join-Permission"));
+        PermissionsManager.setJoinFullGames(plugin.getConfig().getString("Basic-Permissions.Full-Games-Permission", "villagedefense.fullgames"));
+        PermissionsManager.setVip(plugin.getConfig().getString("Basic-Permissions.Vip-Permission", "villagedefense.vip"));
+        PermissionsManager.setMvp(plugin.getConfig().getString("Basic-Permissions.Mvp-Permission", "villagedefense.mvp"));
+        PermissionsManager.setElite(plugin.getConfig().getString("Basic-Permissions.Elite-Permission", "villagedefense.elite"));
+        PermissionsManager.setJoinPerm(plugin.getConfig().getString("Basic-Permissions.Join-Permission", "villagedefense.join.<arena>"));
         Main.debug("Basic permissions registered", System.currentTimeMillis());
     }
 

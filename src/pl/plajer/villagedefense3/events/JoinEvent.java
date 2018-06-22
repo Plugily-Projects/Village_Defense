@@ -78,7 +78,7 @@ public class JoinEvent implements Listener {
                 event.getPlayer().sendMessage(ChatColor.RED + "Enable it in plugins/bStats/config.yml file");
             }
             if(event.getPlayer().hasPermission("villagedefense.updatenotify")) {
-                if(plugin.getConfig().getBoolean("Update-Notifier.Enabled")) {
+                if(plugin.getConfig().getBoolean("Update-Notifier.Enabled", true)) {
                     String currentVersion = "v" + Bukkit.getPluginManager().getPlugin("VillageDefense").getDescription().getVersion();
                     String latestVersion;
                     try {

@@ -224,7 +224,7 @@ public class Events implements Listener {
     public void onCommandExecute(PlayerCommandPreprocessEvent event) {
         Arena arena = ArenaRegistry.getArena(event.getPlayer());
         if(arena == null) return;
-        if(!plugin.getConfig().getBoolean("Block-Commands-In-Game")) return;
+        if(!plugin.getConfig().getBoolean("Block-Commands-In-Game", true)) return;
         for(String msg : plugin.getConfig().getStringList("Whitelisted-Commands")){
             if(event.getMessage().contains(msg)) return;
         }
@@ -308,7 +308,7 @@ public class Events implements Listener {
 
     @EventHandler(priority = EventPriority.HIGH)
     public void onZombieHurt(EntityDamageEvent e) {
-        if(plugin.getConfig().getBoolean("Simple-Zombie-Health-Bar-Enabled")) {
+        if(plugin.getConfig().getBoolean("Simple-Zombie-Health-Bar-Enabled", true)) {
             if(!(e.getEntity() instanceof Zombie)) {
                 return;
             }

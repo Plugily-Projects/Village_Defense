@@ -193,7 +193,7 @@ public class SignManager implements Listener {
             for(Sign s : loadedSigns.keySet()) {
                 for(int i = 0; i < signLines.size(); i++) {
                     s.setLine(i, formatSign(signLines.get(i), loadedSigns.get(s)));
-                    if(plugin.getConfig().getBoolean("Signs-Block-States-Enabled")) {
+                    if(plugin.getConfig().getBoolean("Signs-Block-States-Enabled", true)) {
                         if(s.getType() == Material.SIGN_POST || s.getType() == Material.WALL_SIGN) {
                             Block behind = s.getBlock().getRelative(((org.bukkit.material.Sign) s.getData()).getAttachedFace());
                             behind.setType(Material.STAINED_GLASS);

@@ -253,7 +253,7 @@ public class ArenaManager {
 
             UserManager.getUser(p.getUniqueId()).removeScoreboard();
             if(!quickStop) {
-                if(plugin.getConfig().getBoolean("Firework-When-Game-Ends")) {
+                if(plugin.getConfig().getBoolean("Firework-When-Game-Ends", true)) {
                     new BukkitRunnable() {
                         int i = 0;
 
@@ -315,7 +315,7 @@ public class ArenaManager {
             User user = UserManager.getUser(player.getUniqueId());
             user.addInt("orbs", arena.getWave() * 10);
         }
-        if(plugin.getConfig().getBoolean("Respawn-After-Wave"))
+        if(plugin.getConfig().getBoolean("Respawn-After-Wave", true))
             ArenaUtils.bringDeathPlayersBack(arena);
         for(Player player : arena.getPlayersLeft()) {
             arena.addExperience(player, 5);
@@ -332,7 +332,7 @@ public class ArenaManager {
         VillageWaveStartEvent villageWaveStartEvent = new VillageWaveStartEvent(arena, arena.getWave());
         Bukkit.getPluginManager().callEvent(villageWaveStartEvent);
         arena.setZombieAmount();
-        if(plugin.getConfig().getBoolean("Respawn-After-Wave"))
+        if(plugin.getConfig().getBoolean("Respawn-After-Wave", true))
             ArenaUtils.bringDeathPlayersBack(arena);
         for(User user : UserManager.getUsers(arena)) {
             user.getKit().reStock(user.toPlayer());

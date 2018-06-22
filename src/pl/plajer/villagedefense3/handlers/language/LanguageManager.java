@@ -55,7 +55,7 @@ public class LanguageManager {
     }
 
     private static void setupLocale() {
-        String locale = plugin.getConfig().getString("locale");
+        String locale = plugin.getConfig().getString("locale", "default");
         if(locale.equalsIgnoreCase("default") || locale.equalsIgnoreCase("english")) {
             pluginLocale = VDLocale.DEFAULT;
         } else if(locale.equalsIgnoreCase("de") || locale.equalsIgnoreCase("deutsch")) {

@@ -186,10 +186,10 @@ public abstract class Arena extends BukkitRunnable {
                 if(plugin.isBossbarEnabled()) {
                     if(plugin.is1_8_R3()) {
                         gameBar_v1_8_r3.setTitle(ChatManager.colorMessage("Bossbar.Starting-In").replaceAll("%time%", String.valueOf(getTimer())));
-                        gameBar_v1_8_r3.setProgress(getTimer() / plugin.getConfig().getDouble("Starting-Waiting-Time"));
+                        gameBar_v1_8_r3.setProgress(getTimer() / plugin.getConfig().getDouble("Starting-Waiting-Time", 60));
                     } else {
                         gameBar.setTitle(ChatManager.colorMessage("Bossbar.Starting-In").replaceAll("%time%", String.valueOf(getTimer())));
-                        gameBar.setProgress(getTimer() / plugin.getConfig().getDouble("Starting-Waiting-Time"));
+                        gameBar.setProgress(getTimer() / plugin.getConfig().getDouble("Starting-Waiting-Time", 60));
                     }
                 }
                 if(getTimer() == 0) {
@@ -209,7 +209,7 @@ public abstract class Arena extends BukkitRunnable {
                         player.getInventory().clear();
                         player.setGameMode(GameMode.SURVIVAL);
                         User user = UserManager.getUser(player.getUniqueId());
-                        user.setInt("orbs", plugin.getConfig().getInt("Orbs-Starting-Amount"));
+                        user.setInt("orbs", plugin.getConfig().getInt("Orbs-Starting-Amount", 20));
                         ArenaUtils.hidePlayersOutsideTheGame(player, this);
                         if(UserManager.getUser(player.getUniqueId()).getKit() != null) {
                             UserManager.getUser(player.getUniqueId()).getKit().giveKitItems(player);

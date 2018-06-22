@@ -47,7 +47,7 @@ public class GolemEvents implements Listener {
 
     public GolemEvents(Main plugin) {
         this.plugin = plugin;
-        if(plugin.getConfig().getBoolean("Golem-Upgrades-Enabled")) {
+        if(plugin.getConfig().getBoolean("Golem-Upgrades-Enabled", true)) {
             plugin.getServer().getPluginManager().registerEvents(this, plugin);
             Main.debug("Golem upgrades successfully registered!", System.currentTimeMillis());
         }
@@ -135,7 +135,7 @@ public class GolemEvents implements Listener {
                     e.getWhoClicked().closeInventory();
                     return;
                 }
-                Integer price = plugin.getConfig().getInt("Golem-Upgrade-Heal-Cost");
+                Integer price = plugin.getConfig().getInt("Golem-Upgrade-Heal-Cost", 150);
                 if(orbs >= price) {
                     clickedGolem.get(e.getWhoClicked()).setHealth(clickedGolem.get(e.getWhoClicked()).getMaxHealth());
                     e.getWhoClicked().sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Golem-Upgrades.Upgrade-Applied"));

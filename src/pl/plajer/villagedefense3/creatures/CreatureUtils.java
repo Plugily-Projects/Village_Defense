@@ -51,7 +51,7 @@ public class CreatureUtils {
     }
 
     public static void applyHealthBar(Zombie zombie) {
-        if(plugin.getConfig().getBoolean("Simple-Zombie-Health-Bar-Enabled")) {
+        if(plugin.getConfig().getBoolean("Simple-Zombie-Health-Bar-Enabled", true)) {
             zombie.setCustomNameVisible(true);
             zombie.setCustomName(Utils.getProgressBar((int) zombie.getMaxHealth(), (int) zombie.getMaxHealth(), 50, "|", ChatColor.YELLOW + "", ChatColor.GRAY + ""));
         }
