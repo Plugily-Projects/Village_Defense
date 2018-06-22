@@ -53,7 +53,7 @@ Basic-Permissions:
 Disable-Leave-Command: false
 
 # Commands which can be used in game, remove all of them to disable
-Whielisted-Commands:
+Whitelisted-Commands:
 - me
 - help
 

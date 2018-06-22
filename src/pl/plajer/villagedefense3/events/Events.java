@@ -18,6 +18,7 @@
 
 package pl.plajer.villagedefense3.events;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Effect;
 import org.bukkit.Material;
@@ -224,10 +225,10 @@ public class Events implements Listener {
         Arena arena = ArenaRegistry.getArena(event.getPlayer());
         if(arena == null) return;
         if(!plugin.getConfig().getBoolean("Block-Commands-In-Game")) return;
-        if(plugin.getConfig().getStringList("Whitelisted-Commands").contains(event.getMessage())){
-            return;
+        for(String msg : plugin.getConfig().getStringList("Whitelisted-Commands")){
+            if(event.getMessage().contains(msg)) return;
         }
-        if(event.getMessage().contains("leave") || event.getMessage().contains("stats")) return;
+        if(event.getMessage().contains("leave") || event.getMessage().contains("stats") || event.getMessage().contains("vda")) return;
         if(event.getPlayer().isOp()) return;
         event.setCancelled(true);
         event.getPlayer().sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Only-Command-Ingame-Is-Leave"));

@@ -41,7 +41,7 @@ import java.util.stream.Collectors;
 public class LanguageMigrator {
 
     public static final int LANGUAGE_FILE_VERSION = 5;
-    public static final int CONFIG_FILE_VERSION = 3;
+    public static final int CONFIG_FILE_VERSION = 4;
     private static Main plugin = JavaPlugin.getPlugin(Main.class);
     private static List<String> migratable = Arrays.asList("bungee", "config", "kits", "language", "lobbyitems", "mysql");
 
@@ -68,18 +68,18 @@ public class LanguageMigrator {
                 LanguageMigrator.addNewLines(file, "# Should blocks behind game signs change their color based on game state?\r\n# They will change color to:\r\n" +
                         "# - white (waiting for players) stained glass\r\n# - yellow (starting) stained glass\r\n# - orange (in game) stained glass\r\n# - gray (ending) stained glass\r\n" +
                         "# - black (restarting) stained glass\r\nSigns-Block-States-Enabled: true\r\n\r\n");
-                LanguageMigrator.addNewLines(file, "# Commands which can be used in game, remove all of them to disable\r\nWhielisted-Commands:\r\n- me\r\n- help" +
+                LanguageMigrator.addNewLines(file, "# Commands which can be used in game, remove all of them to disable\r\nWhitelisted-Commands:\r\n- me\r\n- help\r\n" +
                         "# Don't modify\r\nVersion: 4\r\n\r\n# No way! You've reached the end! But... where's the dragon!?");
                 break;
             case 2:
                 LanguageMigrator.addNewLines(file, "# Should blocks behind game signs change their color based on game state?\r\n# They will change color to:\r\n" +
                         "# - white (waiting for players) stained glass\r\n# - yellow (starting) stained glass\r\n# - orange (in game) stained glass\r\n# - gray (ending) stained glass\r\n" +
                         "# - black (restarting) stained glass\r\nSigns-Block-States-Enabled: true\r\n\r\n");
-                LanguageMigrator.addNewLines(file, "# Commands which can be used in game, remove all of them to disable\r\nWhielisted-Commands:\r\n- me\r\n- help" +
+                LanguageMigrator.addNewLines(file, "# Commands which can be used in game, remove all of them to disable\r\nWhitelisted-Commands:\r\n- me\r\n- help\r\n" +
                         "# Don't modify\r\nVersion: 4\r\n\r\n# No way! You've reached the end! But... where's the dragon!?");
                 break;
             case 3:
-                LanguageMigrator.addNewLines(file, "# Commands which can be used in game, remove all of them to disable\r\nWhielisted-Commands:\r\n- me\r\n- help" +
+                LanguageMigrator.addNewLines(file, "# Commands which can be used in game, remove all of them to disable\r\nWhitelisted-Commands:\r\n- me\r\n- help\r\n" +
                         "# Don't modify\r\nVersion: 4\r\n\r\n# No way! You've reached the end! But... where's the dragon!?");
                 break;
         }
