@@ -87,7 +87,15 @@ public class LanguageManager {
 
     public static String getLanguageMessage(String message) {
         if(pluginLocale != LanguageManager.VDLocale.DEFAULT) {
-            return properties.getProperty(ChatColor.translateAlternateColorCodes('&', message), "ERR_MESSAGE_NOT_FOUND");
+            try {
+                return properties.getProperty(ChatColor.translateAlternateColorCodes('&', message));
+            } catch(NullPointerException ex){
+                MessageUtils.errorOccured();
+                Bukkit.getConsoleSender().sendMessage("Game message not found!");
+                Bukkit.getConsoleSender().sendMessage("Please regenerate your language.yml file! If error still occurs report it to the developer!");
+                Bukkit.getConsoleSender().sendMessage("Access string: " + message);
+                return "ERR_MESSAGE_NOT_FOUND";
+            }
         }
         return ConfigurationManager.getConfig("language").getString(message);
     }
