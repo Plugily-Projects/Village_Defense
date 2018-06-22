@@ -1,5 +1,8 @@
 # Village Defense 3 Changelog
 
+### 3.7.4 (22.06.2018)
+* Implemented localization support via .properties files - more info later
+
 ### 3.7.3 Release (14.06.2018)
 * Fixed boss bar startup errors
 * Removed usage of basic permission "arena edit"

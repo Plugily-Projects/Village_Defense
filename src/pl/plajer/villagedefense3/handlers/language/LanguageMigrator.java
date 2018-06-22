@@ -67,14 +67,20 @@ public class LanguageMigrator {
                         "      Enabled: true\r\n      Time: 15 # seconds\r\n\r\n");
                 LanguageMigrator.addNewLines(file, "# Should blocks behind game signs change their color based on game state?\r\n# They will change color to:\r\n" +
                         "# - white (waiting for players) stained glass\r\n# - yellow (starting) stained glass\r\n# - orange (in game) stained glass\r\n# - gray (ending) stained glass\r\n" +
-                        "# - black (restarting) stained glass\r\nSigns-Block-States-Enabled: true\r\n\r\n" +
-                        "# Don't modify\r\nVersion: 3\r\n\r\n# No way! You've reached the end! But... where's the dragon!?");
+                        "# - black (restarting) stained glass\r\nSigns-Block-States-Enabled: true\r\n\r\n");
+                LanguageMigrator.addNewLines(file, "# Commands which can be used in game, remove all of them to disable\r\nWhielisted-Commands:\r\n- me\r\n- help" +
+                        "# Don't modify\r\nVersion: 4\r\n\r\n# No way! You've reached the end! But... where's the dragon!?");
                 break;
             case 2:
                 LanguageMigrator.addNewLines(file, "# Should blocks behind game signs change their color based on game state?\r\n# They will change color to:\r\n" +
                         "# - white (waiting for players) stained glass\r\n# - yellow (starting) stained glass\r\n# - orange (in game) stained glass\r\n# - gray (ending) stained glass\r\n" +
-                        "# - black (restarting) stained glass\r\nSigns-Block-States-Enabled: true\r\n\r\n" +
-                        "# Don't modify\r\nVersion: 3\r\n\r\n# No way! You've reached the end! But... where's the dragon!?");
+                        "# - black (restarting) stained glass\r\nSigns-Block-States-Enabled: true\r\n\r\n");
+                LanguageMigrator.addNewLines(file, "# Commands which can be used in game, remove all of them to disable\r\nWhielisted-Commands:\r\n- me\r\n- help" +
+                        "# Don't modify\r\nVersion: 4\r\n\r\n# No way! You've reached the end! But... where's the dragon!?");
+                break;
+            case 3:
+                LanguageMigrator.addNewLines(file, "# Commands which can be used in game, remove all of them to disable\r\nWhielisted-Commands:\r\n- me\r\n- help" +
+                        "# Don't modify\r\nVersion: 4\r\n\r\n# No way! You've reached the end! But... where's the dragon!?");
                 break;
         }
         Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "[Village Defense] System notify >> Config updated, no comments were removed :)");

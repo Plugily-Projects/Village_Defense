@@ -69,6 +69,7 @@ import pl.plajer.villagedefense3.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -223,6 +224,9 @@ public class Events implements Listener {
         Arena arena = ArenaRegistry.getArena(event.getPlayer());
         if(arena == null) return;
         if(!plugin.getConfig().getBoolean("Block-Commands-In-Game")) return;
+        if(plugin.getConfig().getStringList("Whitelisted-Commands").contains(event.getMessage())){
+            return;
+        }
         if(event.getMessage().contains("leave") || event.getMessage().contains("stats")) return;
         if(event.getPlayer().isOp()) return;
         event.setCancelled(true);

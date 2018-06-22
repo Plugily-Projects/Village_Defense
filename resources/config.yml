@@ -52,6 +52,11 @@ Basic-Permissions:
 # Should /vd leave command be blocked?
 Disable-Leave-Command: false
 
+# Commands which can be used in game, remove all of them to disable
+Whielisted-Commands:
+- me
+- help
+
 # Enable this option when you're using MySQL, otherwise it won't work.
 # Be careful when changing this because there is NO migrator between
 # flat file and MySQL for player stats.
@@ -149,6 +154,6 @@ Update-Notifier:
 Debug: false
 
 # Don't modify.
-Version: 3
+Version: 4
 
 # No way! You've reached the end! But... where's the dragon!?
