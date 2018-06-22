@@ -42,6 +42,7 @@ import pl.plajer.villagedefense3.arena.ArenaState;
 import pl.plajer.villagedefense3.handlers.language.LanguageManager;
 import pl.plajer.villagedefense3.utils.Utils;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -61,7 +62,11 @@ public class SignManager implements Listener {
         gameStateToString.put(ArenaState.IN_GAME, ChatManager.colorMessage("Signs.Game-States.In-Game"));
         gameStateToString.put(ArenaState.ENDING, ChatManager.colorMessage("Signs.Game-States.Ending"));
         gameStateToString.put(ArenaState.RESTARTING, ChatManager.colorMessage("Signs.Game-States.Restarting"));
-        signLines = LanguageManager.getLanguageFile().getStringList("Signs.Lines");
+        if(LanguageManager.getPluginLocale() == LanguageManager.VDLocale.DEFAULT) {
+            signLines = LanguageManager.getLanguageFile().getStringList("Signs.Lines");
+        } else {
+            signLines = Arrays.asList(ChatManager.colorMessage("Signs.Lines").split(";"));
+        }
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
         loadSigns();
         updateSignScheduler();

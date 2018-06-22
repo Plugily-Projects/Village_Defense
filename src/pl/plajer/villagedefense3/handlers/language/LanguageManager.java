@@ -21,16 +21,21 @@ package pl.plajer.villagedefense3.handlers.language;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.craftbukkit.libs.jline.internal.InputStreamReader;
 import pl.plajer.villagedefense3.Main;
 import pl.plajer.villagedefense3.handlers.ConfigurationManager;
 import pl.plajer.villagedefense3.utils.MessageUtils;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.charset.Charset;
+import java.util.Properties;
 
 public class LanguageManager {
 
     private static Main plugin;
     private static VDLocale pluginLocale;
+    private static Properties properties = new Properties();
 
     public static void init(Main pl) {
         plugin = pl;
@@ -38,6 +43,15 @@ public class LanguageManager {
             plugin.saveResource("language.yml", false);
         }
         setupLocale();
+    }
+
+    private static void loadProperties(){
+        if(pluginLocale == LanguageManager.VDLocale.DEFAULT) return;
+        try {
+            properties.load(new InputStreamReader(plugin.getResource("locale_" + pluginLocale.getPrefix() + ".properties"), Charset.forName("UTF-8")));
+        } catch(IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private static void setupLocale() {
@@ -68,6 +82,7 @@ public class LanguageManager {
             Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "[Village Defense] Plugin locale is invalid! Using default one...");
             pluginLocale = VDLocale.DEFAULT;
         }
+        loadProperties();
     }
 
     public static FileConfiguration getLanguageFile() {
@@ -95,32 +110,41 @@ public class LanguageManager {
     }
 
     public static String getLanguageMessage(String message) {
-        switch(pluginLocale) {
-            case DEFAULT:
-                if(ConfigurationManager.getConfig("language").isSet(message)) {
-                    return ConfigurationManager.getConfig("language").getString(message);
-                }
-                return null;
-            case DEUTSCH:
-                if(ConfigurationManager.getConfig("language_de").isSet(message)) {
-                    return ConfigurationManager.getConfig("language_de").getString(message);
-                }
-                return null;
-            case POLSKI:
-                if(ConfigurationManager.getConfig("language_pl").isSet(message)) {
-                    return ConfigurationManager.getConfig("language_pl").getString(message);
-                }
-                return null;
-            default:
-                if(ConfigurationManager.getConfig("language").isSet(message)) {
-                    return ConfigurationManager.getConfig("language").getString(message);
-                }
-                return null;
+        if(pluginLocale != LanguageManager.VDLocale.DEFAULT) {
+            return properties.getProperty(ChatColor.translateAlternateColorCodes('&', message), "ERR_MESSAGE_NOT_FOUND");
+        }
+        return ConfigurationManager.getConfig("language").getString(message);
+    }
+
+    public enum VDLocale {
+        DEFAULT("English", "en_GB", "Plajer"),
+        POLSKI("Polski", "pl_PL", "Plajer"),
+        DEUTSCH("Deutsch", "de_DE", "Tigerkatze");
+
+        String formattedName;
+        String prefix;
+        String author;
+
+        VDLocale(String formattedName, String prefix, String author) {
+            this.prefix = prefix;
+            this.formattedName = formattedName;
+            this.author = author;
+        }
+
+        public String getFormattedName() {
+            return formattedName;
+        }
+
+        public String getAuthor() {
+            return author;
+        }
+
+        public String getPrefix() {
+            return prefix;
         }
     }
 
-    private enum VDLocale {
-        DEFAULT, DEUTSCH, POLSKI
+    public static VDLocale getPluginLocale() {
+        return pluginLocale;
     }
-
 }
