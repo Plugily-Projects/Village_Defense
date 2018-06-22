@@ -1,7 +1,7 @@
 name: VillageDefense
 main: pl.plajer.villagedefense3.Main
 author: [TomTheDeveloper, Plajer]
-version: 3.7.4 - Not ready
+version: 3.7.4
 softdepend: [WorldEdit, HolographicDisplays, PlaceholderAPI]
 
 commands:
