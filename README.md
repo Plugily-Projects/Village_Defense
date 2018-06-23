@@ -1,4 +1,4 @@
-![](https://i.imgur.com/n4ejCJk.png)
+![](https://i.imgur.com/BGzirpT.png)
 
 # Village Defense 3 [![](https://img.shields.io/badge/javadocs-latest-green.svg)](https://plajer-lair.github.io/Village_Defense/) [![](https://img.shields.io/badge/wiki-click-blue.svg)](https://github.com/Plajer/Village_Defense/wiki)
 Harder, better, faster, stronger - motto of Village Defense 3.

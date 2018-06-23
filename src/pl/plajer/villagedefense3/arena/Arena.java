@@ -440,6 +440,8 @@ public abstract class Arena extends BukkitRunnable {
     private void updateScoreboard() {
         if(getPlayers().size() == 0 || getArenaState() == ArenaState.RESTARTING) return;
         for(Player p : getPlayers()) {
+            //fixme only a temp fix for Sitieno14
+            if(p == null) continue;
             User user = UserManager.getUser(p.getUniqueId());
             if(getArenaState() == ArenaState.ENDING) {
                 user.removeScoreboard();
