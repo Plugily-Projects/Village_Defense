@@ -122,6 +122,10 @@ public class LanguageMigrator {
                         "      - \"\"\r\n      - \"&fPlayers: &e%PLAYERS%\"\r\n      - \"\"\r\n      - \"&fMinimum Players: &e%MIN_PLAYERS%\"\r\n      - \"&fMinimum Players: &e%MIN_PLAYERS%\"\r\n" +
                         "      - \"&ewww.spigotmc.org\"");
                 LanguageMigrator.insertAfterLine(file, "Scoreboard:", "  Title: \"&a&lVillage Defense\"");
+                LanguageMigrator.insertAfterLine(file, "Did-You-Mean", "  Command-Executed: \"&aCommand succesfully executed!\"\r\n  Command-Executed-Item-Updated: \"&aCommand succesfully executed, item updated!\"\r\n" +
+                        "  Removed-Game-Instance: \"&cSuccessfully removed game instance!\"\r\n  Look-Sign: \"&cYou have to look at a sign to perform this command!\"\r\n  Hold-Any-Item: \"&cYou must hold any item!\"\r\n" +
+                        "  Invalid-Number: \"&cWave needs to be number! Do %correct%\"\r\n  Target-Player-Not-Found: \"&cTarget player doesn't exist!\"\r\n  Location-Teleport-Invalid: \"&cLocation to teleport is invalid!\"\r\n  Wrong-Usage: \"&cWrong usage. Do %correct%\"\r\n");
+                LanguageMigrator.insertAfterLine(file, "Admin-Commands", "    Success-Reload: \"&aArenas reloaded!\"");
                 break;
             case 1:
                 LanguageMigrator.addNewLines(file, "\r\nPowerups:\r\n  Map-Clean-Powerup:\r\n    Name: \"&e&lMAP CLEANER\"\r\n    # Used as sub title description\r\n" +
@@ -145,6 +149,10 @@ public class LanguageMigrator {
                         "      - \"\"\r\n      - \"&fPlayers: &e%PLAYERS%\"\r\n      - \"\"\r\n      - \"&fMinimum Players: &e%MIN_PLAYERS%\"\r\n      - \"&fMinimum Players: &e%MIN_PLAYERS%\"\r\n" +
                         "      - \"&ewww.spigotmc.org\"");
                 LanguageMigrator.insertAfterLine(file, "Scoreboard:", "  Title: \"&a&lVillage Defense\"");
+                LanguageMigrator.insertAfterLine(file, "Did-You-Mean", "  Command-Executed: \"&aCommand succesfully executed!\"\r\n  Command-Executed-Item-Updated: \"&aCommand succesfully executed, item updated!\"\r\n" +
+                        "  Removed-Game-Instance: \"&cSuccessfully removed game instance!\"\r\n  Look-Sign: \"&cYou have to look at a sign to perform this command!\"\r\n  Hold-Any-Item: \"&cYou must hold any item!\"\r\n" +
+                        "  Invalid-Number: \"&cWave needs to be number! Do %correct%\"\r\n  Target-Player-Not-Found: \"&cTarget player doesn't exist!\"\r\n  Location-Teleport-Invalid: \"&cLocation to teleport is invalid!\"\r\n  Wrong-Usage: \"&cWrong usage. Do %correct%\"\r\n");
+                LanguageMigrator.insertAfterLine(file, "Admin-Commands", "    Success-Reload: \"&aArenas reloaded!\"");
                 break;
             case 2:
                 LanguageMigrator.insertAfterLine(file, "Commands:", "  Statistics:");
@@ -163,6 +171,10 @@ public class LanguageMigrator {
                         "      - \"\"\r\n      - \"&fPlayers: &e%PLAYERS%\"\r\n      - \"\"\r\n      - \"&fMinimum Players: &e%MIN_PLAYERS%\"\r\n      - \"&fMinimum Players: &e%MIN_PLAYERS%\"\r\n" +
                         "      - \"&ewww.spigotmc.org\"");
                 LanguageMigrator.insertAfterLine(file, "Scoreboard:", "  Title: \"&a&lVillage Defense\"");
+                LanguageMigrator.insertAfterLine(file, "Did-You-Mean", "  Command-Executed: \"&aCommand succesfully executed!\"\r\n  Command-Executed-Item-Updated: \"&aCommand succesfully executed, item updated!\"\r\n" +
+                        "  Removed-Game-Instance: \"&cSuccessfully removed game instance!\"\r\n  Look-Sign: \"&cYou have to look at a sign to perform this command!\"\r\n  Hold-Any-Item: \"&cYou must hold any item!\"\r\n" +
+                        "  Invalid-Number: \"&cWave needs to be number! Do %correct%\"\r\n  Target-Player-Not-Found: \"&cTarget player doesn't exist!\"\r\n  Location-Teleport-Invalid: \"&cLocation to teleport is invalid!\"\r\n  Wrong-Usage: \"&cWrong usage. Do %correct%\"\r\n");
+                LanguageMigrator.insertAfterLine(file, "Admin-Commands", "    Success-Reload: \"&aArenas reloaded!\"");
                 break;
             case 3:
                 LanguageMigrator.insertAfterLine(file, "Commands:", "  Did-You-Mean: \"&6Did you mean &7/%command%&6?\"");
@@ -176,6 +188,10 @@ public class LanguageMigrator {
                         "      - \"\"\r\n      - \"&fPlayers: &e%PLAYERS%\"\r\n      - \"\"\r\n      - \"&fMinimum Players: &e%MIN_PLAYERS%\"\r\n      - \"&fMinimum Players: &e%MIN_PLAYERS%\"\r\n" +
                         "      - \"&ewww.spigotmc.org\"");
                 LanguageMigrator.insertAfterLine(file, "Scoreboard:", "  Title: \"&a&lVillage Defense\"");
+                LanguageMigrator.insertAfterLine(file, "Did-You-Mean", "  Command-Executed: \"&aCommand succesfully executed!\"\r\n  Command-Executed-Item-Updated: \"&aCommand succesfully executed, item updated!\"\r\n" +
+                        "  Removed-Game-Instance: \"&cSuccessfully removed game instance!\"\r\n  Look-Sign: \"&cYou have to look at a sign to perform this command!\"\r\n  Hold-Any-Item: \"&cYou must hold any item!\"\r\n" +
+                        "  Invalid-Number: \"&cWave needs to be number! Do %correct%\"\r\n  Target-Player-Not-Found: \"&cTarget player doesn't exist!\"\r\n  Location-Teleport-Invalid: \"&cLocation to teleport is invalid!\"\r\n  Wrong-Usage: \"&cWrong usage. Do %correct%\"\r\n");
+                LanguageMigrator.insertAfterLine(file, "Admin-Commands", "    Success-Reload: \"&aArenas reloaded!\"");
                 break;
             case 4:
                 LanguageMigrator.insertAfterLine(file, "Scoreboard:", "  Content:\r\n    # Contents of scoreboard while wave is running\r\n    Playing:\r\n" +
@@ -188,6 +204,16 @@ public class LanguageMigrator {
                         "      - \"\"\r\n      - \"&fPlayers: &e%PLAYERS%\"\r\n      - \"\"\r\n      - \"&fMinimum Players: &e%MIN_PLAYERS%\"\r\n      - \"&fMinimum Players: &e%MIN_PLAYERS%\"\r\n" +
                         "      - \"&ewww.spigotmc.org\"");
                 LanguageMigrator.insertAfterLine(file, "Scoreboard:", "  Title: \"&a&lVillage Defense\"");
+                LanguageMigrator.insertAfterLine(file, "Did-You-Mean", "  Command-Executed: \"&aCommand succesfully executed!\"\r\n  Command-Executed-Item-Updated: \"&aCommand succesfully executed, item updated!\"\r\n" +
+                        "  Removed-Game-Instance: \"&cSuccessfully removed game instance!\"\r\n  Look-Sign: \"&cYou have to look at a sign to perform this command!\"\r\n  Hold-Any-Item: \"&cYou must hold any item!\"\r\n" +
+                        "  Invalid-Number: \"&cWave needs to be number! Do %correct%\"\r\n  Target-Player-Not-Found: \"&cTarget player doesn't exist!\"\r\n  Location-Teleport-Invalid: \"&cLocation to teleport is invalid!\"\r\n  Wrong-Usage: \"&cWrong usage. Do %correct%\"\r\n");
+                LanguageMigrator.insertAfterLine(file, "Admin-Commands", "    Success-Reload: \"&aArenas reloaded!\"");
+                break;
+            case 5:
+                LanguageMigrator.insertAfterLine(file, "Did-You-Mean", "  Command-Executed: \"&aCommand succesfully executed!\"\r\n  Command-Executed-Item-Updated: \"&aCommand succesfully executed, item updated!\"\r\n" +
+                        "  Removed-Game-Instance: \"&cSuccessfully removed game instance!\"\r\n  Look-Sign: \"&cYou have to look at a sign to perform this command!\"\r\n  Hold-Any-Item: \"&cYou must hold any item!\"\r\n" +
+                        "  Invalid-Number: \"&cWave needs to be number! Do %correct%\"\r\n  Target-Player-Not-Found: \"&cTarget player doesn't exist!\"\r\n  Location-Teleport-Invalid: \"&cLocation to teleport is invalid!\"\r\n  Wrong-Usage: \"&cWrong usage. Do %correct%\"\r\n");
+                LanguageMigrator.insertAfterLine(file, "Admin-Commands", "    Success-Reload: \"&aArenas reloaded!\"");
                 break;
         }
         Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "[Village Defense] System notify >> Language file updated! Nice!");

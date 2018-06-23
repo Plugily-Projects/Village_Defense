@@ -3,6 +3,7 @@
 ### 3.7.5 Release (23.06.2018)
 * Implemented Spanish localization support (thanks to POEditor contributors!)
 * Updated other locales translations (thanks to POEditor contributors!)
+* Added few more translatable admin messages (thanks to montlikadani for contribution!)
 
 ### 3.7.4 Release (22.06.2018)
 * Implemented localization support via .properties files - more info later

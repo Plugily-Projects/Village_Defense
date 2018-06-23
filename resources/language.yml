@@ -29,12 +29,10 @@ Commands:
   Only-By-Player: "&cYou can execute this command only as player!"
   Not-Playing: "&cYou must play to execute this command!"
   No-Permission: "&cYou don't have permission to use this command!"
-  Invalid-Number: "&cWave needs to be number! Do /villagedefense set wave <number>"
+  Invalid-Number: "&cWave needs to be number! Do %correct%"
   Target-Player-Not-Found: "&cTarget player doesn't exist!"
   Location-Teleport-Invalid: "&cLocation to teleport is invalid!"
-  Wrong-Usage:
-    Addorbs1: "&cWrong usage. Do /villagedefense addorbs <amount>"
-    Addorbs2: "&cWrong usage. Do /villagedefense addorbs <player> <amount>"
+  Wrong-Usage: "&cWrong usage. Do %correct%"
   Admin-Commands:
     Player-Not-Found: "&cPlayer not found!"
     Added-Orbs: "&7Added orbs to the player!"

@@ -402,7 +402,7 @@ public class AdminCommands extends MainCommand {
             user.setInt("orbs", user.getInt("orbs") + Integer.parseInt(number));
             sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("Commands.Admin-Commands.Added-Orbs"));
         } else {
-            sender.sendMessage(ChatManager.colorMessage("Commands.Wrong-Usage.Addorbs1"));
+            sender.sendMessage(ChatManager.colorMessage("Commands.Wrong-Usage").replace("%correct%", "/vd addorbs <amount>"));
         }
     }
 
@@ -419,7 +419,7 @@ public class AdminCommands extends MainCommand {
             user.setInt("orbs", user.getInt("orbs") + Integer.parseInt(number));
             sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("Commands.Admin-Commands.Added-Orbs"));
         } else {
-            sender.sendMessage(ChatManager.colorMessage("Commands.Wrong-Usage.Addorbs2"));
+            sender.sendMessage(ChatManager.colorMessage("Commands.Wrong-Usage").replace("%correct%", "/vd addorbs <amount>"));
         }
     }
 
@@ -457,7 +457,7 @@ public class AdminCommands extends MainCommand {
                 loopPlayer.sendMessage(ChatManager.PLUGIN_PREFIX + message1);
             }
         } else {
-            sender.sendMessage(ChatManager.colorMessage("Commands.Invalid-Number"));
+            sender.sendMessage(ChatManager.colorMessage("Commands.Invalid-Number").replace("%correct%", "/villagedefense set wave <number>"));
         }
     }
 
