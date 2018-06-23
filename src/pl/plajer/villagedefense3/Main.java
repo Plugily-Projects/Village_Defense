@@ -317,12 +317,18 @@ public class Main extends JavaPlugin {
             switch(getConfig().getString("locale", "default")) {
                 case "default":
                     return "English";
+                case "english":
                 case "en":
                     return "English";
+                case "polski":
                 case "pl":
                     return "Polish";
+                case "deutsch":
                 case "de":
                     return "German";
+                case "espanol":
+                case "es":
+                    return "Spanish";
                 default:
                     return "English";
             }

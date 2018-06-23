@@ -10,6 +10,7 @@
 #    default - English language. Uses 'language.yml'.
 #    de - Deutsche sprache
 #    pl - Język Polski
+#    es - Idioma español
 #
 locale: default
 

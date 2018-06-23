@@ -1,6 +1,10 @@
 # Village Defense 3 Changelog
 
-### 3.7.4 (22.06.2018)
+### 3.7.5 Release (23.06.2018)
+* Implemented Spanish localization support (thanks to POEditor contributors!)
+* Updated other locales translations (thanks to POEditor contributors!)
+
+### 3.7.4 Release (22.06.2018)
 * Implemented localization support via .properties files - more info later
 * Added whitelisted commands configurable in config.yml
 * Now admin commands won't be blocked via blocked commands in game

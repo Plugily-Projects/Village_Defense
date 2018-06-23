@@ -62,6 +62,8 @@ public class LanguageManager {
             pluginLocale = VDLocale.DEUTSCH;
         } else if(locale.equalsIgnoreCase("pl") || locale.equalsIgnoreCase("polski")) {
             pluginLocale = VDLocale.POLSKI;
+        } else if(locale.equalsIgnoreCase("es") || locale.equalsIgnoreCase("espanol")){
+            pluginLocale = VDLocale.ESPANOL;
         } else {
             Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "[Village Defense] Plugin locale is invalid! Using default one...");
             pluginLocale = VDLocale.DEFAULT;
@@ -107,7 +109,8 @@ public class LanguageManager {
     public enum VDLocale {
         DEFAULT("English", "en_GB", "Plajer"),
         POLSKI("Polski", "pl_PL", "Plajer"),
-        DEUTSCH("Deutsch", "de_DE", "Tigerkatze");
+        DEUTSCH("Deutsch", "de_DE", "Tigerkatze"),
+        ESPANOL("Español", "es_ES", "POEditor contributors");
 
         String formattedName;
         String prefix;
