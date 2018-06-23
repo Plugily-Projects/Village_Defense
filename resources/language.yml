@@ -12,9 +12,14 @@
 # Village Defense commands messages
 Commands:
   Did-You-Mean: "&6Did you mean &e/%command%&6?"
+  Command-Executed: "&aCommand succesfully executed!"
+  Command-Executed-Item-Updated: "&aCommand succesfully executed, item updated!"
   Teleported-To-The-Lobby: "Teleported to the lobby!"
+  Removed-Game-Instance: "&cSuccessfully removed game instance!"
   No-Arena-Like-That: "&cNo arena with that ID!"
+  Look-Sign: "&cYou have to look at a sign to perform this command!"
   Type-Arena-Name: "&cPlease type arena ID!"
+  Hold-Any-Item: "&cYou must hold any item!"
   Statistics:
     Type-Name: "&cPlease type statistic name to view!"
     Invalid-Name: "&cName of statistic is invalid! Type: kills, deaths, games_played, highest_wave, level"
@@ -24,9 +29,16 @@ Commands:
   Only-By-Player: "&cYou can execute this command only as player!"
   Not-Playing: "&cYou must play to execute this command!"
   No-Permission: "&cYou don't have permission to use this command!"
+  Invalid-Number: "&cWave needs to be number! Do /villagedefense set wave <number>"
+  Target-Player-Not-Found: "&cTarget player doesn't exist!"
+  Location-Teleport-Invalid: "&cLocation to teleport is invalid!"
+  Wrong-Usage:
+    Addorbs1: "&cWrong usage. Do /villagedefense addorbs <amount>"
+    Addorbs2: "&cWrong usage. Do /villagedefense addorbs <player> <amount>"
   Admin-Commands:
     Player-Not-Found: "&cPlayer not found!"
     Added-Orbs: "&7Added orbs to the player!"
+    Success-Reload: "&aArenas reloaded!"
     List-Command:
       Header: "&aVillage Defense &6arenas:"
       Format: "&a%arena% &e%status% &6%players%/%maxplayers%"
@@ -348,4 +360,4 @@ Validator:
 
 # Don't edit it. But who's stopping you? It's your server!
 # Really, don't edit ;p
-File-Version-Do-Not-Edit: 5
+File-Version-Do-Not-Edit: 6
