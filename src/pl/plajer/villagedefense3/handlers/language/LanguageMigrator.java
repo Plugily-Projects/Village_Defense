@@ -40,7 +40,7 @@ import java.util.stream.Collectors;
  */
 public class LanguageMigrator {
 
-    public static final int LANGUAGE_FILE_VERSION = 5;
+    public static final int LANGUAGE_FILE_VERSION = 6;
     public static final int CONFIG_FILE_VERSION = 4;
     private static Main plugin = JavaPlugin.getPlugin(Main.class);
     private static List<String> migratable = Arrays.asList("bungee", "config", "kits", "language", "lobbyitems", "mysql");
