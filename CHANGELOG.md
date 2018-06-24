@@ -1,7 +1,7 @@
 # Village Defense 3 Changelog
 
 ### 3.7.5 Release (23.06.2018)
-* Implemented Spanish localization support (thanks to POEditor contributors!)
+* Implemented Spanish and Indonesian localization support (thanks to POEditor contributors!)
 * Updated other locales translations (thanks to POEditor contributors!)
 * Added few more translatable admin messages (thanks to montlikadani for contribution!)
 * Fixed NPE for 1.8 boss bar users
