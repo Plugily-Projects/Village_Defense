@@ -61,6 +61,8 @@ public class Bar_v1_8_R3 extends BukkitRunnable {
 
     public void removePlayer(Player p) {
         EntityWither wither = withers.remove(p);
+        //temp temporary workaround for NPE bug
+        if(wither == null) return;
         PacketPlayOutEntityDestroy packet = new PacketPlayOutEntityDestroy(wither.getId());
         ((CraftPlayer) p).getHandle().playerConnection.sendPacket(packet);
     }

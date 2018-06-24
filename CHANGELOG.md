@@ -4,6 +4,7 @@
 * Implemented Spanish localization support (thanks to POEditor contributors!)
 * Updated other locales translations (thanks to POEditor contributors!)
 * Added few more translatable admin messages (thanks to montlikadani for contribution!)
+* Fixed NPE for 1.8 boss bar users
 
 ### 3.7.4 Release (22.06.2018)
 * Implemented localization support via .properties files - more info later
