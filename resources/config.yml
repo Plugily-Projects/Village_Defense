@@ -11,6 +11,8 @@
 #    de - Deutsche sprache
 #    pl - Język Polski
 #    es - Idioma español
+#    id - Bhasa Indonesia
+#    fr - Langue française
 #
 locale: default
 

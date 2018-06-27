@@ -329,6 +329,12 @@ public class Main extends JavaPlugin {
                 case "espanol":
                 case "es":
                     return "Spanish";
+                case "francais":
+                case "fr":
+                    return "French";
+                case "indonesia":
+                case "id":
+                    return "Indonesian";
                 default:
                     return "English";
             }
