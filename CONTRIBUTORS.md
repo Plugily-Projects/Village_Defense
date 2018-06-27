@@ -1,4 +1,4 @@
-##This file is dedicated to **Village Defense** project's all-time contributors.
+## This file is dedicated to **Village Defense** project's all-time contributors.
 
 ##### I'm sincerely glad to everyone who supported our project every time!
 ##### Contributors are listed in alphabetical order, every contributor is equally important!
