@@ -24,13 +24,6 @@ Fork this project and create pull request!
 
 ***
 
-### Thanks a lot for these cool guys
-* IvanTheBuilder - For Village Defense 1
-* TomTheDeveloper - For Village Defense 1 and 2
-* Tigerkatze - Main beta tester and German translator
-* Marcely99, MattUGV, HomieDion, inventivetalent - For code snippets
-* DerpyKitteh - For plugin idea
-
 ### 👾 Join our discord to be up to date with updates and developement beta builds!
 https://discord.gg/UXzUdTP
 
