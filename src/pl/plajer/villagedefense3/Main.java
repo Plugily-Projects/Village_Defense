@@ -349,7 +349,9 @@ public class Main extends JavaPlugin {
             }
         }));
         metrics.addCustomChart(new Metrics.SimplePie("hooked_addons", () -> {
-            if(getServer().getPluginManager().getPlugin("VillageDefense-CustomKits") != null) {
+            if(getServer().getPluginManager().getPlugin("VillageDefense-Enhancements") != null) {
+                return "Enhancements";
+            } else if(getServer().getPluginManager().getPlugin("VillageDefense-CustomKits") != null) {
                 return "Custom Kits";
             }
             return "None";
