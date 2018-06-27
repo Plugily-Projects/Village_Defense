@@ -1,7 +1,8 @@
 ## This file is dedicated to **Village Defense** project's all-time contributors.
 
-##### I'm sincerely glad to everyone who supported our project every time!
-##### Contributors are listed in alphabetical order, every contributor is equally important!
+**I'm sincerely glad to everyone who supported our project every time!**
+
+**Contributors are listed in alphabetical order, every contributor is equally important!**
 * DerpyKitteh - plugin idea
 * HomieDion (https://www.spigotmc.org/members/homiedion.118743/) - code snippets
 * inventivetalent (https://www.spigotmc.org/members/inventivetalent.6643/) - code snippets
