@@ -64,6 +64,10 @@ public class LanguageManager {
             pluginLocale = VDLocale.POLSKI;
         } else if(locale.equalsIgnoreCase("es") || locale.equalsIgnoreCase("espanol")){
             pluginLocale = VDLocale.ESPANOL;
+        } else if(locale.equalsIgnoreCase("fr") || locale.equalsIgnoreCase("francais")){
+            pluginLocale = VDLocale.FRANCAIS;
+        } else if(locale.equalsIgnoreCase("id") || locale.equalsIgnoreCase("indonesia")){
+            pluginLocale = VDLocale.INDONESIA;
         } else {
             Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "[Village Defense] Plugin locale is invalid! Using default one...");
             pluginLocale = VDLocale.DEFAULT;
@@ -110,7 +114,9 @@ public class LanguageManager {
         DEFAULT("English", "en_GB", "Plajer"),
         POLSKI("Polski", "pl_PL", "Plajer"),
         DEUTSCH("Deutsch", "de_DE", "Tigerkatze"),
-        ESPANOL("Español", "es_ES", "POEditor contributors");
+        ESPANOL("Español", "es_ES", "POEditor contributors"),
+        FRANCAIS("Francais", "fr_FR", "POEditor contributors"),
+        INDONESIA("Francais", "id_ID", "POEditor contributors (Yume)");
 
         String formattedName;
         String prefix;
