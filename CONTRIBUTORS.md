@@ -12,10 +12,10 @@
 * MattUGV (https://www.spigotmc.org/members/mattugv.139086/) - code snippets
 * N4TH4NOT - French translator
 * Tigerkatze (https://www.spigotmc.org/members/tigerkatze.414545/) - Main tester, German translator and staff member of Plajer's Lair discord
-* TomTheDeveloper - former author of Village Defense 1 and 2
-* V_Robot - French translator
-* Yume - Indonesian translator
-* zuhir - Spanish translator
+* TomTheDeveloper (https://www.spigotmc.org/members/tomthedeveloper.4729/) - former author of Village Defense 1 and 2
+* V_Robot (https://www.spigotmc.org/members/ozax_0maza.337764/) - French translator
+* Yume (https://www.spigotmc.org/members/demonmugen.310240/) - Indonesian translator
+* zuhir (https://www.spigotmc.org/members/zuhir.31452/) - Spanish translator
 
 **Thanks to these companies for providing free licenses for Village Defense open source work:**
 * Code Whale Inc. - POEditor open source project license
