@@ -7,7 +7,7 @@
 * HomieDion (https://www.spigotmc.org/members/homiedion.118743/) - code snippets
 * inventivetalent (https://www.spigotmc.org/members/inventivetalent.6643/) - code snippets
 * IvanTheBuilder (https://www.spigotmc.org/members/ivanthebuilder.18881/) - former author of Village Defense 1
-* Lauti.elarquero - Spanish translator
+* Lmmb74 (https://www.spigotmc.org/members/lmmb74.25930/) - Spanish translator
 * Marcely99 (https://www.spigotmc.org/members/marcely99.62672/) - code snippets
 * MattUGV (https://www.spigotmc.org/members/mattugv.139086/) - code snippets
 * N4TH4NOT - French translator
