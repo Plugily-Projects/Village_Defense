@@ -1,6 +1,8 @@
 # Village Defense 3 Changelog
+### 3.7.6 Release (28.06.2018)
+* Now you will see setup video link when creating new arena
 
-### 3.7.5 Release (23.06.2018)
+### 3.7.5 Release (23/27.06.2018)
 * Implemented Spanish, French and Indonesian localization support (thanks to POEditor contributors!)
 * Updated other locales translations (thanks to POEditor contributors!)
 * Added few more translatable admin messages (thanks to montlikadani for contribution!)
