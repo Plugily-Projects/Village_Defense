@@ -10,7 +10,7 @@
 * Lmmb74 (https://www.spigotmc.org/members/lmmb74.25930/) - Spanish translator
 * Marcely99 (https://www.spigotmc.org/members/marcely99.62672/) - code snippets
 * MattUGV (https://www.spigotmc.org/members/mattugv.139086/) - code snippets
-* N4TH4NOT - French translator
+* N4TH4NOT (https://www.spigotmc.org/members/n4th4not.400311/) - French translator
 * Tigerkatze (https://www.spigotmc.org/members/tigerkatze.414545/) - Main tester, German translator and staff member of Plajer's Lair discord
 * TomTheDeveloper (https://www.spigotmc.org/members/tomthedeveloper.4729/) - former author of Village Defense 1 and 2
 * V_Robot (https://www.spigotmc.org/members/ozax_0maza.337764/) - French translator
