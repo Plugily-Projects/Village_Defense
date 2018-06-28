@@ -1,6 +1,8 @@
 # Village Defense 3 Changelog
 ### 3.7.6 Release (28.06.2018)
 * Now you will see setup video link when creating new arena
+* Using placeholder for golem upgrades cost to be corresponding to golem upgrades values from config.yml (makes locales more adaptive)
+* Added Vietnamese localization support (thanks to POEditor contirbutors!)
 
 ### 3.7.5 Release (23/27.06.2018)
 * Implemented Spanish, French and Indonesian localization support (thanks to POEditor contributors!)

@@ -68,7 +68,8 @@ public class GolemEvents implements Listener {
             ItemStack golemHealthUpgrade = new ItemStack(Material.IRON_INGOT, i);
             ItemMeta meta = golemHealthUpgrade.getItemMeta();
             meta.setDisplayName(ChatManager.colorMessage("In-Game.Golem-Upgrades.Upgrade-Tier" + i));
-            meta.setLore(Arrays.asList(ChatManager.colorMessage("In-Game.Golem-Upgrades.Upgrade-Tier" + i + "-Lore").split(";")));
+            meta.setLore(Arrays.asList(ChatManager.colorMessage("In-Game.Golem-Upgrades.Upgrade-Tier" + i + "-Lore")
+                    .replace("%cost%", plugin.getConfig().getString("Golem-Upgrade-Tier" + i + "-Cost")).split(";")));
             golemHealthUpgrade.setItemMeta(meta);
             inv.setItem((i * 3) + 7, golemHealthUpgrade);
         }
@@ -76,7 +77,8 @@ public class GolemEvents implements Listener {
         ItemStack golemHeal = new ItemStack(Material.GOLD_BLOCK, 1);
         ItemMeta healMeta = golemHeal.getItemMeta();
         healMeta.setDisplayName(ChatManager.colorMessage("In-Game.Golem-Upgrades.Upgrade-Heal"));
-        healMeta.setLore(Arrays.asList(ChatManager.colorMessage("In-Game.Golem-Upgrades.Upgrade-Heal-Lore").split(";")));
+        healMeta.setLore(Arrays.asList(ChatManager.colorMessage("In-Game.Golem-Upgrades.Upgrade-Heal-Lore")
+                .replace("%cost%", plugin.getConfig().getString("Golem-Upgrade-Heal-Cost")).split(";")));
         golemHeal.setItemMeta(healMeta);
 
         ItemStack golemHealth = new ItemStack(Material.BOOK, 1);
