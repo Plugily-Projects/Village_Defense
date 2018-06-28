@@ -34,7 +34,7 @@ import java.util.Properties;
 public class LanguageManager {
 
     private static Main plugin;
-    private static VDLocale pluginLocale;
+    private static Locale pluginLocale;
     private static Properties properties = new Properties();
 
     public static void init(Main pl) {
@@ -46,7 +46,7 @@ public class LanguageManager {
     }
 
     private static void loadProperties() {
-        if(pluginLocale == LanguageManager.VDLocale.DEFAULT) return;
+        if(pluginLocale == Locale.ENGLISH) return;
         try {
             properties.load(new InputStreamReader(plugin.getResource("locale_" + pluginLocale.getPrefix() + ".properties"), Charset.forName("UTF-8")));
         } catch(IOException e) {
@@ -56,22 +56,49 @@ public class LanguageManager {
 
     private static void setupLocale() {
         String locale = plugin.getConfig().getString("locale", "default");
-        if(locale.equalsIgnoreCase("default") || locale.equalsIgnoreCase("english")) {
-            pluginLocale = VDLocale.DEFAULT;
-        } else if(locale.equalsIgnoreCase("de") || locale.equalsIgnoreCase("deutsch")) {
-            pluginLocale = VDLocale.DEUTSCH;
-        } else if(locale.equalsIgnoreCase("pl") || locale.equalsIgnoreCase("polski")) {
-            pluginLocale = VDLocale.POLSKI;
-        } else if(locale.equalsIgnoreCase("es") || locale.equalsIgnoreCase("espanol")){
-            pluginLocale = VDLocale.ESPANOL;
-        } else if(locale.equalsIgnoreCase("fr") || locale.equalsIgnoreCase("francais")){
-            pluginLocale = VDLocale.FRANCAIS;
-        } else if(locale.equalsIgnoreCase("id") || locale.equalsIgnoreCase("indonesia")){
-            pluginLocale = VDLocale.INDONESIA;
-        } else {
-            Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "[Village Defense] Plugin locale is invalid! Using default one...");
-            pluginLocale = VDLocale.DEFAULT;
+        switch(locale.toLowerCase()){
+            case "default":
+            case "english":
+            case "en":
+                pluginLocale = Locale.ENGLISH;
+                break;
+            case "german":
+            case "deutsch":
+            case "de":
+                pluginLocale = Locale.GERMAN;
+                break;
+            case "polish":
+            case "polski":
+            case "pl":
+                pluginLocale = Locale.POLISH;
+                break;
+            case "spanish":
+            case "espanol":
+            case "español":
+            case "es":
+                pluginLocale = Locale.SPANISH;
+                break;
+            case "french":
+            case "francais":
+            case "français":
+            case "fr":
+                pluginLocale = Locale.FRENCH;
+                break;
+            case "indonesia":
+            case "id":
+                pluginLocale = Locale.INDONESIA;
+                break;
+            case "vietnamese":
+            case "việt":
+            case "vn":
+                pluginLocale = Locale.VIETNAMESE;
+                break;
+            default:
+                Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "[Village Defense] Plugin locale is invalid! Using default one...");
+                pluginLocale = Locale.ENGLISH;
+                break;
         }
+        Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "[Village Defense] Loaded locale " + pluginLocale.getFormattedName() + " (" + pluginLocale.getPrefix() + ") by " + pluginLocale.getAuthor());
         loadProperties();
     }
 
@@ -92,7 +119,7 @@ public class LanguageManager {
     }
 
     public static String getLanguageMessage(String message) {
-        if(pluginLocale != LanguageManager.VDLocale.DEFAULT) {
+        if(pluginLocale != Locale.ENGLISH) {
             try {
                 return properties.getProperty(ChatColor.translateAlternateColorCodes('&', message));
             } catch(NullPointerException ex){
@@ -106,23 +133,24 @@ public class LanguageManager {
         return ConfigurationManager.getConfig("language").getString(message);
     }
 
-    public static VDLocale getPluginLocale() {
+    public static Locale getPluginLocale() {
         return pluginLocale;
     }
 
-    public enum VDLocale {
-        DEFAULT("English", "en_GB", "Plajer"),
-        POLSKI("Polski", "pl_PL", "Plajer"),
-        DEUTSCH("Deutsch", "de_DE", "Tigerkatze"),
-        ESPANOL("Español", "es_ES", "POEditor contributors"),
-        FRANCAIS("Francais", "fr_FR", "POEditor contributors"),
-        INDONESIA("Francais", "id_ID", "POEditor contributors (Yume)");
+    public enum Locale {
+        ENGLISH("English", "en_GB", "Plajer"),
+        FRENCH("Francais", "fr_FR", "POEditor contributors"),
+        GERMAN("Deutsch", "de_DE", "Tigerkatze"),
+        INDONESIA("Francais", "id_ID", "POEditor contributors (Yume)"),
+        SPANISH("Español", "es_ES", "POEditor contributors"),
+        POLISH("Polski", "pl_PL", "Plajer"),
+        VIETNAMESE("Việt", "vn_VN", "POEditor contributors (HStreamGamer)");
 
         String formattedName;
         String prefix;
         String author;
 
-        VDLocale(String formattedName, String prefix, String author) {
+        Locale(String formattedName, String prefix, String author) {
             this.prefix = prefix;
             this.formattedName = formattedName;
             this.author = author;

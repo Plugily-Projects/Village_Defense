@@ -9,10 +9,11 @@
 # Available locales:
 #    default - English language. Uses 'language.yml'.
 #    de - Deutsche sprache
-#    pl - Język Polski
+#    pl - Język polski
 #    es - Idioma español
 #    id - Bhasa Indonesia
 #    fr - Langue française
+#    vn - Tiếng việt
 #
 locale: default
 

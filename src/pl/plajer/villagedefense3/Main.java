@@ -320,21 +320,29 @@ public class Main extends JavaPlugin {
                 case "english":
                 case "en":
                     return "English";
+                case "polish":
                 case "polski":
                 case "pl":
                     return "Polish";
+                case "german":
                 case "deutsch":
                 case "de":
                     return "German";
+                case "spanish":
                 case "espanol":
                 case "es":
                     return "Spanish";
+                case "french":
                 case "francais":
                 case "fr":
                     return "French";
                 case "indonesia":
                 case "id":
                     return "Indonesian";
+                case "vietnamese":
+                case "viet":
+                case "vn":
+                    return "Vietnamese";
                 default:
                     return "English";
             }
