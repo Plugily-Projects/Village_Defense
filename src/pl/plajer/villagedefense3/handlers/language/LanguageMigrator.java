@@ -40,8 +40,8 @@ import java.util.stream.Collectors;
  */
 public class LanguageMigrator {
 
-    public static final int LANGUAGE_FILE_VERSION = 6;
-    public static final int CONFIG_FILE_VERSION = 4;
+    public static final int LANGUAGE_FILE_VERSION = 7;
+    public static final int CONFIG_FILE_VERSION = 5;
     private static Main plugin = JavaPlugin.getPlugin(Main.class);
     private static List<String> migratable = Arrays.asList("bungee", "config", "kits", "language", "lobbyitems", "mysql");
 
@@ -68,28 +68,39 @@ public class LanguageMigrator {
                 LanguageMigrator.addNewLines(file, "# Should blocks behind game signs change their color based on game state?\r\n# They will change color to:\r\n" +
                         "# - white (waiting for players) stained glass\r\n# - yellow (starting) stained glass\r\n# - orange (in game) stained glass\r\n# - gray (ending) stained glass\r\n" +
                         "# - black (restarting) stained glass\r\nSigns-Block-States-Enabled: true\r\n\r\n");
-                LanguageMigrator.addNewLines(file, "# Commands which can be used in game, remove all of them to disable\r\nWhitelisted-Commands:\r\n- me\r\n- help\r\n" +
+                LanguageMigrator.addNewLines(file, "# Commands which can be used in game, remove all of them to disable\r\nWhitelisted-Commands:\r\n- me\r\n- help\r\n");
+                LanguageMigrator.addNewLines(file, "# Limit of mobs can be spawned per player in-game\r\n# Will affect only buying them in in-game shop\r\n" +
+                        "Wolves-Spawn-Limit: 20\r\nGolems-Spawn-Limit: 15\r\n" +
                         "# Don't modify\r\nVersion: 4\r\n\r\n# No way! You've reached the end! But... where's the dragon!?");
                 break;
             case 2:
                 LanguageMigrator.addNewLines(file, "# Should blocks behind game signs change their color based on game state?\r\n# They will change color to:\r\n" +
                         "# - white (waiting for players) stained glass\r\n# - yellow (starting) stained glass\r\n# - orange (in game) stained glass\r\n# - gray (ending) stained glass\r\n" +
                         "# - black (restarting) stained glass\r\nSigns-Block-States-Enabled: true\r\n\r\n");
-                LanguageMigrator.addNewLines(file, "# Commands which can be used in game, remove all of them to disable\r\nWhitelisted-Commands:\r\n- me\r\n- help\r\n" +
+                LanguageMigrator.addNewLines(file, "# Commands which can be used in game, remove all of them to disable\r\nWhitelisted-Commands:\r\n- me\r\n- help\r\n");
+                LanguageMigrator.addNewLines(file, "# Limit of mobs can be spawned per player in-game\r\n# Will affect only buying them in in-game shop\r\n" +
+                        "Wolves-Spawn-Limit: 20\r\nGolems-Spawn-Limit: 15\r\n" +
                         "# Don't modify\r\nVersion: 4\r\n\r\n# No way! You've reached the end! But... where's the dragon!?");
                 break;
             case 3:
-                LanguageMigrator.addNewLines(file, "# Commands which can be used in game, remove all of them to disable\r\nWhitelisted-Commands:\r\n- me\r\n- help\r\n" +
+                LanguageMigrator.addNewLines(file, "# Commands which can be used in game, remove all of them to disable\r\nWhitelisted-Commands:\r\n- me\r\n- help\r\n");
+                LanguageMigrator.addNewLines(file, "# Limit of mobs can be spawned per player in-game\r\n# Will affect only buying them in in-game shop\r\n" +
+                        "Wolves-Spawn-Limit: 20\r\nGolems-Spawn-Limit: 15\r\n" +
+                        "# Don't modify\r\nVersion: 4\r\n\r\n# No way! You've reached the end! But... where's the dragon!?");
+                break;
+            case 4:
+                LanguageMigrator.addNewLines(file, "# Limit of mobs can be spawned per player in-game\r\n# Will affect only buying them in in-game shop\r\n" +
+                        "Wolves-Spawn-Limit: 20\r\nGolems-Spawn-Limit: 15\r\n" +
                         "# Don't modify\r\nVersion: 4\r\n\r\n# No way! You've reached the end! But... where's the dragon!?");
                 break;
         }
-        Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "[Village Defense] System notify >> Config updated, no comments were removed :)");
-        Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "[Village Defense] System notify >> You're using latest config file version! Nice!");
+        Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "[Village Defense] [System notify] Config updated, no comments were removed :)");
+        Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "[Village Defense] [System notify] You're using latest config file version! Nice!");
     }
 
     public static void languageFileUpdate() {
         if(LanguageManager.getDefaultLanguageMessage("File-Version-Do-Not-Edit").equals(String.valueOf(LANGUAGE_FILE_VERSION))) return;
-        Bukkit.getConsoleSender().sendMessage(ChatColor.YELLOW + "[Village Defense] System notify >> Your language file is outdated! Updating...");
+        Bukkit.getConsoleSender().sendMessage(ChatColor.YELLOW + "[Village Defense] [System notify] Your language file is outdated! Updating...");
 
         int version = Integer.valueOf(LanguageManager.getDefaultLanguageMessage("File-Version-Do-Not-Edit"));
         LanguageMigrator.updateLanguageVersionControl(version);
@@ -126,6 +137,7 @@ public class LanguageMigrator {
                         "  Removed-Game-Instance: \"&cSuccessfully removed game instance!\"\r\n  Look-Sign: \"&cYou have to look at a sign to perform this command!\"\r\n  Hold-Any-Item: \"&cYou must hold any item!\"\r\n" +
                         "  Invalid-Number: \"&cWave needs to be number! Do %correct%\"\r\n  Target-Player-Not-Found: \"&cTarget player doesn't exist!\"\r\n  Location-Teleport-Invalid: \"&cLocation to teleport is invalid!\"\r\n  Wrong-Usage: \"&cWrong usage. Do %correct%\"\r\n");
                 LanguageMigrator.insertAfterLine(file, "Admin-Commands", "    Success-Reload: \"&aArenas reloaded!\"");
+                LanguageMigrator.insertAfterLine(file, "Shop-Messages", "      Mob-Limit-Reached: \"&cYou can't buy mobs! You've reached the limit of %amount% mobs!\"");
                 break;
             case 1:
                 LanguageMigrator.addNewLines(file, "\r\nPowerups:\r\n  Map-Clean-Powerup:\r\n    Name: \"&e&lMAP CLEANER\"\r\n    # Used as sub title description\r\n" +
@@ -153,6 +165,7 @@ public class LanguageMigrator {
                         "  Removed-Game-Instance: \"&cSuccessfully removed game instance!\"\r\n  Look-Sign: \"&cYou have to look at a sign to perform this command!\"\r\n  Hold-Any-Item: \"&cYou must hold any item!\"\r\n" +
                         "  Invalid-Number: \"&cWave needs to be number! Do %correct%\"\r\n  Target-Player-Not-Found: \"&cTarget player doesn't exist!\"\r\n  Location-Teleport-Invalid: \"&cLocation to teleport is invalid!\"\r\n  Wrong-Usage: \"&cWrong usage. Do %correct%\"\r\n");
                 LanguageMigrator.insertAfterLine(file, "Admin-Commands", "    Success-Reload: \"&aArenas reloaded!\"");
+                LanguageMigrator.insertAfterLine(file, "Shop-Messages", "      Mob-Limit-Reached: \"&cYou can't buy mobs! You've reached the limit of %amount% mobs!\"");
                 break;
             case 2:
                 LanguageMigrator.insertAfterLine(file, "Commands:", "  Statistics:");
@@ -175,6 +188,7 @@ public class LanguageMigrator {
                         "  Removed-Game-Instance: \"&cSuccessfully removed game instance!\"\r\n  Look-Sign: \"&cYou have to look at a sign to perform this command!\"\r\n  Hold-Any-Item: \"&cYou must hold any item!\"\r\n" +
                         "  Invalid-Number: \"&cWave needs to be number! Do %correct%\"\r\n  Target-Player-Not-Found: \"&cTarget player doesn't exist!\"\r\n  Location-Teleport-Invalid: \"&cLocation to teleport is invalid!\"\r\n  Wrong-Usage: \"&cWrong usage. Do %correct%\"\r\n");
                 LanguageMigrator.insertAfterLine(file, "Admin-Commands", "    Success-Reload: \"&aArenas reloaded!\"");
+                LanguageMigrator.insertAfterLine(file, "Shop-Messages", "      Mob-Limit-Reached: \"&cYou can't buy mobs! You've reached the limit of %amount% mobs!\"");
                 break;
             case 3:
                 LanguageMigrator.insertAfterLine(file, "Commands:", "  Did-You-Mean: \"&6Did you mean &7/%command%&6?\"");
@@ -192,6 +206,7 @@ public class LanguageMigrator {
                         "  Removed-Game-Instance: \"&cSuccessfully removed game instance!\"\r\n  Look-Sign: \"&cYou have to look at a sign to perform this command!\"\r\n  Hold-Any-Item: \"&cYou must hold any item!\"\r\n" +
                         "  Invalid-Number: \"&cWave needs to be number! Do %correct%\"\r\n  Target-Player-Not-Found: \"&cTarget player doesn't exist!\"\r\n  Location-Teleport-Invalid: \"&cLocation to teleport is invalid!\"\r\n  Wrong-Usage: \"&cWrong usage. Do %correct%\"\r\n");
                 LanguageMigrator.insertAfterLine(file, "Admin-Commands", "    Success-Reload: \"&aArenas reloaded!\"");
+                LanguageMigrator.insertAfterLine(file, "Shop-Messages", "      Mob-Limit-Reached: \"&cYou can't buy mobs! You've reached the limit of %amount% mobs!\"");
                 break;
             case 4:
                 LanguageMigrator.insertAfterLine(file, "Scoreboard:", "  Content:\r\n    # Contents of scoreboard while wave is running\r\n    Playing:\r\n" +
@@ -208,16 +223,21 @@ public class LanguageMigrator {
                         "  Removed-Game-Instance: \"&cSuccessfully removed game instance!\"\r\n  Look-Sign: \"&cYou have to look at a sign to perform this command!\"\r\n  Hold-Any-Item: \"&cYou must hold any item!\"\r\n" +
                         "  Invalid-Number: \"&cWave needs to be number! Do %correct%\"\r\n  Target-Player-Not-Found: \"&cTarget player doesn't exist!\"\r\n  Location-Teleport-Invalid: \"&cLocation to teleport is invalid!\"\r\n  Wrong-Usage: \"&cWrong usage. Do %correct%\"\r\n");
                 LanguageMigrator.insertAfterLine(file, "Admin-Commands", "    Success-Reload: \"&aArenas reloaded!\"");
+                LanguageMigrator.insertAfterLine(file, "Shop-Messages", "      Mob-Limit-Reached: \"&cYou can't buy mobs! You've reached the limit of %amount% mobs!\"");
                 break;
             case 5:
                 LanguageMigrator.insertAfterLine(file, "Did-You-Mean", "  Command-Executed: \"&aCommand succesfully executed!\"\r\n  Command-Executed-Item-Updated: \"&aCommand succesfully executed, item updated!\"\r\n" +
                         "  Removed-Game-Instance: \"&cSuccessfully removed game instance!\"\r\n  Look-Sign: \"&cYou have to look at a sign to perform this command!\"\r\n  Hold-Any-Item: \"&cYou must hold any item!\"\r\n" +
                         "  Invalid-Number: \"&cWave needs to be number! Do %correct%\"\r\n  Target-Player-Not-Found: \"&cTarget player doesn't exist!\"\r\n  Location-Teleport-Invalid: \"&cLocation to teleport is invalid!\"\r\n  Wrong-Usage: \"&cWrong usage. Do %correct%\"\r\n");
                 LanguageMigrator.insertAfterLine(file, "Admin-Commands", "    Success-Reload: \"&aArenas reloaded!\"");
+                LanguageMigrator.insertAfterLine(file, "Shop-Messages", "      Mob-Limit-Reached: \"&cYou can't buy mobs! You've reached the limit of %amount% mobs!\"");
+                break;
+            case 6:
+                LanguageMigrator.insertAfterLine(file, "Shop-Messages", "      Mob-Limit-Reached: \"&cYou can't buy mobs! You've reached the limit of %amount% mobs!\"");
                 break;
         }
-        Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "[Village Defense] System notify >> Language file updated! Nice!");
-        Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "[Village Defense] System notify >> You're using latest language file version! Nice!");
+        Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "[Village Defense] [System notify] Language file updated! Nice!");
+        Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "[Village Defense] [System notify] You're using latest language file version! Nice!");
     }
 
     public static void migrateToNewFormat() {
@@ -230,7 +250,7 @@ public class LanguageMigrator {
                 Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "Renamed file " + file + ".yml");
             }
         }
-        Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "Done! Enabling VD3...");
+        Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "Done! Enabling Village Defense 3...");
     }
 
     private static void removeLineFromFile(File file, String lineToRemove) {

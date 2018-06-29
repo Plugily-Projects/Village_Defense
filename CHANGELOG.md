@@ -3,6 +3,7 @@
 ### 3.8.0 Release (29.06.2018)
 * API update - added new events: VillageGameStateChangeEvent, VillageGolemUpgradeEvent, VillagePowerupPickEvent and VillagePlayerStatisticChangeEvent
 * Added orbs StatisticType to StatsStorage class (keep in mind that orbs stat is a temporary statistic for each game!)
+* Added wolves and golems limit per player
 
 ### 3.7.6 Release (28.06.2018)
 * Now you will see setup video link when creating new arena

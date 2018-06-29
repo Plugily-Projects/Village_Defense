@@ -298,6 +298,7 @@ In-Game:
       Shop-GUI-Name: "&lShop"
       Golem-Item-Name: "Spawn Golem"
       Wolf-Item-Name: "Spawn Wolf"
+      Mob-Limit-Reached: "&cYou can't buy mobs! You've reached the limit of %amount% mobs!"
       Not-Enough-Orbs: "&cYou need more orbs to buy this item!"
       Currency-In-Shop: "orbs"
       No-Shop-Defined: "&cShop wasn't set up! Contact staff!"
@@ -358,4 +359,4 @@ Validator:
 
 # Don't edit it. But who's stopping you? It's your server!
 # Really, don't edit ;p
-File-Version-Do-Not-Edit: 6
+File-Version-Do-Not-Edit: 7

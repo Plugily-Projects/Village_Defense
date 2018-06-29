@@ -112,6 +112,11 @@ Golem-Upgrade-Tier3-Cost: 800
 # Cost of golem full heal
 Golem-Upgrade-Heal-Cost: 150
 
+# Limit of mobs can be spawned per player in-game
+# Will affect only buying them in in-game shop
+Wolves-Spawn-Limit: 20
+Golems-Spawn-Limit: 15
+
 # Enable very simple health bar for zombies?
 # They will have health instead of their names
 # It will show percentage of health left.
@@ -158,6 +163,6 @@ Update-Notifier:
 Debug: false
 
 # Don't modify.
-Version: 4
+Version: 5
 
 # No way! You've reached the end! But... where's the dragon!?

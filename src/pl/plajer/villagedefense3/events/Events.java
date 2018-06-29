@@ -26,6 +26,7 @@ import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.IronGolem;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Villager;
 import org.bukkit.entity.Wolf;
@@ -396,12 +397,27 @@ public class Events implements Listener {
         }
         if(e.getCurrentItem().hasItemMeta() && e.getCurrentItem().getItemMeta().hasDisplayName()) {
             if(e.getCurrentItem().getItemMeta().getDisplayName().contains(ChatManager.colorMessage("In-Game.Messages.Shop-Messages.Golem-Item-Name"))) {
+                int i = 0;
+                for(IronGolem golem : arena.getIronGolems()){
+                    if(golem.getCustomName().equals(ChatManager.colorMessage("In-Game.Spawned-Golem-Name").replace("%player%", player.getName()))) i++;
+                }
+                if(i >= plugin.getConfig().getInt("Golems-Spawn-Limit", 15)){
+                    e.getWhoClicked().sendMessage(ChatManager.colorMessage("In-Game.Messages.Shop-Messages.Mob-Limit-Reached").replace("%amount%", String.valueOf(plugin.getConfig().getInt("Golems-Spawn-Limit", 15))));
+                    return;
+                }
                 arena.spawnGolem(arena.getStartLocation(), player);
                 player.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Messages.Golem-Spawned"));
                 UserManager.getUser(player.getUniqueId()).setInt("orbs", UserManager.getUser(player.getUniqueId()).getInt("orbs") - price);
                 return;
-
             } else if(e.getCurrentItem().getItemMeta().getDisplayName().contains(ChatManager.colorMessage("In-Game.Messages.Shop-Messages.Wolf-Item-Name"))) {
+                int i = 0;
+                for(Wolf wolf : arena.getWolfs()){
+                    if(wolf.getCustomName().equals(ChatManager.colorMessage("In-Game.Spawned-Wolf-Name").replace("%player%", player.getName()))) i++;
+                }
+                if(i >= plugin.getConfig().getInt("Wolves-Spawn-Limit", 20)){
+                    e.getWhoClicked().sendMessage(ChatManager.colorMessage("In-Game.Messages.Shop-Messages.Mob-Limit-Reached").replace("%amount%", String.valueOf(plugin.getConfig().getInt("Wolves-Spawn-Limit", 20))));
+                    return;
+                }
                 arena.spawnWolf(arena.getStartLocation(), player);
                 player.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Messages.Wolf-Spawned"));
                 UserManager.getUser(player.getUniqueId()).setInt("orbs", UserManager.getUser(player.getUniqueId()).getInt("orbs") - price);
