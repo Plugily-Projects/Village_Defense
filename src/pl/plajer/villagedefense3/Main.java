@@ -431,7 +431,7 @@ public class Main extends JavaPlugin {
         debug("System disable", System.currentTimeMillis());
         for(Player player : getServer().getOnlinePlayers()) {
             User user = UserManager.getUser(player.getUniqueId());
-            for(String s : FileStats.STATISTICS) {
+            for(String s : FileStats.STATISTICS.keySet()) {
                 if(isDatabaseActivated()) {
                     getMySQLDatabase().setStat(player.getUniqueId().toString(), s, user.getInt(s));
                 } else {

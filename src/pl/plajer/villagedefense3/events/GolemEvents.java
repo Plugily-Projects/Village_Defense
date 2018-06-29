@@ -35,6 +35,7 @@ import pl.plajer.villagedefense3.Main;
 import pl.plajer.villagedefense3.arena.ArenaRegistry;
 import pl.plajer.villagedefense3.handlers.ChatManager;
 import pl.plajer.villagedefense3.user.UserManager;
+import pl.plajer.villagedefense3.villagedefenseapi.VillageGolemUpgradeEvent;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -117,6 +118,10 @@ public class GolemEvents implements Listener {
                         }
                         clickedGolem.get(e.getWhoClicked()).setMaxHealth(100.0 + (20.0 * i));
                         clickedGolem.get(e.getWhoClicked()).setHealth(clickedGolem.get(e.getWhoClicked()).getMaxHealth());
+
+                        VillageGolemUpgradeEvent villageGolemUpgradeEvent = new VillageGolemUpgradeEvent(ArenaRegistry.getArena((Player) e.getWhoClicked()), clickedGolem.get(e.getWhoClicked()), (Player) e.getWhoClicked(), golemHealth);
+                        Bukkit.getPluginManager().callEvent(villageGolemUpgradeEvent);
+
                         e.getWhoClicked().sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Golem-Upgrades.Upgrade-Applied"));
                         UserManager.getUser(e.getWhoClicked().getUniqueId()).setInt("orbs", orbs - price);
                         clickedGolem.get(e.getWhoClicked()).getWorld().playEffect(e.getWhoClicked().getLocation(), Effect.LAVA_POP, 20);
@@ -140,6 +145,10 @@ public class GolemEvents implements Listener {
                 Integer price = plugin.getConfig().getInt("Golem-Upgrade-Heal-Cost", 150);
                 if(orbs >= price) {
                     clickedGolem.get(e.getWhoClicked()).setHealth(clickedGolem.get(e.getWhoClicked()).getMaxHealth());
+
+                    VillageGolemUpgradeEvent villageGolemUpgradeEvent = new VillageGolemUpgradeEvent(ArenaRegistry.getArena((Player) e.getWhoClicked()), clickedGolem.get(e.getWhoClicked()), (Player) e.getWhoClicked(), golemHealth);
+                    Bukkit.getPluginManager().callEvent(villageGolemUpgradeEvent);
+
                     e.getWhoClicked().sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Golem-Upgrades.Upgrade-Applied"));
                     UserManager.getUser(e.getWhoClicked().getUniqueId()).setInt("orbs", orbs - price);
                     clickedGolem.get(e.getWhoClicked()).getWorld().playEffect(e.getWhoClicked().getLocation(), Effect.LAVA_POP, 20);

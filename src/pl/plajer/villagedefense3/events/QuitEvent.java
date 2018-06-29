@@ -60,7 +60,7 @@ public class QuitEvent implements Listener {
         final Player player = event.getPlayer();
         if(plugin.isDatabaseActivated()) {
             Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
-                for(final String s : FileStats.STATISTICS) {
+                for(final String s : FileStats.STATISTICS.keySet()) {
                     int i;
                     try {
                         i = plugin.getMySQLDatabase().getStat(player.getUniqueId().toString(), s);
@@ -81,7 +81,7 @@ public class QuitEvent implements Listener {
                 }
             });
         } else {
-            for(String s : FileStats.STATISTICS) {
+            for(String s : FileStats.STATISTICS.keySet()) {
                 plugin.getFileStats().saveStat(player, s);
             }
         }

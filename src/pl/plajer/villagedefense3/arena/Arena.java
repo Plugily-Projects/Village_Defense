@@ -39,10 +39,12 @@ import pl.plajer.villagedefense3.handlers.ChatManager;
 import pl.plajer.villagedefense3.handlers.ConfigurationManager;
 import pl.plajer.villagedefense3.handlers.PermissionsManager;
 import pl.plajer.villagedefense3.handlers.language.LanguageManager;
+import pl.plajer.villagedefense3.handlers.language.Locale;
 import pl.plajer.villagedefense3.kits.kitapi.KitRegistry;
 import pl.plajer.villagedefense3.user.User;
 import pl.plajer.villagedefense3.user.UserManager;
 import pl.plajer.villagedefense3.villagedefenseapi.VillageGameStartEvent;
+import pl.plajer.villagedefense3.villagedefenseapi.VillageGameStateChangeEvent;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -450,13 +452,13 @@ public abstract class Arena extends BukkitRunnable {
             ArenaBoard displayBoard = new ArenaBoard("VD3", "board", ChatManager.colorMessage("Scoreboard.Title"));
             List<String> lines;
             if(getArenaState() == ArenaState.IN_GAME) {
-                if(LanguageManager.getPluginLocale() == LanguageManager.Locale.ENGLISH) {
+                if(LanguageManager.getPluginLocale() == Locale.ENGLISH) {
                     lines = LanguageManager.getLanguageFile().getStringList("Scoreboard.Content.Playing" + (fighting ? "" : "-Waiting"));
                 } else {
                     lines = Arrays.asList(ChatManager.colorMessage("Scoreboard.Content.Playing" + (fighting ? "" : "-Waiting")).split(";"));
                 }
             } else {
-                if(LanguageManager.getPluginLocale() == LanguageManager.Locale.ENGLISH) {
+                if(LanguageManager.getPluginLocale() == Locale.ENGLISH) {
                     lines = LanguageManager.getLanguageFile().getStringList("Scoreboard.Content." + getArenaState().getFormattedName());
                 } else {
                     lines = Arrays.asList(ChatManager.colorMessage("Scoreboard.Content." + getArenaState().getFormattedName()).split(";"));
@@ -634,6 +636,8 @@ public abstract class Arena extends BukkitRunnable {
      */
     public void setArenaState(ArenaState arenaState) {
         this.arenaState = arenaState;
+        VillageGameStateChangeEvent villageGameStateChangeEvent = new VillageGameStateChangeEvent(this, getArenaState());
+        Bukkit.getPluginManager().callEvent(villageGameStateChangeEvent);
     }
 
     /**

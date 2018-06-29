@@ -103,11 +103,6 @@ public class MySQLDatabase {
         manager.shutdownConnPool();
     }
 
-
-    public void addStat(String UUID, String stat) {
-        addStat(UUID, stat, 1);
-    }
-
     public void addStat(String UUID, String stat, int amount) {
         executeUpdate("UPDATE playerstats SET " + stat + "=" + stat + "+" + amount + " WHERE UUID='" + UUID + "'");
     }
@@ -126,7 +121,6 @@ public class MySQLDatabase {
             e.printStackTrace();
             return 0;
         }
-
     }
 
     public Map<UUID, Integer> getColumn(String player) {
@@ -141,6 +135,5 @@ public class MySQLDatabase {
         }
         return column;
     }
-
 
 }

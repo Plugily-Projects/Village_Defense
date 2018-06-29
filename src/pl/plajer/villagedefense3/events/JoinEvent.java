@@ -116,7 +116,7 @@ public class JoinEvent implements Listener {
         }
         UserManager.registerUser(event.getPlayer().getUniqueId());
         if(!plugin.isDatabaseActivated()) {
-            for(String s : FileStats.STATISTICS) {
+            for(String s : FileStats.STATISTICS.keySet()) {
                 plugin.getFileStats().loadStat(event.getPlayer(), s);
             }
             return;

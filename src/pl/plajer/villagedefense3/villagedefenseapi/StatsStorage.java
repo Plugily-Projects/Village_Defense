@@ -89,7 +89,7 @@ public class StatsStorage {
      * Available statistics to get.
      */
     public enum StatisticType {
-        KILLS("kills"), DEATHS("deaths"), GAMES_PLAYED("gamesplayed"), HIGHEST_WAVE("highestwave"), LEVEL("level"), XP("xp");
+        ORBS("orbs"), KILLS("kills"), DEATHS("deaths"), GAMES_PLAYED("gamesplayed"), HIGHEST_WAVE("highestwave"), LEVEL("level"), XP("xp");
 
         String name;
 

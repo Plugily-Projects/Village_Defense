@@ -136,36 +136,4 @@ public class LanguageManager {
     public static Locale getPluginLocale() {
         return pluginLocale;
     }
-
-    public enum Locale {
-        ENGLISH("English", "en_GB", "Plajer"),
-        FRENCH("Francais", "fr_FR", "POEditor contributors"),
-        GERMAN("Deutsch", "de_DE", "Tigerkatze"),
-        INDONESIA("Francais", "id_ID", "POEditor contributors (Yume)"),
-        SPANISH("Español", "es_ES", "POEditor contributors"),
-        POLISH("Polski", "pl_PL", "Plajer"),
-        VIETNAMESE("Việt", "vn_VN", "POEditor contributors (HStreamGamer)");
-
-        String formattedName;
-        String prefix;
-        String author;
-
-        Locale(String formattedName, String prefix, String author) {
-            this.prefix = prefix;
-            this.formattedName = formattedName;
-            this.author = author;
-        }
-
-        public String getFormattedName() {
-            return formattedName;
-        }
-
-        public String getAuthor() {
-            return author;
-        }
-
-        public String getPrefix() {
-            return prefix;
-        }
-    }
 }

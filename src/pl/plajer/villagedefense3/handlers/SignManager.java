@@ -40,6 +40,7 @@ import pl.plajer.villagedefense3.arena.ArenaManager;
 import pl.plajer.villagedefense3.arena.ArenaRegistry;
 import pl.plajer.villagedefense3.arena.ArenaState;
 import pl.plajer.villagedefense3.handlers.language.LanguageManager;
+import pl.plajer.villagedefense3.handlers.language.Locale;
 import pl.plajer.villagedefense3.utils.Utils;
 
 import java.util.Arrays;
@@ -62,7 +63,7 @@ public class SignManager implements Listener {
         gameStateToString.put(ArenaState.IN_GAME, ChatManager.colorMessage("Signs.Game-States.In-Game"));
         gameStateToString.put(ArenaState.ENDING, ChatManager.colorMessage("Signs.Game-States.Ending"));
         gameStateToString.put(ArenaState.RESTARTING, ChatManager.colorMessage("Signs.Game-States.Restarting"));
-        if(LanguageManager.getPluginLocale() == LanguageManager.Locale.ENGLISH) {
+        if(LanguageManager.getPluginLocale() == Locale.ENGLISH) {
             signLines = LanguageManager.getLanguageFile().getStringList("Signs.Lines");
         } else {
             signLines = Arrays.asList(ChatManager.colorMessage("Signs.Lines").split(";"));

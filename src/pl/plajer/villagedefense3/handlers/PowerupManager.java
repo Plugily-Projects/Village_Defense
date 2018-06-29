@@ -38,6 +38,8 @@ import pl.plajer.villagedefense3.Main;
 import pl.plajer.villagedefense3.arena.Arena;
 import pl.plajer.villagedefense3.arena.ArenaRegistry;
 import pl.plajer.villagedefense3.utils.MessageUtils;
+import pl.plajer.villagedefense3.villagedefenseapi.VillageGameStartEvent;
+import pl.plajer.villagedefense3.villagedefenseapi.VillagePowerupPickEvent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -108,6 +110,10 @@ public class PowerupManager {
         final String powerUpSubtitle = ChatManager.colorMessage(powerupType.getAccessPath() + ".Description");
         itemLine.setPickupHandler(player -> {
             if(ArenaRegistry.getArena(player) != arena) return;
+
+            VillagePowerupPickEvent villagePowerupPickEvent = new VillagePowerupPickEvent(arena, player, finalPowerUp);
+            Bukkit.getPluginManager().callEvent(villagePowerupPickEvent);
+
             String subTitle = powerUpSubtitle;
             switch(finalPowerUp) {
                 case CLEANER:
@@ -159,7 +165,7 @@ public class PowerupManager {
 
     @Getter
     @AllArgsConstructor
-    private enum PowerupType {
+    public enum PowerupType {
         CLEANER("Cleaner", Material.BLAZE_POWDER, "Powerups.Map-Clean-Powerup", true), DOUBLE_DAMAGE("Doubledamage", Material.REDSTONE, "Powerups.Double-Damage-Powerup", true),
         HEALING("Healing", Material.GOLDEN_APPLE, "Powerups.Healing-Powerup", true), GOLEM_RAID("raid", Material.IRON_INGOT, "Powerups.Golem-Raid-Powerup", true),
         ONE_SHOT_ONE_KILL("oson", Material.DIAMOND_SWORD, "Powerups.One-Shot-One-Kill-Powerup", true);

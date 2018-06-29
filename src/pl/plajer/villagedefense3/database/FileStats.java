@@ -27,26 +27,29 @@ import pl.plajer.villagedefense3.handlers.ConfigurationManager;
 import pl.plajer.villagedefense3.user.User;
 import pl.plajer.villagedefense3.user.UserManager;
 import pl.plajer.villagedefense3.utils.MessageUtils;
+import pl.plajer.villagedefense3.villagedefenseapi.StatsStorage;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Tom on 17/06/2015.
  */
 public class FileStats {
 
-    public final static List<String> STATISTICS = new ArrayList<>();
+    public final static Map<String, StatsStorage.StatisticType> STATISTICS = new HashMap<>();
 
     static {
-        STATISTICS.add("gamesplayed");
-        STATISTICS.add("kills");
-        STATISTICS.add("deaths");
-        STATISTICS.add("highestwave");
-        STATISTICS.add("xp");
-        STATISTICS.add("level");
-        STATISTICS.add("orbs");
+        STATISTICS.put("gamesplayed", StatsStorage.StatisticType.GAMES_PLAYED);
+        STATISTICS.put("kills", StatsStorage.StatisticType.KILLS);
+        STATISTICS.put("deaths", StatsStorage.StatisticType.DEATHS);
+        STATISTICS.put("highestwave", StatsStorage.StatisticType.HIGHEST_WAVE);
+        STATISTICS.put("xp", StatsStorage.StatisticType.XP);
+        STATISTICS.put("level", StatsStorage.StatisticType.LEVEL);
+        STATISTICS.put("orbs", StatsStorage.StatisticType.ORBS);
     }
 
     private Main plugin;
@@ -83,7 +86,7 @@ public class FileStats {
             if(plugin.isBungeeActivated())
                 ArenaRegistry.getArenas().get(0).teleportToLobby(player);
             if(!plugin.isDatabaseActivated()) {
-                for(String s : FileStats.STATISTICS) {
+                for(String s : FileStats.STATISTICS.keySet()) {
                     loadStat(player, s);
                 }
                 continue;
