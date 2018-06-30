@@ -31,7 +31,7 @@ import pl.plajer.villagedefense3.arena.Arena;
  */
 public class VillageGolemUpgradeEvent extends VillageEvent {
 
-    private static final HandlerList handlers = new HandlerList();
+    private static final HandlerList HANDLERS = new HandlerList();
     private IronGolem ironGolem;
     private Player player;
     private double originalHealth;
@@ -43,8 +43,12 @@ public class VillageGolemUpgradeEvent extends VillageEvent {
         this.originalHealth = originalHealth;
     }
 
+    public static HandlerList getHandlerList() {
+        return HANDLERS;
+    }
+
     public HandlerList getHandlers() {
-        return handlers;
+        return HANDLERS;
     }
 
     public IronGolem getIronGolem() {

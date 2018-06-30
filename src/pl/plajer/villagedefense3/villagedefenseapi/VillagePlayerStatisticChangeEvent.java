@@ -31,7 +31,7 @@ import pl.plajer.villagedefense3.arena.Arena;
  */
 public class VillagePlayerStatisticChangeEvent extends VillageEvent {
 
-    private static final HandlerList handlers = new HandlerList();
+    private static final HandlerList HANDLERS = new HandlerList();
     private Player player;
     private StatsStorage.StatisticType statisticType;
     private int number;
@@ -43,8 +43,12 @@ public class VillagePlayerStatisticChangeEvent extends VillageEvent {
         this.number = number;
     }
 
+    public static HandlerList getHandlerList() {
+        return HANDLERS;
+    }
+
     public HandlerList getHandlers() {
-        return handlers;
+        return HANDLERS;
     }
 
     public Player getPlayer() {

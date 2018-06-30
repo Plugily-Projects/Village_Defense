@@ -31,7 +31,7 @@ import pl.plajer.villagedefense3.handlers.PowerupManager;
  */
 public class VillagePowerupPickEvent extends VillageEvent {
 
-    private static final HandlerList handlers = new HandlerList();
+    private static final HandlerList HANDLERS = new HandlerList();
     private final Player player;
     private final PowerupManager.PowerupType powerupType;
 
@@ -49,7 +49,11 @@ public class VillagePowerupPickEvent extends VillageEvent {
         return powerupType;
     }
 
+    public static HandlerList getHandlerList() {
+        return HANDLERS;
+    }
+
     public HandlerList getHandlers() {
-        return handlers;
+        return HANDLERS;
     }
 }

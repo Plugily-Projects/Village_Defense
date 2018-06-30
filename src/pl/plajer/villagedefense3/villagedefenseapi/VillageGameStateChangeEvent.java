@@ -38,6 +38,10 @@ public class VillageGameStateChangeEvent extends VillageEvent {
         this.arenaState = arenaState;
     }
 
+    public static HandlerList getHandlerList() {
+        return HANDLERS;
+    }
+
     public HandlerList getHandlers() {
         return HANDLERS;
     }
