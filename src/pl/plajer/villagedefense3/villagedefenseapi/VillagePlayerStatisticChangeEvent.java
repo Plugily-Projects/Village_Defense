@@ -34,11 +34,13 @@ public class VillagePlayerStatisticChangeEvent extends VillageEvent {
     private static final HandlerList handlers = new HandlerList();
     private Player player;
     private StatsStorage.StatisticType statisticType;
+    private int number;
 
-    public VillagePlayerStatisticChangeEvent(Arena eventArena, Player player, StatsStorage.StatisticType statisticType) {
+    public VillagePlayerStatisticChangeEvent(Arena eventArena, Player player, StatsStorage.StatisticType statisticType, int number) {
         super(eventArena);
         this.player = player;
         this.statisticType = statisticType;
+        this.number = number;
     }
 
     public HandlerList getHandlers() {
@@ -51,5 +53,9 @@ public class VillagePlayerStatisticChangeEvent extends VillageEvent {
 
     public StatsStorage.StatisticType getStatisticType() {
         return statisticType;
+    }
+
+    public int getNumber() {
+        return number;
     }
 }
