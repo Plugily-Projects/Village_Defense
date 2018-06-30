@@ -120,15 +120,21 @@ public class User {
     public void setInt(String s, int i) {
         ints.put(s, i);
 
-        VillagePlayerStatisticChangeEvent villagePlayerStatisticIncreaseEvent = new VillagePlayerStatisticChangeEvent(getArena(), toPlayer(), FileStats.STATISTICS.get(s), i);
-        Bukkit.getPluginManager().callEvent(villagePlayerStatisticIncreaseEvent);
+        //statistics manipulation events are called async when using mysql
+        Bukkit.getScheduler().runTask(plugin, () -> {
+            VillagePlayerStatisticChangeEvent villagePlayerStatisticIncreaseEvent = new VillagePlayerStatisticChangeEvent(getArena(), toPlayer(), FileStats.STATISTICS.get(s), i);
+            Bukkit.getPluginManager().callEvent(villagePlayerStatisticIncreaseEvent);
+        });
     }
 
     public void addInt(String s, int i) {
         ints.put(s, getInt(s) + i);
 
-        VillagePlayerStatisticChangeEvent villagePlayerStatisticIncreaseEvent = new VillagePlayerStatisticChangeEvent(getArena(), toPlayer(), FileStats.STATISTICS.get(s), getInt(s));
-        Bukkit.getPluginManager().callEvent(villagePlayerStatisticIncreaseEvent);
+        //statistics manipulation events are called async when using mysql
+        Bukkit.getScheduler().runTask(plugin, () -> {
+            VillagePlayerStatisticChangeEvent villagePlayerStatisticIncreaseEvent = new VillagePlayerStatisticChangeEvent(getArena(), toPlayer(), FileStats.STATISTICS.get(s), getInt(s));
+            Bukkit.getPluginManager().callEvent(villagePlayerStatisticIncreaseEvent);
+        });
     }
 
     public void setCooldown(String s, int seconds) {

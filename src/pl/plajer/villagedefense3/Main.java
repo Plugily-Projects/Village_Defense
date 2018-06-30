@@ -284,7 +284,7 @@ public class Main extends JavaPlugin {
         }
         if(databaseActivated) {
             for(Player p : Bukkit.getOnlinePlayers()) {
-                MySQLConnectionUtils.loadPlayerStats(p, this);
+                Bukkit.getScheduler().runTaskAsynchronously(this, () -> MySQLConnectionUtils.loadPlayerStats(p, this));
             }
         } else {
             fileStats.loadStatsForPlayersOnline();
