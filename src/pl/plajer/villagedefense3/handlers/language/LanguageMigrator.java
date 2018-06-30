@@ -71,7 +71,7 @@ public class LanguageMigrator {
                 LanguageMigrator.addNewLines(file, "# Commands which can be used in game, remove all of them to disable\r\nWhitelisted-Commands:\r\n- me\r\n- help\r\n");
                 LanguageMigrator.addNewLines(file, "# Limit of mobs can be spawned per player in-game\r\n# Will affect only buying them in in-game shop\r\n" +
                         "Wolves-Spawn-Limit: 20\r\nGolems-Spawn-Limit: 15\r\n" +
-                        "# Don't modify\r\nVersion: 4\r\n\r\n# No way! You've reached the end! But... where's the dragon!?");
+                        "# Don't modify\r\nVersion: 5\r\n\r\n# No way! You've reached the end! But... where's the dragon!?");
                 break;
             case 2:
                 LanguageMigrator.addNewLines(file, "# Should blocks behind game signs change their color based on game state?\r\n# They will change color to:\r\n" +
@@ -80,18 +80,18 @@ public class LanguageMigrator {
                 LanguageMigrator.addNewLines(file, "# Commands which can be used in game, remove all of them to disable\r\nWhitelisted-Commands:\r\n- me\r\n- help\r\n");
                 LanguageMigrator.addNewLines(file, "# Limit of mobs can be spawned per player in-game\r\n# Will affect only buying them in in-game shop\r\n" +
                         "Wolves-Spawn-Limit: 20\r\nGolems-Spawn-Limit: 15\r\n" +
-                        "# Don't modify\r\nVersion: 4\r\n\r\n# No way! You've reached the end! But... where's the dragon!?");
+                        "# Don't modify\r\nVersion: 5\r\n\r\n# No way! You've reached the end! But... where's the dragon!?");
                 break;
             case 3:
                 LanguageMigrator.addNewLines(file, "# Commands which can be used in game, remove all of them to disable\r\nWhitelisted-Commands:\r\n- me\r\n- help\r\n");
                 LanguageMigrator.addNewLines(file, "# Limit of mobs can be spawned per player in-game\r\n# Will affect only buying them in in-game shop\r\n" +
                         "Wolves-Spawn-Limit: 20\r\nGolems-Spawn-Limit: 15\r\n" +
-                        "# Don't modify\r\nVersion: 4\r\n\r\n# No way! You've reached the end! But... where's the dragon!?");
+                        "# Don't modify\r\nVersion: 5\r\n\r\n# No way! You've reached the end! But... where's the dragon!?");
                 break;
             case 4:
                 LanguageMigrator.addNewLines(file, "# Limit of mobs can be spawned per player in-game\r\n# Will affect only buying them in in-game shop\r\n" +
                         "Wolves-Spawn-Limit: 20\r\nGolems-Spawn-Limit: 15\r\n" +
-                        "# Don't modify\r\nVersion: 4\r\n\r\n# No way! You've reached the end! But... where's the dragon!?");
+                        "# Don't modify\r\nVersion: 5\r\n\r\n# No way! You've reached the end! But... where's the dragon!?");
                 break;
         }
         Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "[Village Defense] [System notify] Config updated, no comments were removed :)");
