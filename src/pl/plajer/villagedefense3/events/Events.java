@@ -229,7 +229,7 @@ public class Events implements Listener {
         for(String msg : plugin.getConfig().getStringList("Whitelisted-Commands")){
             if(event.getMessage().contains(msg)) return;
         }
-        if(event.getMessage().contains("leave") || event.getMessage().contains("stats") || event.getMessage().contains("vda")) return;
+        if(event.getMessage().startsWith("vd") || event.getMessage().contains("leave") || event.getMessage().contains("stats") || event.getMessage().contains("vda")) return;
         if(event.getPlayer().isOp()) return;
         event.setCancelled(true);
         event.getPlayer().sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Only-Command-Ingame-Is-Leave"));

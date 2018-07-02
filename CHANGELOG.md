@@ -1,5 +1,8 @@
 # Village Defense 3 Changelog
 
+### 3.8.1 Release (02.07.2018)
+* /vd top command and other not working /vd commands will now work in game
+
 ### 3.8.0 Release (29.06.2018)
 * API update - added new events: VillageGameStateChangeEvent, VillageGolemUpgradeEvent, VillagePowerupPickEvent and VillagePlayerStatisticChangeEvent
 * Added orbs StatisticType to StatsStorage class (keep in mind that orbs stat is a temporary statistic for each game!)
