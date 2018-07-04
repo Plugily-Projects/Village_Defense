@@ -100,6 +100,11 @@ public class LanguageManager {
             case "vn":
                 pluginLocale = Locale.VIETNAMESE;
                 break;
+            case "hungarian":
+            case "magyar":
+            case "hu":
+                pluginLocale = Locale.HUNGARIAN;
+                break;
             default:
                 Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "[Village Defense] Plugin locale is invalid! Using default one...");
                 pluginLocale = Locale.ENGLISH;

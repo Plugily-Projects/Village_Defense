@@ -28,6 +28,7 @@ public enum Locale {
     ENGLISH("English", "en_GB", "Plajer"),
     FRENCH("Francais", "fr_FR", "POEditor contributors"),
     GERMAN("Deutsch", "de_DE", "Tigerkatze"),
+    HUNGARIAN("Magyar", "hu_HU", "POEditor contributors"),
     INDONESIA("Francais", "id_ID", "POEditor contributors (Yume)"),
     SPANISH("Español", "es_ES", "POEditor contributors"),
     POLISH("Polski", "pl_PL", "Plajer"),

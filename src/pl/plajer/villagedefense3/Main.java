@@ -343,6 +343,9 @@ public class Main extends JavaPlugin {
                 case "viet":
                 case "vn":
                     return "Vietnamese";
+                case "hu":
+                case "magyar":
+                    return "Hungarian";
                 default:
                     return "English";
             }
