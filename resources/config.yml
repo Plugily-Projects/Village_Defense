@@ -13,7 +13,7 @@
 #    es - Idioma español
 #    id - Bhasa Indonesia
 #    fr - Langue française
-#    vn - Tiếng việt
+#    vn - Tiếng việt - CURRENTLY NOT SUPPORTED
 #    hu - Magyar nyelv
 #
 locale: default

@@ -55,7 +55,7 @@ public class LanguageManager {
     private static void loadProperties() {
         if(pluginLocale == Locale.ENGLISH) return;
         try {
-            properties.load(new InputStreamReader(plugin.getResource("locale_" + pluginLocale.getPrefix() + ".properties"), Charset.forName("UTF-8")));
+            properties.load(new InputStreamReader(plugin.getResource("/locales/" + pluginLocale.getPrefix() + ".properties"), Charset.forName("UTF-8")));
         } catch(IOException e) {
             e.printStackTrace();
         }
@@ -126,7 +126,8 @@ public class LanguageManager {
                     case "de-DE":
                     case "es-ES":
                     case "fr-FR":
-                    case "vn-VN":
+                    //case "vn-VN":
+                    case "hu-HU":
                         hasLocale = true;
                         localeName = locale.getLocaleName();
                 }
@@ -140,7 +141,8 @@ public class LanguageManager {
                     case "ES":
                     case "FR":
                     case "ID":
-                    case "VN":
+                    //case "VN":
+                    case "HU":
                         hasLocale = true;
                         localeName = locale.getDisplayName();
                 }
