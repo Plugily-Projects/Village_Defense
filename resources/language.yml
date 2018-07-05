@@ -346,6 +346,7 @@ Signs:
     Full-Game: "&4&lFULL"
     Ending: "&lEnding"
     Restarting: "&c&lRestarting"
+    Waiting: "&a&lWaiting for players..."
   Lines:
     - "&a&lVillage Defense"
     - "%state%"
