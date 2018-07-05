@@ -56,9 +56,9 @@ public class BungeeManager implements Listener {
     private String getMOTD() {
         Arena arena = ArenaRegistry.getArenas().get(0);
         if(arena.getArenaState() == ArenaState.STARTING && (arena.getTimer() <= 3)) {
-            return ArenaState.IN_GAME.toString();
+            return ArenaState.IN_GAME.getFormattedName();
         } else {
-            return arena.getArenaState().toString();
+            return arena.getArenaState().getFormattedName();
         }
     }
 
