@@ -29,7 +29,19 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum ArenaState {
-    WAITING_FOR_PLAYERS("Waiting"), STARTING("Starting"), IN_GAME("Playing"), ENDING("Finishing"), RESTARTING("Restarting");
+    WAITING_FOR_PLAYERS(LanguageManager.getLanguageMessage("Signs.Game-States.Waiting")),
+    STARTING(LanguageManager.getLanguageMessage("Signs.Game-States.Starting")),
+    IN_GAME(LanguageManager.getLanguageMessage("Signs.Game-States.In-Game")),
+    ENDING(LanguageManager.getLanguageMessage("Signs.Game-States.Waiting")),
+    RESTARTING(LanguageManager.getLanguageMessage("Signs.Game-States.Restarting"));
 
     String formattedName;
+    
+    public ArenaState (String value) {
+        formattedName = value;
+    }
+
+    public String getFormattedName() {
+        return formattedName;
+    }
 }
