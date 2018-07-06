@@ -116,7 +116,7 @@ public class Utils {
                 }
             }
         }
-        return radiusEntities.toArray(new Entity[radiusEntities.size()]);
+        return radiusEntities.toArray(new Entity[0]);
     }
 
     public static String formatIntoMMSS(int secsIn) {

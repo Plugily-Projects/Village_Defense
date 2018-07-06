@@ -51,7 +51,7 @@ public class MedicKit extends PremiumKit implements Listener {
     public MedicKit(Main plugin) {
         setName(ChatManager.colorMessage("Kits.Medic.Kit-Name"));
         List<String> description = Utils.splitString(ChatManager.colorMessage("Kits.Medic.Kit-Description"), 40);
-        this.setDescription(description.toArray(new String[description.size()]));
+        this.setDescription(description.toArray(new String[0]));
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
         KitRegistry.registerKit(this);
     }

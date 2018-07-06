@@ -62,7 +62,7 @@ public class WizardKit extends PremiumKit implements Listener {
     public WizardKit(Main plugin) {
         setName(ChatManager.colorMessage("Kits.Wizard.Kit-Name"));
         List<String> description = Utils.splitString(ChatManager.colorMessage("Kits.Wizard.Kit-Description"), 40);
-        this.setDescription(description.toArray(new String[description.size()]));
+        this.setDescription(description.toArray(new String[0]));
         KitRegistry.registerKit(this);
         this.plugin = plugin;
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
@@ -77,12 +77,12 @@ public class WizardKit extends PremiumKit implements Listener {
     public void giveKitItems(Player player) {
         ItemStack wizardStaff = new ItemStack(Material.BLAZE_ROD, 1);
         List<String> staffLore = Utils.splitString(ChatManager.colorMessage("Kits.Wizard.Staff-Item-Lore"), 40);
-        this.setItemNameAndLore(wizardStaff, ChatManager.colorMessage("Kits.Wizard.Staff-Item-Name"), staffLore.toArray(new String[staffLore.size()]));
+        this.setItemNameAndLore(wizardStaff, ChatManager.colorMessage("Kits.Wizard.Staff-Item-Name"), staffLore.toArray(new String[0]));
         player.getInventory().addItem(wizardStaff);
 
         ItemStack essenceOfDarkness = new ItemStack(Material.INK_SACK, 4);
         List<String> essenceLore = Utils.splitString(ChatManager.colorMessage("Kits.Wizard.Essence-Item-Lore"), 40);
-        this.setItemNameAndLore(essenceOfDarkness, ChatManager.colorMessage("Kits.Wizard.Essence-Item-Name"), essenceLore.toArray(new String[essenceLore.size()]));
+        this.setItemNameAndLore(essenceOfDarkness, ChatManager.colorMessage("Kits.Wizard.Essence-Item-Name"), essenceLore.toArray(new String[0]));
         player.getInventory().addItem(essenceOfDarkness);
 
         ArmorHelper.setColouredArmor(Color.GRAY, player);
@@ -99,7 +99,7 @@ public class WizardKit extends PremiumKit implements Listener {
     public void reStock(Player player) {
         ItemStack essenceOfDarkness = new ItemStack(Material.INK_SACK, 1);
         List<String> essenceLore = Utils.splitString(ChatManager.colorMessage("Kits.Wizard.Essence-Item-Lore"), 40);
-        this.setItemNameAndLore(essenceOfDarkness, ChatManager.colorMessage("Kits.Wizard.Essence-Item-Name"), essenceLore.toArray(new String[essenceLore.size()]));
+        this.setItemNameAndLore(essenceOfDarkness, ChatManager.colorMessage("Kits.Wizard.Essence-Item-Name"), essenceLore.toArray(new String[0]));
         player.getInventory().addItem(essenceOfDarkness);
     }
 

@@ -44,7 +44,7 @@ public class TerminatorKit extends LevelKit {
     public TerminatorKit(Main plugin) {
         setName(ChatManager.colorMessage("Kits.Terminator.Kit-Name"));
         List<String> description = Utils.splitString(ChatManager.colorMessage("Kits.Terminator.Kit-Description"), 40);
-        this.setDescription(description.toArray(new String[description.size()]));
+        this.setDescription(description.toArray(new String[0]));
         setLevel(ConfigurationManager.getConfig("kits").getInt("Required-Level.Terminator"));
         KitRegistry.registerKit(this);
     }

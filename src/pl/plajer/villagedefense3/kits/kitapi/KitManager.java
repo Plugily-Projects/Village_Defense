@@ -48,7 +48,6 @@ import java.util.Arrays;
  */
 public class KitManager implements Listener {
 
-    private Main plugin;
     private Inventory invMenu;
     private String itemName;
     private Material material;
@@ -60,7 +59,6 @@ public class KitManager implements Listener {
 
     public KitManager(Main plugin) {
         itemName = ChatManager.colorMessage("Kits.Kit-Menu-Item-Name");
-        this.plugin = plugin;
         unlockedString = ChatManager.colorMessage("Kits.Kit-Menu.Unlocked-Kit-Lore");
         lockedString = ChatManager.colorMessage("Kits.Kit-Menu.Locked-Lores.Locked-Lore");
         plugin.getServer().getPluginManager().registerEvents(this, plugin);

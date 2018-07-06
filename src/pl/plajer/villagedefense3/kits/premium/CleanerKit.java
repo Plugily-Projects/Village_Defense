@@ -53,7 +53,7 @@ public class CleanerKit extends PremiumKit implements Listener {
         this.plugin = plugin;
         setName(ChatManager.colorMessage("Kits.Cleaner.Kit-Name"));
         List<String> description = Utils.splitString(ChatManager.colorMessage("Kits.Cleaner.Kit-Description"), 40);
-        this.setDescription(description.toArray(new String[description.size()]));
+        this.setDescription(description.toArray(new String[0]));
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
         KitRegistry.registerKit(this);
     }
@@ -69,7 +69,7 @@ public class CleanerKit extends PremiumKit implements Listener {
         player.getInventory().addItem(WeaponHelper.getUnBreakingSword(WeaponHelper.ResourceType.WOOD, 10));
         ItemStack cleaneritem = new ItemStack(Material.BLAZE_ROD);
         List<String> cleanerWandLore = Utils.splitString(ChatManager.colorMessage("Kits.Cleaner.Game-Item-Lore"), 40);
-        String[] cleanerWandLoreArray = cleanerWandLore.toArray(new String[cleanerWandLore.size()]);
+        String[] cleanerWandLoreArray = cleanerWandLore.toArray(new String[0]);
 
         this.setItemNameAndLore(cleaneritem, ChatManager.colorMessage("Kits.Cleaner.Game-Item-Name"), cleanerWandLoreArray);
         player.getInventory().addItem(cleaneritem);

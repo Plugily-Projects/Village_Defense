@@ -58,7 +58,7 @@ public class TornadoKit extends PremiumKit implements Listener {
         this.plugin = plugin;
         setName(ChatManager.colorMessage("Kits.Tornado.Kit-Name"));
         List<String> description = Utils.splitString(ChatManager.colorMessage("Kits.Tornado.Kit-Description"), 40);
-        this.setDescription(description.toArray(new String[description.size()]));
+        this.setDescription(description.toArray(new String[0]));
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
         KitRegistry.registerKit(this);
     }
@@ -77,7 +77,7 @@ public class TornadoKit extends PremiumKit implements Listener {
         player.getInventory().addItem(new ItemStack(Material.SADDLE));
         ItemStack tornado = new ItemStack(Material.WEB, 5);
         List<String> tornadoLore = Utils.splitString(ChatManager.colorMessage("Kits.Tornado.Game-Item-Lore"), 40);
-        this.setItemNameAndLore(tornado, ChatManager.colorMessage("Kits.Tornado.Game-Item-Name"), tornadoLore.toArray(new String[tornadoLore.size()]));
+        this.setItemNameAndLore(tornado, ChatManager.colorMessage("Kits.Tornado.Game-Item-Name"), tornadoLore.toArray(new String[0]));
         player.getInventory().addItem(tornado);
     }
 
@@ -90,7 +90,7 @@ public class TornadoKit extends PremiumKit implements Listener {
     public void reStock(Player player) {
         ItemStack tornado = new ItemStack(Material.WEB, 5);
         List<String> tornadoLore = Utils.splitString(ChatManager.colorMessage("Kits.Tornado.Game-Item-Lore"), 40);
-        this.setItemNameAndLore(tornado, ChatManager.colorMessage("Kits.Tornado.Game-Item-Name"), tornadoLore.toArray(new String[tornadoLore.size()]));
+        this.setItemNameAndLore(tornado, ChatManager.colorMessage("Kits.Tornado.Game-Item-Name"), tornadoLore.toArray(new String[0]));
         player.getInventory().addItem(tornado);
     }
 

@@ -24,11 +24,11 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import pl.plajer.villagedefense3.Main;
 import pl.plajer.villagedefense3.arena.Arena;
+import pl.plajer.villagedefense3.arena.ArenaRegistry;
 import pl.plajer.villagedefense3.arena.initializers.ArenaInitializer1_11_R1;
 import pl.plajer.villagedefense3.arena.initializers.ArenaInitializer1_12_R1;
 import pl.plajer.villagedefense3.arena.initializers.ArenaInitializer1_8_R3;
 import pl.plajer.villagedefense3.arena.initializers.ArenaInitializer1_9_R1;
-import pl.plajer.villagedefense3.arena.ArenaRegistry;
 import pl.plajer.villagedefense3.handlers.ChatManager;
 import pl.plajer.villagedefense3.handlers.ConfigurationManager;
 import pl.plajer.villagedefense3.kits.kitapi.KitRegistry;
@@ -51,7 +51,7 @@ public class GolemFriendKit extends LevelKit {
         this.plugin = plugin;
         setName(ChatManager.colorMessage("Kits.Golem-Friend.Kit-Name"));
         List<String> description = Utils.splitString(ChatManager.colorMessage("Kits.Golem-Friend.Kit-Description"), 40);
-        this.setDescription(description.toArray(new String[description.size()]));
+        this.setDescription(description.toArray(new String[0]));
         setLevel(ConfigurationManager.getConfig("kits").getInt("Required-Level.GolemFriend"));
         KitRegistry.registerKit(this);
     }
@@ -68,6 +68,23 @@ public class GolemFriendKit extends LevelKit {
         player.getInventory().addItem(new ItemStack(Material.GRILLED_PORK, 8));
         Arena arena = ArenaRegistry.getArena(player);
         if(arena == null) return;
+        spawnGolem(player, arena);
+    }
+
+    @Override
+    public Material getMaterial() {
+        return Material.IRON_INGOT;
+    }
+
+    @Override
+    public void reStock(Player player) {
+        Arena arena = ArenaRegistry.getArena(player);
+        if(arena.getWave() % 5 == 0) {
+            spawnGolem(player, arena);
+        }
+    }
+
+    private void spawnGolem(Player player, Arena arena) {
         if(plugin.is1_8_R3()) {
             ArenaInitializer1_8_R3 initializer = (ArenaInitializer1_8_R3) arena;
             initializer.spawnGolem(initializer.getStartLocation(), player);
@@ -80,31 +97,6 @@ public class GolemFriendKit extends LevelKit {
         } else if(plugin.is1_12_R1()) {
             ArenaInitializer1_12_R1 initializer = (ArenaInitializer1_12_R1) arena;
             initializer.spawnGolem(initializer.getStartLocation(), player);
-        }
-    }
-
-    @Override
-    public Material getMaterial() {
-        return Material.IRON_INGOT;
-    }
-
-    @Override
-    public void reStock(Player player) {
-        Arena arena = ArenaRegistry.getArena(player);
-        if(arena.getWave() % 5 == 0) {
-            if(plugin.is1_8_R3()) {
-                ArenaInitializer1_8_R3 initializer = (ArenaInitializer1_8_R3) arena;
-                initializer.spawnGolem(initializer.getStartLocation(), player);
-            } else if(plugin.is1_9_R1()) {
-                ArenaInitializer1_9_R1 initializer = (ArenaInitializer1_9_R1) arena;
-                initializer.spawnGolem(initializer.getStartLocation(), player);
-            } else if(plugin.is1_11_R1()) {
-                ArenaInitializer1_11_R1 initializer = (ArenaInitializer1_11_R1) arena;
-                initializer.spawnGolem(initializer.getStartLocation(), player);
-            } else if(plugin.is1_12_R1()) {
-                ArenaInitializer1_12_R1 initializer = (ArenaInitializer1_12_R1) arena;
-                initializer.spawnGolem(initializer.getStartLocation(), player);
-            }
         }
     }
 }

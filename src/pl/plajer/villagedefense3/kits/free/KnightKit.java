@@ -39,7 +39,7 @@ public class KnightKit extends FreeKit {
     public KnightKit(Main plugin) {
         this.setName(ChatManager.colorMessage("Kits.Knight.Kit-Name"));
         List<String> description = Utils.splitString(ChatManager.colorMessage("Kits.Knight.Kit-Description"), 40);
-        this.setDescription(description.toArray(new String[description.size()]));
+        this.setDescription(description.toArray(new String[0]));
         KitRegistry.registerKit(this);
     }
 

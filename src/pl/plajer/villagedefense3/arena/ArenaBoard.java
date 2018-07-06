@@ -104,7 +104,7 @@ public class ArenaBoard {
             row.setMessage(row.message);
         }
 
-        this.rows = rowCache.toArray(new Row[rowCache.size()]);
+        this.rows = rowCache.toArray(new Row[0]);
     }
 
 

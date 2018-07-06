@@ -41,7 +41,7 @@ public class HeavyTankKit extends PremiumKit {
     public HeavyTankKit(Main plugin) {
         setName(ChatManager.colorMessage("Kits.Heavy-Tank.Kit-Name"));
         List<String> description = Utils.splitString(ChatManager.colorMessage("Kits.Heavy-Tank.Kit-Description"), 40);
-        this.setDescription(description.toArray(new String[description.size()]));
+        this.setDescription(description.toArray(new String[0]));
         KitRegistry.registerKit(this);
     }
 

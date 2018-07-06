@@ -54,7 +54,7 @@ public class ZombieFinderKit extends LevelKit implements Listener {
         this.plugin = plugin;
         setName(ChatManager.colorMessage("Kits.Zombie-Teleporter.Kit-Name"));
         List<String> description = Utils.splitString(ChatManager.colorMessage("Kits.Zombie-Teleporter.Kit-Description"), 40);
-        this.setDescription(description.toArray(new String[description.size()]));
+        this.setDescription(description.toArray(new String[0]));
         this.setLevel(ConfigurationManager.getConfig("kits").getInt("Required-Level.ZombieFinder"));
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
         KitRegistry.registerKit(this);

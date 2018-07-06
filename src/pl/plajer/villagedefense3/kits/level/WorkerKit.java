@@ -47,14 +47,11 @@ import java.util.List;
  */
 public class WorkerKit extends LevelKit implements Listener {
 
-    private Main plugin;
-
     public WorkerKit(Main plugin) {
-        this.plugin = plugin;
         this.setLevel(ConfigurationManager.getConfig("kits").getInt("Required-Level.Worker"));
         this.setName(ChatManager.colorMessage("Kits.Worker.Kit-Name"));
         List<String> description = Utils.splitString(ChatManager.colorMessage("Kits.Worker.Kit-Description"), 40);
-        this.setDescription(description.toArray(new String[description.size()]));
+        this.setDescription(description.toArray(new String[0]));
         KitRegistry.registerKit(this);
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }

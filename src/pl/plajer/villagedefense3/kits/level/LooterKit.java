@@ -48,7 +48,7 @@ public class LooterKit extends LevelKit implements Listener {
     public LooterKit(Main plugin) {
         setName(ChatManager.colorMessage("Kits.Looter.Kit-Name"));
         List<String> description = Utils.splitString(ChatManager.colorMessage("Kits.Looter.Kit-Description"), 40);
-        this.setDescription(description.toArray(new String[description.size()]));
+        this.setDescription(description.toArray(new String[0]));
         setLevel(ConfigurationManager.getConfig("kits").getInt("Required-Level.Looter"));
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
         KitRegistry.registerKit(this);

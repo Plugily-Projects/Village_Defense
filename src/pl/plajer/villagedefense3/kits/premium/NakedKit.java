@@ -50,7 +50,7 @@ public class NakedKit extends PremiumKit implements Listener {
 
     public NakedKit(Main plugin) {
         List<String> description = Utils.splitString(ChatManager.colorMessage("Kits.Wild-Naked.Kit-Description"), 40);
-        this.setDescription(description.toArray(new String[description.size()]));
+        this.setDescription(description.toArray(new String[0]));
         setName(ChatManager.colorMessage("Kits.Wild-Naked.Kit-Name"));
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
         KitRegistry.registerKit(this);

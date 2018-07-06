@@ -536,15 +536,6 @@ public abstract class Arena extends BukkitRunnable {
     }
 
     /**
-     * Set arena identifier
-     *
-     * @param ID name of arena
-     */
-    public void setID(String ID) {
-        this.ID = ID;
-    }
-
-    /**
      * Get minimum players needed
      *
      * @return minimum players needed to start arena
@@ -575,8 +566,7 @@ public abstract class Arena extends BukkitRunnable {
     /**
      * Set arena map name
      *
-     * @param mapname new map name, [b] it's not arena ID[/b]
-     * @see #setID(String)
+     * @param mapname new map name, [b]it's not arena ID[/b]
      */
     public void setMapName(String mapname) {
         this.mapName = mapname;

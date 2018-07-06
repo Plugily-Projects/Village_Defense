@@ -94,7 +94,7 @@ public class RidableIronGolem extends EntityIronGolem {
 
     @Override
     public void g(float f, float f1) {
-        if(this.passenger != null && this.passenger instanceof EntityLiving) {
+        if(this.passenger instanceof EntityLiving) {
             this.lastYaw = this.yaw = this.passenger.yaw;
             this.pitch = this.passenger.pitch * 0.5F;
             setYawPitch(this.yaw, this.pitch);

@@ -60,7 +60,7 @@ public class BlockerKit extends PremiumKit implements Listener {
         this.plugin = plugin;
         setName(ChatManager.colorMessage("Kits.Blocker.Kit-Name"));
         List<String> description = Utils.splitString(ChatManager.colorMessage("Kits.Blocker.Kit-Description"), 40);
-        this.setDescription(description.toArray(new String[description.size()]));
+        this.setDescription(description.toArray(new String[0]));
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
         KitRegistry.registerKit(this);
     }
@@ -155,11 +155,7 @@ public class BlockerKit extends PremiumKit implements Listener {
 
     private class ZombieBarrier {
         private Location location;
-        private int seconds;
-
-        ZombieBarrier() {
-            seconds = 10;
-        }
+        private int seconds = 10;
 
         Location getLocation() {
             return location;

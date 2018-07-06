@@ -59,7 +59,7 @@ public class TeleporterKit extends PremiumKit implements Listener {
         this.plugin = plugin;
         setName(ChatManager.colorMessage("Kits.Teleporter.Kit-Name"));
         List<String> description = Utils.splitString(ChatManager.colorMessage("Kits.Teleporter.Kit-Description"), 40);
-        this.setDescription(description.toArray(new String[description.size()]));
+        this.setDescription(description.toArray(new String[0]));
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
         KitRegistry.registerKit(this);
     }
@@ -78,7 +78,7 @@ public class TeleporterKit extends PremiumKit implements Listener {
         player.getInventory().addItem(new ItemStack(Material.SADDLE));
         ItemStack enderpealteleporter = new ItemStack(Material.GHAST_TEAR);
         List<String> teleporationlore = Utils.splitString(ChatManager.colorMessage("Kits.Teleporter.Game-Item-Lore"), 40);
-        this.setItemNameAndLore(enderpealteleporter, ChatManager.colorMessage("Kits.Teleporter.Game-Item-Name"), teleporationlore.toArray(new String[teleporationlore.size()]));
+        this.setItemNameAndLore(enderpealteleporter, ChatManager.colorMessage("Kits.Teleporter.Game-Item-Name"), teleporationlore.toArray(new String[0]));
         player.getInventory().addItem(enderpealteleporter);
     }
 

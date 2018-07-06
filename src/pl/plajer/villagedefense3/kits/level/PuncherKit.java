@@ -43,7 +43,7 @@ public class PuncherKit extends LevelKit {
     public PuncherKit(Main plugin) {
         setName(ChatManager.colorMessage("Kits.Puncher.Kit-Name"));
         List<String> description = Utils.splitString(ChatManager.colorMessage("Kits.Puncher.Kit-Description"), 40);
-        this.setDescription(description.toArray(new String[description.size()]));
+        this.setDescription(description.toArray(new String[0]));
         setLevel(ConfigurationManager.getConfig("kits").getInt("Required-Level.Puncher"));
         KitRegistry.registerKit(this);
     }

@@ -71,14 +71,6 @@ public class User {
         this.kit = kit;
     }
 
-    public Scoreboard getScoreboard() {
-        return scoreboard;
-    }
-
-    public void setScoreboard(Scoreboard scoreboard) {
-        Bukkit.getPlayer(uuid).setScoreboard(scoreboard);
-    }
-
     public Arena getArena() {
         return ArenaRegistry.getArena(Bukkit.getPlayer(uuid));
     }
