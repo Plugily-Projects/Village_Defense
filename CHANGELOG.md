@@ -3,6 +3,7 @@
 ### 3.8.1 Release (02.07.2018)
 * /vd top command and other not working /vd commands will now work in game
 * Dropped Vietnamese locale as this translation was in 50% of English messages...
+* Fixed locales loading not working, plugin wasn't even enabled
 
 ### 3.8.0 Release (29.06.2018)
 * API update - added new events: VillageGameStateChangeEvent, VillageGolemUpgradeEvent, VillagePowerupPickEvent and VillagePlayerStatisticChangeEvent

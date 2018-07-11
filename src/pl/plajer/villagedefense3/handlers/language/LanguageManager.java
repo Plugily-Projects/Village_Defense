@@ -55,7 +55,7 @@ public class LanguageManager {
     private static void loadProperties() {
         if(pluginLocale == Locale.ENGLISH) return;
         try {
-            properties.load(new InputStreamReader(plugin.getResource("/locales/" + pluginLocale.getPrefix() + ".properties"), Charset.forName("UTF-8")));
+            properties.load(new InputStreamReader(plugin.getResource("locales/" + pluginLocale.getPrefix() + ".properties"), Charset.forName("UTF-8")));
         } catch(IOException e) {
             e.printStackTrace();
         }
@@ -95,11 +95,11 @@ public class LanguageManager {
             case "id":
                 pluginLocale = Locale.INDONESIA;
                 break;
-            case "vietnamese":
+            /*case "vietnamese":
             case "việt":
             case "vn":
                 pluginLocale = Locale.VIETNAMESE;
-                break;
+                break;*/
             case "hungarian":
             case "magyar":
             case "hu":
