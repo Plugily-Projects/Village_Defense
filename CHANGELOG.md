@@ -1,5 +1,8 @@
 # Village Defense 3 Changelog
 
+### 3.8.2 Release (12.07.2018)
+* Bring back Vietnamese locale support
+
 ### 3.8.1 Release (02.07.2018)
 * /vd top command and other not working /vd commands will now work in game
 * Dropped Vietnamese locale as this translation was in 50% of English messages...

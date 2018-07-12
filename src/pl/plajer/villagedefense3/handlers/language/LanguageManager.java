@@ -95,11 +95,11 @@ public class LanguageManager {
             case "id":
                 pluginLocale = Locale.INDONESIA;
                 break;
-            /*case "vietnamese":
+            case "vietnamese":
             case "việt":
             case "vn":
                 pluginLocale = Locale.VIETNAMESE;
-                break;*/
+                break;
             case "hungarian":
             case "magyar":
             case "hu":

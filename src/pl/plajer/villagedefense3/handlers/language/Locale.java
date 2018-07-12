@@ -31,8 +31,8 @@ public enum Locale {
     HUNGARIAN("Magyar", "hu_HU", "POEditor contributors"),
     INDONESIA("Francais", "id_ID", "POEditor contributors (Yume)"),
     SPANISH("Español", "es_ES", "POEditor contributors"),
-    POLISH("Polski", "pl_PL", "Plajer");//,
-    //VIETNAMESE("Việt", "vn_VN", "POEditor contributors (HStreamGamer)");
+    POLISH("Polski", "pl_PL", "Plajer"),
+    VIETNAMESE("Việt", "vn_VN", "POEditor contributors (HStreamGamer)");
 
     String formattedName;
     String prefix;
