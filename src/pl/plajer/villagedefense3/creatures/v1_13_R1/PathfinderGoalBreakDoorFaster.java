@@ -18,6 +18,7 @@
 
 package pl.plajer.villagedefense3.creatures.v1_13_R1;
 
+import net.minecraft.server.v1_13_R1.Block;
 import net.minecraft.server.v1_13_R1.EntityInsentient;
 import net.minecraft.server.v1_13_R1.PathfinderGoalBreakDoor;
 
@@ -49,7 +50,7 @@ public class PathfinderGoalBreakDoorFaster extends PathfinderGoalBreakDoor {
         if(this.i == 70) {
             this.a.world.setAir(this.b);
             this.a.world.triggerEffect(1012, this.b, 0);
-            this.a.world.triggerEffect(2001, this.b, 0 /*temp*/);
+            this.a.world.triggerEffect(2001, this.b, Block.getCombinedId(this.a.world.getType(this.b)) /* temp temporary workaround based on NMS 1.13 source code */);
         }
     }
 

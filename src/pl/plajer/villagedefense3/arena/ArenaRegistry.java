@@ -25,6 +25,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import pl.plajer.villagedefense3.Main;
 import pl.plajer.villagedefense3.arena.initializers.ArenaInitializer1_11_R1;
 import pl.plajer.villagedefense3.arena.initializers.ArenaInitializer1_12_R1;
+import pl.plajer.villagedefense3.arena.initializers.ArenaInitializer1_13_R1;
 import pl.plajer.villagedefense3.arena.initializers.ArenaInitializer1_8_R3;
 import pl.plajer.villagedefense3.arena.initializers.ArenaInitializer1_9_R1;
 import pl.plajer.villagedefense3.handlers.ChatManager;
@@ -138,8 +139,10 @@ public class ArenaRegistry {
                 arena = new ArenaInitializer1_9_R1(ID, plugin);
             } else if(plugin.is1_11_R1()) {
                 arena = new ArenaInitializer1_11_R1(ID, plugin);
-            } else {
+            } else if(plugin.is1_12_R1()) {
                 arena = new ArenaInitializer1_12_R1(ID, plugin);
+            } else {
+                arena = new ArenaInitializer1_13_R1(ID, plugin);
             }
             arena.setMinimumPlayers(ConfigurationManager.getConfig("arenas").getInt(s + "minimumplayers"));
             arena.setMaximumPlayers(ConfigurationManager.getConfig("arenas").getInt(s + "maximumplayers"));

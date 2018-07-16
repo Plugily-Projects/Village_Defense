@@ -18,6 +18,7 @@
 
 package pl.plajer.villagedefense3.creatures.v1_13_R1;
 
+import net.minecraft.server.v1_13_R1.ChatMessage;
 import net.minecraft.server.v1_13_R1.Entity;
 import net.minecraft.server.v1_13_R1.EntityAgeable;
 import net.minecraft.server.v1_13_R1.EntityHuman;
@@ -89,13 +90,13 @@ public class RidableVillager extends EntityVillager {
         this.goalSelector.a(9, new PathfinderGoalInteract(this, EntityVillager.class, 5.0F, 0.02F));
         this.goalSelector.a(9, new PathfinderGoalRandomStroll(this, 0.6D));
         this.goalSelector.a(10, new PathfinderGoalLookAtPlayer(this, EntityInsentient.class, 8.0F));
-        //todo add villager name
-        //this.setCustomName(villagernames[new Random().nextInt(villagernames.length)]);
+        //temp only a temporary workaround
+        this.setCustomName(new ChatMessage(villagernames[new Random().nextInt(villagernames.length)]));
         this.setCustomNameVisible(true);
     }
 
-    //todo implement riding
-    /*public void a(float f, float f1, float f2) {
+    //temp based on sources
+    public void a(float f, float f1, float f2) {
         EntityLiving entityliving = null;
         for(final Entity e : passengers) {
             if(e instanceof EntityHuman) {
@@ -106,6 +107,7 @@ public class RidableVillager extends EntityVillager {
         if(entityliving == null) {
             this.P = 0.5F;
             this.aR = 0.02F;
+            o(0.12f);
             this.k((float) 0.12);
             super.a(f, f1, f2);
             return;
@@ -115,15 +117,19 @@ public class RidableVillager extends EntityVillager {
         this.setYawPitch(this.yaw, this.pitch);
         this.aO = this.aM = this.yaw;
 
-        f = entityliving.be * 0.5F * 0.75F;
-        f2 = entityliving.bg;
+        f = entityliving.bh * 0.5F * 0.75F;
+        f2 = entityliving.bj;
         if(f2 <= 0.0f) {
             f2 *= 0.25F;
         }
-        k(0.12f);
+
+        //for 1.13
+        entityliving.bj = 0.12f;
+        o(0.12f);
+
         super.a(f, f1, f2);
         P = (float) 1.0;
-    }*/
+    }
 
     @Override
     public EntityAgeable createChild(EntityAgeable entityAgeable) {

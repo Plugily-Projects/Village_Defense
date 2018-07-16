@@ -82,8 +82,8 @@ public class RidableIronGolem extends EntityIronGolem {
         this.setHealth(500);
     }
 
-    //todo implement riding
-    /*public void a(float f, float f1, float f2) {
+    //temp based on sources
+    public void a(float f, float f1, float f2) {
         EntityLiving entityliving = null;
         for(final Entity e : passengers) {
             if(e instanceof EntityHuman) {
@@ -103,15 +103,15 @@ public class RidableIronGolem extends EntityIronGolem {
         this.setYawPitch(this.yaw, this.pitch);
         this.aO = this.aM = this.yaw;
 
-        f = entityliving.be * 0.5F * 0.75F;
-        f2 = entityliving.bg;
+        f = entityliving.bh * 0.5F * 0.75F;
+        f2 = entityliving.bj;
         if(f2 <= 0.0f) {
             f2 *= 0.25F;
         }
         k(0.12f);
         super.a(f, f1, f2);
         P = (float) 1.0;
-    }*/
+    }
 
     @Override
     protected void initAttributes() {
