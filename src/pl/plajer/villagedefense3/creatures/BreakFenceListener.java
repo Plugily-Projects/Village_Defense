@@ -55,12 +55,12 @@ public class BreakFenceListener extends BukkitRunnable {
                 for(Block block : blocks) {
                     if(block.getType() == Material.WOOD_DOOR || block.getType() == Material.WOODEN_DOOR /*|| block.getType() == Material.FENCE*/) {
 
-                        if(plugin.is1_9_R1() || plugin.is1_11_R1() || plugin.is1_12_R1()) {
+                        if(plugin.is1_9_R1() || plugin.is1_11_R1() || plugin.is1_12_R1() || plugin.is1_13_R1()) {
                             block.getWorld().spawnParticle(Particle.BLOCK_CRACK, block.getLocation(), 10, 0.1, 0.1, 0.1, new MaterialData(Material.WOODEN_DOOR));
                         } else {
                             block.getWorld().playEffect(block.getLocation(), Effect.TILE_BREAK, 20, new MaterialData(Material.WOODEN_DOOR).getItemTypeId());
                         }
-                        if(plugin.is1_9_R1() || plugin.is1_11_R1() || plugin.is1_12_R1()) {
+                        if(plugin.is1_9_R1() || plugin.is1_11_R1() || plugin.is1_12_R1() || plugin.is1_13_R1()) {
                             block.getWorld().playSound(block.getLocation(), Sound.ENTITY_ZOMBIE_ATTACK_DOOR_WOOD, 1, 1);
                         } else {
                             block.getWorld().playSound(block.getLocation(), Sound.valueOf("ZOMBIE_WOOD"), 5F, 5F);
@@ -68,7 +68,7 @@ public class BreakFenceListener extends BukkitRunnable {
                         this.particleDoor(block);
                         if(random.nextInt(20) == 5) {
                             breakDoor(block);
-                            if(plugin.is1_9_R1() || plugin.is1_11_R1() || plugin.is1_12_R1()) {
+                            if(plugin.is1_9_R1() || plugin.is1_11_R1() || plugin.is1_12_R1() || plugin.is1_13_R1()) {
                                 block.getWorld().playSound(block.getLocation(), Sound.ENTITY_ZOMBIE_BREAK_DOOR_WOOD, 1, 1);
                             } else {
                                 block.getWorld().playSound(block.getLocation(), Sound.valueOf("ZOMBIE_WOOD"), 5F, 5F);
@@ -83,7 +83,7 @@ public class BreakFenceListener extends BukkitRunnable {
     private void particleDoor(org.bukkit.block.Block block) {
         for(BlockFace blockFace : BlockFace.values()) {
             if(block.getRelative(blockFace).getType() == Material.WOOD_DOOR || block.getRelative(blockFace).getType() == Material.WOODEN_DOOR) {
-                if(plugin.is1_9_R1() || plugin.is1_11_R1() || plugin.is1_12_R1()) {
+                if(plugin.is1_9_R1() || plugin.is1_11_R1() || plugin.is1_12_R1() || plugin.is1_13_R1()) {
                     block.getWorld().spawnParticle(Particle.BLOCK_CRACK, block.getLocation(), 10, 0.1, 0.1, 0.1, new MaterialData(Material.WOODEN_DOOR));
                 } else {
                     block.getWorld().playEffect(block.getLocation(), Effect.TILE_BREAK, 20, new MaterialData(Material.WOODEN_DOOR).getItemTypeId());
@@ -95,7 +95,7 @@ public class BreakFenceListener extends BukkitRunnable {
     private void breakDoor(org.bukkit.block.Block block) {
         for(BlockFace blockFace : BlockFace.values()) {
             if(block.getRelative(blockFace).getType() == Material.WOOD_DOOR || block.getRelative(blockFace).getType() == Material.WOODEN_DOOR) {
-                if(plugin.is1_9_R1() || plugin.is1_11_R1() || plugin.is1_12_R1()) {
+                if(plugin.is1_9_R1() || plugin.is1_11_R1() || plugin.is1_12_R1() || plugin.is1_13_R1()) {
                     block.getWorld().spawnParticle(Particle.BLOCK_CRACK, block.getLocation(), 10, 0.1, 0.1, 0.1, new MaterialData(Material.WOODEN_DOOR));
                 } else {
                     block.getWorld().playEffect(block.getLocation(), Effect.TILE_BREAK, 20, new MaterialData(Material.WOODEN_DOOR).getItemTypeId());

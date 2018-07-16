@@ -27,6 +27,7 @@ import pl.plajer.villagedefense3.arena.Arena;
 import pl.plajer.villagedefense3.arena.ArenaRegistry;
 import pl.plajer.villagedefense3.arena.initializers.ArenaInitializer1_11_R1;
 import pl.plajer.villagedefense3.arena.initializers.ArenaInitializer1_12_R1;
+import pl.plajer.villagedefense3.arena.initializers.ArenaInitializer1_13_R1;
 import pl.plajer.villagedefense3.arena.initializers.ArenaInitializer1_8_R3;
 import pl.plajer.villagedefense3.arena.initializers.ArenaInitializer1_9_R1;
 import pl.plajer.villagedefense3.handlers.ChatManager;
@@ -96,6 +97,9 @@ public class GolemFriendKit extends LevelKit {
             initializer.spawnGolem(initializer.getStartLocation(), player);
         } else if(plugin.is1_12_R1()) {
             ArenaInitializer1_12_R1 initializer = (ArenaInitializer1_12_R1) arena;
+            initializer.spawnGolem(initializer.getStartLocation(), player);
+        } else if(plugin.is1_13_R1()){
+            ArenaInitializer1_13_R1 initializer = (ArenaInitializer1_13_R1) arena;
             initializer.spawnGolem(initializer.getStartLocation(), player);
         }
     }

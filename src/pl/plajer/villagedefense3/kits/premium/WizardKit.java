@@ -143,7 +143,7 @@ public class WizardKit extends PremiumKit implements Listener {
                 } else {
                     p.getItemInHand().setAmount(p.getItemInHand().getAmount() - 1);
                 }
-                if(plugin.is1_9_R1() || plugin.is1_11_R1() || plugin.is1_12_R1()) {
+                if(plugin.is1_9_R1() || plugin.is1_11_R1() || plugin.is1_12_R1() || plugin.is1_13_R1()) {
                     p.getWorld().spawnParticle(Particle.CRIT_MAGIC, p.getLocation(), 40, 1, 1, 1);
                 } else if(plugin.is1_8_R3()) {
                     p.getWorld().spigot().playEffect(p.getLocation(), Effect.MAGIC_CRIT, 0, 0, 1, 1, 1, 1, 40, 50);
@@ -178,7 +178,7 @@ public class WizardKit extends PremiumKit implements Listener {
                         double y = direction.getY() * t + 1.5;
                         double z = direction.getZ() * t;
                         loc.add(x, y, z);
-                        if(plugin.is1_9_R1() || plugin.is1_11_R1() || plugin.is1_12_R1()) {
+                        if(plugin.is1_9_R1() || plugin.is1_11_R1() || plugin.is1_12_R1() || plugin.is1_13_R1()) {
                             p.getWorld().spawnParticle(Particle.TOWN_AURA, loc, 5);
                         } else if(plugin.is1_8_R3()) {
                             p.getWorld().spigot().playEffect(loc, Effect.VOID_FOG, 0, 0, 0, 0, 0, 1, 50, 50);

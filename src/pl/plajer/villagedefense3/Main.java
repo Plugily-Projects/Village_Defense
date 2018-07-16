@@ -137,6 +137,10 @@ public class Main extends JavaPlugin {
         return version.equalsIgnoreCase("v1_12_R1");
     }
 
+    public boolean is1_13_R1() {
+        return version.equalsIgnoreCase("v1_13_R1");
+    }
+
     public boolean isInventoryManagerEnabled() {
         return inventoryManagerEnabled;
     }
@@ -196,12 +200,18 @@ public class Main extends JavaPlugin {
         LanguageManager.init(this);
         saveDefaultConfig();
         if(!(version.equalsIgnoreCase("v1_8_R3") || version.equalsIgnoreCase("v1_9_R1") || version.equalsIgnoreCase("v1_11_R1") || version.equalsIgnoreCase("v1_12_R1"))) {
-            MessageUtils.thisVersionIsNotSupported();
-            Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "Your server version is not supported by Village Defense!");
-            Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "Sadly, we must shut off. Maybe you consider changing your server version?");
-            forceDisable = true;
-            getServer().getPluginManager().disablePlugin(this);
-            return;
+            if(version.contains("v1_13_R1")){
+                MessageUtils.info();
+                Bukkit.getConsoleSender().sendMessage(ChatColor.YELLOW + "Enabling development build of Village Defense for 1.13 pre releases!");
+                Bukkit.getConsoleSender().sendMessage(ChatColor.YELLOW + "Proceed with caution as software is not fully ready!");
+            } else {
+                MessageUtils.thisVersionIsNotSupported();
+                Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "Your server version is not supported by Village Defense!");
+                Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "Sadly, we must shut off. Maybe you consider changing your server version?");
+                forceDisable = true;
+                getServer().getPluginManager().disablePlugin(this);
+                return;
+            }
         }
         try {
             Class.forName("org.spigotmc.SpigotConfig");

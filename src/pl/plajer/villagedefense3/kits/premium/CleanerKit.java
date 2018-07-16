@@ -111,7 +111,7 @@ public class CleanerKit extends PremiumKit implements Listener {
             e.getPlayer().sendMessage(ChatManager.colorMessage("Kits.Cleaner.Nothing-To-Clean"));
             return;
         }
-        if(plugin.is1_9_R1() || plugin.is1_11_R1() || plugin.is1_12_R1()) {
+        if(plugin.is1_9_R1() || plugin.is1_11_R1() || plugin.is1_12_R1() || plugin.is1_13_R1()) {
             e.getPlayer().playSound(e.getPlayer().getLocation(), Sound.ENTITY_ZOMBIE_DEATH, 1, 1);
         } else {
             e.getPlayer().playSound(e.getPlayer().getLocation(), Sound.valueOf("ZOMBIE_DEATH"), 1, 1);

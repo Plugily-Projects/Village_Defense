@@ -160,7 +160,7 @@ public class ArenaEvents implements Listener {
         player.setFlying(true);
         player.getInventory().clear();
         MessageUtils.sendTitle(player, ChatColor.stripColor(ChatManager.colorMessage("In-Game.Death-Screen")), 0, 5 * 20, 0, ChatColor.RED);
-        if(plugin.is1_9_R1() || plugin.is1_11_R1() || plugin.is1_12_R1()) {
+        if(plugin.is1_9_R1() || plugin.is1_11_R1() || plugin.is1_12_R1() || plugin.is1_13_R1()) {
             new BukkitRunnable() {
                 @Override
                 public void run() {
