@@ -54,6 +54,7 @@ import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerExpChangeEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import pl.plajer.villagedefense3.Main;
@@ -132,15 +133,11 @@ public class Events implements Listener {
     }
 
     @EventHandler
-    public void onPickUp(EntityPickupItemEvent event) {
-        if(!(event.getEntity() instanceof Player)) {
-            return;
-        }
-        Player p = (Player) event.getEntity();
-        Arena arena = ArenaRegistry.getArena(p);
+    public void onPickUp(PlayerPickupItemEvent event) {
+        Arena arena = ArenaRegistry.getArena(event.getPlayer());
         if(arena == null)
             return;
-        if(UserManager.getUser(p.getUniqueId()).isFakeDead()) {
+        if(UserManager.getUser(event.getPlayer().getUniqueId()).isFakeDead()) {
             event.setCancelled(true);
         }
     }
