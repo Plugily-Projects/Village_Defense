@@ -1,5 +1,10 @@
 # Village Defense 3 Changelog
 
+### 3.9.0 Pre release (16/17.07.2018)
+* Added support for 1.13-pre7
+* Removed deprecated commands (/vda setshopchest and /vda addsign) - they were deprecated and not working
+* Updated locales messages
+
 ### 3.8.2 Release (12.07.2018)
 * Bring back Vietnamese locale support
 

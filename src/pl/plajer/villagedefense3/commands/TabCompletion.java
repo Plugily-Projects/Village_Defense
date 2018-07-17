@@ -38,12 +38,12 @@ public class TabCompletion implements TabCompleter {
         if(!(sender instanceof Player)) return null;
         if(cmd.getName().equalsIgnoreCase("villagedefenseadmin") && args.length == 1) {
             return Arrays.asList("stop", "list", "forcestart", "respawn", "spychat",
-                    "reload", "setshopchest", "delete", "setprice", "tp", "clear", "addorbs", "setwave");
+                    "reload", "delete", "setprice", "tp", "clear", "addorbs", "setwave");
         }
         if(cmd.getName().equalsIgnoreCase("villagedefense")) {
             if(args.length == 2 && args[0].equalsIgnoreCase("admin")) {
                 return Arrays.asList("stop", "list", "forcestart", "respawn", "spychat",
-                        "reload", "setshopchest", "delete", "setprice", "tp", "clear", "addorbs", "setwave");
+                        "reload", "delete", "setprice", "tp", "clear", "addorbs", "setwave");
             }
             if(args.length == 1) {
                 return Arrays.asList("join", "leave", "stats", "top", "admin", "create", "selectkit");

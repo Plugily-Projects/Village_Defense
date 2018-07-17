@@ -86,10 +86,6 @@ public class AdminCommands extends MainCommand {
                 gray + "Set price of holding item, it's required for game shop\n" + gold + "Permission: " + gray + "villagedefense.admin.setprice"));
         command.add(new CommandData("/vda reload", "/vda reload", gray + "Reload all game arenas\n" + gray + "" + ChatColor.BOLD +
                 "They will be stopped!\n" + gold + "Permission: " + gray + "villagedefense.admin.reload"));
-        command.add(new CommandData(ChatColor.STRIKETHROUGH + "/vda addsign " + gold + "<arena>", "/vda addsign <arena>",
-                gray + "Set sign you look at as a target arena sign\n" + gold + "Permission: " + gray + "villagedefense.admin.addsign\n" +
-                        gold + "Permission: " + gray + "villagedefense.admin.sign.create (for creating signs manually)\n" + gold + "Permission: " +
-                        gray + "villagedefense.admin.sign.break (for breaking arena signs)\n" + ChatColor.BOLD + "" + ChatColor.RED + "Deprecated since 3.6.4, use Setup menu instead"));
         command.add(new CommandData("/vda delete " + gold + "<arena>", "/vda delete <arena>",
                 gray + "Deletes specified arena\n" + gold + "Permission: " + gray + "villagedefense.admin.delete"));
         command.add(new CommandData("/vda tp " + gold + "<arena> <location type>", "/vda tp <arena> <location>",
@@ -236,10 +232,6 @@ public class AdminCommands extends MainCommand {
         if(!hasPermission(sender, "villagedefense.admin.reload")) return;
         ArenaRegistry.registerArenas();
         sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("Commands.Admin-Commands.Success-Reload"));
-    }
-
-    public void setShopChest(CommandSender sender) {
-        sender.sendMessage(ChatColor.GREEN + "Please use Setup menu to set shop chest!");
     }
 
     public void addSign(CommandSender sender, String arena) {

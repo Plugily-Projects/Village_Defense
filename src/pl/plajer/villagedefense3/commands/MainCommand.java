@@ -137,9 +137,6 @@ public class MainCommand implements CommandExecutor {
             } else if(args[0].equalsIgnoreCase("reload")) {
                 adminCommands.reloadInstances(sender);
                 return true;
-            } else if(args[0].equalsIgnoreCase("setshopchest")) {
-                adminCommands.setShopChest(sender);
-                return true;
             } else if(args[0].equalsIgnoreCase("delete")) {
                 if(args.length != 1) {
                     adminCommands.deleteArena(sender, args[1]);
@@ -285,16 +282,6 @@ public class MainCommand implements CommandExecutor {
                     return true;
                 } else if(args[1].equalsIgnoreCase("reload")) {
                     adminCommands.reloadInstances(sender);
-                    return true;
-                } else if(args[1].equalsIgnoreCase("setshopchest")) {
-                    adminCommands.setShopChest(sender);
-                    return true;
-                } else if(args[1].equalsIgnoreCase("addsign")) {
-                    if(args.length != 2) {
-                        adminCommands.addSign(sender, args[2]);
-                    } else {
-                        sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("Commands.Type-Arena-Name"));
-                    }
                     return true;
                 } else if(args[1].equalsIgnoreCase("delete")) {
                     if(args.length != 2) {
