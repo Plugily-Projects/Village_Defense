@@ -53,12 +53,14 @@ public class SpectatorItemEvents implements Listener {
   @EventHandler
   public void onSpectatorItemClick(PlayerInteractEvent e) {
     if (e.getAction() == Action.RIGHT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_BLOCK) {
-      if (ArenaRegistry.getArena(e.getPlayer()) == null)
+      if (ArenaRegistry.getArena(e.getPlayer()) == null) {
         return;
+      }
       ItemStack stack = e.getPlayer().getInventory().getItemInMainHand();
       if (!(stack == null) && stack.hasItemMeta()) {
-        if (stack.getItemMeta().getDisplayName() == null)
+        if (stack.getItemMeta().getDisplayName() == null) {
           return;
+        }
         if (stack.getItemMeta().getDisplayName().equalsIgnoreCase(ChatManager.colorMessage("In-Game.Spectator.Spectator-Item-Name"))) {
           e.setCancelled(true);
           openSpectatorMenu(e.getPlayer().getWorld(), e.getPlayer());
@@ -88,17 +90,14 @@ public class SpectatorItemEvents implements Listener {
   @EventHandler
   public void onSpectatorInventoryClick(InventoryClickEvent e) {
     Player p = (Player) e.getWhoClicked();
-    if (ArenaRegistry.getArena(p) == null)
+    if (ArenaRegistry.getArena(p) == null) {
       return;
+    }
     Arena arena = ArenaRegistry.getArena(p);
-    if (e.getCurrentItem() == null)
+    if (e.getCurrentItem() == null || !e.getCurrentItem().hasItemMeta()
+            || !e.getCurrentItem().getItemMeta().hasDisplayName() || !e.getCurrentItem().getItemMeta().hasLore()) {
       return;
-    if (!e.getCurrentItem().hasItemMeta())
-      return;
-    if (!e.getCurrentItem().getItemMeta().hasDisplayName())
-      return;
-    if (!e.getCurrentItem().getItemMeta().hasLore())
-      return;
+    }
     if (e.getInventory().getName().equalsIgnoreCase(ChatManager.colorMessage("In-Game.Spectator.Spectator-Menu-Name"))) {
       e.setCancelled(true);
       if ((e.isLeftClick() || e.isRightClick())) {

@@ -53,8 +53,9 @@ public class ChatEvents implements Listener {
   public void onChat(AsyncPlayerChatEvent event) {
     if (ArenaRegistry.getArena(event.getPlayer()) == null) {
       for (Player player : event.getRecipients()) {
-        if (ArenaRegistry.getArena(event.getPlayer()) == null)
+        if (ArenaRegistry.getArena(event.getPlayer()) == null) {
           return;
+        }
         event.getRecipients().remove(player);
 
       }
@@ -70,8 +71,9 @@ public class ChatEvents implements Listener {
       for (Arena loopArena : ArenaRegistry.getArenas()) {
         for (Player player : loopArena.getPlayers()) {
           if (event.getRecipients().contains(player)) {
-            if (!plugin.isSpyChatEnabled(player))
+            if (!plugin.isSpyChatEnabled(player)) {
               event.getRecipients().remove(player);
+            }
           }
         }
       }
@@ -83,8 +85,9 @@ public class ChatEvents implements Listener {
       List<Player> remove = new ArrayList<>();
       while (iterator.hasNext()) {
         Player player = iterator.next();
-        if (!plugin.isSpyChatEnabled(player))
+        if (!plugin.isSpyChatEnabled(player)) {
           remove.add(player);
+        }
       }
       for (Player player : remove) {
         event.getRecipients().remove(player);

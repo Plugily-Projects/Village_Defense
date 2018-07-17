@@ -56,7 +56,9 @@ public class PowerupManager {
   private Main plugin;
 
   public PowerupManager(Main plugin) {
-    if (!plugin.getConfig().getBoolean("Powerups.Enabled", true)) return;
+    if (!plugin.getConfig().getBoolean("Powerups.Enabled", true)) {
+      return;
+    }
     if (plugin.getServer().getPluginManager().getPlugin("HolographicDisplays") == null) {
       Main.debug("Power up module: Holographic Displays dependency not found, disabling", System.currentTimeMillis());
       return;
@@ -92,13 +94,17 @@ public class PowerupManager {
   }
 
   public void spawnPowerup(Location loc, Arena arena) {
-    if (!enabled) return;
+    if (!enabled) {
+      return;
+    }
     PowerupType powerupType = PowerupType.random();
     if (!powerupType.isEnabled()) {
       spawnPowerup(loc, arena);
     }
-    if (!(ThreadLocalRandom.current().nextDouble(0.0, 100.0) <= plugin.getConfig().getDouble("Powerups.Drop-Chance", 1.0)))
+    if (!(ThreadLocalRandom.current().nextDouble(0.0, 100.0)
+            <= plugin.getConfig().getDouble("Powerups.Drop-Chance", 1.0))) {
       return;
+    }
     final PowerupType finalPowerUp = powerupType;
     String text = powerupType.getName();
     ItemStack icon = new ItemStack(powerupType.getMaterial());
@@ -109,7 +115,9 @@ public class PowerupManager {
     final String powerUpTitle = powerupType.getName();
     final String powerUpSubtitle = ChatManager.colorMessage(powerupType.getAccessPath() + ".Description");
     itemLine.setPickupHandler(player -> {
-      if (ArenaRegistry.getArena(player) != arena) return;
+      if (ArenaRegistry.getArena(player) != arena) {
+        return;
+      }
 
       VillagePowerupPickEvent villagePowerupPickEvent = new VillagePowerupPickEvent(arena, player, finalPowerUp);
       Bukkit.getPluginManager().callEvent(villagePowerupPickEvent);
@@ -159,7 +167,9 @@ public class PowerupManager {
       hologram.delete();
     });
     Bukkit.getScheduler().runTaskLater(plugin, () -> {
-      if (!hologram.isDeleted()) hologram.delete();
+      if (!hologram.isDeleted()) {
+        hologram.delete();
+      }
     }, /* remove after 40 seconds to prevent staying even if arena is finished */ 20 * 40);
   }
 

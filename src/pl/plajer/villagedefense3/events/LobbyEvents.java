@@ -42,22 +42,29 @@ public class LobbyEvents implements Listener {
 
   @EventHandler(priority = EventPriority.HIGHEST)
   public void onFoodLose(FoodLevelChangeEvent event) {
-    if (event.getEntity().getType() != EntityType.PLAYER)
+    if (event.getEntity().getType() != EntityType.PLAYER) {
       return;
+    }
     Player player = (Player) event.getEntity();
-    if (ArenaRegistry.getArena(player) == null)
+    if (ArenaRegistry.getArena(player) == null) {
       return;
+    }
     Arena arena = ArenaRegistry.getArena(player);
-    if (arena.getArenaState() == ArenaState.STARTING || arena.getArenaState() == ArenaState.WAITING_FOR_PLAYERS)
+    if (arena.getArenaState() == ArenaState.STARTING || arena.getArenaState() == ArenaState.WAITING_FOR_PLAYERS) {
       event.setCancelled(true);
+    }
   }
 
   @EventHandler
   public void onLobbyDamage(EntityDamageEvent event) {
-    if (event.getEntity().getType() != EntityType.PLAYER) return;
+    if (event.getEntity().getType() != EntityType.PLAYER) {
+      return;
+    }
     Player player = (Player) event.getEntity();
     Arena arena = ArenaRegistry.getArena(player);
-    if (arena == null || arena.getArenaState() == ArenaState.IN_GAME) return;
+    if (arena == null || arena.getArenaState() == ArenaState.IN_GAME) {
+      return;
+    }
     event.setCancelled(true);
     player.setHealth(player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue());
   }

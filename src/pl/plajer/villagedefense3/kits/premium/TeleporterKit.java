@@ -95,9 +95,10 @@ public class TeleporterKit extends PremiumKit implements Listener {
     if (e.getAction() == Action.RIGHT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_BLOCK) {
       Arena arena = ArenaRegistry.getArena(e.getPlayer());
       ItemStack stack = e.getPlayer().getInventory().getItemInMainHand();
-      if (arena == null || stack == null || !stack.hasItemMeta() ||
-              !stack.getItemMeta().hasDisplayName())
+      if (arena == null || stack == null || !stack.hasItemMeta()
+              || !stack.getItemMeta().hasDisplayName()) {
         return;
+      }
       if (stack.getItemMeta().getDisplayName().equalsIgnoreCase(ChatManager.colorMessage("Kits.Teleporter.Game-Item-Name"))) {
         Inventory inventory = plugin.getServer().createInventory(null, 18, ChatManager.colorMessage("Kits.Teleporter.Game-Item-Menu-Name"));
         for (Player player : e.getPlayer().getWorld().getPlayers()) {
@@ -127,9 +128,10 @@ public class TeleporterKit extends PremiumKit implements Listener {
   public void onInventoryClick(InventoryClickEvent e) {
     Player p = (Player) e.getWhoClicked();
     Arena arena = ArenaRegistry.getArena(p);
-    if (arena == null || e.getCurrentItem() == null || !e.getCurrentItem().hasItemMeta() || !e.getCurrentItem().getItemMeta().hasDisplayName() ||
-            !e.getCurrentItem().getItemMeta().hasLore())
+    if (arena == null || e.getCurrentItem() == null || !e.getCurrentItem().hasItemMeta()
+            || !e.getCurrentItem().getItemMeta().hasDisplayName() || !e.getCurrentItem().getItemMeta().hasLore()) {
       return;
+    }
     if (e.getInventory().getName().equalsIgnoreCase(ChatManager.colorMessage("Kits.Teleporter.Game-Item-Menu-Name"))) {
       e.setCancelled(true);
       if ((e.isLeftClick() || e.isRightClick())) {

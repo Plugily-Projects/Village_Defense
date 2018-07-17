@@ -60,9 +60,9 @@ public class StatsStorage {
    */
   public static Map<UUID, Integer> getStats(StatisticType stat) {
     Main.debug("Village API getStats(" + stat.getName() + ") run", System.currentTimeMillis());
-    if (plugin.isDatabaseActivated())
+    if (plugin.isDatabaseActivated()) {
       return plugin.getMySQLDatabase().getColumn(stat.getName());
-    else {
+    } else {
       FileConfiguration config = ConfigurationManager.getConfig("stats");
       Map<UUID, Integer> stats = new TreeMap<>();
       for (String string : config.getKeys(false)) {

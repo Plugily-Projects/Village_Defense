@@ -142,12 +142,15 @@ public abstract class Arena extends BukkitRunnable {
 
   public void run() {
     //idle task
-    if (getPlayers().size() == 0 && getArenaState() == ArenaState.WAITING_FOR_PLAYERS) return;
+    if (getPlayers().size() == 0 && getArenaState() == ArenaState.WAITING_FOR_PLAYERS) {
+      return;
+    }
     updateScoreboard();
     switch (getArenaState()) {
       case WAITING_FOR_PLAYERS:
-        if (plugin.isBungeeActivated())
+        if (plugin.isBungeeActivated()) {
           plugin.getServer().setWhitelist(false);
+        }
         if (getPlayers().size() < getMinimumPlayers()) {
           if (getTimer() <= 0) {
             setTimer(15);
@@ -229,8 +232,9 @@ public abstract class Arena extends BukkitRunnable {
         if (zombieChecker >= 60) {
           List<Villager> remove = new ArrayList<>();
           for (Villager villager : getVillagers()) {
-            if (villager.isDead())
+            if (villager.isDead()) {
               remove.add(villager);
+            }
           }
           for (Villager villager : remove) {
             removeVillager(villager);
@@ -274,7 +278,9 @@ public abstract class Arena extends BukkitRunnable {
           if (getVillagers().size() <= 0) {
             showPlayers();
             this.setTimer(10);
-          } else this.setTimer(5);
+          } else {
+            this.setTimer(5);
+          }
           return;
         }
         if (fighting) {
@@ -301,7 +307,9 @@ public abstract class Arena extends BukkitRunnable {
               }
             }
           }
-          if (zombiesToSpawn < 0) zombiesToSpawn = 0;
+          if (zombiesToSpawn < 0) {
+            zombiesToSpawn = 0;
+          }
           setTimer(getTimer() - 1);
 
         } else {
@@ -313,8 +321,9 @@ public abstract class Arena extends BukkitRunnable {
         setTimer(getTimer() - 1);
         break;
       case ENDING:
-        if (plugin.isBungeeActivated())
+        if (plugin.isBungeeActivated()) {
           plugin.getServer().setWhitelist(false);
+        }
         if (getTimer() <= 0) {
           if (plugin.isBossbarEnabled()) {
             gameBar.setTitle(ChatManager.colorMessage("Bossbar.Game-Ended"));
@@ -347,8 +356,9 @@ public abstract class Arena extends BukkitRunnable {
             player.setFireTicks(0);
             player.setFoodLevel(20);
             for (Player players : plugin.getServer().getOnlinePlayers()) {
-              if (ArenaRegistry.getArena(players) != null)
+              if (ArenaRegistry.getArena(players) != null) {
                 players.showPlayer(player);
+              }
               player.showPlayer(players);
             }
           }
@@ -373,8 +383,9 @@ public abstract class Arena extends BukkitRunnable {
           plugin.getRewardsHandler().performEndGameRewards(this);
           players.clear();
           if (plugin.isBungeeActivated()) {
-            if (ConfigurationManager.getConfig("bungee").getBoolean("Shutdown-When-Game-Ends"))
+            if (ConfigurationManager.getConfig("bungee").getBoolean("Shutdown-When-Game-Ends")) {
               plugin.getServer().shutdown();
+            }
           }
           setArenaState(ArenaState.RESTARTING);
         }
@@ -401,10 +412,14 @@ public abstract class Arena extends BukkitRunnable {
   }
 
   private void updateScoreboard() {
-    if (getPlayers().size() == 0 || getArenaState() == ArenaState.RESTARTING) return;
+    if (getPlayers().size() == 0 || getArenaState() == ArenaState.RESTARTING) {
+      return;
+    }
     for (Player p : getPlayers()) {
       //temp only a temporary fix for Sitieno14
-      if (p == null) continue;
+      if (p == null) {
+        continue;
+      }
       User user = UserManager.getUser(p.getUniqueId());
       if (getArenaState() == ArenaState.ENDING) {
         user.removeScoreboard();
@@ -656,18 +671,20 @@ public abstract class Arena extends BukkitRunnable {
   }
 
   public void teleportToStartLocation(Player player) {
-    if (startLoc != null)
+    if (startLoc != null) {
       player.teleport(startLoc);
-    else
+    } else {
       System.out.print("Startlocation for arena " + getID() + " isn't intialized!");
+    }
   }
 
   private void teleportAllToStartLocation() {
     for (Player player : getPlayers()) {
-      if (startLoc != null)
+      if (startLoc != null) {
         player.teleport(startLoc);
-      else
+      } else {
         System.out.print("Startlocation for arena " + getID() + " isn't intialized!");
+      }
     }
   }
 
@@ -800,8 +817,9 @@ public abstract class Arena extends BukkitRunnable {
       }
     }
     spawnCounter++;
-    if (spawnCounter == 20)
+    if (spawnCounter == 20) {
       spawnCounter = 0;
+    }
     if (zombiesToSpawn < 5 && zombiesToSpawn > 0) {
       spawnFastZombie(random);
       return;
@@ -811,17 +829,21 @@ public abstract class Arena extends BukkitRunnable {
         for (int i = 0; i <= wave; i++) {
           if (zombiesToSpawn > 0) {
             if (wave > 7) {
-              if (random.nextInt(2) == 1)
+              if (random.nextInt(2) == 1) {
                 spawnSoftHardZombie(random);
+              }
             } else if (wave > 14) {
-              if (random.nextInt(2) == 1)
+              if (random.nextInt(2) == 1) {
                 spawnHardZombie(random);
+              }
             } else if (wave > 20) {
-              if (random.nextInt(3) == 1)
+              if (random.nextInt(3) == 1) {
                 spawnKnockbackResistantZombies(random);
+              }
             } else if (wave > 23) {
-              if (random.nextInt(4) == 1)
+              if (random.nextInt(4) == 1) {
                 spawnVillagerSlayer(random);
+              }
             } else {
               spawnFastZombie(random);
             }
@@ -829,21 +851,24 @@ public abstract class Arena extends BukkitRunnable {
         }
       } else {
         for (int i = 0; i <= wave; i++) {
-          if (zombiesToSpawn > 0)
+          if (zombiesToSpawn > 0) {
             spawnBabyZombie(random);
+          }
         }
       }
     }
     if (spawnCounter == 15 && wave > 4) {
       if (wave > 8) {
         for (int i = 0; i < (wave - 7); i++) {
-          if (zombiesToSpawn > 0)
+          if (zombiesToSpawn > 0) {
             spawnHardZombie(random);
+          }
         }
       } else {
         for (int i = 0; i < (wave - 3); i++) {
-          if (zombiesToSpawn > 0)
+          if (zombiesToSpawn > 0) {
             spawnSoftHardZombie(random);
+          }
         }
       }
 
@@ -851,30 +876,35 @@ public abstract class Arena extends BukkitRunnable {
 
     if (random.nextInt(8) == 0 && wave > 10) {
       for (int i = 0; i < (wave - 8); i++) {
-        if (zombiesToSpawn > 0)
+        if (zombiesToSpawn > 0) {
           spawnPlayerBuster(random);
+        }
       }
     }
     if (random.nextInt(8) == 0 && wave > 7) {
       for (int i = 0; i < (wave - 5); i++) {
-        if (zombiesToSpawn > 0)
+        if (zombiesToSpawn > 0) {
           spawnHalfInvisibleZombie(random);
+        }
       }
     }
     if (random.nextInt(8) == 0 && wave > 15) {
       for (int i = 0; i < (wave - 13); i++) {
-        if (zombiesToSpawn > 0)
+        if (zombiesToSpawn > 0) {
           spawnHalfInvisibleZombie(random);
+        }
       }
     }
     if (random.nextInt(8) == 0 && wave > 23) {
-      if (zombiesToSpawn > 0)
+      if (zombiesToSpawn > 0) {
         spawnHalfInvisibleZombie(random);
+      }
     }
     if (random.nextInt(8) == 0 && getIronGolems().size() > 0 && wave >= 6) {
       for (int i = 0; i < (wave - 4); i++) {
-        if (zombiesToSpawn > 0)
+        if (zombiesToSpawn > 0) {
           spawnGolemBuster(random);
+        }
       }
     }
   }
@@ -1008,18 +1038,18 @@ public abstract class Arena extends BukkitRunnable {
   }
 
   void removePlayer(Player player) {
-    if (player == null)
+    if (player == null || player.getUniqueId() == null) {
       return;
-    if (player.getUniqueId() == null)
-      return;
+    }
     players.remove(player.getUniqueId());
   }
 
   List<Player> getPlayersLeft() {
     List<Player> players = new ArrayList<>();
     for (User user : UserManager.getUsers(this)) {
-      if (!user.isFakeDead())
+      if (!user.isFakeDead()) {
         players.add(user.toPlayer());
+      }
     }
     return players;
   }

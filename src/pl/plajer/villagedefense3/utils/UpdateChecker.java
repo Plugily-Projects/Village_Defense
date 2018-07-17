@@ -40,10 +40,13 @@ public class UpdateChecker {
   public static void checkUpdate(String currentVersion) {
     String version = getVersion();
     if (version.contains("b")) {
-      if (!Main.getPlugin(Main.class).getConfig().getBoolean("Update-Notifier.Notify-Beta-Versions", true)) return;
+      if (!Main.getPlugin(Main.class).getConfig().getBoolean("Update-Notifier.Notify-Beta-Versions", true)) {
+        return;
+      }
     }
-    if (checkHigher(currentVersion, version))
+    if (checkHigher(currentVersion, version)) {
       latestVersion = version;
+    }
   }
 
   public static String getLatestVersion() {
@@ -66,8 +69,9 @@ public class UpdateChecker {
   private static String toReadable(String version) {
     String[] split = Pattern.compile(".", Pattern.LITERAL).split(version.replace("v", ""));
     StringBuilder versionBuilder = new StringBuilder();
-    for (String s : split)
+    for (String s : split) {
       versionBuilder.append(String.format("%4s", s));
+    }
     version = versionBuilder.toString();
     return version;
   }

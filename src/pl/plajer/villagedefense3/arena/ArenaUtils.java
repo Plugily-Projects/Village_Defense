@@ -50,7 +50,9 @@ public class ArenaUtils {
 
   public static void hidePlayersOutsideTheGame(Player player, Arena arena) {
     for (Player players : plugin.getServer().getOnlinePlayers()) {
-      if (arena.getPlayers().contains(players)) continue;
+      if (arena.getPlayers().contains(players)) {
+        continue;
+      }
       player.hidePlayer(players);
       players.hidePlayer(player);
     }

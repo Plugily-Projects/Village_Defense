@@ -93,9 +93,10 @@ public class MySQLConnectionManager {
 
   public void closeConnection(Connection conn) {
     try {
-      if (conn != null)
+      if (conn != null) {
         conn.close(); //release the connection - the name is tricky but connection is not closed it is released
-      //and it will stay in pool
+        //and it will stay in pool
+      }
     } catch (SQLException e) {
       e.printStackTrace();
     }

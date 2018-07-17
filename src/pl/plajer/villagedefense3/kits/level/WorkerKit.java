@@ -85,7 +85,9 @@ public class WorkerKit extends LevelKit implements Listener {
   @EventHandler(priority = EventPriority.HIGHEST)
   public void onDoorPlace(BlockPlaceEvent e) {
     Arena arena = ArenaRegistry.getArena(e.getPlayer());
-    if (arena == null) return;
+    if (arena == null) {
+      return;
+    }
     User user = UserManager.getUser(e.getPlayer().getUniqueId());
     ItemStack stack = e.getPlayer().getInventory().getItemInMainHand();
     if (user.isSpectator() || stack == null || !arena.getDoorLocations().containsKey(e.getBlock().getLocation())

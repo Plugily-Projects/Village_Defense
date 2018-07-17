@@ -81,11 +81,13 @@ public class MedicKit extends PremiumKit implements Listener {
 
   @EventHandler
   public void onZombieHit(EntityDamageByEntityEvent e) {
-    if (!(e.getEntity() instanceof Zombie && e.getDamager() instanceof Player))
+    if (!(e.getEntity() instanceof Zombie && e.getDamager() instanceof Player)) {
       return;
+    }
     User user = UserManager.getUser(e.getDamager().getUniqueId());
-    if (!(user.getKit() instanceof MedicKit))
+    if (!(user.getKit() instanceof MedicKit)) {
       return;
+    }
     if (Math.random() <= 0.1) {
       for (Entity entity : user.toPlayer().getNearbyEntities(5, 5, 5)) {
         if (entity.getType() == EntityType.PLAYER) {

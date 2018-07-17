@@ -63,8 +63,9 @@ public class User {
   public Kit getKit() {
     if (kit == null) {
       throw new NullPointerException("User has no kit!");
-    } else
+    } else {
       return kit;
+    }
   }
 
   public void setKit(Kit kit) {
@@ -134,10 +135,9 @@ public class User {
   }
 
   public long getCooldown(String s) {
-    if (!cooldowns.containsKey(s))
+    if (!cooldowns.containsKey(s) || cooldowns.get(s) <= cooldownCounter) {
       return 0;
-    if (cooldowns.get(s) <= cooldownCounter)
-      return 0;
+    }
     return cooldowns.get(s) - cooldownCounter;
   }
 

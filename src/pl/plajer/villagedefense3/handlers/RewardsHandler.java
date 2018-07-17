@@ -42,21 +42,30 @@ public class RewardsHandler {
   }
 
   public void performEndGameRewards(Arena arena) {
-    if (!enabled) return;
+    if (!enabled) {
+      return;
+    }
     for (String string : config.getStringList("rewards.endgame")) {
       performCommand(arena, string);
     }
   }
 
   public void performEndWaveRewards(Arena arena, int wave) {
-    if (!enabled) return;
-    if (!config.contains("rewards.endwave." + wave)) return;
-    for (String string : config.getStringList("rewards.endwave." + wave))
+    if (!enabled) {
+      return;
+    }
+    if (!config.contains("rewards.endwave." + wave)) {
+      return;
+    }
+    for (String string : config.getStringList("rewards.endwave." + wave)) {
       performCommand(arena, string);
+    }
   }
 
   public void performZombieKillReward(Player player) {
-    if (!enabled) return;
+    if (!enabled) {
+      return;
+    }
     for (String string : config.getStringList("rewards.zombiekill")) {
       performCommand(player, string);
     }
@@ -64,7 +73,9 @@ public class RewardsHandler {
 
 
   private void performCommand(Arena arena, String string) {
-    if (!enabled) return;
+    if (!enabled) {
+      return;
+    }
     String command = string.replaceAll("%ARENA-ID%", arena.getID())
             .replaceAll("%MAPNAME%", arena.getMapName())
             .replaceAll("%PLAYERAMOUNT%", String.valueOf(arena.getPlayers().size()))
@@ -78,7 +89,9 @@ public class RewardsHandler {
       String chanceStr = command.substring(0, loc).replaceAll("[^0-9]+", "");
       int chance = Integer.parseInt(chanceStr);
       command = command.replace("chance(" + chanceStr + "):", "");
-      if (ThreadLocalRandom.current().nextInt(0, 100) > chance) return;
+      if (ThreadLocalRandom.current().nextInt(0, 100) > chance) {
+        return;
+      }
     }
     if (command.contains("p:") || command.contains("%PLAYER%")) {
       for (Player player : arena.getPlayers()) {
@@ -94,9 +107,13 @@ public class RewardsHandler {
   }
 
   private void performCommand(Player player, String string) {
-    if (!enabled) return;
+    if (!enabled) {
+      return;
+    }
     Arena arena = ArenaRegistry.getArena(player);
-    if (arena == null) return;
+    if (arena == null) {
+      return;
+    }
     String command = string.replaceAll("%ARENA-ID%", arena.getID())
             .replaceAll("%MAPNAME%", arena.getMapName())
             .replaceAll("%PLAYERAMOUNT%", String.valueOf(arena.getPlayers().size()))
@@ -110,7 +127,9 @@ public class RewardsHandler {
       String chanceStr = command.substring(0, loc).replaceAll("[^0-9]+", "");
       int chance = Integer.parseInt(chanceStr);
       command = command.replace("chance(" + chanceStr + "):", "");
-      if (ThreadLocalRandom.current().nextInt(0, 100) > chance) return;
+      if (ThreadLocalRandom.current().nextInt(0, 100) > chance) {
+        return;
+      }
     }
     if (command.contains("p:")) {
       player.performCommand(command.replaceFirst("p:", "")

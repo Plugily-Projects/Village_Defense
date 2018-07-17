@@ -34,8 +34,9 @@ public class SpecialItemManager {
   }
 
   public static SpecialItem getSpecialItem(String name) {
-    if (specialItems.containsKey(name))
+    if (specialItems.containsKey(name)) {
       return specialItems.get(name);
+    }
     return null;
   }
 

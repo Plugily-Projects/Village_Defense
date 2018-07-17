@@ -66,19 +66,29 @@ public class DogFriendKit extends PremiumKit {
     player.getInventory().addItem(new ItemStack(Material.GRILLED_PORK, 8));
     player.getInventory().addItem(new ItemStack(Material.SADDLE));
     Arena arena = ArenaRegistry.getArena(player);
-    if (arena == null) return;
+    if (arena == null) {
+      return;
+    }
     if (plugin.is1_9_R1()) {
       ArenaInitializer1_9_R1 initializer = (ArenaInitializer1_9_R1) arena;
-      for (int i = 0; i < 3; i++) initializer.spawnWolf(initializer.getStartLocation(), player);
+      for (int i = 0; i < 3; i++) {
+        initializer.spawnWolf(initializer.getStartLocation(), player);
+      }
     } else if (plugin.is1_11_R1()) {
       ArenaInitializer1_11_R1 initializer = (ArenaInitializer1_11_R1) arena;
-      for (int i = 0; i < 3; i++) initializer.spawnWolf(initializer.getStartLocation(), player);
+      for (int i = 0; i < 3; i++) {
+        initializer.spawnWolf(initializer.getStartLocation(), player);
+      }
     } else if (plugin.is1_12_R1()) {
       ArenaInitializer1_12_R1 initializer = (ArenaInitializer1_12_R1) arena;
-      for (int i = 0; i < 3; i++) initializer.spawnWolf(initializer.getStartLocation(), player);
+      for (int i = 0; i < 3; i++) {
+        initializer.spawnWolf(initializer.getStartLocation(), player);
+      }
     } else if (plugin.is1_13_R1()) {
       ArenaInitializer1_13_R1 initializer = (ArenaInitializer1_13_R1) arena;
-      for (int i = 0; i < 3; i++) initializer.spawnWolf(initializer.getStartLocation(), player);
+      for (int i = 0; i < 3; i++) {
+        initializer.spawnWolf(initializer.getStartLocation(), player);
+      }
     }
   }
 
@@ -90,7 +100,9 @@ public class DogFriendKit extends PremiumKit {
   @Override
   public void reStock(Player player) {
     Arena arena = ArenaRegistry.getArena(player);
-    if (arena == null) return;
+    if (arena == null) {
+      return;
+    }
     if (plugin.is1_9_R1()) {
       ArenaInitializer1_9_R1 initializer = (ArenaInitializer1_9_R1) arena;
       initializer.spawnWolf(initializer.getStartLocation(), player);

@@ -136,8 +136,9 @@ public class SetupInventory {
 
   private String isOptionDoneList(String path) {
     if (ConfigurationManager.getConfig("arenas").isSet(path)) {
-      if (path.contains(".doors"))
+      if (path.contains(".doors")) {
         return ChatColor.GOLD + "" + ChatColor.BOLD + "Done: " + ChatColor.GREEN + "Yes " + ChatColor.GRAY + "(value: " + ConfigurationManager.getConfig("arenas").getConfigurationSection(path).getKeys(false).size() / 2 + ")";
+      }
       return ChatColor.GOLD + "" + ChatColor.BOLD + "Done: " + ChatColor.GREEN + "Yes " + ChatColor.GRAY + "(value: " + ConfigurationManager.getConfig("arenas").getConfigurationSection(path).getKeys(false).size() + ")";
     }
     return ChatColor.GOLD + "" + ChatColor.BOLD + "Done: " + ChatColor.RED + "No";

@@ -45,15 +45,17 @@ public class ChunkManager implements Listener {
   }
 
   public void keepLoaded(Chunk chunk) {
-    if (!chunk.isLoaded())
+    if (!chunk.isLoaded()) {
       chunk.load();
+    }
     chunks.add(chunk);
   }
 
   @EventHandler
   public void onChunkUnload(ChunkUnloadEvent event) {
-    if (chunks.contains(event.getChunk()))
+    if (chunks.contains(event.getChunk())) {
       event.setCancelled(true);
+    }
   }
 
   @EventHandler

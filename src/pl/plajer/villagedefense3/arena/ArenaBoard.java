@@ -138,9 +138,9 @@ public class ArenaBoard {
           final ChatColor cc = charsToChatColor(new char[]{lastChar, c});
 
           if (cc != null) {
-            if (cc.isFormat())
+            if (cc.isFormat()) {
               cc2 = cc;
-            else {
+            } else {
               cc1 = cc;
               cc2 = null;
             }
@@ -163,11 +163,14 @@ public class ArenaBoard {
 
         int same = 0;
         for (int i = 0; i < 2; i++) {
-          if (ccChars[i] == chars[i])
+          if (ccChars[i] == chars[i]) {
             same++;
+          }
         }
 
-        if (same == 2) return cc;
+        if (same == 2){
+          return cc;
+        }
       }
 
       return null;

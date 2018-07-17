@@ -60,7 +60,9 @@ public class GolemEvents implements Listener {
     if (!ArenaRegistry.isInArena(e.getPlayer()) || !(e.getRightClicked() instanceof IronGolem)) {
       return;
     }
-    if (UserManager.getUser(e.getPlayer().getUniqueId()).isSpectator()) return;
+    if (UserManager.getUser(e.getPlayer().getUniqueId()).isSpectator()) {
+      return;
+    }
     if (e.getRightClicked().getCustomName() == null || !(e.getRightClicked().getCustomName().contains(e.getPlayer().getName()))) {
       e.getPlayer().sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Golem-Upgrades.Cant-Upgrade-Others"));
       return;
@@ -95,10 +97,14 @@ public class GolemEvents implements Listener {
 
   @EventHandler
   public void onInventoryClick(InventoryClickEvent e) {
-    if (e.getInventory() == null || e.getCurrentItem() == null || clickedGolem.get(e.getWhoClicked()) == null || !(e.getWhoClicked() instanceof Player))
+    if (e.getInventory() == null || e.getCurrentItem() == null || clickedGolem.get(e.getWhoClicked()) == null
+            || !(e.getWhoClicked() instanceof Player)) {
       return;
+    }
     if (e.getInventory().getName().equals(ChatManager.colorMessage("In-Game.Golem-Upgrades.Upgrade-Inventory"))) {
-      if (!e.getCurrentItem().hasItemMeta()) return;
+      if (!e.getCurrentItem().hasItemMeta()) {
+        return;
+      }
       Player p = (Player) e.getWhoClicked();
       double golemHealth = clickedGolem.get(p).getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue();
       Integer orbs = UserManager.getUser(p.getUniqueId()).getInt("orbs");
@@ -166,7 +172,9 @@ public class GolemEvents implements Listener {
 
   @EventHandler
   public void onInventoryClose(InventoryCloseEvent e) {
-    if (e.getInventory() == null || clickedGolem.get(e.getPlayer()) == null) return;
+    if (e.getInventory() == null || clickedGolem.get(e.getPlayer()) == null) {
+      return;
+    }
     if (e.getInventory().getName().equals(ChatManager.colorMessage("In-Game.Golem-Upgrades.Upgrade-Inventory"))) {
       clickedGolem.remove(e.getPlayer());
     }

@@ -68,8 +68,9 @@ public class BungeeManager implements Listener {
 
   @EventHandler(priority = EventPriority.HIGHEST)
   public void onServerListPing(ServerListPingEvent event) {
-    if (ArenaRegistry.getArenas().isEmpty())
+    if (ArenaRegistry.getArenas().isEmpty()) {
       return;
+    }
     if (ArenaRegistry.getArenas() == null) {
       Main.debug("No ready arena found! Please create one before activating bungee mode!", System.currentTimeMillis());
       return;
@@ -88,8 +89,9 @@ public class BungeeManager implements Listener {
   @EventHandler(priority = EventPriority.HIGHEST)
   public void onQuit(PlayerQuitEvent event) {
     event.setQuitMessage("");
-    if (ArenaRegistry.getArena(event.getPlayer()) != null)
+    if (ArenaRegistry.getArena(event.getPlayer()) != null) {
       ArenaManager.leaveAttempt(event.getPlayer(), ArenaRegistry.getArenas().get(0));
+    }
 
   }
 

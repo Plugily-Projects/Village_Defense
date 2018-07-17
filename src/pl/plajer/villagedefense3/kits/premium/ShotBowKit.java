@@ -88,9 +88,11 @@ public class ShotBowKit extends PremiumKit implements Listener {
   public void onBowInteract(PlayerInteractEvent e) {
     if (e.getAction() == Action.LEFT_CLICK_AIR || e.getAction() == Action.LEFT_CLICK_BLOCK) {
       ItemStack stack = e.getPlayer().getInventory().getItemInMainHand();
-      if (stack == null || stack.getType() != Material.BOW || !e.getPlayer().getInventory().contains(Material.ARROW) ||
-              !(UserManager.getUser(e.getPlayer().getUniqueId()).getKit() instanceof ShotBowKit) || UserManager.getUser(e.getPlayer().getUniqueId()).isSpectator())
+      if (stack == null || stack.getType() != Material.BOW || !e.getPlayer().getInventory().contains(Material.ARROW)
+              || !(UserManager.getUser(e.getPlayer().getUniqueId()).getKit() instanceof ShotBowKit)
+              || UserManager.getUser(e.getPlayer().getUniqueId()).isSpectator()) {
         return;
+      }
       if (UserManager.getUser(e.getPlayer().getUniqueId()).getCooldown("shotbow") == 0) {
         for (int i = 0; i < 4; i++) {
           Bukkit.getScheduler().runTaskLater(plugin, () -> {
@@ -100,8 +102,9 @@ public class ShotBowKit extends PremiumKit implements Listener {
             pr.setShooter(e.getPlayer());
             ((Arrow) pr).setCritical(true);
 
-            if (e.getPlayer().getInventory().contains(Material.ARROW))
+            if (e.getPlayer().getInventory().contains(Material.ARROW)) {
               e.getPlayer().getInventory().removeItem(new ItemStack(Material.ARROW, 1));
+            }
           }, 2 * (2 * i));
         }
         e.setCancelled(true);

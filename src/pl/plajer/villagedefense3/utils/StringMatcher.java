@@ -53,16 +53,16 @@ public class StringMatcher {
           }
         }
         for (int i = 0; i < Math.min(baseLength, poss.length()); i++) {
-          if ((pos != -1) &&
-                  (base.charAt(i) == poss.charAt(Math.min(i + pos, poss.length() - 1)))) {
+          if ((pos != -1)
+                  && (base.charAt(i) == poss.charAt(Math.min(i + pos, poss.length() - 1)))) {
             matches++;
           }
         }
         if (matches > bestMatch.length) {
           bestMatch = new Match(poss, matches);
         }
-        if ((matches > 0) && (matches >= bestMatch.length) &&
-                (!poss.equalsIgnoreCase(bestMatch.match))) {
+        if ((matches > 0) && (matches >= bestMatch.length)
+                && (!poss.equalsIgnoreCase(bestMatch.match))) {
           otherMatches.add(new Match(poss, matches));
         }
       }

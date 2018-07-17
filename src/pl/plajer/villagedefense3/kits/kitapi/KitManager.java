@@ -86,10 +86,11 @@ public class KitManager implements Listener {
     invMenu = Bukkit.createInventory(null, Utils.serializeInt(KitRegistry.getKits().size()), getMenuName());
     for (Kit kit : KitRegistry.getKits()) {
       ItemStack itemStack = kit.getItemStack();
-      if (kit.isUnlockedByPlayer(player))
+      if (kit.isUnlockedByPlayer(player)) {
         Utils.addLore(itemStack, unlockedString);
-      else
+      } else {
         Utils.addLore(itemStack, lockedString);
+      }
 
       invMenu.addItem(itemStack);
     }
@@ -156,32 +157,41 @@ public class KitManager implements Listener {
 
   @EventHandler
   private void onKitMenuItemClick(PlayerInteractEvent e) {
-    if (!(e.getAction() == Action.RIGHT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_BLOCK))
+    if (!(e.getAction() == Action.RIGHT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_BLOCK)) {
       return;
+    }
     ItemStack stack = e.getPlayer().getInventory().getItemInMainHand();
     if (stack.getType() != getMaterial() || !stack.hasItemMeta() || !stack.getItemMeta().hasLore()) {
       return;
     }
-    if (!stack.getItemMeta().getDisplayName().equalsIgnoreCase(getItemName())) return;
+    if (!stack.getItemMeta().getDisplayName().equalsIgnoreCase(getItemName())) {
+      return;
+    }
     openKitMenu(e.getPlayer());
   }
 
   @EventHandler
   public void onKitChoose(InventoryClickEvent e) {
-    if (!e.getInventory().getName().equalsIgnoreCase(getMenuName()))
+    if (!e.getInventory().getName().equalsIgnoreCase(getMenuName())) {
       return;
-    if (!(e.getWhoClicked() instanceof Player))
+    }
+    if (!(e.getWhoClicked() instanceof Player)) {
       return;
+    }
     Player player = (Player) e.getWhoClicked();
     e.setCancelled(true);
-    if (e.getCurrentItem() == null)
+    if (e.getCurrentItem() == null) {
       return;
-    if (!(e.isLeftClick() || e.isRightClick()))
+    }
+    if (!(e.isLeftClick() || e.isRightClick())) {
       return;
-    if (!e.getCurrentItem().hasItemMeta())
+    }
+    if (!e.getCurrentItem().hasItemMeta()) {
       return;
-    if (!ArenaRegistry.isInArena(player))
+    }
+    if (!ArenaRegistry.isInArena(player)) {
       return;
+    }
     VillagePlayerChooseKitEvent event = new VillagePlayerChooseKitEvent(player, KitRegistry.getKit(e.getCurrentItem()), ArenaRegistry.getArena(player));
     Bukkit.getPluginManager().callEvent(event);
   }

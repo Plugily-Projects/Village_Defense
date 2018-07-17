@@ -75,8 +75,10 @@ public class SignManager implements Listener {
 
   @EventHandler
   public void onSignChange(SignChangeEvent e) {
-    if (!e.getPlayer().hasPermission("villagedefense.admin.sign.create")) return;
-    if (!e.getLine(0).equalsIgnoreCase("[villagedefense]")) return;
+    if (!e.getPlayer().hasPermission("villagedefense.admin.sign.create")
+            && !e.getLine(0).equalsIgnoreCase("[villagedefense]")) {
+      return;
+    }
     if (e.getLine(1).isEmpty()) {
       e.getPlayer().sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("Signs.Please-Type-Arena-Name"));
       return;
@@ -116,8 +118,10 @@ public class SignManager implements Listener {
 
   @EventHandler
   public void onSignDestroy(BlockBreakEvent e) {
-    if (!e.getPlayer().hasPermission("villagedefense.admin.sign.break")) return;
-    if (loadedSigns.get(e.getBlock().getState()) == null) return;
+    if (!e.getPlayer().hasPermission("villagedefense.admin.sign.break")
+            && loadedSigns.get(e.getBlock().getState()) == null) {
+      return;
+    }
     loadedSigns.remove(e.getBlock().getState());
     String location = e.getBlock().getWorld().getName() + "," + e.getBlock().getX() + "," + e.getBlock().getY() + "," + e.getBlock().getZ() + "," + "0.0,0.0";
     for (String arena : ConfigurationManager.getConfig("arenas").getConfigurationSection("instances").getKeys(false)) {
@@ -138,11 +142,13 @@ public class SignManager implements Listener {
 
   @EventHandler
   public void onJoinAttempt(PlayerInteractEvent e) {
-    if (e.getAction() == Action.RIGHT_CLICK_BLOCK &&
-            e.getClickedBlock().getState() instanceof Sign && loadedSigns.containsKey(e.getClickedBlock().getState())) {
+    if (e.getAction() == Action.RIGHT_CLICK_BLOCK
+            && e.getClickedBlock().getState() instanceof Sign && loadedSigns.containsKey(e.getClickedBlock().getState())) {
 
       Arena arena = loadedSigns.get(e.getClickedBlock().getState());
-      if (arena == null) return;
+      if (arena == null) {
+        return;
+      }
       if (ArenaRegistry.isInArena(e.getPlayer())) {
         e.getPlayer().sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Already-Playing"));
         return;

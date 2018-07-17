@@ -69,7 +69,9 @@ public class Utils {
   public static void addLore(ItemStack itemStack, String string) {
     ItemMeta meta = itemStack.getItemMeta();
     List<String> lore = new ArrayList<>();
-    if (meta != null && meta.hasLore()) lore.addAll(meta.getLore());
+    if (meta != null && meta.hasLore()) {
+      lore.addAll(meta.getLore());
+    }
     lore.add(string);
     meta.setLore(lore);
     itemStack.setItemMeta(meta);
@@ -92,11 +94,13 @@ public class Utils {
       //todo block id!
       int id = block.getTypeId();
       if (transparent == null) {
-        if (id != 0 && id != 50 && id != 59 && id != 31 && id != 175 && id != 38 && id != 37 && id != 6 && id != 106)
+        if (id != 0 && id != 50 && id != 59 && id != 31 && id != 175 && id != 38 && id != 37 && id != 6 && id != 106) {
           break;
+        }
       } else {
-        if (!transparent.contains((byte) id))
+        if (!transparent.contains((byte) id)) {
           break;
+        }
       }
     }
     return blocks;
@@ -109,8 +113,9 @@ public class Utils {
       for (int chZ = 0 - chunkRadius; chZ <= chunkRadius; chZ++) {
         int x = (int) l.getX(), y = (int) l.getY(), z = (int) l.getZ();
         for (Entity e : new Location(l.getWorld(), x + chX * 16, y, z + chZ * 16).getChunk().getEntities()) {
-          if (!(l.getWorld().getName().equalsIgnoreCase(e.getWorld().getName())))
+          if (!(l.getWorld().getName().equalsIgnoreCase(e.getWorld().getName()))) {
             continue;
+          }
           if (e.getLocation().distanceSquared(l) <= radius * radius && e.getLocation().getBlock() != l
                   .getBlock()) {
             radiusEntities.add(e);
@@ -129,17 +134,20 @@ public class Utils {
   }
 
   public static double round(double value, int places) {
-    if (places < 0) return value;
+    if (places < 0) {
+      return value;
+    }
     BigDecimal bd = new BigDecimal(value);
     bd = bd.setScale(places, RoundingMode.HALF_UP);
     return bd.doubleValue();
   }
 
   public static int serializeInt(Integer i) {
-    if ((i % 9) == 0)
+    if ((i % 9) == 0) {
       return i;
-    else
+    } else {
       return (int) ((Math.ceil(i / 9) * 9) + 9);
+    }
   }
 
   public static String locationToString(Location location) {
@@ -155,12 +163,27 @@ public class Utils {
 
     //Get the type
     int rt = r.nextInt(4) + 1;
-    FireworkEffect.Type type = FireworkEffect.Type.BALL;
-    if (rt == 1) type = FireworkEffect.Type.BALL;
-    if (rt == 2) type = FireworkEffect.Type.BALL_LARGE;
-    if (rt == 3) type = FireworkEffect.Type.BURST;
-    if (rt == 4) type = FireworkEffect.Type.CREEPER;
-    if (rt == 5) type = FireworkEffect.Type.STAR;
+    FireworkEffect.Type type;
+    switch (rt) {
+      case 1:
+        type = FireworkEffect.Type.BALL;
+        break;
+      case 2:
+        type = FireworkEffect.Type.BALL_LARGE;
+        break;
+      case 3:
+        type = FireworkEffect.Type.BURST;
+        break;
+      case 4:
+        type = FireworkEffect.Type.CREEPER;
+        break;
+      case 5:
+        type = FireworkEffect.Type.STAR;
+        break;
+      default:
+        type = FireworkEffect.Type.BALL;
+        break;
+    }
 
     //Get our random colours
     int r1i = r.nextInt(250) + 1;

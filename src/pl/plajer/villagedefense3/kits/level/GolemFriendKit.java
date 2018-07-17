@@ -67,7 +67,9 @@ public class GolemFriendKit extends LevelKit {
     ArmorHelper.setColouredArmor(Color.WHITE, player);
     player.getInventory().addItem(new ItemStack(Material.GRILLED_PORK, 8));
     Arena arena = ArenaRegistry.getArena(player);
-    if (arena == null) return;
+    if (arena == null) {
+      return;
+    }
     spawnGolem(player, arena);
   }
 

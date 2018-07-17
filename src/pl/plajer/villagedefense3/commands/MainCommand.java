@@ -207,8 +207,9 @@ public class MainCommand implements CommandExecutor {
       }
       if (args.length > 1) {
         if (args[1].equalsIgnoreCase("set") || args[1].equalsIgnoreCase("addspawn") || args[1].equalsIgnoreCase("edit")) {
-          if (checkSenderIsConsole(sender)) return true;
-          if (!hasPermission(sender, "villagedefense.admin.create")) return true;
+          if (checkSenderIsConsole(sender) || !hasPermission(sender, "villagedefense.admin.create")) {
+            return true;
+          }
           adminCommands.performSetup(sender, args);
           return true;
         }
@@ -396,8 +397,9 @@ public class MainCommand implements CommandExecutor {
       new SetupInventory(ArenaRegistry.getArena(args[0])).openInventory(player);
       return;
     }
-    if (!(args.length > 2))
+    if (!(args.length > 2)) {
       return;
+    }
     FileConfiguration config = ConfigurationManager.getConfig("arenas");
 
     if (!config.contains("instances." + args[0])) {
@@ -437,8 +439,9 @@ public class MainCommand implements CommandExecutor {
         String ID = args[0];
         int counter = 0;
         int i;
-        if (plugin.getWorldEditPlugin().getSelection(player) == null)
+        if (plugin.getWorldEditPlugin().getSelection(player) == null) {
           return;
+        }
         if (!config.contains("instances." + ID + ".doors")) {
           i = 0;
         } else {
@@ -489,8 +492,9 @@ public class MainCommand implements CommandExecutor {
       ConfigurationManager.saveConfig(config, "arenas");
       return;
     }
-    if (!(args[1].equalsIgnoreCase("set")))
+    if (!(args[1].equalsIgnoreCase("set"))) {
       return;
+    }
     if (args.length == 3) {
       if (args[2].equalsIgnoreCase("lobbylocation") || args[2].equalsIgnoreCase("lobbyloc")) {
         String location = player.getLocation().getWorld().getName() + "," + player.getLocation().getX() + "," + player.getLocation().getY() + "," + player.getLocation().getZ() + "," + player.getLocation().getYaw() + "," + player.getLocation().getPitch();
@@ -522,8 +526,9 @@ public class MainCommand implements CommandExecutor {
       } else if (args[2].equalsIgnoreCase("WORLD") || args[2].equalsIgnoreCase("MAP")) {
         boolean exists = false;
         for (World world : Bukkit.getWorlds()) {
-          if (world.getName().equalsIgnoreCase(args[3]))
+          if (world.getName().equalsIgnoreCase(args[3])) {
             exists = true;
+          }
         }
         if (!exists) {
           player.sendMessage(ChatManager.PLUGIN_PREFIX + ChatColor.RED + "That world doesn't exists!");

@@ -88,9 +88,11 @@ public class CleanerKit extends PremiumKit implements Listener {
   @EventHandler
   public void onClean(PlayerInteractEvent e) {
     Arena arena = ArenaRegistry.getArena(e.getPlayer());
-    if (!e.hasItem() || e.getItem().getType() != Material.BLAZE_ROD || !(e.getItem().hasItemMeta()) || !(e.getItem().getItemMeta().hasDisplayName()) ||
-            !(e.getItem().getItemMeta().getDisplayName().contains(ChatManager.colorMessage("Kits.Cleaner.Game-Item-Name"))) || arena == null)
+    if (!e.hasItem() || e.getItem().getType() != Material.BLAZE_ROD || !(e.getItem().hasItemMeta())
+            || !(e.getItem().getItemMeta().hasDisplayName()) || !(e.getItem().getItemMeta().getDisplayName()
+            .contains(ChatManager.colorMessage("Kits.Cleaner.Game-Item-Name"))) || arena == null) {
       return;
+    }
     if (UserManager.getUser(e.getPlayer().getUniqueId()).isSpectator()) {
       e.getPlayer().sendMessage(ChatManager.colorMessage("Kits.Cleaner.Spectator-Warning"));
       return;

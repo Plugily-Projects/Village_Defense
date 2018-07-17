@@ -48,12 +48,16 @@ public class LanguageManager {
     setupLocale();
     //we will wait until server is loaded, we won't soft depend those plugins
     Bukkit.getScheduler().runTaskLater(plugin, () -> {
-      if (pluginLocale == Locale.ENGLISH) suggestLocale();
+      if (pluginLocale == Locale.ENGLISH) {
+        suggestLocale();
+      }
     }, 100);
   }
 
   private static void loadProperties() {
-    if (pluginLocale == Locale.ENGLISH) return;
+    if (pluginLocale == Locale.ENGLISH) {
+      return;
+    }
     try {
       properties.load(new InputStreamReader(plugin.getResource("locales/" + pluginLocale.getPrefix() + ".properties"), Charset.forName("UTF-8")));
     } catch (IOException e) {

@@ -220,8 +220,10 @@ public class Main extends JavaPlugin {
       return;
     }
     //check if using releases before 2.1.0 or 2.1.0+
-    if ((ConfigurationManager.getConfig("language").isSet("STATS-AboveLine") && ConfigurationManager.getConfig("language").isSet("SCOREBOARD-Zombies")) ||
-            (ConfigurationManager.getConfig("language").isSet("File-Version") && getConfig().isSet("Config-Version"))) {
+    if ((ConfigurationManager.getConfig("language").isSet("STATS-AboveLine")
+            && ConfigurationManager.getConfig("language").isSet("SCOREBOARD-Zombies"))
+            || (ConfigurationManager.getConfig("language").isSet("File-Version")
+            && getConfig().isSet("Config-Version"))) {
       LanguageMigrator.migrateToNewFormat();
     }
     debug = getConfig().getBoolean("Debug", false);
@@ -302,7 +304,9 @@ public class Main extends JavaPlugin {
 
   private void initializeClasses() {
     bungeeEnabled = getConfig().getBoolean("BungeeActivated", false);
-    if (getConfig().getBoolean("BungeeActivated", false)) bungeeManager = new BungeeManager(this);
+    if (getConfig().getBoolean("BungeeActivated", false)) {
+      bungeeManager = new BungeeManager(this);
+    }
     new ChatManager(ChatManager.colorMessage("In-Game.Plugin-Prefix"));
     new Utils(this);
     mainCommand = new MainCommand(this, true);
@@ -437,7 +441,9 @@ public class Main extends JavaPlugin {
 
   @Override
   public void onDisable() {
-    if (forceDisable) return;
+    if (forceDisable) {
+      return;
+    }
     debug("System disable", System.currentTimeMillis());
     for (Player player : getServer().getOnlinePlayers()) {
       User user = UserManager.getUser(player.getUniqueId());
@@ -470,14 +476,21 @@ public class Main extends JavaPlugin {
       ArenaManager.stopGame(true, arena);
       arena.teleportAllToEndLocation();
     }
-    if (getServer().getPluginManager().isPluginEnabled("HolographicDisplays"))
-      for (Hologram holo : HologramsAPI.getHolograms(this)) holo.delete();
-    if (isDatabaseActivated()) getMySQLDatabase().closeDatabase();
+    if (getServer().getPluginManager().isPluginEnabled("HolographicDisplays")) {
+      for (Hologram holo : HologramsAPI.getHolograms(this)) {
+        holo.delete();
+      }
+    }
+    if (isDatabaseActivated()) {
+      getMySQLDatabase().closeDatabase();
+    }
   }
 
   public WorldEditPlugin getWorldEditPlugin() {
     Plugin p = Bukkit.getServer().getPluginManager().getPlugin("WorldEdit");
-    if (p instanceof WorldEditPlugin) return (WorldEditPlugin) p;
+    if (p instanceof WorldEditPlugin) {
+      return (WorldEditPlugin) p;
+    }
     return null;
   }
 

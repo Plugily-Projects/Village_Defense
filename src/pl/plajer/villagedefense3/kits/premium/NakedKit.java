@@ -103,11 +103,18 @@ public class NakedKit extends PremiumKit implements Listener {
 
   @EventHandler
   public void onArmor(InventoryClickEvent event) {
-    if (UserManager.getUser(event.getWhoClicked().getUniqueId()) == null) return;
-    if (!ArenaRegistry.isInArena((Player) event.getWhoClicked())) return;
-    if (!(UserManager.getUser(event.getWhoClicked().getUniqueId()).getKit() instanceof NakedKit)) return;
-    if (!(event.getInventory().getType().equals(InventoryType.PLAYER) || event.getInventory().getType().equals(InventoryType.CRAFTING)))
+    if (UserManager.getUser(event.getWhoClicked().getUniqueId()) == null) {
       return;
+    }
+    if (!ArenaRegistry.isInArena((Player) event.getWhoClicked())) {
+      return;
+    }
+    if (!(UserManager.getUser(event.getWhoClicked().getUniqueId()).getKit() instanceof NakedKit)) {
+      return;
+    }
+    if (!(event.getInventory().getType().equals(InventoryType.PLAYER) || event.getInventory().getType().equals(InventoryType.CRAFTING))) {
+      return;
+    }
     Bukkit.getScheduler().runTaskLater(Main.getPlugin(Main.class), () -> {
       for (ItemStack is : event.getWhoClicked().getInventory().getArmorContents()) {
         if (is != null) {
@@ -127,10 +134,18 @@ public class NakedKit extends PremiumKit implements Listener {
 
   @EventHandler
   public void onArmorClick(PlayerInteractEvent event) {
-    if (!ArenaRegistry.isInArena(event.getPlayer())) return;
-    if (UserManager.getUser(event.getPlayer().getUniqueId()) == null) return;
-    if (!(UserManager.getUser(event.getPlayer().getUniqueId()).getKit() instanceof NakedKit)) return;
-    if (!event.hasItem()) return;
+    if (!ArenaRegistry.isInArena(event.getPlayer())) {
+      return;
+    }
+    if (UserManager.getUser(event.getPlayer().getUniqueId()) == null) {
+      return;
+    }
+    if (!(UserManager.getUser(event.getPlayer().getUniqueId()).getKit() instanceof NakedKit)) {
+      return;
+    }
+    if (!event.hasItem()) {
+      return;
+    }
     if (armorTypes.contains(event.getItem().getType())) {
       event.setCancelled(true);
       event.getPlayer().sendMessage(ChatManager.colorMessage("Kits.Wild-Naked.Cannot-Wear-Armor"));

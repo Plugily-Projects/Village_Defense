@@ -102,17 +102,22 @@ public class BlockerKit extends PremiumKit implements Listener {
 
   @EventHandler(priority = EventPriority.HIGHEST)
   public void onBarrierPlace(PlayerInteractEvent event) {
-    if (event.getAction() != Action.RIGHT_CLICK_AIR && event.getAction() != Action.RIGHT_CLICK_BLOCK)
+    if (event.getAction() != Action.RIGHT_CLICK_AIR && event.getAction() != Action.RIGHT_CLICK_BLOCK) {
       return;
+    }
     Player player = event.getPlayer();
     ItemStack stack = player.getInventory().getItemInMainHand();
-    if (!ArenaRegistry.isInArena(player) || stack == null || !stack.hasItemMeta() || !stack.getItemMeta().hasDisplayName() ||
-            !stack.getItemMeta().getDisplayName().equalsIgnoreCase(ChatManager.colorMessage("Kits.Blocker.Game-Item-Name")))
+    if (!ArenaRegistry.isInArena(player) || stack == null || !stack.hasItemMeta()
+            || !stack.getItemMeta().hasDisplayName()
+            || !stack.getItemMeta().getDisplayName()
+            .equalsIgnoreCase(ChatManager.colorMessage("Kits.Blocker.Game-Item-Name"))) {
       return;
+    }
     Block block = null;
     for (Block blocks : player.getLastTwoTargetBlocks(null, 5)) {
-      if (blocks.getType() == Material.AIR)
+      if (blocks.getType() == Material.AIR) {
         block = blocks;
+      }
     }
     if (block == null) {
       event.getPlayer().sendMessage(ChatManager.colorMessage("Kits.Blocker.Game-Item-Place-Fail"));

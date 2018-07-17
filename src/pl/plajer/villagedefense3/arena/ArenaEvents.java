@@ -82,8 +82,9 @@ public class ArenaEvents implements Listener {
         if (a.getZombies().contains(e.getEntity())) {
           if (e.getDamage() >= ((LivingEntity) e.getEntity()).getHealth()) {
             //prevent offline player cast error
-            if (((Wolf) e.getDamager()).getOwner() == null || !(((Wolf) e.getDamager()).getOwner() instanceof Player))
+            if (((Wolf) e.getDamager()).getOwner() == null || !(((Wolf) e.getDamager()).getOwner() instanceof Player)) {
               return;
+            }
             Player player = (Player) ((Wolf) e.getDamager()).getOwner();
             if (ArenaRegistry.getArena(player) != null) {
               a.addStat(player, "kills");
@@ -131,9 +132,12 @@ public class ArenaEvents implements Listener {
   @EventHandler(priority = EventPriority.HIGH)
   public void onPlayerDie(PlayerDeathEvent e) {
     Arena arena = ArenaRegistry.getArena(e.getEntity());
-    if (arena == null) return;
-    if (e.getEntity().isDead())
+    if (arena == null) {
+      return;
+    }
+    if (e.getEntity().isDead()) {
       e.getEntity().setHealth(e.getEntity().getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue());
+    }
     e.setDeathMessage("");
     e.getDrops().clear();
     e.setDroppedExp(0);
@@ -166,9 +170,11 @@ public class ArenaEvents implements Listener {
     new BukkitRunnable() {
       @Override
       public void run() {
-        if (user.isSpectator())
+        if (user.isSpectator()) {
           player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(ChatManager.colorMessage("In-Game.Died-Respawn-In-Next-Wave")));
-        else this.cancel();
+        } else {
+          this.cancel();
+        }
       }
     }.runTaskTimer(plugin, 20, 20);
     ChatManager.broadcastAction(arena, player, ChatManager.ActionType.DEATH);
@@ -196,7 +202,9 @@ public class ArenaEvents implements Listener {
   @EventHandler
   public void onRespawn(PlayerRespawnEvent e) {
     Arena arena = ArenaRegistry.getArena(e.getPlayer());
-    if (arena == null) return;
+    if (arena == null) {
+      return;
+    }
     if (arena.getPlayers().contains(e.getPlayer())) {
       Player player = e.getPlayer();
       User user = UserManager.getUser(player.getUniqueId());

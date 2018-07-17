@@ -60,8 +60,9 @@ public class ShopManager {
     Inventory inventory = Bukkit.createInventory(null, Utils.serializeInt(i), ChatManager.colorMessage("In-Game.Messages.Shop-Messages.Shop-GUI-Name"));
     i = 0;
     for (ItemStack itemStack : ((Chest) location.getBlock().getState()).getInventory().getContents()) {
-      if (itemStack != null && itemStack.getType() != Material.REDSTONE_BLOCK)
+      if (itemStack != null && itemStack.getType() != Material.REDSTONE_BLOCK) {
         inventory.setItem(i, itemStack);
+      }
       i++;
     }
     arenaShop.put(a, inventory);
@@ -69,7 +70,9 @@ public class ShopManager {
 
   public static void openShop(Player player) {
     Arena arena = ArenaRegistry.getArena(player);
-    if (arena == null) return;
+    if (arena == null) {
+      return;
+    }
     if (arenaShop.get(arena) == null) {
       player.sendMessage(ChatManager.colorMessage("In-Game.Messages.Shop-Messages.No-Shop-Defined"));
       return;

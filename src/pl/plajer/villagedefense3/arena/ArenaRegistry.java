@@ -68,10 +68,9 @@ public class ArenaRegistry {
    */
   public static Arena getArena(Player p) {
     Arena arena = null;
-    if (p == null)
+    if (p == null || !p.isOnline()) {
       return null;
-    if (!p.isOnline())
-      return null;
+    }
     for (Arena loopArena : arenas) {
       for (Player player : loopArena.getPlayers()) {
         if (player.getUniqueId() == p.getUniqueId()) {
@@ -131,7 +130,9 @@ public class ArenaRegistry {
     for (String ID : ConfigurationManager.getConfig("arenas").getConfigurationSection("instances").getKeys(false)) {
       Arena arena;
       String s = "instances." + ID + ".";
-      if (s.contains("default")) continue;
+      if (s.contains("default")) {
+        continue;
+      }
       if (plugin.is1_9_R1()) {
         arena = new ArenaInitializer1_9_R1(ID, plugin);
       } else if (plugin.is1_11_R1()) {

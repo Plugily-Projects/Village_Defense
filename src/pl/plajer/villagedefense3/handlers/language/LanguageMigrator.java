@@ -46,7 +46,9 @@ public class LanguageMigrator {
   private static List<String> migratable = Arrays.asList("bungee", "config", "kits", "language", "lobbyitems", "mysql");
 
   public static void configUpdate() {
-    if (plugin.getConfig().getInt("Version") == CONFIG_FILE_VERSION) return;
+    if (plugin.getConfig().getInt("Version") == CONFIG_FILE_VERSION) {
+      return;
+    }
     Bukkit.getConsoleSender().sendMessage(ChatColor.YELLOW + "[Village Defense] System notify >> Your config file is outdated! Updating...");
     File file = new File(plugin.getDataFolder() + "/config.yml");
 
@@ -99,8 +101,9 @@ public class LanguageMigrator {
   }
 
   public static void languageFileUpdate() {
-    if (LanguageManager.getDefaultLanguageMessage("File-Version-Do-Not-Edit").equals(String.valueOf(LANGUAGE_FILE_VERSION)))
+    if (LanguageManager.getDefaultLanguageMessage("File-Version-Do-Not-Edit").equals(String.valueOf(LANGUAGE_FILE_VERSION))) {
       return;
+    }
     Bukkit.getConsoleSender().sendMessage(ChatColor.YELLOW + "[Village Defense] [System notify] Your language file is outdated! Updating...");
 
     int version = Integer.valueOf(LanguageManager.getDefaultLanguageMessage("File-Version-Do-Not-Edit"));

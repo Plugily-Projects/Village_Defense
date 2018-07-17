@@ -48,21 +48,24 @@ public class JoinEvent implements Listener {
 
   @EventHandler
   public void onLogin(PlayerLoginEvent e) {
-    if (!plugin.isBungeeActivated() && !plugin.getServer().hasWhitelist())
+    if (!plugin.isBungeeActivated() && !plugin.getServer().hasWhitelist()
+            || e.getResult() != PlayerLoginEvent.Result.KICK_WHITELIST) {
       return;
-    if (e.getResult() != PlayerLoginEvent.Result.KICK_WHITELIST)
-      return;
-    if (e.getPlayer().hasPermission(PermissionsManager.getJoinFullGames()))
+    }
+    if (e.getPlayer().hasPermission(PermissionsManager.getJoinFullGames())) {
       e.setResult(PlayerLoginEvent.Result.ALLOWED);
+    }
   }
 
   @EventHandler
   public void onJoin(PlayerJoinEvent event) {
-    if (plugin.isBungeeActivated())
+    if (plugin.isBungeeActivated()) {
       return;
+    }
     for (Player player : plugin.getServer().getOnlinePlayers()) {
-      if (ArenaRegistry.getArena(player) == null)
+      if (ArenaRegistry.getArena(player) == null) {
         continue;
+      }
       player.hidePlayer(event.getPlayer());
       event.getPlayer().hidePlayer(player);
     }
@@ -106,8 +109,9 @@ public class JoinEvent implements Listener {
         }
       }
     }, 25);
-    if (plugin.isBungeeActivated())
+    if (plugin.isBungeeActivated()) {
       ArenaRegistry.getArenas().get(0).teleportToLobby(event.getPlayer());
+    }
     for (Arena arena : ArenaRegistry.getArenas()) {
       if (event.getPlayer().getWorld().equals(arena.getStartLocation().getWorld())) {
         plugin.getInventoryManager().loadInventory(event.getPlayer());

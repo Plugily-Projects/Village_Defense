@@ -114,8 +114,9 @@ public class MySQLDatabase {
   public int getStat(String UUID, String stat) {
     ResultSet set = executeQuery("SELECT " + stat + " FROM playerstats WHERE UUID='" + UUID + "'");
     try {
-      if (!set.next())
+      if (!set.next()) {
         return 0;
+      }
       return (set.getInt(1));
     } catch (SQLException e) {
       e.printStackTrace();

@@ -45,10 +45,12 @@ public class QuitEvent implements Listener {
 
   @EventHandler
   public void onQuit(PlayerQuitEvent event) {
-    if (ArenaRegistry.getArena(event.getPlayer()) == null)
+    if (ArenaRegistry.getArena(event.getPlayer()) == null) {
       return;
-    if (!plugin.isBungeeActivated())
+    }
+    if (!plugin.isBungeeActivated()) {
       ArenaManager.leaveAttempt(event.getPlayer(), ArenaRegistry.getArena(event.getPlayer()));
+    }
   }
 
   @EventHandler

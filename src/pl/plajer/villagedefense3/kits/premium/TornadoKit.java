@@ -96,13 +96,17 @@ public class TornadoKit extends PremiumKit implements Listener {
 
   @EventHandler
   public void onTornadoSpawn(PlayerInteractEvent e) {
-    if (e.getAction() != Action.RIGHT_CLICK_AIR && e.getAction() != Action.RIGHT_CLICK_BLOCK)
+    if (e.getAction() != Action.RIGHT_CLICK_AIR && e.getAction() != Action.RIGHT_CLICK_BLOCK) {
       return;
+    }
     Player player = e.getPlayer();
     ItemStack stack = player.getInventory().getItemInMainHand();
-    if (stack == null || !stack.hasItemMeta() || !stack.getItemMeta().hasDisplayName() ||
-            !stack.getItemMeta().getDisplayName().equalsIgnoreCase(ChatManager.colorMessage("Kits.Tornado.Game-Item-Name")) || !ArenaRegistry.isInArena(player))
+    if (stack == null || !stack.hasItemMeta() || !stack.getItemMeta().hasDisplayName()
+            || !stack.getItemMeta().getDisplayName()
+            .equalsIgnoreCase(ChatManager.colorMessage("Kits.Tornado.Game-Item-Name"))
+            || !ArenaRegistry.isInArena(player)) {
       return;
+    }
     if (stack.getAmount() <= 1) {
       player.getInventory().setItemInMainHand(new ItemStack(Material.AIR));
     } else {
@@ -114,7 +118,9 @@ public class TornadoKit extends PremiumKit implements Listener {
       @Override
       public void run() {
         tornado.update();
-        if (tornado.getTimes() > 75) this.cancel();
+        if (tornado.getTimes() > 75) {
+          this.cancel();
+        }
       }
     }.runTaskTimer(plugin, 1, 1);
   }

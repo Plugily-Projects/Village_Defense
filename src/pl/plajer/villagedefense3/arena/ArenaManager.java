@@ -148,13 +148,15 @@ public class ArenaManager {
     if (plugin.isBossbarEnabled()) {
       arena.getGameBar().addPlayer(p);
     }
-    if (!UserManager.getUser(p.getUniqueId()).isSpectator())
+    if (!UserManager.getUser(p.getUniqueId()).isSpectator()) {
       ChatManager.broadcastAction(arena, p, ChatManager.ActionType.JOIN);
+    }
     User user = UserManager.getUser(p.getUniqueId());
     user.setKit(KitRegistry.getDefaultKit());
     plugin.getKitManager().giveKitMenuItem(p);
-    if (arena.getArenaState() == ArenaState.STARTING || arena.getArenaState() == ArenaState.WAITING_FOR_PLAYERS)
+    if (arena.getArenaState() == ArenaState.STARTING || arena.getArenaState() == ArenaState.WAITING_FOR_PLAYERS) {
       p.getInventory().setItem(SpecialItemManager.getSpecialItem("Leave").getSlot(), SpecialItemManager.getSpecialItem("Leave").getItemStack());
+    }
     p.updateInventory();
     for (Player player : arena.getPlayers()) {
       ArenaUtils.showPlayer(player, arena);
@@ -210,8 +212,9 @@ public class ArenaManager {
 
     p.setGameMode(GameMode.SURVIVAL);
     for (Player players : plugin.getServer().getOnlinePlayers()) {
-      if (ArenaRegistry.getArena(players) != null)
+      if (ArenaRegistry.getArena(players) != null) {
         players.showPlayer(p);
+      }
       p.showPlayer(players);
     }
     arena.teleportToEndLocation(p);
@@ -251,8 +254,9 @@ public class ArenaManager {
             int i = 0;
 
             public void run() {
-              if (i == 4) this.cancel();
-              if (!arena.getPlayers().contains(p)) this.cancel();
+              if (i == 4 || !arena.getPlayers().contains(p)) {
+                this.cancel();
+              }
               Utils.spawnRandomFirework(p.getLocation());
               i++;
             }
@@ -281,9 +285,11 @@ public class ArenaManager {
     arena.getWolfs().clear();
     for (Entity entity : arena.getStartLocation().getWorld().getEntities()) {
       if (entity.getWorld().getName().equalsIgnoreCase(arena.getStartLocation().getWorld().getName())
-              && entity.getLocation().distance(arena.getStartLocation()) < 300)
-        if (entity.getType() != EntityType.PLAYER)
+              && entity.getLocation().distance(arena.getStartLocation()) < 300) {
+        if (entity.getType() != EntityType.PLAYER) {
           entity.remove();
+        }
+      }
     }
     Main.debug("Game stop event finish, arena " + arena.getID(), System.currentTimeMillis());
   }
@@ -308,8 +314,9 @@ public class ArenaManager {
       User user = UserManager.getUser(player.getUniqueId());
       user.addInt("orbs", arena.getWave() * 10);
     }
-    if (plugin.getConfig().getBoolean("Respawn-After-Wave", true))
+    if (plugin.getConfig().getBoolean("Respawn-After-Wave", true)) {
       ArenaUtils.bringDeathPlayersBack(arena);
+    }
     for (Player player : arena.getPlayersLeft()) {
       arena.addExperience(player, 5);
     }
@@ -325,8 +332,9 @@ public class ArenaManager {
     VillageWaveStartEvent villageWaveStartEvent = new VillageWaveStartEvent(arena, arena.getWave());
     Bukkit.getPluginManager().callEvent(villageWaveStartEvent);
     arena.setZombieAmount();
-    if (plugin.getConfig().getBoolean("Respawn-After-Wave", true))
+    if (plugin.getConfig().getBoolean("Respawn-After-Wave", true)) {
       ArenaUtils.bringDeathPlayersBack(arena);
+    }
     for (User user : UserManager.getUsers(arena)) {
       user.getKit().reStock(user.toPlayer());
     }

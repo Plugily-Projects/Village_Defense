@@ -111,17 +111,27 @@ public class WizardKit extends PremiumKit implements Listener {
   @EventHandler
   public void onWizardDamage(EntityDamageByEntityEvent e) {
     if (e.getDamager() instanceof Zombie && e.getEntity() instanceof Player) {
-      if (!wizardsOnDuty.contains(e.getEntity())) return;
-      if (ArenaRegistry.getArena((Player) e.getEntity()) == null) return;
+      if (!wizardsOnDuty.contains(e.getEntity())) {
+        return;
+      }
+      if (ArenaRegistry.getArena((Player) e.getEntity()) == null) {
+        return;
+      }
       ((Zombie) e.getDamager()).damage(2.0, e.getEntity());
     }
   }
 
   @EventHandler
   public void onStaffUse(PlayerInteractEvent e) {
-    if (UserManager.getUser(e.getPlayer().getUniqueId()) == null) return;
-    if (ArenaRegistry.getArena(e.getPlayer()) == null) return;
-    if (!(UserManager.getUser(e.getPlayer().getUniqueId()).getKit() instanceof WizardKit)) return;
+    if (UserManager.getUser(e.getPlayer().getUniqueId()) == null) {
+      return;
+    }
+    if (ArenaRegistry.getArena(e.getPlayer()) == null) {
+      return;
+    }
+    if (!(UserManager.getUser(e.getPlayer().getUniqueId()).getKit() instanceof WizardKit)) {
+      return;
+    }
     final Player p = e.getPlayer();
     ItemStack is = e.getPlayer().getInventory().getItemInMainHand();
     if (is != null && is.hasItemMeta() && is.getItemMeta().hasDisplayName()) {
@@ -176,7 +186,9 @@ public class WizardKit extends PremiumKit implements Listener {
             loc.add(x, y, z);
             p.getWorld().spawnParticle(Particle.TOWN_AURA, loc, 5);
             for (Entity en : loc.getChunk().getEntities()) {
-              if (!(en instanceof LivingEntity && en instanceof Zombie)) continue;
+              if (!(en instanceof LivingEntity && en instanceof Zombie)) {
+                continue;
+              }
               if (en.getLocation().distance(loc) < 1.5) {
                 if (!en.equals(p)) {
                   ((LivingEntity) en).damage(6.0, p);

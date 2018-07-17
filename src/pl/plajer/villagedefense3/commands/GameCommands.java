@@ -49,7 +49,9 @@ public class GameCommands extends MainCommand {
   }
 
   public void sendStats(CommandSender sender) {
-    if (checkSenderIsConsole(sender)) return;
+    if (checkSenderIsConsole(sender)) {
+      return;
+    }
     User user = UserManager.getUser(((Player) sender).getUniqueId());
     sender.sendMessage(ChatManager.colorMessage("Commands.Stats-Command.Header"));
     sender.sendMessage(ChatManager.colorMessage("Commands.Stats-Command.Kills") + user.getInt("kills"));
@@ -119,10 +121,14 @@ public class GameCommands extends MainCommand {
   }
 
   public void leaveGame(CommandSender sender) {
-    if (checkSenderIsConsole(sender)) return;
+    if (checkSenderIsConsole(sender)) {
+      return;
+    }
     if (!plugin.getConfig().getBoolean("Disable-Leave-Command", false)) {
       Player p = (Player) sender;
-      if (!checkIsInGameInstance((Player) sender)) return;
+      if (!checkIsInGameInstance((Player) sender)) {
+        return;
+      }
       p.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("Commands.Teleported-To-The-Lobby"));
       if (plugin.isBungeeActivated()) {
         plugin.getBungeeManager().connectToHub(p);
@@ -136,7 +142,9 @@ public class GameCommands extends MainCommand {
   }
 
   public void joinGame(CommandSender sender, String arenaString) {
-    if (checkSenderIsConsole(sender)) return;
+    if (checkSenderIsConsole(sender)) {
+      return;
+    }
     for (Arena arena : ArenaRegistry.getArenas()) {
       if (arenaString.equalsIgnoreCase(arena.getID())) {
         ArenaManager.joinAttempt((Player) sender, arena);
@@ -147,9 +155,10 @@ public class GameCommands extends MainCommand {
   }
 
   public void openKitMenu(CommandSender sender) {
-    if (checkSenderIsConsole(sender)) return;
-    if (!checkIsInGameInstance((Player) sender)) return;
-    if (!hasPermission(sender, "villagedefense.command.selectkit")) return;
+    if (checkSenderIsConsole(sender) || !checkIsInGameInstance((Player) sender)
+            || !hasPermission(sender, "villagedefense.command.selectkit")) {
+      return;
+    }
     plugin.getKitManager().openKitMenu((Player) sender);
   }
 

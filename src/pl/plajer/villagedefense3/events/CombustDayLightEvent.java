@@ -49,9 +49,11 @@ public class CombustDayLightEvent implements Listener {
   @EventHandler(ignoreCancelled = true)
   public void onCombust(final EntityCombustEvent e) {
     // Ignore if this is caused by an event lower down the chain.
-    if (e instanceof EntityCombustByEntityEvent || e instanceof EntityCombustByBlockEvent) return;
-    if (!(e.getEntity() instanceof Zombie)) return;
-    if (e.getEntity().getWorld().getEnvironment() != World.Environment.NORMAL) return;
+    if (e instanceof EntityCombustByEntityEvent || e instanceof EntityCombustByBlockEvent
+            || !(e.getEntity() instanceof Zombie)
+            || e.getEntity().getWorld().getEnvironment() != World.Environment.NORMAL) {
+      return;
+    }
 
     for (Arena arena : ArenaRegistry.getArenas()) {
       if (arena.getZombies().contains(e.getEntity())) {

@@ -57,21 +57,15 @@ public class SetupInventoryEvents implements Listener {
 
   @EventHandler
   public void onClick(InventoryClickEvent event) {
-    if (event.getWhoClicked().getType() != EntityType.PLAYER)
+    if (event.getWhoClicked().getType() != EntityType.PLAYER) {
       return;
+    }
     Player player = (Player) event.getWhoClicked();
-    if (!player.hasPermission("villagedefense.admin.create"))
+    if (!player.hasPermission("villagedefense.admin.create") || !event.getInventory().getName().contains("Arena:")
+            || event.getInventory().getHolder() != null || event.getCurrentItem() == null
+            || !event.getCurrentItem().hasItemMeta() || !event.getCurrentItem().getItemMeta().hasDisplayName()) {
       return;
-    if (!event.getInventory().getName().contains("Arena:"))
-      return;
-    if (event.getInventory().getHolder() != null)
-      return;
-    if (event.getCurrentItem() == null)
-      return;
-    if (!event.getCurrentItem().hasItemMeta())
-      return;
-    if (!event.getCurrentItem().getItemMeta().hasDisplayName())
-      return;
+    }
 
     String name = event.getCurrentItem().getItemMeta().getDisplayName();
     name = ChatColor.stripColor(name);

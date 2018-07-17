@@ -73,16 +73,18 @@ public class FileStats {
 
   public void loadStat(Player player, String stat) {
     User user = UserManager.getUser(player.getUniqueId());
-    if (config.contains(player.getUniqueId().toString() + "." + stat))
+    if (config.contains(player.getUniqueId().toString() + "." + stat)) {
       user.setInt(stat, config.getInt(player.getUniqueId().toString() + "." + stat));
-    else
+    } else {
       user.setInt(stat, 0);
+    }
   }
 
   public void loadStatsForPlayersOnline() {
     for (final Player player : plugin.getServer().getOnlinePlayers()) {
-      if (plugin.isBungeeActivated())
+      if (plugin.isBungeeActivated()) {
         ArenaRegistry.getArenas().get(0).teleportToLobby(player);
+      }
       if (!plugin.isDatabaseActivated()) {
         for (String s : FileStats.STATISTICS.keySet()) {
           loadStat(player, s);
