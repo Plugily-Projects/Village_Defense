@@ -23,6 +23,7 @@ import org.bukkit.Color;
 import org.bukkit.FireworkEffect;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.World;
 import org.bukkit.WorldCreator;
 import org.bukkit.block.Block;
@@ -31,6 +32,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Firework;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -254,6 +256,14 @@ public class Utils {
         }
         potion.setItemMeta(meta);
         return potion;
+    }
+
+    public static void sendSound(Player p, String oldSound, String newSound) {
+        if(plugin.is1_9_R1() || plugin.is1_11_R1() || plugin.is1_12_R1() || plugin.is1_13_R1()) {
+            p.playSound(p.getLocation(), Sound.valueOf(oldSound), 1, 1);
+        } else {
+            p.playSound(p.getLocation(), Sound.valueOf(newSound), 1, 1);
+        }
     }
 
 }

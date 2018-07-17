@@ -335,7 +335,7 @@ public class AdminCommands extends MainCommand {
             sender.sendMessage(ChatManager.colorMessage("Kits.Cleaner.Nothing-To-Clean"));
             return;
         }
-        sendSound((Player) sender, "ENTITY_ZOMBIE_DEATH", "ZOMBIE_DEATH");
+        Utils.sendSound((Player) sender, "ENTITY_ZOMBIE_DEATH", "ENTITY_ZOMBIE_DEATH");
         for(Player loopPlayer : arena.getPlayers()) {
             String message = ChatManager.formatMessage(arena, ChatManager.colorMessage("In-Game.Messages.Admin-Messages.Removed-Zombies"), new Player[]{(loopPlayer)});
             loopPlayer.sendMessage(ChatManager.PLUGIN_PREFIX + message);
@@ -357,7 +357,7 @@ public class AdminCommands extends MainCommand {
             sender.sendMessage(ChatManager.colorMessage("Kits.Cleaner.Nothing-To-Clean"));
             return;
         }
-        sendSound((Player) sender, "ENTITY_VILLAGER_DEATH", "VILLAGER_DEATH");
+        Utils.sendSound((Player) sender, "ENTITY_VILLAGER_DEATH", "ENTITY_VILLAGER_DEATH");
         for(Player loopPlayer : arena.getPlayers()) {
             String message = ChatManager.formatMessage(arena, ChatManager.colorMessage("In-Game.Messages.Admin-Messages.Removed-Villagers"), new Player[]{(loopPlayer)});
             loopPlayer.sendMessage(ChatManager.PLUGIN_PREFIX + message);
@@ -380,7 +380,7 @@ public class AdminCommands extends MainCommand {
             sender.sendMessage(ChatManager.colorMessage("Kits.Cleaner.Nothing-To-Clean"));
             return;
         }
-        sendSound((Player) sender, "ENTITY_IRONGOLEM_DEATH", "IRONGOLEM_DEATH");
+        Utils.sendSound((Player) sender, "ENTITY_IRONGOLEM_DEATH", "ENTITY_IRON_GOLEM_DEATH");
         for(Player loopPlayer : arena.getPlayers()) {
             String message = ChatManager.formatMessage(arena, ChatManager.colorMessage("In-Game.Messages.Admin-Messages.Removed-Golems"), new Player[]{(loopPlayer)});
             loopPlayer.sendMessage(ChatManager.PLUGIN_PREFIX + message);
@@ -444,7 +444,7 @@ public class AdminCommands extends MainCommand {
                 sender.sendMessage(ChatManager.colorMessage("Kits.Cleaner.Nothing-To-Clean"));
                 return;
             }
-            sendSound((Player) sender, "ENTITY_ZOMBIE_DEATH", "ZOMBIE_DEATH");
+            Utils.sendSound((Player) sender, "ENTITY_ZOMBIE_DEATH", "ENTITY_ZOMBIE_DEATH");
             for(Player loopPlayer : arena.getPlayers()) {
                 String message1 = ChatManager.formatMessage(arena, ChatManager.colorMessage("In-Game.Messages.Admin-Messages.Removed-Zombies"), new Player[]{(loopPlayer)});
                 loopPlayer.sendMessage(ChatManager.PLUGIN_PREFIX + message1);

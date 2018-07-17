@@ -5,6 +5,6 @@
 - Powerups don't work (HolographicsDisplays aren't 1.13 ready)
 - Plugin reloads (ex. via plugman) broke plugin, use restarts
 - `*`Game entities may be registered using override methods proceed with caution on production servers
-- Sounds doesn't work for now and throw errors
+- `*`Sounds doesn't work for now and throw errors
 
 `*` - temporary fixed

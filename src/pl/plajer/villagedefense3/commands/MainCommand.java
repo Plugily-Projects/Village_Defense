@@ -99,15 +99,6 @@ public class MainCommand implements CommandExecutor {
         return false;
     }
 
-    //todo static utils
-    void sendSound(Player p, String newSound, String oldSound) {
-        if(plugin.is1_9_R1() || plugin.is1_11_R1() || plugin.is1_12_R1() || plugin.is1_13_R1()) {
-            p.playSound(p.getLocation(), Sound.valueOf(newSound), 1, 1);
-        } else {
-            p.playSound(p.getLocation(), Sound.valueOf(oldSound), 1, 1);
-        }
-    }
-
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         if(cmd.getName().equalsIgnoreCase("villagedefenseadmin")) {
