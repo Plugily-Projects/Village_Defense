@@ -18,7 +18,25 @@
 
 package pl.plajer.villagedefense3.creatures.v1_9_R1;
 
-import net.minecraft.server.v1_9_R1.*;
+import net.minecraft.server.v1_9_R1.Entity;
+import net.minecraft.server.v1_9_R1.EntityHuman;
+import net.minecraft.server.v1_9_R1.EntityLiving;
+import net.minecraft.server.v1_9_R1.EntityWolf;
+import net.minecraft.server.v1_9_R1.EntityZombie;
+import net.minecraft.server.v1_9_R1.GenericAttributes;
+import net.minecraft.server.v1_9_R1.Navigation;
+import net.minecraft.server.v1_9_R1.PathfinderGoalFloat;
+import net.minecraft.server.v1_9_R1.PathfinderGoalFollowOwner;
+import net.minecraft.server.v1_9_R1.PathfinderGoalHurtByTarget;
+import net.minecraft.server.v1_9_R1.PathfinderGoalLeapAtTarget;
+import net.minecraft.server.v1_9_R1.PathfinderGoalLookAtPlayer;
+import net.minecraft.server.v1_9_R1.PathfinderGoalMeleeAttack;
+import net.minecraft.server.v1_9_R1.PathfinderGoalMoveTowardsRestriction;
+import net.minecraft.server.v1_9_R1.PathfinderGoalNearestAttackableTarget;
+import net.minecraft.server.v1_9_R1.PathfinderGoalRandomLookaround;
+import net.minecraft.server.v1_9_R1.PathfinderGoalRandomStroll;
+import net.minecraft.server.v1_9_R1.PathfinderGoalSelector;
+import net.minecraft.server.v1_9_R1.World;
 import org.bukkit.craftbukkit.v1_9_R1.CraftWorld;
 import pl.plajer.villagedefense3.creatures.CreatureUtils;
 

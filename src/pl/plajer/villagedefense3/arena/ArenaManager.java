@@ -22,7 +22,13 @@ import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
-import org.bukkit.entity.*;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.IronGolem;
+import org.bukkit.entity.Player;
+import org.bukkit.entity.Villager;
+import org.bukkit.entity.Wolf;
+import org.bukkit.entity.Zombie;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -38,7 +44,11 @@ import pl.plajer.villagedefense3.kits.level.GolemFriendKit;
 import pl.plajer.villagedefense3.user.User;
 import pl.plajer.villagedefense3.user.UserManager;
 import pl.plajer.villagedefense3.utils.Utils;
-import pl.plajer.villagedefense3.villagedefenseapi.*;
+import pl.plajer.villagedefense3.villagedefenseapi.VillageGameJoinAttemptEvent;
+import pl.plajer.villagedefense3.villagedefenseapi.VillageGameLeaveAttemptEvent;
+import pl.plajer.villagedefense3.villagedefenseapi.VillageGameStopEvent;
+import pl.plajer.villagedefense3.villagedefenseapi.VillageWaveEndEvent;
+import pl.plajer.villagedefense3.villagedefenseapi.VillageWaveStartEvent;
 
 /**
  * @author Plajer

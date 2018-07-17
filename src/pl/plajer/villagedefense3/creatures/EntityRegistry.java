@@ -21,7 +21,16 @@ package pl.plajer.villagedefense3.creatures;
 import net.minecraft.server.v1_13_R1.EntityTypes;
 import org.bukkit.Bukkit;
 import pl.plajer.villagedefense3.Main;
-import pl.plajer.villagedefense3.creatures.v1_13_R1.*;
+import pl.plajer.villagedefense3.creatures.v1_13_R1.BabyZombie;
+import pl.plajer.villagedefense3.creatures.v1_13_R1.FastZombie;
+import pl.plajer.villagedefense3.creatures.v1_13_R1.GolemBuster;
+import pl.plajer.villagedefense3.creatures.v1_13_R1.HardZombie;
+import pl.plajer.villagedefense3.creatures.v1_13_R1.PlayerBuster;
+import pl.plajer.villagedefense3.creatures.v1_13_R1.RidableIronGolem;
+import pl.plajer.villagedefense3.creatures.v1_13_R1.RidableVillager;
+import pl.plajer.villagedefense3.creatures.v1_13_R1.TankerZombie;
+import pl.plajer.villagedefense3.creatures.v1_13_R1.VillagerSlayer;
+import pl.plajer.villagedefense3.creatures.v1_13_R1.WorkingWolf;
 import pl.plajer.villagedefense3.utils.MessageUtils;
 
 import java.lang.reflect.Field;

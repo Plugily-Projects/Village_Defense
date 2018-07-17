@@ -38,10 +38,26 @@ import pl.plajer.villagedefense3.creatures.EntityRegistry;
 import pl.plajer.villagedefense3.database.FileStats;
 import pl.plajer.villagedefense3.database.MySQLConnectionUtils;
 import pl.plajer.villagedefense3.database.MySQLDatabase;
-import pl.plajer.villagedefense3.events.*;
+import pl.plajer.villagedefense3.events.ChatEvents;
+import pl.plajer.villagedefense3.events.CombustDayLightEvent;
+import pl.plajer.villagedefense3.events.Events;
+import pl.plajer.villagedefense3.events.GolemEvents;
+import pl.plajer.villagedefense3.events.JoinEvent;
+import pl.plajer.villagedefense3.events.LobbyEvents;
+import pl.plajer.villagedefense3.events.QuitEvent;
 import pl.plajer.villagedefense3.events.spectator.SpectatorEvents;
 import pl.plajer.villagedefense3.events.spectator.SpectatorItemEvents;
-import pl.plajer.villagedefense3.handlers.*;
+import pl.plajer.villagedefense3.handlers.BungeeManager;
+import pl.plajer.villagedefense3.handlers.ChatManager;
+import pl.plajer.villagedefense3.handlers.ChunkManager;
+import pl.plajer.villagedefense3.handlers.ConfigurationManager;
+import pl.plajer.villagedefense3.handlers.InventoryManager;
+import pl.plajer.villagedefense3.handlers.PermissionsManager;
+import pl.plajer.villagedefense3.handlers.PlaceholderManager;
+import pl.plajer.villagedefense3.handlers.PowerupManager;
+import pl.plajer.villagedefense3.handlers.RewardsHandler;
+import pl.plajer.villagedefense3.handlers.ShopManager;
+import pl.plajer.villagedefense3.handlers.SignManager;
 import pl.plajer.villagedefense3.handlers.items.SpecialItem;
 import pl.plajer.villagedefense3.handlers.language.LanguageManager;
 import pl.plajer.villagedefense3.handlers.language.LanguageMigrator;
@@ -57,7 +73,11 @@ import pl.plajer.villagedefense3.utils.Utils;
 import pl.plajer.villagedefense3.villagedefenseapi.StatsStorage;
 
 import java.io.File;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 
 /**
