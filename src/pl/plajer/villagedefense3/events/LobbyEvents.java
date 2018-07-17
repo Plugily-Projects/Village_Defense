@@ -18,6 +18,7 @@
 
 package pl.plajer.villagedefense3.events;
 
+import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -57,7 +58,7 @@ public class LobbyEvents implements Listener {
         Arena arena = ArenaRegistry.getArena(player);
         if(arena == null || arena.getArenaState() == ArenaState.IN_GAME) return;
         event.setCancelled(true);
-        player.setHealth(player.getMaxHealth());
+        player.setHealth(player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue());
     }
 
 }

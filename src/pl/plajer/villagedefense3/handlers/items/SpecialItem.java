@@ -54,6 +54,7 @@ public class SpecialItem {
         }, Material.BED, 8);
     }
 
+    //todo data id!
     public void load(String displayName, String[] lore, Material material, int slot) {
         FileConfiguration config = ConfigurationManager.getConfig("lobbyitems");
 

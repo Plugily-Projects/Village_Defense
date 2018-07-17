@@ -158,13 +158,11 @@ public class KitManager implements Listener {
     private void onKitMenuItemClick(PlayerInteractEvent e) {
         if(!(e.getAction() == Action.RIGHT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_BLOCK))
             return;
-        if(e.getPlayer().getItemInHand().getType() != getMaterial())
+        ItemStack stack = e.getPlayer().getInventory().getItemInMainHand();
+        if(stack.getType() != getMaterial() || !stack.hasItemMeta() || !stack.getItemMeta().hasLore()) {
             return;
-        if(!e.getPlayer().getItemInHand().hasItemMeta())
-            return;
-        if(!e.getPlayer().getItemInHand().getItemMeta().hasLore())
-            return;
-        if(!e.getPlayer().getItemInHand().getItemMeta().getDisplayName().equalsIgnoreCase(getItemName())) return;
+        }
+        if(!stack.getItemMeta().getDisplayName().equalsIgnoreCase(getItemName())) return;
         openKitMenu(e.getPlayer());
     }
 
@@ -184,8 +182,8 @@ public class KitManager implements Listener {
             return;
         if(!ArenaRegistry.isInArena(player))
             return;
-        VillagePlayerChooseKitEvent villagePlayerChooseKitEvent = new VillagePlayerChooseKitEvent(player, KitRegistry.getKit(e.getCurrentItem()), ArenaRegistry.getArena(player));
-        Bukkit.getPluginManager().callEvent(villagePlayerChooseKitEvent);
+        VillagePlayerChooseKitEvent event = new VillagePlayerChooseKitEvent(player, KitRegistry.getKit(e.getCurrentItem()), ArenaRegistry.getArena(player));
+        Bukkit.getPluginManager().callEvent(event);
     }
 
     @EventHandler

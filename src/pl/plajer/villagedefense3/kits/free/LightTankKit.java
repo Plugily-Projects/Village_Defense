@@ -19,6 +19,7 @@
 package pl.plajer.villagedefense3.kits.free;
 
 import org.bukkit.Material;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import pl.plajer.villagedefense3.Main;
@@ -53,7 +54,7 @@ public class LightTankKit extends FreeKit {
         player.getInventory().addItem(WeaponHelper.getUnBreakingSword(WeaponHelper.ResourceType.WOOD, 10));
         player.getInventory().addItem(new ItemStack(Material.GRILLED_PORK, 8));
         ArmorHelper.setArmor(player, ArmorHelper.ArmorType.IRON);
-        player.setMaxHealth(26.0);
+        player.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(26.0);
         player.setHealth(26.0);
     }
 

@@ -29,6 +29,7 @@ import org.bukkit.Effect;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Particle;
 import org.bukkit.block.Sign;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -277,7 +278,7 @@ public class AdminCommands extends MainCommand {
         if(checkSenderIsConsole(sender)) return;
         if(!hasPermission(sender, "villagedefense.admin.setprice")) return;
         Player player = (Player) sender;
-        ItemStack item = player.getItemInHand();
+        ItemStack item = player.getInventory().getItemInMainHand();
         if(item == null || item.getType().equals(Material.AIR)) {
             player.sendMessage(ChatManager.colorMessage("Commands.Hold-Any-Item"));
             return;
@@ -326,7 +327,7 @@ public class AdminCommands extends MainCommand {
         Arena arena = ArenaRegistry.getArena((Player) sender);
         if(arena.getZombies() != null) {
             for(Zombie zombie : arena.getZombies()) {
-                zombie.getWorld().playEffect(zombie.getLocation(), Effect.LAVA_POP, 20);
+                zombie.getWorld().spawnParticle(Particle.LAVA, zombie.getLocation(), 20);
                 zombie.remove();
             }
             arena.getZombies().clear();
@@ -348,7 +349,7 @@ public class AdminCommands extends MainCommand {
         Arena arena = ArenaRegistry.getArena((Player) sender);
         if(arena.getVillagers() != null) {
             for(Villager villager : arena.getVillagers()) {
-                villager.getWorld().playEffect(villager.getLocation(), Effect.LAVA_POP, 20);
+                villager.getWorld().spawnParticle(Particle.LAVA, villager.getLocation(), 20);
                 villager.remove();
             }
             arena.getVillagers().clear();
@@ -370,7 +371,7 @@ public class AdminCommands extends MainCommand {
         Arena arena = ArenaRegistry.getArena((Player) sender);
         if(arena.getIronGolems() != null) {
             for(IronGolem golem : arena.getIronGolems()) {
-                golem.getWorld().playEffect(golem.getLocation(), Effect.LAVA_POP, 20);
+                golem.getWorld().spawnParticle(Particle.LAVA, golem.getLocation(), 20);
                 golem.remove();
             }
             arena.getIronGolems().clear();
@@ -435,7 +436,7 @@ public class AdminCommands extends MainCommand {
             }
             if(arena.getZombies() != null) {
                 for(Zombie zombie : arena.getZombies()) {
-                    zombie.getWorld().playEffect(zombie.getLocation(), Effect.LAVA_POP, 20);
+                    zombie.getWorld().spawnParticle(Particle.LAVA, zombie.getLocation(), 20);
                     zombie.remove();
                 }
                 arena.getZombies().clear();

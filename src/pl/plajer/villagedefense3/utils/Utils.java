@@ -35,7 +35,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
-import org.bukkit.potion.Potion;
 import org.bukkit.potion.PotionData;
 import org.bukkit.potion.PotionType;
 import org.bukkit.util.BlockIterator;
@@ -88,6 +87,7 @@ public class Utils {
             if(maxLength != 0 && blocks.size() > maxLength) {
                 blocks.remove(0);
             }
+            //todo block id!
             int id = block.getTypeId();
             if(transparent == null) {
                 if(id != 0 && id != 50 && id != 59 && id != 31 && id != 175 && id != 38 && id != 37 && id != 6 && id != 106)
@@ -239,29 +239,21 @@ public class Utils {
     }
 
     public static ItemStack getPotion(PotionType type, int tier, boolean splash, int amount) {
-        if(plugin.is1_8_R3()) {
-            Potion potion = new Potion(type);
-            potion.setLevel(tier);
-            potion.setSplash(splash);
-            return potion.toItemStack(amount);
+        ItemStack potion;
+        if(!splash) {
+            potion = new ItemStack(Material.POTION, 1);
         } else {
-            //FOR 1.9 AND LATER
-            ItemStack potion;
-            if(!splash) {
-                potion = new ItemStack(Material.POTION, 1);
-            } else {
-                potion = new ItemStack(Material.SPLASH_POTION, 1);
-            }
-
-            PotionMeta meta = (PotionMeta) potion.getItemMeta();
-            if(tier >= 2 && !splash) {
-                meta.setBasePotionData(new PotionData(type, false, true));
-            } else {
-                meta.setBasePotionData(new PotionData(type, false, false));
-            }
-            potion.setItemMeta(meta);
-            return potion;
+            potion = new ItemStack(Material.SPLASH_POTION, 1);
         }
+
+        PotionMeta meta = (PotionMeta) potion.getItemMeta();
+        if(tier >= 2 && !splash) {
+            meta.setBasePotionData(new PotionData(type, false, true));
+        } else {
+            meta.setBasePotionData(new PotionData(type, false, false));
+        }
+        potion.setItemMeta(meta);
+        return potion;
     }
 
 }

@@ -21,6 +21,7 @@ package pl.plajer.villagedefense3.kits.premium;
 import org.bukkit.Color;
 import org.bukkit.Effect;
 import org.bukkit.Material;
+import org.bukkit.Particle;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Zombie;
@@ -103,7 +104,7 @@ public class CleanerKit extends PremiumKit implements Listener {
         }
         if(arena.getZombies() != null) {
             for(Zombie zombie : arena.getZombies()) {
-                zombie.getWorld().playEffect(zombie.getLocation(), Effect.LAVA_POP, 20);
+                zombie.getWorld().spawnParticle(Particle.LAVA, zombie.getLocation(), 20);
                 zombie.remove();
             }
             arena.getZombies().clear();
@@ -111,6 +112,7 @@ public class CleanerKit extends PremiumKit implements Listener {
             e.getPlayer().sendMessage(ChatManager.colorMessage("Kits.Cleaner.Nothing-To-Clean"));
             return;
         }
+        //todo sound manager!
         if(plugin.is1_9_R1() || plugin.is1_11_R1() || plugin.is1_12_R1() || plugin.is1_13_R1()) {
             e.getPlayer().playSound(e.getPlayer().getLocation(), Sound.ENTITY_ZOMBIE_DEATH, 1, 1);
         } else {

@@ -19,6 +19,7 @@
 package pl.plajer.villagedefense3.kits.level;
 
 import org.bukkit.Material;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import pl.plajer.villagedefense3.Main;
@@ -56,7 +57,7 @@ public class MediumTankKit extends LevelKit {
         player.getInventory().addItem(WeaponHelper.getUnBreakingSword(WeaponHelper.ResourceType.WOOD, 10));
         player.getInventory().addItem(new ItemStack(Material.GRILLED_PORK, 8));
         ArmorHelper.setArmor(player, ArmorHelper.ArmorType.IRON);
-        player.setMaxHealth(32.0);
+        player.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(32.0);
         player.setHealth(32.0);
 
     }

@@ -32,11 +32,10 @@ import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import pl.plajer.villagedefense3.Main;
 import pl.plajer.villagedefense3.arena.Arena;
+import pl.plajer.villagedefense3.arena.ArenaRegistry;
 import pl.plajer.villagedefense3.arena.initializers.ArenaInitializer1_11_R1;
 import pl.plajer.villagedefense3.arena.initializers.ArenaInitializer1_12_R1;
-import pl.plajer.villagedefense3.arena.initializers.ArenaInitializer1_8_R3;
 import pl.plajer.villagedefense3.arena.initializers.ArenaInitializer1_9_R1;
-import pl.plajer.villagedefense3.arena.ArenaRegistry;
 import pl.plajer.villagedefense3.handlers.ConfigurationManager;
 import pl.plajer.villagedefense3.handlers.ShopManager;
 import pl.plajer.villagedefense3.utils.Utils;
@@ -216,9 +215,7 @@ public class SetupInventoryEvents implements Listener {
                     }
                 }
             }
-            if(plugin.is1_8_R3()) {
-                arena = new ArenaInitializer1_8_R3(arena.getID(), plugin);
-            } else if(plugin.is1_9_R1()) {
+            if(plugin.is1_9_R1()) {
                 arena = new ArenaInitializer1_9_R1(arena.getID(), plugin);
             } else if(plugin.is1_11_R1()) {
                 arena = new ArenaInitializer1_11_R1(arena.getID(), plugin);

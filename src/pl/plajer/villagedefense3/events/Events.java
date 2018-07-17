@@ -21,6 +21,8 @@ package pl.plajer.villagedefense3.events;
 import org.bukkit.ChatColor;
 import org.bukkit.Effect;
 import org.bukkit.Material;
+import org.bukkit.Particle;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -40,6 +42,7 @@ import org.bukkit.event.entity.EntityCombustByEntityEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
+import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.entity.ItemSpawnEvent;
 import org.bukkit.event.entity.PlayerLeashEntityEvent;
@@ -51,7 +54,6 @@ import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerExpChangeEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import pl.plajer.villagedefense3.Main;
@@ -130,11 +132,15 @@ public class Events implements Listener {
     }
 
     @EventHandler
-    public void onPickUp(PlayerPickupItemEvent event) {
-        Arena arena = ArenaRegistry.getArena(event.getPlayer());
+    public void onPickUp(EntityPickupItemEvent event) {
+        if(!(event.getEntity() instanceof Player)) {
+            return;
+        }
+        Player p = (Player) event.getEntity();
+        Arena arena = ArenaRegistry.getArena(p);
         if(arena == null)
             return;
-        if(UserManager.getUser(event.getPlayer().getUniqueId()).isFakeDead()) {
+        if(UserManager.getUser(p.getUniqueId()).isFakeDead()) {
             event.setCancelled(true);
         }
     }
@@ -193,9 +199,9 @@ public class Events implements Listener {
             event.setCancelled(true);
             return;
         }
-        if(event.getPlayer().getItemInHand().getType() == Material.SADDLE) {
+        if(event.getPlayer().getInventory().getItemInMainHand().getType() == Material.SADDLE) {
             if(event.getRightClicked().getType() == EntityType.IRON_GOLEM || event.getRightClicked().getType() == EntityType.VILLAGER || event.getRightClicked().getType() == EntityType.WOLF) {
-                event.getRightClicked().setPassenger(event.getPlayer());
+                event.getRightClicked().addPassenger(event.getPlayer());
                 event.setCancelled(true);
                 return;
             }
@@ -206,14 +212,14 @@ public class Events implements Listener {
         } else if(event.getRightClicked().getType() == EntityType.IRON_GOLEM) {
             IronGolem ironGolem = (IronGolem) event.getRightClicked();
             if(ironGolem.getCustomName() != null && ironGolem.getCustomName().contains(event.getPlayer().getName())) {
-                event.getRightClicked().setPassenger(event.getPlayer());
+                event.getRightClicked().addPassenger(event.getPlayer());
             } else {
                 event.getPlayer().sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Messages.Cant-Ride-Others-Golem"));
             }
         } else if(event.getRightClicked().getType() == EntityType.WOLF) {
             Wolf wolf = (Wolf) event.getRightClicked();
             if(wolf.getCustomName() != null && wolf.getCustomName().contains(event.getPlayer().getName())) {
-                event.getRightClicked().setPassenger(event.getPlayer());
+                event.getRightClicked().addPassenger(event.getPlayer());
             }
         }
     }
@@ -223,10 +229,11 @@ public class Events implements Listener {
         Arena arena = ArenaRegistry.getArena(event.getPlayer());
         if(arena == null) return;
         if(!plugin.getConfig().getBoolean("Block-Commands-In-Game", true)) return;
-        for(String msg : plugin.getConfig().getStringList("Whitelisted-Commands")){
+        for(String msg : plugin.getConfig().getStringList("Whitelisted-Commands")) {
             if(event.getMessage().contains(msg)) return;
         }
-        if(event.getMessage().startsWith("vd") || event.getMessage().contains("leave") || event.getMessage().contains("stats") || event.getMessage().contains("vda")) return;
+        if(event.getMessage().startsWith("vd") || event.getMessage().contains("leave") || event.getMessage().contains("stats") || event.getMessage().contains("vda"))
+            return;
         if(event.getPlayer().isOp()) return;
         event.setCancelled(true);
         event.getPlayer().sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Only-Command-Ingame-Is-Leave"));
@@ -252,7 +259,7 @@ public class Events implements Listener {
         Arena arena = ArenaRegistry.getArena(event.getPlayer());
         if(arena == null)
             return;
-        ItemStack itemStack = event.getPlayer().getItemInHand();
+        ItemStack itemStack = event.getPlayer().getInventory().getItemInMainHand();
         if(itemStack == null || itemStack.getItemMeta() == null || itemStack.getItemMeta().getDisplayName() == null)
             return;
         String key = SpecialItemManager.getRelatedSpecialItem(itemStack);
@@ -312,7 +319,9 @@ public class Events implements Listener {
             }
             for(Arena arena : ArenaRegistry.getArenas()) {
                 if(arena.getZombies().contains(e.getEntity())) {
-                    e.getEntity().setCustomName(Utils.getProgressBar((int) ((Zombie) e.getEntity()).getHealth(), (int) ((Zombie) e.getEntity()).getMaxHealth(), 50, "|", ChatColor.YELLOW + "", ChatColor.GRAY + ""));
+                    e.getEntity().setCustomName(Utils.getProgressBar((int) ((Zombie) e.getEntity()).getHealth(),
+                            (int) ((Zombie) e.getEntity()).getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue(),
+                            50, "|", ChatColor.YELLOW + "", ChatColor.GRAY + ""));
                 }
             }
         }
@@ -395,10 +404,11 @@ public class Events implements Listener {
         if(e.getCurrentItem().hasItemMeta() && e.getCurrentItem().getItemMeta().hasDisplayName()) {
             if(e.getCurrentItem().getItemMeta().getDisplayName().contains(ChatManager.colorMessage("In-Game.Messages.Shop-Messages.Golem-Item-Name"))) {
                 int i = 0;
-                for(IronGolem golem : arena.getIronGolems()){
-                    if(golem.getCustomName().equals(ChatManager.colorMessage("In-Game.Spawned-Golem-Name").replace("%player%", player.getName()))) i++;
+                for(IronGolem golem : arena.getIronGolems()) {
+                    if(golem.getCustomName().equals(ChatManager.colorMessage("In-Game.Spawned-Golem-Name").replace("%player%", player.getName())))
+                        i++;
                 }
-                if(i >= plugin.getConfig().getInt("Golems-Spawn-Limit", 15)){
+                if(i >= plugin.getConfig().getInt("Golems-Spawn-Limit", 15)) {
                     e.getWhoClicked().sendMessage(ChatManager.colorMessage("In-Game.Messages.Shop-Messages.Mob-Limit-Reached").replace("%amount%", String.valueOf(plugin.getConfig().getInt("Golems-Spawn-Limit", 15))));
                     return;
                 }
@@ -408,10 +418,10 @@ public class Events implements Listener {
                 return;
             } else if(e.getCurrentItem().getItemMeta().getDisplayName().contains(ChatManager.colorMessage("In-Game.Messages.Shop-Messages.Wolf-Item-Name"))) {
                 int i = 0;
-                for(Wolf wolf : arena.getWolfs()){
+                for(Wolf wolf : arena.getWolfs()) {
                     if(wolf.getCustomName().equals(ChatManager.colorMessage("In-Game.Spawned-Wolf-Name").replace("%player%", player.getName()))) i++;
                 }
-                if(i >= plugin.getConfig().getInt("Wolves-Spawn-Limit", 20)){
+                if(i >= plugin.getConfig().getInt("Wolves-Spawn-Limit", 20)) {
                     e.getWhoClicked().sendMessage(ChatManager.colorMessage("In-Game.Messages.Shop-Messages.Mob-Limit-Reached").replace("%amount%", String.valueOf(plugin.getConfig().getInt("Wolves-Spawn-Limit", 20))));
                     return;
                 }
@@ -458,36 +468,36 @@ public class Events implements Listener {
     }
 
     @EventHandler
-    public void onRottenFleshDrop(InventoryPickupItemEvent event) {
-        if(event.getInventory().getType() != InventoryType.HOPPER) {
+    public void onRottenFleshDrop(InventoryPickupItemEvent e) {
+        if(e.getInventory().getType() != InventoryType.HOPPER) {
             return;
         }
-        if(event.getItem().getItemStack().getType() != Material.ROTTEN_FLESH) {
+        if(e.getItem().getItemStack().getType() != Material.ROTTEN_FLESH) {
             for(Arena arena : ArenaRegistry.getArenas()) {
-                if(event.getItem().getWorld().equals(arena.getStartLocation().getWorld())) {
-                    event.getItem().remove();
-                    event.getInventory().clear();
+                if(e.getItem().getWorld().equals(arena.getStartLocation().getWorld())) {
+                    e.getItem().remove();
+                    e.getInventory().clear();
                     return;
                 }
             }
             return;
         }
-        for(Entity entity : Utils.getNearbyEntities(event.getItem().getLocation(), 20)) {
+        for(Entity entity : Utils.getNearbyEntities(e.getItem().getLocation(), 20)) {
             if(!(entity instanceof Player)) {
                 continue;
             }
             if(ArenaRegistry.getArena((Player) entity) != null) {
                 Arena arena = ArenaRegistry.getArena(((Player) entity));
                 if(arena == null) continue;
-                arena.addRottenFlesh(event.getItem().getItemStack().getAmount());
-                event.getItem().remove();
-                event.setCancelled(true);
-                event.getInventory().clear();
-                event.getItem().getLocation().getWorld().spigot().playEffect(event.getItem().getLocation(), Effect.CLOUD, 0, 0, 2, 2, 2, 1, 50, 100);
+                arena.addRottenFlesh(e.getItem().getItemStack().getAmount());
+                e.getItem().remove();
+                e.setCancelled(true);
+                e.getInventory().clear();
+                e.getItem().getLocation().getWorld().spawnParticle(Particle.CLOUD, e.getItem().getLocation(), 50, 2, 2, 2);
                 if(arena.checkLevelUpRottenFlesh()) {
-                    for(Player player : arena.getPlayers()) {
-                        player.setMaxHealth(player.getMaxHealth() + 2.0);
-                        player.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Rotten-Flesh-Level-Up"));
+                    for(Player p : arena.getPlayers()) {
+                        p.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(p.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue() + 2.0);
+                        p.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Rotten-Flesh-Level-Up"));
                     }
                 }
             }

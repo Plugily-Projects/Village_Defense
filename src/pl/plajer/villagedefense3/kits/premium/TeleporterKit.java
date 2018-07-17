@@ -21,6 +21,7 @@ package pl.plajer.villagedefense3.kits.premium;
 import org.bukkit.ChatColor;
 import org.bukkit.Effect;
 import org.bukkit.Material;
+import org.bukkit.Particle;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Villager;
@@ -94,13 +95,15 @@ public class TeleporterKit extends PremiumKit implements Listener {
     public void onRightClick(PlayerInteractEvent e) {
         if(e.getAction() == Action.RIGHT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_BLOCK) {
             Arena arena = ArenaRegistry.getArena(e.getPlayer());
-            if(arena == null || e.getPlayer().getItemInHand() == null || !e.getPlayer().getItemInHand().hasItemMeta() ||
-                    !e.getPlayer().getItemInHand().getItemMeta().hasDisplayName())
+            ItemStack stack = e.getPlayer().getInventory().getItemInMainHand();
+            if(arena == null || stack == null || !stack.hasItemMeta() ||
+                    !stack.getItemMeta().hasDisplayName())
                 return;
-            if(e.getPlayer().getItemInHand().getItemMeta().getDisplayName().equalsIgnoreCase(ChatManager.colorMessage("Kits.Teleporter.Game-Item-Name"))) {
+            if(stack.getItemMeta().getDisplayName().equalsIgnoreCase(ChatManager.colorMessage("Kits.Teleporter.Game-Item-Name"))) {
                 Inventory inventory = plugin.getServer().createInventory(null, 18, ChatManager.colorMessage("Kits.Teleporter.Game-Item-Menu-Name"));
                 for(Player player : e.getPlayer().getWorld().getPlayers()) {
                     if(ArenaRegistry.getArena(player) != null && !UserManager.getUser(player.getUniqueId()).isFakeDead()) {
+                        //todo remove
                         ItemStack skull = new ItemStack(397, 1, (short) 3);
                         SkullMeta meta = (SkullMeta) skull.getItemMeta();
                         meta.setOwner(player.getName());
@@ -138,12 +141,13 @@ public class TeleporterKit extends PremiumKit implements Listener {
                         }
                         if(villager.getCustomName().equalsIgnoreCase(e.getCurrentItem().getItemMeta().getDisplayName()) && villager.getUniqueId().toString().equalsIgnoreCase(ChatColor.stripColor(e.getCurrentItem().getItemMeta().getLore().get(0)))) {
                             e.getWhoClicked().teleport(villager.getLocation());
+                            //todo soundz
                             if(plugin.is1_9_R1() || plugin.is1_11_R1() || plugin.is1_12_R1() || plugin.is1_13_R1()) {
                                 p.getWorld().playSound(p.getLocation(), Sound.ENTITY_ENDERMEN_TELEPORT, 1, 1);
                             } else {
                                 p.getWorld().playSound(p.getLocation(), Sound.valueOf("ENDERMAN_TELEPORT"), 1, 1);
                             }
-                            p.getWorld().playEffect(p.getLocation(), Effect.PORTAL, 30);
+                            p.getWorld().spawnParticle(Particle.PORTAL, p.getLocation(), 30);
                             p.sendMessage(ChatManager.colorMessage("Kits.Teleporter.Teleported-To-Villager"));
                             return;
                         }
@@ -155,12 +159,13 @@ public class TeleporterKit extends PremiumKit implements Listener {
                         if(player.getName().equalsIgnoreCase(meta.getDisplayName()) || ChatColor.stripColor(meta.getDisplayName()).contains(player.getName())) {
                             p.sendMessage(ChatManager.formatMessage(arena, ChatManager.colorMessage("Kits.Teleporter.Teleported-To-Player"), player));
                             p.teleport(player);
+                            //todo sound manager!
                             if(plugin.is1_9_R1() || plugin.is1_11_R1() || plugin.is1_12_R1() || plugin.is1_13_R1()) {
                                 p.getWorld().playSound(p.getLocation(), Sound.ENTITY_ENDERMEN_TELEPORT, 1, 1);
                             } else {
                                 p.getWorld().playSound(p.getLocation(), Sound.valueOf("ENDERMAN_TELEPORT"), 1, 1);
                             }
-                            p.getWorld().playEffect(p.getLocation(), Effect.PORTAL, 30);
+                            p.getWorld().spawnParticle(Particle.PORTAL, p.getLocation(), 30);
                             p.closeInventory();
                             e.setCancelled(true);
                             return;

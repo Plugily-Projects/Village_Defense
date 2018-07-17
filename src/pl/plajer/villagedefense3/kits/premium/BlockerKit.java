@@ -19,7 +19,6 @@
 package pl.plajer.villagedefense3.kits.premium;
 
 import org.bukkit.Color;
-import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
@@ -106,8 +105,9 @@ public class BlockerKit extends PremiumKit implements Listener {
         if(event.getAction() != Action.RIGHT_CLICK_AIR && event.getAction() != Action.RIGHT_CLICK_BLOCK)
             return;
         Player player = event.getPlayer();
-        if(!ArenaRegistry.isInArena(player) || player.getItemInHand() == null || !player.getItemInHand().hasItemMeta() || !player.getItemInHand().getItemMeta().hasDisplayName() ||
-                !player.getItemInHand().getItemMeta().getDisplayName().equalsIgnoreCase(ChatManager.colorMessage("Kits.Blocker.Game-Item-Name")))
+        ItemStack stack = player.getInventory().getItemInMainHand();
+        if(!ArenaRegistry.isInArena(player) || stack == null || !stack.hasItemMeta() || !stack.getItemMeta().hasDisplayName() ||
+                !stack.getItemMeta().getDisplayName().equalsIgnoreCase(ChatManager.colorMessage("Kits.Blocker.Game-Item-Name")))
             return;
         Block block = null;
         for(Block blocks : player.getLastTwoTargetBlocks(null, 5)) {
@@ -118,10 +118,10 @@ public class BlockerKit extends PremiumKit implements Listener {
             event.getPlayer().sendMessage(ChatManager.colorMessage("Kits.Blocker.Game-Item-Place-Fail"));
             return;
         }
-        if(player.getItemInHand().getAmount() <= 1) {
-            player.setItemInHand(new ItemStack(Material.AIR));
+        if(stack.getAmount() <= 1) {
+            player.getInventory().setItemInMainHand(new ItemStack(Material.AIR));
         } else {
-            player.getItemInHand().setAmount(player.getItemInHand().getAmount() - 1);
+            player.getInventory().getItemInMainHand().setAmount(player.getInventory().getItemInMainHand().getAmount() - 1);
         }
         event.setCancelled(false);
         User user = UserManager.getUser(event.getPlayer().getUniqueId());
@@ -129,22 +129,14 @@ public class BlockerKit extends PremiumKit implements Listener {
         user.toPlayer().sendMessage(ChatManager.colorMessage("Kits.Blocker.Game-Item-Place-Message"));
         ZombieBarrier zombieBarrier = new ZombieBarrier();
         zombieBarrier.setLocation(block.getLocation());
-        if(plugin.is1_8_R3()) {
-            zombieBarrier.getLocation().getWorld().spigot().playEffect(zombieBarrier.getLocation(), Effect.FIREWORKS_SPARK, 0, 0, 0, 0, 0, 1, 20, 50);
-        } else {
-            zombieBarrier.getLocation().getWorld().spawnParticle(Particle.FIREWORKS_SPARK, zombieBarrier.getLocation(), 20);
-        }
+        zombieBarrier.getLocation().getWorld().spawnParticle(Particle.FIREWORKS_SPARK, zombieBarrier.getLocation(), 20);
         new BukkitRunnable() {
             @Override
             public void run() {
                 zombieBarrier.decrementSeconds();
                 if(zombieBarrier.getSeconds() <= 0) {
                     zombieBarrier.getLocation().getBlock().setType(Material.AIR);
-                    if(plugin.is1_8_R3()) {
-                        zombieBarrier.getLocation().getWorld().spigot().playEffect(zombieBarrier.getLocation(), Effect.FIREWORKS_SPARK, 0, 0, 0, 0, 0, 1, 20, 50);
-                    } else {
-                        zombieBarrier.getLocation().getWorld().spawnParticle(Particle.FIREWORKS_SPARK, zombieBarrier.getLocation(), 20);
-                    }
+                    zombieBarrier.getLocation().getWorld().spawnParticle(Particle.FIREWORKS_SPARK, zombieBarrier.getLocation(), 20);
                     this.cancel();
                 }
             }

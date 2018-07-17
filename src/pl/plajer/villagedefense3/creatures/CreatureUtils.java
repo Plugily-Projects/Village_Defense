@@ -19,6 +19,7 @@
 package pl.plajer.villagedefense3.creatures;
 
 import org.bukkit.ChatColor;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Zombie;
 import org.bukkit.plugin.java.JavaPlugin;
 import pl.plajer.villagedefense3.Main;
@@ -53,7 +54,9 @@ public class CreatureUtils {
     public static void applyHealthBar(Zombie zombie) {
         if(plugin.getConfig().getBoolean("Simple-Zombie-Health-Bar-Enabled", true)) {
             zombie.setCustomNameVisible(true);
-            zombie.setCustomName(Utils.getProgressBar((int) zombie.getMaxHealth(), (int) zombie.getMaxHealth(), 50, "|", ChatColor.YELLOW + "", ChatColor.GRAY + ""));
+            zombie.setCustomName(Utils.getProgressBar((int) zombie.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue(),
+                    (int) zombie.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue(), 50, "|",
+                    ChatColor.YELLOW + "", ChatColor.GRAY + ""));
         }
     }
 

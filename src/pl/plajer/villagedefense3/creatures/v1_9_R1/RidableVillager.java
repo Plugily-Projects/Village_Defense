@@ -118,12 +118,13 @@ public class RidableVillager extends EntityVillager {
         final float yaw2 = this.yaw;
         aM = yaw2;
         aO = yaw2;
-        f = entityliving.bd * 0.75F;
+        f = entityliving.bd * 0.75F; // Also make sideways slower
         f1 = entityliving.be;
         if(f1 <= 0.0f) {
-            f1 *= 0.25F;
+            f1 *= 0.25F; // Make backwards slower
         }
-        this.l((float) 0.12);
+        // Apply the speed
+        this.l((float) 0.12); // 0.2 is the default entity speed. I made it slightly faster so that riding is better than walking
         super.g(f, f1);
         P = 1.0F;
     }

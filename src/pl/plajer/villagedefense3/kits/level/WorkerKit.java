@@ -83,17 +83,18 @@ public class WorkerKit extends LevelKit implements Listener {
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
-    public void onDoorPlace(BlockPlaceEvent event) {
-        Arena arena = ArenaRegistry.getArena(event.getPlayer());
+    public void onDoorPlace(BlockPlaceEvent e) {
+        Arena arena = ArenaRegistry.getArena(e.getPlayer());
         if(arena == null) return;
-        User user = UserManager.getUser(event.getPlayer().getUniqueId());
-        if(user.isSpectator() || event.getPlayer().getItemInHand() == null || !arena.getDoorLocations().containsKey(event.getBlock().getLocation())
-                || !(event.getPlayer().getItemInHand().getType() == Material.WOOD_DOOR || event.getPlayer().getItemInHand().getType() == Material.WOODEN_DOOR)) {
-            event.setCancelled(true);
+        User user = UserManager.getUser(e.getPlayer().getUniqueId());
+        ItemStack stack = e.getPlayer().getItemInHand();
+        if(user.isSpectator() || stack == null || !arena.getDoorLocations().containsKey(e.getBlock().getLocation())
+                || !(stack.getType() == Material.WOOD_DOOR || stack.getType() == Material.WOODEN_DOOR)) {
+            e.setCancelled(true);
             return;
         }
-        event.setCancelled(false);
-        event.getPlayer().sendMessage(ChatManager.colorMessage("Kits.Worker.Game-Item-Place-Message"));
+        e.setCancelled(false);
+        e.getPlayer().sendMessage(ChatManager.colorMessage("Kits.Worker.Game-Item-Place-Message"));
     }
 
 }

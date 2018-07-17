@@ -33,6 +33,7 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByBlockEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.event.entity.EntityTargetEvent;
 import org.bukkit.event.entity.EntityTargetLivingEntityEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
@@ -169,8 +170,9 @@ public class SpectatorEvents implements Listener {
     }
 
     @EventHandler(priority = EventPriority.HIGH)
-    public void onPickup(PlayerPickupItemEvent event) {
-        if(UserManager.getUser(event.getPlayer().getUniqueId()).isSpectator())
+    public void onPickup(EntityPickupItemEvent event) {
+        if(!(event.getEntity() instanceof Player)) return;
+        if(UserManager.getUser(event.getEntity().getUniqueId()).isSpectator())
             event.setCancelled(true);
     }
 
@@ -196,8 +198,9 @@ public class SpectatorEvents implements Listener {
     }
 
     @EventHandler
-    public void onSpectate(PlayerPickupItemEvent event) {
-        if(UserManager.getUser(event.getPlayer().getUniqueId()).isSpectator())
+    public void onSpectate(EntityPickupItemEvent event) {
+        if(!(event.getEntity() instanceof Player)) return;
+        if(UserManager.getUser(event.getEntity().getUniqueId()).isSpectator())
             event.setCancelled(true);
     }
 

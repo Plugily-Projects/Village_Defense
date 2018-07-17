@@ -21,6 +21,7 @@ package pl.plajer.villagedefense3.arena;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.IronGolem;
@@ -38,8 +39,8 @@ import pl.plajer.villagedefense3.Main;
 import pl.plajer.villagedefense3.handlers.ChatManager;
 import pl.plajer.villagedefense3.handlers.PermissionsManager;
 import pl.plajer.villagedefense3.handlers.items.SpecialItemManager;
-import pl.plajer.villagedefense3.kits.level.GolemFriendKit;
 import pl.plajer.villagedefense3.kits.kitapi.KitRegistry;
+import pl.plajer.villagedefense3.kits.level.GolemFriendKit;
 import pl.plajer.villagedefense3.user.User;
 import pl.plajer.villagedefense3.user.UserManager;
 import pl.plajer.villagedefense3.utils.Utils;
@@ -108,8 +109,8 @@ public class ArenaManager {
             }
 
             arena.addPlayer(p);
-            p.setMaxHealth(p.getMaxHealth() + arena.getRottenFleshLevel());
-            p.setHealth(p.getMaxHealth());
+            p.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(p.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue() + arena.getRottenFleshLevel());
+            p.setHealth(p.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue());
             p.setFoodLevel(20);
             p.setGameMode(GameMode.SURVIVAL);
             p.setAllowFlight(true);
@@ -137,7 +138,7 @@ public class ArenaManager {
         }
         arena.teleportToLobby(p);
         arena.addPlayer(p);
-        p.setHealth(p.getMaxHealth());
+        p.setHealth(p.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue());
         p.setFoodLevel(20);
         p.getInventory().setArmorContents(new ItemStack[]{new ItemStack(Material.AIR), new ItemStack(Material.AIR), new ItemStack(Material.AIR), new ItemStack(Material.AIR)});
         p.setFlying(false);
@@ -145,11 +146,7 @@ public class ArenaManager {
         p.getInventory().clear();
         arena.showPlayers();
         if(plugin.isBossbarEnabled()) {
-            if(plugin.is1_8_R3()){
-                arena.getGameBar_v1_8_R3().addPlayer(p);
-            } else {
-                arena.getGameBar().addPlayer(p);
-            }
+            arena.getGameBar().addPlayer(p);
         }
         if(!UserManager.getUser(p.getUniqueId()).isSpectator())
             ChatManager.broadcastAction(arena, p, ChatManager.ActionType.JOIN);
@@ -195,14 +192,10 @@ public class ArenaManager {
             }
         }
         if(plugin.isBossbarEnabled()) {
-            if(plugin.is1_8_R3()){
-                arena.getGameBar_v1_8_R3().removePlayer(p);
-            } else {
-                arena.getGameBar().removePlayer(p);
-            }
+            arena.getGameBar().removePlayer(p);
         }
-        p.setMaxHealth(20.0);
-        p.setHealth(p.getMaxHealth());
+        p.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(20.0);
+        p.setHealth(p.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue());
         p.setFoodLevel(20);
         p.setFlying(false);
         p.setAllowFlight(false);
@@ -311,7 +304,7 @@ public class ArenaManager {
         for(Player player : arena.getPlayers()) {
             player.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.formatMessage(arena, ChatManager.colorMessage("In-Game.Messages.Next-Wave-In"), arena.getTimer()));
             player.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Messages.You-Feel-Refreshed"));
-            player.setHealth(player.getMaxHealth());
+            player.setHealth(player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue());
             User user = UserManager.getUser(player.getUniqueId());
             user.addInt("orbs", arena.getWave() * 10);
         }

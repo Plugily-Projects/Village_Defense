@@ -97,7 +97,7 @@ public class ArenaInitializer1_9_R1 extends Arena {
         fastZombie.setPosition(location.getX(), location.getY(), location.getZ());
         McWorld.addEntity(fastZombie, CreatureSpawnEvent.SpawnReason.CUSTOM);
         Zombie zombie = (Zombie) fastZombie.getBukkitEntity();
-        zombie.getEquipment().setItemInHand(new ItemStack(Material.GOLD_AXE));
+        zombie.getEquipment().setItemInMainHand(new ItemStack(Material.GOLD_AXE));
         zombie.getEquipment().setBoots(new ItemStack(Material.DIAMOND_BOOTS));
         zombie.getEquipment().setLeggings(new ItemStack(Material.DIAMOND_LEGGINGS));
         zombie.getEquipment().setChestplate(new ItemStack(Material.DIAMOND_CHESTPLATE));
@@ -167,7 +167,7 @@ public class ArenaInitializer1_9_R1 extends Arena {
         Zombie zombie = (Zombie) fastZombie.getBukkitEntity();
         zombie.getEquipment().setHelmet(new ItemStack(Material.TNT));
         zombie.getEquipment().setHelmetDropChance(0.0F);
-        zombie.getEquipment().setItemInHandDropChance(0F);
+        zombie.getEquipment().setItemInMainHandDropChance(0F);
         zombie.setRemoveWhenFarAway(false);
         CreatureUtils.applyHealthBar(zombie);
         this.addZombie(zombie);
@@ -184,7 +184,7 @@ public class ArenaInitializer1_9_R1 extends Arena {
         Zombie zombie = (Zombie) fastZombie.getBukkitEntity();
         zombie.getEquipment().setHelmet(new ItemStack(Material.TNT));
         zombie.getEquipment().setHelmetDropChance(0.0F);
-        zombie.getEquipment().setItemInHandDropChance(0F);
+        zombie.getEquipment().setItemInMainHandDropChance(0F);
         zombie.getEquipment().setBoots(new ItemStack(Material.GOLD_BOOTS));
         zombie.getEquipment().setLeggings(new ItemStack(Material.GOLD_LEGGINGS));
         zombie.getEquipment().setChestplate(new ItemStack(Material.GOLD_CHESTPLATE));
@@ -201,8 +201,8 @@ public class ArenaInitializer1_9_R1 extends Arena {
         villagerSlayer.setPosition(location.getX(), location.getY(), location.getZ());
         McWorld.addEntity(villagerSlayer, CreatureSpawnEvent.SpawnReason.CUSTOM);
         Zombie zombie = (Zombie) villagerSlayer.getBukkitEntity();
-        zombie.getEquipment().setItemInHand(new ItemStack(Material.EMERALD));
-        zombie.getEquipment().setItemInHandDropChance(0F);
+        zombie.getEquipment().setItemInMainHand(new ItemStack(Material.EMERALD));
+        zombie.getEquipment().setItemInMainHandDropChance(0F);
         zombie.getEquipment().setBoots(new ItemStack(Material.CHAINMAIL_BOOTS));
         zombie.getEquipment().setLeggings(new ItemStack(Material.CHAINMAIL_LEGGINGS));
         zombie.getEquipment().setChestplate(new ItemStack(Material.CHAINMAIL_CHESTPLATE));

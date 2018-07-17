@@ -55,14 +55,13 @@ public class SpectatorItemEvents implements Listener {
         if(e.getAction() == Action.RIGHT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_BLOCK) {
             if(ArenaRegistry.getArena(e.getPlayer()) == null)
                 return;
-            if(!(e.getPlayer().getItemInHand() == null)) {
-                if(e.getPlayer().getItemInHand().hasItemMeta()) {
-                    if(e.getPlayer().getItemInHand().getItemMeta().getDisplayName() == null)
-                        return;
-                    if(e.getPlayer().getItemInHand().getItemMeta().getDisplayName().equalsIgnoreCase(ChatManager.colorMessage("In-Game.Spectator.Spectator-Item-Name"))) {
-                        e.setCancelled(true);
-                        openSpectatorMenu(e.getPlayer().getWorld(), e.getPlayer());
-                    }
+            ItemStack stack = e.getPlayer().getInventory().getItemInMainHand();
+            if(!(stack == null) && stack.hasItemMeta()) {
+                if(stack.getItemMeta().getDisplayName() == null)
+                    return;
+                if(stack.getItemMeta().getDisplayName().equalsIgnoreCase(ChatManager.colorMessage("In-Game.Spectator.Spectator-Item-Name"))) {
+                    e.setCancelled(true);
+                    openSpectatorMenu(e.getPlayer().getWorld(), e.getPlayer());
                 }
             }
         }
@@ -74,6 +73,7 @@ public class SpectatorItemEvents implements Listener {
             if(ArenaRegistry.getArena(player) != null && !UserManager.getUser(player.getUniqueId()).isFakeDead()) {
                 ItemStack skull = new ItemStack(Material.SKULL_ITEM, 1);
                 SkullMeta meta = (SkullMeta) skull.getItemMeta();
+                //todo check deprecation
                 meta.setOwner(player.getName());
                 meta.setDisplayName(player.getName());
                 meta.setLore(Collections.singletonList(ChatManager.colorMessage("In-Game.Spectator.Target-Player-Health").replaceAll("%health%", String.valueOf(Utils.round(player.getHealth(), 2)))));

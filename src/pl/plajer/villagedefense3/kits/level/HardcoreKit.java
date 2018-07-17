@@ -20,6 +20,7 @@ package pl.plajer.villagedefense3.kits.level;
 
 import org.bukkit.Color;
 import org.bukkit.Material;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionType;
@@ -59,7 +60,7 @@ public class HardcoreKit extends LevelKit {
         ArmorHelper.setColouredArmor(Color.WHITE, player);
         player.getInventory().addItem(Utils.getPotion(PotionType.INSTANT_HEAL, 2, true, 1));
         player.getInventory().addItem(new ItemStack(Material.COOKIE, 10));
-        player.setMaxHealth(10.0);
+        player.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(10.0);
 
     }
 

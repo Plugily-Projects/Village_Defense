@@ -29,6 +29,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Particle;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Zombie;
 import org.bukkit.inventory.ItemStack;
@@ -118,7 +119,7 @@ public class PowerupManager {
                 case CLEANER:
                     if(arena.getZombies() != null) {
                         for(Zombie zombie : arena.getZombies()) {
-                            zombie.getWorld().playEffect(zombie.getLocation(), Effect.LAVA_POP, 20);
+                            zombie.getWorld().spawnParticle(Particle.LAVA, zombie.getLocation(), 20);
                             zombie.remove();
                         }
                         arena.getZombies().clear();

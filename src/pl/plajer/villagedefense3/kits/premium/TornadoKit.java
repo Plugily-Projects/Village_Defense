@@ -21,6 +21,7 @@ package pl.plajer.villagedefense3.kits.premium;
 import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Particle;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -95,19 +96,20 @@ public class TornadoKit extends PremiumKit implements Listener {
     }
 
     @EventHandler
-    public void onTornadoSpawn(PlayerInteractEvent event) {
-        if(event.getAction() != Action.RIGHT_CLICK_AIR && event.getAction() != Action.RIGHT_CLICK_BLOCK)
+    public void onTornadoSpawn(PlayerInteractEvent e) {
+        if(e.getAction() != Action.RIGHT_CLICK_AIR && e.getAction() != Action.RIGHT_CLICK_BLOCK)
             return;
-        Player player = event.getPlayer();
-        if(player.getItemInHand() == null || !player.getItemInHand().hasItemMeta() || !player.getItemInHand().getItemMeta().hasDisplayName() ||
-                !player.getItemInHand().getItemMeta().getDisplayName().equalsIgnoreCase(ChatManager.colorMessage("Kits.Tornado.Game-Item-Name")) || !ArenaRegistry.isInArena(player))
+        Player player = e.getPlayer();
+        ItemStack stack = player.getInventory().getItemInMainHand();
+        if(stack == null || !stack.hasItemMeta() || !stack.getItemMeta().hasDisplayName() ||
+                !stack.getItemMeta().getDisplayName().equalsIgnoreCase(ChatManager.colorMessage("Kits.Tornado.Game-Item-Name")) || !ArenaRegistry.isInArena(player))
             return;
-        if(player.getItemInHand().getAmount() <= 1) {
-            player.setItemInHand(new ItemStack(Material.AIR));
+        if(stack.getAmount() <= 1) {
+            player.getInventory().setItemInMainHand(new ItemStack(Material.AIR));
         } else {
-            player.getItemInHand().setAmount(player.getItemInHand().getAmount() - 1);
+            player.getInventory().getItemInMainHand().setAmount(stack.getAmount() - 1);
         }
-        event.setCancelled(true);
+        e.setCancelled(true);
         Tornado tornado = new Tornado(player.getLocation());
         new BukkitRunnable() {
             @Override
@@ -155,8 +157,7 @@ public class TornadoKit extends PremiumKit implements Listener {
                     double radius = y * radius_increment;
                     double x = Math.cos(Math.toRadians(360 / lines * l + y * 25 - angle)) * radius;
                     double z = Math.sin(Math.toRadians(360 / lines * l + y * 25 - angle)) * radius;
-                    getLocation().getWorld().spigot().playEffect(getLocation().clone().add(x, y, z), Effect.CLOUD, 0, 0, 0, 0, 0, 0, 1, 255);
-
+                    getLocation().getWorld().spawnParticle(Particle.CLOUD, getLocation().clone().add(x, y, z), 1, 0, 0, 0);
                 }
             }
 

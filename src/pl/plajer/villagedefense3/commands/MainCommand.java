@@ -37,7 +37,6 @@ import pl.plajer.villagedefense3.Main;
 import pl.plajer.villagedefense3.arena.Arena;
 import pl.plajer.villagedefense3.arena.initializers.ArenaInitializer1_11_R1;
 import pl.plajer.villagedefense3.arena.initializers.ArenaInitializer1_12_R1;
-import pl.plajer.villagedefense3.arena.initializers.ArenaInitializer1_8_R3;
 import pl.plajer.villagedefense3.arena.initializers.ArenaInitializer1_9_R1;
 import pl.plajer.villagedefense3.arena.ArenaRegistry;
 import pl.plajer.villagedefense3.handlers.ChatManager;
@@ -100,6 +99,7 @@ public class MainCommand implements CommandExecutor {
         return false;
     }
 
+    //todo static utils
     void sendSound(Player p, String newSound, String oldSound) {
         if(plugin.is1_9_R1() || plugin.is1_11_R1() || plugin.is1_12_R1() || plugin.is1_13_R1()) {
             p.playSound(p.getLocation(), Sound.valueOf(newSound), 1, 1);
@@ -467,6 +467,7 @@ public class MainCommand implements CommandExecutor {
                                 if(temporaryBlock.getBlock().getType() == Material.WOODEN_DOOR) {
                                     String location = temporaryBlock.getWorld().getName() + "," + temporaryBlock.getX() + "," + temporaryBlock.getY() + "," + temporaryBlock.getZ() + "," + temporaryBlock.getYaw() + "," + temporaryBlock.getPitch();
                                     config.set("instances." + ID + ".doors." + i + ".location", location);
+                                    //todo block data id
                                     config.set("instances." + ID + ".doors." + i + ".byte", temporaryBlock.getBlock().getData());
                                     counter++;
                                     i++;
@@ -479,6 +480,7 @@ public class MainCommand implements CommandExecutor {
                     if(selection.getMaximumPoint().getBlock().getType() == Material.WOODEN_DOOR) {
                         String location = selection.getMaximumPoint().getWorld().getName() + "," + selection.getMaximumPoint().getX() + "," + selection.getMaximumPoint().getY() + "," + selection.getMaximumPoint().getZ() + "," + selection.getMaximumPoint().getYaw() + "," + selection.getMaximumPoint().getPitch();
                         config.set("instances." + ID + ".doors." + i + ".location", location);
+                        //todo block data id
                         config.set("instances." + ID + ".doors." + i + ".byte", selection.getMaximumPoint().getBlock().getData());
                         counter++;
                         i++;
@@ -486,6 +488,7 @@ public class MainCommand implements CommandExecutor {
                     if(selection.getMinimumPoint().getBlock().getType() == Material.WOODEN_DOOR) {
                         String location = selection.getMaximumPoint().getWorld().getName() + "," + selection.getMaximumPoint().getX() + "," + selection.getMaximumPoint().getY() + "," + selection.getMaximumPoint().getZ() + "," + selection.getMaximumPoint().getYaw() + "," + selection.getMaximumPoint().getPitch();
                         config.set("instances." + ID + ".doors." + i + ".location", location);
+                        //todo block data id
                         config.set("instances." + ID + ".doors." + i + ".byte", selection.getMinimumPoint().getBlock().getData());
                         counter++;
                         i++;
@@ -584,9 +587,7 @@ public class MainCommand implements CommandExecutor {
 
         Arena arena;
 
-        if(plugin.is1_8_R3()) {
-            arena = new ArenaInitializer1_8_R3(ID, plugin);
-        } else if(plugin.is1_9_R1()) {
+        if(plugin.is1_9_R1()) {
             arena = new ArenaInitializer1_9_R1(ID, plugin);
         } else if(plugin.is1_11_R1()) {
             arena = new ArenaInitializer1_11_R1(ID, plugin);

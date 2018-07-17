@@ -19,6 +19,7 @@
 package pl.plajer.villagedefense3.kits.premium;
 
 import org.bukkit.Material;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -54,7 +55,7 @@ public class HeavyTankKit extends PremiumKit {
     public void giveKitItems(Player player) {
         player.getInventory().addItem(WeaponHelper.getEnchanted(new ItemStack(Material.STICK), new Enchantment[]{Enchantment.DURABILITY, Enchantment.DAMAGE_ALL}, new int[]{10, 2}));
         player.getInventory().addItem(new ItemStack(Material.GRILLED_PORK, 8));
-        player.setMaxHealth(40.0);
+        player.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(40.0);
         player.setHealth(40.0);
         ArmorHelper.setArmor(player, ArmorHelper.ArmorType.IRON);
         player.getInventory().addItem(new ItemStack(Material.SADDLE));

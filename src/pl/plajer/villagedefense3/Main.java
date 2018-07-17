@@ -36,6 +36,7 @@ import pl.plajer.villagedefense3.commands.MainCommand;
 import pl.plajer.villagedefense3.creatures.BreakFenceListener;
 import pl.plajer.villagedefense3.creatures.EntityRegistry;
 import pl.plajer.villagedefense3.database.FileStats;
+import pl.plajer.villagedefense3.database.MySQLConnectionUtils;
 import pl.plajer.villagedefense3.database.MySQLDatabase;
 import pl.plajer.villagedefense3.events.ChatEvents;
 import pl.plajer.villagedefense3.events.CombustDayLightEvent;
@@ -44,7 +45,6 @@ import pl.plajer.villagedefense3.events.GolemEvents;
 import pl.plajer.villagedefense3.events.JoinEvent;
 import pl.plajer.villagedefense3.events.LobbyEvents;
 import pl.plajer.villagedefense3.events.QuitEvent;
-import pl.plajer.villagedefense3.handlers.setup.SetupInventoryEvents;
 import pl.plajer.villagedefense3.events.spectator.SpectatorEvents;
 import pl.plajer.villagedefense3.events.spectator.SpectatorItemEvents;
 import pl.plajer.villagedefense3.handlers.BungeeManager;
@@ -59,15 +59,15 @@ import pl.plajer.villagedefense3.handlers.RewardsHandler;
 import pl.plajer.villagedefense3.handlers.ShopManager;
 import pl.plajer.villagedefense3.handlers.SignManager;
 import pl.plajer.villagedefense3.handlers.items.SpecialItem;
-import pl.plajer.villagedefense3.kits.kitapi.KitManager;
-import pl.plajer.villagedefense3.kits.kitapi.KitRegistry;
 import pl.plajer.villagedefense3.handlers.language.LanguageManager;
 import pl.plajer.villagedefense3.handlers.language.LanguageMigrator;
+import pl.plajer.villagedefense3.handlers.setup.SetupInventoryEvents;
+import pl.plajer.villagedefense3.kits.kitapi.KitManager;
+import pl.plajer.villagedefense3.kits.kitapi.KitRegistry;
 import pl.plajer.villagedefense3.user.User;
 import pl.plajer.villagedefense3.user.UserManager;
 import pl.plajer.villagedefense3.utils.MessageUtils;
 import pl.plajer.villagedefense3.utils.Metrics;
-import pl.plajer.villagedefense3.database.MySQLConnectionUtils;
 import pl.plajer.villagedefense3.utils.UpdateChecker;
 import pl.plajer.villagedefense3.utils.Utils;
 import pl.plajer.villagedefense3.villagedefenseapi.StatsStorage;
@@ -119,10 +119,6 @@ public class Main extends JavaPlugin {
         if(elapsed > 15) {
             Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "[Village Debugger] Slow server response, games may be affected.");
         }
-    }
-
-    public boolean is1_8_R3() {
-        return version.equalsIgnoreCase("v1_8_R3");
     }
 
     public boolean is1_9_R1() {
@@ -199,8 +195,8 @@ public class Main extends JavaPlugin {
         new ConfigurationManager(this);
         LanguageManager.init(this);
         saveDefaultConfig();
-        if(!(version.equalsIgnoreCase("v1_8_R3") || version.equalsIgnoreCase("v1_9_R1") || version.equalsIgnoreCase("v1_11_R1") || version.equalsIgnoreCase("v1_12_R1"))) {
-            if(version.contains("v1_13_R1")){
+        if(!(version.equalsIgnoreCase("v1_9_R1") || version.equalsIgnoreCase("v1_11_R1") || version.equalsIgnoreCase("v1_12_R1"))) {
+            if(version.contains("v1_13_R1")) {
                 MessageUtils.info();
                 Bukkit.getConsoleSender().sendMessage(ChatColor.YELLOW + "Enabling development build of Village Defense for 1.13 pre releases!");
                 Bukkit.getConsoleSender().sendMessage(ChatColor.YELLOW + "Proceed with caution as software is not fully ready!");
@@ -457,11 +453,7 @@ public class Main extends JavaPlugin {
         for(Arena arena : ArenaRegistry.getArenas()) {
             for(Player player : arena.getPlayers()) {
                 if(bossbarEnabled) {
-                    if(is1_8_R3()){
-                        arena.getGameBar_v1_8_R3().removePlayer(player);
-                    } else {
-                        arena.getGameBar().removePlayer(player);
-                    }
+                    arena.getGameBar().removePlayer(player);
                 }
                 arena.teleportToEndLocation(player);
                 if(inventoryManagerEnabled) {

@@ -21,6 +21,8 @@ package pl.plajer.villagedefense3.events;
 import org.bukkit.Bukkit;
 import org.bukkit.Effect;
 import org.bukkit.Material;
+import org.bukkit.Particle;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.IronGolem;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -94,69 +96,70 @@ public class GolemEvents implements Listener {
 
     @EventHandler
     public void onInventoryClick(InventoryClickEvent e) {
-        if(e.getInventory() == null || e.getCurrentItem() == null || clickedGolem.get(e.getWhoClicked()) == null)
+        if(e.getInventory() == null || e.getCurrentItem() == null || clickedGolem.get(e.getWhoClicked()) == null || !(e.getWhoClicked() instanceof Player))
             return;
         if(e.getInventory().getName().equals(ChatManager.colorMessage("In-Game.Golem-Upgrades.Upgrade-Inventory"))) {
             if(!e.getCurrentItem().hasItemMeta()) return;
-            double golemHealth = clickedGolem.get(e.getWhoClicked()).getMaxHealth();
-            Integer orbs = UserManager.getUser(e.getWhoClicked().getUniqueId()).getInt("orbs");
+            Player p = (Player) e.getWhoClicked();
+            double golemHealth = clickedGolem.get(p).getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue();
+            Integer orbs = UserManager.getUser(p.getUniqueId()).getInt("orbs");
             e.setCancelled(true);
             //checking for health upgrades
             for(int i = 1; i <= 3; i++) {
                 if(e.getCurrentItem().getItemMeta().getDisplayName().equals(ChatManager.colorMessage("In-Game.Golem-Upgrades.Upgrade-Tier" + i))) {
                     if(golemHealth == 160.0) {
-                        e.getWhoClicked().sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Golem-Upgrades.Upgrade-Already-Purchased"));
-                        e.getWhoClicked().closeInventory();
+                        p.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Golem-Upgrades.Upgrade-Already-Purchased"));
+                        p.closeInventory();
                         return;
                     }
                     Integer price = plugin.getConfig().getInt("Golem-Upgrade-Tier" + i + "-Cost");
                     if(orbs >= price) {
                         if(golemHealth >= 100.0 + (20 * i)) {
-                            e.getWhoClicked().sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Golem-Upgrades.Upgrade-Already-Purchased"));
-                            e.getWhoClicked().closeInventory();
+                            p.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Golem-Upgrades.Upgrade-Already-Purchased"));
+                            p.closeInventory();
                             return;
                         }
-                        clickedGolem.get(e.getWhoClicked()).setMaxHealth(100.0 + (20.0 * i));
-                        clickedGolem.get(e.getWhoClicked()).setHealth(clickedGolem.get(e.getWhoClicked()).getMaxHealth());
+                        clickedGolem.get(p).getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(100.0 + (20.0 * i));
+                        clickedGolem.get(p).setHealth(clickedGolem.get(p).getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue());
 
-                        VillageGolemUpgradeEvent villageGolemUpgradeEvent = new VillageGolemUpgradeEvent(ArenaRegistry.getArena((Player) e.getWhoClicked()), clickedGolem.get(e.getWhoClicked()), (Player) e.getWhoClicked(), golemHealth);
-                        Bukkit.getPluginManager().callEvent(villageGolemUpgradeEvent);
+                        VillageGolemUpgradeEvent event = new VillageGolemUpgradeEvent(ArenaRegistry.getArena(p), clickedGolem.get(p), p, golemHealth);
+                        Bukkit.getPluginManager().callEvent(event);
 
-                        e.getWhoClicked().sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Golem-Upgrades.Upgrade-Applied"));
-                        UserManager.getUser(e.getWhoClicked().getUniqueId()).setInt("orbs", orbs - price);
-                        clickedGolem.get(e.getWhoClicked()).getWorld().playEffect(e.getWhoClicked().getLocation(), Effect.LAVA_POP, 20);
-                        clickedGolem.remove(e.getWhoClicked());
-                        e.getWhoClicked().closeInventory();
+                        p.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Golem-Upgrades.Upgrade-Applied"));
+                        UserManager.getUser(p.getUniqueId()).setInt("orbs", orbs - price);
+                        clickedGolem.get(p).getWorld().spawnParticle(Particle.LAVA, p.getLocation(), 20);
+                        clickedGolem.remove(p);
+                        p.closeInventory();
                         return;
                     } else {
-                        e.getWhoClicked().sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Messages.Shop-Messages.Not-Enough-Orbs"));
-                        e.getWhoClicked().closeInventory();
+                        p.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Messages.Shop-Messages.Not-Enough-Orbs"));
+                        p.closeInventory();
                         return;
                     }
                 }
             }
             //checking for heal upgrade
             if(e.getCurrentItem().getItemMeta().getDisplayName().equals(ChatManager.colorMessage("In-Game.Golem-Upgrades.Upgrade-Heal"))) {
-                if(clickedGolem.get(e.getWhoClicked()).getHealth() == clickedGolem.get(e.getWhoClicked()).getMaxHealth()) {
-                    e.getWhoClicked().sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Golem-Upgrades.Upgrade-Heal-Full"));
-                    e.getWhoClicked().closeInventory();
+                if(clickedGolem.get(p).getHealth() == clickedGolem.get(p).getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue()) {
+                    p.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Golem-Upgrades.Upgrade-Heal-Full"));
+                    p.closeInventory();
                     return;
                 }
                 Integer price = plugin.getConfig().getInt("Golem-Upgrade-Heal-Cost", 150);
                 if(orbs >= price) {
-                    clickedGolem.get(e.getWhoClicked()).setHealth(clickedGolem.get(e.getWhoClicked()).getMaxHealth());
+                    clickedGolem.get(p).setHealth(clickedGolem.get(p).getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue());
 
-                    VillageGolemUpgradeEvent villageGolemUpgradeEvent = new VillageGolemUpgradeEvent(ArenaRegistry.getArena((Player) e.getWhoClicked()), clickedGolem.get(e.getWhoClicked()), (Player) e.getWhoClicked(), golemHealth);
-                    Bukkit.getPluginManager().callEvent(villageGolemUpgradeEvent);
+                    VillageGolemUpgradeEvent event = new VillageGolemUpgradeEvent(ArenaRegistry.getArena(p), clickedGolem.get(p), p, golemHealth);
+                    Bukkit.getPluginManager().callEvent(event);
 
-                    e.getWhoClicked().sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Golem-Upgrades.Upgrade-Applied"));
-                    UserManager.getUser(e.getWhoClicked().getUniqueId()).setInt("orbs", orbs - price);
-                    clickedGolem.get(e.getWhoClicked()).getWorld().playEffect(e.getWhoClicked().getLocation(), Effect.LAVA_POP, 20);
-                    clickedGolem.remove(e.getWhoClicked());
-                    e.getWhoClicked().closeInventory();
+                    p.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Golem-Upgrades.Upgrade-Applied"));
+                    UserManager.getUser(p.getUniqueId()).setInt("orbs", orbs - price);
+                    clickedGolem.get(p).getWorld().spawnParticle(Particle.LAVA, p.getLocation(), 20);
+                    clickedGolem.remove(p);
+                    p.closeInventory();
                 } else {
-                    e.getWhoClicked().sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Messages.Shop-Messages.Not-Enough-Orbs"));
-                    e.getWhoClicked().closeInventory();
+                    p.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Messages.Shop-Messages.Not-Enough-Orbs"));
+                    p.closeInventory();
                 }
             }
         }

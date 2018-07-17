@@ -26,7 +26,6 @@ import pl.plajer.villagedefense3.Main;
 import pl.plajer.villagedefense3.arena.initializers.ArenaInitializer1_11_R1;
 import pl.plajer.villagedefense3.arena.initializers.ArenaInitializer1_12_R1;
 import pl.plajer.villagedefense3.arena.initializers.ArenaInitializer1_13_R1;
-import pl.plajer.villagedefense3.arena.initializers.ArenaInitializer1_8_R3;
 import pl.plajer.villagedefense3.arena.initializers.ArenaInitializer1_9_R1;
 import pl.plajer.villagedefense3.handlers.ChatManager;
 import pl.plajer.villagedefense3.handlers.ConfigurationManager;
@@ -133,9 +132,7 @@ public class ArenaRegistry {
             Arena arena;
             String s = "instances." + ID + ".";
             if(s.contains("default")) continue;
-            if(plugin.is1_8_R3()) {
-                arena = new ArenaInitializer1_8_R3(ID, plugin);
-            } else if(plugin.is1_9_R1()) {
+            if(plugin.is1_9_R1()) {
                 arena = new ArenaInitializer1_9_R1(ID, plugin);
             } else if(plugin.is1_11_R1()) {
                 arena = new ArenaInitializer1_11_R1(ID, plugin);

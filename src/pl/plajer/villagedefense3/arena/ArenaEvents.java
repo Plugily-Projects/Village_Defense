@@ -23,6 +23,7 @@ import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -130,7 +131,7 @@ public class ArenaEvents implements Listener {
     public void onPlayerDie(PlayerDeathEvent e) {
         Arena arena = ArenaRegistry.getArena(e.getEntity());
         if(arena == null) return;
-        if(e.getEntity().isDead()) e.getEntity().setHealth(e.getEntity().getMaxHealth());
+        if(e.getEntity().isDead()) e.getEntity().setHealth(e.getEntity().getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue());
         e.setDeathMessage("");
         e.getDrops().clear();
         e.setDroppedExp(0);
@@ -160,16 +161,14 @@ public class ArenaEvents implements Listener {
         player.setFlying(true);
         player.getInventory().clear();
         MessageUtils.sendTitle(player, ChatColor.stripColor(ChatManager.colorMessage("In-Game.Death-Screen")), 0, 5 * 20, 0, ChatColor.RED);
-        if(plugin.is1_9_R1() || plugin.is1_11_R1() || plugin.is1_12_R1() || plugin.is1_13_R1()) {
-            new BukkitRunnable() {
-                @Override
-                public void run() {
-                    if(user.isSpectator())
-                        player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(ChatManager.colorMessage("In-Game.Died-Respawn-In-Next-Wave")));
-                    else this.cancel();
-                }
-            }.runTaskTimer(plugin, 20, 20);
-        }
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                if(user.isSpectator())
+                    player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(ChatManager.colorMessage("In-Game.Died-Respawn-In-Next-Wave")));
+                else this.cancel();
+            }
+        }.runTaskTimer(plugin, 20, 20);
         ChatManager.broadcastAction(arena, player, ChatManager.ActionType.DEATH);
 
         ItemStack spectatorItem = new ItemStack(Material.COMPASS, 1);
