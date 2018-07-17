@@ -36,31 +36,32 @@ import java.util.List;
  */
 public class KnightKit extends FreeKit {
 
-    public KnightKit(Main plugin) {
-        this.setName(ChatManager.colorMessage("Kits.Knight.Kit-Name"));
-        List<String> description = Utils.splitString(ChatManager.colorMessage("Kits.Knight.Kit-Description"), 40);
-        this.setDescription(description.toArray(new String[0]));
-        KitRegistry.registerKit(this);
-    }
+  public KnightKit(Main plugin) {
+    this.setName(ChatManager.colorMessage("Kits.Knight.Kit-Name"));
+    List<String> description = Utils.splitString(ChatManager.colorMessage("Kits.Knight.Kit-Description"), 40);
+    this.setDescription(description.toArray(new String[0]));
+    KitRegistry.registerKit(this);
+  }
 
-    @Override
-    public boolean isUnlockedByPlayer(Player player) {
-        return true;
-    }
+  @Override
+  public boolean isUnlockedByPlayer(Player player) {
+    return true;
+  }
 
-    @Override
-    public void giveKitItems(Player player) {
-        player.getInventory().addItem(WeaponHelper.getUnBreakingSword(WeaponHelper.ResourceType.WOOD, 10));
-        ArmorHelper.setArmor(player, ArmorHelper.ArmorType.LEATHER);
-        player.getInventory().addItem(new ItemStack(Material.GRILLED_PORK, 8));
+  @Override
+  public void giveKitItems(Player player) {
+    player.getInventory().addItem(WeaponHelper.getUnBreakingSword(WeaponHelper.ResourceType.WOOD, 10));
+    ArmorHelper.setArmor(player, ArmorHelper.ArmorType.LEATHER);
+    player.getInventory().addItem(new ItemStack(Material.GRILLED_PORK, 8));
 
-    }
+  }
 
-    @Override
-    public Material getMaterial() {
-        return Material.WOOD_SWORD;
-    }
+  @Override
+  public Material getMaterial() {
+    return Material.WOOD_SWORD;
+  }
 
-    @Override
-    public void reStock(Player player) {}
+  @Override
+  public void reStock(Player player) {
+  }
 }

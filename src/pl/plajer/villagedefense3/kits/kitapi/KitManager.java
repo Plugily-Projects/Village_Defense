@@ -48,153 +48,153 @@ import java.util.Arrays;
  */
 public class KitManager implements Listener {
 
-    private Inventory invMenu;
-    private String itemName;
-    private Material material;
-    private String[] description;
-    private String menuName;
+  private Inventory invMenu;
+  private String itemName;
+  private Material material;
+  private String[] description;
+  private String menuName;
 
-    private String unlockedString;
-    private String lockedString;
+  private String unlockedString;
+  private String lockedString;
 
-    public KitManager(Main plugin) {
-        itemName = ChatManager.colorMessage("Kits.Kit-Menu-Item-Name");
-        unlockedString = ChatManager.colorMessage("Kits.Kit-Menu.Unlocked-Kit-Lore");
-        lockedString = ChatManager.colorMessage("Kits.Kit-Menu.Locked-Lores.Locked-Lore");
-        plugin.getServer().getPluginManager().registerEvents(this, plugin);
+  public KitManager(Main plugin) {
+    itemName = ChatManager.colorMessage("Kits.Kit-Menu-Item-Name");
+    unlockedString = ChatManager.colorMessage("Kits.Kit-Menu.Unlocked-Kit-Lore");
+    lockedString = ChatManager.colorMessage("Kits.Kit-Menu.Locked-Lores.Locked-Lore");
+    plugin.getServer().getPluginManager().registerEvents(this, plugin);
+  }
+
+  /**
+   * Returns name of kit
+   *
+   * @return name of kit
+   */
+  public String getItemName() {
+    return itemName;
+  }
+
+  /**
+   * Sets name of kit
+   *
+   * @param name kit name
+   */
+  public void setItemName(String name) {
+    this.itemName = name;
+  }
+
+  private void createKitMenu(Player player) {
+    invMenu = Bukkit.createInventory(null, Utils.serializeInt(KitRegistry.getKits().size()), getMenuName());
+    for (Kit kit : KitRegistry.getKits()) {
+      ItemStack itemStack = kit.getItemStack();
+      if (kit.isUnlockedByPlayer(player))
+        Utils.addLore(itemStack, unlockedString);
+      else
+        Utils.addLore(itemStack, lockedString);
+
+      invMenu.addItem(itemStack);
+    }
+  }
+
+  /**
+   * Returns material represented by kit
+   *
+   * @return material represented by kit
+   */
+  public Material getMaterial() {
+    return material;
+  }
+
+  /**
+   * Sets material that kit will represents
+   *
+   * @param material material that kit will represents
+   */
+  public void setMaterial(Material material) {
+    this.material = material;
+  }
+
+  /**
+   * Returns description of kit
+   *
+   * @return description of kit
+   */
+  public String[] getDescription() {
+    return description;
+  }
+
+  /**
+   * Sets description of kit
+   *
+   * @param description description of kit
+   */
+  public void setDescription(String[] description) {
+    this.description = description;
+  }
+
+  public String getMenuName() {
+    return menuName;
+  }
+
+  public void setMenuName(String menuName) {
+    this.menuName = menuName;
+  }
+
+  public void openKitMenu(Player player) {
+    createKitMenu(player);
+    player.openInventory(invMenu);
+  }
+
+  public void giveKitMenuItem(Player player) {
+    ItemStack itemStack = new ItemStack(getMaterial());
+    ItemMeta itemMeta = itemStack.getItemMeta();
+    itemMeta.setDisplayName(getItemName());
+    itemMeta.setLore(Arrays.asList(getDescription()));
+    itemStack.setItemMeta(itemMeta);
+    player.getInventory().addItem(itemStack);
+  }
+
+
+  @EventHandler
+  private void onKitMenuItemClick(PlayerInteractEvent e) {
+    if (!(e.getAction() == Action.RIGHT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_BLOCK))
+      return;
+    ItemStack stack = e.getPlayer().getInventory().getItemInMainHand();
+    if (stack.getType() != getMaterial() || !stack.hasItemMeta() || !stack.getItemMeta().hasLore()) {
+      return;
+    }
+    if (!stack.getItemMeta().getDisplayName().equalsIgnoreCase(getItemName())) return;
+    openKitMenu(e.getPlayer());
+  }
+
+  @EventHandler
+  public void onKitChoose(InventoryClickEvent e) {
+    if (!e.getInventory().getName().equalsIgnoreCase(getMenuName()))
+      return;
+    if (!(e.getWhoClicked() instanceof Player))
+      return;
+    Player player = (Player) e.getWhoClicked();
+    e.setCancelled(true);
+    if (e.getCurrentItem() == null)
+      return;
+    if (!(e.isLeftClick() || e.isRightClick()))
+      return;
+    if (!e.getCurrentItem().hasItemMeta())
+      return;
+    if (!ArenaRegistry.isInArena(player))
+      return;
+    VillagePlayerChooseKitEvent event = new VillagePlayerChooseKitEvent(player, KitRegistry.getKit(e.getCurrentItem()), ArenaRegistry.getArena(player));
+    Bukkit.getPluginManager().callEvent(event);
+  }
+
+  @EventHandler
+  public void checkIfIsUnlocked(VillagePlayerChooseKitEvent e) {
+    if (e.getKit().isUnlockedByPlayer(e.getPlayer())) {
+      User user = UserManager.getUser(e.getPlayer().getUniqueId());
+      user.setKit(e.getKit());
+      e.getPlayer().sendMessage(ChatManager.colorMessage("Kits.Choose-Message").replaceAll("%KIT%", e.getKit().getName()));
+    } else {
+      e.getPlayer().sendMessage(ChatManager.colorMessage("Kits.Not-Unlocked-Message").replaceAll("%KIT%", e.getKit().getName()));
     }
 
-    /**
-     * Returns name of kit
-     *
-     * @return name of kit
-     */
-    public String getItemName() {
-        return itemName;
-    }
-
-    /**
-     * Sets name of kit
-     *
-     * @param name kit name
-     */
-    public void setItemName(String name) {
-        this.itemName = name;
-    }
-
-    private void createKitMenu(Player player) {
-        invMenu = Bukkit.createInventory(null, Utils.serializeInt(KitRegistry.getKits().size()), getMenuName());
-        for(Kit kit : KitRegistry.getKits()) {
-            ItemStack itemStack = kit.getItemStack();
-            if(kit.isUnlockedByPlayer(player))
-                Utils.addLore(itemStack, unlockedString);
-            else
-                Utils.addLore(itemStack, lockedString);
-
-            invMenu.addItem(itemStack);
-        }
-    }
-
-    /**
-     * Returns material represented by kit
-     *
-     * @return material represented by kit
-     */
-    public Material getMaterial() {
-        return material;
-    }
-
-    /**
-     * Sets material that kit will represents
-     *
-     * @param material material that kit will represents
-     */
-    public void setMaterial(Material material) {
-        this.material = material;
-    }
-
-    /**
-     * Returns description of kit
-     *
-     * @return description of kit
-     */
-    public String[] getDescription() {
-        return description;
-    }
-
-    /**
-     * Sets description of kit
-     *
-     * @param description description of kit
-     */
-    public void setDescription(String[] description) {
-        this.description = description;
-    }
-
-    public String getMenuName() {
-        return menuName;
-    }
-
-    public void setMenuName(String menuName) {
-        this.menuName = menuName;
-    }
-
-    public void openKitMenu(Player player) {
-        createKitMenu(player);
-        player.openInventory(invMenu);
-    }
-
-    public void giveKitMenuItem(Player player) {
-        ItemStack itemStack = new ItemStack(getMaterial());
-        ItemMeta itemMeta = itemStack.getItemMeta();
-        itemMeta.setDisplayName(getItemName());
-        itemMeta.setLore(Arrays.asList(getDescription()));
-        itemStack.setItemMeta(itemMeta);
-        player.getInventory().addItem(itemStack);
-    }
-
-
-    @EventHandler
-    private void onKitMenuItemClick(PlayerInteractEvent e) {
-        if(!(e.getAction() == Action.RIGHT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_BLOCK))
-            return;
-        ItemStack stack = e.getPlayer().getInventory().getItemInMainHand();
-        if(stack.getType() != getMaterial() || !stack.hasItemMeta() || !stack.getItemMeta().hasLore()) {
-            return;
-        }
-        if(!stack.getItemMeta().getDisplayName().equalsIgnoreCase(getItemName())) return;
-        openKitMenu(e.getPlayer());
-    }
-
-    @EventHandler
-    public void onKitChoose(InventoryClickEvent e) {
-        if(!e.getInventory().getName().equalsIgnoreCase(getMenuName()))
-            return;
-        if(!(e.getWhoClicked() instanceof Player))
-            return;
-        Player player = (Player) e.getWhoClicked();
-        e.setCancelled(true);
-        if(e.getCurrentItem() == null)
-            return;
-        if(!(e.isLeftClick() || e.isRightClick()))
-            return;
-        if(!e.getCurrentItem().hasItemMeta())
-            return;
-        if(!ArenaRegistry.isInArena(player))
-            return;
-        VillagePlayerChooseKitEvent event = new VillagePlayerChooseKitEvent(player, KitRegistry.getKit(e.getCurrentItem()), ArenaRegistry.getArena(player));
-        Bukkit.getPluginManager().callEvent(event);
-    }
-
-    @EventHandler
-    public void checkIfIsUnlocked(VillagePlayerChooseKitEvent e) {
-        if(e.getKit().isUnlockedByPlayer(e.getPlayer())) {
-            User user = UserManager.getUser(e.getPlayer().getUniqueId());
-            user.setKit(e.getKit());
-            e.getPlayer().sendMessage(ChatManager.colorMessage("Kits.Choose-Message").replaceAll("%KIT%", e.getKit().getName()));
-        } else {
-            e.getPlayer().sendMessage(ChatManager.colorMessage("Kits.Not-Unlocked-Message").replaceAll("%KIT%", e.getKit().getName()));
-        }
-
-    }
+  }
 }

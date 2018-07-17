@@ -27,68 +27,68 @@ import pl.plajer.villagedefense3.Main;
  */
 public class PermissionsManager {
 
-    private static Main plugin = JavaPlugin.getPlugin(Main.class);
-    private static String joinFullPerm = "villagedefense.fullgames";
-    private static String vipPerm = "villagedefense.vip";
-    private static String mvpPerm = "villagedefense.mvp";
-    private static String elitePerm = "villagedefense.elite";
-    private static String joinPerm = "villagedefense.join.<arena>";
+  private static Main plugin = JavaPlugin.getPlugin(Main.class);
+  private static String joinFullPerm = "villagedefense.fullgames";
+  private static String vipPerm = "villagedefense.vip";
+  private static String mvpPerm = "villagedefense.mvp";
+  private static String elitePerm = "villagedefense.elite";
+  private static String joinPerm = "villagedefense.join.<arena>";
 
-    public static void init() {
-        setupPermissions();
-    }
+  public static void init() {
+    setupPermissions();
+  }
 
-    public static String getJoinFullGames() {
-        return joinFullPerm;
-    }
+  public static String getJoinFullGames() {
+    return joinFullPerm;
+  }
 
-    private static void setJoinFullGames(String joinFullGames) {
-        PermissionsManager.joinFullPerm = joinFullGames;
-    }
+  private static void setJoinFullGames(String joinFullGames) {
+    PermissionsManager.joinFullPerm = joinFullGames;
+  }
 
-    public static String getVip() {
-        return vipPerm;
-    }
+  public static String getVip() {
+    return vipPerm;
+  }
 
-    private static void setVip(String VIP) {
-        PermissionsManager.vipPerm = VIP;
-    }
+  private static void setVip(String VIP) {
+    PermissionsManager.vipPerm = VIP;
+  }
 
-    public static String getMvp() {
-        return mvpPerm;
-    }
+  public static String getMvp() {
+    return mvpPerm;
+  }
 
-    private static void setMvp(String MVP) {
-        PermissionsManager.mvpPerm = MVP;
-    }
+  private static void setMvp(String MVP) {
+    PermissionsManager.mvpPerm = MVP;
+  }
 
-    public static String getElite() {
-        return elitePerm;
-    }
+  public static String getElite() {
+    return elitePerm;
+  }
 
-    private static void setElite(String ELITE) {
-        PermissionsManager.elitePerm = ELITE;
-    }
+  private static void setElite(String ELITE) {
+    PermissionsManager.elitePerm = ELITE;
+  }
 
-    public static String getJoinPerm() {
-        return joinPerm;
-    }
+  public static String getJoinPerm() {
+    return joinPerm;
+  }
 
-    private static void setJoinPerm(String joinPerm) {
-        PermissionsManager.joinPerm = joinPerm;
-    }
+  private static void setJoinPerm(String joinPerm) {
+    PermissionsManager.joinPerm = joinPerm;
+  }
 
-    public static boolean isPremium(Player p) {
-        return p.hasPermission(vipPerm) || p.hasPermission(mvpPerm) || p.hasPermission(elitePerm);
-    }
+  public static boolean isPremium(Player p) {
+    return p.hasPermission(vipPerm) || p.hasPermission(mvpPerm) || p.hasPermission(elitePerm);
+  }
 
-    private static void setupPermissions() {
-        PermissionsManager.setJoinFullGames(plugin.getConfig().getString("Basic-Permissions.Full-Games-Permission", "villagedefense.fullgames"));
-        PermissionsManager.setVip(plugin.getConfig().getString("Basic-Permissions.Vip-Permission", "villagedefense.vip"));
-        PermissionsManager.setMvp(plugin.getConfig().getString("Basic-Permissions.Mvp-Permission", "villagedefense.mvp"));
-        PermissionsManager.setElite(plugin.getConfig().getString("Basic-Permissions.Elite-Permission", "villagedefense.elite"));
-        PermissionsManager.setJoinPerm(plugin.getConfig().getString("Basic-Permissions.Join-Permission", "villagedefense.join.<arena>"));
-        Main.debug("Basic permissions registered", System.currentTimeMillis());
-    }
+  private static void setupPermissions() {
+    PermissionsManager.setJoinFullGames(plugin.getConfig().getString("Basic-Permissions.Full-Games-Permission", "villagedefense.fullgames"));
+    PermissionsManager.setVip(plugin.getConfig().getString("Basic-Permissions.Vip-Permission", "villagedefense.vip"));
+    PermissionsManager.setMvp(plugin.getConfig().getString("Basic-Permissions.Mvp-Permission", "villagedefense.mvp"));
+    PermissionsManager.setElite(plugin.getConfig().getString("Basic-Permissions.Elite-Permission", "villagedefense.elite"));
+    PermissionsManager.setJoinPerm(plugin.getConfig().getString("Basic-Permissions.Join-Permission", "villagedefense.join.<arena>"));
+    Main.debug("Basic permissions registered", System.currentTimeMillis());
+  }
 
 }

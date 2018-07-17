@@ -19,7 +19,6 @@
 package pl.plajer.villagedefense3.kits.level;
 
 import org.bukkit.Material;
-import org.bukkit.Sound;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -48,71 +47,71 @@ import java.util.Random;
  */
 public class ZombieFinderKit extends LevelKit implements Listener {
 
-    private Main plugin;
+  private Main plugin;
 
-    public ZombieFinderKit(Main plugin) {
-        this.plugin = plugin;
-        setName(ChatManager.colorMessage("Kits.Zombie-Teleporter.Kit-Name"));
-        List<String> description = Utils.splitString(ChatManager.colorMessage("Kits.Zombie-Teleporter.Kit-Description"), 40);
-        this.setDescription(description.toArray(new String[0]));
-        this.setLevel(ConfigurationManager.getConfig("kits").getInt("Required-Level.ZombieFinder"));
-        plugin.getServer().getPluginManager().registerEvents(this, plugin);
-        KitRegistry.registerKit(this);
+  public ZombieFinderKit(Main plugin) {
+    this.plugin = plugin;
+    setName(ChatManager.colorMessage("Kits.Zombie-Teleporter.Kit-Name"));
+    List<String> description = Utils.splitString(ChatManager.colorMessage("Kits.Zombie-Teleporter.Kit-Description"), 40);
+    this.setDescription(description.toArray(new String[0]));
+    this.setLevel(ConfigurationManager.getConfig("kits").getInt("Required-Level.ZombieFinder"));
+    plugin.getServer().getPluginManager().registerEvents(this, plugin);
+    KitRegistry.registerKit(this);
+  }
+
+  @Override
+  public boolean isUnlockedByPlayer(Player player) {
+    return true;
+  }
+
+  @Override
+  public void giveKitItems(Player player) {
+    player.getInventory().addItem(WeaponHelper.getUnBreakingSword(WeaponHelper.ResourceType.WOOD, 10));
+    player.getInventory().addItem(new ItemStack(Material.GRILLED_PORK, 8));
+    ItemStack zombieteleporter = WeaponHelper.getEnchanted(new ItemStack(Material.BOOK), new Enchantment[]{Enchantment.DAMAGE_ALL}, new int[]{1});
+    ItemMeta im = zombieteleporter.getItemMeta();
+    im.setDisplayName(ChatManager.colorMessage("Kits.Zombie-Teleporter.Game-Item-Name"));
+    im.setLore(Utils.splitString(ChatManager.colorMessage("Kits.Zombie-Teleporter.Game-Item-Lore"), 40));
+    zombieteleporter.setItemMeta(im);
+    player.getInventory().addItem(zombieteleporter);
+  }
+
+  @Override
+  public Material getMaterial() {
+    return Material.FISHING_ROD;
+  }
+
+  @Override
+  public void reStock(Player player) {
+
+  }
+
+  @EventHandler
+  public void onClean(PlayerInteractEvent event) {
+    if (!event.hasItem() || event.getItem().getType() != Material.BOOK || !(event.getItem().hasItemMeta()) || !(event.getItem().getItemMeta().hasDisplayName())
+            || !(event.getItem().getItemMeta().getDisplayName().contains(ChatManager.colorMessage("Kits.Zombie-Teleporter.Game-Item-Name")) || !ArenaRegistry.isInArena(event.getPlayer())))
+      return;
+    if (UserManager.getUser(event.getPlayer().getUniqueId()).isSpectator()) {
+      event.getPlayer().sendMessage(ChatManager.colorMessage("Kits.Teleporter.Spectator-Warning"));
+      return;
     }
-
-    @Override
-    public boolean isUnlockedByPlayer(Player player) {
-        return true;
+    Arena arena = ArenaRegistry.getArena(event.getPlayer());
+    if (UserManager.getUser(event.getPlayer().getUniqueId()).getCooldown("zombie") > 0 && !UserManager.getUser(event.getPlayer().getUniqueId()).isSpectator()) {
+      String msgstring = ChatManager.colorMessage("Kits.Ability-Still-On-Cooldown");
+      msgstring = msgstring.replaceFirst("%COOLDOWN%", Long.toString(UserManager.getUser(event.getPlayer().getUniqueId()).getCooldown("zombie")));
+      event.getPlayer().sendMessage(msgstring);
+      return;
     }
-
-    @Override
-    public void giveKitItems(Player player) {
-        player.getInventory().addItem(WeaponHelper.getUnBreakingSword(WeaponHelper.ResourceType.WOOD, 10));
-        player.getInventory().addItem(new ItemStack(Material.GRILLED_PORK, 8));
-        ItemStack zombieteleporter = WeaponHelper.getEnchanted(new ItemStack(Material.BOOK), new Enchantment[]{Enchantment.DAMAGE_ALL}, new int[]{1});
-        ItemMeta im = zombieteleporter.getItemMeta();
-        im.setDisplayName(ChatManager.colorMessage("Kits.Zombie-Teleporter.Game-Item-Name"));
-        im.setLore(Utils.splitString(ChatManager.colorMessage("Kits.Zombie-Teleporter.Game-Item-Lore"), 40));
-        zombieteleporter.setItemMeta(im);
-        player.getInventory().addItem(zombieteleporter);
+    if (arena.getZombies() == null || arena.getZombies().isEmpty() || arena.getZombies().size() <= 0) {
+      event.getPlayer().sendMessage(ChatManager.colorMessage("Kits.Zombie-Teleporter.No-Available-Zombies"));
+      return;
+    } else {
+      Integer rand = new Random().nextInt(arena.getZombies().size());
+      arena.getZombies().get(rand).teleport(event.getPlayer());
+      arena.getZombies().get(rand).addPotionEffect(new PotionEffect(PotionEffectType.WEAKNESS, 20 * 30, 1));
+      event.getPlayer().sendMessage(ChatManager.colorMessage("Kits.Zombie-Teleporter.Zombie-Teleported"));
     }
-
-    @Override
-    public Material getMaterial() {
-        return Material.FISHING_ROD;
-    }
-
-    @Override
-    public void reStock(Player player) {
-
-    }
-
-    @EventHandler
-    public void onClean(PlayerInteractEvent event) {
-        if(!event.hasItem() || event.getItem().getType() != Material.BOOK || !(event.getItem().hasItemMeta()) || !(event.getItem().getItemMeta().hasDisplayName())
-                || !(event.getItem().getItemMeta().getDisplayName().contains(ChatManager.colorMessage("Kits.Zombie-Teleporter.Game-Item-Name")) || !ArenaRegistry.isInArena(event.getPlayer())))
-            return;
-        if(UserManager.getUser(event.getPlayer().getUniqueId()).isSpectator()) {
-            event.getPlayer().sendMessage(ChatManager.colorMessage("Kits.Teleporter.Spectator-Warning"));
-            return;
-        }
-        Arena arena = ArenaRegistry.getArena(event.getPlayer());
-        if(UserManager.getUser(event.getPlayer().getUniqueId()).getCooldown("zombie") > 0 && !UserManager.getUser(event.getPlayer().getUniqueId()).isSpectator()) {
-            String msgstring = ChatManager.colorMessage("Kits.Ability-Still-On-Cooldown");
-            msgstring = msgstring.replaceFirst("%COOLDOWN%", Long.toString(UserManager.getUser(event.getPlayer().getUniqueId()).getCooldown("zombie")));
-            event.getPlayer().sendMessage(msgstring);
-            return;
-        }
-        if(arena.getZombies() == null || arena.getZombies().isEmpty() || arena.getZombies().size() <= 0) {
-            event.getPlayer().sendMessage(ChatManager.colorMessage("Kits.Zombie-Teleporter.No-Available-Zombies"));
-            return;
-        } else {
-            Integer rand = new Random().nextInt(arena.getZombies().size());
-            arena.getZombies().get(rand).teleport(event.getPlayer());
-            arena.getZombies().get(rand).addPotionEffect(new PotionEffect(PotionEffectType.WEAKNESS, 20 * 30, 1));
-            event.getPlayer().sendMessage(ChatManager.colorMessage("Kits.Zombie-Teleporter.Zombie-Teleported"));
-        }
-        Utils.sendSound(event.getPlayer(), "ENTITY_ZOMBIE_DEATH", "ENTITY_ZOMBIE_DEATH");
-        UserManager.getUser(event.getPlayer().getUniqueId()).setCooldown("zombie", 30);
-    }
+    Utils.sendSound(event.getPlayer(), "ENTITY_ZOMBIE_DEATH", "ENTITY_ZOMBIE_DEATH");
+    UserManager.getUser(event.getPlayer().getUniqueId()).setCooldown("zombie", 30);
+  }
 }

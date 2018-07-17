@@ -41,86 +41,86 @@ import java.util.regex.Pattern;
  */
 public class ChatEvents implements Listener {
 
-    private Main plugin;
-    private String[] regexChars = new String[]{"$", "\\"};
+  private Main plugin;
+  private String[] regexChars = new String[]{"$", "\\"};
 
-    public ChatEvents(Main plugin) {
-        this.plugin = plugin;
-        plugin.getServer().getPluginManager().registerEvents(this, plugin);
+  public ChatEvents(Main plugin) {
+    this.plugin = plugin;
+    plugin.getServer().getPluginManager().registerEvents(this, plugin);
+  }
+
+  @EventHandler
+  public void onChat(AsyncPlayerChatEvent event) {
+    if (ArenaRegistry.getArena(event.getPlayer()) == null) {
+      for (Player player : event.getRecipients()) {
+        if (ArenaRegistry.getArena(event.getPlayer()) == null)
+          return;
+        event.getRecipients().remove(player);
+
+      }
     }
+    event.getRecipients().clear();
+    event.getRecipients().addAll(ArenaRegistry.getArena(event.getPlayer()).getPlayers());
+  }
 
-    @EventHandler
-    public void onChat(AsyncPlayerChatEvent event) {
-        if(ArenaRegistry.getArena(event.getPlayer()) == null) {
-            for(Player player : event.getRecipients()) {
-                if(ArenaRegistry.getArena(event.getPlayer()) == null)
-                    return;
-                event.getRecipients().remove(player);
-
-            }
+  @EventHandler
+  public void onChatIngame(AsyncPlayerChatEvent event) {
+    Arena arena = ArenaRegistry.getArena(event.getPlayer());
+    if (arena == null) {
+      for (Arena loopArena : ArenaRegistry.getArenas()) {
+        for (Player player : loopArena.getPlayers()) {
+          if (event.getRecipients().contains(player)) {
+            if (!plugin.isSpyChatEnabled(player))
+              event.getRecipients().remove(player);
+          }
         }
-        event.getRecipients().clear();
-        event.getRecipients().addAll(ArenaRegistry.getArena(event.getPlayer()).getPlayers());
+      }
+      return;
     }
-
-    @EventHandler
-    public void onChatIngame(AsyncPlayerChatEvent event) {
-        Arena arena = ArenaRegistry.getArena(event.getPlayer());
-        if(arena == null) {
-            for(Arena loopArena : ArenaRegistry.getArenas()) {
-                for(Player player : loopArena.getPlayers()) {
-                    if(event.getRecipients().contains(player)) {
-                        if(!plugin.isSpyChatEnabled(player))
-                            event.getRecipients().remove(player);
-                    }
-                }
-            }
-            return;
+    if (plugin.isChatFormatEnabled()) {
+      event.setCancelled(true);
+      Iterator<Player> iterator = event.getRecipients().iterator();
+      List<Player> remove = new ArrayList<>();
+      while (iterator.hasNext()) {
+        Player player = iterator.next();
+        if (!plugin.isSpyChatEnabled(player))
+          remove.add(player);
+      }
+      for (Player player : remove) {
+        event.getRecipients().remove(player);
+      }
+      remove.clear();
+      String message;
+      String eventMessage = event.getMessage();
+      for (String regexChar : regexChars) {
+        if (eventMessage.contains(regexChar)) {
+          eventMessage = eventMessage.replaceAll(Pattern.quote(regexChar), "");
         }
-        if(plugin.isChatFormatEnabled()) {
-            event.setCancelled(true);
-            Iterator<Player> iterator = event.getRecipients().iterator();
-            List<Player> remove = new ArrayList<>();
-            while(iterator.hasNext()) {
-                Player player = iterator.next();
-                if(!plugin.isSpyChatEnabled(player))
-                    remove.add(player);
-            }
-            for(Player player : remove) {
-                event.getRecipients().remove(player);
-            }
-            remove.clear();
-            String message;
-            String eventMessage = event.getMessage();
-            for(String regexChar : regexChars) {
-                if(eventMessage.contains(regexChar)) {
-                    eventMessage = eventMessage.replaceAll(Pattern.quote(regexChar), "");
-                }
-            }
-            if(!UserManager.getUser(event.getPlayer().getUniqueId()).isFakeDead()) {
-                message = ChatColor.translateAlternateColorCodes('&',
-                        LanguageManager.getLanguageMessage("In-Game.Game-Chat-Format")
-                                .replaceAll("%level%", UserManager.getUser(event.getPlayer().getUniqueId()).getInt("level") + "")
-                                .replaceAll("%kit%", UserManager.getUser(event.getPlayer().getUniqueId()).getKit().getName())
-                                .replaceAll("%player%", event.getPlayer().getName())
-                                .replaceAll("%message%", eventMessage));
-            } else {
-                message = ChatColor.translateAlternateColorCodes('&',
-                        LanguageManager.getLanguageMessage("In-Game.Game-Chat-Format")
-                                .replaceAll("%level%", UserManager.getUser(event.getPlayer().getUniqueId()).getInt("level") + "")
-                                .replaceAll("%kit%", ChatManager.colorMessage("In-Game.Dead-Tag-On-Death"))
-                                .replaceAll("%player%", event.getPlayer().getName())
-                                .replaceAll("%message%", eventMessage));
-            }
-            for(Player player : arena.getPlayers()) {
-                player.sendMessage(message);
-            }
-            Bukkit.getConsoleSender().sendMessage(message);
-        } else {
-            event.getRecipients().clear();
-            event.getRecipients().addAll(new ArrayList<>(arena.getPlayers()));
-            event.setMessage(event.getMessage().replaceAll("%kit%", UserManager.getUser(event.getPlayer().getUniqueId()).getKit().getName()));
-        }
+      }
+      if (!UserManager.getUser(event.getPlayer().getUniqueId()).isFakeDead()) {
+        message = ChatColor.translateAlternateColorCodes('&',
+                LanguageManager.getLanguageMessage("In-Game.Game-Chat-Format")
+                        .replaceAll("%level%", UserManager.getUser(event.getPlayer().getUniqueId()).getInt("level") + "")
+                        .replaceAll("%kit%", UserManager.getUser(event.getPlayer().getUniqueId()).getKit().getName())
+                        .replaceAll("%player%", event.getPlayer().getName())
+                        .replaceAll("%message%", eventMessage));
+      } else {
+        message = ChatColor.translateAlternateColorCodes('&',
+                LanguageManager.getLanguageMessage("In-Game.Game-Chat-Format")
+                        .replaceAll("%level%", UserManager.getUser(event.getPlayer().getUniqueId()).getInt("level") + "")
+                        .replaceAll("%kit%", ChatManager.colorMessage("In-Game.Dead-Tag-On-Death"))
+                        .replaceAll("%player%", event.getPlayer().getName())
+                        .replaceAll("%message%", eventMessage));
+      }
+      for (Player player : arena.getPlayers()) {
+        player.sendMessage(message);
+      }
+      Bukkit.getConsoleSender().sendMessage(message);
+    } else {
+      event.getRecipients().clear();
+      event.getRecipients().addAll(new ArrayList<>(arena.getPlayers()));
+      event.setMessage(event.getMessage().replaceAll("%kit%", UserManager.getUser(event.getPlayer().getUniqueId()).getKit().getName()));
     }
+  }
 
 }

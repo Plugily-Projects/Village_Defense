@@ -36,55 +36,55 @@ import pl.plajer.villagedefense3.utils.MessageUtils;
  */
 public class QuitEvent implements Listener {
 
-    private Main plugin;
+  private Main plugin;
 
-    public QuitEvent(Main plugin) {
-        this.plugin = plugin;
-        plugin.getServer().getPluginManager().registerEvents(this, plugin);
+  public QuitEvent(Main plugin) {
+    this.plugin = plugin;
+    plugin.getServer().getPluginManager().registerEvents(this, plugin);
+  }
+
+  @EventHandler
+  public void onQuit(PlayerQuitEvent event) {
+    if (ArenaRegistry.getArena(event.getPlayer()) == null)
+      return;
+    if (!plugin.isBungeeActivated())
+      ArenaManager.leaveAttempt(event.getPlayer(), ArenaRegistry.getArena(event.getPlayer()));
+  }
+
+  @EventHandler
+  public void onQuitSaveStats(PlayerQuitEvent event) {
+    if (ArenaRegistry.getArena(event.getPlayer()) != null) {
+      ArenaManager.leaveAttempt(event.getPlayer(), ArenaRegistry.getArena(event.getPlayer()));
     }
+    final User user = UserManager.getUser(event.getPlayer().getUniqueId());
+    final Player player = event.getPlayer();
+    if (plugin.isDatabaseActivated()) {
+      Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
+        for (final String s : FileStats.STATISTICS.keySet()) {
+          int i;
+          try {
+            i = plugin.getMySQLDatabase().getStat(player.getUniqueId().toString(), s);
+          } catch (NullPointerException npe) {
+            i = 0;
+            System.out.print("COULDN'T GET STATS FROM PLAYER: " + player.getName());
+            npe.printStackTrace();
+            MessageUtils.errorOccured();
+            Bukkit.getConsoleSender().sendMessage("Cannot get stats from MySQL database!");
+            Bukkit.getConsoleSender().sendMessage("Check configuration of mysql.yml file or disable mysql option in config.yml");
+          }
 
-    @EventHandler
-    public void onQuit(PlayerQuitEvent event) {
-        if(ArenaRegistry.getArena(event.getPlayer()) == null)
-            return;
-        if(!plugin.isBungeeActivated())
-            ArenaManager.leaveAttempt(event.getPlayer(), ArenaRegistry.getArena(event.getPlayer()));
-    }
-
-    @EventHandler
-    public void onQuitSaveStats(PlayerQuitEvent event) {
-        if(ArenaRegistry.getArena(event.getPlayer()) != null) {
-            ArenaManager.leaveAttempt(event.getPlayer(), ArenaRegistry.getArena(event.getPlayer()));
+          if (i > user.getInt(s)) {
+            plugin.getMySQLDatabase().setStat(player.getUniqueId().toString(), s, user.getInt(s) + i);
+          } else {
+            plugin.getMySQLDatabase().setStat(player.getUniqueId().toString(), s, user.getInt(s));
+          }
         }
-        final User user = UserManager.getUser(event.getPlayer().getUniqueId());
-        final Player player = event.getPlayer();
-        if(plugin.isDatabaseActivated()) {
-            Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
-                for(final String s : FileStats.STATISTICS.keySet()) {
-                    int i;
-                    try {
-                        i = plugin.getMySQLDatabase().getStat(player.getUniqueId().toString(), s);
-                    } catch(NullPointerException npe) {
-                        i = 0;
-                        System.out.print("COULDN'T GET STATS FROM PLAYER: " + player.getName());
-                        npe.printStackTrace();
-                        MessageUtils.errorOccured();
-                        Bukkit.getConsoleSender().sendMessage("Cannot get stats from MySQL database!");
-                        Bukkit.getConsoleSender().sendMessage("Check configuration of mysql.yml file or disable mysql option in config.yml");
-                    }
-
-                    if(i > user.getInt(s)) {
-                        plugin.getMySQLDatabase().setStat(player.getUniqueId().toString(), s, user.getInt(s) + i);
-                    } else {
-                        plugin.getMySQLDatabase().setStat(player.getUniqueId().toString(), s, user.getInt(s));
-                    }
-                }
-            });
-        } else {
-            for(String s : FileStats.STATISTICS.keySet()) {
-                plugin.getFileStats().saveStat(player, s);
-            }
-        }
+      });
+    } else {
+      for (String s : FileStats.STATISTICS.keySet()) {
+        plugin.getFileStats().saveStat(player, s);
+      }
     }
+  }
 
 }

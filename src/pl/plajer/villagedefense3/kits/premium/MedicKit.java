@@ -19,7 +19,6 @@
 package pl.plajer.villagedefense3.kits.premium;
 
 import org.bukkit.Color;
-import org.bukkit.Effect;
 import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.attribute.Attribute;
@@ -50,54 +49,55 @@ import java.util.List;
  */
 public class MedicKit extends PremiumKit implements Listener {
 
-    public MedicKit(Main plugin) {
-        setName(ChatManager.colorMessage("Kits.Medic.Kit-Name"));
-        List<String> description = Utils.splitString(ChatManager.colorMessage("Kits.Medic.Kit-Description"), 40);
-        this.setDescription(description.toArray(new String[0]));
-        plugin.getServer().getPluginManager().registerEvents(this, plugin);
-        KitRegistry.registerKit(this);
-    }
+  public MedicKit(Main plugin) {
+    setName(ChatManager.colorMessage("Kits.Medic.Kit-Name"));
+    List<String> description = Utils.splitString(ChatManager.colorMessage("Kits.Medic.Kit-Description"), 40);
+    this.setDescription(description.toArray(new String[0]));
+    plugin.getServer().getPluginManager().registerEvents(this, plugin);
+    KitRegistry.registerKit(this);
+  }
 
-    @Override
-    public boolean isUnlockedByPlayer(Player player) {
-        return PermissionsManager.isPremium(player) || player.hasPermission("villagedefense.kit.medic");
-    }
+  @Override
+  public boolean isUnlockedByPlayer(Player player) {
+    return PermissionsManager.isPremium(player) || player.hasPermission("villagedefense.kit.medic");
+  }
 
-    @Override
-    public void giveKitItems(Player player) {
-        player.getInventory().addItem(WeaponHelper.getUnBreakingSword(WeaponHelper.ResourceType.STONE, 10));
-        ArmorHelper.setColouredArmor(Color.WHITE, player);
-        player.getInventory().addItem(new ItemStack(Material.GRILLED_PORK, 8));
-        player.getInventory().addItem(Utils.getPotion(PotionType.REGEN, 1, true, 1));
-    }
+  @Override
+  public void giveKitItems(Player player) {
+    player.getInventory().addItem(WeaponHelper.getUnBreakingSword(WeaponHelper.ResourceType.STONE, 10));
+    ArmorHelper.setColouredArmor(Color.WHITE, player);
+    player.getInventory().addItem(new ItemStack(Material.GRILLED_PORK, 8));
+    player.getInventory().addItem(Utils.getPotion(PotionType.REGEN, 1, true, 1));
+  }
 
-    @Override
-    public Material getMaterial() {
-        return Material.GHAST_TEAR;
-    }
+  @Override
+  public Material getMaterial() {
+    return Material.GHAST_TEAR;
+  }
 
-    @Override
-    public void reStock(Player player) {}
+  @Override
+  public void reStock(Player player) {
+  }
 
-    @EventHandler
-    public void onZombieHit(EntityDamageByEntityEvent e) {
-        if(!(e.getEntity() instanceof Zombie && e.getDamager() instanceof Player))
-            return;
-        User user = UserManager.getUser(e.getDamager().getUniqueId());
-        if(!(user.getKit() instanceof MedicKit))
-            return;
-        if(Math.random() <= 0.1) {
-            for(Entity entity : user.toPlayer().getNearbyEntities(5, 5, 5)) {
-                if(entity.getType() == EntityType.PLAYER) {
-                    Player player = (Player) entity;
-                    if(player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue() > (player.getHealth() + 1)) {
-                        player.setHealth(player.getHealth() + 1);
-                    } else {
-                        player.setHealth(player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue());
-                    }
-                    player.getEyeLocation().getWorld().spawnParticle(Particle.HEART, player.getLocation(), 20);
-                }
-            }
+  @EventHandler
+  public void onZombieHit(EntityDamageByEntityEvent e) {
+    if (!(e.getEntity() instanceof Zombie && e.getDamager() instanceof Player))
+      return;
+    User user = UserManager.getUser(e.getDamager().getUniqueId());
+    if (!(user.getKit() instanceof MedicKit))
+      return;
+    if (Math.random() <= 0.1) {
+      for (Entity entity : user.toPlayer().getNearbyEntities(5, 5, 5)) {
+        if (entity.getType() == EntityType.PLAYER) {
+          Player player = (Player) entity;
+          if (player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue() > (player.getHealth() + 1)) {
+            player.setHealth(player.getHealth() + 1);
+          } else {
+            player.setHealth(player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue());
+          }
+          player.getEyeLocation().getWorld().spawnParticle(Particle.HEART, player.getLocation(), 20);
         }
+      }
     }
+  }
 }

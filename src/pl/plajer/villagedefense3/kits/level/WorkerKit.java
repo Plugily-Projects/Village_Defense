@@ -47,54 +47,54 @@ import java.util.List;
  */
 public class WorkerKit extends LevelKit implements Listener {
 
-    public WorkerKit(Main plugin) {
-        this.setLevel(ConfigurationManager.getConfig("kits").getInt("Required-Level.Worker"));
-        this.setName(ChatManager.colorMessage("Kits.Worker.Kit-Name"));
-        List<String> description = Utils.splitString(ChatManager.colorMessage("Kits.Worker.Kit-Description"), 40);
-        this.setDescription(description.toArray(new String[0]));
-        KitRegistry.registerKit(this);
-        plugin.getServer().getPluginManager().registerEvents(this, plugin);
-    }
+  public WorkerKit(Main plugin) {
+    this.setLevel(ConfigurationManager.getConfig("kits").getInt("Required-Level.Worker"));
+    this.setName(ChatManager.colorMessage("Kits.Worker.Kit-Name"));
+    List<String> description = Utils.splitString(ChatManager.colorMessage("Kits.Worker.Kit-Description"), 40);
+    this.setDescription(description.toArray(new String[0]));
+    KitRegistry.registerKit(this);
+    plugin.getServer().getPluginManager().registerEvents(this, plugin);
+  }
 
 
-    @Override
-    public boolean isUnlockedByPlayer(Player player) {
-        return UserManager.getUser(player.getUniqueId()).getInt("level") >= this.getLevel() || player.hasPermission("villagefense.kit.worker");
-    }
+  @Override
+  public boolean isUnlockedByPlayer(Player player) {
+    return UserManager.getUser(player.getUniqueId()).getInt("level") >= this.getLevel() || player.hasPermission("villagefense.kit.worker");
+  }
 
-    @Override
-    public void giveKitItems(Player player) {
-        ArmorHelper.setColouredArmor(Color.PURPLE, player);
-        player.getInventory().addItem(WeaponHelper.getUnBreakingSword(WeaponHelper.ResourceType.WOOD, 10));
-        player.getInventory().addItem(WeaponHelper.getEnchantedBow(Enchantment.DURABILITY, 10));
-        player.getInventory().addItem(new ItemStack(Material.ARROW, 64));
-        player.getInventory().addItem(new ItemStack(Material.COOKED_BEEF, 10));
-        player.getInventory().addItem(new ItemStack(Material.WOOD_DOOR, 2));
-    }
+  @Override
+  public void giveKitItems(Player player) {
+    ArmorHelper.setColouredArmor(Color.PURPLE, player);
+    player.getInventory().addItem(WeaponHelper.getUnBreakingSword(WeaponHelper.ResourceType.WOOD, 10));
+    player.getInventory().addItem(WeaponHelper.getEnchantedBow(Enchantment.DURABILITY, 10));
+    player.getInventory().addItem(new ItemStack(Material.ARROW, 64));
+    player.getInventory().addItem(new ItemStack(Material.COOKED_BEEF, 10));
+    player.getInventory().addItem(new ItemStack(Material.WOOD_DOOR, 2));
+  }
 
-    @Override
-    public Material getMaterial() {
-        return Material.WOOD_DOOR;
-    }
+  @Override
+  public Material getMaterial() {
+    return Material.WOOD_DOOR;
+  }
 
-    @Override
-    public void reStock(Player player) {
-        player.getInventory().addItem(new ItemStack(Material.WOOD_DOOR));
-    }
+  @Override
+  public void reStock(Player player) {
+    player.getInventory().addItem(new ItemStack(Material.WOOD_DOOR));
+  }
 
-    @EventHandler(priority = EventPriority.HIGHEST)
-    public void onDoorPlace(BlockPlaceEvent e) {
-        Arena arena = ArenaRegistry.getArena(e.getPlayer());
-        if(arena == null) return;
-        User user = UserManager.getUser(e.getPlayer().getUniqueId());
-        ItemStack stack = e.getPlayer().getInventory().getItemInMainHand();
-        if(user.isSpectator() || stack == null || !arena.getDoorLocations().containsKey(e.getBlock().getLocation())
-                || !(stack.getType() == Material.WOOD_DOOR || stack.getType() == Material.WOODEN_DOOR)) {
-            e.setCancelled(true);
-            return;
-        }
-        e.setCancelled(false);
-        e.getPlayer().sendMessage(ChatManager.colorMessage("Kits.Worker.Game-Item-Place-Message"));
+  @EventHandler(priority = EventPriority.HIGHEST)
+  public void onDoorPlace(BlockPlaceEvent e) {
+    Arena arena = ArenaRegistry.getArena(e.getPlayer());
+    if (arena == null) return;
+    User user = UserManager.getUser(e.getPlayer().getUniqueId());
+    ItemStack stack = e.getPlayer().getInventory().getItemInMainHand();
+    if (user.isSpectator() || stack == null || !arena.getDoorLocations().containsKey(e.getBlock().getLocation())
+            || !(stack.getType() == Material.WOOD_DOOR || stack.getType() == Material.WOODEN_DOOR)) {
+      e.setCancelled(true);
+      return;
     }
+    e.setCancelled(false);
+    e.getPlayer().sendMessage(ChatManager.colorMessage("Kits.Worker.Game-Item-Place-Message"));
+  }
 
 }

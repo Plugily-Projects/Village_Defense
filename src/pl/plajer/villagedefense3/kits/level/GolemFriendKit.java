@@ -45,58 +45,58 @@ import java.util.List;
  */
 public class GolemFriendKit extends LevelKit {
 
-    private Main plugin;
+  private Main plugin;
 
-    public GolemFriendKit(Main plugin) {
-        this.plugin = plugin;
-        setName(ChatManager.colorMessage("Kits.Golem-Friend.Kit-Name"));
-        List<String> description = Utils.splitString(ChatManager.colorMessage("Kits.Golem-Friend.Kit-Description"), 40);
-        this.setDescription(description.toArray(new String[0]));
-        setLevel(ConfigurationManager.getConfig("kits").getInt("Required-Level.GolemFriend"));
-        KitRegistry.registerKit(this);
-    }
+  public GolemFriendKit(Main plugin) {
+    this.plugin = plugin;
+    setName(ChatManager.colorMessage("Kits.Golem-Friend.Kit-Name"));
+    List<String> description = Utils.splitString(ChatManager.colorMessage("Kits.Golem-Friend.Kit-Description"), 40);
+    this.setDescription(description.toArray(new String[0]));
+    setLevel(ConfigurationManager.getConfig("kits").getInt("Required-Level.GolemFriend"));
+    KitRegistry.registerKit(this);
+  }
 
-    @Override
-    public boolean isUnlockedByPlayer(Player player) {
-        return UserManager.getUser(player.getUniqueId()).getInt("level") >= this.getLevel() || player.hasPermission("villagefense.kit.golemfriend");
-    }
+  @Override
+  public boolean isUnlockedByPlayer(Player player) {
+    return UserManager.getUser(player.getUniqueId()).getInt("level") >= this.getLevel() || player.hasPermission("villagefense.kit.golemfriend");
+  }
 
-    @Override
-    public void giveKitItems(Player player) {
-        player.getInventory().addItem(WeaponHelper.getUnBreakingSword(WeaponHelper.ResourceType.STONE, 10));
-        ArmorHelper.setColouredArmor(Color.WHITE, player);
-        player.getInventory().addItem(new ItemStack(Material.GRILLED_PORK, 8));
-        Arena arena = ArenaRegistry.getArena(player);
-        if(arena == null) return;
-        spawnGolem(player, arena);
-    }
+  @Override
+  public void giveKitItems(Player player) {
+    player.getInventory().addItem(WeaponHelper.getUnBreakingSword(WeaponHelper.ResourceType.STONE, 10));
+    ArmorHelper.setColouredArmor(Color.WHITE, player);
+    player.getInventory().addItem(new ItemStack(Material.GRILLED_PORK, 8));
+    Arena arena = ArenaRegistry.getArena(player);
+    if (arena == null) return;
+    spawnGolem(player, arena);
+  }
 
-    @Override
-    public Material getMaterial() {
-        return Material.IRON_INGOT;
-    }
+  @Override
+  public Material getMaterial() {
+    return Material.IRON_INGOT;
+  }
 
-    @Override
-    public void reStock(Player player) {
-        Arena arena = ArenaRegistry.getArena(player);
-        if(arena.getWave() % 5 == 0) {
-            spawnGolem(player, arena);
-        }
+  @Override
+  public void reStock(Player player) {
+    Arena arena = ArenaRegistry.getArena(player);
+    if (arena.getWave() % 5 == 0) {
+      spawnGolem(player, arena);
     }
+  }
 
-    private void spawnGolem(Player player, Arena arena) {
-        if(plugin.is1_9_R1()) {
-            ArenaInitializer1_9_R1 initializer = (ArenaInitializer1_9_R1) arena;
-            initializer.spawnGolem(initializer.getStartLocation(), player);
-        } else if(plugin.is1_11_R1()) {
-            ArenaInitializer1_11_R1 initializer = (ArenaInitializer1_11_R1) arena;
-            initializer.spawnGolem(initializer.getStartLocation(), player);
-        } else if(plugin.is1_12_R1()) {
-            ArenaInitializer1_12_R1 initializer = (ArenaInitializer1_12_R1) arena;
-            initializer.spawnGolem(initializer.getStartLocation(), player);
-        } else if(plugin.is1_13_R1()) {
-            ArenaInitializer1_13_R1 initializer = (ArenaInitializer1_13_R1) arena;
-            initializer.spawnGolem(initializer.getStartLocation(), player);
-        }
+  private void spawnGolem(Player player, Arena arena) {
+    if (plugin.is1_9_R1()) {
+      ArenaInitializer1_9_R1 initializer = (ArenaInitializer1_9_R1) arena;
+      initializer.spawnGolem(initializer.getStartLocation(), player);
+    } else if (plugin.is1_11_R1()) {
+      ArenaInitializer1_11_R1 initializer = (ArenaInitializer1_11_R1) arena;
+      initializer.spawnGolem(initializer.getStartLocation(), player);
+    } else if (plugin.is1_12_R1()) {
+      ArenaInitializer1_12_R1 initializer = (ArenaInitializer1_12_R1) arena;
+      initializer.spawnGolem(initializer.getStartLocation(), player);
+    } else if (plugin.is1_13_R1()) {
+      ArenaInitializer1_13_R1 initializer = (ArenaInitializer1_13_R1) arena;
+      initializer.spawnGolem(initializer.getStartLocation(), player);
     }
+  }
 }

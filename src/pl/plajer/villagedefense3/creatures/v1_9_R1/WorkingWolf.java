@@ -18,25 +18,7 @@
 
 package pl.plajer.villagedefense3.creatures.v1_9_R1;
 
-import net.minecraft.server.v1_9_R1.Entity;
-import net.minecraft.server.v1_9_R1.EntityHuman;
-import net.minecraft.server.v1_9_R1.EntityLiving;
-import net.minecraft.server.v1_9_R1.EntityWolf;
-import net.minecraft.server.v1_9_R1.EntityZombie;
-import net.minecraft.server.v1_9_R1.GenericAttributes;
-import net.minecraft.server.v1_9_R1.Navigation;
-import net.minecraft.server.v1_9_R1.PathfinderGoalFloat;
-import net.minecraft.server.v1_9_R1.PathfinderGoalFollowOwner;
-import net.minecraft.server.v1_9_R1.PathfinderGoalHurtByTarget;
-import net.minecraft.server.v1_9_R1.PathfinderGoalLeapAtTarget;
-import net.minecraft.server.v1_9_R1.PathfinderGoalLookAtPlayer;
-import net.minecraft.server.v1_9_R1.PathfinderGoalMeleeAttack;
-import net.minecraft.server.v1_9_R1.PathfinderGoalMoveTowardsRestriction;
-import net.minecraft.server.v1_9_R1.PathfinderGoalNearestAttackableTarget;
-import net.minecraft.server.v1_9_R1.PathfinderGoalRandomLookaround;
-import net.minecraft.server.v1_9_R1.PathfinderGoalRandomStroll;
-import net.minecraft.server.v1_9_R1.PathfinderGoalSelector;
-import net.minecraft.server.v1_9_R1.World;
+import net.minecraft.server.v1_9_R1.*;
 import org.bukkit.craftbukkit.v1_9_R1.CraftWorld;
 import pl.plajer.villagedefense3.creatures.CreatureUtils;
 
@@ -47,77 +29,77 @@ import java.util.Set;
  */
 public class WorkingWolf extends EntityWolf {
 
-    public WorkingWolf(org.bukkit.World world) {
-        this(((CraftWorld) world).getHandle());
-    }
+  public WorkingWolf(org.bukkit.World world) {
+    this(((CraftWorld) world).getHandle());
+  }
 
-    public WorkingWolf(World world) {
-        super(world);
+  public WorkingWolf(World world) {
+    super(world);
 
-        Set goalB = (Set) CreatureUtils.getPrivateField("b", PathfinderGoalSelector.class, goalSelector);
-        goalB.clear();
-        Set goalC = (Set) CreatureUtils.getPrivateField("c", PathfinderGoalSelector.class, goalSelector);
-        goalC.clear();
-        Set targetB = (Set) CreatureUtils.getPrivateField("b", PathfinderGoalSelector.class, targetSelector);
-        targetB.clear();
-        Set targetC = (Set) CreatureUtils.getPrivateField("c", PathfinderGoalSelector.class, targetSelector);
-        targetC.clear();
+    Set goalB = (Set) CreatureUtils.getPrivateField("b", PathfinderGoalSelector.class, goalSelector);
+    goalB.clear();
+    Set goalC = (Set) CreatureUtils.getPrivateField("c", PathfinderGoalSelector.class, goalSelector);
+    goalC.clear();
+    Set targetB = (Set) CreatureUtils.getPrivateField("b", PathfinderGoalSelector.class, targetSelector);
+    targetB.clear();
+    Set targetC = (Set) CreatureUtils.getPrivateField("c", PathfinderGoalSelector.class, targetSelector);
+    targetC.clear();
 
-        this.a(1.4F, 2.9F);
-        ((Navigation) getNavigation()).a(true);
-        this.goalSelector.a(0, new PathfinderGoalFloat(this));
-        this.goalSelector.a(3, new PathfinderGoalLeapAtTarget(this, 0.4F));
-        this.goalSelector.a(4, new PathfinderGoalMeleeAttack(this, 1.0D, true));
-        this.goalSelector.a(5, new PathfinderGoalFollowOwner(this, 1.0D, 10.0F, 2.0F));
-        this.goalSelector.a(2, new PathfinderGoalMeleeAttack(this, 1.5F, false));
-        this.goalSelector.a(4, new PathfinderGoalMoveTowardsRestriction(this, 1.0D));
-        this.goalSelector.a(6, new PathfinderGoalRandomStroll(this, 0.6D));
-        this.goalSelector.a(7, new PathfinderGoalLookAtPlayer(this, EntityHuman.class, 6.0F));
-        this.goalSelector.a(8, new PathfinderGoalRandomLookaround(this));
-        this.targetSelector.a(2, new PathfinderGoalNearestAttackableTarget<>(this, EntityZombie.class, true));
-        this.targetSelector.a(1, new PathfinderGoalHurtByTarget(this, true));
-    }
+    this.a(1.4F, 2.9F);
+    ((Navigation) getNavigation()).a(true);
+    this.goalSelector.a(0, new PathfinderGoalFloat(this));
+    this.goalSelector.a(3, new PathfinderGoalLeapAtTarget(this, 0.4F));
+    this.goalSelector.a(4, new PathfinderGoalMeleeAttack(this, 1.0D, true));
+    this.goalSelector.a(5, new PathfinderGoalFollowOwner(this, 1.0D, 10.0F, 2.0F));
+    this.goalSelector.a(2, new PathfinderGoalMeleeAttack(this, 1.5F, false));
+    this.goalSelector.a(4, new PathfinderGoalMoveTowardsRestriction(this, 1.0D));
+    this.goalSelector.a(6, new PathfinderGoalRandomStroll(this, 0.6D));
+    this.goalSelector.a(7, new PathfinderGoalLookAtPlayer(this, EntityHuman.class, 6.0F));
+    this.goalSelector.a(8, new PathfinderGoalRandomLookaround(this));
+    this.targetSelector.a(2, new PathfinderGoalNearestAttackableTarget<>(this, EntityZombie.class, true));
+    this.targetSelector.a(1, new PathfinderGoalHurtByTarget(this, true));
+  }
 
-    @Override
-    public void g(float f, float f1) {
-        EntityLiving entityliving = (EntityLiving) bt();
-        if(entityliving == null) {
-            for(final Entity e : passengers) {
-                if(e instanceof EntityHuman) {
-                    entityliving = (EntityLiving) e;
-                    break;
-                }
-            }
-            if(entityliving == null) {
-                P = 0.5f;
-                this.l((float) 0.12);
-                super.g(f, f1);
-                return;
-            }
+  @Override
+  public void g(float f, float f1) {
+    EntityLiving entityliving = (EntityLiving) bt();
+    if (entityliving == null) {
+      for (final Entity e : passengers) {
+        if (e instanceof EntityHuman) {
+          entityliving = (EntityLiving) e;
+          break;
         }
-        final float yaw = entityliving.yaw;
-        this.yaw = yaw;
-        lastYaw = yaw;
-        pitch = entityliving.pitch * 0.5f;
-        setYawPitch(this.yaw, pitch);
-        final float yaw2 = this.yaw;
-        aM = yaw2;
-        aO = yaw2;
-        f = entityliving.bd * 0.75F;
-        f1 = entityliving.be;
-        if(f1 <= 0.0f) {
-            f1 *= 0.25F;
-        }
+      }
+      if (entityliving == null) {
+        P = 0.5f;
         this.l((float) 0.12);
         super.g(f, f1);
-        P = 1.0F;
+        return;
+      }
     }
+    final float yaw = entityliving.yaw;
+    this.yaw = yaw;
+    lastYaw = yaw;
+    pitch = entityliving.pitch * 0.5f;
+    setYawPitch(this.yaw, pitch);
+    final float yaw2 = this.yaw;
+    aM = yaw2;
+    aO = yaw2;
+    f = entityliving.bd * 0.75F;
+    f1 = entityliving.be;
+    if (f1 <= 0.0f) {
+      f1 *= 0.25F;
+    }
+    this.l((float) 0.12);
+    super.g(f, f1);
+    P = 1.0F;
+  }
 
-    @Override
-    protected void initAttributes() {
-        super.initAttributes();
-        this.getAttributeInstance(GenericAttributes.FOLLOW_RANGE).setValue(70.0D);
-    }
+  @Override
+  protected void initAttributes() {
+    super.initAttributes();
+    this.getAttributeInstance(GenericAttributes.FOLLOW_RANGE).setValue(70.0D);
+  }
 
 
 }

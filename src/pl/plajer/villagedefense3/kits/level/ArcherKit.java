@@ -40,35 +40,35 @@ import java.util.List;
  */
 public class ArcherKit extends LevelKit {
 
-    public ArcherKit(Main plugin) {
-        this.setLevel(ConfigurationManager.getConfig("kits").getInt("Required-Level.Archer"));
-        this.setName(ChatManager.colorMessage("Kits.Archer.Kit-Name"));
-        List<String> description = Utils.splitString(ChatManager.colorMessage("Kits.Archer.Kit-Description"), 40);
-        this.setDescription(description.toArray(new String[0]));
-        KitRegistry.registerKit(this);
-    }
+  public ArcherKit(Main plugin) {
+    this.setLevel(ConfigurationManager.getConfig("kits").getInt("Required-Level.Archer"));
+    this.setName(ChatManager.colorMessage("Kits.Archer.Kit-Name"));
+    List<String> description = Utils.splitString(ChatManager.colorMessage("Kits.Archer.Kit-Description"), 40);
+    this.setDescription(description.toArray(new String[0]));
+    KitRegistry.registerKit(this);
+  }
 
-    @Override
-    public boolean isUnlockedByPlayer(Player player) {
-        return UserManager.getUser(player.getUniqueId()).getInt("level") >= this.getLevel() || player.hasPermission("villagefense.kit.archer");
-    }
+  @Override
+  public boolean isUnlockedByPlayer(Player player) {
+    return UserManager.getUser(player.getUniqueId()).getInt("level") >= this.getLevel() || player.hasPermission("villagefense.kit.archer");
+  }
 
-    @Override
-    public void giveKitItems(Player player) {
-        ArmorHelper.setColouredArmor(Color.GREEN, player);
-        player.getInventory().addItem(WeaponHelper.getUnBreakingSword(WeaponHelper.ResourceType.WOOD, 10));
-        player.getInventory().addItem(WeaponHelper.getEnchantedBow(Enchantment.DURABILITY, 10));
-        player.getInventory().addItem(new ItemStack(Material.ARROW, 64));
-        player.getInventory().addItem(new ItemStack(Material.COOKED_BEEF, 10));
-    }
+  @Override
+  public void giveKitItems(Player player) {
+    ArmorHelper.setColouredArmor(Color.GREEN, player);
+    player.getInventory().addItem(WeaponHelper.getUnBreakingSword(WeaponHelper.ResourceType.WOOD, 10));
+    player.getInventory().addItem(WeaponHelper.getEnchantedBow(Enchantment.DURABILITY, 10));
+    player.getInventory().addItem(new ItemStack(Material.ARROW, 64));
+    player.getInventory().addItem(new ItemStack(Material.COOKED_BEEF, 10));
+  }
 
-    @Override
-    public Material getMaterial() {
-        return Material.BOW;
-    }
+  @Override
+  public Material getMaterial() {
+    return Material.BOW;
+  }
 
-    @Override
-    public void reStock(Player player) {
-        player.getInventory().addItem(new ItemStack(Material.ARROW, 15));
-    }
+  @Override
+  public void reStock(Player player) {
+    player.getInventory().addItem(new ItemStack(Material.ARROW, 15));
+  }
 }

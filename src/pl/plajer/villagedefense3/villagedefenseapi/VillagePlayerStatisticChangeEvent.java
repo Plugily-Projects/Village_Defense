@@ -24,42 +24,42 @@ import pl.plajer.villagedefense3.arena.Arena;
 
 /**
  * @author Plajer
+ * @see pl.plajer.villagedefense3.villagedefenseapi.StatsStorage.StatisticType
  * @since 3.8.0
  * <p>
  * Called when player receive new statistic.
- * @see pl.plajer.villagedefense3.villagedefenseapi.StatsStorage.StatisticType
  */
 public class VillagePlayerStatisticChangeEvent extends VillageEvent {
 
-    private static final HandlerList HANDLERS = new HandlerList();
-    private Player player;
-    private StatsStorage.StatisticType statisticType;
-    private int number;
+  private static final HandlerList HANDLERS = new HandlerList();
+  private Player player;
+  private StatsStorage.StatisticType statisticType;
+  private int number;
 
-    public VillagePlayerStatisticChangeEvent(Arena eventArena, Player player, StatsStorage.StatisticType statisticType, int number) {
-        super(eventArena);
-        this.player = player;
-        this.statisticType = statisticType;
-        this.number = number;
-    }
+  public VillagePlayerStatisticChangeEvent(Arena eventArena, Player player, StatsStorage.StatisticType statisticType, int number) {
+    super(eventArena);
+    this.player = player;
+    this.statisticType = statisticType;
+    this.number = number;
+  }
 
-    public static HandlerList getHandlerList() {
-        return HANDLERS;
-    }
+  public static HandlerList getHandlerList() {
+    return HANDLERS;
+  }
 
-    public HandlerList getHandlers() {
-        return HANDLERS;
-    }
+  public HandlerList getHandlers() {
+    return HANDLERS;
+  }
 
-    public Player getPlayer() {
-        return player;
-    }
+  public Player getPlayer() {
+    return player;
+  }
 
-    public StatsStorage.StatisticType getStatisticType() {
-        return statisticType;
-    }
+  public StatsStorage.StatisticType getStatisticType() {
+    return statisticType;
+  }
 
-    public int getNumber() {
-        return number;
-    }
+  public int getNumber() {
+    return number;
+  }
 }

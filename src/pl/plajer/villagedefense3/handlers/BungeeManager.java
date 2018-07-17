@@ -38,59 +38,59 @@ import pl.plajer.villagedefense3.arena.ArenaState;
  */
 public class BungeeManager implements Listener {
 
-    private Main plugin;
+  private Main plugin;
 
-    public BungeeManager(Main plugin) {
-        this.plugin = plugin;
-        plugin.getServer().getMessenger().registerOutgoingPluginChannel(plugin, "BungeeCord");
-        plugin.getServer().getPluginManager().registerEvents(this, plugin);
+  public BungeeManager(Main plugin) {
+    this.plugin = plugin;
+    plugin.getServer().getMessenger().registerOutgoingPluginChannel(plugin, "BungeeCord");
+    plugin.getServer().getPluginManager().registerEvents(this, plugin);
+  }
+
+  public void connectToHub(Player player) {
+    ByteArrayDataOutput out = ByteStreams.newDataOutput();
+    out.writeUTF("Connect");
+    out.writeUTF(getHubServerName());
+    player.sendPluginMessage(plugin, "BungeeCord", out.toByteArray());
+  }
+
+  private String getMOTD() {
+    Arena arena = ArenaRegistry.getArenas().get(0);
+    if (arena.getArenaState() == ArenaState.STARTING && (arena.getTimer() <= 3)) {
+      return ArenaState.IN_GAME.toString();
+    } else {
+      return arena.getArenaState().toString();
     }
+  }
 
-    public void connectToHub(Player player) {
-        ByteArrayDataOutput out = ByteStreams.newDataOutput();
-        out.writeUTF("Connect");
-        out.writeUTF(getHubServerName());
-        player.sendPluginMessage(plugin, "BungeeCord", out.toByteArray());
+  private String getHubServerName() {
+    return ConfigurationManager.getConfig("bungee").getString("Hub");
+  }
+
+  @EventHandler(priority = EventPriority.HIGHEST)
+  public void onServerListPing(ServerListPingEvent event) {
+    if (ArenaRegistry.getArenas().isEmpty())
+      return;
+    if (ArenaRegistry.getArenas() == null) {
+      Main.debug("No ready arena found! Please create one before activating bungee mode!", System.currentTimeMillis());
+      return;
     }
-
-    private String getMOTD() {
-        Arena arena = ArenaRegistry.getArenas().get(0);
-        if(arena.getArenaState() == ArenaState.STARTING && (arena.getTimer() <= 3)) {
-            return ArenaState.IN_GAME.toString();
-        } else {
-            return arena.getArenaState().toString();
-        }
-    }
-
-    private String getHubServerName() {
-        return ConfigurationManager.getConfig("bungee").getString("Hub");
-    }
-
-    @EventHandler(priority = EventPriority.HIGHEST)
-    public void onServerListPing(ServerListPingEvent event) {
-        if(ArenaRegistry.getArenas().isEmpty())
-            return;
-        if(ArenaRegistry.getArenas() == null) {
-            Main.debug("No ready arena found! Please create one before activating bungee mode!", System.currentTimeMillis());
-            return;
-        }
-        event.setMaxPlayers(ArenaRegistry.getArenas().get(0).getMaximumPlayers());
-        event.setMotd(this.getMOTD());
-    }
+    event.setMaxPlayers(ArenaRegistry.getArenas().get(0).getMaximumPlayers());
+    event.setMotd(this.getMOTD());
+  }
 
 
-    @EventHandler(priority = EventPriority.HIGHEST)
-    public void onJoin(final PlayerJoinEvent event) {
-        event.setJoinMessage("");
-        plugin.getServer().getScheduler().runTaskLater(plugin, () -> ArenaManager.joinAttempt(event.getPlayer(), ArenaRegistry.getArenas().get(0)), 1L);
-    }
+  @EventHandler(priority = EventPriority.HIGHEST)
+  public void onJoin(final PlayerJoinEvent event) {
+    event.setJoinMessage("");
+    plugin.getServer().getScheduler().runTaskLater(plugin, () -> ArenaManager.joinAttempt(event.getPlayer(), ArenaRegistry.getArenas().get(0)), 1L);
+  }
 
-    @EventHandler(priority = EventPriority.HIGHEST)
-    public void onQuit(PlayerQuitEvent event) {
-        event.setQuitMessage("");
-        if(ArenaRegistry.getArena(event.getPlayer()) != null)
-            ArenaManager.leaveAttempt(event.getPlayer(), ArenaRegistry.getArenas().get(0));
+  @EventHandler(priority = EventPriority.HIGHEST)
+  public void onQuit(PlayerQuitEvent event) {
+    event.setQuitMessage("");
+    if (ArenaRegistry.getArena(event.getPlayer()) != null)
+      ArenaManager.leaveAttempt(event.getPlayer(), ArenaRegistry.getArenas().get(0));
 
-    }
+  }
 
 }

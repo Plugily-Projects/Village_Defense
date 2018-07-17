@@ -38,59 +38,59 @@ import java.util.Map;
  */
 public class FileStats {
 
-    public final static Map<String, StatsStorage.StatisticType> STATISTICS = new HashMap<>();
+  public final static Map<String, StatsStorage.StatisticType> STATISTICS = new HashMap<>();
 
-    static {
-        STATISTICS.put("gamesplayed", StatsStorage.StatisticType.GAMES_PLAYED);
-        STATISTICS.put("kills", StatsStorage.StatisticType.KILLS);
-        STATISTICS.put("deaths", StatsStorage.StatisticType.DEATHS);
-        STATISTICS.put("highestwave", StatsStorage.StatisticType.HIGHEST_WAVE);
-        STATISTICS.put("xp", StatsStorage.StatisticType.XP);
-        STATISTICS.put("level", StatsStorage.StatisticType.LEVEL);
-        STATISTICS.put("orbs", StatsStorage.StatisticType.ORBS);
+  static {
+    STATISTICS.put("gamesplayed", StatsStorage.StatisticType.GAMES_PLAYED);
+    STATISTICS.put("kills", StatsStorage.StatisticType.KILLS);
+    STATISTICS.put("deaths", StatsStorage.StatisticType.DEATHS);
+    STATISTICS.put("highestwave", StatsStorage.StatisticType.HIGHEST_WAVE);
+    STATISTICS.put("xp", StatsStorage.StatisticType.XP);
+    STATISTICS.put("level", StatsStorage.StatisticType.LEVEL);
+    STATISTICS.put("orbs", StatsStorage.StatisticType.ORBS);
+  }
+
+  private Main plugin;
+  private FileConfiguration config;
+
+  public FileStats(Main plugin) {
+    this.plugin = plugin;
+    config = ConfigurationManager.getConfig("stats");
+  }
+
+  public void saveStat(Player player, String stat) {
+    User user = UserManager.getUser(player.getUniqueId());
+    config.set(player.getUniqueId().toString() + "." + stat, user.getInt(stat));
+    try {
+      config.save(ConfigurationManager.getFile("stats"));
+    } catch (IOException e) {
+      e.printStackTrace();
+      MessageUtils.errorOccured();
+      Bukkit.getConsoleSender().sendMessage("Cannot save stats.yml file!");
+      Bukkit.getConsoleSender().sendMessage("Restart the server, file COULD BE OVERRIDDEN!");
     }
+  }
 
-    private Main plugin;
-    private FileConfiguration config;
+  public void loadStat(Player player, String stat) {
+    User user = UserManager.getUser(player.getUniqueId());
+    if (config.contains(player.getUniqueId().toString() + "." + stat))
+      user.setInt(stat, config.getInt(player.getUniqueId().toString() + "." + stat));
+    else
+      user.setInt(stat, 0);
+  }
 
-    public FileStats(Main plugin) {
-        this.plugin = plugin;
-        config = ConfigurationManager.getConfig("stats");
-    }
-
-    public void saveStat(Player player, String stat) {
-        User user = UserManager.getUser(player.getUniqueId());
-        config.set(player.getUniqueId().toString() + "." + stat, user.getInt(stat));
-        try {
-            config.save(ConfigurationManager.getFile("stats"));
-        } catch(IOException e) {
-            e.printStackTrace();
-            MessageUtils.errorOccured();
-            Bukkit.getConsoleSender().sendMessage("Cannot save stats.yml file!");
-            Bukkit.getConsoleSender().sendMessage("Restart the server, file COULD BE OVERRIDDEN!");
+  public void loadStatsForPlayersOnline() {
+    for (final Player player : plugin.getServer().getOnlinePlayers()) {
+      if (plugin.isBungeeActivated())
+        ArenaRegistry.getArenas().get(0).teleportToLobby(player);
+      if (!plugin.isDatabaseActivated()) {
+        for (String s : FileStats.STATISTICS.keySet()) {
+          loadStat(player, s);
         }
+        continue;
+      }
+      Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> MySQLConnectionUtils.loadPlayerStats(player, plugin));
     }
-
-    public void loadStat(Player player, String stat) {
-        User user = UserManager.getUser(player.getUniqueId());
-        if(config.contains(player.getUniqueId().toString() + "." + stat))
-            user.setInt(stat, config.getInt(player.getUniqueId().toString() + "." + stat));
-        else
-            user.setInt(stat, 0);
-    }
-
-    public void loadStatsForPlayersOnline() {
-        for(final Player player : plugin.getServer().getOnlinePlayers()) {
-            if(plugin.isBungeeActivated())
-                ArenaRegistry.getArenas().get(0).teleportToLobby(player);
-            if(!plugin.isDatabaseActivated()) {
-                for(String s : FileStats.STATISTICS.keySet()) {
-                    loadStat(player, s);
-                }
-                continue;
-            }
-            Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> MySQLConnectionUtils.loadPlayerStats(player, plugin));
-        }
-    }
+  }
 
 }

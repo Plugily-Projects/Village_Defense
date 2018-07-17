@@ -40,41 +40,41 @@ import java.util.List;
  */
 public class HealerKit extends LevelKit {
 
-    public HealerKit(Main plugin) {
-        setName(ChatManager.colorMessage("Kits.Healer.Kit-Name"));
-        List<String> description = Utils.splitString(ChatManager.colorMessage("Kits.Healer.Kit-Description"), 40);
-        this.setDescription(description.toArray(new String[0]));
-        setLevel(ConfigurationManager.getConfig("kits").getInt("Required-Level.Healer"));
-        KitRegistry.registerKit(this);
-    }
+  public HealerKit(Main plugin) {
+    setName(ChatManager.colorMessage("Kits.Healer.Kit-Name"));
+    List<String> description = Utils.splitString(ChatManager.colorMessage("Kits.Healer.Kit-Description"), 40);
+    this.setDescription(description.toArray(new String[0]));
+    setLevel(ConfigurationManager.getConfig("kits").getInt("Required-Level.Healer"));
+    KitRegistry.registerKit(this);
+  }
 
-    @Override
-    public boolean isUnlockedByPlayer(Player player) {
-        return UserManager.getUser(player.getUniqueId()).getInt("level") >= this.getLevel() || player.hasPermission("villagefense.kit.healer");
-    }
+  @Override
+  public boolean isUnlockedByPlayer(Player player) {
+    return UserManager.getUser(player.getUniqueId()).getInt("level") >= this.getLevel() || player.hasPermission("villagefense.kit.healer");
+  }
 
-    @Override
-    public void giveKitItems(Player player) {
-        player.getInventory().addItem(WeaponHelper.getUnBreakingSword(WeaponHelper.ResourceType.WOOD, 10));
-        ArmorHelper.setColouredArmor(Color.WHITE, player);
-        player.getInventory().addItem(new ItemStack(Material.GRILLED_PORK, 8));
-        player.getInventory().addItem(Utils.getPotion(PotionType.INSTANT_HEAL, 2, true, 1));
-        player.getInventory().addItem(Utils.getPotion(PotionType.REGEN, 1, true, 1));
+  @Override
+  public void giveKitItems(Player player) {
+    player.getInventory().addItem(WeaponHelper.getUnBreakingSword(WeaponHelper.ResourceType.WOOD, 10));
+    ArmorHelper.setColouredArmor(Color.WHITE, player);
+    player.getInventory().addItem(new ItemStack(Material.GRILLED_PORK, 8));
+    player.getInventory().addItem(Utils.getPotion(PotionType.INSTANT_HEAL, 2, true, 1));
+    player.getInventory().addItem(Utils.getPotion(PotionType.REGEN, 1, true, 1));
 
-    }
+  }
 
-    @Override
-    public Material getMaterial() {
-        return Material.RED_ROSE;
-    }
+  @Override
+  public Material getMaterial() {
+    return Material.RED_ROSE;
+  }
 
-    @Override
-    public void reStock(Player player) {
-        for(int i = 0; i < 2; i++) {
-            player.getInventory().addItem(Utils.getPotion(PotionType.INSTANT_HEAL, 2, true, 1));
-        }
-        for(int i = 0; i < 2; i++) {
-            player.getInventory().addItem(Utils.getPotion(PotionType.REGEN, 1, true, 1));
-        }
+  @Override
+  public void reStock(Player player) {
+    for (int i = 0; i < 2; i++) {
+      player.getInventory().addItem(Utils.getPotion(PotionType.INSTANT_HEAL, 2, true, 1));
     }
+    for (int i = 0; i < 2; i++) {
+      player.getInventory().addItem(Utils.getPotion(PotionType.REGEN, 1, true, 1));
+    }
+  }
 }

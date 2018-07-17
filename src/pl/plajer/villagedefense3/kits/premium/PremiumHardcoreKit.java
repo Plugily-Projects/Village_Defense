@@ -38,36 +38,36 @@ import java.util.List;
  */
 public class PremiumHardcoreKit extends PremiumKit {
 
-    public PremiumHardcoreKit(Main plugin) {
-        setName(ChatManager.colorMessage("Kits.Premium-Hardcore.Kit-Name"));
-        List<String> description = Utils.splitString(ChatManager.colorMessage("Kits.Premium-Hardcore.Kit-Description"), 40);
-        this.setDescription(description.toArray(new String[0]));
-        KitRegistry.registerKit(this);
-    }
+  public PremiumHardcoreKit(Main plugin) {
+    setName(ChatManager.colorMessage("Kits.Premium-Hardcore.Kit-Name"));
+    List<String> description = Utils.splitString(ChatManager.colorMessage("Kits.Premium-Hardcore.Kit-Description"), 40);
+    this.setDescription(description.toArray(new String[0]));
+    KitRegistry.registerKit(this);
+  }
 
-    @Override
-    public boolean isUnlockedByPlayer(Player player) {
-        return PermissionsManager.isPremium(player) || player.hasPermission("villagedefense.kit.premiumhardcore");
-    }
+  @Override
+  public boolean isUnlockedByPlayer(Player player) {
+    return PermissionsManager.isPremium(player) || player.hasPermission("villagedefense.kit.premiumhardcore");
+  }
 
-    @Override
-    public void giveKitItems(Player player) {
-        player.getInventory().addItem(WeaponHelper.getEnchanted(new ItemStack(Material.DIAMOND_SWORD),
-                new Enchantment[]{Enchantment.DAMAGE_ALL}, new int[]{11}));
-        player.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(6);
-        player.getInventory().addItem(new ItemStack(Material.SADDLE));
+  @Override
+  public void giveKitItems(Player player) {
+    player.getInventory().addItem(WeaponHelper.getEnchanted(new ItemStack(Material.DIAMOND_SWORD),
+            new Enchantment[]{Enchantment.DAMAGE_ALL}, new int[]{11}));
+    player.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(6);
+    player.getInventory().addItem(new ItemStack(Material.SADDLE));
 
-    }
+  }
 
-    @Override
-    public Material getMaterial() {
-        return Material.DIAMOND_SWORD;
-    }
+  @Override
+  public Material getMaterial() {
+    return Material.DIAMOND_SWORD;
+  }
 
-    @Override
-    public void reStock(Player player) {
+  @Override
+  public void reStock(Player player) {
 
-    }
+  }
 
 
 }

@@ -41,36 +41,36 @@ import java.util.List;
  */
 public class HardcoreKit extends LevelKit {
 
-    public HardcoreKit(Main plugin) {
-        setName(ChatManager.colorMessage("Kits.Hardcore.Kit-Name"));
-        List<String> description = Utils.splitString(ChatManager.colorMessage("Kits.Hardcore.Kit-Description"), 40);
-        this.setDescription(description.toArray(new String[0]));
-        setLevel(ConfigurationManager.getConfig("kits").getInt("Required-Level.Hardcore"));
-        KitRegistry.registerKit(this);
-    }
+  public HardcoreKit(Main plugin) {
+    setName(ChatManager.colorMessage("Kits.Hardcore.Kit-Name"));
+    List<String> description = Utils.splitString(ChatManager.colorMessage("Kits.Hardcore.Kit-Description"), 40);
+    this.setDescription(description.toArray(new String[0]));
+    setLevel(ConfigurationManager.getConfig("kits").getInt("Required-Level.Hardcore"));
+    KitRegistry.registerKit(this);
+  }
 
-    @Override
-    public boolean isUnlockedByPlayer(Player player) {
-        return UserManager.getUser(player.getUniqueId()).getInt("level") >= this.getLevel() || player.hasPermission("villagefense.kit.hardcore");
-    }
+  @Override
+  public boolean isUnlockedByPlayer(Player player) {
+    return UserManager.getUser(player.getUniqueId()).getInt("level") >= this.getLevel() || player.hasPermission("villagefense.kit.hardcore");
+  }
 
-    @Override
-    public void giveKitItems(Player player) {
-        player.getInventory().addItem(WeaponHelper.getUnBreakingSword(WeaponHelper.ResourceType.WOOD, 10));
-        ArmorHelper.setColouredArmor(Color.WHITE, player);
-        player.getInventory().addItem(Utils.getPotion(PotionType.INSTANT_HEAL, 2, true, 1));
-        player.getInventory().addItem(new ItemStack(Material.COOKIE, 10));
-        player.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(10.0);
+  @Override
+  public void giveKitItems(Player player) {
+    player.getInventory().addItem(WeaponHelper.getUnBreakingSword(WeaponHelper.ResourceType.WOOD, 10));
+    ArmorHelper.setColouredArmor(Color.WHITE, player);
+    player.getInventory().addItem(Utils.getPotion(PotionType.INSTANT_HEAL, 2, true, 1));
+    player.getInventory().addItem(new ItemStack(Material.COOKIE, 10));
+    player.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(10.0);
 
-    }
+  }
 
-    @Override
-    public Material getMaterial() {
-        return Material.SKULL_ITEM;
-    }
+  @Override
+  public Material getMaterial() {
+    return Material.SKULL_ITEM;
+  }
 
-    @Override
-    public void reStock(Player player) {
-        player.getInventory().addItem(Utils.getPotion(PotionType.INSTANT_HEAL, 2, true, 1));
-    }
+  @Override
+  public void reStock(Player player) {
+    player.getInventory().addItem(Utils.getPotion(PotionType.INSTANT_HEAL, 2, true, 1));
+  }
 }

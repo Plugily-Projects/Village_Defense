@@ -29,44 +29,44 @@ import pl.plajer.villagedefense3.villagedefenseapi.StatsStorage;
  */
 public class PlaceholderManager extends PlaceholderExpansion {
 
-    public boolean persist() {
-        return true;
-    }
+  public boolean persist() {
+    return true;
+  }
 
-    public String getIdentifier() {
-        return "villagedefense";
-    }
+  public String getIdentifier() {
+    return "villagedefense";
+  }
 
-    public String getPlugin() {
-        return null;
-    }
+  public String getPlugin() {
+    return null;
+  }
 
-    public String getAuthor() {
-        return "Plajer";
-    }
+  public String getAuthor() {
+    return "Plajer";
+  }
 
-    public String getVersion() {
-        return "1.0.0";
-    }
+  public String getVersion() {
+    return "1.0.0";
+  }
 
-    public String onPlaceholderRequest(Player player, String id) {
-        if(player == null) return null;
-        switch(id) {
-            case "kills":
-                return String.valueOf(StatsStorage.getUserStats(player, StatsStorage.StatisticType.KILLS));
-            case "deaths":
-                return String.valueOf(StatsStorage.getUserStats(player, StatsStorage.StatisticType.DEATHS));
-            case "games_played":
-                return String.valueOf(StatsStorage.getUserStats(player, StatsStorage.StatisticType.GAMES_PLAYED));
-            case "highest_wave":
-                return String.valueOf(StatsStorage.getUserStats(player, StatsStorage.StatisticType.HIGHEST_WAVE));
-            case "level":
-                return String.valueOf(StatsStorage.getUserStats(player, StatsStorage.StatisticType.LEVEL));
-            case "exp":
-                return String.valueOf(StatsStorage.getUserStats(player, StatsStorage.StatisticType.XP));
-            case "exp_to_next_level":
-                return String.valueOf(Math.ceil(Math.pow(50 * StatsStorage.getUserStats(player, StatsStorage.StatisticType.LEVEL), 1.5)));
-        }
-        return null;
+  public String onPlaceholderRequest(Player player, String id) {
+    if (player == null) return null;
+    switch (id) {
+      case "kills":
+        return String.valueOf(StatsStorage.getUserStats(player, StatsStorage.StatisticType.KILLS));
+      case "deaths":
+        return String.valueOf(StatsStorage.getUserStats(player, StatsStorage.StatisticType.DEATHS));
+      case "games_played":
+        return String.valueOf(StatsStorage.getUserStats(player, StatsStorage.StatisticType.GAMES_PLAYED));
+      case "highest_wave":
+        return String.valueOf(StatsStorage.getUserStats(player, StatsStorage.StatisticType.HIGHEST_WAVE));
+      case "level":
+        return String.valueOf(StatsStorage.getUserStats(player, StatsStorage.StatisticType.LEVEL));
+      case "exp":
+        return String.valueOf(StatsStorage.getUserStats(player, StatsStorage.StatisticType.XP));
+      case "exp_to_next_level":
+        return String.valueOf(Math.ceil(Math.pow(50 * StatsStorage.getUserStats(player, StatsStorage.StatisticType.LEVEL), 1.5)));
     }
+    return null;
+  }
 }

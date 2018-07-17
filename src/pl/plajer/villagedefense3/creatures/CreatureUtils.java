@@ -34,30 +34,30 @@ import java.lang.reflect.Field;
  */
 public class CreatureUtils {
 
-    private static Main plugin = JavaPlugin.getPlugin(Main.class);
+  private static Main plugin = JavaPlugin.getPlugin(Main.class);
 
-    public static Object getPrivateField(String fieldName, Class clazz, Object object) {
-        Field field;
-        Object o = null;
-        try {
-            field = clazz.getDeclaredField(fieldName);
+  public static Object getPrivateField(String fieldName, Class clazz, Object object) {
+    Field field;
+    Object o = null;
+    try {
+      field = clazz.getDeclaredField(fieldName);
 
-            field.setAccessible(true);
+      field.setAccessible(true);
 
-            o = field.get(object);
-        } catch(NoSuchFieldException | IllegalAccessException e) {
-            e.printStackTrace();
-        }
-        return o;
+      o = field.get(object);
+    } catch (NoSuchFieldException | IllegalAccessException e) {
+      e.printStackTrace();
     }
+    return o;
+  }
 
-    public static void applyHealthBar(Zombie zombie) {
-        if(plugin.getConfig().getBoolean("Simple-Zombie-Health-Bar-Enabled", true)) {
-            zombie.setCustomNameVisible(true);
-            zombie.setCustomName(Utils.getProgressBar((int) zombie.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue(),
-                    (int) zombie.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue(), 50, "|",
-                    ChatColor.YELLOW + "", ChatColor.GRAY + ""));
-        }
+  public static void applyHealthBar(Zombie zombie) {
+    if (plugin.getConfig().getBoolean("Simple-Zombie-Health-Bar-Enabled", true)) {
+      zombie.setCustomNameVisible(true);
+      zombie.setCustomName(Utils.getProgressBar((int) zombie.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue(),
+              (int) zombie.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue(), 50, "|",
+              ChatColor.YELLOW + "", ChatColor.GRAY + ""));
     }
+  }
 
 }

@@ -31,39 +31,40 @@ import pl.plajer.villagedefense3.arena.Arena;
  */
 public class VillageGolemUpgradeEvent extends VillageEvent {
 
-    private static final HandlerList HANDLERS = new HandlerList();
-    private IronGolem ironGolem;
-    private Player player;
-    private double originalHealth;
+  private static final HandlerList HANDLERS = new HandlerList();
+  private IronGolem ironGolem;
+  private Player player;
+  private double originalHealth;
 
-    public VillageGolemUpgradeEvent(Arena eventArena, IronGolem ironGolem, Player player, double originalHealth) {
-        super(eventArena);
-        this.ironGolem = ironGolem;
-        this.player = player;
-        this.originalHealth = originalHealth;
-    }
+  public VillageGolemUpgradeEvent(Arena eventArena, IronGolem ironGolem, Player player, double originalHealth) {
+    super(eventArena);
+    this.ironGolem = ironGolem;
+    this.player = player;
+    this.originalHealth = originalHealth;
+  }
 
-    public static HandlerList getHandlerList() {
-        return HANDLERS;
-    }
+  public static HandlerList getHandlerList() {
+    return HANDLERS;
+  }
 
-    public HandlerList getHandlers() {
-        return HANDLERS;
-    }
+  public HandlerList getHandlers() {
+    return HANDLERS;
+  }
 
-    public IronGolem getIronGolem() {
-        return ironGolem;
-    }
+  public IronGolem getIronGolem() {
+    return ironGolem;
+  }
 
-    public Player getPlayer() {
-        return player;
-    }
+  public Player getPlayer() {
+    return player;
+  }
 
-    /**
-     * Golem health before upgrade
-     * @return original golem health
-     */
-    public double getOriginalHealth() {
-        return originalHealth;
-    }
+  /**
+   * Golem health before upgrade
+   *
+   * @return original golem health
+   */
+  public double getOriginalHealth() {
+    return originalHealth;
+  }
 }

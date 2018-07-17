@@ -30,24 +30,24 @@ import pl.plajer.villagedefense3.arena.Arena;
  */
 public class VillageGameLeaveAttemptEvent extends VillageEvent {
 
-    private static final HandlerList HANDLERS = new HandlerList();
-    private final Player player;
+  private static final HandlerList HANDLERS = new HandlerList();
+  private final Player player;
 
-    public VillageGameLeaveAttemptEvent(Player player, Arena arena) {
-        super(arena);
-        this.player = player;
-    }
+  public VillageGameLeaveAttemptEvent(Player player, Arena arena) {
+    super(arena);
+    this.player = player;
+  }
 
-    public static HandlerList getHandlerList() {
-        return HANDLERS;
-    }
+  public static HandlerList getHandlerList() {
+    return HANDLERS;
+  }
 
-    public Player getPlayer() {
-        return player;
-    }
+  public Player getPlayer() {
+    return player;
+  }
 
-    public HandlerList getHandlers() {
-        return HANDLERS;
-    }
+  public HandlerList getHandlers() {
+    return HANDLERS;
+  }
 
 }

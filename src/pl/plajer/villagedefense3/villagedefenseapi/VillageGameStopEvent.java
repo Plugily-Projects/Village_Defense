@@ -29,18 +29,18 @@ import pl.plajer.villagedefense3.arena.Arena;
  */
 public class VillageGameStopEvent extends VillageEvent {
 
-    private static final HandlerList HANDLERS = new HandlerList();
+  private static final HandlerList HANDLERS = new HandlerList();
 
-    public VillageGameStopEvent(Arena arena) {
-        super(arena);
-    }
+  public VillageGameStopEvent(Arena arena) {
+    super(arena);
+  }
 
-    public static HandlerList getHandlerList() {
-        return HANDLERS;
-    }
+  public static HandlerList getHandlerList() {
+    return HANDLERS;
+  }
 
-    public HandlerList getHandlers() {
-        return HANDLERS;
-    }
+  public HandlerList getHandlers() {
+    return HANDLERS;
+  }
 
 }

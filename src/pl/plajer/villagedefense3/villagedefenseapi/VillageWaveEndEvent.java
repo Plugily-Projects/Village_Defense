@@ -29,24 +29,24 @@ import pl.plajer.villagedefense3.arena.Arena;
  */
 public class VillageWaveEndEvent extends VillageEvent {
 
-    private static final HandlerList HANDLERS = new HandlerList();
-    private final Integer waveNumber;
+  private static final HandlerList HANDLERS = new HandlerList();
+  private final Integer waveNumber;
 
-    public VillageWaveEndEvent(Arena arena, Integer waveNumber) {
-        super(arena);
-        this.waveNumber = waveNumber;
-    }
+  public VillageWaveEndEvent(Arena arena, Integer waveNumber) {
+    super(arena);
+    this.waveNumber = waveNumber;
+  }
 
-    public static HandlerList getHandlerList() {
-        return HANDLERS;
-    }
+  public static HandlerList getHandlerList() {
+    return HANDLERS;
+  }
 
-    public Integer getWaveNumber() {
-        return waveNumber;
-    }
+  public Integer getWaveNumber() {
+    return waveNumber;
+  }
 
-    public HandlerList getHandlers() {
-        return HANDLERS;
-    }
+  public HandlerList getHandlers() {
+    return HANDLERS;
+  }
 
 }

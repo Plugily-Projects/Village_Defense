@@ -47,71 +47,71 @@ import java.util.List;
  */
 public class ShotBowKit extends PremiumKit implements Listener {
 
-    private Main plugin;
+  private Main plugin;
 
-    public ShotBowKit(Main plugin) {
-        this.plugin = plugin;
-        setName(ChatManager.colorMessage("Kits.Shot-Bow.Kit-Name"));
-        List<String> description = Utils.splitString(ChatManager.colorMessage("Kits.Shot-Bow.Kit-Description"), 40);
-        this.setDescription(description.toArray(new String[0]));
-        plugin.getServer().getPluginManager().registerEvents(this, plugin);
-        KitRegistry.registerKit(this);
-    }
+  public ShotBowKit(Main plugin) {
+    this.plugin = plugin;
+    setName(ChatManager.colorMessage("Kits.Shot-Bow.Kit-Name"));
+    List<String> description = Utils.splitString(ChatManager.colorMessage("Kits.Shot-Bow.Kit-Description"), 40);
+    this.setDescription(description.toArray(new String[0]));
+    plugin.getServer().getPluginManager().registerEvents(this, plugin);
+    KitRegistry.registerKit(this);
+  }
 
-    @Override
-    public boolean isUnlockedByPlayer(Player player) {
-        return PermissionsManager.isPremium(player) || player.hasPermission("villagedefense.kit.shotbow");
-    }
+  @Override
+  public boolean isUnlockedByPlayer(Player player) {
+    return PermissionsManager.isPremium(player) || player.hasPermission("villagedefense.kit.shotbow");
+  }
 
-    @Override
-    public void giveKitItems(Player player) {
-        player.getInventory().addItem(WeaponHelper.getEnchantedBow(new Enchantment[]{Enchantment.DURABILITY, Enchantment.ARROW_KNOCKBACK}, new int[]{10, 1}));
-        player.getInventory().addItem(new ItemStack(Material.ARROW, 64));
-        player.getInventory().addItem(new ItemStack(Material.ARROW, 64));
-        ArmorHelper.setColouredArmor(Color.YELLOW, player);
-        player.getInventory().addItem(new ItemStack(Material.COOKED_BEEF, 8));
-        player.getInventory().addItem(new ItemStack(Material.SADDLE));
+  @Override
+  public void giveKitItems(Player player) {
+    player.getInventory().addItem(WeaponHelper.getEnchantedBow(new Enchantment[]{Enchantment.DURABILITY, Enchantment.ARROW_KNOCKBACK}, new int[]{10, 1}));
+    player.getInventory().addItem(new ItemStack(Material.ARROW, 64));
+    player.getInventory().addItem(new ItemStack(Material.ARROW, 64));
+    ArmorHelper.setColouredArmor(Color.YELLOW, player);
+    player.getInventory().addItem(new ItemStack(Material.COOKED_BEEF, 8));
+    player.getInventory().addItem(new ItemStack(Material.SADDLE));
 
-    }
+  }
 
-    @Override
-    public Material getMaterial() {
-        return Material.ARROW;
-    }
+  @Override
+  public Material getMaterial() {
+    return Material.ARROW;
+  }
 
-    @Override
-    public void reStock(Player player) {
-        player.getInventory().addItem(new ItemStack(Material.ARROW, 64));
-    }
+  @Override
+  public void reStock(Player player) {
+    player.getInventory().addItem(new ItemStack(Material.ARROW, 64));
+  }
 
-    @EventHandler
-    public void onBowInteract(PlayerInteractEvent e) {
-        if(e.getAction() == Action.LEFT_CLICK_AIR || e.getAction() == Action.LEFT_CLICK_BLOCK) {
-            ItemStack stack = e.getPlayer().getInventory().getItemInMainHand();
-            if(stack == null || stack.getType() != Material.BOW || !e.getPlayer().getInventory().contains(Material.ARROW) ||
-                    !(UserManager.getUser(e.getPlayer().getUniqueId()).getKit() instanceof ShotBowKit) || UserManager.getUser(e.getPlayer().getUniqueId()).isSpectator())
-                return;
-            if(UserManager.getUser(e.getPlayer().getUniqueId()).getCooldown("shotbow") == 0) {
-                for(int i = 0; i < 4; i++) {
-                    Bukkit.getScheduler().runTaskLater(plugin, () -> {
-                        Projectile pr = e.getPlayer().launchProjectile(Arrow.class);
-                        pr.setVelocity(e.getPlayer().getLocation().getDirection().multiply(3));
-                        pr.setBounce(false);
-                        pr.setShooter(e.getPlayer());
-                        ((Arrow) pr).setCritical(true);
+  @EventHandler
+  public void onBowInteract(PlayerInteractEvent e) {
+    if (e.getAction() == Action.LEFT_CLICK_AIR || e.getAction() == Action.LEFT_CLICK_BLOCK) {
+      ItemStack stack = e.getPlayer().getInventory().getItemInMainHand();
+      if (stack == null || stack.getType() != Material.BOW || !e.getPlayer().getInventory().contains(Material.ARROW) ||
+              !(UserManager.getUser(e.getPlayer().getUniqueId()).getKit() instanceof ShotBowKit) || UserManager.getUser(e.getPlayer().getUniqueId()).isSpectator())
+        return;
+      if (UserManager.getUser(e.getPlayer().getUniqueId()).getCooldown("shotbow") == 0) {
+        for (int i = 0; i < 4; i++) {
+          Bukkit.getScheduler().runTaskLater(plugin, () -> {
+            Projectile pr = e.getPlayer().launchProjectile(Arrow.class);
+            pr.setVelocity(e.getPlayer().getLocation().getDirection().multiply(3));
+            pr.setBounce(false);
+            pr.setShooter(e.getPlayer());
+            ((Arrow) pr).setCritical(true);
 
-                        if(e.getPlayer().getInventory().contains(Material.ARROW))
-                            e.getPlayer().getInventory().removeItem(new ItemStack(Material.ARROW, 1));
-                    }, 2 * (2 * i));
-                }
-                e.setCancelled(true);
-                UserManager.getUser(e.getPlayer().getUniqueId()).setCooldown("shotbow", 5);
-            } else {
-                String msgstring = ChatManager.colorMessage("Kits.Ability-Still-On-Cooldown");
-                msgstring = msgstring.replaceFirst("%COOLDOWN%", Long.toString(UserManager.getUser(e.getPlayer().getUniqueId()).getCooldown("shotbow")));
-                e.getPlayer().sendMessage(msgstring);
-            }
+            if (e.getPlayer().getInventory().contains(Material.ARROW))
+              e.getPlayer().getInventory().removeItem(new ItemStack(Material.ARROW, 1));
+          }, 2 * (2 * i));
         }
+        e.setCancelled(true);
+        UserManager.getUser(e.getPlayer().getUniqueId()).setCooldown("shotbow", 5);
+      } else {
+        String msgstring = ChatManager.colorMessage("Kits.Ability-Still-On-Cooldown");
+        msgstring = msgstring.replaceFirst("%COOLDOWN%", Long.toString(UserManager.getUser(e.getPlayer().getUniqueId()).getCooldown("shotbow")));
+        e.getPlayer().sendMessage(msgstring);
+      }
     }
+  }
 
 }

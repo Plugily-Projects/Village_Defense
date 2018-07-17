@@ -33,31 +33,31 @@ import pl.plajer.villagedefense3.arena.ArenaRegistry;
  * Created by TomVerschueren on 6/02/2018.
  */
 public class CombustDayLightEvent implements Listener {
-    //class used to stop zombies from burning in daylight
+  //class used to stop zombies from burning in daylight
 
-    private Main plugin;
+  private Main plugin;
 
-    public CombustDayLightEvent(Main main) {
-        this.plugin = main;
-        plugin.getServer().getPluginManager().registerEvents(this, plugin);
+  public CombustDayLightEvent(Main main) {
+    this.plugin = main;
+    plugin.getServer().getPluginManager().registerEvents(this, plugin);
+  }
+
+  /**
+   * Triggers when something combusts in the world.
+   * Thanks to @HomieDion for part of this class!
+   */
+  @EventHandler(ignoreCancelled = true)
+  public void onCombust(final EntityCombustEvent e) {
+    // Ignore if this is caused by an event lower down the chain.
+    if (e instanceof EntityCombustByEntityEvent || e instanceof EntityCombustByBlockEvent) return;
+    if (!(e.getEntity() instanceof Zombie)) return;
+    if (e.getEntity().getWorld().getEnvironment() != World.Environment.NORMAL) return;
+
+    for (Arena arena : ArenaRegistry.getArenas()) {
+      if (arena.getZombies().contains(e.getEntity())) {
+        e.setCancelled(true);
+        return;
+      }
     }
-
-    /**
-     * Triggers when something combusts in the world.
-     * Thanks to @HomieDion for part of this class!
-     */
-    @EventHandler(ignoreCancelled = true)
-    public void onCombust(final EntityCombustEvent e) {
-        // Ignore if this is caused by an event lower down the chain.
-        if(e instanceof EntityCombustByEntityEvent || e instanceof EntityCombustByBlockEvent) return;
-        if(!(e.getEntity() instanceof Zombie)) return;
-        if(e.getEntity().getWorld().getEnvironment() != World.Environment.NORMAL) return;
-
-        for(Arena arena : ArenaRegistry.getArenas()) {
-            if(arena.getZombies().contains(e.getEntity())) {
-                e.setCancelled(true);
-                return;
-            }
-        }
-    }
+  }
 }

@@ -39,34 +39,35 @@ import java.util.List;
  */
 public class MediumTankKit extends LevelKit {
 
-    public MediumTankKit(Main plugin) {
-        setName(ChatManager.colorMessage("Kits.Medium-Tank.Kit-Name"));
-        List<String> description = Utils.splitString(ChatManager.colorMessage("Kits.Medium-Tank.Kit-Description"), 40);
-        this.setDescription(description.toArray(new String[0]));
-        setLevel(ConfigurationManager.getConfig("kits").getInt("Required-Level.MediumTank"));
-        KitRegistry.registerKit(this);
-    }
+  public MediumTankKit(Main plugin) {
+    setName(ChatManager.colorMessage("Kits.Medium-Tank.Kit-Name"));
+    List<String> description = Utils.splitString(ChatManager.colorMessage("Kits.Medium-Tank.Kit-Description"), 40);
+    this.setDescription(description.toArray(new String[0]));
+    setLevel(ConfigurationManager.getConfig("kits").getInt("Required-Level.MediumTank"));
+    KitRegistry.registerKit(this);
+  }
 
-    @Override
-    public boolean isUnlockedByPlayer(Player player) {
-        return UserManager.getUser(player.getUniqueId()).getInt("level") >= this.getLevel() || player.hasPermission("villagefense.kit.mediumtank");
-    }
+  @Override
+  public boolean isUnlockedByPlayer(Player player) {
+    return UserManager.getUser(player.getUniqueId()).getInt("level") >= this.getLevel() || player.hasPermission("villagefense.kit.mediumtank");
+  }
 
-    @Override
-    public void giveKitItems(Player player) {
-        player.getInventory().addItem(WeaponHelper.getUnBreakingSword(WeaponHelper.ResourceType.WOOD, 10));
-        player.getInventory().addItem(new ItemStack(Material.GRILLED_PORK, 8));
-        ArmorHelper.setArmor(player, ArmorHelper.ArmorType.IRON);
-        player.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(32.0);
-        player.setHealth(32.0);
+  @Override
+  public void giveKitItems(Player player) {
+    player.getInventory().addItem(WeaponHelper.getUnBreakingSword(WeaponHelper.ResourceType.WOOD, 10));
+    player.getInventory().addItem(new ItemStack(Material.GRILLED_PORK, 8));
+    ArmorHelper.setArmor(player, ArmorHelper.ArmorType.IRON);
+    player.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(32.0);
+    player.setHealth(32.0);
 
-    }
+  }
 
-    @Override
-    public Material getMaterial() {
-        return Material.IRON_CHESTPLATE;
-    }
+  @Override
+  public Material getMaterial() {
+    return Material.IRON_CHESTPLATE;
+  }
 
-    @Override
-    public void reStock(Player player) {}
+  @Override
+  public void reStock(Player player) {
+  }
 }

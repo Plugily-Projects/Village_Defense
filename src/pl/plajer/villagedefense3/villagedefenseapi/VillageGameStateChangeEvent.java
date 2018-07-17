@@ -30,23 +30,23 @@ import pl.plajer.villagedefense3.arena.ArenaState;
  */
 public class VillageGameStateChangeEvent extends VillageEvent {
 
-    private static final HandlerList HANDLERS = new HandlerList();
-    private ArenaState arenaState;
+  private static final HandlerList HANDLERS = new HandlerList();
+  private ArenaState arenaState;
 
-    public VillageGameStateChangeEvent(Arena eventArena, ArenaState arenaState) {
-        super(eventArena);
-        this.arenaState = arenaState;
-    }
+  public VillageGameStateChangeEvent(Arena eventArena, ArenaState arenaState) {
+    super(eventArena);
+    this.arenaState = arenaState;
+  }
 
-    public static HandlerList getHandlerList() {
-        return HANDLERS;
-    }
+  public static HandlerList getHandlerList() {
+    return HANDLERS;
+  }
 
-    public HandlerList getHandlers() {
-        return HANDLERS;
-    }
+  public HandlerList getHandlers() {
+    return HANDLERS;
+  }
 
-    public ArenaState getArenaState() {
-        return arenaState;
-    }
+  public ArenaState getArenaState() {
+    return arenaState;
+  }
 }

@@ -40,36 +40,36 @@ import java.util.List;
  */
 public class PuncherKit extends LevelKit {
 
-    public PuncherKit(Main plugin) {
-        setName(ChatManager.colorMessage("Kits.Puncher.Kit-Name"));
-        List<String> description = Utils.splitString(ChatManager.colorMessage("Kits.Puncher.Kit-Description"), 40);
-        this.setDescription(description.toArray(new String[0]));
-        setLevel(ConfigurationManager.getConfig("kits").getInt("Required-Level.Puncher"));
-        KitRegistry.registerKit(this);
-    }
+  public PuncherKit(Main plugin) {
+    setName(ChatManager.colorMessage("Kits.Puncher.Kit-Name"));
+    List<String> description = Utils.splitString(ChatManager.colorMessage("Kits.Puncher.Kit-Description"), 40);
+    this.setDescription(description.toArray(new String[0]));
+    setLevel(ConfigurationManager.getConfig("kits").getInt("Required-Level.Puncher"));
+    KitRegistry.registerKit(this);
+  }
 
-    @Override
-    public boolean isUnlockedByPlayer(Player player) {
-        return UserManager.getUser(player.getUniqueId()).getInt("level") >= this.getLevel() || player.hasPermission("villagefense.kit.puncher");
-    }
+  @Override
+  public boolean isUnlockedByPlayer(Player player) {
+    return UserManager.getUser(player.getUniqueId()).getInt("level") >= this.getLevel() || player.hasPermission("villagefense.kit.puncher");
+  }
 
-    @Override
-    public void giveKitItems(Player player) {
-        player.getInventory().addItem(WeaponHelper.getEnchanted(new ItemStack(Material.DIAMOND_SPADE), new Enchantment[]{
-                Enchantment.DURABILITY, Enchantment.KNOCKBACK, Enchantment.DAMAGE_ALL}, new int[]{10, 5, 2}));
-        ArmorHelper.setColouredArmor(Color.BLACK, player);
-        player.getInventory().addItem(WeaponHelper.getEnchantedBow(Enchantment.DURABILITY, 5));
-        player.getInventory().addItem(new ItemStack(Material.ARROW, 25));
-        player.getInventory().addItem(new ItemStack(Material.GRILLED_PORK, 8));
-    }
+  @Override
+  public void giveKitItems(Player player) {
+    player.getInventory().addItem(WeaponHelper.getEnchanted(new ItemStack(Material.DIAMOND_SPADE), new Enchantment[]{
+            Enchantment.DURABILITY, Enchantment.KNOCKBACK, Enchantment.DAMAGE_ALL}, new int[]{10, 5, 2}));
+    ArmorHelper.setColouredArmor(Color.BLACK, player);
+    player.getInventory().addItem(WeaponHelper.getEnchantedBow(Enchantment.DURABILITY, 5));
+    player.getInventory().addItem(new ItemStack(Material.ARROW, 25));
+    player.getInventory().addItem(new ItemStack(Material.GRILLED_PORK, 8));
+  }
 
-    @Override
-    public Material getMaterial() {
-        return Material.DIAMOND_SPADE;
-    }
+  @Override
+  public Material getMaterial() {
+    return Material.DIAMOND_SPADE;
+  }
 
-    @Override
-    public void reStock(Player player) {
+  @Override
+  public void reStock(Player player) {
 
-    }
+  }
 }

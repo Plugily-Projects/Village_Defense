@@ -18,18 +18,7 @@
 
 package pl.plajer.villagedefense3.creatures.v1_9_R1;
 
-import net.minecraft.server.v1_9_R1.EntityVillager;
-import net.minecraft.server.v1_9_R1.EntityZombie;
-import net.minecraft.server.v1_9_R1.GenericAttributes;
-import net.minecraft.server.v1_9_R1.Navigation;
-import net.minecraft.server.v1_9_R1.PathfinderGoalBreakDoor;
-import net.minecraft.server.v1_9_R1.PathfinderGoalFloat;
-import net.minecraft.server.v1_9_R1.PathfinderGoalMeleeAttack;
-import net.minecraft.server.v1_9_R1.PathfinderGoalMoveTowardsRestriction;
-import net.minecraft.server.v1_9_R1.PathfinderGoalNearestAttackableTarget;
-import net.minecraft.server.v1_9_R1.PathfinderGoalRandomLookaround;
-import net.minecraft.server.v1_9_R1.PathfinderGoalSelector;
-import net.minecraft.server.v1_9_R1.World;
+import net.minecraft.server.v1_9_R1.*;
 import org.bukkit.craftbukkit.v1_9_R1.CraftWorld;
 import pl.plajer.villagedefense3.creatures.CreatureUtils;
 
@@ -42,48 +31,48 @@ import java.util.Set;
  */
 public class VillagerSlayer extends EntityZombie {
 
-    public int damage;
-    private float bw;
+  public int damage;
+  private float bw;
 
-    public VillagerSlayer(org.bukkit.World world) {
-        this(((CraftWorld) world).getHandle());
-    }
+  public VillagerSlayer(org.bukkit.World world) {
+    this(((CraftWorld) world).getHandle());
+  }
 
-    @SuppressWarnings("rawtypes")
-    public VillagerSlayer(World world) {
-        super(world);
-        this.bw = 1.0f; //Change this to your liking. this is were you set the speed
-        this.damage = 15; // set the damage
-        //There's also a ton of options of you do this. play around with it
-
-
-        Set goalB = (Set) CreatureUtils.getPrivateField("b", PathfinderGoalSelector.class, goalSelector);
-        goalB.clear();
-        Set goalC = (Set) CreatureUtils.getPrivateField("c", PathfinderGoalSelector.class, goalSelector);
-        goalC.clear();
-        Set targetB = (Set) CreatureUtils.getPrivateField("b", PathfinderGoalSelector.class, targetSelector);
-        targetB.clear();
-        Set targetC = (Set) CreatureUtils.getPrivateField("c", PathfinderGoalSelector.class, targetSelector);
-        targetC.clear();
+  @SuppressWarnings("rawtypes")
+  public VillagerSlayer(World world) {
+    super(world);
+    this.bw = 1.0f; //Change this to your liking. this is were you set the speed
+    this.damage = 15; // set the damage
+    //There's also a ton of options of you do this. play around with it
 
 
-        ((Navigation) getNavigation()).b(true);
+    Set goalB = (Set) CreatureUtils.getPrivateField("b", PathfinderGoalSelector.class, goalSelector);
+    goalB.clear();
+    Set goalC = (Set) CreatureUtils.getPrivateField("c", PathfinderGoalSelector.class, goalSelector);
+    goalC.clear();
+    Set targetB = (Set) CreatureUtils.getPrivateField("b", PathfinderGoalSelector.class, targetSelector);
+    targetB.clear();
+    Set targetC = (Set) CreatureUtils.getPrivateField("c", PathfinderGoalSelector.class, targetSelector);
+    targetC.clear();
 
-        this.goalSelector.a(0, new PathfinderGoalFloat(this));
-        this.goalSelector.a(1, new PathfinderGoalBreakDoor(this));
-        this.goalSelector.a(2, new PathfinderGoalMeleeAttack(this, this.bw, false));
-        this.goalSelector.a(4, new PathfinderGoalMoveTowardsRestriction(this, this.bw));
-        this.goalSelector.a(7, new PathfinderGoalRandomLookaround(this));
-        this.targetSelector.a(2, new PathfinderGoalNearestAttackableTarget<>(this, EntityVillager.class, true));
-        this.setHealth(70);
 
-    }
+    ((Navigation) getNavigation()).b(true);
 
-    @Override
-    protected void initAttributes() {
-        super.initAttributes();
-        this.getAttributeInstance(GenericAttributes.FOLLOW_RANGE).setValue(100.0D);
-        this.getAttributeInstance(GenericAttributes.c).setValue(0D);
-    }
+    this.goalSelector.a(0, new PathfinderGoalFloat(this));
+    this.goalSelector.a(1, new PathfinderGoalBreakDoor(this));
+    this.goalSelector.a(2, new PathfinderGoalMeleeAttack(this, this.bw, false));
+    this.goalSelector.a(4, new PathfinderGoalMoveTowardsRestriction(this, this.bw));
+    this.goalSelector.a(7, new PathfinderGoalRandomLookaround(this));
+    this.targetSelector.a(2, new PathfinderGoalNearestAttackableTarget<>(this, EntityVillager.class, true));
+    this.setHealth(70);
+
+  }
+
+  @Override
+  protected void initAttributes() {
+    super.initAttributes();
+    this.getAttributeInstance(GenericAttributes.FOLLOW_RANGE).setValue(100.0D);
+    this.getAttributeInstance(GenericAttributes.c).setValue(0D);
+  }
 
 }

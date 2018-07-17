@@ -31,29 +31,29 @@ import pl.plajer.villagedefense3.handlers.PowerupManager;
  */
 public class VillagePowerupPickEvent extends VillageEvent {
 
-    private static final HandlerList HANDLERS = new HandlerList();
-    private final Player player;
-    private final PowerupManager.PowerupType powerupType;
+  private static final HandlerList HANDLERS = new HandlerList();
+  private final Player player;
+  private final PowerupManager.PowerupType powerupType;
 
-    public VillagePowerupPickEvent(Arena eventArena, Player player, PowerupManager.PowerupType powerupType) {
-        super(eventArena);
-        this.player = player;
-        this.powerupType = powerupType;
-    }
+  public VillagePowerupPickEvent(Arena eventArena, Player player, PowerupManager.PowerupType powerupType) {
+    super(eventArena);
+    this.player = player;
+    this.powerupType = powerupType;
+  }
 
-    public Player getPlayer() {
-        return player;
-    }
+  public static HandlerList getHandlerList() {
+    return HANDLERS;
+  }
 
-    public PowerupManager.PowerupType getPowerupType() {
-        return powerupType;
-    }
+  public Player getPlayer() {
+    return player;
+  }
 
-    public static HandlerList getHandlerList() {
-        return HANDLERS;
-    }
+  public PowerupManager.PowerupType getPowerupType() {
+    return powerupType;
+  }
 
-    public HandlerList getHandlers() {
-        return HANDLERS;
-    }
+  public HandlerList getHandlers() {
+    return HANDLERS;
+  }
 }

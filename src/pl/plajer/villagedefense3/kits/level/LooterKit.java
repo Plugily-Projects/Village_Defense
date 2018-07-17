@@ -45,46 +45,47 @@ import java.util.List;
  */
 public class LooterKit extends LevelKit implements Listener {
 
-    public LooterKit(Main plugin) {
-        setName(ChatManager.colorMessage("Kits.Looter.Kit-Name"));
-        List<String> description = Utils.splitString(ChatManager.colorMessage("Kits.Looter.Kit-Description"), 40);
-        this.setDescription(description.toArray(new String[0]));
-        setLevel(ConfigurationManager.getConfig("kits").getInt("Required-Level.Looter"));
-        plugin.getServer().getPluginManager().registerEvents(this, plugin);
-        KitRegistry.registerKit(this);
+  public LooterKit(Main plugin) {
+    setName(ChatManager.colorMessage("Kits.Looter.Kit-Name"));
+    List<String> description = Utils.splitString(ChatManager.colorMessage("Kits.Looter.Kit-Description"), 40);
+    this.setDescription(description.toArray(new String[0]));
+    setLevel(ConfigurationManager.getConfig("kits").getInt("Required-Level.Looter"));
+    plugin.getServer().getPluginManager().registerEvents(this, plugin);
+    KitRegistry.registerKit(this);
+  }
+
+  @Override
+  public boolean isUnlockedByPlayer(Player player) {
+    return UserManager.getUser(player.getUniqueId()).getInt("level") >= this.getLevel() || player.hasPermission("villagefense.kit.looter");
+  }
+
+  @Override
+  public void giveKitItems(Player player) {
+    player.getInventory().addItem(WeaponHelper.getUnBreakingSword(WeaponHelper.ResourceType.STONE, 10));
+    ArmorHelper.setColouredArmor(Color.ORANGE, player);
+    player.getInventory().addItem(new ItemStack(Material.GRILLED_PORK, 8));
+
+  }
+
+  @Override
+  public Material getMaterial() {
+    return Material.ROTTEN_FLESH;
+  }
+
+  @Override
+  public void reStock(Player player) {
+  }
+
+  @EventHandler
+  public void onDeath(EntityDeathEvent event) {
+    if (event.getEntity().getType() != EntityType.ZOMBIE) return;
+    if (event.getEntity().getKiller() == null) return;
+    Player player = event.getEntity().getKiller();
+    if (ArenaRegistry.getArena(player) == null) return;
+    User user = UserManager.getUser(player.getUniqueId());
+    if (user.getKit() instanceof LooterKit) {
+      player.getInventory().addItem(new ItemStack(Material.ROTTEN_FLESH, 1));
     }
 
-    @Override
-    public boolean isUnlockedByPlayer(Player player) {
-        return UserManager.getUser(player.getUniqueId()).getInt("level") >= this.getLevel() || player.hasPermission("villagefense.kit.looter");
-    }
-
-    @Override
-    public void giveKitItems(Player player) {
-        player.getInventory().addItem(WeaponHelper.getUnBreakingSword(WeaponHelper.ResourceType.STONE, 10));
-        ArmorHelper.setColouredArmor(Color.ORANGE, player);
-        player.getInventory().addItem(new ItemStack(Material.GRILLED_PORK, 8));
-
-    }
-
-    @Override
-    public Material getMaterial() {
-        return Material.ROTTEN_FLESH;
-    }
-
-    @Override
-    public void reStock(Player player) {}
-
-    @EventHandler
-    public void onDeath(EntityDeathEvent event) {
-        if(event.getEntity().getType() != EntityType.ZOMBIE) return;
-        if(event.getEntity().getKiller() == null) return;
-        Player player = event.getEntity().getKiller();
-        if(ArenaRegistry.getArena(player) == null) return;
-        User user = UserManager.getUser(player.getUniqueId());
-        if(user.getKit() instanceof LooterKit) {
-            player.getInventory().addItem(new ItemStack(Material.ROTTEN_FLESH, 1));
-        }
-
-    }
+  }
 }

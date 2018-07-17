@@ -31,92 +31,92 @@ import java.util.concurrent.ThreadLocalRandom;
  */
 public class RewardsHandler {
 
-    private FileConfiguration config;
-    private Main plugin;
-    private boolean enabled;
+  private FileConfiguration config;
+  private Main plugin;
+  private boolean enabled;
 
-    public RewardsHandler(Main plugin) {
-        this.plugin = plugin;
-        enabled = plugin.getConfig().getBoolean("Rewards-Enabled");
-        config = ConfigurationManager.getConfig("rewards");
+  public RewardsHandler(Main plugin) {
+    this.plugin = plugin;
+    enabled = plugin.getConfig().getBoolean("Rewards-Enabled");
+    config = ConfigurationManager.getConfig("rewards");
+  }
+
+  public void performEndGameRewards(Arena arena) {
+    if (!enabled) return;
+    for (String string : config.getStringList("rewards.endgame")) {
+      performCommand(arena, string);
     }
+  }
 
-    public void performEndGameRewards(Arena arena) {
-        if(!enabled) return;
-        for(String string : config.getStringList("rewards.endgame")) {
-            performCommand(arena, string);
-        }
+  public void performEndWaveRewards(Arena arena, int wave) {
+    if (!enabled) return;
+    if (!config.contains("rewards.endwave." + wave)) return;
+    for (String string : config.getStringList("rewards.endwave." + wave))
+      performCommand(arena, string);
+  }
+
+  public void performZombieKillReward(Player player) {
+    if (!enabled) return;
+    for (String string : config.getStringList("rewards.zombiekill")) {
+      performCommand(player, string);
     }
+  }
 
-    public void performEndWaveRewards(Arena arena, int wave) {
-        if(!enabled) return;
-        if(!config.contains("rewards.endwave." + wave)) return;
-        for(String string : config.getStringList("rewards.endwave." + wave))
-            performCommand(arena, string);
+
+  private void performCommand(Arena arena, String string) {
+    if (!enabled) return;
+    String command = string.replaceAll("%ARENA-ID%", arena.getID())
+            .replaceAll("%MAPNAME%", arena.getMapName())
+            .replaceAll("%PLAYERAMOUNT%", String.valueOf(arena.getPlayers().size()))
+            .replaceAll("%WAVE%", String.valueOf(arena.getWave()));
+    if (command.contains("chance(")) {
+      int loc = command.indexOf(")");
+      if (loc == -1) {
+        plugin.getLogger().warning("rewards.yml configuration is broken! Make sure you don't forget using ')' character in chance condition!");
+        return;
+      }
+      String chanceStr = command.substring(0, loc).replaceAll("[^0-9]+", "");
+      int chance = Integer.parseInt(chanceStr);
+      command = command.replace("chance(" + chanceStr + "):", "");
+      if (ThreadLocalRandom.current().nextInt(0, 100) > chance) return;
     }
-
-    public void performZombieKillReward(Player player) {
-        if(!enabled) return;
-        for(String string : config.getStringList("rewards.zombiekill")) {
-            performCommand(player, string);
-        }
-    }
-
-
-    private void performCommand(Arena arena, String string) {
-        if(!enabled) return;
-        String command = string.replaceAll("%ARENA-ID%", arena.getID())
-                .replaceAll("%MAPNAME%", arena.getMapName())
-                .replaceAll("%PLAYERAMOUNT%", String.valueOf(arena.getPlayers().size()))
-                .replaceAll("%WAVE%", String.valueOf(arena.getWave()));
-        if(command.contains("chance(")) {
-            int loc = command.indexOf(")");
-            if(loc == -1) {
-                plugin.getLogger().warning("rewards.yml configuration is broken! Make sure you don't forget using ')' character in chance condition!");
-                return;
-            }
-            String chanceStr = command.substring(0, loc).replaceAll("[^0-9]+", "");
-            int chance = Integer.parseInt(chanceStr);
-            command = command.replace("chance(" + chanceStr + "):", "");
-            if(ThreadLocalRandom.current().nextInt(0, 100) > chance) return;
-        }
-        if(command.contains("p:") || command.contains("%PLAYER%")) {
-            for(Player player : arena.getPlayers()) {
-                if(command.contains("p:")) {
-                    player.performCommand(command.replaceFirst("p:", "")
-                            .replaceAll("%PLAYER%", player.getName()));
-                } else {
-                    plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), command.replaceAll("%PLAYER%", player.getName()));
-                }
-            }
-        }
-        plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), command);
-    }
-
-    private void performCommand(Player player, String string) {
-        if(!enabled) return;
-        Arena arena = ArenaRegistry.getArena(player);
-        if(arena == null) return;
-        String command = string.replaceAll("%ARENA-ID%", arena.getID())
-                .replaceAll("%MAPNAME%", arena.getMapName())
-                .replaceAll("%PLAYERAMOUNT%", String.valueOf(arena.getPlayers().size()))
-                .replaceAll("%WAVE%", String.valueOf(arena.getWave()));
-        if(command.contains("chance(")) {
-            int loc = command.indexOf(")");
-            if(loc == -1) {
-                plugin.getLogger().warning("rewards.yml configuration is broken! Make sure you don't forget using ')' character in chance condition!");
-                return;
-            }
-            String chanceStr = command.substring(0, loc).replaceAll("[^0-9]+", "");
-            int chance = Integer.parseInt(chanceStr);
-            command = command.replace("chance(" + chanceStr + "):", "");
-            if(ThreadLocalRandom.current().nextInt(0, 100) > chance) return;
-        }
-        if(command.contains("p:")) {
-            player.performCommand(command.replaceFirst("p:", "")
-                    .replaceAll("%PLAYER%", player.getName()));
+    if (command.contains("p:") || command.contains("%PLAYER%")) {
+      for (Player player : arena.getPlayers()) {
+        if (command.contains("p:")) {
+          player.performCommand(command.replaceFirst("p:", "")
+                  .replaceAll("%PLAYER%", player.getName()));
         } else {
-            plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), command.replaceAll("%PLAYER%", player.getName()));
+          plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), command.replaceAll("%PLAYER%", player.getName()));
         }
+      }
     }
+    plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), command);
+  }
+
+  private void performCommand(Player player, String string) {
+    if (!enabled) return;
+    Arena arena = ArenaRegistry.getArena(player);
+    if (arena == null) return;
+    String command = string.replaceAll("%ARENA-ID%", arena.getID())
+            .replaceAll("%MAPNAME%", arena.getMapName())
+            .replaceAll("%PLAYERAMOUNT%", String.valueOf(arena.getPlayers().size()))
+            .replaceAll("%WAVE%", String.valueOf(arena.getWave()));
+    if (command.contains("chance(")) {
+      int loc = command.indexOf(")");
+      if (loc == -1) {
+        plugin.getLogger().warning("rewards.yml configuration is broken! Make sure you don't forget using ')' character in chance condition!");
+        return;
+      }
+      String chanceStr = command.substring(0, loc).replaceAll("[^0-9]+", "");
+      int chance = Integer.parseInt(chanceStr);
+      command = command.replace("chance(" + chanceStr + "):", "");
+      if (ThreadLocalRandom.current().nextInt(0, 100) > chance) return;
+    }
+    if (command.contains("p:")) {
+      player.performCommand(command.replaceFirst("p:", "")
+              .replaceAll("%PLAYER%", player.getName()));
+    } else {
+      plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), command.replaceAll("%PLAYER%", player.getName()));
+    }
+  }
 }

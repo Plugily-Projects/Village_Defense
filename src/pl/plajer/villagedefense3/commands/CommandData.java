@@ -30,8 +30,8 @@ import lombok.Data;
 @AllArgsConstructor
 public class CommandData {
 
-    private String text;
-    private String command;
-    private String description;
+  private String text;
+  private String command;
+  private String description;
 
 }

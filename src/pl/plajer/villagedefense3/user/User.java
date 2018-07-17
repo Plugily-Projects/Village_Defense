@@ -40,105 +40,105 @@ import java.util.UUID;
  */
 public class User {
 
-    private static Main plugin = JavaPlugin.getPlugin(Main.class);
-    private static long cooldownCounter = 0;
-    private ScoreboardManager scoreboardManager = Bukkit.getScoreboardManager();
-    private Scoreboard scoreboard;
-    private UUID uuid;
-    private boolean fakeDead = false;
-    private boolean spectator = false;
-    private Kit kit = KitRegistry.getDefaultKit();
-    private Map<String, Integer> ints = new HashMap<>();
-    private Map<String, Long> cooldowns = new HashMap<>();
+  private static Main plugin = JavaPlugin.getPlugin(Main.class);
+  private static long cooldownCounter = 0;
+  private ScoreboardManager scoreboardManager = Bukkit.getScoreboardManager();
+  private Scoreboard scoreboard;
+  private UUID uuid;
+  private boolean fakeDead = false;
+  private boolean spectator = false;
+  private Kit kit = KitRegistry.getDefaultKit();
+  private Map<String, Integer> ints = new HashMap<>();
+  private Map<String, Long> cooldowns = new HashMap<>();
 
-    public User(UUID uuid) {
-        scoreboard = scoreboardManager.getNewScoreboard();
-        this.uuid = uuid;
+  public User(UUID uuid) {
+    scoreboard = scoreboardManager.getNewScoreboard();
+    this.uuid = uuid;
+  }
+
+  public static void cooldownHandlerTask() {
+    Bukkit.getScheduler().runTaskTimerAsynchronously(plugin, () -> cooldownCounter++, 20, 20);
+  }
+
+  public Kit getKit() {
+    if (kit == null) {
+      throw new NullPointerException("User has no kit!");
+    } else
+      return kit;
+  }
+
+  public void setKit(Kit kit) {
+    this.kit = kit;
+  }
+
+  public Arena getArena() {
+    return ArenaRegistry.getArena(Bukkit.getPlayer(uuid));
+  }
+
+  public boolean isFakeDead() {
+    return fakeDead;
+  }
+
+  public void setFakeDead(boolean b) {
+    fakeDead = b;
+  }
+
+  public Player toPlayer() {
+    return Bukkit.getServer().getPlayer(uuid);
+  }
+
+  public boolean isSpectator() {
+    return spectator;
+  }
+
+  public void setSpectator(boolean b) {
+    spectator = b;
+  }
+
+  public int getInt(String s) {
+    if (!ints.containsKey(s)) {
+      ints.put(s, 0);
+      return 0;
+    } else if (ints.get(s) == null) {
+      return 0;
     }
+    return ints.get(s);
+  }
 
-    public static void cooldownHandlerTask() {
-        Bukkit.getScheduler().runTaskTimerAsynchronously(plugin, () -> cooldownCounter++, 20, 20);
-    }
+  public void removeScoreboard() {
+    this.toPlayer().setScoreboard(scoreboardManager.getNewScoreboard());
+  }
 
-    public Kit getKit() {
-        if(kit == null) {
-            throw new NullPointerException("User has no kit!");
-        } else
-            return kit;
-    }
+  public void setInt(String s, int i) {
+    ints.put(s, i);
 
-    public void setKit(Kit kit) {
-        this.kit = kit;
-    }
+    //statistics manipulation events are called async when using mysql
+    Bukkit.getScheduler().runTask(plugin, () -> {
+      VillagePlayerStatisticChangeEvent villagePlayerStatisticIncreaseEvent = new VillagePlayerStatisticChangeEvent(getArena(), toPlayer(), FileStats.STATISTICS.get(s), i);
+      Bukkit.getPluginManager().callEvent(villagePlayerStatisticIncreaseEvent);
+    });
+  }
 
-    public Arena getArena() {
-        return ArenaRegistry.getArena(Bukkit.getPlayer(uuid));
-    }
+  public void addInt(String s, int i) {
+    ints.put(s, getInt(s) + i);
 
-    public boolean isFakeDead() {
-        return fakeDead;
-    }
+    //statistics manipulation events are called async when using mysql
+    Bukkit.getScheduler().runTask(plugin, () -> {
+      VillagePlayerStatisticChangeEvent villagePlayerStatisticIncreaseEvent = new VillagePlayerStatisticChangeEvent(getArena(), toPlayer(), FileStats.STATISTICS.get(s), getInt(s));
+      Bukkit.getPluginManager().callEvent(villagePlayerStatisticIncreaseEvent);
+    });
+  }
 
-    public void setFakeDead(boolean b) {
-        fakeDead = b;
-    }
+  public void setCooldown(String s, int seconds) {
+    cooldowns.put(s, seconds + cooldownCounter);
+  }
 
-    public Player toPlayer() {
-        return Bukkit.getServer().getPlayer(uuid);
-    }
-
-    public boolean isSpectator() {
-        return spectator;
-    }
-
-    public void setSpectator(boolean b) {
-        spectator = b;
-    }
-
-    public int getInt(String s) {
-        if(!ints.containsKey(s)) {
-            ints.put(s, 0);
-            return 0;
-        } else if(ints.get(s) == null) {
-            return 0;
-        }
-        return ints.get(s);
-    }
-
-    public void removeScoreboard() {
-        this.toPlayer().setScoreboard(scoreboardManager.getNewScoreboard());
-    }
-
-    public void setInt(String s, int i) {
-        ints.put(s, i);
-
-        //statistics manipulation events are called async when using mysql
-        Bukkit.getScheduler().runTask(plugin, () -> {
-            VillagePlayerStatisticChangeEvent villagePlayerStatisticIncreaseEvent = new VillagePlayerStatisticChangeEvent(getArena(), toPlayer(), FileStats.STATISTICS.get(s), i);
-            Bukkit.getPluginManager().callEvent(villagePlayerStatisticIncreaseEvent);
-        });
-    }
-
-    public void addInt(String s, int i) {
-        ints.put(s, getInt(s) + i);
-
-        //statistics manipulation events are called async when using mysql
-        Bukkit.getScheduler().runTask(plugin, () -> {
-            VillagePlayerStatisticChangeEvent villagePlayerStatisticIncreaseEvent = new VillagePlayerStatisticChangeEvent(getArena(), toPlayer(), FileStats.STATISTICS.get(s), getInt(s));
-            Bukkit.getPluginManager().callEvent(villagePlayerStatisticIncreaseEvent);
-        });
-    }
-
-    public void setCooldown(String s, int seconds) {
-        cooldowns.put(s, seconds + cooldownCounter);
-    }
-
-    public long getCooldown(String s) {
-        if(!cooldowns.containsKey(s))
-            return 0;
-        if(cooldowns.get(s) <= cooldownCounter)
-            return 0;
-        return cooldowns.get(s) - cooldownCounter;
-    }
+  public long getCooldown(String s) {
+    if (!cooldowns.containsKey(s))
+      return 0;
+    if (cooldowns.get(s) <= cooldownCounter)
+      return 0;
+    return cooldowns.get(s) - cooldownCounter;
+  }
 
 }

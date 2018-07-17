@@ -32,32 +32,32 @@ import java.util.UUID;
  */
 public class UserManager {
 
-    private static HashMap<UUID, User> users = new HashMap<>();
+  private static HashMap<UUID, User> users = new HashMap<>();
 
-    public static void registerUser(UUID uuid) {
-        Main.debug("Registering new user with UUID: " + uuid, System.currentTimeMillis());
-        users.put(uuid, new User(uuid));
-    }
+  public static void registerUser(UUID uuid) {
+    Main.debug("Registering new user with UUID: " + uuid, System.currentTimeMillis());
+    users.put(uuid, new User(uuid));
+  }
 
-    public static User getUser(UUID uuid) {
-        if(users.containsKey(uuid)) {
-            return users.get(uuid);
-        } else {
-            users.put(uuid, new User(uuid));
-            return users.get(uuid);
-        }
+  public static User getUser(UUID uuid) {
+    if (users.containsKey(uuid)) {
+      return users.get(uuid);
+    } else {
+      users.put(uuid, new User(uuid));
+      return users.get(uuid);
     }
+  }
 
-    public static List<User> getUsers(Arena arena) {
-        List<User> users = new ArrayList<>();
-        for(Player player : arena.getPlayers()) {
-            users.add(getUser(player.getUniqueId()));
-        }
-        return users;
+  public static List<User> getUsers(Arena arena) {
+    List<User> users = new ArrayList<>();
+    for (Player player : arena.getPlayers()) {
+      users.add(getUser(player.getUniqueId()));
     }
+    return users;
+  }
 
-    public static void removeUser(UUID uuid) {
-        users.remove(uuid);
-    }
+  public static void removeUser(UUID uuid) {
+    users.remove(uuid);
+  }
 
 }

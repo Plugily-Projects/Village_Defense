@@ -27,20 +27,20 @@ import pl.plajer.villagedefense3.utils.Utils;
  */
 public abstract class LevelKit extends Kit {
 
-    int level;
+  int level;
 
-    public int getLevel() {
-        return level;
-    }
+  public int getLevel() {
+    return level;
+  }
 
-    public void setLevel(int level) {
-        this.level = level;
-    }
+  public void setLevel(int level) {
+    this.level = level;
+  }
 
-    public ItemStack getItemStack() {
-        ItemStack itemStack = new ItemStack(getMaterial());
-        setItemNameAndLore(itemStack, getName(), getDescription());
-        Utils.addLore(itemStack, ChatManager.colorMessage("Kits.Kit-Menu.Locked-Lores.Unlock-At-Level").replaceAll("%NUMBER%", Integer.toString(getLevel())));
-        return itemStack;
-    }
+  public ItemStack getItemStack() {
+    ItemStack itemStack = new ItemStack(getMaterial());
+    setItemNameAndLore(itemStack, getName(), getDescription());
+    Utils.addLore(itemStack, ChatManager.colorMessage("Kits.Kit-Menu.Locked-Lores.Unlock-At-Level").replaceAll("%NUMBER%", Integer.toString(getLevel())));
+    return itemStack;
+  }
 }

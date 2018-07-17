@@ -43,66 +43,66 @@ import java.util.List;
  */
 public class DogFriendKit extends PremiumKit {
 
-    private Main plugin;
+  private Main plugin;
 
-    public DogFriendKit(Main plugin) {
-        this.plugin = plugin;
-        this.setName(ChatManager.colorMessage("Kits.Dog-Friend.Kit-Name"));
-        List<String> description = Utils.splitString(ChatManager.colorMessage("Kits.Dog-Friend.Kit-Description"), 40);
-        this.setDescription(description.toArray(new String[0]));
-        KitRegistry.registerKit(this);
+  public DogFriendKit(Main plugin) {
+    this.plugin = plugin;
+    this.setName(ChatManager.colorMessage("Kits.Dog-Friend.Kit-Name"));
+    List<String> description = Utils.splitString(ChatManager.colorMessage("Kits.Dog-Friend.Kit-Description"), 40);
+    this.setDescription(description.toArray(new String[0]));
+    KitRegistry.registerKit(this);
+  }
+
+
+  @Override
+  public boolean isUnlockedByPlayer(Player player) {
+    return PermissionsManager.isPremium(player) || player.hasPermission("villagedefense.kit.dogfriend");
+  }
+
+  @Override
+  public void giveKitItems(Player player) {
+    player.getInventory().addItem(WeaponHelper.getUnBreakingSword(WeaponHelper.ResourceType.STONE, 10));
+    ArmorHelper.setArmor(player, ArmorHelper.ArmorType.LEATHER);
+    player.getInventory().addItem(new ItemStack(Material.GRILLED_PORK, 8));
+    player.getInventory().addItem(new ItemStack(Material.SADDLE));
+    Arena arena = ArenaRegistry.getArena(player);
+    if (arena == null) return;
+    if (plugin.is1_9_R1()) {
+      ArenaInitializer1_9_R1 initializer = (ArenaInitializer1_9_R1) arena;
+      for (int i = 0; i < 3; i++) initializer.spawnWolf(initializer.getStartLocation(), player);
+    } else if (plugin.is1_11_R1()) {
+      ArenaInitializer1_11_R1 initializer = (ArenaInitializer1_11_R1) arena;
+      for (int i = 0; i < 3; i++) initializer.spawnWolf(initializer.getStartLocation(), player);
+    } else if (plugin.is1_12_R1()) {
+      ArenaInitializer1_12_R1 initializer = (ArenaInitializer1_12_R1) arena;
+      for (int i = 0; i < 3; i++) initializer.spawnWolf(initializer.getStartLocation(), player);
+    } else if (plugin.is1_13_R1()) {
+      ArenaInitializer1_13_R1 initializer = (ArenaInitializer1_13_R1) arena;
+      for (int i = 0; i < 3; i++) initializer.spawnWolf(initializer.getStartLocation(), player);
     }
+  }
 
+  @Override
+  public Material getMaterial() {
+    return Material.BONE;
+  }
 
-    @Override
-    public boolean isUnlockedByPlayer(Player player) {
-        return PermissionsManager.isPremium(player) || player.hasPermission("villagedefense.kit.dogfriend");
+  @Override
+  public void reStock(Player player) {
+    Arena arena = ArenaRegistry.getArena(player);
+    if (arena == null) return;
+    if (plugin.is1_9_R1()) {
+      ArenaInitializer1_9_R1 initializer = (ArenaInitializer1_9_R1) arena;
+      initializer.spawnWolf(initializer.getStartLocation(), player);
+    } else if (plugin.is1_11_R1()) {
+      ArenaInitializer1_11_R1 initializer = (ArenaInitializer1_11_R1) arena;
+      initializer.spawnWolf(initializer.getStartLocation(), player);
+    } else if (plugin.is1_12_R1()) {
+      ArenaInitializer1_12_R1 initializer = (ArenaInitializer1_12_R1) arena;
+      initializer.spawnWolf(initializer.getStartLocation(), player);
+    } else if (plugin.is1_13_R1()) {
+      ArenaInitializer1_13_R1 initializer = (ArenaInitializer1_13_R1) arena;
+      initializer.spawnWolf(initializer.getStartLocation(), player);
     }
-
-    @Override
-    public void giveKitItems(Player player) {
-        player.getInventory().addItem(WeaponHelper.getUnBreakingSword(WeaponHelper.ResourceType.STONE, 10));
-        ArmorHelper.setArmor(player, ArmorHelper.ArmorType.LEATHER);
-        player.getInventory().addItem(new ItemStack(Material.GRILLED_PORK, 8));
-        player.getInventory().addItem(new ItemStack(Material.SADDLE));
-        Arena arena = ArenaRegistry.getArena(player);
-        if(arena == null) return;
-        if(plugin.is1_9_R1()) {
-            ArenaInitializer1_9_R1 initializer = (ArenaInitializer1_9_R1) arena;
-            for(int i = 0; i < 3; i++) initializer.spawnWolf(initializer.getStartLocation(), player);
-        } else if(plugin.is1_11_R1()) {
-            ArenaInitializer1_11_R1 initializer = (ArenaInitializer1_11_R1) arena;
-            for(int i = 0; i < 3; i++) initializer.spawnWolf(initializer.getStartLocation(), player);
-        } else if(plugin.is1_12_R1()) {
-            ArenaInitializer1_12_R1 initializer = (ArenaInitializer1_12_R1) arena;
-            for(int i = 0; i < 3; i++) initializer.spawnWolf(initializer.getStartLocation(), player);
-        } else if(plugin.is1_13_R1()) {
-            ArenaInitializer1_13_R1 initializer = (ArenaInitializer1_13_R1) arena;
-            for(int i = 0; i < 3; i++) initializer.spawnWolf(initializer.getStartLocation(), player);
-        }
-    }
-
-    @Override
-    public Material getMaterial() {
-        return Material.BONE;
-    }
-
-    @Override
-    public void reStock(Player player) {
-        Arena arena = ArenaRegistry.getArena(player);
-        if(arena == null) return;
-        if(plugin.is1_9_R1()) {
-            ArenaInitializer1_9_R1 initializer = (ArenaInitializer1_9_R1) arena;
-            initializer.spawnWolf(initializer.getStartLocation(), player);
-        } else if(plugin.is1_11_R1()) {
-            ArenaInitializer1_11_R1 initializer = (ArenaInitializer1_11_R1) arena;
-            initializer.spawnWolf(initializer.getStartLocation(), player);
-        } else if(plugin.is1_12_R1()) {
-            ArenaInitializer1_12_R1 initializer = (ArenaInitializer1_12_R1) arena;
-            initializer.spawnWolf(initializer.getStartLocation(), player);
-        } else if(plugin.is1_13_R1()) {
-            ArenaInitializer1_13_R1 initializer = (ArenaInitializer1_13_R1) arena;
-            initializer.spawnWolf(initializer.getStartLocation(), player);
-        }
-    }
+  }
 }

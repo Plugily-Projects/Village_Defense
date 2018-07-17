@@ -39,33 +39,34 @@ import java.util.List;
  */
 public class HeavyTankKit extends PremiumKit {
 
-    public HeavyTankKit(Main plugin) {
-        setName(ChatManager.colorMessage("Kits.Heavy-Tank.Kit-Name"));
-        List<String> description = Utils.splitString(ChatManager.colorMessage("Kits.Heavy-Tank.Kit-Description"), 40);
-        this.setDescription(description.toArray(new String[0]));
-        KitRegistry.registerKit(this);
-    }
+  public HeavyTankKit(Main plugin) {
+    setName(ChatManager.colorMessage("Kits.Heavy-Tank.Kit-Name"));
+    List<String> description = Utils.splitString(ChatManager.colorMessage("Kits.Heavy-Tank.Kit-Description"), 40);
+    this.setDescription(description.toArray(new String[0]));
+    KitRegistry.registerKit(this);
+  }
 
-    @Override
-    public boolean isUnlockedByPlayer(Player player) {
-        return PermissionsManager.isPremium(player) || player.hasPermission("villagedefense.kit.heavytank");
-    }
+  @Override
+  public boolean isUnlockedByPlayer(Player player) {
+    return PermissionsManager.isPremium(player) || player.hasPermission("villagedefense.kit.heavytank");
+  }
 
-    @Override
-    public void giveKitItems(Player player) {
-        player.getInventory().addItem(WeaponHelper.getEnchanted(new ItemStack(Material.STICK), new Enchantment[]{Enchantment.DURABILITY, Enchantment.DAMAGE_ALL}, new int[]{10, 2}));
-        player.getInventory().addItem(new ItemStack(Material.GRILLED_PORK, 8));
-        player.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(40.0);
-        player.setHealth(40.0);
-        ArmorHelper.setArmor(player, ArmorHelper.ArmorType.IRON);
-        player.getInventory().addItem(new ItemStack(Material.SADDLE));
-    }
+  @Override
+  public void giveKitItems(Player player) {
+    player.getInventory().addItem(WeaponHelper.getEnchanted(new ItemStack(Material.STICK), new Enchantment[]{Enchantment.DURABILITY, Enchantment.DAMAGE_ALL}, new int[]{10, 2}));
+    player.getInventory().addItem(new ItemStack(Material.GRILLED_PORK, 8));
+    player.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(40.0);
+    player.setHealth(40.0);
+    ArmorHelper.setArmor(player, ArmorHelper.ArmorType.IRON);
+    player.getInventory().addItem(new ItemStack(Material.SADDLE));
+  }
 
-    @Override
-    public Material getMaterial() {
-        return Material.DIAMOND_CHESTPLATE;
-    }
+  @Override
+  public Material getMaterial() {
+    return Material.DIAMOND_CHESTPLATE;
+  }
 
-    @Override
-    public void reStock(Player player) {}
+  @Override
+  public void reStock(Player player) {
+  }
 }

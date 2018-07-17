@@ -26,18 +26,18 @@ import pl.plajer.villagedefense3.arena.Arena;
  */
 public abstract class VillageEvent extends Event {
 
-    protected Arena arena;
+  protected Arena arena;
 
-    public VillageEvent(Arena eventArena) {
-        arena = eventArena;
-    }
+  public VillageEvent(Arena eventArena) {
+    arena = eventArena;
+  }
 
-    /**
-     * Returns event arena
-     *
-     * @return event arena
-     */
-    public Arena getArena() {
-        return arena;
-    }
+  /**
+   * Returns event arena
+   *
+   * @return event arena
+   */
+  public Arena getArena() {
+    return arena;
+  }
 }

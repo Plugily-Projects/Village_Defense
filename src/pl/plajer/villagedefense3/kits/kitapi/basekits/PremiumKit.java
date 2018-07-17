@@ -27,13 +27,14 @@ import pl.plajer.villagedefense3.utils.Utils;
  */
 public abstract class PremiumKit extends Kit {
 
-    protected PremiumKit() {}
+  protected PremiumKit() {
+  }
 
-    @Override
-    public ItemStack getItemStack() {
-        ItemStack itemStack = new ItemStack(getMaterial());
-        setItemNameAndLore(itemStack, getName(), getDescription());
-        Utils.addLore(itemStack, ChatManager.colorMessage("Kits.Kit-Menu.Locked-Lores.Unlock-In-Store"));
-        return itemStack;
-    }
+  @Override
+  public ItemStack getItemStack() {
+    ItemStack itemStack = new ItemStack(getMaterial());
+    setItemNameAndLore(itemStack, getName(), getDescription());
+    Utils.addLore(itemStack, ChatManager.colorMessage("Kits.Kit-Menu.Locked-Lores.Unlock-In-Store"));
+    return itemStack;
+  }
 }
