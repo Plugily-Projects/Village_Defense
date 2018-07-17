@@ -19,6 +19,7 @@
 package pl.plajer.villagedefense3.villagedefenseapi;
 
 import org.bukkit.event.Event;
+
 import pl.plajer.villagedefense3.arena.Arena;
 
 /**

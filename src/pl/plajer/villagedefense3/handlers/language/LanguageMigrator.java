@@ -18,14 +18,6 @@
 
 package pl.plajer.villagedefense3.handlers.language;
 
-import org.apache.commons.io.FileUtils;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.plugin.java.JavaPlugin;
-import pl.plajer.villagedefense3.Main;
-import pl.plajer.villagedefense3.handlers.ConfigurationManager;
-import pl.plajer.villagedefense3.utils.MessageUtils;
-
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -34,6 +26,15 @@ import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import org.apache.commons.io.FileUtils;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.plugin.java.JavaPlugin;
+
+import pl.plajer.villagedefense3.Main;
+import pl.plajer.villagedefense3.handlers.ConfigurationManager;
+import pl.plajer.villagedefense3.utils.MessageUtils;
 
 /*
   NOTE FOR CONTRIBUTORS - Please do not touch this class if you don't now how it works! You can break migrator modyfing these values!

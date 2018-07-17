@@ -18,6 +18,18 @@
 
 package pl.plajer.villagedefense3.creatures.v1_9_R1;
 
+import java.util.Arrays;
+import java.util.Set;
+
+import org.bukkit.Bukkit;
+import org.bukkit.Material;
+import org.bukkit.craftbukkit.v1_9_R1.CraftWorld;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
+import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.inventory.ItemStack;
+
 import net.minecraft.server.v1_9_R1.DamageSource;
 import net.minecraft.server.v1_9_R1.EntityHuman;
 import net.minecraft.server.v1_9_R1.EntityIronGolem;
@@ -33,18 +45,7 @@ import net.minecraft.server.v1_9_R1.PathfinderGoalNearestAttackableTarget;
 import net.minecraft.server.v1_9_R1.PathfinderGoalRandomLookaround;
 import net.minecraft.server.v1_9_R1.PathfinderGoalSelector;
 import net.minecraft.server.v1_9_R1.World;
-import org.bukkit.Bukkit;
-import org.bukkit.Material;
-import org.bukkit.craftbukkit.v1_9_R1.CraftWorld;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
-import org.bukkit.event.entity.EntityDeathEvent;
-import org.bukkit.inventory.ItemStack;
 import pl.plajer.villagedefense3.creatures.CreatureUtils;
-
-import java.util.Arrays;
-import java.util.Set;
 
 /**
  * Created by Tom on 15/08/2014.

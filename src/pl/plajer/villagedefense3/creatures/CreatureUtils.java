@@ -18,14 +18,15 @@
 
 package pl.plajer.villagedefense3.creatures;
 
+import java.lang.reflect.Field;
+
 import org.bukkit.ChatColor;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Zombie;
 import org.bukkit.plugin.java.JavaPlugin;
+
 import pl.plajer.villagedefense3.Main;
 import pl.plajer.villagedefense3.utils.Utils;
-
-import java.lang.reflect.Field;
 
 /**
  * @author Plajer

@@ -18,14 +18,14 @@
 
 package pl.plajer.villagedefense3.utils;
 
-import pl.plajer.villagedefense3.Main;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.regex.Pattern;
+
+import pl.plajer.villagedefense3.Main;
 
 public class UpdateChecker {
 

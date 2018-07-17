@@ -18,14 +18,15 @@
 
 package pl.plajer.villagedefense3.user;
 
-import org.bukkit.entity.Player;
-import pl.plajer.villagedefense3.Main;
-import pl.plajer.villagedefense3.arena.Arena;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
+
+import org.bukkit.entity.Player;
+
+import pl.plajer.villagedefense3.Main;
+import pl.plajer.villagedefense3.arena.Arena;
 
 /**
  * Created by Tom on 27/07/2014.

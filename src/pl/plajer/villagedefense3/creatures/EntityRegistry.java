@@ -18,8 +18,16 @@
 
 package pl.plajer.villagedefense3.creatures;
 
-import net.minecraft.server.v1_13_R1.EntityTypes;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+
 import org.bukkit.Bukkit;
+
+import net.minecraft.server.v1_13_R1.EntityTypes;
 import pl.plajer.villagedefense3.Main;
 import pl.plajer.villagedefense3.creatures.v1_13_R1.BabyZombie;
 import pl.plajer.villagedefense3.creatures.v1_13_R1.FastZombie;
@@ -32,13 +40,6 @@ import pl.plajer.villagedefense3.creatures.v1_13_R1.TankerZombie;
 import pl.plajer.villagedefense3.creatures.v1_13_R1.VillagerSlayer;
 import pl.plajer.villagedefense3.creatures.v1_13_R1.WorkingWolf;
 import pl.plajer.villagedefense3.utils.MessageUtils;
-
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
 
 /**
  * @author Plajer

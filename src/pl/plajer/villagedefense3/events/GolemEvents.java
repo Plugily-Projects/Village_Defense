@@ -18,6 +18,10 @@
 
 package pl.plajer.villagedefense3.events;
 
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Particle;
@@ -32,15 +36,12 @@ import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+
 import pl.plajer.villagedefense3.Main;
 import pl.plajer.villagedefense3.arena.ArenaRegistry;
 import pl.plajer.villagedefense3.handlers.ChatManager;
 import pl.plajer.villagedefense3.user.UserManager;
 import pl.plajer.villagedefense3.villagedefenseapi.VillageGolemUpgradeEvent;
-
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
 
 public class GolemEvents implements Listener {
 

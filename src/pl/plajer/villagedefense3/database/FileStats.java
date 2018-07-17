@@ -18,9 +18,14 @@
 
 package pl.plajer.villagedefense3.database;
 
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
+
 import pl.plajer.villagedefense3.Main;
 import pl.plajer.villagedefense3.arena.ArenaRegistry;
 import pl.plajer.villagedefense3.handlers.ConfigurationManager;
@@ -28,10 +33,6 @@ import pl.plajer.villagedefense3.user.User;
 import pl.plajer.villagedefense3.user.UserManager;
 import pl.plajer.villagedefense3.utils.MessageUtils;
 import pl.plajer.villagedefense3.villagedefenseapi.StatsStorage;
-
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Created by Tom on 17/06/2015.

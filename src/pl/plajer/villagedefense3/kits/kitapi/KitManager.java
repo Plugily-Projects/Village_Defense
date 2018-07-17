@@ -18,6 +18,8 @@
 
 package pl.plajer.villagedefense3.kits.kitapi;
 
+import java.util.Arrays;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -29,6 +31,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+
 import pl.plajer.villagedefense3.Main;
 import pl.plajer.villagedefense3.arena.ArenaRegistry;
 import pl.plajer.villagedefense3.handlers.ChatManager;
@@ -37,8 +40,6 @@ import pl.plajer.villagedefense3.user.User;
 import pl.plajer.villagedefense3.user.UserManager;
 import pl.plajer.villagedefense3.utils.Utils;
 import pl.plajer.villagedefense3.villagedefenseapi.VillagePlayerChooseKitEvent;
-
-import java.util.Arrays;
 
 /**
  * Class for setting Kit values.

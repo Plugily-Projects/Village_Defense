@@ -18,10 +18,14 @@
 
 package pl.plajer.villagedefense3.arena;
 
-import lombok.Getter;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import lombok.Getter;
 import pl.plajer.villagedefense3.Main;
 import pl.plajer.villagedefense3.arena.initializers.ArenaInitializer1_11_R1;
 import pl.plajer.villagedefense3.arena.initializers.ArenaInitializer1_12_R1;
@@ -31,9 +35,6 @@ import pl.plajer.villagedefense3.handlers.ChatManager;
 import pl.plajer.villagedefense3.handlers.ConfigurationManager;
 import pl.plajer.villagedefense3.handlers.ShopManager;
 import pl.plajer.villagedefense3.utils.Utils;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Tom on 27/07/2014.

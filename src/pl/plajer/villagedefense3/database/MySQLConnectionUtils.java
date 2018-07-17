@@ -18,15 +18,16 @@
 
 package pl.plajer.villagedefense3.database;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+
 import pl.plajer.villagedefense3.Main;
 import pl.plajer.villagedefense3.user.User;
 import pl.plajer.villagedefense3.user.UserManager;
 import pl.plajer.villagedefense3.utils.MessageUtils;
-
-import java.sql.ResultSet;
-import java.sql.SQLException;
 
 /**
  * @author Plajer

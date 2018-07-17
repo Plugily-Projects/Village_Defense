@@ -18,9 +18,13 @@
 
 package pl.plajer.villagedefense3;
 
-import com.gmail.filoghost.holographicdisplays.api.Hologram;
-import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
-import com.sk89q.worldedit.bukkit.WorldEditPlugin;
+import java.io.File;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
@@ -28,6 +32,11 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.PotionEffect;
+
+import com.gmail.filoghost.holographicdisplays.api.Hologram;
+import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
+import com.sk89q.worldedit.bukkit.WorldEditPlugin;
+
 import pl.plajer.villagedefense3.arena.Arena;
 import pl.plajer.villagedefense3.arena.ArenaEvents;
 import pl.plajer.villagedefense3.arena.ArenaManager;
@@ -71,13 +80,6 @@ import pl.plajer.villagedefense3.utils.Metrics;
 import pl.plajer.villagedefense3.utils.UpdateChecker;
 import pl.plajer.villagedefense3.utils.Utils;
 import pl.plajer.villagedefense3.villagedefenseapi.StatsStorage;
-
-import java.io.File;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
 
 
 /**

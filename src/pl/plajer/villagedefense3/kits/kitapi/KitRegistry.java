@@ -18,9 +18,15 @@
 
 package pl.plajer.villagedefense3.kits.kitapi;
 
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
+
 import pl.plajer.villagedefense3.Main;
 import pl.plajer.villagedefense3.handlers.ChatManager;
 import pl.plajer.villagedefense3.handlers.ConfigurationManager;
@@ -50,11 +56,6 @@ import pl.plajer.villagedefense3.kits.premium.ShotBowKit;
 import pl.plajer.villagedefense3.kits.premium.TeleporterKit;
 import pl.plajer.villagedefense3.kits.premium.TornadoKit;
 import pl.plajer.villagedefense3.kits.premium.WizardKit;
-
-import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * Kit registry class for registering new kits.

@@ -18,7 +18,9 @@
 
 package pl.plajer.villagedefense3.handlers;
 
-import lombok.Getter;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -26,13 +28,12 @@ import org.bukkit.block.Chest;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+
+import lombok.Getter;
 import pl.plajer.villagedefense3.Main;
 import pl.plajer.villagedefense3.arena.Arena;
 import pl.plajer.villagedefense3.arena.ArenaRegistry;
 import pl.plajer.villagedefense3.utils.Utils;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Created by Tom on 16/08/2014.

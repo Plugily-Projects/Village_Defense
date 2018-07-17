@@ -18,6 +18,10 @@
 
 package pl.plajer.villagedefense3.creatures.v1_9_R1;
 
+import java.util.Set;
+
+import org.bukkit.craftbukkit.v1_9_R1.CraftWorld;
+
 import net.minecraft.server.v1_9_R1.EntityHuman;
 import net.minecraft.server.v1_9_R1.EntityIronGolem;
 import net.minecraft.server.v1_9_R1.EntityVillager;
@@ -34,10 +38,7 @@ import net.minecraft.server.v1_9_R1.PathfinderGoalNearestAttackableTarget;
 import net.minecraft.server.v1_9_R1.PathfinderGoalRandomLookaround;
 import net.minecraft.server.v1_9_R1.PathfinderGoalSelector;
 import net.minecraft.server.v1_9_R1.World;
-import org.bukkit.craftbukkit.v1_9_R1.CraftWorld;
 import pl.plajer.villagedefense3.creatures.CreatureUtils;
-
-import java.util.Set;
 
 /**
  * Created by Tom on 17/12/2015.

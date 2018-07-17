@@ -18,8 +18,9 @@
 
 package pl.plajer.villagedefense3.handlers;
 
-import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.entity.Player;
+
+import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import pl.plajer.villagedefense3.villagedefenseapi.StatsStorage;
 
 /**

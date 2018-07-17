@@ -18,6 +18,10 @@
 
 package pl.plajer.villagedefense3.handlers;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
@@ -32,12 +36,9 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+
 import pl.plajer.villagedefense3.Main;
 import pl.plajer.villagedefense3.utils.MessageUtils;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Tom on 15/02/2015.

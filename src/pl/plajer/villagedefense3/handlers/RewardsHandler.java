@@ -18,13 +18,14 @@
 
 package pl.plajer.villagedefense3.handlers;
 
+import java.util.concurrent.ThreadLocalRandom;
+
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
+
 import pl.plajer.villagedefense3.Main;
 import pl.plajer.villagedefense3.arena.Arena;
 import pl.plajer.villagedefense3.arena.ArenaRegistry;
-
-import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * Created by Tom on 30/01/2016.

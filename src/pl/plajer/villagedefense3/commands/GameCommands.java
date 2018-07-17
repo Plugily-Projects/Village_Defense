@@ -18,10 +18,14 @@
 
 package pl.plajer.villagedefense3.commands;
 
+import java.util.LinkedHashMap;
+import java.util.UUID;
+
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+
 import pl.plajer.villagedefense3.Main;
 import pl.plajer.villagedefense3.arena.Arena;
 import pl.plajer.villagedefense3.arena.ArenaManager;
@@ -30,9 +34,6 @@ import pl.plajer.villagedefense3.handlers.ChatManager;
 import pl.plajer.villagedefense3.user.User;
 import pl.plajer.villagedefense3.user.UserManager;
 import pl.plajer.villagedefense3.villagedefenseapi.StatsStorage;
-
-import java.util.LinkedHashMap;
-import java.util.UUID;
 
 /**
  * @author Plajer

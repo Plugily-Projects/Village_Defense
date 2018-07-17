@@ -18,15 +18,16 @@
 
 package pl.plajer.villagedefense3.handlers;
 
+import java.io.File;
+import java.io.IOException;
+
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+
 import pl.plajer.villagedefense3.Main;
 import pl.plajer.villagedefense3.utils.MessageUtils;
-
-import java.io.File;
-import java.io.IOException;
 
 /**
  * @author IvanTheBuilder

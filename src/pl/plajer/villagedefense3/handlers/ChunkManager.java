@@ -18,6 +18,9 @@
 
 package pl.plajer.villagedefense3.handlers;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.bukkit.Chunk;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.IronGolem;
@@ -29,12 +32,10 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.world.ChunkLoadEvent;
 import org.bukkit.event.world.ChunkUnloadEvent;
+
 import pl.plajer.villagedefense3.Main;
 import pl.plajer.villagedefense3.arena.Arena;
 import pl.plajer.villagedefense3.arena.ArenaRegistry;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class ChunkManager implements Listener {
 

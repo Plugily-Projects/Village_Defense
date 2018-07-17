@@ -18,18 +18,19 @@
 
 package pl.plajer.villagedefense3.handlers.items;
 
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+
 import pl.plajer.villagedefense3.handlers.ConfigurationManager;
 import pl.plajer.villagedefense3.utils.MessageUtils;
-
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * Created by Tom on 5/02/2016.

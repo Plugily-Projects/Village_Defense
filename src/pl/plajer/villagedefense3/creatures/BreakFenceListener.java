@@ -18,6 +18,9 @@
 
 package pl.plajer.villagedefense3.creatures;
 
+import java.util.Queue;
+import java.util.Random;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Particle;
@@ -31,11 +34,9 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.material.MaterialData;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
+
 import pl.plajer.villagedefense3.Main;
 import pl.plajer.villagedefense3.utils.Utils;
-
-import java.util.Queue;
-import java.util.Random;
 
 /**
  * Created by Tom on 14/08/2014.

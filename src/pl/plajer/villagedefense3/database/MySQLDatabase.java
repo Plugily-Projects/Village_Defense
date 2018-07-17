@@ -18,11 +18,6 @@
 
 package pl.plajer.villagedefense3.database;
 
-import org.bukkit.Bukkit;
-import org.bukkit.plugin.java.JavaPlugin;
-import pl.plajer.villagedefense3.Main;
-import pl.plajer.villagedefense3.utils.MessageUtils;
-
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -30,6 +25,12 @@ import java.sql.Statement;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.UUID;
+
+import org.bukkit.Bukkit;
+import org.bukkit.plugin.java.JavaPlugin;
+
+import pl.plajer.villagedefense3.Main;
+import pl.plajer.villagedefense3.utils.MessageUtils;
 
 public class MySQLDatabase {
 

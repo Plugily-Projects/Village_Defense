@@ -18,9 +18,12 @@
 
 package pl.plajer.villagedefense3.kits.free;
 
+import java.util.List;
+
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+
 import pl.plajer.villagedefense3.Main;
 import pl.plajer.villagedefense3.handlers.ChatManager;
 import pl.plajer.villagedefense3.kits.kitapi.KitRegistry;
@@ -28,8 +31,6 @@ import pl.plajer.villagedefense3.kits.kitapi.basekits.FreeKit;
 import pl.plajer.villagedefense3.utils.ArmorHelper;
 import pl.plajer.villagedefense3.utils.Utils;
 import pl.plajer.villagedefense3.utils.WeaponHelper;
-
-import java.util.List;
 
 /**
  * Created by Tom on 14/08/2014.

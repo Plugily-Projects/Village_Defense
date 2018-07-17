@@ -19,7 +19,8 @@
 package pl.plajer.villagedefense3.arena.initializers;
 
 
-import net.minecraft.server.v1_9_R1.GenericAttributes;
+import java.util.Random;
+
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.craftbukkit.v1_9_R1.CraftWorld;
@@ -31,6 +32,8 @@ import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+
+import net.minecraft.server.v1_9_R1.GenericAttributes;
 import pl.plajer.villagedefense3.Main;
 import pl.plajer.villagedefense3.arena.Arena;
 import pl.plajer.villagedefense3.creatures.CreatureUtils;
@@ -45,8 +48,6 @@ import pl.plajer.villagedefense3.creatures.v1_9_R1.TankerZombie;
 import pl.plajer.villagedefense3.creatures.v1_9_R1.VillagerSlayer;
 import pl.plajer.villagedefense3.creatures.v1_9_R1.WorkingWolf;
 import pl.plajer.villagedefense3.handlers.ChatManager;
-
-import java.util.Random;
 
 /**
  * Created by Tom on 13/03/2016.
