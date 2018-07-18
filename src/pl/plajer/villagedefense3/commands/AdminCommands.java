@@ -79,26 +79,26 @@ public class AdminCommands extends MainCommand {
     command.add(new CommandData("/vda forcestart", "/vda forcestart",
             gray + "Force starts arena you're in\n" + gold + "Permission: " + gray + "villagedefense.admin.forcestart"));
     command.add(new CommandData("/vda respawn " + ChatColor.RED + "[player]", "/vda respawn",
-            gray + "Respawn yourself or target player in game\n" + gold + "Permission: " + gray + "villagedefense.admin.respawn (for yourself)\n" +
-                    gold + "Permission: " + gray + "villagedefense.admin.respawn.others (for others)"));
+            gray + "Respawn yourself or target player in game\n" + gold + "Permission: " + gray + "villagedefense.admin.respawn (for yourself)\n"
+                    + gold + "Permission: " + gray + "villagedefense.admin.respawn.others (for others)"));
     command.add(new CommandData("/vda spychat", "/vda spychat",
-            gray + "Toggles spy chat for all available arenas\n" + gray + "You will see all messages from these games\n" + gold + "Permission: " +
-                    gray + "villagedefense.admin.spychat"));
+            gray + "Toggles spy chat for all available arenas\n" + gray + "You will see all messages from these games\n" + gold + "Permission: "
+                    + gray + "villagedefense.admin.spychat"));
     command.add(new CommandData("/vda setprice " + gold + "<amount>", "/vda setprice <amount>",
             gray + "Set price of holding item, it's required for game shop\n" + gold + "Permission: " + gray + "villagedefense.admin.setprice"));
-    command.add(new CommandData("/vda reload", "/vda reload", gray + "Reload all game arenas\n" + gray + "" + ChatColor.BOLD +
-            "They will be stopped!\n" + gold + "Permission: " + gray + "villagedefense.admin.reload"));
+    command.add(new CommandData("/vda reload", "/vda reload", gray + "Reload all game arenas\n" + gray + "" + ChatColor.BOLD
+            + "They will be stopped!\n" + gold + "Permission: " + gray + "villagedefense.admin.reload"));
     command.add(new CommandData("/vda delete " + gold + "<arena>", "/vda delete <arena>",
             gray + "Deletes specified arena\n" + gold + "Permission: " + gray + "villagedefense.admin.delete"));
     command.add(new CommandData("/vda tp " + gold + "<arena> <location type>", "/vda tp <arena> <location>",
-            gray + "Teleport you to provided arena location\n" + gray + "Valid locations:\n" + gray + "• LOBBY - lobby location\n" + gray +
-                    "• START - starting location\n" + gray + "• END - ending location\n" + gold + "Permission: " + gray + "villagedefense.admin.teleport"));
+            gray + "Teleport you to provided arena location\n" + gray + "Valid locations:\n" + gray + "• LOBBY - lobby location\n" + gray
+                    + "• START - starting location\n" + gray + "• END - ending location\n" + gold + "Permission: " + gray + "villagedefense.admin.teleport"));
     command.add(new CommandData("/vda clear " + gold + "<zombie/villager/golem>", "/vda clear <mob>",
-            gray + "Clear specific mob type from arena you're in\n" + gray + "Valid mob types:\n" + gray + "• ZOMBIE - clear spawned zombies\n" +
-                    gray + "• VILLAGER - clear alive villagers\n" + gray + "• GOLEM - clear spawned golems\n" + gold + "Permission: " + gray + "villagedefense.admin.clear"));
+            gray + "Clear specific mob type from arena you're in\n" + gray + "Valid mob types:\n" + gray + "• ZOMBIE - clear spawned zombies\n"
+                    + gray + "• VILLAGER - clear alive villagers\n" + gray + "• GOLEM - clear spawned golems\n" + gold + "Permission: " + gray + "villagedefense.admin.clear"));
     command.add(new CommandData("/vda addorbs " + gold + "<amount>" + ChatColor.RED + " [player]", "/vda addorbs <amount>",
-            gray + "Add orbs (game currency) to yourself or target player\n" + gray + "Can be used from console too\n" + gold +
-                    "Permission: " + gray + "villagedefense.admin.addorbs (for yourself)\n" + gold + "Permission: " + gray + "villagedefense.admin.addorbs.others (for others)"));
+            gray + "Add orbs (game currency) to yourself or target player\n" + gray + "Can be used from console too\n" + gold
+                    + "Permission: " + gray + "villagedefense.admin.addorbs (for yourself)\n" + gold + "Permission: " + gray + "villagedefense.admin.addorbs.others (for others)"));
     command.add(new CommandData("/vda setwave " + gold + "<number>", "/vda setwave <num>",
             gray + "Set wave number in arena you're in\n" + gold + "Permission: " + gray + "villagedefense.admin.setwave"));
   }

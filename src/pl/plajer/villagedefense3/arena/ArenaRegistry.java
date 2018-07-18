@@ -21,11 +21,12 @@ package pl.plajer.villagedefense3.arena;
 import java.util.ArrayList;
 import java.util.List;
 
+import lombok.Getter;
+
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import lombok.Getter;
 import pl.plajer.villagedefense3.Main;
 import pl.plajer.villagedefense3.arena.initializers.ArenaInitializer1_11_R1;
 import pl.plajer.villagedefense3.arena.initializers.ArenaInitializer1_12_R1;

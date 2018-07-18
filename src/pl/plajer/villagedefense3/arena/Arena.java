@@ -116,7 +116,7 @@ public abstract class Arena extends BukkitRunnable {
   }
 
   /**
-   * Get current rotten flesh level in arena
+   * Get current rotten flesh level in arena.
    *
    * @return rotten flesh level (additional hearts)
    */
@@ -134,7 +134,7 @@ public abstract class Arena extends BukkitRunnable {
   }
 
   /**
-   * Location of game doors
+   * Location of game doors.
    *
    * @return all game doors
    */
@@ -504,7 +504,7 @@ public abstract class Arena extends BukkitRunnable {
   }
 
   /**
-   * Get arena identifier used to get arenas by string
+   * Get arena identifier used to get arenas by string.
    *
    * @return arena name
    * @see ArenaRegistry#getArena(String)
@@ -514,7 +514,7 @@ public abstract class Arena extends BukkitRunnable {
   }
 
   /**
-   * Get minimum players needed
+   * Get minimum players needed.
    *
    * @return minimum players needed to start arena
    */
@@ -523,7 +523,7 @@ public abstract class Arena extends BukkitRunnable {
   }
 
   /**
-   * Set minimum players needed
+   * Set minimum players needed.
    *
    * @param minimumPlayers players needed to start arena
    */
@@ -532,7 +532,7 @@ public abstract class Arena extends BukkitRunnable {
   }
 
   /**
-   * Get arena map name
+   * Get arena map name.
    *
    * @return arena map name, [b]it's not arena ID[/b]
    * @see #getID()
@@ -542,7 +542,7 @@ public abstract class Arena extends BukkitRunnable {
   }
 
   /**
-   * Set arena map name
+   * Set arena map name.
    *
    * @param mapname new map name, [b]it's not arena ID[/b]
    */
@@ -551,7 +551,7 @@ public abstract class Arena extends BukkitRunnable {
   }
 
   /**
-   * Get timer of arena
+   * Get timer of arena.
    *
    * @return timer of lobby time / time to next wave
    */
@@ -560,7 +560,7 @@ public abstract class Arena extends BukkitRunnable {
   }
 
   /**
-   * Modify game timer
+   * Modify game timer.
    *
    * @param timer timer of lobby / time to next wave
    */
@@ -569,7 +569,7 @@ public abstract class Arena extends BukkitRunnable {
   }
 
   /**
-   * Return maximum players arena can handle
+   * Return maximum players arena can handle.
    *
    * @return maximum players arena can handle
    */
@@ -578,7 +578,7 @@ public abstract class Arena extends BukkitRunnable {
   }
 
   /**
-   * Set maximum players arena can handle
+   * Set maximum players arena can handle.
    *
    * @param maximumPlayers how many players arena can handle
    */
@@ -587,7 +587,7 @@ public abstract class Arena extends BukkitRunnable {
   }
 
   /**
-   * Return game state of arena
+   * Return game state of arena.
    *
    * @return game state of arena
    * @see ArenaState
@@ -597,7 +597,7 @@ public abstract class Arena extends BukkitRunnable {
   }
 
   /**
-   * Set game state of arena
+   * Set game state of arena.
    *
    * @param arenaState new game state of arena
    * @see ArenaState
@@ -609,7 +609,7 @@ public abstract class Arena extends BukkitRunnable {
   }
 
   /**
-   * Get all players in arena
+   * Get all players in arena.
    *
    * @return set of players in arena
    */
@@ -637,7 +637,7 @@ public abstract class Arena extends BukkitRunnable {
   }
 
   /**
-   * Get lobby location of arena
+   * Get lobby location of arena.
    *
    * @return lobby location of arena
    */
@@ -646,7 +646,7 @@ public abstract class Arena extends BukkitRunnable {
   }
 
   /**
-   * Set lobby location of arena
+   * Set lobby location of arena.
    *
    * @param loc new lobby location of arena
    */
@@ -655,7 +655,7 @@ public abstract class Arena extends BukkitRunnable {
   }
 
   /**
-   * Get start location of arena
+   * Get start location of arena.
    *
    * @return start location of arena
    */
@@ -664,7 +664,7 @@ public abstract class Arena extends BukkitRunnable {
   }
 
   /**
-   * Set start location of arena
+   * Set start location of arena.
    *
    * @param location new start location of arena
    */
@@ -723,7 +723,7 @@ public abstract class Arena extends BukkitRunnable {
   }
 
   /**
-   * Get end location of arena
+   * Get end location of arena.
    *
    * @return end location of arena
    */
@@ -732,7 +732,7 @@ public abstract class Arena extends BukkitRunnable {
   }
 
   /**
-   * Set end location of arena
+   * Set end location of arena.
    *
    * @param endLoc new end location of arena
    */
@@ -750,8 +750,8 @@ public abstract class Arena extends BukkitRunnable {
   }
 
   /**
-   * Get list of already spawned zombies
-   * [b]This will only return alive zombies not total zombies in current wave[/b]
+   * Get list of already spawned zombies.
+   * This will only return alive zombies not total zombies in current wave.
    *
    * @return list of spawned zombies in arena
    */
@@ -768,7 +768,7 @@ public abstract class Arena extends BukkitRunnable {
   }
 
   /**
-   * Clear all golems in arena
+   * Clear all golems in arena.
    */
   public void clearGolems() {
     for (IronGolem ironGolem : ironGolems) {
@@ -778,7 +778,7 @@ public abstract class Arena extends BukkitRunnable {
   }
 
   /**
-   * Clear all wolves in arena
+   * Clear all wolves in arena.
    */
   public void clearWolfs() {
     for (Wolf wolf : wolfs) {
@@ -796,7 +796,7 @@ public abstract class Arena extends BukkitRunnable {
   }
 
   /**
-   * Clear all zombies in arena
+   * Clear all zombies in arena.
    */
   public void clearZombies() {
     for (Zombie zombie : zombies) {
@@ -912,7 +912,7 @@ public abstract class Arena extends BukkitRunnable {
   }
 
   /**
-   * Get current game wave
+   * Get current game wave.
    *
    * @return current game wave
    */
@@ -959,7 +959,7 @@ public abstract class Arena extends BukkitRunnable {
   }
 
   /**
-   * Get alive wolves
+   * Get alive wolves.
    *
    * @return alive wolves in game
    */
@@ -968,7 +968,7 @@ public abstract class Arena extends BukkitRunnable {
   }
 
   /**
-   * Get alive iron golems
+   * Get alive iron golems.
    *
    * @return alive iron golems in game
    */
@@ -977,7 +977,7 @@ public abstract class Arena extends BukkitRunnable {
   }
 
   /**
-   * Get alive villagers
+   * Get alive villagers.
    *
    * @return alive villagers in game
    */
@@ -986,7 +986,7 @@ public abstract class Arena extends BukkitRunnable {
   }
 
   /**
-   * Clear all villagers in arena
+   * Clear all villagers in arena.
    */
   public void clearVillagers() {
     for (Villager villager : villagers) {

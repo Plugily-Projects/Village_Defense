@@ -49,16 +49,16 @@ public class MySQLDatabase {
         Main.debug("Failed to connect to database", System.currentTimeMillis());
         return;
       }
-      connection.createStatement().executeUpdate("CREATE TABLE IF NOT EXISTS `playerstats` (\n" +
-              "  `UUID` text NOT NULL,\n" +
-              "  `kills` int(11) NOT NULL DEFAULT '0',\n" +
-              "  `deaths` int(11) NOT NULL DEFAULT '0',\n" +
-              "  `highestwave` int(11) NOT NULL DEFAULT '0',\n" +
-              "  `gamesplayed` int(11) NOT NULL DEFAULT '0',\n" +
-              "  `level` int(11) NOT NULL DEFAULT '0',\n" +
-              "  `xp` int(11) NOT NULL DEFAULT '0',\n" +
-              "  `orbs` int(11) NOT NULL DEFAULT '0'\n" +
-              ");");
+      connection.createStatement().executeUpdate("CREATE TABLE IF NOT EXISTS `playerstats` (\n"
+              + "  `UUID` text NOT NULL,\n"
+              + "  `kills` int(11) NOT NULL DEFAULT '0',\n"
+              + "  `deaths` int(11) NOT NULL DEFAULT '0',\n"
+              + "  `highestwave` int(11) NOT NULL DEFAULT '0',\n"
+              + "  `gamesplayed` int(11) NOT NULL DEFAULT '0',\n"
+              + "  `level` int(11) NOT NULL DEFAULT '0',\n"
+              + "  `xp` int(11) NOT NULL DEFAULT '0',\n"
+              + "  `orbs` int(11) NOT NULL DEFAULT '0'\n"
+              + ");");
       manager.closeConnection(connection);
     } catch (SQLException e) {
       e.printStackTrace();
