@@ -463,7 +463,8 @@ public class Events implements Listener {
           }
         }
         if (i >= plugin.getConfig().getInt("Golems-Spawn-Limit", 15)) {
-          e.getWhoClicked().sendMessage(ChatManager.colorMessage("In-Game.Messages.Shop-Messages.Mob-Limit-Reached").replace("%amount%", String.valueOf(plugin.getConfig().getInt("Golems-Spawn-Limit", 15))));
+          e.getWhoClicked().sendMessage(ChatManager.colorMessage("In-Game.Messages.Shop-Messages.Mob-Limit-Reached")
+                  .replace("%amount%", String.valueOf(plugin.getConfig().getInt("Golems-Spawn-Limit", 15))));
           return;
         }
         arena.spawnGolem(arena.getStartLocation(), player);
@@ -478,7 +479,8 @@ public class Events implements Listener {
           }
         }
         if (i >= plugin.getConfig().getInt("Wolves-Spawn-Limit", 20)) {
-          e.getWhoClicked().sendMessage(ChatManager.colorMessage("In-Game.Messages.Shop-Messages.Mob-Limit-Reached").replace("%amount%", String.valueOf(plugin.getConfig().getInt("Wolves-Spawn-Limit", 20))));
+          e.getWhoClicked().sendMessage(ChatManager.colorMessage("In-Game.Messages.Shop-Messages.Mob-Limit-Reached")
+                  .replace("%amount%", String.valueOf(plugin.getConfig().getInt("Wolves-Spawn-Limit", 20))));
           return;
         }
         arena.spawnWolf(arena.getStartLocation(), player);

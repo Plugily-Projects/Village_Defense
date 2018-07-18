@@ -151,7 +151,7 @@ public class ArenaRegistry {
       arena.setEndLocation(Utils.getLocation(false, ConfigurationManager.getConfig("arenas").getString(s + "Endlocation")));
 
       if (!ConfigurationManager.getConfig("arenas").getBoolean(s + "isdone")) {
-        Bukkit.getConsoleSender().sendMessage(ChatManager.colorMessage("Validator.Invalid-Arena-Configuration").replaceAll("%arena%", ID).replaceAll("%error%", "NOT VALIDATED"));
+        Bukkit.getConsoleSender().sendMessage(ChatManager.colorMessage("Validator.Invalid-Arena-Configuration").replace("%arena%", ID).replace("%error%", "NOT VALIDATED"));
         arena.setReady(false);
         ArenaRegistry.registerArena(arena);
         continue;
@@ -163,7 +163,7 @@ public class ArenaRegistry {
           arena.addZombieSpawn(Utils.getLocation(false, ConfigurationManager.getConfig("arenas").getString(path)));
         }
       } else {
-        Bukkit.getConsoleSender().sendMessage(ChatManager.colorMessage("Validator.Invalid-Arena-Configuration").replaceAll("%arena%", ID).replaceAll("%error%", "ZOMBIE SPAWNS"));
+        Bukkit.getConsoleSender().sendMessage(ChatManager.colorMessage("Validator.Invalid-Arena-Configuration").replace("%arena%", ID).replace("%error%", "ZOMBIE SPAWNS"));
         arena.setReady(false);
         ArenaRegistry.registerArena(arena);
         continue;
@@ -175,7 +175,7 @@ public class ArenaRegistry {
           arena.addVillagerSpawn(Utils.getLocation(false, ConfigurationManager.getConfig("arenas").getString(path)));
         }
       } else {
-        Bukkit.getConsoleSender().sendMessage(ChatManager.colorMessage("Validator.Invalid-Arena-Configuration").replaceAll("%arena%", ID).replaceAll("%error%", "VILLAGER SPAWNS"));
+        Bukkit.getConsoleSender().sendMessage(ChatManager.colorMessage("Validator.Invalid-Arena-Configuration").replace("%arena%", ID).replace("%error%", "VILLAGER SPAWNS"));
         arena.setReady(false);
         ArenaRegistry.registerArena(arena);
         continue;
@@ -183,17 +183,18 @@ public class ArenaRegistry {
       if (ConfigurationManager.getConfig("arenas").contains(s + "doors")) {
         for (String string : ConfigurationManager.getConfig("arenas").getConfigurationSection(s + "doors").getKeys(false)) {
           String path = s + "doors." + string + ".";
-          arena.addDoor(Utils.getLocation(false, ConfigurationManager.getConfig("arenas").getString(path + "location")), (byte) ConfigurationManager.getConfig("arenas").getInt(path + "byte"));
+          arena.addDoor(Utils.getLocation(false, ConfigurationManager.getConfig("arenas").getString(path + "location")),
+                  (byte) ConfigurationManager.getConfig("arenas").getInt(path + "byte"));
         }
       } else {
-        Bukkit.getConsoleSender().sendMessage(ChatManager.colorMessage("Validator.Invalid-Arena-Configuration").replaceAll("%arena%", ID).replaceAll("%error%", "DOORS"));
+        Bukkit.getConsoleSender().sendMessage(ChatManager.colorMessage("Validator.Invalid-Arena-Configuration").replace("%arena%", ID).replace("%error%", "DOORS"));
         arena.setReady(false);
         ArenaRegistry.registerArena(arena);
         continue;
       }
       ArenaRegistry.registerArena(arena);
       arena.start();
-      Bukkit.getConsoleSender().sendMessage(ChatManager.colorMessage("Validator.Instance-Started").replaceAll("%arena%", ID));
+      Bukkit.getConsoleSender().sendMessage(ChatManager.colorMessage("Validator.Instance-Started").replace("%arena%", ID));
     }
     new ShopManager();
     Main.debug("Arenas registration completed", System.currentTimeMillis());

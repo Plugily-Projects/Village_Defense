@@ -71,7 +71,8 @@ public class SpectatorItemEvents implements Listener {
   }
 
   private void openSpectatorMenu(World world, Player p) {
-    Inventory inventory = plugin.getServer().createInventory(null, Utils.serializeInt(ArenaRegistry.getArena(p).getPlayers().size()), ChatManager.colorMessage("In-Game.Spectator.Spectator-Menu-Name"));
+    Inventory inventory = plugin.getServer().createInventory(null, Utils.serializeInt(ArenaRegistry.getArena(p).getPlayers().size()),
+            ChatManager.colorMessage("In-Game.Spectator.Spectator-Menu-Name"));
     for (Player player : world.getPlayers()) {
       if (ArenaRegistry.getArena(player) != null && !UserManager.getUser(player.getUniqueId()).isFakeDead()) {
         ItemStack skull = new ItemStack(Material.SKULL_ITEM, 1);
@@ -79,7 +80,8 @@ public class SpectatorItemEvents implements Listener {
         //todo check deprecation
         meta.setOwner(player.getName());
         meta.setDisplayName(player.getName());
-        meta.setLore(Collections.singletonList(ChatManager.colorMessage("In-Game.Spectator.Target-Player-Health").replaceAll("%health%", String.valueOf(Utils.round(player.getHealth(), 2)))));
+        meta.setLore(Collections.singletonList(ChatManager.colorMessage("In-Game.Spectator.Target-Player-Health").replaceAll("%health%",
+                String.valueOf(Utils.round(player.getHealth(), 2)))));
         skull.setDurability((short) SkullType.PLAYER.ordinal());
         skull.setItemMeta(meta);
         inventory.addItem(skull);

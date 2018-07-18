@@ -460,7 +460,8 @@ public class MainCommand implements CommandExecutor {
               for (int z = min.getBlockZ(); z <= max.getBlockZ(); z = z + 1) {
                 Location temporaryBlock = new Location(player.getWorld(), x, y, z);
                 if (temporaryBlock.getBlock().getType() == Material.WOODEN_DOOR) {
-                  String location = temporaryBlock.getWorld().getName() + "," + temporaryBlock.getX() + "," + temporaryBlock.getY() + "," + temporaryBlock.getZ() + "," + temporaryBlock.getYaw() + "," + temporaryBlock.getPitch();
+                  String location = temporaryBlock.getWorld().getName() + "," + temporaryBlock.getX() + "," + temporaryBlock.getY() + "," + temporaryBlock.getZ()
+                          + "," + temporaryBlock.getYaw()+ "," + temporaryBlock.getPitch();
                   config.set("instances." + ID + ".doors." + i + ".location", location);
                   //todo block data id
                   config.set("instances." + ID + ".doors." + i + ".byte", temporaryBlock.getBlock().getData());
@@ -473,7 +474,8 @@ public class MainCommand implements CommandExecutor {
           }
         } else {
           if (selection.getMaximumPoint().getBlock().getType() == Material.WOODEN_DOOR) {
-            String location = selection.getMaximumPoint().getWorld().getName() + "," + selection.getMaximumPoint().getX() + "," + selection.getMaximumPoint().getY() + "," + selection.getMaximumPoint().getZ() + "," + selection.getMaximumPoint().getYaw() + "," + selection.getMaximumPoint().getPitch();
+            String location = selection.getMaximumPoint().getWorld().getName() + "," + selection.getMaximumPoint().getX() + "," + selection.getMaximumPoint().getY()
+                    + "," + selection.getMaximumPoint().getZ() + "," + selection.getMaximumPoint().getYaw() + "," + selection.getMaximumPoint().getPitch();
             config.set("instances." + ID + ".doors." + i + ".location", location);
             //todo block data id
             config.set("instances." + ID + ".doors." + i + ".byte", selection.getMaximumPoint().getBlock().getData());
@@ -481,7 +483,8 @@ public class MainCommand implements CommandExecutor {
             i++;
           }
           if (selection.getMinimumPoint().getBlock().getType() == Material.WOODEN_DOOR) {
-            String location = selection.getMaximumPoint().getWorld().getName() + "," + selection.getMaximumPoint().getX() + "," + selection.getMaximumPoint().getY() + "," + selection.getMaximumPoint().getZ() + "," + selection.getMaximumPoint().getYaw() + "," + selection.getMaximumPoint().getPitch();
+            String location = selection.getMaximumPoint().getWorld().getName() + "," + selection.getMaximumPoint().getX() + "," + selection.getMaximumPoint().getY()
+                    + "," + selection.getMaximumPoint().getZ() + "," + selection.getMaximumPoint().getYaw() + "," + selection.getMaximumPoint().getPitch();
             config.set("instances." + ID + ".doors." + i + ".location", location);
             //todo block data id
             config.set("instances." + ID + ".doors." + i + ".byte", selection.getMinimumPoint().getBlock().getData());
@@ -499,15 +502,18 @@ public class MainCommand implements CommandExecutor {
     }
     if (args.length == 3) {
       if (args[2].equalsIgnoreCase("lobbylocation") || args[2].equalsIgnoreCase("lobbyloc")) {
-        String location = player.getLocation().getWorld().getName() + "," + player.getLocation().getX() + "," + player.getLocation().getY() + "," + player.getLocation().getZ() + "," + player.getLocation().getYaw() + "," + player.getLocation().getPitch();
+        String location = player.getLocation().getWorld().getName() + "," + player.getLocation().getX() + "," + player.getLocation().getY() + "," + player.getLocation().getZ()
+                + "," + player.getLocation().getYaw() + "," + player.getLocation().getPitch();
         config.set("instances." + args[0] + ".lobbylocation", location);
         player.sendMessage("VillageDefense: Lobby location for arena/instance " + args[0] + " set to " + Utils.locationToString(player.getLocation()));
       } else if (args[2].equalsIgnoreCase("Startlocation") || args[2].equalsIgnoreCase("Startloc")) {
-        String location = player.getLocation().getWorld().getName() + "," + player.getLocation().getX() + "," + player.getLocation().getY() + "," + player.getLocation().getZ() + "," + player.getLocation().getYaw() + "," + player.getLocation().getPitch();
+        String location = player.getLocation().getWorld().getName() + "," + player.getLocation().getX() + "," + player.getLocation().getY() + "," + player.getLocation().getZ()
+                + "," + player.getLocation().getYaw() + "," + player.getLocation().getPitch();
         config.set("instances." + args[0] + ".Startlocation", location);
         player.sendMessage("VillageDefense: Start location for arena/instance " + args[0] + " set to " + Utils.locationToString(player.getLocation()));
       } else if (args[2].equalsIgnoreCase("Endlocation") || args[2].equalsIgnoreCase("Endloc")) {
-        String location = player.getLocation().getWorld().getName() + "," + player.getLocation().getX() + "," + player.getLocation().getY() + "," + player.getLocation().getZ() + "," + player.getLocation().getYaw() + "," + player.getLocation().getPitch();
+        String location = player.getLocation().getWorld().getName() + "," + player.getLocation().getX() + "," + player.getLocation().getY() + "," + player.getLocation().getZ()
+                + "," + player.getLocation().getYaw() + "," + player.getLocation().getPitch();
         config.set("instances." + args[0] + ".Endlocation", location);
         player.sendMessage("VillageDefense: End location for arena/instance " + args[0] + " set to " + Utils.locationToString(player.getLocation()));
       } else {

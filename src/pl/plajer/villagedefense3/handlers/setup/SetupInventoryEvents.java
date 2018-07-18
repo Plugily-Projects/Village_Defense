@@ -182,13 +182,15 @@ public class SetupInventoryEvents implements Listener {
       String[] locations = new String[]{"lobbylocation", "Startlocation", "Endlocation"};
       String[] spawns = new String[]{"zombiespawns", "villagerspawns"};
       for (String s : locations) {
-        if (!ConfigurationManager.getConfig("arenas").isSet("instances." + arena.getID() + "." + s) || ConfigurationManager.getConfig("arenas").getString("instances." + arena.getID() + "." + s).equals(Utils.locationToString(Bukkit.getWorlds().get(0).getSpawnLocation()))) {
+        if (!ConfigurationManager.getConfig("arenas").isSet("instances." + arena.getID() + "." + s) || ConfigurationManager.getConfig("arenas")
+                .getString("instances." + arena.getID() + "." + s).equals(Utils.locationToString(Bukkit.getWorlds().get(0).getSpawnLocation()))) {
           event.getWhoClicked().sendMessage(ChatColor.RED + "Arena validation failed! Please configure following spawn properly: " + s + " (cannot be world spawn location)");
           return;
         }
       }
       for (String s : spawns) {
-        if (!ConfigurationManager.getConfig("arenas").isSet("instances." + arena.getID() + "." + s) || ConfigurationManager.getConfig("arenas").getConfigurationSection("instances." + arena.getID() + "." + s).getKeys(false).size() < 2) {
+        if (!ConfigurationManager.getConfig("arenas").isSet("instances." + arena.getID() + "." + s) || ConfigurationManager.getConfig("arenas")
+                .getConfigurationSection("instances." + arena.getID() + "." + s).getKeys(false).size() < 2) {
           event.getWhoClicked().sendMessage(ChatColor.RED + "Arena validation failed! Please configure following mob spawns properly: " + s + " (must be minimum 2 spawns)");
           return;
         }
@@ -234,7 +236,8 @@ public class SetupInventoryEvents implements Listener {
       }
       for (String string : ConfigurationManager.getConfig("arenas").getConfigurationSection("instances." + arena.getID() + ".doors").getKeys(false)) {
         String path = "instances." + arena.getID() + ".doors." + string + ".";
-        arena.addDoor(Utils.getLocation(false, ConfigurationManager.getConfig("arenas").getString(path + "location")), (byte) ConfigurationManager.getConfig("arenas").getInt(path + "byte"));
+        arena.addDoor(Utils.getLocation(false, ConfigurationManager.getConfig("arenas").getString(path + "location")),
+                (byte) ConfigurationManager.getConfig("arenas").getInt(path + "byte"));
       }
       ArenaRegistry.registerArena(arena);
       arena.start();

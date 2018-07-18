@@ -116,7 +116,8 @@ public class LanguageManager {
         pluginLocale = Locale.ENGLISH;
         break;
     }
-    Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "[Village Defense] Loaded locale " + pluginLocale.getFormattedName() + " (" + pluginLocale.getPrefix() + ") by " + pluginLocale.getAuthor());
+    Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "[Village Defense] Loaded locale " + pluginLocale.getFormattedName() + " ("
+            + pluginLocale.getPrefix() + ") by " + pluginLocale.getAuthor());
     loadProperties();
   }
 
