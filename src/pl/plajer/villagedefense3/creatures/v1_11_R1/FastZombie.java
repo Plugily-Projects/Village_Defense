@@ -20,8 +20,6 @@ package pl.plajer.villagedefense3.creatures.v1_11_R1;
 
 import java.util.LinkedHashSet;
 
-import org.bukkit.craftbukkit.v1_11_R1.CraftWorld;
-
 import net.minecraft.server.v1_11_R1.EntityHuman;
 import net.minecraft.server.v1_11_R1.EntityIronGolem;
 import net.minecraft.server.v1_11_R1.EntityVillager;
@@ -37,6 +35,9 @@ import net.minecraft.server.v1_11_R1.PathfinderGoalRandomLookaround;
 import net.minecraft.server.v1_11_R1.PathfinderGoalSelector;
 import net.minecraft.server.v1_11_R1.PathfinderGoalZombieAttack;
 import net.minecraft.server.v1_11_R1.World;
+
+import org.bukkit.craftbukkit.v1_11_R1.CraftWorld;
+
 import pl.plajer.villagedefense3.Main;
 import pl.plajer.villagedefense3.creatures.CreatureUtils;
 

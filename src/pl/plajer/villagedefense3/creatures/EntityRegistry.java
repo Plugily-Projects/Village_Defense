@@ -25,9 +25,10 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+import net.minecraft.server.v1_13_R1.EntityTypes;
+
 import org.bukkit.Bukkit;
 
-import net.minecraft.server.v1_13_R1.EntityTypes;
 import pl.plajer.villagedefense3.Main;
 import pl.plajer.villagedefense3.creatures.v1_13_R1.BabyZombie;
 import pl.plajer.villagedefense3.creatures.v1_13_R1.FastZombie;

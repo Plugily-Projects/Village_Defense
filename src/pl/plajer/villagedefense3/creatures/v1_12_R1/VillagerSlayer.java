@@ -20,8 +20,6 @@ package pl.plajer.villagedefense3.creatures.v1_12_R1;
 
 import java.util.LinkedHashSet;
 
-import org.bukkit.craftbukkit.v1_12_R1.CraftWorld;
-
 import net.minecraft.server.v1_12_R1.EntityVillager;
 import net.minecraft.server.v1_12_R1.EntityZombie;
 import net.minecraft.server.v1_12_R1.GenericAttributes;
@@ -34,6 +32,9 @@ import net.minecraft.server.v1_12_R1.PathfinderGoalNearestAttackableTarget;
 import net.minecraft.server.v1_12_R1.PathfinderGoalRandomLookaround;
 import net.minecraft.server.v1_12_R1.PathfinderGoalSelector;
 import net.minecraft.server.v1_12_R1.World;
+
+import org.bukkit.craftbukkit.v1_12_R1.CraftWorld;
+
 import pl.plajer.villagedefense3.creatures.CreatureUtils;
 
 /**

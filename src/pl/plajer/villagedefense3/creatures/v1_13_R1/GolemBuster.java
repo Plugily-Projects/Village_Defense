@@ -21,13 +21,6 @@ package pl.plajer.villagedefense3.creatures.v1_13_R1;
 import java.util.Arrays;
 import java.util.LinkedHashSet;
 
-import org.bukkit.Bukkit;
-import org.bukkit.craftbukkit.v1_13_R1.CraftWorld;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.IronGolem;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.event.entity.EntityDeathEvent;
-
 import net.minecraft.server.v1_13_R1.DamageSource;
 import net.minecraft.server.v1_13_R1.EntityHuman;
 import net.minecraft.server.v1_13_R1.EntityIronGolem;
@@ -44,6 +37,14 @@ import net.minecraft.server.v1_13_R1.PathfinderGoalRandomLookaround;
 import net.minecraft.server.v1_13_R1.PathfinderGoalSelector;
 import net.minecraft.server.v1_13_R1.PathfinderGoalZombieAttack;
 import net.minecraft.server.v1_13_R1.World;
+
+import org.bukkit.Bukkit;
+import org.bukkit.craftbukkit.v1_13_R1.CraftWorld;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.IronGolem;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.event.entity.EntityDeathEvent;
+
 import pl.plajer.villagedefense3.Main;
 import pl.plajer.villagedefense3.creatures.CreatureUtils;
 

@@ -18,6 +18,10 @@
 
 package pl.plajer.villagedefense3.handlers.language;
 
+import com.earth2me.essentials.Essentials;
+import com.wasteofplastic.askyblock.ASLocale;
+import com.wasteofplastic.askyblock.ASkyBlock;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -27,10 +31,6 @@ import java.util.Properties;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
-
-import com.earth2me.essentials.Essentials;
-import com.wasteofplastic.askyblock.ASLocale;
-import com.wasteofplastic.askyblock.ASkyBlock;
 
 import pl.plajer.villagedefense3.Main;
 import pl.plajer.villagedefense3.handlers.ConfigurationManager;

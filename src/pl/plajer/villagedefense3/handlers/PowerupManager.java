@@ -18,6 +18,10 @@
 
 package pl.plajer.villagedefense3.handlers;
 
+import com.gmail.filoghost.holographicdisplays.api.Hologram;
+import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
+import com.gmail.filoghost.holographicdisplays.api.line.ItemLine;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -33,10 +37,6 @@ import org.bukkit.entity.Zombie;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
-
-import com.gmail.filoghost.holographicdisplays.api.Hologram;
-import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
-import com.gmail.filoghost.holographicdisplays.api.line.ItemLine;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
