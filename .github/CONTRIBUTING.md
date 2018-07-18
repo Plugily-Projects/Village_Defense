@@ -2,7 +2,7 @@
 
 ## Table of contents
 * [Report issue/request feature](https://github.com/Plajer-Lair/Village_Defense/issues/new/choose)
-* [Pull requests](https://github.com/Plajer-Lair/Village_Defense/blob/master/CONTRIBUTING.md#pull-requests)
+* [Pull requests](hhttps://github.com/Plajer-Lair/Village_Defense/blob/master/.github/CONTRIBUTING.md#pull-requests)
 
 ## Pull requests
 ### First contribution
