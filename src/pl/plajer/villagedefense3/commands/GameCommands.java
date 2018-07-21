@@ -30,6 +30,7 @@ import pl.plajer.villagedefense3.Main;
 import pl.plajer.villagedefense3.arena.Arena;
 import pl.plajer.villagedefense3.arena.ArenaManager;
 import pl.plajer.villagedefense3.arena.ArenaRegistry;
+import pl.plajer.villagedefense3.arena.ArenaState;
 import pl.plajer.villagedefense3.handlers.ChatManager;
 import pl.plajer.villagedefense3.user.User;
 import pl.plajer.villagedefense3.user.UserManager;
@@ -153,6 +154,22 @@ public class GameCommands extends MainCommand {
       }
     }
     sender.sendMessage(ChatManager.colorMessage("Commands.No-Arena-Like-That"));
+  }
+
+  public void joinRandomGame(CommandSender sender) {
+    if (checkSenderIsConsole(sender)) {
+      return;
+    }
+    if (!plugin.isBungeeActivated()) {
+      return;
+    }
+    for (Arena arena : ArenaRegistry.getArenas()) {
+      if (arena.getArenaState() == ArenaState.WAITING_FOR_PLAYERS || arena.getArenaState() == ArenaState.STARTING) {
+        ArenaManager.joinAttempt((Player) sender, arena);
+        return;
+      }
+    }
+    sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("Commands.No-Free-Arenas"));
   }
 
   public void openKitMenu(CommandSender sender) {

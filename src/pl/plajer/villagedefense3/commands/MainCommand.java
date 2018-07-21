@@ -223,6 +223,9 @@ public class MainCommand implements CommandExecutor {
         }
         sender.sendMessage(ChatManager.colorMessage("Commands.Type-Arena-Name"));
         return true;
+      } else if (args[0].equalsIgnoreCase("randomjoin")) {
+        gameCommands.joinRandomGame(sender);
+        return true;
       } else if (args[0].equalsIgnoreCase("stats")) {
         if (args.length == 2) {
           gameCommands.sendStatsOther(sender, args[1]);
@@ -461,7 +464,7 @@ public class MainCommand implements CommandExecutor {
                 Location temporaryBlock = new Location(player.getWorld(), x, y, z);
                 if (temporaryBlock.getBlock().getType() == Material.WOODEN_DOOR) {
                   String location = temporaryBlock.getWorld().getName() + "," + temporaryBlock.getX() + "," + temporaryBlock.getY() + "," + temporaryBlock.getZ()
-                          + "," + temporaryBlock.getYaw()+ "," + temporaryBlock.getPitch();
+                          + "," + temporaryBlock.getYaw() + "," + temporaryBlock.getPitch();
                   config.set("instances." + ID + ".doors." + i + ".location", location);
                   //todo block data id
                   config.set("instances." + ID + ".doors." + i + ".byte", temporaryBlock.getBlock().getData());

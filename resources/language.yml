@@ -20,6 +20,7 @@ Commands:
   Look-Sign: "&cYou have to look at a sign to perform this command!"
   Type-Arena-Name: "&cPlease type arena ID!"
   Hold-Any-Item: "&cYou must hold any item!"
+  No-Free-Arenas: "&cThere are no free arenas!"
   Statistics:
     Type-Name: "&cPlease type statistic name to view!"
     Invalid-Name: "&cName of statistic is invalid! Type: kills, deaths, games_played, highest_wave, level"
@@ -59,7 +60,8 @@ Commands:
     &b/vd leave: &7Quits current arena!\n
     &b/vd join <arena>: &7Joins specified arena!\n
     &b/vd top <statistic>: &7Shows top 10 players!\n
-    &b/vd selectkit: &7Select new game kit!"
+    &b/vd selectkit: &7Select new game kit!\n
+    &b/vd randomjoin: &7Join random arena!"
     Admin-Bonus-Description: "\n&b/vd admin: &7Shows all the admin commands"
     Footer: "&6-------------------------------------------------"
 
@@ -359,4 +361,4 @@ Validator:
 
 # Don't edit it. But who's stopping you? It's your server!
 # Really, don't edit ;p
-File-Version-Do-Not-Edit: 7
+File-Version-Do-Not-Edit: 8

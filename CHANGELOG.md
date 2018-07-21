@@ -4,6 +4,7 @@
 * Added support for 1.13-pre7
 * Removed deprecated commands (/vda setshopchest and /vda addsign) - they were deprecated and not working
 * Updated locales messages
+* Added /vd randomjoin command for multi arena server (add to wiki too!!!!!!!!!!312312412412354xds44dcwdrcet fd)
 
 ### 3.8.2 Release (12.07.2018)
 * Bring back Vietnamese locale support

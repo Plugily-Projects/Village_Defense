@@ -41,7 +41,7 @@ import pl.plajer.villagedefense3.utils.MessageUtils;
  */
 public class LanguageMigrator {
 
-  public static final int LANGUAGE_FILE_VERSION = 7;
+  public static final int LANGUAGE_FILE_VERSION = 8;
   public static final int CONFIG_FILE_VERSION = 5;
   private static Main plugin = JavaPlugin.getPlugin(Main.class);
   private static List<String> migratable = Arrays.asList("bungee", "config", "kits", "language", "lobbyitems", "mysql");
@@ -158,6 +158,9 @@ public class LanguageMigrator {
           break;
         case 6:
           LanguageMigrator.insertAfterLine(file, "Shop-Messages", "      Mob-Limit-Reached: \"&cYou can't buy mobs! You've reached the limit of %amount% mobs!\"");
+          break;
+        case 7:
+          LanguageMigrator.insertAfterLine(file, "Commands:", "  No-Free-Arenas: \"&cThere are no free arenas!\"");
           break;
       }
       version++;
