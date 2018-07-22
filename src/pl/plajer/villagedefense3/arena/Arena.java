@@ -66,13 +66,13 @@ import pl.plajer.villagedefense3.villagedefenseapi.VillageGameStateChangeEvent;
 public abstract class Arena extends BukkitRunnable {
 
   protected final List<Location> zombieSpawns = new ArrayList<>();
-  private final Main plugin;
-  private final LinkedHashMap<Location, Byte> doorBlocks = new LinkedHashMap<>();
-  private final List<Location> villagerSpawnPoints = new ArrayList<>();
   private final List<Zombie> zombies = new ArrayList<>();
   private final List<Wolf> wolfs = new ArrayList<>();
   private final List<Villager> villagers = new ArrayList<>();
   private final List<IronGolem> ironGolems = new ArrayList<>();
+  private final Main plugin;
+  private final LinkedHashMap<Location, Byte> doorBlocks = new LinkedHashMap<>();
+  private final List<Location> villagerSpawnPoints = new ArrayList<>();
   private final Random random;
   private final List<Zombie> glitchedZombies = new ArrayList<>();
   private final Map<Zombie, Location> zombieCheckerLocations = new HashMap<>();
@@ -85,6 +85,8 @@ public abstract class Arena extends BukkitRunnable {
   private int rottenFleshLevel;
   private int zombieChecker = 0;
   private int spawnCounter = 0;
+  private int totalKilledZombies = 0;
+  private int totalOrbsSpent = 0;
   private ArenaState arenaState;
   private BossBar gameBar;
   private int minimumPlayers = 2;
@@ -92,9 +94,8 @@ public abstract class Arena extends BukkitRunnable {
   private String mapName = "";
   private int timer;
   private String ID;
-  private Location lobbyLoc = null;
-  private Location startLoc = null;
-  private Location endLoc = null;
+  //instead of 3 location fields we use map with GameLocation enum
+  private Map<GameLocation, Location> gameLocations = new HashMap<>();
   private boolean ready = true;
 
   public Arena(String ID, Main plugin) {
@@ -126,6 +127,22 @@ public abstract class Arena extends BukkitRunnable {
 
   void setRottenFleshLevel(int rottenFleshLevel) {
     this.rottenFleshLevel = rottenFleshLevel;
+  }
+
+  public int getTotalKilledZombies() {
+    return totalKilledZombies;
+  }
+
+  public void setTotalKilledZombies(int totalKilledZombies) {
+    this.totalKilledZombies = totalKilledZombies;
+  }
+
+  public int getTotalOrbsSpent() {
+    return totalOrbsSpent;
+  }
+
+  public void setTotalOrbsSpent(int totalOrbsSpent) {
+    this.totalOrbsSpent = totalOrbsSpent;
   }
 
   @Nullable
@@ -402,6 +419,8 @@ public abstract class Arena extends BukkitRunnable {
         setArenaState(ArenaState.WAITING_FOR_PLAYERS);
 
         wave = 1;
+        totalKilledZombies = 0;
+        totalOrbsSpent = 0;
         if (plugin.isBungeeActivated()) {
           for (Player player : plugin.getServer().getOnlinePlayers()) {
             this.addPlayer(player);
@@ -642,7 +661,7 @@ public abstract class Arena extends BukkitRunnable {
    * @return lobby location of arena
    */
   public Location getLobbyLocation() {
-    return lobbyLoc;
+    return gameLocations.get(GameLocation.LOBBY);
   }
 
   /**
@@ -651,7 +670,7 @@ public abstract class Arena extends BukkitRunnable {
    * @param loc new lobby location of arena
    */
   public void setLobbyLocation(Location loc) {
-    this.lobbyLoc = loc;
+    gameLocations.put(GameLocation.LOBBY, loc);
   }
 
   /**
@@ -660,7 +679,7 @@ public abstract class Arena extends BukkitRunnable {
    * @return start location of arena
    */
   public Location getStartLocation() {
-    return startLoc;
+    return gameLocations.get(GameLocation.START);
   }
 
   /**
@@ -669,12 +688,12 @@ public abstract class Arena extends BukkitRunnable {
    * @param location new start location of arena
    */
   public void setStartLocation(Location location) {
-    startLoc = location;
+    gameLocations.put(GameLocation.START, location);
   }
 
   public void teleportToStartLocation(Player player) {
-    if (startLoc != null) {
-      player.teleport(startLoc);
+    if (gameLocations.get(GameLocation.START) != null) {
+      player.teleport(gameLocations.get(GameLocation.START));
     } else {
       System.out.print("Startlocation for arena " + getID() + " isn't intialized!");
     }
@@ -682,8 +701,8 @@ public abstract class Arena extends BukkitRunnable {
 
   private void teleportAllToStartLocation() {
     for (Player player : getPlayers()) {
-      if (startLoc != null) {
-        player.teleport(startLoc);
+      if (gameLocations.get(GameLocation.START) != null) {
+        player.teleport(gameLocations.get(GameLocation.START));
       } else {
         System.out.print("Startlocation for arena " + getID() + " isn't intialized!");
       }
@@ -728,7 +747,7 @@ public abstract class Arena extends BukkitRunnable {
    * @return end location of arena
    */
   public Location getEndLocation() {
-    return endLoc;
+    return gameLocations.get(GameLocation.END);
   }
 
   /**
@@ -737,7 +756,7 @@ public abstract class Arena extends BukkitRunnable {
    * @param endLoc new end location of arena
    */
   public void setEndLocation(Location endLoc) {
-    this.endLoc = endLoc;
+    gameLocations.put(GameLocation.END, endLoc);
   }
 
   public void start() {
@@ -814,8 +833,7 @@ public abstract class Arena extends BukkitRunnable {
     if (getZombies() == null || getZombies().size() <= 0) {
       for (int i = 0; i <= wave; i++) {
         if (zombiesToSpawn > 0) {
-          spawnVillagerSlayer(random);
-          //spawnFastZombie(random);
+          spawnFastZombie(random);
         }
       }
     }
@@ -824,8 +842,7 @@ public abstract class Arena extends BukkitRunnable {
       spawnCounter = 0;
     }
     if (zombiesToSpawn < 5 && zombiesToSpawn > 0) {
-      spawnVillagerSlayer(random);
-      //spawnFastZombie(random);
+      spawnFastZombie(random);
       return;
     }
     if (spawnCounter == 5) {
@@ -1117,6 +1134,10 @@ public abstract class Arena extends BukkitRunnable {
       int id = Material.WOODEN_DOOR.getId();
       block.setTypeIdAndData(id, doorData, false);
     }
+  }
+
+  public enum GameLocation {
+    START, LOBBY, END
   }
 
 }

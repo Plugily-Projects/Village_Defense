@@ -61,7 +61,7 @@ public class PowerupManager {
     if (!plugin.getConfig().getBoolean("Powerups.Enabled", true)) {
       return;
     }
-    if (plugin.getServer().getPluginManager().getPlugin("HolographicDisplays") == null) {
+    if (!plugin.getServer().getPluginManager().isPluginEnabled("HolographicDisplays")) {
       Main.debug("Power up module: Holographic Displays dependency not found, disabling", System.currentTimeMillis());
       return;
     }
@@ -193,8 +193,5 @@ public class PowerupManager {
       Random r = new Random();
       return values()[r.nextInt(values().length)];
     }
-
-
   }
-
 }

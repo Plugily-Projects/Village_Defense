@@ -502,6 +502,7 @@ public class Events implements Listener {
     itemStack.setItemMeta(itemMeta);
     player.getInventory().addItem(itemStack);
     UserManager.getUser(player.getUniqueId()).setInt("orbs", UserManager.getUser(player.getUniqueId()).getInt("orbs") - price);
+    arena.setTotalOrbsSpent(arena.getTotalOrbsSpent() + price);
   }
 
   @EventHandler(priority = EventPriority.HIGH)

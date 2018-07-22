@@ -201,7 +201,7 @@ public class Main extends JavaPlugin {
     new ConfigurationManager(this);
     LanguageManager.init(this);
     saveDefaultConfig();
-    if (!(version.equalsIgnoreCase("v1_9_R1") || version.equalsIgnoreCase("v1_11_R1") || version.equalsIgnoreCase("v1_12_R1"))) {
+    if (!(version.equalsIgnoreCase("v1_9_R1") || version.equalsIgnoreCase("v1_10_R1") || version.equalsIgnoreCase("v1_11_R1") || version.equalsIgnoreCase("v1_12_R1"))) {
       if (version.contains("v1_13_R1")) {
         MessageUtils.info();
         Bukkit.getConsoleSender().sendMessage(ChatColor.YELLOW + "Enabling development build of Village Defense for 1.13 pre releases!");

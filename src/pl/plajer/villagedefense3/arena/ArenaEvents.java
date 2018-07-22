@@ -107,6 +107,7 @@ public class ArenaEvents implements Listener {
           case ZOMBIE:
             if (a.getZombies().contains(event.getEntity())) {
               a.removeZombie((Zombie) event.getEntity());
+              a.setTotalKilledZombies(a.getTotalKilledZombies() + 1);
               if (ArenaRegistry.getArena(event.getEntity().getKiller()) != null) {
                 a.addStat(event.getEntity().getKiller(), "kills");
                 a.addExperience(event.getEntity().getKiller(), 2);

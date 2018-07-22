@@ -18,6 +18,10 @@
 
 package pl.plajer.villagedefense3.arena;
 
+import java.util.Arrays;
+import java.util.List;
+
+import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
@@ -40,10 +44,13 @@ import pl.plajer.villagedefense3.Main;
 import pl.plajer.villagedefense3.handlers.ChatManager;
 import pl.plajer.villagedefense3.handlers.PermissionsManager;
 import pl.plajer.villagedefense3.handlers.items.SpecialItemManager;
+import pl.plajer.villagedefense3.handlers.language.LanguageManager;
+import pl.plajer.villagedefense3.handlers.language.Locale;
 import pl.plajer.villagedefense3.kits.kitapi.KitRegistry;
 import pl.plajer.villagedefense3.kits.level.GolemFriendKit;
 import pl.plajer.villagedefense3.user.User;
 import pl.plajer.villagedefense3.user.UserManager;
+import pl.plajer.villagedefense3.utils.MessageUtils;
 import pl.plajer.villagedefense3.utils.Utils;
 import pl.plajer.villagedefense3.villagedefenseapi.VillageGameJoinAttemptEvent;
 import pl.plajer.villagedefense3.villagedefenseapi.VillageGameLeaveAttemptEvent;
@@ -234,17 +241,25 @@ public class ArenaManager {
     Main.debug("Game stop event initiate, arena " + arena.getID(), System.currentTimeMillis());
     VillageGameStopEvent villageGameStopEvent = new VillageGameStopEvent(arena);
     Bukkit.getPluginManager().callEvent(villageGameStopEvent);
+    String summaryEnding;
+    if (arena.getPlayersLeft().size() > 0) {
+      summaryEnding = ChatManager.colorMessage("In-Game.Messages.Game-End-Messages.Summary-Villagers-Died");
+    } else {
+      summaryEnding = ChatManager.colorMessage("In-Game.Messages.Game-End-Messages.Summary-Players-Died");
+    }
+    List<String> summaryMessages;
+    if (LanguageManager.getPluginLocale() == Locale.ENGLISH) {
+      summaryMessages = LanguageManager.getLanguageFile().getStringList("In-Game.Messages.Game-End-Messages.Summary-Message");
+    } else {
+      summaryMessages = Arrays.asList(ChatManager.colorMessage("In-Game.Messages.Game-End-Messages.Summary-Message").split(";"));
+    }
     for (final Player p : arena.getPlayers()) {
-      if (arena.getPlayersLeft().size() > 0) {
-        p.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Messages.Game-End-Messages.All-Villagers-Died"));
-      } else {
-        p.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Messages.Game-End-Messages.All-Players-Died"));
-      }
-      p.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Messages.Game-End-Messages.Reached-Wave-X").replaceAll("%NUMBER%", String.valueOf(arena.getWave())));
-      p.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Messages.Game-End-Messages.Teleporting-To-Lobby-In-10-Seconds"));
       User user = UserManager.getUser(p.getUniqueId());
       if (user.getInt("highestwave") <= arena.getWave()) {
         user.setInt("highestwave", arena.getWave());
+      }
+      for (String msg : summaryMessages) {
+        MessageUtils.sendCenteredMessage(p, formatSummaryPlaceholders(msg, arena, user, summaryEnding));
       }
       arena.addExperience(p, arena.getWave());
 
@@ -293,6 +308,16 @@ public class ArenaManager {
       }
     }
     Main.debug("Game stop event finish, arena " + arena.getID(), System.currentTimeMillis());
+  }
+
+  private static String formatSummaryPlaceholders(String msg, Arena a, User user, String summary) {
+    String formatted = msg;
+    formatted = StringUtils.replace(formatted, "%summary%", summary);
+    formatted = StringUtils.replace(formatted, "%wave%", String.valueOf(a.getWave()));
+    formatted = StringUtils.replace(formatted, "%player_best_wave%", String.valueOf(user.getInt("highest_wave")));
+    formatted = StringUtils.replace(formatted, "%zombies%", String.valueOf(a.getTotalKilledZombies()));
+    formatted = StringUtils.replace(formatted, "%orbs_spent%", String.valueOf(a.getTotalOrbsSpent()));
+    return formatted;
   }
 
   /**
