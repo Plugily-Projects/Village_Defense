@@ -314,7 +314,7 @@ public class ArenaManager {
     String formatted = msg;
     formatted = StringUtils.replace(formatted, "%summary%", summary);
     formatted = StringUtils.replace(formatted, "%wave%", String.valueOf(a.getWave()));
-    formatted = StringUtils.replace(formatted, "%player_best_wave%", String.valueOf(user.getInt("highest_wave")));
+    formatted = StringUtils.replace(formatted, "%player_best_wave%", String.valueOf(user.getInt("highestwave")));
     formatted = StringUtils.replace(formatted, "%zombies%", String.valueOf(a.getTotalKilledZombies()));
     formatted = StringUtils.replace(formatted, "%orbs_spent%", String.valueOf(a.getTotalOrbsSpent()));
     return formatted;

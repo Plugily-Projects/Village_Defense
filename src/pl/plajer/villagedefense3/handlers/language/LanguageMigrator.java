@@ -161,12 +161,12 @@ public class LanguageMigrator {
           break;
         case 7:
           LanguageMigrator.insertAfterLine(file, "Commands:", "  No-Free-Arenas: \"&cThere are no free arenas!\"");
-          LanguageMigrator.insertAfterLine(file, "Game-End-Messages:", "      Summary-Message:\n" +
-                  "        - \"&a&m-------------------------------------------------------\"\n" +
-                  "        - \"&f&lVillage Defense\"\n        - \"\"\n        - \"%summary%\"\n        - \"\"\n        - \"\"\n" +
-                  "        - \"&e&lReached wave: &7%wave% &8(best %player_best_wave%)\"\n        - \"&6&lTotal zombies killed: &7%zombies%\"\n" +
-                  "        - \"&c&lTotal coins spent: &7%orbs_spent%\"\n        - \"&a&m-------------------------------------------------------\"\n" +
-                  "      Summary-Players-Died: \"&7All players died!\"\n      Summary-Villagers-Died: \"&7All villagers died!\"");
+          LanguageMigrator.insertAfterLine(file, "Game-End-Messages:", "      Summary-Message:\r\n" +
+                  "        - \"&a&m--------------------------------------------------\"\r\n" +
+                  "        - \"&f&lVillage Defense\"\r\n        - \"\"\r\n        - \"%summary%\"\r\n        - \"\"\r\n        - \"\"\r\n" +
+                  "        - \"&e&lReached wave: &7%wave% &8(best %player_best_wave%)\"\r\n        - \"&6&lTotal zombies killed: &7%zombies%\"\r\n" +
+                  "        - \"&c&lTotal coins spent: &7%orbs_spent%\"\r\n        - \"&a&m--------------------------------------------------\"\r\n" +
+                  "      Summary-Players-Died: \"&7All players died!\"\r\n      Summary-Villagers-Died: \"&7All villagers died!\"\r\n        - \"\"");
           break;
       }
       version++;

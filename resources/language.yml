@@ -306,7 +306,7 @@ In-Game:
       No-Shop-Defined: "&cShop wasn't set up! Contact staff!"
     Game-End-Messages:
       Summary-Message:
-        - "&a&m-------------------------------------------------------"
+        - "&a&m--------------------------------------------------"
         - "&f&lVillage Defense"
         - ""
         - "%summary%"
@@ -315,7 +315,8 @@ In-Game:
         - "&e&lReached wave: &7%wave% &8(best %player_best_wave%)"
         - "&6&lTotal zombies killed: &7%zombies%"
         - "&c&lTotal coins spent: &7%orbs_spent%"
-        - "&a&m-------------------------------------------------------"
+        - ""
+        - "&a&m--------------------------------------------------"
       Summary-Players-Died: "&7All players died!"
       Summary-Villagers-Died: "&7All villagers died!"
     Admin-Messages:
