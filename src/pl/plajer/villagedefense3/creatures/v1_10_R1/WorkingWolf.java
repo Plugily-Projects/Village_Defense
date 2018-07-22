@@ -16,31 +16,31 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package pl.plajer.villagedefense3.creatures.v1_13_R1;
+package pl.plajer.villagedefense3.creatures.v1_10_R1;
 
 import java.util.LinkedHashSet;
 
-import net.minecraft.server.v1_13_R1.Entity;
-import net.minecraft.server.v1_13_R1.EntityHuman;
-import net.minecraft.server.v1_13_R1.EntityLiving;
-import net.minecraft.server.v1_13_R1.EntityWolf;
-import net.minecraft.server.v1_13_R1.EntityZombie;
-import net.minecraft.server.v1_13_R1.GenericAttributes;
-import net.minecraft.server.v1_13_R1.Navigation;
-import net.minecraft.server.v1_13_R1.PathfinderGoalFloat;
-import net.minecraft.server.v1_13_R1.PathfinderGoalFollowOwner;
-import net.minecraft.server.v1_13_R1.PathfinderGoalHurtByTarget;
-import net.minecraft.server.v1_13_R1.PathfinderGoalLeapAtTarget;
-import net.minecraft.server.v1_13_R1.PathfinderGoalLookAtPlayer;
-import net.minecraft.server.v1_13_R1.PathfinderGoalMeleeAttack;
-import net.minecraft.server.v1_13_R1.PathfinderGoalMoveTowardsRestriction;
-import net.minecraft.server.v1_13_R1.PathfinderGoalNearestAttackableTarget;
-import net.minecraft.server.v1_13_R1.PathfinderGoalRandomLookaround;
-import net.minecraft.server.v1_13_R1.PathfinderGoalRandomStroll;
-import net.minecraft.server.v1_13_R1.PathfinderGoalSelector;
-import net.minecraft.server.v1_13_R1.World;
+import net.minecraft.server.v1_10_R1.Entity;
+import net.minecraft.server.v1_10_R1.EntityHuman;
+import net.minecraft.server.v1_10_R1.EntityLiving;
+import net.minecraft.server.v1_10_R1.EntityWolf;
+import net.minecraft.server.v1_10_R1.EntityZombie;
+import net.minecraft.server.v1_10_R1.GenericAttributes;
+import net.minecraft.server.v1_10_R1.Navigation;
+import net.minecraft.server.v1_10_R1.PathfinderGoalFloat;
+import net.minecraft.server.v1_10_R1.PathfinderGoalFollowOwner;
+import net.minecraft.server.v1_10_R1.PathfinderGoalHurtByTarget;
+import net.minecraft.server.v1_10_R1.PathfinderGoalLeapAtTarget;
+import net.minecraft.server.v1_10_R1.PathfinderGoalLookAtPlayer;
+import net.minecraft.server.v1_10_R1.PathfinderGoalMeleeAttack;
+import net.minecraft.server.v1_10_R1.PathfinderGoalMoveTowardsRestriction;
+import net.minecraft.server.v1_10_R1.PathfinderGoalNearestAttackableTarget;
+import net.minecraft.server.v1_10_R1.PathfinderGoalRandomLookaround;
+import net.minecraft.server.v1_10_R1.PathfinderGoalRandomStroll;
+import net.minecraft.server.v1_10_R1.PathfinderGoalSelector;
+import net.minecraft.server.v1_10_R1.World;
 
-import org.bukkit.craftbukkit.v1_13_R1.CraftWorld;
+import org.bukkit.craftbukkit.v1_10_R1.CraftWorld;
 
 import pl.plajer.villagedefense3.creatures.CreatureUtils;
 
@@ -81,40 +81,37 @@ public class WorkingWolf extends EntityWolf {
 
   }
 
-  public void a(float f, float f1, float f2) {
-    EntityLiving entityliving = null;
-    for (final Entity e : passengers) {
-      if (e instanceof EntityHuman) {
-        entityliving = (EntityLiving) e;
-        break;
-      }
-    }
+  @Override
+  public void g(float f, float f1) {
+    EntityLiving entityliving = (EntityLiving) bw();
     if (entityliving == null) {
-      this.P = 0.5F;
-      this.aR = 0.02F;
-      o(0.12f);
-      this.k((float) 0.12);
-      super.a(f, f1, f2);
-      return;
+      // search first human passenger
+      for (final Entity e : passengers) {
+        if (e instanceof EntityHuman) {
+          entityliving = (EntityLiving) e;
+          break;
+        }
+      }
+      if (entityliving == null) {
+        this.l((float) 0.12);
+        super.g(f, f1);
+        return;
+      }
     }
     this.lastYaw = this.yaw = entityliving.yaw;
     this.pitch = entityliving.pitch * 0.5F;
     this.setYawPitch(this.yaw, this.pitch);
-    this.aO = this.aM = this.yaw;
-
-    f = entityliving.bh * 0.5F * 0.75F;
-    f2 = entityliving.bj;
-    if (f2 <= 0.0f) {
-      f2 *= 0.25F;
+    this.aQ = this.aO = this.yaw;
+    f = entityliving.bf * 0.75F;
+    f1 = entityliving.bg;
+    if (f1 <= 0.0f) {
+      f1 *= 0.25F;
     }
-
-    //for 1.13
-    entityliving.bj = 0.12f;
-    o(0.12f);
-
-    super.a(f, f1, f2);
+    this.l((float) 0.12);
+    super.g(f, f1);
     P = (float) 1.0;
   }
+
 
   @Override
   protected void initAttributes() {

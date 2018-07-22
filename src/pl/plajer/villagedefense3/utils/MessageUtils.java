@@ -34,7 +34,7 @@ public class MessageUtils {
 
   private static Main plugin = JavaPlugin.getPlugin(Main.class);
 
-  public static void sendTitle(Player player, String text, int fadeInTime, int showTime, int fadeOutTime, ChatColor color) {
+  public static void sendTitle(Player player, String text, int fadeInTime, int showTime, int fadeOutTime) {
     if (plugin.is1_9_R1()) {
       player.sendTitle(text, null);
     } else {
@@ -42,7 +42,7 @@ public class MessageUtils {
     }
   }
 
-  public static void sendSubTitle(Player player, String text, int fadeInTime, int showTime, int fadeOutTime, ChatColor color) {
+  public static void sendSubTitle(Player player, String text, int fadeInTime, int showTime, int fadeOutTime) {
     if (plugin.is1_9_R1()) {
       player.sendTitle(null, text);
     } else {

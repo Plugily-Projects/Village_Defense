@@ -168,7 +168,7 @@ public class ArenaEvents implements Listener {
     player.setAllowFlight(true);
     player.setFlying(true);
     player.getInventory().clear();
-    MessageUtils.sendTitle(player, ChatColor.stripColor(ChatManager.colorMessage("In-Game.Death-Screen")), 0, 5 * 20, 0, ChatColor.RED);
+    MessageUtils.sendTitle(player, ChatColor.stripColor(ChatManager.colorMessage("In-Game.Death-Screen")), 0, 5 * 20, 0);
     new BukkitRunnable() {
       @Override
       public void run() {

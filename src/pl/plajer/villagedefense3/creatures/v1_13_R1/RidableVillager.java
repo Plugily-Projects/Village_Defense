@@ -102,12 +102,10 @@ public class RidableVillager extends EntityVillager {
     this.goalSelector.a(9, new PathfinderGoalRandomStroll(this, 0.6D));
     this.goalSelector.a(10, new PathfinderGoalLookAtPlayer(this,
             EntityInsentient.class, 8.0F));
-    //temp only a temporary workaround
     this.setCustomName(new ChatMessage(villagernames[new Random().nextInt(villagernames.length)]));
     this.setCustomNameVisible(true);
   }
 
-  //temp based on sources
   public void a(float f, float f1, float f2) {
     EntityLiving entityliving = null;
     for (final Entity e : passengers) {

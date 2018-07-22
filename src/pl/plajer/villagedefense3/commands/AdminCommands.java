@@ -306,7 +306,7 @@ public class AdminCommands extends MainCommand {
     Player player = (Player) sender;
     ItemStack item = player.getInventory().getItemInMainHand();
     if (item == null || item.getType().equals(Material.AIR)) {
-      player.sendMessage(ChatManager.colorMessage("Commands.Hold-Any-Item"));
+      player.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("Commands.Hold-Any-Item"));
       return;
     }
     //check any price from lore

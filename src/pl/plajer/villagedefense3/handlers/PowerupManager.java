@@ -32,7 +32,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
@@ -164,8 +163,8 @@ public class PowerupManager {
           break;
       }
       for (Player p : arena.getPlayers()) {
-        MessageUtils.sendTitle(p, powerUpTitle, 5, 30, 5, ChatColor.DARK_RED);
-        MessageUtils.sendSubTitle(p, subTitle, 5, 30, 5, ChatColor.GRAY);
+        MessageUtils.sendTitle(p, powerUpTitle, 5, 30, 5);
+        MessageUtils.sendSubTitle(p, subTitle, 5, 30, 5);
       }
       hologram.delete();
     });

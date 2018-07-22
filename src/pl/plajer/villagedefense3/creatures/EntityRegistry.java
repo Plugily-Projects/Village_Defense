@@ -25,21 +25,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-import net.minecraft.server.v1_13_R1.EntityTypes;
-
 import org.bukkit.Bukkit;
 
 import pl.plajer.villagedefense3.Main;
-import pl.plajer.villagedefense3.creatures.v1_13_R1.BabyZombie;
-import pl.plajer.villagedefense3.creatures.v1_13_R1.FastZombie;
-import pl.plajer.villagedefense3.creatures.v1_13_R1.GolemBuster;
-import pl.plajer.villagedefense3.creatures.v1_13_R1.HardZombie;
-import pl.plajer.villagedefense3.creatures.v1_13_R1.PlayerBuster;
-import pl.plajer.villagedefense3.creatures.v1_13_R1.RidableIronGolem;
-import pl.plajer.villagedefense3.creatures.v1_13_R1.RidableVillager;
-import pl.plajer.villagedefense3.creatures.v1_13_R1.TankerZombie;
-import pl.plajer.villagedefense3.creatures.v1_13_R1.VillagerSlayer;
-import pl.plajer.villagedefense3.creatures.v1_13_R1.WorkingWolf;
 import pl.plajer.villagedefense3.utils.MessageUtils;
 
 /**
@@ -53,19 +41,10 @@ public class EntityRegistry {
     Main.debug("Initial entity registry startup", System.currentTimeMillis());
     List<String> classes = Arrays.asList("FastZombie", "BabyZombie", "PlayerBuster", "GolemBuster", "HardZombie", "TankerZombie", "VillagerSlayer", "RidableVillager", "RidableIronGolem", "WorkingWolf");
     String version = plugin.getVersion();
-    if (version.equalsIgnoreCase("v1_11_R1") || version.equalsIgnoreCase("v1_9_R1") || version.equalsIgnoreCase("v1_12_R1") || version.equalsIgnoreCase("v1_13_R1")) {
+    if (version.equalsIgnoreCase("v1_11_R1") || version.equalsIgnoreCase("v1_9_R1") || version.equalsIgnoreCase("v1_10_R1")
+            || version.equalsIgnoreCase("v1_12_R1") || version.equalsIgnoreCase("v1_13_R1")) {
       if (version.equalsIgnoreCase("v1_13_R1")) {
-        net.minecraft.server.v1_13_R1.EntityTypes.a("zombie", EntityTypes.a.a(FastZombie.class, FastZombie::new));
-        net.minecraft.server.v1_13_R1.EntityTypes.a("zombie", EntityTypes.a.a(BabyZombie.class, BabyZombie::new));
-        net.minecraft.server.v1_13_R1.EntityTypes.a("zombie", EntityTypes.a.a(PlayerBuster.class, PlayerBuster::new));
-        net.minecraft.server.v1_13_R1.EntityTypes.a("zombie", EntityTypes.a.a(GolemBuster.class, GolemBuster::new));
-        net.minecraft.server.v1_13_R1.EntityTypes.a("zombie", EntityTypes.a.a(HardZombie.class, HardZombie::new));
-        net.minecraft.server.v1_13_R1.EntityTypes.a("zombie", EntityTypes.a.a(TankerZombie.class, TankerZombie::new));
-        net.minecraft.server.v1_13_R1.EntityTypes.a("zombie", EntityTypes.a.a(VillagerSlayer.class, VillagerSlayer::new));
-        net.minecraft.server.v1_13_R1.EntityTypes.a("villager", EntityTypes.a.a(RidableVillager.class, RidableVillager::new));
-        net.minecraft.server.v1_13_R1.EntityTypes.a("iron_golem", EntityTypes.a.a(RidableIronGolem.class, RidableIronGolem::new));
-        net.minecraft.server.v1_13_R1.EntityTypes.a("wolf", EntityTypes.a.a(WorkingWolf.class, WorkingWolf::new));
-        Main.debug("Entities registering completed", System.currentTimeMillis());
+        Main.debug("Skipping entity registering for 1.13 R1", System.currentTimeMillis());
         return;
       }
       try {
@@ -101,6 +80,26 @@ public class EntityRegistry {
     final net.minecraft.server.v1_11_R1.MinecraftKey key = new net.minecraft.server.v1_11_R1.MinecraftKey(name);
     net.minecraft.server.v1_11_R1.EntityTypes.b.a(id, key, customClass);
     net.minecraft.server.v1_11_R1.EntityTypes.d.add(key);
+  }
+
+  @SuppressWarnings("unused")
+  public static void registerv1_10_R1Entity(String name, int id, final Class<? extends net.minecraft.server.v1_10_R1.EntityInsentient> customClass) {
+    try {
+      List<Map<?, ?>> dataMaps = new ArrayList<>();
+      for (Field f : net.minecraft.server.v1_10_R1.EntityTypes.class.getDeclaredFields()) {
+        if (f.getType().getSimpleName().equals(Map.class.getSimpleName())) {
+          f.setAccessible(true);
+          dataMaps.add((Map<?, ?>) f.get(null));
+        }
+      }
+      ((Map<Class<? extends net.minecraft.server.v1_10_R1.EntityInsentient>, String>) dataMaps.get(1)).put(customClass, name);
+      ((Map<Class<? extends net.minecraft.server.v1_10_R1.EntityInsentient>, Integer>) dataMaps.get(3)).put(customClass, id);
+    } catch (Exception e) {
+      e.printStackTrace();
+      MessageUtils.errorOccured();
+      Bukkit.getConsoleSender().sendMessage("Entities has failed to register!");
+      Bukkit.getConsoleSender().sendMessage("Restart server or change your server version!");
+    }
   }
 
   @SuppressWarnings("unused")

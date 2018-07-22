@@ -814,7 +814,8 @@ public abstract class Arena extends BukkitRunnable {
     if (getZombies() == null || getZombies().size() <= 0) {
       for (int i = 0; i <= wave; i++) {
         if (zombiesToSpawn > 0) {
-          spawnFastZombie(random);
+          spawnVillagerSlayer(random);
+          //spawnFastZombie(random);
         }
       }
     }
@@ -823,7 +824,8 @@ public abstract class Arena extends BukkitRunnable {
       spawnCounter = 0;
     }
     if (zombiesToSpawn < 5 && zombiesToSpawn > 0) {
-      spawnFastZombie(random);
+      spawnVillagerSlayer(random);
+      //spawnFastZombie(random);
       return;
     }
     if (spawnCounter == 5) {

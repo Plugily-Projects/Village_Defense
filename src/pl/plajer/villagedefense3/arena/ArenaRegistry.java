@@ -28,6 +28,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import pl.plajer.villagedefense3.Main;
+import pl.plajer.villagedefense3.arena.initializers.ArenaInitializer1_10_R1;
 import pl.plajer.villagedefense3.arena.initializers.ArenaInitializer1_11_R1;
 import pl.plajer.villagedefense3.arena.initializers.ArenaInitializer1_12_R1;
 import pl.plajer.villagedefense3.arena.initializers.ArenaInitializer1_13_R1;
@@ -137,6 +138,8 @@ public class ArenaRegistry {
       }
       if (plugin.is1_9_R1()) {
         arena = new ArenaInitializer1_9_R1(ID, plugin);
+      } else if (plugin.is1_10_R1()) {
+        arena = new ArenaInitializer1_10_R1(ID, plugin);
       } else if (plugin.is1_11_R1()) {
         arena = new ArenaInitializer1_11_R1(ID, plugin);
       } else if (plugin.is1_12_R1()) {

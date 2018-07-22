@@ -170,7 +170,7 @@ public class ArenaBoard {
           }
         }
 
-        if (same == 2){
+        if (same == 2) {
           return cc;
         }
       }

@@ -121,7 +121,7 @@ public class SignManager implements Listener {
   @EventHandler
   public void onSignDestroy(BlockBreakEvent e) {
     if (!e.getPlayer().hasPermission("villagedefense.admin.sign.break")
-            && loadedSigns.get(e.getBlock().getState()) == null) {
+            || loadedSigns.get(e.getBlock().getState()) == null) {
       return;
     }
     loadedSigns.remove(e.getBlock().getState());

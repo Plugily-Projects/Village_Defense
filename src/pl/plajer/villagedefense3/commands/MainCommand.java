@@ -41,8 +41,10 @@ import org.bukkit.entity.Player;
 import pl.plajer.villagedefense3.Main;
 import pl.plajer.villagedefense3.arena.Arena;
 import pl.plajer.villagedefense3.arena.ArenaRegistry;
+import pl.plajer.villagedefense3.arena.initializers.ArenaInitializer1_10_R1;
 import pl.plajer.villagedefense3.arena.initializers.ArenaInitializer1_11_R1;
 import pl.plajer.villagedefense3.arena.initializers.ArenaInitializer1_12_R1;
+import pl.plajer.villagedefense3.arena.initializers.ArenaInitializer1_13_R1;
 import pl.plajer.villagedefense3.arena.initializers.ArenaInitializer1_9_R1;
 import pl.plajer.villagedefense3.handlers.ChatManager;
 import pl.plajer.villagedefense3.handlers.ConfigurationManager;
@@ -64,7 +66,7 @@ public class MainCommand implements CommandExecutor {
     if (register) {
       adminCommands = new AdminCommands(plugin);
       gameCommands = new GameCommands(plugin);
-      TabCompletion completion = new TabCompletion();
+      TabCompletion completion = new TabCompletion(plugin);
       plugin.getCommand("villagedefense").setExecutor(this);
       plugin.getCommand("villagedefense").setTabCompleter(completion);
       plugin.getCommand("villagedefenseadmin").setExecutor(this);
@@ -595,10 +597,14 @@ public class MainCommand implements CommandExecutor {
 
     if (plugin.is1_9_R1()) {
       arena = new ArenaInitializer1_9_R1(ID, plugin);
+    } else if (plugin.is1_10_R1()) {
+      arena = new ArenaInitializer1_10_R1(ID, plugin);
     } else if (plugin.is1_11_R1()) {
       arena = new ArenaInitializer1_11_R1(ID, plugin);
-    } else {
+    } else if (plugin.is1_12_R1()) {
       arena = new ArenaInitializer1_12_R1(ID, plugin);
+    } else {
+      arena = new ArenaInitializer1_13_R1(ID, plugin);
     }
 
     arena.setMinimumPlayers(ConfigurationManager.getConfig("arenas").getInt(path + "minimumplayers"));

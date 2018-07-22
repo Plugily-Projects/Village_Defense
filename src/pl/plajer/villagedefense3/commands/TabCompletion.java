@@ -25,7 +25,6 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.java.JavaPlugin;
 
 import pl.plajer.villagedefense3.Main;
 
@@ -36,7 +35,11 @@ import pl.plajer.villagedefense3.Main;
  */
 public class TabCompletion implements TabCompleter {
 
-  private Main plugin = JavaPlugin.getPlugin(Main.class);
+  private Main plugin;
+
+  public TabCompletion(Main plugin) {
+    this.plugin = plugin;
+  }
 
   @Override
   public List<String> onTabComplete(CommandSender sender, Command cmd, String label, String[] args) {
@@ -53,7 +56,7 @@ public class TabCompletion implements TabCompleter {
                 "reload", "delete", "setprice", "tp", "clear", "addorbs", "setwave");
       }
       if (args.length == 1) {
-        if(plugin.isBungeeActivated()) {
+        if (plugin.isBungeeActivated()) {
           return Arrays.asList("join", "leave", "stats", "top", "admin", "create", "selectkit");
         } else {
           return Arrays.asList("join", "randomjoin", "leave", "stats", "top", "admin", "create", "selectkit");

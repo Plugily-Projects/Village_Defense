@@ -25,6 +25,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.block.Chest;
 import org.bukkit.block.Sign;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.EntityType;
@@ -33,13 +34,17 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.inventory.ItemStack;
 
 import pl.plajer.villagedefense3.Main;
 import pl.plajer.villagedefense3.arena.Arena;
 import pl.plajer.villagedefense3.arena.ArenaRegistry;
+import pl.plajer.villagedefense3.arena.initializers.ArenaInitializer1_10_R1;
 import pl.plajer.villagedefense3.arena.initializers.ArenaInitializer1_11_R1;
 import pl.plajer.villagedefense3.arena.initializers.ArenaInitializer1_12_R1;
+import pl.plajer.villagedefense3.arena.initializers.ArenaInitializer1_13_R1;
 import pl.plajer.villagedefense3.arena.initializers.ArenaInitializer1_9_R1;
+import pl.plajer.villagedefense3.handlers.ChatManager;
 import pl.plajer.villagedefense3.handlers.ConfigurationManager;
 import pl.plajer.villagedefense3.handlers.ShopManager;
 import pl.plajer.villagedefense3.utils.Utils;
@@ -168,9 +173,22 @@ public class SetupInventoryEvents implements Listener {
         player.sendMessage(ChatColor.RED + "Look at the chest! You are targeting something else!");
         return;
       }
+      boolean found = false;
+      for (ItemStack stack : ((Chest) targetBlock.getState()).getBlockInventory()) {
+        if (stack == null) continue;
+        if (stack.hasItemMeta() && stack.getItemMeta().hasLore()) {
+          if (stack.getItemMeta().getLore().get(stack.getItemMeta().getLore().size() - 1).contains(ChatManager.colorMessage("In-Game.Messages.Shop-Messages.Currency-In-Shop"))) {
+            found = true;
+            break;
+          }
+        }
+      }
+      if (!found) {
+        player.sendMessage(ChatColor.RED + "No items in shop have price set! Set their prices using /vda setprice! You can ignore this warning");
+      }
       Utils.saveLoc("instances." + arena.getID() + ".shop", targetBlock.getLocation(), false);
       ShopManager.registerShop(arena);
-      player.sendMessage(ChatColor.GREEN + "shop for chest set!");
+      player.sendMessage(ChatColor.GREEN + "Shop for chest set!");
     }
     if (name.contains("Register arena")) {
       event.setCancelled(true);
@@ -214,10 +232,14 @@ public class SetupInventoryEvents implements Listener {
       }
       if (plugin.is1_9_R1()) {
         arena = new ArenaInitializer1_9_R1(arena.getID(), plugin);
+      } else if (plugin.is1_10_R1()) {
+        arena = new ArenaInitializer1_10_R1(arena.getID(), plugin);
       } else if (plugin.is1_11_R1()) {
         arena = new ArenaInitializer1_11_R1(arena.getID(), plugin);
-      } else {
+      } else if (plugin.is1_12_R1()) {
         arena = new ArenaInitializer1_12_R1(arena.getID(), plugin);
+      } else {
+        arena = new ArenaInitializer1_13_R1(arena.getID(), plugin);
       }
       arena.setReady(true);
       arena.setMinimumPlayers(ConfigurationManager.getConfig("arenas").getInt("instances." + arena.getID() + ".minimumplayers"));

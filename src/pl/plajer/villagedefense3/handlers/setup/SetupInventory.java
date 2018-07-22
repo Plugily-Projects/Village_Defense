@@ -120,6 +120,8 @@ public class SetupInventory {
             .name(ChatColor.GOLD + "► Set" + ChatColor.LIGHT_PURPLE + " chest " + ChatColor.GOLD + "shop")
             .lore(ChatColor.GRAY + "Target chest with configured game items")
             .lore(ChatColor.GRAY + "and click this.")
+            .lore(ChatColor.RED + "Remember to set item prices for the game")
+            .lore(ChatColor.RED + "using /vda setprice command!")
             .build());
     inventory.addItem(new ItemBuilder(new ItemStack(Material.FIREWORK))
             .name(ChatColor.GOLD + "► " + ChatColor.GREEN + "Register arena")

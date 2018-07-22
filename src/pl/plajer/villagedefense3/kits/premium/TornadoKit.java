@@ -163,7 +163,7 @@ public class TornadoKit extends PremiumKit implements Listener {
           double radius = y * radius_increment;
           double x = Math.cos(Math.toRadians(360 / lines * l + y * 25 - angle)) * radius;
           double z = Math.sin(Math.toRadians(360 / lines * l + y * 25 - angle)) * radius;
-          getLocation().getWorld().spawnParticle(Particle.CLOUD, getLocation().clone().add(x, y, z), 1, 0, 0, 0);
+          getLocation().getWorld().spawnParticle(Particle.CLOUD, getLocation().clone().add(x, y, z), 1, 0, 0, 0, 0);
         }
       }
 
