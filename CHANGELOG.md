@@ -6,6 +6,7 @@
 * Updated locales messages
 * Added /vd randomjoin command for multi arena server (add to wiki too!!!!!!!!!!312312412412354xds44dcwdrcet fd)
 * Added info when setting empty shop chest
+* Added 1.10 support
 * Optimized code a bit
 
 ### 3.8.2 Release (12.07.2018)
