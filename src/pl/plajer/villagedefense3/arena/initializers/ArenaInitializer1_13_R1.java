@@ -232,7 +232,7 @@ public class ArenaInitializer1_13_R1 extends Arena {
     RidableIronGolem ironGolem = new RidableIronGolem(location.getWorld());
     ironGolem.setPosition(location.getX(), location.getY(), location.getZ());
     //temp probably only a temporary workaround
-    ironGolem.setCustomName(new ChatMessage(ChatManager.colorMessage("In-Game.Spawned-Golem-Name").replaceAll("%player%", player.getName())));
+    ironGolem.setCustomName(new ChatMessage(ChatManager.colorMessage("In-Game.Spawned-Golem-Name").replace("%player%", player.getName())));
     ironGolem.setCustomNameVisible(true);
     mcWorld.addEntity(ironGolem, CreatureSpawnEvent.SpawnReason.CUSTOM);
 
@@ -245,7 +245,7 @@ public class ArenaInitializer1_13_R1 extends Arena {
     wolf.setPosition(location.getX(), location.getY(), location.getZ());
     mcWorld.addEntity(wolf, CreatureSpawnEvent.SpawnReason.CUSTOM);
     //temp probably only a temporary workaround
-    wolf.setCustomName(new ChatMessage(ChatManager.colorMessage("In-Game.Spawned-Wolf-Name").replaceAll("%player%", player.getName())));
+    wolf.setCustomName(new ChatMessage(ChatManager.colorMessage("In-Game.Spawned-Wolf-Name").replace("%player%", player.getName())));
     wolf.setCustomNameVisible(true);
     wolf.setInvisible(false);
     ((Wolf) wolf.getBukkitEntity()).setOwner(player);

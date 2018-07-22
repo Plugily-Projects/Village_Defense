@@ -229,7 +229,7 @@ public class ArenaInitializer1_9_R1 extends Arena {
     net.minecraft.server.v1_9_R1.World mcWorld = ((CraftWorld) location.getWorld()).getHandle();
     RidableIronGolem ironGolem = new RidableIronGolem(location.getWorld());
     ironGolem.setPosition(location.getX(), location.getY(), location.getZ());
-    ironGolem.setCustomName(ChatManager.colorMessage("In-Game.Spawned-Golem-Name").replaceAll("%player%", player.getName()));
+    ironGolem.setCustomName(ChatManager.colorMessage("In-Game.Spawned-Golem-Name").replace("%player%", player.getName()));
     ironGolem.setCustomNameVisible(true);
     mcWorld.addEntity(ironGolem, CreatureSpawnEvent.SpawnReason.CUSTOM);
     this.addIronGolem((org.bukkit.entity.IronGolem) ironGolem.getBukkitEntity());
@@ -240,7 +240,7 @@ public class ArenaInitializer1_9_R1 extends Arena {
     WorkingWolf wolf = new WorkingWolf(location.getWorld());
     wolf.setPosition(location.getX(), location.getY(), location.getZ());
     mcWorld.addEntity(wolf, CreatureSpawnEvent.SpawnReason.CUSTOM);
-    wolf.setCustomName(ChatManager.colorMessage("In-Game.Spawned-Wolf-Name").replaceAll("%player%", player.getName()));
+    wolf.setCustomName(ChatManager.colorMessage("In-Game.Spawned-Wolf-Name").replace("%player%", player.getName()));
     wolf.setCustomNameVisible(true);
     wolf.setInvisible(false);
 

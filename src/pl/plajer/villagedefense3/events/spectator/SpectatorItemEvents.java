@@ -80,7 +80,7 @@ public class SpectatorItemEvents implements Listener {
         //todo check deprecation
         meta.setOwner(player.getName());
         meta.setDisplayName(player.getName());
-        meta.setLore(Collections.singletonList(ChatManager.colorMessage("In-Game.Spectator.Target-Player-Health").replaceAll("%health%",
+        meta.setLore(Collections.singletonList(ChatManager.colorMessage("In-Game.Spectator.Target-Player-Health").replace("%health%",
                 String.valueOf(Utils.round(player.getHealth(), 2)))));
         skull.setDurability((short) SkullType.PLAYER.ordinal());
         skull.setItemMeta(meta);

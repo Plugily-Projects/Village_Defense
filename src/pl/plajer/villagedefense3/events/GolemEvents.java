@@ -88,7 +88,7 @@ public class GolemEvents implements Listener {
 
     ItemStack golemHealth = new ItemStack(Material.BOOK, 1);
     ItemMeta healthMeta = golemHealth.getItemMeta();
-    healthMeta.setDisplayName(ChatManager.colorMessage("In-Game.Golem-Upgrades.Health").replaceAll("%health%", String.valueOf(((IronGolem) e.getRightClicked()).getHealth())));
+    healthMeta.setDisplayName(ChatManager.colorMessage("In-Game.Golem-Upgrades.Health").replace("%health%", String.valueOf(((IronGolem) e.getRightClicked()).getHealth())));
     golemHealth.setItemMeta(healthMeta);
     inv.setItem(4, golemHealth);
     inv.setItem(22, golemHeal);

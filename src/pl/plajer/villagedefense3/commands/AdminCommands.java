@@ -150,9 +150,9 @@ public class AdminCommands extends MainCommand {
     sender.sendMessage(ChatManager.colorMessage("Commands.Admin-Commands.List-Command.Header"));
     int i = 0;
     for (Arena arena : ArenaRegistry.getArenas()) {
-      sender.sendMessage(ChatManager.colorMessage("Commands.Admin-Commands.List-Command.Format").replaceAll("%arena%", arena.getID())
-              .replaceAll("%status%", arena.getArenaState().getFormattedName()).replaceAll("%players%", String.valueOf(arena.getPlayers().size()))
-              .replaceAll("%maxplayers%", String.valueOf(arena.getMaximumPlayers())));
+      sender.sendMessage(ChatManager.colorMessage("Commands.Admin-Commands.List-Command.Format").replace("%arena%", arena.getID())
+              .replace("%status%", arena.getArenaState().getFormattedName()).replace("%players%", String.valueOf(arena.getPlayers().size()))
+              .replace("%maxplayers%", String.valueOf(arena.getMaximumPlayers())));
       i++;
     }
     if (i == 0) {

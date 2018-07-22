@@ -20,8 +20,10 @@ package pl.plajer.villagedefense3.handlers;
 
 import java.util.concurrent.ThreadLocalRandom;
 
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.util.StringUtil;
 
 import pl.plajer.villagedefense3.Main;
 import pl.plajer.villagedefense3.arena.Arena;
@@ -77,10 +79,7 @@ public class RewardsHandler {
     if (!enabled) {
       return;
     }
-    String command = string.replaceAll("%ARENA-ID%", arena.getID())
-            .replaceAll("%MAPNAME%", arena.getMapName())
-            .replaceAll("%PLAYERAMOUNT%", String.valueOf(arena.getPlayers().size()))
-            .replaceAll("%WAVE%", String.valueOf(arena.getWave()));
+    String command = formatCommandPlaceholders(string, arena);
     if (command.contains("chance(")) {
       int loc = command.indexOf(")");
       if (loc == -1) {
@@ -97,10 +96,9 @@ public class RewardsHandler {
     if (command.contains("p:") || command.contains("%PLAYER%")) {
       for (Player player : arena.getPlayers()) {
         if (command.contains("p:")) {
-          player.performCommand(command.replaceFirst("p:", "")
-                  .replaceAll("%PLAYER%", player.getName()));
+          player.performCommand(command.replaceFirst("p:", "").replace("%PLAYER%", player.getName()));
         } else {
-          plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), command.replaceAll("%PLAYER%", player.getName()));
+          plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), command.replace("%PLAYER%", player.getName()));
         }
       }
     }
@@ -115,10 +113,7 @@ public class RewardsHandler {
     if (arena == null) {
       return;
     }
-    String command = string.replaceAll("%ARENA-ID%", arena.getID())
-            .replaceAll("%MAPNAME%", arena.getMapName())
-            .replaceAll("%PLAYERAMOUNT%", String.valueOf(arena.getPlayers().size()))
-            .replaceAll("%WAVE%", String.valueOf(arena.getWave()));
+    String command = formatCommandPlaceholders(string, arena);
     if (command.contains("chance(")) {
       int loc = command.indexOf(")");
       if (loc == -1) {
@@ -132,11 +127,20 @@ public class RewardsHandler {
         return;
       }
     }
-    if (command.contains("p:")) {
-      player.performCommand(command.replaceFirst("p:", "")
-              .replaceAll("%PLAYER%", player.getName()));
+    if (command.contains("p:") || command.contains("%PLAYER%")) {
+      player.performCommand(command.replaceFirst("p:", "").replace("%PLAYER%", player.getName()));
     } else {
-      plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), command.replaceAll("%PLAYER%", player.getName()));
+      plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), command.replace("%PLAYER%", player.getName()));
     }
   }
+
+  private String formatCommandPlaceholders(String command, Arena arena){
+    String formatted = command;
+    formatted = StringUtils.replace(formatted, "%ARENA-ID%", arena.getID());
+    formatted = StringUtils.replace(formatted, "%MAPNAME%", arena.getMapName());
+    formatted = StringUtils.replace(formatted, "%PLAYERAMOUNT%", String.valueOf(arena.getPlayers().size()));
+    formatted = StringUtils.replace(formatted, "%WAVE%", String.valueOf(arena.getWave()));
+    return formatted;
+  }
+
 }

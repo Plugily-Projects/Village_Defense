@@ -131,7 +131,7 @@ public class KitRegistry {
   private static void setupGameKits() {
     KnightKit knightkit = new KnightKit(plugin);
     for (Class kitClass : classKitNames) {
-      if (ConfigurationManager.getConfig("kits").getBoolean("Enabled-Game-Kits." + kitClass.getSimpleName().replaceAll("Kit", ""))) {
+      if (ConfigurationManager.getConfig("kits").getBoolean("Enabled-Game-Kits." + kitClass.getSimpleName().replace("Kit", ""))) {
         try {
           Class.forName(kitClass.getName()).getConstructor(Main.class).newInstance(plugin);
         } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException | InvocationTargetException | InstantiationException e) {

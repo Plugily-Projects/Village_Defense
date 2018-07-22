@@ -202,9 +202,9 @@ public class KitManager implements Listener {
     if (e.getKit().isUnlockedByPlayer(e.getPlayer())) {
       User user = UserManager.getUser(e.getPlayer().getUniqueId());
       user.setKit(e.getKit());
-      e.getPlayer().sendMessage(ChatManager.colorMessage("Kits.Choose-Message").replaceAll("%KIT%", e.getKit().getName()));
+      e.getPlayer().sendMessage(ChatManager.colorMessage("Kits.Choose-Message").replace("%KIT%", e.getKit().getName()));
     } else {
-      e.getPlayer().sendMessage(ChatManager.colorMessage("Kits.Not-Unlocked-Message").replaceAll("%KIT%", e.getKit().getName()));
+      e.getPlayer().sendMessage(ChatManager.colorMessage("Kits.Not-Unlocked-Message").replace("%KIT%", e.getKit().getName()));
     }
 
   }

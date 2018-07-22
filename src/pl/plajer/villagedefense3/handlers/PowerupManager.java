@@ -140,14 +140,14 @@ public class PowerupManager {
             p.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 20 *
                     plugin.getConfig().getInt("Powerups.List.Double-Damage-For-Players.Time", 15), 1, false, false));
           }
-          subTitle = subTitle.replaceAll("%time%", plugin.getConfig().getString("Powerups.List.Double-Damage-For-Players.Time", "15"));
+          subTitle = subTitle.replace("%time%", plugin.getConfig().getString("Powerups.List.Double-Damage-For-Players.Time", "15"));
           break;
         case HEALING:
           for (Player p : arena.getPlayers()) {
             p.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 20 *
                     plugin.getConfig().getInt("Powerups.List.Healing-For-Players.Time-Of-Healing", 10), 1, false, false));
           }
-          subTitle = subTitle.replaceAll("%time%", plugin.getConfig().getString("Powerups.List.Healing-For-Players.Time-Of-Healing", "10"));
+          subTitle = subTitle.replace("%time%", plugin.getConfig().getString("Powerups.List.Healing-For-Players.Time-Of-Healing", "10"));
           break;
         case GOLEM_RAID:
           for (int i = 0; i < plugin.getConfig().getInt("Powerups.List.Golem-Raid.Golems-Amount", 3); i++) {
@@ -159,7 +159,7 @@ public class PowerupManager {
             p.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 20 *
                     plugin.getConfig().getInt("Powerups.List.One-Shot-One-Kill.Time", 15), 255, false, false));
           }
-          subTitle = subTitle.replaceAll("%time%", plugin.getConfig().getString("Powerups.List.One-Shot-One-Kill.Time", "15"));
+          subTitle = subTitle.replace("%time%", plugin.getConfig().getString("Powerups.List.One-Shot-One-Kill.Time", "15"));
           break;
       }
       for (Player p : arena.getPlayers()) {

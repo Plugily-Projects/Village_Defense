@@ -130,7 +130,7 @@ public class Events implements Listener {
       amount += event.getAmount();
       user.addInt("orbs", event.getAmount());
     }
-    event.getPlayer().sendMessage(ChatManager.colorMessage("In-Game.Orbs-Pickup").replaceAll("%number%", String.valueOf(amount)));
+    event.getPlayer().sendMessage(ChatManager.colorMessage("In-Game.Orbs-Pickup").replace("%number%", String.valueOf(amount)));
   }
 
   @EventHandler

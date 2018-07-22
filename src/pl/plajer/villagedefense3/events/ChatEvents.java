@@ -23,6 +23,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -35,7 +36,10 @@ import pl.plajer.villagedefense3.arena.Arena;
 import pl.plajer.villagedefense3.arena.ArenaRegistry;
 import pl.plajer.villagedefense3.handlers.ChatManager;
 import pl.plajer.villagedefense3.handlers.language.LanguageManager;
+import pl.plajer.villagedefense3.user.User;
 import pl.plajer.villagedefense3.user.UserManager;
+
+import io.netty.util.internal.StringUtil;
 
 /**
  * Created by Tom on 13/08/2014.
@@ -101,21 +105,7 @@ public class ChatEvents implements Listener {
           eventMessage = eventMessage.replaceAll(Pattern.quote(regexChar), "");
         }
       }
-      if (!UserManager.getUser(event.getPlayer().getUniqueId()).isFakeDead()) {
-        message = ChatColor.translateAlternateColorCodes('&',
-                LanguageManager.getLanguageMessage("In-Game.Game-Chat-Format")
-                        .replaceAll("%level%", UserManager.getUser(event.getPlayer().getUniqueId()).getInt("level") + "")
-                        .replaceAll("%kit%", UserManager.getUser(event.getPlayer().getUniqueId()).getKit().getName())
-                        .replaceAll("%player%", event.getPlayer().getName())
-                        .replaceAll("%message%", eventMessage));
-      } else {
-        message = ChatColor.translateAlternateColorCodes('&',
-                LanguageManager.getLanguageMessage("In-Game.Game-Chat-Format")
-                        .replaceAll("%level%", UserManager.getUser(event.getPlayer().getUniqueId()).getInt("level") + "")
-                        .replaceAll("%kit%", ChatManager.colorMessage("In-Game.Dead-Tag-On-Death"))
-                        .replaceAll("%player%", event.getPlayer().getName())
-                        .replaceAll("%message%", eventMessage));
-      }
+      message = formatChatPlaceholders(LanguageManager.getLanguageMessage("In-Game.Game-Chat-Format"), UserManager.getUser(event.getPlayer().getUniqueId()), eventMessage);
       for (Player player : arena.getPlayers()) {
         player.sendMessage(message);
       }
@@ -123,8 +113,22 @@ public class ChatEvents implements Listener {
     } else {
       event.getRecipients().clear();
       event.getRecipients().addAll(new ArrayList<>(arena.getPlayers()));
-      event.setMessage(event.getMessage().replaceAll("%kit%", UserManager.getUser(event.getPlayer().getUniqueId()).getKit().getName()));
+      event.setMessage(event.getMessage().replace("%kit%", UserManager.getUser(event.getPlayer().getUniqueId()).getKit().getName()));
     }
+  }
+
+  private String formatChatPlaceholders(String message, User user, String saidMessage){
+    String formatted = message;
+    formatted = ChatManager.colorRawMessage(formatted);
+    formatted = StringUtils.replace(formatted, "%level%", String.valueOf(user.getInt("level")));
+    if(user.isFakeDead()) {
+      formatted = StringUtils.replace(formatted, "%kit%", ChatManager.colorMessage("In-Game.Dead-Tag-On-Death"));
+    } else {
+      formatted = StringUtils.replace(formatted, "%kit%", user.getKit().getName());
+    }
+    formatted = StringUtils.replace(formatted, "%player%", user.toPlayer().getName());
+    formatted = StringUtils.replace(formatted, "%message%", saidMessage);
+    return formatted;
   }
 
 }

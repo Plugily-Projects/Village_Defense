@@ -73,7 +73,7 @@ public class GameCommands extends MainCommand {
       return;
     }
     User user = UserManager.getUser(player.getUniqueId());
-    sender.sendMessage(ChatManager.colorMessage("Commands.Stats-Command.Header-Other").replaceAll("%player%", player.getName()));
+    sender.sendMessage(ChatManager.colorMessage("Commands.Stats-Command.Header-Other").replace("%player%", player.getName()));
     sender.sendMessage(ChatManager.colorMessage("Commands.Stats-Command.Kills") + user.getInt("kills"));
     sender.sendMessage(ChatManager.colorMessage("Commands.Stats-Command.Deaths") + user.getInt("deaths"));
     sender.sendMessage(ChatManager.colorMessage("Commands.Stats-Command.Games-Played") + user.getInt("gamesplayed"));
@@ -97,24 +97,24 @@ public class GameCommands extends MainCommand {
         try {
           UUID current = (UUID) stats.keySet().toArray()[stats.keySet().toArray().length - 1];
           sender.sendMessage(ChatManager.colorMessage("Commands.Statistics.Format")
-                  .replaceAll("%position%", String.valueOf(i + 1))
-                  .replaceAll("%name%", Bukkit.getOfflinePlayer(current).getName())
-                  .replaceAll("%value%", String.valueOf(stats.get(current)))
-                  .replaceAll("%statistic%", StringUtils.capitalize(statisticType.toString().toLowerCase().replaceAll("_", " ")))); //Games_played > Games played etc
+                  .replace("%position%", String.valueOf(i + 1))
+                  .replace("%name%", Bukkit.getOfflinePlayer(current).getName())
+                  .replace("%value%", String.valueOf(stats.get(current)))
+                  .replace("%statistic%", StringUtils.capitalize(statisticType.toString().toLowerCase().replace("_", " ")))); //Games_played > Games played etc
           stats.remove(current);
         } catch (IndexOutOfBoundsException ex) {
           sender.sendMessage(ChatManager.colorMessage("Commands.Statistics.Format")
-                  .replaceAll("%position%", String.valueOf(i + 1))
-                  .replaceAll("%name%", "Empty")
-                  .replaceAll("%value%", "0")
-                  .replaceAll("%statistic%", StringUtils.capitalize(statisticType.toString().toLowerCase().replaceAll("_", " "))));
+                  .replace("%position%", String.valueOf(i + 1))
+                  .replace("%name%", "Empty")
+                  .replace("%value%", "0")
+                  .replace("%statistic%", StringUtils.capitalize(statisticType.toString().toLowerCase().replace("_", " "))));
         } catch (NullPointerException ex) {
           UUID current = (UUID) stats.keySet().toArray()[stats.keySet().toArray().length - 1];
           sender.sendMessage(ChatManager.colorMessage("Commands.Statistics.Format")
-                  .replaceAll("%position%", String.valueOf(i + 1))
-                  .replaceAll("%name%", "Unknown Player")
-                  .replaceAll("%value%", String.valueOf(stats.get(current)))
-                  .replaceAll("%statistic%", StringUtils.capitalize(statisticType.toString().toLowerCase().replaceAll("_", " "))));
+                  .replace("%position%", String.valueOf(i + 1))
+                  .replace("%name%", "Unknown Player")
+                  .replace("%value%", String.valueOf(stats.get(current)))
+                  .replace("%statistic%", StringUtils.capitalize(statisticType.toString().toLowerCase().replace("_", " "))));
         }
       }
     } catch (IllegalArgumentException e) {

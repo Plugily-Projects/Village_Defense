@@ -41,7 +41,7 @@ public abstract class LevelKit extends Kit {
   public ItemStack getItemStack() {
     ItemStack itemStack = new ItemStack(getMaterial());
     setItemNameAndLore(itemStack, getName(), getDescription());
-    Utils.addLore(itemStack, ChatManager.colorMessage("Kits.Kit-Menu.Locked-Lores.Unlock-At-Level").replaceAll("%NUMBER%", Integer.toString(getLevel())));
+    Utils.addLore(itemStack, ChatManager.colorMessage("Kits.Kit-Menu.Locked-Lores.Unlock-At-Level").replace("%NUMBER%", Integer.toString(getLevel())));
     return itemStack;
   }
 }

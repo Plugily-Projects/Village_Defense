@@ -194,7 +194,7 @@ public abstract class Arena extends BukkitRunnable {
         break;
       case STARTING:
         if (plugin.isBossbarEnabled()) {
-          gameBar.setTitle(ChatManager.colorMessage("Bossbar.Starting-In").replaceAll("%time%", String.valueOf(getTimer())));
+          gameBar.setTitle(ChatManager.colorMessage("Bossbar.Starting-In").replace("%time%", String.valueOf(getTimer())));
           gameBar.setProgress(getTimer() / plugin.getConfig().getDouble("Starting-Waiting-Time", 60));
         }
         if (getTimer() == 0) {
@@ -230,13 +230,13 @@ public abstract class Arena extends BukkitRunnable {
       case IN_GAME:
         if (plugin.isBossbarEnabled()) {
           if (barToggle > 5) {
-            gameBar.setTitle(ChatManager.colorMessage("Bossbar.In-Game-Wave").replaceAll("%wave%", String.valueOf(getWave())));
+            gameBar.setTitle(ChatManager.colorMessage("Bossbar.In-Game-Wave").replace("%wave%", String.valueOf(getWave())));
             barToggle++;
             if (barToggle > 10) {
               barToggle = 0;
             }
           } else {
-            gameBar.setTitle(ChatManager.colorMessage("Bossbar.In-Game-Info").replaceAll("%wave%", String.valueOf(getWave())));
+            gameBar.setTitle(ChatManager.colorMessage("Bossbar.In-Game-Info").replace("%wave%", String.valueOf(getWave())));
             barToggle++;
           }
         }
