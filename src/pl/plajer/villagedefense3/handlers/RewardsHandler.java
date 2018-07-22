@@ -23,7 +23,6 @@ import java.util.concurrent.ThreadLocalRandom;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
-import org.bukkit.util.StringUtil;
 
 import pl.plajer.villagedefense3.Main;
 import pl.plajer.villagedefense3.arena.Arena;
@@ -134,7 +133,7 @@ public class RewardsHandler {
     }
   }
 
-  private String formatCommandPlaceholders(String command, Arena arena){
+  private String formatCommandPlaceholders(String command, Arena arena) {
     String formatted = command;
     formatted = StringUtils.replace(formatted, "%ARENA-ID%", arena.getID());
     formatted = StringUtils.replace(formatted, "%MAPNAME%", arena.getMapName());
