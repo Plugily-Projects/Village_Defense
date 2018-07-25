@@ -105,7 +105,7 @@ public class TeleporterKit extends PremiumKit implements Listener {
         for (Player player : e.getPlayer().getWorld().getPlayers()) {
           if (ArenaRegistry.getArena(player) != null && !UserManager.getUser(player.getUniqueId()).isFakeDead()) {
             //todo remove
-            ItemStack skull = new ItemStack(397, 1, (short) 3);
+            ItemStack skull = new ItemStack(Material.SKULL, 1, (short) 3);
             SkullMeta meta = (SkullMeta) skull.getItemMeta();
             meta.setOwner(player.getName());
             meta.setDisplayName(player.getName());

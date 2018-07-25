@@ -166,7 +166,7 @@ public class LanguageMigrator {
                   "        - \"&f&lVillage Defense\"\r\n        - \"\"\r\n        - \"%summary%\"\r\n        - \"\"\r\n        - \"\"\r\n" +
                   "        - \"&e&lReached wave: &7%wave% &8(best %player_best_wave%)\"\r\n        - \"&6&lTotal zombies killed: &7%zombies%\"\r\n" +
                   "        - \"&c&lTotal coins spent: &7%orbs_spent%\"\r\n        - \"&a&m--------------------------------------------------\"\r\n" +
-                  "      Summary-Players-Died: \"&7All players died!\"\r\n      Summary-Villagers-Died: \"&7All villagers died!\"\r\n        - \"\"");
+                  "      Summary-Players-Died: \"&7All players died!\"\r\n      Summary-Villagers-Died: \"&7All villagers died!\"");
           break;
       }
       version++;

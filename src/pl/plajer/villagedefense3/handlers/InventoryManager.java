@@ -68,7 +68,7 @@ public class InventoryManager {
       }
       FileConfiguration invConfig = YamlConfiguration.loadConfiguration(invFile);
 
-      invConfig.set("Exp", player.getExpToLevel());
+      invConfig.set("Exp", player.getExp());
       invConfig.set("Current health", player.getHealth());
       invConfig.set("Max health", player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue());
       invConfig.set("Food", player.getFoodLevel());
@@ -178,6 +178,7 @@ public class InventoryManager {
         }
         player.getInventory().setArmorContents(armor);
         player.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(invConfig.getDouble("Max health"));
+        player.setExp((float) invConfig.get("Exp"));
         player.setHealth(invConfig.getDouble("Current health"));
         player.setFoodLevel(invConfig.getInt("Food"));
         player.setSaturation((float) invConfig.get("Saturation"));
@@ -202,6 +203,5 @@ public class InventoryManager {
     }
 
     player.updateInventory();
-    player.setLevel(Integer.valueOf(inventory.getTitle()));
   }
 }

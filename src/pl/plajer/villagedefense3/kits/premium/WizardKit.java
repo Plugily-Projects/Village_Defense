@@ -154,13 +154,27 @@ public class WizardKit extends PremiumKit implements Listener {
         } else {
           p.getInventory().getItemInMainHand().setAmount(is.getAmount() - 1);
         }
-        p.getWorld().spawnParticle(Particle.CRIT_MAGIC, p.getLocation(), 40, 1, 1, 1);
+        p.setGlowing(true);
+        new BukkitRunnable() {
+          @Override
+          public void run() {
+            Location loc = p.getLocation();
+            loc.add(0, 0.8, 0);
+            p.getWorld().spawnParticle(Particle.VILLAGER_ANGRY, loc, 5, 0, 0, 0, 0);
+            if (!wizardsOnDuty.contains(p) || !ArenaRegistry.isInArena(p)) {
+              this.cancel();
+            }
+          }
+        }.runTaskTimer(plugin, 0, 2);
         for (Entity en : p.getNearbyEntities(2, 2, 2)) {
           if (en instanceof Zombie) {
             ((Zombie) en).damage(9.0, p);
           }
         }
-        Bukkit.getScheduler().runTaskLater(plugin, () -> wizardsOnDuty.remove(p), 20 * 15);
+        Bukkit.getScheduler().runTaskLater(plugin, () -> {
+          p.setGlowing(false);
+          wizardsOnDuty.remove(p);
+        }, 20 * 15);
         UserManager.getUser(e.getPlayer().getUniqueId()).setCooldown("essence", 15);
       } else if (is.getItemMeta().getDisplayName().equals(ChatManager.colorMessage("Kits.Wizard.Staff-Item-Name"))) {
         if (UserManager.getUser(e.getPlayer().getUniqueId()).isSpectator()) {
@@ -193,6 +207,7 @@ public class WizardKit extends PremiumKit implements Listener {
               if (en.getLocation().distance(loc) < 1.5) {
                 if (!en.equals(p)) {
                   ((LivingEntity) en).damage(6.0, p);
+                  en.getWorld().spawnParticle(Particle.FIREWORKS_SPARK, en.getLocation(), 2, 0.5, 0.5, 0.5, 0);
                 }
               }
             }

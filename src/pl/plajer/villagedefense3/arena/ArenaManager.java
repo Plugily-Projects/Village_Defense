@@ -191,6 +191,7 @@ public class ArenaManager {
     if (!user.isSpectator()) {
       ChatManager.broadcastAction(arena, p, ChatManager.ActionType.LEAVE);
     }
+    p.setGlowing(false);
     user.setFakeDead(false);
     user.setSpectator(false);
     user.removeScoreboard();

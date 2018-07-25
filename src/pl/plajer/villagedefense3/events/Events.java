@@ -212,7 +212,7 @@ public class Events implements Listener {
     }
     if (event.getPlayer().getInventory().getItemInMainHand().getType() == Material.SADDLE) {
       if (event.getRightClicked().getType() == EntityType.IRON_GOLEM || event.getRightClicked().getType() == EntityType.VILLAGER || event.getRightClicked().getType() == EntityType.WOLF) {
-        event.getRightClicked().addPassenger(event.getPlayer());
+        event.getRightClicked().setPassenger(event.getPlayer());
         event.setCancelled(true);
         return;
       }
@@ -223,14 +223,14 @@ public class Events implements Listener {
     } else if (event.getRightClicked().getType() == EntityType.IRON_GOLEM) {
       IronGolem ironGolem = (IronGolem) event.getRightClicked();
       if (ironGolem.getCustomName() != null && ironGolem.getCustomName().contains(event.getPlayer().getName())) {
-        event.getRightClicked().addPassenger(event.getPlayer());
+        event.getRightClicked().setPassenger(event.getPlayer());
       } else {
         event.getPlayer().sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Messages.Cant-Ride-Others-Golem"));
       }
     } else if (event.getRightClicked().getType() == EntityType.WOLF) {
       Wolf wolf = (Wolf) event.getRightClicked();
       if (wolf.getCustomName() != null && wolf.getCustomName().contains(event.getPlayer().getName())) {
-        event.getRightClicked().addPassenger(event.getPlayer());
+        event.getRightClicked().setPassenger(event.getPlayer());
       }
     }
   }

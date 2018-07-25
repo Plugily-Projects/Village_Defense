@@ -78,7 +78,7 @@ public class SignManager implements Listener {
   @EventHandler
   public void onSignChange(SignChangeEvent e) {
     if (!e.getPlayer().hasPermission("villagedefense.admin.sign.create")
-            && !e.getLine(0).equalsIgnoreCase("[villagedefense]")) {
+            || !e.getLine(0).equalsIgnoreCase("[villagedefense]")) {
       return;
     }
     if (e.getLine(1).isEmpty()) {

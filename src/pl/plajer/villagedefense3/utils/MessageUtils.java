@@ -71,7 +71,7 @@ public class MessageUtils {
   }
 
   public static void sendTitle(Player player, String text, int fadeInTime, int showTime, int fadeOutTime) {
-    if (plugin.is1_9_R1()) {
+    if (plugin.is1_9_R1() || plugin.is1_10_R1()) {
       player.sendTitle(text, null);
     } else {
       player.sendTitle(text, null, fadeInTime, showTime, fadeOutTime);
@@ -79,7 +79,7 @@ public class MessageUtils {
   }
 
   public static void sendSubTitle(Player player, String text, int fadeInTime, int showTime, int fadeOutTime) {
-    if (plugin.is1_9_R1()) {
+    if (plugin.is1_9_R1() || plugin.is1_10_R1()) {
       player.sendTitle(null, text);
     } else {
       player.sendTitle(null, text, fadeInTime, showTime, fadeOutTime);
