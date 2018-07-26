@@ -27,10 +27,6 @@ import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
-
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -175,23 +171,50 @@ public class PowerupManager {
     }, /* remove after 40 seconds to prevent staying even if arena is finished */ 20 * 40);
   }
 
-  @Getter
-  @AllArgsConstructor
   public enum PowerupType {
     CLEANER("Cleaner", Material.BLAZE_POWDER, "Powerups.Map-Clean-Powerup", true), DOUBLE_DAMAGE("Doubledamage", Material.REDSTONE, "Powerups.Double-Damage-Powerup", true),
     HEALING("Healing", Material.GOLDEN_APPLE, "Powerups.Healing-Powerup", true), GOLEM_RAID("raid", Material.IRON_INGOT, "Powerups.Golem-Raid-Powerup", true),
     ONE_SHOT_ONE_KILL("oson", Material.DIAMOND_SWORD, "Powerups.One-Shot-One-Kill-Powerup", true);
 
-    @Setter
     String name;
     Material material;
     String accessPath;
-    @Setter
     boolean enabled;
+
+    PowerupType(String name, Material material, String accessPath, boolean enabled) {
+      this.name = name;
+      this.material = material;
+      this.accessPath = accessPath;
+      this.enabled = enabled;
+    }
 
     private static PowerupType random() {
       Random r = new Random();
       return values()[r.nextInt(values().length)];
+    }
+
+    public String getName() {
+      return name;
+    }
+
+    public void setName(String name) {
+      this.name = name;
+    }
+
+    public Material getMaterial() {
+      return material;
+    }
+
+    public String getAccessPath() {
+      return accessPath;
+    }
+
+    public boolean isEnabled() {
+      return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+      this.enabled = enabled;
     }
   }
 }

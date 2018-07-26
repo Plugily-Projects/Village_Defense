@@ -23,8 +23,6 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
-import lombok.Getter;
-
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -41,14 +39,11 @@ import org.bukkit.scoreboard.Team;
  */
 public class ArenaBoard {
 
-  @Getter
   private final String name, criterion;
 
   private final Scoreboard bukkitScoreboard;
   private final Objective obj;
-  @Getter
   String title;
-  @Getter
   private Row[] rows = new Row[0];
   private List<Row> rowCache = new ArrayList<>();
   private boolean finished = false;
@@ -67,6 +62,22 @@ public class ArenaBoard {
 
   public void display(Player player) {
     player.setScoreboard(this.bukkitScoreboard);
+  }
+
+  public String getName() {
+    return name;
+  }
+
+  public String getCriterion() {
+    return criterion;
+  }
+
+  public String getTitle() {
+    return title;
+  }
+
+  public Row[] getRows() {
+    return rows;
   }
 
   public @Nullable
@@ -112,12 +123,9 @@ public class ArenaBoard {
 
   public static class Row {
 
-    @Getter
     private final ArenaBoard scoreboard;
-    @Getter
     private final int rowInScoreboard;
     private Team team;
-    @Getter
     private String message;
 
     public Row(ArenaBoard sb, String message, int row) {
@@ -176,6 +184,18 @@ public class ArenaBoard {
       }
 
       return null;
+    }
+
+    public ArenaBoard getScoreboard() {
+      return scoreboard;
+    }
+
+    public int getRowInScoreboard() {
+      return rowInScoreboard;
+    }
+
+    public String getMessage() {
+      return message;
     }
 
     public void setMessage(String message) {

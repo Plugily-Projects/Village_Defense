@@ -21,8 +21,6 @@ package pl.plajer.villagedefense3.arena;
 import java.util.ArrayList;
 import java.util.List;
 
-import lombok.Getter;
-
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -44,7 +42,6 @@ import pl.plajer.villagedefense3.utils.Utils;
 public class ArenaRegistry {
 
   private static Main plugin = JavaPlugin.getPlugin(Main.class);
-  @Getter
   private static List<Arena> arenas = new ArrayList<>();
 
   /**
@@ -204,4 +201,7 @@ public class ArenaRegistry {
     Main.debug("Arenas registration completed", System.currentTimeMillis());
   }
 
+  public static List<Arena> getArenas() {
+    return arenas;
+  }
 }

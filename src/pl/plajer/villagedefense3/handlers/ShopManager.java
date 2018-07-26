@@ -21,8 +21,6 @@ package pl.plajer.villagedefense3.handlers;
 import java.util.HashMap;
 import java.util.Map;
 
-import lombok.Getter;
-
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -41,7 +39,6 @@ import pl.plajer.villagedefense3.utils.Utils;
  */
 public class ShopManager {
 
-  @Getter
   private static Map<Arena, Inventory> arenaShop = new HashMap<>();
 
   public ShopManager() {
@@ -50,6 +47,10 @@ public class ShopManager {
         registerShop(a);
       }
     }
+  }
+
+  public static Map<Arena, Inventory> getArenaShop() {
+    return arenaShop;
   }
 
   public static void registerShop(Arena a) {

@@ -18,6 +18,8 @@
 
 package pl.plajer.villagedefense3.database;
 
+import com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException;
+
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -59,6 +61,15 @@ public class MySQLDatabase {
               + "  `xp` int(11) NOT NULL DEFAULT '0',\n"
               + "  `orbs` int(11) NOT NULL DEFAULT '0'\n"
               + ");");
+
+      //temporary workaround
+      try {
+        connection.createStatement().executeUpdate("ALTER TABLE playerstats ADD name text NOT NULL DEFAULT 'Unknown Player'");
+      } catch (MySQLSyntaxErrorException e) {
+        if (!e.getMessage().contains("Duplicate column name")) {
+          e.printStackTrace();
+        }
+      }
       manager.closeConnection(connection);
     } catch (SQLException e) {
       e.printStackTrace();

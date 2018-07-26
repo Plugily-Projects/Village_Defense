@@ -23,8 +23,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import lombok.Getter;
-
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -53,7 +51,6 @@ import pl.plajer.villagedefense3.utils.Utils;
 public class SignManager implements Listener {
 
   private Main plugin;
-  @Getter
   private Map<Sign, Arena> loadedSigns = new HashMap<>();
   private Map<ArenaState, String> gameStateToString = new HashMap<>();
   private List<String> signLines;
@@ -230,5 +227,9 @@ public class SignManager implements Listener {
         s.update();
       }
     }, 10, 10);
+  }
+
+  public Map<Sign, Arena> getLoadedSigns() {
+    return loadedSigns;
   }
 }
