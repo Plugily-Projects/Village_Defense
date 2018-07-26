@@ -26,12 +26,35 @@ import lombok.Data;
  * <p>
  * Created at 03.05.2018
  */
-@Data
-@AllArgsConstructor
 public class CommandData {
 
   private String text;
   private String command;
   private String description;
 
+  public CommandData(String text, String command, String description) {
+    this.text = text;
+    this.command = command;
+    this.description = description;
+  }
+
+  public String getText() {
+    return text;
+  }
+
+  public String getCommand() {
+    return command;
+  }
+
+  public void setCommand(String command) {
+    this.command = command;
+  }
+
+  public String getDescription() {
+    return description;
+  }
+
+  public void setDescription(String description) {
+    this.description = description;
+  }
 }

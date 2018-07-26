@@ -81,6 +81,7 @@ public class QuitEvent implements Listener {
           } else {
             plugin.getMySQLDatabase().setStat(player.getUniqueId().toString(), s, user.getInt(s));
           }
+          plugin.getMySQLDatabase().executeUpdate("UPDATE playerstats SET name='" + player.getName() + "' WHERE UUID='" + player.getUniqueId().toString() + "';");
         }
       });
     } else {

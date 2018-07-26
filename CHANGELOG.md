@@ -1,6 +1,10 @@
 # Village Defense 3 Changelog
 
-### 3.9.0 Pre release (16/17.07.2018)
+### 3.9.1 Release (26.07.2018)
+* Fixed Unknown Player bug in /vd top while using database (now user names are stored in database)
+(will take a while until all Unknown Player records will be changed to Player names cause they are overridden every quit event)
+
+### 3.9.0 Release (16/17.07.2018)
 * Added support for 1.13-pre7
 * Removed deprecated commands (/vda setshopchest and /vda addsign) - they were deprecated and not working
 * Updated locales messages

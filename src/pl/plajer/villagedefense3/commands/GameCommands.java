@@ -18,6 +18,8 @@
 
 package pl.plajer.villagedefense3.commands;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.LinkedHashMap;
 import java.util.UUID;
 
@@ -110,6 +112,19 @@ public class GameCommands extends MainCommand {
                   .replace("%statistic%", StringUtils.capitalize(statisticType.toString().toLowerCase().replace("_", " "))));
         } catch (NullPointerException ex) {
           UUID current = (UUID) stats.keySet().toArray()[stats.keySet().toArray().length - 1];
+          if (plugin.isDatabaseActivated()) {
+            ResultSet set = plugin.getMySQLDatabase().executeQuery("SELECT name FROM playerstats WHERE UUID='" + current.toString() + "'");
+            try {
+              if (set.next()) {
+                sender.sendMessage(ChatManager.colorMessage("Commands.Statistics.Format")
+                        .replace("%position%", String.valueOf(i + 1))
+                        .replace("%name%", set.getString(1))
+                        .replace("%value%", String.valueOf(stats.get(current)))
+                        .replace("%statistic%", StringUtils.capitalize(statisticType.toString().toLowerCase().replace("_", " "))));
+                return;
+              }
+            } catch (SQLException ignored) {}
+          }
           sender.sendMessage(ChatManager.colorMessage("Commands.Statistics.Format")
                   .replace("%position%", String.valueOf(i + 1))
                   .replace("%name%", "Unknown Player")

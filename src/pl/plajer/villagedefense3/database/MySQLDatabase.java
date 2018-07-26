@@ -53,6 +53,7 @@ public class MySQLDatabase {
       }
       connection.createStatement().executeUpdate("CREATE TABLE IF NOT EXISTS `playerstats` (\n"
               + "  `UUID` text NOT NULL,\n"
+              + "  `name` text NOT NULL DEFAULT 'Unknown Player',\n"
               + "  `kills` int(11) NOT NULL DEFAULT '0',\n"
               + "  `deaths` int(11) NOT NULL DEFAULT '0',\n"
               + "  `highestwave` int(11) NOT NULL DEFAULT '0',\n"
