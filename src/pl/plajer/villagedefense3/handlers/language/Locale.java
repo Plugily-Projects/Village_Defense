@@ -25,6 +25,7 @@ package pl.plajer.villagedefense3.handlers.language;
  */
 public enum Locale {
 
+  CHINESE_SIMPLIFIED("简体中文", "zh_Hans", "POEditor contributors"),
   ENGLISH("English", "en_GB", "Plajer"),
   FRENCH("Francais", "fr_FR", "POEditor contributors"),
   GERMAN("Deutsch", "de_DE", "Tigerkatze"),

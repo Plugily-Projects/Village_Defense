@@ -249,8 +249,8 @@ public class Events implements Listener {
         return;
       }
     }
-    if (event.getMessage().startsWith("vd") || event.getMessage().contains("leave")
-            || event.getMessage().contains("stats") || event.getMessage().contains("vda")) {
+    if (event.getMessage().startsWith("/vd") || event.getMessage().contains("leave")
+            || event.getMessage().contains("stats") || event.getMessage().startsWith("/vda")) {
       return;
 
     }

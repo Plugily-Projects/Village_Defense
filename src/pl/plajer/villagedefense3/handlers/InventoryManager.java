@@ -36,6 +36,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import org.bukkit.scoreboard.Scoreboard;
 
 import pl.plajer.villagedefense3.Main;
 import pl.plajer.villagedefense3.utils.MessageUtils;
@@ -76,6 +77,7 @@ public class InventoryManager {
       invConfig.set("Fire ticks", player.getFireTicks());
       invConfig.set("GameMode", player.getGameMode().toString());
       invConfig.set("Allow flight", player.getAllowFlight());
+      invConfig.set("Scoreboard", player.getScoreboard());
 
       invConfig.set("Size", inventory.getSize());
       invConfig.set("Max stack size", inventory.getMaxStackSize());
@@ -186,6 +188,7 @@ public class InventoryManager {
         player.setGameMode(GameMode.valueOf(invConfig.getString("GameMode")));
         player.setAllowFlight(invConfig.getBoolean("Allow flight"));
         List<String> activePotions = invConfig.getStringList("Active potion effects");
+        player.setScoreboard((Scoreboard) invConfig.get("Scoreboard"));
         for (String potion : activePotions) {
           String[] splited = potion.split("#");
           player.addPotionEffect(new PotionEffect(PotionEffectType.getByName(splited[0]), Integer.valueOf(splited[1]), Integer.valueOf(splited[2])));

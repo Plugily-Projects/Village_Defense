@@ -3,12 +3,17 @@
 ### 3.9.1 Release (26.07.2018)
 * Fixed Unknown Player bug in /vd top while using database (now user names are stored in database)
 (will take a while until all Unknown Player records will be changed to Player names cause they are overridden every quit event)
+* Fixed Vietnamese locale
+* Fixed 1.13 not working
+* Fixed /vd command wasn't working in game
+* Added scoreboard saving in inventory manager
+* Added Chinese (Simplified) locale support
 
 ### 3.9.0 Release (16/17.07.2018)
 * Added support for 1.13-pre7
 * Removed deprecated commands (/vda setshopchest and /vda addsign) - they were deprecated and not working
 * Updated locales messages
-* Added /vd randomjoin command for multi arena server (add to wiki too!!!!!!!!!!312312412412354xds44dcwdrcet fd)
+* Added /vd randomjoin command for multi arena server
 * Added info when setting empty shop chest
 * Added 1.10 support
 * Optimized code a bit

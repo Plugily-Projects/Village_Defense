@@ -201,7 +201,8 @@ public class Main extends JavaPlugin {
     new ConfigurationManager(this);
     LanguageManager.init(this);
     saveDefaultConfig();
-    if (!(version.equalsIgnoreCase("v1_9_R1") || version.equalsIgnoreCase("v1_10_R1") || version.equalsIgnoreCase("v1_11_R1") || version.equalsIgnoreCase("v1_12_R1"))) {
+    if (!(version.equalsIgnoreCase("v1_9_R1") || version.equalsIgnoreCase("v1_10_R1") || version.equalsIgnoreCase("v1_11_R1")
+            || version.equalsIgnoreCase("v1_12_R1") || version.equalsIgnoreCase("v_1_13_R1"))) {
       MessageUtils.thisVersionIsNotSupported();
       Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "Your server version is not supported by Village Defense!");
       Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "Sadly, we must shut off. Maybe you consider changing your server version?");
@@ -358,6 +359,11 @@ public class Main extends JavaPlugin {
         case "hu":
         case "magyar":
           return "Hungarian";
+        case "简体中文":
+        case "中文":
+        case "chinese":
+        case "zh":
+          return "Chinese (Simplified)";
         default:
           return "English";
       }

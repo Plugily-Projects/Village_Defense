@@ -70,6 +70,12 @@ public class LanguageManager {
   private static void setupLocale() {
     String locale = plugin.getConfig().getString("locale", "default");
     switch (locale.toLowerCase()) {
+      case "简体中文":
+      case "中文":
+      case "chinese":
+      case "zh":
+        pluginLocale = Locale.CHINESE_SIMPLIFIED;
+        break;
       case "default":
       case "english":
       case "en":
@@ -133,8 +139,9 @@ public class LanguageManager {
           case "de-DE":
           case "es-ES":
           case "fr-FR":
-            //case "vn-VN":
+          case "vn-VN":
           case "hu-HU":
+          case "zh-CN":
             hasLocale = true;
             localeName = locale.getLocaleName();
         }
@@ -148,8 +155,9 @@ public class LanguageManager {
           case "ES":
           case "FR":
           case "ID":
-            //case "VN":
+          case "VN":
           case "HU":
+          case "ZH":
             hasLocale = true;
             localeName = locale.getDisplayName();
         }
