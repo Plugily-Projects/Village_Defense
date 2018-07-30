@@ -8,6 +8,7 @@
 * Fixed /vd command wasn't working in game
 * Added scoreboard saving in inventory manager
 * Added Chinese (Simplified) locale support
+* Fixed /vd randomjoin wasn't working
 
 ### 3.9.0 Release (16/17.07.2018)
 * Added support for 1.13-pre7

@@ -175,7 +175,7 @@ public class GameCommands extends MainCommand {
     if (checkSenderIsConsole(sender)) {
       return;
     }
-    if (!plugin.isBungeeActivated()) {
+    if (plugin.isBungeeActivated()) {
       return;
     }
     for (Arena arena : ArenaRegistry.getArenas()) {
