@@ -27,10 +27,10 @@ public enum Locale {
 
   CHINESE_SIMPLIFIED("简体中文", "zh_Hans", "POEditor contributors"),
   ENGLISH("English", "en_GB", "Plajer"),
-  FRENCH("Francais", "fr_FR", "POEditor contributors"),
+  FRENCH("Français", "fr_FR", "POEditor contributors"),
   GERMAN("Deutsch", "de_DE", "Tigerkatze"),
   HUNGARIAN("Magyar", "hu_HU", "POEditor contributors"),
-  INDONESIA("Francais", "id_ID", "POEditor contributors (Yume)"),
+  INDONESIA("Indonesia", "id_ID", "POEditor contributors (Yume)"),
   SPANISH("Español", "es_ES", "POEditor contributors"),
   POLISH("Polski", "pl_PL", "Plajer"),
   VIETNAMESE("Việt", "vn_VN", "POEditor contributors (HStreamGamer)");
