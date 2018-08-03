@@ -1,5 +1,9 @@
 # Village Defense 3 Changelog
 
+### 3.9.2 Release (03.08.2018)
+* Fixed InventoryManager errors due to scoreboard saving in it
+* Updated French and Hungarian locales
+
 ### 3.9.1 Release (26.07.2018)
 * Fixed Unknown Player bug in /vd top while using database (now user names are stored in database)
 (will take a while until all Unknown Player records will be changed to Player names cause they are overridden every quit event)
