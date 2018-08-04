@@ -282,6 +282,7 @@ public class Utils {
     return potion;
   }
 
+  @Deprecated
   public static void sendSound(Player p, String oldSound, String newSound) {
     if (plugin.is1_9_R1() || plugin.is1_10_R1() || plugin.is1_11_R1() || plugin.is1_12_R1() || plugin.is1_13_R1()) {
       p.playSound(p.getLocation(), Sound.valueOf(oldSound), 1, 1);
