@@ -28,13 +28,13 @@ import org.bukkit.potion.PotionType;
 
 import pl.plajer.villagedefense3.Main;
 import pl.plajer.villagedefense3.handlers.ChatManager;
-import pl.plajer.villagedefense3.handlers.ConfigurationManager;
 import pl.plajer.villagedefense3.kits.kitapi.KitRegistry;
 import pl.plajer.villagedefense3.kits.kitapi.basekits.LevelKit;
 import pl.plajer.villagedefense3.user.UserManager;
 import pl.plajer.villagedefense3.utils.ArmorHelper;
 import pl.plajer.villagedefense3.utils.Utils;
 import pl.plajer.villagedefense3.utils.WeaponHelper;
+import pl.plajerlair.core.utils.ConfigUtils;
 
 /**
  * Created by Tom on 18/08/2014.
@@ -45,7 +45,7 @@ public class HealerKit extends LevelKit {
     setName(ChatManager.colorMessage("Kits.Healer.Kit-Name"));
     List<String> description = Utils.splitString(ChatManager.colorMessage("Kits.Healer.Kit-Description"), 40);
     this.setDescription(description.toArray(new String[0]));
-    setLevel(ConfigurationManager.getConfig("kits").getInt("Required-Level.Healer"));
+    setLevel(ConfigUtils.getConfig(plugin, "kits").getInt("Required-Level.Healer"));
     KitRegistry.registerKit(this);
   }
 
@@ -59,8 +59,8 @@ public class HealerKit extends LevelKit {
     player.getInventory().addItem(WeaponHelper.getUnBreakingSword(WeaponHelper.ResourceType.WOOD, 10));
     ArmorHelper.setColouredArmor(Color.WHITE, player);
     player.getInventory().addItem(new ItemStack(Material.GRILLED_PORK, 8));
-    player.getInventory().addItem(Utils.getPotion(PotionType.INSTANT_HEAL, 2, true, 1));
-    player.getInventory().addItem(Utils.getPotion(PotionType.REGEN, 1, true, 1));
+    player.getInventory().addItem(Utils.getPotion(PotionType.INSTANT_HEAL, 2, true));
+    player.getInventory().addItem(Utils.getPotion(PotionType.REGEN, 1, true));
 
   }
 
@@ -72,10 +72,10 @@ public class HealerKit extends LevelKit {
   @Override
   public void reStock(Player player) {
     for (int i = 0; i < 2; i++) {
-      player.getInventory().addItem(Utils.getPotion(PotionType.INSTANT_HEAL, 2, true, 1));
+      player.getInventory().addItem(Utils.getPotion(PotionType.INSTANT_HEAL, 2, true));
     }
     for (int i = 0; i < 2; i++) {
-      player.getInventory().addItem(Utils.getPotion(PotionType.REGEN, 1, true, 1));
+      player.getInventory().addItem(Utils.getPotion(PotionType.REGEN, 1, true));
     }
   }
 }

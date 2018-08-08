@@ -28,11 +28,11 @@ import org.bukkit.entity.Player;
 
 import pl.plajer.villagedefense3.Main;
 import pl.plajer.villagedefense3.arena.ArenaRegistry;
-import pl.plajer.villagedefense3.handlers.ConfigurationManager;
 import pl.plajer.villagedefense3.user.User;
 import pl.plajer.villagedefense3.user.UserManager;
 import pl.plajer.villagedefense3.utils.MessageUtils;
 import pl.plajer.villagedefense3.villagedefenseapi.StatsStorage;
+import pl.plajerlair.core.utils.ConfigUtils;
 
 /**
  * Created by Tom on 17/06/2015.
@@ -56,14 +56,14 @@ public class FileStats {
 
   public FileStats(Main plugin) {
     this.plugin = plugin;
-    config = ConfigurationManager.getConfig("stats");
+    config = ConfigUtils.getConfig(plugin, "stats");
   }
 
   public void saveStat(Player player, String stat) {
     User user = UserManager.getUser(player.getUniqueId());
     config.set(player.getUniqueId().toString() + "." + stat, user.getInt(stat));
     try {
-      config.save(ConfigurationManager.getFile("stats"));
+      config.save(ConfigUtils.getFile(plugin, "stats"));
     } catch (IOException e) {
       e.printStackTrace();
       MessageUtils.errorOccured();

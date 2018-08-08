@@ -27,6 +27,7 @@ import org.bukkit.entity.Player;
 import pl.plajer.villagedefense3.Main;
 import pl.plajer.villagedefense3.arena.Arena;
 import pl.plajer.villagedefense3.arena.ArenaRegistry;
+import pl.plajerlair.core.utils.ConfigUtils;
 
 /**
  * Created by Tom on 30/01/2016.
@@ -40,7 +41,7 @@ public class RewardsHandler {
   public RewardsHandler(Main plugin) {
     this.plugin = plugin;
     enabled = plugin.getConfig().getBoolean("Rewards-Enabled");
-    config = ConfigurationManager.getConfig("rewards");
+    config = ConfigUtils.getConfig(plugin, "rewards");
   }
 
   public void performEndGameRewards(Arena arena) {

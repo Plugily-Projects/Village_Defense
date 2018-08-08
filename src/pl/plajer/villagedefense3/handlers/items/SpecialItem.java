@@ -28,9 +28,11 @@ import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.plugin.java.JavaPlugin;
 
-import pl.plajer.villagedefense3.handlers.ConfigurationManager;
+import pl.plajer.villagedefense3.Main;
 import pl.plajer.villagedefense3.utils.MessageUtils;
+import pl.plajerlair.core.utils.ConfigUtils;
 
 /**
  * Created by Tom on 5/02/2016.
@@ -57,7 +59,7 @@ public class SpecialItem {
 
   //todo data id!
   public void load(String displayName, String[] lore, Material material, int slot) {
-    FileConfiguration config = ConfigurationManager.getConfig("lobbyitems");
+    FileConfiguration config = ConfigUtils.getConfig(JavaPlugin.getPlugin(Main.class), "lobbyitems");
 
     if (!config.contains(name)) {
       config.set(name + ".data", 0);
@@ -67,7 +69,7 @@ public class SpecialItem {
       config.set(name + ".slot", slot);
     }
     try {
-      config.save(ConfigurationManager.getFile("lobbyitems"));
+      config.save(ConfigUtils.getFile(JavaPlugin.getPlugin(Main.class), "lobbyitems"));
     } catch (IOException e) {
       e.printStackTrace();
       MessageUtils.errorOccured();

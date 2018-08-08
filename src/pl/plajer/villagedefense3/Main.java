@@ -60,7 +60,6 @@ import pl.plajer.villagedefense3.handlers.BungeeManager;
 import pl.plajer.villagedefense3.handlers.ChatManager;
 import pl.plajer.villagedefense3.handlers.ChunkManager;
 import pl.plajer.villagedefense3.handlers.ConfigurationManager;
-import pl.plajer.villagedefense3.handlers.InventoryManager;
 import pl.plajer.villagedefense3.handlers.PermissionsManager;
 import pl.plajer.villagedefense3.handlers.PlaceholderManager;
 import pl.plajer.villagedefense3.handlers.PowerupManager;
@@ -77,9 +76,10 @@ import pl.plajer.villagedefense3.user.User;
 import pl.plajer.villagedefense3.user.UserManager;
 import pl.plajer.villagedefense3.utils.MessageUtils;
 import pl.plajer.villagedefense3.utils.Metrics;
-import pl.plajer.villagedefense3.utils.UpdateChecker;
-import pl.plajer.villagedefense3.utils.Utils;
 import pl.plajer.villagedefense3.villagedefenseapi.StatsStorage;
+import pl.plajerlair.core.utils.ConfigUtils;
+import pl.plajerlair.core.utils.InventoryUtils;
+import pl.plajerlair.core.utils.UpdateChecker;
 
 
 /**
@@ -94,7 +94,6 @@ public class Main extends JavaPlugin {
   private MySQLDatabase database;
   private FileStats fileStats;
   private SignManager signManager;
-  private InventoryManager inventoryManager;
   private BungeeManager bungeeManager;
   private KitManager kitManager;
   private ChunkManager chunkManager;
@@ -163,10 +162,6 @@ public class Main extends JavaPlugin {
     return signManager;
   }
 
-  public InventoryManager getInventoryManager() {
-    return inventoryManager;
-  }
-
   public ChunkManager getChunkManager() {
     return chunkManager;
   }
@@ -221,9 +216,9 @@ public class Main extends JavaPlugin {
       return;
     }
     //check if using releases before 2.1.0 or 2.1.0+
-    if ((ConfigurationManager.getConfig("language").isSet("STATS-AboveLine")
-            && ConfigurationManager.getConfig("language").isSet("SCOREBOARD-Zombies"))
-            || (ConfigurationManager.getConfig("language").isSet("File-Version")
+    if ((ConfigUtils.getConfig(this, "language").isSet("STATS-AboveLine")
+            && ConfigUtils.getConfig(this, "language").isSet("SCOREBOARD-Zombies"))
+            || (ConfigUtils.getConfig(this, "language").isSet("File-Version")
             && getConfig().isSet("Config-Version"))) {
       LanguageMigrator.migrateToNewFormat();
     }
@@ -237,7 +232,7 @@ public class Main extends JavaPlugin {
     String currentVersion = "v" + Bukkit.getPluginManager().getPlugin("VillageDefense").getDescription().getVersion();
     if (getConfig().getBoolean("Update-Notifier.Enabled", true)) {
       try {
-        UpdateChecker.checkUpdate(currentVersion);
+        UpdateChecker.checkUpdate(this, currentVersion, 41869);
         String latestVersion = UpdateChecker.getLatestVersion();
         if (latestVersion != null) {
           latestVersion = "v" + latestVersion;
@@ -310,12 +305,10 @@ public class Main extends JavaPlugin {
       bungeeManager = new BungeeManager(this);
     }
     new ChatManager(ChatManager.colorMessage("In-Game.Plugin-Prefix"));
-    new Utils(this);
     mainCommand = new MainCommand(this, true);
     new GolemEvents(this);
     new EntityRegistry(this);
     new ArenaEvents(this);
-    inventoryManager = new InventoryManager(this);
     kitManager = new KitManager(this);
     new SpectatorEvents(this);
     new QuitEvent(this);
@@ -470,7 +463,7 @@ public class Main extends JavaPlugin {
         }
         arena.teleportToEndLocation(player);
         if (inventoryManagerEnabled) {
-          inventoryManager.loadInventory(player);
+          InventoryUtils.loadInventory(this, player);
         } else {
           player.getInventory().clear();
           player.getInventory().setArmorContents(null);

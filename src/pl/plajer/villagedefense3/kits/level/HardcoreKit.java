@@ -29,13 +29,13 @@ import org.bukkit.potion.PotionType;
 
 import pl.plajer.villagedefense3.Main;
 import pl.plajer.villagedefense3.handlers.ChatManager;
-import pl.plajer.villagedefense3.handlers.ConfigurationManager;
 import pl.plajer.villagedefense3.kits.kitapi.KitRegistry;
 import pl.plajer.villagedefense3.kits.kitapi.basekits.LevelKit;
 import pl.plajer.villagedefense3.user.UserManager;
 import pl.plajer.villagedefense3.utils.ArmorHelper;
 import pl.plajer.villagedefense3.utils.Utils;
 import pl.plajer.villagedefense3.utils.WeaponHelper;
+import pl.plajerlair.core.utils.ConfigUtils;
 
 /**
  * Created by Tom on 28/07/2015.
@@ -46,7 +46,7 @@ public class HardcoreKit extends LevelKit {
     setName(ChatManager.colorMessage("Kits.Hardcore.Kit-Name"));
     List<String> description = Utils.splitString(ChatManager.colorMessage("Kits.Hardcore.Kit-Description"), 40);
     this.setDescription(description.toArray(new String[0]));
-    setLevel(ConfigurationManager.getConfig("kits").getInt("Required-Level.Hardcore"));
+    setLevel(ConfigUtils.getConfig(plugin, "kits").getInt("Required-Level.Hardcore"));
     KitRegistry.registerKit(this);
   }
 
@@ -59,7 +59,7 @@ public class HardcoreKit extends LevelKit {
   public void giveKitItems(Player player) {
     player.getInventory().addItem(WeaponHelper.getUnBreakingSword(WeaponHelper.ResourceType.WOOD, 10));
     ArmorHelper.setColouredArmor(Color.WHITE, player);
-    player.getInventory().addItem(Utils.getPotion(PotionType.INSTANT_HEAL, 2, true, 1));
+    player.getInventory().addItem(Utils.getPotion(PotionType.INSTANT_HEAL, 2, true));
     player.getInventory().addItem(new ItemStack(Material.COOKIE, 10));
     player.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(10.0);
 
@@ -72,6 +72,6 @@ public class HardcoreKit extends LevelKit {
 
   @Override
   public void reStock(Player player) {
-    player.getInventory().addItem(Utils.getPotion(PotionType.INSTANT_HEAL, 2, true, 1));
+    player.getInventory().addItem(Utils.getPotion(PotionType.INSTANT_HEAL, 2, true));
   }
 }

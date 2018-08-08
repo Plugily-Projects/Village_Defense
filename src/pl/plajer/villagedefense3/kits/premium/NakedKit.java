@@ -99,7 +99,7 @@ public class NakedKit extends PremiumKit implements Listener {
 
   @Override
   public void reStock(Player player) {
-    player.getInventory().addItem(Utils.getPotion(PotionType.INSTANT_HEAL, 1, true, 1));
+    player.getInventory().addItem(Utils.getPotion(PotionType.INSTANT_HEAL, 1, true));
   }
 
   @EventHandler

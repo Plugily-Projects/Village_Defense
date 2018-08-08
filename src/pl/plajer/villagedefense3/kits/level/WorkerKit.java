@@ -34,7 +34,6 @@ import pl.plajer.villagedefense3.Main;
 import pl.plajer.villagedefense3.arena.Arena;
 import pl.plajer.villagedefense3.arena.ArenaRegistry;
 import pl.plajer.villagedefense3.handlers.ChatManager;
-import pl.plajer.villagedefense3.handlers.ConfigurationManager;
 import pl.plajer.villagedefense3.kits.kitapi.KitRegistry;
 import pl.plajer.villagedefense3.kits.kitapi.basekits.LevelKit;
 import pl.plajer.villagedefense3.user.User;
@@ -42,6 +41,7 @@ import pl.plajer.villagedefense3.user.UserManager;
 import pl.plajer.villagedefense3.utils.ArmorHelper;
 import pl.plajer.villagedefense3.utils.Utils;
 import pl.plajer.villagedefense3.utils.WeaponHelper;
+import pl.plajerlair.core.utils.ConfigUtils;
 
 /**
  * Created by Tom on 19/07/2015.
@@ -49,7 +49,7 @@ import pl.plajer.villagedefense3.utils.WeaponHelper;
 public class WorkerKit extends LevelKit implements Listener {
 
   public WorkerKit(Main plugin) {
-    this.setLevel(ConfigurationManager.getConfig("kits").getInt("Required-Level.Worker"));
+    this.setLevel(ConfigUtils.getConfig(plugin, "kits").getInt("Required-Level.Worker"));
     this.setName(ChatManager.colorMessage("Kits.Worker.Kit-Name"));
     List<String> description = Utils.splitString(ChatManager.colorMessage("Kits.Worker.Kit-Description"), 40);
     this.setDescription(description.toArray(new String[0]));

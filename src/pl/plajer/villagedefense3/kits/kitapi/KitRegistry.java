@@ -29,7 +29,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import pl.plajer.villagedefense3.Main;
 import pl.plajer.villagedefense3.handlers.ChatManager;
-import pl.plajer.villagedefense3.handlers.ConfigurationManager;
 import pl.plajer.villagedefense3.kits.free.KnightKit;
 import pl.plajer.villagedefense3.kits.free.LightTankKit;
 import pl.plajer.villagedefense3.kits.kitapi.basekits.FreeKit;
@@ -56,6 +55,7 @@ import pl.plajer.villagedefense3.kits.premium.ShotBowKit;
 import pl.plajer.villagedefense3.kits.premium.TeleporterKit;
 import pl.plajer.villagedefense3.kits.premium.TornadoKit;
 import pl.plajer.villagedefense3.kits.premium.WizardKit;
+import pl.plajerlair.core.utils.ConfigUtils;
 
 /**
  * Kit registry class for registering new kits.
@@ -131,7 +131,7 @@ public class KitRegistry {
   private static void setupGameKits() {
     KnightKit knightkit = new KnightKit(plugin);
     for (Class kitClass : classKitNames) {
-      if (ConfigurationManager.getConfig("kits").getBoolean("Enabled-Game-Kits." + kitClass.getSimpleName().replace("Kit", ""))) {
+      if (ConfigUtils.getConfig(plugin, "kits").getBoolean("Enabled-Game-Kits." + kitClass.getSimpleName().replace("Kit", ""))) {
         try {
           Class.forName(kitClass.getName()).getConstructor(Main.class).newInstance(plugin);
         } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException | InvocationTargetException | InstantiationException e) {

@@ -27,7 +27,7 @@ import pl.plajer.villagedefense3.arena.Arena;
 import pl.plajer.villagedefense3.handlers.language.LanguageManager;
 import pl.plajer.villagedefense3.handlers.language.Locale;
 import pl.plajer.villagedefense3.utils.MessageUtils;
-import pl.plajer.villagedefense3.utils.Utils;
+import pl.plajerlair.core.utils.MinigameUtils;
 
 /**
  * Created by Tom on 27/07/2014.
@@ -51,7 +51,7 @@ public class ChatManager {
       e1.printStackTrace();
       MessageUtils.errorOccured();
       Bukkit.getConsoleSender().sendMessage("Game message not found!");
-      if(LanguageManager.getPluginLocale() == Locale.ENGLISH){
+      if (LanguageManager.getPluginLocale() == Locale.ENGLISH) {
         Bukkit.getConsoleSender().sendMessage("Please regenerate your language.yml file! If error still occurs report it to the developer!");
       } else {
         Bukkit.getConsoleSender().sendMessage("Locale message string not found! Please contact developer!");
@@ -87,7 +87,7 @@ public class ChatManager {
   private static String formatPlaceholders(String message, Arena arena) {
     String returnString = message;
     returnString = StringUtils.replace(returnString, "%TIME%", Integer.toString(arena.getTimer()));
-    returnString = StringUtils.replace(returnString, "%FORMATTEDTIME%", Utils.formatIntoMMSS((arena.getTimer())));
+    returnString = StringUtils.replace(returnString, "%FORMATTEDTIME%", MinigameUtils.formatIntoMMSS((arena.getTimer())));
     returnString = StringUtils.replace(returnString, "%PLAYERSIZE%", Integer.toString(arena.getPlayers().size()));
     returnString = StringUtils.replace(returnString, "%MAXPLAYERS%", Integer.toString(arena.getMaximumPlayers()));
     returnString = StringUtils.replace(returnString, "%MINPLAYERS%", Integer.toString(arena.getMinimumPlayers()));

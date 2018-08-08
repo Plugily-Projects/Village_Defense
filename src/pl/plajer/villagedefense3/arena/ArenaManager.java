@@ -51,12 +51,13 @@ import pl.plajer.villagedefense3.kits.level.GolemFriendKit;
 import pl.plajer.villagedefense3.user.User;
 import pl.plajer.villagedefense3.user.UserManager;
 import pl.plajer.villagedefense3.utils.MessageUtils;
-import pl.plajer.villagedefense3.utils.Utils;
 import pl.plajer.villagedefense3.villagedefenseapi.VillageGameJoinAttemptEvent;
 import pl.plajer.villagedefense3.villagedefenseapi.VillageGameLeaveAttemptEvent;
 import pl.plajer.villagedefense3.villagedefenseapi.VillageGameStopEvent;
 import pl.plajer.villagedefense3.villagedefenseapi.VillageWaveEndEvent;
 import pl.plajer.villagedefense3.villagedefenseapi.VillageWaveStartEvent;
+import pl.plajerlair.core.utils.InventoryUtils;
+import pl.plajerlair.core.utils.MinigameUtils;
 
 /**
  * @author Plajer
@@ -97,8 +98,7 @@ public class ArenaManager {
     if ((arena.getArenaState() == ArenaState.IN_GAME || (arena.getArenaState() == ArenaState.STARTING && arena.getTimer() <= 3) || arena.getArenaState() == ArenaState.ENDING)) {
       if (plugin.isInventoryManagerEnabled()) {
         p.setLevel(0);
-        plugin.getInventoryManager().saveInventoryToFile(p);
-
+        InventoryUtils.saveInventoryToFile(plugin, p);
       }
       arena.teleportToStartLocation(p);
       p.sendMessage(ChatManager.colorMessage("In-Game.You-Are-Spectator"));
@@ -142,7 +142,7 @@ public class ArenaManager {
     }
     if (plugin.isInventoryManagerEnabled()) {
       p.setLevel(0);
-      plugin.getInventoryManager().saveInventoryToFile(p);
+      InventoryUtils.saveInventoryToFile(plugin, p);
     }
     arena.teleportToLobby(p);
     arena.addPlayer(p);
@@ -228,7 +228,7 @@ public class ArenaManager {
     }
     arena.teleportToEndLocation(p);
     if (!plugin.isBungeeActivated() && plugin.isInventoryManagerEnabled()) {
-      plugin.getInventoryManager().loadInventory(p);
+      InventoryUtils.loadInventory(plugin, p);
     }
   }
 
@@ -274,7 +274,7 @@ public class ArenaManager {
               if (i == 4 || !arena.getPlayers().contains(p)) {
                 this.cancel();
               }
-              Utils.spawnRandomFirework(p.getLocation());
+              MinigameUtils.spawnRandomFirework(p.getLocation());
               i++;
             }
           }.runTaskTimer(plugin, 30, 30);

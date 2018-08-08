@@ -34,6 +34,7 @@ import pl.plajer.villagedefense3.arena.Arena;
 import pl.plajer.villagedefense3.arena.ArenaManager;
 import pl.plajer.villagedefense3.arena.ArenaRegistry;
 import pl.plajer.villagedefense3.arena.ArenaState;
+import pl.plajerlair.core.utils.ConfigUtils;
 
 /**
  * Created by Tom on 31/08/2014.
@@ -65,7 +66,7 @@ public class BungeeManager implements Listener {
   }
 
   private String getHubServerName() {
-    return ConfigurationManager.getConfig("bungee").getString("Hub");
+    return ConfigUtils.getConfig(plugin, "bungee").getString("Hub");
   }
 
   @EventHandler(priority = EventPriority.HIGHEST)

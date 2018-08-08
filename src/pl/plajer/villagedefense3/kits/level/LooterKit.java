@@ -32,7 +32,6 @@ import org.bukkit.inventory.ItemStack;
 import pl.plajer.villagedefense3.Main;
 import pl.plajer.villagedefense3.arena.ArenaRegistry;
 import pl.plajer.villagedefense3.handlers.ChatManager;
-import pl.plajer.villagedefense3.handlers.ConfigurationManager;
 import pl.plajer.villagedefense3.kits.kitapi.KitRegistry;
 import pl.plajer.villagedefense3.kits.kitapi.basekits.LevelKit;
 import pl.plajer.villagedefense3.user.User;
@@ -40,6 +39,7 @@ import pl.plajer.villagedefense3.user.UserManager;
 import pl.plajer.villagedefense3.utils.ArmorHelper;
 import pl.plajer.villagedefense3.utils.Utils;
 import pl.plajer.villagedefense3.utils.WeaponHelper;
+import pl.plajerlair.core.utils.ConfigUtils;
 
 /**
  * Created by Tom on 21/07/2015.
@@ -50,7 +50,7 @@ public class LooterKit extends LevelKit implements Listener {
     setName(ChatManager.colorMessage("Kits.Looter.Kit-Name"));
     List<String> description = Utils.splitString(ChatManager.colorMessage("Kits.Looter.Kit-Description"), 40);
     this.setDescription(description.toArray(new String[0]));
-    setLevel(ConfigurationManager.getConfig("kits").getInt("Required-Level.Looter"));
+    setLevel(ConfigUtils.getConfig(plugin, "kits").getInt("Required-Level.Looter"));
     plugin.getServer().getPluginManager().registerEvents(this, plugin);
     KitRegistry.registerKit(this);
   }

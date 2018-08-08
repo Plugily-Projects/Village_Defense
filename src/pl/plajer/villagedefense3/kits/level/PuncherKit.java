@@ -28,13 +28,13 @@ import org.bukkit.inventory.ItemStack;
 
 import pl.plajer.villagedefense3.Main;
 import pl.plajer.villagedefense3.handlers.ChatManager;
-import pl.plajer.villagedefense3.handlers.ConfigurationManager;
 import pl.plajer.villagedefense3.kits.kitapi.KitRegistry;
 import pl.plajer.villagedefense3.kits.kitapi.basekits.LevelKit;
 import pl.plajer.villagedefense3.user.UserManager;
 import pl.plajer.villagedefense3.utils.ArmorHelper;
 import pl.plajer.villagedefense3.utils.Utils;
 import pl.plajer.villagedefense3.utils.WeaponHelper;
+import pl.plajerlair.core.utils.ConfigUtils;
 
 /**
  * Created by Tom on 18/08/2014.
@@ -45,7 +45,7 @@ public class PuncherKit extends LevelKit {
     setName(ChatManager.colorMessage("Kits.Puncher.Kit-Name"));
     List<String> description = Utils.splitString(ChatManager.colorMessage("Kits.Puncher.Kit-Description"), 40);
     this.setDescription(description.toArray(new String[0]));
-    setLevel(ConfigurationManager.getConfig("kits").getInt("Required-Level.Puncher"));
+    setLevel(ConfigUtils.getConfig(plugin, "kits").getInt("Required-Level.Puncher"));
     KitRegistry.registerKit(this);
   }
 

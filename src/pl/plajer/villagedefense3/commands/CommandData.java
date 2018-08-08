@@ -18,9 +18,6 @@
 
 package pl.plajer.villagedefense3.commands;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-
 /**
  * @author Plajer
  * <p>

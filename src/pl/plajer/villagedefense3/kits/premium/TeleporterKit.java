@@ -24,6 +24,7 @@ import java.util.List;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.Particle;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Villager;
 import org.bukkit.event.EventHandler;
@@ -143,7 +144,11 @@ public class TeleporterKit extends PremiumKit implements Listener {
             }
             if (villager.getCustomName().equalsIgnoreCase(e.getCurrentItem().getItemMeta().getDisplayName()) && villager.getUniqueId().toString().equalsIgnoreCase(ChatColor.stripColor(e.getCurrentItem().getItemMeta().getLore().get(0)))) {
               e.getWhoClicked().teleport(villager.getLocation());
-              Utils.sendSound(p, "ENTITY_ENDERMEN_TELEPORT", "ENTITY_ENDERMAN_TELEPORT");
+              if (plugin.is1_13_R1()) {
+                p.playSound(p.getLocation(), Sound.valueOf("ENTITY_ENDERMAN_TELEPORT"), 1, 1);
+              } else {
+                p.playSound(p.getLocation(), Sound.ENTITY_ENDERMEN_TELEPORT, 1, 1);
+              }
               p.getWorld().spawnParticle(Particle.PORTAL, p.getLocation(), 30);
               p.sendMessage(ChatManager.colorMessage("Kits.Teleporter.Teleported-To-Villager"));
               return;
@@ -156,7 +161,11 @@ public class TeleporterKit extends PremiumKit implements Listener {
             if (player.getName().equalsIgnoreCase(meta.getDisplayName()) || ChatColor.stripColor(meta.getDisplayName()).contains(player.getName())) {
               p.sendMessage(ChatManager.formatMessage(arena, ChatManager.colorMessage("Kits.Teleporter.Teleported-To-Player"), player));
               p.teleport(player);
-              Utils.sendSound(p, "ENTITY_ENDERMEN_TELEPORT", "ENTITY_ENDERMAN_TELEPORT");
+              if (plugin.is1_13_R1()) {
+                p.playSound(p.getLocation(), Sound.valueOf("ENTITY_ENDERMAN_TELEPORT"), 1, 1);
+              } else {
+                p.playSound(p.getLocation(), Sound.ENTITY_ENDERMEN_TELEPORT, 1, 1);
+              }
               p.getWorld().spawnParticle(Particle.PORTAL, p.getLocation(), 30);
               p.closeInventory();
               e.setCancelled(true);

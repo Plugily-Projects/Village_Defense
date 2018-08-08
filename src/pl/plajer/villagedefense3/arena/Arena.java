@@ -50,7 +50,6 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import pl.plajer.villagedefense3.Main;
 import pl.plajer.villagedefense3.handlers.ChatManager;
-import pl.plajer.villagedefense3.handlers.ConfigurationManager;
 import pl.plajer.villagedefense3.handlers.PermissionsManager;
 import pl.plajer.villagedefense3.handlers.language.LanguageManager;
 import pl.plajer.villagedefense3.handlers.language.Locale;
@@ -59,6 +58,9 @@ import pl.plajer.villagedefense3.user.User;
 import pl.plajer.villagedefense3.user.UserManager;
 import pl.plajer.villagedefense3.villagedefenseapi.VillageGameStartEvent;
 import pl.plajer.villagedefense3.villagedefenseapi.VillageGameStateChangeEvent;
+import pl.plajerlair.core.utils.ConfigUtils;
+import pl.plajerlair.core.utils.InventoryUtils;
+import pl.plajerlair.core.utils.MinigameScoreboard;
 
 /**
  * Created by Tom on 12/08/2014.
@@ -386,7 +388,7 @@ public abstract class Arena extends BukkitRunnable {
 
           if (plugin.isInventoryManagerEnabled()) {
             for (Player player : getPlayers()) {
-              plugin.getInventoryManager().loadInventory(player);
+              InventoryUtils.loadInventory(plugin, player);
             }
           }
 
@@ -402,7 +404,7 @@ public abstract class Arena extends BukkitRunnable {
           plugin.getRewardsHandler().performEndGameRewards(this);
           players.clear();
           if (plugin.isBungeeActivated()) {
-            if (ConfigurationManager.getConfig("bungee").getBoolean("Shutdown-When-Game-Ends")) {
+            if (ConfigUtils.getConfig(plugin, "bungee").getBoolean("Shutdown-When-Game-Ends")) {
               plugin.getServer().shutdown();
             }
           }
@@ -446,7 +448,7 @@ public abstract class Arena extends BukkitRunnable {
         user.removeScoreboard();
         return;
       }
-      ArenaBoard displayBoard = new ArenaBoard("VD3", "board", ChatManager.colorMessage("Scoreboard.Title"));
+      MinigameScoreboard scoreboard;
       List<String> lines;
       if (getArenaState() == ArenaState.IN_GAME) {
         if (LanguageManager.getPluginLocale() == Locale.ENGLISH) {
@@ -461,11 +463,11 @@ public abstract class Arena extends BukkitRunnable {
           lines = Arrays.asList(ChatManager.colorMessage("Scoreboard.Content." + getArenaState().getFormattedName()).split(";"));
         }
       }
-      for (String line : lines) {
-        displayBoard.addRow(formatScoreboardLine(line, user));
+      scoreboard = new MinigameScoreboard(ChatManager.colorMessage("Scoreboard.Title"), lines);
+      for (int i = 0; i < lines.size(); i++) {
+        scoreboard.setValue(i, formatScoreboardLine(lines.get(i), user));
       }
-      displayBoard.finish();
-      displayBoard.display(p);
+      scoreboard.display(p);
     }
   }
 

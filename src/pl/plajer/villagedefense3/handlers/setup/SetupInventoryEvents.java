@@ -47,7 +47,8 @@ import pl.plajer.villagedefense3.arena.initializers.ArenaInitializer1_9_R1;
 import pl.plajer.villagedefense3.handlers.ChatManager;
 import pl.plajer.villagedefense3.handlers.ConfigurationManager;
 import pl.plajer.villagedefense3.handlers.ShopManager;
-import pl.plajer.villagedefense3.utils.Utils;
+import pl.plajerlair.core.utils.ConfigUtils;
+import pl.plajerlair.core.utils.MinigameUtils;
 
 /**
  * Created by Tom on 15/06/2015.
@@ -186,7 +187,7 @@ public class SetupInventoryEvents implements Listener {
       if (!found) {
         player.sendMessage(ChatColor.RED + "No items in shop have price set! Set their prices using /vda setprice! You can ignore this warning");
       }
-      Utils.saveLoc("instances." + arena.getID() + ".shop", targetBlock.getLocation(), false);
+      MinigameUtils.saveLoc(plugin, ConfigUtils.getConfig(plugin, "arenas"), "arenas", "instances." + arena.getID() + ".shop", targetBlock.getLocation());
       ShopManager.registerShop(arena);
       player.sendMessage(ChatColor.GREEN + "Shop for chest set!");
     }
@@ -200,25 +201,25 @@ public class SetupInventoryEvents implements Listener {
       String[] locations = new String[]{"lobbylocation", "Startlocation", "Endlocation"};
       String[] spawns = new String[]{"zombiespawns", "villagerspawns"};
       for (String s : locations) {
-        if (!ConfigurationManager.getConfig("arenas").isSet("instances." + arena.getID() + "." + s) || ConfigurationManager.getConfig("arenas")
-                .getString("instances." + arena.getID() + "." + s).equals(Utils.locationToString(Bukkit.getWorlds().get(0).getSpawnLocation()))) {
+        if (!ConfigUtils.getConfig(plugin, "arenas").isSet("instances." + arena.getID() + "." + s) || ConfigUtils.getConfig(plugin, "arenas")
+                .getString("instances." + arena.getID() + "." + s).equals(MinigameUtils.locationToString(Bukkit.getWorlds().get(0).getSpawnLocation()))) {
           event.getWhoClicked().sendMessage(ChatColor.RED + "Arena validation failed! Please configure following spawn properly: " + s + " (cannot be world spawn location)");
           return;
         }
       }
       for (String s : spawns) {
-        if (!ConfigurationManager.getConfig("arenas").isSet("instances." + arena.getID() + "." + s) || ConfigurationManager.getConfig("arenas")
+        if (!ConfigUtils.getConfig(plugin, "arenas").isSet("instances." + arena.getID() + "." + s) || ConfigUtils.getConfig(plugin, "arenas")
                 .getConfigurationSection("instances." + arena.getID() + "." + s).getKeys(false).size() < 2) {
           event.getWhoClicked().sendMessage(ChatColor.RED + "Arena validation failed! Please configure following mob spawns properly: " + s + " (must be minimum 2 spawns)");
           return;
         }
       }
-      if (ConfigurationManager.getConfig("arenas").getConfigurationSection("instances." + arena.getID() + ".doors") == null) {
+      if (ConfigUtils.getConfig(plugin, "arenas").getConfigurationSection("instances." + arena.getID() + ".doors") == null) {
         event.getWhoClicked().sendMessage(ChatColor.RED + "Arena validation failed! Please configure doors properly");
         return;
       }
       event.getWhoClicked().sendMessage(ChatColor.GREEN + "Validation succeeded! Registering new arena instance: " + arena.getID());
-      FileConfiguration config = ConfigurationManager.getConfig("arenas");
+      FileConfiguration config = ConfigUtils.getConfig(plugin, "arenas");
       config.set("instances." + arena.getID() + ".isdone", true);
       ConfigurationManager.saveConfig(config, "arenas");
       List<Sign> signsToUpdate = new ArrayList<>();
@@ -242,24 +243,24 @@ public class SetupInventoryEvents implements Listener {
         arena = new ArenaInitializer1_13_R1(arena.getID(), plugin);
       }
       arena.setReady(true);
-      arena.setMinimumPlayers(ConfigurationManager.getConfig("arenas").getInt("instances." + arena.getID() + ".minimumplayers"));
-      arena.setMaximumPlayers(ConfigurationManager.getConfig("arenas").getInt("instances." + arena.getID() + ".maximumplayers"));
-      arena.setMapName(ConfigurationManager.getConfig("arenas").getString("instances." + arena.getID() + ".mapname"));
-      arena.setLobbyLocation(Utils.getLocation(false, ConfigurationManager.getConfig("arenas").getString("instances." + arena.getID() + ".lobbylocation")));
-      arena.setStartLocation(Utils.getLocation(false, ConfigurationManager.getConfig("arenas").getString("instances." + arena.getID() + ".Startlocation")));
-      arena.setEndLocation(Utils.getLocation(false, ConfigurationManager.getConfig("arenas").getString("instances." + arena.getID() + ".Endlocation")));
-      for (String string : ConfigurationManager.getConfig("arenas").getConfigurationSection("instances." + arena.getID() + ".zombiespawns").getKeys(false)) {
+      arena.setMinimumPlayers(ConfigUtils.getConfig(plugin, "arenas").getInt("instances." + arena.getID() + ".minimumplayers"));
+      arena.setMaximumPlayers(ConfigUtils.getConfig(plugin, "arenas").getInt("instances." + arena.getID() + ".maximumplayers"));
+      arena.setMapName(ConfigUtils.getConfig(plugin, "arenas").getString("instances." + arena.getID() + ".mapname"));
+      arena.setLobbyLocation(MinigameUtils.getLocation(ConfigUtils.getConfig(plugin, "arenas").getString("instances." + arena.getID() + ".lobbylocation")));
+      arena.setStartLocation(MinigameUtils.getLocation(ConfigUtils.getConfig(plugin, "arenas").getString("instances." + arena.getID() + ".Startlocation")));
+      arena.setEndLocation(MinigameUtils.getLocation(ConfigUtils.getConfig(plugin, "arenas").getString("instances." + arena.getID() + ".Endlocation")));
+      for (String string : ConfigUtils.getConfig(plugin, "arenas").getConfigurationSection("instances." + arena.getID() + ".zombiespawns").getKeys(false)) {
         String path = "instances." + arena.getID() + ".zombiespawns." + string;
-        arena.addZombieSpawn(Utils.getLocation(false, ConfigurationManager.getConfig("arenas").getString(path)));
+        arena.addZombieSpawn(MinigameUtils.getLocation(ConfigUtils.getConfig(plugin, "arenas").getString(path)));
       }
-      for (String string : ConfigurationManager.getConfig("arenas").getConfigurationSection("instances." + arena.getID() + ".villagerspawns").getKeys(false)) {
+      for (String string : ConfigUtils.getConfig(plugin, "arenas").getConfigurationSection("instances." + arena.getID() + ".villagerspawns").getKeys(false)) {
         String path = "instances." + arena.getID() + ".villagerspawns." + string;
-        arena.addVillagerSpawn(Utils.getLocation(false, ConfigurationManager.getConfig("arenas").getString(path)));
+        arena.addVillagerSpawn(MinigameUtils.getLocation(ConfigUtils.getConfig(plugin, "arenas").getString(path)));
       }
-      for (String string : ConfigurationManager.getConfig("arenas").getConfigurationSection("instances." + arena.getID() + ".doors").getKeys(false)) {
+      for (String string : ConfigUtils.getConfig(plugin, "arenas").getConfigurationSection("instances." + arena.getID() + ".doors").getKeys(false)) {
         String path = "instances." + arena.getID() + ".doors." + string + ".";
-        arena.addDoor(Utils.getLocation(false, ConfigurationManager.getConfig("arenas").getString(path + "location")),
-                (byte) ConfigurationManager.getConfig("arenas").getInt(path + "byte"));
+        arena.addDoor(MinigameUtils.getLocation(ConfigUtils.getConfig(plugin, "arenas").getString(path + "location")),
+                (byte) ConfigUtils.getConfig(plugin, "arenas").getInt(path + "byte"));
       }
       ArenaRegistry.registerArena(arena);
       arena.start();

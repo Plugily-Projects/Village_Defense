@@ -33,6 +33,7 @@ import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
+import org.bukkit.Sound;
 import org.bukkit.block.Sign;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -51,10 +52,10 @@ import pl.plajer.villagedefense3.arena.ArenaRegistry;
 import pl.plajer.villagedefense3.arena.ArenaState;
 import pl.plajer.villagedefense3.arena.ArenaUtils;
 import pl.plajer.villagedefense3.handlers.ChatManager;
-import pl.plajer.villagedefense3.handlers.ConfigurationManager;
 import pl.plajer.villagedefense3.user.User;
 import pl.plajer.villagedefense3.user.UserManager;
-import pl.plajer.villagedefense3.utils.Utils;
+import pl.plajerlair.core.utils.ConfigUtils;
+import pl.plajerlair.core.utils.MinigameUtils;
 
 /**
  * @author Plajer
@@ -271,11 +272,11 @@ public class AdminCommands extends MainCommand {
         plugin.getSignManager().getLoadedSigns().put((Sign) location.getBlock().getState(), ArenaRegistry.getArena(arena));
         player.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("Signs.Sign-Created"));
         String loc = location.getBlock().getWorld().getName() + "," + location.getBlock().getX() + "," + location.getBlock().getY() + "," + location.getBlock().getZ() + ",0.0,0.0";
-        FileConfiguration config = ConfigurationManager.getConfig("arenas");
+        FileConfiguration config = ConfigUtils.getConfig(plugin, "arenas");
         List<String> locs = config.getStringList("instances." + arena + ".signs");
         locs.add(loc);
         config.set("instances." + arena + ".signs", locs);
-        ConfigurationManager.saveConfig(config, "arenas");
+        ConfigUtils.saveConfig(plugin, config, "arenas");
       } else {
         player.sendMessage(ChatManager.colorMessage("Commands.Look-Sign"));
       }
@@ -292,9 +293,9 @@ public class AdminCommands extends MainCommand {
       return;
     }
     ArenaManager.stopGame(false, arena);
-    FileConfiguration config = ConfigurationManager.getConfig("arenas");
+    FileConfiguration config = ConfigUtils.getConfig(plugin, "arenas");
     config.set("instances." + arenaString, null);
-    ConfigurationManager.saveConfig(config, "arenas");
+    ConfigUtils.saveConfig(plugin, config, "arenas");
     ArenaRegistry.unregisterArena(arena);
     sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("Commands.Removed-Game-Instance"));
   }
@@ -324,7 +325,7 @@ public class AdminCommands extends MainCommand {
       item.setItemMeta(meta);
       player.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("Commands.Command-Executed-Item-Updated"));
     } else {
-      Utils.addLore(item, ChatColor.GOLD + price + " " + ChatManager.colorMessage("In-Game.Messages.Shop-Messages.Currency-In-Shop"));
+      MinigameUtils.addLore(item, ChatColor.GOLD + price + " " + ChatManager.colorMessage("In-Game.Messages.Shop-Messages.Currency-In-Shop"));
       player.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("Commands.Command-Executed"));
     }
   }
@@ -363,7 +364,7 @@ public class AdminCommands extends MainCommand {
       sender.sendMessage(ChatManager.colorMessage("Kits.Cleaner.Nothing-To-Clean"));
       return;
     }
-    Utils.sendSound((Player) sender, "ENTITY_ZOMBIE_DEATH", "ENTITY_ZOMBIE_DEATH");
+    ((Player) sender).playSound(((Player) sender).getLocation(), Sound.ENTITY_ZOMBIE_DEATH, 1, 1);
     for (Player loopPlayer : arena.getPlayers()) {
       String message = ChatManager.formatMessage(arena, ChatManager.colorMessage("In-Game.Messages.Admin-Messages.Removed-Zombies"), new Player[]{(loopPlayer)});
       loopPlayer.sendMessage(ChatManager.PLUGIN_PREFIX + message);
@@ -386,7 +387,7 @@ public class AdminCommands extends MainCommand {
       sender.sendMessage(ChatManager.colorMessage("Kits.Cleaner.Nothing-To-Clean"));
       return;
     }
-    Utils.sendSound((Player) sender, "ENTITY_VILLAGER_DEATH", "ENTITY_VILLAGER_DEATH");
+    ((Player) sender).playSound(((Player) sender).getLocation(), Sound.ENTITY_VILLAGER_DEATH, 1, 1);
     for (Player loopPlayer : arena.getPlayers()) {
       String message = ChatManager.formatMessage(arena, ChatManager.colorMessage("In-Game.Messages.Admin-Messages.Removed-Villagers"), new Player[]{(loopPlayer)});
       loopPlayer.sendMessage(ChatManager.PLUGIN_PREFIX + message);
@@ -410,7 +411,11 @@ public class AdminCommands extends MainCommand {
       sender.sendMessage(ChatManager.colorMessage("Kits.Cleaner.Nothing-To-Clean"));
       return;
     }
-    Utils.sendSound((Player) sender, "ENTITY_IRONGOLEM_DEATH", "ENTITY_IRON_GOLEM_DEATH");
+    if (plugin.is1_13_R1()) {
+      ((Player) sender).playSound(((Player) sender).getLocation(), Sound.valueOf("ENTITY_IRON_GOLEM_DEATH"), 1, 1);
+    } else {
+      ((Player) sender).playSound(((Player) sender).getLocation(), Sound.ENTITY_IRONGOLEM_DEATH, 1, 1);
+    }
     for (Player loopPlayer : arena.getPlayers()) {
       String message = ChatManager.formatMessage(arena, ChatManager.colorMessage("In-Game.Messages.Admin-Messages.Removed-Golems"), new Player[]{(loopPlayer)});
       loopPlayer.sendMessage(ChatManager.PLUGIN_PREFIX + message);
@@ -478,7 +483,7 @@ public class AdminCommands extends MainCommand {
         sender.sendMessage(ChatManager.colorMessage("Kits.Cleaner.Nothing-To-Clean"));
         return;
       }
-      Utils.sendSound((Player) sender, "ENTITY_ZOMBIE_DEATH", "ENTITY_ZOMBIE_DEATH");
+      ((Player) sender).playSound(((Player) sender).getLocation(), Sound.ENTITY_ZOMBIE_DEATH, 1, 1);
       for (Player loopPlayer : arena.getPlayers()) {
         String message1 = ChatManager.formatMessage(arena, ChatManager.colorMessage("In-Game.Messages.Admin-Messages.Removed-Zombies"), new Player[]{(loopPlayer)});
         loopPlayer.sendMessage(ChatManager.PLUGIN_PREFIX + message1);

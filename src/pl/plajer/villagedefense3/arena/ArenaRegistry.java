@@ -32,9 +32,9 @@ import pl.plajer.villagedefense3.arena.initializers.ArenaInitializer1_12_R1;
 import pl.plajer.villagedefense3.arena.initializers.ArenaInitializer1_13_R1;
 import pl.plajer.villagedefense3.arena.initializers.ArenaInitializer1_9_R1;
 import pl.plajer.villagedefense3.handlers.ChatManager;
-import pl.plajer.villagedefense3.handlers.ConfigurationManager;
 import pl.plajer.villagedefense3.handlers.ShopManager;
-import pl.plajer.villagedefense3.utils.Utils;
+import pl.plajerlair.core.utils.ConfigUtils;
+import pl.plajerlair.core.utils.MinigameUtils;
 
 /**
  * Created by Tom on 27/07/2014.
@@ -122,12 +122,12 @@ public class ArenaRegistry {
       }
     }
     ArenaRegistry.getArenas().clear();
-    if (!ConfigurationManager.getConfig("arenas").contains("instances")) {
+    if (!ConfigUtils.getConfig(plugin, "arenas").contains("instances")) {
       Bukkit.getConsoleSender().sendMessage(ChatManager.colorMessage("Validator.No-Instances-Created"));
       return;
     }
 
-    for (String ID : ConfigurationManager.getConfig("arenas").getConfigurationSection("instances").getKeys(false)) {
+    for (String ID : ConfigUtils.getConfig(plugin, "arenas").getConfigurationSection("instances").getKeys(false)) {
       Arena arena;
       String s = "instances." + ID + ".";
       if (s.contains("default")) {
@@ -144,24 +144,24 @@ public class ArenaRegistry {
       } else {
         arena = new ArenaInitializer1_13_R1(ID, plugin);
       }
-      arena.setMinimumPlayers(ConfigurationManager.getConfig("arenas").getInt(s + "minimumplayers"));
-      arena.setMaximumPlayers(ConfigurationManager.getConfig("arenas").getInt(s + "maximumplayers"));
-      arena.setMapName(ConfigurationManager.getConfig("arenas").getString(s + "mapname"));
-      arena.setLobbyLocation(Utils.getLocation(false, ConfigurationManager.getConfig("arenas").getString(s + "lobbylocation")));
-      arena.setStartLocation(Utils.getLocation(false, ConfigurationManager.getConfig("arenas").getString(s + "Startlocation")));
-      arena.setEndLocation(Utils.getLocation(false, ConfigurationManager.getConfig("arenas").getString(s + "Endlocation")));
+      arena.setMinimumPlayers(ConfigUtils.getConfig(plugin, "arenas").getInt(s + "minimumplayers"));
+      arena.setMaximumPlayers(ConfigUtils.getConfig(plugin, "arenas").getInt(s + "maximumplayers"));
+      arena.setMapName(ConfigUtils.getConfig(plugin, "arenas").getString(s + "mapname"));
+      arena.setLobbyLocation(MinigameUtils.getLocation(ConfigUtils.getConfig(plugin, "arenas").getString(s + "lobbylocation")));
+      arena.setStartLocation(MinigameUtils.getLocation(ConfigUtils.getConfig(plugin, "arenas").getString(s + "Startlocation")));
+      arena.setEndLocation(MinigameUtils.getLocation(ConfigUtils.getConfig(plugin, "arenas").getString(s + "Endlocation")));
 
-      if (!ConfigurationManager.getConfig("arenas").getBoolean(s + "isdone")) {
+      if (!ConfigUtils.getConfig(plugin, "arenas").getBoolean(s + "isdone")) {
         Bukkit.getConsoleSender().sendMessage(ChatManager.colorMessage("Validator.Invalid-Arena-Configuration").replace("%arena%", ID).replace("%error%", "NOT VALIDATED"));
         arena.setReady(false);
         ArenaRegistry.registerArena(arena);
         continue;
       }
 
-      if (ConfigurationManager.getConfig("arenas").contains(s + "zombiespawns")) {
-        for (String string : ConfigurationManager.getConfig("arenas").getConfigurationSection(s + "zombiespawns").getKeys(false)) {
+      if (ConfigUtils.getConfig(plugin, "arenas").contains(s + "zombiespawns")) {
+        for (String string : ConfigUtils.getConfig(plugin, "arenas").getConfigurationSection(s + "zombiespawns").getKeys(false)) {
           String path = s + "zombiespawns." + string;
-          arena.addZombieSpawn(Utils.getLocation(false, ConfigurationManager.getConfig("arenas").getString(path)));
+          arena.addZombieSpawn(MinigameUtils.getLocation(ConfigUtils.getConfig(plugin, "arenas").getString(path)));
         }
       } else {
         Bukkit.getConsoleSender().sendMessage(ChatManager.colorMessage("Validator.Invalid-Arena-Configuration").replace("%arena%", ID).replace("%error%", "ZOMBIE SPAWNS"));
@@ -170,10 +170,10 @@ public class ArenaRegistry {
         continue;
       }
 
-      if (ConfigurationManager.getConfig("arenas").contains(s + "villagerspawns")) {
-        for (String string : ConfigurationManager.getConfig("arenas").getConfigurationSection(s + "villagerspawns").getKeys(false)) {
+      if (ConfigUtils.getConfig(plugin, "arenas").contains(s + "villagerspawns")) {
+        for (String string : ConfigUtils.getConfig(plugin, "arenas").getConfigurationSection(s + "villagerspawns").getKeys(false)) {
           String path = s + "villagerspawns." + string;
-          arena.addVillagerSpawn(Utils.getLocation(false, ConfigurationManager.getConfig("arenas").getString(path)));
+          arena.addVillagerSpawn(MinigameUtils.getLocation(ConfigUtils.getConfig(plugin, "arenas").getString(path)));
         }
       } else {
         Bukkit.getConsoleSender().sendMessage(ChatManager.colorMessage("Validator.Invalid-Arena-Configuration").replace("%arena%", ID).replace("%error%", "VILLAGER SPAWNS"));
@@ -181,11 +181,11 @@ public class ArenaRegistry {
         ArenaRegistry.registerArena(arena);
         continue;
       }
-      if (ConfigurationManager.getConfig("arenas").contains(s + "doors")) {
-        for (String string : ConfigurationManager.getConfig("arenas").getConfigurationSection(s + "doors").getKeys(false)) {
+      if (ConfigUtils.getConfig(plugin, "arenas").contains(s + "doors")) {
+        for (String string : ConfigUtils.getConfig(plugin, "arenas").getConfigurationSection(s + "doors").getKeys(false)) {
           String path = s + "doors." + string + ".";
-          arena.addDoor(Utils.getLocation(false, ConfigurationManager.getConfig("arenas").getString(path + "location")),
-                  (byte) ConfigurationManager.getConfig("arenas").getInt(path + "byte"));
+          arena.addDoor(MinigameUtils.getLocation(ConfigUtils.getConfig(plugin, "arenas").getString(path + "location")),
+                  (byte) ConfigUtils.getConfig(plugin, "arenas").getInt(path + "byte"));
         }
       } else {
         Bukkit.getConsoleSender().sendMessage(ChatManager.colorMessage("Validator.Invalid-Arena-Configuration").replace("%arena%", ID).replace("%error%", "DOORS"));

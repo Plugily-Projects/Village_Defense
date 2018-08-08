@@ -28,11 +28,13 @@ import org.bukkit.block.Chest;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.java.JavaPlugin;
 
 import pl.plajer.villagedefense3.Main;
 import pl.plajer.villagedefense3.arena.Arena;
 import pl.plajer.villagedefense3.arena.ArenaRegistry;
-import pl.plajer.villagedefense3.utils.Utils;
+import pl.plajerlair.core.utils.ConfigUtils;
+import pl.plajerlair.core.utils.MinigameUtils;
 
 /**
  * Created by Tom on 16/08/2014.
@@ -43,7 +45,7 @@ public class ShopManager {
 
   public ShopManager() {
     for (Arena a : ArenaRegistry.getArenas()) {
-      if (ConfigurationManager.getConfig("arenas").isSet("instances." + a.getID() + ".shop")) {
+      if (ConfigUtils.getConfig(JavaPlugin.getPlugin(Main.class), "arenas").isSet("instances." + a.getID() + ".shop")) {
         registerShop(a);
       }
     }
@@ -54,13 +56,13 @@ public class ShopManager {
   }
 
   public static void registerShop(Arena a) {
-    Location location = Utils.getLocation(false, ConfigurationManager.getConfig("arenas").getString("instances." + a.getID() + ".shop"));
+    Location location = MinigameUtils.getLocation(ConfigUtils.getConfig(JavaPlugin.getPlugin(Main.class), "arenas").getString("instances." + a.getID() + ".shop"));
     if (!(location.getBlock().getState() instanceof Chest)) {
       Main.debug("Shop failed to load, invalid location for loc " + location, System.currentTimeMillis());
       return;
     }
     int i = ((Chest) location.getBlock().getState()).getInventory().getContents().length;
-    Inventory inventory = Bukkit.createInventory(null, Utils.serializeInt(i), ChatManager.colorMessage("In-Game.Messages.Shop-Messages.Shop-GUI-Name"));
+    Inventory inventory = Bukkit.createInventory(null, MinigameUtils.serializeInt(i), ChatManager.colorMessage("In-Game.Messages.Shop-Messages.Shop-GUI-Name"));
     i = 0;
     for (ItemStack itemStack : ((Chest) location.getBlock().getState()).getInventory().getContents()) {
       if (itemStack != null && itemStack.getType() != Material.REDSTONE_BLOCK) {

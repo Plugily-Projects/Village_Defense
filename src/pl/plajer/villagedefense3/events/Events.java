@@ -22,7 +22,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.Particle;
@@ -73,6 +72,7 @@ import pl.plajer.villagedefense3.handlers.items.SpecialItemManager;
 import pl.plajer.villagedefense3.user.User;
 import pl.plajer.villagedefense3.user.UserManager;
 import pl.plajer.villagedefense3.utils.Utils;
+import pl.plajerlair.core.utils.MinigameUtils;
 
 /**
  * Created by Tom on 16/08/2014.
@@ -361,7 +361,7 @@ public class Events implements Listener {
       }
       for (Arena arena : ArenaRegistry.getArenas()) {
         if (arena.getZombies().contains(e.getEntity())) {
-          e.getEntity().setCustomName(Utils.getProgressBar((int) ((Zombie) e.getEntity()).getHealth(),
+          e.getEntity().setCustomName(MinigameUtils.getProgressBar((int) ((Zombie) e.getEntity()).getHealth(),
                   (int) ((Zombie) e.getEntity()).getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue(),
                   50, "|", ChatColor.YELLOW + "", ChatColor.GRAY + ""));
         }

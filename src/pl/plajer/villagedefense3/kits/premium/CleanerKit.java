@@ -23,6 +23,7 @@ import java.util.List;
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.Particle;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Zombie;
 import org.bukkit.event.EventHandler;
@@ -114,7 +115,7 @@ public class CleanerKit extends PremiumKit implements Listener {
       e.getPlayer().sendMessage(ChatManager.colorMessage("Kits.Cleaner.Nothing-To-Clean"));
       return;
     }
-    Utils.sendSound(e.getPlayer(), "ENTITY_ZOMBIE_DEATH", "ENTITY_ZOMBIE_DEATH");
+    e.getPlayer().playSound(e.getPlayer().getLocation(), Sound.ENTITY_ZOMBIE_DEATH, 1, 1);
     String message = ChatManager.formatMessage(arena, ChatManager.colorMessage("Kits.Cleaner.Cleaned-Map"), e.getPlayer());
     for (Player player1 : ArenaRegistry.getArena(e.getPlayer()).getPlayers()) {
       player1.sendMessage(ChatManager.PLUGIN_PREFIX + message);

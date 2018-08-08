@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Random;
 
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -36,12 +37,12 @@ import pl.plajer.villagedefense3.Main;
 import pl.plajer.villagedefense3.arena.Arena;
 import pl.plajer.villagedefense3.arena.ArenaRegistry;
 import pl.plajer.villagedefense3.handlers.ChatManager;
-import pl.plajer.villagedefense3.handlers.ConfigurationManager;
 import pl.plajer.villagedefense3.kits.kitapi.KitRegistry;
 import pl.plajer.villagedefense3.kits.kitapi.basekits.LevelKit;
 import pl.plajer.villagedefense3.user.UserManager;
 import pl.plajer.villagedefense3.utils.Utils;
 import pl.plajer.villagedefense3.utils.WeaponHelper;
+import pl.plajerlair.core.utils.ConfigUtils;
 
 /**
  * Created by Tom on 21/07/2015.
@@ -55,7 +56,7 @@ public class ZombieFinderKit extends LevelKit implements Listener {
     setName(ChatManager.colorMessage("Kits.Zombie-Teleporter.Kit-Name"));
     List<String> description = Utils.splitString(ChatManager.colorMessage("Kits.Zombie-Teleporter.Kit-Description"), 40);
     this.setDescription(description.toArray(new String[0]));
-    this.setLevel(ConfigurationManager.getConfig("kits").getInt("Required-Level.ZombieFinder"));
+    this.setLevel(ConfigUtils.getConfig(plugin, "kits").getInt("Required-Level.ZombieFinder"));
     plugin.getServer().getPluginManager().registerEvents(this, plugin);
     KitRegistry.registerKit(this);
   }
@@ -116,7 +117,7 @@ public class ZombieFinderKit extends LevelKit implements Listener {
       arena.getZombies().get(rand).addPotionEffect(new PotionEffect(PotionEffectType.WEAKNESS, 20 * 30, 1));
       event.getPlayer().sendMessage(ChatManager.colorMessage("Kits.Zombie-Teleporter.Zombie-Teleported"));
     }
-    Utils.sendSound(event.getPlayer(), "ENTITY_ZOMBIE_DEATH", "ENTITY_ZOMBIE_DEATH");
+    event.getPlayer().playSound(event.getPlayer().getLocation(), Sound.ENTITY_ZOMBIE_DEATH, 1, 1);
     UserManager.getUser(event.getPlayer().getUniqueId()).setCooldown("zombie", 30);
   }
 }

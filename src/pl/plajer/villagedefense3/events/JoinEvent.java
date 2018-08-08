@@ -33,7 +33,8 @@ import pl.plajer.villagedefense3.database.FileStats;
 import pl.plajer.villagedefense3.database.MySQLConnectionUtils;
 import pl.plajer.villagedefense3.handlers.PermissionsManager;
 import pl.plajer.villagedefense3.user.UserManager;
-import pl.plajer.villagedefense3.utils.UpdateChecker;
+import pl.plajerlair.core.utils.InventoryUtils;
+import pl.plajerlair.core.utils.UpdateChecker;
 
 /**
  * Created by Tom on 10/07/2015.
@@ -86,7 +87,7 @@ public class JoinEvent implements Listener {
           String currentVersion = "v" + Bukkit.getPluginManager().getPlugin("VillageDefense").getDescription().getVersion();
           String latestVersion;
           try {
-            UpdateChecker.checkUpdate(currentVersion);
+            UpdateChecker.checkUpdate(plugin, currentVersion, 41869);
             latestVersion = UpdateChecker.getLatestVersion();
             if (latestVersion != null) {
               latestVersion = "v" + latestVersion;
@@ -115,7 +116,7 @@ public class JoinEvent implements Listener {
     }
     for (Arena arena : ArenaRegistry.getArenas()) {
       if (event.getPlayer().getWorld().equals(arena.getStartLocation().getWorld())) {
-        plugin.getInventoryManager().loadInventory(event.getPlayer());
+        InventoryUtils.loadInventory(plugin, event.getPlayer());
         event.getPlayer().teleport(ArenaRegistry.getArenas().get(0).getEndLocation());
       }
     }
