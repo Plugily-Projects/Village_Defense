@@ -31,6 +31,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.PotionType;
 
 import pl.plajer.villagedefense3.Main;
@@ -41,6 +42,7 @@ import pl.plajer.villagedefense3.kits.kitapi.KitRegistry;
 import pl.plajer.villagedefense3.kits.kitapi.basekits.PremiumKit;
 import pl.plajer.villagedefense3.user.UserManager;
 import pl.plajer.villagedefense3.utils.Utils;
+import pl.plajerlair.core.services.ReportedException;
 
 /**
  * Created by Tom on 8/02/2015.
@@ -104,52 +106,60 @@ public class NakedKit extends PremiumKit implements Listener {
 
   @EventHandler
   public void onArmor(InventoryClickEvent event) {
-    if (UserManager.getUser(event.getWhoClicked().getUniqueId()) == null) {
-      return;
-    }
-    if (!ArenaRegistry.isInArena((Player) event.getWhoClicked())) {
-      return;
-    }
-    if (!(UserManager.getUser(event.getWhoClicked().getUniqueId()).getKit() instanceof NakedKit)) {
-      return;
-    }
-    if (!(event.getInventory().getType().equals(InventoryType.PLAYER) || event.getInventory().getType().equals(InventoryType.CRAFTING))) {
-      return;
-    }
-    Bukkit.getScheduler().runTaskLater(Main.getPlugin(Main.class), () -> {
-      for (ItemStack is : event.getWhoClicked().getInventory().getArmorContents()) {
-        if (is != null) {
-          if (armorTypes.contains(is.getType())) {
-            //we cannot cancel event using scheduler, we must remove all armor contents from inventory manually
-            event.getWhoClicked().sendMessage(ChatManager.colorMessage("Kits.Wild-Naked.Cannot-Wear-Armor"));
-            event.getWhoClicked().getInventory().setHelmet(new ItemStack(Material.AIR, 1));
-            event.getWhoClicked().getInventory().setChestplate(new ItemStack(Material.AIR, 1));
-            event.getWhoClicked().getInventory().setLeggings(new ItemStack(Material.AIR, 1));
-            event.getWhoClicked().getInventory().setBoots(new ItemStack(Material.AIR, 1));
-            return;
+    try {
+      if (UserManager.getUser(event.getWhoClicked().getUniqueId()) == null) {
+        return;
+      }
+      if (!ArenaRegistry.isInArena((Player) event.getWhoClicked())) {
+        return;
+      }
+      if (!(UserManager.getUser(event.getWhoClicked().getUniqueId()).getKit() instanceof NakedKit)) {
+        return;
+      }
+      if (!(event.getInventory().getType().equals(InventoryType.PLAYER) || event.getInventory().getType().equals(InventoryType.CRAFTING))) {
+        return;
+      }
+      Bukkit.getScheduler().runTaskLater(Main.getPlugin(Main.class), () -> {
+        for (ItemStack is : event.getWhoClicked().getInventory().getArmorContents()) {
+          if (is != null) {
+            if (armorTypes.contains(is.getType())) {
+              //we cannot cancel event using scheduler, we must remove all armor contents from inventory manually
+              event.getWhoClicked().sendMessage(ChatManager.colorMessage("Kits.Wild-Naked.Cannot-Wear-Armor"));
+              event.getWhoClicked().getInventory().setHelmet(new ItemStack(Material.AIR, 1));
+              event.getWhoClicked().getInventory().setChestplate(new ItemStack(Material.AIR, 1));
+              event.getWhoClicked().getInventory().setLeggings(new ItemStack(Material.AIR, 1));
+              event.getWhoClicked().getInventory().setBoots(new ItemStack(Material.AIR, 1));
+              return;
+            }
           }
         }
-      }
-    }, 1);
+      }, 1);
+    } catch (Exception ex){
+      new ReportedException(JavaPlugin.getPlugin(Main.class), ex);
+    }
   }
 
   @EventHandler
   public void onArmorClick(PlayerInteractEvent event) {
-    if (!ArenaRegistry.isInArena(event.getPlayer())) {
-      return;
-    }
-    if (UserManager.getUser(event.getPlayer().getUniqueId()) == null) {
-      return;
-    }
-    if (!(UserManager.getUser(event.getPlayer().getUniqueId()).getKit() instanceof NakedKit)) {
-      return;
-    }
-    if (!event.hasItem()) {
-      return;
-    }
-    if (armorTypes.contains(event.getItem().getType())) {
-      event.setCancelled(true);
-      event.getPlayer().sendMessage(ChatManager.colorMessage("Kits.Wild-Naked.Cannot-Wear-Armor"));
+    try {
+      if (!ArenaRegistry.isInArena(event.getPlayer())) {
+        return;
+      }
+      if (UserManager.getUser(event.getPlayer().getUniqueId()) == null) {
+        return;
+      }
+      if (!(UserManager.getUser(event.getPlayer().getUniqueId()).getKit() instanceof NakedKit)) {
+        return;
+      }
+      if (!event.hasItem()) {
+        return;
+      }
+      if (armorTypes.contains(event.getItem().getType())) {
+        event.setCancelled(true);
+        event.getPlayer().sendMessage(ChatManager.colorMessage("Kits.Wild-Naked.Cannot-Wear-Armor"));
+      }
+    } catch (Exception ex){
+      new ReportedException(JavaPlugin.getPlugin(Main.class), ex);
     }
   }
 }

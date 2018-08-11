@@ -58,6 +58,7 @@ import pl.plajer.villagedefense3.user.User;
 import pl.plajer.villagedefense3.user.UserManager;
 import pl.plajer.villagedefense3.villagedefenseapi.VillageGameStartEvent;
 import pl.plajer.villagedefense3.villagedefenseapi.VillageGameStateChangeEvent;
+import pl.plajerlair.core.services.ReportedException;
 import pl.plajerlair.core.utils.ConfigUtils;
 import pl.plajerlair.core.utils.InventoryUtils;
 import pl.plajerlair.core.utils.MinigameScoreboard;
@@ -162,275 +163,279 @@ public abstract class Arena extends BukkitRunnable {
   }
 
   public void run() {
-    //idle task
-    if (getPlayers().size() == 0 && getArenaState() == ArenaState.WAITING_FOR_PLAYERS) {
-      return;
-    }
-    updateScoreboard();
-    switch (getArenaState()) {
-      case WAITING_FOR_PLAYERS:
-        if (plugin.isBungeeActivated()) {
-          plugin.getServer().setWhitelist(false);
-        }
-        if (getPlayers().size() < getMinimumPlayers()) {
-          if (getTimer() <= 0) {
-            setTimer(15);
-            String message = ChatManager.formatMessage(this, ChatManager.colorMessage("In-Game.Messages.Lobby-Messages.Waiting-For-Players"), getMinimumPlayers());
+    try {
+      //idle task
+      if (getPlayers().size() == 0 && getArenaState() == ArenaState.WAITING_FOR_PLAYERS) {
+        return;
+      }
+      updateScoreboard();
+      switch (getArenaState()) {
+        case WAITING_FOR_PLAYERS:
+          if (plugin.isBungeeActivated()) {
+            plugin.getServer().setWhitelist(false);
+          }
+          if (getPlayers().size() < getMinimumPlayers()) {
+            if (getTimer() <= 0) {
+              setTimer(15);
+              String message = ChatManager.formatMessage(this, ChatManager.colorMessage("In-Game.Messages.Lobby-Messages.Waiting-For-Players"), getMinimumPlayers());
+              for (Player p : getPlayers()) {
+                p.sendMessage(ChatManager.PLUGIN_PREFIX + message);
+              }
+              return;
+            }
+          } else {
+            if (plugin.isBossbarEnabled()) {
+              gameBar.setTitle(ChatManager.colorMessage("Bossbar.Waiting-For-Players"));
+            }
             for (Player p : getPlayers()) {
-              p.sendMessage(ChatManager.PLUGIN_PREFIX + message);
+              p.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Messages.Lobby-Messages.Enough-Players-To-Start"));
+            }
+            setArenaState(ArenaState.STARTING);
+            setTimer(Main.STARTING_TIMER_TIME);
+            this.showPlayers();
+          }
+          setTimer(getTimer() - 1);
+          break;
+        case STARTING:
+          if (plugin.isBossbarEnabled()) {
+            gameBar.setTitle(ChatManager.colorMessage("Bossbar.Starting-In").replace("%time%", String.valueOf(getTimer())));
+            gameBar.setProgress(getTimer() / plugin.getConfig().getDouble("Starting-Waiting-Time", 60));
+          }
+          if (getTimer() == 0) {
+            VillageGameStartEvent villageGameStartEvent = new VillageGameStartEvent(this);
+            Bukkit.getPluginManager().callEvent(villageGameStartEvent);
+            setArenaState(ArenaState.IN_GAME);
+            if (plugin.isBossbarEnabled()) {
+              gameBar.setProgress(1.0);
+            }
+            setTimer(5);
+            teleportAllToStartLocation();
+            for (Player player : getPlayers()) {
+              player.getInventory().clear();
+              player.setGameMode(GameMode.SURVIVAL);
+              User user = UserManager.getUser(player.getUniqueId());
+              user.setInt("orbs", plugin.getConfig().getInt("Orbs-Starting-Amount", 20));
+              ArenaUtils.hidePlayersOutsideTheGame(player, this);
+              if (UserManager.getUser(player.getUniqueId()).getKit() != null) {
+                UserManager.getUser(player.getUniqueId()).getKit().giveKitItems(player);
+              } else {
+                KitRegistry.getDefaultKit().giveKitItems(player);
+              }
+              player.updateInventory();
+              addStat(player, "gamesplayed");
+              addExperience(player, 10);
+              setTimer(25);
+              player.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Messages.Lobby-Messages.Game-Started"));
+            }
+            fighting = false;
+          }
+          setTimer(getTimer() - 1);
+          break;
+        case IN_GAME:
+          if (plugin.isBossbarEnabled()) {
+            if (barToggle > 5) {
+              gameBar.setTitle(ChatManager.colorMessage("Bossbar.In-Game-Wave").replace("%wave%", String.valueOf(getWave())));
+              barToggle++;
+              if (barToggle > 10) {
+                barToggle = 0;
+              }
+            } else {
+              gameBar.setTitle(ChatManager.colorMessage("Bossbar.In-Game-Info").replace("%wave%", String.valueOf(getWave())));
+              barToggle++;
+            }
+          }
+          if (plugin.isBungeeActivated()) {
+            if (getMaximumPlayers() <= getPlayers().size()) {
+              plugin.getServer().setWhitelist(true);
+            } else {
+              plugin.getServer().setWhitelist(false);
+            }
+          }
+          zombieChecker++;
+          if (zombieChecker >= 60) {
+            List<Villager> remove = new ArrayList<>();
+            for (Villager villager : getVillagers()) {
+              if (villager.isDead()) {
+                remove.add(villager);
+              }
+            }
+            for (Villager villager : remove) {
+              removeVillager(villager);
+            }
+            remove.clear();
+            zombieChecker = 0;
+            List<Zombie> removeAfterLoop = new ArrayList<>();
+            for (Zombie zombie : getZombies()) {
+              if (zombie.isDead()) {
+                removeAfterLoop.add(zombie);
+                continue;
+              }
+              if (glitchedZombies.contains(zombie) && zombie.getLocation().distance(zombieCheckerLocations.get(zombie)) <= 1) {
+                removeAfterLoop.add(zombie);
+                zombieCheckerLocations.remove(zombie);
+                zombie.remove();
+              }
+              if (zombieCheckerLocations.get(zombie) == null) {
+                zombieCheckerLocations.put(zombie, zombie.getLocation());
+              } else {
+                Location location = zombieCheckerLocations.get(zombie);
+
+                if (zombie.getLocation().distance(location) <= 1) {
+                  zombie.teleport(zombieSpawns.get(random.nextInt(zombieSpawns.size() - 1)));
+                  zombieCheckerLocations.put(zombie, zombie.getLocation());
+                  glitchedZombies.add(zombie);
+                }
+              }
+            }
+
+            for (Zombie zombie : removeAfterLoop) {
+              removeZombie(zombie);
+            }
+            removeAfterLoop.clear();
+
+          }
+          if (getVillagers().size() <= 0 || getPlayersLeft().size() <= 0) {
+            clearZombies();
+            this.setArenaState(ArenaState.ENDING);
+            ArenaManager.stopGame(false, this);
+            if (getVillagers().size() <= 0) {
+              showPlayers();
+              this.setTimer(10);
+            } else {
+              this.setTimer(5);
             }
             return;
           }
-        } else {
-          if (plugin.isBossbarEnabled()) {
-            gameBar.setTitle(ChatManager.colorMessage("Bossbar.Waiting-For-Players"));
-          }
-          for (Player p : getPlayers()) {
-            p.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Messages.Lobby-Messages.Enough-Players-To-Start"));
-          }
-          setArenaState(ArenaState.STARTING);
-          setTimer(Main.STARTING_TIMER_TIME);
-          this.showPlayers();
-        }
-        setTimer(getTimer() - 1);
-        break;
-      case STARTING:
-        if (plugin.isBossbarEnabled()) {
-          gameBar.setTitle(ChatManager.colorMessage("Bossbar.Starting-In").replace("%time%", String.valueOf(getTimer())));
-          gameBar.setProgress(getTimer() / plugin.getConfig().getDouble("Starting-Waiting-Time", 60));
-        }
-        if (getTimer() == 0) {
-          VillageGameStartEvent villageGameStartEvent = new VillageGameStartEvent(this);
-          Bukkit.getPluginManager().callEvent(villageGameStartEvent);
-          setArenaState(ArenaState.IN_GAME);
-          if (plugin.isBossbarEnabled()) {
-            gameBar.setProgress(1.0);
-          }
-          setTimer(5);
-          teleportAllToStartLocation();
-          for (Player player : getPlayers()) {
-            player.getInventory().clear();
-            player.setGameMode(GameMode.SURVIVAL);
-            User user = UserManager.getUser(player.getUniqueId());
-            user.setInt("orbs", plugin.getConfig().getInt("Orbs-Starting-Amount", 20));
-            ArenaUtils.hidePlayersOutsideTheGame(player, this);
-            if (UserManager.getUser(player.getUniqueId()).getKit() != null) {
-              UserManager.getUser(player.getUniqueId()).getKit().giveKitItems(player);
+          if (fighting) {
+            if (getZombiesLeft() <= 0) {
+              fighting = false;
+              ArenaManager.endWave(this);
+            }
+            if (zombiesToSpawn > 0) {
+              spawnZombies();
+              setTimer(500);
             } else {
-              KitRegistry.getDefaultKit().giveKitItems(player);
-            }
-            player.updateInventory();
-            addStat(player, "gamesplayed");
-            addExperience(player, 10);
-            setTimer(25);
-            player.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Messages.Lobby-Messages.Game-Started"));
-          }
-          fighting = false;
-        }
-        setTimer(getTimer() - 1);
-        break;
-      case IN_GAME:
-        if (plugin.isBossbarEnabled()) {
-          if (barToggle > 5) {
-            gameBar.setTitle(ChatManager.colorMessage("Bossbar.In-Game-Wave").replace("%wave%", String.valueOf(getWave())));
-            barToggle++;
-            if (barToggle > 10) {
-              barToggle = 0;
-            }
-          } else {
-            gameBar.setTitle(ChatManager.colorMessage("Bossbar.In-Game-Info").replace("%wave%", String.valueOf(getWave())));
-            barToggle++;
-          }
-        }
-        if (plugin.isBungeeActivated()) {
-          if (getMaximumPlayers() <= getPlayers().size()) {
-            plugin.getServer().setWhitelist(true);
-          } else {
-            plugin.getServer().setWhitelist(false);
-          }
-        }
-        zombieChecker++;
-        if (zombieChecker >= 60) {
-          List<Villager> remove = new ArrayList<>();
-          for (Villager villager : getVillagers()) {
-            if (villager.isDead()) {
-              remove.add(villager);
-            }
-          }
-          for (Villager villager : remove) {
-            removeVillager(villager);
-          }
-          remove.clear();
-          zombieChecker = 0;
-          List<Zombie> removeAfterLoop = new ArrayList<>();
-          for (Zombie zombie : getZombies()) {
-            if (zombie.isDead()) {
-              removeAfterLoop.add(zombie);
-              continue;
-            }
-            if (glitchedZombies.contains(zombie) && zombie.getLocation().distance(zombieCheckerLocations.get(zombie)) <= 1) {
-              removeAfterLoop.add(zombie);
-              zombieCheckerLocations.remove(zombie);
-              zombie.remove();
-            }
-            if (zombieCheckerLocations.get(zombie) == null) {
-              zombieCheckerLocations.put(zombie, zombie.getLocation());
-            } else {
-              Location location = zombieCheckerLocations.get(zombie);
-
-              if (zombie.getLocation().distance(location) <= 1) {
-                zombie.teleport(zombieSpawns.get(random.nextInt(zombieSpawns.size() - 1)));
-                zombieCheckerLocations.put(zombie, zombie.getLocation());
-                glitchedZombies.add(zombie);
-              }
-            }
-          }
-
-          for (Zombie zombie : removeAfterLoop) {
-            removeZombie(zombie);
-          }
-          removeAfterLoop.clear();
-
-        }
-        if (getVillagers().size() <= 0 || getPlayersLeft().size() <= 0) {
-          clearZombies();
-          this.setArenaState(ArenaState.ENDING);
-          ArenaManager.stopGame(false, this);
-          if (getVillagers().size() <= 0) {
-            showPlayers();
-            this.setTimer(10);
-          } else {
-            this.setTimer(5);
-          }
-          return;
-        }
-        if (fighting) {
-          if (getZombiesLeft() <= 0) {
-            fighting = false;
-            ArenaManager.endWave(this);
-          }
-          if (zombiesToSpawn > 0) {
-            spawnZombies();
-            setTimer(500);
-          } else {
-            if (getTimer() == 0) {
-              if (getZombiesLeft() <= 5) {
-                clearZombies();
-                zombiesToSpawn = 0;
-                for (Player p : getPlayers()) {
-                  p.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Messages.Zombie-Got-Stuck-In-The-Map"));
-                }
-              } else {
-                getZombies().clear();
-                for (int i = getZombiesLeft(); i > 0; i++) {
-                  spawnFastZombie(random);
+              if (getTimer() == 0) {
+                if (getZombiesLeft() <= 5) {
+                  clearZombies();
+                  zombiesToSpawn = 0;
+                  for (Player p : getPlayers()) {
+                    p.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Messages.Zombie-Got-Stuck-In-The-Map"));
+                  }
+                } else {
+                  getZombies().clear();
+                  for (int i = getZombiesLeft(); i > 0; i++) {
+                    spawnFastZombie(random);
+                  }
                 }
               }
             }
-          }
-          if (zombiesToSpawn < 0) {
-            zombiesToSpawn = 0;
+            if (zombiesToSpawn < 0) {
+              zombiesToSpawn = 0;
+            }
+            setTimer(getTimer() - 1);
+
+          } else {
+            if (getTimer() <= 0) {
+              fighting = true;
+              ArenaManager.startWave(this);
+            }
           }
           setTimer(getTimer() - 1);
-
-        } else {
-          if (getTimer() <= 0) {
-            fighting = true;
-            ArenaManager.startWave(this);
-          }
-        }
-        setTimer(getTimer() - 1);
-        break;
-      case ENDING:
-        if (plugin.isBungeeActivated()) {
-          plugin.getServer().setWhitelist(false);
-        }
-        if (getTimer() <= 0) {
-          if (plugin.isBossbarEnabled()) {
-            gameBar.setTitle(ChatManager.colorMessage("Bossbar.Game-Ended"));
-          }
-          clearVillagers();
-          clearZombies();
-          clearGolems();
-          clearWolfs();
-
-          for (Player player : getPlayers()) {
-            UserManager.getUser(player.getUniqueId()).removeScoreboard();
-            player.setGameMode(GameMode.SURVIVAL);
-            for (Player players : Bukkit.getOnlinePlayers()) {
-              player.showPlayer(players);
-              players.hidePlayer(player);
-            }
-            for (PotionEffect effect : player.getActivePotionEffects()) {
-              player.removePotionEffect(effect.getType());
-            }
-            player.setFlying(false);
-            player.setAllowFlight(false);
-            player.getInventory().clear();
-
-            player.getInventory().setArmorContents(null);
-            if (plugin.isBossbarEnabled()) {
-              gameBar.removePlayer(player);
-            }
-            player.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(20.0);
-            player.setHealth(player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue());
-            player.setFireTicks(0);
-            player.setFoodLevel(20);
-            for (Player players : plugin.getServer().getOnlinePlayers()) {
-              if (ArenaRegistry.getArena(players) != null) {
-                players.showPlayer(player);
-              }
-              player.showPlayer(players);
-            }
-          }
-
-          teleportAllToEndLocation();
-
-          if (plugin.isInventoryManagerEnabled()) {
-            for (Player player : getPlayers()) {
-              InventoryUtils.loadInventory(plugin, player);
-            }
-          }
-
-          for (Player p : getPlayers()) {
-            p.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("Commands.Teleported-To-The-Lobby"));
-          }
-
-          for (User user : UserManager.getUsers(this)) {
-            user.setSpectator(false);
-            user.setInt("orbs", 0);
-            user.setFakeDead(false);
-          }
-          plugin.getRewardsHandler().performEndGameRewards(this);
-          players.clear();
+          break;
+        case ENDING:
           if (plugin.isBungeeActivated()) {
-            if (ConfigUtils.getConfig(plugin, "bungee").getBoolean("Shutdown-When-Game-Ends")) {
-              plugin.getServer().shutdown();
+            plugin.getServer().setWhitelist(false);
+          }
+          if (getTimer() <= 0) {
+            if (plugin.isBossbarEnabled()) {
+              gameBar.setTitle(ChatManager.colorMessage("Bossbar.Game-Ended"));
+            }
+            clearVillagers();
+            clearZombies();
+            clearGolems();
+            clearWolfs();
+
+            for (Player player : getPlayers()) {
+              UserManager.getUser(player.getUniqueId()).removeScoreboard();
+              player.setGameMode(GameMode.SURVIVAL);
+              for (Player players : Bukkit.getOnlinePlayers()) {
+                player.showPlayer(players);
+                players.hidePlayer(player);
+              }
+              for (PotionEffect effect : player.getActivePotionEffects()) {
+                player.removePotionEffect(effect.getType());
+              }
+              player.setFlying(false);
+              player.setAllowFlight(false);
+              player.getInventory().clear();
+
+              player.getInventory().setArmorContents(null);
+              if (plugin.isBossbarEnabled()) {
+                gameBar.removePlayer(player);
+              }
+              player.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(20.0);
+              player.setHealth(player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue());
+              player.setFireTicks(0);
+              player.setFoodLevel(20);
+              for (Player players : plugin.getServer().getOnlinePlayers()) {
+                if (ArenaRegistry.getArena(players) != null) {
+                  players.showPlayer(player);
+                }
+                player.showPlayer(players);
+              }
+            }
+
+            teleportAllToEndLocation();
+
+            if (plugin.isInventoryManagerEnabled()) {
+              for (Player player : getPlayers()) {
+                InventoryUtils.loadInventory(plugin, player);
+              }
+            }
+
+            for (Player p : getPlayers()) {
+              p.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("Commands.Teleported-To-The-Lobby"));
+            }
+
+            for (User user : UserManager.getUsers(this)) {
+              user.setSpectator(false);
+              user.setInt("orbs", 0);
+              user.setFakeDead(false);
+            }
+            plugin.getRewardsHandler().performEndGameRewards(this);
+            players.clear();
+            if (plugin.isBungeeActivated()) {
+              if (ConfigUtils.getConfig(plugin, "bungee").getBoolean("Shutdown-When-Game-Ends")) {
+                plugin.getServer().shutdown();
+              }
+            }
+            setArenaState(ArenaState.RESTARTING);
+          }
+          setTimer(getTimer() - 1);
+          break;
+        case RESTARTING:
+          clearVillagers();
+          this.restoreMap();
+
+          getPlayers().clear();
+
+          setArenaState(ArenaState.WAITING_FOR_PLAYERS);
+
+          wave = 1;
+          totalKilledZombies = 0;
+          totalOrbsSpent = 0;
+          if (plugin.isBungeeActivated()) {
+            for (Player player : plugin.getServer().getOnlinePlayers()) {
+              this.addPlayer(player);
             }
           }
-          setArenaState(ArenaState.RESTARTING);
-        }
-        setTimer(getTimer() - 1);
-        break;
-      case RESTARTING:
-        clearVillagers();
-        this.restoreMap();
-
-        getPlayers().clear();
-
-        setArenaState(ArenaState.WAITING_FOR_PLAYERS);
-
-        wave = 1;
-        totalKilledZombies = 0;
-        totalOrbsSpent = 0;
-        if (plugin.isBungeeActivated()) {
-          for (Player player : plugin.getServer().getOnlinePlayers()) {
-            this.addPlayer(player);
-          }
-        }
-        break;
-      default:
-        break; //o.o?
+          break;
+        default:
+          break; //o.o?
+      }
+    } catch (Exception e) {
+      new ReportedException(plugin, e);
     }
   }
 
@@ -438,6 +443,7 @@ public abstract class Arena extends BukkitRunnable {
     if (getPlayers().size() == 0 || getArenaState() == ArenaState.RESTARTING) {
       return;
     }
+    MinigameScoreboard scoreboard;
     for (Player p : getPlayers()) {
       //temp only a temporary fix for Sitieno14
       if (p == null) {
@@ -448,7 +454,7 @@ public abstract class Arena extends BukkitRunnable {
         user.removeScoreboard();
         return;
       }
-      MinigameScoreboard scoreboard;
+      scoreboard = new MinigameScoreboard("PL_VD3", "PL_CR", ChatManager.colorMessage("Scoreboard.Title"));
       List<String> lines;
       if (getArenaState() == ArenaState.IN_GAME) {
         if (LanguageManager.getPluginLocale() == Locale.ENGLISH) {
@@ -463,10 +469,10 @@ public abstract class Arena extends BukkitRunnable {
           lines = Arrays.asList(ChatManager.colorMessage("Scoreboard.Content." + getArenaState().getFormattedName()).split(";"));
         }
       }
-      scoreboard = new MinigameScoreboard(ChatManager.colorMessage("Scoreboard.Title"), lines);
-      for (int i = 0; i < lines.size(); i++) {
-        scoreboard.setValue(i, formatScoreboardLine(lines.get(i), user));
+      for (String line : lines) {
+        scoreboard.addRow(formatScoreboardLine(line, user));
       }
+      scoreboard.finish();
       scoreboard.display(p);
     }
   }

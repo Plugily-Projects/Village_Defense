@@ -42,7 +42,7 @@ public class MySQLConnectionUtils {
     ResultSet resultSet = database.executeQuery("SELECT UUID from playerstats WHERE UUID='" + player.getUniqueId().toString() + "'");
     try {
       if (!resultSet.next()) {
-        database.insertPlayer(player.getUniqueId().toString());
+        database.insertPlayer(player);
         b = true;
       }
 
@@ -79,7 +79,7 @@ public class MySQLConnectionUtils {
     if (!b) {
       try {
         if (!resultSet.next()) {
-          database.insertPlayer(player.getUniqueId().toString());
+          database.insertPlayer(player);
         }
 
         int gamesplayed;

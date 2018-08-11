@@ -29,6 +29,7 @@ import java.util.Map;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import pl.plajer.villagedefense3.Main;
@@ -53,7 +54,7 @@ public class MySQLDatabase {
       }
       connection.createStatement().executeUpdate("CREATE TABLE IF NOT EXISTS `playerstats` (\n"
               + "  `UUID` text NOT NULL,\n"
-              + "  `name` text NOT NULL DEFAULT 'Unknown Player',\n"
+              + "  `name` text NOT NULL,\n"
               + "  `kills` int(11) NOT NULL DEFAULT '0',\n"
               + "  `deaths` int(11) NOT NULL DEFAULT '0',\n"
               + "  `highestwave` int(11) NOT NULL DEFAULT '0',\n"
@@ -65,7 +66,7 @@ public class MySQLDatabase {
 
       //temporary workaround
       try {
-        connection.createStatement().executeUpdate("ALTER TABLE playerstats ADD name text NOT NULL DEFAULT 'Unknown Player'");
+        connection.createStatement().executeUpdate("ALTER TABLE playerstats ADD `name` text NOT NULL");
       } catch (MySQLSyntaxErrorException e) {
         if (!e.getMessage().contains("Duplicate column name")) {
           e.printStackTrace();
@@ -108,8 +109,8 @@ public class MySQLDatabase {
     }
   }
 
-  public void insertPlayer(String UUID) {
-    executeUpdate("INSERT INTO playerstats (UUID,xp) VALUES ('" + UUID + "',0)");
+  public void insertPlayer(Player player) {
+    executeUpdate("INSERT INTO playerstats (UUID,name,xp) VALUES ('" + player.getUniqueId().toString() + "','" + player.getName() + "',0)");
   }
 
   public void closeDatabase() {

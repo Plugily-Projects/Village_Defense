@@ -18,25 +18,23 @@
 
 package pl.plajer.villagedefense3.commands;
 
-import com.sk89q.worldedit.Vector;
-import com.sk89q.worldedit.bukkit.selections.CuboidSelection;
-import com.sk89q.worldedit.bukkit.selections.Selection;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.material.Door;
 
 import pl.plajer.villagedefense3.Main;
 import pl.plajer.villagedefense3.arena.Arena;
@@ -47,9 +45,10 @@ import pl.plajer.villagedefense3.arena.initializers.ArenaInitializer1_12_R1;
 import pl.plajer.villagedefense3.arena.initializers.ArenaInitializer1_13_R1;
 import pl.plajer.villagedefense3.arena.initializers.ArenaInitializer1_9_R1;
 import pl.plajer.villagedefense3.handlers.ChatManager;
-import pl.plajer.villagedefense3.handlers.ConfigurationManager;
 import pl.plajer.villagedefense3.handlers.setup.SetupInventory;
 import pl.plajer.villagedefense3.utils.StringMatcher;
+import pl.plajer.villagedefense3.utils.Utils;
+import pl.plajerlair.core.services.ReportedException;
 import pl.plajerlair.core.utils.ConfigUtils;
 import pl.plajerlair.core.utils.MinigameUtils;
 
@@ -105,259 +104,264 @@ public class MainCommand implements CommandExecutor {
 
   @Override
   public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-    if (cmd.getName().equalsIgnoreCase("villagedefenseadmin")) {
-      if (args.length == 0) {
-        adminCommands.sendHelp(sender);
-        return true;
-      }
-      if (args[0].equalsIgnoreCase("stop")) {
-        adminCommands.stopGame(sender);
-        return true;
-      } else if (args[0].equalsIgnoreCase("list")) {
-        adminCommands.printList(sender);
-        return true;
-      } else if (args[0].equalsIgnoreCase("forcestart")) {
-        adminCommands.forceStartGame(sender);
-        return true;
-      } else if (args[0].equalsIgnoreCase("respawn")) {
-        if (args.length == 1) {
-          adminCommands.respawn(sender);
-        } else {
-          adminCommands.respawnOther(sender, args[1]);
-        }
-        return true;
-      } else if (args[0].equalsIgnoreCase("spychat")) {
-        adminCommands.toggleSpyChat(sender);
-        return true;
-      } else if (args[0].equalsIgnoreCase("reload")) {
-        adminCommands.reloadInstances(sender);
-        return true;
-      } else if (args[0].equalsIgnoreCase("delete")) {
-        if (args.length != 1) {
-          adminCommands.deleteArena(sender, args[1]);
-        } else {
-          sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("Commands.Type-Arena-Name"));
-        }
-        return true;
-      } else if (args[0].equalsIgnoreCase("setprice")) {
-        if (args.length != 1) {
-          adminCommands.setItemPrice(sender, args[1]);
-        } else {
-          sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatColor.RED + "Please type price of item!");
-        }
-        return true;
-      } else if (args[0].equalsIgnoreCase("tp")) {
-        if (args.length == 1) {
-          sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("Commands.Type-Arena-Name"));
-          return true;
-        }
-        if (args.length == 2) {
-          sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatColor.RED + "Please type location type: END, START, LOBBY");
-          return true;
-        }
-        adminCommands.teleportToInstance(sender, args[1], args[2]);
-        return true;
-      } else if (args[0].equalsIgnoreCase("clear")) {
-        if (args.length == 1) {
-          sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatColor.RED + "Please type valid mob type to clear: VILLAGER, ZOMBIE, GOLEM");
-          return true;
-        }
-        if (args[1].equalsIgnoreCase("villager")) {
-          adminCommands.clearVillagers(sender);
-        } else if (args[1].equalsIgnoreCase("zombie")) {
-          adminCommands.clearZombies(sender);
-        } else if (args[1].equalsIgnoreCase("golem")) {
-          adminCommands.clearGolems(sender);
-        } else {
-          sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatColor.RED + "Please type valid mob type to clear: VILLAGER, ZOMBIE, GOLEM");
-          return true;
-        }
-        return true;
-      } else if (args[0].equalsIgnoreCase("addorbs")) {
-        if (args.length == 1) {
-          sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatColor.RED + "Please type number of orbs to give!");
-          return true;
-        }
-        if (args.length == 2) {
-          adminCommands.addOrbs(sender, args[1]);
-        } else {
-          adminCommands.addOrbsOther(sender, args[2], args[1]);
-        }
-        return true;
-      } else if (args[0].equalsIgnoreCase("setwave")) {
-        if (args.length == 1) {
-          sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatColor.RED + "Please type number of wave to set!");
-          return true;
-        }
-        adminCommands.setWave(sender, args[1]);
-        return true;
-      }
-      adminCommands.sendHelp(sender);
-      List<StringMatcher.Match> matches = StringMatcher.match(args[0], Arrays.asList("stop", "list", "forcestart", "respawn", "spychat",
-              "reload", "setshopchest", "delete", "setprice", "tp", "clear", "addorbs", "setwave"));
-      if (!matches.isEmpty()) {
-        sender.sendMessage(ChatManager.colorMessage("Commands.Did-You-Mean").replace("%command%", "vda " + matches.get(0).getMatch()));
-      }
-      return true;
-    }
-    if (cmd.getName().equalsIgnoreCase("villagedefense")) {
-      if (args.length == 0) {
-        sender.sendMessage(ChatManager.colorMessage("Commands.Main-Command.Header"));
-        sender.sendMessage(ChatManager.colorMessage("Commands.Main-Command.Description"));
-        if (sender.hasPermission("villagedefense.admin")) {
-          sender.sendMessage(ChatManager.colorMessage("Commands.Main-Command.Admin-Bonus-Description"));
-        }
-        sender.sendMessage(ChatManager.colorMessage("Commands.Main-Command.Footer"));
-        return true;
-      }
-      if (args.length > 1) {
-        if (args[1].equalsIgnoreCase("set") || args[1].equalsIgnoreCase("addspawn") || args[1].equalsIgnoreCase("edit")) {
-          if (checkSenderIsConsole(sender) || !hasPermission(sender, "villagedefense.admin.create")) {
-            return true;
-          }
-          adminCommands.performSetup(sender, args);
-          return true;
-        }
-      }
-      if (args[0].equalsIgnoreCase("join")) {
-        if (args.length == 2) {
-          gameCommands.joinGame(sender, args[1]);
-          return true;
-        }
-        sender.sendMessage(ChatManager.colorMessage("Commands.Type-Arena-Name"));
-        return true;
-      } else if (args[0].equalsIgnoreCase("randomjoin")) {
-        gameCommands.joinRandomGame(sender);
-        return true;
-      } else if (args[0].equalsIgnoreCase("stats")) {
-        if (args.length == 2) {
-          gameCommands.sendStatsOther(sender, args[1]);
-        }
-        gameCommands.sendStats(sender);
-        return true;
-      } else if (args[0].equalsIgnoreCase("top")) {
-        if (args.length == 2) {
-          gameCommands.sendTopStatistics(sender, args[1]);
-        } else {
-          sender.sendMessage(ChatManager.colorMessage("Commands.Statistics.Type-Name"));
-        }
-        return true;
-      } else if (args[0].equalsIgnoreCase("leave")) {
-        gameCommands.leaveGame(sender);
-        return true;
-      } else if (args[0].equalsIgnoreCase("selectkit")) {
-        gameCommands.openKitMenu(sender);
-        return true;
-      } else if (args[0].equalsIgnoreCase("create")) {
-        if (args.length == 2) {
-          adminCommands.createArena(sender, args);
-          return true;
-        }
-        sender.sendMessage(ChatManager.colorMessage("Commands.Type-Arena-Name"));
-        return true;
-      } else if (args[0].equalsIgnoreCase("admin")) {
-        if (args.length == 1) {
+    try {
+      if (cmd.getName().equalsIgnoreCase("villagedefenseadmin")) {
+        if (args.length == 0) {
           adminCommands.sendHelp(sender);
           return true;
         }
-        if (args[1].equalsIgnoreCase("stop")) {
+        if (args[0].equalsIgnoreCase("stop")) {
           adminCommands.stopGame(sender);
           return true;
-        } else if (args[1].equalsIgnoreCase("list")) {
+        } else if (args[0].equalsIgnoreCase("list")) {
           adminCommands.printList(sender);
           return true;
-        } else if (args[1].equalsIgnoreCase("forcestart")) {
+        } else if (args[0].equalsIgnoreCase("forcestart")) {
           adminCommands.forceStartGame(sender);
           return true;
-        } else if (args[1].equalsIgnoreCase("respawn")) {
-          if (args.length == 2) {
+        } else if (args[0].equalsIgnoreCase("respawn")) {
+          if (args.length == 1) {
             adminCommands.respawn(sender);
           } else {
-            adminCommands.respawnOther(sender, args[2]);
+            adminCommands.respawnOther(sender, args[1]);
           }
           return true;
-        } else if (args[1].equalsIgnoreCase("spychat")) {
+        } else if (args[0].equalsIgnoreCase("spychat")) {
           adminCommands.toggleSpyChat(sender);
           return true;
-        } else if (args[1].equalsIgnoreCase("reload")) {
+        } else if (args[0].equalsIgnoreCase("reload")) {
           adminCommands.reloadInstances(sender);
           return true;
-        } else if (args[1].equalsIgnoreCase("delete")) {
-          if (args.length != 2) {
-            adminCommands.deleteArena(sender, args[2]);
+        } else if (args[0].equalsIgnoreCase("delete")) {
+          if (args.length != 1) {
+            adminCommands.deleteArena(sender, args[1]);
           } else {
             sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("Commands.Type-Arena-Name"));
           }
           return true;
-        } else if (args[1].equalsIgnoreCase("setprice")) {
-          if (args.length != 2) {
-            adminCommands.setItemPrice(sender, args[2]);
+        } else if (args[0].equalsIgnoreCase("setprice")) {
+          if (args.length != 1) {
+            adminCommands.setItemPrice(sender, args[1]);
           } else {
             sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatColor.RED + "Please type price of item!");
           }
           return true;
-        } else if (args[1].equalsIgnoreCase("tp")) {
-          if (args.length == 2) {
+        } else if (args[0].equalsIgnoreCase("tp")) {
+          if (args.length == 1) {
             sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("Commands.Type-Arena-Name"));
             return true;
           }
-          if (args.length == 3) {
+          if (args.length == 2) {
             sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatColor.RED + "Please type location type: END, START, LOBBY");
             return true;
           }
-          adminCommands.teleportToInstance(sender, args[2], args[3]);
+          adminCommands.teleportToInstance(sender, args[1], args[2]);
           return true;
-        } else if (args[1].equalsIgnoreCase("clear")) {
-          if (args.length == 2) {
+        } else if (args[0].equalsIgnoreCase("clear")) {
+          if (args.length == 1) {
             sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatColor.RED + "Please type valid mob type to clear: VILLAGER, ZOMBIE, GOLEM");
             return true;
           }
-          if (args[2].equalsIgnoreCase("villager")) {
+          if (args[1].equalsIgnoreCase("villager")) {
             adminCommands.clearVillagers(sender);
-          } else if (args[2].equalsIgnoreCase("zombie")) {
+          } else if (args[1].equalsIgnoreCase("zombie")) {
             adminCommands.clearZombies(sender);
-          } else if (args[2].equalsIgnoreCase("golem")) {
+          } else if (args[1].equalsIgnoreCase("golem")) {
             adminCommands.clearGolems(sender);
           } else {
             sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatColor.RED + "Please type valid mob type to clear: VILLAGER, ZOMBIE, GOLEM");
             return true;
           }
           return true;
-        } else if (args[1].equalsIgnoreCase("addorbs")) {
-          if (args.length == 2) {
+        } else if (args[0].equalsIgnoreCase("addorbs")) {
+          if (args.length == 1) {
             sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatColor.RED + "Please type number of orbs to give!");
             return true;
           }
-          if (args.length == 3) {
-            adminCommands.addOrbs(sender, args[2]);
+          if (args.length == 2) {
+            adminCommands.addOrbs(sender, args[1]);
           } else {
-            adminCommands.addOrbsOther(sender, args[3], args[2]);
+            adminCommands.addOrbsOther(sender, args[2], args[1]);
           }
           return true;
-        } else if (args[1].equalsIgnoreCase("setwave")) {
-          if (args.length == 2) {
+        } else if (args[0].equalsIgnoreCase("setwave")) {
+          if (args.length == 1) {
             sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatColor.RED + "Please type number of wave to set!");
             return true;
           }
-          adminCommands.setWave(sender, args[2]);
+          adminCommands.setWave(sender, args[1]);
           return true;
         }
         adminCommands.sendHelp(sender);
-        List<StringMatcher.Match> matches = StringMatcher.match(args[1], Arrays.asList("stop", "list", "forcestart", "respawn", "spychat",
+        List<StringMatcher.Match> matches = StringMatcher.match(args[0], Arrays.asList("stop", "list", "forcestart", "respawn", "spychat",
                 "reload", "setshopchest", "delete", "setprice", "tp", "clear", "addorbs", "setwave"));
         if (!matches.isEmpty()) {
-          sender.sendMessage(ChatManager.colorMessage("Commands.Did-You-Mean").replace("%command%", "vd admin " + matches.get(0).getMatch()));
-        }
-        return true;
-      } else {
-        List<StringMatcher.Match> matches = StringMatcher.match(args[0], Arrays.asList("join", "leave", "stats", "top", "admin", "create", "selectkit"));
-        if (!matches.isEmpty()) {
-          sender.sendMessage(ChatManager.colorMessage("Commands.Did-You-Mean").replace("%command%", "vd " + matches.get(0).getMatch()));
+          sender.sendMessage(ChatManager.colorMessage("Commands.Did-You-Mean").replace("%command%", "vda " + matches.get(0).getMatch()));
         }
         return true;
       }
+      if (cmd.getName().equalsIgnoreCase("villagedefense")) {
+        if (args.length == 0) {
+          sender.sendMessage(ChatManager.colorMessage("Commands.Main-Command.Header"));
+          sender.sendMessage(ChatManager.colorMessage("Commands.Main-Command.Description"));
+          if (sender.hasPermission("villagedefense.admin")) {
+            sender.sendMessage(ChatManager.colorMessage("Commands.Main-Command.Admin-Bonus-Description"));
+          }
+          sender.sendMessage(ChatManager.colorMessage("Commands.Main-Command.Footer"));
+          return true;
+        }
+        if (args.length > 1) {
+          if (args[1].equalsIgnoreCase("set") || args[1].equalsIgnoreCase("addspawn") || args[1].equalsIgnoreCase("edit")) {
+            if (checkSenderIsConsole(sender) || !hasPermission(sender, "villagedefense.admin.create")) {
+              return true;
+            }
+            adminCommands.performSetup(sender, args);
+            return true;
+          }
+        }
+        if (args[0].equalsIgnoreCase("join")) {
+          if (args.length == 2) {
+            gameCommands.joinGame(sender, args[1]);
+            return true;
+          }
+          sender.sendMessage(ChatManager.colorMessage("Commands.Type-Arena-Name"));
+          return true;
+        } else if (args[0].equalsIgnoreCase("randomjoin")) {
+          gameCommands.joinRandomGame(sender);
+          return true;
+        } else if (args[0].equalsIgnoreCase("stats")) {
+          if (args.length == 2) {
+            gameCommands.sendStatsOther(sender, args[1]);
+          }
+          gameCommands.sendStats(sender);
+          return true;
+        } else if (args[0].equalsIgnoreCase("top")) {
+          if (args.length == 2) {
+            gameCommands.sendTopStatistics(sender, args[1]);
+          } else {
+            sender.sendMessage(ChatManager.colorMessage("Commands.Statistics.Type-Name"));
+          }
+          return true;
+        } else if (args[0].equalsIgnoreCase("leave")) {
+          gameCommands.leaveGame(sender);
+          return true;
+        } else if (args[0].equalsIgnoreCase("selectkit")) {
+          gameCommands.openKitMenu(sender);
+          return true;
+        } else if (args[0].equalsIgnoreCase("create")) {
+          if (args.length == 2) {
+            adminCommands.createArena(sender, args);
+            return true;
+          }
+          sender.sendMessage(ChatManager.colorMessage("Commands.Type-Arena-Name"));
+          return true;
+        } else if (args[0].equalsIgnoreCase("admin")) {
+          if (args.length == 1) {
+            adminCommands.sendHelp(sender);
+            return true;
+          }
+          if (args[1].equalsIgnoreCase("stop")) {
+            adminCommands.stopGame(sender);
+            return true;
+          } else if (args[1].equalsIgnoreCase("list")) {
+            adminCommands.printList(sender);
+            return true;
+          } else if (args[1].equalsIgnoreCase("forcestart")) {
+            adminCommands.forceStartGame(sender);
+            return true;
+          } else if (args[1].equalsIgnoreCase("respawn")) {
+            if (args.length == 2) {
+              adminCommands.respawn(sender);
+            } else {
+              adminCommands.respawnOther(sender, args[2]);
+            }
+            return true;
+          } else if (args[1].equalsIgnoreCase("spychat")) {
+            adminCommands.toggleSpyChat(sender);
+            return true;
+          } else if (args[1].equalsIgnoreCase("reload")) {
+            adminCommands.reloadInstances(sender);
+            return true;
+          } else if (args[1].equalsIgnoreCase("delete")) {
+            if (args.length != 2) {
+              adminCommands.deleteArena(sender, args[2]);
+            } else {
+              sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("Commands.Type-Arena-Name"));
+            }
+            return true;
+          } else if (args[1].equalsIgnoreCase("setprice")) {
+            if (args.length != 2) {
+              adminCommands.setItemPrice(sender, args[2]);
+            } else {
+              sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatColor.RED + "Please type price of item!");
+            }
+            return true;
+          } else if (args[1].equalsIgnoreCase("tp")) {
+            if (args.length == 2) {
+              sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("Commands.Type-Arena-Name"));
+              return true;
+            }
+            if (args.length == 3) {
+              sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatColor.RED + "Please type location type: END, START, LOBBY");
+              return true;
+            }
+            adminCommands.teleportToInstance(sender, args[2], args[3]);
+            return true;
+          } else if (args[1].equalsIgnoreCase("clear")) {
+            if (args.length == 2) {
+              sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatColor.RED + "Please type valid mob type to clear: VILLAGER, ZOMBIE, GOLEM");
+              return true;
+            }
+            if (args[2].equalsIgnoreCase("villager")) {
+              adminCommands.clearVillagers(sender);
+            } else if (args[2].equalsIgnoreCase("zombie")) {
+              adminCommands.clearZombies(sender);
+            } else if (args[2].equalsIgnoreCase("golem")) {
+              adminCommands.clearGolems(sender);
+            } else {
+              sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatColor.RED + "Please type valid mob type to clear: VILLAGER, ZOMBIE, GOLEM");
+              return true;
+            }
+            return true;
+          } else if (args[1].equalsIgnoreCase("addorbs")) {
+            if (args.length == 2) {
+              sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatColor.RED + "Please type number of orbs to give!");
+              return true;
+            }
+            if (args.length == 3) {
+              adminCommands.addOrbs(sender, args[2]);
+            } else {
+              adminCommands.addOrbsOther(sender, args[3], args[2]);
+            }
+            return true;
+          } else if (args[1].equalsIgnoreCase("setwave")) {
+            if (args.length == 2) {
+              sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatColor.RED + "Please type number of wave to set!");
+              return true;
+            }
+            adminCommands.setWave(sender, args[2]);
+            return true;
+          }
+          adminCommands.sendHelp(sender);
+          List<StringMatcher.Match> matches = StringMatcher.match(args[1], Arrays.asList("stop", "list", "forcestart", "respawn", "spychat",
+                  "reload", "setshopchest", "delete", "setprice", "tp", "clear", "addorbs", "setwave"));
+          if (!matches.isEmpty()) {
+            sender.sendMessage(ChatManager.colorMessage("Commands.Did-You-Mean").replace("%command%", "vd admin " + matches.get(0).getMatch()));
+          }
+          return true;
+        } else {
+          List<StringMatcher.Match> matches = StringMatcher.match(args[0], Arrays.asList("join", "leave", "stats", "top", "admin", "create", "selectkit"));
+          if (!matches.isEmpty()) {
+            sender.sendMessage(ChatManager.colorMessage("Commands.Did-You-Mean").replace("%command%", "vd " + matches.get(0).getMatch()));
+          }
+          return true;
+        }
+      }
+      return false;
+    } catch (Exception e) {
+      new ReportedException(plugin, e);
+      return false;
     }
-    return false;
   }
 
   void onTpCommand(Player player, String ID, LocationType type) {
@@ -444,64 +448,47 @@ public class MainCommand implements CommandExecutor {
         return;
       }
       if (args[2].equalsIgnoreCase("doors")) {
-        String ID = args[0];
-        int counter = 0;
-        int i;
-        if (plugin.getWorldEditPlugin().getSelection(player) == null) {
-          return;
-        }
-        if (!config.contains("instances." + ID + ".doors")) {
-          i = 0;
-        } else {
-          i = config.getConfigurationSection("instances." + ID + ".doors").getKeys(false).size();
-        }
-        i++;
-        Selection selection = plugin.getWorldEditPlugin().getSelection(player);
-        if (selection instanceof CuboidSelection) {
-          CuboidSelection cuboidSelection = (CuboidSelection) selection;
-          Vector min = cuboidSelection.getNativeMinimumPoint();
-          Vector max = cuboidSelection.getNativeMaximumPoint();
-          for (int x = min.getBlockX(); x <= max.getBlockX(); x = x + 1) {
-            for (int y = min.getBlockY(); y <= max.getBlockY(); y = y + 1) {
-              for (int z = min.getBlockZ(); z <= max.getBlockZ(); z = z + 1) {
-                Location temporaryBlock = new Location(player.getWorld(), x, y, z);
-                if (temporaryBlock.getBlock().getType() == Material.WOODEN_DOOR) {
-                  String location = temporaryBlock.getWorld().getName() + "," + temporaryBlock.getX() + "," + temporaryBlock.getY() + "," + temporaryBlock.getZ()
-                          + "," + temporaryBlock.getYaw() + "," + temporaryBlock.getPitch();
-                  config.set("instances." + ID + ".doors." + i + ".location", location);
-                  //todo block data id
-                  config.set("instances." + ID + ".doors." + i + ".byte", temporaryBlock.getBlock().getData());
-                  counter++;
-                  i++;
-                }
+        Block block = player.getTargetBlock(null, 10);
+        if (block.getType() == Material.WOODEN_DOOR) {
+          String ID = args[0];
+          int i;
+          if (!config.contains("instances." + ID + ".doors")) {
+            i = 0;
+          } else {
+            i = config.getConfigurationSection("instances." + ID + ".doors").getKeys(false).size();
+          }
+          i++;
 
-              }
-            }
+          Block relativeBlock = null;
+          if (block.getRelative(BlockFace.DOWN).getType() == Material.WOODEN_DOOR) {
+            relativeBlock = block;
+            block = block.getRelative(BlockFace.DOWN);
+          } else if (block.getRelative(BlockFace.UP).getType() == Material.WOODEN_DOOR) {
+            relativeBlock = block.getRelative(BlockFace.UP);
           }
-        } else {
-          if (selection.getMaximumPoint().getBlock().getType() == Material.WOODEN_DOOR) {
-            String location = selection.getMaximumPoint().getWorld().getName() + "," + selection.getMaximumPoint().getX() + "," + selection.getMaximumPoint().getY()
-                    + "," + selection.getMaximumPoint().getZ() + "," + selection.getMaximumPoint().getYaw() + "," + selection.getMaximumPoint().getPitch();
-            config.set("instances." + ID + ".doors." + i + ".location", location);
-            //todo block data id
-            config.set("instances." + ID + ".doors." + i + ".byte", selection.getMaximumPoint().getBlock().getData());
-            counter++;
-            i++;
+          if (relativeBlock == null) {
+            player.sendMessage("This door doesn't have 2 blocks? Maybe it's bugged? Try placing it again.");
+            return;
           }
-          if (selection.getMinimumPoint().getBlock().getType() == Material.WOODEN_DOOR) {
-            String location = selection.getMaximumPoint().getWorld().getName() + "," + selection.getMaximumPoint().getX() + "," + selection.getMaximumPoint().getY()
-                    + "," + selection.getMaximumPoint().getZ() + "," + selection.getMaximumPoint().getYaw() + "," + selection.getMaximumPoint().getPitch();
-            config.set("instances." + ID + ".doors." + i + ".location", location);
-            //todo block data id
-            config.set("instances." + ID + ".doors." + i + ".byte", selection.getMinimumPoint().getBlock().getData());
-            counter++;
-            i++;
+          String location = block.getWorld().getName() + "," + block.getX() + "," + block.getY() + "," + block.getZ() + ",0.0" + ",0.0";
+          String relativeLocation = relativeBlock.getWorld().getName() + "," + relativeBlock.getX() + "," + relativeBlock.getY() + "," + relativeBlock.getZ() + ",0.0" + ",0.0";
+          config.set("instances." + ID + ".doors." + i + ".location", relativeLocation);
+          config.set("instances." + ID + ".doors." + i + ".byte", 8);
+          i++;
+          config.set("instances." + ID + ".doors." + i + ".location", location);
+          if(plugin.is1_13_R1()) {
+            config.set("instances." + ID + ".doors." + i + ".byte", Utils.getDoorByte(((Door) block.getState().getData()).getFacing()));
+          } else {
+            config.set("instances." + ID + ".doors." + i + ".byte", block.getData());
           }
+          player.sendMessage(ChatColor.GREEN + "Door successfully added!");
         }
-        player.sendMessage(ChatColor.GREEN + "" + (int) Math.ceil(counter / 2) + " doors were added!");
+        ConfigUtils.saveConfig(plugin, config, "arenas");
+        return;
+      } else {
+        player.sendMessage("You must face door to add it!");
+        return;
       }
-      ConfigurationManager.saveConfig(config, "arenas");
-      return;
     }
     if (!(args[1].equalsIgnoreCase("set"))) {
       return;
@@ -555,7 +542,7 @@ public class MainCommand implements CommandExecutor {
         player.sendMessage(ChatColor.RED + "Usage: /vd set <MINPLAYERS | MAXPLAYERS> <value>");
       }
     }
-    ConfigurationManager.saveConfig(config, "arenas");
+    ConfigUtils.saveConfig(plugin, config, "arenas");
   }
 
   void createArenaCommand(Player player, String[] args) {

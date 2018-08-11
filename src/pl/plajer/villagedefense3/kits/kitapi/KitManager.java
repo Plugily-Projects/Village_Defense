@@ -31,6 +31,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.plugin.java.JavaPlugin;
 
 import pl.plajer.villagedefense3.Main;
 import pl.plajer.villagedefense3.arena.ArenaRegistry;
@@ -39,6 +40,7 @@ import pl.plajer.villagedefense3.kits.kitapi.basekits.Kit;
 import pl.plajer.villagedefense3.user.User;
 import pl.plajer.villagedefense3.user.UserManager;
 import pl.plajer.villagedefense3.villagedefenseapi.VillagePlayerChooseKitEvent;
+import pl.plajerlair.core.services.ReportedException;
 import pl.plajerlair.core.utils.MinigameUtils;
 
 /**
@@ -158,43 +160,51 @@ public class KitManager implements Listener {
 
   @EventHandler
   private void onKitMenuItemClick(PlayerInteractEvent e) {
-    if (!(e.getAction() == Action.RIGHT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_BLOCK)) {
-      return;
+    try {
+      if (!(e.getAction() == Action.RIGHT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_BLOCK)) {
+        return;
+      }
+      ItemStack stack = e.getPlayer().getInventory().getItemInMainHand();
+      if (stack.getType() != getMaterial() || !stack.hasItemMeta() || !stack.getItemMeta().hasLore()) {
+        return;
+      }
+      if (!stack.getItemMeta().getDisplayName().equalsIgnoreCase(getItemName())) {
+        return;
+      }
+      openKitMenu(e.getPlayer());
+    } catch (Exception ex) {
+      new ReportedException(JavaPlugin.getPlugin(Main.class), ex);
     }
-    ItemStack stack = e.getPlayer().getInventory().getItemInMainHand();
-    if (stack.getType() != getMaterial() || !stack.hasItemMeta() || !stack.getItemMeta().hasLore()) {
-      return;
-    }
-    if (!stack.getItemMeta().getDisplayName().equalsIgnoreCase(getItemName())) {
-      return;
-    }
-    openKitMenu(e.getPlayer());
   }
 
   @EventHandler
   public void onKitChoose(InventoryClickEvent e) {
-    if (!e.getInventory().getName().equalsIgnoreCase(getMenuName())) {
-      return;
+    try {
+      if (!e.getInventory().getName().equalsIgnoreCase(getMenuName())) {
+        return;
+      }
+      if (!(e.getWhoClicked() instanceof Player)) {
+        return;
+      }
+      Player player = (Player) e.getWhoClicked();
+      e.setCancelled(true);
+      if (e.getCurrentItem() == null) {
+        return;
+      }
+      if (!(e.isLeftClick() || e.isRightClick())) {
+        return;
+      }
+      if (!e.getCurrentItem().hasItemMeta()) {
+        return;
+      }
+      if (!ArenaRegistry.isInArena(player)) {
+        return;
+      }
+      VillagePlayerChooseKitEvent event = new VillagePlayerChooseKitEvent(player, KitRegistry.getKit(e.getCurrentItem()), ArenaRegistry.getArena(player));
+      Bukkit.getPluginManager().callEvent(event);
+    } catch (Exception ex) {
+      new ReportedException(JavaPlugin.getPlugin(Main.class), ex);
     }
-    if (!(e.getWhoClicked() instanceof Player)) {
-      return;
-    }
-    Player player = (Player) e.getWhoClicked();
-    e.setCancelled(true);
-    if (e.getCurrentItem() == null) {
-      return;
-    }
-    if (!(e.isLeftClick() || e.isRightClick())) {
-      return;
-    }
-    if (!e.getCurrentItem().hasItemMeta()) {
-      return;
-    }
-    if (!ArenaRegistry.isInArena(player)) {
-      return;
-    }
-    VillagePlayerChooseKitEvent event = new VillagePlayerChooseKitEvent(player, KitRegistry.getKit(e.getCurrentItem()), ArenaRegistry.getArena(player));
-    Bukkit.getPluginManager().callEvent(event);
   }
 
   @EventHandler

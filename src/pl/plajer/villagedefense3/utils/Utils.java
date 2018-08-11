@@ -31,10 +31,12 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.PotionMeta;
+import org.bukkit.material.Door;
 import org.bukkit.potion.PotionData;
 import org.bukkit.potion.PotionType;
 import org.bukkit.util.BlockIterator;
@@ -119,6 +121,21 @@ public class Utils {
     }
     potion.setItemMeta(meta);
     return potion;
+  }
+
+  public static byte getDoorByte(BlockFace face) {
+    switch (face) {
+      case NORTH:
+        return 2;
+      case EAST:
+        return 3;
+      case SOUTH:
+        return 0;
+      case WEST:
+        return 1;
+      default:
+        return 0;
+    }
   }
 
 }

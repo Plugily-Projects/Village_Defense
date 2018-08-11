@@ -42,6 +42,7 @@ import pl.plajer.villagedefense3.arena.Arena;
 import pl.plajer.villagedefense3.arena.ArenaRegistry;
 import pl.plajer.villagedefense3.utils.MessageUtils;
 import pl.plajer.villagedefense3.villagedefenseapi.VillagePowerupPickEvent;
+import pl.plajerlair.core.services.ReportedException;
 
 /**
  * @author Plajer
@@ -92,83 +93,87 @@ public class PowerupManager {
   }
 
   public void spawnPowerup(Location loc, Arena arena) {
-    if (!enabled) {
-      return;
-    }
-    PowerupType powerupType = PowerupType.random();
-    if (!powerupType.isEnabled()) {
-      spawnPowerup(loc, arena);
-    }
-    if (!(ThreadLocalRandom.current().nextDouble(0.0, 100.0)
-            <= plugin.getConfig().getDouble("Powerups.Drop-Chance", 1.0))) {
-      return;
-    }
-    final PowerupType finalPowerUp = powerupType;
-    String text = powerupType.getName();
-    ItemStack icon = new ItemStack(powerupType.getMaterial());
-
-    final Hologram hologram = HologramsAPI.createHologram(plugin, loc.clone().add(0.0, 1.2, 0.0));
-    hologram.appendTextLine(text);
-    ItemLine itemLine = hologram.appendItemLine(icon);
-    final String powerUpTitle = powerupType.getName();
-    final String powerUpSubtitle = ChatManager.colorMessage(powerupType.getAccessPath() + ".Description");
-    itemLine.setPickupHandler(player -> {
-      if (ArenaRegistry.getArena(player) != arena) {
+    try {
+      if (!enabled) {
         return;
       }
+      PowerupType powerupType = PowerupType.random();
+      if (!powerupType.isEnabled()) {
+        spawnPowerup(loc, arena);
+      }
+      if (!(ThreadLocalRandom.current().nextDouble(0.0, 100.0)
+              <= plugin.getConfig().getDouble("Powerups.Drop-Chance", 1.0))) {
+        return;
+      }
+      final PowerupType finalPowerUp = powerupType;
+      String text = powerupType.getName();
+      ItemStack icon = new ItemStack(powerupType.getMaterial());
 
-      VillagePowerupPickEvent villagePowerupPickEvent = new VillagePowerupPickEvent(arena, player, finalPowerUp);
-      Bukkit.getPluginManager().callEvent(villagePowerupPickEvent);
+      final Hologram hologram = HologramsAPI.createHologram(plugin, loc.clone().add(0.0, 1.2, 0.0));
+      hologram.appendTextLine(text);
+      ItemLine itemLine = hologram.appendItemLine(icon);
+      final String powerUpTitle = powerupType.getName();
+      final String powerUpSubtitle = ChatManager.colorMessage(powerupType.getAccessPath() + ".Description");
+      itemLine.setPickupHandler(player -> {
+        if (ArenaRegistry.getArena(player) != arena) {
+          return;
+        }
 
-      String subTitle = powerUpSubtitle;
-      switch (finalPowerUp) {
-        case CLEANER:
-          if (arena.getZombies() != null) {
-            for (Zombie zombie : arena.getZombies()) {
-              zombie.getWorld().spawnParticle(Particle.LAVA, zombie.getLocation(), 20);
-              zombie.remove();
+        VillagePowerupPickEvent villagePowerupPickEvent = new VillagePowerupPickEvent(arena, player, finalPowerUp);
+        Bukkit.getPluginManager().callEvent(villagePowerupPickEvent);
+
+        String subTitle = powerUpSubtitle;
+        switch (finalPowerUp) {
+          case CLEANER:
+            if (arena.getZombies() != null) {
+              for (Zombie zombie : arena.getZombies()) {
+                zombie.getWorld().spawnParticle(Particle.LAVA, zombie.getLocation(), 20);
+                zombie.remove();
+              }
+              arena.getZombies().clear();
             }
-            arena.getZombies().clear();
-          }
-          break;
-        case DOUBLE_DAMAGE:
-          for (Player p : arena.getPlayers()) {
-            p.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 20 *
-                    plugin.getConfig().getInt("Powerups.List.Double-Damage-For-Players.Time", 15), 1, false, false));
-          }
-          subTitle = subTitle.replace("%time%", plugin.getConfig().getString("Powerups.List.Double-Damage-For-Players.Time", "15"));
-          break;
-        case HEALING:
-          for (Player p : arena.getPlayers()) {
-            p.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 20 *
-                    plugin.getConfig().getInt("Powerups.List.Healing-For-Players.Time-Of-Healing", 10), 1, false, false));
-          }
-          subTitle = subTitle.replace("%time%", plugin.getConfig().getString("Powerups.List.Healing-For-Players.Time-Of-Healing", "10"));
-          break;
-        case GOLEM_RAID:
-          for (int i = 0; i < plugin.getConfig().getInt("Powerups.List.Golem-Raid.Golems-Amount", 3); i++) {
-            arena.spawnGolem(arena.getStartLocation(), player);
-          }
-          break;
-        case ONE_SHOT_ONE_KILL:
-          for (Player p : arena.getPlayers()) {
-            p.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 20 *
-                    plugin.getConfig().getInt("Powerups.List.One-Shot-One-Kill.Time", 15), 255, false, false));
-          }
-          subTitle = subTitle.replace("%time%", plugin.getConfig().getString("Powerups.List.One-Shot-One-Kill.Time", "15"));
-          break;
-      }
-      for (Player p : arena.getPlayers()) {
-        MessageUtils.sendTitle(p, powerUpTitle, 5, 30, 5);
-        MessageUtils.sendSubTitle(p, subTitle, 5, 30, 5);
-      }
-      hologram.delete();
-    });
-    Bukkit.getScheduler().runTaskLater(plugin, () -> {
-      if (!hologram.isDeleted()) {
+            break;
+          case DOUBLE_DAMAGE:
+            for (Player p : arena.getPlayers()) {
+              p.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 20 *
+                      plugin.getConfig().getInt("Powerups.List.Double-Damage-For-Players.Time", 15), 1, false, false));
+            }
+            subTitle = subTitle.replace("%time%", plugin.getConfig().getString("Powerups.List.Double-Damage-For-Players.Time", "15"));
+            break;
+          case HEALING:
+            for (Player p : arena.getPlayers()) {
+              p.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 20 *
+                      plugin.getConfig().getInt("Powerups.List.Healing-For-Players.Time-Of-Healing", 10), 1, false, false));
+            }
+            subTitle = subTitle.replace("%time%", plugin.getConfig().getString("Powerups.List.Healing-For-Players.Time-Of-Healing", "10"));
+            break;
+          case GOLEM_RAID:
+            for (int i = 0; i < plugin.getConfig().getInt("Powerups.List.Golem-Raid.Golems-Amount", 3); i++) {
+              arena.spawnGolem(arena.getStartLocation(), player);
+            }
+            break;
+          case ONE_SHOT_ONE_KILL:
+            for (Player p : arena.getPlayers()) {
+              p.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 20 *
+                      plugin.getConfig().getInt("Powerups.List.One-Shot-One-Kill.Time", 15), 255, false, false));
+            }
+            subTitle = subTitle.replace("%time%", plugin.getConfig().getString("Powerups.List.One-Shot-One-Kill.Time", "15"));
+            break;
+        }
+        for (Player p : arena.getPlayers()) {
+          MessageUtils.sendTitle(p, powerUpTitle, 5, 30, 5);
+          MessageUtils.sendSubTitle(p, subTitle, 5, 30, 5);
+        }
         hologram.delete();
-      }
-    }, /* remove after 40 seconds to prevent staying even if arena is finished */ 20 * 40);
+      });
+      Bukkit.getScheduler().runTaskLater(plugin, () -> {
+        if (!hologram.isDeleted()) {
+          hologram.delete();
+        }
+      }, /* remove after 40 seconds to prevent staying even if arena is finished */ 20 * 40);
+    } catch (Exception ex){
+      new ReportedException(plugin, ex);
+    }
   }
 
   public enum PowerupType {

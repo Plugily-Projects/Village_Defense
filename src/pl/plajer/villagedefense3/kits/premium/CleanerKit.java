@@ -42,6 +42,7 @@ import pl.plajer.villagedefense3.user.UserManager;
 import pl.plajer.villagedefense3.utils.ArmorHelper;
 import pl.plajer.villagedefense3.utils.Utils;
 import pl.plajer.villagedefense3.utils.WeaponHelper;
+import pl.plajerlair.core.services.ReportedException;
 
 /**
  * Created by Tom on 18/08/2014.
@@ -89,37 +90,41 @@ public class CleanerKit extends PremiumKit implements Listener {
 
   @EventHandler
   public void onClean(PlayerInteractEvent e) {
-    Arena arena = ArenaRegistry.getArena(e.getPlayer());
-    if (!e.hasItem() || e.getItem().getType() != Material.BLAZE_ROD || !(e.getItem().hasItemMeta())
-            || !(e.getItem().getItemMeta().hasDisplayName()) || !(e.getItem().getItemMeta().getDisplayName()
-            .contains(ChatManager.colorMessage("Kits.Cleaner.Game-Item-Name"))) || arena == null) {
-      return;
-    }
-    if (UserManager.getUser(e.getPlayer().getUniqueId()).isSpectator()) {
-      e.getPlayer().sendMessage(ChatManager.colorMessage("Kits.Cleaner.Spectator-Warning"));
-      return;
-    }
-    if (UserManager.getUser(e.getPlayer().getUniqueId()).getCooldown("clean") > 0 && !UserManager.getUser(e.getPlayer().getUniqueId()).isSpectator()) {
-      String msgstring = ChatManager.colorMessage("Kits.Ability-Still-On-Cooldown");
-      msgstring = msgstring.replaceFirst("%COOLDOWN%", Long.toString(UserManager.getUser(e.getPlayer().getUniqueId()).getCooldown("clean")));
-      e.getPlayer().sendMessage(msgstring);
-      return;
-    }
-    if (arena.getZombies() != null) {
-      for (Zombie zombie : arena.getZombies()) {
-        zombie.getWorld().spawnParticle(Particle.LAVA, zombie.getLocation(), 20);
-        zombie.remove();
+    try {
+      Arena arena = ArenaRegistry.getArena(e.getPlayer());
+      if (!e.hasItem() || e.getItem().getType() != Material.BLAZE_ROD || !(e.getItem().hasItemMeta())
+              || !(e.getItem().getItemMeta().hasDisplayName()) || !(e.getItem().getItemMeta().getDisplayName()
+              .contains(ChatManager.colorMessage("Kits.Cleaner.Game-Item-Name"))) || arena == null) {
+        return;
       }
-      arena.getZombies().clear();
-    } else {
-      e.getPlayer().sendMessage(ChatManager.colorMessage("Kits.Cleaner.Nothing-To-Clean"));
-      return;
+      if (UserManager.getUser(e.getPlayer().getUniqueId()).isSpectator()) {
+        e.getPlayer().sendMessage(ChatManager.colorMessage("Kits.Cleaner.Spectator-Warning"));
+        return;
+      }
+      if (UserManager.getUser(e.getPlayer().getUniqueId()).getCooldown("clean") > 0 && !UserManager.getUser(e.getPlayer().getUniqueId()).isSpectator()) {
+        String msgstring = ChatManager.colorMessage("Kits.Ability-Still-On-Cooldown");
+        msgstring = msgstring.replaceFirst("%COOLDOWN%", Long.toString(UserManager.getUser(e.getPlayer().getUniqueId()).getCooldown("clean")));
+        e.getPlayer().sendMessage(msgstring);
+        return;
+      }
+      if (arena.getZombies() != null) {
+        for (Zombie zombie : arena.getZombies()) {
+          zombie.getWorld().spawnParticle(Particle.LAVA, zombie.getLocation(), 20);
+          zombie.remove();
+        }
+        arena.getZombies().clear();
+      } else {
+        e.getPlayer().sendMessage(ChatManager.colorMessage("Kits.Cleaner.Nothing-To-Clean"));
+        return;
+      }
+      e.getPlayer().playSound(e.getPlayer().getLocation(), Sound.ENTITY_ZOMBIE_DEATH, 1, 1);
+      String message = ChatManager.formatMessage(arena, ChatManager.colorMessage("Kits.Cleaner.Cleaned-Map"), e.getPlayer());
+      for (Player player1 : ArenaRegistry.getArena(e.getPlayer()).getPlayers()) {
+        player1.sendMessage(ChatManager.PLUGIN_PREFIX + message);
+      }
+      UserManager.getUser(e.getPlayer().getUniqueId()).setCooldown("clean", 180);
+    } catch (Exception ex){
+      new ReportedException(plugin, ex);
     }
-    e.getPlayer().playSound(e.getPlayer().getLocation(), Sound.ENTITY_ZOMBIE_DEATH, 1, 1);
-    String message = ChatManager.formatMessage(arena, ChatManager.colorMessage("Kits.Cleaner.Cleaned-Map"), e.getPlayer());
-    for (Player player1 : ArenaRegistry.getArena(e.getPlayer()).getPlayers()) {
-      player1.sendMessage(ChatManager.PLUGIN_PREFIX + message);
-    }
-    UserManager.getUser(e.getPlayer().getUniqueId()).setCooldown("clean", 180);
   }
 }

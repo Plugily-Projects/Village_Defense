@@ -37,6 +37,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import pl.plajer.villagedefense3.Main;
 import pl.plajer.villagedefense3.utils.Utils;
+import pl.plajerlair.core.services.ReportedException;
 
 /**
  * Created by Tom on 14/08/2014.
@@ -48,32 +49,36 @@ public class BreakFenceListener extends BukkitRunnable {
 
   @Override
   public void run() {
-    for (World world : Bukkit.getServer().getWorlds()) {
-      for (Entity entity : world.getEntities()) {
-        if (!(entity.getType() == EntityType.ZOMBIE)) {
-          continue;
-        }
-        Queue<Block> blocks = Utils.getLineOfSight((LivingEntity) entity, null, 1, 1);
-        for (Block block : blocks) {
-          if (block.getType() == Material.WOOD_DOOR || block.getType() == Material.WOODEN_DOOR /*|| block.getType() == Material.FENCE*/) {
-            block.getWorld().spawnParticle(Particle.BLOCK_CRACK, block.getLocation(), 10, 0.1, 0.1, 0.1, new MaterialData(Material.WOODEN_DOOR));
-            if (plugin.is1_9_R1() || plugin.is1_10_R1() || plugin.is1_11_R1() || plugin.is1_12_R1()) {
-              block.getWorld().playSound(block.getLocation(), Sound.ENTITY_ZOMBIE_ATTACK_DOOR_WOOD, 5, 5);
-            } else if (plugin.is1_13_R1()) {
-              block.getWorld().playSound(block.getLocation(), Sound.valueOf("ENTITY_ZOMBIE_ATTACK_WOODEN_DOOR"), 5F, 5F);
-            }
-            this.particleDoor(block);
-            if (random.nextInt(20) == 5) {
-              breakDoor(block);
+    try {
+      for (World world : Bukkit.getServer().getWorlds()) {
+        for (Entity entity : world.getEntities()) {
+          if (!(entity.getType() == EntityType.ZOMBIE)) {
+            continue;
+          }
+          Queue<Block> blocks = Utils.getLineOfSight((LivingEntity) entity, null, 1, 1);
+          for (Block block : blocks) {
+            if (block.getType() == Material.WOOD_DOOR || block.getType() == Material.WOODEN_DOOR /*|| block.getType() == Material.FENCE*/) {
+              block.getWorld().spawnParticle(Particle.BLOCK_CRACK, block.getLocation(), 10, 0.1, 0.1, 0.1, new MaterialData(Material.WOODEN_DOOR));
               if (plugin.is1_9_R1() || plugin.is1_10_R1() || plugin.is1_11_R1() || plugin.is1_12_R1()) {
-                block.getWorld().playSound(block.getLocation(), Sound.ENTITY_ZOMBIE_BREAK_DOOR_WOOD, 5, 5);
+                block.getWorld().playSound(block.getLocation(), Sound.ENTITY_ZOMBIE_ATTACK_DOOR_WOOD, 5, 5);
               } else if (plugin.is1_13_R1()) {
-                block.getWorld().playSound(block.getLocation(), Sound.valueOf("ENTITY_ZOMBIE_BREAK_WOODEN_DOOR"), 5F, 5F);
+                block.getWorld().playSound(block.getLocation(), Sound.valueOf("ENTITY_ZOMBIE_ATTACK_WOODEN_DOOR"), 5F, 5F);
+              }
+              this.particleDoor(block);
+              if (random.nextInt(20) == 5) {
+                breakDoor(block);
+                if (plugin.is1_9_R1() || plugin.is1_10_R1() || plugin.is1_11_R1() || plugin.is1_12_R1()) {
+                  block.getWorld().playSound(block.getLocation(), Sound.ENTITY_ZOMBIE_BREAK_DOOR_WOOD, 5, 5);
+                } else if (plugin.is1_13_R1()) {
+                  block.getWorld().playSound(block.getLocation(), Sound.valueOf("ENTITY_ZOMBIE_BREAK_WOODEN_DOOR"), 5F, 5F);
+                }
               }
             }
           }
         }
       }
+    } catch (Exception e){
+      new ReportedException(plugin, e);
     }
   }
 

@@ -33,6 +33,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import pl.plajer.villagedefense3.Main;
 import pl.plajer.villagedefense3.arena.Arena;
 import pl.plajer.villagedefense3.arena.ArenaRegistry;
+import pl.plajerlair.core.services.ReportedException;
 import pl.plajerlair.core.utils.ConfigUtils;
 import pl.plajerlair.core.utils.MinigameUtils;
 
@@ -56,21 +57,25 @@ public class ShopManager {
   }
 
   public static void registerShop(Arena a) {
-    Location location = MinigameUtils.getLocation(ConfigUtils.getConfig(JavaPlugin.getPlugin(Main.class), "arenas").getString("instances." + a.getID() + ".shop"));
-    if (!(location.getBlock().getState() instanceof Chest)) {
-      Main.debug("Shop failed to load, invalid location for loc " + location, System.currentTimeMillis());
-      return;
-    }
-    int i = ((Chest) location.getBlock().getState()).getInventory().getContents().length;
-    Inventory inventory = Bukkit.createInventory(null, MinigameUtils.serializeInt(i), ChatManager.colorMessage("In-Game.Messages.Shop-Messages.Shop-GUI-Name"));
-    i = 0;
-    for (ItemStack itemStack : ((Chest) location.getBlock().getState()).getInventory().getContents()) {
-      if (itemStack != null && itemStack.getType() != Material.REDSTONE_BLOCK) {
-        inventory.setItem(i, itemStack);
+    try {
+      Location location = MinigameUtils.getLocation(ConfigUtils.getConfig(JavaPlugin.getPlugin(Main.class), "arenas").getString("instances." + a.getID() + ".shop"));
+      if (!(location.getBlock().getState() instanceof Chest)) {
+        Main.debug("Shop failed to load, invalid location for loc " + location, System.currentTimeMillis());
+        return;
       }
-      i++;
+      int i = ((Chest) location.getBlock().getState()).getInventory().getContents().length;
+      Inventory inventory = Bukkit.createInventory(null, MinigameUtils.serializeInt(i), ChatManager.colorMessage("In-Game.Messages.Shop-Messages.Shop-GUI-Name"));
+      i = 0;
+      for (ItemStack itemStack : ((Chest) location.getBlock().getState()).getInventory().getContents()) {
+        if (itemStack != null && itemStack.getType() != Material.REDSTONE_BLOCK) {
+          inventory.setItem(i, itemStack);
+        }
+        i++;
+      }
+      arenaShop.put(a, inventory);
+    } catch (Exception ex){
+      new ReportedException(JavaPlugin.getPlugin(Main.class), ex);
     }
-    arenaShop.put(a, inventory);
   }
 
   public static void openShop(Player player) {

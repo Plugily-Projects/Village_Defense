@@ -1,5 +1,10 @@
 # Village Defense 3 Changelog
 
+### 3.10.0 Release (08.08.2018)
+* Built against PLCore API
+* Fixed MySQL error when creating it for first time
+* Fixed error in 1.9 versions in game
+
 ### 3.9.2 Release (03.08.2018)
 * Fixed InventoryManager errors due to scoreboard saving in it
 * Updated French and Hungarian locales

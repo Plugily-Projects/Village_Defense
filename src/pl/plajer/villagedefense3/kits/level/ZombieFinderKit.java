@@ -42,6 +42,7 @@ import pl.plajer.villagedefense3.kits.kitapi.basekits.LevelKit;
 import pl.plajer.villagedefense3.user.UserManager;
 import pl.plajer.villagedefense3.utils.Utils;
 import pl.plajer.villagedefense3.utils.WeaponHelper;
+import pl.plajerlair.core.services.ReportedException;
 import pl.plajerlair.core.utils.ConfigUtils;
 
 /**
@@ -90,34 +91,38 @@ public class ZombieFinderKit extends LevelKit implements Listener {
 
   @EventHandler
   public void onClean(PlayerInteractEvent event) {
-    if (!event.hasItem() || event.getItem().getType() != Material.BOOK || !(event.getItem().hasItemMeta())
-            || !(event.getItem().getItemMeta().hasDisplayName())
-            || !(event.getItem().getItemMeta().getDisplayName()
-            .contains(ChatManager.colorMessage("Kits.Zombie-Teleporter.Game-Item-Name"))
-            || !ArenaRegistry.isInArena(event.getPlayer()))) {
-      return;
+    try {
+      if (!event.hasItem() || event.getItem().getType() != Material.BOOK || !(event.getItem().hasItemMeta())
+              || !(event.getItem().getItemMeta().hasDisplayName())
+              || !(event.getItem().getItemMeta().getDisplayName()
+              .contains(ChatManager.colorMessage("Kits.Zombie-Teleporter.Game-Item-Name"))
+              || !ArenaRegistry.isInArena(event.getPlayer()))) {
+        return;
+      }
+      if (UserManager.getUser(event.getPlayer().getUniqueId()).isSpectator()) {
+        event.getPlayer().sendMessage(ChatManager.colorMessage("Kits.Teleporter.Spectator-Warning"));
+        return;
+      }
+      Arena arena = ArenaRegistry.getArena(event.getPlayer());
+      if (UserManager.getUser(event.getPlayer().getUniqueId()).getCooldown("zombie") > 0 && !UserManager.getUser(event.getPlayer().getUniqueId()).isSpectator()) {
+        String msgstring = ChatManager.colorMessage("Kits.Ability-Still-On-Cooldown");
+        msgstring = msgstring.replaceFirst("%COOLDOWN%", Long.toString(UserManager.getUser(event.getPlayer().getUniqueId()).getCooldown("zombie")));
+        event.getPlayer().sendMessage(msgstring);
+        return;
+      }
+      if (arena.getZombies() == null || arena.getZombies().isEmpty() || arena.getZombies().size() <= 0) {
+        event.getPlayer().sendMessage(ChatManager.colorMessage("Kits.Zombie-Teleporter.No-Available-Zombies"));
+        return;
+      } else {
+        Integer rand = new Random().nextInt(arena.getZombies().size());
+        arena.getZombies().get(rand).teleport(event.getPlayer());
+        arena.getZombies().get(rand).addPotionEffect(new PotionEffect(PotionEffectType.WEAKNESS, 20 * 30, 1));
+        event.getPlayer().sendMessage(ChatManager.colorMessage("Kits.Zombie-Teleporter.Zombie-Teleported"));
+      }
+      event.getPlayer().playSound(event.getPlayer().getLocation(), Sound.ENTITY_ZOMBIE_DEATH, 1, 1);
+      UserManager.getUser(event.getPlayer().getUniqueId()).setCooldown("zombie", 30);
+    } catch (Exception ex){
+      new ReportedException(plugin, ex);
     }
-    if (UserManager.getUser(event.getPlayer().getUniqueId()).isSpectator()) {
-      event.getPlayer().sendMessage(ChatManager.colorMessage("Kits.Teleporter.Spectator-Warning"));
-      return;
-    }
-    Arena arena = ArenaRegistry.getArena(event.getPlayer());
-    if (UserManager.getUser(event.getPlayer().getUniqueId()).getCooldown("zombie") > 0 && !UserManager.getUser(event.getPlayer().getUniqueId()).isSpectator()) {
-      String msgstring = ChatManager.colorMessage("Kits.Ability-Still-On-Cooldown");
-      msgstring = msgstring.replaceFirst("%COOLDOWN%", Long.toString(UserManager.getUser(event.getPlayer().getUniqueId()).getCooldown("zombie")));
-      event.getPlayer().sendMessage(msgstring);
-      return;
-    }
-    if (arena.getZombies() == null || arena.getZombies().isEmpty() || arena.getZombies().size() <= 0) {
-      event.getPlayer().sendMessage(ChatManager.colorMessage("Kits.Zombie-Teleporter.No-Available-Zombies"));
-      return;
-    } else {
-      Integer rand = new Random().nextInt(arena.getZombies().size());
-      arena.getZombies().get(rand).teleport(event.getPlayer());
-      arena.getZombies().get(rand).addPotionEffect(new PotionEffect(PotionEffectType.WEAKNESS, 20 * 30, 1));
-      event.getPlayer().sendMessage(ChatManager.colorMessage("Kits.Zombie-Teleporter.Zombie-Teleported"));
-    }
-    event.getPlayer().playSound(event.getPlayer().getLocation(), Sound.ENTITY_ZOMBIE_DEATH, 1, 1);
-    UserManager.getUser(event.getPlayer().getUniqueId()).setCooldown("zombie", 30);
   }
 }

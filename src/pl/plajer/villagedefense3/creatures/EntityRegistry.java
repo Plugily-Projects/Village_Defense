@@ -29,6 +29,7 @@ import org.bukkit.Bukkit;
 
 import pl.plajer.villagedefense3.Main;
 import pl.plajer.villagedefense3.utils.MessageUtils;
+import pl.plajerlair.core.services.ReportedException;
 
 /**
  * @author Plajer
@@ -38,41 +39,45 @@ import pl.plajer.villagedefense3.utils.MessageUtils;
 public class EntityRegistry {
 
   public EntityRegistry(Main plugin) {
-    Main.debug("Initial entity registry startup", System.currentTimeMillis());
-    List<String> classes = Arrays.asList("FastZombie", "BabyZombie", "PlayerBuster", "GolemBuster", "HardZombie", "TankerZombie", "VillagerSlayer", "RidableVillager", "RidableIronGolem", "WorkingWolf");
-    String version = plugin.getVersion();
-    if (version.equalsIgnoreCase("v1_11_R1") || version.equalsIgnoreCase("v1_9_R1") || version.equalsIgnoreCase("v1_10_R1")
-            || version.equalsIgnoreCase("v1_12_R1") || version.equalsIgnoreCase("v1_13_R1")) {
-      if (version.equalsIgnoreCase("v1_13_R1")) {
-        Main.debug("Skipping entity registering for 1.13 R1", System.currentTimeMillis());
-        return;
+    try {
+      Main.debug("Initial entity registry startup", System.currentTimeMillis());
+      List<String> classes = Arrays.asList("FastZombie", "BabyZombie", "PlayerBuster", "GolemBuster", "HardZombie", "TankerZombie", "VillagerSlayer", "RidableVillager", "RidableIronGolem", "WorkingWolf");
+      String version = plugin.getVersion();
+      if (version.equalsIgnoreCase("v1_11_R1") || version.equalsIgnoreCase("v1_9_R1") || version.equalsIgnoreCase("v1_10_R1")
+              || version.equalsIgnoreCase("v1_12_R1") || version.equalsIgnoreCase("v1_13_R1")) {
+        if (version.equalsIgnoreCase("v1_13_R1")) {
+          Main.debug("Skipping entity registering for 1.13 R1", System.currentTimeMillis());
+          return;
+        }
+        try {
+          this.getClass().getMethod("register" + version + "Entity", String.class, int.class, Class.class)
+                  .invoke(this, "VillageZombie", 54, Class.forName("pl.plajer.villagedefense3.creatures." + version + "." + classes.toArray()[0]));
+          this.getClass().getMethod("register" + version + "Entity", String.class, int.class, Class.class)
+                  .invoke(this, "VillageZombie", 54, Class.forName("pl.plajer.villagedefense3.creatures." + version + "." + classes.toArray()[1]));
+          this.getClass().getMethod("register" + version + "Entity", String.class, int.class, Class.class)
+                  .invoke(this, "VillageZombie", 54, Class.forName("pl.plajer.villagedefense3.creatures." + version + "." + classes.toArray()[2]));
+          this.getClass().getMethod("register" + version + "Entity", String.class, int.class, Class.class)
+                  .invoke(this, "VillageZombie", 54, Class.forName("pl.plajer.villagedefense3.creatures." + version + "." + classes.toArray()[3]));
+          this.getClass().getMethod("register" + version + "Entity", String.class, int.class, Class.class)
+                  .invoke(this, "VillageZombie", 54, Class.forName("pl.plajer.villagedefense3.creatures." + version + "." + classes.toArray()[4]));
+          this.getClass().getMethod("register" + version + "Entity", String.class, int.class, Class.class)
+                  .invoke(this, "VillageZombie", 54, Class.forName("pl.plajer.villagedefense3.creatures." + version + "." + classes.toArray()[5]));
+          this.getClass().getMethod("register" + version + "Entity", String.class, int.class, Class.class)
+                  .invoke(this, "VillageZombie", 54, Class.forName("pl.plajer.villagedefense3.creatures." + version + "." + classes.toArray()[6]));
+          this.getClass().getMethod("register" + version + "Entity", String.class, int.class, Class.class)
+                  .invoke(this, "VillageVillager", 120, Class.forName("pl.plajer.villagedefense3.creatures." + version + "." + classes.toArray()[7]));
+          this.getClass().getMethod("register" + version + "Entity", String.class, int.class, Class.class)
+                  .invoke(this, "VillageVillagerGolem", 99, Class.forName("pl.plajer.villagedefense3.creatures." + version + "." + classes.toArray()[8]));
+          this.getClass().getMethod("register" + version + "Entity", String.class, int.class, Class.class)
+                  .invoke(this, "VillageWolf", 95, Class.forName("pl.plajer.villagedefense3.creatures." + version + "." + classes.toArray()[9]));
+        } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+          e.printStackTrace();
+        }
       }
-      try {
-        this.getClass().getMethod("register" + version + "Entity", String.class, int.class, Class.class)
-                .invoke(this, "VillageZombie", 54, Class.forName("pl.plajer.villagedefense3.creatures." + version + "." + classes.toArray()[0]));
-        this.getClass().getMethod("register" + version + "Entity", String.class, int.class, Class.class)
-                .invoke(this, "VillageZombie", 54, Class.forName("pl.plajer.villagedefense3.creatures." + version + "." + classes.toArray()[1]));
-        this.getClass().getMethod("register" + version + "Entity", String.class, int.class, Class.class)
-                .invoke(this, "VillageZombie", 54, Class.forName("pl.plajer.villagedefense3.creatures." + version + "." + classes.toArray()[2]));
-        this.getClass().getMethod("register" + version + "Entity", String.class, int.class, Class.class)
-                .invoke(this, "VillageZombie", 54, Class.forName("pl.plajer.villagedefense3.creatures." + version + "." + classes.toArray()[3]));
-        this.getClass().getMethod("register" + version + "Entity", String.class, int.class, Class.class)
-                .invoke(this, "VillageZombie", 54, Class.forName("pl.plajer.villagedefense3.creatures." + version + "." + classes.toArray()[4]));
-        this.getClass().getMethod("register" + version + "Entity", String.class, int.class, Class.class)
-                .invoke(this, "VillageZombie", 54, Class.forName("pl.plajer.villagedefense3.creatures." + version + "." + classes.toArray()[5]));
-        this.getClass().getMethod("register" + version + "Entity", String.class, int.class, Class.class)
-                .invoke(this, "VillageZombie", 54, Class.forName("pl.plajer.villagedefense3.creatures." + version + "." + classes.toArray()[6]));
-        this.getClass().getMethod("register" + version + "Entity", String.class, int.class, Class.class)
-                .invoke(this, "VillageVillager", 120, Class.forName("pl.plajer.villagedefense3.creatures." + version + "." + classes.toArray()[7]));
-        this.getClass().getMethod("register" + version + "Entity", String.class, int.class, Class.class)
-                .invoke(this, "VillageVillagerGolem", 99, Class.forName("pl.plajer.villagedefense3.creatures." + version + "." + classes.toArray()[8]));
-        this.getClass().getMethod("register" + version + "Entity", String.class, int.class, Class.class)
-                .invoke(this, "VillageWolf", 95, Class.forName("pl.plajer.villagedefense3.creatures." + version + "." + classes.toArray()[9]));
-      } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
-        e.printStackTrace();
-      }
+      Main.debug("Entities registering completed", System.currentTimeMillis());
+    } catch(Exception e){
+      new ReportedException(plugin, e);
     }
-    Main.debug("Entities registering completed", System.currentTimeMillis());
   }
 
   @SuppressWarnings("unused")

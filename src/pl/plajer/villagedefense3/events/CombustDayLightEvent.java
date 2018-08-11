@@ -29,6 +29,7 @@ import org.bukkit.event.entity.EntityCombustEvent;
 import pl.plajer.villagedefense3.Main;
 import pl.plajer.villagedefense3.arena.Arena;
 import pl.plajer.villagedefense3.arena.ArenaRegistry;
+import pl.plajerlair.core.services.ReportedException;
 
 /**
  * Created by TomVerschueren on 6/02/2018.
@@ -49,18 +50,22 @@ public class CombustDayLightEvent implements Listener {
    */
   @EventHandler(ignoreCancelled = true)
   public void onCombust(final EntityCombustEvent e) {
-    // Ignore if this is caused by an event lower down the chain.
-    if (e instanceof EntityCombustByEntityEvent || e instanceof EntityCombustByBlockEvent
-            || !(e.getEntity() instanceof Zombie)
-            || e.getEntity().getWorld().getEnvironment() != World.Environment.NORMAL) {
-      return;
-    }
-
-    for (Arena arena : ArenaRegistry.getArenas()) {
-      if (arena.getZombies().contains(e.getEntity())) {
-        e.setCancelled(true);
+    try {
+      // Ignore if this is caused by an event lower down the chain.
+      if (e instanceof EntityCombustByEntityEvent || e instanceof EntityCombustByBlockEvent
+              || !(e.getEntity() instanceof Zombie)
+              || e.getEntity().getWorld().getEnvironment() != World.Environment.NORMAL) {
         return;
       }
+
+      for (Arena arena : ArenaRegistry.getArenas()) {
+        if (arena.getZombies().contains(e.getEntity())) {
+          e.setCancelled(true);
+          return;
+        }
+      }
+    } catch (Exception ex){
+      new ReportedException(plugin, ex);
     }
   }
 }

@@ -37,6 +37,7 @@ import pl.plajer.villagedefense3.handlers.ChatManager;
 import pl.plajer.villagedefense3.handlers.language.LanguageManager;
 import pl.plajer.villagedefense3.user.User;
 import pl.plajer.villagedefense3.user.UserManager;
+import pl.plajerlair.core.services.ReportedException;
 
 /**
  * Created by Tom on 13/08/2014.
@@ -53,64 +54,72 @@ public class ChatEvents implements Listener {
 
   @EventHandler
   public void onChat(AsyncPlayerChatEvent event) {
-    if (ArenaRegistry.getArena(event.getPlayer()) == null) {
-      for (Player player : event.getRecipients()) {
-        if (ArenaRegistry.getArena(event.getPlayer()) == null) {
-          return;
-        }
-        event.getRecipients().remove(player);
+    try {
+      if (ArenaRegistry.getArena(event.getPlayer()) == null) {
+        for (Player player : event.getRecipients()) {
+          if (ArenaRegistry.getArena(event.getPlayer()) == null) {
+            return;
+          }
+          event.getRecipients().remove(player);
 
+        }
       }
+      event.getRecipients().clear();
+      event.getRecipients().addAll(ArenaRegistry.getArena(event.getPlayer()).getPlayers());
+    } catch (Exception ex){
+      new ReportedException(plugin, ex);
     }
-    event.getRecipients().clear();
-    event.getRecipients().addAll(ArenaRegistry.getArena(event.getPlayer()).getPlayers());
   }
 
   @EventHandler
   public void onChatIngame(AsyncPlayerChatEvent event) {
-    Arena arena = ArenaRegistry.getArena(event.getPlayer());
-    if (arena == null) {
-      for (Arena loopArena : ArenaRegistry.getArenas()) {
-        for (Player player : loopArena.getPlayers()) {
-          if (event.getRecipients().contains(player)) {
-            if (!plugin.isSpyChatEnabled(player)) {
-              event.getRecipients().remove(player);
+    try {
+      Arena arena = ArenaRegistry.getArena(event.getPlayer());
+      if (arena == null) {
+        for (Arena loopArena : ArenaRegistry.getArenas()) {
+          for (Player player : loopArena.getPlayers()) {
+            if (event.getRecipients().contains(player)) {
+              if (!plugin.isSpyChatEnabled(player)) {
+                event.getRecipients().remove(player);
+              }
             }
           }
         }
+        return;
       }
-      return;
-    }
-    if (plugin.isChatFormatEnabled()) {
-      event.setCancelled(true);
-      Iterator<Player> iterator = event.getRecipients().iterator();
-      List<Player> remove = new ArrayList<>();
-      while (iterator.hasNext()) {
-        Player player = iterator.next();
-        if (!plugin.isSpyChatEnabled(player)) {
-          remove.add(player);
+      if (plugin.isChatFormatEnabled()) {
+        event.setCancelled(true);
+        Iterator<Player> iterator = event.getRecipients().iterator();
+        List<Player> remove = new ArrayList<>();
+        while (iterator.hasNext()) {
+          Player player = iterator.next();
+          if (!plugin.isSpyChatEnabled(player)) {
+            remove.add(player);
+          }
         }
-      }
-      for (Player player : remove) {
-        event.getRecipients().remove(player);
-      }
-      remove.clear();
-      String message;
-      String eventMessage = event.getMessage();
-      for (String regexChar : regexChars) {
-        if (eventMessage.contains(regexChar)) {
-          eventMessage = eventMessage.replaceAll(Pattern.quote(regexChar), "");
+        for (Player player : remove) {
+          event.getRecipients().remove(player);
         }
+        remove.clear();
+        String message;
+        String eventMessage = event.getMessage();
+        for (String regexChar : regexChars) {
+          if (eventMessage.contains(regexChar)) {
+            eventMessage = eventMessage.replaceAll(Pattern.quote(regexChar), "");
+          }
+        }
+        message = formatChatPlaceholders(LanguageManager.getLanguageMessage("In-Game.Game-Chat-Format"), UserManager.getUser(event.getPlayer().getUniqueId()), eventMessage);
+        for (Player player : arena.getPlayers()) {
+          player.sendMessage(message);
+        }
+        Bukkit.getConsoleSender().sendMessage(message);
+      } else {
+        event.getRecipients().clear();
+        event.getRecipients().addAll(new ArrayList<>(arena.getPlayers()));
+        event.setMessage(event.getMessage().replace("%kit%", UserManager.getUser(event.getPlayer().getUniqueId()).getKit().getName()));
       }
-      message = formatChatPlaceholders(LanguageManager.getLanguageMessage("In-Game.Game-Chat-Format"), UserManager.getUser(event.getPlayer().getUniqueId()), eventMessage);
-      for (Player player : arena.getPlayers()) {
-        player.sendMessage(message);
-      }
-      Bukkit.getConsoleSender().sendMessage(message);
-    } else {
-      event.getRecipients().clear();
-      event.getRecipients().addAll(new ArrayList<>(arena.getPlayers()));
-      event.setMessage(event.getMessage().replace("%kit%", UserManager.getUser(event.getPlayer().getUniqueId()).getKit().getName()));
+    } catch (Exception ex){
+      new ReportedException(plugin, ex);
     }
   }
 

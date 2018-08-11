@@ -31,6 +31,7 @@ import pl.plajer.villagedefense3.database.FileStats;
 import pl.plajer.villagedefense3.user.User;
 import pl.plajer.villagedefense3.user.UserManager;
 import pl.plajer.villagedefense3.utils.MessageUtils;
+import pl.plajerlair.core.services.ReportedException;
 
 /**
  * Created by Tom on 11/08/2014.
@@ -56,38 +57,42 @@ public class QuitEvent implements Listener {
 
   @EventHandler
   public void onQuitSaveStats(PlayerQuitEvent event) {
-    if (ArenaRegistry.getArena(event.getPlayer()) != null) {
-      ArenaManager.leaveAttempt(event.getPlayer(), ArenaRegistry.getArena(event.getPlayer()));
-    }
-    final User user = UserManager.getUser(event.getPlayer().getUniqueId());
-    final Player player = event.getPlayer();
-    if (plugin.isDatabaseActivated()) {
-      Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
-        for (final String s : FileStats.STATISTICS.keySet()) {
-          int i;
-          try {
-            i = plugin.getMySQLDatabase().getStat(player.getUniqueId().toString(), s);
-          } catch (NullPointerException npe) {
-            i = 0;
-            System.out.print("COULDN'T GET STATS FROM PLAYER: " + player.getName());
-            npe.printStackTrace();
-            MessageUtils.errorOccured();
-            Bukkit.getConsoleSender().sendMessage("Cannot get stats from MySQL database!");
-            Bukkit.getConsoleSender().sendMessage("Check configuration of mysql.yml file or disable mysql option in config.yml");
-          }
-
-          if (i > user.getInt(s)) {
-            plugin.getMySQLDatabase().setStat(player.getUniqueId().toString(), s, user.getInt(s) + i);
-          } else {
-            plugin.getMySQLDatabase().setStat(player.getUniqueId().toString(), s, user.getInt(s));
-          }
-          plugin.getMySQLDatabase().executeUpdate("UPDATE playerstats SET name='" + player.getName() + "' WHERE UUID='" + player.getUniqueId().toString() + "';");
-        }
-      });
-    } else {
-      for (String s : FileStats.STATISTICS.keySet()) {
-        plugin.getFileStats().saveStat(player, s);
+    try {
+      if (ArenaRegistry.getArena(event.getPlayer()) != null) {
+        ArenaManager.leaveAttempt(event.getPlayer(), ArenaRegistry.getArena(event.getPlayer()));
       }
+      final User user = UserManager.getUser(event.getPlayer().getUniqueId());
+      final Player player = event.getPlayer();
+      if (plugin.isDatabaseActivated()) {
+        Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
+          for (final String s : FileStats.STATISTICS.keySet()) {
+            int i;
+            try {
+              i = plugin.getMySQLDatabase().getStat(player.getUniqueId().toString(), s);
+            } catch (NullPointerException npe) {
+              i = 0;
+              System.out.print("COULDN'T GET STATS FROM PLAYER: " + player.getName());
+              npe.printStackTrace();
+              MessageUtils.errorOccured();
+              Bukkit.getConsoleSender().sendMessage("Cannot get stats from MySQL database!");
+              Bukkit.getConsoleSender().sendMessage("Check configuration of mysql.yml file or disable mysql option in config.yml");
+            }
+
+            if (i > user.getInt(s)) {
+              plugin.getMySQLDatabase().setStat(player.getUniqueId().toString(), s, user.getInt(s) + i);
+            } else {
+              plugin.getMySQLDatabase().setStat(player.getUniqueId().toString(), s, user.getInt(s));
+            }
+            plugin.getMySQLDatabase().executeUpdate("UPDATE playerstats SET name='" + player.getName() + "' WHERE UUID='" + player.getUniqueId().toString() + "';");
+          }
+        });
+      } else {
+        for (String s : FileStats.STATISTICS.keySet()) {
+          plugin.getFileStats().saveStat(player, s);
+        }
+      }
+    } catch (Exception ex){
+      new ReportedException(plugin, ex);
     }
   }
 

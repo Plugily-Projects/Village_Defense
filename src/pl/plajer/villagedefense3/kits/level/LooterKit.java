@@ -28,6 +28,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.java.JavaPlugin;
 
 import pl.plajer.villagedefense3.Main;
 import pl.plajer.villagedefense3.arena.ArenaRegistry;
@@ -39,6 +40,7 @@ import pl.plajer.villagedefense3.user.UserManager;
 import pl.plajer.villagedefense3.utils.ArmorHelper;
 import pl.plajer.villagedefense3.utils.Utils;
 import pl.plajer.villagedefense3.utils.WeaponHelper;
+import pl.plajerlair.core.services.ReportedException;
 import pl.plajerlair.core.utils.ConfigUtils;
 
 /**
@@ -79,20 +81,23 @@ public class LooterKit extends LevelKit implements Listener {
 
   @EventHandler
   public void onDeath(EntityDeathEvent event) {
-    if (event.getEntity().getType() != EntityType.ZOMBIE) {
-      return;
+    try {
+      if (event.getEntity().getType() != EntityType.ZOMBIE) {
+        return;
+      }
+      if (event.getEntity().getKiller() == null) {
+        return;
+      }
+      Player player = event.getEntity().getKiller();
+      if (ArenaRegistry.getArena(player) == null) {
+        return;
+      }
+      User user = UserManager.getUser(player.getUniqueId());
+      if (user.getKit() instanceof LooterKit) {
+        player.getInventory().addItem(new ItemStack(Material.ROTTEN_FLESH, 1));
+      }
+    }catch (Exception ex){
+      new ReportedException(JavaPlugin.getPlugin(Main.class), ex);
     }
-    if (event.getEntity().getKiller() == null) {
-      return;
-    }
-    Player player = event.getEntity().getKiller();
-    if (ArenaRegistry.getArena(player) == null) {
-      return;
-    }
-    User user = UserManager.getUser(player.getUniqueId());
-    if (user.getKit() instanceof LooterKit) {
-      player.getInventory().addItem(new ItemStack(Material.ROTTEN_FLESH, 1));
-    }
-
   }
 }

@@ -32,6 +32,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.PotionType;
 
 import pl.plajer.villagedefense3.Main;
@@ -44,6 +45,7 @@ import pl.plajer.villagedefense3.user.UserManager;
 import pl.plajer.villagedefense3.utils.ArmorHelper;
 import pl.plajer.villagedefense3.utils.Utils;
 import pl.plajer.villagedefense3.utils.WeaponHelper;
+import pl.plajerlair.core.services.ReportedException;
 
 /**
  * Created by Tom on 1/12/2015.
@@ -82,25 +84,29 @@ public class MedicKit extends PremiumKit implements Listener {
 
   @EventHandler
   public void onZombieHit(EntityDamageByEntityEvent e) {
-    if (!(e.getEntity() instanceof Zombie && e.getDamager() instanceof Player)) {
-      return;
-    }
-    User user = UserManager.getUser(e.getDamager().getUniqueId());
-    if (!(user.getKit() instanceof MedicKit)) {
-      return;
-    }
-    if (Math.random() <= 0.1) {
-      for (Entity entity : user.toPlayer().getNearbyEntities(5, 5, 5)) {
-        if (entity.getType() == EntityType.PLAYER) {
-          Player player = (Player) entity;
-          if (player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue() > (player.getHealth() + 1)) {
-            player.setHealth(player.getHealth() + 1);
-          } else {
-            player.setHealth(player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue());
+    try {
+      if (!(e.getEntity() instanceof Zombie && e.getDamager() instanceof Player)) {
+        return;
+      }
+      User user = UserManager.getUser(e.getDamager().getUniqueId());
+      if (!(user.getKit() instanceof MedicKit)) {
+        return;
+      }
+      if (Math.random() <= 0.1) {
+        for (Entity entity : user.toPlayer().getNearbyEntities(5, 5, 5)) {
+          if (entity.getType() == EntityType.PLAYER) {
+            Player player = (Player) entity;
+            if (player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue() > (player.getHealth() + 1)) {
+              player.setHealth(player.getHealth() + 1);
+            } else {
+              player.setHealth(player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue());
+            }
+            player.getEyeLocation().getWorld().spawnParticle(Particle.HEART, player.getLocation(), 20);
           }
-          player.getEyeLocation().getWorld().spawnParticle(Particle.HEART, player.getLocation(), 20);
         }
       }
+    } catch (Exception ex){
+      new ReportedException(JavaPlugin.getPlugin(Main.class), ex);
     }
   }
 }

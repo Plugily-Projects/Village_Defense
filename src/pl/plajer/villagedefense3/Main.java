@@ -59,7 +59,6 @@ import pl.plajer.villagedefense3.events.spectator.SpectatorItemEvents;
 import pl.plajer.villagedefense3.handlers.BungeeManager;
 import pl.plajer.villagedefense3.handlers.ChatManager;
 import pl.plajer.villagedefense3.handlers.ChunkManager;
-import pl.plajer.villagedefense3.handlers.ConfigurationManager;
 import pl.plajer.villagedefense3.handlers.PermissionsManager;
 import pl.plajer.villagedefense3.handlers.PlaceholderManager;
 import pl.plajer.villagedefense3.handlers.PowerupManager;
@@ -77,6 +76,8 @@ import pl.plajer.villagedefense3.user.UserManager;
 import pl.plajer.villagedefense3.utils.MessageUtils;
 import pl.plajer.villagedefense3.utils.Metrics;
 import pl.plajer.villagedefense3.villagedefenseapi.StatsStorage;
+import pl.plajerlair.core.services.ReportedException;
+import pl.plajerlair.core.services.ServiceRegistry;
 import pl.plajerlair.core.utils.ConfigUtils;
 import pl.plajerlair.core.utils.InventoryUtils;
 import pl.plajerlair.core.utils.UpdateChecker;
@@ -192,111 +193,115 @@ public class Main extends JavaPlugin {
 
   @Override
   public void onEnable() {
-    version = Bukkit.getServer().getClass().getPackage().getName().replace(".", ",").split(",")[3];
-    new ConfigurationManager(this);
-    LanguageManager.init(this);
-    saveDefaultConfig();
-    if (!(version.equalsIgnoreCase("v1_9_R1") || version.equalsIgnoreCase("v1_10_R1") || version.equalsIgnoreCase("v1_11_R1")
-            || version.equalsIgnoreCase("v1_12_R1") || version.equalsIgnoreCase("v1_13_R1"))) {
-      MessageUtils.thisVersionIsNotSupported();
-      Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "Your server version is not supported by Village Defense!");
-      Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "Sadly, we must shut off. Maybe you consider changing your server version?");
-      forceDisable = true;
-      getServer().getPluginManager().disablePlugin(this);
-      return;
-    }
     try {
-      Class.forName("org.spigotmc.SpigotConfig");
-    } catch (Exception e) {
-      MessageUtils.thisVersionIsNotSupported();
-      Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "Your server software is not supported by Village Defense!");
-      Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "We support only Spigot and Spigot forks only! Shutting off...");
-      forceDisable = true;
-      getServer().getPluginManager().disablePlugin(this);
-      return;
-    }
-    //check if using releases before 2.1.0 or 2.1.0+
-    if ((ConfigUtils.getConfig(this, "language").isSet("STATS-AboveLine")
-            && ConfigUtils.getConfig(this, "language").isSet("SCOREBOARD-Zombies"))
-            || (ConfigUtils.getConfig(this, "language").isSet("File-Version")
-            && getConfig().isSet("Config-Version"))) {
-      LanguageMigrator.migrateToNewFormat();
-    }
-    debug = getConfig().getBoolean("Debug", false);
-    debug("Main setup start", System.currentTimeMillis());
-    setupFiles();
-    LanguageMigrator.configUpdate();
-    LanguageMigrator.languageFileUpdate();
-    initializeClasses();
-
-    String currentVersion = "v" + Bukkit.getPluginManager().getPlugin("VillageDefense").getDescription().getVersion();
-    if (getConfig().getBoolean("Update-Notifier.Enabled", true)) {
+      ServiceRegistry.registerService(this);
+      version = Bukkit.getServer().getClass().getPackage().getName().replace(".", ",").split(",")[3];
+      LanguageManager.init(this);
+      saveDefaultConfig();
+      if (!(version.equalsIgnoreCase("v1_9_R1") || version.equalsIgnoreCase("v1_10_R1") || version.equalsIgnoreCase("v1_11_R1")
+              || version.equalsIgnoreCase("v1_12_R1") || version.equalsIgnoreCase("v1_13_R1"))) {
+        MessageUtils.thisVersionIsNotSupported();
+        Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "Your server version is not supported by Village Defense!");
+        Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "Sadly, we must shut off. Maybe you consider changing your server version?");
+        forceDisable = true;
+        getServer().getPluginManager().disablePlugin(this);
+        return;
+      }
       try {
-        UpdateChecker.checkUpdate(this, currentVersion, 41869);
-        String latestVersion = UpdateChecker.getLatestVersion();
-        if (latestVersion != null) {
-          latestVersion = "v" + latestVersion;
-          if (latestVersion.contains("b")) {
-            Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "[VillageDefense] Your software is ready for update! However it's a BETA VERSION. Proceed with caution.");
-            Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "[VillageDefense] Current version %old%, latest version %new%".replace("%old%", currentVersion)
-                    .replace("%new%", latestVersion));
-          } else {
-            MessageUtils.updateIsHere();
-            Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "Your Village Defense plugin is outdated! Download it to keep with latest changes and fixes.");
-            Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "Disable this option in config.yml if you wish.");
-            Bukkit.getConsoleSender().sendMessage(ChatColor.YELLOW + "Current version: " + ChatColor.RED + currentVersion + ChatColor.YELLOW + " Latest version: " + ChatColor.GREEN + latestVersion);
+        Class.forName("org.spigotmc.SpigotConfig");
+      } catch (Exception e) {
+        MessageUtils.thisVersionIsNotSupported();
+        Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "Your server software is not supported by Village Defense!");
+        Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "We support only Spigot and Spigot forks only! Shutting off...");
+        forceDisable = true;
+        getServer().getPluginManager().disablePlugin(this);
+        return;
+      }
+      //check if using releases before 2.1.0 or 2.1.0+
+      if ((ConfigUtils.getConfig(this, "language").isSet("STATS-AboveLine")
+              && ConfigUtils.getConfig(this, "language").isSet("SCOREBOARD-Zombies"))
+              || (ConfigUtils.getConfig(this, "language").isSet("File-Version")
+              && getConfig().isSet("Config-Version"))) {
+        LanguageMigrator.migrateToNewFormat();
+      }
+      debug = getConfig().getBoolean("Debug", false);
+      debug("Main setup start", System.currentTimeMillis());
+      setupFiles();
+      LanguageMigrator.configUpdate();
+      LanguageMigrator.languageFileUpdate();
+      initializeClasses();
+
+      String currentVersion = "v" + Bukkit.getPluginManager().getPlugin("VillageDefense").getDescription().getVersion();
+      if (getConfig().getBoolean("Update-Notifier.Enabled", true)) {
+        try {
+          UpdateChecker.checkUpdate(this, currentVersion, 41869);
+          String latestVersion = UpdateChecker.getLatestVersion();
+          if (latestVersion != null) {
+            latestVersion = "v" + latestVersion;
+            if (latestVersion.contains("b")) {
+              Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "[VillageDefense] Your software is ready for update! However it's a BETA VERSION. Proceed with caution.");
+              Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "[VillageDefense] Current version %old%, latest version %new%".replace("%old%", currentVersion)
+                      .replace("%new%", latestVersion));
+            } else {
+              MessageUtils.updateIsHere();
+              Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "Your Village Defense plugin is outdated! Download it to keep with latest changes and fixes.");
+              Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "Disable this option in config.yml if you wish.");
+              Bukkit.getConsoleSender().sendMessage(ChatColor.YELLOW + "Current version: " + ChatColor.RED + currentVersion + ChatColor.YELLOW + " Latest version: " + ChatColor.GREEN + latestVersion);
+            }
           }
+        } catch (Exception ex) {
+          Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "[VillageDefense] An error occured while checking for update!");
+          Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "Please check internet connection or check for update via WWW site directly!");
+          Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "WWW site https://www.spigotmc.org/resources/minigame-village-defence-1-12-and-1-8-8.41869/");
         }
-      } catch (Exception ex) {
-        Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "[VillageDefense] An error occured while checking for update!");
-        Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "Please check internet connection or check for update via WWW site directly!");
-        Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "WWW site https://www.spigotmc.org/resources/minigame-village-defence-1-12-and-1-8-8.41869/");
       }
-    }
 
-    STARTING_TIMER_TIME = getConfig().getInt("Starting-Waiting-Time", 60);
-    MINI_ZOMBIE_SPEED = (float) getConfig().getDouble("Mini-Zombie-Speed", 2.0);
-    ZOMBIE_SPEED = (float) getConfig().getDouble("Zombie-Speed", 1.3);
-    databaseActivated = getConfig().getBoolean("DatabaseActivated", false);
-    inventoryManagerEnabled = getConfig().getBoolean("InventoryManager", false);
-    if (databaseActivated) {
-      database = new MySQLDatabase(this);
-    } else {
-      fileStats = new FileStats(this);
-    }
-    bossbarEnabled = getConfig().getBoolean("Bossbar-Enabled", true);
+      STARTING_TIMER_TIME = getConfig().getInt("Starting-Waiting-Time", 60);
+      MINI_ZOMBIE_SPEED = (float) getConfig().getDouble("Mini-Zombie-Speed", 2.0);
+      ZOMBIE_SPEED = (float) getConfig().getDouble("Zombie-Speed", 1.3);
+      databaseActivated = getConfig().getBoolean("DatabaseActivated", false);
+      inventoryManagerEnabled = getConfig().getBoolean("InventoryManager", false);
+      if (databaseActivated) {
+        database = new MySQLDatabase(this);
+      } else {
+        fileStats = new FileStats(this);
+      }
+      bossbarEnabled = getConfig().getBoolean("Bossbar-Enabled", true);
 
-    BreakFenceListener listener = new BreakFenceListener();
-    listener.runTaskTimer(this, 1L, 20L);
+      BreakFenceListener listener = new BreakFenceListener();
+      listener.runTaskTimer(this, 1L, 20L);
 
-    KitRegistry.init();
+      KitRegistry.init();
 
-    SpecialItem.loadAll();
-    ArenaRegistry.registerArenas();
-    new ShopManager();
-    //we must start it after instances load!
-    signManager = new SignManager(this);
+      SpecialItem.loadAll();
+      ArenaRegistry.registerArenas();
+      new ShopManager();
+      //we must start it after instances load!
+      signManager = new SignManager(this);
 
-    chatFormat = getConfig().getBoolean("ChatFormat-Enabled", true);
+      chatFormat = getConfig().getBoolean("ChatFormat-Enabled", true);
 
-    ConfigurationSection cs = getConfig().getConfigurationSection("CustomPermissions");
-    for (String key : cs.getKeys(false)) {
-      customPermissions.put(key, getConfig().getInt("CustomPermissions." + key));
-      debug("Loaded custom permission " + key, System.currentTimeMillis());
-    }
-    for (Player p : Bukkit.getOnlinePlayers()) {
-      UserManager.registerUser(p.getUniqueId());
-    }
-    if (databaseActivated) {
+      ConfigurationSection cs = getConfig().getConfigurationSection("CustomPermissions");
+      for (String key : cs.getKeys(false)) {
+        customPermissions.put(key, getConfig().getInt("CustomPermissions." + key));
+        debug("Loaded custom permission " + key, System.currentTimeMillis());
+      }
       for (Player p : Bukkit.getOnlinePlayers()) {
-        Bukkit.getScheduler().runTaskAsynchronously(this, () -> MySQLConnectionUtils.loadPlayerStats(p, this));
+        UserManager.registerUser(p.getUniqueId());
       }
-    } else {
-      fileStats.loadStatsForPlayersOnline();
+      if (databaseActivated) {
+        for (Player p : Bukkit.getOnlinePlayers()) {
+          Bukkit.getScheduler().runTaskAsynchronously(this, () -> MySQLConnectionUtils.loadPlayerStats(p, this));
+        }
+      } else {
+        fileStats.loadStatsForPlayersOnline();
+      }
+      StatsStorage.plugin = this;
+      PermissionsManager.init();
+      debug("Main setup done", System.currentTimeMillis());
+    } catch (Exception ex) {
+      new ReportedException(this, ex);
     }
-    StatsStorage.plugin = this;
-    PermissionsManager.init();
-    debug("Main setup done", System.currentTimeMillis());
   }
 
   private void initializeClasses() {
@@ -484,14 +489,6 @@ public class Main extends JavaPlugin {
     if (isDatabaseActivated()) {
       getMySQLDatabase().closeDatabase();
     }
-  }
-
-  public WorldEditPlugin getWorldEditPlugin() {
-    Plugin p = Bukkit.getServer().getPluginManager().getPlugin("WorldEdit");
-    if (p instanceof WorldEditPlugin) {
-      return (WorldEditPlugin) p;
-    }
-    return null;
   }
 
 }

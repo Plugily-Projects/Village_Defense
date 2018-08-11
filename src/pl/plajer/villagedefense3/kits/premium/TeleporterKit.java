@@ -48,6 +48,7 @@ import pl.plajer.villagedefense3.user.UserManager;
 import pl.plajer.villagedefense3.utils.ArmorHelper;
 import pl.plajer.villagedefense3.utils.Utils;
 import pl.plajer.villagedefense3.utils.WeaponHelper;
+import pl.plajerlair.core.services.ReportedException;
 
 /**
  * Created by Tom on 18/08/2014.
@@ -94,87 +95,95 @@ public class TeleporterKit extends PremiumKit implements Listener {
 
   @EventHandler
   public void onRightClick(PlayerInteractEvent e) {
-    if (e.getAction() == Action.RIGHT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_BLOCK) {
-      Arena arena = ArenaRegistry.getArena(e.getPlayer());
-      ItemStack stack = e.getPlayer().getInventory().getItemInMainHand();
-      if (arena == null || stack == null || !stack.hasItemMeta()
-              || !stack.getItemMeta().hasDisplayName()) {
-        return;
-      }
-      if (stack.getItemMeta().getDisplayName().equalsIgnoreCase(ChatManager.colorMessage("Kits.Teleporter.Game-Item-Name"))) {
-        Inventory inventory = plugin.getServer().createInventory(null, 18, ChatManager.colorMessage("Kits.Teleporter.Game-Item-Menu-Name"));
-        for (Player player : e.getPlayer().getWorld().getPlayers()) {
-          if (ArenaRegistry.getArena(player) != null && !UserManager.getUser(player.getUniqueId()).isFakeDead()) {
-            //todo remove
-            ItemStack skull = new ItemStack(Material.SKULL, 1, (short) 3);
-            SkullMeta meta = (SkullMeta) skull.getItemMeta();
-            meta.setOwner(player.getName());
-            meta.setDisplayName(player.getName());
-            meta.setLore(Collections.singletonList(""));
-            skull.setItemMeta(meta);
-            inventory.addItem(skull);
+    try {
+      if (e.getAction() == Action.RIGHT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_BLOCK) {
+        Arena arena = ArenaRegistry.getArena(e.getPlayer());
+        ItemStack stack = e.getPlayer().getInventory().getItemInMainHand();
+        if (arena == null || stack == null || !stack.hasItemMeta()
+                || !stack.getItemMeta().hasDisplayName()) {
+          return;
+        }
+        if (stack.getItemMeta().getDisplayName().equalsIgnoreCase(ChatManager.colorMessage("Kits.Teleporter.Game-Item-Name"))) {
+          Inventory inventory = plugin.getServer().createInventory(null, 18, ChatManager.colorMessage("Kits.Teleporter.Game-Item-Menu-Name"));
+          for (Player player : e.getPlayer().getWorld().getPlayers()) {
+            if (ArenaRegistry.getArena(player) != null && !UserManager.getUser(player.getUniqueId()).isFakeDead()) {
+              //todo remove
+              ItemStack skull = new ItemStack(Material.SKULL, 1, (short) 3);
+              SkullMeta meta = (SkullMeta) skull.getItemMeta();
+              meta.setOwner(player.getName());
+              meta.setDisplayName(player.getName());
+              meta.setLore(Collections.singletonList(""));
+              skull.setItemMeta(meta);
+              inventory.addItem(skull);
+            }
           }
+          for (Villager villager : arena.getVillagers()) {
+            ItemStack villagerItem = new ItemStack(Material.EMERALD);
+            this.setItemNameAndLore(villagerItem, villager.getCustomName(), new String[]{villager.getUniqueId().toString()});
+            inventory.addItem(villagerItem);
+          }
+          e.getPlayer().openInventory(inventory);
         }
-        for (Villager villager : arena.getVillagers()) {
-          ItemStack villagerItem = new ItemStack(Material.EMERALD);
-          this.setItemNameAndLore(villagerItem, villager.getCustomName(), new String[]{villager.getUniqueId().toString()});
-          inventory.addItem(villagerItem);
-        }
-        e.getPlayer().openInventory(inventory);
       }
+    }catch (Exception ex){
+      new ReportedException(plugin, ex);
     }
   }
 
 
   @EventHandler
   public void onInventoryClick(InventoryClickEvent e) {
-    Player p = (Player) e.getWhoClicked();
-    Arena arena = ArenaRegistry.getArena(p);
-    if (arena == null || e.getCurrentItem() == null || !e.getCurrentItem().hasItemMeta()
-            || !e.getCurrentItem().getItemMeta().hasDisplayName() || !e.getCurrentItem().getItemMeta().hasLore()) {
-      return;
-    }
-    if (e.getInventory().getName().equalsIgnoreCase(ChatManager.colorMessage("Kits.Teleporter.Game-Item-Menu-Name"))) {
-      e.setCancelled(true);
-      if ((e.isLeftClick() || e.isRightClick())) {
-        if (e.getCurrentItem().getType() == Material.EMERALD) {
-          for (Villager villager : arena.getVillagers()) {
-            if (villager.getCustomName() == null) {
-              villager.remove();
-            }
-            if (villager.getCustomName().equalsIgnoreCase(e.getCurrentItem().getItemMeta().getDisplayName()) && villager.getUniqueId().toString().equalsIgnoreCase(ChatColor.stripColor(e.getCurrentItem().getItemMeta().getLore().get(0)))) {
-              e.getWhoClicked().teleport(villager.getLocation());
-              if (plugin.is1_13_R1()) {
-                p.playSound(p.getLocation(), Sound.valueOf("ENTITY_ENDERMAN_TELEPORT"), 1, 1);
-              } else {
-                p.playSound(p.getLocation(), Sound.ENTITY_ENDERMEN_TELEPORT, 1, 1);
+    try {
+      Player p = (Player) e.getWhoClicked();
+      Arena arena = ArenaRegistry.getArena(p);
+      if (arena == null || e.getCurrentItem() == null || !e.getCurrentItem().hasItemMeta()
+              || !e.getCurrentItem().getItemMeta().hasDisplayName() || !e.getCurrentItem().getItemMeta().hasLore()) {
+        return;
+      }
+      if (e.getInventory().getName().equalsIgnoreCase(ChatManager.colorMessage("Kits.Teleporter.Game-Item-Menu-Name"))) {
+        e.setCancelled(true);
+        if ((e.isLeftClick() || e.isRightClick())) {
+          if (e.getCurrentItem().getType() == Material.EMERALD) {
+            for (Villager villager : arena.getVillagers()) {
+              if (villager.getCustomName() == null) {
+                villager.remove();
               }
-              p.getWorld().spawnParticle(Particle.PORTAL, p.getLocation(), 30);
-              p.sendMessage(ChatManager.colorMessage("Kits.Teleporter.Teleported-To-Villager"));
-              return;
-            }
-          }
-          p.sendMessage(ChatManager.colorMessage("Kits.Teleporter.Villager-Warning"));
-        } else { /*if(e.getCurrentItem().getType() == Material.SKULL_ITEM || e.getCurrentItem().getType() == Material.SKULL)*/
-          ItemMeta meta = e.getCurrentItem().getItemMeta();
-          for (Player player : arena.getPlayers()) {
-            if (player.getName().equalsIgnoreCase(meta.getDisplayName()) || ChatColor.stripColor(meta.getDisplayName()).contains(player.getName())) {
-              p.sendMessage(ChatManager.formatMessage(arena, ChatManager.colorMessage("Kits.Teleporter.Teleported-To-Player"), player));
-              p.teleport(player);
-              if (plugin.is1_13_R1()) {
-                p.playSound(p.getLocation(), Sound.valueOf("ENTITY_ENDERMAN_TELEPORT"), 1, 1);
-              } else {
-                p.playSound(p.getLocation(), Sound.ENTITY_ENDERMEN_TELEPORT, 1, 1);
+              if (villager.getCustomName().equalsIgnoreCase(e.getCurrentItem().getItemMeta().getDisplayName()) && villager.getUniqueId().toString().equalsIgnoreCase(ChatColor.stripColor(e.getCurrentItem().getItemMeta().getLore().get(0)))) {
+                e.getWhoClicked().teleport(villager.getLocation());
+                if (plugin.is1_13_R1()) {
+                  p.playSound(p.getLocation(), Sound.valueOf("ENTITY_ENDERMAN_TELEPORT"), 1, 1);
+                } else {
+                  p.playSound(p.getLocation(), Sound.ENTITY_ENDERMEN_TELEPORT, 1, 1);
+                }
+                p.getWorld().spawnParticle(Particle.PORTAL, p.getLocation(), 30);
+                p.sendMessage(ChatManager.colorMessage("Kits.Teleporter.Teleported-To-Villager"));
+                return;
               }
-              p.getWorld().spawnParticle(Particle.PORTAL, p.getLocation(), 30);
-              p.closeInventory();
-              e.setCancelled(true);
-              return;
             }
+            p.sendMessage(ChatManager.colorMessage("Kits.Teleporter.Villager-Warning"));
+          } else { /*if(e.getCurrentItem().getType() == Material.SKULL_ITEM || e.getCurrentItem().getType() == Material.SKULL)*/
+            ItemMeta meta = e.getCurrentItem().getItemMeta();
+            for (Player player : arena.getPlayers()) {
+              if (player.getName().equalsIgnoreCase(meta.getDisplayName()) || ChatColor.stripColor(meta.getDisplayName()).contains(player.getName())) {
+                p.sendMessage(ChatManager.formatMessage(arena, ChatManager.colorMessage("Kits.Teleporter.Teleported-To-Player"), player));
+                p.teleport(player);
+                if (plugin.is1_13_R1()) {
+                  p.playSound(p.getLocation(), Sound.valueOf("ENTITY_ENDERMAN_TELEPORT"), 1, 1);
+                } else {
+                  p.playSound(p.getLocation(), Sound.ENTITY_ENDERMEN_TELEPORT, 1, 1);
+                }
+                p.getWorld().spawnParticle(Particle.PORTAL, p.getLocation(), 30);
+                p.closeInventory();
+                e.setCancelled(true);
+                return;
+              }
+            }
+            p.sendMessage(ChatManager.colorMessage("Kits.Teleporter.Player-Not-Found"));
           }
-          p.sendMessage(ChatManager.colorMessage("Kits.Teleporter.Player-Not-Found"));
         }
       }
+    } catch (Exception ex){
+      new ReportedException(plugin, ex);
     }
   }
 

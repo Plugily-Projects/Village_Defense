@@ -29,6 +29,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.java.JavaPlugin;
 
 import pl.plajer.villagedefense3.Main;
 import pl.plajer.villagedefense3.arena.Arena;
@@ -41,6 +42,7 @@ import pl.plajer.villagedefense3.user.UserManager;
 import pl.plajer.villagedefense3.utils.ArmorHelper;
 import pl.plajer.villagedefense3.utils.Utils;
 import pl.plajer.villagedefense3.utils.WeaponHelper;
+import pl.plajerlair.core.services.ReportedException;
 import pl.plajerlair.core.utils.ConfigUtils;
 
 /**
@@ -85,19 +87,23 @@ public class WorkerKit extends LevelKit implements Listener {
 
   @EventHandler(priority = EventPriority.HIGHEST)
   public void onDoorPlace(BlockPlaceEvent e) {
-    Arena arena = ArenaRegistry.getArena(e.getPlayer());
-    if (arena == null) {
-      return;
+    try {
+      Arena arena = ArenaRegistry.getArena(e.getPlayer());
+      if (arena == null) {
+        return;
+      }
+      User user = UserManager.getUser(e.getPlayer().getUniqueId());
+      ItemStack stack = e.getPlayer().getInventory().getItemInMainHand();
+      if (user.isSpectator() || stack == null || !arena.getDoorLocations().containsKey(e.getBlock().getLocation())
+              || !(stack.getType() == Material.WOOD_DOOR || stack.getType() == Material.WOODEN_DOOR)) {
+        e.setCancelled(true);
+        return;
+      }
+      e.setCancelled(false);
+      e.getPlayer().sendMessage(ChatManager.colorMessage("Kits.Worker.Game-Item-Place-Message"));
+    } catch (Exception ex){
+      new ReportedException(JavaPlugin.getPlugin(Main.class), ex);
     }
-    User user = UserManager.getUser(e.getPlayer().getUniqueId());
-    ItemStack stack = e.getPlayer().getInventory().getItemInMainHand();
-    if (user.isSpectator() || stack == null || !arena.getDoorLocations().containsKey(e.getBlock().getLocation())
-            || !(stack.getType() == Material.WOOD_DOOR || stack.getType() == Material.WOODEN_DOOR)) {
-      e.setCancelled(true);
-      return;
-    }
-    e.setCancelled(false);
-    e.getPlayer().sendMessage(ChatManager.colorMessage("Kits.Worker.Game-Item-Place-Message"));
   }
 
 }

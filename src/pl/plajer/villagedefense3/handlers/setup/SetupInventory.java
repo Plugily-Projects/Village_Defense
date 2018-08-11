@@ -109,11 +109,7 @@ public class SetupInventory {
             .build()));
     inventory.addItem((new ItemBuilder(new ItemStack(Material.WOOD_DOOR))
             .name(ChatColor.GOLD + "► Add doors")
-            .lore(ChatColor.GRAY + "Select your arena with Cuboid Selection")
-            .lore(ChatColor.GRAY + "in WorldEdit (select minimum and maximum")
-            .lore(ChatColor.GRAY + "arena opposite selections with wand)")
-            .lore(ChatColor.GRAY + "And click this. Plugin will search")
-            .lore(ChatColor.GRAY + "for doors in your selection automatically.")
+            .lore(ChatColor.GRAY + "Target arena door and click this.")
             .lore(isOptionDoneList("instances." + arena.getID() + ".doors"))
             .build()));
     inventory.addItem(new ItemBuilder(new ItemStack(Material.CHEST))
