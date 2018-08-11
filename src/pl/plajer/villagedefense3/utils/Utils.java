@@ -126,13 +126,13 @@ public class Utils {
   public static byte getDoorByte(BlockFace face) {
     switch (face) {
       case NORTH:
-        return 2;
-      case EAST:
         return 3;
-      case SOUTH:
+      case EAST:
         return 0;
-      case WEST:
+      case SOUTH:
         return 1;
+      case WEST:
+        return 2;
       default:
         return 0;
     }

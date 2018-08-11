@@ -67,9 +67,6 @@ public class JoinEvent implements Listener {
   @EventHandler
   public void onJoin(PlayerJoinEvent event) {
     try {
-      //temp test
-      Object obj = null;
-      obj.hashCode();
       if (plugin.isBungeeActivated()) {
         return;
       }
