@@ -343,7 +343,7 @@ public class ArenaManager {
   public static void endWave(Arena arena) {
     try {
       plugin.getRewardsHandler().performEndWaveRewards(arena, arena.getWave());
-      arena.setTimer(25);
+      arena.setTimer(plugin.getConfig().getInt("Cooldown-Before-Next-Wave", 25));
       arena.getZombieCheckerLocations().clear();
       arena.setWave(arena.getWave() + 1);
       VillageWaveEndEvent villageWaveEndEvent = new VillageWaveEndEvent(arena, arena.getWave());

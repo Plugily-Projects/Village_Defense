@@ -71,6 +71,9 @@ DatabaseActivated: false
 # How many seconds game should take to start.
 Starting-Waiting-Time: 60
 
+# Time before next wave starts
+Cooldown-Before-Next-Wave: 25
+
 # Speed of baby zombie. Suggested: between 1.8 and 2.0
 Mini-Zombie-Speed: 2.0
 
@@ -165,6 +168,6 @@ Update-Notifier:
 Debug: false
 
 # Don't modify.
-Version: 5
+Version: 6
 
 # No way! You've reached the end! But... where's the dragon!?

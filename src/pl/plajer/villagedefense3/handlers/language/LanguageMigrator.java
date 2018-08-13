@@ -68,8 +68,10 @@ public class LanguageMigrator {
                 "# - black (restarting) stained glass\r\nSigns-Block-States-Enabled: true\r\n\r\n");
         MigratorUtils.addNewLines(file, "# Commands which can be used in game, remove all of them to disable\r\nWhitelisted-Commands:\r\n- me\r\n- help\r\n");
         MigratorUtils.addNewLines(file, "# Limit of mobs can be spawned per player in-game\r\n# Will affect only buying them in in-game shop\r\n" +
-                "Wolves-Spawn-Limit: 20\r\nGolems-Spawn-Limit: 15\r\n" +
-                "# Don't modify\r\nVersion: 5\r\n\r\n# No way! You've reached the end! But... where's the dragon!?");
+                "Wolves-Spawn-Limit: 20\r\nGolems-Spawn-Limit: 15\r\n");
+        MigratorUtils.addNewLines(file, "# Time before next wave starts\n" +
+                "Cooldown-Before-Next-Wave: 25\r\n"+
+                "# Don't modify\r\nVersion: 6\r\n\r\n# No way! You've reached the end! But... where's the dragon!?");
         break;
       case 2:
         MigratorUtils.addNewLines(file, "# Should blocks behind game signs change their color based on game state?\r\n# They will change color to:\r\n" +
@@ -77,19 +79,30 @@ public class LanguageMigrator {
                 "# - black (restarting) stained glass\r\nSigns-Block-States-Enabled: true\r\n\r\n");
         MigratorUtils.addNewLines(file, "# Commands which can be used in game, remove all of them to disable\r\nWhitelisted-Commands:\r\n- me\r\n- help\r\n");
         MigratorUtils.addNewLines(file, "# Limit of mobs can be spawned per player in-game\r\n# Will affect only buying them in in-game shop\r\n" +
-                "Wolves-Spawn-Limit: 20\r\nGolems-Spawn-Limit: 15\r\n" +
-                "# Don't modify\r\nVersion: 5\r\n\r\n# No way! You've reached the end! But... where's the dragon!?");
+                "Wolves-Spawn-Limit: 20\r\nGolems-Spawn-Limit: 15\r\n");
+        MigratorUtils.addNewLines(file, "# Time before next wave starts\n" +
+                "Cooldown-Before-Next-Wave: 25\r\n"+
+                "# Don't modify\r\nVersion: 6\r\n\r\n# No way! You've reached the end! But... where's the dragon!?");
         break;
       case 3:
         MigratorUtils.addNewLines(file, "# Commands which can be used in game, remove all of them to disable\r\nWhitelisted-Commands:\r\n- me\r\n- help\r\n");
         MigratorUtils.addNewLines(file, "# Limit of mobs can be spawned per player in-game\r\n# Will affect only buying them in in-game shop\r\n" +
-                "Wolves-Spawn-Limit: 20\r\nGolems-Spawn-Limit: 15\r\n" +
-                "# Don't modify\r\nVersion: 5\r\n\r\n# No way! You've reached the end! But... where's the dragon!?");
+                "Wolves-Spawn-Limit: 20\r\nGolems-Spawn-Limit: 15\r\n");
+        MigratorUtils.addNewLines(file, "# Time before next wave starts\n" +
+                "Cooldown-Before-Next-Wave: 25\r\n"+
+                "# Don't modify\r\nVersion: 6\r\n\r\n# No way! You've reached the end! But... where's the dragon!?");
         break;
       case 4:
         MigratorUtils.addNewLines(file, "# Limit of mobs can be spawned per player in-game\r\n# Will affect only buying them in in-game shop\r\n" +
-                "Wolves-Spawn-Limit: 20\r\nGolems-Spawn-Limit: 15\r\n" +
-                "# Don't modify\r\nVersion: 5\r\n\r\n# No way! You've reached the end! But... where's the dragon!?");
+                "Wolves-Spawn-Limit: 20\r\nGolems-Spawn-Limit: 15\r\n");
+        MigratorUtils.addNewLines(file, "# Time before next wave starts\n" +
+                "Cooldown-Before-Next-Wave: 25\r\n"+
+                "# Don't modify\r\nVersion: 6\r\n\r\n# No way! You've reached the end! But... where's the dragon!?");
+        break;
+      case 5:
+        MigratorUtils.addNewLines(file, "# Time before next wave starts\n" +
+                "Cooldown-Before-Next-Wave: 25\r\n"+
+                "# Don't modify\r\nVersion: 6\r\n\r\n# No way! You've reached the end! But... where's the dragon!?");
         break;
     }
     Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "[Village Defense] [System notify] Config updated, no comments were removed :)");

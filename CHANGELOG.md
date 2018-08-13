@@ -3,6 +3,7 @@
 ### 3.10.1 Release (13.08.2017)
 * Fixed NullPointerException in combust event (reported anonymously via Error service) (#1 error service report)
 * Fixed IndexOutOfBoundsException in join event while bungee is enabled (reported anonymously via Error service) (#2 error service report)
+* Added configurable time between next waves (for example for implementing custom bosses using wave end rewards :))
 
 ### 3.10.0 Release (08.08.2018)
 * Built against PLCore API
