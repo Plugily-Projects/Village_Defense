@@ -358,7 +358,7 @@ public class Events implements Listener {
         return;
       }
       if (e.getEntity() instanceof Player) {
-        if (ArenaRegistry.getArena((Player) arrow.getShooter()).equals(ArenaRegistry.getArena((Player) e.getEntity()))) {
+        if (ArenaRegistry.getArena((Player) arrow.getShooter()) != null && ArenaRegistry.getArena((Player) arrow.getShooter()).equals(ArenaRegistry.getArena((Player) e.getEntity()))) {
           e.setCancelled(true);
         }
       } else if (e.getEntity() instanceof IronGolem || e.getEntity() instanceof Villager || e.getEntity() instanceof Wolf) {
