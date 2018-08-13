@@ -1,7 +1,8 @@
 # Village Defense 3 Changelog
 
 ### 3.10.1 Release (13.08.2017)
-* Fixed NullPointerException in combust event (reporter anonymously via Error service) (#1 error service report)
+* Fixed NullPointerException in combust event (reported anonymously via Error service) (#1 error service report)
+* Fixed IndexOutOfBoundsException in join event while bungee is enabled (reported anonymously via Error service) (#2 error service report)
 
 ### 3.10.0 Release (08.08.2018)
 * Built against PLCore API

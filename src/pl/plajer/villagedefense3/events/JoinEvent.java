@@ -121,7 +121,7 @@ public class JoinEvent implements Listener {
           }
         }
       }, 25);
-      if (plugin.isBungeeActivated()) {
+      if (plugin.isBungeeActivated() && ArenaRegistry.getArenas().size() >= 1) {
         ArenaRegistry.getArenas().get(0).teleportToLobby(event.getPlayer());
       }
       for (Arena arena : ArenaRegistry.getArenas()) {
