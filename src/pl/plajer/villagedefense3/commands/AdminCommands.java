@@ -441,7 +441,10 @@ public class AdminCommands extends MainCommand {
       sender.sendMessage(ChatManager.colorMessage("Commands.Target-Player-Not-Found"));
     }
     Player player = Bukkit.getPlayer(p);
-    if (!checkIsInGameInstance(player) || !hasPermission(sender, "villagedefense.admin.addorbs.others")) {
+    if (!hasPermission(sender, "villagedefense.admin.addorbs.others")) {
+      if(!ArenaRegistry.isInArena(player)){
+        sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("Commands.Not-Playing"));
+      }
       return;
     }
     if (NumberUtils.isNumber(number)) {
