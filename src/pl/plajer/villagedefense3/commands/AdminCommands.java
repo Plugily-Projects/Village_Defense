@@ -437,14 +437,12 @@ public class AdminCommands extends MainCommand {
 
   public void addOrbsOther(CommandSender sender, String p, String number) {
     //check only target player, maybe sender would do this from console.
-    if (Bukkit.getPlayerExact(p) == null) {
-      sender.sendMessage(ChatManager.colorMessage("Commands.Target-Player-Not-Found"));
-    }
-    Player player = Bukkit.getPlayer(p);
     if (!hasPermission(sender, "villagedefense.admin.addorbs.others")) {
-      if(!ArenaRegistry.isInArena(player)){
-        sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("Commands.Not-Playing"));
-      }
+      return;
+    }
+    Player player = Bukkit.getPlayerExact(p);
+    if (player == null || !ArenaRegistry.isInArena(player)) {
+      sender.sendMessage(ChatManager.colorMessage("Commands.Target-Player-Not-Found"));
       return;
     }
     if (NumberUtils.isNumber(number)) {
