@@ -5,6 +5,7 @@
 * Fixed IndexOutOfBoundsException in join event while bungee is enabled (reported anonymously via Error service) (#2 error service report)
 * Added configurable time between next waves (for example for implementing custom bosses using wave end rewards :))
 * Fixed NullPointerException in add orbs other method in vda command (reported anonymously via Error service)
+* Fixed NullPointerException while using setup menu while using my other minigames (like BuildBattle) (reported anonymously via Error service)
 
 ### 3.10.0 Release (08.08.2018)
 * Built against PLCore API

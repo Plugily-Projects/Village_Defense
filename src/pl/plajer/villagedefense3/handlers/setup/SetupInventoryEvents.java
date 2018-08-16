@@ -69,7 +69,7 @@ public class SetupInventoryEvents implements Listener {
         return;
       }
       Player player = (Player) event.getWhoClicked();
-      if (!player.hasPermission("villagedefense.admin.create") || !event.getInventory().getName().contains("Arena:")
+      if (!player.hasPermission("villagedefense.admin.create") || !event.getInventory().getName().contains("Arena VD:")
               || event.getInventory().getHolder() != null || event.getCurrentItem() == null
               || !event.getCurrentItem().hasItemMeta() || !event.getCurrentItem().getItemMeta().hasDisplayName()) {
         return;
