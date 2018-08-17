@@ -562,7 +562,7 @@ public class MainCommand implements CommandExecutor {
       player.sendMessage("");
       player.sendMessage(ChatColor.GREEN + "Edit this arena via " + ChatColor.GOLD + "/vd " + args[1] + " edit" + ChatColor.GREEN + "!");
       player.sendMessage(ChatColor.GOLD + "Don't know where to start? Check out tutorial video:");
-      player.sendMessage(ChatColor.GOLD + "https://bit.ly/2yPTI0H");
+      player.sendMessage(ChatColor.GOLD + "https://bit.ly/2MjU0mX");
       player.sendMessage(ChatColor.BOLD + "------------------------------------------- ");
     }
   }
