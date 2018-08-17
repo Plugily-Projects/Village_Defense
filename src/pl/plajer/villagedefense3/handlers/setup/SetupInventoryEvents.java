@@ -78,7 +78,7 @@ public class SetupInventoryEvents implements Listener {
       String name = event.getCurrentItem().getItemMeta().getDisplayName();
       name = ChatColor.stripColor(name);
 
-      Arena arena = ArenaRegistry.getArena(event.getInventory().getName().replace("Arena: ", ""));
+      Arena arena = ArenaRegistry.getArena(event.getInventory().getName().replace("Arena VD: ", ""));
       if (event.getCurrentItem().getType() == Material.NAME_TAG && event.getCursor().getType() == Material.NAME_TAG) {
         event.setCancelled(true);
         if (!event.getCursor().hasItemMeta()) {
