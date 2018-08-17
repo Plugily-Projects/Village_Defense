@@ -6,6 +6,8 @@
 * Added configurable time between next waves (for example for implementing custom bosses using wave end rewards :))
 * Fixed NullPointerException in add orbs other method in vda command (reported anonymously via Error service)
 * Fixed NullPointerException while using setup menu while using my other minigames (like BuildBattle) (reported anonymously via Error service)
+* Fixed NumberFormatException for language.yml migrator - this problem is very rare to occur but it was reported so fix was done
+* Some 2 other small fixes for errors that MAY be fixed (and may not)
 
 ### 3.10.0 Release (08.08.2018)
 * Built against PLCore API
