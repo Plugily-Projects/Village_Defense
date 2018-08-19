@@ -97,6 +97,7 @@ public class ArenaManager {
         }
       }
       Main.debug("Final join attempt, " + p.getName(), System.currentTimeMillis());
+      arena.addPlayer(p);
       if ((arena.getArenaState() == ArenaState.IN_GAME || (arena.getArenaState() == ArenaState.STARTING && arena.getTimer() <= 3) || arena.getArenaState() == ArenaState.ENDING)) {
         if (plugin.isInventoryManagerEnabled()) {
           p.setLevel(0);
@@ -118,7 +119,6 @@ public class ArenaManager {
           p.removePotionEffect(potionEffect.getType());
         }
 
-        arena.addPlayer(p);
         p.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(p.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue() + arena.getRottenFleshLevel());
         p.setHealth(p.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue());
         p.setFoodLevel(20);
@@ -147,7 +147,6 @@ public class ArenaManager {
         InventoryUtils.saveInventoryToFile(plugin, p);
       }
       arena.teleportToLobby(p);
-      arena.addPlayer(p);
       p.setHealth(p.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue());
       p.setFoodLevel(20);
       p.getInventory().setArmorContents(new ItemStack[]{new ItemStack(Material.AIR), new ItemStack(Material.AIR), new ItemStack(Material.AIR), new ItemStack(Material.AIR)});

@@ -193,8 +193,8 @@ public class Main extends JavaPlugin {
 
   @Override
   public void onEnable() {
+    ServiceRegistry.registerService(this);
     try {
-      ServiceRegistry.registerService(this);
       version = Bukkit.getServer().getClass().getPackage().getName().replace(".", ",").split(",")[3];
       LanguageManager.init(this);
       saveDefaultConfig();

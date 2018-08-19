@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -445,10 +446,6 @@ public abstract class Arena extends BukkitRunnable {
     }
     MinigameScoreboard scoreboard;
     for (Player p : getPlayers()) {
-      //temp only a temporary fix for Sitieno14
-      if (p == null) {
-        continue;
-      }
       User user = UserManager.getUser(p.getUniqueId());
       if (getArenaState() == ArenaState.ENDING) {
         user.removeScoreboard();
@@ -642,7 +639,13 @@ public abstract class Arena extends BukkitRunnable {
    */
   public HashSet<Player> getPlayers() {
     HashSet<Player> list = new HashSet<>();
-    for (UUID uuid : players) {
+    Iterator<UUID> iterator = players.iterator();
+    while(iterator.hasNext()){
+      UUID uuid = iterator.next();
+      if(Bukkit.getPlayer(uuid) == null){
+        iterator.remove();
+        Main.debug("Removed invalid player from arena " + getID() + " (not online?)", System.currentTimeMillis());
+      }
       list.add(Bukkit.getPlayer(uuid));
     }
     return list;

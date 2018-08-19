@@ -59,7 +59,7 @@ public class JoinEvent implements Listener {
       if (e.getPlayer().hasPermission(PermissionsManager.getJoinFullGames())) {
         e.setResult(PlayerLoginEvent.Result.ALLOWED);
       }
-    } catch (Exception ex){
+    } catch (Exception ex) {
       new ReportedException(plugin, ex);
     }
   }
@@ -77,7 +77,7 @@ public class JoinEvent implements Listener {
         player.hidePlayer(event.getPlayer());
         event.getPlayer().hidePlayer(player);
       }
-    } catch (Exception ex){
+    } catch (Exception ex) {
       new ReportedException(plugin, ex);
     }
   }
@@ -139,7 +139,7 @@ public class JoinEvent implements Listener {
       }
       final Player player = event.getPlayer();
       Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> MySQLConnectionUtils.loadPlayerStats(player, plugin));
-    } catch (Exception ex){
+    } catch (Exception ex) {
       new ReportedException(plugin, ex);
     }
   }
