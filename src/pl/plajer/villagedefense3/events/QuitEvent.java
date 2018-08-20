@@ -91,6 +91,7 @@ public class QuitEvent implements Listener {
           plugin.getFileStats().saveStat(player, s);
         }
       }
+      UserManager.removeUser(player.getUniqueId());
     } catch (Exception ex){
       new ReportedException(plugin, ex);
     }
