@@ -150,11 +150,7 @@ public class TeleporterKit extends PremiumKit implements Listener {
               }
               if (villager.getCustomName().equalsIgnoreCase(e.getCurrentItem().getItemMeta().getDisplayName()) && villager.getUniqueId().toString().equalsIgnoreCase(ChatColor.stripColor(e.getCurrentItem().getItemMeta().getLore().get(0)))) {
                 e.getWhoClicked().teleport(villager.getLocation());
-                if (plugin.is1_13_R1()) {
-                  p.playSound(p.getLocation(), Sound.valueOf("ENTITY_ENDERMAN_TELEPORT"), 1, 1);
-                } else {
-                  p.playSound(p.getLocation(), Sound.ENTITY_ENDERMEN_TELEPORT, 1, 1);
-                }
+                Utils.playSound(p.getLocation(), "ENTITY_ENDERMEN_TELEPORT", "ENTITY_ENDERMAN_TELEPORT");
                 p.getWorld().spawnParticle(Particle.PORTAL, p.getLocation(), 30);
                 p.sendMessage(ChatManager.colorMessage("Kits.Teleporter.Teleported-To-Villager"));
                 return;
@@ -167,11 +163,7 @@ public class TeleporterKit extends PremiumKit implements Listener {
               if (player.getName().equalsIgnoreCase(meta.getDisplayName()) || ChatColor.stripColor(meta.getDisplayName()).contains(player.getName())) {
                 p.sendMessage(ChatManager.formatMessage(arena, ChatManager.colorMessage("Kits.Teleporter.Teleported-To-Player"), player));
                 p.teleport(player);
-                if (plugin.is1_13_R1()) {
-                  p.playSound(p.getLocation(), Sound.valueOf("ENTITY_ENDERMAN_TELEPORT"), 1, 1);
-                } else {
-                  p.playSound(p.getLocation(), Sound.ENTITY_ENDERMEN_TELEPORT, 1, 1);
-                }
+                Utils.playSound(p.getLocation(), "ENTITY_ENDERMEN_TELEPORT", "ENTITY_ENDERMAN_TELEPORT");
                 p.getWorld().spawnParticle(Particle.PORTAL, p.getLocation(), 30);
                 p.closeInventory();
                 e.setCancelled(true);

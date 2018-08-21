@@ -54,6 +54,7 @@ import pl.plajer.villagedefense3.arena.ArenaUtils;
 import pl.plajer.villagedefense3.handlers.ChatManager;
 import pl.plajer.villagedefense3.user.User;
 import pl.plajer.villagedefense3.user.UserManager;
+import pl.plajer.villagedefense3.utils.Utils;
 import pl.plajerlair.core.utils.ConfigUtils;
 import pl.plajerlair.core.utils.MinigameUtils;
 
@@ -362,7 +363,7 @@ public class AdminCommands extends MainCommand {
       sender.sendMessage(ChatManager.colorMessage("Kits.Cleaner.Nothing-To-Clean"));
       return;
     }
-    ((Player) sender).playSound(((Player) sender).getLocation(), Sound.ENTITY_ZOMBIE_DEATH, 1, 1);
+    Utils.playSound(((Player) sender).getLocation(), "ENTITY_ZOMBIE_DEATH", "ENTITY_ZOMBIE_DEATH");
     for (Player loopPlayer : arena.getPlayers()) {
       String message = ChatManager.formatMessage(arena, ChatManager.colorMessage("In-Game.Messages.Admin-Messages.Removed-Zombies"), new Player[]{(loopPlayer)});
       loopPlayer.sendMessage(ChatManager.PLUGIN_PREFIX + message);
@@ -385,7 +386,7 @@ public class AdminCommands extends MainCommand {
       sender.sendMessage(ChatManager.colorMessage("Kits.Cleaner.Nothing-To-Clean"));
       return;
     }
-    ((Player) sender).playSound(((Player) sender).getLocation(), Sound.ENTITY_VILLAGER_DEATH, 1, 1);
+    Utils.playSound(((Player) sender).getLocation(), "ENTITY_VILLAGER_DEATH", "ENTITY_VILLAGER_DEATH");
     for (Player loopPlayer : arena.getPlayers()) {
       String message = ChatManager.formatMessage(arena, ChatManager.colorMessage("In-Game.Messages.Admin-Messages.Removed-Villagers"), new Player[]{(loopPlayer)});
       loopPlayer.sendMessage(ChatManager.PLUGIN_PREFIX + message);
@@ -409,11 +410,7 @@ public class AdminCommands extends MainCommand {
       sender.sendMessage(ChatManager.colorMessage("Kits.Cleaner.Nothing-To-Clean"));
       return;
     }
-    if (plugin.is1_13_R1()) {
-      ((Player) sender).playSound(((Player) sender).getLocation(), Sound.valueOf("ENTITY_IRON_GOLEM_DEATH"), 1, 1);
-    } else {
-      ((Player) sender).playSound(((Player) sender).getLocation(), Sound.ENTITY_IRONGOLEM_DEATH, 1, 1);
-    }
+    Utils.playSound(((Player) sender).getLocation(), "ENTITY_IRONGOLEM_DEATH", "ENTITY_IRON_GOLEM_DEATH");
     for (Player loopPlayer : arena.getPlayers()) {
       String message = ChatManager.formatMessage(arena, ChatManager.colorMessage("In-Game.Messages.Admin-Messages.Removed-Golems"), new Player[]{(loopPlayer)});
       loopPlayer.sendMessage(ChatManager.PLUGIN_PREFIX + message);
@@ -482,7 +479,7 @@ public class AdminCommands extends MainCommand {
         sender.sendMessage(ChatManager.colorMessage("Kits.Cleaner.Nothing-To-Clean"));
         return;
       }
-      ((Player) sender).playSound(((Player) sender).getLocation(), Sound.ENTITY_ZOMBIE_DEATH, 1, 1);
+      Utils.playSound(((Player) sender).getLocation(), "ENTITY_ZOMBIE_DEATH", "ENTITY_ZOMBIE_DEATH");
       for (Player loopPlayer : arena.getPlayers()) {
         String message1 = ChatManager.formatMessage(arena, ChatManager.colorMessage("In-Game.Messages.Admin-Messages.Removed-Zombies"), new Player[]{(loopPlayer)});
         loopPlayer.sendMessage(ChatManager.PLUGIN_PREFIX + message1);

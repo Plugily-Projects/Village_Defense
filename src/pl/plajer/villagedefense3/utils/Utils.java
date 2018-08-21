@@ -37,10 +37,12 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.material.Door;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.PotionData;
 import org.bukkit.potion.PotionType;
 import org.bukkit.util.BlockIterator;
 
+import pl.plajer.villagedefense3.Main;
 import pl.plajer.villagedefense3.handlers.ChatManager;
 
 /**
@@ -137,6 +139,14 @@ public class Utils {
         return 2;
       default:
         return 0;
+    }
+  }
+
+  public static void playSound(Location loc, String before1_13, String after1_13){
+    if(JavaPlugin.getPlugin(Main.class).is1_13_R1()) {
+      loc.getWorld().playSound(loc, after1_13, 1, 1);
+    } else {
+      loc.getWorld().playSound(loc, before1_13, 1, 1);
     }
   }
 
