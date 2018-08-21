@@ -42,7 +42,6 @@ public class ItemBuilder implements Listener {
 
   private final ItemStack is;
 
-
   public ItemBuilder(final ItemStack is) {
     this.is = is;
   }

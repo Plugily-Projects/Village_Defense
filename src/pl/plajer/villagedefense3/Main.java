@@ -20,7 +20,6 @@ package pl.plajer.villagedefense3;
 
 import com.gmail.filoghost.holographicdisplays.api.Hologram;
 import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
-import com.sk89q.worldedit.bukkit.WorldEditPlugin;
 
 import java.io.File;
 import java.util.Arrays;
@@ -33,7 +32,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.PotionEffect;
 
@@ -42,7 +40,7 @@ import pl.plajer.villagedefense3.arena.ArenaEvents;
 import pl.plajer.villagedefense3.arena.ArenaManager;
 import pl.plajer.villagedefense3.arena.ArenaRegistry;
 import pl.plajer.villagedefense3.commands.MainCommand;
-import pl.plajer.villagedefense3.creatures.BreakFenceListener;
+import pl.plajer.villagedefense3.creatures.DoorBreakListener;
 import pl.plajer.villagedefense3.creatures.EntityRegistry;
 import pl.plajer.villagedefense3.database.FileStats;
 import pl.plajer.villagedefense3.database.MySQLConnectionUtils;
@@ -268,7 +266,7 @@ public class Main extends JavaPlugin {
       }
       bossbarEnabled = getConfig().getBoolean("Bossbar-Enabled", true);
 
-      BreakFenceListener listener = new BreakFenceListener();
+      DoorBreakListener listener = new DoorBreakListener();
       listener.runTaskTimer(this, 1L, 20L);
 
       KitRegistry.init();

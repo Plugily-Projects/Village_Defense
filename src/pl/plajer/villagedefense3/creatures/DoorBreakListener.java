@@ -42,7 +42,7 @@ import pl.plajerlair.core.services.ReportedException;
 /**
  * Created by Tom on 14/08/2014.
  */
-public class BreakFenceListener extends BukkitRunnable {
+public class DoorBreakListener extends BukkitRunnable {
 
   private Random random = new Random();
   private Main plugin = JavaPlugin.getPlugin(Main.class);

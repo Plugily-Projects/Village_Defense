@@ -41,6 +41,8 @@ import org.bukkit.potion.PotionData;
 import org.bukkit.potion.PotionType;
 import org.bukkit.util.BlockIterator;
 
+import pl.plajer.villagedefense3.handlers.ChatManager;
+
 /**
  * Created by Tom on 29/07/2014.
  */
@@ -100,7 +102,7 @@ public class Utils {
     Pattern regex = Pattern.compile(".{1," + max + "}(?:\\s|$)", Pattern.DOTALL);
     Matcher regexMatcher = regex.matcher(string);
     while (regexMatcher.find()) {
-      matchList.add(ChatColor.translateAlternateColorCodes('&', "&7") + regexMatcher.group());
+      matchList.add(ChatManager.colorRawMessage("&7") + regexMatcher.group());
     }
     return matchList;
   }
