@@ -127,7 +127,7 @@ public class ChatEvents implements Listener {
     String formatted = message;
     formatted = ChatManager.colorRawMessage(formatted);
     formatted = StringUtils.replace(formatted, "%level%", String.valueOf(user.getInt("level")));
-    if (user.isFakeDead()) {
+    if (user.isSpectator()) {
       formatted = StringUtils.replace(formatted, "%kit%", ChatManager.colorMessage("In-Game.Dead-Tag-On-Death"));
     } else {
       formatted = StringUtils.replace(formatted, "%kit%", user.getKit().getName());

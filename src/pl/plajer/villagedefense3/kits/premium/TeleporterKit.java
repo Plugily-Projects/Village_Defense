@@ -106,7 +106,7 @@ public class TeleporterKit extends PremiumKit implements Listener {
         if (stack.getItemMeta().getDisplayName().equalsIgnoreCase(ChatManager.colorMessage("Kits.Teleporter.Game-Item-Name"))) {
           Inventory inventory = plugin.getServer().createInventory(null, 18, ChatManager.colorMessage("Kits.Teleporter.Game-Item-Menu-Name"));
           for (Player player : e.getPlayer().getWorld().getPlayers()) {
-            if (ArenaRegistry.getArena(player) != null && !UserManager.getUser(player.getUniqueId()).isFakeDead()) {
+            if (ArenaRegistry.getArena(player) != null && !UserManager.getUser(player.getUniqueId()).isSpectator()) {
               //todo remove
               ItemStack skull = new ItemStack(Material.SKULL, 1, (short) 3);
               SkullMeta meta = (SkullMeta) skull.getItemMeta();

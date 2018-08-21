@@ -177,7 +177,6 @@ public class ArenaEvents implements Listener {
       arena.teleportToStartLocation(player);
       user.setSpectator(true);
       player.setGameMode(GameMode.SURVIVAL);
-      user.setFakeDead(true);
       user.setInt("orbs", 0);
       ArenaUtils.hidePlayer(player, arena);
       player.setAllowFlight(true);
@@ -233,14 +232,13 @@ public class ArenaEvents implements Listener {
         User user = UserManager.getUser(player.getUniqueId());
         player.setAllowFlight(true);
         player.setFlying(true);
-        if (user.isFakeDead()) {
+        if (user.isSpectator()) {
           arena.teleportToStartLocation(player);
         } else {
           arena.teleportToStartLocation(player);
           user.setSpectator(true);
           player.setGameMode(GameMode.SURVIVAL);
           player.removePotionEffect(PotionEffectType.NIGHT_VISION);
-          user.setFakeDead(true);
           user.setInt("orbs", 0);
         }
         e.setRespawnLocation(arena.getStartLocation());

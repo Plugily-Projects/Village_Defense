@@ -79,7 +79,7 @@ public class SpectatorItemEvents implements Listener {
     Inventory inventory = plugin.getServer().createInventory(null, MinigameUtils.serializeInt(ArenaRegistry.getArena(p).getPlayers().size()),
             ChatManager.colorMessage("In-Game.Spectator.Spectator-Menu-Name"));
     for (Player player : world.getPlayers()) {
-      if (ArenaRegistry.getArena(player) != null && !UserManager.getUser(player.getUniqueId()).isFakeDead()) {
+      if (ArenaRegistry.getArena(player) != null && !UserManager.getUser(player.getUniqueId()).isSpectator()) {
         ItemStack skull = new ItemStack(Material.SKULL_ITEM, 1);
         SkullMeta meta = (SkullMeta) skull.getItemMeta();
         //todo check deprecation

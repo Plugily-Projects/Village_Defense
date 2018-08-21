@@ -195,7 +195,7 @@ public class SpectatorEvents implements Listener {
     if (!(e.getTarget() instanceof Player)) {
       return;
     }
-    if (UserManager.getUser(e.getTarget().getUniqueId()).isSpectator() || UserManager.getUser(e.getTarget().getUniqueId()).isFakeDead()) {
+    if (UserManager.getUser(e.getTarget().getUniqueId()).isSpectator()) {
       if (e.getEntity() instanceof ExperienceOrb || e.getEntity() instanceof Zombie || e.getEntity() instanceof Wolf) {
         e.setCancelled(true);
         e.setTarget(null);
@@ -226,8 +226,7 @@ public class SpectatorEvents implements Listener {
     if (arena == null) {
       return;
     }
-    if (arena.getArenaState() != ArenaState.IN_GAME
-            || UserManager.getUser(event.getPlayer().getUniqueId()).isFakeDead()) {
+    if (arena.getArenaState() != ArenaState.IN_GAME || UserManager.getUser(event.getPlayer().getUniqueId()).isSpectator()) {
       event.setCancelled(true);
     }
   }
@@ -235,7 +234,7 @@ public class SpectatorEvents implements Listener {
   @EventHandler
   public void onInteractEntityInteract(PlayerInteractEntityEvent event) {
     User user = UserManager.getUser(event.getPlayer().getUniqueId());
-    if (user.isFakeDead() || user.isSpectator()) {
+    if (user.isSpectator()) {
       event.setCancelled(true);
     }
   }

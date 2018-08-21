@@ -127,7 +127,6 @@ public class ArenaManager {
         p.setFlying(true);
         User user = UserManager.getUser(p.getUniqueId());
         user.setSpectator(true);
-        user.setFakeDead(true);
         user.setInt("orbs", 0);
         p.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, Integer.MAX_VALUE, 1));
         ArenaUtils.hidePlayer(p, arena);
@@ -197,7 +196,6 @@ public class ArenaManager {
         ChatManager.broadcastAction(arena, p, ChatManager.ActionType.LEAVE);
       }
       p.setGlowing(false);
-      user.setFakeDead(false);
       user.setSpectator(false);
       user.removeScoreboard();
       if (user.getKit() instanceof GolemFriendKit) {

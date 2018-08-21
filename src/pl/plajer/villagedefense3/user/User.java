@@ -46,7 +46,6 @@ public class User {
   private ScoreboardManager scoreboardManager = Bukkit.getScoreboardManager();
   private Scoreboard scoreboard;
   private UUID uuid;
-  private boolean fakeDead = false;
   private boolean spectator = false;
   private Kit kit = KitRegistry.getDefaultKit();
   private Map<String, Integer> ints = new HashMap<>();
@@ -75,14 +74,6 @@ public class User {
 
   public Arena getArena() {
     return ArenaRegistry.getArena(Bukkit.getPlayer(uuid));
-  }
-
-  public boolean isFakeDead() {
-    return fakeDead;
-  }
-
-  public void setFakeDead(boolean b) {
-    fakeDead = b;
   }
 
   public Player toPlayer() {

@@ -112,7 +112,7 @@ public class Events implements Listener {
       int amount = (int) Math.ceil(event.getAmount() * 1.6);
       User user = UserManager.getUser(event.getPlayer().getUniqueId());
       event.setAmount(amount);
-      if (user.isFakeDead()) {
+      if (user.isSpectator()) {
         event.setAmount(0);
         return;
       }
@@ -150,7 +150,7 @@ public class Events implements Listener {
       if (arena == null) {
         return;
       }
-      if (UserManager.getUser(event.getPlayer().getUniqueId()).isFakeDead()) {
+      if (UserManager.getUser(event.getPlayer().getUniqueId()).isSpectator()) {
         event.setCancelled(true);
       }
     } catch (Exception ex) {
@@ -203,7 +203,7 @@ public class Events implements Listener {
       if (arena == null) {
         return;
       }
-      if (UserManager.getUser(event.getPlayer().getUniqueId()).isFakeDead()) {
+      if (UserManager.getUser(event.getPlayer().getUniqueId()).isSpectator()) {
         event.setCancelled(true);
         return;
       }
@@ -237,7 +237,7 @@ public class Events implements Listener {
         return;
       }
       User user = UserManager.getUser(event.getPlayer().getUniqueId());
-      if (user.isFakeDead()) {
+      if (user.isSpectator()) {
         event.setCancelled(true);
         return;
       }
@@ -393,7 +393,7 @@ public class Events implements Listener {
       if (arena == null) {
         return;
       }
-      if (UserManager.getUser(event.getDamager().getUniqueId()).isFakeDead()) {
+      if (UserManager.getUser(event.getDamager().getUniqueId()).isSpectator()) {
         event.setCancelled(true);
         return;
       }
@@ -430,7 +430,7 @@ public class Events implements Listener {
   public void onSecond(EntityDamageByEntityEvent event) {
     try {
       User user = UserManager.getUser((event.getDamager().getUniqueId()));
-      if (user.isFakeDead() || user.isSpectator()) {
+      if (user.isSpectator()) {
         event.setCancelled(true);
         return;
       }
@@ -446,10 +446,6 @@ public class Events implements Listener {
       }
       Arena arena = ArenaRegistry.getArena((Player) arrow.getShooter());
       if (arena == null) {
-        return;
-      }
-      if (user.isFakeDead() || user.isSpectator()) {
-        event.setCancelled(true);
         return;
       }
       if (!VILLAGE_ENTITIES.contains(event.getEntityType())) {

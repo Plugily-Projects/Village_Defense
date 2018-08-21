@@ -65,7 +65,6 @@ public class ArenaUtils {
       for (Player player : arena.getPlayers()) {
         if (!arena.getPlayersLeft().contains(player)) {
           User user = UserManager.getUser(player.getUniqueId());
-          user.setFakeDead(false);
           user.setSpectator(false);
 
           arena.teleportToStartLocation(player);

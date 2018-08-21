@@ -399,7 +399,6 @@ public abstract class Arena extends BukkitRunnable {
             for (User user : UserManager.getUsers(this)) {
               user.setSpectator(false);
               user.setInt("orbs", 0);
-              user.setFakeDead(false);
             }
             plugin.getRewardsHandler().performEndGameRewards(this);
             players.clear();
@@ -1075,7 +1074,7 @@ public abstract class Arena extends BukkitRunnable {
   List<Player> getPlayersLeft() {
     List<Player> players = new ArrayList<>();
     for (User user : UserManager.getUsers(this)) {
-      if (!user.isFakeDead()) {
+      if (!user.isSpectator()) {
         players.add(user.toPlayer());
       }
     }

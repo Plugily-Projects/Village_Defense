@@ -200,7 +200,6 @@ public class AdminCommands extends MainCommand {
     player.setGameMode(GameMode.SURVIVAL);
     player.removePotionEffect(PotionEffectType.NIGHT_VISION);
     User user = UserManager.getUser(player.getUniqueId());
-    user.setFakeDead(false);
     user.setSpectator(false);
     arena.teleportToStartLocation(player);
     player.setFlying(false);
@@ -222,7 +221,6 @@ public class AdminCommands extends MainCommand {
         loopPlayer.setGameMode(GameMode.SURVIVAL);
         loopPlayer.removePotionEffect(PotionEffectType.NIGHT_VISION);
         User user = UserManager.getUser(loopPlayer.getUniqueId());
-        user.setFakeDead(false);
         user.setSpectator(false);
 
         sender.sendMessage(ChatColor.GREEN + "Player respawned!");
