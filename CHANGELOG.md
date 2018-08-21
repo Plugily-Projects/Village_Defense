@@ -3,6 +3,7 @@
 ### 3.10.2 Release (19.08.2018)
 * Now removing invalid players in game when getPlayers() method is invoked
 * Fixed NullPointerException for users who where no longer online
+* Some code improvements
 
 ### 3.10.1 Release (13/17.08.2018)
 * Fixed NullPointerException in combust event (reported anonymously via Error service) (#1 error service report)

@@ -414,13 +414,10 @@ public class MainCommand implements CommandExecutor {
       return;
     }
     FileConfiguration config = ConfigUtils.getConfig(plugin, "arenas");
-
     if (!config.contains("instances." + args[0])) {
       player.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("Commands.No-Arena-Like-That"));
-      player.sendMessage(ChatColor.RED + "Usage: /vd < ARENA ID > set <MINPLAYRS | MAXPLAYERS | MAPNAME | SCHEMATIC | LOBBYLOCATION | EndLOCATION | STARTLOCATION  >  < VALUE>");
       return;
     }
-
 
     if (args[1].equalsIgnoreCase("addspawn")) {
       if (args[2].equalsIgnoreCase("zombie")) {
