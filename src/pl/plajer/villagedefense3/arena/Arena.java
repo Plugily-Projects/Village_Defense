@@ -32,6 +32,7 @@ import java.util.UUID;
 
 import javax.annotation.Nullable;
 
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -472,14 +473,14 @@ public abstract class Arena extends BukkitRunnable {
 
   private String formatScoreboardLine(String line, User user) {
     String formattedLine = line;
-    formattedLine = formattedLine.replace("%TIME%", String.valueOf(getTimer()));
-    formattedLine = formattedLine.replace("%PLAYERS%", String.valueOf(getPlayers().size()));
-    formattedLine = formattedLine.replace("%MIN_PLAYERS%", String.valueOf(getMinimumPlayers()));
-    formattedLine = formattedLine.replace("%PLAYERS_LEFT%", String.valueOf(getPlayersLeft().size()));
-    formattedLine = formattedLine.replace("%VILLAGERS%", String.valueOf(getVillagers().size()));
-    formattedLine = formattedLine.replace("%ORBS%", String.valueOf(user.getInt("orbs")));
-    formattedLine = formattedLine.replace("%ZOMBIES%", String.valueOf(getZombiesLeft()));
-    formattedLine = formattedLine.replace("%ROTTEN_FLESH%", String.valueOf(getRottenFlesh()));
+    formattedLine = StringUtils.replace(formattedLine, "%TIME%", String.valueOf(getTimer()));
+    formattedLine = StringUtils.replace(formattedLine, "%PLAYERS%", String.valueOf(getPlayers().size()));
+    formattedLine = StringUtils.replace(formattedLine, "%MIN_PLAYERS%", String.valueOf(getMinimumPlayers()));
+    formattedLine = StringUtils.replace(formattedLine, "%PLAYERS_LEFT%", String.valueOf(getPlayersLeft().size()));
+    formattedLine = StringUtils.replace(formattedLine, "%VILLAGERS%", String.valueOf(getVillagers().size()));
+    formattedLine = StringUtils.replace(formattedLine, "%ORBS%", String.valueOf(user.getInt("orbs")));
+    formattedLine = StringUtils.replace(formattedLine, "%ZOMBIES%", String.valueOf(getZombiesLeft()));
+    formattedLine = StringUtils.replace(formattedLine, "%ROTTEN_FLESH%", String.valueOf(getRottenFlesh()));
     formattedLine = ChatManager.colorRawMessage(formattedLine);
     return formattedLine;
   }
