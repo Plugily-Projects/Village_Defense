@@ -32,7 +32,7 @@ import java.util.UUID;
 
 import javax.annotation.Nullable;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -837,7 +837,6 @@ public abstract class Arena extends BukkitRunnable {
   }
 
   private void spawnZombies() {
-    Random random = new Random();
     if (getZombies() == null || getZombies().size() <= 0) {
       for (int i = 0; i <= wave; i++) {
         if (zombiesToSpawn > 0) {
