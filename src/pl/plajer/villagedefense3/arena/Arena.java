@@ -254,25 +254,27 @@ public abstract class Arena extends BukkitRunnable {
           }
           zombieChecker++;
           if (zombieChecker >= 60) {
-            List<Villager> remove = new ArrayList<>();
-            for (Villager villager : getVillagers()) {
-              if (villager.isDead()) {
-                remove.add(villager);
+            Iterator<Villager> villagerIterator = getVillagers().iterator();
+            while(villagerIterator.hasNext()){
+              Villager villager = villagerIterator.next();
+              if(villager.isDead()){
+                villagerIterator.remove();
+                removeVillager(villager);
               }
             }
-            for (Villager villager : remove) {
-              removeVillager(villager);
-            }
-            remove.clear();
             zombieChecker = 0;
-            List<Zombie> removeAfterLoop = new ArrayList<>();
-            for (Zombie zombie : getZombies()) {
-              if (zombie.isDead()) {
-                removeAfterLoop.add(zombie);
+
+            Iterator<Zombie> zombieIterator = getZombies().iterator();
+            while(zombieIterator.hasNext()){
+              Zombie zombie = zombieIterator.next();
+              if(zombie.isDead()){
+                zombieIterator.remove();
+                removeZombie(zombie);
                 continue;
               }
               if (glitchedZombies.contains(zombie) && zombie.getLocation().distance(zombieCheckerLocations.get(zombie)) <= 1) {
-                removeAfterLoop.add(zombie);
+                zombieIterator.remove();
+                removeZombie(zombie);
                 zombieCheckerLocations.remove(zombie);
                 zombie.remove();
               }
@@ -288,12 +290,6 @@ public abstract class Arena extends BukkitRunnable {
                 }
               }
             }
-
-            for (Zombie zombie : removeAfterLoop) {
-              removeZombie(zombie);
-            }
-            removeAfterLoop.clear();
-
           }
           if (getVillagers().size() <= 0 || getPlayersLeft().size() <= 0) {
             clearZombies();
@@ -1122,7 +1118,6 @@ public abstract class Arena extends BukkitRunnable {
 
   protected void addVillager(Villager villager) {
     villagers.add(villager);
-
   }
 
   void removeVillager(Villager villager) {
