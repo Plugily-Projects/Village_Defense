@@ -128,21 +128,10 @@ public class ArenaRegistry {
     }
 
     for (String ID : ConfigUtils.getConfig(plugin, "arenas").getConfigurationSection("instances").getKeys(false)) {
-      Arena arena;
+      Arena arena = ArenaUtils.initializeArena(ID);
       String s = "instances." + ID + ".";
       if (s.contains("default")) {
         continue;
-      }
-      if (plugin.is1_9_R1()) {
-        arena = new ArenaInitializer1_9_R1(ID, plugin);
-      } else if (plugin.is1_10_R1()) {
-        arena = new ArenaInitializer1_10_R1(ID, plugin);
-      } else if (plugin.is1_11_R1()) {
-        arena = new ArenaInitializer1_11_R1(ID, plugin);
-      } else if (plugin.is1_12_R1()) {
-        arena = new ArenaInitializer1_12_R1(ID, plugin);
-      } else {
-        arena = new ArenaInitializer1_13_R1(ID, plugin);
       }
       arena.setMinimumPlayers(ConfigUtils.getConfig(plugin, "arenas").getInt(s + "minimumplayers"));
       arena.setMaximumPlayers(ConfigUtils.getConfig(plugin, "arenas").getInt(s + "maximumplayers"));

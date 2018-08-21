@@ -39,6 +39,7 @@ import org.bukkit.material.Door;
 import pl.plajer.villagedefense3.Main;
 import pl.plajer.villagedefense3.arena.Arena;
 import pl.plajer.villagedefense3.arena.ArenaRegistry;
+import pl.plajer.villagedefense3.arena.ArenaUtils;
 import pl.plajer.villagedefense3.arena.initializers.ArenaInitializer1_10_R1;
 import pl.plajer.villagedefense3.arena.initializers.ArenaInitializer1_11_R1;
 import pl.plajer.villagedefense3.arena.initializers.ArenaInitializer1_12_R1;
@@ -496,17 +497,17 @@ public class MainCommand implements CommandExecutor {
     if (args.length == 3) {
       if (args[2].equalsIgnoreCase("lobbylocation") || args[2].equalsIgnoreCase("lobbyloc")) {
         String location = player.getLocation().getWorld().getName() + "," + player.getLocation().getX() + "," + player.getLocation().getY() + "," + player.getLocation().getZ()
-                + "," + player.getLocation().getYaw() + "," + player.getLocation().getPitch();
+                + "," + player.getLocation().getYaw() + ",0.0";
         config.set("instances." + args[0] + ".lobbylocation", location);
         player.sendMessage("VillageDefense: Lobby location for arena/instance " + args[0] + " set to " + MinigameUtils.locationToString(player.getLocation()));
       } else if (args[2].equalsIgnoreCase("Startlocation") || args[2].equalsIgnoreCase("Startloc")) {
         String location = player.getLocation().getWorld().getName() + "," + player.getLocation().getX() + "," + player.getLocation().getY() + "," + player.getLocation().getZ()
-                + "," + player.getLocation().getYaw() + "," + player.getLocation().getPitch();
+                + "," + player.getLocation().getYaw() + ",0.0";
         config.set("instances." + args[0] + ".Startlocation", location);
         player.sendMessage("VillageDefense: Start location for arena/instance " + args[0] + " set to " + MinigameUtils.locationToString(player.getLocation()));
       } else if (args[2].equalsIgnoreCase("Endlocation") || args[2].equalsIgnoreCase("Endloc")) {
         String location = player.getLocation().getWorld().getName() + "," + player.getLocation().getX() + "," + player.getLocation().getY() + "," + player.getLocation().getZ()
-                + "," + player.getLocation().getYaw() + "," + player.getLocation().getPitch();
+                + "," + player.getLocation().getYaw() + ",0.0";
         config.set("instances." + args[0] + ".Endlocation", location);
         player.sendMessage("VillageDefense: End location for arena/instance " + args[0] + " set to " + MinigameUtils.locationToString(player.getLocation()));
       } else {
@@ -581,19 +582,7 @@ public class MainCommand implements CommandExecutor {
     config.set(path + "world", worldName);
     ConfigUtils.saveConfig(plugin, config, "arenas");
 
-    Arena arena;
-
-    if (plugin.is1_9_R1()) {
-      arena = new ArenaInitializer1_9_R1(ID, plugin);
-    } else if (plugin.is1_10_R1()) {
-      arena = new ArenaInitializer1_10_R1(ID, plugin);
-    } else if (plugin.is1_11_R1()) {
-      arena = new ArenaInitializer1_11_R1(ID, plugin);
-    } else if (plugin.is1_12_R1()) {
-      arena = new ArenaInitializer1_12_R1(ID, plugin);
-    } else {
-      arena = new ArenaInitializer1_13_R1(ID, plugin);
-    }
+    Arena arena = ArenaUtils.initializeArena(ID);
 
     arena.setMinimumPlayers(ConfigUtils.getConfig(plugin, "arenas").getInt(path + "minimumplayers"));
     arena.setMaximumPlayers(ConfigUtils.getConfig(plugin, "arenas").getInt(path + "maximumplayers"));

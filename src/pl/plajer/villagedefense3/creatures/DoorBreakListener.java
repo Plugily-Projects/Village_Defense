@@ -56,7 +56,7 @@ public class DoorBreakListener extends BukkitRunnable {
           }
           Queue<Block> blocks = Utils.getLineOfSight((LivingEntity) entity, null, 1, 1);
           for (Block block : blocks) {
-            if (block.getType() == Material.WOOD_DOOR || block.getType() == Material.WOODEN_DOOR /*|| block.getType() == Material.FENCE*/) {
+            if (block.getType() == Material.WOOD_DOOR || block.getType() == Material.WOODEN_DOOR) {
               block.getWorld().spawnParticle(Particle.BLOCK_CRACK, block.getLocation(), 10, 0.1, 0.1, 0.1, new MaterialData(Material.WOODEN_DOOR));
               Utils.playSound(block.getLocation(), "ENTITY_ZOMBIE_ATTACK_DOOR_WOOD", "ENTITY_ZOMBIE_ATTACK_WOODEN_DOOR");
               this.particleDoor(block);
