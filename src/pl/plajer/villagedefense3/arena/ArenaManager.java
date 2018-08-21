@@ -307,14 +307,6 @@ public class ArenaManager {
         wolf.remove();
       }
       arena.getWolfs().clear();
-      for (Entity entity : arena.getStartLocation().getWorld().getEntities()) {
-        if (entity.getWorld().getName().equalsIgnoreCase(arena.getStartLocation().getWorld().getName())
-                && entity.getLocation().distance(arena.getStartLocation()) < 300) {
-          if (entity.getType() != EntityType.PLAYER) {
-            entity.remove();
-          }
-        }
-      }
       Main.debug("Game stop event finish, arena " + arena.getID(), System.currentTimeMillis());
     } catch (Exception e){
       new ReportedException(plugin, e);
