@@ -321,49 +321,7 @@ public class Main extends JavaPlugin {
     Metrics metrics = new Metrics(this);
     metrics.addCustomChart(new Metrics.SimplePie("database_enabled", () -> getConfig().getString("DatabaseActivated", "false")));
     metrics.addCustomChart(new Metrics.SimplePie("bungeecord_hooked", () -> getConfig().getString("BungeeActivated", "false")));
-    metrics.addCustomChart(new Metrics.SimplePie("locale_used", () -> {
-      switch (getConfig().getString("locale", "default")) {
-        case "default":
-          return "English";
-        case "english":
-        case "en":
-          return "English";
-        case "polish":
-        case "polski":
-        case "pl":
-          return "Polish";
-        case "german":
-        case "deutsch":
-        case "de":
-          return "German";
-        case "spanish":
-        case "espanol":
-        case "es":
-          return "Spanish";
-        case "french":
-        case "francais":
-        case "fr":
-          return "French";
-        case "indonesia":
-        case "id":
-          return "Indonesian";
-        case "vietnamese":
-        case "viet":
-        case "vn":
-          return "Vietnamese";
-        case "hungarian":
-        case "hu":
-        case "magyar":
-          return "Hungarian";
-        case "简体中文":
-        case "中文":
-        case "chinese":
-        case "zh":
-          return "Chinese (Simplified)";
-        default:
-          return "English";
-      }
-    }));
+    metrics.addCustomChart(new Metrics.SimplePie("locale_used", () -> LanguageManager.getPluginLocale().getPrefix()));
     metrics.addCustomChart(new Metrics.SimplePie("update_notifier", () -> {
       if (getConfig().getBoolean("Update-Notifier.Enabled", true)) {
         if (getConfig().getBoolean("Update-Notifier.Notify-Beta-Versions", true)) {

@@ -23,9 +23,8 @@ import com.wasteofplastic.askyblock.ASLocale;
 import com.wasteofplastic.askyblock.ASkyBlock;
 
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.nio.charset.Charset;
 import java.util.Properties;
 
 import org.bukkit.Bukkit;
@@ -34,6 +33,8 @@ import org.bukkit.configuration.file.FileConfiguration;
 
 import pl.plajer.villagedefense3.Main;
 import pl.plajer.villagedefense3.utils.MessageUtils;
+import pl.plajerlair.core.services.LocaleService;
+import pl.plajerlair.core.services.ServiceRegistry;
 import pl.plajerlair.core.utils.ConfigUtils;
 
 public class LanguageManager {
@@ -60,70 +61,45 @@ public class LanguageManager {
     if (pluginLocale == Locale.ENGLISH) {
       return;
     }
+    LocaleService service = ServiceRegistry.getLocaleService(plugin);
+    if (service.isValidVersion()) {
+      LocaleService.DownloadStatus status = service.demandLocaleDownload(pluginLocale.getPrefix());
+      if (status == LocaleService.DownloadStatus.FAIL) {
+        pluginLocale = Locale.ENGLISH;
+        Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "[Village Defense] Locale service couldn't download latest locale for plugin! English locale will be used instead!");
+        return;
+      } else if (status == LocaleService.DownloadStatus.SUCCESS) {
+        Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "[Village Defense] Downloaded locale " + pluginLocale.getPrefix() + " properly!");
+      } else if (status == LocaleService.DownloadStatus.LATEST) {
+        Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "[Village Defense] Locale " + pluginLocale.getPrefix() + " is latest! Awesome!");
+      }
+    } else {
+      pluginLocale = Locale.ENGLISH;
+      Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "[Village Defense] Your plugin version is too old to use latest locale! Please update plugin to access latest updates of locale!");
+      return;
+    }
     try {
-      properties.load(new InputStreamReader(plugin.getResource("locales/" + pluginLocale.getPrefix() + ".properties"), Charset.forName("UTF-8")));
+      properties.load(new FileReader(new File(plugin.getDataFolder() + "/locales/" + pluginLocale.getPrefix() + ".properties")));
     } catch (IOException e) {
       e.printStackTrace();
     }
   }
 
   private static void setupLocale() {
-    String locale = plugin.getConfig().getString("locale", "default");
-    switch (locale.toLowerCase()) {
-      case "简体中文":
-      case "中文":
-      case "chinese":
-      case "zh":
-        pluginLocale = Locale.CHINESE_SIMPLIFIED;
-        break;
-      case "default":
-      case "english":
-      case "en":
-        pluginLocale = Locale.ENGLISH;
-        break;
-      case "german":
-      case "deutsch":
-      case "de":
-        pluginLocale = Locale.GERMAN;
-        break;
-      case "polish":
-      case "polski":
-      case "pl":
-        pluginLocale = Locale.POLISH;
-        break;
-      case "spanish":
-      case "espanol":
-      case "español":
-      case "es":
-        pluginLocale = Locale.SPANISH;
-        break;
-      case "french":
-      case "francais":
-      case "français":
-      case "fr":
-        pluginLocale = Locale.FRENCH;
-        break;
-      case "indonesia":
-      case "id":
-        pluginLocale = Locale.INDONESIA;
-        break;
-      case "vietnamese":
-      case "việt":
-      case "vn":
-        pluginLocale = Locale.VIETNAMESE;
-        break;
-      case "hungarian":
-      case "magyar":
-      case "hu":
-        pluginLocale = Locale.HUNGARIAN;
-        break;
-      default:
-        Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "[Village Defense] Plugin locale is invalid! Using default one...");
-        pluginLocale = Locale.ENGLISH;
-        break;
+    String localeName = plugin.getConfig().getString("locale", "default").toLowerCase();
+    for (Locale locale : Locale.values()) {
+      for (String alias : locale.getAliases()) {
+        if (alias.equals(localeName)) {
+          pluginLocale = locale;
+          break;
+        }
+      }
     }
-    Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "[Village Defense] Loaded locale " + pluginLocale.getFormattedName() + " ("
-            + pluginLocale.getPrefix() + ") by " + pluginLocale.getAuthor());
+    if (pluginLocale == null) {
+      Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "[BuildBattle] Plugin locale is invalid! Using default one...");
+      pluginLocale = Locale.ENGLISH;
+    }
+    Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "[Village Defense] Loaded locale " + pluginLocale.getFormattedName() + " (" + pluginLocale.getPrefix() + ") by " + pluginLocale.getAuthor());
     loadProperties();
   }
 

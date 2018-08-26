@@ -18,6 +18,9 @@
 
 package pl.plajer.villagedefense3.handlers.language;
 
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * @author Plajer
  * <p>
@@ -25,24 +28,26 @@ package pl.plajer.villagedefense3.handlers.language;
  */
 public enum Locale {
 
-  CHINESE_SIMPLIFIED("简体中文", "zh_Hans", "POEditor contributors"),
-  ENGLISH("English", "en_GB", "Plajer"),
-  FRENCH("Français", "fr_FR", "POEditor contributors"),
-  GERMAN("Deutsch", "de_DE", "Tigerkatze"),
-  HUNGARIAN("Magyar", "hu_HU", "POEditor contributors"),
-  INDONESIA("Indonesia", "id_ID", "POEditor contributors (Yume)"),
-  SPANISH("Español", "es_ES", "POEditor contributors"),
-  POLISH("Polski", "pl_PL", "Plajer"),
-  VIETNAMESE("Việt", "vn_VN", "POEditor contributors (HStreamGamer)");
+  CHINESE_SIMPLIFIED("简体中文", "zh_Hans", "POEditor contributors (Haoting)", Arrays.asList("简体中文", "中文", "chinese", "zh")),
+  ENGLISH("English", "en_GB", "Plajer", Arrays.asList("default", "english", "en")),
+  FRENCH("Français", "fr_FR", "POEditor contributors", Arrays.asList("french", "francais", "français", "fr")),
+  GERMAN("Deutsch", "de_DE", "Tigerkatze and POEditor contributors", Arrays.asList("deutsch", "german", "de")),
+  HUNGARIAN("Magyar", "hu_HU", "POEditor contributors (montlikadani)", Arrays.asList("hungarian", "magyar", "hu")),
+  INDONESIAN("Indonesia", "id_ID", "POEditor contributors", Arrays.asList("indonesian", "indonesia", "id")),
+  POLISH("Polski", "pl_PL", "Plajer", Arrays.asList("polish", "polski", "pl")),
+  SPANISH("Español", "es_ES", "POEditor contributors", Arrays.asList("spanish", "espanol", "español", "es")),
+  VIETNAMESE("Việt", "vn_VN", "POEditor contributors (HStreamGamer)", Arrays.asList("vietnamese", "viet", "việt", "vn"));
 
   String formattedName;
   String prefix;
   String author;
+  List<String> aliases;
 
-  Locale(String formattedName, String prefix, String author) {
+  Locale(String formattedName, String prefix, String author, List<String> aliases) {
     this.prefix = prefix;
     this.formattedName = formattedName;
     this.author = author;
+    this.aliases = aliases;
   }
 
   public String getFormattedName() {
@@ -55,6 +60,10 @@ public enum Locale {
 
   public String getPrefix() {
     return prefix;
+  }
+
+  public List<String> getAliases() {
+    return aliases;
   }
 
 }
