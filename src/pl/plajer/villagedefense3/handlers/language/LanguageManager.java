@@ -134,6 +134,7 @@ public class LanguageManager {
           case "VN":
           case "HU":
           case "ZH":
+          case "RO":
             hasLocale = true;
             localeName = locale.getDisplayName();
         }
