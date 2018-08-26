@@ -5,6 +5,7 @@
 * Fixed NullPointerException for users who where no longer online
 * Some code improvements
 * Added dynamic locale manager system - you can now get latest locales on demand from our repository
+* Added Romanian locale
 
 ### 3.10.1 Release (13/17.08.2018)
 * Fixed NullPointerException in combust event (reported anonymously via Error service) (#1 error service report)

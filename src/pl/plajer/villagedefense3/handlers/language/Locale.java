@@ -35,6 +35,7 @@ public enum Locale {
   HUNGARIAN("Magyar", "hu_HU", "POEditor contributors (montlikadani)", Arrays.asList("hungarian", "magyar", "hu")),
   INDONESIAN("Indonesia", "id_ID", "POEditor contributors", Arrays.asList("indonesian", "indonesia", "id")),
   POLISH("Polski", "pl_PL", "Plajer", Arrays.asList("polish", "polski", "pl")),
+  ROMANIAN("Românesc", "ro_RO", "POEditor contributors (Andrei)", Arrays.asList("romanian", "romanesc", "românesc", "ro")),
   SPANISH("Español", "es_ES", "POEditor contributors", Arrays.asList("spanish", "espanol", "español", "es")),
   VIETNAMESE("Việt", "vn_VN", "POEditor contributors (HStreamGamer)", Arrays.asList("vietnamese", "viet", "việt", "vn"));
 
