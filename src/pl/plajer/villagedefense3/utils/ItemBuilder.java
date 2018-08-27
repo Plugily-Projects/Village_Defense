@@ -36,9 +36,7 @@ import org.bukkit.potion.PotionEffect;
 /**
  * Created by Tom on 9/04/2015.
  */
-public class ItemBuilder implements Listener {
-
-  private static final HashMap<String, PotionEffect> effects = new HashMap<>();
+public class ItemBuilder {
 
   private final ItemStack is;
 
@@ -89,19 +87,6 @@ public class ItemBuilder implements Listener {
 
   public ItemStack build() {
     return is;
-  }
-
-  @EventHandler
-  public void onItemConsume(PlayerItemConsumeEvent e) {
-    if (e.getItem().hasItemMeta()) {
-      @SuppressWarnings("unchecked") HashMap<String, PotionEffect> copy = (HashMap<String, PotionEffect>) effects.clone();
-      String name = e.getItem().getItemMeta().getDisplayName();
-      while (copy.containsKey(name)) {
-        e.getPlayer().addPotionEffect(copy.get(name), true);
-        copy.remove(name);
-        name += "#";
-      }
-    }
   }
 
 }
