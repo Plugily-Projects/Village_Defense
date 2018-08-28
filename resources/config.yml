@@ -17,6 +17,7 @@
 #    hu - Magyar nyelv
 #    zh - 简体中文
 #    ro - Limba română
+#    cs - Český jazyk
 #
 locale: default
 

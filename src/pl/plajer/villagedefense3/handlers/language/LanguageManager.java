@@ -118,6 +118,7 @@ public class LanguageManager {
           case "vn-VN":
           case "hu-HU":
           case "zh-CN":
+          case "cs-CS":
             hasLocale = true;
             localeName = locale.getLocaleName();
         }
@@ -135,6 +136,7 @@ public class LanguageManager {
           case "HU":
           case "ZH":
           case "RO":
+          case "CS":
             hasLocale = true;
             localeName = locale.getDisplayName();
         }
