@@ -33,6 +33,7 @@ import pl.plajer.villagedefense3.database.FileStats;
 import pl.plajer.villagedefense3.database.MySQLConnectionUtils;
 import pl.plajer.villagedefense3.handlers.PermissionsManager;
 import pl.plajer.villagedefense3.user.UserManager;
+import pl.plajer.villagedefense3.villagedefenseapi.StatsStorage;
 import pl.plajerlair.core.services.ReportedException;
 import pl.plajerlair.core.utils.InventoryUtils;
 import pl.plajerlair.core.utils.UpdateChecker;
@@ -132,8 +133,8 @@ public class JoinEvent implements Listener {
       }
       UserManager.registerUser(event.getPlayer().getUniqueId());
       if (!plugin.isDatabaseActivated()) {
-        for (String s : FileStats.STATISTICS.keySet()) {
-          plugin.getFileStats().loadStat(event.getPlayer(), s);
+        for (StatsStorage.StatisticType s : StatsStorage.StatisticType.values()) {
+          plugin.getFileStats().loadStat(event.getPlayer(), s.getName());
         }
         return;
       }

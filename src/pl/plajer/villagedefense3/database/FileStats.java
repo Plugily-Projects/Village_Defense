@@ -39,18 +39,6 @@ import pl.plajerlair.core.utils.ConfigUtils;
  */
 public class FileStats {
 
-  public final static Map<String, StatsStorage.StatisticType> STATISTICS = new HashMap<>();
-
-  static {
-    STATISTICS.put("gamesplayed", StatsStorage.StatisticType.GAMES_PLAYED);
-    STATISTICS.put("kills", StatsStorage.StatisticType.KILLS);
-    STATISTICS.put("deaths", StatsStorage.StatisticType.DEATHS);
-    STATISTICS.put("highestwave", StatsStorage.StatisticType.HIGHEST_WAVE);
-    STATISTICS.put("xp", StatsStorage.StatisticType.XP);
-    STATISTICS.put("level", StatsStorage.StatisticType.LEVEL);
-    STATISTICS.put("orbs", StatsStorage.StatisticType.ORBS);
-  }
-
   private Main plugin;
   private FileConfiguration config;
 
@@ -87,8 +75,8 @@ public class FileStats {
         ArenaRegistry.getArenas().get(0).teleportToLobby(player);
       }
       if (!plugin.isDatabaseActivated()) {
-        for (String s : FileStats.STATISTICS.keySet()) {
-          loadStat(player, s);
+        for (StatsStorage.StatisticType s : StatsStorage.StatisticType.values()) {
+          loadStat(player, s.getName());
         }
         continue;
       }

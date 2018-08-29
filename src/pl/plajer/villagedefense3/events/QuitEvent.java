@@ -31,6 +31,7 @@ import pl.plajer.villagedefense3.database.FileStats;
 import pl.plajer.villagedefense3.user.User;
 import pl.plajer.villagedefense3.user.UserManager;
 import pl.plajer.villagedefense3.utils.MessageUtils;
+import pl.plajer.villagedefense3.villagedefenseapi.StatsStorage;
 import pl.plajerlair.core.services.ReportedException;
 
 /**
@@ -65,10 +66,10 @@ public class QuitEvent implements Listener {
       final Player player = event.getPlayer();
       if (plugin.isDatabaseActivated()) {
         Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
-          for (final String s : FileStats.STATISTICS.keySet()) {
+          for (final StatsStorage.StatisticType s : StatsStorage.StatisticType.values()) {
             int i;
             try {
-              i = plugin.getMySQLDatabase().getStat(player.getUniqueId().toString(), s);
+              i = plugin.getMySQLDatabase().getStat(player.getUniqueId().toString(), s.getName());
             } catch (NullPointerException npe) {
               i = 0;
               System.out.print("COULDN'T GET STATS FROM PLAYER: " + player.getName());
@@ -78,17 +79,17 @@ public class QuitEvent implements Listener {
               Bukkit.getConsoleSender().sendMessage("Check configuration of mysql.yml file or disable mysql option in config.yml");
             }
 
-            if (i > user.getInt(s)) {
-              plugin.getMySQLDatabase().setStat(player.getUniqueId().toString(), s, user.getInt(s) + i);
+            if (i > user.getInt(s.getName())) {
+              plugin.getMySQLDatabase().setStat(player.getUniqueId().toString(), s.getName(), user.getInt(s.getName()) + i);
             } else {
-              plugin.getMySQLDatabase().setStat(player.getUniqueId().toString(), s, user.getInt(s));
+              plugin.getMySQLDatabase().setStat(player.getUniqueId().toString(), s.getName(), user.getInt(s.getName()));
             }
             plugin.getMySQLDatabase().executeUpdate("UPDATE playerstats SET name='" + player.getName() + "' WHERE UUID='" + player.getUniqueId().toString() + "';");
           }
         });
       } else {
-        for (String s : FileStats.STATISTICS.keySet()) {
-          plugin.getFileStats().saveStat(player, s);
+        for (StatsStorage.StatisticType s : StatsStorage.StatisticType.values()) {
+          plugin.getFileStats().saveStat(player, s.getName());
         }
       }
       UserManager.removeUser(player.getUniqueId());

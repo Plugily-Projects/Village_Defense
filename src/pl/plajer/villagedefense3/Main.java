@@ -254,7 +254,7 @@ public class Main extends JavaPlugin {
         } catch (Exception ex) {
           Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "[VillageDefense] An error occured while checking for update!");
           Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "Please check internet connection or check for update via WWW site directly!");
-          Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "WWW site https://www.spigotmc.org/resources/minigame-village-defence-1-12-and-1-8-8.41869/");
+          Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "WWW site https://www.spigotmc.org/resources/41869");
         }
       }
 
@@ -412,11 +412,11 @@ public class Main extends JavaPlugin {
     debug("System disable", System.currentTimeMillis());
     for (Player player : getServer().getOnlinePlayers()) {
       User user = UserManager.getUser(player.getUniqueId());
-      for (String s : FileStats.STATISTICS.keySet()) {
+      for (StatsStorage.StatisticType s : StatsStorage.StatisticType.values()) {
         if (isDatabaseActivated()) {
-          getMySQLDatabase().setStat(player.getUniqueId().toString(), s, user.getInt(s));
+          getMySQLDatabase().setStat(player.getUniqueId().toString(), s.getName(), user.getInt(s.getName()));
         } else {
-          getFileStats().saveStat(player, s);
+          getFileStats().saveStat(player, s.getName());
         }
       }
       UserManager.removeUser(player.getUniqueId());
