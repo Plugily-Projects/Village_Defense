@@ -474,7 +474,7 @@ public class MainCommand implements CommandExecutor {
           config.set("instances." + ID + ".doors." + i + ".byte", 8);
           i++;
           config.set("instances." + ID + ".doors." + i + ".location", location);
-          if (plugin.is1_13_R1()) {
+          if (plugin.is1_13_R1() || plugin.is1_13_R2()) {
             config.set("instances." + ID + ".doors." + i + ".byte", Utils.getDoorByte(((Door) block.getState().getData()).getFacing()));
           } else {
             config.set("instances." + ID + ".doors." + i + ".byte", block.getData());

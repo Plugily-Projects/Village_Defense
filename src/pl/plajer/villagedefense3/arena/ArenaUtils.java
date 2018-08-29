@@ -28,6 +28,7 @@ import pl.plajer.villagedefense3.arena.initializers.ArenaInitializer1_10_R1;
 import pl.plajer.villagedefense3.arena.initializers.ArenaInitializer1_11_R1;
 import pl.plajer.villagedefense3.arena.initializers.ArenaInitializer1_12_R1;
 import pl.plajer.villagedefense3.arena.initializers.ArenaInitializer1_13_R1;
+import pl.plajer.villagedefense3.arena.initializers.ArenaInitializer1_13_R2;
 import pl.plajer.villagedefense3.arena.initializers.ArenaInitializer1_9_R1;
 import pl.plajer.villagedefense3.handlers.ChatManager;
 import pl.plajer.villagedefense3.user.User;
@@ -110,8 +111,10 @@ public class ArenaUtils {
       arena = new ArenaInitializer1_11_R1(ID, plugin);
     } else if (plugin.is1_12_R1()) {
       arena = new ArenaInitializer1_12_R1(ID, plugin);
-    } else {
+    } else if(plugin.is1_13_R1()) {
       arena = new ArenaInitializer1_13_R1(ID, plugin);
+    } else {
+      arena = new ArenaInitializer1_13_R2(ID, plugin);
     }
     return arena;
   }

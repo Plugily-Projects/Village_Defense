@@ -39,6 +39,7 @@ import org.bukkit.inventory.ItemStack;
 import pl.plajer.villagedefense3.Main;
 import pl.plajer.villagedefense3.arena.Arena;
 import pl.plajer.villagedefense3.arena.ArenaRegistry;
+import pl.plajer.villagedefense3.arena.ArenaUtils;
 import pl.plajer.villagedefense3.arena.initializers.ArenaInitializer1_10_R1;
 import pl.plajer.villagedefense3.arena.initializers.ArenaInitializer1_11_R1;
 import pl.plajer.villagedefense3.arena.initializers.ArenaInitializer1_12_R1;
@@ -232,17 +233,7 @@ public class SetupInventoryEvents implements Listener {
             }
           }
         }
-        if (plugin.is1_9_R1()) {
-          arena = new ArenaInitializer1_9_R1(arena.getID(), plugin);
-        } else if (plugin.is1_10_R1()) {
-          arena = new ArenaInitializer1_10_R1(arena.getID(), plugin);
-        } else if (plugin.is1_11_R1()) {
-          arena = new ArenaInitializer1_11_R1(arena.getID(), plugin);
-        } else if (plugin.is1_12_R1()) {
-          arena = new ArenaInitializer1_12_R1(arena.getID(), plugin);
-        } else {
-          arena = new ArenaInitializer1_13_R1(arena.getID(), plugin);
-        }
+        arena = ArenaUtils.initializeArena(arena.getID());
         arena.setReady(true);
         arena.setMinimumPlayers(ConfigUtils.getConfig(plugin, "arenas").getInt("instances." + arena.getID() + ".minimumplayers"));
         arena.setMaximumPlayers(ConfigUtils.getConfig(plugin, "arenas").getInt("instances." + arena.getID() + ".maximumplayers"));

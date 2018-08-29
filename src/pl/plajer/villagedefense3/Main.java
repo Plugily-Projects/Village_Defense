@@ -141,6 +141,10 @@ public class Main extends JavaPlugin {
     return version.equalsIgnoreCase("v1_13_R1");
   }
 
+  public boolean is1_13_R2() {
+    return version.equalsIgnoreCase("v1_13_R2");
+  }
+
   public boolean isInventoryManagerEnabled() {
     return inventoryManagerEnabled;
   }
@@ -197,7 +201,7 @@ public class Main extends JavaPlugin {
       LanguageManager.init(this);
       saveDefaultConfig();
       if (!(version.equalsIgnoreCase("v1_9_R1") || version.equalsIgnoreCase("v1_10_R1") || version.equalsIgnoreCase("v1_11_R1")
-              || version.equalsIgnoreCase("v1_12_R1") || version.equalsIgnoreCase("v1_13_R1"))) {
+              || version.equalsIgnoreCase("v1_12_R1") || version.equalsIgnoreCase("v1_13_R1") || version.equalsIgnoreCase("v1_13_R2"))) {
         MessageUtils.thisVersionIsNotSupported();
         Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "Your server version is not supported by Village Defense!");
         Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "Sadly, we must shut off. Maybe you consider changing your server version?");
