@@ -30,6 +30,8 @@ import java.util.Random;
 import java.util.Set;
 import java.util.UUID;
 
+import me.clip.placeholderapi.PlaceholderAPI;
+
 import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
@@ -477,6 +479,9 @@ public abstract class Arena extends BukkitRunnable {
     formattedLine = StringUtils.replace(formattedLine, "%ZOMBIES%", String.valueOf(getZombiesLeft()));
     formattedLine = StringUtils.replace(formattedLine, "%ROTTEN_FLESH%", String.valueOf(getRottenFlesh()));
     formattedLine = ChatManager.colorRawMessage(formattedLine);
+    if (plugin.getServer().getPluginManager().isPluginEnabled("PlaceholderAPI")) {
+      PlaceholderAPI.setPlaceholders(user.toPlayer(), formattedLine);
+    }
     return formattedLine;
   }
 
