@@ -43,7 +43,7 @@ import pl.plajer.villagedefense3.kits.level.PuncherKit;
 import pl.plajer.villagedefense3.kits.level.RunnerKit;
 import pl.plajer.villagedefense3.kits.level.TerminatorKit;
 import pl.plajer.villagedefense3.kits.level.WorkerKit;
-import pl.plajer.villagedefense3.kits.level.ZombieFinderKit;
+import pl.plajer.villagedefense3.kits.free.ZombieFinderKit;
 import pl.plajer.villagedefense3.kits.premium.BlockerKit;
 import pl.plajer.villagedefense3.kits.premium.CleanerKit;
 import pl.plajer.villagedefense3.kits.premium.DogFriendKit;

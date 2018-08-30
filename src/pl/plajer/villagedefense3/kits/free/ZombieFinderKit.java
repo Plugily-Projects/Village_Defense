@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package pl.plajer.villagedefense3.kits.level;
+package pl.plajer.villagedefense3.kits.free;
 
 import java.util.List;
 import java.util.Random;
