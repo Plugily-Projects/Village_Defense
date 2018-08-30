@@ -28,6 +28,7 @@ import pl.plajer.villagedefense3.Main;
 import pl.plajer.villagedefense3.user.User;
 import pl.plajer.villagedefense3.user.UserManager;
 import pl.plajer.villagedefense3.utils.MessageUtils;
+import pl.plajer.villagedefense3.villagedefenseapi.StatsStorage;
 
 /**
  * @author Plajer
@@ -61,13 +62,13 @@ public class MySQLConnectionUtils {
       level = database.getStat(player.getUniqueId().toString(), "level");
       orbs = database.getStat(player.getUniqueId().toString(), "orbs");
       User user = UserManager.getUser(player.getUniqueId());
-      user.setInt("gamesplayed", gamesplayed);
-      user.setInt("kills", zombiekills);
-      user.setInt("highestwave", highestwave);
-      user.setInt("deaths", deaths);
-      user.setInt("xp", xp);
-      user.setInt("level", level);
-      user.setInt("orbs", orbs);
+      user.setStat(StatsStorage.StatisticType.GAMES_PLAYED, gamesplayed);
+      user.setStat(StatsStorage.StatisticType.KILLS, zombiekills);
+      user.setStat(StatsStorage.StatisticType.HIGHEST_WAVE, highestwave);
+      user.setStat(StatsStorage.StatisticType.DEATHS, deaths);
+      user.setStat(StatsStorage.StatisticType.XP, xp);
+      user.setStat(StatsStorage.StatisticType.LEVEL, level);
+      user.setStat(StatsStorage.StatisticType.ORBS, orbs);
       b = true;
     } catch (SQLException e1) {
       System.out.print("CONNECTION FAILED FOR PLAYER " + player.getName());
@@ -97,13 +98,13 @@ public class MySQLConnectionUtils {
         level = database.getStat(player.getUniqueId().toString(), "level");
         orbs = database.getStat(player.getUniqueId().toString(), "orbs");
         User user = UserManager.getUser(player.getUniqueId());
-        user.setInt("gamesplayed", gamesplayed);
-        user.setInt("kills", zombiekills);
-        user.setInt("highestwave", highestwave);
-        user.setInt("deaths", deaths);
-        user.setInt("xp", xp);
-        user.setInt("level", level);
-        user.setInt("orbs", orbs);
+        user.setStat(StatsStorage.StatisticType.GAMES_PLAYED, gamesplayed);
+        user.setStat(StatsStorage.StatisticType.KILLS, zombiekills);
+        user.setStat(StatsStorage.StatisticType.HIGHEST_WAVE, highestwave);
+        user.setStat(StatsStorage.StatisticType.DEATHS, deaths);
+        user.setStat(StatsStorage.StatisticType.XP, xp);
+        user.setStat(StatsStorage.StatisticType.LEVEL, level);
+        user.setStat(StatsStorage.StatisticType.ORBS, orbs);
       } catch (SQLException e1) {
         System.out.print("CONNECTION FAILED TWICE FOR PLAYER " + player.getName());
         e1.printStackTrace();

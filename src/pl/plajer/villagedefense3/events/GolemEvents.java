@@ -41,6 +41,7 @@ import pl.plajer.villagedefense3.Main;
 import pl.plajer.villagedefense3.arena.ArenaRegistry;
 import pl.plajer.villagedefense3.handlers.ChatManager;
 import pl.plajer.villagedefense3.user.UserManager;
+import pl.plajer.villagedefense3.villagedefenseapi.StatsStorage;
 import pl.plajer.villagedefense3.villagedefenseapi.VillageGolemUpgradeEvent;
 import pl.plajerlair.core.services.ReportedException;
 
@@ -114,7 +115,7 @@ public class GolemEvents implements Listener {
         }
         Player p = (Player) e.getWhoClicked();
         double golemHealth = clickedGolem.get(p).getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue();
-        Integer orbs = UserManager.getUser(p.getUniqueId()).getInt("orbs");
+        Integer orbs = UserManager.getUser(p.getUniqueId()).getStat(StatsStorage.StatisticType.ORBS);
         e.setCancelled(true);
         //checking for health upgrades
         for (int i = 1; i <= 3; i++) {
@@ -138,7 +139,7 @@ public class GolemEvents implements Listener {
               Bukkit.getPluginManager().callEvent(event);
 
               p.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Golem-Upgrades.Upgrade-Applied"));
-              UserManager.getUser(p.getUniqueId()).setInt("orbs", orbs - price);
+              UserManager.getUser(p.getUniqueId()).setStat(StatsStorage.StatisticType.ORBS, orbs - price);
               clickedGolem.get(p).getWorld().spawnParticle(Particle.LAVA, p.getLocation(), 20);
               clickedGolem.remove(p);
               p.closeInventory();
@@ -165,7 +166,7 @@ public class GolemEvents implements Listener {
             Bukkit.getPluginManager().callEvent(event);
 
             p.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Golem-Upgrades.Upgrade-Applied"));
-            UserManager.getUser(p.getUniqueId()).setInt("orbs", orbs - price);
+            UserManager.getUser(p.getUniqueId()).setStat(StatsStorage.StatisticType.ORBS, orbs - price);
             clickedGolem.get(p).getWorld().spawnParticle(Particle.LAVA, p.getLocation(), 20);
             clickedGolem.remove(p);
             p.closeInventory();

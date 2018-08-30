@@ -72,6 +72,7 @@ import pl.plajer.villagedefense3.handlers.items.SpecialItemManager;
 import pl.plajer.villagedefense3.user.User;
 import pl.plajer.villagedefense3.user.UserManager;
 import pl.plajer.villagedefense3.utils.Utils;
+import pl.plajer.villagedefense3.villagedefenseapi.StatsStorage;
 import pl.plajerlair.core.services.ReportedException;
 import pl.plajerlair.core.utils.MinigameUtils;
 
@@ -120,22 +121,22 @@ public class Events implements Listener {
       for (String perm : plugin.getCustomPermissions().keySet()) {
         if (event.getPlayer().hasPermission(perm)) {
           amount = +(int) Math.ceil(event.getAmount() * (plugin.getCustomPermissions().get(perm) / 100));
-          user.addInt("orbs", (int) Math.ceil(event.getAmount() * (plugin.getCustomPermissions().get(perm) / 100)));
+          user.addStat(StatsStorage.StatisticType.ORBS, (int) Math.ceil(event.getAmount() * (plugin.getCustomPermissions().get(perm) / 100)));
         }
       }
 
       if (event.getPlayer().hasPermission(PermissionsManager.getElite())) {
         amount += (int) Math.ceil(event.getAmount() * 1.5);
-        user.addInt("orbs", (int) Math.ceil(event.getAmount() * 1.5));
+        user.addStat(StatsStorage.StatisticType.ORBS, (int) Math.ceil(event.getAmount() * 1.5));
       } else if (event.getPlayer().hasPermission(PermissionsManager.getMvp())) {
         amount += (int) Math.ceil(event.getAmount() * 1.0);
-        user.addInt("orbs", (int) Math.ceil(event.getAmount() * 1.0));
+        user.addStat(StatsStorage.StatisticType.ORBS, (int) Math.ceil(event.getAmount() * 1.0));
       } else if (event.getPlayer().hasPermission(PermissionsManager.getVip())) {
         amount += (int) Math.ceil(event.getAmount() * 0.5);
-        user.addInt("orbs", (int) Math.ceil(event.getAmount() * 0.5));
+        user.addStat(StatsStorage.StatisticType.ORBS, (int) Math.ceil(event.getAmount() * 0.5));
       } else {
         amount += event.getAmount();
-        user.addInt("orbs", event.getAmount());
+        user.addStat(StatsStorage.StatisticType.ORBS, event.getAmount());
       }
       event.getPlayer().sendMessage(ChatManager.colorMessage("In-Game.Orbs-Pickup").replace("%number%", String.valueOf(amount)));
     } catch (Exception ex) {
@@ -513,7 +514,7 @@ public class Events implements Listener {
         }
       }
       int price = Integer.parseInt(string.split(" ")[0]);
-      if (price > UserManager.getUser(player.getUniqueId()).getInt("orbs")) {
+      if (price > UserManager.getUser(player.getUniqueId()).getStat(StatsStorage.StatisticType.ORBS)) {
         player.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Messages.Shop-Messages.Not-Enough-Orbs"));
         return;
       }
@@ -532,7 +533,7 @@ public class Events implements Listener {
           }
           arena.spawnGolem(arena.getStartLocation(), player);
           player.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Messages.Golem-Spawned"));
-          UserManager.getUser(player.getUniqueId()).setInt("orbs", UserManager.getUser(player.getUniqueId()).getInt("orbs") - price);
+          UserManager.getUser(player.getUniqueId()).setStat(StatsStorage.StatisticType.ORBS, UserManager.getUser(player.getUniqueId()).getStat(StatsStorage.StatisticType.ORBS) - price);
           return;
         } else if (e.getCurrentItem().getItemMeta().getDisplayName().contains(ChatManager.colorMessage("In-Game.Messages.Shop-Messages.Wolf-Item-Name"))) {
           int i = 0;
@@ -548,7 +549,7 @@ public class Events implements Listener {
           }
           arena.spawnWolf(arena.getStartLocation(), player);
           player.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Messages.Wolf-Spawned"));
-          UserManager.getUser(player.getUniqueId()).setInt("orbs", UserManager.getUser(player.getUniqueId()).getInt("orbs") - price);
+          UserManager.getUser(player.getUniqueId()).setStat(StatsStorage.StatisticType.ORBS, UserManager.getUser(player.getUniqueId()).getStat(StatsStorage.StatisticType.ORBS) - price);
           return;
         }
       }
@@ -564,7 +565,7 @@ public class Events implements Listener {
       itemMeta.setLore(lore);
       itemStack.setItemMeta(itemMeta);
       player.getInventory().addItem(itemStack);
-      UserManager.getUser(player.getUniqueId()).setInt("orbs", UserManager.getUser(player.getUniqueId()).getInt("orbs") - price);
+      UserManager.getUser(player.getUniqueId()).setStat(StatsStorage.StatisticType.ORBS, UserManager.getUser(player.getUniqueId()).getStat(StatsStorage.StatisticType.ORBS) - price);
       arena.setTotalOrbsSpent(arena.getTotalOrbsSpent() + price);
     } catch (Exception ex){
       new ReportedException(plugin, ex);

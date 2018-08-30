@@ -19,8 +19,6 @@
 package pl.plajer.villagedefense3.database;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -47,9 +45,9 @@ public class FileStats {
     config = ConfigUtils.getConfig(plugin, "stats");
   }
 
-  public void saveStat(Player player, String stat) {
+  public void saveStat(Player player, StatsStorage.StatisticType stat) {
     User user = UserManager.getUser(player.getUniqueId());
-    config.set(player.getUniqueId().toString() + "." + stat, user.getInt(stat));
+    config.set(player.getUniqueId().toString() + "." + stat, user.getStat(stat));
     try {
       config.save(ConfigUtils.getFile(plugin, "stats"));
     } catch (IOException e) {
@@ -60,12 +58,12 @@ public class FileStats {
     }
   }
 
-  public void loadStat(Player player, String stat) {
+  public void loadStat(Player player, StatsStorage.StatisticType stat) {
     User user = UserManager.getUser(player.getUniqueId());
     if (config.contains(player.getUniqueId().toString() + "." + stat)) {
-      user.setInt(stat, config.getInt(player.getUniqueId().toString() + "." + stat));
+      user.setStat(stat, config.getInt(player.getUniqueId().toString() + "." + stat));
     } else {
-      user.setInt(stat, 0);
+      user.setStat(stat, 0);
     }
   }
 
@@ -76,7 +74,7 @@ public class FileStats {
       }
       if (!plugin.isDatabaseActivated()) {
         for (StatsStorage.StatisticType s : StatsStorage.StatisticType.values()) {
-          loadStat(player, s.getName());
+          loadStat(player, s);
         }
         continue;
       }

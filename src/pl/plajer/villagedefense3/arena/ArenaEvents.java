@@ -49,6 +49,7 @@ import pl.plajer.villagedefense3.handlers.items.SpecialItemManager;
 import pl.plajer.villagedefense3.user.User;
 import pl.plajer.villagedefense3.user.UserManager;
 import pl.plajer.villagedefense3.utils.MessageUtils;
+import pl.plajer.villagedefense3.villagedefenseapi.StatsStorage;
 import pl.plajerlair.core.services.ReportedException;
 
 /**
@@ -95,7 +96,7 @@ public class ArenaEvents implements Listener {
               }
               Player player = (Player) ((Wolf) e.getDamager()).getOwner();
               if (ArenaRegistry.getArena(player) != null) {
-                a.addStat(player, "kills");
+                a.addStat(player, StatsStorage.StatisticType.KILLS);
                 a.addExperience(player, 2);
               }
               return;
@@ -119,7 +120,7 @@ public class ArenaEvents implements Listener {
                 a.removeZombie((Zombie) event.getEntity());
                 a.setTotalKilledZombies(a.getTotalKilledZombies() + 1);
                 if (ArenaRegistry.getArena(event.getEntity().getKiller()) != null) {
-                  a.addStat(event.getEntity().getKiller(), "kills");
+                  a.addStat(event.getEntity().getKiller(), StatsStorage.StatisticType.KILLS);
                   a.addExperience(event.getEntity().getKiller(), 2);
                   plugin.getRewardsHandler().performZombieKillReward(event.getEntity().getKiller());
                   plugin.getPowerupManager().spawnPowerup(event.getEntity().getLocation(), ArenaRegistry.getArena(event.getEntity().getKiller()));
@@ -168,16 +169,16 @@ public class ArenaEvents implements Listener {
         player.setFlying(false);
         player.setAllowFlight(false);
         User user = UserManager.getUser(player.getUniqueId());
-        user.setInt("orbs", 0);
+        user.setStat(StatsStorage.StatisticType.ORBS, 0);
         player.teleport(arena.getEndLocation());
         return;
       }
       User user = UserManager.getUser(player.getUniqueId());
-      arena.addStat(player, "deaths");
+      arena.addStat(player, StatsStorage.StatisticType.DEATHS);
       arena.teleportToStartLocation(player);
       user.setSpectator(true);
       player.setGameMode(GameMode.SURVIVAL);
-      user.setInt("orbs", 0);
+      user.setStat(StatsStorage.StatisticType.ORBS, 0);
       ArenaUtils.hidePlayer(player, arena);
       player.setAllowFlight(true);
       player.setFlying(true);
@@ -239,7 +240,7 @@ public class ArenaEvents implements Listener {
           user.setSpectator(true);
           player.setGameMode(GameMode.SURVIVAL);
           player.removePotionEffect(PotionEffectType.NIGHT_VISION);
-          user.setInt("orbs", 0);
+          user.setStat(StatsStorage.StatisticType.ORBS, 0);
         }
         e.setRespawnLocation(arena.getStartLocation());
       }

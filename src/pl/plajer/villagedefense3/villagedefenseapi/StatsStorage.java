@@ -84,7 +84,7 @@ public class StatsStorage {
    */
   public static int getUserStats(Player player, StatisticType statisticType) {
     Main.debug("Village API getUserStats(" + player.getName() + ", " + statisticType.getName() + ") run", System.currentTimeMillis());
-    return UserManager.getUser(player.getUniqueId()).getInt(statisticType.name);
+    return UserManager.getUser(player.getUniqueId()).getStat(statisticType);
   }
 
   /**

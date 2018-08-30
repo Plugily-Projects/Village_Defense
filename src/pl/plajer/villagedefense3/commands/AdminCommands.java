@@ -33,7 +33,6 @@ import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
-import org.bukkit.Sound;
 import org.bukkit.block.Sign;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -55,6 +54,7 @@ import pl.plajer.villagedefense3.handlers.ChatManager;
 import pl.plajer.villagedefense3.user.User;
 import pl.plajer.villagedefense3.user.UserManager;
 import pl.plajer.villagedefense3.utils.Utils;
+import pl.plajer.villagedefense3.villagedefenseapi.StatsStorage;
 import pl.plajerlair.core.utils.ConfigUtils;
 import pl.plajerlair.core.utils.MinigameUtils;
 
@@ -423,7 +423,7 @@ public class AdminCommands extends MainCommand {
     }
     if (NumberUtils.isNumber(number)) {
       User user = UserManager.getUser(((Player) sender).getUniqueId());
-      user.setInt("orbs", user.getInt("orbs") + Integer.parseInt(number));
+      user.setStat(StatsStorage.StatisticType.ORBS, user.getStat(StatsStorage.StatisticType.ORBS) + Integer.parseInt(number));
       sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("Commands.Admin-Commands.Added-Orbs"));
     } else {
       sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("Commands.Wrong-Usage").replace("%correct%", "/vd addorbs <amount>"));
@@ -442,7 +442,7 @@ public class AdminCommands extends MainCommand {
     }
     if (NumberUtils.isNumber(number)) {
       User user = UserManager.getUser(player.getUniqueId());
-      user.setInt("orbs", user.getInt("orbs") + Integer.parseInt(number));
+      user.setStat(StatsStorage.StatisticType.ORBS, user.getStat(StatsStorage.StatisticType.ORBS) + Integer.parseInt(number));
       sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("Commands.Admin-Commands.Added-Orbs"));
     } else {
       sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("Commands.Wrong-Usage").replace("%correct%", "/vd addorbs <amount>"));

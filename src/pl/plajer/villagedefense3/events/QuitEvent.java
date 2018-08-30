@@ -27,7 +27,6 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import pl.plajer.villagedefense3.Main;
 import pl.plajer.villagedefense3.arena.ArenaManager;
 import pl.plajer.villagedefense3.arena.ArenaRegistry;
-import pl.plajer.villagedefense3.database.FileStats;
 import pl.plajer.villagedefense3.user.User;
 import pl.plajer.villagedefense3.user.UserManager;
 import pl.plajer.villagedefense3.utils.MessageUtils;
@@ -79,17 +78,17 @@ public class QuitEvent implements Listener {
               Bukkit.getConsoleSender().sendMessage("Check configuration of mysql.yml file or disable mysql option in config.yml");
             }
 
-            if (i > user.getInt(s.getName())) {
-              plugin.getMySQLDatabase().setStat(player.getUniqueId().toString(), s.getName(), user.getInt(s.getName()) + i);
+            if (i > user.getStat(s)) {
+              plugin.getMySQLDatabase().setStat(player.getUniqueId().toString(), s.getName(), user.getStat(s) + i);
             } else {
-              plugin.getMySQLDatabase().setStat(player.getUniqueId().toString(), s.getName(), user.getInt(s.getName()));
+              plugin.getMySQLDatabase().setStat(player.getUniqueId().toString(), s.getName(), user.getStat(s));
             }
             plugin.getMySQLDatabase().executeUpdate("UPDATE playerstats SET name='" + player.getName() + "' WHERE UUID='" + player.getUniqueId().toString() + "';");
           }
         });
       } else {
         for (StatsStorage.StatisticType s : StatsStorage.StatisticType.values()) {
-          plugin.getFileStats().saveStat(player, s.getName());
+          plugin.getFileStats().saveStat(player, s);
         }
       }
       UserManager.removeUser(player.getUniqueId());

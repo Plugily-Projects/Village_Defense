@@ -58,13 +58,13 @@ public class GameCommands extends MainCommand {
     }
     User user = UserManager.getUser(((Player) sender).getUniqueId());
     sender.sendMessage(ChatManager.colorMessage("Commands.Stats-Command.Header"));
-    sender.sendMessage(ChatManager.colorMessage("Commands.Stats-Command.Kills") + user.getInt("kills"));
-    sender.sendMessage(ChatManager.colorMessage("Commands.Stats-Command.Deaths") + user.getInt("deaths"));
-    sender.sendMessage(ChatManager.colorMessage("Commands.Stats-Command.Games-Played") + user.getInt("gamesplayed"));
-    sender.sendMessage(ChatManager.colorMessage("Commands.Stats-Command.Highest-Wave") + user.getInt("highestwave"));
-    sender.sendMessage(ChatManager.colorMessage("Commands.Stats-Command.Level") + user.getInt("level"));
-    sender.sendMessage(ChatManager.colorMessage("Commands.Stats-Command.Exp") + user.getInt("xp"));
-    sender.sendMessage(ChatManager.colorMessage("Commands.Stats-Command.Next-Level-Exp") + Math.ceil(Math.pow(50 * user.getInt("level"), 1.5)));
+    sender.sendMessage(ChatManager.colorMessage("Commands.Stats-Command.Kills") + user.getStat(StatsStorage.StatisticType.KILLS));
+    sender.sendMessage(ChatManager.colorMessage("Commands.Stats-Command.Deaths") + user.getStat(StatsStorage.StatisticType.DEATHS));
+    sender.sendMessage(ChatManager.colorMessage("Commands.Stats-Command.Games-Played") + user.getStat(StatsStorage.StatisticType.GAMES_PLAYED));
+    sender.sendMessage(ChatManager.colorMessage("Commands.Stats-Command.Highest-Wave") + user.getStat(StatsStorage.StatisticType.HIGHEST_WAVE));
+    sender.sendMessage(ChatManager.colorMessage("Commands.Stats-Command.Level") + user.getStat(StatsStorage.StatisticType.LEVEL));
+    sender.sendMessage(ChatManager.colorMessage("Commands.Stats-Command.Exp") + user.getStat(StatsStorage.StatisticType.XP));
+    sender.sendMessage(ChatManager.colorMessage("Commands.Stats-Command.Next-Level-Exp") + Math.ceil(Math.pow(50 * user.getStat(StatsStorage.StatisticType.LEVEL), 1.5)));
     sender.sendMessage(ChatManager.colorMessage("Commands.Stats-Command.Footer"));
   }
 
@@ -76,13 +76,13 @@ public class GameCommands extends MainCommand {
     }
     User user = UserManager.getUser(player.getUniqueId());
     sender.sendMessage(ChatManager.colorMessage("Commands.Stats-Command.Header-Other").replace("%player%", player.getName()));
-    sender.sendMessage(ChatManager.colorMessage("Commands.Stats-Command.Kills") + user.getInt("kills"));
-    sender.sendMessage(ChatManager.colorMessage("Commands.Stats-Command.Deaths") + user.getInt("deaths"));
-    sender.sendMessage(ChatManager.colorMessage("Commands.Stats-Command.Games-Played") + user.getInt("gamesplayed"));
-    sender.sendMessage(ChatManager.colorMessage("Commands.Stats-Command.Highest-Wave") + user.getInt("highestwave"));
-    sender.sendMessage(ChatManager.colorMessage("Commands.Stats-Command.Level") + user.getInt("level"));
-    sender.sendMessage(ChatManager.colorMessage("Commands.Stats-Command.Exp") + user.getInt("xp"));
-    sender.sendMessage(ChatManager.colorMessage("Commands.Stats-Command.Next-Level-Exp") + Math.ceil(Math.pow(50 * user.getInt("level"), 1.5)));
+    sender.sendMessage(ChatManager.colorMessage("Commands.Stats-Command.Kills") + user.getStat(StatsStorage.StatisticType.KILLS));
+    sender.sendMessage(ChatManager.colorMessage("Commands.Stats-Command.Deaths") + user.getStat(StatsStorage.StatisticType.DEATHS));
+    sender.sendMessage(ChatManager.colorMessage("Commands.Stats-Command.Games-Played") + user.getStat(StatsStorage.StatisticType.GAMES_PLAYED));
+    sender.sendMessage(ChatManager.colorMessage("Commands.Stats-Command.Highest-Wave") + user.getStat(StatsStorage.StatisticType.HIGHEST_WAVE));
+    sender.sendMessage(ChatManager.colorMessage("Commands.Stats-Command.Level") + user.getStat(StatsStorage.StatisticType.LEVEL));
+    sender.sendMessage(ChatManager.colorMessage("Commands.Stats-Command.Exp") + user.getStat(StatsStorage.StatisticType.XP));
+    sender.sendMessage(ChatManager.colorMessage("Commands.Stats-Command.Next-Level-Exp") + Math.ceil(Math.pow(50 * user.getStat(StatsStorage.StatisticType.LEVEL), 1.5)));
     sender.sendMessage(ChatManager.colorMessage("Commands.Stats-Command.Footer"));
   }
 

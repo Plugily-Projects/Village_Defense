@@ -58,6 +58,7 @@ import pl.plajer.villagedefense3.handlers.language.Locale;
 import pl.plajer.villagedefense3.kits.kitapi.KitRegistry;
 import pl.plajer.villagedefense3.user.User;
 import pl.plajer.villagedefense3.user.UserManager;
+import pl.plajer.villagedefense3.villagedefenseapi.StatsStorage;
 import pl.plajer.villagedefense3.villagedefenseapi.VillageGameStartEvent;
 import pl.plajer.villagedefense3.villagedefenseapi.VillageGameStateChangeEvent;
 import pl.plajerlair.core.services.ReportedException;
@@ -216,7 +217,7 @@ public abstract class Arena extends BukkitRunnable {
               player.getInventory().clear();
               player.setGameMode(GameMode.SURVIVAL);
               User user = UserManager.getUser(player.getUniqueId());
-              user.setInt("orbs", plugin.getConfig().getInt("Orbs-Starting-Amount", 20));
+              user.setStat(StatsStorage.StatisticType.ORBS, plugin.getConfig().getInt("Orbs-Starting-Amount", 20));
               ArenaUtils.hidePlayersOutsideTheGame(player, this);
               if (UserManager.getUser(player.getUniqueId()).getKit() != null) {
                 UserManager.getUser(player.getUniqueId()).getKit().giveKitItems(player);
@@ -224,7 +225,7 @@ public abstract class Arena extends BukkitRunnable {
                 KitRegistry.getDefaultKit().giveKitItems(player);
               }
               player.updateInventory();
-              addStat(player, "gamesplayed");
+              addStat(player, StatsStorage.StatisticType.GAMES_PLAYED);
               addExperience(player, 10);
               setTimer(plugin.getConfig().getInt("Cooldown-Before-Next-Wave", 25));
               player.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Messages.Lobby-Messages.Game-Started"));
@@ -398,7 +399,7 @@ public abstract class Arena extends BukkitRunnable {
 
             for (User user : UserManager.getUsers(this)) {
               user.setSpectator(false);
-              user.setInt("orbs", 0);
+              user.setStat(StatsStorage.StatisticType.ORBS, 0);
             }
             plugin.getRewardsHandler().performEndGameRewards(this);
             players.clear();
@@ -477,7 +478,7 @@ public abstract class Arena extends BukkitRunnable {
     formattedLine = StringUtils.replace(formattedLine, "%MIN_PLAYERS%", String.valueOf(getMinimumPlayers()));
     formattedLine = StringUtils.replace(formattedLine, "%PLAYERS_LEFT%", String.valueOf(getPlayersLeft().size()));
     formattedLine = StringUtils.replace(formattedLine, "%VILLAGERS%", String.valueOf(getVillagers().size()));
-    formattedLine = StringUtils.replace(formattedLine, "%ORBS%", String.valueOf(user.getInt("orbs")));
+    formattedLine = StringUtils.replace(formattedLine, "%ORBS%", String.valueOf(user.getStat(StatsStorage.StatisticType.ORBS)));
     formattedLine = StringUtils.replace(formattedLine, "%ZOMBIES%", String.valueOf(getZombiesLeft()));
     formattedLine = StringUtils.replace(formattedLine, "%ROTTEN_FLESH%", String.valueOf(getRottenFlesh()));
     formattedLine = ChatManager.colorRawMessage(formattedLine);
@@ -1096,22 +1097,22 @@ public abstract class Arena extends BukkitRunnable {
 
   void addExperience(Player player, int i) {
     User user = UserManager.getUser(player.getUniqueId());
-    user.addInt("xp", i);
+    user.addStat(StatsStorage.StatisticType.XP, i);
     if (player.hasPermission(PermissionsManager.getVip())) {
-      user.addInt("xp", (int) Math.ceil(i / 2));
+      user.addStat(StatsStorage.StatisticType.XP, (int) Math.ceil(i / 2));
     }
     if (player.hasPermission(PermissionsManager.getMvp())) {
-      user.addInt("xp", (int) Math.ceil(i / 2));
+      user.addStat(StatsStorage.StatisticType.XP, (int) Math.ceil(i / 2));
     }
     if (player.hasPermission(PermissionsManager.getElite())) {
-      user.addInt("xp", (int) Math.ceil(i / 2));
+      user.addStat(StatsStorage.StatisticType.XP, (int) Math.ceil(i / 2));
     }
     ArenaUtils.updateLevelStat(player, this);
   }
 
-  void addStat(Player player, String stat) {
+  void addStat(Player player, StatsStorage.StatisticType stat) {
     User user = UserManager.getUser(player.getUniqueId());
-    user.addInt(stat, 1);
+    user.addStat(stat, 1);
     ArenaUtils.updateLevelStat(player, this);
   }
 

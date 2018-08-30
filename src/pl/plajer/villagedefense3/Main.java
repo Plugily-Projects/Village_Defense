@@ -414,9 +414,9 @@ public class Main extends JavaPlugin {
       User user = UserManager.getUser(player.getUniqueId());
       for (StatsStorage.StatisticType s : StatsStorage.StatisticType.values()) {
         if (isDatabaseActivated()) {
-          getMySQLDatabase().setStat(player.getUniqueId().toString(), s.getName(), user.getInt(s.getName()));
+          getMySQLDatabase().setStat(player.getUniqueId().toString(), s.getName(), user.getStat(s));
         } else {
-          getFileStats().saveStat(player, s.getName());
+          getFileStats().saveStat(player, s);
         }
       }
       UserManager.removeUser(player.getUniqueId());

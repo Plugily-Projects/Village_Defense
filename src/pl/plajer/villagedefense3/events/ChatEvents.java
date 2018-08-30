@@ -37,6 +37,7 @@ import pl.plajer.villagedefense3.handlers.ChatManager;
 import pl.plajer.villagedefense3.handlers.language.LanguageManager;
 import pl.plajer.villagedefense3.user.User;
 import pl.plajer.villagedefense3.user.UserManager;
+import pl.plajer.villagedefense3.villagedefenseapi.StatsStorage;
 import pl.plajerlair.core.services.ReportedException;
 
 /**
@@ -126,7 +127,7 @@ public class ChatEvents implements Listener {
   private String formatChatPlaceholders(String message, User user, String saidMessage) {
     String formatted = message;
     formatted = ChatManager.colorRawMessage(formatted);
-    formatted = StringUtils.replace(formatted, "%level%", String.valueOf(user.getInt("level")));
+    formatted = StringUtils.replace(formatted, "%level%", String.valueOf(user.getStat(StatsStorage.StatisticType.LEVEL)));
     if (user.isSpectator()) {
       formatted = StringUtils.replace(formatted, "%kit%", ChatManager.colorMessage("In-Game.Dead-Tag-On-Death"));
     } else {

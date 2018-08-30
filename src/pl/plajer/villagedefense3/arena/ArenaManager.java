@@ -26,8 +26,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.IronGolem;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Villager;
@@ -51,6 +49,7 @@ import pl.plajer.villagedefense3.kits.level.GolemFriendKit;
 import pl.plajer.villagedefense3.user.User;
 import pl.plajer.villagedefense3.user.UserManager;
 import pl.plajer.villagedefense3.utils.MessageUtils;
+import pl.plajer.villagedefense3.villagedefenseapi.StatsStorage;
 import pl.plajer.villagedefense3.villagedefenseapi.VillageGameJoinAttemptEvent;
 import pl.plajer.villagedefense3.villagedefenseapi.VillageGameLeaveAttemptEvent;
 import pl.plajer.villagedefense3.villagedefenseapi.VillageGameStopEvent;
@@ -127,7 +126,7 @@ public class ArenaManager {
         p.setFlying(true);
         User user = UserManager.getUser(p.getUniqueId());
         user.setSpectator(true);
-        user.setInt("orbs", 0);
+        user.setStat(StatsStorage.StatisticType.ORBS, 0);
         p.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, Integer.MAX_VALUE, 1));
         ArenaUtils.hidePlayer(p, arena);
 
@@ -188,7 +187,7 @@ public class ArenaManager {
       VillageGameLeaveAttemptEvent villageGameLeaveAttemptEvent = new VillageGameLeaveAttemptEvent(p, arena);
       Bukkit.getPluginManager().callEvent(villageGameLeaveAttemptEvent);
       User user = UserManager.getUser(p.getUniqueId());
-      user.setInt("orbs", 0);
+      user.setStat(StatsStorage.StatisticType.ORBS, 0);
       p.getInventory().clear();
       p.getInventory().setArmorContents(null);
       arena.removePlayer(p);
@@ -263,8 +262,8 @@ public class ArenaManager {
       }
       for (final Player p : arena.getPlayers()) {
         User user = UserManager.getUser(p.getUniqueId());
-        if (user.getInt("highestwave") <= arena.getWave()) {
-          user.setInt("highestwave", arena.getWave());
+        if (user.getStat(StatsStorage.StatisticType.HIGHEST_WAVE) <= arena.getWave()) {
+          user.setStat(StatsStorage.StatisticType.HIGHEST_WAVE, arena.getWave());
         }
         for (String msg : summaryMessages) {
           MessageUtils.sendCenteredMessage(p, formatSummaryPlaceholders(msg, arena, user, summaryEnding));
@@ -317,7 +316,7 @@ public class ArenaManager {
     String formatted = msg;
     formatted = StringUtils.replace(formatted, "%summary%", summary);
     formatted = StringUtils.replace(formatted, "%wave%", String.valueOf(a.getWave()));
-    formatted = StringUtils.replace(formatted, "%player_best_wave%", String.valueOf(user.getInt("highestwave")));
+    formatted = StringUtils.replace(formatted, "%player_best_wave%", String.valueOf(user.getStat(StatsStorage.StatisticType.HIGHEST_WAVE)));
     formatted = StringUtils.replace(formatted, "%zombies%", String.valueOf(a.getTotalKilledZombies()));
     formatted = StringUtils.replace(formatted, "%orbs_spent%", String.valueOf(a.getTotalOrbsSpent()));
     return formatted;
@@ -342,7 +341,7 @@ public class ArenaManager {
         player.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Messages.You-Feel-Refreshed"));
         player.setHealth(player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue());
         User user = UserManager.getUser(player.getUniqueId());
-        user.addInt("orbs", arena.getWave() * 10);
+        user.addStat(StatsStorage.StatisticType.ORBS, arena.getWave() * 10);
       }
       if (plugin.getConfig().getBoolean("Respawn-After-Wave", true)) {
         ArenaUtils.bringDeathPlayersBack(arena);

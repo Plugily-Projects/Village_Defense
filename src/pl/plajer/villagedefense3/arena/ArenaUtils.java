@@ -33,6 +33,7 @@ import pl.plajer.villagedefense3.arena.initializers.ArenaInitializer1_9_R1;
 import pl.plajer.villagedefense3.handlers.ChatManager;
 import pl.plajer.villagedefense3.user.User;
 import pl.plajer.villagedefense3.user.UserManager;
+import pl.plajer.villagedefense3.villagedefenseapi.StatsStorage;
 import pl.plajerlair.core.services.ReportedException;
 
 /**
@@ -92,9 +93,9 @@ public class ArenaUtils {
   public static void updateLevelStat(Player player, Arena arena) {
     try {
       User user = UserManager.getUser(player.getUniqueId());
-      if (Math.pow(50 * user.getInt("level"), 1.5) < user.getInt("xp")) {
-        user.addInt("level", 1);
-        player.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.formatMessage(arena, ChatManager.colorMessage("In-Game.You-Leveled-Up"), user.getInt("level")));
+      if (Math.pow(50 * user.getStat(StatsStorage.StatisticType.LEVEL), 1.5) < user.getStat(StatsStorage.StatisticType.XP)) {
+        user.addStat(StatsStorage.StatisticType.LEVEL, 1);
+        player.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.formatMessage(arena, ChatManager.colorMessage("In-Game.You-Leveled-Up"), user.getStat(StatsStorage.StatisticType.LEVEL)));
       }
     } catch (Exception e){
       new ReportedException(plugin, e);

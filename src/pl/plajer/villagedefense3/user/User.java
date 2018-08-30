@@ -31,7 +31,6 @@ import org.bukkit.scoreboard.ScoreboardManager;
 import pl.plajer.villagedefense3.Main;
 import pl.plajer.villagedefense3.arena.Arena;
 import pl.plajer.villagedefense3.arena.ArenaRegistry;
-import pl.plajer.villagedefense3.database.FileStats;
 import pl.plajer.villagedefense3.kits.kitapi.KitRegistry;
 import pl.plajer.villagedefense3.kits.kitapi.basekits.Kit;
 import pl.plajer.villagedefense3.villagedefenseapi.StatsStorage;
@@ -49,7 +48,7 @@ public class User {
   private UUID uuid;
   private boolean spectator = false;
   private Kit kit = KitRegistry.getDefaultKit();
-  private Map<String, Integer> ints = new HashMap<>();
+  private Map<StatsStorage.StatisticType, Integer> ints = new HashMap<>();
   private Map<String, Long> cooldowns = new HashMap<>();
 
   public User(UUID uuid) {
@@ -89,7 +88,7 @@ public class User {
     spectator = b;
   }
 
-  public int getInt(String s) {
+  public int getStat(StatsStorage.StatisticType s) {
     if (!ints.containsKey(s)) {
       ints.put(s, 0);
       return 0;
@@ -103,7 +102,7 @@ public class User {
     this.toPlayer().setScoreboard(scoreboardManager.getNewScoreboard());
   }
 
-  public void setInt(String s, int i) {
+  public void setStat(StatsStorage.StatisticType s, int i) {
     ints.put(s, i);
 
     //statistics manipulation events are called async when using mysql
@@ -113,12 +112,12 @@ public class User {
     });
   }
 
-  public void addInt(String s, int i) {
-    ints.put(s, getInt(s) + i);
+  public void addStat(StatsStorage.StatisticType s, int i) {
+    ints.put(s, getStat(s) + i);
 
     //statistics manipulation events are called async when using mysql
     Bukkit.getScheduler().runTask(plugin, () -> {
-      VillagePlayerStatisticChangeEvent villagePlayerStatisticIncreaseEvent = new VillagePlayerStatisticChangeEvent(getArena(), toPlayer(), s, getInt(s));
+      VillagePlayerStatisticChangeEvent villagePlayerStatisticIncreaseEvent = new VillagePlayerStatisticChangeEvent(getArena(), toPlayer(), s, getStat(s));
       Bukkit.getPluginManager().callEvent(villagePlayerStatisticIncreaseEvent);
     });
   }

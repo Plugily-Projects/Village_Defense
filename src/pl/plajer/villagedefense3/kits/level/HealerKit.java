@@ -34,6 +34,7 @@ import pl.plajer.villagedefense3.user.UserManager;
 import pl.plajer.villagedefense3.utils.ArmorHelper;
 import pl.plajer.villagedefense3.utils.Utils;
 import pl.plajer.villagedefense3.utils.WeaponHelper;
+import pl.plajer.villagedefense3.villagedefenseapi.StatsStorage;
 import pl.plajerlair.core.utils.ConfigUtils;
 
 /**
@@ -51,7 +52,7 @@ public class HealerKit extends LevelKit {
 
   @Override
   public boolean isUnlockedByPlayer(Player player) {
-    return UserManager.getUser(player.getUniqueId()).getInt("level") >= this.getLevel() || player.hasPermission("villagefense.kit.healer");
+    return UserManager.getUser(player.getUniqueId()).getStat(StatsStorage.StatisticType.LEVEL) >= this.getLevel() || player.hasPermission("villagefense.kit.healer");
   }
 
   @Override
