@@ -27,6 +27,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -111,14 +112,30 @@ public class Main extends JavaPlugin {
   private HashMap<UUID, Boolean> spyChatEnabled = new HashMap<>();
   private String version;
 
-  public static void debug(String thing, long millis) {
-    long elapsed = System.currentTimeMillis() - millis;
+  public static void debug(LogLevel level, String thing) {
     if (debug) {
-      Bukkit.getConsoleSender().sendMessage(ChatColor.YELLOW + "[Village Debugger] Running task '" + thing + "'");
+      switch (level){
+        case INFO:
+          Bukkit.getConsoleSender().sendMessage("[Village Debugger] " + thing);
+          break;
+        case WARN:
+          Bukkit.getConsoleSender().sendMessage(ChatColor.YELLOW + "[Village Debugger] " + thing);
+          break;
+        case ERROR:
+          Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "[Village Debugger] " + thing);
+          break;
+        case WTF:
+          Bukkit.getConsoleSender().sendMessage(ChatColor.DARK_RED + "[Village Debugger] [SEVERE]" + thing);
+          break;
+        case TASK:
+          Bukkit.getConsoleSender().sendMessage(ChatColor.YELLOW + "[Village Debugger] Running task '" + thing + "'");
+          break;
+      }
     }
-    if (elapsed > 15) {
-      Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "[Village Debugger] Slow server response, games may be affected.");
-    }
+  }
+
+  public enum LogLevel {
+    INFO, WARN, ERROR, WTF /*what a terrible failure*/, TASK
   }
 
   public boolean is1_9_R1() {
@@ -227,7 +244,7 @@ public class Main extends JavaPlugin {
         LanguageMigrator.migrateToNewFormat();
       }
       debug = getConfig().getBoolean("Debug", false);
-      debug("Main setup start", System.currentTimeMillis());
+      debug(LogLevel.INFO, "Main setup start");
       setupFiles();
       LanguageMigrator.configUpdate();
       LanguageMigrator.languageFileUpdate();
@@ -286,7 +303,7 @@ public class Main extends JavaPlugin {
       ConfigurationSection cs = getConfig().getConfigurationSection("CustomPermissions");
       for (String key : cs.getKeys(false)) {
         customPermissions.put(key, getConfig().getInt("CustomPermissions." + key));
-        debug("Loaded custom permission " + key, System.currentTimeMillis());
+        debug(LogLevel.INFO,"Loaded custom permission " + key);
       }
       for (Player p : Bukkit.getOnlinePlayers()) {
         UserManager.registerUser(p.getUniqueId());
@@ -300,7 +317,7 @@ public class Main extends JavaPlugin {
       }
       StatsStorage.plugin = this;
       PermissionsManager.init();
-      debug("Main setup done", System.currentTimeMillis());
+      debug(LogLevel.INFO,"Main setup done");
     } catch (Exception ex) {
       new ReportedException(this, ex);
     }
@@ -350,7 +367,7 @@ public class Main extends JavaPlugin {
       return "None";
     }));
     if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
-      Main.debug("Hooking into PlaceholderAPI", System.currentTimeMillis());
+      Main.debug(LogLevel.INFO,"Hooking into PlaceholderAPI");
       new PlaceholderManager().register();
     }
     new Events(this);
@@ -409,7 +426,7 @@ public class Main extends JavaPlugin {
     if (forceDisable) {
       return;
     }
-    debug("System disable", System.currentTimeMillis());
+    debug(LogLevel.INFO,"System disable init");
     for (Player player : getServer().getOnlinePlayers()) {
       User user = UserManager.getUser(player.getUniqueId());
       for (StatsStorage.StatisticType s : StatsStorage.StatisticType.values()) {
@@ -447,6 +464,7 @@ public class Main extends JavaPlugin {
     if (isDatabaseActivated()) {
       getMySQLDatabase().closeDatabase();
     }
+    debug(LogLevel.INFO,"System disable finalize");
   }
 
 }

@@ -40,13 +40,13 @@ public class EntityRegistry {
 
   public EntityRegistry(Main plugin) {
     try {
-      Main.debug("Initial entity registry startup", System.currentTimeMillis());
+      Main.debug(Main.LogLevel.INFO, "Initial entity registry startup");
       List<String> classes = Arrays.asList("FastZombie", "BabyZombie", "PlayerBuster", "GolemBuster", "HardZombie", "TankerZombie", "VillagerSlayer", "RidableVillager", "RidableIronGolem", "WorkingWolf");
       String version = plugin.getVersion();
       if (version.equalsIgnoreCase("v1_11_R1") || version.equalsIgnoreCase("v1_9_R1") || version.equalsIgnoreCase("v1_10_R1")
               || version.equalsIgnoreCase("v1_12_R1") || version.equalsIgnoreCase("v1_13_R1") || version.equalsIgnoreCase("v1_13_R2")) {
         if (version.equalsIgnoreCase("v1_13_R1") || version.equalsIgnoreCase("v1_13_R2")) {
-          Main.debug("Skipping entity registering for 1.13", System.currentTimeMillis());
+          Main.debug(Main.LogLevel.INFO, "Skipping entity registering for 1.13");
           return;
         }
         try {
@@ -74,7 +74,7 @@ public class EntityRegistry {
           e.printStackTrace();
         }
       }
-      Main.debug("Entities registering completed", System.currentTimeMillis());
+      Main.debug(Main.LogLevel.INFO, "Entities registering completed");
     } catch(Exception e){
       new ReportedException(plugin, e);
     }

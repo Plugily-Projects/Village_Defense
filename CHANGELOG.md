@@ -9,6 +9,8 @@
 * Added 1.13.1 support
 * Fixed scoreboard color bugs (see https://i.imgur.com/kaZy5s2.png)
 * Fixed this bug https://github.com/Plajer-Lair/Village_Defense/issues/10
+* Some MySQL improvements
+* Moved some bad console messages to debugger
 
 ### 3.10.1 Release (13/17.08.2018)
 * Fixed NullPointerException in combust event (reported anonymously via Error service) (#1 error service report)

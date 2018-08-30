@@ -72,10 +72,7 @@ public class BungeeManager implements Listener {
   @EventHandler(priority = EventPriority.HIGHEST)
   public void onServerListPing(ServerListPingEvent event) {
     if (ArenaRegistry.getArenas().isEmpty()) {
-      return;
-    }
-    if (ArenaRegistry.getArenas() == null) {
-      Main.debug("No ready arena found! Please create one before activating bungee mode!", System.currentTimeMillis());
+      Main.debug(Main.LogLevel.WARN, "No ready arena found! Please create one before activating bungee mode!");
       return;
     }
     event.setMaxPlayers(ArenaRegistry.getArenas().get(0).getMaximumPlayers());

@@ -44,13 +44,13 @@ public class MySQLDatabase {
   public MySQLDatabase(JavaPlugin javaPlugin) {
     this.plugin = javaPlugin;
     this.manager = new MySQLConnectionManager(plugin);
-    Main.debug("Configuring MySQL connection", System.currentTimeMillis());
+    Main.debug(Main.LogLevel.INFO, "Configuring MySQL connection");
     manager.configureConnPool();
 
     try {
       Connection connection = manager.getConnection();
       if (connection == null) {
-        Main.debug("Failed to connect to database", System.currentTimeMillis());
+        Main.debug(Main.LogLevel.ERROR, "Failed to connect to database");
         return;
       }
       connection.createStatement().executeUpdate("CREATE TABLE IF NOT EXISTS `playerstats` (\n"

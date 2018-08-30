@@ -59,12 +59,12 @@ public class PowerupManager {
       return;
     }
     if (!plugin.getServer().getPluginManager().isPluginEnabled("HolographicDisplays")) {
-      Main.debug("Power up module: Holographic Displays dependency not found, disabling", System.currentTimeMillis());
+      Main.debug(Main.LogLevel.WARN, "Power up module: Holographic Displays dependency not found, disabling");
       return;
     }
     enabled = true;
     this.plugin = plugin;
-    Main.debug("Registering power ups module!", System.currentTimeMillis());
+    Main.debug(Main.LogLevel.INFO, "Registering power ups module!");
     PowerupType.CLEANER.setName(ChatManager.colorMessage("Powerups.Map-Clean-Powerup.Name"));
     PowerupType.CLEANER.setEnabled(plugin.getConfig().getBoolean("Powerups.List.Map-Clean", true));
 
@@ -87,7 +87,7 @@ public class PowerupManager {
       }
     }
     if (powerups.size() == PowerupType.values().length) {
-      Main.debug("Disabling power up module, all power ups disabled", System.currentTimeMillis());
+      Main.debug(Main.LogLevel.WARN, "Disabling power up module, all power ups disabled");
       enabled = false;
     }
   }

@@ -89,7 +89,7 @@ public class PermissionsManager {
     PermissionsManager.setMvp(plugin.getConfig().getString("Basic-Permissions.Mvp-Permission", "villagedefense.mvp"));
     PermissionsManager.setElite(plugin.getConfig().getString("Basic-Permissions.Elite-Permission", "villagedefense.elite"));
     PermissionsManager.setJoinPerm(plugin.getConfig().getString("Basic-Permissions.Join-Permission", "villagedefense.join.<arena>"));
-    Main.debug("Basic permissions registered", System.currentTimeMillis());
+    Main.debug(Main.LogLevel.INFO, "Basic permissions registered");
   }
 
 }

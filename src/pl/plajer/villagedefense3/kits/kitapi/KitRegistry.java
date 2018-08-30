@@ -136,7 +136,7 @@ public class KitRegistry {
           Class.forName(kitClass.getName()).getConstructor(Main.class).newInstance(plugin);
         } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException | InvocationTargetException | InstantiationException e) {
           e.printStackTrace();
-          System.out.println("[VillageDefense] FATAL ERROR! COULDN'T REGISTER EXISTING KIT! REPORT THIS TO THE DEVELOPER!");
+          Main.debug(Main.LogLevel.WTF, "FATAL ERROR COULDN'T REGISTER EXISTING KIT! REPORT THIS TO THE DEVELOPER!");
         }
       }
     }

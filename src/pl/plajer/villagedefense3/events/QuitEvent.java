@@ -71,7 +71,7 @@ public class QuitEvent implements Listener {
               i = plugin.getMySQLDatabase().getStat(player, s);
             } catch (NullPointerException npe) {
               i = 0;
-              System.out.print("COULDN'T GET STATS FROM PLAYER: " + player.getName());
+              Main.debug(Main.LogLevel.ERROR, "Couldn't get stats from player " + player.getName());
               npe.printStackTrace();
               MessageUtils.errorOccured();
               Bukkit.getConsoleSender().sendMessage("Cannot get stats from MySQL database!");

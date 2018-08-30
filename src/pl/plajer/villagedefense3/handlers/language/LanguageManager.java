@@ -142,7 +142,7 @@ public class LanguageManager {
         }
       }
     } catch (Exception e) {
-      Main.debug("[WARN] Plugin has occured a problem suggesting locale, probably API change.", System.currentTimeMillis());
+      Main.debug(Main.LogLevel.WARN, "[EXTERNAL] Plugin has occurred a problem suggesting locale, probably API change.");
     }
     if (hasLocale) {
       MessageUtils.info();

@@ -506,7 +506,7 @@ public abstract class Arena extends BukkitRunnable {
     if (getVillagers().size() > 10) {
       return;
     } else if (getVillagerSpawns() == null || getVillagerSpawns().size() <= 0) {
-      Main.debug("No villager spawns for " + getID() + ", game won't start", System.currentTimeMillis());
+      Main.debug(Main.LogLevel.WARN, "No villager spawns for " + getID() + ", game won't start");
     } else {
       for (Location location : getVillagerSpawns()) {
         spawnVillager(location);
@@ -514,7 +514,7 @@ public abstract class Arena extends BukkitRunnable {
       if (getVillagers().size() != 0) {
         spawnVillagers();
       } else {
-        Main.debug("Villager spawns can't be set up!", System.currentTimeMillis());
+        Main.debug(Main.LogLevel.WARN, "Villager spawns can't be set up!");
       }
     }
   }
@@ -636,7 +636,7 @@ public abstract class Arena extends BukkitRunnable {
       UUID uuid = iterator.next();
       if (Bukkit.getPlayer(uuid) == null) {
         iterator.remove();
-        Main.debug("Removed invalid player from arena " + getID() + " (not online?)", System.currentTimeMillis());
+        Main.debug(Main.LogLevel.WARN, "Removed invalid player from arena " + getID() + " (not online?)");
       }
       list.add(Bukkit.getPlayer(uuid));
     }
@@ -653,7 +653,7 @@ public abstract class Arena extends BukkitRunnable {
       player.removePotionEffect(effect.getType());
     }
     if (location == null) {
-      System.out.print("LobbyLocation isn't intialized for arena " + getID());
+      Main.debug(Main.LogLevel.WARN, "Lobby location of arena " + getID() + " doesn't exist!");
     }
     player.teleport(location);
   }
@@ -698,7 +698,7 @@ public abstract class Arena extends BukkitRunnable {
     if (gameLocations.get(GameLocation.START) != null) {
       player.teleport(gameLocations.get(GameLocation.START));
     } else {
-      System.out.print("Startlocation for arena " + getID() + " isn't intialized!");
+      Main.debug(Main.LogLevel.WARN, "Start location of arena " + getID() + " doesn't exist!");
     }
   }
 
@@ -707,7 +707,7 @@ public abstract class Arena extends BukkitRunnable {
       if (gameLocations.get(GameLocation.START) != null) {
         player.teleport(gameLocations.get(GameLocation.START));
       } else {
-        System.out.print("Startlocation for arena " + getID() + " isn't intialized!");
+        Main.debug(Main.LogLevel.WARN, "Start location of arena " + getID() + " doesn't exist!");
       }
     }
   }
@@ -723,7 +723,7 @@ public abstract class Arena extends BukkitRunnable {
 
     if (location == null) {
       location = getLobbyLocation();
-      System.out.print("EndLocation for arena " + getID() + " isn't intialized!");
+      Main.debug(Main.LogLevel.WARN, "Ending location of arena " + getID() + " doesn't exist!");
     }
     for (Player player : getPlayers()) {
       player.teleport(location);
@@ -738,7 +738,7 @@ public abstract class Arena extends BukkitRunnable {
     Location location = getEndLocation();
     if (location == null) {
       location = getLobbyLocation();
-      System.out.print("EndLocation for arena " + getID() + " isn't intialized!");
+      Main.debug(Main.LogLevel.WARN, "Ending location of arena " + getID() + " doesn't exist!");
     }
 
     player.teleport(location);
@@ -763,7 +763,7 @@ public abstract class Arena extends BukkitRunnable {
   }
 
   public void start() {
-    Main.debug("Game instance started, arena " + this.getID(), System.currentTimeMillis());
+    Main.debug(Main.LogLevel.INFO, "Game instance started, arena " + this.getID());
     this.runTaskTimer(plugin, 20L, 20L);
     this.setArenaState(ArenaState.RESTARTING);
     for (Location location : villagerSpawnPoints) {

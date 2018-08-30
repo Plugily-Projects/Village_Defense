@@ -78,7 +78,7 @@ public class ArenaManager {
    */
   public static void joinAttempt(Player p, Arena arena) {
     try {
-      Main.debug("Initial join attempt, " + p.getName(), System.currentTimeMillis());
+      Main.debug(Main.LogLevel.INFO, "Initial join attempt, " + p.getName());
       VillageGameJoinAttemptEvent villageGameJoinAttemptEvent = new VillageGameJoinAttemptEvent(p, arena);
       Bukkit.getPluginManager().callEvent(villageGameJoinAttemptEvent);
       if (!arena.isReady()) {
@@ -95,7 +95,8 @@ public class ArenaManager {
           return;
         }
       }
-      Main.debug("Final join attempt, " + p.getName(), System.currentTimeMillis());
+      Main.debug(Main.LogLevel.INFO, "Final join attempt, " + p.getName());
+      Main.debug(Main.LogLevel.INFO, "Join task, " + p.getName());
       arena.addPlayer(p);
       if ((arena.getArenaState() == ArenaState.IN_GAME || (arena.getArenaState() == ArenaState.STARTING && arena.getTimer() <= 3) || arena.getArenaState() == ArenaState.ENDING)) {
         if (plugin.isInventoryManagerEnabled()) {
@@ -167,6 +168,7 @@ public class ArenaManager {
         ArenaUtils.showPlayer(player, arena);
       }
       arena.showPlayers();
+      Main.debug(Main.LogLevel.INFO, "Join task end, " + p.getName());
     } catch (Exception e){
       new ReportedException(plugin, e);
     }
@@ -181,7 +183,7 @@ public class ArenaManager {
    */
   public static void leaveAttempt(Player p, Arena arena) {
     try {
-      Main.debug("Initial leave attempt, " + p.getName(), System.currentTimeMillis());
+      Main.debug(Main.LogLevel.INFO, "Initial leave attempt, " + p.getName());
       VillageGameLeaveAttemptEvent villageGameLeaveAttemptEvent = new VillageGameLeaveAttemptEvent(p, arena);
       Bukkit.getPluginManager().callEvent(villageGameLeaveAttemptEvent);
       User user = UserManager.getUser(p.getUniqueId());
@@ -228,6 +230,7 @@ public class ArenaManager {
       if (!plugin.isBungeeActivated() && plugin.isInventoryManagerEnabled()) {
         InventoryUtils.loadInventory(plugin, p);
       }
+      Main.debug(Main.LogLevel.INFO, "Final leave attempt, " + p.getName());
     } catch (Exception e){
       new ReportedException(plugin, e);
     }
@@ -241,7 +244,7 @@ public class ArenaManager {
    */
   public static void stopGame(boolean quickStop, Arena arena) {
     try {
-      Main.debug("Game stop event initiate, arena " + arena.getID(), System.currentTimeMillis());
+      Main.debug(Main.LogLevel.INFO, "Game stop event initiate, arena " + arena.getID());
       VillageGameStopEvent villageGameStopEvent = new VillageGameStopEvent(arena);
       Bukkit.getPluginManager().callEvent(villageGameStopEvent);
       String summaryEnding;
@@ -309,7 +312,7 @@ public class ArenaManager {
       } else {
         arena.setTimer(5);
       }
-      Main.debug("Game stop event finish, arena " + arena.getID(), System.currentTimeMillis());
+      Main.debug(Main.LogLevel.INFO, "Game stop event finish, arena " + arena.getID());
     } catch (Exception e){
       new ReportedException(plugin, e);
     }

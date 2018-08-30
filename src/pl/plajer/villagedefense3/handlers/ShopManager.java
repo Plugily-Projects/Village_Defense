@@ -60,7 +60,7 @@ public class ShopManager {
     try {
       Location location = MinigameUtils.getLocation(ConfigUtils.getConfig(JavaPlugin.getPlugin(Main.class), "arenas").getString("instances." + a.getID() + ".shop"));
       if (!(location.getBlock().getState() instanceof Chest)) {
-        Main.debug("Shop failed to load, invalid location for loc " + location, System.currentTimeMillis());
+        Main.debug(Main.LogLevel.WARN, "Shop failed to load, invalid location for loc " + location);
         return;
       }
       int i = ((Chest) location.getBlock().getState()).getInventory().getContents().length;

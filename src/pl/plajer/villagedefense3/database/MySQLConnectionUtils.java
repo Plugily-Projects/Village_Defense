@@ -53,7 +53,7 @@ public class MySQLConnectionUtils {
       }
       b = true;
     } catch (SQLException e1) {
-      System.out.print("CONNECTION FAILED FOR PLAYER " + player.getName());
+      Main.debug(Main.LogLevel.ERROR, "Connection failed for player " + player.getName());
       e1.printStackTrace();
       MessageUtils.errorOccured();
       Bukkit.getConsoleSender().sendMessage("Cannot save contents to MySQL database!");
@@ -69,7 +69,7 @@ public class MySQLConnectionUtils {
           user.setStat(stat, database.getStat(player, stat));
         }
       } catch (SQLException e1) {
-        System.out.print("CONNECTION FAILED TWICE FOR PLAYER " + player.getName());
+        Main.debug(Main.LogLevel.ERROR, "Connection called twice for player " + player.getName());
         e1.printStackTrace();
         MessageUtils.errorOccured();
         Bukkit.getConsoleSender().sendMessage("Cannot save contents to MySQL database!");
