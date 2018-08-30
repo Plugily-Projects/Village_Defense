@@ -11,6 +11,7 @@
 * Fixed this bug https://github.com/Plajer-Lair/Village_Defense/issues/10
 * Some MySQL improvements
 * Moved some bad console messages to debugger
+* Some small fixes for errors from Error service
 
 ### 3.10.1 Release (13/17.08.2018)
 * Fixed NullPointerException in combust event (reported anonymously via Error service) (#1 error service report)

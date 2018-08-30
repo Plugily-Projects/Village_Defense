@@ -92,11 +92,11 @@ public class ZombieFinderKit extends LevelKit implements Listener {
   public void onClean(PlayerInteractEvent event) {
     try {
       Arena arena = ArenaRegistry.getArena(event.getPlayer());
-      if (!event.hasItem() || event.getItem().getType() != Material.BOOK || !event.getItem().hasItemMeta()
-              || !event.getItem().getItemMeta().hasDisplayName()
-              || !event.getItem().getItemMeta().getDisplayName()
-              .equals(ChatManager.colorMessage("Kits.Zombie-Teleporter.Game-Item-Name"))
-              || arena == null) {
+      if (arena == null) {
+        return;
+      }
+      if (!event.hasItem() || event.getItem().getType() != Material.BOOK || !event.getItem().hasItemMeta() || !event.getItem().getItemMeta().hasDisplayName() ||
+              !event.getItem().getItemMeta().getDisplayName().equals(ChatManager.colorMessage("Kits.Zombie-Teleporter.Game-Item-Name"))) {
         return;
       }
       if (UserManager.getUser(event.getPlayer().getUniqueId()).isSpectator()) {
