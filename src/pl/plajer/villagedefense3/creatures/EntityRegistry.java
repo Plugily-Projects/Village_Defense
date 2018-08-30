@@ -44,9 +44,9 @@ public class EntityRegistry {
       List<String> classes = Arrays.asList("FastZombie", "BabyZombie", "PlayerBuster", "GolemBuster", "HardZombie", "TankerZombie", "VillagerSlayer", "RidableVillager", "RidableIronGolem", "WorkingWolf");
       String version = plugin.getVersion();
       if (version.equalsIgnoreCase("v1_11_R1") || version.equalsIgnoreCase("v1_9_R1") || version.equalsIgnoreCase("v1_10_R1")
-              || version.equalsIgnoreCase("v1_12_R1") || version.equalsIgnoreCase("v1_13_R1")) {
-        if (version.equalsIgnoreCase("v1_13_R1")) {
-          Main.debug("Skipping entity registering for 1.13 R1", System.currentTimeMillis());
+              || version.equalsIgnoreCase("v1_12_R1") || version.equalsIgnoreCase("v1_13_R1") || version.equalsIgnoreCase("v1_13_R2")) {
+        if (version.equalsIgnoreCase("v1_13_R1") || version.equalsIgnoreCase("v1_13_R2")) {
+          Main.debug("Skipping entity registering for 1.13", System.currentTimeMillis());
           return;
         }
         try {

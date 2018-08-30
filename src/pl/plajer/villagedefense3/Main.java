@@ -293,7 +293,7 @@ public class Main extends JavaPlugin {
       }
       if (databaseActivated) {
         for (Player p : Bukkit.getOnlinePlayers()) {
-          Bukkit.getScheduler().runTaskAsynchronously(this, () -> MySQLConnectionUtils.loadPlayerStats(p, this));
+          Bukkit.getScheduler().runTaskAsynchronously(this, () -> MySQLConnectionUtils.loadPlayerStats(p));
         }
       } else {
         fileStats.loadStatsForPlayersOnline();
@@ -414,7 +414,7 @@ public class Main extends JavaPlugin {
       User user = UserManager.getUser(player.getUniqueId());
       for (StatsStorage.StatisticType s : StatsStorage.StatisticType.values()) {
         if (isDatabaseActivated()) {
-          getMySQLDatabase().setStat(player.getUniqueId().toString(), s.getName(), user.getStat(s));
+          getMySQLDatabase().setStat(player, s, user.getStat(s));
         } else {
           getFileStats().saveStat(player, s);
         }

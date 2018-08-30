@@ -23,6 +23,7 @@ import java.sql.SQLException;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.java.JavaPlugin;
 
 import pl.plajer.villagedefense3.Main;
 import pl.plajer.villagedefense3.user.User;
@@ -37,38 +38,19 @@ import pl.plajer.villagedefense3.villagedefenseapi.StatsStorage;
  */
 public class MySQLConnectionUtils {
 
-  public static void loadPlayerStats(Player player, Main plugin) {
+  public static void loadPlayerStats(Player player) {
     boolean b = false;
-    MySQLDatabase database = plugin.getMySQLDatabase();
+    MySQLDatabase database = JavaPlugin.getPlugin(Main.class).getMySQLDatabase();
     ResultSet resultSet = database.executeQuery("SELECT UUID from playerstats WHERE UUID='" + player.getUniqueId().toString() + "'");
     try {
       if (!resultSet.next()) {
         database.insertPlayer(player);
         b = true;
       }
-
-      int gamesplayed;
-      int zombiekills;
-      int highestwave;
-      int deaths;
-      int xp;
-      int level;
-      int orbs;
-      gamesplayed = database.getStat(player.getUniqueId().toString(), "gamesplayed");
-      zombiekills = database.getStat(player.getUniqueId().toString(), "kills");
-      highestwave = database.getStat(player.getUniqueId().toString(), "highestwave");
-      deaths = database.getStat(player.getUniqueId().toString(), "deaths");
-      xp = database.getStat(player.getUniqueId().toString(), "xp");
-      level = database.getStat(player.getUniqueId().toString(), "level");
-      orbs = database.getStat(player.getUniqueId().toString(), "orbs");
       User user = UserManager.getUser(player.getUniqueId());
-      user.setStat(StatsStorage.StatisticType.GAMES_PLAYED, gamesplayed);
-      user.setStat(StatsStorage.StatisticType.KILLS, zombiekills);
-      user.setStat(StatsStorage.StatisticType.HIGHEST_WAVE, highestwave);
-      user.setStat(StatsStorage.StatisticType.DEATHS, deaths);
-      user.setStat(StatsStorage.StatisticType.XP, xp);
-      user.setStat(StatsStorage.StatisticType.LEVEL, level);
-      user.setStat(StatsStorage.StatisticType.ORBS, orbs);
+      for(StatsStorage.StatisticType stat : StatsStorage.StatisticType.values()){
+        user.setStat(stat, database.getStat(player, stat));
+      }
       b = true;
     } catch (SQLException e1) {
       System.out.print("CONNECTION FAILED FOR PLAYER " + player.getName());
@@ -82,29 +64,10 @@ public class MySQLConnectionUtils {
         if (!resultSet.next()) {
           database.insertPlayer(player);
         }
-
-        int gamesplayed;
-        int zombiekills;
-        int highestwave;
-        int deaths;
-        int xp;
-        int level;
-        int orbs;
-        gamesplayed = database.getStat(player.getUniqueId().toString(), "gamesplayed");
-        zombiekills = database.getStat(player.getUniqueId().toString(), "kills");
-        highestwave = database.getStat(player.getUniqueId().toString(), "highestwave");
-        deaths = database.getStat(player.getUniqueId().toString(), "deaths");
-        xp = database.getStat(player.getUniqueId().toString(), "xp");
-        level = database.getStat(player.getUniqueId().toString(), "level");
-        orbs = database.getStat(player.getUniqueId().toString(), "orbs");
         User user = UserManager.getUser(player.getUniqueId());
-        user.setStat(StatsStorage.StatisticType.GAMES_PLAYED, gamesplayed);
-        user.setStat(StatsStorage.StatisticType.KILLS, zombiekills);
-        user.setStat(StatsStorage.StatisticType.HIGHEST_WAVE, highestwave);
-        user.setStat(StatsStorage.StatisticType.DEATHS, deaths);
-        user.setStat(StatsStorage.StatisticType.XP, xp);
-        user.setStat(StatsStorage.StatisticType.LEVEL, level);
-        user.setStat(StatsStorage.StatisticType.ORBS, orbs);
+        for(StatsStorage.StatisticType stat : StatsStorage.StatisticType.values()){
+          user.setStat(stat, database.getStat(player, stat));
+        }
       } catch (SQLException e1) {
         System.out.print("CONNECTION FAILED TWICE FOR PLAYER " + player.getName());
         e1.printStackTrace();

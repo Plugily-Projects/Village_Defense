@@ -29,7 +29,6 @@ import org.bukkit.event.player.PlayerLoginEvent;
 import pl.plajer.villagedefense3.Main;
 import pl.plajer.villagedefense3.arena.Arena;
 import pl.plajer.villagedefense3.arena.ArenaRegistry;
-import pl.plajer.villagedefense3.database.FileStats;
 import pl.plajer.villagedefense3.database.MySQLConnectionUtils;
 import pl.plajer.villagedefense3.handlers.PermissionsManager;
 import pl.plajer.villagedefense3.user.UserManager;
@@ -139,7 +138,7 @@ public class JoinEvent implements Listener {
         return;
       }
       final Player player = event.getPlayer();
-      Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> MySQLConnectionUtils.loadPlayerStats(player, plugin));
+      Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> MySQLConnectionUtils.loadPlayerStats(player));
     } catch (Exception ex) {
       new ReportedException(plugin, ex);
     }

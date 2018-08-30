@@ -34,6 +34,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import pl.plajer.villagedefense3.Main;
 import pl.plajer.villagedefense3.utils.MessageUtils;
+import pl.plajer.villagedefense3.villagedefenseapi.StatsStorage;
 
 public class MySQLDatabase {
 
@@ -117,16 +118,16 @@ public class MySQLDatabase {
     manager.shutdownConnPool();
   }
 
-  public void addStat(String UUID, String stat, int amount) {
-    executeUpdate("UPDATE playerstats SET " + stat + "=" + stat + "+" + amount + " WHERE UUID='" + UUID + "'");
+  public void addStat(Player player, StatsStorage.StatisticType stat, int amount) {
+    executeUpdate("UPDATE playerstats SET " + stat.getName() + "=" + stat + "+" + amount + " WHERE UUID='" + player.getUniqueId().toString() + "'");
   }
 
-  public void setStat(String UUID, String stat, int number) {
-    executeUpdate("UPDATE playerstats SET " + stat + "=" + number + " WHERE UUID='" + UUID + "';");
+  public void setStat(Player player, StatsStorage.StatisticType stat, int number) {
+    executeUpdate("UPDATE playerstats SET " + stat.getName() + "=" + number + " WHERE UUID='" + player.getUniqueId().toString() + "';");
   }
 
-  public int getStat(String UUID, String stat) {
-    ResultSet set = executeQuery("SELECT " + stat + " FROM playerstats WHERE UUID='" + UUID + "'");
+  public int getStat(Player player, StatsStorage.StatisticType stat) {
+    ResultSet set = executeQuery("SELECT " + stat.getName() + " FROM playerstats WHERE UUID='" + player.getUniqueId().toString() + "'");
     try {
       if (!set.next()) {
         return 0;
