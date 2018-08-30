@@ -169,7 +169,9 @@ public class AdminCommands extends MainCommand {
     if (!checkIsInGameInstance((Player) sender)) {
       return;
     }
-    ArenaManager.stopGame(false, ArenaRegistry.getArena((Player) sender));
+    if(ArenaRegistry.getArena((Player) sender).getArenaState() != ArenaState.ENDING) {
+      ArenaManager.stopGame(false, ArenaRegistry.getArena((Player) sender));
+    }
   }
 
   public void forceStartGame(CommandSender sender) {

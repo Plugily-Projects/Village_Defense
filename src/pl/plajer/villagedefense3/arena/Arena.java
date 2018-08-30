@@ -298,12 +298,9 @@ public abstract class Arena extends BukkitRunnable {
               }
             }
           }
-          if (getVillagers().size() <= 0 || getPlayersLeft().size() <= 0) {
+          if (getVillagers().size() <= 0 || getPlayersLeft().size() <= 0 && getArenaState() != ArenaState.ENDING) {
             clearZombies();
-            if (getArenaState() != ArenaState.ENDING) {
-              ArenaManager.stopGame(false, this);
-            }
-            this.setArenaState(ArenaState.ENDING);
+            ArenaManager.stopGame(false, this);
             return;
           }
           if (fighting) {

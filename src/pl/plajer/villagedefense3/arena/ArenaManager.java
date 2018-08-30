@@ -312,6 +312,7 @@ public class ArenaManager {
       } else {
         arena.setTimer(5);
       }
+      arena.setArenaState(ArenaState.ENDING);
       Main.debug(Main.LogLevel.INFO, "Game stop event finish, arena " + arena.getID());
     } catch (Exception e) {
       new ReportedException(plugin, e);
