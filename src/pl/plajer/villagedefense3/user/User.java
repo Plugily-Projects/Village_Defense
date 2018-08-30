@@ -25,7 +25,6 @@ import java.util.UUID;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.ScoreboardManager;
 
 import pl.plajer.villagedefense3.Main;
@@ -44,15 +43,13 @@ public class User {
   private static Main plugin = JavaPlugin.getPlugin(Main.class);
   private static long cooldownCounter = 0;
   private ScoreboardManager scoreboardManager = Bukkit.getScoreboardManager();
-  private Scoreboard scoreboard;
   private UUID uuid;
   private boolean spectator = false;
   private Kit kit = KitRegistry.getDefaultKit();
-  private Map<StatsStorage.StatisticType, Integer> ints = new HashMap<>();
+  private Map<StatsStorage.StatisticType, Integer> stats = new HashMap<>();
   private Map<String, Long> cooldowns = new HashMap<>();
 
   public User(UUID uuid) {
-    scoreboard = scoreboardManager.getNewScoreboard();
     this.uuid = uuid;
   }
 
@@ -89,13 +86,13 @@ public class User {
   }
 
   public int getStat(StatsStorage.StatisticType s) {
-    if (!ints.containsKey(s)) {
-      ints.put(s, 0);
+    if (!stats.containsKey(s)) {
+      stats.put(s, 0);
       return 0;
-    } else if (ints.get(s) == null) {
+    } else if (stats.get(s) == null) {
       return 0;
     }
-    return ints.get(s);
+    return stats.get(s);
   }
 
   public void removeScoreboard() {
@@ -103,7 +100,7 @@ public class User {
   }
 
   public void setStat(StatsStorage.StatisticType s, int i) {
-    ints.put(s, i);
+    stats.put(s, i);
 
     //statistics manipulation events are called async when using mysql
     Bukkit.getScheduler().runTask(plugin, () -> {
@@ -113,7 +110,7 @@ public class User {
   }
 
   public void addStat(StatsStorage.StatisticType s, int i) {
-    ints.put(s, getStat(s) + i);
+    stats.put(s, getStat(s) + i);
 
     //statistics manipulation events are called async when using mysql
     Bukkit.getScheduler().runTask(plugin, () -> {
