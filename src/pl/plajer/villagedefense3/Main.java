@@ -423,9 +423,7 @@ public class Main extends JavaPlugin {
     }
     for (Arena arena : ArenaRegistry.getArenas()) {
       for (Player player : arena.getPlayers()) {
-        if (bossbarEnabled) {
-          arena.getGameBar().removePlayer(player);
-        }
+        arena.doBarAction(Arena.BarAction.REMOVE, player);
         arena.teleportToEndLocation(player);
         if (inventoryManagerEnabled) {
           InventoryUtils.loadInventory(this, player);

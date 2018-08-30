@@ -152,9 +152,7 @@ public class ArenaManager {
       p.setAllowFlight(false);
       p.getInventory().clear();
       arena.showPlayers();
-      if (plugin.isBossbarEnabled()) {
-        arena.getGameBar().addPlayer(p);
-      }
+      arena.doBarAction(Arena.BarAction.ADD, p);
       if (!UserManager.getUser(p.getUniqueId()).isSpectator()) {
         ChatManager.broadcastAction(arena, p, ChatManager.ActionType.JOIN);
       }
@@ -204,9 +202,7 @@ public class ArenaManager {
           }
         }
       }
-      if (plugin.isBossbarEnabled()) {
-        arena.getGameBar().removePlayer(p);
-      }
+      arena.doBarAction(Arena.BarAction.REMOVE, p);
       p.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(20.0);
       p.setHealth(p.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue());
       p.setFoodLevel(20);

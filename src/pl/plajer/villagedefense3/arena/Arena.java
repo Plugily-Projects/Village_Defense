@@ -151,9 +151,23 @@ public abstract class Arena extends BukkitRunnable {
     this.totalOrbsSpent = totalOrbsSpent;
   }
 
-  @Nullable
-  public BossBar getGameBar() {
-    return gameBar;
+  /**
+   * Executes boss bar action for arena
+   * @param action add or remove a player from boss bar
+   * @param p player
+   */
+  public void doBarAction(BarAction action, Player p) {
+    if (!plugin.isBossbarEnabled()) {
+      return;
+    }
+    switch (action) {
+      case ADD:
+        gameBar.addPlayer(p);
+        break;
+      case REMOVE:
+        gameBar.removePlayer(p);
+        break;
+    }
   }
 
   /**
@@ -257,9 +271,9 @@ public abstract class Arena extends BukkitRunnable {
           zombieChecker++;
           if (zombieChecker >= 60) {
             Iterator<Villager> villagerIterator = getVillagers().iterator();
-            while(villagerIterator.hasNext()){
+            while (villagerIterator.hasNext()) {
               Villager villager = villagerIterator.next();
-              if(villager.isDead()){
+              if (villager.isDead()) {
                 villagerIterator.remove();
                 removeVillager(villager);
               }
@@ -267,9 +281,9 @@ public abstract class Arena extends BukkitRunnable {
             zombieChecker = 0;
 
             Iterator<Zombie> zombieIterator = getZombies().iterator();
-            while(zombieIterator.hasNext()){
+            while (zombieIterator.hasNext()) {
               Zombie zombie = zombieIterator.next();
-              if(zombie.isDead()){
+              if (zombie.isDead()) {
                 zombieIterator.remove();
                 removeZombie(zombie);
                 continue;
@@ -637,9 +651,9 @@ public abstract class Arena extends BukkitRunnable {
   public HashSet<Player> getPlayers() {
     HashSet<Player> list = new HashSet<>();
     Iterator<UUID> iterator = players.iterator();
-    while(iterator.hasNext()){
+    while (iterator.hasNext()) {
       UUID uuid = iterator.next();
-      if(Bukkit.getPlayer(uuid) == null){
+      if (Bukkit.getPlayer(uuid) == null) {
         iterator.remove();
         Main.debug("Removed invalid player from arena " + getID() + " (not online?)", System.currentTimeMillis());
       }
@@ -1140,6 +1154,10 @@ public abstract class Arena extends BukkitRunnable {
       int id = Material.WOODEN_DOOR.getId();
       block.setTypeIdAndData(id, doorData, false);
     }
+  }
+
+  public enum BarAction {
+    ADD, REMOVE
   }
 
   public enum GameLocation {
