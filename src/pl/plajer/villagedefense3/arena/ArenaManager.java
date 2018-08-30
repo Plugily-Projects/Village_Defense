@@ -302,6 +302,13 @@ public class ArenaManager {
         wolf.remove();
       }
       arena.getWolfs().clear();
+
+      if (arena.getVillagers().size() <= 0) {
+        arena.showPlayers();
+        arena.setTimer(10);
+      } else {
+        arena.setTimer(5);
+      }
       Main.debug("Game stop event finish, arena " + arena.getID(), System.currentTimeMillis());
     } catch (Exception e){
       new ReportedException(plugin, e);
