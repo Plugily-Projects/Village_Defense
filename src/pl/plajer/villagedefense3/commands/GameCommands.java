@@ -98,39 +98,43 @@ public class GameCommands extends MainCommand {
       for (int i = 0; i < 10; i++) {
         try {
           UUID current = (UUID) stats.keySet().toArray()[stats.keySet().toArray().length - 1];
-          sender.sendMessage(ChatManager.colorMessage("Commands.Statistics.Format")
-                  .replace("%position%", String.valueOf(i + 1))
-                  .replace("%name%", Bukkit.getOfflinePlayer(current).getName())
-                  .replace("%value%", String.valueOf(stats.get(current)))
-                  .replace("%statistic%", StringUtils.capitalize(statisticType.toString().toLowerCase().replace("_", " ")))); //Games_played > Games played etc
+          String message = ChatManager.colorMessage("Commands.Statistics.Format");
+          message = StringUtils.replace(message, "%position%", String.valueOf(i + 1));
+          message = StringUtils.replace(message, "%name%", Bukkit.getOfflinePlayer(current).getName());
+          message = StringUtils.replace(message,"%value%", String.valueOf(stats.get(current)));
+          message = StringUtils.replace(message, "%statistic%", StringUtils.capitalize(statisticType.toString().toLowerCase().replace("_", " "))); //Games_played > Games played etc
+          sender.sendMessage(message);
           stats.remove(current);
         } catch (IndexOutOfBoundsException ex) {
-          sender.sendMessage(ChatManager.colorMessage("Commands.Statistics.Format")
-                  .replace("%position%", String.valueOf(i + 1))
-                  .replace("%name%", "Empty")
-                  .replace("%value%", "0")
-                  .replace("%statistic%", StringUtils.capitalize(statisticType.toString().toLowerCase().replace("_", " "))));
+          String message = ChatManager.colorMessage("Commands.Statistics.Format");
+          message = StringUtils.replace(message, "%position%", String.valueOf(i + 1));
+          message = StringUtils.replace(message, "%name%", "Empty");
+          message = StringUtils.replace(message,"%value%", "0");
+          message = StringUtils.replace(message, "%statistic%", StringUtils.capitalize(statisticType.toString().toLowerCase().replace("_", " "))); //Games_played > Games played etc
+          sender.sendMessage(message);
         } catch (NullPointerException ex) {
           UUID current = (UUID) stats.keySet().toArray()[stats.keySet().toArray().length - 1];
           if (plugin.isDatabaseActivated()) {
             ResultSet set = plugin.getMySQLDatabase().executeQuery("SELECT name FROM playerstats WHERE UUID='" + current.toString() + "'");
             try {
               if (set.next()) {
-                sender.sendMessage(ChatManager.colorMessage("Commands.Statistics.Format")
-                        .replace("%position%", String.valueOf(i + 1))
-                        .replace("%name%", set.getString(1))
-                        .replace("%value%", String.valueOf(stats.get(current)))
-                        .replace("%statistic%", StringUtils.capitalize(statisticType.toString().toLowerCase().replace("_", " "))));
+                String message = ChatManager.colorMessage("Commands.Statistics.Format");
+                message = StringUtils.replace(message, "%position%", String.valueOf(i + 1));
+                message = StringUtils.replace(message, "%name%", set.getString(1));
+                message = StringUtils.replace(message,"%value%", String.valueOf(stats.get(current)));
+                message = StringUtils.replace(message, "%statistic%", StringUtils.capitalize(statisticType.toString().toLowerCase().replace("_", " "))); //Games_played > Games played etc
+                sender.sendMessage(message);
                 return;
               }
             } catch (SQLException ignored) {
             }
           }
-          sender.sendMessage(ChatManager.colorMessage("Commands.Statistics.Format")
-                  .replace("%position%", String.valueOf(i + 1))
-                  .replace("%name%", "Unknown Player")
-                  .replace("%value%", String.valueOf(stats.get(current)))
-                  .replace("%statistic%", StringUtils.capitalize(statisticType.toString().toLowerCase().replace("_", " "))));
+          String message = ChatManager.colorMessage("Commands.Statistics.Format");
+          message = StringUtils.replace(message, "%position%", String.valueOf(i + 1));
+          message = StringUtils.replace(message, "%name%","Unknown Player");
+          message = StringUtils.replace(message,"%value%", String.valueOf(stats.get(current)));
+          message = StringUtils.replace(message, "%statistic%", StringUtils.capitalize(statisticType.toString().toLowerCase().replace("_", " "))); //Games_played > Games played etc
+          sender.sendMessage(message);
         }
       }
     } catch (IllegalArgumentException e) {
