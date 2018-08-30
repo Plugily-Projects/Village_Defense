@@ -343,8 +343,8 @@ public class Events implements Listener {
           ArenaManager.leaveAttempt(event.getPlayer(), arena);
         }
       }
-    } catch (Exception ex){
-      new ReportedException(plugin,ex);
+    } catch (Exception ex) {
+      new ReportedException(plugin, ex);
     }
   }
 
@@ -379,7 +379,7 @@ public class Events implements Listener {
           }
         }
       }
-    } catch (Exception ex){
+    } catch (Exception ex) {
       new ReportedException(plugin, ex);
     }
   }
@@ -402,7 +402,7 @@ public class Events implements Listener {
         return;
       }
       event.setCancelled(true);
-    } catch (Exception ex){
+    } catch (Exception ex) {
       new ReportedException(plugin, ex);
     }
   }
@@ -422,7 +422,7 @@ public class Events implements Listener {
           }
         }
       }
-    } catch (Exception ex){
+    } catch (Exception ex) {
       new ReportedException(plugin, ex);
     }
   }
@@ -453,8 +453,8 @@ public class Events implements Listener {
         return;
       }
       event.setCancelled(true);
-    } catch (Exception ex){
-      new ReportedException(plugin,ex);
+    } catch (Exception ex) {
+      new ReportedException(plugin, ex);
     }
   }
 
@@ -479,7 +479,7 @@ public class Events implements Listener {
         event.setFoodLevel(20);
         event.setCancelled(true);
       }
-    }catch (Exception ex){
+    } catch (Exception ex) {
       new ReportedException(plugin, ex);
     }
   }
@@ -567,7 +567,7 @@ public class Events implements Listener {
       player.getInventory().addItem(itemStack);
       UserManager.getUser(player.getUniqueId()).setStat(StatsStorage.StatisticType.ORBS, UserManager.getUser(player.getUniqueId()).getStat(StatsStorage.StatisticType.ORBS) - price);
       arena.setTotalOrbsSpent(arena.getTotalOrbsSpent() + price);
-    } catch (Exception ex){
+    } catch (Exception ex) {
       new ReportedException(plugin, ex);
     }
   }
@@ -638,7 +638,7 @@ public class Events implements Listener {
           }
         }
       }
-    } catch (Exception ex){
+    } catch (Exception ex) {
       new ReportedException(plugin, ex);
     }
   }

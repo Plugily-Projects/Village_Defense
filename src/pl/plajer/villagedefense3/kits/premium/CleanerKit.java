@@ -23,7 +23,6 @@ import java.util.List;
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.Particle;
-import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Zombie;
 import org.bukkit.event.EventHandler;
@@ -123,7 +122,7 @@ public class CleanerKit extends PremiumKit implements Listener {
         player1.sendMessage(ChatManager.PLUGIN_PREFIX + message);
       }
       UserManager.getUser(e.getPlayer().getUniqueId()).setCooldown("clean", 180);
-    } catch (Exception ex){
+    } catch (Exception ex) {
       new ReportedException(plugin, ex);
     }
   }

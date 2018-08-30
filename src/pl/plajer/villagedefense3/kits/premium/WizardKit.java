@@ -122,7 +122,7 @@ public class WizardKit extends PremiumKit implements Listener {
         }
         ((Zombie) e.getDamager()).damage(2.0, e.getEntity());
       }
-    } catch (Exception ex){
+    } catch (Exception ex) {
       new ReportedException(plugin, ex);
     }
   }
@@ -226,7 +226,7 @@ public class WizardKit extends PremiumKit implements Listener {
           UserManager.getUser(e.getPlayer().getUniqueId()).setCooldown("wizard_staff", 1);
         }
       }
-    } catch (Exception ex){
+    } catch (Exception ex) {
       new ReportedException(plugin, ex);
     }
   }

@@ -59,7 +59,7 @@ public class LobbyEvents implements Listener {
       if (arena.getArenaState() == ArenaState.STARTING || arena.getArenaState() == ArenaState.WAITING_FOR_PLAYERS) {
         event.setCancelled(true);
       }
-    } catch (Exception ex){
+    } catch (Exception ex) {
       new ReportedException(plugin, ex);
     }
   }
@@ -77,7 +77,7 @@ public class LobbyEvents implements Listener {
       }
       event.setCancelled(true);
       player.setHealth(player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue());
-    } catch (Exception ex){
+    } catch (Exception ex) {
       new ReportedException(plugin, ex);
     }
   }

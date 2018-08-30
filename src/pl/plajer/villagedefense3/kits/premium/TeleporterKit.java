@@ -24,7 +24,6 @@ import java.util.List;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.Particle;
-import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Villager;
 import org.bukkit.event.EventHandler;
@@ -125,7 +124,7 @@ public class TeleporterKit extends PremiumKit implements Listener {
           e.getPlayer().openInventory(inventory);
         }
       }
-    }catch (Exception ex){
+    } catch (Exception ex) {
       new ReportedException(plugin, ex);
     }
   }
@@ -174,7 +173,7 @@ public class TeleporterKit extends PremiumKit implements Listener {
           }
         }
       }
-    } catch (Exception ex){
+    } catch (Exception ex) {
       new ReportedException(plugin, ex);
     }
   }

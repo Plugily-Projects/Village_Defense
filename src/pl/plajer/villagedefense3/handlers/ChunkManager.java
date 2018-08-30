@@ -73,7 +73,7 @@ public class ChunkManager implements Listener {
           }
         }
       }
-    } catch (Exception ex){
+    } catch (Exception ex) {
       new ReportedException(JavaPlugin.getPlugin(Main.class), ex);
     }
   }

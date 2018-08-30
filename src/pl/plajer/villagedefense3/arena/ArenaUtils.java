@@ -85,7 +85,7 @@ public class ArenaUtils {
           player.sendMessage(ChatManager.colorMessage("In-Game.Back-In-Game"));
         }
       }
-    } catch(Exception e){
+    } catch (Exception e) {
       new ReportedException(plugin, e);
     }
   }
@@ -97,12 +97,12 @@ public class ArenaUtils {
         user.addStat(StatsStorage.StatisticType.LEVEL, 1);
         player.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.formatMessage(arena, ChatManager.colorMessage("In-Game.You-Leveled-Up"), user.getStat(StatsStorage.StatisticType.LEVEL)));
       }
-    } catch (Exception e){
+    } catch (Exception e) {
       new ReportedException(plugin, e);
     }
   }
 
-  public static Arena initializeArena(String ID){
+  public static Arena initializeArena(String ID) {
     Arena arena;
     if (plugin.is1_9_R1()) {
       arena = new ArenaInitializer1_9_R1(ID, plugin);
@@ -112,7 +112,7 @@ public class ArenaUtils {
       arena = new ArenaInitializer1_11_R1(ID, plugin);
     } else if (plugin.is1_12_R1()) {
       arena = new ArenaInitializer1_12_R1(ID, plugin);
-    } else if(plugin.is1_13_R1()) {
+    } else if (plugin.is1_13_R1()) {
       arena = new ArenaInitializer1_13_R1(ID, plugin);
     } else {
       arena = new ArenaInitializer1_13_R2(ID, plugin);

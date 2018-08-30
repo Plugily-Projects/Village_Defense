@@ -150,7 +150,7 @@ public class BlockerKit extends PremiumKit implements Listener {
         }
       }.runTaskTimer(plugin, 20, 20);
       block.setType(Material.FENCE);
-    } catch (Exception ex){
+    } catch (Exception ex) {
       new ReportedException(plugin, ex);
     }
   }

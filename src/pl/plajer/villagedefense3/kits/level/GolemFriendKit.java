@@ -106,7 +106,7 @@ public class GolemFriendKit extends LevelKit {
     } else if (plugin.is1_13_R1()) {
       ArenaInitializer1_13_R1 initializer = (ArenaInitializer1_13_R1) arena;
       initializer.spawnGolem(initializer.getStartLocation(), player);
-    } else if (plugin.is1_13_R2()){
+    } else if (plugin.is1_13_R2()) {
       ArenaInitializer1_13_R2 initializer = (ArenaInitializer1_13_R2) arena;
       initializer.spawnGolem(initializer.getStartLocation(), player);
     }

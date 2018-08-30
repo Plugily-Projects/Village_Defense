@@ -27,7 +27,6 @@ import java.util.Queue;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -36,7 +35,6 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.PotionMeta;
-import org.bukkit.material.Door;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.PotionData;
 import org.bukkit.potion.PotionType;
@@ -142,8 +140,8 @@ public class Utils {
     }
   }
 
-  public static void playSound(Location loc, String before1_13, String after1_13){
-    if(JavaPlugin.getPlugin(Main.class).is1_13_R1() || JavaPlugin.getPlugin(Main.class).is1_13_R2()) {
+  public static void playSound(Location loc, String before1_13, String after1_13) {
+    if (JavaPlugin.getPlugin(Main.class).is1_13_R1() || JavaPlugin.getPlugin(Main.class).is1_13_R2()) {
       loc.getWorld().playSound(loc, after1_13, 1, 1);
     } else {
       loc.getWorld().playSound(loc, before1_13, 1, 1);

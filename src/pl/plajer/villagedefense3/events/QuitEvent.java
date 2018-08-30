@@ -92,7 +92,7 @@ public class QuitEvent implements Listener {
         }
       }
       UserManager.removeUser(player.getUniqueId());
-    } catch (Exception ex){
+    } catch (Exception ex) {
       new ReportedException(plugin, ex);
     }
   }

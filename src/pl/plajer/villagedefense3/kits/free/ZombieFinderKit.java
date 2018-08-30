@@ -22,7 +22,6 @@ import java.util.List;
 import java.util.Random;
 
 import org.bukkit.Material;
-import org.bukkit.Sound;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -121,7 +120,7 @@ public class ZombieFinderKit extends LevelKit implements Listener {
       }
       Utils.playSound(event.getPlayer().getLocation(), "ENTITY_ZOMBIE_DEATH", "ENTITY_ZOMBIE_DEATH");
       UserManager.getUser(event.getPlayer().getUniqueId()).setCooldown("zombie", 30);
-    } catch (Exception ex){
+    } catch (Exception ex) {
       new ReportedException(plugin, ex);
     }
   }

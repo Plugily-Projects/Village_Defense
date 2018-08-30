@@ -134,7 +134,7 @@ public class NakedKit extends PremiumKit implements Listener {
           }
         }
       }, 1);
-    } catch (Exception ex){
+    } catch (Exception ex) {
       new ReportedException(JavaPlugin.getPlugin(Main.class), ex);
     }
   }
@@ -158,7 +158,7 @@ public class NakedKit extends PremiumKit implements Listener {
         event.setCancelled(true);
         event.getPlayer().sendMessage(ChatManager.colorMessage("Kits.Wild-Naked.Cannot-Wear-Armor"));
       }
-    } catch (Exception ex){
+    } catch (Exception ex) {
       new ReportedException(JavaPlugin.getPlugin(Main.class), ex);
     }
   }

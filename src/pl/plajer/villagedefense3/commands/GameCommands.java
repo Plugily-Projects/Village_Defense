@@ -101,7 +101,7 @@ public class GameCommands extends MainCommand {
           String message = ChatManager.colorMessage("Commands.Statistics.Format");
           message = StringUtils.replace(message, "%position%", String.valueOf(i + 1));
           message = StringUtils.replace(message, "%name%", Bukkit.getOfflinePlayer(current).getName());
-          message = StringUtils.replace(message,"%value%", String.valueOf(stats.get(current)));
+          message = StringUtils.replace(message, "%value%", String.valueOf(stats.get(current)));
           message = StringUtils.replace(message, "%statistic%", StringUtils.capitalize(statisticType.toString().toLowerCase().replace("_", " "))); //Games_played > Games played etc
           sender.sendMessage(message);
           stats.remove(current);
@@ -109,7 +109,7 @@ public class GameCommands extends MainCommand {
           String message = ChatManager.colorMessage("Commands.Statistics.Format");
           message = StringUtils.replace(message, "%position%", String.valueOf(i + 1));
           message = StringUtils.replace(message, "%name%", "Empty");
-          message = StringUtils.replace(message,"%value%", "0");
+          message = StringUtils.replace(message, "%value%", "0");
           message = StringUtils.replace(message, "%statistic%", StringUtils.capitalize(statisticType.toString().toLowerCase().replace("_", " "))); //Games_played > Games played etc
           sender.sendMessage(message);
         } catch (NullPointerException ex) {
@@ -121,7 +121,7 @@ public class GameCommands extends MainCommand {
                 String message = ChatManager.colorMessage("Commands.Statistics.Format");
                 message = StringUtils.replace(message, "%position%", String.valueOf(i + 1));
                 message = StringUtils.replace(message, "%name%", set.getString(1));
-                message = StringUtils.replace(message,"%value%", String.valueOf(stats.get(current)));
+                message = StringUtils.replace(message, "%value%", String.valueOf(stats.get(current)));
                 message = StringUtils.replace(message, "%statistic%", StringUtils.capitalize(statisticType.toString().toLowerCase().replace("_", " "))); //Games_played > Games played etc
                 sender.sendMessage(message);
                 return;
@@ -131,8 +131,8 @@ public class GameCommands extends MainCommand {
           }
           String message = ChatManager.colorMessage("Commands.Statistics.Format");
           message = StringUtils.replace(message, "%position%", String.valueOf(i + 1));
-          message = StringUtils.replace(message, "%name%","Unknown Player");
-          message = StringUtils.replace(message,"%value%", String.valueOf(stats.get(current)));
+          message = StringUtils.replace(message, "%name%", "Unknown Player");
+          message = StringUtils.replace(message, "%value%", String.valueOf(stats.get(current)));
           message = StringUtils.replace(message, "%statistic%", StringUtils.capitalize(statisticType.toString().toLowerCase().replace("_", " "))); //Games_played > Games played etc
           sender.sendMessage(message);
         }

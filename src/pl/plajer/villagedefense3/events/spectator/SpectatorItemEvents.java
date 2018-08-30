@@ -70,7 +70,7 @@ public class SpectatorItemEvents implements Listener {
           }
         }
       }
-    } catch (Exception ex){
+    } catch (Exception ex) {
       new ReportedException(plugin, ex);
     }
   }
@@ -125,7 +125,7 @@ public class SpectatorItemEvents implements Listener {
         }
         e.setCancelled(true);
       }
-    } catch (Exception ex){
+    } catch (Exception ex) {
       new ReportedException(plugin, ex);
     }
   }

@@ -26,7 +26,6 @@ import java.util.TreeMap;
 import java.util.UUID;
 
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.craftbukkit.libs.jline.internal.Nullable;
 import org.bukkit.entity.Player;
 
 import pl.plajer.villagedefense3.Main;

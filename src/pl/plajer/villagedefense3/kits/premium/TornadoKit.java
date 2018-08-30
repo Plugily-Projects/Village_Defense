@@ -126,7 +126,7 @@ public class TornadoKit extends PremiumKit implements Listener {
           }
         }
       }.runTaskTimer(plugin, 1, 1);
-    } catch (Exception ex){
+    } catch (Exception ex) {
       new ReportedException(plugin, ex);
     }
   }

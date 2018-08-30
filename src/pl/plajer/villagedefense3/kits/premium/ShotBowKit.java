@@ -118,7 +118,7 @@ public class ShotBowKit extends PremiumKit implements Listener {
           e.getPlayer().sendMessage(msgstring);
         }
       }
-    } catch (Exception ex){
+    } catch (Exception ex) {
       new ReportedException(plugin, ex);
     }
   }

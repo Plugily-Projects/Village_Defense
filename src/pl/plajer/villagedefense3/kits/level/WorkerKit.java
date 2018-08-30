@@ -102,7 +102,7 @@ public class WorkerKit extends LevelKit implements Listener {
       }
       e.setCancelled(false);
       e.getPlayer().sendMessage(ChatManager.colorMessage("Kits.Worker.Game-Item-Place-Message"));
-    } catch (Exception ex){
+    } catch (Exception ex) {
       new ReportedException(JavaPlugin.getPlugin(Main.class), ex);
     }
   }

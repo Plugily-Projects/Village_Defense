@@ -97,7 +97,7 @@ public class LooterKit extends LevelKit implements Listener {
       if (user.getKit() instanceof LooterKit) {
         player.getInventory().addItem(new ItemStack(Material.ROTTEN_FLESH, 1));
       }
-    }catch (Exception ex){
+    } catch (Exception ex) {
       new ReportedException(JavaPlugin.getPlugin(Main.class), ex);
     }
   }

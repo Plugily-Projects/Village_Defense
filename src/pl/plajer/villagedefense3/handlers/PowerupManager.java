@@ -171,7 +171,7 @@ public class PowerupManager {
           hologram.delete();
         }
       }, /* remove after 40 seconds to prevent staying even if arena is finished */ 20 * 40);
-    } catch (Exception ex){
+    } catch (Exception ex) {
       new ReportedException(plugin, ex);
     }
   }

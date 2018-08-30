@@ -169,7 +169,7 @@ public class ArenaManager {
       }
       arena.showPlayers();
       Main.debug(Main.LogLevel.INFO, "Join task end, " + p.getName());
-    } catch (Exception e){
+    } catch (Exception e) {
       new ReportedException(plugin, e);
     }
   }
@@ -231,7 +231,7 @@ public class ArenaManager {
         InventoryUtils.loadInventory(plugin, p);
       }
       Main.debug(Main.LogLevel.INFO, "Final leave attempt, " + p.getName());
-    } catch (Exception e){
+    } catch (Exception e) {
       new ReportedException(plugin, e);
     }
   }
@@ -313,7 +313,7 @@ public class ArenaManager {
         arena.setTimer(5);
       }
       Main.debug(Main.LogLevel.INFO, "Game stop event finish, arena " + arena.getID());
-    } catch (Exception e){
+    } catch (Exception e) {
       new ReportedException(plugin, e);
     }
   }
@@ -355,7 +355,7 @@ public class ArenaManager {
       for (Player player : arena.getPlayersLeft()) {
         arena.addExperience(player, 5);
       }
-    } catch (Exception e){
+    } catch (Exception e) {
       new ReportedException(plugin, e);
     }
   }
@@ -381,7 +381,7 @@ public class ArenaManager {
       for (Player p : arena.getPlayers()) {
         p.sendMessage(ChatManager.PLUGIN_PREFIX + message);
       }
-    } catch (Exception e){
+    } catch (Exception e) {
       new ReportedException(plugin, e);
     }
   }

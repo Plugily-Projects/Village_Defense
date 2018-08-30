@@ -48,7 +48,7 @@ public class MySQLConnectionUtils {
         b = true;
       }
       User user = UserManager.getUser(player.getUniqueId());
-      for(StatsStorage.StatisticType stat : StatsStorage.StatisticType.values()){
+      for (StatsStorage.StatisticType stat : StatsStorage.StatisticType.values()) {
         user.setStat(stat, database.getStat(player, stat));
       }
       b = true;
@@ -65,7 +65,7 @@ public class MySQLConnectionUtils {
           database.insertPlayer(player);
         }
         User user = UserManager.getUser(player.getUniqueId());
-        for(StatsStorage.StatisticType stat : StatsStorage.StatisticType.values()){
+        for (StatsStorage.StatisticType stat : StatsStorage.StatisticType.values()) {
           user.setStat(stat, database.getStat(player, stat));
         }
       } catch (SQLException e1) {

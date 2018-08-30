@@ -64,7 +64,7 @@ public class CombustDayLightEvent implements Listener {
           return;
         }
       }
-    } catch (Exception ex){
+    } catch (Exception ex) {
       new ReportedException(plugin, ex);
     }
   }

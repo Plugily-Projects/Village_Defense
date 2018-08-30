@@ -26,11 +26,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import pl.plajer.villagedefense3.Main;
-import pl.plajer.villagedefense3.arena.initializers.ArenaInitializer1_10_R1;
-import pl.plajer.villagedefense3.arena.initializers.ArenaInitializer1_11_R1;
-import pl.plajer.villagedefense3.arena.initializers.ArenaInitializer1_12_R1;
-import pl.plajer.villagedefense3.arena.initializers.ArenaInitializer1_13_R1;
-import pl.plajer.villagedefense3.arena.initializers.ArenaInitializer1_9_R1;
 import pl.plajer.villagedefense3.handlers.ChatManager;
 import pl.plajer.villagedefense3.handlers.ShopManager;
 import pl.plajerlair.core.utils.ConfigUtils;

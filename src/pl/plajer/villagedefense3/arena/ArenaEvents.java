@@ -77,7 +77,7 @@ public class ArenaEvents implements Listener {
           }
         }
       }
-    } catch(Exception ex){
+    } catch (Exception ex) {
       new ReportedException(plugin, ex);
     }
   }
@@ -104,7 +104,7 @@ public class ArenaEvents implements Listener {
           }
         }
       }
-    } catch(Exception ex){
+    } catch (Exception ex) {
       new ReportedException(plugin, ex);
     }
   }
@@ -141,7 +141,7 @@ public class ArenaEvents implements Listener {
           }
         }
       }
-    } catch(Exception ex){
+    } catch (Exception ex) {
       new ReportedException(plugin, ex);
     }
   }
@@ -184,7 +184,7 @@ public class ArenaEvents implements Listener {
       player.setFlying(true);
       player.getInventory().clear();
       MessageUtils.sendTitle(player, ChatColor.stripColor(ChatManager.colorMessage("In-Game.Death-Screen")), 0, 5 * 20, 0);
-      if(!plugin.is1_9_R1()) {
+      if (!plugin.is1_9_R1()) {
         new BukkitRunnable() {
           @Override
           public void run() {
@@ -216,7 +216,7 @@ public class ArenaEvents implements Listener {
           }
         }
       }
-    } catch (Exception ex){
+    } catch (Exception ex) {
       new ReportedException(plugin, ex);
     }
   }
@@ -244,7 +244,7 @@ public class ArenaEvents implements Listener {
         }
         e.setRespawnLocation(arena.getStartLocation());
       }
-    } catch (Exception ex){
+    } catch (Exception ex) {
       new ReportedException(plugin, ex);
     }
   }

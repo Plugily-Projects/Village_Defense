@@ -75,7 +75,7 @@ public class EntityRegistry {
         }
       }
       Main.debug(Main.LogLevel.INFO, "Entities registering completed");
-    } catch(Exception e){
+    } catch (Exception e) {
       new ReportedException(plugin, e);
     }
   }

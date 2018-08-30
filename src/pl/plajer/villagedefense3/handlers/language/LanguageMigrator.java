@@ -71,7 +71,7 @@ public class LanguageMigrator {
         MigratorUtils.addNewLines(file, "# Limit of mobs can be spawned per player in-game\r\n# Will affect only buying them in in-game shop\r\n" +
                 "Wolves-Spawn-Limit: 20\r\nGolems-Spawn-Limit: 15\r\n");
         MigratorUtils.addNewLines(file, "# Time before next wave starts\n" +
-                "Cooldown-Before-Next-Wave: 25\r\n"+
+                "Cooldown-Before-Next-Wave: 25\r\n" +
                 "# Don't modify\r\nVersion: 6\r\n\r\n# No way! You've reached the end! But... where's the dragon!?");
         break;
       case 2:
@@ -82,7 +82,7 @@ public class LanguageMigrator {
         MigratorUtils.addNewLines(file, "# Limit of mobs can be spawned per player in-game\r\n# Will affect only buying them in in-game shop\r\n" +
                 "Wolves-Spawn-Limit: 20\r\nGolems-Spawn-Limit: 15\r\n");
         MigratorUtils.addNewLines(file, "# Time before next wave starts\n" +
-                "Cooldown-Before-Next-Wave: 25\r\n"+
+                "Cooldown-Before-Next-Wave: 25\r\n" +
                 "# Don't modify\r\nVersion: 6\r\n\r\n# No way! You've reached the end! But... where's the dragon!?");
         break;
       case 3:
@@ -90,19 +90,19 @@ public class LanguageMigrator {
         MigratorUtils.addNewLines(file, "# Limit of mobs can be spawned per player in-game\r\n# Will affect only buying them in in-game shop\r\n" +
                 "Wolves-Spawn-Limit: 20\r\nGolems-Spawn-Limit: 15\r\n");
         MigratorUtils.addNewLines(file, "# Time before next wave starts\n" +
-                "Cooldown-Before-Next-Wave: 25\r\n"+
+                "Cooldown-Before-Next-Wave: 25\r\n" +
                 "# Don't modify\r\nVersion: 6\r\n\r\n# No way! You've reached the end! But... where's the dragon!?");
         break;
       case 4:
         MigratorUtils.addNewLines(file, "# Limit of mobs can be spawned per player in-game\r\n# Will affect only buying them in in-game shop\r\n" +
                 "Wolves-Spawn-Limit: 20\r\nGolems-Spawn-Limit: 15\r\n");
         MigratorUtils.addNewLines(file, "# Time before next wave starts\n" +
-                "Cooldown-Before-Next-Wave: 25\r\n"+
+                "Cooldown-Before-Next-Wave: 25\r\n" +
                 "# Don't modify\r\nVersion: 6\r\n\r\n# No way! You've reached the end! But... where's the dragon!?");
         break;
       case 5:
         MigratorUtils.addNewLines(file, "# Time before next wave starts\n" +
-                "Cooldown-Before-Next-Wave: 25\r\n"+
+                "Cooldown-Before-Next-Wave: 25\r\n" +
                 "# Don't modify\r\nVersion: 6\r\n\r\n# No way! You've reached the end! But... where's the dragon!?");
         break;
     }
@@ -117,7 +117,7 @@ public class LanguageMigrator {
     Bukkit.getConsoleSender().sendMessage(ChatColor.YELLOW + "[Village Defense] [System notify] Your language file is outdated! Updating...");
 
     int version = 0;
-    if(NumberUtils.isNumber(LanguageManager.getDefaultLanguageMessage("File-Version-Do-Not-Edit"))){
+    if (NumberUtils.isNumber(LanguageManager.getDefaultLanguageMessage("File-Version-Do-Not-Edit"))) {
       version = Integer.valueOf(LanguageManager.getDefaultLanguageMessage("File-Version-Do-Not-Edit"));
     }
     LanguageMigrator.updateLanguageVersionControl(version);

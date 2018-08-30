@@ -73,7 +73,7 @@ public class ShopManager {
         i++;
       }
       arenaShop.put(a, inventory);
-    } catch (Exception ex){
+    } catch (Exception ex) {
       new ReportedException(JavaPlugin.getPlugin(Main.class), ex);
     }
   }

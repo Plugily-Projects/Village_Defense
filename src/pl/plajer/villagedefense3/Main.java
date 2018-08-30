@@ -27,7 +27,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -114,7 +113,7 @@ public class Main extends JavaPlugin {
 
   public static void debug(LogLevel level, String thing) {
     if (debug) {
-      switch (level){
+      switch (level) {
         case INFO:
           Bukkit.getConsoleSender().sendMessage("[Village Debugger] " + thing);
           break;
@@ -132,10 +131,6 @@ public class Main extends JavaPlugin {
           break;
       }
     }
-  }
-
-  public enum LogLevel {
-    INFO, WARN, ERROR, WTF /*what a terrible failure*/, TASK
   }
 
   public boolean is1_9_R1() {
@@ -303,7 +298,7 @@ public class Main extends JavaPlugin {
       ConfigurationSection cs = getConfig().getConfigurationSection("CustomPermissions");
       for (String key : cs.getKeys(false)) {
         customPermissions.put(key, getConfig().getInt("CustomPermissions." + key));
-        debug(LogLevel.INFO,"Loaded custom permission " + key);
+        debug(LogLevel.INFO, "Loaded custom permission " + key);
       }
       for (Player p : Bukkit.getOnlinePlayers()) {
         UserManager.registerUser(p.getUniqueId());
@@ -317,7 +312,7 @@ public class Main extends JavaPlugin {
       }
       StatsStorage.plugin = this;
       PermissionsManager.init();
-      debug(LogLevel.INFO,"Main setup done");
+      debug(LogLevel.INFO, "Main setup done");
     } catch (Exception ex) {
       new ReportedException(this, ex);
     }
@@ -367,7 +362,7 @@ public class Main extends JavaPlugin {
       return "None";
     }));
     if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
-      Main.debug(LogLevel.INFO,"Hooking into PlaceholderAPI");
+      Main.debug(LogLevel.INFO, "Hooking into PlaceholderAPI");
       new PlaceholderManager().register();
     }
     new Events(this);
@@ -426,7 +421,7 @@ public class Main extends JavaPlugin {
     if (forceDisable) {
       return;
     }
-    debug(LogLevel.INFO,"System disable init");
+    debug(LogLevel.INFO, "System disable init");
     for (Player player : getServer().getOnlinePlayers()) {
       User user = UserManager.getUser(player.getUniqueId());
       for (StatsStorage.StatisticType s : StatsStorage.StatisticType.values()) {
@@ -464,7 +459,11 @@ public class Main extends JavaPlugin {
     if (isDatabaseActivated()) {
       getMySQLDatabase().closeDatabase();
     }
-    debug(LogLevel.INFO,"System disable finalize");
+    debug(LogLevel.INFO, "System disable finalize");
+  }
+
+  public enum LogLevel {
+    INFO, WARN, ERROR, WTF /*what a terrible failure*/, TASK
   }
 
 }
