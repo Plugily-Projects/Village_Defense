@@ -8,17 +8,11 @@
 # Select locale of VD 3, default it's English.
 # Available locales:
 #    default - English language. Uses 'language.yml'.
-#    de - Deutsche sprache
-#    pl - Język polski
-#    es - Idioma español
-#    id - Bhasa Indonesia
-#    fr - Langue française
-#    vn - Tiếng việt
-#    hu - Magyar nyelv
-#    zh - 简体中文
-#    ro - Limba română
-#    cs - Český jazyk
-#
+#    de - Deutsche sprache       pl - Język polski
+#    es - Idioma español         id - Bhasa Indonesia
+#    fr - Langue française       vn - Tiếng việt
+#    hu - Magyar nyelv           zh - 简体中文
+#    ro - Limba română           cs - Český jazyk
 locale: default
 
 # Enable bossbar support?
