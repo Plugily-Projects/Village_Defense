@@ -3,6 +3,8 @@
 **I'm sincerely glad to everyone who supported our project every time!**
 
 **Contributors are listed in alphabetical order, every contributor is equally important!**
+* Andrei - Romanian translator
+* [Borc55](https://www.spigotmc.org/members/borc55.108890/) - Czech translator
 * [Calvineries](https://www.spigotmc.org/members/calvineries.120470/) - French translator
 * DerpyKitteh - Plugin idea
 * [Dianox](https://www.spigotmc.org/members/dianox.74931/) - French translator
@@ -11,6 +13,7 @@
 * HStreamGamer - Vietnamese translator
 * [inventivetalent](https://www.spigotmc.org/members/inventivetalent.6643/) - Code snippets
 * [IvanTheBuilder](https://www.spigotmc.org/members/ivanthebuilder.18881/) - Former author of Village Defense 1
+* [KitsuneSakul](https://www.spigotmc.org/members/kitsunesakul.61401/) - Czech translator
 * [Marcely99](https://www.spigotmc.org/members/marcely99.62672/) - Code snippets
 * [MattUGV](https://www.spigotmc.org/members/mattugv.139086/) - Code snippets
 * Melonzrix - German translator

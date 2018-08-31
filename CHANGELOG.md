@@ -2,7 +2,7 @@
 
 ### 3.11.0 Release (19/26.08.2018)
 * Now removing invalid players in game when getPlayers() method is invoked
-* Fixed NullPointerException for users who where no longer online
+* Fixed NullPointerException for users who were no longer online
 * Some code improvements
 * Added dynamic locale manager system - you can now get latest locales on demand from our repository
 * Added Romanian locale
