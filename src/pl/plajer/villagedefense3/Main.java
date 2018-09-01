@@ -245,13 +245,12 @@ public class Main extends JavaPlugin {
       LanguageMigrator.languageFileUpdate();
       initializeClasses();
 
-      String currentVersion = "v" + Bukkit.getPluginManager().getPlugin("VillageDefense").getDescription().getVersion();
       if (getConfig().getBoolean("Update-Notifier.Enabled", true)) {
+        String currentVersion = "v" + Bukkit.getPluginManager().getPlugin("VillageDefense").getDescription().getVersion();
         try {
-          UpdateChecker.checkUpdate(this, currentVersion, 41869);
-          String latestVersion = UpdateChecker.getLatestVersion();
-          if (latestVersion != null) {
-            latestVersion = "v" + latestVersion;
+          boolean check = UpdateChecker.checkUpdate(this, currentVersion, 41869);
+          if (check) {
+            String latestVersion = "v" + UpdateChecker.getLatestVersion();
             if (latestVersion.contains("b")) {
               Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "[VillageDefense] Your software is ready for update! However it's a BETA VERSION. Proceed with caution.");
               Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "[VillageDefense] Current version %old%, latest version %new%".replace("%old%", currentVersion)

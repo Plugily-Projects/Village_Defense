@@ -95,12 +95,10 @@ public class JoinEvent implements Listener {
         if (event.getPlayer().hasPermission("villagedefense.updatenotify")) {
           if (plugin.getConfig().getBoolean("Update-Notifier.Enabled", true)) {
             String currentVersion = "v" + Bukkit.getPluginManager().getPlugin("VillageDefense").getDescription().getVersion();
-            String latestVersion;
             try {
-              UpdateChecker.checkUpdate(plugin, currentVersion, 41869);
-              latestVersion = UpdateChecker.getLatestVersion();
-              if (latestVersion != null) {
-                latestVersion = "v" + latestVersion;
+              boolean check = UpdateChecker.checkUpdate(plugin, currentVersion, 41869);
+              if (check) {
+                String latestVersion =  "v" + UpdateChecker.getLatestVersion();
                 if (latestVersion.contains("b")) {
                   event.getPlayer().sendMessage("");
                   event.getPlayer().sendMessage(ChatColor.BOLD + "VILLAGE DEFENSE UPDATE NOTIFY");

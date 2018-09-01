@@ -1,5 +1,8 @@
 # Village Defense 3 Changelog
 
+### 3.11.1 Release (01.09.2018)
+* Fixed update checker bugs while using my other minigames
+
 ### 3.11.0 Release (19/26.08.2018)
 * Now removing invalid players in game when getPlayers() method is invoked
 * Fixed NullPointerException for users who were no longer online
