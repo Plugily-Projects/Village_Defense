@@ -1,5 +1,8 @@
 # Village Defense 3 Changelog
 
+### 3.11.2 Release (03.09.2018)
+* Temporarily merged PLCore to fix issues when using my other plugins
+
 ### 3.11.1 Release (01.09.2018)
 * Fixed update checker bugs while using my other mini games
 * Fixed errors in console for 1.13 - sounds problem

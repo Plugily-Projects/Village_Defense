@@ -32,8 +32,8 @@ import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 
 import pl.plajer.villagedefense3.Main;
+import pl.plajer.villagedefense3.plajerlair.core.services.LocaleService;
 import pl.plajer.villagedefense3.utils.MessageUtils;
-import pl.plajerlair.core.services.LocaleService;
 import pl.plajerlair.core.services.ServiceRegistry;
 import pl.plajerlair.core.utils.ConfigUtils;
 

@@ -55,7 +55,7 @@ import pl.plajer.villagedefense3.kits.premium.ShotBowKit;
 import pl.plajer.villagedefense3.kits.premium.TeleporterKit;
 import pl.plajer.villagedefense3.kits.premium.TornadoKit;
 import pl.plajer.villagedefense3.kits.premium.WizardKit;
-import pl.plajerlair.core.utils.ConfigUtils;
+import pl.plajer.villagedefense3.plajerlair.core.utils.ConfigUtils;
 
 /**
  * Kit registry class for registering new kits.

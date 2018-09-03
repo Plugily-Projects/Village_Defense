@@ -31,8 +31,8 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import pl.plajer.villagedefense3.Main;
+import pl.plajer.villagedefense3.plajerlair.core.utils.ConfigUtils;
 import pl.plajer.villagedefense3.utils.MessageUtils;
-import pl.plajerlair.core.utils.ConfigUtils;
 
 /**
  * Created by Tom on 5/02/2016.

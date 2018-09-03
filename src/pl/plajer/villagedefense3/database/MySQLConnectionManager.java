@@ -28,8 +28,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import pl.plajer.villagedefense3.plajerlair.core.utils.ConfigUtils;
 import pl.plajer.villagedefense3.utils.MessageUtils;
-import pl.plajerlair.core.utils.ConfigUtils;
 
 
 public class MySQLConnectionManager {

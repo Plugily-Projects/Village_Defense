@@ -51,12 +51,12 @@ import pl.plajer.villagedefense3.arena.ArenaRegistry;
 import pl.plajer.villagedefense3.arena.ArenaState;
 import pl.plajer.villagedefense3.arena.ArenaUtils;
 import pl.plajer.villagedefense3.handlers.ChatManager;
+import pl.plajer.villagedefense3.plajerlair.core.utils.ConfigUtils;
+import pl.plajer.villagedefense3.plajerlair.core.utils.MinigameUtils;
 import pl.plajer.villagedefense3.user.User;
 import pl.plajer.villagedefense3.user.UserManager;
 import pl.plajer.villagedefense3.utils.Utils;
 import pl.plajer.villagedefense3.villagedefenseapi.StatsStorage;
-import pl.plajerlair.core.utils.ConfigUtils;
-import pl.plajerlair.core.utils.MinigameUtils;
 
 /**
  * @author Plajer

@@ -21,7 +21,7 @@ package pl.plajer.villagedefense3.kits.kitapi.basekits;
 import org.bukkit.inventory.ItemStack;
 
 import pl.plajer.villagedefense3.handlers.ChatManager;
-import pl.plajerlair.core.utils.MinigameUtils;
+import pl.plajer.villagedefense3.plajerlair.core.utils.MinigameUtils;
 
 /**
  * Created by Tom on 14/08/2014.

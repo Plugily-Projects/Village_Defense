@@ -42,9 +42,9 @@ import pl.plajer.villagedefense3.arena.ArenaRegistry;
 import pl.plajer.villagedefense3.arena.ArenaUtils;
 import pl.plajer.villagedefense3.handlers.ChatManager;
 import pl.plajer.villagedefense3.handlers.ShopManager;
-import pl.plajerlair.core.services.ReportedException;
-import pl.plajerlair.core.utils.ConfigUtils;
-import pl.plajerlair.core.utils.MinigameUtils;
+import pl.plajer.villagedefense3.plajerlair.core.services.ReportedException;
+import pl.plajer.villagedefense3.plajerlair.core.utils.ConfigUtils;
+import pl.plajer.villagedefense3.plajerlair.core.utils.MinigameUtils;
 
 /**
  * Created by Tom on 15/06/2015.

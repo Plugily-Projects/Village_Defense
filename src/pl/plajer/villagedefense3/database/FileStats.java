@@ -26,11 +26,11 @@ import org.bukkit.entity.Player;
 
 import pl.plajer.villagedefense3.Main;
 import pl.plajer.villagedefense3.arena.ArenaRegistry;
+import pl.plajer.villagedefense3.plajerlair.core.utils.ConfigUtils;
 import pl.plajer.villagedefense3.user.User;
 import pl.plajer.villagedefense3.user.UserManager;
 import pl.plajer.villagedefense3.utils.MessageUtils;
 import pl.plajer.villagedefense3.villagedefenseapi.StatsStorage;
-import pl.plajerlair.core.utils.ConfigUtils;
 
 /**
  * Created by Tom on 17/06/2015.

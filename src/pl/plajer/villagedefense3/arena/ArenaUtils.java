@@ -31,10 +31,10 @@ import pl.plajer.villagedefense3.arena.initializers.ArenaInitializer1_13_R1;
 import pl.plajer.villagedefense3.arena.initializers.ArenaInitializer1_13_R2;
 import pl.plajer.villagedefense3.arena.initializers.ArenaInitializer1_9_R1;
 import pl.plajer.villagedefense3.handlers.ChatManager;
+import pl.plajer.villagedefense3.plajerlair.core.services.ReportedException;
 import pl.plajer.villagedefense3.user.User;
 import pl.plajer.villagedefense3.user.UserManager;
 import pl.plajer.villagedefense3.villagedefenseapi.StatsStorage;
-import pl.plajerlair.core.services.ReportedException;
 
 /**
  * @author Plajer

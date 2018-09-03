@@ -30,12 +30,12 @@ import pl.plajer.villagedefense3.Main;
 import pl.plajer.villagedefense3.handlers.ChatManager;
 import pl.plajer.villagedefense3.kits.kitapi.KitRegistry;
 import pl.plajer.villagedefense3.kits.kitapi.basekits.LevelKit;
+import pl.plajer.villagedefense3.plajerlair.core.utils.ConfigUtils;
 import pl.plajer.villagedefense3.user.UserManager;
 import pl.plajer.villagedefense3.utils.ArmorHelper;
 import pl.plajer.villagedefense3.utils.Utils;
 import pl.plajer.villagedefense3.utils.WeaponHelper;
 import pl.plajer.villagedefense3.villagedefenseapi.StatsStorage;
-import pl.plajerlair.core.utils.ConfigUtils;
 
 /**
  * Created by Tom on 18/08/2014.

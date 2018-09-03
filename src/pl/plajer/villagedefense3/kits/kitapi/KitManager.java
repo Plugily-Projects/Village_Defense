@@ -37,11 +37,11 @@ import pl.plajer.villagedefense3.Main;
 import pl.plajer.villagedefense3.arena.ArenaRegistry;
 import pl.plajer.villagedefense3.handlers.ChatManager;
 import pl.plajer.villagedefense3.kits.kitapi.basekits.Kit;
+import pl.plajer.villagedefense3.plajerlair.core.services.ReportedException;
+import pl.plajer.villagedefense3.plajerlair.core.utils.MinigameUtils;
 import pl.plajer.villagedefense3.user.User;
 import pl.plajer.villagedefense3.user.UserManager;
 import pl.plajer.villagedefense3.villagedefenseapi.VillagePlayerChooseKitEvent;
-import pl.plajerlair.core.services.ReportedException;
-import pl.plajerlair.core.utils.MinigameUtils;
 
 /**
  * Class for setting Kit values.

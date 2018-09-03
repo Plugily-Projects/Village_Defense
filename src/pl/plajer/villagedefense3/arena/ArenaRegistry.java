@@ -28,8 +28,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 import pl.plajer.villagedefense3.Main;
 import pl.plajer.villagedefense3.handlers.ChatManager;
 import pl.plajer.villagedefense3.handlers.ShopManager;
-import pl.plajerlair.core.utils.ConfigUtils;
-import pl.plajerlair.core.utils.MinigameUtils;
+import pl.plajer.villagedefense3.plajerlair.core.utils.ConfigUtils;
+import pl.plajer.villagedefense3.plajerlair.core.utils.MinigameUtils;
 
 /**
  * Created by Tom on 27/07/2014.

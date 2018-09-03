@@ -37,7 +37,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import pl.plajer.villagedefense3.Main;
 import pl.plajer.villagedefense3.arena.Arena;
 import pl.plajer.villagedefense3.arena.ArenaRegistry;
-import pl.plajerlair.core.services.ReportedException;
+import pl.plajer.villagedefense3.plajerlair.core.services.ReportedException;
 
 public class ChunkManager implements Listener {
 

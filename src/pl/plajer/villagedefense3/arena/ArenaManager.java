@@ -46,6 +46,9 @@ import pl.plajer.villagedefense3.handlers.language.LanguageManager;
 import pl.plajer.villagedefense3.handlers.language.Locale;
 import pl.plajer.villagedefense3.kits.kitapi.KitRegistry;
 import pl.plajer.villagedefense3.kits.level.GolemFriendKit;
+import pl.plajer.villagedefense3.plajerlair.core.services.ReportedException;
+import pl.plajer.villagedefense3.plajerlair.core.utils.InventoryUtils;
+import pl.plajer.villagedefense3.plajerlair.core.utils.MinigameUtils;
 import pl.plajer.villagedefense3.user.User;
 import pl.plajer.villagedefense3.user.UserManager;
 import pl.plajer.villagedefense3.utils.MessageUtils;
@@ -55,9 +58,6 @@ import pl.plajer.villagedefense3.villagedefenseapi.VillageGameLeaveAttemptEvent;
 import pl.plajer.villagedefense3.villagedefenseapi.VillageGameStopEvent;
 import pl.plajer.villagedefense3.villagedefenseapi.VillageWaveEndEvent;
 import pl.plajer.villagedefense3.villagedefenseapi.VillageWaveStartEvent;
-import pl.plajerlair.core.services.ReportedException;
-import pl.plajerlair.core.utils.InventoryUtils;
-import pl.plajerlair.core.utils.MinigameUtils;
 
 /**
  * @author Plajer

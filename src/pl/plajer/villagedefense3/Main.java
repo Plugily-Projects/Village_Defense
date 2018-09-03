@@ -69,16 +69,16 @@ import pl.plajer.villagedefense3.handlers.language.LanguageMigrator;
 import pl.plajer.villagedefense3.handlers.setup.SetupInventoryEvents;
 import pl.plajer.villagedefense3.kits.kitapi.KitManager;
 import pl.plajer.villagedefense3.kits.kitapi.KitRegistry;
+import pl.plajer.villagedefense3.plajerlair.core.services.ReportedException;
+import pl.plajer.villagedefense3.plajerlair.core.services.ServiceRegistry;
+import pl.plajer.villagedefense3.plajerlair.core.utils.ConfigUtils;
+import pl.plajer.villagedefense3.plajerlair.core.utils.InventoryUtils;
+import pl.plajer.villagedefense3.plajerlair.core.utils.UpdateChecker;
 import pl.plajer.villagedefense3.user.User;
 import pl.plajer.villagedefense3.user.UserManager;
 import pl.plajer.villagedefense3.utils.MessageUtils;
 import pl.plajer.villagedefense3.utils.Metrics;
 import pl.plajer.villagedefense3.villagedefenseapi.StatsStorage;
-import pl.plajerlair.core.services.ReportedException;
-import pl.plajerlair.core.services.ServiceRegistry;
-import pl.plajerlair.core.utils.ConfigUtils;
-import pl.plajerlair.core.utils.InventoryUtils;
-import pl.plajerlair.core.utils.UpdateChecker;
 
 
 /**

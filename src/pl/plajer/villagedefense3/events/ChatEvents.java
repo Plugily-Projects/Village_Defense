@@ -35,10 +35,10 @@ import pl.plajer.villagedefense3.arena.Arena;
 import pl.plajer.villagedefense3.arena.ArenaRegistry;
 import pl.plajer.villagedefense3.handlers.ChatManager;
 import pl.plajer.villagedefense3.handlers.language.LanguageManager;
+import pl.plajer.villagedefense3.plajerlair.core.services.ReportedException;
 import pl.plajer.villagedefense3.user.User;
 import pl.plajer.villagedefense3.user.UserManager;
 import pl.plajer.villagedefense3.villagedefenseapi.StatsStorage;
-import pl.plajerlair.core.services.ReportedException;
 
 /**
  * Created by Tom on 13/08/2014.

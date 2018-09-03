@@ -27,7 +27,7 @@ import org.bukkit.entity.Player;
 import pl.plajer.villagedefense3.Main;
 import pl.plajer.villagedefense3.arena.Arena;
 import pl.plajer.villagedefense3.arena.ArenaRegistry;
-import pl.plajerlair.core.utils.ConfigUtils;
+import pl.plajer.villagedefense3.plajerlair.core.utils.ConfigUtils;
 
 /**
  * Created by Tom on 30/01/2016.

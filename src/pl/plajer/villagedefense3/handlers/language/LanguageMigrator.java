@@ -28,9 +28,9 @@ import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import pl.plajer.villagedefense3.Main;
+import pl.plajer.villagedefense3.plajerlair.core.utils.ConfigUtils;
+import pl.plajer.villagedefense3.plajerlair.core.utils.MigratorUtils;
 import pl.plajer.villagedefense3.utils.MessageUtils;
-import pl.plajerlair.core.utils.ConfigUtils;
-import pl.plajerlair.core.utils.MigratorUtils;
 
 /*
   NOTE FOR CONTRIBUTORS - Please do not touch this class if you don't now how it works! You can break migrator modyfing these values!

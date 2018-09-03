@@ -31,11 +31,11 @@ import pl.plajer.villagedefense3.arena.Arena;
 import pl.plajer.villagedefense3.arena.ArenaRegistry;
 import pl.plajer.villagedefense3.database.MySQLConnectionUtils;
 import pl.plajer.villagedefense3.handlers.PermissionsManager;
+import pl.plajer.villagedefense3.plajerlair.core.services.ReportedException;
+import pl.plajer.villagedefense3.plajerlair.core.utils.InventoryUtils;
+import pl.plajer.villagedefense3.plajerlair.core.utils.UpdateChecker;
 import pl.plajer.villagedefense3.user.UserManager;
 import pl.plajer.villagedefense3.villagedefenseapi.StatsStorage;
-import pl.plajerlair.core.services.ReportedException;
-import pl.plajerlair.core.utils.InventoryUtils;
-import pl.plajerlair.core.utils.UpdateChecker;
 
 /**
  * Created by Tom on 10/07/2015.

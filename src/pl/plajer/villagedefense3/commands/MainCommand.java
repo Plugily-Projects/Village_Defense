@@ -42,11 +42,11 @@ import pl.plajer.villagedefense3.arena.ArenaRegistry;
 import pl.plajer.villagedefense3.arena.ArenaUtils;
 import pl.plajer.villagedefense3.handlers.ChatManager;
 import pl.plajer.villagedefense3.handlers.setup.SetupInventory;
+import pl.plajer.villagedefense3.plajerlair.core.services.ReportedException;
+import pl.plajer.villagedefense3.plajerlair.core.utils.ConfigUtils;
+import pl.plajer.villagedefense3.plajerlair.core.utils.MinigameUtils;
 import pl.plajer.villagedefense3.utils.StringMatcher;
 import pl.plajer.villagedefense3.utils.Utils;
-import pl.plajerlair.core.services.ReportedException;
-import pl.plajerlair.core.utils.ConfigUtils;
-import pl.plajerlair.core.utils.MinigameUtils;
 
 /**
  * Created by Tom on 7/08/2014.

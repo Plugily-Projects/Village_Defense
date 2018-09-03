@@ -40,10 +40,10 @@ import org.bukkit.inventory.meta.ItemMeta;
 import pl.plajer.villagedefense3.Main;
 import pl.plajer.villagedefense3.arena.ArenaRegistry;
 import pl.plajer.villagedefense3.handlers.ChatManager;
+import pl.plajer.villagedefense3.plajerlair.core.services.ReportedException;
 import pl.plajer.villagedefense3.user.UserManager;
 import pl.plajer.villagedefense3.villagedefenseapi.StatsStorage;
 import pl.plajer.villagedefense3.villagedefenseapi.VillageGolemUpgradeEvent;
-import pl.plajerlair.core.services.ReportedException;
 
 public class GolemEvents implements Listener {
 

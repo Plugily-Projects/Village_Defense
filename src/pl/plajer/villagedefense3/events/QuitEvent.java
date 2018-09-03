@@ -27,11 +27,11 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import pl.plajer.villagedefense3.Main;
 import pl.plajer.villagedefense3.arena.ArenaManager;
 import pl.plajer.villagedefense3.arena.ArenaRegistry;
+import pl.plajer.villagedefense3.plajerlair.core.services.ReportedException;
 import pl.plajer.villagedefense3.user.User;
 import pl.plajer.villagedefense3.user.UserManager;
 import pl.plajer.villagedefense3.utils.MessageUtils;
 import pl.plajer.villagedefense3.villagedefenseapi.StatsStorage;
-import pl.plajerlair.core.services.ReportedException;
 
 /**
  * Created by Tom on 11/08/2014.

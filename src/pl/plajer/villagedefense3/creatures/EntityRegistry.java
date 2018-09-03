@@ -28,8 +28,8 @@ import java.util.Map;
 import org.bukkit.Bukkit;
 
 import pl.plajer.villagedefense3.Main;
+import pl.plajer.villagedefense3.plajerlair.core.services.ReportedException;
 import pl.plajer.villagedefense3.utils.MessageUtils;
-import pl.plajerlair.core.services.ReportedException;
 
 /**
  * @author Plajer

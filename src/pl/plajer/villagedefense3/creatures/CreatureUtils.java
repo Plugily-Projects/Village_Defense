@@ -26,7 +26,7 @@ import org.bukkit.entity.Zombie;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import pl.plajer.villagedefense3.Main;
-import pl.plajerlair.core.utils.MinigameUtils;
+import pl.plajer.villagedefense3.plajerlair.core.utils.MinigameUtils;
 
 /**
  * @author Plajer

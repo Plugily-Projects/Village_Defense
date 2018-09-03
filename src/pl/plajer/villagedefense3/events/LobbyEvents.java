@@ -31,7 +31,7 @@ import pl.plajer.villagedefense3.Main;
 import pl.plajer.villagedefense3.arena.Arena;
 import pl.plajer.villagedefense3.arena.ArenaRegistry;
 import pl.plajer.villagedefense3.arena.ArenaState;
-import pl.plajerlair.core.services.ReportedException;
+import pl.plajer.villagedefense3.plajerlair.core.services.ReportedException;
 
 /**
  * Created by Tom on 16/06/2015.
