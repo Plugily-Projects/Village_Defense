@@ -253,6 +253,9 @@ public class AdminCommands extends MainCommand {
     if (!hasPermission(sender, "villagedefense.admin.reload")) {
       return;
     }
+    for (Arena arena : ArenaRegistry.getArenas()) {
+      ArenaManager.stopGame(true, arena);
+    }
     ArenaRegistry.registerArenas();
     sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("Commands.Admin-Commands.Success-Reload"));
   }
