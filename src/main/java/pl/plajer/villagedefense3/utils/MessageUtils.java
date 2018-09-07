@@ -70,22 +70,6 @@ public class MessageUtils {
     player.sendMessage(sb.toString() + message);
   }
 
-  public static void sendTitle(Player player, String text, int fadeInTime, int showTime, int fadeOutTime) {
-    if (plugin.is1_9_R1() || plugin.is1_10_R1()) {
-      player.sendTitle(text, null);
-    } else {
-      player.sendTitle(text, null, fadeInTime, showTime, fadeOutTime);
-    }
-  }
-
-  public static void sendSubTitle(Player player, String text, int fadeInTime, int showTime, int fadeOutTime) {
-    if (plugin.is1_9_R1() || plugin.is1_10_R1()) {
-      player.sendTitle(null, text);
-    } else {
-      player.sendTitle(null, text, fadeInTime, showTime, fadeOutTime);
-    }
-  }
-
   public static void thisVersionIsNotSupported() {
     Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "  _   _           _                                                    _                _ ");
     Bukkit.getConsoleSender().sendMessage(ChatColor.RED + " | \\ | |   ___   | |_     ___   _   _   _ __    _ __     ___    _ __  | |_    ___    __| |");

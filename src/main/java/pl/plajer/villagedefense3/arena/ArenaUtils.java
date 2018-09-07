@@ -24,12 +24,10 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.PotionEffectType;
 
 import pl.plajer.villagedefense3.Main;
-import pl.plajer.villagedefense3.arena.initializers.ArenaInitializer1_10_R1;
 import pl.plajer.villagedefense3.arena.initializers.ArenaInitializer1_11_R1;
 import pl.plajer.villagedefense3.arena.initializers.ArenaInitializer1_12_R1;
 import pl.plajer.villagedefense3.arena.initializers.ArenaInitializer1_13_R1;
 import pl.plajer.villagedefense3.arena.initializers.ArenaInitializer1_13_R2;
-import pl.plajer.villagedefense3.arena.initializers.ArenaInitializer1_9_R1;
 import pl.plajer.villagedefense3.handlers.ChatManager;
 import pl.plajer.villagedefense3.user.User;
 import pl.plajer.villagedefense3.user.UserManager;
@@ -104,11 +102,7 @@ public class ArenaUtils {
 
   public static Arena initializeArena(String ID) {
     Arena arena;
-    if (plugin.is1_9_R1()) {
-      arena = new ArenaInitializer1_9_R1(ID, plugin);
-    } else if (plugin.is1_10_R1()) {
-      arena = new ArenaInitializer1_10_R1(ID, plugin);
-    } else if (plugin.is1_11_R1()) {
+    if (plugin.is1_11_R1()) {
       arena = new ArenaInitializer1_11_R1(ID, plugin);
     } else if (plugin.is1_12_R1()) {
       arena = new ArenaInitializer1_12_R1(ID, plugin);

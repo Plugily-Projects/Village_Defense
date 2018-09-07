@@ -1,5 +1,8 @@
 # Village Defense 3 Changelog
 
+### 3.12 Release (07.09.2018)
+* Dropped 1.9-1.10 support
+
 ### 3.11.2 Release (03.09.2018)
 * Temporarily merged PLCore to fix issues when using my other plugins
 

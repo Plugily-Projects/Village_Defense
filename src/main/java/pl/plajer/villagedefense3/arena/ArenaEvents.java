@@ -21,7 +21,6 @@ package pl.plajer.villagedefense3.arena;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 
-import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
@@ -48,7 +47,6 @@ import pl.plajer.villagedefense3.handlers.ChatManager;
 import pl.plajer.villagedefense3.handlers.items.SpecialItemManager;
 import pl.plajer.villagedefense3.user.User;
 import pl.plajer.villagedefense3.user.UserManager;
-import pl.plajer.villagedefense3.utils.MessageUtils;
 import pl.plajer.villagedefense3.villagedefenseapi.StatsStorage;
 import pl.plajerlair.core.services.ReportedException;
 
@@ -183,19 +181,17 @@ public class ArenaEvents implements Listener {
       player.setAllowFlight(true);
       player.setFlying(true);
       player.getInventory().clear();
-      MessageUtils.sendTitle(player, ChatColor.stripColor(ChatManager.colorMessage("In-Game.Death-Screen")), 0, 5 * 20, 0);
-      if (!plugin.is1_9_R1()) {
-        new BukkitRunnable() {
-          @Override
-          public void run() {
-            if (user.isSpectator()) {
-              player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(ChatManager.colorMessage("In-Game.Died-Respawn-In-Next-Wave")));
-            } else {
-              this.cancel();
-            }
+      player.sendTitle(ChatManager.colorMessage("In-Game.Death-Screen"), null, 0, 5 * 20, 0);
+      new BukkitRunnable() {
+        @Override
+        public void run() {
+          if (user.isSpectator()) {
+            player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(ChatManager.colorMessage("In-Game.Died-Respawn-In-Next-Wave")));
+          } else {
+            this.cancel();
           }
-        }.runTaskTimer(plugin, 20, 20);
-      }
+        }
+      }.runTaskTimer(plugin, 20, 20);
       ChatManager.broadcastAction(arena, player, ChatManager.ActionType.DEATH);
 
       ItemStack spectatorItem = new ItemStack(Material.COMPASS, 1);

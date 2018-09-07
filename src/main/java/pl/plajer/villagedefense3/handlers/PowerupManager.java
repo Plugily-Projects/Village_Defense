@@ -40,7 +40,6 @@ import org.bukkit.potion.PotionEffectType;
 import pl.plajer.villagedefense3.Main;
 import pl.plajer.villagedefense3.arena.Arena;
 import pl.plajer.villagedefense3.arena.ArenaRegistry;
-import pl.plajer.villagedefense3.utils.MessageUtils;
 import pl.plajer.villagedefense3.villagedefenseapi.VillagePowerupPickEvent;
 import pl.plajerlair.core.services.ReportedException;
 
@@ -161,8 +160,7 @@ public class PowerupManager {
             break;
         }
         for (Player p : arena.getPlayers()) {
-          MessageUtils.sendTitle(p, powerUpTitle, 5, 30, 5);
-          MessageUtils.sendSubTitle(p, subTitle, 5, 30, 5);
+          p.sendTitle(powerUpTitle, subTitle, 5, 30, 5);
         }
         hologram.delete();
       });

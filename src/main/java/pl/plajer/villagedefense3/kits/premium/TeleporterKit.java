@@ -109,7 +109,7 @@ public class TeleporterKit extends PremiumKit implements Listener {
               //todo remove
               ItemStack skull = new ItemStack(Material.SKULL_ITEM, 1, (short) 3);
               SkullMeta meta = (SkullMeta) skull.getItemMeta();
-              meta.setOwner(player.getName());
+              meta.setOwningPlayer(player);
               meta.setDisplayName(player.getName());
               meta.setLore(Collections.singletonList(""));
               skull.setItemMeta(meta);

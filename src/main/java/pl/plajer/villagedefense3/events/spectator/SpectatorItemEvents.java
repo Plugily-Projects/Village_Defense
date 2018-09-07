@@ -82,8 +82,7 @@ public class SpectatorItemEvents implements Listener {
       if (ArenaRegistry.getArena(player) != null && !UserManager.getUser(player.getUniqueId()).isSpectator()) {
         ItemStack skull = new ItemStack(Material.SKULL_ITEM, 1);
         SkullMeta meta = (SkullMeta) skull.getItemMeta();
-        //todo check deprecation
-        meta.setOwner(player.getName());
+        meta.setOwningPlayer(player);
         meta.setDisplayName(player.getName());
         meta.setLore(Collections.singletonList(ChatManager.colorMessage("In-Game.Spectator.Target-Player-Health").replace("%health%",
                 String.valueOf(MinigameUtils.round(player.getHealth(), 2)))));
