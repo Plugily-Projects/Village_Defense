@@ -79,6 +79,7 @@ public class ArenaRegistry {
 
   public static void registerArena(Arena arena) {
     Main.debug(Main.LogLevel.INFO, "Registering new game instance, " + arena.getID());
+    ShopManager.registerShop(arena);
     arenas.add(arena);
   }
 
