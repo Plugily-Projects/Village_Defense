@@ -38,4 +38,5 @@ permissions:
       villagedefense.admin.setwave: true
       villagedefense.admin.sign.create: true
       villagedefense.admin.sign.break: true
+      villagedefense.command.override: true
 

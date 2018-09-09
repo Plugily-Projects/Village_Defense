@@ -285,12 +285,10 @@ public class Events implements Listener {
           return;
         }
       }
-      if (event.getMessage().startsWith("/vd") || event.getMessage().contains("leave")
-              || event.getMessage().contains("stats") || event.getMessage().startsWith("/vda")) {
+      if (event.getMessage().startsWith("/vd") || event.getMessage().contains("leave") || event.getMessage().contains("stats") || event.getMessage().startsWith("/vda")) {
         return;
-
       }
-      if (event.getPlayer().isOp()) {
+      if (event.getPlayer().isOp() || event.getPlayer().hasPermission("villagedefense.command.override")) {
         return;
       }
       event.setCancelled(true);
