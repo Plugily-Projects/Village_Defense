@@ -213,6 +213,16 @@ public abstract class Arena extends BukkitRunnable {
         case STARTING:
           gameBar.setTitle(ChatManager.colorMessage("Bossbar.Starting-In").replace("%time%", String.valueOf(getTimer())));
           gameBar.setProgress(getTimer() / plugin.getConfig().getDouble("Starting-Waiting-Time", 60));
+          if(getPlayers().size() < getMinimumPlayers()) {
+            String message = ChatManager.formatMessage(this, ChatManager.colorMessage("In-Game.Messages.Lobby-Messages.Waiting-For-Players"), getMinimumPlayers());
+            for(Player p : getPlayers()) {
+              p.sendMessage(ChatManager.PLUGIN_PREFIX + message);
+            }
+            setArenaState(ArenaState.WAITING_FOR_PLAYERS);
+            Bukkit.getPluginManager().callEvent(new VillageGameStartEvent(this));
+            setTimer(15);
+            break;
+          }
           if (getTimer() == 0) {
             VillageGameStartEvent villageGameStartEvent = new VillageGameStartEvent(this);
             Bukkit.getPluginManager().callEvent(villageGameStartEvent);
