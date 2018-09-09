@@ -215,6 +215,8 @@ public abstract class Arena extends BukkitRunnable {
           gameBar.setProgress(getTimer() / plugin.getConfig().getDouble("Starting-Waiting-Time", 60));
           if(getPlayers().size() < getMinimumPlayers()) {
             String message = ChatManager.formatMessage(this, ChatManager.colorMessage("In-Game.Messages.Lobby-Messages.Waiting-For-Players"), getMinimumPlayers());
+            gameBar.setTitle(ChatManager.colorMessage("Bossbar.Waiting-For-Players"));
+            gameBar.setProgress(1.0);
             for(Player p : getPlayers()) {
               p.sendMessage(ChatManager.PLUGIN_PREFIX + message);
             }
