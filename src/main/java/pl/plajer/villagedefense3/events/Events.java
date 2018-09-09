@@ -217,7 +217,7 @@ public class Events implements Listener {
   }
 
   @EventHandler
-  public void ExplosionCancel(EntityExplodeEvent event) {
+  public void onExplosionCancel(EntityExplodeEvent event) {
     try {
       for (Arena arena : ArenaRegistry.getArenas()) {
         if (arena.getStartLocation().getWorld().getName().equals(event.getLocation().getWorld().getName())
