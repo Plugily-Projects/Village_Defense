@@ -1,13 +1,11 @@
 # Village Defense 3 Changelog
 
-### Version Release
-* Added cancel lobbystart when there are not enough players
-
 ### 3.12 Release (07.09.2018)
 * Dropped 1.9-1.10 support
 * /vda reload now force players to quit to prevent problems
 * Now shop will be successfully registered when arena is freshly created
 * Added villagedefense.command.override permission to be able to use all game commands while being in VillageDefense game
+* Added cancel lobbystart when there are not enough players
 
 ### 3.11.2 Release (03.09.2018)
 * Temporarily merged PLCore to fix issues when using my other plugins
