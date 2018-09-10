@@ -1,6 +1,6 @@
 # Village Defense 3 Changelog
 
-### 3.12 Release (07.09.2018)
+### 3.11.3 Release (07/10.09.2018)
 * Dropped 1.9-1.10 support
 * /vda reload now force players to quit to prevent problems
 * Now shop will be successfully registered when arena is freshly created
