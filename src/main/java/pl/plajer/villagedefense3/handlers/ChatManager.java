@@ -47,6 +47,12 @@ public class ChatManager {
     return ChatColor.translateAlternateColorCodes('&', message);
   }
 
+  public static void broadcast(Arena arena, String message) {
+    for (Player p : arena.getPlayers()) {
+      p.sendMessage(message);
+    }
+  }
+
   public static String colorMessage(String message) {
     try {
       return ChatColor.translateAlternateColorCodes('&', LanguageManager.getLanguageMessage(message));
@@ -63,15 +69,6 @@ public class ChatManager {
       Bukkit.getConsoleSender().sendMessage("Access string: " + message);
       return "ERR_MESSAGE_NOT_FOUND";
     }
-  }
-
-  public static String formatMessage(Arena arena, String message, Player[] players) {
-    String returnString = message;
-    for (Player player : players) {
-      returnString = StringUtils.replace(returnString, "%PLAYER%", player.getName());
-    }
-    returnString = colorRawMessage(formatPlaceholders(returnString, arena));
-    return returnString;
   }
 
   public static String formatMessage(Arena arena, String message, int integer) {
