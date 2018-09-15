@@ -89,7 +89,7 @@ public class AdminCommands extends MainCommand {
     command.add(new CommandData("/vda setprice " + gold + "<amount>", "/vda setprice <amount>",
             gray + "Set price of holding item, it's required for game shop\n" + gold + "Permission: " + gray + "villagedefense.admin.setprice"));
     command.add(new CommandData("/vda reload", "/vda reload", gray + "Reload all game arenas\n" + gray + "" + ChatColor.BOLD
-            + "They will be stopped!\n" + gold + "Permission: " + gray + "villagedefense.admin.reload"));
+            + "They will be stopped!\n" + ChatColor.BOLD + "" + ChatColor.RED + "Not recommended!" + gold + "Permission: " + gray + "villagedefense.admin.reload"));
     command.add(new CommandData("/vda delete " + gold + "<arena>", "/vda delete <arena>",
             gray + "Deletes specified arena\n" + gold + "Permission: " + gray + "villagedefense.admin.delete"));
     command.add(new CommandData("/vda tp " + gold + "<arena> <location type>", "/vda tp <arena> <location>",

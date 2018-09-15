@@ -7,6 +7,8 @@
 * Added villagedefense.command.override permission to be able to use all game commands while being in VillageDefense game
 * Added cancel lobbystart when there are not enough players
 * Added checking if player is in the same arena as spectator
+* Fixed permission typo with respawn others for villagedefense.admin.*
+* Added /vda reload permission for villagedefense.admin.*
 
 ### 3.11.2 Release (03.09.2018)
 * Temporarily merged PLCore to fix issues when using my other plugins

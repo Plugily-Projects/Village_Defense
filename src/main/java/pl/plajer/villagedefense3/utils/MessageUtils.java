@@ -21,9 +21,6 @@ package pl.plajer.villagedefense3.utils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.java.JavaPlugin;
-
-import pl.plajer.villagedefense3.Main;
 
 /**
  * @author Plajer
@@ -31,8 +28,6 @@ import pl.plajer.villagedefense3.Main;
  * Created at 11.02.2018
  */
 public class MessageUtils {
-
-  private static Main plugin = JavaPlugin.getPlugin(Main.class);
 
   public static void sendCenteredMessage(Player player, String message) {
     if (message == null || message.equals("")) {

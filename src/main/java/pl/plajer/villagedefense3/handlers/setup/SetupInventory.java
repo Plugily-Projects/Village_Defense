@@ -28,8 +28,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import pl.plajer.villagedefense3.Main;
 import pl.plajer.villagedefense3.arena.Arena;
-import pl.plajer.villagedefense3.utils.ItemBuilder;
 import pl.plajerlair.core.utils.ConfigUtils;
+import pl.plajerlair.core.utils.ItemBuilder;
 import pl.plajerlair.core.utils.LocationUtils;
 
 /**
