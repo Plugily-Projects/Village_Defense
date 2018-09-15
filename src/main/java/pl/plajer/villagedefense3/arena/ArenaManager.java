@@ -55,7 +55,7 @@ import pl.plajer.villagedefense3.villagedefenseapi.VillageGameLeaveAttemptEvent;
 import pl.plajer.villagedefense3.villagedefenseapi.VillageGameStopEvent;
 import pl.plajer.villagedefense3.villagedefenseapi.VillageWaveEndEvent;
 import pl.plajer.villagedefense3.villagedefenseapi.VillageWaveStartEvent;
-import pl.plajerlair.core.services.ReportedException;
+import pl.plajerlair.core.services.exception.ReportedException;
 import pl.plajerlair.core.utils.InventoryUtils;
 import pl.plajerlair.core.utils.MinigameUtils;
 

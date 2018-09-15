@@ -61,10 +61,10 @@ import pl.plajer.villagedefense3.user.UserManager;
 import pl.plajer.villagedefense3.villagedefenseapi.StatsStorage;
 import pl.plajer.villagedefense3.villagedefenseapi.VillageGameStartEvent;
 import pl.plajer.villagedefense3.villagedefenseapi.VillageGameStateChangeEvent;
-import pl.plajerlair.core.services.ReportedException;
+import pl.plajerlair.core.services.exception.ReportedException;
 import pl.plajerlair.core.utils.ConfigUtils;
+import pl.plajerlair.core.utils.GameScoreboard;
 import pl.plajerlair.core.utils.InventoryUtils;
-import pl.plajerlair.core.utils.MinigameScoreboard;
 
 /**
  * Created by Tom on 12/08/2014.
@@ -213,11 +213,11 @@ public abstract class Arena extends BukkitRunnable {
         case STARTING:
           gameBar.setTitle(ChatManager.colorMessage("Bossbar.Starting-In").replace("%time%", String.valueOf(getTimer())));
           gameBar.setProgress(getTimer() / plugin.getConfig().getDouble("Starting-Waiting-Time", 60));
-          if(getPlayers().size() < getMinimumPlayers()) {
+          if (getPlayers().size() < getMinimumPlayers()) {
             String message = ChatManager.formatMessage(this, ChatManager.colorMessage("In-Game.Messages.Lobby-Messages.Waiting-For-Players"), getMinimumPlayers());
             gameBar.setTitle(ChatManager.colorMessage("Bossbar.Waiting-For-Players"));
             gameBar.setProgress(1.0);
-            for(Player p : getPlayers()) {
+            for (Player p : getPlayers()) {
               p.sendMessage(ChatManager.PLUGIN_PREFIX + message);
             }
             setArenaState(ArenaState.WAITING_FOR_PLAYERS);
@@ -447,14 +447,14 @@ public abstract class Arena extends BukkitRunnable {
     if (getPlayers().size() == 0 || getArenaState() == ArenaState.RESTARTING) {
       return;
     }
-    MinigameScoreboard scoreboard;
+    GameScoreboard scoreboard;
     for (Player p : getPlayers()) {
       User user = UserManager.getUser(p.getUniqueId());
       if (getArenaState() == ArenaState.ENDING) {
         user.removeScoreboard();
         return;
       }
-      scoreboard = new MinigameScoreboard("PL_VD3", "PL_CR", ChatManager.colorMessage("Scoreboard.Title"));
+      scoreboard = new GameScoreboard("PL_VD3", "PL_CR", ChatManager.colorMessage("Scoreboard.Title"));
       List<String> lines;
       if (getArenaState() == ArenaState.IN_GAME) {
         if (LanguageManager.getPluginLocale() == Locale.ENGLISH) {
