@@ -44,36 +44,23 @@ public class RewardsHandler {
     config = ConfigUtils.getConfig(plugin, "rewards");
   }
 
-  public void performEndGameRewards(Arena arena) {
-    if (!enabled) {
+  public void performReward(Arena arena, RewardType type) {
+    if (!enabled || (type == RewardType.END_WAVE && !config.contains("rewards.endwave." + arena.getWave()))) {
       return;
     }
-    for (String string : config.getStringList("rewards.endgame")) {
+    for (String string : config.getStringList("rewards." + type.getPath())) {
       performCommand(arena, string);
     }
   }
 
-  public void performEndWaveRewards(Arena arena, int wave) {
+  public void performReward(Player player, RewardType type) {
     if (!enabled) {
       return;
     }
-    if (!config.contains("rewards.endwave." + wave)) {
-      return;
-    }
-    for (String string : config.getStringList("rewards.endwave." + wave)) {
-      performCommand(arena, string);
-    }
-  }
-
-  public void performZombieKillReward(Player player) {
-    if (!enabled) {
-      return;
-    }
-    for (String string : config.getStringList("rewards.zombiekill")) {
+    for (String string : config.getStringList("rewards." + type.getPath())) {
       performCommand(player, string);
     }
   }
-
 
   private void performCommand(Arena arena, String string) {
     if (!enabled) {
@@ -141,6 +128,21 @@ public class RewardsHandler {
     formatted = StringUtils.replace(formatted, "%PLAYERAMOUNT%", String.valueOf(arena.getPlayers().size()));
     formatted = StringUtils.replace(formatted, "%WAVE%", String.valueOf(arena.getWave()));
     return formatted;
+  }
+
+  public enum RewardType {
+    END_GAME("endgame"), END_WAVE("endwave"), ZOMBIE_KILL("zombiekill");
+
+    private String path;
+
+    RewardType(String path) {
+      this.path = path;
+    }
+
+    public String getPath() {
+      return path;
+    }
+
   }
 
 }

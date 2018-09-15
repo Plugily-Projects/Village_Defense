@@ -18,7 +18,6 @@
 
 package pl.plajer.villagedefense3.arena;
 
-import java.util.Arrays;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -41,9 +40,9 @@ import org.bukkit.scheduler.BukkitRunnable;
 import pl.plajer.villagedefense3.Main;
 import pl.plajer.villagedefense3.handlers.ChatManager;
 import pl.plajer.villagedefense3.handlers.PermissionsManager;
+import pl.plajer.villagedefense3.handlers.RewardsHandler;
 import pl.plajer.villagedefense3.handlers.items.SpecialItemManager;
 import pl.plajer.villagedefense3.handlers.language.LanguageManager;
-import pl.plajer.villagedefense3.handlers.language.Locale;
 import pl.plajer.villagedefense3.kits.kitapi.KitRegistry;
 import pl.plajer.villagedefense3.kits.level.GolemFriendKit;
 import pl.plajer.villagedefense3.user.User;
@@ -253,12 +252,7 @@ public class ArenaManager {
       } else {
         summaryEnding = ChatManager.colorMessage("In-Game.Messages.Game-End-Messages.Summary-Players-Died");
       }
-      List<String> summaryMessages;
-      if (LanguageManager.getPluginLocale() == Locale.ENGLISH) {
-        summaryMessages = LanguageManager.getLanguageFile().getStringList("In-Game.Messages.Game-End-Messages.Summary-Message");
-      } else {
-        summaryMessages = Arrays.asList(ChatManager.colorMessage("In-Game.Messages.Game-End-Messages.Summary-Message").split(";"));
-      }
+      List<String> summaryMessages = LanguageManager.getLanguageList("In-Game.Messages.Game-End-Messages.Summary-Message");
       for (final Player p : arena.getPlayers()) {
         User user = UserManager.getUser(p.getUniqueId());
         if (user.getStat(StatsStorage.StatisticType.HIGHEST_WAVE) <= arena.getWave()) {
@@ -337,7 +331,7 @@ public class ArenaManager {
    */
   public static void endWave(Arena arena) {
     try {
-      plugin.getRewardsHandler().performEndWaveRewards(arena, arena.getWave());
+      plugin.getRewardsHandler().performReward(arena, RewardsHandler.RewardType.END_WAVE);
       arena.setTimer(plugin.getConfig().getInt("Cooldown-Before-Next-Wave", 25));
       arena.getZombieCheckerLocations().clear();
       arena.setWave(arena.getWave() + 1);

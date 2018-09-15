@@ -44,6 +44,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import pl.plajer.villagedefense3.Main;
 import pl.plajer.villagedefense3.handlers.ChatManager;
+import pl.plajer.villagedefense3.handlers.RewardsHandler;
 import pl.plajer.villagedefense3.handlers.items.SpecialItemManager;
 import pl.plajer.villagedefense3.user.User;
 import pl.plajer.villagedefense3.user.UserManager;
@@ -108,28 +109,28 @@ public class ArenaEvents implements Listener {
   }
 
   @EventHandler
-  public void onDieEntity(EntityDeathEvent event) {
+  public void onDieEntity(EntityDeathEvent e) {
     try {
-      if (event.getEntity().getType() == EntityType.ZOMBIE || event.getEntity().getType() == EntityType.VILLAGER) {
+      if (e.getEntity().getType() == EntityType.ZOMBIE || e.getEntity().getType() == EntityType.VILLAGER) {
         for (Arena a : ArenaRegistry.getArenas()) {
-          switch (event.getEntityType()) {
+          switch (e.getEntityType()) {
             case ZOMBIE:
-              if (a.getZombies().contains(event.getEntity())) {
-                a.removeZombie((Zombie) event.getEntity());
+              if (a.getZombies().contains(e.getEntity())) {
+                a.removeZombie((Zombie) e.getEntity());
                 a.setTotalKilledZombies(a.getTotalKilledZombies() + 1);
-                if (ArenaRegistry.getArena(event.getEntity().getKiller()) != null) {
-                  a.addStat(event.getEntity().getKiller(), StatsStorage.StatisticType.KILLS);
-                  a.addExperience(event.getEntity().getKiller(), 2);
-                  plugin.getRewardsHandler().performZombieKillReward(event.getEntity().getKiller());
-                  plugin.getPowerupManager().spawnPowerup(event.getEntity().getLocation(), ArenaRegistry.getArena(event.getEntity().getKiller()));
+                if (ArenaRegistry.getArena(e.getEntity().getKiller()) != null) {
+                  a.addStat(e.getEntity().getKiller(), StatsStorage.StatisticType.KILLS);
+                  a.addExperience(e.getEntity().getKiller(), 2);
+                  plugin.getRewardsHandler().performReward(e.getEntity().getKiller(), RewardsHandler.RewardType.ZOMBIE_KILL);
+                  plugin.getPowerupManager().spawnPowerup(e.getEntity().getLocation(), ArenaRegistry.getArena(e.getEntity().getKiller()));
                 }
                 return;
               }
               break;
             case VILLAGER:
-              if (a.getVillagers().contains(event.getEntity())) {
-                a.getStartLocation().getWorld().strikeLightningEffect(event.getEntity().getLocation());
-                a.removeVillager((Villager) event.getEntity());
+              if (a.getVillagers().contains(e.getEntity())) {
+                a.getStartLocation().getWorld().strikeLightningEffect(e.getEntity().getLocation());
+                a.removeVillager((Villager) e.getEntity());
                 for (Player p : a.getPlayers()) {
                   p.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Messages.Villager-Died"));
                 }

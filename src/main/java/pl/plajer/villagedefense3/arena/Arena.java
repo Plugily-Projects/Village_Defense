@@ -19,7 +19,6 @@
 package pl.plajer.villagedefense3.arena;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -53,8 +52,8 @@ import org.bukkit.scheduler.BukkitRunnable;
 import pl.plajer.villagedefense3.Main;
 import pl.plajer.villagedefense3.handlers.ChatManager;
 import pl.plajer.villagedefense3.handlers.PermissionsManager;
+import pl.plajer.villagedefense3.handlers.RewardsHandler;
 import pl.plajer.villagedefense3.handlers.language.LanguageManager;
-import pl.plajer.villagedefense3.handlers.language.Locale;
 import pl.plajer.villagedefense3.kits.kitapi.KitRegistry;
 import pl.plajer.villagedefense3.user.User;
 import pl.plajer.villagedefense3.user.UserManager;
@@ -392,7 +391,7 @@ public abstract class Arena extends BukkitRunnable {
               user.setSpectator(false);
               user.setStat(StatsStorage.StatisticType.ORBS, 0);
             }
-            plugin.getRewardsHandler().performEndGameRewards(this);
+            plugin.getRewardsHandler().performReward(this, RewardsHandler.RewardType.END_GAME);
             players.clear();
             if (plugin.isBungeeActivated()) {
               if (ConfigUtils.getConfig(plugin, "bungee").getBoolean("Shutdown-When-Game-Ends")) {
@@ -442,17 +441,9 @@ public abstract class Arena extends BukkitRunnable {
       scoreboard = new GameScoreboard("PL_VD3", "PL_CR", ChatManager.colorMessage("Scoreboard.Title"));
       List<String> lines;
       if (getArenaState() == ArenaState.IN_GAME) {
-        if (LanguageManager.getPluginLocale() == Locale.ENGLISH) {
-          lines = LanguageManager.getLanguageFile().getStringList("Scoreboard.Content.Playing" + (fighting ? "" : "-Waiting"));
-        } else {
-          lines = Arrays.asList(ChatManager.colorMessage("Scoreboard.Content.Playing" + (fighting ? "" : "-Waiting")).split(";"));
-        }
+        lines = LanguageManager.getLanguageList("Scoreboard.Content.Playing" + (fighting ? "" : "-Waiting"));
       } else {
-        if (LanguageManager.getPluginLocale() == Locale.ENGLISH) {
-          lines = LanguageManager.getLanguageFile().getStringList("Scoreboard.Content." + getArenaState().getFormattedName());
-        } else {
-          lines = Arrays.asList(ChatManager.colorMessage("Scoreboard.Content." + getArenaState().getFormattedName()).split(";"));
-        }
+        lines = LanguageManager.getLanguageList("Scoreboard.Content." + getArenaState().getFormattedName());
       }
       for (String line : lines) {
         scoreboard.addRow(formatScoreboardLine(line, user));
