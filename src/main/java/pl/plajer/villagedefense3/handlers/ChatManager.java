@@ -49,7 +49,7 @@ public class ChatManager {
 
   public static void broadcast(Arena arena, String message) {
     for (Player p : arena.getPlayers()) {
-      p.sendMessage(message);
+      p.sendMessage(PLUGIN_PREFIX + message);
     }
   }
 
@@ -96,22 +96,16 @@ public class ChatManager {
   }
 
   public static void broadcastAction(Arena a, Player p, ActionType action) {
-    String message;
     switch (action) {
       case JOIN:
-        message = formatMessage(a, ChatManager.colorMessage("In-Game.Messages.Join"), p);
+        broadcast(a, formatMessage(a, ChatManager.colorMessage("In-Game.Messages.Join"), p));
         break;
       case LEAVE:
-        message = formatMessage(a, ChatManager.colorMessage("In-Game.Messages.Leave"), p);
+        broadcast(a, formatMessage(a, ChatManager.colorMessage("In-Game.Messages.Leave"), p));
         break;
       case DEATH:
-        message = formatMessage(a, ChatManager.colorMessage("In-Game.Messages.Death"), p);
+        broadcast(a, formatMessage(a, ChatManager.colorMessage("In-Game.Messages.Death"), p));
         break;
-      default:
-        return; //likely won't ever happen
-    }
-    for (Player player : a.getPlayers()) {
-      player.sendMessage(PLUGIN_PREFIX + message);
     }
   }
 

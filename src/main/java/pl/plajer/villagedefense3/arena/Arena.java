@@ -193,17 +193,12 @@ public abstract class Arena extends BukkitRunnable {
           if (getPlayers().size() < getMinimumPlayers()) {
             if (getTimer() <= 0) {
               setTimer(15);
-              String message = ChatManager.formatMessage(this, ChatManager.colorMessage("In-Game.Messages.Lobby-Messages.Waiting-For-Players"), getMinimumPlayers());
-              for (Player p : getPlayers()) {
-                p.sendMessage(ChatManager.PLUGIN_PREFIX + message);
-              }
+              ChatManager.broadcast(this, ChatManager.formatMessage(this, ChatManager.colorMessage("In-Game.Messages.Lobby-Messages.Waiting-For-Players"), getMinimumPlayers()));
               return;
             }
           } else {
             gameBar.setTitle(ChatManager.colorMessage("Bossbar.Waiting-For-Players"));
-            for (Player p : getPlayers()) {
-              p.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Messages.Lobby-Messages.Enough-Players-To-Start"));
-            }
+            ChatManager.broadcast(this, ChatManager.colorMessage("In-Game.Messages.Lobby-Messages.Enough-Players-To-Start"));
             setArenaState(ArenaState.STARTING);
             setTimer(Main.STARTING_TIMER_TIME);
             this.showPlayers();
@@ -214,12 +209,9 @@ public abstract class Arena extends BukkitRunnable {
           gameBar.setTitle(ChatManager.colorMessage("Bossbar.Starting-In").replace("%time%", String.valueOf(getTimer())));
           gameBar.setProgress(getTimer() / plugin.getConfig().getDouble("Starting-Waiting-Time", 60));
           if (getPlayers().size() < getMinimumPlayers()) {
-            String message = ChatManager.formatMessage(this, ChatManager.colorMessage("In-Game.Messages.Lobby-Messages.Waiting-For-Players"), getMinimumPlayers());
             gameBar.setTitle(ChatManager.colorMessage("Bossbar.Waiting-For-Players"));
             gameBar.setProgress(1.0);
-            for (Player p : getPlayers()) {
-              p.sendMessage(ChatManager.PLUGIN_PREFIX + message);
-            }
+            ChatManager.broadcast(this, ChatManager.formatMessage(this, ChatManager.colorMessage("In-Game.Messages.Lobby-Messages.Waiting-For-Players"), getMinimumPlayers()));
             setArenaState(ArenaState.WAITING_FOR_PLAYERS);
             Bukkit.getPluginManager().callEvent(new VillageGameStartEvent(this));
             setTimer(15);
@@ -328,9 +320,7 @@ public abstract class Arena extends BukkitRunnable {
                 if (getZombiesLeft() <= 5) {
                   clearZombies();
                   zombiesToSpawn = 0;
-                  for (Player p : getPlayers()) {
-                    p.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Messages.Zombie-Got-Stuck-In-The-Map"));
-                  }
+                  ChatManager.broadcast(this, ChatManager.colorMessage("In-Game.Messages.Zombie-Got-Stuck-In-The-Map"));
                 } else {
                   getZombies().clear();
                   for (int i = getZombiesLeft(); i > 0; i++) {
@@ -390,18 +380,13 @@ public abstract class Arena extends BukkitRunnable {
                 player.showPlayer(players);
               }
             }
-
             teleportAllToEndLocation();
-
             if (plugin.isInventoryManagerEnabled()) {
               for (Player player : getPlayers()) {
                 InventoryUtils.loadInventory(plugin, player);
               }
             }
-
-            for (Player p : getPlayers()) {
-              p.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("Commands.Teleported-To-The-Lobby"));
-            }
+            ChatManager.broadcast(this, ChatManager.colorMessage("Commands.Teleported-To-The-Lobby"));
 
             for (User user : UserManager.getUsers(this)) {
               user.setSpectator(false);

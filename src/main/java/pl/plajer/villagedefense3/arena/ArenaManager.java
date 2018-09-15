@@ -378,10 +378,7 @@ public class ArenaManager {
       for (User user : UserManager.getUsers(arena)) {
         user.getKit().reStock(user.toPlayer());
       }
-      String message = ChatManager.formatMessage(arena, ChatManager.colorMessage("In-Game.Messages.Wave-Started"), arena.getWave());
-      for (Player p : arena.getPlayers()) {
-        p.sendMessage(ChatManager.PLUGIN_PREFIX + message);
-      }
+      ChatManager.broadcast(arena, ChatManager.formatMessage(arena, ChatManager.colorMessage("In-Game.Messages.Wave-Started"), arena.getWave()));
     } catch (Exception e) {
       new ReportedException(plugin, e);
     }
