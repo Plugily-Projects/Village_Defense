@@ -18,7 +18,6 @@
 
 package pl.plajer.villagedefense3.handlers;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -45,10 +44,9 @@ import pl.plajer.villagedefense3.arena.ArenaManager;
 import pl.plajer.villagedefense3.arena.ArenaRegistry;
 import pl.plajer.villagedefense3.arena.ArenaState;
 import pl.plajer.villagedefense3.handlers.language.LanguageManager;
-import pl.plajer.villagedefense3.handlers.language.Locale;
-import pl.plajerlair.core.services.ReportedException;
+import pl.plajerlair.core.services.exception.ReportedException;
 import pl.plajerlair.core.utils.ConfigUtils;
-import pl.plajerlair.core.utils.MinigameUtils;
+import pl.plajerlair.core.utils.LocationUtils;
 
 public class SignManager implements Listener {
 
@@ -64,11 +62,7 @@ public class SignManager implements Listener {
     gameStateToString.put(ArenaState.IN_GAME, ChatManager.colorMessage("Signs.Game-States.In-Game"));
     gameStateToString.put(ArenaState.ENDING, ChatManager.colorMessage("Signs.Game-States.Ending"));
     gameStateToString.put(ArenaState.RESTARTING, ChatManager.colorMessage("Signs.Game-States.Restarting"));
-    if (LanguageManager.getPluginLocale() == Locale.ENGLISH) {
-      signLines = LanguageManager.getLanguageFile().getStringList("Signs.Lines");
-    } else {
-      signLines = Arrays.asList(ChatManager.colorMessage("Signs.Lines").split(";"));
-    }
+    signLines = LanguageManager.getLanguageList("Signs.Lines");
     plugin.getServer().getPluginManager().registerEvents(this, plugin);
     loadSigns();
     updateSignScheduler();
@@ -173,9 +167,7 @@ public class SignManager implements Listener {
               if (arena.getArenaState() == ArenaState.STARTING || arena.getArenaState() == ArenaState.WAITING_FOR_PLAYERS) {
                 ArenaManager.leaveAttempt(player, arena);
                 player.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Messages.Lobby-Messages.You-Were-Kicked-For-Premium-Slot"));
-                for (Player p : arena.getPlayers()) {
-                  p.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.formatMessage(arena, ChatManager.colorMessage("In-Game.Messages.Lobby-Messages.Kicked-For-Premium-Slot"), player));
-                }
+                ChatManager.broadcast(arena, ChatManager.formatMessage(arena, ChatManager.colorMessage("In-Game.Messages.Lobby-Messages.Kicked-For-Premium-Slot"), player));
                 ArenaManager.joinAttempt(e.getPlayer(), arena);
                 return;
               } else {
@@ -198,7 +190,7 @@ public class SignManager implements Listener {
     loadedSigns.clear();
     for (String path : ConfigUtils.getConfig(plugin, "arenas").getConfigurationSection("instances").getKeys(false)) {
       for (String sign : ConfigUtils.getConfig(plugin, "arenas").getStringList("instances." + path + ".signs")) {
-        Location loc = MinigameUtils.getLocation(sign);
+        Location loc = LocationUtils.getLocation(sign);
         if (loc.getBlock().getState() instanceof Sign) {
           loadedSigns.put((Sign) loc.getBlock().getState(), ArenaRegistry.getArena(path));
         } else {

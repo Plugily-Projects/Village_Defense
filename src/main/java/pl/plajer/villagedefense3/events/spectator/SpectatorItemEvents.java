@@ -40,7 +40,7 @@ import pl.plajer.villagedefense3.arena.Arena;
 import pl.plajer.villagedefense3.arena.ArenaRegistry;
 import pl.plajer.villagedefense3.handlers.ChatManager;
 import pl.plajer.villagedefense3.user.UserManager;
-import pl.plajerlair.core.services.ReportedException;
+import pl.plajerlair.core.services.exception.ReportedException;
 import pl.plajerlair.core.utils.MinigameUtils;
 
 public class SpectatorItemEvents implements Listener {
@@ -79,7 +79,7 @@ public class SpectatorItemEvents implements Listener {
     Inventory inventory = plugin.getServer().createInventory(null, MinigameUtils.serializeInt(ArenaRegistry.getArena(p).getPlayers().size()),
             ChatManager.colorMessage("In-Game.Spectator.Spectator-Menu-Name"));
     for (Player player : world.getPlayers()) {
-      if (ArenaRegistry.getArena(player) != null && !UserManager.getUser(player.getUniqueId()).isSpectator()) {
+      if (ArenaRegistry.getArena(p).getPlayers().contains(player) && !UserManager.getUser(player.getUniqueId()).isSpectator()) {
         ItemStack skull = new ItemStack(Material.SKULL_ITEM, 1);
         SkullMeta meta = (SkullMeta) skull.getItemMeta();
         meta.setOwningPlayer(player);

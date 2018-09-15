@@ -41,7 +41,7 @@ import pl.plajer.villagedefense3.Main;
 import pl.plajer.villagedefense3.arena.Arena;
 import pl.plajer.villagedefense3.arena.ArenaRegistry;
 import pl.plajer.villagedefense3.villagedefenseapi.VillagePowerupPickEvent;
-import pl.plajerlair.core.services.ReportedException;
+import pl.plajerlair.core.services.exception.ReportedException;
 
 /**
  * @author Plajer

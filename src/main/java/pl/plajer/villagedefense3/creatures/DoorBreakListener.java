@@ -36,7 +36,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import pl.plajer.villagedefense3.Main;
 import pl.plajer.villagedefense3.utils.Utils;
-import pl.plajerlair.core.services.ReportedException;
+import pl.plajerlair.core.services.exception.ReportedException;
 
 /**
  * Created by Tom on 14/08/2014.

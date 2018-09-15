@@ -29,7 +29,7 @@ import org.bukkit.event.entity.EntityCombustEvent;
 import pl.plajer.villagedefense3.Main;
 import pl.plajer.villagedefense3.arena.Arena;
 import pl.plajer.villagedefense3.arena.ArenaRegistry;
-import pl.plajerlair.core.services.ReportedException;
+import pl.plajerlair.core.services.exception.ReportedException;
 
 /**
  * Created by TomVerschueren on 6/02/2018.

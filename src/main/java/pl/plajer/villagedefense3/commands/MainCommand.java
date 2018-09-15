@@ -44,9 +44,9 @@ import pl.plajer.villagedefense3.handlers.ChatManager;
 import pl.plajer.villagedefense3.handlers.setup.SetupInventory;
 import pl.plajer.villagedefense3.utils.StringMatcher;
 import pl.plajer.villagedefense3.utils.Utils;
-import pl.plajerlair.core.services.ReportedException;
+import pl.plajerlair.core.services.exception.ReportedException;
 import pl.plajerlair.core.utils.ConfigUtils;
-import pl.plajerlair.core.utils.MinigameUtils;
+import pl.plajerlair.core.utils.LocationUtils;
 
 /**
  * Created by Tom on 7/08/2014.
@@ -423,7 +423,7 @@ public class MainCommand implements CommandExecutor {
           i = config.getConfigurationSection("instances." + args[0] + ".zombiespawns").getKeys(false).size();
         }
         i++;
-        MinigameUtils.saveLoc(plugin, config, "arenas", "instances." + args[0] + ".zombiespawns." + i, player.getLocation());
+        LocationUtils.saveLoc(plugin, config, "arenas", "instances." + args[0] + ".zombiespawns." + i, player.getLocation());
         player.sendMessage(ChatColor.GREEN + "Zombie spawn added!");
         return;
       }
@@ -436,7 +436,7 @@ public class MainCommand implements CommandExecutor {
         }
 
         i++;
-        MinigameUtils.saveLoc(plugin, config, "arenas", "instances." + args[0] + ".villagerspawns." + i, player.getLocation());
+        LocationUtils.saveLoc(plugin, config, "arenas", "instances." + args[0] + ".villagerspawns." + i, player.getLocation());
         player.sendMessage(ChatColor.GREEN + "Villager spawn added!");
         return;
       }
@@ -491,17 +491,17 @@ public class MainCommand implements CommandExecutor {
         String location = player.getLocation().getWorld().getName() + "," + player.getLocation().getX() + "," + player.getLocation().getY() + "," + player.getLocation().getZ()
                 + "," + player.getLocation().getYaw() + ",0.0";
         config.set("instances." + args[0] + ".lobbylocation", location);
-        player.sendMessage("VillageDefense: Lobby location for arena/instance " + args[0] + " set to " + MinigameUtils.locationToString(player.getLocation()));
+        player.sendMessage("VillageDefense: Lobby location for arena/instance " + args[0] + " set to " + LocationUtils.locationToString(player.getLocation()));
       } else if (args[2].equalsIgnoreCase("Startlocation") || args[2].equalsIgnoreCase("Startloc")) {
         String location = player.getLocation().getWorld().getName() + "," + player.getLocation().getX() + "," + player.getLocation().getY() + "," + player.getLocation().getZ()
                 + "," + player.getLocation().getYaw() + ",0.0";
         config.set("instances." + args[0] + ".Startlocation", location);
-        player.sendMessage("VillageDefense: Start location for arena/instance " + args[0] + " set to " + MinigameUtils.locationToString(player.getLocation()));
+        player.sendMessage("VillageDefense: Start location for arena/instance " + args[0] + " set to " + LocationUtils.locationToString(player.getLocation()));
       } else if (args[2].equalsIgnoreCase("Endlocation") || args[2].equalsIgnoreCase("Endloc")) {
         String location = player.getLocation().getWorld().getName() + "," + player.getLocation().getX() + "," + player.getLocation().getY() + "," + player.getLocation().getZ()
                 + "," + player.getLocation().getYaw() + ",0.0";
         config.set("instances." + args[0] + ".Endlocation", location);
-        player.sendMessage("VillageDefense: End location for arena/instance " + args[0] + " set to " + MinigameUtils.locationToString(player.getLocation()));
+        player.sendMessage("VillageDefense: End location for arena/instance " + args[0] + " set to " + LocationUtils.locationToString(player.getLocation()));
       } else {
         player.sendMessage(ChatColor.RED + "Invalid Command!");
         player.sendMessage(ChatColor.RED + "Usage: /vd <ARENA > set <StartLOCTION | LOBBYLOCATION | EndLOCATION>");
@@ -563,9 +563,9 @@ public class MainCommand implements CommandExecutor {
   private void createInstanceInConfig(String ID, String worldName) {
     String path = "instances." + ID + ".";
     FileConfiguration config = ConfigUtils.getConfig(plugin, "arenas");
-    MinigameUtils.saveLoc(plugin, config, "arenas", path + "lobbylocation", Bukkit.getServer().getWorlds().get(0).getSpawnLocation());
-    MinigameUtils.saveLoc(plugin, config, "arenas", path + "Startlocation", Bukkit.getServer().getWorlds().get(0).getSpawnLocation());
-    MinigameUtils.saveLoc(plugin, config, "arenas", path + "Endlocation", Bukkit.getServer().getWorlds().get(0).getSpawnLocation());
+    LocationUtils.saveLoc(plugin, config, "arenas", path + "lobbylocation", Bukkit.getServer().getWorlds().get(0).getSpawnLocation());
+    LocationUtils.saveLoc(plugin, config, "arenas", path + "Startlocation", Bukkit.getServer().getWorlds().get(0).getSpawnLocation());
+    LocationUtils.saveLoc(plugin, config, "arenas", path + "Endlocation", Bukkit.getServer().getWorlds().get(0).getSpawnLocation());
     config.set(path + "minimumplayers", 1);
     config.set(path + "maximumplayers", 10);
     config.set(path + "mapname", ID);
@@ -579,9 +579,9 @@ public class MainCommand implements CommandExecutor {
     arena.setMinimumPlayers(ConfigUtils.getConfig(plugin, "arenas").getInt(path + "minimumplayers"));
     arena.setMaximumPlayers(ConfigUtils.getConfig(plugin, "arenas").getInt(path + "maximumplayers"));
     arena.setMapName(ConfigUtils.getConfig(plugin, "arenas").getString(path + "mapname"));
-    arena.setLobbyLocation(MinigameUtils.getLocation(ConfigUtils.getConfig(plugin, "arenas").getString(path + "lobbylocation")));
-    arena.setStartLocation(MinigameUtils.getLocation(ConfigUtils.getConfig(plugin, "arenas").getString(path + "Startlocation")));
-    arena.setEndLocation(MinigameUtils.getLocation(ConfigUtils.getConfig(plugin, "arenas").getString(path + "Endlocation")));
+    arena.setLobbyLocation(LocationUtils.getLocation(ConfigUtils.getConfig(plugin, "arenas").getString(path + "lobbylocation")));
+    arena.setStartLocation(LocationUtils.getLocation(ConfigUtils.getConfig(plugin, "arenas").getString(path + "Startlocation")));
+    arena.setEndLocation(LocationUtils.getLocation(ConfigUtils.getConfig(plugin, "arenas").getString(path + "Endlocation")));
     arena.setReady(false);
 
     ArenaRegistry.registerArena(arena);

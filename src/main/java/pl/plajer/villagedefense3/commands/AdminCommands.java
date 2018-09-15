@@ -89,7 +89,7 @@ public class AdminCommands extends MainCommand {
     command.add(new CommandData("/vda setprice " + gold + "<amount>", "/vda setprice <amount>",
             gray + "Set price of holding item, it's required for game shop\n" + gold + "Permission: " + gray + "villagedefense.admin.setprice"));
     command.add(new CommandData("/vda reload", "/vda reload", gray + "Reload all game arenas\n" + gray + "" + ChatColor.BOLD
-            + "They will be stopped!\n" + gold + "Permission: " + gray + "villagedefense.admin.reload"));
+            + "They will be stopped!\n" + ChatColor.BOLD + "" + ChatColor.RED + "Not recommended!" + gold + "Permission: " + gray + "villagedefense.admin.reload"));
     command.add(new CommandData("/vda delete " + gold + "<arena>", "/vda delete <arena>",
             gray + "Deletes specified arena\n" + gold + "Permission: " + gray + "villagedefense.admin.delete"));
     command.add(new CommandData("/vda tp " + gold + "<arena> <location type>", "/vda tp <arena> <location>",
@@ -185,9 +185,7 @@ public class AdminCommands extends MainCommand {
     if (arena.getArenaState() == ArenaState.WAITING_FOR_PLAYERS || arena.getArenaState() == ArenaState.STARTING) {
       arena.setArenaState(ArenaState.STARTING);
       arena.setTimer(0);
-      for (Player p : ArenaRegistry.getArena((Player) sender).getPlayers()) {
-        p.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Messages.Admin-Messages.Set-Starting-In-To-0"));
-      }
+      ChatManager.broadcast(arena, ChatManager.colorMessage("In-Game.Messages.Admin-Messages.Set-Starting-In-To-0"));
     }
   }
 
@@ -370,7 +368,7 @@ public class AdminCommands extends MainCommand {
     }
     Utils.playSound(((Player) sender).getLocation(), "ENTITY_ZOMBIE_DEATH", "ENTITY_ZOMBIE_DEATH");
     for (Player loopPlayer : arena.getPlayers()) {
-      String message = ChatManager.formatMessage(arena, ChatManager.colorMessage("In-Game.Messages.Admin-Messages.Removed-Zombies"), new Player[]{(loopPlayer)});
+      String message = ChatManager.formatMessage(arena, ChatManager.colorMessage("In-Game.Messages.Admin-Messages.Removed-Zombies"), loopPlayer);
       loopPlayer.sendMessage(ChatManager.PLUGIN_PREFIX + message);
     }
   }
@@ -393,7 +391,7 @@ public class AdminCommands extends MainCommand {
     }
     Utils.playSound(((Player) sender).getLocation(), "ENTITY_VILLAGER_DEATH", "ENTITY_VILLAGER_DEATH");
     for (Player loopPlayer : arena.getPlayers()) {
-      String message = ChatManager.formatMessage(arena, ChatManager.colorMessage("In-Game.Messages.Admin-Messages.Removed-Villagers"), new Player[]{(loopPlayer)});
+      String message = ChatManager.formatMessage(arena, ChatManager.colorMessage("In-Game.Messages.Admin-Messages.Removed-Villagers"), loopPlayer);
       loopPlayer.sendMessage(ChatManager.PLUGIN_PREFIX + message);
     }
   }
@@ -417,7 +415,7 @@ public class AdminCommands extends MainCommand {
     }
     Utils.playSound(((Player) sender).getLocation(), "ENTITY_IRONGOLEM_DEATH", "ENTITY_IRON_GOLEM_DEATH");
     for (Player loopPlayer : arena.getPlayers()) {
-      String message = ChatManager.formatMessage(arena, ChatManager.colorMessage("In-Game.Messages.Admin-Messages.Removed-Golems"), new Player[]{(loopPlayer)});
+      String message = ChatManager.formatMessage(arena, ChatManager.colorMessage("In-Game.Messages.Admin-Messages.Removed-Golems"), loopPlayer);
       loopPlayer.sendMessage(ChatManager.PLUGIN_PREFIX + message);
     }
   }
@@ -486,7 +484,7 @@ public class AdminCommands extends MainCommand {
       }
       Utils.playSound(((Player) sender).getLocation(), "ENTITY_ZOMBIE_DEATH", "ENTITY_ZOMBIE_DEATH");
       for (Player loopPlayer : arena.getPlayers()) {
-        String message1 = ChatManager.formatMessage(arena, ChatManager.colorMessage("In-Game.Messages.Admin-Messages.Removed-Zombies"), new Player[]{(loopPlayer)});
+        String message1 = ChatManager.formatMessage(arena, ChatManager.colorMessage("In-Game.Messages.Admin-Messages.Removed-Zombies"), loopPlayer);
         loopPlayer.sendMessage(ChatManager.PLUGIN_PREFIX + message1);
       }
     } else {

@@ -27,9 +27,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 import pl.plajer.villagedefense3.Main;
 import pl.plajer.villagedefense3.arena.Arena;
 import pl.plajer.villagedefense3.handlers.language.LanguageManager;
-import pl.plajer.villagedefense3.handlers.language.Locale;
 import pl.plajer.villagedefense3.utils.MessageUtils;
-import pl.plajerlair.core.services.ReportedException;
+import pl.plajerlair.core.services.exception.ReportedException;
 import pl.plajerlair.core.utils.MinigameUtils;
 
 /**
@@ -47,6 +46,12 @@ public class ChatManager {
     return ChatColor.translateAlternateColorCodes('&', message);
   }
 
+  public static void broadcast(Arena arena, String message) {
+    for (Player p : arena.getPlayers()) {
+      p.sendMessage(PLUGIN_PREFIX + message);
+    }
+  }
+
   public static String colorMessage(String message) {
     try {
       return ChatColor.translateAlternateColorCodes('&', LanguageManager.getLanguageMessage(message));
@@ -55,7 +60,7 @@ public class ChatManager {
       e1.printStackTrace();
       MessageUtils.errorOccured();
       Bukkit.getConsoleSender().sendMessage("Game message not found!");
-      if (LanguageManager.getPluginLocale() == Locale.ENGLISH) {
+      if (LanguageManager.isDefaultLanguageUsed()) {
         Bukkit.getConsoleSender().sendMessage("Please regenerate your language.yml file! If error still occurs report it to the developer!");
       } else {
         Bukkit.getConsoleSender().sendMessage("Locale message string not found! Please contact developer!");
@@ -63,15 +68,6 @@ public class ChatManager {
       Bukkit.getConsoleSender().sendMessage("Access string: " + message);
       return "ERR_MESSAGE_NOT_FOUND";
     }
-  }
-
-  public static String formatMessage(Arena arena, String message, Player[] players) {
-    String returnString = message;
-    for (Player player : players) {
-      returnString = StringUtils.replace(returnString, "%PLAYER%", player.getName());
-    }
-    returnString = colorRawMessage(formatPlaceholders(returnString, arena));
-    return returnString;
   }
 
   public static String formatMessage(Arena arena, String message, int integer) {
@@ -99,22 +95,16 @@ public class ChatManager {
   }
 
   public static void broadcastAction(Arena a, Player p, ActionType action) {
-    String message;
     switch (action) {
       case JOIN:
-        message = formatMessage(a, ChatManager.colorMessage("In-Game.Messages.Join"), p);
+        broadcast(a, formatMessage(a, ChatManager.colorMessage("In-Game.Messages.Join"), p));
         break;
       case LEAVE:
-        message = formatMessage(a, ChatManager.colorMessage("In-Game.Messages.Leave"), p);
+        broadcast(a, formatMessage(a, ChatManager.colorMessage("In-Game.Messages.Leave"), p));
         break;
       case DEATH:
-        message = formatMessage(a, ChatManager.colorMessage("In-Game.Messages.Death"), p);
+        broadcast(a, formatMessage(a, ChatManager.colorMessage("In-Game.Messages.Death"), p));
         break;
-      default:
-        return; //likely won't ever happen
-    }
-    for (Player player : a.getPlayers()) {
-      player.sendMessage(PLUGIN_PREFIX + message);
     }
   }
 

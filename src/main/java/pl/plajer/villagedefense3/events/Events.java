@@ -73,7 +73,7 @@ import pl.plajer.villagedefense3.user.User;
 import pl.plajer.villagedefense3.user.UserManager;
 import pl.plajer.villagedefense3.utils.Utils;
 import pl.plajer.villagedefense3.villagedefenseapi.StatsStorage;
-import pl.plajerlair.core.services.ReportedException;
+import pl.plajerlair.core.services.exception.ReportedException;
 import pl.plajerlair.core.utils.MinigameUtils;
 
 /**

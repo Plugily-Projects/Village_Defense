@@ -19,7 +19,6 @@
 package pl.plajer.villagedefense3.arena;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -53,18 +52,18 @@ import org.bukkit.scheduler.BukkitRunnable;
 import pl.plajer.villagedefense3.Main;
 import pl.plajer.villagedefense3.handlers.ChatManager;
 import pl.plajer.villagedefense3.handlers.PermissionsManager;
+import pl.plajer.villagedefense3.handlers.RewardsHandler;
 import pl.plajer.villagedefense3.handlers.language.LanguageManager;
-import pl.plajer.villagedefense3.handlers.language.Locale;
 import pl.plajer.villagedefense3.kits.kitapi.KitRegistry;
 import pl.plajer.villagedefense3.user.User;
 import pl.plajer.villagedefense3.user.UserManager;
 import pl.plajer.villagedefense3.villagedefenseapi.StatsStorage;
 import pl.plajer.villagedefense3.villagedefenseapi.VillageGameStartEvent;
 import pl.plajer.villagedefense3.villagedefenseapi.VillageGameStateChangeEvent;
-import pl.plajerlair.core.services.ReportedException;
+import pl.plajerlair.core.services.exception.ReportedException;
 import pl.plajerlair.core.utils.ConfigUtils;
+import pl.plajerlair.core.utils.GameScoreboard;
 import pl.plajerlair.core.utils.InventoryUtils;
-import pl.plajerlair.core.utils.MinigameScoreboard;
 
 /**
  * Created by Tom on 12/08/2014.
@@ -193,17 +192,12 @@ public abstract class Arena extends BukkitRunnable {
           if (getPlayers().size() < getMinimumPlayers()) {
             if (getTimer() <= 0) {
               setTimer(15);
-              String message = ChatManager.formatMessage(this, ChatManager.colorMessage("In-Game.Messages.Lobby-Messages.Waiting-For-Players"), getMinimumPlayers());
-              for (Player p : getPlayers()) {
-                p.sendMessage(ChatManager.PLUGIN_PREFIX + message);
-              }
+              ChatManager.broadcast(this, ChatManager.formatMessage(this, ChatManager.colorMessage("In-Game.Messages.Lobby-Messages.Waiting-For-Players"), getMinimumPlayers()));
               return;
             }
           } else {
             gameBar.setTitle(ChatManager.colorMessage("Bossbar.Waiting-For-Players"));
-            for (Player p : getPlayers()) {
-              p.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Messages.Lobby-Messages.Enough-Players-To-Start"));
-            }
+            ChatManager.broadcast(this, ChatManager.colorMessage("In-Game.Messages.Lobby-Messages.Enough-Players-To-Start"));
             setArenaState(ArenaState.STARTING);
             setTimer(Main.STARTING_TIMER_TIME);
             this.showPlayers();
@@ -213,13 +207,10 @@ public abstract class Arena extends BukkitRunnable {
         case STARTING:
           gameBar.setTitle(ChatManager.colorMessage("Bossbar.Starting-In").replace("%time%", String.valueOf(getTimer())));
           gameBar.setProgress(getTimer() / plugin.getConfig().getDouble("Starting-Waiting-Time", 60));
-          if(getPlayers().size() < getMinimumPlayers()) {
-            String message = ChatManager.formatMessage(this, ChatManager.colorMessage("In-Game.Messages.Lobby-Messages.Waiting-For-Players"), getMinimumPlayers());
+          if (getPlayers().size() < getMinimumPlayers()) {
             gameBar.setTitle(ChatManager.colorMessage("Bossbar.Waiting-For-Players"));
             gameBar.setProgress(1.0);
-            for(Player p : getPlayers()) {
-              p.sendMessage(ChatManager.PLUGIN_PREFIX + message);
-            }
+            ChatManager.broadcast(this, ChatManager.formatMessage(this, ChatManager.colorMessage("In-Game.Messages.Lobby-Messages.Waiting-For-Players"), getMinimumPlayers()));
             setArenaState(ArenaState.WAITING_FOR_PLAYERS);
             Bukkit.getPluginManager().callEvent(new VillageGameStartEvent(this));
             setTimer(15);
@@ -328,9 +319,7 @@ public abstract class Arena extends BukkitRunnable {
                 if (getZombiesLeft() <= 5) {
                   clearZombies();
                   zombiesToSpawn = 0;
-                  for (Player p : getPlayers()) {
-                    p.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Messages.Zombie-Got-Stuck-In-The-Map"));
-                  }
+                  ChatManager.broadcast(this, ChatManager.colorMessage("In-Game.Messages.Zombie-Got-Stuck-In-The-Map"));
                 } else {
                   getZombies().clear();
                   for (int i = getZombiesLeft(); i > 0; i++) {
@@ -390,24 +379,19 @@ public abstract class Arena extends BukkitRunnable {
                 player.showPlayer(players);
               }
             }
-
             teleportAllToEndLocation();
-
             if (plugin.isInventoryManagerEnabled()) {
               for (Player player : getPlayers()) {
                 InventoryUtils.loadInventory(plugin, player);
               }
             }
-
-            for (Player p : getPlayers()) {
-              p.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("Commands.Teleported-To-The-Lobby"));
-            }
+            ChatManager.broadcast(this, ChatManager.colorMessage("Commands.Teleported-To-The-Lobby"));
 
             for (User user : UserManager.getUsers(this)) {
               user.setSpectator(false);
               user.setStat(StatsStorage.StatisticType.ORBS, 0);
             }
-            plugin.getRewardsHandler().performEndGameRewards(this);
+            plugin.getRewardsHandler().performReward(this, RewardsHandler.RewardType.END_GAME);
             players.clear();
             if (plugin.isBungeeActivated()) {
               if (ConfigUtils.getConfig(plugin, "bungee").getBoolean("Shutdown-When-Game-Ends")) {
@@ -447,27 +431,19 @@ public abstract class Arena extends BukkitRunnable {
     if (getPlayers().size() == 0 || getArenaState() == ArenaState.RESTARTING) {
       return;
     }
-    MinigameScoreboard scoreboard;
+    GameScoreboard scoreboard;
     for (Player p : getPlayers()) {
       User user = UserManager.getUser(p.getUniqueId());
       if (getArenaState() == ArenaState.ENDING) {
         user.removeScoreboard();
         return;
       }
-      scoreboard = new MinigameScoreboard("PL_VD3", "PL_CR", ChatManager.colorMessage("Scoreboard.Title"));
+      scoreboard = new GameScoreboard("PL_VD3", "PL_CR", ChatManager.colorMessage("Scoreboard.Title"));
       List<String> lines;
       if (getArenaState() == ArenaState.IN_GAME) {
-        if (LanguageManager.getPluginLocale() == Locale.ENGLISH) {
-          lines = LanguageManager.getLanguageFile().getStringList("Scoreboard.Content.Playing" + (fighting ? "" : "-Waiting"));
-        } else {
-          lines = Arrays.asList(ChatManager.colorMessage("Scoreboard.Content.Playing" + (fighting ? "" : "-Waiting")).split(";"));
-        }
+        lines = LanguageManager.getLanguageList("Scoreboard.Content.Playing" + (fighting ? "" : "-Waiting"));
       } else {
-        if (LanguageManager.getPluginLocale() == Locale.ENGLISH) {
-          lines = LanguageManager.getLanguageFile().getStringList("Scoreboard.Content." + getArenaState().getFormattedName());
-        } else {
-          lines = Arrays.asList(ChatManager.colorMessage("Scoreboard.Content." + getArenaState().getFormattedName()).split(";"));
-        }
+        lines = LanguageManager.getLanguageList("Scoreboard.Content." + getArenaState().getFormattedName());
       }
       for (String line : lines) {
         scoreboard.addRow(formatScoreboardLine(line, user));

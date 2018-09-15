@@ -40,7 +40,7 @@ import pl.plajer.villagedefense3.kits.kitapi.basekits.Kit;
 import pl.plajer.villagedefense3.user.User;
 import pl.plajer.villagedefense3.user.UserManager;
 import pl.plajer.villagedefense3.villagedefenseapi.VillagePlayerChooseKitEvent;
-import pl.plajerlair.core.services.ReportedException;
+import pl.plajerlair.core.services.exception.ReportedException;
 import pl.plajerlair.core.utils.MinigameUtils;
 
 /**

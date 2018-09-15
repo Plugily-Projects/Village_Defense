@@ -29,7 +29,7 @@ import pl.plajer.villagedefense3.Main;
 import pl.plajer.villagedefense3.handlers.ChatManager;
 import pl.plajer.villagedefense3.handlers.ShopManager;
 import pl.plajerlair.core.utils.ConfigUtils;
-import pl.plajerlair.core.utils.MinigameUtils;
+import pl.plajerlair.core.utils.LocationUtils;
 
 /**
  * Created by Tom on 27/07/2014.
@@ -114,10 +114,10 @@ public class ArenaRegistry {
           arena.clearVillagers();
           arena.clearWolfs();
           arena.clearGolems();
+          unregisterArena(arena);
         }
       }
     }
-    ArenaRegistry.getArenas().clear();
     if (!ConfigUtils.getConfig(plugin, "arenas").contains("instances")) {
       Bukkit.getConsoleSender().sendMessage(ChatManager.colorMessage("Validator.No-Instances-Created"));
       return;
@@ -132,9 +132,9 @@ public class ArenaRegistry {
       arena.setMinimumPlayers(ConfigUtils.getConfig(plugin, "arenas").getInt(s + "minimumplayers"));
       arena.setMaximumPlayers(ConfigUtils.getConfig(plugin, "arenas").getInt(s + "maximumplayers"));
       arena.setMapName(ConfigUtils.getConfig(plugin, "arenas").getString(s + "mapname"));
-      arena.setLobbyLocation(MinigameUtils.getLocation(ConfigUtils.getConfig(plugin, "arenas").getString(s + "lobbylocation")));
-      arena.setStartLocation(MinigameUtils.getLocation(ConfigUtils.getConfig(plugin, "arenas").getString(s + "Startlocation")));
-      arena.setEndLocation(MinigameUtils.getLocation(ConfigUtils.getConfig(plugin, "arenas").getString(s + "Endlocation")));
+      arena.setLobbyLocation(LocationUtils.getLocation(ConfigUtils.getConfig(plugin, "arenas").getString(s + "lobbylocation")));
+      arena.setStartLocation(LocationUtils.getLocation(ConfigUtils.getConfig(plugin, "arenas").getString(s + "Startlocation")));
+      arena.setEndLocation(LocationUtils.getLocation(ConfigUtils.getConfig(plugin, "arenas").getString(s + "Endlocation")));
 
       if (!ConfigUtils.getConfig(plugin, "arenas").getBoolean(s + "isdone")) {
         Bukkit.getConsoleSender().sendMessage(ChatManager.colorMessage("Validator.Invalid-Arena-Configuration").replace("%arena%", ID).replace("%error%", "NOT VALIDATED"));
@@ -146,7 +146,7 @@ public class ArenaRegistry {
       if (ConfigUtils.getConfig(plugin, "arenas").contains(s + "zombiespawns")) {
         for (String string : ConfigUtils.getConfig(plugin, "arenas").getConfigurationSection(s + "zombiespawns").getKeys(false)) {
           String path = s + "zombiespawns." + string;
-          arena.addZombieSpawn(MinigameUtils.getLocation(ConfigUtils.getConfig(plugin, "arenas").getString(path)));
+          arena.addZombieSpawn(LocationUtils.getLocation(ConfigUtils.getConfig(plugin, "arenas").getString(path)));
         }
       } else {
         Bukkit.getConsoleSender().sendMessage(ChatManager.colorMessage("Validator.Invalid-Arena-Configuration").replace("%arena%", ID).replace("%error%", "ZOMBIE SPAWNS"));
@@ -158,7 +158,7 @@ public class ArenaRegistry {
       if (ConfigUtils.getConfig(plugin, "arenas").contains(s + "villagerspawns")) {
         for (String string : ConfigUtils.getConfig(plugin, "arenas").getConfigurationSection(s + "villagerspawns").getKeys(false)) {
           String path = s + "villagerspawns." + string;
-          arena.addVillagerSpawn(MinigameUtils.getLocation(ConfigUtils.getConfig(plugin, "arenas").getString(path)));
+          arena.addVillagerSpawn(LocationUtils.getLocation(ConfigUtils.getConfig(plugin, "arenas").getString(path)));
         }
       } else {
         Bukkit.getConsoleSender().sendMessage(ChatManager.colorMessage("Validator.Invalid-Arena-Configuration").replace("%arena%", ID).replace("%error%", "VILLAGER SPAWNS"));
@@ -169,7 +169,7 @@ public class ArenaRegistry {
       if (ConfigUtils.getConfig(plugin, "arenas").contains(s + "doors")) {
         for (String string : ConfigUtils.getConfig(plugin, "arenas").getConfigurationSection(s + "doors").getKeys(false)) {
           String path = s + "doors." + string + ".";
-          arena.addDoor(MinigameUtils.getLocation(ConfigUtils.getConfig(plugin, "arenas").getString(path + "location")),
+          arena.addDoor(LocationUtils.getLocation(ConfigUtils.getConfig(plugin, "arenas").getString(path + "location")),
                   (byte) ConfigUtils.getConfig(plugin, "arenas").getInt(path + "byte"));
         }
       } else {

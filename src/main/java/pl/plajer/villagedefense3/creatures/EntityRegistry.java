@@ -29,7 +29,7 @@ import org.bukkit.Bukkit;
 
 import pl.plajer.villagedefense3.Main;
 import pl.plajer.villagedefense3.utils.MessageUtils;
-import pl.plajerlair.core.services.ReportedException;
+import pl.plajerlair.core.services.exception.ReportedException;
 
 /**
  * @author Plajer

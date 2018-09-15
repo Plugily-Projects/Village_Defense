@@ -33,8 +33,9 @@ import org.bukkit.plugin.java.JavaPlugin;
 import pl.plajer.villagedefense3.Main;
 import pl.plajer.villagedefense3.arena.Arena;
 import pl.plajer.villagedefense3.arena.ArenaRegistry;
-import pl.plajerlair.core.services.ReportedException;
+import pl.plajerlair.core.services.exception.ReportedException;
 import pl.plajerlair.core.utils.ConfigUtils;
+import pl.plajerlair.core.utils.LocationUtils;
 import pl.plajerlair.core.utils.MinigameUtils;
 
 /**
@@ -58,7 +59,7 @@ public class ShopManager {
 
   public static void registerShop(Arena a) {
     try {
-      Location location = MinigameUtils.getLocation(ConfigUtils.getConfig(JavaPlugin.getPlugin(Main.class), "arenas").getString("instances." + a.getID() + ".shop"));
+      Location location = LocationUtils.getLocation(ConfigUtils.getConfig(JavaPlugin.getPlugin(Main.class), "arenas").getString("instances." + a.getID() + ".shop"));
       if (!(location.getBlock().getState() instanceof Chest)) {
         Main.debug(Main.LogLevel.WARN, "Shop failed to load, invalid location for loc " + location);
         return;
