@@ -165,6 +165,8 @@ public class ArenaManager {
       p.updateInventory();
       for (Player player : arena.getPlayers()) {
         ArenaUtils.showPlayer(player, arena);
+        player.setExp(1);
+        player.setLevel(0);
       }
       arena.showPlayers();
       Main.debug(Main.LogLevel.INFO, "Join task end, " + p.getName());

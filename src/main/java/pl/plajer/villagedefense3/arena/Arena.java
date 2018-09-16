@@ -229,6 +229,8 @@ public abstract class Arena extends BukkitRunnable {
             setTimer(5);
             teleportAllToStartLocation();
             for (Player player : getPlayers()) {
+              player.setExp(0);
+              player.setLevel(0);
               player.getInventory().clear();
               player.setGameMode(GameMode.SURVIVAL);
               User user = UserManager.getUser(player.getUniqueId());
@@ -246,6 +248,10 @@ public abstract class Arena extends BukkitRunnable {
               player.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Messages.Lobby-Messages.Game-Started"));
             }
             fighting = false;
+          }
+          for (Player player : getPlayers()) {
+            player.setExp(player.getExp() - 1F / getTimer());
+            player.setLevel(getTimer() - 1);
           }
           setTimer(getTimer() - 1);
           break;
