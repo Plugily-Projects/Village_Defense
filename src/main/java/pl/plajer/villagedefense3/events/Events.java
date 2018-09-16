@@ -72,6 +72,7 @@ import pl.plajer.villagedefense3.handlers.items.SpecialItemManager;
 import pl.plajer.villagedefense3.user.User;
 import pl.plajer.villagedefense3.user.UserManager;
 import pl.plajer.villagedefense3.utils.Utils;
+import pl.plajer.villagedefense3.utils.XMaterial;
 import pl.plajer.villagedefense3.villagedefenseapi.StatsStorage;
 import pl.plajerlair.core.services.exception.ReportedException;
 import pl.plajerlair.core.utils.MinigameUtils;
@@ -301,7 +302,8 @@ public class Events implements Listener {
   @EventHandler
   public void onDoorDrop(ItemSpawnEvent event) {
     try {
-      if (event.getEntity().getItemStack().getType() == Material.WOOD_DOOR) {
+      //todo check
+      if (event.getEntity().getItemStack().getType() == XMaterial.OAK_DOOR.parseMaterial()) {
         for (Entity entity : Utils.getNearbyEntities(event.getLocation(), 20)) {
           if (entity.getType() == EntityType.PLAYER) {
             if (ArenaRegistry.getArena((Player) entity) != null) {
@@ -593,7 +595,7 @@ public class Events implements Listener {
     if (!ArenaRegistry.isInArena(event.getPlayer())) {
       return;
     }
-    if (event.getPlayer().getTargetBlock(null, 7).getType() == Material.WORKBENCH) {
+    if (event.getPlayer().getTargetBlock(null, 7).getType() == XMaterial.CRAFTING_TABLE.parseMaterial()) {
       event.setCancelled(true);
     }
   }

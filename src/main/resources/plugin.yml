@@ -3,6 +3,7 @@ main: pl.plajer.villagedefense3.Main
 author: [TomTheDeveloper, Plajer]
 version: 3.11.3
 softdepend: [HolographicDisplays, PlaceholderAPI]
+api-version: 1.13
 
 commands:
   VillageDefense:

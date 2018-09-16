@@ -46,6 +46,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.entity.Villager;
 import org.bukkit.entity.Wolf;
 import org.bukkit.entity.Zombie;
+import org.bukkit.material.Directional;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -57,6 +58,8 @@ import pl.plajer.villagedefense3.handlers.language.LanguageManager;
 import pl.plajer.villagedefense3.kits.kitapi.KitRegistry;
 import pl.plajer.villagedefense3.user.User;
 import pl.plajer.villagedefense3.user.UserManager;
+import pl.plajer.villagedefense3.utils.Utils;
+import pl.plajer.villagedefense3.utils.XMaterial;
 import pl.plajer.villagedefense3.villagedefenseapi.StatsStorage;
 import pl.plajer.villagedefense3.villagedefenseapi.VillageGameStartEvent;
 import pl.plajer.villagedefense3.villagedefenseapi.VillageGameStateChangeEvent;
@@ -1121,9 +1124,14 @@ public abstract class Arena extends BukkitRunnable {
     for (Location location : doorBlocks.keySet()) {
       Block block = location.getBlock();
       Byte doorData = doorBlocks.get(location);
-      //todo id!
-      int id = Material.WOODEN_DOOR.getId();
-      block.setTypeIdAndData(id, doorData, false);
+      //todo check
+      if (plugin.is1_11_R1() || plugin.is1_12_R1()) {
+        int id = Material.WOODEN_DOOR.getId();
+        block.setTypeIdAndData(id, doorData, false);
+      } else {
+        block.setType(XMaterial.OAK_DOOR.parseMaterial());
+        ((Directional) block).setFacingDirection(Utils.getFacingByByte(doorData));
+      }
     }
   }
 

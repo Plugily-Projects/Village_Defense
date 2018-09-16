@@ -43,6 +43,7 @@ import pl.plajer.villagedefense3.kits.kitapi.basekits.PremiumKit;
 import pl.plajer.villagedefense3.utils.ArmorHelper;
 import pl.plajer.villagedefense3.utils.Utils;
 import pl.plajer.villagedefense3.utils.WeaponHelper;
+import pl.plajer.villagedefense3.utils.XMaterial;
 import pl.plajerlair.core.services.exception.ReportedException;
 
 /**
@@ -77,7 +78,7 @@ public class TornadoKit extends PremiumKit implements Listener {
 
     player.getInventory().addItem(new ItemStack(Material.COOKED_BEEF, 10));
     player.getInventory().addItem(new ItemStack(Material.SADDLE));
-    ItemStack tornado = new ItemStack(Material.WEB, 5);
+    ItemStack tornado = new ItemStack(XMaterial.COBWEB.parseMaterial(), 5);
     List<String> tornadoLore = Utils.splitString(ChatManager.colorMessage("Kits.Tornado.Game-Item-Lore"), 40);
     this.setItemNameAndLore(tornado, ChatManager.colorMessage("Kits.Tornado.Game-Item-Name"), tornadoLore.toArray(new String[0]));
     player.getInventory().addItem(tornado);
@@ -85,12 +86,12 @@ public class TornadoKit extends PremiumKit implements Listener {
 
   @Override
   public Material getMaterial() {
-    return Material.WEB;
+    return XMaterial.COBWEB.parseMaterial();
   }
 
   @Override
   public void reStock(Player player) {
-    ItemStack tornado = new ItemStack(Material.WEB, 5);
+    ItemStack tornado = new ItemStack(XMaterial.COBWEB.parseMaterial(), 5);
     List<String> tornadoLore = Utils.splitString(ChatManager.colorMessage("Kits.Tornado.Game-Item-Lore"), 40);
     this.setItemNameAndLore(tornado, ChatManager.colorMessage("Kits.Tornado.Game-Item-Name"), tornadoLore.toArray(new String[0]));
     player.getInventory().addItem(tornado);

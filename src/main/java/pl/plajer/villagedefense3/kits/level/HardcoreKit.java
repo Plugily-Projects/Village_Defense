@@ -35,6 +35,7 @@ import pl.plajer.villagedefense3.user.UserManager;
 import pl.plajer.villagedefense3.utils.ArmorHelper;
 import pl.plajer.villagedefense3.utils.Utils;
 import pl.plajer.villagedefense3.utils.WeaponHelper;
+import pl.plajer.villagedefense3.utils.XMaterial;
 import pl.plajer.villagedefense3.villagedefenseapi.StatsStorage;
 import pl.plajerlair.core.utils.ConfigUtils;
 
@@ -68,7 +69,7 @@ public class HardcoreKit extends LevelKit {
 
   @Override
   public Material getMaterial() {
-    return Material.SKULL_ITEM;
+    return XMaterial.PLAYER_HEAD.parseMaterial();
   }
 
   @Override

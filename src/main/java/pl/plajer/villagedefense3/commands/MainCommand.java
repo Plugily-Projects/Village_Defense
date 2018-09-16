@@ -24,7 +24,6 @@ import java.util.List;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -44,6 +43,7 @@ import pl.plajer.villagedefense3.handlers.ChatManager;
 import pl.plajer.villagedefense3.handlers.setup.SetupInventory;
 import pl.plajer.villagedefense3.utils.StringMatcher;
 import pl.plajer.villagedefense3.utils.Utils;
+import pl.plajer.villagedefense3.utils.XMaterial;
 import pl.plajerlair.core.services.exception.ReportedException;
 import pl.plajerlair.core.utils.ConfigUtils;
 import pl.plajerlair.core.utils.LocationUtils;
@@ -442,7 +442,8 @@ public class MainCommand implements CommandExecutor {
       }
       if (args[2].equalsIgnoreCase("doors")) {
         Block block = player.getTargetBlock(null, 10);
-        if (block.getType() == Material.WOODEN_DOOR) {
+        //todo check
+        if (block.getType() == XMaterial.OAK_DOOR.parseMaterial()) {
           String ID = args[0];
           int i;
           if (!config.contains("instances." + ID + ".doors")) {
@@ -453,10 +454,10 @@ public class MainCommand implements CommandExecutor {
           i++;
 
           Block relativeBlock = null;
-          if (block.getRelative(BlockFace.DOWN).getType() == Material.WOODEN_DOOR) {
+          if (block.getRelative(BlockFace.DOWN).getType() == XMaterial.OAK_DOOR.parseMaterial()) {
             relativeBlock = block;
             block = block.getRelative(BlockFace.DOWN);
-          } else if (block.getRelative(BlockFace.UP).getType() == Material.WOODEN_DOOR) {
+          } else if (block.getRelative(BlockFace.UP).getType() == XMaterial.OAK_DOOR.parseMaterial()) {
             relativeBlock = block.getRelative(BlockFace.UP);
           }
           if (relativeBlock == null) {

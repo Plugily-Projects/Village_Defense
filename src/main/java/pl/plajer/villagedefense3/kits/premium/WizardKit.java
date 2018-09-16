@@ -49,6 +49,7 @@ import pl.plajer.villagedefense3.kits.kitapi.basekits.PremiumKit;
 import pl.plajer.villagedefense3.user.UserManager;
 import pl.plajer.villagedefense3.utils.ArmorHelper;
 import pl.plajer.villagedefense3.utils.Utils;
+import pl.plajer.villagedefense3.utils.XMaterial;
 import pl.plajerlair.core.services.exception.ReportedException;
 
 /**
@@ -82,7 +83,7 @@ public class WizardKit extends PremiumKit implements Listener {
     this.setItemNameAndLore(wizardStaff, ChatManager.colorMessage("Kits.Wizard.Staff-Item-Name"), staffLore.toArray(new String[0]));
     player.getInventory().addItem(wizardStaff);
 
-    ItemStack essenceOfDarkness = new ItemStack(Material.INK_SACK, 4);
+    ItemStack essenceOfDarkness = new ItemStack(XMaterial.INK_SAC.parseMaterial(), 4);
     List<String> essenceLore = Utils.splitString(ChatManager.colorMessage("Kits.Wizard.Essence-Item-Lore"), 40);
     this.setItemNameAndLore(essenceOfDarkness, ChatManager.colorMessage("Kits.Wizard.Essence-Item-Name"), essenceLore.toArray(new String[0]));
     player.getInventory().addItem(essenceOfDarkness);
@@ -99,7 +100,7 @@ public class WizardKit extends PremiumKit implements Listener {
 
   @Override
   public void reStock(Player player) {
-    ItemStack essenceOfDarkness = new ItemStack(Material.INK_SACK, 1);
+    ItemStack essenceOfDarkness = new ItemStack(XMaterial.INK_SAC.parseMaterial(), 1);
     List<String> essenceLore = Utils.splitString(ChatManager.colorMessage("Kits.Wizard.Essence-Item-Lore"), 40);
     this.setItemNameAndLore(essenceOfDarkness, ChatManager.colorMessage("Kits.Wizard.Essence-Item-Name"), essenceLore.toArray(new String[0]));
     player.getInventory().addItem(essenceOfDarkness);

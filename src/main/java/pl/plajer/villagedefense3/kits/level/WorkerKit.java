@@ -42,6 +42,7 @@ import pl.plajer.villagedefense3.user.UserManager;
 import pl.plajer.villagedefense3.utils.ArmorHelper;
 import pl.plajer.villagedefense3.utils.Utils;
 import pl.plajer.villagedefense3.utils.WeaponHelper;
+import pl.plajer.villagedefense3.utils.XMaterial;
 import pl.plajer.villagedefense3.villagedefenseapi.StatsStorage;
 import pl.plajerlair.core.services.exception.ReportedException;
 import pl.plajerlair.core.utils.ConfigUtils;
@@ -73,17 +74,17 @@ public class WorkerKit extends LevelKit implements Listener {
     player.getInventory().addItem(WeaponHelper.getEnchantedBow(Enchantment.DURABILITY, 10));
     player.getInventory().addItem(new ItemStack(Material.ARROW, 64));
     player.getInventory().addItem(new ItemStack(Material.COOKED_BEEF, 10));
-    player.getInventory().addItem(new ItemStack(Material.WOOD_DOOR, 2));
+    player.getInventory().addItem(new ItemStack(XMaterial.OAK_DOOR.parseMaterial(), 2));
   }
 
   @Override
   public Material getMaterial() {
-    return Material.WOOD_DOOR;
+    return XMaterial.OAK_DOOR.parseMaterial();
   }
 
   @Override
   public void reStock(Player player) {
-    player.getInventory().addItem(new ItemStack(Material.WOOD_DOOR));
+    player.getInventory().addItem(XMaterial.OAK_DOOR.parseItem());
   }
 
   @EventHandler(priority = EventPriority.HIGHEST)
@@ -96,7 +97,7 @@ public class WorkerKit extends LevelKit implements Listener {
       User user = UserManager.getUser(e.getPlayer().getUniqueId());
       ItemStack stack = e.getPlayer().getInventory().getItemInMainHand();
       if (user.isSpectator() || stack == null || !arena.getDoorLocations().containsKey(e.getBlock().getLocation())
-              || !(stack.getType() == Material.WOOD_DOOR || stack.getType() == Material.WOODEN_DOOR)) {
+          || !(stack.getType() == XMaterial.OAK_DOOR.parseMaterial() /*todo || stack.getType() == Material.WOODEN_DOOR*/)) {
         e.setCancelled(true);
         return;
       }

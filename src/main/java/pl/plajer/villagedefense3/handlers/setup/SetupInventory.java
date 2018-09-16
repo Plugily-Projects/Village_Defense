@@ -28,6 +28,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import pl.plajer.villagedefense3.Main;
 import pl.plajer.villagedefense3.arena.Arena;
+import pl.plajer.villagedefense3.utils.XMaterial;
 import pl.plajerlair.core.utils.ConfigUtils;
 import pl.plajerlair.core.utils.ItemBuilder;
 import pl.plajerlair.core.utils.LocationUtils;
@@ -107,7 +108,7 @@ public class SetupInventory {
             .lore(ChatColor.GRAY + "on the place you're standing at.")
             .lore(isOptionDoneList("instances." + arena.getID() + ".zombiespawns"))
             .build()));
-    inventory.addItem((new ItemBuilder(new ItemStack(Material.WOOD_DOOR))
+    inventory.addItem((new ItemBuilder(XMaterial.OAK_DOOR.parseItem())
             .name(ChatColor.GOLD + "► Add doors")
             .lore(ChatColor.GRAY + "Target arena door and click this.")
             .lore(isOptionDoneList("instances." + arena.getID() + ".doors"))
@@ -119,7 +120,7 @@ public class SetupInventory {
             .lore(ChatColor.RED + "Remember to set item prices for the game")
             .lore(ChatColor.RED + "using /vda setprice command!")
             .build());
-    inventory.addItem(new ItemBuilder(new ItemStack(Material.FIREWORK))
+    inventory.addItem(new ItemBuilder(XMaterial.FIREWORK_ROCKET.parseItem())
             .name(ChatColor.GOLD + "► " + ChatColor.GREEN + "Register arena")
             .lore(ChatColor.GRAY + "Click this when you're done with configuration.")
             .lore(ChatColor.GRAY + "It will validate and register arena.")

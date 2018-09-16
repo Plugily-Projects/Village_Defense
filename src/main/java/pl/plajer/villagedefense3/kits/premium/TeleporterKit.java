@@ -47,6 +47,7 @@ import pl.plajer.villagedefense3.user.UserManager;
 import pl.plajer.villagedefense3.utils.ArmorHelper;
 import pl.plajer.villagedefense3.utils.Utils;
 import pl.plajer.villagedefense3.utils.WeaponHelper;
+import pl.plajer.villagedefense3.utils.XMaterial;
 import pl.plajerlair.core.services.exception.ReportedException;
 
 /**
@@ -106,8 +107,8 @@ public class TeleporterKit extends PremiumKit implements Listener {
           Inventory inventory = plugin.getServer().createInventory(null, 18, ChatManager.colorMessage("Kits.Teleporter.Game-Item-Menu-Name"));
           for (Player player : e.getPlayer().getWorld().getPlayers()) {
             if (ArenaRegistry.getArena(player) != null && !UserManager.getUser(player.getUniqueId()).isSpectator()) {
-              //todo remove
-              ItemStack skull = new ItemStack(Material.SKULL_ITEM, 1, (short) 3);
+              //todo check
+              ItemStack skull = XMaterial.PLAYER_HEAD.parseItem();
               SkullMeta meta = (SkullMeta) skull.getItemMeta();
               meta.setOwningPlayer(player);
               meta.setDisplayName(player.getName());

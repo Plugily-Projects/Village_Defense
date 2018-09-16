@@ -48,6 +48,7 @@ import pl.plajer.villagedefense3.user.UserManager;
 import pl.plajer.villagedefense3.utils.ArmorHelper;
 import pl.plajer.villagedefense3.utils.Utils;
 import pl.plajer.villagedefense3.utils.WeaponHelper;
+import pl.plajer.villagedefense3.utils.XMaterial;
 import pl.plajerlair.core.services.exception.ReportedException;
 
 /**
@@ -76,7 +77,7 @@ public class BlockerKit extends PremiumKit implements Listener {
     ArmorHelper.setColouredArmor(Color.RED, player);
     player.getInventory().addItem(WeaponHelper.getEnchanted(new ItemStack(Material.STONE_SWORD), new org.bukkit.enchantments.Enchantment[]{org.bukkit.enchantments.Enchantment.DURABILITY}, new int[]{10}));
     player.getInventory().addItem(new ItemStack(Material.COOKED_BEEF, 10));
-    ItemStack is = new ItemStack(Material.FENCE, 3);
+    ItemStack is = new ItemStack(XMaterial.OAK_FENCE.parseMaterial(), 3);
     ItemMeta im = is.getItemMeta();
     im.setDisplayName(ChatManager.colorMessage("Kits.Blocker.Game-Item-Name"));
     im.setLore(Arrays.asList(ChatManager.colorMessage("Kits.Blocker.Game-Item-Lore").split("\n")));
@@ -94,7 +95,7 @@ public class BlockerKit extends PremiumKit implements Listener {
   @Override
   public void reStock(Player player) {
     PlayerInventory inventory = player.getInventory();
-    ItemStack is = new ItemStack(Material.FENCE, 3);
+    ItemStack is = new ItemStack(XMaterial.OAK_FENCE.parseMaterial(), 3);
     ItemMeta im = is.getItemMeta();
     im.setDisplayName(ChatManager.colorMessage("Kits.Blocker.Game-Item-Name"));
     im.setLore(Utils.splitString(ChatManager.colorMessage("Kits.Blocker.Game-Item-Lore"), 40));
@@ -149,7 +150,7 @@ public class BlockerKit extends PremiumKit implements Listener {
           }
         }
       }.runTaskTimer(plugin, 20, 20);
-      block.setType(Material.FENCE);
+      block.setType(XMaterial.OAK_FENCE.parseMaterial());
     } catch (Exception ex) {
       new ReportedException(plugin, ex);
     }

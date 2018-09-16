@@ -1,6 +1,6 @@
 # Village Defense 3 Changelog
 
-### 3.11.3 Release (07/10.09.2018)
+### 3.11.3 Release (07/15.09.2018)
 * Dropped 1.9-1.10 support
 * /vda reload now force players to quit to prevent problems
 * Now shop will be successfully registered when arena is freshly created
@@ -9,6 +9,7 @@
 * Added checking if player is in the same arena as spectator
 * Fixed permission typo with respawn others for villagedefense.admin.*
 * Added /vda reload permission for villagedefense.admin.*
+* Removed block game states behind signs (cannot make it compatible both for 1.13 and 1.11-1.12)
 
 ### 3.11.2 Release (03.09.2018)
 * Temporarily merged PLCore to fix issues when using my other plugins

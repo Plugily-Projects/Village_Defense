@@ -48,7 +48,7 @@ import pl.plajer.villagedefense3.handlers.ChatManager;
  */
 public class Utils {
 
-  public static Queue<Block> getLineOfSight(LivingEntity entity, HashSet<Byte> transparent, int maxDistance, int maxLength) {
+  public static Queue<Block> getNearbyDoors(LivingEntity entity, HashSet<Byte> transparent, int maxDistance, int maxLength) {
     if (maxDistance > 120) {
       maxDistance = 120;
     }
@@ -57,7 +57,10 @@ public class Utils {
     Iterator<Block> itr = new BlockIterator(entity, maxDistance);
     while (itr.hasNext()) {
       Block block = itr.next();
-      blocks.add(block);
+      if (block.getType() == XMaterial.OAK_DOOR.parseMaterial()) {
+        blocks.add(block);
+      }
+      /*blocks.add(block);
 
       if (maxLength != 0 && blocks.size() > maxLength) {
         blocks.remove(0);
@@ -72,7 +75,7 @@ public class Utils {
         if (!transparent.contains((byte) id)) {
           break;
         }
-      }
+      }*/
     }
     return blocks;
   }
@@ -88,7 +91,7 @@ public class Utils {
             continue;
           }
           if (e.getLocation().distanceSquared(l) <= radius * radius && e.getLocation().getBlock() != l
-                  .getBlock()) {
+              .getBlock()) {
             radiusEntities.add(e);
           }
         }
@@ -137,6 +140,21 @@ public class Utils {
         return 2;
       default:
         return 0;
+    }
+  }
+
+  public static BlockFace getFacingByByte(byte bt) {
+    switch (bt) {
+      case 1:
+        return BlockFace.SOUTH;
+      case 2:
+        return BlockFace.WEST;
+      case 3:
+        return BlockFace.EAST;
+      case 4:
+        return BlockFace.NORTH;
+      default:
+        return BlockFace.SOUTH;
     }
   }
 
