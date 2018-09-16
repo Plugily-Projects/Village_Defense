@@ -1,27 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-  ~ Village Defense 3 - Protect villagers from hordes of zombies
-  ~ Copyright (C) 2018  Plajer's Lair - maintained by Plajer
-  ~
-  ~ This program is free software: you can redistribute it and/or modify
-  ~ it under the terms of the GNU General Public License as published by
-  ~ the Free Software Foundation, either version 3 of the License, or
-  ~ (at your option) any later version.
-  ~
-  ~ This program is distributed in the hope that it will be useful,
-  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
-  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  ~ GNU General Public License for more details.
-  ~
-  ~ You should have received a copy of the GNU General Public License
-  ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
-  -->
-
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
-    <groupId>pl.plajer</groupId>
-    <artifactId>villagedefense3</artifactId>
-    <version>3.11.3</version>
+  <groupId>pl.plajer</groupId>
+  <artifactId>villagedefense3</artifactId>
+  <version>3.11.3</version>
   <licenses>
     <license>
       <name>GNU General Public License v3</name>
@@ -82,8 +64,8 @@
       <url>http://dl.bintray.com/tastybento/maven-repo</url>
     </repository>
     <repository>
-        <id>plajerlair-repo</id>
-        <url>https://plajer.xyz/mvn/repo</url>
+      <id>plajerlair-repo</id>
+      <url>https://plajer.xyz/mvn/repo</url>
     </repository>
   </repositories>
   <dependencies>
@@ -145,27 +127,6 @@
       <systemPath>${project.basedir}/lib/spigot/1.13.1-R0.1.jar</systemPath>
     </dependency>
     <dependency>
-      <groupId>1.9_R1</groupId>
-      <artifactId>spigot_1_9_R1</artifactId>
-      <version>1.9.2</version>
-      <scope>system</scope>
-      <systemPath>${project.basedir}/lib/spigot/1.9.2-R0.1.jar</systemPath>
-    </dependency>
-    <dependency>
-      <groupId>1.9_R2</groupId>
-      <artifactId>spigot_1_9_R2</artifactId>
-      <version>1.9.4</version>
-      <scope>system</scope>
-      <systemPath>${project.basedir}/lib/spigot/1.9.4-R0.1.jar</systemPath>
-    </dependency>
-    <dependency>
-      <groupId>1.10_R1</groupId>
-      <artifactId>spigot_1_10_R1</artifactId>
-      <version>1.10.2</version>
-      <scope>system</scope>
-      <systemPath>${project.basedir}/lib/spigot/1.10.2-R0.1.jar</systemPath>
-    </dependency>
-    <dependency>
       <groupId>1.11_R1</groupId>
       <artifactId>spigot_1_11_R1</artifactId>
       <version>1.11.2</version>
@@ -180,14 +141,14 @@
       <systemPath>${project.basedir}/lib/HolographicDisplays-2.2.jar</systemPath>
     </dependency>
   </dependencies>
-    <distributionManagement>
-        <repository>
-            <uniqueVersion>false</uniqueVersion>
-            <id>plajerlair.repo</id>
-            <name>Plajer's Lair repo</name>
-            <url>file:///${project.basedir}/mvn/repo</url>
-        </repository>
-    </distributionManagement>
+  <distributionManagement>
+    <repository>
+      <uniqueVersion>false</uniqueVersion>
+      <id>plajerlair.repo</id>
+      <name>Plajer's Lair repo</name>
+      <url>file:///${project.basedir}/mvn/repo</url>
+    </repository>
+  </distributionManagement>
   <properties>
     <java.version>1.8</java.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

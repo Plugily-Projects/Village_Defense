@@ -80,27 +80,6 @@
             <systemPath>${project.basedir}/lib/spigot/1.13.1-R0.1.jar</systemPath>
         </dependency>
         <dependency>
-            <groupId>1.9_R1</groupId>
-            <artifactId>spigot_1_9_R1</artifactId>
-            <version>1.9.2</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/lib/spigot/1.9.2-R0.1.jar</systemPath>
-        </dependency>
-        <dependency>
-            <groupId>1.9_R2</groupId>
-            <artifactId>spigot_1_9_R2</artifactId>
-            <version>1.9.4</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/lib/spigot/1.9.4-R0.1.jar</systemPath>
-        </dependency>
-        <dependency>
-            <groupId>1.10_R1</groupId>
-            <artifactId>spigot_1_10_R1</artifactId>
-            <version>1.10.2</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/lib/spigot/1.10.2-R0.1.jar</systemPath>
-        </dependency>
-        <dependency>
             <groupId>1.11_R1</groupId>
             <artifactId>spigot_1_11_R1</artifactId>
             <version>1.11.2</version>

@@ -212,6 +212,10 @@ public abstract class Arena extends BukkitRunnable {
         case STARTING:
           gameBar.setTitle(ChatManager.colorMessage("Bossbar.Starting-In").replace("%time%", String.valueOf(getTimer())));
           gameBar.setProgress(getTimer() / plugin.getConfig().getDouble("Starting-Waiting-Time", 60));
+          for (Player player : getPlayers()) {
+            player.setExp((float) (getTimer() / plugin.getConfig().getDouble("Starting-Waiting-Time", 60)));
+            player.setLevel(getTimer());
+          }
           if (getPlayers().size() < getMinimumPlayers()) {
             gameBar.setTitle(ChatManager.colorMessage("Bossbar.Waiting-For-Players"));
             gameBar.setProgress(1.0);
@@ -248,10 +252,6 @@ public abstract class Arena extends BukkitRunnable {
               player.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Messages.Lobby-Messages.Game-Started"));
             }
             fighting = false;
-          }
-          for (Player player : getPlayers()) {
-            player.setExp(player.getExp() - 1F / getTimer());
-            player.setLevel(getTimer() - 1);
           }
           setTimer(getTimer() - 1);
           break;
