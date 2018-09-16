@@ -223,6 +223,10 @@ public abstract class Arena extends BukkitRunnable {
             setArenaState(ArenaState.WAITING_FOR_PLAYERS);
             Bukkit.getPluginManager().callEvent(new VillageGameStartEvent(this));
             setTimer(15);
+            for (Player player : getPlayers()) {
+              player.setExp(1);
+              player.setLevel(0);
+            }
             break;
           }
           if (getTimer() == 0) {
