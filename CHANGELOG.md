@@ -9,6 +9,7 @@
 * Added checking if player is in the same arena as spectator
 * Fixed permission typo with respawn others for villagedefense.admin.*
 * Added /vda reload permission for villagedefense.admin.*
+* Added xp bar countdown in lobby
 
 todo 1.13 (maybe 1.12-) in game leave item not work
 todo 1.13 compass when dead is not received
