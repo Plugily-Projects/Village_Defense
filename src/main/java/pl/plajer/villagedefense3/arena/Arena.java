@@ -36,8 +36,10 @@ import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.TreeSpecies;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockState;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
@@ -46,7 +48,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.entity.Villager;
 import org.bukkit.entity.Wolf;
 import org.bukkit.entity.Zombie;
-import org.bukkit.material.Directional;
+import org.bukkit.material.Door;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -1129,8 +1131,29 @@ public abstract class Arena extends BukkitRunnable {
         int id = Material.WOODEN_DOOR.getId();
         block.setTypeIdAndData(id, doorData, false);
       } else {
+        //idk how does this work
+        if (doorData == (byte) 8) {
+          block.setType(XMaterial.OAK_DOOR.parseMaterial());
+          BlockState doorBlockState = block.getState();
+          Door doorBlockData = new Door(TreeSpecies.GENERIC, Utils.getFacingByByte(doorData));
+
+          doorBlockData.setTopHalf(true);
+          doorBlockData.setFacingDirection(doorBlockData.getFacing());
+
+          doorBlockState.setData(doorBlockData);
+          doorBlockState.update(true);
+          continue;
+        }
+
         block.setType(XMaterial.OAK_DOOR.parseMaterial());
-        ((Directional) block).setFacingDirection(Utils.getFacingByByte(doorData));
+        BlockState doorBlockState = block.getState();
+        Door doorBlockData = new Door(TreeSpecies.GENERIC, Utils.getFacingByByte(doorData));
+
+        doorBlockData.setTopHalf(false);
+        doorBlockData.setFacingDirection(doorBlockData.getFacing());
+
+        doorBlockState.setData(doorBlockData);
+        doorBlockState.update(true);
       }
     }
   }

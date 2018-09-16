@@ -21,6 +21,7 @@ package pl.plajer.villagedefense3.events.spectator;
 import java.util.Collections;
 
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -79,8 +80,13 @@ public class SpectatorItemEvents implements Listener {
             ChatManager.colorMessage("In-Game.Spectator.Spectator-Menu-Name"));
     for (Player player : world.getPlayers()) {
       if (ArenaRegistry.getArena(p).getPlayers().contains(player) && !UserManager.getUser(player.getUniqueId()).isSpectator()) {
-        //todo check
-        ItemStack skull = XMaterial.PLAYER_HEAD.parseItem();
+        ItemStack skull;
+        if (plugin.is1_11_R1() || plugin.is1_12_R1()) {
+          skull = new ItemStack(Material.SKULL_ITEM, 1, (short) 3);
+        } else {
+          //todo check
+          skull = XMaterial.PLAYER_HEAD.parseItem();
+        }
         SkullMeta meta = (SkullMeta) skull.getItemMeta();
         meta.setOwningPlayer(player);
         meta.setDisplayName(player.getName());

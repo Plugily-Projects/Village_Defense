@@ -9,7 +9,9 @@
 * Added checking if player is in the same arena as spectator
 * Fixed permission typo with respawn others for villagedefense.admin.*
 * Added /vda reload permission for villagedefense.admin.*
-* Removed block game states behind signs (cannot make it compatible both for 1.13 and 1.11-1.12)
+
+todo 1.13 (maybe 1.12-) in game leave item not work
+todo 1.13 compass when dead is not received
 
 ### 3.11.2 Release (03.09.2018)
 * Temporarily merged PLCore to fix issues when using my other plugins

@@ -24,6 +24,7 @@ import java.util.List;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -190,7 +191,7 @@ public class MainCommand implements CommandExecutor {
         }
         adminCommands.sendHelp(sender);
         List<StringMatcher.Match> matches = StringMatcher.match(args[0], Arrays.asList("stop", "list", "forcestart", "respawn", "spychat",
-                "reload", "setshopchest", "delete", "setprice", "tp", "clear", "addorbs", "setwave"));
+            "reload", "setshopchest", "delete", "setprice", "tp", "clear", "addorbs", "setwave"));
         if (!matches.isEmpty()) {
           sender.sendMessage(ChatManager.colorMessage("Commands.Did-You-Mean").replace("%command%", "vda " + matches.get(0).getMatch()));
         }
@@ -340,7 +341,7 @@ public class MainCommand implements CommandExecutor {
           }
           adminCommands.sendHelp(sender);
           List<StringMatcher.Match> matches = StringMatcher.match(args[1], Arrays.asList("stop", "list", "forcestart", "respawn", "spychat",
-                  "reload", "setshopchest", "delete", "setprice", "tp", "clear", "addorbs", "setwave"));
+              "reload", "setshopchest", "delete", "setprice", "tp", "clear", "addorbs", "setwave"));
           if (!matches.isEmpty()) {
             sender.sendMessage(ChatManager.colorMessage("Commands.Did-You-Mean").replace("%command%", "vd admin " + matches.get(0).getMatch()));
           }
@@ -442,45 +443,59 @@ public class MainCommand implements CommandExecutor {
       }
       if (args[2].equalsIgnoreCase("doors")) {
         Block block = player.getTargetBlock(null, 10);
-        //todo check
-        if (block.getType() == XMaterial.OAK_DOOR.parseMaterial()) {
-          String ID = args[0];
-          int i;
-          if (!config.contains("instances." + ID + ".doors")) {
-            i = 0;
-          } else {
-            i = config.getConfigurationSection("instances." + ID + ".doors").getKeys(false).size();
+        if (plugin.is1_11_R1() || plugin.is1_12_R1()) {
+          if (block.getType() != Material.WOODEN_DOOR) {
+            player.sendMessage(ChatColor.RED + "Target block is not oak door!");
+            return;
           }
-          i++;
+        } else {
+          if (block.getType() != XMaterial.OAK_DOOR.parseMaterial()) {
+            player.sendMessage(ChatColor.RED + "Target block is not oak door!");
+            return;
+          }
+        }
+        String ID = args[0];
+        int i;
+        if (!config.contains("instances." + ID + ".doors")) {
+          i = 0;
+        } else {
+          i = config.getConfigurationSection("instances." + ID + ".doors").getKeys(false).size();
+        }
+        i++;
 
-          Block relativeBlock = null;
+        Block relativeBlock = null;
+        if (plugin.is1_11_R1() || plugin.is1_12_R1()) {
+          if (block.getRelative(BlockFace.DOWN).getType() == Material.WOODEN_DOOR) {
+            relativeBlock = block;
+            block = block.getRelative(BlockFace.DOWN);
+          } else if (block.getRelative(BlockFace.UP).getType() == Material.WOODEN_DOOR) {
+            relativeBlock = block.getRelative(BlockFace.UP);
+          }
+        } else {
           if (block.getRelative(BlockFace.DOWN).getType() == XMaterial.OAK_DOOR.parseMaterial()) {
             relativeBlock = block;
             block = block.getRelative(BlockFace.DOWN);
           } else if (block.getRelative(BlockFace.UP).getType() == XMaterial.OAK_DOOR.parseMaterial()) {
             relativeBlock = block.getRelative(BlockFace.UP);
           }
-          if (relativeBlock == null) {
-            player.sendMessage("This door doesn't have 2 blocks? Maybe it's bugged? Try placing it again.");
-            return;
-          }
-          String location = block.getWorld().getName() + "," + block.getX() + "," + block.getY() + "," + block.getZ() + ",0.0" + ",0.0";
-          String relativeLocation = relativeBlock.getWorld().getName() + "," + relativeBlock.getX() + "," + relativeBlock.getY() + "," + relativeBlock.getZ() + ",0.0" + ",0.0";
-          config.set("instances." + ID + ".doors." + i + ".location", relativeLocation);
-          config.set("instances." + ID + ".doors." + i + ".byte", 8);
-          i++;
-          config.set("instances." + ID + ".doors." + i + ".location", location);
-          if (plugin.is1_13_R1() || plugin.is1_13_R2()) {
-            config.set("instances." + ID + ".doors." + i + ".byte", Utils.getDoorByte(((Door) block.getState().getData()).getFacing()));
-          } else {
-            config.set("instances." + ID + ".doors." + i + ".byte", block.getData());
-          }
-          player.sendMessage(ChatColor.GREEN + "Door successfully added!");
         }
+        if (relativeBlock == null) {
+          player.sendMessage("This door doesn't have 2 blocks? Maybe it's bugged? Try placing it again.");
+          return;
+        }
+        String location = block.getWorld().getName() + "," + block.getX() + "," + block.getY() + "," + block.getZ() + ",0.0" + ",0.0";
+        String relativeLocation = relativeBlock.getWorld().getName() + "," + relativeBlock.getX() + "," + relativeBlock.getY() + "," + relativeBlock.getZ() + ",0.0" + ",0.0";
+        config.set("instances." + ID + ".doors." + i + ".location", relativeLocation);
+        config.set("instances." + ID + ".doors." + i + ".byte", 8);
+        i++;
+        config.set("instances." + ID + ".doors." + i + ".location", location);
+        if (plugin.is1_13_R1() || plugin.is1_13_R2()) {
+          config.set("instances." + ID + ".doors." + i + ".byte", Utils.getDoorByte(((Door) block.getState().getData()).getFacing()));
+        } else {
+          config.set("instances." + ID + ".doors." + i + ".byte", block.getData());
+        }
+        player.sendMessage(ChatColor.GREEN + "Door successfully added!");
         ConfigUtils.saveConfig(plugin, config, "arenas");
-        return;
-      } else {
-        player.sendMessage("You must face door to add it!");
         return;
       }
     }
@@ -490,17 +505,17 @@ public class MainCommand implements CommandExecutor {
     if (args.length == 3) {
       if (args[2].equalsIgnoreCase("lobbylocation") || args[2].equalsIgnoreCase("lobbyloc")) {
         String location = player.getLocation().getWorld().getName() + "," + player.getLocation().getX() + "," + player.getLocation().getY() + "," + player.getLocation().getZ()
-                + "," + player.getLocation().getYaw() + ",0.0";
+            + "," + player.getLocation().getYaw() + ",0.0";
         config.set("instances." + args[0] + ".lobbylocation", location);
         player.sendMessage("VillageDefense: Lobby location for arena/instance " + args[0] + " set to " + LocationUtils.locationToString(player.getLocation()));
       } else if (args[2].equalsIgnoreCase("Startlocation") || args[2].equalsIgnoreCase("Startloc")) {
         String location = player.getLocation().getWorld().getName() + "," + player.getLocation().getX() + "," + player.getLocation().getY() + "," + player.getLocation().getZ()
-                + "," + player.getLocation().getYaw() + ",0.0";
+            + "," + player.getLocation().getYaw() + ",0.0";
         config.set("instances." + args[0] + ".Startlocation", location);
         player.sendMessage("VillageDefense: Start location for arena/instance " + args[0] + " set to " + LocationUtils.locationToString(player.getLocation()));
       } else if (args[2].equalsIgnoreCase("Endlocation") || args[2].equalsIgnoreCase("Endloc")) {
         String location = player.getLocation().getWorld().getName() + "," + player.getLocation().getX() + "," + player.getLocation().getY() + "," + player.getLocation().getZ()
-                + "," + player.getLocation().getYaw() + ",0.0";
+            + "," + player.getLocation().getYaw() + ",0.0";
         config.set("instances." + args[0] + ".Endlocation", location);
         player.sendMessage("VillageDefense: End location for arena/instance " + args[0] + " set to " + LocationUtils.locationToString(player.getLocation()));
       } else {

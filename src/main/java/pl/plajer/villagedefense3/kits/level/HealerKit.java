@@ -66,10 +66,9 @@ public class HealerKit extends LevelKit {
 
   }
 
-  //todo item id???
   @Override
   public Material getMaterial() {
-    return XMaterial.ROSE_RED.parseMaterial();
+    return XMaterial.POPPY.parseMaterial();
   }
 
   @Override

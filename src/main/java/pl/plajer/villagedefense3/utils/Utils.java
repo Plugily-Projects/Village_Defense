@@ -57,25 +57,14 @@ public class Utils {
     Iterator<Block> itr = new BlockIterator(entity, maxDistance);
     while (itr.hasNext()) {
       Block block = itr.next();
-      if (block.getType() == XMaterial.OAK_DOOR.parseMaterial()) {
-        blocks.add(block);
-      }
-      /*blocks.add(block);
+      blocks.add(block);
 
       if (maxLength != 0 && blocks.size() > maxLength) {
         blocks.remove(0);
       }
-      //todo block id!
-      int id = block.getTypeId();
-      if (transparent == null) {
-        if (id != 0 && id != 50 && id != 59 && id != 31 && id != 175 && id != 38 && id != 37 && id != 6 && id != 106) {
-          break;
-        }
-      } else {
-        if (!transparent.contains((byte) id)) {
-          break;
-        }
-      }*/
+      if (block.getType().isTransparent()) {
+        break;
+      }
     }
     return blocks;
   }

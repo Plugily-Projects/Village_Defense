@@ -114,6 +114,8 @@ public class ArenaRegistry {
           arena.clearVillagers();
           arena.clearWolfs();
           arena.clearGolems();
+        }
+        for (Arena arena : new ArrayList<>(ArenaRegistry.getArenas())) {
           unregisterArena(arena);
         }
       }

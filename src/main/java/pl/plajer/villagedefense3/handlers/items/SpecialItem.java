@@ -60,11 +60,11 @@ public class SpecialItem {
       config.set(name + ".data", 0);
       config.set(name + ".displayname", displayName);
       config.set(name + ".lore", Arrays.asList(lore));
-      config.set(name + ".material-name", material);
+      config.set(name + ".material-name", material.toString());
       config.set(name + ".slot", slot);
     } else {
       if (!config.isSet(name + ".material-name")) {
-        config.set(name + ".material-name", material);
+        config.set(name + ".material-name", material.toString());
         Main.debug(Main.LogLevel.INFO, "Found outdated item in lobbyitems.yml! We've converted it to the newest version!");
       }
     }
