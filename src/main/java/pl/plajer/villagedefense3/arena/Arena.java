@@ -1133,6 +1133,7 @@ public abstract class Arena extends BukkitRunnable {
   }
 
   void restoreDoors() {
+    int i = 1;
     for (Location location : doorBlocks.keySet()) {
       Block block = location.getBlock();
       Byte doorData = doorBlocks.get(location);
@@ -1142,29 +1143,42 @@ public abstract class Arena extends BukkitRunnable {
         block.setTypeIdAndData(id, doorData, false);
       } else {
         //idk how does this work
-        if (doorData == (byte) 8) {
+        try {
+          if (block.getType() != XMaterial.AIR.parseMaterial()) {
+            i++;
+            continue;
+          }
+          if (doorData == (byte) 8) {
+            block.setType(XMaterial.OAK_DOOR.parseMaterial());
+            BlockState doorBlockState = block.getState();
+            Door doorBlockData = new Door(TreeSpecies.GENERIC, Utils.getFacingByByte(doorData));
+
+            doorBlockData.setTopHalf(true);
+            doorBlockData.setFacingDirection(doorBlockData.getFacing());
+
+            doorBlockState.setType(doorBlockData.getItemType());
+            doorBlockState.setData(doorBlockData);
+            doorBlockState.update(true);
+            continue;
+          }
+
           block.setType(XMaterial.OAK_DOOR.parseMaterial());
           BlockState doorBlockState = block.getState();
           Door doorBlockData = new Door(TreeSpecies.GENERIC, Utils.getFacingByByte(doorData));
 
-          doorBlockData.setTopHalf(true);
+          doorBlockData.setTopHalf(false);
           doorBlockData.setFacingDirection(doorBlockData.getFacing());
 
           doorBlockState.setData(doorBlockData);
           doorBlockState.update(true);
-          continue;
+          i++;
+        } catch (Exception ex) {
+          Main.debug(Main.LogLevel.WARN, "Door has failed to load for arena " + getID() + ", skipping!");
         }
-
-        block.setType(XMaterial.OAK_DOOR.parseMaterial());
-        BlockState doorBlockState = block.getState();
-        Door doorBlockData = new Door(TreeSpecies.GENERIC, Utils.getFacingByByte(doorData));
-
-        doorBlockData.setTopHalf(false);
-        doorBlockData.setFacingDirection(doorBlockData.getFacing());
-
-        doorBlockState.setData(doorBlockData);
-        doorBlockState.update(true);
       }
+    }
+    if (i != doorBlocks.size()) {
+      Main.debug(Main.LogLevel.WARN, "Some doors has failed to load for arena " + getID() + "! Expected " + doorBlocks.size() + " but loaded only " + i + "!");
     }
   }
 

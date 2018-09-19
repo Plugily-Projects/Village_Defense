@@ -65,11 +65,16 @@ public class DoorBreakListener extends BukkitRunnable {
                 continue;
               }
             }
-            block.getWorld().spawnParticle(Particle.BLOCK_CRACK, block.getLocation(), 10, 0.1, 0.1, 0.1, new MaterialData(XMaterial.OAK_DOOR.parseMaterial()));
-            Utils.playSound(block.getLocation(), "ENTITY_ZOMBIE_ATTACK_DOOR_WOOD", "ENTITY_ZOMBIE_ATTACK_WOODEN_DOOR");
-            block.getWorld().spawnParticle(Particle.BLOCK_CRACK, block.getLocation(), 10, 0.1, 0.1, 0.1, new MaterialData(XMaterial.OAK_DOOR.parseMaterial()));
-            if (random.nextInt(20) == 5) {
+            //todo bring back block crack for 1.13
+
+            if (plugin.is1_11_R1() || plugin.is1_12_R1()) {
               block.getWorld().spawnParticle(Particle.BLOCK_CRACK, block.getLocation(), 10, 0.1, 0.1, 0.1, new MaterialData(XMaterial.OAK_DOOR.parseMaterial()));
+            }
+            Utils.playSound(block.getLocation(), "ENTITY_ZOMBIE_ATTACK_DOOR_WOOD", "ENTITY_ZOMBIE_ATTACK_WOODEN_DOOR");
+            if (random.nextInt(20) == 5) {
+              if (plugin.is1_11_R1() || plugin.is1_12_R1()) {
+                block.getWorld().spawnParticle(Particle.BLOCK_CRACK, block.getLocation(), 10, 0.1, 0.1, 0.1, new MaterialData(XMaterial.OAK_DOOR.parseMaterial()));
+              }
               block.setType(Material.AIR);
               Utils.playSound(block.getLocation(), "ENTITY_ZOMBIE_BREAK_DOOR_WOOD", "ENTITY_ZOMBIE_BREAK_WOODEN_DOOR");
             }
