@@ -12,6 +12,7 @@
 * Added xp bar countdown in lobby
 * Fixed this error https://plajer.xyz/errorservice/viewer.php?id=209
 * 1.13 fixes
+* Updated setup video link and added it into setup menu
 
 todo 1.13 (maybe 1.12-) in game leave item not work
 todo 1.13 compass when dead is not received
