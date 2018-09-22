@@ -13,9 +13,9 @@
 * Fixed this error https://plajer.xyz/errorservice/viewer.php?id=209
 * 1.13 fixes
 * Updated setup video link and added it into setup menu
-
-todo 1.13 (maybe 1.12-) in game leave item not work
-todo 1.13 compass when dead is not received
+* Powerups won't be enabled on 1.13 now even if Holo Displays is installed, latest plugin version doesn't work with pickup handler api
+* Compass for spectators is now properly given on death
+* Leave item for died spectators is now working
 
 ### 3.11.2 Release (03.09.2018)
 * Temporarily merged PLCore to fix issues when using my other plugins

@@ -68,6 +68,7 @@ import pl.plajer.villagedefense3.arena.ArenaState;
 import pl.plajer.villagedefense3.handlers.ChatManager;
 import pl.plajer.villagedefense3.handlers.PermissionsManager;
 import pl.plajer.villagedefense3.handlers.ShopManager;
+import pl.plajer.villagedefense3.handlers.items.SpecialItem;
 import pl.plajer.villagedefense3.handlers.items.SpecialItemManager;
 import pl.plajer.villagedefense3.user.User;
 import pl.plajer.villagedefense3.user.UserManager;
@@ -331,11 +332,11 @@ public class Events implements Listener {
       if (itemStack == null || itemStack.getItemMeta() == null || itemStack.getItemMeta().getDisplayName() == null) {
         return;
       }
-      String key = SpecialItemManager.getRelatedSpecialItem(itemStack);
+      SpecialItem key = SpecialItemManager.getSpecialItem("Leave");
       if (key == null) {
         return;
       }
-      if (SpecialItemManager.getRelatedSpecialItem(itemStack).equalsIgnoreCase("Leave")) {
+      if (key.getItemStack().getItemMeta().getDisplayName().equalsIgnoreCase(itemStack.getItemMeta().getDisplayName())) {
         event.setCancelled(true);
         if (plugin.isBungeeActivated()) {
           plugin.getBungeeManager().connectToHub(event.getPlayer());
