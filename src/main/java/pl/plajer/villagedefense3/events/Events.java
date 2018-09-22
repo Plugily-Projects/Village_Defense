@@ -25,6 +25,7 @@ import java.util.List;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.Particle;
+import org.bukkit.World;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Entity;
@@ -41,7 +42,9 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.CreatureSpawnEvent;
+import org.bukkit.event.entity.EntityCombustByBlockEvent;
 import org.bukkit.event.entity.EntityCombustByEntityEvent;
+import org.bukkit.event.entity.EntityCombustEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
@@ -637,6 +640,31 @@ public class Events implements Listener {
               p.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Rotten-Flesh-Level-Up"));
             }
           }
+        }
+      }
+    } catch (Exception ex) {
+      new ReportedException(plugin, ex);
+    }
+  }
+
+  /**
+   * Triggers when something combusts in the world.
+   * Thanks to @HomieDion for part of this class!
+   */
+  @EventHandler(ignoreCancelled = true)
+  public void onCombust(final EntityCombustEvent e) {
+    try {
+      // Ignore if this is caused by an event lower down the chain.
+      if (e instanceof EntityCombustByEntityEvent || e instanceof EntityCombustByBlockEvent
+          || !(e.getEntity() instanceof Zombie)
+          || e.getEntity().getWorld().getEnvironment() != World.Environment.NORMAL) {
+        return;
+      }
+
+      for (Arena arena : ArenaRegistry.getArenas()) {
+        if (arena.getZombies().contains(e.getEntity())) {
+          e.setCancelled(true);
+          return;
         }
       }
     } catch (Exception ex) {
