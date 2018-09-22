@@ -11,12 +11,13 @@
 * Added /vda reload permission for villagedefense.admin.*
 * Added xp bar countdown in lobby
 * Fixed this error https://plajer.xyz/errorservice/viewer.php?id=209
-* 1.13 fixes
+* Fixes for 1.13
 * Updated setup video link and added it into setup menu
 * Powerups won't be enabled on 1.13 now even if Holo Displays is installed, latest plugin version doesn't work with pickup handler api
 * Compass for spectators is now properly given on death
 * Leave item for died spectators is now working
 * Arena registry is now fail safe, not existing sections won't throw errors in console now
+* Fixed ClassCastException errors in console when non player sender executed game commands (ex. command block, different player implementation)
 
 ### 3.11.2 Release (03.09.2018)
 * Temporarily merged PLCore to fix issues when using my other plugins

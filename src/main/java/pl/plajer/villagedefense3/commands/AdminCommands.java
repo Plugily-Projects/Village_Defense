@@ -117,7 +117,7 @@ public class AdminCommands extends MainCommand {
       return;
     }
     sender.sendMessage(ChatColor.GREEN + "  " + ChatColor.BOLD + "Village Defense " + ChatColor.GRAY + plugin.getDescription().getVersion());
-    if (!checkSenderIsConsole(sender)) {
+    if (!checkSenderPlayer(sender)) {
       sender.sendMessage(ChatColor.RED + " []" + ChatColor.GRAY + " = optional  " + ChatColor.GOLD + "<>" + ChatColor.GRAY + " = required");
       sender.sendMessage(ChatColor.GRAY + "Hover command to see more, click command to suggest it.");
       for (CommandData data : command) {
@@ -163,7 +163,7 @@ public class AdminCommands extends MainCommand {
   }
 
   public void stopGame(CommandSender sender) {
-    if (checkSenderIsConsole(sender) || !hasPermission(sender, "villagedefense.admin.stopgame")) {
+    if (!checkSenderPlayer(sender) || !hasPermission(sender, "villagedefense.admin.stopgame")) {
       return;
     }
     if (!checkIsInGameInstance((Player) sender)) {
@@ -175,7 +175,7 @@ public class AdminCommands extends MainCommand {
   }
 
   public void forceStartGame(CommandSender sender) {
-    if (checkSenderIsConsole(sender) || !hasPermission(sender, "villagedefense.admin.forcestart")) {
+    if (!checkSenderPlayer(sender) || !hasPermission(sender, "villagedefense.admin.forcestart")) {
       return;
     }
     if (!checkIsInGameInstance((Player) sender)) {
@@ -190,7 +190,7 @@ public class AdminCommands extends MainCommand {
   }
 
   public void respawn(CommandSender sender) {
-    if (checkSenderIsConsole(sender)) {
+    if (!checkSenderPlayer(sender)) {
       return;
     }
     Player player = (Player) sender;
@@ -212,7 +212,7 @@ public class AdminCommands extends MainCommand {
   }
 
   public void respawnOther(CommandSender sender, String player) {
-    if (checkSenderIsConsole(sender) || !checkIsInGameInstance((Player) sender)
+    if (!checkSenderPlayer(sender) || !checkIsInGameInstance((Player) sender)
             || !hasPermission(sender, "villagedefense.admin.respawn.others")) {
       return;
     }
@@ -239,7 +239,7 @@ public class AdminCommands extends MainCommand {
   }
 
   public void toggleSpyChat(CommandSender sender) {
-    if (checkSenderIsConsole(sender) || !hasPermission(sender, "villagedefense.admin.spychat")) {
+    if (!checkSenderPlayer(sender) || !hasPermission(sender, "villagedefense.admin.spychat")) {
       return;
     }
     boolean bool = !plugin.getSpyChatEnabled().getOrDefault(((Player) sender).getUniqueId(), false);
@@ -259,7 +259,7 @@ public class AdminCommands extends MainCommand {
   }
 
   public void addSign(CommandSender sender, String arena) {
-    if (checkSenderIsConsole(sender)) {
+    if (!checkSenderPlayer(sender)) {
       return;
     }
     Player player = (Player) sender;
@@ -286,7 +286,7 @@ public class AdminCommands extends MainCommand {
   }
 
   public void deleteArena(CommandSender sender, String arenaString) {
-    if (checkSenderIsConsole(sender) || !hasPermission(sender, "villagedefense.admin.delete")) {
+    if (!checkSenderPlayer(sender) || !hasPermission(sender, "villagedefense.admin.delete")) {
       return;
     }
     Arena arena = ArenaRegistry.getArena(arenaString);
@@ -303,7 +303,7 @@ public class AdminCommands extends MainCommand {
   }
 
   public void setItemPrice(CommandSender sender, String price) {
-    if (checkSenderIsConsole(sender) || !hasPermission(sender, "villagedefense.admin.setprice")) {
+    if (!checkSenderPlayer(sender) || !hasPermission(sender, "villagedefense.admin.setprice")) {
       return;
     }
     Player player = (Player) sender;
@@ -333,7 +333,7 @@ public class AdminCommands extends MainCommand {
   }
 
   public void teleportToInstance(CommandSender sender, String arenaString, String locationType) {
-    if (checkSenderIsConsole(sender) || !hasPermission(sender, "villagedefense.admin.teleport")) {
+    if (!checkSenderPlayer(sender) || !hasPermission(sender, "villagedefense.admin.teleport")) {
       return;
     }
     Player player = (Player) sender;
@@ -351,7 +351,7 @@ public class AdminCommands extends MainCommand {
   }
 
   public void clearZombies(CommandSender sender) {
-    if (checkSenderIsConsole(sender) || !hasPermission(sender, "villagedefense.admin.clear")
+    if (!checkSenderPlayer(sender) || !hasPermission(sender, "villagedefense.admin.clear")
             || !checkIsInGameInstance((Player) sender)) {
       return;
     }
@@ -374,7 +374,7 @@ public class AdminCommands extends MainCommand {
   }
 
   public void clearVillagers(CommandSender sender) {
-    if (checkSenderIsConsole(sender) || !hasPermission(sender, "villagedefense.admin.clear")
+    if (!checkSenderPlayer(sender) || !hasPermission(sender, "villagedefense.admin.clear")
             || !checkIsInGameInstance((Player) sender)) {
       return;
     }
@@ -397,7 +397,7 @@ public class AdminCommands extends MainCommand {
   }
 
   public void clearGolems(CommandSender sender) {
-    if (checkSenderIsConsole(sender) || !hasPermission(sender, "villagedefense.admin.clear")
+    if (!checkSenderPlayer(sender) || !hasPermission(sender, "villagedefense.admin.clear")
             || !checkIsInGameInstance((Player) sender)) {
       return;
     }
@@ -453,14 +453,14 @@ public class AdminCommands extends MainCommand {
   }
 
   public void createArena(CommandSender sender, String[] args) {
-    if (checkSenderIsConsole(sender) || !hasPermission(sender, "villagedefense.admin.create")) {
+    if (!checkSenderPlayer(sender) || !hasPermission(sender, "villagedefense.admin.create")) {
       return;
     }
     createArenaCommand((Player) sender, args);
   }
 
   public void setWave(CommandSender sender, String number) {
-    if (checkSenderIsConsole(sender) || !checkIsInGameInstance((Player) sender)
+    if (!checkSenderPlayer(sender) || !checkIsInGameInstance((Player) sender)
             || !hasPermission(sender, "villagedefense.admin.setwave")) {
       return;
     }
@@ -493,7 +493,7 @@ public class AdminCommands extends MainCommand {
   }
 
   public void performSetup(CommandSender sender, String[] args) {
-    if (checkSenderIsConsole(sender) || !hasPermission(sender, "villagedefense.admin.setup")) {
+    if (!checkSenderPlayer(sender) || !hasPermission(sender, "villagedefense.admin.setup")) {
       return;
     }
     performSetup((Player) sender, args);

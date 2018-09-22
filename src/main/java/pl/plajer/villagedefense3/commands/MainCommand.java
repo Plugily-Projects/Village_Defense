@@ -31,7 +31,6 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.material.Door;
@@ -75,11 +74,11 @@ public class MainCommand implements CommandExecutor {
     return adminCommands;
   }
 
-  boolean checkSenderIsConsole(CommandSender sender) {
-    if (sender instanceof ConsoleCommandSender) {
-      sender.sendMessage(ChatManager.colorMessage("Commands.Only-By-Player"));
+  boolean checkSenderPlayer(CommandSender sender) {
+    if (sender instanceof Player) {
       return true;
     }
+    sender.sendMessage(ChatManager.colorMessage("Commands.Only-By-Player"));
     return false;
   }
 
@@ -209,7 +208,7 @@ public class MainCommand implements CommandExecutor {
         }
         if (args.length > 1) {
           if (args[1].equalsIgnoreCase("set") || args[1].equalsIgnoreCase("addspawn") || args[1].equalsIgnoreCase("edit")) {
-            if (checkSenderIsConsole(sender) || !hasPermission(sender, "villagedefense.admin.create")) {
+            if (!checkSenderPlayer(sender) || !hasPermission(sender, "villagedefense.admin.create")) {
               return true;
             }
             adminCommands.performSetup(sender, args);
