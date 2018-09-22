@@ -16,6 +16,7 @@
 * Powerups won't be enabled on 1.13 now even if Holo Displays is installed, latest plugin version doesn't work with pickup handler api
 * Compass for spectators is now properly given on death
 * Leave item for died spectators is now working
+* Arena registry is now fail safe, not existing sections won't throw errors in console now
 
 ### 3.11.2 Release (03.09.2018)
 * Temporarily merged PLCore to fix issues when using my other plugins
