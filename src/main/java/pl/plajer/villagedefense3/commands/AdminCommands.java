@@ -117,7 +117,7 @@ public class AdminCommands extends MainCommand {
       return;
     }
     sender.sendMessage(ChatColor.GREEN + "  " + ChatColor.BOLD + "Village Defense " + ChatColor.GRAY + plugin.getDescription().getVersion());
-    if (!checkSenderPlayer(sender)) {
+    if (checkSenderPlayer(sender)) {
       sender.sendMessage(ChatColor.RED + " []" + ChatColor.GRAY + " = optional  " + ChatColor.GOLD + "<>" + ChatColor.GRAY + " = required");
       sender.sendMessage(ChatColor.GRAY + "Hover command to see more, click command to suggest it.");
       for (CommandData data : command) {

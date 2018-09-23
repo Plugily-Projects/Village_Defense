@@ -125,7 +125,7 @@ public class ArenaRegistry {
     FileConfiguration config = ConfigUtils.getConfig(plugin, "arenas");
 
     ConfigurationSection section = config.getConfigurationSection("instances");
-    if (config.isSet("instances")) {
+    if (section == null) {
       Bukkit.getConsoleSender().sendMessage(ChatManager.colorMessage("Validator.No-Instances-Created"));
       return;
     }

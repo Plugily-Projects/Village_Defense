@@ -29,6 +29,7 @@ import java.util.regex.Pattern;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Entity;
@@ -148,15 +149,12 @@ public class Utils {
   }
 
   public static void playSound(Location loc, String before1_13, String after1_13) {
-    try {
       if (JavaPlugin.getPlugin(Main.class).is1_13_R1() || JavaPlugin.getPlugin(Main.class).is1_13_R2()) {
-        loc.getWorld().playSound(loc, after1_13, 1, 1);
+        loc.getWorld().playSound(loc, Sound.valueOf(after1_13), 1, 1);
       } else {
         loc.getWorld().playSound(loc, before1_13, 1, 1);
       }
-    } catch (Exception ignored) {
-      //Minecraft 1.13 exceptions will be ignored, for now...
-    }
+
   }
 
 }
