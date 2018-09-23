@@ -22,7 +22,6 @@ import java.util.Collections;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.SkullType;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -40,6 +39,7 @@ import pl.plajer.villagedefense3.arena.Arena;
 import pl.plajer.villagedefense3.arena.ArenaRegistry;
 import pl.plajer.villagedefense3.handlers.ChatManager;
 import pl.plajer.villagedefense3.user.UserManager;
+import pl.plajer.villagedefense3.utils.XMaterial;
 import pl.plajerlair.core.services.exception.ReportedException;
 import pl.plajerlair.core.utils.MinigameUtils;
 
@@ -55,20 +55,20 @@ public class SpectatorItemEvents implements Listener {
   @EventHandler
   public void onSpectatorItemClick(PlayerInteractEvent e) {
     try {
-      if (e.getAction() == Action.RIGHT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_BLOCK) {
-        if (ArenaRegistry.getArena(e.getPlayer()) == null) {
-          return;
-        }
-        ItemStack stack = e.getPlayer().getInventory().getItemInMainHand();
-        if (!(stack == null) && stack.hasItemMeta()) {
-          if (stack.getItemMeta().getDisplayName() == null) {
-            return;
-          }
-          if (stack.getItemMeta().getDisplayName().equalsIgnoreCase(ChatManager.colorMessage("In-Game.Spectator.Spectator-Item-Name"))) {
-            e.setCancelled(true);
-            openSpectatorMenu(e.getPlayer().getWorld(), e.getPlayer());
-          }
-        }
+      if (e.getAction() == Action.LEFT_CLICK_AIR || e.getAction() == Action.LEFT_CLICK_BLOCK) {
+        return;
+      }
+      Arena arena = ArenaRegistry.getArena(e.getPlayer());
+      if (arena == null) {
+        return;
+      }
+      ItemStack stack = e.getPlayer().getInventory().getItemInMainHand();
+      if (stack == null || !stack.hasItemMeta() || !stack.getItemMeta().hasDisplayName()) {
+        return;
+      }
+      if (stack.getItemMeta().getDisplayName().equalsIgnoreCase(ChatManager.colorMessage("In-Game.Spectator.Spectator-Item-Name"))) {
+        e.setCancelled(true);
+        openSpectatorMenu(e.getPlayer().getWorld(), e.getPlayer());
       }
     } catch (Exception ex) {
       new ReportedException(plugin, ex);
@@ -77,16 +77,21 @@ public class SpectatorItemEvents implements Listener {
 
   private void openSpectatorMenu(World world, Player p) {
     Inventory inventory = plugin.getServer().createInventory(null, MinigameUtils.serializeInt(ArenaRegistry.getArena(p).getPlayers().size()),
-            ChatManager.colorMessage("In-Game.Spectator.Spectator-Menu-Name"));
+        ChatManager.colorMessage("In-Game.Spectator.Spectator-Menu-Name"));
     for (Player player : world.getPlayers()) {
       if (ArenaRegistry.getArena(p).getPlayers().contains(player) && !UserManager.getUser(player.getUniqueId()).isSpectator()) {
-        ItemStack skull = new ItemStack(Material.SKULL_ITEM, 1);
+        ItemStack skull;
+        if (plugin.is1_11_R1() || plugin.is1_12_R1()) {
+          skull = new ItemStack(Material.SKULL_ITEM, 1, (short) 3);
+        } else {
+          //todo check
+          skull = XMaterial.PLAYER_HEAD.parseItem();
+        }
         SkullMeta meta = (SkullMeta) skull.getItemMeta();
         meta.setOwningPlayer(player);
         meta.setDisplayName(player.getName());
         meta.setLore(Collections.singletonList(ChatManager.colorMessage("In-Game.Spectator.Target-Player-Health").replace("%health%",
-                String.valueOf(MinigameUtils.round(player.getHealth(), 2)))));
-        skull.setDurability((short) SkullType.PLAYER.ordinal());
+            String.valueOf(MinigameUtils.round(player.getHealth(), 2)))));
         skull.setItemMeta(meta);
         inventory.addItem(skull);
       }
@@ -103,7 +108,7 @@ public class SpectatorItemEvents implements Listener {
       }
       Arena arena = ArenaRegistry.getArena(p);
       if (e.getCurrentItem() == null || !e.getCurrentItem().hasItemMeta()
-              || !e.getCurrentItem().getItemMeta().hasDisplayName() || !e.getCurrentItem().getItemMeta().hasLore()) {
+          || !e.getCurrentItem().getItemMeta().hasDisplayName() || !e.getCurrentItem().getItemMeta().hasLore()) {
         return;
       }
       if (e.getInventory().getName().equalsIgnoreCase(ChatManager.colorMessage("In-Game.Spectator.Spectator-Menu-Name"))) {

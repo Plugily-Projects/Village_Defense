@@ -44,10 +44,10 @@ public class ArmorHelper {
         player.getInventory().setHelmet(new ItemStack(Material.IRON_HELMET));
         break;
       case GOLD:
-        player.getInventory().setBoots(new ItemStack(Material.GOLD_BOOTS));
-        player.getInventory().setLeggings(new ItemStack(Material.GOLD_LEGGINGS));
-        player.getInventory().setChestplate(new ItemStack(Material.GOLD_CHESTPLATE));
-        player.getInventory().setHelmet(new ItemStack(Material.GOLD_HELMET));
+        player.getInventory().setBoots(XMaterial.GOLDEN_BOOTS.parseItem());
+        player.getInventory().setLeggings(XMaterial.GOLDEN_LEGGINGS.parseItem());
+        player.getInventory().setChestplate(XMaterial.GOLDEN_CHESTPLATE.parseItem());
+        player.getInventory().setHelmet(XMaterial.GOLDEN_HELMET.parseItem());
         break;
       case DIAMOND:
         player.getInventory().setBoots(new ItemStack(Material.DIAMOND_BOOTS));

@@ -53,7 +53,7 @@ public class GameCommands extends MainCommand {
   }
 
   public void sendStats(CommandSender sender) {
-    if (checkSenderIsConsole(sender)) {
+    if (!checkSenderPlayer(sender)) {
       return;
     }
     User user = UserManager.getUser(((Player) sender).getUniqueId());
@@ -143,7 +143,7 @@ public class GameCommands extends MainCommand {
   }
 
   public void leaveGame(CommandSender sender) {
-    if (checkSenderIsConsole(sender)) {
+    if (!checkSenderPlayer(sender)) {
       return;
     }
     if (!plugin.getConfig().getBoolean("Disable-Leave-Command", false)) {
@@ -164,7 +164,7 @@ public class GameCommands extends MainCommand {
   }
 
   public void joinGame(CommandSender sender, String arenaString) {
-    if (checkSenderIsConsole(sender)) {
+    if (!checkSenderPlayer(sender)) {
       return;
     }
     for (Arena arena : ArenaRegistry.getArenas()) {
@@ -177,7 +177,7 @@ public class GameCommands extends MainCommand {
   }
 
   public void joinRandomGame(CommandSender sender) {
-    if (checkSenderIsConsole(sender)) {
+    if (!checkSenderPlayer(sender)) {
       return;
     }
     if (plugin.isBungeeActivated()) {
@@ -193,7 +193,7 @@ public class GameCommands extends MainCommand {
   }
 
   public void openKitMenu(CommandSender sender) {
-    if (checkSenderIsConsole(sender) || !checkIsInGameInstance((Player) sender)
+    if (!checkSenderPlayer(sender) || !checkIsInGameInstance((Player) sender)
             || !hasPermission(sender, "villagedefense.command.selectkit")) {
       return;
     }

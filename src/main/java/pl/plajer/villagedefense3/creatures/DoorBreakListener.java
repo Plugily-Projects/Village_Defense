@@ -26,7 +26,6 @@ import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.World;
 import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
@@ -36,6 +35,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import pl.plajer.villagedefense3.Main;
 import pl.plajer.villagedefense3.utils.Utils;
+import pl.plajer.villagedefense3.utils.XMaterial;
 import pl.plajerlair.core.services.exception.ReportedException;
 
 /**
@@ -54,39 +54,35 @@ public class DoorBreakListener extends BukkitRunnable {
           if (!(entity.getType() == EntityType.ZOMBIE)) {
             continue;
           }
-          Queue<Block> blocks = Utils.getLineOfSight((LivingEntity) entity, null, 1, 1);
+          Queue<Block> blocks = Utils.getNearbyDoors((LivingEntity) entity, null, 1, 1);
           for (Block block : blocks) {
-            if (block.getType() == Material.WOOD_DOOR || block.getType() == Material.WOODEN_DOOR) {
-              block.getWorld().spawnParticle(Particle.BLOCK_CRACK, block.getLocation(), 10, 0.1, 0.1, 0.1, new MaterialData(Material.WOODEN_DOOR));
-              Utils.playSound(block.getLocation(), "ENTITY_ZOMBIE_ATTACK_DOOR_WOOD", "ENTITY_ZOMBIE_ATTACK_WOODEN_DOOR");
-              this.particleDoor(block);
-              if (random.nextInt(20) == 5) {
-                breakDoor(block);
-                Utils.playSound(block.getLocation(), "ENTITY_ZOMBIE_BREAK_DOOR_WOOD", "ENTITY_ZOMBIE_BREAK_WOODEN_DOOR");
+            if (plugin.is1_11_R1() || plugin.is1_12_R1()) {
+              if (block.getType() != Material.WOODEN_DOOR) {
+                continue;
               }
+            } else {
+              if (block.getType() != XMaterial.OAK_DOOR.parseMaterial()) {
+                continue;
+              }
+            }
+            //todo bring back block crack for 1.13
+
+            if (plugin.is1_11_R1() || plugin.is1_12_R1()) {
+              block.getWorld().spawnParticle(Particle.BLOCK_CRACK, block.getLocation(), 10, 0.1, 0.1, 0.1, new MaterialData(XMaterial.OAK_DOOR.parseMaterial()));
+            }
+            Utils.playSound(block.getLocation(), "ENTITY_ZOMBIE_ATTACK_DOOR_WOOD", "ENTITY_ZOMBIE_ATTACK_WOODEN_DOOR");
+            if (random.nextInt(20) == 5) {
+              if (plugin.is1_11_R1() || plugin.is1_12_R1()) {
+                block.getWorld().spawnParticle(Particle.BLOCK_CRACK, block.getLocation(), 10, 0.1, 0.1, 0.1, new MaterialData(XMaterial.OAK_DOOR.parseMaterial()));
+              }
+              block.setType(Material.AIR);
+              Utils.playSound(block.getLocation(), "ENTITY_ZOMBIE_BREAK_DOOR_WOOD", "ENTITY_ZOMBIE_BREAK_WOODEN_DOOR");
             }
           }
         }
       }
     } catch (Exception e) {
       new ReportedException(plugin, e);
-    }
-  }
-
-  private void particleDoor(Block block) {
-    for (BlockFace blockFace : BlockFace.values()) {
-      if (block.getRelative(blockFace).getType() == Material.WOOD_DOOR || block.getRelative(blockFace).getType() == Material.WOODEN_DOOR) {
-        block.getWorld().spawnParticle(Particle.BLOCK_CRACK, block.getLocation(), 10, 0.1, 0.1, 0.1, new MaterialData(Material.WOODEN_DOOR));
-      }
-    }
-  }
-
-  private void breakDoor(Block block) {
-    for (BlockFace blockFace : BlockFace.values()) {
-      if (block.getRelative(blockFace).getType() == Material.WOOD_DOOR || block.getRelative(blockFace).getType() == Material.WOODEN_DOOR) {
-        block.getWorld().spawnParticle(Particle.BLOCK_CRACK, block.getLocation(), 10, 0.1, 0.1, 0.1, new MaterialData(Material.WOODEN_DOOR));
-        block.setType(Material.AIR);
-      }
     }
   }
 

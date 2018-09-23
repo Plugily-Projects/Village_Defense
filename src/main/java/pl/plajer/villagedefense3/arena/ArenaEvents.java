@@ -21,8 +21,8 @@ package pl.plajer.villagedefense3.arena;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 
+import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
-import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
@@ -48,6 +48,7 @@ import pl.plajer.villagedefense3.handlers.RewardsHandler;
 import pl.plajer.villagedefense3.handlers.items.SpecialItemManager;
 import pl.plajer.villagedefense3.user.User;
 import pl.plajer.villagedefense3.user.UserManager;
+import pl.plajer.villagedefense3.utils.XMaterial;
 import pl.plajer.villagedefense3.villagedefenseapi.StatsStorage;
 import pl.plajerlair.core.services.exception.ReportedException;
 
@@ -195,13 +196,17 @@ public class ArenaEvents implements Listener {
       }.runTaskTimer(plugin, 20, 20);
       ChatManager.broadcastAction(arena, player, ChatManager.ActionType.DEATH);
 
-      ItemStack spectatorItem = new ItemStack(Material.COMPASS, 1);
-      ItemMeta spectatorMeta = spectatorItem.getItemMeta();
-      spectatorMeta.setDisplayName(ChatManager.colorMessage("In-Game.Spectator.Spectator-Item-Name"));
-      spectatorItem.setItemMeta(spectatorMeta);
-      player.getInventory().setItem(0, spectatorItem);
+      //running in a scheduler of 1 tick due to 1.13 bug
+      Bukkit.getScheduler().runTaskLater(plugin, () -> {
+        ItemStack spectatorItem = XMaterial.COMPASS.parseItem();
+        ItemMeta spectatorMeta = spectatorItem.getItemMeta();
+        spectatorMeta.setDisplayName(ChatManager.colorMessage("In-Game.Spectator.Spectator-Item-Name"));
+        spectatorItem.setItemMeta(spectatorMeta);
+        player.getInventory().setItem(0, spectatorItem);
 
-      player.getInventory().setItem(8, SpecialItemManager.getSpecialItem("Leave").getItemStack());
+        player.getInventory().setItem(8, SpecialItemManager.getSpecialItem("Leave").getItemStack());
+      }, 1);
+
       //tryin to untarget dead player bcuz they will still target him
       for (Zombie zombie : arena.getZombies()) {
         if (zombie.getTarget() != null) {

@@ -38,6 +38,7 @@ import pl.plajer.villagedefense3.kits.kitapi.basekits.PremiumKit;
 import pl.plajer.villagedefense3.utils.ArmorHelper;
 import pl.plajer.villagedefense3.utils.Utils;
 import pl.plajer.villagedefense3.utils.WeaponHelper;
+import pl.plajer.villagedefense3.utils.XMaterial;
 
 /**
  * Created by Tom on 18/07/2015.
@@ -64,7 +65,7 @@ public class DogFriendKit extends PremiumKit {
   public void giveKitItems(Player player) {
     player.getInventory().addItem(WeaponHelper.getUnBreakingSword(WeaponHelper.ResourceType.STONE, 10));
     ArmorHelper.setArmor(player, ArmorHelper.ArmorType.LEATHER);
-    player.getInventory().addItem(new ItemStack(Material.GRILLED_PORK, 8));
+    player.getInventory().addItem(new ItemStack(XMaterial.COOKED_PORKCHOP.parseMaterial(), 8));
     player.getInventory().addItem(new ItemStack(Material.SADDLE));
     Arena arena = ArenaRegistry.getArena(player);
     if (arena == null) {

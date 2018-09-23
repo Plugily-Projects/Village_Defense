@@ -35,6 +35,7 @@ import pl.plajer.villagedefense3.user.UserManager;
 import pl.plajer.villagedefense3.utils.ArmorHelper;
 import pl.plajer.villagedefense3.utils.Utils;
 import pl.plajer.villagedefense3.utils.WeaponHelper;
+import pl.plajer.villagedefense3.utils.XMaterial;
 import pl.plajer.villagedefense3.villagedefenseapi.StatsStorage;
 import pl.plajerlair.core.utils.ConfigUtils;
 
@@ -61,7 +62,7 @@ public class TerminatorKit extends LevelKit {
     player.getInventory().addItem(WeaponHelper.getUnBreakingSword(WeaponHelper.ResourceType.STONE, 10));
     player.getInventory().addItem(WeaponHelper.getEnchanted(new ItemStack(Material.BONE), new Enchantment[]{Enchantment.DAMAGE_ALL, Enchantment.KNOCKBACK}, new int[]{3, 7}));
     ArmorHelper.setColouredArmor(Color.BLACK, player);
-    player.getInventory().addItem(new ItemStack(Material.GRILLED_PORK, 8));
+    player.getInventory().addItem(new ItemStack(XMaterial.COOKED_PORKCHOP.parseMaterial(), 8));
     player.getInventory().addItem(Utils.getPotion(PotionType.STRENGTH, 2, true));
     player.getInventory().addItem(Utils.getPotion(PotionType.REGEN, 1, true));
 

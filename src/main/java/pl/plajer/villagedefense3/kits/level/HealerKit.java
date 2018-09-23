@@ -34,6 +34,7 @@ import pl.plajer.villagedefense3.user.UserManager;
 import pl.plajer.villagedefense3.utils.ArmorHelper;
 import pl.plajer.villagedefense3.utils.Utils;
 import pl.plajer.villagedefense3.utils.WeaponHelper;
+import pl.plajer.villagedefense3.utils.XMaterial;
 import pl.plajer.villagedefense3.villagedefenseapi.StatsStorage;
 import pl.plajerlair.core.utils.ConfigUtils;
 
@@ -59,7 +60,7 @@ public class HealerKit extends LevelKit {
   public void giveKitItems(Player player) {
     player.getInventory().addItem(WeaponHelper.getUnBreakingSword(WeaponHelper.ResourceType.WOOD, 10));
     ArmorHelper.setColouredArmor(Color.WHITE, player);
-    player.getInventory().addItem(new ItemStack(Material.GRILLED_PORK, 8));
+    player.getInventory().addItem(new ItemStack(XMaterial.COOKED_PORKCHOP.parseMaterial(), 8));
     player.getInventory().addItem(Utils.getPotion(PotionType.INSTANT_HEAL, 2, true));
     player.getInventory().addItem(Utils.getPotion(PotionType.REGEN, 1, true));
 
@@ -67,7 +68,7 @@ public class HealerKit extends LevelKit {
 
   @Override
   public Material getMaterial() {
-    return Material.RED_ROSE;
+    return XMaterial.POPPY.parseMaterial();
   }
 
   @Override

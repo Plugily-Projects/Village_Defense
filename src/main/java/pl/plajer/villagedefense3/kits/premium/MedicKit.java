@@ -45,6 +45,7 @@ import pl.plajer.villagedefense3.user.UserManager;
 import pl.plajer.villagedefense3.utils.ArmorHelper;
 import pl.plajer.villagedefense3.utils.Utils;
 import pl.plajer.villagedefense3.utils.WeaponHelper;
+import pl.plajer.villagedefense3.utils.XMaterial;
 import pl.plajerlair.core.services.exception.ReportedException;
 
 /**
@@ -69,7 +70,7 @@ public class MedicKit extends PremiumKit implements Listener {
   public void giveKitItems(Player player) {
     player.getInventory().addItem(WeaponHelper.getUnBreakingSword(WeaponHelper.ResourceType.STONE, 10));
     ArmorHelper.setColouredArmor(Color.WHITE, player);
-    player.getInventory().addItem(new ItemStack(Material.GRILLED_PORK, 8));
+    player.getInventory().addItem(new ItemStack(XMaterial.COOKED_PORKCHOP.parseMaterial(), 8));
     player.getInventory().addItem(Utils.getPotion(PotionType.REGEN, 1, true));
   }
 

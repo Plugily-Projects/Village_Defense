@@ -25,6 +25,7 @@ import java.util.List;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.Particle;
+import org.bukkit.World;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Entity;
@@ -41,7 +42,9 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.CreatureSpawnEvent;
+import org.bukkit.event.entity.EntityCombustByBlockEvent;
 import org.bukkit.event.entity.EntityCombustByEntityEvent;
+import org.bukkit.event.entity.EntityCombustEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
@@ -68,10 +71,12 @@ import pl.plajer.villagedefense3.arena.ArenaState;
 import pl.plajer.villagedefense3.handlers.ChatManager;
 import pl.plajer.villagedefense3.handlers.PermissionsManager;
 import pl.plajer.villagedefense3.handlers.ShopManager;
+import pl.plajer.villagedefense3.handlers.items.SpecialItem;
 import pl.plajer.villagedefense3.handlers.items.SpecialItemManager;
 import pl.plajer.villagedefense3.user.User;
 import pl.plajer.villagedefense3.user.UserManager;
 import pl.plajer.villagedefense3.utils.Utils;
+import pl.plajer.villagedefense3.utils.XMaterial;
 import pl.plajer.villagedefense3.villagedefenseapi.StatsStorage;
 import pl.plajerlair.core.services.exception.ReportedException;
 import pl.plajerlair.core.utils.MinigameUtils;
@@ -301,7 +306,8 @@ public class Events implements Listener {
   @EventHandler
   public void onDoorDrop(ItemSpawnEvent event) {
     try {
-      if (event.getEntity().getItemStack().getType() == Material.WOOD_DOOR) {
+      //todo check
+      if (event.getEntity().getItemStack().getType() == XMaterial.OAK_DOOR.parseMaterial()) {
         for (Entity entity : Utils.getNearbyEntities(event.getLocation(), 20)) {
           if (entity.getType() == EntityType.PLAYER) {
             if (ArenaRegistry.getArena((Player) entity) != null) {
@@ -329,11 +335,11 @@ public class Events implements Listener {
       if (itemStack == null || itemStack.getItemMeta() == null || itemStack.getItemMeta().getDisplayName() == null) {
         return;
       }
-      String key = SpecialItemManager.getRelatedSpecialItem(itemStack);
+      SpecialItem key = SpecialItemManager.getSpecialItem("Leave");
       if (key == null) {
         return;
       }
-      if (SpecialItemManager.getRelatedSpecialItem(itemStack).equalsIgnoreCase("Leave")) {
+      if (key.getItemStack().getItemMeta().getDisplayName().equalsIgnoreCase(itemStack.getItemMeta().getDisplayName())) {
         event.setCancelled(true);
         if (plugin.isBungeeActivated()) {
           plugin.getBungeeManager().connectToHub(event.getPlayer());
@@ -593,7 +599,7 @@ public class Events implements Listener {
     if (!ArenaRegistry.isInArena(event.getPlayer())) {
       return;
     }
-    if (event.getPlayer().getTargetBlock(null, 7).getType() == Material.WORKBENCH) {
+    if (event.getPlayer().getTargetBlock(null, 7).getType() == XMaterial.CRAFTING_TABLE.parseMaterial()) {
       event.setCancelled(true);
     }
   }
@@ -634,6 +640,31 @@ public class Events implements Listener {
               p.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Rotten-Flesh-Level-Up"));
             }
           }
+        }
+      }
+    } catch (Exception ex) {
+      new ReportedException(plugin, ex);
+    }
+  }
+
+  /**
+   * Triggers when something combusts in the world.
+   * Thanks to @HomieDion for part of this class!
+   */
+  @EventHandler(ignoreCancelled = true)
+  public void onCombust(final EntityCombustEvent e) {
+    try {
+      // Ignore if this is caused by an event lower down the chain.
+      if (e instanceof EntityCombustByEntityEvent || e instanceof EntityCombustByBlockEvent
+          || !(e.getEntity() instanceof Zombie)
+          || e.getEntity().getWorld().getEnvironment() != World.Environment.NORMAL) {
+        return;
+      }
+
+      for (Arena arena : ArenaRegistry.getArenas()) {
+        if (arena.getZombies().contains(e.getEntity())) {
+          e.setCancelled(true);
+          return;
         }
       }
     } catch (Exception ex) {

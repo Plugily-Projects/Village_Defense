@@ -63,7 +63,7 @@ public class WeaponHelper {
     ItemStack itemStack;
     switch (type) {
       case WOOD:
-        itemStack = new ItemStack(Material.WOOD_SWORD);
+        itemStack = XMaterial.WOODEN_SWORD.parseItem();
         itemStack.addUnsafeEnchantment(Enchantment.DURABILITY, level);
         return itemStack;
       case IRON:
@@ -71,7 +71,7 @@ public class WeaponHelper {
         itemStack.addUnsafeEnchantment(Enchantment.DURABILITY, level);
         return itemStack;
       case GOLD:
-        itemStack = new ItemStack(Material.GOLD_SWORD);
+        itemStack = XMaterial.GOLDEN_SWORD.parseItem();
         itemStack.addUnsafeEnchantment(Enchantment.DURABILITY, level);
         return itemStack;
       case DIAMOND:

@@ -49,6 +49,7 @@ import pl.plajer.villagedefense3.creatures.v1_13_R1.TankerZombie;
 import pl.plajer.villagedefense3.creatures.v1_13_R1.VillagerSlayer;
 import pl.plajer.villagedefense3.creatures.v1_13_R1.WorkingWolf;
 import pl.plajer.villagedefense3.handlers.ChatManager;
+import pl.plajer.villagedefense3.utils.XMaterial;
 
 /**
  * @author Plajer
@@ -101,7 +102,7 @@ public class ArenaInitializer1_13_R1 extends Arena {
     fastZombie.setPosition(location.getX(), location.getY(), location.getZ());
     mcWorld.addEntity(fastZombie, CreatureSpawnEvent.SpawnReason.CUSTOM);
     Zombie zombie = (Zombie) fastZombie.getBukkitEntity();
-    zombie.getEquipment().setItemInMainHand(new ItemStack(Material.GOLD_AXE));
+    zombie.getEquipment().setItemInMainHand(XMaterial.GOLDEN_AXE.parseItem());
     zombie.getEquipment().setBoots(new ItemStack(Material.DIAMOND_BOOTS));
     zombie.getEquipment().setLeggings(new ItemStack(Material.DIAMOND_LEGGINGS));
     zombie.getEquipment().setChestplate(new ItemStack(Material.DIAMOND_CHESTPLATE));
@@ -189,9 +190,9 @@ public class ArenaInitializer1_13_R1 extends Arena {
     zombie.getEquipment().setHelmet(new ItemStack(Material.TNT));
     zombie.getEquipment().setHelmetDropChance(0.0F);
     zombie.getEquipment().setItemInMainHandDropChance(0F);
-    zombie.getEquipment().setBoots(new ItemStack(Material.GOLD_BOOTS));
-    zombie.getEquipment().setLeggings(new ItemStack(Material.GOLD_LEGGINGS));
-    zombie.getEquipment().setChestplate(new ItemStack(Material.GOLD_CHESTPLATE));
+    zombie.getEquipment().setBoots(XMaterial.GOLDEN_BOOTS.parseItem());
+    zombie.getEquipment().setLeggings(XMaterial.GOLDEN_LEGGINGS.parseItem());
+    zombie.getEquipment().setChestplate(XMaterial.GOLDEN_CHESTPLATE.parseItem());
     CreatureUtils.applyHealthBar(zombie);
     this.addZombie(zombie);
 

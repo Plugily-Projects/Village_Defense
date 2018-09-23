@@ -34,6 +34,7 @@ import pl.plajer.villagedefense3.user.UserManager;
 import pl.plajer.villagedefense3.utils.ArmorHelper;
 import pl.plajer.villagedefense3.utils.Utils;
 import pl.plajer.villagedefense3.utils.WeaponHelper;
+import pl.plajer.villagedefense3.utils.XMaterial;
 import pl.plajer.villagedefense3.villagedefenseapi.StatsStorage;
 import pl.plajerlair.core.utils.ConfigUtils;
 
@@ -57,17 +58,17 @@ public class PuncherKit extends LevelKit {
 
   @Override
   public void giveKitItems(Player player) {
-    player.getInventory().addItem(WeaponHelper.getEnchanted(new ItemStack(Material.DIAMOND_SPADE), new Enchantment[]{
+    player.getInventory().addItem(WeaponHelper.getEnchanted(XMaterial.DIAMOND_SHOVEL.parseItem(), new Enchantment[] {
             Enchantment.DURABILITY, Enchantment.KNOCKBACK, Enchantment.DAMAGE_ALL}, new int[]{10, 5, 2}));
     ArmorHelper.setColouredArmor(Color.BLACK, player);
     player.getInventory().addItem(WeaponHelper.getEnchantedBow(Enchantment.DURABILITY, 5));
     player.getInventory().addItem(new ItemStack(Material.ARROW, 25));
-    player.getInventory().addItem(new ItemStack(Material.GRILLED_PORK, 8));
+    player.getInventory().addItem(new ItemStack(XMaterial.COOKED_PORKCHOP.parseMaterial(), 8));
   }
 
   @Override
   public Material getMaterial() {
-    return Material.DIAMOND_SPADE;
+    return XMaterial.DIAMOND_SHOVEL.parseMaterial();
   }
 
   @Override

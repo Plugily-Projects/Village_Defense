@@ -25,6 +25,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Chest;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -59,7 +60,12 @@ public class ShopManager {
 
   public static void registerShop(Arena a) {
     try {
-      Location location = LocationUtils.getLocation(ConfigUtils.getConfig(JavaPlugin.getPlugin(Main.class), "arenas").getString("instances." + a.getID() + ".shop"));
+      FileConfiguration config = ConfigUtils.getConfig(JavaPlugin.getPlugin(Main.class), "arenas");
+      if (config.getString("instances." + a.getID() + ".shop", "").equals("") || config.getString("instances." + a.getID() + ".shop", "").split(",").length == 0) {
+        Main.debug(Main.LogLevel.WARN, "There is no shop for arena " + a.getID() + "! Aborting registering shop!");
+        return;
+      }
+      Location location = LocationUtils.getLocation(config.getString("instances." + a.getID() + ".shop"));
       if (!(location.getBlock().getState() instanceof Chest)) {
         Main.debug(Main.LogLevel.WARN, "Shop failed to load, invalid location for loc " + location);
         return;

@@ -165,6 +165,8 @@ public class ArenaManager {
       p.updateInventory();
       for (Player player : arena.getPlayers()) {
         ArenaUtils.showPlayer(player, arena);
+        player.setExp(1);
+        player.setLevel(0);
       }
       arena.showPlayers();
       Main.debug(Main.LogLevel.INFO, "Join task end, " + p.getName());
@@ -182,6 +184,8 @@ public class ArenaManager {
    */
   public static void leaveAttempt(Player p, Arena arena) {
     try {
+      p.setExp(0);
+      p.setLevel(0);
       Main.debug(Main.LogLevel.INFO, "Initial leave attempt, " + p.getName());
       VillageGameLeaveAttemptEvent villageGameLeaveAttemptEvent = new VillageGameLeaveAttemptEvent(p, arena);
       Bukkit.getPluginManager().callEvent(villageGameLeaveAttemptEvent);

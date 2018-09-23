@@ -42,6 +42,7 @@ import pl.plajer.villagedefense3.kits.kitapi.KitRegistry;
 import pl.plajer.villagedefense3.kits.kitapi.basekits.PremiumKit;
 import pl.plajer.villagedefense3.user.UserManager;
 import pl.plajer.villagedefense3.utils.Utils;
+import pl.plajer.villagedefense3.utils.XMaterial;
 import pl.plajerlair.core.services.exception.ReportedException;
 
 /**
@@ -61,10 +62,10 @@ public class NakedKit extends PremiumKit implements Listener {
     armorTypes.add(Material.LEATHER_CHESTPLATE);
     armorTypes.add(Material.LEATHER_LEGGINGS);
     armorTypes.add(Material.LEATHER_HELMET);
-    armorTypes.add(Material.GOLD_BOOTS);
-    armorTypes.add(Material.GOLD_CHESTPLATE);
-    armorTypes.add(Material.GOLD_LEGGINGS);
-    armorTypes.add(Material.GOLD_HELMET);
+    armorTypes.add(XMaterial.GOLDEN_BOOTS.parseMaterial());
+    armorTypes.add(XMaterial.GOLDEN_CHESTPLATE.parseMaterial());
+    armorTypes.add(XMaterial.GOLDEN_LEGGINGS.parseMaterial());
+    armorTypes.add(XMaterial.GOLDEN_HELMET.parseMaterial());
     armorTypes.add(Material.DIAMOND_BOOTS);
     armorTypes.add(Material.DIAMOND_LEGGINGS);
     armorTypes.add(Material.DIAMOND_CHESTPLATE);

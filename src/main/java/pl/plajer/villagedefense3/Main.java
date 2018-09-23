@@ -46,7 +46,6 @@ import pl.plajer.villagedefense3.database.FileStats;
 import pl.plajer.villagedefense3.database.MySQLConnectionUtils;
 import pl.plajer.villagedefense3.database.MySQLDatabase;
 import pl.plajer.villagedefense3.events.ChatEvents;
-import pl.plajer.villagedefense3.events.CombustDayLightEvent;
 import pl.plajer.villagedefense3.events.Events;
 import pl.plajer.villagedefense3.events.GolemEvents;
 import pl.plajer.villagedefense3.events.JoinEvent;
@@ -356,7 +355,6 @@ public class Main extends JavaPlugin {
       new PlaceholderManager().register();
     }
     new Events(this);
-    new CombustDayLightEvent(this);
     new LobbyEvents(this);
     new SpectatorItemEvents(this);
     powerupManager = new PowerupManager(this);

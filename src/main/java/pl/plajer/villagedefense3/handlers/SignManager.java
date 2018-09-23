@@ -44,6 +44,7 @@ import pl.plajer.villagedefense3.arena.ArenaManager;
 import pl.plajer.villagedefense3.arena.ArenaRegistry;
 import pl.plajer.villagedefense3.arena.ArenaState;
 import pl.plajer.villagedefense3.handlers.language.LanguageManager;
+import pl.plajer.villagedefense3.utils.XMaterial;
 import pl.plajerlair.core.services.exception.ReportedException;
 import pl.plajerlair.core.utils.ConfigUtils;
 import pl.plajerlair.core.utils.LocationUtils;
@@ -65,14 +66,14 @@ public class SignManager implements Listener {
     signLines = LanguageManager.getLanguageList("Signs.Lines");
     plugin.getServer().getPluginManager().registerEvents(this, plugin);
     loadSigns();
-    updateSignScheduler();
+    //updateSignScheduler();
   }
 
   @EventHandler
   public void onSignChange(SignChangeEvent e) {
     try {
       if (!e.getPlayer().hasPermission("villagedefense.admin.sign.create")
-              || !e.getLine(0).equalsIgnoreCase("[villagedefense]")) {
+          || !e.getLine(0).equalsIgnoreCase("[villagedefense]")) {
         return;
       }
       if (e.getLine(1).isEmpty()) {
@@ -119,7 +120,7 @@ public class SignManager implements Listener {
   public void onSignDestroy(BlockBreakEvent e) {
     try {
       if (!e.getPlayer().hasPermission("villagedefense.admin.sign.break")
-              || loadedSigns.get(e.getBlock().getState()) == null) {
+          || loadedSigns.get(e.getBlock().getState()) == null) {
         return;
       }
       loadedSigns.remove(e.getBlock().getState());
@@ -147,7 +148,7 @@ public class SignManager implements Listener {
   public void onJoinAttempt(PlayerInteractEvent e) {
     try {
       if (e.getAction() == Action.RIGHT_CLICK_BLOCK
-              && e.getClickedBlock().getState() instanceof Sign && loadedSigns.containsKey(e.getClickedBlock().getState())) {
+          && e.getClickedBlock().getState() instanceof Sign && loadedSigns.containsKey(e.getClickedBlock().getState())) {
 
         Arena arena = loadedSigns.get(e.getClickedBlock().getState());
         if (arena == null) {
@@ -200,7 +201,6 @@ public class SignManager implements Listener {
     }
   }
 
-  //todo data id!
   private void updateSignScheduler() {
     Bukkit.getScheduler().runTaskTimer(plugin, () -> {
       for (Sign s : loadedSigns.keySet()) {
@@ -210,22 +210,37 @@ public class SignManager implements Listener {
           if (plugin.getConfig().getBoolean("Signs-Block-States-Enabled", true)) {
             if (block.getType() == Material.SIGN_POST || block.getType() == Material.WALL_SIGN) {
               Block behind = block.getRelative(((org.bukkit.material.Sign) s.getData()).getAttachedFace());
-              behind.setType(Material.STAINED_GLASS);
+              behind.setType(XMaterial.WHITE_STAINED_GLASS.parseMaterial());
               switch (loadedSigns.get(s).getArenaState()) {
                 case WAITING_FOR_PLAYERS:
-                  behind.setData((byte) 0);
+                  behind.setType(XMaterial.WHITE_STAINED_GLASS.parseMaterial());
+                  if (plugin.is1_11_R1() || plugin.is1_12_R1()) {
+                    behind.setData((byte) 0);
+                  }
                   break;
                 case STARTING:
-                  behind.setData((byte) 4);
+                  behind.setType(XMaterial.YELLOW_STAINED_GLASS.parseMaterial());
+                  if (plugin.is1_11_R1() || plugin.is1_12_R1()) {
+                    behind.setData((byte) 4);
+                  }
                   break;
                 case IN_GAME:
-                  behind.setData((byte) 1);
+                  behind.setType(XMaterial.ORANGE_STAINED_GLASS.parseMaterial());
+                  if (plugin.is1_11_R1() || plugin.is1_12_R1()) {
+                    behind.setData((byte) 1);
+                  }
                   break;
                 case ENDING:
-                  behind.setData((byte) 7);
+                  behind.setType(XMaterial.GRAY_STAINED_GLASS.parseMaterial());
+                  if (plugin.is1_11_R1() || plugin.is1_12_R1()) {
+                    behind.setData((byte) 7);
+                  }
                   break;
                 case RESTARTING:
-                  behind.setData((byte) 15);
+                  behind.setType(XMaterial.BLACK_STAINED_GLASS.parseMaterial());
+                  if (plugin.is1_11_R1() || plugin.is1_12_R1()) {
+                    behind.setData((byte) 15);
+                  }
                   break;
               }
             }

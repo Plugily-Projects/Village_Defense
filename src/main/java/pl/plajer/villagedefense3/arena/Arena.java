@@ -36,8 +36,10 @@ import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.TreeSpecies;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockState;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
@@ -46,6 +48,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.entity.Villager;
 import org.bukkit.entity.Wolf;
 import org.bukkit.entity.Zombie;
+import org.bukkit.material.Door;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -57,6 +60,8 @@ import pl.plajer.villagedefense3.handlers.language.LanguageManager;
 import pl.plajer.villagedefense3.kits.kitapi.KitRegistry;
 import pl.plajer.villagedefense3.user.User;
 import pl.plajer.villagedefense3.user.UserManager;
+import pl.plajer.villagedefense3.utils.Utils;
+import pl.plajer.villagedefense3.utils.XMaterial;
 import pl.plajer.villagedefense3.villagedefenseapi.StatsStorage;
 import pl.plajer.villagedefense3.villagedefenseapi.VillageGameStartEvent;
 import pl.plajer.villagedefense3.villagedefenseapi.VillageGameStateChangeEvent;
@@ -207,6 +212,10 @@ public abstract class Arena extends BukkitRunnable {
         case STARTING:
           gameBar.setTitle(ChatManager.colorMessage("Bossbar.Starting-In").replace("%time%", String.valueOf(getTimer())));
           gameBar.setProgress(getTimer() / plugin.getConfig().getDouble("Starting-Waiting-Time", 60));
+          for (Player player : getPlayers()) {
+            player.setExp((float) (getTimer() / plugin.getConfig().getDouble("Starting-Waiting-Time", 60)));
+            player.setLevel(getTimer());
+          }
           if (getPlayers().size() < getMinimumPlayers()) {
             gameBar.setTitle(ChatManager.colorMessage("Bossbar.Waiting-For-Players"));
             gameBar.setProgress(1.0);
@@ -214,6 +223,10 @@ public abstract class Arena extends BukkitRunnable {
             setArenaState(ArenaState.WAITING_FOR_PLAYERS);
             Bukkit.getPluginManager().callEvent(new VillageGameStartEvent(this));
             setTimer(15);
+            for (Player player : getPlayers()) {
+              player.setExp(1);
+              player.setLevel(0);
+            }
             break;
           }
           if (getTimer() == 0) {
@@ -224,6 +237,8 @@ public abstract class Arena extends BukkitRunnable {
             setTimer(5);
             teleportAllToStartLocation();
             for (Player player : getPlayers()) {
+              player.setExp(0);
+              player.setLevel(0);
               player.getInventory().clear();
               player.setGameMode(GameMode.SURVIVAL);
               User user = UserManager.getUser(player.getUniqueId());
@@ -1118,12 +1133,52 @@ public abstract class Arena extends BukkitRunnable {
   }
 
   void restoreDoors() {
+    int i = 1;
     for (Location location : doorBlocks.keySet()) {
       Block block = location.getBlock();
       Byte doorData = doorBlocks.get(location);
-      //todo id!
-      int id = Material.WOODEN_DOOR.getId();
-      block.setTypeIdAndData(id, doorData, false);
+      //todo check
+      if (plugin.is1_11_R1() || plugin.is1_12_R1()) {
+        int id = Material.WOODEN_DOOR.getId();
+        block.setTypeIdAndData(id, doorData, false);
+      } else {
+        //idk how does this work
+        try {
+          if (block.getType() != XMaterial.AIR.parseMaterial()) {
+            i++;
+            continue;
+          }
+          if (doorData == (byte) 8) {
+            block.setType(XMaterial.OAK_DOOR.parseMaterial());
+            BlockState doorBlockState = block.getState();
+            Door doorBlockData = new Door(TreeSpecies.GENERIC, Utils.getFacingByByte(doorData));
+
+            doorBlockData.setTopHalf(true);
+            doorBlockData.setFacingDirection(doorBlockData.getFacing());
+
+            doorBlockState.setType(doorBlockData.getItemType());
+            doorBlockState.setData(doorBlockData);
+            doorBlockState.update(true);
+            continue;
+          }
+
+          block.setType(XMaterial.OAK_DOOR.parseMaterial());
+          BlockState doorBlockState = block.getState();
+          Door doorBlockData = new Door(TreeSpecies.GENERIC, Utils.getFacingByByte(doorData));
+
+          doorBlockData.setTopHalf(false);
+          doorBlockData.setFacingDirection(doorBlockData.getFacing());
+
+          doorBlockState.setData(doorBlockData);
+          doorBlockState.update(true);
+          i++;
+        } catch (Exception ex) {
+          Main.debug(Main.LogLevel.WARN, "Door has failed to load for arena " + getID() + ", skipping!");
+        }
+      }
+    }
+    if (i != doorBlocks.size()) {
+      Main.debug(Main.LogLevel.WARN, "Some doors has failed to load for arena " + getID() + "! Expected " + doorBlocks.size() + " but loaded only " + i + "!");
     }
   }
 

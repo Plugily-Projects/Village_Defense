@@ -29,6 +29,7 @@ import java.util.regex.Pattern;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Entity;
@@ -48,7 +49,7 @@ import pl.plajer.villagedefense3.handlers.ChatManager;
  */
 public class Utils {
 
-  public static Queue<Block> getLineOfSight(LivingEntity entity, HashSet<Byte> transparent, int maxDistance, int maxLength) {
+  public static Queue<Block> getNearbyDoors(LivingEntity entity, HashSet<Byte> transparent, int maxDistance, int maxLength) {
     if (maxDistance > 120) {
       maxDistance = 120;
     }
@@ -62,16 +63,8 @@ public class Utils {
       if (maxLength != 0 && blocks.size() > maxLength) {
         blocks.remove(0);
       }
-      //todo block id!
-      int id = block.getTypeId();
-      if (transparent == null) {
-        if (id != 0 && id != 50 && id != 59 && id != 31 && id != 175 && id != 38 && id != 37 && id != 6 && id != 106) {
-          break;
-        }
-      } else {
-        if (!transparent.contains((byte) id)) {
-          break;
-        }
+      if (block.getType().isTransparent()) {
+        break;
       }
     }
     return blocks;
@@ -88,7 +81,7 @@ public class Utils {
             continue;
           }
           if (e.getLocation().distanceSquared(l) <= radius * radius && e.getLocation().getBlock() != l
-                  .getBlock()) {
+              .getBlock()) {
             radiusEntities.add(e);
           }
         }
@@ -140,16 +133,28 @@ public class Utils {
     }
   }
 
+  public static BlockFace getFacingByByte(byte bt) {
+    switch (bt) {
+      case 1:
+        return BlockFace.SOUTH;
+      case 2:
+        return BlockFace.WEST;
+      case 3:
+        return BlockFace.EAST;
+      case 4:
+        return BlockFace.NORTH;
+      default:
+        return BlockFace.SOUTH;
+    }
+  }
+
   public static void playSound(Location loc, String before1_13, String after1_13) {
-    try {
       if (JavaPlugin.getPlugin(Main.class).is1_13_R1() || JavaPlugin.getPlugin(Main.class).is1_13_R2()) {
-        loc.getWorld().playSound(loc, after1_13, 1, 1);
+        loc.getWorld().playSound(loc, Sound.valueOf(after1_13), 1, 1);
       } else {
         loc.getWorld().playSound(loc, before1_13, 1, 1);
       }
-    } catch (Exception ignored) {
-      //Minecraft 1.13 exceptions will be ignored, for now...
-    }
+
   }
 
 }

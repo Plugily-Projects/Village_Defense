@@ -22,8 +22,8 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>pl.plajer.vilagedefense3</groupId>
-    <artifactId>VillageDefense</artifactId>
+    <groupId>pl.plajer</groupId>
+    <artifactId>villagedefense3</artifactId>
     <version>3.11.3</version>
 
     <properties>
@@ -80,27 +80,6 @@
             <systemPath>${project.basedir}/lib/spigot/1.13.1-R0.1.jar</systemPath>
         </dependency>
         <dependency>
-            <groupId>1.9_R1</groupId>
-            <artifactId>spigot_1_9_R1</artifactId>
-            <version>1.9.2</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/lib/spigot/1.9.2-R0.1.jar</systemPath>
-        </dependency>
-        <dependency>
-            <groupId>1.9_R2</groupId>
-            <artifactId>spigot_1_9_R2</artifactId>
-            <version>1.9.4</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/lib/spigot/1.9.4-R0.1.jar</systemPath>
-        </dependency>
-        <dependency>
-            <groupId>1.10_R1</groupId>
-            <artifactId>spigot_1_10_R1</artifactId>
-            <version>1.10.2</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/lib/spigot/1.10.2-R0.1.jar</systemPath>
-        </dependency>
-        <dependency>
             <groupId>1.11_R1</groupId>
             <artifactId>spigot_1_11_R1</artifactId>
             <version>1.11.2</version>
@@ -112,7 +91,7 @@
             <artifactId>com.gmail.filoghost.holographicdisplays</artifactId>
             <version>2.2</version>
             <scope>system</scope>
-            <systemPath>${project.basedir}/lib/HolographicDisplays-2.2.jar</systemPath>
+            <systemPath>${project.basedir}/lib/HolographicDisplays.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>pl.plajerlair</groupId>
@@ -164,6 +143,12 @@
     </dependencies>
 
     <build>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -205,5 +190,14 @@
             </plugin>
         </plugins>
     </build>
+
+    <distributionManagement>
+        <repository>
+            <uniqueVersion>false</uniqueVersion>
+            <id>plajerlair.repo</id>
+            <name>Plajer's Lair repo</name>
+            <url>file:///${project.basedir}/mvn/repo</url>
+        </repository>
+    </distributionManagement>
 
 </project>
