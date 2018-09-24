@@ -24,7 +24,7 @@
 
     <groupId>pl.plajer</groupId>
     <artifactId>villagedefense3</artifactId>
-    <version>3.11.3</version>
+    <version>3.11.4</version>
 
     <properties>
         <java.version>1.8</java.version>
