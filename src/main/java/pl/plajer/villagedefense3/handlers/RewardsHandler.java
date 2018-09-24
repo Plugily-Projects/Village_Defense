@@ -45,8 +45,16 @@ public class RewardsHandler {
   }
 
   public void performReward(Arena arena, RewardType type) {
-    if (!enabled || (type == RewardType.END_WAVE && !config.contains("rewards.endwave." + arena.getWave()))) {
+    if (!enabled) {
       return;
+    }
+    if (type == RewardType.END_WAVE) {
+      if (!config.contains("rewards.endwave." + arena.getWave())) {
+        return;
+      }
+      for (String string : config.getStringList("rewards." + type.getPath() + "." + arena.getWave())) {
+        performCommand(arena, string);
+      }
     }
     for (String string : config.getStringList("rewards." + type.getPath())) {
       performCommand(arena, string);
