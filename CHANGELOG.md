@@ -1,8 +1,10 @@
 # Village Defense 3 Changelog
 
-### 3.11.4 Release (24.09.2018)
+### 3.11.4 Release (25.09.2018)
 * Fixed rewards weren't dispatched properly while using %PLAYER% placeholder (it was always executed by players)
 * Fixed endwave commands not working
+* Fixed signs not working
+* Fixed doors will not destroyed
 
 ### 3.11.3 Release (07/23.09.2018)
 * Dropped 1.9-1.10 support
