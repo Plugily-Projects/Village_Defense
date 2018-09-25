@@ -66,7 +66,7 @@ public class SignManager implements Listener {
     signLines = LanguageManager.getLanguageList("Signs.Lines");
     plugin.getServer().getPluginManager().registerEvents(this, plugin);
     loadSigns();
-    //updateSignScheduler();
+    updateSignScheduler();
   }
 
   @EventHandler
