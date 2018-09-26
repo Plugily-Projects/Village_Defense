@@ -6,6 +6,7 @@
 * Fixed signs not working
 * Fixed doors will not destroyed
 * Removed bad behavior when you was teleported to arena ending location while joining the server on the arena world
+* Brought back game sign states
 
 ### 3.11.3 Release (07/23.09.2018)
 * Dropped 1.9-1.10 support
