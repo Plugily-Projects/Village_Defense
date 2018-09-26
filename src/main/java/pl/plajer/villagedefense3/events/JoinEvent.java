@@ -27,14 +27,12 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
 
 import pl.plajer.villagedefense3.Main;
-import pl.plajer.villagedefense3.arena.Arena;
 import pl.plajer.villagedefense3.arena.ArenaRegistry;
 import pl.plajer.villagedefense3.database.MySQLConnectionUtils;
 import pl.plajer.villagedefense3.handlers.PermissionsManager;
 import pl.plajer.villagedefense3.user.UserManager;
 import pl.plajer.villagedefense3.villagedefenseapi.StatsStorage;
 import pl.plajerlair.core.services.exception.ReportedException;
-import pl.plajerlair.core.utils.InventoryUtils;
 import pl.plajerlair.core.utils.UpdateChecker;
 
 /**
@@ -121,12 +119,6 @@ public class JoinEvent implements Listener {
       }, 25);
       if (plugin.isBungeeActivated() && ArenaRegistry.getArenas().size() >= 1) {
         ArenaRegistry.getArenas().get(0).teleportToLobby(event.getPlayer());
-      }
-      for (Arena arena : ArenaRegistry.getArenas()) {
-        if (event.getPlayer().getWorld().equals(arena.getStartLocation().getWorld())) {
-          InventoryUtils.loadInventory(plugin, event.getPlayer());
-          event.getPlayer().teleport(ArenaRegistry.getArenas().get(0).getEndLocation());
-        }
       }
       UserManager.registerUser(event.getPlayer().getUniqueId());
       if (!plugin.isDatabaseActivated()) {
