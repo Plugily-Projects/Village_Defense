@@ -161,7 +161,12 @@ public class SetupInventoryEvents implements Listener {
         player.performCommand("vd " + arena.getID() + " addspawn doors");
         player.closeInventory();
         return;
-
+      }
+      if (name.contains("View setup video")) {
+        event.setCancelled(true);
+        player.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorRawMessage("&6Check out this video: " + SetupInventory.VIDEO_LINK));
+        player.closeInventory();
+        return;
       }
       if (name.contains("Set chest shop")) {
         event.setCancelled(true);
