@@ -1,6 +1,15 @@
 # Village Defense 3 Changelog
 
-### 3.11.3 Release (07/15.09.2018)
+### 3.11.4 Release (25/26.09.2018)
+* Fixed rewards weren't dispatched properly while using %PLAYER% placeholder (it was always executed by players)
+* Fixed endwave commands not working
+* Fixed signs not working
+* Fixed doors will not destroyed
+* Removed bad behavior when you was teleported to arena ending location while joining the server on the arena world
+* Brought back game sign states
+* Setup video link in setup menu is now working properly :)
+
+### 3.11.3 Release (07/23.09.2018)
 * Dropped 1.9-1.10 support
 * /vda reload now force players to quit to prevent problems
 * Now shop will be successfully registered when arena is freshly created

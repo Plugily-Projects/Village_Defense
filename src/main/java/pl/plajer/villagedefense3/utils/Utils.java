@@ -58,13 +58,12 @@ public class Utils {
     Iterator<Block> itr = new BlockIterator(entity, maxDistance);
     while (itr.hasNext()) {
       Block block = itr.next();
+      if (block.getType().isTransparent()) {
+        continue;
+      }
       blocks.add(block);
-
       if (maxLength != 0 && blocks.size() > maxLength) {
         blocks.remove(0);
-      }
-      if (block.getType().isTransparent()) {
-        break;
       }
     }
     return blocks;
@@ -149,11 +148,11 @@ public class Utils {
   }
 
   public static void playSound(Location loc, String before1_13, String after1_13) {
-      if (JavaPlugin.getPlugin(Main.class).is1_13_R1() || JavaPlugin.getPlugin(Main.class).is1_13_R2()) {
-        loc.getWorld().playSound(loc, Sound.valueOf(after1_13), 1, 1);
-      } else {
-        loc.getWorld().playSound(loc, before1_13, 1, 1);
-      }
+    if (JavaPlugin.getPlugin(Main.class).is1_13_R1() || JavaPlugin.getPlugin(Main.class).is1_13_R2()) {
+      loc.getWorld().playSound(loc, Sound.valueOf(after1_13), 1, 1);
+    } else {
+      loc.getWorld().playSound(loc, before1_13, 1, 1);
+    }
 
   }
 

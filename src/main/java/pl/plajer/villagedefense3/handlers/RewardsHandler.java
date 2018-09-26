@@ -45,8 +45,16 @@ public class RewardsHandler {
   }
 
   public void performReward(Arena arena, RewardType type) {
-    if (!enabled || (type == RewardType.END_WAVE && !config.contains("rewards.endwave." + arena.getWave()))) {
+    if (!enabled) {
       return;
+    }
+    if (type == RewardType.END_WAVE) {
+      if (!config.contains("rewards.endwave." + arena.getWave())) {
+        return;
+      }
+      for (String string : config.getStringList("rewards." + type.getPath() + "." + arena.getWave())) {
+        performCommand(arena, string);
+      }
     }
     for (String string : config.getStringList("rewards." + type.getPath())) {
       performCommand(arena, string);
@@ -80,16 +88,13 @@ public class RewardsHandler {
         return;
       }
     }
-    if (command.contains("p:") || command.contains("%PLAYER%")) {
-      for (Player player : arena.getPlayers()) {
-        if (command.contains("p:")) {
-          player.performCommand(command.replaceFirst("p:", "").replace("%PLAYER%", player.getName()));
-        } else {
-          plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), command.replace("%PLAYER%", player.getName()));
-        }
+    for (Player player : arena.getPlayers()) {
+      if (command.contains("p:")) {
+        player.performCommand(command.replaceFirst("p:", "").replace("%PLAYER%", player.getName()));
+      } else {
+        plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), command.replace("%PLAYER%", player.getName()));
       }
     }
-    plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), command);
   }
 
   private void performCommand(Player player, String string) {
@@ -114,7 +119,7 @@ public class RewardsHandler {
         return;
       }
     }
-    if (command.contains("p:") || command.contains("%PLAYER%")) {
+    if (command.contains("p:")) {
       player.performCommand(command.replaceFirst("p:", "").replace("%PLAYER%", player.getName()));
     } else {
       plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), command.replace("%PLAYER%", player.getName()));
