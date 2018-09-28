@@ -205,7 +205,7 @@ public class LanguageMigrator {
     MigratorUtils.removeLineFromFile(file, "# Don't edit it. But who's stopping you? It's your server!");
     MigratorUtils.removeLineFromFile(file, "# Really, don't edit ;p");
     MigratorUtils.removeLineFromFile(file, "File-Version-Do-Not-Edit: " + oldVersion);
-    MigratorUtils.addNewLines(file, "# Don't edit it. But who's stopping you? It's your server!\n# Really, don't edit ;p\nFile-Version-Do-Not-Edit: " + LANGUAGE_FILE_VERSION);
+    MigratorUtils.addNewLines(file, "# Don't edit it. But who's stopping you? It's your server!\r\n# Really, don't edit ;p\r\nFile-Version-Do-Not-Edit: " + LANGUAGE_FILE_VERSION + "\r\n");
   }
 
 }
