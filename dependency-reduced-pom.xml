@@ -71,7 +71,7 @@
     </repository>
     <repository>
       <id>plajerlair-repo</id>
-      <url>https://plajer.xyz/mvn/repo</url>
+      <url>https://maven.plajer.xyz/</url>
     </repository>
   </repositories>
   <dependencies>

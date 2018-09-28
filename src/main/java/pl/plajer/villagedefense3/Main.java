@@ -31,6 +31,7 @@ import java.util.UUID;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.PotionEffect;
@@ -44,7 +45,7 @@ import pl.plajer.villagedefense3.creatures.DoorBreakListener;
 import pl.plajer.villagedefense3.creatures.EntityRegistry;
 import pl.plajer.villagedefense3.database.FileStats;
 import pl.plajer.villagedefense3.database.MySQLConnectionUtils;
-import pl.plajer.villagedefense3.database.MySQLDatabase;
+import pl.plajer.villagedefense3.database.MySQLManager;
 import pl.plajer.villagedefense3.events.ChatEvents;
 import pl.plajer.villagedefense3.events.Events;
 import pl.plajer.villagedefense3.events.GolemEvents;
@@ -73,6 +74,7 @@ import pl.plajer.villagedefense3.user.UserManager;
 import pl.plajer.villagedefense3.utils.MessageUtils;
 import pl.plajer.villagedefense3.utils.Metrics;
 import pl.plajer.villagedefense3.villagedefenseapi.StatsStorage;
+import pl.plajerlair.core.database.MySQLDatabase;
 import pl.plajerlair.core.services.ServiceRegistry;
 import pl.plajerlair.core.services.exception.ReportedException;
 import pl.plajerlair.core.utils.ConfigUtils;
@@ -90,6 +92,7 @@ public class Main extends JavaPlugin {
   public static float ZOMBIE_SPEED;
   private static boolean debug;
   private MySQLDatabase database;
+  private MySQLManager mySQLManager;
   private FileStats fileStats;
   private SignManager signManager;
   private BungeeManager bungeeManager;
@@ -223,9 +226,9 @@ public class Main extends JavaPlugin {
       }
       //check if using releases before 2.1.0 or 2.1.0+
       if ((ConfigUtils.getConfig(this, "language").isSet("STATS-AboveLine")
-              && ConfigUtils.getConfig(this, "language").isSet("SCOREBOARD-Zombies"))
-              || (ConfigUtils.getConfig(this, "language").isSet("File-Version")
-              && getConfig().isSet("Config-Version"))) {
+          && ConfigUtils.getConfig(this, "language").isSet("SCOREBOARD-Zombies"))
+          || (ConfigUtils.getConfig(this, "language").isSet("File-Version")
+          && getConfig().isSet("Config-Version"))) {
         LanguageMigrator.migrateToNewFormat();
       }
       debug = getConfig().getBoolean("Debug", false);
@@ -244,7 +247,7 @@ public class Main extends JavaPlugin {
             if (latestVersion.contains("b")) {
               Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "[VillageDefense] Your software is ready for update! However it's a BETA VERSION. Proceed with caution.");
               Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "[VillageDefense] Current version %old%, latest version %new%".replace("%old%", currentVersion)
-                      .replace("%new%", latestVersion));
+                  .replace("%new%", latestVersion));
             } else {
               MessageUtils.updateIsHere();
               Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "Your Village Defense plugin is outdated! Download it to keep with latest changes and fixes.");
@@ -265,7 +268,10 @@ public class Main extends JavaPlugin {
       databaseActivated = getConfig().getBoolean("DatabaseActivated", false);
       inventoryManagerEnabled = getConfig().getBoolean("InventoryManager", false);
       if (databaseActivated) {
-        database = new MySQLDatabase(this);
+        FileConfiguration config = ConfigUtils.getConfig(this, "mysql");
+        database = new MySQLDatabase(this, config.getString("address"), config.getString("user"), config.getString("password"),
+            config.getInt("min-connections"), config.getInt("max-connections"));
+        mySQLManager = new MySQLManager(this);
       } else {
         fileStats = new FileStats(this);
       }
@@ -400,6 +406,10 @@ public class Main extends JavaPlugin {
     return database;
   }
 
+  public MySQLManager getMySQLManager() {
+    return mySQLManager;
+  }
+
   public PowerupManager getPowerupManager() {
     return powerupManager;
   }
@@ -414,7 +424,7 @@ public class Main extends JavaPlugin {
       User user = UserManager.getUser(player.getUniqueId());
       for (StatsStorage.StatisticType s : StatsStorage.StatisticType.values()) {
         if (isDatabaseActivated()) {
-          getMySQLDatabase().setStat(player, s, user.getStat(s));
+          getMySQLManager().setStat(player, s, user.getStat(s));
         } else {
           getFileStats().saveStat(player, s);
         }
@@ -445,7 +455,7 @@ public class Main extends JavaPlugin {
       }
     }
     if (isDatabaseActivated()) {
-      getMySQLDatabase().closeDatabase();
+      getMySQLDatabase().getManager().shutdownConnPool();
     }
     debug(LogLevel.INFO, "System disable finalize");
   }
