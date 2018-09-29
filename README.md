@@ -1,6 +1,6 @@
 ![](https://i.imgur.com/BGzirpT.png)
 
-# Village Defense 3 [![](https://img.shields.io/badge/javadocs-latest-green.svg)](https://plajer-lair.github.io/Village_Defense/) [![](https://img.shields.io/badge/wiki-click-blue.svg)](https://plajer.xyz/wiki/mc/villagedefense/index.php)
+# Village Defense 3 [![](https://img.shields.io/badge/javadocs-latest-green.svg)](https://plajer-lair.github.io/Village_Defense/) [![](https://img.shields.io/badge/wiki-click-blue.svg)](https://wiki.plajer.xyz/minecraft/villagedefense/index.php)
 Village Defense is a Minecraft minigame designed for small and big servers. This minigame is unique and very configurable, 100% free and open source! 
 
 The goal is to protect Villagers from hordes of undead Zombies. However, the game isn't that easy. There are more and more zombies every wave and more types of them come in higher waves. There is no wave limit so try to survive as long as you can!
