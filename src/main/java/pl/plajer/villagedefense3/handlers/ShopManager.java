@@ -66,7 +66,7 @@ public class ShopManager {
         return;
       }
       Location location = LocationUtils.getLocation(config.getString("instances." + a.getID() + ".shop"));
-      if (!(location.getBlock().getState() instanceof Chest)) {
+      if (location.getBlock() == null || !(location.getBlock().getState() instanceof Chest)) {
         Main.debug(Main.LogLevel.WARN, "Shop failed to load, invalid location for loc " + location);
         return;
       }

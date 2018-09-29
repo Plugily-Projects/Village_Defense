@@ -2,6 +2,7 @@
 
 ### 3.11.5 Release (28.09.2018)
 * Fixed server was stopped using Shutdown-When-Game-Ends option but player just left not started arena
+* Fixed NPE when chest location wasn't set (https://plajer.xyz/errorservice/viewer.php?id=232)
 
 ### 3.11.4 Release (25/26.09.2018)
 * Fixed rewards weren't dispatched properly while using %PLAYER% placeholder (it was always executed by players)
