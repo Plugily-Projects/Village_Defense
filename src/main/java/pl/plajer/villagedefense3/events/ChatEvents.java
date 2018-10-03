@@ -54,25 +54,6 @@ public class ChatEvents implements Listener {
   }
 
   @EventHandler
-  public void onChat(AsyncPlayerChatEvent event) {
-    try {
-      if (ArenaRegistry.getArena(event.getPlayer()) == null) {
-        for (Player player : event.getRecipients()) {
-          if (ArenaRegistry.getArena(event.getPlayer()) == null) {
-            return;
-          }
-          event.getRecipients().remove(player);
-
-        }
-      }
-      event.getRecipients().clear();
-      event.getRecipients().addAll(ArenaRegistry.getArena(event.getPlayer()).getPlayers());
-    } catch (Exception ex) {
-      new ReportedException(plugin, ex);
-    }
-  }
-
-  @EventHandler
   public void onChatIngame(AsyncPlayerChatEvent event) {
     try {
       Arena arena = ArenaRegistry.getArena(event.getPlayer());
