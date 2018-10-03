@@ -28,6 +28,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
@@ -72,7 +73,6 @@ import pl.plajer.villagedefense3.kits.kitapi.KitRegistry;
 import pl.plajer.villagedefense3.user.User;
 import pl.plajer.villagedefense3.user.UserManager;
 import pl.plajer.villagedefense3.utils.MessageUtils;
-import pl.plajer.villagedefense3.utils.Metrics;
 import pl.plajer.villagedefense3.villagedefenseapi.StatsStorage;
 import pl.plajerlair.core.database.MySQLDatabase;
 import pl.plajerlair.core.services.ServiceRegistry;
@@ -104,7 +104,6 @@ public class Main extends JavaPlugin {
   private boolean forceDisable = false;
   private boolean databaseActivated = false;
   private boolean bungeeEnabled;
-  private boolean dataEnabled = false;
   private boolean chatFormat = true;
   private boolean bossbarEnabled;
   private boolean inventoryManagerEnabled = false;
@@ -189,14 +188,6 @@ public class Main extends JavaPlugin {
 
   public String getVersion() {
     return version;
-  }
-
-  public boolean isDataEnabled() {
-    return dataEnabled;
-  }
-
-  public void setDataEnabled(boolean dataEnabled) {
-    this.dataEnabled = dataEnabled;
   }
 
   @Override

@@ -66,6 +66,10 @@
                   <pattern>pl.plajerlair.core</pattern>
                   <shadedPattern>pl.plajer.villagedefense3.plajerlair.core</shadedPattern>
                 </relocation>
+                  <relocation>
+                      <pattern>org.bstats</pattern>
+                      <shadedPattern>pl.plajer.villagedefense3.utils</shadedPattern>
+                  </relocation>
               </relocations>
             </configuration>
           </execution>
@@ -90,6 +94,10 @@
     <repository>
       <id>plajerlair-repo</id>
         <url>https://maven.plajer.xyz/</url>
+    </repository>
+      <repository>
+          <id>bstats-repo</id>
+          <url>http://repo.bstats.org/content/repositories/releases/</url>
     </repository>
   </repositories>
   <dependencies>
