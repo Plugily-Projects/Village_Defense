@@ -8,6 +8,7 @@
 * Removed annoying "Please enable bStats" message for admins
 * Now when update cannot be checked you won't receive any message like "Cannot check for updates!"
 * Added PAPI placeholders support in in-game chat!
+* Added some PR0 TIPS when editing arenas
 
 ### 3.11.4 Release (25/26.09.2018)
 * Fixed rewards weren't dispatched properly while using %PLAYER% placeholder (it was always executed by players)

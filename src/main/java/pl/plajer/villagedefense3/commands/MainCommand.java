@@ -21,6 +21,7 @@ package pl.plajer.villagedefense3.commands;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -402,6 +403,8 @@ public class MainCommand implements CommandExecutor {
         player.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("Commands.No-Arena-Like-That"));
         return;
       }
+
+      sendProTip(player);
       new SetupInventory(ArenaRegistry.getArena(args[0])).openInventory(player);
       return;
     }
@@ -572,6 +575,7 @@ public class MainCommand implements CommandExecutor {
       player.sendMessage(ChatColor.GOLD + "Don't know where to start? Check out tutorial video:");
       player.sendMessage(ChatColor.GOLD + SetupInventory.VIDEO_LINK);
       player.sendMessage(ChatColor.BOLD + "------------------------------------------- ");
+      sendProTip(player);
     }
   }
 
@@ -604,6 +608,30 @@ public class MainCommand implements CommandExecutor {
 
   enum LocationType {
     LOBBY, END, START
+  }
+
+  private void sendProTip(Player p) {
+    int rand = new Random().nextInt(5) + 1;
+    switch (rand) {
+      case 0:
+        p.sendMessage(ChatManager.colorRawMessage("&e&lTIP: &7Console can execute /vd addorbs [amount] (player) command! Add game orbs via console!"));
+        break;
+      case 1:
+        p.sendMessage(ChatManager.colorRawMessage("&e&lTIP: &7Build Secret Well for your arena! Check how: https://bit.ly/2DTYxZc"));
+        break;
+      case 2:
+        p.sendMessage(ChatManager.colorRawMessage("&e&lTIP: &7Help us translating plugin to your language here: https://plajer.xyz/translate/villagedefense"));
+        break;
+      case 3:
+        p.sendMessage(ChatManager.colorRawMessage("&e&lTIP: &7LeaderHeads leaderboard plugin is supported with our plugin! Check here: https://bit.ly/2Riu5L0"));
+        break;
+      case 4:
+        p.sendMessage(ChatManager.colorRawMessage("&e&lTIP: &7Achievements, custom kits and replay ability are things available in our paid addon for this minigame!"));
+        break;
+      case 5:
+        p.sendMessage(ChatManager.colorRawMessage("&e&lTIP: &7We are open source! You can always help us by contributing! Check https://github.com/Plajer-Lair/Village_Defense"));
+        break;
+    }
   }
 
 }
