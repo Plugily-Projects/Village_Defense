@@ -104,10 +104,7 @@ public class JoinEvent implements Listener {
                   event.getPlayer().sendMessage(ChatColor.YELLOW + "Current version: " + ChatColor.RED + currentVersion + ChatColor.YELLOW + " Latest version: " + ChatColor.GREEN + latestVersion);
                 }
               }
-            } catch (Exception ex) {
-              event.getPlayer().sendMessage(ChatColor.RED + "[VillageDefense] An error occured while checking for update!");
-              event.getPlayer().sendMessage(ChatColor.RED + "Please check internet connection or check for update via WWW site directly!");
-              event.getPlayer().sendMessage(ChatColor.RED + "WWW site https://www.spigotmc.org/resources/minigame-village-defence-1-12-and-1-8-8.41869/");
+            } catch (Exception ignored) {
             }
           }
         }

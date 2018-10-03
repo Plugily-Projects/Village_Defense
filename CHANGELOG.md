@@ -6,6 +6,7 @@
 * Fixed debugger messages like `[Village Debugger] Some doors has failed to load for arena VD2! Expected 8 but loaded only 9!`, was x + 1
 * Code improvements
 * Removed annoying "Please enable bStats" message for admins
+* Now when update cannot be checked you won't receive any message like "Cannot check for updates!"
 
 ### 3.11.4 Release (25/26.09.2018)
 * Fixed rewards weren't dispatched properly while using %PLAYER% placeholder (it was always executed by players)
