@@ -611,7 +611,7 @@ public class MainCommand implements CommandExecutor {
   }
 
   private void sendProTip(Player p) {
-    int rand = new Random().nextInt(5) + 1;
+    int rand = new Random().nextInt(5 + 1);
     switch (rand) {
       case 0:
         p.sendMessage(ChatManager.colorRawMessage("&e&lTIP: &7Console can execute /vd addorbs [amount] (player) command! Add game orbs via console!"));
