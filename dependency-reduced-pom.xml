@@ -64,11 +64,11 @@
               <relocations>
                 <relocation>
                   <pattern>pl.plajerlair.core</pattern>
-                  <shadedPattern>pl.plajer.villagedefense3.plajerlair.core</shadedPattern>
+                    <shadedPattern>pl.plajer.villagedefense4.plajerlair.core</shadedPattern>
                 </relocation>
                   <relocation>
                       <pattern>org.bstats</pattern>
-                      <shadedPattern>pl.plajer.villagedefense3.utils</shadedPattern>
+                      <shadedPattern>pl.plajer.villagedefense4.utils</shadedPattern>
                   </relocation>
               </relocations>
             </configuration>
