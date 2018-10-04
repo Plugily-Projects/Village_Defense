@@ -1,6 +1,6 @@
 # Village Defense 3 Changelog
 
-### 3.11.5 Release (28.09.2018/03.10.2018)
+### 3.11.5 Release (28.09.2018/04.10.2018)
 * Fixed server was stopped using Shutdown-When-Game-Ends option but player just left not started arena
 * Fixed NPE when chest location wasn't set (https://plajer.xyz/errorservice/viewer.php?id=232)
 * Fixed debugger messages like `[Village Debugger] Some doors has failed to load for arena VD2! Expected 8 but loaded only 9!`, was x + 1
@@ -9,6 +9,7 @@
 * Now when update cannot be checked you won't receive any message like "Cannot check for updates!"
 * Added PAPI placeholders support in in-game chat!
 * Added some PR0 TIPS when editing arenas
+* Fixed NPE for migrator (https://plajer.xyz/errorservice/viewer.php?id=240)
 
 ### 3.11.4 Release (25/26.09.2018)
 * Fixed rewards weren't dispatched properly while using %PLAYER% placeholder (it was always executed by players)

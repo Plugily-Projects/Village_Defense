@@ -111,7 +111,7 @@ public class LanguageMigrator {
   }
 
   public static void languageFileUpdate() {
-    if (ConfigUtils.getConfig(plugin, "language").getString("File-Version-Do-Not-Edit").equals(String.valueOf(LANGUAGE_FILE_VERSION))) {
+    if (ConfigUtils.getConfig(plugin, "language").getString("File-Version-Do-Not-Edit", "").equals(String.valueOf(LANGUAGE_FILE_VERSION))) {
       return;
     }
     Bukkit.getConsoleSender().sendMessage(ChatColor.YELLOW + "[Village Defense] [System notify] Your language file is outdated! Updating...");
