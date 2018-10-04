@@ -38,10 +38,12 @@ import pl.plajer.villagedefense3.villagedefenseapi.StatsStorage;
  */
 public class MySQLConnectionUtils {
 
+  private static Main plugin = JavaPlugin.getPlugin(Main.class);
+
   public static void loadPlayerStats(Player player) {
     boolean b = false;
-    MySQLDatabase database = JavaPlugin.getPlugin(Main.class).getMySQLDatabase();
-    ResultSet resultSet = database.executeQuery("SELECT UUID from playerstats WHERE UUID='" + player.getUniqueId().toString() + "'");
+    MySQLManager database = plugin.getMySQLManager();
+    ResultSet resultSet = plugin.getMySQLDatabase().executeQuery("SELECT UUID from playerstats WHERE UUID='" + player.getUniqueId().toString() + "'");
     try {
       if (!resultSet.next()) {
         database.insertPlayer(player);

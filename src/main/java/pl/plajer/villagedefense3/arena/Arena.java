@@ -1133,7 +1133,7 @@ public abstract class Arena extends BukkitRunnable {
   }
 
   void restoreDoors() {
-    int i = 1;
+    int i = 0;
     for (Location location : doorBlocks.keySet()) {
       Block block = location.getBlock();
       Byte doorData = doorBlocks.get(location);

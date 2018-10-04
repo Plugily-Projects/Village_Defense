@@ -23,6 +23,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import me.clip.placeholderapi.PlaceholderAPI;
+
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -51,25 +53,6 @@ public class ChatEvents implements Listener {
   public ChatEvents(Main plugin) {
     this.plugin = plugin;
     plugin.getServer().getPluginManager().registerEvents(this, plugin);
-  }
-
-  @EventHandler
-  public void onChat(AsyncPlayerChatEvent event) {
-    try {
-      if (ArenaRegistry.getArena(event.getPlayer()) == null) {
-        for (Player player : event.getRecipients()) {
-          if (ArenaRegistry.getArena(event.getPlayer()) == null) {
-            return;
-          }
-          event.getRecipients().remove(player);
-
-        }
-      }
-      event.getRecipients().clear();
-      event.getRecipients().addAll(ArenaRegistry.getArena(event.getPlayer()).getPlayers());
-    } catch (Exception ex) {
-      new ReportedException(plugin, ex);
-    }
   }
 
   @EventHandler
@@ -110,6 +93,9 @@ public class ChatEvents implements Listener {
           }
         }
         message = formatChatPlaceholders(LanguageManager.getLanguageMessage("In-Game.Game-Chat-Format"), UserManager.getUser(event.getPlayer().getUniqueId()), eventMessage);
+        if (plugin.getServer().getPluginManager().isPluginEnabled("PlaceholderAPI")) {
+          message = PlaceholderAPI.setPlaceholders(event.getPlayer(), message);
+        }
         for (Player player : arena.getPlayers()) {
           player.sendMessage(message);
         }
@@ -117,7 +103,11 @@ public class ChatEvents implements Listener {
       } else {
         event.getRecipients().clear();
         event.getRecipients().addAll(new ArrayList<>(arena.getPlayers()));
-        event.setMessage(event.getMessage().replace("%kit%", UserManager.getUser(event.getPlayer().getUniqueId()).getKit().getName()));
+        String message = event.getMessage().replace("%kit%", UserManager.getUser(event.getPlayer().getUniqueId()).getKit().getName());
+        if (plugin.getServer().getPluginManager().isPluginEnabled("PlaceholderAPI")) {
+          message = PlaceholderAPI.setPlaceholders(event.getPlayer(), message);
+        }
+        event.setMessage(message);
       }
     } catch (Exception ex) {
       new ReportedException(plugin, ex);

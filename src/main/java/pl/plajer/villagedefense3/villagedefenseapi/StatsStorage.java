@@ -61,7 +61,7 @@ public class StatsStorage {
    */
   public static Map<UUID, Integer> getStats(StatisticType stat) {
     if (plugin.isDatabaseActivated()) {
-      return plugin.getMySQLDatabase().getColumn(stat.getName());
+      return plugin.getMySQLManager().getColumn(stat.getName());
     } else {
       FileConfiguration config = ConfigUtils.getConfig(plugin, "stats");
       Map<UUID, Integer> stats = new TreeMap<>();

@@ -24,7 +24,7 @@
 
     <groupId>pl.plajer</groupId>
     <artifactId>villagedefense3</artifactId>
-    <version>3.11.4</version>
+    <version>3.11.5</version>
 
     <properties>
         <java.version>1.8</java.version>
@@ -54,10 +54,16 @@
         </repository>
         <repository>
             <id>plajerlair-repo</id>
-            <url>https://plajer.xyz/mvn/repo</url>
+            <url>https://maven.plajer.xyz/</url>
+        </repository>
+        <repository>
+            <id>bstats-repo</id>
+            <url>http://repo.bstats.org/content/repositories/releases/</url>
         </repository>
     </repositories>
+
     <dependencies>
+        <!-- Spigot APIs -->
         <dependency>
             <groupId>1.12_R1</groupId>
             <artifactId>spigot_1_12_R1</artifactId>
@@ -86,6 +92,7 @@
             <scope>system</scope>
             <systemPath>${project.basedir}/lib/spigot/1.11.2-R0.1.jar</systemPath>
         </dependency>
+        <!-- Spigot APIs -->
         <dependency>
             <groupId>api</groupId>
             <artifactId>com.gmail.filoghost.holographicdisplays</artifactId>
@@ -96,7 +103,13 @@
         <dependency>
             <groupId>pl.plajerlair</groupId>
             <artifactId>plcore</artifactId>
-            <version>1.2.2</version>
+            <version>1.2.4</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.bstats</groupId>
+            <artifactId>bstats-bukkit</artifactId>
+            <version>1.2</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
@@ -182,6 +195,10 @@
                                 <relocation>
                                     <pattern>pl.plajerlair.core</pattern>
                                     <shadedPattern>pl.plajer.villagedefense3.plajerlair.core</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>org.bstats</pattern>
+                                    <shadedPattern>pl.plajer.villagedefense3.utils</shadedPattern>
                                 </relocation>
                             </relocations>
                         </configuration>

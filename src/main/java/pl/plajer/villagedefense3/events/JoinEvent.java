@@ -85,11 +85,6 @@ public class JoinEvent implements Listener {
     try {
       //we want to be the first :)
       Bukkit.getScheduler().runTaskLater(plugin, () -> {
-        if (event.getPlayer().isOp() && !plugin.isDataEnabled()) {
-          event.getPlayer().sendMessage(ChatColor.RED + "[VillageDefense] It seems that you've disabled bStats statistics.");
-          event.getPlayer().sendMessage(ChatColor.RED + "Please consider enabling it to help us develop our plugins better!");
-          event.getPlayer().sendMessage(ChatColor.RED + "Enable it in plugins/bStats/config.yml file");
-        }
         if (event.getPlayer().hasPermission("villagedefense.updatenotify")) {
           if (plugin.getConfig().getBoolean("Update-Notifier.Enabled", true)) {
             String currentVersion = "v" + Bukkit.getPluginManager().getPlugin("VillageDefense").getDescription().getVersion();
@@ -109,10 +104,7 @@ public class JoinEvent implements Listener {
                   event.getPlayer().sendMessage(ChatColor.YELLOW + "Current version: " + ChatColor.RED + currentVersion + ChatColor.YELLOW + " Latest version: " + ChatColor.GREEN + latestVersion);
                 }
               }
-            } catch (Exception ex) {
-              event.getPlayer().sendMessage(ChatColor.RED + "[VillageDefense] An error occured while checking for update!");
-              event.getPlayer().sendMessage(ChatColor.RED + "Please check internet connection or check for update via WWW site directly!");
-              event.getPlayer().sendMessage(ChatColor.RED + "WWW site https://www.spigotmc.org/resources/minigame-village-defence-1-12-and-1-8-8.41869/");
+            } catch (Exception ignored) {
             }
           }
         }

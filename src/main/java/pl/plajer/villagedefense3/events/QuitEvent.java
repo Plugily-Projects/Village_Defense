@@ -68,7 +68,7 @@ public class QuitEvent implements Listener {
           for (final StatsStorage.StatisticType s : StatsStorage.StatisticType.values()) {
             int i;
             try {
-              i = plugin.getMySQLDatabase().getStat(player, s);
+              i = plugin.getMySQLManager().getStat(player, s);
             } catch (NullPointerException npe) {
               i = 0;
               Main.debug(Main.LogLevel.ERROR, "Couldn't get stats from player " + player.getName());
@@ -79,9 +79,9 @@ public class QuitEvent implements Listener {
             }
 
             if (i > user.getStat(s)) {
-              plugin.getMySQLDatabase().setStat(player, s, user.getStat(s) + i);
+              plugin.getMySQLManager().setStat(player, s, user.getStat(s) + i);
             } else {
-              plugin.getMySQLDatabase().setStat(player, s, user.getStat(s));
+              plugin.getMySQLManager().setStat(player, s, user.getStat(s));
             }
             plugin.getMySQLDatabase().executeUpdate("UPDATE playerstats SET name='" + player.getName() + "' WHERE UUID='" + player.getUniqueId().toString() + "';");
           }

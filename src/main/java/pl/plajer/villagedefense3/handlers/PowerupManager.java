@@ -61,10 +61,6 @@ public class PowerupManager {
       Main.debug(Main.LogLevel.WARN, "Power up module: Holographic Displays dependency not found, disabling");
       return;
     }
-    if (plugin.is1_13_R1() || plugin.is1_13_R2()) {
-      Main.debug(Main.LogLevel.WARN, "Power up module cannot be enabled! Holographic Displays isn't working properly on that version! Disabling...");
-      return;
-    }
     enabled = true;
     this.plugin = plugin;
     Main.debug(Main.LogLevel.INFO, "Registering power ups module!");

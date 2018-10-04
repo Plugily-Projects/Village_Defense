@@ -217,7 +217,7 @@ public class ArenaManager {
         p.removePotionEffect(effect.getType());
       }
       p.setFireTicks(0);
-      if (arena.getPlayers().size() == 0) {
+      if (arena.getPlayers().size() == 0 && arena.getArenaState() != ArenaState.WAITING_FOR_PLAYERS) {
         arena.setArenaState(ArenaState.ENDING);
         arena.setTimer(0);
       }
