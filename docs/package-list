@@ -1,4 +1,13 @@
-pl.plajer.villagedefense3.arena
-pl.plajer.villagedefense3.kits.kitapi
-pl.plajer.villagedefense3.kits.kitapi.basekits
-pl.plajer.villagedefense3.villagedefenseapi
+pl.plajer.villagedefense4.api
+pl.plajer.villagedefense4.api.event
+pl.plajer.villagedefense4.api.event.game
+pl.plajer.villagedefense4.api.event.player
+pl.plajer.villagedefense4.api.event.wave
+pl.plajer.villagedefense4.arena
+pl.plajer.villagedefense4.arena.initializers
+pl.plajer.villagedefense4.kits.free
+pl.plajer.villagedefense4.kits.kitapi
+pl.plajer.villagedefense4.kits.kitapi.basekits
+pl.plajer.villagedefense4.kits.level
+pl.plajer.villagedefense4.kits.premium
+pl.plajer.villagedefense4.user
