@@ -110,7 +110,7 @@ public class GolemEvents implements Listener {
         return;
       }
       if (e.getInventory().getName().equals(ChatManager.colorMessage("In-Game.Golem-Upgrades.Upgrade-Inventory"))) {
-        if (!e.getCurrentItem().hasItemMeta()) {
+        if (!e.getCurrentItem().hasItemMeta() || !e.getCurrentItem().getItemMeta().hasDisplayName()) {
           return;
         }
         Player p = (Player) e.getWhoClicked();
