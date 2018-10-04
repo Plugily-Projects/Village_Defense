@@ -1,13 +1,13 @@
 name: VillageDefense
-main: pl.plajer.villagedefense3.Main
-author: [TomTheDeveloper, Plajer]
+main: pl.plajer.villagedefense4.Main
+author: [TomTheDeveloper, Plajer, Tigerpanzer]
 version: ${project.version}
 softdepend: [HolographicDisplays, PlaceholderAPI]
 api-version: 1.13
 
 commands:
   VillageDefense:
-    description: VD 3 Commands
+    description: VillageDefense Commands
     usage: "\u00A76Correct usage: /vd [option]"
     aliases: [vd, villaged]
   VillageDefenseAdmin:

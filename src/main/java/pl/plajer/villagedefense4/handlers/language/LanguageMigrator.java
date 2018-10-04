@@ -189,7 +189,7 @@ public class LanguageMigrator {
 
   public static void migrateToNewFormat() {
     MessageUtils.gonnaMigrate();
-    Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "Village Defense 3 is migrating all files to the new file format...");
+    Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "Village Defense is migrating all files to the new file format...");
     Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "Don't worry! Old files will be renamed not overridden!");
     for (String file : migratable) {
       if (ConfigUtils.getFile(plugin, file).exists()) {
@@ -197,7 +197,7 @@ public class LanguageMigrator {
         Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "Renamed file " + file + ".yml");
       }
     }
-    Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "Done! Enabling Village Defense 3...");
+    Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "Done! Enabling Village Defense...");
   }
 
   private static void updateLanguageVersionControl(int oldVersion) {

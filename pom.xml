@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  ~ Village Defense 3 - Protect villagers from hordes of zombies
-  ~ Copyright (C) 2018  Plajer's Lair - maintained by Plajer
+  ~ Village Defense 4 - Protect villagers from hordes of zombies
+  ~ Copyright (C) 2018  Plajer's Lair - maintained by Plajer and Tigerpanzer
   ~
   ~ This program is free software: you can redistribute it and/or modify
   ~ it under the terms of the GNU General Public License as published by
@@ -24,7 +24,7 @@
 
     <groupId>pl.plajer</groupId>
     <artifactId>villagedefense3</artifactId>
-    <version>3.11.5</version>
+    <version>4.0.0-pre-1</version>
 
     <properties>
         <java.version>1.8</java.version>

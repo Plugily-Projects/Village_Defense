@@ -1,11 +1,11 @@
-#     VillageDefense 3 configuration file
+#      VillageDefense configuration file
 #
-#    You can edit here the basic things of VD 3
+#    You can edit here the basic things of VD
 #      Please read everything CAREFULLY!
 #   You don't want to break anything, do you?
 #
 
-# Select locale of VD 3, default it's English.
+# Select locale of VillageDefense, default it's English.
 # Available locales:
 #    default - English language. Uses 'language.yml'.
 #    de - Deutsche sprache       pl - Język polski
@@ -81,6 +81,7 @@ Rewards-Enabled: false
 
 # Enable in game (eg. '[KIT][LEVEL] Plajer: hey') special formatting?
 # Formatting is configurable in language.yml
+# You can use PlaceholderAPI placeholders in chat format!
 ChatFormat-Enabled: true
 
 # Amount of orbs given to player when game starts
@@ -124,7 +125,7 @@ Golems-Spawn-Limit: 15
 # It's kinda buggy, you should use external plugin if you got one.
 Simple-Zombie-Health-Bar-Enabled: true
 
-# Power ups section. If you want to have classic Village Defense game mode i recommend to disable this.
+# Power ups section. If you want to have classic Village Defense game mode I recommend to disable this.
 Powerups:
   # Do you want to enable in-game power ups?
   # This will make zombies drop some power ups when they're killed

@@ -1,4 +1,4 @@
-#    You can translate Village Defense 3 messages here.
+#    You can translate Village Defense messages here.
 #             Color codes (&) supported.
 #
 #              Use \n to make new line
@@ -270,7 +270,7 @@ In-Game:
     Health: "&e&lGolem's health: &7%health%"
   Spawned-Wolf-Name: "%player%'s Wolf"
   Spawned-Golem-Name: "%player%'s Golem"
-  # Join cancelled via external plugin that uses VD3 api.
+  # Join cancelled via external plugin that uses VillageDefense API.
   Join-Cancelled-Via-API: "&cYou can't join this game!"
   Arena-Not-Configured: "&cArena is not configured yet! Contact staff!"
   Spectator:
