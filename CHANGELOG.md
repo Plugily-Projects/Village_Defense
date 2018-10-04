@@ -2,6 +2,7 @@
 
 ### 4.0.0 Beta (04.10.2018)
 * API change - now you can access it via pl.plajer.villagedefense4.api
+* Removed actionbar message from players that died and the arena was changed in "ending"
 
 ### 3.11.5 Release (28.09.2018/04.10.2018)
 * Fixed server was stopped using Shutdown-When-Game-Ends option but player just left not started arena

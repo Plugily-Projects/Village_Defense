@@ -187,6 +187,9 @@ public class ArenaEvents implements Listener {
       new BukkitRunnable() {
         @Override
         public void run() {
+          if (arena.getArenaState() == ArenaState.ENDING ) {
+            this.cancel();
+          }
           if (user.isSpectator()) {
             player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(ChatManager.colorMessage("In-Game.Died-Respawn-In-Next-Wave")));
           } else {
