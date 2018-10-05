@@ -93,9 +93,6 @@ public class ChatEvents implements Listener {
           }
         }
         message = formatChatPlaceholders(LanguageManager.getLanguageMessage("In-Game.Game-Chat-Format"), UserManager.getUser(event.getPlayer().getUniqueId()), eventMessage);
-        if (plugin.getServer().getPluginManager().isPluginEnabled("PlaceholderAPI")) {
-          message = PlaceholderAPI.setPlaceholders(event.getPlayer(), message);
-        }
         for (Player player : arena.getPlayers()) {
           player.sendMessage(message);
         }
@@ -104,7 +101,7 @@ public class ChatEvents implements Listener {
         event.getRecipients().clear();
         event.getRecipients().addAll(new ArrayList<>(arena.getPlayers()));
         String message = event.getMessage().replace("%kit%", UserManager.getUser(event.getPlayer().getUniqueId()).getKit().getName());
-        if (plugin.getServer().getPluginManager().isPluginEnabled("PlaceholderAPI")) {
+        if (plugin.getServer().getPluginManager().isPluginEnabled("PlaceholderAPI") && PlaceholderAPI.containsPlaceholders(message)) {
           message = PlaceholderAPI.setPlaceholders(event.getPlayer(), message);
         }
         event.setMessage(message);
@@ -125,6 +122,9 @@ public class ChatEvents implements Listener {
     }
     formatted = StringUtils.replace(formatted, "%player%", user.toPlayer().getName());
     formatted = StringUtils.replace(formatted, "%message%", saidMessage);
+    if (plugin.getServer().getPluginManager().isPluginEnabled("PlaceholderAPI") && PlaceholderAPI.containsPlaceholders(formatted)) {
+      formatted = PlaceholderAPI.setPlaceholders(user.toPlayer(), formatted);
+    }
     return formatted;
   }
 
