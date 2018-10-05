@@ -73,7 +73,7 @@ public class SignManager implements Listener {
   public void onSignChange(SignChangeEvent e) {
     try {
       if (!e.getPlayer().hasPermission("villagedefense.admin.sign.create")
-          || !e.getLine(0).equalsIgnoreCase("[villagedefense]")) {
+          || !e.getLine(0).equalsIgnoreCase("[villagedefense]") || !e.getLine(0).equalsIgnoreCase("[vd]")) {
         return;
       }
       if (e.getLine(1).isEmpty()) {
