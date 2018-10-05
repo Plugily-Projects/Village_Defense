@@ -82,13 +82,11 @@ public class BungeeManager implements Listener {
 
   @EventHandler(priority = EventPriority.HIGHEST)
   public void onJoin(final PlayerJoinEvent event) {
-    event.setJoinMessage("");
     plugin.getServer().getScheduler().runTaskLater(plugin, () -> ArenaManager.joinAttempt(event.getPlayer(), ArenaRegistry.getArenas().get(0)), 1L);
   }
 
   @EventHandler(priority = EventPriority.HIGHEST)
   public void onQuit(PlayerQuitEvent event) {
-    event.setQuitMessage("");
     if (ArenaRegistry.getArena(event.getPlayer()) != null) {
       ArenaManager.leaveAttempt(event.getPlayer(), ArenaRegistry.getArenas().get(0));
     }
