@@ -51,7 +51,7 @@ public class JoinEvent implements Listener {
   public void onLogin(PlayerLoginEvent e) {
     try {
       if (!plugin.isBungeeActivated() && !plugin.getServer().hasWhitelist()
-              || e.getResult() != PlayerLoginEvent.Result.KICK_WHITELIST) {
+          || e.getResult() != PlayerLoginEvent.Result.KICK_WHITELIST) {
         return;
       }
       if (e.getPlayer().hasPermission(PermissionsManager.getJoinFullGames())) {
@@ -65,7 +65,11 @@ public class JoinEvent implements Listener {
   @EventHandler
   public void onJoin(PlayerJoinEvent event) {
     try {
+      UserManager.registerUser(event.getPlayer().getUniqueId());
       if (plugin.isBungeeActivated()) {
+        if (ArenaRegistry.getArenas().size() >= 1) {
+          ArenaRegistry.getArenas().get(0).teleportToLobby(event.getPlayer());
+        }
         return;
       }
       for (Player player : plugin.getServer().getOnlinePlayers()) {
@@ -84,9 +88,17 @@ public class JoinEvent implements Listener {
   public void onJoinCheckVersion(final PlayerJoinEvent event) {
     try {
       //we want to be the first :)
-      Bukkit.getScheduler().runTaskLater(plugin, () -> {
-        if (event.getPlayer().hasPermission("villagedefense.updatenotify")) {
-          if (plugin.getConfig().getBoolean("Update-Notifier.Enabled", true)) {
+      if (!plugin.isDatabaseActivated()) {
+        for (StatsStorage.StatisticType s : StatsStorage.StatisticType.values()) {
+          plugin.getFileStats().loadStat(event.getPlayer(), s);
+        }
+        return;
+      }
+      final Player player = event.getPlayer();
+      Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> MySQLConnectionUtils.loadPlayerStats(player));
+      if (plugin.getConfig().getBoolean("Update-Notifier.Enabled", true)) {
+        Bukkit.getScheduler().runTaskLater(plugin, () -> {
+          if (event.getPlayer().hasPermission("villagedefense.updatenotify")) {
             String currentVersion = "v" + Bukkit.getPluginManager().getPlugin("VillageDefense").getDescription().getVersion();
             try {
               boolean check = UpdateChecker.checkUpdate(plugin, currentVersion, 41869);
@@ -107,20 +119,9 @@ public class JoinEvent implements Listener {
             } catch (Exception ignored) {
             }
           }
-        }
-      }, 25);
-      if (plugin.isBungeeActivated() && ArenaRegistry.getArenas().size() >= 1) {
-        ArenaRegistry.getArenas().get(0).teleportToLobby(event.getPlayer());
+
+        }, 25);
       }
-      UserManager.registerUser(event.getPlayer().getUniqueId());
-      if (!plugin.isDatabaseActivated()) {
-        for (StatsStorage.StatisticType s : StatsStorage.StatisticType.values()) {
-          plugin.getFileStats().loadStat(event.getPlayer(), s);
-        }
-        return;
-      }
-      final Player player = event.getPlayer();
-      Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> MySQLConnectionUtils.loadPlayerStats(player));
     } catch (Exception ex) {
       new ReportedException(plugin, ex);
     }

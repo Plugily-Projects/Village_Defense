@@ -27,6 +27,9 @@ import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
+import net.md_5.bungee.api.ChatMessageType;
+import net.md_5.bungee.api.chat.TextComponent;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -161,6 +164,7 @@ public class PowerupManager {
         }
         for (Player p : arena.getPlayers()) {
           p.sendTitle(powerUpTitle, subTitle, 5, 30, 5);
+          player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(powerUpTitle + " | " + subTitle));
         }
         hologram.delete();
       });

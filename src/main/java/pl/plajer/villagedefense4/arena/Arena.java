@@ -160,6 +160,7 @@ public abstract class Arena extends BukkitRunnable {
    * @param p      player
    */
   public void doBarAction(BarAction action, Player p) {
+    updateScoreboard();
     if (!plugin.isBossbarEnabled()) {
       return;
     }
@@ -206,6 +207,7 @@ public abstract class Arena extends BukkitRunnable {
             setArenaState(ArenaState.STARTING);
             setTimer(Main.STARTING_TIMER_TIME);
             this.showPlayers();
+            return;
           }
           setTimer(getTimer() - 1);
           break;
