@@ -220,7 +220,7 @@ public class ArenaManager {
 
       p.setGameMode(GameMode.SURVIVAL);
       for (Player players : plugin.getServer().getOnlinePlayers()) {
-        if (ArenaRegistry.getArena(players) != null) {
+        if (ArenaRegistry.getArena(players) == null) {
           players.showPlayer(p);
         }
         p.showPlayer(players);
