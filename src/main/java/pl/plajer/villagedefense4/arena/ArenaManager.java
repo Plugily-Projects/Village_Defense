@@ -123,7 +123,7 @@ public class ArenaManager {
         User user = UserManager.getUser(p.getUniqueId());
         user.setSpectator(true);
         user.setStat(StatsStorage.StatisticType.ORBS, 0);
-        p.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, Integer.MAX_VALUE, 1));
+        p.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, Integer.MAX_VALUE, 0));
         ArenaUtils.hidePlayer(p, arena);
 
         for (Player spectator : arena.getPlayers()) {

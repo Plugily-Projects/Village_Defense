@@ -7,7 +7,8 @@
 * Added an Actionbar message when picking up an Powerup
 * Added spectator settings menu
 * You cannot join now game infinitely through command (lol???)
-* Now players that leave game will be visible by others
+* Now players that leave game will be visible by other players outside game
+* Nerfed some kits - potions amplifiers are counted from 0 so every kit with potion effects has now amplifier -1 because it was too op
 
 ### 3.11.5 Release (28.09.2018/04.10.2018)
 * Fixed server was stopped using Shutdown-When-Game-Ends option but player just left not started arena

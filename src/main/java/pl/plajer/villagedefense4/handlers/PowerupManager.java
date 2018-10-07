@@ -138,14 +138,14 @@ public class PowerupManager {
           case DOUBLE_DAMAGE:
             for (Player p : arena.getPlayers()) {
               p.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 20 *
-                      plugin.getConfig().getInt("Powerups.List.Double-Damage-For-Players.Time", 15), 1, false, false));
+                  plugin.getConfig().getInt("Powerups.List.Double-Damage-For-Players.Time", 15), 0, false, false));
             }
             subTitle = subTitle.replace("%time%", plugin.getConfig().getString("Powerups.List.Double-Damage-For-Players.Time", "15"));
             break;
           case HEALING:
             for (Player p : arena.getPlayers()) {
               p.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 20 *
-                      plugin.getConfig().getInt("Powerups.List.Healing-For-Players.Time-Of-Healing", 10), 1, false, false));
+                  plugin.getConfig().getInt("Powerups.List.Healing-For-Players.Time-Of-Healing", 10), 0, false, false));
             }
             subTitle = subTitle.replace("%time%", plugin.getConfig().getString("Powerups.List.Healing-For-Players.Time-Of-Healing", "10"));
             break;
