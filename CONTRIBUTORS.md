@@ -12,11 +12,8 @@
 * [Hex_27](https://www.spigotmc.org/members/hex_27.23764/) - Code snippets (XMaterial class)
 * [HomieDion](https://www.spigotmc.org/members/homiedion.118743/) - Code snippets (Events.onCombust() class)
 * HStreamGamer - Vietnamese translator
-* [inventivetalent](https://www.spigotmc.org/members/inventivetalent.6643/) - Code snippets (StringMatcher class)
 * [IvanTheBuilder](https://www.spigotmc.org/members/ivanthebuilder.18881/) - Former author of Village Defense 1
 * [KitsuneSakul](https://www.spigotmc.org/members/kitsunesakul.61401/) - Czech translator
-* [Marcely99](https://www.spigotmc.org/members/marcely99.62672/) - Code snippets (PLCore GameScoreboard class)
-* [MattUGV](https://www.spigotmc.org/members/mattugv.139086/) - Code snippets (PLCore percentage message utility)
 * [Melonzrix](https://www.spigotmc.org/members/melongun77.147284/) - German translator
 * [montlikadani](https://www.spigotmc.org/members/toldi.251100/) - Code contributor
 * [N4TH4NOT](https://www.spigotmc.org/members/n4th4not.400311/) - French translator

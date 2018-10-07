@@ -28,10 +28,10 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import pl.plajer.villagedefense4.Main;
 import pl.plajer.villagedefense4.arena.Arena;
-import pl.plajer.villagedefense4.utils.XMaterial;
 import pl.plajerlair.core.utils.ConfigUtils;
 import pl.plajerlair.core.utils.ItemBuilder;
 import pl.plajerlair.core.utils.LocationUtils;
+import pl.plajerlair.core.utils.XMaterial;
 
 /**
  * Created by Tom on 15/06/2015.

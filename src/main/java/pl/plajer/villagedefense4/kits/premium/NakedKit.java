@@ -42,8 +42,8 @@ import pl.plajer.villagedefense4.kits.kitapi.KitRegistry;
 import pl.plajer.villagedefense4.kits.kitapi.basekits.PremiumKit;
 import pl.plajer.villagedefense4.user.UserManager;
 import pl.plajer.villagedefense4.utils.Utils;
-import pl.plajer.villagedefense4.utils.XMaterial;
 import pl.plajerlair.core.services.exception.ReportedException;
+import pl.plajerlair.core.utils.XMaterial;
 
 /**
  * Created by Tom on 8/02/2015.

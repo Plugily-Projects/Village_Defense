@@ -32,7 +32,7 @@ import pl.plajer.villagedefense4.kits.kitapi.basekits.FreeKit;
 import pl.plajer.villagedefense4.utils.ArmorHelper;
 import pl.plajer.villagedefense4.utils.Utils;
 import pl.plajer.villagedefense4.utils.WeaponHelper;
-import pl.plajer.villagedefense4.utils.XMaterial;
+import pl.plajerlair.core.utils.XMaterial;
 
 /**
  * Created by Tom on 18/08/2014.

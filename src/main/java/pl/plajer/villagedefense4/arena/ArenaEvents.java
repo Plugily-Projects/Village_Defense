@@ -37,8 +37,6 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -49,8 +47,9 @@ import pl.plajer.villagedefense4.handlers.RewardsHandler;
 import pl.plajer.villagedefense4.handlers.items.SpecialItemManager;
 import pl.plajer.villagedefense4.user.User;
 import pl.plajer.villagedefense4.user.UserManager;
-import pl.plajer.villagedefense4.utils.XMaterial;
 import pl.plajerlair.core.services.exception.ReportedException;
+import pl.plajerlair.core.utils.ItemBuilder;
+import pl.plajerlair.core.utils.XMaterial;
 
 /**
  * @author Plajer
@@ -201,12 +200,8 @@ public class ArenaEvents implements Listener {
 
       //running in a scheduler of 1 tick due to 1.13 bug
       Bukkit.getScheduler().runTaskLater(plugin, () -> {
-        ItemStack spectatorItem = XMaterial.COMPASS.parseItem();
-        ItemMeta spectatorMeta = spectatorItem.getItemMeta();
-        spectatorMeta.setDisplayName(ChatManager.colorMessage("In-Game.Spectator.Spectator-Item-Name"));
-        spectatorItem.setItemMeta(spectatorMeta);
-        player.getInventory().setItem(0, spectatorItem);
-
+        player.getInventory().setItem(0, new ItemBuilder(XMaterial.COMPASS.parseItem()).name(ChatManager.colorMessage("In-Game.Spectator.Spectator-Item-Name")).build());
+        player.getInventory().setItem(4, new ItemBuilder(XMaterial.COMPARATOR.parseItem()).name(ChatManager.colorMessage("In-Game.Spectator.Spectator.Settings-Menu.Item-Name")).build());
         player.getInventory().setItem(8, SpecialItemManager.getSpecialItem("Leave").getItemStack());
       }, 1);
 

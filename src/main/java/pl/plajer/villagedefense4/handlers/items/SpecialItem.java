@@ -31,8 +31,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import pl.plajer.villagedefense4.Main;
 import pl.plajer.villagedefense4.handlers.ChatManager;
-import pl.plajer.villagedefense4.utils.XMaterial;
 import pl.plajerlair.core.utils.ConfigUtils;
+import pl.plajerlair.core.utils.XMaterial;
 
 /**
  * Created by Tom on 5/02/2016.

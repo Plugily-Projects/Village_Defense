@@ -49,7 +49,7 @@ import pl.plajer.villagedefense4.handlers.ChatManager;
  */
 public class Utils {
 
-  public static Queue<Block> getNearbyDoors(LivingEntity entity, HashSet<Byte> transparent, int maxDistance, int maxLength) {
+  public static Queue<Block> getNearbyDoors(LivingEntity entity, int maxDistance, int maxLength) {
     if (maxDistance > 120) {
       maxDistance = 120;
     }

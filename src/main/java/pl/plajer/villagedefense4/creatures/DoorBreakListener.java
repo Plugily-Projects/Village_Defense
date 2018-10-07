@@ -35,8 +35,8 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import pl.plajer.villagedefense4.Main;
 import pl.plajer.villagedefense4.utils.Utils;
-import pl.plajer.villagedefense4.utils.XMaterial;
 import pl.plajerlair.core.services.exception.ReportedException;
+import pl.plajerlair.core.utils.XMaterial;
 
 /**
  * Created by Tom on 14/08/2014.
@@ -54,7 +54,7 @@ public class DoorBreakListener extends BukkitRunnable {
           if (!(entity.getType() == EntityType.ZOMBIE)) {
             continue;
           }
-          Queue<Block> blocks = Utils.getNearbyDoors((LivingEntity) entity, null, 1, 1);
+          Queue<Block> blocks = Utils.getNearbyDoors((LivingEntity) entity, 1, 1);
           for (Block block : blocks) {
             if (plugin.is1_11_R1() || plugin.is1_12_R1()) {
               if (block.getType() != Material.WOODEN_DOOR) {

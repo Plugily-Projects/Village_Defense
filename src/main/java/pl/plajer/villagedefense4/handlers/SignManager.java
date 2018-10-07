@@ -44,10 +44,10 @@ import pl.plajer.villagedefense4.arena.ArenaManager;
 import pl.plajer.villagedefense4.arena.ArenaRegistry;
 import pl.plajer.villagedefense4.arena.ArenaState;
 import pl.plajer.villagedefense4.handlers.language.LanguageManager;
-import pl.plajer.villagedefense4.utils.XMaterial;
 import pl.plajerlair.core.services.exception.ReportedException;
 import pl.plajerlair.core.utils.ConfigUtils;
 import pl.plajerlair.core.utils.LocationUtils;
+import pl.plajerlair.core.utils.XMaterial;
 
 public class SignManager implements Listener {
 

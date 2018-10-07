@@ -42,12 +42,12 @@ import pl.plajer.villagedefense4.arena.ArenaRegistry;
 import pl.plajer.villagedefense4.arena.ArenaUtils;
 import pl.plajer.villagedefense4.handlers.ChatManager;
 import pl.plajer.villagedefense4.handlers.setup.SetupInventory;
-import pl.plajer.villagedefense4.utils.StringMatcher;
 import pl.plajer.villagedefense4.utils.Utils;
-import pl.plajer.villagedefense4.utils.XMaterial;
 import pl.plajerlair.core.services.exception.ReportedException;
 import pl.plajerlair.core.utils.ConfigUtils;
 import pl.plajerlair.core.utils.LocationUtils;
+import pl.plajerlair.core.utils.StringMatcher;
+import pl.plajerlair.core.utils.XMaterial;
 
 /**
  * Created by Tom on 7/08/2014.

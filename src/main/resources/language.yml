@@ -277,6 +277,10 @@ In-Game:
     Spectator-Item-Name: "&7Players list"
     Spectator-Menu-Name: "Alive players list"
     Target-Player-Health: "&cHealth: &7%health%"
+    Settings-Menu:
+      Item-Name: "&7Spectator settings"
+      Inventory-Name: "&7Spectator settings"
+      Speed-Name: "&aSpeed"
   Messages:
     Lobby-Messages:
       Start-In: "&7The game starts in &b%TIME%&7 seconds!"
@@ -370,4 +374,4 @@ Validator:
 
 # Don't edit it. But who's stopping you? It's your server!
 # Really, don't edit ;p
-File-Version-Do-Not-Edit: 8
+File-Version-Do-Not-Edit: 9

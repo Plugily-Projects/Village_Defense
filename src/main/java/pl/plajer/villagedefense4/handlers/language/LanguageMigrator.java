@@ -37,7 +37,7 @@ import pl.plajerlair.core.utils.MigratorUtils;
  */
 public class LanguageMigrator {
 
-  public static final int LANGUAGE_FILE_VERSION = 8;
+  public static final int LANGUAGE_FILE_VERSION = 9;
   public static final int CONFIG_FILE_VERSION = 5;
   private static Main plugin = JavaPlugin.getPlugin(Main.class);
   private static List<String> migratable = Arrays.asList("bungee", "config", "kits", "language", "lobbyitems", "mysql");
@@ -179,6 +179,10 @@ public class LanguageMigrator {
                   "        - \"&e&lReached wave: &7%wave% &8(best %player_best_wave%)\"\r\n        - \"&6&lTotal zombies killed: &7%zombies%\"\r\n" +
                   "        - \"&c&lTotal coins spent: &7%orbs_spent%\"\r\n        - \"&a&m--------------------------------------------------\"\r\n" +
                   "      Summary-Players-Died: \"&7All players died!\"\r\n      Summary-Villagers-Died: \"&7All villagers died!\"");
+          break;
+        case 8:
+          MigratorUtils.insertAfterLine(file, "Target-Player-Health:", "    Settings-Menu:\r\n      Item-Name: \"&7Spectator settings\"\r\n      Inventory-Name: \"&7Spectator settings\"\r\n" +
+              "      Speed-Name: \"&aSpeed\"");
           break;
       }
       version++;

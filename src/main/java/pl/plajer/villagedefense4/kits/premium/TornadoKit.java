@@ -43,8 +43,8 @@ import pl.plajer.villagedefense4.kits.kitapi.basekits.PremiumKit;
 import pl.plajer.villagedefense4.utils.ArmorHelper;
 import pl.plajer.villagedefense4.utils.Utils;
 import pl.plajer.villagedefense4.utils.WeaponHelper;
-import pl.plajer.villagedefense4.utils.XMaterial;
 import pl.plajerlair.core.services.exception.ReportedException;
+import pl.plajerlair.core.utils.XMaterial;
 
 /**
  * Created by Tom on 30/12/2015.

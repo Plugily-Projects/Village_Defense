@@ -34,8 +34,8 @@ import pl.plajer.villagedefense4.user.UserManager;
 import pl.plajer.villagedefense4.utils.ArmorHelper;
 import pl.plajer.villagedefense4.utils.Utils;
 import pl.plajer.villagedefense4.utils.WeaponHelper;
-import pl.plajer.villagedefense4.utils.XMaterial;
 import pl.plajerlair.core.utils.ConfigUtils;
+import pl.plajerlair.core.utils.XMaterial;
 
 /**
  * Created by Tom on 19/08/2014.

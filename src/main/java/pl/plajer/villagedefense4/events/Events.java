@@ -77,9 +77,9 @@ import pl.plajer.villagedefense4.handlers.items.SpecialItemManager;
 import pl.plajer.villagedefense4.user.User;
 import pl.plajer.villagedefense4.user.UserManager;
 import pl.plajer.villagedefense4.utils.Utils;
-import pl.plajer.villagedefense4.utils.XMaterial;
 import pl.plajerlair.core.services.exception.ReportedException;
 import pl.plajerlair.core.utils.MinigameUtils;
+import pl.plajerlair.core.utils.XMaterial;
 
 /**
  * Created by Tom on 16/08/2014.

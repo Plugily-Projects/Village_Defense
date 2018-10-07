@@ -49,7 +49,7 @@ import pl.plajer.villagedefense4.creatures.v1_13_R1.TankerZombie;
 import pl.plajer.villagedefense4.creatures.v1_13_R1.VillagerSlayer;
 import pl.plajer.villagedefense4.creatures.v1_13_R1.WorkingWolf;
 import pl.plajer.villagedefense4.handlers.ChatManager;
-import pl.plajer.villagedefense4.utils.XMaterial;
+import pl.plajerlair.core.utils.XMaterial;
 
 /**
  * @author Plajer

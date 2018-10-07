@@ -31,7 +31,6 @@ import org.bukkit.entity.Villager;
 import org.bukkit.entity.Wolf;
 import org.bukkit.entity.Zombie;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -55,7 +54,9 @@ import pl.plajer.villagedefense4.user.User;
 import pl.plajer.villagedefense4.user.UserManager;
 import pl.plajerlair.core.services.exception.ReportedException;
 import pl.plajerlair.core.utils.InventoryUtils;
+import pl.plajerlair.core.utils.ItemBuilder;
 import pl.plajerlair.core.utils.MinigameUtils;
+import pl.plajerlair.core.utils.XMaterial;
 
 /**
  * @author Plajer
@@ -105,12 +106,8 @@ public class ArenaManager {
         p.sendMessage(ChatManager.colorMessage("In-Game.You-Are-Spectator"));
         p.getInventory().clear();
 
-        ItemStack spectatorItem = new ItemStack(Material.COMPASS, 1);
-        ItemMeta spectatorMeta = spectatorItem.getItemMeta();
-        spectatorMeta.setDisplayName(ChatManager.colorMessage("In-Game.Spectator.Spectator-Item-Name"));
-        spectatorItem.setItemMeta(spectatorMeta);
-        p.getInventory().setItem(0, spectatorItem);
-
+        p.getInventory().setItem(0, new ItemBuilder(XMaterial.COMPASS.parseItem()).name(ChatManager.colorMessage("In-Game.Spectator.Spectator-Item-Name")).build());
+        p.getInventory().setItem(4, new ItemBuilder(XMaterial.COMPARATOR.parseItem()).name(ChatManager.colorMessage("In-Game.Spectator.Spectator.Settings-Menu.Item-Name")).build());
         p.getInventory().setItem(8, SpecialItemManager.getSpecialItem("Leave").getItemStack());
 
         for (PotionEffect potionEffect : p.getActivePotionEffects()) {
