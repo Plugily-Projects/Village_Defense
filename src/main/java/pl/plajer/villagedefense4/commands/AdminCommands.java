@@ -200,6 +200,7 @@ public class AdminCommands extends MainCommand {
     Arena arena = ArenaRegistry.getArena(player);
     player.setGameMode(GameMode.SURVIVAL);
     player.removePotionEffect(PotionEffectType.NIGHT_VISION);
+    player.removePotionEffect(PotionEffectType.SPEED);
     User user = UserManager.getUser(player.getUniqueId());
     user.setSpectator(false);
     arena.teleportToStartLocation(player);
@@ -221,6 +222,7 @@ public class AdminCommands extends MainCommand {
       if (player.equalsIgnoreCase(loopPlayer.getName())) {
         loopPlayer.setGameMode(GameMode.SURVIVAL);
         loopPlayer.removePotionEffect(PotionEffectType.NIGHT_VISION);
+        loopPlayer.removePotionEffect(PotionEffectType.SPEED);
         User user = UserManager.getUser(loopPlayer.getUniqueId());
         user.setSpectator(false);
 

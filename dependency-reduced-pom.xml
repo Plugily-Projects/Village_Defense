@@ -1,8 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Village Defense 4 - Protect villagers from hordes of zombies
+  ~ Copyright (C) 2018  Plajer's Lair - maintained by Plajer and Tigerpanzer
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>pl.plajer</groupId>
-  <artifactId>villagedefense3</artifactId>
+    <artifactId>villagedefense4</artifactId>
   <version>4.0.0-pre-1</version>
   <licenses>
     <license>
@@ -81,8 +99,18 @@
       <id>bstats-repo</id>
       <url>http://repo.bstats.org/content/repositories/releases/</url>
     </repository>
+      <repository>
+          <id>filoghost-repo</id>
+          <url>https://ci.filoghost.me/plugin/repository/everything/</url>
+      </repository>
   </repositories>
   <dependencies>
+      <dependency>
+          <groupId>com.gmail.filoghost.holographicdisplays</groupId>
+          <artifactId>holographicdisplays-api</artifactId>
+          <version>2.3.1</version>
+          <scope>provided</scope>
+      </dependency>
     <dependency>
       <groupId>net.ess3</groupId>
       <artifactId>EssentialsX</artifactId>
@@ -146,13 +174,6 @@
       <version>1.11.2</version>
       <scope>system</scope>
       <systemPath>${project.basedir}/lib/spigot/1.11.2-R0.1.jar</systemPath>
-    </dependency>
-    <dependency>
-      <groupId>api</groupId>
-      <artifactId>com.gmail.filoghost.holographicdisplays</artifactId>
-      <version>2.2</version>
-      <scope>system</scope>
-      <systemPath>${project.basedir}/lib/HolographicDisplays.jar</systemPath>
     </dependency>
   </dependencies>
   <distributionManagement>

@@ -240,6 +240,7 @@ public class ArenaEvents implements Listener {
           user.setSpectator(true);
           player.setGameMode(GameMode.SURVIVAL);
           player.removePotionEffect(PotionEffectType.NIGHT_VISION);
+          player.removePotionEffect(PotionEffectType.SPEED);
           user.setStat(StatsStorage.StatisticType.ORBS, 0);
         }
         e.setRespawnLocation(arena.getStartLocation());

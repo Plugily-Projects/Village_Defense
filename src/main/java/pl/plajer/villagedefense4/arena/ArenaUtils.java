@@ -77,6 +77,7 @@ public class ArenaUtils {
           player.setAllowFlight(false);
           player.setGameMode(GameMode.SURVIVAL);
           player.removePotionEffect(PotionEffectType.NIGHT_VISION);
+          player.removePotionEffect(PotionEffectType.SPEED);
           arena.showPlayers();
           player.getInventory().clear();
           user.getKit().giveKitItems(player);
