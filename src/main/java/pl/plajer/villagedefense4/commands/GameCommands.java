@@ -167,6 +167,10 @@ public class GameCommands extends MainCommand {
     if (!checkSenderPlayer(sender)) {
       return;
     }
+    if (ArenaRegistry.isInArena(((Player) sender))) {
+      sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Already-Playing"));
+      return;
+    }
     for (Arena arena : ArenaRegistry.getArenas()) {
       if (arenaString.equalsIgnoreCase(arena.getID())) {
         ArenaManager.joinAttempt((Player) sender, arena);
