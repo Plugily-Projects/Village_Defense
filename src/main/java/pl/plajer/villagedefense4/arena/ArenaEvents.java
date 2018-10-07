@@ -201,7 +201,7 @@ public class ArenaEvents implements Listener {
       //running in a scheduler of 1 tick due to 1.13 bug
       Bukkit.getScheduler().runTaskLater(plugin, () -> {
         player.getInventory().setItem(0, new ItemBuilder(XMaterial.COMPASS.parseItem()).name(ChatManager.colorMessage("In-Game.Spectator.Spectator-Item-Name")).build());
-        player.getInventory().setItem(4, new ItemBuilder(XMaterial.COMPARATOR.parseItem()).name(ChatManager.colorMessage("In-Game.Spectator.Spectator.Settings-Menu.Item-Name")).build());
+        player.getInventory().setItem(4, new ItemBuilder(XMaterial.COMPARATOR.parseItem()).name(ChatManager.colorMessage("In-Game.Spectator.Settings-Menu.Item-Name")).build());
         player.getInventory().setItem(8, SpecialItemManager.getSpecialItem("Leave").getItemStack());
       }, 1);
 

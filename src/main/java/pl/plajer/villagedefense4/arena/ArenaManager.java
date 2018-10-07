@@ -107,7 +107,7 @@ public class ArenaManager {
         p.getInventory().clear();
 
         p.getInventory().setItem(0, new ItemBuilder(XMaterial.COMPASS.parseItem()).name(ChatManager.colorMessage("In-Game.Spectator.Spectator-Item-Name")).build());
-        p.getInventory().setItem(4, new ItemBuilder(XMaterial.COMPARATOR.parseItem()).name(ChatManager.colorMessage("In-Game.Spectator.Spectator.Settings-Menu.Item-Name")).build());
+        p.getInventory().setItem(4, new ItemBuilder(XMaterial.COMPARATOR.parseItem()).name(ChatManager.colorMessage("In-Game.Spectator.Settings-Menu.Item-Name")).build());
         p.getInventory().setItem(8, SpecialItemManager.getSpecialItem("Leave").getItemStack());
 
         for (PotionEffect potionEffect : p.getActivePotionEffects()) {

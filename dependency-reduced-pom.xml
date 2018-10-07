@@ -20,7 +20,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>pl.plajer</groupId>
-    <artifactId>villagedefense4</artifactId>
+  <artifactId>villagedefense4</artifactId>
   <version>4.0.0-pre-1</version>
   <licenses>
     <license>
@@ -99,18 +99,18 @@
       <id>bstats-repo</id>
       <url>http://repo.bstats.org/content/repositories/releases/</url>
     </repository>
-      <repository>
-          <id>filoghost-repo</id>
-          <url>https://ci.filoghost.me/plugin/repository/everything/</url>
-      </repository>
+    <repository>
+      <id>filoghost-repo</id>
+      <url>https://ci.filoghost.me/plugin/repository/everything/</url>
+    </repository>
   </repositories>
   <dependencies>
-      <dependency>
-          <groupId>com.gmail.filoghost.holographicdisplays</groupId>
-          <artifactId>holographicdisplays-api</artifactId>
-          <version>2.3.1</version>
-          <scope>provided</scope>
-      </dependency>
+    <dependency>
+      <groupId>com.gmail.filoghost.holographicdisplays</groupId>
+      <artifactId>holographicdisplays-api</artifactId>
+      <version>2.3.1</version>
+      <scope>provided</scope>
+    </dependency>
     <dependency>
       <groupId>net.ess3</groupId>
       <artifactId>EssentialsX</artifactId>
