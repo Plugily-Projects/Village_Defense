@@ -60,6 +60,10 @@
             <id>bstats-repo</id>
             <url>http://repo.bstats.org/content/repositories/releases/</url>
         </repository>
+        <repository>
+            <id>filoghost-repo</id>
+            <url>https://ci.filoghost.me/plugin/repository/everything/</url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -94,11 +98,10 @@
         </dependency>
         <!-- Spigot APIs -->
         <dependency>
-            <groupId>api</groupId>
-            <artifactId>com.gmail.filoghost.holographicdisplays</artifactId>
-            <version>2.2</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/lib/HolographicDisplays.jar</systemPath>
+            <groupId>com.gmail.filoghost.holographicdisplays</groupId>
+            <artifactId>holographicdisplays-api</artifactId>
+            <version>2.3.1</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>pl.plajerlair</groupId>
