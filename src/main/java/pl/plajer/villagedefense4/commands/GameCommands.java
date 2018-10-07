@@ -187,6 +187,10 @@ public class GameCommands extends MainCommand {
     if (plugin.isBungeeActivated()) {
       return;
     }
+    if (ArenaRegistry.isInArena(((Player) sender))) {
+      sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Already-Playing"));
+      return;
+    }
     for (Arena arena : ArenaRegistry.getArenas()) {
       if (arena.getArenaState() == ArenaState.WAITING_FOR_PLAYERS || arena.getArenaState() == ArenaState.STARTING) {
         ArenaManager.joinAttempt((Player) sender, arena);
