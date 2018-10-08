@@ -278,7 +278,7 @@ In-Game:
     Spectator-Menu-Name: "Alive players list"
     Target-Player-Health: "&cHealth: &7%health%"
     Settings-Menu:
-      Item-Name: "&7Spectator settings"
+      Item-Name: "&b&lSpectator Settings &7(Right-click)"
       Inventory-Name: "&7Spectator settings"
       Speed-Name: "&aSpeed"
   Messages:

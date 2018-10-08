@@ -181,7 +181,7 @@ public class LanguageMigrator {
                   "      Summary-Players-Died: \"&7All players died!\"\r\n      Summary-Villagers-Died: \"&7All villagers died!\"");
           break;
         case 8:
-          MigratorUtils.insertAfterLine(file, "Target-Player-Health:", "    Settings-Menu:\r\n      Item-Name: \"&7Spectator settings\"\r\n      Inventory-Name: \"&7Spectator settings\"\r\n" +
+          MigratorUtils.insertAfterLine(file, "Target-Player-Health:", "    Settings-Menu:\r\n      Item-Name: \"&b&lSpectator Settings &7(Right-click)\"\r\n      Inventory-Name: \"&7Spectator settings\"\r\n" +
               "      Speed-Name: \"&aSpeed\"");
           break;
       }
