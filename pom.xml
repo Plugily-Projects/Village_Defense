@@ -23,7 +23,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>pl.plajer</groupId>
-    <artifactId>villagedefense4</artifactId>
+    <artifactId>villagedefense</artifactId>
     <version>4.0.0-pre-1</version>
 
     <properties>
@@ -215,11 +215,11 @@
                             <relocations>
                                 <relocation>
                                     <pattern>pl.plajerlair.core</pattern>
-                                    <shadedPattern>pl.plajer.villagedefense4.plajerlair.core</shadedPattern>
+                                    <shadedPattern>pl.plajer.villagedefense.plajerlair.core</shadedPattern>
                                 </relocation>
                                 <relocation>
                                     <pattern>org.bstats</pattern>
-                                    <shadedPattern>pl.plajer.villagedefense4.utils</shadedPattern>
+                                    <shadedPattern>pl.plajer.villagedefense.utils</shadedPattern>
                                 </relocation>
                             </relocations>
                         </configuration>

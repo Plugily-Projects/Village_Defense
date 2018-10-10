@@ -1,7 +1,7 @@
 # Village Defense 3 Changelog
 
 ### 4.0.0 Beta (04/07.10.2018)
-* API change - now you can access it via pl.plajer.villagedefense4.api
+* API change - now you can access it via pl.plajer.villagedefense.api
 * Removed actionbar message from players that died and the arena was changed in "ending"
 * Fixed https://plajer.xyz/errorservice/viewer.php?id=245
 * Added an Actionbar message when picking up an Powerup
