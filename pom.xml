@@ -168,6 +168,24 @@
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-site-plugin</artifactId>
+                <version>3.7.1</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>3.0.1</version>
+                <configuration>
+                    <windowtitle>Village Defense API docs for v${project.version}</windowtitle>
+                    <description>Minecraft cooperation minigame.
+                        Fight against hordes of undead zombies and protect villagers from them! API documentation for hooking Village Defense with your plugin.
+                    </description>
+                    <destDir>minecraft/villagedefense</destDir>
+                    <isOffline>false</isOffline>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.8.0</version>
                 <goals>
@@ -209,15 +227,24 @@
                 </executions>
             </plugin>
         </plugins>
+        <extensions>
+            <extension>
+                <groupId>org.apache.maven.wagon</groupId>
+                <artifactId>wagon-ftp</artifactId>
+                <version>3.0.0</version>
+            </extension>
+        </extensions>
     </build>
 
     <distributionManagement>
         <repository>
-            <uniqueVersion>false</uniqueVersion>
-            <id>plajerlair.repo</id>
-            <name>Plajer's Lair repo</name>
-            <url>file:///${project.basedir}/mvn/repo</url>
+            <id>plajer-lair-repo</id>
+            <url>ftp://54.38.159.68</url>
         </repository>
+        <site>
+            <id>plajer-lair-java-docs</id>
+            <url>ftp://54.38.159.68</url>
+        </site>
     </distributionManagement>
 
 </project>
