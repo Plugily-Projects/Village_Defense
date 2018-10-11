@@ -512,17 +512,18 @@ public abstract class Arena extends BukkitRunnable {
   private void spawnVillagers() {
     if (getVillagers().size() > 10) {
       return;
-    } else if (getVillagerSpawns() == null || getVillagerSpawns().size() <= 0) {
+    }
+    if (getVillagerSpawns() == null || getVillagerSpawns().size() <= 0) {
       Main.debug(Main.LogLevel.WARN, "No villager spawns for " + getID() + ", game won't start");
+      return;
+    }
+    for (Location location : getVillagerSpawns()) {
+      spawnVillager(location);
+    }
+    if (getVillagers().size() != 0) {
+      spawnVillagers();
     } else {
-      for (Location location : getVillagerSpawns()) {
-        spawnVillager(location);
-      }
-      if (getVillagers().size() != 0) {
-        spawnVillagers();
-      } else {
-        Main.debug(Main.LogLevel.WARN, "Villager spawns can't be set up!");
-      }
+      Main.debug(Main.LogLevel.WARN, "Villager spawns can't be set up!");
     }
   }
 
