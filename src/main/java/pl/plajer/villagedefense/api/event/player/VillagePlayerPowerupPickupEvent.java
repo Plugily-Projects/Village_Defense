@@ -35,12 +35,12 @@ public class VillagePlayerPowerupPickupEvent extends VillageEvent {
 
   private static final HandlerList HANDLERS = new HandlerList();
   private final Player player;
-  private final PowerupManager.PowerupType powerupType;
+  private final PowerupManager.Powerup powerup;
 
-  public VillagePlayerPowerupPickupEvent(Arena eventArena, Player player, PowerupManager.PowerupType powerupType) {
+  public VillagePlayerPowerupPickupEvent(Arena eventArena, Player player, PowerupManager.Powerup powerup) {
     super(eventArena);
     this.player = player;
-    this.powerupType = powerupType;
+    this.powerup = powerup;
   }
 
   public static HandlerList getHandlerList() {
@@ -51,8 +51,8 @@ public class VillagePlayerPowerupPickupEvent extends VillageEvent {
     return player;
   }
 
-  public PowerupManager.PowerupType getPowerupType() {
-    return powerupType;
+  public PowerupManager.Powerup getPowerup() {
+    return powerup;
   }
 
   public HandlerList getHandlers() {

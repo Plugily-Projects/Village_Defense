@@ -23,17 +23,17 @@ import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
 import com.gmail.filoghost.holographicdisplays.api.line.ItemLine;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Zombie;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
@@ -42,6 +42,7 @@ import pl.plajer.villagedefense.api.event.player.VillagePlayerPowerupPickupEvent
 import pl.plajer.villagedefense.arena.Arena;
 import pl.plajer.villagedefense.arena.ArenaRegistry;
 import pl.plajerlair.core.services.exception.ReportedException;
+import pl.plajerlair.core.utils.XMaterial;
 
 /**
  * @author Plajer
@@ -50,6 +51,7 @@ import pl.plajerlair.core.services.exception.ReportedException;
  */
 public class PowerupManager {
 
+  private List<Powerup> registeredPowerups = new ArrayList<>();
   private boolean enabled = false;
   private Main plugin;
 
@@ -64,31 +66,33 @@ public class PowerupManager {
     enabled = true;
     this.plugin = plugin;
     Main.debug(Main.LogLevel.INFO, "Registering power ups module!");
-    PowerupType.CLEANER.setName(ChatManager.colorMessage("Powerups.Map-Clean-Powerup.Name"));
-    PowerupType.CLEANER.setEnabled(plugin.getConfig().getBoolean("Powerups.List.Map-Clean", true));
-
-    PowerupType.DOUBLE_DAMAGE.setName(ChatManager.colorMessage("Powerups.Double-Damage-Powerup.Name"));
-    PowerupType.DOUBLE_DAMAGE.setEnabled(plugin.getConfig().getBoolean("Powerups.List.Double-Damage-For-Players.Enabled", true));
-
-    PowerupType.GOLEM_RAID.setName(ChatManager.colorMessage("Powerups.Golem-Raid-Powerup.Name"));
-    PowerupType.GOLEM_RAID.setEnabled(plugin.getConfig().getBoolean("Powerups.List.Golem-Raid.Enabled", true));
-
-    PowerupType.HEALING.setName(ChatManager.colorMessage("Powerups.Healing-Powerup.Name"));
-    PowerupType.HEALING.setEnabled(plugin.getConfig().getBoolean("Powerups.List.Healing-For-Players.Enabled", true));
-
-    PowerupType.ONE_SHOT_ONE_KILL.setName(ChatManager.colorMessage("Powerups.One-Shot-One-Kill-Powerup.Name"));
-    PowerupType.DOUBLE_DAMAGE.setEnabled(plugin.getConfig().getBoolean("Powerups.List.One-Shot-One-Kill.Enabled", true));
-
-    List<PowerupType> powerups = new ArrayList<>();
-    for (PowerupType pt : PowerupType.values()) {
-      if (!pt.isEnabled()) {
-        powerups.add(pt);
-      }
-    }
-    if (powerups.size() == PowerupType.values().length) {
+    registerPowerups();
+    if (registeredPowerups.isEmpty()) {
       Main.debug(Main.LogLevel.WARN, "Disabling power up module, all power ups disabled");
       enabled = false;
     }
+  }
+
+  private void registerPowerups() {
+    List<String> powerupNames = Arrays.asList("Map-Clean", "Double-Damage", "Golem-Raid", "Healing", "One-Shot-One-Kill");
+    List<XMaterial> powerupMaterials = Arrays.asList(XMaterial.BLAZE_POWDER, XMaterial.REDSTONE, XMaterial.GOLDEN_APPLE, XMaterial.IRON_INGOT, XMaterial.DIAMOND_SWORD);
+    int i = 0;
+    for (String pwr : powerupNames) {
+      if (plugin.getConfig().getBoolean("Powerups." + pwr + "-Powerup.Enabled", true)) {
+        registerPowerup(new Powerup(pwr, ChatManager.colorMessage("Powerups." + pwr + "-Powerup.Name"), ChatManager.colorMessage("Powerups." + pwr + "-Powerup.Description"),
+            powerupMaterials.get(i)));
+      }
+      i++;
+    }
+  }
+
+  public Powerup getRandomPowerup() {
+    Random r = new Random();
+    return registeredPowerups.get(r.nextInt(registeredPowerups.size()));
+  }
+
+  public void registerPowerup(Powerup powerup) {
+    registeredPowerups.add(powerup);
   }
 
   public void spawnPowerup(Location loc, Arena arena) {
@@ -96,34 +100,27 @@ public class PowerupManager {
       if (!enabled) {
         return;
       }
-      PowerupType powerupType = PowerupType.random();
-      if (!powerupType.isEnabled()) {
-        spawnPowerup(loc, arena);
-      }
+      final Powerup powerup = getRandomPowerup();
       if (!(ThreadLocalRandom.current().nextDouble(0.0, 100.0)
-              <= plugin.getConfig().getDouble("Powerups.Drop-Chance", 1.0))) {
+          <= plugin.getConfig().getDouble("Powerups.Drop-Chance", 1.0))) {
         return;
       }
-      final PowerupType finalPowerUp = powerupType;
-      String text = powerupType.getName();
-      ItemStack icon = new ItemStack(powerupType.getMaterial());
 
       final Hologram hologram = HologramsAPI.createHologram(plugin, loc.clone().add(0.0, 1.2, 0.0));
-      hologram.appendTextLine(text);
-      ItemLine itemLine = hologram.appendItemLine(icon);
-      final String powerUpTitle = powerupType.getName();
-      final String powerUpSubtitle = ChatManager.colorMessage(powerupType.getAccessPath() + ".Description");
+      hologram.appendTextLine(powerup.getName());
+      ItemLine itemLine = hologram.appendItemLine(powerup.getMaterial().parseItem());
       itemLine.setPickupHandler(player -> {
         if (ArenaRegistry.getArena(player) != arena) {
           return;
         }
+        String title = powerup.getName();
+        String subTitle = powerup.getDescription();
 
-        VillagePlayerPowerupPickupEvent villagePowerupPickEvent = new VillagePlayerPowerupPickupEvent(arena, player, finalPowerUp);
+        VillagePlayerPowerupPickupEvent villagePowerupPickEvent = new VillagePlayerPowerupPickupEvent(arena, player, powerup);
         Bukkit.getPluginManager().callEvent(villagePowerupPickEvent);
 
-        String subTitle = powerUpSubtitle;
-        switch (finalPowerUp) {
-          case CLEANER:
+        switch (powerup.getID()) {
+          case "Map-Clean":
             if (arena.getZombies() != null) {
               for (Zombie zombie : arena.getZombies()) {
                 zombie.getWorld().spawnParticle(Particle.LAVA, zombie.getLocation(), 20);
@@ -132,35 +129,35 @@ public class PowerupManager {
               arena.getZombies().clear();
             }
             break;
-          case DOUBLE_DAMAGE:
+          case "Double-Damage":
             for (Player p : arena.getPlayers()) {
               p.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 20 *
                   plugin.getConfig().getInt("Powerups.List.Double-Damage-For-Players.Time", 15), 0, false, false));
             }
-            subTitle = subTitle.replace("%time%", plugin.getConfig().getString("Powerups.List.Double-Damage-For-Players.Time", "15"));
+            subTitle = StringUtils.replace(subTitle, "%time%", plugin.getConfig().getString("Powerups.List.Double-Damage-For-Players.Time", "15"));
             break;
-          case HEALING:
-            for (Player p : arena.getPlayers()) {
-              p.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 20 *
-                  plugin.getConfig().getInt("Powerups.List.Healing-For-Players.Time-Of-Healing", 10), 0, false, false));
-            }
-            subTitle = subTitle.replace("%time%", plugin.getConfig().getString("Powerups.List.Healing-For-Players.Time-Of-Healing", "10"));
-            break;
-          case GOLEM_RAID:
+          case "Golem-Raid":
             for (int i = 0; i < plugin.getConfig().getInt("Powerups.List.Golem-Raid.Golems-Amount", 3); i++) {
               arena.spawnGolem(arena.getStartLocation(), player);
             }
             break;
-          case ONE_SHOT_ONE_KILL:
+          case "Healing":
+            for (Player p : arena.getPlayers()) {
+              p.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 20 *
+                  plugin.getConfig().getInt("Powerups.List.Healing-For-Players.Time-Of-Healing", 10), 0, false, false));
+            }
+            subTitle = StringUtils.replace(subTitle, "%time%", plugin.getConfig().getString("Powerups.List.Healing-For-Players.Time-Of-Healing", "10"));
+            break;
+          case "One-Shot-One-Kill":
             for (Player p : arena.getPlayers()) {
               p.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 20 *
-                      plugin.getConfig().getInt("Powerups.List.One-Shot-One-Kill.Time", 15), 255, false, false));
+                  plugin.getConfig().getInt("Powerups.List.One-Shot-One-Kill.Time", 15), 255, false, false));
             }
-            subTitle = subTitle.replace("%time%", plugin.getConfig().getString("Powerups.List.One-Shot-One-Kill.Time", "15"));
+            subTitle = StringUtils.replace(subTitle, "%time%", plugin.getConfig().getString("Powerups.List.One-Shot-One-Kill.Time", "15"));
             break;
         }
         for (Player p : arena.getPlayers()) {
-          p.sendTitle(powerUpTitle, subTitle, 5, 30, 5);
+          p.sendTitle(title, subTitle, 5, 30, 5);
         }
         hologram.delete();
       });
@@ -172,52 +169,36 @@ public class PowerupManager {
     } catch (Exception ex) {
       new ReportedException(plugin, ex);
     }
-  }
-
-  public enum PowerupType {
-    CLEANER("Cleaner", Material.BLAZE_POWDER, "Powerups.Map-Clean-Powerup", true), DOUBLE_DAMAGE("Doubledamage", Material.REDSTONE, "Powerups.Double-Damage-Powerup", true),
-    HEALING("Healing", Material.GOLDEN_APPLE, "Powerups.Healing-Powerup", true), GOLEM_RAID("raid", Material.IRON_INGOT, "Powerups.Golem-Raid-Powerup", true),
-    ONE_SHOT_ONE_KILL("oson", Material.DIAMOND_SWORD, "Powerups.One-Shot-One-Kill-Powerup", true);
-
-    String name;
-    Material material;
-    String accessPath;
-    boolean enabled;
-
-    PowerupType(String name, Material material, String accessPath, boolean enabled) {
-      this.name = name;
-      this.material = material;
-      this.accessPath = accessPath;
-      this.enabled = enabled;
     }
 
-    private static PowerupType random() {
-      Random r = new Random();
-      return values()[r.nextInt(values().length)];
+  public class Powerup {
+
+    private String ID;
+    private String name;
+    private String description;
+    private XMaterial material;
+
+    public Powerup(String ID, String name, String description, XMaterial material) {
+      this.ID = ID;
+      this.name = name;
+      this.description = description;
+      this.material = material;
+    }
+
+    public String getID() {
+      return ID;
     }
 
     public String getName() {
       return name;
     }
 
-    public void setName(String name) {
-      this.name = name;
+    public String getDescription() {
+      return description;
     }
 
-    public Material getMaterial() {
+    public XMaterial getMaterial() {
       return material;
-    }
-
-    public String getAccessPath() {
-      return accessPath;
-    }
-
-    public boolean isEnabled() {
-      return enabled;
-    }
-
-    public void setEnabled(boolean enabled) {
-      this.enabled = enabled;
     }
   }
 }
