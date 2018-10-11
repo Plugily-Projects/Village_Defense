@@ -792,7 +792,7 @@ public abstract class Arena extends BukkitRunnable {
     zombies.remove(zombie);
   }
 
-  private List<Location> getVillagerSpawns() {
+  public List<Location> getVillagerSpawns() {
     return villagerSpawnPoints;
   }
 

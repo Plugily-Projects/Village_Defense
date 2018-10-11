@@ -33,6 +33,7 @@ import net.minecraft.server.v1_12_R1.PathfinderGoalRandomLookaround;
 import net.minecraft.server.v1_12_R1.PathfinderGoalSelector;
 import net.minecraft.server.v1_12_R1.World;
 
+import org.bukkit.Location;
 import org.bukkit.craftbukkit.v1_12_R1.CraftWorld;
 
 import pl.plajer.villagedefense.creatures.CreatureUtils;
@@ -70,6 +71,11 @@ public class VillagerSlayer extends EntityZombie {
     this.targetSelector.a(2, new PathfinderGoalNearestAttackableTarget<>(this, EntityVillager.class, true));
     this.setHealth(70);
     this.p(true);
+  }
+
+  public VillagerSlayer(World world, Location location) {
+    this(world);
+    getNavigation().a(location.getX(), location.getY(), location.getZ());
   }
 
   @Override
