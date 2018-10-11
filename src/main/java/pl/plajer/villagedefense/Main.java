@@ -43,6 +43,7 @@ import pl.plajer.villagedefense.arena.ArenaEvents;
 import pl.plajer.villagedefense.arena.ArenaManager;
 import pl.plajer.villagedefense.arena.ArenaRegistry;
 import pl.plajer.villagedefense.commands.MainCommand;
+import pl.plajer.villagedefense.creatures.CreatureUtils;
 import pl.plajer.villagedefense.creatures.DoorBreakListener;
 import pl.plajer.villagedefense.creatures.EntityRegistry;
 import pl.plajer.villagedefense.database.FileStats;
@@ -88,8 +89,6 @@ import pl.plajerlair.core.utils.UpdateChecker;
 public class Main extends JavaPlugin {
 
   public static int STARTING_TIMER_TIME = 60;
-  public static float MINI_ZOMBIE_SPEED;
-  public static float ZOMBIE_SPEED;
   private static boolean debug;
   private MySQLDatabase database;
   private MySQLManager mySQLManager;
@@ -195,8 +194,6 @@ public class Main extends JavaPlugin {
     ServiceRegistry.registerService(this);
     try {
       version = Bukkit.getServer().getClass().getPackage().getName().replace(".", ",").split(",")[3];
-      LanguageManager.init(this);
-      saveDefaultConfig();
       if (!(version.equalsIgnoreCase("v1_11_R1") || version.equalsIgnoreCase("v1_12_R1") || version.equalsIgnoreCase("v1_13_R1") || version.equalsIgnoreCase("v1_13_R2"))) {
         MessageUtils.thisVersionIsNotSupported();
         Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "Your server version is not supported by Village Defense!");
@@ -215,6 +212,8 @@ public class Main extends JavaPlugin {
         getServer().getPluginManager().disablePlugin(this);
         return;
       }
+      LanguageManager.init(this);
+      saveDefaultConfig();
       //check if using releases before 2.1.0 or 2.1.0+
       if ((ConfigUtils.getConfig(this, "language").isSet("STATS-AboveLine")
           && ConfigUtils.getConfig(this, "language").isSet("SCOREBOARD-Zombies"))
@@ -251,8 +250,6 @@ public class Main extends JavaPlugin {
       }
 
       STARTING_TIMER_TIME = getConfig().getInt("Starting-Waiting-Time", 60);
-      MINI_ZOMBIE_SPEED = (float) getConfig().getDouble("Mini-Zombie-Speed", 2.0);
-      ZOMBIE_SPEED = (float) getConfig().getDouble("Zombie-Speed", 1.3);
       databaseActivated = getConfig().getBoolean("DatabaseActivated", false);
       inventoryManagerEnabled = getConfig().getBoolean("InventoryManager", false);
       if (databaseActivated) {
@@ -302,6 +299,7 @@ public class Main extends JavaPlugin {
   }
 
   private void initializeClasses() {
+    CreatureUtils.init(this);
     bungeeEnabled = getConfig().getBoolean("BungeeActivated", false);
     if (getConfig().getBoolean("BungeeActivated", false)) {
       bungeeManager = new BungeeManager(this);

@@ -48,22 +48,16 @@ import net.minecraft.server.v1_12_R1.World;
 import org.bukkit.craftbukkit.v1_12_R1.CraftWorld;
 
 import pl.plajer.villagedefense.creatures.CreatureUtils;
-import pl.plajer.villagedefense.handlers.language.LanguageManager;
 
 /**
  * Created by Tom on 15/08/2014.
  */
 public class RidableVillager extends EntityVillager {
 
-  private String[] villagernames = LanguageManager.getLanguageMessage("In-Game.Villager-Names") != null ? LanguageManager.getLanguageMessage("In-Game.Villager-Names").split(",") :
-          ("Jagger,Kelsey,Kelton,Haylie,Harlow,Howard,Wulffric,Winfred,Ashley,Bailey,Beckett,Alfredo,Alfred,Adair,Edgar,ED,Eadwig,Edgaras,Buckley,Stanley,Nuffley,Mary," +
-                  "Jeffry,Rosaly,Elliot,Harry,Sam,Rosaline,Tom,Ivan,Kevin,Adam").split(",");
-
   public RidableVillager(org.bukkit.World world) {
     this(((CraftWorld) world).getHandle());
   }
 
-  @SuppressWarnings("rawtypes")
   public RidableVillager(World world) {
     super(world);
 
@@ -93,7 +87,7 @@ public class RidableVillager extends EntityVillager {
     this.goalSelector.a(9, new PathfinderGoalInteract(this, EntityVillager.class, 5.0F, 0.02F));
     this.goalSelector.a(9, new PathfinderGoalRandomStroll(this, 0.6D));
     this.goalSelector.a(10, new PathfinderGoalLookAtPlayer(this, EntityInsentient.class, 8.0F));
-    this.setCustomName(villagernames[new Random().nextInt(villagernames.length)]);
+    this.setCustomName(CreatureUtils.VILLAGER_NAMES[new Random().nextInt(CreatureUtils.VILLAGER_NAMES.length)]);
     this.setCustomNameVisible(true);
   }
 

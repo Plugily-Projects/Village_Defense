@@ -26,6 +26,7 @@ import org.bukkit.entity.Zombie;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import pl.plajer.villagedefense.Main;
+import pl.plajer.villagedefense.handlers.language.LanguageManager;
 import pl.plajerlair.core.utils.MinigameUtils;
 
 /**
@@ -35,7 +36,17 @@ import pl.plajerlair.core.utils.MinigameUtils;
  */
 public class CreatureUtils {
 
+  public static float ZOMBIE_SPEED = 1.3f;
+  public static float BABY_ZOMBIE_SPEED = 2.0f;
+  public static String[] VILLAGER_NAMES = ("Jagger,Kelsey,Kelton,Haylie,Harlow,Howard,Wulffric,Winfred,Ashley,Bailey,Beckett,Alfredo,Alfred,Adair,Edgar,ED,Eadwig,Edgaras,Buckley,Stanley,Nuffley," +
+      "Mary,Jeffry,Rosaly,Elliot,Harry,Sam,Rosaline,Tom,Ivan,Kevin,Adam").split(",");
   private static Main plugin = JavaPlugin.getPlugin(Main.class);
+
+  public static void init(Main plugin) {
+    ZOMBIE_SPEED = (float) plugin.getConfig().getDouble("Zombie-Speed", 1.3);
+    BABY_ZOMBIE_SPEED = (float) plugin.getConfig().getDouble("Mini-Zombie-Speed", 2.0);
+    VILLAGER_NAMES = LanguageManager.getLanguageMessage("In-Game.Villager-Names").split(",");
+  }
 
   public static Object getPrivateField(String fieldName, Class clazz, Object object) {
     Field field;
@@ -56,8 +67,8 @@ public class CreatureUtils {
     if (plugin.getConfig().getBoolean("Simple-Zombie-Health-Bar-Enabled", true)) {
       zombie.setCustomNameVisible(true);
       zombie.setCustomName(MinigameUtils.getProgressBar((int) zombie.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue(),
-              (int) zombie.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue(), 50, "|",
-              ChatColor.YELLOW + "", ChatColor.GRAY + ""));
+          (int) zombie.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue(), 50, "|",
+          ChatColor.YELLOW + "", ChatColor.GRAY + ""));
     }
   }
 

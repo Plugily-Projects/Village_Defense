@@ -33,6 +33,7 @@ import net.minecraft.server.v1_13_R2.PathfinderGoalRandomLookaround;
 import net.minecraft.server.v1_13_R2.PathfinderGoalSelector;
 import net.minecraft.server.v1_13_R2.World;
 
+import org.bukkit.Location;
 import org.bukkit.craftbukkit.v1_13_R2.CraftWorld;
 
 import pl.plajer.villagedefense.creatures.CreatureUtils;
@@ -44,20 +45,12 @@ import pl.plajer.villagedefense.creatures.CreatureUtils;
  */
 public class VillagerSlayer extends EntityZombie {
 
-  public int damage;
-  private float bw;
-
   public VillagerSlayer(org.bukkit.World world) {
     this(((CraftWorld) world).getHandle());
   }
 
-  @SuppressWarnings("rawtypes")
   public VillagerSlayer(World world) {
     super(world);
-    this.bw = 1.0f; //Change this to your liking. this is were you set the speed
-    this.damage = 15; // set the damage
-    //There's also a ton of options of you do this. play around with it
-
 
     LinkedHashSet goalB = (LinkedHashSet) CreatureUtils.getPrivateField("b", PathfinderGoalSelector.class, goalSelector);
     goalB.clear();
@@ -68,17 +61,21 @@ public class VillagerSlayer extends EntityZombie {
     LinkedHashSet targetC = (LinkedHashSet) CreatureUtils.getPrivateField("c", PathfinderGoalSelector.class, targetSelector);
     targetC.clear();
 
-
     ((Navigation) getNavigation()).b(true);
 
     this.goalSelector.a(0, new PathfinderGoalFloat(this));
     this.goalSelector.a(1, new PathfinderGoalBreakDoor(this));
-    this.goalSelector.a(2, new PathfinderGoalMeleeAttack(this, this.bw, false));
-    this.goalSelector.a(4, new PathfinderGoalMoveTowardsRestriction(this, this.bw));
+    this.goalSelector.a(2, new PathfinderGoalMeleeAttack(this, 1.0f, false));
+    this.goalSelector.a(4, new PathfinderGoalMoveTowardsRestriction(this, 1.0f));
     this.goalSelector.a(7, new PathfinderGoalRandomLookaround(this));
     this.targetSelector.a(2, new PathfinderGoalNearestAttackableTarget<>(this, EntityVillager.class, true));
     this.setHealth(70);
     this.p(true);
+  }
+
+  public VillagerSlayer(World world, Location location) {
+    this(world);
+    getNavigation().a(location.getX(), location.getY(), location.getZ());
   }
 
   @Override
