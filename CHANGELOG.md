@@ -4,7 +4,6 @@
 * API change - now you can access it via pl.plajer.villagedefense.api
 * Removed actionbar message from players that died and the arena was changed in "ending"
 * Fixed https://plajer.xyz/errorservice/viewer.php?id=245
-* Added an Actionbar message when picking up an Powerup
 * Added spectator settings menu
 * You cannot join now game infinitely through command (lol???)
 * Now players that leave game will be visible by other players outside game
