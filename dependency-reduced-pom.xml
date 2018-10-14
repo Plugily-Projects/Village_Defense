@@ -1,27 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-  ~ Village Defense 4 - Protect villagers from hordes of zombies
-  ~ Copyright (C) 2018  Plajer's Lair - maintained by Plajer and Tigerpanzer
-  ~
-  ~ This program is free software: you can redistribute it and/or modify
-  ~ it under the terms of the GNU General Public License as published by
-  ~ the Free Software Foundation, either version 3 of the License, or
-  ~ (at your option) any later version.
-  ~
-  ~ This program is distributed in the hope that it will be useful,
-  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
-  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  ~ GNU General Public License for more details.
-  ~
-  ~ You should have received a copy of the GNU General Public License
-  ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
-  -->
-
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>pl.plajer</groupId>
   <artifactId>villagedefense</artifactId>
-  <version>4.0.0-pre-1</version>
+  <version>4.0.0-pre-2</version>
   <licenses>
     <license>
       <name>GNU General Public License v3</name>
@@ -53,8 +35,7 @@
         <configuration>
           <windowtitle>Village Defense API docs for v${project.version}</windowtitle>
           <description>Minecraft cooperation minigame.
-            Fight against hordes of undead zombies and protect villagers from them! API documentation for hooking Village Defense with your plugin.
-          </description>
+                        Fight against hordes of undead zombies and protect villagers from them! API documentation for hooking Village Defense with your plugin.</description>
           <destDir>minecraft/villagedefense</destDir>
           <isOffline>false</isOffline>
         </configuration>

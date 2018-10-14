@@ -44,7 +44,7 @@ import pl.plajer.villagedefense.utils.Utils;
  */
 public class HolidayManager implements Listener {
 
-  private HolidayType currentHoliday;
+  private HolidayType currentHoliday = HolidayType.NONE;
   private Random rand;
   private boolean enabled = true;
   private Main plugin;
