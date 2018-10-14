@@ -43,3 +43,5 @@ permissions:
       villagedefense.command.override: true
       villagedefense.admin.setlevel: true
       villagedefense.admin.addlevel: true
+      villagedefense.admin.setlevel.other: true
+      villagedefense.admin.addlevel.other: true

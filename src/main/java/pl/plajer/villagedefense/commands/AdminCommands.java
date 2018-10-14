@@ -103,10 +103,10 @@ public class AdminCommands extends MainCommand {
             + "Permission: " + gray + "villagedefense.admin.addorbs (for yourself)\n" + gold + "Permission: " + gray + "villagedefense.admin.addorbs.others (for others)"));
     command.add(new CommandData("/vda setlevel " + gold + "<amount>" + ChatColor.RED + " [player]", "/vda setlevel <amount>",
         gray + "Set level to yourself or target player\n" + gray + "Can be used from console too\n" + gold
-            + "Permission: " + gray + "villagedefense.admin.setlevel"));
+            + "Permission: " + gray + "villagedefense.admin.setlevel(for yourself)\n" + gold + "Permission: " + gray + "villagedefense.admin.setlevel.others (for others)"));
     command.add(new CommandData("/vda addlevel " + gold + "<amount>" + ChatColor.RED + " [player]", "/vda addlevel <amount>",
         gray + "Add level to yourself or target player\n" + gray + "Can be used from console too\n" + gold
-            + "Permission: " + gray + "villagedefense.admin.addlevel"));
+            + "Permission: " + gray + "villagedefense.admin.addlevel(for yourself)\n" + gold + "Permission: " + gray + "villagedefense.admin.addlevel.others (for others)"));
     command.add(new CommandData("/vda setwave " + gold + "<number>", "/vda setwave <num>",
         gray + "Set wave number in arena you're in\n" + gold + "Permission: " + gray + "villagedefense.admin.setwave"));
   }
@@ -439,7 +439,7 @@ public class AdminCommands extends MainCommand {
       user.setStat(StatsStorage.StatisticType.ORBS, user.getStat(StatsStorage.StatisticType.ORBS) + Integer.parseInt(number));
       sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("Commands.Admin-Commands.Added-Orbs"));
     } else {
-      sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("Commands.Wrong-Usage").replace("%correct%", "/vd addorbs <amount>"));
+      sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("Commands.Wrong-Usage").replace("%correct%", "/vda addorbs <amount>"));
     }
   }
 
@@ -458,7 +458,7 @@ public class AdminCommands extends MainCommand {
       user.setStat(StatsStorage.StatisticType.ORBS, user.getStat(StatsStorage.StatisticType.ORBS) + Integer.parseInt(number));
       sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("Commands.Admin-Commands.Added-Orbs"));
     } else {
-      sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("Commands.Wrong-Usage").replace("%correct%", "/vd addorbs <amount>"));
+      sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("Commands.Wrong-Usage").replace("%correct%", "/vda addorbs <amount>"));
     }
   }
 
@@ -484,7 +484,7 @@ public class AdminCommands extends MainCommand {
       user.setStat(StatsStorage.StatisticType.LEVEL, Integer.parseInt(number));
       sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("Commands.Admin-Commands.Added-Level"));
     } else {
-      sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("Commands.Wrong-Usage").replace("%correct%", "/vd setlevel <amount> [player]"));
+      sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("Commands.Wrong-Usage").replace("%correct%", "/vda setlevel <amount> [player]"));
     }
   }
 
@@ -510,7 +510,7 @@ public class AdminCommands extends MainCommand {
       user.setStat(StatsStorage.StatisticType.LEVEL, user.getStat(StatsStorage.StatisticType.LEVEL) + Integer.parseInt(number));
       sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("Commands.Admin-Commands.Added-Level"));
     } else {
-      sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("Commands.Wrong-Usage").replace("%correct%", "/vd addlevel <amount> [player]"));
+      sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("Commands.Wrong-Usage").replace("%correct%", "/vda addlevel <amount> [player]"));
     }
   }
 
@@ -550,7 +550,7 @@ public class AdminCommands extends MainCommand {
         loopPlayer.sendMessage(ChatManager.PLUGIN_PREFIX + message1);
       }
     } else {
-      sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("Commands.Invalid-Number").replace("%correct%", "/villagedefense setwave <number>"));
+      sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("Commands.Invalid-Number").replace("%correct%", "/vda setwave <number>"));
     }
   }
 
