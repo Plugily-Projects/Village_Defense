@@ -247,7 +247,7 @@ public class ArenaManager {
       VillageGameStopEvent villageGameStopEvent = new VillageGameStopEvent(arena);
       Bukkit.getPluginManager().callEvent(villageGameStopEvent);
       String summaryEnding;
-      if (plugin.getConfig().getBoolean("Wave-Limit.Enabled", true) && arena.getWave() == plugin.getConfig().getInt("Wave-Limit.Limit", 20)) {
+      if (plugin.getConfig().getBoolean("Wave-Limit.Enabled", false) && arena.getWave() == plugin.getConfig().getInt("Wave-Limit.Limit", 25)) {
         summaryEnding = ChatManager.colorMessage("In-Game.Messages.Game-End-Messages.Summary-Win-Game");
       } else if (arena.getPlayersLeft().size() > 0) {
         summaryEnding = ChatManager.colorMessage("In-Game.Messages.Game-End-Messages.Summary-Villagers-Died");
@@ -333,8 +333,9 @@ public class ArenaManager {
    */
   public static void endWave(Arena arena) {
     try {
-      if (plugin.getConfig().getBoolean("Wave-Limit.Enabled", true) && arena.getWave() == plugin.getConfig().getInt("Wave-Limit.Limit", 20)) {
+      if (plugin.getConfig().getBoolean("Wave-Limit.Enabled", false) && arena.getWave() == plugin.getConfig().getInt("Wave-Limit.Limit", 25)) {
         stopGame(false, arena);
+        return;
       }
       plugin.getRewardsHandler().performReward(arena, RewardsHandler.RewardType.END_WAVE);
       arena.setTimer(plugin.getConfig().getInt("Cooldown-Before-Next-Wave", 25));

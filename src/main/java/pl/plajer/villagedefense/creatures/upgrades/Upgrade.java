@@ -23,34 +23,28 @@ package pl.plajer.villagedefense.creatures.upgrades;
  * <p>
  * Created at 14.10.2018
  */
-public enum EntityUpgrades {
+public class Upgrade {
 
-  DAMAGE(EntityType.BOTH, 4), FINAL_DEFENSE(EntityType.GOLEM, 2), HEALTH(EntityType.BOTH, 4), SPEED(EntityType.BOTH, 4), SWARM_AWARENESS(EntityType.WOLF, 2);
+  private String name;
+  private String[] description;
+  private String metadataAccess;
 
-  private EntityType applicableFor;
-  private int maxTierUpgrade;
-
-  EntityUpgrades(EntityType applicableFor, int maxTierUpgrade) {
-    this.applicableFor = applicableFor;
-    this.maxTierUpgrade = maxTierUpgrade;
+  public Upgrade(String name, String[] description, String metadataAccess) {
+    this.name = name;
+    this.description = description;
+    this.metadataAccess = metadataAccess;
   }
 
-  /**
-   * @return entity which upgrade can be applied for
-   */
-  public EntityType getApplicableFor() {
-    return applicableFor;
+  public String getName() {
+    return name;
   }
 
-  /**
-   * @return maximum tier the entity can be upgraded
-   */
-  public int getMaxTierUpgrade() {
-    return maxTierUpgrade;
+  public String[] getDescription() {
+    return description;
   }
 
-  public enum EntityType {
-    BOTH, GOLEM, WOLF
+  public String getMetadataAccess() {
+    return metadataAccess;
   }
 
 }

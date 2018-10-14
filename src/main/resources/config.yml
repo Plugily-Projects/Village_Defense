@@ -158,11 +158,10 @@ Powerups:
       Enabled: true
       Time: 15 # seconds
 
-# Wave limit section.
 Wave-Limit:
-  # Should we limit game waves
+  # Should game have finite amount of waves
   Enabled: false
-  # Set Wave limit when the game should end
+  # Limit of waves, if this wave ends game will end
   Limit: 25
 
 Update-Notifier:

@@ -84,6 +84,8 @@ public class LanguageMigrator {
         case 6:
           MigratorUtils.addNewLines(file, "# Should holiday events for Village Defense be enabled?\n\r" +
               "# Eg. 4 days before and 4 days after Halloween special effects\n\r# for death and zombies will be applied, spooky!\n\rHolidays-Enabled: true\r\n");
+          MigratorUtils.addNewLines(file, "Wave-Limit:\r\n  # Should game have finite amount of waves\r\n  Enabled: false\r\n" +
+              "  # Limit of waves, if this wave ends game will end\r\n  Limit: 25");
           break;
       }
       version++;
