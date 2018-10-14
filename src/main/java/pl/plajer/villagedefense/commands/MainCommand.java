@@ -181,26 +181,26 @@ public class MainCommand implements CommandExecutor {
             adminCommands.addOrbsOther(sender, args[2], args[1]);
           }
           return true;
-        } else if (args[0].equalsIgnoreCase("setlevels")) {
+        } else if (args[0].equalsIgnoreCase("setlevel")) {
           if (args.length == 1) {
             sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatColor.RED + "Please type number of levels to set!");
             return true;
           }
           if (args.length == 2) {
-            adminCommands.setLevels(sender, args[1]);
+            adminCommands.setLevel(sender, sender.getName(), args[1]);
           } else {
-            adminCommands.setLevelsOther(sender, args[2], args[1]);
+            adminCommands.setLevel(sender, args[2], args[1]);
           }
           return true;
-        } else if (args[0].equalsIgnoreCase("addlevels")) {
+        } else if (args[0].equalsIgnoreCase("addlevel")) {
           if (args.length == 1) {
             sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatColor.RED + "Please type number of levels to give!");
             return true;
           }
           if (args.length == 2) {
-            adminCommands.addLevels(sender, args[1]);
+            adminCommands.addLevel(sender, sender.getName(), args[1]);
           } else {
-            adminCommands.addLevelsOther(sender, args[2], args[1]);
+            adminCommands.addLevel(sender, args[2], args[1]);
           }
           return true;
         } else if (args[0].equalsIgnoreCase("setwave")) {

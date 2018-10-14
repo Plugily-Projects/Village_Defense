@@ -101,12 +101,12 @@ public class AdminCommands extends MainCommand {
     command.add(new CommandData("/vda addorbs " + gold + "<amount>" + ChatColor.RED + " [player]", "/vda addorbs <amount>",
         gray + "Add orbs (game currency) to yourself or target player\n" + gray + "Can be used from console too\n" + gold
             + "Permission: " + gray + "villagedefense.admin.addorbs (for yourself)\n" + gold + "Permission: " + gray + "villagedefense.admin.addorbs.others (for others)"));
-    command.add(new CommandData("/vda setlevels " + gold + "<amount>" + ChatColor.RED + " [player]", "/vda setlevels <amount>",
+    command.add(new CommandData("/vda setlevel " + gold + "<amount>" + ChatColor.RED + " [player]", "/vda setlevel <amount>",
         gray + "Set level to yourself or target player\n" + gray + "Can be used from console too\n" + gold
-            + "Permission: " + gray + "villagedefense.admin.setlevel (for yourself)\n" + gold + "Permission: " + gray + "villagedefense.admin.setlevel.others (for others)"));
-    command.add(new CommandData("/vda addlevels " + gold + "<amount>" + ChatColor.RED + " [player]", "/vda addlevels <amount>",
+            + "Permission: " + gray + "villagedefense.admin.setlevel"));
+    command.add(new CommandData("/vda addlevel " + gold + "<amount>" + ChatColor.RED + " [player]", "/vda addlevel <amount>",
         gray + "Add level to yourself or target player\n" + gray + "Can be used from console too\n" + gold
-            + "Permission: " + gray + "villagedefense.admin.addlevel (for yourself)\n" + gold + "Permission: " + gray + "villagedefense.admin.addlevel.others (for others)"));
+            + "Permission: " + gray + "villagedefense.admin.addlevel"));
     command.add(new CommandData("/vda setwave " + gold + "<number>", "/vda setwave <num>",
         gray + "Set wave number in arena you're in\n" + gold + "Permission: " + gray + "villagedefense.admin.setwave"));
   }
@@ -148,8 +148,8 @@ public class AdminCommands extends MainCommand {
     sender.sendMessage(ChatColor.WHITE + "/vda tp " + ChatColor.GOLD + "<arena> <location type>" + ChatColor.GRAY + ": Teleport you to provided arena location");
     sender.sendMessage(ChatColor.WHITE + "/vda clear " + ChatColor.GOLD + "<zombie/villager/golem>" + ChatColor.GRAY + ": Remove target mob type from your arena");
     sender.sendMessage(ChatColor.WHITE + "/vda addorbs " + ChatColor.GOLD + "<amount> " + ChatColor.RED + "[player]" + ChatColor.GRAY + ": Give yourself or player the given amount of orbs");
-    sender.sendMessage(ChatColor.WHITE + "/vda setlevels " + ChatColor.GOLD + "<amount> " + ChatColor.RED + "[player]" + ChatColor.GRAY + ": Set yourself or player the given amount of levels");
-    sender.sendMessage(ChatColor.WHITE + "/vda addlevels " + ChatColor.GOLD + "<amount> " + ChatColor.RED + "[player]" + ChatColor.GRAY + ": Give yourself or player the given amount of levels");
+    sender.sendMessage(ChatColor.WHITE + "/vda setlevel " + ChatColor.GOLD + "<amount> " + ChatColor.RED + "[player]" + ChatColor.GRAY + ": Set yourself or player the given amount of level");
+    sender.sendMessage(ChatColor.WHITE + "/vda addlevel " + ChatColor.GOLD + "<amount> " + ChatColor.RED + "[player]" + ChatColor.GRAY + ": Give yourself or player the given amount of level");
     sender.sendMessage(ChatColor.WHITE + "/vda setwave " + ChatColor.GOLD + "<number>" + ChatColor.GRAY + ": Set the wave number");
   }
 
@@ -462,22 +462,10 @@ public class AdminCommands extends MainCommand {
     }
   }
 
-  public void setLevels(CommandSender sender, String number) {
-    if (!checkIsInGameInstance((Player) sender) || !hasPermission(sender, "villagedefense.admin.setlevels")) {
-      return;
-    }
-    if (NumberUtils.isNumber(number)) {
-      User user = UserManager.getUser(((Player) sender).getUniqueId());
-      user.setStat(StatsStorage.StatisticType.LEVEL, Integer.parseInt(number));
-      sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("Commands.Admin-Commands.Added-Levels"));
-    } else {
-      sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("Commands.Wrong-Usage").replace("%correct%", "/vd addlevels <amount>"));
-    }
-  }
 
-  public void setLevelsOther(CommandSender sender, String p, String number) {
+  public void setLevel(CommandSender sender, String p, String number) {
     //check only target player, maybe sender would do this from console.
-    if (!hasPermission(sender, "villagedefense.admin.setlevels.others")) {
+    if (!hasPermission(sender, "villagedefense.admin.setlevel.others")) {
       return;
     }
     Player player = Bukkit.getPlayerExact(p);
@@ -488,28 +476,16 @@ public class AdminCommands extends MainCommand {
     if (NumberUtils.isNumber(number)) {
       User user = UserManager.getUser(player.getUniqueId());
       user.setStat(StatsStorage.StatisticType.LEVEL, Integer.parseInt(number));
-      sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("Commands.Admin-Commands.Added-Levels"));
+      sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("Commands.Admin-Commands.Added-Level"));
     } else {
-      sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("Commands.Wrong-Usage").replace("%correct%", "/vd addlevels <amount>"));
+      sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("Commands.Wrong-Usage").replace("%correct%", "/vd addlevel <amount> <player>"));
     }
   }
 
-  public void addLevels(CommandSender sender, String number) {
-    if (!checkIsInGameInstance((Player) sender) || !hasPermission(sender, "villagedefense.admin.addlevels")) {
-      return;
-    }
-    if (NumberUtils.isNumber(number)) {
-      User user = UserManager.getUser(((Player) sender).getUniqueId());
-      user.setStat(StatsStorage.StatisticType.LEVEL, user.getStat(StatsStorage.StatisticType.LEVEL) + Integer.parseInt(number));
-      sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("Commands.Admin-Commands.Added-Levels"));
-    } else {
-      sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("Commands.Wrong-Usage").replace("%correct%", "/vd addlevels <amount>"));
-    }
-  }
 
-  public void addLevelsOther(CommandSender sender, String p, String number) {
+  public void addLevel(CommandSender sender, String p, String number) {
     //check only target player, maybe sender would do this from console.
-    if (!hasPermission(sender, "villagedefense.admin.addlevels.others")) {
+    if (!hasPermission(sender, "villagedefense.admin.addlevel.others")) {
       return;
     }
     Player player = Bukkit.getPlayerExact(p);
@@ -520,9 +496,9 @@ public class AdminCommands extends MainCommand {
     if (NumberUtils.isNumber(number)) {
       User user = UserManager.getUser(player.getUniqueId());
       user.setStat(StatsStorage.StatisticType.LEVEL, user.getStat(StatsStorage.StatisticType.LEVEL) + Integer.parseInt(number));
-      sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("Commands.Admin-Commands.Added-Levels"));
+      sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("Commands.Admin-Commands.Added-Level"));
     } else {
-      sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("Commands.Wrong-Usage").replace("%correct%", "/vd addlevels <amount>"));
+      sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("Commands.Wrong-Usage").replace("%correct%", "/vd addlevel <amount> <player>"));
     }
   }
 
