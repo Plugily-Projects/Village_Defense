@@ -103,10 +103,10 @@ public class AdminCommands extends MainCommand {
             + "Permission: " + gray + "villagedefense.admin.addorbs (for yourself)\n" + gold + "Permission: " + gray + "villagedefense.admin.addorbs.others (for others)"));
     command.add(new CommandData("/vda setlevel " + gold + "<amount>" + ChatColor.RED + " [player]", "/vda setlevel <amount>",
         gray + "Set level to yourself or target player\n" + gray + "Can be used from console too\n" + gold
-            + "Permission: " + gray + "villagedefense.admin.setlevel(for yourself)\n" + gold + "Permission: " + gray + "villagedefense.admin.setlevel.others (for others)"));
+            + "Permission: " + gray + "villagedefense.admin.setlevel (for yourself)\n" + gold + "Permission: " + gray + "villagedefense.admin.setlevel.others (for others)"));
     command.add(new CommandData("/vda addlevel " + gold + "<amount>" + ChatColor.RED + " [player]", "/vda addlevel <amount>",
         gray + "Add level to yourself or target player\n" + gray + "Can be used from console too\n" + gold
-            + "Permission: " + gray + "villagedefense.admin.addlevel(for yourself)\n" + gold + "Permission: " + gray + "villagedefense.admin.addlevel.others (for others)"));
+            + "Permission: " + gray + "villagedefense.admin.addlevel (for yourself)\n" + gold + "Permission: " + gray + "villagedefense.admin.addlevel.others (for others)"));
     command.add(new CommandData("/vda setwave " + gold + "<number>", "/vda setwave <num>",
         gray + "Set wave number in arena you're in\n" + gold + "Permission: " + gray + "villagedefense.admin.setwave"));
   }
