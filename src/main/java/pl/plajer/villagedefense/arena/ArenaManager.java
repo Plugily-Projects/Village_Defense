@@ -143,7 +143,7 @@ public class ArenaManager {
       arena.teleportToLobby(p);
       p.setHealth(p.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue());
       p.setFoodLevel(20);
-      p.getInventory().setArmorContents(new ItemStack[]{new ItemStack(Material.AIR), new ItemStack(Material.AIR), new ItemStack(Material.AIR), new ItemStack(Material.AIR)});
+      p.getInventory().setArmorContents(new ItemStack[] {new ItemStack(Material.AIR), new ItemStack(Material.AIR), new ItemStack(Material.AIR), new ItemStack(Material.AIR)});
       p.setFlying(false);
       p.setAllowFlight(false);
       p.getInventory().clear();
@@ -247,7 +247,9 @@ public class ArenaManager {
       VillageGameStopEvent villageGameStopEvent = new VillageGameStopEvent(arena);
       Bukkit.getPluginManager().callEvent(villageGameStopEvent);
       String summaryEnding;
-      if (arena.getPlayersLeft().size() > 0) {
+      if (plugin.getConfig().getBoolean("Wave-Limit.Enabled", true) && arena.getWave() == plugin.getConfig().getInt("Wave-Limit.Limit")) {
+        summaryEnding = ChatManager.colorMessage("In-Game.Messages.Game-End-Messages.Summary-Win-Game");
+      } else if (arena.getPlayersLeft().size() > 0) {
         summaryEnding = ChatManager.colorMessage("In-Game.Messages.Game-End-Messages.Summary-Villagers-Died");
       } else {
         summaryEnding = ChatManager.colorMessage("In-Game.Messages.Game-End-Messages.Summary-Players-Died");
@@ -331,6 +333,9 @@ public class ArenaManager {
    */
   public static void endWave(Arena arena) {
     try {
+      if (plugin.getConfig().getBoolean("Wave-Limit.Enabled", true) && arena.getWave() == plugin.getConfig().getInt("Wave-Limit.Limit")) {
+        stopGame(false, arena);
+      }
       plugin.getRewardsHandler().performReward(arena, RewardsHandler.RewardType.END_WAVE);
       arena.setTimer(plugin.getConfig().getInt("Cooldown-Before-Next-Wave", 25));
       arena.getZombieCheckerLocations().clear();

@@ -323,6 +323,7 @@ In-Game:
         - "&a&m--------------------------------------------------"
       Summary-Players-Died: "&7All players died!"
       Summary-Villagers-Died: "&7All villagers died!"
+      Summary-Win-Game: "&7You survived all the waves"
     Admin-Messages:
       Set-Starting-In-To-0: "&bAn admin set waiting time to 0. The game starts now!"
       Removed-Villagers: "&b%PLAYER% has removed all the villagers!"
