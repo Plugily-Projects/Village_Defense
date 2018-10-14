@@ -37,6 +37,7 @@ Commands:
   Admin-Commands:
     Player-Not-Found: "&cPlayer not found!"
     Added-Orbs: "&7Added orbs to the player!"
+    Added-Levels: "&7Added Levels to the player!"
     Success-Reload: "&aArenas reloaded!"
     List-Command:
       Header: "&aVillage Defense &6arenas:"

@@ -181,6 +181,28 @@ public class MainCommand implements CommandExecutor {
             adminCommands.addOrbsOther(sender, args[2], args[1]);
           }
           return true;
+        } else if (args[0].equalsIgnoreCase("setlevels")) {
+          if (args.length == 1) {
+            sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatColor.RED + "Please type number of levels to set!");
+            return true;
+          }
+          if (args.length == 2) {
+            adminCommands.setLevels(sender, args[1]);
+          } else {
+            adminCommands.setLevelsOther(sender, args[2], args[1]);
+          }
+          return true;
+        } else if (args[0].equalsIgnoreCase("addlevels")) {
+          if (args.length == 1) {
+            sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatColor.RED + "Please type number of levels to give!");
+            return true;
+          }
+          if (args.length == 2) {
+            adminCommands.addLevels(sender, args[1]);
+          } else {
+            adminCommands.addLevelsOther(sender, args[2], args[1]);
+          }
+          return true;
         } else if (args[0].equalsIgnoreCase("setwave")) {
           if (args.length == 1) {
             sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatColor.RED + "Please type number of wave to set!");
@@ -191,7 +213,7 @@ public class MainCommand implements CommandExecutor {
         }
         adminCommands.sendHelp(sender);
         List<StringMatcher.Match> matches = StringMatcher.match(args[0], Arrays.asList("stop", "list", "forcestart", "respawn", "spychat",
-            "reload", "setshopchest", "delete", "setprice", "tp", "clear", "addorbs", "setwave"));
+            "reload", "setshopchest", "delete", "setprice", "tp", "clear", "addorbs", "setlevel", "addlevel", "setwave"));
         if (!matches.isEmpty()) {
           sender.sendMessage(ChatManager.colorMessage("Commands.Did-You-Mean").replace("%command%", "vda " + matches.get(0).getMatch()));
         }
