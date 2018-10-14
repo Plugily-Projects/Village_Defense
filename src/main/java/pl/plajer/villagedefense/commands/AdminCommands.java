@@ -468,10 +468,11 @@ public class AdminCommands extends MainCommand {
     if (sender.getName().equals(p)) {
       if (!hasPermission(sender, "villagedefense.admin.setlevel")) {
         return;
-      } else //sender is not equal to p
-        if (!hasPermission(sender, "villagedefense.admin.setlevel.others")) {
-          return;
-        }
+      }
+    } else {
+      if (!hasPermission(sender, "villagedefense.admin.setlevel.others")) {
+        return;
+      }
     }
     Player player = Bukkit.getPlayerExact(p);
     if (player == null || !ArenaRegistry.isInArena(player)) {
@@ -483,7 +484,7 @@ public class AdminCommands extends MainCommand {
       user.setStat(StatsStorage.StatisticType.LEVEL, Integer.parseInt(number));
       sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("Commands.Admin-Commands.Added-Level"));
     } else {
-      sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("Commands.Wrong-Usage").replace("%correct%", "/vd addlevel <amount> <player>"));
+      sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("Commands.Wrong-Usage").replace("%correct%", "/vd addlevel <amount> [player]"));
     }
   }
 
@@ -493,70 +494,71 @@ public class AdminCommands extends MainCommand {
     if (sender.getName().equals(p)) {
       if (!hasPermission(sender, "villagedefense.admin.addlevel")) {
         return;
-      } else //sender is not equal to p
-        if (!hasPermission(sender, "villagedefense.admin.addlevel.others")) {
-          return;
-        }
-    }
-      Player player = Bukkit.getPlayerExact(p);
-      if (player == null || !ArenaRegistry.isInArena(player)) {
-        sender.sendMessage(ChatManager.colorMessage("Commands.Target-Player-Not-Found"));
+      }
+    } else {
+      if (!hasPermission(sender, "villagedefense.admin.addlevel.others")) {
         return;
       }
-      if (NumberUtils.isNumber(number)) {
-        User user = UserManager.getUser(player.getUniqueId());
-        user.setStat(StatsStorage.StatisticType.LEVEL, user.getStat(StatsStorage.StatisticType.LEVEL) + Integer.parseInt(number));
-        sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("Commands.Admin-Commands.Added-Level"));
-      } else {
-        sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("Commands.Wrong-Usage").replace("%correct%", "/vd addlevel <amount> <player>"));
-      }
     }
-
-    public void createArena (CommandSender sender, String[]args){
-      if (!checkSenderPlayer(sender) || !hasPermission(sender, "villagedefense.admin.create")) {
-        return;
-      }
-      createArenaCommand((Player) sender, args);
+    Player player = Bukkit.getPlayerExact(p);
+    if (player == null || !ArenaRegistry.isInArena(player)) {
+      sender.sendMessage(ChatManager.colorMessage("Commands.Target-Player-Not-Found"));
+      return;
     }
-
-    public void setWave (CommandSender sender, String number){
-      if (!checkSenderPlayer(sender) || !checkIsInGameInstance((Player) sender)
-          || !hasPermission(sender, "villagedefense.admin.setwave")) {
-        return;
-      }
-      Arena arena = ArenaRegistry.getArena((Player) sender);
-      if (NumberUtils.isNumber(number)) {
-        arena.setWave(Integer.parseInt(number) - 1);
-        ArenaManager.endWave(arena);
-        String message = ChatManager.formatMessage(arena, ChatManager.colorMessage("In-Game.Messages.Admin-Messages.Changed-Wave"), arena.getWave());
-        for (Player player1 : arena.getPlayers()) {
-          player1.sendMessage(ChatManager.PLUGIN_PREFIX + message);
-        }
-        if (arena.getZombies() != null) {
-          for (Zombie zombie : arena.getZombies()) {
-            zombie.getWorld().spawnParticle(Particle.LAVA, zombie.getLocation(), 20);
-            zombie.remove();
-          }
-          arena.getZombies().clear();
-        } else {
-          sender.sendMessage(ChatManager.colorMessage("Kits.Cleaner.Nothing-To-Clean"));
-          return;
-        }
-        Utils.playSound(((Player) sender).getLocation(), "ENTITY_ZOMBIE_DEATH", "ENTITY_ZOMBIE_DEATH");
-        for (Player loopPlayer : arena.getPlayers()) {
-          String message1 = ChatManager.formatMessage(arena, ChatManager.colorMessage("In-Game.Messages.Admin-Messages.Removed-Zombies"), loopPlayer);
-          loopPlayer.sendMessage(ChatManager.PLUGIN_PREFIX + message1);
-        }
-      } else {
-        sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("Commands.Invalid-Number").replace("%correct%", "/villagedefense set wave <number>"));
-      }
+    if (NumberUtils.isNumber(number)) {
+      User user = UserManager.getUser(player.getUniqueId());
+      user.setStat(StatsStorage.StatisticType.LEVEL, user.getStat(StatsStorage.StatisticType.LEVEL) + Integer.parseInt(number));
+      sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("Commands.Admin-Commands.Added-Level"));
+    } else {
+      sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("Commands.Wrong-Usage").replace("%correct%", "/vd addlevel <amount> [player]"));
     }
-
-    public void performSetup (CommandSender sender, String[]args){
-      if (!checkSenderPlayer(sender) || !hasPermission(sender, "villagedefense.admin.setup")) {
-        return;
-      }
-      performSetup((Player) sender, args);
-    }
-
   }
+
+  public void createArena(CommandSender sender, String[] args) {
+    if (!checkSenderPlayer(sender) || !hasPermission(sender, "villagedefense.admin.create")) {
+      return;
+    }
+    createArenaCommand((Player) sender, args);
+  }
+
+  public void setWave(CommandSender sender, String number) {
+    if (!checkSenderPlayer(sender) || !checkIsInGameInstance((Player) sender)
+        || !hasPermission(sender, "villagedefense.admin.setwave")) {
+      return;
+    }
+    Arena arena = ArenaRegistry.getArena((Player) sender);
+    if (NumberUtils.isNumber(number)) {
+      arena.setWave(Integer.parseInt(number) - 1);
+      ArenaManager.endWave(arena);
+      String message = ChatManager.formatMessage(arena, ChatManager.colorMessage("In-Game.Messages.Admin-Messages.Changed-Wave"), arena.getWave());
+      for (Player player1 : arena.getPlayers()) {
+        player1.sendMessage(ChatManager.PLUGIN_PREFIX + message);
+      }
+      if (arena.getZombies() != null) {
+        for (Zombie zombie : arena.getZombies()) {
+          zombie.getWorld().spawnParticle(Particle.LAVA, zombie.getLocation(), 20);
+          zombie.remove();
+        }
+        arena.getZombies().clear();
+      } else {
+        sender.sendMessage(ChatManager.colorMessage("Kits.Cleaner.Nothing-To-Clean"));
+        return;
+      }
+      Utils.playSound(((Player) sender).getLocation(), "ENTITY_ZOMBIE_DEATH", "ENTITY_ZOMBIE_DEATH");
+      for (Player loopPlayer : arena.getPlayers()) {
+        String message1 = ChatManager.formatMessage(arena, ChatManager.colorMessage("In-Game.Messages.Admin-Messages.Removed-Zombies"), loopPlayer);
+        loopPlayer.sendMessage(ChatManager.PLUGIN_PREFIX + message1);
+      }
+    } else {
+      sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("Commands.Invalid-Number").replace("%correct%", "/villagedefense setwave <number>"));
+    }
+  }
+
+  public void performSetup(CommandSender sender, String[] args) {
+    if (!checkSenderPlayer(sender) || !hasPermission(sender, "villagedefense.admin.setup")) {
+      return;
+    }
+    performSetup((Player) sender, args);
+  }
+
+}
