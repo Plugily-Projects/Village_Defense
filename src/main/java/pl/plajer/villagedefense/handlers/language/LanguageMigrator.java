@@ -167,6 +167,7 @@ public class LanguageMigrator {
         case 8:
           MigratorUtils.insertAfterLine(file, "Target-Player-Health:", "    Settings-Menu:\r\n      Item-Name: \"&b&lSpectator Settings &7(Right-click)\"\r\n      Inventory-Name: \"&7Spectator settings\"\r\n" +
               "      Speed-Name: \"&aSpeed\"");
+          MigratorUtils.insertAfterLine(file, "Admin-Commands", "    Added-Level: \"&7Added level to the player!\"");
           break;
       }
       version++;
