@@ -63,10 +63,10 @@ public class EntityUpgradeMenu {
    * @param p  player who will see inventory
    */
   public static void openUpgradeMenu(Entity en, Player p) {
-    Inventory inv = Bukkit.createInventory(null, /* magic number may be changed */9 * 6, ChatManager.colorMessage("Upgrade-Menu.Title"));
+    Inventory inv = Bukkit.createInventory(null, /* magic number may be changed */9 * 5, ChatManager.colorMessage("Upgrade-Menu.Title"));
 
     for (int i = 0; i < 3; i++) {
-      inv.setItem(11 * (i + 1), new ItemBuilder(XMaterial.BLACK_STAINED_GLASS_PANE.parseItem())
+      inv.setItem(((i + 1) * 9) + 2, new ItemBuilder(XMaterial.BLACK_STAINED_GLASS_PANE.parseItem())
           .name(upgrades.get(i).getName())
           .lore(upgrades.get(i).getDescription()).build());
       int tier = 0;
@@ -74,10 +74,10 @@ public class EntityUpgradeMenu {
         tier = en.getMetadata(upgrades.get(i).getMetadataAccess()).get(0).asInt();
       }
       for (int j = 0; j < tier; j++) {
-        inv.setItem(11 * (i + 1) + j, new ItemBuilder(XMaterial.YELLOW_STAINED_GLASS_PANE.parseItem()).build());
+        inv.setItem(((i + 1) * 9) + 2 + j + j, new ItemBuilder(XMaterial.YELLOW_STAINED_GLASS_PANE.parseItem()).build());
       }
       for (int j = 0; j < 4 - tier; j++) {
-        inv.setItem(11 * (i + 1) + j + tier, new ItemBuilder(XMaterial.WHITE_STAINED_GLASS_PANE.parseItem()).build());
+        inv.setItem(4 + ((i + 1) * 8) + j + tier, new ItemBuilder(XMaterial.WHITE_STAINED_GLASS_PANE.parseItem()).build());
       }
     }
     p.openInventory(inv);

@@ -36,7 +36,6 @@ import pl.plajer.villagedefense.arena.ArenaRegistry;
 import pl.plajer.villagedefense.handlers.ChatManager;
 import pl.plajer.villagedefense.user.UserManager;
 import pl.plajerlair.core.services.exception.ReportedException;
-import pl.plajerlair.core.utils.XMaterial;
 
 /**
  * @author Plajer
@@ -60,8 +59,8 @@ public class EntityUpgradeListener implements Listener {
           (e.getRightClicked().getType() != EntityType.IRON_GOLEM && e.getRightClicked().getType() != EntityType.WOLF) || e.getRightClicked().getCustomName() == null) {
         return;
       }
-      clickedEntity.put(e.getPlayer(), e.getRightClicked());
       EntityUpgradeMenu.openUpgradeMenu(e.getRightClicked(), e.getPlayer());
+      clickedEntity.put(e.getPlayer(), e.getRightClicked());
     } catch (Exception ex) {
       new ReportedException(plugin, ex);
     }
@@ -77,9 +76,11 @@ public class EntityUpgradeListener implements Listener {
       if (!e.getInventory().getName().equals(ChatManager.colorMessage("Upgrade-Menu.Title"))) {
         return;
       }
-      if (!e.getCurrentItem().isSimilar(XMaterial.BLACK_STAINED_GLASS_PANE.parseItem())) {
+      //todo check position
+      /*if (!e.getCurrentItem().getItemMeta().getDisplayName().equals()) {
+        e.setCancelled(true);
         return;
-      }
+      }*/
       Player p = (Player) e.getWhoClicked();
       String upgrade = e.getCurrentItem().getItemMeta().getDisplayName();
       if (upgrade.equals(ChatManager.colorMessage("Upgrade-Menu.Upgrades.Health.Name"))) {
@@ -96,6 +97,7 @@ public class EntityUpgradeListener implements Listener {
         p.closeInventory();
       } else {
         p.sendMessage("Not supported yet");
+        p.closeInventory();
       }
     } catch (Exception ex) {
       new ReportedException(plugin, ex);
