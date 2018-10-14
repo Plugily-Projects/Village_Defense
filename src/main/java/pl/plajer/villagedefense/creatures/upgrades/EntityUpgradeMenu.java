@@ -22,10 +22,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Particle;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.handlers.ChatManager;
@@ -44,6 +49,8 @@ public class EntityUpgradeMenu {
 
   public static void init(Main plugin) {
     EntityUpgradeMenu.plugin = plugin;
+    //todo add config checks + language + locale
+    new EntityUpgradeListener(plugin);
     upgrades.add(new Upgrade(ChatManager.colorMessage("Upgrade-Menu.Upgrades.Health.Name"), ChatManager.colorMessage("Upgrade-Menu.Upgrades.Health.Description").split(";"), "VD_Health"));
     upgrades.add(new Upgrade(ChatManager.colorMessage("Upgrade-Menu.Upgrades.Damage.Name"), ChatManager.colorMessage("Upgrade-Menu.Upgrades.Damage.Description").split(";"), "VD_Damage"));
     upgrades.add(new Upgrade(ChatManager.colorMessage("Upgrade-Menu.Upgrades.Speed.Name"), ChatManager.colorMessage("Upgrade-Menu.Upgrades.Speed.Description").split(";"), "VD_Speed"));
@@ -56,21 +63,24 @@ public class EntityUpgradeMenu {
    * @param p  player who will see inventory
    */
   public static void openUpgradeMenu(Entity en, Player p) {
-    Inventory inv = Bukkit.createInventory(null, /* magic number may be changed */9 * 6, ChatManager.colorMessage("Upgrade-Menu.Title"));
+    Inventory inv = Bukkit.createInventory(null, /* magic number may be changed */9 * 5, ChatManager.colorMessage("Upgrade-Menu.Title"));
 
     for (int i = 0; i < 3; i++) {
-      inv.setItem(11 * (i + 1), new ItemBuilder(XMaterial.BLACK_STAINED_GLASS_PANE.parseItem()).name(upgrades.get(i).getName()).lore(upgrades.get(i).getDescription()).build());
+      inv.setItem(((i + 1) * 9) + 2, new ItemBuilder(XMaterial.BLACK_STAINED_GLASS_PANE.parseItem())
+          .name(upgrades.get(i).getName())
+          .lore(upgrades.get(i).getDescription()).build());
       int tier = 0;
       if (en.hasMetadata(upgrades.get(i).getMetadataAccess())) {
         tier = en.getMetadata(upgrades.get(i).getMetadataAccess()).get(0).asInt();
       }
       for (int j = 0; j < tier; j++) {
-        inv.setItem(11 * (i + 1) + j, new ItemBuilder(XMaterial.YELLOW_STAINED_GLASS_PANE.parseItem()).build());
+        inv.setItem(((i + 1) * 9) + 2 + j + j, new ItemBuilder(XMaterial.YELLOW_STAINED_GLASS_PANE.parseItem()).build());
       }
       for (int j = 0; j < 4 - tier; j++) {
-        inv.setItem(11 * (i + 1) + j + tier, new ItemBuilder(XMaterial.WHITE_STAINED_GLASS_PANE.parseItem()).build());
+        inv.setItem(4 + ((i + 1) * 8) + j + tier, new ItemBuilder(XMaterial.WHITE_STAINED_GLASS_PANE.parseItem()).build());
       }
     }
+    p.openInventory(inv);
   }
 
   /**
@@ -84,12 +94,50 @@ public class EntityUpgradeMenu {
   public static boolean applyUpgrade(Entity en, EntityUpgrade upgrade) {
     if (!en.hasMetadata(upgrade.getMetadataAccess())) {
       en.setMetadata(upgrade.getMetadataAccess(), new FixedMetadataValue(plugin, 1));
+      applyUpgradeEffect(en, upgrade, 1);
       return true;
     }
     if (en.getMetadata(upgrade.getMetadataAccess()).get(0).asInt() == upgrade.getMaxTierUpgrade()) {
       return false;
     }
-    en.setMetadata(upgrade.getMetadataAccess(), new FixedMetadataValue(plugin, en.getMetadata(upgrade.getMetadataAccess()).get(0).asInt() + 1));
+    int tier = getTier(en, upgrade) + 1;
+    en.setMetadata(upgrade.getMetadataAccess(), new FixedMetadataValue(plugin, tier));
+    applyUpgradeEffect(en, upgrade, tier);
+    return true;
+  }
+
+  private static void applyUpgradeEffect(Entity en, EntityUpgrade upgrade, int tier) {
+    en.getWorld().spawnParticle(Particle.FIREWORKS_SPARK, en.getLocation(), 15, 0.5, 0.5, 0.5);
+    if (areAllEqualOrHigher(new int[] {getTier(en, EntityUpgrade.HEALTH), getTier(en, EntityUpgrade.SPEED), getTier(en, EntityUpgrade.DAMAGE)})) {
+      //todo
+    }
+    switch (upgrade) {
+      case DAMAGE:
+        ((LivingEntity) en).removePotionEffect(PotionEffectType.INCREASE_DAMAGE);
+        ((LivingEntity) en).addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, Integer.MAX_VALUE, /* amplifiers counts from 0*/tier - 1));
+        break;
+      case FINAL_DEFENSE:
+        //todo
+        break;
+      case HEALTH:
+        ((LivingEntity) en).getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(100.0 + (100.0 * ((double) tier / 2.0)));
+        break;
+      case SPEED:
+        ((LivingEntity) en).removePotionEffect(PotionEffectType.SPEED);
+        ((LivingEntity) en).addPotionEffect(new PotionEffect(PotionEffectType.SPEED, Integer.MAX_VALUE, /* amplifiers counts from 0*/tier - 1));
+        break;
+      case SWARM_AWARENESS:
+        //todo
+        break;
+    }
+  }
+
+  private static boolean areAllEqualOrHigher(int[] a) {
+    for (int i = 1; i < a.length; i++) {
+      if (a[0] < a[i]) {
+        return false;
+      }
+    }
     return true;
   }
 
@@ -98,7 +146,7 @@ public class EntityUpgradeMenu {
    * @param upgrade upgrade type
    * @return current tier of upgrade for target entity
    */
-  public int getTier(Entity en, EntityUpgrade upgrade) {
+  public static int getTier(Entity en, EntityUpgrade upgrade) {
     if (!en.hasMetadata(upgrade.getMetadataAccess())) {
       return 0;
     }

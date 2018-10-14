@@ -351,6 +351,20 @@ Powerups:
     Description: "&7Every zombie for 1 hit!"
   Powerup-Ended-Title-Message: "&4Powerup %powerup% has ended!"
 
+#todo locale and migrator
+Upgrade-Menu:
+  Title: "&e&lUpgrade entity"
+  Upgrades:
+    Health:
+      Name: "&a&lUpgrade health"
+      Description: "&7Upgrade health to tier &e%tier%!;&7Cost of upgrade: &e%cost%;;&eClick to purchase"
+    Damage:
+      Name: "&a&lUpgrade damage"
+      Description: "&7Upgrade damage to tier &e%tier%!;&7Cost of upgrade: &e%cost%;;&eClick to purchase"
+    Speed:
+      Name: "&a&lUpgrade speed"
+      Description: "&7Upgrade speed to tier &e%tier%!;&7Cost of upgrade: &e%cost%;;&eClick to purchase"
+
 Signs:
   Please-Type-Arena-Name: "&cPlease type arena name in second line!"
   Arena-Doesnt-Exists: "&cArena with that name doesn't exists!"

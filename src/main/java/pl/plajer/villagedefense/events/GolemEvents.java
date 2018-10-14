@@ -45,6 +45,7 @@ import pl.plajer.villagedefense.handlers.ChatManager;
 import pl.plajer.villagedefense.user.UserManager;
 import pl.plajerlair.core.services.exception.ReportedException;
 
+@Deprecated
 public class GolemEvents implements Listener {
 
   private Map<Player, IronGolem> clickedGolem = new HashMap<>();
@@ -53,7 +54,7 @@ public class GolemEvents implements Listener {
   public GolemEvents(Main plugin) {
     this.plugin = plugin;
     if (plugin.getConfig().getBoolean("Golem-Upgrades-Enabled", true)) {
-      plugin.getServer().getPluginManager().registerEvents(this, plugin);
+      //plugin.getServer().getPluginManager().registerEvents(this, plugin);
       Main.debug(Main.LogLevel.INFO, "Golem upgrades successfully registered!");
     }
   }
@@ -77,7 +78,7 @@ public class GolemEvents implements Listener {
         ItemMeta meta = golemHealthUpgrade.getItemMeta();
         meta.setDisplayName(ChatManager.colorMessage("In-Game.Golem-Upgrades.Upgrade-Tier" + i));
         meta.setLore(Arrays.asList(ChatManager.colorMessage("In-Game.Golem-Upgrades.Upgrade-Tier" + i + "-Lore")
-                .replace("%cost%", plugin.getConfig().getString("Golem-Upgrade-Tier" + i + "-Cost")).split(";")));
+            .replace("%cost%", plugin.getConfig().getString("Golem-Upgrade-Tier" + i + "-Cost")).split(";")));
         golemHealthUpgrade.setItemMeta(meta);
         inv.setItem((i * 3) + 7, golemHealthUpgrade);
       }
@@ -86,7 +87,7 @@ public class GolemEvents implements Listener {
       ItemMeta healMeta = golemHeal.getItemMeta();
       healMeta.setDisplayName(ChatManager.colorMessage("In-Game.Golem-Upgrades.Upgrade-Heal"));
       healMeta.setLore(Arrays.asList(ChatManager.colorMessage("In-Game.Golem-Upgrades.Upgrade-Heal-Lore")
-              .replace("%cost%", plugin.getConfig().getString("Golem-Upgrade-Heal-Cost")).split(";")));
+          .replace("%cost%", plugin.getConfig().getString("Golem-Upgrade-Heal-Cost")).split(";")));
       golemHeal.setItemMeta(healMeta);
 
       ItemStack golemHealth = new ItemStack(Material.BOOK, 1);
@@ -106,7 +107,7 @@ public class GolemEvents implements Listener {
   public void onInventoryClick(InventoryClickEvent e) {
     try {
       if (e.getInventory() == null || e.getCurrentItem() == null || clickedGolem.get(e.getWhoClicked()) == null
-              || !(e.getWhoClicked() instanceof Player)) {
+          || !(e.getWhoClicked() instanceof Player)) {
         return;
       }
       if (e.getInventory().getName().equals(ChatManager.colorMessage("In-Game.Golem-Upgrades.Upgrade-Inventory"))) {
