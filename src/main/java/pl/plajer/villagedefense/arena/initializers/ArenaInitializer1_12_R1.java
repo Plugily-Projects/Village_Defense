@@ -67,6 +67,7 @@ public class ArenaInitializer1_12_R1 extends Arena {
     Zombie zombie = (Zombie) fastZombie.getBukkitEntity();
     zombie.setRemoveWhenFarAway(false);
     CreatureUtils.applyHealthBar(zombie);
+    plugin.getHolidayManager().applyHolidayZombieEffects(zombie);
     this.addZombie((Zombie) fastZombie.getBukkitEntity());
 
     super.subtractZombiesToSpawn();
@@ -117,6 +118,7 @@ public class ArenaInitializer1_12_R1 extends Arena {
     fastZombie.setPosition(location.getX(), location.getY(), location.getZ());
     Zombie zombie = (Zombie) fastZombie.getBukkitEntity();
     CreatureUtils.applyHealthBar(zombie);
+    plugin.getHolidayManager().applyHolidayZombieEffects(zombie);
     zombie.setRemoveWhenFarAway(false);
     mcWorld.addEntity(fastZombie, CreatureSpawnEvent.SpawnReason.CUSTOM);
     this.addZombie((Zombie) fastZombie.getBukkitEntity());

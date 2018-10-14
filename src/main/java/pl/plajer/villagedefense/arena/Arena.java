@@ -80,7 +80,7 @@ public abstract class Arena extends BukkitRunnable {
   private final List<Wolf> wolfs = new ArrayList<>();
   private final List<Villager> villagers = new ArrayList<>();
   private final List<IronGolem> ironGolems = new ArrayList<>();
-  private final Main plugin;
+  protected final Main plugin;
   private final LinkedHashMap<Location, Byte> doorBlocks = new LinkedHashMap<>();
   private final List<Location> villagerSpawnPoints = new ArrayList<>();
   private final Random random;

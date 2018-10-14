@@ -38,7 +38,7 @@ import pl.plajerlair.core.utils.MigratorUtils;
 public class LanguageMigrator {
 
   public static final int LANGUAGE_FILE_VERSION = 9;
-  public static final int CONFIG_FILE_VERSION = 5;
+  public static final int CONFIG_FILE_VERSION = 7;
   private static Main plugin = JavaPlugin.getPlugin(Main.class);
   private static List<String> migratable = Arrays.asList("bungee", "config", "kits", "language", "lobbyitems", "mysql");
 
@@ -49,62 +49,44 @@ public class LanguageMigrator {
     Bukkit.getConsoleSender().sendMessage(ChatColor.YELLOW + "[Village Defense] System notify >> Your config file is outdated! Updating...");
     File file = new File(plugin.getDataFolder() + "/config.yml");
 
-    MigratorUtils.removeLineFromFile(file, "# Don't modify.");
-    MigratorUtils.removeLineFromFile(file, "Version: " + plugin.getConfig().getInt("Version"));
-    MigratorUtils.removeLineFromFile(file, "# No way! You've reached the end! But... where's the dragon!?");
+    int version = plugin.getConfig().getInt("Version", 0);
+    updateConfigVersionControl(version);
 
-    switch (plugin.getConfig().getInt("Version")) {
-      case 1:
-        MigratorUtils.addNewLines(file, "# Power ups section. If you want to have classic Village Defense game mode i recommend to disable this.\r\nPowerups:\r\n" +
-                "  # Do you want to enable in-game power ups?\r\n  # This will make zombies to drop some power ups when they're killed\r\n" +
-                "  # REQUIRES Holographic Displays otherwise it won't be enabled!\r\n  Enabled: true\r\n  # Modify powerup drop chance here\r\n" +
-                "  Drop-Chance: 1.0 # 1% chance by default\r\n  # Enable or disable specific power ups here.\r\n  List:\r\n" +
-                "    Map-Clean: true\r\n    Double-Damage-For-Players:\r\n      Enabled: true\r\n      Time: 15 # seconds\r\n" +
-                "    Healing-For-Players:\r\n      Enabled: true\r\n      Amplifier: 1\r\n      Time-Of-Healing: 10 # seconds\r\n" +
-                "    # Spawns X golems in village\r\n    # Owner of golems is person who picked up power up\r\n    Golem-Raid:\r\n" +
-                "      Enabled: true\r\n      Golems-Amount: 3\r\n    # Every zombie can be killed for one hit\r\n    One-Shot-One-Kill:\r\n" +
-                "      Enabled: true\r\n      Time: 15 # seconds\r\n\r\n");
-        MigratorUtils.addNewLines(file, "# Should blocks behind game signs change their color based on game state?\r\n# They will change color to:\r\n" +
-                "# - white (waiting for players) stained glass\r\n# - yellow (starting) stained glass\r\n# - orange (in game) stained glass\r\n# - gray (ending) stained glass\r\n" +
-                "# - black (restarting) stained glass\r\nSigns-Block-States-Enabled: true\r\n\r\n");
-        MigratorUtils.addNewLines(file, "# Commands which can be used in game, remove all of them to disable\r\nWhitelisted-Commands:\r\n- me\r\n- help\r\n");
-        MigratorUtils.addNewLines(file, "# Limit of mobs can be spawned per player in-game\r\n# Will affect only buying them in in-game shop\r\n" +
-                "Wolves-Spawn-Limit: 20\r\nGolems-Spawn-Limit: 15\r\n");
-        MigratorUtils.addNewLines(file, "# Time before next wave starts\n" +
-                "Cooldown-Before-Next-Wave: 25\r\n" +
-                "# Don't modify\r\nVersion: 6\r\n\r\n# No way! You've reached the end! But... where's the dragon!?");
-        break;
-      case 2:
-        MigratorUtils.addNewLines(file, "# Should blocks behind game signs change their color based on game state?\r\n# They will change color to:\r\n" +
-                "# - white (waiting for players) stained glass\r\n# - yellow (starting) stained glass\r\n# - orange (in game) stained glass\r\n# - gray (ending) stained glass\r\n" +
-                "# - black (restarting) stained glass\r\nSigns-Block-States-Enabled: true\r\n\r\n");
-        MigratorUtils.addNewLines(file, "# Commands which can be used in game, remove all of them to disable\r\nWhitelisted-Commands:\r\n- me\r\n- help\r\n");
-        MigratorUtils.addNewLines(file, "# Limit of mobs can be spawned per player in-game\r\n# Will affect only buying them in in-game shop\r\n" +
-                "Wolves-Spawn-Limit: 20\r\nGolems-Spawn-Limit: 15\r\n");
-        MigratorUtils.addNewLines(file, "# Time before next wave starts\n" +
-                "Cooldown-Before-Next-Wave: 25\r\n" +
-                "# Don't modify\r\nVersion: 6\r\n\r\n# No way! You've reached the end! But... where's the dragon!?");
-        break;
-      case 3:
-        MigratorUtils.addNewLines(file, "# Commands which can be used in game, remove all of them to disable\r\nWhitelisted-Commands:\r\n- me\r\n- help\r\n");
-        MigratorUtils.addNewLines(file, "# Limit of mobs can be spawned per player in-game\r\n# Will affect only buying them in in-game shop\r\n" +
-                "Wolves-Spawn-Limit: 20\r\nGolems-Spawn-Limit: 15\r\n");
-        MigratorUtils.addNewLines(file, "# Time before next wave starts\n" +
-                "Cooldown-Before-Next-Wave: 25\r\n" +
-                "# Don't modify\r\nVersion: 6\r\n\r\n# No way! You've reached the end! But... where's the dragon!?");
-        break;
-      case 4:
-        MigratorUtils.addNewLines(file, "# Limit of mobs can be spawned per player in-game\r\n# Will affect only buying them in in-game shop\r\n" +
-                "Wolves-Spawn-Limit: 20\r\nGolems-Spawn-Limit: 15\r\n");
-        MigratorUtils.addNewLines(file, "# Time before next wave starts\n" +
-                "Cooldown-Before-Next-Wave: 25\r\n" +
-                "# Don't modify\r\nVersion: 6\r\n\r\n# No way! You've reached the end! But... where's the dragon!?");
-        break;
-      case 5:
-        MigratorUtils.addNewLines(file, "# Time before next wave starts\n" +
-                "Cooldown-Before-Next-Wave: 25\r\n" +
-                "# Don't modify\r\nVersion: 6\r\n\r\n# No way! You've reached the end! But... where's the dragon!?");
-        break;
+    for (int i = version; i < LANGUAGE_FILE_VERSION; i++) {
+      switch (version) {
+        case 1:
+          MigratorUtils.addNewLines(file, "# Power ups section. If you want to have classic Village Defense game mode i recommend to disable this.\r\nPowerups:\r\n" +
+              "  # Do you want to enable in-game power ups?\r\n  # This will make zombies to drop some power ups when they're killed\r\n" +
+              "  # REQUIRES Holographic Displays otherwise it won't be enabled!\r\n  Enabled: true\r\n  # Modify powerup drop chance here\r\n" +
+              "  Drop-Chance: 1.0 # 1% chance by default\r\n  # Enable or disable specific power ups here.\r\n  List:\r\n" +
+              "    Map-Clean: true\r\n    Double-Damage-For-Players:\r\n      Enabled: true\r\n      Time: 15 # seconds\r\n" +
+              "    Healing-For-Players:\r\n      Enabled: true\r\n      Amplifier: 1\r\n      Time-Of-Healing: 10 # seconds\r\n" +
+              "    # Spawns X golems in village\r\n    # Owner of golems is person who picked up power up\r\n    Golem-Raid:\r\n" +
+              "      Enabled: true\r\n      Golems-Amount: 3\r\n    # Every zombie can be killed for one hit\r\n    One-Shot-One-Kill:\r\n" +
+              "      Enabled: true\r\n      Time: 15 # seconds\r\n\r\n");
+          break;
+        case 2:
+          MigratorUtils.addNewLines(file, "# Should blocks behind game signs change their color based on game state?\r\n# They will change color to:\r\n" +
+              "# - white (waiting for players) stained glass\r\n# - yellow (starting) stained glass\r\n# - orange (in game) stained glass\r\n# - gray (ending) stained glass\r\n" +
+              "# - black (restarting) stained glass\r\nSigns-Block-States-Enabled: true\r\n\r\n");
+          break;
+        case 3:
+          MigratorUtils.addNewLines(file, "# Commands which can be used in game, remove all of them to disable\r\nWhitelisted-Commands:\r\n- me\r\n- help\r\n");
+          break;
+        case 4:
+          MigratorUtils.addNewLines(file, "# Limit of mobs can be spawned per player in-game\r\n# Will affect only buying them in in-game shop\r\n" +
+              "Wolves-Spawn-Limit: 20\r\nGolems-Spawn-Limit: 15\r\n");
+          break;
+        case 5:
+          MigratorUtils.addNewLines(file, "# Time before next wave starts\n" +
+              "Cooldown-Before-Next-Wave: 25\r\n");
+          break;
+        case 6:
+          MigratorUtils.addNewLines(file, "# Should holiday events for Village Defense be enabled?\n\r" +
+              "# Eg. 4 days before and 4 days after Halloween special effects\n\r# for death and zombies will be applied, spooky!\n\rHolidays-Enabled: true\r\n");
+          break;
+      }
+      version++;
     }
     Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "[Village Defense] [System notify] Config updated, no comments were removed :)");
     Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "[Village Defense] [System notify] You're using latest config file version! Nice!");
@@ -120,7 +102,7 @@ public class LanguageMigrator {
     if (NumberUtils.isNumber(ConfigUtils.getConfig(plugin, "language").getString("File-Version-Do-Not-Edit"))) {
       version = Integer.valueOf(ConfigUtils.getConfig(plugin, "language").getString("File-Version-Do-Not-Edit"));
     }
-    LanguageMigrator.updateLanguageVersionControl(version);
+    updateLanguageVersionControl(version);
 
     File file = new File(plugin.getDataFolder() + "/language.yml");
 
@@ -210,6 +192,14 @@ public class LanguageMigrator {
     MigratorUtils.removeLineFromFile(file, "# Really, don't edit ;p");
     MigratorUtils.removeLineFromFile(file, "File-Version-Do-Not-Edit: " + oldVersion);
     MigratorUtils.addNewLines(file, "# Don't edit it. But who's stopping you? It's your server!\r\n# Really, don't edit ;p\r\nFile-Version-Do-Not-Edit: " + LANGUAGE_FILE_VERSION + "\r\n");
+  }
+
+  private static void updateConfigVersionControl(int oldVersion) {
+    File file = new File(plugin.getDataFolder() + "/config.yml");
+    MigratorUtils.removeLineFromFile(file, "# Don't modify.");
+    MigratorUtils.removeLineFromFile(file, "Version: " + oldVersion);
+    MigratorUtils.removeLineFromFile(file, "# No way! You've reached the end! But... where's the dragon!?");
+    MigratorUtils.addNewLines(file, "# Don't modify\r\nVersion: " + CONFIG_FILE_VERSION + "\r\n\r\n# No way! You've reached the end! But... where's the dragon!?");
   }
 
 }

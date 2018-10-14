@@ -131,6 +131,7 @@ public class ArenaEvents implements Listener {
               if (a.getVillagers().contains(e.getEntity())) {
                 a.getStartLocation().getWorld().strikeLightningEffect(e.getEntity().getLocation());
                 a.removeVillager((Villager) e.getEntity());
+                plugin.getHolidayManager().applyHolidayDeathEffects(e.getEntity());
                 for (Player p : a.getPlayers()) {
                   p.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Messages.Villager-Died"));
                 }
@@ -158,6 +159,7 @@ public class ArenaEvents implements Listener {
       e.setDeathMessage("");
       e.getDrops().clear();
       e.setDroppedExp(0);
+      plugin.getHolidayManager().applyHolidayDeathEffects(e.getEntity());
       Bukkit.getScheduler().runTaskLater(plugin, () -> {
         e.getEntity().spigot().respawn();
         Player player = e.getEntity();

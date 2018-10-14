@@ -60,6 +60,7 @@ import pl.plajer.villagedefense.events.spectator.SpectatorItemEvents;
 import pl.plajer.villagedefense.handlers.BungeeManager;
 import pl.plajer.villagedefense.handlers.ChatManager;
 import pl.plajer.villagedefense.handlers.ChunkManager;
+import pl.plajer.villagedefense.handlers.HolidayManager;
 import pl.plajer.villagedefense.handlers.PermissionsManager;
 import pl.plajer.villagedefense.handlers.PlaceholderManager;
 import pl.plajer.villagedefense.handlers.PowerupManager;
@@ -99,6 +100,7 @@ public class Main extends JavaPlugin {
   private ChunkManager chunkManager;
   private PowerupManager powerupManager;
   private RewardsHandler rewardsHandler;
+  private HolidayManager holidayManager;
   private MainCommand mainCommand;
   private boolean forceDisable = false;
   private boolean databaseActivated = false;
@@ -315,6 +317,7 @@ public class Main extends JavaPlugin {
     new SetupInventoryEvents(this);
     new JoinEvent(this);
     new ChatEvents(this);
+    holidayManager = new HolidayManager(this);
     Metrics metrics = new Metrics(this);
     metrics.addCustomChart(new Metrics.SimplePie("database_enabled", () -> getConfig().getString("DatabaseActivated", "false")));
     metrics.addCustomChart(new Metrics.SimplePie("bungeecord_hooked", () -> getConfig().getString("BungeeActivated", "false")));
@@ -366,6 +369,10 @@ public class Main extends JavaPlugin {
 
   public RewardsHandler getRewardsHandler() {
     return rewardsHandler;
+  }
+
+  public HolidayManager getHolidayManager() {
+    return holidayManager;
   }
 
   public boolean isChatFormatEnabled() {

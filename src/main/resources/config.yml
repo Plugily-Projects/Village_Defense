@@ -119,6 +119,11 @@ Golem-Upgrade-Heal-Cost: 150
 Wolves-Spawn-Limit: 20
 Golems-Spawn-Limit: 15
 
+# Should holiday events for Village Defense be enabled?
+# Eg. 4 days before and 4 days after Halloween special effects
+# for death and zombies will be applied, spooky!
+Holidays-Enabled: true
+
 # Enable very simple health bar for zombies?
 # They will have health instead of their names
 # It will show percentage of health left.
@@ -165,6 +170,6 @@ Update-Notifier:
 Debug: false
 
 # Don't modify.
-Version: 6
+Version: 7
 
 # No way! You've reached the end! But... where's the dragon!?
