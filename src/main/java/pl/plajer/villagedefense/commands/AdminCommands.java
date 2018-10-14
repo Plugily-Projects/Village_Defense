@@ -484,7 +484,7 @@ public class AdminCommands extends MainCommand {
       user.setStat(StatsStorage.StatisticType.LEVEL, Integer.parseInt(number));
       sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("Commands.Admin-Commands.Added-Level"));
     } else {
-      sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("Commands.Wrong-Usage").replace("%correct%", "/vd addlevel <amount> [player]"));
+      sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("Commands.Wrong-Usage").replace("%correct%", "/vd setlevel <amount> [player]"));
     }
   }
 
