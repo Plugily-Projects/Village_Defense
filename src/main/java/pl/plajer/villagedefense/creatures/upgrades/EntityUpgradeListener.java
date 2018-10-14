@@ -18,12 +18,25 @@
 
 package pl.plajer.villagedefense.creatures.upgrades;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 
 import pl.plajer.villagedefense.Main;
+import pl.plajer.villagedefense.arena.ArenaRegistry;
+import pl.plajer.villagedefense.handlers.ChatManager;
+import pl.plajer.villagedefense.user.UserManager;
 import pl.plajerlair.core.services.exception.ReportedException;
+import pl.plajerlair.core.utils.XMaterial;
 
 /**
  * @author Plajer
@@ -32,6 +45,7 @@ import pl.plajerlair.core.services.exception.ReportedException;
  */
 public class EntityUpgradeListener implements Listener {
 
+  private Map<Player, Entity> clickedEntity = new HashMap<>();
   private Main plugin;
 
   public EntityUpgradeListener(Main plugin) {
@@ -42,9 +56,69 @@ public class EntityUpgradeListener implements Listener {
   @EventHandler
   public void onEntityClick(PlayerInteractEntityEvent e) {
     try {
+      if (ArenaRegistry.getArena(e.getPlayer()) == null || UserManager.getUser(e.getPlayer().getUniqueId()).isSpectator() ||
+          (e.getRightClicked().getType() != EntityType.IRON_GOLEM && e.getRightClicked().getType() != EntityType.WOLF) || e.getRightClicked().getCustomName() == null) {
+        return;
+      }
+      clickedEntity.put(e.getPlayer(), e.getRightClicked());
+      EntityUpgradeMenu.openUpgradeMenu(e.getRightClicked(), e.getPlayer());
     } catch (Exception ex) {
       new ReportedException(plugin, ex);
     }
+  }
+
+  @EventHandler
+  public void onInventoryClick(InventoryClickEvent e) {
+    try {
+      if (e.getInventory() == null || e.getCurrentItem() == null || !e.getCurrentItem().hasItemMeta() || !e.getCurrentItem().getItemMeta().hasDisplayName() ||
+          !(e.getWhoClicked() instanceof Player) || clickedEntity.get(e.getWhoClicked()) == null) {
+        return;
+      }
+      if (!e.getInventory().getName().equals(ChatManager.colorMessage("Upgrade-Menu.Title"))) {
+        return;
+      }
+      if (!e.getCurrentItem().isSimilar(XMaterial.BLACK_STAINED_GLASS_PANE.parseItem())) {
+        return;
+      }
+      Player p = (Player) e.getWhoClicked();
+      String upgrade = e.getCurrentItem().getItemMeta().getDisplayName();
+      if (upgrade.equals(ChatManager.colorMessage("Upgrade-Menu.Upgrades.Health.Name"))) {
+        //todo add pricing
+        EntityUpgradeMenu.applyUpgrade(clickedEntity.get(p), EntityUpgrade.HEALTH);
+        p.closeInventory();
+      } else if (upgrade.equals(ChatManager.colorMessage("Upgrade-Menu.Upgrades.Damage.Name"))) {
+        //todo add pricing
+        EntityUpgradeMenu.applyUpgrade(clickedEntity.get(p), EntityUpgrade.DAMAGE);
+        p.closeInventory();
+      } else if (upgrade.equals(ChatManager.colorMessage("Upgrade-Menu.Upgrades.Speed.Name"))) {
+        //todo add pricing
+        EntityUpgradeMenu.applyUpgrade(clickedEntity.get(p), EntityUpgrade.SPEED);
+        p.closeInventory();
+      } else {
+        p.sendMessage("Not supported yet");
+      }
+    } catch (Exception ex) {
+      new ReportedException(plugin, ex);
+    }
+  }
+
+  @EventHandler
+  public void onInventoryClose(InventoryCloseEvent e) {
+    try {
+      if (e.getInventory() == null || clickedEntity.get(e.getPlayer()) == null) {
+        return;
+      }
+      if (e.getInventory().getName().equals(ChatManager.colorMessage("Upgrade-Menu.Title"))) {
+        clickedEntity.remove(e.getPlayer());
+      }
+    } catch (Exception ex) {
+      new ReportedException(plugin, ex);
+    }
+  }
+
+  @EventHandler
+  public void onQuit(PlayerQuitEvent e) {
+    clickedEntity.remove(e.getPlayer());
   }
 
 }

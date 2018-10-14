@@ -80,6 +80,7 @@ public class EntityUpgradeMenu {
         inv.setItem(11 * (i + 1) + j + tier, new ItemBuilder(XMaterial.WHITE_STAINED_GLASS_PANE.parseItem()).build());
       }
     }
+    p.openInventory(inv);
   }
 
   /**
