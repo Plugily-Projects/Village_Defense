@@ -14,6 +14,7 @@
 * Added halloween effects (can be disabled in config) (4 days before and 4 days after Halloween)
 * Added wave limiter
 * Added command vda add/set levels
+* Check default message of spawn golem/wolve
 
 ### 3.11.5 Release (28.09.2018/04.10.2018)
 * Fixed server was stopped using Shutdown-When-Game-Ends option but player just left not started arena

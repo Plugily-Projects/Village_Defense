@@ -74,6 +74,7 @@ import pl.plajer.villagedefense.handlers.PermissionsManager;
 import pl.plajer.villagedefense.handlers.ShopManager;
 import pl.plajer.villagedefense.handlers.items.SpecialItem;
 import pl.plajer.villagedefense.handlers.items.SpecialItemManager;
+import pl.plajer.villagedefense.handlers.language.LanguageManager;
 import pl.plajer.villagedefense.user.User;
 import pl.plajer.villagedefense.user.UserManager;
 import pl.plajer.villagedefense.utils.Utils;
@@ -523,7 +524,7 @@ public class Events implements Listener {
         return;
       }
       if (e.getCurrentItem().hasItemMeta() && e.getCurrentItem().getItemMeta().hasDisplayName()) {
-        if (e.getCurrentItem().getItemMeta().getDisplayName().contains(ChatManager.colorMessage("In-Game.Messages.Shop-Messages.Golem-Item-Name"))) {
+        if (e.getCurrentItem().getItemMeta().getDisplayName().contains(ChatManager.colorMessage("In-Game.Messages.Shop-Messages.Golem-Item-Name")) || e.getCurrentItem().getItemMeta().getDisplayName().contains(ChatManager.colorRawMessage(LanguageManager.getLanguageMessage("In-Game.Messages.Shop-Messages.Golem-Item-Name")))) {
           int i = 0;
           for (IronGolem golem : arena.getIronGolems()) {
             if (golem.getCustomName().equals(ChatManager.colorMessage("In-Game.Spawned-Golem-Name").replace("%player%", player.getName()))) {
@@ -539,7 +540,7 @@ public class Events implements Listener {
           player.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Messages.Golem-Spawned"));
           UserManager.getUser(player.getUniqueId()).setStat(StatsStorage.StatisticType.ORBS, UserManager.getUser(player.getUniqueId()).getStat(StatsStorage.StatisticType.ORBS) - price);
           return;
-        } else if (e.getCurrentItem().getItemMeta().getDisplayName().contains(ChatManager.colorMessage("In-Game.Messages.Shop-Messages.Wolf-Item-Name"))) {
+        } else if (e.getCurrentItem().getItemMeta().getDisplayName().contains(ChatManager.colorMessage("In-Game.Messages.Shop-Messages.Wolf-Item-Name")) || e.getCurrentItem().getItemMeta().getDisplayName().contains(ChatManager.colorRawMessage(LanguageManager.getLanguageMessage("In-Game.Messages.Shop-Messages.Wolf-Item-Name")))) {
           int i = 0;
           for (Wolf wolf : arena.getWolfs()) {
             if (wolf.getCustomName().equals(ChatManager.colorMessage("In-Game.Spawned-Wolf-Name").replace("%player%", player.getName()))) {
