@@ -33,7 +33,7 @@ import pl.plajer.villagedefense.database.MySQLConnectionUtils;
 import pl.plajer.villagedefense.handlers.PermissionsManager;
 import pl.plajer.villagedefense.user.UserManager;
 import pl.plajerlair.core.services.exception.ReportedException;
-import pl.plajerlair.core.utils.UpdateChecker;
+import pl.plajerlair.core.services.update.UpdateChecker;
 
 /**
  * Created by Tom on 10/07/2015.
@@ -99,27 +99,22 @@ public class JoinEvent implements Listener {
       if (plugin.getConfig().getBoolean("Update-Notifier.Enabled", true)) {
         Bukkit.getScheduler().runTaskLater(plugin, () -> {
           if (event.getPlayer().hasPermission("villagedefense.updatenotify")) {
-            String currentVersion = "v" + Bukkit.getPluginManager().getPlugin("VillageDefense").getDescription().getVersion();
-            try {
-              boolean check = UpdateChecker.checkUpdate(plugin, currentVersion, 41869);
-              if (check) {
-                String latestVersion = "v" + UpdateChecker.getLatestVersion();
-                if (latestVersion.contains("b")) {
+            UpdateChecker.init(plugin, 41869).requestUpdateCheck().whenComplete((result, exception) -> {
+              if (result.requiresUpdate()) {
+                if (result.getNewestVersion().contains("b")) {
                   event.getPlayer().sendMessage("");
                   event.getPlayer().sendMessage(ChatColor.BOLD + "VILLAGE DEFENSE UPDATE NOTIFY");
                   event.getPlayer().sendMessage(ChatColor.RED + "BETA version of software is ready for update! Proceed with caution.");
-                  event.getPlayer().sendMessage(ChatColor.YELLOW + "Current version: " + ChatColor.RED + currentVersion + ChatColor.YELLOW + " Latest version: " + ChatColor.GREEN + latestVersion);
+                  event.getPlayer().sendMessage(ChatColor.YELLOW + "Current version: " + ChatColor.RED + plugin.getDescription().getVersion() + ChatColor.YELLOW + " Latest version: " + ChatColor.GREEN + result.getNewestVersion());
                 } else {
                   event.getPlayer().sendMessage("");
                   event.getPlayer().sendMessage(ChatColor.BOLD + "VILLAGE DEFENSE UPDATE NOTIFY");
                   event.getPlayer().sendMessage(ChatColor.GREEN + "Software is ready for update! Download it to keep with latest changes and fixes.");
-                  event.getPlayer().sendMessage(ChatColor.YELLOW + "Current version: " + ChatColor.RED + currentVersion + ChatColor.YELLOW + " Latest version: " + ChatColor.GREEN + latestVersion);
+                  event.getPlayer().sendMessage(ChatColor.YELLOW + "Current version: " + ChatColor.RED + plugin.getDescription().getVersion() + ChatColor.YELLOW + " Latest version: " + ChatColor.GREEN + result.getNewestVersion());
                 }
               }
-            } catch (Exception ignored) {
-            }
+            });
           }
-
         }, 25);
       }
     } catch (Exception ex) {
