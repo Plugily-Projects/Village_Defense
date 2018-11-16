@@ -19,7 +19,9 @@
 package pl.plajer.villagedefense.creatures.upgrades;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Particle;
@@ -66,18 +68,17 @@ public class EntityUpgradeMenu {
     Inventory inv = Bukkit.createInventory(null, /* magic number may be changed */9 * 5, ChatManager.colorMessage("Upgrade-Menu.Title"));
 
     for (int i = 0; i < 3; i++) {
+      final int tier = en.hasMetadata(upgrades.get(i).getMetadataAccess()) ? en.getMetadata(upgrades.get(i).getMetadataAccess()).get(0).asInt() : 0;
+      List<String> description = Arrays.asList(upgrades.get(i).getDescription());
+      description = description.stream().map(msg -> msg.replace("%tier%", String.valueOf(tier))).collect(Collectors.toList());
       inv.setItem(((i + 1) * 9) + 2, new ItemBuilder(XMaterial.BLACK_STAINED_GLASS_PANE.parseItem())
           .name(upgrades.get(i).getName())
-          .lore(upgrades.get(i).getDescription()).build());
-      int tier = 0;
-      if (en.hasMetadata(upgrades.get(i).getMetadataAccess())) {
-        tier = en.getMetadata(upgrades.get(i).getMetadataAccess()).get(0).asInt();
+          .lore((String[]) description.toArray()).build());
+      for (int j = 0; j < 4; j++) {
+        inv.setItem(((i + 1) * 9) + 2 + j, new ItemBuilder(XMaterial.WHITE_STAINED_GLASS_PANE.parseItem()).build());
       }
       for (int j = 0; j < tier; j++) {
-        inv.setItem(((i + 1) * 9) + 2 + j + j, new ItemBuilder(XMaterial.YELLOW_STAINED_GLASS_PANE.parseItem()).build());
-      }
-      for (int j = 0; j < 4 - tier; j++) {
-        inv.setItem(4 + ((i + 1) * 8) + j + tier, new ItemBuilder(XMaterial.WHITE_STAINED_GLASS_PANE.parseItem()).build());
+        inv.setItem(((i + 1) * 9) + 2 + j, new ItemBuilder(XMaterial.YELLOW_STAINED_GLASS_PANE.parseItem()).build());
       }
     }
     p.openInventory(inv);
