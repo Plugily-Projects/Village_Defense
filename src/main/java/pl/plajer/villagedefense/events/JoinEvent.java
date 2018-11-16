@@ -79,6 +79,15 @@ public class JoinEvent implements Listener {
         player.hidePlayer(event.getPlayer());
         event.getPlayer().hidePlayer(player);
       }
+
+      if (!plugin.isDatabaseActivated()) {
+        for (StatsStorage.StatisticType s : StatsStorage.StatisticType.values()) {
+          plugin.getFileStats().loadStat(event.getPlayer(), s);
+        }
+      } else {
+        final Player player = event.getPlayer();
+        Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> MySQLConnectionUtils.loadPlayerStats(player));
+      }
     } catch (Exception ex) {
       new ReportedException(plugin, ex);
     }
@@ -88,14 +97,6 @@ public class JoinEvent implements Listener {
   public void onJoinCheckVersion(final PlayerJoinEvent event) {
     try {
       //we want to be the first :)
-      if (!plugin.isDatabaseActivated()) {
-        for (StatsStorage.StatisticType s : StatsStorage.StatisticType.values()) {
-          plugin.getFileStats().loadStat(event.getPlayer(), s);
-        }
-        return;
-      }
-      final Player player = event.getPlayer();
-      Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> MySQLConnectionUtils.loadPlayerStats(player));
       if (plugin.getConfig().getBoolean("Update-Notifier.Enabled", true)) {
         Bukkit.getScheduler().runTaskLater(plugin, () -> {
           if (event.getPlayer().hasPermission("villagedefense.updatenotify")) {
