@@ -153,7 +153,19 @@ public class Utils {
     } else {
       loc.getWorld().playSound(loc, before1_13, 1, 1);
     }
+  }
 
+  /**
+   * @param s string to check whether is integer number
+   * @return true if it is, false otherwise, like 12a, 12.03 33333333333333 etc.
+   */
+  public static boolean isInteger(String s) {
+    try {
+      Integer.parseInt(s);
+      return true;
+    } catch (NumberFormatException ex) {
+      return false;
+    }
   }
 
 }

@@ -26,7 +26,6 @@ import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 
-import org.apache.commons.lang.math.NumberUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
@@ -435,7 +434,7 @@ public class AdminCommands extends MainCommand {
     if (!checkIsInGameInstance((Player) sender) || !hasPermission(sender, "villagedefense.admin.addorbs")) {
       return;
     }
-    if (NumberUtils.isNumber(number)) {
+    if (Utils.isInteger(number)) {
       User user = UserManager.getUser(((Player) sender).getUniqueId());
       user.setStat(StatsStorage.StatisticType.ORBS, user.getStat(StatsStorage.StatisticType.ORBS) + Integer.parseInt(number));
       sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("Commands.Admin-Commands.Added-Orbs"));
@@ -454,7 +453,7 @@ public class AdminCommands extends MainCommand {
       sender.sendMessage(ChatManager.colorMessage("Commands.Target-Player-Not-Found"));
       return;
     }
-    if (NumberUtils.isNumber(number)) {
+    if (Utils.isInteger(number)) {
       User user = UserManager.getUser(player.getUniqueId());
       user.setStat(StatsStorage.StatisticType.ORBS, user.getStat(StatsStorage.StatisticType.ORBS) + Integer.parseInt(number));
       sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("Commands.Admin-Commands.Added-Orbs"));
@@ -480,7 +479,7 @@ public class AdminCommands extends MainCommand {
       sender.sendMessage(ChatManager.colorMessage("Commands.Target-Player-Not-Found"));
       return;
     }
-    if (NumberUtils.isNumber(number)) {
+    if (Utils.isInteger(number)) {
       User user = UserManager.getUser(player.getUniqueId());
       user.setStat(StatsStorage.StatisticType.LEVEL, Integer.parseInt(number));
       sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("Commands.Admin-Commands.Added-Level"));
@@ -506,7 +505,7 @@ public class AdminCommands extends MainCommand {
       sender.sendMessage(ChatManager.colorMessage("Commands.Target-Player-Not-Found"));
       return;
     }
-    if (NumberUtils.isNumber(number)) {
+    if (Utils.isInteger(number)) {
       User user = UserManager.getUser(player.getUniqueId());
       user.setStat(StatsStorage.StatisticType.LEVEL, user.getStat(StatsStorage.StatisticType.LEVEL) + Integer.parseInt(number));
       sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("Commands.Admin-Commands.Added-Level"));
@@ -528,7 +527,7 @@ public class AdminCommands extends MainCommand {
       return;
     }
     Arena arena = ArenaRegistry.getArena((Player) sender);
-    if (NumberUtils.isNumber(number)) {
+    if (Utils.isInteger(number)) {
       arena.setWave(Integer.parseInt(number) - 1);
       ArenaManager.endWave(arena);
       String message = ChatManager.formatMessage(arena, ChatManager.colorMessage("In-Game.Messages.Admin-Messages.Changed-Wave"), arena.getWave());
