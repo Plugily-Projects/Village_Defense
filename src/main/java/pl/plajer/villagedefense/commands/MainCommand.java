@@ -26,7 +26,6 @@ import java.util.Random;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.command.Command;
@@ -441,28 +440,17 @@ public class MainCommand implements CommandExecutor {
 
     if (args[1].equalsIgnoreCase("addspawn")) {
       if (args[2].equalsIgnoreCase("zombie")) {
-        int i;
-        if (!config.contains("instances." + args[0] + ".zombiespawns")) {
-          i = 0;
-        } else {
-          i = config.getConfigurationSection("instances." + args[0] + ".zombiespawns").getKeys(false).size();
-        }
-        i++;
+        int i = (config.isSet("instances." + args[0] + ".zombiespawns") ? config.getConfigurationSection("instances." + args[0] + ".zombiespawns").getKeys(false).size() : 0) + 1;
         LocationUtils.saveLoc(plugin, config, "arenas", "instances." + args[0] + ".zombiespawns." + i, player.getLocation());
-        player.sendMessage(ChatColor.GREEN + "Zombie spawn added!");
+        String progress = i >= 2 ? "&e✔ Completed | " : "&c✘ Not completed | ";
+        player.sendMessage(ChatManager.colorRawMessage(progress + "&aZombie spawn added! &8(&7" + i + "/2&8)"));
         return;
       }
       if (args[2].equalsIgnoreCase("villager")) {
-        int i;
-        if (!config.contains("instances." + args[0] + ".villagerspawns")) {
-          i = 0;
-        } else {
-          i = config.getConfigurationSection("instances." + args[0] + ".villagerspawns").getKeys(false).size();
-        }
-
-        i++;
+        int i = (config.isSet("instances." + args[0] + ".villagerspawns") ? config.getConfigurationSection("instances." + args[0] + ".villagerspawns").getKeys(false).size() : 0) + 1;
         LocationUtils.saveLoc(plugin, config, "arenas", "instances." + args[0] + ".villagerspawns." + i, player.getLocation());
-        player.sendMessage(ChatColor.GREEN + "Villager spawn added!");
+        String progress = i >= 2 ? "&e✔ Completed | " : "&c✘ Not completed | ";
+        player.sendMessage(ChatManager.colorRawMessage(progress + "&aVillager spawn added! &8(&7" + i + "/2&8)"));
         return;
       }
       if (args[2].equalsIgnoreCase("doors")) {
@@ -479,13 +467,7 @@ public class MainCommand implements CommandExecutor {
           }
         }
         String ID = args[0];
-        int i;
-        if (!config.contains("instances." + ID + ".doors")) {
-          i = 0;
-        } else {
-          i = config.getConfigurationSection("instances." + ID + ".doors").getKeys(false).size();
-        }
-        i++;
+        int i = (config.isSet("instances." + args[0] + ".doors") ? config.getConfigurationSection("instances." + args[0] + ".doors").getKeys(false).size() : 0) + 1;
 
         Block relativeBlock = null;
         if (plugin.is1_11_R1() || plugin.is1_12_R1()) {
@@ -527,52 +509,46 @@ public class MainCommand implements CommandExecutor {
       return;
     }
     if (args.length == 3) {
-      if (args[2].equalsIgnoreCase("lobbylocation") || args[2].equalsIgnoreCase("lobbyloc")) {
-        String location = player.getLocation().getWorld().getName() + "," + player.getLocation().getX() + "," + player.getLocation().getY() + "," + player.getLocation().getZ()
-            + "," + player.getLocation().getYaw() + ",0.0";
-        config.set("instances." + args[0] + ".lobbylocation", location);
-        player.sendMessage("VillageDefense: Lobby location for arena/instance " + args[0] + " set to " + LocationUtils.locationToString(player.getLocation()));
-      } else if (args[2].equalsIgnoreCase("Startlocation") || args[2].equalsIgnoreCase("Startloc")) {
-        String location = player.getLocation().getWorld().getName() + "," + player.getLocation().getX() + "," + player.getLocation().getY() + "," + player.getLocation().getZ()
-            + "," + player.getLocation().getYaw() + ",0.0";
-        config.set("instances." + args[0] + ".Startlocation", location);
-        player.sendMessage("VillageDefense: Start location for arena/instance " + args[0] + " set to " + LocationUtils.locationToString(player.getLocation()));
-      } else if (args[2].equalsIgnoreCase("Endlocation") || args[2].equalsIgnoreCase("Endloc")) {
-        String location = player.getLocation().getWorld().getName() + "," + player.getLocation().getX() + "," + player.getLocation().getY() + "," + player.getLocation().getZ()
-            + "," + player.getLocation().getYaw() + ",0.0";
-        config.set("instances." + args[0] + ".Endlocation", location);
-        player.sendMessage("VillageDefense: End location for arena/instance " + args[0] + " set to " + LocationUtils.locationToString(player.getLocation()));
-      } else {
-        player.sendMessage(ChatColor.RED + "Invalid Command!");
-        player.sendMessage(ChatColor.RED + "Usage: /vd <ARENA > set <StartLOCTION | LOBBYLOCATION | EndLOCATION>");
+      String location = player.getLocation().getWorld().getName() + "," + player.getLocation().getX() + "," + player.getLocation().getY() + "," + player.getLocation().getZ()
+          + "," + player.getLocation().getYaw() + ",0.0";
+      switch (args[2].toLowerCase()) {
+        case "lobbylocation":
+        case "lobbyloc":
+          config.set("instances." + args[0] + ".lobbylocation", location);
+          player.sendMessage(ChatManager.colorRawMessage("&e✔ Completed | &aLobby location for arena " + args[0] + " set at your location!"));
+          break;
+        case "startlocation":
+        case "startloc":
+          config.set("instances." + args[0] + ".Startlocation", location);
+          player.sendMessage(ChatManager.colorRawMessage("&e✔ Completed | &aStarting location for arena " + args[0] + " set at your location!"));
+          break;
+        case "endlocation":
+        case "endloc":
+          config.set("instances." + args[0] + ".Endlocation", location);
+          player.sendMessage(ChatManager.colorRawMessage("&e✔ Completed | &aEnding location for arena " + args[0] + " set at your location!"));
+          break;
+        default:
+          player.sendMessage(ChatManager.colorRawMessage("&cInvalid argument! Use: /vd <arena> set <lobbyloc | startloc | endloc>"));
+          break;
       }
     } else if (args.length == 4) {
-      if (args[2].equalsIgnoreCase("MAXPLAYERS") || args[2].equalsIgnoreCase("maximumplayers")) {
-        config.set("instances." + args[0] + ".maximumplayers", Integer.parseInt(args[3]));
-        player.sendMessage("VillageDefense: Maximum players for arena/instance " + args[0] + " set to " + Integer.parseInt(args[3]));
-
-      } else if (args[2].equalsIgnoreCase("MINPLAYERS") || args[2].equalsIgnoreCase("minimumplayers")) {
-        config.set("instances." + args[0] + ".minimumplayers", Integer.parseInt(args[3]));
-        player.sendMessage("VillageDefense: Minimum players for arena/instance " + args[0] + " set to " + Integer.parseInt(args[3]));
-      } else if (args[2].equalsIgnoreCase("MAPNAME") || args[2].equalsIgnoreCase("NAME")) {
-        config.set("instances." + args[0] + ".mapname", args[3]);
-        player.sendMessage("VillageDefense: Map name for arena/instance " + args[0] + " set to " + args[3]);
-      } else if (args[2].equalsIgnoreCase("WORLD") || args[2].equalsIgnoreCase("MAP")) {
-        boolean exists = false;
-        for (World world : Bukkit.getWorlds()) {
-          if (world.getName().equalsIgnoreCase(args[3])) {
-            exists = true;
-          }
-        }
-        if (!exists) {
-          player.sendMessage(ChatManager.PLUGIN_PREFIX + ChatColor.RED + "That world doesn't exists!");
-          return;
-        }
-        config.set("instances." + args[0] + ".world", args[3]);
-        player.sendMessage("VillageDefense: World for arena/instance " + args[0] + " set to " + args[3]);
-      } else {
-        player.sendMessage(ChatColor.RED + "Invalid Command!");
-        player.sendMessage(ChatColor.RED + "Usage: /vd set <MINPLAYERS | MAXPLAYERS> <value>");
+      switch (args[2].toLowerCase()) {
+        case "maximumplayers":
+        case "maxplayers":
+          config.set("instances." + args[0] + ".maximumplayers", Integer.parseInt(args[3]));
+          break;
+        case "minimumplayers":
+        case "minplayers":
+          config.set("instances." + args[0] + ".minimumplayers", Integer.parseInt(args[3]));
+          break;
+        case "mapname":
+        case "name":
+          config.set("instances." + args[0] + ".mapname", args[3]);
+          player.sendMessage(ChatManager.colorRawMessage("&e✔ Completed | &aName of arena " + args[0] + " set to " + args[3]));
+          break;
+        default:
+          player.sendMessage(ChatManager.colorRawMessage("&cInvalid argument! Use /vd <arena> set <minplayers | maxplayers | name> <value>"));
+          break;
       }
     }
     ConfigUtils.saveConfig(plugin, config, "arenas");
@@ -628,10 +604,6 @@ public class MainCommand implements CommandExecutor {
     ArenaRegistry.registerArena(arena);
   }
 
-  enum LocationType {
-    LOBBY, END, START
-  }
-
   private void sendProTip(Player p) {
     int rand = new Random().nextInt(5 + 1);
     switch (rand) {
@@ -642,7 +614,7 @@ public class MainCommand implements CommandExecutor {
         p.sendMessage(ChatManager.colorRawMessage("&e&lTIP: &7Build Secret Well for your arena! Check how: https://bit.ly/2DTYxZc"));
         break;
       case 2:
-        p.sendMessage(ChatManager.colorRawMessage("&e&lTIP: &7Help us translating plugin to your language here: https://plajer.xyz/translate/villagedefense"));
+        p.sendMessage(ChatManager.colorRawMessage("&e&lTIP: &7Help us translating plugin to your language here: https://translate.plajer.xyz"));
         break;
       case 3:
         p.sendMessage(ChatManager.colorRawMessage("&e&lTIP: &7LeaderHeads leaderboard plugin is supported with our plugin! Check here: https://bit.ly/2Riu5L0"));
@@ -654,6 +626,10 @@ public class MainCommand implements CommandExecutor {
         p.sendMessage(ChatManager.colorRawMessage("&e&lTIP: &7We are open source! You can always help us by contributing! Check https://github.com/Plajer-Lair/Village_Defense"));
         break;
     }
+  }
+
+  enum LocationType {
+    LOBBY, END, START
   }
 
 }

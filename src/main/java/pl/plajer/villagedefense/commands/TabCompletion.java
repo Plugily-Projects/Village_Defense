@@ -18,6 +18,7 @@
 
 package pl.plajer.villagedefense.commands;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -27,6 +28,8 @@ import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
 import pl.plajer.villagedefense.Main;
+import pl.plajer.villagedefense.arena.Arena;
+import pl.plajer.villagedefense.arena.ArenaRegistry;
 
 /**
  * @author Plajer
@@ -54,6 +57,13 @@ public class TabCompletion implements TabCompleter {
       if (args.length == 2 && args[0].equalsIgnoreCase("admin")) {
         return Arrays.asList("stop", "list", "forcestart", "respawn", "spychat",
                 "reload", "delete", "setprice", "tp", "clear", "addorbs", "setwave");
+      }
+      if (args.length == 0) {
+        List<String> arenaIds = new ArrayList<>();
+        for (Arena arena : ArenaRegistry.getArenas()) {
+          arenaIds.add(arena.getID());
+        }
+        return arenaIds;
       }
       if (args.length == 1) {
         if (plugin.isBungeeActivated()) {

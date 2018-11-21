@@ -232,20 +232,21 @@ public class Main extends JavaPlugin {
       initializeClasses();
       if (getConfig().getBoolean("Update-Notifier.Enabled", true)) {
         UpdateChecker.init(this, 41869).requestUpdateCheck().whenComplete((result, exception) -> {
-          if (result.requiresUpdate()) {
-            if (result.getNewestVersion().contains("b")) {
-              if (getConfig().getBoolean("Update-Notifier.Notify-Beta-Versions", true)) {
-                Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "[VillageDefense] Your software is ready for update! However it's a BETA VERSION. Proceed with caution.");
-                Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "[VillageDefense] Current version %old%, latest version %new%".replace("%old%", getDescription().getVersion()).replace("%new%",
-                    result.getNewestVersion()));
-              }
-              return;
-            }
-            MessageUtils.updateIsHere();
-            Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "Your VillageDefense plugin is outdated! Download it to keep with latest changes and fixes.");
-            Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "Disable this option in config.yml if you wish.");
-            Bukkit.getConsoleSender().sendMessage(ChatColor.YELLOW + "Current version: " + ChatColor.RED + getDescription().getVersion() + ChatColor.YELLOW + " Latest version: " + ChatColor.GREEN + result.getNewestVersion());
+          if (!result.requiresUpdate()) {
+            return;
           }
+          if (result.getNewestVersion().contains("b")) {
+            if (getConfig().getBoolean("Update-Notifier.Notify-Beta-Versions", true)) {
+              Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "[VillageDefense] Your software is ready for update! However it's a BETA VERSION. Proceed with caution.");
+              Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "[VillageDefense] Current version %old%, latest version %new%".replace("%old%", getDescription().getVersion()).replace("%new%",
+                  result.getNewestVersion()));
+            }
+            return;
+          }
+          MessageUtils.updateIsHere();
+          Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "Your VillageDefense plugin is outdated! Download it to keep with latest changes and fixes.");
+          Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "Disable this option in config.yml if you wish.");
+          Bukkit.getConsoleSender().sendMessage(ChatColor.YELLOW + "Current version: " + ChatColor.RED + getDescription().getVersion() + ChatColor.YELLOW + " Latest version: " + ChatColor.GREEN + result.getNewestVersion());
         });
       }
 

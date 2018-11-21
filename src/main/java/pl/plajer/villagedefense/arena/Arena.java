@@ -859,22 +859,22 @@ public abstract class Arena extends BukkitRunnable {
       if (random.nextInt(3) != 2) {
         for (int i = 0; i <= wave; i++) {
           if (zombiesToSpawn > 0) {
-            //todo fix that logic
-            if (wave > 7) {
-              if (random.nextInt(2) == 1) {
-                spawnSoftHardZombie(random);
-              }
-            } else if (wave > 14) {
-              if (random.nextInt(2) == 1) {
-                spawnHardZombie(random);
+            if (wave > 23) {
+              if (random.nextInt(4) == 1) {
+                spawnVillagerSlayer(random);
               }
             } else if (wave > 20) {
               if (random.nextInt(3) == 1) {
                 spawnKnockbackResistantZombies(random);
               }
-            } else if (wave > 23) {
-              if (random.nextInt(4) == 1) {
-                spawnVillagerSlayer(random);
+            } else if (wave > 14) {
+              if (random.nextInt(2) == 1) {
+                spawnHardZombie(random);
+              }
+            }
+            if (wave > 7) {
+              if (random.nextInt(2) == 1) {
+                spawnSoftHardZombie(random);
               }
             } else {
               spawnFastZombie(random);

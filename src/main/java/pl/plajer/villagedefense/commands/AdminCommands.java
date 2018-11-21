@@ -167,6 +167,7 @@ public class AdminCommands extends MainCommand {
     }
     if (i == 0) {
       sender.sendMessage(ChatManager.colorMessage("Commands.Admin-Commands.List-Command.No-Arenas"));
+      sender.sendMessage(ChatManager.colorRawMessage("&e&lTIP: &7You can get free maps with configs at our wiki! Just head to https://wiki.plajer.xyz/minecraft/villagedefense/free_maps.php"));
     }
   }
 
