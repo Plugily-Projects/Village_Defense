@@ -22,6 +22,7 @@ ones - game may be now much harder sorry :(
 * Cleaned up some code
 * Now commands like /vda addorbs/setlevel/setwave won't throw an error if number exceeds real Integer max value
 (2 147 483 647) - some users brute forced this error using values like 300000000000000000 (fixes https://plajer.xyz/errorservice/viewer.php?id=351)
+* More setup tips!
 
 ### 3.11.5 Release (28.09.2018/04.10.2018)
 * Fixed server was stopped using Shutdown-When-Game-Ends option but player just left not started arena
