@@ -65,12 +65,12 @@ import pl.plajer.villagedefense.handlers.HolidayManager;
 import pl.plajer.villagedefense.handlers.PermissionsManager;
 import pl.plajer.villagedefense.handlers.PlaceholderManager;
 import pl.plajer.villagedefense.handlers.PowerupManager;
-import pl.plajer.villagedefense.handlers.RewardsHandler;
 import pl.plajer.villagedefense.handlers.ShopManager;
 import pl.plajer.villagedefense.handlers.SignManager;
 import pl.plajer.villagedefense.handlers.items.SpecialItem;
 import pl.plajer.villagedefense.handlers.language.LanguageManager;
 import pl.plajer.villagedefense.handlers.language.LanguageMigrator;
+import pl.plajer.villagedefense.handlers.reward.RewardsFactory;
 import pl.plajer.villagedefense.handlers.setup.SetupInventoryEvents;
 import pl.plajer.villagedefense.kits.kitapi.KitManager;
 import pl.plajer.villagedefense.kits.kitapi.KitRegistry;
@@ -100,7 +100,7 @@ public class Main extends JavaPlugin {
   private KitManager kitManager;
   private ChunkManager chunkManager;
   private PowerupManager powerupManager;
-  private RewardsHandler rewardsHandler;
+  private RewardsFactory rewardsHandler;
   private HolidayManager holidayManager;
   private MainCommand mainCommand;
   private boolean forceDisable = false;
@@ -355,7 +355,7 @@ public class Main extends JavaPlugin {
     EntityUpgradeMenu.init(this);
     powerupManager = new PowerupManager(this);
     chunkManager = new ChunkManager(this);
-    rewardsHandler = new RewardsHandler(this);
+    rewardsHandler = new RewardsFactory(this);
     User.cooldownHandlerTask();
   }
 
@@ -368,7 +368,7 @@ public class Main extends JavaPlugin {
     }
   }
 
-  public RewardsHandler getRewardsHandler() {
+  public RewardsFactory getRewardsHandler() {
     return rewardsHandler;
   }
 

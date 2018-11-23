@@ -43,8 +43,8 @@ import org.bukkit.scheduler.BukkitRunnable;
 import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.api.StatsStorage;
 import pl.plajer.villagedefense.handlers.ChatManager;
-import pl.plajer.villagedefense.handlers.RewardsHandler;
 import pl.plajer.villagedefense.handlers.items.SpecialItemManager;
+import pl.plajer.villagedefense.handlers.reward.Reward;
 import pl.plajer.villagedefense.user.User;
 import pl.plajer.villagedefense.user.UserManager;
 import pl.plajerlair.core.services.exception.ReportedException;
@@ -121,7 +121,7 @@ public class ArenaEvents implements Listener {
                 if (ArenaRegistry.getArena(e.getEntity().getKiller()) != null) {
                   a.addStat(e.getEntity().getKiller(), StatsStorage.StatisticType.KILLS);
                   a.addExperience(e.getEntity().getKiller(), 2);
-                  plugin.getRewardsHandler().performReward(e.getEntity().getKiller(), RewardsHandler.RewardType.ZOMBIE_KILL);
+                  plugin.getRewardsHandler().performReward(e.getEntity().getKiller(), Reward.RewardType.ZOMBIE_KILL);
                   plugin.getPowerupManager().spawnPowerup(e.getEntity().getLocation(), ArenaRegistry.getArena(e.getEntity().getKiller()));
                 }
                 return;

@@ -58,8 +58,8 @@ import pl.plajer.villagedefense.api.event.game.VillageGameStartEvent;
 import pl.plajer.villagedefense.api.event.game.VillageGameStateChangeEvent;
 import pl.plajer.villagedefense.handlers.ChatManager;
 import pl.plajer.villagedefense.handlers.PermissionsManager;
-import pl.plajer.villagedefense.handlers.RewardsHandler;
 import pl.plajer.villagedefense.handlers.language.LanguageManager;
+import pl.plajer.villagedefense.handlers.reward.Reward;
 import pl.plajer.villagedefense.kits.kitapi.KitRegistry;
 import pl.plajer.villagedefense.user.User;
 import pl.plajer.villagedefense.user.UserManager;
@@ -408,7 +408,7 @@ public abstract class Arena extends BukkitRunnable {
               user.setSpectator(false);
               user.setStat(StatsStorage.StatisticType.ORBS, 0);
             }
-            plugin.getRewardsHandler().performReward(this, RewardsHandler.RewardType.END_GAME);
+            plugin.getRewardsHandler().performReward(this, Reward.RewardType.END_GAME);
             players.clear();
             if (plugin.isBungeeActivated()) {
               if (ConfigUtils.getConfig(plugin, "bungee").getBoolean("Shutdown-When-Game-Ends")) {

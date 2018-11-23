@@ -45,9 +45,9 @@ import pl.plajer.villagedefense.api.event.wave.VillageWaveEndEvent;
 import pl.plajer.villagedefense.api.event.wave.VillageWaveStartEvent;
 import pl.plajer.villagedefense.handlers.ChatManager;
 import pl.plajer.villagedefense.handlers.PermissionsManager;
-import pl.plajer.villagedefense.handlers.RewardsHandler;
 import pl.plajer.villagedefense.handlers.items.SpecialItemManager;
 import pl.plajer.villagedefense.handlers.language.LanguageManager;
+import pl.plajer.villagedefense.handlers.reward.Reward;
 import pl.plajer.villagedefense.kits.kitapi.KitRegistry;
 import pl.plajer.villagedefense.kits.level.GolemFriendKit;
 import pl.plajer.villagedefense.user.User;
@@ -337,7 +337,7 @@ public class ArenaManager {
         stopGame(false, arena);
         return;
       }
-      plugin.getRewardsHandler().performReward(arena, RewardsHandler.RewardType.END_WAVE);
+      plugin.getRewardsHandler().performReward(arena, Reward.RewardType.END_WAVE);
       arena.setTimer(plugin.getConfig().getInt("Cooldown-Before-Next-Wave", 25));
       arena.getZombieCheckerLocations().clear();
       arena.setWave(arena.getWave() + 1);
