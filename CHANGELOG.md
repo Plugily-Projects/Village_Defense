@@ -19,7 +19,7 @@
 * Added tab completer for /vd join <arena name>
 * Fixed broken game logic while spawning zombie entities, Villager Slayer never spawned in game neither knockback resistant
 ones - game may be now much harder sorry :(
-* Cleaned up some code
+* Cleaned up lots of code - especially commands and setup inventory
 * Now commands like /vda addorbs/setlevel/setwave won't throw an error if number exceeds real Integer max value
 (2 147 483 647) - some users brute forced this error using values like 300000000000000000 (fixes https://plajer.xyz/errorservice/viewer.php?id=351)
 * More setup tips!
