@@ -71,7 +71,7 @@ public class ZombieFinderKit extends LevelKit implements Listener {
   public void giveKitItems(Player player) {
     player.getInventory().addItem(WeaponHelper.getUnBreakingSword(WeaponHelper.ResourceType.WOOD, 10));
     player.getInventory().addItem(new ItemStack(XMaterial.COOKED_PORKCHOP.parseMaterial(), 8));
-    ItemStack zombieteleporter = WeaponHelper.getEnchanted(new ItemStack(Material.BOOK), new Enchantment[]{Enchantment.DAMAGE_ALL}, new int[]{1});
+    ItemStack zombieteleporter = WeaponHelper.getEnchanted(new ItemStack(Material.BOOK), new Enchantment[] {Enchantment.DAMAGE_ALL}, new int[] {1});
     ItemMeta im = zombieteleporter.getItemMeta();
     im.setDisplayName(ChatManager.colorMessage("Kits.Zombie-Teleporter.Game-Item-Name"));
     im.setLore(Utils.splitString(ChatManager.colorMessage("Kits.Zombie-Teleporter.Game-Item-Lore"), 40));
@@ -97,7 +97,7 @@ public class ZombieFinderKit extends LevelKit implements Listener {
         return;
       }
       if (!event.hasItem() || event.getItem().getType() != Material.BOOK || !event.getItem().hasItemMeta() || !event.getItem().getItemMeta().hasDisplayName() ||
-              !event.getItem().getItemMeta().getDisplayName().equals(ChatManager.colorMessage("Kits.Zombie-Teleporter.Game-Item-Name"))) {
+          !event.getItem().getItemMeta().getDisplayName().equals(ChatManager.colorMessage("Kits.Zombie-Teleporter.Game-Item-Name"))) {
         return;
       }
       if (UserManager.getUser(event.getPlayer().getUniqueId()).isSpectator()) {

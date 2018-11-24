@@ -38,23 +38,23 @@
 rewards:
   # Commands performed when game is finished
   endgame:
-    - say %MAPNAME% has ended, reached wave %WAVE%
-    - say Ooh and there were playing %PLAYERAMOUNT% players
+  - say %MAPNAME% has ended, reached wave %WAVE%
+  - say Ooh and there were playing %PLAYERAMOUNT% players
   # Commands performed every wave end
   # Use "WAVE NUMBER:" to execute command in specific wave (ex. 1:)
   # Delete everything if you don't want to use this section
   endwave:
     1:
-      - say You reached wave %WAVE%, nice!
+    - say You reached wave %WAVE%, nice!
     5:
-      - say You reached wave %WAVE%, good job!
-      - eco give %PLAYER% 5
+    - say You reached wave %WAVE%, good job!
+    - eco give %PLAYER% 5
     10:
-      - broadcast Woah! %MAPNAME% reached wave %WAVE%!
+    - broadcast Woah! %MAPNAME% reached wave %WAVE%!
     99:
-      - say Nice try %PLAYER%...
+    - say Nice try %PLAYER%...
   # Commands executed when zombie is killed
   zombiekill:
-    - eco give %PLAYER% 2
-    - chance(10):eco give %PLAYER% 8
+  - eco give %PLAYER% 2
+  - chance(10):eco give %PLAYER% 8
 

@@ -48,8 +48,8 @@ public class SpecialItem {
   }
 
   public static void loadAll() {
-    new SpecialItem("Leave").load(ChatColor.RED + "Leave", new String[]{
-            ChatColor.GRAY + "Click to teleport to hub"
+    new SpecialItem("Leave").load(ChatColor.RED + "Leave", new String[] {
+        ChatColor.GRAY + "Click to teleport to hub"
     }, XMaterial.WHITE_BED.parseMaterial(), 8);
   }
 

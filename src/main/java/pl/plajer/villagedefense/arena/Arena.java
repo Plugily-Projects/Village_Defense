@@ -76,11 +76,11 @@ import pl.plajerlair.core.utils.XMaterial;
 public abstract class Arena extends BukkitRunnable {
 
   protected final List<Location> zombieSpawns = new ArrayList<>();
+  protected final Main plugin;
   private final List<Zombie> zombies = new ArrayList<>();
   private final List<Wolf> wolfs = new ArrayList<>();
   private final List<Villager> villagers = new ArrayList<>();
   private final List<IronGolem> ironGolems = new ArrayList<>();
-  protected final Main plugin;
   private final LinkedHashMap<Location, Byte> doorBlocks = new LinkedHashMap<>();
   private final List<Location> villagerSpawnPoints = new ArrayList<>();
   private final Random random;

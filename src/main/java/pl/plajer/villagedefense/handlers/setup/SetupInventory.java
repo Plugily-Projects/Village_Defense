@@ -38,9 +38,9 @@ import pl.plajerlair.core.utils.XMaterial;
  */
 public class SetupInventory {
 
+  public static final String VIDEO_LINK = "https://bit.ly/2xwRU8S";
   private static Main plugin = JavaPlugin.getPlugin(Main.class);
   private Inventory inventory;
-  public static final String VIDEO_LINK = "https://bit.ly/2xwRU8S";
 
   public SetupInventory(Arena arena) {
     this.inventory = Bukkit.createInventory(null, 9 * 2, "Arena VD: " + arena.getID());

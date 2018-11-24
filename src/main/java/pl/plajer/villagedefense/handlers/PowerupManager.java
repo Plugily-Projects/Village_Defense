@@ -169,7 +169,7 @@ public class PowerupManager {
     } catch (Exception ex) {
       new ReportedException(plugin, ex);
     }
-    }
+  }
 
   public class Powerup {
 

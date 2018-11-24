@@ -116,10 +116,10 @@ public class LanguageMigrator {
           break;
         case 1:
           MigratorUtils.addNewLines(file, "\r\nPowerups:\r\n  Map-Clean-Powerup:\r\n    Name: \"&e&lMAP CLEANER\"\r\n    # Used as sub title description\r\n" +
-                  "    Description: \"&7Map has been cleaned!\"\r\n  Double-Damage-Powerup:\r\n    Name: \"&c&lDOUBLE DAMAGE\"\r\n    Description: \"&7Double damage for %time% seconds!\"\r\n" +
-                  "  Healing-Powerup:\r\n    Name: \"&6&lREJUVENATION\"\r\n    Description: \"&7Healing for %time% seconds!\"\r\n  Golem-Raid-Powerup:\r\n    Name: \"&a&lIRONBOUND RAID\"\r\n" +
-                  "    Description: \"&7Golems have invaded this village!\"\r\n  One-Shot-One-Kill-Powerup:\r\n    Name: \"&b&lFRENZY\"\r\n    Description: \"&7Every zombie for 1 hit!\"\r\n" +
-                  "  Powerup-Ended-Title-Message: \"&4Powerup %powerup% has ended!\"\r\n");
+              "    Description: \"&7Map has been cleaned!\"\r\n  Double-Damage-Powerup:\r\n    Name: \"&c&lDOUBLE DAMAGE\"\r\n    Description: \"&7Double damage for %time% seconds!\"\r\n" +
+              "  Healing-Powerup:\r\n    Name: \"&6&lREJUVENATION\"\r\n    Description: \"&7Healing for %time% seconds!\"\r\n  Golem-Raid-Powerup:\r\n    Name: \"&a&lIRONBOUND RAID\"\r\n" +
+              "    Description: \"&7Golems have invaded this village!\"\r\n  One-Shot-One-Kill-Powerup:\r\n    Name: \"&b&lFRENZY\"\r\n    Description: \"&7Every zombie for 1 hit!\"\r\n" +
+              "  Powerup-Ended-Title-Message: \"&4Powerup %powerup% has ended!\"\r\n");
           break;
         case 2:
           MigratorUtils.insertAfterLine(file, "Commands:", "  Statistics:");
@@ -133,23 +133,23 @@ public class LanguageMigrator {
           break;
         case 4:
           MigratorUtils.insertAfterLine(file, "Scoreboard:", "  Content:\r\n    # Contents of scoreboard while wave is running\r\n    Playing:\r\n" +
-                  "      - \"&fVillagers Left: &e%VILLAGERS%\"\r\n      - \"&fPlayers Left: &e%PLAYERS_LEFT%\"\r\n      - \"&fZombies Left: &e%ZOMBIES%\"\r\n" +
-                  "      - \"\"\r\n      - \"&fRotten Flesh: &e%ROTTEN_FLESH%\"\r\n      - \"&fOrbs: &e%ORBS%\"\r\n      - \"\"\r\n      - \"&ewww.spigotmc.org\"\r\n" +
-                  "    # Contents while players are waiting for the wave\r\n    Playing-Waiting:\r\n      - \"&fVillagers Left: &e%VILLAGERS%\"\r\n" +
-                  "      - \"&fPlayers Left: &e%PLAYERS_LEFT%\"\r\n      - \"\"\r\n      - \"&fNext Wave In: &e%TIME%\"\r\n      - \"\"\r\n      - \"&fRotten Flesh: &e%ROTTEN_FLESH%\"\r\n" +
-                  "      - \"&fOrbs: &e%ORBS%\"\r\n      - \"\"\r\n      - \"&ewww.spigotmc.org\"\r\n    Waiting:\r\n      - \"&fPlayers: &e%PLAYERS%\"\r\n      - \"\"\r\n" +
-                  "      - \"&fMinimum Players: &e%MIN_PLAYERS%\"\r\n      - \"\"\r\n      - \"&ewww.spigotmc.org\"\r\n    Starting:\r\n      - \"&fStarting In: &e%TIME%\"\r\n" +
-                  "      - \"\"\r\n      - \"&fPlayers: &e%PLAYERS%\"\r\n      - \"\"\r\n      - \"&fMinimum Players: &e%MIN_PLAYERS%\"\r\n      - \"&fMinimum Players: &e%MIN_PLAYERS%\"\r\n" +
-                  "      - \"&ewww.spigotmc.org\"");
+              "      - \"&fVillagers Left: &e%VILLAGERS%\"\r\n      - \"&fPlayers Left: &e%PLAYERS_LEFT%\"\r\n      - \"&fZombies Left: &e%ZOMBIES%\"\r\n" +
+              "      - \"\"\r\n      - \"&fRotten Flesh: &e%ROTTEN_FLESH%\"\r\n      - \"&fOrbs: &e%ORBS%\"\r\n      - \"\"\r\n      - \"&ewww.spigotmc.org\"\r\n" +
+              "    # Contents while players are waiting for the wave\r\n    Playing-Waiting:\r\n      - \"&fVillagers Left: &e%VILLAGERS%\"\r\n" +
+              "      - \"&fPlayers Left: &e%PLAYERS_LEFT%\"\r\n      - \"\"\r\n      - \"&fNext Wave In: &e%TIME%\"\r\n      - \"\"\r\n      - \"&fRotten Flesh: &e%ROTTEN_FLESH%\"\r\n" +
+              "      - \"&fOrbs: &e%ORBS%\"\r\n      - \"\"\r\n      - \"&ewww.spigotmc.org\"\r\n    Waiting:\r\n      - \"&fPlayers: &e%PLAYERS%\"\r\n      - \"\"\r\n" +
+              "      - \"&fMinimum Players: &e%MIN_PLAYERS%\"\r\n      - \"\"\r\n      - \"&ewww.spigotmc.org\"\r\n    Starting:\r\n      - \"&fStarting In: &e%TIME%\"\r\n" +
+              "      - \"\"\r\n      - \"&fPlayers: &e%PLAYERS%\"\r\n      - \"\"\r\n      - \"&fMinimum Players: &e%MIN_PLAYERS%\"\r\n      - \"&fMinimum Players: &e%MIN_PLAYERS%\"\r\n" +
+              "      - \"&ewww.spigotmc.org\"");
           MigratorUtils.insertAfterLine(file, "Scoreboard:", "  Title: \"&a&lVillage Defense\"");
           break;
         case 5:
           MigratorUtils.insertAfterLine(file, "Did-You-Mean", "  Command-Executed: \"&aCommand succesfully executed!\"\r\n" +
-                  "  Command-Executed-Item-Updated: \"&aCommand succesfully executed, item updated!\"\r\n" +
-                  "  Removed-Game-Instance: \"&cSuccessfully removed game instance!\"\r\n  Look-Sign: \"&cYou have to look at a sign to perform this command!\"\r\n" +
-                  "  Hold-Any-Item: \"&cYou must hold any item!\"\r\n" +
-                  "  Invalid-Number: \"&cWave needs to be number! Do %correct%\"\r\n  Target-Player-Not-Found: \"&cTarget player doesn't exist!\"\r\n" +
-                  "  Location-Teleport-Invalid: \"&cLocation to teleport is invalid!\"\r\n  Wrong-Usage: \"&cWrong usage. Do %correct%\"");
+              "  Command-Executed-Item-Updated: \"&aCommand succesfully executed, item updated!\"\r\n" +
+              "  Removed-Game-Instance: \"&cSuccessfully removed game instance!\"\r\n  Look-Sign: \"&cYou have to look at a sign to perform this command!\"\r\n" +
+              "  Hold-Any-Item: \"&cYou must hold any item!\"\r\n" +
+              "  Invalid-Number: \"&cWave needs to be number! Do %correct%\"\r\n  Target-Player-Not-Found: \"&cTarget player doesn't exist!\"\r\n" +
+              "  Location-Teleport-Invalid: \"&cLocation to teleport is invalid!\"\r\n  Wrong-Usage: \"&cWrong usage. Do %correct%\"");
           MigratorUtils.insertAfterLine(file, "Admin-Commands", "    Success-Reload: \"&aArenas reloaded!\"");
           break;
         case 6:
@@ -158,11 +158,11 @@ public class LanguageMigrator {
         case 7:
           MigratorUtils.insertAfterLine(file, "Commands:", "  No-Free-Arenas: \"&cThere are no free arenas!\"");
           MigratorUtils.insertAfterLine(file, "Game-End-Messages:", "      Summary-Message:\r\n" +
-                  "        - \"&a&m--------------------------------------------------\"\r\n" +
-                  "        - \"&f&lVillage Defense\"\r\n        - \"\"\r\n        - \"%summary%\"\r\n        - \"\"\r\n        - \"\"\r\n" +
-                  "        - \"&e&lReached wave: &7%wave% &8(best %player_best_wave%)\"\r\n        - \"&6&lTotal zombies killed: &7%zombies%\"\r\n" +
-                  "        - \"&c&lTotal coins spent: &7%orbs_spent%\"\r\n        - \"&a&m--------------------------------------------------\"\r\n" +
-                  "      Summary-Players-Died: \"&7All players died!\"\r\n      Summary-Villagers-Died: \"&7All villagers died!\"");
+              "        - \"&a&m--------------------------------------------------\"\r\n" +
+              "        - \"&f&lVillage Defense\"\r\n        - \"\"\r\n        - \"%summary%\"\r\n        - \"\"\r\n        - \"\"\r\n" +
+              "        - \"&e&lReached wave: &7%wave% &8(best %player_best_wave%)\"\r\n        - \"&6&lTotal zombies killed: &7%zombies%\"\r\n" +
+              "        - \"&c&lTotal coins spent: &7%orbs_spent%\"\r\n        - \"&a&m--------------------------------------------------\"\r\n" +
+              "      Summary-Players-Died: \"&7All players died!\"\r\n      Summary-Villagers-Died: \"&7All villagers died!\"");
           break;
         case 8:
           MigratorUtils.insertAfterLine(file, "Target-Player-Health:", "    Settings-Menu:\r\n      Item-Name: \"&b&lSpectator Settings &7(Right-click)\"\r\n      Inventory-Name: \"&7Spectator settings\"\r\n" +

@@ -63,16 +63,16 @@ public class RidableVillager extends EntityVillager {
     super(world);
 
     LinkedHashSet goalB = (LinkedHashSet) CreatureUtils.getPrivateField("b",
-            PathfinderGoalSelector.class, goalSelector);
+        PathfinderGoalSelector.class, goalSelector);
     goalB.clear();
     LinkedHashSet goalC = (LinkedHashSet) CreatureUtils.getPrivateField("c",
-            PathfinderGoalSelector.class, goalSelector);
+        PathfinderGoalSelector.class, goalSelector);
     goalC.clear();
     LinkedHashSet targetB = (LinkedHashSet) CreatureUtils.getPrivateField("b",
-            PathfinderGoalSelector.class, targetSelector);
+        PathfinderGoalSelector.class, targetSelector);
     targetB.clear();
     LinkedHashSet targetC = (LinkedHashSet) CreatureUtils.getPrivateField("c",
-            PathfinderGoalSelector.class, targetSelector);
+        PathfinderGoalSelector.class, targetSelector);
     targetC.clear();
 
     this.setSize(0.6F, 1.8F);
@@ -80,7 +80,7 @@ public class RidableVillager extends EntityVillager {
     ((Navigation) getNavigation()).a(true);
     this.goalSelector.a(0, new PathfinderGoalFloat(this));
     this.goalSelector.a(1, new PathfinderGoalAvoidTarget<>(this, EntityZombie.class,
-            8.0F, 0.6D, 0.6D));
+        8.0F, 0.6D, 0.6D));
     this.goalSelector.a(1, new PathfinderGoalTradeWithPlayer(this));
     this.goalSelector.a(1, new PathfinderGoalLookAtTradingPlayer(this));
     this.goalSelector.a(2, new PathfinderGoalMoveIndoors(this));
@@ -90,12 +90,12 @@ public class RidableVillager extends EntityVillager {
     this.goalSelector.a(6, new PathfinderGoalMakeLove(this));
     this.goalSelector.a(8, new PathfinderGoalPlay(this, 0.32D));
     this.goalSelector.a(9, new PathfinderGoalInteract(this, EntityHuman.class,
-            3.0F, 1.0F));
+        3.0F, 1.0F));
     this.goalSelector.a(9, new PathfinderGoalInteract(this, EntityVillager.class,
-            5.0F, 0.02F));
+        5.0F, 0.02F));
     this.goalSelector.a(9, new PathfinderGoalRandomStroll(this, 0.6D));
     this.goalSelector.a(10, new PathfinderGoalLookAtPlayer(this,
-            EntityInsentient.class, 8.0F));
+        EntityInsentient.class, 8.0F));
     this.setCustomName(new ChatMessage(CreatureUtils.VILLAGER_NAMES[new Random().nextInt(CreatureUtils.VILLAGER_NAMES.length)]));
     this.setCustomNameVisible(true);
   }

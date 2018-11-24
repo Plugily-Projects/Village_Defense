@@ -68,8 +68,8 @@ public class KitRegistry {
   private static Kit defaultKit = null;
   private static Main plugin = JavaPlugin.getPlugin(Main.class);
   private static List<Class> classKitNames = Arrays.asList(LightTankKit.class, ZombieFinderKit.class, ArcherKit.class, PuncherKit.class, HealerKit.class, LooterKit.class, RunnerKit.class,
-          MediumTankKit.class, WorkerKit.class, GolemFriendKit.class, TerminatorKit.class, HardcoreKit.class, CleanerKit.class, TeleporterKit.class, HeavyTankKit.class, ShotBowKit.class,
-          DogFriendKit.class, PremiumHardcoreKit.class, TornadoKit.class, BlockerKit.class, MedicKit.class, NakedKit.class, WizardKit.class);
+      MediumTankKit.class, WorkerKit.class, GolemFriendKit.class, TerminatorKit.class, HardcoreKit.class, CleanerKit.class, TeleporterKit.class, HeavyTankKit.class, ShotBowKit.class,
+      DogFriendKit.class, PremiumHardcoreKit.class, TornadoKit.class, BlockerKit.class, MedicKit.class, NakedKit.class, WizardKit.class);
 
   public static void init() {
     setupGameKits();
@@ -145,7 +145,7 @@ public class KitRegistry {
     plugin.getKitManager().setMaterial(Material.NETHER_STAR);
     plugin.getKitManager().setItemName(ChatManager.colorMessage("Kits.Kit-Menu-Item-Name"));
     plugin.getKitManager().setMenuName(ChatManager.colorMessage("Kits.Kit-Menu.Title"));
-    plugin.getKitManager().setDescription(new String[]{ChatManager.colorMessage("Kits.Open-Kit-Menu")});
+    plugin.getKitManager().setDescription(new String[] {ChatManager.colorMessage("Kits.Open-Kit-Menu")});
   }
 
 }

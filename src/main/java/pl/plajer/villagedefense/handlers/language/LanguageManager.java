@@ -119,7 +119,7 @@ public class LanguageManager {
       pluginLocale = LocaleRegistry.getByName("English");
     }
     Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "[Village Defense] Loaded locale " + pluginLocale.getName() + " (" + pluginLocale.getOriginalName() + " ID: " +
-            pluginLocale.getPrefix() + ") by " + pluginLocale.getAuthor());
+        pluginLocale.getPrefix() + ") by " + pluginLocale.getAuthor());
     loadProperties();
   }
 

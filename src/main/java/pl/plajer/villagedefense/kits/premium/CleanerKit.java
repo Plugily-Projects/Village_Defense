@@ -92,8 +92,8 @@ public class CleanerKit extends PremiumKit implements Listener {
     try {
       Arena arena = ArenaRegistry.getArena(e.getPlayer());
       if (!e.hasItem() || e.getItem().getType() != Material.BLAZE_ROD || !(e.getItem().hasItemMeta())
-              || !(e.getItem().getItemMeta().hasDisplayName()) || !(e.getItem().getItemMeta().getDisplayName()
-              .contains(ChatManager.colorMessage("Kits.Cleaner.Game-Item-Name"))) || arena == null) {
+          || !(e.getItem().getItemMeta().hasDisplayName()) || !(e.getItem().getItemMeta().getDisplayName()
+          .contains(ChatManager.colorMessage("Kits.Cleaner.Game-Item-Name"))) || arena == null) {
         return;
       }
       if (UserManager.getUser(e.getPlayer().getUniqueId()).isSpectator()) {

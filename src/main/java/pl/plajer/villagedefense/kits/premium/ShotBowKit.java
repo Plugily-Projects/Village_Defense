@@ -67,7 +67,7 @@ public class ShotBowKit extends PremiumKit implements Listener {
 
   @Override
   public void giveKitItems(Player player) {
-    player.getInventory().addItem(WeaponHelper.getEnchantedBow(new Enchantment[]{Enchantment.DURABILITY, Enchantment.ARROW_KNOCKBACK}, new int[]{10, 1}));
+    player.getInventory().addItem(WeaponHelper.getEnchantedBow(new Enchantment[] {Enchantment.DURABILITY, Enchantment.ARROW_KNOCKBACK}, new int[] {10, 1}));
     player.getInventory().addItem(new ItemStack(Material.ARROW, 64));
     player.getInventory().addItem(new ItemStack(Material.ARROW, 64));
     ArmorHelper.setColouredArmor(Color.YELLOW, player);
@@ -92,8 +92,8 @@ public class ShotBowKit extends PremiumKit implements Listener {
       if (e.getAction() == Action.LEFT_CLICK_AIR || e.getAction() == Action.LEFT_CLICK_BLOCK) {
         ItemStack stack = e.getPlayer().getInventory().getItemInMainHand();
         if (stack == null || stack.getType() != Material.BOW || !e.getPlayer().getInventory().contains(Material.ARROW)
-                || !(UserManager.getUser(e.getPlayer().getUniqueId()).getKit() instanceof ShotBowKit)
-                || UserManager.getUser(e.getPlayer().getUniqueId()).isSpectator()) {
+            || !(UserManager.getUser(e.getPlayer().getUniqueId()).getKit() instanceof ShotBowKit)
+            || UserManager.getUser(e.getPlayer().getUniqueId()).isSpectator()) {
           return;
         }
         if (UserManager.getUser(e.getPlayer().getUniqueId()).getCooldown("shotbow") == 0) {

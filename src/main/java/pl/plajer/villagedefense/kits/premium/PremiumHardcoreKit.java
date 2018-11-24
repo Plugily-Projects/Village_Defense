@@ -54,7 +54,7 @@ public class PremiumHardcoreKit extends PremiumKit {
   @Override
   public void giveKitItems(Player player) {
     player.getInventory().addItem(WeaponHelper.getEnchanted(new ItemStack(Material.DIAMOND_SWORD),
-            new Enchantment[]{Enchantment.DAMAGE_ALL}, new int[]{11}));
+        new Enchantment[] {Enchantment.DAMAGE_ALL}, new int[] {11}));
     player.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(6);
     player.getInventory().addItem(new ItemStack(Material.SADDLE));
 

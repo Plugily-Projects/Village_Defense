@@ -55,7 +55,7 @@ public class HeavyTankKit extends PremiumKit {
 
   @Override
   public void giveKitItems(Player player) {
-    player.getInventory().addItem(WeaponHelper.getEnchanted(new ItemStack(Material.STICK), new Enchantment[]{Enchantment.DURABILITY, Enchantment.DAMAGE_ALL}, new int[]{10, 2}));
+    player.getInventory().addItem(WeaponHelper.getEnchanted(new ItemStack(Material.STICK), new Enchantment[] {Enchantment.DURABILITY, Enchantment.DAMAGE_ALL}, new int[] {10, 2}));
     player.getInventory().addItem(new ItemStack(XMaterial.COOKED_PORKCHOP.parseMaterial(), 8));
     player.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(40.0);
     player.setHealth(40.0);

@@ -74,7 +74,6 @@ import pl.plajer.villagedefense.handlers.PermissionsManager;
 import pl.plajer.villagedefense.handlers.ShopManager;
 import pl.plajer.villagedefense.handlers.items.SpecialItem;
 import pl.plajer.villagedefense.handlers.items.SpecialItemManager;
-import pl.plajer.villagedefense.handlers.language.LanguageManager;
 import pl.plajer.villagedefense.user.User;
 import pl.plajer.villagedefense.user.UserManager;
 import pl.plajer.villagedefense.utils.Utils;
@@ -175,8 +174,8 @@ public class Events implements Listener {
         return;
       }
       if (inv == null || !inv.hasItemMeta() || !inv.getItemMeta().hasDisplayName()
-              || inv.getType() != plugin.getKitManager().getMaterial()
-              || !inv.getItemMeta().getDisplayName().equalsIgnoreCase(plugin.getKitManager().getItemName())) {
+          || inv.getType() != plugin.getKitManager().getMaterial()
+          || !inv.getItemMeta().getDisplayName().equalsIgnoreCase(plugin.getKitManager().getItemName())) {
         return;
       }
       event.setCancelled(true);
@@ -194,8 +193,8 @@ public class Events implements Listener {
         return;
       }
       if (inv == null || !inv.hasItemMeta() || !inv.getItemMeta().hasDisplayName()
-              || inv.getType() != plugin.getKitManager().getMaterial()
-              || !inv.getItemMeta().getDisplayName().equalsIgnoreCase(plugin.getKitManager().getItemName())) {
+          || inv.getType() != plugin.getKitManager().getMaterial()
+          || !inv.getItemMeta().getDisplayName().equalsIgnoreCase(plugin.getKitManager().getItemName())) {
         return;
       }
       event.setCancelled(true);
@@ -228,7 +227,7 @@ public class Events implements Listener {
     try {
       for (Arena arena : ArenaRegistry.getArenas()) {
         if (arena.getStartLocation().getWorld().getName().equals(event.getLocation().getWorld().getName())
-                && arena.getStartLocation().distance(event.getLocation()) < 300) {
+            && arena.getStartLocation().distance(event.getLocation()) < 300) {
           event.blockList().clear();
         }
       }
@@ -423,8 +422,8 @@ public class Events implements Listener {
         for (Arena arena : ArenaRegistry.getArenas()) {
           if (arena.getZombies().contains(e.getEntity())) {
             e.getEntity().setCustomName(MinigameUtils.getProgressBar((int) ((Zombie) e.getEntity()).getHealth(),
-                    (int) ((Zombie) e.getEntity()).getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue(),
-                    50, "|", ChatColor.YELLOW + "", ChatColor.GRAY + ""));
+                (int) ((Zombie) e.getEntity()).getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue(),
+                50, "|", ChatColor.YELLOW + "", ChatColor.GRAY + ""));
           }
         }
       }
@@ -499,7 +498,7 @@ public class Events implements Listener {
       Player player = (Player) e.getWhoClicked();
       Arena arena = ArenaRegistry.getArena((Player) e.getWhoClicked());
       if (arena == null || e.getInventory().getName() == null
-              || !e.getInventory().getName().equalsIgnoreCase(ChatManager.colorMessage("In-Game.Messages.Shop-Messages.Shop-GUI-Name"))) {
+          || !e.getInventory().getName().equalsIgnoreCase(ChatManager.colorMessage("In-Game.Messages.Shop-Messages.Shop-GUI-Name"))) {
         return;
       }
       e.setCancelled(true);
@@ -534,7 +533,7 @@ public class Events implements Listener {
           }
           if (i >= plugin.getConfig().getInt("Golems-Spawn-Limit", 15)) {
             e.getWhoClicked().sendMessage(ChatManager.colorMessage("In-Game.Messages.Shop-Messages.Mob-Limit-Reached")
-                    .replace("%amount%", String.valueOf(plugin.getConfig().getInt("Golems-Spawn-Limit", 15))));
+                .replace("%amount%", String.valueOf(plugin.getConfig().getInt("Golems-Spawn-Limit", 15))));
             return;
           }
           arena.spawnGolem(arena.getStartLocation(), player);
@@ -550,7 +549,7 @@ public class Events implements Listener {
           }
           if (i >= plugin.getConfig().getInt("Wolves-Spawn-Limit", 20)) {
             e.getWhoClicked().sendMessage(ChatManager.colorMessage("In-Game.Messages.Shop-Messages.Mob-Limit-Reached")
-                    .replace("%amount%", String.valueOf(plugin.getConfig().getInt("Wolves-Spawn-Limit", 20))));
+                .replace("%amount%", String.valueOf(plugin.getConfig().getInt("Wolves-Spawn-Limit", 20))));
             return;
           }
           arena.spawnWolf(arena.getStartLocation(), player);

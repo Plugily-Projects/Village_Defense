@@ -100,7 +100,7 @@ public class TeleporterKit extends PremiumKit implements Listener {
         Arena arena = ArenaRegistry.getArena(e.getPlayer());
         ItemStack stack = e.getPlayer().getInventory().getItemInMainHand();
         if (arena == null || stack == null || !stack.hasItemMeta()
-                || !stack.getItemMeta().hasDisplayName()) {
+            || !stack.getItemMeta().hasDisplayName()) {
           return;
         }
         if (stack.getItemMeta().getDisplayName().equalsIgnoreCase(ChatManager.colorMessage("Kits.Teleporter.Game-Item-Name"))) {
@@ -124,7 +124,7 @@ public class TeleporterKit extends PremiumKit implements Listener {
           }
           for (Villager villager : arena.getVillagers()) {
             ItemStack villagerItem = new ItemStack(Material.EMERALD);
-            this.setItemNameAndLore(villagerItem, villager.getCustomName(), new String[]{villager.getUniqueId().toString()});
+            this.setItemNameAndLore(villagerItem, villager.getCustomName(), new String[] {villager.getUniqueId().toString()});
             inventory.addItem(villagerItem);
           }
           e.getPlayer().openInventory(inventory);
@@ -142,7 +142,7 @@ public class TeleporterKit extends PremiumKit implements Listener {
       Player p = (Player) e.getWhoClicked();
       Arena arena = ArenaRegistry.getArena(p);
       if (arena == null || e.getCurrentItem() == null || !e.getCurrentItem().hasItemMeta()
-              || !e.getCurrentItem().getItemMeta().hasDisplayName() || !e.getCurrentItem().getItemMeta().hasLore()) {
+          || !e.getCurrentItem().getItemMeta().hasDisplayName() || !e.getCurrentItem().getItemMeta().hasLore()) {
         return;
       }
       if (e.getInventory().getName().equalsIgnoreCase(ChatManager.colorMessage("Kits.Teleporter.Game-Item-Menu-Name"))) {

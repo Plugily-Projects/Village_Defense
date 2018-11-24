@@ -75,7 +75,7 @@ public class BlockerKit extends PremiumKit implements Listener {
   @Override
   public void giveKitItems(Player player) {
     ArmorHelper.setColouredArmor(Color.RED, player);
-    player.getInventory().addItem(WeaponHelper.getEnchanted(new ItemStack(Material.STONE_SWORD), new org.bukkit.enchantments.Enchantment[]{org.bukkit.enchantments.Enchantment.DURABILITY}, new int[]{10}));
+    player.getInventory().addItem(WeaponHelper.getEnchanted(new ItemStack(Material.STONE_SWORD), new org.bukkit.enchantments.Enchantment[] {org.bukkit.enchantments.Enchantment.DURABILITY}, new int[] {10}));
     player.getInventory().addItem(new ItemStack(Material.COOKED_BEEF, 10));
     ItemStack is = new ItemStack(XMaterial.OAK_FENCE.parseMaterial(), 3);
     ItemMeta im = is.getItemMeta();
@@ -112,9 +112,9 @@ public class BlockerKit extends PremiumKit implements Listener {
       Player player = event.getPlayer();
       ItemStack stack = player.getInventory().getItemInMainHand();
       if (!ArenaRegistry.isInArena(player) || stack == null || !stack.hasItemMeta()
-              || !stack.getItemMeta().hasDisplayName()
-              || !stack.getItemMeta().getDisplayName()
-              .equalsIgnoreCase(ChatManager.colorMessage("Kits.Blocker.Game-Item-Name"))) {
+          || !stack.getItemMeta().hasDisplayName()
+          || !stack.getItemMeta().getDisplayName()
+          .equalsIgnoreCase(ChatManager.colorMessage("Kits.Blocker.Game-Item-Name"))) {
         return;
       }
       Block block = null;

@@ -48,7 +48,7 @@ import pl.plajerlair.core.services.exception.ReportedException;
 public class ChatEvents implements Listener {
 
   private Main plugin;
-  private String[] regexChars = new String[]{"$", "\\"};
+  private String[] regexChars = new String[] {"$", "\\"};
 
   public ChatEvents(Main plugin) {
     this.plugin = plugin;
