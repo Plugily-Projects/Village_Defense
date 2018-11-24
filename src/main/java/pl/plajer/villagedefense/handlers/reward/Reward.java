@@ -31,7 +31,7 @@ public class Reward {
   private RewardExecutor executor;
   private RewardType type;
   private String executableCode;
-  private int chance;
+  private double chance;
   private int waveExecute;
 
   public Reward(RewardType type, String rawCode, int waveExecute) {
@@ -42,10 +42,10 @@ public class Reward {
     //set reward executor based on provided code
     if (rawCode.contains("p:")) {
       this.executor = RewardExecutor.PLAYER;
-      processedCode = StringUtils.replace("p:", "", processedCode);
+      processedCode = StringUtils.replace(processedCode, "p:", "");
     } else if (rawCode.contains("script:")) {
       this.executor = RewardExecutor.SCRIPT;
-      processedCode = StringUtils.replace("script:", "", processedCode);
+      processedCode = StringUtils.replace(processedCode, "script:", "");
     } else {
       this.executor = RewardExecutor.CONSOLE;
     }
@@ -56,13 +56,17 @@ public class Reward {
       //modifier is invalid
       if (loc == -1) {
         Bukkit.getLogger().warning("rewards.yml configuration is broken! Make sure you don't forget using ')' character in chance condition! Command: " + rawCode);
+        //invalid code, 0% chance to execute
+        this.chance = 0.0;
         return;
       }
       String chanceStr = processedCode;
       chanceStr = chanceStr.substring(0, loc).replaceAll("[^0-9]+", "");
-      int chance = Integer.parseInt(chanceStr);
-      processedCode = StringUtils.replace("chance(" + chanceStr + "):", "", processedCode);
+      double chance = Double.parseDouble(chanceStr);
+      processedCode = StringUtils.replace(processedCode, "chance(" + chanceStr + "):", "");
       this.chance = chance;
+    } else {
+      this.chance = 100.0;
     }
     this.executableCode = processedCode;
   }
@@ -83,7 +87,7 @@ public class Reward {
     return executableCode;
   }
 
-  public int getChance() {
+  public double getChance() {
     return chance;
   }
 

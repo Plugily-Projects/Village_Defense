@@ -18,7 +18,9 @@
 
 package pl.plajer.villagedefense.handlers.reward;
 
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -76,7 +78,7 @@ public class RewardsFactory {
           continue;
         }
         String command = reward.getExecutableCode();
-        command = StringUtils.replace("%PLAYER%", player.getName(), command);
+        command = StringUtils.replace(command, "%PLAYER%", player.getName());
         command = formatCommandPlaceholders(command, arena);
         switch (reward.getExecutor()) {
           case CONSOLE:
@@ -106,29 +108,25 @@ public class RewardsFactory {
     if (!enabled) {
       return;
     }
-    int i = 0;
+    Map<Reward.RewardType, Integer> registeredRewards = new HashMap<>();
     for (Reward.RewardType rewardType : Reward.RewardType.values()) {
-      for (String string : config.getStringList("rewards." + rewardType.getPath())) {
-        rewards.add(new Reward(rewardType, string));
-        i++;
+      if (rewardType == Reward.RewardType.END_WAVE) {
+        for (String key : config.getConfigurationSection("rewards." + rewardType.getPath()).getKeys(false)) {
+          for (String reward : config.getStringList("rewards." + rewardType.getPath() + "." + key)) {
+            rewards.add(new Reward(rewardType, reward, Integer.valueOf(key)));
+            registeredRewards.put(rewardType, registeredRewards.getOrDefault(rewardType, 0) + 1);
+          }
+        }
+        continue;
+      }
+      for (String reward : config.getStringList("rewards." + rewardType.getPath())) {
+        rewards.add(new Reward(rewardType, reward));
+        registeredRewards.put(rewardType, registeredRewards.getOrDefault(rewardType, 0) + 1);
       }
     }
-    Main.debug(Main.LogLevel.INFO, "[RewardsFactory] Registered " + i + " rewards!");
-  }
-
-  public enum RewardType {
-    END_GAME("endgame"), END_WAVE("endwave"), ZOMBIE_KILL("zombiekill");
-
-    private String path;
-
-    RewardType(String path) {
-      this.path = path;
+    for (Reward.RewardType rewardType : registeredRewards.keySet()) {
+      Main.debug(Main.LogLevel.INFO, "[RewardsFactory] Registered " + registeredRewards.get(rewardType) + " " + rewardType.name() + " rewards!");
     }
-
-    public String getPath() {
-      return path;
-    }
-
   }
 
 }
