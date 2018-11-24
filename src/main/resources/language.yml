@@ -63,7 +63,7 @@ Commands:
     &b/vd top <statistic>: &7Shows top 10 players!\n
     &b/vd selectkit: &7Select new game kit!\n
     &b/vd randomjoin: &7Join random arena!"
-    Admin-Bonus-Description: "\n&b/vd admin: &7Shows all the admin commands"
+    Admin-Bonus-Description: "\n&b/vda: &7Shows all the admin commands"
     Footer: "&6-------------------------------------------------"
 
 # In-game scoreboard messages.

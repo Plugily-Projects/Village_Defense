@@ -23,6 +23,7 @@ import java.util.List;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
@@ -66,8 +67,8 @@ public class SetupInventoryEvents implements Listener {
       }
       Player player = (Player) event.getWhoClicked();
       if (!player.hasPermission("villagedefense.admin.create") || !event.getInventory().getName().contains("Arena VD:")
-              || event.getInventory().getHolder() != null || event.getCurrentItem() == null
-              || !event.getCurrentItem().hasItemMeta() || !event.getCurrentItem().getItemMeta().hasDisplayName()) {
+          || event.getInventory().getHolder() != null || event.getCurrentItem() == null
+          || !event.getCurrentItem().hasItemMeta() || !event.getCurrentItem().getItemMeta().hasDisplayName()) {
         return;
       }
 
@@ -138,7 +139,19 @@ public class SetupInventoryEvents implements Listener {
       }
       if (name.contains("Add game sign")) {
         event.setCancelled(true);
-        plugin.getMainCommand().getAdminCommands().addSign(player, arena.getID());
+        Location location = player.getTargetBlock(null, 10).getLocation();
+        if (location.getBlock().getState() instanceof Sign) {
+          plugin.getSignManager().getLoadedSigns().put((Sign) location.getBlock().getState(), arena);
+          player.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("Signs.Sign-Created"));
+          String loc = location.getBlock().getWorld().getName() + "," + location.getBlock().getX() + "," + location.getBlock().getY() + "," + location.getBlock().getZ() + ",0.0,0.0";
+          FileConfiguration config = ConfigUtils.getConfig(plugin, "arenas");
+          List<String> locs = config.getStringList("instances." + arena + ".signs");
+          locs.add(loc);
+          config.set("instances." + arena + ".signs", locs);
+          ConfigUtils.saveConfig(plugin, config, "arenas");
+        } else {
+          player.sendMessage(ChatManager.colorMessage("Commands.Look-Sign"));
+        }
         return;
       }
       if (event.getCurrentItem().getType() != Material.NAME_TAG) {
@@ -178,7 +191,9 @@ public class SetupInventoryEvents implements Listener {
         }
         boolean found = false;
         for (ItemStack stack : ((Chest) targetBlock.getState()).getBlockInventory()) {
-          if (stack == null) continue;
+          if (stack == null) {
+            continue;
+          }
           if (stack.hasItemMeta() && stack.getItemMeta().hasLore()) {
             if (stack.getItemMeta().getLore().get(stack.getItemMeta().getLore().size() - 1).contains(ChatManager.colorMessage("In-Game.Messages.Shop-Messages.Currency-In-Shop"))) {
               found = true;
@@ -200,18 +215,18 @@ public class SetupInventoryEvents implements Listener {
           event.getWhoClicked().sendMessage(ChatColor.GREEN + "This arena was already validated and is ready to use!");
           return;
         }
-        String[] locations = new String[]{"lobbylocation", "Startlocation", "Endlocation"};
-        String[] spawns = new String[]{"zombiespawns", "villagerspawns"};
+        String[] locations = new String[] {"lobbylocation", "Startlocation", "Endlocation"};
+        String[] spawns = new String[] {"zombiespawns", "villagerspawns"};
         for (String s : locations) {
           if (!ConfigUtils.getConfig(plugin, "arenas").isSet("instances." + arena.getID() + "." + s) || ConfigUtils.getConfig(plugin, "arenas")
-                  .getString("instances." + arena.getID() + "." + s).equals(LocationUtils.locationToString(Bukkit.getWorlds().get(0).getSpawnLocation()))) {
+              .getString("instances." + arena.getID() + "." + s).equals(LocationUtils.locationToString(Bukkit.getWorlds().get(0).getSpawnLocation()))) {
             event.getWhoClicked().sendMessage(ChatColor.RED + "Arena validation failed! Please configure following spawn properly: " + s + " (cannot be world spawn location)");
             return;
           }
         }
         for (String s : spawns) {
           if (!ConfigUtils.getConfig(plugin, "arenas").isSet("instances." + arena.getID() + "." + s) || ConfigUtils.getConfig(plugin, "arenas")
-                  .getConfigurationSection("instances." + arena.getID() + "." + s).getKeys(false).size() < 2) {
+              .getConfigurationSection("instances." + arena.getID() + "." + s).getKeys(false).size() < 2) {
             event.getWhoClicked().sendMessage(ChatColor.RED + "Arena validation failed! Please configure following mob spawns properly: " + s + " (must be minimum 2 spawns)");
             return;
           }
@@ -252,7 +267,7 @@ public class SetupInventoryEvents implements Listener {
         for (String string : ConfigUtils.getConfig(plugin, "arenas").getConfigurationSection("instances." + arena.getID() + ".doors").getKeys(false)) {
           String path = "instances." + arena.getID() + ".doors." + string + ".";
           arena.addDoor(LocationUtils.getLocation(ConfigUtils.getConfig(plugin, "arenas").getString(path + "location")),
-                  (byte) ConfigUtils.getConfig(plugin, "arenas").getInt(path + "byte"));
+              (byte) ConfigUtils.getConfig(plugin, "arenas").getInt(path + "byte"));
         }
         ArenaRegistry.registerArena(arena);
         arena.start();

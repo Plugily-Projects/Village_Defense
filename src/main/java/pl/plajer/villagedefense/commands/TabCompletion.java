@@ -54,11 +54,7 @@ public class TabCompletion implements TabCompleter {
               "reload", "delete", "setprice", "tp", "clear", "addorbs", "setwave");
     }
     if (cmd.getName().equalsIgnoreCase("villagedefense")) {
-      if (args.length == 2 && args[0].equalsIgnoreCase("admin")) {
-        return Arrays.asList("stop", "list", "forcestart", "respawn", "spychat",
-                "reload", "delete", "setprice", "tp", "clear", "addorbs", "setwave");
-      }
-      if (args.length == 1 && args[0].equalsIgnoreCase("join")) {
+      if (args.length == 2 && args[0].equalsIgnoreCase("join")) {
         List<String> arenaIds = new ArrayList<>();
         for (Arena arena : ArenaRegistry.getArenas()) {
           arenaIds.add(arena.getID());
@@ -67,9 +63,9 @@ public class TabCompletion implements TabCompleter {
       }
       if (args.length == 1) {
         if (plugin.isBungeeActivated()) {
-          return Arrays.asList("join", "leave", "stats", "top", "admin", "create", "selectkit");
+          return Arrays.asList("join", "leave", "stats", "top", "create", "selectkit");
         } else {
-          return Arrays.asList("join", "randomjoin", "leave", "stats", "top", "admin", "create", "selectkit");
+          return Arrays.asList("join", "randomjoin", "leave", "stats", "top", "create", "selectkit");
         }
       }
     }

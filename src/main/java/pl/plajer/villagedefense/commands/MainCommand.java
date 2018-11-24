@@ -19,8 +19,6 @@
 package pl.plajer.villagedefense.commands;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Random;
 
 import org.bukkit.Bukkit;
@@ -28,8 +26,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -39,42 +35,35 @@ import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.arena.Arena;
 import pl.plajer.villagedefense.arena.ArenaRegistry;
 import pl.plajer.villagedefense.arena.ArenaUtils;
+import pl.plajer.villagedefense.commands.arguments.ArgumentsRegistry;
 import pl.plajer.villagedefense.handlers.ChatManager;
 import pl.plajer.villagedefense.handlers.setup.SetupInventory;
 import pl.plajer.villagedefense.utils.Utils;
-import pl.plajerlair.core.services.exception.ReportedException;
 import pl.plajerlair.core.utils.ConfigUtils;
 import pl.plajerlair.core.utils.LocationUtils;
-import pl.plajerlair.core.utils.StringMatcher;
 import pl.plajerlair.core.utils.XMaterial;
 
 /**
  * Created by Tom on 7/08/2014.
  */
-public class MainCommand implements CommandExecutor {
+//todo we should get rid of this
+public class MainCommand {
 
   private Main plugin;
-  private AdminCommands adminCommands;
-  private GameCommands gameCommands;
 
   public MainCommand(Main plugin, boolean register) {
     this.plugin = plugin;
     if (register) {
-      adminCommands = new AdminCommands(plugin);
-      gameCommands = new GameCommands(plugin);
+      ArgumentsRegistry argumentsRegistry = new ArgumentsRegistry(plugin);
       TabCompletion completion = new TabCompletion(plugin);
-      plugin.getCommand("villagedefense").setExecutor(this);
+      plugin.getCommand("villagedefense").setExecutor(argumentsRegistry);
       plugin.getCommand("villagedefense").setTabCompleter(completion);
-      plugin.getCommand("villagedefenseadmin").setExecutor(this);
+      plugin.getCommand("villagedefenseadmin").setExecutor(argumentsRegistry);
       plugin.getCommand("villagedefenseadmin").setTabCompleter(completion);
     }
   }
 
-  public AdminCommands getAdminCommands() {
-    return adminCommands;
-  }
-
-  boolean checkSenderPlayer(CommandSender sender) {
+  protected boolean checkSenderPlayer(CommandSender sender) {
     if (sender instanceof Player) {
       return true;
     }
@@ -82,7 +71,7 @@ public class MainCommand implements CommandExecutor {
     return false;
   }
 
-  boolean checkIsInGameInstance(Player player) {
+  public boolean checkIsInGameInstance(Player player) {
     if (ArenaRegistry.getArena(player) == null) {
       player.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("Commands.Not-Playing"));
       return false;
@@ -90,7 +79,7 @@ public class MainCommand implements CommandExecutor {
     return true;
   }
 
-  boolean hasPermission(CommandSender sender, String perm) {
+  public boolean hasPermission(CommandSender sender, String perm) {
     if (sender.hasPermission(perm)) {
       return true;
     }
@@ -98,327 +87,7 @@ public class MainCommand implements CommandExecutor {
     return false;
   }
 
-  @Override
-  public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-    try {
-      if (cmd.getName().equalsIgnoreCase("villagedefenseadmin")) {
-        if (args.length == 0) {
-          adminCommands.sendHelp(sender);
-          return true;
-        }
-        if (args[0].equalsIgnoreCase("stop")) {
-          adminCommands.stopGame(sender);
-          return true;
-        } else if (args[0].equalsIgnoreCase("list")) {
-          adminCommands.printList(sender);
-          return true;
-        } else if (args[0].equalsIgnoreCase("forcestart")) {
-          adminCommands.forceStartGame(sender);
-          return true;
-        } else if (args[0].equalsIgnoreCase("respawn")) {
-          if (args.length == 1) {
-            adminCommands.respawn(sender);
-          } else {
-            adminCommands.respawnOther(sender, args[1]);
-          }
-          return true;
-        } else if (args[0].equalsIgnoreCase("spychat")) {
-          adminCommands.toggleSpyChat(sender);
-          return true;
-        } else if (args[0].equalsIgnoreCase("reload")) {
-          adminCommands.reloadInstances(sender);
-          return true;
-        } else if (args[0].equalsIgnoreCase("delete")) {
-          if (args.length != 1) {
-            adminCommands.deleteArena(sender, args[1]);
-          } else {
-            sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("Commands.Type-Arena-Name"));
-          }
-          return true;
-        } else if (args[0].equalsIgnoreCase("setprice")) {
-          if (args.length != 1) {
-            adminCommands.setItemPrice(sender, args[1]);
-          } else {
-            sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatColor.RED + "Please type price of item!");
-          }
-          return true;
-        } else if (args[0].equalsIgnoreCase("tp")) {
-          if (args.length == 1) {
-            sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("Commands.Type-Arena-Name"));
-            return true;
-          }
-          if (args.length == 2) {
-            sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatColor.RED + "Please type location type: END, START, LOBBY");
-            return true;
-          }
-          adminCommands.teleportToInstance(sender, args[1], args[2]);
-          return true;
-        } else if (args[0].equalsIgnoreCase("clear")) {
-          if (args.length == 1) {
-            sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatColor.RED + "Please type valid mob type to clear: VILLAGER, ZOMBIE, GOLEM");
-            return true;
-          }
-          if (args[1].equalsIgnoreCase("villager")) {
-            adminCommands.clearVillagers(sender);
-          } else if (args[1].equalsIgnoreCase("zombie")) {
-            adminCommands.clearZombies(sender);
-          } else if (args[1].equalsIgnoreCase("golem")) {
-            adminCommands.clearGolems(sender);
-          } else {
-            sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatColor.RED + "Please type valid mob type to clear: VILLAGER, ZOMBIE, GOLEM");
-            return true;
-          }
-          return true;
-        } else if (args[0].equalsIgnoreCase("addorbs")) {
-          if (args.length == 1) {
-            sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatColor.RED + "Please type number of orbs to give!");
-            return true;
-          }
-          if (args.length == 2) {
-            adminCommands.addOrbs(sender, args[1]);
-          } else {
-            adminCommands.addOrbsOther(sender, args[2], args[1]);
-          }
-          return true;
-        } else if (args[0].equalsIgnoreCase("setlevel")) {
-          if (args.length == 1) {
-            sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatColor.RED + "Please type number of levels to set!");
-            return true;
-          }
-          if (args.length == 2) {
-            adminCommands.setLevel(sender, sender.getName(), args[1]);
-          } else {
-            adminCommands.setLevel(sender, args[2], args[1]);
-          }
-          return true;
-        } else if (args[0].equalsIgnoreCase("addlevel")) {
-          if (args.length == 1) {
-            sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatColor.RED + "Please type number of levels to give!");
-            return true;
-          }
-          if (args.length == 2) {
-            adminCommands.addLevel(sender, sender.getName(), args[1]);
-          } else {
-            adminCommands.addLevel(sender, args[2], args[1]);
-          }
-          return true;
-        } else if (args[0].equalsIgnoreCase("setwave")) {
-          if (args.length == 1) {
-            sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatColor.RED + "Please type number of wave to set!");
-            return true;
-          }
-          adminCommands.setWave(sender, args[1]);
-          return true;
-        }
-        adminCommands.sendHelp(sender);
-        List<StringMatcher.Match> matches = StringMatcher.match(args[0], Arrays.asList("stop", "list", "forcestart", "respawn", "spychat",
-            "reload", "setshopchest", "delete", "setprice", "tp", "clear", "addorbs", "setlevel", "addlevel", "setwave"));
-        if (!matches.isEmpty()) {
-          sender.sendMessage(ChatManager.colorMessage("Commands.Did-You-Mean").replace("%command%", "vda " + matches.get(0).getMatch()));
-        }
-        return true;
-      }
-      if (cmd.getName().equalsIgnoreCase("villagedefense")) {
-        if (args.length == 0) {
-          sender.sendMessage(ChatManager.colorMessage("Commands.Main-Command.Header"));
-          sender.sendMessage(ChatManager.colorMessage("Commands.Main-Command.Description"));
-          if (sender.hasPermission("villagedefense.admin")) {
-            sender.sendMessage(ChatManager.colorMessage("Commands.Main-Command.Admin-Bonus-Description"));
-          }
-          sender.sendMessage(ChatManager.colorMessage("Commands.Main-Command.Footer"));
-          return true;
-        }
-        if (args.length > 1) {
-          if (args[1].equalsIgnoreCase("set") || args[1].equalsIgnoreCase("addspawn") || args[1].equalsIgnoreCase("edit")) {
-            if (!checkSenderPlayer(sender) || !hasPermission(sender, "villagedefense.admin.create")) {
-              return true;
-            }
-            adminCommands.performSetup(sender, args);
-            return true;
-          }
-        }
-        if (args[0].equalsIgnoreCase("join")) {
-          if (args.length == 2) {
-            gameCommands.joinGame(sender, args[1]);
-            return true;
-          }
-          sender.sendMessage(ChatManager.colorMessage("Commands.Type-Arena-Name"));
-          return true;
-        } else if (args[0].equalsIgnoreCase("randomjoin")) {
-          gameCommands.joinRandomGame(sender);
-          return true;
-        } else if (args[0].equalsIgnoreCase("stats")) {
-          if (args.length == 2) {
-            gameCommands.sendStatsOther(sender, args[1]);
-          }
-          gameCommands.sendStats(sender);
-          return true;
-        } else if (args[0].equalsIgnoreCase("top")) {
-          if (args.length == 2) {
-            gameCommands.sendTopStatistics(sender, args[1]);
-          } else {
-            sender.sendMessage(ChatManager.colorMessage("Commands.Statistics.Type-Name"));
-          }
-          return true;
-        } else if (args[0].equalsIgnoreCase("leave")) {
-          gameCommands.leaveGame(sender);
-          return true;
-        } else if (args[0].equalsIgnoreCase("selectkit")) {
-          gameCommands.openKitMenu(sender);
-          return true;
-        } else if (args[0].equalsIgnoreCase("create")) {
-          if (args.length == 2) {
-            adminCommands.createArena(sender, args);
-            return true;
-          }
-          sender.sendMessage(ChatManager.colorMessage("Commands.Type-Arena-Name"));
-          return true;
-        } else if (args[0].equalsIgnoreCase("admin")) {
-          if (args.length == 1) {
-            adminCommands.sendHelp(sender);
-            return true;
-          }
-          if (args[1].equalsIgnoreCase("stop")) {
-            adminCommands.stopGame(sender);
-            return true;
-          } else if (args[1].equalsIgnoreCase("list")) {
-            adminCommands.printList(sender);
-            return true;
-          } else if (args[1].equalsIgnoreCase("forcestart")) {
-            adminCommands.forceStartGame(sender);
-            return true;
-          } else if (args[1].equalsIgnoreCase("respawn")) {
-            if (args.length == 2) {
-              adminCommands.respawn(sender);
-            } else {
-              adminCommands.respawnOther(sender, args[2]);
-            }
-            return true;
-          } else if (args[1].equalsIgnoreCase("spychat")) {
-            adminCommands.toggleSpyChat(sender);
-            return true;
-          } else if (args[1].equalsIgnoreCase("reload")) {
-            adminCommands.reloadInstances(sender);
-            return true;
-          } else if (args[1].equalsIgnoreCase("delete")) {
-            if (args.length != 2) {
-              adminCommands.deleteArena(sender, args[2]);
-            } else {
-              sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("Commands.Type-Arena-Name"));
-            }
-            return true;
-          } else if (args[1].equalsIgnoreCase("setprice")) {
-            if (args.length != 2) {
-              adminCommands.setItemPrice(sender, args[2]);
-            } else {
-              sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatColor.RED + "Please type price of item!");
-            }
-            return true;
-          } else if (args[1].equalsIgnoreCase("tp")) {
-            if (args.length == 2) {
-              sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("Commands.Type-Arena-Name"));
-              return true;
-            }
-            if (args.length == 3) {
-              sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatColor.RED + "Please type location type: END, START, LOBBY");
-              return true;
-            }
-            adminCommands.teleportToInstance(sender, args[2], args[3]);
-            return true;
-          } else if (args[1].equalsIgnoreCase("clear")) {
-            if (args.length == 2) {
-              sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatColor.RED + "Please type valid mob type to clear: VILLAGER, ZOMBIE, GOLEM");
-              return true;
-            }
-            if (args[2].equalsIgnoreCase("villager")) {
-              adminCommands.clearVillagers(sender);
-            } else if (args[2].equalsIgnoreCase("zombie")) {
-              adminCommands.clearZombies(sender);
-            } else if (args[2].equalsIgnoreCase("golem")) {
-              adminCommands.clearGolems(sender);
-            } else {
-              sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatColor.RED + "Please type valid mob type to clear: VILLAGER, ZOMBIE, GOLEM");
-              return true;
-            }
-            return true;
-          } else if (args[1].equalsIgnoreCase("addorbs")) {
-            if (args.length == 2) {
-              sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatColor.RED + "Please type number of orbs to give!");
-              return true;
-            }
-            if (args.length == 3) {
-              adminCommands.addOrbs(sender, args[2]);
-            } else {
-              adminCommands.addOrbsOther(sender, args[3], args[2]);
-            }
-            return true;
-          } else if (args[1].equalsIgnoreCase("setwave")) {
-            if (args.length == 2) {
-              sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatColor.RED + "Please type number of wave to set!");
-              return true;
-            }
-            adminCommands.setWave(sender, args[2]);
-            return true;
-          }
-          adminCommands.sendHelp(sender);
-          List<StringMatcher.Match> matches = StringMatcher.match(args[1], Arrays.asList("stop", "list", "forcestart", "respawn", "spychat",
-              "reload", "setshopchest", "delete", "setprice", "tp", "clear", "addorbs", "setwave"));
-          if (!matches.isEmpty()) {
-            sender.sendMessage(ChatManager.colorMessage("Commands.Did-You-Mean").replace("%command%", "vd admin " + matches.get(0).getMatch()));
-          }
-          return true;
-        } else {
-          List<StringMatcher.Match> matches = StringMatcher.match(args[0], Arrays.asList("join", "leave", "stats", "top", "admin", "create", "selectkit"));
-          if (!matches.isEmpty()) {
-            sender.sendMessage(ChatManager.colorMessage("Commands.Did-You-Mean").replace("%command%", "vd " + matches.get(0).getMatch()));
-          }
-          return true;
-        }
-      }
-      return false;
-    } catch (Exception e) {
-      new ReportedException(plugin, e);
-      return false;
-    }
-  }
-
-  void onTpCommand(Player player, String ID, LocationType type) {
-    if (!ConfigUtils.getConfig(plugin, "arenas").contains("instances." + ID)) {
-      player.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("Commands.No-Arena-Like-That"));
-      return;
-    }
-    Arena arena = ArenaRegistry.getArena(ID);
-    switch (type) {
-      case LOBBY:
-        if (arena.getLobbyLocation() == null) {
-          player.sendMessage(ChatColor.RED + "Lobby location isn't set for this arena!");
-          return;
-        }
-        arena.teleportToLobby(player);
-        player.sendMessage(ChatColor.GRAY + "Teleported to LOBBY location from arena" + ID);
-        break;
-      case START:
-        if (arena.getLobbyLocation() == null) {
-          player.sendMessage(ChatColor.RED + "Start location isn't set for this arena!");
-          return;
-        }
-        arena.teleportToStartLocation(player);
-        player.sendMessage(ChatColor.GRAY + "Teleported to START location from arena" + ID);
-        break;
-      case END:
-        if (arena.getLobbyLocation() == null) {
-          player.sendMessage(ChatColor.RED + "End location isn't set for this arena!");
-          return;
-        }
-        arena.teleportToEndLocation(player);
-        player.sendMessage(ChatColor.GRAY + "Teleported to END location from arena" + ID);
-        break;
-      default:
-        break; //o.o
-    }
-  }
-
-  void performSetup(Player player, String[] args) {
+  public void performSetup(Player player, String[] args) {
     if (args[1].equalsIgnoreCase("setup") || args[1].equals("edit")) {
       if (ArenaRegistry.getArena(args[0]) == null) {
         player.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("Commands.No-Arena-Like-That"));
@@ -554,7 +223,7 @@ public class MainCommand implements CommandExecutor {
     ConfigUtils.saveConfig(plugin, config, "arenas");
   }
 
-  void createArenaCommand(Player player, String[] args) {
+  public void createArenaCommand(Player player, String[] args) {
     for (Arena arena : ArenaRegistry.getArenas()) {
       if (arena.getID().equalsIgnoreCase(args[1])) {
         player.sendMessage(ChatColor.DARK_RED + "Arena with that ID already exists!");
@@ -632,10 +301,6 @@ public class MainCommand implements CommandExecutor {
         p.sendMessage(ChatManager.colorRawMessage("&e&lTIP: &7Install HolographicDisplays plugin to access power-ups in game! (configure them in config.yml)"));
         break;
     }
-  }
-
-  enum LocationType {
-    LOBBY, END, START
   }
 
 }
