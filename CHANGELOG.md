@@ -16,7 +16,7 @@
 * Added command vda add/set levels
 * Check default message of spawn golem/wolf
 * Added tip about downloadable maps when no arenas are set up while typing /vda list
-* Added tab completer for /vd <arena name>
+* Added tab completer for /vd join <arena name>
 * Fixed broken game logic while spawning zombie entities, Villager Slayer never spawned in game neither knockback resistant
 ones - game may be now much harder sorry :(
 * Cleaned up some code

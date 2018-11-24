@@ -58,7 +58,7 @@ public class TabCompletion implements TabCompleter {
         return Arrays.asList("stop", "list", "forcestart", "respawn", "spychat",
                 "reload", "delete", "setprice", "tp", "clear", "addorbs", "setwave");
       }
-      if (args.length == 0) {
+      if (args.length == 1 && args[0].equalsIgnoreCase("join")) {
         List<String> arenaIds = new ArrayList<>();
         for (Arena arena : ArenaRegistry.getArenas()) {
           arenaIds.add(arena.getID());
