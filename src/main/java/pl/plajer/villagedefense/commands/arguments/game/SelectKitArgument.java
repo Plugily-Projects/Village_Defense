@@ -22,7 +22,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import pl.plajer.villagedefense.commands.arguments.ArgumentsRegistry;
-import pl.plajer.villagedefense.commands.arguments.CommandArgument;
+import pl.plajer.villagedefense.commands.arguments.data.CommandArgument;
+import pl.plajer.villagedefense.utils.Utils;
 
 /**
  * @author Plajer
@@ -35,7 +36,7 @@ public class SelectKitArgument {
     registry.mapArgument("villagedefense", new CommandArgument("selectkit", "villagedefense.command.selectkit", CommandArgument.ExecutorType.PLAYER) {
       @Override
       public void execute(CommandSender sender, String[] args) {
-        if (!registry.getPlugin().getMainCommand().checkIsInGameInstance((Player) sender)) {
+        if (!Utils.checkIsInGameInstance((Player) sender)) {
           return;
         }
         registry.getPlugin().getKitManager().openKitMenu((Player) sender);

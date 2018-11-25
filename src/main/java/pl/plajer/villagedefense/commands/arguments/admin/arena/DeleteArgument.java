@@ -25,7 +25,9 @@ import pl.plajer.villagedefense.arena.Arena;
 import pl.plajer.villagedefense.arena.ArenaManager;
 import pl.plajer.villagedefense.arena.ArenaRegistry;
 import pl.plajer.villagedefense.commands.arguments.ArgumentsRegistry;
-import pl.plajer.villagedefense.commands.arguments.CommandArgument;
+import pl.plajer.villagedefense.commands.arguments.data.CommandArgument;
+import pl.plajer.villagedefense.commands.arguments.data.LabeledCommandArgument;
+import pl.plajer.villagedefense.commands.arguments.data.LabelData;
 import pl.plajer.villagedefense.handlers.ChatManager;
 import pl.plajerlair.core.utils.ConfigUtils;
 
@@ -37,7 +39,9 @@ import pl.plajerlair.core.utils.ConfigUtils;
 public class DeleteArgument {
 
   public DeleteArgument(ArgumentsRegistry registry) {
-    registry.mapArgument("villagedefenseadmin", new CommandArgument("delete", "villagedefense.admin.delete", CommandArgument.ExecutorType.PLAYER) {
+    registry.mapArgument("villagedefenseadmin", new LabeledCommandArgument("delete", "villagedefense.admin.delete", CommandArgument.ExecutorType.PLAYER,
+        new LabelData("/vda delete &6<arena>", "/vda delete <arena>",
+            "&7Deletes specified arena\n&6Permission: &7villagedefense.admin.delete")) {
       @Override
       public void execute(CommandSender sender, String[] args) {
         if (args.length == 0) {

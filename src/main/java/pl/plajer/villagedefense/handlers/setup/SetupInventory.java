@@ -18,9 +18,12 @@
 
 package pl.plajer.villagedefense.handlers.setup;
 
+import java.util.Random;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -28,6 +31,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.arena.Arena;
+import pl.plajer.villagedefense.handlers.ChatManager;
 import pl.plajerlair.core.utils.ConfigUtils;
 import pl.plajerlair.core.utils.ItemBuilder;
 import pl.plajerlair.core.utils.LocationUtils;
@@ -141,32 +145,35 @@ public class SetupInventory {
   }
 
   private static String isOptionDone(String path) {
-    if (ConfigUtils.getConfig(plugin, "arenas").isSet(path)) {
-      return ChatColor.GOLD + "" + ChatColor.BOLD + "Done: " + ChatColor.GREEN + "Yes " + ChatColor.GRAY + "(value: " + ConfigUtils.getConfig(plugin, "arenas").getString(path) + ")";
+    FileConfiguration config = ConfigUtils.getConfig(plugin, "arenas");
+    if (!config.isSet(path)) {
+      return ChatColor.GOLD + "" + ChatColor.BOLD + "Done: " + ChatColor.RED + "No";
     }
-    return ChatColor.GOLD + "" + ChatColor.BOLD + "Done: " + ChatColor.RED + "No";
+    return ChatColor.GOLD + "" + ChatColor.BOLD + "Done: " + ChatColor.GREEN + "Yes " + ChatColor.GRAY + "(value: " + config.getString(path) + ")";
   }
 
   private String isOptionDoneList(String path) {
-    if (ConfigUtils.getConfig(plugin, "arenas").isSet(path)) {
-      if (path.contains(".doors")) {
-        return ChatColor.GOLD + "" + ChatColor.BOLD + "Done: " + ChatColor.GREEN + "Yes " + ChatColor.GRAY + "(value: " + ConfigUtils.getConfig(plugin, "arenas")
-            .getConfigurationSection(path).getKeys(false).size() / 2 + ")";
-      }
-      return ChatColor.GOLD + "" + ChatColor.BOLD + "Done: " + ChatColor.GREEN + "Yes " + ChatColor.GRAY + "(value: " + ConfigUtils.getConfig(plugin, "arenas")
-          .getConfigurationSection(path).getKeys(false).size() + ")";
+    FileConfiguration config = ConfigUtils.getConfig(plugin, "arenas");
+    if (!config.isSet(path)) {
+      return ChatColor.GOLD + "" + ChatColor.BOLD + "Done: " + ChatColor.RED + "No";
     }
-    return ChatColor.GOLD + "" + ChatColor.BOLD + "Done: " + ChatColor.RED + "No";
+    if (!path.contains(".doors")) {
+      return ChatColor.GOLD + "" + ChatColor.BOLD + "Done: " + ChatColor.GREEN + "Yes " + ChatColor.GRAY + "(value: " +
+          config.getConfigurationSection(path).getKeys(false).size() + ")";
+    }
+    return ChatColor.GOLD + "" + ChatColor.BOLD + "Done: " + ChatColor.GREEN + "Yes " + ChatColor.GRAY + "(value: " +
+        config.getConfigurationSection(path).getKeys(false).size() / 2 + ")";
   }
 
   private String isOptionDoneBool(String path) {
-    if (ConfigUtils.getConfig(plugin, "arenas").isSet(path)) {
-      if (Bukkit.getServer().getWorlds().get(0).getSpawnLocation().equals(LocationUtils.getLocation(ConfigUtils.getConfig(plugin, "arenas").getString(path)))) {
-        return ChatColor.GOLD + "" + ChatColor.BOLD + "Done: " + ChatColor.RED + "No";
-      }
-      return ChatColor.GOLD + "" + ChatColor.BOLD + "Done: " + ChatColor.GREEN + "Yes";
+    FileConfiguration config = ConfigUtils.getConfig(plugin, "arenas");
+    if (!config.isSet(path)) {
+      return ChatColor.GOLD + "" + ChatColor.BOLD + "Done: " + ChatColor.RED + "No";
     }
-    return ChatColor.GOLD + "" + ChatColor.BOLD + "Done: " + ChatColor.RED + "No";
+    if (Bukkit.getServer().getWorlds().get(0).getSpawnLocation().equals(LocationUtils.getLocation(config.getString(path)))) {
+      return ChatColor.GOLD + "" + ChatColor.BOLD + "Done: " + ChatColor.RED + "No";
+    }
+    return ChatColor.GOLD + "" + ChatColor.BOLD + "Done: " + ChatColor.GREEN + "Yes";
   }
 
   public void addItem(ItemStack itemStack) {
@@ -206,6 +213,36 @@ public class SetupInventory {
      */
     public int getPosition() {
       return position;
+    }
+  }
+
+  public static void sendProTip(Player p) {
+    int rand = new Random().nextInt(7 + 1);
+    switch (rand) {
+      case 0:
+        p.sendMessage(ChatManager.colorRawMessage("&e&lTIP: &7Console can execute /vd addorbs [amount] (player) command! Add game orbs via console!"));
+        break;
+      case 1:
+        p.sendMessage(ChatManager.colorRawMessage("&e&lTIP: &7Build Secret Well for your arena! Check how: https://bit.ly/2DTYxZc"));
+        break;
+      case 2:
+        p.sendMessage(ChatManager.colorRawMessage("&e&lTIP: &7Help us translating plugin to your language here: https://translate.plajer.xyz"));
+        break;
+      case 3:
+        p.sendMessage(ChatManager.colorRawMessage("&e&lTIP: &7LeaderHeads leaderboard plugin is supported with our plugin! Check here: https://bit.ly/2Riu5L0"));
+        break;
+      case 4:
+        p.sendMessage(ChatManager.colorRawMessage("&e&lTIP: &7Achievements, custom kits and replay ability are things available in our paid addon for this minigame!"));
+        break;
+      case 5:
+        p.sendMessage(ChatManager.colorRawMessage("&e&lTIP: &7We are open source! You can always help us by contributing! Check https://github.com/Plajer-Lair/Village_Defense"));
+        break;
+      case 6:
+        p.sendMessage(ChatManager.colorRawMessage("&e&lTIP: &7Need help? Check wiki &8https://wiki.plajer.xyz/minecraft/villagedefense &7or discord https://discord.gg/UXzUdTP"));
+        break;
+      case 7:
+        p.sendMessage(ChatManager.colorRawMessage("&e&lTIP: &7Install HolographicDisplays plugin to access power-ups in game! (configure them in config.yml)"));
+        break;
     }
   }
 

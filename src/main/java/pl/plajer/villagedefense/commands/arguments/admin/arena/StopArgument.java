@@ -25,7 +25,10 @@ import pl.plajer.villagedefense.arena.ArenaManager;
 import pl.plajer.villagedefense.arena.ArenaRegistry;
 import pl.plajer.villagedefense.arena.ArenaState;
 import pl.plajer.villagedefense.commands.arguments.ArgumentsRegistry;
-import pl.plajer.villagedefense.commands.arguments.CommandArgument;
+import pl.plajer.villagedefense.commands.arguments.data.CommandArgument;
+import pl.plajer.villagedefense.commands.arguments.data.LabeledCommandArgument;
+import pl.plajer.villagedefense.commands.arguments.data.LabelData;
+import pl.plajer.villagedefense.utils.Utils;
 
 /**
  * @author Plajer
@@ -35,10 +38,12 @@ import pl.plajer.villagedefense.commands.arguments.CommandArgument;
 public class StopArgument {
 
   public StopArgument(ArgumentsRegistry registry) {
-    registry.mapArgument("villagedefenseadmin", new CommandArgument("stop", "villagedefense.admin.stop", CommandArgument.ExecutorType.PLAYER) {
+    registry.mapArgument("villagedefenseadmin", new LabeledCommandArgument("stop", "villagedefense.admin.stop", CommandArgument.ExecutorType.PLAYER,
+        new LabelData("/vda stop", "/vda stop",
+            "&7Stops the arena you're in\n&7&lYou must be in target arena!\n&6Permission: &7villagedefense.admin.stop")) {
       @Override
       public void execute(CommandSender sender, String[] args) {
-        if (!registry.getPlugin().getMainCommand().checkIsInGameInstance((Player) sender)) {
+        if (!Utils.checkIsInGameInstance((Player) sender)) {
           return;
         }
         if (ArenaRegistry.getArena((Player) sender).getArenaState() != ArenaState.ENDING) {

@@ -28,7 +28,9 @@ import pl.plajer.villagedefense.arena.Arena;
 import pl.plajer.villagedefense.arena.ArenaManager;
 import pl.plajer.villagedefense.arena.ArenaRegistry;
 import pl.plajer.villagedefense.commands.arguments.ArgumentsRegistry;
-import pl.plajer.villagedefense.commands.arguments.CommandArgument;
+import pl.plajer.villagedefense.commands.arguments.data.CommandArgument;
+import pl.plajer.villagedefense.commands.arguments.data.LabeledCommandArgument;
+import pl.plajer.villagedefense.commands.arguments.data.LabelData;
 import pl.plajer.villagedefense.handlers.ChatManager;
 import pl.plajer.villagedefense.utils.Utils;
 
@@ -40,10 +42,12 @@ import pl.plajer.villagedefense.utils.Utils;
 public class SetWaveArgument {
 
   public SetWaveArgument(ArgumentsRegistry registry) {
-    registry.mapArgument("villagedefenseadmin", new CommandArgument("setwave", "villagedefense.admin.setwave", CommandArgument.ExecutorType.PLAYER) {
+    registry.mapArgument("villagedefenseadmin", new LabeledCommandArgument("setwave", "villagedefense.admin.setwave", CommandArgument.ExecutorType.PLAYER,
+        new LabelData("/vda setwave &6<number>", "/vda setwave <number>",
+            "&7Set wave number in arena you're in\n&6Permission: &7villagedefense.admin.setwave")) {
       @Override
       public void execute(CommandSender sender, String[] args) {
-        if (!registry.getPlugin().getMainCommand().checkIsInGameInstance((Player) sender)) {
+        if (!Utils.checkIsInGameInstance((Player) sender)) {
           return;
         }
         if (args.length == 0) {

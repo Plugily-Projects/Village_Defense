@@ -22,8 +22,10 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import pl.plajer.villagedefense.commands.arguments.data.LabelData;
+import pl.plajer.villagedefense.commands.arguments.data.LabeledCommandArgument;
 import pl.plajer.villagedefense.commands.arguments.ArgumentsRegistry;
-import pl.plajer.villagedefense.commands.arguments.CommandArgument;
+import pl.plajer.villagedefense.commands.arguments.data.CommandArgument;
 import pl.plajer.villagedefense.handlers.ChatManager;
 
 /**
@@ -34,7 +36,9 @@ import pl.plajer.villagedefense.handlers.ChatManager;
 public class SpyChatArgument {
 
   public SpyChatArgument(ArgumentsRegistry registry) {
-    registry.mapArgument("villagedefenseadmin", new CommandArgument("spychat", "villagedefense.admin.spychat", CommandArgument.ExecutorType.PLAYER) {
+    registry.mapArgument("villagedefenseadmin", new LabeledCommandArgument("spychat", "villagedefense.admin.spychat", CommandArgument.ExecutorType.PLAYER,
+        new LabelData("/vda spychat", "/vda spychat","&7Toggles spy chat for all available arenas\n" +
+            "&7You will see all messages from these games\n&6Permission: &7villagedefense.admin.spychat")) {
       @Override
       public void execute(CommandSender sender, String[] args) {
         boolean bool = !registry.getPlugin().getSpyChatEnabled().getOrDefault(((Player) sender).getUniqueId(), false);

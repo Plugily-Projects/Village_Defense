@@ -28,8 +28,10 @@ import org.bukkit.entity.Zombie;
 
 import pl.plajer.villagedefense.arena.Arena;
 import pl.plajer.villagedefense.arena.ArenaRegistry;
+import pl.plajer.villagedefense.commands.arguments.data.LabelData;
+import pl.plajer.villagedefense.commands.arguments.data.LabeledCommandArgument;
 import pl.plajer.villagedefense.commands.arguments.ArgumentsRegistry;
-import pl.plajer.villagedefense.commands.arguments.CommandArgument;
+import pl.plajer.villagedefense.commands.arguments.data.CommandArgument;
 import pl.plajer.villagedefense.handlers.ChatManager;
 import pl.plajer.villagedefense.utils.Utils;
 
@@ -41,10 +43,13 @@ import pl.plajer.villagedefense.utils.Utils;
 public class ClearEntitiesArgument {
 
   public ClearEntitiesArgument(ArgumentsRegistry registry) {
-    registry.mapArgument("villagedefenseadmin", new CommandArgument("clear", "villagedefense.admin.clear", CommandArgument.ExecutorType.PLAYER) {
+    registry.mapArgument("villagedefenseadmin", new LabeledCommandArgument("clear", "villagedefense.admin.clear", CommandArgument.ExecutorType.PLAYER,
+        new LabelData("/vda clear &6<zombie/villager/golem>", "/vda clear <mob>",
+            "&7Clear specific mob type from arena you're in\n&7Valid mob types:\n&7• ZOMBIE - clear spawned zombies\n"
+                + "&7• VILLAGER - clear alive villagers\n&7• GOLEM - clear spawned golems\n&6Permission: &7villagedefense.admin.clear")) {
       @Override
       public void execute(CommandSender sender, String[] args) {
-        if (!registry.getPlugin().getMainCommand().checkIsInGameInstance((Player) sender)) {
+        if (!Utils.checkIsInGameInstance((Player) sender)) {
           return;
         }
         if (args.length == 1) {

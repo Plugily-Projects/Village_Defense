@@ -22,8 +22,10 @@ import org.bukkit.command.CommandSender;
 
 import pl.plajer.villagedefense.arena.Arena;
 import pl.plajer.villagedefense.arena.ArenaRegistry;
+import pl.plajer.villagedefense.commands.arguments.data.LabelData;
+import pl.plajer.villagedefense.commands.arguments.data.LabeledCommandArgument;
 import pl.plajer.villagedefense.commands.arguments.ArgumentsRegistry;
-import pl.plajer.villagedefense.commands.arguments.CommandArgument;
+import pl.plajer.villagedefense.commands.arguments.data.CommandArgument;
 import pl.plajer.villagedefense.handlers.ChatManager;
 
 /**
@@ -34,7 +36,9 @@ import pl.plajer.villagedefense.handlers.ChatManager;
 public class ListArenasArgument {
 
   public ListArenasArgument(ArgumentsRegistry registry) {
-    registry.mapArgument("villagedefenseadmin", new CommandArgument("list", "villagedefense.admin.list", CommandArgument.ExecutorType.BOTH) {
+    registry.mapArgument("villagedefenseadmin", new LabeledCommandArgument("list", "villagedefense.admin.list", CommandArgument.ExecutorType.BOTH,
+        new LabelData("/vda list", "/vda list",
+            "&7Shows list with all loaded arenas\n&6Permission: &7villagedefense.admin.list")) {
       @Override
       public void execute(CommandSender sender, String[] args) {
         sender.sendMessage(ChatManager.colorMessage("Commands.Admin-Commands.List-Command.Header"));

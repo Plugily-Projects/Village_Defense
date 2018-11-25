@@ -26,7 +26,7 @@ import pl.plajer.villagedefense.arena.ArenaManager;
 import pl.plajer.villagedefense.arena.ArenaRegistry;
 import pl.plajer.villagedefense.arena.ArenaState;
 import pl.plajer.villagedefense.commands.arguments.ArgumentsRegistry;
-import pl.plajer.villagedefense.commands.arguments.CommandArgument;
+import pl.plajer.villagedefense.commands.arguments.data.CommandArgument;
 import pl.plajer.villagedefense.handlers.ChatManager;
 
 /**
@@ -59,26 +59,25 @@ public class JoinArguments {
       }
     });
 
-    //random join argument
-    registry.mapArgument("villagedefense", new CommandArgument("randomjoin", "", CommandArgument.ExecutorType.PLAYER) {
-      @Override
-      public void execute(CommandSender sender, String[] args) {
-        if (registry.getPlugin().isBungeeActivated()) {
-          return;
-        }
-        if (ArenaRegistry.isInArena(((Player) sender))) {
-          sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Already-Playing"));
-          return;
-        }
-        for (Arena arena : ArenaRegistry.getArenas()) {
-          if (arena.getArenaState() == ArenaState.WAITING_FOR_PLAYERS || arena.getArenaState() == ArenaState.STARTING) {
-            ArenaManager.joinAttempt((Player) sender, arena);
+    //random join argument, register only for multi arena
+    if(!registry.getPlugin().isBungeeActivated()) {
+      registry.mapArgument("villagedefense", new CommandArgument("randomjoin", "", CommandArgument.ExecutorType.PLAYER) {
+        @Override
+        public void execute(CommandSender sender, String[] args) {
+          if (ArenaRegistry.isInArena(((Player) sender))) {
+            sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Already-Playing"));
             return;
           }
+          for (Arena arena : ArenaRegistry.getArenas()) {
+            if (arena.getArenaState() == ArenaState.WAITING_FOR_PLAYERS || arena.getArenaState() == ArenaState.STARTING) {
+              ArenaManager.joinAttempt((Player) sender, arena);
+              return;
+            }
+          }
+          sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("Commands.No-Free-Arenas"));
         }
-        sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("Commands.No-Free-Arenas"));
-      }
-    });
+      });
+    }
   }
 
 }

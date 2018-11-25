@@ -19,17 +19,18 @@
 package pl.plajer.villagedefense.commands;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
-import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.arena.Arena;
 import pl.plajer.villagedefense.arena.ArenaRegistry;
+import pl.plajer.villagedefense.commands.arguments.ArgumentsRegistry;
+import pl.plajer.villagedefense.commands.arguments.data.CommandArgument;
 
 /**
  * @author Plajer
@@ -38,10 +39,10 @@ import pl.plajer.villagedefense.arena.ArenaRegistry;
  */
 public class TabCompletion implements TabCompleter {
 
-  private Main plugin;
+  private ArgumentsRegistry registry;
 
-  public TabCompletion(Main plugin) {
-    this.plugin = plugin;
+  public TabCompletion(ArgumentsRegistry registry) {
+    this.registry = registry;
   }
 
   @Override
@@ -50,8 +51,7 @@ public class TabCompletion implements TabCompleter {
       return null;
     }
     if (cmd.getName().equalsIgnoreCase("villagedefenseadmin") && args.length == 1) {
-      return Arrays.asList("stop", "list", "forcestart", "respawn", "spychat",
-          "reload", "delete", "setprice", "tp", "clear", "addorbs", "setwave");
+      return registry.getMappedArguments().get(cmd.getName().toLowerCase()).stream().map(CommandArgument::getArgumentName).collect(Collectors.toList());
     }
     if (cmd.getName().equalsIgnoreCase("villagedefense")) {
       if (args.length == 2 && args[0].equalsIgnoreCase("join")) {
@@ -62,11 +62,7 @@ public class TabCompletion implements TabCompleter {
         return arenaIds;
       }
       if (args.length == 1) {
-        if (plugin.isBungeeActivated()) {
-          return Arrays.asList("join", "leave", "stats", "top", "create", "selectkit");
-        } else {
-          return Arrays.asList("join", "randomjoin", "leave", "stats", "top", "create", "selectkit");
-        }
+        return registry.getMappedArguments().get(cmd.getName().toLowerCase()).stream().map(CommandArgument::getArgumentName).collect(Collectors.toList());
       }
     }
     return null;

@@ -27,8 +27,10 @@ import org.bukkit.entity.Player;
 
 import pl.plajer.villagedefense.api.StatsStorage;
 import pl.plajer.villagedefense.arena.ArenaRegistry;
+import pl.plajer.villagedefense.commands.arguments.data.LabelData;
+import pl.plajer.villagedefense.commands.arguments.data.LabeledCommandArgument;
 import pl.plajer.villagedefense.commands.arguments.ArgumentsRegistry;
-import pl.plajer.villagedefense.commands.arguments.CommandArgument;
+import pl.plajer.villagedefense.commands.arguments.data.CommandArgument;
 import pl.plajer.villagedefense.handlers.ChatManager;
 import pl.plajer.villagedefense.user.User;
 import pl.plajer.villagedefense.user.UserManager;
@@ -42,8 +44,10 @@ import pl.plajer.villagedefense.utils.Utils;
 public class AddOrbsArgument {
 
   public AddOrbsArgument(ArgumentsRegistry registry) {
-    registry.mapArgument("villagedefenseadmin", new CommandArgument("addorbs", Arrays.asList("villagedefense.admin.addorbs", "villagedefense.admin.addorbs.others"),
-        CommandArgument.ExecutorType.BOTH) {
+    registry.mapArgument("villagedefenseadmin", new LabeledCommandArgument("addorbs", Arrays.asList("villagedefense.admin.addorbs", "villagedefense.admin.addorbs.others"),
+        CommandArgument.ExecutorType.BOTH, new LabelData("/vda addorbs &6<amount> &c[player]",
+        "/vda addorbs <amount>", "&7Add orbs (game currency) to yourself or target player\n&7Can be used from console too\n" +
+        "&6Permission: &7villagedefense.admin.addorbs (for yourself)\n&6Permission: &7villagedefense.admin.addorbs.others (for others)")) {
       @Override
       public void execute(CommandSender sender, String[] args) {
         if (args.length == 1) {
@@ -51,7 +55,7 @@ public class AddOrbsArgument {
           return;
         }
 
-        Player target = null;
+        Player target;
         if (args.length == 3) {
           if (!sender.hasPermission("villagedefense.admin.addorbs.others")) {
             return;

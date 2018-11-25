@@ -27,8 +27,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import pl.plajer.villagedefense.commands.arguments.data.LabelData;
+import pl.plajer.villagedefense.commands.arguments.data.LabeledCommandArgument;
 import pl.plajer.villagedefense.commands.arguments.ArgumentsRegistry;
-import pl.plajer.villagedefense.commands.arguments.CommandArgument;
+import pl.plajer.villagedefense.commands.arguments.data.CommandArgument;
 import pl.plajer.villagedefense.handlers.ChatManager;
 import pl.plajerlair.core.utils.MinigameUtils;
 
@@ -40,7 +42,9 @@ import pl.plajerlair.core.utils.MinigameUtils;
 public class SetPriceArgument {
 
   public SetPriceArgument(ArgumentsRegistry registry) {
-    registry.mapArgument("villagedefenseadmin", new CommandArgument("setprice", "villagedefense.admin.setprice", CommandArgument.ExecutorType.PLAYER) {
+    registry.mapArgument("villagedefenseadmin", new LabeledCommandArgument("setprice", "villagedefense.admin.setprice", CommandArgument.ExecutorType.PLAYER,
+        new LabelData("/vda setprice &6<amount>", "/vda setprice <amount>",
+            "&7Set price of holding item, it's required for game shop\n&6Permission: &7villagedefense.admin.setprice")) {
       @Override
       public void execute(CommandSender sender, String[] args) {
         if (args.length == 0) {

@@ -24,8 +24,10 @@ import org.bukkit.entity.Player;
 
 import pl.plajer.villagedefense.arena.Arena;
 import pl.plajer.villagedefense.arena.ArenaRegistry;
+import pl.plajer.villagedefense.commands.arguments.data.LabelData;
+import pl.plajer.villagedefense.commands.arguments.data.LabeledCommandArgument;
 import pl.plajer.villagedefense.commands.arguments.ArgumentsRegistry;
-import pl.plajer.villagedefense.commands.arguments.CommandArgument;
+import pl.plajer.villagedefense.commands.arguments.data.CommandArgument;
 import pl.plajer.villagedefense.handlers.ChatManager;
 
 /**
@@ -36,7 +38,10 @@ import pl.plajer.villagedefense.handlers.ChatManager;
 public class TeleportArgument {
 
   public TeleportArgument(ArgumentsRegistry registry) {
-    registry.mapArgument("villagedefenseadmin", new CommandArgument("tp", "villagedefense.admin.teleport", CommandArgument.ExecutorType.PLAYER) {
+    registry.mapArgument("villagedefenseadmin", new LabeledCommandArgument("tp", "villagedefense.admin.teleport", CommandArgument.ExecutorType.PLAYER,
+        new LabelData("/vda tp &6<arena> <location type>", "/vda tp <arena> <location>",
+            "&7Teleport you to provided arena location\n&7Valid locations:\n&7• LOBBY - lobby location\n&7• START - starting location\n" +
+                "&7• END - ending location\n&6Permission: &7villagedefense.admin.teleport")) {
       @Override
       public void execute(CommandSender sender, String[] args) {
         if (args.length == 1) {

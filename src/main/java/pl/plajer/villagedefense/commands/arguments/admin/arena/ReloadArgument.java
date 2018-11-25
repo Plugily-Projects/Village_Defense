@@ -24,7 +24,9 @@ import pl.plajer.villagedefense.arena.Arena;
 import pl.plajer.villagedefense.arena.ArenaManager;
 import pl.plajer.villagedefense.arena.ArenaRegistry;
 import pl.plajer.villagedefense.commands.arguments.ArgumentsRegistry;
-import pl.plajer.villagedefense.commands.arguments.CommandArgument;
+import pl.plajer.villagedefense.commands.arguments.data.CommandArgument;
+import pl.plajer.villagedefense.commands.arguments.data.LabeledCommandArgument;
+import pl.plajer.villagedefense.commands.arguments.data.LabelData;
 import pl.plajer.villagedefense.handlers.ChatManager;
 
 /**
@@ -35,7 +37,9 @@ import pl.plajer.villagedefense.handlers.ChatManager;
 public class ReloadArgument {
 
   public ReloadArgument(ArgumentsRegistry registry) {
-    registry.mapArgument("villagedefenseadmin", new CommandArgument("reload", "villagedefense.admin.reload", CommandArgument.ExecutorType.PLAYER) {
+    registry.mapArgument("villagedefenseadmin", new LabeledCommandArgument("reload", "villagedefense.admin.reload", CommandArgument.ExecutorType.BOTH,
+        new LabelData("/vda reload", "/vda reload","&7Reload all game arenas\n&7&lThey will be stopped!\n" +
+            "&c&lNot recommended!\n&6Permission: &7villagedefense.admin.reload")) {
       @Override
       public void execute(CommandSender sender, String[] args) {
         for (Arena arena : ArenaRegistry.getArenas()) {

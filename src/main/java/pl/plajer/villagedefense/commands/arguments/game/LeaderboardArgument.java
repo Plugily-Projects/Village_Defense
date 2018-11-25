@@ -29,7 +29,7 @@ import org.bukkit.command.CommandSender;
 
 import pl.plajer.villagedefense.api.StatsStorage;
 import pl.plajer.villagedefense.commands.arguments.ArgumentsRegistry;
-import pl.plajer.villagedefense.commands.arguments.CommandArgument;
+import pl.plajer.villagedefense.commands.arguments.data.CommandArgument;
 import pl.plajer.villagedefense.handlers.ChatManager;
 
 /**

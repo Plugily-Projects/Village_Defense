@@ -25,8 +25,9 @@ import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.arena.ArenaManager;
 import pl.plajer.villagedefense.arena.ArenaRegistry;
 import pl.plajer.villagedefense.commands.arguments.ArgumentsRegistry;
-import pl.plajer.villagedefense.commands.arguments.CommandArgument;
+import pl.plajer.villagedefense.commands.arguments.data.CommandArgument;
 import pl.plajer.villagedefense.handlers.ChatManager;
+import pl.plajer.villagedefense.utils.Utils;
 
 /**
  * @author Plajer
@@ -41,7 +42,7 @@ public class LeaveArgument {
       public void execute(CommandSender sender, String[] args) {
         if (!registry.getPlugin().getConfig().getBoolean("Disable-Leave-Command", false)) {
           Player p = (Player) sender;
-          if (!registry.getPlugin().getMainCommand().checkIsInGameInstance((Player) sender)) {
+          if (!Utils.checkIsInGameInstance((Player) sender)) {
             return;
           }
           p.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("Commands.Teleported-To-The-Lobby"));

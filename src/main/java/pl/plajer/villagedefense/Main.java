@@ -43,6 +43,7 @@ import pl.plajer.villagedefense.arena.ArenaEvents;
 import pl.plajer.villagedefense.arena.ArenaManager;
 import pl.plajer.villagedefense.arena.ArenaRegistry;
 import pl.plajer.villagedefense.commands.MainCommand;
+import pl.plajer.villagedefense.commands.arguments.ArgumentsRegistry;
 import pl.plajer.villagedefense.creatures.CreatureUtils;
 import pl.plajer.villagedefense.creatures.DoorBreakListener;
 import pl.plajer.villagedefense.creatures.EntityRegistry;
@@ -102,7 +103,6 @@ public class Main extends JavaPlugin {
   private PowerupManager powerupManager;
   private RewardsFactory rewardsHandler;
   private HolidayManager holidayManager;
-  private MainCommand mainCommand;
   private boolean forceDisable = false;
   private boolean databaseActivated = false;
   private boolean bungeeEnabled;
@@ -174,10 +174,6 @@ public class Main extends JavaPlugin {
 
   public ChunkManager getChunkManager() {
     return chunkManager;
-  }
-
-  public MainCommand getMainCommand() {
-    return mainCommand;
   }
 
   public Map<String, Integer> getCustomPermissions() {
@@ -307,7 +303,7 @@ public class Main extends JavaPlugin {
       bungeeManager = new BungeeManager(this);
     }
     new ChatManager(ChatManager.colorMessage("In-Game.Plugin-Prefix"));
-    mainCommand = new MainCommand(this, true);
+    new ArgumentsRegistry(this);
     new GolemEvents(this);
     new EntityRegistry(this);
     new ArenaEvents(this);

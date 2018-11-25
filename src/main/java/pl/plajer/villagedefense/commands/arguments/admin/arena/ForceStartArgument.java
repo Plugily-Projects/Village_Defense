@@ -25,8 +25,11 @@ import pl.plajer.villagedefense.arena.Arena;
 import pl.plajer.villagedefense.arena.ArenaRegistry;
 import pl.plajer.villagedefense.arena.ArenaState;
 import pl.plajer.villagedefense.commands.arguments.ArgumentsRegistry;
-import pl.plajer.villagedefense.commands.arguments.CommandArgument;
+import pl.plajer.villagedefense.commands.arguments.data.CommandArgument;
+import pl.plajer.villagedefense.commands.arguments.data.LabeledCommandArgument;
+import pl.plajer.villagedefense.commands.arguments.data.LabelData;
 import pl.plajer.villagedefense.handlers.ChatManager;
+import pl.plajer.villagedefense.utils.Utils;
 
 /**
  * @author Plajer
@@ -36,10 +39,12 @@ import pl.plajer.villagedefense.handlers.ChatManager;
 public class ForceStartArgument {
 
   public ForceStartArgument(ArgumentsRegistry registry) {
-    registry.mapArgument("villagedefenseadmin", new CommandArgument("forcestart", "villagedefense.admin.forcestart", CommandArgument.ExecutorType.PLAYER) {
+    registry.mapArgument("villagedefenseadmin", new LabeledCommandArgument("forcestart", "villagedefense.admin.forcestart", CommandArgument.ExecutorType.PLAYER,
+        new LabelData("/vda forcestart", "/vda forcestart",
+            "&7Force starts arena you're in\n&6Permission: &7villagedefense.admin.forcestart")) {
       @Override
       public void execute(CommandSender sender, String[] args) {
-        if (!registry.getPlugin().getMainCommand().checkIsInGameInstance((Player) sender)) {
+        if (!Utils.checkIsInGameInstance((Player) sender)) {
           return;
         }
         Arena arena = ArenaRegistry.getArena((Player) sender);

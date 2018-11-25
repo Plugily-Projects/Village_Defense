@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package pl.plajer.villagedefense.commands.arguments;
+package pl.plajer.villagedefense.commands.arguments.data;
 
 import java.util.Collections;
 import java.util.List;

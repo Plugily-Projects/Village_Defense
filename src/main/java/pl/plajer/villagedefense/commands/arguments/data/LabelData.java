@@ -16,23 +16,25 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package pl.plajer.villagedefense.commands;
+package pl.plajer.villagedefense.commands.arguments.data;
+
+import pl.plajer.villagedefense.handlers.ChatManager;
 
 /**
  * @author Plajer
  * <p>
  * Created at 03.05.2018
  */
-public class CommandData {
+public class LabelData {
 
   private String text;
   private String command;
   private String description;
 
-  public CommandData(String text, String command, String description) {
-    this.text = text;
+  public LabelData(String text, String command, String description) {
+    this.text = ChatManager.colorRawMessage(text);
     this.command = command;
-    this.description = description;
+    this.description = ChatManager.colorRawMessage(description);
   }
 
   public String getText() {

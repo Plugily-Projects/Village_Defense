@@ -32,8 +32,10 @@ import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -42,6 +44,7 @@ import org.bukkit.potion.PotionType;
 import org.bukkit.util.BlockIterator;
 
 import pl.plajer.villagedefense.Main;
+import pl.plajer.villagedefense.arena.ArenaRegistry;
 import pl.plajer.villagedefense.handlers.ChatManager;
 
 /**
@@ -166,6 +169,22 @@ public class Utils {
     } catch (NumberFormatException ex) {
       return false;
     }
+  }
+
+  public static boolean checkIsInGameInstance(Player player) {
+    if (ArenaRegistry.getArena(player) == null) {
+      player.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("Commands.Not-Playing"));
+      return false;
+    }
+    return true;
+  }
+
+  public static boolean hasPermission(CommandSender sender, String perm) {
+    if (sender.hasPermission(perm)) {
+      return true;
+    }
+    sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("Commands.No-Permission"));
+    return false;
   }
 
 }

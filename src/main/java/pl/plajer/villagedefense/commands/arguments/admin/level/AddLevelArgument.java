@@ -27,7 +27,9 @@ import org.bukkit.entity.Player;
 
 import pl.plajer.villagedefense.api.StatsStorage;
 import pl.plajer.villagedefense.commands.arguments.ArgumentsRegistry;
-import pl.plajer.villagedefense.commands.arguments.CommandArgument;
+import pl.plajer.villagedefense.commands.arguments.data.CommandArgument;
+import pl.plajer.villagedefense.commands.arguments.data.LabeledCommandArgument;
+import pl.plajer.villagedefense.commands.arguments.data.LabelData;
 import pl.plajer.villagedefense.handlers.ChatManager;
 import pl.plajer.villagedefense.user.User;
 import pl.plajer.villagedefense.user.UserManager;
@@ -41,8 +43,10 @@ import pl.plajer.villagedefense.utils.Utils;
 public class AddLevelArgument {
 
   public AddLevelArgument(ArgumentsRegistry registry) {
-    registry.mapArgument("villagedefenseadmin", new CommandArgument("addlevel", Arrays.asList("villagedefense.admin.addlevel", "villagedefense.admin.addlevel.others"),
-        CommandArgument.ExecutorType.BOTH) {
+    registry.mapArgument("villagedefenseadmin", new LabeledCommandArgument("addlevel", Arrays.asList("villagedefense.admin.addlevel", "villagedefense.admin.addlevel.others"),
+        CommandArgument.ExecutorType.BOTH, new LabelData("/vda addlevel &6<amount> &c[player]", "/vda addlevel <amount>",
+        "&7Add level to yourself or target player\n&7Can be used from console too\n&6Permission: &7villagedefense.admin.addlevel (for yourself)\n" +
+            "&6Permission: &7villagedefense.admin.addlevel.others (for others)")) {
       @Override
       public void execute(CommandSender sender, String[] args) {
         if (args.length == 1) {
@@ -60,8 +64,7 @@ public class AddLevelArgument {
           sender.sendMessage(ChatManager.colorMessage("Commands.Target-Player-Not-Found"));
           return;
         }
-        if (!(sender.equals(target) && registry.getPlugin().getMainCommand()
-            .hasPermission(sender, "villagedefense.admin.addlevel.others"))) {
+        if (!(sender.equals(target) && Utils.hasPermission(sender, "villagedefense.admin.addlevel.others"))) {
           return;
         }
 

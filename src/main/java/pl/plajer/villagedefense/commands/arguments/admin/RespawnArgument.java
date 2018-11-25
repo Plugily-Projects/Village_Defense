@@ -29,10 +29,13 @@ import pl.plajer.villagedefense.arena.Arena;
 import pl.plajer.villagedefense.arena.ArenaRegistry;
 import pl.plajer.villagedefense.arena.ArenaUtils;
 import pl.plajer.villagedefense.commands.arguments.ArgumentsRegistry;
-import pl.plajer.villagedefense.commands.arguments.CommandArgument;
+import pl.plajer.villagedefense.commands.arguments.data.CommandArgument;
+import pl.plajer.villagedefense.commands.arguments.data.LabelData;
+import pl.plajer.villagedefense.commands.arguments.data.LabeledCommandArgument;
 import pl.plajer.villagedefense.handlers.ChatManager;
 import pl.plajer.villagedefense.user.User;
 import pl.plajer.villagedefense.user.UserManager;
+import pl.plajer.villagedefense.utils.Utils;
 
 /**
  * @author Plajer
@@ -42,19 +45,21 @@ import pl.plajer.villagedefense.user.UserManager;
 public class RespawnArgument {
 
   public RespawnArgument(ArgumentsRegistry registry) {
-    registry.mapArgument("villagedefenseadmin", new CommandArgument("respawn", Arrays.asList("villagedefense.admin.respawn", "villagedefense.admin.respawn.others"),
-        CommandArgument.ExecutorType.PLAYER) {
+    registry.mapArgument("villagedefenseadmin", new LabeledCommandArgument("respawn", Arrays.asList("villagedefense.admin.respawn", "villagedefense.admin.respawn.others"),
+        CommandArgument.ExecutorType.PLAYER, new LabelData("/vda respawn &c[player]", "/vda respawn",
+        "&7Respawn yourself or target player in game\n&6Permission: &7 villagedefense.admin.respawn (for yourself)\n" +
+            "&6Permission: &7villagedefense.admin.respawn.others (for others)")) {
       @Override
       public void execute(CommandSender sender, String[] args) {
         Player player = (Player) sender;
-        if (!registry.getPlugin().getMainCommand().checkIsInGameInstance(player)) {
+        if (!Utils.checkIsInGameInstance(player)) {
           return;
         }
         Arena arena = ArenaRegistry.getArena(player);
 
         Player target = null;
         if (args.length == 2) {
-          if (!sender.hasPermission("villagedefense.admin.respawn.others")) {
+          if (!Utils.hasPermission(sender, "villagedefense.admin.respawn.others")) {
             return;
           }
           for (Player loopPlayer : arena.getPlayers()) {
