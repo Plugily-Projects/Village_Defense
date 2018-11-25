@@ -1,6 +1,6 @@
 # Village Defense 3 Changelog
 
-### 4.0.0 Beta (04/14.10.2018 - 21.11.2018)
+### 4.0.0 Beta (04/14.10.2018 - 24.11.2018)
 * API change - now you can access it via pl.plajer.villagedefense.api
 * Removed actionbar message from players that died and the arena was changed in "ending"
 * Fixed https://plajer.xyz/errorservice/viewer.php?id=245
@@ -14,7 +14,7 @@
 * Added halloween effects (can be disabled in config) (4 days before and 4 days after Halloween)
 * Added wave limiter
 * Added command vda add/set levels
-* Check default message of spawn golem/wolf
+* Now non localized Spawn Golem/Wolf items will work with locales
 * Added tip about downloadable maps when no arenas are set up while typing /vda list
 * Added tab completer for /vd join <arena name>
 * Fixed broken game logic while spawning zombie entities, Villager Slayer never spawned in game neither knockback resistant

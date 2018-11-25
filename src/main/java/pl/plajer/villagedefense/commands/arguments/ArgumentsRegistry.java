@@ -19,11 +19,12 @@
 package pl.plajer.villagedefense.commands.arguments;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.LinkedList;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
@@ -70,7 +71,7 @@ import pl.plajerlair.core.utils.StringMatcher;
  */
 public class ArgumentsRegistry extends MainCommand implements CommandExecutor {
 
-  private static List<CommandData> command = new LinkedList<>();
+  private static Set<CommandData> command = new LinkedHashSet<>();
 
   //todo change me?
   static {
@@ -236,20 +237,10 @@ public class ArgumentsRegistry extends MainCommand implements CommandExecutor {
             return true;
           }
         }
-        //todo change this
-        if (cmd.getName().equalsIgnoreCase("villagedefense")) {
-          List<StringMatcher.Match> matches = StringMatcher.match(args[0], Arrays.asList("join", "leave", "stats", "top", "create", "selectkit"));
-          if (!matches.isEmpty()) {
-            sender.sendMessage(ChatManager.colorMessage("Commands.Did-You-Mean").replace("%command%", "vd " + matches.get(0).getMatch()));
-          }
+        List<StringMatcher.Match> matches = StringMatcher.match(args[0], mappedArguments.get(cmd.getName().toLowerCase()).stream().map(CommandArgument::getArgumentName).collect(Collectors.toList()));
+        if (!matches.isEmpty()) {
+          sender.sendMessage(ChatManager.colorMessage("Commands.Did-You-Mean").replace("%command%", label + " " + matches.get(0).getMatch()));
           return true;
-        }
-        if (cmd.getName().equalsIgnoreCase("villagedefenseadmin")) {
-          List<StringMatcher.Match> matches = StringMatcher.match(args[0], Arrays.asList("stop", "list", "forcestart", "respawn", "spychat",
-              "reload", "setshopchest", "delete", "setprice", "tp", "clear", "addorbs", "setlevel", "addlevel", "setwave"));
-          if (!matches.isEmpty()) {
-            sender.sendMessage(ChatManager.colorMessage("Commands.Did-You-Mean").replace("%command%", "vda " + matches.get(0).getMatch()));
-          }
         }
       }
     }
@@ -283,6 +274,7 @@ public class ArgumentsRegistry extends MainCommand implements CommandExecutor {
     List<CommandArgument> args = mappedArguments.getOrDefault(mainCommand, new ArrayList<>());
     args.add(argument);
     mappedArguments.put(mainCommand, args);
+
   }
 
   public Main getPlugin() {
