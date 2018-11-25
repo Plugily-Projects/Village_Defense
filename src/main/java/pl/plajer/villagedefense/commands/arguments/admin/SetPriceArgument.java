@@ -27,10 +27,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import pl.plajer.villagedefense.commands.arguments.data.LabelData;
-import pl.plajer.villagedefense.commands.arguments.data.LabeledCommandArgument;
 import pl.plajer.villagedefense.commands.arguments.ArgumentsRegistry;
 import pl.plajer.villagedefense.commands.arguments.data.CommandArgument;
+import pl.plajer.villagedefense.commands.arguments.data.LabelData;
+import pl.plajer.villagedefense.commands.arguments.data.LabeledCommandArgument;
 import pl.plajer.villagedefense.handlers.ChatManager;
 import pl.plajerlair.core.utils.MinigameUtils;
 

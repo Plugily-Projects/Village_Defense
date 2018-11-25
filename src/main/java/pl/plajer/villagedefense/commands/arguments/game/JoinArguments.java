@@ -60,7 +60,7 @@ public class JoinArguments {
     });
 
     //random join argument, register only for multi arena
-    if(!registry.getPlugin().isBungeeActivated()) {
+    if (!registry.getPlugin().isBungeeActivated()) {
       registry.mapArgument("villagedefense", new CommandArgument("randomjoin", "", CommandArgument.ExecutorType.PLAYER) {
         @Override
         public void execute(CommandSender sender, String[] args) {
