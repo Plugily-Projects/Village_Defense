@@ -1,6 +1,6 @@
 # Village Defense 3 Changelog
 
-### 4.0.0 Beta (04/14.10.2018 - 24.11.2018)
+### 4.0.0 Beta (04/14.10.2018 - 27.11.2018)
 * API change - now you can access it via pl.plajer.villagedefense.api
 * Removed actionbar message from players that died and the arena was changed in "ending"
 * Fixed https://plajer.xyz/errorservice/viewer.php?id=245
@@ -24,6 +24,7 @@ ones - game may be now much harder sorry :(
 (2 147 483 647) - some users brute forced this error using values like 300000000000000000 (fixes https://plajer.xyz/errorservice/viewer.php?id=351)
 * More setup tips!
 * Implemented JavaScript engine into rewards section. Now you can execute java code from rewards.
+* Fixed exp wasn't saved properly via InventoryManager
 
 ### 3.11.5 Release (28.09.2018/04.10.2018)
 * Fixed server was stopped using Shutdown-When-Game-Ends option but player just left not started arena
