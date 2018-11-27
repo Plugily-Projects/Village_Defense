@@ -118,6 +118,12 @@ public class LanguageManager {
       Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "[Village Defense] Plugin locale is invalid! Using default one...");
       pluginLocale = LocaleRegistry.getByName("English");
     }
+    /* is beta release */
+    if (plugin.getDescription().getVersion().contains("b") || plugin.getDescription().getVersion().contains("pre")) {
+      Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "[Village Defense] Locales aren't supported in beta versions because they're lacking latest translations! Enabling English one...");
+      pluginLocale = LocaleRegistry.getByName("English");
+      return;
+    }
     Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "[Village Defense] Loaded locale " + pluginLocale.getName() + " (" + pluginLocale.getOriginalName() + " ID: " +
         pluginLocale.getPrefix() + ") by " + pluginLocale.getAuthor());
     loadProperties();
