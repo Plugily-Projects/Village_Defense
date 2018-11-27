@@ -46,7 +46,6 @@ import pl.plajer.villagedefense.commands.arguments.ArgumentsRegistry;
 import pl.plajer.villagedefense.creatures.CreatureUtils;
 import pl.plajer.villagedefense.creatures.DoorBreakListener;
 import pl.plajer.villagedefense.creatures.EntityRegistry;
-import pl.plajer.villagedefense.creatures.upgrades.EntityUpgradeMenu;
 import pl.plajer.villagedefense.database.FileStats;
 import pl.plajer.villagedefense.database.MySQLConnectionUtils;
 import pl.plajer.villagedefense.database.MySQLManager;
@@ -347,7 +346,8 @@ public class Main extends JavaPlugin {
     new Events(this);
     new LobbyEvents(this);
     new SpectatorItemEvents(this);
-    EntityUpgradeMenu.init(this);
+    //todo bring back soon
+    //EntityUpgradeMenu.init(this);
     powerupManager = new PowerupManager(this);
     chunkManager = new ChunkManager(this);
     rewardsHandler = new RewardsFactory(this);

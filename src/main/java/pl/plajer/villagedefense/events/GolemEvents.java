@@ -54,7 +54,7 @@ public class GolemEvents implements Listener {
   public GolemEvents(Main plugin) {
     this.plugin = plugin;
     if (plugin.getConfig().getBoolean("Golem-Upgrades-Enabled", true)) {
-      //plugin.getServer().getPluginManager().registerEvents(this, plugin);
+      plugin.getServer().getPluginManager().registerEvents(this, plugin);
       Main.debug(Main.LogLevel.INFO, "Golem upgrades successfully registered!");
     }
   }
