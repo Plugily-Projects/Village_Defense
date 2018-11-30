@@ -73,7 +73,8 @@ public class EntityUpgradeMenu {
       description = description.stream().map(msg -> msg.replace("%tier%", String.valueOf(tier))).collect(Collectors.toList());
       inv.setItem(((i + 1) * 9) + 2, new ItemBuilder(XMaterial.BLACK_STAINED_GLASS_PANE.parseItem())
           .name(upgrades.get(i).getName())
-          .lore((String[]) description.toArray()).build());
+          .lore(description)
+          .build());
       for (int j = 0; j < 4; j++) {
         inv.setItem(((i + 1) * 9) + 2 + j, new ItemBuilder(XMaterial.WHITE_STAINED_GLASS_PANE.parseItem()).build());
       }
