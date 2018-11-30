@@ -116,10 +116,7 @@ public class CleanerKit extends PremiumKit implements Listener {
       }
       arena.getZombies().clear();
       Utils.playSound(e.getPlayer().getLocation(), "ENTITY_ZOMBIE_DEATH", "ENTITY_ZOMBIE_DEATH");
-      String message = ChatManager.formatMessage(arena, ChatManager.colorMessage("Kits.Cleaner.Cleaned-Map"), e.getPlayer());
-      for (Player p : ArenaRegistry.getArena(e.getPlayer()).getPlayers()) {
-        p.sendMessage(ChatManager.PLUGIN_PREFIX + message);
-      }
+      ChatManager.broadcast(arena, ChatManager.formatMessage(arena, ChatManager.colorMessage("Kits.Cleaner.Cleaned-Map"), e.getPlayer()));
       user.setCooldown("clean", 180);
     } catch (Exception ex) {
       new ReportedException(plugin, ex);

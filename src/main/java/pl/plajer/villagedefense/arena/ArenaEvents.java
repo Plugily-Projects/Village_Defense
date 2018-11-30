@@ -116,31 +116,29 @@ public class ArenaEvents implements Listener {
       if (!(e.getEntity() instanceof Zombie || e.getEntity() instanceof Villager)) {
         return;
       }
-      for (Arena a : ArenaRegistry.getArenas()) {
+      for (Arena arena : ArenaRegistry.getArenas()) {
         switch (e.getEntityType()) {
           case ZOMBIE:
-            if (!a.getZombies().contains(e.getEntity())) {
+            if (!arena.getZombies().contains(e.getEntity())) {
               continue;
             }
-            a.removeZombie((Zombie) e.getEntity());
-            a.setTotalKilledZombies(a.getTotalKilledZombies() + 1);
+            arena.removeZombie((Zombie) e.getEntity());
+            arena.setTotalKilledZombies(arena.getTotalKilledZombies() + 1);
             if (ArenaRegistry.getArena(e.getEntity().getKiller()) != null) {
-              a.addStat(e.getEntity().getKiller(), StatsStorage.StatisticType.KILLS);
-              a.addExperience(e.getEntity().getKiller(), 2);
+              arena.addStat(e.getEntity().getKiller(), StatsStorage.StatisticType.KILLS);
+              arena.addExperience(e.getEntity().getKiller(), 2);
               plugin.getRewardsHandler().performReward(e.getEntity().getKiller(), Reward.RewardType.ZOMBIE_KILL);
               plugin.getPowerupManager().spawnPowerup(e.getEntity().getLocation(), ArenaRegistry.getArena(e.getEntity().getKiller()));
             }
             return;
           case VILLAGER:
-            if (!a.getVillagers().contains(e.getEntity())) {
+            if (!arena.getVillagers().contains(e.getEntity())) {
               return;
             }
-            a.getStartLocation().getWorld().strikeLightningEffect(e.getEntity().getLocation());
-            a.removeVillager((Villager) e.getEntity());
+            arena.getStartLocation().getWorld().strikeLightningEffect(e.getEntity().getLocation());
+            arena.removeVillager((Villager) e.getEntity());
             plugin.getHolidayManager().applyHolidayDeathEffects(e.getEntity());
-            for (Player p : a.getPlayers()) {
-              p.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Messages.Villager-Died"));
-            }
+            ChatManager.broadcast(arena, ChatManager.colorMessage("In-Game.Messages.Villager-Died"));
             return;
         }
       }

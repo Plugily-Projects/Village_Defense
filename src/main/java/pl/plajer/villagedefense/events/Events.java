@@ -493,6 +493,7 @@ public class Events implements Listener {
         return;
       }
       Player player = (Player) e.getWhoClicked();
+      User user = UserManager.getUser(player.getUniqueId());
       Arena arena = ArenaRegistry.getArena((Player) e.getWhoClicked());
       ItemStack stack = e.getCurrentItem();
       if (arena == null || e.getInventory().getName() == null
@@ -517,7 +518,7 @@ public class Events implements Listener {
         }
       }
       int price = Integer.parseInt(string.split(" ")[0]);
-      if (price > UserManager.getUser(player.getUniqueId()).getStat(StatsStorage.StatisticType.ORBS)) {
+      if (price > user.getStat(StatsStorage.StatisticType.ORBS)) {
         player.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Messages.Shop-Messages.Not-Enough-Orbs"));
         return;
       }
@@ -536,7 +537,7 @@ public class Events implements Listener {
           }
           arena.spawnGolem(arena.getStartLocation(), player);
           player.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Messages.Golem-Spawned"));
-          UserManager.getUser(player.getUniqueId()).setStat(StatsStorage.StatisticType.ORBS, UserManager.getUser(player.getUniqueId()).getStat(StatsStorage.StatisticType.ORBS) - price);
+          user.setStat(StatsStorage.StatisticType.ORBS, user.getStat(StatsStorage.StatisticType.ORBS) - price);
           return;
         } else if (stack.getItemMeta().getDisplayName().contains(ChatManager.colorMessage("In-Game.Messages.Shop-Messages.Wolf-Item-Name")) || stack.getItemMeta().getDisplayName().contains(ChatManager.colorRawMessage(ConfigUtils.getConfig(plugin, "language").getString("In-Game.Messages.Shop-Messages.Wolf-Item-Name")))) {
           int i = 0;
@@ -552,7 +553,7 @@ public class Events implements Listener {
           }
           arena.spawnWolf(arena.getStartLocation(), player);
           player.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Messages.Wolf-Spawned"));
-          UserManager.getUser(player.getUniqueId()).setStat(StatsStorage.StatisticType.ORBS, UserManager.getUser(player.getUniqueId()).getStat(StatsStorage.StatisticType.ORBS) - price);
+          user.setStat(StatsStorage.StatisticType.ORBS, user.getStat(StatsStorage.StatisticType.ORBS) - price);
           return;
         }
       }
@@ -568,7 +569,7 @@ public class Events implements Listener {
       itemMeta.setLore(lore);
       itemStack.setItemMeta(itemMeta);
       player.getInventory().addItem(itemStack);
-      UserManager.getUser(player.getUniqueId()).setStat(StatsStorage.StatisticType.ORBS, UserManager.getUser(player.getUniqueId()).getStat(StatsStorage.StatisticType.ORBS) - price);
+      user.setStat(StatsStorage.StatisticType.ORBS, user.getStat(StatsStorage.StatisticType.ORBS) - price);
       arena.setTotalOrbsSpent(arena.getTotalOrbsSpent() + price);
     } catch (Exception ex) {
       new ReportedException(plugin, ex);
