@@ -56,7 +56,6 @@ public class TornadoKit extends PremiumKit implements Listener {
   private double radius_increment = max_radius / max_height;
   private Main plugin;
 
-
   public TornadoKit(Main plugin) {
     this.plugin = plugin;
     setName(ChatManager.colorMessage("Kits.Tornado.Kit-Name"));

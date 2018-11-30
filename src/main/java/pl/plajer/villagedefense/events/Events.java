@@ -99,11 +99,10 @@ public class Events implements Listener {
   public void onSpawn(CreatureSpawnEvent event) {
     try {
       for (Arena arena : ArenaRegistry.getArenas()) {
-        if (event.getEntity().getWorld().equals(arena.getStartLocation().getWorld())) {
-          if (event.getSpawnReason() != CreatureSpawnEvent.SpawnReason.CUSTOM) {
-            event.setCancelled(true);
-          }
+        if (!event.getEntity().getWorld().equals(arena.getStartLocation().getWorld()) || event.getSpawnReason() == CreatureSpawnEvent.SpawnReason.CUSTOM) {
+          continue;
         }
+        event.setCancelled(true);
       }
     } catch (Exception ex) {
       new ReportedException(plugin, ex);
@@ -308,10 +307,11 @@ public class Events implements Listener {
       //todo check
       if (event.getEntity().getItemStack().getType() == XMaterial.OAK_DOOR.parseMaterial()) {
         for (Entity entity : Utils.getNearbyEntities(event.getLocation(), 20)) {
-          if (entity.getType() == EntityType.PLAYER) {
-            if (ArenaRegistry.getArena((Player) entity) != null) {
-              event.getEntity().remove();
-            }
+          if (!(entity instanceof Player)) {
+            continue;
+          }
+          if (ArenaRegistry.getArena((Player) entity) != null) {
+            event.getEntity().remove();
           }
         }
       }
@@ -418,11 +418,12 @@ public class Events implements Listener {
           return;
         }
         for (Arena arena : ArenaRegistry.getArenas()) {
-          if (arena.getZombies().contains(e.getEntity())) {
-            e.getEntity().setCustomName(MinigameUtils.getProgressBar((int) ((Zombie) e.getEntity()).getHealth(),
-                (int) ((Zombie) e.getEntity()).getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue(),
-                50, "|", ChatColor.YELLOW + "", ChatColor.GRAY + ""));
+          if (!arena.getZombies().contains(e.getEntity())) {
+            continue;
           }
+          e.getEntity().setCustomName(MinigameUtils.getProgressBar((int) ((Zombie) e.getEntity()).getHealth(),
+              (int) ((Zombie) e.getEntity()).getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue(),
+              50, "|", ChatColor.YELLOW + "", ChatColor.GRAY + ""));
         }
       }
     } catch (Exception ex) {
@@ -495,18 +496,19 @@ public class Events implements Listener {
       }
       Player player = (Player) e.getWhoClicked();
       Arena arena = ArenaRegistry.getArena((Player) e.getWhoClicked());
+      ItemStack stack = e.getCurrentItem();
       if (arena == null || e.getInventory().getName() == null
           || !e.getInventory().getName().equalsIgnoreCase(ChatManager.colorMessage("In-Game.Messages.Shop-Messages.Shop-GUI-Name"))) {
         return;
       }
       e.setCancelled(true);
-      if (e.getCurrentItem() == null || !e.getCurrentItem().hasItemMeta() || !e.getCurrentItem().getItemMeta().hasLore()) {
+      if (stack == null || !stack.hasItemMeta() || !stack.getItemMeta().hasLore()) {
         return;
       }
-      String string = ChatColor.stripColor(e.getCurrentItem().getItemMeta().getLore().get(0));
+      String string = ChatColor.stripColor(stack.getItemMeta().getLore().get(0));
       if (!(string.contains(ChatManager.colorMessage("In-Game.Messages.Shop-Messages.Currency-In-Shop")) || string.contains("orbs"))) {
         boolean b = false;
-        for (String s : e.getCurrentItem().getItemMeta().getLore()) {
+        for (String s : stack.getItemMeta().getLore()) {
           if (string.contains(ChatManager.colorMessage("In-Game.Messages.Shop-Messages.Currency-In-Shop")) || string.contains("orbs")) {
             string = s;
             b = true;
@@ -521,8 +523,8 @@ public class Events implements Listener {
         player.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Messages.Shop-Messages.Not-Enough-Orbs"));
         return;
       }
-      if (Utils.isNamed(e.getCurrentItem())) {
-        if (e.getCurrentItem().getItemMeta().getDisplayName().contains(ChatManager.colorMessage("In-Game.Messages.Shop-Messages.Golem-Item-Name")) || e.getCurrentItem().getItemMeta().getDisplayName().contains(ChatManager.colorRawMessage(ConfigUtils.getConfig(plugin, "language").getString("In-Game.Messages.Shop-Messages.Golem-Item-Name")))) {
+      if (Utils.isNamed(stack)) {
+        if (stack.getItemMeta().getDisplayName().contains(ChatManager.colorMessage("In-Game.Messages.Shop-Messages.Golem-Item-Name")) || stack.getItemMeta().getDisplayName().contains(ChatManager.colorRawMessage(ConfigUtils.getConfig(plugin, "language").getString("In-Game.Messages.Shop-Messages.Golem-Item-Name")))) {
           int i = 0;
           for (IronGolem golem : arena.getIronGolems()) {
             if (golem.getCustomName().equals(ChatManager.colorMessage("In-Game.Spawned-Golem-Name").replace("%player%", player.getName()))) {
@@ -538,7 +540,7 @@ public class Events implements Listener {
           player.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Messages.Golem-Spawned"));
           UserManager.getUser(player.getUniqueId()).setStat(StatsStorage.StatisticType.ORBS, UserManager.getUser(player.getUniqueId()).getStat(StatsStorage.StatisticType.ORBS) - price);
           return;
-        } else if (e.getCurrentItem().getItemMeta().getDisplayName().contains(ChatManager.colorMessage("In-Game.Messages.Shop-Messages.Wolf-Item-Name")) || e.getCurrentItem().getItemMeta().getDisplayName().contains(ChatManager.colorRawMessage(ConfigUtils.getConfig(plugin, "language").getString("In-Game.Messages.Shop-Messages.Wolf-Item-Name")))) {
+        } else if (stack.getItemMeta().getDisplayName().contains(ChatManager.colorMessage("In-Game.Messages.Shop-Messages.Wolf-Item-Name")) || stack.getItemMeta().getDisplayName().contains(ChatManager.colorRawMessage(ConfigUtils.getConfig(plugin, "language").getString("In-Game.Messages.Shop-Messages.Wolf-Item-Name")))) {
           int i = 0;
           for (Wolf wolf : arena.getWolfs()) {
             if (wolf.getCustomName().equals(ChatManager.colorMessage("In-Game.Spawned-Wolf-Name").replace("%player%", player.getName()))) {
@@ -557,9 +559,9 @@ public class Events implements Listener {
         }
       }
 
-      ItemStack itemStack = e.getCurrentItem().clone();
+      ItemStack itemStack = stack.clone();
       ItemMeta itemMeta = itemStack.getItemMeta();
-      List<String> lore = new ArrayList<>();
+      List<String> lore = new ArrayList<>(itemMeta.getLore());
       for (String loopLore : lore) {
         if (loopLore.contains(ChatManager.colorMessage("In-Game.Messages.Shop-Messages.Currency-In-Shop"))) {
           lore.remove(loopLore);
@@ -623,22 +625,21 @@ public class Events implements Listener {
         if (!(entity instanceof Player)) {
           continue;
         }
-        if (ArenaRegistry.getArena((Player) entity) != null) {
-          Arena arena = ArenaRegistry.getArena(((Player) entity));
-          if (arena == null) {
-            continue;
-          }
-          arena.addRottenFlesh(e.getItem().getItemStack().getAmount());
-          e.getItem().remove();
-          e.setCancelled(true);
-          e.getInventory().clear();
-          e.getItem().getLocation().getWorld().spawnParticle(Particle.CLOUD, e.getItem().getLocation(), 50, 2, 2, 2);
-          if (arena.checkLevelUpRottenFlesh()) {
-            for (Player p : arena.getPlayers()) {
-              p.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(p.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue() + 2.0);
-              p.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Rotten-Flesh-Level-Up"));
-            }
-          }
+        Arena arena = ArenaRegistry.getArena((Player) entity);
+        if (arena == null) {
+          continue;
+        }
+        arena.addRottenFlesh(e.getItem().getItemStack().getAmount());
+        e.getItem().remove();
+        e.setCancelled(true);
+        e.getInventory().clear();
+        e.getItem().getLocation().getWorld().spawnParticle(Particle.CLOUD, e.getItem().getLocation(), 50, 2, 2, 2);
+        if (!arena.checkLevelUpRottenFlesh()) {
+          return;
+        }
+        for (Player p : arena.getPlayers()) {
+          p.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(p.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue() + 2.0);
+          p.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Rotten-Flesh-Level-Up"));
         }
       }
     } catch (Exception ex) {

@@ -26,7 +26,6 @@ import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Player;
-import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
@@ -89,34 +88,35 @@ public class ShotBowKit extends PremiumKit implements Listener {
   @EventHandler
   public void onBowInteract(PlayerInteractEvent e) {
     try {
-      if (e.getAction() == Action.LEFT_CLICK_AIR || e.getAction() == Action.LEFT_CLICK_BLOCK) {
-        ItemStack stack = e.getPlayer().getInventory().getItemInMainHand();
-        if (stack == null || stack.getType() != Material.BOW || !e.getPlayer().getInventory().contains(Material.ARROW)
-            || !(UserManager.getUser(e.getPlayer().getUniqueId()).getKit() instanceof ShotBowKit)
-            || UserManager.getUser(e.getPlayer().getUniqueId()).isSpectator()) {
-          return;
-        }
-        if (UserManager.getUser(e.getPlayer().getUniqueId()).getCooldown("shotbow") == 0) {
-          for (int i = 0; i < 4; i++) {
-            Bukkit.getScheduler().runTaskLater(plugin, () -> {
-              Projectile pr = e.getPlayer().launchProjectile(Arrow.class);
-              pr.setVelocity(e.getPlayer().getLocation().getDirection().multiply(3));
-              pr.setBounce(false);
-              pr.setShooter(e.getPlayer());
-              ((Arrow) pr).setCritical(true);
+      if (e.getAction() != Action.LEFT_CLICK_AIR || e.getAction() != Action.LEFT_CLICK_BLOCK) {
+        return;
+      }
+      ItemStack stack = e.getPlayer().getInventory().getItemInMainHand();
+      if (stack == null || stack.getType() != Material.BOW || !e.getPlayer().getInventory().contains(Material.ARROW)
+          || !(UserManager.getUser(e.getPlayer().getUniqueId()).getKit() instanceof ShotBowKit)
+          || UserManager.getUser(e.getPlayer().getUniqueId()).isSpectator()) {
+        return;
+      }
+      if (UserManager.getUser(e.getPlayer().getUniqueId()).getCooldown("shotbow") == 0) {
+        for (int i = 0; i < 4; i++) {
+          Bukkit.getScheduler().runTaskLater(plugin, () -> {
+            Arrow pr = e.getPlayer().launchProjectile(Arrow.class);
+            pr.setVelocity(e.getPlayer().getLocation().getDirection().multiply(3));
+            pr.setBounce(false);
+            pr.setShooter(e.getPlayer());
+            pr.setCritical(true);
 
-              if (e.getPlayer().getInventory().contains(Material.ARROW)) {
-                e.getPlayer().getInventory().removeItem(new ItemStack(Material.ARROW, 1));
-              }
-            }, 2 * (2 * i));
-          }
-          e.setCancelled(true);
-          UserManager.getUser(e.getPlayer().getUniqueId()).setCooldown("shotbow", 5);
-        } else {
-          String msgstring = ChatManager.colorMessage("Kits.Ability-Still-On-Cooldown");
-          msgstring = msgstring.replaceFirst("%COOLDOWN%", Long.toString(UserManager.getUser(e.getPlayer().getUniqueId()).getCooldown("shotbow")));
-          e.getPlayer().sendMessage(msgstring);
+            if (e.getPlayer().getInventory().contains(Material.ARROW)) {
+              e.getPlayer().getInventory().removeItem(new ItemStack(Material.ARROW, 1));
+            }
+          }, 2 * (2 * i));
         }
+        e.setCancelled(true);
+        UserManager.getUser(e.getPlayer().getUniqueId()).setCooldown("shotbow", 5);
+      } else {
+        String msgstring = ChatManager.colorMessage("Kits.Ability-Still-On-Cooldown");
+        msgstring = msgstring.replaceFirst("%COOLDOWN%", Long.toString(UserManager.getUser(e.getPlayer().getUniqueId()).getCooldown("shotbow")));
+        e.getPlayer().sendMessage(msgstring);
       }
     } catch (Exception ex) {
       new ReportedException(plugin, ex);

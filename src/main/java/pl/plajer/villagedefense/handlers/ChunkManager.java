@@ -66,10 +66,11 @@ public class ChunkManager implements Listener {
     try {
       for (Entity entity : event.getChunk().getEntities()) {
         for (Arena arena : ArenaRegistry.getArenas()) {
-          if (entity.getWorld().getName().equals(arena.getStartLocation().getWorld().getName()) && entity.getLocation().distance(arena.getStartLocation()) < 300) {
-            if (entity instanceof Player || entity instanceof Wolf || entity instanceof IronGolem || entity instanceof Villager || entity instanceof Zombie) {
-              entity.remove();
-            }
+          if (!entity.getWorld().equals(arena.getStartLocation().getWorld()) || entity.getLocation().distance(arena.getStartLocation()) >= 300) {
+            continue;
+          }
+          if (entity instanceof Player || entity instanceof Wolf || entity instanceof IronGolem || entity instanceof Villager || entity instanceof Zombie) {
+            entity.remove();
           }
         }
       }

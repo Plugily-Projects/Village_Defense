@@ -108,7 +108,7 @@ public class SpectatorItemEvents implements Listener {
   public void onSpectatorInventoryClick(InventoryClickEvent e) {
     try {
       Player p = (Player) e.getWhoClicked();
-      if (ArenaRegistry.getArena(p) == null) {
+      if (ArenaRegistry.getArena(p) == null || !(e.isLeftClick() || e.isRightClick())) {
         return;
       }
       Arena arena = ArenaRegistry.getArena(p);
@@ -117,21 +117,18 @@ public class SpectatorItemEvents implements Listener {
       }
       if (e.getInventory().getName().equalsIgnoreCase(ChatManager.colorMessage("In-Game.Spectator.Spectator-Menu-Name"))) {
         e.setCancelled(true);
-        if ((e.isLeftClick() || e.isRightClick())) {
-          ItemMeta meta = e.getCurrentItem().getItemMeta();
-          for (Player player : arena.getPlayers()) {
-            if (player.getName().equalsIgnoreCase(meta.getDisplayName()) || ChatColor.stripColor(meta.getDisplayName()).contains(player.getName())) {
-              p.sendMessage(ChatManager.formatMessage(arena, ChatManager.colorMessage("Kits.Teleporter.Teleported-To-Player"), player));
-              p.teleport(player);
-              p.closeInventory();
-              e.setCancelled(true);
-              return;
+        ItemMeta meta = e.getCurrentItem().getItemMeta();
+        for (Player player : arena.getPlayers()) {
+          if (player.getName().equalsIgnoreCase(meta.getDisplayName()) || ChatColor.stripColor(meta.getDisplayName()).contains(player.getName())) {
+            p.sendMessage(ChatManager.formatMessage(arena, ChatManager.colorMessage("Kits.Teleporter.Teleported-To-Player"), player));
+            p.teleport(player);
+            p.closeInventory();
+            e.setCancelled(true);
+            return;
 
-            }
           }
-          p.sendMessage(ChatManager.colorMessage("Kits.Teleporter.Player-Not-Found"));
         }
-        e.setCancelled(true);
+        p.sendMessage(ChatManager.colorMessage("Kits.Teleporter.Player-Not-Found"));
       }
     } catch (Exception ex) {
       new ReportedException(plugin, ex);

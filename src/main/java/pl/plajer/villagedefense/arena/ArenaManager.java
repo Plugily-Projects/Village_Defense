@@ -266,21 +266,20 @@ public class ArenaManager {
         arena.addExperience(p, arena.getWave());
 
         UserManager.getUser(p.getUniqueId()).removeScoreboard();
-        if (!quickStop) {
-          if (plugin.getConfig().getBoolean("Firework-When-Game-Ends", true)) {
-            new BukkitRunnable() {
-              int i = 0;
-
-              public void run() {
-                if (i == 4 || !arena.getPlayers().contains(p)) {
-                  this.cancel();
-                }
-                MinigameUtils.spawnRandomFirework(p.getLocation());
-                i++;
-              }
-            }.runTaskTimer(plugin, 30, 30);
-          }
+        if (quickStop || !plugin.getConfig().getBoolean("Firework-When-Game-Ends", true)) {
+          continue;
         }
+        new BukkitRunnable() {
+          int i = 0;
+
+          public void run() {
+            if (i == 4 || !arena.getPlayers().contains(p)) {
+              this.cancel();
+            }
+            MinigameUtils.spawnRandomFirework(p.getLocation());
+            i++;
+          }
+        }.runTaskTimer(plugin, 30, 30);
       }
       arena.setRottenFleshAmount(0);
       arena.setRottenFleshLevel(0);

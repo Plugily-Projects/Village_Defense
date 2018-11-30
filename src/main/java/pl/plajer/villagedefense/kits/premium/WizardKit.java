@@ -114,15 +114,16 @@ public class WizardKit extends PremiumKit implements Listener {
   @EventHandler
   public void onWizardDamage(EntityDamageByEntityEvent e) {
     try {
-      if (e.getDamager() instanceof Zombie && e.getEntity() instanceof Player) {
-        if (!wizardsOnDuty.contains(e.getEntity())) {
-          return;
-        }
-        if (ArenaRegistry.getArena((Player) e.getEntity()) == null) {
-          return;
-        }
-        ((Zombie) e.getDamager()).damage(2.0, e.getEntity());
+      if (!(e.getDamager() instanceof Zombie && e.getEntity() instanceof Player)) {
+        return;
       }
+      if (!wizardsOnDuty.contains(e.getEntity())) {
+        return;
+      }
+      if (ArenaRegistry.getArena((Player) e.getEntity()) == null) {
+        return;
+      }
+      ((Zombie) e.getDamager()).damage(2.0, e.getEntity());
     } catch (Exception ex) {
       new ReportedException(plugin, ex);
     }

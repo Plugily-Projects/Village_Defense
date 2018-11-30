@@ -68,21 +68,22 @@ public class ArenaUtils {
   public static void bringDeathPlayersBack(Arena arena) {
     try {
       for (Player player : arena.getPlayers()) {
-        if (!arena.getPlayersLeft().contains(player)) {
-          User user = UserManager.getUser(player.getUniqueId());
-          user.setSpectator(false);
-
-          arena.teleportToStartLocation(player);
-          player.setFlying(false);
-          player.setAllowFlight(false);
-          player.setGameMode(GameMode.SURVIVAL);
-          player.removePotionEffect(PotionEffectType.NIGHT_VISION);
-          player.removePotionEffect(PotionEffectType.SPEED);
-          arena.showPlayers();
-          player.getInventory().clear();
-          user.getKit().giveKitItems(player);
-          player.sendMessage(ChatManager.colorMessage("In-Game.Back-In-Game"));
+        if (arena.getPlayersLeft().contains(player)) {
+          return;
         }
+        User user = UserManager.getUser(player.getUniqueId());
+        user.setSpectator(false);
+
+        arena.teleportToStartLocation(player);
+        player.setFlying(false);
+        player.setAllowFlight(false);
+        player.setGameMode(GameMode.SURVIVAL);
+        player.removePotionEffect(PotionEffectType.NIGHT_VISION);
+        player.removePotionEffect(PotionEffectType.SPEED);
+        arena.showPlayers();
+        player.getInventory().clear();
+        user.getKit().giveKitItems(player);
+        player.sendMessage(ChatManager.colorMessage("In-Game.Back-In-Game"));
       }
     } catch (Exception e) {
       new ReportedException(plugin, e);

@@ -25,7 +25,6 @@ import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Zombie;
 import org.bukkit.event.EventHandler;
@@ -93,18 +92,20 @@ public class MedicKit extends PremiumKit implements Listener {
       if (!(user.getKit() instanceof MedicKit)) {
         return;
       }
-      if (Math.random() <= 0.1) {
-        for (Entity entity : user.toPlayer().getNearbyEntities(5, 5, 5)) {
-          if (entity.getType() == EntityType.PLAYER) {
-            Player player = (Player) entity;
-            if (player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue() > (player.getHealth() + 1)) {
-              player.setHealth(player.getHealth() + 1);
-            } else {
-              player.setHealth(player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue());
-            }
-            player.getEyeLocation().getWorld().spawnParticle(Particle.HEART, player.getLocation(), 20);
-          }
+      if (Math.random() > 0.1) {
+        return;
+      }
+      for (Entity entity : user.toPlayer().getNearbyEntities(5, 5, 5)) {
+        if (!(entity instanceof Player)) {
+          continue;
         }
+        Player player = (Player) entity;
+        if (player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue() > (player.getHealth() + 1)) {
+          player.setHealth(player.getHealth() + 1);
+        } else {
+          player.setHealth(player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue());
+        }
+        player.getEyeLocation().getWorld().spawnParticle(Particle.HEART, player.getLocation(), 20);
       }
     } catch (Exception ex) {
       new ReportedException(JavaPlugin.getPlugin(Main.class), ex);

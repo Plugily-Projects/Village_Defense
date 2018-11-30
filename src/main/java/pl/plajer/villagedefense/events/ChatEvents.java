@@ -97,15 +97,15 @@ public class ChatEvents implements Listener {
           player.sendMessage(message);
         }
         Bukkit.getConsoleSender().sendMessage(message);
-      } else {
-        event.getRecipients().clear();
-        event.getRecipients().addAll(new ArrayList<>(arena.getPlayers()));
-        String message = event.getMessage().replace("%kit%", UserManager.getUser(event.getPlayer().getUniqueId()).getKit().getName());
-        if (plugin.getServer().getPluginManager().isPluginEnabled("PlaceholderAPI") && PlaceholderAPI.containsPlaceholders(message)) {
-          message = PlaceholderAPI.setPlaceholders(event.getPlayer(), message);
-        }
-        event.setMessage(message);
+        return;
       }
+      event.getRecipients().clear();
+      event.getRecipients().addAll(new ArrayList<>(arena.getPlayers()));
+      String message = event.getMessage().replace("%kit%", UserManager.getUser(event.getPlayer().getUniqueId()).getKit().getName());
+      if (plugin.getServer().getPluginManager().isPluginEnabled("PlaceholderAPI") && PlaceholderAPI.containsPlaceholders(message)) {
+        message = PlaceholderAPI.setPlaceholders(event.getPlayer(), message);
+      }
+      event.setMessage(message);
     } catch (Exception ex) {
       new ReportedException(plugin, ex);
     }

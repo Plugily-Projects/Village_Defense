@@ -224,26 +224,7 @@ public class Main extends JavaPlugin {
       LanguageMigrator.configUpdate();
       LanguageMigrator.languageFileUpdate();
       initializeClasses();
-      if (getConfig().getBoolean("Update-Notifier.Enabled", true)) {
-        UpdateChecker.init(this, 41869).requestUpdateCheck().whenComplete((result, exception) -> {
-          if (!result.requiresUpdate()) {
-            return;
-          }
-          if (result.getNewestVersion().contains("b")) {
-            if (getConfig().getBoolean("Update-Notifier.Notify-Beta-Versions", true)) {
-              Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "[VillageDefense] Your software is ready for update! However it's a BETA VERSION. Proceed with caution.");
-              Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "[VillageDefense] Current version %old%, latest version %new%".replace("%old%", getDescription().getVersion()).replace("%new%",
-                  result.getNewestVersion()));
-            }
-            return;
-          }
-          MessageUtils.updateIsHere();
-          Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "Your VillageDefense plugin is outdated! Download it to keep with latest changes and fixes.");
-          Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "Disable this option in config.yml if you wish.");
-          Bukkit.getConsoleSender().sendMessage(ChatColor.YELLOW + "Current version: " + ChatColor.RED + getDescription().getVersion() + ChatColor.YELLOW + " Latest version: " + ChatColor.GREEN + result.getNewestVersion());
-        });
-      }
-
+      checkUpdate();
 
       STARTING_TIMER_TIME = getConfig().getInt("Starting-Waiting-Time", 60);
       databaseActivated = getConfig().getBoolean("DatabaseActivated", false);
@@ -352,6 +333,29 @@ public class Main extends JavaPlugin {
     chunkManager = new ChunkManager(this);
     rewardsHandler = new RewardsFactory(this);
     User.cooldownHandlerTask();
+  }
+
+  private void checkUpdate() {
+    if (!getConfig().getBoolean("Update-Notifier.Enabled", true)) {
+      return;
+    }
+    UpdateChecker.init(this, 41869).requestUpdateCheck().whenComplete((result, exception) -> {
+      if (!result.requiresUpdate()) {
+        return;
+      }
+      if (result.getNewestVersion().contains("b")) {
+        if (getConfig().getBoolean("Update-Notifier.Notify-Beta-Versions", true)) {
+          Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "[VillageDefense] Your software is ready for update! However it's a BETA VERSION. Proceed with caution.");
+          Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "[VillageDefense] Current version %old%, latest version %new%".replace("%old%", getDescription().getVersion()).replace("%new%",
+              result.getNewestVersion()));
+        }
+        return;
+      }
+      MessageUtils.updateIsHere();
+      Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "Your VillageDefense plugin is outdated! Download it to keep with latest changes and fixes.");
+      Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "Disable this option in config.yml if you wish.");
+      Bukkit.getConsoleSender().sendMessage(ChatColor.YELLOW + "Current version: " + ChatColor.RED + getDescription().getVersion() + ChatColor.YELLOW + " Latest version: " + ChatColor.GREEN + result.getNewestVersion());
+    });
   }
 
   private void setupFiles() {

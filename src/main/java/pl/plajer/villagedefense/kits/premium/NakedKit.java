@@ -121,18 +121,17 @@ public class NakedKit extends PremiumKit implements Listener {
         return;
       }
       Bukkit.getScheduler().runTaskLater(Main.getPlugin(Main.class), () -> {
-        for (ItemStack is : event.getWhoClicked().getInventory().getArmorContents()) {
-          if (is != null) {
-            if (armorTypes.contains(is.getType())) {
-              //we cannot cancel event using scheduler, we must remove all armor contents from inventory manually
-              event.getWhoClicked().sendMessage(ChatManager.colorMessage("Kits.Wild-Naked.Cannot-Wear-Armor"));
-              event.getWhoClicked().getInventory().setHelmet(new ItemStack(Material.AIR, 1));
-              event.getWhoClicked().getInventory().setChestplate(new ItemStack(Material.AIR, 1));
-              event.getWhoClicked().getInventory().setLeggings(new ItemStack(Material.AIR, 1));
-              event.getWhoClicked().getInventory().setBoots(new ItemStack(Material.AIR, 1));
-              return;
-            }
+        for (ItemStack stack : event.getWhoClicked().getInventory().getArmorContents()) {
+          if (stack == null || !armorTypes.contains(stack.getType())) {
+            continue;
           }
+          //we cannot cancel event using scheduler, we must remove all armor contents from inventory manually
+          event.getWhoClicked().sendMessage(ChatManager.colorMessage("Kits.Wild-Naked.Cannot-Wear-Armor"));
+          event.getWhoClicked().getInventory().setHelmet(new ItemStack(Material.AIR, 1));
+          event.getWhoClicked().getInventory().setChestplate(new ItemStack(Material.AIR, 1));
+          event.getWhoClicked().getInventory().setLeggings(new ItemStack(Material.AIR, 1));
+          event.getWhoClicked().getInventory().setBoots(new ItemStack(Material.AIR, 1));
+          return;
         }
       }, 1);
     } catch (Exception ex) {
