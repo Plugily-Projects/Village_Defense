@@ -58,12 +58,15 @@ import pl.plajerlair.core.utils.XMaterial;
  */
 public class ArenaInitializer1_13_R1 extends Arena {
 
+  private Main plugin;
+
   public ArenaInitializer1_13_R1(String ID, Main plugin) {
     super(ID, plugin);
+    this.plugin = plugin;
   }
 
   public void spawnFastZombie(Random random) {
-    Location location = zombieSpawns.get(random.nextInt(zombieSpawns.size()));
+    Location location = getZombieSpawns().get(random.nextInt(getZombieSpawns().size()));
     net.minecraft.server.v1_13_R1.World mcWorld = ((CraftWorld) location.getWorld()).getHandle();
     FastZombie fastZombie = new FastZombie(mcWorld, this.getVillagerSpawns().get(0));
     fastZombie.setPosition(location.getX(), location.getY(), location.getZ());
@@ -79,7 +82,7 @@ public class ArenaInitializer1_13_R1 extends Arena {
 
   @Override
   public void spawnHalfInvisibleZombie(Random random) {
-    Location location = zombieSpawns.get(random.nextInt(zombieSpawns.size()));
+    Location location = getZombieSpawns().get(random.nextInt(getZombieSpawns().size()));
     net.minecraft.server.v1_13_R1.World mcWorld = ((CraftWorld) location.getWorld()).getHandle();
     FastZombie fastZombie = new FastZombie(mcWorld, this.getVillagerSpawns().get(0));
     fastZombie.setPosition(location.getX(), location.getY(), location.getZ());
@@ -96,7 +99,7 @@ public class ArenaInitializer1_13_R1 extends Arena {
 
   @Override
   public void spawnKnockbackResistantZombies(Random random) {
-    Location location = zombieSpawns.get(random.nextInt(zombieSpawns.size()));
+    Location location = getZombieSpawns().get(random.nextInt(getZombieSpawns().size()));
     net.minecraft.server.v1_13_R1.World mcWorld = ((CraftWorld) location.getWorld()).getHandle();
     TankerZombie fastZombie = new TankerZombie(mcWorld, this.getVillagerSpawns().get(0));
     fastZombie.getAttributeInstance(GenericAttributes.c).setValue(Double.MAX_VALUE);
@@ -116,7 +119,7 @@ public class ArenaInitializer1_13_R1 extends Arena {
   }
 
   public void spawnBabyZombie(Random random) {
-    Location location = zombieSpawns.get(random.nextInt(zombieSpawns.size()));
+    Location location = getZombieSpawns().get(random.nextInt(getZombieSpawns().size()));
     net.minecraft.server.v1_13_R1.World mcWorld = ((CraftWorld) location.getWorld()).getHandle();
     BabyZombie fastZombie = new BabyZombie(mcWorld, this.getVillagerSpawns().get(0));
     fastZombie.setPosition(location.getX(), location.getY(), location.getZ());
@@ -131,7 +134,7 @@ public class ArenaInitializer1_13_R1 extends Arena {
   }
 
   public void spawnHardZombie(Random random) {
-    Location location = zombieSpawns.get(random.nextInt(zombieSpawns.size()));
+    Location location = getZombieSpawns().get(random.nextInt(getZombieSpawns().size()));
     net.minecraft.server.v1_13_R1.World mcWorld = ((CraftWorld) location.getWorld()).getHandle();
     HardZombie fastZombie = new HardZombie(mcWorld, this.getVillagerSpawns().get(0));
     fastZombie.setPosition(location.getX(), location.getY(), location.getZ());
@@ -149,7 +152,7 @@ public class ArenaInitializer1_13_R1 extends Arena {
 
   @Override
   public void spawnSoftHardZombie(Random random) {
-    Location location = zombieSpawns.get(random.nextInt(zombieSpawns.size()));
+    Location location = getZombieSpawns().get(random.nextInt(getZombieSpawns().size()));
     net.minecraft.server.v1_13_R1.World mcWorld = ((CraftWorld) location.getWorld()).getHandle();
     HardZombie fastZombie = new HardZombie(mcWorld, this.getVillagerSpawns().get(0));
     fastZombie.setPosition(location.getX(), location.getY(), location.getZ());
@@ -166,7 +169,7 @@ public class ArenaInitializer1_13_R1 extends Arena {
   }
 
   public void spawnGolemBuster(Random random) {
-    Location location = zombieSpawns.get(random.nextInt(zombieSpawns.size()));
+    Location location = getZombieSpawns().get(random.nextInt(getZombieSpawns().size()));
     net.minecraft.server.v1_13_R1.World mcWorld = ((CraftWorld) location.getWorld()).getHandle();
     GolemBuster fastZombie = new GolemBuster(mcWorld, this.getVillagerSpawns().get(0));
     fastZombie.setPosition(location.getX(), location.getY(), location.getZ());
@@ -183,7 +186,7 @@ public class ArenaInitializer1_13_R1 extends Arena {
   }
 
   public void spawnPlayerBuster(Random random) {
-    Location location = zombieSpawns.get(random.nextInt(zombieSpawns.size()));
+    Location location = getZombieSpawns().get(random.nextInt(getZombieSpawns().size()));
     net.minecraft.server.v1_13_R1.World mcWorld = ((CraftWorld) location.getWorld()).getHandle();
     PlayerBuster fastZombie = new PlayerBuster(mcWorld, this.getVillagerSpawns().get(0));
     fastZombie.setPosition(location.getX(), location.getY(), location.getZ());
@@ -202,7 +205,7 @@ public class ArenaInitializer1_13_R1 extends Arena {
   }
 
   public void spawnVillagerSlayer(Random random) {
-    Location location = zombieSpawns.get(random.nextInt(zombieSpawns.size() - 1));
+    Location location = getZombieSpawns().get(random.nextInt(getZombieSpawns().size() - 1));
     net.minecraft.server.v1_13_R1.World mcWorld = ((CraftWorld) location.getWorld()).getHandle();
     VillagerSlayer villagerSlayer = new VillagerSlayer(mcWorld, this.getVillagerSpawns().get(0));
     villagerSlayer.setPosition(location.getX(), location.getY(), location.getZ());

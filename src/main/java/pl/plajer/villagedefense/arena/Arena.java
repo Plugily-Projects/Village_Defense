@@ -75,8 +75,8 @@ import pl.plajerlair.core.utils.XMaterial;
  */
 public abstract class Arena extends BukkitRunnable {
 
-  protected final List<Location> zombieSpawns = new ArrayList<>();
-  protected final Main plugin;
+  private final List<Location> zombieSpawns = new ArrayList<>();
+  private final Main plugin;
   private final List<Zombie> zombies = new ArrayList<>();
   private final List<Wolf> wolfs = new ArrayList<>();
   private final List<Villager> villagers = new ArrayList<>();
@@ -1130,6 +1130,10 @@ public abstract class Arena extends BukkitRunnable {
       villager.setHealth(0);
       villagers.remove(villager);
     }
+  }
+
+  public List<Location> getZombieSpawns() {
+    return zombieSpawns;
   }
 
   protected void addIronGolem(IronGolem ironGolem) {
