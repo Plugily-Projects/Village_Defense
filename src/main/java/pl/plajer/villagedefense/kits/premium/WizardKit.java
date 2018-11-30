@@ -46,6 +46,7 @@ import pl.plajer.villagedefense.handlers.ChatManager;
 import pl.plajer.villagedefense.handlers.PermissionsManager;
 import pl.plajer.villagedefense.kits.kitapi.KitRegistry;
 import pl.plajer.villagedefense.kits.kitapi.basekits.PremiumKit;
+import pl.plajer.villagedefense.user.User;
 import pl.plajer.villagedefense.user.UserManager;
 import pl.plajer.villagedefense.utils.ArmorHelper;
 import pl.plajer.villagedefense.utils.Utils;
@@ -142,14 +143,15 @@ public class WizardKit extends PremiumKit implements Listener {
         return;
       }
       final Player p = e.getPlayer();
+      User user = UserManager.getUser(e.getPlayer().getUniqueId());
       ItemStack stack = e.getPlayer().getInventory().getItemInMainHand();
       if (!Utils.isNamed(stack)) {
         return;
       }
       if (stack.getItemMeta().getDisplayName().equals(ChatManager.colorMessage("Kits.Wizard.Essence-Item-Name"))) {
-        if (UserManager.getUser(e.getPlayer().getUniqueId()).getCooldown("essence") > 0 && !UserManager.getUser(e.getPlayer().getUniqueId()).isSpectator()) {
+        if (user.getCooldown("essence") > 0 && !user.isSpectator()) {
           String message = ChatManager.colorMessage("Kits.Ability-Still-On-Cooldown");
-          message = message.replaceFirst("%COOLDOWN%", Long.toString(UserManager.getUser(e.getPlayer().getUniqueId()).getCooldown("essence")));
+          message = message.replaceFirst("%COOLDOWN%", Long.toString(user.getCooldown("essence")));
           e.getPlayer().sendMessage(message);
           return;
         }
@@ -185,15 +187,15 @@ public class WizardKit extends PremiumKit implements Listener {
           p.setGlowing(false);
           wizardsOnDuty.remove(p);
         }, 20 * 15);
-        UserManager.getUser(e.getPlayer().getUniqueId()).setCooldown("essence", 15);
+        user.setCooldown("essence", 15);
       } else if (stack.getItemMeta().getDisplayName().equals(ChatManager.colorMessage("Kits.Wizard.Staff-Item-Name"))) {
-        if (UserManager.getUser(e.getPlayer().getUniqueId()).isSpectator()) {
+        if (user.isSpectator()) {
           e.getPlayer().sendMessage(ChatManager.colorMessage("Kits.Cleaner.Spectator-Warning"));
           return;
         }
-        if (UserManager.getUser(e.getPlayer().getUniqueId()).getCooldown("wizard_staff") > 0 && !UserManager.getUser(e.getPlayer().getUniqueId()).isSpectator()) {
+        if (user.getCooldown("wizard_staff") > 0 && !user.isSpectator()) {
           String message = ChatManager.colorMessage("Kits.Ability-Still-On-Cooldown");
-          message = message.replaceFirst("%COOLDOWN%", Long.toString(UserManager.getUser(e.getPlayer().getUniqueId()).getCooldown("wizard_staff")));
+          message = message.replaceFirst("%COOLDOWN%", Long.toString(user.getCooldown("wizard_staff")));
           e.getPlayer().sendMessage(message);
           return;
         }
@@ -227,7 +229,7 @@ public class WizardKit extends PremiumKit implements Listener {
             }
           }
         }.runTaskTimer(plugin, 0, 1);
-        UserManager.getUser(e.getPlayer().getUniqueId()).setCooldown("wizard_staff", 1);
+        user.setCooldown("wizard_staff", 1);
       }
     } catch (Exception ex) {
       new ReportedException(plugin, ex);

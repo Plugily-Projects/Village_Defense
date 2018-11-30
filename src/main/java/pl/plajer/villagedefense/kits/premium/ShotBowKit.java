@@ -37,6 +37,7 @@ import pl.plajer.villagedefense.handlers.ChatManager;
 import pl.plajer.villagedefense.handlers.PermissionsManager;
 import pl.plajer.villagedefense.kits.kitapi.KitRegistry;
 import pl.plajer.villagedefense.kits.kitapi.basekits.PremiumKit;
+import pl.plajer.villagedefense.user.User;
 import pl.plajer.villagedefense.user.UserManager;
 import pl.plajer.villagedefense.utils.ArmorHelper;
 import pl.plajer.villagedefense.utils.Utils;
@@ -92,12 +93,13 @@ public class ShotBowKit extends PremiumKit implements Listener {
         return;
       }
       ItemStack stack = e.getPlayer().getInventory().getItemInMainHand();
+      User user = UserManager.getUser(e.getPlayer().getUniqueId());
       if (stack == null || stack.getType() != Material.BOW || !e.getPlayer().getInventory().contains(Material.ARROW)
-          || !(UserManager.getUser(e.getPlayer().getUniqueId()).getKit() instanceof ShotBowKit)
-          || UserManager.getUser(e.getPlayer().getUniqueId()).isSpectator()) {
+          || !(user.getKit() instanceof ShotBowKit)
+          || user.isSpectator()) {
         return;
       }
-      if (UserManager.getUser(e.getPlayer().getUniqueId()).getCooldown("shotbow") == 0) {
+      if (user.getCooldown("shotbow") == 0) {
         for (int i = 0; i < 4; i++) {
           Bukkit.getScheduler().runTaskLater(plugin, () -> {
             Arrow pr = e.getPlayer().launchProjectile(Arrow.class);
@@ -112,10 +114,10 @@ public class ShotBowKit extends PremiumKit implements Listener {
           }, 2 * (2 * i));
         }
         e.setCancelled(true);
-        UserManager.getUser(e.getPlayer().getUniqueId()).setCooldown("shotbow", 5);
+        user.setCooldown("shotbow", 5);
       } else {
         String msgstring = ChatManager.colorMessage("Kits.Ability-Still-On-Cooldown");
-        msgstring = msgstring.replaceFirst("%COOLDOWN%", Long.toString(UserManager.getUser(e.getPlayer().getUniqueId()).getCooldown("shotbow")));
+        msgstring = msgstring.replaceFirst("%COOLDOWN%", Long.toString(user.getCooldown("shotbow")));
         e.getPlayer().sendMessage(msgstring);
       }
     } catch (Exception ex) {

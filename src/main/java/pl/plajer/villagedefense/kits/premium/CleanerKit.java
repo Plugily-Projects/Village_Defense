@@ -37,6 +37,7 @@ import pl.plajer.villagedefense.handlers.ChatManager;
 import pl.plajer.villagedefense.handlers.PermissionsManager;
 import pl.plajer.villagedefense.kits.kitapi.KitRegistry;
 import pl.plajer.villagedefense.kits.kitapi.basekits.PremiumKit;
+import pl.plajer.villagedefense.user.User;
 import pl.plajer.villagedefense.user.UserManager;
 import pl.plajer.villagedefense.utils.ArmorHelper;
 import pl.plajer.villagedefense.utils.Utils;
@@ -95,13 +96,14 @@ public class CleanerKit extends PremiumKit implements Listener {
           .contains(ChatManager.colorMessage("Kits.Cleaner.Game-Item-Name")) || arena == null) {
         return;
       }
-      if (UserManager.getUser(e.getPlayer().getUniqueId()).isSpectator()) {
+      User user = (UserManager.getUser(e.getPlayer().getUniqueId()));
+      if (user.isSpectator()) {
         e.getPlayer().sendMessage(ChatManager.colorMessage("Kits.Cleaner.Spectator-Warning"));
         return;
       }
-      if (UserManager.getUser(e.getPlayer().getUniqueId()).getCooldown("clean") > 0 && !UserManager.getUser(e.getPlayer().getUniqueId()).isSpectator()) {
+      if (user.getCooldown("clean") > 0 && !user.isSpectator()) {
         String message = ChatManager.colorMessage("Kits.Ability-Still-On-Cooldown");
-        message = message.replaceFirst("%COOLDOWN%", Long.toString(UserManager.getUser(e.getPlayer().getUniqueId()).getCooldown("clean")));
+        message = message.replaceFirst("%COOLDOWN%", Long.toString(user.getCooldown("clean")));
         e.getPlayer().sendMessage(message);
         return;
       }
@@ -119,7 +121,7 @@ public class CleanerKit extends PremiumKit implements Listener {
       for (Player p : ArenaRegistry.getArena(e.getPlayer()).getPlayers()) {
         p.sendMessage(ChatManager.PLUGIN_PREFIX + message);
       }
-      UserManager.getUser(e.getPlayer().getUniqueId()).setCooldown("clean", 180);
+      user.setCooldown("clean", 180);
     } catch (Exception ex) {
       new ReportedException(plugin, ex);
     }
