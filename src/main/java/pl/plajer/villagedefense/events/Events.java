@@ -19,7 +19,6 @@
 package pl.plajer.villagedefense.events;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import org.bukkit.ChatColor;
@@ -87,7 +86,6 @@ import pl.plajerlair.core.utils.XMaterial;
  */
 public class Events implements Listener {
 
-  private final List<EntityType> VILLAGE_ENTITIES = Arrays.asList(EntityType.PLAYER, EntityType.WOLF, EntityType.IRON_GOLEM, EntityType.VILLAGER);
   private Main plugin;
 
   public Events(Main plugin) {
@@ -388,23 +386,23 @@ public class Events implements Listener {
   }
 
   @EventHandler(priority = EventPriority.HIGHEST)
-  public void onFriendHurt(EntityDamageByEntityEvent event) {
+  public void onFriendHurt(EntityDamageByEntityEvent e) {
     try {
-      if (!(event.getDamager() instanceof Player)) {
+      if (!(e.getDamager() instanceof Player)) {
         return;
       }
-      Arena arena = ArenaRegistry.getArena((Player) event.getDamager());
+      Arena arena = ArenaRegistry.getArena((Player) e.getDamager());
       if (arena == null) {
         return;
       }
-      if (UserManager.getUser(event.getDamager().getUniqueId()).isSpectator()) {
-        event.setCancelled(true);
+      if (UserManager.getUser(e.getDamager().getUniqueId()).isSpectator()) {
+        e.setCancelled(true);
         return;
       }
-      if (!VILLAGE_ENTITIES.contains(event.getEntityType())) {
+      if (!(e.getEntity() instanceof Player || e.getEntity() instanceof Wolf || e.getEntity() instanceof IronGolem || e.getEntity() instanceof Villager)) {
         return;
       }
-      event.setCancelled(true);
+      e.setCancelled(true);
     } catch (Exception ex) {
       new ReportedException(plugin, ex);
     }
@@ -432,17 +430,17 @@ public class Events implements Listener {
   }
 
   @EventHandler(priority = EventPriority.HIGHEST)
-  public void onSecond(EntityDamageByEntityEvent event) {
+  public void onSecond(EntityDamageByEntityEvent e) {
     try {
-      User user = UserManager.getUser((event.getDamager().getUniqueId()));
+      User user = UserManager.getUser((e.getDamager().getUniqueId()));
       if (user.isSpectator()) {
-        event.setCancelled(true);
+        e.setCancelled(true);
         return;
       }
-      if (!(event.getDamager() instanceof Arrow)) {
+      if (!(e.getDamager() instanceof Arrow)) {
         return;
       }
-      Arrow arrow = (Arrow) event.getDamager();
+      Arrow arrow = (Arrow) e.getDamager();
       if (arrow.getShooter() == null) {
         return;
       }
@@ -453,10 +451,10 @@ public class Events implements Listener {
       if (arena == null) {
         return;
       }
-      if (!VILLAGE_ENTITIES.contains(event.getEntityType())) {
+      if (!(e.getEntity() instanceof Player || e.getEntity() instanceof Wolf || e.getEntity() instanceof IronGolem || e.getEntity() instanceof Villager)) {
         return;
       }
-      event.setCancelled(true);
+      e.setCancelled(true);
     } catch (Exception ex) {
       new ReportedException(plugin, ex);
     }
