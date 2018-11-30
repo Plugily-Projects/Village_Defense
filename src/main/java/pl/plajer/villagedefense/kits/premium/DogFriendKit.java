@@ -55,7 +55,6 @@ public class DogFriendKit extends PremiumKit {
     KitRegistry.registerKit(this);
   }
 
-
   @Override
   public boolean isUnlockedByPlayer(Player player) {
     return PermissionsManager.isPremium(player) || player.hasPermission("villagedefense.kit.dogfriend");

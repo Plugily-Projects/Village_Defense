@@ -44,6 +44,7 @@ import pl.plajer.villagedefense.utils.ArmorHelper;
 import pl.plajer.villagedefense.utils.Utils;
 import pl.plajer.villagedefense.utils.WeaponHelper;
 import pl.plajerlair.core.services.exception.ReportedException;
+import pl.plajerlair.core.utils.ItemBuilder;
 import pl.plajerlair.core.utils.XMaterial;
 
 /**
@@ -77,10 +78,10 @@ public class TornadoKit extends PremiumKit implements Listener {
 
     player.getInventory().addItem(new ItemStack(Material.COOKED_BEEF, 10));
     player.getInventory().addItem(new ItemStack(Material.SADDLE));
-    ItemStack tornado = new ItemStack(XMaterial.COBWEB.parseMaterial(), 5);
-    List<String> tornadoLore = Utils.splitString(ChatManager.colorMessage("Kits.Tornado.Game-Item-Lore"), 40);
-    this.setItemNameAndLore(tornado, ChatManager.colorMessage("Kits.Tornado.Game-Item-Name"), tornadoLore.toArray(new String[0]));
-    player.getInventory().addItem(tornado);
+    player.getInventory().addItem(new ItemBuilder(new ItemStack(XMaterial.COBWEB.parseMaterial(), 5))
+        .name(ChatManager.colorMessage("Kits.Tornado.Game-Item-Name"))
+        .lore(Utils.splitString(ChatManager.colorMessage("Kits.Tornado.Game-Item-Lore"), 40))
+        .build());
   }
 
   @Override
@@ -90,10 +91,10 @@ public class TornadoKit extends PremiumKit implements Listener {
 
   @Override
   public void reStock(Player player) {
-    ItemStack tornado = new ItemStack(XMaterial.COBWEB.parseMaterial(), 5);
-    List<String> tornadoLore = Utils.splitString(ChatManager.colorMessage("Kits.Tornado.Game-Item-Lore"), 40);
-    this.setItemNameAndLore(tornado, ChatManager.colorMessage("Kits.Tornado.Game-Item-Name"), tornadoLore.toArray(new String[0]));
-    player.getInventory().addItem(tornado);
+    player.getInventory().addItem(new ItemBuilder(new ItemStack(XMaterial.COBWEB.parseMaterial(), 5))
+        .name(ChatManager.colorMessage("Kits.Tornado.Game-Item-Name"))
+        .lore(Utils.splitString(ChatManager.colorMessage("Kits.Tornado.Game-Item-Lore"), 40))
+        .build());
   }
 
   @EventHandler

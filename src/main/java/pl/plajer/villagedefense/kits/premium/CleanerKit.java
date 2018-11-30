@@ -43,6 +43,7 @@ import pl.plajer.villagedefense.utils.ArmorHelper;
 import pl.plajer.villagedefense.utils.Utils;
 import pl.plajer.villagedefense.utils.WeaponHelper;
 import pl.plajerlair.core.services.exception.ReportedException;
+import pl.plajerlair.core.utils.ItemBuilder;
 
 /**
  * Created by Tom on 18/08/2014.
@@ -69,12 +70,10 @@ public class CleanerKit extends PremiumKit implements Listener {
   public void giveKitItems(Player player) {
     ArmorHelper.setColouredArmor(Color.YELLOW, player);
     player.getInventory().addItem(WeaponHelper.getUnBreakingSword(WeaponHelper.ResourceType.WOOD, 10));
-    ItemStack cleaneritem = new ItemStack(Material.BLAZE_ROD);
-    List<String> cleanerWandLore = Utils.splitString(ChatManager.colorMessage("Kits.Cleaner.Game-Item-Lore"), 40);
-    String[] cleanerWandLoreArray = cleanerWandLore.toArray(new String[0]);
-
-    this.setItemNameAndLore(cleaneritem, ChatManager.colorMessage("Kits.Cleaner.Game-Item-Name"), cleanerWandLoreArray);
-    player.getInventory().addItem(cleaneritem);
+    player.getInventory().addItem(new ItemBuilder(new ItemStack(Material.BLAZE_ROD))
+        .name(ChatManager.colorMessage("Kits.Cleaner.Game-Item-Name"))
+        .lore(Utils.splitString(ChatManager.colorMessage("Kits.Cleaner.Game-Item-Lore"), 40))
+        .build());
     player.getInventory().addItem(new ItemStack(Material.COOKED_BEEF, 10));
     player.getInventory().addItem(new ItemStack(Material.SADDLE));
   }

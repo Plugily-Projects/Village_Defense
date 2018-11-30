@@ -21,6 +21,7 @@ package pl.plajer.villagedefense.kits.kitapi.basekits;
 import org.bukkit.inventory.ItemStack;
 
 import pl.plajer.villagedefense.handlers.ChatManager;
+import pl.plajerlair.core.utils.ItemBuilder;
 import pl.plajerlair.core.utils.MinigameUtils;
 
 /**
@@ -28,14 +29,13 @@ import pl.plajerlair.core.utils.MinigameUtils;
  */
 public abstract class PremiumKit extends Kit {
 
-  protected PremiumKit() {
-  }
-
   @Override
   public ItemStack getItemStack() {
-    ItemStack itemStack = new ItemStack(getMaterial());
-    setItemNameAndLore(itemStack, getName(), getDescription());
-    MinigameUtils.addLore(itemStack, ChatManager.colorMessage("Kits.Kit-Menu.Locked-Lores.Unlock-In-Store"));
-    return itemStack;
+    ItemStack stack = new ItemBuilder(new ItemStack(getMaterial()))
+        .name(getName())
+        .lore(getDescription())
+        .build();
+    MinigameUtils.addLore(stack, ChatManager.colorMessage("Kits.Kit-Menu.Locked-Lores.Unlock-In-Store"));
+    return stack;
   }
 }

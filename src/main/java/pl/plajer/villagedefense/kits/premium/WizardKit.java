@@ -51,6 +51,7 @@ import pl.plajer.villagedefense.user.UserManager;
 import pl.plajer.villagedefense.utils.ArmorHelper;
 import pl.plajer.villagedefense.utils.Utils;
 import pl.plajerlair.core.services.exception.ReportedException;
+import pl.plajerlair.core.utils.ItemBuilder;
 import pl.plajerlair.core.utils.XMaterial;
 
 /**
@@ -79,15 +80,14 @@ public class WizardKit extends PremiumKit implements Listener {
 
   @Override
   public void giveKitItems(Player player) {
-    ItemStack wizardStaff = new ItemStack(Material.BLAZE_ROD, 1);
-    List<String> staffLore = Utils.splitString(ChatManager.colorMessage("Kits.Wizard.Staff-Item-Lore"), 40);
-    this.setItemNameAndLore(wizardStaff, ChatManager.colorMessage("Kits.Wizard.Staff-Item-Name"), staffLore.toArray(new String[0]));
-    player.getInventory().addItem(wizardStaff);
-
-    ItemStack essenceOfDarkness = new ItemStack(XMaterial.INK_SAC.parseMaterial(), 4);
-    List<String> essenceLore = Utils.splitString(ChatManager.colorMessage("Kits.Wizard.Essence-Item-Lore"), 40);
-    this.setItemNameAndLore(essenceOfDarkness, ChatManager.colorMessage("Kits.Wizard.Essence-Item-Name"), essenceLore.toArray(new String[0]));
-    player.getInventory().addItem(essenceOfDarkness);
+    player.getInventory().addItem(new ItemBuilder(new ItemStack(Material.BLAZE_ROD))
+        .name(ChatManager.colorMessage("Kits.Wizard.Staff-Item-Name"))
+        .lore(Utils.splitString(ChatManager.colorMessage("Kits.Wizard.Staff-Item-Lore"), 40))
+        .build());
+    player.getInventory().addItem(new ItemBuilder(new ItemStack(XMaterial.INK_SAC.parseMaterial(), 4))
+        .name(ChatManager.colorMessage("Kits.Wizard.Essence-Item-Lore"))
+        .lore(Utils.splitString(ChatManager.colorMessage("Kits.Wizard.Essence-Item-Name"), 40))
+        .build());
 
     ArmorHelper.setColouredArmor(Color.GRAY, player);
     player.getInventory().addItem(new ItemStack(Material.SADDLE));
@@ -101,10 +101,10 @@ public class WizardKit extends PremiumKit implements Listener {
 
   @Override
   public void reStock(Player player) {
-    ItemStack essenceOfDarkness = new ItemStack(XMaterial.INK_SAC.parseMaterial(), 1);
-    List<String> essenceLore = Utils.splitString(ChatManager.colorMessage("Kits.Wizard.Essence-Item-Lore"), 40);
-    this.setItemNameAndLore(essenceOfDarkness, ChatManager.colorMessage("Kits.Wizard.Essence-Item-Name"), essenceLore.toArray(new String[0]));
-    player.getInventory().addItem(essenceOfDarkness);
+    player.getInventory().addItem(new ItemBuilder(new ItemStack(XMaterial.INK_SAC.parseMaterial()))
+        .name(ChatManager.colorMessage("Kits.Wizard.Essence-Item-Lore"))
+        .lore(Utils.splitString(ChatManager.colorMessage("Kits.Wizard.Essence-Item-Name"), 40))
+        .build());
   }
 
   @EventHandler

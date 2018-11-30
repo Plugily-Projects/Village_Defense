@@ -18,7 +18,6 @@
 
 package pl.plajer.villagedefense.kits.premium;
 
-import java.util.Arrays;
 import java.util.List;
 
 import org.bukkit.Color;
@@ -33,8 +32,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.PlayerInventory;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import pl.plajer.villagedefense.Main;
@@ -49,6 +46,7 @@ import pl.plajer.villagedefense.utils.ArmorHelper;
 import pl.plajer.villagedefense.utils.Utils;
 import pl.plajer.villagedefense.utils.WeaponHelper;
 import pl.plajerlair.core.services.exception.ReportedException;
+import pl.plajerlair.core.utils.ItemBuilder;
 import pl.plajerlair.core.utils.XMaterial;
 
 /**
@@ -77,12 +75,10 @@ public class BlockerKit extends PremiumKit implements Listener {
     ArmorHelper.setColouredArmor(Color.RED, player);
     player.getInventory().addItem(WeaponHelper.getEnchanted(new ItemStack(Material.STONE_SWORD), new org.bukkit.enchantments.Enchantment[] {org.bukkit.enchantments.Enchantment.DURABILITY}, new int[] {10}));
     player.getInventory().addItem(new ItemStack(Material.COOKED_BEEF, 10));
-    ItemStack is = new ItemStack(XMaterial.OAK_FENCE.parseMaterial(), 3);
-    ItemMeta im = is.getItemMeta();
-    im.setDisplayName(ChatManager.colorMessage("Kits.Blocker.Game-Item-Name"));
-    im.setLore(Arrays.asList(ChatManager.colorMessage("Kits.Blocker.Game-Item-Lore").split("\n")));
-    is.setItemMeta(im);
-    player.getInventory().addItem(is);
+    player.getInventory().addItem(new ItemBuilder(new ItemStack(XMaterial.OAK_FENCE.parseMaterial(), 3))
+        .name(ChatManager.colorMessage("Kits.Blocker.Game-Item-Name"))
+        .lore(ChatManager.colorMessage("Kits.Blocker.Game-Item-Lore").split("\n"))
+        .build());
     player.getInventory().addItem(new ItemStack(Material.SADDLE));
 
   }
@@ -94,13 +90,10 @@ public class BlockerKit extends PremiumKit implements Listener {
 
   @Override
   public void reStock(Player player) {
-    PlayerInventory inventory = player.getInventory();
-    ItemStack is = new ItemStack(XMaterial.OAK_FENCE.parseMaterial(), 3);
-    ItemMeta im = is.getItemMeta();
-    im.setDisplayName(ChatManager.colorMessage("Kits.Blocker.Game-Item-Name"));
-    im.setLore(Utils.splitString(ChatManager.colorMessage("Kits.Blocker.Game-Item-Lore"), 40));
-    is.setItemMeta(im);
-    inventory.addItem(is);
+    player.getInventory().addItem(new ItemBuilder(new ItemStack(XMaterial.OAK_FENCE.parseMaterial(), 3))
+        .name(ChatManager.colorMessage("Kits.Blocker.Game-Item-Name"))
+        .lore(Utils.splitString(ChatManager.colorMessage("Kits.Blocker.Game-Item-Lore"), 40))
+        .build());
   }
 
   @EventHandler(priority = EventPriority.HIGHEST)

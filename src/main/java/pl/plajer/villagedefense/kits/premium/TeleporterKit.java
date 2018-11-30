@@ -48,6 +48,7 @@ import pl.plajer.villagedefense.utils.ArmorHelper;
 import pl.plajer.villagedefense.utils.Utils;
 import pl.plajer.villagedefense.utils.WeaponHelper;
 import pl.plajerlair.core.services.exception.ReportedException;
+import pl.plajerlair.core.utils.ItemBuilder;
 import pl.plajerlair.core.utils.XMaterial;
 
 /**
@@ -78,10 +79,10 @@ public class TeleporterKit extends PremiumKit implements Listener {
 
     player.getInventory().addItem(new ItemStack(Material.COOKED_BEEF, 10));
     player.getInventory().addItem(new ItemStack(Material.SADDLE));
-    ItemStack enderpealteleporter = new ItemStack(Material.GHAST_TEAR);
-    List<String> teleporationlore = Utils.splitString(ChatManager.colorMessage("Kits.Teleporter.Game-Item-Lore"), 40);
-    this.setItemNameAndLore(enderpealteleporter, ChatManager.colorMessage("Kits.Teleporter.Game-Item-Name"), teleporationlore.toArray(new String[0]));
-    player.getInventory().addItem(enderpealteleporter);
+    player.getInventory().addItem(new ItemBuilder(new ItemStack(Material.GHAST_TEAR))
+        .name(ChatManager.colorMessage("Kits.Teleporter.Game-Item-Name"))
+        .lore(Utils.splitString(ChatManager.colorMessage("Kits.Teleporter.Game-Item-Lore"), 40))
+        .build());
   }
 
   @Override
@@ -126,9 +127,10 @@ public class TeleporterKit extends PremiumKit implements Listener {
         }
       }
       for (Villager villager : arena.getVillagers()) {
-        ItemStack villagerItem = new ItemStack(Material.EMERALD);
-        this.setItemNameAndLore(villagerItem, villager.getCustomName(), new String[] {villager.getUniqueId().toString()});
-        inventory.addItem(villagerItem);
+        inventory.addItem(new ItemBuilder(new ItemStack(Material.EMERALD))
+            .name(villager.getCustomName())
+            .lore(villager.getUniqueId().toString())
+            .build());
       }
       e.getPlayer().openInventory(inventory);
     } catch (Exception ex) {

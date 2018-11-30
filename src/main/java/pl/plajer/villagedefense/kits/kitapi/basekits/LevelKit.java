@@ -21,6 +21,7 @@ package pl.plajer.villagedefense.kits.kitapi.basekits;
 import org.bukkit.inventory.ItemStack;
 
 import pl.plajer.villagedefense.handlers.ChatManager;
+import pl.plajerlair.core.utils.ItemBuilder;
 import pl.plajerlair.core.utils.MinigameUtils;
 
 /**
@@ -28,7 +29,7 @@ import pl.plajerlair.core.utils.MinigameUtils;
  */
 public abstract class LevelKit extends Kit {
 
-  int level;
+  private int level;
 
   public int getLevel() {
     return level;
@@ -38,10 +39,13 @@ public abstract class LevelKit extends Kit {
     this.level = level;
   }
 
+  @Override
   public ItemStack getItemStack() {
-    ItemStack itemStack = new ItemStack(getMaterial());
-    setItemNameAndLore(itemStack, getName(), getDescription());
-    MinigameUtils.addLore(itemStack, ChatManager.colorMessage("Kits.Kit-Menu.Locked-Lores.Unlock-At-Level").replace("%NUMBER%", Integer.toString(getLevel())));
-    return itemStack;
+    ItemStack stack = new ItemBuilder(new ItemStack(getMaterial()))
+        .name(getName())
+        .lore(getDescription())
+        .build();
+    MinigameUtils.addLore(stack, ChatManager.colorMessage("Kits.Kit-Menu.Locked-Lores.Unlock-At-Level").replace("%NUMBER%", Integer.toString(getLevel())));
+    return stack;
   }
 }

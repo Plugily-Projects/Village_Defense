@@ -73,7 +73,6 @@ public class ShotBowKit extends PremiumKit implements Listener {
     ArmorHelper.setColouredArmor(Color.YELLOW, player);
     player.getInventory().addItem(new ItemStack(Material.COOKED_BEEF, 8));
     player.getInventory().addItem(new ItemStack(Material.SADDLE));
-
   }
 
   @Override
