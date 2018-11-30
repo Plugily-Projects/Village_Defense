@@ -46,6 +46,13 @@ public class ChatManager {
     return ChatColor.translateAlternateColorCodes('&', message);
   }
 
+  /**
+   * Broadcasts message to all players in arena
+   * Includes game prefix!
+   *
+   * @param arena   arena to get players from
+   * @param message message to broadcast
+   */
   public static void broadcast(Arena arena, String message) {
     for (Player p : arena.getPlayers()) {
       p.sendMessage(PLUGIN_PREFIX + message);

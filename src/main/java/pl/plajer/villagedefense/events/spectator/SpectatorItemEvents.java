@@ -39,6 +39,7 @@ import pl.plajer.villagedefense.arena.Arena;
 import pl.plajer.villagedefense.arena.ArenaRegistry;
 import pl.plajer.villagedefense.handlers.ChatManager;
 import pl.plajer.villagedefense.user.UserManager;
+import pl.plajer.villagedefense.utils.Utils;
 import pl.plajerlair.core.minigame.spectator.SpectatorSettingsMenu;
 import pl.plajerlair.core.services.exception.ReportedException;
 import pl.plajerlair.core.utils.MinigameUtils;
@@ -63,17 +64,14 @@ public class SpectatorItemEvents implements Listener {
         return;
       }
       Arena arena = ArenaRegistry.getArena(e.getPlayer());
-      if (arena == null) {
-        return;
-      }
       ItemStack stack = e.getPlayer().getInventory().getItemInMainHand();
-      if (stack == null || !stack.hasItemMeta() || !stack.getItemMeta().hasDisplayName()) {
+      if (arena == null || !Utils.isNamed(stack)) {
         return;
       }
       if (stack.getItemMeta().getDisplayName().equalsIgnoreCase(ChatManager.colorMessage("In-Game.Spectator.Spectator-Item-Name"))) {
         e.setCancelled(true);
         openSpectatorMenu(e.getPlayer().getWorld(), e.getPlayer());
-      } else if (stack.getItemMeta().getDisplayName().equalsIgnoreCase(ChatManager.colorMessage("In-Game.Spectator.Spectator.Settings-Menu.Item-Name"))) {
+      } else if (stack.getItemMeta().getDisplayName().equalsIgnoreCase(ChatManager.colorMessage("In-Game.Spectator.Settings-Menu.Item-Name"))) {
         e.setCancelled(true);
         spectatorSettingsMenu.openSpectatorSettingsMenu(e.getPlayer());
       }
@@ -114,8 +112,7 @@ public class SpectatorItemEvents implements Listener {
         return;
       }
       Arena arena = ArenaRegistry.getArena(p);
-      if (e.getCurrentItem() == null || !e.getCurrentItem().hasItemMeta()
-          || !e.getCurrentItem().getItemMeta().hasDisplayName() || !e.getCurrentItem().getItemMeta().hasLore()) {
+      if (!Utils.isNamed(e.getCurrentItem()) || !e.getCurrentItem().getItemMeta().hasLore()) {
         return;
       }
       if (e.getInventory().getName().equalsIgnoreCase(ChatManager.colorMessage("In-Game.Spectator.Spectator-Menu-Name"))) {

@@ -35,6 +35,7 @@ import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.arena.ArenaRegistry;
 import pl.plajer.villagedefense.handlers.ChatManager;
 import pl.plajer.villagedefense.user.UserManager;
+import pl.plajer.villagedefense.utils.Utils;
 import pl.plajerlair.core.services.exception.ReportedException;
 
 /**
@@ -69,8 +70,7 @@ public class EntityUpgradeListener implements Listener {
   @EventHandler
   public void onInventoryClick(InventoryClickEvent e) {
     try {
-      if (e.getInventory() == null || e.getCurrentItem() == null || !e.getCurrentItem().hasItemMeta() || !e.getCurrentItem().getItemMeta().hasDisplayName() ||
-          !(e.getWhoClicked() instanceof Player) || clickedEntity.get(e.getWhoClicked()) == null) {
+      if (e.getInventory() == null || !Utils.isNamed(e.getCurrentItem()) || !(e.getWhoClicked() instanceof Player) || clickedEntity.get(e.getWhoClicked()) == null) {
         return;
       }
       if (!e.getInventory().getName().equals(ChatManager.colorMessage("Upgrade-Menu.Title"))) {

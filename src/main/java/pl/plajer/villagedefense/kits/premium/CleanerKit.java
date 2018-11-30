@@ -91,9 +91,8 @@ public class CleanerKit extends PremiumKit implements Listener {
   public void onClean(PlayerInteractEvent e) {
     try {
       Arena arena = ArenaRegistry.getArena(e.getPlayer());
-      if (!e.hasItem() || e.getItem().getType() != Material.BLAZE_ROD || !(e.getItem().hasItemMeta())
-          || !(e.getItem().getItemMeta().hasDisplayName()) || !(e.getItem().getItemMeta().getDisplayName()
-          .contains(ChatManager.colorMessage("Kits.Cleaner.Game-Item-Name"))) || arena == null) {
+      if (!Utils.isNamed(e.getItem()) || e.getItem().getType() != Material.BLAZE_ROD || !e.getItem().getItemMeta().getDisplayName()
+          .contains(ChatManager.colorMessage("Kits.Cleaner.Game-Item-Name")) || arena == null) {
         return;
       }
       if (UserManager.getUser(e.getPlayer().getUniqueId()).isSpectator()) {
@@ -101,9 +100,9 @@ public class CleanerKit extends PremiumKit implements Listener {
         return;
       }
       if (UserManager.getUser(e.getPlayer().getUniqueId()).getCooldown("clean") > 0 && !UserManager.getUser(e.getPlayer().getUniqueId()).isSpectator()) {
-        String msgstring = ChatManager.colorMessage("Kits.Ability-Still-On-Cooldown");
-        msgstring = msgstring.replaceFirst("%COOLDOWN%", Long.toString(UserManager.getUser(e.getPlayer().getUniqueId()).getCooldown("clean")));
-        e.getPlayer().sendMessage(msgstring);
+        String message = ChatManager.colorMessage("Kits.Ability-Still-On-Cooldown");
+        message = message.replaceFirst("%COOLDOWN%", Long.toString(UserManager.getUser(e.getPlayer().getUniqueId()).getCooldown("clean")));
+        e.getPlayer().sendMessage(message);
         return;
       }
       if (arena.getZombies() != null) {
@@ -118,8 +117,8 @@ public class CleanerKit extends PremiumKit implements Listener {
       }
       Utils.playSound(e.getPlayer().getLocation(), "ENTITY_ZOMBIE_DEATH", "ENTITY_ZOMBIE_DEATH");
       String message = ChatManager.formatMessage(arena, ChatManager.colorMessage("Kits.Cleaner.Cleaned-Map"), e.getPlayer());
-      for (Player player1 : ArenaRegistry.getArena(e.getPlayer()).getPlayers()) {
-        player1.sendMessage(ChatManager.PLUGIN_PREFIX + message);
+      for (Player p : ArenaRegistry.getArena(e.getPlayer()).getPlayers()) {
+        p.sendMessage(ChatManager.PLUGIN_PREFIX + message);
       }
       UserManager.getUser(e.getPlayer().getUniqueId()).setCooldown("clean", 180);
     } catch (Exception ex) {

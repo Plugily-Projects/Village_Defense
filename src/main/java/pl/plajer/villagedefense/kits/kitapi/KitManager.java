@@ -35,11 +35,13 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.api.event.player.VillagePlayerChooseKitEvent;
+import pl.plajer.villagedefense.arena.Arena;
 import pl.plajer.villagedefense.arena.ArenaRegistry;
 import pl.plajer.villagedefense.handlers.ChatManager;
 import pl.plajer.villagedefense.kits.kitapi.basekits.Kit;
 import pl.plajer.villagedefense.user.User;
 import pl.plajer.villagedefense.user.UserManager;
+import pl.plajer.villagedefense.utils.Utils;
 import pl.plajerlair.core.services.exception.ReportedException;
 import pl.plajerlair.core.utils.MinigameUtils;
 
@@ -183,24 +185,16 @@ public class KitManager implements Listener {
       if (!e.getInventory().getName().equalsIgnoreCase(getMenuName())) {
         return;
       }
-      if (!(e.getWhoClicked() instanceof Player)) {
+      if (!(e.getWhoClicked() instanceof Player) || !(e.isLeftClick() || e.isRightClick())) {
         return;
       }
       Player player = (Player) e.getWhoClicked();
+      Arena arena = ArenaRegistry.getArena(player);
       e.setCancelled(true);
-      if (e.getCurrentItem() == null) {
+      if (!Utils.isNamed(e.getCurrentItem()) || arena == null) {
         return;
       }
-      if (!(e.isLeftClick() || e.isRightClick())) {
-        return;
-      }
-      if (!e.getCurrentItem().hasItemMeta()) {
-        return;
-      }
-      if (!ArenaRegistry.isInArena(player)) {
-        return;
-      }
-      VillagePlayerChooseKitEvent event = new VillagePlayerChooseKitEvent(player, KitRegistry.getKit(e.getCurrentItem()), ArenaRegistry.getArena(player));
+      VillagePlayerChooseKitEvent event = new VillagePlayerChooseKitEvent(player, KitRegistry.getKit(e.getCurrentItem()), arena);
       Bukkit.getPluginManager().callEvent(event);
     } catch (Exception ex) {
       new ReportedException(JavaPlugin.getPlugin(Main.class), ex);

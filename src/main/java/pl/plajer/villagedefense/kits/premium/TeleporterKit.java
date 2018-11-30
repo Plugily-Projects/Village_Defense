@@ -99,36 +99,36 @@ public class TeleporterKit extends PremiumKit implements Listener {
       if (e.getAction() == Action.RIGHT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_BLOCK) {
         Arena arena = ArenaRegistry.getArena(e.getPlayer());
         ItemStack stack = e.getPlayer().getInventory().getItemInMainHand();
-        if (arena == null || stack == null || !stack.hasItemMeta()
-            || !stack.getItemMeta().hasDisplayName()) {
+        if (arena == null || !Utils.isNamed(stack)) {
           return;
         }
-        if (stack.getItemMeta().getDisplayName().equalsIgnoreCase(ChatManager.colorMessage("Kits.Teleporter.Game-Item-Name"))) {
-          Inventory inventory = plugin.getServer().createInventory(null, 18, ChatManager.colorMessage("Kits.Teleporter.Game-Item-Menu-Name"));
-          for (Player player : e.getPlayer().getWorld().getPlayers()) {
-            if (ArenaRegistry.getArena(player) != null && !UserManager.getUser(player.getUniqueId()).isSpectator()) {
-              ItemStack skull;
-              if (plugin.is1_11_R1() || plugin.is1_12_R1()) {
-                skull = new ItemStack(Material.SKULL_ITEM, 1, (short) 3);
-              } else {
-                //todo check
-                skull = XMaterial.PLAYER_HEAD.parseItem();
-              }
-              SkullMeta meta = (SkullMeta) skull.getItemMeta();
-              meta.setOwningPlayer(player);
-              meta.setDisplayName(player.getName());
-              meta.setLore(Collections.singletonList(""));
-              skull.setItemMeta(meta);
-              inventory.addItem(skull);
-            }
-          }
-          for (Villager villager : arena.getVillagers()) {
-            ItemStack villagerItem = new ItemStack(Material.EMERALD);
-            this.setItemNameAndLore(villagerItem, villager.getCustomName(), new String[] {villager.getUniqueId().toString()});
-            inventory.addItem(villagerItem);
-          }
-          e.getPlayer().openInventory(inventory);
+        if (!stack.getItemMeta().getDisplayName().equalsIgnoreCase(ChatManager.colorMessage("Kits.Teleporter.Game-Item-Name"))) {
+          return;
         }
+        Inventory inventory = plugin.getServer().createInventory(null, 18, ChatManager.colorMessage("Kits.Teleporter.Game-Item-Menu-Name"));
+        for (Player player : e.getPlayer().getWorld().getPlayers()) {
+          if (ArenaRegistry.getArena(player) != null && !UserManager.getUser(player.getUniqueId()).isSpectator()) {
+            ItemStack skull;
+            if (plugin.is1_11_R1() || plugin.is1_12_R1()) {
+              skull = new ItemStack(Material.SKULL_ITEM, 1, (short) 3);
+            } else {
+              //todo check
+              skull = XMaterial.PLAYER_HEAD.parseItem();
+            }
+            SkullMeta meta = (SkullMeta) skull.getItemMeta();
+            meta.setOwningPlayer(player);
+            meta.setDisplayName(player.getName());
+            meta.setLore(Collections.singletonList(""));
+            skull.setItemMeta(meta);
+            inventory.addItem(skull);
+          }
+        }
+        for (Villager villager : arena.getVillagers()) {
+          ItemStack villagerItem = new ItemStack(Material.EMERALD);
+          this.setItemNameAndLore(villagerItem, villager.getCustomName(), new String[] {villager.getUniqueId().toString()});
+          inventory.addItem(villagerItem);
+        }
+        e.getPlayer().openInventory(inventory);
       }
     } catch (Exception ex) {
       new ReportedException(plugin, ex);
@@ -141,8 +141,7 @@ public class TeleporterKit extends PremiumKit implements Listener {
     try {
       Player p = (Player) e.getWhoClicked();
       Arena arena = ArenaRegistry.getArena(p);
-      if (arena == null || e.getCurrentItem() == null || !e.getCurrentItem().hasItemMeta()
-          || !e.getCurrentItem().getItemMeta().hasDisplayName() || !e.getCurrentItem().getItemMeta().hasLore()) {
+      if (arena == null || !Utils.isNamed(e.getCurrentItem()) || !e.getCurrentItem().getItemMeta().hasLore()) {
         return;
       }
       if (e.getInventory().getName().equalsIgnoreCase(ChatManager.colorMessage("Kits.Teleporter.Game-Item-Menu-Name"))) {

@@ -71,8 +71,7 @@ public class SetupInventoryEvents implements Listener {
       }
       Player player = (Player) event.getWhoClicked();
       if (!player.hasPermission("villagedefense.admin.create") || !event.getInventory().getName().contains("Arena VD:")
-          || event.getInventory().getHolder() != null || event.getCurrentItem() == null
-          || !event.getCurrentItem().hasItemMeta() || !event.getCurrentItem().getItemMeta().hasDisplayName()) {
+          || event.getInventory().getHolder() != null || !Utils.isNamed(event.getCurrentItem())) {
         return;
       }
 
@@ -138,11 +137,7 @@ public class SetupInventoryEvents implements Listener {
           break;
         case SET_MAP_NAME:
           if (event.getCurrentItem().getType() == Material.NAME_TAG && event.getCursor().getType() == Material.NAME_TAG) {
-            if (!event.getCursor().hasItemMeta()) {
-              player.sendMessage(ChatColor.RED + "This item doesn't has a name!");
-              return;
-            }
-            if (!event.getCursor().getItemMeta().hasDisplayName()) {
+            if (!Utils.isNamed(event.getCursor())) {
               player.sendMessage(ChatColor.RED + "This item doesn't has a name!");
               return;
             }

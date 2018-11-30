@@ -52,6 +52,19 @@ import pl.plajer.villagedefense.handlers.ChatManager;
  */
 public class Utils {
 
+  /**
+   * Checks whether itemstack is named (not null, has meta and display name)
+   *
+   * @param stack item stack to check
+   * @return true if named, false otherwise
+   */
+  public static boolean isNamed(ItemStack stack) {
+    if (stack == null) {
+      return false;
+    }
+    return stack.hasItemMeta() && stack.getItemMeta().hasDisplayName();
+  }
+
   public static Queue<Block> getNearbyDoors(LivingEntity entity, int maxDistance, int maxLength) {
     if (maxDistance > 120) {
       maxDistance = 120;

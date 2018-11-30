@@ -4,7 +4,7 @@
 * API change - now you can access it via pl.plajer.villagedefense.api
 * Removed actionbar message from players that died and the arena was changed in "ending"
 * Fixed https://plajer.xyz/errorservice/viewer.php?id=245
-* Added spectator settings menu
+* Added spectator settings menu (now working)
 * You cannot join now game infinitely through command (lol???)
 * Now players that leave game will be visible by other players outside game
 * Nerfed some kits - potions amplifiers are counted from 0 so every kit with potion effects has now amplifier -1 because it was too op

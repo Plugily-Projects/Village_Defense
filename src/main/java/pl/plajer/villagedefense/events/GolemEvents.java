@@ -43,6 +43,7 @@ import pl.plajer.villagedefense.api.event.player.VillagePlayerGolemUpgradeEvent;
 import pl.plajer.villagedefense.arena.ArenaRegistry;
 import pl.plajer.villagedefense.handlers.ChatManager;
 import pl.plajer.villagedefense.user.UserManager;
+import pl.plajer.villagedefense.utils.Utils;
 import pl.plajerlair.core.services.exception.ReportedException;
 
 @Deprecated
@@ -111,7 +112,7 @@ public class GolemEvents implements Listener {
         return;
       }
       if (e.getInventory().getName().equals(ChatManager.colorMessage("In-Game.Golem-Upgrades.Upgrade-Inventory"))) {
-        if (!e.getCurrentItem().hasItemMeta() || !e.getCurrentItem().getItemMeta().hasDisplayName()) {
+        if (!Utils.isNamed(e.getCurrentItem())) {
           return;
         }
         Player p = (Player) e.getWhoClicked();

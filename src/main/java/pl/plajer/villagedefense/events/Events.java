@@ -168,14 +168,13 @@ public class Events implements Listener {
   @EventHandler
   public void onKitMenuItemClick(InventoryClickEvent event) {
     try {
-      ItemStack inv = event.getCurrentItem();
+      ItemStack stack = event.getCurrentItem();
       Arena arena = ArenaRegistry.getArena((Player) event.getWhoClicked());
       if (arena == null) {
         return;
       }
-      if (inv == null || !inv.hasItemMeta() || !inv.getItemMeta().hasDisplayName()
-          || inv.getType() != plugin.getKitManager().getMaterial()
-          || !inv.getItemMeta().getDisplayName().equalsIgnoreCase(plugin.getKitManager().getItemName())) {
+      if (!Utils.isNamed(stack) || stack.getType() != plugin.getKitManager().getMaterial()
+          || !stack.getItemMeta().getDisplayName().equalsIgnoreCase(plugin.getKitManager().getItemName())) {
         return;
       }
       event.setCancelled(true);
@@ -185,16 +184,15 @@ public class Events implements Listener {
   }
 
   @EventHandler
-  public void KitMenuItemClick(InventoryClickEvent event) {
+  public void onKitMenuItemClickWithCursor(InventoryClickEvent event) {
     try {
-      ItemStack inv = event.getCursor();
+      ItemStack stack = event.getCursor();
       Arena arena = ArenaRegistry.getArena((Player) event.getWhoClicked());
       if (arena == null) {
         return;
       }
-      if (inv == null || !inv.hasItemMeta() || !inv.getItemMeta().hasDisplayName()
-          || inv.getType() != plugin.getKitManager().getMaterial()
-          || !inv.getItemMeta().getDisplayName().equalsIgnoreCase(plugin.getKitManager().getItemName())) {
+      if (!Utils.isNamed(stack) || stack.getType() != plugin.getKitManager().getMaterial()
+          || !stack.getItemMeta().getDisplayName().equalsIgnoreCase(plugin.getKitManager().getItemName())) {
         return;
       }
       event.setCancelled(true);
@@ -523,7 +521,7 @@ public class Events implements Listener {
         player.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Messages.Shop-Messages.Not-Enough-Orbs"));
         return;
       }
-      if (e.getCurrentItem().hasItemMeta() && e.getCurrentItem().getItemMeta().hasDisplayName()) {
+      if (Utils.isNamed(e.getCurrentItem())) {
         if (e.getCurrentItem().getItemMeta().getDisplayName().contains(ChatManager.colorMessage("In-Game.Messages.Shop-Messages.Golem-Item-Name")) || e.getCurrentItem().getItemMeta().getDisplayName().contains(ChatManager.colorRawMessage(ConfigUtils.getConfig(plugin, "language").getString("In-Game.Messages.Shop-Messages.Golem-Item-Name")))) {
           int i = 0;
           for (IronGolem golem : arena.getIronGolems()) {

@@ -21,7 +21,8 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>pl.plajer</groupId>
   <artifactId>villagedefense</artifactId>
-    <version>4.0.0-pre-4</version>
+    <name>VillageDefense</name>
+    <version>4.0.0b-pre-4</version>
   <licenses>
     <license>
       <name>GNU General Public License v3</name>
