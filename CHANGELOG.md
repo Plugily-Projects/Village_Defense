@@ -2,6 +2,7 @@
 
 ### 4.0.0 Beta pre 5 (1.12.2018)
 * Fixed commands without permissions weren't working
+* Fixed setup inventory not working
 
 ### 4.0.0 Beta (04/14.10.2018 - 27.11.2018)
 * API change - now you can access it via pl.plajer.villagedefense.api

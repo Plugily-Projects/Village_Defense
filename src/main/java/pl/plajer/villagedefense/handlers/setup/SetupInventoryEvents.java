@@ -70,16 +70,13 @@ public class SetupInventoryEvents implements Listener {
         return;
       }
       Player player = (Player) event.getWhoClicked();
-      if (!player.hasPermission("villagedefense.admin.create") || !event.getInventory().getName().contains("Arena VD:")
-          || event.getInventory().getHolder() != null || !Utils.isNamed(event.getCurrentItem())) {
+      if (!(player.hasPermission("villagedefense.admin.create") || event.getInventory().getName().contains("Arena VD:") ||
+          Utils.isNamed(event.getCurrentItem()))) {
         return;
       }
 
       //do not close inventory nor cancel event when setting arena name via name tag
-      if (event.getCurrentItem().getType() == Material.NAME_TAG && event.getCursor() == null || event.getCursor().getType() != Material.NAME_TAG) {
-        return;
-      }
-      if (event.getCursor() == null || event.getCursor().getType() != Material.NAME_TAG) {
+      if (event.getCurrentItem().getType() != Material.NAME_TAG) {
         player.closeInventory();
         event.setCancelled(true);
       }
@@ -89,6 +86,7 @@ public class SetupInventoryEvents implements Listener {
       String locationString = player.getLocation().getWorld().getName() + "," + player.getLocation().getX() + "," + player.getLocation().getY() + "," +
           player.getLocation().getZ() + "," + player.getLocation().getYaw() + ",0.0";
       FileConfiguration config = ConfigUtils.getConfig(plugin, "arenas");
+      Bukkit.broadcastMessage("call with " + SetupInventory.ClickPosition.getByPosition(event.getRawSlot()) + " at pos " + event.getRawSlot() + " not raw " + event.getSlot());
       switch (SetupInventory.ClickPosition.getByPosition(event.getRawSlot())) {
         case SET_ENDING:
           config.set("instances." + arena.getID() + ".Endlocation", locationString);
