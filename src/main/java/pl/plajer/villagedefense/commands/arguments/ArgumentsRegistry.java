@@ -180,6 +180,10 @@ public class ArgumentsRegistry implements CommandExecutor {
             if (argument.getArgumentName().equals(args[0])) {
               boolean hasPerm = false;
               for (String perm : argument.getPermissions()) {
+                if (perm.equals("")) {
+                  hasPerm = true;
+                  break;
+                }
                 if (sender.hasPermission(perm)) {
                   hasPerm = true;
                   break;

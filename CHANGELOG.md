@@ -1,5 +1,8 @@
 # Village Defense 3 Changelog
 
+### 4.0.0 Beta pre 5 (1.12.2018)
+* Fixed commands without permissions weren't working
+
 ### 4.0.0 Beta (04/14.10.2018 - 27.11.2018)
 * API change - now you can access it via pl.plajer.villagedefense.api
 * Removed actionbar message from players that died and the arena was changed in "ending"
