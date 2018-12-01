@@ -85,8 +85,8 @@ public class WizardKit extends PremiumKit implements Listener {
         .lore(Utils.splitString(ChatManager.colorMessage("Kits.Wizard.Staff-Item-Lore"), 40))
         .build());
     player.getInventory().addItem(new ItemBuilder(new ItemStack(XMaterial.INK_SAC.parseMaterial(), 4))
-        .name(ChatManager.colorMessage("Kits.Wizard.Essence-Item-Lore"))
-        .lore(Utils.splitString(ChatManager.colorMessage("Kits.Wizard.Essence-Item-Name"), 40))
+        .name(ChatManager.colorMessage("Kits.Wizard.Essence-Item-Name"))
+        .lore(Utils.splitString(ChatManager.colorMessage("Kits.Wizard.Essence-Item-Lore"), 40))
         .build());
 
     ArmorHelper.setColouredArmor(Color.GRAY, player);
@@ -102,8 +102,8 @@ public class WizardKit extends PremiumKit implements Listener {
   @Override
   public void reStock(Player player) {
     player.getInventory().addItem(new ItemBuilder(new ItemStack(XMaterial.INK_SAC.parseMaterial()))
-        .name(ChatManager.colorMessage("Kits.Wizard.Essence-Item-Lore"))
-        .lore(Utils.splitString(ChatManager.colorMessage("Kits.Wizard.Essence-Item-Name"), 40))
+        .name(ChatManager.colorMessage("Kits.Wizard.Essence-Item-Name"))
+        .lore(Utils.splitString(ChatManager.colorMessage("Kits.Wizard.Essence-Item-Lore"), 40))
         .build());
   }
 

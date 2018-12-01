@@ -71,7 +71,7 @@ public class SetupInventoryEvents implements Listener {
       }
       Player player = (Player) event.getWhoClicked();
       if (!(player.hasPermission("villagedefense.admin.create") || event.getInventory().getName().contains("Arena VD:") ||
-          Utils.isNamed(event.getCurrentItem()))) {
+          Utils.isNamed(event.getCurrentItem())) || !event.getInventory().getName().contains("Arena VD:")) {
         return;
       }
 
@@ -86,7 +86,6 @@ public class SetupInventoryEvents implements Listener {
       String locationString = player.getLocation().getWorld().getName() + "," + player.getLocation().getX() + "," + player.getLocation().getY() + "," +
           player.getLocation().getZ() + "," + player.getLocation().getYaw() + ",0.0";
       FileConfiguration config = ConfigUtils.getConfig(plugin, "arenas");
-      Bukkit.broadcastMessage("call with " + SetupInventory.ClickPosition.getByPosition(event.getRawSlot()) + " at pos " + event.getRawSlot() + " not raw " + event.getSlot());
       switch (SetupInventory.ClickPosition.getByPosition(event.getRawSlot())) {
         case SET_ENDING:
           config.set("instances." + arena.getID() + ".Endlocation", locationString);

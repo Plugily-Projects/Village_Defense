@@ -19,6 +19,7 @@
 package pl.plajer.villagedefense.events;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.bukkit.ChatColor;
@@ -560,13 +561,16 @@ public class Events implements Listener {
 
       ItemStack itemStack = stack.clone();
       ItemMeta itemMeta = itemStack.getItemMeta();
-      List<String> lore = new ArrayList<>(itemMeta.getLore());
-      for (String loopLore : lore) {
-        if (loopLore.contains(ChatManager.colorMessage("In-Game.Messages.Shop-Messages.Currency-In-Shop"))) {
-          lore.remove(loopLore);
+      Iterator<String> lore = itemMeta.getLore().iterator();
+      while (lore.hasNext()) {
+        String next = lore.next();
+        if (next.contains(ChatManager.colorMessage("In-Game.Messages.Shop-Messages.Currency-In-Shop"))) {
+          lore.remove();
         }
       }
-      itemMeta.setLore(lore);
+      List<String> newLore = new ArrayList<>();
+      lore.forEachRemaining(newLore::add);
+      itemMeta.setLore(newLore);
       itemStack.setItemMeta(itemMeta);
       player.getInventory().addItem(itemStack);
       user.setStat(StatsStorage.StatisticType.ORBS, user.getStat(StatsStorage.StatisticType.ORBS) - price);
