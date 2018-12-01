@@ -97,7 +97,7 @@ public class TeleporterKit extends PremiumKit implements Listener {
   @EventHandler
   public void onRightClick(PlayerInteractEvent e) {
     try {
-      if (e.getAction() != Action.RIGHT_CLICK_AIR || e.getAction() != Action.RIGHT_CLICK_BLOCK) {
+      if (!(e.getAction() == Action.RIGHT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_BLOCK)) {
         return;
       }
       Arena arena = ArenaRegistry.getArena(e.getPlayer());

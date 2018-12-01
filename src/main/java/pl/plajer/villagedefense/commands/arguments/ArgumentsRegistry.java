@@ -177,7 +177,7 @@ public class ArgumentsRegistry implements CommandExecutor {
             }
           }
           for (CommandArgument argument : mappedArguments.get(mainCommand)) {
-            if (argument.getArgumentName().equals(args[0])) {
+            if (argument.getArgumentName().equalsIgnoreCase(args[0])) {
               boolean hasPerm = false;
               for (String perm : argument.getPermissions()) {
                 if (perm.equals("")) {

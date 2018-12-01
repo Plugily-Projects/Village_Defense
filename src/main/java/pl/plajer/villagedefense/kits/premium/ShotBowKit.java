@@ -88,7 +88,7 @@ public class ShotBowKit extends PremiumKit implements Listener {
   @EventHandler
   public void onBowInteract(PlayerInteractEvent e) {
     try {
-      if (e.getAction() != Action.LEFT_CLICK_AIR || e.getAction() != Action.LEFT_CLICK_BLOCK) {
+      if (!(e.getAction() == Action.LEFT_CLICK_AIR || e.getAction() == Action.LEFT_CLICK_BLOCK)) {
         return;
       }
       ItemStack stack = e.getPlayer().getInventory().getItemInMainHand();
