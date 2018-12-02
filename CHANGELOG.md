@@ -1,13 +1,75 @@
 # Village Defense 3 Changelog
 
-### Version Release
-* Added cancel lobbystart when there are not enough players
+### 4.0.0 Beta pre 5 (1.12.2018)
+* Fixed commands without permissions weren't working
+* Fixed setup inventory not working
 
-### 3.12 Release (07.09.2018)
+### 4.0.0 Beta (04/14.10.2018 - 27.11.2018)
+* API change - now you can access it via pl.plajer.villagedefense.api
+* Removed actionbar message from players that died and the arena was changed in "ending"
+* Fixed https://plajer.xyz/errorservice/viewer.php?id=245
+* Added spectator settings menu (now working)
+* You cannot join now game infinitely through command (lol???)
+* Now players that leave game will be visible by other players outside game
+* Nerfed some kits - potions amplifiers are counted from 0 so every kit with potion effects has now amplifier -1 because it was too op
+* Implemented powerup registry
+* Fixed weird respawn glitches (player was - bugged half dead)
+* Zombies after respawn won't stay and don't move until you attack them
+* Added halloween effects (can be disabled in config) (4 days before and 4 days after Halloween)
+* Added wave limiter
+* Added command vda add/set levels
+* Now non localized Spawn Golem/Wolf items will work with locales
+* Added tip about downloadable maps when no arenas are set up while typing /vda list
+* Added tab completer for /vd join <arena name>
+* Fixed broken game logic while spawning zombie entities, Villager Slayer never spawned in game neither knockback resistant
+ones - game may be now much harder sorry :(
+* Cleaned up lots of code - especially commands and setup inventory
+* Now commands like /vda addorbs/setlevel/setwave won't throw an error if number exceeds real Integer max value
+(2 147 483 647) - some users brute forced this error using values like 300000000000000000 (fixes https://plajer.xyz/errorservice/viewer.php?id=351)
+* More setup tips!
+* Implemented JavaScript engine into rewards section. Now you can execute java code from rewards.
+* Fixed exp wasn't saved properly via InventoryManager
+
+### 3.11.5 Release (28.09.2018/04.10.2018)
+* Fixed server was stopped using Shutdown-When-Game-Ends option but player just left not started arena
+* Fixed NPE when chest location wasn't set (https://plajer.xyz/errorservice/viewer.php?id=232)
+* Fixed debugger messages like `[Village Debugger] Some doors has failed to load for arena VD2! Expected 8 but loaded only 9!`, was x + 1
+* Code improvements
+* Removed annoying "Please enable bStats" message for admins
+* Now when update cannot be checked you won't receive any message like "Cannot check for updates!"
+* Added PAPI placeholders support in in-game chat!
+* Added some PR0 TIPS when editing arenas
+* Fixed NPE for migrator (https://plajer.xyz/errorservice/viewer.php?id=240)
+
+### 3.11.4 Release (25/26.09.2018)
+* Fixed rewards weren't dispatched properly while using %PLAYER% placeholder (it was always executed by players)
+* Fixed endwave commands not working
+* Fixed signs not working
+* Fixed doors will not destroyed
+* Removed bad behavior when you was teleported to arena ending location while joining the server on the arena world
+* Brought back game sign states
+* Setup video link in setup menu is now working properly :)
+
+### 3.11.3 Release (07/23.09.2018)
 * Dropped 1.9-1.10 support
 * /vda reload now force players to quit to prevent problems
 * Now shop will be successfully registered when arena is freshly created
 * Added villagedefense.command.override permission to be able to use all game commands while being in VillageDefense game
+* Added cancel lobbystart when there are not enough players
+* Added checking if player is in the same arena as spectator
+* Fixed permission typo with respawn others for villagedefense.admin.*
+* Added /vda reload permission for villagedefense.admin.*
+* Added xp bar countdown in lobby
+* Fixed IAE when shop was null (https://plajer.xyz/errorservice/viewer.php?id=209)
+* Fixes for 1.13
+* Updated setup video link and added it into setup menu
+* Powerups won't be enabled on 1.13 now even if Holo Displays is installed, latest plugin version doesn't work with pickup handler api
+* Compass for spectators is now properly given on death
+* Leave item for died spectators is now working
+* Arena registry is now fail safe, not existing sections won't throw errors in console now
+* Fixed ClassCastException errors in console when non player sender executed game commands (ex. command block, different player implementation)
+* Sounds on 1.13 are now working properly (without errors and can be heard now)
+* Door crack particles cannot be seen at 1.13 for now
 
 ### 3.11.2 Release (03.09.2018)
 * Temporarily merged PLCore to fix issues when using my other plugins

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  ~ Village Defense 3 - Protect villagers from hordes of zombies
-  ~ Copyright (C) 2018  Plajer's Lair - maintained by Plajer
+  ~ Village Defense 4 - Protect villagers from hordes of zombies
+  ~ Copyright (C) 2018  Plajer's Lair - maintained by Plajer and Tigerpanzer
   ~
   ~ This program is free software: you can redistribute it and/or modify
   ~ it under the terms of the GNU General Public License as published by
@@ -22,9 +22,10 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>pl.plajer.vilagedefense3</groupId>
-    <artifactId>VillageDefense</artifactId>
-    <version>3.11.2</version>
+    <groupId>pl.plajer</groupId>
+    <artifactId>villagedefense</artifactId>
+    <version>4.0.0b-pre-5</version>
+    <name>VillageDefense</name>
 
     <properties>
         <java.version>1.8</java.version>
@@ -53,11 +54,21 @@
             <url>http://dl.bintray.com/tastybento/maven-repo</url>
         </repository>
         <repository>
-            <id>local-repo</id>
-            <url>file:///${project.basedir}/../PLCore/repo</url>
+            <id>plajerlair-repo</id>
+            <url>https://maven.plajer.xyz/minecraft/</url>
+        </repository>
+        <repository>
+            <id>bstats-repo</id>
+            <url>https://repo.codemc.org/repository/maven-public</url>
+        </repository>
+        <repository>
+            <id>filoghost-repo</id>
+            <url>https://ci.filoghost.me/plugin/repository/everything/</url>
         </repository>
     </repositories>
+
     <dependencies>
+        <!-- Spigot APIs -->
         <dependency>
             <groupId>1.12_R1</groupId>
             <artifactId>spigot_1_12_R1</artifactId>
@@ -80,44 +91,29 @@
             <systemPath>${project.basedir}/lib/spigot/1.13.1-R0.1.jar</systemPath>
         </dependency>
         <dependency>
-            <groupId>1.9_R1</groupId>
-            <artifactId>spigot_1_9_R1</artifactId>
-            <version>1.9.2</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/lib/spigot/1.9.2-R0.1.jar</systemPath>
-        </dependency>
-        <dependency>
-            <groupId>1.9_R2</groupId>
-            <artifactId>spigot_1_9_R2</artifactId>
-            <version>1.9.4</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/lib/spigot/1.9.4-R0.1.jar</systemPath>
-        </dependency>
-        <dependency>
-            <groupId>1.10_R1</groupId>
-            <artifactId>spigot_1_10_R1</artifactId>
-            <version>1.10.2</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/lib/spigot/1.10.2-R0.1.jar</systemPath>
-        </dependency>
-        <dependency>
             <groupId>1.11_R1</groupId>
             <artifactId>spigot_1_11_R1</artifactId>
             <version>1.11.2</version>
             <scope>system</scope>
             <systemPath>${project.basedir}/lib/spigot/1.11.2-R0.1.jar</systemPath>
         </dependency>
+        <!-- Spigot APIs -->
         <dependency>
-            <groupId>api</groupId>
-            <artifactId>com.gmail.filoghost.holographicdisplays</artifactId>
-            <version>2.2</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/lib/HolographicDisplays-2.2.jar</systemPath>
+            <groupId>com.gmail.filoghost.holographicdisplays</groupId>
+            <artifactId>holographicdisplays-api</artifactId>
+            <version>2.3.1</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>pl.plajerlair</groupId>
-            <artifactId>PLCore</artifactId>
-            <version>1.0.0</version>
+            <artifactId>plcore</artifactId>
+            <version>1.4.4</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.bstats</groupId>
+            <artifactId>bstats-bukkit</artifactId>
+            <version>1.4</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
@@ -164,7 +160,31 @@
     </dependencies>
 
     <build>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
         <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-site-plugin</artifactId>
+                <version>3.7.1</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>3.0.1</version>
+                <configuration>
+                    <windowtitle>Village Defense API docs for v${project.version}</windowtitle>
+                    <description>Minecraft cooperation minigame.
+                        Fight against hordes of undead zombies and protect villagers from them! API documentation for hooking Village Defense with your plugin.
+                    </description>
+                    <destDir>minecraft/villagedefense</destDir>
+                    <isOffline>false</isOffline>
+                </configuration>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -196,7 +216,11 @@
                             <relocations>
                                 <relocation>
                                     <pattern>pl.plajerlair.core</pattern>
-                                    <shadedPattern>pl.plajer.villagedefense3.plajerlair.core</shadedPattern>
+                                    <shadedPattern>pl.plajer.villagedefense.plajerlair.core</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>org.bstats</pattern>
+                                    <shadedPattern>pl.plajer.villagedefense.utils</shadedPattern>
                                 </relocation>
                             </relocations>
                         </configuration>
@@ -204,6 +228,24 @@
                 </executions>
             </plugin>
         </plugins>
+        <extensions>
+            <extension>
+                <groupId>org.apache.maven.wagon</groupId>
+                <artifactId>wagon-ftp</artifactId>
+                <version>3.0.0</version>
+            </extension>
+        </extensions>
     </build>
+
+    <distributionManagement>
+        <repository>
+            <id>plajer-lair-repo</id>
+            <url>ftp://54.38.159.68</url>
+        </repository>
+        <site>
+            <id>plajer-lair-java-docs</id>
+            <url>ftp://54.38.159.68</url>
+        </site>
+    </distributionManagement>
 
 </project>

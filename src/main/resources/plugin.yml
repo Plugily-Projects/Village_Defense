@@ -1,13 +1,14 @@
 name: VillageDefense
-main: pl.plajer.villagedefense3.Main
-author: [TomTheDeveloper, Plajer]
-version: 3.11.2
+main: pl.plajer.villagedefense.Main
+authors: [TomTheDeveloper, Plajer, Tigerpanzer]
+version: ${project.version}
 softdepend: [HolographicDisplays, PlaceholderAPI]
+api-version: 1.13
 
 commands:
   VillageDefense:
-    description: VD 3 Commands
-    usage: "\u00A76Correct usage: /vd [stats/leave/join]"
+    description: VillageDefense Commands
+    usage: "\u00A76Correct usage: /vd [option]"
     aliases: [vd, villaged]
   VillageDefenseAdmin:
     description:
@@ -30,7 +31,7 @@ permissions:
       villagedefense.admin.stopgame: true
       villagedefense.admin.forcestart: true
       villagedefense.admin.respawn: true
-      villagedefense.admin.repsawn.others: true
+      villagedefense.admin.respawn.others: true
       villagedefense.admin.addsign: true
       villagedefense.admin.clear: true
       villagedefense.admin.addorbs: true
@@ -38,5 +39,9 @@ permissions:
       villagedefense.admin.setwave: true
       villagedefense.admin.sign.create: true
       villagedefense.admin.sign.break: true
+      villagedefense.admin.reload: true
       villagedefense.command.override: true
-
+      villagedefense.admin.setlevel: true
+      villagedefense.admin.addlevel: true
+      villagedefense.admin.setlevel.others: true
+      villagedefense.admin.addlevel.others: true

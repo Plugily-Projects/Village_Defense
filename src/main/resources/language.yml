@@ -1,4 +1,4 @@
-#    You can translate Village Defense 3 messages here.
+#    You can translate Village Defense messages here.
 #             Color codes (&) supported.
 #
 #              Use \n to make new line
@@ -37,6 +37,7 @@ Commands:
   Admin-Commands:
     Player-Not-Found: "&cPlayer not found!"
     Added-Orbs: "&7Added orbs to the player!"
+    Added-Level: "&7Added level to the player!"
     Success-Reload: "&aArenas reloaded!"
     List-Command:
       Header: "&aVillage Defense &6arenas:"
@@ -62,7 +63,7 @@ Commands:
     &b/vd top <statistic>: &7Shows top 10 players!\n
     &b/vd selectkit: &7Select new game kit!\n
     &b/vd randomjoin: &7Join random arena!"
-    Admin-Bonus-Description: "\n&b/vd admin: &7Shows all the admin commands"
+    Admin-Bonus-Description: "\n&b/vda: &7Shows all the admin commands"
     Footer: "&6-------------------------------------------------"
 
 # In-game scoreboard messages.
@@ -72,39 +73,39 @@ Scoreboard:
   Content:
     # Contents of scoreboard while wave is running
     Playing:
-      - "&fVillagers Left: &e%VILLAGERS%"
-      - "&fPlayers Left: &e%PLAYERS_LEFT%"
-      - "&fZombies Left: &e%ZOMBIES%"
-      - ""
-      - "&fRotten Flesh: &e%ROTTEN_FLESH%"
-      - "&fOrbs: &e%ORBS%"
-      - ""
-      - "&ewww.spigotmc.org"
+    - "&fVillagers Left: &e%VILLAGERS%"
+    - "&fPlayers Left: &e%PLAYERS_LEFT%"
+    - "&fZombies Left: &e%ZOMBIES%"
+    - ""
+    - "&fRotten Flesh: &e%ROTTEN_FLESH%"
+    - "&fOrbs: &e%ORBS%"
+    - ""
+    - "&ewww.spigotmc.org"
     # Contents while players are waiting for the wave
     Playing-Waiting:
-      - "&fVillagers Left: &e%VILLAGERS%"
-      - "&fPlayers Left: &e%PLAYERS_LEFT%"
-      - ""
-      - "&fNext Wave In: &e%TIME%"
-      - ""
-      - "&fRotten Flesh: &e%ROTTEN_FLESH%"
-      - "&fOrbs: &e%ORBS%"
-      - ""
-      - "&ewww.spigotmc.org"
+    - "&fVillagers Left: &e%VILLAGERS%"
+    - "&fPlayers Left: &e%PLAYERS_LEFT%"
+    - ""
+    - "&fNext Wave In: &e%TIME%"
+    - ""
+    - "&fRotten Flesh: &e%ROTTEN_FLESH%"
+    - "&fOrbs: &e%ORBS%"
+    - ""
+    - "&ewww.spigotmc.org"
     Waiting:
-      - "&fPlayers: &e%PLAYERS%"
-      - ""
-      - "&fMinimum Players: &e%MIN_PLAYERS%"
-      - ""
-      - "&ewww.spigotmc.org"
+    - "&fPlayers: &e%PLAYERS%"
+    - ""
+    - "&fMinimum Players: &e%MIN_PLAYERS%"
+    - ""
+    - "&ewww.spigotmc.org"
     Starting:
-      - "&fStarting In: &e%TIME%"
-      - ""
-      - "&fPlayers: &e%PLAYERS%"
-      - ""
-      - "&fMinimum Players: &e%MIN_PLAYERS%"
-      - ""
-      - "&ewww.spigotmc.org"
+    - "&fStarting In: &e%TIME%"
+    - ""
+    - "&fPlayers: &e%PLAYERS%"
+    - ""
+    - "&fMinimum Players: &e%MIN_PLAYERS%"
+    - ""
+    - "&ewww.spigotmc.org"
 
 # Has usage only when bossbar is enabled in config.yml
 Bossbar:
@@ -270,13 +271,17 @@ In-Game:
     Health: "&e&lGolem's health: &7%health%"
   Spawned-Wolf-Name: "%player%'s Wolf"
   Spawned-Golem-Name: "%player%'s Golem"
-  # Join cancelled via external plugin that uses VD3 api.
+  # Join cancelled via external plugin that uses VillageDefense API.
   Join-Cancelled-Via-API: "&cYou can't join this game!"
   Arena-Not-Configured: "&cArena is not configured yet! Contact staff!"
   Spectator:
     Spectator-Item-Name: "&7Players list"
     Spectator-Menu-Name: "Alive players list"
     Target-Player-Health: "&cHealth: &7%health%"
+    Settings-Menu:
+      Item-Name: "&b&lSpectator Settings &7(Right-click)"
+      Inventory-Name: "&7Spectator settings"
+      Speed-Name: "&aSpeed"
   Messages:
     Lobby-Messages:
       Start-In: "&7The game starts in &b%TIME%&7 seconds!"
@@ -306,19 +311,20 @@ In-Game:
       No-Shop-Defined: "&cShop wasn't set up! Contact staff!"
     Game-End-Messages:
       Summary-Message:
-        - "&a&m--------------------------------------------------"
-        - "&f&lVillage Defense"
-        - ""
-        - "%summary%"
-        - ""
-        - ""
-        - "&e&lReached wave: &7%wave% &8(best %player_best_wave%)"
-        - "&6&lTotal zombies killed: &7%zombies%"
-        - "&c&lTotal coins spent: &7%orbs_spent%"
-        - ""
-        - "&a&m--------------------------------------------------"
+      - "&a&m--------------------------------------------------"
+      - "&f&lVillage Defense"
+      - ""
+      - "%summary%"
+      - ""
+      - ""
+      - "&e&lReached wave: &7%wave% &8(best %player_best_wave%)"
+      - "&6&lTotal zombies killed: &7%zombies%"
+      - "&c&lTotal coins spent: &7%orbs_spent%"
+      - ""
+      - "&a&m--------------------------------------------------"
       Summary-Players-Died: "&7All players died!"
       Summary-Villagers-Died: "&7All villagers died!"
+      Summary-Win-Game: "&7You survived all the waves"
     Admin-Messages:
       Set-Starting-In-To-0: "&bAn admin set waiting time to 0. The game starts now!"
       Removed-Villagers: "&b%PLAYER% has removed all the villagers!"
@@ -345,6 +351,20 @@ Powerups:
     Description: "&7Every zombie for 1 hit!"
   Powerup-Ended-Title-Message: "&4Powerup %powerup% has ended!"
 
+#todo locale and migrator
+Upgrade-Menu:
+  Title: "&e&lUpgrade entity"
+  Upgrades:
+    Health:
+      Name: "&a&lUpgrade health"
+      Description: "&7Upgrade health to tier &e%tier%!;&7Cost of upgrade: &e%cost%;;&eClick to purchase"
+    Damage:
+      Name: "&a&lUpgrade damage"
+      Description: "&7Upgrade damage to tier &e%tier%!;&7Cost of upgrade: &e%cost%;;&eClick to purchase"
+    Speed:
+      Name: "&a&lUpgrade speed"
+      Description: "&7Upgrade speed to tier &e%tier%!;&7Cost of upgrade: &e%cost%;;&eClick to purchase"
+
 Signs:
   Please-Type-Arena-Name: "&cPlease type arena name in second line!"
   Arena-Doesnt-Exists: "&cArena with that name doesn't exists!"
@@ -358,10 +378,10 @@ Signs:
     Ending: "&lEnding"
     Restarting: "&c&lRestarting"
   Lines:
-    - "&a&lVillage Defense"
-    - "%state%"
-    - "%mapname%"
-    - "&5[%playersize%/%maxplayers%]"
+  - "&a&lVillage Defense"
+  - "%state%"
+  - "%mapname%"
+  - "&5[%playersize%/%maxplayers%]"
 
 Validator:
   Invalid-Arena-Configuration: "[Village Defense] Arena %arena% has invalid configuration! Missing node: %error%"
@@ -370,4 +390,4 @@ Validator:
 
 # Don't edit it. But who's stopping you? It's your server!
 # Really, don't edit ;p
-File-Version-Do-Not-Edit: 8
+File-Version-Do-Not-Edit: 9

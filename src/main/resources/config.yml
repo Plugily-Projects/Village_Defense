@@ -1,11 +1,11 @@
-#     VillageDefense 3 configuration file
+#      VillageDefense configuration file
 #
-#    You can edit here the basic things of VD 3
+#    You can edit here the basic things of VD
 #      Please read everything CAREFULLY!
 #   You don't want to break anything, do you?
 #
 
-# Select locale of VD 3, default it's English.
+# Select locale of VillageDefense, default it's English.
 # Available locales:
 #    default - English language. Uses 'language.yml'.
 #    de - Deutsche sprache       pl - Język polski
@@ -21,13 +21,13 @@ Bossbar-Enabled: true
 # Should we hook into bungee cord? (If you wanna use arena per server option)
 # You STILL need to use external addon for HUB server game signs
 # Village Defense doesn't offer that addon.
-# Check here for more info: https://github.com/Plajer/Village_Defense/wiki/Addons#bungee-signs-not-official
+# Check here for more info: https://wiki.plajer.xyz/minecraft/villagedefense/addons.php#bungee-signs-not-official
 BungeeActivated: false
 
 # Enable Inventory Manager for your games? (VERY USEFUL feature for MULTI ARENA)
 # This saves inventory of players and restores it after player leaves arena.
 # Saved elements: max health, health, food, experience, full inventory, armor contents, fire ticks, active potions
-InventoryManager: false
+InventoryManager: true
 
 # Respawn players when wave ends/starts?
 Respawn-After-Wave: true
@@ -35,13 +35,13 @@ Respawn-After-Wave: true
 # You can create custom players permissions here.
 # Player with your custom permission will get % bonus orbs
 # when he lift up experience from killed zombie.
-# More here: https://github.com/Plajer-Lair/Village_Defense/wiki/Commands-and-Permissions#custom-permissions
+# More here: https://wiki.plajer.xyz/minecraft/villagedefense/cmds_and_perms.php#custom-permissions
 CustomPermissions:
   # Player with permission my-permission-one get 10% more orbs
   # Do not use dots (.), they won't work.
   my-permission-one: 10
 
-# Basic permissions for game, permissions explained here: https://github.com/Plajer-Lair/Village_Defense/wiki/Commands-and-Permissions#basic-permissions
+# Basic permissions for game, permissions explained here: https://wiki.plajer.xyz/minecraft/villagedefense/cmds_and_perms.php#basic-permissions
 Basic-Permissions:
   Full-Games-Permission: "villagedefense.fullgames"
   Vip-Permission: "villagedefense.vip"
@@ -81,6 +81,7 @@ Rewards-Enabled: false
 
 # Enable in game (eg. '[KIT][LEVEL] Plajer: hey') special formatting?
 # Formatting is configurable in language.yml
+# You can use PlaceholderAPI placeholders in chat format!
 ChatFormat-Enabled: true
 
 # Amount of orbs given to player when game starts
@@ -118,13 +119,18 @@ Golem-Upgrade-Heal-Cost: 150
 Wolves-Spawn-Limit: 20
 Golems-Spawn-Limit: 15
 
+# Should holiday events for Village Defense be enabled?
+# Eg. 4 days before and 4 days after Halloween special effects
+# for death and zombies will be applied, spooky!
+Holidays-Enabled: true
+
 # Enable very simple health bar for zombies?
 # They will have health instead of their names
 # It will show percentage of health left.
 # It's kinda buggy, you should use external plugin if you got one.
 Simple-Zombie-Health-Bar-Enabled: true
 
-# Power ups section. If you want to have classic Village Defense game mode i recommend to disable this.
+# Power ups section. If you want to have classic Village Defense game mode I recommend to disable this.
 Powerups:
   # Do you want to enable in-game power ups?
   # This will make zombies drop some power ups when they're killed
@@ -152,6 +158,12 @@ Powerups:
       Enabled: true
       Time: 15 # seconds
 
+Wave-Limit:
+  # Should game have finite amount of waves
+  Enabled: false
+  # Limit of waves, if this wave ends game will end
+  Limit: 25
+
 Update-Notifier:
   # Should we check for updates on plugin start/after admin join?
   # You REALLY should have this true!
@@ -164,6 +176,6 @@ Update-Notifier:
 Debug: false
 
 # Don't modify.
-Version: 6
+Version: 7
 
 # No way! You've reached the end! But... where's the dragon!?
