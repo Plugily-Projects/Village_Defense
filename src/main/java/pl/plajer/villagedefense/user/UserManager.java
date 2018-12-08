@@ -21,6 +21,7 @@ package pl.plajer.villagedefense.user;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import org.bukkit.entity.Player;
@@ -33,17 +34,13 @@ import pl.plajer.villagedefense.arena.Arena;
  */
 public class UserManager {
 
-  private static HashMap<UUID, User> users = new HashMap<>();
-
-  public static void registerUser(UUID uuid) {
-    Main.debug(Main.LogLevel.INFO, "Registering new user with UUID: " + uuid);
-    users.put(uuid, new User(uuid));
-  }
+  private static Map<UUID, User> users = new HashMap<>();
 
   public static User getUser(UUID uuid) {
     if (users.containsKey(uuid)) {
       return users.get(uuid);
     } else {
+      Main.debug(Main.LogLevel.INFO, "Registering new user with UUID: " + uuid);
       users.put(uuid, new User(uuid));
       return users.get(uuid);
     }

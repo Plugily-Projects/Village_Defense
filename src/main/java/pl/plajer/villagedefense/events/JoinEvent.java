@@ -31,7 +31,6 @@ import pl.plajer.villagedefense.api.StatsStorage;
 import pl.plajer.villagedefense.arena.ArenaRegistry;
 import pl.plajer.villagedefense.database.MySQLConnectionUtils;
 import pl.plajer.villagedefense.handlers.PermissionsManager;
-import pl.plajer.villagedefense.user.UserManager;
 import pl.plajerlair.core.services.exception.ReportedException;
 import pl.plajerlair.core.services.update.UpdateChecker;
 
@@ -65,7 +64,6 @@ public class JoinEvent implements Listener {
   @EventHandler
   public void onJoin(PlayerJoinEvent event) {
     try {
-      UserManager.registerUser(event.getPlayer().getUniqueId());
       if (plugin.isBungeeActivated()) {
         if (ArenaRegistry.getArenas().size() >= 1) {
           ArenaRegistry.getArenas().get(0).teleportToLobby(event.getPlayer());

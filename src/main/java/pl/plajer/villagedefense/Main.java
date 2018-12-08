@@ -257,9 +257,6 @@ public class Main extends JavaPlugin {
         customPermissions.put(key, getConfig().getInt("CustomPermissions." + key));
         debug(LogLevel.INFO, "Loaded custom permission " + key);
       }
-      for (Player p : Bukkit.getOnlinePlayers()) {
-        UserManager.registerUser(p.getUniqueId());
-      }
       if (databaseActivated) {
         for (Player p : Bukkit.getOnlinePlayers()) {
           Bukkit.getScheduler().runTaskAsynchronously(this, () -> MySQLConnectionUtils.loadPlayerStats(p));
