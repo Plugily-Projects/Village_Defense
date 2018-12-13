@@ -55,6 +55,7 @@ public class LeaderboardArgument {
           }
           LinkedHashMap<UUID, Integer> stats = (LinkedHashMap<UUID, Integer>) StatsStorage.getStats(statisticType);
           sender.sendMessage(ChatManager.colorMessage("Commands.Statistics.Header"));
+          String statistic = StringUtils.capitalize(statisticType.toString().toLowerCase().replace("_", " "));
           for (int i = 0; i < 10; i++) {
             try {
               UUID current = (UUID) stats.keySet().toArray()[stats.keySet().toArray().length - 1];
@@ -62,7 +63,7 @@ public class LeaderboardArgument {
               message = StringUtils.replace(message, "%position%", String.valueOf(i + 1));
               message = StringUtils.replace(message, "%name%", Bukkit.getOfflinePlayer(current).getName());
               message = StringUtils.replace(message, "%value%", String.valueOf(stats.get(current)));
-              message = StringUtils.replace(message, "%statistic%", StringUtils.capitalize(statisticType.toString().toLowerCase().replace("_", " "))); //Games_played > Games played etc
+              message = StringUtils.replace(message, "%statistic%", statistic); //Games_played > Games played etc
               sender.sendMessage(message);
               stats.remove(current);
             } catch (IndexOutOfBoundsException ex) {
@@ -70,7 +71,7 @@ public class LeaderboardArgument {
               message = StringUtils.replace(message, "%position%", String.valueOf(i + 1));
               message = StringUtils.replace(message, "%name%", "Empty");
               message = StringUtils.replace(message, "%value%", "0");
-              message = StringUtils.replace(message, "%statistic%", StringUtils.capitalize(statisticType.toString().toLowerCase().replace("_", " "))); //Games_played > Games played etc
+              message = StringUtils.replace(message, "%statistic%", statistic); //Games_played > Games played etc
               sender.sendMessage(message);
             } catch (NullPointerException ex) {
               UUID current = (UUID) stats.keySet().toArray()[stats.keySet().toArray().length - 1];
@@ -82,9 +83,9 @@ public class LeaderboardArgument {
                     message = StringUtils.replace(message, "%position%", String.valueOf(i + 1));
                     message = StringUtils.replace(message, "%name%", set.getString(1));
                     message = StringUtils.replace(message, "%value%", String.valueOf(stats.get(current)));
-                    message = StringUtils.replace(message, "%statistic%", StringUtils.capitalize(statisticType.toString().toLowerCase().replace("_", " "))); //Games_played > Games played etc
+                    message = StringUtils.replace(message, "%statistic%", statistic); //Games_played > Games played etc
                     sender.sendMessage(message);
-                    return;
+                    continue;
                   }
                 } catch (SQLException ignored) {
                 }
@@ -93,7 +94,7 @@ public class LeaderboardArgument {
               message = StringUtils.replace(message, "%position%", String.valueOf(i + 1));
               message = StringUtils.replace(message, "%name%", "Unknown Player");
               message = StringUtils.replace(message, "%value%", String.valueOf(stats.get(current)));
-              message = StringUtils.replace(message, "%statistic%", StringUtils.capitalize(statisticType.toString().toLowerCase().replace("_", " "))); //Games_played > Games played etc
+              message = StringUtils.replace(message, "%statistic%", statistic); //Games_played > Games played etc
               sender.sendMessage(message);
             }
           }
