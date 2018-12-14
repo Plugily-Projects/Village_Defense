@@ -47,7 +47,7 @@ public class FileStats {
 
   public void saveStat(Player player, StatsStorage.StatisticType stat) {
     User user = UserManager.getUser(player.getUniqueId());
-    config.set(player.getUniqueId().toString() + "." + stat, user.getStat(stat));
+    config.set(player.getUniqueId().toString() + "." + stat.getName(), user.getStat(stat));
     try {
       config.save(ConfigUtils.getFile(plugin, "stats"));
     } catch (IOException e) {
@@ -60,8 +60,8 @@ public class FileStats {
 
   public void loadStat(Player player, StatsStorage.StatisticType stat) {
     User user = UserManager.getUser(player.getUniqueId());
-    if (config.contains(player.getUniqueId().toString() + "." + stat)) {
-      user.setStat(stat, config.getInt(player.getUniqueId().toString() + "." + stat));
+    if (config.contains(player.getUniqueId().toString() + "." + stat.getName())) {
+      user.setStat(stat, config.getInt(player.getUniqueId().toString() + "." + stat.getName()));
     } else {
       user.setStat(stat, 0);
     }

@@ -75,6 +75,7 @@ import pl.plajer.villagedefense.kits.kitapi.KitManager;
 import pl.plajer.villagedefense.kits.kitapi.KitRegistry;
 import pl.plajer.villagedefense.user.User;
 import pl.plajer.villagedefense.user.UserManager;
+import pl.plajer.villagedefense.utils.LegacyDataFixer;
 import pl.plajer.villagedefense.utils.MessageUtils;
 import pl.plajerlair.core.database.MySQLDatabase;
 import pl.plajerlair.core.services.ServiceRegistry;
@@ -223,6 +224,7 @@ public class Main extends JavaPlugin {
       setupFiles();
       LanguageMigrator.configUpdate();
       LanguageMigrator.languageFileUpdate();
+      new LegacyDataFixer(this);
       initializeClasses();
       checkUpdate();
 

@@ -1,5 +1,9 @@
 # Village Defense 3 Changelog
 
+### 4.0.0 Beta pre 6 (14.12.2018)
+* Implemented legacy data fixer that will fix inconsistency between original user data and current one (old implementation failure)
+data was wrongly saved without getName() method called. MySQL users are safe.
+
 ### 4.0.0 Beta pre 5 (1.12.2018)
 * Fixed commands without permissions weren't working
 * Fixed setup inventory not working
