@@ -34,7 +34,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
-import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.arena.ArenaRegistry;
 import pl.plajer.villagedefense.handlers.ChatManager;
 import pl.plajer.villagedefense.handlers.PermissionsManager;
@@ -55,14 +54,12 @@ public class TornadoKit extends PremiumKit implements Listener {
   private int max_height = 5;
   private double max_radius = 4;
   private double radius_increment = max_radius / max_height;
-  private Main plugin;
 
-  public TornadoKit(Main plugin) {
-    this.plugin = plugin;
+  public TornadoKit() {
     setName(ChatManager.colorMessage("Kits.Tornado.Kit-Name"));
     List<String> description = Utils.splitString(ChatManager.colorMessage("Kits.Tornado.Kit-Description"), 40);
     this.setDescription(description.toArray(new String[0]));
-    plugin.getServer().getPluginManager().registerEvents(this, plugin);
+    getPlugin().getServer().getPluginManager().registerEvents(this, getPlugin());
     KitRegistry.registerKit(this);
   }
 
@@ -124,9 +121,9 @@ public class TornadoKit extends PremiumKit implements Listener {
             this.cancel();
           }
         }
-      }.runTaskTimer(plugin, 1, 1);
+      }.runTaskTimer(getPlugin(), 1, 1);
     } catch (Exception ex) {
-      new ReportedException(plugin, ex);
+      new ReportedException(getPlugin(), ex);
     }
   }
 

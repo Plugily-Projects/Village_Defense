@@ -34,7 +34,6 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.arena.ArenaRegistry;
 import pl.plajer.villagedefense.handlers.ChatManager;
 import pl.plajer.villagedefense.handlers.PermissionsManager;
@@ -53,14 +52,11 @@ import pl.plajerlair.core.utils.XMaterial;
  */
 public class BlockerKit extends PremiumKit implements Listener {
 
-  private Main plugin;
-
-  public BlockerKit(Main plugin) {
-    this.plugin = plugin;
+  public BlockerKit() {
     setName(ChatManager.colorMessage("Kits.Blocker.Kit-Name"));
     List<String> description = Utils.splitString(ChatManager.colorMessage("Kits.Blocker.Kit-Description"), 40);
     this.setDescription(description.toArray(new String[0]));
-    plugin.getServer().getPluginManager().registerEvents(this, plugin);
+    getPlugin().getServer().getPluginManager().registerEvents(this, getPlugin());
     KitRegistry.registerKit(this);
   }
 
@@ -122,7 +118,7 @@ public class BlockerKit extends PremiumKit implements Listener {
         player.getInventory().getItemInMainHand().setAmount(player.getInventory().getItemInMainHand().getAmount() - 1);
       }
       event.setCancelled(false);
-      User user = plugin.getUserManager().getUser(event.getPlayer().getUniqueId());
+      User user = getPlugin().getUserManager().getUser(event.getPlayer().getUniqueId());
 
       user.toPlayer().sendMessage(ChatManager.colorMessage("Kits.Blocker.Game-Item-Place-Message"));
       ZombieBarrier zombieBarrier = new ZombieBarrier();
@@ -138,10 +134,10 @@ public class BlockerKit extends PremiumKit implements Listener {
             this.cancel();
           }
         }
-      }.runTaskTimer(plugin, 20, 20);
+      }.runTaskTimer(getPlugin(), 20, 20);
       block.setType(XMaterial.OAK_FENCE.parseMaterial());
     } catch (Exception ex) {
-      new ReportedException(plugin, ex);
+      new ReportedException(getPlugin(), ex);
     }
   }
 

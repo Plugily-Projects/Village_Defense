@@ -40,7 +40,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
-import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.arena.ArenaRegistry;
 import pl.plajer.villagedefense.handlers.ChatManager;
 import pl.plajer.villagedefense.handlers.PermissionsManager;
@@ -61,15 +60,13 @@ import pl.plajerlair.core.utils.XMaterial;
 public class WizardKit extends PremiumKit implements Listener {
 
   private List<Player> wizardsOnDuty = new ArrayList<>();
-  private Main plugin;
 
-  public WizardKit(Main plugin) {
+  public WizardKit() {
     setName(ChatManager.colorMessage("Kits.Wizard.Kit-Name"));
     List<String> description = Utils.splitString(ChatManager.colorMessage("Kits.Wizard.Kit-Description"), 40);
     this.setDescription(description.toArray(new String[0]));
     KitRegistry.registerKit(this);
-    this.plugin = plugin;
-    plugin.getServer().getPluginManager().registerEvents(this, plugin);
+    getPlugin().getServer().getPluginManager().registerEvents(this, getPlugin());
   }
 
   @Override
@@ -125,24 +122,24 @@ public class WizardKit extends PremiumKit implements Listener {
       }
       ((Zombie) e.getDamager()).damage(2.0, e.getEntity());
     } catch (Exception ex) {
-      new ReportedException(plugin, ex);
+      new ReportedException(getPlugin(), ex);
     }
   }
 
   @EventHandler
   public void onStaffUse(PlayerInteractEvent e) {
     try {
-      if (plugin.getUserManager().getUser(e.getPlayer().getUniqueId()) == null) {
+      if (getPlugin().getUserManager().getUser(e.getPlayer().getUniqueId()) == null) {
         return;
       }
       if (ArenaRegistry.getArena(e.getPlayer()) == null) {
         return;
       }
-      if (!(plugin.getUserManager().getUser(e.getPlayer().getUniqueId()).getKit() instanceof WizardKit)) {
+      if (!(getPlugin().getUserManager().getUser(e.getPlayer().getUniqueId()).getKit() instanceof WizardKit)) {
         return;
       }
       final Player p = e.getPlayer();
-      User user = plugin.getUserManager().getUser(e.getPlayer().getUniqueId());
+      User user = getPlugin().getUserManager().getUser(e.getPlayer().getUniqueId());
       ItemStack stack = e.getPlayer().getInventory().getItemInMainHand();
       if (!Utils.isNamed(stack)) {
         return;
@@ -176,13 +173,13 @@ public class WizardKit extends PremiumKit implements Listener {
               this.cancel();
             }
           }
-        }.runTaskTimer(plugin, 0, 2);
+        }.runTaskTimer(getPlugin(), 0, 2);
         for (Entity en : p.getNearbyEntities(2, 2, 2)) {
           if (en instanceof Zombie) {
             ((Zombie) en).damage(9.0, p);
           }
         }
-        Bukkit.getScheduler().runTaskLater(plugin, () -> {
+        Bukkit.getScheduler().runTaskLater(getPlugin(), () -> {
           p.setGlowing(false);
           wizardsOnDuty.remove(p);
         }, 20 * 15);
@@ -227,11 +224,11 @@ public class WizardKit extends PremiumKit implements Listener {
               this.cancel();
             }
           }
-        }.runTaskTimer(plugin, 0, 1);
+        }.runTaskTimer(getPlugin(), 0, 1);
         user.setCooldown("wizard_staff", 1);
       }
     } catch (Exception ex) {
-      new ReportedException(plugin, ex);
+      new ReportedException(getPlugin(), ex);
     }
   }
 }

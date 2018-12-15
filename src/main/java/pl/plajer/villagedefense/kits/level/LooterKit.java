@@ -28,9 +28,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.plugin.java.JavaPlugin;
 
-import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.api.StatsStorage;
 import pl.plajer.villagedefense.arena.ArenaRegistry;
 import pl.plajer.villagedefense.handlers.ChatManager;
@@ -41,7 +39,6 @@ import pl.plajer.villagedefense.utils.ArmorHelper;
 import pl.plajer.villagedefense.utils.Utils;
 import pl.plajer.villagedefense.utils.WeaponHelper;
 import pl.plajerlair.core.services.exception.ReportedException;
-import pl.plajerlair.core.utils.ConfigUtils;
 import pl.plajerlair.core.utils.XMaterial;
 
 /**
@@ -49,21 +46,18 @@ import pl.plajerlair.core.utils.XMaterial;
  */
 public class LooterKit extends LevelKit implements Listener {
 
-  private Main plugin;
-
-  public LooterKit(Main plugin) {
-    this.plugin = plugin;
+  public LooterKit() {
     setName(ChatManager.colorMessage("Kits.Looter.Kit-Name"));
     List<String> description = Utils.splitString(ChatManager.colorMessage("Kits.Looter.Kit-Description"), 40);
     this.setDescription(description.toArray(new String[0]));
-    setLevel(ConfigUtils.getConfig(plugin, "kits").getInt("Required-Level.Looter"));
-    plugin.getServer().getPluginManager().registerEvents(this, plugin);
+    setLevel(getKitsConfig().getInt("Required-Level.Looter"));
+    getPlugin().getServer().getPluginManager().registerEvents(this, getPlugin());
     KitRegistry.registerKit(this);
   }
 
   @Override
   public boolean isUnlockedByPlayer(Player player) {
-    return plugin.getUserManager().getUser(player.getUniqueId()).getStat(StatsStorage.StatisticType.LEVEL) >= this.getLevel() || player.hasPermission("villagefense.kit.looter");
+    return getPlugin().getUserManager().getUser(player.getUniqueId()).getStat(StatsStorage.StatisticType.LEVEL) >= this.getLevel() || player.hasPermission("villagefense.kit.looter");
   }
 
   @Override
@@ -95,12 +89,12 @@ public class LooterKit extends LevelKit implements Listener {
       if (ArenaRegistry.getArena(player) == null) {
         return;
       }
-      User user = plugin.getUserManager().getUser(player.getUniqueId());
+      User user = getPlugin().getUserManager().getUser(player.getUniqueId());
       if (user.getKit() instanceof LooterKit) {
         player.getInventory().addItem(new ItemStack(Material.ROTTEN_FLESH, 1));
       }
     } catch (Exception ex) {
-      new ReportedException(JavaPlugin.getPlugin(Main.class), ex);
+      new ReportedException(getPlugin(), ex);
     }
   }
 }

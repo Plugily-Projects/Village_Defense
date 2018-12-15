@@ -24,7 +24,6 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.arena.Arena;
 import pl.plajer.villagedefense.arena.ArenaRegistry;
 import pl.plajer.villagedefense.arena.initializers.ArenaInitializer1_11_R1;
@@ -45,10 +44,7 @@ import pl.plajerlair.core.utils.XMaterial;
  */
 public class DogFriendKit extends PremiumKit {
 
-  private Main plugin;
-
-  public DogFriendKit(Main plugin) {
-    this.plugin = plugin;
+  public DogFriendKit() {
     this.setName(ChatManager.colorMessage("Kits.Dog-Friend.Kit-Name"));
     List<String> description = Utils.splitString(ChatManager.colorMessage("Kits.Dog-Friend.Kit-Description"), 40);
     this.setDescription(description.toArray(new String[0]));
@@ -70,22 +66,22 @@ public class DogFriendKit extends PremiumKit {
     if (arena == null) {
       return;
     }
-    if (plugin.is1_11_R1()) {
+    if (getPlugin().is1_11_R1()) {
       ArenaInitializer1_11_R1 initializer = (ArenaInitializer1_11_R1) arena;
       for (int i = 0; i < 3; i++) {
         initializer.spawnWolf(initializer.getStartLocation(), player);
       }
-    } else if (plugin.is1_12_R1()) {
+    } else if (getPlugin().is1_12_R1()) {
       ArenaInitializer1_12_R1 initializer = (ArenaInitializer1_12_R1) arena;
       for (int i = 0; i < 3; i++) {
         initializer.spawnWolf(initializer.getStartLocation(), player);
       }
-    } else if (plugin.is1_13_R1()) {
+    } else if (getPlugin().is1_13_R1()) {
       ArenaInitializer1_13_R1 initializer = (ArenaInitializer1_13_R1) arena;
       for (int i = 0; i < 3; i++) {
         initializer.spawnWolf(initializer.getStartLocation(), player);
       }
-    } else if (plugin.is1_13_R2()) {
+    } else if (getPlugin().is1_13_R2()) {
       ArenaInitializer1_13_R2 initializer = (ArenaInitializer1_13_R2) arena;
       for (int i = 0; i < 3; i++) {
         initializer.spawnWolf(initializer.getStartLocation(), player);
@@ -104,16 +100,16 @@ public class DogFriendKit extends PremiumKit {
     if (arena == null) {
       return;
     }
-    if (plugin.is1_11_R1()) {
+    if (getPlugin().is1_11_R1()) {
       ArenaInitializer1_11_R1 initializer = (ArenaInitializer1_11_R1) arena;
       initializer.spawnWolf(initializer.getStartLocation(), player);
-    } else if (plugin.is1_12_R1()) {
+    } else if (getPlugin().is1_12_R1()) {
       ArenaInitializer1_12_R1 initializer = (ArenaInitializer1_12_R1) arena;
       initializer.spawnWolf(initializer.getStartLocation(), player);
-    } else if (plugin.is1_13_R1()) {
+    } else if (getPlugin().is1_13_R1()) {
       ArenaInitializer1_13_R1 initializer = (ArenaInitializer1_13_R1) arena;
       initializer.spawnWolf(initializer.getStartLocation(), player);
-    } else if (plugin.is1_13_R2()) {
+    } else if (getPlugin().is1_13_R2()) {
       ArenaInitializer1_13_R2 initializer = (ArenaInitializer1_13_R2) arena;
       initializer.spawnWolf(initializer.getStartLocation(), player);
     }

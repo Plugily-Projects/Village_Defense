@@ -25,7 +25,6 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.api.StatsStorage;
 import pl.plajer.villagedefense.arena.Arena;
 import pl.plajer.villagedefense.arena.ArenaRegistry;
@@ -39,7 +38,6 @@ import pl.plajer.villagedefense.kits.kitapi.basekits.LevelKit;
 import pl.plajer.villagedefense.utils.ArmorHelper;
 import pl.plajer.villagedefense.utils.Utils;
 import pl.plajer.villagedefense.utils.WeaponHelper;
-import pl.plajerlair.core.utils.ConfigUtils;
 import pl.plajerlair.core.utils.XMaterial;
 
 /**
@@ -47,20 +45,17 @@ import pl.plajerlair.core.utils.XMaterial;
  */
 public class GolemFriendKit extends LevelKit {
 
-  private Main plugin;
-
-  public GolemFriendKit(Main plugin) {
-    this.plugin = plugin;
+  public GolemFriendKit() {
     setName(ChatManager.colorMessage("Kits.Golem-Friend.Kit-Name"));
     List<String> description = Utils.splitString(ChatManager.colorMessage("Kits.Golem-Friend.Kit-Description"), 40);
     this.setDescription(description.toArray(new String[0]));
-    setLevel(ConfigUtils.getConfig(plugin, "kits").getInt("Required-Level.GolemFriend"));
+    setLevel(getKitsConfig().getInt("Required-Level.GolemFriend"));
     KitRegistry.registerKit(this);
   }
 
   @Override
   public boolean isUnlockedByPlayer(Player player) {
-    return plugin.getUserManager().getUser(player.getUniqueId()).getStat(StatsStorage.StatisticType.LEVEL) >= this.getLevel() || player.hasPermission("villagefense.kit.golemfriend");
+    return getPlugin().getUserManager().getUser(player.getUniqueId()).getStat(StatsStorage.StatisticType.LEVEL) >= this.getLevel() || player.hasPermission("villagefense.kit.golemfriend");
   }
 
   @Override
@@ -89,16 +84,16 @@ public class GolemFriendKit extends LevelKit {
   }
 
   private void spawnGolem(Player player, Arena arena) {
-    if (plugin.is1_11_R1()) {
+    if (getPlugin().is1_11_R1()) {
       ArenaInitializer1_11_R1 initializer = (ArenaInitializer1_11_R1) arena;
       initializer.spawnGolem(initializer.getStartLocation(), player);
-    } else if (plugin.is1_12_R1()) {
+    } else if (getPlugin().is1_12_R1()) {
       ArenaInitializer1_12_R1 initializer = (ArenaInitializer1_12_R1) arena;
       initializer.spawnGolem(initializer.getStartLocation(), player);
-    } else if (plugin.is1_13_R1()) {
+    } else if (getPlugin().is1_13_R1()) {
       ArenaInitializer1_13_R1 initializer = (ArenaInitializer1_13_R1) arena;
       initializer.spawnGolem(initializer.getStartLocation(), player);
-    } else if (plugin.is1_13_R2()) {
+    } else if (getPlugin().is1_13_R2()) {
       ArenaInitializer1_13_R2 initializer = (ArenaInitializer1_13_R2) arena;
       initializer.spawnGolem(initializer.getStartLocation(), player);
     }

@@ -31,7 +31,6 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.PotionType;
 
 import pl.plajer.villagedefense.Main;
@@ -49,15 +48,13 @@ import pl.plajerlair.core.utils.XMaterial;
  */
 public class NakedKit extends PremiumKit implements Listener {
 
-  private Main plugin;
   private List<Material> armorTypes = new ArrayList<>();
 
-  public NakedKit(Main plugin) {
-    this.plugin = plugin;
+  public NakedKit() {
     List<String> description = Utils.splitString(ChatManager.colorMessage("Kits.Wild-Naked.Kit-Description"), 40);
     this.setDescription(description.toArray(new String[0]));
     setName(ChatManager.colorMessage("Kits.Wild-Naked.Kit-Name"));
-    plugin.getServer().getPluginManager().registerEvents(this, plugin);
+    getPlugin().getServer().getPluginManager().registerEvents(this, getPlugin());
     KitRegistry.registerKit(this);
     armorTypes.add(Material.LEATHER_BOOTS);
     armorTypes.add(Material.LEATHER_CHESTPLATE);
@@ -109,13 +106,13 @@ public class NakedKit extends PremiumKit implements Listener {
   @EventHandler
   public void onArmor(InventoryClickEvent event) {
     try {
-      if (plugin.getUserManager().getUser(event.getWhoClicked().getUniqueId()) == null) {
+      if (getPlugin().getUserManager().getUser(event.getWhoClicked().getUniqueId()) == null) {
         return;
       }
       if (!ArenaRegistry.isInArena((Player) event.getWhoClicked())) {
         return;
       }
-      if (!(plugin.getUserManager().getUser(event.getWhoClicked().getUniqueId()).getKit() instanceof NakedKit)) {
+      if (!(getPlugin().getUserManager().getUser(event.getWhoClicked().getUniqueId()).getKit() instanceof NakedKit)) {
         return;
       }
       if (!(event.getInventory().getType().equals(InventoryType.PLAYER) || event.getInventory().getType().equals(InventoryType.CRAFTING))) {
@@ -136,7 +133,7 @@ public class NakedKit extends PremiumKit implements Listener {
         }
       }, 1);
     } catch (Exception ex) {
-      new ReportedException(JavaPlugin.getPlugin(Main.class), ex);
+      new ReportedException(getPlugin(), ex);
     }
   }
 
@@ -146,10 +143,10 @@ public class NakedKit extends PremiumKit implements Listener {
       if (!ArenaRegistry.isInArena(event.getPlayer())) {
         return;
       }
-      if (plugin.getUserManager().getUser(event.getPlayer().getUniqueId()) == null) {
+      if (getPlugin().getUserManager().getUser(event.getPlayer().getUniqueId()) == null) {
         return;
       }
-      if (!(plugin.getUserManager().getUser(event.getPlayer().getUniqueId()).getKit() instanceof NakedKit)) {
+      if (!(getPlugin().getUserManager().getUser(event.getPlayer().getUniqueId()).getKit() instanceof NakedKit)) {
         return;
       }
       if (!event.hasItem()) {
@@ -160,7 +157,7 @@ public class NakedKit extends PremiumKit implements Listener {
         event.getPlayer().sendMessage(ChatManager.colorMessage("Kits.Wild-Naked.Cannot-Wear-Armor"));
       }
     } catch (Exception ex) {
-      new ReportedException(JavaPlugin.getPlugin(Main.class), ex);
+      new ReportedException(getPlugin(), ex);
     }
   }
 }

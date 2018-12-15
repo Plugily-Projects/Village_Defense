@@ -31,10 +31,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.PotionType;
 
-import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.handlers.ChatManager;
 import pl.plajer.villagedefense.handlers.PermissionsManager;
 import pl.plajer.villagedefense.kits.kitapi.KitRegistry;
@@ -51,14 +49,11 @@ import pl.plajerlair.core.utils.XMaterial;
  */
 public class MedicKit extends PremiumKit implements Listener {
 
-  private Main plugin;
-
-  public MedicKit(Main plugin) {
-    this.plugin = plugin;
+  public MedicKit() {
     setName(ChatManager.colorMessage("Kits.Medic.Kit-Name"));
     List<String> description = Utils.splitString(ChatManager.colorMessage("Kits.Medic.Kit-Description"), 40);
     this.setDescription(description.toArray(new String[0]));
-    plugin.getServer().getPluginManager().registerEvents(this, plugin);
+    getPlugin().getServer().getPluginManager().registerEvents(this, getPlugin());
     KitRegistry.registerKit(this);
   }
 
@@ -90,7 +85,7 @@ public class MedicKit extends PremiumKit implements Listener {
       if (!(e.getEntity() instanceof Zombie && e.getDamager() instanceof Player)) {
         return;
       }
-      User user = plugin.getUserManager().getUser(e.getDamager().getUniqueId());
+      User user = getPlugin().getUserManager().getUser(e.getDamager().getUniqueId());
       if (!(user.getKit() instanceof MedicKit)) {
         return;
       }
@@ -110,7 +105,7 @@ public class MedicKit extends PremiumKit implements Listener {
         player.getEyeLocation().getWorld().spawnParticle(Particle.HEART, player.getLocation(), 20);
       }
     } catch (Exception ex) {
-      new ReportedException(JavaPlugin.getPlugin(Main.class), ex);
+      new ReportedException(getPlugin(), ex);
     }
   }
 }

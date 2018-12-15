@@ -19,9 +19,13 @@
 package pl.plajer.villagedefense.kits.kitapi.basekits;
 
 import org.bukkit.Material;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.java.JavaPlugin;
 
+import pl.plajer.villagedefense.Main;
+import pl.plajerlair.core.utils.ConfigUtils;
 import pl.plajerlair.core.utils.ItemBuilder;
 
 /**
@@ -29,15 +33,19 @@ import pl.plajerlair.core.utils.ItemBuilder;
  */
 public abstract class Kit {
 
+  private FileConfiguration kitsConfig;
+  private Main plugin = JavaPlugin.getPlugin(Main.class);
   private String name;
   private boolean unlockedOnDefault = false;
   private String[] description = {""};
 
   protected Kit() {
+    kitsConfig = ConfigUtils.getConfig(plugin, "kits");
   }
 
   public Kit(String name) {
     this.name = name;
+    kitsConfig = ConfigUtils.getConfig(plugin, "kits");
   }
 
   public abstract boolean isUnlockedByPlayer(Player p);
@@ -50,6 +58,20 @@ public abstract class Kit {
     this.unlockedOnDefault = unlockedOnDefault;
   }
 
+
+  /**
+   * @return main plugin
+   */
+  public Main getPlugin() {
+    return plugin;
+  }
+
+  /**
+   * @return config file of kits
+   */
+  public FileConfiguration getKitsConfig() {
+    return kitsConfig;
+  }
 
   public String getName() {
     return name;

@@ -30,7 +30,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
-import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.arena.Arena;
 import pl.plajer.villagedefense.arena.ArenaRegistry;
 import pl.plajer.villagedefense.handlers.ChatManager;
@@ -49,14 +48,11 @@ import pl.plajerlair.core.utils.ItemBuilder;
  */
 public class CleanerKit extends PremiumKit implements Listener {
 
-  private Main plugin;
-
-  public CleanerKit(Main plugin) {
-    this.plugin = plugin;
+  public CleanerKit() {
     setName(ChatManager.colorMessage("Kits.Cleaner.Kit-Name"));
     List<String> description = Utils.splitString(ChatManager.colorMessage("Kits.Cleaner.Kit-Description"), 40);
     this.setDescription(description.toArray(new String[0]));
-    plugin.getServer().getPluginManager().registerEvents(this, plugin);
+    getPlugin().getServer().getPluginManager().registerEvents(this, getPlugin());
     KitRegistry.registerKit(this);
   }
 
@@ -94,7 +90,7 @@ public class CleanerKit extends PremiumKit implements Listener {
           .contains(ChatManager.colorMessage("Kits.Cleaner.Game-Item-Name")) || arena == null) {
         return;
       }
-      User user = (plugin.getUserManager().getUser(e.getPlayer().getUniqueId()));
+      User user = (getPlugin().getUserManager().getUser(e.getPlayer().getUniqueId()));
       if (user.isSpectator()) {
         e.getPlayer().sendMessage(ChatManager.colorMessage("Kits.Cleaner.Spectator-Warning"));
         return;
@@ -118,7 +114,7 @@ public class CleanerKit extends PremiumKit implements Listener {
       ChatManager.broadcast(arena, ChatManager.formatMessage(arena, ChatManager.colorMessage("Kits.Cleaner.Cleaned-Map"), e.getPlayer()));
       user.setCooldown("clean", 180);
     } catch (Exception ex) {
-      new ReportedException(plugin, ex);
+      new ReportedException(getPlugin(), ex);
     }
   }
 }

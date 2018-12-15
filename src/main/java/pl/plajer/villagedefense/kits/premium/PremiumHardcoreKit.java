@@ -26,7 +26,6 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.handlers.ChatManager;
 import pl.plajer.villagedefense.handlers.PermissionsManager;
 import pl.plajer.villagedefense.kits.kitapi.KitRegistry;
@@ -39,7 +38,7 @@ import pl.plajer.villagedefense.utils.WeaponHelper;
  */
 public class PremiumHardcoreKit extends PremiumKit {
 
-  public PremiumHardcoreKit(Main plugin) {
+  public PremiumHardcoreKit() {
     setName(ChatManager.colorMessage("Kits.Premium-Hardcore.Kit-Name"));
     List<String> description = Utils.splitString(ChatManager.colorMessage("Kits.Premium-Hardcore.Kit-Description"), 40);
     this.setDescription(description.toArray(new String[0]));

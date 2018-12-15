@@ -18,7 +18,6 @@
 
 package pl.plajer.villagedefense.kits.kitapi;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -135,8 +134,8 @@ public class KitRegistry {
     for (Class kitClass : classKitNames) {
       if (ConfigUtils.getConfig(plugin, "kits").getBoolean("Enabled-Game-Kits." + kitClass.getSimpleName().replace("Kit", ""))) {
         try {
-          Class.forName(kitClass.getName()).getConstructor(Main.class).newInstance(plugin);
-        } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException | InvocationTargetException | InstantiationException e) {
+          Class.forName(kitClass.getName()).newInstance();
+        } catch (ClassNotFoundException | IllegalAccessException | InstantiationException e) {
           e.printStackTrace();
           Debugger.debug(LogLevel.WTF, "FATAL ERROR COULDN'T REGISTER EXISTING KIT! REPORT THIS TO THE DEVELOPER!");
         }

@@ -36,7 +36,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 
-import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.arena.Arena;
 import pl.plajer.villagedefense.arena.ArenaRegistry;
 import pl.plajer.villagedefense.handlers.ChatManager;
@@ -55,14 +54,11 @@ import pl.plajerlair.core.utils.XMaterial;
  */
 public class TeleporterKit extends PremiumKit implements Listener {
 
-  private Main plugin;
-
-  public TeleporterKit(Main plugin) {
-    this.plugin = plugin;
+  public TeleporterKit() {
     setName(ChatManager.colorMessage("Kits.Teleporter.Kit-Name"));
     List<String> description = Utils.splitString(ChatManager.colorMessage("Kits.Teleporter.Kit-Description"), 40);
     this.setDescription(description.toArray(new String[0]));
-    plugin.getServer().getPluginManager().registerEvents(this, plugin);
+    getPlugin().getServer().getPluginManager().registerEvents(this, getPlugin());
     KitRegistry.registerKit(this);
   }
 
@@ -107,11 +103,11 @@ public class TeleporterKit extends PremiumKit implements Listener {
       if (!stack.getItemMeta().getDisplayName().equalsIgnoreCase(ChatManager.colorMessage("Kits.Teleporter.Game-Item-Name"))) {
         return;
       }
-      Inventory inventory = plugin.getServer().createInventory(null, 18, ChatManager.colorMessage("Kits.Teleporter.Game-Item-Menu-Name"));
+      Inventory inventory = getPlugin().getServer().createInventory(null, 18, ChatManager.colorMessage("Kits.Teleporter.Game-Item-Menu-Name"));
       for (Player player : e.getPlayer().getWorld().getPlayers()) {
-        if (ArenaRegistry.getArena(player) != null && !plugin.getUserManager().getUser(player.getUniqueId()).isSpectator()) {
+        if (ArenaRegistry.getArena(player) != null && !getPlugin().getUserManager().getUser(player.getUniqueId()).isSpectator()) {
           ItemStack skull;
-          if (plugin.is1_11_R1() || plugin.is1_12_R1()) {
+          if (getPlugin().is1_11_R1() || getPlugin().is1_12_R1()) {
             skull = new ItemStack(Material.SKULL_ITEM, 1, (short) 3);
           } else {
             //todo check
@@ -133,7 +129,7 @@ public class TeleporterKit extends PremiumKit implements Listener {
       }
       e.getPlayer().openInventory(inventory);
     } catch (Exception ex) {
-      new ReportedException(plugin, ex);
+      new ReportedException(getPlugin(), ex);
     }
   }
 
@@ -181,7 +177,7 @@ public class TeleporterKit extends PremiumKit implements Listener {
       }
       p.sendMessage(ChatManager.colorMessage("Kits.Teleporter.Player-Not-Found"));
     } catch (Exception ex) {
-      new ReportedException(plugin, ex);
+      new ReportedException(getPlugin(), ex);
     }
   }
 

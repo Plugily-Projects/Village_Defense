@@ -32,7 +32,6 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
-import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.handlers.ChatManager;
 import pl.plajer.villagedefense.handlers.PermissionsManager;
 import pl.plajer.villagedefense.kits.kitapi.KitRegistry;
@@ -48,14 +47,11 @@ import pl.plajerlair.core.services.exception.ReportedException;
  */
 public class ShotBowKit extends PremiumKit implements Listener {
 
-  private Main plugin;
-
-  public ShotBowKit(Main plugin) {
-    this.plugin = plugin;
+  public ShotBowKit() {
     setName(ChatManager.colorMessage("Kits.Shot-Bow.Kit-Name"));
     List<String> description = Utils.splitString(ChatManager.colorMessage("Kits.Shot-Bow.Kit-Description"), 40);
     this.setDescription(description.toArray(new String[0]));
-    plugin.getServer().getPluginManager().registerEvents(this, plugin);
+    getPlugin().getServer().getPluginManager().registerEvents(this, getPlugin());
     KitRegistry.registerKit(this);
   }
 
@@ -91,7 +87,7 @@ public class ShotBowKit extends PremiumKit implements Listener {
         return;
       }
       ItemStack stack = e.getPlayer().getInventory().getItemInMainHand();
-      User user = plugin.getUserManager().getUser(e.getPlayer().getUniqueId());
+      User user = getPlugin().getUserManager().getUser(e.getPlayer().getUniqueId());
       if (stack == null || stack.getType() != Material.BOW || !e.getPlayer().getInventory().contains(Material.ARROW)
           || !(user.getKit() instanceof ShotBowKit)
           || user.isSpectator()) {
@@ -99,7 +95,7 @@ public class ShotBowKit extends PremiumKit implements Listener {
       }
       if (user.getCooldown("shotbow") == 0) {
         for (int i = 0; i < 4; i++) {
-          Bukkit.getScheduler().runTaskLater(plugin, () -> {
+          Bukkit.getScheduler().runTaskLater(getPlugin(), () -> {
             Arrow pr = e.getPlayer().launchProjectile(Arrow.class);
             pr.setVelocity(e.getPlayer().getLocation().getDirection().multiply(3));
             pr.setBounce(false);
@@ -119,7 +115,7 @@ public class ShotBowKit extends PremiumKit implements Listener {
         e.getPlayer().sendMessage(msgstring);
       }
     } catch (Exception ex) {
-      new ReportedException(plugin, ex);
+      new ReportedException(getPlugin(), ex);
     }
   }
 

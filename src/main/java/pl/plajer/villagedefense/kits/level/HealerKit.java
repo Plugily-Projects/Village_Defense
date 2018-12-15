@@ -26,7 +26,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionType;
 
-import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.api.StatsStorage;
 import pl.plajer.villagedefense.handlers.ChatManager;
 import pl.plajer.villagedefense.kits.kitapi.KitRegistry;
@@ -34,7 +33,6 @@ import pl.plajer.villagedefense.kits.kitapi.basekits.LevelKit;
 import pl.plajer.villagedefense.utils.ArmorHelper;
 import pl.plajer.villagedefense.utils.Utils;
 import pl.plajer.villagedefense.utils.WeaponHelper;
-import pl.plajerlair.core.utils.ConfigUtils;
 import pl.plajerlair.core.utils.XMaterial;
 
 /**
@@ -42,20 +40,17 @@ import pl.plajerlair.core.utils.XMaterial;
  */
 public class HealerKit extends LevelKit {
 
-  private Main plugin;
-
-  public HealerKit(Main plugin) {
-    this.plugin = plugin;
+  public HealerKit() {
     setName(ChatManager.colorMessage("Kits.Healer.Kit-Name"));
     List<String> description = Utils.splitString(ChatManager.colorMessage("Kits.Healer.Kit-Description"), 40);
     this.setDescription(description.toArray(new String[0]));
-    setLevel(ConfigUtils.getConfig(plugin, "kits").getInt("Required-Level.Healer"));
+    setLevel(getKitsConfig().getInt("Required-Level.Healer"));
     KitRegistry.registerKit(this);
   }
 
   @Override
   public boolean isUnlockedByPlayer(Player player) {
-    return plugin.getUserManager().getUser(player.getUniqueId()).getStat(StatsStorage.StatisticType.LEVEL) >= this.getLevel() || player.hasPermission("villagefense.kit.healer");
+    return getPlugin().getUserManager().getUser(player.getUniqueId()).getStat(StatsStorage.StatisticType.LEVEL) >= this.getLevel() || player.hasPermission("villagefense.kit.healer");
   }
 
   @Override

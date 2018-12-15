@@ -26,7 +26,6 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.handlers.ChatManager;
 import pl.plajer.villagedefense.handlers.PermissionsManager;
 import pl.plajer.villagedefense.kits.kitapi.KitRegistry;
@@ -41,7 +40,7 @@ import pl.plajerlair.core.utils.XMaterial;
  */
 public class HeavyTankKit extends PremiumKit {
 
-  public HeavyTankKit(Main plugin) {
+  public HeavyTankKit() {
     setName(ChatManager.colorMessage("Kits.Heavy-Tank.Kit-Name"));
     List<String> description = Utils.splitString(ChatManager.colorMessage("Kits.Heavy-Tank.Kit-Description"), 40);
     this.setDescription(description.toArray(new String[0]));

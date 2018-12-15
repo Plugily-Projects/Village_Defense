@@ -26,7 +26,6 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.api.StatsStorage;
 import pl.plajer.villagedefense.handlers.ChatManager;
 import pl.plajer.villagedefense.kits.kitapi.KitRegistry;
@@ -34,7 +33,6 @@ import pl.plajer.villagedefense.kits.kitapi.basekits.LevelKit;
 import pl.plajer.villagedefense.utils.ArmorHelper;
 import pl.plajer.villagedefense.utils.Utils;
 import pl.plajer.villagedefense.utils.WeaponHelper;
-import pl.plajerlair.core.utils.ConfigUtils;
 import pl.plajerlair.core.utils.XMaterial;
 
 /**
@@ -42,20 +40,17 @@ import pl.plajerlair.core.utils.XMaterial;
  */
 public class PuncherKit extends LevelKit {
 
-  private Main plugin;
-
-  public PuncherKit(Main plugin) {
-    this.plugin = plugin;
+  public PuncherKit() {
     setName(ChatManager.colorMessage("Kits.Puncher.Kit-Name"));
     List<String> description = Utils.splitString(ChatManager.colorMessage("Kits.Puncher.Kit-Description"), 40);
     this.setDescription(description.toArray(new String[0]));
-    setLevel(ConfigUtils.getConfig(plugin, "kits").getInt("Required-Level.Puncher"));
+    setLevel(getKitsConfig().getInt("Required-Level.Puncher"));
     KitRegistry.registerKit(this);
   }
 
   @Override
   public boolean isUnlockedByPlayer(Player player) {
-    return plugin.getUserManager().getUser(player.getUniqueId()).getStat(StatsStorage.StatisticType.LEVEL) >= this.getLevel() || player.hasPermission("villagefense.kit.puncher");
+    return getPlugin().getUserManager().getUser(player.getUniqueId()).getStat(StatsStorage.StatisticType.LEVEL) >= this.getLevel() || player.hasPermission("villagefense.kit.puncher");
   }
 
   @Override
