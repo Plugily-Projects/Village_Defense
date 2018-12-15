@@ -45,12 +45,12 @@ public class DeleteArgument {
       @Override
       public void execute(CommandSender sender, String[] args) {
         if (args.length == 0) {
-          sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("Commands.Type-Arena-Name"));
+          sender.sendMessage(ChatManager.getPrefix() + ChatManager.colorMessage("Commands.Type-Arena-Name"));
           return;
         }
         Arena arena = ArenaRegistry.getArena(args[1]);
         if (arena == null) {
-          sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("Commands.No-Arena-Like-That"));
+          sender.sendMessage(ChatManager.getPrefix() + ChatManager.colorMessage("Commands.No-Arena-Like-That"));
           return;
         }
         ArenaManager.stopGame(false, arena);
@@ -58,7 +58,7 @@ public class DeleteArgument {
         config.set("instances." + args[1], null);
         ConfigUtils.saveConfig(registry.getPlugin(), config, "arenas");
         ArenaRegistry.unregisterArena(arena);
-        sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("Commands.Removed-Game-Instance"));
+        sender.sendMessage(ChatManager.getPrefix() + ChatManager.colorMessage("Commands.Removed-Game-Instance"));
       }
     });
   }

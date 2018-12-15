@@ -51,7 +51,7 @@ public class SetWaveArgument {
           return;
         }
         if (args.length == 0) {
-          sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatColor.RED + "Please type number of wave to set!");
+          sender.sendMessage(ChatManager.getPrefix() + ChatColor.RED + "Please type number of wave to set!");
           return;
         }
         Arena arena = ArenaRegistry.getArena((Player) sender);
@@ -60,7 +60,7 @@ public class SetWaveArgument {
           ArenaManager.endWave(arena);
           String message = ChatManager.formatMessage(arena, ChatManager.colorMessage("In-Game.Messages.Admin-Messages.Changed-Wave"), arena.getWave());
           for (Player player1 : arena.getPlayers()) {
-            player1.sendMessage(ChatManager.PLUGIN_PREFIX + message);
+            player1.sendMessage(ChatManager.getPrefix() + message);
           }
           if (arena.getZombies() != null) {
             for (Zombie zombie : arena.getZombies()) {
@@ -75,10 +75,10 @@ public class SetWaveArgument {
           Utils.playSound(((Player) sender).getLocation(), "ENTITY_ZOMBIE_DEATH", "ENTITY_ZOMBIE_DEATH");
           for (Player loopPlayer : arena.getPlayers()) {
             String message1 = ChatManager.formatMessage(arena, ChatManager.colorMessage("In-Game.Messages.Admin-Messages.Removed-Zombies"), loopPlayer);
-            loopPlayer.sendMessage(ChatManager.PLUGIN_PREFIX + message1);
+            loopPlayer.sendMessage(ChatManager.getPrefix() + message1);
           }
         } else {
-          sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("Commands.Invalid-Number").replace("%correct%", "/vda setwave <number>"));
+          sender.sendMessage(ChatManager.getPrefix() + ChatManager.colorMessage("Commands.Invalid-Number").replace("%correct%", "/vda setwave <number>"));
         }
       }
     });

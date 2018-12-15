@@ -50,7 +50,7 @@ public class AddOrbsArgument {
       @Override
       public void execute(CommandSender sender, String[] args) {
         if (args.length == 1) {
-          sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatColor.RED + "Please type number of orbs to give!");
+          sender.sendMessage(ChatManager.getPrefix() + ChatColor.RED + "Please type number of orbs to give!");
           return;
         }
 
@@ -72,9 +72,9 @@ public class AddOrbsArgument {
         if (Utils.isInteger(args[1])) {
           User user = registry.getPlugin().getUserManager().getUser(target.getUniqueId());
           user.setStat(StatsStorage.StatisticType.ORBS, user.getStat(StatsStorage.StatisticType.ORBS) + Integer.parseInt(args[1]));
-          sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("Commands.Admin-Commands.Added-Orbs"));
+          sender.sendMessage(ChatManager.getPrefix() + ChatManager.colorMessage("Commands.Admin-Commands.Added-Orbs"));
         } else {
-          sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("Commands.Wrong-Usage").replace("%correct%", "/vda addorbs <amount> (player)"));
+          sender.sendMessage(ChatManager.getPrefix() + ChatManager.colorMessage("Commands.Wrong-Usage").replace("%correct%", "/vda addorbs <amount> (player)"));
         }
       }
     });

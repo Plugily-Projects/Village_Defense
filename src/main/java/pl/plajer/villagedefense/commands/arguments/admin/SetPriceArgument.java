@@ -48,13 +48,13 @@ public class SetPriceArgument {
       @Override
       public void execute(CommandSender sender, String[] args) {
         if (args.length == 0) {
-          sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatColor.RED + "Please type price of item!");
+          sender.sendMessage(ChatManager.getPrefix() + ChatColor.RED + "Please type price of item!");
           return;
         }
         Player player = (Player) sender;
         ItemStack item = player.getInventory().getItemInMainHand();
         if (item == null || item.getType().equals(Material.AIR)) {
-          player.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("Commands.Hold-Any-Item"));
+          player.sendMessage(ChatManager.getPrefix() + ChatManager.colorMessage("Commands.Hold-Any-Item"));
           return;
         }
         //check any price from lore
@@ -70,10 +70,10 @@ public class SetPriceArgument {
           lore.add(0, ChatColor.GOLD + args[1] + " " + ChatManager.colorMessage("In-Game.Messages.Shop-Messages.Currency-In-Shop"));
           meta.setLore(lore);
           item.setItemMeta(meta);
-          player.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("Commands.Command-Executed-Item-Updated"));
+          player.sendMessage(ChatManager.getPrefix() + ChatManager.colorMessage("Commands.Command-Executed-Item-Updated"));
         } else {
           MinigameUtils.addLore(item, ChatColor.GOLD + args[1] + " " + ChatManager.colorMessage("In-Game.Messages.Shop-Messages.Currency-In-Shop"));
-          player.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("Commands.Command-Executed"));
+          player.sendMessage(ChatManager.getPrefix() + ChatManager.colorMessage("Commands.Command-Executed"));
         }
       }
     });

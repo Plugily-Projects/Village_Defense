@@ -257,7 +257,7 @@ public abstract class Arena extends BukkitRunnable {
               addStat(player, StatsStorage.StatisticType.GAMES_PLAYED);
               addExperience(player, 10);
               setTimer(plugin.getConfig().getInt("Cooldown-Before-Next-Wave", 25));
-              player.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Messages.Lobby-Messages.Game-Started"));
+              player.sendMessage(ChatManager.getPrefix() + ChatManager.colorMessage("In-Game.Messages.Lobby-Messages.Game-Started"));
             }
             fighting = false;
           }

@@ -47,7 +47,7 @@ public class JoinArguments {
           return;
         }
         if (ArenaRegistry.isInArena(((Player) sender))) {
-          sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Already-Playing"));
+          sender.sendMessage(ChatManager.getPrefix() + ChatManager.colorMessage("In-Game.Already-Playing"));
           return;
         }
         for (Arena arena : ArenaRegistry.getArenas()) {
@@ -66,7 +66,7 @@ public class JoinArguments {
         @Override
         public void execute(CommandSender sender, String[] args) {
           if (ArenaRegistry.isInArena(((Player) sender))) {
-            sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Already-Playing"));
+            sender.sendMessage(ChatManager.getPrefix() + ChatManager.colorMessage("In-Game.Already-Playing"));
             return;
           }
           for (Arena arena : ArenaRegistry.getArenas()) {
@@ -75,7 +75,7 @@ public class JoinArguments {
               return;
             }
           }
-          sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("Commands.No-Free-Arenas"));
+          sender.sendMessage(ChatManager.getPrefix() + ChatManager.colorMessage("Commands.No-Free-Arenas"));
         }
       });
     }

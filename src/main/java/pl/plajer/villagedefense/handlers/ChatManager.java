@@ -36,10 +36,17 @@ import pl.plajerlair.core.utils.MinigameUtils;
  */
 public class ChatManager {
 
-  public static String PLUGIN_PREFIX;
+  private static String prefix;
 
   public ChatManager(String prefix) {
-    PLUGIN_PREFIX = prefix;
+    ChatManager.prefix = prefix;
+  }
+
+  /**
+   * @return game prefix
+   */
+  public static String getPrefix() {
+    return prefix;
   }
 
   public static String colorRawMessage(String message) {
@@ -55,7 +62,7 @@ public class ChatManager {
    */
   public static void broadcast(Arena arena, String message) {
     for (Player p : arena.getPlayers()) {
-      p.sendMessage(PLUGIN_PREFIX + message);
+      p.sendMessage(prefix + message);
     }
   }
 

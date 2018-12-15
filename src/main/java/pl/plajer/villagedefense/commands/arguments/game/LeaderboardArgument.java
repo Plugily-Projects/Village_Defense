@@ -46,12 +46,12 @@ public class LeaderboardArgument {
       public void execute(CommandSender sender, String[] args) {
         try {
           if (args.length == 1) {
-            sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("Commands.Statistics.Type-Name"));
+            sender.sendMessage(ChatManager.getPrefix() + ChatManager.colorMessage("Commands.Statistics.Type-Name"));
             return;
           }
           StatsStorage.StatisticType statisticType = StatsStorage.StatisticType.valueOf(args[1].toUpperCase());
           if (statisticType == StatsStorage.StatisticType.XP) {
-            sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("Commands.Statistics.Invalid-Name"));
+            sender.sendMessage(ChatManager.getPrefix() + ChatManager.colorMessage("Commands.Statistics.Invalid-Name"));
             return;
           }
           LinkedHashMap<UUID, Integer> stats = (LinkedHashMap<UUID, Integer>) StatsStorage.getStats(statisticType);

@@ -49,7 +49,7 @@ public class SetLevelArgument {
       @Override
       public void execute(CommandSender sender, String[] args) {
         if (args.length == 1) {
-          sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatColor.RED + "Please type number of levels to set!");
+          sender.sendMessage(ChatManager.getPrefix() + ChatColor.RED + "Please type number of levels to set!");
           return;
         }
         Player target;
@@ -70,9 +70,9 @@ public class SetLevelArgument {
         if (Utils.isInteger(args[1])) {
           User user = registry.getPlugin().getUserManager().getUser(target.getUniqueId());
           user.setStat(StatsStorage.StatisticType.LEVEL, Integer.parseInt(args[1]));
-          sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("Commands.Admin-Commands.Added-Level"));
+          sender.sendMessage(ChatManager.getPrefix() + ChatManager.colorMessage("Commands.Admin-Commands.Added-Level"));
         } else {
-          sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("Commands.Wrong-Usage").replace("%correct%", "/vda setlevel <amount> [player]"));
+          sender.sendMessage(ChatManager.getPrefix() + ChatManager.colorMessage("Commands.Wrong-Usage").replace("%correct%", "/vda setlevel <amount> [player]"));
         }
       }
     });

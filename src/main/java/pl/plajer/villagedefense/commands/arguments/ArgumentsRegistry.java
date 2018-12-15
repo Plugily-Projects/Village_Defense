@@ -138,7 +138,7 @@ public class ArgumentsRegistry implements CommandExecutor {
                 return true;
               }
               if (ArenaRegistry.getArena(args[0]) == null) {
-                sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("Commands.No-Arena-Like-That"));
+                sender.sendMessage(ChatManager.getPrefix() + ChatManager.colorMessage("Commands.No-Arena-Like-That"));
                 return true;
               }
 

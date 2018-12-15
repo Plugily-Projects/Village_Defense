@@ -41,7 +41,7 @@ public class StatsArgument {
       public void execute(CommandSender sender, String[] args) {
         Player player = args.length == 2 ? Bukkit.getPlayerExact(args[1]) : (Player) sender;
         if (player == null || registry.getPlugin().getUserManager().getUser(player.getUniqueId()) == null) {
-          sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("Commands.Admin-Commands.Player-Not-Found"));
+          sender.sendMessage(ChatManager.getPrefix() + ChatManager.colorMessage("Commands.Admin-Commands.Player-Not-Found"));
           return;
         }
         User user = registry.getPlugin().getUserManager().getUser(player.getUniqueId());

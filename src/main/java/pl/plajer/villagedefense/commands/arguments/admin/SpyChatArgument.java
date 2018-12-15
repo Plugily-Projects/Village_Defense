@@ -53,7 +53,7 @@ public class SpyChatArgument {
         } else {
           spyChatters.add(uuid);
         }
-        sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatColor.GREEN + "Game spy chat toggled to " + spyChatters.contains(uuid));
+        sender.sendMessage(ChatManager.getPrefix() + ChatColor.GREEN + "Game spy chat toggled to " + spyChatters.contains(uuid));
       }
     });
   }

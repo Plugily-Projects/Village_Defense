@@ -83,16 +83,16 @@ public class ArenaManager {
       VillageGameJoinAttemptEvent villageGameJoinAttemptEvent = new VillageGameJoinAttemptEvent(p, arena);
       Bukkit.getPluginManager().callEvent(villageGameJoinAttemptEvent);
       if (!arena.isReady()) {
-        p.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Arena-Not-Configured"));
+        p.sendMessage(ChatManager.getPrefix() + ChatManager.colorMessage("In-Game.Arena-Not-Configured"));
         return;
       }
       if (villageGameJoinAttemptEvent.isCancelled()) {
-        p.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Join-Cancelled-Via-API"));
+        p.sendMessage(ChatManager.getPrefix() + ChatManager.colorMessage("In-Game.Join-Cancelled-Via-API"));
         return;
       }
       if (!plugin.getConfigPreferences().getOption(ConfigPreferences.Option.BUNGEE_ENABLED)) {
         if (!(p.hasPermission(PermissionsManager.getJoinPerm().replace("<arena>", "*")) || p.hasPermission(PermissionsManager.getJoinPerm().replace("<arena>", arena.getID())))) {
-          p.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Join-No-Permission"));
+          p.sendMessage(ChatManager.getPrefix() + ChatManager.colorMessage("In-Game.Join-No-Permission"));
           return;
         }
       }
@@ -346,8 +346,8 @@ public class ArenaManager {
       VillageWaveEndEvent villageWaveEndEvent = new VillageWaveEndEvent(arena, arena.getWave());
       Bukkit.getPluginManager().callEvent(villageWaveEndEvent);
       for (Player player : arena.getPlayers()) {
-        player.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.formatMessage(arena, ChatManager.colorMessage("In-Game.Messages.Next-Wave-In"), arena.getTimer()));
-        player.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Messages.You-Feel-Refreshed"));
+        player.sendMessage(ChatManager.getPrefix() + ChatManager.formatMessage(arena, ChatManager.colorMessage("In-Game.Messages.Next-Wave-In"), arena.getTimer()));
+        player.sendMessage(ChatManager.getPrefix() + ChatManager.colorMessage("In-Game.Messages.You-Feel-Refreshed"));
         player.setHealth(player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue());
         User user = plugin.getUserManager().getUser(player.getUniqueId());
         user.addStat(StatsStorage.StatisticType.ORBS, arena.getWave() * 10);

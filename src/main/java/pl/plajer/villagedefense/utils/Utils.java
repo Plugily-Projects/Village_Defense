@@ -186,7 +186,7 @@ public class Utils {
 
   public static boolean checkIsInGameInstance(Player player) {
     if (ArenaRegistry.getArena(player) == null) {
-      player.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("Commands.Not-Playing"));
+      player.sendMessage(ChatManager.getPrefix() + ChatManager.colorMessage("Commands.Not-Playing"));
       return false;
     }
     return true;
@@ -196,7 +196,7 @@ public class Utils {
     if (sender.hasPermission(perm)) {
       return true;
     }
-    sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("Commands.No-Permission"));
+    sender.sendMessage(ChatManager.getPrefix() + ChatManager.colorMessage("Commands.No-Permission"));
     return false;
   }
 

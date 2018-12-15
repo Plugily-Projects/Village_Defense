@@ -46,7 +46,7 @@ public class ReloadArgument {
           ArenaManager.stopGame(true, arena);
         }
         ArenaRegistry.registerArenas();
-        sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("Commands.Admin-Commands.Success-Reload"));
+        sender.sendMessage(ChatManager.getPrefix() + ChatManager.colorMessage("Commands.Admin-Commands.Success-Reload"));
       }
     });
   }

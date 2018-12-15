@@ -260,7 +260,7 @@ public class Events implements Listener {
         if (ironGolem.getCustomName() != null && ironGolem.getCustomName().contains(event.getPlayer().getName())) {
           event.getRightClicked().setPassenger(event.getPlayer());
         } else {
-          event.getPlayer().sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Messages.Cant-Ride-Others-Golem"));
+          event.getPlayer().sendMessage(ChatManager.getPrefix() + ChatManager.colorMessage("In-Game.Messages.Cant-Ride-Others-Golem"));
         }
       } else if (event.getRightClicked().getType() == EntityType.WOLF) {
         Wolf wolf = (Wolf) event.getRightClicked();
@@ -295,7 +295,7 @@ public class Events implements Listener {
         return;
       }
       event.setCancelled(true);
-      event.getPlayer().sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Only-Command-Ingame-Is-Leave"));
+      event.getPlayer().sendMessage(ChatManager.getPrefix() + ChatManager.colorMessage("In-Game.Only-Command-Ingame-Is-Leave"));
     } catch (Exception ex) {
       new ReportedException(plugin, ex);
     }
@@ -521,7 +521,7 @@ public class Events implements Listener {
       }
       int price = Integer.parseInt(string.split(" ")[0]);
       if (price > user.getStat(StatsStorage.StatisticType.ORBS)) {
-        player.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Messages.Shop-Messages.Not-Enough-Orbs"));
+        player.sendMessage(ChatManager.getPrefix() + ChatManager.colorMessage("In-Game.Messages.Shop-Messages.Not-Enough-Orbs"));
         return;
       }
       if (Utils.isNamed(stack)) {
@@ -538,7 +538,7 @@ public class Events implements Listener {
             return;
           }
           arena.spawnGolem(arena.getStartLocation(), player);
-          player.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Messages.Golem-Spawned"));
+          player.sendMessage(ChatManager.getPrefix() + ChatManager.colorMessage("In-Game.Messages.Golem-Spawned"));
           user.setStat(StatsStorage.StatisticType.ORBS, user.getStat(StatsStorage.StatisticType.ORBS) - price);
           return;
         } else if (stack.getItemMeta().getDisplayName().contains(ChatManager.colorMessage("In-Game.Messages.Shop-Messages.Wolf-Item-Name")) || stack.getItemMeta().getDisplayName().contains(ChatManager.colorRawMessage(ConfigUtils.getConfig(plugin, "language").getString("In-Game.Messages.Shop-Messages.Wolf-Item-Name")))) {
@@ -554,7 +554,7 @@ public class Events implements Listener {
             return;
           }
           arena.spawnWolf(arena.getStartLocation(), player);
-          player.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Messages.Wolf-Spawned"));
+          player.sendMessage(ChatManager.getPrefix() + ChatManager.colorMessage("In-Game.Messages.Wolf-Spawned"));
           user.setStat(StatsStorage.StatisticType.ORBS, user.getStat(StatsStorage.StatisticType.ORBS) - price);
           return;
         }
@@ -643,7 +643,7 @@ public class Events implements Listener {
         }
         for (Player p : arena.getPlayers()) {
           p.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(p.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue() + 2.0);
-          p.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Rotten-Flesh-Level-Up"));
+          p.sendMessage(ChatManager.getPrefix() + ChatManager.colorMessage("In-Game.Rotten-Flesh-Level-Up"));
         }
       }
     } catch (Exception ex) {

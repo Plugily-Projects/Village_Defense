@@ -53,7 +53,7 @@ public class ClearEntitiesArgument {
           return;
         }
         if (args.length == 1) {
-          sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatColor.RED + "Please type valid mob type to clear: VILLAGER, ZOMBIE, GOLEM");
+          sender.sendMessage(ChatManager.getPrefix() + ChatColor.RED + "Please type valid mob type to clear: VILLAGER, ZOMBIE, GOLEM");
           return;
         }
         Arena arena = ArenaRegistry.getArena((Player) sender);
@@ -99,13 +99,13 @@ public class ClearEntitiesArgument {
             clearMessage = ChatManager.colorMessage("In-Game.Messages.Admin-Messages.Removed-Golems");
             break;
           default:
-            sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatColor.RED + "Please type valid mob type to clear: VILLAGER, ZOMBIE, GOLEM");
+            sender.sendMessage(ChatManager.getPrefix() + ChatColor.RED + "Please type valid mob type to clear: VILLAGER, ZOMBIE, GOLEM");
             return;
           //todo add wolves
         }
         for (Player loopPlayer : arena.getPlayers()) {
           String message = ChatManager.formatMessage(arena, clearMessage, loopPlayer);
-          loopPlayer.sendMessage(ChatManager.PLUGIN_PREFIX + message);
+          loopPlayer.sendMessage(ChatManager.getPrefix() + message);
         }
       }
     });

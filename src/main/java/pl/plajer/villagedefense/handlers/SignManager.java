@@ -79,7 +79,7 @@ public class SignManager implements Listener {
         return;
       }
       if (e.getLine(1).isEmpty()) {
-        e.getPlayer().sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("Signs.Please-Type-Arena-Name"));
+        e.getPlayer().sendMessage(ChatManager.getPrefix() + ChatManager.colorMessage("Signs.Please-Type-Arena-Name"));
         return;
       }
       for (Arena arena : ArenaRegistry.getArenas()) {
@@ -90,7 +90,7 @@ public class SignManager implements Listener {
           e.setLine(i, formatSign(signLines.get(i), arena));
         }
         loadedSigns.put((Sign) e.getBlock().getState(), arena);
-        e.getPlayer().sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("Signs.Sign-Created"));
+        e.getPlayer().sendMessage(ChatManager.getPrefix() + ChatManager.colorMessage("Signs.Sign-Created"));
         String location = e.getBlock().getWorld().getName() + "," + e.getBlock().getX() + "," + e.getBlock().getY() + "," + e.getBlock().getZ() + ",0.0,0.0";
         List<String> locs = ConfigUtils.getConfig(plugin, "arenas").getStringList("instances." + arena.getID() + ".signs");
         locs.add(location);
@@ -99,7 +99,7 @@ public class SignManager implements Listener {
         ConfigUtils.saveConfig(plugin, config, "arenas");
         return;
       }
-      e.getPlayer().sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("Signs.Arena-Doesnt-Exists"));
+      e.getPlayer().sendMessage(ChatManager.getPrefix() + ChatManager.colorMessage("Signs.Arena-Doesnt-Exists"));
     } catch (Exception ex) {
       new ReportedException(plugin, ex);
     }
@@ -138,11 +138,11 @@ public class SignManager implements Listener {
           FileConfiguration config = ConfigUtils.getConfig(plugin, "arenas");
           config.set(arena + ".signs", signs);
           ConfigUtils.saveConfig(plugin, config, "arenas");
-          e.getPlayer().sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("Signs.Sign-Removed"));
+          e.getPlayer().sendMessage(ChatManager.getPrefix() + ChatManager.colorMessage("Signs.Sign-Removed"));
           return;
         }
       }
-      e.getPlayer().sendMessage(ChatManager.PLUGIN_PREFIX + ChatColor.RED + "Couldn't remove sign from configuration! Please do this manually!");
+      e.getPlayer().sendMessage(ChatManager.getPrefix() + ChatColor.RED + "Couldn't remove sign from configuration! Please do this manually!");
     } catch (Exception ex) {
       new ReportedException(plugin, ex);
     }
@@ -159,7 +159,7 @@ public class SignManager implements Listener {
           return;
         }
         if (ArenaRegistry.isInArena(e.getPlayer())) {
-          e.getPlayer().sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Already-Playing"));
+          e.getPlayer().sendMessage(ChatManager.getPrefix() + ChatManager.colorMessage("In-Game.Already-Playing"));
           return;
         }
         if (!(arena.getPlayers().size() >= arena.getMaximumPlayers())) {
@@ -173,7 +173,7 @@ public class SignManager implements Listener {
             }
             if (arena.getArenaState() == ArenaState.STARTING || arena.getArenaState() == ArenaState.WAITING_FOR_PLAYERS) {
               ArenaManager.leaveAttempt(player, arena);
-              player.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Messages.Lobby-Messages.You-Were-Kicked-For-Premium-Slot"));
+              player.sendMessage(ChatManager.getPrefix() + ChatManager.colorMessage("In-Game.Messages.Lobby-Messages.You-Were-Kicked-For-Premium-Slot"));
               ChatManager.broadcast(arena, ChatManager.formatMessage(arena, ChatManager.colorMessage("In-Game.Messages.Lobby-Messages.Kicked-For-Premium-Slot"), player));
               ArenaManager.joinAttempt(e.getPlayer(), arena);
               return;
@@ -182,9 +182,9 @@ public class SignManager implements Listener {
               return;
             }
           }
-          e.getPlayer().sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.No-Slots-For-Premium"));
+          e.getPlayer().sendMessage(ChatManager.getPrefix() + ChatManager.colorMessage("In-Game.No-Slots-For-Premium"));
         } else {
-          e.getPlayer().sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Full-Game-No-Permission"));
+          e.getPlayer().sendMessage(ChatManager.getPrefix() + ChatManager.colorMessage("In-Game.Full-Game-No-Permission"));
         }
       }
     } catch (Exception ex) {

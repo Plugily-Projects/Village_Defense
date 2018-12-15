@@ -68,7 +68,7 @@ public class RespawnArgument {
             }
           }
           if (target == null) {
-            sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("Commands.Admin-Commands.Player-Not-Found"));
+            sender.sendMessage(ChatManager.getPrefix() + ChatManager.colorMessage("Commands.Admin-Commands.Player-Not-Found"));
             return;
           }
         } else {
@@ -88,7 +88,7 @@ public class RespawnArgument {
         ArenaUtils.showPlayer(target, arena);
         target.getInventory().clear();
         user.getKit().giveKitItems(target);
-        target.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Back-In-Game"));
+        target.sendMessage(ChatManager.getPrefix() + ChatManager.colorMessage("In-Game.Back-In-Game"));
       }
     });
   }

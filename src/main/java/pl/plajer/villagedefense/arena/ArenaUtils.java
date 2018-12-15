@@ -94,7 +94,7 @@ public class ArenaUtils {
       User user = plugin.getUserManager().getUser(player.getUniqueId());
       if (Math.pow(50 * user.getStat(StatsStorage.StatisticType.LEVEL), 1.5) < user.getStat(StatsStorage.StatisticType.XP)) {
         user.addStat(StatsStorage.StatisticType.LEVEL, 1);
-        player.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.formatMessage(arena, ChatManager.colorMessage("In-Game.You-Leveled-Up"), user.getStat(StatsStorage.StatisticType.LEVEL)));
+        player.sendMessage(ChatManager.getPrefix() + ChatManager.formatMessage(arena, ChatManager.colorMessage("In-Game.You-Leveled-Up"), user.getStat(StatsStorage.StatisticType.LEVEL)));
       }
     } catch (Exception e) {
       new ReportedException(plugin, e);

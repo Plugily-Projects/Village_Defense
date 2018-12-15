@@ -49,8 +49,15 @@ public class LanguageManager {
   private static Locale pluginLocale;
   private static Properties properties = new Properties();
 
-  public static void init(Main pl) {
-    plugin = pl;
+  /**
+   * Initializes language management system
+   * Executes language migration if needed
+   *
+   * @param plugin plugin instance
+   * @see LanguageMigrator
+   */
+  public static void init(Main plugin) {
+    LanguageManager.plugin = plugin;
     if (!new File(plugin.getDataFolder() + File.separator + "language.yml").exists()) {
       plugin.saveResource("language.yml", false);
     }
@@ -62,6 +69,7 @@ public class LanguageManager {
         suggestLocale();
       }
     }, 100);
+    new LanguageMigrator(plugin);
   }
 
   private static void registerLocales() {

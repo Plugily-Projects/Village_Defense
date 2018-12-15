@@ -61,7 +61,6 @@ import pl.plajer.villagedefense.handlers.ShopManager;
 import pl.plajer.villagedefense.handlers.SignManager;
 import pl.plajer.villagedefense.handlers.items.SpecialItem;
 import pl.plajer.villagedefense.handlers.language.LanguageManager;
-import pl.plajer.villagedefense.handlers.language.LanguageMigrator;
 import pl.plajer.villagedefense.handlers.reward.RewardsFactory;
 import pl.plajer.villagedefense.handlers.setup.SetupInventoryEvents;
 import pl.plajer.villagedefense.kits.kitapi.KitManager;
@@ -161,20 +160,11 @@ public class Main extends JavaPlugin {
       }
       LanguageManager.init(this);
       saveDefaultConfig();
-      //check if using releases before 2.1.0 or 2.1.0+
-      if ((ConfigUtils.getConfig(this, "language").isSet("STATS-AboveLine")
-          && ConfigUtils.getConfig(this, "language").isSet("SCOREBOARD-Zombies"))
-          || (ConfigUtils.getConfig(this, "language").isSet("File-Version")
-          && getConfig().isSet("Config-Version"))) {
-        LanguageMigrator.migrateToNewFormat();
-      }
       Debugger.setEnabled(getConfig().getBoolean("Debug", false));
       Debugger.setPrefix("[Village Debugger]");
       Debugger.debug(LogLevel.INFO, "Main setup start");
       configPreferences = new ConfigPreferences(this);
       setupFiles();
-      LanguageMigrator.configUpdate();
-      LanguageMigrator.languageFileUpdate();
       new LegacyDataFixer(this);
       initializeClasses();
       checkUpdate();
