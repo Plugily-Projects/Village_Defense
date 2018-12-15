@@ -30,7 +30,6 @@ import pl.plajer.villagedefense.api.StatsStorage;
 import pl.plajer.villagedefense.arena.ArenaManager;
 import pl.plajer.villagedefense.arena.ArenaRegistry;
 import pl.plajer.villagedefense.user.User;
-import pl.plajer.villagedefense.user.UserManager;
 import pl.plajer.villagedefense.utils.MessageUtils;
 import pl.plajerlair.core.debug.Debugger;
 import pl.plajerlair.core.debug.LogLevel;
@@ -64,7 +63,7 @@ public class QuitEvent implements Listener {
       if (ArenaRegistry.getArena(event.getPlayer()) != null) {
         ArenaManager.leaveAttempt(event.getPlayer(), ArenaRegistry.getArena(event.getPlayer()));
       }
-      final User user = UserManager.getUser(event.getPlayer().getUniqueId());
+      final User user = plugin.getUserManager().getUser(event.getPlayer().getUniqueId());
       final Player player = event.getPlayer();
       if (plugin.getConfigPreferences().getOption(ConfigPreferences.Option.DATABASE_ENABLED)) {
         Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
@@ -94,7 +93,7 @@ public class QuitEvent implements Listener {
           plugin.getFileStats().saveStat(player, s);
         }
       }
-      UserManager.removeUser(player.getUniqueId());
+      plugin.getUserManager().removeUser(player.getUniqueId());
     } catch (Exception ex) {
       new ReportedException(plugin, ex);
     }

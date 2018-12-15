@@ -32,7 +32,6 @@ import pl.plajer.villagedefense.commands.arguments.data.LabelData;
 import pl.plajer.villagedefense.commands.arguments.data.LabeledCommandArgument;
 import pl.plajer.villagedefense.handlers.ChatManager;
 import pl.plajer.villagedefense.user.User;
-import pl.plajer.villagedefense.user.UserManager;
 import pl.plajer.villagedefense.utils.Utils;
 
 /**
@@ -69,7 +68,7 @@ public class SetLevelArgument {
         }
 
         if (Utils.isInteger(args[1])) {
-          User user = UserManager.getUser(target.getUniqueId());
+          User user = registry.getPlugin().getUserManager().getUser(target.getUniqueId());
           user.setStat(StatsStorage.StatisticType.LEVEL, Integer.parseInt(args[1]));
           sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("Commands.Admin-Commands.Added-Level"));
         } else {

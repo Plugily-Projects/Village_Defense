@@ -38,7 +38,6 @@ import pl.plajer.villagedefense.arena.ArenaRegistry;
 import pl.plajer.villagedefense.handlers.ChatManager;
 import pl.plajer.villagedefense.kits.kitapi.KitRegistry;
 import pl.plajer.villagedefense.kits.kitapi.basekits.LevelKit;
-import pl.plajer.villagedefense.user.UserManager;
 import pl.plajer.villagedefense.utils.Utils;
 import pl.plajer.villagedefense.utils.WeaponHelper;
 import pl.plajerlair.core.services.exception.ReportedException;
@@ -97,13 +96,13 @@ public class ZombieFinderKit extends LevelKit implements Listener {
           !event.getItem().getItemMeta().getDisplayName().equals(ChatManager.colorMessage("Kits.Zombie-Teleporter.Game-Item-Name"))) {
         return;
       }
-      if (UserManager.getUser(event.getPlayer().getUniqueId()).isSpectator()) {
+      if (plugin.getUserManager().getUser(event.getPlayer().getUniqueId()).isSpectator()) {
         event.getPlayer().sendMessage(ChatManager.colorMessage("Kits.Teleporter.Spectator-Warning"));
         return;
       }
-      if (UserManager.getUser(event.getPlayer().getUniqueId()).getCooldown("zombie") > 0 && !UserManager.getUser(event.getPlayer().getUniqueId()).isSpectator()) {
+      if (plugin.getUserManager().getUser(event.getPlayer().getUniqueId()).getCooldown("zombie") > 0 && !plugin.getUserManager().getUser(event.getPlayer().getUniqueId()).isSpectator()) {
         String msgstring = ChatManager.colorMessage("Kits.Ability-Still-On-Cooldown");
-        msgstring = msgstring.replaceFirst("%COOLDOWN%", Long.toString(UserManager.getUser(event.getPlayer().getUniqueId()).getCooldown("zombie")));
+        msgstring = msgstring.replaceFirst("%COOLDOWN%", Long.toString(plugin.getUserManager().getUser(event.getPlayer().getUniqueId()).getCooldown("zombie")));
         event.getPlayer().sendMessage(msgstring);
         return;
       }
@@ -117,7 +116,7 @@ public class ZombieFinderKit extends LevelKit implements Listener {
         event.getPlayer().sendMessage(ChatManager.colorMessage("Kits.Zombie-Teleporter.Zombie-Teleported"));
       }
       Utils.playSound(event.getPlayer().getLocation(), "ENTITY_ZOMBIE_DEATH", "ENTITY_ZOMBIE_DEATH");
-      UserManager.getUser(event.getPlayer().getUniqueId()).setCooldown("zombie", 30);
+      plugin.getUserManager().getUser(event.getPlayer().getUniqueId()).setCooldown("zombie", 30);
     } catch (Exception ex) {
       new ReportedException(plugin, ex);
     }

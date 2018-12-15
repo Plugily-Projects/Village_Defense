@@ -43,7 +43,6 @@ import pl.plajer.villagedefense.handlers.ChatManager;
 import pl.plajer.villagedefense.handlers.PermissionsManager;
 import pl.plajer.villagedefense.kits.kitapi.KitRegistry;
 import pl.plajer.villagedefense.kits.kitapi.basekits.PremiumKit;
-import pl.plajer.villagedefense.user.UserManager;
 import pl.plajer.villagedefense.utils.ArmorHelper;
 import pl.plajer.villagedefense.utils.Utils;
 import pl.plajer.villagedefense.utils.WeaponHelper;
@@ -110,7 +109,7 @@ public class TeleporterKit extends PremiumKit implements Listener {
       }
       Inventory inventory = plugin.getServer().createInventory(null, 18, ChatManager.colorMessage("Kits.Teleporter.Game-Item-Menu-Name"));
       for (Player player : e.getPlayer().getWorld().getPlayers()) {
-        if (ArenaRegistry.getArena(player) != null && !UserManager.getUser(player.getUniqueId()).isSpectator()) {
+        if (ArenaRegistry.getArena(player) != null && !plugin.getUserManager().getUser(player.getUniqueId()).isSpectator()) {
           ItemStack skull;
           if (plugin.is1_11_R1() || plugin.is1_12_R1()) {
             skull = new ItemStack(Material.SKULL_ITEM, 1, (short) 3);

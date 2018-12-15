@@ -42,7 +42,6 @@ import pl.plajer.villagedefense.api.StatsStorage;
 import pl.plajer.villagedefense.api.event.player.VillagePlayerGolemUpgradeEvent;
 import pl.plajer.villagedefense.arena.ArenaRegistry;
 import pl.plajer.villagedefense.handlers.ChatManager;
-import pl.plajer.villagedefense.user.UserManager;
 import pl.plajer.villagedefense.utils.Utils;
 import pl.plajerlair.core.debug.Debugger;
 import pl.plajerlair.core.debug.LogLevel;
@@ -68,7 +67,7 @@ public class GolemEvents implements Listener {
       if (!ArenaRegistry.isInArena(e.getPlayer()) || !(e.getRightClicked() instanceof IronGolem)) {
         return;
       }
-      if (UserManager.getUser(e.getPlayer().getUniqueId()).isSpectator()) {
+      if (plugin.getUserManager().getUser(e.getPlayer().getUniqueId()).isSpectator()) {
         return;
       }
       if (e.getRightClicked().getCustomName() == null || !(e.getRightClicked().getCustomName().contains(e.getPlayer().getName()))) {
@@ -119,7 +118,7 @@ public class GolemEvents implements Listener {
         }
         Player p = (Player) e.getWhoClicked();
         double golemHealth = clickedGolem.get(p).getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue();
-        Integer orbs = UserManager.getUser(p.getUniqueId()).getStat(StatsStorage.StatisticType.ORBS);
+        Integer orbs = plugin.getUserManager().getUser(p.getUniqueId()).getStat(StatsStorage.StatisticType.ORBS);
         e.setCancelled(true);
         //checking for health upgrades
         for (int i = 1; i <= 3; i++) {
@@ -143,7 +142,7 @@ public class GolemEvents implements Listener {
               Bukkit.getPluginManager().callEvent(event);
 
               p.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Golem-Upgrades.Upgrade-Applied"));
-              UserManager.getUser(p.getUniqueId()).setStat(StatsStorage.StatisticType.ORBS, orbs - price);
+              plugin.getUserManager().getUser(p.getUniqueId()).setStat(StatsStorage.StatisticType.ORBS, orbs - price);
               clickedGolem.get(p).getWorld().spawnParticle(Particle.LAVA, p.getLocation(), 20);
               clickedGolem.remove(p);
               p.closeInventory();
@@ -170,7 +169,7 @@ public class GolemEvents implements Listener {
             Bukkit.getPluginManager().callEvent(event);
 
             p.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Golem-Upgrades.Upgrade-Applied"));
-            UserManager.getUser(p.getUniqueId()).setStat(StatsStorage.StatisticType.ORBS, orbs - price);
+            plugin.getUserManager().getUser(p.getUniqueId()).setStat(StatsStorage.StatisticType.ORBS, orbs - price);
             clickedGolem.get(p).getWorld().spawnParticle(Particle.LAVA, p.getLocation(), 20);
             clickedGolem.remove(p);
             p.closeInventory();

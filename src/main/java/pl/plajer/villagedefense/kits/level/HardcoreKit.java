@@ -32,7 +32,6 @@ import pl.plajer.villagedefense.api.StatsStorage;
 import pl.plajer.villagedefense.handlers.ChatManager;
 import pl.plajer.villagedefense.kits.kitapi.KitRegistry;
 import pl.plajer.villagedefense.kits.kitapi.basekits.LevelKit;
-import pl.plajer.villagedefense.user.UserManager;
 import pl.plajer.villagedefense.utils.ArmorHelper;
 import pl.plajer.villagedefense.utils.Utils;
 import pl.plajer.villagedefense.utils.WeaponHelper;
@@ -44,7 +43,10 @@ import pl.plajerlair.core.utils.XMaterial;
  */
 public class HardcoreKit extends LevelKit {
 
+  private Main plugin;
+
   public HardcoreKit(Main plugin) {
+    this.plugin = plugin;
     setName(ChatManager.colorMessage("Kits.Hardcore.Kit-Name"));
     List<String> description = Utils.splitString(ChatManager.colorMessage("Kits.Hardcore.Kit-Description"), 40);
     this.setDescription(description.toArray(new String[0]));
@@ -54,7 +56,7 @@ public class HardcoreKit extends LevelKit {
 
   @Override
   public boolean isUnlockedByPlayer(Player player) {
-    return UserManager.getUser(player.getUniqueId()).getStat(StatsStorage.StatisticType.LEVEL) >= this.getLevel() || player.hasPermission("villagefense.kit.hardcore");
+    return plugin.getUserManager().getUser(player.getUniqueId()).getStat(StatsStorage.StatisticType.LEVEL) >= this.getLevel() || player.hasPermission("villagefense.kit.hardcore");
   }
 
   @Override

@@ -41,7 +41,6 @@ import pl.plajer.villagedefense.handlers.PermissionsManager;
 import pl.plajer.villagedefense.kits.kitapi.KitRegistry;
 import pl.plajer.villagedefense.kits.kitapi.basekits.PremiumKit;
 import pl.plajer.villagedefense.user.User;
-import pl.plajer.villagedefense.user.UserManager;
 import pl.plajer.villagedefense.utils.ArmorHelper;
 import pl.plajer.villagedefense.utils.Utils;
 import pl.plajer.villagedefense.utils.WeaponHelper;
@@ -123,7 +122,7 @@ public class BlockerKit extends PremiumKit implements Listener {
         player.getInventory().getItemInMainHand().setAmount(player.getInventory().getItemInMainHand().getAmount() - 1);
       }
       event.setCancelled(false);
-      User user = UserManager.getUser(event.getPlayer().getUniqueId());
+      User user = plugin.getUserManager().getUser(event.getPlayer().getUniqueId());
 
       user.toPlayer().sendMessage(ChatManager.colorMessage("Kits.Blocker.Game-Item-Place-Message"));
       ZombieBarrier zombieBarrier = new ZombieBarrier();

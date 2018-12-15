@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package pl.plajer.villagedefense.database;
+package pl.plajer.villagedefense.user.data;
 
 import java.io.IOException;
 
@@ -29,7 +29,6 @@ import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.api.StatsStorage;
 import pl.plajer.villagedefense.arena.ArenaRegistry;
 import pl.plajer.villagedefense.user.User;
-import pl.plajer.villagedefense.user.UserManager;
 import pl.plajer.villagedefense.utils.MessageUtils;
 import pl.plajerlair.core.utils.ConfigUtils;
 
@@ -47,7 +46,7 @@ public class FileStats {
   }
 
   public void saveStat(Player player, StatsStorage.StatisticType stat) {
-    User user = UserManager.getUser(player.getUniqueId());
+    User user = plugin.getUserManager().getUser(player.getUniqueId());
     config.set(player.getUniqueId().toString() + "." + stat.getName(), user.getStat(stat));
     try {
       config.save(ConfigUtils.getFile(plugin, "stats"));
@@ -60,7 +59,7 @@ public class FileStats {
   }
 
   public void loadStat(Player player, StatsStorage.StatisticType stat) {
-    User user = UserManager.getUser(player.getUniqueId());
+    User user = plugin.getUserManager().getUser(player.getUniqueId());
     if (config.contains(player.getUniqueId().toString() + "." + stat.getName())) {
       user.setStat(stat, config.getInt(player.getUniqueId().toString() + "." + stat.getName()));
     } else {

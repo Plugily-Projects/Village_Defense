@@ -27,7 +27,6 @@ import pl.plajer.villagedefense.commands.arguments.ArgumentsRegistry;
 import pl.plajer.villagedefense.commands.arguments.data.CommandArgument;
 import pl.plajer.villagedefense.handlers.ChatManager;
 import pl.plajer.villagedefense.user.User;
-import pl.plajer.villagedefense.user.UserManager;
 
 /**
  * @author Plajer
@@ -41,11 +40,11 @@ public class StatsArgument {
       @Override
       public void execute(CommandSender sender, String[] args) {
         Player player = args.length == 2 ? Bukkit.getPlayerExact(args[1]) : (Player) sender;
-        if (player == null || UserManager.getUser(player.getUniqueId()) == null) {
+        if (player == null || registry.getPlugin().getUserManager().getUser(player.getUniqueId()) == null) {
           sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("Commands.Admin-Commands.Player-Not-Found"));
           return;
         }
-        User user = UserManager.getUser(player.getUniqueId());
+        User user = registry.getPlugin().getUserManager().getUser(player.getUniqueId());
         if (player.equals(sender)) {
           sender.sendMessage(ChatManager.colorMessage("Commands.Stats-Command.Header"));
         } else {

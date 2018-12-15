@@ -38,7 +38,6 @@ import pl.plajer.villagedefense.handlers.PermissionsManager;
 import pl.plajer.villagedefense.kits.kitapi.KitRegistry;
 import pl.plajer.villagedefense.kits.kitapi.basekits.PremiumKit;
 import pl.plajer.villagedefense.user.User;
-import pl.plajer.villagedefense.user.UserManager;
 import pl.plajer.villagedefense.utils.ArmorHelper;
 import pl.plajer.villagedefense.utils.Utils;
 import pl.plajer.villagedefense.utils.WeaponHelper;
@@ -92,7 +91,7 @@ public class ShotBowKit extends PremiumKit implements Listener {
         return;
       }
       ItemStack stack = e.getPlayer().getInventory().getItemInMainHand();
-      User user = UserManager.getUser(e.getPlayer().getUniqueId());
+      User user = plugin.getUserManager().getUser(e.getPlayer().getUniqueId());
       if (stack == null || stack.getType() != Material.BOW || !e.getPlayer().getInventory().contains(Material.ARROW)
           || !(user.getKit() instanceof ShotBowKit)
           || user.isSpectator()) {

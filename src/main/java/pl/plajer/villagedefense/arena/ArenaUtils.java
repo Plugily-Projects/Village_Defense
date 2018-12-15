@@ -31,7 +31,6 @@ import pl.plajer.villagedefense.arena.initializers.ArenaInitializer1_13_R1;
 import pl.plajer.villagedefense.arena.initializers.ArenaInitializer1_13_R2;
 import pl.plajer.villagedefense.handlers.ChatManager;
 import pl.plajer.villagedefense.user.User;
-import pl.plajer.villagedefense.user.UserManager;
 import pl.plajerlair.core.services.exception.ReportedException;
 
 /**
@@ -71,7 +70,7 @@ public class ArenaUtils {
         if (arena.getPlayersLeft().contains(player)) {
           return;
         }
-        User user = UserManager.getUser(player.getUniqueId());
+        User user = plugin.getUserManager().getUser(player.getUniqueId());
         user.setSpectator(false);
 
         arena.teleportToStartLocation(player);
@@ -92,7 +91,7 @@ public class ArenaUtils {
 
   public static void updateLevelStat(Player player, Arena arena) {
     try {
-      User user = UserManager.getUser(player.getUniqueId());
+      User user = plugin.getUserManager().getUser(player.getUniqueId());
       if (Math.pow(50 * user.getStat(StatsStorage.StatisticType.LEVEL), 1.5) < user.getStat(StatsStorage.StatisticType.XP)) {
         user.addStat(StatsStorage.StatisticType.LEVEL, 1);
         player.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.formatMessage(arena, ChatManager.colorMessage("In-Game.You-Leveled-Up"), user.getStat(StatsStorage.StatisticType.LEVEL)));

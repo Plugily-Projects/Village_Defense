@@ -47,7 +47,6 @@ import pl.plajer.villagedefense.handlers.PermissionsManager;
 import pl.plajer.villagedefense.kits.kitapi.KitRegistry;
 import pl.plajer.villagedefense.kits.kitapi.basekits.PremiumKit;
 import pl.plajer.villagedefense.user.User;
-import pl.plajer.villagedefense.user.UserManager;
 import pl.plajer.villagedefense.utils.ArmorHelper;
 import pl.plajer.villagedefense.utils.Utils;
 import pl.plajerlair.core.services.exception.ReportedException;
@@ -133,17 +132,17 @@ public class WizardKit extends PremiumKit implements Listener {
   @EventHandler
   public void onStaffUse(PlayerInteractEvent e) {
     try {
-      if (UserManager.getUser(e.getPlayer().getUniqueId()) == null) {
+      if (plugin.getUserManager().getUser(e.getPlayer().getUniqueId()) == null) {
         return;
       }
       if (ArenaRegistry.getArena(e.getPlayer()) == null) {
         return;
       }
-      if (!(UserManager.getUser(e.getPlayer().getUniqueId()).getKit() instanceof WizardKit)) {
+      if (!(plugin.getUserManager().getUser(e.getPlayer().getUniqueId()).getKit() instanceof WizardKit)) {
         return;
       }
       final Player p = e.getPlayer();
-      User user = UserManager.getUser(e.getPlayer().getUniqueId());
+      User user = plugin.getUserManager().getUser(e.getPlayer().getUniqueId());
       ItemStack stack = e.getPlayer().getInventory().getItemInMainHand();
       if (!Utils.isNamed(stack)) {
         return;

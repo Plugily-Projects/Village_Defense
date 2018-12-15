@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package pl.plajer.villagedefense.database;
+package pl.plajer.villagedefense.user.data;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -28,7 +28,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.api.StatsStorage;
 import pl.plajer.villagedefense.user.User;
-import pl.plajer.villagedefense.user.UserManager;
 import pl.plajer.villagedefense.utils.MessageUtils;
 import pl.plajerlair.core.debug.Debugger;
 import pl.plajerlair.core.debug.LogLevel;
@@ -51,7 +50,7 @@ public class MySQLConnectionUtils {
         database.insertPlayer(player);
         b = true;
       }
-      User user = UserManager.getUser(player.getUniqueId());
+      User user = plugin.getUserManager().getUser(player.getUniqueId());
       for (StatsStorage.StatisticType stat : StatsStorage.StatisticType.values()) {
         user.setStat(stat, database.getStat(player, stat));
       }
@@ -68,7 +67,7 @@ public class MySQLConnectionUtils {
         if (!resultSet.next()) {
           database.insertPlayer(player);
         }
-        User user = UserManager.getUser(player.getUniqueId());
+        User user = plugin.getUserManager().getUser(player.getUniqueId());
         for (StatsStorage.StatisticType stat : StatsStorage.StatisticType.values()) {
           user.setStat(stat, database.getStat(player, stat));
         }

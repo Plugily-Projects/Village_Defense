@@ -76,7 +76,6 @@ import pl.plajer.villagedefense.handlers.ShopManager;
 import pl.plajer.villagedefense.handlers.items.SpecialItem;
 import pl.plajer.villagedefense.handlers.items.SpecialItemManager;
 import pl.plajer.villagedefense.user.User;
-import pl.plajer.villagedefense.user.UserManager;
 import pl.plajer.villagedefense.utils.Utils;
 import pl.plajerlair.core.services.exception.ReportedException;
 import pl.plajerlair.core.utils.ConfigUtils;
@@ -116,7 +115,7 @@ public class Events implements Listener {
         return;
       }
       int amount = (int) Math.ceil(event.getAmount() * 1.6);
-      User user = UserManager.getUser(event.getPlayer().getUniqueId());
+      User user = plugin.getUserManager().getUser(event.getPlayer().getUniqueId());
       event.setAmount(amount);
       if (user.isSpectator()) {
         event.setAmount(0);
@@ -157,7 +156,7 @@ public class Events implements Listener {
       if (arena == null) {
         return;
       }
-      if (UserManager.getUser(event.getPlayer().getUniqueId()).isSpectator()) {
+      if (plugin.getUserManager().getUser(event.getPlayer().getUniqueId()).isSpectator()) {
         event.setCancelled(true);
       }
     } catch (Exception ex) {
@@ -208,7 +207,7 @@ public class Events implements Listener {
       if (arena == null) {
         return;
       }
-      if (UserManager.getUser(event.getPlayer().getUniqueId()).isSpectator()) {
+      if (plugin.getUserManager().getUser(event.getPlayer().getUniqueId()).isSpectator()) {
         event.setCancelled(true);
         return;
       }
@@ -241,7 +240,7 @@ public class Events implements Listener {
       if (arena == null) {
         return;
       }
-      User user = UserManager.getUser(event.getPlayer().getUniqueId());
+      User user = plugin.getUserManager().getUser(event.getPlayer().getUniqueId());
       if (user.isSpectator()) {
         event.setCancelled(true);
         return;
@@ -398,7 +397,7 @@ public class Events implements Listener {
       if (arena == null) {
         return;
       }
-      if (UserManager.getUser(e.getDamager().getUniqueId()).isSpectator()) {
+      if (plugin.getUserManager().getUser(e.getDamager().getUniqueId()).isSpectator()) {
         e.setCancelled(true);
         return;
       }
@@ -435,7 +434,7 @@ public class Events implements Listener {
   @EventHandler(priority = EventPriority.HIGHEST)
   public void onSecond(EntityDamageByEntityEvent e) {
     try {
-      User user = UserManager.getUser((e.getDamager().getUniqueId()));
+      User user = plugin.getUserManager().getUser((e.getDamager().getUniqueId()));
       if (user.isSpectator()) {
         e.setCancelled(true);
         return;
@@ -496,7 +495,7 @@ public class Events implements Listener {
         return;
       }
       Player player = (Player) e.getWhoClicked();
-      User user = UserManager.getUser(player.getUniqueId());
+      User user = plugin.getUserManager().getUser(player.getUniqueId());
       Arena arena = ArenaRegistry.getArena((Player) e.getWhoClicked());
       ItemStack stack = e.getCurrentItem();
       if (arena == null || e.getInventory().getName() == null

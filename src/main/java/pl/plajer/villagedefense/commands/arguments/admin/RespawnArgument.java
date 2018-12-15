@@ -34,7 +34,6 @@ import pl.plajer.villagedefense.commands.arguments.data.LabelData;
 import pl.plajer.villagedefense.commands.arguments.data.LabeledCommandArgument;
 import pl.plajer.villagedefense.handlers.ChatManager;
 import pl.plajer.villagedefense.user.User;
-import pl.plajer.villagedefense.user.UserManager;
 import pl.plajer.villagedefense.utils.Utils;
 
 /**
@@ -75,7 +74,7 @@ public class RespawnArgument {
         } else {
           target = player;
         }
-        User user = UserManager.getUser(target.getUniqueId());
+        User user = registry.getPlugin().getUserManager().getUser(target.getUniqueId());
         if (!user.isSpectator()) {
           return;
         }

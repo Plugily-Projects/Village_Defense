@@ -27,10 +27,10 @@ import java.util.UUID;
 
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.java.JavaPlugin;
 
 import pl.plajer.villagedefense.ConfigPreferences;
 import pl.plajer.villagedefense.Main;
-import pl.plajer.villagedefense.user.UserManager;
 import pl.plajerlair.core.utils.ConfigUtils;
 
 /**
@@ -41,7 +41,7 @@ import pl.plajerlair.core.utils.ConfigUtils;
  */
 public class StatsStorage {
 
-  public static Main plugin;
+  private static Main plugin = JavaPlugin.getPlugin(Main.class);
 
   private static Map sortByValue(Map unsortMap) {
     List list = new LinkedList(unsortMap.entrySet());
@@ -82,7 +82,7 @@ public class StatsStorage {
    * @see StatisticType
    */
   public static int getUserStats(Player player, StatisticType statisticType) {
-    return UserManager.getUser(player.getUniqueId()).getStat(statisticType);
+    return plugin.getUserManager().getUser(player.getUniqueId()).getStat(statisticType);
   }
 
   /**

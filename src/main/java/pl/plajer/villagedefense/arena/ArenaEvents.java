@@ -45,7 +45,6 @@ import pl.plajer.villagedefense.handlers.ChatManager;
 import pl.plajer.villagedefense.handlers.items.SpecialItemManager;
 import pl.plajer.villagedefense.handlers.reward.Reward;
 import pl.plajer.villagedefense.user.User;
-import pl.plajer.villagedefense.user.UserManager;
 import pl.plajerlair.core.services.exception.ReportedException;
 import pl.plajerlair.core.utils.ItemBuilder;
 import pl.plajerlair.core.utils.XMaterial;
@@ -171,12 +170,12 @@ public class ArenaEvents implements Listener {
           player.getInventory().clear();
           player.setFlying(false);
           player.setAllowFlight(false);
-          User user = UserManager.getUser(player.getUniqueId());
+          User user = plugin.getUserManager().getUser(player.getUniqueId());
           user.setStat(StatsStorage.StatisticType.ORBS, 0);
           player.teleport(arena.getEndLocation());
           return;
         }
-        User user = UserManager.getUser(player.getUniqueId());
+        User user = plugin.getUserManager().getUser(player.getUniqueId());
         arena.addStat(player, StatsStorage.StatisticType.DEATHS);
         arena.teleportToStartLocation(player);
         user.setSpectator(true);
@@ -233,7 +232,7 @@ public class ArenaEvents implements Listener {
         return;
       }
       Player player = e.getPlayer();
-      User user = UserManager.getUser(player.getUniqueId());
+      User user = plugin.getUserManager().getUser(player.getUniqueId());
       player.setAllowFlight(true);
       player.setFlying(true);
       if (user.isSpectator()) {

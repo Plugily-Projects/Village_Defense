@@ -30,8 +30,8 @@ import pl.plajer.villagedefense.ConfigPreferences;
 import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.api.StatsStorage;
 import pl.plajer.villagedefense.arena.ArenaRegistry;
-import pl.plajer.villagedefense.database.MySQLConnectionUtils;
 import pl.plajer.villagedefense.handlers.PermissionsManager;
+import pl.plajer.villagedefense.user.data.MySQLConnectionUtils;
 import pl.plajerlair.core.services.exception.ReportedException;
 import pl.plajerlair.core.services.update.UpdateChecker;
 

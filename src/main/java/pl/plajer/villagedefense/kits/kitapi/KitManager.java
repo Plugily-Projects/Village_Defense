@@ -40,7 +40,6 @@ import pl.plajer.villagedefense.arena.ArenaRegistry;
 import pl.plajer.villagedefense.handlers.ChatManager;
 import pl.plajer.villagedefense.kits.kitapi.basekits.Kit;
 import pl.plajer.villagedefense.user.User;
-import pl.plajer.villagedefense.user.UserManager;
 import pl.plajer.villagedefense.utils.Utils;
 import pl.plajerlair.core.services.exception.ReportedException;
 import pl.plajerlair.core.utils.MinigameUtils;
@@ -53,6 +52,7 @@ import pl.plajerlair.core.utils.MinigameUtils;
  */
 public class KitManager implements Listener {
 
+  private Main plugin;
   private Inventory invMenu;
   private String itemName;
   private Material material;
@@ -63,6 +63,7 @@ public class KitManager implements Listener {
   private String lockedString;
 
   public KitManager(Main plugin) {
+    this.plugin = plugin;
     itemName = ChatManager.colorMessage("Kits.Kit-Menu-Item-Name");
     unlockedString = ChatManager.colorMessage("Kits.Kit-Menu.Unlocked-Kit-Lore");
     lockedString = ChatManager.colorMessage("Kits.Kit-Menu.Locked-Lores.Locked-Lore");
@@ -204,7 +205,7 @@ public class KitManager implements Listener {
   @EventHandler
   public void checkIfIsUnlocked(VillagePlayerChooseKitEvent e) {
     if (e.getKit().isUnlockedByPlayer(e.getPlayer())) {
-      User user = UserManager.getUser(e.getPlayer().getUniqueId());
+      User user = plugin.getUserManager().getUser(e.getPlayer().getUniqueId());
       user.setKit(e.getKit());
       e.getPlayer().sendMessage(ChatManager.colorMessage("Kits.Choose-Message").replace("%KIT%", e.getKit().getName()));
     } else {

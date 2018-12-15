@@ -38,7 +38,6 @@ import pl.plajer.villagedefense.handlers.PermissionsManager;
 import pl.plajer.villagedefense.kits.kitapi.KitRegistry;
 import pl.plajer.villagedefense.kits.kitapi.basekits.PremiumKit;
 import pl.plajer.villagedefense.user.User;
-import pl.plajer.villagedefense.user.UserManager;
 import pl.plajer.villagedefense.utils.ArmorHelper;
 import pl.plajer.villagedefense.utils.Utils;
 import pl.plajer.villagedefense.utils.WeaponHelper;
@@ -95,7 +94,7 @@ public class CleanerKit extends PremiumKit implements Listener {
           .contains(ChatManager.colorMessage("Kits.Cleaner.Game-Item-Name")) || arena == null) {
         return;
       }
-      User user = (UserManager.getUser(e.getPlayer().getUniqueId()));
+      User user = (plugin.getUserManager().getUser(e.getPlayer().getUniqueId()));
       if (user.isSpectator()) {
         e.getPlayer().sendMessage(ChatManager.colorMessage("Kits.Cleaner.Spectator-Warning"));
         return;

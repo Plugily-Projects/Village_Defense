@@ -63,7 +63,6 @@ import pl.plajer.villagedefense.handlers.language.LanguageManager;
 import pl.plajer.villagedefense.handlers.reward.Reward;
 import pl.plajer.villagedefense.kits.kitapi.KitRegistry;
 import pl.plajer.villagedefense.user.User;
-import pl.plajer.villagedefense.user.UserManager;
 import pl.plajer.villagedefense.utils.Utils;
 import pl.plajerlair.core.debug.Debugger;
 import pl.plajerlair.core.debug.LogLevel;
@@ -246,11 +245,11 @@ public abstract class Arena extends BukkitRunnable {
               player.setLevel(0);
               player.getInventory().clear();
               player.setGameMode(GameMode.SURVIVAL);
-              User user = UserManager.getUser(player.getUniqueId());
+              User user = plugin.getUserManager().getUser(player.getUniqueId());
               user.setStat(StatsStorage.StatisticType.ORBS, plugin.getConfig().getInt("Orbs-Starting-Amount", 20));
               ArenaUtils.hidePlayersOutsideTheGame(player, this);
-              if (UserManager.getUser(player.getUniqueId()).getKit() != null) {
-                UserManager.getUser(player.getUniqueId()).getKit().giveKitItems(player);
+              if (plugin.getUserManager().getUser(player.getUniqueId()).getKit() != null) {
+                plugin.getUserManager().getUser(player.getUniqueId()).getKit().giveKitItems(player);
               } else {
                 KitRegistry.getDefaultKit().giveKitItems(player);
               }
@@ -373,7 +372,7 @@ public abstract class Arena extends BukkitRunnable {
             clearWolfs();
 
             for (Player player : getPlayers()) {
-              UserManager.getUser(player.getUniqueId()).removeScoreboard();
+              plugin.getUserManager().getUser(player.getUniqueId()).removeScoreboard();
               player.setGameMode(GameMode.SURVIVAL);
               for (Player players : Bukkit.getOnlinePlayers()) {
                 player.showPlayer(players);
@@ -407,7 +406,7 @@ public abstract class Arena extends BukkitRunnable {
             }
             ChatManager.broadcast(this, ChatManager.colorMessage("Commands.Teleported-To-The-Lobby"));
 
-            for (User user : UserManager.getUsers(this)) {
+            for (User user : plugin.getUserManager().getUsers(this)) {
               user.setSpectator(false);
               user.setStat(StatsStorage.StatisticType.ORBS, 0);
             }
@@ -453,7 +452,7 @@ public abstract class Arena extends BukkitRunnable {
     }
     GameScoreboard scoreboard;
     for (Player p : getPlayers()) {
-      User user = UserManager.getUser(p.getUniqueId());
+      User user = plugin.getUserManager().getUser(p.getUniqueId());
       if (getArenaState() == ArenaState.ENDING) {
         user.removeScoreboard();
         return;
@@ -1081,7 +1080,7 @@ public abstract class Arena extends BukkitRunnable {
 
   List<Player> getPlayersLeft() {
     List<Player> players = new ArrayList<>();
-    for (User user : UserManager.getUsers(this)) {
+    for (User user : plugin.getUserManager().getUsers(this)) {
       if (!user.isSpectator()) {
         players.add(user.toPlayer());
       }
@@ -1103,7 +1102,7 @@ public abstract class Arena extends BukkitRunnable {
   }
 
   void addExperience(Player player, int i) {
-    User user = UserManager.getUser(player.getUniqueId());
+    User user = plugin.getUserManager().getUser(player.getUniqueId());
     user.addStat(StatsStorage.StatisticType.XP, i);
     if (player.hasPermission(PermissionsManager.getVip())) {
       user.addStat(StatsStorage.StatisticType.XP, (int) Math.ceil(i / 2));
@@ -1118,7 +1117,7 @@ public abstract class Arena extends BukkitRunnable {
   }
 
   void addStat(Player player, StatsStorage.StatisticType stat) {
-    User user = UserManager.getUser(player.getUniqueId());
+    User user = plugin.getUserManager().getUser(player.getUniqueId());
     user.addStat(stat, 1);
     ArenaUtils.updateLevelStat(player, this);
   }

@@ -40,7 +40,6 @@ import pl.plajer.villagedefense.handlers.PermissionsManager;
 import pl.plajer.villagedefense.kits.kitapi.KitRegistry;
 import pl.plajer.villagedefense.kits.kitapi.basekits.PremiumKit;
 import pl.plajer.villagedefense.user.User;
-import pl.plajer.villagedefense.user.UserManager;
 import pl.plajer.villagedefense.utils.ArmorHelper;
 import pl.plajer.villagedefense.utils.Utils;
 import pl.plajer.villagedefense.utils.WeaponHelper;
@@ -52,7 +51,10 @@ import pl.plajerlair.core.utils.XMaterial;
  */
 public class MedicKit extends PremiumKit implements Listener {
 
+  private Main plugin;
+
   public MedicKit(Main plugin) {
+    this.plugin = plugin;
     setName(ChatManager.colorMessage("Kits.Medic.Kit-Name"));
     List<String> description = Utils.splitString(ChatManager.colorMessage("Kits.Medic.Kit-Description"), 40);
     this.setDescription(description.toArray(new String[0]));
@@ -88,7 +90,7 @@ public class MedicKit extends PremiumKit implements Listener {
       if (!(e.getEntity() instanceof Zombie && e.getDamager() instanceof Player)) {
         return;
       }
-      User user = UserManager.getUser(e.getDamager().getUniqueId());
+      User user = plugin.getUserManager().getUser(e.getDamager().getUniqueId());
       if (!(user.getKit() instanceof MedicKit)) {
         return;
       }

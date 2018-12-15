@@ -34,7 +34,6 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.arena.ArenaRegistry;
 import pl.plajer.villagedefense.handlers.ChatManager;
-import pl.plajer.villagedefense.user.UserManager;
 import pl.plajer.villagedefense.utils.Utils;
 import pl.plajerlair.core.services.exception.ReportedException;
 
@@ -56,7 +55,7 @@ public class EntityUpgradeListener implements Listener {
   @EventHandler
   public void onEntityClick(PlayerInteractEntityEvent e) {
     try {
-      if (ArenaRegistry.getArena(e.getPlayer()) == null || UserManager.getUser(e.getPlayer().getUniqueId()).isSpectator() ||
+      if (ArenaRegistry.getArena(e.getPlayer()) == null || plugin.getUserManager().getUser(e.getPlayer().getUniqueId()).isSpectator() ||
           (e.getRightClicked().getType() != EntityType.IRON_GOLEM && e.getRightClicked().getType() != EntityType.WOLF) || e.getRightClicked().getCustomName() == null) {
         return;
       }

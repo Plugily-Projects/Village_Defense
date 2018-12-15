@@ -40,7 +40,6 @@ import pl.plajer.villagedefense.handlers.ChatManager;
 import pl.plajer.villagedefense.handlers.PermissionsManager;
 import pl.plajer.villagedefense.kits.kitapi.KitRegistry;
 import pl.plajer.villagedefense.kits.kitapi.basekits.PremiumKit;
-import pl.plajer.villagedefense.user.UserManager;
 import pl.plajer.villagedefense.utils.Utils;
 import pl.plajerlair.core.services.exception.ReportedException;
 import pl.plajerlair.core.utils.XMaterial;
@@ -50,9 +49,11 @@ import pl.plajerlair.core.utils.XMaterial;
  */
 public class NakedKit extends PremiumKit implements Listener {
 
+  private Main plugin;
   private List<Material> armorTypes = new ArrayList<>();
 
   public NakedKit(Main plugin) {
+    this.plugin = plugin;
     List<String> description = Utils.splitString(ChatManager.colorMessage("Kits.Wild-Naked.Kit-Description"), 40);
     this.setDescription(description.toArray(new String[0]));
     setName(ChatManager.colorMessage("Kits.Wild-Naked.Kit-Name"));
@@ -108,13 +109,13 @@ public class NakedKit extends PremiumKit implements Listener {
   @EventHandler
   public void onArmor(InventoryClickEvent event) {
     try {
-      if (UserManager.getUser(event.getWhoClicked().getUniqueId()) == null) {
+      if (plugin.getUserManager().getUser(event.getWhoClicked().getUniqueId()) == null) {
         return;
       }
       if (!ArenaRegistry.isInArena((Player) event.getWhoClicked())) {
         return;
       }
-      if (!(UserManager.getUser(event.getWhoClicked().getUniqueId()).getKit() instanceof NakedKit)) {
+      if (!(plugin.getUserManager().getUser(event.getWhoClicked().getUniqueId()).getKit() instanceof NakedKit)) {
         return;
       }
       if (!(event.getInventory().getType().equals(InventoryType.PLAYER) || event.getInventory().getType().equals(InventoryType.CRAFTING))) {
@@ -145,10 +146,10 @@ public class NakedKit extends PremiumKit implements Listener {
       if (!ArenaRegistry.isInArena(event.getPlayer())) {
         return;
       }
-      if (UserManager.getUser(event.getPlayer().getUniqueId()) == null) {
+      if (plugin.getUserManager().getUser(event.getPlayer().getUniqueId()) == null) {
         return;
       }
-      if (!(UserManager.getUser(event.getPlayer().getUniqueId()).getKit() instanceof NakedKit)) {
+      if (!(plugin.getUserManager().getUser(event.getPlayer().getUniqueId()).getKit() instanceof NakedKit)) {
         return;
       }
       if (!event.hasItem()) {

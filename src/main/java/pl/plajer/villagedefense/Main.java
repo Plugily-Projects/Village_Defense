@@ -44,9 +44,6 @@ import pl.plajer.villagedefense.commands.arguments.ArgumentsRegistry;
 import pl.plajer.villagedefense.creatures.CreatureUtils;
 import pl.plajer.villagedefense.creatures.DoorBreakListener;
 import pl.plajer.villagedefense.creatures.EntityRegistry;
-import pl.plajer.villagedefense.database.FileStats;
-import pl.plajer.villagedefense.database.MySQLConnectionUtils;
-import pl.plajer.villagedefense.database.MySQLManager;
 import pl.plajer.villagedefense.events.ChatEvents;
 import pl.plajer.villagedefense.events.Events;
 import pl.plajer.villagedefense.events.GolemEvents;
@@ -73,6 +70,9 @@ import pl.plajer.villagedefense.kits.kitapi.KitManager;
 import pl.plajer.villagedefense.kits.kitapi.KitRegistry;
 import pl.plajer.villagedefense.user.User;
 import pl.plajer.villagedefense.user.UserManager;
+import pl.plajer.villagedefense.user.data.FileStats;
+import pl.plajer.villagedefense.user.data.MySQLConnectionUtils;
+import pl.plajer.villagedefense.user.data.MySQLManager;
 import pl.plajer.villagedefense.utils.LegacyDataFixer;
 import pl.plajer.villagedefense.utils.MessageUtils;
 import pl.plajerlair.core.database.MySQLDatabase;
@@ -90,6 +90,7 @@ import pl.plajerlair.core.utils.InventoryUtils;
  */
 public class Main extends JavaPlugin {
 
+  private UserManager userManager;
   private ConfigPreferences configPreferences;
   private MySQLDatabase database;
   private MySQLManager mySQLManager;
@@ -193,6 +194,7 @@ public class Main extends JavaPlugin {
       } else {
         fileStats = new FileStats(this);
       }
+      userManager = new UserManager(this);
 
       DoorBreakListener listener = new DoorBreakListener();
       listener.runTaskTimer(this, 1L, 20L);
@@ -212,7 +214,6 @@ public class Main extends JavaPlugin {
       } else {
         fileStats.loadStatsForPlayersOnline();
       }
-      StatsStorage.plugin = this;
       PermissionsManager.init();
       Debugger.debug(LogLevel.INFO, "Main setup done");
     } catch (Exception ex) {
@@ -311,6 +312,10 @@ public class Main extends JavaPlugin {
     }
   }
 
+  public UserManager getUserManager() {
+    return userManager;
+  }
+
   public RewardsFactory getRewardsHandler() {
     return rewardsHandler;
   }
@@ -354,7 +359,7 @@ public class Main extends JavaPlugin {
     }
     Debugger.debug(LogLevel.INFO, "System disable init");
     for (Player player : getServer().getOnlinePlayers()) {
-      User user = UserManager.getUser(player.getUniqueId());
+      User user = userManager.getUser(player.getUniqueId());
       for (StatsStorage.StatisticType s : StatsStorage.StatisticType.values()) {
         if (configPreferences.getOption(ConfigPreferences.Option.DATABASE_ENABLED)) {
           getMySQLManager().setStat(player, s, user.getStat(s));
@@ -362,7 +367,7 @@ public class Main extends JavaPlugin {
           getFileStats().saveStat(player, s);
         }
       }
-      UserManager.removeUser(player.getUniqueId());
+      userManager.removeUser(player.getUniqueId());
     }
     for (Arena arena : ArenaRegistry.getArenas()) {
       for (Player player : arena.getPlayers()) {

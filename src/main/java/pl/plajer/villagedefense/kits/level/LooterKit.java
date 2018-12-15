@@ -37,7 +37,6 @@ import pl.plajer.villagedefense.handlers.ChatManager;
 import pl.plajer.villagedefense.kits.kitapi.KitRegistry;
 import pl.plajer.villagedefense.kits.kitapi.basekits.LevelKit;
 import pl.plajer.villagedefense.user.User;
-import pl.plajer.villagedefense.user.UserManager;
 import pl.plajer.villagedefense.utils.ArmorHelper;
 import pl.plajer.villagedefense.utils.Utils;
 import pl.plajer.villagedefense.utils.WeaponHelper;
@@ -50,7 +49,10 @@ import pl.plajerlair.core.utils.XMaterial;
  */
 public class LooterKit extends LevelKit implements Listener {
 
+  private Main plugin;
+
   public LooterKit(Main plugin) {
+    this.plugin = plugin;
     setName(ChatManager.colorMessage("Kits.Looter.Kit-Name"));
     List<String> description = Utils.splitString(ChatManager.colorMessage("Kits.Looter.Kit-Description"), 40);
     this.setDescription(description.toArray(new String[0]));
@@ -61,7 +63,7 @@ public class LooterKit extends LevelKit implements Listener {
 
   @Override
   public boolean isUnlockedByPlayer(Player player) {
-    return UserManager.getUser(player.getUniqueId()).getStat(StatsStorage.StatisticType.LEVEL) >= this.getLevel() || player.hasPermission("villagefense.kit.looter");
+    return plugin.getUserManager().getUser(player.getUniqueId()).getStat(StatsStorage.StatisticType.LEVEL) >= this.getLevel() || player.hasPermission("villagefense.kit.looter");
   }
 
   @Override
@@ -69,7 +71,6 @@ public class LooterKit extends LevelKit implements Listener {
     player.getInventory().addItem(WeaponHelper.getUnBreakingSword(WeaponHelper.ResourceType.STONE, 10));
     ArmorHelper.setColouredArmor(Color.ORANGE, player);
     player.getInventory().addItem(new ItemStack(XMaterial.COOKED_PORKCHOP.parseMaterial(), 8));
-
   }
 
   @Override
@@ -94,7 +95,7 @@ public class LooterKit extends LevelKit implements Listener {
       if (ArenaRegistry.getArena(player) == null) {
         return;
       }
-      User user = UserManager.getUser(player.getUniqueId());
+      User user = plugin.getUserManager().getUser(player.getUniqueId());
       if (user.getKit() instanceof LooterKit) {
         player.getInventory().addItem(new ItemStack(Material.ROTTEN_FLESH, 1));
       }

@@ -36,7 +36,6 @@ import pl.plajer.villagedefense.arena.initializers.ArenaInitializer1_13_R2;
 import pl.plajer.villagedefense.handlers.ChatManager;
 import pl.plajer.villagedefense.kits.kitapi.KitRegistry;
 import pl.plajer.villagedefense.kits.kitapi.basekits.LevelKit;
-import pl.plajer.villagedefense.user.UserManager;
 import pl.plajer.villagedefense.utils.ArmorHelper;
 import pl.plajer.villagedefense.utils.Utils;
 import pl.plajer.villagedefense.utils.WeaponHelper;
@@ -61,7 +60,7 @@ public class GolemFriendKit extends LevelKit {
 
   @Override
   public boolean isUnlockedByPlayer(Player player) {
-    return UserManager.getUser(player.getUniqueId()).getStat(StatsStorage.StatisticType.LEVEL) >= this.getLevel() || player.hasPermission("villagefense.kit.golemfriend");
+    return plugin.getUserManager().getUser(player.getUniqueId()).getStat(StatsStorage.StatisticType.LEVEL) >= this.getLevel() || player.hasPermission("villagefense.kit.golemfriend");
   }
 
   @Override

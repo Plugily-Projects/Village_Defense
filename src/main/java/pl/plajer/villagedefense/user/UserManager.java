@@ -26,6 +26,7 @@ import java.util.UUID;
 
 import org.bukkit.entity.Player;
 
+import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.arena.Arena;
 import pl.plajerlair.core.debug.Debugger;
 import pl.plajerlair.core.debug.LogLevel;
@@ -35,9 +36,14 @@ import pl.plajerlair.core.debug.LogLevel;
  */
 public class UserManager {
 
+  private Main plugin;
   private static Map<UUID, User> users = new HashMap<>();
 
-  public static User getUser(UUID uuid) {
+  public UserManager(Main plugin) {
+    this.plugin = plugin;
+  }
+
+  public User getUser(UUID uuid) {
     if (users.containsKey(uuid)) {
       return users.get(uuid);
     } else {
@@ -47,7 +53,7 @@ public class UserManager {
     }
   }
 
-  public static List<User> getUsers(Arena arena) {
+  public List<User> getUsers(Arena arena) {
     List<User> users = new ArrayList<>();
     for (Player player : arena.getPlayers()) {
       users.add(getUser(player.getUniqueId()));
@@ -55,7 +61,7 @@ public class UserManager {
     return users;
   }
 
-  public static void removeUser(UUID uuid) {
+  public void removeUser(UUID uuid) {
     users.remove(uuid);
   }
 

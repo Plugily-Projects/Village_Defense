@@ -31,7 +31,6 @@ import pl.plajer.villagedefense.api.StatsStorage;
 import pl.plajer.villagedefense.handlers.ChatManager;
 import pl.plajer.villagedefense.kits.kitapi.KitRegistry;
 import pl.plajer.villagedefense.kits.kitapi.basekits.LevelKit;
-import pl.plajer.villagedefense.user.UserManager;
 import pl.plajer.villagedefense.utils.ArmorHelper;
 import pl.plajer.villagedefense.utils.Utils;
 import pl.plajer.villagedefense.utils.WeaponHelper;
@@ -42,7 +41,10 @@ import pl.plajerlair.core.utils.ConfigUtils;
  */
 public class ArcherKit extends LevelKit {
 
+  private Main plugin;
+
   public ArcherKit(Main plugin) {
+    this.plugin = plugin;
     this.setLevel(ConfigUtils.getConfig(plugin, "kits").getInt("Required-Level.Archer"));
     this.setName(ChatManager.colorMessage("Kits.Archer.Kit-Name"));
     List<String> description = Utils.splitString(ChatManager.colorMessage("Kits.Archer.Kit-Description"), 40);
@@ -52,7 +54,7 @@ public class ArcherKit extends LevelKit {
 
   @Override
   public boolean isUnlockedByPlayer(Player player) {
-    return UserManager.getUser(player.getUniqueId()).getStat(StatsStorage.StatisticType.LEVEL) >= this.getLevel() || player.hasPermission("villagefense.kit.archer");
+    return plugin.getUserManager().getUser(player.getUniqueId()).getStat(StatsStorage.StatisticType.LEVEL) >= this.getLevel() || player.hasPermission("villagefense.kit.archer");
   }
 
   @Override

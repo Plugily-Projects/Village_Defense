@@ -50,7 +50,6 @@ import pl.plajer.villagedefense.arena.Arena;
 import pl.plajer.villagedefense.arena.ArenaRegistry;
 import pl.plajer.villagedefense.arena.ArenaState;
 import pl.plajer.villagedefense.user.User;
-import pl.plajer.villagedefense.user.UserManager;
 
 /**
  * Created by Tom on 1/08/2014.
@@ -69,7 +68,7 @@ public class SpectatorEvents implements Listener {
     if (!(e.getTarget() instanceof Player)) {
       return;
     }
-    if (UserManager.getUser(e.getTarget().getUniqueId()).isSpectator()) {
+    if (plugin.getUserManager().getUser(e.getTarget().getUniqueId()).isSpectator()) {
       e.setCancelled(true);
       e.setTarget(null);
     }
@@ -80,7 +79,7 @@ public class SpectatorEvents implements Listener {
     if (!(e.getTarget() instanceof Player)) {
       return;
     }
-    if (UserManager.getUser(e.getTarget().getUniqueId()).isSpectator()) {
+    if (plugin.getUserManager().getUser(e.getTarget().getUniqueId()).isSpectator()) {
       e.setCancelled(true);
       e.setTarget(null);
     }
@@ -88,49 +87,49 @@ public class SpectatorEvents implements Listener {
 
   @EventHandler(priority = EventPriority.HIGH)
   public void onBlockPlace(BlockPlaceEvent event) {
-    if (UserManager.getUser(event.getPlayer().getUniqueId()).isSpectator()) {
+    if (plugin.getUserManager().getUser(event.getPlayer().getUniqueId()).isSpectator()) {
       event.setCancelled(true);
     }
   }
 
   @EventHandler(priority = EventPriority.HIGH)
   public void onBlockBreak(BlockBreakEvent event) {
-    if (UserManager.getUser(event.getPlayer().getUniqueId()).isSpectator()) {
+    if (plugin.getUserManager().getUser(event.getPlayer().getUniqueId()).isSpectator()) {
       event.setCancelled(true);
     }
   }
 
   @EventHandler(priority = EventPriority.HIGH)
   public void onDropItem(PlayerDropItemEvent event) {
-    if (UserManager.getUser(event.getPlayer().getUniqueId()).isSpectator()) {
+    if (plugin.getUserManager().getUser(event.getPlayer().getUniqueId()).isSpectator()) {
       event.setCancelled(true);
     }
   }
 
   @EventHandler(priority = EventPriority.HIGH)
   public void onBucketEmpty(PlayerBucketEmptyEvent event) {
-    if (UserManager.getUser(event.getPlayer().getUniqueId()).isSpectator()) {
+    if (plugin.getUserManager().getUser(event.getPlayer().getUniqueId()).isSpectator()) {
       event.setCancelled(true);
     }
   }
 
   @EventHandler(priority = EventPriority.HIGH)
   public void onInteract(PlayerInteractEntityEvent event) {
-    if (UserManager.getUser(event.getPlayer().getUniqueId()).isSpectator()) {
+    if (plugin.getUserManager().getUser(event.getPlayer().getUniqueId()).isSpectator()) {
       event.setCancelled(true);
     }
   }
 
   @EventHandler(priority = EventPriority.HIGH)
   public void onShear(PlayerShearEntityEvent event) {
-    if (UserManager.getUser(event.getPlayer().getUniqueId()).isSpectator()) {
+    if (plugin.getUserManager().getUser(event.getPlayer().getUniqueId()).isSpectator()) {
       event.setCancelled(true);
     }
   }
 
   @EventHandler(priority = EventPriority.HIGH)
   public void onConsume(PlayerItemConsumeEvent event) {
-    if (UserManager.getUser(event.getPlayer().getUniqueId()).isSpectator()) {
+    if (plugin.getUserManager().getUser(event.getPlayer().getUniqueId()).isSpectator()) {
       event.setCancelled(true);
     }
   }
@@ -141,7 +140,7 @@ public class SpectatorEvents implements Listener {
       return;
     }
     Player player = (Player) event.getEntity();
-    if (UserManager.getUser(player.getUniqueId()).isSpectator()) {
+    if (plugin.getUserManager().getUser(player.getUniqueId()).isSpectator()) {
       event.setCancelled(true);
     }
   }
@@ -152,7 +151,7 @@ public class SpectatorEvents implements Listener {
       return;
     }
     Player player = (Player) event.getEntity();
-    if (!UserManager.getUser(player.getUniqueId()).isSpectator() || ArenaRegistry.getArena(player) == null) {
+    if (!plugin.getUserManager().getUser(player.getUniqueId()).isSpectator() || ArenaRegistry.getArena(player) == null) {
       return;
     }
     if (player.getLocation().getY() < 1) {
@@ -167,7 +166,7 @@ public class SpectatorEvents implements Listener {
       return;
     }
     Player player = (Player) event.getEntity();
-    if (UserManager.getUser(player.getUniqueId()).isSpectator()) {
+    if (plugin.getUserManager().getUser(player.getUniqueId()).isSpectator()) {
       event.setCancelled(true);
     }
   }
@@ -178,14 +177,14 @@ public class SpectatorEvents implements Listener {
       return;
     }
     Player player = (Player) event.getDamager();
-    if (UserManager.getUser(player.getUniqueId()).isSpectator()) {
+    if (plugin.getUserManager().getUser(player.getUniqueId()).isSpectator()) {
       event.setCancelled(true);
     }
   }
 
   @EventHandler(priority = EventPriority.HIGH)
   public void onPickup(PlayerPickupItemEvent event) {
-    if (UserManager.getUser(event.getPlayer().getUniqueId()).isSpectator()) {
+    if (plugin.getUserManager().getUser(event.getPlayer().getUniqueId()).isSpectator()) {
       event.setCancelled(true);
     }
   }
@@ -195,7 +194,7 @@ public class SpectatorEvents implements Listener {
     if (!(e.getTarget() instanceof Player)) {
       return;
     }
-    if (UserManager.getUser(e.getTarget().getUniqueId()).isSpectator()) {
+    if (plugin.getUserManager().getUser(e.getTarget().getUniqueId()).isSpectator()) {
       if (e.getEntity() instanceof ExperienceOrb || e.getEntity() instanceof Zombie || e.getEntity() instanceof Wolf) {
         e.setCancelled(true);
         e.setTarget(null);
@@ -206,7 +205,7 @@ public class SpectatorEvents implements Listener {
   //this will spawn orb at spec location when it's taken by spectator
   @EventHandler
   public void onPickup(PlayerExpChangeEvent e) {
-    if (UserManager.getUser(e.getPlayer().getUniqueId()).isSpectator()) {
+    if (plugin.getUserManager().getUser(e.getPlayer().getUniqueId()).isSpectator()) {
       Location loc = e.getPlayer().getLocation();
       e.setAmount(0);
       Bukkit.getScheduler().runTaskLater(plugin, () -> loc.getWorld().spawnEntity(loc, EntityType.EXPERIENCE_ORB), 30);
@@ -215,7 +214,7 @@ public class SpectatorEvents implements Listener {
 
   @EventHandler
   public void onSpectate(PlayerPickupItemEvent event) {
-    if (UserManager.getUser(event.getPlayer().getUniqueId()).isSpectator()) {
+    if (plugin.getUserManager().getUser(event.getPlayer().getUniqueId()).isSpectator()) {
       event.setCancelled(true);
     }
   }
@@ -226,14 +225,14 @@ public class SpectatorEvents implements Listener {
     if (arena == null) {
       return;
     }
-    if (arena.getArenaState() != ArenaState.IN_GAME || UserManager.getUser(event.getPlayer().getUniqueId()).isSpectator()) {
+    if (arena.getArenaState() != ArenaState.IN_GAME || plugin.getUserManager().getUser(event.getPlayer().getUniqueId()).isSpectator()) {
       event.setCancelled(true);
     }
   }
 
   @EventHandler
   public void onInteractEntityInteract(PlayerInteractEntityEvent event) {
-    User user = UserManager.getUser(event.getPlayer().getUniqueId());
+    User user = plugin.getUserManager().getUser(event.getPlayer().getUniqueId());
     if (user.isSpectator()) {
       event.setCancelled(true);
     }
@@ -242,7 +241,7 @@ public class SpectatorEvents implements Listener {
   @EventHandler
   public void onRightClick(PlayerInteractEvent event) {
     Arena arena = ArenaRegistry.getArena(event.getPlayer());
-    if (arena != null && UserManager.getUser(event.getPlayer().getUniqueId()).isSpectator()) {
+    if (arena != null && plugin.getUserManager().getUser(event.getPlayer().getUniqueId()).isSpectator()) {
       event.setCancelled(true);
     }
   }

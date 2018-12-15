@@ -39,7 +39,6 @@ import pl.plajer.villagedefense.handlers.ChatManager;
 import pl.plajer.villagedefense.kits.kitapi.KitRegistry;
 import pl.plajer.villagedefense.kits.kitapi.basekits.LevelKit;
 import pl.plajer.villagedefense.user.User;
-import pl.plajer.villagedefense.user.UserManager;
 import pl.plajer.villagedefense.utils.ArmorHelper;
 import pl.plajer.villagedefense.utils.Utils;
 import pl.plajer.villagedefense.utils.WeaponHelper;
@@ -52,7 +51,10 @@ import pl.plajerlair.core.utils.XMaterial;
  */
 public class WorkerKit extends LevelKit implements Listener {
 
+  private Main plugin;
+
   public WorkerKit(Main plugin) {
+    this.plugin = plugin;
     this.setLevel(ConfigUtils.getConfig(plugin, "kits").getInt("Required-Level.Worker"));
     this.setName(ChatManager.colorMessage("Kits.Worker.Kit-Name"));
     List<String> description = Utils.splitString(ChatManager.colorMessage("Kits.Worker.Kit-Description"), 40);
@@ -64,7 +66,7 @@ public class WorkerKit extends LevelKit implements Listener {
 
   @Override
   public boolean isUnlockedByPlayer(Player player) {
-    return UserManager.getUser(player.getUniqueId()).getStat(StatsStorage.StatisticType.LEVEL) >= this.getLevel() || player.hasPermission("villagefense.kit.worker");
+    return plugin.getUserManager().getUser(player.getUniqueId()).getStat(StatsStorage.StatisticType.LEVEL) >= this.getLevel() || player.hasPermission("villagefense.kit.worker");
   }
 
   @Override
@@ -94,7 +96,7 @@ public class WorkerKit extends LevelKit implements Listener {
       if (arena == null) {
         return;
       }
-      User user = UserManager.getUser(e.getPlayer().getUniqueId());
+      User user = plugin.getUserManager().getUser(e.getPlayer().getUniqueId());
       ItemStack stack = e.getPlayer().getInventory().getItemInMainHand();
       if (user.isSpectator() || stack == null || !arena.getDoorLocations().containsKey(e.getBlock().getLocation())
           || !(stack.getType() == XMaterial.OAK_DOOR.parseMaterial())) {
