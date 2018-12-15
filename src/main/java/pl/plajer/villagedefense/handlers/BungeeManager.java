@@ -34,6 +34,8 @@ import pl.plajer.villagedefense.arena.Arena;
 import pl.plajer.villagedefense.arena.ArenaManager;
 import pl.plajer.villagedefense.arena.ArenaRegistry;
 import pl.plajer.villagedefense.arena.ArenaState;
+import pl.plajerlair.core.debug.Debugger;
+import pl.plajerlair.core.debug.LogLevel;
 import pl.plajerlair.core.utils.ConfigUtils;
 
 /**
@@ -72,7 +74,7 @@ public class BungeeManager implements Listener {
   @EventHandler(priority = EventPriority.HIGHEST)
   public void onServerListPing(ServerListPingEvent event) {
     if (ArenaRegistry.getArenas().isEmpty()) {
-      Main.debug(Main.LogLevel.WARN, "No ready arena found! Please create one before activating bungee mode!");
+      Debugger.debug(LogLevel.WARN, "No ready arena found! Please create one before activating bungee mode!");
       return;
     }
     event.setMaxPlayers(ArenaRegistry.getArenas().get(0).getMaximumPlayers());

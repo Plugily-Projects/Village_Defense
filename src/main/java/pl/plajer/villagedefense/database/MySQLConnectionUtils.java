@@ -30,6 +30,8 @@ import pl.plajer.villagedefense.api.StatsStorage;
 import pl.plajer.villagedefense.user.User;
 import pl.plajer.villagedefense.user.UserManager;
 import pl.plajer.villagedefense.utils.MessageUtils;
+import pl.plajerlair.core.debug.Debugger;
+import pl.plajerlair.core.debug.LogLevel;
 
 /**
  * @author Plajer
@@ -55,7 +57,7 @@ public class MySQLConnectionUtils {
       }
       b = true;
     } catch (SQLException e1) {
-      Main.debug(Main.LogLevel.ERROR, "Connection failed for player " + player.getName());
+      Debugger.debug(LogLevel.ERROR, "Connection failed for player " + player.getName());
       e1.printStackTrace();
       MessageUtils.errorOccurred();
       Bukkit.getConsoleSender().sendMessage("Cannot save contents to MySQL database!");
@@ -71,7 +73,7 @@ public class MySQLConnectionUtils {
           user.setStat(stat, database.getStat(player, stat));
         }
       } catch (SQLException e1) {
-        Main.debug(Main.LogLevel.ERROR, "Connection called twice for player " + player.getName());
+        Debugger.debug(LogLevel.ERROR, "Connection called twice for player " + player.getName());
         e1.printStackTrace();
         MessageUtils.errorOccurred();
         Bukkit.getConsoleSender().sendMessage("Cannot save contents to MySQL database!");

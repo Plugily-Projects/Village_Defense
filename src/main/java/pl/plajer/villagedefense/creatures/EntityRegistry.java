@@ -23,6 +23,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import pl.plajer.villagedefense.Main;
+import pl.plajerlair.core.debug.Debugger;
+import pl.plajerlair.core.debug.LogLevel;
 import pl.plajerlair.core.services.exception.ReportedException;
 
 /**
@@ -34,12 +36,12 @@ public class EntityRegistry {
 
   public EntityRegistry(Main plugin) {
     try {
-      Main.debug(Main.LogLevel.INFO, "Initial entity registry startup");
+      Debugger.debug(LogLevel.INFO, "Initial entity registry startup");
       List<String> classes = Arrays.asList("FastZombie", "BabyZombie", "PlayerBuster", "GolemBuster", "HardZombie", "TankerZombie", "VillagerSlayer", "RidableVillager", "RidableIronGolem", "WorkingWolf");
       String version = plugin.getVersion();
       if (version.equalsIgnoreCase("v1_11_R1") || version.equalsIgnoreCase("v1_12_R1") || version.equalsIgnoreCase("v1_13_R1") || version.equalsIgnoreCase("v1_13_R2")) {
         if (version.equalsIgnoreCase("v1_13_R1") || version.equalsIgnoreCase("v1_13_R2")) {
-          Main.debug(Main.LogLevel.INFO, "Skipping entity registering for 1.13");
+          Debugger.debug(LogLevel.INFO, "Skipping entity registering for 1.13");
           return;
         }
         try {
@@ -67,7 +69,7 @@ public class EntityRegistry {
           e.printStackTrace();
         }
       }
-      Main.debug(Main.LogLevel.INFO, "Entities registering completed");
+      Debugger.debug(LogLevel.INFO, "Entities registering completed");
     } catch (Exception e) {
       new ReportedException(plugin, e);
     }

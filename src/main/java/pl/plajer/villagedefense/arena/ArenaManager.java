@@ -52,6 +52,8 @@ import pl.plajer.villagedefense.kits.kitapi.KitRegistry;
 import pl.plajer.villagedefense.kits.level.GolemFriendKit;
 import pl.plajer.villagedefense.user.User;
 import pl.plajer.villagedefense.user.UserManager;
+import pl.plajerlair.core.debug.Debugger;
+import pl.plajerlair.core.debug.LogLevel;
 import pl.plajerlair.core.services.exception.ReportedException;
 import pl.plajerlair.core.utils.InventoryUtils;
 import pl.plajerlair.core.utils.ItemBuilder;
@@ -77,7 +79,7 @@ public class ArenaManager {
    */
   public static void joinAttempt(Player p, Arena arena) {
     try {
-      Main.debug(Main.LogLevel.INFO, "Initial join attempt, " + p.getName());
+      Debugger.debug(LogLevel.INFO, "Initial join attempt, " + p.getName());
       VillageGameJoinAttemptEvent villageGameJoinAttemptEvent = new VillageGameJoinAttemptEvent(p, arena);
       Bukkit.getPluginManager().callEvent(villageGameJoinAttemptEvent);
       if (!arena.isReady()) {
@@ -94,8 +96,8 @@ public class ArenaManager {
           return;
         }
       }
-      Main.debug(Main.LogLevel.INFO, "Final join attempt, " + p.getName());
-      Main.debug(Main.LogLevel.INFO, "Join task, " + p.getName());
+      Debugger.debug(LogLevel.INFO, "Final join attempt, " + p.getName());
+      Debugger.debug(LogLevel.INFO, "Join task, " + p.getName());
       arena.addPlayer(p);
       if ((arena.getArenaState() == ArenaState.IN_GAME || (arena.getArenaState() == ArenaState.STARTING && arena.getTimer() <= 3) || arena.getArenaState() == ArenaState.ENDING)) {
         if (plugin.isInventoryManagerEnabled()) {
@@ -165,7 +167,7 @@ public class ArenaManager {
         player.setLevel(0);
       }
       arena.showPlayers();
-      Main.debug(Main.LogLevel.INFO, "Join task end, " + p.getName());
+      Debugger.debug(LogLevel.INFO, "Join task end, " + p.getName());
     } catch (Exception e) {
       new ReportedException(plugin, e);
     }
@@ -182,7 +184,7 @@ public class ArenaManager {
     try {
       p.setExp(0);
       p.setLevel(0);
-      Main.debug(Main.LogLevel.INFO, "Initial leave attempt, " + p.getName());
+      Debugger.debug(LogLevel.INFO, "Initial leave attempt, " + p.getName());
       VillageGameLeaveAttemptEvent villageGameLeaveAttemptEvent = new VillageGameLeaveAttemptEvent(p, arena);
       Bukkit.getPluginManager().callEvent(villageGameLeaveAttemptEvent);
       User user = UserManager.getUser(p.getUniqueId());
@@ -229,7 +231,7 @@ public class ArenaManager {
       if (!plugin.isBungeeActivated() && plugin.isInventoryManagerEnabled()) {
         InventoryUtils.loadInventory(plugin, p);
       }
-      Main.debug(Main.LogLevel.INFO, "Final leave attempt, " + p.getName());
+      Debugger.debug(LogLevel.INFO, "Final leave attempt, " + p.getName());
     } catch (Exception e) {
       new ReportedException(plugin, e);
     }
@@ -243,7 +245,7 @@ public class ArenaManager {
    */
   public static void stopGame(boolean quickStop, Arena arena) {
     try {
-      Main.debug(Main.LogLevel.INFO, "Game stop event initiate, arena " + arena.getID());
+      Debugger.debug(LogLevel.INFO, "Game stop event initiate, arena " + arena.getID());
       VillageGameStopEvent villageGameStopEvent = new VillageGameStopEvent(arena);
       Bukkit.getPluginManager().callEvent(villageGameStopEvent);
       String summaryEnding;
@@ -308,7 +310,7 @@ public class ArenaManager {
         arena.setTimer(5);
       }
       arena.setArenaState(ArenaState.ENDING);
-      Main.debug(Main.LogLevel.INFO, "Game stop event finish, arena " + arena.getID());
+      Debugger.debug(LogLevel.INFO, "Game stop event finish, arena " + arena.getID());
     } catch (Exception e) {
       new ReportedException(plugin, e);
     }

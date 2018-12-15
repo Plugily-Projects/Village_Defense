@@ -22,6 +22,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import pl.plajer.villagedefense.Main;
+import pl.plajerlair.core.debug.Debugger;
+import pl.plajerlair.core.debug.LogLevel;
 
 /**
  * Created by Tom on 14/08/2014.
@@ -89,7 +91,7 @@ public class PermissionsManager {
     PermissionsManager.setMvp(plugin.getConfig().getString("Basic-Permissions.Mvp-Permission", "villagedefense.mvp"));
     PermissionsManager.setElite(plugin.getConfig().getString("Basic-Permissions.Elite-Permission", "villagedefense.elite"));
     PermissionsManager.setJoinPerm(plugin.getConfig().getString("Basic-Permissions.Join-Permission", "villagedefense.join.<arena>"));
-    Main.debug(Main.LogLevel.INFO, "Basic permissions registered");
+    Debugger.debug(LogLevel.INFO, "Basic permissions registered");
   }
 
 }

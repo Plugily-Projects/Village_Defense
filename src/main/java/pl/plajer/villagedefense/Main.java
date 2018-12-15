@@ -78,6 +78,8 @@ import pl.plajer.villagedefense.user.UserManager;
 import pl.plajer.villagedefense.utils.LegacyDataFixer;
 import pl.plajer.villagedefense.utils.MessageUtils;
 import pl.plajerlair.core.database.MySQLDatabase;
+import pl.plajerlair.core.debug.Debugger;
+import pl.plajerlair.core.debug.LogLevel;
 import pl.plajerlair.core.services.ServiceRegistry;
 import pl.plajerlair.core.services.exception.ReportedException;
 import pl.plajerlair.core.services.update.UpdateChecker;
@@ -91,7 +93,6 @@ import pl.plajerlair.core.utils.InventoryUtils;
 public class Main extends JavaPlugin {
 
   public static int STARTING_TIMER_TIME = 60;
-  private static boolean debug;
   private MySQLDatabase database;
   private MySQLManager mySQLManager;
   private FileStats fileStats;
@@ -112,28 +113,6 @@ public class Main extends JavaPlugin {
   private Map<String, Integer> customPermissions = new HashMap<>();
   private HashMap<UUID, Boolean> spyChatEnabled = new HashMap<>();
   private String version;
-
-  public static void debug(LogLevel level, String thing) {
-    if (debug) {
-      switch (level) {
-        case INFO:
-          Bukkit.getConsoleSender().sendMessage("[Village Debugger] " + thing);
-          break;
-        case WARN:
-          Bukkit.getConsoleSender().sendMessage(ChatColor.YELLOW + "[Village Debugger] " + thing);
-          break;
-        case ERROR:
-          Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "[Village Debugger] " + thing);
-          break;
-        case WTF:
-          Bukkit.getConsoleSender().sendMessage(ChatColor.DARK_RED + "[Village Debugger] [SEVERE]" + thing);
-          break;
-        case TASK:
-          Bukkit.getConsoleSender().sendMessage(ChatColor.YELLOW + "[Village Debugger] Running task '" + thing + "'");
-          break;
-      }
-    }
-  }
 
   public boolean is1_11_R1() {
     return version.equalsIgnoreCase("v1_11_R1");
@@ -219,8 +198,9 @@ public class Main extends JavaPlugin {
           && getConfig().isSet("Config-Version"))) {
         LanguageMigrator.migrateToNewFormat();
       }
-      debug = getConfig().getBoolean("Debug", false);
-      debug(LogLevel.INFO, "Main setup start");
+      Debugger.setEnabled(getConfig().getBoolean("Debug", false));
+      Debugger.setPrefix("[Village Debugger]");
+      Debugger.debug(LogLevel.INFO, "Main setup start");
       setupFiles();
       LanguageMigrator.configUpdate();
       LanguageMigrator.languageFileUpdate();
@@ -257,7 +237,7 @@ public class Main extends JavaPlugin {
       ConfigurationSection cs = getConfig().getConfigurationSection("CustomPermissions");
       for (String key : cs.getKeys(false)) {
         customPermissions.put(key, getConfig().getInt("CustomPermissions." + key));
-        debug(LogLevel.INFO, "Loaded custom permission " + key);
+        Debugger.debug(LogLevel.INFO, "Loaded custom permission " + key);
       }
       if (databaseActivated) {
         for (Player p : Bukkit.getOnlinePlayers()) {
@@ -268,7 +248,7 @@ public class Main extends JavaPlugin {
       }
       StatsStorage.plugin = this;
       PermissionsManager.init();
-      debug(LogLevel.INFO, "Main setup done");
+      Debugger.debug(LogLevel.INFO, "Main setup done");
     } catch (Exception ex) {
       new ReportedException(this, ex);
     }
@@ -320,7 +300,7 @@ public class Main extends JavaPlugin {
       return "None";
     }));
     if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
-      Main.debug(LogLevel.INFO, "Hooking into PlaceholderAPI");
+      Debugger.debug(LogLevel.INFO, "Hooking into PlaceholderAPI");
       new PlaceholderManager().register();
     }
     new Events(this);
@@ -411,7 +391,7 @@ public class Main extends JavaPlugin {
     if (forceDisable) {
       return;
     }
-    debug(LogLevel.INFO, "System disable init");
+    Debugger.debug(LogLevel.INFO, "System disable init");
     for (Player player : getServer().getOnlinePlayers()) {
       User user = UserManager.getUser(player.getUniqueId());
       for (StatsStorage.StatisticType s : StatsStorage.StatisticType.values()) {
@@ -449,11 +429,7 @@ public class Main extends JavaPlugin {
     if (isDatabaseActivated()) {
       getMySQLDatabase().getManager().shutdownConnPool();
     }
-    debug(LogLevel.INFO, "System disable finalize");
-  }
-
-  public enum LogLevel {
-    INFO, WARN, ERROR, WTF /*what a terrible failure*/, TASK
+    Debugger.debug(LogLevel.INFO, "System disable finalize");
   }
 
 }

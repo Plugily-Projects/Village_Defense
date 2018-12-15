@@ -44,6 +44,8 @@ import pl.plajer.villagedefense.arena.ArenaRegistry;
 import pl.plajer.villagedefense.handlers.ChatManager;
 import pl.plajer.villagedefense.user.UserManager;
 import pl.plajer.villagedefense.utils.Utils;
+import pl.plajerlair.core.debug.Debugger;
+import pl.plajerlair.core.debug.LogLevel;
 import pl.plajerlair.core.services.exception.ReportedException;
 
 @Deprecated
@@ -56,7 +58,7 @@ public class GolemEvents implements Listener {
     this.plugin = plugin;
     if (plugin.getConfig().getBoolean("Golem-Upgrades-Enabled", true)) {
       plugin.getServer().getPluginManager().registerEvents(this, plugin);
-      Main.debug(Main.LogLevel.INFO, "Golem upgrades successfully registered!");
+      Debugger.debug(LogLevel.INFO, "Golem upgrades successfully registered!");
     }
   }
 

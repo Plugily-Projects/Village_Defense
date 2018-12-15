@@ -41,6 +41,8 @@ import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.api.event.player.VillagePlayerPowerupPickupEvent;
 import pl.plajer.villagedefense.arena.Arena;
 import pl.plajer.villagedefense.arena.ArenaRegistry;
+import pl.plajerlair.core.debug.Debugger;
+import pl.plajerlair.core.debug.LogLevel;
 import pl.plajerlair.core.services.exception.ReportedException;
 import pl.plajerlair.core.utils.XMaterial;
 
@@ -60,15 +62,15 @@ public class PowerupManager {
       return;
     }
     if (!plugin.getServer().getPluginManager().isPluginEnabled("HolographicDisplays")) {
-      Main.debug(Main.LogLevel.WARN, "Power up module: Holographic Displays dependency not found, disabling");
+      Debugger.debug(LogLevel.WARN, "Power up module: Holographic Displays dependency not found, disabling");
       return;
     }
     enabled = true;
     this.plugin = plugin;
-    Main.debug(Main.LogLevel.INFO, "Registering power ups module!");
+    Debugger.debug(LogLevel.INFO, "Registering power ups module!");
     registerPowerups();
     if (registeredPowerups.isEmpty()) {
-      Main.debug(Main.LogLevel.WARN, "Disabling power up module, all power ups disabled");
+      Debugger.debug(LogLevel.WARN, "Disabling power up module, all power ups disabled");
       enabled = false;
     }
   }

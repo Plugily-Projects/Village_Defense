@@ -21,13 +21,14 @@ package pl.plajer.villagedefense.commands.arguments.game;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.arena.ArenaManager;
 import pl.plajer.villagedefense.arena.ArenaRegistry;
 import pl.plajer.villagedefense.commands.arguments.ArgumentsRegistry;
 import pl.plajer.villagedefense.commands.arguments.data.CommandArgument;
 import pl.plajer.villagedefense.handlers.ChatManager;
 import pl.plajer.villagedefense.utils.Utils;
+import pl.plajerlair.core.debug.Debugger;
+import pl.plajerlair.core.debug.LogLevel;
 
 /**
  * @author Plajer
@@ -48,11 +49,11 @@ public class LeaveArgument {
           p.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("Commands.Teleported-To-The-Lobby"));
           if (registry.getPlugin().isBungeeActivated()) {
             registry.getPlugin().getBungeeManager().connectToHub(p);
-            Main.debug(Main.LogLevel.INFO, p.getName() + " was teleported to the Hub server");
+            Debugger.debug(LogLevel.INFO, p.getName() + " was teleported to the Hub server");
           } else {
             ArenaRegistry.getArena(p).teleportToEndLocation(p);
             ArenaManager.leaveAttempt(p, ArenaRegistry.getArena(p));
-            Main.debug(Main.LogLevel.INFO, p.getName() + " has left the arena! He is teleported to the end location.");
+            Debugger.debug(LogLevel.INFO, p.getName() + " has left the arena! He is teleported to the end location.");
           }
         }
       }

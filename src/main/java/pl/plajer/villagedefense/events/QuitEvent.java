@@ -31,6 +31,8 @@ import pl.plajer.villagedefense.arena.ArenaRegistry;
 import pl.plajer.villagedefense.user.User;
 import pl.plajer.villagedefense.user.UserManager;
 import pl.plajer.villagedefense.utils.MessageUtils;
+import pl.plajerlair.core.debug.Debugger;
+import pl.plajerlair.core.debug.LogLevel;
 import pl.plajerlair.core.services.exception.ReportedException;
 
 /**
@@ -71,7 +73,7 @@ public class QuitEvent implements Listener {
               i = plugin.getMySQLManager().getStat(player, s);
             } catch (NullPointerException npe) {
               i = 0;
-              Main.debug(Main.LogLevel.ERROR, "Couldn't get stats from player " + player.getName());
+              Debugger.debug(LogLevel.ERROR, "Couldn't get stats from player " + player.getName());
               npe.printStackTrace();
               MessageUtils.errorOccurred();
               Bukkit.getConsoleSender().sendMessage("Cannot get stats from MySQL database!");

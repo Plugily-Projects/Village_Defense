@@ -32,6 +32,8 @@ import org.bukkit.entity.Player;
 import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.arena.Arena;
 import pl.plajer.villagedefense.arena.ArenaRegistry;
+import pl.plajerlair.core.debug.Debugger;
+import pl.plajerlair.core.debug.LogLevel;
 import pl.plajerlair.core.utils.ConfigUtils;
 
 /**
@@ -125,7 +127,7 @@ public class RewardsFactory {
       }
     }
     for (Reward.RewardType rewardType : registeredRewards.keySet()) {
-      Main.debug(Main.LogLevel.INFO, "[RewardsFactory] Registered " + registeredRewards.get(rewardType) + " " + rewardType.name() + " rewards!");
+      Debugger.debug(LogLevel.INFO, "[RewardsFactory] Registered " + registeredRewards.get(rewardType) + " " + rewardType.name() + " rewards!");
     }
   }
 

@@ -30,6 +30,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.handlers.ChatManager;
 import pl.plajer.villagedefense.handlers.ShopManager;
+import pl.plajerlair.core.debug.Debugger;
+import pl.plajerlair.core.debug.LogLevel;
 import pl.plajerlair.core.utils.ConfigUtils;
 import pl.plajerlair.core.utils.LocationUtils;
 
@@ -80,13 +82,13 @@ public class ArenaRegistry {
   }
 
   public static void registerArena(Arena arena) {
-    Main.debug(Main.LogLevel.INFO, "Registering new game instance, " + arena.getID());
+    Debugger.debug(LogLevel.INFO, "Registering new game instance, " + arena.getID());
     ShopManager.registerShop(arena);
     arenas.add(arena);
   }
 
   public static void unregisterArena(Arena arena) {
-    Main.debug(Main.LogLevel.INFO, "Unegistering game instance, " + arena.getID());
+    Debugger.debug(LogLevel.INFO, "Unegistering game instance, " + arena.getID());
     arenas.remove(arena);
   }
 
@@ -108,7 +110,7 @@ public class ArenaRegistry {
   }
 
   public static void registerArenas() {
-    Main.debug(Main.LogLevel.INFO, "Initial arenas registration");
+    Debugger.debug(LogLevel.INFO, "Initial arenas registration");
     if (ArenaRegistry.getArenas() != null) {
       if (ArenaRegistry.getArenas().size() > 0) {
         for (Arena arena : ArenaRegistry.getArenas()) {
@@ -189,7 +191,7 @@ public class ArenaRegistry {
       Bukkit.getConsoleSender().sendMessage(ChatManager.colorMessage("Validator.Instance-Started").replace("%arena%", ID));
     }
     new ShopManager();
-    Main.debug(Main.LogLevel.INFO, "Arenas registration completed");
+    Debugger.debug(LogLevel.INFO, "Arenas registration completed");
   }
 
   public static List<Arena> getArenas() {

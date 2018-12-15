@@ -107,7 +107,7 @@
         <dependency>
             <groupId>pl.plajerlair</groupId>
             <artifactId>plcore</artifactId>
-            <version>1.4.4</version>
+            <version>1.4.5</version>
             <scope>compile</scope>
         </dependency>
         <dependency>

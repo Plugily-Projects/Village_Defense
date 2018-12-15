@@ -34,6 +34,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.arena.Arena;
 import pl.plajer.villagedefense.arena.ArenaRegistry;
+import pl.plajerlair.core.debug.Debugger;
+import pl.plajerlair.core.debug.LogLevel;
 import pl.plajerlair.core.services.exception.ReportedException;
 import pl.plajerlair.core.utils.ConfigUtils;
 import pl.plajerlair.core.utils.LocationUtils;
@@ -62,12 +64,12 @@ public class ShopManager {
     try {
       FileConfiguration config = ConfigUtils.getConfig(JavaPlugin.getPlugin(Main.class), "arenas");
       if (config.getString("instances." + a.getID() + ".shop", "").equals("") || config.getString("instances." + a.getID() + ".shop", "").split(",").length == 0) {
-        Main.debug(Main.LogLevel.WARN, "There is no shop for arena " + a.getID() + "! Aborting registering shop!");
+        Debugger.debug(LogLevel.WARN, "There is no shop for arena " + a.getID() + "! Aborting registering shop!");
         return;
       }
       Location location = LocationUtils.getLocation(config.getString("instances." + a.getID() + ".shop"));
       if (location.getBlock() == null || !(location.getBlock().getState() instanceof Chest)) {
-        Main.debug(Main.LogLevel.WARN, "Shop failed to load, invalid location for loc " + location);
+        Debugger.debug(LogLevel.WARN, "Shop failed to load, invalid location for loc " + location);
         return;
       }
       int i = ((Chest) location.getBlock().getState()).getInventory().getContents().length;

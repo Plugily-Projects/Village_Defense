@@ -55,6 +55,8 @@ import pl.plajer.villagedefense.kits.premium.ShotBowKit;
 import pl.plajer.villagedefense.kits.premium.TeleporterKit;
 import pl.plajer.villagedefense.kits.premium.TornadoKit;
 import pl.plajer.villagedefense.kits.premium.WizardKit;
+import pl.plajerlair.core.debug.Debugger;
+import pl.plajerlair.core.debug.LogLevel;
 import pl.plajerlair.core.utils.ConfigUtils;
 
 /**
@@ -136,7 +138,7 @@ public class KitRegistry {
           Class.forName(kitClass.getName()).getConstructor(Main.class).newInstance(plugin);
         } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException | InvocationTargetException | InstantiationException e) {
           e.printStackTrace();
-          Main.debug(Main.LogLevel.WTF, "FATAL ERROR COULDN'T REGISTER EXISTING KIT! REPORT THIS TO THE DEVELOPER!");
+          Debugger.debug(LogLevel.WTF, "FATAL ERROR COULDN'T REGISTER EXISTING KIT! REPORT THIS TO THE DEVELOPER!");
         }
       }
     }
