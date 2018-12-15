@@ -36,8 +36,8 @@ import pl.plajerlair.core.debug.LogLevel;
  */
 public class UserManager {
 
-  private Main plugin;
   private static Map<UUID, User> users = new HashMap<>();
+  private Main plugin;
 
   public UserManager(Main plugin) {
     this.plugin = plugin;

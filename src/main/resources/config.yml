@@ -56,8 +56,8 @@ Disable-Leave-Command: false
 
 # Commands which can be used in game, remove all of them to disable
 Whitelisted-Commands:
-- me
-- help
+  - me
+  - help
 
 # Enable this option when you're using MySQL, otherwise it won't work.
 # Be careful when changing this because there is NO migrator between
