@@ -23,9 +23,7 @@ import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
 
 import java.io.File;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.UUID;
 
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
@@ -90,6 +88,7 @@ public class Main extends JavaPlugin {
   private UserManager userManager;
   private ConfigPreferences configPreferences;
   private MySQLDatabase database;
+  private ArgumentsRegistry registry;
   private SignManager signManager;
   private BungeeManager bungeeManager;
   private KitManager kitManager;
@@ -99,7 +98,6 @@ public class Main extends JavaPlugin {
   private HolidayManager holidayManager;
   private boolean forceDisable = false;
   private List<String> fileNames = Arrays.asList("arenas", "bungee", "rewards", "stats", "lobbyitems", "mysql", "kits");
-  private HashMap<UUID, Boolean> spyChatEnabled = new HashMap<>();
   private String version;
 
   public boolean is1_11_R1() {
@@ -213,7 +211,7 @@ public class Main extends JavaPlugin {
       bungeeManager = new BungeeManager(this);
     }
     new ChatManager(ChatManager.colorMessage("In-Game.Plugin-Prefix"));
-    new ArgumentsRegistry(this);
+    registry = new ArgumentsRegistry(this);
     new GolemEvents(this);
     new EntityRegistry(this);
     new ArenaEvents(this);
@@ -310,14 +308,6 @@ public class Main extends JavaPlugin {
     return holidayManager;
   }
 
-  public boolean isSpyChatEnabled(Player player) {
-    return spyChatEnabled.containsKey(player.getUniqueId());
-  }
-
-  public HashMap<UUID, Boolean> getSpyChatEnabled() {
-    return spyChatEnabled;
-  }
-
   public MySQLDatabase getMySQLDatabase() {
     return database;
   }
@@ -328,6 +318,10 @@ public class Main extends JavaPlugin {
 
   public ConfigPreferences getConfigPreferences() {
     return configPreferences;
+  }
+
+  public ArgumentsRegistry getArgumentsRegistry() {
+    return registry;
   }
 
   @Override

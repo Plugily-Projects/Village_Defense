@@ -75,6 +75,7 @@ import pl.plajerlair.core.utils.StringMatcher;
  */
 public class ArgumentsRegistry implements CommandExecutor {
 
+  private SpyChatArgument spyChat;
   private Main plugin;
   private Map<String, List<CommandArgument>> mappedArguments = new HashMap<>();
 
@@ -112,7 +113,7 @@ public class ArgumentsRegistry implements CommandExecutor {
     new ListArenasArgument(this);
     new RespawnArgument(this);
     new SetPriceArgument(this);
-    new SpyChatArgument(this);
+    spyChat = new SpyChatArgument(this);
     new TeleportArgument(this);
   }
 
@@ -249,5 +250,9 @@ public class ArgumentsRegistry implements CommandExecutor {
 
   public Main getPlugin() {
     return plugin;
+  }
+
+  public SpyChatArgument getSpyChat() {
+    return spyChat;
   }
 }

@@ -63,7 +63,7 @@ public class ChatEvents implements Listener {
         for (Arena loopArena : ArenaRegistry.getArenas()) {
           for (Player player : loopArena.getPlayers()) {
             if (event.getRecipients().contains(player)) {
-              if (!plugin.isSpyChatEnabled(player)) {
+              if (!plugin.getArgumentsRegistry().getSpyChat().isSpyChatEnabled(player)) {
                 event.getRecipients().remove(player);
               }
             }
@@ -77,7 +77,7 @@ public class ChatEvents implements Listener {
         List<Player> remove = new ArrayList<>();
         while (iterator.hasNext()) {
           Player player = iterator.next();
-          if (!plugin.isSpyChatEnabled(player)) {
+          if (!plugin.getArgumentsRegistry().getSpyChat().isSpyChatEnabled(player)) {
             remove.add(player);
           }
         }
