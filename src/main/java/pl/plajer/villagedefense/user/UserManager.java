@@ -24,10 +24,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
+import pl.plajer.villagedefense.ConfigPreferences;
 import pl.plajer.villagedefense.Main;
+import pl.plajer.villagedefense.api.StatsStorage;
 import pl.plajer.villagedefense.arena.Arena;
+import pl.plajer.villagedefense.user.data.FileStats;
+import pl.plajer.villagedefense.user.data.MySQLManager;
 import pl.plajerlair.core.debug.Debugger;
 import pl.plajerlair.core.debug.LogLevel;
 
@@ -36,11 +41,18 @@ import pl.plajerlair.core.debug.LogLevel;
  */
 public class UserManager {
 
+  private MySQLManager mySQLManager;
+  private FileStats fileStats;
   private static Map<UUID, User> users = new HashMap<>();
   private Main plugin;
 
   public UserManager(Main plugin) {
     this.plugin = plugin;
+    if (plugin.getConfigPreferences().getOption(ConfigPreferences.Option.DATABASE_ENABLED)) {
+      mySQLManager = new MySQLManager(plugin);
+    } else {
+      fileStats = new FileStats(plugin);
+    }
   }
 
   public User getUser(UUID uuid) {
@@ -59,6 +71,40 @@ public class UserManager {
       users.add(getUser(player.getUniqueId()));
     }
     return users;
+  }
+
+  /**
+   * Saves player statistic into yaml or MySQL storage based on user choice
+   *
+   * @param user user to retrieve statistic from
+   * @param stat stat to save to storage
+   */
+  public void saveStatistic(User user, StatsStorage.StatisticType stat) {
+    if (!stat.isPersistent()) {
+      return;
+    }
+    if (plugin.getConfigPreferences().getOption(ConfigPreferences.Option.DATABASE_ENABLED)) {
+      Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> mySQLManager.saveStat(user, stat));
+      return;
+    }
+    fileStats.saveStat(user, stat);
+  }
+
+  /**
+   * Loads player statistic from yaml or MySQL storage based on user choice
+   *
+   * @param user user to load statistic for
+   * @param stat type of stat to load from storage
+   */
+  public void loadStatistic(User user, StatsStorage.StatisticType stat) {
+    if (!stat.isPersistent()) {
+      return;
+    }
+    if (plugin.getConfigPreferences().getOption(ConfigPreferences.Option.DATABASE_ENABLED)) {
+      Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> user.setStat(stat, mySQLManager.getStat(user, stat)));
+      return;
+    }
+    fileStats.loadStat(user, stat);
   }
 
   public void removeUser(UUID uuid) {

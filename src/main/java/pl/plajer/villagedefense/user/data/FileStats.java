@@ -18,18 +18,11 @@
 
 package pl.plajer.villagedefense.user.data;
 
-import java.io.IOException;
-
-import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.entity.Player;
 
-import pl.plajer.villagedefense.ConfigPreferences;
 import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.api.StatsStorage;
-import pl.plajer.villagedefense.arena.ArenaRegistry;
 import pl.plajer.villagedefense.user.User;
-import pl.plajer.villagedefense.utils.MessageUtils;
 import pl.plajerlair.core.utils.ConfigUtils;
 
 /**
@@ -45,41 +38,13 @@ public class FileStats {
     config = ConfigUtils.getConfig(plugin, "stats");
   }
 
-  public void saveStat(Player player, StatsStorage.StatisticType stat) {
-    User user = plugin.getUserManager().getUser(player.getUniqueId());
-    config.set(player.getUniqueId().toString() + "." + stat.getName(), user.getStat(stat));
-    try {
-      config.save(ConfigUtils.getFile(plugin, "stats"));
-    } catch (IOException e) {
-      e.printStackTrace();
-      MessageUtils.errorOccurred();
-      Bukkit.getConsoleSender().sendMessage("Cannot save stats.yml file!");
-      Bukkit.getConsoleSender().sendMessage("Restart the server, file COULD BE OVERRIDDEN!");
-    }
+  public void saveStat(User user, StatsStorage.StatisticType stat) {
+    config.set(user.toPlayer().getUniqueId().toString() + "." + stat.getName(), user.getStat(stat));
+    ConfigUtils.saveConfig(plugin, config, "stats");
   }
 
-  public void loadStat(Player player, StatsStorage.StatisticType stat) {
-    User user = plugin.getUserManager().getUser(player.getUniqueId());
-    if (config.contains(player.getUniqueId().toString() + "." + stat.getName())) {
-      user.setStat(stat, config.getInt(player.getUniqueId().toString() + "." + stat.getName()));
-    } else {
-      user.setStat(stat, 0);
-    }
-  }
-
-  public void loadStatsForPlayersOnline() {
-    for (final Player player : plugin.getServer().getOnlinePlayers()) {
-      if (plugin.getConfigPreferences().getOption(ConfigPreferences.Option.BUNGEE_ENABLED)) {
-        ArenaRegistry.getArenas().get(0).teleportToLobby(player);
-      }
-      if (!plugin.getConfigPreferences().getOption(ConfigPreferences.Option.DATABASE_ENABLED)) {
-        for (StatsStorage.StatisticType s : StatsStorage.StatisticType.values()) {
-          loadStat(player, s);
-        }
-        continue;
-      }
-      Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> MySQLConnectionUtils.loadPlayerStats(player));
-    }
+  public void loadStat(User user, StatsStorage.StatisticType stat) {
+    user.setStat(stat, config.getInt(user.toPlayer().getUniqueId().toString() + "." + stat.getName(), 0));
   }
 
 }

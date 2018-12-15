@@ -31,7 +31,6 @@ import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.api.StatsStorage;
 import pl.plajer.villagedefense.arena.ArenaRegistry;
 import pl.plajer.villagedefense.handlers.PermissionsManager;
-import pl.plajer.villagedefense.user.data.MySQLConnectionUtils;
 import pl.plajerlair.core.services.exception.ReportedException;
 import pl.plajerlair.core.services.update.UpdateChecker;
 
@@ -79,13 +78,8 @@ public class JoinEvent implements Listener {
         event.getPlayer().hidePlayer(player);
       }
 
-      if (!plugin.getConfigPreferences().getOption(ConfigPreferences.Option.DATABASE_ENABLED)) {
-        for (StatsStorage.StatisticType s : StatsStorage.StatisticType.values()) {
-          plugin.getFileStats().loadStat(event.getPlayer(), s);
-        }
-      } else {
-        final Player player = event.getPlayer();
-        Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> MySQLConnectionUtils.loadPlayerStats(player));
+      for (StatsStorage.StatisticType stat : StatsStorage.StatisticType.values()) {
+        plugin.getUserManager().loadStatistic(plugin.getUserManager().getUser(event.getPlayer().getUniqueId()), stat);
       }
     } catch (Exception ex) {
       new ReportedException(plugin, ex);

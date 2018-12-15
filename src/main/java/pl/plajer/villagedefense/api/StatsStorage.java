@@ -18,6 +18,8 @@
 
 package pl.plajer.villagedefense.api;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -25,12 +27,16 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.UUID;
 
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import pl.plajer.villagedefense.ConfigPreferences;
 import pl.plajer.villagedefense.Main;
+import pl.plajer.villagedefense.utils.MessageUtils;
+import pl.plajerlair.core.debug.Debugger;
+import pl.plajerlair.core.debug.LogLevel;
 import pl.plajerlair.core.utils.ConfigUtils;
 
 /**
@@ -61,8 +67,21 @@ public class StatsStorage {
    * @return Map of UUID keys and Integer values sorted in ascending order of requested statistic type
    */
   public static Map<UUID, Integer> getStats(StatisticType stat) {
+    Debugger.debug(LogLevel.INFO, "VillageDefense API getStats(" + stat.getName() + ") run");
     if (plugin.getConfigPreferences().getOption(ConfigPreferences.Option.DATABASE_ENABLED)) {
-      return plugin.getMySQLManager().getColumn(stat.getName());
+      ResultSet set = plugin.getMySQLDatabase().executeQuery("SELECT UUID, " + stat.getName() + " FROM playerstats ORDER BY " + stat.getName() + " ASC;");
+      Map<java.util.UUID, java.lang.Integer> column = new LinkedHashMap<>();
+      try {
+        while (set.next()) {
+          column.put(java.util.UUID.fromString(set.getString("UUID")), set.getInt(stat.getName()));
+        }
+      } catch (SQLException e) {
+        e.printStackTrace();
+        MessageUtils.errorOccurred();
+        Bukkit.getConsoleSender().sendMessage("Cannot get contents from MySQL database!");
+        Bukkit.getConsoleSender().sendMessage("Check configuration of mysql.yml file or disable mysql option in config.yml");
+      }
+      return column;
     } else {
       FileConfiguration config = ConfigUtils.getConfig(plugin, "stats");
       Map<UUID, Integer> stats = new TreeMap<>();
@@ -89,16 +108,23 @@ public class StatsStorage {
    * Available statistics to get.
    */
   public enum StatisticType {
-    ORBS("orbs"), KILLS("kills"), DEATHS("deaths"), GAMES_PLAYED("gamesplayed"), HIGHEST_WAVE("highestwave"), LEVEL("level"), XP("xp");
+    ORBS("orbs", false), KILLS("kills", true), DEATHS("deaths", true), GAMES_PLAYED("gamesplayed", true),
+    HIGHEST_WAVE("highestwave", true), LEVEL("level", true), XP("xp", true);
 
-    String name;
+    private String name;
+    private boolean persistent;
 
-    StatisticType(String name) {
+    StatisticType(String name, boolean persistent) {
       this.name = name;
+      this.persistent = persistent;
     }
 
     public String getName() {
       return name;
+    }
+
+    public boolean isPersistent() {
+      return persistent;
     }
 
   }

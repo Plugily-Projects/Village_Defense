@@ -18,8 +18,6 @@
 
 package pl.plajer.villagedefense.events;
 
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -30,9 +28,6 @@ import pl.plajer.villagedefense.api.StatsStorage;
 import pl.plajer.villagedefense.arena.ArenaManager;
 import pl.plajer.villagedefense.arena.ArenaRegistry;
 import pl.plajer.villagedefense.user.User;
-import pl.plajer.villagedefense.utils.MessageUtils;
-import pl.plajerlair.core.debug.Debugger;
-import pl.plajerlair.core.debug.LogLevel;
 import pl.plajerlair.core.services.exception.ReportedException;
 
 /**
@@ -64,36 +59,10 @@ public class QuitEvent implements Listener {
         ArenaManager.leaveAttempt(event.getPlayer(), ArenaRegistry.getArena(event.getPlayer()));
       }
       final User user = plugin.getUserManager().getUser(event.getPlayer().getUniqueId());
-      final Player player = event.getPlayer();
-      if (plugin.getConfigPreferences().getOption(ConfigPreferences.Option.DATABASE_ENABLED)) {
-        Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
-          for (final StatsStorage.StatisticType s : StatsStorage.StatisticType.values()) {
-            int i;
-            try {
-              i = plugin.getMySQLManager().getStat(player, s);
-            } catch (NullPointerException npe) {
-              i = 0;
-              Debugger.debug(LogLevel.ERROR, "Couldn't get stats from player " + player.getName());
-              npe.printStackTrace();
-              MessageUtils.errorOccurred();
-              Bukkit.getConsoleSender().sendMessage("Cannot get stats from MySQL database!");
-              Bukkit.getConsoleSender().sendMessage("Check configuration of mysql.yml file or disable mysql option in config.yml");
-            }
-
-            if (i > user.getStat(s)) {
-              plugin.getMySQLManager().setStat(player, s, user.getStat(s) + i);
-            } else {
-              plugin.getMySQLManager().setStat(player, s, user.getStat(s));
-            }
-            plugin.getMySQLDatabase().executeUpdate("UPDATE playerstats SET name='" + player.getName() + "' WHERE UUID='" + player.getUniqueId().toString() + "';");
-          }
-        });
-      } else {
-        for (StatsStorage.StatisticType s : StatsStorage.StatisticType.values()) {
-          plugin.getFileStats().saveStat(player, s);
-        }
+      for (StatsStorage.StatisticType stat : StatsStorage.StatisticType.values()) {
+        plugin.getUserManager().saveStatistic(user, stat);
       }
-      plugin.getUserManager().removeUser(player.getUniqueId());
+      plugin.getUserManager().removeUser(event.getPlayer().getUniqueId());
     } catch (Exception ex) {
       new ReportedException(plugin, ex);
     }

@@ -70,9 +70,6 @@ import pl.plajer.villagedefense.kits.kitapi.KitManager;
 import pl.plajer.villagedefense.kits.kitapi.KitRegistry;
 import pl.plajer.villagedefense.user.User;
 import pl.plajer.villagedefense.user.UserManager;
-import pl.plajer.villagedefense.user.data.FileStats;
-import pl.plajer.villagedefense.user.data.MySQLConnectionUtils;
-import pl.plajer.villagedefense.user.data.MySQLManager;
 import pl.plajer.villagedefense.utils.LegacyDataFixer;
 import pl.plajer.villagedefense.utils.MessageUtils;
 import pl.plajerlair.core.database.MySQLDatabase;
@@ -93,8 +90,6 @@ public class Main extends JavaPlugin {
   private UserManager userManager;
   private ConfigPreferences configPreferences;
   private MySQLDatabase database;
-  private MySQLManager mySQLManager;
-  private FileStats fileStats;
   private SignManager signManager;
   private BungeeManager bungeeManager;
   private KitManager kitManager;
@@ -190,9 +185,6 @@ public class Main extends JavaPlugin {
         FileConfiguration config = ConfigUtils.getConfig(this, "mysql");
         database = new MySQLDatabase(this, config.getString("address"), config.getString("user"), config.getString("password"),
             config.getInt("min-connections"), config.getInt("max-connections"));
-        mySQLManager = new MySQLManager(this);
-      } else {
-        fileStats = new FileStats(this);
       }
       userManager = new UserManager(this);
 
@@ -207,13 +199,7 @@ public class Main extends JavaPlugin {
       //we must start it after instances load!
       signManager = new SignManager(this);
 
-      if (configPreferences.getOption(ConfigPreferences.Option.DATABASE_ENABLED)) {
-        for (Player p : Bukkit.getOnlinePlayers()) {
-          Bukkit.getScheduler().runTaskAsynchronously(this, () -> MySQLConnectionUtils.loadPlayerStats(p));
-        }
-      } else {
-        fileStats.loadStatsForPlayersOnline();
-      }
+      loadStatsForPlayersOnline();
       PermissionsManager.init();
       Debugger.debug(LogLevel.INFO, "Main setup done");
     } catch (Exception ex) {
@@ -239,8 +225,8 @@ public class Main extends JavaPlugin {
     new ChatEvents(this);
     holidayManager = new HolidayManager(this);
     Metrics metrics = new Metrics(this);
-    metrics.addCustomChart(new Metrics.SimplePie("database_enabled", () -> getConfig().getString("DatabaseActivated", "false")));
-    metrics.addCustomChart(new Metrics.SimplePie("bungeecord_hooked", () -> getConfig().getString("BungeeActivated", "false")));
+    metrics.addCustomChart(new Metrics.SimplePie("database_enabled", () -> String.valueOf(configPreferences.getOption(ConfigPreferences.Option.DATABASE_ENABLED))));
+    metrics.addCustomChart(new Metrics.SimplePie("bungeecord_hooked", () -> String.valueOf(configPreferences.getOption(ConfigPreferences.Option.BUNGEE_ENABLED))));
     metrics.addCustomChart(new Metrics.SimplePie("locale_used", () -> LanguageManager.getPluginLocale().getPrefix()));
     metrics.addCustomChart(new Metrics.SimplePie("update_notifier", () -> {
       if (getConfig().getBoolean("Update-Notifier.Enabled", true)) {
@@ -332,16 +318,8 @@ public class Main extends JavaPlugin {
     return spyChatEnabled;
   }
 
-  public FileStats getFileStats() {
-    return fileStats;
-  }
-
   public MySQLDatabase getMySQLDatabase() {
     return database;
-  }
-
-  public MySQLManager getMySQLManager() {
-    return mySQLManager;
   }
 
   public PowerupManager getPowerupManager() {
@@ -360,12 +338,8 @@ public class Main extends JavaPlugin {
     Debugger.debug(LogLevel.INFO, "System disable init");
     for (Player player : getServer().getOnlinePlayers()) {
       User user = userManager.getUser(player.getUniqueId());
-      for (StatsStorage.StatisticType s : StatsStorage.StatisticType.values()) {
-        if (configPreferences.getOption(ConfigPreferences.Option.DATABASE_ENABLED)) {
-          getMySQLManager().setStat(player, s, user.getStat(s));
-        } else {
-          getFileStats().saveStat(player, s);
-        }
+      for (StatsStorage.StatisticType stat : StatsStorage.StatisticType.values()) {
+        userManager.saveStatistic(user, stat);
       }
       userManager.removeUser(player.getUniqueId());
     }
@@ -396,6 +370,18 @@ public class Main extends JavaPlugin {
       getMySQLDatabase().getManager().shutdownConnPool();
     }
     Debugger.debug(LogLevel.INFO, "System disable finalize");
+  }
+
+  private void loadStatsForPlayersOnline() {
+    for (final Player player : getServer().getOnlinePlayers()) {
+      if (configPreferences.getOption(ConfigPreferences.Option.BUNGEE_ENABLED)) {
+        ArenaRegistry.getArenas().get(0).teleportToLobby(player);
+      }
+      User user = userManager.getUser(player.getUniqueId());
+      for (StatsStorage.StatisticType stat : StatsStorage.StatisticType.values()) {
+        userManager.loadStatistic(user, stat);
+      }
+    }
   }
 
 }
