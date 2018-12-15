@@ -32,6 +32,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
+import pl.plajer.villagedefense.ConfigPreferences;
 import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.api.StatsStorage;
 import pl.plajer.villagedefense.arena.Arena;
@@ -71,7 +72,7 @@ public class ChatEvents implements Listener {
         }
         return;
       }
-      if (plugin.isChatFormatEnabled()) {
+      if (plugin.getConfigPreferences().getOption(ConfigPreferences.Option.CHAT_FORMAT_ENABLED)) {
         event.setCancelled(true);
         Iterator<Player> iterator = event.getRecipients().iterator();
         List<Player> remove = new ArrayList<>();

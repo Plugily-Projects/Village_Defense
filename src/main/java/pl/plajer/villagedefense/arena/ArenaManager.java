@@ -36,6 +36,7 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import pl.plajer.villagedefense.ConfigPreferences;
 import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.api.StatsStorage;
 import pl.plajer.villagedefense.api.event.game.VillageGameJoinAttemptEvent;
@@ -90,7 +91,7 @@ public class ArenaManager {
         p.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Join-Cancelled-Via-API"));
         return;
       }
-      if (!plugin.isBungeeActivated()) {
+      if (!plugin.getConfigPreferences().getOption(ConfigPreferences.Option.BUNGEE_ENABLED)) {
         if (!(p.hasPermission(PermissionsManager.getJoinPerm().replace("<arena>", "*")) || p.hasPermission(PermissionsManager.getJoinPerm().replace("<arena>", arena.getID())))) {
           p.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Join-No-Permission"));
           return;
@@ -100,7 +101,7 @@ public class ArenaManager {
       Debugger.debug(LogLevel.INFO, "Join task, " + p.getName());
       arena.addPlayer(p);
       if ((arena.getArenaState() == ArenaState.IN_GAME || (arena.getArenaState() == ArenaState.STARTING && arena.getTimer() <= 3) || arena.getArenaState() == ArenaState.ENDING)) {
-        if (plugin.isInventoryManagerEnabled()) {
+        if (plugin.getConfigPreferences().getOption(ConfigPreferences.Option.INVENTORY_MANAGER_ENABLED)) {
           p.setLevel(0);
           InventoryUtils.saveInventoryToFile(plugin, p);
         }
@@ -138,7 +139,7 @@ public class ArenaManager {
         ArenaUtils.hidePlayersOutsideTheGame(p, arena);
         return;
       }
-      if (plugin.isInventoryManagerEnabled()) {
+      if (plugin.getConfigPreferences().getOption(ConfigPreferences.Option.INVENTORY_MANAGER_ENABLED)) {
         p.setLevel(0);
         InventoryUtils.saveInventoryToFile(plugin, p);
       }
@@ -228,7 +229,8 @@ public class ArenaManager {
         p.showPlayer(players);
       }
       arena.teleportToEndLocation(p);
-      if (!plugin.isBungeeActivated() && plugin.isInventoryManagerEnabled()) {
+      if (!plugin.getConfigPreferences().getOption(ConfigPreferences.Option.BUNGEE_ENABLED) &&
+          plugin.getConfigPreferences().getOption(ConfigPreferences.Option.INVENTORY_MANAGER_ENABLED)) {
         InventoryUtils.loadInventory(plugin, p);
       }
       Debugger.debug(LogLevel.INFO, "Final leave attempt, " + p.getName());

@@ -28,6 +28,7 @@ import java.util.UUID;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
+import pl.plajer.villagedefense.ConfigPreferences;
 import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.user.UserManager;
 import pl.plajerlair.core.utils.ConfigUtils;
@@ -60,7 +61,7 @@ public class StatsStorage {
    * @return Map of UUID keys and Integer values sorted in ascending order of requested statistic type
    */
   public static Map<UUID, Integer> getStats(StatisticType stat) {
-    if (plugin.isDatabaseActivated()) {
+    if (plugin.getConfigPreferences().getOption(ConfigPreferences.Option.DATABASE_ENABLED)) {
       return plugin.getMySQLManager().getColumn(stat.getName());
     } else {
       FileConfiguration config = ConfigUtils.getConfig(plugin, "stats");

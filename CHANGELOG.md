@@ -9,7 +9,7 @@ data was wrongly saved without getName() method called. MySQL users are safe.
 * Fixed setup inventory not working
 
 ### 4.0.0 Beta (04/14.10.2018 - 27.11.2018)
-* API change - now you can access it via pl.plajer.villagedefense.api
+* API change - now you can path it via pl.plajer.villagedefense.api
 * Removed actionbar message from players that died and the arena was changed in "ending"
 * Fixed https://plajer.xyz/errorservice/viewer.php?id=245
 * Added spectator settings menu (now working)

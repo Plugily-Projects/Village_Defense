@@ -63,6 +63,7 @@ import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import pl.plajer.villagedefense.ConfigPreferences;
 import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.api.StatsStorage;
 import pl.plajer.villagedefense.arena.Arena;
@@ -122,10 +123,11 @@ public class Events implements Listener {
         return;
       }
       //bonus orbs with custom permissions
-      for (String perm : plugin.getCustomPermissions().keySet()) {
+      for (String perm : plugin.getConfigPreferences().getCustomPermissions().keySet()) {
         if (event.getPlayer().hasPermission(perm)) {
-          amount = +(int) Math.ceil(event.getAmount() * (plugin.getCustomPermissions().get(perm) / 100));
-          user.addStat(StatsStorage.StatisticType.ORBS, (int) Math.ceil(event.getAmount() * (plugin.getCustomPermissions().get(perm) / 100)));
+          int orbs = plugin.getConfigPreferences().getCustomPermissions().get(perm) / 100;
+          amount = +(int) Math.ceil(event.getAmount() * orbs);
+          user.addStat(StatsStorage.StatisticType.ORBS, (int) Math.ceil(event.getAmount() * orbs));
         }
       }
 
@@ -339,7 +341,7 @@ public class Events implements Listener {
       }
       if (key.getItemStack().getItemMeta().getDisplayName().equalsIgnoreCase(itemStack.getItemMeta().getDisplayName())) {
         event.setCancelled(true);
-        if (plugin.isBungeeActivated()) {
+        if (plugin.getConfigPreferences().getOption(ConfigPreferences.Option.BUNGEE_ENABLED)) {
           plugin.getBungeeManager().connectToHub(event.getPlayer());
         } else {
           ArenaManager.leaveAttempt(event.getPlayer(), arena);

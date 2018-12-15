@@ -25,13 +25,11 @@ import java.io.File;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -92,7 +90,7 @@ import pl.plajerlair.core.utils.InventoryUtils;
  */
 public class Main extends JavaPlugin {
 
-  public static int STARTING_TIMER_TIME = 60;
+  private ConfigPreferences configPreferences;
   private MySQLDatabase database;
   private MySQLManager mySQLManager;
   private FileStats fileStats;
@@ -104,13 +102,7 @@ public class Main extends JavaPlugin {
   private RewardsFactory rewardsHandler;
   private HolidayManager holidayManager;
   private boolean forceDisable = false;
-  private boolean databaseActivated = false;
-  private boolean bungeeEnabled;
-  private boolean chatFormat = true;
-  private boolean bossbarEnabled;
-  private boolean inventoryManagerEnabled = false;
   private List<String> fileNames = Arrays.asList("arenas", "bungee", "rewards", "stats", "lobbyitems", "mysql", "kits");
-  private Map<String, Integer> customPermissions = new HashMap<>();
   private HashMap<UUID, Boolean> spyChatEnabled = new HashMap<>();
   private String version;
 
@@ -130,18 +122,6 @@ public class Main extends JavaPlugin {
     return version.equalsIgnoreCase("v1_13_R2");
   }
 
-  public boolean isInventoryManagerEnabled() {
-    return inventoryManagerEnabled;
-  }
-
-  public boolean isBossbarEnabled() {
-    return bossbarEnabled;
-  }
-
-  public boolean isBungeeActivated() {
-    return bungeeEnabled;
-  }
-
   public BungeeManager getBungeeManager() {
     return bungeeManager;
   }
@@ -152,10 +132,6 @@ public class Main extends JavaPlugin {
 
   public ChunkManager getChunkManager() {
     return chunkManager;
-  }
-
-  public Map<String, Integer> getCustomPermissions() {
-    return customPermissions;
   }
 
   public KitManager getKitManager() {
@@ -201,6 +177,7 @@ public class Main extends JavaPlugin {
       Debugger.setEnabled(getConfig().getBoolean("Debug", false));
       Debugger.setPrefix("[Village Debugger]");
       Debugger.debug(LogLevel.INFO, "Main setup start");
+      configPreferences = new ConfigPreferences(this);
       setupFiles();
       LanguageMigrator.configUpdate();
       LanguageMigrator.languageFileUpdate();
@@ -208,10 +185,7 @@ public class Main extends JavaPlugin {
       initializeClasses();
       checkUpdate();
 
-      STARTING_TIMER_TIME = getConfig().getInt("Starting-Waiting-Time", 60);
-      databaseActivated = getConfig().getBoolean("DatabaseActivated", false);
-      inventoryManagerEnabled = getConfig().getBoolean("InventoryManager", false);
-      if (databaseActivated) {
+      if (configPreferences.getOption(ConfigPreferences.Option.DATABASE_ENABLED)) {
         FileConfiguration config = ConfigUtils.getConfig(this, "mysql");
         database = new MySQLDatabase(this, config.getString("address"), config.getString("user"), config.getString("password"),
             config.getInt("min-connections"), config.getInt("max-connections"));
@@ -219,7 +193,6 @@ public class Main extends JavaPlugin {
       } else {
         fileStats = new FileStats(this);
       }
-      bossbarEnabled = getConfig().getBoolean("Bossbar-Enabled", true);
 
       DoorBreakListener listener = new DoorBreakListener();
       listener.runTaskTimer(this, 1L, 20L);
@@ -232,14 +205,7 @@ public class Main extends JavaPlugin {
       //we must start it after instances load!
       signManager = new SignManager(this);
 
-      chatFormat = getConfig().getBoolean("ChatFormat-Enabled", true);
-
-      ConfigurationSection cs = getConfig().getConfigurationSection("CustomPermissions");
-      for (String key : cs.getKeys(false)) {
-        customPermissions.put(key, getConfig().getInt("CustomPermissions." + key));
-        Debugger.debug(LogLevel.INFO, "Loaded custom permission " + key);
-      }
-      if (databaseActivated) {
+      if (configPreferences.getOption(ConfigPreferences.Option.DATABASE_ENABLED)) {
         for (Player p : Bukkit.getOnlinePlayers()) {
           Bukkit.getScheduler().runTaskAsynchronously(this, () -> MySQLConnectionUtils.loadPlayerStats(p));
         }
@@ -256,7 +222,6 @@ public class Main extends JavaPlugin {
 
   private void initializeClasses() {
     CreatureUtils.init(this);
-    bungeeEnabled = getConfig().getBoolean("BungeeActivated", false);
     if (getConfig().getBoolean("BungeeActivated", false)) {
       bungeeManager = new BungeeManager(this);
     }
@@ -354,10 +319,6 @@ public class Main extends JavaPlugin {
     return holidayManager;
   }
 
-  public boolean isChatFormatEnabled() {
-    return chatFormat;
-  }
-
   public boolean isSpyChatEnabled(Player player) {
     return spyChatEnabled.containsKey(player.getUniqueId());
   }
@@ -368,10 +329,6 @@ public class Main extends JavaPlugin {
 
   public FileStats getFileStats() {
     return fileStats;
-  }
-
-  public boolean isDatabaseActivated() {
-    return databaseActivated;
   }
 
   public MySQLDatabase getMySQLDatabase() {
@@ -386,6 +343,10 @@ public class Main extends JavaPlugin {
     return powerupManager;
   }
 
+  public ConfigPreferences getConfigPreferences() {
+    return configPreferences;
+  }
+
   @Override
   public void onDisable() {
     if (forceDisable) {
@@ -395,7 +356,7 @@ public class Main extends JavaPlugin {
     for (Player player : getServer().getOnlinePlayers()) {
       User user = UserManager.getUser(player.getUniqueId());
       for (StatsStorage.StatisticType s : StatsStorage.StatisticType.values()) {
-        if (isDatabaseActivated()) {
+        if (configPreferences.getOption(ConfigPreferences.Option.DATABASE_ENABLED)) {
           getMySQLManager().setStat(player, s, user.getStat(s));
         } else {
           getFileStats().saveStat(player, s);
@@ -407,7 +368,7 @@ public class Main extends JavaPlugin {
       for (Player player : arena.getPlayers()) {
         arena.doBarAction(Arena.BarAction.REMOVE, player);
         arena.teleportToEndLocation(player);
-        if (inventoryManagerEnabled) {
+        if (configPreferences.getOption(ConfigPreferences.Option.INVENTORY_MANAGER_ENABLED)) {
           InventoryUtils.loadInventory(this, player);
         } else {
           player.getInventory().clear();
@@ -426,7 +387,7 @@ public class Main extends JavaPlugin {
         holo.delete();
       }
     }
-    if (isDatabaseActivated()) {
+    if (configPreferences.getOption(ConfigPreferences.Option.DATABASE_ENABLED)) {
       getMySQLDatabase().getManager().shutdownConnPool();
     }
     Debugger.debug(LogLevel.INFO, "System disable finalize");

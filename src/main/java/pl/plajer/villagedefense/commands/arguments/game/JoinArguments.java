@@ -21,6 +21,7 @@ package pl.plajer.villagedefense.commands.arguments.game;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import pl.plajer.villagedefense.ConfigPreferences;
 import pl.plajer.villagedefense.arena.Arena;
 import pl.plajer.villagedefense.arena.ArenaManager;
 import pl.plajer.villagedefense.arena.ArenaRegistry;
@@ -60,7 +61,7 @@ public class JoinArguments {
     });
 
     //random join argument, register only for multi arena
-    if (!registry.getPlugin().isBungeeActivated()) {
+    if (!registry.getPlugin().getConfigPreferences().getOption(ConfigPreferences.Option.BUNGEE_ENABLED)) {
       registry.mapArgument("villagedefense", new CommandArgument("randomjoin", "", CommandArgument.ExecutorType.PLAYER) {
         @Override
         public void execute(CommandSender sender, String[] args) {

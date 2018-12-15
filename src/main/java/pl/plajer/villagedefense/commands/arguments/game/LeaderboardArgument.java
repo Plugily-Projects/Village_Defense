@@ -27,6 +27,7 @@ import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 
+import pl.plajer.villagedefense.ConfigPreferences;
 import pl.plajer.villagedefense.api.StatsStorage;
 import pl.plajer.villagedefense.commands.arguments.ArgumentsRegistry;
 import pl.plajer.villagedefense.commands.arguments.data.CommandArgument;
@@ -75,7 +76,7 @@ public class LeaderboardArgument {
               sender.sendMessage(message);
             } catch (NullPointerException ex) {
               UUID current = (UUID) stats.keySet().toArray()[stats.keySet().toArray().length - 1];
-              if (registry.getPlugin().isDatabaseActivated()) {
+              if (registry.getPlugin().getConfigPreferences().getOption(ConfigPreferences.Option.DATABASE_ENABLED)) {
                 ResultSet set = registry.getPlugin().getMySQLDatabase().executeQuery("SELECT name FROM playerstats WHERE UUID='" + current.toString() + "'");
                 try {
                   if (set.next()) {

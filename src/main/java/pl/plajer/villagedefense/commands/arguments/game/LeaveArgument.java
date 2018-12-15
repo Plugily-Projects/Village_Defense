@@ -21,6 +21,7 @@ package pl.plajer.villagedefense.commands.arguments.game;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import pl.plajer.villagedefense.ConfigPreferences;
 import pl.plajer.villagedefense.arena.ArenaManager;
 import pl.plajer.villagedefense.arena.ArenaRegistry;
 import pl.plajer.villagedefense.commands.arguments.ArgumentsRegistry;
@@ -47,7 +48,7 @@ public class LeaveArgument {
             return;
           }
           p.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("Commands.Teleported-To-The-Lobby"));
-          if (registry.getPlugin().isBungeeActivated()) {
+          if (registry.getPlugin().getConfigPreferences().getOption(ConfigPreferences.Option.BUNGEE_ENABLED)) {
             registry.getPlugin().getBungeeManager().connectToHub(p);
             Debugger.debug(LogLevel.INFO, p.getName() + " was teleported to the Hub server");
           } else {

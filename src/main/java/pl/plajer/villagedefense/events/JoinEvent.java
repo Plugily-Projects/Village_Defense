@@ -26,6 +26,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
 
+import pl.plajer.villagedefense.ConfigPreferences;
 import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.api.StatsStorage;
 import pl.plajer.villagedefense.arena.ArenaRegistry;
@@ -49,7 +50,7 @@ public class JoinEvent implements Listener {
   @EventHandler
   public void onLogin(PlayerLoginEvent e) {
     try {
-      if (!plugin.isBungeeActivated() && !plugin.getServer().hasWhitelist()
+      if (!plugin.getConfigPreferences().getOption(ConfigPreferences.Option.BUNGEE_ENABLED) && !plugin.getServer().hasWhitelist()
           || e.getResult() != PlayerLoginEvent.Result.KICK_WHITELIST) {
         return;
       }
@@ -64,7 +65,7 @@ public class JoinEvent implements Listener {
   @EventHandler
   public void onJoin(PlayerJoinEvent event) {
     try {
-      if (plugin.isBungeeActivated()) {
+      if (plugin.getConfigPreferences().getOption(ConfigPreferences.Option.BUNGEE_ENABLED)) {
         if (ArenaRegistry.getArenas().size() >= 1) {
           ArenaRegistry.getArenas().get(0).teleportToLobby(event.getPlayer());
         }
@@ -78,7 +79,7 @@ public class JoinEvent implements Listener {
         event.getPlayer().hidePlayer(player);
       }
 
-      if (!plugin.isDatabaseActivated()) {
+      if (!plugin.getConfigPreferences().getOption(ConfigPreferences.Option.DATABASE_ENABLED)) {
         for (StatsStorage.StatisticType s : StatsStorage.StatisticType.values()) {
           plugin.getFileStats().loadStat(event.getPlayer(), s);
         }

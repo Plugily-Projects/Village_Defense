@@ -47,7 +47,7 @@ authors' sake, the GPL requires that modified versions be marked as
 changed, so that their problems will not be attributed erroneously to
 authors of previous versions.
 
-  Some devices are designed to deny users access to install or run
+  Some devices are designed to deny users path to install or run
 modified versions of the software inside them, although the manufacturer
 can do so.  This is fundamentally incompatible with the aim of
 protecting users' freedom to change the software.  The systematic
@@ -237,7 +237,7 @@ works, which are not by their nature extensions of the covered work,
 and which are not combined with it such as to form a larger program,
 in or on a volume of a storage or distribution medium, is called an
 "aggregate" if the compilation and its resulting copyright are not
-used to limit the access or legal rights of the compilation's users
+used to limit the path or legal rights of the compilation's users
 beyond what the individual works permit.  Inclusion of a covered work
 in an aggregate does not cause this License to apply to the other
 parts of the aggregate.
@@ -263,7 +263,7 @@ in one of these ways:
     product that is covered by this License, on a durable physical
     medium customarily used for software interchange, for a price no
     more than your reasonable cost of physically performing this
-    conveying of source, or (2) access to copy the
+    conveying of source, or (2) path to copy the
     Corresponding Source from a network server at no charge.
 
     c) Convey individual copies of the object code with a copy of the
@@ -272,8 +272,8 @@ in one of these ways:
     only if you received the object code with such an offer, in accord
     with subsection 6b.
 
-    d) Convey the object code by offering access from a designated
-    place (gratis or for a charge), and offer equivalent access to the
+    d) Convey the object code by offering path from a designated
+    place (gratis or for a charge), and offer equivalent path to the
     Corresponding Source in the same way through the same place at no
     further charge.  You need not require recipients to copy the
     Corresponding Source along with the object code.  If the place to
