@@ -25,7 +25,6 @@ import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.handlers.ChatManager;
 import pl.plajer.villagedefense.kits.kitapi.KitRegistry;
 import pl.plajer.villagedefense.kits.kitapi.basekits.FreeKit;
@@ -39,7 +38,7 @@ import pl.plajerlair.core.utils.XMaterial;
  */
 public class LightTankKit extends FreeKit {
 
-  public LightTankKit(Main plugin) {
+  public LightTankKit() {
     setName(ChatManager.colorMessage("Kits.Light-Tank.Kit-Name"));
     List<String> description = Utils.splitString(ChatManager.colorMessage("Kits.Light-Tank.Kit-Description"), 40);
     this.setDescription(description.toArray(new String[0]));

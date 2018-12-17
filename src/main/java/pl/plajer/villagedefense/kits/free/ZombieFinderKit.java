@@ -32,16 +32,15 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.arena.Arena;
 import pl.plajer.villagedefense.arena.ArenaRegistry;
 import pl.plajer.villagedefense.handlers.ChatManager;
 import pl.plajer.villagedefense.kits.kitapi.KitRegistry;
 import pl.plajer.villagedefense.kits.kitapi.basekits.LevelKit;
+import pl.plajer.villagedefense.user.User;
 import pl.plajer.villagedefense.utils.Utils;
 import pl.plajer.villagedefense.utils.WeaponHelper;
 import pl.plajerlair.core.services.exception.ReportedException;
-import pl.plajerlair.core.utils.ConfigUtils;
 import pl.plajerlair.core.utils.XMaterial;
 
 /**
@@ -49,15 +48,12 @@ import pl.plajerlair.core.utils.XMaterial;
  */
 public class ZombieFinderKit extends LevelKit implements Listener {
 
-  private Main plugin;
-
-  public ZombieFinderKit(Main plugin) {
-    this.plugin = plugin;
+  public ZombieFinderKit() {
     setName(ChatManager.colorMessage("Kits.Zombie-Teleporter.Kit-Name"));
     List<String> description = Utils.splitString(ChatManager.colorMessage("Kits.Zombie-Teleporter.Kit-Description"), 40);
     this.setDescription(description.toArray(new String[0]));
-    this.setLevel(ConfigUtils.getConfig(plugin, "kits").getInt("Required-Level.ZombieFinder"));
-    plugin.getServer().getPluginManager().registerEvents(this, plugin);
+    this.setLevel(getKitsConfig().getInt("Required-Level.ZombieFinder"));
+    getPlugin().getServer().getPluginManager().registerEvents(this, getPlugin());
     KitRegistry.registerKit(this);
   }
 
@@ -96,13 +92,14 @@ public class ZombieFinderKit extends LevelKit implements Listener {
           !event.getItem().getItemMeta().getDisplayName().equals(ChatManager.colorMessage("Kits.Zombie-Teleporter.Game-Item-Name"))) {
         return;
       }
-      if (plugin.getUserManager().getUser(event.getPlayer().getUniqueId()).isSpectator()) {
+      User user = getPlugin().getUserManager().getUser(event.getPlayer().getUniqueId());
+      if (user.isSpectator()) {
         event.getPlayer().sendMessage(ChatManager.colorMessage("Kits.Teleporter.Spectator-Warning"));
         return;
       }
-      if (plugin.getUserManager().getUser(event.getPlayer().getUniqueId()).getCooldown("zombie") > 0 && !plugin.getUserManager().getUser(event.getPlayer().getUniqueId()).isSpectator()) {
+      if (user.getCooldown("zombie") > 0 && !user.isSpectator()) {
         String msgstring = ChatManager.colorMessage("Kits.Ability-Still-On-Cooldown");
-        msgstring = msgstring.replaceFirst("%COOLDOWN%", Long.toString(plugin.getUserManager().getUser(event.getPlayer().getUniqueId()).getCooldown("zombie")));
+        msgstring = msgstring.replaceFirst("%COOLDOWN%", Long.toString(user.getCooldown("zombie")));
         event.getPlayer().sendMessage(msgstring);
         return;
       }
@@ -116,9 +113,9 @@ public class ZombieFinderKit extends LevelKit implements Listener {
         event.getPlayer().sendMessage(ChatManager.colorMessage("Kits.Zombie-Teleporter.Zombie-Teleported"));
       }
       Utils.playSound(event.getPlayer().getLocation(), "ENTITY_ZOMBIE_DEATH", "ENTITY_ZOMBIE_DEATH");
-      plugin.getUserManager().getUser(event.getPlayer().getUniqueId()).setCooldown("zombie", 30);
+      user.setCooldown("zombie", 30);
     } catch (Exception ex) {
-      new ReportedException(plugin, ex);
+      new ReportedException(getPlugin(), ex);
     }
   }
 }

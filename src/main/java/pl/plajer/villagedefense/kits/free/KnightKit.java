@@ -24,7 +24,6 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.handlers.ChatManager;
 import pl.plajer.villagedefense.kits.kitapi.KitRegistry;
 import pl.plajer.villagedefense.kits.kitapi.basekits.FreeKit;
@@ -38,7 +37,7 @@ import pl.plajerlair.core.utils.XMaterial;
  */
 public class KnightKit extends FreeKit {
 
-  public KnightKit(Main plugin) {
+  public KnightKit() {
     this.setName(ChatManager.colorMessage("Kits.Knight.Kit-Name"));
     List<String> description = Utils.splitString(ChatManager.colorMessage("Kits.Knight.Kit-Description"), 40);
     this.setDescription(description.toArray(new String[0]));

@@ -200,7 +200,7 @@ public class SignManager implements Listener {
         if (loc.getBlock().getState() instanceof Sign) {
           loadedSigns.put((Sign) loc.getBlock().getState(), ArenaRegistry.getArena(path));
         } else {
-          Debugger.debug(LogLevel.WARN, "Block at loc " + loc + " for arena " + path + " not a sign");
+          Debugger.debug(LogLevel.WARN, "Block at loc " + LocationUtils.locationToString(loc) + " for arena " + path + " not a sign");
         }
       }
     }

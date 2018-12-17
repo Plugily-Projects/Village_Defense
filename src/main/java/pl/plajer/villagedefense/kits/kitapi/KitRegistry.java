@@ -130,7 +130,7 @@ public class KitRegistry {
   }
 
   private static void setupGameKits() {
-    KnightKit knightkit = new KnightKit(plugin);
+    KnightKit knightkit = new KnightKit();
     for (Class kitClass : classKitNames) {
       if (ConfigUtils.getConfig(plugin, "kits").getBoolean("Enabled-Game-Kits." + kitClass.getSimpleName().replace("Kit", ""))) {
         try {

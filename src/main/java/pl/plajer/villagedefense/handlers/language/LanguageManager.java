@@ -92,7 +92,7 @@ public class LanguageManager {
     }
     LocaleService service = ServiceRegistry.getLocaleService(plugin);
     if (service.isValidVersion()) {
-      LocaleService.DownloadStatus status = service.demandLocaleDownload(pluginLocale.getPrefix());
+      LocaleService.DownloadStatus status = service.demandLocaleDownload(pluginLocale);
       if (status == LocaleService.DownloadStatus.FAIL) {
         pluginLocale = LocaleRegistry.getByName("English");
         Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "[Village Defense] Locale service couldn't download latest locale for plugin! English locale will be used instead!");
@@ -129,7 +129,7 @@ public class LanguageManager {
       pluginLocale = LocaleRegistry.getByName("English");
     }
     /* is beta release */
-    if (plugin.getDescription().getVersion().contains("b") || plugin.getDescription().getVersion().contains("pre")) {
+    if ((plugin.getDescription().getVersion().contains("b") || plugin.getDescription().getVersion().contains("pre")) && !plugin.getConfig().getBoolean("Developer-Mode", false)) {
       Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "[Village Defense] Locales aren't supported in beta versions because they're lacking latest translations! Enabling English one...");
       pluginLocale = LocaleRegistry.getByName("English");
       return;
