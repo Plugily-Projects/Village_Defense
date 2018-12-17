@@ -1,4 +1,4 @@
-#    You can translate Village Defense messages here.
+  F#    You can translate Village Defense messages here.
 #             Color codes (&) supported.
 #
 #              Use \n to make new line
@@ -351,7 +351,7 @@ Powerups:
     Description: "&7Every zombie for 1 hit!"
   Powerup-Ended-Title-Message: "&4Powerup %powerup% has ended!"
 
-#todo locale and migrator
+  #todo and migrator only
 Upgrade-Menu:
   Title: "&e&lUpgrade entity"
   Upgrades:
