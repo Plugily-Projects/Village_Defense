@@ -4,6 +4,7 @@
 * Implemented legacy data fixer that will fix inconsistency between original user data and current one (old implementation failure)
 data was wrongly saved without getName() method called. MySQL users are safe.
 * Added Italian locale
+* Fixed arena signs were incorrectly saved via setup menu (4.0.0 pre issue)
 
 ### 4.0.0 Beta pre 5 (1.12.2018)
 * Fixed commands without permissions weren't working
