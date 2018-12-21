@@ -50,6 +50,7 @@ public class ForceStartArgument {
         Arena arena = ArenaRegistry.getArena((Player) sender);
         if (arena.getArenaState() == ArenaState.WAITING_FOR_PLAYERS || arena.getArenaState() == ArenaState.STARTING) {
           arena.setArenaState(ArenaState.STARTING);
+          arena.setForceStart(true);
           arena.setTimer(0);
           ChatManager.broadcast(arena, ChatManager.colorMessage("In-Game.Messages.Admin-Messages.Set-Starting-In-To-0"));
         }

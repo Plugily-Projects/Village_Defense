@@ -109,6 +109,7 @@ public abstract class Arena extends BukkitRunnable {
   //instead of 3 location fields we use map with GameLocation enum
   private Map<GameLocation, Location> gameLocations = new HashMap<>();
   private boolean ready = true;
+  private boolean forceStart = false;
 
   public Arena(String ID, Main plugin) {
     this.plugin = plugin;
@@ -220,7 +221,7 @@ public abstract class Arena extends BukkitRunnable {
             player.setExp((float) (getTimer() / plugin.getConfig().getDouble("Starting-Waiting-Time", 60)));
             player.setLevel(getTimer());
           }
-          if (getPlayers().size() < getMinimumPlayers()) {
+          if (getPlayers().size() < getMinimumPlayers() && !forceStart) {
             gameBar.setTitle(ChatManager.colorMessage("Bossbar.Waiting-For-Players"));
             gameBar.setProgress(1.0);
             ChatManager.broadcast(this, ChatManager.formatMessage(this, ChatManager.colorMessage("In-Game.Messages.Lobby-Messages.Waiting-For-Players"), getMinimumPlayers()));
@@ -233,7 +234,7 @@ public abstract class Arena extends BukkitRunnable {
             }
             break;
           }
-          if (getTimer() == 0) {
+          if (getTimer() == 0 || forceStart) {
             VillageGameStartEvent villageGameStartEvent = new VillageGameStartEvent(this);
             Bukkit.getPluginManager().callEvent(villageGameStartEvent);
             setArenaState(ArenaState.IN_GAME);
@@ -260,6 +261,9 @@ public abstract class Arena extends BukkitRunnable {
               player.sendMessage(ChatManager.getPrefix() + ChatManager.colorMessage("In-Game.Messages.Lobby-Messages.Game-Started"));
             }
             fighting = false;
+          }
+          if (forceStart) {
+            forceStart = false;
           }
           setTimer(getTimer() - 1);
           break;
@@ -985,6 +989,10 @@ public abstract class Arena extends BukkitRunnable {
   public abstract void spawnKnockbackResistantZombies(Random random);
 
   public abstract void spawnVillagerSlayer(Random random);
+
+  public void setForceStart(boolean forceStart) {
+    this.forceStart = forceStart;
+  }
 
   protected void addWolf(Wolf wolf) {
     wolfs.add(wolf);
