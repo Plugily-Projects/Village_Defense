@@ -33,6 +33,7 @@ import pl.plajer.villagedefense.arena.ArenaRegistry;
 import pl.plajer.villagedefense.handlers.PermissionsManager;
 import pl.plajerlair.core.services.exception.ReportedException;
 import pl.plajerlair.core.services.update.UpdateChecker;
+import pl.plajerlair.core.utils.InventoryUtils;
 
 /**
  * Created by Tom on 10/07/2015.
@@ -80,6 +81,11 @@ public class JoinEvent implements Listener {
 
       for (StatsStorage.StatisticType stat : StatsStorage.StatisticType.values()) {
         plugin.getUserManager().loadStatistic(plugin.getUserManager().getUser(event.getPlayer().getUniqueId()), stat);
+      }
+      //load player inventory in case of server crash, file is deleted once loaded so if file was already
+      //deleted player won't receive his backup, in case of crash he will get it back
+      if (plugin.getConfigPreferences().getOption(ConfigPreferences.Option.INVENTORY_MANAGER_ENABLED)) {
+        InventoryUtils.loadInventory(plugin, event.getPlayer());
       }
     } catch (Exception ex) {
       new ReportedException(plugin, ex);

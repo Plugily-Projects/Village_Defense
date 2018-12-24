@@ -1,10 +1,12 @@
 # Village Defense 3 Changelog
 
-### 4.0.0 Beta pre 6 (14.12.2018)
+### 4.0.0 Beta pre 6 (14/24.12.2018)
 * Implemented legacy data fixer that will fix inconsistency between original user data and current one (old implementation failure)
 data was wrongly saved without getName() method called. MySQL users are safe.
 * Added Italian locale
 * Fixed arena signs were incorrectly saved via setup menu (4.0.0 pre issue)
+* Fixed /vda forcestart wasn't working properly when there were not enough players to start
+* In case of any server crash players' inventories will be loaded from backup if exist in inventories folder in Village Defense plugin folder
 
 ### 4.0.0 Beta pre 5 (1.12.2018)
 * Fixed commands without permissions weren't working
