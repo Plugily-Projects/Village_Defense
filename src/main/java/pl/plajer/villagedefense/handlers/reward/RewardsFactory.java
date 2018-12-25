@@ -92,6 +92,8 @@ public class RewardsFactory {
           case SCRIPT:
             engine.execute(command);
             break;
+          default:
+            break;
         }
       }
     }

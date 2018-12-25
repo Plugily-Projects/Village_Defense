@@ -55,8 +55,8 @@ public class EntityUpgradeListener implements Listener {
   @EventHandler
   public void onEntityClick(PlayerInteractEntityEvent e) {
     try {
-      if (ArenaRegistry.getArena(e.getPlayer()) == null || plugin.getUserManager().getUser(e.getPlayer().getUniqueId()).isSpectator() ||
-          (e.getRightClicked().getType() != EntityType.IRON_GOLEM && e.getRightClicked().getType() != EntityType.WOLF) || e.getRightClicked().getCustomName() == null) {
+      if (ArenaRegistry.getArena(e.getPlayer()) == null || plugin.getUserManager().getUser(e.getPlayer().getUniqueId()).isSpectator()
+          || (e.getRightClicked().getType() != EntityType.IRON_GOLEM && e.getRightClicked().getType() != EntityType.WOLF) || e.getRightClicked().getCustomName() == null) {
         return;
       }
       EntityUpgradeMenu.openUpgradeMenu(e.getRightClicked(), e.getPlayer());

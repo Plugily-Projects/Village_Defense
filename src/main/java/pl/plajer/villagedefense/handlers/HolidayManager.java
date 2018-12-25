@@ -67,14 +67,16 @@ public class HolidayManager implements Listener {
         //4 days before halloween
         if (31 - day <= 4) {
           currentHoliday = HolidayType.HALLOWEEN;
-          break;
         }
+        break;
       case 11:
         //4 days after halloween
         if (day <= 4) {
           currentHoliday = HolidayType.HALLOWEEN;
-          break;
         }
+        break;
+      default:
+        break;
     }
   }
 
@@ -104,6 +106,8 @@ public class HolidayManager implements Listener {
         }
         break;
       case NONE:
+        break;
+      default:
         break;
     }
   }
@@ -145,6 +149,8 @@ public class HolidayManager implements Listener {
         }
         break;
       case NONE:
+        break;
+      default:
         break;
     }
   }

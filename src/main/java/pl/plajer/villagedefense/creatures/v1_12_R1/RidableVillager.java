@@ -91,6 +91,7 @@ public class RidableVillager extends EntityVillager {
     this.setCustomNameVisible(true);
   }
 
+  @Override
   public void a(float f, float f1, float f2) {
     EntityLiving entityliving = null;
     for (final Entity e : passengers) {

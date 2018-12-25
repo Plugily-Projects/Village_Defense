@@ -83,21 +83,21 @@ public class CreateArgument {
     });
   }
 
-  private void createInstanceInConfig(String ID, String worldName) {
-    String path = "instances." + ID + ".";
+  private void createInstanceInConfig(String id, String worldName) {
+    String path = "instances." + id + ".";
     FileConfiguration config = ConfigUtils.getConfig(registry.getPlugin(), "arenas");
     LocationUtils.saveLoc(registry.getPlugin(), config, "arenas", path + "lobbylocation", Bukkit.getServer().getWorlds().get(0).getSpawnLocation());
     LocationUtils.saveLoc(registry.getPlugin(), config, "arenas", path + "Startlocation", Bukkit.getServer().getWorlds().get(0).getSpawnLocation());
     LocationUtils.saveLoc(registry.getPlugin(), config, "arenas", path + "Endlocation", Bukkit.getServer().getWorlds().get(0).getSpawnLocation());
     config.set(path + "minimumplayers", 1);
     config.set(path + "maximumplayers", 10);
-    config.set(path + "mapname", ID);
+    config.set(path + "mapname", id);
     config.set(path + "signs", new ArrayList<>());
     config.set(path + "isdone", false);
     config.set(path + "world", worldName);
     ConfigUtils.saveConfig(registry.getPlugin(), config, "arenas");
 
-    Arena arena = ArenaUtils.initializeArena(ID);
+    Arena arena = ArenaUtils.initializeArena(id);
 
     arena.setMinimumPlayers(config.getInt(path + "minimumplayers"));
     arena.setMaximumPlayers(config.getInt(path + "maximumplayers"));

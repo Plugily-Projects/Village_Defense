@@ -53,24 +53,24 @@ public class PermissionsManager {
     return vipPerm;
   }
 
-  private static void setVip(String VIP) {
-    PermissionsManager.vipPerm = VIP;
+  private static void setVip(String vip) {
+    PermissionsManager.vipPerm = vip;
   }
 
   public static String getMvp() {
     return mvpPerm;
   }
 
-  private static void setMvp(String MVP) {
-    PermissionsManager.mvpPerm = MVP;
+  private static void setMvp(String mvp) {
+    PermissionsManager.mvpPerm = mvp;
   }
 
   public static String getElite() {
     return elitePerm;
   }
 
-  private static void setElite(String ELITE) {
-    PermissionsManager.elitePerm = ELITE;
+  private static void setElite(String elite) {
+    PermissionsManager.elitePerm = elite;
   }
 
   public static String getJoinPerm() {

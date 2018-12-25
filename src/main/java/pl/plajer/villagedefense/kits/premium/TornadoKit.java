@@ -51,9 +51,9 @@ import pl.plajerlair.core.utils.XMaterial;
  */
 public class TornadoKit extends PremiumKit implements Listener {
 
-  private int max_height = 5;
-  private double max_radius = 4;
-  private double radius_increment = max_radius / max_height;
+  private int maxHeight = 5;
+  private double maxRadius = 4;
+  private double radiusIncrement = maxRadius / maxHeight;
 
   public TornadoKit() {
     setName(ChatManager.colorMessage("Kits.Tornado.Kit-Name"));
@@ -102,8 +102,8 @@ public class TornadoKit extends PremiumKit implements Listener {
       }
       Player player = e.getPlayer();
       ItemStack stack = player.getInventory().getItemInMainHand();
-      if (!ArenaRegistry.isInArena(player) || !Utils.isNamed(stack) ||
-          !stack.getItemMeta().getDisplayName().equalsIgnoreCase(ChatManager.colorMessage("Kits.Tornado.Game-Item-Name"))) {
+      if (!ArenaRegistry.isInArena(player) || !Utils.isNamed(stack)
+          || !stack.getItemMeta().getDisplayName().equalsIgnoreCase(ChatManager.colorMessage("Kits.Tornado.Game-Item-Name"))) {
         return;
       }
       if (stack.getAmount() <= 1) {
@@ -159,9 +159,9 @@ public class TornadoKit extends PremiumKit implements Listener {
       times++;
       int lines = 3;
       for (int l = 0; l < lines; l++) {
-        double height_increase = 0.5;
-        for (double y = 0; y < max_height; y += height_increase) {
-          double radius = y * radius_increment;
+        double heightIncrease = 0.5;
+        for (double y = 0; y < maxHeight; y += heightIncrease) {
+          double radius = y * radiusIncrement;
           double x = Math.cos(Math.toRadians(360 / lines * l + y * 25 - angle)) * radius;
           double z = Math.sin(Math.toRadians(360 / lines * l + y * 25 - angle)) * radius;
           getLocation().getWorld().spawnParticle(Particle.CLOUD, getLocation().clone().add(x, y, z), 1, 0, 0, 0, 0);

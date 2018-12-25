@@ -228,8 +228,8 @@ public class ArenaManager {
         p.showPlayer(players);
       }
       arena.teleportToEndLocation(p);
-      if (!plugin.getConfigPreferences().getOption(ConfigPreferences.Option.BUNGEE_ENABLED) &&
-          plugin.getConfigPreferences().getOption(ConfigPreferences.Option.INVENTORY_MANAGER_ENABLED)) {
+      if (!plugin.getConfigPreferences().getOption(ConfigPreferences.Option.BUNGEE_ENABLED)
+          && plugin.getConfigPreferences().getOption(ConfigPreferences.Option.INVENTORY_MANAGER_ENABLED)) {
         InventoryUtils.loadInventory(plugin, p);
       }
       Debugger.debug(LogLevel.INFO, "Final leave attempt, " + p.getName());

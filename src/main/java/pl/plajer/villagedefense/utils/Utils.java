@@ -24,6 +24,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -85,18 +86,17 @@ public class Utils {
     return blocks;
   }
 
-  public static Entity[] getNearbyEntities(Location l, int radius) {
+  public static Entity[] getNearbyEntities(Location loc, int radius) {
     int chunkRadius = radius < 16 ? 1 : radius / 16;
-    HashSet<Entity> radiusEntities = new HashSet<>();
-    for (int chX = 0 - chunkRadius; chX <= chunkRadius; chX++) {
-      for (int chZ = 0 - chunkRadius; chZ <= chunkRadius; chZ++) {
-        int x = (int) l.getX(), y = (int) l.getY(), z = (int) l.getZ();
-        for (Entity e : new Location(l.getWorld(), x + chX * 16, y, z + chZ * 16).getChunk().getEntities()) {
-          if (!(l.getWorld().getName().equalsIgnoreCase(e.getWorld().getName()))) {
+    Set<Entity> radiusEntities = new HashSet<>();
+    for (int chunkX = 0 - chunkRadius; chunkX <= chunkRadius; chunkX++) {
+      for (int chunkZ = 0 - chunkRadius; chunkZ <= chunkRadius; chunkZ++) {
+        int x = (int) loc.getX(), y = (int) loc.getY(), z = (int) loc.getZ();
+        for (Entity e : new Location(loc.getWorld(), x + chunkX * 16, y, z + chunkZ * 16).getChunk().getEntities()) {
+          if (!(loc.getWorld().getName().equalsIgnoreCase(e.getWorld().getName()))) {
             continue;
           }
-          if (e.getLocation().distanceSquared(l) <= radius * radius && e.getLocation().getBlock() != l
-              .getBlock()) {
+          if (e.getLocation().distanceSquared(loc) <= radius * radius && e.getLocation().getBlock() != loc.getBlock()) {
             radiusEntities.add(e);
           }
         }

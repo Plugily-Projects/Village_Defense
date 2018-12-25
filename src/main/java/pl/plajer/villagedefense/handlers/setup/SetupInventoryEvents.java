@@ -70,8 +70,8 @@ public class SetupInventoryEvents implements Listener {
         return;
       }
       Player player = (Player) event.getWhoClicked();
-      if (!(player.hasPermission("villagedefense.admin.create") && event.getInventory().getName().contains("Arena VD:") &&
-          Utils.isNamed(event.getCurrentItem()))) {
+      if (!(player.hasPermission("villagedefense.admin.create") && event.getInventory().getName().contains("Arena VD:")
+          && Utils.isNamed(event.getCurrentItem()))) {
         return;
       }
 
@@ -83,8 +83,8 @@ public class SetupInventoryEvents implements Listener {
 
       Arena arena = ArenaRegistry.getArena(event.getInventory().getName().replace("Arena VD: ", ""));
       ClickType clickType = event.getClick();
-      String locationString = player.getLocation().getWorld().getName() + "," + player.getLocation().getX() + "," + player.getLocation().getY() + "," +
-          player.getLocation().getZ() + "," + player.getLocation().getYaw() + ",0.0";
+      String locationString = player.getLocation().getWorld().getName() + "," + player.getLocation().getX() + "," + player.getLocation().getY() + ","
+          + player.getLocation().getZ() + "," + player.getLocation().getYaw() + ",0.0";
       FileConfiguration config = ConfigUtils.getConfig(plugin, "arenas");
       switch (SetupInventory.ClickPosition.getByPosition(event.getRawSlot())) {
         case SET_ENDING:
@@ -145,15 +145,15 @@ public class SetupInventoryEvents implements Listener {
           }
           break;
         case ADD_VILLAGER_SPAWN:
-          int villagers = (config.isSet("instances." + arena.getID() + ".villagerspawns") ?
-              config.getConfigurationSection("instances." + arena.getID() + ".villagerspawns").getKeys(false).size() : 0) + 1;
+          int villagers = (config.isSet("instances." + arena.getID() + ".villagerspawns")
+              ? config.getConfigurationSection("instances." + arena.getID() + ".villagerspawns").getKeys(false).size() : 0) + 1;
           LocationUtils.saveLoc(plugin, config, "arenas", "instances." + arena.getID() + ".villagerspawns." + villagers, player.getLocation());
           String villagerProgress = villagers >= 2 ? "&e✔ Completed | " : "&c✘ Not completed | ";
           player.sendMessage(ChatManager.colorRawMessage(villagerProgress + "&aVillager spawn added! &8(&7" + villagers + "/2&8)"));
           break;
         case ADD_ZOMBIE_SPAWN:
-          int zombies = (config.isSet("instances." + arena.getID() + ".zombiespawns") ?
-              config.getConfigurationSection("instances." + arena.getID() + ".zombiespawns").getKeys(false).size() : 0) + 1;
+          int zombies = (config.isSet("instances." + arena.getID() + ".zombiespawns")
+              ? config.getConfigurationSection("instances." + arena.getID() + ".zombiespawns").getKeys(false).size() : 0) + 1;
           LocationUtils.saveLoc(plugin, config, "arenas", "instances." + arena.getID() + ".zombiespawns." + zombies, player.getLocation());
           String zombieProgress = zombies >= 2 ? "&e✔ Completed | " : "&c✘ Not completed | ";
           player.sendMessage(ChatManager.colorRawMessage(zombieProgress + "&aZombie spawn added! &8(&7" + zombies + "/2&8)"));
@@ -171,8 +171,8 @@ public class SetupInventoryEvents implements Listener {
               return;
             }
           }
-          int doors = (config.isSet("instances." + arena.getID() + ".doors") ?
-              config.getConfigurationSection("instances." + arena.getID() + ".doors").getKeys(false).size() : 0) + 1;
+          int doors = (config.isSet("instances." + arena.getID() + ".doors")
+              ? config.getConfigurationSection("instances." + arena.getID() + ".doors").getKeys(false).size() : 0) + 1;
 
           Block relativeBlock = null;
           if (plugin.is1_11_R1() || plugin.is1_12_R1()) {
@@ -194,11 +194,12 @@ public class SetupInventoryEvents implements Listener {
             player.sendMessage("This door doesn't have 2 blocks? Maybe it's bugged? Try placing it again.");
             return;
           }
-          String doorLocation = block.getWorld().getName() + "," + block.getX() + "," + block.getY() + "," + block.getZ() + ",0.0" + ",0.0";
           String relativeLocation = relativeBlock.getWorld().getName() + "," + relativeBlock.getX() + "," + relativeBlock.getY() + "," + relativeBlock.getZ() + ",0.0" + ",0.0";
           config.set("instances." + arena.getID() + ".doors." + doors + ".location", relativeLocation);
           config.set("instances." + arena.getID() + ".doors." + doors + ".byte", 8);
           doors++;
+
+          String doorLocation = block.getWorld().getName() + "," + block.getX() + "," + block.getY() + "," + block.getZ() + ",0.0" + ",0.0";
           config.set("instances." + arena.getID() + ".doors." + doors + ".location", doorLocation);
           if (plugin.is1_13_R1() || plugin.is1_13_R2()) {
             config.set("instances." + arena.getID() + ".doors." + doors + ".byte", Utils.getDoorByte(((Door) block.getState().getData()).getFacing()));
@@ -249,8 +250,8 @@ public class SetupInventoryEvents implements Listener {
             }
           }
           for (String s : spawns) {
-            if (!config.isSet("instances." + arena.getID() + "." + s) ||
-                config.getConfigurationSection("instances." + arena.getID() + "." + s).getKeys(false).size() < 2) {
+            if (!config.isSet("instances." + arena.getID() + "." + s)
+                || config.getConfigurationSection("instances." + arena.getID() + "." + s).getKeys(false).size() < 2) {
               event.getWhoClicked().sendMessage(ChatColor.RED + "Arena validation failed! Please configure following mob spawns properly: " + s + " (must be minimum 2 spawns)");
               return;
             }
@@ -298,6 +299,8 @@ public class SetupInventoryEvents implements Listener {
           break;
         case VIEW_SETUP_VIDEO:
           player.sendMessage(ChatManager.getPrefix() + ChatManager.colorRawMessage("&6Check out this video: " + SetupInventory.VIDEO_LINK));
+          break;
+        default:
           break;
       }
       ConfigUtils.saveConfig(plugin, config, "arenas");

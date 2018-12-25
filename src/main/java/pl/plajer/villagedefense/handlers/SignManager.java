@@ -250,6 +250,8 @@ public class SignManager implements Listener {
                 behind.setData((byte) 15);
               }
               break;
+            default:
+              break;
           }
         }
         s.update();

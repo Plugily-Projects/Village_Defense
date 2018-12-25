@@ -45,8 +45,8 @@ public class AddOrbsArgument {
   public AddOrbsArgument(ArgumentsRegistry registry) {
     registry.mapArgument("villagedefenseadmin", new LabeledCommandArgument("addorbs", Arrays.asList("villagedefense.admin.addorbs", "villagedefense.admin.addorbs.others"),
         CommandArgument.ExecutorType.BOTH, new LabelData("/vda addorbs &6<amount> &c[player]",
-        "/vda addorbs <amount>", "&7Add orbs (game currency) to yourself or target player\n&7Can be used from console too\n" +
-        "&6Permission: &7villagedefense.admin.addorbs (for yourself)\n&6Permission: &7villagedefense.admin.addorbs.others (for others)")) {
+        "/vda addorbs <amount>", "&7Add orbs (game currency) to yourself or target player\n&7Can be used from console too\n"
+        + "&6Permission: &7villagedefense.admin.addorbs (for yourself)\n&6Permission: &7villagedefense.admin.addorbs.others (for others)")) {
       @Override
       public void execute(CommandSender sender, String[] args) {
         if (args.length == 1) {

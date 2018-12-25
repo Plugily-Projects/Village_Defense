@@ -135,8 +135,8 @@ public class LanguageManager {
       pluginLocale = LocaleRegistry.getByName("English");
       return;
     }
-    Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "[Village Defense] Loaded locale " + pluginLocale.getName() + " (" + pluginLocale.getOriginalName() + " ID: " +
-        pluginLocale.getPrefix() + ") by " + pluginLocale.getAuthor());
+    Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "[Village Defense] Loaded locale " + pluginLocale.getName() + " (" + pluginLocale.getOriginalName() + " ID: "
+        + pluginLocale.getPrefix() + ") by " + pluginLocale.getAuthor());
     loadProperties();
   }
 
@@ -158,6 +158,9 @@ public class LanguageManager {
           case "cs-CS":
             hasLocale = true;
             localeName = locale.getLocaleName();
+            break;
+          default:
+            break;
         }
       }
       if (plugin.getServer().getPluginManager().isPluginEnabled("Essentials")) {
@@ -176,6 +179,9 @@ public class LanguageManager {
           case "CS":
             hasLocale = true;
             localeName = locale.getDisplayName();
+            break;
+          default:
+            break;
         }
       }
     } catch (Exception e) {

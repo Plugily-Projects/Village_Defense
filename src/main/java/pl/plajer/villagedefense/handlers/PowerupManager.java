@@ -133,8 +133,8 @@ public class PowerupManager {
             break;
           case "Double-Damage":
             for (Player p : arena.getPlayers()) {
-              p.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 20 *
-                  plugin.getConfig().getInt("Powerups.List.Double-Damage-For-Players.Time", 15), 0, false, false));
+              p.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 20
+                  * plugin.getConfig().getInt("Powerups.List.Double-Damage-For-Players.Time", 15), 0, false, false));
             }
             subTitle = StringUtils.replace(subTitle, "%time%", plugin.getConfig().getString("Powerups.List.Double-Damage-For-Players.Time", "15"));
             break;
@@ -145,17 +145,19 @@ public class PowerupManager {
             break;
           case "Healing":
             for (Player p : arena.getPlayers()) {
-              p.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 20 *
-                  plugin.getConfig().getInt("Powerups.List.Healing-For-Players.Time-Of-Healing", 10), 0, false, false));
+              p.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 20
+                  * plugin.getConfig().getInt("Powerups.List.Healing-For-Players.Time-Of-Healing", 10), 0, false, false));
             }
             subTitle = StringUtils.replace(subTitle, "%time%", plugin.getConfig().getString("Powerups.List.Healing-For-Players.Time-Of-Healing", "10"));
             break;
           case "One-Shot-One-Kill":
             for (Player p : arena.getPlayers()) {
-              p.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 20 *
-                  plugin.getConfig().getInt("Powerups.List.One-Shot-One-Kill.Time", 15), 255, false, false));
+              p.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 20
+                  * plugin.getConfig().getInt("Powerups.List.One-Shot-One-Kill.Time", 15), 255, false, false));
             }
             subTitle = StringUtils.replace(subTitle, "%time%", plugin.getConfig().getString("Powerups.List.One-Shot-One-Kill.Time", "15"));
+            break;
+          default:
             break;
         }
         for (Player p : arena.getPlayers()) {
@@ -175,20 +177,20 @@ public class PowerupManager {
 
   public class Powerup {
 
-    private String ID;
+    private String id;
     private String name;
     private String description;
     private XMaterial material;
 
-    public Powerup(String ID, String name, String description, XMaterial material) {
-      this.ID = ID;
+    public Powerup(String id, String name, String description, XMaterial material) {
+      this.id = id;
       this.name = name;
       this.description = description;
       this.material = material;
     }
 
     public String getID() {
-      return ID;
+      return id;
     }
 
     public String getName() {

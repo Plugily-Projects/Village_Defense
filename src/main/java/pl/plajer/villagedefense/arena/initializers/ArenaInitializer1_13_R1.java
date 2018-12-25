@@ -60,8 +60,8 @@ public class ArenaInitializer1_13_R1 extends Arena {
 
   private Main plugin;
 
-  public ArenaInitializer1_13_R1(String ID, Main plugin) {
-    super(ID, plugin);
+  public ArenaInitializer1_13_R1(String id, Main plugin) {
+    super(id, plugin);
     this.plugin = plugin;
   }
 
@@ -234,12 +234,11 @@ public class ArenaInitializer1_13_R1 extends Arena {
   }
 
   public void spawnGolem(Location location, Player player) {
-    net.minecraft.server.v1_13_R1.World mcWorld = ((CraftWorld) location.getWorld()).getHandle();
     RidableIronGolem ironGolem = new RidableIronGolem(location.getWorld());
     ironGolem.setPosition(location.getX(), location.getY(), location.getZ());
     ironGolem.setCustomName(new ChatMessage(ChatManager.colorMessage("In-Game.Spawned-Golem-Name").replace("%player%", player.getName())));
     ironGolem.setCustomNameVisible(true);
-    mcWorld.addEntity(ironGolem, CreatureSpawnEvent.SpawnReason.CUSTOM);
+    ((CraftWorld) location.getWorld()).getHandle().addEntity(ironGolem, CreatureSpawnEvent.SpawnReason.CUSTOM);
 
     this.addIronGolem((org.bukkit.entity.IronGolem) ironGolem.getBukkitEntity());
   }

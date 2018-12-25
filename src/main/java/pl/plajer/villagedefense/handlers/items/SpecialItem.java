@@ -71,7 +71,6 @@ public class SpecialItem {
       }
     }
     ConfigUtils.saveConfig(JavaPlugin.getPlugin(Main.class), config, "lobbyitems");
-    SpecialItem particleItem = new SpecialItem(name);
     ItemStack stack = XMaterial.fromString(config.getString(name + ".material-name").toUpperCase()).parseItem();
     ItemMeta meta = stack.getItemMeta();
     meta.setDisplayName(ChatManager.colorRawMessage(config.getString(name + ".displayname")));
@@ -83,9 +82,10 @@ public class SpecialItem {
     meta.setLore(colorizedLore);
     stack.setItemMeta(meta);
 
-    particleItem.itemStack = stack;
-    particleItem.setSlot(config.getInt(name + ".slot"));
-    SpecialItemManager.addItem(name, particleItem);
+    SpecialItem item = new SpecialItem(name);
+    item.itemStack = stack;
+    item.setSlot(config.getInt(name + ".slot"));
+    SpecialItemManager.addItem(name, item);
 
   }
 

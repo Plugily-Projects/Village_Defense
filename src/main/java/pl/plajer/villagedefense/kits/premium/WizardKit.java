@@ -196,16 +196,16 @@ public class WizardKit extends PremiumKit implements Listener {
           return;
         }
         new BukkitRunnable() {
-          double t = 0;
+          double positionModifier = 0;
           Location loc = p.getLocation();
           Vector direction = loc.getDirection().normalize();
 
           @Override
           public void run() {
-            t += 0.5;
-            double x = direction.getX() * t;
-            double y = direction.getY() * t + 1.5;
-            double z = direction.getZ() * t;
+            positionModifier += 0.5;
+            double x = direction.getX() * positionModifier;
+            double y = direction.getY() * positionModifier + 1.5;
+            double z = direction.getZ() * positionModifier;
             loc.add(x, y, z);
             p.getWorld().spawnParticle(Particle.TOWN_AURA, loc, 5);
             for (Entity en : loc.getChunk().getEntities()) {
@@ -220,7 +220,7 @@ public class WizardKit extends PremiumKit implements Listener {
               }
             }
             loc.subtract(x, y, z);
-            if (t > 40) {
+            if (positionModifier > 40) {
               this.cancel();
             }
           }

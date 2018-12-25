@@ -81,6 +81,23 @@ public class ArenaRegistry {
     return arena;
   }
 
+  /**
+   * Returns arena based by ID
+   *
+   * @param id name of arena
+   * @return Arena or null if not found
+   */
+  public static Arena getArena(String id) {
+    Arena arena = null;
+    for (Arena loopArena : arenas) {
+      if (loopArena.getID().equalsIgnoreCase(id)) {
+        arena = loopArena;
+        break;
+      }
+    }
+    return arena;
+  }
+
   public static void registerArena(Arena arena) {
     Debugger.debug(LogLevel.INFO, "Registering new game instance, " + arena.getID());
     ShopManager.registerShop(arena);
@@ -90,23 +107,6 @@ public class ArenaRegistry {
   public static void unregisterArena(Arena arena) {
     Debugger.debug(LogLevel.INFO, "Unegistering game instance, " + arena.getID());
     arenas.remove(arena);
-  }
-
-  /**
-   * Returns arena based by ID
-   *
-   * @param ID name of arena
-   * @return Arena or null if not found
-   */
-  public static Arena getArena(String ID) {
-    Arena arena = null;
-    for (Arena loopArena : arenas) {
-      if (loopArena.getID().equalsIgnoreCase(ID)) {
-        arena = loopArena;
-        break;
-      }
-    }
-    return arena;
   }
 
   public static void registerArenas() {
@@ -131,9 +131,9 @@ public class ArenaRegistry {
       Bukkit.getConsoleSender().sendMessage(ChatManager.colorMessage("Validator.No-Instances-Created"));
       return;
     }
-    for (String ID : section.getKeys(false)) {
-      Arena arena = ArenaUtils.initializeArena(ID);
-      String s = "instances." + ID + ".";
+    for (String id : section.getKeys(false)) {
+      Arena arena = ArenaUtils.initializeArena(id);
+      String s = "instances." + id + ".";
       if (s.contains("default")) {
         continue;
       }
@@ -145,7 +145,7 @@ public class ArenaRegistry {
       arena.setEndLocation(LocationUtils.getLocation(config.getString(s + "Endlocation", "world,364.0,63.0,-72.0,0.0,0.0")));
 
       if (!config.getBoolean(s + "isdone", false)) {
-        Bukkit.getConsoleSender().sendMessage(ChatManager.colorMessage("Validator.Invalid-Arena-Configuration").replace("%arena%", ID).replace("%error%", "NOT VALIDATED"));
+        Bukkit.getConsoleSender().sendMessage(ChatManager.colorMessage("Validator.Invalid-Arena-Configuration").replace("%arena%", id).replace("%error%", "NOT VALIDATED"));
         arena.setReady(false);
         ArenaRegistry.registerArena(arena);
         continue;
@@ -157,7 +157,7 @@ public class ArenaRegistry {
           arena.addZombieSpawn(LocationUtils.getLocation(config.getString(path)));
         }
       } else {
-        Bukkit.getConsoleSender().sendMessage(ChatManager.colorMessage("Validator.Invalid-Arena-Configuration").replace("%arena%", ID).replace("%error%", "ZOMBIE SPAWNS"));
+        Bukkit.getConsoleSender().sendMessage(ChatManager.colorMessage("Validator.Invalid-Arena-Configuration").replace("%arena%", id).replace("%error%", "ZOMBIE SPAWNS"));
         arena.setReady(false);
         ArenaRegistry.registerArena(arena);
         continue;
@@ -169,7 +169,7 @@ public class ArenaRegistry {
           arena.addVillagerSpawn(LocationUtils.getLocation(config.getString(path)));
         }
       } else {
-        Bukkit.getConsoleSender().sendMessage(ChatManager.colorMessage("Validator.Invalid-Arena-Configuration").replace("%arena%", ID).replace("%error%", "VILLAGER SPAWNS"));
+        Bukkit.getConsoleSender().sendMessage(ChatManager.colorMessage("Validator.Invalid-Arena-Configuration").replace("%arena%", id).replace("%error%", "VILLAGER SPAWNS"));
         arena.setReady(false);
         ArenaRegistry.registerArena(arena);
         continue;
@@ -181,14 +181,14 @@ public class ArenaRegistry {
               (byte) config.getInt(path + "byte"));
         }
       } else {
-        Bukkit.getConsoleSender().sendMessage(ChatManager.colorMessage("Validator.Invalid-Arena-Configuration").replace("%arena%", ID).replace("%error%", "DOORS"));
+        Bukkit.getConsoleSender().sendMessage(ChatManager.colorMessage("Validator.Invalid-Arena-Configuration").replace("%arena%", id).replace("%error%", "DOORS"));
         arena.setReady(false);
         ArenaRegistry.registerArena(arena);
         continue;
       }
       ArenaRegistry.registerArena(arena);
       arena.start();
-      Bukkit.getConsoleSender().sendMessage(ChatManager.colorMessage("Validator.Instance-Started").replace("%arena%", ID));
+      Bukkit.getConsoleSender().sendMessage(ChatManager.colorMessage("Validator.Instance-Started").replace("%arena%", id));
     }
     new ShopManager();
     Debugger.debug(LogLevel.INFO, "Arenas registration completed");

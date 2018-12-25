@@ -62,8 +62,7 @@ public class RunnerKit extends LevelKit {
     ArmorHelper.setColouredArmor(Color.BLUE, player);
     player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, Integer.MAX_VALUE, 2));
     player.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, Integer.MAX_VALUE, 1));
-    player.getInventory().addItem(new ItemStack(XMaterial.COOKED_PORKCHOP.parseMaterial()
-        , 8));
+    player.getInventory().addItem(new ItemStack(XMaterial.COOKED_PORKCHOP.parseMaterial(), 8));
   }
 
   @Override

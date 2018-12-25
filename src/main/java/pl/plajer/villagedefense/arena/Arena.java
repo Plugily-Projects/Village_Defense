@@ -105,16 +105,16 @@ public abstract class Arena extends BukkitRunnable {
   private int maximumPlayers = 10;
   private String mapName = "";
   private int timer;
-  private String ID;
+  private String id;
   //instead of 3 location fields we use map with GameLocation enum
   private Map<GameLocation, Location> gameLocations = new HashMap<>();
   private boolean ready = true;
   private boolean forceStart = false;
 
-  public Arena(String ID, Main plugin) {
+  public Arena(String id, Main plugin) {
     this.plugin = plugin;
     arenaState = ArenaState.WAITING_FOR_PLAYERS;
-    this.ID = ID;
+    this.id = id;
     random = new Random();
     gameBar = Bukkit.createBossBar(ChatManager.colorMessage("Bossbar.Main-Title"), BarColor.BLUE, BarStyle.SOLID);
   }
@@ -173,6 +173,8 @@ public abstract class Arena extends BukkitRunnable {
         break;
       case REMOVE:
         gameBar.removePlayer(p);
+        break;
+      default:
         break;
     }
   }
@@ -540,7 +542,7 @@ public abstract class Arena extends BukkitRunnable {
    * @see ArenaRegistry#getArena(String)
    */
   public String getID() {
-    return ID;
+    return id;
   }
 
   /**
@@ -564,7 +566,7 @@ public abstract class Arena extends BukkitRunnable {
   /**
    * Get arena map name.
    *
-   * @return arena map name, [b]it's not arena ID[/b]
+   * @return arena map name, [b]it's not arena id[/b]
    * @see #getID()
    */
   public String getMapName() {
@@ -574,7 +576,7 @@ public abstract class Arena extends BukkitRunnable {
   /**
    * Set arena map name.
    *
-   * @param mapname new map name, [b]it's not arena ID[/b]
+   * @param mapname new map name, [b]it's not arena id[/b]
    */
   public void setMapName(String mapname) {
     this.mapName = mapname;
@@ -658,7 +660,6 @@ public abstract class Arena extends BukkitRunnable {
   }
 
   public void teleportToLobby(Player player) {
-    Location location = getLobbyLocation();
     player.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(20.0);
     player.setFoodLevel(20);
     player.setFlying(false);
@@ -666,6 +667,7 @@ public abstract class Arena extends BukkitRunnable {
     for (PotionEffect effect : player.getActivePotionEffects()) {
       player.removePotionEffect(effect.getType());
     }
+    Location location = getLobbyLocation();
     if (location == null) {
       Debugger.debug(LogLevel.WARN, "Lobby location of arena " + getID() + " doesn't exist!");
     }

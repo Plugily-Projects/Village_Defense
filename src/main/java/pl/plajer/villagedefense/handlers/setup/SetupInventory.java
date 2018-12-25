@@ -180,6 +180,8 @@ public class SetupInventory {
       case 7:
         p.sendMessage(ChatManager.colorRawMessage("&e&lTIP: &7Install HolographicDisplays plugin to access power-ups in game! (configure them in config.yml)"));
         break;
+      default:
+        break;
     }
   }
 
@@ -189,11 +191,11 @@ public class SetupInventory {
       return ChatColor.GOLD + "" + ChatColor.BOLD + "Done: " + ChatColor.RED + "No";
     }
     if (!path.contains(".doors")) {
-      return ChatColor.GOLD + "" + ChatColor.BOLD + "Done: " + ChatColor.GREEN + "Yes " + ChatColor.GRAY + "(value: " +
-          config.getConfigurationSection(path).getKeys(false).size() + ")";
+      return ChatColor.GOLD + "" + ChatColor.BOLD + "Done: " + ChatColor.GREEN + "Yes " + ChatColor.GRAY + "(value: "
+          + config.getConfigurationSection(path).getKeys(false).size() + ")";
     }
-    return ChatColor.GOLD + "" + ChatColor.BOLD + "Done: " + ChatColor.GREEN + "Yes " + ChatColor.GRAY + "(value: " +
-        config.getConfigurationSection(path).getKeys(false).size() / 2 + ")";
+    return ChatColor.GOLD + "" + ChatColor.BOLD + "Done: " + ChatColor.GREEN + "Yes " + ChatColor.GRAY + "(value: "
+        + config.getConfigurationSection(path).getKeys(false).size() / 2 + ")";
   }
 
   private String isOptionDoneBool(String path) {

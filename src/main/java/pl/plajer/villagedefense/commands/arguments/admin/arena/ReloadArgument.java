@@ -38,8 +38,8 @@ public class ReloadArgument {
 
   public ReloadArgument(ArgumentsRegistry registry) {
     registry.mapArgument("villagedefenseadmin", new LabeledCommandArgument("reload", "villagedefense.admin.reload", CommandArgument.ExecutorType.BOTH,
-        new LabelData("/vda reload", "/vda reload", "&7Reload all game arenas\n&7&lThey will be stopped!\n" +
-            "&c&lNot recommended!\n&6Permission: &7villagedefense.admin.reload")) {
+        new LabelData("/vda reload", "/vda reload", "&7Reload all game arenas\n&7&lThey will be stopped!\n"
+            + "&c&lNot recommended!\n&6Permission: &7villagedefense.admin.reload")) {
       @Override
       public void execute(CommandSender sender, String[] args) {
         for (Arena arena : ArenaRegistry.getArenas()) {

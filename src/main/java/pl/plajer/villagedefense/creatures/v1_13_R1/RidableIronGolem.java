@@ -84,6 +84,7 @@ public class RidableIronGolem extends EntityIronGolem {
     this.setHealth(500);
   }
 
+  @Override
   public void a(float f, float f1, float f2) {
     EntityLiving entityliving = null;
     for (final Entity e : passengers) {

@@ -38,8 +38,8 @@ public class CreatureUtils {
 
   public static float ZOMBIE_SPEED = 1.3f;
   public static float BABY_ZOMBIE_SPEED = 2.0f;
-  public static String[] VILLAGER_NAMES = ("Jagger,Kelsey,Kelton,Haylie,Harlow,Howard,Wulffric,Winfred,Ashley,Bailey,Beckett,Alfredo,Alfred,Adair,Edgar,ED,Eadwig,Edgaras,Buckley,Stanley,Nuffley," +
-      "Mary,Jeffry,Rosaly,Elliot,Harry,Sam,Rosaline,Tom,Ivan,Kevin,Adam").split(",");
+  public static String[] VILLAGER_NAMES = ("Jagger,Kelsey,Kelton,Haylie,Harlow,Howard,Wulffric,Winfred,Ashley,Bailey,Beckett,Alfredo,Alfred,Adair,Edgar,ED,Eadwig,Edgaras,Buckley,Stanley,Nuffley,"
+      + "Mary,Jeffry,Rosaly,Elliot,Harry,Sam,Rosaline,Tom,Ivan,Kevin,Adam").split(",");
   private static Main plugin = JavaPlugin.getPlugin(Main.class);
 
   public static void init(Main plugin) {

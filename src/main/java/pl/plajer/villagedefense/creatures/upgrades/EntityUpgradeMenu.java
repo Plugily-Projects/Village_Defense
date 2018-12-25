@@ -131,6 +131,8 @@ public class EntityUpgradeMenu {
       case SWARM_AWARENESS:
         //todo
         break;
+      default:
+        break;
     }
   }
 

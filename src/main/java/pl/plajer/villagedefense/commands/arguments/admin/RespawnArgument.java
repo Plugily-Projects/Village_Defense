@@ -46,8 +46,8 @@ public class RespawnArgument {
   public RespawnArgument(ArgumentsRegistry registry) {
     registry.mapArgument("villagedefenseadmin", new LabeledCommandArgument("respawn", Arrays.asList("villagedefense.admin.respawn", "villagedefense.admin.respawn.others"),
         CommandArgument.ExecutorType.PLAYER, new LabelData("/vda respawn &c[player]", "/vda respawn",
-        "&7Respawn yourself or target player in game\n&6Permission: &7villagedefense.admin.respawn (for yourself)\n" +
-            "&6Permission: &7villagedefense.admin.respawn.others (for others)")) {
+        "&7Respawn yourself or target player in game\n&6Permission: &7villagedefense.admin.respawn (for yourself)\n"
+            + "&6Permission: &7villagedefense.admin.respawn.others (for others)")) {
       @Override
       public void execute(CommandSender sender, String[] args) {
         Player player = (Player) sender;

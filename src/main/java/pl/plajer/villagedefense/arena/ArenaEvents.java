@@ -139,6 +139,8 @@ public class ArenaEvents implements Listener {
             plugin.getHolidayManager().applyHolidayDeathEffects(e.getEntity());
             ChatManager.broadcast(arena, ChatManager.colorMessage("In-Game.Messages.Villager-Died"));
             return;
+          default:
+            break;
         }
       }
     } catch (Exception ex) {

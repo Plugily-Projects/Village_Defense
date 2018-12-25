@@ -43,8 +43,8 @@ public class SpyChatArgument {
 
   public SpyChatArgument(ArgumentsRegistry registry) {
     registry.mapArgument("villagedefenseadmin", new LabeledCommandArgument("spychat", "villagedefense.admin.spychat", CommandArgument.ExecutorType.PLAYER,
-        new LabelData("/vda spychat", "/vda spychat", "&7Toggles spy chat for all available arenas\n" +
-            "&7You will see all messages from these games\n&6Permission: &7villagedefense.admin.spychat")) {
+        new LabelData("/vda spychat", "/vda spychat", "&7Toggles spy chat for all available arenas\n"
+            + "&7You will see all messages from these games\n&6Permission: &7villagedefense.admin.spychat")) {
       @Override
       public void execute(CommandSender sender, String[] args) {
         UUID uuid = ((Player) sender).getUniqueId();

@@ -119,6 +119,8 @@ public class ChatManager {
       case DEATH:
         broadcast(a, formatMessage(a, ChatManager.colorMessage("In-Game.Messages.Death"), p));
         break;
+      default:
+        break;
     }
   }
 

@@ -44,8 +44,8 @@ public class AddLevelArgument {
   public AddLevelArgument(ArgumentsRegistry registry) {
     registry.mapArgument("villagedefenseadmin", new LabeledCommandArgument("addlevel", Arrays.asList("villagedefense.admin.addlevel", "villagedefense.admin.addlevel.others"),
         CommandArgument.ExecutorType.BOTH, new LabelData("/vda addlevel &6<amount> &c[player]", "/vda addlevel <amount>",
-        "&7Add level to yourself or target player\n&7Can be used from console too\n&6Permission: &7villagedefense.admin.addlevel (for yourself)\n" +
-            "&6Permission: &7villagedefense.admin.addlevel.others (for others)")) {
+        "&7Add level to yourself or target player\n&7Can be used from console too\n&6Permission: &7villagedefense.admin.addlevel (for yourself)\n"
+            + "&6Permission: &7villagedefense.admin.addlevel.others (for others)")) {
       @Override
       public void execute(CommandSender sender, String[] args) {
         if (args.length == 1) {

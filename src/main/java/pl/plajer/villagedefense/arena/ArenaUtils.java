@@ -101,16 +101,16 @@ public class ArenaUtils {
     }
   }
 
-  public static Arena initializeArena(String ID) {
+  public static Arena initializeArena(String id) {
     Arena arena;
     if (plugin.is1_11_R1()) {
-      arena = new ArenaInitializer1_11_R1(ID, plugin);
+      arena = new ArenaInitializer1_11_R1(id, plugin);
     } else if (plugin.is1_12_R1()) {
-      arena = new ArenaInitializer1_12_R1(ID, plugin);
+      arena = new ArenaInitializer1_12_R1(id, plugin);
     } else if (plugin.is1_13_R1()) {
-      arena = new ArenaInitializer1_13_R1(ID, plugin);
+      arena = new ArenaInitializer1_13_R1(id, plugin);
     } else {
-      arena = new ArenaInitializer1_13_R2(ID, plugin);
+      arena = new ArenaInitializer1_13_R2(id, plugin);
     }
     return arena;
   }

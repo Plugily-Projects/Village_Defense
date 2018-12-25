@@ -495,8 +495,7 @@ public class Events implements Listener {
         return;
       }
       Player player = (Player) e.getWhoClicked();
-      User user = plugin.getUserManager().getUser(player.getUniqueId());
-      Arena arena = ArenaRegistry.getArena((Player) e.getWhoClicked());
+      Arena arena = ArenaRegistry.getArena(player);
       ItemStack stack = e.getCurrentItem();
       if (arena == null || e.getInventory().getName() == null
           || !e.getInventory().getName().equalsIgnoreCase(ChatManager.colorMessage("In-Game.Messages.Shop-Messages.Shop-GUI-Name"))) {
@@ -519,13 +518,15 @@ public class Events implements Listener {
           return;
         }
       }
+      User user = plugin.getUserManager().getUser(player.getUniqueId());
       int price = Integer.parseInt(string.split(" ")[0]);
       if (price > user.getStat(StatsStorage.StatisticType.ORBS)) {
         player.sendMessage(ChatManager.getPrefix() + ChatManager.colorMessage("In-Game.Messages.Shop-Messages.Not-Enough-Orbs"));
         return;
       }
       if (Utils.isNamed(stack)) {
-        if (stack.getItemMeta().getDisplayName().contains(ChatManager.colorMessage("In-Game.Messages.Shop-Messages.Golem-Item-Name")) || stack.getItemMeta().getDisplayName().contains(ChatManager.colorRawMessage(ConfigUtils.getConfig(plugin, "language").getString("In-Game.Messages.Shop-Messages.Golem-Item-Name")))) {
+        if (stack.getItemMeta().getDisplayName().contains(ChatManager.colorMessage("In-Game.Messages.Shop-Messages.Golem-Item-Name"))
+            || stack.getItemMeta().getDisplayName().contains(ChatManager.colorRawMessage(ConfigUtils.getConfig(plugin, "language").getString("In-Game.Messages.Shop-Messages.Golem-Item-Name")))) {
           int i = 0;
           for (IronGolem golem : arena.getIronGolems()) {
             if (golem.getCustomName().equals(ChatManager.colorMessage("In-Game.Spawned-Golem-Name").replace("%player%", player.getName()))) {
@@ -541,7 +542,8 @@ public class Events implements Listener {
           player.sendMessage(ChatManager.getPrefix() + ChatManager.colorMessage("In-Game.Messages.Golem-Spawned"));
           user.setStat(StatsStorage.StatisticType.ORBS, user.getStat(StatsStorage.StatisticType.ORBS) - price);
           return;
-        } else if (stack.getItemMeta().getDisplayName().contains(ChatManager.colorMessage("In-Game.Messages.Shop-Messages.Wolf-Item-Name")) || stack.getItemMeta().getDisplayName().contains(ChatManager.colorRawMessage(ConfigUtils.getConfig(plugin, "language").getString("In-Game.Messages.Shop-Messages.Wolf-Item-Name")))) {
+        } else if (stack.getItemMeta().getDisplayName().contains(ChatManager.colorMessage("In-Game.Messages.Shop-Messages.Wolf-Item-Name"))
+            || stack.getItemMeta().getDisplayName().contains(ChatManager.colorRawMessage(ConfigUtils.getConfig(plugin, "language").getString("In-Game.Messages.Shop-Messages.Wolf-Item-Name")))) {
           int i = 0;
           for (Wolf wolf : arena.getWolfs()) {
             if (wolf.getCustomName().equals(ChatManager.colorMessage("In-Game.Spawned-Wolf-Name").replace("%player%", player.getName()))) {

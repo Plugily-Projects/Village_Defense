@@ -133,8 +133,8 @@ public class ArgumentsRegistry implements CommandExecutor {
               return true;
             }
             if (args.length > 1 && args[1].equalsIgnoreCase("edit")) {
-              if (!checkSenderIsExecutorType(sender, CommandArgument.ExecutorType.PLAYER) ||
-                  !Utils.hasPermission(sender, "villagedefense.admin.create")) {
+              if (!checkSenderIsExecutorType(sender, CommandArgument.ExecutorType.PLAYER)
+                  || !Utils.hasPermission(sender, "villagedefense.admin.create")) {
                 return true;
               }
               if (ArenaRegistry.getArena(args[0]) == null) {
