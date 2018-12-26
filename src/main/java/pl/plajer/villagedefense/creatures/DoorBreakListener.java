@@ -30,7 +30,6 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.material.MaterialData;
-import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import pl.plajer.villagedefense.Main;
@@ -44,7 +43,12 @@ import pl.plajerlair.core.utils.XMaterial;
 public class DoorBreakListener extends BukkitRunnable {
 
   private Random random = new Random();
-  private Main plugin = JavaPlugin.getPlugin(Main.class);
+  private Main plugin;
+
+  public DoorBreakListener(Main plugin) {
+    this.plugin = plugin;
+    this.runTaskTimer(plugin, 1, 20);
+  }
 
   @Override
   public void run() {

@@ -129,17 +129,14 @@ public class WizardKit extends PremiumKit implements Listener {
   @EventHandler
   public void onStaffUse(PlayerInteractEvent e) {
     try {
-      if (getPlugin().getUserManager().getUser(e.getPlayer().getUniqueId()) == null) {
+      User user = getPlugin().getUserManager().getUser(e.getPlayer().getUniqueId());
+      if (user == null || ArenaRegistry.getArena(e.getPlayer()) == null) {
         return;
       }
-      if (ArenaRegistry.getArena(e.getPlayer()) == null) {
-        return;
-      }
-      if (!(getPlugin().getUserManager().getUser(e.getPlayer().getUniqueId()).getKit() instanceof WizardKit)) {
+      if (!(user.getKit() instanceof WizardKit)) {
         return;
       }
       final Player p = e.getPlayer();
-      User user = getPlugin().getUserManager().getUser(e.getPlayer().getUniqueId());
       ItemStack stack = e.getPlayer().getInventory().getItemInMainHand();
       if (!Utils.isNamed(stack)) {
         return;
@@ -209,7 +206,7 @@ public class WizardKit extends PremiumKit implements Listener {
             loc.add(x, y, z);
             p.getWorld().spawnParticle(Particle.TOWN_AURA, loc, 5);
             for (Entity en : loc.getChunk().getEntities()) {
-              if (!(en instanceof LivingEntity && en instanceof Zombie)) {
+              if (!(en instanceof Zombie)) {
                 continue;
               }
               if (en.getLocation().distance(loc) < 1.5) {

@@ -58,11 +58,7 @@ public class User {
   }
 
   public Kit getKit() {
-    if (kit == null) {
-      throw new NullPointerException("User has no kit!");
-    } else {
-      return kit;
-    }
+    return kit;
   }
 
   public void setKit(Kit kit) {

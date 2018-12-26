@@ -61,7 +61,6 @@ import pl.plajer.villagedefense.handlers.ChatManager;
 import pl.plajer.villagedefense.handlers.PermissionsManager;
 import pl.plajer.villagedefense.handlers.language.LanguageManager;
 import pl.plajer.villagedefense.handlers.reward.GameReward;
-import pl.plajer.villagedefense.kits.kitapi.KitRegistry;
 import pl.plajer.villagedefense.user.User;
 import pl.plajer.villagedefense.utils.Utils;
 import pl.plajerlair.core.debug.Debugger;
@@ -85,7 +84,7 @@ public abstract class Arena extends BukkitRunnable {
   private final List<IronGolem> ironGolems = new ArrayList<>();
   private final LinkedHashMap<Location, Byte> doorBlocks = new LinkedHashMap<>();
   private final List<Location> villagerSpawnPoints = new ArrayList<>();
-  private final Random random;
+  private final Random random = new Random();
   private final List<Zombie> glitchedZombies = new ArrayList<>();
   private final Map<Zombie, Location> zombieCheckerLocations = new HashMap<>();
   private final Set<UUID> players = new HashSet<>();
@@ -99,7 +98,7 @@ public abstract class Arena extends BukkitRunnable {
   private int spawnCounter = 0;
   private int totalKilledZombies = 0;
   private int totalOrbsSpent = 0;
-  private ArenaState arenaState;
+  private ArenaState arenaState = ArenaState.WAITING_FOR_PLAYERS;
   private BossBar gameBar;
   private int minimumPlayers = 2;
   private int maximumPlayers = 10;
@@ -113,9 +112,7 @@ public abstract class Arena extends BukkitRunnable {
 
   public Arena(String id, Main plugin) {
     this.plugin = plugin;
-    arenaState = ArenaState.WAITING_FOR_PLAYERS;
     this.id = id;
-    random = new Random();
     gameBar = Bukkit.createBossBar(ChatManager.colorMessage("Bossbar.Main-Title"), BarColor.BLUE, BarStyle.SOLID);
   }
 
@@ -251,11 +248,7 @@ public abstract class Arena extends BukkitRunnable {
               User user = plugin.getUserManager().getUser(player.getUniqueId());
               user.setStat(StatsStorage.StatisticType.ORBS, plugin.getConfig().getInt("Orbs-Starting-Amount", 20));
               ArenaUtils.hidePlayersOutsideTheGame(player, this);
-              if (plugin.getUserManager().getUser(player.getUniqueId()).getKit() != null) {
-                plugin.getUserManager().getUser(player.getUniqueId()).getKit().giveKitItems(player);
-              } else {
-                KitRegistry.getDefaultKit().giveKitItems(player);
-              }
+              plugin.getUserManager().getUser(player.getUniqueId()).getKit().giveKitItems(player);
               player.updateInventory();
               addStat(player, StatsStorage.StatisticType.GAMES_PLAYED);
               addExperience(player, 10);

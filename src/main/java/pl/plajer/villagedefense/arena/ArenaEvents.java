@@ -237,10 +237,8 @@ public class ArenaEvents implements Listener {
       User user = plugin.getUserManager().getUser(player.getUniqueId());
       player.setAllowFlight(true);
       player.setFlying(true);
-      if (user.isSpectator()) {
-        arena.teleportToStartLocation(player);
-      } else {
-        arena.teleportToStartLocation(player);
+      arena.teleportToStartLocation(player);
+      if (!user.isSpectator()) {
         user.setSpectator(true);
         player.setGameMode(GameMode.SURVIVAL);
         player.removePotionEffect(PotionEffectType.NIGHT_VISION);

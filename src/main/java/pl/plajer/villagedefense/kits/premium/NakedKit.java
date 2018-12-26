@@ -39,6 +39,7 @@ import pl.plajer.villagedefense.handlers.ChatManager;
 import pl.plajer.villagedefense.handlers.PermissionsManager;
 import pl.plajer.villagedefense.kits.kitapi.KitRegistry;
 import pl.plajer.villagedefense.kits.kitapi.basekits.PremiumKit;
+import pl.plajer.villagedefense.user.User;
 import pl.plajer.villagedefense.utils.Utils;
 import pl.plajerlair.core.services.exception.ReportedException;
 import pl.plajerlair.core.utils.XMaterial;
@@ -106,13 +107,11 @@ public class NakedKit extends PremiumKit implements Listener {
   @EventHandler
   public void onArmor(InventoryClickEvent event) {
     try {
-      if (getPlugin().getUserManager().getUser(event.getWhoClicked().getUniqueId()) == null) {
+      User user = getPlugin().getUserManager().getUser(event.getWhoClicked().getUniqueId());
+      if (user == null || !ArenaRegistry.isInArena((Player) event.getWhoClicked())) {
         return;
       }
-      if (!ArenaRegistry.isInArena((Player) event.getWhoClicked())) {
-        return;
-      }
-      if (!(getPlugin().getUserManager().getUser(event.getWhoClicked().getUniqueId()).getKit() instanceof NakedKit)) {
+      if (!(user.getKit() instanceof NakedKit)) {
         return;
       }
       if (!(event.getInventory().getType().equals(InventoryType.PLAYER) || event.getInventory().getType().equals(InventoryType.CRAFTING))) {
@@ -143,13 +142,8 @@ public class NakedKit extends PremiumKit implements Listener {
       if (!ArenaRegistry.isInArena(event.getPlayer())) {
         return;
       }
-      if (getPlugin().getUserManager().getUser(event.getPlayer().getUniqueId()) == null) {
-        return;
-      }
-      if (!(getPlugin().getUserManager().getUser(event.getPlayer().getUniqueId()).getKit() instanceof NakedKit)) {
-        return;
-      }
-      if (!event.hasItem()) {
+      User user = getPlugin().getUserManager().getUser(event.getPlayer().getUniqueId());
+      if (user == null || !(user.getKit() instanceof NakedKit) || !event.hasItem()) {
         return;
       }
       if (armorTypes.contains(event.getItem().getType())) {

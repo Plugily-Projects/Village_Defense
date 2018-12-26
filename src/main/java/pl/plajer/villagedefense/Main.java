@@ -175,10 +175,7 @@ public class Main extends JavaPlugin {
             config.getInt("min-connections"), config.getInt("max-connections"));
       }
       userManager = new UserManager(this);
-
-      DoorBreakListener listener = new DoorBreakListener();
-      listener.runTaskTimer(this, 1L, 20L);
-
+      new DoorBreakListener(this);
       KitRegistry.init();
 
       SpecialItem.loadAll();
