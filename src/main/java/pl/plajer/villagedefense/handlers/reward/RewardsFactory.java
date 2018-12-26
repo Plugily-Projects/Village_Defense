@@ -34,6 +34,7 @@ import pl.plajer.villagedefense.arena.Arena;
 import pl.plajer.villagedefense.arena.ArenaRegistry;
 import pl.plajerlair.core.debug.Debugger;
 import pl.plajerlair.core.debug.LogLevel;
+import pl.plajerlair.core.rewards.RewardsScriptEngine;
 import pl.plajerlair.core.utils.ConfigUtils;
 
 /**
@@ -41,7 +42,7 @@ import pl.plajerlair.core.utils.ConfigUtils;
  */
 public class RewardsFactory {
 
-  private Set<Reward> rewards = new HashSet<>();
+  private Set<GameReward> rewards = new HashSet<>();
   private FileConfiguration config;
   private boolean enabled;
 
@@ -51,7 +52,7 @@ public class RewardsFactory {
     registerRewards();
   }
 
-  public void performReward(Arena arena, Reward.RewardType type) {
+  public void performReward(Arena arena, GameReward.RewardType type) {
     if (!enabled) {
       return;
     }
@@ -60,7 +61,7 @@ public class RewardsFactory {
     }
   }
 
-  public void performReward(Player player, Reward.RewardType type) {
+  public void performReward(Player player, GameReward.RewardType type) {
     if (!enabled) {
       return;
     }
@@ -69,10 +70,10 @@ public class RewardsFactory {
     engine.setValue("player", player);
     engine.setValue("server", Bukkit.getServer());
     engine.setValue("arena", arena);
-    for (Reward reward : rewards) {
+    for (GameReward reward : rewards) {
       if (reward.getType() == type) {
         //reward isn't for this wave
-        if (type == Reward.RewardType.END_WAVE && reward.getWaveExecute() != arena.getWave()) {
+        if (type == GameReward.RewardType.END_WAVE && reward.getWaveExecute() != arena.getWave()) {
           continue;
         }
         //cannot execute if chance wasn't met
@@ -112,23 +113,23 @@ public class RewardsFactory {
     if (!enabled) {
       return;
     }
-    Map<Reward.RewardType, Integer> registeredRewards = new HashMap<>();
-    for (Reward.RewardType rewardType : Reward.RewardType.values()) {
-      if (rewardType == Reward.RewardType.END_WAVE) {
+    Map<GameReward.RewardType, Integer> registeredRewards = new HashMap<>();
+    for (GameReward.RewardType rewardType : GameReward.RewardType.values()) {
+      if (rewardType == GameReward.RewardType.END_WAVE) {
         for (String key : config.getConfigurationSection("rewards." + rewardType.getPath()).getKeys(false)) {
           for (String reward : config.getStringList("rewards." + rewardType.getPath() + "." + key)) {
-            rewards.add(new Reward(rewardType, reward, Integer.valueOf(key)));
+            rewards.add(new GameReward(rewardType, reward, Integer.valueOf(key)));
             registeredRewards.put(rewardType, registeredRewards.getOrDefault(rewardType, 0) + 1);
           }
         }
         continue;
       }
       for (String reward : config.getStringList("rewards." + rewardType.getPath())) {
-        rewards.add(new Reward(rewardType, reward));
+        rewards.add(new GameReward(rewardType, reward));
         registeredRewards.put(rewardType, registeredRewards.getOrDefault(rewardType, 0) + 1);
       }
     }
-    for (Reward.RewardType rewardType : registeredRewards.keySet()) {
+    for (GameReward.RewardType rewardType : registeredRewards.keySet()) {
       Debugger.debug(LogLevel.INFO, "[RewardsFactory] Registered " + registeredRewards.get(rewardType) + " " + rewardType.name() + " rewards!");
     }
   }
