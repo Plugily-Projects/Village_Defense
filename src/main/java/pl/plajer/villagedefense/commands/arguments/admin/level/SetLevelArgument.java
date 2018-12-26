@@ -18,8 +18,6 @@
 
 package pl.plajer.villagedefense.commands.arguments.admin.level;
 
-import java.util.Arrays;
-
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
@@ -42,7 +40,7 @@ import pl.plajer.villagedefense.utils.Utils;
 public class SetLevelArgument {
 
   public SetLevelArgument(ArgumentsRegistry registry) {
-    registry.mapArgument("villagedefenseadmin", new LabeledCommandArgument("setlevel", Arrays.asList("villagedefense.admin.setlevel", "villagedefense.admin.setlevel.others"),
+    registry.mapArgument("villagedefenseadmin", new LabeledCommandArgument("setlevel", "villagedefense.admin.setlevel",
         CommandArgument.ExecutorType.BOTH, new LabelData("/vda setlevel  &6<amount> &c[player]", "/vda setlevel <amount>",
         "&7Set level to yourself or target player\n&7Can be used from console too\n&6Permission: &7villagedefense.admin.setlevel (for yourself)\n"
             + "&6Permission: &7villagedefense.admin.setlevel.others (for others)")) {
@@ -61,9 +59,6 @@ public class SetLevelArgument {
 
         if (target == null) {
           sender.sendMessage(ChatManager.colorMessage("Commands.Target-Player-Not-Found"));
-          return;
-        }
-        if (!(sender.equals(target) && Utils.hasPermission(sender, "villagedefense.admin.setlevel.others"))) {
           return;
         }
 

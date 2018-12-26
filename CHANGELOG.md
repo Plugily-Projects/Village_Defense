@@ -7,6 +7,7 @@ data was wrongly saved without getName() method called. MySQL users are safe.
 * Fixed arena signs were incorrectly saved via setup menu (4.0.0 pre issue)
 * Fixed /vda forcestart wasn't working properly when there were not enough players to start
 * In case of any server crash players' inventories will be loaded from backup if exist in inventories folder in Village Defense plugin folder
+* Removed permissions for giving other players levels for commands /vda setlevel/addlevel (it was useless)
 
 ### 4.0.0 Beta pre 5 (1.12.2018)
 * Fixed commands without permissions weren't working
