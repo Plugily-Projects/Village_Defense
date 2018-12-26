@@ -1154,6 +1154,7 @@ public abstract class Arena extends BukkitRunnable {
       if (plugin.is1_11_R1() || plugin.is1_12_R1()) {
         int id = Material.WOODEN_DOOR.getId();
         block.setTypeIdAndData(id, doorData, false);
+        i++;
       } else {
         //idk how does this work
         try {
@@ -1172,6 +1173,7 @@ public abstract class Arena extends BukkitRunnable {
             doorBlockState.setType(doorBlockData.getItemType());
             doorBlockState.setData(doorBlockData);
             doorBlockState.update(true);
+            i++;
             continue;
           }
 

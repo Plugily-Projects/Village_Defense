@@ -8,6 +8,7 @@ data was wrongly saved without getName() method called. MySQL users are safe.
 * Fixed /vda forcestart wasn't working properly when there were not enough players to start
 * In case of any server crash players' inventories will be loaded from backup if exist in inventories folder in Village Defense plugin folder
 * Removed permissions for giving other players levels for commands /vda setlevel/addlevel (it was useless)
+* Debug messages "LSome doors has failed to load for arena" for 1.11 and 1.12 was fixed, doors were loaded properly
 
 ### 4.0.0 Beta pre 5 (1.12.2018)
 * Fixed commands without permissions weren't working
