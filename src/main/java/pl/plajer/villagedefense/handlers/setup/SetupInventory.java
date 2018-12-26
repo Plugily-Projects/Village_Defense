@@ -43,7 +43,7 @@ import pl.plajerlair.core.utils.XMaterial;
  */
 public class SetupInventory {
 
-  public static final String VIDEO_LINK = "https://bit.ly/2xwRU8S";
+  public static final String VIDEO_LINK = "https://tutorial.plajer.xyz";
   private static Main plugin = JavaPlugin.getPlugin(Main.class);
   private Inventory inventory;
 
