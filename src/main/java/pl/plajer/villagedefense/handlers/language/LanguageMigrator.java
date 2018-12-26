@@ -186,6 +186,7 @@ public class LanguageMigrator {
           MigratorUtils.insertAfterLine(file, "Target-Player-Health:", "    Settings-Menu:\r\n      Item-Name: \"&b&lSpectator Settings &7(Right-click)\"\r\n      Inventory-Name: \"&7Spectator settings\"\r\n"
               + "      Speed-Name: \"&aSpeed\"");
           MigratorUtils.insertAfterLine(file, "Admin-Commands", "    Added-Level: \"&7Added level to the player!\"");
+          MigratorUtils.insertAfterLine(file, "Game-End-Messages", "      Summary-Win-Game: \"&7You survived all the waves\"");
           break;
         default:
           break;
