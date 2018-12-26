@@ -234,6 +234,7 @@ public abstract class Arena extends BukkitRunnable {
             break;
           }
           if (getTimer() == 0 || forceStart) {
+            spawnVillagers();
             VillageGameStartEvent villageGameStartEvent = new VillageGameStartEvent(this);
             Bukkit.getPluginManager().callEvent(villageGameStartEvent);
             setArenaState(ArenaState.IN_GAME);
@@ -506,8 +507,6 @@ public abstract class Arena extends BukkitRunnable {
     clearGolems();
     clearVillagers();
     clearWolfs();
-    spawnVillagers();
-
   }
 
   private void spawnVillagers() {
@@ -521,11 +520,11 @@ public abstract class Arena extends BukkitRunnable {
     for (Location location : getVillagerSpawns()) {
       spawnVillager(location);
     }
-    if (getVillagers().size() != 0) {
-      spawnVillagers();
-    } else {
-      Debugger.debug(LogLevel.WARN, "Villager spawns can't be set up!");
+    if (getVillagers().size() == 0) {
+      Debugger.debug(LogLevel.WARN, "There was a problem with spawning villagers for arena " + id + "! Are villager spawns set in safe and valid locations?");
+      return;
     }
+    spawnVillagers();
   }
 
   /**
