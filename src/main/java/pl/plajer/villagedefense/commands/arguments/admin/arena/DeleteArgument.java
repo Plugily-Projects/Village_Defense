@@ -44,7 +44,7 @@ public class DeleteArgument {
             "&7Deletes specified arena\n&6Permission: &7villagedefense.admin.delete")) {
       @Override
       public void execute(CommandSender sender, String[] args) {
-        if (args.length == 0) {
+        if (args.length == 1) {
           sender.sendMessage(ChatManager.getPrefix() + ChatManager.colorMessage("Commands.Type-Arena-Name"));
           return;
         }
