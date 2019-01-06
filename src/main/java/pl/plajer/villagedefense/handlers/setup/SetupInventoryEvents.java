@@ -1,6 +1,6 @@
 /*
  * Village Defense - Protect villagers from hordes of zombies
- * Copyright (C) 2018  Plajer's Lair - maintained by Plajer and Tigerpanzer
+ * Copyright (C) 2019  Plajer's Lair - maintained by Plajer and Tigerpanzer
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -43,8 +43,6 @@ import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.arena.Arena;
 import pl.plajer.villagedefense.arena.ArenaRegistry;
 import pl.plajer.villagedefense.arena.ArenaUtils;
-import pl.plajer.villagedefense.handlers.ChatManager;
-import pl.plajer.villagedefense.handlers.ShopManager;
 import pl.plajer.villagedefense.utils.Utils;
 import pl.plajerlair.core.services.exception.ReportedException;
 import pl.plajerlair.core.utils.ConfigUtils;
@@ -89,15 +87,15 @@ public class SetupInventoryEvents implements Listener {
       switch (SetupInventory.ClickPosition.getByPosition(event.getRawSlot())) {
         case SET_ENDING:
           config.set("instances." + arena.getID() + ".Endlocation", locationString);
-          player.sendMessage(ChatManager.colorRawMessage("&e✔ Completed | &aEnding location for arena " + arena.getID() + " set at your location!"));
+          player.sendMessage(plugin.getChatManager().colorRawMessage("&e✔ Completed | &aEnding location for arena " + arena.getID() + " set at your location!"));
           break;
         case SET_LOBBY:
           config.set("instances." + arena.getID() + ".lobbylocation", locationString);
-          player.sendMessage(ChatManager.colorRawMessage("&e✔ Completed | &aLobby location for arena " + arena.getID() + " set at your location!"));
+          player.sendMessage(plugin.getChatManager().colorRawMessage("&e✔ Completed | &aLobby location for arena " + arena.getID() + " set at your location!"));
           break;
         case SET_STARTING:
           config.set("instances." + arena.getID() + ".Startlocation", locationString);
-          player.sendMessage(ChatManager.colorRawMessage("&e✔ Completed | &aStarting location for arena " + arena.getID() + " set at your location!"));
+          player.sendMessage(plugin.getChatManager().colorRawMessage("&e✔ Completed | &aStarting location for arena " + arena.getID() + " set at your location!"));
           break;
         case SET_MINIMUM_PLAYERS:
           if (clickType.isRightClick()) {
@@ -122,11 +120,11 @@ public class SetupInventoryEvents implements Listener {
         case ADD_SIGN:
           Location location = player.getTargetBlock(null, 10).getLocation();
           if (!(location.getBlock().getState() instanceof Sign)) {
-            player.sendMessage(ChatManager.colorMessage("Commands.Look-Sign"));
+            player.sendMessage(plugin.getChatManager().colorMessage("Commands.Look-Sign"));
             break;
           }
           plugin.getSignManager().getLoadedSigns().put((Sign) location.getBlock().getState(), arena);
-          player.sendMessage(ChatManager.getPrefix() + ChatManager.colorMessage("Signs.Sign-Created"));
+          player.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage("Signs.Sign-Created"));
           String loc = location.getBlock().getWorld().getName() + "," + location.getBlock().getX() + "," + location.getBlock().getY() + "," + location.getBlock().getZ() + ",0.0,0.0";
           List<String> locs = config.getStringList("instances." + arena.getID() + ".signs");
           locs.add(loc);
@@ -140,7 +138,7 @@ public class SetupInventoryEvents implements Listener {
             }
             String newName = event.getCursor().getItemMeta().getDisplayName();
             config.set("instances." + arena.getID() + ".mapname", newName);
-            player.sendMessage(ChatManager.colorRawMessage("&e✔ Completed | &aName of arena " + arena.getID() + " set to " + newName));
+            player.sendMessage(plugin.getChatManager().colorRawMessage("&e✔ Completed | &aName of arena " + arena.getID() + " set to " + newName));
             event.getCurrentItem().getItemMeta().setDisplayName(ChatColor.GOLD + "Set a mapname (currently: " + newName);
           }
           break;
@@ -149,14 +147,14 @@ public class SetupInventoryEvents implements Listener {
               ? config.getConfigurationSection("instances." + arena.getID() + ".villagerspawns").getKeys(false).size() : 0) + 1;
           LocationUtils.saveLoc(plugin, config, "arenas", "instances." + arena.getID() + ".villagerspawns." + villagers, player.getLocation());
           String villagerProgress = villagers >= 2 ? "&e✔ Completed | " : "&c✘ Not completed | ";
-          player.sendMessage(ChatManager.colorRawMessage(villagerProgress + "&aVillager spawn added! &8(&7" + villagers + "/2&8)"));
+          player.sendMessage(plugin.getChatManager().colorRawMessage(villagerProgress + "&aVillager spawn added! &8(&7" + villagers + "/2&8)"));
           break;
         case ADD_ZOMBIE_SPAWN:
           int zombies = (config.isSet("instances." + arena.getID() + ".zombiespawns")
               ? config.getConfigurationSection("instances." + arena.getID() + ".zombiespawns").getKeys(false).size() : 0) + 1;
           LocationUtils.saveLoc(plugin, config, "arenas", "instances." + arena.getID() + ".zombiespawns." + zombies, player.getLocation());
           String zombieProgress = zombies >= 2 ? "&e✔ Completed | " : "&c✘ Not completed | ";
-          player.sendMessage(ChatManager.colorRawMessage(zombieProgress + "&aZombie spawn added! &8(&7" + zombies + "/2&8)"));
+          player.sendMessage(plugin.getChatManager().colorRawMessage(zombieProgress + "&aZombie spawn added! &8(&7" + zombies + "/2&8)"));
           break;
         case ADD_DOORS:
           Block block = player.getTargetBlock(null, 10);
@@ -222,7 +220,7 @@ public class SetupInventoryEvents implements Listener {
             }
             if (stack.hasItemMeta() && stack.getItemMeta().hasLore()) {
               if (stack.getItemMeta().getLore().get(stack.getItemMeta().getLore().size() - 1)
-                  .contains(ChatManager.colorMessage("In-Game.Messages.Shop-Messages.Currency-In-Shop"))) {
+                  .contains(plugin.getChatManager().colorMessage("In-Game.Messages.Shop-Messages.Currency-In-Shop"))) {
                 found = true;
                 break;
               }
@@ -232,7 +230,6 @@ public class SetupInventoryEvents implements Listener {
             player.sendMessage(ChatColor.RED + "No items in shop have price set! Set their prices using /vda setprice! You can ignore this warning");
           }
           LocationUtils.saveLoc(plugin, config, "arenas", "instances." + arena.getID() + ".shop", targetBlock.getLocation());
-          ShopManager.registerShop(arena);
           player.sendMessage(ChatColor.GREEN + "Shop for chest set!");
           break;
         case REGISTER_ARENA:
@@ -298,7 +295,7 @@ public class SetupInventoryEvents implements Listener {
           }
           break;
         case VIEW_SETUP_VIDEO:
-          player.sendMessage(ChatManager.getPrefix() + ChatManager.colorRawMessage("&6Check out this video: " + SetupInventory.VIDEO_LINK));
+          player.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorRawMessage("&6Check out this video: " + SetupInventory.VIDEO_LINK));
           break;
         default:
           break;

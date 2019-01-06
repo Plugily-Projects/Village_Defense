@@ -1,6 +1,6 @@
 /*
  * Village Defense - Protect villagers from hordes of zombies
- * Copyright (C) 2018  Plajer's Lair - maintained by Plajer and Tigerpanzer
+ * Copyright (C) 2019  Plajer's Lair - maintained by Plajer and Tigerpanzer
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,7 +26,6 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import pl.plajer.villagedefense.handlers.ChatManager;
 import pl.plajer.villagedefense.handlers.PermissionsManager;
 import pl.plajer.villagedefense.kits.kitapi.KitRegistry;
 import pl.plajer.villagedefense.kits.kitapi.basekits.PremiumKit;
@@ -39,8 +38,8 @@ import pl.plajer.villagedefense.utils.WeaponHelper;
 public class PremiumHardcoreKit extends PremiumKit {
 
   public PremiumHardcoreKit() {
-    setName(ChatManager.colorMessage("Kits.Premium-Hardcore.Kit-Name"));
-    List<String> description = Utils.splitString(ChatManager.colorMessage("Kits.Premium-Hardcore.Kit-Description"), 40);
+    setName(getPlugin().getChatManager().colorMessage("Kits.Premium-Hardcore.Kit-Name"));
+    List<String> description = Utils.splitString(getPlugin().getChatManager().colorMessage("Kits.Premium-Hardcore.Kit-Description"), 40);
     this.setDescription(description.toArray(new String[0]));
     KitRegistry.registerKit(this);
   }

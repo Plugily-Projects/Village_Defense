@@ -16,38 +16,34 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package pl.plajer.villagedefense.creatures.upgrades;
+package pl.plajer.villagedefense.creatures;
 
 /**
  * @author Plajer
  * <p>
- * Created at 14.10.2018
+ * Created at 06.01.2019
  */
-public class Upgrade {
+public class CachedObject {
 
-  private String name;
-  @Deprecated
-  private String[] description;
-  private String metadataAccess;
+  private String fieldName;
+  private Class clazz;
+  private Object object;
 
-  public Upgrade(String name, String[] description, String metadataAccess) {
-    this.name = name;
-    //we shouldn't store mutable reference
-    this.description = description;
-    this.metadataAccess = metadataAccess;
+  public CachedObject(String fieldName, Class clazz, Object object) {
+    this.fieldName = fieldName;
+    this.clazz = clazz;
+    this.object = object;
   }
 
-  public String getName() {
-    return name;
+  public String getFieldName() {
+    return fieldName;
   }
 
-  @Deprecated
-  public String[] getDescription() {
-    return description;
+  public Class getClazz() {
+    return clazz;
   }
 
-  public String getMetadataAccess() {
-    return metadataAccess;
+  public Object getObject() {
+    return object;
   }
-
 }

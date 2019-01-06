@@ -1,6 +1,6 @@
 /*
  * Village Defense - Protect villagers from hordes of zombies
- * Copyright (C) 2018  Plajer's Lair - maintained by Plajer and Tigerpanzer
+ * Copyright (C) 2019  Plajer's Lair - maintained by Plajer and Tigerpanzer
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,6 +19,8 @@
 package pl.plajer.villagedefense.creatures;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.bukkit.ChatColor;
 import org.bukkit.attribute.Attribute;
@@ -36,11 +38,15 @@ import pl.plajerlair.core.utils.MinigameUtils;
  */
 public class CreatureUtils {
 
+  @Deprecated //should be either final or private
   public static float ZOMBIE_SPEED = 1.3f;
+  @Deprecated //should be either final or private
   public static float BABY_ZOMBIE_SPEED = 2.0f;
+  @Deprecated
   public static String[] VILLAGER_NAMES = ("Jagger,Kelsey,Kelton,Haylie,Harlow,Howard,Wulffric,Winfred,Ashley,Bailey,Beckett,Alfredo,Alfred,Adair,Edgar,ED,Eadwig,Edgaras,Buckley,Stanley,Nuffley,"
       + "Mary,Jeffry,Rosaly,Elliot,Harry,Sam,Rosaline,Tom,Ivan,Kevin,Adam").split(",");
   private static Main plugin = JavaPlugin.getPlugin(Main.class);
+  private static List<CachedObject> cachedObjects = new ArrayList<>();
 
   public static void init(Main plugin) {
     ZOMBIE_SPEED = (float) plugin.getConfig().getDouble("Zombie-Speed", 1.3);
@@ -49,6 +55,11 @@ public class CreatureUtils {
   }
 
   public static Object getPrivateField(String fieldName, Class clazz, Object object) {
+    for (CachedObject cachedObject : cachedObjects) {
+      if (cachedObject.getClazz().equals(clazz) && cachedObject.getFieldName().equals(fieldName)) {
+        return cachedObject.getObject();
+      }
+    }
     Field field;
     Object o = null;
     try {
@@ -57,6 +68,7 @@ public class CreatureUtils {
       field.setAccessible(true);
 
       o = field.get(object);
+      cachedObjects.add(new CachedObject(fieldName, clazz, o));
     } catch (NoSuchFieldException | IllegalAccessException e) {
       e.printStackTrace();
     }

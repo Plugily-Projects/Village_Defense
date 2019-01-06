@@ -1,6 +1,6 @@
 /*
  * Village Defense - Protect villagers from hordes of zombies
- * Copyright (C) 2018  Plajer's Lair - maintained by Plajer and Tigerpanzer
+ * Copyright (C) 2019  Plajer's Lair - maintained by Plajer and Tigerpanzer
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -35,7 +35,6 @@ import org.bukkit.potion.PotionType;
 
 import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.arena.ArenaRegistry;
-import pl.plajer.villagedefense.handlers.ChatManager;
 import pl.plajer.villagedefense.handlers.PermissionsManager;
 import pl.plajer.villagedefense.kits.kitapi.KitRegistry;
 import pl.plajer.villagedefense.kits.kitapi.basekits.PremiumKit;
@@ -52,9 +51,9 @@ public class NakedKit extends PremiumKit implements Listener {
   private List<Material> armorTypes = new ArrayList<>();
 
   public NakedKit() {
-    List<String> description = Utils.splitString(ChatManager.colorMessage("Kits.Wild-Naked.Kit-Description"), 40);
+    List<String> description = Utils.splitString(getPlugin().getChatManager().colorMessage("Kits.Wild-Naked.Kit-Description"), 40);
     this.setDescription(description.toArray(new String[0]));
-    setName(ChatManager.colorMessage("Kits.Wild-Naked.Kit-Name"));
+    setName(getPlugin().getChatManager().colorMessage("Kits.Wild-Naked.Kit-Name"));
     getPlugin().getServer().getPluginManager().registerEvents(this, getPlugin());
     KitRegistry.registerKit(this);
     armorTypes.add(Material.LEATHER_BOOTS);
@@ -123,7 +122,7 @@ public class NakedKit extends PremiumKit implements Listener {
             continue;
           }
           //we cannot cancel event using scheduler, we must remove all armor contents from inventory manually
-          event.getWhoClicked().sendMessage(ChatManager.colorMessage("Kits.Wild-Naked.Cannot-Wear-Armor"));
+          event.getWhoClicked().sendMessage(getPlugin().getChatManager().colorMessage("Kits.Wild-Naked.Cannot-Wear-Armor"));
           event.getWhoClicked().getInventory().setHelmet(new ItemStack(Material.AIR, 1));
           event.getWhoClicked().getInventory().setChestplate(new ItemStack(Material.AIR, 1));
           event.getWhoClicked().getInventory().setLeggings(new ItemStack(Material.AIR, 1));
@@ -148,7 +147,7 @@ public class NakedKit extends PremiumKit implements Listener {
       }
       if (armorTypes.contains(event.getItem().getType())) {
         event.setCancelled(true);
-        event.getPlayer().sendMessage(ChatManager.colorMessage("Kits.Wild-Naked.Cannot-Wear-Armor"));
+        event.getPlayer().sendMessage(getPlugin().getChatManager().colorMessage("Kits.Wild-Naked.Cannot-Wear-Armor"));
       }
     } catch (Exception ex) {
       new ReportedException(getPlugin(), ex);

@@ -1,6 +1,6 @@
 /*
  * Village Defense - Protect villagers from hordes of zombies
- * Copyright (C) 2018  Plajer's Lair - maintained by Plajer and Tigerpanzer
+ * Copyright (C) 2019  Plajer's Lair - maintained by Plajer and Tigerpanzer
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,7 +33,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 
 import pl.plajer.villagedefense.Main;
-import pl.plajer.villagedefense.handlers.ChatManager;
 import pl.plajer.villagedefense.utils.MessageUtils;
 import pl.plajerlair.core.debug.Debugger;
 import pl.plajerlair.core.debug.LogLevel;
@@ -87,6 +86,10 @@ public class LanguageManager {
     LocaleRegistry.registerLocale(new Locale("Vietnamese", "Việt", "vn_VN", "POEditor contributors (HStreamGamer)", Arrays.asList("vietnamese", "viet", "việt", "vn")));
   }
 
+  @Deprecated
+  /**
+   * @deprecated system default charset dependent
+   */
   private static void loadProperties() {
     if (isDefaultLanguageUsed()) {
       return;
@@ -109,6 +112,7 @@ public class LanguageManager {
       return;
     }
     try {
+      //todo
       properties.load(new FileReader(new File(plugin.getDataFolder() + "/locales/" + pluginLocale.getPrefix() + ".properties")));
     } catch (IOException e) {
       e.printStackTrace();
@@ -203,7 +207,7 @@ public class LanguageManager {
     if (isDefaultLanguageUsed()) {
       return ConfigUtils.getConfig(plugin, "language").getStringList(path);
     } else {
-      return Arrays.asList(ChatManager.colorMessage(path).split(";"));
+      return Arrays.asList(plugin.getChatManager().colorMessage(path).split(";"));
     }
   }
 

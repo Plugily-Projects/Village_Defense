@@ -1,6 +1,6 @@
 /*
  * Village Defense - Protect villagers from hordes of zombies
- * Copyright (C) 2018  Plajer's Lair - maintained by Plajer and Tigerpanzer
+ * Copyright (C) 2019  Plajer's Lair - maintained by Plajer and Tigerpanzer
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,7 +29,6 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 import pl.plajer.villagedefense.api.StatsStorage;
-import pl.plajer.villagedefense.handlers.ChatManager;
 import pl.plajer.villagedefense.kits.kitapi.KitRegistry;
 import pl.plajer.villagedefense.kits.kitapi.basekits.LevelKit;
 import pl.plajer.villagedefense.utils.ArmorHelper;
@@ -44,8 +43,8 @@ public class RunnerKit extends LevelKit {
 
   public RunnerKit() {
     setLevel(getKitsConfig().getInt("Required-Level.Runner"));
-    setName(ChatManager.colorMessage("Kits.Runner.Kit-Name"));
-    List<String> description = Utils.splitString(ChatManager.colorMessage("Kits.Runner.Kit-Description"), 40);
+    setName(getPlugin().getChatManager().colorMessage("Kits.Runner.Kit-Name"));
+    List<String> description = Utils.splitString(getPlugin().getChatManager().colorMessage("Kits.Runner.Kit-Description"), 40);
     this.setDescription(description.toArray(new String[0]));
     KitRegistry.registerKit(this);
   }

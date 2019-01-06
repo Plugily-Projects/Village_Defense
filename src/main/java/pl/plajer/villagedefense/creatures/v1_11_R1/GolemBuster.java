@@ -1,6 +1,6 @@
 /*
  * Village Defense - Protect villagers from hordes of zombies
- * Copyright (C) 2018  Plajer's Lair - maintained by Plajer and Tigerpanzer
+ * Copyright (C) 2019  Plajer's Lair - maintained by Plajer and Tigerpanzer
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -105,9 +105,7 @@ public class GolemBuster extends EntityZombie {
       Bukkit.getServer().getPluginManager().callEvent(new EntityDeathEvent((LivingEntity) this.getBukkitEntity(), Arrays.asList(itemStack), expToDrop));
       IronGolem golem = (IronGolem) damagesource.getEntity().getBukkitEntity();
       //golem.getWorld().createExplosion(golem.getLocation(), 4);
-      org.bukkit.entity.Entity primed = golem.getWorld().spawnEntity(golem.getLocation(), EntityType.PRIMED_TNT);
-
-
+      golem.getWorld().spawnEntity(golem.getLocation(), EntityType.PRIMED_TNT);
       return true;
 
     } else {

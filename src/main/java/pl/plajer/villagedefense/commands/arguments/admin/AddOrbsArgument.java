@@ -1,6 +1,6 @@
 /*
  * Village Defense - Protect villagers from hordes of zombies
- * Copyright (C) 2018  Plajer's Lair - maintained by Plajer and Tigerpanzer
+ * Copyright (C) 2019  Plajer's Lair - maintained by Plajer and Tigerpanzer
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -31,7 +31,6 @@ import pl.plajer.villagedefense.commands.arguments.ArgumentsRegistry;
 import pl.plajer.villagedefense.commands.arguments.data.CommandArgument;
 import pl.plajer.villagedefense.commands.arguments.data.LabelData;
 import pl.plajer.villagedefense.commands.arguments.data.LabeledCommandArgument;
-import pl.plajer.villagedefense.handlers.ChatManager;
 import pl.plajer.villagedefense.user.User;
 import pl.plajer.villagedefense.utils.Utils;
 
@@ -50,7 +49,7 @@ public class AddOrbsArgument {
       @Override
       public void execute(CommandSender sender, String[] args) {
         if (args.length == 1) {
-          sender.sendMessage(ChatManager.getPrefix() + ChatColor.RED + "Please type number of orbs to give!");
+          sender.sendMessage(registry.getPlugin().getChatManager().getPrefix() + ChatColor.RED + "Please type number of orbs to give!");
           return;
         }
 
@@ -61,7 +60,7 @@ public class AddOrbsArgument {
           }
           Player p = Bukkit.getPlayerExact(args[2]);
           if (p == null || !ArenaRegistry.isInArena(p)) {
-            sender.sendMessage(ChatManager.colorMessage("Commands.Target-Player-Not-Found"));
+            sender.sendMessage(registry.getPlugin().getChatManager().colorMessage("Commands.Target-Player-Not-Found"));
             return;
           }
           target = p;
@@ -72,9 +71,9 @@ public class AddOrbsArgument {
         if (Utils.isInteger(args[1])) {
           User user = registry.getPlugin().getUserManager().getUser(target.getUniqueId());
           user.setStat(StatsStorage.StatisticType.ORBS, user.getStat(StatsStorage.StatisticType.ORBS) + Integer.parseInt(args[1]));
-          sender.sendMessage(ChatManager.getPrefix() + ChatManager.colorMessage("Commands.Admin-Commands.Added-Orbs"));
+          sender.sendMessage(registry.getPlugin().getChatManager().getPrefix() + registry.getPlugin().getChatManager().colorMessage("Commands.Admin-Commands.Added-Orbs"));
         } else {
-          sender.sendMessage(ChatManager.getPrefix() + ChatManager.colorMessage("Commands.Wrong-Usage").replace("%correct%", "/vda addorbs <amount> (player)"));
+          sender.sendMessage(registry.getPlugin().getChatManager().getPrefix() + registry.getPlugin().getChatManager().colorMessage("Commands.Wrong-Usage").replace("%correct%", "/vda addorbs <amount> (player)"));
         }
       }
     });

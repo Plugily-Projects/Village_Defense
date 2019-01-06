@@ -1,6 +1,6 @@
 /*
  * Village Defense - Protect villagers from hordes of zombies
- * Copyright (C) 2018  Plajer's Lair - maintained by Plajer and Tigerpanzer
+ * Copyright (C) 2019  Plajer's Lair - maintained by Plajer and Tigerpanzer
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -35,7 +35,6 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 import pl.plajer.villagedefense.Main;
-import pl.plajer.villagedefense.handlers.ChatManager;
 import pl.plajerlair.core.utils.ItemBuilder;
 import pl.plajerlair.core.utils.XMaterial;
 
@@ -53,9 +52,9 @@ public class EntityUpgradeMenu {
     EntityUpgradeMenu.plugin = plugin;
     //todo add config checks + language + locale
     new EntityUpgradeListener(plugin);
-    upgrades.add(new Upgrade(ChatManager.colorMessage("Upgrade-Menu.Upgrades.Health.Name"), ChatManager.colorMessage("Upgrade-Menu.Upgrades.Health.Description").split(";"), "VD_Health"));
-    upgrades.add(new Upgrade(ChatManager.colorMessage("Upgrade-Menu.Upgrades.Damage.Name"), ChatManager.colorMessage("Upgrade-Menu.Upgrades.Damage.Description").split(";"), "VD_Damage"));
-    upgrades.add(new Upgrade(ChatManager.colorMessage("Upgrade-Menu.Upgrades.Speed.Name"), ChatManager.colorMessage("Upgrade-Menu.Upgrades.Speed.Description").split(";"), "VD_Speed"));
+    upgrades.add(new Upgrade(plugin.getChatManager().colorMessage("Upgrade-Menu.Upgrades.Health.Name"), plugin.getChatManager().colorMessage("Upgrade-Menu.Upgrades.Health.Description").split(";"), "VD_Health"));
+    upgrades.add(new Upgrade(plugin.getChatManager().colorMessage("Upgrade-Menu.Upgrades.Damage.Name"), plugin.getChatManager().colorMessage("Upgrade-Menu.Upgrades.Damage.Description").split(";"), "VD_Damage"));
+    upgrades.add(new Upgrade(plugin.getChatManager().colorMessage("Upgrade-Menu.Upgrades.Speed.Name"), plugin.getChatManager().colorMessage("Upgrade-Menu.Upgrades.Speed.Description").split(";"), "VD_Speed"));
   }
 
   /**
@@ -65,7 +64,7 @@ public class EntityUpgradeMenu {
    * @param p  player who will see inventory
    */
   public static void openUpgradeMenu(Entity en, Player p) {
-    Inventory inv = Bukkit.createInventory(null, /* magic number may be changed */9 * 5, ChatManager.colorMessage("Upgrade-Menu.Title"));
+    Inventory inv = Bukkit.createInventory(null, /* magic number may be changed */9 * 5, plugin.getChatManager().colorMessage("Upgrade-Menu.Title"));
 
     for (int i = 0; i < 3; i++) {
       final int tier = en.hasMetadata(upgrades.get(i).getMetadataAccess()) ? en.getMetadata(upgrades.get(i).getMetadataAccess()).get(0).asInt() : 0;

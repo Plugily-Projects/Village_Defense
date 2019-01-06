@@ -1,6 +1,6 @@
 /*
  * Village Defense - Protect villagers from hordes of zombies
- * Copyright (C) 2018  Plajer's Lair - maintained by Plajer and Tigerpanzer
+ * Copyright (C) 2019  Plajer's Lair - maintained by Plajer and Tigerpanzer
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,7 +33,6 @@ import org.bukkit.inventory.ItemStack;
 import pl.plajer.villagedefense.api.StatsStorage;
 import pl.plajer.villagedefense.arena.Arena;
 import pl.plajer.villagedefense.arena.ArenaRegistry;
-import pl.plajer.villagedefense.handlers.ChatManager;
 import pl.plajer.villagedefense.kits.kitapi.KitRegistry;
 import pl.plajer.villagedefense.kits.kitapi.basekits.LevelKit;
 import pl.plajer.villagedefense.user.User;
@@ -50,8 +49,8 @@ public class WorkerKit extends LevelKit implements Listener {
 
   public WorkerKit() {
     this.setLevel(getKitsConfig().getInt("Required-Level.Worker"));
-    this.setName(ChatManager.colorMessage("Kits.Worker.Kit-Name"));
-    List<String> description = Utils.splitString(ChatManager.colorMessage("Kits.Worker.Kit-Description"), 40);
+    this.setName(getPlugin().getChatManager().colorMessage("Kits.Worker.Kit-Name"));
+    List<String> description = Utils.splitString(getPlugin().getChatManager().colorMessage("Kits.Worker.Kit-Description"), 40);
     this.setDescription(description.toArray(new String[0]));
     KitRegistry.registerKit(this);
     getPlugin().getServer().getPluginManager().registerEvents(this, getPlugin());
@@ -98,7 +97,7 @@ public class WorkerKit extends LevelKit implements Listener {
         return;
       }
       e.setCancelled(false);
-      e.getPlayer().sendMessage(ChatManager.colorMessage("Kits.Worker.Game-Item-Place-Message"));
+      e.getPlayer().sendMessage(getPlugin().getChatManager().colorMessage("Kits.Worker.Game-Item-Place-Message"));
     } catch (Exception ex) {
       new ReportedException(getPlugin(), ex);
     }

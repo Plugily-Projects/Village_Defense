@@ -1,6 +1,6 @@
 /*
  * Village Defense - Protect villagers from hordes of zombies
- * Copyright (C) 2018  Plajer's Lair - maintained by Plajer and Tigerpanzer
+ * Copyright (C) 2019  Plajer's Lair - maintained by Plajer and Tigerpanzer
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -38,7 +38,6 @@ import org.bukkit.inventory.meta.SkullMeta;
 
 import pl.plajer.villagedefense.arena.Arena;
 import pl.plajer.villagedefense.arena.ArenaRegistry;
-import pl.plajer.villagedefense.handlers.ChatManager;
 import pl.plajer.villagedefense.handlers.PermissionsManager;
 import pl.plajer.villagedefense.kits.kitapi.KitRegistry;
 import pl.plajer.villagedefense.kits.kitapi.basekits.PremiumKit;
@@ -55,8 +54,8 @@ import pl.plajerlair.core.utils.XMaterial;
 public class TeleporterKit extends PremiumKit implements Listener {
 
   public TeleporterKit() {
-    setName(ChatManager.colorMessage("Kits.Teleporter.Kit-Name"));
-    List<String> description = Utils.splitString(ChatManager.colorMessage("Kits.Teleporter.Kit-Description"), 40);
+    setName(getPlugin().getChatManager().colorMessage("Kits.Teleporter.Kit-Name"));
+    List<String> description = Utils.splitString(getPlugin().getChatManager().colorMessage("Kits.Teleporter.Kit-Description"), 40);
     this.setDescription(description.toArray(new String[0]));
     getPlugin().getServer().getPluginManager().registerEvents(this, getPlugin());
     KitRegistry.registerKit(this);
@@ -75,8 +74,8 @@ public class TeleporterKit extends PremiumKit implements Listener {
     player.getInventory().addItem(new ItemStack(Material.COOKED_BEEF, 10));
     player.getInventory().addItem(new ItemStack(Material.SADDLE));
     player.getInventory().addItem(new ItemBuilder(new ItemStack(Material.GHAST_TEAR))
-        .name(ChatManager.colorMessage("Kits.Teleporter.Game-Item-Name"))
-        .lore(Utils.splitString(ChatManager.colorMessage("Kits.Teleporter.Game-Item-Lore"), 40))
+        .name(getPlugin().getChatManager().colorMessage("Kits.Teleporter.Game-Item-Name"))
+        .lore(Utils.splitString(getPlugin().getChatManager().colorMessage("Kits.Teleporter.Game-Item-Lore"), 40))
         .build());
   }
 
@@ -100,10 +99,10 @@ public class TeleporterKit extends PremiumKit implements Listener {
       if (arena == null || !Utils.isNamed(stack)) {
         return;
       }
-      if (!stack.getItemMeta().getDisplayName().equalsIgnoreCase(ChatManager.colorMessage("Kits.Teleporter.Game-Item-Name"))) {
+      if (!stack.getItemMeta().getDisplayName().equalsIgnoreCase(getPlugin().getChatManager().colorMessage("Kits.Teleporter.Game-Item-Name"))) {
         return;
       }
-      Inventory inventory = getPlugin().getServer().createInventory(null, 18, ChatManager.colorMessage("Kits.Teleporter.Game-Item-Menu-Name"));
+      Inventory inventory = getPlugin().getServer().createInventory(null, 18, getPlugin().getChatManager().colorMessage("Kits.Teleporter.Game-Item-Menu-Name"));
       for (Player player : e.getPlayer().getWorld().getPlayers()) {
         if (ArenaRegistry.getArena(player) != null && !getPlugin().getUserManager().getUser(player.getUniqueId()).isSpectator()) {
           ItemStack skull;
@@ -142,31 +141,28 @@ public class TeleporterKit extends PremiumKit implements Listener {
       if (arena == null || !Utils.isNamed(e.getCurrentItem()) || !e.getCurrentItem().getItemMeta().hasLore()) {
         return;
       }
-      if (!e.getInventory().getName().equalsIgnoreCase(ChatManager.colorMessage("Kits.Teleporter.Game-Item-Menu-Name")) || !(e.isLeftClick() || e.isRightClick())) {
+      if (!e.getInventory().getName().equals(getPlugin().getChatManager().colorMessage("Kits.Teleporter.Game-Item-Menu-Name")) || !(e.isLeftClick() || e.isRightClick())) {
         return;
       }
       e.setCancelled(true);
       if (e.getCurrentItem().getType() == Material.EMERALD) {
         for (Villager villager : arena.getVillagers()) {
-          if (villager.getCustomName() == null) {
-            villager.remove();
-          }
-          if (villager.getCustomName().equalsIgnoreCase(e.getCurrentItem().getItemMeta().getDisplayName()) && villager.getUniqueId().toString().equalsIgnoreCase(ChatColor.stripColor(e.getCurrentItem().getItemMeta().getLore().get(0)))) {
+          if (villager.getCustomName().equals(e.getCurrentItem().getItemMeta().getDisplayName()) && villager.getUniqueId().toString().equals((ChatColor.stripColor(e.getCurrentItem().getItemMeta().getLore().get(0))))) {
             e.getWhoClicked().teleport(villager.getLocation());
             Utils.playSound(p.getLocation(), "ENTITY_ENDERMEN_TELEPORT", "ENTITY_ENDERMAN_TELEPORT");
             p.getWorld().spawnParticle(Particle.PORTAL, p.getLocation(), 30);
-            p.sendMessage(ChatManager.colorMessage("Kits.Teleporter.Teleported-To-Villager"));
+            p.sendMessage(getPlugin().getChatManager().colorMessage("Kits.Teleporter.Teleported-To-Villager"));
             return;
           }
         }
-        p.sendMessage(ChatManager.colorMessage("Kits.Teleporter.Villager-Warning"));
+        p.sendMessage(getPlugin().getChatManager().colorMessage("Kits.Teleporter.Villager-Warning"));
         return;
       }
       //teleports to player
       ItemMeta meta = e.getCurrentItem().getItemMeta();
-      for (Player player : arena.getPlayers()) {
-        if (player.getName().equalsIgnoreCase(meta.getDisplayName()) || ChatColor.stripColor(meta.getDisplayName()).contains(player.getName())) {
-          p.sendMessage(ChatManager.formatMessage(arena, ChatManager.colorMessage("Kits.Teleporter.Teleported-To-Player"), player));
+      for (Player player : arena.getPlayersLeft()) {
+        if (player.getName().equals(meta.getDisplayName()) || ChatColor.stripColor(meta.getDisplayName()).contains(player.getName())) {
+          p.sendMessage(getPlugin().getChatManager().formatMessage(arena, getPlugin().getChatManager().colorMessage("Kits.Teleporter.Teleported-To-Player"), player));
           p.teleport(player);
           Utils.playSound(p.getLocation(), "ENTITY_ENDERMEN_TELEPORT", "ENTITY_ENDERMAN_TELEPORT");
           p.getWorld().spawnParticle(Particle.PORTAL, p.getLocation(), 30);
@@ -175,7 +171,7 @@ public class TeleporterKit extends PremiumKit implements Listener {
           return;
         }
       }
-      p.sendMessage(ChatManager.colorMessage("Kits.Teleporter.Player-Not-Found"));
+      p.sendMessage(getPlugin().getChatManager().colorMessage("Kits.Teleporter.Player-Not-Found"));
     } catch (Exception ex) {
       new ReportedException(getPlugin(), ex);
     }

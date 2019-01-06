@@ -1,6 +1,6 @@
 /*
  * Village Defense - Protect villagers from hordes of zombies
- * Copyright (C) 2018  Plajer's Lair - maintained by Plajer and Tigerpanzer
+ * Copyright (C) 2019  Plajer's Lair - maintained by Plajer and Tigerpanzer
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -31,13 +31,11 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.plugin.java.JavaPlugin;
 
 import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.api.event.player.VillagePlayerChooseKitEvent;
 import pl.plajer.villagedefense.arena.Arena;
 import pl.plajer.villagedefense.arena.ArenaRegistry;
-import pl.plajer.villagedefense.handlers.ChatManager;
 import pl.plajer.villagedefense.kits.kitapi.basekits.Kit;
 import pl.plajer.villagedefense.user.User;
 import pl.plajer.villagedefense.utils.Utils;
@@ -56,6 +54,7 @@ public class KitManager implements Listener {
   private Inventory invMenu;
   private String itemName;
   private Material material;
+  @Deprecated
   private String[] description;
   private String menuName;
 
@@ -64,9 +63,9 @@ public class KitManager implements Listener {
 
   public KitManager(Main plugin) {
     this.plugin = plugin;
-    itemName = ChatManager.colorMessage("Kits.Kit-Menu-Item-Name");
-    unlockedString = ChatManager.colorMessage("Kits.Kit-Menu.Unlocked-Kit-Lore");
-    lockedString = ChatManager.colorMessage("Kits.Kit-Menu.Locked-Lores.Locked-Lore");
+    itemName = plugin.getChatManager().colorMessage("Kits.Kit-Menu-Item-Name");
+    unlockedString = plugin.getChatManager().colorMessage("Kits.Kit-Menu.Unlocked-Kit-Lore");
+    lockedString = plugin.getChatManager().colorMessage("Kits.Kit-Menu.Locked-Lores.Locked-Lore");
     plugin.getServer().getPluginManager().registerEvents(this, plugin);
   }
 
@@ -125,6 +124,7 @@ public class KitManager implements Listener {
    *
    * @return description of kit
    */
+  @Deprecated
   public String[] getDescription() {
     return description;
   }
@@ -162,7 +162,7 @@ public class KitManager implements Listener {
 
 
   @EventHandler
-  private void onKitMenuItemClick(PlayerInteractEvent e) {
+  public void onKitMenuItemClick(PlayerInteractEvent e) {
     try {
       if (!(e.getAction() == Action.RIGHT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_BLOCK)) {
         return;
@@ -176,7 +176,7 @@ public class KitManager implements Listener {
       }
       openKitMenu(e.getPlayer());
     } catch (Exception ex) {
-      new ReportedException(JavaPlugin.getPlugin(Main.class), ex);
+      new ReportedException(plugin, ex);
     }
   }
 
@@ -198,7 +198,7 @@ public class KitManager implements Listener {
       VillagePlayerChooseKitEvent event = new VillagePlayerChooseKitEvent(player, KitRegistry.getKit(e.getCurrentItem()), arena);
       Bukkit.getPluginManager().callEvent(event);
     } catch (Exception ex) {
-      new ReportedException(JavaPlugin.getPlugin(Main.class), ex);
+      new ReportedException(plugin, ex);
     }
   }
 
@@ -207,9 +207,9 @@ public class KitManager implements Listener {
     if (e.getKit().isUnlockedByPlayer(e.getPlayer())) {
       User user = plugin.getUserManager().getUser(e.getPlayer().getUniqueId());
       user.setKit(e.getKit());
-      e.getPlayer().sendMessage(ChatManager.colorMessage("Kits.Choose-Message").replace("%KIT%", e.getKit().getName()));
+      e.getPlayer().sendMessage(plugin.getChatManager().colorMessage("Kits.Choose-Message").replace("%KIT%", e.getKit().getName()));
     } else {
-      e.getPlayer().sendMessage(ChatManager.colorMessage("Kits.Not-Unlocked-Message").replace("%KIT%", e.getKit().getName()));
+      e.getPlayer().sendMessage(plugin.getChatManager().colorMessage("Kits.Not-Unlocked-Message").replace("%KIT%", e.getKit().getName()));
     }
 
   }

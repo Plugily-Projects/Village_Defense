@@ -1,6 +1,6 @@
 /*
  * Village Defense - Protect villagers from hordes of zombies
- * Copyright (C) 2018  Plajer's Lair - maintained by Plajer and Tigerpanzer
+ * Copyright (C) 2019  Plajer's Lair - maintained by Plajer and Tigerpanzer
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -118,7 +118,7 @@ public class RewardsFactory {
       if (rewardType == GameReward.RewardType.END_WAVE) {
         for (String key : config.getConfigurationSection("rewards." + rewardType.getPath()).getKeys(false)) {
           for (String reward : config.getStringList("rewards." + rewardType.getPath() + "." + key)) {
-            rewards.add(new GameReward(rewardType, reward, Integer.valueOf(key)));
+            rewards.add(new GameReward(rewardType, reward, Integer.parseInt(key)));
             registeredRewards.put(rewardType, registeredRewards.getOrDefault(rewardType, 0) + 1);
           }
         }

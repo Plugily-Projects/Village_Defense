@@ -1,6 +1,6 @@
 /*
  * Village Defense - Protect villagers from hordes of zombies
- * Copyright (C) 2018  Plajer's Lair - maintained by Plajer and Tigerpanzer
+ * Copyright (C) 2019  Plajer's Lair - maintained by Plajer and Tigerpanzer
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -41,7 +41,6 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
 import pl.plajer.villagedefense.arena.ArenaRegistry;
-import pl.plajer.villagedefense.handlers.ChatManager;
 import pl.plajer.villagedefense.handlers.PermissionsManager;
 import pl.plajer.villagedefense.kits.kitapi.KitRegistry;
 import pl.plajer.villagedefense.kits.kitapi.basekits.PremiumKit;
@@ -62,8 +61,8 @@ public class WizardKit extends PremiumKit implements Listener {
   private List<Player> wizardsOnDuty = new ArrayList<>();
 
   public WizardKit() {
-    setName(ChatManager.colorMessage("Kits.Wizard.Kit-Name"));
-    List<String> description = Utils.splitString(ChatManager.colorMessage("Kits.Wizard.Kit-Description"), 40);
+    setName(getPlugin().getChatManager().colorMessage("Kits.Wizard.Kit-Name"));
+    List<String> description = Utils.splitString(getPlugin().getChatManager().colorMessage("Kits.Wizard.Kit-Description"), 40);
     this.setDescription(description.toArray(new String[0]));
     KitRegistry.registerKit(this);
     getPlugin().getServer().getPluginManager().registerEvents(this, getPlugin());
@@ -77,12 +76,12 @@ public class WizardKit extends PremiumKit implements Listener {
   @Override
   public void giveKitItems(Player player) {
     player.getInventory().addItem(new ItemBuilder(new ItemStack(Material.BLAZE_ROD))
-        .name(ChatManager.colorMessage("Kits.Wizard.Staff-Item-Name"))
-        .lore(Utils.splitString(ChatManager.colorMessage("Kits.Wizard.Staff-Item-Lore"), 40))
+        .name(getPlugin().getChatManager().colorMessage("Kits.Wizard.Staff-Item-Name"))
+        .lore(Utils.splitString(getPlugin().getChatManager().colorMessage("Kits.Wizard.Staff-Item-Lore"), 40))
         .build());
     player.getInventory().addItem(new ItemBuilder(new ItemStack(XMaterial.INK_SAC.parseMaterial(), 4))
-        .name(ChatManager.colorMessage("Kits.Wizard.Essence-Item-Name"))
-        .lore(Utils.splitString(ChatManager.colorMessage("Kits.Wizard.Essence-Item-Lore"), 40))
+        .name(getPlugin().getChatManager().colorMessage("Kits.Wizard.Essence-Item-Name"))
+        .lore(Utils.splitString(getPlugin().getChatManager().colorMessage("Kits.Wizard.Essence-Item-Lore"), 40))
         .build());
 
     ArmorHelper.setColouredArmor(Color.GRAY, player);
@@ -98,8 +97,8 @@ public class WizardKit extends PremiumKit implements Listener {
   @Override
   public void reStock(Player player) {
     player.getInventory().addItem(new ItemBuilder(new ItemStack(XMaterial.INK_SAC.parseMaterial()))
-        .name(ChatManager.colorMessage("Kits.Wizard.Essence-Item-Name"))
-        .lore(Utils.splitString(ChatManager.colorMessage("Kits.Wizard.Essence-Item-Lore"), 40))
+        .name(getPlugin().getChatManager().colorMessage("Kits.Wizard.Essence-Item-Name"))
+        .lore(Utils.splitString(getPlugin().getChatManager().colorMessage("Kits.Wizard.Essence-Item-Lore"), 40))
         .build());
   }
 
@@ -141,9 +140,9 @@ public class WizardKit extends PremiumKit implements Listener {
       if (!Utils.isNamed(stack)) {
         return;
       }
-      if (stack.getItemMeta().getDisplayName().equals(ChatManager.colorMessage("Kits.Wizard.Essence-Item-Name"))) {
+      if (stack.getItemMeta().getDisplayName().equals(getPlugin().getChatManager().colorMessage("Kits.Wizard.Essence-Item-Name"))) {
         if (user.getCooldown("essence") > 0 && !user.isSpectator()) {
-          String message = ChatManager.colorMessage("Kits.Ability-Still-On-Cooldown");
+          String message = getPlugin().getChatManager().colorMessage("Kits.Ability-Still-On-Cooldown");
           message = message.replaceFirst("%COOLDOWN%", Long.toString(user.getCooldown("essence")));
           e.getPlayer().sendMessage(message);
           return;
@@ -181,13 +180,13 @@ public class WizardKit extends PremiumKit implements Listener {
           wizardsOnDuty.remove(p);
         }, 20 * 15);
         user.setCooldown("essence", 15);
-      } else if (stack.getItemMeta().getDisplayName().equals(ChatManager.colorMessage("Kits.Wizard.Staff-Item-Name"))) {
+      } else if (stack.getItemMeta().getDisplayName().equals(getPlugin().getChatManager().colorMessage("Kits.Wizard.Staff-Item-Name"))) {
         if (user.isSpectator()) {
-          e.getPlayer().sendMessage(ChatManager.colorMessage("Kits.Cleaner.Spectator-Warning"));
+          e.getPlayer().sendMessage(getPlugin().getChatManager().colorMessage("Kits.Cleaner.Spectator-Warning"));
           return;
         }
         if (user.getCooldown("wizard_staff") > 0 && !user.isSpectator()) {
-          String message = ChatManager.colorMessage("Kits.Ability-Still-On-Cooldown");
+          String message = getPlugin().getChatManager().colorMessage("Kits.Ability-Still-On-Cooldown");
           message = message.replaceFirst("%COOLDOWN%", Long.toString(user.getCooldown("wizard_staff")));
           e.getPlayer().sendMessage(message);
           return;

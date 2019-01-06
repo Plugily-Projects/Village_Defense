@@ -1,6 +1,6 @@
 /*
  * Village Defense - Protect villagers from hordes of zombies
- * Copyright (C) 2018  Plajer's Lair - maintained by Plajer and Tigerpanzer
+ * Copyright (C) 2019  Plajer's Lair - maintained by Plajer and Tigerpanzer
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -37,7 +37,6 @@ import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.api.StatsStorage;
 import pl.plajer.villagedefense.arena.Arena;
 import pl.plajer.villagedefense.arena.ArenaRegistry;
-import pl.plajer.villagedefense.handlers.ChatManager;
 import pl.plajer.villagedefense.handlers.language.LanguageManager;
 import pl.plajer.villagedefense.user.User;
 import pl.plajerlair.core.services.exception.ReportedException;
@@ -113,10 +112,10 @@ public class ChatEvents implements Listener {
 
   private String formatChatPlaceholders(String message, User user, String saidMessage) {
     String formatted = message;
-    formatted = ChatManager.colorRawMessage(formatted);
+    formatted = plugin.getChatManager().colorRawMessage(formatted);
     formatted = StringUtils.replace(formatted, "%level%", String.valueOf(user.getStat(StatsStorage.StatisticType.LEVEL)));
     if (user.isSpectator()) {
-      formatted = StringUtils.replace(formatted, "%kit%", ChatManager.colorMessage("In-Game.Dead-Tag-On-Death"));
+      formatted = StringUtils.replace(formatted, "%kit%", plugin.getChatManager().colorMessage("In-Game.Dead-Tag-On-Death"));
     } else {
       formatted = StringUtils.replace(formatted, "%kit%", user.getKit().getName());
     }

@@ -1,6 +1,6 @@
 /*
  * Village Defense - Protect villagers from hordes of zombies
- * Copyright (C) 2018  Plajer's Lair - maintained by Plajer and Tigerpanzer
+ * Copyright (C) 2019  Plajer's Lair - maintained by Plajer and Tigerpanzer
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -32,7 +32,6 @@ import pl.plajer.villagedefense.commands.arguments.ArgumentsRegistry;
 import pl.plajer.villagedefense.commands.arguments.data.CommandArgument;
 import pl.plajer.villagedefense.commands.arguments.data.LabelData;
 import pl.plajer.villagedefense.commands.arguments.data.LabeledCommandArgument;
-import pl.plajer.villagedefense.handlers.ChatManager;
 import pl.plajer.villagedefense.utils.Utils;
 
 /**
@@ -53,7 +52,7 @@ public class ClearEntitiesArgument {
           return;
         }
         if (args.length == 1) {
-          sender.sendMessage(ChatManager.getPrefix() + ChatColor.RED + "Please type valid mob type to clear: VILLAGER, ZOMBIE, GOLEM");
+          sender.sendMessage(registry.getPlugin().getChatManager().getPrefix() + ChatColor.RED + "Please type valid mob type to clear: VILLAGER, ZOMBIE, GOLEM");
           return;
         }
         Arena arena = ArenaRegistry.getArena((Player) sender);
@@ -61,7 +60,7 @@ public class ClearEntitiesArgument {
         switch (args[1].toLowerCase()) {
           case "villager":
             if (arena.getVillagers() == null || arena.getVillagers().isEmpty()) {
-              sender.sendMessage(ChatManager.colorMessage("Kits.Cleaner.Nothing-To-Clean"));
+              sender.sendMessage(registry.getPlugin().getChatManager().colorMessage("Kits.Cleaner.Nothing-To-Clean"));
               return;
             }
             for (Villager villager : arena.getVillagers()) {
@@ -70,11 +69,11 @@ public class ClearEntitiesArgument {
             }
             arena.getVillagers().clear();
             Utils.playSound(((Player) sender).getLocation(), "ENTITY_VILLAGER_DEATH", "ENTITY_VILLAGER_DEATH");
-            clearMessage = ChatManager.colorMessage("In-Game.Messages.Admin-Messages.Removed-Villagers");
+            clearMessage = registry.getPlugin().getChatManager().colorMessage("In-Game.Messages.Admin-Messages.Removed-Villagers");
             break;
           case "zombie":
             if (arena.getZombies() == null || arena.getZombies().isEmpty()) {
-              sender.sendMessage(ChatManager.colorMessage("Kits.Cleaner.Nothing-To-Clean"));
+              sender.sendMessage(registry.getPlugin().getChatManager().colorMessage("Kits.Cleaner.Nothing-To-Clean"));
               return;
             }
             for (Zombie zombie : arena.getZombies()) {
@@ -83,11 +82,11 @@ public class ClearEntitiesArgument {
             }
             arena.getZombies().clear();
             Utils.playSound(((Player) sender).getLocation(), "ENTITY_ZOMBIE_DEATH", "ENTITY_ZOMBIE_DEATH");
-            clearMessage = ChatManager.colorMessage("In-Game.Messages.Admin-Messages.Removed-Zombies");
+            clearMessage = registry.getPlugin().getChatManager().colorMessage("In-Game.Messages.Admin-Messages.Removed-Zombies");
             break;
           case "golem":
             if (arena.getIronGolems() == null || arena.getIronGolems().isEmpty()) {
-              sender.sendMessage(ChatManager.colorMessage("Kits.Cleaner.Nothing-To-Clean"));
+              sender.sendMessage(registry.getPlugin().getChatManager().colorMessage("Kits.Cleaner.Nothing-To-Clean"));
               return;
             }
             for (IronGolem golem : arena.getIronGolems()) {
@@ -96,16 +95,16 @@ public class ClearEntitiesArgument {
             }
             arena.getIronGolems().clear();
             Utils.playSound(((Player) sender).getLocation(), "ENTITY_IRONGOLEM_DEATH", "ENTITY_IRON_GOLEM_DEATH");
-            clearMessage = ChatManager.colorMessage("In-Game.Messages.Admin-Messages.Removed-Golems");
+            clearMessage = registry.getPlugin().getChatManager().colorMessage("In-Game.Messages.Admin-Messages.Removed-Golems");
             break;
           default:
-            sender.sendMessage(ChatManager.getPrefix() + ChatColor.RED + "Please type valid mob type to clear: VILLAGER, ZOMBIE, GOLEM");
+            sender.sendMessage(registry.getPlugin().getChatManager().getPrefix() + ChatColor.RED + "Please type valid mob type to clear: VILLAGER, ZOMBIE, GOLEM");
             return;
           //todo add wolves
         }
         for (Player loopPlayer : arena.getPlayers()) {
-          String message = ChatManager.formatMessage(arena, clearMessage, loopPlayer);
-          loopPlayer.sendMessage(ChatManager.getPrefix() + message);
+          String message = registry.getPlugin().getChatManager().formatMessage(arena, clearMessage, loopPlayer);
+          loopPlayer.sendMessage(registry.getPlugin().getChatManager().getPrefix() + message);
         }
       }
     });

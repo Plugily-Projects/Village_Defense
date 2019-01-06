@@ -1,6 +1,6 @@
 /*
  * Village Defense - Protect villagers from hordes of zombies
- * Copyright (C) 2018  Plajer's Lair - maintained by Plajer and Tigerpanzer
+ * Copyright (C) 2019  Plajer's Lair - maintained by Plajer and Tigerpanzer
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,7 +25,6 @@ import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import pl.plajer.villagedefense.handlers.ChatManager;
 import pl.plajer.villagedefense.kits.kitapi.KitRegistry;
 import pl.plajer.villagedefense.kits.kitapi.basekits.FreeKit;
 import pl.plajer.villagedefense.utils.ArmorHelper;
@@ -39,8 +38,8 @@ import pl.plajerlair.core.utils.XMaterial;
 public class LightTankKit extends FreeKit {
 
   public LightTankKit() {
-    setName(ChatManager.colorMessage("Kits.Light-Tank.Kit-Name"));
-    List<String> description = Utils.splitString(ChatManager.colorMessage("Kits.Light-Tank.Kit-Description"), 40);
+    setName(getPlugin().getChatManager().colorMessage("Kits.Light-Tank.Kit-Name"));
+    List<String> description = Utils.splitString(getPlugin().getChatManager().colorMessage("Kits.Light-Tank.Kit-Description"), 40);
     this.setDescription(description.toArray(new String[0]));
     KitRegistry.registerKit(this);
   }

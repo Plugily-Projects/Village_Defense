@@ -1,6 +1,6 @@
 /*
  * Village Defense - Protect villagers from hordes of zombies
- * Copyright (C) 2018  Plajer's Lair - maintained by Plajer and Tigerpanzer
+ * Copyright (C) 2019  Plajer's Lair - maintained by Plajer and Tigerpanzer
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -137,7 +137,7 @@ public class ArenaEvents implements Listener {
             arena.getStartLocation().getWorld().strikeLightningEffect(e.getEntity().getLocation());
             arena.removeVillager((Villager) e.getEntity());
             plugin.getHolidayManager().applyHolidayDeathEffects(e.getEntity());
-            ChatManager.broadcast(arena, ChatManager.colorMessage("In-Game.Messages.Villager-Died"));
+            plugin.getChatManager().broadcast(arena, plugin.getChatManager().colorMessage("In-Game.Messages.Villager-Died"));
             return;
           default:
             break;
@@ -187,26 +187,27 @@ public class ArenaEvents implements Listener {
         player.setAllowFlight(true);
         player.setFlying(true);
         player.getInventory().clear();
-        player.sendTitle(ChatManager.colorMessage("In-Game.Death-Screen"), null, 0, 5 * 20, 0);
+        player.sendTitle(plugin.getChatManager().colorMessage("In-Game.Death-Screen"), null, 0, 5 * 20, 0);
         new BukkitRunnable() {
           @Override
           public void run() {
             if (arena.getArenaState() == ArenaState.ENDING) {
               this.cancel();
+              return;
             }
             if (user.isSpectator()) {
-              player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(ChatManager.colorMessage("In-Game.Died-Respawn-In-Next-Wave")));
+              player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(plugin.getChatManager().colorMessage("In-Game.Died-Respawn-In-Next-Wave")));
             } else {
               this.cancel();
             }
           }
-        }.runTaskTimer(plugin, 20, 20);
-        ChatManager.broadcastAction(arena, player, ChatManager.ActionType.DEATH);
+        }.runTaskTimer(plugin, 30, 30);
+        plugin.getChatManager().broadcastAction(arena, player, ChatManager.ActionType.DEATH);
 
         //running in a scheduler of 1 tick due to 1.13 bug
         Bukkit.getScheduler().runTaskLater(plugin, () -> {
-          player.getInventory().setItem(0, new ItemBuilder(XMaterial.COMPASS.parseItem()).name(ChatManager.colorMessage("In-Game.Spectator.Spectator-Item-Name")).build());
-          player.getInventory().setItem(4, new ItemBuilder(XMaterial.COMPARATOR.parseItem()).name(ChatManager.colorMessage("In-Game.Spectator.Settings-Menu.Item-Name")).build());
+          player.getInventory().setItem(0, new ItemBuilder(XMaterial.COMPASS.parseItem()).name(plugin.getChatManager().colorMessage("In-Game.Spectator.Spectator-Item-Name")).build());
+          player.getInventory().setItem(4, new ItemBuilder(XMaterial.COMPARATOR.parseItem()).name(plugin.getChatManager().colorMessage("In-Game.Spectator.Settings-Menu.Item-Name")).build());
           player.getInventory().setItem(8, SpecialItemManager.getSpecialItem("Leave").getItemStack());
         }, 1);
 

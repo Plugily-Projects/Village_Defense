@@ -1,6 +1,6 @@
 /*
  * Village Defense - Protect villagers from hordes of zombies
- * Copyright (C) 2018  Plajer's Lair - maintained by Plajer and Tigerpanzer
+ * Copyright (C) 2019  Plajer's Lair - maintained by Plajer and Tigerpanzer
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,7 +28,6 @@ import pl.plajer.villagedefense.arena.ArenaRegistry;
 import pl.plajer.villagedefense.arena.ArenaState;
 import pl.plajer.villagedefense.commands.arguments.ArgumentsRegistry;
 import pl.plajer.villagedefense.commands.arguments.data.CommandArgument;
-import pl.plajer.villagedefense.handlers.ChatManager;
 
 /**
  * @author Plajer
@@ -43,11 +42,11 @@ public class JoinArguments {
       @Override
       public void execute(CommandSender sender, String[] args) {
         if (args.length == 1) {
-          sender.sendMessage(ChatManager.colorMessage("Commands.Type-Arena-Name"));
+          sender.sendMessage(registry.getPlugin().getChatManager().colorMessage("Commands.Type-Arena-Name"));
           return;
         }
         if (ArenaRegistry.isInArena(((Player) sender))) {
-          sender.sendMessage(ChatManager.getPrefix() + ChatManager.colorMessage("In-Game.Already-Playing"));
+          sender.sendMessage(registry.getPlugin().getChatManager().getPrefix() + registry.getPlugin().getChatManager().colorMessage("In-Game.Already-Playing"));
           return;
         }
         for (Arena arena : ArenaRegistry.getArenas()) {
@@ -56,7 +55,7 @@ public class JoinArguments {
             return;
           }
         }
-        sender.sendMessage(ChatManager.colorMessage("Commands.No-Arena-Like-That"));
+        sender.sendMessage(registry.getPlugin().getChatManager().colorMessage("Commands.No-Arena-Like-That"));
       }
     });
 
@@ -66,7 +65,7 @@ public class JoinArguments {
         @Override
         public void execute(CommandSender sender, String[] args) {
           if (ArenaRegistry.isInArena(((Player) sender))) {
-            sender.sendMessage(ChatManager.getPrefix() + ChatManager.colorMessage("In-Game.Already-Playing"));
+            sender.sendMessage(registry.getPlugin().getChatManager().getPrefix() + registry.getPlugin().getChatManager().colorMessage("In-Game.Already-Playing"));
             return;
           }
           for (Arena arena : ArenaRegistry.getArenas()) {
@@ -75,7 +74,7 @@ public class JoinArguments {
               return;
             }
           }
-          sender.sendMessage(ChatManager.getPrefix() + ChatManager.colorMessage("Commands.No-Free-Arenas"));
+          sender.sendMessage(registry.getPlugin().getChatManager().getPrefix() + registry.getPlugin().getChatManager().colorMessage("Commands.No-Free-Arenas"));
         }
       });
     }

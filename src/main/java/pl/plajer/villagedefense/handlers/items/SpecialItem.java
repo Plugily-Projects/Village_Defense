@@ -1,6 +1,6 @@
 /*
  * Village Defense - Protect villagers from hordes of zombies
- * Copyright (C) 2018  Plajer's Lair - maintained by Plajer and Tigerpanzer
+ * Copyright (C) 2019  Plajer's Lair - maintained by Plajer and Tigerpanzer
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,7 +30,6 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import pl.plajer.villagedefense.Main;
-import pl.plajer.villagedefense.handlers.ChatManager;
 import pl.plajerlair.core.debug.Debugger;
 import pl.plajerlair.core.debug.LogLevel;
 import pl.plajerlair.core.utils.ConfigUtils;
@@ -41,6 +40,7 @@ import pl.plajerlair.core.utils.XMaterial;
  */
 public class SpecialItem {
 
+  private Main plugin = JavaPlugin.getPlugin(Main.class);
   private ItemStack itemStack;
   private int slot;
   private String name;
@@ -73,11 +73,11 @@ public class SpecialItem {
     ConfigUtils.saveConfig(JavaPlugin.getPlugin(Main.class), config, "lobbyitems");
     ItemStack stack = XMaterial.fromString(config.getString(name + ".material-name").toUpperCase()).parseItem();
     ItemMeta meta = stack.getItemMeta();
-    meta.setDisplayName(ChatManager.colorRawMessage(config.getString(name + ".displayname")));
+    meta.setDisplayName(plugin.getChatManager().colorRawMessage(config.getString(name + ".displayname")));
 
     List<String> colorizedLore = new ArrayList<>();
     for (String str : config.getStringList(name + ".lore")) {
-      colorizedLore.add(ChatManager.colorRawMessage(str));
+      colorizedLore.add(plugin.getChatManager().colorRawMessage(str));
     }
     meta.setLore(colorizedLore);
     stack.setItemMeta(meta);

@@ -1,6 +1,6 @@
 /*
  * Village Defense - Protect villagers from hordes of zombies
- * Copyright (C) 2018  Plajer's Lair - maintained by Plajer and Tigerpanzer
+ * Copyright (C) 2019  Plajer's Lair - maintained by Plajer and Tigerpanzer
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,7 +29,6 @@ import pl.plajer.villagedefense.arena.initializers.ArenaInitializer1_11_R1;
 import pl.plajer.villagedefense.arena.initializers.ArenaInitializer1_12_R1;
 import pl.plajer.villagedefense.arena.initializers.ArenaInitializer1_13_R1;
 import pl.plajer.villagedefense.arena.initializers.ArenaInitializer1_13_R2;
-import pl.plajer.villagedefense.handlers.ChatManager;
 import pl.plajer.villagedefense.user.User;
 import pl.plajerlair.core.services.exception.ReportedException;
 
@@ -82,7 +81,7 @@ public class ArenaUtils {
         arena.showPlayers();
         player.getInventory().clear();
         user.getKit().giveKitItems(player);
-        player.sendMessage(ChatManager.colorMessage("In-Game.Back-In-Game"));
+        player.sendMessage(plugin.getChatManager().colorMessage("In-Game.Back-In-Game"));
       }
     } catch (Exception e) {
       new ReportedException(plugin, e);
@@ -94,7 +93,7 @@ public class ArenaUtils {
       User user = plugin.getUserManager().getUser(player.getUniqueId());
       if (Math.pow(50 * user.getStat(StatsStorage.StatisticType.LEVEL), 1.5) < user.getStat(StatsStorage.StatisticType.XP)) {
         user.addStat(StatsStorage.StatisticType.LEVEL, 1);
-        player.sendMessage(ChatManager.getPrefix() + ChatManager.formatMessage(arena, ChatManager.colorMessage("In-Game.You-Leveled-Up"), user.getStat(StatsStorage.StatisticType.LEVEL)));
+        player.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().formatMessage(arena, plugin.getChatManager().colorMessage("In-Game.You-Leveled-Up"), user.getStat(StatsStorage.StatisticType.LEVEL)));
       }
     } catch (Exception e) {
       new ReportedException(plugin, e);

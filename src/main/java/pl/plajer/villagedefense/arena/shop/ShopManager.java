@@ -1,6 +1,6 @@
 /*
  * Village Defense - Protect villagers from hordes of zombies
- * Copyright (C) 2018  Plajer's Lair - maintained by Plajer and Tigerpanzer
+ * Copyright (C) 2019  Plajer's Lair - maintained by Plajer and Tigerpanzer
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,10 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package pl.plajer.villagedefense.handlers;
-
-import java.util.HashMap;
-import java.util.Map;
+package pl.plajer.villagedefense.arena.shop;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -46,21 +43,20 @@ import pl.plajerlair.core.utils.MinigameUtils;
  */
 public class ShopManager {
 
-  private static Map<Arena, Inventory> arenaShop = new HashMap<>();
+  private Main plugin = JavaPlugin.getPlugin(Main.class);
+  private Inventory arenaShop;
 
-  public ShopManager() {
-    for (Arena a : ArenaRegistry.getArenas()) {
-      if (ConfigUtils.getConfig(JavaPlugin.getPlugin(Main.class), "arenas").isSet("instances." + a.getID() + ".shop")) {
-        registerShop(a);
-      }
+  public ShopManager(Arena arena) {
+    if (ConfigUtils.getConfig(JavaPlugin.getPlugin(Main.class), "arenas").isSet("instances." + arena.getID() + ".shop")) {
+      registerShop(arena);
     }
   }
 
-  public static Map<Arena, Inventory> getArenaShop() {
+  public Inventory getShop() {
     return arenaShop;
   }
 
-  public static void registerShop(Arena a) {
+  private void registerShop(Arena a) {
     try {
       FileConfiguration config = ConfigUtils.getConfig(JavaPlugin.getPlugin(Main.class), "arenas");
       if (config.getString("instances." + a.getID() + ".shop", "").equals("") || config.getString("instances." + a.getID() + ".shop", "").split(",").length == 0) {
@@ -73,7 +69,7 @@ public class ShopManager {
         return;
       }
       int i = ((Chest) location.getBlock().getState()).getInventory().getContents().length;
-      Inventory inventory = Bukkit.createInventory(null, MinigameUtils.serializeInt(i), ChatManager.colorMessage("In-Game.Messages.Shop-Messages.Shop-GUI-Name"));
+      Inventory inventory = Bukkit.createInventory(null, MinigameUtils.serializeInt(i), plugin.getChatManager().colorMessage("In-Game.Messages.Shop-Messages.Shop-GUI-Name"));
       i = 0;
       for (ItemStack itemStack : ((Chest) location.getBlock().getState()).getInventory().getContents()) {
         if (itemStack != null && itemStack.getType() != Material.REDSTONE_BLOCK) {
@@ -81,22 +77,22 @@ public class ShopManager {
         }
         i++;
       }
-      arenaShop.put(a, inventory);
+      arenaShop = inventory;
     } catch (Exception ex) {
       new ReportedException(JavaPlugin.getPlugin(Main.class), ex);
     }
   }
 
-  public static void openShop(Player player) {
+  public void openShop(Player player) {
     Arena arena = ArenaRegistry.getArena(player);
     if (arena == null) {
       return;
     }
-    if (arenaShop.get(arena) == null) {
-      player.sendMessage(ChatManager.colorMessage("In-Game.Messages.Shop-Messages.No-Shop-Defined"));
+    if (arenaShop == null) {
+      player.sendMessage(plugin.getChatManager().colorMessage("In-Game.Messages.Shop-Messages.No-Shop-Defined"));
       return;
     }
-    player.openInventory(arenaShop.get(arena));
+    player.openInventory(arenaShop);
   }
 
 

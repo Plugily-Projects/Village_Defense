@@ -1,6 +1,6 @@
 /*
  * Village Defense - Protect villagers from hordes of zombies
- * Copyright (C) 2018  Plajer's Lair - maintained by Plajer and Tigerpanzer
+ * Copyright (C) 2019  Plajer's Lair - maintained by Plajer and Tigerpanzer
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -31,7 +31,6 @@ import pl.plajer.villagedefense.commands.arguments.ArgumentsRegistry;
 import pl.plajer.villagedefense.commands.arguments.data.CommandArgument;
 import pl.plajer.villagedefense.commands.arguments.data.LabelData;
 import pl.plajer.villagedefense.commands.arguments.data.LabeledCommandArgument;
-import pl.plajer.villagedefense.handlers.ChatManager;
 import pl.plajer.villagedefense.utils.Utils;
 
 /**
@@ -51,16 +50,16 @@ public class SetWaveArgument {
           return;
         }
         if (args.length == 0) {
-          sender.sendMessage(ChatManager.getPrefix() + ChatColor.RED + "Please type number of wave to set!");
+          sender.sendMessage(registry.getPlugin().getChatManager().getPrefix() + ChatColor.RED + "Please type number of wave to set!");
           return;
         }
         Arena arena = ArenaRegistry.getArena((Player) sender);
         if (Utils.isInteger(args[1])) {
           arena.setWave(Integer.parseInt(args[1]) - 1);
           ArenaManager.endWave(arena);
-          String message = ChatManager.formatMessage(arena, ChatManager.colorMessage("In-Game.Messages.Admin-Messages.Changed-Wave"), arena.getWave());
+          String message = registry.getPlugin().getChatManager().formatMessage(arena, registry.getPlugin().getChatManager().colorMessage("In-Game.Messages.Admin-Messages.Changed-Wave"), arena.getWave());
           for (Player player1 : arena.getPlayers()) {
-            player1.sendMessage(ChatManager.getPrefix() + message);
+            player1.sendMessage(registry.getPlugin().getChatManager().getPrefix() + message);
           }
           if (arena.getZombies() != null) {
             for (Zombie zombie : arena.getZombies()) {
@@ -69,16 +68,16 @@ public class SetWaveArgument {
             }
             arena.getZombies().clear();
           } else {
-            sender.sendMessage(ChatManager.colorMessage("Kits.Cleaner.Nothing-To-Clean"));
+            sender.sendMessage(registry.getPlugin().getChatManager().colorMessage("Kits.Cleaner.Nothing-To-Clean"));
             return;
           }
           Utils.playSound(((Player) sender).getLocation(), "ENTITY_ZOMBIE_DEATH", "ENTITY_ZOMBIE_DEATH");
           for (Player loopPlayer : arena.getPlayers()) {
-            String message1 = ChatManager.formatMessage(arena, ChatManager.colorMessage("In-Game.Messages.Admin-Messages.Removed-Zombies"), loopPlayer);
-            loopPlayer.sendMessage(ChatManager.getPrefix() + message1);
+            String message1 = registry.getPlugin().getChatManager().formatMessage(arena, registry.getPlugin().getChatManager().colorMessage("In-Game.Messages.Admin-Messages.Removed-Zombies"), loopPlayer);
+            loopPlayer.sendMessage(registry.getPlugin().getChatManager().getPrefix() + message1);
           }
         } else {
-          sender.sendMessage(ChatManager.getPrefix() + ChatManager.colorMessage("Commands.Invalid-Number").replace("%correct%", "/vda setwave <number>"));
+          sender.sendMessage(registry.getPlugin().getChatManager().getPrefix() + registry.getPlugin().getChatManager().colorMessage("Commands.Invalid-Number").replace("%correct%", "/vda setwave <number>"));
         }
       }
     });

@@ -1,6 +1,6 @@
 /*
  * Village Defense - Protect villagers from hordes of zombies
- * Copyright (C) 2018  Plajer's Lair - maintained by Plajer and Tigerpanzer
+ * Copyright (C) 2019  Plajer's Lair - maintained by Plajer and Tigerpanzer
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -35,7 +35,6 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
 import pl.plajer.villagedefense.arena.ArenaRegistry;
-import pl.plajer.villagedefense.handlers.ChatManager;
 import pl.plajer.villagedefense.handlers.PermissionsManager;
 import pl.plajer.villagedefense.kits.kitapi.KitRegistry;
 import pl.plajer.villagedefense.kits.kitapi.basekits.PremiumKit;
@@ -56,8 +55,8 @@ public class TornadoKit extends PremiumKit implements Listener {
   private double radiusIncrement = maxRadius / maxHeight;
 
   public TornadoKit() {
-    setName(ChatManager.colorMessage("Kits.Tornado.Kit-Name"));
-    List<String> description = Utils.splitString(ChatManager.colorMessage("Kits.Tornado.Kit-Description"), 40);
+    setName(getPlugin().getChatManager().colorMessage("Kits.Tornado.Kit-Name"));
+    List<String> description = Utils.splitString(getPlugin().getChatManager().colorMessage("Kits.Tornado.Kit-Description"), 40);
     this.setDescription(description.toArray(new String[0]));
     getPlugin().getServer().getPluginManager().registerEvents(this, getPlugin());
     KitRegistry.registerKit(this);
@@ -76,8 +75,8 @@ public class TornadoKit extends PremiumKit implements Listener {
     player.getInventory().addItem(new ItemStack(Material.COOKED_BEEF, 10));
     player.getInventory().addItem(new ItemStack(Material.SADDLE));
     player.getInventory().addItem(new ItemBuilder(new ItemStack(XMaterial.COBWEB.parseMaterial(), 5))
-        .name(ChatManager.colorMessage("Kits.Tornado.Game-Item-Name"))
-        .lore(Utils.splitString(ChatManager.colorMessage("Kits.Tornado.Game-Item-Lore"), 40))
+        .name(getPlugin().getChatManager().colorMessage("Kits.Tornado.Game-Item-Name"))
+        .lore(Utils.splitString(getPlugin().getChatManager().colorMessage("Kits.Tornado.Game-Item-Lore"), 40))
         .build());
   }
 
@@ -89,8 +88,8 @@ public class TornadoKit extends PremiumKit implements Listener {
   @Override
   public void reStock(Player player) {
     player.getInventory().addItem(new ItemBuilder(new ItemStack(XMaterial.COBWEB.parseMaterial(), 5))
-        .name(ChatManager.colorMessage("Kits.Tornado.Game-Item-Name"))
-        .lore(Utils.splitString(ChatManager.colorMessage("Kits.Tornado.Game-Item-Lore"), 40))
+        .name(getPlugin().getChatManager().colorMessage("Kits.Tornado.Game-Item-Name"))
+        .lore(Utils.splitString(getPlugin().getChatManager().colorMessage("Kits.Tornado.Game-Item-Lore"), 40))
         .build());
   }
 
@@ -103,7 +102,7 @@ public class TornadoKit extends PremiumKit implements Listener {
       Player player = e.getPlayer();
       ItemStack stack = player.getInventory().getItemInMainHand();
       if (!ArenaRegistry.isInArena(player) || !Utils.isNamed(stack)
-          || !stack.getItemMeta().getDisplayName().equalsIgnoreCase(ChatManager.colorMessage("Kits.Tornado.Game-Item-Name"))) {
+          || !stack.getItemMeta().getDisplayName().equalsIgnoreCase(getPlugin().getChatManager().colorMessage("Kits.Tornado.Game-Item-Name"))) {
         return;
       }
       if (stack.getAmount() <= 1) {

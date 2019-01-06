@@ -1,6 +1,6 @@
 /*
  * Village Defense - Protect villagers from hordes of zombies
- * Copyright (C) 2018  Plajer's Lair - maintained by Plajer and Tigerpanzer
+ * Copyright (C) 2019  Plajer's Lair - maintained by Plajer and Tigerpanzer
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,7 +30,6 @@ import pl.plajer.villagedefense.commands.arguments.ArgumentsRegistry;
 import pl.plajer.villagedefense.commands.arguments.data.CommandArgument;
 import pl.plajer.villagedefense.commands.arguments.data.LabelData;
 import pl.plajer.villagedefense.commands.arguments.data.LabeledCommandArgument;
-import pl.plajer.villagedefense.handlers.ChatManager;
 
 /**
  * @author Plajer
@@ -53,7 +52,7 @@ public class SpyChatArgument {
         } else {
           spyChatters.add(uuid);
         }
-        sender.sendMessage(ChatManager.getPrefix() + ChatColor.GREEN + "Game spy chat toggled to " + spyChatters.contains(uuid));
+        sender.sendMessage(registry.getPlugin().getChatManager().getPrefix() + ChatColor.GREEN + "Game spy chat toggled to " + spyChatters.contains(uuid));
       }
     });
   }

@@ -1,6 +1,6 @@
 /*
  * Village Defense - Protect villagers from hordes of zombies
- * Copyright (C) 2018  Plajer's Lair - maintained by Plajer and Tigerpanzer
+ * Copyright (C) 2019  Plajer's Lair - maintained by Plajer and Tigerpanzer
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,7 +33,6 @@ import org.bukkit.event.player.PlayerQuitEvent;
 
 import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.arena.ArenaRegistry;
-import pl.plajer.villagedefense.handlers.ChatManager;
 import pl.plajer.villagedefense.utils.Utils;
 import pl.plajerlair.core.services.exception.ReportedException;
 
@@ -72,7 +71,7 @@ public class EntityUpgradeListener implements Listener {
       if (e.getInventory() == null || !Utils.isNamed(e.getCurrentItem()) || !(e.getWhoClicked() instanceof Player) || clickedEntity.get(e.getWhoClicked()) == null) {
         return;
       }
-      if (!e.getInventory().getName().equals(ChatManager.colorMessage("Upgrade-Menu.Title"))) {
+      if (!e.getInventory().getName().equals(plugin.getChatManager().colorMessage("Upgrade-Menu.Title"))) {
         return;
       }
       //todo check position
@@ -82,15 +81,15 @@ public class EntityUpgradeListener implements Listener {
       }*/
       Player p = (Player) e.getWhoClicked();
       String upgrade = e.getCurrentItem().getItemMeta().getDisplayName();
-      if (upgrade.equals(ChatManager.colorMessage("Upgrade-Menu.Upgrades.Health.Name"))) {
+      if (upgrade.equals(plugin.getChatManager().colorMessage("Upgrade-Menu.Upgrades.Health.Name"))) {
         //todo add pricing
         EntityUpgradeMenu.applyUpgrade(clickedEntity.get(p), EntityUpgrade.HEALTH);
         p.closeInventory();
-      } else if (upgrade.equals(ChatManager.colorMessage("Upgrade-Menu.Upgrades.Damage.Name"))) {
+      } else if (upgrade.equals(plugin.getChatManager().colorMessage("Upgrade-Menu.Upgrades.Damage.Name"))) {
         //todo add pricing
         EntityUpgradeMenu.applyUpgrade(clickedEntity.get(p), EntityUpgrade.DAMAGE);
         p.closeInventory();
-      } else if (upgrade.equals(ChatManager.colorMessage("Upgrade-Menu.Upgrades.Speed.Name"))) {
+      } else if (upgrade.equals(plugin.getChatManager().colorMessage("Upgrade-Menu.Upgrades.Speed.Name"))) {
         //todo add pricing
         EntityUpgradeMenu.applyUpgrade(clickedEntity.get(p), EntityUpgrade.SPEED);
         p.closeInventory();
@@ -109,7 +108,7 @@ public class EntityUpgradeListener implements Listener {
       if (e.getInventory() == null || clickedEntity.get(e.getPlayer()) == null) {
         return;
       }
-      if (e.getInventory().getName().equals(ChatManager.colorMessage("Upgrade-Menu.Title"))) {
+      if (e.getInventory().getName().equals(plugin.getChatManager().colorMessage("Upgrade-Menu.Title"))) {
         clickedEntity.remove(e.getPlayer());
       }
     } catch (Exception ex) {

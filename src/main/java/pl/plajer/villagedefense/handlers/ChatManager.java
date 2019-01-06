@@ -1,6 +1,6 @@
 /*
  * Village Defense - Protect villagers from hordes of zombies
- * Copyright (C) 2018  Plajer's Lair - maintained by Plajer and Tigerpanzer
+ * Copyright (C) 2019  Plajer's Lair - maintained by Plajer and Tigerpanzer
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -36,20 +36,20 @@ import pl.plajerlair.core.utils.MinigameUtils;
  */
 public class ChatManager {
 
-  private static String prefix;
-
+  private String prefix;
+  
   public ChatManager(String prefix) {
-    ChatManager.prefix = prefix;
+    this.prefix = prefix;
   }
 
   /**
    * @return game prefix
    */
-  public static String getPrefix() {
+  public String getPrefix() {
     return prefix;
   }
 
-  public static String colorRawMessage(String message) {
+  public String colorRawMessage(String message) {
     return ChatColor.translateAlternateColorCodes('&', message);
   }
 
@@ -60,13 +60,13 @@ public class ChatManager {
    * @param arena   arena to get players from
    * @param message message to broadcast
    */
-  public static void broadcast(Arena arena, String message) {
+  public void broadcast(Arena arena, String message) {
     for (Player p : arena.getPlayers()) {
       p.sendMessage(prefix + message);
     }
   }
 
-  public static String colorMessage(String message) {
+  public String colorMessage(String message) {
     try {
       return ChatColor.translateAlternateColorCodes('&', LanguageManager.getLanguageMessage(message));
     } catch (NullPointerException e1) {
@@ -84,21 +84,21 @@ public class ChatManager {
     }
   }
 
-  public static String formatMessage(Arena arena, String message, int integer) {
+  public String formatMessage(Arena arena, String message, int integer) {
     String returnString = message;
     returnString = StringUtils.replace(returnString, "%NUMBER%", Integer.toString(integer));
     returnString = colorRawMessage(formatPlaceholders(returnString, arena));
     return returnString;
   }
 
-  public static String formatMessage(Arena arena, String message, Player player) {
+  public String formatMessage(Arena arena, String message, Player player) {
     String returnString = message;
     returnString = StringUtils.replace(returnString, "%PLAYER%", player.getName());
     returnString = colorRawMessage(formatPlaceholders(returnString, arena));
     return returnString;
   }
 
-  private static String formatPlaceholders(String message, Arena arena) {
+  private String formatPlaceholders(String message, Arena arena) {
     String returnString = message;
     returnString = StringUtils.replace(returnString, "%TIME%", Integer.toString(arena.getTimer()));
     returnString = StringUtils.replace(returnString, "%FORMATTEDTIME%", MinigameUtils.formatIntoMMSS((arena.getTimer())));
@@ -108,16 +108,16 @@ public class ChatManager {
     return returnString;
   }
 
-  public static void broadcastAction(Arena a, Player p, ActionType action) {
+  public void broadcastAction(Arena a, Player p, ActionType action) {
     switch (action) {
       case JOIN:
-        broadcast(a, formatMessage(a, ChatManager.colorMessage("In-Game.Messages.Join"), p));
+        broadcast(a, formatMessage(a, colorMessage("In-Game.Messages.Join"), p));
         break;
       case LEAVE:
-        broadcast(a, formatMessage(a, ChatManager.colorMessage("In-Game.Messages.Leave"), p));
+        broadcast(a, formatMessage(a, colorMessage("In-Game.Messages.Leave"), p));
         break;
       case DEATH:
-        broadcast(a, formatMessage(a, ChatManager.colorMessage("In-Game.Messages.Death"), p));
+        broadcast(a, formatMessage(a, colorMessage("In-Game.Messages.Death"), p));
         break;
       default:
         break;

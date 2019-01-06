@@ -1,6 +1,6 @@
 /*
  * Village Defense - Protect villagers from hordes of zombies
- * Copyright (C) 2018  Plajer's Lair - maintained by Plajer and Tigerpanzer
+ * Copyright (C) 2019  Plajer's Lair - maintained by Plajer and Tigerpanzer
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,7 +28,6 @@ import pl.plajer.villagedefense.commands.arguments.ArgumentsRegistry;
 import pl.plajer.villagedefense.commands.arguments.data.CommandArgument;
 import pl.plajer.villagedefense.commands.arguments.data.LabelData;
 import pl.plajer.villagedefense.commands.arguments.data.LabeledCommandArgument;
-import pl.plajer.villagedefense.handlers.ChatManager;
 
 /**
  * @author Plajer
@@ -45,18 +44,18 @@ public class TeleportArgument {
       @Override
       public void execute(CommandSender sender, String[] args) {
         if (args.length == 1) {
-          sender.sendMessage(ChatManager.getPrefix() + ChatManager.colorMessage("Commands.Type-Arena-Name"));
+          sender.sendMessage(registry.getPlugin().getChatManager().getPrefix() + registry.getPlugin().getChatManager().colorMessage("Commands.Type-Arena-Name"));
           return;
         }
         if (args.length == 2) {
-          sender.sendMessage(ChatManager.getPrefix() + ChatColor.RED + "Please type location type: END, START, LOBBY");
+          sender.sendMessage(registry.getPlugin().getChatManager().getPrefix() + ChatColor.RED + "Please type location type: END, START, LOBBY");
           return;
         }
         Player player = (Player) sender;
         try {
           LocationType.valueOf(args[2].toUpperCase());
         } catch (Exception e) {
-          sender.sendMessage(ChatManager.getPrefix() + ChatManager.colorMessage("Commands.Location-Teleport-Invalid"));
+          sender.sendMessage(registry.getPlugin().getChatManager().getPrefix() + registry.getPlugin().getChatManager().colorMessage("Commands.Location-Teleport-Invalid"));
           return;
         }
         for (Arena arena : ArenaRegistry.getArenas()) {

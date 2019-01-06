@@ -1,6 +1,6 @@
 /*
  * Village Defense - Protect villagers from hordes of zombies
- * Copyright (C) 2018  Plajer's Lair - maintained by Plajer and Tigerpanzer
+ * Copyright (C) 2019  Plajer's Lair - maintained by Plajer and Tigerpanzer
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -41,7 +41,6 @@ import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.api.StatsStorage;
 import pl.plajer.villagedefense.api.event.player.VillagePlayerGolemUpgradeEvent;
 import pl.plajer.villagedefense.arena.ArenaRegistry;
-import pl.plajer.villagedefense.handlers.ChatManager;
 import pl.plajer.villagedefense.utils.Utils;
 import pl.plajerlair.core.debug.Debugger;
 import pl.plajerlair.core.debug.LogLevel;
@@ -71,15 +70,15 @@ public class GolemEvents implements Listener {
         return;
       }
       if (e.getRightClicked().getCustomName() == null || !(e.getRightClicked().getCustomName().contains(e.getPlayer().getName()))) {
-        e.getPlayer().sendMessage(ChatManager.getPrefix() + ChatManager.colorMessage("In-Game.Golem-Upgrades.Cant-Upgrade-Others"));
+        e.getPlayer().sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage("In-Game.Golem-Upgrades.Cant-Upgrade-Others"));
         return;
       }
-      Inventory inv = Bukkit.createInventory(null, 3 * 9, ChatManager.colorMessage("In-Game.Golem-Upgrades.Upgrade-Inventory"));
+      Inventory inv = Bukkit.createInventory(null, 3 * 9, plugin.getChatManager().colorMessage("In-Game.Golem-Upgrades.Upgrade-Inventory"));
       for (int i = 1; i <= 3; i++) {
         ItemStack golemHealthUpgrade = new ItemStack(Material.IRON_INGOT, i);
         ItemMeta meta = golemHealthUpgrade.getItemMeta();
-        meta.setDisplayName(ChatManager.colorMessage("In-Game.Golem-Upgrades.Upgrade-Tier" + i));
-        meta.setLore(Arrays.asList(ChatManager.colorMessage("In-Game.Golem-Upgrades.Upgrade-Tier" + i + "-Lore")
+        meta.setDisplayName(plugin.getChatManager().colorMessage("In-Game.Golem-Upgrades.Upgrade-Tier" + i));
+        meta.setLore(Arrays.asList(plugin.getChatManager().colorMessage("In-Game.Golem-Upgrades.Upgrade-Tier" + i + "-Lore")
             .replace("%cost%", plugin.getConfig().getString("Golem-Upgrade-Tier" + i + "-Cost")).split(";")));
         golemHealthUpgrade.setItemMeta(meta);
         inv.setItem((i * 3) + 7, golemHealthUpgrade);
@@ -87,14 +86,14 @@ public class GolemEvents implements Listener {
 
       ItemStack golemHeal = new ItemStack(Material.GOLD_BLOCK, 1);
       ItemMeta healMeta = golemHeal.getItemMeta();
-      healMeta.setDisplayName(ChatManager.colorMessage("In-Game.Golem-Upgrades.Upgrade-Heal"));
-      healMeta.setLore(Arrays.asList(ChatManager.colorMessage("In-Game.Golem-Upgrades.Upgrade-Heal-Lore")
+      healMeta.setDisplayName(plugin.getChatManager().colorMessage("In-Game.Golem-Upgrades.Upgrade-Heal"));
+      healMeta.setLore(Arrays.asList(plugin.getChatManager().colorMessage("In-Game.Golem-Upgrades.Upgrade-Heal-Lore")
           .replace("%cost%", plugin.getConfig().getString("Golem-Upgrade-Heal-Cost")).split(";")));
       golemHeal.setItemMeta(healMeta);
 
       ItemStack golemHealth = new ItemStack(Material.BOOK, 1);
       ItemMeta healthMeta = golemHealth.getItemMeta();
-      healthMeta.setDisplayName(ChatManager.colorMessage("In-Game.Golem-Upgrades.Health").replace("%health%", String.valueOf(((IronGolem) e.getRightClicked()).getHealth())));
+      healthMeta.setDisplayName(plugin.getChatManager().colorMessage("In-Game.Golem-Upgrades.Health").replace("%health%", String.valueOf(((IronGolem) e.getRightClicked()).getHealth())));
       golemHealth.setItemMeta(healthMeta);
       inv.setItem(4, golemHealth);
       inv.setItem(22, golemHeal);
@@ -112,7 +111,7 @@ public class GolemEvents implements Listener {
           || !(e.getWhoClicked() instanceof Player)) {
         return;
       }
-      if (e.getInventory().getName().equals(ChatManager.colorMessage("In-Game.Golem-Upgrades.Upgrade-Inventory"))) {
+      if (e.getInventory().getName().equals(plugin.getChatManager().colorMessage("In-Game.Golem-Upgrades.Upgrade-Inventory"))) {
         if (!Utils.isNamed(e.getCurrentItem())) {
           return;
         }
@@ -122,16 +121,16 @@ public class GolemEvents implements Listener {
         e.setCancelled(true);
         //checking for health upgrades
         for (int i = 1; i <= 3; i++) {
-          if (e.getCurrentItem().getItemMeta().getDisplayName().equals(ChatManager.colorMessage("In-Game.Golem-Upgrades.Upgrade-Tier" + i))) {
+          if (e.getCurrentItem().getItemMeta().getDisplayName().equals(plugin.getChatManager().colorMessage("In-Game.Golem-Upgrades.Upgrade-Tier" + i))) {
             if (golemHealth == 160.0) {
-              p.sendMessage(ChatManager.getPrefix() + ChatManager.colorMessage("In-Game.Golem-Upgrades.Upgrade-Already-Purchased"));
+              p.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage("In-Game.Golem-Upgrades.Upgrade-Already-Purchased"));
               p.closeInventory();
               return;
             }
             Integer price = plugin.getConfig().getInt("Golem-Upgrade-Tier" + i + "-Cost");
             if (orbs >= price) {
               if (golemHealth >= 100.0 + (20 * i)) {
-                p.sendMessage(ChatManager.getPrefix() + ChatManager.colorMessage("In-Game.Golem-Upgrades.Upgrade-Already-Purchased"));
+                p.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage("In-Game.Golem-Upgrades.Upgrade-Already-Purchased"));
                 p.closeInventory();
                 return;
               }
@@ -141,23 +140,23 @@ public class GolemEvents implements Listener {
               VillagePlayerGolemUpgradeEvent event = new VillagePlayerGolemUpgradeEvent(ArenaRegistry.getArena(p), clickedGolem.get(p), p, golemHealth);
               Bukkit.getPluginManager().callEvent(event);
 
-              p.sendMessage(ChatManager.getPrefix() + ChatManager.colorMessage("In-Game.Golem-Upgrades.Upgrade-Applied"));
+              p.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage("In-Game.Golem-Upgrades.Upgrade-Applied"));
               plugin.getUserManager().getUser(p.getUniqueId()).setStat(StatsStorage.StatisticType.ORBS, orbs - price);
               clickedGolem.get(p).getWorld().spawnParticle(Particle.LAVA, p.getLocation(), 20);
               clickedGolem.remove(p);
               p.closeInventory();
               return;
             } else {
-              p.sendMessage(ChatManager.getPrefix() + ChatManager.colorMessage("In-Game.Messages.Shop-Messages.Not-Enough-Orbs"));
+              p.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage("In-Game.Messages.Shop-Messages.Not-Enough-Orbs"));
               p.closeInventory();
               return;
             }
           }
         }
         //checking for heal upgrade
-        if (e.getCurrentItem().getItemMeta().getDisplayName().equals(ChatManager.colorMessage("In-Game.Golem-Upgrades.Upgrade-Heal"))) {
+        if (e.getCurrentItem().getItemMeta().getDisplayName().equals(plugin.getChatManager().colorMessage("In-Game.Golem-Upgrades.Upgrade-Heal"))) {
           if (clickedGolem.get(p).getHealth() == clickedGolem.get(p).getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue()) {
-            p.sendMessage(ChatManager.getPrefix() + ChatManager.colorMessage("In-Game.Golem-Upgrades.Upgrade-Heal-Full"));
+            p.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage("In-Game.Golem-Upgrades.Upgrade-Heal-Full"));
             p.closeInventory();
             return;
           }
@@ -168,13 +167,13 @@ public class GolemEvents implements Listener {
             VillagePlayerGolemUpgradeEvent event = new VillagePlayerGolemUpgradeEvent(ArenaRegistry.getArena(p), clickedGolem.get(p), p, golemHealth);
             Bukkit.getPluginManager().callEvent(event);
 
-            p.sendMessage(ChatManager.getPrefix() + ChatManager.colorMessage("In-Game.Golem-Upgrades.Upgrade-Applied"));
+            p.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage("In-Game.Golem-Upgrades.Upgrade-Applied"));
             plugin.getUserManager().getUser(p.getUniqueId()).setStat(StatsStorage.StatisticType.ORBS, orbs - price);
             clickedGolem.get(p).getWorld().spawnParticle(Particle.LAVA, p.getLocation(), 20);
             clickedGolem.remove(p);
             p.closeInventory();
           } else {
-            p.sendMessage(ChatManager.getPrefix() + ChatManager.colorMessage("In-Game.Messages.Shop-Messages.Not-Enough-Orbs"));
+            p.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage("In-Game.Messages.Shop-Messages.Not-Enough-Orbs"));
             p.closeInventory();
           }
         }
@@ -190,7 +189,7 @@ public class GolemEvents implements Listener {
       if (e.getInventory() == null || clickedGolem.get(e.getPlayer()) == null) {
         return;
       }
-      if (e.getInventory().getName().equals(ChatManager.colorMessage("In-Game.Golem-Upgrades.Upgrade-Inventory"))) {
+      if (e.getInventory().getName().equals(plugin.getChatManager().colorMessage("In-Game.Golem-Upgrades.Upgrade-Inventory"))) {
         clickedGolem.remove(e.getPlayer());
       }
     } catch (Exception ex) {

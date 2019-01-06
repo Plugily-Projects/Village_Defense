@@ -1,6 +1,6 @@
 /*
  * Village Defense - Protect villagers from hordes of zombies
- * Copyright (C) 2018  Plajer's Lair - maintained by Plajer and Tigerpanzer
+ * Copyright (C) 2019  Plajer's Lair - maintained by Plajer and Tigerpanzer
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -31,7 +31,6 @@ import org.bukkit.inventory.ItemStack;
 
 import pl.plajer.villagedefense.api.StatsStorage;
 import pl.plajer.villagedefense.arena.ArenaRegistry;
-import pl.plajer.villagedefense.handlers.ChatManager;
 import pl.plajer.villagedefense.kits.kitapi.KitRegistry;
 import pl.plajer.villagedefense.kits.kitapi.basekits.LevelKit;
 import pl.plajer.villagedefense.user.User;
@@ -47,8 +46,8 @@ import pl.plajerlair.core.utils.XMaterial;
 public class LooterKit extends LevelKit implements Listener {
 
   public LooterKit() {
-    setName(ChatManager.colorMessage("Kits.Looter.Kit-Name"));
-    List<String> description = Utils.splitString(ChatManager.colorMessage("Kits.Looter.Kit-Description"), 40);
+    setName(getPlugin().getChatManager().colorMessage("Kits.Looter.Kit-Name"));
+    List<String> description = Utils.splitString(getPlugin().getChatManager().colorMessage("Kits.Looter.Kit-Description"), 40);
     this.setDescription(description.toArray(new String[0]));
     setLevel(getKitsConfig().getInt("Required-Level.Looter"));
     getPlugin().getServer().getPluginManager().registerEvents(this, getPlugin());

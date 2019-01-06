@@ -1,6 +1,6 @@
 /*
  * Village Defense - Protect villagers from hordes of zombies
- * Copyright (C) 2018  Plajer's Lair - maintained by Plajer and Tigerpanzer
+ * Copyright (C) 2019  Plajer's Lair - maintained by Plajer and Tigerpanzer
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -83,16 +83,16 @@ public class ArenaManager {
       VillageGameJoinAttemptEvent villageGameJoinAttemptEvent = new VillageGameJoinAttemptEvent(p, arena);
       Bukkit.getPluginManager().callEvent(villageGameJoinAttemptEvent);
       if (!arena.isReady()) {
-        p.sendMessage(ChatManager.getPrefix() + ChatManager.colorMessage("In-Game.Arena-Not-Configured"));
+        p.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage("In-Game.Arena-Not-Configured"));
         return;
       }
       if (villageGameJoinAttemptEvent.isCancelled()) {
-        p.sendMessage(ChatManager.getPrefix() + ChatManager.colorMessage("In-Game.Join-Cancelled-Via-API"));
+        p.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage("In-Game.Join-Cancelled-Via-API"));
         return;
       }
       if (!plugin.getConfigPreferences().getOption(ConfigPreferences.Option.BUNGEE_ENABLED)) {
         if (!(p.hasPermission(PermissionsManager.getJoinPerm().replace("<arena>", "*")) || p.hasPermission(PermissionsManager.getJoinPerm().replace("<arena>", arena.getID())))) {
-          p.sendMessage(ChatManager.getPrefix() + ChatManager.colorMessage("In-Game.Join-No-Permission"));
+          p.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage("In-Game.Join-No-Permission"));
           return;
         }
       }
@@ -105,11 +105,11 @@ public class ArenaManager {
           InventoryUtils.saveInventoryToFile(plugin, p);
         }
         arena.teleportToStartLocation(p);
-        p.sendMessage(ChatManager.colorMessage("In-Game.You-Are-Spectator"));
+        p.sendMessage(plugin.getChatManager().colorMessage("In-Game.You-Are-Spectator"));
         p.getInventory().clear();
 
-        p.getInventory().setItem(0, new ItemBuilder(XMaterial.COMPASS.parseItem()).name(ChatManager.colorMessage("In-Game.Spectator.Spectator-Item-Name")).build());
-        p.getInventory().setItem(4, new ItemBuilder(XMaterial.COMPARATOR.parseItem()).name(ChatManager.colorMessage("In-Game.Spectator.Settings-Menu.Item-Name")).build());
+        p.getInventory().setItem(0, new ItemBuilder(XMaterial.COMPASS.parseItem()).name(plugin.getChatManager().colorMessage("In-Game.Spectator.Spectator-Item-Name")).build());
+        p.getInventory().setItem(4, new ItemBuilder(XMaterial.COMPARATOR.parseItem()).name(plugin.getChatManager().colorMessage("In-Game.Spectator.Settings-Menu.Item-Name")).build());
         p.getInventory().setItem(8, SpecialItemManager.getSpecialItem("Leave").getItemStack());
 
         for (PotionEffect potionEffect : p.getActivePotionEffects()) {
@@ -152,7 +152,7 @@ public class ArenaManager {
       arena.showPlayers();
       arena.doBarAction(Arena.BarAction.ADD, p);
       if (!plugin.getUserManager().getUser(p.getUniqueId()).isSpectator()) {
-        ChatManager.broadcastAction(arena, p, ChatManager.ActionType.JOIN);
+        plugin.getChatManager().broadcastAction(arena, p, ChatManager.ActionType.JOIN);
       }
       User user = plugin.getUserManager().getUser(p.getUniqueId());
       user.setKit(KitRegistry.getDefaultKit());
@@ -193,7 +193,7 @@ public class ArenaManager {
       p.getInventory().setArmorContents(null);
       arena.removePlayer(p);
       if (!user.isSpectator()) {
-        ChatManager.broadcastAction(arena, p, ChatManager.ActionType.LEAVE);
+        plugin.getChatManager().broadcastAction(arena, p, ChatManager.ActionType.LEAVE);
       }
       p.setGlowing(false);
       user.setSpectator(false);
@@ -251,11 +251,11 @@ public class ArenaManager {
       Bukkit.getPluginManager().callEvent(villageGameStopEvent);
       String summaryEnding;
       if (plugin.getConfig().getBoolean("Wave-Limit.Enabled", false) && arena.getWave() >= plugin.getConfig().getInt("Wave-Limit.Limit", 25)) {
-        summaryEnding = ChatManager.colorMessage("In-Game.Messages.Game-End-Messages.Summary-Win-Game");
+        summaryEnding = plugin.getChatManager().colorMessage("In-Game.Messages.Game-End-Messages.Summary-Win-Game");
       } else if (arena.getPlayersLeft().size() > 0) {
-        summaryEnding = ChatManager.colorMessage("In-Game.Messages.Game-End-Messages.Summary-Villagers-Died");
+        summaryEnding = plugin.getChatManager().colorMessage("In-Game.Messages.Game-End-Messages.Summary-Villagers-Died");
       } else {
-        summaryEnding = ChatManager.colorMessage("In-Game.Messages.Game-End-Messages.Summary-Players-Died");
+        summaryEnding = plugin.getChatManager().colorMessage("In-Game.Messages.Game-End-Messages.Summary-Players-Died");
       }
       List<String> summaryMessages = LanguageManager.getLanguageList("In-Game.Messages.Game-End-Messages.Summary-Message");
       for (final Player p : arena.getPlayers()) {
@@ -278,6 +278,7 @@ public class ArenaManager {
           public void run() {
             if (i == 4 || !arena.getPlayers().contains(p)) {
               this.cancel();
+              return;
             }
             MinigameUtils.spawnRandomFirework(p.getLocation());
             i++;
@@ -346,8 +347,8 @@ public class ArenaManager {
       VillageWaveEndEvent villageWaveEndEvent = new VillageWaveEndEvent(arena, arena.getWave());
       Bukkit.getPluginManager().callEvent(villageWaveEndEvent);
       for (Player player : arena.getPlayers()) {
-        player.sendMessage(ChatManager.getPrefix() + ChatManager.formatMessage(arena, ChatManager.colorMessage("In-Game.Messages.Next-Wave-In"), arena.getTimer()));
-        player.sendMessage(ChatManager.getPrefix() + ChatManager.colorMessage("In-Game.Messages.You-Feel-Refreshed"));
+        player.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().formatMessage(arena, plugin.getChatManager().colorMessage("In-Game.Messages.Next-Wave-In"), arena.getTimer()));
+        player.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage("In-Game.Messages.You-Feel-Refreshed"));
         player.setHealth(player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue());
         User user = plugin.getUserManager().getUser(player.getUniqueId());
         user.addStat(StatsStorage.StatisticType.ORBS, arena.getWave() * 10);
@@ -380,7 +381,7 @@ public class ArenaManager {
       for (User user : plugin.getUserManager().getUsers(arena)) {
         user.getKit().reStock(user.toPlayer());
       }
-      ChatManager.broadcast(arena, ChatManager.formatMessage(arena, ChatManager.colorMessage("In-Game.Messages.Wave-Started"), arena.getWave()));
+      plugin.getChatManager().broadcast(arena, plugin.getChatManager().formatMessage(arena, plugin.getChatManager().colorMessage("In-Game.Messages.Wave-Started"), arena.getWave()));
     } catch (Exception e) {
       new ReportedException(plugin, e);
     }

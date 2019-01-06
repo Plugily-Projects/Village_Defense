@@ -1,6 +1,6 @@
 /*
  * Village Defense - Protect villagers from hordes of zombies
- * Copyright (C) 2018  Plajer's Lair - maintained by Plajer and Tigerpanzer
+ * Copyright (C) 2019  Plajer's Lair - maintained by Plajer and Tigerpanzer
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,7 +28,6 @@ import pl.plajer.villagedefense.commands.arguments.ArgumentsRegistry;
 import pl.plajer.villagedefense.commands.arguments.data.CommandArgument;
 import pl.plajer.villagedefense.commands.arguments.data.LabelData;
 import pl.plajer.villagedefense.commands.arguments.data.LabeledCommandArgument;
-import pl.plajer.villagedefense.handlers.ChatManager;
 import pl.plajer.villagedefense.user.User;
 import pl.plajer.villagedefense.utils.Utils;
 
@@ -47,7 +46,7 @@ public class SetLevelArgument {
       @Override
       public void execute(CommandSender sender, String[] args) {
         if (args.length == 1) {
-          sender.sendMessage(ChatManager.getPrefix() + ChatColor.RED + "Please type number of levels to set!");
+          sender.sendMessage(plugin.getChatManager().getPrefix() + ChatColor.RED + "Please type number of levels to set!");
           return;
         }
         Player target;
@@ -58,16 +57,16 @@ public class SetLevelArgument {
         }
 
         if (target == null) {
-          sender.sendMessage(ChatManager.colorMessage("Commands.Target-Player-Not-Found"));
+          sender.sendMessage(plugin.getChatManager().colorMessage("Commands.Target-Player-Not-Found"));
           return;
         }
 
         if (Utils.isInteger(args[1])) {
           User user = registry.getPlugin().getUserManager().getUser(target.getUniqueId());
           user.setStat(StatsStorage.StatisticType.LEVEL, Integer.parseInt(args[1]));
-          sender.sendMessage(ChatManager.getPrefix() + ChatManager.colorMessage("Commands.Admin-Commands.Added-Level"));
+          sender.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage("Commands.Admin-Commands.Added-Level"));
         } else {
-          sender.sendMessage(ChatManager.getPrefix() + ChatManager.colorMessage("Commands.Wrong-Usage").replace("%correct%", "/vda setlevel <amount> [player]"));
+          sender.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage("Commands.Wrong-Usage").replace("%correct%", "/vda setlevel <amount> [player]"));
         }
       }
     });

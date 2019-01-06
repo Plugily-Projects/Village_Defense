@@ -1,6 +1,6 @@
 /*
  * Village Defense - Protect villagers from hordes of zombies
- * Copyright (C) 2018  Plajer's Lair - maintained by Plajer and Tigerpanzer
+ * Copyright (C) 2019  Plajer's Lair - maintained by Plajer and Tigerpanzer
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,7 +20,6 @@ package pl.plajer.villagedefense.kits.kitapi.basekits;
 
 import org.bukkit.inventory.ItemStack;
 
-import pl.plajer.villagedefense.handlers.ChatManager;
 import pl.plajerlair.core.utils.ItemBuilder;
 import pl.plajerlair.core.utils.MinigameUtils;
 
@@ -35,7 +34,7 @@ public abstract class PremiumKit extends Kit {
         .name(getName())
         .lore(getDescription())
         .build();
-    MinigameUtils.addLore(stack, ChatManager.colorMessage("Kits.Kit-Menu.Locked-Lores.Unlock-In-Store"));
+    MinigameUtils.addLore(stack, getPlugin().getChatManager().colorMessage("Kits.Kit-Menu.Locked-Lores.Unlock-In-Store"));
     return stack;
   }
 }

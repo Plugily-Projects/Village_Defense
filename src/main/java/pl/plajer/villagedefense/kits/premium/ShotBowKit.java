@@ -1,6 +1,6 @@
 /*
  * Village Defense - Protect villagers from hordes of zombies
- * Copyright (C) 2018  Plajer's Lair - maintained by Plajer and Tigerpanzer
+ * Copyright (C) 2019  Plajer's Lair - maintained by Plajer and Tigerpanzer
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -32,7 +32,6 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
-import pl.plajer.villagedefense.handlers.ChatManager;
 import pl.plajer.villagedefense.handlers.PermissionsManager;
 import pl.plajer.villagedefense.kits.kitapi.KitRegistry;
 import pl.plajer.villagedefense.kits.kitapi.basekits.PremiumKit;
@@ -48,8 +47,8 @@ import pl.plajerlair.core.services.exception.ReportedException;
 public class ShotBowKit extends PremiumKit implements Listener {
 
   public ShotBowKit() {
-    setName(ChatManager.colorMessage("Kits.Shot-Bow.Kit-Name"));
-    List<String> description = Utils.splitString(ChatManager.colorMessage("Kits.Shot-Bow.Kit-Description"), 40);
+    setName(getPlugin().getChatManager().colorMessage("Kits.Shot-Bow.Kit-Name"));
+    List<String> description = Utils.splitString(getPlugin().getChatManager().colorMessage("Kits.Shot-Bow.Kit-Description"), 40);
     this.setDescription(description.toArray(new String[0]));
     getPlugin().getServer().getPluginManager().registerEvents(this, getPlugin());
     KitRegistry.registerKit(this);
@@ -110,7 +109,7 @@ public class ShotBowKit extends PremiumKit implements Listener {
         e.setCancelled(true);
         user.setCooldown("shotbow", 5);
       } else {
-        String msgstring = ChatManager.colorMessage("Kits.Ability-Still-On-Cooldown");
+        String msgstring = getPlugin().getChatManager().colorMessage("Kits.Ability-Still-On-Cooldown");
         msgstring = msgstring.replaceFirst("%COOLDOWN%", Long.toString(user.getCooldown("shotbow")));
         e.getPlayer().sendMessage(msgstring);
       }

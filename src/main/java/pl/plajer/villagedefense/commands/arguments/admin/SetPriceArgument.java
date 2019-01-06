@@ -1,6 +1,6 @@
 /*
  * Village Defense - Protect villagers from hordes of zombies
- * Copyright (C) 2018  Plajer's Lair - maintained by Plajer and Tigerpanzer
+ * Copyright (C) 2019  Plajer's Lair - maintained by Plajer and Tigerpanzer
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -31,7 +31,6 @@ import pl.plajer.villagedefense.commands.arguments.ArgumentsRegistry;
 import pl.plajer.villagedefense.commands.arguments.data.CommandArgument;
 import pl.plajer.villagedefense.commands.arguments.data.LabelData;
 import pl.plajer.villagedefense.commands.arguments.data.LabeledCommandArgument;
-import pl.plajer.villagedefense.handlers.ChatManager;
 import pl.plajerlair.core.utils.MinigameUtils;
 
 /**
@@ -48,13 +47,13 @@ public class SetPriceArgument {
       @Override
       public void execute(CommandSender sender, String[] args) {
         if (args.length == 0) {
-          sender.sendMessage(ChatManager.getPrefix() + ChatColor.RED + "Please type price of item!");
+          sender.sendMessage(registry.getPlugin().getChatManager().getPrefix() + ChatColor.RED + "Please type price of item!");
           return;
         }
         Player player = (Player) sender;
         ItemStack item = player.getInventory().getItemInMainHand();
         if (item == null || item.getType().equals(Material.AIR)) {
-          player.sendMessage(ChatManager.getPrefix() + ChatManager.colorMessage("Commands.Hold-Any-Item"));
+          player.sendMessage(registry.getPlugin().getChatManager().getPrefix() + registry.getPlugin().getChatManager().colorMessage("Commands.Hold-Any-Item"));
           return;
         }
         //check any price from lore
@@ -62,18 +61,18 @@ public class SetPriceArgument {
           ItemMeta meta = item.getItemMeta();
           List<String> lore = item.getItemMeta().getLore();
           for (String search : lore) {
-            if (search.contains(ChatManager.colorMessage("In-Game.Messages.Shop-Messages.Currency-In-Shop"))) {
+            if (search.contains(registry.getPlugin().getChatManager().colorMessage("In-Game.Messages.Shop-Messages.Currency-In-Shop"))) {
               lore.remove(search);
               break;
             }
           }
-          lore.add(0, ChatColor.GOLD + args[1] + " " + ChatManager.colorMessage("In-Game.Messages.Shop-Messages.Currency-In-Shop"));
+          lore.add(0, ChatColor.GOLD + args[1] + " " + registry.getPlugin().getChatManager().colorMessage("In-Game.Messages.Shop-Messages.Currency-In-Shop"));
           meta.setLore(lore);
           item.setItemMeta(meta);
-          player.sendMessage(ChatManager.getPrefix() + ChatManager.colorMessage("Commands.Command-Executed-Item-Updated"));
+          player.sendMessage(registry.getPlugin().getChatManager().getPrefix() + registry.getPlugin().getChatManager().colorMessage("Commands.Command-Executed-Item-Updated"));
         } else {
-          MinigameUtils.addLore(item, ChatColor.GOLD + args[1] + " " + ChatManager.colorMessage("In-Game.Messages.Shop-Messages.Currency-In-Shop"));
-          player.sendMessage(ChatManager.getPrefix() + ChatManager.colorMessage("Commands.Command-Executed"));
+          MinigameUtils.addLore(item, ChatColor.GOLD + args[1] + " " + registry.getPlugin().getChatManager().colorMessage("In-Game.Messages.Shop-Messages.Currency-In-Shop"));
+          player.sendMessage(registry.getPlugin().getChatManager().getPrefix() + registry.getPlugin().getChatManager().colorMessage("Commands.Command-Executed"));
         }
       }
     });

@@ -1,6 +1,6 @@
 /*
  * Village Defense - Protect villagers from hordes of zombies
- * Copyright (C) 2018  Plajer's Lair - maintained by Plajer and Tigerpanzer
+ * Copyright (C) 2019  Plajer's Lair - maintained by Plajer and Tigerpanzer
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -52,12 +52,10 @@ import pl.plajer.villagedefense.events.spectator.SpectatorEvents;
 import pl.plajer.villagedefense.events.spectator.SpectatorItemEvents;
 import pl.plajer.villagedefense.handlers.BungeeManager;
 import pl.plajer.villagedefense.handlers.ChatManager;
-import pl.plajer.villagedefense.handlers.ChunkManager;
 import pl.plajer.villagedefense.handlers.HolidayManager;
 import pl.plajer.villagedefense.handlers.PermissionsManager;
 import pl.plajer.villagedefense.handlers.PlaceholderManager;
 import pl.plajer.villagedefense.handlers.PowerupManager;
-import pl.plajer.villagedefense.handlers.ShopManager;
 import pl.plajer.villagedefense.handlers.SignManager;
 import pl.plajer.villagedefense.handlers.items.SpecialItem;
 import pl.plajer.villagedefense.handlers.language.LanguageManager;
@@ -84,6 +82,7 @@ import pl.plajerlair.core.utils.InventoryUtils;
  */
 public class Main extends JavaPlugin {
 
+  private ChatManager chatManager;
   private UserManager userManager;
   private ConfigPreferences configPreferences;
   private MySQLDatabase database;
@@ -91,7 +90,6 @@ public class Main extends JavaPlugin {
   private SignManager signManager;
   private BungeeManager bungeeManager;
   private KitManager kitManager;
-  private ChunkManager chunkManager;
   private PowerupManager powerupManager;
   private RewardsFactory rewardsHandler;
   private HolidayManager holidayManager;
@@ -121,10 +119,6 @@ public class Main extends JavaPlugin {
 
   public SignManager getSignManager() {
     return signManager;
-  }
-
-  public ChunkManager getChunkManager() {
-    return chunkManager;
   }
 
   public KitManager getKitManager() {
@@ -163,6 +157,7 @@ public class Main extends JavaPlugin {
       Debugger.setEnabled(getConfig().getBoolean("Debug", false));
       Debugger.setPrefix("[Village Debugger]");
       Debugger.debug(LogLevel.INFO, "Main setup start");
+      chatManager = new ChatManager(ChatColor.translateAlternateColorCodes('&', LanguageManager.getLanguageMessage("In-Game.Plugin-Prefix")));
       configPreferences = new ConfigPreferences(this);
       setupFiles();
       new LegacyDataFixer(this);
@@ -180,7 +175,6 @@ public class Main extends JavaPlugin {
 
       SpecialItem.loadAll();
       ArenaRegistry.registerArenas();
-      new ShopManager();
       //we must start it after instances load!
       signManager = new SignManager(this);
 
@@ -197,7 +191,6 @@ public class Main extends JavaPlugin {
     if (getConfig().getBoolean("BungeeActivated", false)) {
       bungeeManager = new BungeeManager(this);
     }
-    new ChatManager(ChatManager.colorMessage("In-Game.Plugin-Prefix"));
     registry = new ArgumentsRegistry(this);
     new GolemEvents(this);
     new EntityRegistry(this);
@@ -246,7 +239,6 @@ public class Main extends JavaPlugin {
     //todo bring back soon
     //EntityUpgradeMenu.init(this);
     powerupManager = new PowerupManager(this);
-    chunkManager = new ChunkManager(this);
     rewardsHandler = new RewardsFactory(this);
     User.cooldownHandlerTask();
   }
@@ -281,6 +273,10 @@ public class Main extends JavaPlugin {
         saveResource(fileName + ".yml", false);
       }
     }
+  }
+
+  public ChatManager getChatManager() {
+    return chatManager;
   }
 
   public UserManager getUserManager() {
