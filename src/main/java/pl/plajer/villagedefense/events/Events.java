@@ -71,6 +71,7 @@ import pl.plajer.villagedefense.arena.Arena;
 import pl.plajer.villagedefense.arena.ArenaManager;
 import pl.plajer.villagedefense.arena.ArenaRegistry;
 import pl.plajer.villagedefense.arena.ArenaState;
+import pl.plajer.villagedefense.arena.options.ArenaOption;
 import pl.plajer.villagedefense.handlers.PermissionsManager;
 import pl.plajer.villagedefense.handlers.items.SpecialItem;
 import pl.plajer.villagedefense.handlers.items.SpecialItemManager;
@@ -576,7 +577,7 @@ public class Events implements Listener {
       itemStack.setItemMeta(itemMeta);
       player.getInventory().addItem(itemStack);
       user.setStat(StatsStorage.StatisticType.ORBS, user.getStat(StatsStorage.StatisticType.ORBS) - price);
-      arena.setTotalOrbsSpent(arena.getTotalOrbsSpent() + price);
+      arena.addOptionValue(ArenaOption.TOTAL_ORBS_SPENT, price);
     } catch (Exception ex) {
       new ReportedException(plugin, ex);
     }
@@ -634,7 +635,7 @@ public class Events implements Listener {
         if (arena == null) {
           continue;
         }
-        arena.addRottenFlesh(e.getItem().getItemStack().getAmount());
+        arena.addOptionValue(ArenaOption.ROTTEN_FLESH_AMOUNT, e.getItem().getItemStack().getAmount());
         e.getItem().remove();
         e.setCancelled(true);
         e.getInventory().clear();

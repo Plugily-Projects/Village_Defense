@@ -18,35 +18,30 @@
 
 package pl.plajer.villagedefense.user.data;
 
-import org.bukkit.configuration.file.FileConfiguration;
-
-import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.api.StatsStorage;
 import pl.plajer.villagedefense.user.User;
-import pl.plajerlair.core.utils.ConfigUtils;
 
 /**
- * Created by Tom on 17/06/2015.
+ * @author Plajer
+ * <p>
+ * Created at 06.01.2019
  */
-public class FileStats implements UserDatabase {
+public interface UserDatabase {
 
-  private Main plugin;
-  private FileConfiguration config;
+  /**
+   * Saves player statistic into yaml or MySQL storage based on user choice
+   *
+   * @param user user to retrieve statistic from
+   * @param stat stat to save to storage
+   */
+  void saveStatistic(User user, StatsStorage.StatisticType stat);
 
-  public FileStats(Main plugin) {
-    this.plugin = plugin;
-    config = ConfigUtils.getConfig(plugin, "stats");
-  }
-
-  @Override
-  public void saveStatistic(User user, StatsStorage.StatisticType stat) {
-    config.set(user.toPlayer().getUniqueId().toString() + "." + stat.getName(), user.getStat(stat));
-    ConfigUtils.saveConfig(plugin, config, "stats");
-  }
-
-  @Override
-  public void loadStatistic(User user, StatsStorage.StatisticType stat) {
-    user.setStat(stat, config.getInt(user.toPlayer().getUniqueId().toString() + "." + stat.getName(), 0));
-  }
+  /**
+   * Loads player statistic from yaml or MySQL storage based on user choice
+   *
+   * @param user user to load statistic for
+   * @param stat type of stat to load from storage
+   */
+  void loadStatistic(User user, StatsStorage.StatisticType stat);
 
 }

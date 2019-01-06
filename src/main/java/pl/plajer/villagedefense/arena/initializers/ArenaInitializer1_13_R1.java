@@ -37,6 +37,7 @@ import org.bukkit.potion.PotionEffectType;
 
 import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.arena.Arena;
+import pl.plajer.villagedefense.arena.options.ArenaOption;
 import pl.plajer.villagedefense.creatures.CreatureUtils;
 import pl.plajer.villagedefense.creatures.v1_13_R1.BabyZombie;
 import pl.plajer.villagedefense.creatures.v1_13_R1.FastZombie;
@@ -76,7 +77,7 @@ public class ArenaInitializer1_13_R1 extends Arena {
     plugin.getHolidayManager().applyHolidayZombieEffects(zombie);
     this.addZombie((Zombie) fastZombie.getBukkitEntity());
 
-    super.subtractZombiesToSpawn();
+    super.setOptionValue(ArenaOption.ZOMBIES_TO_SPAWN, getOption(ArenaOption.ZOMBIES_TO_SPAWN) - 1);
   }
 
   @Override
@@ -93,7 +94,7 @@ public class ArenaInitializer1_13_R1 extends Arena {
     CreatureUtils.applyHealthBar(zombie);
     this.addZombie((Zombie) fastZombie.getBukkitEntity());
 
-    super.subtractZombiesToSpawn();
+    super.setOptionValue(ArenaOption.ZOMBIES_TO_SPAWN, getOption(ArenaOption.ZOMBIES_TO_SPAWN) - 1);
   }
 
   @Override
@@ -114,7 +115,7 @@ public class ArenaInitializer1_13_R1 extends Arena {
     CreatureUtils.applyHealthBar(zombie);
     this.addZombie((Zombie) fastZombie.getBukkitEntity());
 
-    super.subtractZombiesToSpawn();
+    super.setOptionValue(ArenaOption.ZOMBIES_TO_SPAWN, getOption(ArenaOption.ZOMBIES_TO_SPAWN) - 1);
   }
 
   public void spawnBabyZombie(Random random) {
@@ -129,7 +130,7 @@ public class ArenaInitializer1_13_R1 extends Arena {
     mcWorld.addEntity(fastZombie, CreatureSpawnEvent.SpawnReason.CUSTOM);
     this.addZombie((Zombie) fastZombie.getBukkitEntity());
 
-    super.subtractZombiesToSpawn();
+    super.setOptionValue(ArenaOption.ZOMBIES_TO_SPAWN, getOption(ArenaOption.ZOMBIES_TO_SPAWN) - 1);
   }
 
   public void spawnHardZombie(Random random) {
@@ -146,7 +147,7 @@ public class ArenaInitializer1_13_R1 extends Arena {
     zombie.setRemoveWhenFarAway(false);
     CreatureUtils.applyHealthBar(zombie);
     this.addZombie(zombie);
-    super.subtractZombiesToSpawn();
+    super.setOptionValue(ArenaOption.ZOMBIES_TO_SPAWN, getOption(ArenaOption.ZOMBIES_TO_SPAWN) - 1);
   }
 
   @Override
@@ -164,7 +165,7 @@ public class ArenaInitializer1_13_R1 extends Arena {
     zombie.setRemoveWhenFarAway(false);
     CreatureUtils.applyHealthBar(zombie);
     this.addZombie(zombie);
-    super.subtractZombiesToSpawn();
+    super.setOptionValue(ArenaOption.ZOMBIES_TO_SPAWN, getOption(ArenaOption.ZOMBIES_TO_SPAWN) - 1);
   }
 
   public void spawnGolemBuster(Random random) {
@@ -181,7 +182,7 @@ public class ArenaInitializer1_13_R1 extends Arena {
     CreatureUtils.applyHealthBar(zombie);
     this.addZombie(zombie);
 
-    super.subtractZombiesToSpawn();
+    super.setOptionValue(ArenaOption.ZOMBIES_TO_SPAWN, getOption(ArenaOption.ZOMBIES_TO_SPAWN) - 1);
   }
 
   public void spawnPlayerBuster(Random random) {
@@ -200,7 +201,7 @@ public class ArenaInitializer1_13_R1 extends Arena {
     CreatureUtils.applyHealthBar(zombie);
     this.addZombie(zombie);
 
-    super.subtractZombiesToSpawn();
+    super.setOptionValue(ArenaOption.ZOMBIES_TO_SPAWN, getOption(ArenaOption.ZOMBIES_TO_SPAWN) - 1);
   }
 
   public void spawnVillagerSlayer(Random random) {
@@ -219,7 +220,7 @@ public class ArenaInitializer1_13_R1 extends Arena {
     CreatureUtils.applyHealthBar(zombie);
     this.addZombie(zombie);
 
-    super.subtractZombiesToSpawn();
+    super.setOptionValue(ArenaOption.ZOMBIES_TO_SPAWN, getOption(ArenaOption.ZOMBIES_TO_SPAWN) - 1);
   }
 
   public void spawnVillager(Location location) {

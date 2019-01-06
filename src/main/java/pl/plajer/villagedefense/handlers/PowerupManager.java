@@ -81,8 +81,8 @@ public class PowerupManager {
     int i = 0;
     for (String pwr : powerupNames) {
       if (plugin.getConfig().getBoolean("Powerups." + pwr + "-Powerup.Enabled", true)) {
-        registerPowerup(new Powerup(pwr, ChatManager.colorMessage("Powerups." + pwr + "-Powerup.Name"), ChatManager.colorMessage("Powerups." + pwr + "-Powerup.Description"),
-            powerupMaterials.get(i)));
+        registerPowerup(new Powerup(pwr, plugin.getChatManager().colorMessage("Powerups." + pwr + "-Powerup.Name"),
+            plugin.getChatManager().colorMessage("Powerups." + pwr + "-Powerup.Description"), powerupMaterials.get(i)));
       }
       i++;
     }

@@ -29,6 +29,7 @@ import pl.plajer.villagedefense.arena.initializers.ArenaInitializer1_11_R1;
 import pl.plajer.villagedefense.arena.initializers.ArenaInitializer1_12_R1;
 import pl.plajer.villagedefense.arena.initializers.ArenaInitializer1_13_R1;
 import pl.plajer.villagedefense.arena.initializers.ArenaInitializer1_13_R2;
+import pl.plajer.villagedefense.handlers.PermissionsManager;
 import pl.plajer.villagedefense.user.User;
 import pl.plajerlair.core.services.exception.ReportedException;
 
@@ -88,6 +89,7 @@ public class ArenaUtils {
     }
   }
 
+  @Deprecated //move somewhere else
   public static void updateLevelStat(Player player, Arena arena) {
     try {
       User user = plugin.getUserManager().getUser(player.getUniqueId());
@@ -112,6 +114,29 @@ public class ArenaUtils {
       arena = new ArenaInitializer1_13_R2(id, plugin);
     }
     return arena;
+  }
+
+  @Deprecated //move somewhere else
+  public static void addExperience(Player player, int i) {
+    User user = plugin.getUserManager().getUser(player.getUniqueId());
+    user.addStat(StatsStorage.StatisticType.XP, i);
+    if (player.hasPermission(PermissionsManager.getVip())) {
+      user.addStat(StatsStorage.StatisticType.XP, (int) Math.ceil(i / 2));
+    }
+    if (player.hasPermission(PermissionsManager.getMvp())) {
+      user.addStat(StatsStorage.StatisticType.XP, (int) Math.ceil(i / 2));
+    }
+    if (player.hasPermission(PermissionsManager.getElite())) {
+      user.addStat(StatsStorage.StatisticType.XP, (int) Math.ceil(i / 2));
+    }
+    ArenaUtils.updateLevelStat(player, ArenaRegistry.getArena(player));
+  }
+
+  @Deprecated //move somewhere else
+  public static void addStat(Player player, StatsStorage.StatisticType stat) {
+    User user = plugin.getUserManager().getUser(player.getUniqueId());
+    user.addStat(stat, 1);
+    ArenaUtils.updateLevelStat(player, ArenaRegistry.getArena(player));
   }
 
 }

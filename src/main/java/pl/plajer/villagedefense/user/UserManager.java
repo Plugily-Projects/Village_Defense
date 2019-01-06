@@ -1,6 +1,6 @@
 /*
  * Village Defense - Protect villagers from hordes of zombies
- * Copyright (C) 2018  Plajer's Lair - maintained by Plajer and Tigerpanzer
+ * Copyright (C) 2019  Plajer's Lair - maintained by Plajer and Tigerpanzer
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,13 +33,14 @@ import pl.plajer.villagedefense.api.StatsStorage;
 import pl.plajer.villagedefense.arena.Arena;
 import pl.plajer.villagedefense.user.data.FileStats;
 import pl.plajer.villagedefense.user.data.MySQLManager;
+import pl.plajer.villagedefense.user.data.UserDatabase;
 import pl.plajerlair.core.debug.Debugger;
 import pl.plajerlair.core.debug.LogLevel;
 
 /**
  * Created by Tom on 27/07/2014.
  */
-public class UserManager {
+public class UserManager implements UserDatabase {
 
   private MySQLManager mySQLManager;
   private FileStats fileStats;
@@ -73,38 +74,28 @@ public class UserManager {
     return users;
   }
 
-  /**
-   * Saves player statistic into yaml or MySQL storage based on user choice
-   *
-   * @param user user to retrieve statistic from
-   * @param stat stat to save to storage
-   */
+  @Override
   public void saveStatistic(User user, StatsStorage.StatisticType stat) {
     if (!stat.isPersistent()) {
       return;
     }
     if (plugin.getConfigPreferences().getOption(ConfigPreferences.Option.DATABASE_ENABLED)) {
-      Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> mySQLManager.saveStat(user, stat));
+      Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> mySQLManager.saveStatistic(user, stat));
       return;
     }
-    fileStats.saveStat(user, stat);
+    fileStats.saveStatistic(user, stat);
   }
 
-  /**
-   * Loads player statistic from yaml or MySQL storage based on user choice
-   *
-   * @param user user to load statistic for
-   * @param stat type of stat to load from storage
-   */
+  @Override
   public void loadStatistic(User user, StatsStorage.StatisticType stat) {
     if (!stat.isPersistent()) {
       return;
     }
     if (plugin.getConfigPreferences().getOption(ConfigPreferences.Option.DATABASE_ENABLED)) {
-      Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> user.setStat(stat, mySQLManager.getStat(user, stat)));
+      Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> mySQLManager.loadStatistic(user, stat));
       return;
     }
-    fileStats.loadStat(user, stat);
+    fileStats.loadStatistic(user, stat);
   }
 
   public void removeUser(UUID uuid) {

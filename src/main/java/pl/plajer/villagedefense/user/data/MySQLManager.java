@@ -1,6 +1,6 @@
 /*
  * Village Defense - Protect villagers from hordes of zombies
- * Copyright (C) 2018  Plajer's Lair - maintained by Plajer and Tigerpanzer
+ * Copyright (C) 2019  Plajer's Lair - maintained by Plajer and Tigerpanzer
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -38,7 +38,7 @@ import pl.plajerlair.core.database.MySQLDatabase;
  * <p>
  * Created at 28.09.2018
  */
-public class MySQLManager {
+public class MySQLManager implements UserDatabase {
 
   private MySQLDatabase database;
 
@@ -79,11 +79,13 @@ public class MySQLManager {
     database.executeUpdate("INSERT INTO playerstats (UUID,name,xp) VALUES ('" + player.getUniqueId().toString() + "','" + player.getName() + "',0)");
   }
 
-  public void saveStat(User user, StatsStorage.StatisticType stat) {
+  @Override
+  public void saveStatistic(User user, StatsStorage.StatisticType stat) {
     database.executeUpdate("UPDATE playerstats SET " + stat.getName() + "=" + user.getStat(stat) + " WHERE UUID='" + user.toPlayer().getUniqueId().toString() + "';");
   }
 
-  public int getStat(User user, StatsStorage.StatisticType stat) {
+  @Override
+  public void loadStatistic(User user, StatsStorage.StatisticType stat) {
     ResultSet resultSet = database.executeQuery("SELECT UUID from playerstats WHERE UUID='" + user.toPlayer().getUniqueId().toString() + "'");
     //insert into the database
     try {
@@ -97,12 +99,13 @@ public class MySQLManager {
     ResultSet set = database.executeQuery("SELECT " + stat.getName() + " FROM playerstats WHERE UUID='" + user.toPlayer().getUniqueId().toString() + "'");
     try {
       if (!set.next()) {
-        return 0;
+        user.setStat(stat, 0);
+        return;
       }
-      return set.getInt(1);
+      user.setStat(stat, set.getInt(1));
     } catch (SQLException e) {
       e.printStackTrace();
-      return 0;
+      user.setStat(stat, 0);
     }
   }
 

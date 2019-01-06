@@ -1,6 +1,6 @@
 /*
  * Village Defense - Protect villagers from hordes of zombies
- * Copyright (C) 2018  Plajer's Lair - maintained by Plajer and Tigerpanzer
+ * Copyright (C) 2019  Plajer's Lair - maintained by Plajer and Tigerpanzer
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -36,6 +36,7 @@ import org.bukkit.potion.PotionEffectType;
 
 import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.arena.Arena;
+import pl.plajer.villagedefense.arena.options.ArenaOption;
 import pl.plajer.villagedefense.creatures.CreatureUtils;
 import pl.plajer.villagedefense.creatures.v1_11_R1.BabyZombie;
 import pl.plajer.villagedefense.creatures.v1_11_R1.FastZombie;
@@ -47,7 +48,6 @@ import pl.plajer.villagedefense.creatures.v1_11_R1.RidableVillager;
 import pl.plajer.villagedefense.creatures.v1_11_R1.TankerZombie;
 import pl.plajer.villagedefense.creatures.v1_11_R1.VillagerSlayer;
 import pl.plajer.villagedefense.creatures.v1_11_R1.WorkingWolf;
-import pl.plajer.villagedefense.handlers.ChatManager;
 
 public class ArenaInitializer1_11_R1 extends Arena {
 
@@ -70,7 +70,7 @@ public class ArenaInitializer1_11_R1 extends Arena {
     plugin.getHolidayManager().applyHolidayZombieEffects(zombie);
     this.addZombie((Zombie) fastZombie.getBukkitEntity());
 
-    super.subtractZombiesToSpawn();
+    super.setOptionValue(ArenaOption.ZOMBIES_TO_SPAWN, getOption(ArenaOption.ZOMBIES_TO_SPAWN) - 1);
   }
 
   @Override
@@ -87,7 +87,7 @@ public class ArenaInitializer1_11_R1 extends Arena {
     CreatureUtils.applyHealthBar(zombie);
     this.addZombie((Zombie) fastZombie.getBukkitEntity());
 
-    super.subtractZombiesToSpawn();
+    super.setOptionValue(ArenaOption.ZOMBIES_TO_SPAWN, getOption(ArenaOption.ZOMBIES_TO_SPAWN) - 1);
   }
 
   @Override
@@ -108,7 +108,7 @@ public class ArenaInitializer1_11_R1 extends Arena {
     CreatureUtils.applyHealthBar(zombie);
     this.addZombie((Zombie) fastZombie.getBukkitEntity());
 
-    super.subtractZombiesToSpawn();
+    super.setOptionValue(ArenaOption.ZOMBIES_TO_SPAWN, getOption(ArenaOption.ZOMBIES_TO_SPAWN) - 1);
   }
 
   public void spawnBabyZombie(Random random) {
@@ -123,7 +123,7 @@ public class ArenaInitializer1_11_R1 extends Arena {
     plugin.getHolidayManager().applyHolidayZombieEffects(zombie);
     this.addZombie((Zombie) fastZombie.getBukkitEntity());
 
-    super.subtractZombiesToSpawn();
+    super.setOptionValue(ArenaOption.ZOMBIES_TO_SPAWN, getOption(ArenaOption.ZOMBIES_TO_SPAWN) - 1);
   }
 
   public void spawnHardZombie(Random random) {
@@ -140,7 +140,7 @@ public class ArenaInitializer1_11_R1 extends Arena {
     zombie.setRemoveWhenFarAway(false);
     CreatureUtils.applyHealthBar(zombie);
     this.addZombie(zombie);
-    super.subtractZombiesToSpawn();
+    super.setOptionValue(ArenaOption.ZOMBIES_TO_SPAWN, getOption(ArenaOption.ZOMBIES_TO_SPAWN) - 1);
   }
 
   @Override
@@ -158,7 +158,7 @@ public class ArenaInitializer1_11_R1 extends Arena {
     zombie.setRemoveWhenFarAway(false);
     CreatureUtils.applyHealthBar(zombie);
     this.addZombie(zombie);
-    super.subtractZombiesToSpawn();
+    super.setOptionValue(ArenaOption.ZOMBIES_TO_SPAWN, getOption(ArenaOption.ZOMBIES_TO_SPAWN) - 1);
   }
 
   public void spawnGolemBuster(Random random) {
@@ -175,7 +175,7 @@ public class ArenaInitializer1_11_R1 extends Arena {
     CreatureUtils.applyHealthBar(zombie);
     this.addZombie(zombie);
 
-    super.subtractZombiesToSpawn();
+    super.setOptionValue(ArenaOption.ZOMBIES_TO_SPAWN, getOption(ArenaOption.ZOMBIES_TO_SPAWN) - 1);
   }
 
   public void spawnPlayerBuster(Random random) {
@@ -194,7 +194,7 @@ public class ArenaInitializer1_11_R1 extends Arena {
     CreatureUtils.applyHealthBar(zombie);
     this.addZombie(zombie);
 
-    super.subtractZombiesToSpawn();
+    super.setOptionValue(ArenaOption.ZOMBIES_TO_SPAWN, getOption(ArenaOption.ZOMBIES_TO_SPAWN) - 1);
   }
 
   public void spawnVillagerSlayer(Random random) {
@@ -213,7 +213,7 @@ public class ArenaInitializer1_11_R1 extends Arena {
     CreatureUtils.applyHealthBar(zombie);
     this.addZombie(zombie);
 
-    super.subtractZombiesToSpawn();
+    super.setOptionValue(ArenaOption.ZOMBIES_TO_SPAWN, getOption(ArenaOption.ZOMBIES_TO_SPAWN) - 1);
   }
 
   public void spawnVillager(Location location) {
@@ -228,7 +228,7 @@ public class ArenaInitializer1_11_R1 extends Arena {
   public void spawnGolem(Location location, Player player) {
     RidableIronGolem ironGolem = new RidableIronGolem(location.getWorld());
     ironGolem.setPosition(location.getX(), location.getY(), location.getZ());
-    ironGolem.setCustomName(ChatManager.colorMessage("In-Game.Spawned-Golem-Name").replace("%player%", player.getName()));
+    ironGolem.setCustomName(plugin.getChatManager().colorMessage("In-Game.Spawned-Golem-Name").replace("%player%", player.getName()));
     ironGolem.setCustomNameVisible(true);
     ((CraftWorld) location.getWorld()).getHandle().addEntity(ironGolem, CreatureSpawnEvent.SpawnReason.CUSTOM);
     this.addIronGolem((org.bukkit.entity.IronGolem) ironGolem.getBukkitEntity());
@@ -239,7 +239,7 @@ public class ArenaInitializer1_11_R1 extends Arena {
     WorkingWolf wolf = new WorkingWolf(location.getWorld());
     wolf.setPosition(location.getX(), location.getY(), location.getZ());
     mcWorld.addEntity(wolf, CreatureSpawnEvent.SpawnReason.CUSTOM);
-    wolf.setCustomName(ChatManager.colorMessage("In-Game.Spawned-Wolf-Name").replace("%player%", player.getName()));
+    wolf.setCustomName(plugin.getChatManager().colorMessage("In-Game.Spawned-Wolf-Name").replace("%player%", player.getName()));
     wolf.setCustomNameVisible(true);
     wolf.setInvisible(false);
     ((Wolf) wolf.getBukkitEntity()).setOwner(player);

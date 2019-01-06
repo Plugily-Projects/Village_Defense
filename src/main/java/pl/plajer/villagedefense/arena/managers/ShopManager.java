@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package pl.plajer.villagedefense.arena.shop;
+package pl.plajer.villagedefense.arena.managers;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;

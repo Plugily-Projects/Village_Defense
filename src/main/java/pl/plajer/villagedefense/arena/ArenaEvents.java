@@ -41,6 +41,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.api.StatsStorage;
+import pl.plajer.villagedefense.arena.options.ArenaOption;
 import pl.plajer.villagedefense.handlers.ChatManager;
 import pl.plajer.villagedefense.handlers.items.SpecialItemManager;
 import pl.plajer.villagedefense.handlers.reward.GameReward;
@@ -98,8 +99,8 @@ public class ArenaEvents implements Listener {
           }
           Player player = (Player) ((Wolf) e.getDamager()).getOwner();
           if (ArenaRegistry.getArena(player) != null) {
-            arena.addStat(player, StatsStorage.StatisticType.KILLS);
-            arena.addExperience(player, 2);
+            ArenaUtils.addStat(player, StatsStorage.StatisticType.KILLS);
+            ArenaUtils.addExperience(player, 2);
           }
           return;
         }
@@ -122,10 +123,10 @@ public class ArenaEvents implements Listener {
               continue;
             }
             arena.removeZombie((Zombie) e.getEntity());
-            arena.setTotalKilledZombies(arena.getTotalKilledZombies() + 1);
+            arena.addOptionValue(ArenaOption.TOTAL_KILLED_ZOMBIES, 1);
             if (ArenaRegistry.getArena(e.getEntity().getKiller()) != null) {
-              arena.addStat(e.getEntity().getKiller(), StatsStorage.StatisticType.KILLS);
-              arena.addExperience(e.getEntity().getKiller(), 2);
+              ArenaUtils.addStat(e.getEntity().getKiller(), StatsStorage.StatisticType.KILLS);
+              ArenaUtils.addExperience(e.getEntity().getKiller(), 2);
               plugin.getRewardsHandler().performReward(e.getEntity().getKiller(), GameReward.RewardType.ZOMBIE_KILL);
               plugin.getPowerupManager().spawnPowerup(e.getEntity().getLocation(), ArenaRegistry.getArena(e.getEntity().getKiller()));
             }
@@ -178,7 +179,7 @@ public class ArenaEvents implements Listener {
           return;
         }
         User user = plugin.getUserManager().getUser(player.getUniqueId());
-        arena.addStat(player, StatsStorage.StatisticType.DEATHS);
+        ArenaUtils.addStat(player, StatsStorage.StatisticType.DEATHS);
         arena.teleportToStartLocation(player);
         user.setSpectator(true);
         player.setGameMode(GameMode.SURVIVAL);

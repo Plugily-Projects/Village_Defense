@@ -44,6 +44,7 @@ import pl.plajer.villagedefense.api.event.game.VillageGameLeaveAttemptEvent;
 import pl.plajer.villagedefense.api.event.game.VillageGameStopEvent;
 import pl.plajer.villagedefense.api.event.wave.VillageWaveEndEvent;
 import pl.plajer.villagedefense.api.event.wave.VillageWaveStartEvent;
+import pl.plajer.villagedefense.arena.options.ArenaOption;
 import pl.plajer.villagedefense.handlers.ChatManager;
 import pl.plajer.villagedefense.handlers.PermissionsManager;
 import pl.plajer.villagedefense.handlers.items.SpecialItemManager;
@@ -116,7 +117,7 @@ public class ArenaManager {
           p.removePotionEffect(potionEffect.getType());
         }
 
-        p.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(p.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue() + arena.getRottenFleshLevel());
+        p.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(p.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue() + arena.getOption(ArenaOption.ROTTEN_FLESH_LEVEL));
         p.setHealth(p.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue());
         p.setFoodLevel(20);
         p.setGameMode(GameMode.SURVIVAL);
@@ -266,7 +267,7 @@ public class ArenaManager {
         for (String msg : summaryMessages) {
           MinigameUtils.sendCenteredMessage(p, formatSummaryPlaceholders(msg, arena, user, summaryEnding));
         }
-        arena.addExperience(p, arena.getWave());
+        ArenaUtils.addExperience(p, arena.getWave());
 
         plugin.getUserManager().getUser(p.getUniqueId()).removeScoreboard();
         if (quickStop || !plugin.getConfig().getBoolean("Firework-When-Game-Ends", true)) {
@@ -285,8 +286,8 @@ public class ArenaManager {
           }
         }.runTaskTimer(plugin, 30, 30);
       }
-      arena.setRottenFleshAmount(0);
-      arena.setRottenFleshLevel(0);
+      arena.setOptionValue(ArenaOption.ROTTEN_FLESH_AMOUNT, 0);
+      arena.setOptionValue(ArenaOption.ROTTEN_FLESH_LEVEL, 0);
       arena.restoreDoors();
       for (Zombie zombie : arena.getZombies()) {
         zombie.remove();
@@ -323,8 +324,8 @@ public class ArenaManager {
     formatted = StringUtils.replace(formatted, "%summary%", summary);
     formatted = StringUtils.replace(formatted, "%wave%", String.valueOf(a.getWave()));
     formatted = StringUtils.replace(formatted, "%player_best_wave%", String.valueOf(user.getStat(StatsStorage.StatisticType.HIGHEST_WAVE)));
-    formatted = StringUtils.replace(formatted, "%zombies%", String.valueOf(a.getTotalKilledZombies()));
-    formatted = StringUtils.replace(formatted, "%orbs_spent%", String.valueOf(a.getTotalOrbsSpent()));
+    formatted = StringUtils.replace(formatted, "%zombies%", String.valueOf(a.getOption(ArenaOption.TOTAL_KILLED_ZOMBIES)));
+    formatted = StringUtils.replace(formatted, "%orbs_spent%", String.valueOf(a.getOption(ArenaOption.TOTAL_ORBS_SPENT)));
     return formatted;
   }
 
@@ -357,7 +358,7 @@ public class ArenaManager {
         ArenaUtils.bringDeathPlayersBack(arena);
       }
       for (Player player : arena.getPlayersLeft()) {
-        arena.addExperience(player, 5);
+        ArenaUtils.addExperience(player, 5);
       }
     } catch (Exception e) {
       new ReportedException(plugin, e);
@@ -374,7 +375,7 @@ public class ArenaManager {
     try {
       VillageWaveStartEvent villageWaveStartEvent = new VillageWaveStartEvent(arena, arena.getWave());
       Bukkit.getPluginManager().callEvent(villageWaveStartEvent);
-      arena.setZombieAmount();
+      arena.setOptionValue(ArenaOption.ZOMBIES_TO_SPAWN, (int) Math.ceil((arena.getPlayers().size() * 0.5) * (arena.getOption(ArenaOption.WAVE) ^ 2) / 2));
       if (plugin.getConfig().getBoolean("Respawn-After-Wave", true)) {
         ArenaUtils.bringDeathPlayersBack(arena);
       }

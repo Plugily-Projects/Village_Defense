@@ -46,7 +46,7 @@ public class SetLevelArgument {
       @Override
       public void execute(CommandSender sender, String[] args) {
         if (args.length == 1) {
-          sender.sendMessage(plugin.getChatManager().getPrefix() + ChatColor.RED + "Please type number of levels to set!");
+          sender.sendMessage(registry.getPlugin().getChatManager().getPrefix() + ChatColor.RED + "Please type number of levels to set!");
           return;
         }
         Player target;
@@ -57,16 +57,17 @@ public class SetLevelArgument {
         }
 
         if (target == null) {
-          sender.sendMessage(plugin.getChatManager().colorMessage("Commands.Target-Player-Not-Found"));
+          sender.sendMessage(registry.getPlugin().getChatManager().colorMessage("Commands.Target-Player-Not-Found"));
           return;
         }
 
         if (Utils.isInteger(args[1])) {
           User user = registry.getPlugin().getUserManager().getUser(target.getUniqueId());
           user.setStat(StatsStorage.StatisticType.LEVEL, Integer.parseInt(args[1]));
-          sender.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage("Commands.Admin-Commands.Added-Level"));
+          sender.sendMessage(registry.getPlugin().getChatManager().getPrefix() + registry.getPlugin().getChatManager().colorMessage("Commands.Admin-Commands.Added-Level"));
         } else {
-          sender.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage("Commands.Wrong-Usage").replace("%correct%", "/vda setlevel <amount> [player]"));
+          sender.sendMessage(registry.getPlugin().getChatManager().getPrefix() + registry.getPlugin().getChatManager().colorMessage("Commands.Wrong-Usage")
+              .replace("%correct%", "/vda setlevel <amount> [player]"));
         }
       }
     });
