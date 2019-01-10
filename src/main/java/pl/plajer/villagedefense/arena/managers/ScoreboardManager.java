@@ -43,6 +43,7 @@ import pl.plajerlair.core.utils.GameScoreboard;
 public class ScoreboardManager {
 
   private Main plugin = JavaPlugin.getPlugin(Main.class);
+  private String boardTitle = plugin.getChatManager().colorMessage("Scoreboard.Title");
   private Arena arena;
 
   public ScoreboardManager(Arena arena) {
@@ -63,7 +64,7 @@ public class ScoreboardManager {
         user.removeScoreboard();
         return;
       }
-      scoreboard = new GameScoreboard("PL_VD3", "PL_CR", plugin.getChatManager().colorMessage("Scoreboard.Title"));
+      scoreboard = new GameScoreboard("PL_VD3", "PL_CR", boardTitle);
       List<String> lines;
       if (arena.getArenaState() == ArenaState.IN_GAME) {
         lines = LanguageManager.getLanguageList("Scoreboard.Content.Playing" + (arena.isFighting() ? "" : "-Waiting"));
