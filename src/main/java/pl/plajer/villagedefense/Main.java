@@ -178,7 +178,6 @@ public class Main extends JavaPlugin {
       //we must start it after instances load!
       signManager = new SignManager(this);
 
-      loadStatsForPlayersOnline();
       PermissionsManager.init();
       Debugger.debug(LogLevel.INFO, "Main setup done");
     } catch (Exception ex) {
@@ -347,18 +346,6 @@ public class Main extends JavaPlugin {
       getMySQLDatabase().getManager().shutdownConnPool();
     }
     Debugger.debug(LogLevel.INFO, "System disable finalize");
-  }
-
-  private void loadStatsForPlayersOnline() {
-    for (final Player player : getServer().getOnlinePlayers()) {
-      if (configPreferences.getOption(ConfigPreferences.Option.BUNGEE_ENABLED)) {
-        ArenaRegistry.getArenas().get(0).teleportToLobby(player);
-      }
-      User user = userManager.getUser(player.getUniqueId());
-      for (StatsStorage.StatisticType stat : StatsStorage.StatisticType.values()) {
-        userManager.loadStatistic(user, stat);
-      }
-    }
   }
 
 }

@@ -42,9 +42,9 @@ import pl.plajerlair.core.debug.LogLevel;
  */
 public class UserManager implements UserDatabase {
 
+  private static Map<UUID, User> users = new HashMap<>();
   private MySQLManager mySQLManager;
   private FileStats fileStats;
-  private static Map<UUID, User> users = new HashMap<>();
   private Main plugin;
 
   public UserManager(Main plugin) {
@@ -53,6 +53,16 @@ public class UserManager implements UserDatabase {
       mySQLManager = new MySQLManager(plugin);
     } else {
       fileStats = new FileStats(plugin);
+    }
+    loadStatsForPlayersOnline();
+  }
+
+  private void loadStatsForPlayersOnline() {
+    for (Player player : Bukkit.getServer().getOnlinePlayers()) {
+      User user = getUser(player.getUniqueId());
+      for (StatsStorage.StatisticType stat : StatsStorage.StatisticType.values()) {
+        loadStatistic(user, stat);
+      }
     }
   }
 
