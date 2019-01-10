@@ -14,6 +14,7 @@ data was wrongly saved without getName() method called. MySQL users are safe.
 * Fixed worlds were generated if arenas.yml contain their names (PLCore issue)
 * Misc code improvements - signs refresh speed improved and other things
 * Now zombies or any other entities that will damage any other entity won't be registered into user database
+* Now language manager will use cached language.yml file so plugin will perform bit better
 
 ### 4.0.0 Beta pre 5 (1.12.2018)
 * Fixed commands without permissions weren't working
