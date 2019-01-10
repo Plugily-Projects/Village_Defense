@@ -434,11 +434,6 @@ public class Events implements Listener {
   @EventHandler(priority = EventPriority.HIGHEST)
   public void onSecond(EntityDamageByEntityEvent e) {
     try {
-      User user = plugin.getUserManager().getUser((e.getDamager().getUniqueId()));
-      if (user.isSpectator()) {
-        e.setCancelled(true);
-        return;
-      }
       if (!(e.getDamager() instanceof Arrow)) {
         return;
       }

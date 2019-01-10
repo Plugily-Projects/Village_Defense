@@ -1,6 +1,6 @@
 # Village Defense 3 Changelog
 
-### 4.0.0 Beta pre 6 (14.12.2018-06.01.2019)
+### 4.0.0 Beta pre 6 (14.12.2018-10.01.2019)
 * Implemented legacy data fixer that will fix inconsistency between original user data and current one (old implementation failure)
 data was wrongly saved without getName() method called. MySQL users are safe.
 * Added Italian locale
@@ -13,6 +13,7 @@ data was wrongly saved without getName() method called. MySQL users are safe.
 * Added caching reflection while spawning game entities, this change drastically decreases plugin load and average plugin speed per tick is now faster
 * Fixed worlds were generated if arenas.yml contain their names (PLCore issue)
 * Misc code improvements - signs refresh speed improved and other things
+* Now zombies or any other entities that will damage any other entity won't be registered into user database
 
 ### 4.0.0 Beta pre 5 (1.12.2018)
 * Fixed commands without permissions weren't working

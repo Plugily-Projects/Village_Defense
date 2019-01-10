@@ -236,10 +236,10 @@ public class ArenaEvents implements Listener {
         return;
       }
       Player player = e.getPlayer();
-      User user = plugin.getUserManager().getUser(player.getUniqueId());
       player.setAllowFlight(true);
       player.setFlying(true);
       arena.teleportToStartLocation(player);
+      User user = plugin.getUserManager().getUser(player.getUniqueId());
       if (!user.isSpectator()) {
         user.setSpectator(true);
         player.setGameMode(GameMode.SURVIVAL);

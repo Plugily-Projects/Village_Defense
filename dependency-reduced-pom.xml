@@ -22,7 +22,7 @@
   <groupId>pl.plajer</groupId>
   <artifactId>villagedefense</artifactId>
   <name>VillageDefense</name>
-  <version>4.0.0b-pre-6</version>
+    <version>4.0.0-pre-6</version>
   <licenses>
     <license>
       <name>GNU General Public License v3</name>
