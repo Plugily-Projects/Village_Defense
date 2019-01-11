@@ -22,7 +22,6 @@ import java.util.Collections;
 import java.util.HashSet;
 
 import org.bukkit.ChatColor;
-import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -38,11 +37,11 @@ import org.bukkit.inventory.meta.SkullMeta;
 import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.arena.Arena;
 import pl.plajer.villagedefense.arena.ArenaRegistry;
+import pl.plajer.villagedefense.utils.CompatMaterialConstants;
 import pl.plajer.villagedefense.utils.Utils;
 import pl.plajerlair.core.services.exception.ReportedException;
 import pl.plajerlair.core.spectator.SpectatorSettingsMenu;
 import pl.plajerlair.core.utils.MinigameUtils;
-import pl.plajerlair.core.utils.XMaterial;
 
 public class SpectatorItemEvents implements Listener {
 
@@ -85,13 +84,7 @@ public class SpectatorItemEvents implements Listener {
     HashSet<Player> players = ArenaRegistry.getArena(p).getPlayers();
     for (Player player : world.getPlayers()) {
       if (players.contains(player) && !plugin.getUserManager().getUser(player.getUniqueId()).isSpectator()) {
-        ItemStack skull;
-        if (plugin.is1_11_R1() || plugin.is1_12_R1()) {
-          skull = new ItemStack(Material.SKULL_ITEM, 1, (short) 3);
-        } else {
-          //todo check
-          skull = XMaterial.PLAYER_HEAD.parseItem();
-        }
+        ItemStack skull = CompatMaterialConstants.PLAYER_HEAD_ITEM.clone();
         SkullMeta meta = (SkullMeta) skull.getItemMeta();
         meta.setOwningPlayer(player);
         meta.setDisplayName(player.getName());

@@ -31,9 +31,9 @@ import pl.plajer.villagedefense.api.StatsStorage;
 import pl.plajer.villagedefense.kits.kitapi.KitRegistry;
 import pl.plajer.villagedefense.kits.kitapi.basekits.LevelKit;
 import pl.plajer.villagedefense.utils.ArmorHelper;
+import pl.plajer.villagedefense.utils.CompatMaterialConstants;
 import pl.plajer.villagedefense.utils.Utils;
 import pl.plajer.villagedefense.utils.WeaponHelper;
-import pl.plajerlair.core.utils.XMaterial;
 
 /**
  * Created by Tom on 28/07/2015.
@@ -65,7 +65,7 @@ public class HardcoreKit extends LevelKit {
 
   @Override
   public Material getMaterial() {
-    return XMaterial.PLAYER_HEAD.parseMaterial();
+    return CompatMaterialConstants.PLAYER_HEAD;
   }
 
   @Override

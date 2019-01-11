@@ -42,11 +42,11 @@ import pl.plajer.villagedefense.handlers.PermissionsManager;
 import pl.plajer.villagedefense.kits.kitapi.KitRegistry;
 import pl.plajer.villagedefense.kits.kitapi.basekits.PremiumKit;
 import pl.plajer.villagedefense.utils.ArmorHelper;
+import pl.plajer.villagedefense.utils.CompatMaterialConstants;
 import pl.plajer.villagedefense.utils.Utils;
 import pl.plajer.villagedefense.utils.WeaponHelper;
 import pl.plajerlair.core.services.exception.ReportedException;
 import pl.plajerlair.core.utils.ItemBuilder;
-import pl.plajerlair.core.utils.XMaterial;
 
 /**
  * Created by Tom on 18/08/2014.
@@ -105,13 +105,7 @@ public class TeleporterKit extends PremiumKit implements Listener {
       Inventory inventory = getPlugin().getServer().createInventory(null, 18, getPlugin().getChatManager().colorMessage("Kits.Teleporter.Game-Item-Menu-Name"));
       for (Player player : e.getPlayer().getWorld().getPlayers()) {
         if (ArenaRegistry.getArena(player) != null && !getPlugin().getUserManager().getUser(player.getUniqueId()).isSpectator()) {
-          ItemStack skull;
-          if (getPlugin().is1_11_R1() || getPlugin().is1_12_R1()) {
-            skull = new ItemStack(Material.SKULL_ITEM, 1, (short) 3);
-          } else {
-            //todo check
-            skull = XMaterial.PLAYER_HEAD.parseItem();
-          }
+          ItemStack skull = CompatMaterialConstants.PLAYER_HEAD_ITEM.clone();
           SkullMeta meta = (SkullMeta) skull.getItemMeta();
           meta.setOwningPlayer(player);
           meta.setDisplayName(player.getName());

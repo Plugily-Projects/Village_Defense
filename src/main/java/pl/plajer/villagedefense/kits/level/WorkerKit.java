@@ -37,10 +37,10 @@ import pl.plajer.villagedefense.kits.kitapi.KitRegistry;
 import pl.plajer.villagedefense.kits.kitapi.basekits.LevelKit;
 import pl.plajer.villagedefense.user.User;
 import pl.plajer.villagedefense.utils.ArmorHelper;
+import pl.plajer.villagedefense.utils.CompatMaterialConstants;
 import pl.plajer.villagedefense.utils.Utils;
 import pl.plajer.villagedefense.utils.WeaponHelper;
 import pl.plajerlair.core.services.exception.ReportedException;
-import pl.plajerlair.core.utils.XMaterial;
 
 /**
  * Created by Tom on 19/07/2015.
@@ -69,17 +69,17 @@ public class WorkerKit extends LevelKit implements Listener {
     player.getInventory().addItem(WeaponHelper.getEnchantedBow(Enchantment.DURABILITY, 10));
     player.getInventory().addItem(new ItemStack(Material.ARROW, 64));
     player.getInventory().addItem(new ItemStack(Material.COOKED_BEEF, 10));
-    player.getInventory().addItem(new ItemStack(XMaterial.OAK_DOOR.parseMaterial(), 2));
+    player.getInventory().addItem(new ItemStack(CompatMaterialConstants.OAK_DOOR_ITEM, 2));
   }
 
   @Override
   public Material getMaterial() {
-    return XMaterial.OAK_DOOR.parseMaterial();
+    return CompatMaterialConstants.OAK_DOOR_ITEM;
   }
 
   @Override
   public void reStock(Player player) {
-    player.getInventory().addItem(XMaterial.OAK_DOOR.parseItem());
+    player.getInventory().addItem(new ItemStack(CompatMaterialConstants.OAK_DOOR_ITEM));
   }
 
   @EventHandler(priority = EventPriority.HIGHEST)
@@ -95,16 +95,9 @@ public class WorkerKit extends LevelKit implements Listener {
         e.setCancelled(true);
         return;
       }
-      if (getPlugin().is1_12_R1() || getPlugin().is1_11_R1()) {
-        if (stack.getType() != Material.WOOD_DOOR || stack.getType() != Material.WOODEN_DOOR) {
-          e.setCancelled(true);
-          return;
-        }
-      } else {
-        if (stack.getType() != XMaterial.OAK_DOOR.parseMaterial()) {
-          e.setCancelled(true);
-          return;
-        }
+      if (stack.getType() != CompatMaterialConstants.OAK_DOOR_ITEM) {
+        e.setCancelled(true);
+        return;
       }
       e.setCancelled(false);
       e.getPlayer().sendMessage(getPlugin().getChatManager().colorMessage("Kits.Worker.Game-Item-Place-Message"));
