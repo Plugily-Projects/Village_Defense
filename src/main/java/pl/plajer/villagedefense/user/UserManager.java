@@ -42,6 +42,7 @@ import pl.plajerlair.core.debug.LogLevel;
  */
 public class UserManager implements UserDatabase {
 
+  @Deprecated //use Player instead of UUID
   private static Map<UUID, User> users = new HashMap<>();
   private MySQLManager mySQLManager;
   private FileStats fileStats;
@@ -66,12 +67,13 @@ public class UserManager implements UserDatabase {
     }
   }
 
+  @Deprecated //use getUser(Player)
   public User getUser(UUID uuid) {
     if (users.containsKey(uuid)) {
       return users.get(uuid);
     } else {
       Debugger.debug(LogLevel.INFO, "Registering new user with UUID: " + uuid);
-      users.put(uuid, new User(uuid));
+      users.put(uuid, new User(Bukkit.getPlayer(uuid)));
       return users.get(uuid);
     }
   }
@@ -90,8 +92,7 @@ public class UserManager implements UserDatabase {
       return;
     }
     if (plugin.getConfigPreferences().getOption(ConfigPreferences.Option.DATABASE_ENABLED)) {
-      Player player = user.toPlayer();
-      Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> mySQLManager.saveStatistic(user, player, stat));
+      Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> mySQLManager.saveStatistic(user, stat));
       return;
     }
     fileStats.saveStatistic(user, stat);
@@ -109,6 +110,7 @@ public class UserManager implements UserDatabase {
     fileStats.loadStatistic(user, stat);
   }
 
+  @Deprecated //use Player
   public void removeUser(UUID uuid) {
     users.remove(uuid);
   }
