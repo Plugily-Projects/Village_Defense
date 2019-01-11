@@ -32,6 +32,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import pl.plajer.villagedefense.ConfigPreferences;
 import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.arena.Arena;
+import pl.plajer.villagedefense.utils.CompatMaterialConstants;
 import pl.plajerlair.core.utils.ConfigUtils;
 import pl.plajerlair.core.utils.ItemBuilder;
 import pl.plajerlair.core.utils.LocationUtils;
@@ -120,7 +121,7 @@ public class SetupInventory {
         .lore(ChatColor.GRAY + "on the place you're standing at.")
         .lore(isOptionDoneList("instances." + arena.getID() + ".zombiespawns"))
         .build()));
-    inventory.setItem(ClickPosition.ADD_DOORS.getPosition(), new ItemBuilder(XMaterial.OAK_DOOR.parseItem())
+    inventory.setItem(ClickPosition.ADD_DOORS.getPosition(), new ItemBuilder(new ItemStack(CompatMaterialConstants.OAK_DOOR_ITEM))
         .name(ChatColor.GOLD + "► Add doors")
         .lore(ChatColor.GRAY + "Target arena door and click this.")
         .lore(isOptionDoneList("instances." + arena.getID() + ".doors"))

@@ -20,6 +20,7 @@ data was wrongly saved without getName() method called. MySQL users are safe.
 * Fixed Worker kit wasn't displaying and working on 1.11-1.12
 * Fixed oak doors couldn't be placed at the position of broken ones on 1.11-1.12
 * Fixed doors couldn't be broken by zombies at 1.11-1.12
+* Fixed doors couldn't be added in arena setup at 1.11-1.12
 
 ### 4.0.0 Beta pre 5 (1.12.2018)
 * Fixed commands without permissions weren't working
