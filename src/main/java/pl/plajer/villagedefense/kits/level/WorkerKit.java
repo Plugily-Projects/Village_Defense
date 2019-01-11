@@ -91,10 +91,20 @@ public class WorkerKit extends LevelKit implements Listener {
       }
       User user = getPlugin().getUserManager().getUser(e.getPlayer().getUniqueId());
       ItemStack stack = e.getPlayer().getInventory().getItemInMainHand();
-      if (user.isSpectator() || stack == null || !arena.getDoorLocations().containsKey(e.getBlock().getLocation())
-          || !(stack.getType() == XMaterial.OAK_DOOR.parseMaterial())) {
+      if (stack == null || user.isSpectator() || !arena.getDoorLocations().containsKey(e.getBlock().getLocation())) {
         e.setCancelled(true);
         return;
+      }
+      if (getPlugin().is1_12_R1() || getPlugin().is1_11_R1()) {
+        if (stack.getType() != Material.WOOD_DOOR || stack.getType() != Material.WOODEN_DOOR) {
+          e.setCancelled(true);
+          return;
+        }
+      } else {
+        if (stack.getType() != XMaterial.OAK_DOOR.parseMaterial()) {
+          e.setCancelled(true);
+          return;
+        }
       }
       e.setCancelled(false);
       e.getPlayer().sendMessage(getPlugin().getChatManager().colorMessage("Kits.Worker.Game-Item-Place-Message"));
