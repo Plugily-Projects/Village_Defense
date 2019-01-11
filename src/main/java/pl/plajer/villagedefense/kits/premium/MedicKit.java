@@ -91,7 +91,7 @@ public class MedicKit extends PremiumKit implements Listener {
       if (Math.random() > 0.1) {
         return;
       }
-      for (Entity entity : user.toPlayer().getNearbyEntities(5, 5, 5)) {
+      for (Entity entity : e.getDamager().getNearbyEntities(5, 5, 5)) {
         if (!(entity instanceof Player)) {
           continue;
         }

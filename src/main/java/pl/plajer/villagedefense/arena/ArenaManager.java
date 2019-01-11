@@ -201,7 +201,7 @@ public class ArenaManager {
       user.removeScoreboard();
       if (user.getKit() instanceof GolemFriendKit) {
         for (IronGolem ironGolem : arena.getIronGolems()) {
-          if (ironGolem.getCustomName().contains(user.toPlayer().getName())) {
+          if (ironGolem.getCustomName().contains(user.getPlayer().getName())) {
             ironGolem.remove();
           }
         }
@@ -380,7 +380,7 @@ public class ArenaManager {
         ArenaUtils.bringDeathPlayersBack(arena);
       }
       for (User user : plugin.getUserManager().getUsers(arena)) {
-        user.getKit().reStock(user.toPlayer());
+        user.getKit().reStock(user.getPlayer());
       }
       plugin.getChatManager().broadcast(arena, plugin.getChatManager().formatMessage(arena, plugin.getChatManager().colorMessage("In-Game.Messages.Wave-Started"), arena.getWave()));
     } catch (Exception e) {

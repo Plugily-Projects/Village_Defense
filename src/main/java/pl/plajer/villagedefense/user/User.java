@@ -68,6 +68,10 @@ public class User {
     return ArenaRegistry.getArena(player);
   }
 
+  public Player getPlayer() {
+    return player;
+  }
+
   public boolean isSpectator() {
     return spectator;
   }

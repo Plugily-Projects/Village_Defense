@@ -891,7 +891,7 @@ public abstract class Arena extends BukkitRunnable {
     List<Player> players = new ArrayList<>();
     for (User user : plugin.getUserManager().getUsers(this)) {
       if (!user.isSpectator()) {
-        players.add(user.toPlayer());
+        players.add(user.getPlayer());
       }
     }
     return players;

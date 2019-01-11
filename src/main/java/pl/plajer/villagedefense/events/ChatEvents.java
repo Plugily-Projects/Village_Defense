@@ -119,10 +119,10 @@ public class ChatEvents implements Listener {
     } else {
       formatted = StringUtils.replace(formatted, "%kit%", user.getKit().getName());
     }
-    formatted = StringUtils.replace(formatted, "%player%", user.toPlayer().getName());
+    formatted = StringUtils.replace(formatted, "%player%", user.getPlayer().getName());
     formatted = StringUtils.replace(formatted, "%message%", saidMessage);
     if (plugin.getServer().getPluginManager().isPluginEnabled("PlaceholderAPI") && PlaceholderAPI.containsPlaceholders(formatted)) {
-      formatted = PlaceholderAPI.setPlaceholders(user.toPlayer(), formatted);
+      formatted = PlaceholderAPI.setPlaceholders(user.getPlayer(), formatted);
     }
     return formatted;
   }
