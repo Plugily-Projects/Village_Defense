@@ -1,6 +1,6 @@
 /*
  * Village Defense - Protect villagers from hordes of zombies
- * Copyright (C) 2018  Plajer's Lair - maintained by Plajer and Tigerpanzer
+ * Copyright (C) 2019  Plajer's Lair - maintained by Plajer and Tigerpanzer
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -39,7 +39,6 @@ import net.minecraft.server.v1_13_R2.PathfinderGoalZombieAttack;
 import net.minecraft.server.v1_13_R2.World;
 
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.craftbukkit.v1_13_R2.CraftWorld;
 import org.bukkit.entity.EntityType;
@@ -86,11 +85,6 @@ public class PlayerBuster extends EntityZombie {
 
     this.setHealth(1);
     this.p(true);
-  }
-
-  public PlayerBuster(World world, Location location) {
-    this(world);
-    getNavigation().a(location.getX(), location.getY(), location.getZ());
   }
 
   @Override

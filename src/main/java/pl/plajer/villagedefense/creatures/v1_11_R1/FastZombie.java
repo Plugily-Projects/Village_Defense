@@ -1,6 +1,6 @@
 /*
  * Village Defense - Protect villagers from hordes of zombies
- * Copyright (C) 2018  Plajer's Lair - maintained by Plajer and Tigerpanzer
+ * Copyright (C) 2019  Plajer's Lair - maintained by Plajer and Tigerpanzer
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -36,7 +36,6 @@ import net.minecraft.server.v1_11_R1.PathfinderGoalSelector;
 import net.minecraft.server.v1_11_R1.PathfinderGoalZombieAttack;
 import net.minecraft.server.v1_11_R1.World;
 
-import org.bukkit.Location;
 import org.bukkit.craftbukkit.v1_11_R1.CraftWorld;
 
 import pl.plajer.villagedefense.creatures.CreatureUtils;
@@ -74,11 +73,6 @@ public class FastZombie extends EntityZombie {
     this.targetSelector.a(2, new PathfinderGoalNearestAttackableTarget<>(this, EntityVillager.class, false));
     this.targetSelector.a(2, new PathfinderGoalNearestAttackableTarget<>(this, EntityIronGolem.class, false));
     this.p(true);
-  }
-
-  public FastZombie(World world, Location location) {
-    this(world);
-    getNavigation().a(location.getX(), location.getY(), location.getZ());
   }
 
   @Override

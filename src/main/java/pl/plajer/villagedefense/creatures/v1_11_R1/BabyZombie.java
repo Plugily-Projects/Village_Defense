@@ -1,6 +1,6 @@
 /*
  * Village Defense - Protect villagers from hordes of zombies
- * Copyright (C) 2018  Plajer's Lair - maintained by Plajer and Tigerpanzer
+ * Copyright (C) 2019  Plajer's Lair - maintained by Plajer and Tigerpanzer
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -37,7 +37,6 @@ import net.minecraft.server.v1_11_R1.PathfinderGoalSelector;
 import net.minecraft.server.v1_11_R1.PathfinderGoalZombieAttack;
 import net.minecraft.server.v1_11_R1.World;
 
-import org.bukkit.Location;
 import org.bukkit.craftbukkit.v1_11_R1.CraftWorld;
 
 import pl.plajer.villagedefense.creatures.CreatureUtils;
@@ -78,11 +77,6 @@ public class BabyZombie extends EntityZombie {
     this.setBaby(true);
     this.setHealth(2);
     this.p(true);
-  }
-
-  public BabyZombie(World world, Location location) {
-    this(world);
-    getNavigation().a(location.getX(), location.getY(), location.getZ());
   }
 
   @Override

@@ -39,7 +39,6 @@ import net.minecraft.server.v1_11_R1.PathfinderGoalZombieAttack;
 import net.minecraft.server.v1_11_R1.World;
 
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.craftbukkit.v1_11_R1.CraftWorld;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.IronGolem;
@@ -83,11 +82,6 @@ public class GolemBuster extends EntityZombie {
     this.targetSelector.a(2, new PathfinderGoalNearestAttackableTarget<>(this, EntityIronGolem.class, false));
     this.setHealth(5);
     this.p(true);
-  }
-
-  public GolemBuster(World world, Location location) {
-    this(world);
-    getNavigation().a(location.getX(), location.getY(), location.getZ());
   }
 
   @Override
