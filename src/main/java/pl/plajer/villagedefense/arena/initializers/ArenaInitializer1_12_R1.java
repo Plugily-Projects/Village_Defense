@@ -61,7 +61,10 @@ public class ArenaInitializer1_12_R1 extends Arena {
   public ArenaInitializer1_12_R1(String id, Main plugin) {
     super(id, plugin);
     this.plugin = plugin;
-    this.world = ((CraftWorld) getStartLocation().getWorld()).getHandle();
+  }
+
+  public void setWorld(Location loc) {
+    this.world = ((CraftWorld) loc.getWorld()).getHandle();
   }
 
   public void spawnFastZombie(Random random) {

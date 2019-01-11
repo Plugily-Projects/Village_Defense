@@ -73,9 +73,12 @@ public class SetupInventoryEvents implements Listener {
         return;
       }
 
+      SetupInventory.ClickPosition slot = SetupInventory.ClickPosition.getByPosition(event.getRawSlot());
       //do not close inventory nor cancel event when setting arena name via name tag
       if (event.getCurrentItem().getType() != Material.NAME_TAG) {
-        player.closeInventory();
+        if (!(slot == SetupInventory.ClickPosition.SET_MINIMUM_PLAYERS || slot == SetupInventory.ClickPosition.SET_MAXIMUM_PLAYERS)) {
+          player.closeInventory();
+        }
         event.setCancelled(true);
       }
 
@@ -84,7 +87,7 @@ public class SetupInventoryEvents implements Listener {
       String locationString = player.getLocation().getWorld().getName() + "," + player.getLocation().getX() + "," + player.getLocation().getY() + ","
           + player.getLocation().getZ() + "," + player.getLocation().getYaw() + ",0.0";
       FileConfiguration config = ConfigUtils.getConfig(plugin, "arenas");
-      switch (SetupInventory.ClickPosition.getByPosition(event.getRawSlot())) {
+      switch (slot) {
         case SET_ENDING:
           config.set("instances." + arena.getID() + ".Endlocation", locationString);
           player.sendMessage(plugin.getChatManager().colorRawMessage("&e✔ Completed | &aEnding location for arena " + arena.getID() + " set at your location!"));
@@ -105,7 +108,7 @@ public class SetupInventoryEvents implements Listener {
             event.getCurrentItem().setAmount(event.getCurrentItem().getAmount() - 1);
           }
           config.set("instances." + arena.getID() + ".minimumplayers", event.getCurrentItem().getAmount());
-          player.openInventory(new SetupInventory(arena).getInventory());
+          player.updateInventory();
           break;
         case SET_MAXIMUM_PLAYERS:
           if (clickType.isRightClick()) {
@@ -115,7 +118,7 @@ public class SetupInventoryEvents implements Listener {
             event.getCurrentItem().setAmount(event.getCurrentItem().getAmount() - 1);
           }
           config.set("instances." + arena.getID() + ".maximumplayers", event.getCurrentItem().getAmount());
-          player.openInventory(new SetupInventory(arena).getInventory());
+          player.updateInventory();
           break;
         case ADD_SIGN:
           Location location = player.getTargetBlock(null, 10).getLocation();
@@ -276,6 +279,7 @@ public class SetupInventoryEvents implements Listener {
           arena.setLobbyLocation(LocationUtils.getLocation(config.getString("instances." + arena.getID() + ".lobbylocation")));
           arena.setStartLocation(LocationUtils.getLocation(config.getString("instances." + arena.getID() + ".Startlocation")));
           arena.setEndLocation(LocationUtils.getLocation(config.getString("instances." + arena.getID() + ".Endlocation")));
+          ArenaUtils.setWorld(arena);
           for (String string : config.getConfigurationSection("instances." + arena.getID() + ".zombiespawns").getKeys(false)) {
             String path = "instances." + arena.getID() + ".zombiespawns." + string;
             arena.addZombieSpawn(LocationUtils.getLocation(config.getString(path)));

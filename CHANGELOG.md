@@ -1,6 +1,6 @@
 # Village Defense 3 Changelog
 
-### 4.0.0 Beta pre 6 (14.12.2018-10.01.2019)
+### 4.0.0 Beta pre 6 (14.12.2018-11.01.2019)
 * Implemented legacy data fixer that will fix inconsistency between original user data and current one (old implementation failure)
 data was wrongly saved without getName() method called. MySQL users are safe.
 * Added Italian locale
@@ -15,6 +15,7 @@ data was wrongly saved without getName() method called. MySQL users are safe.
 * Misc code improvements - signs refresh speed improved and other things
 * Now zombies or any other entities that will damage any other entity won't be registered into user database
 * Now language manager will use cached language.yml file so plugin will perform bit better
+* Now you can smoothly add/decrease minimum and maximum players amount in setup gui
 
 ### 4.0.0 Beta pre 5 (1.12.2018)
 * Fixed commands without permissions weren't working

@@ -116,6 +116,18 @@ public class ArenaUtils {
     return arena;
   }
 
+  public static void setWorld(Arena arena) {
+    if (plugin.is1_11_R1()) {
+      ((ArenaInitializer1_11_R1) arena).setWorld(arena.getStartLocation());
+    } else if (plugin.is1_12_R1()) {
+      ((ArenaInitializer1_12_R1) arena).setWorld(arena.getStartLocation());
+    } else if (plugin.is1_13_R1()) {
+      ((ArenaInitializer1_13_R1) arena).setWorld(arena.getStartLocation());
+    } else {
+      ((ArenaInitializer1_13_R2) arena).setWorld(arena.getStartLocation());
+    }
+  }
+
   @Deprecated //move somewhere else
   public static void addExperience(Player player, int i) {
     User user = plugin.getUserManager().getUser(player.getUniqueId());

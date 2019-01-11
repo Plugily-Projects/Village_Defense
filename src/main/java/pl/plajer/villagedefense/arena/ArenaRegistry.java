@@ -140,6 +140,7 @@ public class ArenaRegistry {
       arena.setLobbyLocation(LocationUtils.getLocation(config.getString(s + "lobbylocation", "world,364.0,63.0,-72.0,0.0,0.0")));
       arena.setStartLocation(LocationUtils.getLocation(config.getString(s + "Startlocation", "world,364.0,63.0,-72.0,0.0,0.0")));
       arena.setEndLocation(LocationUtils.getLocation(config.getString(s + "Endlocation", "world,364.0,63.0,-72.0,0.0,0.0")));
+      ArenaUtils.setWorld(arena);
 
       if (!config.getBoolean(s + "isdone", false)) {
         Bukkit.getConsoleSender().sendMessage(plugin.getChatManager().colorMessage("Validator.Invalid-Arena-Configuration").replace("%arena%", id).replace("%error%", "NOT VALIDATED"));

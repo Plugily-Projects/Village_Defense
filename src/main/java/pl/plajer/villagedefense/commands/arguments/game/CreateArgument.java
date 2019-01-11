@@ -104,6 +104,7 @@ public class CreateArgument {
     arena.setLobbyLocation(LocationUtils.getLocation(config.getString(path + "lobbylocation")));
     arena.setStartLocation(LocationUtils.getLocation(config.getString(path + "Startlocation")));
     arena.setEndLocation(LocationUtils.getLocation(config.getString(path + "Endlocation")));
+    ArenaUtils.setWorld(arena);
     arena.setReady(false);
 
     ArenaRegistry.registerArena(arena);
