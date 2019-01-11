@@ -90,7 +90,8 @@ public class UserManager implements UserDatabase {
       return;
     }
     if (plugin.getConfigPreferences().getOption(ConfigPreferences.Option.DATABASE_ENABLED)) {
-      Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> mySQLManager.saveStatistic(user, stat));
+      Player player = user.toPlayer();
+      Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> mySQLManager.saveStatistic(user, player, stat));
       return;
     }
     fileStats.saveStatistic(user, stat);

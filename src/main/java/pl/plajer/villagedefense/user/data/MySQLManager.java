@@ -38,7 +38,7 @@ import pl.plajerlair.core.database.MySQLDatabase;
  * <p>
  * Created at 28.09.2018
  */
-public class MySQLManager implements UserDatabase {
+public class MySQLManager {
 
   private MySQLDatabase database;
 
@@ -79,12 +79,10 @@ public class MySQLManager implements UserDatabase {
     database.executeUpdate("INSERT INTO playerstats (UUID,name,xp) VALUES ('" + player.getUniqueId().toString() + "','" + player.getName() + "',0)");
   }
 
-  @Override
-  public void saveStatistic(User user, StatsStorage.StatisticType stat) {
+  public void saveStatistic(User user, Player player, StatsStorage.StatisticType stat) {
     database.executeUpdate("UPDATE playerstats SET " + stat.getName() + "=" + user.getStat(stat) + " WHERE UUID='" + user.toPlayer().getUniqueId().toString() + "';");
   }
 
-  @Override
   public void loadStatistic(User user, StatsStorage.StatisticType stat) {
     ResultSet resultSet = database.executeQuery("SELECT UUID from playerstats WHERE UUID='" + user.toPlayer().getUniqueId().toString() + "'");
     //insert into the database
