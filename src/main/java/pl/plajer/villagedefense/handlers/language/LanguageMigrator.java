@@ -190,6 +190,7 @@ public class LanguageMigrator {
           break;
         case 9:
           MigratorUtils.insertAfterLine(file, "Admin-Commands", "    Received-Orbs: \"&7You received &a%orbs% orbs&7!\"");
+          MigratorUtils.insertAfterLine(file, "Admin-Messages:", "      Removed-Wolves: \"&b%PLAYER% has cleared the wolves!\"");
         default:
           break;
       }

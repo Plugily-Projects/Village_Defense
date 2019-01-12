@@ -24,6 +24,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.IronGolem;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Villager;
+import org.bukkit.entity.Wolf;
 import org.bukkit.entity.Zombie;
 
 import pl.plajer.villagedefense.arena.Arena;
@@ -99,13 +100,25 @@ public class ClearEntitiesArgument {
             Utils.playSound(((Player) sender).getLocation(), "ENTITY_IRONGOLEM_DEATH", "ENTITY_IRON_GOLEM_DEATH");
             clearMessage = registry.getPlugin().getChatManager().colorMessage("In-Game.Messages.Admin-Messages.Removed-Golems");
             break;
+          case "wolf":
+            if (arena.getWolfs() == null || arena.getWolfs().isEmpty()) {
+              sender.sendMessage(registry.getPlugin().getChatManager().colorMessage("Kits.Cleaner.Nothing-To-Clean"));
+              return;
+            }
+            for (Wolf wolf : arena.getWolfs()) {
+              wolf.getWorld().spawnParticle(Particle.LAVA, wolf.getLocation(), 20);
+              wolf.remove();
+            }
+            arena.getWolfs().clear();
+            Utils.playSound(((Player) sender).getLocation(), "ENTITY_WOLF_DEATH", "ENTITY_WOLF_DEATH");
+            clearMessage = registry.getPlugin().getChatManager().colorMessage("In-Game.Messages.Admin-Messages.Removed-Wolves");
+            break;
           default:
-            sender.sendMessage(registry.getPlugin().getChatManager().getPrefix() + ChatColor.RED + "Please type valid mob type to clear: VILLAGER, ZOMBIE, GOLEM");
+            sender.sendMessage(registry.getPlugin().getChatManager().getPrefix() + ChatColor.RED + "Please type valid mob type to clear: VILLAGER, ZOMBIE, GOLEM, WOLF");
             return;
-          //todo add wolves
         }
+        String message = registry.getPlugin().getChatManager().formatMessage(arena, clearMessage, (Player) sender);
         for (Player loopPlayer : arena.getPlayers()) {
-          String message = registry.getPlugin().getChatManager().formatMessage(arena, clearMessage, (Player) sender);
           loopPlayer.sendMessage(registry.getPlugin().getChatManager().getPrefix() + message);
         }
       }

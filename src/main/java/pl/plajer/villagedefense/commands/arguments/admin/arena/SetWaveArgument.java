@@ -74,9 +74,10 @@ public class SetWaveArgument {
             return;
           }
           Utils.playSound(((Player) sender).getLocation(), "ENTITY_ZOMBIE_DEATH", "ENTITY_ZOMBIE_DEATH");
+          String msg = registry.getPlugin().getChatManager().formatMessage(arena, registry.getPlugin().getChatManager().colorMessage("In-Game.Messages.Admin-Messages.Removed-Zombies"),
+              (Player) sender);
           for (Player loopPlayer : arena.getPlayers()) {
-            String message1 = registry.getPlugin().getChatManager().formatMessage(arena, registry.getPlugin().getChatManager().colorMessage("In-Game.Messages.Admin-Messages.Removed-Zombies"), loopPlayer);
-            loopPlayer.sendMessage(registry.getPlugin().getChatManager().getPrefix() + message1);
+            loopPlayer.sendMessage(registry.getPlugin().getChatManager().getPrefix() + msg);
           }
         } else {
           sender.sendMessage(registry.getPlugin().getChatManager().getPrefix() + registry.getPlugin().getChatManager().colorMessage("Commands.Invalid-Number").replace("%correct%", "/vda setwave <number>"));

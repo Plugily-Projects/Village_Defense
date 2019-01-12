@@ -331,6 +331,7 @@ In-Game:
       Removed-Villagers: "&b%PLAYER% has removed all the villagers!"
       Removed-Golems: "&b%PLAYER% has removed all the golems!"
       Removed-Zombies: "&b%PLAYER% has cleared the zombies!"
+      Removed-Wolves: "&b%PLAYER% has cleared the wolves!"
       Changed-Wave: "&bAdmin changed the wave to %NUMBER%"
 
 Powerups:

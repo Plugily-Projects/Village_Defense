@@ -26,6 +26,7 @@ data was wrongly saved without getName() method called. MySQL users are safe.
 * Added message when player receive orbs via addorbs command
 * Golems on death won't drop useless items now
 * Added missing game prefixes in some commands
+* Added /vda clear wolf to /vda clear command. You can now clear wolves
 
 ### 4.0.0 Beta pre 5 (1.12.2018)
 * Fixed commands without permissions weren't working
