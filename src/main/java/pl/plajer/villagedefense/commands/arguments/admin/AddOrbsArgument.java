@@ -72,6 +72,7 @@ public class AddOrbsArgument {
           User user = registry.getPlugin().getUserManager().getUser(target);
           user.setStat(StatsStorage.StatisticType.ORBS, user.getStat(StatsStorage.StatisticType.ORBS) + Integer.parseInt(args[1]));
           sender.sendMessage(registry.getPlugin().getChatManager().getPrefix() + registry.getPlugin().getChatManager().colorMessage("Commands.Admin-Commands.Added-Orbs"));
+          target.sendMessage(registry.getPlugin().getChatManager().getPrefix() + registry.getPlugin().getChatManager().colorMessage("Commands.Admin-Commands.Received-Orbs").replace("%orbs%", args[1]));
         } else {
           sender.sendMessage(registry.getPlugin().getChatManager().getPrefix() + registry.getPlugin().getChatManager().colorMessage("Commands.Wrong-Usage").replace("%correct%", "/vda addorbs <amount> (player)"));
         }

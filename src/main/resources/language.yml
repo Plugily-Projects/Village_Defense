@@ -37,6 +37,7 @@ Commands:
   Admin-Commands:
     Player-Not-Found: "&cPlayer not found!"
     Added-Orbs: "&7Added orbs to the player!"
+    Received-Orbs: "&7You received &a%orbs% orbs&7!"
     Added-Level: "&7Added level to the player!"
     Success-Reload: "&aArenas reloaded!"
     List-Command:
@@ -390,4 +391,4 @@ Validator:
 
 # Don't edit it. But who's stopping you? It's your server!
 # Really, don't edit ;p
-File-Version-Do-Not-Edit: 9
+File-Version-Do-Not-Edit: 10

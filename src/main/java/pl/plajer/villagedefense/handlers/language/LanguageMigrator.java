@@ -37,7 +37,7 @@ import pl.plajerlair.core.utils.MigratorUtils;
  */
 public class LanguageMigrator {
 
-  public static final int LANGUAGE_FILE_VERSION = 9;
+  public static final int LANGUAGE_FILE_VERSION = 10;
   public static final int CONFIG_FILE_VERSION = 7;
   private Main plugin;
   private List<String> migratable = Arrays.asList("bungee", "config", "kits", "language", "lobbyitems", "mysql");
@@ -188,6 +188,8 @@ public class LanguageMigrator {
           MigratorUtils.insertAfterLine(file, "Admin-Commands", "    Added-Level: \"&7Added level to the player!\"");
           MigratorUtils.insertAfterLine(file, "Game-End-Messages", "      Summary-Win-Game: \"&7You survived all the waves\"");
           break;
+        case 9:
+          MigratorUtils.insertAfterLine(file, "Admin-Commands", "    Received-Orbs: \"&7You received &a%orbs% orbs&7!\"");
         default:
           break;
       }

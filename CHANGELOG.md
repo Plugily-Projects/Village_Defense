@@ -1,6 +1,6 @@
 # Village Defense 3 Changelog
 
-### 4.0.0 Beta pre 6 (14.12.2018-11.01.2019)
+### 4.0.0 Beta pre 6 (14.12.2018-12.01.2019)
 * Implemented legacy data fixer that will fix inconsistency between original user data and current one (old implementation failure)
 data was wrongly saved without getName() method called. MySQL users are safe.
 * Added Italian locale
@@ -23,6 +23,7 @@ data was wrongly saved without getName() method called. MySQL users are safe.
 * Fixed doors couldn't be added in arena setup at 1.11-1.12
 * Buffed and nerfed cleaner kit, can use his ability each 60 seconds but will clean only spawned zombies not all in wave
 * Nerfed map cleaner powerup it will clean only spawned zombies now 
+* Added message when player receive orbs via addorbs command
 
 ### 4.0.0 Beta pre 5 (1.12.2018)
 * Fixed commands without permissions weren't working
