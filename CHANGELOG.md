@@ -24,6 +24,7 @@ data was wrongly saved without getName() method called. MySQL users are safe.
 * Buffed and nerfed cleaner kit, can use his ability each 60 seconds but will clean only spawned zombies not all in wave
 * Nerfed map cleaner powerup it will clean only spawned zombies now 
 * Added message when player receive orbs via addorbs command
+* Golems on death won't drop useless items now
 
 ### 4.0.0 Beta pre 5 (1.12.2018)
 * Fixed commands without permissions weren't working
