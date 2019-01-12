@@ -375,7 +375,7 @@ public class ArenaManager {
     try {
       VillageWaveStartEvent villageWaveStartEvent = new VillageWaveStartEvent(arena, arena.getWave());
       Bukkit.getPluginManager().callEvent(villageWaveStartEvent);
-      arena.setOptionValue(ArenaOption.ZOMBIES_TO_SPAWN, (int) Math.ceil((arena.getPlayers().size() * 0.5) * (arena.getOption(ArenaOption.WAVE) ^ 2) / 2));
+      arena.setOptionValue(ArenaOption.ZOMBIES_TO_SPAWN, (int) Math.ceil((arena.getPlayers().size() * 0.5) * (arena.getOption(ArenaOption.WAVE) * arena.getOption(ArenaOption.WAVE)) / 2));
       if (plugin.getConfig().getBoolean("Respawn-After-Wave", true)) {
         ArenaUtils.bringDeathPlayersBack(arena);
       }

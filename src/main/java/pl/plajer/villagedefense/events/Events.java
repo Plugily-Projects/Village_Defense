@@ -397,7 +397,7 @@ public class Events implements Listener {
       if (arena == null) {
         return;
       }
-      if (plugin.getUserManager().getUser(e.getDamager()).isSpectator()) {
+      if (plugin.getUserManager().getUser((Player) e.getDamager()).isSpectator()) {
         e.setCancelled(true);
         return;
       }
