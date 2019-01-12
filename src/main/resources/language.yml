@@ -134,7 +134,7 @@ Kits:
     Kit-Name: "&bCleaner"
     Kit-Description: "&7The cleaner has a special ability. With this ability, he can make all the zombies disappear. However, it takes a lot of effort to do this!"
     Game-Item-Name: "&6Cleaner Wand!"
-    Game-Item-Lore: "&7Right click to kill all zombies! Cooldown: 180 seconds"
+    Game-Item-Lore: "&7Right click to kill all zombies! Cooldown: 60 seconds"
     Cleaned-Map: "&b%PLAYER% has cleaned the map!"
     Nothing-To-Clean: "&aThe map is already empty!" #WARNING: used for admin clean commands too!!!
     Spectator-Warning: "&cYou can't clean the map now! You are a spectator! You'll respawn at the start of the next wave!"

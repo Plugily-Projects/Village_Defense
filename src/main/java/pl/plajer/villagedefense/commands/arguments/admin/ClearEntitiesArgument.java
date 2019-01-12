@@ -28,6 +28,7 @@ import org.bukkit.entity.Zombie;
 
 import pl.plajer.villagedefense.arena.Arena;
 import pl.plajer.villagedefense.arena.ArenaRegistry;
+import pl.plajer.villagedefense.arena.options.ArenaOption;
 import pl.plajer.villagedefense.commands.arguments.ArgumentsRegistry;
 import pl.plajer.villagedefense.commands.arguments.data.CommandArgument;
 import pl.plajer.villagedefense.commands.arguments.data.LabelData;
@@ -81,6 +82,7 @@ public class ClearEntitiesArgument {
               zombie.remove();
             }
             arena.getZombies().clear();
+            arena.setOptionValue(ArenaOption.ZOMBIES_TO_SPAWN, 0);
             Utils.playSound(((Player) sender).getLocation(), "ENTITY_ZOMBIE_DEATH", "ENTITY_ZOMBIE_DEATH");
             clearMessage = registry.getPlugin().getChatManager().colorMessage("In-Game.Messages.Admin-Messages.Removed-Zombies");
             break;
@@ -103,7 +105,7 @@ public class ClearEntitiesArgument {
           //todo add wolves
         }
         for (Player loopPlayer : arena.getPlayers()) {
-          String message = registry.getPlugin().getChatManager().formatMessage(arena, clearMessage, loopPlayer);
+          String message = registry.getPlugin().getChatManager().formatMessage(arena, clearMessage, (Player) sender);
           loopPlayer.sendMessage(registry.getPlugin().getChatManager().getPrefix() + message);
         }
       }

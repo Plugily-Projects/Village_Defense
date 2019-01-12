@@ -293,6 +293,7 @@ public class ArenaManager {
         zombie.remove();
       }
       arena.getZombies().clear();
+      arena.setOptionValue(ArenaOption.ZOMBIES_TO_SPAWN, 0);
       for (IronGolem ironGolem : arena.getIronGolems()) {
         ironGolem.remove();
       }

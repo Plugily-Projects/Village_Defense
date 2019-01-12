@@ -27,6 +27,7 @@ import org.bukkit.entity.Zombie;
 import pl.plajer.villagedefense.arena.Arena;
 import pl.plajer.villagedefense.arena.ArenaManager;
 import pl.plajer.villagedefense.arena.ArenaRegistry;
+import pl.plajer.villagedefense.arena.options.ArenaOption;
 import pl.plajer.villagedefense.commands.arguments.ArgumentsRegistry;
 import pl.plajer.villagedefense.commands.arguments.data.CommandArgument;
 import pl.plajer.villagedefense.commands.arguments.data.LabelData;
@@ -67,6 +68,7 @@ public class SetWaveArgument {
               zombie.remove();
             }
             arena.getZombies().clear();
+            arena.setOptionValue(ArenaOption.ZOMBIES_TO_SPAWN, 0);
           } else {
             sender.sendMessage(registry.getPlugin().getChatManager().colorMessage("Kits.Cleaner.Nothing-To-Clean"));
             return;
