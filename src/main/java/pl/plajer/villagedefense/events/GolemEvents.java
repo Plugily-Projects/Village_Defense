@@ -66,7 +66,7 @@ public class GolemEvents implements Listener {
       if (!ArenaRegistry.isInArena(e.getPlayer()) || !(e.getRightClicked() instanceof IronGolem)) {
         return;
       }
-      if (plugin.getUserManager().getUser(e.getPlayer().getUniqueId()).isSpectator()) {
+      if (plugin.getUserManager().getUser(e.getPlayer()).isSpectator()) {
         return;
       }
       if (e.getRightClicked().getCustomName() == null || !(e.getRightClicked().getCustomName().contains(e.getPlayer().getName()))) {
@@ -117,7 +117,7 @@ public class GolemEvents implements Listener {
         }
         Player p = (Player) e.getWhoClicked();
         double golemHealth = clickedGolem.get(p).getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue();
-        Integer orbs = plugin.getUserManager().getUser(p.getUniqueId()).getStat(StatsStorage.StatisticType.ORBS);
+        Integer orbs = plugin.getUserManager().getUser(p).getStat(StatsStorage.StatisticType.ORBS);
         e.setCancelled(true);
         //checking for health upgrades
         for (int i = 1; i <= 3; i++) {
@@ -141,7 +141,7 @@ public class GolemEvents implements Listener {
               Bukkit.getPluginManager().callEvent(event);
 
               p.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage("In-Game.Golem-Upgrades.Upgrade-Applied"));
-              plugin.getUserManager().getUser(p.getUniqueId()).setStat(StatsStorage.StatisticType.ORBS, orbs - price);
+              plugin.getUserManager().getUser(p).setStat(StatsStorage.StatisticType.ORBS, orbs - price);
               clickedGolem.get(p).getWorld().spawnParticle(Particle.LAVA, p.getLocation(), 20);
               clickedGolem.remove(p);
               p.closeInventory();
@@ -168,7 +168,7 @@ public class GolemEvents implements Listener {
             Bukkit.getPluginManager().callEvent(event);
 
             p.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage("In-Game.Golem-Upgrades.Upgrade-Applied"));
-            plugin.getUserManager().getUser(p.getUniqueId()).setStat(StatsStorage.StatisticType.ORBS, orbs - price);
+            plugin.getUserManager().getUser(p).setStat(StatsStorage.StatisticType.ORBS, orbs - price);
             clickedGolem.get(p).getWorld().spawnParticle(Particle.LAVA, p.getLocation(), 20);
             clickedGolem.remove(p);
             p.closeInventory();

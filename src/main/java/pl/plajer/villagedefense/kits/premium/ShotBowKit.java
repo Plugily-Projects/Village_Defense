@@ -86,7 +86,7 @@ public class ShotBowKit extends PremiumKit implements Listener {
         return;
       }
       ItemStack stack = e.getPlayer().getInventory().getItemInMainHand();
-      User user = getPlugin().getUserManager().getUser(e.getPlayer().getUniqueId());
+      User user = getPlugin().getUserManager().getUser(e.getPlayer());
       if (stack == null || stack.getType() != Material.BOW || !e.getPlayer().getInventory().contains(Material.ARROW)
           || !(user.getKit() instanceof ShotBowKit)
           || user.isSpectator()) {

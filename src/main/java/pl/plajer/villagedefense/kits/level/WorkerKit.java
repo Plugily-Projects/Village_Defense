@@ -59,7 +59,7 @@ public class WorkerKit extends LevelKit implements Listener {
 
   @Override
   public boolean isUnlockedByPlayer(Player player) {
-    return getPlugin().getUserManager().getUser(player.getUniqueId()).getStat(StatsStorage.StatisticType.LEVEL) >= this.getLevel() || player.hasPermission("villagefense.kit.worker");
+    return getPlugin().getUserManager().getUser(player).getStat(StatsStorage.StatisticType.LEVEL) >= this.getLevel() || player.hasPermission("villagefense.kit.worker");
   }
 
   @Override
@@ -89,7 +89,7 @@ public class WorkerKit extends LevelKit implements Listener {
       if (arena == null) {
         return;
       }
-      User user = getPlugin().getUserManager().getUser(e.getPlayer().getUniqueId());
+      User user = getPlugin().getUserManager().getUser(e.getPlayer());
       ItemStack stack = e.getPlayer().getInventory().getItemInMainHand();
       if (stack == null || user.isSpectator() || !arena.getDoorLocations().containsKey(e.getBlock().getLocation())) {
         e.setCancelled(true);

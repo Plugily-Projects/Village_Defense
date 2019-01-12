@@ -42,8 +42,7 @@ import pl.plajerlair.core.debug.LogLevel;
  */
 public class UserManager implements UserDatabase {
 
-  @Deprecated //use Player instead of UUID
-  private static Map<UUID, User> users = new HashMap<>();
+  private static Map<Player, User> users = new HashMap<>();
   private MySQLManager mySQLManager;
   private FileStats fileStats;
   private Main plugin;
@@ -60,28 +59,27 @@ public class UserManager implements UserDatabase {
 
   private void loadStatsForPlayersOnline() {
     for (Player player : Bukkit.getServer().getOnlinePlayers()) {
-      User user = getUser(player.getUniqueId());
+      User user = getUser(player);
       for (StatsStorage.StatisticType stat : StatsStorage.StatisticType.values()) {
         loadStatistic(user, stat);
       }
     }
   }
 
-  @Deprecated //use getUser(Player)
-  public User getUser(UUID uuid) {
-    if (users.containsKey(uuid)) {
-      return users.get(uuid);
+  public User getUser(Player player) {
+    if (users.containsKey(player)) {
+      return users.get(player);
     } else {
-      Debugger.debug(LogLevel.INFO, "Registering new user with UUID: " + uuid);
-      users.put(uuid, new User(Bukkit.getPlayer(uuid)));
-      return users.get(uuid);
+      Debugger.debug(LogLevel.INFO, "Registering new user with UUID: " + player.getUniqueId() + " (" + player.getName() + ")");
+      users.put(player, new User(player));
+      return users.get(player);
     }
   }
 
   public List<User> getUsers(Arena arena) {
     List<User> users = new ArrayList<>();
     for (Player player : arena.getPlayers()) {
-      users.add(getUser(player.getUniqueId()));
+      users.add(getUser(player));
     }
     return users;
   }
@@ -110,9 +108,8 @@ public class UserManager implements UserDatabase {
     fileStats.loadStatistic(user, stat);
   }
 
-  @Deprecated //use Player
-  public void removeUser(UUID uuid) {
-    users.remove(uuid);
+  public void removeUser(Player player) {
+    users.remove(player);
   }
 
 }

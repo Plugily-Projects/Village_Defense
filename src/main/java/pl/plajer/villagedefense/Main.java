@@ -313,11 +313,11 @@ public class Main extends JavaPlugin {
     }
     Debugger.debug(LogLevel.INFO, "System disable init");
     for (Player player : getServer().getOnlinePlayers()) {
-      User user = userManager.getUser(player.getUniqueId());
+      User user = userManager.getUser(player);
       for (StatsStorage.StatisticType stat : StatsStorage.StatisticType.values()) {
         userManager.saveStatistic(user, stat);
       }
-      userManager.removeUser(player.getUniqueId());
+      userManager.removeUser(player);
     }
     for (Arena arena : ArenaRegistry.getArenas()) {
       for (Player player : arena.getPlayers()) {

@@ -166,6 +166,7 @@ public class ArenaEvents implements Listener {
       Bukkit.getScheduler().runTaskLater(plugin, () -> {
         e.getEntity().spigot().respawn();
         Player player = e.getEntity();
+        User user = plugin.getUserManager().getUser(player);
         if (arena.getArenaState() == ArenaState.STARTING) {
           player.teleport(arena.getStartLocation());
           return;
@@ -173,12 +174,10 @@ public class ArenaEvents implements Listener {
           player.getInventory().clear();
           player.setFlying(false);
           player.setAllowFlight(false);
-          User user = plugin.getUserManager().getUser(player.getUniqueId());
           user.setStat(StatsStorage.StatisticType.ORBS, 0);
           player.teleport(arena.getEndLocation());
           return;
         }
-        User user = plugin.getUserManager().getUser(player.getUniqueId());
         ArenaUtils.addStat(player, StatsStorage.StatisticType.DEATHS);
         arena.teleportToStartLocation(player);
         user.setSpectator(true);
@@ -239,7 +238,7 @@ public class ArenaEvents implements Listener {
       player.setAllowFlight(true);
       player.setFlying(true);
       arena.teleportToStartLocation(player);
-      User user = plugin.getUserManager().getUser(player.getUniqueId());
+      User user = plugin.getUserManager().getUser(player);
       if (!user.isSpectator()) {
         user.setSpectator(true);
         player.setGameMode(GameMode.SURVIVAL);

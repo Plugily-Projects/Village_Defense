@@ -1,6 +1,6 @@
 /*
  * Village Defense - Protect villagers from hordes of zombies
- * Copyright (C) 2018  Plajer's Lair - maintained by Plajer and Tigerpanzer
+ * Copyright (C) 2019  Plajer's Lair - maintained by Plajer and Tigerpanzer
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -80,7 +80,7 @@ public class JoinEvent implements Listener {
       }
 
       for (StatsStorage.StatisticType stat : StatsStorage.StatisticType.values()) {
-        plugin.getUserManager().loadStatistic(plugin.getUserManager().getUser(event.getPlayer().getUniqueId()), stat);
+        plugin.getUserManager().loadStatistic(plugin.getUserManager().getUser(event.getPlayer()), stat);
       }
       //load player inventory in case of server crash, file is deleted once loaded so if file was already
       //deleted player won't receive his backup, in case of crash he will get it back

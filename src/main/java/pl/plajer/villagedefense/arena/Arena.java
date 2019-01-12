@@ -217,10 +217,10 @@ public abstract class Arena extends BukkitRunnable {
               player.setLevel(0);
               player.getInventory().clear();
               player.setGameMode(GameMode.SURVIVAL);
-              User user = plugin.getUserManager().getUser(player.getUniqueId());
+              User user = plugin.getUserManager().getUser(player);
               user.setStat(StatsStorage.StatisticType.ORBS, plugin.getConfig().getInt("Orbs-Starting-Amount", 20));
               ArenaUtils.hidePlayersOutsideTheGame(player, this);
-              plugin.getUserManager().getUser(player.getUniqueId()).getKit().giveKitItems(player);
+              plugin.getUserManager().getUser(player).getKit().giveKitItems(player);
               player.updateInventory();
               ArenaUtils.addStat(player, StatsStorage.StatisticType.GAMES_PLAYED);
               ArenaUtils.addExperience(player, 10);
@@ -343,7 +343,7 @@ public abstract class Arena extends BukkitRunnable {
             clearWolfs();
 
             for (Player player : getPlayers()) {
-              plugin.getUserManager().getUser(player.getUniqueId()).removeScoreboard();
+              plugin.getUserManager().getUser(player).removeScoreboard();
               player.setGameMode(GameMode.SURVIVAL);
               for (Player players : Bukkit.getOnlinePlayers()) {
                 player.showPlayer(players);

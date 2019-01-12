@@ -205,7 +205,7 @@ public class KitManager implements Listener {
   @EventHandler
   public void checkIfIsUnlocked(VillagePlayerChooseKitEvent e) {
     if (e.getKit().isUnlockedByPlayer(e.getPlayer())) {
-      User user = plugin.getUserManager().getUser(e.getPlayer().getUniqueId());
+      User user = plugin.getUserManager().getUser(e.getPlayer());
       user.setKit(e.getKit());
       e.getPlayer().sendMessage(plugin.getChatManager().colorMessage("Kits.Choose-Message").replace("%KIT%", e.getKit().getName()));
     } else {

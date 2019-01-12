@@ -56,7 +56,7 @@ public class LooterKit extends LevelKit implements Listener {
 
   @Override
   public boolean isUnlockedByPlayer(Player player) {
-    return getPlugin().getUserManager().getUser(player.getUniqueId()).getStat(StatsStorage.StatisticType.LEVEL) >= this.getLevel() || player.hasPermission("villagefense.kit.looter");
+    return getPlugin().getUserManager().getUser(player).getStat(StatsStorage.StatisticType.LEVEL) >= this.getLevel() || player.hasPermission("villagefense.kit.looter");
   }
 
   @Override
@@ -88,7 +88,7 @@ public class LooterKit extends LevelKit implements Listener {
       if (ArenaRegistry.getArena(player) == null) {
         return;
       }
-      User user = getPlugin().getUserManager().getUser(player.getUniqueId());
+      User user = getPlugin().getUserManager().getUser(player);
       if (user.getKit() instanceof LooterKit) {
         player.getInventory().addItem(new ItemStack(Material.ROTTEN_FLESH, 1));
       }

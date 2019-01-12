@@ -83,7 +83,7 @@ public class SpectatorItemEvents implements Listener {
         plugin.getChatManager().colorMessage("In-Game.Spectator.Spectator-Menu-Name"));
     HashSet<Player> players = ArenaRegistry.getArena(p).getPlayers();
     for (Player player : world.getPlayers()) {
-      if (players.contains(player) && !plugin.getUserManager().getUser(player.getUniqueId()).isSpectator()) {
+      if (players.contains(player) && !plugin.getUserManager().getUser(player).isSpectator()) {
         ItemStack skull = CompatMaterialConstants.PLAYER_HEAD_ITEM.clone();
         SkullMeta meta = (SkullMeta) skull.getItemMeta();
         meta.setOwningPlayer(player);

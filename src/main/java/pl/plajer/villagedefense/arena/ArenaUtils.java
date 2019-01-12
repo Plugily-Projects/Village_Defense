@@ -70,7 +70,7 @@ public class ArenaUtils {
         if (arena.getPlayersLeft().contains(player)) {
           return;
         }
-        User user = plugin.getUserManager().getUser(player.getUniqueId());
+        User user = plugin.getUserManager().getUser(player);
         user.setSpectator(false);
 
         arena.teleportToStartLocation(player);
@@ -92,7 +92,7 @@ public class ArenaUtils {
   @Deprecated //move somewhere else
   public static void updateLevelStat(Player player, Arena arena) {
     try {
-      User user = plugin.getUserManager().getUser(player.getUniqueId());
+      User user = plugin.getUserManager().getUser(player);
       if (Math.pow(50 * user.getStat(StatsStorage.StatisticType.LEVEL), 1.5) < user.getStat(StatsStorage.StatisticType.XP)) {
         user.addStat(StatsStorage.StatisticType.LEVEL, 1);
         player.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().formatMessage(arena, plugin.getChatManager().colorMessage("In-Game.You-Leveled-Up"), user.getStat(StatsStorage.StatisticType.LEVEL)));
@@ -130,7 +130,7 @@ public class ArenaUtils {
 
   @Deprecated //move somewhere else
   public static void addExperience(Player player, int i) {
-    User user = plugin.getUserManager().getUser(player.getUniqueId());
+    User user = plugin.getUserManager().getUser(player);
     user.addStat(StatsStorage.StatisticType.XP, i);
     if (player.hasPermission(PermissionsManager.getVip())) {
       user.addStat(StatsStorage.StatisticType.XP, (int) Math.ceil(i / 2));
@@ -146,7 +146,7 @@ public class ArenaUtils {
 
   @Deprecated //move somewhere else
   public static void addStat(Player player, StatsStorage.StatisticType stat) {
-    User user = plugin.getUserManager().getUser(player.getUniqueId());
+    User user = plugin.getUserManager().getUser(player);
     user.addStat(stat, 1);
     ArenaUtils.updateLevelStat(player, ArenaRegistry.getArena(player));
   }

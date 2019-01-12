@@ -1,6 +1,6 @@
 /*
  * Village Defense - Protect villagers from hordes of zombies
- * Copyright (C) 2018  Plajer's Lair - maintained by Plajer and Tigerpanzer
+ * Copyright (C) 2019  Plajer's Lair - maintained by Plajer and Tigerpanzer
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -58,11 +58,11 @@ public class QuitEvent implements Listener {
       if (ArenaRegistry.getArena(event.getPlayer()) != null) {
         ArenaManager.leaveAttempt(event.getPlayer(), ArenaRegistry.getArena(event.getPlayer()));
       }
-      final User user = plugin.getUserManager().getUser(event.getPlayer().getUniqueId());
+      final User user = plugin.getUserManager().getUser(event.getPlayer());
       for (StatsStorage.StatisticType stat : StatsStorage.StatisticType.values()) {
         plugin.getUserManager().saveStatistic(user, stat);
       }
-      plugin.getUserManager().removeUser(event.getPlayer().getUniqueId());
+      plugin.getUserManager().removeUser(event.getPlayer());
     } catch (Exception ex) {
       new ReportedException(plugin, ex);
     }

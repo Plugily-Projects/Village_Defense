@@ -73,7 +73,7 @@ public class RespawnArgument {
         } else {
           target = player;
         }
-        User user = registry.getPlugin().getUserManager().getUser(target.getUniqueId());
+        User user = registry.getPlugin().getUserManager().getUser(target);
         if (!user.isSpectator()) {
           return;
         }

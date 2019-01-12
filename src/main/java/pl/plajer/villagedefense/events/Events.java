@@ -115,7 +115,7 @@ public class Events implements Listener {
         return;
       }
       int amount = (int) Math.ceil(event.getAmount() * 1.6);
-      User user = plugin.getUserManager().getUser(event.getPlayer().getUniqueId());
+      User user = plugin.getUserManager().getUser(event.getPlayer());
       event.setAmount(amount);
       if (user.isSpectator()) {
         event.setAmount(0);
@@ -156,7 +156,7 @@ public class Events implements Listener {
       if (arena == null) {
         return;
       }
-      if (plugin.getUserManager().getUser(event.getPlayer().getUniqueId()).isSpectator()) {
+      if (plugin.getUserManager().getUser(event.getPlayer()).isSpectator()) {
         event.setCancelled(true);
       }
     } catch (Exception ex) {
@@ -207,7 +207,7 @@ public class Events implements Listener {
       if (arena == null) {
         return;
       }
-      if (plugin.getUserManager().getUser(event.getPlayer().getUniqueId()).isSpectator()) {
+      if (plugin.getUserManager().getUser(event.getPlayer()).isSpectator()) {
         event.setCancelled(true);
         return;
       }
@@ -240,7 +240,7 @@ public class Events implements Listener {
       if (arena == null) {
         return;
       }
-      User user = plugin.getUserManager().getUser(event.getPlayer().getUniqueId());
+      User user = plugin.getUserManager().getUser(event.getPlayer());
       if (user.isSpectator()) {
         event.setCancelled(true);
         return;
@@ -397,7 +397,7 @@ public class Events implements Listener {
       if (arena == null) {
         return;
       }
-      if (plugin.getUserManager().getUser(e.getDamager().getUniqueId()).isSpectator()) {
+      if (plugin.getUserManager().getUser(e.getDamager()).isSpectator()) {
         e.setCancelled(true);
         return;
       }
@@ -513,7 +513,7 @@ public class Events implements Listener {
           return;
         }
       }
-      User user = plugin.getUserManager().getUser(player.getUniqueId());
+      User user = plugin.getUserManager().getUser(player);
       int price = Integer.parseInt(string.split(" ")[0]);
       if (price > user.getStat(StatsStorage.StatisticType.ORBS)) {
         player.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage("In-Game.Messages.Shop-Messages.Not-Enough-Orbs"));

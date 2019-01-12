@@ -123,14 +123,14 @@ public class ArenaManager {
         p.setGameMode(GameMode.SURVIVAL);
         p.setAllowFlight(true);
         p.setFlying(true);
-        User user = plugin.getUserManager().getUser(p.getUniqueId());
+        User user = plugin.getUserManager().getUser(p);
         user.setSpectator(true);
         user.setStat(StatsStorage.StatisticType.ORBS, 0);
         p.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, Integer.MAX_VALUE, 0));
         ArenaUtils.hidePlayer(p, arena);
 
         for (Player spectator : arena.getPlayers()) {
-          if (plugin.getUserManager().getUser(spectator.getUniqueId()).isSpectator()) {
+          if (plugin.getUserManager().getUser(spectator).isSpectator()) {
             p.hidePlayer(spectator);
           } else {
             p.showPlayer(spectator);
@@ -152,10 +152,10 @@ public class ArenaManager {
       p.getInventory().clear();
       arena.showPlayers();
       arena.doBarAction(Arena.BarAction.ADD, p);
-      if (!plugin.getUserManager().getUser(p.getUniqueId()).isSpectator()) {
+      if (!plugin.getUserManager().getUser(p).isSpectator()) {
         plugin.getChatManager().broadcastAction(arena, p, ChatManager.ActionType.JOIN);
       }
-      User user = plugin.getUserManager().getUser(p.getUniqueId());
+      User user = plugin.getUserManager().getUser(p);
       user.setKit(KitRegistry.getDefaultKit());
       plugin.getKitManager().giveKitMenuItem(p);
       if (arena.getArenaState() == ArenaState.STARTING || arena.getArenaState() == ArenaState.WAITING_FOR_PLAYERS) {
@@ -188,7 +188,7 @@ public class ArenaManager {
       Debugger.debug(LogLevel.INFO, "Initial leave attempt, " + p.getName());
       VillageGameLeaveAttemptEvent villageGameLeaveAttemptEvent = new VillageGameLeaveAttemptEvent(p, arena);
       Bukkit.getPluginManager().callEvent(villageGameLeaveAttemptEvent);
-      User user = plugin.getUserManager().getUser(p.getUniqueId());
+      User user = plugin.getUserManager().getUser(p);
       user.setStat(StatsStorage.StatisticType.ORBS, 0);
       p.getInventory().clear();
       p.getInventory().setArmorContents(null);
@@ -260,7 +260,7 @@ public class ArenaManager {
       }
       List<String> summaryMessages = LanguageManager.getLanguageList("In-Game.Messages.Game-End-Messages.Summary-Message");
       for (final Player p : arena.getPlayers()) {
-        User user = plugin.getUserManager().getUser(p.getUniqueId());
+        User user = plugin.getUserManager().getUser(p);
         if (user.getStat(StatsStorage.StatisticType.HIGHEST_WAVE) <= arena.getWave()) {
           user.setStat(StatsStorage.StatisticType.HIGHEST_WAVE, arena.getWave());
         }
@@ -269,7 +269,7 @@ public class ArenaManager {
         }
         ArenaUtils.addExperience(p, arena.getWave());
 
-        plugin.getUserManager().getUser(p.getUniqueId()).removeScoreboard();
+        plugin.getUserManager().getUser(p).removeScoreboard();
         if (quickStop || !plugin.getConfig().getBoolean("Firework-When-Game-Ends", true)) {
           continue;
         }
@@ -351,7 +351,7 @@ public class ArenaManager {
         player.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().formatMessage(arena, plugin.getChatManager().colorMessage("In-Game.Messages.Next-Wave-In"), arena.getTimer()));
         player.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage("In-Game.Messages.You-Feel-Refreshed"));
         player.setHealth(player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue());
-        User user = plugin.getUserManager().getUser(player.getUniqueId());
+        User user = plugin.getUserManager().getUser(player);
         user.addStat(StatsStorage.StatisticType.ORBS, arena.getWave() * 10);
       }
       if (plugin.getConfig().getBoolean("Respawn-After-Wave", true)) {

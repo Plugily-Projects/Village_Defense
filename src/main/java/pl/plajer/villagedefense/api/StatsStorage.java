@@ -1,6 +1,6 @@
 /*
  * Village Defense - Protect villagers from hordes of zombies
- * Copyright (C) 2018  Plajer's Lair - maintained by Plajer and Tigerpanzer
+ * Copyright (C) 2019  Plajer's Lair - maintained by Plajer and Tigerpanzer
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -104,7 +104,7 @@ public class StatsStorage {
    * @see StatisticType
    */
   public static int getUserStats(Player player, StatisticType statisticType) {
-    return plugin.getUserManager().getUser(player.getUniqueId()).getStat(statisticType);
+    return plugin.getUserManager().getUser(player).getStat(statisticType);
   }
 
   /**

@@ -59,7 +59,7 @@ public class ScoreboardManager {
     }
     GameScoreboard scoreboard;
     for (Player p : arena.getPlayers()) {
-      User user = plugin.getUserManager().getUser(p.getUniqueId());
+      User user = plugin.getUserManager().getUser(p);
       if (arena.getArenaState() == ArenaState.ENDING) {
         user.removeScoreboard();
         return;

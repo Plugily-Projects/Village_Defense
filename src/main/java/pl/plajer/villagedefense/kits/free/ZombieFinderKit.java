@@ -91,7 +91,7 @@ public class ZombieFinderKit extends LevelKit implements Listener {
           || !event.getItem().getItemMeta().getDisplayName().equals(getPlugin().getChatManager().colorMessage("Kits.Zombie-Teleporter.Game-Item-Name"))) {
         return;
       }
-      User user = getPlugin().getUserManager().getUser(event.getPlayer().getUniqueId());
+      User user = getPlugin().getUserManager().getUser(event.getPlayer());
       if (user.isSpectator()) {
         event.getPlayer().sendMessage(getPlugin().getChatManager().colorMessage("Kits.Teleporter.Spectator-Warning"));
         return;

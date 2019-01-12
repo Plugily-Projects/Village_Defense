@@ -69,7 +69,7 @@ public class AddOrbsArgument {
         }
 
         if (Utils.isInteger(args[1])) {
-          User user = registry.getPlugin().getUserManager().getUser(target.getUniqueId());
+          User user = registry.getPlugin().getUserManager().getUser(target);
           user.setStat(StatsStorage.StatisticType.ORBS, user.getStat(StatsStorage.StatisticType.ORBS) + Integer.parseInt(args[1]));
           sender.sendMessage(registry.getPlugin().getChatManager().getPrefix() + registry.getPlugin().getChatManager().colorMessage("Commands.Admin-Commands.Added-Orbs"));
         } else {

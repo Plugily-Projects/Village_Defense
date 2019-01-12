@@ -84,7 +84,7 @@ public class MedicKit extends PremiumKit implements Listener {
       if (!(e.getEntity() instanceof Zombie && e.getDamager() instanceof Player)) {
         return;
       }
-      User user = getPlugin().getUserManager().getUser(e.getDamager().getUniqueId());
+      User user = getPlugin().getUserManager().getUser((Player) e.getDamager());
       if (!(user.getKit() instanceof MedicKit)) {
         return;
       }
