@@ -216,14 +216,20 @@ public class LanguageManager {
 
   public static String getLanguageMessage(String message) {
     if (isDefaultLanguageUsed()) {
-      return languageConfig.getString(message, "ERR_MESSAGE_NOT_FOUND");
+      String str = languageConfig.getString(message, "ERR_MESSAGE_NOT_FOUND");
+      if (str.equals("ERR_MESSAGE_NOT_FOUND")) {
+        Bukkit.getConsoleSender().sendMessage("Game message not found!");
+        Bukkit.getConsoleSender().sendMessage("Please regenerate your language.yml file! If error still occurs report it to the developer!");
+        Bukkit.getConsoleSender().sendMessage("Access string: " + message);
+      }
+      return str;
     }
     try {
       return properties.getProperty(ChatColor.translateAlternateColorCodes('&', message));
     } catch (NullPointerException ex) {
       MessageUtils.errorOccurred();
       Bukkit.getConsoleSender().sendMessage("Game message not found!");
-      Bukkit.getConsoleSender().sendMessage("Please regenerate your language.yml file! If error still occurs report it to the developer!");
+      Bukkit.getConsoleSender().sendMessage("Please contact the developer!");
       Bukkit.getConsoleSender().sendMessage("Access string: " + message);
       return "ERR_MESSAGE_NOT_FOUND";
     }
