@@ -42,7 +42,7 @@ public class JoinArguments {
       @Override
       public void execute(CommandSender sender, String[] args) {
         if (args.length == 1) {
-          sender.sendMessage(registry.getPlugin().getChatManager().colorMessage("Commands.Type-Arena-Name"));
+          sender.sendMessage(registry.getPlugin().getChatManager().getPrefix() + registry.getPlugin().getChatManager().colorMessage("Commands.Type-Arena-Name"));
           return;
         }
         if (ArenaRegistry.isInArena(((Player) sender))) {
@@ -55,7 +55,7 @@ public class JoinArguments {
             return;
           }
         }
-        sender.sendMessage(registry.getPlugin().getChatManager().colorMessage("Commands.No-Arena-Like-That"));
+        sender.sendMessage(registry.getPlugin().getChatManager().getPrefix() + registry.getPlugin().getChatManager().colorMessage("Commands.No-Arena-Like-That"));
       }
     });
 

@@ -99,7 +99,7 @@ public class LeaderboardArgument {
             }
           }
         } catch (IllegalArgumentException e) {
-          sender.sendMessage(registry.getPlugin().getChatManager().colorMessage("Commands.Statistics.Invalid-Name"));
+          sender.sendMessage(registry.getPlugin().getChatManager().getPrefix() + registry.getPlugin().getChatManager().colorMessage("Commands.Statistics.Invalid-Name"));
         }
       }
     });
