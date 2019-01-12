@@ -106,6 +106,7 @@ Signs-Block-States-Enabled: true
 # If you want to have classic Village Defense game mode i recommend to disable this.
 Golem-Upgrades-Enabled: true
 
+# //deprecated todo
 # Cost of golem heart upgrades
 Golem-Upgrade-Tier1-Cost: 200
 Golem-Upgrade-Tier2-Cost: 400
@@ -113,6 +114,32 @@ Golem-Upgrade-Tier3-Cost: 800
 
 # Cost of golem full heal
 Golem-Upgrade-Heal-Cost: 150
+
+#todo migrator
+# Entity upgrades section
+Entity-Upgrades:
+  # Cost of x tier (in orbs), ex 1: 100 means 1st tier cost 100 orbs to upgrade
+  Health-Tiers:
+    '1': 100
+    '2': 200
+    '3': 350
+    '4': 500
+  Damage-Tiers:
+    '1': 150
+    '2': 300
+    '3': 450
+    '4': 600
+  Speed-Tiers:
+    '1': 50
+    '2': 100
+    '3': 150
+    '4': 250
+  Final-Defense-Tiers:
+    '1': 200
+    '2': 350
+  Swarm-Awareness-Tiers:
+    '1': 200
+    '2': 350
 
 # Limit of mobs can be spawned per player in-game
 # Will affect only buying them in in-game shop

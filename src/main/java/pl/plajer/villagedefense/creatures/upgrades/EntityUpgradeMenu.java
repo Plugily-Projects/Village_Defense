@@ -24,17 +24,19 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
 
 import pl.plajer.villagedefense.Main;
+import pl.plajer.villagedefense.utils.Utils;
 import pl.plajerlair.core.utils.ItemBuilder;
 import pl.plajerlair.core.utils.XMaterial;
 
@@ -45,16 +47,46 @@ import pl.plajerlair.core.utils.XMaterial;
  */
 public class EntityUpgradeMenu {
 
-  private static List<Upgrade> upgrades = new ArrayList<>();
-  private static Main plugin;
+  private List<Upgrade> upgrades = new ArrayList<>();
+  private Main plugin;
 
-  public static void init(Main plugin) {
-    EntityUpgradeMenu.plugin = plugin;
+  public EntityUpgradeMenu(Main plugin) {
+    this.plugin = plugin;
     //todo add config checks + language + locale
-    new EntityUpgradeListener(plugin);
-    upgrades.add(new Upgrade(plugin.getChatManager().colorMessage("Upgrade-Menu.Upgrades.Health.Name"), plugin.getChatManager().colorMessage("Upgrade-Menu.Upgrades.Health.Description").split(";"), "VD_Health"));
-    upgrades.add(new Upgrade(plugin.getChatManager().colorMessage("Upgrade-Menu.Upgrades.Damage.Name"), plugin.getChatManager().colorMessage("Upgrade-Menu.Upgrades.Damage.Description").split(";"), "VD_Damage"));
-    upgrades.add(new Upgrade(plugin.getChatManager().colorMessage("Upgrade-Menu.Upgrades.Speed.Name"), plugin.getChatManager().colorMessage("Upgrade-Menu.Upgrades.Speed.Description").split(";"), "VD_Speed"));
+    new EntityUpgradeListener(this);
+    registerUpgrade(new Upgrade("DAMAGE", 11, Upgrade.EntityType.BOTH, 4, plugin.getChatManager().colorMessage("Upgrade-Menu.Upgrades.Damage.Name"),
+        Arrays.asList(plugin.getChatManager().colorMessage("Upgrade-Menu.Upgrades.Damage.Description").split(";")), "VD_Damage",
+        plugin.getConfig().getString("Entity-Upgrades.Damage-Tiers")));
+    registerUpgrade(new Upgrade("HEALTH", 20, Upgrade.EntityType.BOTH, 4, plugin.getChatManager().colorMessage("Upgrade-Menu.Upgrades.Health.Name"),
+        Arrays.asList(plugin.getChatManager().colorMessage("Upgrade-Menu.Upgrades.Health.Description").split(";")), "VD_Health",
+        plugin.getConfig().getString("Entity-Upgrades.Health-Tiers")));
+    registerUpgrade(new Upgrade("SPEED", 29, Upgrade.EntityType.BOTH, 4, plugin.getChatManager().colorMessage("Upgrade-Menu.Upgrades.Speed.Name"),
+        Arrays.asList(plugin.getChatManager().colorMessage("Upgrade-Menu.Upgrades.Speed.Description").split(";")), "VD_Speed",
+        plugin.getConfig().getString("Entity-Upgrades.Speed-Tiers")));
+    registerUpgrade(new Upgrade("SWARM_AWARENESS", 39, Upgrade.EntityType.WOLF, 2, plugin.getChatManager().colorMessage("Upgrade-Menu.Upgrades.Swarm-Awareness.Name"),
+        Arrays.asList(plugin.getChatManager().colorMessage("Upgrade-Menu.Upgrades.Swarm-Awareness.Description").split(";")), "VD_SwarmAwareness",
+        plugin.getConfig().getString("Entity-Upgrades.Swarm-Awareness-Tiers")));
+    registerUpgrade(new Upgrade("FINAL_DEFENSE", 39, Upgrade.EntityType.IRON_GOLEM, 2, plugin.getChatManager().colorMessage("Upgrade-Menu.Upgrades.Final-Defense.Name"),
+        Arrays.asList(plugin.getChatManager().colorMessage("Upgrade-Menu.Upgrades.Final-Defense.Description").split(";")), "VD_FinalDefense",
+        plugin.getConfig().getString("Entity-Upgrades.Final-Defense-Tiers")));
+  }
+
+  /**
+   * Registers new upgrade
+   *
+   * @param upgrade upgrade to registry
+   */
+  public void registerUpgrade(Upgrade upgrade) {
+    upgrades.add(upgrade);
+  }
+
+  public Upgrade getUpgrade(String id) {
+    for (Upgrade upgrade : upgrades) {
+      if (upgrade.getId().equals(id)) {
+        return upgrade;
+      }
+    }
+    return null;
   }
 
   /**
@@ -63,24 +95,33 @@ public class EntityUpgradeMenu {
    * @param en entity to check upgrades for
    * @param p  player who will see inventory
    */
-  public static void openUpgradeMenu(Entity en, Player p) {
-    Inventory inv = Bukkit.createInventory(null, /* magic number may be changed */9 * 5, plugin.getChatManager().colorMessage("Upgrade-Menu.Title"));
+  public void openUpgradeMenu(LivingEntity en, Player p) {
+    Inventory inv = Bukkit.createInventory(null, /* magic number may be changed */9 * 6, plugin.getChatManager().colorMessage("Upgrade-Menu.Title"));
 
-    for (int i = 0; i < 3; i++) {
-      final int tier = en.hasMetadata(upgrades.get(i).getMetadataAccess()) ? en.getMetadata(upgrades.get(i).getMetadataAccess()).get(0).asInt() : 0;
-      List<String> description = Arrays.asList(upgrades.get(i).getDescription());
-      description = description.stream().map(msg -> msg.replace("%tier%", String.valueOf(tier))).collect(Collectors.toList());
-      inv.setItem(((i + 1) * 9) + 2, new ItemBuilder(XMaterial.BLACK_STAINED_GLASS_PANE.parseItem())
-          .name(upgrades.get(i).getName())
-          .lore(description)
-          .build());
-      for (int j = 0; j < 4; j++) {
-        inv.setItem(((i + 1) * 9) + 2 + j, new ItemBuilder(XMaterial.WHITE_STAINED_GLASS_PANE.parseItem()).build());
+    for (Upgrade upgrade : upgrades) {
+      if (upgrade.getApplicableFor() != Upgrade.EntityType.BOTH && !en.getType().toString().equals(upgrade.getApplicableFor().toString())) {
+        continue;
       }
-      for (int j = 0; j < tier; j++) {
-        inv.setItem(((i + 1) * 9) + 2 + j, new ItemBuilder(XMaterial.YELLOW_STAINED_GLASS_PANE.parseItem()).build());
+      int tier = en.hasMetadata(upgrade.getMetadataAccessor()) ? en.getMetadata(upgrade.getMetadataAccessor()).get(0).asInt() : 0;
+      inv.setItem(upgrade.getSlot(), upgrade.asItemStack(en, tier, upgrade));
+      for (int i = 0; i < upgrade.getMaxTier(); i++) {
+        if (i < tier) {
+          inv.setItem(upgrade.getSlot() + 1 + i, new ItemBuilder(XMaterial.YELLOW_STAINED_GLASS_PANE.parseItem()).build());
+        } else {
+          inv.setItem(upgrade.getSlot() + 1 + i, new ItemBuilder(XMaterial.WHITE_STAINED_GLASS_PANE.parseItem()).build());
+        }
       }
     }
+    inv.setItem(4, new ItemBuilder(new ItemStack(Material.BOOK))
+        .name(plugin.getChatManager().colorMessage("Upgrade-Menu.Stats-Item.Name"))
+        .lore(Arrays.stream(plugin.getChatManager().colorMessage("Upgrade-Menu.Stats-Item.Description").split(";"))
+            .map((lore) -> lore = plugin.getChatManager().colorRawMessage(lore)
+                .replace("%speed%", String.valueOf(en.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).getBaseValue()))
+                //damage attribute doesn't exist for golems that's why we use this
+                .replace("%damage%", String.valueOf(2.0 + (getTier(en, getUpgrade("DAMAGE")) * 2)))
+                .replace("%max_hp%", String.valueOf(en.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue()))
+                .replace("%current_hp%", String.valueOf(en.getHealth()))).collect(Collectors.toList()))
+        .build());
     p.openInventory(inv);
   }
 
@@ -92,50 +133,60 @@ public class EntityUpgradeMenu {
    * @param upgrade upgrade to apply
    * @return true if applied successfully, false if tier is max and cannot be applied more
    */
-  public static boolean applyUpgrade(Entity en, EntityUpgrade upgrade) {
-    if (!en.hasMetadata(upgrade.getMetadataAccess())) {
-      en.setMetadata(upgrade.getMetadataAccess(), new FixedMetadataValue(plugin, 1));
+  public boolean applyUpgrade(Entity en, Upgrade upgrade) {
+    if (!en.hasMetadata(upgrade.getMetadataAccessor())) {
+      en.setMetadata(upgrade.getMetadataAccessor(), new FixedMetadataValue(plugin, 1));
       applyUpgradeEffect(en, upgrade, 1);
       return true;
     }
-    if (en.getMetadata(upgrade.getMetadataAccess()).get(0).asInt() == upgrade.getMaxTierUpgrade()) {
+    if (en.getMetadata(upgrade.getMetadataAccessor()).get(0).asInt() == upgrade.getMaxTier()) {
       return false;
     }
     int tier = getTier(en, upgrade) + 1;
-    en.setMetadata(upgrade.getMetadataAccess(), new FixedMetadataValue(plugin, tier));
+    en.setMetadata(upgrade.getMetadataAccessor(), new FixedMetadataValue(plugin, tier));
     applyUpgradeEffect(en, upgrade, tier);
     return true;
   }
 
-  private static void applyUpgradeEffect(Entity en, EntityUpgrade upgrade, int tier) {
-    en.getWorld().spawnParticle(Particle.FIREWORKS_SPARK, en.getLocation(), 15, 0.5, 0.5, 0.5);
-    if (areAllEqualOrHigher(new int[] {getTier(en, EntityUpgrade.HEALTH), getTier(en, EntityUpgrade.SPEED), getTier(en, EntityUpgrade.DAMAGE)})) {
-      //todo
+  private void applyUpgradeEffect(Entity en, Upgrade upgrade, int tier) {
+    en.getWorld().spawnParticle(Particle.FIREWORKS_SPARK, en.getLocation(), 25, 0.2, 0.5, 0.2, 0);
+    Utils.playSound(en.getLocation(), "BLOCK_ANVIL_USE", "BLOCK_ANVIL_USE");
+    int[] baseValues = new int[] {getTier(en, getUpgrade("HEALTH")), getTier(en, getUpgrade("SPEED")), getTier(en, getUpgrade("DAMAGE"))};
+    if (areAllEqualOrHigher(baseValues)) {
+      int lvl = getMinValue(baseValues);
+      if (lvl == 4) {
+        //final mode! rage!!!
+        en.setGlowing(true);
+      }
+      //todo apply hologram level logic
     }
-    switch (upgrade) {
-      case DAMAGE:
-        ((LivingEntity) en).removePotionEffect(PotionEffectType.INCREASE_DAMAGE);
-        ((LivingEntity) en).addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, Integer.MAX_VALUE, /* amplifiers counts from 0*/tier - 1));
+    switch (upgrade.getId()) {
+      case "DAMAGE":
+        if (en.getType() == EntityType.WOLF) {
+          ((LivingEntity) en).getAttribute(Attribute.GENERIC_ATTACK_DAMAGE).setBaseValue(2.0 + (tier * 3));
+        }
+        //attribute damage doesn't exist for golems
         break;
-      case FINAL_DEFENSE:
-        //todo
-        break;
-      case HEALTH:
+      case "HEALTH":
         ((LivingEntity) en).getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(100.0 + (100.0 * ((double) tier / 2.0)));
         break;
-      case SPEED:
-        ((LivingEntity) en).removePotionEffect(PotionEffectType.SPEED);
-        ((LivingEntity) en).addPotionEffect(new PotionEffect(PotionEffectType.SPEED, Integer.MAX_VALUE, /* amplifiers counts from 0*/tier - 1));
+      case "SPEED":
+        ((LivingEntity) en).getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(0.25 + (0.25 * ((double) tier / 5.0)));
         break;
-      case SWARM_AWARENESS:
-        //todo
+      case "SWARM_AWARENESS":
+      case "FINAL_DEFENSE":
+        //do nothing they are used within events
         break;
       default:
         break;
     }
   }
 
-  private static boolean areAllEqualOrHigher(int[] a) {
+  public Main getPlugin() {
+    return plugin;
+  }
+
+  private boolean areAllEqualOrHigher(int[] a) {
     for (int i = 1; i < a.length; i++) {
       if (a[0] < a[i]) {
         return false;
@@ -144,16 +195,26 @@ public class EntityUpgradeMenu {
     return true;
   }
 
+  private int getMinValue(int[] numbers) {
+    int minValue = numbers[0];
+    for (int i = 1; i < numbers.length; i++) {
+      if (numbers[i] < minValue) {
+        minValue = numbers[i];
+      }
+    }
+    return minValue;
+  }
+
   /**
    * @param en      entity to check
    * @param upgrade upgrade type
    * @return current tier of upgrade for target entity
    */
-  public static int getTier(Entity en, EntityUpgrade upgrade) {
-    if (!en.hasMetadata(upgrade.getMetadataAccess())) {
+  public int getTier(Entity en, Upgrade upgrade) {
+    if (!en.hasMetadata(upgrade.getMetadataAccessor())) {
       return 0;
     }
-    return en.getMetadata(upgrade.getMetadataAccess()).get(0).asInt();
+    return en.getMetadata(upgrade.getMetadataAccessor()).get(0).asInt();
   }
 
 }

@@ -47,14 +47,14 @@ public class ClearEntitiesArgument {
     registry.mapArgument("villagedefenseadmin", new LabeledCommandArgument("clear", "villagedefense.admin.clear", CommandArgument.ExecutorType.PLAYER,
         new LabelData("/vda clear &6<zombie/villager/golem>", "/vda clear <mob>",
             "&7Clear specific mob type from arena you're in\n&7Valid mob types:\n&7• ZOMBIE - clear spawned zombies\n"
-                + "&7• VILLAGER - clear alive villagers\n&7• GOLEM - clear spawned golems\n&6Permission: &7villagedefense.admin.clear")) {
+                + "&7• VILLAGER - clear alive villagers\n&7• GOLEM - clear spawned golems\n&7• WOLF - clear spawned wolves\n&6Permission: &7villagedefense.admin.clear")) {
       @Override
       public void execute(CommandSender sender, String[] args) {
         if (!Utils.checkIsInGameInstance((Player) sender)) {
           return;
         }
         if (args.length == 1) {
-          sender.sendMessage(registry.getPlugin().getChatManager().getPrefix() + ChatColor.RED + "Please type valid mob type to clear: VILLAGER, ZOMBIE, GOLEM");
+          sender.sendMessage(registry.getPlugin().getChatManager().getPrefix() + ChatColor.RED + "Please type valid mob type to clear: VILLAGER, ZOMBIE, IRON_GOLEM");
           return;
         }
         Arena arena = ArenaRegistry.getArena((Player) sender);

@@ -61,6 +61,7 @@ import org.bukkit.event.player.PlayerExpChangeEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -240,6 +241,9 @@ public class Events implements Listener {
       if (arena == null) {
         return;
       }
+      if (event.getHand() == EquipmentSlot.OFF_HAND) {
+        return;
+      }
       User user = plugin.getUserManager().getUser(event.getPlayer());
       if (user.isSpectator()) {
         event.setCancelled(true);
@@ -257,12 +261,18 @@ public class Events implements Listener {
         arena.getShopManager().openShop(event.getPlayer());
       } else if (event.getRightClicked().getType() == EntityType.IRON_GOLEM) {
         IronGolem ironGolem = (IronGolem) event.getRightClicked();
+        if (event.getPlayer().isSneaking()) {
+          return;
+        }
         if (ironGolem.getCustomName() != null && ironGolem.getCustomName().contains(event.getPlayer().getName())) {
           event.getRightClicked().setPassenger(event.getPlayer());
         } else {
           event.getPlayer().sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage("In-Game.Messages.Cant-Ride-Others-Golem"));
         }
       } else if (event.getRightClicked().getType() == EntityType.WOLF) {
+        if (event.getPlayer().isSneaking()) {
+          return;
+        }
         Wolf wolf = (Wolf) event.getRightClicked();
         if (wolf.getCustomName() != null && wolf.getCustomName().contains(event.getPlayer().getName())) {
           event.getRightClicked().setPassenger(event.getPlayer());

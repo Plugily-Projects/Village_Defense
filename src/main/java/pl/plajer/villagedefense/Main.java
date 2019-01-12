@@ -42,9 +42,9 @@ import pl.plajer.villagedefense.commands.arguments.ArgumentsRegistry;
 import pl.plajer.villagedefense.creatures.CreatureUtils;
 import pl.plajer.villagedefense.creatures.DoorBreakListener;
 import pl.plajer.villagedefense.creatures.EntityRegistry;
+import pl.plajer.villagedefense.creatures.upgrades.EntityUpgradeMenu;
 import pl.plajer.villagedefense.events.ChatEvents;
 import pl.plajer.villagedefense.events.Events;
-import pl.plajer.villagedefense.events.GolemEvents;
 import pl.plajer.villagedefense.events.JoinEvent;
 import pl.plajer.villagedefense.events.LobbyEvents;
 import pl.plajer.villagedefense.events.QuitEvent;
@@ -93,6 +93,7 @@ public class Main extends JavaPlugin {
   private PowerupManager powerupManager;
   private RewardsFactory rewardsHandler;
   private HolidayManager holidayManager;
+  private EntityUpgradeMenu entityUpgradeMenu;
   private boolean forceDisable = false;
   private List<String> fileNames = Arrays.asList("arenas", "bungee", "rewards", "stats", "lobbyitems", "mysql", "kits");
   private String version;
@@ -191,7 +192,7 @@ public class Main extends JavaPlugin {
       bungeeManager = new BungeeManager(this);
     }
     registry = new ArgumentsRegistry(this);
-    new GolemEvents(this);
+    entityUpgradeMenu = new EntityUpgradeMenu(this);
     new EntityRegistry(this);
     new ArenaEvents(this);
     kitManager = new KitManager(this);
@@ -272,6 +273,10 @@ public class Main extends JavaPlugin {
         saveResource(fileName + ".yml", false);
       }
     }
+  }
+
+  public EntityUpgradeMenu getEntityUpgradeMenu() {
+    return entityUpgradeMenu;
   }
 
   public ChatManager getChatManager() {

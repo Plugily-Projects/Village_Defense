@@ -33,6 +33,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -64,6 +65,9 @@ public class GolemEvents implements Listener {
   public void onGolemClick(PlayerInteractEntityEvent e) {
     try {
       if (!ArenaRegistry.isInArena(e.getPlayer()) || !(e.getRightClicked() instanceof IronGolem)) {
+        return;
+      }
+      if (e.getHand() == EquipmentSlot.OFF_HAND) {
         return;
       }
       if (plugin.getUserManager().getUser(e.getPlayer()).isSpectator()) {

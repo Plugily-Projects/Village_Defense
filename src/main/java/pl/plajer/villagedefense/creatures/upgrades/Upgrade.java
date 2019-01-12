@@ -18,6 +18,18 @@
 
 package pl.plajer.villagedefense.creatures.upgrades;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.bukkit.entity.Entity;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.java.JavaPlugin;
+
+import pl.plajer.villagedefense.Main;
+import pl.plajerlair.core.utils.ItemBuilder;
+import pl.plajerlair.core.utils.XMaterial;
+
 /**
  * @author Plajer
  * <p>
@@ -25,29 +37,111 @@ package pl.plajer.villagedefense.creatures.upgrades;
  */
 public class Upgrade {
 
+  private Main plugin = JavaPlugin.getPlugin(Main.class);
+  private String id;
+  private int slot;
+  private EntityType entityType;
+  private int maxTier;
   private String name;
-  @Deprecated
-  private String[] description;
-  private String metadataAccess;
+  private List<String> description;
+  private String metadataAccessor;
+  private String configAccessor;
 
-  public Upgrade(String name, String[] description, String metadataAccess) {
+  public Upgrade(String id, int slot, EntityType entityType, int maxTier, String name, List<String> description, String metadataAccessor, String configAccessor) {
+    this.id = id;
+    this.slot = slot;
+    this.entityType = entityType;
+    this.maxTier = maxTier;
     this.name = name;
-    //we shouldn't store mutable reference
     this.description = description;
-    this.metadataAccess = metadataAccess;
+    this.metadataAccessor = metadataAccessor;
+    this.configAccessor = configAccessor;
+  }
+
+  public String getId() {
+    return id;
+  }
+
+  public int getSlot() {
+    return slot;
+  }
+
+  public EntityType getApplicableFor() {
+    return entityType;
+  }
+
+  public int getMaxTier() {
+    return maxTier;
   }
 
   public String getName() {
     return name;
   }
 
-  @Deprecated
-  public String[] getDescription() {
+  public List<String> getDescription() {
     return description;
   }
 
-  public String getMetadataAccess() {
-    return metadataAccess;
+  public String getMetadataAccessor() {
+    return metadataAccessor;
+  }
+
+  public int getCost(int tier) {
+    return plugin.getConfig().getInt(configAccessor + "." + tier);
+  }
+
+  //todo bit weird, maybe recode
+  public ItemStack asItemStack(Entity en, int currentTier, Upgrade upgrade) {
+    String name = this.name;
+    List<String> description = new ArrayList<>(this.description);
+
+    String from;
+    String to;
+    int tier = plugin.getEntityUpgradeMenu().getTier(en, upgrade);
+    switch (upgrade.getId()) {
+      case "DAMAGE":
+        from = String.valueOf(2.0 + (tier * 3));
+        to = String.valueOf(2.0 + ((tier + 1) * 3));
+        break;
+      case "HEALTH":
+        from = String.valueOf(100.0 + (100.0 * ((double) tier / 2.0)));
+        to = String.valueOf(100.0 + (100.0 * ((double) (tier + 1) / 2.0)));
+        break;
+      case "SPEED":
+        from = String.valueOf(0.25 + (0.25 * ((double) tier / 5.0)));
+        to = String.valueOf(0.25 + (0.25 * ((double) (tier + 1) / 5.0)));
+        break;
+      case "SWARM_AWARENESS":
+        from = String.valueOf(tier * 0.2);
+        to = String.valueOf((tier + 1) * 0.2);
+        break;
+      case "FINAL_DEFENSE":
+        from = String.valueOf(tier * 5);
+        to = String.valueOf((tier + 1) * 5);
+        break;
+      default:
+        from = "";
+        to = "";
+        break;
+    }
+    if (tier == upgrade.getMaxTier()) {
+      to = from;
+    }
+
+    final String finalTo = to;
+
+    description = description.stream().map((lore) -> lore = plugin.getChatManager().colorRawMessage(lore)
+        .replace("%cost%", String.valueOf(getCost(currentTier + 1)))
+        .replace("%tier%", String.valueOf(currentTier + 1))
+        .replace("%from%", from)
+        .replace("%to%", finalTo)).collect(Collectors.toList());
+    return new ItemBuilder(XMaterial.BLACK_STAINED_GLASS_PANE.parseItem())
+        .name(plugin.getChatManager().colorRawMessage(name))
+        .lore(description).build();
+  }
+
+  public enum EntityType {
+    BOTH, IRON_GOLEM, WOLF
   }
 
 }
