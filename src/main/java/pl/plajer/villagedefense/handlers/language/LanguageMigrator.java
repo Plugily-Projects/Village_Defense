@@ -38,7 +38,7 @@ import pl.plajerlair.core.utils.MigratorUtils;
 public class LanguageMigrator {
 
   public static final int LANGUAGE_FILE_VERSION = 10;
-  public static final int CONFIG_FILE_VERSION = 7;
+  public static final int CONFIG_FILE_VERSION = 8;
   private Main plugin;
   private List<String> migratable = Arrays.asList("bungee", "config", "kits", "language", "lobbyitems", "mysql");
 
@@ -103,6 +103,15 @@ public class LanguageMigrator {
           MigratorUtils.addNewLines(file, "Wave-Limit:\r\n  # Should game have finite amount of waves\r\n  Enabled: false\r\n"
               + "  # Limit of waves, if this wave ends game will end\r\n  Limit: 25");
           break;
+        case 7:
+          MigratorUtils.addNewLines(file, "# Entity upgrades section\r\n"
+              + "Entity-Upgrades:\r\n" + "  # Should entity (wolves and golems) upgrades be enabled?\r\n"
+              + "  # If you want to have classic Village Defense game mode i recommend to disable this.\r\n"
+              + "  Enabled: true\r\n" + "  # Cost of x tier (in orbs), ex 1: 100 means 1st tier cost 100 orbs to upgrade\r\n"
+              + "  Health-Tiers:\r\n" + "    '1': 100\r\n" + "    '2': 200\r\n" + "    '3': 350\r\n" + "    '4': 500\r\n"
+              + "  Damage-Tiers:\r\n" + "    '1': 150\r\n" + "    '2': 300\r\n" + "    '3': 450\r\n" + "    '4': 600\r\n"
+              + "  Speed-Tiers:\r\n" + "    '1': 50\r\n" + "    '2': 100\r\n" + "    '3': 150\r\n" + "    '4': 250\r\n"
+              + "  Final-Defense-Tiers:\r\n" + "    '1': 200\r\n" + "    '2': 350\r\n" + "  Swarm-Awareness-Tiers:\r\n" + "    '1': 200\r\n" + "    '2': 350");
         default:
           break;
       }
@@ -191,6 +200,21 @@ public class LanguageMigrator {
         case 9:
           MigratorUtils.insertAfterLine(file, "Admin-Commands", "    Received-Orbs: \"&7You received &a%orbs% orbs&7!\"");
           MigratorUtils.insertAfterLine(file, "Admin-Messages:", "      Removed-Wolves: \"&b%PLAYER% has cleared the wolves!\"");
+          MigratorUtils.addNewLines(file, "Upgrade-Menu:\n" + "  Title: \"&e&lUpgrade entity\"\r\n" + "  Stats-Item:\r\n"
+              + "    Name: \"&e&lCurrent Stats\"\r\n"
+              + "    Description: \"&eMovement speed: &7%speed%;&eAttack Damage: &7%damage%;&eHealth: &7%current_hp%/%max_hp%\"\r\n"
+              + "  Upgrades:\r\n" + "    Health:\r\n" + "      Name: \"&a&lUpgrade Health\"\r\n"
+              + "      Description: \"&7Upgrade max health to tier &e%tier%&7!;&7From &e%from% &7to &e%to%;&7Cost of upgrade: &e%cost%;;&eClick to purchase\"\r\n"
+              + "    Damage:\r\n" + "      Name: \"&a&lUpgrade Damage\"\r\n"
+              + "      Description: \"&7Upgrade entity damage to tier &e%tier%&7!;&7From &e%from% &7to &e%to%;&7Cost of upgrade: &e%cost%;;&eClick to purchase\"\r\n"
+              + "    Speed:\r\n" + "      Name: \"&a&lUpgrade Speed\"\r\n"
+              + "      Description: \"&7Upgrade movement speed to tier &e%tier%&7!;&7From &e%from% &7to &e%to%;&7Cost of upgrade: &e%cost%;;&eClick to purchase\"\r\n"
+              + "    Swarm-Awareness:\r\n" + "      Name: \"&a&lSwarm Awareness\"\r\n"
+              + "      Description: \"&7Upgrade swarm awareness to tier &e%tier%&7!;&7From &e%from% &edamage multiplier per wolf in radius;&eof 3 blocks &7to %to%;&7The more wolves near attacking wolf;&7the more damage wolf deal;&7Cost of upgrade: &e%cost%;;&eClick to purchase\"\r\n"
+              + "    Final-Defense:\r\n" + "      Name: \"&a&lFinal Defense\"\r\n"
+              + "      Description: \"&7Upgrade final defense to tier &e%tier%&7!;&7From &e%from% explosion radius &7to &e%to%;&7Golem will explode after death killing nearby;&7zombies and stun all alive ones;&7Cost of upgrade: &e%cost%;;&eClick to purchase\"\r\n"
+              + "  Upgraded-Entity: \"&7Upgraded entity to tier &e%tier%&7!\"\r\n" + "  Cannot-Afford: \"&cYou don't have enough orbs to apply that upgrade!\"\r\n"
+              + "  Max-Tier: \"&cEntity is at max tier of this upgrade!\"");
         default:
           break;
       }

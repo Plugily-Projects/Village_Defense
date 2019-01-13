@@ -77,6 +77,7 @@ import pl.plajer.villagedefense.handlers.PermissionsManager;
 import pl.plajer.villagedefense.handlers.items.SpecialItem;
 import pl.plajer.villagedefense.handlers.items.SpecialItemManager;
 import pl.plajer.villagedefense.user.User;
+import pl.plajer.villagedefense.utils.CompatMaterialConstants;
 import pl.plajer.villagedefense.utils.Utils;
 import pl.plajerlair.core.services.exception.ReportedException;
 import pl.plajerlair.core.utils.ConfigUtils;
@@ -314,8 +315,8 @@ public class Events implements Listener {
   @EventHandler
   public void onDoorDrop(ItemSpawnEvent event) {
     try {
-      //todo check
-      if (event.getEntity().getItemStack().getType() == XMaterial.OAK_DOOR.parseMaterial()) {
+      if (event.getEntity().getItemStack().getType() == XMaterial.OAK_DOOR.parseMaterial()
+          || event.getEntity().getItemStack().getType() == CompatMaterialConstants.OAK_DOOR_ITEM) {
         for (Entity entity : Utils.getNearbyEntities(event.getLocation(), 20)) {
           if (!(entity instanceof Player)) {
             continue;

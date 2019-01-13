@@ -236,8 +236,6 @@ public class Main extends JavaPlugin {
     new Events(this);
     new LobbyEvents(this);
     new SpectatorItemEvents(this);
-    //todo bring back soon
-    //EntityUpgradeMenu.init(this);
     powerupManager = new PowerupManager(this);
     rewardsHandler = new RewardsFactory(this);
     User.cooldownHandlerTask();

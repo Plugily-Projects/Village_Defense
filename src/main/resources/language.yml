@@ -353,7 +353,6 @@ Powerups:
     Description: "&7Every zombie for 1 hit!"
   Powerup-Ended-Title-Message: "&4Powerup %powerup% has ended!"
 
-  #todo and migrator only
 Upgrade-Menu:
   Title: "&e&lUpgrade entity"
   Stats-Item:

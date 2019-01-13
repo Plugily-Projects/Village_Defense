@@ -936,7 +936,6 @@ public abstract class Arena extends BukkitRunnable {
     for (Location location : doorBlocks.keySet()) {
       Block block = location.getBlock();
       Byte doorData = doorBlocks.get(location);
-      //todo check
       if (plugin.is1_11_R1() || plugin.is1_12_R1()) {
         int id = Material.WOODEN_DOOR.getId();
         block.setTypeIdAndData(id, doorData, false);

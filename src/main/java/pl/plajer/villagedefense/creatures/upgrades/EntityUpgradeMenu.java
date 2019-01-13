@@ -52,6 +52,9 @@ public class EntityUpgradeMenu {
 
   public EntityUpgradeMenu(Main plugin) {
     this.plugin = plugin;
+    if (!plugin.getConfig().getBoolean("Entity-Upgrades.Enabled")) {
+      return;
+    }
     //todo add config checks + language + locale
     new EntityUpgradeListener(this);
     registerUpgrade(new UpgradeBuilder("Damage")
@@ -161,29 +164,25 @@ public class EntityUpgradeMenu {
     en.getWorld().spawnParticle(Particle.FIREWORKS_SPARK, en.getLocation(), 25, 0.2, 0.5, 0.2, 0);
     Utils.playSound(en.getLocation(), "BLOCK_ANVIL_USE", "BLOCK_ANVIL_USE");
     int[] baseValues = new int[] {getTier(en, getUpgrade("Health")), getTier(en, getUpgrade("Speed")), getTier(en, getUpgrade("Damage"))};
-    if (areAllEqualOrHigher(baseValues)) {
-      int lvl = getMinValue(baseValues);
-      if (lvl == 4) {
-        //final mode! rage!!!
-        en.setGlowing(true);
-      }
-      //todo apply hologram level logic
+    if (areAllEqualOrHigher(baseValues) && getMinValue(baseValues) == 4) {
+      //final mode! rage!!!
+      en.setGlowing(true);
     }
     switch (upgrade.getId()) {
-      case "DAMAGE":
+      case "Damage":
         if (en.getType() == EntityType.WOLF) {
           ((LivingEntity) en).getAttribute(Attribute.GENERIC_ATTACK_DAMAGE).setBaseValue(2.0 + (tier * 3));
         }
         //attribute damage doesn't exist for golems
         break;
-      case "HEALTH":
+      case "Health":
         ((LivingEntity) en).getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(100.0 + (100.0 * ((double) tier / 2.0)));
         break;
-      case "SPEED":
+      case "Speed":
         ((LivingEntity) en).getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(0.25 + (0.25 * ((double) tier / 5.0)));
         break;
-      case "SWARM_AWARENESS":
-      case "FINAL_DEFENSE":
+      case "Swarm-Awareness":
+      case "Final-Defense":
         //do nothing they are used within events
         break;
       default:
