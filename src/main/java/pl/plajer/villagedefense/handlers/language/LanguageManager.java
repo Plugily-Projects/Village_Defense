@@ -23,8 +23,11 @@ import com.wasteofplastic.askyblock.ASLocale;
 import com.wasteofplastic.askyblock.ASkyBlock;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
@@ -89,10 +92,6 @@ public class LanguageManager {
     LocaleRegistry.registerLocale(new Locale("Vietnamese", "Việt", "vn_VN", "POEditor contributors (HStreamGamer)", Arrays.asList("vietnamese", "viet", "việt", "vn")));
   }
 
-  @Deprecated
-  /**
-   * @deprecated system default charset dependent
-   */
   private static void loadProperties() {
     if (isDefaultLanguageUsed()) {
       return;
@@ -115,8 +114,8 @@ public class LanguageManager {
       return;
     }
     try {
-      //todo
-      properties.load(new FileReader(new File(plugin.getDataFolder() + "/locales/" + pluginLocale.getPrefix() + ".properties")));
+      properties.load(new InputStreamReader(new FileInputStream(plugin.getDataFolder() + "/locales/"
+          + pluginLocale.getPrefix() + ".properties"), StandardCharsets.UTF_8));
     } catch (IOException e) {
       e.printStackTrace();
     }

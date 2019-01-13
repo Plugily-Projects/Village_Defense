@@ -66,8 +66,8 @@ public class BabyZombie extends EntityZombie {
 
     this.goalSelector.a(0, new PathfinderGoalFloat(this));
     this.goalSelector.a(1, new PathfinderGoalBreakDoor(this));
-    this.goalSelector.a(2, new PathfinderGoalZombieAttack(this, CreatureUtils.BABY_ZOMBIE_SPEED, false));
-    this.goalSelector.a(4, new PathfinderGoalMoveTowardsRestriction(this, CreatureUtils.BABY_ZOMBIE_SPEED));
+    this.goalSelector.a(2, new PathfinderGoalZombieAttack(this, CreatureUtils.getBabyZombieSpeed(), false));
+    this.goalSelector.a(4, new PathfinderGoalMoveTowardsRestriction(this, CreatureUtils.getBabyZombieSpeed()));
     this.goalSelector.a(7, new PathfinderGoalLookAtPlayer(this, EntityHuman.class, 8.0F)); // this one to look at human
     this.goalSelector.a(7, new PathfinderGoalRandomLookaround(this));
     this.targetSelector.a(1, new PathfinderGoalHurtByTarget(this, false));

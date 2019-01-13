@@ -54,8 +54,7 @@ public class KitManager implements Listener {
   private Inventory invMenu;
   private String itemName;
   private Material material;
-  @Deprecated
-  private String[] description;
+  @Deprecated protected String[] description;
   private String menuName;
 
   private String unlockedString;

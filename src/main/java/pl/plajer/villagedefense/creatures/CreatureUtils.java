@@ -38,20 +38,17 @@ import pl.plajerlair.core.utils.MinigameUtils;
  */
 public class CreatureUtils {
 
-  @Deprecated //should be either final or private
-  public static float ZOMBIE_SPEED = 1.3f;
-  @Deprecated //should be either final or private
-  public static float BABY_ZOMBIE_SPEED = 2.0f;
-  @Deprecated
-  public static String[] VILLAGER_NAMES = ("Jagger,Kelsey,Kelton,Haylie,Harlow,Howard,Wulffric,Winfred,Ashley,Bailey,Beckett,Alfredo,Alfred,Adair,Edgar,ED,Eadwig,Edgaras,Buckley,Stanley,Nuffley,"
+  private static float zombieSpeed = 1.3f;
+  private static float babyZombieSpeed = 2.0f;
+  private static String[] villagerNames = ("Jagger,Kelsey,Kelton,Haylie,Harlow,Howard,Wulffric,Winfred,Ashley,Bailey,Beckett,Alfredo,Alfred,Adair,Edgar,ED,Eadwig,Edgaras,Buckley,Stanley,Nuffley,"
       + "Mary,Jeffry,Rosaly,Elliot,Harry,Sam,Rosaline,Tom,Ivan,Kevin,Adam").split(",");
   private static Main plugin = JavaPlugin.getPlugin(Main.class);
   private static List<CachedObject> cachedObjects = new ArrayList<>();
 
   public static void init(Main plugin) {
-    ZOMBIE_SPEED = (float) plugin.getConfig().getDouble("Zombie-Speed", 1.3);
-    BABY_ZOMBIE_SPEED = (float) plugin.getConfig().getDouble("Mini-Zombie-Speed", 2.0);
-    VILLAGER_NAMES = LanguageManager.getLanguageMessage("In-Game.Villager-Names").split(",");
+    zombieSpeed = (float) plugin.getConfig().getDouble("Zombie-Speed", 1.3);
+    babyZombieSpeed = (float) plugin.getConfig().getDouble("Mini-Zombie-Speed", 2.0);
+    villagerNames = LanguageManager.getLanguageMessage("In-Game.Villager-Names").split(",");
   }
 
   public static Object getPrivateField(String fieldName, Class clazz, Object object) {
@@ -84,4 +81,15 @@ public class CreatureUtils {
     }
   }
 
+  public static float getZombieSpeed() {
+    return zombieSpeed;
+  }
+
+  public static float getBabyZombieSpeed() {
+    return babyZombieSpeed;
+  }
+
+  public static String[] getVillagerNames() {
+    return villagerNames;
+  }
 }
