@@ -317,13 +317,6 @@ public class Main extends JavaPlugin {
       return;
     }
     Debugger.debug(LogLevel.INFO, "System disable init");
-    for (Player player : getServer().getOnlinePlayers()) {
-      User user = userManager.getUser(player);
-      for (StatsStorage.StatisticType stat : StatsStorage.StatisticType.values()) {
-        userManager.saveStatistic(user, stat);
-      }
-      userManager.removeUser(player);
-    }
     for (Arena arena : ArenaRegistry.getArenas()) {
       for (Player player : arena.getPlayers()) {
         arena.doBarAction(Arena.BarAction.REMOVE, player);
@@ -338,9 +331,24 @@ public class Main extends JavaPlugin {
           }
         }
       }
-      arena.clearVillagers();
+      arena.restoreMap();
       ArenaManager.stopGame(true, arena);
       arena.teleportAllToEndLocation();
+    }
+    for (Player player : getServer().getOnlinePlayers()) {
+      User user = userManager.getUser(player);
+
+      //copy of userManager#saveStatistic but without async database call that's not allowed in onDisable method.
+      for (StatsStorage.StatisticType stat : StatsStorage.StatisticType.values()) {
+        if (!stat.isPersistent()) {
+          continue;
+        }
+        if (getConfigPreferences().getOption(ConfigPreferences.Option.DATABASE_ENABLED)) {
+          userManager.getMySQLManager().saveStatistic(user, stat);
+          return;
+        }
+        userManager.getFileStats().saveStatistic(user, stat);
+      }
     }
     if (getServer().getPluginManager().isPluginEnabled("HolographicDisplays")) {
       for (Hologram holo : HologramsAPI.getHolograms(this)) {

@@ -1,63 +1,64 @@
 # Village Defense 3 Changelog
 
-### 4.0.0 Beta pre 6 (14.12.2018-12.01.2019)
-* Implemented legacy data fixer that will fix inconsistency between original user data and current one (old implementation failure)
-data was wrongly saved without getName() method called. MySQL users are safe.
-* Added Italian locale
-* Fixed arena signs were incorrectly saved via setup menu (4.0.0 pre issue)
-* Fixed /vda forcestart wasn't working properly when there were not enough players to start
-* In case of any server crash players' inventories will be loaded from backup if exist in inventories folder in Village Defense plugin folder
-* Removed permissions for giving other players levels for commands /vda setlevel/addlevel (it was useless)
-* Debug messages "LSome doors has failed to load for arena" for 1.11 and 1.12 was fixed, doors were loaded properly
-* Removed weird villagers behavior that they were still spawned even if game was finished, it was intended but we removed it
-* Added caching reflection while spawning game entities, this change drastically decreases plugin load and average plugin speed per tick is now faster
-* Fixed worlds were generated if arenas.yml contain their names (PLCore issue)
-* Misc code improvements - signs refresh speed improved and other things
-* Now zombies or any other entities that will damage any other entity won't be registered into user database
-* Now language manager will use cached language.yml file so plugin will perform bit better
-* Now you can smoothly add/decrease minimum and maximum players amount in setup gui
-* Added useSSL=false argument in mysql.yml address to avoid mysql warnings in console (not harmful)
-* Fixed Worker kit wasn't displaying and working on 1.11-1.12
-* Fixed oak doors couldn't be placed at the position of broken ones on 1.11-1.12
-* Fixed doors couldn't be broken by zombies at 1.11-1.12
-* Fixed doors couldn't be added in arena setup at 1.11-1.12
-* Buffed and nerfed cleaner kit, can use his ability each 60 seconds but will clean only spawned zombies not all in wave
-* Nerfed map cleaner powerup it will clean only spawned zombies now 
-* Added message when player receive orbs via addorbs command
-* Golems on death won't drop useless items now
-* Added missing game prefixes in some commands
-* Added /vda clear wolf to /vda clear command. You can now clear wolves
-* Totally new entity upgrade system implemented!!!
-
-### 4.0.0 Beta pre 5 (1.12.2018)
-* Fixed commands without permissions weren't working
-* Fixed setup inventory not working
-
-### 4.0.0 Beta (04/14.10.2018 - 27.11.2018)
-* API change - now you can path it via pl.plajer.villagedefense.api
-* Removed actionbar message from players that died and the arena was changed in "ending"
-* Fixed https://plajer.xyz/errorservice/viewer.php?id=245
-* Added spectator settings menu (now working)
-* You cannot join now game infinitely through command (lol???)
-* Now players that leave game will be visible by other players outside game
-* Nerfed some kits - potions amplifiers are counted from 0 so every kit with potion effects has now amplifier -1 because it was too op
-* Implemented powerup registry
-* Fixed weird respawn glitches (player was - bugged half dead)
-* Zombies after respawn won't stay and don't move until you attack them
-* Added halloween effects (can be disabled in config) (4 days before and 4 days after Halloween)
-* Added wave limiter
-* Added command vda add/set levels
-* Now non localized Spawn Golem/Wolf items will work with locales
-* Added tip about downloadable maps when no arenas are set up while typing /vda list
-* Added tab completer for /vd join <arena name>
-* Fixed broken game logic while spawning zombie entities, Villager Slayer never spawned in game neither knockback resistant
-ones - game may be now much harder sorry :(
-* Cleaned up lots of code - especially commands and setup inventory
-* Now commands like /vda addorbs/setlevel/setwave won't throw an error if number exceeds real Integer max value
-(2 147 483 647) - some users brute forced this error using values like 300000000000000000 (fixes https://plajer.xyz/errorservice/viewer.php?id=351)
-* More setup tips!
-* Implemented JavaScript engine into rewards section. Now you can execute java code from rewards.
-* Fixed exp wasn't saved properly via InventoryManager
+### 4.0.0 Release (04.10.2018-13.01.2019)
+**Whole changelog from all beta pre releases**
+* Beta pre 6 (14.12.2018-12.01.2019)
+    * Implemented legacy data fixer that will fix inconsistency between original user data and current one (old implementation failure)
+    data was wrongly saved without getName() method called. MySQL users are safe.
+    * Added Italian locale
+    * Fixed arena signs were incorrectly saved via setup menu (4.0.0 pre issue)
+    * Fixed /vda forcestart wasn't working properly when there were not enough players to start
+    * In case of any server crash players' inventories will be loaded from backup if exist in inventories folder in Village Defense plugin folder
+    * Removed permissions for giving other players levels for commands /vda setlevel/addlevel (it was useless)
+    * Debug messages "Some doors has failed to load for arena" for 1.11 and 1.12 was fixed, doors were loaded properly
+    * Removed weird villagers behavior that they were still spawned even if game was finished, it was intended but we removed it
+    * Added caching reflection while spawning game entities, this change drastically decreases plugin load and average plugin speed per tick is now faster
+    * Fixed worlds were generated if arenas.yml contain their names (PLCore issue)
+    * Misc code improvements - signs refresh speed improved and other things
+    * Now zombies or any other entities that will damage any other entity won't be registered into user database
+    * Now language manager will use cached language.yml file so plugin will perform bit better
+    * Now you can smoothly add/decrease minimum and maximum players amount in setup gui
+    * Added useSSL=false argument in mysql.yml address to avoid mysql warnings in console (not harmful)
+    * Fixed Worker kit wasn't displaying and working on 1.11-1.12
+    * Fixed oak doors couldn't be placed at the position of broken ones on 1.11-1.12
+    * Fixed doors couldn't be broken by zombies at 1.11-1.12
+    * Fixed doors couldn't be added in arena setup at 1.11-1.12
+    * Buffed and nerfed cleaner kit, can use his ability each 60 seconds but will clean only spawned zombies not all in wave
+    * Nerfed map cleaner powerup it will clean only spawned zombies now 
+    * Added message when player receive orbs via addorbs command
+    * Golems on death won't drop useless items now
+    * Added missing game prefixes in some commands
+    * Added /vda clear wolf to /vda clear command. You can now clear wolves
+    * Totally new entity upgrade system implemented!!!
+    * Fixed game couldn't clean up and save users data on disable when mysql was enabled (usually on force disable)
+* Beta pre 5 (1.12.2018)
+    * Fixed commands without permissions weren't working
+    * Fixed setup inventory not working
+* Beta pre 1-4 (04.10.2018 - 27.11.2018)
+    * API change - now you can path it via pl.plajer.villagedefense.api
+    * Removed actionbar message from players that died and the arena was changed in "ending"
+    * Fixed https://plajer.xyz/errorservice/viewer.php?id=245
+    * Added spectator settings menu (now working)
+    * You cannot join now game infinitely through command (lol???)
+    * Now players that leave game will be visible by other players outside game
+    * Nerfed some kits - potions amplifiers are counted from 0 so every kit with potion effects has now amplifier -1 because it was too op
+    * Implemented powerup registry
+    * Fixed weird respawn glitches (player was - bugged half dead)
+    * Zombies after respawn won't stay and don't move until you attack them
+    * Added halloween effects (can be disabled in config) (4 days before and 4 days after Halloween)
+    * Added wave limiter
+    * Added command vda add/set levels
+    * Now non localized Spawn Golem/Wolf items will work with locales
+    * Added tip about downloadable maps when no arenas are set up while typing /vda list
+    * Added tab completer for /vd join <arena name>
+    * Fixed broken game logic while spawning zombie entities, Villager Slayer never spawned in game neither knockback resistant
+    ones - game may be now much harder sorry :(
+    * Cleaned up lots of code - especially commands and setup inventory
+    * Now commands like /vda addorbs/setlevel/setwave won't throw an error if number exceeds real Integer max value
+    (2 147 483 647) - some users brute forced this error using values like 300000000000000000 (fixes https://plajer.xyz/errorservice/viewer.php?id=351)
+    * More setup tips!
+    * Implemented JavaScript engine into rewards section. Now you can execute java code from rewards.
+    * Fixed exp wasn't saved properly via InventoryManager
 
 ### 3.11.5 Release (28.09.2018/04.10.2018)
 * Fixed server was stopped using Shutdown-When-Game-Ends option but player just left not started arena

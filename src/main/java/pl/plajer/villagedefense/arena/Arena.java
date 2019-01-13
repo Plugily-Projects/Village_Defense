@@ -418,7 +418,7 @@ public abstract class Arena extends BukkitRunnable {
     }
   }
 
-  private void restoreMap() {
+  public void restoreMap() {
     this.restoreDoors();
     for (Zombie zombie : getZombies()) {
       zombie.remove();
