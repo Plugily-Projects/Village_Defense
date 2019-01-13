@@ -64,7 +64,7 @@ public class ScoreboardManager {
         user.removeScoreboard();
         return;
       }
-      scoreboard = new GameScoreboard("PL_VD3", "PL_CR", boardTitle);
+      scoreboard = new GameScoreboard("PL_VD4", "PL_CR", boardTitle);
       List<String> lines;
       if (arena.getArenaState() == ArenaState.IN_GAME) {
         lines = LanguageManager.getLanguageList("Scoreboard.Content.Playing" + (arena.isFighting() ? "" : "-Waiting"));
