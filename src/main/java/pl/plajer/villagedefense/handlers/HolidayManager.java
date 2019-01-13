@@ -1,6 +1,6 @@
 /*
- * Village Defense 4 - Protect villagers from hordes of zombies
- * Copyright (C) 2018  Plajer's Lair - maintained by Plajer and Tigerpanzer
+ * Village Defense - Protect villagers from hordes of zombies
+ * Copyright (C) 2019  Plajer's Lair - maintained by Plajer and Tigerpanzer
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -67,14 +67,16 @@ public class HolidayManager implements Listener {
         //4 days before halloween
         if (31 - day <= 4) {
           currentHoliday = HolidayType.HALLOWEEN;
-          break;
         }
+        break;
       case 11:
         //4 days after halloween
         if (day <= 4) {
           currentHoliday = HolidayType.HALLOWEEN;
-          break;
         }
+        break;
+      default:
+        break;
     }
   }
 
@@ -105,6 +107,8 @@ public class HolidayManager implements Listener {
         break;
       case NONE:
         break;
+      default:
+        break;
     }
   }
 
@@ -132,7 +136,7 @@ public class HolidayManager implements Listener {
           final List<Entity> bats = new ArrayList<>();
           for (int i = 0; i < 5; i++) {
             final Entity bat = en.getWorld().spawnEntity(en.getLocation(), EntityType.BAT);
-            bat.setCustomName(ChatManager.colorRawMessage("&6Halloween!"));
+            bat.setCustomName(plugin.getChatManager().colorRawMessage("&6Halloween!"));
             bats.add(bat);
           }
           Bukkit.getScheduler().runTaskLater(plugin, () -> {
@@ -146,12 +150,14 @@ public class HolidayManager implements Listener {
         break;
       case NONE:
         break;
+      default:
+        break;
     }
   }
 
   @EventHandler
   public void onBatDamage(EntityDamageEvent e) {
-    if (e.getEntityType().equals(EntityType.BAT) || (e.getEntity().getCustomName() != null && e.getEntity().getCustomName().equals(ChatManager.colorRawMessage("&6Halloween!")))) {
+    if (e.getEntityType().equals(EntityType.BAT) || (e.getEntity().getCustomName() != null && e.getEntity().getCustomName().equals(plugin.getChatManager().colorRawMessage("&6Halloween!")))) {
       e.setCancelled(true);
     }
   }

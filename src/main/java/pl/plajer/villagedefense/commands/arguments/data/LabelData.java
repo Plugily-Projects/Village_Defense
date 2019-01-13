@@ -1,6 +1,6 @@
 /*
- * Village Defense 4 - Protect villagers from hordes of zombies
- * Copyright (C) 2018  Plajer's Lair - maintained by Plajer and Tigerpanzer
+ * Village Defense - Protect villagers from hordes of zombies
+ * Copyright (C) 2019  Plajer's Lair - maintained by Plajer and Tigerpanzer
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,7 +18,9 @@
 
 package pl.plajer.villagedefense.commands.arguments.data;
 
-import pl.plajer.villagedefense.handlers.ChatManager;
+import org.bukkit.plugin.java.JavaPlugin;
+
+import pl.plajer.villagedefense.Main;
 
 /**
  * @author Plajer
@@ -27,14 +29,15 @@ import pl.plajer.villagedefense.handlers.ChatManager;
  */
 public class LabelData {
 
+  private Main plugin = JavaPlugin.getPlugin(Main.class);
   private String text;
   private String command;
   private String description;
 
   public LabelData(String text, String command, String description) {
-    this.text = ChatManager.colorRawMessage(text);
+    this.text = plugin.getChatManager().colorRawMessage(text);
     this.command = command;
-    this.description = ChatManager.colorRawMessage(description);
+    this.description = plugin.getChatManager().colorRawMessage(description);
   }
 
   public String getText() {

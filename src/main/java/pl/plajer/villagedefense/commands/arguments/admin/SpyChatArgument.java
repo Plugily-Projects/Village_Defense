@@ -1,6 +1,6 @@
 /*
- * Village Defense 4 - Protect villagers from hordes of zombies
- * Copyright (C) 2018  Plajer's Lair - maintained by Plajer and Tigerpanzer
+ * Village Defense - Protect villagers from hordes of zombies
+ * Copyright (C) 2019  Plajer's Lair - maintained by Plajer and Tigerpanzer
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,7 +30,6 @@ import pl.plajer.villagedefense.commands.arguments.ArgumentsRegistry;
 import pl.plajer.villagedefense.commands.arguments.data.CommandArgument;
 import pl.plajer.villagedefense.commands.arguments.data.LabelData;
 import pl.plajer.villagedefense.commands.arguments.data.LabeledCommandArgument;
-import pl.plajer.villagedefense.handlers.ChatManager;
 
 /**
  * @author Plajer
@@ -43,8 +42,8 @@ public class SpyChatArgument {
 
   public SpyChatArgument(ArgumentsRegistry registry) {
     registry.mapArgument("villagedefenseadmin", new LabeledCommandArgument("spychat", "villagedefense.admin.spychat", CommandArgument.ExecutorType.PLAYER,
-        new LabelData("/vda spychat", "/vda spychat", "&7Toggles spy chat for all available arenas\n" +
-            "&7You will see all messages from these games\n&6Permission: &7villagedefense.admin.spychat")) {
+        new LabelData("/vda spychat", "/vda spychat", "&7Toggles spy chat for all available arenas\n"
+            + "&7You will see all messages from these games\n&6Permission: &7villagedefense.admin.spychat")) {
       @Override
       public void execute(CommandSender sender, String[] args) {
         UUID uuid = ((Player) sender).getUniqueId();
@@ -53,7 +52,7 @@ public class SpyChatArgument {
         } else {
           spyChatters.add(uuid);
         }
-        sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatColor.GREEN + "Game spy chat toggled to " + spyChatters.contains(uuid));
+        sender.sendMessage(registry.getPlugin().getChatManager().getPrefix() + ChatColor.GREEN + "Game spy chat toggled to " + spyChatters.contains(uuid));
       }
     });
   }

@@ -1,6 +1,6 @@
 /*
- * Village Defense 4 - Protect villagers from hordes of zombies
- * Copyright (C) 2018  Plajer's Lair - maintained by Plajer and Tigerpanzer
+ * Village Defense - Protect villagers from hordes of zombies
+ * Copyright (C) 2019  Plajer's Lair - maintained by Plajer and Tigerpanzer
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,7 +26,6 @@ import pl.plajer.villagedefense.commands.arguments.ArgumentsRegistry;
 import pl.plajer.villagedefense.commands.arguments.data.CommandArgument;
 import pl.plajer.villagedefense.commands.arguments.data.LabelData;
 import pl.plajer.villagedefense.commands.arguments.data.LabeledCommandArgument;
-import pl.plajer.villagedefense.handlers.ChatManager;
 
 /**
  * @author Plajer
@@ -41,17 +40,17 @@ public class ListArenasArgument {
             "&7Shows list with all loaded arenas\n&6Permission: &7villagedefense.admin.list")) {
       @Override
       public void execute(CommandSender sender, String[] args) {
-        sender.sendMessage(ChatManager.colorMessage("Commands.Admin-Commands.List-Command.Header"));
+        sender.sendMessage(registry.getPlugin().getChatManager().colorMessage("Commands.Admin-Commands.List-Command.Header"));
         int i = 0;
         for (Arena arena : ArenaRegistry.getArenas()) {
-          sender.sendMessage(ChatManager.colorMessage("Commands.Admin-Commands.List-Command.Format").replace("%arena%", arena.getID())
+          sender.sendMessage(registry.getPlugin().getChatManager().colorMessage("Commands.Admin-Commands.List-Command.Format").replace("%arena%", arena.getID())
               .replace("%status%", arena.getArenaState().getFormattedName()).replace("%players%", String.valueOf(arena.getPlayers().size()))
               .replace("%maxplayers%", String.valueOf(arena.getMaximumPlayers())));
           i++;
         }
         if (i == 0) {
-          sender.sendMessage(ChatManager.colorMessage("Commands.Admin-Commands.List-Command.No-Arenas"));
-          sender.sendMessage(ChatManager.colorRawMessage("&e&lTIP: &7You can get free maps with configs at our wiki! Just head to https://wiki.plajer.xyz/minecraft/villagedefense/free_maps.php"));
+          sender.sendMessage(registry.getPlugin().getChatManager().colorMessage("Commands.Admin-Commands.List-Command.No-Arenas"));
+          sender.sendMessage(registry.getPlugin().getChatManager().colorRawMessage("&e&lTIP: &7You can get free maps with configs at our wiki! Just head to https://wiki.plajer.xyz/minecraft/villagedefense/free_maps.php"));
         }
       }
     });

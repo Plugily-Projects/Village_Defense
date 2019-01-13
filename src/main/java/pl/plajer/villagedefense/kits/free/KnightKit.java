@@ -1,6 +1,6 @@
 /*
- * Village Defense 4 - Protect villagers from hordes of zombies
- * Copyright (C) 2018  Plajer's Lair - maintained by Plajer and Tigerpanzer
+ * Village Defense - Protect villagers from hordes of zombies
+ * Copyright (C) 2019  Plajer's Lair - maintained by Plajer and Tigerpanzer
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,8 +24,6 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import pl.plajer.villagedefense.Main;
-import pl.plajer.villagedefense.handlers.ChatManager;
 import pl.plajer.villagedefense.kits.kitapi.KitRegistry;
 import pl.plajer.villagedefense.kits.kitapi.basekits.FreeKit;
 import pl.plajer.villagedefense.utils.ArmorHelper;
@@ -38,9 +36,9 @@ import pl.plajerlair.core.utils.XMaterial;
  */
 public class KnightKit extends FreeKit {
 
-  public KnightKit(Main plugin) {
-    this.setName(ChatManager.colorMessage("Kits.Knight.Kit-Name"));
-    List<String> description = Utils.splitString(ChatManager.colorMessage("Kits.Knight.Kit-Description"), 40);
+  public KnightKit() {
+    this.setName(getPlugin().getChatManager().colorMessage("Kits.Knight.Kit-Name"));
+    List<String> description = Utils.splitString(getPlugin().getChatManager().colorMessage("Kits.Knight.Kit-Description"), 40);
     this.setDescription(description.toArray(new String[0]));
     KitRegistry.registerKit(this);
   }

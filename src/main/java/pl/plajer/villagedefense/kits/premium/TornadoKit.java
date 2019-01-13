@@ -1,6 +1,6 @@
 /*
- * Village Defense 4 - Protect villagers from hordes of zombies
- * Copyright (C) 2018  Plajer's Lair - maintained by Plajer and Tigerpanzer
+ * Village Defense - Protect villagers from hordes of zombies
+ * Copyright (C) 2019  Plajer's Lair - maintained by Plajer and Tigerpanzer
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -35,7 +35,6 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
 import pl.plajer.villagedefense.arena.ArenaRegistry;
-import pl.plajer.villagedefense.handlers.ChatManager;
 import pl.plajer.villagedefense.handlers.PermissionsManager;
 import pl.plajer.villagedefense.kits.kitapi.KitRegistry;
 import pl.plajer.villagedefense.kits.kitapi.basekits.PremiumKit;
@@ -51,13 +50,13 @@ import pl.plajerlair.core.utils.XMaterial;
  */
 public class TornadoKit extends PremiumKit implements Listener {
 
-  private int max_height = 5;
-  private double max_radius = 4;
-  private double radius_increment = max_radius / max_height;
+  private int maxHeight = 5;
+  private double maxRadius = 4;
+  private double radiusIncrement = maxRadius / maxHeight;
 
   public TornadoKit() {
-    setName(ChatManager.colorMessage("Kits.Tornado.Kit-Name"));
-    List<String> description = Utils.splitString(ChatManager.colorMessage("Kits.Tornado.Kit-Description"), 40);
+    setName(getPlugin().getChatManager().colorMessage("Kits.Tornado.Kit-Name"));
+    List<String> description = Utils.splitString(getPlugin().getChatManager().colorMessage("Kits.Tornado.Kit-Description"), 40);
     this.setDescription(description.toArray(new String[0]));
     getPlugin().getServer().getPluginManager().registerEvents(this, getPlugin());
     KitRegistry.registerKit(this);
@@ -76,8 +75,8 @@ public class TornadoKit extends PremiumKit implements Listener {
     player.getInventory().addItem(new ItemStack(Material.COOKED_BEEF, 10));
     player.getInventory().addItem(new ItemStack(Material.SADDLE));
     player.getInventory().addItem(new ItemBuilder(new ItemStack(XMaterial.COBWEB.parseMaterial(), 5))
-        .name(ChatManager.colorMessage("Kits.Tornado.Game-Item-Name"))
-        .lore(Utils.splitString(ChatManager.colorMessage("Kits.Tornado.Game-Item-Lore"), 40))
+        .name(getPlugin().getChatManager().colorMessage("Kits.Tornado.Game-Item-Name"))
+        .lore(Utils.splitString(getPlugin().getChatManager().colorMessage("Kits.Tornado.Game-Item-Lore"), 40))
         .build());
   }
 
@@ -89,8 +88,8 @@ public class TornadoKit extends PremiumKit implements Listener {
   @Override
   public void reStock(Player player) {
     player.getInventory().addItem(new ItemBuilder(new ItemStack(XMaterial.COBWEB.parseMaterial(), 5))
-        .name(ChatManager.colorMessage("Kits.Tornado.Game-Item-Name"))
-        .lore(Utils.splitString(ChatManager.colorMessage("Kits.Tornado.Game-Item-Lore"), 40))
+        .name(getPlugin().getChatManager().colorMessage("Kits.Tornado.Game-Item-Name"))
+        .lore(Utils.splitString(getPlugin().getChatManager().colorMessage("Kits.Tornado.Game-Item-Lore"), 40))
         .build());
   }
 
@@ -102,8 +101,8 @@ public class TornadoKit extends PremiumKit implements Listener {
       }
       Player player = e.getPlayer();
       ItemStack stack = player.getInventory().getItemInMainHand();
-      if (!ArenaRegistry.isInArena(player) || !Utils.isNamed(stack) ||
-          !stack.getItemMeta().getDisplayName().equalsIgnoreCase(ChatManager.colorMessage("Kits.Tornado.Game-Item-Name"))) {
+      if (!ArenaRegistry.isInArena(player) || !Utils.isNamed(stack)
+          || !stack.getItemMeta().getDisplayName().equalsIgnoreCase(getPlugin().getChatManager().colorMessage("Kits.Tornado.Game-Item-Name"))) {
         return;
       }
       if (stack.getAmount() <= 1) {
@@ -159,9 +158,9 @@ public class TornadoKit extends PremiumKit implements Listener {
       times++;
       int lines = 3;
       for (int l = 0; l < lines; l++) {
-        double height_increase = 0.5;
-        for (double y = 0; y < max_height; y += height_increase) {
-          double radius = y * radius_increment;
+        double heightIncrease = 0.5;
+        for (double y = 0; y < maxHeight; y += heightIncrease) {
+          double radius = y * radiusIncrement;
           double x = Math.cos(Math.toRadians(360 / lines * l + y * 25 - angle)) * radius;
           double z = Math.sin(Math.toRadians(360 / lines * l + y * 25 - angle)) * radius;
           getLocation().getWorld().spawnParticle(Particle.CLOUD, getLocation().clone().add(x, y, z), 1, 0, 0, 0, 0);

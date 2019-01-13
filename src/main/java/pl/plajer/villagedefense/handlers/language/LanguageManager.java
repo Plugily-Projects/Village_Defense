@@ -1,6 +1,6 @@
 /*
- * Village Defense 4 - Protect villagers from hordes of zombies
- * Copyright (C) 2018  Plajer's Lair - maintained by Plajer and Tigerpanzer
+ * Village Defense - Protect villagers from hordes of zombies
+ * Copyright (C) 2019  Plajer's Lair - maintained by Plajer and Tigerpanzer
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,17 +23,20 @@ import com.wasteofplastic.askyblock.ASLocale;
 import com.wasteofplastic.askyblock.ASkyBlock;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.configuration.file.FileConfiguration;
 
 import pl.plajer.villagedefense.Main;
-import pl.plajer.villagedefense.handlers.ChatManager;
 import pl.plajer.villagedefense.utils.MessageUtils;
 import pl.plajerlair.core.debug.Debugger;
 import pl.plajerlair.core.debug.LogLevel;
@@ -48,12 +51,21 @@ public class LanguageManager {
   private static Main plugin;
   private static Locale pluginLocale;
   private static Properties properties = new Properties();
+  private static FileConfiguration languageConfig;
 
-  public static void init(Main pl) {
-    plugin = pl;
+  /**
+   * Initializes language management system
+   * Executes language migration if needed
+   *
+   * @param plugin plugin instance
+   * @see LanguageMigrator
+   */
+  public static void init(Main plugin) {
+    LanguageManager.plugin = plugin;
     if (!new File(plugin.getDataFolder() + File.separator + "language.yml").exists()) {
       plugin.saveResource("language.yml", false);
     }
+    languageConfig = ConfigUtils.getConfig(plugin, "language");
     registerLocales();
     setupLocale();
     //we will wait until server is loaded, we won't soft depend those plugins
@@ -62,6 +74,7 @@ public class LanguageManager {
         suggestLocale();
       }
     }, 100);
+    new LanguageMigrator(plugin);
   }
 
   private static void registerLocales() {
@@ -72,6 +85,7 @@ public class LanguageManager {
     LocaleRegistry.registerLocale(new Locale("German", "Deutsch", "de_DE", "Tigerkatze and POEditor contributors", Arrays.asList("deutsch", "german", "de")));
     LocaleRegistry.registerLocale(new Locale("Hungarian", "Magyar", "hu_HU", "POEditor contributors (montlikadani)", Arrays.asList("hungarian", "magyar", "hu")));
     LocaleRegistry.registerLocale(new Locale("Indonesian", "Indonesia", "id_ID", "POEditor contributors", Arrays.asList("indonesian", "indonesia", "id")));
+    LocaleRegistry.registerLocale(new Locale("Italian", "Italiano", "it_IT", "POEditor contributors", Arrays.asList("italian", "italiano", "it")));
     LocaleRegistry.registerLocale(new Locale("Polish", "Polski", "pl_PL", "Plajer", Arrays.asList("polish", "polski", "pl")));
     LocaleRegistry.registerLocale(new Locale("Romanian", "Românesc", "ro_RO", "POEditor contributors (Andrei)", Arrays.asList("romanian", "romanesc", "românesc", "ro")));
     LocaleRegistry.registerLocale(new Locale("Spanish", "Español", "es_ES", "POEditor contributors", Arrays.asList("spanish", "espanol", "español", "es")));
@@ -84,7 +98,7 @@ public class LanguageManager {
     }
     LocaleService service = ServiceRegistry.getLocaleService(plugin);
     if (service.isValidVersion()) {
-      LocaleService.DownloadStatus status = service.demandLocaleDownload(pluginLocale.getPrefix());
+      LocaleService.DownloadStatus status = service.demandLocaleDownload(pluginLocale);
       if (status == LocaleService.DownloadStatus.FAIL) {
         pluginLocale = LocaleRegistry.getByName("English");
         Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "[Village Defense] Locale service couldn't download latest locale for plugin! English locale will be used instead!");
@@ -100,7 +114,8 @@ public class LanguageManager {
       return;
     }
     try {
-      properties.load(new FileReader(new File(plugin.getDataFolder() + "/locales/" + pluginLocale.getPrefix() + ".properties")));
+      properties.load(new InputStreamReader(new FileInputStream(plugin.getDataFolder() + "/locales/"
+          + pluginLocale.getPrefix() + ".properties"), StandardCharsets.UTF_8));
     } catch (IOException e) {
       e.printStackTrace();
     }
@@ -121,13 +136,13 @@ public class LanguageManager {
       pluginLocale = LocaleRegistry.getByName("English");
     }
     /* is beta release */
-    if (plugin.getDescription().getVersion().contains("b") || plugin.getDescription().getVersion().contains("pre")) {
+    if ((plugin.getDescription().getVersion().contains("b") || plugin.getDescription().getVersion().contains("pre")) && !plugin.getConfig().getBoolean("Developer-Mode", false)) {
       Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "[Village Defense] Locales aren't supported in beta versions because they're lacking latest translations! Enabling English one...");
       pluginLocale = LocaleRegistry.getByName("English");
       return;
     }
-    Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "[Village Defense] Loaded locale " + pluginLocale.getName() + " (" + pluginLocale.getOriginalName() + " ID: " +
-        pluginLocale.getPrefix() + ") by " + pluginLocale.getAuthor());
+    Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "[Village Defense] Loaded locale " + pluginLocale.getName() + " (" + pluginLocale.getOriginalName() + " ID: "
+        + pluginLocale.getPrefix() + ") by " + pluginLocale.getAuthor());
     loadProperties();
   }
 
@@ -149,6 +164,9 @@ public class LanguageManager {
           case "cs-CS":
             hasLocale = true;
             localeName = locale.getLocaleName();
+            break;
+          default:
+            break;
         }
       }
       if (plugin.getServer().getPluginManager().isPluginEnabled("Essentials")) {
@@ -167,6 +185,9 @@ public class LanguageManager {
           case "CS":
             hasLocale = true;
             localeName = locale.getDisplayName();
+            break;
+          default:
+            break;
         }
       }
     } catch (Exception e) {
@@ -186,22 +207,28 @@ public class LanguageManager {
 
   public static List<String> getLanguageList(String path) {
     if (isDefaultLanguageUsed()) {
-      return ConfigUtils.getConfig(plugin, "language").getStringList(path);
+      return languageConfig.getStringList(path);
     } else {
-      return Arrays.asList(ChatManager.colorMessage(path).split(";"));
+      return Arrays.asList(plugin.getChatManager().colorMessage(path).split(";"));
     }
   }
 
   public static String getLanguageMessage(String message) {
     if (isDefaultLanguageUsed()) {
-      return ConfigUtils.getConfig(plugin, "language").getString(message, "ERR_MESSAGE_NOT_FOUND");
+      String str = languageConfig.getString(message, "ERR_MESSAGE_NOT_FOUND");
+      if (str.equals("ERR_MESSAGE_NOT_FOUND")) {
+        Bukkit.getConsoleSender().sendMessage("Game message not found!");
+        Bukkit.getConsoleSender().sendMessage("Please regenerate your language.yml file! If error still occurs report it to the developer!");
+        Bukkit.getConsoleSender().sendMessage("Access string: " + message);
+      }
+      return str;
     }
     try {
       return properties.getProperty(ChatColor.translateAlternateColorCodes('&', message));
     } catch (NullPointerException ex) {
       MessageUtils.errorOccurred();
       Bukkit.getConsoleSender().sendMessage("Game message not found!");
-      Bukkit.getConsoleSender().sendMessage("Please regenerate your language.yml file! If error still occurs report it to the developer!");
+      Bukkit.getConsoleSender().sendMessage("Please contact the developer!");
       Bukkit.getConsoleSender().sendMessage("Access string: " + message);
       return "ERR_MESSAGE_NOT_FOUND";
     }

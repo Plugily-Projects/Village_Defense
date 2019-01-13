@@ -1,6 +1,6 @@
 /*
- * Village Defense 4 - Protect villagers from hordes of zombies
- * Copyright (C) 2018  Plajer's Lair - maintained by Plajer and Tigerpanzer
+ * Village Defense - Protect villagers from hordes of zombies
+ * Copyright (C) 2019  Plajer's Lair - maintained by Plajer and Tigerpanzer
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,15 +33,14 @@ import org.bukkit.inventory.ItemStack;
 import pl.plajer.villagedefense.api.StatsStorage;
 import pl.plajer.villagedefense.arena.Arena;
 import pl.plajer.villagedefense.arena.ArenaRegistry;
-import pl.plajer.villagedefense.handlers.ChatManager;
 import pl.plajer.villagedefense.kits.kitapi.KitRegistry;
 import pl.plajer.villagedefense.kits.kitapi.basekits.LevelKit;
 import pl.plajer.villagedefense.user.User;
 import pl.plajer.villagedefense.utils.ArmorHelper;
+import pl.plajer.villagedefense.utils.CompatMaterialConstants;
 import pl.plajer.villagedefense.utils.Utils;
 import pl.plajer.villagedefense.utils.WeaponHelper;
 import pl.plajerlair.core.services.exception.ReportedException;
-import pl.plajerlair.core.utils.XMaterial;
 
 /**
  * Created by Tom on 19/07/2015.
@@ -50,8 +49,8 @@ public class WorkerKit extends LevelKit implements Listener {
 
   public WorkerKit() {
     this.setLevel(getKitsConfig().getInt("Required-Level.Worker"));
-    this.setName(ChatManager.colorMessage("Kits.Worker.Kit-Name"));
-    List<String> description = Utils.splitString(ChatManager.colorMessage("Kits.Worker.Kit-Description"), 40);
+    this.setName(getPlugin().getChatManager().colorMessage("Kits.Worker.Kit-Name"));
+    List<String> description = Utils.splitString(getPlugin().getChatManager().colorMessage("Kits.Worker.Kit-Description"), 40);
     this.setDescription(description.toArray(new String[0]));
     KitRegistry.registerKit(this);
     getPlugin().getServer().getPluginManager().registerEvents(this, getPlugin());
@@ -60,7 +59,7 @@ public class WorkerKit extends LevelKit implements Listener {
 
   @Override
   public boolean isUnlockedByPlayer(Player player) {
-    return getPlugin().getUserManager().getUser(player.getUniqueId()).getStat(StatsStorage.StatisticType.LEVEL) >= this.getLevel() || player.hasPermission("villagefense.kit.worker");
+    return getPlugin().getUserManager().getUser(player).getStat(StatsStorage.StatisticType.LEVEL) >= this.getLevel() || player.hasPermission("villagefense.kit.worker");
   }
 
   @Override
@@ -70,17 +69,17 @@ public class WorkerKit extends LevelKit implements Listener {
     player.getInventory().addItem(WeaponHelper.getEnchantedBow(Enchantment.DURABILITY, 10));
     player.getInventory().addItem(new ItemStack(Material.ARROW, 64));
     player.getInventory().addItem(new ItemStack(Material.COOKED_BEEF, 10));
-    player.getInventory().addItem(new ItemStack(XMaterial.OAK_DOOR.parseMaterial(), 2));
+    player.getInventory().addItem(new ItemStack(CompatMaterialConstants.OAK_DOOR_ITEM, 2));
   }
 
   @Override
   public Material getMaterial() {
-    return XMaterial.OAK_DOOR.parseMaterial();
+    return CompatMaterialConstants.OAK_DOOR_ITEM;
   }
 
   @Override
   public void reStock(Player player) {
-    player.getInventory().addItem(XMaterial.OAK_DOOR.parseItem());
+    player.getInventory().addItem(new ItemStack(CompatMaterialConstants.OAK_DOOR_ITEM));
   }
 
   @EventHandler(priority = EventPriority.HIGHEST)
@@ -90,15 +89,18 @@ public class WorkerKit extends LevelKit implements Listener {
       if (arena == null) {
         return;
       }
-      User user = getPlugin().getUserManager().getUser(e.getPlayer().getUniqueId());
+      User user = getPlugin().getUserManager().getUser(e.getPlayer());
       ItemStack stack = e.getPlayer().getInventory().getItemInMainHand();
-      if (user.isSpectator() || stack == null || !arena.getDoorLocations().containsKey(e.getBlock().getLocation())
-          || !(stack.getType() == XMaterial.OAK_DOOR.parseMaterial())) {
+      if (stack == null || user.isSpectator() || !arena.getDoorLocations().containsKey(e.getBlock().getLocation())) {
+        e.setCancelled(true);
+        return;
+      }
+      if (stack.getType() != CompatMaterialConstants.OAK_DOOR_ITEM) {
         e.setCancelled(true);
         return;
       }
       e.setCancelled(false);
-      e.getPlayer().sendMessage(ChatManager.colorMessage("Kits.Worker.Game-Item-Place-Message"));
+      e.getPlayer().sendMessage(getPlugin().getChatManager().colorMessage("Kits.Worker.Game-Item-Place-Message"));
     } catch (Exception ex) {
       new ReportedException(getPlugin(), ex);
     }

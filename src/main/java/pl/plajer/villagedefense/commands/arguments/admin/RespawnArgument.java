@@ -1,6 +1,6 @@
 /*
- * Village Defense 4 - Protect villagers from hordes of zombies
- * Copyright (C) 2018  Plajer's Lair - maintained by Plajer and Tigerpanzer
+ * Village Defense - Protect villagers from hordes of zombies
+ * Copyright (C) 2019  Plajer's Lair - maintained by Plajer and Tigerpanzer
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -32,7 +32,6 @@ import pl.plajer.villagedefense.commands.arguments.ArgumentsRegistry;
 import pl.plajer.villagedefense.commands.arguments.data.CommandArgument;
 import pl.plajer.villagedefense.commands.arguments.data.LabelData;
 import pl.plajer.villagedefense.commands.arguments.data.LabeledCommandArgument;
-import pl.plajer.villagedefense.handlers.ChatManager;
 import pl.plajer.villagedefense.user.User;
 import pl.plajer.villagedefense.utils.Utils;
 
@@ -46,8 +45,8 @@ public class RespawnArgument {
   public RespawnArgument(ArgumentsRegistry registry) {
     registry.mapArgument("villagedefenseadmin", new LabeledCommandArgument("respawn", Arrays.asList("villagedefense.admin.respawn", "villagedefense.admin.respawn.others"),
         CommandArgument.ExecutorType.PLAYER, new LabelData("/vda respawn &c[player]", "/vda respawn",
-        "&7Respawn yourself or target player in game\n&6Permission: &7villagedefense.admin.respawn (for yourself)\n" +
-            "&6Permission: &7villagedefense.admin.respawn.others (for others)")) {
+        "&7Respawn yourself or target player in game\n&6Permission: &7villagedefense.admin.respawn (for yourself)\n"
+            + "&6Permission: &7villagedefense.admin.respawn.others (for others)")) {
       @Override
       public void execute(CommandSender sender, String[] args) {
         Player player = (Player) sender;
@@ -68,13 +67,13 @@ public class RespawnArgument {
             }
           }
           if (target == null) {
-            sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("Commands.Admin-Commands.Player-Not-Found"));
+            sender.sendMessage(registry.getPlugin().getChatManager().getPrefix() + registry.getPlugin().getChatManager().colorMessage("Commands.Admin-Commands.Player-Not-Found"));
             return;
           }
         } else {
           target = player;
         }
-        User user = registry.getPlugin().getUserManager().getUser(target.getUniqueId());
+        User user = registry.getPlugin().getUserManager().getUser(target);
         if (!user.isSpectator()) {
           return;
         }
@@ -88,7 +87,7 @@ public class RespawnArgument {
         ArenaUtils.showPlayer(target, arena);
         target.getInventory().clear();
         user.getKit().giveKitItems(target);
-        target.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Back-In-Game"));
+        target.sendMessage(registry.getPlugin().getChatManager().getPrefix() + registry.getPlugin().getChatManager().colorMessage("In-Game.Back-In-Game"));
       }
     });
   }

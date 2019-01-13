@@ -1,6 +1,6 @@
 /*
- * Village Defense 4 - Protect villagers from hordes of zombies
- * Copyright (C) 2018  Plajer's Lair - maintained by Plajer and Tigerpanzer
+ * Village Defense - Protect villagers from hordes of zombies
+ * Copyright (C) 2019  Plajer's Lair - maintained by Plajer and Tigerpanzer
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,9 +19,9 @@
 package pl.plajer.villagedefense.events.spectator;
 
 import java.util.Collections;
+import java.util.HashSet;
 
 import org.bukkit.ChatColor;
-import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -37,12 +37,11 @@ import org.bukkit.inventory.meta.SkullMeta;
 import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.arena.Arena;
 import pl.plajer.villagedefense.arena.ArenaRegistry;
-import pl.plajer.villagedefense.handlers.ChatManager;
+import pl.plajer.villagedefense.utils.CompatMaterialConstants;
 import pl.plajer.villagedefense.utils.Utils;
-import pl.plajerlair.core.minigame.spectator.SpectatorSettingsMenu;
 import pl.plajerlair.core.services.exception.ReportedException;
+import pl.plajerlair.core.spectator.SpectatorSettingsMenu;
 import pl.plajerlair.core.utils.MinigameUtils;
-import pl.plajerlair.core.utils.XMaterial;
 
 public class SpectatorItemEvents implements Listener {
 
@@ -52,8 +51,8 @@ public class SpectatorItemEvents implements Listener {
   public SpectatorItemEvents(Main plugin) {
     this.plugin = plugin;
     plugin.getServer().getPluginManager().registerEvents(this, plugin);
-    spectatorSettingsMenu = new SpectatorSettingsMenu(plugin, ChatManager.colorMessage("In-Game.Spectator.Settings-Menu.Inventory-Name"),
-        ChatManager.colorMessage("In-Game.Spectator.Settings-Menu.Speed-Name"));
+    spectatorSettingsMenu = new SpectatorSettingsMenu(plugin, plugin.getChatManager().colorMessage("In-Game.Spectator.Settings-Menu.Inventory-Name"),
+        plugin.getChatManager().colorMessage("In-Game.Spectator.Settings-Menu.Speed-Name"));
   }
 
   @EventHandler
@@ -67,10 +66,10 @@ public class SpectatorItemEvents implements Listener {
       if (arena == null || !Utils.isNamed(stack)) {
         return;
       }
-      if (stack.getItemMeta().getDisplayName().equalsIgnoreCase(ChatManager.colorMessage("In-Game.Spectator.Spectator-Item-Name"))) {
+      if (stack.getItemMeta().getDisplayName().equalsIgnoreCase(plugin.getChatManager().colorMessage("In-Game.Spectator.Spectator-Item-Name"))) {
         e.setCancelled(true);
         openSpectatorMenu(e.getPlayer().getWorld(), e.getPlayer());
-      } else if (stack.getItemMeta().getDisplayName().equalsIgnoreCase(ChatManager.colorMessage("In-Game.Spectator.Settings-Menu.Item-Name"))) {
+      } else if (stack.getItemMeta().getDisplayName().equalsIgnoreCase(plugin.getChatManager().colorMessage("In-Game.Spectator.Settings-Menu.Item-Name"))) {
         e.setCancelled(true);
         spectatorSettingsMenu.openSpectatorSettingsMenu(e.getPlayer());
       }
@@ -81,20 +80,15 @@ public class SpectatorItemEvents implements Listener {
 
   private void openSpectatorMenu(World world, Player p) {
     Inventory inventory = plugin.getServer().createInventory(null, MinigameUtils.serializeInt(ArenaRegistry.getArena(p).getPlayers().size()),
-        ChatManager.colorMessage("In-Game.Spectator.Spectator-Menu-Name"));
+        plugin.getChatManager().colorMessage("In-Game.Spectator.Spectator-Menu-Name"));
+    HashSet<Player> players = ArenaRegistry.getArena(p).getPlayers();
     for (Player player : world.getPlayers()) {
-      if (ArenaRegistry.getArena(p).getPlayers().contains(player) && !plugin.getUserManager().getUser(player.getUniqueId()).isSpectator()) {
-        ItemStack skull;
-        if (plugin.is1_11_R1() || plugin.is1_12_R1()) {
-          skull = new ItemStack(Material.SKULL_ITEM, 1, (short) 3);
-        } else {
-          //todo check
-          skull = XMaterial.PLAYER_HEAD.parseItem();
-        }
+      if (players.contains(player) && !plugin.getUserManager().getUser(player).isSpectator()) {
+        ItemStack skull = CompatMaterialConstants.PLAYER_HEAD_ITEM.clone();
         SkullMeta meta = (SkullMeta) skull.getItemMeta();
         meta.setOwningPlayer(player);
         meta.setDisplayName(player.getName());
-        meta.setLore(Collections.singletonList(ChatManager.colorMessage("In-Game.Spectator.Target-Player-Health").replace("%health%",
+        meta.setLore(Collections.singletonList(plugin.getChatManager().colorMessage("In-Game.Spectator.Target-Player-Health").replace("%health%",
             String.valueOf(MinigameUtils.round(player.getHealth(), 2)))));
         skull.setItemMeta(meta);
         inventory.addItem(skull);
@@ -114,12 +108,12 @@ public class SpectatorItemEvents implements Listener {
       if (!Utils.isNamed(e.getCurrentItem()) || !e.getCurrentItem().getItemMeta().hasLore()) {
         return;
       }
-      if (e.getInventory().getName().equalsIgnoreCase(ChatManager.colorMessage("In-Game.Spectator.Spectator-Menu-Name"))) {
+      if (e.getInventory().getName().equalsIgnoreCase(plugin.getChatManager().colorMessage("In-Game.Spectator.Spectator-Menu-Name"))) {
         e.setCancelled(true);
         ItemMeta meta = e.getCurrentItem().getItemMeta();
         for (Player player : arena.getPlayers()) {
           if (player.getName().equalsIgnoreCase(meta.getDisplayName()) || ChatColor.stripColor(meta.getDisplayName()).contains(player.getName())) {
-            p.sendMessage(ChatManager.formatMessage(arena, ChatManager.colorMessage("Kits.Teleporter.Teleported-To-Player"), player));
+            p.sendMessage(plugin.getChatManager().formatMessage(arena, plugin.getChatManager().colorMessage("Kits.Teleporter.Teleported-To-Player"), player));
             p.teleport(player);
             p.closeInventory();
             e.setCancelled(true);
@@ -127,7 +121,7 @@ public class SpectatorItemEvents implements Listener {
 
           }
         }
-        p.sendMessage(ChatManager.colorMessage("Kits.Teleporter.Player-Not-Found"));
+        p.sendMessage(plugin.getChatManager().colorMessage("Kits.Teleporter.Player-Not-Found"));
       }
     } catch (Exception ex) {
       new ReportedException(plugin, ex);

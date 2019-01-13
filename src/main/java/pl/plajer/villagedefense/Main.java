@@ -1,6 +1,6 @@
 /*
- * Village Defense 4 - Protect villagers from hordes of zombies
- * Copyright (C) 2018  Plajer's Lair - maintained by Plajer and Tigerpanzer
+ * Village Defense - Protect villagers from hordes of zombies
+ * Copyright (C) 2019  Plajer's Lair - maintained by Plajer and Tigerpanzer
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -42,9 +42,9 @@ import pl.plajer.villagedefense.commands.arguments.ArgumentsRegistry;
 import pl.plajer.villagedefense.creatures.CreatureUtils;
 import pl.plajer.villagedefense.creatures.DoorBreakListener;
 import pl.plajer.villagedefense.creatures.EntityRegistry;
+import pl.plajer.villagedefense.creatures.upgrades.EntityUpgradeMenu;
 import pl.plajer.villagedefense.events.ChatEvents;
 import pl.plajer.villagedefense.events.Events;
-import pl.plajer.villagedefense.events.GolemEvents;
 import pl.plajer.villagedefense.events.JoinEvent;
 import pl.plajer.villagedefense.events.LobbyEvents;
 import pl.plajer.villagedefense.events.QuitEvent;
@@ -52,16 +52,13 @@ import pl.plajer.villagedefense.events.spectator.SpectatorEvents;
 import pl.plajer.villagedefense.events.spectator.SpectatorItemEvents;
 import pl.plajer.villagedefense.handlers.BungeeManager;
 import pl.plajer.villagedefense.handlers.ChatManager;
-import pl.plajer.villagedefense.handlers.ChunkManager;
 import pl.plajer.villagedefense.handlers.HolidayManager;
 import pl.plajer.villagedefense.handlers.PermissionsManager;
 import pl.plajer.villagedefense.handlers.PlaceholderManager;
 import pl.plajer.villagedefense.handlers.PowerupManager;
-import pl.plajer.villagedefense.handlers.ShopManager;
 import pl.plajer.villagedefense.handlers.SignManager;
 import pl.plajer.villagedefense.handlers.items.SpecialItem;
 import pl.plajer.villagedefense.handlers.language.LanguageManager;
-import pl.plajer.villagedefense.handlers.language.LanguageMigrator;
 import pl.plajer.villagedefense.handlers.reward.RewardsFactory;
 import pl.plajer.villagedefense.handlers.setup.SetupInventoryEvents;
 import pl.plajer.villagedefense.kits.kitapi.KitManager;
@@ -85,6 +82,7 @@ import pl.plajerlair.core.utils.InventoryUtils;
  */
 public class Main extends JavaPlugin {
 
+  private ChatManager chatManager;
   private UserManager userManager;
   private ConfigPreferences configPreferences;
   private MySQLDatabase database;
@@ -92,10 +90,10 @@ public class Main extends JavaPlugin {
   private SignManager signManager;
   private BungeeManager bungeeManager;
   private KitManager kitManager;
-  private ChunkManager chunkManager;
   private PowerupManager powerupManager;
   private RewardsFactory rewardsHandler;
   private HolidayManager holidayManager;
+  private EntityUpgradeMenu entityUpgradeMenu;
   private boolean forceDisable = false;
   private List<String> fileNames = Arrays.asList("arenas", "bungee", "rewards", "stats", "lobbyitems", "mysql", "kits");
   private String version;
@@ -122,10 +120,6 @@ public class Main extends JavaPlugin {
 
   public SignManager getSignManager() {
     return signManager;
-  }
-
-  public ChunkManager getChunkManager() {
-    return chunkManager;
   }
 
   public KitManager getKitManager() {
@@ -161,20 +155,12 @@ public class Main extends JavaPlugin {
       }
       LanguageManager.init(this);
       saveDefaultConfig();
-      //check if using releases before 2.1.0 or 2.1.0+
-      if ((ConfigUtils.getConfig(this, "language").isSet("STATS-AboveLine")
-          && ConfigUtils.getConfig(this, "language").isSet("SCOREBOARD-Zombies"))
-          || (ConfigUtils.getConfig(this, "language").isSet("File-Version")
-          && getConfig().isSet("Config-Version"))) {
-        LanguageMigrator.migrateToNewFormat();
-      }
       Debugger.setEnabled(getConfig().getBoolean("Debug", false));
       Debugger.setPrefix("[Village Debugger]");
       Debugger.debug(LogLevel.INFO, "Main setup start");
+      chatManager = new ChatManager(ChatColor.translateAlternateColorCodes('&', LanguageManager.getLanguageMessage("In-Game.Plugin-Prefix")));
       configPreferences = new ConfigPreferences(this);
       setupFiles();
-      LanguageMigrator.configUpdate();
-      LanguageMigrator.languageFileUpdate();
       new LegacyDataFixer(this);
       initializeClasses();
       checkUpdate();
@@ -185,19 +171,14 @@ public class Main extends JavaPlugin {
             config.getInt("min-connections"), config.getInt("max-connections"));
       }
       userManager = new UserManager(this);
-
-      DoorBreakListener listener = new DoorBreakListener();
-      listener.runTaskTimer(this, 1L, 20L);
-
+      new DoorBreakListener(this);
       KitRegistry.init();
 
       SpecialItem.loadAll();
       ArenaRegistry.registerArenas();
-      new ShopManager();
       //we must start it after instances load!
       signManager = new SignManager(this);
 
-      loadStatsForPlayersOnline();
       PermissionsManager.init();
       Debugger.debug(LogLevel.INFO, "Main setup done");
     } catch (Exception ex) {
@@ -210,9 +191,8 @@ public class Main extends JavaPlugin {
     if (getConfig().getBoolean("BungeeActivated", false)) {
       bungeeManager = new BungeeManager(this);
     }
-    new ChatManager(ChatManager.colorMessage("In-Game.Plugin-Prefix"));
     registry = new ArgumentsRegistry(this);
-    new GolemEvents(this);
+    entityUpgradeMenu = new EntityUpgradeMenu(this);
     new EntityRegistry(this);
     new ArenaEvents(this);
     kitManager = new KitManager(this);
@@ -256,10 +236,7 @@ public class Main extends JavaPlugin {
     new Events(this);
     new LobbyEvents(this);
     new SpectatorItemEvents(this);
-    //todo bring back soon
-    //EntityUpgradeMenu.init(this);
     powerupManager = new PowerupManager(this);
-    chunkManager = new ChunkManager(this);
     rewardsHandler = new RewardsFactory(this);
     User.cooldownHandlerTask();
   }
@@ -296,6 +273,14 @@ public class Main extends JavaPlugin {
     }
   }
 
+  public EntityUpgradeMenu getEntityUpgradeMenu() {
+    return entityUpgradeMenu;
+  }
+
+  public ChatManager getChatManager() {
+    return chatManager;
+  }
+
   public UserManager getUserManager() {
     return userManager;
   }
@@ -330,13 +315,6 @@ public class Main extends JavaPlugin {
       return;
     }
     Debugger.debug(LogLevel.INFO, "System disable init");
-    for (Player player : getServer().getOnlinePlayers()) {
-      User user = userManager.getUser(player.getUniqueId());
-      for (StatsStorage.StatisticType stat : StatsStorage.StatisticType.values()) {
-        userManager.saveStatistic(user, stat);
-      }
-      userManager.removeUser(player.getUniqueId());
-    }
     for (Arena arena : ArenaRegistry.getArenas()) {
       for (Player player : arena.getPlayers()) {
         arena.doBarAction(Arena.BarAction.REMOVE, player);
@@ -351,9 +329,24 @@ public class Main extends JavaPlugin {
           }
         }
       }
-      arena.clearVillagers();
+      arena.restoreMap();
       ArenaManager.stopGame(true, arena);
       arena.teleportAllToEndLocation();
+    }
+    for (Player player : getServer().getOnlinePlayers()) {
+      User user = userManager.getUser(player);
+
+      //copy of userManager#saveStatistic but without async database call that's not allowed in onDisable method.
+      for (StatsStorage.StatisticType stat : StatsStorage.StatisticType.values()) {
+        if (!stat.isPersistent()) {
+          continue;
+        }
+        if (getConfigPreferences().getOption(ConfigPreferences.Option.DATABASE_ENABLED)) {
+          userManager.getMySQLManager().saveStatistic(user, stat);
+          return;
+        }
+        userManager.getFileStats().saveStatistic(user, stat);
+      }
     }
     if (getServer().getPluginManager().isPluginEnabled("HolographicDisplays")) {
       for (Hologram holo : HologramsAPI.getHolograms(this)) {
@@ -364,18 +357,6 @@ public class Main extends JavaPlugin {
       getMySQLDatabase().getManager().shutdownConnPool();
     }
     Debugger.debug(LogLevel.INFO, "System disable finalize");
-  }
-
-  private void loadStatsForPlayersOnline() {
-    for (final Player player : getServer().getOnlinePlayers()) {
-      if (configPreferences.getOption(ConfigPreferences.Option.BUNGEE_ENABLED)) {
-        ArenaRegistry.getArenas().get(0).teleportToLobby(player);
-      }
-      User user = userManager.getUser(player.getUniqueId());
-      for (StatsStorage.StatisticType stat : StatsStorage.StatisticType.values()) {
-        userManager.loadStatistic(user, stat);
-      }
-    }
   }
 
 }

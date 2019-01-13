@@ -1,6 +1,6 @@
 /*
- * Village Defense 4 - Protect villagers from hordes of zombies
- * Copyright (C) 2018  Plajer's Lair - maintained by Plajer and Tigerpanzer
+ * Village Defense - Protect villagers from hordes of zombies
+ * Copyright (C) 2019  Plajer's Lair - maintained by Plajer and Tigerpanzer
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -43,8 +43,6 @@ import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.arena.Arena;
 import pl.plajer.villagedefense.arena.ArenaRegistry;
 import pl.plajer.villagedefense.arena.ArenaUtils;
-import pl.plajer.villagedefense.handlers.ChatManager;
-import pl.plajer.villagedefense.handlers.ShopManager;
 import pl.plajer.villagedefense.utils.Utils;
 import pl.plajerlair.core.services.exception.ReportedException;
 import pl.plajerlair.core.utils.ConfigUtils;
@@ -70,34 +68,37 @@ public class SetupInventoryEvents implements Listener {
         return;
       }
       Player player = (Player) event.getWhoClicked();
-      if (!(player.hasPermission("villagedefense.admin.create") && event.getInventory().getName().contains("Arena VD:") &&
-          Utils.isNamed(event.getCurrentItem()))) {
+      if (!(player.hasPermission("villagedefense.admin.create") && event.getInventory().getName().contains("Arena VD:")
+          && Utils.isNamed(event.getCurrentItem()))) {
         return;
       }
 
+      SetupInventory.ClickPosition slot = SetupInventory.ClickPosition.getByPosition(event.getRawSlot());
       //do not close inventory nor cancel event when setting arena name via name tag
       if (event.getCurrentItem().getType() != Material.NAME_TAG) {
-        player.closeInventory();
+        if (!(slot == SetupInventory.ClickPosition.SET_MINIMUM_PLAYERS || slot == SetupInventory.ClickPosition.SET_MAXIMUM_PLAYERS)) {
+          player.closeInventory();
+        }
         event.setCancelled(true);
       }
 
       Arena arena = ArenaRegistry.getArena(event.getInventory().getName().replace("Arena VD: ", ""));
       ClickType clickType = event.getClick();
-      String locationString = player.getLocation().getWorld().getName() + "," + player.getLocation().getX() + "," + player.getLocation().getY() + "," +
-          player.getLocation().getZ() + "," + player.getLocation().getYaw() + ",0.0";
+      String locationString = player.getLocation().getWorld().getName() + "," + player.getLocation().getX() + "," + player.getLocation().getY() + ","
+          + player.getLocation().getZ() + "," + player.getLocation().getYaw() + ",0.0";
       FileConfiguration config = ConfigUtils.getConfig(plugin, "arenas");
-      switch (SetupInventory.ClickPosition.getByPosition(event.getRawSlot())) {
+      switch (slot) {
         case SET_ENDING:
           config.set("instances." + arena.getID() + ".Endlocation", locationString);
-          player.sendMessage(ChatManager.colorRawMessage("&e✔ Completed | &aEnding location for arena " + arena.getID() + " set at your location!"));
+          player.sendMessage(plugin.getChatManager().colorRawMessage("&e✔ Completed | &aEnding location for arena " + arena.getID() + " set at your location!"));
           break;
         case SET_LOBBY:
           config.set("instances." + arena.getID() + ".lobbylocation", locationString);
-          player.sendMessage(ChatManager.colorRawMessage("&e✔ Completed | &aLobby location for arena " + arena.getID() + " set at your location!"));
+          player.sendMessage(plugin.getChatManager().colorRawMessage("&e✔ Completed | &aLobby location for arena " + arena.getID() + " set at your location!"));
           break;
         case SET_STARTING:
           config.set("instances." + arena.getID() + ".Startlocation", locationString);
-          player.sendMessage(ChatManager.colorRawMessage("&e✔ Completed | &aStarting location for arena " + arena.getID() + " set at your location!"));
+          player.sendMessage(plugin.getChatManager().colorRawMessage("&e✔ Completed | &aStarting location for arena " + arena.getID() + " set at your location!"));
           break;
         case SET_MINIMUM_PLAYERS:
           if (clickType.isRightClick()) {
@@ -107,7 +108,7 @@ public class SetupInventoryEvents implements Listener {
             event.getCurrentItem().setAmount(event.getCurrentItem().getAmount() - 1);
           }
           config.set("instances." + arena.getID() + ".minimumplayers", event.getCurrentItem().getAmount());
-          player.openInventory(new SetupInventory(arena).getInventory());
+          player.updateInventory();
           break;
         case SET_MAXIMUM_PLAYERS:
           if (clickType.isRightClick()) {
@@ -117,20 +118,20 @@ public class SetupInventoryEvents implements Listener {
             event.getCurrentItem().setAmount(event.getCurrentItem().getAmount() - 1);
           }
           config.set("instances." + arena.getID() + ".maximumplayers", event.getCurrentItem().getAmount());
-          player.openInventory(new SetupInventory(arena).getInventory());
+          player.updateInventory();
           break;
         case ADD_SIGN:
           Location location = player.getTargetBlock(null, 10).getLocation();
           if (!(location.getBlock().getState() instanceof Sign)) {
-            player.sendMessage(ChatManager.colorMessage("Commands.Look-Sign"));
+            player.sendMessage(plugin.getChatManager().colorMessage("Commands.Look-Sign"));
             break;
           }
           plugin.getSignManager().getLoadedSigns().put((Sign) location.getBlock().getState(), arena);
-          player.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("Signs.Sign-Created"));
+          player.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage("Signs.Sign-Created"));
           String loc = location.getBlock().getWorld().getName() + "," + location.getBlock().getX() + "," + location.getBlock().getY() + "," + location.getBlock().getZ() + ",0.0,0.0";
-          List<String> locs = config.getStringList("instances." + arena + ".signs");
+          List<String> locs = config.getStringList("instances." + arena.getID() + ".signs");
           locs.add(loc);
-          config.set("instances." + arena + ".signs", locs);
+          config.set("instances." + arena.getID() + ".signs", locs);
           break;
         case SET_MAP_NAME:
           if (event.getCurrentItem().getType() == Material.NAME_TAG && event.getCursor().getType() == Material.NAME_TAG) {
@@ -140,23 +141,23 @@ public class SetupInventoryEvents implements Listener {
             }
             String newName = event.getCursor().getItemMeta().getDisplayName();
             config.set("instances." + arena.getID() + ".mapname", newName);
-            player.sendMessage(ChatManager.colorRawMessage("&e✔ Completed | &aName of arena " + arena.getID() + " set to " + newName));
+            player.sendMessage(plugin.getChatManager().colorRawMessage("&e✔ Completed | &aName of arena " + arena.getID() + " set to " + newName));
             event.getCurrentItem().getItemMeta().setDisplayName(ChatColor.GOLD + "Set a mapname (currently: " + newName);
           }
           break;
         case ADD_VILLAGER_SPAWN:
-          int villagers = (config.isSet("instances." + arena.getID() + ".villagerspawns") ?
-              config.getConfigurationSection("instances." + arena.getID() + ".villagerspawns").getKeys(false).size() : 0) + 1;
+          int villagers = (config.isSet("instances." + arena.getID() + ".villagerspawns")
+              ? config.getConfigurationSection("instances." + arena.getID() + ".villagerspawns").getKeys(false).size() : 0) + 1;
           LocationUtils.saveLoc(plugin, config, "arenas", "instances." + arena.getID() + ".villagerspawns." + villagers, player.getLocation());
           String villagerProgress = villagers >= 2 ? "&e✔ Completed | " : "&c✘ Not completed | ";
-          player.sendMessage(ChatManager.colorRawMessage(villagerProgress + "&aVillager spawn added! &8(&7" + villagers + "/2&8)"));
+          player.sendMessage(plugin.getChatManager().colorRawMessage(villagerProgress + "&aVillager spawn added! &8(&7" + villagers + "/2&8)"));
           break;
         case ADD_ZOMBIE_SPAWN:
-          int zombies = (config.isSet("instances." + arena.getID() + ".zombiespawns") ?
-              config.getConfigurationSection("instances." + arena.getID() + ".zombiespawns").getKeys(false).size() : 0) + 1;
+          int zombies = (config.isSet("instances." + arena.getID() + ".zombiespawns")
+              ? config.getConfigurationSection("instances." + arena.getID() + ".zombiespawns").getKeys(false).size() : 0) + 1;
           LocationUtils.saveLoc(plugin, config, "arenas", "instances." + arena.getID() + ".zombiespawns." + zombies, player.getLocation());
           String zombieProgress = zombies >= 2 ? "&e✔ Completed | " : "&c✘ Not completed | ";
-          player.sendMessage(ChatManager.colorRawMessage(zombieProgress + "&aZombie spawn added! &8(&7" + zombies + "/2&8)"));
+          player.sendMessage(plugin.getChatManager().colorRawMessage(zombieProgress + "&aZombie spawn added! &8(&7" + zombies + "/2&8)"));
           break;
         case ADD_DOORS:
           Block block = player.getTargetBlock(null, 10);
@@ -171,8 +172,8 @@ public class SetupInventoryEvents implements Listener {
               return;
             }
           }
-          int doors = (config.isSet("instances." + arena.getID() + ".doors") ?
-              config.getConfigurationSection("instances." + arena.getID() + ".doors").getKeys(false).size() : 0) + 1;
+          int doors = (config.isSet("instances." + arena.getID() + ".doors")
+              ? config.getConfigurationSection("instances." + arena.getID() + ".doors").getKeys(false).size() : 0) + 1;
 
           Block relativeBlock = null;
           if (plugin.is1_11_R1() || plugin.is1_12_R1()) {
@@ -194,11 +195,12 @@ public class SetupInventoryEvents implements Listener {
             player.sendMessage("This door doesn't have 2 blocks? Maybe it's bugged? Try placing it again.");
             return;
           }
-          String doorLocation = block.getWorld().getName() + "," + block.getX() + "," + block.getY() + "," + block.getZ() + ",0.0" + ",0.0";
           String relativeLocation = relativeBlock.getWorld().getName() + "," + relativeBlock.getX() + "," + relativeBlock.getY() + "," + relativeBlock.getZ() + ",0.0" + ",0.0";
           config.set("instances." + arena.getID() + ".doors." + doors + ".location", relativeLocation);
           config.set("instances." + arena.getID() + ".doors." + doors + ".byte", 8);
           doors++;
+
+          String doorLocation = block.getWorld().getName() + "," + block.getX() + "," + block.getY() + "," + block.getZ() + ",0.0" + ",0.0";
           config.set("instances." + arena.getID() + ".doors." + doors + ".location", doorLocation);
           if (plugin.is1_13_R1() || plugin.is1_13_R2()) {
             config.set("instances." + arena.getID() + ".doors." + doors + ".byte", Utils.getDoorByte(((Door) block.getState().getData()).getFacing()));
@@ -221,7 +223,7 @@ public class SetupInventoryEvents implements Listener {
             }
             if (stack.hasItemMeta() && stack.getItemMeta().hasLore()) {
               if (stack.getItemMeta().getLore().get(stack.getItemMeta().getLore().size() - 1)
-                  .contains(ChatManager.colorMessage("In-Game.Messages.Shop-Messages.Currency-In-Shop"))) {
+                  .contains(plugin.getChatManager().colorMessage("In-Game.Messages.Shop-Messages.Currency-In-Shop"))) {
                 found = true;
                 break;
               }
@@ -231,7 +233,6 @@ public class SetupInventoryEvents implements Listener {
             player.sendMessage(ChatColor.RED + "No items in shop have price set! Set their prices using /vda setprice! You can ignore this warning");
           }
           LocationUtils.saveLoc(plugin, config, "arenas", "instances." + arena.getID() + ".shop", targetBlock.getLocation());
-          ShopManager.registerShop(arena);
           player.sendMessage(ChatColor.GREEN + "Shop for chest set!");
           break;
         case REGISTER_ARENA:
@@ -249,8 +250,8 @@ public class SetupInventoryEvents implements Listener {
             }
           }
           for (String s : spawns) {
-            if (!config.isSet("instances." + arena.getID() + "." + s) ||
-                config.getConfigurationSection("instances." + arena.getID() + "." + s).getKeys(false).size() < 2) {
+            if (!config.isSet("instances." + arena.getID() + "." + s)
+                || config.getConfigurationSection("instances." + arena.getID() + "." + s).getKeys(false).size() < 2) {
               event.getWhoClicked().sendMessage(ChatColor.RED + "Arena validation failed! Please configure following mob spawns properly: " + s + " (must be minimum 2 spawns)");
               return;
             }
@@ -278,6 +279,7 @@ public class SetupInventoryEvents implements Listener {
           arena.setLobbyLocation(LocationUtils.getLocation(config.getString("instances." + arena.getID() + ".lobbylocation")));
           arena.setStartLocation(LocationUtils.getLocation(config.getString("instances." + arena.getID() + ".Startlocation")));
           arena.setEndLocation(LocationUtils.getLocation(config.getString("instances." + arena.getID() + ".Endlocation")));
+          ArenaUtils.setWorld(arena);
           for (String string : config.getConfigurationSection("instances." + arena.getID() + ".zombiespawns").getKeys(false)) {
             String path = "instances." + arena.getID() + ".zombiespawns." + string;
             arena.addZombieSpawn(LocationUtils.getLocation(config.getString(path)));
@@ -297,7 +299,9 @@ public class SetupInventoryEvents implements Listener {
           }
           break;
         case VIEW_SETUP_VIDEO:
-          player.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorRawMessage("&6Check out this video: " + SetupInventory.VIDEO_LINK));
+          player.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorRawMessage("&6Check out this video: " + SetupInventory.VIDEO_LINK));
+          break;
+        default:
           break;
       }
       ConfigUtils.saveConfig(plugin, config, "arenas");

@@ -1,6 +1,6 @@
 /*
- * Village Defense 4 - Protect villagers from hordes of zombies
- * Copyright (C) 2018  Plajer's Lair - maintained by Plajer and Tigerpanzer
+ * Village Defense - Protect villagers from hordes of zombies
+ * Copyright (C) 2019  Plajer's Lair - maintained by Plajer and Tigerpanzer
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,7 +33,6 @@ import pl.plajer.villagedefense.commands.arguments.ArgumentsRegistry;
 import pl.plajer.villagedefense.commands.arguments.data.CommandArgument;
 import pl.plajer.villagedefense.commands.arguments.data.LabelData;
 import pl.plajer.villagedefense.commands.arguments.data.LabeledCommandArgument;
-import pl.plajer.villagedefense.handlers.ChatManager;
 import pl.plajer.villagedefense.handlers.setup.SetupInventory;
 import pl.plajerlair.core.utils.ConfigUtils;
 import pl.plajerlair.core.utils.LocationUtils;
@@ -55,7 +54,7 @@ public class CreateArgument {
       @Override
       public void execute(CommandSender sender, String[] args) {
         if (args.length == 1) {
-          sender.sendMessage(ChatManager.colorMessage("Commands.Type-Arena-Name"));
+          sender.sendMessage(registry.getPlugin().getChatManager().colorMessage("Commands.Type-Arena-Name"));
           return;
         }
         Player player = (Player) sender;
@@ -83,21 +82,21 @@ public class CreateArgument {
     });
   }
 
-  private void createInstanceInConfig(String ID, String worldName) {
-    String path = "instances." + ID + ".";
+  private void createInstanceInConfig(String id, String worldName) {
+    String path = "instances." + id + ".";
     FileConfiguration config = ConfigUtils.getConfig(registry.getPlugin(), "arenas");
     LocationUtils.saveLoc(registry.getPlugin(), config, "arenas", path + "lobbylocation", Bukkit.getServer().getWorlds().get(0).getSpawnLocation());
     LocationUtils.saveLoc(registry.getPlugin(), config, "arenas", path + "Startlocation", Bukkit.getServer().getWorlds().get(0).getSpawnLocation());
     LocationUtils.saveLoc(registry.getPlugin(), config, "arenas", path + "Endlocation", Bukkit.getServer().getWorlds().get(0).getSpawnLocation());
     config.set(path + "minimumplayers", 1);
     config.set(path + "maximumplayers", 10);
-    config.set(path + "mapname", ID);
+    config.set(path + "mapname", id);
     config.set(path + "signs", new ArrayList<>());
     config.set(path + "isdone", false);
     config.set(path + "world", worldName);
     ConfigUtils.saveConfig(registry.getPlugin(), config, "arenas");
 
-    Arena arena = ArenaUtils.initializeArena(ID);
+    Arena arena = ArenaUtils.initializeArena(id);
 
     arena.setMinimumPlayers(config.getInt(path + "minimumplayers"));
     arena.setMaximumPlayers(config.getInt(path + "maximumplayers"));
@@ -105,6 +104,7 @@ public class CreateArgument {
     arena.setLobbyLocation(LocationUtils.getLocation(config.getString(path + "lobbylocation")));
     arena.setStartLocation(LocationUtils.getLocation(config.getString(path + "Startlocation")));
     arena.setEndLocation(LocationUtils.getLocation(config.getString(path + "Endlocation")));
+    ArenaUtils.setWorld(arena);
     arena.setReady(false);
 
     ArenaRegistry.registerArena(arena);

@@ -1,6 +1,6 @@
 /*
- * Village Defense 4 - Protect villagers from hordes of zombies
- * Copyright (C) 2018  Plajer's Lair - maintained by Plajer and Tigerpanzer
+ * Village Defense - Protect villagers from hordes of zombies
+ * Copyright (C) 2019  Plajer's Lair - maintained by Plajer and Tigerpanzer
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -62,17 +62,13 @@ public class RidableVillager extends EntityVillager {
   public RidableVillager(World world) {
     super(world);
 
-    LinkedHashSet goalB = (LinkedHashSet) CreatureUtils.getPrivateField("b",
-        PathfinderGoalSelector.class, goalSelector);
+    LinkedHashSet goalB = (LinkedHashSet) CreatureUtils.getPrivateField("b", PathfinderGoalSelector.class, goalSelector);
     goalB.clear();
-    LinkedHashSet goalC = (LinkedHashSet) CreatureUtils.getPrivateField("c",
-        PathfinderGoalSelector.class, goalSelector);
+    LinkedHashSet goalC = (LinkedHashSet) CreatureUtils.getPrivateField("c", PathfinderGoalSelector.class, goalSelector);
     goalC.clear();
-    LinkedHashSet targetB = (LinkedHashSet) CreatureUtils.getPrivateField("b",
-        PathfinderGoalSelector.class, targetSelector);
+    LinkedHashSet targetB = (LinkedHashSet) CreatureUtils.getPrivateField("b", PathfinderGoalSelector.class, targetSelector);
     targetB.clear();
-    LinkedHashSet targetC = (LinkedHashSet) CreatureUtils.getPrivateField("c",
-        PathfinderGoalSelector.class, targetSelector);
+    LinkedHashSet targetC = (LinkedHashSet) CreatureUtils.getPrivateField("c", PathfinderGoalSelector.class, targetSelector);
     targetC.clear();
 
     this.setSize(0.6F, 1.8F);
@@ -96,10 +92,11 @@ public class RidableVillager extends EntityVillager {
     this.goalSelector.a(9, new PathfinderGoalRandomStroll(this, 0.6D));
     this.goalSelector.a(10, new PathfinderGoalLookAtPlayer(this,
         EntityInsentient.class, 8.0F));
-    this.setCustomName(new ChatMessage(CreatureUtils.VILLAGER_NAMES[new Random().nextInt(CreatureUtils.VILLAGER_NAMES.length)]));
+    this.setCustomName(new ChatMessage(CreatureUtils.getVillagerNames()[new Random().nextInt(CreatureUtils.getVillagerNames().length)]));
     this.setCustomNameVisible(true);
   }
 
+  @Override
   public void a(float f, float f1, float f2) {
     EntityLiving entityliving = null;
     for (final Entity e : passengers) {

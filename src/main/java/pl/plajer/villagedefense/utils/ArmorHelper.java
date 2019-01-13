@@ -1,5 +1,5 @@
 /*
- * Village Defense 4 - Protect villagers from hordes of zombies
+ * Village Defense - Protect villagers from hordes of zombies
  * Copyright (C) 2018  Plajer's Lair - maintained by Plajer and Tigerpanzer
  *
  * This program is free software: you can redistribute it and/or modify
@@ -67,18 +67,19 @@ public class ArmorHelper {
     ItemStack chestplate = new ItemStack(Material.LEATHER_CHESTPLATE);
     ItemStack leggings = new ItemStack(Material.LEATHER_LEGGINGS);
     ItemStack boots = new ItemStack(Material.LEATHER_BOOTS);
-    LeatherArmorMeta helmetmeta = (LeatherArmorMeta) helmet.getItemMeta();
-    LeatherArmorMeta chestplatemeta = (LeatherArmorMeta) chestplate.getItemMeta();
-    LeatherArmorMeta leggingsmeta = (LeatherArmorMeta) leggings.getItemMeta();
-    LeatherArmorMeta bootsmeta = (LeatherArmorMeta) boots.getItemMeta();
-    helmetmeta.setColor(color);
-    chestplatemeta.setColor(color);
-    leggingsmeta.setColor(color);
-    bootsmeta.setColor(color);
-    helmet.setItemMeta(helmetmeta);
-    chestplate.setItemMeta(chestplatemeta);
-    leggings.setItemMeta(leggingsmeta);
-    boots.setItemMeta(bootsmeta);
+    LeatherArmorMeta helmMeta = (LeatherArmorMeta) helmet.getItemMeta();
+    helmMeta.setColor(color);
+    LeatherArmorMeta armorMeta = (LeatherArmorMeta) chestplate.getItemMeta();
+    armorMeta.setColor(color);
+    LeatherArmorMeta legsMeta = (LeatherArmorMeta) leggings.getItemMeta();
+    legsMeta.setColor(color);
+    LeatherArmorMeta bootsMeta = (LeatherArmorMeta) boots.getItemMeta();
+    bootsMeta.setColor(color);
+    boots.setItemMeta(bootsMeta);
+    helmet.setItemMeta(helmMeta);
+    chestplate.setItemMeta(armorMeta);
+    leggings.setItemMeta(legsMeta);
+    boots.setItemMeta(bootsMeta);
     player.getInventory().setHelmet(helmet);
     player.getInventory().setChestplate(chestplate);
     player.getInventory().setLeggings(leggings);

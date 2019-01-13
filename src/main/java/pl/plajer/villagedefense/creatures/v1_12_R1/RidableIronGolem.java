@@ -1,5 +1,5 @@
 /*
- * Village Defense 4 - Protect villagers from hordes of zombies
+ * Village Defense - Protect villagers from hordes of zombies
  * Copyright (C) 2018  Plajer's Lair - maintained by Plajer and Tigerpanzer
  *
  * This program is free software: you can redistribute it and/or modify
@@ -84,6 +84,7 @@ public class RidableIronGolem extends EntityIronGolem {
     this.setHealth(500);
   }
 
+  @Override
   public void a(float f, float f1, float f2) {
     EntityLiving entityliving = null;
     for (final Entity e : passengers) {

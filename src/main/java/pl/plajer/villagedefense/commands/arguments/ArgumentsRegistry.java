@@ -1,6 +1,6 @@
 /*
- * Village Defense 4 - Protect villagers from hordes of zombies
- * Copyright (C) 2018  Plajer's Lair - maintained by Plajer and Tigerpanzer
+ * Village Defense - Protect villagers from hordes of zombies
+ * Copyright (C) 2019  Plajer's Lair - maintained by Plajer and Tigerpanzer
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -62,7 +62,6 @@ import pl.plajer.villagedefense.commands.arguments.game.LeaderboardArgument;
 import pl.plajer.villagedefense.commands.arguments.game.LeaveArgument;
 import pl.plajer.villagedefense.commands.arguments.game.SelectKitArgument;
 import pl.plajer.villagedefense.commands.arguments.game.StatsArgument;
-import pl.plajer.villagedefense.handlers.ChatManager;
 import pl.plajer.villagedefense.handlers.setup.SetupInventory;
 import pl.plajer.villagedefense.utils.Utils;
 import pl.plajerlair.core.services.exception.ReportedException;
@@ -124,21 +123,21 @@ public class ArgumentsRegistry implements CommandExecutor {
         if (cmd.getName().equalsIgnoreCase(mainCommand)) {
           if (cmd.getName().equalsIgnoreCase("villagedefense")) {
             if (args.length == 0) {
-              sender.sendMessage(ChatManager.colorMessage("Commands.Main-Command.Header"));
-              sender.sendMessage(ChatManager.colorMessage("Commands.Main-Command.Description"));
+              sender.sendMessage(plugin.getChatManager().colorMessage("Commands.Main-Command.Header"));
+              sender.sendMessage(plugin.getChatManager().colorMessage("Commands.Main-Command.Description"));
               if (sender.hasPermission("villagedefense.admin")) {
-                sender.sendMessage(ChatManager.colorMessage("Commands.Main-Command.Admin-Bonus-Description"));
+                sender.sendMessage(plugin.getChatManager().colorMessage("Commands.Main-Command.Admin-Bonus-Description"));
               }
-              sender.sendMessage(ChatManager.colorMessage("Commands.Main-Command.Footer"));
+              sender.sendMessage(plugin.getChatManager().colorMessage("Commands.Main-Command.Footer"));
               return true;
             }
             if (args.length > 1 && args[1].equalsIgnoreCase("edit")) {
-              if (!checkSenderIsExecutorType(sender, CommandArgument.ExecutorType.PLAYER) ||
-                  !Utils.hasPermission(sender, "villagedefense.admin.create")) {
+              if (!checkSenderIsExecutorType(sender, CommandArgument.ExecutorType.PLAYER)
+                  || !Utils.hasPermission(sender, "villagedefense.admin.create")) {
                 return true;
               }
               if (ArenaRegistry.getArena(args[0]) == null) {
-                sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("Commands.No-Arena-Like-That"));
+                sender.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage("Commands.No-Arena-Like-That"));
                 return true;
               }
 
@@ -204,7 +203,7 @@ public class ArgumentsRegistry implements CommandExecutor {
           //sending did you mean help
           List<StringMatcher.Match> matches = StringMatcher.match(args[0], mappedArguments.get(cmd.getName().toLowerCase()).stream().map(CommandArgument::getArgumentName).collect(Collectors.toList()));
           if (!matches.isEmpty()) {
-            sender.sendMessage(ChatManager.colorMessage("Commands.Did-You-Mean").replace("%command%", label + " " + matches.get(0).getMatch()));
+            sender.sendMessage(plugin.getChatManager().colorMessage("Commands.Did-You-Mean").replace("%command%", label + " " + matches.get(0).getMatch()));
             return true;
           }
         }
@@ -225,7 +224,7 @@ public class ArgumentsRegistry implements CommandExecutor {
         if (sender instanceof Player) {
           return true;
         }
-        sender.sendMessage(ChatManager.colorMessage("Commands.Only-By-Player"));
+        sender.sendMessage(plugin.getChatManager().colorMessage("Commands.Only-By-Player"));
         return false;
       default:
         return false;

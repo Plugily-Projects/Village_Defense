@@ -1,6 +1,6 @@
 /*
- * Village Defense 4 - Protect villagers from hordes of zombies
- * Copyright (C) 2018  Plajer's Lair - maintained by Plajer and Tigerpanzer
+ * Village Defense - Protect villagers from hordes of zombies
+ * Copyright (C) 2019  Plajer's Lair - maintained by Plajer and Tigerpanzer
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -32,7 +32,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import pl.plajer.villagedefense.ConfigPreferences;
 import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.arena.Arena;
-import pl.plajer.villagedefense.handlers.ChatManager;
+import pl.plajer.villagedefense.utils.CompatMaterialConstants;
 import pl.plajerlair.core.utils.ConfigUtils;
 import pl.plajerlair.core.utils.ItemBuilder;
 import pl.plajerlair.core.utils.LocationUtils;
@@ -43,7 +43,7 @@ import pl.plajerlair.core.utils.XMaterial;
  */
 public class SetupInventory {
 
-  public static final String VIDEO_LINK = "https://bit.ly/2xwRU8S";
+  public static final String VIDEO_LINK = "https://tutorial.plajer.xyz";
   private static Main plugin = JavaPlugin.getPlugin(Main.class);
   private Inventory inventory;
 
@@ -121,7 +121,7 @@ public class SetupInventory {
         .lore(ChatColor.GRAY + "on the place you're standing at.")
         .lore(isOptionDoneList("instances." + arena.getID() + ".zombiespawns"))
         .build()));
-    inventory.setItem(ClickPosition.ADD_DOORS.getPosition(), new ItemBuilder(XMaterial.OAK_DOOR.parseItem())
+    inventory.setItem(ClickPosition.ADD_DOORS.getPosition(), new ItemBuilder(new ItemStack(CompatMaterialConstants.OAK_DOOR_ITEM))
         .name(ChatColor.GOLD + "► Add doors")
         .lore(ChatColor.GRAY + "Target arena door and click this.")
         .lore(isOptionDoneList("instances." + arena.getID() + ".doors"))
@@ -157,28 +157,30 @@ public class SetupInventory {
     int rand = new Random().nextInt(7 + 1);
     switch (rand) {
       case 0:
-        p.sendMessage(ChatManager.colorRawMessage("&e&lTIP: &7Console can execute /vd addorbs [amount] (player) command! Add game orbs via console!"));
+        p.sendMessage(plugin.getChatManager().colorRawMessage("&e&lTIP: &7Console can execute /vd addorbs [amount] (player) command! Add game orbs via console!"));
         break;
       case 1:
-        p.sendMessage(ChatManager.colorRawMessage("&e&lTIP: &7Build Secret Well for your arena! Check how: https://bit.ly/2DTYxZc"));
+        p.sendMessage(plugin.getChatManager().colorRawMessage("&e&lTIP: &7Build Secret Well for your arena! Check how: https://bit.ly/2DTYxZc"));
         break;
       case 2:
-        p.sendMessage(ChatManager.colorRawMessage("&e&lTIP: &7Help us translating plugin to your language here: https://translate.plajer.xyz"));
+        p.sendMessage(plugin.getChatManager().colorRawMessage("&e&lTIP: &7Help us translating plugin to your language here: https://translate.plajer.xyz"));
         break;
       case 3:
-        p.sendMessage(ChatManager.colorRawMessage("&e&lTIP: &7LeaderHeads leaderboard plugin is supported with our plugin! Check here: https://bit.ly/2Riu5L0"));
+        p.sendMessage(plugin.getChatManager().colorRawMessage("&e&lTIP: &7LeaderHeads leaderboard plugin is supported with our plugin! Check here: https://bit.ly/2Riu5L0"));
         break;
       case 4:
-        p.sendMessage(ChatManager.colorRawMessage("&e&lTIP: &7Achievements, custom kits and replay ability are things available in our paid addon for this minigame!"));
+        p.sendMessage(plugin.getChatManager().colorRawMessage("&e&lTIP: &7Achievements, custom kits and replay ability are things available in our paid addon for this minigame!"));
         break;
       case 5:
-        p.sendMessage(ChatManager.colorRawMessage("&e&lTIP: &7We are open source! You can always help us by contributing! Check https://github.com/Plajer-Lair/Village_Defense"));
+        p.sendMessage(plugin.getChatManager().colorRawMessage("&e&lTIP: &7We are open source! You can always help us by contributing! Check https://github.com/Plajer-Lair/Village_Defense"));
         break;
       case 6:
-        p.sendMessage(ChatManager.colorRawMessage("&e&lTIP: &7Need help? Check wiki &8https://wiki.plajer.xyz/minecraft/villagedefense &7or discord https://discord.gg/UXzUdTP"));
+        p.sendMessage(plugin.getChatManager().colorRawMessage("&e&lTIP: &7Need help? Check wiki &8https://wiki.plajer.xyz/minecraft/villagedefense &7or discord https://discord.gg/UXzUdTP"));
         break;
       case 7:
-        p.sendMessage(ChatManager.colorRawMessage("&e&lTIP: &7Install HolographicDisplays plugin to access power-ups in game! (configure them in config.yml)"));
+        p.sendMessage(plugin.getChatManager().colorRawMessage("&e&lTIP: &7Install HolographicDisplays plugin to access power-ups in game! (configure them in config.yml)"));
+        break;
+      default:
         break;
     }
   }
@@ -189,11 +191,11 @@ public class SetupInventory {
       return ChatColor.GOLD + "" + ChatColor.BOLD + "Done: " + ChatColor.RED + "No";
     }
     if (!path.contains(".doors")) {
-      return ChatColor.GOLD + "" + ChatColor.BOLD + "Done: " + ChatColor.GREEN + "Yes " + ChatColor.GRAY + "(value: " +
-          config.getConfigurationSection(path).getKeys(false).size() + ")";
+      return ChatColor.GOLD + "" + ChatColor.BOLD + "Done: " + ChatColor.GREEN + "Yes " + ChatColor.GRAY + "(value: "
+          + config.getConfigurationSection(path).getKeys(false).size() + ")";
     }
-    return ChatColor.GOLD + "" + ChatColor.BOLD + "Done: " + ChatColor.GREEN + "Yes " + ChatColor.GRAY + "(value: " +
-        config.getConfigurationSection(path).getKeys(false).size() / 2 + ")";
+    return ChatColor.GOLD + "" + ChatColor.BOLD + "Done: " + ChatColor.GREEN + "Yes " + ChatColor.GRAY + "(value: "
+        + config.getConfigurationSection(path).getKeys(false).size() / 2 + ")";
   }
 
   private String isOptionDoneBool(String path) {

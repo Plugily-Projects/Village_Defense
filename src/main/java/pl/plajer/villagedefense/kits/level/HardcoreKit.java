@@ -1,6 +1,6 @@
 /*
- * Village Defense 4 - Protect villagers from hordes of zombies
- * Copyright (C) 2018  Plajer's Lair - maintained by Plajer and Tigerpanzer
+ * Village Defense - Protect villagers from hordes of zombies
+ * Copyright (C) 2019  Plajer's Lair - maintained by Plajer and Tigerpanzer
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,13 +28,12 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionType;
 
 import pl.plajer.villagedefense.api.StatsStorage;
-import pl.plajer.villagedefense.handlers.ChatManager;
 import pl.plajer.villagedefense.kits.kitapi.KitRegistry;
 import pl.plajer.villagedefense.kits.kitapi.basekits.LevelKit;
 import pl.plajer.villagedefense.utils.ArmorHelper;
+import pl.plajer.villagedefense.utils.CompatMaterialConstants;
 import pl.plajer.villagedefense.utils.Utils;
 import pl.plajer.villagedefense.utils.WeaponHelper;
-import pl.plajerlair.core.utils.XMaterial;
 
 /**
  * Created by Tom on 28/07/2015.
@@ -42,8 +41,8 @@ import pl.plajerlair.core.utils.XMaterial;
 public class HardcoreKit extends LevelKit {
 
   public HardcoreKit() {
-    setName(ChatManager.colorMessage("Kits.Hardcore.Kit-Name"));
-    List<String> description = Utils.splitString(ChatManager.colorMessage("Kits.Hardcore.Kit-Description"), 40);
+    setName(getPlugin().getChatManager().colorMessage("Kits.Hardcore.Kit-Name"));
+    List<String> description = Utils.splitString(getPlugin().getChatManager().colorMessage("Kits.Hardcore.Kit-Description"), 40);
     this.setDescription(description.toArray(new String[0]));
     setLevel(getKitsConfig().getInt("Required-Level.Hardcore"));
     KitRegistry.registerKit(this);
@@ -51,7 +50,7 @@ public class HardcoreKit extends LevelKit {
 
   @Override
   public boolean isUnlockedByPlayer(Player player) {
-    return getPlugin().getUserManager().getUser(player.getUniqueId()).getStat(StatsStorage.StatisticType.LEVEL) >= this.getLevel() || player.hasPermission("villagefense.kit.hardcore");
+    return getPlugin().getUserManager().getUser(player).getStat(StatsStorage.StatisticType.LEVEL) >= this.getLevel() || player.hasPermission("villagefense.kit.hardcore");
   }
 
   @Override
@@ -66,7 +65,7 @@ public class HardcoreKit extends LevelKit {
 
   @Override
   public Material getMaterial() {
-    return XMaterial.PLAYER_HEAD.parseMaterial();
+    return CompatMaterialConstants.PLAYER_HEAD;
   }
 
   @Override

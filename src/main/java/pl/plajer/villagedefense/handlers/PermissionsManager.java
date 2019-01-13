@@ -1,5 +1,5 @@
 /*
- * Village Defense 4 - Protect villagers from hordes of zombies
+ * Village Defense - Protect villagers from hordes of zombies
  * Copyright (C) 2018  Plajer's Lair - maintained by Plajer and Tigerpanzer
  *
  * This program is free software: you can redistribute it and/or modify
@@ -53,24 +53,24 @@ public class PermissionsManager {
     return vipPerm;
   }
 
-  private static void setVip(String VIP) {
-    PermissionsManager.vipPerm = VIP;
+  private static void setVip(String vip) {
+    PermissionsManager.vipPerm = vip;
   }
 
   public static String getMvp() {
     return mvpPerm;
   }
 
-  private static void setMvp(String MVP) {
-    PermissionsManager.mvpPerm = MVP;
+  private static void setMvp(String mvp) {
+    PermissionsManager.mvpPerm = mvp;
   }
 
   public static String getElite() {
     return elitePerm;
   }
 
-  private static void setElite(String ELITE) {
-    PermissionsManager.elitePerm = ELITE;
+  private static void setElite(String elite) {
+    PermissionsManager.elitePerm = elite;
   }
 
   public static String getJoinPerm() {

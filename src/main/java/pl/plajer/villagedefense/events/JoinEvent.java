@@ -1,6 +1,6 @@
 /*
- * Village Defense 4 - Protect villagers from hordes of zombies
- * Copyright (C) 2018  Plajer's Lair - maintained by Plajer and Tigerpanzer
+ * Village Defense - Protect villagers from hordes of zombies
+ * Copyright (C) 2019  Plajer's Lair - maintained by Plajer and Tigerpanzer
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,6 +33,7 @@ import pl.plajer.villagedefense.arena.ArenaRegistry;
 import pl.plajer.villagedefense.handlers.PermissionsManager;
 import pl.plajerlair.core.services.exception.ReportedException;
 import pl.plajerlair.core.services.update.UpdateChecker;
+import pl.plajerlair.core.utils.InventoryUtils;
 
 /**
  * Created by Tom on 10/07/2015.
@@ -79,7 +80,12 @@ public class JoinEvent implements Listener {
       }
 
       for (StatsStorage.StatisticType stat : StatsStorage.StatisticType.values()) {
-        plugin.getUserManager().loadStatistic(plugin.getUserManager().getUser(event.getPlayer().getUniqueId()), stat);
+        plugin.getUserManager().loadStatistic(plugin.getUserManager().getUser(event.getPlayer()), stat);
+      }
+      //load player inventory in case of server crash, file is deleted once loaded so if file was already
+      //deleted player won't receive his backup, in case of crash he will get it back
+      if (plugin.getConfigPreferences().getOption(ConfigPreferences.Option.INVENTORY_MANAGER_ENABLED)) {
+        InventoryUtils.loadInventory(plugin, event.getPlayer());
       }
     } catch (Exception ex) {
       new ReportedException(plugin, ex);

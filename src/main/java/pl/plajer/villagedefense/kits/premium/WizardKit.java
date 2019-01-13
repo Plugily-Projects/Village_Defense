@@ -1,6 +1,6 @@
 /*
- * Village Defense 4 - Protect villagers from hordes of zombies
- * Copyright (C) 2018  Plajer's Lair - maintained by Plajer and Tigerpanzer
+ * Village Defense - Protect villagers from hordes of zombies
+ * Copyright (C) 2019  Plajer's Lair - maintained by Plajer and Tigerpanzer
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -41,7 +41,6 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
 import pl.plajer.villagedefense.arena.ArenaRegistry;
-import pl.plajer.villagedefense.handlers.ChatManager;
 import pl.plajer.villagedefense.handlers.PermissionsManager;
 import pl.plajer.villagedefense.kits.kitapi.KitRegistry;
 import pl.plajer.villagedefense.kits.kitapi.basekits.PremiumKit;
@@ -62,8 +61,8 @@ public class WizardKit extends PremiumKit implements Listener {
   private List<Player> wizardsOnDuty = new ArrayList<>();
 
   public WizardKit() {
-    setName(ChatManager.colorMessage("Kits.Wizard.Kit-Name"));
-    List<String> description = Utils.splitString(ChatManager.colorMessage("Kits.Wizard.Kit-Description"), 40);
+    setName(getPlugin().getChatManager().colorMessage("Kits.Wizard.Kit-Name"));
+    List<String> description = Utils.splitString(getPlugin().getChatManager().colorMessage("Kits.Wizard.Kit-Description"), 40);
     this.setDescription(description.toArray(new String[0]));
     KitRegistry.registerKit(this);
     getPlugin().getServer().getPluginManager().registerEvents(this, getPlugin());
@@ -77,12 +76,12 @@ public class WizardKit extends PremiumKit implements Listener {
   @Override
   public void giveKitItems(Player player) {
     player.getInventory().addItem(new ItemBuilder(new ItemStack(Material.BLAZE_ROD))
-        .name(ChatManager.colorMessage("Kits.Wizard.Staff-Item-Name"))
-        .lore(Utils.splitString(ChatManager.colorMessage("Kits.Wizard.Staff-Item-Lore"), 40))
+        .name(getPlugin().getChatManager().colorMessage("Kits.Wizard.Staff-Item-Name"))
+        .lore(Utils.splitString(getPlugin().getChatManager().colorMessage("Kits.Wizard.Staff-Item-Lore"), 40))
         .build());
     player.getInventory().addItem(new ItemBuilder(new ItemStack(XMaterial.INK_SAC.parseMaterial(), 4))
-        .name(ChatManager.colorMessage("Kits.Wizard.Essence-Item-Name"))
-        .lore(Utils.splitString(ChatManager.colorMessage("Kits.Wizard.Essence-Item-Lore"), 40))
+        .name(getPlugin().getChatManager().colorMessage("Kits.Wizard.Essence-Item-Name"))
+        .lore(Utils.splitString(getPlugin().getChatManager().colorMessage("Kits.Wizard.Essence-Item-Lore"), 40))
         .build());
 
     ArmorHelper.setColouredArmor(Color.GRAY, player);
@@ -98,8 +97,8 @@ public class WizardKit extends PremiumKit implements Listener {
   @Override
   public void reStock(Player player) {
     player.getInventory().addItem(new ItemBuilder(new ItemStack(XMaterial.INK_SAC.parseMaterial()))
-        .name(ChatManager.colorMessage("Kits.Wizard.Essence-Item-Name"))
-        .lore(Utils.splitString(ChatManager.colorMessage("Kits.Wizard.Essence-Item-Lore"), 40))
+        .name(getPlugin().getChatManager().colorMessage("Kits.Wizard.Essence-Item-Name"))
+        .lore(Utils.splitString(getPlugin().getChatManager().colorMessage("Kits.Wizard.Essence-Item-Lore"), 40))
         .build());
   }
 
@@ -129,24 +128,21 @@ public class WizardKit extends PremiumKit implements Listener {
   @EventHandler
   public void onStaffUse(PlayerInteractEvent e) {
     try {
-      if (getPlugin().getUserManager().getUser(e.getPlayer().getUniqueId()) == null) {
+      User user = getPlugin().getUserManager().getUser(e.getPlayer());
+      if (user == null || ArenaRegistry.getArena(e.getPlayer()) == null) {
         return;
       }
-      if (ArenaRegistry.getArena(e.getPlayer()) == null) {
-        return;
-      }
-      if (!(getPlugin().getUserManager().getUser(e.getPlayer().getUniqueId()).getKit() instanceof WizardKit)) {
+      if (!(user.getKit() instanceof WizardKit)) {
         return;
       }
       final Player p = e.getPlayer();
-      User user = getPlugin().getUserManager().getUser(e.getPlayer().getUniqueId());
       ItemStack stack = e.getPlayer().getInventory().getItemInMainHand();
       if (!Utils.isNamed(stack)) {
         return;
       }
-      if (stack.getItemMeta().getDisplayName().equals(ChatManager.colorMessage("Kits.Wizard.Essence-Item-Name"))) {
+      if (stack.getItemMeta().getDisplayName().equals(getPlugin().getChatManager().colorMessage("Kits.Wizard.Essence-Item-Name"))) {
         if (user.getCooldown("essence") > 0 && !user.isSpectator()) {
-          String message = ChatManager.colorMessage("Kits.Ability-Still-On-Cooldown");
+          String message = getPlugin().getChatManager().colorMessage("Kits.Ability-Still-On-Cooldown");
           message = message.replaceFirst("%COOLDOWN%", Long.toString(user.getCooldown("essence")));
           e.getPlayer().sendMessage(message);
           return;
@@ -184,32 +180,32 @@ public class WizardKit extends PremiumKit implements Listener {
           wizardsOnDuty.remove(p);
         }, 20 * 15);
         user.setCooldown("essence", 15);
-      } else if (stack.getItemMeta().getDisplayName().equals(ChatManager.colorMessage("Kits.Wizard.Staff-Item-Name"))) {
+      } else if (stack.getItemMeta().getDisplayName().equals(getPlugin().getChatManager().colorMessage("Kits.Wizard.Staff-Item-Name"))) {
         if (user.isSpectator()) {
-          e.getPlayer().sendMessage(ChatManager.colorMessage("Kits.Cleaner.Spectator-Warning"));
+          e.getPlayer().sendMessage(getPlugin().getChatManager().colorMessage("Kits.Cleaner.Spectator-Warning"));
           return;
         }
         if (user.getCooldown("wizard_staff") > 0 && !user.isSpectator()) {
-          String message = ChatManager.colorMessage("Kits.Ability-Still-On-Cooldown");
+          String message = getPlugin().getChatManager().colorMessage("Kits.Ability-Still-On-Cooldown");
           message = message.replaceFirst("%COOLDOWN%", Long.toString(user.getCooldown("wizard_staff")));
           e.getPlayer().sendMessage(message);
           return;
         }
         new BukkitRunnable() {
-          double t = 0;
+          double positionModifier = 0;
           Location loc = p.getLocation();
           Vector direction = loc.getDirection().normalize();
 
           @Override
           public void run() {
-            t += 0.5;
-            double x = direction.getX() * t;
-            double y = direction.getY() * t + 1.5;
-            double z = direction.getZ() * t;
+            positionModifier += 0.5;
+            double x = direction.getX() * positionModifier;
+            double y = direction.getY() * positionModifier + 1.5;
+            double z = direction.getZ() * positionModifier;
             loc.add(x, y, z);
             p.getWorld().spawnParticle(Particle.TOWN_AURA, loc, 5);
             for (Entity en : loc.getChunk().getEntities()) {
-              if (!(en instanceof LivingEntity && en instanceof Zombie)) {
+              if (!(en instanceof Zombie)) {
                 continue;
               }
               if (en.getLocation().distance(loc) < 1.5) {
@@ -220,7 +216,7 @@ public class WizardKit extends PremiumKit implements Listener {
               }
             }
             loc.subtract(x, y, z);
-            if (t > 40) {
+            if (positionModifier > 40) {
               this.cancel();
             }
           }

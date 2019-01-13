@@ -1,6 +1,6 @@
 /*
- * Village Defense 4 - Protect villagers from hordes of zombies
- * Copyright (C) 2018  Plajer's Lair - maintained by Plajer and Tigerpanzer
+ * Village Defense - Protect villagers from hordes of zombies
+ * Copyright (C) 2019  Plajer's Lair - maintained by Plajer and Tigerpanzer
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,7 +28,7 @@ import pl.plajerlair.core.utils.ConfigUtils;
 /**
  * Created by Tom on 17/06/2015.
  */
-public class FileStats {
+public class FileStats implements UserDatabase {
 
   private Main plugin;
   private FileConfiguration config;
@@ -38,13 +38,15 @@ public class FileStats {
     config = ConfigUtils.getConfig(plugin, "stats");
   }
 
-  public void saveStat(User user, StatsStorage.StatisticType stat) {
-    config.set(user.toPlayer().getUniqueId().toString() + "." + stat.getName(), user.getStat(stat));
+  @Override
+  public void saveStatistic(User user, StatsStorage.StatisticType stat) {
+    config.set(user.getPlayer().getUniqueId().toString() + "." + stat.getName(), user.getStat(stat));
     ConfigUtils.saveConfig(plugin, config, "stats");
   }
 
-  public void loadStat(User user, StatsStorage.StatisticType stat) {
-    user.setStat(stat, config.getInt(user.toPlayer().getUniqueId().toString() + "." + stat.getName(), 0));
+  @Override
+  public void loadStatistic(User user, StatsStorage.StatisticType stat) {
+    user.setStat(stat, config.getInt(user.getPlayer().getUniqueId().toString() + "." + stat.getName(), 0));
   }
 
 }

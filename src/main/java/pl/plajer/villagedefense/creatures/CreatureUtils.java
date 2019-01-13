@@ -1,6 +1,6 @@
 /*
- * Village Defense 4 - Protect villagers from hordes of zombies
- * Copyright (C) 2018  Plajer's Lair - maintained by Plajer and Tigerpanzer
+ * Village Defense - Protect villagers from hordes of zombies
+ * Copyright (C) 2019  Plajer's Lair - maintained by Plajer and Tigerpanzer
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,6 +19,8 @@
 package pl.plajer.villagedefense.creatures;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.bukkit.ChatColor;
 import org.bukkit.attribute.Attribute;
@@ -36,19 +38,25 @@ import pl.plajerlair.core.utils.MinigameUtils;
  */
 public class CreatureUtils {
 
-  public static float ZOMBIE_SPEED = 1.3f;
-  public static float BABY_ZOMBIE_SPEED = 2.0f;
-  public static String[] VILLAGER_NAMES = ("Jagger,Kelsey,Kelton,Haylie,Harlow,Howard,Wulffric,Winfred,Ashley,Bailey,Beckett,Alfredo,Alfred,Adair,Edgar,ED,Eadwig,Edgaras,Buckley,Stanley,Nuffley," +
-      "Mary,Jeffry,Rosaly,Elliot,Harry,Sam,Rosaline,Tom,Ivan,Kevin,Adam").split(",");
+  private static float zombieSpeed = 1.3f;
+  private static float babyZombieSpeed = 2.0f;
+  private static String[] villagerNames = ("Jagger,Kelsey,Kelton,Haylie,Harlow,Howard,Wulffric,Winfred,Ashley,Bailey,Beckett,Alfredo,Alfred,Adair,Edgar,ED,Eadwig,Edgaras,Buckley,Stanley,Nuffley,"
+      + "Mary,Jeffry,Rosaly,Elliot,Harry,Sam,Rosaline,Tom,Ivan,Kevin,Adam").split(",");
   private static Main plugin = JavaPlugin.getPlugin(Main.class);
+  private static List<CachedObject> cachedObjects = new ArrayList<>();
 
   public static void init(Main plugin) {
-    ZOMBIE_SPEED = (float) plugin.getConfig().getDouble("Zombie-Speed", 1.3);
-    BABY_ZOMBIE_SPEED = (float) plugin.getConfig().getDouble("Mini-Zombie-Speed", 2.0);
-    VILLAGER_NAMES = LanguageManager.getLanguageMessage("In-Game.Villager-Names").split(",");
+    zombieSpeed = (float) plugin.getConfig().getDouble("Zombie-Speed", 1.3);
+    babyZombieSpeed = (float) plugin.getConfig().getDouble("Mini-Zombie-Speed", 2.0);
+    villagerNames = LanguageManager.getLanguageMessage("In-Game.Villager-Names").split(",");
   }
 
   public static Object getPrivateField(String fieldName, Class clazz, Object object) {
+    for (CachedObject cachedObject : cachedObjects) {
+      if (cachedObject.getClazz().equals(clazz) && cachedObject.getFieldName().equals(fieldName)) {
+        return cachedObject.getObject();
+      }
+    }
     Field field;
     Object o = null;
     try {
@@ -57,6 +65,7 @@ public class CreatureUtils {
       field.setAccessible(true);
 
       o = field.get(object);
+      cachedObjects.add(new CachedObject(fieldName, clazz, o));
     } catch (NoSuchFieldException | IllegalAccessException e) {
       e.printStackTrace();
     }
@@ -72,4 +81,15 @@ public class CreatureUtils {
     }
   }
 
+  public static float getZombieSpeed() {
+    return zombieSpeed;
+  }
+
+  public static float getBabyZombieSpeed() {
+    return babyZombieSpeed;
+  }
+
+  public static String[] getVillagerNames() {
+    return villagerNames;
+  }
 }

@@ -1,6 +1,6 @@
 /*
- * Village Defense 4 - Protect villagers from hordes of zombies
- * Copyright (C) 2018  Plajer's Lair - maintained by Plajer and Tigerpanzer
+ * Village Defense - Protect villagers from hordes of zombies
+ * Copyright (C) 2019  Plajer's Lair - maintained by Plajer and Tigerpanzer
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -53,8 +53,8 @@ public class StatsStorage {
     List list = new LinkedList(unsortMap.entrySet());
     list.sort((o1, o2) -> ((Comparable) ((Map.Entry) (o1)).getValue()).compareTo(((Map.Entry) (o2)).getValue()));
     Map sortedMap = new LinkedHashMap();
-    for (Object aList : list) {
-      Map.Entry entry = (Map.Entry) aList;
+    for (Object sort : list) {
+      Map.Entry entry = (Map.Entry) sort;
       sortedMap.put(entry.getKey(), entry.getValue());
     }
     return sortedMap;
@@ -86,6 +86,9 @@ public class StatsStorage {
       FileConfiguration config = ConfigUtils.getConfig(plugin, "stats");
       Map<UUID, Integer> stats = new TreeMap<>();
       for (String string : config.getKeys(false)) {
+        if (string.equals("data-version")) {
+          continue;
+        }
         stats.put(UUID.fromString(string), config.getInt(string + "." + stat.getName()));
       }
       return sortByValue(stats);
@@ -101,7 +104,7 @@ public class StatsStorage {
    * @see StatisticType
    */
   public static int getUserStats(Player player, StatisticType statisticType) {
-    return plugin.getUserManager().getUser(player.getUniqueId()).getStat(statisticType);
+    return plugin.getUserManager().getUser(player).getStat(statisticType);
   }
 
   /**

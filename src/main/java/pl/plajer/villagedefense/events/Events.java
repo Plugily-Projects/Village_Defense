@@ -1,6 +1,6 @@
 /*
- * Village Defense 4 - Protect villagers from hordes of zombies
- * Copyright (C) 2018  Plajer's Lair - maintained by Plajer and Tigerpanzer
+ * Village Defense - Protect villagers from hordes of zombies
+ * Copyright (C) 2019  Plajer's Lair - maintained by Plajer and Tigerpanzer
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,6 +21,7 @@ package pl.plajer.villagedefense.events;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -60,6 +61,7 @@ import org.bukkit.event.player.PlayerExpChangeEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -70,12 +72,12 @@ import pl.plajer.villagedefense.arena.Arena;
 import pl.plajer.villagedefense.arena.ArenaManager;
 import pl.plajer.villagedefense.arena.ArenaRegistry;
 import pl.plajer.villagedefense.arena.ArenaState;
-import pl.plajer.villagedefense.handlers.ChatManager;
+import pl.plajer.villagedefense.arena.options.ArenaOption;
 import pl.plajer.villagedefense.handlers.PermissionsManager;
-import pl.plajer.villagedefense.handlers.ShopManager;
 import pl.plajer.villagedefense.handlers.items.SpecialItem;
 import pl.plajer.villagedefense.handlers.items.SpecialItemManager;
 import pl.plajer.villagedefense.user.User;
+import pl.plajer.villagedefense.utils.CompatMaterialConstants;
 import pl.plajer.villagedefense.utils.Utils;
 import pl.plajerlair.core.services.exception.ReportedException;
 import pl.plajerlair.core.utils.ConfigUtils;
@@ -115,16 +117,16 @@ public class Events implements Listener {
         return;
       }
       int amount = (int) Math.ceil(event.getAmount() * 1.6);
-      User user = plugin.getUserManager().getUser(event.getPlayer().getUniqueId());
+      User user = plugin.getUserManager().getUser(event.getPlayer());
       event.setAmount(amount);
       if (user.isSpectator()) {
         event.setAmount(0);
         return;
       }
       //bonus orbs with custom permissions
-      for (String perm : plugin.getConfigPreferences().getCustomPermissions().keySet()) {
-        if (event.getPlayer().hasPermission(perm)) {
-          int orbs = plugin.getConfigPreferences().getCustomPermissions().get(perm) / 100;
+      for (Map.Entry<String, Integer> perm : plugin.getConfigPreferences().getCustomPermissions().entrySet()) {
+        if (event.getPlayer().hasPermission(perm.getKey())) {
+          int orbs = perm.getValue() / 100;
           amount = +(int) Math.ceil(event.getAmount() * orbs);
           user.addStat(StatsStorage.StatisticType.ORBS, (int) Math.ceil(event.getAmount() * orbs));
         }
@@ -143,7 +145,7 @@ public class Events implements Listener {
         amount += event.getAmount();
         user.addStat(StatsStorage.StatisticType.ORBS, event.getAmount());
       }
-      event.getPlayer().sendMessage(ChatManager.colorMessage("In-Game.Orbs-Pickup").replace("%number%", String.valueOf(amount)));
+      event.getPlayer().sendMessage(plugin.getChatManager().colorMessage("In-Game.Orbs-Pickup").replace("%number%", String.valueOf(amount)));
     } catch (Exception ex) {
       new ReportedException(plugin, ex);
     }
@@ -156,7 +158,7 @@ public class Events implements Listener {
       if (arena == null) {
         return;
       }
-      if (plugin.getUserManager().getUser(event.getPlayer().getUniqueId()).isSpectator()) {
+      if (plugin.getUserManager().getUser(event.getPlayer()).isSpectator()) {
         event.setCancelled(true);
       }
     } catch (Exception ex) {
@@ -207,7 +209,7 @@ public class Events implements Listener {
       if (arena == null) {
         return;
       }
-      if (plugin.getUserManager().getUser(event.getPlayer().getUniqueId()).isSpectator()) {
+      if (plugin.getUserManager().getUser(event.getPlayer()).isSpectator()) {
         event.setCancelled(true);
         return;
       }
@@ -240,7 +242,10 @@ public class Events implements Listener {
       if (arena == null) {
         return;
       }
-      User user = plugin.getUserManager().getUser(event.getPlayer().getUniqueId());
+      if (event.getHand() == EquipmentSlot.OFF_HAND) {
+        return;
+      }
+      User user = plugin.getUserManager().getUser(event.getPlayer());
       if (user.isSpectator()) {
         event.setCancelled(true);
         return;
@@ -254,15 +259,21 @@ public class Events implements Listener {
       }
       if (event.getRightClicked().getType() == EntityType.VILLAGER) {
         event.setCancelled(true);
-        ShopManager.openShop(event.getPlayer());
+        arena.getShopManager().openShop(event.getPlayer());
       } else if (event.getRightClicked().getType() == EntityType.IRON_GOLEM) {
         IronGolem ironGolem = (IronGolem) event.getRightClicked();
+        if (event.getPlayer().isSneaking()) {
+          return;
+        }
         if (ironGolem.getCustomName() != null && ironGolem.getCustomName().contains(event.getPlayer().getName())) {
           event.getRightClicked().setPassenger(event.getPlayer());
         } else {
-          event.getPlayer().sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Messages.Cant-Ride-Others-Golem"));
+          event.getPlayer().sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage("In-Game.Messages.Cant-Ride-Others-Golem"));
         }
       } else if (event.getRightClicked().getType() == EntityType.WOLF) {
+        if (event.getPlayer().isSneaking()) {
+          return;
+        }
         Wolf wolf = (Wolf) event.getRightClicked();
         if (wolf.getCustomName() != null && wolf.getCustomName().contains(event.getPlayer().getName())) {
           event.getRightClicked().setPassenger(event.getPlayer());
@@ -295,7 +306,7 @@ public class Events implements Listener {
         return;
       }
       event.setCancelled(true);
-      event.getPlayer().sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Only-Command-Ingame-Is-Leave"));
+      event.getPlayer().sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage("In-Game.Only-Command-Ingame-Is-Leave"));
     } catch (Exception ex) {
       new ReportedException(plugin, ex);
     }
@@ -304,8 +315,8 @@ public class Events implements Listener {
   @EventHandler
   public void onDoorDrop(ItemSpawnEvent event) {
     try {
-      //todo check
-      if (event.getEntity().getItemStack().getType() == XMaterial.OAK_DOOR.parseMaterial()) {
+      if (event.getEntity().getItemStack().getType() == XMaterial.OAK_DOOR.parseMaterial()
+          || event.getEntity().getItemStack().getType() == CompatMaterialConstants.OAK_DOOR_ITEM) {
         for (Entity entity : Utils.getNearbyEntities(event.getLocation(), 20)) {
           if (!(entity instanceof Player)) {
             continue;
@@ -397,7 +408,7 @@ public class Events implements Listener {
       if (arena == null) {
         return;
       }
-      if (plugin.getUserManager().getUser(e.getDamager().getUniqueId()).isSpectator()) {
+      if (plugin.getUserManager().getUser((Player) e.getDamager()).isSpectator()) {
         e.setCancelled(true);
         return;
       }
@@ -434,11 +445,6 @@ public class Events implements Listener {
   @EventHandler(priority = EventPriority.HIGHEST)
   public void onSecond(EntityDamageByEntityEvent e) {
     try {
-      User user = plugin.getUserManager().getUser((e.getDamager().getUniqueId()));
-      if (user.isSpectator()) {
-        e.setCancelled(true);
-        return;
-      }
       if (!(e.getDamager() instanceof Arrow)) {
         return;
       }
@@ -495,11 +501,10 @@ public class Events implements Listener {
         return;
       }
       Player player = (Player) e.getWhoClicked();
-      User user = plugin.getUserManager().getUser(player.getUniqueId());
-      Arena arena = ArenaRegistry.getArena((Player) e.getWhoClicked());
+      Arena arena = ArenaRegistry.getArena(player);
       ItemStack stack = e.getCurrentItem();
       if (arena == null || e.getInventory().getName() == null
-          || !e.getInventory().getName().equalsIgnoreCase(ChatManager.colorMessage("In-Game.Messages.Shop-Messages.Shop-GUI-Name"))) {
+          || !e.getInventory().getName().equalsIgnoreCase(plugin.getChatManager().colorMessage("In-Game.Messages.Shop-Messages.Shop-GUI-Name"))) {
         return;
       }
       e.setCancelled(true);
@@ -507,10 +512,10 @@ public class Events implements Listener {
         return;
       }
       String string = ChatColor.stripColor(stack.getItemMeta().getLore().get(0));
-      if (!(string.contains(ChatManager.colorMessage("In-Game.Messages.Shop-Messages.Currency-In-Shop")) || string.contains("orbs"))) {
+      if (!(string.contains(plugin.getChatManager().colorMessage("In-Game.Messages.Shop-Messages.Currency-In-Shop")) || string.contains("orbs"))) {
         boolean b = false;
         for (String s : stack.getItemMeta().getLore()) {
-          if (string.contains(ChatManager.colorMessage("In-Game.Messages.Shop-Messages.Currency-In-Shop")) || string.contains("orbs")) {
+          if (string.contains(plugin.getChatManager().colorMessage("In-Game.Messages.Shop-Messages.Currency-In-Shop")) || string.contains("orbs")) {
             string = s;
             b = true;
           }
@@ -519,42 +524,45 @@ public class Events implements Listener {
           return;
         }
       }
+      User user = plugin.getUserManager().getUser(player);
       int price = Integer.parseInt(string.split(" ")[0]);
       if (price > user.getStat(StatsStorage.StatisticType.ORBS)) {
-        player.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Messages.Shop-Messages.Not-Enough-Orbs"));
+        player.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage("In-Game.Messages.Shop-Messages.Not-Enough-Orbs"));
         return;
       }
       if (Utils.isNamed(stack)) {
-        if (stack.getItemMeta().getDisplayName().contains(ChatManager.colorMessage("In-Game.Messages.Shop-Messages.Golem-Item-Name")) || stack.getItemMeta().getDisplayName().contains(ChatManager.colorRawMessage(ConfigUtils.getConfig(plugin, "language").getString("In-Game.Messages.Shop-Messages.Golem-Item-Name")))) {
+        if (stack.getItemMeta().getDisplayName().contains(plugin.getChatManager().colorMessage("In-Game.Messages.Shop-Messages.Golem-Item-Name"))
+            || stack.getItemMeta().getDisplayName().contains(plugin.getChatManager().colorRawMessage(ConfigUtils.getConfig(plugin, "language").getString("In-Game.Messages.Shop-Messages.Golem-Item-Name")))) {
           int i = 0;
           for (IronGolem golem : arena.getIronGolems()) {
-            if (golem.getCustomName().equals(ChatManager.colorMessage("In-Game.Spawned-Golem-Name").replace("%player%", player.getName()))) {
+            if (golem.getCustomName().equals(plugin.getChatManager().colorMessage("In-Game.Spawned-Golem-Name").replace("%player%", player.getName()))) {
               i++;
             }
           }
           if (i >= plugin.getConfig().getInt("Golems-Spawn-Limit", 15)) {
-            e.getWhoClicked().sendMessage(ChatManager.colorMessage("In-Game.Messages.Shop-Messages.Mob-Limit-Reached")
+            e.getWhoClicked().sendMessage(plugin.getChatManager().colorMessage("In-Game.Messages.Shop-Messages.Mob-Limit-Reached")
                 .replace("%amount%", String.valueOf(plugin.getConfig().getInt("Golems-Spawn-Limit", 15))));
             return;
           }
           arena.spawnGolem(arena.getStartLocation(), player);
-          player.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Messages.Golem-Spawned"));
+          player.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage("In-Game.Messages.Golem-Spawned"));
           user.setStat(StatsStorage.StatisticType.ORBS, user.getStat(StatsStorage.StatisticType.ORBS) - price);
           return;
-        } else if (stack.getItemMeta().getDisplayName().contains(ChatManager.colorMessage("In-Game.Messages.Shop-Messages.Wolf-Item-Name")) || stack.getItemMeta().getDisplayName().contains(ChatManager.colorRawMessage(ConfigUtils.getConfig(plugin, "language").getString("In-Game.Messages.Shop-Messages.Wolf-Item-Name")))) {
+        } else if (stack.getItemMeta().getDisplayName().contains(plugin.getChatManager().colorMessage("In-Game.Messages.Shop-Messages.Wolf-Item-Name"))
+            || stack.getItemMeta().getDisplayName().contains(plugin.getChatManager().colorRawMessage(ConfigUtils.getConfig(plugin, "language").getString("In-Game.Messages.Shop-Messages.Wolf-Item-Name")))) {
           int i = 0;
           for (Wolf wolf : arena.getWolfs()) {
-            if (wolf.getCustomName().equals(ChatManager.colorMessage("In-Game.Spawned-Wolf-Name").replace("%player%", player.getName()))) {
+            if (wolf.getCustomName().equals(plugin.getChatManager().colorMessage("In-Game.Spawned-Wolf-Name").replace("%player%", player.getName()))) {
               i++;
             }
           }
           if (i >= plugin.getConfig().getInt("Wolves-Spawn-Limit", 20)) {
-            e.getWhoClicked().sendMessage(ChatManager.colorMessage("In-Game.Messages.Shop-Messages.Mob-Limit-Reached")
+            e.getWhoClicked().sendMessage(plugin.getChatManager().colorMessage("In-Game.Messages.Shop-Messages.Mob-Limit-Reached")
                 .replace("%amount%", String.valueOf(plugin.getConfig().getInt("Wolves-Spawn-Limit", 20))));
             return;
           }
           arena.spawnWolf(arena.getStartLocation(), player);
-          player.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Messages.Wolf-Spawned"));
+          player.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage("In-Game.Messages.Wolf-Spawned"));
           user.setStat(StatsStorage.StatisticType.ORBS, user.getStat(StatsStorage.StatisticType.ORBS) - price);
           return;
         }
@@ -565,7 +573,7 @@ public class Events implements Listener {
       Iterator<String> lore = itemMeta.getLore().iterator();
       while (lore.hasNext()) {
         String next = lore.next();
-        if (next.contains(ChatManager.colorMessage("In-Game.Messages.Shop-Messages.Currency-In-Shop"))) {
+        if (next.contains(plugin.getChatManager().colorMessage("In-Game.Messages.Shop-Messages.Currency-In-Shop"))) {
           lore.remove();
         }
       }
@@ -575,7 +583,7 @@ public class Events implements Listener {
       itemStack.setItemMeta(itemMeta);
       player.getInventory().addItem(itemStack);
       user.setStat(StatsStorage.StatisticType.ORBS, user.getStat(StatsStorage.StatisticType.ORBS) - price);
-      arena.setTotalOrbsSpent(arena.getTotalOrbsSpent() + price);
+      arena.addOptionValue(ArenaOption.TOTAL_ORBS_SPENT, price);
     } catch (Exception ex) {
       new ReportedException(plugin, ex);
     }
@@ -633,7 +641,7 @@ public class Events implements Listener {
         if (arena == null) {
           continue;
         }
-        arena.addRottenFlesh(e.getItem().getItemStack().getAmount());
+        arena.addOptionValue(ArenaOption.ROTTEN_FLESH_AMOUNT, e.getItem().getItemStack().getAmount());
         e.getItem().remove();
         e.setCancelled(true);
         e.getInventory().clear();
@@ -643,7 +651,7 @@ public class Events implements Listener {
         }
         for (Player p : arena.getPlayers()) {
           p.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(p.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue() + 2.0);
-          p.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Rotten-Flesh-Level-Up"));
+          p.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage("In-Game.Rotten-Flesh-Level-Up"));
         }
       }
     } catch (Exception ex) {

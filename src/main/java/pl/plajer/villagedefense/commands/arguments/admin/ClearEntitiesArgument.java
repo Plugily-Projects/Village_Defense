@@ -1,6 +1,6 @@
 /*
- * Village Defense 4 - Protect villagers from hordes of zombies
- * Copyright (C) 2018  Plajer's Lair - maintained by Plajer and Tigerpanzer
+ * Village Defense - Protect villagers from hordes of zombies
+ * Copyright (C) 2019  Plajer's Lair - maintained by Plajer and Tigerpanzer
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,15 +24,16 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.IronGolem;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Villager;
+import org.bukkit.entity.Wolf;
 import org.bukkit.entity.Zombie;
 
 import pl.plajer.villagedefense.arena.Arena;
 import pl.plajer.villagedefense.arena.ArenaRegistry;
+import pl.plajer.villagedefense.arena.options.ArenaOption;
 import pl.plajer.villagedefense.commands.arguments.ArgumentsRegistry;
 import pl.plajer.villagedefense.commands.arguments.data.CommandArgument;
 import pl.plajer.villagedefense.commands.arguments.data.LabelData;
 import pl.plajer.villagedefense.commands.arguments.data.LabeledCommandArgument;
-import pl.plajer.villagedefense.handlers.ChatManager;
 import pl.plajer.villagedefense.utils.Utils;
 
 /**
@@ -46,14 +47,14 @@ public class ClearEntitiesArgument {
     registry.mapArgument("villagedefenseadmin", new LabeledCommandArgument("clear", "villagedefense.admin.clear", CommandArgument.ExecutorType.PLAYER,
         new LabelData("/vda clear &6<zombie/villager/golem>", "/vda clear <mob>",
             "&7Clear specific mob type from arena you're in\n&7Valid mob types:\n&7• ZOMBIE - clear spawned zombies\n"
-                + "&7• VILLAGER - clear alive villagers\n&7• GOLEM - clear spawned golems\n&6Permission: &7villagedefense.admin.clear")) {
+                + "&7• VILLAGER - clear alive villagers\n&7• GOLEM - clear spawned golems\n&7• WOLF - clear spawned wolves\n&6Permission: &7villagedefense.admin.clear")) {
       @Override
       public void execute(CommandSender sender, String[] args) {
         if (!Utils.checkIsInGameInstance((Player) sender)) {
           return;
         }
         if (args.length == 1) {
-          sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatColor.RED + "Please type valid mob type to clear: VILLAGER, ZOMBIE, GOLEM");
+          sender.sendMessage(registry.getPlugin().getChatManager().getPrefix() + ChatColor.RED + "Please type valid mob type to clear: VILLAGER, ZOMBIE, IRON_GOLEM");
           return;
         }
         Arena arena = ArenaRegistry.getArena((Player) sender);
@@ -61,7 +62,7 @@ public class ClearEntitiesArgument {
         switch (args[1].toLowerCase()) {
           case "villager":
             if (arena.getVillagers() == null || arena.getVillagers().isEmpty()) {
-              sender.sendMessage(ChatManager.colorMessage("Kits.Cleaner.Nothing-To-Clean"));
+              sender.sendMessage(registry.getPlugin().getChatManager().colorMessage("Kits.Cleaner.Nothing-To-Clean"));
               return;
             }
             for (Villager villager : arena.getVillagers()) {
@@ -70,11 +71,11 @@ public class ClearEntitiesArgument {
             }
             arena.getVillagers().clear();
             Utils.playSound(((Player) sender).getLocation(), "ENTITY_VILLAGER_DEATH", "ENTITY_VILLAGER_DEATH");
-            clearMessage = ChatManager.colorMessage("In-Game.Messages.Admin-Messages.Removed-Villagers");
+            clearMessage = registry.getPlugin().getChatManager().colorMessage("In-Game.Messages.Admin-Messages.Removed-Villagers");
             break;
           case "zombie":
             if (arena.getZombies() == null || arena.getZombies().isEmpty()) {
-              sender.sendMessage(ChatManager.colorMessage("Kits.Cleaner.Nothing-To-Clean"));
+              sender.sendMessage(registry.getPlugin().getChatManager().colorMessage("Kits.Cleaner.Nothing-To-Clean"));
               return;
             }
             for (Zombie zombie : arena.getZombies()) {
@@ -82,12 +83,13 @@ public class ClearEntitiesArgument {
               zombie.remove();
             }
             arena.getZombies().clear();
+            arena.setOptionValue(ArenaOption.ZOMBIES_TO_SPAWN, 0);
             Utils.playSound(((Player) sender).getLocation(), "ENTITY_ZOMBIE_DEATH", "ENTITY_ZOMBIE_DEATH");
-            clearMessage = ChatManager.colorMessage("In-Game.Messages.Admin-Messages.Removed-Zombies");
+            clearMessage = registry.getPlugin().getChatManager().colorMessage("In-Game.Messages.Admin-Messages.Removed-Zombies");
             break;
           case "golem":
             if (arena.getIronGolems() == null || arena.getIronGolems().isEmpty()) {
-              sender.sendMessage(ChatManager.colorMessage("Kits.Cleaner.Nothing-To-Clean"));
+              sender.sendMessage(registry.getPlugin().getChatManager().colorMessage("Kits.Cleaner.Nothing-To-Clean"));
               return;
             }
             for (IronGolem golem : arena.getIronGolems()) {
@@ -96,16 +98,28 @@ public class ClearEntitiesArgument {
             }
             arena.getIronGolems().clear();
             Utils.playSound(((Player) sender).getLocation(), "ENTITY_IRONGOLEM_DEATH", "ENTITY_IRON_GOLEM_DEATH");
-            clearMessage = ChatManager.colorMessage("In-Game.Messages.Admin-Messages.Removed-Golems");
+            clearMessage = registry.getPlugin().getChatManager().colorMessage("In-Game.Messages.Admin-Messages.Removed-Golems");
+            break;
+          case "wolf":
+            if (arena.getWolfs() == null || arena.getWolfs().isEmpty()) {
+              sender.sendMessage(registry.getPlugin().getChatManager().colorMessage("Kits.Cleaner.Nothing-To-Clean"));
+              return;
+            }
+            for (Wolf wolf : arena.getWolfs()) {
+              wolf.getWorld().spawnParticle(Particle.LAVA, wolf.getLocation(), 20);
+              wolf.remove();
+            }
+            arena.getWolfs().clear();
+            Utils.playSound(((Player) sender).getLocation(), "ENTITY_WOLF_DEATH", "ENTITY_WOLF_DEATH");
+            clearMessage = registry.getPlugin().getChatManager().colorMessage("In-Game.Messages.Admin-Messages.Removed-Wolves");
             break;
           default:
-            sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatColor.RED + "Please type valid mob type to clear: VILLAGER, ZOMBIE, GOLEM");
+            sender.sendMessage(registry.getPlugin().getChatManager().getPrefix() + ChatColor.RED + "Please type valid mob type to clear: VILLAGER, ZOMBIE, GOLEM, WOLF");
             return;
-          //todo add wolves
         }
+        String message = registry.getPlugin().getChatManager().formatMessage(arena, clearMessage, (Player) sender);
         for (Player loopPlayer : arena.getPlayers()) {
-          String message = ChatManager.formatMessage(arena, clearMessage, loopPlayer);
-          loopPlayer.sendMessage(ChatManager.PLUGIN_PREFIX + message);
+          loopPlayer.sendMessage(registry.getPlugin().getChatManager().getPrefix() + message);
         }
       }
     });

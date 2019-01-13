@@ -1,6 +1,6 @@
 /*
- * Village Defense 4 - Protect villagers from hordes of zombies
- * Copyright (C) 2018  Plajer's Lair - maintained by Plajer and Tigerpanzer
+ * Village Defense - Protect villagers from hordes of zombies
+ * Copyright (C) 2019  Plajer's Lair - maintained by Plajer and Tigerpanzer
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,6 +24,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -45,12 +46,13 @@ import org.bukkit.util.BlockIterator;
 
 import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.arena.ArenaRegistry;
-import pl.plajer.villagedefense.handlers.ChatManager;
 
 /**
  * Created by Tom on 29/07/2014.
  */
 public class Utils {
+
+  private static Main plugin = JavaPlugin.getPlugin(Main.class);
 
   /**
    * Checks whether itemstack is named (not null, has meta and display name)
@@ -85,18 +87,17 @@ public class Utils {
     return blocks;
   }
 
-  public static Entity[] getNearbyEntities(Location l, int radius) {
+  public static Entity[] getNearbyEntities(Location loc, int radius) {
     int chunkRadius = radius < 16 ? 1 : radius / 16;
-    HashSet<Entity> radiusEntities = new HashSet<>();
-    for (int chX = 0 - chunkRadius; chX <= chunkRadius; chX++) {
-      for (int chZ = 0 - chunkRadius; chZ <= chunkRadius; chZ++) {
-        int x = (int) l.getX(), y = (int) l.getY(), z = (int) l.getZ();
-        for (Entity e : new Location(l.getWorld(), x + chX * 16, y, z + chZ * 16).getChunk().getEntities()) {
-          if (!(l.getWorld().getName().equalsIgnoreCase(e.getWorld().getName()))) {
+    Set<Entity> radiusEntities = new HashSet<>();
+    for (int chunkX = 0 - chunkRadius; chunkX <= chunkRadius; chunkX++) {
+      for (int chunkZ = 0 - chunkRadius; chunkZ <= chunkRadius; chunkZ++) {
+        int x = (int) loc.getX(), y = (int) loc.getY(), z = (int) loc.getZ();
+        for (Entity e : new Location(loc.getWorld(), x + chunkX * 16, y, z + chunkZ * 16).getChunk().getEntities()) {
+          if (!(loc.getWorld().getName().equalsIgnoreCase(e.getWorld().getName()))) {
             continue;
           }
-          if (e.getLocation().distanceSquared(l) <= radius * radius && e.getLocation().getBlock() != l
-              .getBlock()) {
+          if (e.getLocation().distanceSquared(loc) <= radius * radius && e.getLocation().getBlock() != loc.getBlock()) {
             radiusEntities.add(e);
           }
         }
@@ -110,7 +111,7 @@ public class Utils {
     Pattern regex = Pattern.compile(".{1," + max + "}(?:\\s|$)", Pattern.DOTALL);
     Matcher regexMatcher = regex.matcher(string);
     while (regexMatcher.find()) {
-      matchList.add(ChatManager.colorRawMessage("&7") + regexMatcher.group());
+      matchList.add(plugin.getChatManager().colorRawMessage("&7") + regexMatcher.group());
     }
     return matchList;
   }
@@ -186,7 +187,7 @@ public class Utils {
 
   public static boolean checkIsInGameInstance(Player player) {
     if (ArenaRegistry.getArena(player) == null) {
-      player.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("Commands.Not-Playing"));
+      player.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage("Commands.Not-Playing"));
       return false;
     }
     return true;
@@ -196,7 +197,7 @@ public class Utils {
     if (sender.hasPermission(perm)) {
       return true;
     }
-    sender.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("Commands.No-Permission"));
+    sender.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage("Commands.No-Permission"));
     return false;
   }
 

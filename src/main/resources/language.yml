@@ -37,6 +37,7 @@ Commands:
   Admin-Commands:
     Player-Not-Found: "&cPlayer not found!"
     Added-Orbs: "&7Added orbs to the player!"
+    Received-Orbs: "&7You received &a%orbs% orbs&7!"
     Added-Level: "&7Added level to the player!"
     Success-Reload: "&aArenas reloaded!"
     List-Command:
@@ -134,7 +135,7 @@ Kits:
     Kit-Name: "&bCleaner"
     Kit-Description: "&7The cleaner has a special ability. With this ability, he can make all the zombies disappear. However, it takes a lot of effort to do this!"
     Game-Item-Name: "&6Cleaner Wand!"
-    Game-Item-Lore: "&7Right click to kill all zombies! Cooldown: 180 seconds"
+    Game-Item-Lore: "&7Right click to kill all zombies! Cooldown: 60 seconds"
     Cleaned-Map: "&b%PLAYER% has cleaned the map!"
     Nothing-To-Clean: "&aThe map is already empty!" #WARNING: used for admin clean commands too!!!
     Spectator-Warning: "&cYou can't clean the map now! You are a spectator! You'll respawn at the start of the next wave!"
@@ -330,6 +331,7 @@ In-Game:
       Removed-Villagers: "&b%PLAYER% has removed all the villagers!"
       Removed-Golems: "&b%PLAYER% has removed all the golems!"
       Removed-Zombies: "&b%PLAYER% has cleared the zombies!"
+      Removed-Wolves: "&b%PLAYER% has cleared the wolves!"
       Changed-Wave: "&bAdmin changed the wave to %NUMBER%"
 
 Powerups:
@@ -351,19 +353,31 @@ Powerups:
     Description: "&7Every zombie for 1 hit!"
   Powerup-Ended-Title-Message: "&4Powerup %powerup% has ended!"
 
-#todo locale and migrator
 Upgrade-Menu:
   Title: "&e&lUpgrade entity"
+  Stats-Item:
+    Name: "&e&lCurrent Stats"
+    Description: "&eMovement speed: &7%speed%;&eAttack Damage: &7%damage%;&eHealth: &7%current_hp%/%max_hp%"
   Upgrades:
     Health:
-      Name: "&a&lUpgrade health"
-      Description: "&7Upgrade health to tier &e%tier%!;&7Cost of upgrade: &e%cost%;;&eClick to purchase"
+      Name: "&a&lUpgrade Health"
+      Description: "&7Upgrade max health to tier &e%tier%&7!;&7From &e%from% &7to &e%to%;&7Cost of upgrade: &e%cost%;;&eClick to purchase"
     Damage:
-      Name: "&a&lUpgrade damage"
-      Description: "&7Upgrade damage to tier &e%tier%!;&7Cost of upgrade: &e%cost%;;&eClick to purchase"
+      Name: "&a&lUpgrade Damage"
+      Description: "&7Upgrade entity damage to tier &e%tier%&7!;&7From &e%from% &7to &e%to%;&7Cost of upgrade: &e%cost%;;&eClick to purchase"
     Speed:
-      Name: "&a&lUpgrade speed"
-      Description: "&7Upgrade speed to tier &e%tier%!;&7Cost of upgrade: &e%cost%;;&eClick to purchase"
+      Name: "&a&lUpgrade Speed"
+      Description: "&7Upgrade movement speed to tier &e%tier%&7!;&7From &e%from% &7to &e%to%;&7Cost of upgrade: &e%cost%;;&eClick to purchase"
+    Swarm-Awareness:
+      Name: "&a&lSwarm Awareness"
+      Description: "&7Upgrade swarm awareness to tier &e%tier%&7!;&7From &e%from% &edamage multiplier per wolf in radius;&eof 3 blocks &7to %to%;&7The more wolves near attacking wolf;&7the more damage wolf deal;&7Cost of upgrade: &e%cost%;;&eClick to purchase"
+    Final-Defense:
+      Name: "&a&lFinal Defense"
+      Description: "&7Upgrade final defense to tier &e%tier%&7!;&7From &e%from% explosion radius &7to &e%to%;&7Golem will explode after death killing nearby;&7zombies and stun all alive ones;&7Cost of upgrade: &e%cost%;;&eClick to purchase"
+  Upgraded-Entity: "&7Upgraded entity to tier &e%tier%&7!"
+  Cannot-Afford: "&cYou don't have enough orbs to apply that upgrade!"
+  Max-Tier: "&cEntity is at max tier of this upgrade!"
+
 
 Signs:
   Please-Type-Arena-Name: "&cPlease type arena name in second line!"
@@ -390,4 +404,4 @@ Validator:
 
 # Don't edit it. But who's stopping you? It's your server!
 # Really, don't edit ;p
-File-Version-Do-Not-Edit: 9
+File-Version-Do-Not-Edit: 10

@@ -1,6 +1,6 @@
 /*
- * Village Defense 4 - Protect villagers from hordes of zombies
- * Copyright (C) 2018  Plajer's Lair - maintained by Plajer and Tigerpanzer
+ * Village Defense - Protect villagers from hordes of zombies
+ * Copyright (C) 2019  Plajer's Lair - maintained by Plajer and Tigerpanzer
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,7 +29,7 @@ import pl.plajer.villagedefense.arena.initializers.ArenaInitializer1_11_R1;
 import pl.plajer.villagedefense.arena.initializers.ArenaInitializer1_12_R1;
 import pl.plajer.villagedefense.arena.initializers.ArenaInitializer1_13_R1;
 import pl.plajer.villagedefense.arena.initializers.ArenaInitializer1_13_R2;
-import pl.plajer.villagedefense.handlers.ChatManager;
+import pl.plajer.villagedefense.handlers.PermissionsManager;
 import pl.plajer.villagedefense.user.User;
 import pl.plajerlair.core.services.exception.ReportedException;
 
@@ -70,7 +70,7 @@ public class ArenaUtils {
         if (arena.getPlayersLeft().contains(player)) {
           return;
         }
-        User user = plugin.getUserManager().getUser(player.getUniqueId());
+        User user = plugin.getUserManager().getUser(player);
         user.setSpectator(false);
 
         arena.teleportToStartLocation(player);
@@ -82,37 +82,73 @@ public class ArenaUtils {
         arena.showPlayers();
         player.getInventory().clear();
         user.getKit().giveKitItems(player);
-        player.sendMessage(ChatManager.colorMessage("In-Game.Back-In-Game"));
+        player.sendMessage(plugin.getChatManager().colorMessage("In-Game.Back-In-Game"));
       }
     } catch (Exception e) {
       new ReportedException(plugin, e);
     }
   }
 
+  @Deprecated //move somewhere else
   public static void updateLevelStat(Player player, Arena arena) {
     try {
-      User user = plugin.getUserManager().getUser(player.getUniqueId());
+      User user = plugin.getUserManager().getUser(player);
       if (Math.pow(50 * user.getStat(StatsStorage.StatisticType.LEVEL), 1.5) < user.getStat(StatsStorage.StatisticType.XP)) {
         user.addStat(StatsStorage.StatisticType.LEVEL, 1);
-        player.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.formatMessage(arena, ChatManager.colorMessage("In-Game.You-Leveled-Up"), user.getStat(StatsStorage.StatisticType.LEVEL)));
+        player.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().formatMessage(arena, plugin.getChatManager().colorMessage("In-Game.You-Leveled-Up"), user.getStat(StatsStorage.StatisticType.LEVEL)));
       }
     } catch (Exception e) {
       new ReportedException(plugin, e);
     }
   }
 
-  public static Arena initializeArena(String ID) {
+  public static Arena initializeArena(String id) {
     Arena arena;
     if (plugin.is1_11_R1()) {
-      arena = new ArenaInitializer1_11_R1(ID, plugin);
+      arena = new ArenaInitializer1_11_R1(id, plugin);
     } else if (plugin.is1_12_R1()) {
-      arena = new ArenaInitializer1_12_R1(ID, plugin);
+      arena = new ArenaInitializer1_12_R1(id, plugin);
     } else if (plugin.is1_13_R1()) {
-      arena = new ArenaInitializer1_13_R1(ID, plugin);
+      arena = new ArenaInitializer1_13_R1(id, plugin);
     } else {
-      arena = new ArenaInitializer1_13_R2(ID, plugin);
+      arena = new ArenaInitializer1_13_R2(id, plugin);
     }
     return arena;
+  }
+
+  public static void setWorld(Arena arena) {
+    if (plugin.is1_11_R1()) {
+      ((ArenaInitializer1_11_R1) arena).setWorld(arena.getStartLocation());
+    } else if (plugin.is1_12_R1()) {
+      ((ArenaInitializer1_12_R1) arena).setWorld(arena.getStartLocation());
+    } else if (plugin.is1_13_R1()) {
+      ((ArenaInitializer1_13_R1) arena).setWorld(arena.getStartLocation());
+    } else {
+      ((ArenaInitializer1_13_R2) arena).setWorld(arena.getStartLocation());
+    }
+  }
+
+  @Deprecated //move somewhere else
+  public static void addExperience(Player player, int i) {
+    User user = plugin.getUserManager().getUser(player);
+    user.addStat(StatsStorage.StatisticType.XP, i);
+    if (player.hasPermission(PermissionsManager.getVip())) {
+      user.addStat(StatsStorage.StatisticType.XP, (int) Math.ceil(i / 2));
+    }
+    if (player.hasPermission(PermissionsManager.getMvp())) {
+      user.addStat(StatsStorage.StatisticType.XP, (int) Math.ceil(i / 2));
+    }
+    if (player.hasPermission(PermissionsManager.getElite())) {
+      user.addStat(StatsStorage.StatisticType.XP, (int) Math.ceil(i / 2));
+    }
+    ArenaUtils.updateLevelStat(player, ArenaRegistry.getArena(player));
+  }
+
+  @Deprecated //move somewhere else
+  public static void addStat(Player player, StatsStorage.StatisticType stat) {
+    User user = plugin.getUserManager().getUser(player);
+    user.addStat(stat, 1);
+    ArenaUtils.updateLevelStat(player, ArenaRegistry.getArena(player));
   }
 
 }

@@ -1,6 +1,6 @@
 /*
- * Village Defense 4 - Protect villagers from hordes of zombies
- * Copyright (C) 2018  Plajer's Lair - maintained by Plajer and Tigerpanzer
+ * Village Defense - Protect villagers from hordes of zombies
+ * Copyright (C) 2019  Plajer's Lair - maintained by Plajer and Tigerpanzer
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -37,7 +37,6 @@ import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.api.StatsStorage;
 import pl.plajer.villagedefense.arena.Arena;
 import pl.plajer.villagedefense.arena.ArenaRegistry;
-import pl.plajer.villagedefense.handlers.ChatManager;
 import pl.plajer.villagedefense.handlers.language.LanguageManager;
 import pl.plajer.villagedefense.user.User;
 import pl.plajerlair.core.services.exception.ReportedException;
@@ -92,7 +91,7 @@ public class ChatEvents implements Listener {
             eventMessage = eventMessage.replaceAll(Pattern.quote(regexChar), "");
           }
         }
-        message = formatChatPlaceholders(LanguageManager.getLanguageMessage("In-Game.Game-Chat-Format"), plugin.getUserManager().getUser(event.getPlayer().getUniqueId()), eventMessage);
+        message = formatChatPlaceholders(LanguageManager.getLanguageMessage("In-Game.Game-Chat-Format"), plugin.getUserManager().getUser(event.getPlayer()), eventMessage);
         for (Player player : arena.getPlayers()) {
           player.sendMessage(message);
         }
@@ -101,7 +100,7 @@ public class ChatEvents implements Listener {
       }
       event.getRecipients().clear();
       event.getRecipients().addAll(new ArrayList<>(arena.getPlayers()));
-      String message = event.getMessage().replace("%kit%", plugin.getUserManager().getUser(event.getPlayer().getUniqueId()).getKit().getName());
+      String message = event.getMessage().replace("%kit%", plugin.getUserManager().getUser(event.getPlayer()).getKit().getName());
       if (plugin.getServer().getPluginManager().isPluginEnabled("PlaceholderAPI") && PlaceholderAPI.containsPlaceholders(message)) {
         message = PlaceholderAPI.setPlaceholders(event.getPlayer(), message);
       }
@@ -113,17 +112,17 @@ public class ChatEvents implements Listener {
 
   private String formatChatPlaceholders(String message, User user, String saidMessage) {
     String formatted = message;
-    formatted = ChatManager.colorRawMessage(formatted);
+    formatted = plugin.getChatManager().colorRawMessage(formatted);
     formatted = StringUtils.replace(formatted, "%level%", String.valueOf(user.getStat(StatsStorage.StatisticType.LEVEL)));
     if (user.isSpectator()) {
-      formatted = StringUtils.replace(formatted, "%kit%", ChatManager.colorMessage("In-Game.Dead-Tag-On-Death"));
+      formatted = StringUtils.replace(formatted, "%kit%", plugin.getChatManager().colorMessage("In-Game.Dead-Tag-On-Death"));
     } else {
       formatted = StringUtils.replace(formatted, "%kit%", user.getKit().getName());
     }
-    formatted = StringUtils.replace(formatted, "%player%", user.toPlayer().getName());
+    formatted = StringUtils.replace(formatted, "%player%", user.getPlayer().getName());
     formatted = StringUtils.replace(formatted, "%message%", saidMessage);
     if (plugin.getServer().getPluginManager().isPluginEnabled("PlaceholderAPI") && PlaceholderAPI.containsPlaceholders(formatted)) {
-      formatted = PlaceholderAPI.setPlaceholders(user.toPlayer(), formatted);
+      formatted = PlaceholderAPI.setPlaceholders(user.getPlayer(), formatted);
     }
     return formatted;
   }

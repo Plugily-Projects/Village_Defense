@@ -1,6 +1,6 @@
 /*
- * Village Defense 4 - Protect villagers from hordes of zombies
- * Copyright (C) 2018  Plajer's Lair - maintained by Plajer and Tigerpanzer
+ * Village Defense - Protect villagers from hordes of zombies
+ * Copyright (C) 2019  Plajer's Lair - maintained by Plajer and Tigerpanzer
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,9 +29,6 @@ import java.util.Random;
 import java.util.Set;
 import java.util.UUID;
 
-import me.clip.placeholderapi.PlaceholderAPI;
-
-import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -57,18 +54,17 @@ import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.api.StatsStorage;
 import pl.plajer.villagedefense.api.event.game.VillageGameStartEvent;
 import pl.plajer.villagedefense.api.event.game.VillageGameStateChangeEvent;
-import pl.plajer.villagedefense.handlers.ChatManager;
-import pl.plajer.villagedefense.handlers.PermissionsManager;
-import pl.plajer.villagedefense.handlers.language.LanguageManager;
-import pl.plajer.villagedefense.handlers.reward.Reward;
-import pl.plajer.villagedefense.kits.kitapi.KitRegistry;
+import pl.plajer.villagedefense.arena.managers.ScoreboardManager;
+import pl.plajer.villagedefense.arena.managers.ShopManager;
+import pl.plajer.villagedefense.arena.managers.ZombieSpawnManager;
+import pl.plajer.villagedefense.arena.options.ArenaOption;
+import pl.plajer.villagedefense.handlers.reward.GameReward;
 import pl.plajer.villagedefense.user.User;
 import pl.plajer.villagedefense.utils.Utils;
 import pl.plajerlair.core.debug.Debugger;
 import pl.plajerlair.core.debug.LogLevel;
 import pl.plajerlair.core.services.exception.ReportedException;
 import pl.plajerlair.core.utils.ConfigUtils;
-import pl.plajerlair.core.utils.GameScoreboard;
 import pl.plajerlair.core.utils.InventoryUtils;
 import pl.plajerlair.core.utils.XMaterial;
 
@@ -85,37 +81,35 @@ public abstract class Arena extends BukkitRunnable {
   private final List<IronGolem> ironGolems = new ArrayList<>();
   private final LinkedHashMap<Location, Byte> doorBlocks = new LinkedHashMap<>();
   private final List<Location> villagerSpawnPoints = new ArrayList<>();
-  private final Random random;
+  private final Random random = new Random();
   private final List<Zombie> glitchedZombies = new ArrayList<>();
   private final Map<Zombie, Location> zombieCheckerLocations = new HashMap<>();
   private final Set<UUID> players = new HashSet<>();
-  private int zombiesToSpawn;
+  private ShopManager shopManager;
+  private ZombieSpawnManager zombieSpawnManager;
+  private ScoreboardManager scoreboardManager;
   private boolean fighting = false;
-  private int wave;
-  private int barToggle = 0;
-  private int rottenFleshAmount;
-  private int rottenFleshLevel;
-  private int zombieChecker = 0;
-  private int spawnCounter = 0;
-  private int totalKilledZombies = 0;
-  private int totalOrbsSpent = 0;
-  private ArenaState arenaState;
+  private ArenaState arenaState = ArenaState.WAITING_FOR_PLAYERS;
   private BossBar gameBar;
-  private int minimumPlayers = 2;
-  private int maximumPlayers = 10;
   private String mapName = "";
-  private int timer;
-  private String ID;
+  private String id;
+  //all arena values that are integers, contains constant and floating values
+  private Map<ArenaOption, Integer> arenaOptions = new HashMap<>();
   //instead of 3 location fields we use map with GameLocation enum
   private Map<GameLocation, Location> gameLocations = new HashMap<>();
   private boolean ready = true;
+  private boolean forceStart = false;
 
-  public Arena(String ID, Main plugin) {
+  public Arena(String id, Main plugin) {
     this.plugin = plugin;
-    arenaState = ArenaState.WAITING_FOR_PLAYERS;
-    this.ID = ID;
-    random = new Random();
-    gameBar = Bukkit.createBossBar(ChatManager.colorMessage("Bossbar.Main-Title"), BarColor.BLUE, BarStyle.SOLID);
+    this.id = id;
+    gameBar = Bukkit.createBossBar(plugin.getChatManager().colorMessage("Bossbar.Main-Title"), BarColor.BLUE, BarStyle.SOLID);
+    shopManager = new ShopManager(this);
+    zombieSpawnManager = new ZombieSpawnManager(this);
+    scoreboardManager = new ScoreboardManager(this);
+    for (ArenaOption option : ArenaOption.values()) {
+      arenaOptions.put(option, option.getDefaultValue());
+    }
   }
 
   public boolean isReady() {
@@ -126,33 +120,8 @@ public abstract class Arena extends BukkitRunnable {
     this.ready = ready;
   }
 
-  /**
-   * Get current rotten flesh level in arena.
-   *
-   * @return rotten flesh level (additional hearts)
-   */
-  public int getRottenFleshLevel() {
-    return rottenFleshLevel;
-  }
-
-  void setRottenFleshLevel(int rottenFleshLevel) {
-    this.rottenFleshLevel = rottenFleshLevel;
-  }
-
-  public int getTotalKilledZombies() {
-    return totalKilledZombies;
-  }
-
-  public void setTotalKilledZombies(int totalKilledZombies) {
-    this.totalKilledZombies = totalKilledZombies;
-  }
-
-  public int getTotalOrbsSpent() {
-    return totalOrbsSpent;
-  }
-
-  public void setTotalOrbsSpent(int totalOrbsSpent) {
-    this.totalOrbsSpent = totalOrbsSpent;
+  public ShopManager getShopManager() {
+    return shopManager;
   }
 
   /**
@@ -162,7 +131,7 @@ public abstract class Arena extends BukkitRunnable {
    * @param p      player
    */
   public void doBarAction(BarAction action, Player p) {
-    updateScoreboard();
+    scoreboardManager.updateScoreboard();
     if (!plugin.getConfigPreferences().getOption(ConfigPreferences.Option.BOSSBAR_ENABLED)) {
       return;
     }
@@ -172,6 +141,8 @@ public abstract class Arena extends BukkitRunnable {
         break;
       case REMOVE:
         gameBar.removePlayer(p);
+        break;
+      default:
         break;
     }
   }
@@ -191,7 +162,7 @@ public abstract class Arena extends BukkitRunnable {
       if (getPlayers().size() == 0 && getArenaState() == ArenaState.WAITING_FOR_PLAYERS) {
         return;
       }
-      updateScoreboard();
+      scoreboardManager.updateScoreboard();
       switch (getArenaState()) {
         case WAITING_FOR_PLAYERS:
           if (plugin.getConfigPreferences().getOption(ConfigPreferences.Option.BUNGEE_ENABLED)) {
@@ -200,12 +171,12 @@ public abstract class Arena extends BukkitRunnable {
           if (getPlayers().size() < getMinimumPlayers()) {
             if (getTimer() <= 0) {
               setTimer(15);
-              ChatManager.broadcast(this, ChatManager.formatMessage(this, ChatManager.colorMessage("In-Game.Messages.Lobby-Messages.Waiting-For-Players"), getMinimumPlayers()));
+              plugin.getChatManager().broadcast(this, plugin.getChatManager().formatMessage(this, plugin.getChatManager().colorMessage("In-Game.Messages.Lobby-Messages.Waiting-For-Players"), getMinimumPlayers()));
               return;
             }
           } else {
-            gameBar.setTitle(ChatManager.colorMessage("Bossbar.Waiting-For-Players"));
-            ChatManager.broadcast(this, ChatManager.colorMessage("In-Game.Messages.Lobby-Messages.Enough-Players-To-Start"));
+            gameBar.setTitle(plugin.getChatManager().colorMessage("Bossbar.Waiting-For-Players"));
+            plugin.getChatManager().broadcast(this, plugin.getChatManager().colorMessage("In-Game.Messages.Lobby-Messages.Enough-Players-To-Start"));
             setArenaState(ArenaState.STARTING);
             setTimer(plugin.getConfig().getInt("Starting-Waiting-Time", 60));
             this.showPlayers();
@@ -214,16 +185,16 @@ public abstract class Arena extends BukkitRunnable {
           setTimer(getTimer() - 1);
           break;
         case STARTING:
-          gameBar.setTitle(ChatManager.colorMessage("Bossbar.Starting-In").replace("%time%", String.valueOf(getTimer())));
+          gameBar.setTitle(plugin.getChatManager().colorMessage("Bossbar.Starting-In").replace("%time%", String.valueOf(getTimer())));
           gameBar.setProgress(getTimer() / plugin.getConfig().getDouble("Starting-Waiting-Time", 60));
           for (Player player : getPlayers()) {
             player.setExp((float) (getTimer() / plugin.getConfig().getDouble("Starting-Waiting-Time", 60)));
             player.setLevel(getTimer());
           }
-          if (getPlayers().size() < getMinimumPlayers()) {
-            gameBar.setTitle(ChatManager.colorMessage("Bossbar.Waiting-For-Players"));
+          if (getPlayers().size() < getMinimumPlayers() && !forceStart) {
+            gameBar.setTitle(plugin.getChatManager().colorMessage("Bossbar.Waiting-For-Players"));
             gameBar.setProgress(1.0);
-            ChatManager.broadcast(this, ChatManager.formatMessage(this, ChatManager.colorMessage("In-Game.Messages.Lobby-Messages.Waiting-For-Players"), getMinimumPlayers()));
+            plugin.getChatManager().broadcast(this, plugin.getChatManager().formatMessage(this, plugin.getChatManager().colorMessage("In-Game.Messages.Lobby-Messages.Waiting-For-Players"), getMinimumPlayers()));
             setArenaState(ArenaState.WAITING_FOR_PLAYERS);
             Bukkit.getPluginManager().callEvent(new VillageGameStartEvent(this));
             setTimer(15);
@@ -233,7 +204,8 @@ public abstract class Arena extends BukkitRunnable {
             }
             break;
           }
-          if (getTimer() == 0) {
+          if (getTimer() == 0 || forceStart) {
+            spawnVillagers();
             VillageGameStartEvent villageGameStartEvent = new VillageGameStartEvent(this);
             Bukkit.getPluginManager().callEvent(villageGameStartEvent);
             setArenaState(ArenaState.IN_GAME);
@@ -245,34 +217,33 @@ public abstract class Arena extends BukkitRunnable {
               player.setLevel(0);
               player.getInventory().clear();
               player.setGameMode(GameMode.SURVIVAL);
-              User user = plugin.getUserManager().getUser(player.getUniqueId());
+              User user = plugin.getUserManager().getUser(player);
               user.setStat(StatsStorage.StatisticType.ORBS, plugin.getConfig().getInt("Orbs-Starting-Amount", 20));
               ArenaUtils.hidePlayersOutsideTheGame(player, this);
-              if (plugin.getUserManager().getUser(player.getUniqueId()).getKit() != null) {
-                plugin.getUserManager().getUser(player.getUniqueId()).getKit().giveKitItems(player);
-              } else {
-                KitRegistry.getDefaultKit().giveKitItems(player);
-              }
+              plugin.getUserManager().getUser(player).getKit().giveKitItems(player);
               player.updateInventory();
-              addStat(player, StatsStorage.StatisticType.GAMES_PLAYED);
-              addExperience(player, 10);
+              ArenaUtils.addStat(player, StatsStorage.StatisticType.GAMES_PLAYED);
+              ArenaUtils.addExperience(player, 10);
               setTimer(plugin.getConfig().getInt("Cooldown-Before-Next-Wave", 25));
-              player.sendMessage(ChatManager.PLUGIN_PREFIX + ChatManager.colorMessage("In-Game.Messages.Lobby-Messages.Game-Started"));
+              player.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage("In-Game.Messages.Lobby-Messages.Game-Started"));
             }
             fighting = false;
+          }
+          if (forceStart) {
+            forceStart = false;
           }
           setTimer(getTimer() - 1);
           break;
         case IN_GAME:
-          if (barToggle > 5) {
-            gameBar.setTitle(ChatManager.colorMessage("Bossbar.In-Game-Wave").replace("%wave%", String.valueOf(getWave())));
-            barToggle++;
-            if (barToggle > 10) {
-              barToggle = 0;
+          if (getOption(ArenaOption.BAR_TOGGLE_VALUE) > 5) {
+            gameBar.setTitle(plugin.getChatManager().colorMessage("Bossbar.In-Game-Wave").replace("%wave%", String.valueOf(getWave())));
+            addOptionValue(ArenaOption.BAR_TOGGLE_VALUE, 1);
+            if (getOption(ArenaOption.BAR_TOGGLE_VALUE) > 10) {
+              setOptionValue(ArenaOption.BAR_TOGGLE_VALUE, 0);
             }
           } else {
-            gameBar.setTitle(ChatManager.colorMessage("Bossbar.In-Game-Info").replace("%wave%", String.valueOf(getWave())));
-            barToggle++;
+            gameBar.setTitle(plugin.getChatManager().colorMessage("Bossbar.In-Game-Info").replace("%wave%", String.valueOf(getWave())));
+            addOptionValue(ArenaOption.BAR_TOGGLE_VALUE, 1);
           }
           if (plugin.getConfigPreferences().getOption(ConfigPreferences.Option.BUNGEE_ENABLED)) {
             if (getMaximumPlayers() <= getPlayers().size()) {
@@ -281,8 +252,8 @@ public abstract class Arena extends BukkitRunnable {
               plugin.getServer().setWhitelist(false);
             }
           }
-          zombieChecker++;
-          if (zombieChecker >= 60) {
+          addOptionValue(ArenaOption.ZOMBIE_GLITCH_CHECKER, 1);
+          if (getOption(ArenaOption.ZOMBIE_GLITCH_CHECKER) >= 60) {
             Iterator<Villager> villagerIterator = getVillagers().iterator();
             while (villagerIterator.hasNext()) {
               Villager villager = villagerIterator.next();
@@ -291,7 +262,7 @@ public abstract class Arena extends BukkitRunnable {
                 removeVillager(villager);
               }
             }
-            zombieChecker = 0;
+            setOptionValue(ArenaOption.ZOMBIE_GLITCH_CHECKER, 0);
 
             Iterator<Zombie> zombieIterator = getZombies().iterator();
             while (zombieIterator.hasNext()) {
@@ -330,25 +301,26 @@ public abstract class Arena extends BukkitRunnable {
               fighting = false;
               ArenaManager.endWave(this);
             }
-            if (zombiesToSpawn > 0) {
-              spawnZombies();
+            if (getOption(ArenaOption.ZOMBIES_TO_SPAWN) > 0) {
+              zombieSpawnManager.spawnZombies();
               setTimer(500);
             } else {
               if (getTimer() == 0) {
                 if (getZombiesLeft() <= 5) {
                   clearZombies();
-                  zombiesToSpawn = 0;
-                  ChatManager.broadcast(this, ChatManager.colorMessage("In-Game.Messages.Zombie-Got-Stuck-In-The-Map"));
+                  setOptionValue(ArenaOption.ZOMBIES_TO_SPAWN, 0);
+                  plugin.getChatManager().broadcast(this, plugin.getChatManager().colorMessage("In-Game.Messages.Zombie-Got-Stuck-In-The-Map"));
                 } else {
                   getZombies().clear();
+                  setOptionValue(ArenaOption.ZOMBIES_TO_SPAWN, 0);
                   for (int i = getZombiesLeft(); i > 0; i++) {
                     spawnFastZombie(random);
                   }
                 }
               }
             }
-            if (zombiesToSpawn < 0) {
-              zombiesToSpawn = 0;
+            if (getOption(ArenaOption.ZOMBIES_TO_SPAWN) < 0) {
+              setOptionValue(ArenaOption.ZOMBIES_TO_SPAWN, 0);
             }
             setTimer(getTimer() - 1);
 
@@ -365,14 +337,14 @@ public abstract class Arena extends BukkitRunnable {
             plugin.getServer().setWhitelist(false);
           }
           if (getTimer() <= 0) {
-            gameBar.setTitle(ChatManager.colorMessage("Bossbar.Game-Ended"));
+            gameBar.setTitle(plugin.getChatManager().colorMessage("Bossbar.Game-Ended"));
             clearVillagers();
             clearZombies();
             clearGolems();
             clearWolfs();
 
             for (Player player : getPlayers()) {
-              plugin.getUserManager().getUser(player.getUniqueId()).removeScoreboard();
+              plugin.getUserManager().getUser(player).removeScoreboard();
               player.setGameMode(GameMode.SURVIVAL);
               for (Player players : Bukkit.getOnlinePlayers()) {
                 player.showPlayer(players);
@@ -404,13 +376,13 @@ public abstract class Arena extends BukkitRunnable {
                 InventoryUtils.loadInventory(plugin, player);
               }
             }
-            ChatManager.broadcast(this, ChatManager.colorMessage("Commands.Teleported-To-The-Lobby"));
+            plugin.getChatManager().broadcast(this, plugin.getChatManager().colorMessage("Commands.Teleported-To-The-Lobby"));
 
             for (User user : plugin.getUserManager().getUsers(this)) {
               user.setSpectator(false);
               user.setStat(StatsStorage.StatisticType.ORBS, 0);
             }
-            plugin.getRewardsHandler().performReward(this, Reward.RewardType.END_GAME);
+            plugin.getRewardsHandler().performReward(this, GameReward.RewardType.END_GAME);
             players.clear();
             if (plugin.getConfigPreferences().getOption(ConfigPreferences.Option.BUNGEE_ENABLED)) {
               if (ConfigUtils.getConfig(plugin, "bungee").getBoolean("Shutdown-When-Game-Ends")) {
@@ -429,9 +401,9 @@ public abstract class Arena extends BukkitRunnable {
 
           setArenaState(ArenaState.WAITING_FOR_PLAYERS);
 
-          wave = 1;
-          totalKilledZombies = 0;
-          totalOrbsSpent = 0;
+          setOptionValue(ArenaOption.WAVE, 1);
+          setOptionValue(ArenaOption.TOTAL_KILLED_ZOMBIES, 0);
+          setOptionValue(ArenaOption.TOTAL_ORBS_SPENT, 0);
           if (plugin.getConfigPreferences().getOption(ConfigPreferences.Option.BUNGEE_ENABLED)) {
             for (Player player : plugin.getServer().getOnlinePlayers()) {
               this.addPlayer(player);
@@ -446,50 +418,7 @@ public abstract class Arena extends BukkitRunnable {
     }
   }
 
-  private void updateScoreboard() {
-    if (getPlayers().size() == 0 || getArenaState() == ArenaState.RESTARTING) {
-      return;
-    }
-    GameScoreboard scoreboard;
-    for (Player p : getPlayers()) {
-      User user = plugin.getUserManager().getUser(p.getUniqueId());
-      if (getArenaState() == ArenaState.ENDING) {
-        user.removeScoreboard();
-        return;
-      }
-      scoreboard = new GameScoreboard("PL_VD3", "PL_CR", ChatManager.colorMessage("Scoreboard.Title"));
-      List<String> lines;
-      if (getArenaState() == ArenaState.IN_GAME) {
-        lines = LanguageManager.getLanguageList("Scoreboard.Content.Playing" + (fighting ? "" : "-Waiting"));
-      } else {
-        lines = LanguageManager.getLanguageList("Scoreboard.Content." + getArenaState().getFormattedName());
-      }
-      for (String line : lines) {
-        scoreboard.addRow(formatScoreboardLine(line, user));
-      }
-      scoreboard.finish();
-      scoreboard.display(p);
-    }
-  }
-
-  private String formatScoreboardLine(String line, User user) {
-    String formattedLine = line;
-    formattedLine = StringUtils.replace(formattedLine, "%TIME%", String.valueOf(getTimer()));
-    formattedLine = StringUtils.replace(formattedLine, "%PLAYERS%", String.valueOf(getPlayers().size()));
-    formattedLine = StringUtils.replace(formattedLine, "%MIN_PLAYERS%", String.valueOf(getMinimumPlayers()));
-    formattedLine = StringUtils.replace(formattedLine, "%PLAYERS_LEFT%", String.valueOf(getPlayersLeft().size()));
-    formattedLine = StringUtils.replace(formattedLine, "%VILLAGERS%", String.valueOf(getVillagers().size()));
-    formattedLine = StringUtils.replace(formattedLine, "%ORBS%", String.valueOf(user.getStat(StatsStorage.StatisticType.ORBS)));
-    formattedLine = StringUtils.replace(formattedLine, "%ZOMBIES%", String.valueOf(getZombiesLeft()));
-    formattedLine = StringUtils.replace(formattedLine, "%ROTTEN_FLESH%", String.valueOf(getRottenFlesh()));
-    formattedLine = ChatManager.colorRawMessage(formattedLine);
-    if (plugin.getServer().getPluginManager().isPluginEnabled("PlaceholderAPI")) {
-      PlaceholderAPI.setPlaceholders(user.toPlayer(), formattedLine);
-    }
-    return formattedLine;
-  }
-
-  private void restoreMap() {
+  public void restoreMap() {
     this.restoreDoors();
     for (Zombie zombie : getZombies()) {
       zombie.remove();
@@ -507,8 +436,6 @@ public abstract class Arena extends BukkitRunnable {
     clearGolems();
     clearVillagers();
     clearWolfs();
-    spawnVillagers();
-
   }
 
   private void spawnVillagers() {
@@ -522,11 +449,15 @@ public abstract class Arena extends BukkitRunnable {
     for (Location location : getVillagerSpawns()) {
       spawnVillager(location);
     }
-    if (getVillagers().size() != 0) {
-      spawnVillagers();
-    } else {
-      Debugger.debug(LogLevel.WARN, "Villager spawns can't be set up!");
+    if (getVillagers().size() == 0) {
+      Debugger.debug(LogLevel.WARN, "There was a problem with spawning villagers for arena " + id + "! Are villager spawns set in safe and valid locations?");
+      return;
     }
+    spawnVillagers();
+  }
+
+  public boolean isFighting() {
+    return fighting;
   }
 
   /**
@@ -536,7 +467,7 @@ public abstract class Arena extends BukkitRunnable {
    * @see ArenaRegistry#getArena(String)
    */
   public String getID() {
-    return ID;
+    return id;
   }
 
   /**
@@ -545,7 +476,7 @@ public abstract class Arena extends BukkitRunnable {
    * @return minimum players needed to start arena
    */
   public int getMinimumPlayers() {
-    return minimumPlayers;
+    return getOption(ArenaOption.MINIMUM_PLAYERS);
   }
 
   /**
@@ -554,13 +485,13 @@ public abstract class Arena extends BukkitRunnable {
    * @param minimumPlayers players needed to start arena
    */
   public void setMinimumPlayers(int minimumPlayers) {
-    this.minimumPlayers = minimumPlayers;
+    setOptionValue(ArenaOption.MINIMUM_PLAYERS, minimumPlayers);
   }
 
   /**
    * Get arena map name.
    *
-   * @return arena map name, [b]it's not arena ID[/b]
+   * @return arena map name, [b]it's not arena id[/b]
    * @see #getID()
    */
   public String getMapName() {
@@ -570,7 +501,7 @@ public abstract class Arena extends BukkitRunnable {
   /**
    * Set arena map name.
    *
-   * @param mapname new map name, [b]it's not arena ID[/b]
+   * @param mapname new map name, [b]it's not arena id[/b]
    */
   public void setMapName(String mapname) {
     this.mapName = mapname;
@@ -582,7 +513,7 @@ public abstract class Arena extends BukkitRunnable {
    * @return timer of lobby time / time to next wave
    */
   public int getTimer() {
-    return timer;
+    return getOption(ArenaOption.TIMER);
   }
 
   /**
@@ -591,7 +522,7 @@ public abstract class Arena extends BukkitRunnable {
    * @param timer timer of lobby / time to next wave
    */
   public void setTimer(int timer) {
-    this.timer = timer;
+    setOptionValue(ArenaOption.TIMER, timer);
   }
 
   /**
@@ -600,7 +531,7 @@ public abstract class Arena extends BukkitRunnable {
    * @return maximum players arena can handle
    */
   public int getMaximumPlayers() {
-    return maximumPlayers;
+    return getOption(ArenaOption.MAXIMUM_PLAYERS);
   }
 
   /**
@@ -609,7 +540,7 @@ public abstract class Arena extends BukkitRunnable {
    * @param maximumPlayers how many players arena can handle
    */
   public void setMaximumPlayers(int maximumPlayers) {
-    this.maximumPlayers = maximumPlayers;
+    setOptionValue(ArenaOption.MAXIMUM_PLAYERS, maximumPlayers);
   }
 
   /**
@@ -654,7 +585,6 @@ public abstract class Arena extends BukkitRunnable {
   }
 
   public void teleportToLobby(Player player) {
-    Location location = getLobbyLocation();
     player.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(20.0);
     player.setFoodLevel(20);
     player.setFlying(false);
@@ -662,6 +592,7 @@ public abstract class Arena extends BukkitRunnable {
     for (PotionEffect effect : player.getActivePotionEffects()) {
       player.removePotionEffect(effect.getType());
     }
+    Location location = getLobbyLocation();
     if (location == null) {
       Debugger.debug(LogLevel.WARN, "Lobby location of arena " + getID() + " doesn't exist!");
     }
@@ -776,9 +707,6 @@ public abstract class Arena extends BukkitRunnable {
     Debugger.debug(LogLevel.INFO, "Game instance started, arena " + this.getID());
     this.runTaskTimer(plugin, 20L, 20L);
     this.setArenaState(ArenaState.RESTARTING);
-    for (Location location : villagerSpawnPoints) {
-      plugin.getChunkManager().keepLoaded(location.getChunk());
-    }
   }
 
   /**
@@ -837,110 +765,8 @@ public abstract class Arena extends BukkitRunnable {
     zombies.clear();
   }
 
-  private int getZombiesLeft() {
-    return zombiesToSpawn + getZombies().size();
-  }
-
-  private void spawnZombies() {
-    if (getZombies() == null || getZombies().size() <= 0) {
-      for (int i = 0; i <= wave; i++) {
-        if (zombiesToSpawn > 0) {
-          spawnFastZombie(random);
-        }
-      }
-    }
-    spawnCounter++;
-    if (spawnCounter == 20) {
-      spawnCounter = 0;
-    }
-    if (zombiesToSpawn < 5 && zombiesToSpawn > 0) {
-      spawnFastZombie(random);
-      return;
-    }
-    if (spawnCounter == 5) {
-      if (random.nextInt(3) != 2) {
-        for (int i = 0; i <= wave; i++) {
-          if (zombiesToSpawn > 0) {
-            if (wave > 23) {
-              if (random.nextInt(4) == 1) {
-                spawnVillagerSlayer(random);
-              }
-            } else if (wave > 20) {
-              if (random.nextInt(3) == 1) {
-                spawnKnockbackResistantZombies(random);
-              }
-            } else if (wave > 14) {
-              if (random.nextInt(2) == 1) {
-                spawnHardZombie(random);
-              }
-            }
-            if (wave > 7) {
-              if (random.nextInt(2) == 1) {
-                spawnSoftHardZombie(random);
-              }
-            } else {
-              spawnFastZombie(random);
-            }
-          }
-        }
-      } else {
-        for (int i = 0; i <= wave; i++) {
-          if (zombiesToSpawn > 0) {
-            spawnBabyZombie(random);
-          }
-        }
-      }
-    }
-    if (spawnCounter == 15 && wave > 4) {
-      if (wave > 8) {
-        for (int i = 0; i < (wave - 7); i++) {
-          if (zombiesToSpawn > 0) {
-            spawnHardZombie(random);
-          }
-        }
-      } else {
-        for (int i = 0; i < (wave - 3); i++) {
-          if (zombiesToSpawn > 0) {
-            spawnSoftHardZombie(random);
-          }
-        }
-      }
-
-    }
-
-    if (random.nextInt(8) == 0 && wave > 10) {
-      for (int i = 0; i < (wave - 8); i++) {
-        if (zombiesToSpawn > 0) {
-          spawnPlayerBuster(random);
-        }
-      }
-    }
-    if (random.nextInt(8) == 0 && wave > 7) {
-      for (int i = 0; i < (wave - 5); i++) {
-        if (zombiesToSpawn > 0) {
-          spawnHalfInvisibleZombie(random);
-        }
-      }
-    }
-    if (random.nextInt(8) == 0 && wave > 15) {
-      for (int i = 0; i < (wave - 13); i++) {
-        if (zombiesToSpawn > 0) {
-          spawnHalfInvisibleZombie(random);
-        }
-      }
-    }
-    if (random.nextInt(8) == 0 && wave > 23) {
-      if (zombiesToSpawn > 0) {
-        spawnHalfInvisibleZombie(random);
-      }
-    }
-    if (random.nextInt(8) == 0 && getIronGolems().size() > 0 && wave >= 6) {
-      for (int i = 0; i < (wave - 4); i++) {
-        if (zombiesToSpawn > 0) {
-          spawnGolemBuster(random);
-        }
-      }
-    }
+  public int getZombiesLeft() {
+    return getOption(ArenaOption.ZOMBIES_TO_SPAWN) + getZombies().size();
   }
 
   /**
@@ -949,17 +775,17 @@ public abstract class Arena extends BukkitRunnable {
    * @return current game wave
    */
   public int getWave() {
-    return wave;
+    return getOption(ArenaOption.WAVE);
   }
 
   /**
    * Should be used with endWave.
    *
-   * @param i new game wave
+   * @param wave new game wave
    * @see ArenaManager#endWave(Arena)
    */
-  public void setWave(int i) {
-    wave = i;
+  public void setWave(int wave) {
+    setOptionValue(ArenaOption.WAVE, wave);
   }
 
   public abstract void spawnVillager(Location location);
@@ -985,6 +811,10 @@ public abstract class Arena extends BukkitRunnable {
   public abstract void spawnKnockbackResistantZombies(Random random);
 
   public abstract void spawnVillagerSlayer(Random random);
+
+  public void setForceStart(boolean forceStart) {
+    this.forceStart = forceStart;
+  }
 
   protected void addWolf(Wolf wolf) {
     wolfs.add(wolf);
@@ -1031,21 +861,13 @@ public abstract class Arena extends BukkitRunnable {
     this.doorBlocks.put(location, data);
   }
 
-  public void addRottenFlesh(int i) {
-    rottenFleshAmount = rottenFleshAmount + i;
-  }
-
-  private int getRottenFlesh() {
-    return rottenFleshAmount;
-  }
-
   public boolean checkLevelUpRottenFlesh() {
-    if (rottenFleshLevel == 0 && rottenFleshAmount > 50) {
-      rottenFleshLevel = 1;
+    if (getOption(ArenaOption.ROTTEN_FLESH_LEVEL) == 0 && getOption(ArenaOption.ROTTEN_FLESH_AMOUNT) > 50) {
+      setOptionValue(ArenaOption.ROTTEN_FLESH_LEVEL, 1);
       return true;
     }
-    if (rottenFleshLevel * 10 * getPlayers().size() + 10 < rottenFleshAmount) {
-      rottenFleshLevel++;
+    if (getOption(ArenaOption.ROTTEN_FLESH_LEVEL) * 10 * getPlayers().size() + 10 < getOption(ArenaOption.ROTTEN_FLESH_AMOUNT)) {
+      addOptionValue(ArenaOption.ROTTEN_FLESH_LEVEL, 1);
       return true;
     }
     return false;
@@ -1053,18 +875,6 @@ public abstract class Arena extends BukkitRunnable {
 
   Map<Zombie, Location> getZombieCheckerLocations() {
     return zombieCheckerLocations;
-  }
-
-  protected void subtractZombiesToSpawn() {
-    this.zombiesToSpawn--;
-  }
-
-  void setRottenFleshAmount(int rottenFleshAmount) {
-    this.rottenFleshAmount = rottenFleshAmount;
-  }
-
-  void setZombieAmount() {
-    zombiesToSpawn = (int) Math.ceil((getPlayers().size() * 0.5) * (wave * wave) / 2);
   }
 
   void addPlayer(Player player) {
@@ -1078,11 +888,11 @@ public abstract class Arena extends BukkitRunnable {
     players.remove(player.getUniqueId());
   }
 
-  List<Player> getPlayersLeft() {
+  public List<Player> getPlayersLeft() {
     List<Player> players = new ArrayList<>();
     for (User user : plugin.getUserManager().getUsers(this)) {
       if (!user.isSpectator()) {
-        players.add(user.toPlayer());
+        players.add(user.getPlayer());
       }
     }
     return players;
@@ -1099,27 +909,6 @@ public abstract class Arena extends BukkitRunnable {
 
   protected void addZombie(Zombie zombie) {
     zombies.add(zombie);
-  }
-
-  void addExperience(Player player, int i) {
-    User user = plugin.getUserManager().getUser(player.getUniqueId());
-    user.addStat(StatsStorage.StatisticType.XP, i);
-    if (player.hasPermission(PermissionsManager.getVip())) {
-      user.addStat(StatsStorage.StatisticType.XP, (int) Math.ceil(i / 2));
-    }
-    if (player.hasPermission(PermissionsManager.getMvp())) {
-      user.addStat(StatsStorage.StatisticType.XP, (int) Math.ceil(i / 2));
-    }
-    if (player.hasPermission(PermissionsManager.getElite())) {
-      user.addStat(StatsStorage.StatisticType.XP, (int) Math.ceil(i / 2));
-    }
-    ArenaUtils.updateLevelStat(player, this);
-  }
-
-  void addStat(Player player, StatsStorage.StatisticType stat) {
-    User user = plugin.getUserManager().getUser(player.getUniqueId());
-    user.addStat(stat, 1);
-    ArenaUtils.updateLevelStat(player, this);
   }
 
   protected void addVillager(Villager villager) {
@@ -1147,10 +936,10 @@ public abstract class Arena extends BukkitRunnable {
     for (Location location : doorBlocks.keySet()) {
       Block block = location.getBlock();
       Byte doorData = doorBlocks.get(location);
-      //todo check
       if (plugin.is1_11_R1() || plugin.is1_12_R1()) {
         int id = Material.WOODEN_DOOR.getId();
         block.setTypeIdAndData(id, doorData, false);
+        i++;
       } else {
         //idk how does this work
         try {
@@ -1169,6 +958,7 @@ public abstract class Arena extends BukkitRunnable {
             doorBlockState.setType(doorBlockData.getItemType());
             doorBlockState.setData(doorBlockData);
             doorBlockState.update(true);
+            i++;
             continue;
           }
 
@@ -1190,6 +980,18 @@ public abstract class Arena extends BukkitRunnable {
     if (i != doorBlocks.size()) {
       Debugger.debug(LogLevel.WARN, "Some doors has failed to load for arena " + getID() + "! Expected " + doorBlocks.size() + " but loaded only " + i + "!");
     }
+  }
+
+  public int getOption(ArenaOption option) {
+    return arenaOptions.get(option);
+  }
+
+  public void setOptionValue(ArenaOption option, int value) {
+    arenaOptions.put(option, value);
+  }
+
+  public void addOptionValue(ArenaOption option, int value) {
+    arenaOptions.put(option, arenaOptions.get(option) + value);
   }
 
   public enum BarAction {

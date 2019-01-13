@@ -1,6 +1,6 @@
 /*
- * Village Defense 4 - Protect villagers from hordes of zombies
- * Copyright (C) 2018  Plajer's Lair - maintained by Plajer and Tigerpanzer
+ * Village Defense - Protect villagers from hordes of zombies
+ * Copyright (C) 2019  Plajer's Lair - maintained by Plajer and Tigerpanzer
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,7 +27,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import pl.plajer.villagedefense.Main;
-import pl.plajer.villagedefense.handlers.ChatManager;
 import pl.plajer.villagedefense.kits.free.KnightKit;
 import pl.plajer.villagedefense.kits.free.LightTankKit;
 import pl.plajer.villagedefense.kits.free.ZombieFinderKit;
@@ -130,7 +129,7 @@ public class KitRegistry {
   }
 
   private static void setupGameKits() {
-    KnightKit knightkit = new KnightKit(plugin);
+    KnightKit knightkit = new KnightKit();
     for (Class kitClass : classKitNames) {
       if (ConfigUtils.getConfig(plugin, "kits").getBoolean("Enabled-Game-Kits." + kitClass.getSimpleName().replace("Kit", ""))) {
         try {
@@ -144,9 +143,9 @@ public class KitRegistry {
 
     KitRegistry.setDefaultKit(knightkit);
     plugin.getKitManager().setMaterial(Material.NETHER_STAR);
-    plugin.getKitManager().setItemName(ChatManager.colorMessage("Kits.Kit-Menu-Item-Name"));
-    plugin.getKitManager().setMenuName(ChatManager.colorMessage("Kits.Kit-Menu.Title"));
-    plugin.getKitManager().setDescription(new String[] {ChatManager.colorMessage("Kits.Open-Kit-Menu")});
+    plugin.getKitManager().setItemName(plugin.getChatManager().colorMessage("Kits.Kit-Menu-Item-Name"));
+    plugin.getKitManager().setMenuName(plugin.getChatManager().colorMessage("Kits.Kit-Menu.Title"));
+    plugin.getKitManager().setDescription(new String[] {plugin.getChatManager().colorMessage("Kits.Open-Kit-Menu")});
   }
 
 }

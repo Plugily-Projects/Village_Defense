@@ -1,6 +1,6 @@
 /*
- * Village Defense 4 - Protect villagers from hordes of zombies
- * Copyright (C) 2018  Plajer's Lair - maintained by Plajer and Tigerpanzer
+ * Village Defense - Protect villagers from hordes of zombies
+ * Copyright (C) 2019  Plajer's Lair - maintained by Plajer and Tigerpanzer
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,7 +27,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import pl.plajer.villagedefense.api.StatsStorage;
-import pl.plajer.villagedefense.handlers.ChatManager;
 import pl.plajer.villagedefense.kits.kitapi.KitRegistry;
 import pl.plajer.villagedefense.kits.kitapi.basekits.LevelKit;
 import pl.plajer.villagedefense.utils.ArmorHelper;
@@ -41,8 +40,8 @@ import pl.plajerlair.core.utils.XMaterial;
 public class PuncherKit extends LevelKit {
 
   public PuncherKit() {
-    setName(ChatManager.colorMessage("Kits.Puncher.Kit-Name"));
-    List<String> description = Utils.splitString(ChatManager.colorMessage("Kits.Puncher.Kit-Description"), 40);
+    setName(getPlugin().getChatManager().colorMessage("Kits.Puncher.Kit-Name"));
+    List<String> description = Utils.splitString(getPlugin().getChatManager().colorMessage("Kits.Puncher.Kit-Description"), 40);
     this.setDescription(description.toArray(new String[0]));
     setLevel(getKitsConfig().getInt("Required-Level.Puncher"));
     KitRegistry.registerKit(this);
@@ -50,7 +49,7 @@ public class PuncherKit extends LevelKit {
 
   @Override
   public boolean isUnlockedByPlayer(Player player) {
-    return getPlugin().getUserManager().getUser(player.getUniqueId()).getStat(StatsStorage.StatisticType.LEVEL) >= this.getLevel() || player.hasPermission("villagefense.kit.puncher");
+    return getPlugin().getUserManager().getUser(player).getStat(StatsStorage.StatisticType.LEVEL) >= this.getLevel() || player.hasPermission("villagefense.kit.puncher");
   }
 
   @Override

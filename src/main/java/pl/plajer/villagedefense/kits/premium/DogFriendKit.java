@@ -1,6 +1,6 @@
 /*
- * Village Defense 4 - Protect villagers from hordes of zombies
- * Copyright (C) 2018  Plajer's Lair - maintained by Plajer and Tigerpanzer
+ * Village Defense - Protect villagers from hordes of zombies
+ * Copyright (C) 2019  Plajer's Lair - maintained by Plajer and Tigerpanzer
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,7 +30,6 @@ import pl.plajer.villagedefense.arena.initializers.ArenaInitializer1_11_R1;
 import pl.plajer.villagedefense.arena.initializers.ArenaInitializer1_12_R1;
 import pl.plajer.villagedefense.arena.initializers.ArenaInitializer1_13_R1;
 import pl.plajer.villagedefense.arena.initializers.ArenaInitializer1_13_R2;
-import pl.plajer.villagedefense.handlers.ChatManager;
 import pl.plajer.villagedefense.handlers.PermissionsManager;
 import pl.plajer.villagedefense.kits.kitapi.KitRegistry;
 import pl.plajer.villagedefense.kits.kitapi.basekits.PremiumKit;
@@ -45,8 +44,8 @@ import pl.plajerlair.core.utils.XMaterial;
 public class DogFriendKit extends PremiumKit {
 
   public DogFriendKit() {
-    this.setName(ChatManager.colorMessage("Kits.Dog-Friend.Kit-Name"));
-    List<String> description = Utils.splitString(ChatManager.colorMessage("Kits.Dog-Friend.Kit-Description"), 40);
+    this.setName(getPlugin().getChatManager().colorMessage("Kits.Dog-Friend.Kit-Name"));
+    List<String> description = Utils.splitString(getPlugin().getChatManager().colorMessage("Kits.Dog-Friend.Kit-Description"), 40);
     this.setDescription(description.toArray(new String[0]));
     KitRegistry.registerKit(this);
   }

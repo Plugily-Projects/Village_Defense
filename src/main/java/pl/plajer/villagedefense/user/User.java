@@ -1,6 +1,6 @@
 /*
- * Village Defense 4 - Protect villagers from hordes of zombies
- * Copyright (C) 2018  Plajer's Lair - maintained by Plajer and Tigerpanzer
+ * Village Defense - Protect villagers from hordes of zombies
+ * Copyright (C) 2019  Plajer's Lair - maintained by Plajer and Tigerpanzer
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,7 +20,6 @@ package pl.plajer.villagedefense.user;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -43,14 +42,14 @@ public class User {
   private static Main plugin = JavaPlugin.getPlugin(Main.class);
   private static long cooldownCounter = 0;
   private ScoreboardManager scoreboardManager = Bukkit.getScoreboardManager();
-  private UUID uuid;
+  private Player player;
   private boolean spectator = false;
   private Kit kit = KitRegistry.getDefaultKit();
   private Map<StatsStorage.StatisticType, Integer> stats = new HashMap<>();
   private Map<String, Long> cooldowns = new HashMap<>();
 
-  public User(UUID uuid) {
-    this.uuid = uuid;
+  public User(Player player) {
+    this.player = player;
   }
 
   public static void cooldownHandlerTask() {
@@ -58,11 +57,7 @@ public class User {
   }
 
   public Kit getKit() {
-    if (kit == null) {
-      throw new NullPointerException("User has no kit!");
-    } else {
-      return kit;
-    }
+    return kit;
   }
 
   public void setKit(Kit kit) {
@@ -70,11 +65,11 @@ public class User {
   }
 
   public Arena getArena() {
-    return ArenaRegistry.getArena(Bukkit.getPlayer(uuid));
+    return ArenaRegistry.getArena(player);
   }
 
-  public Player toPlayer() {
-    return Bukkit.getServer().getPlayer(uuid);
+  public Player getPlayer() {
+    return player;
   }
 
   public boolean isSpectator() {
@@ -96,7 +91,7 @@ public class User {
   }
 
   public void removeScoreboard() {
-    this.toPlayer().setScoreboard(scoreboardManager.getNewScoreboard());
+    player.setScoreboard(scoreboardManager.getNewScoreboard());
   }
 
   public void setStat(StatsStorage.StatisticType s, int i) {
@@ -104,7 +99,7 @@ public class User {
 
     //statistics manipulation events are called async when using mysql
     Bukkit.getScheduler().runTask(plugin, () -> {
-      VillagePlayerStatisticChangeEvent villagePlayerStatisticIncreaseEvent = new VillagePlayerStatisticChangeEvent(getArena(), toPlayer(), s, i);
+      VillagePlayerStatisticChangeEvent villagePlayerStatisticIncreaseEvent = new VillagePlayerStatisticChangeEvent(getArena(), player, s, i);
       Bukkit.getPluginManager().callEvent(villagePlayerStatisticIncreaseEvent);
     });
   }
@@ -114,7 +109,7 @@ public class User {
 
     //statistics manipulation events are called async when using mysql
     Bukkit.getScheduler().runTask(plugin, () -> {
-      VillagePlayerStatisticChangeEvent villagePlayerStatisticIncreaseEvent = new VillagePlayerStatisticChangeEvent(getArena(), toPlayer(), s, getStat(s));
+      VillagePlayerStatisticChangeEvent villagePlayerStatisticIncreaseEvent = new VillagePlayerStatisticChangeEvent(getArena(), player, s, getStat(s));
       Bukkit.getPluginManager().callEvent(villagePlayerStatisticIncreaseEvent);
     });
   }
