@@ -375,7 +375,7 @@ Upgrade-Menu:
     Final-Defense:
       Name: "&a&lFinal Defense"
       Description: "&7Upgrade final defense to tier &e%tier%&7!;&7From &e%from% explosion radius &7to &e%to%;&7Golem will explode after death killing nearby;&7zombies and stun all alive ones;&7Cost of upgrade: &e%cost%;;&eClick to purchase"
-  Upgraded-Entity: "&aUpgraded entity to tier &e%tier%&a!"
+  Upgraded-Entity: "&7Upgraded entity to tier &e%tier%&7!"
   Cannot-Afford: "&cYou don't have enough orbs to apply that upgrade!"
   Max-Tier: "&cEntity is at max tier of this upgrade!"
 

@@ -54,21 +54,31 @@ public class EntityUpgradeMenu {
     this.plugin = plugin;
     //todo add config checks + language + locale
     new EntityUpgradeListener(this);
-    registerUpgrade(new Upgrade("DAMAGE", 11, Upgrade.EntityType.BOTH, 4, plugin.getChatManager().colorMessage("Upgrade-Menu.Upgrades.Damage.Name"),
-        Arrays.asList(plugin.getChatManager().colorMessage("Upgrade-Menu.Upgrades.Damage.Description").split(";")), "VD_Damage",
-        plugin.getConfig().getString("Entity-Upgrades.Damage-Tiers")));
-    registerUpgrade(new Upgrade("HEALTH", 20, Upgrade.EntityType.BOTH, 4, plugin.getChatManager().colorMessage("Upgrade-Menu.Upgrades.Health.Name"),
-        Arrays.asList(plugin.getChatManager().colorMessage("Upgrade-Menu.Upgrades.Health.Description").split(";")), "VD_Health",
-        plugin.getConfig().getString("Entity-Upgrades.Health-Tiers")));
-    registerUpgrade(new Upgrade("SPEED", 29, Upgrade.EntityType.BOTH, 4, plugin.getChatManager().colorMessage("Upgrade-Menu.Upgrades.Speed.Name"),
-        Arrays.asList(plugin.getChatManager().colorMessage("Upgrade-Menu.Upgrades.Speed.Description").split(";")), "VD_Speed",
-        plugin.getConfig().getString("Entity-Upgrades.Speed-Tiers")));
-    registerUpgrade(new Upgrade("SWARM_AWARENESS", 39, Upgrade.EntityType.WOLF, 2, plugin.getChatManager().colorMessage("Upgrade-Menu.Upgrades.Swarm-Awareness.Name"),
-        Arrays.asList(plugin.getChatManager().colorMessage("Upgrade-Menu.Upgrades.Swarm-Awareness.Description").split(";")), "VD_SwarmAwareness",
-        plugin.getConfig().getString("Entity-Upgrades.Swarm-Awareness-Tiers")));
-    registerUpgrade(new Upgrade("FINAL_DEFENSE", 39, Upgrade.EntityType.IRON_GOLEM, 2, plugin.getChatManager().colorMessage("Upgrade-Menu.Upgrades.Final-Defense.Name"),
-        Arrays.asList(plugin.getChatManager().colorMessage("Upgrade-Menu.Upgrades.Final-Defense.Description").split(";")), "VD_FinalDefense",
-        plugin.getConfig().getString("Entity-Upgrades.Final-Defense-Tiers")));
+    registerUpgrade(new UpgradeBuilder("Damage")
+        .entity(Upgrade.EntityType.BOTH).slot(11).maxTier(4).metadata("VD_Damage")
+        //2.0 + (tier * 3)
+        .tierVal(0, 2.0).tierVal(1, 5.0).tierVal(2, 8.0).tierVal(3, 11.0).tierVal(4, 14.0)
+        .build());
+    registerUpgrade(new UpgradeBuilder("Health")
+        .entity(Upgrade.EntityType.BOTH).slot(20).maxTier(4).metadata("VD_Health")
+        //100.0 + (100.0 * (tier / 2.0))
+        .tierVal(0, 100.0).tierVal(1, 150.0).tierVal(2, 200.0).tierVal(3, 250.0).tierVal(4, 300.0)
+        .build());
+    registerUpgrade(new UpgradeBuilder("Speed")
+        .entity(Upgrade.EntityType.BOTH).slot(29).maxTier(4).metadata("VD_Speed")
+        //0.25 + (0.25 * ((double) tier / 5.0))
+        .tierVal(0, 0.25).tierVal(1, 0.3).tierVal(2, 0.35).tierVal(3, 0.4).tierVal(4, 0.45)
+        .build());
+    registerUpgrade(new UpgradeBuilder("Swarm-Awareness")
+        .entity(Upgrade.EntityType.WOLF).slot(39).maxTier(2).metadata("VD_SwarmAwareness")
+        //tier * 0.2
+        .tierVal(0, 0).tierVal(1, 0.2).tierVal(2, 0.4)
+        .build());
+    registerUpgrade(new UpgradeBuilder("Final-Defense")
+        .entity(Upgrade.EntityType.IRON_GOLEM).slot(39).maxTier(2).metadata("VD_FinalDefense")
+        //tier * 5
+        .tierVal(0, 0).tierVal(1, 5).tierVal(2, 10)
+        .build());
   }
 
   /**
@@ -103,7 +113,7 @@ public class EntityUpgradeMenu {
         continue;
       }
       int tier = en.hasMetadata(upgrade.getMetadataAccessor()) ? en.getMetadata(upgrade.getMetadataAccessor()).get(0).asInt() : 0;
-      inv.setItem(upgrade.getSlot(), upgrade.asItemStack(en, tier, upgrade));
+      inv.setItem(upgrade.getSlot(), upgrade.asItemStack(tier));
       for (int i = 0; i < upgrade.getMaxTier(); i++) {
         if (i < tier) {
           inv.setItem(upgrade.getSlot() + 1 + i, new ItemBuilder(XMaterial.YELLOW_STAINED_GLASS_PANE.parseItem()).build());
@@ -116,10 +126,9 @@ public class EntityUpgradeMenu {
         .name(plugin.getChatManager().colorMessage("Upgrade-Menu.Stats-Item.Name"))
         .lore(Arrays.stream(plugin.getChatManager().colorMessage("Upgrade-Menu.Stats-Item.Description").split(";"))
             .map((lore) -> lore = plugin.getChatManager().colorRawMessage(lore)
-                .replace("%speed%", String.valueOf(en.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).getBaseValue()))
-                //damage attribute doesn't exist for golems that's why we use this
-                .replace("%damage%", String.valueOf(2.0 + (getTier(en, getUpgrade("DAMAGE")) * 2)))
-                .replace("%max_hp%", String.valueOf(en.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue()))
+                .replace("%speed%", String.valueOf(getUpgrade("Speed").getValueForTier(getTier(en, getUpgrade("Speed")))))
+                .replace("%damage%", String.valueOf(getUpgrade("Damage").getValueForTier(getTier(en, getUpgrade("Damage")))))
+                .replace("%max_hp%", String.valueOf(getUpgrade("Health").getValueForTier(getTier(en, getUpgrade("Health")))))
                 .replace("%current_hp%", String.valueOf(en.getHealth()))).collect(Collectors.toList()))
         .build());
     p.openInventory(inv);
@@ -151,7 +160,7 @@ public class EntityUpgradeMenu {
   private void applyUpgradeEffect(Entity en, Upgrade upgrade, int tier) {
     en.getWorld().spawnParticle(Particle.FIREWORKS_SPARK, en.getLocation(), 25, 0.2, 0.5, 0.2, 0);
     Utils.playSound(en.getLocation(), "BLOCK_ANVIL_USE", "BLOCK_ANVIL_USE");
-    int[] baseValues = new int[] {getTier(en, getUpgrade("HEALTH")), getTier(en, getUpgrade("SPEED")), getTier(en, getUpgrade("DAMAGE"))};
+    int[] baseValues = new int[] {getTier(en, getUpgrade("Health")), getTier(en, getUpgrade("Speed")), getTier(en, getUpgrade("Damage"))};
     if (areAllEqualOrHigher(baseValues)) {
       int lvl = getMinValue(baseValues);
       if (lvl == 4) {
@@ -184,6 +193,10 @@ public class EntityUpgradeMenu {
 
   public Main getPlugin() {
     return plugin;
+  }
+
+  public List<Upgrade> getUpgrades() {
+    return upgrades;
   }
 
   private boolean areAllEqualOrHigher(int[] a) {

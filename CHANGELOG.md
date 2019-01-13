@@ -27,6 +27,7 @@ data was wrongly saved without getName() method called. MySQL users are safe.
 * Golems on death won't drop useless items now
 * Added missing game prefixes in some commands
 * Added /vda clear wolf to /vda clear command. You can now clear wolves
+* Totally new entity upgrade system implemented!!!
 
 ### 4.0.0 Beta pre 5 (1.12.2018)
 * Fixed commands without permissions weren't working

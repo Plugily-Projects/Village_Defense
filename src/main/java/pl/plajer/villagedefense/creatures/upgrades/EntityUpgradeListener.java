@@ -37,11 +37,14 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
+import pl.plajer.villagedefense.api.StatsStorage;
 import pl.plajer.villagedefense.arena.Arena;
 import pl.plajer.villagedefense.arena.ArenaRegistry;
+import pl.plajer.villagedefense.user.User;
 import pl.plajer.villagedefense.utils.Utils;
 import pl.plajerlair.core.services.exception.ReportedException;
 
@@ -72,7 +75,7 @@ public class EntityUpgradeListener implements Listener {
             if (!arena.getIronGolems().contains(e.getDamager())) {
               continue;
             }
-            e.setDamage(e.getDamage() + upgradeMenu.getTier(e.getDamager(), upgradeMenu.getUpgrade("DAMAGE")) * 2);
+            e.setDamage(e.getDamage() + upgradeMenu.getTier(e.getDamager(), upgradeMenu.getUpgrade("Damage")) * 2);
           }
           break;
         case WOLF:
@@ -80,7 +83,7 @@ public class EntityUpgradeListener implements Listener {
             if (!arena.getWolfs().contains(e.getDamager())) {
               continue;
             }
-            int tier = upgradeMenu.getTier(e.getDamager(), upgradeMenu.getUpgrade("SWARM_AWARENESS"));
+            int tier = upgradeMenu.getTier(e.getDamager(), upgradeMenu.getUpgrade("Swarm-Awareness"));
             if (tier == 0) {
               return;
             }
@@ -109,7 +112,7 @@ public class EntityUpgradeListener implements Listener {
         if (!arena.getIronGolems().contains(e.getEntity())) {
           continue;
         }
-        int tier = upgradeMenu.getTier(e.getEntity(), upgradeMenu.getUpgrade("FINAL_DEFENSE"));
+        int tier = upgradeMenu.getTier(e.getEntity(), upgradeMenu.getUpgrade("Final-Defense"));
         if (tier == 0) {
           return;
         }
@@ -136,11 +139,16 @@ public class EntityUpgradeListener implements Listener {
           || (e.getRightClicked().getType() != EntityType.IRON_GOLEM && e.getRightClicked().getType() != EntityType.WOLF) || e.getRightClicked().getCustomName() == null) {
         return;
       }
+      if (e.getHand() == EquipmentSlot.OFF_HAND) {
+        return;
+      }
       if (!e.getPlayer().isSneaking()) {
         return;
       }
-      //to cancel wolves sitting down
-      e.setCancelled(true);
+      //to prevent wolves sitting
+      if (e.getRightClicked() instanceof Wolf) {
+        ((Wolf) e.getRightClicked()).setSitting(false);
+      }
       upgradeMenu.openUpgradeMenu((LivingEntity) e.getRightClicked(), e.getPlayer());
       clickedEntity.put(e.getPlayer(), e.getRightClicked());
     } catch (Exception ex) {
@@ -159,41 +167,24 @@ public class EntityUpgradeListener implements Listener {
       }
       e.setCancelled(true);
       Player p = (Player) e.getWhoClicked();
-      String upgrade = e.getCurrentItem().getItemMeta().getDisplayName();
-      if (upgrade.equals(upgradeMenu.getPlugin().getChatManager().colorMessage("Upgrade-Menu.Upgrades.Health.Name"))) {
-        //todo add pricing
-        upgradeMenu.applyUpgrade(clickedEntity.get(p), upgradeMenu.getUpgrade("HEALTH"));
+      User user = upgradeMenu.getPlugin().getUserManager().getUser(p);
+      String name = e.getCurrentItem().getItemMeta().getDisplayName();
+      for (Upgrade upgrade : upgradeMenu.getUpgrades()) {
+        if (!upgrade.getName().equals(name)) {
+          continue;
+        }
+        int tier = upgradeMenu.getTier(clickedEntity.get(p), upgrade) + 1;
+        int cost = upgrade.getCost(tier);
+        if (user.getStat(StatsStorage.StatisticType.ORBS) < cost) {
+          p.sendMessage(upgradeMenu.getPlugin().getChatManager().getPrefix() +
+              upgradeMenu.getPlugin().getChatManager().colorMessage("Upgrade-Menu.Cannot-Afford"));
+          return;
+        }
+        user.setStat(StatsStorage.StatisticType.ORBS, user.getStat(StatsStorage.StatisticType.ORBS) - cost);
         p.sendMessage(upgradeMenu.getPlugin().getChatManager().getPrefix() +
             upgradeMenu.getPlugin().getChatManager().colorMessage("Upgrade-Menu.Upgraded-Entity").replace("%tier%",
-                String.valueOf(upgradeMenu.getTier(clickedEntity.get(p), upgradeMenu.getUpgrade("HEALTH")))));
-        p.closeInventory();
-      } else if (upgrade.equals(upgradeMenu.getPlugin().getChatManager().colorMessage("Upgrade-Menu.Upgrades.Damage.Name"))) {
-        //todo add pricing
-        upgradeMenu.applyUpgrade(clickedEntity.get(p), upgradeMenu.getUpgrade("DAMAGE"));
-        p.sendMessage(upgradeMenu.getPlugin().getChatManager().getPrefix() +
-            upgradeMenu.getPlugin().getChatManager().colorMessage("Upgrade-Menu.Upgraded-Entity").replace("%tier%",
-                String.valueOf(upgradeMenu.getTier(clickedEntity.get(p), upgradeMenu.getUpgrade("DAMAGE")))));
-        p.closeInventory();
-      } else if (upgrade.equals(upgradeMenu.getPlugin().getChatManager().colorMessage("Upgrade-Menu.Upgrades.Speed.Name"))) {
-        //todo add pricing
-        upgradeMenu.applyUpgrade(clickedEntity.get(p), upgradeMenu.getUpgrade("SPEED"));
-        p.sendMessage(upgradeMenu.getPlugin().getChatManager().getPrefix() +
-            upgradeMenu.getPlugin().getChatManager().colorMessage("Upgrade-Menu.Upgraded-Entity").replace("%tier%",
-                String.valueOf(upgradeMenu.getTier(clickedEntity.get(p), upgradeMenu.getUpgrade("SPEED")))));
-        p.closeInventory();
-      } else if (upgrade.equals(upgradeMenu.getPlugin().getChatManager().colorMessage("Upgrade-Menu.Upgrades.Final-Defense.Name"))) {
-        //todo add pricing
-        upgradeMenu.applyUpgrade(clickedEntity.get(p), upgradeMenu.getUpgrade("FINAL_DEFENSE"));
-        p.sendMessage(upgradeMenu.getPlugin().getChatManager().getPrefix() +
-            upgradeMenu.getPlugin().getChatManager().colorMessage("Upgrade-Menu.Upgraded-Entity").replace("%tier%",
-                String.valueOf(upgradeMenu.getTier(clickedEntity.get(p), upgradeMenu.getUpgrade("FINAL_DEFENSE")))));
-        p.closeInventory();
-      } else if (upgrade.equals(upgradeMenu.getPlugin().getChatManager().colorMessage("Upgrade-Menu.Upgrades.Swarm-Awareness.Name"))) {
-        //todo add pricing
-        upgradeMenu.applyUpgrade(clickedEntity.get(p), upgradeMenu.getUpgrade("SWARM_AWARENESS"));
-        p.sendMessage(upgradeMenu.getPlugin().getChatManager().getPrefix() +
-            upgradeMenu.getPlugin().getChatManager().colorMessage("Upgrade-Menu.Upgraded-Entity").replace("%tier%",
-                String.valueOf(upgradeMenu.getTier(clickedEntity.get(p), upgradeMenu.getUpgrade("SWARM_AWARENESS")))));
+                String.valueOf(tier)));
+        upgradeMenu.applyUpgrade(clickedEntity.get(p), upgrade);
         p.closeInventory();
       }
     } catch (Exception ex) {
