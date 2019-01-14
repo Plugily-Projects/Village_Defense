@@ -646,7 +646,7 @@ public class Events implements Listener {
         e.setCancelled(true);
         e.getInventory().clear();
         e.getItem().getLocation().getWorld().spawnParticle(Particle.CLOUD, e.getItem().getLocation(), 50, 2, 2, 2);
-        if (!arena.checkLevelUpRottenFlesh()) {
+        if (!arena.checkLevelUpRottenFlesh() || arena.getOption(ArenaOption.ROTTEN_FLESH_LEVEL) >= 30) {
           return;
         }
         for (Player p : arena.getPlayers()) {

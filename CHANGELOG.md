@@ -1,7 +1,8 @@
 # Village Defense 3 Changelog
 
-### 4.0.0 Release (04.10.2018-13.01.2019)
+### 4.0.0 Release (04.10.2018-14.01.2019)
 **Whole changelog from all beta pre releases**
+* Limited rotten flesh hearts level amount to 30 after this limit you won't receive any more hearts
 * Beta pre 6 (14.12.2018-12.01.2019)
     * Implemented legacy data fixer that will fix inconsistency between original user data and current one (old implementation failure)
     data was wrongly saved without getName() method called. MySQL users are safe.
