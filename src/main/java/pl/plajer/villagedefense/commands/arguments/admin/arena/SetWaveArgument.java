@@ -63,9 +63,14 @@ public class SetWaveArgument {
             player1.sendMessage(registry.getPlugin().getChatManager().getPrefix() + message);
           }
           if (arena.getZombies() != null) {
+            boolean eachThree = arena.getZombies().size() > 70;
+            int i = 0;
             for (Zombie zombie : arena.getZombies()) {
-              zombie.getWorld().spawnParticle(Particle.LAVA, zombie.getLocation(), 20);
+              if (eachThree && (i % 3) == 0) {
+                zombie.getWorld().spawnParticle(Particle.LAVA, zombie.getLocation(), 20);
+              }
               zombie.remove();
+              i++;
             }
             arena.getZombies().clear();
             arena.setOptionValue(ArenaOption.ZOMBIES_TO_SPAWN, 0);
