@@ -323,7 +323,6 @@ public abstract class Arena extends BukkitRunnable {
               setOptionValue(ArenaOption.ZOMBIES_TO_SPAWN, 0);
             }
             setTimer(getTimer() - 1);
-
           } else {
             if (getTimer() <= 0) {
               fighting = true;
@@ -933,9 +932,9 @@ public abstract class Arena extends BukkitRunnable {
 
   void restoreDoors() {
     int i = 0;
-    for (Location location : doorBlocks.keySet()) {
-      Block block = location.getBlock();
-      Byte doorData = doorBlocks.get(location);
+    for (Map.Entry<Location, Byte> entry : doorBlocks.entrySet()) {
+      Block block = entry.getKey().getBlock();
+      Byte doorData = entry.getValue();
       if (plugin.is1_11_R1() || plugin.is1_12_R1()) {
         int id = Material.WOODEN_DOOR.getId();
         block.setTypeIdAndData(id, doorData, false);
