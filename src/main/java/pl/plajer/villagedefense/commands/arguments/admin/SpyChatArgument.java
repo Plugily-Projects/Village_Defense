@@ -20,7 +20,6 @@ package pl.plajer.villagedefense.commands.arguments.admin;
 
 import java.util.HashSet;
 import java.util.Set;
-import java.util.UUID;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
@@ -38,7 +37,7 @@ import pl.plajer.villagedefense.commands.arguments.data.LabeledCommandArgument;
  */
 public class SpyChatArgument {
 
-  private Set<UUID> spyChatters = new HashSet<>();
+  private Set<Player> spyChatters = new HashSet<>();
 
   public SpyChatArgument(ArgumentsRegistry registry) {
     registry.mapArgument("villagedefenseadmin", new LabeledCommandArgument("spychat", "villagedefense.admin.spychat", CommandArgument.ExecutorType.PLAYER,
@@ -46,18 +45,23 @@ public class SpyChatArgument {
             + "&7You will see all messages from these games\n&6Permission: &7villagedefense.admin.spychat")) {
       @Override
       public void execute(CommandSender sender, String[] args) {
-        UUID uuid = ((Player) sender).getUniqueId();
-        if (spyChatters.contains(uuid)) {
-          spyChatters.remove(uuid);
+        Player player = (Player) sender;
+        if (spyChatters.contains(player)) {
+          spyChatters.remove(player);
         } else {
-          spyChatters.add(uuid);
+          spyChatters.add(player);
         }
-        sender.sendMessage(registry.getPlugin().getChatManager().getPrefix() + ChatColor.GREEN + "Game spy chat toggled to " + spyChatters.contains(uuid));
+        sender.sendMessage(registry.getPlugin().getChatManager().getPrefix() + ChatColor.GREEN + "Game spy chat toggled to " + spyChatters.contains(player));
       }
     });
   }
 
   public boolean isSpyChatEnabled(Player player) {
-    return spyChatters.contains(player.getUniqueId());
+    return spyChatters.contains(player);
   }
+
+  public void disableSpyChat(Player player) {
+    spyChatters.remove(player);
+  }
+
 }

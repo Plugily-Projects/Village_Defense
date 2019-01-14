@@ -63,6 +63,8 @@ public class QuitEvent implements Listener {
         plugin.getUserManager().saveStatistic(user, stat);
       }
       plugin.getUserManager().removeUser(event.getPlayer());
+
+      plugin.getArgumentsRegistry().getSpyChat().disableSpyChat(event.getPlayer());
     } catch (Exception ex) {
       new ReportedException(plugin, ex);
     }
