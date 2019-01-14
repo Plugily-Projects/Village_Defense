@@ -27,7 +27,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
-import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
@@ -84,7 +83,7 @@ public abstract class Arena extends BukkitRunnable {
   private final Random random = new Random();
   private final List<Zombie> glitchedZombies = new ArrayList<>();
   private final Map<Zombie, Location> zombieCheckerLocations = new HashMap<>();
-  private final Set<UUID> players = new HashSet<>();
+  private final Set<Player> players = new HashSet<>();
   private ShopManager shopManager;
   private ZombieSpawnManager zombieSpawnManager;
   private ScoreboardManager scoreboardManager;
@@ -569,18 +568,8 @@ public abstract class Arena extends BukkitRunnable {
    *
    * @return set of players in arena
    */
-  public HashSet<Player> getPlayers() {
-    HashSet<Player> list = new HashSet<>();
-    Iterator<UUID> iterator = players.iterator();
-    while (iterator.hasNext()) {
-      UUID uuid = iterator.next();
-      if (Bukkit.getPlayer(uuid) == null) {
-        iterator.remove();
-        Debugger.debug(LogLevel.WARN, "Removed invalid player from arena " + getID() + " (not online?)");
-      }
-      list.add(Bukkit.getPlayer(uuid));
-    }
-    return list;
+  public Set<Player> getPlayers() {
+    return players;
   }
 
   public void teleportToLobby(Player player) {
@@ -877,14 +866,14 @@ public abstract class Arena extends BukkitRunnable {
   }
 
   void addPlayer(Player player) {
-    players.add(player.getUniqueId());
+    players.add(player);
   }
 
   void removePlayer(Player player) {
-    if (player == null || player.getUniqueId() == null) {
+    if (player == null) {
       return;
     }
-    players.remove(player.getUniqueId());
+    players.remove(player);
   }
 
   public List<Player> getPlayersLeft() {
