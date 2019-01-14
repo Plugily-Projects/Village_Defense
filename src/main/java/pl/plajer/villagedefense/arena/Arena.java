@@ -402,6 +402,9 @@ public abstract class Arena extends BukkitRunnable {
           setOptionValue(ArenaOption.WAVE, 1);
           setOptionValue(ArenaOption.TOTAL_KILLED_ZOMBIES, 0);
           setOptionValue(ArenaOption.TOTAL_ORBS_SPENT, 0);
+          setOptionValue(ArenaOption.ZOMBIE_DIFFICULTY_MULTIPLIER, 0);
+          setOptionValue(ArenaOption.ZOMBIE_IDLE_PROCESS, 0);
+          zombieSpawnManager.applyIdle(0);
           if (plugin.getConfigPreferences().getOption(ConfigPreferences.Option.BUNGEE_ENABLED)) {
             for (Player player : plugin.getServer().getOnlinePlayers()) {
               this.addPlayer(player);

@@ -78,7 +78,7 @@ public class ArenaInitializer1_13_R2 extends Arena {
     world.addEntity(fastZombie, CreatureSpawnEvent.SpawnReason.CUSTOM);
     Zombie zombie = (Zombie) fastZombie.getBukkitEntity();
     zombie.setRemoveWhenFarAway(false);
-    CreatureUtils.applyHealthBar(zombie);
+    CreatureUtils.applyHealthAttributes(zombie, this);
     plugin.getHolidayManager().applyHolidayZombieEffects(zombie);
     this.addZombie((Zombie) fastZombie.getBukkitEntity());
 
@@ -95,7 +95,7 @@ public class ArenaInitializer1_13_R2 extends Arena {
     zombie.setRemoveWhenFarAway(false);
     zombie.getEquipment().setBoots(new ItemStack(Material.CHAINMAIL_BOOTS));
     zombie.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, Integer.MAX_VALUE, 1));
-    CreatureUtils.applyHealthBar(zombie);
+    CreatureUtils.applyHealthAttributes(zombie, this);
     this.addZombie((Zombie) fastZombie.getBukkitEntity());
 
     super.setOptionValue(ArenaOption.ZOMBIES_TO_SPAWN, getOption(ArenaOption.ZOMBIES_TO_SPAWN) - 1);
@@ -115,7 +115,7 @@ public class ArenaInitializer1_13_R2 extends Arena {
     zombie.getEquipment().setChestplate(new ItemStack(Material.DIAMOND_CHESTPLATE));
     zombie.getEquipment().setHelmet(new ItemStack(Material.DIAMOND_HELMET));
     zombie.setRemoveWhenFarAway(false);
-    CreatureUtils.applyHealthBar(zombie);
+    CreatureUtils.applyHealthAttributes(zombie, this);
     this.addZombie((Zombie) fastZombie.getBukkitEntity());
 
     super.setOptionValue(ArenaOption.ZOMBIES_TO_SPAWN, getOption(ArenaOption.ZOMBIES_TO_SPAWN) - 1);
@@ -126,7 +126,7 @@ public class ArenaInitializer1_13_R2 extends Arena {
     BabyZombie fastZombie = new BabyZombie(world);
     fastZombie.setPosition(location.getX(), location.getY(), location.getZ());
     Zombie zombie = (Zombie) fastZombie.getBukkitEntity();
-    CreatureUtils.applyHealthBar(zombie);
+    CreatureUtils.applyHealthAttributes(zombie, this);
     plugin.getHolidayManager().applyHolidayZombieEffects(zombie);
     zombie.setRemoveWhenFarAway(false);
     world.addEntity(fastZombie, CreatureSpawnEvent.SpawnReason.CUSTOM);
@@ -146,7 +146,7 @@ public class ArenaInitializer1_13_R2 extends Arena {
     zombie.getEquipment().setChestplate(new ItemStack(Material.DIAMOND_CHESTPLATE));
     zombie.getEquipment().setHelmet(new ItemStack(Material.DIAMOND_HELMET));
     zombie.setRemoveWhenFarAway(false);
-    CreatureUtils.applyHealthBar(zombie);
+    CreatureUtils.applyHealthAttributes(zombie, this);
     this.addZombie(zombie);
     super.setOptionValue(ArenaOption.ZOMBIES_TO_SPAWN, getOption(ArenaOption.ZOMBIES_TO_SPAWN) - 1);
   }
@@ -163,7 +163,7 @@ public class ArenaInitializer1_13_R2 extends Arena {
     zombie.getEquipment().setChestplate(new ItemStack(Material.IRON_CHESTPLATE));
     zombie.getEquipment().setHelmet(new ItemStack(Material.IRON_HELMET));
     zombie.setRemoveWhenFarAway(false);
-    CreatureUtils.applyHealthBar(zombie);
+    CreatureUtils.applyHealthAttributes(zombie, this);
     this.addZombie(zombie);
     super.setOptionValue(ArenaOption.ZOMBIES_TO_SPAWN, getOption(ArenaOption.ZOMBIES_TO_SPAWN) - 1);
   }
@@ -178,7 +178,7 @@ public class ArenaInitializer1_13_R2 extends Arena {
     zombie.getEquipment().setHelmetDropChance(0.0F);
     zombie.getEquipment().setItemInMainHandDropChance(0F);
     zombie.setRemoveWhenFarAway(false);
-    CreatureUtils.applyHealthBar(zombie);
+    CreatureUtils.applyHealthAttributes(zombie, this);
     this.addZombie(zombie);
 
     super.setOptionValue(ArenaOption.ZOMBIES_TO_SPAWN, getOption(ArenaOption.ZOMBIES_TO_SPAWN) - 1);
@@ -196,7 +196,7 @@ public class ArenaInitializer1_13_R2 extends Arena {
     zombie.getEquipment().setBoots(XMaterial.GOLDEN_BOOTS.parseItem());
     zombie.getEquipment().setLeggings(XMaterial.GOLDEN_LEGGINGS.parseItem());
     zombie.getEquipment().setChestplate(XMaterial.GOLDEN_CHESTPLATE.parseItem());
-    CreatureUtils.applyHealthBar(zombie);
+    CreatureUtils.applyHealthAttributes(zombie, this);
     this.addZombie(zombie);
 
     super.setOptionValue(ArenaOption.ZOMBIES_TO_SPAWN, getOption(ArenaOption.ZOMBIES_TO_SPAWN) - 1);
@@ -214,7 +214,7 @@ public class ArenaInitializer1_13_R2 extends Arena {
     zombie.getEquipment().setLeggings(new ItemStack(Material.CHAINMAIL_LEGGINGS));
     zombie.getEquipment().setChestplate(new ItemStack(Material.CHAINMAIL_CHESTPLATE));
     zombie.getEquipment().setHelmet(new ItemStack(Material.CHAINMAIL_HELMET));
-    CreatureUtils.applyHealthBar(zombie);
+    CreatureUtils.applyHealthAttributes(zombie, this);
     this.addZombie(zombie);
 
     super.setOptionValue(ArenaOption.ZOMBIES_TO_SPAWN, getOption(ArenaOption.ZOMBIES_TO_SPAWN) - 1);

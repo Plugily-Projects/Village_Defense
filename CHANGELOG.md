@@ -3,6 +3,10 @@
 ### 4.0.0 Release (04.10.2018-14.01.2019)
 **Whole changelog from all beta pre releases**
 * Limited rotten flesh hearts level amount to 30 after this limit you won't receive any more hearts
+* Added zombie idle process to save server load and prevent lag, when game will be in higher waves state system will
+run idle process to halt spawning zombies to x seconds (wave / 15 rounded down) so server will save performance a bit
+* Added zombie spawn limiter, now there won't be more than 750 zombies in wave, any amount above that will be
+decremented to 750 and zombies will gain extra health based on algorithm (zombies this wave - 750 / 15 rounded up)
 * Beta pre 6 (14.12.2018-12.01.2019)
     * Implemented legacy data fixer that will fix inconsistency between original user data and current one (old implementation failure)
     data was wrongly saved without getName() method called. MySQL users are safe.

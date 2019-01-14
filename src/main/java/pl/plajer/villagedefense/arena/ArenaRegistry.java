@@ -45,7 +45,7 @@ public class ArenaRegistry {
    * Checks if player is in any arena
    *
    * @param player player to check
-   * @return [b]true[/b] when player is in arena, [b]false[/b] if otherwise
+   * @return true when player is in arena, false if otherwise
    */
   public static boolean isInArena(Player player) {
     for (Arena arena : arenas) {

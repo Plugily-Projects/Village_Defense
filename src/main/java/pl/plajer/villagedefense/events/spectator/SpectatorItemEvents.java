@@ -19,7 +19,7 @@
 package pl.plajer.villagedefense.events.spectator;
 
 import java.util.Collections;
-import java.util.HashSet;
+import java.util.Set;
 
 import org.bukkit.ChatColor;
 import org.bukkit.World;
@@ -81,7 +81,7 @@ public class SpectatorItemEvents implements Listener {
   private void openSpectatorMenu(World world, Player p) {
     Inventory inventory = plugin.getServer().createInventory(null, MinigameUtils.serializeInt(ArenaRegistry.getArena(p).getPlayers().size()),
         plugin.getChatManager().colorMessage("In-Game.Spectator.Spectator-Menu-Name"));
-    HashSet<Player> players = ArenaRegistry.getArena(p).getPlayers();
+    Set<Player> players = ArenaRegistry.getArena(p).getPlayers();
     for (Player player : world.getPlayers()) {
       if (players.contains(player) && !plugin.getUserManager().getUser(player).isSpectator()) {
         ItemStack skull = CompatMaterialConstants.PLAYER_HEAD_ITEM.clone();

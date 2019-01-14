@@ -32,10 +32,15 @@ public class ZombieSpawnManager {
 
   private Random random;
   private Arena arena;
+  private int localIdleProcess = 0;
 
   public ZombieSpawnManager(Arena arena) {
     this.arena = arena;
     this.random = new Random();
+  }
+
+  public void applyIdle(int idle) {
+    localIdleProcess = idle;
   }
 
   /**
@@ -45,6 +50,14 @@ public class ZombieSpawnManager {
    * on random value and current wave
    */
   public void spawnZombies() {
+    //Idling to ~~save server stability~~ protect against hordes of zombies
+    if (localIdleProcess > 0) {
+      localIdleProcess--;
+      return;
+    } else {
+      applyIdle(arena.getOption(ArenaOption.ZOMBIE_IDLE_PROCESS));
+      //continue spawning
+    }
     int wave = arena.getOption(ArenaOption.WAVE);
     int zombiesToSpawn = arena.getOption(ArenaOption.ZOMBIES_TO_SPAWN);
     if (arena.getZombies() == null || arena.getZombies().size() <= 0) {

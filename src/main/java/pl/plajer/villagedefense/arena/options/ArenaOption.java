@@ -82,7 +82,27 @@ public enum ArenaOption {
    * If value is equal 5 or 15 and wave is enough high special
    * zombie units will be spawned in addition to standard ones.
    */
-  ZOMBIE_SPAWN_COUNTER(0);
+  ZOMBIE_SPAWN_COUNTER(0),
+  /**
+   * Value describes how many seconds zombie spawn system should halt and not spawn any entity.
+   * This value reduces server load and lag preventing spawning hordes at once.
+   * Example when wave is 30 counter will set value to 2 halting zombies spawn for 2 seconds
+   * Algorithm: floor(wave / 15)
+   */
+  ZOMBIE_IDLE_PROCESS(0),
+  /**
+   * Value that describes the multiplier of extra health zombies will receive.
+   * Current health + multiplier.
+   * <p>
+   * Since 4.0.0 there is maximum amount of 750 to spawn in wave.
+   * The more value will be above 750 the stronger zombies will be.
+   * <p>
+   * Zombies amount is based on algorithm: ceil((players * 0.5) * (wave * wave) / 2)
+   * Difficulty multiplier is based on: ceil((ceil((players * 0.5) * (wave * wave) / 2) - 750) / 15)
+   * Example: 12 players in wave 20 will receive 30 difficulty multiplier.
+   * So each zombie will get 30 HP more, harder!
+   */
+  ZOMBIE_DIFFICULTY_MULTIPLIER(0);
 
   private int defaultValue;
 
