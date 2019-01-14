@@ -40,6 +40,7 @@ import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
 import org.bukkit.entity.IronGolem;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Villager;
 import org.bukkit.entity.Wolf;
@@ -84,6 +85,7 @@ public abstract class Arena extends BukkitRunnable {
   private final List<Zombie> glitchedZombies = new ArrayList<>();
   private final Map<Zombie, Location> zombieCheckerLocations = new HashMap<>();
   private final Set<Player> players = new HashSet<>();
+  private final List<Item> droppedFleshes = new ArrayList<>();
   private ShopManager shopManager;
   private ZombieSpawnManager zombieSpawnManager;
   private ScoreboardManager scoreboardManager;
@@ -405,6 +407,12 @@ public abstract class Arena extends BukkitRunnable {
           setOptionValue(ArenaOption.ZOMBIE_DIFFICULTY_MULTIPLIER, 0);
           setOptionValue(ArenaOption.ZOMBIE_IDLE_PROCESS, 0);
           zombieSpawnManager.applyIdle(0);
+          for (Item item : droppedFleshes) {
+            if (item != null) {
+              item.remove();
+            }
+          }
+          droppedFleshes.clear();
           if (plugin.getConfigPreferences().getOption(ConfigPreferences.Option.BUNGEE_ENABLED)) {
             for (Player player : plugin.getServer().getOnlinePlayers()) {
               this.addPlayer(player);
@@ -754,6 +762,14 @@ public abstract class Arena extends BukkitRunnable {
       zombie.remove();
     }
     zombies.clear();
+  }
+
+  public void addDroppedFlesh(Item item) {
+    droppedFleshes.add(item);
+  }
+
+  public void removeDroppedFlesh(Item item) {
+    droppedFleshes.remove(item);
   }
 
   public int getZombiesLeft() {
