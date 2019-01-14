@@ -23,6 +23,7 @@ import net.md_5.bungee.api.chat.TextComponent;
 
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
+import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -34,7 +35,9 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.event.entity.ItemSpawnEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -105,6 +108,40 @@ public class ArenaEvents implements Listener {
           return;
         }
       }
+    } catch (Exception ex) {
+      new ReportedException(plugin, ex);
+    }
+  }
+
+  @EventHandler
+  public void onItemDrop(ItemSpawnEvent e) {
+    try {
+      if (e.getEntity().getItemStack().getType() != Material.ROTTEN_FLESH) {
+        return;
+      }
+      for (Arena arena : ArenaRegistry.getArenas()) {
+        if (!e.getEntity().getWorld().equals(arena.getStartLocation().getWorld())) {
+          continue;
+        }
+        if (e.getEntity().getLocation().distance(arena.getStartLocation()) > 150) {
+          continue;
+        }
+        arena.addDroppedFlesh(e.getEntity());
+      }
+    } catch (Exception ex) {
+      new ReportedException(plugin, ex);
+    }
+  }
+
+  @Deprecated //should use EntityPickupItemEvent
+  @EventHandler
+  public void onDropPickup(PlayerPickupItemEvent e) {
+    try {
+      Arena arena = ArenaRegistry.getArena(e.getPlayer());
+      if (arena == null) {
+        return;
+      }
+      arena.removeDroppedFlesh(e.getItem());
     } catch (Exception ex) {
       new ReportedException(plugin, ex);
     }

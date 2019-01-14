@@ -27,7 +27,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
-import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
@@ -41,6 +40,7 @@ import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
 import org.bukkit.entity.IronGolem;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Villager;
 import org.bukkit.entity.Wolf;
@@ -84,7 +84,8 @@ public abstract class Arena extends BukkitRunnable {
   private final Random random = new Random();
   private final List<Zombie> glitchedZombies = new ArrayList<>();
   private final Map<Zombie, Location> zombieCheckerLocations = new HashMap<>();
-  private final Set<UUID> players = new HashSet<>();
+  private final Set<Player> players = new HashSet<>();
+  private final List<Item> droppedFleshes = new ArrayList<>();
   private ShopManager shopManager;
   private ZombieSpawnManager zombieSpawnManager;
   private ScoreboardManager scoreboardManager;
@@ -323,7 +324,6 @@ public abstract class Arena extends BukkitRunnable {
               setOptionValue(ArenaOption.ZOMBIES_TO_SPAWN, 0);
             }
             setTimer(getTimer() - 1);
-
           } else {
             if (getTimer() <= 0) {
               fighting = true;
@@ -404,6 +404,15 @@ public abstract class Arena extends BukkitRunnable {
           setOptionValue(ArenaOption.WAVE, 1);
           setOptionValue(ArenaOption.TOTAL_KILLED_ZOMBIES, 0);
           setOptionValue(ArenaOption.TOTAL_ORBS_SPENT, 0);
+          setOptionValue(ArenaOption.ZOMBIE_DIFFICULTY_MULTIPLIER, 0);
+          setOptionValue(ArenaOption.ZOMBIE_IDLE_PROCESS, 0);
+          zombieSpawnManager.applyIdle(0);
+          for (Item item : droppedFleshes) {
+            if (item != null) {
+              item.remove();
+            }
+          }
+          droppedFleshes.clear();
           if (plugin.getConfigPreferences().getOption(ConfigPreferences.Option.BUNGEE_ENABLED)) {
             for (Player player : plugin.getServer().getOnlinePlayers()) {
               this.addPlayer(player);
@@ -570,18 +579,8 @@ public abstract class Arena extends BukkitRunnable {
    *
    * @return set of players in arena
    */
-  public HashSet<Player> getPlayers() {
-    HashSet<Player> list = new HashSet<>();
-    Iterator<UUID> iterator = players.iterator();
-    while (iterator.hasNext()) {
-      UUID uuid = iterator.next();
-      if (Bukkit.getPlayer(uuid) == null) {
-        iterator.remove();
-        Debugger.debug(LogLevel.WARN, "Removed invalid player from arena " + getID() + " (not online?)");
-      }
-      list.add(Bukkit.getPlayer(uuid));
-    }
-    return list;
+  public Set<Player> getPlayers() {
+    return players;
   }
 
   public void teleportToLobby(Player player) {
@@ -765,6 +764,14 @@ public abstract class Arena extends BukkitRunnable {
     zombies.clear();
   }
 
+  public void addDroppedFlesh(Item item) {
+    droppedFleshes.add(item);
+  }
+
+  public void removeDroppedFlesh(Item item) {
+    droppedFleshes.remove(item);
+  }
+
   public int getZombiesLeft() {
     return getOption(ArenaOption.ZOMBIES_TO_SPAWN) + getZombies().size();
   }
@@ -878,14 +885,14 @@ public abstract class Arena extends BukkitRunnable {
   }
 
   void addPlayer(Player player) {
-    players.add(player.getUniqueId());
+    players.add(player);
   }
 
   void removePlayer(Player player) {
-    if (player == null || player.getUniqueId() == null) {
+    if (player == null) {
       return;
     }
-    players.remove(player.getUniqueId());
+    players.remove(player);
   }
 
   public List<Player> getPlayersLeft() {
@@ -933,9 +940,9 @@ public abstract class Arena extends BukkitRunnable {
 
   void restoreDoors() {
     int i = 0;
-    for (Location location : doorBlocks.keySet()) {
-      Block block = location.getBlock();
-      Byte doorData = doorBlocks.get(location);
+    for (Map.Entry<Location, Byte> entry : doorBlocks.entrySet()) {
+      Block block = entry.getKey().getBlock();
+      Byte doorData = entry.getValue();
       if (plugin.is1_11_R1() || plugin.is1_12_R1()) {
         int id = Material.WOODEN_DOOR.getId();
         block.setTypeIdAndData(id, doorData, false);

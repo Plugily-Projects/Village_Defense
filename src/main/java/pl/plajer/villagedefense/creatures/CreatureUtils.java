@@ -28,6 +28,8 @@ import org.bukkit.entity.Zombie;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import pl.plajer.villagedefense.Main;
+import pl.plajer.villagedefense.arena.Arena;
+import pl.plajer.villagedefense.arena.options.ArenaOption;
 import pl.plajer.villagedefense.handlers.language.LanguageManager;
 import pl.plajerlair.core.utils.MinigameUtils;
 
@@ -72,7 +74,15 @@ public class CreatureUtils {
     return o;
   }
 
-  public static void applyHealthBar(Zombie zombie) {
+  /**
+   * Applies health attributes (i.e. health bar (if enabled) and
+   * health multiplier) to target zombie.
+   *
+   * @param zombie zombie to apply attributes for
+   * @param arena  arena to get health multiplier from
+   */
+  public static void applyHealthAttributes(Zombie zombie, Arena arena) {
+    zombie.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(zombie.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue() + arena.getOption(ArenaOption.ZOMBIE_DIFFICULTY_MULTIPLIER));
     if (plugin.getConfig().getBoolean("Simple-Zombie-Health-Bar-Enabled", true)) {
       zombie.setCustomNameVisible(true);
       zombie.setCustomName(MinigameUtils.getProgressBar((int) zombie.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue(),

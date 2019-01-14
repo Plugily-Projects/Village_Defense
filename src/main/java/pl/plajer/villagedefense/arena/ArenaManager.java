@@ -376,7 +376,18 @@ public class ArenaManager {
     try {
       VillageWaveStartEvent villageWaveStartEvent = new VillageWaveStartEvent(arena, arena.getWave());
       Bukkit.getPluginManager().callEvent(villageWaveStartEvent);
-      arena.setOptionValue(ArenaOption.ZOMBIES_TO_SPAWN, (int) Math.ceil((arena.getPlayers().size() * 0.5) * (arena.getOption(ArenaOption.WAVE) * arena.getOption(ArenaOption.WAVE)) / 2));
+      int zombiesAmount = (int) Math.ceil((arena.getPlayers().size() * 0.5) * (arena.getOption(ArenaOption.WAVE) * arena.getOption(ArenaOption.WAVE)) / 2);
+      if (zombiesAmount > 750) {
+        arena.setOptionValue(ArenaOption.ZOMBIE_DIFFICULTY_MULTIPLIER, (int) Math.ceil((zombiesAmount - 750.0) / 15));
+        Debugger.debug(LogLevel.INFO, "Detected abnormal wave (" + arena.getWave() + ") in arena " + arena.getID() + "! Applying zombie limit and difficulty multiplier to "
+            + arena.getOption(ArenaOption.ZOMBIE_DIFFICULTY_MULTIPLIER));
+        zombiesAmount = 750;
+      }
+      arena.setOptionValue(ArenaOption.ZOMBIES_TO_SPAWN, zombiesAmount);
+      arena.setOptionValue(ArenaOption.ZOMBIE_IDLE_PROCESS, (int) Math.floor((double) arena.getWave() / 15));
+      if (arena.getOption(ArenaOption.ZOMBIE_IDLE_PROCESS) > 0) {
+        Debugger.debug(LogLevel.INFO, "Spawn idle process initiated for arena " + arena.getID() + " to prevent server overload! Value: " + arena.getOption(ArenaOption.ZOMBIE_IDLE_PROCESS));
+      }
       if (plugin.getConfig().getBoolean("Respawn-After-Wave", true)) {
         ArenaUtils.bringDeathPlayersBack(arena);
       }
