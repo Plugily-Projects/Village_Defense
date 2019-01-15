@@ -165,7 +165,7 @@ public class ArenaEvents implements Listener {
               ArenaUtils.addStat(e.getEntity().getKiller(), StatsStorage.StatisticType.KILLS);
               ArenaUtils.addExperience(e.getEntity().getKiller(), 2);
               plugin.getRewardsHandler().performReward(e.getEntity().getKiller(), GameReward.RewardType.ZOMBIE_KILL);
-              plugin.getPowerupManager().spawnPowerup(e.getEntity().getLocation(), ArenaRegistry.getArena(e.getEntity().getKiller()));
+              plugin.getPowerupRegistry().spawnPowerup(e.getEntity().getLocation(), ArenaRegistry.getArena(e.getEntity().getKiller()));
             }
             return;
           case VILLAGER:

@@ -55,10 +55,10 @@ import pl.plajer.villagedefense.handlers.ChatManager;
 import pl.plajer.villagedefense.handlers.HolidayManager;
 import pl.plajer.villagedefense.handlers.PermissionsManager;
 import pl.plajer.villagedefense.handlers.PlaceholderManager;
-import pl.plajer.villagedefense.handlers.PowerupManager;
 import pl.plajer.villagedefense.handlers.SignManager;
 import pl.plajer.villagedefense.handlers.items.SpecialItem;
 import pl.plajer.villagedefense.handlers.language.LanguageManager;
+import pl.plajer.villagedefense.handlers.powerup.PowerupRegistry;
 import pl.plajer.villagedefense.handlers.reward.RewardsFactory;
 import pl.plajer.villagedefense.handlers.setup.SetupInventoryEvents;
 import pl.plajer.villagedefense.kits.kitapi.KitManager;
@@ -90,7 +90,7 @@ public class Main extends JavaPlugin {
   private SignManager signManager;
   private BungeeManager bungeeManager;
   private KitManager kitManager;
-  private PowerupManager powerupManager;
+  private PowerupRegistry powerupRegistry;
   private RewardsFactory rewardsHandler;
   private HolidayManager holidayManager;
   private EntityUpgradeMenu entityUpgradeMenu;
@@ -236,7 +236,7 @@ public class Main extends JavaPlugin {
     new Events(this);
     new LobbyEvents(this);
     new SpectatorItemEvents(this);
-    powerupManager = new PowerupManager(this);
+    powerupRegistry = new PowerupRegistry(this);
     rewardsHandler = new RewardsFactory(this);
     User.cooldownHandlerTask();
   }
@@ -297,8 +297,8 @@ public class Main extends JavaPlugin {
     return database;
   }
 
-  public PowerupManager getPowerupManager() {
-    return powerupManager;
+  public PowerupRegistry getPowerupRegistry() {
+    return powerupRegistry;
   }
 
   public ConfigPreferences getConfigPreferences() {

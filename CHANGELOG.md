@@ -1,4 +1,4 @@
-# Village Defense 3 Changelog
+# Village Defense Changelog
 
 ### 4.0.0 Release (04.10.2018-14.01.2019)
 **Whole changelog from all beta pre releases**
@@ -10,6 +10,7 @@ decremented to 750 and zombies will gain extra health based on algorithm (zombie
 * Now if there will be spawned more than 70 zombies and player uses /vda setwave or /vda clear zombie commands or uses 
 cleanup power-up or cleaner kit every third zombie will spawn lava particles to prevent client lag
 * The game will now cleanup all rotten fleshes spawned near 150 blocks from starting location of arena after the game ends
+* Implemented better power-up registry for better API hooks
 * Beta pre 6 (14.12.2018-12.01.2019)
     * Implemented legacy data fixer that will fix inconsistency between original user data and current one (old implementation failure)
     data was wrongly saved without getName() method called. MySQL users are safe.

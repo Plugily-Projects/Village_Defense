@@ -1,6 +1,6 @@
 /*
  * Village Defense - Protect villagers from hordes of zombies
- * Copyright (C) 2018  Plajer's Lair - maintained by Plajer and Tigerpanzer
+ * Copyright (C) 2019  Plajer's Lair - maintained by Plajer and Tigerpanzer
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,10 +23,11 @@ import org.bukkit.event.HandlerList;
 
 import pl.plajer.villagedefense.api.event.VillageEvent;
 import pl.plajer.villagedefense.arena.Arena;
-import pl.plajer.villagedefense.handlers.PowerupManager;
+import pl.plajer.villagedefense.handlers.powerup.Powerup;
 
 /**
  * @author Plajer
+ * @see pl.plajer.villagedefense.handlers.powerup.PowerupRegistry
  * @since 3.8.0
  * <p>
  * Called when player pick up a power-up.
@@ -35,9 +36,9 @@ public class VillagePlayerPowerupPickupEvent extends VillageEvent {
 
   private static final HandlerList HANDLERS = new HandlerList();
   private final Player player;
-  private final PowerupManager.Powerup powerup;
+  private final Powerup powerup;
 
-  public VillagePlayerPowerupPickupEvent(Arena eventArena, Player player, PowerupManager.Powerup powerup) {
+  public VillagePlayerPowerupPickupEvent(Arena eventArena, Player player, Powerup powerup) {
     super(eventArena);
     this.player = player;
     this.powerup = powerup;
@@ -51,7 +52,7 @@ public class VillagePlayerPowerupPickupEvent extends VillageEvent {
     return player;
   }
 
-  public PowerupManager.Powerup getPowerup() {
+  public Powerup getPowerup() {
     return powerup;
   }
 
