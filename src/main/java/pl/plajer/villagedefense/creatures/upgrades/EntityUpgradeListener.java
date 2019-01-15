@@ -159,13 +159,16 @@ public class EntityUpgradeListener implements Listener {
   @EventHandler
   public void onInventoryClick(InventoryClickEvent e) {
     try {
-      if (e.getInventory() == null || !Utils.isNamed(e.getCurrentItem()) || !(e.getWhoClicked() instanceof Player) || clickedEntity.get(e.getWhoClicked()) == null) {
+      if (e.getInventory() == null || !(e.getWhoClicked() instanceof Player) || clickedEntity.get(e.getWhoClicked()) == null) {
         return;
       }
       if (!e.getInventory().getName().equals(upgradeMenu.getPlugin().getChatManager().colorMessage("Upgrade-Menu.Title"))) {
         return;
       }
       e.setCancelled(true);
+      if (!Utils.isNamed(e.getCurrentItem())) {
+        return;
+      }
       Player p = (Player) e.getWhoClicked();
       User user = upgradeMenu.getPlugin().getUserManager().getUser(p);
       String name = e.getCurrentItem().getItemMeta().getDisplayName();
