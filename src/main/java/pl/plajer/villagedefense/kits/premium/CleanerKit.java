@@ -22,9 +22,7 @@ import java.util.List;
 
 import org.bukkit.Color;
 import org.bukkit.Material;
-import org.bukkit.Particle;
 import org.bukkit.entity.Player;
-import org.bukkit.entity.Zombie;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -32,6 +30,7 @@ import org.bukkit.inventory.ItemStack;
 
 import pl.plajer.villagedefense.arena.Arena;
 import pl.plajer.villagedefense.arena.ArenaRegistry;
+import pl.plajer.villagedefense.arena.ArenaUtils;
 import pl.plajer.villagedefense.handlers.PermissionsManager;
 import pl.plajer.villagedefense.kits.kitapi.KitRegistry;
 import pl.plajer.villagedefense.kits.kitapi.basekits.PremiumKit;
@@ -104,10 +103,7 @@ public class CleanerKit extends PremiumKit implements Listener {
         e.getPlayer().sendMessage(getPlugin().getChatManager().colorMessage("Kits.Cleaner.Nothing-To-Clean"));
         return;
       }
-      for (Zombie zombie : arena.getZombies()) {
-        zombie.getWorld().spawnParticle(Particle.LAVA, zombie.getLocation(), 20);
-        zombie.remove();
-      }
+      ArenaUtils.removeSpawnedZombies(arena);
       arena.getZombies().clear();
       Utils.playSound(e.getPlayer().getLocation(), "ENTITY_ZOMBIE_DEATH", "ENTITY_ZOMBIE_DEATH");
       getPlugin().getChatManager().broadcast(arena, getPlugin().getChatManager().formatMessage(arena, getPlugin().getChatManager().colorMessage("Kits.Cleaner.Cleaned-Map"), e.getPlayer()));

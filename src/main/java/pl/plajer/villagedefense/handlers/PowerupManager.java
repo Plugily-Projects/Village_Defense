@@ -31,9 +31,7 @@ import java.util.concurrent.ThreadLocalRandom;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.Particle;
 import org.bukkit.entity.Player;
-import org.bukkit.entity.Zombie;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
@@ -41,6 +39,7 @@ import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.api.event.player.VillagePlayerPowerupPickupEvent;
 import pl.plajer.villagedefense.arena.Arena;
 import pl.plajer.villagedefense.arena.ArenaRegistry;
+import pl.plajer.villagedefense.arena.ArenaUtils;
 import pl.plajerlair.core.debug.Debugger;
 import pl.plajerlair.core.debug.LogLevel;
 import pl.plajerlair.core.services.exception.ReportedException;
@@ -124,10 +123,7 @@ public class PowerupManager {
         switch (powerup.getID()) {
           case "Map-Clean":
             if (arena.getZombies() != null) {
-              for (Zombie zombie : arena.getZombies()) {
-                zombie.getWorld().spawnParticle(Particle.LAVA, zombie.getLocation(), 20);
-                zombie.remove();
-              }
+              ArenaUtils.removeSpawnedZombies(arena);
               arena.getZombies().clear();
             }
             break;

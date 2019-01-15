@@ -19,7 +19,9 @@
 package pl.plajer.villagedefense.arena;
 
 import org.bukkit.GameMode;
+import org.bukkit.Particle;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Zombie;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.PotionEffectType;
 
@@ -149,6 +151,18 @@ public class ArenaUtils {
     User user = plugin.getUserManager().getUser(player);
     user.addStat(stat, 1);
     ArenaUtils.updateLevelStat(player, ArenaRegistry.getArena(player));
+  }
+
+  public static void removeSpawnedZombies(Arena arena) {
+    boolean eachThree = arena.getZombies().size() > 70;
+    int i = 0;
+    for (Zombie zombie : arena.getZombies()) {
+      if (eachThree && (i % 3) == 0) {
+        zombie.getWorld().spawnParticle(Particle.LAVA, zombie.getLocation(), 20);
+      }
+      zombie.remove();
+      i++;
+    }
   }
 
 }

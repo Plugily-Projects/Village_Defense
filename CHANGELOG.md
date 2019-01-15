@@ -7,8 +7,8 @@
 run idle process to halt spawning zombies to x seconds (wave / 15 rounded down) so server will save performance a bit
 * Added zombie spawn limiter, now there won't be more than 750 zombies in wave, any amount above that will be
 decremented to 750 and zombies will gain extra health based on algorithm (zombies this wave - 750 / 15 rounded up)
-* Now if there will be spawned more than 70 zombies and player uses /vda setwave or /vda clear zombie commands
-only each of 3 zombies will spawn lava particles to prevent client lag
+* Now if there will be spawned more than 70 zombies and player uses /vda setwave or /vda clear zombie commands or uses 
+cleanup power-up or cleaner kit every third zombie will spawn lava particles to prevent client lag
 * The game will now cleanup all rotten fleshes spawned near 150 blocks from starting location of arena after the game ends
 * Beta pre 6 (14.12.2018-12.01.2019)
     * Implemented legacy data fixer that will fix inconsistency between original user data and current one (old implementation failure)

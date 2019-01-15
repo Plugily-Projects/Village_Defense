@@ -19,14 +19,13 @@
 package pl.plajer.villagedefense.commands.arguments.admin.arena;
 
 import org.bukkit.ChatColor;
-import org.bukkit.Particle;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.entity.Zombie;
 
 import pl.plajer.villagedefense.arena.Arena;
 import pl.plajer.villagedefense.arena.ArenaManager;
 import pl.plajer.villagedefense.arena.ArenaRegistry;
+import pl.plajer.villagedefense.arena.ArenaUtils;
 import pl.plajer.villagedefense.arena.options.ArenaOption;
 import pl.plajer.villagedefense.commands.arguments.ArgumentsRegistry;
 import pl.plajer.villagedefense.commands.arguments.data.CommandArgument;
@@ -63,15 +62,7 @@ public class SetWaveArgument {
             player1.sendMessage(registry.getPlugin().getChatManager().getPrefix() + message);
           }
           if (arena.getZombies() != null) {
-            boolean eachThree = arena.getZombies().size() > 70;
-            int i = 0;
-            for (Zombie zombie : arena.getZombies()) {
-              if (eachThree && (i % 3) == 0) {
-                zombie.getWorld().spawnParticle(Particle.LAVA, zombie.getLocation(), 20);
-              }
-              zombie.remove();
-              i++;
-            }
+            ArenaUtils.removeSpawnedZombies(arena);
             arena.getZombies().clear();
             arena.setOptionValue(ArenaOption.ZOMBIES_TO_SPAWN, 0);
           } else {

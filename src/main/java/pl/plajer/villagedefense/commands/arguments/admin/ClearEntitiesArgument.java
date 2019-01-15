@@ -25,10 +25,10 @@ import org.bukkit.entity.IronGolem;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Villager;
 import org.bukkit.entity.Wolf;
-import org.bukkit.entity.Zombie;
 
 import pl.plajer.villagedefense.arena.Arena;
 import pl.plajer.villagedefense.arena.ArenaRegistry;
+import pl.plajer.villagedefense.arena.ArenaUtils;
 import pl.plajer.villagedefense.arena.options.ArenaOption;
 import pl.plajer.villagedefense.commands.arguments.ArgumentsRegistry;
 import pl.plajer.villagedefense.commands.arguments.data.CommandArgument;
@@ -78,15 +78,7 @@ public class ClearEntitiesArgument {
               sender.sendMessage(registry.getPlugin().getChatManager().colorMessage("Kits.Cleaner.Nothing-To-Clean"));
               return;
             }
-            boolean eachThree = arena.getZombies().size() > 70;
-            int i = 0;
-            for (Zombie zombie : arena.getZombies()) {
-              if (eachThree && (i % 3) == 0) {
-                zombie.getWorld().spawnParticle(Particle.LAVA, zombie.getLocation(), 20);
-              }
-              zombie.remove();
-              i++;
-            }
+            ArenaUtils.removeSpawnedZombies(arena);
             arena.getZombies().clear();
             arena.setOptionValue(ArenaOption.ZOMBIES_TO_SPAWN, 0);
             Utils.playSound(((Player) sender).getLocation(), "ENTITY_ZOMBIE_DEATH", "ENTITY_ZOMBIE_DEATH");
