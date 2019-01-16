@@ -157,6 +157,9 @@ public class EntityUpgradeMenu {
     int tier = getTier(en, upgrade) + 1;
     en.setMetadata(upgrade.getMetadataAccessor(), new FixedMetadataValue(plugin, tier));
     applyUpgradeEffect(en, upgrade, tier);
+    if (upgrade.getMaxTier() == tier) {
+      en.getWorld().spawnParticle(Particle.EXPLOSION_LARGE, en.getLocation(), 5);
+    }
     return true;
   }
 

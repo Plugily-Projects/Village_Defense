@@ -21,6 +21,7 @@ package pl.plajer.villagedefense.creatures.upgrades;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Particle;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -42,6 +43,7 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 import pl.plajer.villagedefense.api.StatsStorage;
+import pl.plajer.villagedefense.api.event.player.VillagePlayerEntityUpgradeEvent;
 import pl.plajer.villagedefense.arena.Arena;
 import pl.plajer.villagedefense.arena.ArenaRegistry;
 import pl.plajer.villagedefense.user.User;
@@ -188,6 +190,9 @@ public class EntityUpgradeListener implements Listener {
             upgradeMenu.getPlugin().getChatManager().colorMessage("Upgrade-Menu.Upgraded-Entity").replace("%tier%",
                 String.valueOf(tier)));
         upgradeMenu.applyUpgrade(clickedEntity.get(p), upgrade);
+
+        VillagePlayerEntityUpgradeEvent event = new VillagePlayerEntityUpgradeEvent(ArenaRegistry.getArena(p), clickedEntity.get(p), p, upgrade, tier);
+        Bukkit.getPluginManager().callEvent(event);
         p.closeInventory();
       }
     } catch (Exception ex) {

@@ -1,6 +1,6 @@
 /*
  * Village Defense - Protect villagers from hordes of zombies
- * Copyright (C) 2018  Plajer's Lair - maintained by Plajer and Tigerpanzer
+ * Copyright (C) 2019  Plajer's Lair - maintained by Plajer and Tigerpanzer
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,31 +18,34 @@
 
 package pl.plajer.villagedefense.api.event.player;
 
-import org.bukkit.entity.IronGolem;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 
 import pl.plajer.villagedefense.api.event.VillageEvent;
 import pl.plajer.villagedefense.arena.Arena;
+import pl.plajer.villagedefense.creatures.upgrades.Upgrade;
 
 /**
  * @author Plajer
- * @since 3.8.0
+ * @since 4.0.0
  * <p>
- * Called when player upgrades a golem.
+ * Called when player upgrades an entity.
  */
-public class VillagePlayerGolemUpgradeEvent extends VillageEvent {
+public class VillagePlayerEntityUpgradeEvent extends VillageEvent {
 
   private static final HandlerList HANDLERS = new HandlerList();
-  private IronGolem ironGolem;
+  private Entity entity;
   private Player player;
-  private double originalHealth;
+  private Upgrade appliedUpgrade;
+  private int tier;
 
-  public VillagePlayerGolemUpgradeEvent(Arena eventArena, IronGolem ironGolem, Player player, double originalHealth) {
+  public VillagePlayerEntityUpgradeEvent(Arena eventArena, Entity entity, Player player, Upgrade appliedUpgrade, int tier) {
     super(eventArena);
-    this.ironGolem = ironGolem;
+    this.entity = entity;
     this.player = player;
-    this.originalHealth = originalHealth;
+    this.appliedUpgrade = appliedUpgrade;
+    this.tier = tier;
   }
 
   public static HandlerList getHandlerList() {
@@ -53,20 +56,26 @@ public class VillagePlayerGolemUpgradeEvent extends VillageEvent {
     return HANDLERS;
   }
 
-  public IronGolem getIronGolem() {
-    return ironGolem;
+  public Entity getEntity() {
+    return entity;
+  }
+
+  /**
+   * @return upgrade that was applied to entity
+   */
+  public Upgrade getAppliedUpgrade() {
+    return appliedUpgrade;
+  }
+
+  /**
+   * @return upgrade tier
+   */
+  public int getTier() {
+    return tier;
   }
 
   public Player getPlayer() {
     return player;
   }
 
-  /**
-   * Golem health before upgrade
-   *
-   * @return original golem health
-   */
-  public double getOriginalHealth() {
-    return originalHealth;
-  }
 }
