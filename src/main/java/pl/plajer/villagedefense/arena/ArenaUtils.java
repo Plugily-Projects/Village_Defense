@@ -70,7 +70,7 @@ public class ArenaUtils {
     try {
       for (Player player : arena.getPlayers()) {
         if (arena.getPlayersLeft().contains(player)) {
-          return;
+          continue;
         }
         User user = plugin.getUserManager().getUser(player);
         user.setSpectator(false);
