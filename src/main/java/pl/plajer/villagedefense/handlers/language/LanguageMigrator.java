@@ -65,10 +65,10 @@ public class LanguageMigrator {
     Bukkit.getConsoleSender().sendMessage(ChatColor.YELLOW + "[Village Defense] System notify >> Your config file is outdated! Updating...");
     File file = new File(plugin.getDataFolder() + "/config.yml");
 
-    int version = plugin.getConfig().getInt("Version", 0);
+    int version = plugin.getConfig().getInt("Version", CONFIG_FILE_VERSION - 1);
     updateConfigVersionControl(version);
 
-    for (int i = version; i < LANGUAGE_FILE_VERSION; i++) {
+    for (int i = version; i < CONFIG_FILE_VERSION; i++) {
       switch (version) {
         case 1:
           MigratorUtils.addNewLines(file, "# Power ups section. If you want to have classic Village Defense game mode i recommend to disable this.\r\nPowerups:\r\n"
@@ -127,7 +127,7 @@ public class LanguageMigrator {
     }
     Bukkit.getConsoleSender().sendMessage(ChatColor.YELLOW + "[Village Defense] [System notify] Your language file is outdated! Updating...");
 
-    int version = 0;
+    int version = LANGUAGE_FILE_VERSION - 1;
     if (NumberUtils.isNumber(ConfigUtils.getConfig(plugin, "language").getString("File-Version-Do-Not-Edit"))) {
       version = Integer.parseInt(ConfigUtils.getConfig(plugin, "language").getString("File-Version-Do-Not-Edit"));
     }
