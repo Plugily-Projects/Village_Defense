@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package pl.plajer.villagedefense.commands;
+package pl.plajer.villagedefense.commands.completion;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,11 +39,15 @@ import pl.plajer.villagedefense.commands.arguments.data.CommandArgument;
  */
 public class TabCompletion implements TabCompleter {
 
-
+  private List<CompletableArgument> registeredCompletions = new ArrayList<>();
   private ArgumentsRegistry registry;
 
   public TabCompletion(ArgumentsRegistry registry) {
     this.registry = registry;
+  }
+
+  public void registerCompletion(CompletableArgument completion) {
+    registeredCompletions.add(completion);
   }
 
   @Override
@@ -65,6 +69,18 @@ public class TabCompletion implements TabCompleter {
       if (args.length == 1) {
         return registry.getMappedArguments().get(cmd.getName().toLowerCase()).stream().map(CommandArgument::getArgumentName).collect(Collectors.toList());
       }
+    }
+    if (args.length < 2) {
+      return null;
+    }
+    for (CompletableArgument completion : registeredCompletions) {
+      if (!cmd.getName().equalsIgnoreCase(completion.getMainCommand())) {
+        continue;
+      }
+      if (!completion.getArgument().equalsIgnoreCase(args[0])) {
+        continue;
+      }
+      return completion.getCompletions();
     }
     return null;
   }

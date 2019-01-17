@@ -20,7 +20,9 @@ package pl.plajer.villagedefense.commands.arguments.game;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.UUID;
 
 import org.apache.commons.lang.StringUtils;
@@ -31,6 +33,7 @@ import pl.plajer.villagedefense.ConfigPreferences;
 import pl.plajer.villagedefense.api.StatsStorage;
 import pl.plajer.villagedefense.commands.arguments.ArgumentsRegistry;
 import pl.plajer.villagedefense.commands.arguments.data.CommandArgument;
+import pl.plajer.villagedefense.commands.completion.CompletableArgument;
 
 /**
  * @author Plajer
@@ -40,6 +43,14 @@ import pl.plajer.villagedefense.commands.arguments.data.CommandArgument;
 public class LeaderboardArgument {
 
   public LeaderboardArgument(ArgumentsRegistry registry) {
+    List<String> stats = new ArrayList<>();
+    for (StatsStorage.StatisticType val : StatsStorage.StatisticType.values()) {
+      if (!val.isPersistent()) {
+        continue;
+      }
+      stats.add(val.name().toLowerCase());
+    }
+    registry.getTabCompletion().registerCompletion(new CompletableArgument("villagedefense", "top", stats));
     registry.mapArgument("villagedefense", new CommandArgument("top", "", CommandArgument.ExecutorType.PLAYER) {
       @Override
       public void execute(CommandSender sender, String[] args) {

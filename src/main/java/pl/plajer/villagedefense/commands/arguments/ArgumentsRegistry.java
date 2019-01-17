@@ -38,7 +38,6 @@ import org.bukkit.entity.Player;
 
 import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.arena.ArenaRegistry;
-import pl.plajer.villagedefense.commands.TabCompletion;
 import pl.plajer.villagedefense.commands.arguments.admin.AddOrbsArgument;
 import pl.plajer.villagedefense.commands.arguments.admin.ClearEntitiesArgument;
 import pl.plajer.villagedefense.commands.arguments.admin.ListArenasArgument;
@@ -62,6 +61,7 @@ import pl.plajer.villagedefense.commands.arguments.game.LeaderboardArgument;
 import pl.plajer.villagedefense.commands.arguments.game.LeaveArgument;
 import pl.plajer.villagedefense.commands.arguments.game.SelectKitArgument;
 import pl.plajer.villagedefense.commands.arguments.game.StatsArgument;
+import pl.plajer.villagedefense.commands.completion.TabCompletion;
 import pl.plajer.villagedefense.handlers.setup.SetupInventory;
 import pl.plajer.villagedefense.utils.Utils;
 import pl.plajerlair.core.services.exception.ReportedException;
@@ -76,15 +76,16 @@ public class ArgumentsRegistry implements CommandExecutor {
 
   private SpyChatArgument spyChat;
   private Main plugin;
+  private TabCompletion tabCompletion;
   private Map<String, List<CommandArgument>> mappedArguments = new HashMap<>();
 
   public ArgumentsRegistry(Main plugin) {
     this.plugin = plugin;
-    TabCompletion completion = new TabCompletion(this);
+    tabCompletion = new TabCompletion(this);
     plugin.getCommand("villagedefense").setExecutor(this);
-    plugin.getCommand("villagedefense").setTabCompleter(completion);
+    plugin.getCommand("villagedefense").setTabCompleter(tabCompletion);
     plugin.getCommand("villagedefenseadmin").setExecutor(this);
-    plugin.getCommand("villagedefenseadmin").setTabCompleter(completion);
+    plugin.getCommand("villagedefenseadmin").setTabCompleter(tabCompletion);
 
     //register Village Defense basic arguments
     new CreateArgument(this);
@@ -249,6 +250,10 @@ public class ArgumentsRegistry implements CommandExecutor {
 
   public Main getPlugin() {
     return plugin;
+  }
+
+  public TabCompletion getTabCompletion() {
+    return tabCompletion;
   }
 
   public SpyChatArgument getSpyChat() {

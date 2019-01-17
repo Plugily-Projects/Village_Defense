@@ -18,6 +18,8 @@
 
 package pl.plajer.villagedefense.commands.arguments.admin;
 
+import java.util.Arrays;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Particle;
 import org.bukkit.command.CommandSender;
@@ -34,6 +36,7 @@ import pl.plajer.villagedefense.commands.arguments.ArgumentsRegistry;
 import pl.plajer.villagedefense.commands.arguments.data.CommandArgument;
 import pl.plajer.villagedefense.commands.arguments.data.LabelData;
 import pl.plajer.villagedefense.commands.arguments.data.LabeledCommandArgument;
+import pl.plajer.villagedefense.commands.completion.CompletableArgument;
 import pl.plajer.villagedefense.utils.Utils;
 
 /**
@@ -44,8 +47,9 @@ import pl.plajer.villagedefense.utils.Utils;
 public class ClearEntitiesArgument {
 
   public ClearEntitiesArgument(ArgumentsRegistry registry) {
+    registry.getTabCompletion().registerCompletion(new CompletableArgument("villagedefenseadmin", "clear", Arrays.asList("zombie", "villager", "golem", "wolf")));
     registry.mapArgument("villagedefenseadmin", new LabeledCommandArgument("clear", "villagedefense.admin.clear", CommandArgument.ExecutorType.PLAYER,
-        new LabelData("/vda clear &6<zombie/villager/golem>", "/vda clear <mob>",
+        new LabelData("/vda clear &6<zombie/villager/golem/wolf>", "/vda clear <mob>",
             "&7Clear specific mob type from arena you're in\n&7Valid mob types:\n&7• ZOMBIE - clear spawned zombies\n"
                 + "&7• VILLAGER - clear alive villagers\n&7• GOLEM - clear spawned golems\n&7• WOLF - clear spawned wolves\n&6Permission: &7villagedefense.admin.clear")) {
       @Override
