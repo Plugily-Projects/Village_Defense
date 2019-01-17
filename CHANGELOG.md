@@ -1,6 +1,6 @@
 # Village Defense Changelog
 
-### 4.0.0 Release (04.10.2018-16.01.2019)
+### 4.0.0 Release (04.10.2018-17.01.2019)
 **Whole changelog from all beta pre releases**
 * Limited rotten flesh hearts level amount to 30 after this limit you won't receive any more hearts
 * Added zombie idle process to save server load and prevent lag, when game will be in higher waves state system will
@@ -12,6 +12,7 @@ cleanup power-up or cleaner kit every third zombie will spawn lava particles to 
 * The game will now cleanup all rotten fleshes spawned near 150 blocks from starting location of arena after the game ends
 * Implemented better power-up registry for better API hooks
 * Fixed dead users won't be respawned when game starts
+* Added tab completer for some commands values
 * Beta pre 6 (14.12.2018-12.01.2019)
     * Implemented legacy data fixer that will fix inconsistency between original user data and current one (old implementation failure)
     data was wrongly saved without getName() method called. MySQL users are safe.
