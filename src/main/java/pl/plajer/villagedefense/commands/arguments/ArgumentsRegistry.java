@@ -144,6 +144,7 @@ public class ArgumentsRegistry implements CommandExecutor {
 
               SetupInventory.sendProTip((Player) sender);
               new SetupInventory(ArenaRegistry.getArena(args[0])).openInventory((Player) sender);
+              return true;
             }
           }
           if (cmd.getName().equalsIgnoreCase("villagedefenseadmin")) {
