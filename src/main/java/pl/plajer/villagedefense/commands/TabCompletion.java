@@ -1,6 +1,6 @@
 /*
  * Village Defense - Protect villagers from hordes of zombies
- * Copyright (C) 2018  Plajer's Lair - maintained by Plajer and Tigerpanzer
+ * Copyright (C) 2019  Plajer's Lair - maintained by Plajer and Tigerpanzer
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -38,6 +38,7 @@ import pl.plajer.villagedefense.commands.arguments.data.CommandArgument;
  * Created at 11.05.2018
  */
 public class TabCompletion implements TabCompleter {
+
 
   private ArgumentsRegistry registry;
 

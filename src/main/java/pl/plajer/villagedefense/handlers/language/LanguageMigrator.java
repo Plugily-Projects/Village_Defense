@@ -130,6 +130,8 @@ public class LanguageMigrator {
     int version = LANGUAGE_FILE_VERSION - 1;
     if (NumberUtils.isNumber(ConfigUtils.getConfig(plugin, "language").getString("File-Version-Do-Not-Edit"))) {
       version = Integer.parseInt(ConfigUtils.getConfig(plugin, "language").getString("File-Version-Do-Not-Edit"));
+    } else {
+      Bukkit.broadcastMessage("Failed to parse language file version!");
     }
     updateLanguageVersionControl(version);
 

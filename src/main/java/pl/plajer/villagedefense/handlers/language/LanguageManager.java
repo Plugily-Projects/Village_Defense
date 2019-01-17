@@ -24,7 +24,6 @@ import com.wasteofplastic.askyblock.ASkyBlock;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
@@ -65,6 +64,7 @@ public class LanguageManager {
     if (!new File(plugin.getDataFolder() + File.separator + "language.yml").exists()) {
       plugin.saveResource("language.yml", false);
     }
+    new LanguageMigrator(plugin);
     languageConfig = ConfigUtils.getConfig(plugin, "language");
     registerLocales();
     setupLocale();
@@ -74,7 +74,6 @@ public class LanguageManager {
         suggestLocale();
       }
     }, 100);
-    new LanguageMigrator(plugin);
   }
 
   private static void registerLocales() {
