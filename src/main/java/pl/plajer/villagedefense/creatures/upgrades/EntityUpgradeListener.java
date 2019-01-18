@@ -18,6 +18,7 @@
 
 package pl.plajer.villagedefense.creatures.upgrades;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -124,7 +125,7 @@ public class EntityUpgradeListener implements Listener {
             ((Zombie) en).damage(10000.0, e.getEntity());
           }
         }
-        for (Zombie zombie : arena.getZombies()) {
+        for (Zombie zombie : new ArrayList<>(arena.getZombies())) {
           zombie.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 5, 0));
           zombie.damage(0.5, e.getEntity());
         }
