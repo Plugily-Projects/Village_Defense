@@ -1,5 +1,8 @@
 # Village Defense Changelog
 
+### 4.0.1 Release (18.01.2019)
+* There was no check for max tier of entity upgrades, you could upgrade tier 5 infinitely
+
 ### 4.0.0 Release (04.10.2018-17.01.2019)
 **Whole changelog from all beta pre releases**
 * Limited rotten flesh hearts level amount to 30 after this limit you won't receive any more hearts

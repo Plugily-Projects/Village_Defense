@@ -180,6 +180,9 @@ public class EntityUpgradeListener implements Listener {
         }
         int tier = upgradeMenu.getTier(clickedEntity.get(p), upgrade) + 1;
         int cost = upgrade.getCost(tier);
+        if (tier > upgrade.getMaxTier()) {
+          p.sendMessage(upgradeMenu.getPlugin().getChatManager().colorMessage("Upgrade-Menu.Max-Tier"));
+        }
         if (user.getStat(StatsStorage.StatisticType.ORBS) < cost) {
           p.sendMessage(upgradeMenu.getPlugin().getChatManager().getPrefix() +
               upgradeMenu.getPlugin().getChatManager().colorMessage("Upgrade-Menu.Cannot-Afford"));
