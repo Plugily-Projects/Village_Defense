@@ -40,7 +40,7 @@ public class SetLevelArgument {
 
   public SetLevelArgument(ArgumentsRegistry registry) {
     registry.mapArgument("villagedefenseadmin", new LabeledCommandArgument("setlevel", "villagedefense.admin.setlevel",
-        CommandArgument.ExecutorType.BOTH, new LabelData("/vda setlevel  &6<amount> &c[player]", "/vda setlevel <amount>",
+        CommandArgument.ExecutorType.BOTH, new LabelData("/vda setlevel &6<amount> &c[player]", "/vda setlevel <amount>",
         "&7Set level to yourself or target player\n&7Can be used from console too\n&6Permission: &7villagedefense.admin.setlevel (for yourself)\n"
             + "&6Permission: &7villagedefense.admin.setlevel.others (for others)")) {
       @Override
