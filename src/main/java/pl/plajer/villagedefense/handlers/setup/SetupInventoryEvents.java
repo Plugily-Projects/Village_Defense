@@ -234,6 +234,7 @@ public class SetupInventoryEvents implements Listener {
           }
           LocationUtils.saveLoc(plugin, config, "arenas", "instances." + arena.getID() + ".shop", targetBlock.getLocation());
           player.sendMessage(ChatColor.GREEN + "Shop for chest set!");
+          player.sendMessage(plugin.getChatManager().colorRawMessage("&e&lTIP: &7You can use special items in shops! Check out https://bit.ly/2T2GhA9"));
           break;
         case REGISTER_ARENA:
           if (ArenaRegistry.getArena(arena.getID()).isReady()) {
