@@ -183,6 +183,7 @@ public class EntityUpgradeListener implements Listener {
         int cost = upgrade.getCost(tier);
         if (tier > upgrade.getMaxTier()) {
           p.sendMessage(upgradeMenu.getPlugin().getChatManager().colorMessage("Upgrade-Menu.Max-Tier"));
+          return;
         }
         if (user.getStat(StatsStorage.StatisticType.ORBS) < cost) {
           p.sendMessage(upgradeMenu.getPlugin().getChatManager().getPrefix() +
