@@ -5,6 +5,7 @@
 * Fixed error #409 caused by Golem's Final Defense upgrade (https://plajer.xyz/errorservice/viewer.php?id=409)
 * Added new pro tip about user voice panel https://plajer.xyz/uservoice/index.php?id=VillageDefense
 * Added tip about special items for shops when setting up shop via setup menu
+* Fixed errors when plugin was disabled and arenas couldn't be properly reset
 
 ### 4.0.0 Release (04.10.2018-17.01.2019)
 **Whole changelog from all beta pre releases**
