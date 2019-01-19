@@ -118,13 +118,15 @@ public class EntityUpgradeListener implements Listener {
         }
         e.getEntity().getLocation().getWorld().spawnParticle(Particle.EXPLOSION_HUGE, e.getEntity().getLocation(), 5);
         for (Entity en : Utils.getNearbyEntities(e.getEntity().getLocation(), tier * 5)) {
-          if (en instanceof Zombie) {
+          if (en instanceof Zombie && !en.isDead()) {
             ((Zombie) en).damage(10000.0, e.getEntity());
           }
         }
         for (Zombie zombie : arena.getZombies()) {
-          zombie.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 5, 0));
-          zombie.damage(0.5, e.getEntity());
+          if (!zombie.isDead()) {
+            zombie.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 5, 0));
+            zombie.damage(0.5, e.getEntity());
+          }
         }
       }
     } catch (Exception ex) {
