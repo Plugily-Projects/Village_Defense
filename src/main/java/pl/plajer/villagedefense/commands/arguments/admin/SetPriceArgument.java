@@ -46,7 +46,7 @@ public class SetPriceArgument {
             "&7Set price of holding item, it's required for game shop\n&6Permission: &7villagedefense.admin.setprice")) {
       @Override
       public void execute(CommandSender sender, String[] args) {
-        if (args.length == 0) {
+        if (args.length == 1) {
           sender.sendMessage(registry.getPlugin().getChatManager().getPrefix() + ChatColor.RED + "Please type price of item!");
           return;
         }

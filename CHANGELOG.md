@@ -1,5 +1,8 @@
 # Village Defense Changelog
 
+### 4.0.2 Release (23.01.2019)
+* Fixed [#415 error](https://plajer.xyz/errorservice/viewer.php?id=415) caused by /vda setprice without price set
+
 ### 4.0.1 Release (18/19.01.2019)
 * There was no check for max tier of entity upgrades, you could upgrade tier 5 infinitely
 * Fixed error #409 caused by Golem's Final Defense upgrade (https://plajer.xyz/errorservice/viewer.php?id=409)
