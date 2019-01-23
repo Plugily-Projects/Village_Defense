@@ -19,9 +19,7 @@
 package pl.plajer.villagedefense.user;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -41,10 +39,10 @@ import pl.plajerlair.core.debug.LogLevel;
  */
 public class UserManager implements UserDatabase {
 
-  private static Map<Player, User> users = new HashMap<>();
+  private Main plugin;
   private MySQLManager mySQLManager;
   private FileStats fileStats;
-  private Main plugin;
+  private List<User> users = new ArrayList<>();
 
   public UserManager(Main plugin) {
     this.plugin = plugin;
@@ -66,13 +64,15 @@ public class UserManager implements UserDatabase {
   }
 
   public User getUser(Player player) {
-    if (users.containsKey(player)) {
-      return users.get(player);
-    } else {
-      Debugger.debug(LogLevel.INFO, "Registering new user with UUID: " + player.getUniqueId() + " (" + player.getName() + ")");
-      users.put(player, new User(player));
-      return users.get(player);
+    for (User user : users) {
+      if (user.getPlayer().equals(player)) {
+        return user;
+      }
     }
+    Debugger.debug(LogLevel.INFO, "Registering new user with UUID: " + player.getUniqueId() + " (" + player.getName() + ")");
+    User user = new User(player);
+    users.add(user);
+    return user;
   }
 
   public List<User> getUsers(Arena arena) {
@@ -107,8 +107,8 @@ public class UserManager implements UserDatabase {
     fileStats.loadStatistic(user, stat);
   }
 
-  public void removeUser(Player player) {
-    users.remove(player);
+  public void removeUser(User user) {
+    users.remove(user);
   }
 
   public MySQLManager getMySQLManager() {
