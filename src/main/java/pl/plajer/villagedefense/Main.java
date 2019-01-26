@@ -344,7 +344,7 @@ public class Main extends JavaPlugin {
         }
         if (getConfigPreferences().getOption(ConfigPreferences.Option.DATABASE_ENABLED)) {
           userManager.getMySQLManager().saveStatistic(user, stat);
-          return;
+          continue;
         }
         userManager.getFileStats().saveStatistic(user, stat);
       }

@@ -2,6 +2,7 @@
 
 ### 4.0.2 Release (23.01.2019)
 * Fixed [#415 error](https://plajer.xyz/errorservice/viewer.php?id=415) caused by /vda setprice without price set
+* Removed return code line from onDisable method while saving user data into mysql, only 1 stat was saved for 1 player -,-
 
 ### 4.0.1 Release (18/19.01.2019)
 * There was no check for max tier of entity upgrades, you could upgrade tier 5 infinitely
