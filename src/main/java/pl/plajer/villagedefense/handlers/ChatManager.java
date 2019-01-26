@@ -70,6 +70,7 @@ public class ChatManager {
     try {
       return ChatColor.translateAlternateColorCodes('&', LanguageManager.getLanguageMessage(message));
     } catch (NullPointerException e1) {
+      //TODO Fix soon #417 (errorservice)
       MessageUtils.errorOccurred();
       Bukkit.getConsoleSender().sendMessage("Game message not found!");
       if (LanguageManager.isDefaultLanguageUsed()) {
