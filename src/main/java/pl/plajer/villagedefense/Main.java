@@ -37,7 +37,6 @@ import pl.plajer.villagedefense.api.StatsStorage;
 import pl.plajer.villagedefense.arena.Arena;
 import pl.plajer.villagedefense.arena.ArenaEvents;
 import pl.plajer.villagedefense.arena.ArenaRegistry;
-import pl.plajer.villagedefense.arena.ArenaUtils;
 import pl.plajer.villagedefense.commands.arguments.ArgumentsRegistry;
 import pl.plajer.villagedefense.creatures.CreatureUtils;
 import pl.plajer.villagedefense.creatures.DoorBreakListener;
@@ -317,7 +316,6 @@ public class Main extends JavaPlugin {
     Debugger.debug(LogLevel.INFO, "System disable init");
     for (Arena arena : ArenaRegistry.getArenas()) {
       for (Player player : arena.getPlayers()) {
-        ArenaUtils.addExperience(player, arena.getWave());
         arena.doBarAction(Arena.BarAction.REMOVE, player);
         arena.teleportToEndLocation(player);
         if (configPreferences.getOption(ConfigPreferences.Option.INVENTORY_MANAGER_ENABLED)) {
