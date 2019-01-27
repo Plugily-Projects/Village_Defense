@@ -193,6 +193,11 @@ public class SignManager implements Listener {
 
   public void loadSigns() {
     loadedSigns.clear();
+    if (ConfigUtils.getConfig(plugin, "arenas").getConfigurationSection("instances") == null) {
+      Debugger.debug(LogLevel.WARN, "Arena instances not found. Signs not loaded")
+      return;
+    }
+
     for (String path : ConfigUtils.getConfig(plugin, "arenas").getConfigurationSection("instances").getKeys(false)) {
       for (String sign : ConfigUtils.getConfig(plugin, "arenas").getStringList("instances." + path + ".signs")) {
         Location loc = LocationUtils.getLocation(sign);
