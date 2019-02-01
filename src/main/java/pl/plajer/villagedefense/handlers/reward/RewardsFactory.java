@@ -114,7 +114,7 @@ public class RewardsFactory {
       return;
     }
     if (!config.contains("rewards")) {
-      Debugger.debug(LogLevel.WARN, "[RewardsFactory] Rewards section not found in the file. Rewards not loaded.");
+      Debugger.debug(LogLevel.WARN, "[RewardsFactory] Rewards section not found in the file.");
       return;
     }
     Map<GameReward.RewardType, Integer> registeredRewards = new HashMap<>();
