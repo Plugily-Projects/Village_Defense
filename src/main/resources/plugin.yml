@@ -3,7 +3,6 @@ main: pl.plajer.villagedefense.Main
 authors: [TomTheDeveloper, Plajer, Tigerpanzer]
 version: ${project.version}
 softdepend: [HolographicDisplays, PlaceholderAPI]
-loadbefore: [VillageDefense-Enhancements]
 api-version: 1.13
 
 commands:
