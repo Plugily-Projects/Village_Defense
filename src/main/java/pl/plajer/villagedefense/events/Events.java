@@ -28,6 +28,7 @@ import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.World;
 import org.bukkit.attribute.Attribute;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -89,10 +90,21 @@ import pl.plajerlair.core.utils.XMaterial;
  */
 public class Events implements Listener {
 
+  /**
+   * Default name of golem spawn item from language.yml
+   */
+  private final String defaultGolemItemName;
+  /**
+   * Default name of wolf spawn item from language.yml
+   */
+  private final String defaultWolfItemName;
   private Main plugin;
 
   public Events(Main plugin) {
     this.plugin = plugin;
+    FileConfiguration config = ConfigUtils.getConfig(plugin, "language");
+    this.defaultGolemItemName = config.getString("In-Game.Messages.Shop-Messages.Golem-Item-Name");
+    this.defaultWolfItemName = config.getString("In-Game.Messages.Shop-Messages.Wolf-Item-Name");
     plugin.getServer().getPluginManager().registerEvents(this, plugin);
   }
 
@@ -531,16 +543,17 @@ public class Events implements Listener {
         return;
       }
       if (Utils.isNamed(stack)) {
-        if (stack.getItemMeta().getDisplayName().contains(plugin.getChatManager().colorMessage("In-Game.Messages.Shop-Messages.Golem-Item-Name"))
-            || stack.getItemMeta().getDisplayName().contains(plugin.getChatManager().colorRawMessage(ConfigUtils.getConfig(plugin, "language").getString("In-Game.Messages.Shop-Messages.Golem-Item-Name")))) {
-          int i = 0;
+        String name = stack.getItemMeta().getDisplayName();
+        int spawnedAmount = 0;
+        if (name.contains(plugin.getChatManager().colorMessage("In-Game.Messages.Shop-Messages.Golem-Item-Name")) ||
+            name.contains(defaultGolemItemName)) {
           for (IronGolem golem : arena.getIronGolems()) {
             if (golem.getCustomName().equals(plugin.getChatManager().colorMessage("In-Game.Spawned-Golem-Name").replace("%player%", player.getName()))) {
-              i++;
+              spawnedAmount++;
             }
           }
-          if (i >= plugin.getConfig().getInt("Golems-Spawn-Limit", 15)) {
-            e.getWhoClicked().sendMessage(plugin.getChatManager().colorMessage("In-Game.Messages.Shop-Messages.Mob-Limit-Reached")
+          if (spawnedAmount >= plugin.getConfig().getInt("Golems-Spawn-Limit", 15)) {
+            player.sendMessage(plugin.getChatManager().colorMessage("In-Game.Messages.Shop-Messages.Mob-Limit-Reached")
                 .replace("%amount%", String.valueOf(plugin.getConfig().getInt("Golems-Spawn-Limit", 15))));
             return;
           }
@@ -548,16 +561,15 @@ public class Events implements Listener {
           player.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage("In-Game.Messages.Golem-Spawned"));
           user.setStat(StatsStorage.StatisticType.ORBS, user.getStat(StatsStorage.StatisticType.ORBS) - price);
           return;
-        } else if (stack.getItemMeta().getDisplayName().contains(plugin.getChatManager().colorMessage("In-Game.Messages.Shop-Messages.Wolf-Item-Name"))
-            || stack.getItemMeta().getDisplayName().contains(plugin.getChatManager().colorRawMessage(ConfigUtils.getConfig(plugin, "language").getString("In-Game.Messages.Shop-Messages.Wolf-Item-Name")))) {
-          int i = 0;
+        } else if (name.contains(plugin.getChatManager().colorMessage("In-Game.Messages.Shop-Messages.Wolf-Item-Name"))
+            || name.contains(defaultWolfItemName)) {
           for (Wolf wolf : arena.getWolfs()) {
             if (wolf.getCustomName().equals(plugin.getChatManager().colorMessage("In-Game.Spawned-Wolf-Name").replace("%player%", player.getName()))) {
-              i++;
+              spawnedAmount++;
             }
           }
-          if (i >= plugin.getConfig().getInt("Wolves-Spawn-Limit", 20)) {
-            e.getWhoClicked().sendMessage(plugin.getChatManager().colorMessage("In-Game.Messages.Shop-Messages.Mob-Limit-Reached")
+          if (spawnedAmount >= plugin.getConfig().getInt("Wolves-Spawn-Limit", 20)) {
+            player.sendMessage(plugin.getChatManager().colorMessage("In-Game.Messages.Shop-Messages.Mob-Limit-Reached")
                 .replace("%amount%", String.valueOf(plugin.getConfig().getInt("Wolves-Spawn-Limit", 20))));
             return;
           }
