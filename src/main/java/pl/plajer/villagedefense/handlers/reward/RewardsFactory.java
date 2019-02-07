@@ -34,7 +34,7 @@ import pl.plajer.villagedefense.arena.Arena;
 import pl.plajer.villagedefense.arena.ArenaRegistry;
 import pl.plajerlair.core.debug.Debugger;
 import pl.plajerlair.core.debug.LogLevel;
-import pl.plajerlair.core.rewards.RewardsScriptEngine;
+import pl.plajerlair.core.script.ScriptEngine;
 import pl.plajerlair.core.utils.ConfigUtils;
 
 /**
@@ -70,7 +70,7 @@ public class RewardsFactory {
       return;
     }
     Arena arena = ArenaRegistry.getArena(player);
-    RewardsScriptEngine engine = new RewardsScriptEngine();
+    ScriptEngine engine = new ScriptEngine();
     engine.setValue("player", player);
     engine.setValue("server", Bukkit.getServer());
     engine.setValue("arena", arena);
