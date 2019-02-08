@@ -18,6 +18,10 @@
 
 package pl.plajer.villagedefense.creatures.upgrades;
 
+import com.github.stefvanschie.inventoryframework.Gui;
+import com.github.stefvanschie.inventoryframework.GuiItem;
+import com.github.stefvanschie.inventoryframework.pane.StaticPane;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -31,11 +35,14 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
 
 import pl.plajer.villagedefense.Main;
+import pl.plajer.villagedefense.api.StatsStorage;
+import pl.plajer.villagedefense.api.event.player.VillagePlayerEntityUpgradeEvent;
+import pl.plajer.villagedefense.arena.ArenaRegistry;
+import pl.plajer.villagedefense.user.User;
 import pl.plajer.villagedefense.utils.Utils;
 import pl.plajerlair.core.utils.ItemBuilder;
 import pl.plajerlair.core.utils.XMaterial;
@@ -105,27 +112,50 @@ public class EntityUpgradeMenu {
   /**
    * Opens menu with upgrades for wolf or golem
    *
-   * @param en entity to check upgrades for
-   * @param p  player who will see inventory
+   * @param en     entity to check upgrades for
+   * @param player player who will see inventory
    */
-  public void openUpgradeMenu(LivingEntity en, Player p) {
-    Inventory inv = Bukkit.createInventory(null, /* magic number may be changed */9 * 6, plugin.getChatManager().colorMessage("Upgrade-Menu.Title"));
+  public void openUpgradeMenu(LivingEntity en, Player player) {
+    Gui gui = new Gui(plugin, 6, plugin.getChatManager().colorMessage("Upgrade-Menu.Title"));
+    StaticPane pane = new StaticPane(9, 6);
+    User user = plugin.getUserManager().getUser(player);
 
     for (Upgrade upgrade : upgrades) {
       if (upgrade.getApplicableFor() != Upgrade.EntityType.BOTH && !en.getType().toString().equals(upgrade.getApplicableFor().toString())) {
         continue;
       }
       int tier = en.hasMetadata(upgrade.getMetadataAccessor()) ? en.getMetadata(upgrade.getMetadataAccessor()).get(0).asInt() : 0;
-      inv.setItem(upgrade.getSlot(), upgrade.asItemStack(tier));
+      pane.addItem(new GuiItem(upgrade.asItemStack(tier), e -> {
+        int nextTier = getTier(en, upgrade) + 1;
+        int cost = upgrade.getCost(nextTier);
+        if (nextTier > upgrade.getMaxTier()) {
+          player.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage("Upgrade-Menu.Max-Tier"));
+          return;
+        }
+        if (user.getStat(StatsStorage.StatisticType.ORBS) < cost) {
+          player.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage("Upgrade-Menu.Cannot-Afford"));
+          return;
+        }
+        user.setStat(StatsStorage.StatisticType.ORBS, user.getStat(StatsStorage.StatisticType.ORBS) - cost);
+        player.sendMessage(plugin.getChatManager().getPrefix() +
+            plugin.getChatManager().colorMessage("Upgrade-Menu.Upgraded-Entity").replace("%tier%", String.valueOf(nextTier)));
+        applyUpgrade(en, upgrade);
+
+        VillagePlayerEntityUpgradeEvent event = new VillagePlayerEntityUpgradeEvent(ArenaRegistry.getArena(player), en, player, upgrade, nextTier);
+        Bukkit.getPluginManager().callEvent(event);
+        player.closeInventory();
+      }), upgrade.getSlotX(), upgrade.getSlotY());
       for (int i = 0; i < upgrade.getMaxTier(); i++) {
         if (i < tier) {
-          inv.setItem(upgrade.getSlot() + 1 + i, new ItemBuilder(XMaterial.YELLOW_STAINED_GLASS_PANE.parseItem()).build());
+          pane.addItem(new GuiItem(new ItemBuilder(XMaterial.YELLOW_STAINED_GLASS_PANE.parseItem())
+              .name(" ").build(), e -> e.setCancelled(true)), upgrade.getSlotX() + 1 + i, upgrade.getSlotY());
         } else {
-          inv.setItem(upgrade.getSlot() + 1 + i, new ItemBuilder(XMaterial.WHITE_STAINED_GLASS_PANE.parseItem()).build());
+          pane.addItem(new GuiItem(new ItemBuilder(XMaterial.WHITE_STAINED_GLASS_PANE.parseItem())
+              .name(" ").build(), e -> e.setCancelled(true)), upgrade.getSlotX() + 1 + i, upgrade.getSlotY());
         }
       }
     }
-    inv.setItem(4, new ItemBuilder(new ItemStack(Material.BOOK))
+    pane.addItem(new GuiItem(new ItemBuilder(new ItemStack(Material.BOOK))
         .name(plugin.getChatManager().colorMessage("Upgrade-Menu.Stats-Item.Name"))
         .lore(Arrays.stream(plugin.getChatManager().colorMessage("Upgrade-Menu.Stats-Item.Description").split(";"))
             .map((lore) -> lore = plugin.getChatManager().colorRawMessage(lore)
@@ -133,8 +163,9 @@ public class EntityUpgradeMenu {
                 .replace("%damage%", String.valueOf(getUpgrade("Damage").getValueForTier(getTier(en, getUpgrade("Damage")))))
                 .replace("%max_hp%", String.valueOf(getUpgrade("Health").getValueForTier(getTier(en, getUpgrade("Health")))))
                 .replace("%current_hp%", String.valueOf(en.getHealth()))).collect(Collectors.toList()))
-        .build());
-    p.openInventory(inv);
+        .build(), e -> e.setCancelled(true)), 4, 0);
+    gui.addPane(pane);
+    gui.show(player);
   }
 
   /**

@@ -19,35 +19,25 @@
 package pl.plajer.villagedefense.creatures.upgrades;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Particle;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.IronGolem;
 import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
 import org.bukkit.entity.Wolf;
 import org.bukkit.entity.Zombie;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
-import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import pl.plajer.villagedefense.api.StatsStorage;
-import pl.plajer.villagedefense.api.event.player.VillagePlayerEntityUpgradeEvent;
 import pl.plajer.villagedefense.arena.Arena;
 import pl.plajer.villagedefense.arena.ArenaRegistry;
-import pl.plajer.villagedefense.user.User;
 import pl.plajer.villagedefense.utils.Utils;
 import pl.plajerlair.core.services.exception.ReportedException;
 
@@ -58,7 +48,6 @@ import pl.plajerlair.core.services.exception.ReportedException;
  */
 public class EntityUpgradeListener implements Listener {
 
-  private Map<Player, Entity> clickedEntity = new HashMap<>();
   private EntityUpgradeMenu upgradeMenu;
 
   public EntityUpgradeListener(EntityUpgradeMenu upgradeMenu) {
@@ -153,75 +142,9 @@ public class EntityUpgradeListener implements Listener {
         ((Wolf) e.getRightClicked()).setSitting(false);
       }
       upgradeMenu.openUpgradeMenu((LivingEntity) e.getRightClicked(), e.getPlayer());
-      clickedEntity.put(e.getPlayer(), e.getRightClicked());
     } catch (Exception ex) {
       new ReportedException(upgradeMenu.getPlugin(), ex);
     }
-  }
-
-  @EventHandler
-  public void onInventoryClick(InventoryClickEvent e) {
-    try {
-      if (e.getInventory() == null || !(e.getWhoClicked() instanceof Player) || clickedEntity.get(e.getWhoClicked()) == null) {
-        return;
-      }
-      if (!e.getInventory().getName().equals(upgradeMenu.getPlugin().getChatManager().colorMessage("Upgrade-Menu.Title"))) {
-        return;
-      }
-      e.setCancelled(true);
-      if (!Utils.isNamed(e.getCurrentItem())) {
-        return;
-      }
-      Player p = (Player) e.getWhoClicked();
-      User user = upgradeMenu.getPlugin().getUserManager().getUser(p);
-      String name = e.getCurrentItem().getItemMeta().getDisplayName();
-      for (Upgrade upgrade : upgradeMenu.getUpgrades()) {
-        if (!upgrade.getName().equals(name)) {
-          continue;
-        }
-        int tier = upgradeMenu.getTier(clickedEntity.get(p), upgrade) + 1;
-        int cost = upgrade.getCost(tier);
-        if (tier > upgrade.getMaxTier()) {
-          p.sendMessage(upgradeMenu.getPlugin().getChatManager().colorMessage("Upgrade-Menu.Max-Tier"));
-          return;
-        }
-        if (user.getStat(StatsStorage.StatisticType.ORBS) < cost) {
-          p.sendMessage(upgradeMenu.getPlugin().getChatManager().getPrefix() +
-              upgradeMenu.getPlugin().getChatManager().colorMessage("Upgrade-Menu.Cannot-Afford"));
-          return;
-        }
-        user.setStat(StatsStorage.StatisticType.ORBS, user.getStat(StatsStorage.StatisticType.ORBS) - cost);
-        p.sendMessage(upgradeMenu.getPlugin().getChatManager().getPrefix() +
-            upgradeMenu.getPlugin().getChatManager().colorMessage("Upgrade-Menu.Upgraded-Entity").replace("%tier%",
-                String.valueOf(tier)));
-        upgradeMenu.applyUpgrade(clickedEntity.get(p), upgrade);
-
-        VillagePlayerEntityUpgradeEvent event = new VillagePlayerEntityUpgradeEvent(ArenaRegistry.getArena(p), clickedEntity.get(p), p, upgrade, tier);
-        Bukkit.getPluginManager().callEvent(event);
-        p.closeInventory();
-      }
-    } catch (Exception ex) {
-      new ReportedException(upgradeMenu.getPlugin(), ex);
-    }
-  }
-
-  @EventHandler
-  public void onInventoryClose(InventoryCloseEvent e) {
-    try {
-      if (e.getInventory() == null || clickedEntity.get(e.getPlayer()) == null) {
-        return;
-      }
-      if (e.getInventory().getName().equals(upgradeMenu.getPlugin().getChatManager().colorMessage("Upgrade-Menu.Title"))) {
-        clickedEntity.remove(e.getPlayer());
-      }
-    } catch (Exception ex) {
-      new ReportedException(upgradeMenu.getPlugin(), ex);
-    }
-  }
-
-  @EventHandler
-  public void onQuit(PlayerQuitEvent e) {
-    clickedEntity.remove(e.getPlayer());
   }
 
 }
