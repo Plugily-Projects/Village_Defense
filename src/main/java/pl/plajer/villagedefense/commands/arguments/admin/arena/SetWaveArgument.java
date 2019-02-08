@@ -49,7 +49,7 @@ public class SetWaveArgument {
         if (!Utils.checkIsInGameInstance((Player) sender)) {
           return;
         }
-        if (args.length == 0) {
+        if (args.length == 1) {
           sender.sendMessage(registry.getPlugin().getChatManager().getPrefix() + ChatColor.RED + "Please type number of wave to set!");
           return;
         }
