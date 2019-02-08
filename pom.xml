@@ -117,6 +117,11 @@
             <scope>compile</scope>
         </dependency>
         <dependency>
+            <groupId>com.github.stefvanschie.inventoryframework</groupId>
+            <artifactId>IF</artifactId>
+            <version>0.3.2</version>
+        </dependency>
+        <dependency>
             <groupId>net.ess3</groupId>
             <artifactId>EssentialsX</artifactId>
             <version>2.0.1</version>
