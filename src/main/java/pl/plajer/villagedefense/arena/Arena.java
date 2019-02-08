@@ -132,7 +132,6 @@ public abstract class Arena extends BukkitRunnable {
    * @param p      player
    */
   public void doBarAction(BarAction action, Player p) {
-    scoreboardManager.updateScoreboard();
     if (!plugin.getConfigPreferences().getOption(ConfigPreferences.Option.BOSSBAR_ENABLED)) {
       return;
     }
@@ -163,7 +162,6 @@ public abstract class Arena extends BukkitRunnable {
       if (getPlayers().size() == 0 && getArenaState() == ArenaState.WAITING_FOR_PLAYERS) {
         return;
       }
-      scoreboardManager.updateScoreboard();
       switch (getArenaState()) {
         case WAITING_FOR_PLAYERS:
           if (plugin.getConfigPreferences().getOption(ConfigPreferences.Option.BUNGEE_ENABLED)) {
@@ -332,6 +330,7 @@ public abstract class Arena extends BukkitRunnable {
           setTimer(getTimer() - 1);
           break;
         case ENDING:
+          scoreboardManager.stopAllScoreboards();
           if (plugin.getConfigPreferences().getOption(ConfigPreferences.Option.BUNGEE_ENABLED)) {
             plugin.getServer().setWhitelist(false);
           }
@@ -705,6 +704,10 @@ public abstract class Arena extends BukkitRunnable {
     Debugger.debug(LogLevel.INFO, "Game instance started, arena " + this.getID());
     this.runTaskTimer(plugin, 20L, 20L);
     this.setArenaState(ArenaState.RESTARTING);
+  }
+
+  public ScoreboardManager getScoreboardManager() {
+    return scoreboardManager;
   }
 
   /**

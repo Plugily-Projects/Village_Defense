@@ -50,12 +50,15 @@
         </repository>
         <repository>
             <id>bintray-tastybento-maven-repo</id>
-            <name>bintray</name>
             <url>http://dl.bintray.com/tastybento/maven-repo</url>
         </repository>
         <repository>
             <id>plajerlair-repo</id>
             <url>https://maven.plajer.xyz/minecraft/</url>
+        </repository>
+        <repository>
+            <id>tiger-repo</id>
+            <url>http://repo.tigerhix.me/content/repositories/snapshots/</url>
         </repository>
         <repository>
             <id>bstats-repo</id>
@@ -120,6 +123,24 @@
             <groupId>com.github.stefvanschie.inventoryframework</groupId>
             <artifactId>IF</artifactId>
             <version>0.3.2</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>me.tigerhix.lib</groupId>
+            <artifactId>scoreboard</artifactId>
+            <version>1.0.1-SNAPSHOT</version>
+            <scope>compile</scope>
+            <!-- Some broken and outdated repos -->
+            <exclusions>
+                <exclusion>
+                    <groupId>org</groupId>
+                    <artifactId>spigotmc.api</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org</groupId>
+                    <artifactId>spigotmc</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>net.ess3</groupId>

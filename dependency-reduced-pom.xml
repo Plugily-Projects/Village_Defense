@@ -111,13 +111,16 @@
     </repository>
     <repository>
       <id>bintray-tastybento-maven-repo</id>
-      <name>bintray</name>
       <url>http://dl.bintray.com/tastybento/maven-repo</url>
     </repository>
     <repository>
       <id>plajerlair-repo</id>
       <url>https://maven.plajer.xyz/minecraft/</url>
     </repository>
+      <repository>
+          <id>tiger-repo</id>
+          <url>http://repo.tigerhix.me/content/repositories/snapshots/</url>
+      </repository>
     <repository>
       <id>bstats-repo</id>
       <url>https://repo.codemc.org/repository/maven-public</url>

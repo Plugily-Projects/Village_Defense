@@ -100,6 +100,8 @@ public class ArenaManager {
       Debugger.debug(LogLevel.INFO, "Final join attempt, " + p.getName());
       Debugger.debug(LogLevel.INFO, "Join task, " + p.getName());
       arena.addPlayer(p);
+      User user = plugin.getUserManager().getUser(p);
+      arena.getScoreboardManager().createScoreboard(user);
       if ((arena.getArenaState() == ArenaState.IN_GAME || (arena.getArenaState() == ArenaState.STARTING && arena.getTimer() <= 3) || arena.getArenaState() == ArenaState.ENDING)) {
         if (plugin.getConfigPreferences().getOption(ConfigPreferences.Option.INVENTORY_MANAGER_ENABLED)) {
           p.setLevel(0);
@@ -123,7 +125,6 @@ public class ArenaManager {
         p.setGameMode(GameMode.SURVIVAL);
         p.setAllowFlight(true);
         p.setFlying(true);
-        User user = plugin.getUserManager().getUser(p);
         user.setSpectator(true);
         user.setStat(StatsStorage.StatisticType.ORBS, 0);
         p.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, Integer.MAX_VALUE, 0));
@@ -155,7 +156,6 @@ public class ArenaManager {
       if (!plugin.getUserManager().getUser(p).isSpectator()) {
         plugin.getChatManager().broadcastAction(arena, p, ChatManager.ActionType.JOIN);
       }
-      User user = plugin.getUserManager().getUser(p);
       user.setKit(KitRegistry.getDefaultKit());
       plugin.getKitManager().giveKitMenuItem(p);
       if (arena.getArenaState() == ArenaState.STARTING || arena.getArenaState() == ArenaState.WAITING_FOR_PLAYERS) {
@@ -192,6 +192,7 @@ public class ArenaManager {
       user.setStat(StatsStorage.StatisticType.ORBS, 0);
       p.getInventory().clear();
       p.getInventory().setArmorContents(null);
+      arena.getScoreboardManager().removeScoreboard(user);
       arena.removePlayer(p);
       if (!user.isSpectator()) {
         plugin.getChatManager().broadcastAction(arena, p, ChatManager.ActionType.LEAVE);

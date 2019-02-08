@@ -25,6 +25,8 @@ import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 
+import me.tigerhix.lib.scoreboard.ScoreboardLib;
+
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -186,6 +188,7 @@ public class Main extends JavaPlugin {
   }
 
   private void initializeClasses() {
+    ScoreboardLib.setPluginInstance(this);
     CreatureUtils.init(this);
     if (getConfig().getBoolean("BungeeActivated", false)) {
       bungeeManager = new BungeeManager(this);
@@ -315,6 +318,7 @@ public class Main extends JavaPlugin {
     }
     Debugger.debug(LogLevel.INFO, "System disable init");
     for (Arena arena : ArenaRegistry.getArenas()) {
+      arena.getScoreboardManager().stopAllScoreboards();
       for (Player player : arena.getPlayers()) {
         arena.doBarAction(Arena.BarAction.REMOVE, player);
         arena.teleportToEndLocation(player);
