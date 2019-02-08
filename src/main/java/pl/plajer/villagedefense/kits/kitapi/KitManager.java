@@ -18,6 +18,10 @@
 
 package pl.plajer.villagedefense.kits.kitapi;
 
+import com.github.stefvanschie.inventoryframework.Gui;
+import com.github.stefvanschie.inventoryframework.GuiItem;
+import com.github.stefvanschie.inventoryframework.pane.StaticPane;
+
 import java.util.Arrays;
 
 import org.bukkit.Bukkit;
@@ -26,9 +30,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
-import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -50,11 +52,14 @@ import pl.plajerlair.core.utils.MinigameUtils;
  */
 public class KitManager implements Listener {
 
+  @Deprecated
+  /*
+   * @deprecated to removal, switch to List<String>
+   */
+  protected String[] description;
   private Main plugin;
-  private Inventory invMenu;
   private String itemName;
   private Material material;
-  @Deprecated protected String[] description;
   private String menuName;
 
   private String unlockedString;
@@ -86,8 +91,11 @@ public class KitManager implements Listener {
     this.itemName = name;
   }
 
-  private void createKitMenu(Player player) {
-    invMenu = Bukkit.createInventory(null, MinigameUtils.serializeInt(KitRegistry.getKits().size()), getMenuName());
+  public void createKitMenu(Player player) {
+    Gui guiMenu = new Gui(plugin, MinigameUtils.serializeInt(KitRegistry.getKits().size()) / 9, getMenuName());
+    StaticPane pane = new StaticPane(9, guiMenu.getRows());
+    int x = 0;
+    int y = 0;
     for (Kit kit : KitRegistry.getKits()) {
       ItemStack itemStack = kit.getItemStack();
       if (kit.isUnlockedByPlayer(player)) {
@@ -96,8 +104,26 @@ public class KitManager implements Listener {
         MinigameUtils.addLore(itemStack, lockedString);
       }
 
-      invMenu.addItem(itemStack);
+      pane.addItem(new GuiItem(itemStack, e -> {
+        if (!(e.getWhoClicked() instanceof Player) || !(e.isLeftClick() || e.isRightClick())) {
+          return;
+        }
+        Arena arena = ArenaRegistry.getArena(player);
+        e.setCancelled(true);
+        if (!Utils.isNamed(e.getCurrentItem()) || arena == null) {
+          return;
+        }
+        VillagePlayerChooseKitEvent event = new VillagePlayerChooseKitEvent(player, KitRegistry.getKit(e.getCurrentItem()), arena);
+        Bukkit.getPluginManager().callEvent(event);
+      }), x, y);
+      x++;
+      if (x == 9) {
+        x = 0;
+        y++;
+      }
     }
+    guiMenu.addPane(pane);
+    guiMenu.show(player);
   }
 
   /**
@@ -145,11 +171,6 @@ public class KitManager implements Listener {
     this.menuName = menuName;
   }
 
-  public void openKitMenu(Player player) {
-    createKitMenu(player);
-    player.openInventory(invMenu);
-  }
-
   public void giveKitMenuItem(Player player) {
     ItemStack itemStack = new ItemStack(getMaterial());
     ItemMeta itemMeta = itemStack.getItemMeta();
@@ -173,36 +194,14 @@ public class KitManager implements Listener {
       if (!stack.getItemMeta().getDisplayName().equalsIgnoreCase(getItemName())) {
         return;
       }
-      openKitMenu(e.getPlayer());
+      createKitMenu(e.getPlayer());
     } catch (Exception ex) {
       new ReportedException(plugin, ex);
     }
   }
 
   @EventHandler
-  public void onKitChoose(InventoryClickEvent e) {
-    try {
-      if (!e.getInventory().getName().equalsIgnoreCase(getMenuName())) {
-        return;
-      }
-      if (!(e.getWhoClicked() instanceof Player) || !(e.isLeftClick() || e.isRightClick())) {
-        return;
-      }
-      Player player = (Player) e.getWhoClicked();
-      Arena arena = ArenaRegistry.getArena(player);
-      e.setCancelled(true);
-      if (!Utils.isNamed(e.getCurrentItem()) || arena == null) {
-        return;
-      }
-      VillagePlayerChooseKitEvent event = new VillagePlayerChooseKitEvent(player, KitRegistry.getKit(e.getCurrentItem()), arena);
-      Bukkit.getPluginManager().callEvent(event);
-    } catch (Exception ex) {
-      new ReportedException(plugin, ex);
-    }
-  }
-
-  @EventHandler
-  public void checkIfIsUnlocked(VillagePlayerChooseKitEvent e) {
+  public void onKitChoose(VillagePlayerChooseKitEvent e) {
     if (e.getKit().isUnlockedByPlayer(e.getPlayer())) {
       User user = plugin.getUserManager().getUser(e.getPlayer());
       user.setKit(e.getKit());
