@@ -62,30 +62,29 @@ public class EntityUpgradeMenu {
     if (!plugin.getConfig().getBoolean("Entity-Upgrades.Enabled")) {
       return;
     }
-    //todo add config checks + language + locale
     new EntityUpgradeListener(this);
     registerUpgrade(new UpgradeBuilder("Damage")
-        .entity(Upgrade.EntityType.BOTH).slot(11).maxTier(4).metadata("VD_Damage")
+        .entity(Upgrade.EntityType.BOTH).slot(2, 1).maxTier(4).metadata("VD_Damage")
         //2.0 + (tier * 3)
         .tierVal(0, 2.0).tierVal(1, 5.0).tierVal(2, 8.0).tierVal(3, 11.0).tierVal(4, 14.0)
         .build());
     registerUpgrade(new UpgradeBuilder("Health")
-        .entity(Upgrade.EntityType.BOTH).slot(20).maxTier(4).metadata("VD_Health")
+        .entity(Upgrade.EntityType.BOTH).slot(2, 2).maxTier(4).metadata("VD_Health")
         //100.0 + (100.0 * (tier / 2.0))
         .tierVal(0, 100.0).tierVal(1, 150.0).tierVal(2, 200.0).tierVal(3, 250.0).tierVal(4, 300.0)
         .build());
     registerUpgrade(new UpgradeBuilder("Speed")
-        .entity(Upgrade.EntityType.BOTH).slot(29).maxTier(4).metadata("VD_Speed")
+        .entity(Upgrade.EntityType.BOTH).slot(2, 3).maxTier(4).metadata("VD_Speed")
         //0.25 + (0.25 * ((double) tier / 5.0))
         .tierVal(0, 0.25).tierVal(1, 0.3).tierVal(2, 0.35).tierVal(3, 0.4).tierVal(4, 0.45)
         .build());
     registerUpgrade(new UpgradeBuilder("Swarm-Awareness")
-        .entity(Upgrade.EntityType.WOLF).slot(39).maxTier(2).metadata("VD_SwarmAwareness")
+        .entity(Upgrade.EntityType.WOLF).slot(3, 4).maxTier(2).metadata("VD_SwarmAwareness")
         //tier * 0.2
         .tierVal(0, 0).tierVal(1, 0.2).tierVal(2, 0.4)
         .build());
     registerUpgrade(new UpgradeBuilder("Final-Defense")
-        .entity(Upgrade.EntityType.IRON_GOLEM).slot(39).maxTier(2).metadata("VD_FinalDefense")
+        .entity(Upgrade.EntityType.IRON_GOLEM).slot(3, 4).maxTier(2).metadata("VD_FinalDefense")
         //tier * 5
         .tierVal(0, 0).tierVal(1, 5).tierVal(2, 10)
         .build());
@@ -126,6 +125,7 @@ public class EntityUpgradeMenu {
       }
       int tier = en.hasMetadata(upgrade.getMetadataAccessor()) ? en.getMetadata(upgrade.getMetadataAccessor()).get(0).asInt() : 0;
       pane.addItem(new GuiItem(upgrade.asItemStack(tier), e -> {
+        e.setCancelled(true);
         int nextTier = getTier(en, upgrade) + 1;
         int cost = upgrade.getCost(nextTier);
         if (nextTier > upgrade.getMaxTier()) {
@@ -189,14 +189,16 @@ public class EntityUpgradeMenu {
     en.setMetadata(upgrade.getMetadataAccessor(), new FixedMetadataValue(plugin, tier));
     applyUpgradeEffect(en, upgrade, tier);
     if (upgrade.getMaxTier() == tier) {
-      en.getWorld().spawnParticle(Particle.EXPLOSION_LARGE, en.getLocation(), 5);
+      Utils.playSound(en.getLocation(), "BLOCK_ANVIL_USE", "BLOCK_ANVIL_USE");
+      en.getWorld().spawnParticle(Particle.EXPLOSION_LARGE, en.getLocation().add(0, 0.5, 0), 5);
     }
     return true;
   }
 
   private void applyUpgradeEffect(Entity en, Upgrade upgrade, int tier) {
-    en.getWorld().spawnParticle(Particle.FIREWORKS_SPARK, en.getLocation(), 25, 0.2, 0.5, 0.2, 0);
-    Utils.playSound(en.getLocation(), "BLOCK_ANVIL_USE", "BLOCK_ANVIL_USE");
+    en.getWorld().spawnParticle(Particle.FIREWORKS_SPARK, en.getLocation().add(0, 1, 0), 30, 0.7, 0.7, 0.7, 0);
+    en.getWorld().spawnParticle(Particle.HEART, en.getLocation().add(0, 1.6, 0), 5, 0, 0, 0);
+    Utils.playSound(en.getLocation(), "ENTITY_PLAYER_LEVELUP", "ENTITY_PLAYER_LEVELUP");
     int[] baseValues = new int[] {getTier(en, getUpgrade("Health")), getTier(en, getUpgrade("Speed")), getTier(en, getUpgrade("Damage"))};
     if (areAllEqualOrHigher(baseValues) && getMinValue(baseValues) == 4) {
       //final mode! rage!!!

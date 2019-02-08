@@ -2,6 +2,7 @@
 
 ### 4.0.3 Release (01.02.2019)
 * Fixed NPE when rewards section was null [#449](https://plajer.xyz/errorservice/viewer.php?id=449)
+* Prettified golem upgrades particle effects a bit
 
 ### 4.0.2 Release (23.01.2019)
 * Fixed [#415 error](https://plajer.xyz/errorservice/viewer.php?id=415) caused by /vda setprice without price set

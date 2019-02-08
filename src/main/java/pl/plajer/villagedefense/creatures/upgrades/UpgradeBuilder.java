@@ -53,8 +53,8 @@ public class UpgradeBuilder {
     return this;
   }
 
-  public UpgradeBuilder slot(int slot) {
-    upgrade.setSlot(slot);
+  public UpgradeBuilder slot(int x, int y) {
+    upgrade.setSlot(x, y);
     return this;
   }
 
