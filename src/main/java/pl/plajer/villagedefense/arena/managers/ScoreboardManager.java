@@ -111,7 +111,12 @@ public class ScoreboardManager {
     if (arena.getArenaState() == ArenaState.IN_GAME) {
       lines = LanguageManager.getLanguageList("Scoreboard.Content.Playing" + (arena.isFighting() ? "" : "-Waiting"));
     } else {
-      lines = LanguageManager.getLanguageList("Scoreboard.Content." + arena.getArenaState().getFormattedName());
+      //apply fix
+      if (arena.getArenaState() == ArenaState.ENDING) {
+        lines = LanguageManager.getLanguageList("Scoreboard.Content.Playing");
+      } else {
+        lines = LanguageManager.getLanguageList("Scoreboard.Content." + arena.getArenaState().getFormattedName());
+      }
     }
     for (String line : lines) {
       if (line.equals("")) {
