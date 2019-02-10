@@ -75,9 +75,9 @@ public class HolidayManager implements Listener {
         if (day >= 10 && day <= 18) {
           currentHoliday = HolidayType.VALENTINES_DAY;
           Powerup powerup = new Powerup("VALENTINES_HEALING", plugin.getChatManager().colorRawMessage("&c&l<3"),
-              plugin.getChatManager().colorRawMessage("&c&lHappy Valentine's Day!"), XMaterial.POPPY, pickup -> {
+              plugin.getChatManager().colorRawMessage("&d&lHappy Valentine's Day!"), XMaterial.POPPY, pickup -> {
             pickup.getPlayer().setHealth(pickup.getPlayer().getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue());
-            pickup.getPlayer().sendTitle(pickup.getPowerup().getName(), pickup.getPowerup().getDescription(), 5, 30, 5);
+            pickup.getPlayer().sendTitle(pickup.getPowerup().getDescription(), null, 5, 30, 5);
           });
           plugin.getPowerupRegistry().registerPowerup(powerup);
         }
