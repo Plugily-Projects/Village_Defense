@@ -22,7 +22,7 @@
   <groupId>pl.plajer</groupId>
   <artifactId>villagedefense</artifactId>
   <name>VillageDefense</name>
-    <version>4.0.4</version>
+  <version>4.0.4</version>
   <licenses>
     <license>
       <name>GNU General Public License v3</name>
@@ -117,10 +117,10 @@
       <id>plajerlair-repo</id>
       <url>https://maven.plajer.xyz/minecraft/</url>
     </repository>
-      <repository>
-          <id>tiger-repo</id>
-          <url>http://repo.tigerhix.me/content/repositories/snapshots/</url>
-      </repository>
+    <repository>
+      <id>tiger-repo</id>
+      <url>http://repo.tigerhix.me/content/repositories/snapshots/</url>
+    </repository>
     <repository>
       <id>bstats-repo</id>
       <url>https://repo.codemc.org/repository/maven-public</url>

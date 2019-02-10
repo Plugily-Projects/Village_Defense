@@ -1,6 +1,6 @@
 /*
  * Village Defense - Protect villagers from hordes of zombies
- * Copyright (C) 2018  Plajer's Lair - maintained by Plajer and Tigerpanzer
+ * Copyright (C) 2019  Plajer's Lair - maintained by Plajer and Tigerpanzer
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -36,7 +36,6 @@ import net.minecraft.server.v1_13_R1.PathfinderGoalMoveThroughVillage;
 import net.minecraft.server.v1_13_R1.PathfinderGoalMoveTowardsRestriction;
 import net.minecraft.server.v1_13_R1.PathfinderGoalMoveTowardsTarget;
 import net.minecraft.server.v1_13_R1.PathfinderGoalNearestAttackableTarget;
-import net.minecraft.server.v1_13_R1.PathfinderGoalOfferFlower;
 import net.minecraft.server.v1_13_R1.PathfinderGoalRandomLookaround;
 import net.minecraft.server.v1_13_R1.PathfinderGoalRandomStroll;
 import net.minecraft.server.v1_13_R1.PathfinderGoalSelector;
@@ -74,10 +73,9 @@ public class RidableIronGolem extends EntityIronGolem {
     this.goalSelector.a(2, new PathfinderGoalMoveTowardsTarget(this, 0.9D, 32.0F));
     this.goalSelector.a(3, new PathfinderGoalMoveThroughVillage(this, 0.6D, true));
     this.goalSelector.a(4, new PathfinderGoalMoveTowardsRestriction(this, 1.0D));
-    this.goalSelector.a(5, new PathfinderGoalOfferFlower(this));
-    this.goalSelector.a(6, new PathfinderGoalRandomStroll(this, 0.6D));
-    this.goalSelector.a(7, new PathfinderGoalLookAtPlayer(this, EntityHuman.class, 6.0F));
-    this.goalSelector.a(8, new PathfinderGoalRandomLookaround(this));
+    this.goalSelector.a(5, new PathfinderGoalRandomStroll(this, 0.6D));
+    this.goalSelector.a(6, new PathfinderGoalLookAtPlayer(this, EntityHuman.class, 6.0F));
+    this.goalSelector.a(7, new PathfinderGoalRandomLookaround(this));
     this.targetSelector.a(1, new PathfinderGoalDefendVillage(this));
     this.targetSelector.a(2, new PathfinderGoalHurtByTarget(this, false));
     this.targetSelector.a(3, new PathfinderGoalNearestAttackableTarget<>(this, EntityHuman.class, 0, false, true, IMonster.e));
