@@ -203,7 +203,6 @@ public class Main extends JavaPlugin {
     new SetupInventoryEvents(this);
     new JoinEvent(this);
     new ChatEvents(this);
-    holidayManager = new HolidayManager(this);
     Metrics metrics = new Metrics(this);
     metrics.addCustomChart(new Metrics.SimplePie("database_enabled", () -> String.valueOf(configPreferences.getOption(ConfigPreferences.Option.DATABASE_ENABLED))));
     metrics.addCustomChart(new Metrics.SimplePie("bungeecord_hooked", () -> String.valueOf(configPreferences.getOption(ConfigPreferences.Option.BUNGEE_ENABLED))));
@@ -240,6 +239,7 @@ public class Main extends JavaPlugin {
     new SpectatorItemEvents(this);
     powerupRegistry = new PowerupRegistry(this);
     rewardsHandler = new RewardsFactory(this);
+    holidayManager = new HolidayManager(this);
     User.cooldownHandlerTask();
   }
 

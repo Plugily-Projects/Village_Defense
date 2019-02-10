@@ -18,48 +18,37 @@
 
 package pl.plajer.villagedefense.handlers.powerup;
 
-import java.util.function.Consumer;
+import org.bukkit.entity.Player;
 
-import pl.plajerlair.core.utils.XMaterial;
+import pl.plajer.villagedefense.arena.Arena;
 
 /**
  * @author Plajer
  * <p>
- * Created at 15.01.2019
+ * Created at 10.02.2019
  */
-public class Powerup {
+public class PowerupPickupHandler {
 
-  private String id;
-  private String name;
-  private String description;
-  private XMaterial material;
-  private Consumer<PowerupPickupHandler> onPickup;
+  private Powerup powerup;
+  private Arena arena;
+  private Player player;
 
-  public Powerup(String id, String name, String description, XMaterial material, Consumer<PowerupPickupHandler> pickup) {
-    this.id = id;
-    this.name = name;
-    this.description = description;
-    this.material = material;
-    this.onPickup = pickup;
+  public PowerupPickupHandler(Powerup powerup, Arena arena, Player player) {
+    this.powerup = powerup;
+    this.arena = arena;
+    this.player = player;
   }
 
-  public String getId() {
-    return id;
+  public Powerup getPowerup() {
+    return powerup;
   }
 
-  public String getName() {
-    return name;
+  public Arena getArena() {
+    return arena;
   }
 
-  public String getDescription() {
-    return description;
+  public Player getPlayer() {
+    return player;
   }
 
-  public XMaterial getMaterial() {
-    return material;
-  }
-
-  public Consumer<PowerupPickupHandler> getOnPickup() {
-    return onPickup;
-  }
 }

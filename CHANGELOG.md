@@ -1,5 +1,8 @@
 # Village Defense Changelog
 
+### 4.0.4 Release (10.02.2019)
+
+
 ### 4.0.3 Release (01/08.02.2019)
 * Fixed NPE when rewards section was null [#449](https://plajer.xyz/errorservice/viewer.php?id=449)
 * Prettified golem upgrades particle effects a bit

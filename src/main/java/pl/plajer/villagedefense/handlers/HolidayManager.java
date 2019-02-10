@@ -26,16 +26,24 @@ import java.util.Random;
 import org.bukkit.Bukkit;
 import org.bukkit.Effect;
 import org.bukkit.Material;
+import org.bukkit.Particle;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Player;
 import org.bukkit.entity.Zombie;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityShootBowEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import pl.plajer.villagedefense.Main;
+import pl.plajer.villagedefense.arena.ArenaRegistry;
+import pl.plajer.villagedefense.handlers.powerup.Powerup;
 import pl.plajer.villagedefense.utils.Utils;
+import pl.plajerlair.core.utils.XMaterial;
 
 /**
  * @author Plajer
@@ -63,6 +71,17 @@ public class HolidayManager implements Listener {
     int month = time.getMonthValue();
 
     switch (month) {
+      case 2:
+        if (day >= 10 && day <= 18) {
+          currentHoliday = HolidayType.VALENTINES_DAY;
+          Powerup powerup = new Powerup("VALENTINES_HEALING", plugin.getChatManager().colorRawMessage("&c&l<3"),
+              plugin.getChatManager().colorRawMessage("&c&lHappy Valentine's Day!"), XMaterial.POPPY, pickup -> {
+            pickup.getPlayer().setHealth(pickup.getPlayer().getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue());
+            pickup.getPlayer().sendTitle(pickup.getPowerup().getName(), pickup.getPowerup().getDescription(), 5, 30, 5);
+          });
+          plugin.getPowerupRegistry().registerPowerup(powerup);
+        }
+        break;
       case 10:
         //4 days before halloween
         if (31 - day <= 4) {
@@ -134,7 +153,7 @@ public class HolidayManager implements Listener {
         //randomizing bats spawn chance
         if (rand.nextBoolean()) {
           final List<Entity> bats = new ArrayList<>();
-          for (int i = 0; i < 5; i++) {
+          for (int i = 0; i < rand.nextInt(6); i++) {
             final Entity bat = en.getWorld().spawnEntity(en.getLocation(), EntityType.BAT);
             bat.setCustomName(plugin.getChatManager().colorRawMessage("&6Halloween!"));
             bats.add(bat);
@@ -162,8 +181,29 @@ public class HolidayManager implements Listener {
     }
   }
 
+  @EventHandler
+  public void onCupidArrowShot(EntityShootBowEvent e) {
+    if (!(e.getEntity() instanceof Player) || ArenaRegistry.getArena((Player) e.getEntity()) == null) {
+      return;
+    }
+    if (currentHoliday != HolidayType.VALENTINES_DAY) {
+      return;
+    }
+    Entity en = e.getProjectile();
+    new BukkitRunnable() {
+      @Override
+      public void run() {
+        if (en == null || en.isOnGround() || en.isDead()) {
+          this.cancel();
+          return;
+        }
+        en.getLocation().getWorld().spawnParticle(Particle.HEART, en.getLocation(), 1, 0, 0, 0, 1);
+      }
+    }.runTaskTimer(plugin, 1, 1);
+  }
+
   public enum HolidayType {
-    HALLOWEEN, NONE
+    HALLOWEEN, NONE, VALENTINES_DAY
   }
 
 }

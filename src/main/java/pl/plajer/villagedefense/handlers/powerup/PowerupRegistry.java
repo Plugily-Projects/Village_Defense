@@ -77,81 +77,66 @@ public class PowerupRegistry {
   private void registerPowerups() {
     ChatManager chatManager = plugin.getChatManager();
     registerPowerup(new Powerup("MAP_CLEAN", chatManager.colorMessage("Powerups.Map-Clean-Powerup.Name"),
-        chatManager.colorMessage("Powerups.Map-Clean-Powerup.Description"), XMaterial.BLAZE_POWDER) {
-      @Override
-      public void onPickup(Arena arena, Player player) {
-        if (arena.getZombies() != null) {
-          ArenaUtils.removeSpawnedZombies(arena);
-          arena.getZombies().clear();
-        }
-
-        for (Player p : arena.getPlayers()) {
-          p.sendTitle(this.getName(), this.getDescription(), 5, 30, 5);
-        }
+        chatManager.colorMessage("Powerups.Map-Clean-Powerup.Description"), XMaterial.BLAZE_POWDER, pickup -> {
+      if (pickup.getArena().getZombies() != null) {
+        ArenaUtils.removeSpawnedZombies(pickup.getArena());
+        pickup.getArena().getZombies().clear();
       }
-    });
+
+      for (Player p : pickup.getArena().getPlayers()) {
+        p.sendTitle(pickup.getPowerup().getName(), pickup.getPowerup().getDescription(), 5, 30, 5);
+      }
+    }));
     registerPowerup(new Powerup("DOUBLE_DAMAGE", chatManager.colorMessage("Powerups.Double-Damage-Powerup.Name"),
-        chatManager.colorMessage("Powerups.Double-Damage-Powerup.Description"), XMaterial.REDSTONE) {
-      @Override
-      public void onPickup(Arena arena, Player player) {
-        for (Player p : arena.getPlayers()) {
-          p.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 20
-              * plugin.getConfig().getInt("Powerups.List.Double-Damage-For-Players.Time", 15), 0, false, false));
-        }
-
-        String subTitle = this.getDescription();
-        subTitle = StringUtils.replace(subTitle, "%time%", plugin.getConfig().getString("Powerups.List.Double-Damage-For-Players.Time", "15"));
-
-        for (Player p : arena.getPlayers()) {
-          p.sendTitle(this.getName(), subTitle, 5, 30, 5);
-        }
+        chatManager.colorMessage("Powerups.Double-Damage-Powerup.Description"), XMaterial.REDSTONE, pickup -> {
+      for (Player p : pickup.getArena().getPlayers()) {
+        p.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 20
+            * plugin.getConfig().getInt("Powerups.List.Double-Damage-For-Players.Time", 15), 0, false, false));
       }
-    });
+
+      String subTitle = pickup.getPowerup().getDescription();
+      subTitle = StringUtils.replace(subTitle, "%time%", plugin.getConfig().getString("Powerups.List.Double-Damage-For-Players.Time", "15"));
+
+      for (Player p : pickup.getArena().getPlayers()) {
+        p.sendTitle(pickup.getPowerup().getName(), subTitle, 5, 30, 5);
+      }
+    }));
     registerPowerup(new Powerup("GOLEM_RAID", chatManager.colorMessage("Powerups.Golem-Raid-Powerup.Name"),
-        chatManager.colorMessage("Powerups.Golem-Raid-Powerup.Description"), XMaterial.GOLDEN_APPLE) {
-      @Override
-      public void onPickup(Arena arena, Player player) {
-        for (int i = 0; i < plugin.getConfig().getInt("Powerups.List.Golem-Raid.Golems-Amount", 3); i++) {
-          arena.spawnGolem(arena.getStartLocation(), player);
-        }
-
-        for (Player p : arena.getPlayers()) {
-          p.sendTitle(this.getName(), this.getDescription(), 5, 30, 5);
-        }
+        chatManager.colorMessage("Powerups.Golem-Raid-Powerup.Description"), XMaterial.GOLDEN_APPLE, pickup -> {
+      for (int i = 0; i < plugin.getConfig().getInt("Powerups.List.Golem-Raid.Golems-Amount", 3); i++) {
+        pickup.getArena().spawnGolem(pickup.getArena().getStartLocation(), pickup.getPlayer());
       }
-    });
+
+      for (Player p : pickup.getArena().getPlayers()) {
+        p.sendTitle(pickup.getPowerup().getName(), pickup.getPowerup().getDescription(), 5, 30, 5);
+      }
+    }));
     registerPowerup(new Powerup("HEALING", chatManager.colorMessage("Powerups.Healing-Powerup.Name"),
-        chatManager.colorMessage("Powerups.Healing-Powerup.Description"), XMaterial.IRON_INGOT) {
-      @Override
-      public void onPickup(Arena arena, Player player) {
-        for (Player p : arena.getPlayers()) {
-          p.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 20
-              * plugin.getConfig().getInt("Powerups.List.Healing-For-Players.Time-Of-Healing", 10), 0, false, false));
-        }
-        String subTitle = this.getDescription();
-        subTitle = StringUtils.replace(subTitle, "%time%", plugin.getConfig().getString("Powerups.List.Healing-For-Players.Time-Of-Healing", "10"));
-
-        for (Player p : arena.getPlayers()) {
-          p.sendTitle(this.getName(), subTitle, 5, 30, 5);
-        }
+        chatManager.colorMessage("Powerups.Healing-Powerup.Description"), XMaterial.IRON_INGOT, pickup -> {
+      for (Player p : pickup.getArena().getPlayers()) {
+        p.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 20
+            * plugin.getConfig().getInt("Powerups.List.Healing-For-Players.Time-Of-Healing", 10), 0, false, false));
       }
-    });
+      String subTitle = pickup.getPowerup().getDescription();
+      subTitle = StringUtils.replace(subTitle, "%time%", plugin.getConfig().getString("Powerups.List.Healing-For-Players.Time-Of-Healing", "10"));
+
+      for (Player p : pickup.getArena().getPlayers()) {
+        p.sendTitle(pickup.getPowerup().getName(), subTitle, 5, 30, 5);
+      }
+    }));
     registerPowerup(new Powerup("ONE_SHOT_ONE_KILL", chatManager.colorMessage("Powerups.One-Shot-One-Kill-Powerup.Name"),
-        chatManager.colorMessage("Powerups.One-Shot-One-Kill-Powerup.Description"), XMaterial.DIAMOND_SWORD) {
-      @Override
-      public void onPickup(Arena arena, Player player) {
-        for (Player p : arena.getPlayers()) {
-          p.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 20
-              * plugin.getConfig().getInt("Powerups.List.One-Shot-One-Kill.Time", 15), 255, false, false));
-        }
-        String subTitle = this.getDescription();
-        subTitle = StringUtils.replace(subTitle, "%time%", plugin.getConfig().getString("Powerups.List.One-Shot-One-Kill.Time", "15"));
-
-        for (Player p : arena.getPlayers()) {
-          p.sendTitle(this.getName(), subTitle, 5, 30, 5);
-        }
+        chatManager.colorMessage("Powerups.One-Shot-One-Kill-Powerup.Description"), XMaterial.DIAMOND_SWORD, pickup -> {
+      for (Player p : pickup.getArena().getPlayers()) {
+        p.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 20
+            * plugin.getConfig().getInt("Powerups.List.One-Shot-One-Kill.Time", 15), 255, false, false));
       }
-    });
+      String subTitle = pickup.getPowerup().getDescription();
+      subTitle = StringUtils.replace(subTitle, "%time%", plugin.getConfig().getString("Powerups.List.One-Shot-One-Kill.Time", "15"));
+
+      for (Player p : pickup.getArena().getPlayers()) {
+        p.sendTitle(pickup.getPowerup().getName(), subTitle, 5, 30, 5);
+      }
+    }));
   }
 
   /**
@@ -182,7 +167,7 @@ public class PowerupRegistry {
         }
         VillagePlayerPowerupPickupEvent villagePowerupPickEvent = new VillagePlayerPowerupPickupEvent(arena, player, powerup);
         Bukkit.getPluginManager().callEvent(villagePowerupPickEvent);
-        powerup.onPickup(arena, player);
+        powerup.getOnPickup().accept(new PowerupPickupHandler(powerup, arena, player));
         hologram.delete();
       });
       Bukkit.getScheduler().runTaskLater(plugin, () -> {

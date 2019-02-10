@@ -91,7 +91,7 @@ public class ShopManager {
   private void registerShop(Arena arena) {
     try {
       if (config.getString("instances." + arena.getID() + ".shop", "").equals("") || config.getString("instances." + arena.getID() + ".shop", "").split(",").length == 0) {
-        Debugger.debug(LogLevel.WARN, "There is no gui for arena " + arena.getID() + "! Aborting registering gui!");
+        Debugger.debug(LogLevel.WARN, "There is no shop for arena " + arena.getID() + "! Aborting registering shop!");
         return;
       }
       Location location = LocationUtils.getLocation(config.getString("instances." + arena.getID() + ".shop"));
@@ -115,11 +115,10 @@ public class ShopManager {
         }
 
         String costString = null;
-        String string = ChatColor.stripColor(itemStack.getItemMeta().getLore().get(0));
         boolean found = false;
         //seek for item price
         for (String s : itemStack.getItemMeta().getLore()) {
-          if (string.contains(plugin.getChatManager().colorMessage("In-Game.Messages.Shop-Messages.Currency-In-Shop")) || string.contains("orbs")) {
+          if (s.contains(plugin.getChatManager().colorMessage("In-Game.Messages.Shop-Messages.Currency-In-Shop")) || s.contains("orbs")) {
             costString = ChatColor.stripColor(s).replaceAll("[^0-9]", "");
             found = true;
             break;
