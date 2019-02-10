@@ -119,10 +119,6 @@ public class ScoreboardManager {
       }
     }
     for (String line : lines) {
-      if (line.equals("")) {
-        builder.blank();
-        continue;
-      }
       builder.next(formatScoreboardLine(line, user));
     }
     return builder.build();
