@@ -95,7 +95,7 @@ public class ShopManager {
         return;
       }
       Location location = LocationUtils.getLocation(config.getString("instances." + arena.getID() + ".shop"));
-      if (location.getBlock() == null || !(location.getBlock().getState() instanceof Chest)) {
+      if (location.getWorld() == null || location.getBlock() == null || !(location.getBlock().getState() instanceof Chest)) {
         Debugger.debug(LogLevel.WARN, "Shop failed to load, invalid location for loc " + location);
         return;
       }
