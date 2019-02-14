@@ -42,7 +42,6 @@ import pl.plajer.villagedefense.arena.ArenaUtils;
 import pl.plajer.villagedefense.handlers.ChatManager;
 import pl.plajerlair.core.debug.Debugger;
 import pl.plajerlair.core.debug.LogLevel;
-import pl.plajerlair.core.services.exception.ReportedException;
 import pl.plajerlair.core.utils.XMaterial;
 
 /**
@@ -148,36 +147,32 @@ public class PowerupRegistry {
   }
 
   public void spawnPowerup(Location loc, Arena arena) {
-    try {
-      if (!enabled) {
-        return;
-      }
-      final Powerup powerup = getRandomPowerup();
-      if (!(ThreadLocalRandom.current().nextDouble(0.0, 100.0)
-          <= plugin.getConfig().getDouble("Powerups.Drop-Chance", 1.0))) {
-        return;
-      }
-
-      final Hologram hologram = HologramsAPI.createHologram(plugin, loc.clone().add(0.0, 1.2, 0.0));
-      hologram.appendTextLine(powerup.getName());
-      ItemLine itemLine = hologram.appendItemLine(powerup.getMaterial().parseItem());
-      itemLine.setPickupHandler(player -> {
-        if (ArenaRegistry.getArena(player) != arena) {
-          return;
-        }
-        VillagePlayerPowerupPickupEvent villagePowerupPickEvent = new VillagePlayerPowerupPickupEvent(arena, player, powerup);
-        Bukkit.getPluginManager().callEvent(villagePowerupPickEvent);
-        powerup.getOnPickup().accept(new PowerupPickupHandler(powerup, arena, player));
-        hologram.delete();
-      });
-      Bukkit.getScheduler().runTaskLater(plugin, () -> {
-        if (!hologram.isDeleted()) {
-          hologram.delete();
-        }
-      }, /* remove after 40 seconds to prevent staying even if arena is finished */ 20 * 40);
-    } catch (Exception ex) {
-      new ReportedException(plugin, ex);
+    if (!enabled) {
+      return;
     }
+    final Powerup powerup = getRandomPowerup();
+    if (!(ThreadLocalRandom.current().nextDouble(0.0, 100.0)
+        <= plugin.getConfig().getDouble("Powerups.Drop-Chance", 1.0))) {
+      return;
+    }
+
+    final Hologram hologram = HologramsAPI.createHologram(plugin, loc.clone().add(0.0, 1.2, 0.0));
+    hologram.appendTextLine(powerup.getName());
+    ItemLine itemLine = hologram.appendItemLine(powerup.getMaterial().parseItem());
+    itemLine.setPickupHandler(player -> {
+      if (ArenaRegistry.getArena(player) != arena) {
+        return;
+      }
+      VillagePlayerPowerupPickupEvent villagePowerupPickEvent = new VillagePlayerPowerupPickupEvent(arena, player, powerup);
+      Bukkit.getPluginManager().callEvent(villagePowerupPickEvent);
+      powerup.getOnPickup().accept(new PowerupPickupHandler(powerup, arena, player));
+      hologram.delete();
+    });
+    Bukkit.getScheduler().runTaskLater(plugin, () -> {
+      if (!hologram.isDeleted()) {
+        hologram.delete();
+      }
+    }, /* remove after 40 seconds to prevent staying even if arena is finished */ 20 * 40);
   }
 
   /**

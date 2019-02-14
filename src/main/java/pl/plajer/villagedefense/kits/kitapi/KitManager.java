@@ -41,7 +41,6 @@ import pl.plajer.villagedefense.arena.ArenaRegistry;
 import pl.plajer.villagedefense.kits.kitapi.basekits.Kit;
 import pl.plajer.villagedefense.user.User;
 import pl.plajer.villagedefense.utils.Utils;
-import pl.plajerlair.core.services.exception.ReportedException;
 import pl.plajerlair.core.utils.MinigameUtils;
 
 /**
@@ -183,21 +182,17 @@ public class KitManager implements Listener {
 
   @EventHandler
   public void onKitMenuItemClick(PlayerInteractEvent e) {
-    try {
-      if (!(e.getAction() == Action.RIGHT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_BLOCK)) {
-        return;
-      }
-      ItemStack stack = e.getPlayer().getInventory().getItemInMainHand();
-      if (stack.getType() != getMaterial() || !stack.hasItemMeta() || !stack.getItemMeta().hasLore()) {
-        return;
-      }
-      if (!stack.getItemMeta().getDisplayName().equalsIgnoreCase(getItemName())) {
-        return;
-      }
-      createKitMenu(e.getPlayer());
-    } catch (Exception ex) {
-      new ReportedException(plugin, ex);
+    if (!(e.getAction() == Action.RIGHT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_BLOCK)) {
+      return;
     }
+    ItemStack stack = e.getPlayer().getInventory().getItemInMainHand();
+    if (stack.getType() != getMaterial() || !stack.hasItemMeta() || !stack.getItemMeta().hasLore()) {
+      return;
+    }
+    if (!stack.getItemMeta().getDisplayName().equalsIgnoreCase(getItemName())) {
+      return;
+    }
+    createKitMenu(e.getPlayer());
   }
 
   @EventHandler

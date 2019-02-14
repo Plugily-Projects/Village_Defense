@@ -33,7 +33,6 @@ import pl.plajer.villagedefense.arena.initializers.ArenaInitializer1_13_R1;
 import pl.plajer.villagedefense.arena.initializers.ArenaInitializer1_13_R2;
 import pl.plajer.villagedefense.handlers.PermissionsManager;
 import pl.plajer.villagedefense.user.User;
-import pl.plajerlair.core.services.exception.ReportedException;
 
 /**
  * @author Plajer
@@ -67,40 +66,32 @@ public class ArenaUtils {
   }
 
   public static void bringDeathPlayersBack(Arena arena) {
-    try {
-      for (Player player : arena.getPlayers()) {
-        if (arena.getPlayersLeft().contains(player)) {
-          continue;
-        }
-        User user = plugin.getUserManager().getUser(player);
-        user.setSpectator(false);
-
-        arena.teleportToStartLocation(player);
-        player.setFlying(false);
-        player.setAllowFlight(false);
-        player.setGameMode(GameMode.SURVIVAL);
-        player.removePotionEffect(PotionEffectType.NIGHT_VISION);
-        player.removePotionEffect(PotionEffectType.SPEED);
-        arena.showPlayers();
-        player.getInventory().clear();
-        user.getKit().giveKitItems(player);
-        player.sendMessage(plugin.getChatManager().colorMessage("In-Game.Back-In-Game"));
+    for (Player player : arena.getPlayers()) {
+      if (arena.getPlayersLeft().contains(player)) {
+        continue;
       }
-    } catch (Exception e) {
-      new ReportedException(plugin, e);
+      User user = plugin.getUserManager().getUser(player);
+      user.setSpectator(false);
+
+      arena.teleportToStartLocation(player);
+      player.setFlying(false);
+      player.setAllowFlight(false);
+      player.setGameMode(GameMode.SURVIVAL);
+      player.removePotionEffect(PotionEffectType.NIGHT_VISION);
+      player.removePotionEffect(PotionEffectType.SPEED);
+      arena.showPlayers();
+      player.getInventory().clear();
+      user.getKit().giveKitItems(player);
+      player.sendMessage(plugin.getChatManager().colorMessage("In-Game.Back-In-Game"));
     }
   }
 
   @Deprecated //move somewhere else
   public static void updateLevelStat(Player player, Arena arena) {
-    try {
-      User user = plugin.getUserManager().getUser(player);
-      if (Math.pow(50 * user.getStat(StatsStorage.StatisticType.LEVEL), 1.5) < user.getStat(StatsStorage.StatisticType.XP)) {
-        user.addStat(StatsStorage.StatisticType.LEVEL, 1);
-        player.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().formatMessage(arena, plugin.getChatManager().colorMessage("In-Game.You-Leveled-Up"), user.getStat(StatsStorage.StatisticType.LEVEL)));
-      }
-    } catch (Exception e) {
-      new ReportedException(plugin, e);
+    User user = plugin.getUserManager().getUser(player);
+    if (Math.pow(50 * user.getStat(StatsStorage.StatisticType.LEVEL), 1.5) < user.getStat(StatsStorage.StatisticType.XP)) {
+      user.addStat(StatsStorage.StatisticType.LEVEL, 1);
+      player.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().formatMessage(arena, plugin.getChatManager().colorMessage("In-Game.You-Leveled-Up"), user.getStat(StatsStorage.StatisticType.LEVEL)));
     }
   }
 

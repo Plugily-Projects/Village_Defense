@@ -39,7 +39,6 @@ import pl.plajer.villagedefense.user.User;
 import pl.plajer.villagedefense.utils.ArmorHelper;
 import pl.plajer.villagedefense.utils.Utils;
 import pl.plajer.villagedefense.utils.WeaponHelper;
-import pl.plajerlair.core.services.exception.ReportedException;
 
 /**
  * Created by Tom on 27/08/2014.
@@ -81,40 +80,36 @@ public class ShotBowKit extends PremiumKit implements Listener {
 
   @EventHandler
   public void onBowInteract(PlayerInteractEvent e) {
-    try {
-      if (!(e.getAction() == Action.LEFT_CLICK_AIR || e.getAction() == Action.LEFT_CLICK_BLOCK)) {
-        return;
-      }
-      ItemStack stack = e.getPlayer().getInventory().getItemInMainHand();
-      User user = getPlugin().getUserManager().getUser(e.getPlayer());
-      if (stack == null || stack.getType() != Material.BOW || !e.getPlayer().getInventory().contains(Material.ARROW)
-          || !(user.getKit() instanceof ShotBowKit)
-          || user.isSpectator()) {
-        return;
-      }
-      if (user.getCooldown("shotbow") == 0) {
-        for (int i = 0; i < 4; i++) {
-          Bukkit.getScheduler().runTaskLater(getPlugin(), () -> {
-            Arrow pr = e.getPlayer().launchProjectile(Arrow.class);
-            pr.setVelocity(e.getPlayer().getLocation().getDirection().multiply(3));
-            pr.setBounce(false);
-            pr.setShooter(e.getPlayer());
-            pr.setCritical(true);
+    if (!(e.getAction() == Action.LEFT_CLICK_AIR || e.getAction() == Action.LEFT_CLICK_BLOCK)) {
+      return;
+    }
+    ItemStack stack = e.getPlayer().getInventory().getItemInMainHand();
+    User user = getPlugin().getUserManager().getUser(e.getPlayer());
+    if (stack == null || stack.getType() != Material.BOW || !e.getPlayer().getInventory().contains(Material.ARROW)
+        || !(user.getKit() instanceof ShotBowKit)
+        || user.isSpectator()) {
+      return;
+    }
+    if (user.getCooldown("shotbow") == 0) {
+      for (int i = 0; i < 4; i++) {
+        Bukkit.getScheduler().runTaskLater(getPlugin(), () -> {
+          Arrow pr = e.getPlayer().launchProjectile(Arrow.class);
+          pr.setVelocity(e.getPlayer().getLocation().getDirection().multiply(3));
+          pr.setBounce(false);
+          pr.setShooter(e.getPlayer());
+          pr.setCritical(true);
 
-            if (e.getPlayer().getInventory().contains(Material.ARROW)) {
-              e.getPlayer().getInventory().removeItem(new ItemStack(Material.ARROW, 1));
-            }
-          }, 2 * (2 * i));
-        }
-        e.setCancelled(true);
-        user.setCooldown("shotbow", 5);
-      } else {
-        String msgstring = getPlugin().getChatManager().colorMessage("Kits.Ability-Still-On-Cooldown");
-        msgstring = msgstring.replaceFirst("%COOLDOWN%", Long.toString(user.getCooldown("shotbow")));
-        e.getPlayer().sendMessage(msgstring);
+          if (e.getPlayer().getInventory().contains(Material.ARROW)) {
+            e.getPlayer().getInventory().removeItem(new ItemStack(Material.ARROW, 1));
+          }
+        }, 2 * (2 * i));
       }
-    } catch (Exception ex) {
-      new ReportedException(getPlugin(), ex);
+      e.setCancelled(true);
+      user.setCooldown("shotbow", 5);
+    } else {
+      String msgstring = getPlugin().getChatManager().colorMessage("Kits.Ability-Still-On-Cooldown");
+      msgstring = msgstring.replaceFirst("%COOLDOWN%", Long.toString(user.getCooldown("shotbow")));
+      e.getPlayer().sendMessage(msgstring);
     }
   }
 

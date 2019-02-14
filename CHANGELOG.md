@@ -1,7 +1,11 @@
 # Village Defense Changelog
 
-### 4.0.4 Release (10.02.2019)
+### 4.1.0 Release (14.02.2019)
+* Abandoned the direct try-catch exception handling in most of methods and event listeners in favour of
+logger listening, code looks better now
 
+### 4.0.4 Release (10.02.2019)
+* Added Valentine's Day effects like heart arrow trails and special healing power-up
 
 ### 4.0.3 Release (01/08.02.2019)
 * Fixed NPE when rewards section was null [#449](https://plajer.xyz/errorservice/viewer.php?id=449)

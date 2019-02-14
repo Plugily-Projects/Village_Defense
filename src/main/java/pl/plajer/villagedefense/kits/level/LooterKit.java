@@ -37,7 +37,6 @@ import pl.plajer.villagedefense.user.User;
 import pl.plajer.villagedefense.utils.ArmorHelper;
 import pl.plajer.villagedefense.utils.Utils;
 import pl.plajer.villagedefense.utils.WeaponHelper;
-import pl.plajerlair.core.services.exception.ReportedException;
 import pl.plajerlair.core.utils.XMaterial;
 
 /**
@@ -77,23 +76,19 @@ public class LooterKit extends LevelKit implements Listener {
 
   @EventHandler
   public void onDeath(EntityDeathEvent event) {
-    try {
-      if (event.getEntity().getType() != EntityType.ZOMBIE) {
-        return;
-      }
-      if (event.getEntity().getKiller() == null) {
-        return;
-      }
-      Player player = event.getEntity().getKiller();
-      if (ArenaRegistry.getArena(player) == null) {
-        return;
-      }
-      User user = getPlugin().getUserManager().getUser(player);
-      if (user.getKit() instanceof LooterKit) {
-        player.getInventory().addItem(new ItemStack(Material.ROTTEN_FLESH, 1));
-      }
-    } catch (Exception ex) {
-      new ReportedException(getPlugin(), ex);
+    if (event.getEntity().getType() != EntityType.ZOMBIE) {
+      return;
+    }
+    if (event.getEntity().getKiller() == null) {
+      return;
+    }
+    Player player = event.getEntity().getKiller();
+    if (ArenaRegistry.getArena(player) == null) {
+      return;
+    }
+    User user = getPlugin().getUserManager().getUser(player);
+    if (user.getKit() instanceof LooterKit) {
+      player.getInventory().addItem(new ItemStack(Material.ROTTEN_FLESH, 1));
     }
   }
 }

@@ -38,7 +38,6 @@ import pl.plajer.villagedefense.user.User;
 import pl.plajer.villagedefense.utils.ArmorHelper;
 import pl.plajer.villagedefense.utils.Utils;
 import pl.plajer.villagedefense.utils.WeaponHelper;
-import pl.plajerlair.core.services.exception.ReportedException;
 import pl.plajerlair.core.utils.ItemBuilder;
 
 /**
@@ -82,34 +81,30 @@ public class CleanerKit extends PremiumKit implements Listener {
 
   @EventHandler
   public void onClean(PlayerInteractEvent e) {
-    try {
-      Arena arena = ArenaRegistry.getArena(e.getPlayer());
-      if (!Utils.isNamed(e.getItem()) || e.getItem().getType() != Material.BLAZE_ROD || !e.getItem().getItemMeta().getDisplayName()
-          .contains(getPlugin().getChatManager().colorMessage("Kits.Cleaner.Game-Item-Name")) || arena == null) {
-        return;
-      }
-      User user = (getPlugin().getUserManager().getUser(e.getPlayer()));
-      if (user.isSpectator()) {
-        e.getPlayer().sendMessage(getPlugin().getChatManager().colorMessage("Kits.Cleaner.Spectator-Warning"));
-        return;
-      }
-      if (user.getCooldown("clean") > 0 && !user.isSpectator()) {
-        String message = getPlugin().getChatManager().colorMessage("Kits.Ability-Still-On-Cooldown");
-        message = message.replaceFirst("%COOLDOWN%", Long.toString(user.getCooldown("clean")));
-        e.getPlayer().sendMessage(message);
-        return;
-      }
-      if (arena.getZombies() == null || arena.getZombies().isEmpty()) {
-        e.getPlayer().sendMessage(getPlugin().getChatManager().colorMessage("Kits.Cleaner.Nothing-To-Clean"));
-        return;
-      }
-      ArenaUtils.removeSpawnedZombies(arena);
-      arena.getZombies().clear();
-      Utils.playSound(e.getPlayer().getLocation(), "ENTITY_ZOMBIE_DEATH", "ENTITY_ZOMBIE_DEATH");
-      getPlugin().getChatManager().broadcast(arena, getPlugin().getChatManager().formatMessage(arena, getPlugin().getChatManager().colorMessage("Kits.Cleaner.Cleaned-Map"), e.getPlayer()));
-      user.setCooldown("clean", 60);
-    } catch (Exception ex) {
-      new ReportedException(getPlugin(), ex);
+    Arena arena = ArenaRegistry.getArena(e.getPlayer());
+    if (!Utils.isNamed(e.getItem()) || e.getItem().getType() != Material.BLAZE_ROD || !e.getItem().getItemMeta().getDisplayName()
+        .contains(getPlugin().getChatManager().colorMessage("Kits.Cleaner.Game-Item-Name")) || arena == null) {
+      return;
     }
+    User user = (getPlugin().getUserManager().getUser(e.getPlayer()));
+    if (user.isSpectator()) {
+      e.getPlayer().sendMessage(getPlugin().getChatManager().colorMessage("Kits.Cleaner.Spectator-Warning"));
+      return;
+    }
+    if (user.getCooldown("clean") > 0 && !user.isSpectator()) {
+      String message = getPlugin().getChatManager().colorMessage("Kits.Ability-Still-On-Cooldown");
+      message = message.replaceFirst("%COOLDOWN%", Long.toString(user.getCooldown("clean")));
+      e.getPlayer().sendMessage(message);
+      return;
+    }
+    if (arena.getZombies() == null || arena.getZombies().isEmpty()) {
+      e.getPlayer().sendMessage(getPlugin().getChatManager().colorMessage("Kits.Cleaner.Nothing-To-Clean"));
+      return;
+    }
+    ArenaUtils.removeSpawnedZombies(arena);
+    arena.getZombies().clear();
+    Utils.playSound(e.getPlayer().getLocation(), "ENTITY_ZOMBIE_DEATH", "ENTITY_ZOMBIE_DEATH");
+    getPlugin().getChatManager().broadcast(arena, getPlugin().getChatManager().formatMessage(arena, getPlugin().getChatManager().colorMessage("Kits.Cleaner.Cleaned-Map"), e.getPlayer()));
+    user.setCooldown("clean", 60);
   }
 }

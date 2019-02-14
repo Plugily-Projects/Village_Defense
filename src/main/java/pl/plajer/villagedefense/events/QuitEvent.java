@@ -28,7 +28,6 @@ import pl.plajer.villagedefense.api.StatsStorage;
 import pl.plajer.villagedefense.arena.ArenaManager;
 import pl.plajer.villagedefense.arena.ArenaRegistry;
 import pl.plajer.villagedefense.user.User;
-import pl.plajerlair.core.services.exception.ReportedException;
 
 /**
  * Created by Tom on 11/08/2014.
@@ -54,20 +53,16 @@ public class QuitEvent implements Listener {
 
   @EventHandler
   public void onQuitSaveStats(PlayerQuitEvent event) {
-    try {
-      if (ArenaRegistry.getArena(event.getPlayer()) != null) {
-        ArenaManager.leaveAttempt(event.getPlayer(), ArenaRegistry.getArena(event.getPlayer()));
-      }
-      User user = plugin.getUserManager().getUser(event.getPlayer());
-      for (StatsStorage.StatisticType stat : StatsStorage.StatisticType.values()) {
-        plugin.getUserManager().saveStatistic(user, stat);
-      }
-      plugin.getUserManager().removeUser(user);
-
-      plugin.getArgumentsRegistry().getSpyChat().disableSpyChat(event.getPlayer());
-    } catch (Exception ex) {
-      new ReportedException(plugin, ex);
+    if (ArenaRegistry.getArena(event.getPlayer()) != null) {
+      ArenaManager.leaveAttempt(event.getPlayer(), ArenaRegistry.getArena(event.getPlayer()));
     }
+    User user = plugin.getUserManager().getUser(event.getPlayer());
+    for (StatsStorage.StatisticType stat : StatsStorage.StatisticType.values()) {
+      plugin.getUserManager().saveStatistic(user, stat);
+    }
+    plugin.getUserManager().removeUser(user);
+
+    plugin.getArgumentsRegistry().getSpyChat().disableSpyChat(event.getPlayer());
   }
 
 }

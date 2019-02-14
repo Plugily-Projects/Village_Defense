@@ -50,13 +50,8 @@ public class ZombieSpawnManager {
    * on random value and current wave
    */
   public void spawnZombies() {
-    //Idling to ~~save server stability~~ protect against hordes of zombies
-    if (localIdleProcess > 0) {
-      localIdleProcess--;
+    if (!checkForIdle()) {
       return;
-    } else {
-      applyIdle(arena.getOption(ArenaOption.ZOMBIE_IDLE_PROCESS));
-      //continue spawning
     }
     int wave = arena.getOption(ArenaOption.WAVE);
     int zombiesToSpawn = arena.getOption(ArenaOption.ZOMBIES_TO_SPAWN);
@@ -158,6 +153,18 @@ public class ZombieSpawnManager {
           arena.spawnGolemBuster(random);
         }
       }
+    }
+  }
+
+  private boolean checkForIdle() {
+    //Idling to ~~save server stability~~ protect against hordes of zombies
+    if (localIdleProcess > 0) {
+      localIdleProcess--;
+      return true;
+    } else {
+      applyIdle(arena.getOption(ArenaOption.ZOMBIE_IDLE_PROCESS));
+      //continue spawning
+      return false;
     }
   }
 

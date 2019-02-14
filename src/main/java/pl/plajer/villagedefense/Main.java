@@ -66,13 +66,13 @@ import pl.plajer.villagedefense.kits.kitapi.KitManager;
 import pl.plajer.villagedefense.kits.kitapi.KitRegistry;
 import pl.plajer.villagedefense.user.User;
 import pl.plajer.villagedefense.user.UserManager;
+import pl.plajer.villagedefense.utils.ExceptionLogHandler;
 import pl.plajer.villagedefense.utils.LegacyDataFixer;
 import pl.plajer.villagedefense.utils.MessageUtils;
 import pl.plajerlair.core.database.MySQLDatabase;
 import pl.plajerlair.core.debug.Debugger;
 import pl.plajerlair.core.debug.LogLevel;
 import pl.plajerlair.core.services.ServiceRegistry;
-import pl.plajerlair.core.services.exception.ReportedException;
 import pl.plajerlair.core.services.update.UpdateChecker;
 import pl.plajerlair.core.utils.ConfigUtils;
 import pl.plajerlair.core.utils.InventoryUtils;
@@ -83,6 +83,7 @@ import pl.plajerlair.core.utils.InventoryUtils;
  */
 public class Main extends JavaPlugin {
 
+  private ExceptionLogHandler exceptionLogHandler;
   private ChatManager chatManager;
   private UserManager userManager;
   private ConfigPreferences configPreferences;
@@ -134,57 +135,54 @@ public class Main extends JavaPlugin {
   @Override
   public void onEnable() {
     ServiceRegistry.registerService(this);
-    try {
-      version = Bukkit.getServer().getClass().getPackage().getName().replace(".", ",").split(",")[3];
-      if (!(version.equalsIgnoreCase("v1_11_R1") || version.equalsIgnoreCase("v1_12_R1") || version.equalsIgnoreCase("v1_13_R1") || version.equalsIgnoreCase("v1_13_R2"))) {
-        MessageUtils.thisVersionIsNotSupported();
-        Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "Your server version is not supported by Village Defense!");
-        Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "Sadly, we must shut off. Maybe you consider changing your server version?");
-        forceDisable = true;
-        getServer().getPluginManager().disablePlugin(this);
-        return;
-      }
-      try {
-        Class.forName("org.spigotmc.SpigotConfig");
-      } catch (Exception e) {
-        MessageUtils.thisVersionIsNotSupported();
-        Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "Your server software is not supported by Village Defense!");
-        Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "We support only Spigot and Spigot forks only! Shutting off...");
-        forceDisable = true;
-        getServer().getPluginManager().disablePlugin(this);
-        return;
-      }
-      LanguageManager.init(this);
-      saveDefaultConfig();
-      Debugger.setEnabled(getConfig().getBoolean("Debug", false));
-      Debugger.setPrefix("[Village Debugger]");
-      Debugger.debug(LogLevel.INFO, "Main setup start");
-      chatManager = new ChatManager(ChatColor.translateAlternateColorCodes('&', LanguageManager.getLanguageMessage("In-Game.Plugin-Prefix")));
-      configPreferences = new ConfigPreferences(this);
-      setupFiles();
-      new LegacyDataFixer(this);
-      initializeClasses();
-      checkUpdate();
-
-      if (configPreferences.getOption(ConfigPreferences.Option.DATABASE_ENABLED)) {
-        FileConfiguration config = ConfigUtils.getConfig(this, "mysql");
-        database = new MySQLDatabase(this, config.getString("address"), config.getString("user"), config.getString("password"),
-            config.getInt("min-connections"), config.getInt("max-connections"));
-      }
-      userManager = new UserManager(this);
-      new DoorBreakListener(this);
-      KitRegistry.init();
-
-      SpecialItem.loadAll();
-      ArenaRegistry.registerArenas();
-      //we must start it after instances load!
-      signManager = new SignManager(this);
-
-      PermissionsManager.init();
-      Debugger.debug(LogLevel.INFO, "Main setup done");
-    } catch (Exception ex) {
-      new ReportedException(this, ex);
+    exceptionLogHandler = new ExceptionLogHandler();
+    version = Bukkit.getServer().getClass().getPackage().getName().replace(".", ",").split(",")[3];
+    if (!(version.equalsIgnoreCase("v1_11_R1") || version.equalsIgnoreCase("v1_12_R1") || version.equalsIgnoreCase("v1_13_R1") || version.equalsIgnoreCase("v1_13_R2"))) {
+      MessageUtils.thisVersionIsNotSupported();
+      Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "Your server version is not supported by Village Defense!");
+      Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "Sadly, we must shut off. Maybe you consider changing your server version?");
+      forceDisable = true;
+      getServer().getPluginManager().disablePlugin(this);
+      return;
     }
+    try {
+      Class.forName("org.spigotmc.SpigotConfig");
+    } catch (Exception e) {
+      MessageUtils.thisVersionIsNotSupported();
+      Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "Your server software is not supported by Village Defense!");
+      Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "We support only Spigot and Spigot forks only! Shutting off...");
+      forceDisable = true;
+      getServer().getPluginManager().disablePlugin(this);
+      return;
+    }
+    LanguageManager.init(this);
+    saveDefaultConfig();
+    Debugger.setEnabled(getConfig().getBoolean("Debug", false));
+    Debugger.setPrefix("[Village Debugger]");
+    Debugger.debug(LogLevel.INFO, "Main setup start");
+    chatManager = new ChatManager(ChatColor.translateAlternateColorCodes('&', LanguageManager.getLanguageMessage("In-Game.Plugin-Prefix")));
+    configPreferences = new ConfigPreferences(this);
+    setupFiles();
+    new LegacyDataFixer(this);
+    initializeClasses();
+    checkUpdate();
+
+    if (configPreferences.getOption(ConfigPreferences.Option.DATABASE_ENABLED)) {
+      FileConfiguration config = ConfigUtils.getConfig(this, "mysql");
+      database = new MySQLDatabase(this, config.getString("address"), config.getString("user"), config.getString("password"),
+          config.getInt("min-connections"), config.getInt("max-connections"));
+    }
+    userManager = new UserManager(this);
+    new DoorBreakListener(this);
+    KitRegistry.init();
+
+    SpecialItem.loadAll();
+    ArenaRegistry.registerArenas();
+    //we must start it after instances load!
+    signManager = new SignManager(this);
+
+    PermissionsManager.init();
+    Debugger.debug(LogLevel.INFO, "Main setup done");
   }
 
   private void initializeClasses() {
@@ -317,6 +315,7 @@ public class Main extends JavaPlugin {
       return;
     }
     Debugger.debug(LogLevel.INFO, "System disable init");
+    Bukkit.getLogger().removeHandler(exceptionLogHandler);
     for (Arena arena : ArenaRegistry.getArenas()) {
       arena.getScoreboardManager().stopAllScoreboards();
       for (Player player : arena.getPlayers()) {

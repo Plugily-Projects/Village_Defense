@@ -39,7 +39,6 @@ import pl.plajer.villagedefense.arena.Arena;
 import pl.plajer.villagedefense.arena.ArenaRegistry;
 import pl.plajer.villagedefense.utils.CompatMaterialConstants;
 import pl.plajer.villagedefense.utils.Utils;
-import pl.plajerlair.core.services.exception.ReportedException;
 import pl.plajerlair.core.spectator.SpectatorSettingsMenu;
 import pl.plajerlair.core.utils.MinigameUtils;
 
@@ -57,24 +56,20 @@ public class SpectatorItemEvents implements Listener {
 
   @EventHandler
   public void onSpectatorItemClick(PlayerInteractEvent e) {
-    try {
-      if (e.getAction() == Action.LEFT_CLICK_AIR || e.getAction() == Action.LEFT_CLICK_BLOCK) {
-        return;
-      }
-      Arena arena = ArenaRegistry.getArena(e.getPlayer());
-      ItemStack stack = e.getPlayer().getInventory().getItemInMainHand();
-      if (arena == null || !Utils.isNamed(stack)) {
-        return;
-      }
-      if (stack.getItemMeta().getDisplayName().equalsIgnoreCase(plugin.getChatManager().colorMessage("In-Game.Spectator.Spectator-Item-Name"))) {
-        e.setCancelled(true);
-        openSpectatorMenu(e.getPlayer().getWorld(), e.getPlayer());
-      } else if (stack.getItemMeta().getDisplayName().equalsIgnoreCase(plugin.getChatManager().colorMessage("In-Game.Spectator.Settings-Menu.Item-Name"))) {
-        e.setCancelled(true);
-        spectatorSettingsMenu.openSpectatorSettingsMenu(e.getPlayer());
-      }
-    } catch (Exception ex) {
-      new ReportedException(plugin, ex);
+    if (e.getAction() == Action.LEFT_CLICK_AIR || e.getAction() == Action.LEFT_CLICK_BLOCK) {
+      return;
+    }
+    Arena arena = ArenaRegistry.getArena(e.getPlayer());
+    ItemStack stack = e.getPlayer().getInventory().getItemInMainHand();
+    if (arena == null || !Utils.isNamed(stack)) {
+      return;
+    }
+    if (stack.getItemMeta().getDisplayName().equalsIgnoreCase(plugin.getChatManager().colorMessage("In-Game.Spectator.Spectator-Item-Name"))) {
+      e.setCancelled(true);
+      openSpectatorMenu(e.getPlayer().getWorld(), e.getPlayer());
+    } else if (stack.getItemMeta().getDisplayName().equalsIgnoreCase(plugin.getChatManager().colorMessage("In-Game.Spectator.Settings-Menu.Item-Name"))) {
+      e.setCancelled(true);
+      spectatorSettingsMenu.openSpectatorSettingsMenu(e.getPlayer());
     }
   }
 
@@ -99,32 +94,28 @@ public class SpectatorItemEvents implements Listener {
 
   @EventHandler
   public void onSpectatorInventoryClick(InventoryClickEvent e) {
-    try {
-      Player p = (Player) e.getWhoClicked();
-      if (ArenaRegistry.getArena(p) == null || !(e.isLeftClick() || e.isRightClick())) {
-        return;
-      }
-      Arena arena = ArenaRegistry.getArena(p);
-      if (!Utils.isNamed(e.getCurrentItem()) || !e.getCurrentItem().getItemMeta().hasLore()) {
-        return;
-      }
-      if (e.getInventory().getName().equalsIgnoreCase(plugin.getChatManager().colorMessage("In-Game.Spectator.Spectator-Menu-Name"))) {
-        e.setCancelled(true);
-        ItemMeta meta = e.getCurrentItem().getItemMeta();
-        for (Player player : arena.getPlayers()) {
-          if (player.getName().equalsIgnoreCase(meta.getDisplayName()) || ChatColor.stripColor(meta.getDisplayName()).contains(player.getName())) {
-            p.sendMessage(plugin.getChatManager().formatMessage(arena, plugin.getChatManager().colorMessage("Kits.Teleporter.Teleported-To-Player"), player));
-            p.teleport(player);
-            p.closeInventory();
-            e.setCancelled(true);
-            return;
+    Player p = (Player) e.getWhoClicked();
+    if (ArenaRegistry.getArena(p) == null || !(e.isLeftClick() || e.isRightClick())) {
+      return;
+    }
+    Arena arena = ArenaRegistry.getArena(p);
+    if (!Utils.isNamed(e.getCurrentItem()) || !e.getCurrentItem().getItemMeta().hasLore()) {
+      return;
+    }
+    if (e.getInventory().getName().equalsIgnoreCase(plugin.getChatManager().colorMessage("In-Game.Spectator.Spectator-Menu-Name"))) {
+      e.setCancelled(true);
+      ItemMeta meta = e.getCurrentItem().getItemMeta();
+      for (Player player : arena.getPlayers()) {
+        if (player.getName().equalsIgnoreCase(meta.getDisplayName()) || ChatColor.stripColor(meta.getDisplayName()).contains(player.getName())) {
+          p.sendMessage(plugin.getChatManager().formatMessage(arena, plugin.getChatManager().colorMessage("Kits.Teleporter.Teleported-To-Player"), player));
+          p.teleport(player);
+          p.closeInventory();
+          e.setCancelled(true);
+          return;
 
-          }
         }
-        p.sendMessage(plugin.getChatManager().colorMessage("Kits.Teleporter.Player-Not-Found"));
       }
-    } catch (Exception ex) {
-      new ReportedException(plugin, ex);
+      p.sendMessage(plugin.getChatManager().colorMessage("Kits.Teleporter.Player-Not-Found"));
     }
   }
 }

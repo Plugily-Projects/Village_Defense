@@ -40,7 +40,6 @@ import pl.plajer.villagedefense.user.User;
 import pl.plajer.villagedefense.utils.ArmorHelper;
 import pl.plajer.villagedefense.utils.Utils;
 import pl.plajer.villagedefense.utils.WeaponHelper;
-import pl.plajerlair.core.services.exception.ReportedException;
 import pl.plajerlair.core.utils.XMaterial;
 
 /**
@@ -80,31 +79,27 @@ public class MedicKit extends PremiumKit implements Listener {
 
   @EventHandler
   public void onZombieHit(EntityDamageByEntityEvent e) {
-    try {
-      if (!(e.getEntity() instanceof Zombie && e.getDamager() instanceof Player)) {
-        return;
+    if (!(e.getEntity() instanceof Zombie && e.getDamager() instanceof Player)) {
+      return;
+    }
+    User user = getPlugin().getUserManager().getUser((Player) e.getDamager());
+    if (!(user.getKit() instanceof MedicKit)) {
+      return;
+    }
+    if (Math.random() > 0.1) {
+      return;
+    }
+    for (Entity entity : e.getDamager().getNearbyEntities(5, 5, 5)) {
+      if (!(entity instanceof Player)) {
+        continue;
       }
-      User user = getPlugin().getUserManager().getUser((Player) e.getDamager());
-      if (!(user.getKit() instanceof MedicKit)) {
-        return;
+      Player player = (Player) entity;
+      if (player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue() > (player.getHealth() + 1)) {
+        player.setHealth(player.getHealth() + 1);
+      } else {
+        player.setHealth(player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue());
       }
-      if (Math.random() > 0.1) {
-        return;
-      }
-      for (Entity entity : e.getDamager().getNearbyEntities(5, 5, 5)) {
-        if (!(entity instanceof Player)) {
-          continue;
-        }
-        Player player = (Player) entity;
-        if (player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue() > (player.getHealth() + 1)) {
-          player.setHealth(player.getHealth() + 1);
-        } else {
-          player.setHealth(player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue());
-        }
-        player.getEyeLocation().getWorld().spawnParticle(Particle.HEART, player.getLocation(), 20);
-      }
-    } catch (Exception ex) {
-      new ReportedException(getPlugin(), ex);
+      player.getEyeLocation().getWorld().spawnParticle(Particle.HEART, player.getLocation(), 20);
     }
   }
 }

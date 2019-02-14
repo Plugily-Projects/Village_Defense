@@ -63,7 +63,6 @@ import pl.plajer.villagedefense.user.User;
 import pl.plajer.villagedefense.utils.Utils;
 import pl.plajerlair.core.debug.Debugger;
 import pl.plajerlair.core.debug.LogLevel;
-import pl.plajerlair.core.services.exception.ReportedException;
 import pl.plajerlair.core.utils.ConfigUtils;
 import pl.plajerlair.core.utils.InventoryUtils;
 import pl.plajerlair.core.utils.XMaterial;
@@ -157,271 +156,267 @@ public abstract class Arena extends BukkitRunnable {
   }
 
   public void run() {
-    try {
-      //idle task
-      if (getPlayers().size() == 0 && getArenaState() == ArenaState.WAITING_FOR_PLAYERS) {
-        return;
-      }
-      switch (getArenaState()) {
-        case WAITING_FOR_PLAYERS:
-          if (plugin.getConfigPreferences().getOption(ConfigPreferences.Option.BUNGEE_ENABLED)) {
-            plugin.getServer().setWhitelist(false);
-          }
-          if (getPlayers().size() < getMinimumPlayers()) {
-            if (getTimer() <= 0) {
-              setTimer(15);
-              plugin.getChatManager().broadcast(this, plugin.getChatManager().formatMessage(this, plugin.getChatManager().colorMessage("In-Game.Messages.Lobby-Messages.Waiting-For-Players"), getMinimumPlayers()));
-              return;
-            }
-          } else {
-            gameBar.setTitle(plugin.getChatManager().colorMessage("Bossbar.Waiting-For-Players"));
-            plugin.getChatManager().broadcast(this, plugin.getChatManager().colorMessage("In-Game.Messages.Lobby-Messages.Enough-Players-To-Start"));
-            setArenaState(ArenaState.STARTING);
-            setTimer(plugin.getConfig().getInt("Starting-Waiting-Time", 60));
-            this.showPlayers();
-            return;
-          }
-          setTimer(getTimer() - 1);
-          break;
-        case STARTING:
-          gameBar.setTitle(plugin.getChatManager().colorMessage("Bossbar.Starting-In").replace("%time%", String.valueOf(getTimer())));
-          gameBar.setProgress(getTimer() / plugin.getConfig().getDouble("Starting-Waiting-Time", 60));
-          for (Player player : getPlayers()) {
-            player.setExp((float) (getTimer() / plugin.getConfig().getDouble("Starting-Waiting-Time", 60)));
-            player.setLevel(getTimer());
-          }
-          if (getPlayers().size() < getMinimumPlayers() && !forceStart) {
-            gameBar.setTitle(plugin.getChatManager().colorMessage("Bossbar.Waiting-For-Players"));
-            gameBar.setProgress(1.0);
-            plugin.getChatManager().broadcast(this, plugin.getChatManager().formatMessage(this, plugin.getChatManager().colorMessage("In-Game.Messages.Lobby-Messages.Waiting-For-Players"), getMinimumPlayers()));
-            setArenaState(ArenaState.WAITING_FOR_PLAYERS);
-            Bukkit.getPluginManager().callEvent(new VillageGameStartEvent(this));
-            setTimer(15);
-            for (Player player : getPlayers()) {
-              player.setExp(1);
-              player.setLevel(0);
-            }
-            break;
-          }
-          if (getTimer() == 0 || forceStart) {
-            spawnVillagers();
-            VillageGameStartEvent villageGameStartEvent = new VillageGameStartEvent(this);
-            Bukkit.getPluginManager().callEvent(villageGameStartEvent);
-            setArenaState(ArenaState.IN_GAME);
-            gameBar.setProgress(1.0);
-            setTimer(5);
-            teleportAllToStartLocation();
-            for (Player player : getPlayers()) {
-              player.setExp(0);
-              player.setLevel(0);
-              player.getInventory().clear();
-              player.setGameMode(GameMode.SURVIVAL);
-              User user = plugin.getUserManager().getUser(player);
-              user.setStat(StatsStorage.StatisticType.ORBS, plugin.getConfig().getInt("Orbs-Starting-Amount", 20));
-              ArenaUtils.hidePlayersOutsideTheGame(player, this);
-              plugin.getUserManager().getUser(player).getKit().giveKitItems(player);
-              player.updateInventory();
-              ArenaUtils.addStat(player, StatsStorage.StatisticType.GAMES_PLAYED);
-              ArenaUtils.addExperience(player, 10);
-              setTimer(plugin.getConfig().getInt("Cooldown-Before-Next-Wave", 25));
-              player.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage("In-Game.Messages.Lobby-Messages.Game-Started"));
-            }
-            fighting = false;
-          }
-          if (forceStart) {
-            forceStart = false;
-          }
-          setTimer(getTimer() - 1);
-          break;
-        case IN_GAME:
-          if (getOption(ArenaOption.BAR_TOGGLE_VALUE) > 5) {
-            gameBar.setTitle(plugin.getChatManager().colorMessage("Bossbar.In-Game-Wave").replace("%wave%", String.valueOf(getWave())));
-            addOptionValue(ArenaOption.BAR_TOGGLE_VALUE, 1);
-            if (getOption(ArenaOption.BAR_TOGGLE_VALUE) > 10) {
-              setOptionValue(ArenaOption.BAR_TOGGLE_VALUE, 0);
-            }
-          } else {
-            gameBar.setTitle(plugin.getChatManager().colorMessage("Bossbar.In-Game-Info").replace("%wave%", String.valueOf(getWave())));
-            addOptionValue(ArenaOption.BAR_TOGGLE_VALUE, 1);
-          }
-          if (plugin.getConfigPreferences().getOption(ConfigPreferences.Option.BUNGEE_ENABLED)) {
-            if (getMaximumPlayers() <= getPlayers().size()) {
-              plugin.getServer().setWhitelist(true);
-            } else {
-              plugin.getServer().setWhitelist(false);
-            }
-          }
-          addOptionValue(ArenaOption.ZOMBIE_GLITCH_CHECKER, 1);
-          if (getOption(ArenaOption.ZOMBIE_GLITCH_CHECKER) >= 60) {
-            Iterator<Villager> villagerIterator = getVillagers().iterator();
-            while (villagerIterator.hasNext()) {
-              Villager villager = villagerIterator.next();
-              if (villager.isDead()) {
-                villagerIterator.remove();
-                removeVillager(villager);
-              }
-            }
-            setOptionValue(ArenaOption.ZOMBIE_GLITCH_CHECKER, 0);
-
-            Iterator<Zombie> zombieIterator = getZombies().iterator();
-            while (zombieIterator.hasNext()) {
-              Zombie zombie = zombieIterator.next();
-              if (zombie.isDead()) {
-                zombieIterator.remove();
-                removeZombie(zombie);
-                continue;
-              }
-              if (glitchedZombies.contains(zombie) && zombie.getLocation().distance(zombieCheckerLocations.get(zombie)) <= 1) {
-                zombieIterator.remove();
-                removeZombie(zombie);
-                zombieCheckerLocations.remove(zombie);
-                zombie.remove();
-              }
-              if (zombieCheckerLocations.get(zombie) == null) {
-                zombieCheckerLocations.put(zombie, zombie.getLocation());
-              } else {
-                Location location = zombieCheckerLocations.get(zombie);
-
-                if (zombie.getLocation().distance(location) <= 1) {
-                  zombie.teleport(zombieSpawns.get(random.nextInt(zombieSpawns.size() - 1)));
-                  zombieCheckerLocations.put(zombie, zombie.getLocation());
-                  glitchedZombies.add(zombie);
-                }
-              }
-            }
-          }
-          if (getVillagers().size() <= 0 || getPlayersLeft().size() <= 0 && getArenaState() != ArenaState.ENDING) {
-            clearZombies();
-            ArenaManager.stopGame(false, this);
-            return;
-          }
-          if (fighting) {
-            if (getZombiesLeft() <= 0) {
-              fighting = false;
-              ArenaManager.endWave(this);
-            }
-            if (getOption(ArenaOption.ZOMBIES_TO_SPAWN) > 0) {
-              zombieSpawnManager.spawnZombies();
-              setTimer(500);
-            } else {
-              if (getTimer() == 0) {
-                clearZombies();
-                if (getZombiesLeft() <= 5) {
-                  setOptionValue(ArenaOption.ZOMBIES_TO_SPAWN, 0);
-                  plugin.getChatManager().broadcast(this, plugin.getChatManager().colorMessage("In-Game.Messages.Zombie-Got-Stuck-In-The-Map"));
-                } else {
-                  setOptionValue(ArenaOption.ZOMBIES_TO_SPAWN, 0);
-                  for (int i = getZombiesLeft(); i > 0; i++) {
-                    spawnFastZombie(random);
-                  }
-                }
-              }
-            }
-            if (getOption(ArenaOption.ZOMBIES_TO_SPAWN) < 0) {
-              setOptionValue(ArenaOption.ZOMBIES_TO_SPAWN, 0);
-            }
-            setTimer(getTimer() - 1);
-          } else {
-            if (getTimer() <= 0) {
-              fighting = true;
-              ArenaManager.startWave(this);
-            }
-          }
-          setTimer(getTimer() - 1);
-          break;
-        case ENDING:
-          scoreboardManager.stopAllScoreboards();
-          if (plugin.getConfigPreferences().getOption(ConfigPreferences.Option.BUNGEE_ENABLED)) {
-            plugin.getServer().setWhitelist(false);
-          }
+    //idle task
+    if (getPlayers().size() == 0 && getArenaState() == ArenaState.WAITING_FOR_PLAYERS) {
+      return;
+    }
+    switch (getArenaState()) {
+      case WAITING_FOR_PLAYERS:
+        if (plugin.getConfigPreferences().getOption(ConfigPreferences.Option.BUNGEE_ENABLED)) {
+          plugin.getServer().setWhitelist(false);
+        }
+        if (getPlayers().size() < getMinimumPlayers()) {
           if (getTimer() <= 0) {
-            gameBar.setTitle(plugin.getChatManager().colorMessage("Bossbar.Game-Ended"));
-            clearVillagers();
-            clearZombies();
-            clearGolems();
-            clearWolfs();
+            setTimer(15);
+            plugin.getChatManager().broadcast(this, plugin.getChatManager().formatMessage(this, plugin.getChatManager().colorMessage("In-Game.Messages.Lobby-Messages.Waiting-For-Players"), getMinimumPlayers()));
+            return;
+          }
+        } else {
+          gameBar.setTitle(plugin.getChatManager().colorMessage("Bossbar.Waiting-For-Players"));
+          plugin.getChatManager().broadcast(this, plugin.getChatManager().colorMessage("In-Game.Messages.Lobby-Messages.Enough-Players-To-Start"));
+          setArenaState(ArenaState.STARTING);
+          setTimer(plugin.getConfig().getInt("Starting-Waiting-Time", 60));
+          this.showPlayers();
+          return;
+        }
+        setTimer(getTimer() - 1);
+        break;
+      case STARTING:
+        gameBar.setTitle(plugin.getChatManager().colorMessage("Bossbar.Starting-In").replace("%time%", String.valueOf(getTimer())));
+        gameBar.setProgress(getTimer() / plugin.getConfig().getDouble("Starting-Waiting-Time", 60));
+        for (Player player : getPlayers()) {
+          player.setExp((float) (getTimer() / plugin.getConfig().getDouble("Starting-Waiting-Time", 60)));
+          player.setLevel(getTimer());
+        }
+        if (getPlayers().size() < getMinimumPlayers() && !forceStart) {
+          gameBar.setTitle(plugin.getChatManager().colorMessage("Bossbar.Waiting-For-Players"));
+          gameBar.setProgress(1.0);
+          plugin.getChatManager().broadcast(this, plugin.getChatManager().formatMessage(this, plugin.getChatManager().colorMessage("In-Game.Messages.Lobby-Messages.Waiting-For-Players"), getMinimumPlayers()));
+          setArenaState(ArenaState.WAITING_FOR_PLAYERS);
+          Bukkit.getPluginManager().callEvent(new VillageGameStartEvent(this));
+          setTimer(15);
+          for (Player player : getPlayers()) {
+            player.setExp(1);
+            player.setLevel(0);
+          }
+          break;
+        }
+        if (getTimer() == 0 || forceStart) {
+          spawnVillagers();
+          VillageGameStartEvent villageGameStartEvent = new VillageGameStartEvent(this);
+          Bukkit.getPluginManager().callEvent(villageGameStartEvent);
+          setArenaState(ArenaState.IN_GAME);
+          gameBar.setProgress(1.0);
+          setTimer(5);
+          teleportAllToStartLocation();
+          for (Player player : getPlayers()) {
+            player.setExp(0);
+            player.setLevel(0);
+            player.getInventory().clear();
+            player.setGameMode(GameMode.SURVIVAL);
+            User user = plugin.getUserManager().getUser(player);
+            user.setStat(StatsStorage.StatisticType.ORBS, plugin.getConfig().getInt("Orbs-Starting-Amount", 20));
+            ArenaUtils.hidePlayersOutsideTheGame(player, this);
+            plugin.getUserManager().getUser(player).getKit().giveKitItems(player);
+            player.updateInventory();
+            ArenaUtils.addStat(player, StatsStorage.StatisticType.GAMES_PLAYED);
+            ArenaUtils.addExperience(player, 10);
+            setTimer(plugin.getConfig().getInt("Cooldown-Before-Next-Wave", 25));
+            player.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage("In-Game.Messages.Lobby-Messages.Game-Started"));
+          }
+          fighting = false;
+        }
+        if (forceStart) {
+          forceStart = false;
+        }
+        setTimer(getTimer() - 1);
+        break;
+      case IN_GAME:
+        if (getOption(ArenaOption.BAR_TOGGLE_VALUE) > 5) {
+          gameBar.setTitle(plugin.getChatManager().colorMessage("Bossbar.In-Game-Wave").replace("%wave%", String.valueOf(getWave())));
+          addOptionValue(ArenaOption.BAR_TOGGLE_VALUE, 1);
+          if (getOption(ArenaOption.BAR_TOGGLE_VALUE) > 10) {
+            setOptionValue(ArenaOption.BAR_TOGGLE_VALUE, 0);
+          }
+        } else {
+          gameBar.setTitle(plugin.getChatManager().colorMessage("Bossbar.In-Game-Info").replace("%wave%", String.valueOf(getWave())));
+          addOptionValue(ArenaOption.BAR_TOGGLE_VALUE, 1);
+        }
+        if (plugin.getConfigPreferences().getOption(ConfigPreferences.Option.BUNGEE_ENABLED)) {
+          if (getMaximumPlayers() <= getPlayers().size()) {
+            plugin.getServer().setWhitelist(true);
+          } else {
+            plugin.getServer().setWhitelist(false);
+          }
+        }
+        addOptionValue(ArenaOption.ZOMBIE_GLITCH_CHECKER, 1);
+        if (getOption(ArenaOption.ZOMBIE_GLITCH_CHECKER) >= 60) {
+          Iterator<Villager> villagerIterator = getVillagers().iterator();
+          while (villagerIterator.hasNext()) {
+            Villager villager = villagerIterator.next();
+            if (villager.isDead()) {
+              villagerIterator.remove();
+              removeVillager(villager);
+            }
+          }
+          setOptionValue(ArenaOption.ZOMBIE_GLITCH_CHECKER, 0);
 
-            for (Player player : getPlayers()) {
-              plugin.getUserManager().getUser(player).removeScoreboard();
-              player.setGameMode(GameMode.SURVIVAL);
-              for (Player players : Bukkit.getOnlinePlayers()) {
-                player.showPlayer(players);
-                players.hidePlayer(player);
-              }
-              for (PotionEffect effect : player.getActivePotionEffects()) {
-                player.removePotionEffect(effect.getType());
-              }
-              player.setFlying(false);
-              player.setAllowFlight(false);
-              player.getInventory().clear();
+          Iterator<Zombie> zombieIterator = getZombies().iterator();
+          while (zombieIterator.hasNext()) {
+            Zombie zombie = zombieIterator.next();
+            if (zombie.isDead()) {
+              zombieIterator.remove();
+              removeZombie(zombie);
+              continue;
+            }
+            if (glitchedZombies.contains(zombie) && zombie.getLocation().distance(zombieCheckerLocations.get(zombie)) <= 1) {
+              zombieIterator.remove();
+              removeZombie(zombie);
+              zombieCheckerLocations.remove(zombie);
+              zombie.remove();
+            }
+            if (zombieCheckerLocations.get(zombie) == null) {
+              zombieCheckerLocations.put(zombie, zombie.getLocation());
+            } else {
+              Location location = zombieCheckerLocations.get(zombie);
 
-              player.getInventory().setArmorContents(null);
-              doBarAction(BarAction.REMOVE, player);
-              player.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(20.0);
-              player.setHealth(player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue());
-              player.setFireTicks(0);
-              player.setFoodLevel(20);
-              for (Player players : plugin.getServer().getOnlinePlayers()) {
-                if (ArenaRegistry.getArena(players) != null) {
-                  players.showPlayer(player);
+              if (zombie.getLocation().distance(location) <= 1) {
+                zombie.teleport(zombieSpawns.get(random.nextInt(zombieSpawns.size() - 1)));
+                zombieCheckerLocations.put(zombie, zombie.getLocation());
+                glitchedZombies.add(zombie);
+              }
+            }
+          }
+        }
+        if (getVillagers().size() <= 0 || getPlayersLeft().size() <= 0 && getArenaState() != ArenaState.ENDING) {
+          clearZombies();
+          ArenaManager.stopGame(false, this);
+          return;
+        }
+        if (fighting) {
+          if (getZombiesLeft() <= 0) {
+            fighting = false;
+            ArenaManager.endWave(this);
+          }
+          if (getOption(ArenaOption.ZOMBIES_TO_SPAWN) > 0) {
+            zombieSpawnManager.spawnZombies();
+            setTimer(500);
+          } else {
+            if (getTimer() == 0) {
+              clearZombies();
+              if (getZombiesLeft() <= 5) {
+                setOptionValue(ArenaOption.ZOMBIES_TO_SPAWN, 0);
+                plugin.getChatManager().broadcast(this, plugin.getChatManager().colorMessage("In-Game.Messages.Zombie-Got-Stuck-In-The-Map"));
+              } else {
+                setOptionValue(ArenaOption.ZOMBIES_TO_SPAWN, 0);
+                for (int i = getZombiesLeft(); i > 0; i++) {
+                  spawnFastZombie(random);
                 }
-                player.showPlayer(players);
               }
             }
-            teleportAllToEndLocation();
-            if (plugin.getConfigPreferences().getOption(ConfigPreferences.Option.INVENTORY_MANAGER_ENABLED)) {
-              for (Player player : getPlayers()) {
-                InventoryUtils.loadInventory(plugin, player);
-              }
-            }
-            plugin.getChatManager().broadcast(this, plugin.getChatManager().colorMessage("Commands.Teleported-To-The-Lobby"));
-
-            for (User user : plugin.getUserManager().getUsers(this)) {
-              user.setSpectator(false);
-              user.setStat(StatsStorage.StatisticType.ORBS, 0);
-            }
-            plugin.getRewardsHandler().performReward(this, GameReward.RewardType.END_GAME);
-            players.clear();
-            if (plugin.getConfigPreferences().getOption(ConfigPreferences.Option.BUNGEE_ENABLED)) {
-              if (ConfigUtils.getConfig(plugin, "bungee").getBoolean("Shutdown-When-Game-Ends")) {
-                plugin.getServer().shutdown();
-              }
-            }
-            setArenaState(ArenaState.RESTARTING);
+          }
+          if (getOption(ArenaOption.ZOMBIES_TO_SPAWN) < 0) {
+            setOptionValue(ArenaOption.ZOMBIES_TO_SPAWN, 0);
           }
           setTimer(getTimer() - 1);
-          break;
-        case RESTARTING:
+        } else {
+          if (getTimer() <= 0) {
+            fighting = true;
+            ArenaManager.startWave(this);
+          }
+        }
+        setTimer(getTimer() - 1);
+        break;
+      case ENDING:
+        scoreboardManager.stopAllScoreboards();
+        if (plugin.getConfigPreferences().getOption(ConfigPreferences.Option.BUNGEE_ENABLED)) {
+          plugin.getServer().setWhitelist(false);
+        }
+        if (getTimer() <= 0) {
+          gameBar.setTitle(plugin.getChatManager().colorMessage("Bossbar.Game-Ended"));
           clearVillagers();
-          this.restoreMap();
+          clearZombies();
+          clearGolems();
+          clearWolfs();
 
-          getPlayers().clear();
+          for (Player player : getPlayers()) {
+            plugin.getUserManager().getUser(player).removeScoreboard();
+            player.setGameMode(GameMode.SURVIVAL);
+            for (Player players : Bukkit.getOnlinePlayers()) {
+              player.showPlayer(players);
+              players.hidePlayer(player);
+            }
+            for (PotionEffect effect : player.getActivePotionEffects()) {
+              player.removePotionEffect(effect.getType());
+            }
+            player.setFlying(false);
+            player.setAllowFlight(false);
+            player.getInventory().clear();
 
-          setArenaState(ArenaState.WAITING_FOR_PLAYERS);
-
-          setOptionValue(ArenaOption.WAVE, 1);
-          setOptionValue(ArenaOption.TOTAL_KILLED_ZOMBIES, 0);
-          setOptionValue(ArenaOption.TOTAL_ORBS_SPENT, 0);
-          setOptionValue(ArenaOption.ZOMBIE_DIFFICULTY_MULTIPLIER, 0);
-          setOptionValue(ArenaOption.ZOMBIE_IDLE_PROCESS, 0);
-          zombieSpawnManager.applyIdle(0);
-          for (Item item : droppedFleshes) {
-            if (item != null) {
-              item.remove();
+            player.getInventory().setArmorContents(null);
+            doBarAction(BarAction.REMOVE, player);
+            player.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(20.0);
+            player.setHealth(player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue());
+            player.setFireTicks(0);
+            player.setFoodLevel(20);
+            for (Player players : plugin.getServer().getOnlinePlayers()) {
+              if (ArenaRegistry.getArena(players) != null) {
+                players.showPlayer(player);
+              }
+              player.showPlayer(players);
             }
           }
-          droppedFleshes.clear();
+          teleportAllToEndLocation();
+          if (plugin.getConfigPreferences().getOption(ConfigPreferences.Option.INVENTORY_MANAGER_ENABLED)) {
+            for (Player player : getPlayers()) {
+              InventoryUtils.loadInventory(plugin, player);
+            }
+          }
+          plugin.getChatManager().broadcast(this, plugin.getChatManager().colorMessage("Commands.Teleported-To-The-Lobby"));
+
+          for (User user : plugin.getUserManager().getUsers(this)) {
+            user.setSpectator(false);
+            user.setStat(StatsStorage.StatisticType.ORBS, 0);
+          }
+          plugin.getRewardsHandler().performReward(this, GameReward.RewardType.END_GAME);
+          players.clear();
           if (plugin.getConfigPreferences().getOption(ConfigPreferences.Option.BUNGEE_ENABLED)) {
-            for (Player player : plugin.getServer().getOnlinePlayers()) {
-              this.addPlayer(player);
+            if (ConfigUtils.getConfig(plugin, "bungee").getBoolean("Shutdown-When-Game-Ends")) {
+              plugin.getServer().shutdown();
             }
           }
-          break;
-        default:
-          break; //o.o?
-      }
-    } catch (Exception e) {
-      new ReportedException(plugin, e);
+          setArenaState(ArenaState.RESTARTING);
+        }
+        setTimer(getTimer() - 1);
+        break;
+      case RESTARTING:
+        clearVillagers();
+        this.restoreMap();
+
+        getPlayers().clear();
+
+        setArenaState(ArenaState.WAITING_FOR_PLAYERS);
+
+        setOptionValue(ArenaOption.WAVE, 1);
+        setOptionValue(ArenaOption.TOTAL_KILLED_ZOMBIES, 0);
+        setOptionValue(ArenaOption.TOTAL_ORBS_SPENT, 0);
+        setOptionValue(ArenaOption.ZOMBIE_DIFFICULTY_MULTIPLIER, 0);
+        setOptionValue(ArenaOption.ZOMBIE_IDLE_PROCESS, 0);
+        zombieSpawnManager.applyIdle(0);
+        for (Item item : droppedFleshes) {
+          if (item != null) {
+            item.remove();
+          }
+        }
+        droppedFleshes.clear();
+        if (plugin.getConfigPreferences().getOption(ConfigPreferences.Option.BUNGEE_ENABLED)) {
+          for (Player player : plugin.getServer().getOnlinePlayers()) {
+            this.addPlayer(player);
+          }
+        }
+        break;
+      default:
+        break; //o.o?
     }
   }
 

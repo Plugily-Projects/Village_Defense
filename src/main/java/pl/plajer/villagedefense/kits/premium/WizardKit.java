@@ -47,7 +47,6 @@ import pl.plajer.villagedefense.kits.kitapi.basekits.PremiumKit;
 import pl.plajer.villagedefense.user.User;
 import pl.plajer.villagedefense.utils.ArmorHelper;
 import pl.plajer.villagedefense.utils.Utils;
-import pl.plajerlair.core.services.exception.ReportedException;
 import pl.plajerlair.core.utils.ItemBuilder;
 import pl.plajerlair.core.utils.XMaterial;
 
@@ -109,122 +108,114 @@ public class WizardKit extends PremiumKit implements Listener {
 
   @EventHandler
   public void onWizardDamage(EntityDamageByEntityEvent e) {
-    try {
-      if (!(e.getDamager() instanceof Zombie && e.getEntity() instanceof Player)) {
-        return;
-      }
-      if (!wizardsOnDuty.contains(e.getEntity())) {
-        return;
-      }
-      if (ArenaRegistry.getArena((Player) e.getEntity()) == null) {
-        return;
-      }
-      ((Zombie) e.getDamager()).damage(2.0, e.getEntity());
-    } catch (Exception ex) {
-      new ReportedException(getPlugin(), ex);
+    if (!(e.getDamager() instanceof Zombie && e.getEntity() instanceof Player)) {
+      return;
     }
+    if (!wizardsOnDuty.contains(e.getEntity())) {
+      return;
+    }
+    if (ArenaRegistry.getArena((Player) e.getEntity()) == null) {
+      return;
+    }
+    ((Zombie) e.getDamager()).damage(2.0, e.getEntity());
   }
 
   @EventHandler
   public void onStaffUse(PlayerInteractEvent e) {
-    try {
-      User user = getPlugin().getUserManager().getUser(e.getPlayer());
-      if (user == null || ArenaRegistry.getArena(e.getPlayer()) == null) {
+    User user = getPlugin().getUserManager().getUser(e.getPlayer());
+    if (user == null || ArenaRegistry.getArena(e.getPlayer()) == null) {
+      return;
+    }
+    if (!(user.getKit() instanceof WizardKit)) {
+      return;
+    }
+    final Player p = e.getPlayer();
+    ItemStack stack = e.getPlayer().getInventory().getItemInMainHand();
+    if (!Utils.isNamed(stack)) {
+      return;
+    }
+    if (stack.getItemMeta().getDisplayName().equals(getPlugin().getChatManager().colorMessage("Kits.Wizard.Essence-Item-Name"))) {
+      if (user.getCooldown("essence") > 0 && !user.isSpectator()) {
+        String message = getPlugin().getChatManager().colorMessage("Kits.Ability-Still-On-Cooldown");
+        message = message.replaceFirst("%COOLDOWN%", Long.toString(user.getCooldown("essence")));
+        e.getPlayer().sendMessage(message);
         return;
       }
-      if (!(user.getKit() instanceof WizardKit)) {
-        return;
+      wizardsOnDuty.add(p);
+      if (p.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue() > (p.getHealth() + 3)) {
+        p.setHealth(p.getHealth() + 3);
+      } else {
+        p.setHealth(p.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue());
       }
-      final Player p = e.getPlayer();
-      ItemStack stack = e.getPlayer().getInventory().getItemInMainHand();
-      if (!Utils.isNamed(stack)) {
-        return;
+      if (stack.getAmount() <= 1) {
+        p.getInventory().setItemInMainHand(new ItemStack(Material.AIR));
+      } else {
+        p.getInventory().getItemInMainHand().setAmount(stack.getAmount() - 1);
       }
-      if (stack.getItemMeta().getDisplayName().equals(getPlugin().getChatManager().colorMessage("Kits.Wizard.Essence-Item-Name"))) {
-        if (user.getCooldown("essence") > 0 && !user.isSpectator()) {
-          String message = getPlugin().getChatManager().colorMessage("Kits.Ability-Still-On-Cooldown");
-          message = message.replaceFirst("%COOLDOWN%", Long.toString(user.getCooldown("essence")));
-          e.getPlayer().sendMessage(message);
-          return;
-        }
-        wizardsOnDuty.add(p);
-        if (p.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue() > (p.getHealth() + 3)) {
-          p.setHealth(p.getHealth() + 3);
-        } else {
-          p.setHealth(p.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue());
-        }
-        if (stack.getAmount() <= 1) {
-          p.getInventory().setItemInMainHand(new ItemStack(Material.AIR));
-        } else {
-          p.getInventory().getItemInMainHand().setAmount(stack.getAmount() - 1);
-        }
-        p.setGlowing(true);
-        new BukkitRunnable() {
-          @Override
-          public void run() {
-            Location loc = p.getLocation();
-            loc.add(0, 0.8, 0);
-            p.getWorld().spawnParticle(Particle.VILLAGER_ANGRY, loc, 5, 0, 0, 0, 0);
-            if (!wizardsOnDuty.contains(p) || !ArenaRegistry.isInArena(p)) {
-              this.cancel();
-            }
-          }
-        }.runTaskTimer(getPlugin(), 0, 2);
-        for (Entity en : p.getNearbyEntities(2, 2, 2)) {
-          if (en instanceof Zombie) {
-            ((Zombie) en).damage(9.0, p);
-          }
-        }
-        Bukkit.getScheduler().runTaskLater(getPlugin(), () -> {
-          p.setGlowing(false);
-          wizardsOnDuty.remove(p);
-        }, 20 * 15);
-        user.setCooldown("essence", 15);
-      } else if (stack.getItemMeta().getDisplayName().equals(getPlugin().getChatManager().colorMessage("Kits.Wizard.Staff-Item-Name"))) {
-        if (user.isSpectator()) {
-          e.getPlayer().sendMessage(getPlugin().getChatManager().colorMessage("Kits.Cleaner.Spectator-Warning"));
-          return;
-        }
-        if (user.getCooldown("wizard_staff") > 0 && !user.isSpectator()) {
-          String message = getPlugin().getChatManager().colorMessage("Kits.Ability-Still-On-Cooldown");
-          message = message.replaceFirst("%COOLDOWN%", Long.toString(user.getCooldown("wizard_staff")));
-          e.getPlayer().sendMessage(message);
-          return;
-        }
-        new BukkitRunnable() {
-          double positionModifier = 0;
+      p.setGlowing(true);
+      new BukkitRunnable() {
+        @Override
+        public void run() {
           Location loc = p.getLocation();
-          Vector direction = loc.getDirection().normalize();
+          loc.add(0, 0.8, 0);
+          p.getWorld().spawnParticle(Particle.VILLAGER_ANGRY, loc, 5, 0, 0, 0, 0);
+          if (!wizardsOnDuty.contains(p) || !ArenaRegistry.isInArena(p)) {
+            this.cancel();
+          }
+        }
+      }.runTaskTimer(getPlugin(), 0, 2);
+      for (Entity en : p.getNearbyEntities(2, 2, 2)) {
+        if (en instanceof Zombie) {
+          ((Zombie) en).damage(9.0, p);
+        }
+      }
+      Bukkit.getScheduler().runTaskLater(getPlugin(), () -> {
+        p.setGlowing(false);
+        wizardsOnDuty.remove(p);
+      }, 20 * 15);
+      user.setCooldown("essence", 15);
+    } else if (stack.getItemMeta().getDisplayName().equals(getPlugin().getChatManager().colorMessage("Kits.Wizard.Staff-Item-Name"))) {
+      if (user.isSpectator()) {
+        e.getPlayer().sendMessage(getPlugin().getChatManager().colorMessage("Kits.Cleaner.Spectator-Warning"));
+        return;
+      }
+      if (user.getCooldown("wizard_staff") > 0 && !user.isSpectator()) {
+        String message = getPlugin().getChatManager().colorMessage("Kits.Ability-Still-On-Cooldown");
+        message = message.replaceFirst("%COOLDOWN%", Long.toString(user.getCooldown("wizard_staff")));
+        e.getPlayer().sendMessage(message);
+        return;
+      }
+      new BukkitRunnable() {
+        double positionModifier = 0;
+        Location loc = p.getLocation();
+        Vector direction = loc.getDirection().normalize();
 
-          @Override
-          public void run() {
-            positionModifier += 0.5;
-            double x = direction.getX() * positionModifier;
-            double y = direction.getY() * positionModifier + 1.5;
-            double z = direction.getZ() * positionModifier;
-            loc.add(x, y, z);
-            p.getWorld().spawnParticle(Particle.TOWN_AURA, loc, 5);
-            for (Entity en : loc.getChunk().getEntities()) {
-              if (!(en instanceof Zombie)) {
-                continue;
-              }
-              if (en.getLocation().distance(loc) < 1.5) {
-                if (!en.equals(p)) {
-                  ((LivingEntity) en).damage(6.0, p);
-                  en.getWorld().spawnParticle(Particle.FIREWORKS_SPARK, en.getLocation(), 2, 0.5, 0.5, 0.5, 0);
-                }
-              }
+        @Override
+        public void run() {
+          positionModifier += 0.5;
+          double x = direction.getX() * positionModifier;
+          double y = direction.getY() * positionModifier + 1.5;
+          double z = direction.getZ() * positionModifier;
+          loc.add(x, y, z);
+          p.getWorld().spawnParticle(Particle.TOWN_AURA, loc, 5);
+          for (Entity en : loc.getChunk().getEntities()) {
+            if (!(en instanceof Zombie)) {
+              continue;
             }
-            loc.subtract(x, y, z);
-            if (positionModifier > 40) {
-              this.cancel();
+            if (en.getLocation().distance(loc) < 1.5) {
+              if (!en.equals(p)) {
+                ((LivingEntity) en).damage(6.0, p);
+                en.getWorld().spawnParticle(Particle.FIREWORKS_SPARK, en.getLocation(), 2, 0.5, 0.5, 0.5, 0);
+              }
             }
           }
-        }.runTaskTimer(getPlugin(), 0, 1);
-        user.setCooldown("wizard_staff", 1);
-      }
-    } catch (Exception ex) {
-      new ReportedException(getPlugin(), ex);
+          loc.subtract(x, y, z);
+          if (positionModifier > 40) {
+            this.cancel();
+          }
+        }
+      }.runTaskTimer(getPlugin(), 0, 1);
+      user.setCooldown("wizard_staff", 1);
     }
   }
 }

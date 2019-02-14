@@ -40,7 +40,6 @@ import pl.plajer.villagedefense.utils.ArmorHelper;
 import pl.plajer.villagedefense.utils.CompatMaterialConstants;
 import pl.plajer.villagedefense.utils.Utils;
 import pl.plajer.villagedefense.utils.WeaponHelper;
-import pl.plajerlair.core.services.exception.ReportedException;
 
 /**
  * Created by Tom on 19/07/2015.
@@ -84,26 +83,22 @@ public class WorkerKit extends LevelKit implements Listener {
 
   @EventHandler(priority = EventPriority.HIGHEST)
   public void onDoorPlace(BlockPlaceEvent e) {
-    try {
-      Arena arena = ArenaRegistry.getArena(e.getPlayer());
-      if (arena == null) {
-        return;
-      }
-      User user = getPlugin().getUserManager().getUser(e.getPlayer());
-      ItemStack stack = e.getPlayer().getInventory().getItemInMainHand();
-      if (stack == null || user.isSpectator() || !arena.getDoorLocations().containsKey(e.getBlock().getLocation())) {
-        e.setCancelled(true);
-        return;
-      }
-      if (stack.getType() != CompatMaterialConstants.OAK_DOOR_ITEM) {
-        e.setCancelled(true);
-        return;
-      }
-      e.setCancelled(false);
-      e.getPlayer().sendMessage(getPlugin().getChatManager().colorMessage("Kits.Worker.Game-Item-Place-Message"));
-    } catch (Exception ex) {
-      new ReportedException(getPlugin(), ex);
+    Arena arena = ArenaRegistry.getArena(e.getPlayer());
+    if (arena == null) {
+      return;
     }
+    User user = getPlugin().getUserManager().getUser(e.getPlayer());
+    ItemStack stack = e.getPlayer().getInventory().getItemInMainHand();
+    if (stack == null || user.isSpectator() || !arena.getDoorLocations().containsKey(e.getBlock().getLocation())) {
+      e.setCancelled(true);
+      return;
+    }
+    if (stack.getType() != CompatMaterialConstants.OAK_DOOR_ITEM) {
+      e.setCancelled(true);
+      return;
+    }
+    e.setCancelled(false);
+    e.getPlayer().sendMessage(getPlugin().getChatManager().colorMessage("Kits.Worker.Game-Item-Place-Message"));
   }
 
 }

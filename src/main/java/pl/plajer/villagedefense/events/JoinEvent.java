@@ -31,7 +31,6 @@ import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.api.StatsStorage;
 import pl.plajer.villagedefense.arena.ArenaRegistry;
 import pl.plajer.villagedefense.handlers.PermissionsManager;
-import pl.plajerlair.core.services.exception.ReportedException;
 import pl.plajerlair.core.services.update.UpdateChecker;
 import pl.plajerlair.core.utils.InventoryUtils;
 
@@ -49,74 +48,62 @@ public class JoinEvent implements Listener {
 
   @EventHandler
   public void onLogin(PlayerLoginEvent e) {
-    try {
-      if (!plugin.getConfigPreferences().getOption(ConfigPreferences.Option.BUNGEE_ENABLED) && !plugin.getServer().hasWhitelist()
-          || e.getResult() != PlayerLoginEvent.Result.KICK_WHITELIST) {
-        return;
-      }
-      if (e.getPlayer().hasPermission(PermissionsManager.getJoinFullGames())) {
-        e.setResult(PlayerLoginEvent.Result.ALLOWED);
-      }
-    } catch (Exception ex) {
-      new ReportedException(plugin, ex);
+    if (!plugin.getConfigPreferences().getOption(ConfigPreferences.Option.BUNGEE_ENABLED) && !plugin.getServer().hasWhitelist()
+        || e.getResult() != PlayerLoginEvent.Result.KICK_WHITELIST) {
+      return;
+    }
+    if (e.getPlayer().hasPermission(PermissionsManager.getJoinFullGames())) {
+      e.setResult(PlayerLoginEvent.Result.ALLOWED);
     }
   }
 
   @EventHandler
   public void onJoin(PlayerJoinEvent event) {
-    try {
-      if (plugin.getConfigPreferences().getOption(ConfigPreferences.Option.BUNGEE_ENABLED)) {
-        if (ArenaRegistry.getArenas().size() >= 1) {
-          ArenaRegistry.getArenas().get(0).teleportToLobby(event.getPlayer());
-        }
-        return;
+    if (plugin.getConfigPreferences().getOption(ConfigPreferences.Option.BUNGEE_ENABLED)) {
+      if (ArenaRegistry.getArenas().size() >= 1) {
+        ArenaRegistry.getArenas().get(0).teleportToLobby(event.getPlayer());
       }
-      for (Player player : plugin.getServer().getOnlinePlayers()) {
-        if (ArenaRegistry.getArena(player) == null) {
-          continue;
-        }
-        player.hidePlayer(event.getPlayer());
-        event.getPlayer().hidePlayer(player);
+      return;
+    }
+    for (Player player : plugin.getServer().getOnlinePlayers()) {
+      if (ArenaRegistry.getArena(player) == null) {
+        continue;
       }
+      player.hidePlayer(event.getPlayer());
+      event.getPlayer().hidePlayer(player);
+    }
 
-      for (StatsStorage.StatisticType stat : StatsStorage.StatisticType.values()) {
-        plugin.getUserManager().loadStatistic(plugin.getUserManager().getUser(event.getPlayer()), stat);
-      }
-      //load player inventory in case of server crash, file is deleted once loaded so if file was already
-      //deleted player won't receive his backup, in case of crash he will get it back
-      if (plugin.getConfigPreferences().getOption(ConfigPreferences.Option.INVENTORY_MANAGER_ENABLED)) {
-        InventoryUtils.loadInventory(plugin, event.getPlayer());
-      }
-    } catch (Exception ex) {
-      new ReportedException(plugin, ex);
+    for (StatsStorage.StatisticType stat : StatsStorage.StatisticType.values()) {
+      plugin.getUserManager().loadStatistic(plugin.getUserManager().getUser(event.getPlayer()), stat);
+    }
+    //load player inventory in case of server crash, file is deleted once loaded so if file was already
+    //deleted player won't receive his backup, in case of crash he will get it back
+    if (plugin.getConfigPreferences().getOption(ConfigPreferences.Option.INVENTORY_MANAGER_ENABLED)) {
+      InventoryUtils.loadInventory(plugin, event.getPlayer());
     }
   }
 
   @EventHandler
   public void onJoinCheckVersion(final PlayerJoinEvent event) {
-    try {
-      //we want to be the first :)
-      if (!(plugin.getConfig().getBoolean("Update-Notifier.Enabled", true) || event.getPlayer().hasPermission("villagedefense.updatenotify"))) {
+    //we want to be the first :)
+    if (!(plugin.getConfig().getBoolean("Update-Notifier.Enabled", true) || event.getPlayer().hasPermission("villagedefense.updatenotify"))) {
+      return;
+    }
+    Bukkit.getScheduler().runTaskLater(plugin, () -> UpdateChecker.init(plugin, 41869).requestUpdateCheck().whenComplete((result, exception) -> {
+      if (!result.requiresUpdate()) {
         return;
       }
-      Bukkit.getScheduler().runTaskLater(plugin, () -> UpdateChecker.init(plugin, 41869).requestUpdateCheck().whenComplete((result, exception) -> {
-        if (!result.requiresUpdate()) {
-          return;
-        }
-        if (result.getNewestVersion().contains("b")) {
-          event.getPlayer().sendMessage("");
-          event.getPlayer().sendMessage(ChatColor.BOLD + "VILLAGE DEFENSE UPDATE NOTIFY");
-          event.getPlayer().sendMessage(ChatColor.RED + "BETA version of software is ready for update! Proceed with caution.");
-          event.getPlayer().sendMessage(ChatColor.YELLOW + "Current version: " + ChatColor.RED + plugin.getDescription().getVersion() + ChatColor.YELLOW + " Latest version: " + ChatColor.GREEN + result.getNewestVersion());
-        } else {
-          event.getPlayer().sendMessage("");
-          event.getPlayer().sendMessage(ChatColor.BOLD + "VILLAGE DEFENSE UPDATE NOTIFY");
-          event.getPlayer().sendMessage(ChatColor.GREEN + "Software is ready for update! Download it to keep with latest changes and fixes.");
-          event.getPlayer().sendMessage(ChatColor.YELLOW + "Current version: " + ChatColor.RED + plugin.getDescription().getVersion() + ChatColor.YELLOW + " Latest version: " + ChatColor.GREEN + result.getNewestVersion());
-        }
-      }), 25);
-    } catch (Exception ex) {
-      new ReportedException(plugin, ex);
-    }
+      if (result.getNewestVersion().contains("b")) {
+        event.getPlayer().sendMessage("");
+        event.getPlayer().sendMessage(ChatColor.BOLD + "VILLAGE DEFENSE UPDATE NOTIFY");
+        event.getPlayer().sendMessage(ChatColor.RED + "BETA version of software is ready for update! Proceed with caution.");
+        event.getPlayer().sendMessage(ChatColor.YELLOW + "Current version: " + ChatColor.RED + plugin.getDescription().getVersion() + ChatColor.YELLOW + " Latest version: " + ChatColor.GREEN + result.getNewestVersion());
+      } else {
+        event.getPlayer().sendMessage("");
+        event.getPlayer().sendMessage(ChatColor.BOLD + "VILLAGE DEFENSE UPDATE NOTIFY");
+        event.getPlayer().sendMessage(ChatColor.GREEN + "Software is ready for update! Download it to keep with latest changes and fixes.");
+        event.getPlayer().sendMessage(ChatColor.YELLOW + "Current version: " + ChatColor.RED + plugin.getDescription().getVersion() + ChatColor.YELLOW + " Latest version: " + ChatColor.GREEN + result.getNewestVersion());
+      }
+    }), 25);
   }
 }

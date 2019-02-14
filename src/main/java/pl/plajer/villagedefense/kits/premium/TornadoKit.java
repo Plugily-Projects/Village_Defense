@@ -41,7 +41,6 @@ import pl.plajer.villagedefense.kits.kitapi.basekits.PremiumKit;
 import pl.plajer.villagedefense.utils.ArmorHelper;
 import pl.plajer.villagedefense.utils.Utils;
 import pl.plajer.villagedefense.utils.WeaponHelper;
-import pl.plajerlair.core.services.exception.ReportedException;
 import pl.plajerlair.core.utils.ItemBuilder;
 import pl.plajerlair.core.utils.XMaterial;
 
@@ -95,35 +94,31 @@ public class TornadoKit extends PremiumKit implements Listener {
 
   @EventHandler
   public void onTornadoSpawn(PlayerInteractEvent e) {
-    try {
-      if (e.getAction() != Action.RIGHT_CLICK_AIR && e.getAction() != Action.RIGHT_CLICK_BLOCK) {
-        return;
-      }
-      Player player = e.getPlayer();
-      ItemStack stack = player.getInventory().getItemInMainHand();
-      if (!ArenaRegistry.isInArena(player) || !Utils.isNamed(stack)
-          || !stack.getItemMeta().getDisplayName().equalsIgnoreCase(getPlugin().getChatManager().colorMessage("Kits.Tornado.Game-Item-Name"))) {
-        return;
-      }
-      if (stack.getAmount() <= 1) {
-        player.getInventory().setItemInMainHand(new ItemStack(Material.AIR));
-      } else {
-        player.getInventory().getItemInMainHand().setAmount(stack.getAmount() - 1);
-      }
-      e.setCancelled(true);
-      Tornado tornado = new Tornado(player.getLocation());
-      new BukkitRunnable() {
-        @Override
-        public void run() {
-          tornado.update();
-          if (tornado.getTimes() > 75) {
-            this.cancel();
-          }
-        }
-      }.runTaskTimer(getPlugin(), 1, 1);
-    } catch (Exception ex) {
-      new ReportedException(getPlugin(), ex);
+    if (e.getAction() != Action.RIGHT_CLICK_AIR && e.getAction() != Action.RIGHT_CLICK_BLOCK) {
+      return;
     }
+    Player player = e.getPlayer();
+    ItemStack stack = player.getInventory().getItemInMainHand();
+    if (!ArenaRegistry.isInArena(player) || !Utils.isNamed(stack)
+        || !stack.getItemMeta().getDisplayName().equalsIgnoreCase(getPlugin().getChatManager().colorMessage("Kits.Tornado.Game-Item-Name"))) {
+      return;
+    }
+    if (stack.getAmount() <= 1) {
+      player.getInventory().setItemInMainHand(new ItemStack(Material.AIR));
+    } else {
+      player.getInventory().getItemInMainHand().setAmount(stack.getAmount() - 1);
+    }
+    e.setCancelled(true);
+    Tornado tornado = new Tornado(player.getLocation());
+    new BukkitRunnable() {
+      @Override
+      public void run() {
+        tornado.update();
+        if (tornado.getTimes() > 75) {
+          this.cancel();
+        }
+      }
+    }.runTaskTimer(getPlugin(), 1, 1);
   }
 
   private class Tornado {

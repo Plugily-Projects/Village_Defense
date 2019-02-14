@@ -1,6 +1,6 @@
 /*
  * Village Defense - Protect villagers from hordes of zombies
- * Copyright (C) 2018  Plajer's Lair - maintained by Plajer and Tigerpanzer
+ * Copyright (C) 2019  Plajer's Lair - maintained by Plajer and Tigerpanzer
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -31,7 +31,6 @@ import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.arena.Arena;
 import pl.plajer.villagedefense.arena.ArenaRegistry;
 import pl.plajer.villagedefense.arena.ArenaState;
-import pl.plajerlair.core.services.exception.ReportedException;
 
 /**
  * Created by Tom on 16/06/2015.
@@ -47,39 +46,31 @@ public class LobbyEvents implements Listener {
 
   @EventHandler(priority = EventPriority.HIGHEST)
   public void onFoodLose(FoodLevelChangeEvent event) {
-    try {
-      if (event.getEntity().getType() != EntityType.PLAYER) {
-        return;
-      }
-      Player player = (Player) event.getEntity();
-      if (ArenaRegistry.getArena(player) == null) {
-        return;
-      }
-      Arena arena = ArenaRegistry.getArena(player);
-      if (arena.getArenaState() == ArenaState.STARTING || arena.getArenaState() == ArenaState.WAITING_FOR_PLAYERS) {
-        event.setCancelled(true);
-      }
-    } catch (Exception ex) {
-      new ReportedException(plugin, ex);
+    if (event.getEntity().getType() != EntityType.PLAYER) {
+      return;
+    }
+    Player player = (Player) event.getEntity();
+    if (ArenaRegistry.getArena(player) == null) {
+      return;
+    }
+    Arena arena = ArenaRegistry.getArena(player);
+    if (arena.getArenaState() == ArenaState.STARTING || arena.getArenaState() == ArenaState.WAITING_FOR_PLAYERS) {
+      event.setCancelled(true);
     }
   }
 
   @EventHandler
   public void onLobbyDamage(EntityDamageEvent event) {
-    try {
-      if (event.getEntity().getType() != EntityType.PLAYER) {
-        return;
-      }
-      Player player = (Player) event.getEntity();
-      Arena arena = ArenaRegistry.getArena(player);
-      if (arena == null || arena.getArenaState() == ArenaState.IN_GAME) {
-        return;
-      }
-      event.setCancelled(true);
-      player.setHealth(player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue());
-    } catch (Exception ex) {
-      new ReportedException(plugin, ex);
+    if (event.getEntity().getType() != EntityType.PLAYER) {
+      return;
     }
+    Player player = (Player) event.getEntity();
+    Arena arena = ArenaRegistry.getArena(player);
+    if (arena == null || arena.getArenaState() == ArenaState.IN_GAME) {
+      return;
+    }
+    event.setCancelled(true);
+    player.setHealth(player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue());
   }
 
 }

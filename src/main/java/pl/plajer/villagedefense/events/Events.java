@@ -75,7 +75,6 @@ import pl.plajer.villagedefense.handlers.items.SpecialItemManager;
 import pl.plajer.villagedefense.user.User;
 import pl.plajer.villagedefense.utils.CompatMaterialConstants;
 import pl.plajer.villagedefense.utils.Utils;
-import pl.plajerlair.core.services.exception.ReportedException;
 import pl.plajerlair.core.utils.MinigameUtils;
 import pl.plajerlair.core.utils.XMaterial;
 
@@ -93,374 +92,314 @@ public class Events implements Listener {
 
   @EventHandler
   public void onSpawn(CreatureSpawnEvent event) {
-    try {
-      for (Arena arena : ArenaRegistry.getArenas()) {
-        if (!event.getEntity().getWorld().equals(arena.getStartLocation().getWorld()) || event.getSpawnReason() == CreatureSpawnEvent.SpawnReason.CUSTOM) {
-          continue;
-        }
-        event.setCancelled(true);
+    for (Arena arena : ArenaRegistry.getArenas()) {
+      if (!event.getEntity().getWorld().equals(arena.getStartLocation().getWorld()) || event.getSpawnReason() == CreatureSpawnEvent.SpawnReason.CUSTOM) {
+        continue;
       }
-    } catch (Exception ex) {
-      new ReportedException(plugin, ex);
+      event.setCancelled(true);
     }
   }
 
   @EventHandler
   public void onItemPickup(PlayerExpChangeEvent event) {
-    try {
-      if (ArenaRegistry.getArena(event.getPlayer()) == null) {
-        return;
-      }
-      int amount = (int) Math.ceil(event.getAmount() * 1.6);
-      User user = plugin.getUserManager().getUser(event.getPlayer());
-      event.setAmount(amount);
-      if (user.isSpectator()) {
-        event.setAmount(0);
-        return;
-      }
-      //bonus orbs with custom permissions
-      for (Map.Entry<String, Integer> perm : plugin.getConfigPreferences().getCustomPermissions().entrySet()) {
-        if (event.getPlayer().hasPermission(perm.getKey())) {
-          int orbs = perm.getValue() / 100;
-          amount = +(int) Math.ceil(event.getAmount() * orbs);
-          user.addStat(StatsStorage.StatisticType.ORBS, (int) Math.ceil(event.getAmount() * orbs));
-        }
-      }
-
-      if (event.getPlayer().hasPermission(PermissionsManager.getElite())) {
-        amount += (int) Math.ceil(event.getAmount() * 1.5);
-        user.addStat(StatsStorage.StatisticType.ORBS, (int) Math.ceil(event.getAmount() * 1.5));
-      } else if (event.getPlayer().hasPermission(PermissionsManager.getMvp())) {
-        amount += (int) Math.ceil(event.getAmount() * 1.0);
-        user.addStat(StatsStorage.StatisticType.ORBS, (int) Math.ceil(event.getAmount() * 1.0));
-      } else if (event.getPlayer().hasPermission(PermissionsManager.getVip())) {
-        amount += (int) Math.ceil(event.getAmount() * 0.5);
-        user.addStat(StatsStorage.StatisticType.ORBS, (int) Math.ceil(event.getAmount() * 0.5));
-      } else {
-        amount += event.getAmount();
-        user.addStat(StatsStorage.StatisticType.ORBS, event.getAmount());
-      }
-      event.getPlayer().sendMessage(plugin.getChatManager().colorMessage("In-Game.Orbs-Pickup").replace("%number%", String.valueOf(amount)));
-    } catch (Exception ex) {
-      new ReportedException(plugin, ex);
+    if (ArenaRegistry.getArena(event.getPlayer()) == null) {
+      return;
     }
+    int amount = (int) Math.ceil(event.getAmount() * 1.6);
+    User user = plugin.getUserManager().getUser(event.getPlayer());
+    event.setAmount(amount);
+    if (user.isSpectator()) {
+      event.setAmount(0);
+      return;
+    }
+    //bonus orbs with custom permissions
+    for (Map.Entry<String, Integer> perm : plugin.getConfigPreferences().getCustomPermissions().entrySet()) {
+      if (event.getPlayer().hasPermission(perm.getKey())) {
+        int orbs = perm.getValue() / 100;
+        amount = +(int) Math.ceil(event.getAmount() * orbs);
+        user.addStat(StatsStorage.StatisticType.ORBS, (int) Math.ceil(event.getAmount() * orbs));
+      }
+    }
+
+    if (event.getPlayer().hasPermission(PermissionsManager.getElite())) {
+      amount += (int) Math.ceil(event.getAmount() * 1.5);
+      user.addStat(StatsStorage.StatisticType.ORBS, (int) Math.ceil(event.getAmount() * 1.5));
+    } else if (event.getPlayer().hasPermission(PermissionsManager.getMvp())) {
+      amount += (int) Math.ceil(event.getAmount() * 1.0);
+      user.addStat(StatsStorage.StatisticType.ORBS, (int) Math.ceil(event.getAmount() * 1.0));
+    } else if (event.getPlayer().hasPermission(PermissionsManager.getVip())) {
+      amount += (int) Math.ceil(event.getAmount() * 0.5);
+      user.addStat(StatsStorage.StatisticType.ORBS, (int) Math.ceil(event.getAmount() * 0.5));
+    } else {
+      amount += event.getAmount();
+      user.addStat(StatsStorage.StatisticType.ORBS, event.getAmount());
+    }
+    event.getPlayer().sendMessage(plugin.getChatManager().colorMessage("In-Game.Orbs-Pickup").replace("%number%", String.valueOf(amount)));
   }
 
   @EventHandler
   public void onPickUp(PlayerPickupItemEvent event) {
-    try {
-      Arena arena = ArenaRegistry.getArena(event.getPlayer());
-      if (arena == null) {
-        return;
-      }
-      if (plugin.getUserManager().getUser(event.getPlayer()).isSpectator()) {
-        event.setCancelled(true);
-      }
-    } catch (Exception ex) {
-      new ReportedException(plugin, ex);
+    Arena arena = ArenaRegistry.getArena(event.getPlayer());
+    if (arena == null) {
+      return;
+    }
+    if (plugin.getUserManager().getUser(event.getPlayer()).isSpectator()) {
+      event.setCancelled(true);
     }
   }
 
   @EventHandler
   public void onKitMenuItemClick(InventoryClickEvent event) {
-    try {
-      ItemStack stack = event.getCurrentItem();
-      Arena arena = ArenaRegistry.getArena((Player) event.getWhoClicked());
-      if (arena == null) {
-        return;
-      }
-      if (!Utils.isNamed(stack) || stack.getType() != plugin.getKitManager().getMaterial()
-          || !stack.getItemMeta().getDisplayName().equalsIgnoreCase(plugin.getKitManager().getItemName())) {
-        return;
-      }
-      event.setCancelled(true);
-    } catch (Exception ex) {
-      new ReportedException(plugin, ex);
+    ItemStack stack = event.getCurrentItem();
+    Arena arena = ArenaRegistry.getArena((Player) event.getWhoClicked());
+    if (arena == null) {
+      return;
     }
+    if (!Utils.isNamed(stack) || stack.getType() != plugin.getKitManager().getMaterial()
+        || !stack.getItemMeta().getDisplayName().equalsIgnoreCase(plugin.getKitManager().getItemName())) {
+      return;
+    }
+    event.setCancelled(true);
   }
 
   @EventHandler
   public void onKitMenuItemClickWithCursor(InventoryClickEvent event) {
-    try {
-      ItemStack stack = event.getCursor();
-      Arena arena = ArenaRegistry.getArena((Player) event.getWhoClicked());
-      if (arena == null) {
-        return;
-      }
-      if (!Utils.isNamed(stack) || stack.getType() != plugin.getKitManager().getMaterial()
-          || !stack.getItemMeta().getDisplayName().equalsIgnoreCase(plugin.getKitManager().getItemName())) {
-        return;
-      }
-      event.setCancelled(true);
-    } catch (Exception ex) {
-      new ReportedException(plugin, ex);
+    ItemStack stack = event.getCursor();
+    Arena arena = ArenaRegistry.getArena((Player) event.getWhoClicked());
+    if (arena == null) {
+      return;
     }
+    if (!Utils.isNamed(stack) || stack.getType() != plugin.getKitManager().getMaterial()
+        || !stack.getItemMeta().getDisplayName().equalsIgnoreCase(plugin.getKitManager().getItemName())) {
+      return;
+    }
+    event.setCancelled(true);
   }
 
   @EventHandler
   public void onDrop(PlayerDropItemEvent event) {
-    try {
-      Arena arena = ArenaRegistry.getArena(event.getPlayer());
-      if (arena == null) {
-        return;
-      }
-      if (plugin.getUserManager().getUser(event.getPlayer()).isSpectator()) {
-        event.setCancelled(true);
-        return;
-      }
-      if (event.getItemDrop().getItemStack().getType() == Material.SADDLE) {
-        event.setCancelled(true);
-      }
-    } catch (Exception ex) {
-      new ReportedException(plugin, ex);
+    Arena arena = ArenaRegistry.getArena(event.getPlayer());
+    if (arena == null) {
+      return;
+    }
+    if (plugin.getUserManager().getUser(event.getPlayer()).isSpectator()) {
+      event.setCancelled(true);
+      return;
+    }
+    if (event.getItemDrop().getItemStack().getType() == Material.SADDLE) {
+      event.setCancelled(true);
     }
   }
 
   @EventHandler
   public void onExplosionCancel(EntityExplodeEvent event) {
-    try {
-      for (Arena arena : ArenaRegistry.getArenas()) {
-        if (arena.getStartLocation().getWorld().getName().equals(event.getLocation().getWorld().getName())
-            && arena.getStartLocation().distance(event.getLocation()) < 300) {
-          event.blockList().clear();
-        }
+    for (Arena arena : ArenaRegistry.getArenas()) {
+      if (arena.getStartLocation().getWorld().getName().equals(event.getLocation().getWorld().getName())
+          && arena.getStartLocation().distance(event.getLocation()) < 300) {
+        event.blockList().clear();
       }
-    } catch (Exception ex) {
-      new ReportedException(plugin, ex);
     }
   }
 
   @EventHandler
   public void onEntityInteractEntity(PlayerInteractEntityEvent event) {
-    try {
-      Arena arena = ArenaRegistry.getArena(event.getPlayer());
-      if (arena == null) {
-        return;
-      }
-      if (event.getHand() == EquipmentSlot.OFF_HAND) {
-        return;
-      }
-      User user = plugin.getUserManager().getUser(event.getPlayer());
-      if (user.isSpectator()) {
+    Arena arena = ArenaRegistry.getArena(event.getPlayer());
+    if (arena == null) {
+      return;
+    }
+    if (event.getHand() == EquipmentSlot.OFF_HAND) {
+      return;
+    }
+    User user = plugin.getUserManager().getUser(event.getPlayer());
+    if (user.isSpectator()) {
+      event.setCancelled(true);
+      return;
+    }
+    if (event.getPlayer().getInventory().getItemInMainHand().getType() == Material.SADDLE) {
+      if (event.getRightClicked().getType() == EntityType.IRON_GOLEM || event.getRightClicked().getType() == EntityType.VILLAGER || event.getRightClicked().getType() == EntityType.WOLF) {
+        event.getRightClicked().setPassenger(event.getPlayer());
         event.setCancelled(true);
         return;
       }
-      if (event.getPlayer().getInventory().getItemInMainHand().getType() == Material.SADDLE) {
-        if (event.getRightClicked().getType() == EntityType.IRON_GOLEM || event.getRightClicked().getType() == EntityType.VILLAGER || event.getRightClicked().getType() == EntityType.WOLF) {
-          event.getRightClicked().setPassenger(event.getPlayer());
-          event.setCancelled(true);
-          return;
-        }
+    }
+    if (event.getRightClicked().getType() == EntityType.VILLAGER) {
+      event.setCancelled(true);
+      arena.getShopManager().openShop(event.getPlayer());
+    } else if (event.getRightClicked().getType() == EntityType.IRON_GOLEM) {
+      IronGolem ironGolem = (IronGolem) event.getRightClicked();
+      if (event.getPlayer().isSneaking()) {
+        return;
       }
-      if (event.getRightClicked().getType() == EntityType.VILLAGER) {
-        event.setCancelled(true);
-        arena.getShopManager().openShop(event.getPlayer());
-      } else if (event.getRightClicked().getType() == EntityType.IRON_GOLEM) {
-        IronGolem ironGolem = (IronGolem) event.getRightClicked();
-        if (event.getPlayer().isSneaking()) {
-          return;
-        }
-        if (ironGolem.getCustomName() != null && ironGolem.getCustomName().contains(event.getPlayer().getName())) {
-          event.getRightClicked().setPassenger(event.getPlayer());
-        } else {
-          event.getPlayer().sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage("In-Game.Messages.Cant-Ride-Others-Golem"));
-        }
-      } else if (event.getRightClicked().getType() == EntityType.WOLF) {
-        if (event.getPlayer().isSneaking()) {
-          return;
-        }
-        Wolf wolf = (Wolf) event.getRightClicked();
-        if (wolf.getCustomName() != null && wolf.getCustomName().contains(event.getPlayer().getName())) {
-          event.getRightClicked().setPassenger(event.getPlayer());
-        }
+      if (ironGolem.getCustomName() != null && ironGolem.getCustomName().contains(event.getPlayer().getName())) {
+        event.getRightClicked().setPassenger(event.getPlayer());
+      } else {
+        event.getPlayer().sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage("In-Game.Messages.Cant-Ride-Others-Golem"));
       }
-    } catch (Exception ex) {
-      new ReportedException(plugin, ex);
+    } else if (event.getRightClicked().getType() == EntityType.WOLF) {
+      if (event.getPlayer().isSneaking()) {
+        return;
+      }
+      Wolf wolf = (Wolf) event.getRightClicked();
+      if (wolf.getCustomName() != null && wolf.getCustomName().contains(event.getPlayer().getName())) {
+        event.getRightClicked().setPassenger(event.getPlayer());
+      }
     }
   }
 
   @EventHandler(priority = EventPriority.HIGHEST)
   public void onCommandExecute(PlayerCommandPreprocessEvent event) {
-    try {
-      Arena arena = ArenaRegistry.getArena(event.getPlayer());
-      if (arena == null) {
-        return;
-      }
-      if (!plugin.getConfig().getBoolean("Block-Commands-In-Game", true)) {
-        return;
-      }
-      for (String msg : plugin.getConfig().getStringList("Whitelisted-Commands")) {
-        if (event.getMessage().contains(msg)) {
-          return;
-        }
-      }
-      if (event.getMessage().startsWith("/vd") || event.getMessage().contains("leave") || event.getMessage().contains("stats") || event.getMessage().startsWith("/vda")) {
-        return;
-      }
-      if (event.getPlayer().isOp() || event.getPlayer().hasPermission("villagedefense.command.override")) {
-        return;
-      }
-      event.setCancelled(true);
-      event.getPlayer().sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage("In-Game.Only-Command-Ingame-Is-Leave"));
-    } catch (Exception ex) {
-      new ReportedException(plugin, ex);
+    Arena arena = ArenaRegistry.getArena(event.getPlayer());
+    if (arena == null) {
+      return;
     }
+    if (!plugin.getConfig().getBoolean("Block-Commands-In-Game", true)) {
+      return;
+    }
+    for (String msg : plugin.getConfig().getStringList("Whitelisted-Commands")) {
+      if (event.getMessage().contains(msg)) {
+        return;
+      }
+    }
+    if (event.getMessage().startsWith("/vd") || event.getMessage().contains("leave") || event.getMessage().contains("stats") || event.getMessage().startsWith("/vda")) {
+      return;
+    }
+    if (event.getPlayer().isOp() || event.getPlayer().hasPermission("villagedefense.command.override")) {
+      return;
+    }
+    event.setCancelled(true);
+    event.getPlayer().sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage("In-Game.Only-Command-Ingame-Is-Leave"));
   }
 
   @EventHandler
   public void onDoorDrop(ItemSpawnEvent event) {
-    try {
-      if (event.getEntity().getItemStack().getType() == XMaterial.OAK_DOOR.parseMaterial()
-          || event.getEntity().getItemStack().getType() == CompatMaterialConstants.OAK_DOOR_ITEM) {
-        for (Entity entity : Utils.getNearbyEntities(event.getLocation(), 20)) {
-          if (!(entity instanceof Player)) {
-            continue;
-          }
-          if (ArenaRegistry.getArena((Player) entity) != null) {
-            event.getEntity().remove();
-          }
+    if (event.getEntity().getItemStack().getType() == XMaterial.OAK_DOOR.parseMaterial()
+        || event.getEntity().getItemStack().getType() == CompatMaterialConstants.OAK_DOOR_ITEM) {
+      for (Entity entity : Utils.getNearbyEntities(event.getLocation(), 20)) {
+        if (!(entity instanceof Player)) {
+          continue;
+        }
+        if (ArenaRegistry.getArena((Player) entity) != null) {
+          event.getEntity().remove();
         }
       }
-    } catch (Exception ex) {
-      new ReportedException(plugin, ex);
     }
   }
 
   @EventHandler(priority = EventPriority.LOWEST)
   public void onLeave(PlayerInteractEvent event) {
-    try {
-      if (event.getAction() == Action.LEFT_CLICK_AIR || event.getAction() == Action.LEFT_CLICK_BLOCK) {
-        return;
+    if (event.getAction() == Action.LEFT_CLICK_AIR || event.getAction() == Action.LEFT_CLICK_BLOCK) {
+      return;
+    }
+    Arena arena = ArenaRegistry.getArena(event.getPlayer());
+    if (arena == null) {
+      return;
+    }
+    ItemStack itemStack = event.getPlayer().getInventory().getItemInMainHand();
+    if (itemStack == null || itemStack.getItemMeta() == null || itemStack.getItemMeta().getDisplayName() == null) {
+      return;
+    }
+    SpecialItem key = SpecialItemManager.getSpecialItem("Leave");
+    if (key == null) {
+      return;
+    }
+    if (key.getItemStack().getItemMeta().getDisplayName().equalsIgnoreCase(itemStack.getItemMeta().getDisplayName())) {
+      event.setCancelled(true);
+      if (plugin.getConfigPreferences().getOption(ConfigPreferences.Option.BUNGEE_ENABLED)) {
+        plugin.getBungeeManager().connectToHub(event.getPlayer());
+      } else {
+        ArenaManager.leaveAttempt(event.getPlayer(), arena);
       }
-      Arena arena = ArenaRegistry.getArena(event.getPlayer());
-      if (arena == null) {
-        return;
-      }
-      ItemStack itemStack = event.getPlayer().getInventory().getItemInMainHand();
-      if (itemStack == null || itemStack.getItemMeta() == null || itemStack.getItemMeta().getDisplayName() == null) {
-        return;
-      }
-      SpecialItem key = SpecialItemManager.getSpecialItem("Leave");
-      if (key == null) {
-        return;
-      }
-      if (key.getItemStack().getItemMeta().getDisplayName().equalsIgnoreCase(itemStack.getItemMeta().getDisplayName())) {
-        event.setCancelled(true);
-        if (plugin.getConfigPreferences().getOption(ConfigPreferences.Option.BUNGEE_ENABLED)) {
-          plugin.getBungeeManager().connectToHub(event.getPlayer());
-        } else {
-          ArenaManager.leaveAttempt(event.getPlayer(), arena);
-        }
-      }
-    } catch (Exception ex) {
-      new ReportedException(plugin, ex);
     }
   }
 
   @EventHandler
   public void onEntityCombust(EntityCombustByEntityEvent e) {
-    try {
-      if (!(e.getCombuster() instanceof Arrow)) {
-        return;
+    if (!(e.getCombuster() instanceof Arrow)) {
+      return;
+    }
+    Arrow arrow = (Arrow) e.getCombuster();
+    if (!(arrow.getShooter() instanceof Player)) {
+      return;
+    }
+    if (e.getEntity() instanceof Player) {
+      if (ArenaRegistry.getArena((Player) arrow.getShooter()) != null && ArenaRegistry.getArena((Player) arrow.getShooter()).equals(ArenaRegistry.getArena((Player) e.getEntity()))) {
+        e.setCancelled(true);
       }
-      Arrow arrow = (Arrow) e.getCombuster();
-      if (!(arrow.getShooter() instanceof Player)) {
-        return;
-      }
-      if (e.getEntity() instanceof Player) {
-        if (ArenaRegistry.getArena((Player) arrow.getShooter()) != null && ArenaRegistry.getArena((Player) arrow.getShooter()).equals(ArenaRegistry.getArena((Player) e.getEntity()))) {
-          e.setCancelled(true);
-        }
-      } else if (e.getEntity() instanceof IronGolem || e.getEntity() instanceof Villager || e.getEntity() instanceof Wolf) {
-        for (Arena a : ArenaRegistry.getArenas()) {
-          if (e.getEntity() instanceof IronGolem) {
-            if (a.getIronGolems().contains(e.getEntity())) {
-              e.setCancelled(true);
-            }
-          } else if (e.getEntity() instanceof Villager) {
-            if (a.getVillagers().contains(e.getEntity())) {
-              e.setCancelled(true);
-            }
-          } else {
-            if (a.getWolfs().contains(e.getEntity())) {
-              e.setCancelled(true);
-            }
+    } else if (e.getEntity() instanceof IronGolem || e.getEntity() instanceof Villager || e.getEntity() instanceof Wolf) {
+      for (Arena a : ArenaRegistry.getArenas()) {
+        if (e.getEntity() instanceof IronGolem) {
+          if (a.getIronGolems().contains(e.getEntity())) {
+            e.setCancelled(true);
+          }
+        } else if (e.getEntity() instanceof Villager) {
+          if (a.getVillagers().contains(e.getEntity())) {
+            e.setCancelled(true);
+          }
+        } else {
+          if (a.getWolfs().contains(e.getEntity())) {
+            e.setCancelled(true);
           }
         }
       }
-    } catch (Exception ex) {
-      new ReportedException(plugin, ex);
     }
   }
 
   @EventHandler(priority = EventPriority.HIGHEST)
   public void onFriendHurt(EntityDamageByEntityEvent e) {
-    try {
-      if (!(e.getDamager() instanceof Player)) {
-        return;
-      }
-      Arena arena = ArenaRegistry.getArena((Player) e.getDamager());
-      if (arena == null) {
-        return;
-      }
-      if (plugin.getUserManager().getUser((Player) e.getDamager()).isSpectator()) {
-        e.setCancelled(true);
-        return;
-      }
-      if (!(e.getEntity() instanceof Player || e.getEntity() instanceof Wolf || e.getEntity() instanceof IronGolem || e.getEntity() instanceof Villager)) {
-        return;
-      }
-      e.setCancelled(true);
-    } catch (Exception ex) {
-      new ReportedException(plugin, ex);
+    if (!(e.getDamager() instanceof Player)) {
+      return;
     }
+    Arena arena = ArenaRegistry.getArena((Player) e.getDamager());
+    if (arena == null) {
+      return;
+    }
+    if (plugin.getUserManager().getUser((Player) e.getDamager()).isSpectator()) {
+      e.setCancelled(true);
+      return;
+    }
+    if (!(e.getEntity() instanceof Player || e.getEntity() instanceof Wolf || e.getEntity() instanceof IronGolem || e.getEntity() instanceof Villager)) {
+      return;
+    }
+    e.setCancelled(true);
   }
 
   @EventHandler(priority = EventPriority.HIGH)
   public void onZombieHurt(EntityDamageEvent e) {
-    try {
-      if (plugin.getConfig().getBoolean("Simple-Zombie-Health-Bar-Enabled", true)) {
-        if (!(e.getEntity() instanceof Zombie)) {
-          return;
-        }
-        for (Arena arena : ArenaRegistry.getArenas()) {
-          if (!arena.getZombies().contains(e.getEntity())) {
-            continue;
-          }
-          e.getEntity().setCustomName(MinigameUtils.getProgressBar((int) ((Zombie) e.getEntity()).getHealth(),
-              (int) ((Zombie) e.getEntity()).getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue(),
-              50, "|", ChatColor.YELLOW + "", ChatColor.GRAY + ""));
-        }
+    if (plugin.getConfig().getBoolean("Simple-Zombie-Health-Bar-Enabled", true)) {
+      if (!(e.getEntity() instanceof Zombie)) {
+        return;
       }
-    } catch (Exception ex) {
-      new ReportedException(plugin, ex);
+      for (Arena arena : ArenaRegistry.getArenas()) {
+        if (!arena.getZombies().contains(e.getEntity())) {
+          continue;
+        }
+        e.getEntity().setCustomName(MinigameUtils.getProgressBar((int) ((Zombie) e.getEntity()).getHealth(),
+            (int) ((Zombie) e.getEntity()).getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue(),
+            50, "|", ChatColor.YELLOW + "", ChatColor.GRAY + ""));
+      }
     }
   }
 
   @EventHandler(priority = EventPriority.HIGHEST)
   public void onSecond(EntityDamageByEntityEvent e) {
-    try {
-      if (!(e.getDamager() instanceof Arrow)) {
-        return;
-      }
-      Arrow arrow = (Arrow) e.getDamager();
-      if (arrow.getShooter() == null) {
-        return;
-      }
-      if (!(arrow.getShooter() instanceof Player)) {
-        return;
-      }
-      Arena arena = ArenaRegistry.getArena((Player) arrow.getShooter());
-      if (arena == null) {
-        return;
-      }
-      if (!(e.getEntity() instanceof Player || e.getEntity() instanceof Wolf || e.getEntity() instanceof IronGolem || e.getEntity() instanceof Villager)) {
-        return;
-      }
-      e.setCancelled(true);
-    } catch (Exception ex) {
-      new ReportedException(plugin, ex);
+    if (!(e.getDamager() instanceof Arrow)) {
+      return;
     }
+    Arrow arrow = (Arrow) e.getDamager();
+    if (arrow.getShooter() == null) {
+      return;
+    }
+    if (!(arrow.getShooter() instanceof Player)) {
+      return;
+    }
+    Arena arena = ArenaRegistry.getArena((Player) arrow.getShooter());
+    if (arena == null) {
+      return;
+    }
+    if (!(e.getEntity() instanceof Player || e.getEntity() instanceof Wolf || e.getEntity() instanceof IronGolem || e.getEntity() instanceof Villager)) {
+      return;
+    }
+    e.setCancelled(true);
   }
 
   @EventHandler
@@ -472,20 +411,16 @@ public class Events implements Listener {
 
   @EventHandler
   public void onFoodLevelChange(FoodLevelChangeEvent event) {
-    try {
-      if (event.getEntity().getType() != EntityType.PLAYER) {
-        return;
-      }
-      Arena arena = ArenaRegistry.getArena((Player) event.getEntity());
-      if (arena == null) {
-        return;
-      }
-      if (arena.getArenaState() == ArenaState.STARTING || arena.getArenaState() == ArenaState.WAITING_FOR_PLAYERS || arena.getArenaState() == ArenaState.ENDING) {
-        event.setFoodLevel(20);
-        event.setCancelled(true);
-      }
-    } catch (Exception ex) {
-      new ReportedException(plugin, ex);
+    if (event.getEntity().getType() != EntityType.PLAYER) {
+      return;
+    }
+    Arena arena = ArenaRegistry.getArena((Player) event.getEntity());
+    if (arena == null) {
+      return;
+    }
+    if (arena.getArenaState() == ArenaState.STARTING || arena.getArenaState() == ArenaState.WAITING_FOR_PLAYERS || arena.getArenaState() == ArenaState.ENDING) {
+      event.setFoodLevel(20);
+      event.setCancelled(true);
     }
   }
 
@@ -519,43 +454,39 @@ public class Events implements Listener {
 
   @EventHandler
   public void onRottenFleshDrop(InventoryPickupItemEvent e) {
-    try {
-      if (e.getInventory().getType() != InventoryType.HOPPER) {
-        return;
-      }
-      if (e.getItem().getItemStack().getType() != Material.ROTTEN_FLESH) {
-        for (Arena arena : ArenaRegistry.getArenas()) {
-          if (e.getItem().getWorld().equals(arena.getStartLocation().getWorld())) {
-            e.getItem().remove();
-            e.getInventory().clear();
-            return;
-          }
-        }
-        return;
-      }
-      for (Entity entity : Utils.getNearbyEntities(e.getItem().getLocation(), 20)) {
-        if (!(entity instanceof Player)) {
-          continue;
-        }
-        Arena arena = ArenaRegistry.getArena((Player) entity);
-        if (arena == null) {
-          continue;
-        }
-        arena.addOptionValue(ArenaOption.ROTTEN_FLESH_AMOUNT, e.getItem().getItemStack().getAmount());
-        e.getItem().remove();
-        e.setCancelled(true);
-        e.getInventory().clear();
-        e.getItem().getLocation().getWorld().spawnParticle(Particle.CLOUD, e.getItem().getLocation(), 50, 2, 2, 2);
-        if (!arena.checkLevelUpRottenFlesh() || arena.getOption(ArenaOption.ROTTEN_FLESH_LEVEL) >= 30) {
+    if (e.getInventory().getType() != InventoryType.HOPPER) {
+      return;
+    }
+    if (e.getItem().getItemStack().getType() != Material.ROTTEN_FLESH) {
+      for (Arena arena : ArenaRegistry.getArenas()) {
+        if (e.getItem().getWorld().equals(arena.getStartLocation().getWorld())) {
+          e.getItem().remove();
+          e.getInventory().clear();
           return;
         }
-        for (Player p : arena.getPlayers()) {
-          p.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(p.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue() + 2.0);
-          p.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage("In-Game.Rotten-Flesh-Level-Up"));
-        }
       }
-    } catch (Exception ex) {
-      new ReportedException(plugin, ex);
+      return;
+    }
+    for (Entity entity : Utils.getNearbyEntities(e.getItem().getLocation(), 20)) {
+      if (!(entity instanceof Player)) {
+        continue;
+      }
+      Arena arena = ArenaRegistry.getArena((Player) entity);
+      if (arena == null) {
+        continue;
+      }
+      arena.addOptionValue(ArenaOption.ROTTEN_FLESH_AMOUNT, e.getItem().getItemStack().getAmount());
+      e.getItem().remove();
+      e.setCancelled(true);
+      e.getInventory().clear();
+      e.getItem().getLocation().getWorld().spawnParticle(Particle.CLOUD, e.getItem().getLocation(), 50, 2, 2, 2);
+      if (!arena.checkLevelUpRottenFlesh() || arena.getOption(ArenaOption.ROTTEN_FLESH_LEVEL) >= 30) {
+        return;
+      }
+      for (Player p : arena.getPlayers()) {
+        p.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(p.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue() + 2.0);
+        p.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage("In-Game.Rotten-Flesh-Level-Up"));
+      }
     }
   }
 
@@ -565,22 +496,18 @@ public class Events implements Listener {
    */
   @EventHandler(ignoreCancelled = true)
   public void onCombust(final EntityCombustEvent e) {
-    try {
-      // Ignore if this is caused by an event lower down the chain.
-      if (e instanceof EntityCombustByEntityEvent || e instanceof EntityCombustByBlockEvent
-          || !(e.getEntity() instanceof Zombie)
-          || e.getEntity().getWorld().getEnvironment() != World.Environment.NORMAL) {
+    // Ignore if this is caused by an event lower down the chain.
+    if (e instanceof EntityCombustByEntityEvent || e instanceof EntityCombustByBlockEvent
+        || !(e.getEntity() instanceof Zombie)
+        || e.getEntity().getWorld().getEnvironment() != World.Environment.NORMAL) {
+      return;
+    }
+
+    for (Arena arena : ArenaRegistry.getArenas()) {
+      if (arena.getZombies().contains(e.getEntity())) {
+        e.setCancelled(true);
         return;
       }
-
-      for (Arena arena : ArenaRegistry.getArenas()) {
-        if (arena.getZombies().contains(e.getEntity())) {
-          e.setCancelled(true);
-          return;
-        }
-      }
-    } catch (Exception ex) {
-      new ReportedException(plugin, ex);
     }
   }
 

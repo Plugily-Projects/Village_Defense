@@ -39,7 +39,6 @@ import pl.plajer.villagedefense.arena.Arena;
 import pl.plajer.villagedefense.arena.ArenaRegistry;
 import pl.plajer.villagedefense.handlers.language.LanguageManager;
 import pl.plajer.villagedefense.user.User;
-import pl.plajerlair.core.services.exception.ReportedException;
 
 /**
  * Created by Tom on 13/08/2014.
@@ -56,58 +55,54 @@ public class ChatEvents implements Listener {
 
   @EventHandler
   public void onChatIngame(AsyncPlayerChatEvent event) {
-    try {
-      Arena arena = ArenaRegistry.getArena(event.getPlayer());
-      if (arena == null) {
-        for (Arena loopArena : ArenaRegistry.getArenas()) {
-          for (Player player : loopArena.getPlayers()) {
-            if (event.getRecipients().contains(player)) {
-              if (!plugin.getArgumentsRegistry().getSpyChat().isSpyChatEnabled(player)) {
-                event.getRecipients().remove(player);
-              }
+    Arena arena = ArenaRegistry.getArena(event.getPlayer());
+    if (arena == null) {
+      for (Arena loopArena : ArenaRegistry.getArenas()) {
+        for (Player player : loopArena.getPlayers()) {
+          if (event.getRecipients().contains(player)) {
+            if (!plugin.getArgumentsRegistry().getSpyChat().isSpyChatEnabled(player)) {
+              event.getRecipients().remove(player);
             }
           }
         }
-        return;
       }
-      if (plugin.getConfigPreferences().getOption(ConfigPreferences.Option.CHAT_FORMAT_ENABLED)) {
-        event.setCancelled(true);
-        Iterator<Player> iterator = event.getRecipients().iterator();
-        List<Player> remove = new ArrayList<>();
-        while (iterator.hasNext()) {
-          Player player = iterator.next();
-          if (!plugin.getArgumentsRegistry().getSpyChat().isSpyChatEnabled(player)) {
-            remove.add(player);
-          }
-        }
-        for (Player player : remove) {
-          event.getRecipients().remove(player);
-        }
-        remove.clear();
-        String message;
-        String eventMessage = event.getMessage();
-        for (String regexChar : regexChars) {
-          if (eventMessage.contains(regexChar)) {
-            eventMessage = eventMessage.replaceAll(Pattern.quote(regexChar), "");
-          }
-        }
-        message = formatChatPlaceholders(LanguageManager.getLanguageMessage("In-Game.Game-Chat-Format"), plugin.getUserManager().getUser(event.getPlayer()), eventMessage);
-        for (Player player : arena.getPlayers()) {
-          player.sendMessage(message);
-        }
-        Bukkit.getConsoleSender().sendMessage(message);
-        return;
-      }
-      event.getRecipients().clear();
-      event.getRecipients().addAll(new ArrayList<>(arena.getPlayers()));
-      String message = event.getMessage().replace("%kit%", plugin.getUserManager().getUser(event.getPlayer()).getKit().getName());
-      if (plugin.getServer().getPluginManager().isPluginEnabled("PlaceholderAPI") && PlaceholderAPI.containsPlaceholders(message)) {
-        message = PlaceholderAPI.setPlaceholders(event.getPlayer(), message);
-      }
-      event.setMessage(message);
-    } catch (Exception ex) {
-      new ReportedException(plugin, ex);
+      return;
     }
+    if (plugin.getConfigPreferences().getOption(ConfigPreferences.Option.CHAT_FORMAT_ENABLED)) {
+      event.setCancelled(true);
+      Iterator<Player> iterator = event.getRecipients().iterator();
+      List<Player> remove = new ArrayList<>();
+      while (iterator.hasNext()) {
+        Player player = iterator.next();
+        if (!plugin.getArgumentsRegistry().getSpyChat().isSpyChatEnabled(player)) {
+          remove.add(player);
+        }
+      }
+      for (Player player : remove) {
+        event.getRecipients().remove(player);
+      }
+      remove.clear();
+      String message;
+      String eventMessage = event.getMessage();
+      for (String regexChar : regexChars) {
+        if (eventMessage.contains(regexChar)) {
+          eventMessage = eventMessage.replaceAll(Pattern.quote(regexChar), "");
+        }
+      }
+      message = formatChatPlaceholders(LanguageManager.getLanguageMessage("In-Game.Game-Chat-Format"), plugin.getUserManager().getUser(event.getPlayer()), eventMessage);
+      for (Player player : arena.getPlayers()) {
+        player.sendMessage(message);
+      }
+      Bukkit.getConsoleSender().sendMessage(message);
+      return;
+    }
+    event.getRecipients().clear();
+    event.getRecipients().addAll(new ArrayList<>(arena.getPlayers()));
+    String message = event.getMessage().replace("%kit%", plugin.getUserManager().getUser(event.getPlayer()).getKit().getName());
+    if (plugin.getServer().getPluginManager().isPluginEnabled("PlaceholderAPI") && PlaceholderAPI.containsPlaceholders(message)) {
+      message = PlaceholderAPI.setPlaceholders(event.getPlayer(), message);
+    }
+    event.setMessage(message);
   }
 
   private String formatChatPlaceholders(String message, User user, String saidMessage) {
