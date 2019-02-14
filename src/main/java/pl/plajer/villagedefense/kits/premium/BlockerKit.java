@@ -119,6 +119,11 @@ public class BlockerKit extends PremiumKit implements Listener {
     ZombieBarrier zombieBarrier = new ZombieBarrier();
     zombieBarrier.setLocation(block.getLocation());
     zombieBarrier.getLocation().getWorld().spawnParticle(Particle.FIREWORKS_SPARK, zombieBarrier.getLocation(), 20);
+    removeBarrierLater(zombieBarrier);
+    block.setType(XMaterial.OAK_FENCE.parseMaterial());
+  }
+
+  private void removeBarrierLater(ZombieBarrier zombieBarrier) {
     new BukkitRunnable() {
       @Override
       public void run() {
@@ -130,9 +135,7 @@ public class BlockerKit extends PremiumKit implements Listener {
         }
       }
     }.runTaskTimer(getPlugin(), 20, 20);
-    block.setType(XMaterial.OAK_FENCE.parseMaterial());
   }
-
 
   private static class ZombieBarrier {
     private Location location;

@@ -111,10 +111,10 @@ public class ArenaRegistry {
     if (ArenaRegistry.getArenas() != null) {
       if (ArenaRegistry.getArenas().size() > 0) {
         for (Arena arena : ArenaRegistry.getArenas()) {
-          arena.clearZombies();
-          arena.clearVillagers();
-          arena.clearWolfs();
-          arena.clearGolems();
+          arena.getMapRestorerManager().clearZombiesFromArena();
+          arena.getMapRestorerManager().clearVillagersFromArena();
+          arena.getMapRestorerManager().clearWolvesFromArena();
+          arena.getMapRestorerManager().clearGolemsFromArena();
         }
         for (Arena arena : new ArrayList<>(ArenaRegistry.getArenas())) {
           unregisterArena(arena);
@@ -175,7 +175,7 @@ public class ArenaRegistry {
       if (config.isSet(s + "doors")) {
         for (String string : config.getConfigurationSection(s + "doors").getKeys(false)) {
           String path = s + "doors." + string + ".";
-          arena.addDoor(LocationUtils.getLocation(config.getString(path + "location")),
+          arena.getMapRestorerManager().addDoor(LocationUtils.getLocation(config.getString(path + "location")),
               (byte) config.getInt(path + "byte"));
         }
       } else {

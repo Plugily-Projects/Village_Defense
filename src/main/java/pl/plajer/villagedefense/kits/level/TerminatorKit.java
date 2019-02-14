@@ -74,6 +74,6 @@ public class TerminatorKit extends LevelKit {
     for (int i = 0; i < 2; i++) {
       player.getInventory().addItem(Utils.getPotion(PotionType.STRENGTH, 2, true));
     }
-
   }
+
 }

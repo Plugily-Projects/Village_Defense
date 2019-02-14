@@ -109,7 +109,11 @@ public class TornadoKit extends PremiumKit implements Listener {
       player.getInventory().getItemInMainHand().setAmount(stack.getAmount() - 1);
     }
     e.setCancelled(true);
-    Tornado tornado = new Tornado(player.getLocation());
+    prepareTornado(player.getLocation());
+  }
+
+  private void prepareTornado(Location location) {
+    Tornado tornado = new Tornado(location);
     new BukkitRunnable() {
       @Override
       public void run() {
@@ -162,15 +166,19 @@ public class TornadoKit extends PremiumKit implements Listener {
         }
       }
 
+      pushNearbyZombies();
+      setLocation(getLocation().add(getVector().getX() / (3 + Math.random() / 2), 0, getVector().getZ() / (3 + Math.random() / 2)));
+
+      angle += 50;
+
+    }
+
+    private void pushNearbyZombies() {
       for (Entity entity : getLocation().getWorld().getNearbyEntities(getLocation(), 2, 2, 2)) {
         if (entity.getType() == EntityType.ZOMBIE) {
           entity.setVelocity(getVector().multiply(2).setY(0).add(new Vector(0, 1, 0)));
         }
       }
-      setLocation(getLocation().add(getVector().getX() / (3 + Math.random() / 2), 0, getVector().getZ() / (3 + Math.random() / 2)));
-
-      angle += 50;
-
     }
   }
 }

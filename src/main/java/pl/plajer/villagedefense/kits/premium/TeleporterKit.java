@@ -50,6 +50,7 @@ import pl.plajerlair.core.utils.ItemBuilder;
 /**
  * Created by Tom on 18/08/2014.
  */
+//todo use GUI instead of Inventory here please
 public class TeleporterKit extends PremiumKit implements Listener {
 
   public TeleporterKit() {

@@ -95,9 +95,9 @@ public class ZombieFinderKit extends LevelKit implements Listener {
       return;
     }
     if (user.getCooldown("zombie") > 0 && !user.isSpectator()) {
-      String msgstring = getPlugin().getChatManager().colorMessage("Kits.Ability-Still-On-Cooldown");
-      msgstring = msgstring.replaceFirst("%COOLDOWN%", Long.toString(user.getCooldown("zombie")));
-      event.getPlayer().sendMessage(msgstring);
+      String message = getPlugin().getChatManager().colorMessage("Kits.Ability-Still-On-Cooldown");
+      message = message.replaceFirst("%COOLDOWN%", Long.toString(user.getCooldown("zombie")));
+      event.getPlayer().sendMessage(message);
       return;
     }
     if (arena.getZombies() == null || arena.getZombies().isEmpty() || arena.getZombies().size() <= 0) {

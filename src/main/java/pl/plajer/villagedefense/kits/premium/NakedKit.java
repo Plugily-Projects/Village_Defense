@@ -55,6 +55,10 @@ public class NakedKit extends PremiumKit implements Listener {
     setName(getPlugin().getChatManager().colorMessage("Kits.Wild-Naked.Kit-Name"));
     getPlugin().getServer().getPluginManager().registerEvents(this, getPlugin());
     KitRegistry.registerKit(this);
+    setupArmorTypes();
+  }
+
+  private void setupArmorTypes() {
     armorTypes.add(Material.LEATHER_BOOTS);
     armorTypes.add(Material.LEATHER_CHESTPLATE);
     armorTypes.add(Material.LEATHER_LEGGINGS);

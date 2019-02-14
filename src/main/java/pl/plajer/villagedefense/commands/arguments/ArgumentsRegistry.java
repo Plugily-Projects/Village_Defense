@@ -122,12 +122,7 @@ public class ArgumentsRegistry implements CommandExecutor {
       if (cmd.getName().equalsIgnoreCase(mainCommand)) {
         if (cmd.getName().equalsIgnoreCase("villagedefense")) {
           if (args.length == 0) {
-            sender.sendMessage(plugin.getChatManager().colorMessage("Commands.Main-Command.Header"));
-            sender.sendMessage(plugin.getChatManager().colorMessage("Commands.Main-Command.Description"));
-            if (sender.hasPermission("villagedefense.admin")) {
-              sender.sendMessage(plugin.getChatManager().colorMessage("Commands.Main-Command.Admin-Bonus-Description"));
-            }
-            sender.sendMessage(plugin.getChatManager().colorMessage("Commands.Main-Command.Footer"));
+            sendHelpCommand(sender);
             return true;
           }
           if (args.length > 1 && args[1].equalsIgnoreCase("edit")) {
@@ -215,6 +210,15 @@ public class ArgumentsRegistry implements CommandExecutor {
       }
     }
     return false;
+  }
+
+  private void sendHelpCommand(CommandSender sender) {
+    sender.sendMessage(plugin.getChatManager().colorMessage("Commands.Main-Command.Header"));
+    sender.sendMessage(plugin.getChatManager().colorMessage("Commands.Main-Command.Description"));
+    if (sender.hasPermission("villagedefense.admin")) {
+      sender.sendMessage(plugin.getChatManager().colorMessage("Commands.Main-Command.Admin-Bonus-Description"));
+    }
+    sender.sendMessage(plugin.getChatManager().colorMessage("Commands.Main-Command.Footer"));
   }
 
   private boolean checkSenderIsExecutorType(CommandSender sender, CommandArgument.ExecutorType type) {

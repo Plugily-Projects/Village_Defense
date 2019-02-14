@@ -99,8 +99,8 @@ public class User {
 
     //statistics manipulation events are called async when using mysql
     Bukkit.getScheduler().runTask(plugin, () -> {
-      VillagePlayerStatisticChangeEvent villagePlayerStatisticIncreaseEvent = new VillagePlayerStatisticChangeEvent(getArena(), player, s, i);
-      Bukkit.getPluginManager().callEvent(villagePlayerStatisticIncreaseEvent);
+      VillagePlayerStatisticChangeEvent event = new VillagePlayerStatisticChangeEvent(getArena(), player, s, i);
+      Bukkit.getPluginManager().callEvent(event);
     });
   }
 
@@ -109,8 +109,8 @@ public class User {
 
     //statistics manipulation events are called async when using mysql
     Bukkit.getScheduler().runTask(plugin, () -> {
-      VillagePlayerStatisticChangeEvent villagePlayerStatisticIncreaseEvent = new VillagePlayerStatisticChangeEvent(getArena(), player, s, getStat(s));
-      Bukkit.getPluginManager().callEvent(villagePlayerStatisticIncreaseEvent);
+      VillagePlayerStatisticChangeEvent event = new VillagePlayerStatisticChangeEvent(getArena(), player, s, getStat(s));
+      Bukkit.getPluginManager().callEvent(event);
     });
   }
 

@@ -65,26 +65,8 @@ public class DogFriendKit extends PremiumKit {
     if (arena == null) {
       return;
     }
-    if (getPlugin().is1_11_R1()) {
-      ArenaInitializer1_11_R1 initializer = (ArenaInitializer1_11_R1) arena;
-      for (int i = 0; i < 3; i++) {
-        initializer.spawnWolf(initializer.getStartLocation(), player);
-      }
-    } else if (getPlugin().is1_12_R1()) {
-      ArenaInitializer1_12_R1 initializer = (ArenaInitializer1_12_R1) arena;
-      for (int i = 0; i < 3; i++) {
-        initializer.spawnWolf(initializer.getStartLocation(), player);
-      }
-    } else if (getPlugin().is1_13_R1()) {
-      ArenaInitializer1_13_R1 initializer = (ArenaInitializer1_13_R1) arena;
-      for (int i = 0; i < 3; i++) {
-        initializer.spawnWolf(initializer.getStartLocation(), player);
-      }
-    } else if (getPlugin().is1_13_R2()) {
-      ArenaInitializer1_13_R2 initializer = (ArenaInitializer1_13_R2) arena;
-      for (int i = 0; i < 3; i++) {
-        initializer.spawnWolf(initializer.getStartLocation(), player);
-      }
+    for (int i = 0; i < 3; i++) {
+      spawnWolf(arena, player);
     }
   }
 
@@ -99,6 +81,10 @@ public class DogFriendKit extends PremiumKit {
     if (arena == null) {
       return;
     }
+    spawnWolf(arena, player);
+  }
+
+  private void spawnWolf(Arena arena, Player player) {
     if (getPlugin().is1_11_R1()) {
       ArenaInitializer1_11_R1 initializer = (ArenaInitializer1_11_R1) arena;
       initializer.spawnWolf(initializer.getStartLocation(), player);
@@ -113,4 +99,5 @@ public class DogFriendKit extends PremiumKit {
       initializer.spawnWolf(initializer.getStartLocation(), player);
     }
   }
+
 }

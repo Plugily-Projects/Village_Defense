@@ -120,6 +120,7 @@ public class WizardKit extends PremiumKit implements Listener {
     ((Zombie) e.getDamager()).damage(2.0, e.getEntity());
   }
 
+  //todo very complex code
   @EventHandler
   public void onStaffUse(PlayerInteractEvent e) {
     User user = getPlugin().getUserManager().getUser(e.getPlayer());

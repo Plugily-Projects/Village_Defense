@@ -134,27 +134,12 @@ public class Main extends JavaPlugin {
 
   @Override
   public void onEnable() {
+    if (!validateIfPluginShouldStart()) {
+      return;
+    }
+
     ServiceRegistry.registerService(this);
     exceptionLogHandler = new ExceptionLogHandler();
-    version = Bukkit.getServer().getClass().getPackage().getName().replace(".", ",").split(",")[3];
-    if (!(version.equalsIgnoreCase("v1_11_R1") || version.equalsIgnoreCase("v1_12_R1") || version.equalsIgnoreCase("v1_13_R1") || version.equalsIgnoreCase("v1_13_R2"))) {
-      MessageUtils.thisVersionIsNotSupported();
-      Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "Your server version is not supported by Village Defense!");
-      Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "Sadly, we must shut off. Maybe you consider changing your server version?");
-      forceDisable = true;
-      getServer().getPluginManager().disablePlugin(this);
-      return;
-    }
-    try {
-      Class.forName("org.spigotmc.SpigotConfig");
-    } catch (Exception e) {
-      MessageUtils.thisVersionIsNotSupported();
-      Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "Your server software is not supported by Village Defense!");
-      Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "We support only Spigot and Spigot forks only! Shutting off...");
-      forceDisable = true;
-      getServer().getPluginManager().disablePlugin(this);
-      return;
-    }
     LanguageManager.init(this);
     saveDefaultConfig();
     Debugger.setEnabled(getConfig().getBoolean("Debug", false));
@@ -185,6 +170,29 @@ public class Main extends JavaPlugin {
     Debugger.debug(LogLevel.INFO, "Main setup done");
   }
 
+  private boolean validateIfPluginShouldStart() {
+    version = Bukkit.getServer().getClass().getPackage().getName().replace(".", ",").split(",")[3];
+    if (!(version.equalsIgnoreCase("v1_11_R1") || version.equalsIgnoreCase("v1_12_R1") || version.equalsIgnoreCase("v1_13_R1") || version.equalsIgnoreCase("v1_13_R2"))) {
+      MessageUtils.thisVersionIsNotSupported();
+      Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "Your server version is not supported by Village Defense!");
+      Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "Sadly, we must shut off. Maybe you consider changing your server version?");
+      forceDisable = true;
+      getServer().getPluginManager().disablePlugin(this);
+      return false;
+    }
+    try {
+      Class.forName("org.spigotmc.SpigotConfig");
+    } catch (Exception e) {
+      MessageUtils.thisVersionIsNotSupported();
+      Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "Your server software is not supported by Village Defense!");
+      Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "We support only Spigot and Spigot forks only! Shutting off...");
+      forceDisable = true;
+      getServer().getPluginManager().disablePlugin(this);
+      return false;
+    }
+    return true;
+  }
+
   private void initializeClasses() {
     ScoreboardLib.setPluginInstance(this);
     CreatureUtils.init(this);
@@ -201,6 +209,21 @@ public class Main extends JavaPlugin {
     new SetupInventoryEvents(this);
     new JoinEvent(this);
     new ChatEvents(this);
+    setupPluginMetrics();
+    if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
+      Debugger.debug(LogLevel.INFO, "Hooking into PlaceholderAPI");
+      new PlaceholderManager().register();
+    }
+    new Events(this);
+    new LobbyEvents(this);
+    new SpectatorItemEvents(this);
+    powerupRegistry = new PowerupRegistry(this);
+    rewardsHandler = new RewardsFactory(this);
+    holidayManager = new HolidayManager(this);
+    User.cooldownHandlerTask();
+  }
+
+  private void setupPluginMetrics() {
     Metrics metrics = new Metrics(this);
     metrics.addCustomChart(new Metrics.SimplePie("database_enabled", () -> String.valueOf(configPreferences.getOption(ConfigPreferences.Option.DATABASE_ENABLED))));
     metrics.addCustomChart(new Metrics.SimplePie("bungeecord_hooked", () -> String.valueOf(configPreferences.getOption(ConfigPreferences.Option.BUNGEE_ENABLED))));
@@ -228,17 +251,6 @@ public class Main extends JavaPlugin {
       }
       return "None";
     }));
-    if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
-      Debugger.debug(LogLevel.INFO, "Hooking into PlaceholderAPI");
-      new PlaceholderManager().register();
-    }
-    new Events(this);
-    new LobbyEvents(this);
-    new SpectatorItemEvents(this);
-    powerupRegistry = new PowerupRegistry(this);
-    rewardsHandler = new RewardsFactory(this);
-    holidayManager = new HolidayManager(this);
-    User.cooldownHandlerTask();
   }
 
   private void checkUpdate() {
@@ -331,9 +343,22 @@ public class Main extends JavaPlugin {
           }
         }
       }
-      arena.restoreMap();
+      arena.getMapRestorerManager().fullyRestoreArena();
       arena.teleportAllToEndLocation();
     }
+    saveAllUserStatistics();
+    if (getServer().getPluginManager().isPluginEnabled("HolographicDisplays")) {
+      for (Hologram holo : HologramsAPI.getHolograms(this)) {
+        holo.delete();
+      }
+    }
+    if (configPreferences.getOption(ConfigPreferences.Option.DATABASE_ENABLED)) {
+      getMySQLDatabase().getManager().shutdownConnPool();
+    }
+    Debugger.debug(LogLevel.INFO, "System disable finalize");
+  }
+
+  private void saveAllUserStatistics() {
     for (Player player : getServer().getOnlinePlayers()) {
       User user = userManager.getUser(player);
       user.removeScoreboard();
@@ -350,15 +375,6 @@ public class Main extends JavaPlugin {
         userManager.getFileStats().saveStatistic(user, stat);
       }
     }
-    if (getServer().getPluginManager().isPluginEnabled("HolographicDisplays")) {
-      for (Hologram holo : HologramsAPI.getHolograms(this)) {
-        holo.delete();
-      }
-    }
-    if (configPreferences.getOption(ConfigPreferences.Option.DATABASE_ENABLED)) {
-      getMySQLDatabase().getManager().shutdownConnPool();
-    }
-    Debugger.debug(LogLevel.INFO, "System disable finalize");
   }
 
 }

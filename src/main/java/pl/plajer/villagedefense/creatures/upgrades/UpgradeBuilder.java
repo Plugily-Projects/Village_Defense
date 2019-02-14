@@ -73,7 +73,7 @@ public class UpgradeBuilder {
     return this;
   }
 
-  public UpgradeBuilder tierVal(int tier, double val) {
+  public UpgradeBuilder tierValue(int tier, double val) {
     upgrade.setTierValue(tier, val);
     return this;
   }

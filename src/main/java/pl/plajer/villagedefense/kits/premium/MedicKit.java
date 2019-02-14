@@ -79,7 +79,7 @@ public class MedicKit extends PremiumKit implements Listener {
 
   @EventHandler
   public void onZombieHit(EntityDamageByEntityEvent e) {
-    if (!(e.getEntity() instanceof Zombie && e.getDamager() instanceof Player)) {
+    if (!(e.getEntity() instanceof Zombie) || !(e.getDamager() instanceof Player)) {
       return;
     }
     User user = getPlugin().getUserManager().getUser((Player) e.getDamager());
@@ -89,7 +89,11 @@ public class MedicKit extends PremiumKit implements Listener {
     if (Math.random() > 0.1) {
       return;
     }
-    for (Entity entity : e.getDamager().getNearbyEntities(5, 5, 5)) {
+    healNearbyPlayers(e.getDamager());
+  }
+
+  private void healNearbyPlayers(Entity en) {
+    for (Entity entity : en.getNearbyEntities(5, 5, 5)) {
       if (!(entity instanceof Player)) {
         continue;
       }
@@ -102,4 +106,5 @@ public class MedicKit extends PremiumKit implements Listener {
       player.getEyeLocation().getWorld().spawnParticle(Particle.HEART, player.getLocation(), 20);
     }
   }
+
 }

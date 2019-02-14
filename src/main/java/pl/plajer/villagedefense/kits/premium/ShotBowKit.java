@@ -107,9 +107,9 @@ public class ShotBowKit extends PremiumKit implements Listener {
       e.setCancelled(true);
       user.setCooldown("shotbow", 5);
     } else {
-      String msgstring = getPlugin().getChatManager().colorMessage("Kits.Ability-Still-On-Cooldown");
-      msgstring = msgstring.replaceFirst("%COOLDOWN%", Long.toString(user.getCooldown("shotbow")));
-      e.getPlayer().sendMessage(msgstring);
+      String message = getPlugin().getChatManager().colorMessage("Kits.Ability-Still-On-Cooldown");
+      message = message.replaceFirst("%COOLDOWN%", Long.toString(user.getCooldown("shotbow")));
+      e.getPlayer().sendMessage(message);
     }
   }
 

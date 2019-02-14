@@ -66,27 +66,27 @@ public class EntityUpgradeMenu {
     registerUpgrade(new UpgradeBuilder("Damage")
         .entity(Upgrade.EntityType.BOTH).slot(2, 1).maxTier(4).metadata("VD_Damage")
         //2.0 + (tier * 3)
-        .tierVal(0, 2.0).tierVal(1, 5.0).tierVal(2, 8.0).tierVal(3, 11.0).tierVal(4, 14.0)
+        .tierValue(0, 2.0).tierValue(1, 5.0).tierValue(2, 8.0).tierValue(3, 11.0).tierValue(4, 14.0)
         .build());
     registerUpgrade(new UpgradeBuilder("Health")
         .entity(Upgrade.EntityType.BOTH).slot(2, 2).maxTier(4).metadata("VD_Health")
         //100.0 + (100.0 * (tier / 2.0))
-        .tierVal(0, 100.0).tierVal(1, 150.0).tierVal(2, 200.0).tierVal(3, 250.0).tierVal(4, 300.0)
+        .tierValue(0, 100.0).tierValue(1, 150.0).tierValue(2, 200.0).tierValue(3, 250.0).tierValue(4, 300.0)
         .build());
     registerUpgrade(new UpgradeBuilder("Speed")
         .entity(Upgrade.EntityType.BOTH).slot(2, 3).maxTier(4).metadata("VD_Speed")
         //0.25 + (0.25 * ((double) tier / 5.0))
-        .tierVal(0, 0.25).tierVal(1, 0.3).tierVal(2, 0.35).tierVal(3, 0.4).tierVal(4, 0.45)
+        .tierValue(0, 0.25).tierValue(1, 0.3).tierValue(2, 0.35).tierValue(3, 0.4).tierValue(4, 0.45)
         .build());
     registerUpgrade(new UpgradeBuilder("Swarm-Awareness")
         .entity(Upgrade.EntityType.WOLF).slot(3, 4).maxTier(2).metadata("VD_SwarmAwareness")
         //tier * 0.2
-        .tierVal(0, 0).tierVal(1, 0.2).tierVal(2, 0.4)
+        .tierValue(0, 0).tierValue(1, 0.2).tierValue(2, 0.4)
         .build());
     registerUpgrade(new UpgradeBuilder("Final-Defense")
         .entity(Upgrade.EntityType.IRON_GOLEM).slot(3, 4).maxTier(2).metadata("VD_FinalDefense")
         //tier * 5
-        .tierVal(0, 0).tierVal(1, 5).tierVal(2, 10)
+        .tierValue(0, 0).tierValue(1, 5).tierValue(2, 10)
         .build());
   }
 
@@ -155,6 +155,13 @@ public class EntityUpgradeMenu {
         }
       }
     }
+    applyStatisticsBookOfEntityToPane(pane, en);
+
+    gui.addPane(pane);
+    gui.show(player);
+  }
+
+  private void applyStatisticsBookOfEntityToPane(StaticPane pane, LivingEntity en) {
     pane.addItem(new GuiItem(new ItemBuilder(new ItemStack(Material.BOOK))
         .name(plugin.getChatManager().colorMessage("Upgrade-Menu.Stats-Item.Name"))
         .lore(Arrays.stream(plugin.getChatManager().colorMessage("Upgrade-Menu.Stats-Item.Description").split(";"))
@@ -164,8 +171,6 @@ public class EntityUpgradeMenu {
                 .replace("%max_hp%", String.valueOf(getUpgrade("Health").getValueForTier(getTier(en, getUpgrade("Health")))))
                 .replace("%current_hp%", String.valueOf(en.getHealth()))).collect(Collectors.toList()))
         .build(), e -> e.setCancelled(true)), 4, 0);
-    gui.addPane(pane);
-    gui.show(player);
   }
 
   /**

@@ -37,10 +37,7 @@ import pl.plajer.villagedefense.arena.ArenaState;
  */
 public class LobbyEvents implements Listener {
 
-  private Main plugin;
-
   public LobbyEvents(Main plugin) {
-    this.plugin = plugin;
     plugin.getServer().getPluginManager().registerEvents(this, plugin);
   }
 

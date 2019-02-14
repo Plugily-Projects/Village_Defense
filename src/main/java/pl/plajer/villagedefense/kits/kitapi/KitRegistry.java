@@ -73,6 +73,7 @@ public class KitRegistry {
 
   public static void init() {
     setupGameKits();
+    setupKitSelectorItem();
   }
 
   /**
@@ -142,6 +143,9 @@ public class KitRegistry {
     }
 
     KitRegistry.setDefaultKit(knightkit);
+  }
+
+  private static void setupKitSelectorItem() {
     plugin.getKitManager().setMaterial(Material.NETHER_STAR);
     plugin.getKitManager().setItemName(plugin.getChatManager().colorMessage("Kits.Kit-Menu-Item-Name"));
     plugin.getKitManager().setMenuName(plugin.getChatManager().colorMessage("Kits.Kit-Menu.Title"));

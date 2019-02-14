@@ -22,7 +22,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -31,11 +30,7 @@ import java.util.Set;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.TreeSpecies;
 import org.bukkit.attribute.Attribute;
-import org.bukkit.block.Block;
-import org.bukkit.block.BlockState;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
@@ -45,7 +40,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.entity.Villager;
 import org.bukkit.entity.Wolf;
 import org.bukkit.entity.Zombie;
-import org.bukkit.material.Door;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -54,18 +48,17 @@ import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.api.StatsStorage;
 import pl.plajer.villagedefense.api.event.game.VillageGameStartEvent;
 import pl.plajer.villagedefense.api.event.game.VillageGameStateChangeEvent;
+import pl.plajer.villagedefense.arena.managers.MapRestorerManager;
 import pl.plajer.villagedefense.arena.managers.ScoreboardManager;
 import pl.plajer.villagedefense.arena.managers.ShopManager;
 import pl.plajer.villagedefense.arena.managers.ZombieSpawnManager;
 import pl.plajer.villagedefense.arena.options.ArenaOption;
 import pl.plajer.villagedefense.handlers.reward.GameReward;
 import pl.plajer.villagedefense.user.User;
-import pl.plajer.villagedefense.utils.Utils;
 import pl.plajerlair.core.debug.Debugger;
 import pl.plajerlair.core.debug.LogLevel;
 import pl.plajerlair.core.utils.ConfigUtils;
 import pl.plajerlair.core.utils.InventoryUtils;
-import pl.plajerlair.core.utils.XMaterial;
 
 /**
  * Created by Tom on 12/08/2014.
@@ -78,7 +71,6 @@ public abstract class Arena extends BukkitRunnable {
   private final List<Wolf> wolfs = new ArrayList<>();
   private final List<Villager> villagers = new ArrayList<>();
   private final List<IronGolem> ironGolems = new ArrayList<>();
-  private final LinkedHashMap<Location, Byte> doorBlocks = new LinkedHashMap<>();
   private final List<Location> villagerSpawnPoints = new ArrayList<>();
   private final Random random = new Random();
   private final List<Zombie> glitchedZombies = new ArrayList<>();
@@ -88,6 +80,7 @@ public abstract class Arena extends BukkitRunnable {
   private ShopManager shopManager;
   private ZombieSpawnManager zombieSpawnManager;
   private ScoreboardManager scoreboardManager;
+  private MapRestorerManager mapRestorerManager;
   private boolean fighting = false;
   private ArenaState arenaState = ArenaState.WAITING_FOR_PLAYERS;
   private BossBar gameBar;
@@ -107,6 +100,7 @@ public abstract class Arena extends BukkitRunnable {
     shopManager = new ShopManager(this);
     zombieSpawnManager = new ZombieSpawnManager(this);
     scoreboardManager = new ScoreboardManager(this);
+    mapRestorerManager = new MapRestorerManager(this);
     for (ArenaOption option : ArenaOption.values()) {
       arenaOptions.put(option, option.getDefaultValue());
     }
@@ -144,15 +138,6 @@ public abstract class Arena extends BukkitRunnable {
       default:
         break;
     }
-  }
-
-  /**
-   * Location of game doors.
-   *
-   * @return all game doors
-   */
-  public HashMap<Location, Byte> getDoorLocations() {
-    return doorBlocks;
   }
 
   public void run() {
@@ -289,7 +274,6 @@ public abstract class Arena extends BukkitRunnable {
           }
         }
         if (getVillagers().size() <= 0 || getPlayersLeft().size() <= 0 && getArenaState() != ArenaState.ENDING) {
-          clearZombies();
           ArenaManager.stopGame(false, this);
           return;
         }
@@ -303,7 +287,7 @@ public abstract class Arena extends BukkitRunnable {
             setTimer(500);
           } else {
             if (getTimer() == 0) {
-              clearZombies();
+              mapRestorerManager.clearZombiesFromArena();
               if (getZombiesLeft() <= 5) {
                 setOptionValue(ArenaOption.ZOMBIES_TO_SPAWN, 0);
                 plugin.getChatManager().broadcast(this, plugin.getChatManager().colorMessage("In-Game.Messages.Zombie-Got-Stuck-In-The-Map"));
@@ -334,10 +318,10 @@ public abstract class Arena extends BukkitRunnable {
         }
         if (getTimer() <= 0) {
           gameBar.setTitle(plugin.getChatManager().colorMessage("Bossbar.Game-Ended"));
-          clearVillagers();
-          clearZombies();
-          clearGolems();
-          clearWolfs();
+          mapRestorerManager.clearVillagersFromArena();
+          mapRestorerManager.clearZombiesFromArena();
+          mapRestorerManager.clearGolemsFromArena();
+          mapRestorerManager.clearWolvesFromArena();
 
           for (Player player : getPlayers()) {
             plugin.getUserManager().getUser(player).removeScoreboard();
@@ -390,19 +374,13 @@ public abstract class Arena extends BukkitRunnable {
         setTimer(getTimer() - 1);
         break;
       case RESTARTING:
-        clearVillagers();
-        this.restoreMap();
+        mapRestorerManager.fullyRestoreArena();
 
         getPlayers().clear();
 
         setArenaState(ArenaState.WAITING_FOR_PLAYERS);
 
-        setOptionValue(ArenaOption.WAVE, 1);
-        setOptionValue(ArenaOption.TOTAL_KILLED_ZOMBIES, 0);
-        setOptionValue(ArenaOption.TOTAL_ORBS_SPENT, 0);
-        setOptionValue(ArenaOption.ZOMBIE_DIFFICULTY_MULTIPLIER, 0);
-        setOptionValue(ArenaOption.ZOMBIE_IDLE_PROCESS, 0);
-        zombieSpawnManager.applyIdle(0);
+        resetOptionValues();
         for (Item item : droppedFleshes) {
           if (item != null) {
             item.remove();
@@ -418,26 +396,6 @@ public abstract class Arena extends BukkitRunnable {
       default:
         break; //o.o?
     }
-  }
-
-  public void restoreMap() {
-    this.restoreDoors();
-    for (Zombie zombie : getZombies()) {
-      zombie.remove();
-    }
-    for (IronGolem ironGolem : getIronGolems()) {
-      ironGolem.remove();
-    }
-    for (Villager villager : getVillagers()) {
-      villager.remove();
-    }
-    for (Wolf wolf : getWolfs()) {
-      wolf.remove();
-    }
-    clearZombies();
-    clearGolems();
-    clearVillagers();
-    clearWolfs();
   }
 
   private void spawnVillagers() {
@@ -470,6 +428,10 @@ public abstract class Arena extends BukkitRunnable {
    */
   public String getID() {
     return id;
+  }
+
+  public MapRestorerManager getMapRestorerManager() {
+    return mapRestorerManager;
   }
 
   /**
@@ -723,42 +685,12 @@ public abstract class Arena extends BukkitRunnable {
     return villagerSpawnPoints;
   }
 
-  /**
-   * Clear all golems in arena.
-   */
-  public void clearGolems() {
-    for (IronGolem ironGolem : ironGolems) {
-      ironGolem.remove();
-    }
-    this.ironGolems.clear();
-  }
-
-  /**
-   * Clear all wolves in arena.
-   */
-  public void clearWolfs() {
-    for (Wolf wolf : wolfs) {
-      wolf.remove();
-    }
-    this.wolfs.clear();
-  }
-
   public void addVillagerSpawn(Location location) {
     this.villagerSpawnPoints.add(location);
   }
 
   public void addZombieSpawn(Location location) {
     zombieSpawns.add(location);
-  }
-
-  /**
-   * Clear all zombies in arena.
-   */
-  public void clearZombies() {
-    for (Zombie zombie : zombies) {
-      zombie.remove();
-    }
-    zombies.clear();
   }
 
   public void addDroppedFlesh(Item item) {
@@ -851,20 +783,6 @@ public abstract class Arena extends BukkitRunnable {
     return villagers;
   }
 
-  /**
-   * Clear all villagers in arena.
-   */
-  public void clearVillagers() {
-    for (Villager villager : villagers) {
-      villager.remove();
-    }
-    villagers.clear();
-  }
-
-  public void addDoor(Location location, byte data) {
-    this.doorBlocks.put(location, data);
-  }
-
   public boolean checkLevelUpRottenFlesh() {
     if (getOption(ArenaOption.ROTTEN_FLESH_LEVEL) == 0 && getOption(ArenaOption.ROTTEN_FLESH_AMOUNT) > 50) {
       setOptionValue(ArenaOption.ROTTEN_FLESH_LEVEL, 1);
@@ -935,55 +853,13 @@ public abstract class Arena extends BukkitRunnable {
     ironGolems.add(ironGolem);
   }
 
-  void restoreDoors() {
-    int i = 0;
-    for (Map.Entry<Location, Byte> entry : doorBlocks.entrySet()) {
-      Block block = entry.getKey().getBlock();
-      Byte doorData = entry.getValue();
-      if (plugin.is1_11_R1() || plugin.is1_12_R1()) {
-        int id = Material.WOODEN_DOOR.getId();
-        block.setTypeIdAndData(id, doorData, false);
-        i++;
-      } else {
-        //idk how does this work
-        try {
-          if (block.getType() != XMaterial.AIR.parseMaterial()) {
-            i++;
-            continue;
-          }
-          if (doorData == (byte) 8) {
-            block.setType(XMaterial.OAK_DOOR.parseMaterial());
-            BlockState doorBlockState = block.getState();
-            Door doorBlockData = new Door(TreeSpecies.GENERIC, Utils.getFacingByByte(doorData));
-
-            doorBlockData.setTopHalf(true);
-            doorBlockData.setFacingDirection(doorBlockData.getFacing());
-
-            doorBlockState.setType(doorBlockData.getItemType());
-            doorBlockState.setData(doorBlockData);
-            doorBlockState.update(true);
-            i++;
-            continue;
-          }
-
-          block.setType(XMaterial.OAK_DOOR.parseMaterial());
-          BlockState doorBlockState = block.getState();
-          Door doorBlockData = new Door(TreeSpecies.GENERIC, Utils.getFacingByByte(doorData));
-
-          doorBlockData.setTopHalf(false);
-          doorBlockData.setFacingDirection(doorBlockData.getFacing());
-
-          doorBlockState.setData(doorBlockData);
-          doorBlockState.update(true);
-          i++;
-        } catch (Exception ex) {
-          Debugger.debug(LogLevel.WARN, "Door has failed to load for arena " + getID() + ", skipping!");
-        }
-      }
-    }
-    if (i != doorBlocks.size()) {
-      Debugger.debug(LogLevel.WARN, "Some doors has failed to load for arena " + getID() + "! Expected " + doorBlocks.size() + " but loaded only " + i + "!");
-    }
+  private void resetOptionValues() {
+    setOptionValue(ArenaOption.WAVE, 1);
+    setOptionValue(ArenaOption.TOTAL_KILLED_ZOMBIES, 0);
+    setOptionValue(ArenaOption.TOTAL_ORBS_SPENT, 0);
+    setOptionValue(ArenaOption.ZOMBIE_DIFFICULTY_MULTIPLIER, 0);
+    setOptionValue(ArenaOption.ZOMBIE_IDLE_PROCESS, 0);
+    zombieSpawnManager.applyIdle(0);
   }
 
   public int getOption(ArenaOption option) {

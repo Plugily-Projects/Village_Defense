@@ -209,24 +209,7 @@ public class ArenaEvents implements Listener {
       player.setFlying(true);
       player.getInventory().clear();
       player.sendTitle(plugin.getChatManager().colorMessage("In-Game.Death-Screen"), null, 0, 5 * 20, 0);
-      new BukkitRunnable() {
-        @Override
-        public void run() {
-          if (plugin.is1_11_R1()) {
-            this.cancel();
-            return;
-          }
-          if (arena.getArenaState() == ArenaState.ENDING) {
-            this.cancel();
-            return;
-          }
-          if (user.isSpectator()) {
-            player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(plugin.getChatManager().colorMessage("In-Game.Died-Respawn-In-Next-Wave")));
-          } else {
-            this.cancel();
-          }
-        }
-      }.runTaskTimer(plugin, 30, 30);
+      sendSpectatorActionBar(user, arena);
       plugin.getChatManager().broadcastAction(arena, player, ChatManager.ActionType.DEATH);
 
       //running in a scheduler of 1 tick due to 1.13 bug
@@ -236,17 +219,41 @@ public class ArenaEvents implements Listener {
         player.getInventory().setItem(8, SpecialItemManager.getSpecialItem("Leave").getItemStack());
       }, 1);
 
-      //tryin to untarget dead player bcuz they will still target him
-      for (Zombie zombie : arena.getZombies()) {
-        if (zombie.getTarget() == null || !zombie.getTarget().equals(player)) {
-          continue;
+      untargetPlayerFromZombies(player, arena);
+    }, 2);
+  }
+
+  private void sendSpectatorActionBar(User user, Arena arena) {
+    new BukkitRunnable() {
+      @Override
+      public void run() {
+        if (plugin.is1_11_R1()) {
+          this.cancel();
+          return;
         }
-        //set new target as villager so zombies won't stay still waiting for nothing
-        for (Villager villager : arena.getVillagers()) {
-          zombie.setTarget(villager);
+        if (arena.getArenaState() == ArenaState.ENDING) {
+          this.cancel();
+          return;
+        }
+        if (user.isSpectator()) {
+          user.getPlayer().spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(plugin.getChatManager().colorMessage("In-Game.Died-Respawn-In-Next-Wave")));
+        } else {
+          this.cancel();
         }
       }
-    }, 2);
+    }.runTaskTimer(plugin, 30, 30);
+  }
+
+  private void untargetPlayerFromZombies(Player player, Arena arena) {
+    for (Zombie zombie : arena.getZombies()) {
+      if (zombie.getTarget() == null || !zombie.getTarget().equals(player)) {
+        continue;
+      }
+      //set new target as villager so zombies won't stay still waiting for nothing
+      for (Villager villager : arena.getVillagers()) {
+        zombie.setTarget(villager);
+      }
+    }
   }
 
   @EventHandler

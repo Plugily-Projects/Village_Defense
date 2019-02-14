@@ -27,9 +27,6 @@ import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.IronGolem;
 import org.bukkit.entity.Player;
-import org.bukkit.entity.Villager;
-import org.bukkit.entity.Wolf;
-import org.bukkit.entity.Zombie;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.PotionEffect;
@@ -79,21 +76,8 @@ public class ArenaManager {
    */
   public static void joinAttempt(Player p, Arena arena) {
     Debugger.debug(LogLevel.INFO, "Initial join attempt, " + p.getName());
-    VillageGameJoinAttemptEvent villageGameJoinAttemptEvent = new VillageGameJoinAttemptEvent(p, arena);
-    Bukkit.getPluginManager().callEvent(villageGameJoinAttemptEvent);
-    if (!arena.isReady()) {
-      p.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage("In-Game.Arena-Not-Configured"));
+    if (!canJoinArenaAndMessage(p, arena)) {
       return;
-    }
-    if (villageGameJoinAttemptEvent.isCancelled()) {
-      p.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage("In-Game.Join-Cancelled-Via-API"));
-      return;
-    }
-    if (!plugin.getConfigPreferences().getOption(ConfigPreferences.Option.BUNGEE_ENABLED)) {
-      if (!(p.hasPermission(PermissionsManager.getJoinPerm().replace("<arena>", "*")) || p.hasPermission(PermissionsManager.getJoinPerm().replace("<arena>", arena.getID())))) {
-        p.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage("In-Game.Join-No-Permission"));
-        return;
-      }
     }
     Debugger.debug(LogLevel.INFO, "Final join attempt, " + p.getName());
     Debugger.debug(LogLevel.INFO, "Join task, " + p.getName());
@@ -167,6 +151,28 @@ public class ArenaManager {
     }
     arena.showPlayers();
     Debugger.debug(LogLevel.INFO, "Join task end, " + p.getName());
+  }
+
+  private static boolean canJoinArenaAndMessage(Player p, Arena arena) {
+    if (!arena.isReady()) {
+      p.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage("In-Game.Arena-Not-Configured"));
+      return false;
+    }
+
+    VillageGameJoinAttemptEvent event = new VillageGameJoinAttemptEvent(p, arena);
+    Bukkit.getPluginManager().callEvent(event);
+    if (event.isCancelled()) {
+      p.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage("In-Game.Join-Cancelled-Via-API"));
+      return false;
+    }
+
+    if (!plugin.getConfigPreferences().getOption(ConfigPreferences.Option.BUNGEE_ENABLED)) {
+      if (!(p.hasPermission(PermissionsManager.getJoinPerm().replace("<arena>", "*")) || p.hasPermission(PermissionsManager.getJoinPerm().replace("<arena>", arena.getID())))) {
+        p.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage("In-Game.Join-No-Permission"));
+        return false;
+      }
+    }
+    return true;
   }
 
   /**
@@ -261,49 +267,20 @@ public class ArenaManager {
       ArenaUtils.addExperience(p, arena.getWave());
 
       plugin.getUserManager().getUser(p).removeScoreboard();
-      if (quickStop || !plugin.getConfig().getBoolean("Firework-When-Game-Ends", true)) {
-        continue;
+      if (!quickStop) {
+        spawnFireworks(arena, p);
       }
-      new BukkitRunnable() {
-        int i = 0;
-
-        public void run() {
-          if (i == 4 || !arena.getPlayers().contains(p)) {
-            this.cancel();
-            return;
-          }
-          MinigameUtils.spawnRandomFirework(p.getLocation());
-          i++;
-        }
-      }.runTaskTimer(plugin, 30, 30);
     }
     arena.setOptionValue(ArenaOption.ROTTEN_FLESH_AMOUNT, 0);
     arena.setOptionValue(ArenaOption.ROTTEN_FLESH_LEVEL, 0);
-    arena.restoreDoors();
-    for (Zombie zombie : arena.getZombies()) {
-      zombie.remove();
-    }
-    arena.getZombies().clear();
     arena.setOptionValue(ArenaOption.ZOMBIES_TO_SPAWN, 0);
-    for (IronGolem ironGolem : arena.getIronGolems()) {
-      ironGolem.remove();
-    }
-    arena.getIronGolems().clear();
-    for (Villager villager : arena.getVillagers()) {
-      villager.remove();
-    }
-    arena.getVillagers().clear();
-    for (Wolf wolf : arena.getWolfs()) {
-      wolf.remove();
-    }
-    arena.getWolfs().clear();
-
     if (arena.getVillagers().size() <= 0) {
       arena.showPlayers();
       arena.setTimer(10);
     } else {
       arena.setTimer(5);
     }
+    arena.getMapRestorerManager().fullyRestoreArena();
     arena.setArenaState(ArenaState.ENDING);
     Debugger.debug(LogLevel.INFO, "Game stop event finish, arena " + arena.getID());
   }
@@ -316,6 +293,24 @@ public class ArenaManager {
     formatted = StringUtils.replace(formatted, "%zombies%", String.valueOf(a.getOption(ArenaOption.TOTAL_KILLED_ZOMBIES)));
     formatted = StringUtils.replace(formatted, "%orbs_spent%", String.valueOf(a.getOption(ArenaOption.TOTAL_ORBS_SPENT)));
     return formatted;
+  }
+
+  private static void spawnFireworks(Arena arena, Player p) {
+    if (!plugin.getConfig().getBoolean("Firework-When-Game-Ends", true)) {
+      return;
+    }
+    new BukkitRunnable() {
+      int i = 0;
+
+      public void run() {
+        if (i == 4 || !arena.getPlayers().contains(p)) {
+          this.cancel();
+          return;
+        }
+        MinigameUtils.spawnRandomFirework(p.getLocation());
+        i++;
+      }
+    }.runTaskTimer(plugin, 30, 30);
   }
 
   /**
@@ -333,20 +328,24 @@ public class ArenaManager {
     arena.setTimer(plugin.getConfig().getInt("Cooldown-Before-Next-Wave", 25));
     arena.getZombieCheckerLocations().clear();
     arena.setWave(arena.getWave() + 1);
-    VillageWaveEndEvent villageWaveEndEvent = new VillageWaveEndEvent(arena, arena.getWave());
-    Bukkit.getPluginManager().callEvent(villageWaveEndEvent);
+    VillageWaveEndEvent event = new VillageWaveEndEvent(arena, arena.getWave());
+    Bukkit.getPluginManager().callEvent(event);
+    refreshAllPlayers(arena);
+    if (plugin.getConfig().getBoolean("Respawn-After-Wave", true)) {
+      ArenaUtils.bringDeathPlayersBack(arena);
+    }
+    for (Player player : arena.getPlayersLeft()) {
+      ArenaUtils.addExperience(player, 5);
+    }
+  }
+
+  private static void refreshAllPlayers(Arena arena) {
     for (Player player : arena.getPlayers()) {
       player.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().formatMessage(arena, plugin.getChatManager().colorMessage("In-Game.Messages.Next-Wave-In"), arena.getTimer()));
       player.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage("In-Game.Messages.You-Feel-Refreshed"));
       player.setHealth(player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue());
       User user = plugin.getUserManager().getUser(player);
       user.addStat(StatsStorage.StatisticType.ORBS, arena.getWave() * 10);
-    }
-    if (plugin.getConfig().getBoolean("Respawn-After-Wave", true)) {
-      ArenaUtils.bringDeathPlayersBack(arena);
-    }
-    for (Player player : arena.getPlayersLeft()) {
-      ArenaUtils.addExperience(player, 5);
     }
   }
 
@@ -357,8 +356,8 @@ public class ArenaManager {
    * @see VillageWaveStartEvent
    */
   public static void startWave(Arena arena) {
-    VillageWaveStartEvent villageWaveStartEvent = new VillageWaveStartEvent(arena, arena.getWave());
-    Bukkit.getPluginManager().callEvent(villageWaveStartEvent);
+    VillageWaveStartEvent event = new VillageWaveStartEvent(arena, arena.getWave());
+    Bukkit.getPluginManager().callEvent(event);
     int zombiesAmount = (int) Math.ceil((arena.getPlayers().size() * 0.5) * (arena.getOption(ArenaOption.WAVE) * arena.getOption(ArenaOption.WAVE)) / 2);
     if (zombiesAmount > 750) {
       arena.setOptionValue(ArenaOption.ZOMBIE_DIFFICULTY_MULTIPLIER, (int) Math.ceil((zombiesAmount - 750.0) / 15));

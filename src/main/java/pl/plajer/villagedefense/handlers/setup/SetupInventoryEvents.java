@@ -289,7 +289,8 @@ public class SetupInventoryEvents implements Listener {
         }
         for (String string : config.getConfigurationSection("instances." + arena.getID() + ".doors").getKeys(false)) {
           String path = "instances." + arena.getID() + ".doors." + string + ".";
-          arena.addDoor(LocationUtils.getLocation(config.getString(path + "location")), (byte) config.getInt(path + "byte"));
+          arena.getMapRestorerManager().addDoor(LocationUtils.getLocation(config.getString(path + "location")),
+              (byte) config.getInt(path + "byte"));
         }
         ArenaRegistry.registerArena(arena);
         arena.start();
