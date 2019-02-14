@@ -106,7 +106,7 @@ public class NakedKit extends PremiumKit implements Listener {
   @EventHandler
   public void onArmor(InventoryClickEvent event) {
     try {
-      if(!(event.getWhoClicked() instanceof Player)) {
+      if (!(event.getWhoClicked() instanceof Player)) {
         return;
       }
       User user = getPlugin().getUserManager().getUser((Player) event.getWhoClicked());

@@ -88,6 +88,8 @@ public class EntityUpgradeListener implements Listener {
             e.setDamage(e.getDamage() * multiplier);
           }
           break;
+        default:
+          break;
       }
     } catch (Exception ex) {
       new ReportedException(upgradeMenu.getPlugin(), ex);

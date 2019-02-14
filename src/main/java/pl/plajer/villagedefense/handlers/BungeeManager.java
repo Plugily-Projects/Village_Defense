@@ -1,6 +1,6 @@
 /*
  * Village Defense - Protect villagers from hordes of zombies
- * Copyright (C) 2018  Plajer's Lair - maintained by Plajer and Tigerpanzer
+ * Copyright (C) 2019  Plajer's Lair - maintained by Plajer and Tigerpanzer
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -58,7 +58,7 @@ public class BungeeManager implements Listener {
     player.sendPluginMessage(plugin, "BungeeCord", out.toByteArray());
   }
 
-  private String getMOTD() {
+  private String getMotd() {
     Arena arena = ArenaRegistry.getArenas().get(0);
     if (arena.getArenaState() == ArenaState.STARTING && (arena.getTimer() <= 3)) {
       return ArenaState.IN_GAME.toString();
@@ -78,7 +78,7 @@ public class BungeeManager implements Listener {
       return;
     }
     event.setMaxPlayers(ArenaRegistry.getArenas().get(0).getMaximumPlayers());
-    event.setMotd(this.getMOTD());
+    event.setMotd(this.getMotd());
   }
 
 

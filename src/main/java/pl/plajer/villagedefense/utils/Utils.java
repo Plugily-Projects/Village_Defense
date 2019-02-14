@@ -92,7 +92,9 @@ public class Utils {
     Set<Entity> radiusEntities = new HashSet<>();
     for (int chunkX = 0 - chunkRadius; chunkX <= chunkRadius; chunkX++) {
       for (int chunkZ = 0 - chunkRadius; chunkZ <= chunkRadius; chunkZ++) {
-        int x = (int) loc.getX(), y = (int) loc.getY(), z = (int) loc.getZ();
+        int x = (int) loc.getX();
+        int y = (int) loc.getY();
+        int z = (int) loc.getZ();
         for (Entity e : new Location(loc.getWorld(), x + chunkX * 16, y, z + chunkZ * 16).getChunk().getEntities()) {
           if (!(loc.getWorld().getName().equalsIgnoreCase(e.getWorld().getName()))) {
             continue;

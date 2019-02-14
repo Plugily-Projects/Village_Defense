@@ -137,8 +137,8 @@ public class EntityUpgradeMenu {
           return;
         }
         user.setStat(StatsStorage.StatisticType.ORBS, user.getStat(StatsStorage.StatisticType.ORBS) - cost);
-        player.sendMessage(plugin.getChatManager().getPrefix() +
-            plugin.getChatManager().colorMessage("Upgrade-Menu.Upgraded-Entity").replace("%tier%", String.valueOf(nextTier)));
+        player.sendMessage(plugin.getChatManager().getPrefix()
+            + plugin.getChatManager().colorMessage("Upgrade-Menu.Upgraded-Entity").replace("%tier%", String.valueOf(nextTier)));
         applyUpgrade(en, upgrade);
 
         VillagePlayerEntityUpgradeEvent event = new VillagePlayerEntityUpgradeEvent(ArenaRegistry.getArena(player), en, player, upgrade, nextTier);

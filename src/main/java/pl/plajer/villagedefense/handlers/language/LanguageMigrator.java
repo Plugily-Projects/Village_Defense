@@ -212,9 +212,11 @@ public class LanguageMigrator {
               + "    Speed:\r\n" + "      Name: \"&a&lUpgrade Speed\"\r\n"
               + "      Description: \"&7Upgrade movement speed to tier &e%tier%&7!;&7From &e%from% &7to &e%to%;&7Cost of upgrade: &e%cost%;;&eClick to purchase\"\r\n"
               + "    Swarm-Awareness:\r\n" + "      Name: \"&a&lSwarm Awareness\"\r\n"
-              + "      Description: \"&7Upgrade swarm awareness to tier &e%tier%&7!;&7From &e%from% &edamage multiplier per wolf in radius;&eof 3 blocks &7to %to%;&7The more wolves near attacking wolf;&7the more damage wolf deal;&7Cost of upgrade: &e%cost%;;&eClick to purchase\"\r\n"
+              + "      Description: \"&7Upgrade swarm awareness to tier &e%tier%&7!;&7From &e%from% &edamage multiplier per wolf in radius;&eof 3 blocks &7to %to%;&7The more wolves near attacking wolf;"
+              + "&7the more damage wolf deal;&7Cost of upgrade: &e%cost%;;&eClick to purchase\"\r\n"
               + "    Final-Defense:\r\n" + "      Name: \"&a&lFinal Defense\"\r\n"
-              + "      Description: \"&7Upgrade final defense to tier &e%tier%&7!;&7From &e%from% explosion radius &7to &e%to%;&7Golem will explode after death killing nearby;&7zombies and stun all alive ones;&7Cost of upgrade: &e%cost%;;&eClick to purchase\"\r\n"
+              + "      Description: \"&7Upgrade final defense to tier &e%tier%&7!;&7From &e%from% explosion radius &7to &e%to%;&7Golem will explode after death killing nearby;&7zombies and stun all alive ones;"
+              + "&7Cost of upgrade: &e%cost%;;&eClick to purchase\"\r\n"
               + "  Upgraded-Entity: \"&7Upgraded entity to tier &e%tier%&7!\"\r\n" + "  Cannot-Afford: \"&cYou don't have enough orbs to apply that upgrade!\"\r\n"
               + "  Max-Tier: \"&cEntity is at max tier of this upgrade!\"");
         default:

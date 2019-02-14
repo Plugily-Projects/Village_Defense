@@ -182,6 +182,7 @@ public class ArenaEvents implements Listener {
               continue;
             }
             e.getDrops().clear();
+            return;
           default:
             break;
         }

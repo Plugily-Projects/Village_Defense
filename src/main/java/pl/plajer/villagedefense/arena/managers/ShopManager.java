@@ -147,8 +147,8 @@ public class ShopManager {
           if (Utils.isNamed(itemStack)) {
             String name = itemStack.getItemMeta().getDisplayName();
             int spawnedAmount = 0;
-            if (name.contains(plugin.getChatManager().colorMessage("In-Game.Messages.Shop-Messages.Golem-Item-Name")) ||
-                name.contains(DEFAULT_GOLEM_ITEM_NAME)) {
+            if (name.contains(plugin.getChatManager().colorMessage("In-Game.Messages.Shop-Messages.Golem-Item-Name"))
+                || name.contains(DEFAULT_GOLEM_ITEM_NAME)) {
               for (IronGolem golem : arena.getIronGolems()) {
                 if (golem.getCustomName().equals(plugin.getChatManager().colorMessage("In-Game.Spawned-Golem-Name").replace("%player%", player.getName()))) {
                   spawnedAmount++;

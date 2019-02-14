@@ -40,8 +40,8 @@ public class Upgrade {
 
   private Main plugin = JavaPlugin.getPlugin(Main.class);
   private String id;
-  private int x;
-  private int y;
+  private int slotX;
+  private int slotY;
   private EntityType entityType;
   private int maxTier;
   private String name;
@@ -68,16 +68,16 @@ public class Upgrade {
   }
 
   public int getSlotX() {
-    return x;
+    return slotX;
   }
 
   public int getSlotY() {
-    return y;
+    return slotY;
   }
 
   public void setSlot(int x, int y) {
-    this.x = x;
-    this.y = y;
+    this.slotX = x;
+    this.slotY = y;
   }
 
   public EntityType getApplicableFor() {
