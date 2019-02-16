@@ -20,9 +20,9 @@ package pl.plajer.villagedefense.user.data;
 
 import com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException;
 
-import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -44,9 +44,8 @@ public class MySQLManager implements UserDatabase {
 
   public MySQLManager(Main plugin) {
     database = plugin.getMySQLDatabase();
-    try {
-      Connection conn = database.getManager().getConnection();
-      conn.createStatement().executeUpdate("CREATE TABLE IF NOT EXISTS `playerstats` (\n"
+    try (Statement statement = database.getManager().getConnection().createStatement()) {
+      statement.executeUpdate("CREATE TABLE IF NOT EXISTS `playerstats` (\n"
           + "  `UUID` text NOT NULL,\n"
           + "  `name` text NOT NULL,\n"
           + "  `kills` int(11) NOT NULL DEFAULT '0',\n"
@@ -60,13 +59,12 @@ public class MySQLManager implements UserDatabase {
 
       //temporary workaround
       try {
-        conn.createStatement().executeUpdate("ALTER TABLE playerstats ADD `name` text NOT NULL");
+        statement.executeUpdate("ALTER TABLE playerstats ADD `name` text NOT NULL");
       } catch (MySQLSyntaxErrorException e) {
         if (!e.getMessage().contains("Duplicate column name")) {
           e.printStackTrace();
         }
       }
-      database.getManager().closeConnection(conn);
     } catch (SQLException e) {
       e.printStackTrace();
       MessageUtils.errorOccurred();
