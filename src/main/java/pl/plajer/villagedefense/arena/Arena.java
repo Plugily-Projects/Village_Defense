@@ -324,7 +324,6 @@ public abstract class Arena extends BukkitRunnable {
           mapRestorerManager.clearWolvesFromArena();
 
           for (Player player : getPlayers()) {
-            plugin.getUserManager().getUser(player).removeScoreboard();
             player.setGameMode(GameMode.SURVIVAL);
             for (Player players : Bukkit.getOnlinePlayers()) {
               player.showPlayer(players);

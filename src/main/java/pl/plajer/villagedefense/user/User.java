@@ -24,7 +24,6 @@ import java.util.Map;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scoreboard.ScoreboardManager;
 
 import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.api.StatsStorage;
@@ -41,7 +40,6 @@ public class User {
 
   private static Main plugin = JavaPlugin.getPlugin(Main.class);
   private static long cooldownCounter = 0;
-  private ScoreboardManager scoreboardManager = Bukkit.getScoreboardManager();
   private Player player;
   private boolean spectator = false;
   private Kit kit = KitRegistry.getDefaultKit();
@@ -88,10 +86,6 @@ public class User {
       return 0;
     }
     return stats.get(s);
-  }
-
-  public void removeScoreboard() {
-    player.setScoreboard(scoreboardManager.getNewScoreboard());
   }
 
   public void setStat(StatsStorage.StatisticType s, int i) {

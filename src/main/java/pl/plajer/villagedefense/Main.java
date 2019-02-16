@@ -361,7 +361,6 @@ public class Main extends JavaPlugin {
   private void saveAllUserStatistics() {
     for (Player player : getServer().getOnlinePlayers()) {
       User user = userManager.getUser(player);
-      user.removeScoreboard();
 
       //copy of userManager#saveStatistic but without async database call that's not allowed in onDisable method.
       for (StatsStorage.StatisticType stat : StatsStorage.StatisticType.values()) {

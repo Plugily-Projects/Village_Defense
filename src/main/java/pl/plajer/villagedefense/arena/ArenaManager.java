@@ -199,7 +199,6 @@ public class ArenaManager {
     }
     p.setGlowing(false);
     user.setSpectator(false);
-    user.removeScoreboard();
     if (user.getKit() instanceof GolemFriendKit) {
       for (IronGolem ironGolem : arena.getIronGolems()) {
         if (ironGolem.getCustomName().contains(user.getPlayer().getName())) {
@@ -266,11 +265,11 @@ public class ArenaManager {
       }
       ArenaUtils.addExperience(p, arena.getWave());
 
-      plugin.getUserManager().getUser(p).removeScoreboard();
       if (!quickStop) {
         spawnFireworks(arena, p);
       }
     }
+    arena.getScoreboardManager().stopAllScoreboards();
     arena.setOptionValue(ArenaOption.ROTTEN_FLESH_AMOUNT, 0);
     arena.setOptionValue(ArenaOption.ROTTEN_FLESH_LEVEL, 0);
     arena.setOptionValue(ArenaOption.ZOMBIES_TO_SPAWN, 0);

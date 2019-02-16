@@ -85,7 +85,6 @@ public class ScoreboardManager {
    * @see User
    */
   public void removeScoreboard(User user) {
-    user.removeScoreboard();
     for (Scoreboard board : scoreboards) {
       if (board.getHolder().equals(user.getPlayer())) {
         scoreboards.remove(board);
