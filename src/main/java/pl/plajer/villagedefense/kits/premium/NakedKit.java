@@ -112,7 +112,7 @@ public class NakedKit extends PremiumKit implements Listener {
       return;
     }
     User user = getPlugin().getUserManager().getUser((Player) event.getWhoClicked());
-    if (user == null || !ArenaRegistry.isInArena((Player) event.getWhoClicked())) {
+    if (!ArenaRegistry.isInArena((Player) event.getWhoClicked())) {
       return;
     }
     if (!(user.getKit() instanceof NakedKit)) {
@@ -143,7 +143,7 @@ public class NakedKit extends PremiumKit implements Listener {
       return;
     }
     User user = getPlugin().getUserManager().getUser(event.getPlayer());
-    if (user == null || !(user.getKit() instanceof NakedKit) || !event.hasItem()) {
+    if (!(user.getKit() instanceof NakedKit) || !event.hasItem()) {
       return;
     }
     if (armorTypes.contains(event.getItem().getType())) {

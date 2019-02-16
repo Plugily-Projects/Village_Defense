@@ -114,9 +114,9 @@ public class LanguageManager {
       Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "[Village Defense] Your plugin version is too old to use latest locale! Please update plugin to access latest updates of locale!");
       return;
     }
-    try {
-      properties.load(new InputStreamReader(new FileInputStream(plugin.getDataFolder() + "/locales/"
-          + pluginLocale.getPrefix() + ".properties"), StandardCharsets.UTF_8));
+    try (InputStreamReader reader = new InputStreamReader(new FileInputStream(plugin.getDataFolder() + "/locales/"
+        + pluginLocale.getPrefix() + ".properties"), StandardCharsets.UTF_8)) {
+      properties.load(reader);
     } catch (IOException e) {
       e.printStackTrace();
     }

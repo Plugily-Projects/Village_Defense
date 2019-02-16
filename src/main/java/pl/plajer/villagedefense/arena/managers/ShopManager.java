@@ -79,7 +79,7 @@ public class ShopManager {
   public ShopManager(Arena arena) {
     this.config = ConfigUtils.getConfig(JavaPlugin.getPlugin(Main.class), "arenas");
     this.arena = arena;
-    if (config.isSet("instances." + arena.getID() + ".shop")) {
+    if (config.isSet("instances." + arena.getId() + ".shop")) {
       registerShop();
     }
   }
@@ -104,7 +104,7 @@ public class ShopManager {
     if (!validateShop()) {
       return;
     }
-    ItemStack[] contents = ((Chest) LocationUtils.getLocation(config.getString("instances." + arena.getID() + ".shop"))
+    ItemStack[] contents = ((Chest) LocationUtils.getLocation(config.getString("instances." + arena.getId() + ".shop"))
         .getBlock().getState()).getInventory().getContents();
     int i = contents.length;
     Gui gui = new Gui(plugin, MinigameUtils.serializeInt(i) / 9, plugin.getChatManager().colorMessage("In-Game.Messages.Shop-Messages.Shop-GUI-Name"));
@@ -132,7 +132,7 @@ public class ShopManager {
         }
       }
       if (!found) {
-        Debugger.debug(LogLevel.WARN, "No price set for shop item in arena " + arena.getID() + " skipping!");
+        Debugger.debug(LogLevel.WARN, "No price set for shop item in arena " + arena.getId() + " skipping!");
         continue;
       }
       final int cost = Integer.parseInt(costString);
@@ -217,11 +217,11 @@ public class ShopManager {
   }
 
   private boolean validateShop() {
-    if (config.getString("instances." + arena.getID() + ".shop", "").equals("") || config.getString("instances." + arena.getID() + ".shop", "").split(",").length == 0) {
-      Debugger.debug(LogLevel.WARN, "There is no shop for arena " + arena.getID() + "! Aborting registering shop!");
+    if (config.getString("instances." + arena.getId() + ".shop", "").equals("") || config.getString("instances." + arena.getId() + ".shop", "").split(",").length == 0) {
+      Debugger.debug(LogLevel.WARN, "There is no shop for arena " + arena.getId() + "! Aborting registering shop!");
       return false;
     }
-    Location location = LocationUtils.getLocation(config.getString("instances." + arena.getID() + ".shop"));
+    Location location = LocationUtils.getLocation(config.getString("instances." + arena.getId() + ".shop"));
     if (location.getWorld() == null || location.getBlock() == null || !(location.getBlock().getState() instanceof Chest)) {
       Debugger.debug(LogLevel.WARN, "Shop failed to load, invalid location for loc " + location);
       return false;

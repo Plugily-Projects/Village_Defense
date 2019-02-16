@@ -59,7 +59,7 @@ public class CreateArgument {
         }
         Player player = (Player) sender;
         for (Arena arena : ArenaRegistry.getArenas()) {
-          if (arena.getID().equalsIgnoreCase(args[1])) {
+          if (arena.getId().equalsIgnoreCase(args[1])) {
             player.sendMessage(ChatColor.DARK_RED + "Arena with that ID already exists!");
             player.sendMessage(ChatColor.DARK_RED + "Usage: /vd create <ID>");
             return;

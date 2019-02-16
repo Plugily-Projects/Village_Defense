@@ -62,7 +62,7 @@ public class TabCompletion implements TabCompleter {
       if (args.length == 2 && args[0].equalsIgnoreCase("join")) {
         List<String> arenaIds = new ArrayList<>();
         for (Arena arena : ArenaRegistry.getArenas()) {
-          arenaIds.add(arena.getID());
+          arenaIds.add(arena.getId());
         }
         return arenaIds;
       }

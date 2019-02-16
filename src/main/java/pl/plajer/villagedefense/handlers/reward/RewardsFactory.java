@@ -106,7 +106,7 @@ public class RewardsFactory {
 
   private String formatCommandPlaceholders(String command, Arena arena) {
     String formatted = command;
-    formatted = StringUtils.replace(formatted, "%ARENA-ID%", arena.getID());
+    formatted = StringUtils.replace(formatted, "%ARENA-ID%", arena.getId());
     formatted = StringUtils.replace(formatted, "%MAPNAME%", arena.getMapName());
     formatted = StringUtils.replace(formatted, "%PLAYERAMOUNT%", String.valueOf(arena.getPlayers().size()));
     formatted = StringUtils.replace(formatted, "%WAVE%", String.valueOf(arena.getWave()));
@@ -133,8 +133,8 @@ public class RewardsFactory {
         registeredRewards.put(rewardType, registeredRewards.getOrDefault(rewardType, 0) + 1);
       }
     }
-    for (GameReward.RewardType rewardType : registeredRewards.keySet()) {
-      Debugger.debug(LogLevel.INFO, "[RewardsFactory] Registered " + registeredRewards.get(rewardType) + " " + rewardType.name() + " rewards!");
+    for (Map.Entry<GameReward.RewardType, Integer> entry : registeredRewards.entrySet()) {
+      Debugger.debug(LogLevel.INFO, "[RewardsFactory] Registered " + entry.getValue() + " " + entry.getKey().name() + " rewards!");
     }
   }
 

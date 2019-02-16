@@ -123,12 +123,12 @@ public class MapRestorerManager {
           restoreBottomHalfDoorPart(block, doorData);
           i++;
         } catch (Exception ex) {
-          Debugger.debug(LogLevel.WARN, "Door has failed to load for arena " + arena.getID() + ", skipping!");
+          Debugger.debug(LogLevel.WARN, "Door has failed to load for arena " + arena.getId() + ", skipping!");
         }
       }
     }
     if (i != getGameDoorLocations().size()) {
-      Debugger.debug(LogLevel.WARN, "Some doors has failed to load for arena " + arena.getID() + "! Expected "
+      Debugger.debug(LogLevel.WARN, "Some doors has failed to load for arena " + arena.getId() + "! Expected "
           + getGameDoorLocations().size() + " but loaded only " + i + "!");
     }
   }

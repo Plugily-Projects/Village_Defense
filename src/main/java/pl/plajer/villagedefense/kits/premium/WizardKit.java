@@ -124,7 +124,7 @@ public class WizardKit extends PremiumKit implements Listener {
   @EventHandler
   public void onStaffUse(PlayerInteractEvent e) {
     User user = getPlugin().getUserManager().getUser(e.getPlayer());
-    if (user == null || ArenaRegistry.getArena(e.getPlayer()) == null) {
+    if (ArenaRegistry.getArena(e.getPlayer()) == null) {
       return;
     }
     if (!(user.getKit() instanceof WizardKit)) {

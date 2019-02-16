@@ -51,11 +51,7 @@ import pl.plajerlair.core.utils.MinigameUtils;
  */
 public class KitManager implements Listener {
 
-  @Deprecated
-  /*
-   * @deprecated to removal, switch to List<String>
-   */
-  protected String[] description;
+  private String[] description;
   private Main plugin;
   private String itemName;
   private Material material;
@@ -148,9 +144,8 @@ public class KitManager implements Listener {
    *
    * @return description of kit
    */
-  @Deprecated
   public String[] getDescription() {
-    return description;
+    return description.clone();
   }
 
   /**
@@ -159,7 +154,7 @@ public class KitManager implements Listener {
    * @param description description of kit
    */
   public void setDescription(String[] description) {
-    this.description = description;
+    this.description = description.clone();
   }
 
   public String getMenuName() {

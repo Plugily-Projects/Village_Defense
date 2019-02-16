@@ -88,7 +88,7 @@ public class ArenaRegistry {
   public static Arena getArena(String id) {
     Arena arena = null;
     for (Arena loopArena : arenas) {
-      if (loopArena.getID().equalsIgnoreCase(id)) {
+      if (loopArena.getId().equalsIgnoreCase(id)) {
         arena = loopArena;
         break;
       }
@@ -97,12 +97,12 @@ public class ArenaRegistry {
   }
 
   public static void registerArena(Arena arena) {
-    Debugger.debug(LogLevel.INFO, "Registering new game instance, " + arena.getID());
+    Debugger.debug(LogLevel.INFO, "Registering new game instance, " + arena.getId());
     arenas.add(arena);
   }
 
   public static void unregisterArena(Arena arena) {
-    Debugger.debug(LogLevel.INFO, "Unegistering game instance, " + arena.getID());
+    Debugger.debug(LogLevel.INFO, "Unegistering game instance, " + arena.getId());
     arenas.remove(arena);
   }
 

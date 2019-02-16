@@ -116,7 +116,7 @@ public class Events implements Listener {
     for (Map.Entry<String, Integer> perm : plugin.getConfigPreferences().getCustomPermissions().entrySet()) {
       if (event.getPlayer().hasPermission(perm.getKey())) {
         int orbs = perm.getValue() / 100;
-        amount = +(int) Math.ceil(event.getAmount() * orbs);
+        amount = +(int) Math.ceil(event.getAmount() * (double) orbs);
         user.addStat(StatsStorage.StatisticType.ORBS, (int) Math.ceil(event.getAmount() * orbs));
       }
     }
@@ -138,7 +138,7 @@ public class Events implements Listener {
   }
 
   @EventHandler
-  public void onPickUp(PlayerPickupItemEvent event) {
+  public void onItemPickup(PlayerPickupItemEvent event) {
     Arena arena = ArenaRegistry.getArena(event.getPlayer());
     if (arena == null) {
       return;

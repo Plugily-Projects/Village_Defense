@@ -39,7 +39,7 @@ public class StatsArgument {
       @Override
       public void execute(CommandSender sender, String[] args) {
         Player player = args.length == 2 ? Bukkit.getPlayerExact(args[1]) : (Player) sender;
-        if (player == null || registry.getPlugin().getUserManager().getUser(player) == null) {
+        if (player == null) {
           sender.sendMessage(registry.getPlugin().getChatManager().getPrefix() + registry.getPlugin().getChatManager().colorMessage("Commands.Admin-Commands.Player-Not-Found"));
           return;
         }

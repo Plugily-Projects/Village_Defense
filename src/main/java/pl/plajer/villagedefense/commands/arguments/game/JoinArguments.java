@@ -50,7 +50,7 @@ public class JoinArguments {
           return;
         }
         for (Arena arena : ArenaRegistry.getArenas()) {
-          if (args[1].equalsIgnoreCase(arena.getID())) {
+          if (args[1].equalsIgnoreCase(arena.getId())) {
             ArenaManager.joinAttempt((Player) sender, arena);
             return;
           }

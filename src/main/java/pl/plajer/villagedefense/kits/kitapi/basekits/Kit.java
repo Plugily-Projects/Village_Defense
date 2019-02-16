@@ -82,11 +82,11 @@ public abstract class Kit {
   }
 
   public String[] getDescription() {
-    return description;
+    return description.clone();
   }
 
   public void setDescription(String[] description) {
-    this.description = description;
+    this.description = description.clone();
   }
 
   public abstract void giveKitItems(Player player);

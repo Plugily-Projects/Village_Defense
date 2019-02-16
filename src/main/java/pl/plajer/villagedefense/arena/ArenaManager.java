@@ -167,7 +167,7 @@ public class ArenaManager {
     }
 
     if (!plugin.getConfigPreferences().getOption(ConfigPreferences.Option.BUNGEE_ENABLED)) {
-      if (!(p.hasPermission(PermissionsManager.getJoinPerm().replace("<arena>", "*")) || p.hasPermission(PermissionsManager.getJoinPerm().replace("<arena>", arena.getID())))) {
+      if (!(p.hasPermission(PermissionsManager.getJoinPerm().replace("<arena>", "*")) || p.hasPermission(PermissionsManager.getJoinPerm().replace("<arena>", arena.getId())))) {
         p.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage("In-Game.Join-No-Permission"));
         return false;
       }
@@ -243,7 +243,7 @@ public class ArenaManager {
    * @see VillageGameStopEvent
    */
   public static void stopGame(boolean quickStop, Arena arena) {
-    Debugger.debug(LogLevel.INFO, "Game stop event initiate, arena " + arena.getID());
+    Debugger.debug(LogLevel.INFO, "Game stop event initiate, arena " + arena.getId());
     VillageGameStopEvent villageGameStopEvent = new VillageGameStopEvent(arena);
     Bukkit.getPluginManager().callEvent(villageGameStopEvent);
     String summaryEnding;
@@ -281,7 +281,7 @@ public class ArenaManager {
     }
     arena.getMapRestorerManager().fullyRestoreArena();
     arena.setArenaState(ArenaState.ENDING);
-    Debugger.debug(LogLevel.INFO, "Game stop event finish, arena " + arena.getID());
+    Debugger.debug(LogLevel.INFO, "Game stop event finish, arena " + arena.getId());
   }
 
   private static String formatSummaryPlaceholders(String msg, Arena a, User user, String summary) {
@@ -360,14 +360,14 @@ public class ArenaManager {
     int zombiesAmount = (int) Math.ceil((arena.getPlayers().size() * 0.5) * (arena.getOption(ArenaOption.WAVE) * arena.getOption(ArenaOption.WAVE)) / 2);
     if (zombiesAmount > 750) {
       arena.setOptionValue(ArenaOption.ZOMBIE_DIFFICULTY_MULTIPLIER, (int) Math.ceil((zombiesAmount - 750.0) / 15));
-      Debugger.debug(LogLevel.INFO, "Detected abnormal wave (" + arena.getWave() + ") in arena " + arena.getID() + "! Applying zombie limit and difficulty multiplier to "
+      Debugger.debug(LogLevel.INFO, "Detected abnormal wave (" + arena.getWave() + ") in arena " + arena.getId() + "! Applying zombie limit and difficulty multiplier to "
           + arena.getOption(ArenaOption.ZOMBIE_DIFFICULTY_MULTIPLIER));
       zombiesAmount = 750;
     }
     arena.setOptionValue(ArenaOption.ZOMBIES_TO_SPAWN, zombiesAmount);
     arena.setOptionValue(ArenaOption.ZOMBIE_IDLE_PROCESS, (int) Math.floor((double) arena.getWave() / 15));
     if (arena.getOption(ArenaOption.ZOMBIE_IDLE_PROCESS) > 0) {
-      Debugger.debug(LogLevel.INFO, "Spawn idle process initiated for arena " + arena.getID() + " to prevent server overload! Value: " + arena.getOption(ArenaOption.ZOMBIE_IDLE_PROCESS));
+      Debugger.debug(LogLevel.INFO, "Spawn idle process initiated for arena " + arena.getId() + " to prevent server overload! Value: " + arena.getOption(ArenaOption.ZOMBIE_IDLE_PROCESS));
     }
     if (plugin.getConfig().getBoolean("Respawn-After-Wave", true)) {
       ArenaUtils.bringDeathPlayersBack(arena);

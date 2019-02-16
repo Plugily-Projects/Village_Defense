@@ -112,6 +112,7 @@ public class LanguageMigrator {
               + "  Damage-Tiers:\r\n" + "    '1': 150\r\n" + "    '2': 300\r\n" + "    '3': 450\r\n" + "    '4': 600\r\n"
               + "  Speed-Tiers:\r\n" + "    '1': 50\r\n" + "    '2': 100\r\n" + "    '3': 150\r\n" + "    '4': 250\r\n"
               + "  Final-Defense-Tiers:\r\n" + "    '1': 200\r\n" + "    '2': 350\r\n" + "  Swarm-Awareness-Tiers:\r\n" + "    '1': 200\r\n" + "    '2': 350");
+          break;
         default:
           break;
       }
@@ -219,6 +220,7 @@ public class LanguageMigrator {
               + "&7Cost of upgrade: &e%cost%;;&eClick to purchase\"\r\n"
               + "  Upgraded-Entity: \"&7Upgraded entity to tier &e%tier%&7!\"\r\n" + "  Cannot-Afford: \"&cYou don't have enough orbs to apply that upgrade!\"\r\n"
               + "  Max-Tier: \"&cEntity is at max tier of this upgrade!\"");
+          break;
         default:
           break;
       }
@@ -232,10 +234,15 @@ public class LanguageMigrator {
     MessageUtils.gonnaMigrate();
     Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "Village Defense is migrating all files to the new file format...");
     Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "Don't worry! Old files will be renamed not overridden!");
-    for (String file : migratable) {
-      if (ConfigUtils.getFile(plugin, file).exists()) {
-        ConfigUtils.getFile(plugin, file).renameTo(new File(plugin.getDataFolder(), "VD2_" + file + ".yml"));
-        Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "Renamed file " + file + ".yml");
+    for (String fileName : migratable) {
+      File file = ConfigUtils.getFile(plugin, fileName);
+      if (file.exists()) {
+        boolean success = file.renameTo(new File(plugin.getDataFolder(), plugin.getDataFolder() + "/VD2_" + file + ".yml"));
+        if (success) {
+          Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "Renamed file " + file + ".yml");
+          continue;
+        }
+        Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "Couldn't rename file " + file + ".yml. Problems might occur!");
       }
     }
     Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "Done! Enabling Village Defense...");

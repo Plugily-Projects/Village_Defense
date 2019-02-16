@@ -126,13 +126,13 @@ public class ArenaUtils {
     User user = plugin.getUserManager().getUser(player);
     user.addStat(StatsStorage.StatisticType.XP, i);
     if (player.hasPermission(PermissionsManager.getVip())) {
-      user.addStat(StatsStorage.StatisticType.XP, (int) Math.ceil(i / 2));
+      user.addStat(StatsStorage.StatisticType.XP, (int) Math.ceil(i / 2.0));
     }
     if (player.hasPermission(PermissionsManager.getMvp())) {
-      user.addStat(StatsStorage.StatisticType.XP, (int) Math.ceil(i / 2));
+      user.addStat(StatsStorage.StatisticType.XP, (int) Math.ceil(i / 2.0));
     }
     if (player.hasPermission(PermissionsManager.getElite())) {
-      user.addStat(StatsStorage.StatisticType.XP, (int) Math.ceil(i / 2));
+      user.addStat(StatsStorage.StatisticType.XP, (int) Math.ceil(i / 2.0));
     }
     ArenaUtils.updateLevelStat(player, ArenaRegistry.getArena(player));
   }

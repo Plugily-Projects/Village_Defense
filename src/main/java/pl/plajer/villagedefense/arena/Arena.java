@@ -402,7 +402,7 @@ public abstract class Arena extends BukkitRunnable {
       return;
     }
     if (getVillagerSpawns() == null || getVillagerSpawns().size() <= 0) {
-      Debugger.debug(LogLevel.WARN, "No villager spawns for " + getID() + ", game won't start");
+      Debugger.debug(LogLevel.WARN, "No villager spawns for " + getId() + ", game won't start");
       return;
     }
     for (Location location : getVillagerSpawns()) {
@@ -425,7 +425,7 @@ public abstract class Arena extends BukkitRunnable {
    * @return arena name
    * @see ArenaRegistry#getArena(String)
    */
-  public String getID() {
+  public String getId() {
     return id;
   }
 
@@ -455,7 +455,7 @@ public abstract class Arena extends BukkitRunnable {
    * Get arena map name.
    *
    * @return arena map name, [b]it's not arena id[/b]
-   * @see #getID()
+   * @see #getId()
    */
   public String getMapName() {
     return mapName;
@@ -547,7 +547,7 @@ public abstract class Arena extends BukkitRunnable {
     }
     Location location = getLobbyLocation();
     if (location == null) {
-      Debugger.debug(LogLevel.WARN, "Lobby location of arena " + getID() + " doesn't exist!");
+      Debugger.debug(LogLevel.WARN, "Lobby location of arena " + getId() + " doesn't exist!");
     }
     player.teleport(location);
   }
@@ -592,7 +592,7 @@ public abstract class Arena extends BukkitRunnable {
     if (gameLocations.get(GameLocation.START) != null) {
       player.teleport(gameLocations.get(GameLocation.START));
     } else {
-      Debugger.debug(LogLevel.WARN, "Start location of arena " + getID() + " doesn't exist!");
+      Debugger.debug(LogLevel.WARN, "Start location of arena " + getId() + " doesn't exist!");
     }
   }
 
@@ -601,7 +601,7 @@ public abstract class Arena extends BukkitRunnable {
       if (gameLocations.get(GameLocation.START) != null) {
         player.teleport(gameLocations.get(GameLocation.START));
       } else {
-        Debugger.debug(LogLevel.WARN, "Start location of arena " + getID() + " doesn't exist!");
+        Debugger.debug(LogLevel.WARN, "Start location of arena " + getId() + " doesn't exist!");
       }
     }
   }
@@ -617,7 +617,7 @@ public abstract class Arena extends BukkitRunnable {
 
     if (location == null) {
       location = getLobbyLocation();
-      Debugger.debug(LogLevel.WARN, "Ending location of arena " + getID() + " doesn't exist!");
+      Debugger.debug(LogLevel.WARN, "Ending location of arena " + getId() + " doesn't exist!");
     }
     for (Player player : getPlayers()) {
       player.teleport(location);
@@ -632,7 +632,7 @@ public abstract class Arena extends BukkitRunnable {
     Location location = getEndLocation();
     if (location == null) {
       location = getLobbyLocation();
-      Debugger.debug(LogLevel.WARN, "Ending location of arena " + getID() + " doesn't exist!");
+      Debugger.debug(LogLevel.WARN, "Ending location of arena " + getId() + " doesn't exist!");
     }
 
     player.teleport(location);
@@ -657,7 +657,7 @@ public abstract class Arena extends BukkitRunnable {
   }
 
   public void start() {
-    Debugger.debug(LogLevel.INFO, "Game instance started, arena " + this.getID());
+    Debugger.debug(LogLevel.INFO, "Game instance started, arena " + this.getId());
     this.runTaskTimer(plugin, 20L, 20L);
     this.setArenaState(ArenaState.RESTARTING);
   }

@@ -19,6 +19,8 @@
 package pl.plajer.villagedefense.creatures;
 
 import java.lang.reflect.Field;
+import java.security.AccessController;
+import java.security.PrivilegedAction;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -64,7 +66,10 @@ public class CreatureUtils {
     try {
       field = clazz.getDeclaredField(fieldName);
 
-      field.setAccessible(true);
+      AccessController.doPrivileged((PrivilegedAction<Object>) () -> {
+        field.setAccessible(true);
+        return null;
+      });
 
       o = field.get(object);
       cachedObjects.add(new CachedObject(fieldName, clazz, o));
@@ -100,6 +105,6 @@ public class CreatureUtils {
   }
 
   public static String[] getVillagerNames() {
-    return villagerNames;
+    return villagerNames.clone();
   }
 }

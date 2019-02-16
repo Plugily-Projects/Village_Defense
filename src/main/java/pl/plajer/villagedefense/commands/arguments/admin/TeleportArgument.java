@@ -59,7 +59,7 @@ public class TeleportArgument {
           return;
         }
         for (Arena arena : ArenaRegistry.getArenas()) {
-          if (arena.getID().equalsIgnoreCase(args[1])) {
+          if (arena.getId().equalsIgnoreCase(args[1])) {
             teleport(player, arena, LocationType.valueOf(args[2].toUpperCase()));
           }
         }
@@ -75,7 +75,7 @@ public class TeleportArgument {
           return;
         }
         arena.teleportToLobby(player);
-        player.sendMessage(ChatColor.GRAY + "Teleported to LOBBY location from arena " + arena.getID());
+        player.sendMessage(ChatColor.GRAY + "Teleported to LOBBY location from arena " + arena.getId());
         break;
       case START:
         if (arena.getLobbyLocation() == null) {
@@ -83,7 +83,7 @@ public class TeleportArgument {
           return;
         }
         arena.teleportToStartLocation(player);
-        player.sendMessage(ChatColor.GRAY + "Teleported to START location from arena " + arena.getID());
+        player.sendMessage(ChatColor.GRAY + "Teleported to START location from arena " + arena.getId());
         break;
       case END:
         if (arena.getLobbyLocation() == null) {
@@ -91,7 +91,7 @@ public class TeleportArgument {
           return;
         }
         arena.teleportToEndLocation(player);
-        player.sendMessage(ChatColor.GRAY + "Teleported to END location from arena " + arena.getID());
+        player.sendMessage(ChatColor.GRAY + "Teleported to END location from arena " + arena.getId());
         break;
       default:
         break; //o.o

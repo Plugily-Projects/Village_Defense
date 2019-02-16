@@ -48,7 +48,7 @@ public class SetupInventory {
   private Inventory inventory;
 
   public SetupInventory(Arena arena) {
-    this.inventory = Bukkit.createInventory(null, 9 * 2, "Arena VD: " + arena.getID());
+    this.inventory = Bukkit.createInventory(null, 9 * 2, "Arena VD: " + arena.getId());
 
     inventory.setItem(ClickPosition.SET_ENDING.getPosition(), new ItemBuilder(new ItemStack(Material.REDSTONE_BLOCK))
         .name(ChatColor.GOLD + "► Set" + ChatColor.RED + " ending " + ChatColor.GOLD + "location")
@@ -56,13 +56,13 @@ public class SetupInventory {
         .lore(ChatColor.GRAY + "on the place where you are standing.")
         .lore(ChatColor.DARK_GRAY + "(location where players will be teleported")
         .lore(ChatColor.DARK_GRAY + "after the game)")
-        .lore(isOptionDoneBool("instances." + arena.getID() + ".Endlocation"))
+        .lore(isOptionDoneBool("instances." + arena.getId() + ".Endlocation"))
         .build());
     inventory.setItem(ClickPosition.SET_LOBBY.getPosition(), new ItemBuilder(new ItemStack(Material.LAPIS_BLOCK))
         .name(ChatColor.GOLD + "► Set" + ChatColor.WHITE + " lobby " + ChatColor.GOLD + "location")
         .lore(ChatColor.GRAY + "Click to set the lobby location")
         .lore(ChatColor.GRAY + "on the place where you are standing")
-        .lore(isOptionDoneBool("instances." + arena.getID() + ".lobbylocation"))
+        .lore(isOptionDoneBool("instances." + arena.getId() + ".lobbylocation"))
         .build());
     inventory.setItem(ClickPosition.SET_STARTING.getPosition(), new ItemBuilder(new ItemStack(Material.EMERALD_BLOCK))
         .name(ChatColor.GOLD + "► Set" + ChatColor.YELLOW + " starting " + ChatColor.GOLD + "location")
@@ -70,10 +70,10 @@ public class SetupInventory {
         .lore(ChatColor.GRAY + "on the place where you are standing.")
         .lore(ChatColor.DARK_GRAY + "(location where players will be teleported")
         .lore(ChatColor.DARK_GRAY + "when game starts)")
-        .lore(isOptionDoneBool("instances." + arena.getID() + ".Startlocation"))
+        .lore(isOptionDoneBool("instances." + arena.getId() + ".Startlocation"))
         .build());
 
-    int min = ConfigUtils.getConfig(plugin, "arenas").getInt("instances." + arena.getID() + ".minimumplayers");
+    int min = ConfigUtils.getConfig(plugin, "arenas").getInt("instances." + arena.getId() + ".minimumplayers");
     if (min == 0) {
       min = 1;
     }
@@ -83,15 +83,15 @@ public class SetupInventory {
         .lore(ChatColor.GRAY + "RIGHT click to increase")
         .lore(ChatColor.DARK_GRAY + "(how many players are needed")
         .lore(ChatColor.DARK_GRAY + "for game to start lobby countdown)")
-        .lore(isOptionDone("instances." + arena.getID() + ".minimumplayers"))
+        .lore(isOptionDone("instances." + arena.getId() + ".minimumplayers"))
         .build());
     inventory.setItem(ClickPosition.SET_MAXIMUM_PLAYERS.getPosition(), new ItemBuilder(new ItemStack(Material.REDSTONE,
-        ConfigUtils.getConfig(plugin, "arenas").getInt("instances." + arena.getID() + ".maximumplayers")))
+        ConfigUtils.getConfig(plugin, "arenas").getInt("instances." + arena.getId() + ".maximumplayers")))
         .name(ChatColor.GOLD + "► Set" + ChatColor.GREEN + " maximum players " + ChatColor.GOLD + "size")
         .lore(ChatColor.GRAY + "LEFT click to decrease")
         .lore(ChatColor.GRAY + "RIGHT click to increase")
         .lore(ChatColor.DARK_GRAY + "(how many players arena can hold)")
-        .lore(isOptionDone("instances." + arena.getID() + ".maximumplayers"))
+        .lore(isOptionDone("instances." + arena.getId() + ".maximumplayers"))
         .build());
 
     if (!plugin.getConfigPreferences().getOption(ConfigPreferences.Option.BUNGEE_ENABLED)) {
@@ -113,18 +113,18 @@ public class SetupInventory {
         .name(ChatColor.GOLD + "► Add" + ChatColor.GREEN + " villager " + ChatColor.GOLD + "spawn")
         .lore(ChatColor.GRAY + "Add new villager spawn")
         .lore(ChatColor.GRAY + "on the place you're standing at.")
-        .lore(isOptionDoneList("instances." + arena.getID() + ".villagerspawns"))
+        .lore(isOptionDoneList("instances." + arena.getId() + ".villagerspawns"))
         .build());
     inventory.setItem(ClickPosition.ADD_ZOMBIE_SPAWN.getPosition(), (new ItemBuilder(new ItemStack(Material.ROTTEN_FLESH))
         .name(ChatColor.GOLD + "► Add" + ChatColor.BLUE + " zombie " + ChatColor.GOLD + "spawn")
         .lore(ChatColor.GRAY + "Add new zombie spawn")
         .lore(ChatColor.GRAY + "on the place you're standing at.")
-        .lore(isOptionDoneList("instances." + arena.getID() + ".zombiespawns"))
+        .lore(isOptionDoneList("instances." + arena.getId() + ".zombiespawns"))
         .build()));
     inventory.setItem(ClickPosition.ADD_DOORS.getPosition(), new ItemBuilder(new ItemStack(CompatMaterialConstants.OAK_DOOR_ITEM))
         .name(ChatColor.GOLD + "► Add doors")
         .lore(ChatColor.GRAY + "Target arena door and click this.")
-        .lore(isOptionDoneList("instances." + arena.getID() + ".doors"))
+        .lore(isOptionDoneList("instances." + arena.getId() + ".doors"))
         .build());
     inventory.setItem(ClickPosition.SET_CHEST_SHOP.getPosition(), new ItemBuilder(new ItemStack(Material.CHEST))
         .name(ChatColor.GOLD + "► Set" + ChatColor.LIGHT_PURPLE + " chest " + ChatColor.GOLD + "shop")
