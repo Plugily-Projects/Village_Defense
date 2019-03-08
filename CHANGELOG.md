@@ -1,8 +1,9 @@
 # Village Defense Changelog
 
-### 4.1.0 Release (14.02.2019)
+### 4.1.0 Release (14.02.2019 - 08.03.2019)
 * Abandoned the direct try-catch exception handling in most of methods and event listeners in favour of
 logger listening, code looks better now
+* Fixed Signs weren't updating if Signs-Block-States-Enabled option was false
 
 ### 4.0.4 Release (10.02.2019)
 * Added Valentine's Day effects like heart arrow trails and special healing power-up

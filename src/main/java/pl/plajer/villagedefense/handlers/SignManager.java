@@ -198,51 +198,50 @@ public class SignManager implements Listener {
   }
 
   private void updateSignScheduler() {
-    if (!plugin.getConfig().getBoolean("Signs-Block-States-Enabled", true)) {
-      return;
-    }
     Bukkit.getScheduler().runTaskTimer(plugin, () -> {
       for (Map.Entry<Sign, Arena> entry : loadedSigns.entrySet()) {
-        Sign s = entry.getKey();
+        Sign sign = entry.getKey();
         for (int i = 0; i < signLines.size(); i++) {
-          s.setLine(i, formatSign(signLines.get(i), loadedSigns.get(s)));
+          sign.setLine(i, formatSign(signLines.get(i), loadedSigns.get(sign)));
         }
-        Block behind = s.getBlock().getRelative(((org.bukkit.material.Sign) s.getData()).getAttachedFace());
-        switch (entry.getValue().getArenaState()) {
-          case WAITING_FOR_PLAYERS:
-            behind.setType(XMaterial.WHITE_STAINED_GLASS.parseMaterial());
-            if (plugin.is1_11_R1() || plugin.is1_12_R1()) {
-              behind.setData((byte) 0);
-            }
-            break;
-          case STARTING:
-            behind.setType(XMaterial.YELLOW_STAINED_GLASS.parseMaterial());
-            if (plugin.is1_11_R1() || plugin.is1_12_R1()) {
-              behind.setData((byte) 4);
-            }
-            break;
-          case IN_GAME:
-            behind.setType(XMaterial.ORANGE_STAINED_GLASS.parseMaterial());
-            if (plugin.is1_11_R1() || plugin.is1_12_R1()) {
-              behind.setData((byte) 1);
-            }
-            break;
-          case ENDING:
-            behind.setType(XMaterial.GRAY_STAINED_GLASS.parseMaterial());
-            if (plugin.is1_11_R1() || plugin.is1_12_R1()) {
-              behind.setData((byte) 7);
-            }
-            break;
-          case RESTARTING:
-            behind.setType(XMaterial.BLACK_STAINED_GLASS.parseMaterial());
-            if (plugin.is1_11_R1() || plugin.is1_12_R1()) {
-              behind.setData((byte) 15);
-            }
-            break;
-          default:
-            break;
+        if (plugin.getConfig().getBoolean("Signs-Block-States-Enabled", true)) {
+          Block behind = sign.getBlock().getRelative(((org.bukkit.material.Sign) sign.getData()).getAttachedFace());
+          switch (entry.getValue().getArenaState()) {
+            case WAITING_FOR_PLAYERS:
+              behind.setType(XMaterial.WHITE_STAINED_GLASS.parseMaterial());
+              if (plugin.is1_11_R1() || plugin.is1_12_R1()) {
+                behind.setData((byte) 0);
+              }
+              break;
+            case STARTING:
+              behind.setType(XMaterial.YELLOW_STAINED_GLASS.parseMaterial());
+              if (plugin.is1_11_R1() || plugin.is1_12_R1()) {
+                behind.setData((byte) 4);
+              }
+              break;
+            case IN_GAME:
+              behind.setType(XMaterial.ORANGE_STAINED_GLASS.parseMaterial());
+              if (plugin.is1_11_R1() || plugin.is1_12_R1()) {
+                behind.setData((byte) 1);
+              }
+              break;
+            case ENDING:
+              behind.setType(XMaterial.GRAY_STAINED_GLASS.parseMaterial());
+              if (plugin.is1_11_R1() || plugin.is1_12_R1()) {
+                behind.setData((byte) 7);
+              }
+              break;
+            case RESTARTING:
+              behind.setType(XMaterial.BLACK_STAINED_GLASS.parseMaterial());
+              if (plugin.is1_11_R1() || plugin.is1_12_R1()) {
+                behind.setData((byte) 15);
+              }
+              break;
+            default:
+              break;
+          }
         }
-        s.update();
+        sign.update();
       }
     }, 10, 10);
   }
