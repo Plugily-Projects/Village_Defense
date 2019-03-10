@@ -20,6 +20,7 @@ package pl.plajer.villagedefense.handlers.setup;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -264,9 +265,9 @@ public class SetupInventoryEvents implements Listener {
         List<Sign> signsToUpdate = new ArrayList<>();
         ArenaRegistry.unregisterArena(arena);
         if (plugin.getSignManager().getLoadedSigns().containsValue(arena)) {
-          for (Sign s : plugin.getSignManager().getLoadedSigns().keySet()) {
-            if (plugin.getSignManager().getLoadedSigns().get(s).equals(arena)) {
-              signsToUpdate.add(s);
+          for (Map.Entry<Sign, Arena> entry : plugin.getSignManager().getLoadedSigns().entrySet()) {
+            if (entry.getValue().equals(arena)) {
+              signsToUpdate.add(entry.getKey());
             }
           }
         }
