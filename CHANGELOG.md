@@ -1,6 +1,9 @@
 # Village Defense Changelog
 
-### 4.1.0 Release (14.02.2019 - 08.03.2019)
+### 4.2.0 Release (13.03.2019)
+* Added Russian locale (thanks to POEditor contributors!)
+
+### 4.1.0 Release (14.02.2019 - 10.03.2019)
 * Abandoned the direct try-catch exception handling in most of methods and event listeners in favour of
 logger listening, code looks better now
 * Fixed Signs weren't updating if Signs-Block-States-Enabled option was false

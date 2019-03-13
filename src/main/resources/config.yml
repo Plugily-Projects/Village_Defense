@@ -14,7 +14,7 @@
 #    hu - Magyar nyelv              zh - 简体中文
 #    ro - Limba română              cs - Český jazyk
 #    pt_br - Português Brasileiro   lt - Lietuvių kalba
-#    it - Lingua italiana
+#    it - Lingua italiana           ru - Русский язык
 locale: default
 
 # Enable bossbar support?
