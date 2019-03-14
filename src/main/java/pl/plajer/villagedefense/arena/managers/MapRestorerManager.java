@@ -122,7 +122,7 @@ public class MapRestorerManager {
           }
           restoreBottomHalfDoorPart(block, doorData);
           i++;
-        } catch (Exception ex) {
+        } catch (Throwable t) {
           Debugger.debug(LogLevel.WARN, "Door has failed to load for arena " + arena.getId() + ", skipping!");
         }
       }
