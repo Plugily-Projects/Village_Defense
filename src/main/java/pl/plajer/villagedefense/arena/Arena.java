@@ -142,7 +142,7 @@ public abstract class Arena extends BukkitRunnable {
 
   public void run() {
     //idle task
-    if (getPlayers().size() == 0 && getArenaState() == ArenaState.WAITING_FOR_PLAYERS) {
+    if (getPlayers().isEmpty() && getArenaState() == ArenaState.WAITING_FOR_PLAYERS) {
       return;
     }
     switch (getArenaState()) {
@@ -408,7 +408,7 @@ public abstract class Arena extends BukkitRunnable {
     for (Location location : getVillagerSpawns()) {
       spawnVillager(location);
     }
-    if (getVillagers().size() == 0) {
+    if (getVillagers().isEmpty()) {
       Debugger.debug(LogLevel.WARN, "There was a problem with spawning villagers for arena " + id + "! Are villager spawns set in safe and valid locations?");
       return;
     }
