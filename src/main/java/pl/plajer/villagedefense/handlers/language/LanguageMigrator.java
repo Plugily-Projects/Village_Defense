@@ -132,7 +132,7 @@ public class LanguageMigrator {
     if (NumberUtils.isNumber(ConfigUtils.getConfig(plugin, "language").getString("File-Version-Do-Not-Edit"))) {
       version = Integer.parseInt(ConfigUtils.getConfig(plugin, "language").getString("File-Version-Do-Not-Edit"));
     } else {
-      Bukkit.broadcastMessage("Failed to parse language file version!");
+      Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "[Village Defense] [System notify] Failed to parse language file version!");
     }
     updateLanguageVersionControl(version);
 

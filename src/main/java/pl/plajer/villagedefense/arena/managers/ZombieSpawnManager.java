@@ -160,11 +160,11 @@ public class ZombieSpawnManager {
     //Idling to ~~save server stability~~ protect against hordes of zombies
     if (localIdleProcess > 0) {
       localIdleProcess--;
-      return true;
+      return false;
     } else {
       applyIdle(arena.getOption(ArenaOption.ZOMBIE_IDLE_PROCESS));
       //continue spawning
-      return false;
+      return true;
     }
   }
 

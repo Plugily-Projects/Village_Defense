@@ -1,7 +1,8 @@
 # Village Defense Changelog
 
-### 4.2.0 Release (13.03.2019)
+### 4.1.1 Release (13/14.03.2019)
 * Added Russian locale (thanks to POEditor contributors!)
+* Fixed zombies couldn't even spawn in any arena
 
 ### 4.1.0 Release (14.02.2019 - 10.03.2019)
 * Abandoned the direct try-catch exception handling in most of methods and event listeners in favour of
