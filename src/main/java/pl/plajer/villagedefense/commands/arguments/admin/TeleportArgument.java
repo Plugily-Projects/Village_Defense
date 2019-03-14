@@ -54,7 +54,7 @@ public class TeleportArgument {
         Player player = (Player) sender;
         try {
           LocationType.valueOf(args[2].toUpperCase());
-        } catch (Exception e) {
+        } catch (Throwable e) {
           sender.sendMessage(registry.getPlugin().getChatManager().getPrefix() + registry.getPlugin().getChatManager().colorMessage("Commands.Location-Teleport-Invalid"));
           return;
         }
