@@ -217,7 +217,8 @@ public class ShopManager {
   }
 
   private boolean validateShop() {
-    if (config.getString("instances." + arena.getId() + ".shop", "").equals("") || config.getString("instances." + arena.getId() + ".shop", "").split(",").length == 0) {
+    if (!config.contains("instances." + arena.getId() + ".shop", "") || config.getString("instances." + arena.getId() + ".shop", "").equals("")
+        || config.getString("instances." + arena.getId() + ".shop", "").split(",").length == 0) {
       Debugger.debug(LogLevel.WARN, "There is no shop for arena " + arena.getId() + "! Aborting registering shop!");
       return false;
     }
