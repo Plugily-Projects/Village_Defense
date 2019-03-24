@@ -45,7 +45,7 @@ public class LeaderboardArgument {
   public LeaderboardArgument(ArgumentsRegistry registry) {
     List<String> stats = new ArrayList<>();
     for (StatsStorage.StatisticType val : StatsStorage.StatisticType.values()) {
-      if (!val.isPersistent()) {
+      if (!val.isPersistent() || val == StatsStorage.StatisticType.XP) {
         continue;
       }
       stats.add(val.name().toLowerCase());

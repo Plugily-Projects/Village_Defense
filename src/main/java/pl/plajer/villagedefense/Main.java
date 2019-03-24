@@ -66,6 +66,7 @@ import pl.plajer.villagedefense.kits.kitapi.KitManager;
 import pl.plajer.villagedefense.kits.kitapi.KitRegistry;
 import pl.plajer.villagedefense.user.User;
 import pl.plajer.villagedefense.user.UserManager;
+import pl.plajer.villagedefense.user.data.MySQLManager;
 import pl.plajer.villagedefense.utils.ExceptionLogHandler;
 import pl.plajer.villagedefense.utils.LegacyDataFixer;
 import pl.plajer.villagedefense.utils.MessageUtils;
@@ -367,11 +368,11 @@ public class Main extends JavaPlugin {
         if (!stat.isPersistent()) {
           continue;
         }
-        if (getConfigPreferences().getOption(ConfigPreferences.Option.DATABASE_ENABLED)) {
-          userManager.getMySQLManager().saveStatistic(user, stat);
+        if (userManager.getDatabase() instanceof MySQLManager) {
+          ((MySQLManager) userManager.getDatabase()).getDatabase().executeUpdate("UPDATE playerstats SET " + stat.getName() + "=" + user.getStat(stat) + " WHERE UUID='" + user.getPlayer().getUniqueId().toString() + "';");
           continue;
         }
-        userManager.getFileStats().saveStatistic(user, stat);
+        userManager.getDatabase().saveStatistic(user, stat);
       }
     }
   }

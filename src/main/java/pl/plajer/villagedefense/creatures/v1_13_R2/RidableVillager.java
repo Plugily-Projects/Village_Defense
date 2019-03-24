@@ -21,7 +21,6 @@ package pl.plajer.villagedefense.creatures.v1_13_R2;
 import java.util.LinkedHashSet;
 import java.util.Random;
 
-import net.minecraft.server.v1_13_R2.ChatMessage;
 import net.minecraft.server.v1_13_R2.Entity;
 import net.minecraft.server.v1_13_R2.EntityAgeable;
 import net.minecraft.server.v1_13_R2.EntityHuman;
@@ -92,7 +91,7 @@ public class RidableVillager extends EntityVillager {
     this.goalSelector.a(9, new PathfinderGoalRandomStroll(this, 0.6D));
     this.goalSelector.a(10, new PathfinderGoalLookAtPlayer(this,
         EntityInsentient.class, 8.0F));
-    this.setCustomName(new ChatMessage(CreatureUtils.getVillagerNames()[new Random().nextInt(CreatureUtils.getVillagerNames().length)]));
+    this.getBukkitEntity().setCustomName(CreatureUtils.getVillagerNames()[new Random().nextInt(CreatureUtils.getVillagerNames().length)]);
     this.setCustomNameVisible(true);
   }
 

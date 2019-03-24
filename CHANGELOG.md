@@ -1,5 +1,8 @@
 # Village Defense Changelog
 
+### todo
+* Leaderboard command doesn't include XP statistic in tab completion now
+
 ### 4.1.1 Release (13/14.03.2019)
 * Added Russian locale (thanks to POEditor contributors!)
 * Fixed zombies couldn't even spawn in any arena
