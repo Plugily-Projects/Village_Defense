@@ -202,7 +202,7 @@ public class SignManager implements Listener {
       for (Map.Entry<Sign, Arena> entry : loadedSigns.entrySet()) {
         Sign sign = entry.getKey();
         for (int i = 0; i < signLines.size(); i++) {
-          sign.setLine(i, formatSign(signLines.get(i), loadedSigns.get(sign)));
+          sign.setLine(i, formatSign(signLines.get(i), entry.getValue()));
         }
         if (plugin.getConfig().getBoolean("Signs-Block-States-Enabled", true)) {
           Block behind = sign.getBlock().getRelative(((org.bukkit.material.Sign) sign.getData()).getAttachedFace());
