@@ -1,7 +1,9 @@
 # Village Defense Changelog
 
-### todo
+### 4.1.2 Release (15/25.03.2019)
 * Leaderboard command doesn't include XP statistic in tab completion now
+* Added April Fool's Day special effects, arrows sometimes can shoot at random direction
+and villagers can sometimes drop diamonds at random velocity on death
 
 ### 4.1.1 Release (13/14.03.2019)
 * Added Russian locale (thanks to POEditor contributors!)
