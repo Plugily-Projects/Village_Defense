@@ -30,6 +30,7 @@ import org.bukkit.Particle;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Zombie;
 import org.bukkit.event.EventHandler;
@@ -38,6 +39,7 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityShootBowEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.util.Vector;
 
 import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.arena.ArenaRegistry;
@@ -82,9 +84,29 @@ public class HolidayManager implements Listener {
           plugin.getPowerupRegistry().registerPowerup(powerup);
         }
         break;
+      case 3:
+        if (day >= 28) {
+          currentHoliday = HolidayType.APRIL_FOOLS;
+          Powerup powerup = new Powerup("APRIL_FOOL", plugin.getChatManager().colorRawMessage("&a&llololol"),
+              plugin.getChatManager().colorRawMessage("&a&lApril Fools!"), XMaterial.DIRT, pickup -> {
+            pickup.getPlayer().damage(0);
+            pickup.getPlayer().sendTitle(pickup.getPowerup().getDescription(), null, 5, 30, 5);
+          });
+          plugin.getPowerupRegistry().registerPowerup(powerup);
+        }
+      case 4:
+        if (day <= 5) {
+          currentHoliday = HolidayType.APRIL_FOOLS;
+          Powerup powerup = new Powerup("APRIL_FOOL", plugin.getChatManager().colorRawMessage("&a&llololol"),
+              plugin.getChatManager().colorRawMessage("&a&lApril Fools!"), XMaterial.DIRT, pickup -> {
+            pickup.getPlayer().damage(0);
+            pickup.getPlayer().sendTitle(pickup.getPowerup().getDescription(), null, 5, 30, 5);
+          });
+          plugin.getPowerupRegistry().registerPowerup(powerup);
+        }
       case 10:
         //4 days before halloween
-        if (31 - day <= 4) {
+        if (day >= 27) {
           currentHoliday = HolidayType.HALLOWEEN;
         }
         break;
@@ -167,6 +189,24 @@ public class HolidayManager implements Listener {
           }, 30);
         }
         break;
+      case APRIL_FOOLS:
+        if (!rand.nextBoolean()) {
+          return;
+        }
+        final List<Item> diamonds = new ArrayList<>();
+        for (int i = 0; i < rand.nextInt(6); i++) {
+          Item item = en.getWorld().dropItem(en.getLocation(), XMaterial.DIAMOND.parseItem());
+          item.setPickupDelay(1000000);
+          item.setVelocity(getRandomVector());
+          diamonds.add(item);
+        }
+        Bukkit.getScheduler().runTaskLater(plugin, () -> {
+          for (Item diamond : diamonds) {
+            diamond.remove();
+          }
+          diamonds.clear();
+        }, 30);
+        break;
       case NONE:
         break;
       default:
@@ -182,28 +222,40 @@ public class HolidayManager implements Listener {
   }
 
   @EventHandler
-  public void onCupidArrowShot(EntityShootBowEvent e) {
+  public void onArrowShoot(EntityShootBowEvent e) {
     if (!(e.getEntity() instanceof Player) || ArenaRegistry.getArena((Player) e.getEntity()) == null) {
       return;
     }
-    if (currentHoliday != HolidayType.VALENTINES_DAY) {
-      return;
-    }
-    Entity en = e.getProjectile();
-    new BukkitRunnable() {
-      @Override
-      public void run() {
-        if (en == null || en.isOnGround() || en.isDead()) {
-          this.cancel();
-          return;
+    if (currentHoliday == HolidayType.VALENTINES_DAY) {
+      Entity en = e.getProjectile();
+      new BukkitRunnable() {
+        @Override
+        public void run() {
+          if (en == null || en.isOnGround() || en.isDead()) {
+            this.cancel();
+            return;
+          }
+          en.getLocation().getWorld().spawnParticle(Particle.HEART, en.getLocation(), 1, 0, 0, 0, 1);
         }
-        en.getLocation().getWorld().spawnParticle(Particle.HEART, en.getLocation(), 1, 0, 0, 0, 1);
+      }.runTaskTimer(plugin, 1, 1);
+    } else if (currentHoliday == HolidayType.APRIL_FOOLS) {
+      if (rand.nextInt(4) == 0) {
+        //chance to make arrow shoot somewhere else
+        e.getProjectile().setVelocity(getRandomVector());
       }
-    }.runTaskTimer(plugin, 1, 1);
+    }
+  }
+
+  private Vector getRandomVector() {
+    Vector direction = new Vector();
+    direction.setX(0.0D + Math.random() - Math.random());
+    direction.setY(Math.random());
+    direction.setZ(0.0D + Math.random() - Math.random());
+    return direction;
   }
 
   public enum HolidayType {
-    HALLOWEEN, NONE, VALENTINES_DAY
+    HALLOWEEN, APRIL_FOOLS, NONE, VALENTINES_DAY
   }
 
 }
