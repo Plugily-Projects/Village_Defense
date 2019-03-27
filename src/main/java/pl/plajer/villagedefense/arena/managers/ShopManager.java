@@ -145,9 +145,6 @@ public class ShopManager {
           return;
         }
         e.setCancelled(true);
-        if (!itemStack.hasItemMeta() || !itemStack.getItemMeta().hasLore()) {
-          return;
-        }
         User user = plugin.getUserManager().getUser(player);
         if (cost > user.getStat(StatsStorage.StatisticType.ORBS)) {
           player.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage("In-Game.Messages.Shop-Messages.Not-Enough-Orbs"));
