@@ -124,11 +124,13 @@ public class ShopManager {
       String costString = null;
       boolean found = false;
       //seek for item price
-      for (String s : itemStack.getItemMeta().getLore()) {
-        if (s.contains(plugin.getChatManager().colorMessage("In-Game.Messages.Shop-Messages.Currency-In-Shop")) || s.contains("orbs")) {
-          costString = ChatColor.stripColor(s).replaceAll("[^0-9]", "");
-          found = true;
-          break;
+      if (itemStack.hasItemMeta() && itemStack.getItemMeta().hasLore()) {
+        for (String s : itemStack.getItemMeta().getLore()) {
+          if (s.contains(plugin.getChatManager().colorMessage("In-Game.Messages.Shop-Messages.Currency-In-Shop")) || s.contains("orbs")) {
+            costString = ChatColor.stripColor(s).replaceAll("[^0-9]", "");
+            found = true;
+            break;
+          }
         }
       }
       if (!found) {

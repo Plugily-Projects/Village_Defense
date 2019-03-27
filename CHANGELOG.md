@@ -4,6 +4,7 @@
 * Leaderboard command doesn't include XP statistic in tab completion now
 * Added April Fool's Day special effects, arrows sometimes can shoot at random direction
 and villagers can sometimes drop diamonds at random velocity on death
+* Fixed shop didn't load if items in chest if any item didn't have lore
 
 ### 4.1.1 Release (13/14.03.2019)
 * Added Russian locale (thanks to POEditor contributors!)
