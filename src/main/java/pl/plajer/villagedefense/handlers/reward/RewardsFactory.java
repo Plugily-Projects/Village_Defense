@@ -26,6 +26,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
@@ -120,7 +121,12 @@ public class RewardsFactory {
     Map<GameReward.RewardType, Integer> registeredRewards = new HashMap<>();
     for (GameReward.RewardType rewardType : GameReward.RewardType.values()) {
       if (rewardType == GameReward.RewardType.END_WAVE) {
-        for (String key : config.getConfigurationSection("rewards." + rewardType.getPath()).getKeys(false)) {
+        ConfigurationSection section = config.getConfigurationSection("rewards." + rewardType.getPath());
+        if (section == null) {
+          Debugger.debug(LogLevel.WARN, "Rewards section " + rewardType.getPath() + " is missing! Was it manually removed?");
+          continue;
+        }
+        for (String key : section.getKeys(false)) {
           for (String reward : config.getStringList("rewards." + rewardType.getPath() + "." + key)) {
             rewards.add(new GameReward(rewardType, reward, Integer.parseInt(key)));
             registeredRewards.put(rewardType, registeredRewards.getOrDefault(rewardType, 0) + 1);
