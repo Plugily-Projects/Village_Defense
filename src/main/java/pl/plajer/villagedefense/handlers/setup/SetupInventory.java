@@ -157,7 +157,7 @@ public class SetupInventory {
     int rand = new Random().nextInt(8 + 1);
     switch (rand) {
       case 0:
-        p.sendMessage(plugin.getChatManager().colorRawMessage("&e&lTIP: &7Console can execute /vd addorbs [amount] (player) command! Add game orbs via console!"));
+        p.sendMessage(plugin.getChatManager().colorRawMessage("&e&lTIP: &7Console can execute /vda addorbs [amount] (player) command! Add game orbs via console!"));
         break;
       case 1:
         p.sendMessage(plugin.getChatManager().colorRawMessage("&e&lTIP: &7Build Secret Well for your arena! Check how: https://bit.ly/2DTYxZc"));
