@@ -121,19 +121,7 @@ public class RidableIronGolem extends EntityIronGolem {
 
   @Override
   protected void dropDeathLoot(boolean flag, int i) {
-     /*   int j = this.random.nextInt(3);
-
-        int k;
-
-        for (k = 0; k < j; ++k) {
-            this.a(Item.getItemOf(Blocks.RED_ROSE), 1, 0.0F);
-        }
-
-        k = 3 + this.random.nextInt(3);
-
-        for (int l = 0; l < k; ++l) {
-            this.a(ItemUtils.IRON_INGOT, 1);
-        } */
+    //do not drop death loot
   }
 
 }

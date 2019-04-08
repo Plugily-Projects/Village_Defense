@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.UUID;
+import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -76,7 +77,7 @@ public class StatsStorage {
           column.put(java.util.UUID.fromString(set.getString("UUID")), set.getInt(stat.getName()));
         }
       } catch (SQLException e) {
-        e.printStackTrace();
+        plugin.getLogger().log(Level.WARNING, "SQLException occurred! " + e.getSQLState() + " (" + e.getErrorCode() + ")");
         MessageUtils.errorOccurred();
         Bukkit.getConsoleSender().sendMessage("Cannot get contents from MySQL database!");
         Bukkit.getConsoleSender().sendMessage("Check configuration of mysql.yml file or disable mysql option in config.yml");

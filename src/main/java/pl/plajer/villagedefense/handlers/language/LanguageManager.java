@@ -30,6 +30,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
+import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -119,7 +120,9 @@ public class LanguageManager {
         + pluginLocale.getPrefix() + ".properties"), StandardCharsets.UTF_8)) {
       properties.load(reader);
     } catch (IOException e) {
-      e.printStackTrace();
+      plugin.getLogger().log(Level.WARNING, "Failed to load localization file for locale " + pluginLocale.getPrefix() + "! Using English instead");
+      plugin.getLogger().log(Level.WARNING, "Cause: " + e.getMessage());
+      pluginLocale = LocaleRegistry.getByName("English");
     }
   }
 

@@ -21,6 +21,7 @@ package pl.plajer.villagedefense.kits.kitapi;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Level;
 
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
@@ -53,8 +54,6 @@ import pl.plajer.villagedefense.kits.premium.ShotBowKit;
 import pl.plajer.villagedefense.kits.premium.TeleporterKit;
 import pl.plajer.villagedefense.kits.premium.TornadoKit;
 import pl.plajer.villagedefense.kits.premium.WizardKit;
-import pl.plajerlair.core.debug.Debugger;
-import pl.plajerlair.core.debug.LogLevel;
 import pl.plajerlair.core.utils.ConfigUtils;
 
 /**
@@ -136,8 +135,8 @@ public class KitRegistry {
         try {
           Class.forName(kitClass.getName()).newInstance();
         } catch (ClassNotFoundException | IllegalAccessException | InstantiationException e) {
-          e.printStackTrace();
-          Debugger.debug(LogLevel.WTF, "FATAL ERROR COULDN'T REGISTER EXISTING KIT! REPORT THIS TO THE DEVELOPER!");
+          plugin.getLogger().log(Level.SEVERE, "Fatal error while registering existing game kit! Report this error to the developer!");
+          plugin.getLogger().log(Level.SEVERE, "Cause: " + e.getMessage() + " (kitClass " + kitClass.getName() + ")");
         }
       }
     }

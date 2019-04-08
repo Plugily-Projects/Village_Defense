@@ -23,6 +23,7 @@ import java.security.AccessController;
 import java.security.PrivilegedAction;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 
 import org.bukkit.ChatColor;
 import org.bukkit.attribute.Attribute;
@@ -74,7 +75,8 @@ public class CreatureUtils {
       o = field.get(object);
       cachedObjects.add(new CachedObject(fieldName, clazz, o));
     } catch (NoSuchFieldException | IllegalAccessException e) {
-      e.printStackTrace();
+      plugin.getLogger().log(Level.WARNING, "Failed to retrieve private field of object " + object.getClass() + "!");
+      plugin.getLogger().log(Level.WARNING, e.getMessage() + " (fieldName " + fieldName + ", class " + clazz.getName() + ")");
     }
     return o;
   }

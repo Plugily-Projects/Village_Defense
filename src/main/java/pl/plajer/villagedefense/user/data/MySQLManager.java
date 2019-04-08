@@ -23,6 +23,7 @@ import com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -64,11 +65,12 @@ public class MySQLManager implements UserDatabase {
         statement.executeUpdate("ALTER TABLE playerstats ADD `name` text NOT NULL");
       } catch (MySQLSyntaxErrorException e) {
         if (!e.getMessage().contains("Duplicate column name")) {
+          plugin.getLogger().log(Level.WARNING, "Failed altering table 'name'! Cause: " + e.getSQLState() + " (" + e.getErrorCode() + ")");
           e.printStackTrace();
         }
       }
     } catch (SQLException e) {
-      e.printStackTrace();
+      plugin.getLogger().log(Level.WARNING, "Could not connect to MySQL database! Cause: " + e.getSQLState() + " (" + e.getErrorCode() + ")");
       MessageUtils.errorOccurred();
       Bukkit.getConsoleSender().sendMessage("Cannot save contents to MySQL database!");
       Bukkit.getConsoleSender().sendMessage("Check configuration of mysql.yml file or disable mysql option in config.yml");
@@ -93,8 +95,8 @@ public class MySQLManager implements UserDatabase {
         if (!resultSet.next()) {
           insertPlayer(user.getPlayer());
         }
-      } catch (SQLException e1) {
-        System.out.print("CONNECTION FAILED FOR PLAYER " + user.getPlayer().getName());
+      } catch (SQLException e) {
+        plugin.getLogger().log(Level.WARNING, "MySQL connection failed for player " + user.getPlayer().getName() + "! Cause: " + e.getSQLState() + " (" + e.getErrorCode() + ")");
       }
 
       ResultSet set = database.executeQuery("SELECT " + stat.getName() + " FROM playerstats WHERE UUID='" + user.getPlayer().getUniqueId().toString() + "'");

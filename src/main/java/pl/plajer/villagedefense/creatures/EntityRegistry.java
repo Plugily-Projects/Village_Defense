@@ -21,6 +21,7 @@ package pl.plajer.villagedefense.creatures;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Level;
 
 import pl.plajer.villagedefense.Main;
 import pl.plajerlair.core.debug.Debugger;
@@ -64,7 +65,8 @@ public class EntityRegistry {
         this.getClass().getMethod("register" + version + "Entity", String.class, int.class, Class.class)
             .invoke(this, "VillageWolf", 95, Class.forName("pl.plajer.villagedefense.creatures." + version + "." + classes.toArray()[9]));
       } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
-        e.printStackTrace();
+        plugin.getLogger().log(Level.WARNING, "Could not register custom mobs in version 1.11-1.12! Plugin won't work properly!");
+        plugin.getLogger().log(Level.WARNING, "Cause: " + e.getMessage());
       }
     }
     Debugger.debug(LogLevel.INFO, "Entities registering completed");

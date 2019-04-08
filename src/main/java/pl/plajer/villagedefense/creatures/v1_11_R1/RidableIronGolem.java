@@ -90,6 +90,7 @@ public class RidableIronGolem extends EntityIronGolem {
 
   @Override
   protected void dropDeathLoot(boolean flag, int i) {
+    //do not drop death loot
   }
 
   @Override
