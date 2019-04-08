@@ -18,6 +18,7 @@
 
 package pl.plajer.villagedefense.user;
 
+import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -43,7 +44,7 @@ public class User {
   private Player player;
   private boolean spectator = false;
   private Kit kit = KitRegistry.getDefaultKit();
-  private Map<StatsStorage.StatisticType, Integer> stats = new HashMap<>();
+  private Map<StatsStorage.StatisticType, Integer> stats = new EnumMap<>(StatsStorage.StatisticType.class);
   private Map<String, Long> cooldowns = new HashMap<>();
 
   public User(Player player) {

@@ -18,7 +18,7 @@
 
 package pl.plajer.villagedefense.handlers.reward;
 
-import java.util.HashMap;
+import java.util.EnumMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -118,7 +118,7 @@ public class RewardsFactory {
     if (!enabled) {
       return;
     }
-    Map<GameReward.RewardType, Integer> registeredRewards = new HashMap<>();
+    Map<GameReward.RewardType, Integer> registeredRewards = new EnumMap<>(GameReward.RewardType.class);
     for (GameReward.RewardType rewardType : GameReward.RewardType.values()) {
       if (rewardType == GameReward.RewardType.END_WAVE) {
         ConfigurationSection section = config.getConfigurationSection("rewards." + rewardType.getPath());

@@ -18,6 +18,7 @@
 
 package pl.plajer.villagedefense.handlers;
 
+import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -53,7 +54,7 @@ public class SignManager implements Listener {
 
   private Main plugin;
   private Map<Sign, Arena> loadedSigns = new HashMap<>();
-  private Map<ArenaState, String> gameStateToString = new HashMap<>();
+  private Map<ArenaState, String> gameStateToString = new EnumMap<>(ArenaState.class);
   private List<String> signLines;
 
   public SignManager(Main plugin) {
