@@ -45,7 +45,7 @@ public class ExceptionLogHandler extends Handler {
   }
 
   @Override
-  public void close() throws SecurityException {
+  public void close() {
   }
 
   @Override
