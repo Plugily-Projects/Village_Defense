@@ -31,6 +31,7 @@ import pl.plajer.villagedefense.api.StatsStorage;
  */
 public class PlaceholderManager extends PlaceholderExpansion {
 
+  @Override
   public boolean persist() {
     return true;
   }
