@@ -87,6 +87,7 @@ public class LeaderboardArgument {
                     continue;
                   }
                 } catch (SQLException ignored) {
+                  //it has failed second time, cannot continue
                 }
               }
               sender.sendMessage(formatMessage(statistic, "Unknown Player", i + 1, stats.get(current)));
