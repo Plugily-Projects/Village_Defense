@@ -165,7 +165,7 @@ public class EntityUpgradeMenu {
     pane.addItem(new GuiItem(new ItemBuilder(new ItemStack(Material.BOOK))
         .name(plugin.getChatManager().colorMessage("Upgrade-Menu.Stats-Item.Name"))
         .lore(Arrays.stream(plugin.getChatManager().colorMessage("Upgrade-Menu.Stats-Item.Description").split(";"))
-            .map((lore) -> lore = plugin.getChatManager().colorRawMessage(lore)
+            .map(lore -> lore = plugin.getChatManager().colorRawMessage(lore)
                 .replace("%speed%", String.valueOf(getUpgrade("Speed").getValueForTier(getTier(en, getUpgrade("Speed")))))
                 .replace("%damage%", String.valueOf(getUpgrade("Damage").getValueForTier(getTier(en, getUpgrade("Damage")))))
                 .replace("%max_hp%", String.valueOf(getUpgrade("Health").getValueForTier(getTier(en, getUpgrade("Health")))))

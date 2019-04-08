@@ -131,7 +131,7 @@ public class Upgrade {
     double valCurrent = tieredValues.get(currentTier);
     double valNext = tieredValues.getOrDefault(currentTier + 1, tieredValues.get(currentTier));
 
-    description = description.stream().map((lore) -> lore = plugin.getChatManager().colorRawMessage(lore)
+    description = description.stream().map(lore -> lore = plugin.getChatManager().colorRawMessage(lore)
         .replace("%cost%", String.valueOf(getCost(currentTier + 1)))
         .replace("%tier%", String.valueOf(currentTier + 1))
         .replace("%from%", String.valueOf(valCurrent))
