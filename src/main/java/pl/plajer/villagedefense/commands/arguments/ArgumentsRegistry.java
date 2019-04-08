@@ -118,95 +118,94 @@ public class ArgumentsRegistry implements CommandExecutor {
 
   @Override
   public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-    for (String mainCommand : mappedArguments.keySet()) {
-      if (cmd.getName().equalsIgnoreCase(mainCommand)) {
-        if (cmd.getName().equalsIgnoreCase("villagedefense")) {
-          if (args.length == 0) {
-            sendHelpCommand(sender);
-            return true;
-          }
-          if (args.length > 1 && args[1].equalsIgnoreCase("edit")) {
-            if (!checkSenderIsExecutorType(sender, CommandArgument.ExecutorType.PLAYER)
-                || !Utils.hasPermission(sender, "villagedefense.admin.create")) {
-              return true;
-            }
-            if (ArenaRegistry.getArena(args[0]) == null) {
-              sender.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage("Commands.No-Arena-Like-That"));
-              return true;
-            }
-
-            SetupInventory.sendProTip((Player) sender);
-            new SetupInventory(ArenaRegistry.getArena(args[0])).openInventory((Player) sender);
-            return true;
-          }
-        }
-        if (cmd.getName().equalsIgnoreCase("villagedefenseadmin")) {
-          if (args.length == 0) {
-            if (!sender.hasPermission("villagedefense.admin")) {
-              return true;
-            }
-            sender.sendMessage(ChatColor.GREEN + "  " + ChatColor.BOLD + "Village Defense " + ChatColor.GRAY + plugin.getDescription().getVersion());
-            sender.sendMessage(ChatColor.RED + " []" + ChatColor.GRAY + " = optional  " + ChatColor.GOLD + "<>" + ChatColor.GRAY + " = required");
-            if (sender instanceof Player) {
-              sender.sendMessage(ChatColor.GRAY + "Hover command to see more, click command to suggest it.");
-            }
-            List<LabelData> data = mappedArguments.get("villagedefenseadmin").stream().filter(arg -> arg instanceof LabeledCommandArgument)
-                .map(arg -> ((LabeledCommandArgument) arg).getLabelData()).collect(Collectors.toList());
-            data.add(new LabelData("/vd &6<arena>&f edit", "/vd <arena> edit",
-                "&7Edit existing arena\n&6Permission: &7villagedefense.admin.edit"));
-            data.addAll(mappedArguments.get("villagedefense").stream().filter(arg -> arg instanceof LabeledCommandArgument)
-                .map(arg -> ((LabeledCommandArgument) arg).getLabelData()).collect(Collectors.toList()));
-            if (plugin.is1_11_R1()) {
-              for (LabelData labelData : data) {
-                sender.sendMessage(labelData.getText() + " - " + labelData.getDescription().split("\n")[0]);
-              }
-              return true;
-            }
-            for (LabelData labelData : data) {
-              TextComponent component;
-              if (sender instanceof Player) {
-                component = new TextComponent(labelData.getText());
-              } else {
-                //more descriptive for console - split at \n to show only basic description
-                component = new TextComponent(labelData.getText() + " - " + labelData.getDescription().split("\n")[0]);
-              }
-              component.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, labelData.getCommand()));
-              component.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(labelData.getDescription()).create()));
-              sender.spigot().sendMessage(component);
-            }
-            return true;
-          }
-        }
-        for (CommandArgument argument : mappedArguments.get(mainCommand)) {
-          if (argument.getArgumentName().equalsIgnoreCase(args[0])) {
-            boolean hasPerm = false;
-            for (String perm : argument.getPermissions()) {
-              if (perm.equals("")) {
-                hasPerm = true;
-                break;
-              }
-              if (sender.hasPermission(perm)) {
-                hasPerm = true;
-                break;
-              }
-            }
-            if (!hasPerm) {
-              return true;
-            }
-            if (checkSenderIsExecutorType(sender, argument.getValidExecutors())) {
-              argument.execute(sender, args);
-            }
-            //return true even if sender is not good executor or hasn't got permission
-            return true;
-          }
-        }
-
-        //sending did you mean help
-        List<StringMatcher.Match> matches = StringMatcher.match(args[0], mappedArguments.get(cmd.getName().toLowerCase()).stream().map(CommandArgument::getArgumentName).collect(Collectors.toList()));
-        if (!matches.isEmpty()) {
-          sender.sendMessage(plugin.getChatManager().colorMessage("Commands.Did-You-Mean").replace("%command%", label + " " + matches.get(0).getMatch()));
+    for (Map.Entry<String, List<CommandArgument>> entry : mappedArguments.entrySet()) {
+      if (!cmd.getName().equalsIgnoreCase(entry.getKey())) {
+        continue;
+      }
+      if (cmd.getName().equalsIgnoreCase("villagedefense")) {
+        if (args.length == 0) {
+          sendHelpCommand(sender);
           return true;
         }
+        if (args.length > 1 && args[1].equalsIgnoreCase("edit")) {
+          if (!checkSenderIsExecutorType(sender, CommandArgument.ExecutorType.PLAYER)
+              || !Utils.hasPermission(sender, "villagedefense.admin.create")) {
+            return true;
+          }
+          if (ArenaRegistry.getArena(args[0]) == null) {
+            sender.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage("Commands.No-Arena-Like-That"));
+            return true;
+          }
+
+          SetupInventory.sendProTip((Player) sender);
+          new SetupInventory(ArenaRegistry.getArena(args[0])).openInventory((Player) sender);
+          return true;
+        }
+      }
+      if (cmd.getName().equalsIgnoreCase("villagedefenseadmin") && args.length == 0) {
+        if (!sender.hasPermission("villagedefense.admin")) {
+          return true;
+        }
+        sender.sendMessage(ChatColor.GREEN + "  " + ChatColor.BOLD + "Village Defense " + ChatColor.GRAY + plugin.getDescription().getVersion());
+        sender.sendMessage(ChatColor.RED + " []" + ChatColor.GRAY + " = optional  " + ChatColor.GOLD + "<>" + ChatColor.GRAY + " = required");
+        if (sender instanceof Player) {
+          sender.sendMessage(ChatColor.GRAY + "Hover command to see more, click command to suggest it.");
+        }
+        List<LabelData> data = mappedArguments.get("villagedefenseadmin").stream().filter(arg -> arg instanceof LabeledCommandArgument)
+            .map(arg -> ((LabeledCommandArgument) arg).getLabelData()).collect(Collectors.toList());
+        data.add(new LabelData("/vd &6<arena>&f edit", "/vd <arena> edit",
+            "&7Edit existing arena\n&6Permission: &7villagedefense.admin.edit"));
+        data.addAll(mappedArguments.get("villagedefense").stream().filter(arg -> arg instanceof LabeledCommandArgument)
+            .map(arg -> ((LabeledCommandArgument) arg).getLabelData()).collect(Collectors.toList()));
+        if (plugin.is1_11_R1()) {
+          for (LabelData labelData : data) {
+            sender.sendMessage(labelData.getText() + " - " + labelData.getDescription().split("\n")[0]);
+          }
+          return true;
+        }
+        for (LabelData labelData : data) {
+          TextComponent component;
+          if (sender instanceof Player) {
+            component = new TextComponent(labelData.getText());
+          } else {
+            //more descriptive for console - split at \n to show only basic description
+            component = new TextComponent(labelData.getText() + " - " + labelData.getDescription().split("\n")[0]);
+          }
+          component.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, labelData.getCommand()));
+          component.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(labelData.getDescription()).create()));
+          sender.spigot().sendMessage(component);
+        }
+        return true;
+      }
+      for (CommandArgument argument : entry.getValue()) {
+        if (argument.getArgumentName().equalsIgnoreCase(args[0])) {
+          boolean hasPerm = false;
+          for (String perm : argument.getPermissions()) {
+            if (perm.equals("")) {
+              hasPerm = true;
+              break;
+            }
+            if (sender.hasPermission(perm)) {
+              hasPerm = true;
+              break;
+            }
+          }
+          if (!hasPerm) {
+            return true;
+          }
+          if (checkSenderIsExecutorType(sender, argument.getValidExecutors())) {
+            argument.execute(sender, args);
+          }
+          //return true even if sender is not good executor or hasn't got permission
+          return true;
+        }
+      }
+
+      //sending did you mean help
+      List<StringMatcher.Match> matches = StringMatcher.match(args[0], entry.getValue().stream().map(CommandArgument::getArgumentName).collect(Collectors.toList()));
+      if (!matches.isEmpty()) {
+        sender.sendMessage(plugin.getChatManager().colorMessage("Commands.Did-You-Mean").replace("%command%", label + " " + matches.get(0).getMatch()));
+        return true;
       }
     }
     return false;
