@@ -108,17 +108,13 @@ public class ArenaRegistry {
 
   public static void registerArenas() {
     Debugger.debug(LogLevel.INFO, "Initial arenas registration");
-    if (ArenaRegistry.getArenas() != null) {
-      if (!ArenaRegistry.getArenas().isEmpty()) {
-        for (Arena arena : ArenaRegistry.getArenas()) {
-          arena.getMapRestorerManager().clearZombiesFromArena();
-          arena.getMapRestorerManager().clearVillagersFromArena();
-          arena.getMapRestorerManager().clearWolvesFromArena();
-          arena.getMapRestorerManager().clearGolemsFromArena();
-        }
-        for (Arena arena : new ArrayList<>(ArenaRegistry.getArenas())) {
-          unregisterArena(arena);
-        }
+    if (ArenaRegistry.getArenas() != null && !ArenaRegistry.getArenas().isEmpty()) {
+      for (Arena arena : new ArrayList<>(ArenaRegistry.getArenas())) {
+        arena.getMapRestorerManager().clearZombiesFromArena();
+        arena.getMapRestorerManager().clearVillagersFromArena();
+        arena.getMapRestorerManager().clearWolvesFromArena();
+        arena.getMapRestorerManager().clearGolemsFromArena();
+        unregisterArena(arena);
       }
     }
     FileConfiguration config = ConfigUtils.getConfig(plugin, "arenas");
@@ -130,28 +126,28 @@ public class ArenaRegistry {
     }
     for (String id : section.getKeys(false)) {
       Arena arena = ArenaUtils.initializeArena(id);
-      String s = "instances." + id + ".";
-      if (s.contains("default")) {
+      String key = "instances." + id + ".";
+      if (key.contains("default")) {
         continue;
       }
-      arena.setMinimumPlayers(config.getInt(s + "minimumplayers", 1));
-      arena.setMaximumPlayers(config.getInt(s + "maximumplayers", 2));
-      arena.setMapName(config.getString(s + "mapname", "none"));
-      arena.setLobbyLocation(LocationUtils.getLocation(config.getString(s + "lobbylocation", "world,364.0,63.0,-72.0,0.0,0.0")));
-      arena.setStartLocation(LocationUtils.getLocation(config.getString(s + "Startlocation", "world,364.0,63.0,-72.0,0.0,0.0")));
-      arena.setEndLocation(LocationUtils.getLocation(config.getString(s + "Endlocation", "world,364.0,63.0,-72.0,0.0,0.0")));
+      arena.setMinimumPlayers(config.getInt(key + "minimumplayers", 1));
+      arena.setMaximumPlayers(config.getInt(key + "maximumplayers", 2));
+      arena.setMapName(config.getString(key + "mapname", "none"));
+      arena.setLobbyLocation(LocationUtils.getLocation(config.getString(key + "lobbylocation", "world,364.0,63.0,-72.0,0.0,0.0")));
+      arena.setStartLocation(LocationUtils.getLocation(config.getString(key + "Startlocation", "world,364.0,63.0,-72.0,0.0,0.0")));
+      arena.setEndLocation(LocationUtils.getLocation(config.getString(key + "Endlocation", "world,364.0,63.0,-72.0,0.0,0.0")));
       ArenaUtils.setWorld(arena);
 
-      if (!config.getBoolean(s + "isdone", false)) {
+      if (!config.getBoolean(key + "isdone", false)) {
         Bukkit.getConsoleSender().sendMessage(plugin.getChatManager().colorMessage("Validator.Invalid-Arena-Configuration").replace("%arena%", id).replace("%error%", "NOT VALIDATED"));
         arena.setReady(false);
         ArenaRegistry.registerArena(arena);
         continue;
       }
 
-      if (config.isSet(s + "zombiespawns")) {
-        for (String string : config.getConfigurationSection(s + "zombiespawns").getKeys(false)) {
-          String path = s + "zombiespawns." + string;
+      if (config.isSet(key + "zombiespawns")) {
+        for (String string : config.getConfigurationSection(key + "zombiespawns").getKeys(false)) {
+          String path = key + "zombiespawns." + string;
           arena.addZombieSpawn(LocationUtils.getLocation(config.getString(path)));
         }
       } else {
@@ -161,9 +157,9 @@ public class ArenaRegistry {
         continue;
       }
 
-      if (config.isSet(s + "villagerspawns")) {
-        for (String string : config.getConfigurationSection(s + "villagerspawns").getKeys(false)) {
-          String path = s + "villagerspawns." + string;
+      if (config.isSet(key + "villagerspawns")) {
+        for (String string : config.getConfigurationSection(key + "villagerspawns").getKeys(false)) {
+          String path = key + "villagerspawns." + string;
           arena.addVillagerSpawn(LocationUtils.getLocation(config.getString(path)));
         }
       } else {
@@ -172,9 +168,9 @@ public class ArenaRegistry {
         ArenaRegistry.registerArena(arena);
         continue;
       }
-      if (config.isSet(s + "doors")) {
-        for (String string : config.getConfigurationSection(s + "doors").getKeys(false)) {
-          String path = s + "doors." + string + ".";
+      if (config.isSet(key + "doors")) {
+        for (String string : config.getConfigurationSection(key + "doors").getKeys(false)) {
+          String path = key + "doors." + string + ".";
           arena.getMapRestorerManager().addDoor(LocationUtils.getLocation(config.getString(path + "location")),
               (byte) config.getInt(path + "byte"));
         }

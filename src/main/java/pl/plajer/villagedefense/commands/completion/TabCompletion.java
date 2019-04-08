@@ -74,10 +74,7 @@ public class TabCompletion implements TabCompleter {
       return null;
     }
     for (CompletableArgument completion : registeredCompletions) {
-      if (!cmd.getName().equalsIgnoreCase(completion.getMainCommand())) {
-        continue;
-      }
-      if (!completion.getArgument().equalsIgnoreCase(args[0])) {
+      if (!cmd.getName().equalsIgnoreCase(completion.getMainCommand()) || !completion.getArgument().equalsIgnoreCase(args[0])) {
         continue;
       }
       return completion.getCompletions();

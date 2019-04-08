@@ -54,29 +54,20 @@ public class SetWaveArgument {
           return;
         }
         Arena arena = ArenaRegistry.getArena((Player) sender);
-        if (Utils.isInteger(args[1])) {
-          arena.setWave(Integer.parseInt(args[1]) - 1);
-          ArenaManager.endWave(arena);
-          String message = registry.getPlugin().getChatManager().formatMessage(arena, registry.getPlugin().getChatManager().colorMessage("In-Game.Messages.Admin-Messages.Changed-Wave"), arena.getWave());
-          for (Player player1 : arena.getPlayers()) {
-            player1.sendMessage(registry.getPlugin().getChatManager().getPrefix() + message);
-          }
-          if (arena.getZombies() != null) {
-            ArenaUtils.removeSpawnedZombies(arena);
-            arena.getZombies().clear();
-            arena.setOptionValue(ArenaOption.ZOMBIES_TO_SPAWN, 0);
-          } else {
-            sender.sendMessage(registry.getPlugin().getChatManager().colorMessage("Kits.Cleaner.Nothing-To-Clean"));
-            return;
-          }
-          Utils.playSound(((Player) sender).getLocation(), "ENTITY_ZOMBIE_DEATH", "ENTITY_ZOMBIE_DEATH");
-          String msg = registry.getPlugin().getChatManager().formatMessage(arena, registry.getPlugin().getChatManager().colorMessage("In-Game.Messages.Admin-Messages.Removed-Zombies"),
-              (Player) sender);
-          for (Player loopPlayer : arena.getPlayers()) {
-            loopPlayer.sendMessage(registry.getPlugin().getChatManager().getPrefix() + msg);
-          }
-        } else {
+        if (!Utils.isInteger(args[1])) {
           sender.sendMessage(registry.getPlugin().getChatManager().getPrefix() + registry.getPlugin().getChatManager().colorMessage("Commands.Invalid-Number").replace("%correct%", "/vda setwave <number>"));
+          return;
+        }
+        arena.setWave(Integer.parseInt(args[1]) - 1);
+        ArenaManager.endWave(arena);
+        String message = registry.getPlugin().getChatManager().formatMessage(arena, registry.getPlugin().getChatManager().colorMessage("In-Game.Messages.Admin-Messages.Changed-Wave"), arena.getWave());
+        for (Player player : arena.getPlayers()) {
+          player.sendMessage(registry.getPlugin().getChatManager().getPrefix() + message);
+        }
+        if (arena.getZombies() != null) {
+          ArenaUtils.removeSpawnedZombies(arena);
+          arena.getZombies().clear();
+          arena.setOptionValue(ArenaOption.ZOMBIES_TO_SPAWN, 0);
         }
       }
     });

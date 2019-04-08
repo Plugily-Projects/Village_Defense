@@ -56,24 +56,23 @@ public class SetPriceArgument {
           player.sendMessage(registry.getPlugin().getChatManager().getPrefix() + registry.getPlugin().getChatManager().colorMessage("Commands.Hold-Any-Item"));
           return;
         }
-        //check any price from lore
-        if (item.hasItemMeta() && item.getItemMeta().hasLore()) {
-          ItemMeta meta = item.getItemMeta();
-          List<String> lore = item.getItemMeta().getLore();
-          for (String search : lore) {
-            if (search.contains(registry.getPlugin().getChatManager().colorMessage("In-Game.Messages.Shop-Messages.Currency-In-Shop"))) {
-              lore.remove(search);
-              break;
-            }
-          }
-          lore.add(0, ChatColor.GOLD + args[1] + " " + registry.getPlugin().getChatManager().colorMessage("In-Game.Messages.Shop-Messages.Currency-In-Shop"));
-          meta.setLore(lore);
-          item.setItemMeta(meta);
-          player.sendMessage(registry.getPlugin().getChatManager().getPrefix() + registry.getPlugin().getChatManager().colorMessage("Commands.Command-Executed-Item-Updated"));
-        } else {
+        if (!item.hasItemMeta() || !item.getItemMeta().hasLore()) {
           MinigameUtils.addLore(item, ChatColor.GOLD + args[1] + " " + registry.getPlugin().getChatManager().colorMessage("In-Game.Messages.Shop-Messages.Currency-In-Shop"));
           player.sendMessage(registry.getPlugin().getChatManager().getPrefix() + registry.getPlugin().getChatManager().colorMessage("Commands.Command-Executed"));
         }
+        //check any price from lore
+        ItemMeta meta = item.getItemMeta();
+        List<String> lore = item.getItemMeta().getLore();
+        for (String search : lore) {
+          if (search.contains(registry.getPlugin().getChatManager().colorMessage("In-Game.Messages.Shop-Messages.Currency-In-Shop"))) {
+            lore.remove(search);
+            break;
+          }
+        }
+        lore.add(0, ChatColor.GOLD + args[1] + " " + registry.getPlugin().getChatManager().colorMessage("In-Game.Messages.Shop-Messages.Currency-In-Shop"));
+        meta.setLore(lore);
+        item.setItemMeta(meta);
+        player.sendMessage(registry.getPlugin().getChatManager().getPrefix() + registry.getPlugin().getChatManager().colorMessage("Commands.Command-Executed-Item-Updated"));
       }
     });
   }

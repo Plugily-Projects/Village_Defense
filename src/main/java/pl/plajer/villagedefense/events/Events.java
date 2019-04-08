@@ -204,10 +204,7 @@ public class Events implements Listener {
   @EventHandler
   public void onEntityInteractEntity(PlayerInteractEntityEvent event) {
     Arena arena = ArenaRegistry.getArena(event.getPlayer());
-    if (arena == null) {
-      return;
-    }
-    if (event.getHand() == EquipmentSlot.OFF_HAND) {
+    if (event.getHand() == EquipmentSlot.OFF_HAND || arena == null) {
       return;
     }
     User user = plugin.getUserManager().getUser(event.getPlayer());
@@ -322,23 +319,18 @@ public class Events implements Listener {
       return;
     }
     if (e.getEntity() instanceof Player) {
-      if (ArenaRegistry.getArena((Player) arrow.getShooter()) != null && ArenaRegistry.getArena((Player) arrow.getShooter()).equals(ArenaRegistry.getArena((Player) e.getEntity()))) {
+      Arena arena = ArenaRegistry.getArena((Player) arrow.getShooter());
+      if (arena != null && arena.equals(ArenaRegistry.getArena((Player) e.getEntity()))) {
         e.setCancelled(true);
       }
     } else if (e.getEntity() instanceof IronGolem || e.getEntity() instanceof Villager || e.getEntity() instanceof Wolf) {
       for (Arena a : ArenaRegistry.getArenas()) {
-        if (e.getEntity() instanceof IronGolem) {
-          if (a.getIronGolems().contains(e.getEntity())) {
-            e.setCancelled(true);
-          }
-        } else if (e.getEntity() instanceof Villager) {
-          if (a.getVillagers().contains(e.getEntity())) {
-            e.setCancelled(true);
-          }
-        } else {
-          if (a.getWolfs().contains(e.getEntity())) {
-            e.setCancelled(true);
-          }
+        if (e.getEntity() instanceof IronGolem && a.getIronGolems().contains(e.getEntity())) {
+          e.setCancelled(true);
+        } else if (e.getEntity() instanceof Villager && a.getVillagers().contains(e.getEntity())) {
+          e.setCancelled(true);
+        } else if (a.getWolfs().contains(e.getEntity())) {
+          e.setCancelled(true);
         }
       }
     }

@@ -86,7 +86,6 @@ public class ArenaManager {
     arena.getScoreboardManager().createScoreboard(user);
     if ((arena.getArenaState() == ArenaState.IN_GAME || (arena.getArenaState() == ArenaState.STARTING && arena.getTimer() <= 3) || arena.getArenaState() == ArenaState.ENDING)) {
       if (plugin.getConfigPreferences().getOption(ConfigPreferences.Option.INVENTORY_MANAGER_ENABLED)) {
-        p.setLevel(0);
         InventoryUtils.saveInventoryToFile(plugin, p);
       }
       arena.teleportToStartLocation(p);
@@ -123,7 +122,6 @@ public class ArenaManager {
       return;
     }
     if (plugin.getConfigPreferences().getOption(ConfigPreferences.Option.INVENTORY_MANAGER_ENABLED)) {
-      p.setLevel(0);
       InventoryUtils.saveInventoryToFile(plugin, p);
     }
     arena.teleportToLobby(p);
