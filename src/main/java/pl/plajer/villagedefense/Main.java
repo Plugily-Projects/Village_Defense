@@ -334,12 +334,12 @@ public class Main extends JavaPlugin {
         arena.teleportToEndLocation(player);
         if (configPreferences.getOption(ConfigPreferences.Option.INVENTORY_MANAGER_ENABLED)) {
           InventoryUtils.loadInventory(this, player);
-        } else {
-          player.getInventory().clear();
-          player.getInventory().setArmorContents(null);
-          for (PotionEffect pe : player.getActivePotionEffects()) {
-            player.removePotionEffect(pe.getType());
-          }
+          continue;
+        }
+        player.getInventory().clear();
+        player.getInventory().setArmorContents(null);
+        for (PotionEffect pe : player.getActivePotionEffects()) {
+          player.removePotionEffect(pe.getType());
         }
       }
       arena.getMapRestorerManager().fullyRestoreArena();
