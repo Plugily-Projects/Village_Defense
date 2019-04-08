@@ -18,6 +18,7 @@
 
 package pl.plajer.villagedefense;
 
+import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -32,7 +33,7 @@ import pl.plajerlair.core.debug.LogLevel;
 public class ConfigPreferences {
 
   private Main plugin;
-  private Map<Option, Boolean> options = new HashMap<>();
+  private Map<Option, Boolean> options = new EnumMap<>(Option.class);
   private Map<String, Integer> customPermissions = new HashMap<>();
 
   public ConfigPreferences(Main plugin) {

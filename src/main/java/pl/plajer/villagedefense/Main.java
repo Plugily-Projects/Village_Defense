@@ -23,7 +23,6 @@ import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
 
 import java.io.File;
 import java.util.Arrays;
-import java.util.List;
 
 import me.tigerhix.lib.scoreboard.ScoreboardLib;
 
@@ -98,7 +97,6 @@ public class Main extends JavaPlugin {
   private HolidayManager holidayManager;
   private EntityUpgradeMenu entityUpgradeMenu;
   private boolean forceDisable = false;
-  private List<String> fileNames = Arrays.asList("arenas", "bungee", "rewards", "stats", "lobbyitems", "mysql", "kits");
   private String version;
 
   public boolean is1_11_R1() {
@@ -278,7 +276,7 @@ public class Main extends JavaPlugin {
   }
 
   private void setupFiles() {
-    for (String fileName : fileNames) {
+    for (String fileName : Arrays.asList("arenas", "bungee", "rewards", "stats", "lobbyitems", "mysql", "kits")) {
       File file = new File(getDataFolder() + File.separator + fileName + ".yml");
       if (!file.exists()) {
         saveResource(fileName + ".yml", false);

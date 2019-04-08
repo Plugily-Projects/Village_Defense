@@ -19,6 +19,7 @@
 package pl.plajer.villagedefense.arena;
 
 import java.util.ArrayList;
+import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -87,9 +88,9 @@ public abstract class Arena extends BukkitRunnable {
   private String mapName = "";
   private String id;
   //all arena values that are integers, contains constant and floating values
-  private Map<ArenaOption, Integer> arenaOptions = new HashMap<>();
+  private Map<ArenaOption, Integer> arenaOptions = new EnumMap<>(ArenaOption.class);
   //instead of 3 location fields we use map with GameLocation enum
-  private Map<GameLocation, Location> gameLocations = new HashMap<>();
+  private Map<GameLocation, Location> gameLocations = new EnumMap<>(GameLocation.class);
   private boolean ready = true;
   private boolean forceStart = false;
 
