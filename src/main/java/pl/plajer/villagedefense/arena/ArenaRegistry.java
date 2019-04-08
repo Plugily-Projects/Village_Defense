@@ -109,7 +109,7 @@ public class ArenaRegistry {
   public static void registerArenas() {
     Debugger.debug(LogLevel.INFO, "Initial arenas registration");
     if (ArenaRegistry.getArenas() != null) {
-      if (ArenaRegistry.getArenas().size() > 0) {
+      if (!ArenaRegistry.getArenas().isEmpty()) {
         for (Arena arena : ArenaRegistry.getArenas()) {
           arena.getMapRestorerManager().clearZombiesFromArena();
           arena.getMapRestorerManager().clearVillagersFromArena();

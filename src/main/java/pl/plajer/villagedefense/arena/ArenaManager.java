@@ -216,7 +216,7 @@ public class ArenaManager {
       p.removePotionEffect(effect.getType());
     }
     p.setFireTicks(0);
-    if (arena.getPlayers().size() == 0 && arena.getArenaState() != ArenaState.WAITING_FOR_PLAYERS) {
+    if (arena.getPlayers().isEmpty() && arena.getArenaState() != ArenaState.WAITING_FOR_PLAYERS) {
       arena.setArenaState(ArenaState.ENDING);
       arena.setTimer(0);
     }
@@ -249,31 +249,31 @@ public class ArenaManager {
     String summaryEnding;
     if (plugin.getConfig().getBoolean("Wave-Limit.Enabled", false) && arena.getWave() >= plugin.getConfig().getInt("Wave-Limit.Limit", 25)) {
       summaryEnding = plugin.getChatManager().colorMessage("In-Game.Messages.Game-End-Messages.Summary-Win-Game");
-    } else if (arena.getPlayersLeft().size() > 0) {
+    } else if (!arena.getPlayersLeft().isEmpty()) {
       summaryEnding = plugin.getChatManager().colorMessage("In-Game.Messages.Game-End-Messages.Summary-Villagers-Died");
     } else {
       summaryEnding = plugin.getChatManager().colorMessage("In-Game.Messages.Game-End-Messages.Summary-Players-Died");
     }
     List<String> summaryMessages = LanguageManager.getLanguageList("In-Game.Messages.Game-End-Messages.Summary-Message");
-    for (final Player p : arena.getPlayers()) {
-      User user = plugin.getUserManager().getUser(p);
+    for (Player player : arena.getPlayers()) {
+      User user = plugin.getUserManager().getUser(player);
       if (user.getStat(StatsStorage.StatisticType.HIGHEST_WAVE) <= arena.getWave()) {
         user.setStat(StatsStorage.StatisticType.HIGHEST_WAVE, arena.getWave());
       }
       for (String msg : summaryMessages) {
-        MinigameUtils.sendCenteredMessage(p, formatSummaryPlaceholders(msg, arena, user, summaryEnding));
+        MinigameUtils.sendCenteredMessage(player, formatSummaryPlaceholders(msg, arena, user, summaryEnding));
       }
-      ArenaUtils.addExperience(p, arena.getWave());
+      ArenaUtils.addExperience(player, arena.getWave());
 
       if (!quickStop) {
-        spawnFireworks(arena, p);
+        spawnFireworks(arena, player);
       }
     }
     arena.getScoreboardManager().stopAllScoreboards();
     arena.setOptionValue(ArenaOption.ROTTEN_FLESH_AMOUNT, 0);
     arena.setOptionValue(ArenaOption.ROTTEN_FLESH_LEVEL, 0);
     arena.setOptionValue(ArenaOption.ZOMBIES_TO_SPAWN, 0);
-    if (arena.getVillagers().size() <= 0) {
+    if (arena.getVillagers().isEmpty()) {
       arena.showPlayers();
       arena.setTimer(10);
     } else {

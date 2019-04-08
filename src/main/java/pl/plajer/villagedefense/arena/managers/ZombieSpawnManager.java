@@ -55,7 +55,7 @@ public class ZombieSpawnManager {
     }
     int wave = arena.getOption(ArenaOption.WAVE);
     int zombiesToSpawn = arena.getOption(ArenaOption.ZOMBIES_TO_SPAWN);
-    if (arena.getZombies() == null || arena.getZombies().size() <= 0) {
+    if (arena.getZombies() == null || arena.getZombies().isEmpty()) {
       for (int i = 0; i <= wave; i++) {
         if (zombiesToSpawn > 0) {
           arena.spawnFastZombie(random);
@@ -147,7 +147,7 @@ public class ZombieSpawnManager {
         arena.spawnHalfInvisibleZombie(random);
       }
     }
-    if (random.nextInt(8) == 0 && arena.getIronGolems().size() > 0 && wave >= 6) {
+    if (random.nextInt(8) == 0 && !arena.getIronGolems().isEmpty() && wave >= 6) {
       for (int i = 0; i < (wave - 4); i++) {
         if (zombiesToSpawn > 0) {
           arena.spawnGolemBuster(random);

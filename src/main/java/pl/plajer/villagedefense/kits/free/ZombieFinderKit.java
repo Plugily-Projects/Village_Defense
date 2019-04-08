@@ -100,7 +100,7 @@ public class ZombieFinderKit extends LevelKit implements Listener {
       event.getPlayer().sendMessage(message);
       return;
     }
-    if (arena.getZombies() == null || arena.getZombies().isEmpty() || arena.getZombies().size() <= 0) {
+    if (arena.getZombies() == null || arena.getZombies().isEmpty()) {
       event.getPlayer().sendMessage(getPlugin().getChatManager().colorMessage("Kits.Zombie-Teleporter.No-Available-Zombies"));
       return;
     } else {

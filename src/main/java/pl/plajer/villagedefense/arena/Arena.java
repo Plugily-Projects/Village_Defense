@@ -143,7 +143,7 @@ public abstract class Arena extends BukkitRunnable {
 
   public void run() {
     //idle task
-    if (getPlayers().size() == 0 && getArenaState() == ArenaState.WAITING_FOR_PLAYERS) {
+    if (getPlayers().isEmpty() && getArenaState() == ArenaState.WAITING_FOR_PLAYERS) {
       return;
     }
     switch (getArenaState()) {
@@ -274,7 +274,7 @@ public abstract class Arena extends BukkitRunnable {
             }
           }
         }
-        if (getVillagers().size() <= 0 || getPlayersLeft().size() <= 0 && getArenaState() != ArenaState.ENDING) {
+        if (getVillagers().isEmpty() || getPlayersLeft().isEmpty() && getArenaState() != ArenaState.ENDING) {
           ArenaManager.stopGame(false, this);
           return;
         }
@@ -402,14 +402,14 @@ public abstract class Arena extends BukkitRunnable {
     if (getVillagers().size() > 10) {
       return;
     }
-    if (getVillagerSpawns() == null || getVillagerSpawns().size() <= 0) {
+    if (getVillagerSpawns() == null || getVillagerSpawns().isEmpty()) {
       Debugger.debug(LogLevel.WARN, "No villager spawns for " + getId() + ", game won't start");
       return;
     }
     for (Location location : getVillagerSpawns()) {
       spawnVillager(location);
     }
-    if (getVillagers().size() == 0) {
+    if (getVillagers().isEmpty()) {
       Debugger.debug(LogLevel.WARN, "There was a problem with spawning villagers for arena " + id + "! Are villager spawns set in safe and valid locations?");
       return;
     }

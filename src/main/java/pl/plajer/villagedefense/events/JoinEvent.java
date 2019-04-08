@@ -60,7 +60,7 @@ public class JoinEvent implements Listener {
   @EventHandler
   public void onJoin(PlayerJoinEvent event) {
     if (plugin.getConfigPreferences().getOption(ConfigPreferences.Option.BUNGEE_ENABLED)) {
-      if (ArenaRegistry.getArenas().size() >= 1) {
+      if (!ArenaRegistry.getArenas().isEmpty()) {
         ArenaRegistry.getArenas().get(0).teleportToLobby(event.getPlayer());
       }
       return;
