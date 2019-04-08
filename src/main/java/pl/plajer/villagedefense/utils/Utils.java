@@ -52,7 +52,11 @@ import pl.plajer.villagedefense.arena.ArenaRegistry;
  */
 public class Utils {
 
-  private static Main plugin = JavaPlugin.getPlugin(Main.class);
+  private static Main plugin;
+
+  public static void init(Main plugin) {
+    Utils.plugin = plugin;
+  }
 
   /**
    * Checks whether itemstack is named (not null, has meta and display name)

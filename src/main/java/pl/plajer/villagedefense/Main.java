@@ -69,6 +69,7 @@ import pl.plajer.villagedefense.user.data.MySQLManager;
 import pl.plajer.villagedefense.utils.ExceptionLogHandler;
 import pl.plajer.villagedefense.utils.LegacyDataFixer;
 import pl.plajer.villagedefense.utils.MessageUtils;
+import pl.plajer.villagedefense.utils.Utils;
 import pl.plajerlair.core.database.MySQLDatabase;
 import pl.plajerlair.core.debug.Debugger;
 import pl.plajerlair.core.debug.LogLevel;
@@ -193,6 +194,7 @@ public class Main extends JavaPlugin {
   }
 
   private void initializeClasses() {
+    Utils.init(this);
     ScoreboardLib.setPluginInstance(this);
     CreatureUtils.init(this);
     if (getConfig().getBoolean("BungeeActivated", false)) {
