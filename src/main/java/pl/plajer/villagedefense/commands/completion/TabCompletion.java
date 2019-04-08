@@ -19,6 +19,7 @@
 package pl.plajer.villagedefense.commands.completion;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -53,7 +54,7 @@ public class TabCompletion implements TabCompleter {
   @Override
   public List<String> onTabComplete(CommandSender sender, Command cmd, String label, String[] args) {
     if (!(sender instanceof Player)) {
-      return null;
+      return Collections.emptyList();
     }
     if (cmd.getName().equalsIgnoreCase("villagedefenseadmin") && args.length == 1) {
       return registry.getMappedArguments().get(cmd.getName().toLowerCase()).stream().map(CommandArgument::getArgumentName).collect(Collectors.toList());
@@ -71,7 +72,7 @@ public class TabCompletion implements TabCompleter {
       }
     }
     if (args.length < 2) {
-      return null;
+      return Collections.emptyList();
     }
     for (CompletableArgument completion : registeredCompletions) {
       if (!cmd.getName().equalsIgnoreCase(completion.getMainCommand()) || !completion.getArgument().equalsIgnoreCase(args[0])) {
@@ -79,6 +80,6 @@ public class TabCompletion implements TabCompleter {
       }
       return completion.getCompletions();
     }
-    return null;
+    return Collections.emptyList();
   }
 }
