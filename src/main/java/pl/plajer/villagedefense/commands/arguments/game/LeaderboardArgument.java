@@ -42,7 +42,10 @@ import pl.plajer.villagedefense.commands.completion.CompletableArgument;
  */
 public class LeaderboardArgument {
 
+  private ArgumentsRegistry registry;
+
   public LeaderboardArgument(ArgumentsRegistry registry) {
+    this.registry = registry;
     List<String> stats = new ArrayList<>();
     for (StatsStorage.StatisticType val : StatsStorage.StatisticType.values()) {
       if (!val.isPersistent() || val == StatsStorage.StatisticType.XP) {
@@ -70,43 +73,23 @@ public class LeaderboardArgument {
           for (int i = 0; i < 10; i++) {
             try {
               UUID current = (UUID) stats.keySet().toArray()[stats.keySet().toArray().length - 1];
-              String message = registry.getPlugin().getChatManager().colorMessage("Commands.Statistics.Format");
-              message = StringUtils.replace(message, "%position%", String.valueOf(i + 1));
-              message = StringUtils.replace(message, "%name%", Bukkit.getOfflinePlayer(current).getName());
-              message = StringUtils.replace(message, "%value%", String.valueOf(stats.get(current)));
-              message = StringUtils.replace(message, "%statistic%", statistic); //Games_played > Games played etc
-              sender.sendMessage(message);
+              sender.sendMessage(formatMessage(statistic, Bukkit.getOfflinePlayer(current).getName(), i + 1, stats.get(current)));
               stats.remove(current);
             } catch (IndexOutOfBoundsException ex) {
-              String message = registry.getPlugin().getChatManager().colorMessage("Commands.Statistics.Format");
-              message = StringUtils.replace(message, "%position%", String.valueOf(i + 1));
-              message = StringUtils.replace(message, "%name%", "Empty");
-              message = StringUtils.replace(message, "%value%", "0");
-              message = StringUtils.replace(message, "%statistic%", statistic); //Games_played > Games played etc
-              sender.sendMessage(message);
+              sender.sendMessage(formatMessage(statistic, "Empty", i + 1, 0));
             } catch (NullPointerException ex) {
               UUID current = (UUID) stats.keySet().toArray()[stats.keySet().toArray().length - 1];
               if (registry.getPlugin().getConfigPreferences().getOption(ConfigPreferences.Option.DATABASE_ENABLED)) {
                 ResultSet set = registry.getPlugin().getMySQLDatabase().executeQuery("SELECT name FROM playerstats WHERE UUID='" + current.toString() + "'");
                 try {
                   if (set.next()) {
-                    String message = registry.getPlugin().getChatManager().colorMessage("Commands.Statistics.Format");
-                    message = StringUtils.replace(message, "%position%", String.valueOf(i + 1));
-                    message = StringUtils.replace(message, "%name%", set.getString(1));
-                    message = StringUtils.replace(message, "%value%", String.valueOf(stats.get(current)));
-                    message = StringUtils.replace(message, "%statistic%", statistic); //Games_played > Games played etc
-                    sender.sendMessage(message);
+                    sender.sendMessage(formatMessage(statistic, set.getString(1), i + 1, stats.get(current)));
                     continue;
                   }
                 } catch (SQLException ignored) {
                 }
               }
-              String message = registry.getPlugin().getChatManager().colorMessage("Commands.Statistics.Format");
-              message = StringUtils.replace(message, "%position%", String.valueOf(i + 1));
-              message = StringUtils.replace(message, "%name%", "Unknown Player");
-              message = StringUtils.replace(message, "%value%", String.valueOf(stats.get(current)));
-              message = StringUtils.replace(message, "%statistic%", statistic); //Games_played > Games played etc
-              sender.sendMessage(message);
+              sender.sendMessage(formatMessage(statistic, "Unknown Player", i + 1, stats.get(current)));
             }
           }
         } catch (IllegalArgumentException e) {
@@ -114,6 +97,15 @@ public class LeaderboardArgument {
         }
       }
     });
+  }
+
+  private String formatMessage(String statisticName, String playerName, int position, int value) {
+    String message = registry.getPlugin().getChatManager().colorMessage("Commands.Statistics.Format");
+    message = StringUtils.replace(message, "%position%", String.valueOf(position));
+    message = StringUtils.replace(message, "%name%", playerName);
+    message = StringUtils.replace(message, "%value%", String.valueOf(value));
+    message = StringUtils.replace(message, "%statistic%", statisticName);
+    return message;
   }
 
 }
