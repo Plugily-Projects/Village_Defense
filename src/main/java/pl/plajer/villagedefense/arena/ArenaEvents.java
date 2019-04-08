@@ -91,7 +91,7 @@ public class ArenaEvents implements Listener {
       }
       if (e.getDamage() >= ((LivingEntity) e.getEntity()).getHealth()) {
         //prevent offline player cast error
-        if (((Wolf) e.getDamager()).getOwner() == null || !(((Wolf) e.getDamager()).getOwner() instanceof Player)) {
+        if (!(((Wolf) e.getDamager()).getOwner() instanceof Player)) {
           return;
         }
         Player player = (Player) ((Wolf) e.getDamager()).getOwner();
