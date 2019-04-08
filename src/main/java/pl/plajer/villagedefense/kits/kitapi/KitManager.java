@@ -51,7 +51,7 @@ import pl.plajerlair.core.utils.MinigameUtils;
  */
 public class KitManager implements Listener {
 
-  private String[] description;
+  private String[] description = new String[] {};
   private Main plugin;
   private String itemName;
   private Material material;
