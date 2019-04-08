@@ -94,6 +94,7 @@ public class HolidayManager implements Listener {
           });
           plugin.getPowerupRegistry().registerPowerup(powerup);
         }
+        break;
       case 4:
         if (day <= 5) {
           currentHoliday = HolidayType.APRIL_FOOLS;
@@ -104,6 +105,7 @@ public class HolidayManager implements Listener {
           });
           plugin.getPowerupRegistry().registerPowerup(powerup);
         }
+        break;
       case 10:
         //4 days before halloween
         if (day >= 27) {
