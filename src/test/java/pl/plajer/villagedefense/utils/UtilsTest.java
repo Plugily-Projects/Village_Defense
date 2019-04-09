@@ -31,8 +31,8 @@ public class UtilsTest {
 
   @Test
   public void getFacingByByte() {
-    Assert.assertEquals(Utils.getFacingByByte((byte) 3), BlockFace.EAST);
-    Assert.assertEquals(Utils.getFacingByByte((byte) 4), BlockFace.NORTH);
+    Assert.assertEquals(BlockFace.EAST, Utils.getFacingByByte((byte) 3));
+    Assert.assertEquals(BlockFace.NORTH, Utils.getFacingByByte((byte) 4));
     System.out.println("> Utils#getFacingByByte -> 3, 4 | PASSED");
   }
 

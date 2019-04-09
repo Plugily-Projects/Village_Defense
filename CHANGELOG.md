@@ -1,8 +1,9 @@
 # Village Defense Changelog
 
-### 4.1.3 Release (06.04.2019)
+### 4.1.3 Release (06/09.04.2019)
 * Fixed [#611 exception when there was no section for some rewards](https://www.plajer.xyz/errorservice/viewer.php?id=611) but plugin attempted to register them
 * Fixed experience saving via InventoryManager
+* Fixed plugin couldn't start up when Cloudflare was blocked in your country (or services were offline)
 
 ### 4.1.2 Release (15/27.03.2019)
 * Leaderboard command doesn't include XP statistic in tab completion now

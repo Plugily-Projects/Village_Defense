@@ -100,6 +100,11 @@ public class LanguageManager {
       return;
     }
     LocaleService service = ServiceRegistry.getLocaleService(plugin);
+    if (service == null) {
+      Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "[Build Battle] Locales cannot be downloaded because API website is unreachable, locales will be disabled.");
+      pluginLocale = LocaleRegistry.getByName("English");
+      return;
+    }
     if (service.isValidVersion()) {
       LocaleService.DownloadStatus status = service.demandLocaleDownload(pluginLocale);
       if (status == LocaleService.DownloadStatus.FAIL) {
