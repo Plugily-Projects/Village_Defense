@@ -70,7 +70,7 @@ public class EntityUpgradeListener implements Listener {
         break;
       case WOLF:
         for (Arena arena : ArenaRegistry.getArenas()) {
-          if (!arena.getWolfs().contains(e.getDamager())) {
+          if (!arena.getWolves().contains(e.getDamager())) {
             continue;
           }
           int tier = upgradeMenu.getTier(e.getDamager(), upgradeMenu.getUpgrade("Swarm-Awareness"));

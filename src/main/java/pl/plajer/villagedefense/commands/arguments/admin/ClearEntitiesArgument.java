@@ -102,15 +102,15 @@ public class ClearEntitiesArgument {
             clearMessage = registry.getPlugin().getChatManager().colorMessage("In-Game.Messages.Admin-Messages.Removed-Golems");
             break;
           case "wolf":
-            if (arena.getWolfs() == null || arena.getWolfs().isEmpty()) {
+            if (arena.getWolves() == null || arena.getWolves().isEmpty()) {
               sender.sendMessage(registry.getPlugin().getChatManager().colorMessage("Kits.Cleaner.Nothing-To-Clean"));
               return;
             }
-            for (Wolf wolf : arena.getWolfs()) {
+            for (Wolf wolf : arena.getWolves()) {
               wolf.getWorld().spawnParticle(Particle.LAVA, wolf.getLocation(), 20);
               wolf.remove();
             }
-            arena.getWolfs().clear();
+            arena.getWolves().clear();
             Utils.playSound(((Player) sender).getLocation(), "ENTITY_WOLF_DEATH", "ENTITY_WOLF_DEATH");
             clearMessage = registry.getPlugin().getChatManager().colorMessage("In-Game.Messages.Admin-Messages.Removed-Wolves");
             break;

@@ -92,10 +92,10 @@ public class MapRestorerManager {
   }
 
   public void clearWolvesFromArena() {
-    for (Wolf wolf : arena.getWolfs()) {
+    for (Wolf wolf : arena.getWolves()) {
       wolf.remove();
     }
-    arena.getWolfs().clear();
+    arena.getWolves().clear();
   }
 
   private void restoreDoors() {

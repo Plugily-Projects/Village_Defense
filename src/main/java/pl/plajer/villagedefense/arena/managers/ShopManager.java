@@ -169,7 +169,7 @@ public class ShopManager {
             return;
           } else if (name.contains(plugin.getChatManager().colorMessage("In-Game.Messages.Shop-Messages.Wolf-Item-Name"))
               || name.contains(DEFAULT_WOLF_ITEM_NAME)) {
-            for (Wolf wolf : arena.getWolfs()) {
+            for (Wolf wolf : arena.getWolves()) {
               if (wolf.getCustomName().equals(plugin.getChatManager().colorMessage("In-Game.Spawned-Wolf-Name").replace("%player%", player.getName()))) {
                 spawnedAmount++;
               }

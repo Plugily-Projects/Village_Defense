@@ -80,14 +80,14 @@ public class ArenaManager {
     }
     Debugger.debug(Debugger.Level.INFO, "Final join attempt, " + p.getName());
     Debugger.debug(Debugger.Level.INFO, "Join task, " + p.getName());
-    arena.addPlayer(p);
+    arena.getPlayers().add(p);
     User user = plugin.getUserManager().getUser(p);
     arena.getScoreboardManager().createScoreboard(user);
     if ((arena.getArenaState() == ArenaState.IN_GAME || (arena.getArenaState() == ArenaState.STARTING && arena.getTimer() <= 3) || arena.getArenaState() == ArenaState.ENDING)) {
       if (plugin.getConfigPreferences().getOption(ConfigPreferences.Option.INVENTORY_MANAGER_ENABLED)) {
         InventorySerializer.saveInventoryToFile(plugin, p);
       }
-      arena.teleportToStartLocation(p);
+      p.teleport(arena.getStartLocation());
       p.sendMessage(plugin.getChatManager().colorMessage("In-Game.You-Are-Spectator"));
       p.getInventory().clear();
 
@@ -122,7 +122,7 @@ public class ArenaManager {
     if (plugin.getConfigPreferences().getOption(ConfigPreferences.Option.INVENTORY_MANAGER_ENABLED)) {
       InventorySerializer.saveInventoryToFile(plugin, p);
     }
-    arena.teleportToLobby(p);
+    p.teleport(arena.getLobbyLocation());
     p.setHealth(p.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue());
     p.setFoodLevel(20);
     p.getInventory().setArmorContents(new ItemStack[] {new ItemStack(Material.AIR), new ItemStack(Material.AIR), new ItemStack(Material.AIR), new ItemStack(Material.AIR)});
@@ -185,7 +185,7 @@ public class ArenaManager {
     User user = plugin.getUserManager().getUser(player);
     user.setStat(StatsStorage.StatisticType.ORBS, 0);
     arena.getScoreboardManager().removeScoreboard(user);
-    arena.removePlayer(player);
+    arena.getPlayers().remove(player);
     if (!user.isSpectator()) {
       plugin.getChatManager().broadcastAction(arena, player, ChatManager.ActionType.LEAVE);
     }
@@ -244,12 +244,7 @@ public class ArenaManager {
     arena.setOptionValue(ArenaOption.ROTTEN_FLESH_AMOUNT, 0);
     arena.setOptionValue(ArenaOption.ROTTEN_FLESH_LEVEL, 0);
     arena.setOptionValue(ArenaOption.ZOMBIES_TO_SPAWN, 0);
-    if (arena.getVillagers().isEmpty()) {
-      arena.showPlayers();
-      arena.setTimer(10);
-    } else {
-      arena.setTimer(5);
-    }
+    arena.setTimer(arena.getVillagers().isEmpty() ? 10 : 5);
     arena.getMapRestorerManager().fullyRestoreArena();
     arena.setArenaState(ArenaState.ENDING);
     Debugger.debug(Debugger.Level.INFO, "Game stop event finish, arena " + arena.getId());
@@ -296,10 +291,9 @@ public class ArenaManager {
     }
     plugin.getRewardsHandler().performReward(arena, Reward.RewardType.END_WAVE);
     arena.setTimer(plugin.getConfig().getInt("Cooldown-Before-Next-Wave", 25));
-    arena.getZombieCheckerLocations().clear();
+    arena.getZombieSpawnManager().getZombieCheckerLocations().clear();
     arena.setWave(arena.getWave() + 1);
-    VillageWaveEndEvent event = new VillageWaveEndEvent(arena, arena.getWave());
-    Bukkit.getPluginManager().callEvent(event);
+    Bukkit.getPluginManager().callEvent(new VillageWaveEndEvent(arena, arena.getWave()));
     refreshAllPlayers(arena);
     if (plugin.getConfig().getBoolean("Respawn-After-Wave", true)) {
       ArenaUtils.bringDeathPlayersBack(arena);

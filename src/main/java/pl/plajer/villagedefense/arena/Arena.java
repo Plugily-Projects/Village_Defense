@@ -20,11 +20,10 @@ package pl.plajer.villagedefense.arena;
 
 import java.util.ArrayList;
 import java.util.EnumMap;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Random;
 import java.util.Set;
 
@@ -34,6 +33,7 @@ import org.bukkit.Location;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.IronGolem;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
@@ -67,12 +67,10 @@ public abstract class Arena extends BukkitRunnable {
 
   private Set<Player> players = new HashSet<>();
   private List<Zombie> zombies = new ArrayList<>();
-  private List<Wolf> wolfs = new ArrayList<>();
+  private List<Wolf> wolves = new ArrayList<>();
   private List<Villager> villagers = new ArrayList<>();
   private List<IronGolem> ironGolems = new ArrayList<>();
-  private List<Zombie> glitchedZombies = new ArrayList<>();
   private List<Item> droppedFleshes = new ArrayList<>();
-  private Map<Zombie, Location> zombieCheckerLocations = new HashMap<>();
 
   //all arena values that are integers, contains constant and floating values
   private Map<ArenaOption, Integer> arenaOptions = new EnumMap<>(ArenaOption.class);
@@ -105,6 +103,9 @@ public abstract class Arena extends BukkitRunnable {
     for (ArenaOption option : ArenaOption.values()) {
       arenaOptions.put(option, option.getDefaultValue());
     }
+    for (GameLocation location : GameLocation.values()) {
+      gameLocations.put(location, Bukkit.getWorlds().get(0).getSpawnLocation());
+    }
     for (SpawnPoint point : SpawnPoint.values()) {
       spawnPoints.put(point, new ArrayList<>());
     }
@@ -120,6 +121,10 @@ public abstract class Arena extends BukkitRunnable {
 
   public ShopManager getShopManager() {
     return shopManager;
+  }
+
+  public ZombieSpawnManager getZombieSpawnManager() {
+    return zombieSpawnManager;
   }
 
   /**
@@ -192,13 +197,12 @@ public abstract class Arena extends BukkitRunnable {
         }
         if (getTimer() == 0 || forceStart) {
           spawnVillagers();
-          VillageGameStartEvent villageGameStartEvent = new VillageGameStartEvent(this);
-          Bukkit.getPluginManager().callEvent(villageGameStartEvent);
+          Bukkit.getPluginManager().callEvent(new VillageGameStartEvent(this));
           setArenaState(ArenaState.IN_GAME);
           gameBar.setProgress(1.0);
           setTimer(5);
-          teleportAllToStartLocation();
           for (Player player : getPlayers()) {
+            player.teleport(getStartLocation());
             player.setExp(0);
             player.setLevel(0);
             player.getInventory().clear();
@@ -231,51 +235,9 @@ public abstract class Arena extends BukkitRunnable {
           addOptionValue(ArenaOption.BAR_TOGGLE_VALUE, 1);
         }
         if (plugin.getConfigPreferences().getOption(ConfigPreferences.Option.BUNGEE_ENABLED)) {
-          if (getMaximumPlayers() <= getPlayers().size()) {
-            plugin.getServer().setWhitelist(true);
-          } else {
-            plugin.getServer().setWhitelist(false);
-          }
+          plugin.getServer().setWhitelist(getMaximumPlayers() <= getPlayers().size());
         }
-        addOptionValue(ArenaOption.ZOMBIE_GLITCH_CHECKER, 1);
-        if (getOption(ArenaOption.ZOMBIE_GLITCH_CHECKER) >= 60) {
-          Iterator<Villager> villagerIterator = getVillagers().iterator();
-          while (villagerIterator.hasNext()) {
-            Villager villager = villagerIterator.next();
-            if (villager.isDead()) {
-              villagerIterator.remove();
-              removeVillager(villager);
-            }
-          }
-          setOptionValue(ArenaOption.ZOMBIE_GLITCH_CHECKER, 0);
-
-          Iterator<Zombie> zombieIterator = getZombies().iterator();
-          while (zombieIterator.hasNext()) {
-            Zombie zombie = zombieIterator.next();
-            if (zombie.isDead()) {
-              zombieIterator.remove();
-              removeZombie(zombie);
-              continue;
-            }
-            if (glitchedZombies.contains(zombie) && zombie.getLocation().distance(zombieCheckerLocations.get(zombie)) <= 1) {
-              zombieIterator.remove();
-              removeZombie(zombie);
-              zombieCheckerLocations.remove(zombie);
-              zombie.remove();
-            }
-            if (zombieCheckerLocations.get(zombie) == null) {
-              zombieCheckerLocations.put(zombie, zombie.getLocation());
-            } else {
-              Location location = zombieCheckerLocations.get(zombie);
-
-              if (zombie.getLocation().distance(location) <= 1) {
-                zombie.teleport(getZombieSpawns().get(random.nextInt(getZombieSpawns().size() - 1)));
-                zombieCheckerLocations.put(zombie, zombie.getLocation());
-                glitchedZombies.add(zombie);
-              }
-            }
-          }
-        }
+        zombieSpawnManager.spawnGlitchCheck();
         if (getVillagers().isEmpty() || getPlayersLeft().isEmpty() && getArenaState() != ArenaState.ENDING) {
           ArenaManager.stopGame(false, this);
           return;
@@ -288,17 +250,14 @@ public abstract class Arena extends BukkitRunnable {
           if (getOption(ArenaOption.ZOMBIES_TO_SPAWN) > 0) {
             zombieSpawnManager.spawnZombies();
             setTimer(500);
-          } else {
-            if (getTimer() == 0) {
-              mapRestorerManager.clearZombiesFromArena();
-              if (getZombiesLeft() <= 5) {
-                setOptionValue(ArenaOption.ZOMBIES_TO_SPAWN, 0);
-                plugin.getChatManager().broadcast(this, plugin.getChatManager().colorMessage("In-Game.Messages.Zombie-Got-Stuck-In-The-Map"));
-              } else {
-                setOptionValue(ArenaOption.ZOMBIES_TO_SPAWN, 0);
-                for (int i = getZombiesLeft(); i > 0; i++) {
-                  spawnFastZombie(random);
-                }
+          } else if (getTimer() == 0) {
+            mapRestorerManager.clearZombiesFromArena();
+            setOptionValue(ArenaOption.ZOMBIES_TO_SPAWN, 0);
+            if (getZombiesLeft() <= 5) {
+              plugin.getChatManager().broadcast(this, plugin.getChatManager().colorMessage("In-Game.Messages.Zombie-Got-Stuck-In-The-Map"));
+            } else {
+              for (int i = getZombiesLeft(); i > 0; i++) {
+                spawnFastZombie(random);
               }
             }
           }
@@ -326,7 +285,7 @@ public abstract class Arena extends BukkitRunnable {
             ArenaUtils.resetPlayerAfterGame(player);
             doBarAction(BarAction.REMOVE, player);
           }
-          teleportAllToEndLocation();
+          players.forEach(this::teleportToEndLocation);
           plugin.getChatManager().broadcast(this, plugin.getChatManager().colorMessage("Commands.Teleported-To-The-Lobby"));
 
           for (User user : plugin.getUserManager().getUsers(this)) {
@@ -334,34 +293,24 @@ public abstract class Arena extends BukkitRunnable {
             user.setStat(StatsStorage.StatisticType.ORBS, 0);
           }
           plugin.getRewardsHandler().performReward(this, Reward.RewardType.END_GAME);
-          players.clear();
           setArenaState(ArenaState.RESTARTING);
         }
         setTimer(getTimer() - 1);
         break;
       case RESTARTING:
         mapRestorerManager.fullyRestoreArena();
-
         getPlayers().clear();
-
         setArenaState(ArenaState.WAITING_FOR_PLAYERS);
 
         resetOptionValues();
-        for (Item item : droppedFleshes) {
-          if (item != null) {
-            item.remove();
-          }
-        }
+        droppedFleshes.stream().filter(Objects::nonNull).forEach(Entity::remove);
         droppedFleshes.clear();
         if (plugin.getConfigPreferences().getOption(ConfigPreferences.Option.BUNGEE_ENABLED)) {
           if (ConfigUtils.getConfig(plugin, "bungee").getBoolean("Shutdown-When-Game-Ends")) {
             plugin.getServer().shutdown();
+            return;
           }
-        }
-        if (plugin.getConfigPreferences().getOption(ConfigPreferences.Option.BUNGEE_ENABLED)) {
-          for (Player player : plugin.getServer().getOnlinePlayers()) {
-            this.addPlayer(player);
-          }
+          players.addAll(plugin.getServer().getOnlinePlayers());
         }
         break;
       default:
@@ -373,7 +322,7 @@ public abstract class Arena extends BukkitRunnable {
     if (getVillagers().size() > 10) {
       return;
     }
-    if (getVillagerSpawns() == null || getVillagerSpawns().isEmpty()) {
+    if (getVillagerSpawns().isEmpty()) {
       Debugger.debug(Debugger.Level.WARN, "No villager spawns for " + getId() + ", game won't start");
       return;
     }
@@ -472,20 +421,11 @@ public abstract class Arena extends BukkitRunnable {
    */
   public void setArenaState(ArenaState arenaState) {
     this.arenaState = arenaState;
-    VillageGameStateChangeEvent villageGameStateChangeEvent = new VillageGameStateChangeEvent(this, getArenaState());
-    Bukkit.getPluginManager().callEvent(villageGameStateChangeEvent);
+    Bukkit.getPluginManager().callEvent(new VillageGameStateChangeEvent(this, getArenaState()));
   }
 
   public Set<Player> getPlayers() {
     return players;
-  }
-
-  public void teleportToLobby(Player player) {
-    Location location = getLobbyLocation();
-    if (location == null) {
-      Debugger.debug(Debugger.Level.WARN, "Lobby location of arena " + getId() + " doesn't exist!");
-    }
-    player.teleport(location);
   }
 
   public Location getLobbyLocation() {
@@ -504,54 +444,12 @@ public abstract class Arena extends BukkitRunnable {
     gameLocations.put(GameLocation.START, location);
   }
 
-  public void teleportToStartLocation(Player player) {
-    if (gameLocations.get(GameLocation.START) != null) {
-      player.teleport(gameLocations.get(GameLocation.START));
-    } else {
-      Debugger.debug(Debugger.Level.WARN, "Start location of arena " + getId() + " doesn't exist!");
-    }
-  }
-
-  private void teleportAllToStartLocation() {
-    for (Player player : getPlayers()) {
-      if (gameLocations.get(GameLocation.START) != null) {
-        player.teleport(gameLocations.get(GameLocation.START));
-      } else {
-        Debugger.debug(Debugger.Level.WARN, "Start location of arena " + getId() + " doesn't exist!");
-      }
-    }
-  }
-
-  public void teleportAllToEndLocation() {
-    if (plugin.getConfigPreferences().getOption(ConfigPreferences.Option.BUNGEE_ENABLED)) {
-      for (Player player : getPlayers()) {
-        plugin.getBungeeManager().connectToHub(player);
-      }
-      return;
-    }
-    Location location = getEndLocation();
-
-    if (location == null) {
-      location = getLobbyLocation();
-      Debugger.debug(Debugger.Level.WARN, "Ending location of arena " + getId() + " doesn't exist!");
-    }
-    for (Player player : getPlayers()) {
-      player.teleport(location);
-    }
-  }
-
   public void teleportToEndLocation(Player player) {
     if (plugin.getConfigPreferences().getOption(ConfigPreferences.Option.BUNGEE_ENABLED)) {
       plugin.getBungeeManager().connectToHub(player);
       return;
     }
-    Location location = getEndLocation();
-    if (location == null) {
-      location = getLobbyLocation();
-      Debugger.debug(Debugger.Level.WARN, "Ending location of arena " + getId() + " doesn't exist!");
-    }
-
-    player.teleport(location);
+    player.teleport(getEndLocation());
   }
 
   public Location getEndLocation() {
@@ -567,9 +465,7 @@ public abstract class Arena extends BukkitRunnable {
     this.runTaskTimer(plugin, 20L, 20L);
     this.setArenaState(ArenaState.WAITING_FOR_PLAYERS);
     if (plugin.getConfigPreferences().getOption(ConfigPreferences.Option.BUNGEE_ENABLED)) {
-      for (Player player : plugin.getServer().getOnlinePlayers()) {
-        this.addPlayer(player);
-      }
+      players.addAll(plugin.getServer().getOnlinePlayers());
     }
   }
 
@@ -658,7 +554,7 @@ public abstract class Arena extends BukkitRunnable {
   }
 
   protected void addWolf(Wolf wolf) {
-    wolfs.add(wolf);
+    wolves.add(wolf);
   }
 
   /**
@@ -666,8 +562,8 @@ public abstract class Arena extends BukkitRunnable {
    *
    * @return alive wolves in game
    */
-  public List<Wolf> getWolfs() {
-    return wolfs;
+  public List<Wolf> getWolves() {
+    return wolves;
   }
 
   /**
@@ -700,21 +596,6 @@ public abstract class Arena extends BukkitRunnable {
     return false;
   }
 
-  Map<Zombie, Location> getZombieCheckerLocations() {
-    return zombieCheckerLocations;
-  }
-
-  void addPlayer(Player player) {
-    players.add(player);
-  }
-
-  void removePlayer(Player player) {
-    if (player == null) {
-      return;
-    }
-    players.remove(player);
-  }
-
   public List<Player> getPlayersLeft() {
     List<Player> players = new ArrayList<>();
     for (User user : plugin.getUserManager().getUsers(this)) {
@@ -733,12 +614,10 @@ public abstract class Arena extends BukkitRunnable {
     villagers.add(villager);
   }
 
-  void removeVillager(Villager villager) {
-    if (villagers.contains(villager)) {
-      villager.remove();
-      villager.setHealth(0);
-      villagers.remove(villager);
-    }
+  public void removeVillager(Villager villager) {
+    villager.remove();
+    villager.setHealth(0);
+    villagers.remove(villager);
   }
 
   public List<Location> getZombieSpawns() {

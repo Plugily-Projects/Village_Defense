@@ -342,7 +342,7 @@ public class Main extends JavaPlugin {
         }
       }
       arena.getMapRestorerManager().fullyRestoreArena();
-      arena.teleportAllToEndLocation();
+      arena.getPlayers().forEach(arena::teleportToEndLocation);
     }
     saveAllUserStatistics();
     if (getServer().getPluginManager().isPluginEnabled("HolographicDisplays")) {

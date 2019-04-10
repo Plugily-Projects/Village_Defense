@@ -200,7 +200,7 @@ public class ArenaEvents implements Listener {
         return;
       }
       ArenaUtils.addStat(player, StatsStorage.StatisticType.DEATHS);
-      arena.teleportToStartLocation(player);
+      player.teleport(arena.getStartLocation());
       user.setSpectator(true);
       player.setGameMode(GameMode.SURVIVAL);
       user.setStat(StatsStorage.StatisticType.ORBS, 0);
@@ -265,7 +265,6 @@ public class ArenaEvents implements Listener {
     Player player = e.getPlayer();
     player.setAllowFlight(true);
     player.setFlying(true);
-    arena.teleportToStartLocation(player);
     User user = plugin.getUserManager().getUser(player);
     if (!user.isSpectator()) {
       user.setSpectator(true);

@@ -74,7 +74,7 @@ public class TeleportArgument {
           player.sendMessage(ChatColor.RED + "Lobby location isn't set for this arena!");
           return;
         }
-        arena.teleportToLobby(player);
+        player.teleport(arena.getLobbyLocation());
         player.sendMessage(ChatColor.GRAY + "Teleported to LOBBY location from arena " + arena.getId());
         break;
       case START:

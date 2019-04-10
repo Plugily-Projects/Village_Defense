@@ -18,7 +18,16 @@
 
 package pl.plajer.villagedefense.arena.managers;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 import java.util.Random;
+
+import org.bukkit.Location;
+import org.bukkit.entity.Villager;
+import org.bukkit.entity.Zombie;
 
 import pl.plajer.villagedefense.arena.Arena;
 import pl.plajer.villagedefense.arena.options.ArenaOption;
@@ -33,6 +42,8 @@ public class ZombieSpawnManager {
   private Random random;
   private Arena arena;
   private int localIdleProcess = 0;
+  private List<Zombie> glitchedZombies = new ArrayList<>();
+  private Map<Zombie, Location> zombieCheckerLocations = new HashMap<>();
 
   public ZombieSpawnManager(Arena arena) {
     this.arena = arena;
@@ -41,6 +52,59 @@ public class ZombieSpawnManager {
 
   public void applyIdle(int idle) {
     localIdleProcess = idle;
+  }
+
+  /**
+   * Increments ZOMBIE_GLITCH_CHECKER value and attempts to check
+   * whether any zombies are glitched on spawn point when
+   * ZOMBIE_GLITCH_CHECKER value is higher or equal than 60
+   * <p>
+   * Glitch checker also clean ups dead zombies and villagers from the arena
+   */
+  public void spawnGlitchCheck() {
+    arena.addOptionValue(ArenaOption.ZOMBIE_GLITCH_CHECKER, 1);
+    if (arena.getOption(ArenaOption.ZOMBIE_GLITCH_CHECKER) >= 60) {
+      Iterator<Villager> villagerIterator = arena.getVillagers().iterator();
+      while (villagerIterator.hasNext()) {
+        Villager villager = villagerIterator.next();
+        if (villager.isDead()) {
+          villagerIterator.remove();
+          arena.removeVillager(villager);
+        }
+      }
+      arena.setOptionValue(ArenaOption.ZOMBIE_GLITCH_CHECKER, 0);
+
+      Iterator<Zombie> zombieIterator = arena.getZombies().iterator();
+      while (zombieIterator.hasNext()) {
+        Zombie zombie = zombieIterator.next();
+        if (zombie.isDead()) {
+          zombieIterator.remove();
+          arena.removeZombie(zombie);
+          continue;
+        }
+        if (glitchedZombies.contains(zombie) && zombie.getLocation().distance(zombieCheckerLocations.get(zombie)) <= 1) {
+          zombieIterator.remove();
+          arena.removeZombie(zombie);
+          zombieCheckerLocations.remove(zombie);
+          zombie.remove();
+        }
+        if (zombieCheckerLocations.get(zombie) == null) {
+          zombieCheckerLocations.put(zombie, zombie.getLocation());
+        } else {
+          Location location = zombieCheckerLocations.get(zombie);
+
+          if (zombie.getLocation().distance(location) <= 1) {
+            zombie.teleport(arena.getZombieSpawns().get(random.nextInt(arena.getZombieSpawns().size() - 1)));
+            zombieCheckerLocations.put(zombie, zombie.getLocation());
+            glitchedZombies.add(zombie);
+          }
+        }
+      }
+    }
+  }
+
+  public Map<Zombie, Location> getZombieCheckerLocations() {
+    return zombieCheckerLocations;
   }
 
   /**

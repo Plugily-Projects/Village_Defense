@@ -329,7 +329,7 @@ public class Events implements Listener {
           e.setCancelled(true);
         } else if (e.getEntity() instanceof Villager && a.getVillagers().contains(e.getEntity())) {
           e.setCancelled(true);
-        } else if (a.getWolfs().contains(e.getEntity())) {
+        } else if (a.getWolves().contains(e.getEntity())) {
           e.setCancelled(true);
         }
       }
