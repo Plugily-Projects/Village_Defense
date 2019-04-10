@@ -166,7 +166,6 @@ public abstract class Arena extends BukkitRunnable {
           plugin.getChatManager().broadcast(this, plugin.getChatManager().colorMessage("In-Game.Messages.Lobby-Messages.Enough-Players-To-Start"));
           setArenaState(ArenaState.STARTING);
           setTimer(plugin.getConfig().getInt("Starting-Waiting-Time", 60));
-          this.showPlayers();
           return;
         }
         setTimer(getTimer() - 1);
@@ -406,20 +405,10 @@ public abstract class Arena extends BukkitRunnable {
     return mapRestorerManager;
   }
 
-  /**
-   * Get minimum players needed.
-   *
-   * @return minimum players needed to start arena
-   */
   public int getMinimumPlayers() {
     return getOption(ArenaOption.MINIMUM_PLAYERS);
   }
 
-  /**
-   * Set minimum players needed.
-   *
-   * @param minimumPlayers players needed to start arena
-   */
   public void setMinimumPlayers(int minimumPlayers) {
     setOptionValue(ArenaOption.MINIMUM_PLAYERS, minimumPlayers);
   }
@@ -427,7 +416,7 @@ public abstract class Arena extends BukkitRunnable {
   /**
    * Get arena map name.
    *
-   * @return arena map name, [b]it's not arena id[/b]
+   * @return arena map name, <b>it's not arena id</b>
    * @see #getId()
    */
   public String getMapName() {
@@ -461,39 +450,25 @@ public abstract class Arena extends BukkitRunnable {
     setOptionValue(ArenaOption.TIMER, timer);
   }
 
-  /**
-   * Return maximum players arena can handle.
-   *
-   * @return maximum players arena can handle
-   */
   public int getMaximumPlayers() {
     return getOption(ArenaOption.MAXIMUM_PLAYERS);
   }
 
-  /**
-   * Set maximum players arena can handle.
-   *
-   * @param maximumPlayers how many players arena can handle
-   */
   public void setMaximumPlayers(int maximumPlayers) {
     setOptionValue(ArenaOption.MAXIMUM_PLAYERS, maximumPlayers);
   }
 
-  /**
-   * Return game state of arena.
-   *
-   * @return game state of arena
-   * @see ArenaState
-   */
   public ArenaState getArenaState() {
     return arenaState;
   }
 
   /**
    * Set game state of arena.
+   * Calls VillageGameStateChangeEvent
    *
    * @param arenaState new game state of arena
    * @see ArenaState
+   * @see VillageGameStateChangeEvent
    */
   public void setArenaState(ArenaState arenaState) {
     this.arenaState = arenaState;
@@ -501,11 +476,6 @@ public abstract class Arena extends BukkitRunnable {
     Bukkit.getPluginManager().callEvent(villageGameStateChangeEvent);
   }
 
-  /**
-   * Get all players in arena.
-   *
-   * @return set of players in arena
-   */
   public Set<Player> getPlayers() {
     return players;
   }
@@ -518,38 +488,18 @@ public abstract class Arena extends BukkitRunnable {
     player.teleport(location);
   }
 
-  /**
-   * Get lobby location of arena.
-   *
-   * @return lobby location of arena
-   */
   public Location getLobbyLocation() {
     return gameLocations.get(GameLocation.LOBBY);
   }
 
-  /**
-   * Set lobby location of arena.
-   *
-   * @param loc new lobby location of arena
-   */
   public void setLobbyLocation(Location loc) {
     gameLocations.put(GameLocation.LOBBY, loc);
   }
 
-  /**
-   * Get start location of arena.
-   *
-   * @return start location of arena
-   */
   public Location getStartLocation() {
     return gameLocations.get(GameLocation.START);
   }
 
-  /**
-   * Set start location of arena.
-   *
-   * @param location new start location of arena
-   */
   public void setStartLocation(Location location) {
     gameLocations.put(GameLocation.START, location);
   }
@@ -604,20 +554,10 @@ public abstract class Arena extends BukkitRunnable {
     player.teleport(location);
   }
 
-  /**
-   * Get end location of arena.
-   *
-   * @return end location of arena
-   */
   public Location getEndLocation() {
     return gameLocations.get(GameLocation.END);
   }
 
-  /**
-   * Set end location of arena.
-   *
-   * @param endLoc new end location of arena
-   */
   public void setEndLocation(Location endLoc) {
     gameLocations.put(GameLocation.END, endLoc);
   }
@@ -675,11 +615,6 @@ public abstract class Arena extends BukkitRunnable {
     return getOption(ArenaOption.ZOMBIES_TO_SPAWN) + getZombies().size();
   }
 
-  /**
-   * Get current game wave.
-   *
-   * @return current game wave
-   */
   public int getWave() {
     return getOption(ArenaOption.WAVE);
   }
@@ -788,15 +723,6 @@ public abstract class Arena extends BukkitRunnable {
       }
     }
     return players;
-  }
-
-  void showPlayers() {
-    for (Player player : getPlayers()) {
-      for (Player p : getPlayers()) {
-        player.showPlayer(p);
-        p.showPlayer(player);
-      }
-    }
   }
 
   protected void addZombie(Zombie zombie) {

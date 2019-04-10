@@ -129,7 +129,6 @@ public class ArenaManager {
     p.setFlying(false);
     p.setAllowFlight(false);
     p.getInventory().clear();
-    arena.showPlayers();
     arena.doBarAction(Arena.BarAction.ADD, p);
     if (!plugin.getUserManager().getUser(p).isSpectator()) {
       plugin.getChatManager().broadcastAction(arena, p, ChatManager.ActionType.JOIN);
@@ -145,7 +144,6 @@ public class ArenaManager {
       player.setExp(1);
       player.setLevel(0);
     }
-    arena.showPlayers();
     Debugger.debug(Debugger.Level.INFO, "Join task end, " + p.getName());
   }
 
