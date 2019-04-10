@@ -23,7 +23,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import pl.plajer.villagedefense.Main;
-import pl.plajerlair.core.utils.XMaterial;
+import pl.plajerlair.commonsbox.minecraft.compat.XMaterial;
 
 /**
  * Bridge for compatibility between 1.12 and 1.13

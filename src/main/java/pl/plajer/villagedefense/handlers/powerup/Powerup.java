@@ -20,7 +20,7 @@ package pl.plajer.villagedefense.handlers.powerup;
 
 import java.util.function.Consumer;
 
-import pl.plajerlair.core.utils.XMaterial;
+import pl.plajerlair.commonsbox.minecraft.compat.XMaterial;
 
 /**
  * @author Plajer

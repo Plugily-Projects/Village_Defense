@@ -24,7 +24,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
 
-import pl.plajerlair.core.utils.XMaterial;
+import pl.plajerlair.commonsbox.minecraft.compat.XMaterial;
 
 /**
  * Created by Tom on 7/08/2014.

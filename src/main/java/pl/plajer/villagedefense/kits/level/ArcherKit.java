@@ -27,8 +27,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import pl.plajer.villagedefense.api.StatsStorage;
-import pl.plajer.villagedefense.kits.kitapi.KitRegistry;
-import pl.plajer.villagedefense.kits.kitapi.basekits.LevelKit;
+import pl.plajer.villagedefense.kits.KitRegistry;
+import pl.plajer.villagedefense.kits.basekits.LevelKit;
 import pl.plajer.villagedefense.utils.ArmorHelper;
 import pl.plajer.villagedefense.utils.Utils;
 import pl.plajer.villagedefense.utils.WeaponHelper;

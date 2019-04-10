@@ -40,9 +40,8 @@ import pl.plajer.villagedefense.arena.Arena;
 import pl.plajer.villagedefense.arena.ArenaRegistry;
 import pl.plajer.villagedefense.arena.ArenaUtils;
 import pl.plajer.villagedefense.handlers.ChatManager;
-import pl.plajerlair.core.debug.Debugger;
-import pl.plajerlair.core.debug.LogLevel;
-import pl.plajerlair.core.utils.XMaterial;
+import pl.plajer.villagedefense.utils.Debugger;
+import pl.plajerlair.commonsbox.minecraft.compat.XMaterial;
 
 /**
  * @author Plajer
@@ -60,15 +59,15 @@ public class PowerupRegistry {
       return;
     }
     if (!plugin.getServer().getPluginManager().isPluginEnabled("HolographicDisplays")) {
-      Debugger.debug(LogLevel.WARN, "Power up module: Holographic Displays dependency not found, disabling");
+      Debugger.debug(Debugger.Level.WARN, "Power up module: Holographic Displays dependency not found, disabling");
       return;
     }
     enabled = true;
     this.plugin = plugin;
-    Debugger.debug(LogLevel.INFO, "Registering power ups module!");
+    Debugger.debug(Debugger.Level.INFO, "Registering power ups module!");
     registerPowerups();
     if (registeredPowerups.isEmpty()) {
-      Debugger.debug(LogLevel.WARN, "Disabling power up module, all power ups disabled");
+      Debugger.debug(Debugger.Level.WARN, "Disabling power up module, all power ups disabled");
       enabled = false;
     }
   }
@@ -163,8 +162,8 @@ public class PowerupRegistry {
       if (ArenaRegistry.getArena(player) != arena) {
         return;
       }
-      VillagePlayerPowerupPickupEvent villagePowerupPickEvent = new VillagePlayerPowerupPickupEvent(arena, player, powerup);
-      Bukkit.getPluginManager().callEvent(villagePowerupPickEvent);
+      VillagePlayerPowerupPickupEvent event = new VillagePlayerPowerupPickupEvent(arena, player, powerup);
+      Bukkit.getPluginManager().callEvent(event);
       powerup.getOnPickup().accept(new PowerupPickupHandler(powerup, arena, player));
       hologram.delete();
     });

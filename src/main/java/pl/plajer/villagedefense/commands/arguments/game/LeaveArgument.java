@@ -26,9 +26,8 @@ import pl.plajer.villagedefense.arena.ArenaManager;
 import pl.plajer.villagedefense.arena.ArenaRegistry;
 import pl.plajer.villagedefense.commands.arguments.ArgumentsRegistry;
 import pl.plajer.villagedefense.commands.arguments.data.CommandArgument;
+import pl.plajer.villagedefense.utils.Debugger;
 import pl.plajer.villagedefense.utils.Utils;
-import pl.plajerlair.core.debug.Debugger;
-import pl.plajerlair.core.debug.LogLevel;
 
 /**
  * @author Plajer
@@ -49,12 +48,12 @@ public class LeaveArgument {
           p.sendMessage(registry.getPlugin().getChatManager().getPrefix() + registry.getPlugin().getChatManager().colorMessage("Commands.Teleported-To-The-Lobby"));
           if (registry.getPlugin().getConfigPreferences().getOption(ConfigPreferences.Option.BUNGEE_ENABLED)) {
             registry.getPlugin().getBungeeManager().connectToHub(p);
-            Debugger.debug(LogLevel.INFO, p.getName() + " was teleported to the Hub server");
-          } else {
-            ArenaRegistry.getArena(p).teleportToEndLocation(p);
-            ArenaManager.leaveAttempt(p, ArenaRegistry.getArena(p));
-            Debugger.debug(LogLevel.INFO, p.getName() + " has left the arena! He is teleported to the end location.");
+            Debugger.debug(Debugger.Level.INFO, p.getName() + " was teleported to the Hub server");
+            return;
           }
+          ArenaRegistry.getArena(p).teleportToEndLocation(p);
+          ArenaManager.leaveAttempt(p, ArenaRegistry.getArena(p));
+          Debugger.debug(Debugger.Level.INFO, p.getName() + " has left the arena! He is teleported to the end location.");
         }
       }
     });

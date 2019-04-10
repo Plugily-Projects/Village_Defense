@@ -37,14 +37,13 @@ import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 
 import pl.plajer.villagedefense.Main;
+import pl.plajer.villagedefense.utils.Debugger;
 import pl.plajer.villagedefense.utils.MessageUtils;
-import pl.plajerlair.core.debug.Debugger;
-import pl.plajerlair.core.debug.LogLevel;
-import pl.plajerlair.core.services.ServiceRegistry;
-import pl.plajerlair.core.services.locale.Locale;
-import pl.plajerlair.core.services.locale.LocaleRegistry;
-import pl.plajerlair.core.services.locale.LocaleService;
-import pl.plajerlair.core.utils.ConfigUtils;
+import pl.plajerlair.commonsbox.minecraft.configuration.ConfigUtils;
+import pl.plajerlair.services.ServiceRegistry;
+import pl.plajerlair.services.locale.Locale;
+import pl.plajerlair.services.locale.LocaleRegistry;
+import pl.plajerlair.services.locale.LocaleService;
 
 public class LanguageManager {
 
@@ -101,7 +100,7 @@ public class LanguageManager {
     }
     LocaleService service = ServiceRegistry.getLocaleService(plugin);
     if (service == null) {
-      Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "[Build Battle] Locales cannot be downloaded because API website is unreachable, locales will be disabled.");
+      Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "[Village Defense] Locales cannot be downloaded because API website is unreachable, locales will be disabled.");
       pluginLocale = LocaleRegistry.getByName("English");
       return;
     }
@@ -156,6 +155,7 @@ public class LanguageManager {
     loadProperties();
   }
 
+  @Deprecated
   private static void suggestLocale() {
     //we will catch any exceptions in case of api changes
     boolean hasLocale = false;
@@ -201,7 +201,7 @@ public class LanguageManager {
         }
       }
     } catch (Exception e) {
-      Debugger.debug(LogLevel.WARN, "[EXTERNAL] Plugin has occurred a problem suggesting locale, probably API change.");
+      Debugger.debug(Debugger.Level.WARN, "[EXTERNAL] Plugin has occurred a problem suggesting locale, probably API change.");
     }
     if (hasLocale) {
       MessageUtils.info();

@@ -36,13 +36,13 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import pl.plajer.villagedefense.arena.ArenaRegistry;
 import pl.plajer.villagedefense.handlers.PermissionsManager;
-import pl.plajer.villagedefense.kits.kitapi.KitRegistry;
-import pl.plajer.villagedefense.kits.kitapi.basekits.PremiumKit;
+import pl.plajer.villagedefense.kits.KitRegistry;
+import pl.plajer.villagedefense.kits.basekits.PremiumKit;
 import pl.plajer.villagedefense.utils.ArmorHelper;
 import pl.plajer.villagedefense.utils.Utils;
 import pl.plajer.villagedefense.utils.WeaponHelper;
-import pl.plajerlair.core.utils.ItemBuilder;
-import pl.plajerlair.core.utils.XMaterial;
+import pl.plajerlair.commonsbox.minecraft.compat.XMaterial;
+import pl.plajerlair.commonsbox.minecraft.item.ItemBuilder;
 
 /**
  * Created by Tom on 17/12/2015.
@@ -108,11 +108,7 @@ public class BlockerKit extends PremiumKit implements Listener {
       event.getPlayer().sendMessage(getPlugin().getChatManager().colorMessage("Kits.Blocker.Game-Item-Place-Fail"));
       return;
     }
-    if (stack.getAmount() <= 1) {
-      player.getInventory().setItemInMainHand(new ItemStack(Material.AIR));
-    } else {
-      player.getInventory().getItemInMainHand().setAmount(player.getInventory().getItemInMainHand().getAmount() - 1);
-    }
+    Utils.takeOneItem(player, stack);
     event.setCancelled(false);
 
     event.getPlayer().sendMessage(getPlugin().getChatManager().colorMessage("Kits.Blocker.Game-Item-Place-Message"));

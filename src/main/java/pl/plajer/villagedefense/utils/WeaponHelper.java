@@ -25,7 +25,7 @@ import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 
-import pl.plajerlair.core.utils.XMaterial;
+import pl.plajerlair.commonsbox.minecraft.compat.XMaterial;
 
 /**
  * Created by Tom on 12/08/2014.

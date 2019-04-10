@@ -64,7 +64,7 @@ import pl.plajer.villagedefense.commands.arguments.game.StatsArgument;
 import pl.plajer.villagedefense.commands.completion.TabCompletion;
 import pl.plajer.villagedefense.handlers.setup.SetupInventory;
 import pl.plajer.villagedefense.utils.Utils;
-import pl.plajerlair.core.utils.StringMatcher;
+import pl.plajerlair.commonsbox.string.StringMatcher;
 
 /**
  * @author Plajer
@@ -146,35 +146,7 @@ public class ArgumentsRegistry implements CommandExecutor {
         if (!sender.hasPermission("villagedefense.admin")) {
           return true;
         }
-        sender.sendMessage(ChatColor.GREEN + "  " + ChatColor.BOLD + "Village Defense " + ChatColor.GRAY + plugin.getDescription().getVersion());
-        sender.sendMessage(ChatColor.RED + " []" + ChatColor.GRAY + " = optional  " + ChatColor.GOLD + "<>" + ChatColor.GRAY + " = required");
-        if (sender instanceof Player) {
-          sender.sendMessage(ChatColor.GRAY + "Hover command to see more, click command to suggest it.");
-        }
-        List<LabelData> data = mappedArguments.get("villagedefenseadmin").stream().filter(arg -> arg instanceof LabeledCommandArgument)
-            .map(arg -> ((LabeledCommandArgument) arg).getLabelData()).collect(Collectors.toList());
-        data.add(new LabelData("/vd &6<arena>&f edit", "/vd <arena> edit",
-            "&7Edit existing arena\n&6Permission: &7villagedefense.admin.edit"));
-        data.addAll(mappedArguments.get("villagedefense").stream().filter(arg -> arg instanceof LabeledCommandArgument)
-            .map(arg -> ((LabeledCommandArgument) arg).getLabelData()).collect(Collectors.toList()));
-        if (plugin.is1_11_R1()) {
-          for (LabelData labelData : data) {
-            sender.sendMessage(labelData.getText() + " - " + labelData.getDescription().split("\n")[0]);
-          }
-          return true;
-        }
-        for (LabelData labelData : data) {
-          TextComponent component;
-          if (sender instanceof Player) {
-            component = new TextComponent(labelData.getText());
-          } else {
-            //more descriptive for console - split at \n to show only basic description
-            component = new TextComponent(labelData.getText() + " - " + labelData.getDescription().split("\n")[0]);
-          }
-          component.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, labelData.getCommand()));
-          component.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(labelData.getDescription()).create()));
-          sender.spigot().sendMessage(component);
-        }
+        sendAdminHelpCommand(sender);
         return true;
       }
       for (CommandArgument argument : entry.getValue()) {
@@ -218,6 +190,38 @@ public class ArgumentsRegistry implements CommandExecutor {
       sender.sendMessage(plugin.getChatManager().colorMessage("Commands.Main-Command.Admin-Bonus-Description"));
     }
     sender.sendMessage(plugin.getChatManager().colorMessage("Commands.Main-Command.Footer"));
+  }
+
+  private void sendAdminHelpCommand(CommandSender sender) {
+    sender.sendMessage(ChatColor.GREEN + "  " + ChatColor.BOLD + "Village Defense " + ChatColor.GRAY + plugin.getDescription().getVersion());
+    sender.sendMessage(ChatColor.RED + " []" + ChatColor.GRAY + " = optional  " + ChatColor.GOLD + "<>" + ChatColor.GRAY + " = required");
+    if (sender instanceof Player) {
+      sender.sendMessage(ChatColor.GRAY + "Hover command to see more, click command to suggest it.");
+    }
+    List<LabelData> data = mappedArguments.get("villagedefenseadmin").stream().filter(arg -> arg instanceof LabeledCommandArgument)
+        .map(arg -> ((LabeledCommandArgument) arg).getLabelData()).collect(Collectors.toList());
+    data.add(new LabelData("/vd &6<arena>&f edit", "/vd <arena> edit",
+        "&7Edit existing arena\n&6Permission: &7villagedefense.admin.edit"));
+    data.addAll(mappedArguments.get("villagedefense").stream().filter(arg -> arg instanceof LabeledCommandArgument)
+        .map(arg -> ((LabeledCommandArgument) arg).getLabelData()).collect(Collectors.toList()));
+    if (plugin.is1_11_R1()) {
+      for (LabelData labelData : data) {
+        sender.sendMessage(labelData.getText() + " - " + labelData.getDescription().split("\n")[0]);
+      }
+      return;
+    }
+    for (LabelData labelData : data) {
+      TextComponent component;
+      if (sender instanceof Player) {
+        component = new TextComponent(labelData.getText());
+      } else {
+        //more descriptive for console - split at \n to show only basic description
+        component = new TextComponent(labelData.getText() + " - " + labelData.getDescription().split("\n")[0]);
+      }
+      component.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, labelData.getCommand()));
+      component.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(labelData.getDescription()).create()));
+      sender.spigot().sendMessage(component);
+    }
   }
 
   private boolean checkSenderIsExecutorType(CommandSender sender, CommandArgument.ExecutorType type) {

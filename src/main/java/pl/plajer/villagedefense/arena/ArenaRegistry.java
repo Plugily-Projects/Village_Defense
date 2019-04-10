@@ -28,10 +28,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import pl.plajer.villagedefense.Main;
-import pl.plajerlair.core.debug.Debugger;
-import pl.plajerlair.core.debug.LogLevel;
-import pl.plajerlair.core.utils.ConfigUtils;
-import pl.plajerlair.core.utils.LocationUtils;
+import pl.plajer.villagedefense.utils.Debugger;
+import pl.plajerlair.commonsbox.minecraft.configuration.ConfigUtils;
+import pl.plajerlair.commonsbox.minecraft.serialization.LocationSerializer;
 
 /**
  * Created by Tom on 27/07/2014.
@@ -97,17 +96,17 @@ public class ArenaRegistry {
   }
 
   public static void registerArena(Arena arena) {
-    Debugger.debug(LogLevel.INFO, "Registering new game instance, " + arena.getId());
+    Debugger.debug(Debugger.Level.INFO, "Registering new game instance, " + arena.getId());
     arenas.add(arena);
   }
 
   public static void unregisterArena(Arena arena) {
-    Debugger.debug(LogLevel.INFO, "Unegistering game instance, " + arena.getId());
+    Debugger.debug(Debugger.Level.INFO, "Unegistering game instance, " + arena.getId());
     arenas.remove(arena);
   }
 
   public static void registerArenas() {
-    Debugger.debug(LogLevel.INFO, "Initial arenas registration");
+    Debugger.debug(Debugger.Level.INFO, "Initial arenas registration");
     if (ArenaRegistry.getArenas() != null && !ArenaRegistry.getArenas().isEmpty()) {
       for (Arena arena : new ArrayList<>(ArenaRegistry.getArenas())) {
         arena.getMapRestorerManager().clearZombiesFromArena();
@@ -133,9 +132,9 @@ public class ArenaRegistry {
       arena.setMinimumPlayers(config.getInt(key + "minimumplayers", 1));
       arena.setMaximumPlayers(config.getInt(key + "maximumplayers", 2));
       arena.setMapName(config.getString(key + "mapname", "none"));
-      arena.setLobbyLocation(LocationUtils.getLocation(config.getString(key + "lobbylocation", "world,364.0,63.0,-72.0,0.0,0.0")));
-      arena.setStartLocation(LocationUtils.getLocation(config.getString(key + "Startlocation", "world,364.0,63.0,-72.0,0.0,0.0")));
-      arena.setEndLocation(LocationUtils.getLocation(config.getString(key + "Endlocation", "world,364.0,63.0,-72.0,0.0,0.0")));
+      arena.setLobbyLocation(LocationSerializer.getLocation(config.getString(key + "lobbylocation", "world,364.0,63.0,-72.0,0.0,0.0")));
+      arena.setStartLocation(LocationSerializer.getLocation(config.getString(key + "Startlocation", "world,364.0,63.0,-72.0,0.0,0.0")));
+      arena.setEndLocation(LocationSerializer.getLocation(config.getString(key + "Endlocation", "world,364.0,63.0,-72.0,0.0,0.0")));
       ArenaUtils.setWorld(arena);
 
       if (!config.getBoolean(key + "isdone", false)) {
@@ -148,7 +147,7 @@ public class ArenaRegistry {
       if (config.isSet(key + "zombiespawns")) {
         for (String string : config.getConfigurationSection(key + "zombiespawns").getKeys(false)) {
           String path = key + "zombiespawns." + string;
-          arena.addZombieSpawn(LocationUtils.getLocation(config.getString(path)));
+          arena.addZombieSpawn(LocationSerializer.getLocation(config.getString(path)));
         }
       } else {
         Bukkit.getConsoleSender().sendMessage(plugin.getChatManager().colorMessage("Validator.Invalid-Arena-Configuration").replace("%arena%", id).replace("%error%", "ZOMBIE SPAWNS"));
@@ -160,7 +159,7 @@ public class ArenaRegistry {
       if (config.isSet(key + "villagerspawns")) {
         for (String string : config.getConfigurationSection(key + "villagerspawns").getKeys(false)) {
           String path = key + "villagerspawns." + string;
-          arena.addVillagerSpawn(LocationUtils.getLocation(config.getString(path)));
+          arena.addVillagerSpawn(LocationSerializer.getLocation(config.getString(path)));
         }
       } else {
         Bukkit.getConsoleSender().sendMessage(plugin.getChatManager().colorMessage("Validator.Invalid-Arena-Configuration").replace("%arena%", id).replace("%error%", "VILLAGER SPAWNS"));
@@ -171,7 +170,7 @@ public class ArenaRegistry {
       if (config.isSet(key + "doors")) {
         for (String string : config.getConfigurationSection(key + "doors").getKeys(false)) {
           String path = key + "doors." + string + ".";
-          arena.getMapRestorerManager().addDoor(LocationUtils.getLocation(config.getString(path + "location")),
+          arena.getMapRestorerManager().addDoor(LocationSerializer.getLocation(config.getString(path + "location")),
               (byte) config.getInt(path + "byte"));
         }
       } else {
@@ -184,7 +183,7 @@ public class ArenaRegistry {
       arena.start();
       Bukkit.getConsoleSender().sendMessage(plugin.getChatManager().colorMessage("Validator.Instance-Started").replace("%arena%", id));
     }
-    Debugger.debug(LogLevel.INFO, "Arenas registration completed");
+    Debugger.debug(Debugger.Level.INFO, "Arenas registration completed");
   }
 
   public static List<Arena> getArenas() {

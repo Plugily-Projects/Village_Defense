@@ -44,8 +44,8 @@ import pl.plajer.villagedefense.api.event.player.VillagePlayerEntityUpgradeEvent
 import pl.plajer.villagedefense.arena.ArenaRegistry;
 import pl.plajer.villagedefense.user.User;
 import pl.plajer.villagedefense.utils.Utils;
-import pl.plajerlair.core.utils.ItemBuilder;
-import pl.plajerlair.core.utils.XMaterial;
+import pl.plajerlair.commonsbox.minecraft.compat.XMaterial;
+import pl.plajerlair.commonsbox.minecraft.item.ItemBuilder;
 
 /**
  * @author Plajer

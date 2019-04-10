@@ -24,7 +24,7 @@ import org.bukkit.event.HandlerList;
 
 import pl.plajer.villagedefense.api.event.VillageEvent;
 import pl.plajer.villagedefense.arena.Arena;
-import pl.plajer.villagedefense.kits.kitapi.basekits.Kit;
+import pl.plajer.villagedefense.kits.basekits.Kit;
 
 /**
  * @author TomTheDeveloper, Plajer

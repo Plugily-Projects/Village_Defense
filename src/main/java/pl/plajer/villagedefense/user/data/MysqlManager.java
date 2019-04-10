@@ -32,22 +32,22 @@ import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.api.StatsStorage;
 import pl.plajer.villagedefense.user.User;
 import pl.plajer.villagedefense.utils.MessageUtils;
-import pl.plajerlair.core.database.MySQLDatabase;
+import pl.plajerlair.commonsbox.database.MysqlDatabase;
 
 /**
  * @author Plajer
  * <p>
  * Created at 28.09.2018
  */
-public class MySQLManager implements UserDatabase {
+public class MysqlManager implements UserDatabase {
 
   private Main plugin;
-  private MySQLDatabase database;
+  private MysqlDatabase database;
 
-  public MySQLManager(Main plugin) {
+  public MysqlManager(Main plugin) {
     this.plugin = plugin;
-    database = plugin.getMySQLDatabase();
-    try (Statement statement = database.getManager().getConnection().createStatement()) {
+    database = plugin.getMysqlDatabase();
+    try (Statement statement = database.getConnection().createStatement()) {
       statement.executeUpdate("CREATE TABLE IF NOT EXISTS `playerstats` (\n"
           + "  `UUID` text NOT NULL,\n"
           + "  `name` text NOT NULL,\n"
@@ -113,7 +113,4 @@ public class MySQLManager implements UserDatabase {
     });
   }
 
-  public MySQLDatabase getDatabase() {
-    return database;
-  }
 }

@@ -36,13 +36,13 @@ import org.bukkit.util.Vector;
 
 import pl.plajer.villagedefense.arena.ArenaRegistry;
 import pl.plajer.villagedefense.handlers.PermissionsManager;
-import pl.plajer.villagedefense.kits.kitapi.KitRegistry;
-import pl.plajer.villagedefense.kits.kitapi.basekits.PremiumKit;
+import pl.plajer.villagedefense.kits.KitRegistry;
+import pl.plajer.villagedefense.kits.basekits.PremiumKit;
 import pl.plajer.villagedefense.utils.ArmorHelper;
 import pl.plajer.villagedefense.utils.Utils;
 import pl.plajer.villagedefense.utils.WeaponHelper;
-import pl.plajerlair.core.utils.ItemBuilder;
-import pl.plajerlair.core.utils.XMaterial;
+import pl.plajerlair.commonsbox.minecraft.compat.XMaterial;
+import pl.plajerlair.commonsbox.minecraft.item.ItemBuilder;
 
 /**
  * Created by Tom on 30/12/2015.
@@ -103,11 +103,7 @@ public class TornadoKit extends PremiumKit implements Listener {
         || !stack.getItemMeta().getDisplayName().equalsIgnoreCase(getPlugin().getChatManager().colorMessage("Kits.Tornado.Game-Item-Name"))) {
       return;
     }
-    if (stack.getAmount() <= 1) {
-      player.getInventory().setItemInMainHand(new ItemStack(Material.AIR));
-    } else {
-      player.getInventory().getItemInMainHand().setAmount(stack.getAmount() - 1);
-    }
+    Utils.takeOneItem(player, stack);
     e.setCancelled(true);
     prepareTornado(player.getLocation());
   }

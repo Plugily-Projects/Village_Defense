@@ -16,12 +16,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package pl.plajer.villagedefense.kits.kitapi.basekits;
+package pl.plajer.villagedefense.kits.basekits;
 
 import org.bukkit.inventory.ItemStack;
 
-import pl.plajerlair.core.utils.ItemBuilder;
-import pl.plajerlair.core.utils.MinigameUtils;
+import pl.plajerlair.commonsbox.minecraft.item.ItemBuilder;
 
 /**
  * Created by Tom on 25/07/2014.
@@ -30,11 +29,10 @@ public abstract class PremiumKit extends Kit {
 
   @Override
   public ItemStack getItemStack() {
-    ItemStack stack = new ItemBuilder(new ItemStack(getMaterial()))
+    return new ItemBuilder(new ItemStack(getMaterial()))
         .name(getName())
         .lore(getDescription())
+        .lore(getPlugin().getChatManager().colorMessage("Kits.Kit-Menu.Locked-Lores.Unlock-In-Store"))
         .build();
-    MinigameUtils.addLore(stack, getPlugin().getChatManager().colorMessage("Kits.Kit-Menu.Locked-Lores.Unlock-In-Store"));
-    return stack;
   }
 }

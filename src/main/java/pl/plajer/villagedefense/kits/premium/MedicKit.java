@@ -34,13 +34,13 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionType;
 
 import pl.plajer.villagedefense.handlers.PermissionsManager;
-import pl.plajer.villagedefense.kits.kitapi.KitRegistry;
-import pl.plajer.villagedefense.kits.kitapi.basekits.PremiumKit;
+import pl.plajer.villagedefense.kits.KitRegistry;
+import pl.plajer.villagedefense.kits.basekits.PremiumKit;
 import pl.plajer.villagedefense.user.User;
 import pl.plajer.villagedefense.utils.ArmorHelper;
 import pl.plajer.villagedefense.utils.Utils;
 import pl.plajer.villagedefense.utils.WeaponHelper;
-import pl.plajerlair.core.utils.XMaterial;
+import pl.plajerlair.commonsbox.minecraft.compat.XMaterial;
 
 /**
  * Created by Tom on 1/12/2015.

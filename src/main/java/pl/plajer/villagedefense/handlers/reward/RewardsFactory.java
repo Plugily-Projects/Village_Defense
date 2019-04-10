@@ -33,17 +33,16 @@ import org.bukkit.entity.Player;
 import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.arena.Arena;
 import pl.plajer.villagedefense.arena.ArenaRegistry;
-import pl.plajerlair.core.debug.Debugger;
-import pl.plajerlair.core.debug.LogLevel;
-import pl.plajerlair.core.script.ScriptEngine;
-import pl.plajerlair.core.utils.ConfigUtils;
+import pl.plajer.villagedefense.utils.Debugger;
+import pl.plajerlair.commonsbox.minecraft.configuration.ConfigUtils;
+import pl.plajerlair.commonsbox.minecraft.engine.ScriptEngine;
 
 /**
  * Created by Tom on 30/01/2016.
  */
 public class RewardsFactory {
 
-  private Set<GameReward> rewards = new HashSet<>();
+  private Set<Reward> rewards = new HashSet<>();
   private FileConfiguration config;
   private boolean enabled;
 
@@ -53,7 +52,7 @@ public class RewardsFactory {
     registerRewards();
   }
 
-  public void performReward(Arena arena, GameReward.RewardType type) {
+  public void performReward(Arena arena, Reward.RewardType type) {
     if (!enabled) {
       return;
     }
@@ -62,12 +61,12 @@ public class RewardsFactory {
     }
   }
 
-  public void performReward(Player player, GameReward.RewardType type) {
+  public void performReward(Player player, Reward.RewardType type) {
     if (!enabled) {
       return;
     }
     if (!config.contains("rewards")) {
-      Debugger.debug(LogLevel.WARN, "[RewardsFactory] Rewards section not found in the file. Rewards won't be loaded.");
+      Debugger.debug(Debugger.Level.WARN, "[RewardsFactory] Rewards section not found in the file. Rewards won't be loaded.");
       return;
     }
     Arena arena = ArenaRegistry.getArena(player);
@@ -75,10 +74,10 @@ public class RewardsFactory {
     engine.setValue("player", player);
     engine.setValue("server", Bukkit.getServer());
     engine.setValue("arena", arena);
-    for (GameReward reward : rewards) {
+    for (Reward reward : rewards) {
       if (reward.getType() == type) {
         //reward isn't for this wave
-        if (type == GameReward.RewardType.END_WAVE && reward.getWaveExecute() != arena.getWave()) {
+        if (type == Reward.RewardType.END_WAVE && reward.getWaveExecute() != arena.getWave()) {
           continue;
         }
         //cannot execute if chance wasn't met
@@ -118,29 +117,29 @@ public class RewardsFactory {
     if (!enabled) {
       return;
     }
-    Map<GameReward.RewardType, Integer> registeredRewards = new EnumMap<>(GameReward.RewardType.class);
-    for (GameReward.RewardType rewardType : GameReward.RewardType.values()) {
-      if (rewardType == GameReward.RewardType.END_WAVE) {
+    Map<Reward.RewardType, Integer> registeredRewards = new EnumMap<>(Reward.RewardType.class);
+    for (Reward.RewardType rewardType : Reward.RewardType.values()) {
+      if (rewardType == Reward.RewardType.END_WAVE) {
         ConfigurationSection section = config.getConfigurationSection("rewards." + rewardType.getPath());
         if (section == null) {
-          Debugger.debug(LogLevel.WARN, "Rewards section " + rewardType.getPath() + " is missing! Was it manually removed?");
+          Debugger.debug(Debugger.Level.WARN, "Rewards section " + rewardType.getPath() + " is missing! Was it manually removed?");
           continue;
         }
         for (String key : section.getKeys(false)) {
           for (String reward : config.getStringList("rewards." + rewardType.getPath() + "." + key)) {
-            rewards.add(new GameReward(rewardType, reward, Integer.parseInt(key)));
+            rewards.add(new Reward(rewardType, reward, Integer.parseInt(key)));
             registeredRewards.put(rewardType, registeredRewards.getOrDefault(rewardType, 0) + 1);
           }
         }
         continue;
       }
       for (String reward : config.getStringList("rewards." + rewardType.getPath())) {
-        rewards.add(new GameReward(rewardType, reward));
+        rewards.add(new Reward(rewardType, reward));
         registeredRewards.put(rewardType, registeredRewards.getOrDefault(rewardType, 0) + 1);
       }
     }
-    for (Map.Entry<GameReward.RewardType, Integer> entry : registeredRewards.entrySet()) {
-      Debugger.debug(LogLevel.INFO, "[RewardsFactory] Registered " + entry.getValue() + " " + entry.getKey().name() + " rewards!");
+    for (Map.Entry<Reward.RewardType, Integer> entry : registeredRewards.entrySet()) {
+      Debugger.debug(Debugger.Level.INFO, "[RewardsFactory] Registered " + entry.getValue() + " " + entry.getKey().name() + " rewards!");
     }
   }
 

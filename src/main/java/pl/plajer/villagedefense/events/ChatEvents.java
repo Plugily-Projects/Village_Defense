@@ -59,10 +59,8 @@ public class ChatEvents implements Listener {
     if (arena == null) {
       for (Arena loopArena : ArenaRegistry.getArenas()) {
         for (Player player : loopArena.getPlayers()) {
-          if (event.getRecipients().contains(player)) {
-            if (!plugin.getArgumentsRegistry().getSpyChat().isSpyChatEnabled(player)) {
-              event.getRecipients().remove(player);
-            }
+          if (event.getRecipients().contains(player) && !plugin.getArgumentsRegistry().getSpyChat().isSpyChatEnabled(player)) {
+            event.getRecipients().remove(player);
           }
         }
       }

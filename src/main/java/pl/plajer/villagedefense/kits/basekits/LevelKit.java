@@ -16,29 +16,34 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package pl.plajer.villagedefense.commands.arguments.data;
+package pl.plajer.villagedefense.kits.basekits;
 
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
+import org.bukkit.inventory.ItemStack;
+
+import pl.plajerlair.commonsbox.minecraft.item.ItemBuilder;
 
 /**
- * @author Plajer
- * <p>
- * Created at 25.11.2018
+ * Created by Tom on 14/08/2014.
  */
-@Retention(RetentionPolicy.RUNTIME)
-public @interface Command {
+public abstract class LevelKit extends Kit {
 
-  Type type();
+  private int level;
 
-  String argument();
-
-  String[] permissions();
-
-  String usage();
-
-  enum Type {
-    MAIN, ADMIN
+  public int getLevel() {
+    return level;
   }
 
+  public void setLevel(int level) {
+    this.level = level;
+  }
+
+  @Override
+  public ItemStack getItemStack() {
+    return new ItemBuilder(getMaterial())
+        .name(getName())
+        .lore(getDescription())
+        .lore(getPlugin().getChatManager().colorMessage("Kits.Kit-Menu.Locked-Lores.Unlock-At-Level")
+            .replace("%NUMBER%", Integer.toString(getLevel())))
+        .build();
+  }
 }

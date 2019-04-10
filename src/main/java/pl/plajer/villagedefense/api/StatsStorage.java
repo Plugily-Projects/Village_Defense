@@ -35,10 +35,9 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import pl.plajer.villagedefense.ConfigPreferences;
 import pl.plajer.villagedefense.Main;
+import pl.plajer.villagedefense.utils.Debugger;
 import pl.plajer.villagedefense.utils.MessageUtils;
-import pl.plajerlair.core.debug.Debugger;
-import pl.plajerlair.core.debug.LogLevel;
-import pl.plajerlair.core.utils.ConfigUtils;
+import pl.plajerlair.commonsbox.minecraft.configuration.ConfigUtils;
 
 /**
  * @author Plajer, TomTheDeveloper
@@ -68,9 +67,9 @@ public class StatsStorage {
    * @return Map of UUID keys and Integer values sorted in ascending order of requested statistic type
    */
   public static Map<UUID, Integer> getStats(StatisticType stat) {
-    Debugger.debug(LogLevel.INFO, "VillageDefense API getStats(" + stat.getName() + ") run");
+    Debugger.debug(Debugger.Level.INFO, "VillageDefense API getStats(" + stat.getName() + ") run");
     if (plugin.getConfigPreferences().getOption(ConfigPreferences.Option.DATABASE_ENABLED)) {
-      ResultSet set = plugin.getMySQLDatabase().executeQuery("SELECT UUID, " + stat.getName() + " FROM playerstats ORDER BY " + stat.getName() + " ASC;");
+      ResultSet set = plugin.getMysqlDatabase().executeQuery("SELECT UUID, " + stat.getName() + " FROM playerstats ORDER BY " + stat.getName() + " ASC;");
       Map<java.util.UUID, java.lang.Integer> column = new LinkedHashMap<>();
       try {
         while (set.next()) {

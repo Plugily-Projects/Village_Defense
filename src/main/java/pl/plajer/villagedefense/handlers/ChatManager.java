@@ -28,8 +28,8 @@ import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.arena.Arena;
 import pl.plajer.villagedefense.handlers.language.LanguageManager;
 import pl.plajer.villagedefense.utils.MessageUtils;
-import pl.plajerlair.core.services.exception.ReportedException;
-import pl.plajerlair.core.utils.MinigameUtils;
+import pl.plajerlair.commonsbox.string.StringFormatUtils;
+import pl.plajerlair.services.exception.ReportedException;
 
 /**
  * Created by Tom on 27/07/2014.
@@ -37,7 +37,7 @@ import pl.plajerlair.core.utils.MinigameUtils;
 public class ChatManager {
 
   private String prefix;
-  
+
   public ChatManager(String prefix) {
     this.prefix = prefix;
   }
@@ -100,7 +100,7 @@ public class ChatManager {
   private String formatPlaceholders(String message, Arena arena) {
     String returnString = message;
     returnString = StringUtils.replace(returnString, "%TIME%", Integer.toString(arena.getTimer()));
-    returnString = StringUtils.replace(returnString, "%FORMATTEDTIME%", MinigameUtils.formatIntoMMSS((arena.getTimer())));
+    returnString = StringUtils.replace(returnString, "%FORMATTEDTIME%", StringFormatUtils.formatIntoMMSS((arena.getTimer())));
     returnString = StringUtils.replace(returnString, "%PLAYERSIZE%", Integer.toString(arena.getPlayers().size()));
     returnString = StringUtils.replace(returnString, "%MAXPLAYERS%", Integer.toString(arena.getMaximumPlayers()));
     returnString = StringUtils.replace(returnString, "%MINPLAYERS%", Integer.toString(arena.getMinimumPlayers()));

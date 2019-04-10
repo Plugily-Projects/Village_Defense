@@ -30,10 +30,9 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import pl.plajer.villagedefense.Main;
-import pl.plajerlair.core.debug.Debugger;
-import pl.plajerlair.core.debug.LogLevel;
-import pl.plajerlair.core.utils.ConfigUtils;
-import pl.plajerlair.core.utils.XMaterial;
+import pl.plajer.villagedefense.utils.Debugger;
+import pl.plajerlair.commonsbox.minecraft.compat.XMaterial;
+import pl.plajerlair.commonsbox.minecraft.configuration.ConfigUtils;
 
 /**
  * Created by Tom on 5/02/2016.
@@ -67,7 +66,7 @@ public class SpecialItem {
     } else {
       if (!config.isSet(name + ".material-name")) {
         config.set(name + ".material-name", material.toString());
-        Debugger.debug(LogLevel.INFO, "Found outdated item in lobbyitems.yml! We've converted it to the newest version!");
+        Debugger.debug(Debugger.Level.INFO, "Found outdated item in lobbyitems.yml! We've converted it to the newest version!");
       }
     }
     ConfigUtils.saveConfig(JavaPlugin.getPlugin(Main.class), config, "lobbyitems");

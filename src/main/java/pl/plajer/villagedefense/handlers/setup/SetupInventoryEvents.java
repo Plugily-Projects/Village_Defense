@@ -45,9 +45,9 @@ import pl.plajer.villagedefense.arena.Arena;
 import pl.plajer.villagedefense.arena.ArenaRegistry;
 import pl.plajer.villagedefense.arena.ArenaUtils;
 import pl.plajer.villagedefense.utils.Utils;
-import pl.plajerlair.core.utils.ConfigUtils;
-import pl.plajerlair.core.utils.LocationUtils;
-import pl.plajerlair.core.utils.XMaterial;
+import pl.plajerlair.commonsbox.minecraft.compat.XMaterial;
+import pl.plajerlair.commonsbox.minecraft.configuration.ConfigUtils;
+import pl.plajerlair.commonsbox.minecraft.serialization.LocationSerializer;
 
 /**
  * Created by Tom on 15/06/2015.
@@ -147,48 +147,38 @@ public class SetupInventoryEvents implements Listener {
       case ADD_VILLAGER_SPAWN:
         int villagers = (config.isSet("instances." + arena.getId() + ".villagerspawns")
             ? config.getConfigurationSection("instances." + arena.getId() + ".villagerspawns").getKeys(false).size() : 0) + 1;
-        LocationUtils.saveLoc(plugin, config, "arenas", "instances." + arena.getId() + ".villagerspawns." + villagers, player.getLocation());
+        LocationSerializer.saveLoc(plugin, config, "arenas", "instances." + arena.getId() + ".villagerspawns." + villagers, player.getLocation());
         String villagerProgress = villagers >= 2 ? "&e✔ Completed | " : "&c✘ Not completed | ";
         player.sendMessage(plugin.getChatManager().colorRawMessage(villagerProgress + "&aVillager spawn added! &8(&7" + villagers + "/2&8)"));
         break;
       case ADD_ZOMBIE_SPAWN:
         int zombies = (config.isSet("instances." + arena.getId() + ".zombiespawns")
             ? config.getConfigurationSection("instances." + arena.getId() + ".zombiespawns").getKeys(false).size() : 0) + 1;
-        LocationUtils.saveLoc(plugin, config, "arenas", "instances." + arena.getId() + ".zombiespawns." + zombies, player.getLocation());
+        LocationSerializer.saveLoc(plugin, config, "arenas", "instances." + arena.getId() + ".zombiespawns." + zombies, player.getLocation());
         String zombieProgress = zombies >= 2 ? "&e✔ Completed | " : "&c✘ Not completed | ";
         player.sendMessage(plugin.getChatManager().colorRawMessage(zombieProgress + "&aZombie spawn added! &8(&7" + zombies + "/2&8)"));
         break;
       case ADD_DOORS:
         Block block = player.getTargetBlock(null, 10);
+        Material door;
         if (plugin.is1_11_R1() || plugin.is1_12_R1()) {
-          if (block.getType() != Material.WOODEN_DOOR) {
-            player.sendMessage(ChatColor.RED + "Target block is not oak door!");
-            return;
-          }
+          door = Material.WOODEN_DOOR;
         } else {
-          if (block.getType() != XMaterial.OAK_DOOR.parseMaterial()) {
-            player.sendMessage(ChatColor.RED + "Target block is not oak door!");
-            return;
-          }
+          door = XMaterial.OAK_DOOR.parseMaterial();
+        }
+        if (block.getType() != door) {
+          player.sendMessage(ChatColor.RED + "Target block is not oak door!");
+          return;
         }
         int doors = (config.isSet("instances." + arena.getId() + ".doors")
             ? config.getConfigurationSection("instances." + arena.getId() + ".doors").getKeys(false).size() : 0) + 1;
 
         Block relativeBlock = null;
-        if (plugin.is1_11_R1() || plugin.is1_12_R1()) {
-          if (block.getRelative(BlockFace.DOWN).getType() == Material.WOODEN_DOOR) {
-            relativeBlock = block;
-            block = block.getRelative(BlockFace.DOWN);
-          } else if (block.getRelative(BlockFace.UP).getType() == Material.WOODEN_DOOR) {
-            relativeBlock = block.getRelative(BlockFace.UP);
-          }
-        } else {
-          if (block.getRelative(BlockFace.DOWN).getType() == XMaterial.OAK_DOOR.parseMaterial()) {
-            relativeBlock = block;
-            block = block.getRelative(BlockFace.DOWN);
-          } else if (block.getRelative(BlockFace.UP).getType() == XMaterial.OAK_DOOR.parseMaterial()) {
-            relativeBlock = block.getRelative(BlockFace.UP);
-          }
+        if (block.getRelative(BlockFace.DOWN).getType() == door) {
+          relativeBlock = block;
+          block = block.getRelative(BlockFace.DOWN);
+        } else if (block.getRelative(BlockFace.UP).getType() == door) {
+          relativeBlock = block.getRelative(BlockFace.UP);
         }
         if (relativeBlock == null) {
           player.sendMessage("This door doesn't have 2 blocks? Maybe it's bugged? Try placing it again.");
@@ -231,7 +221,7 @@ public class SetupInventoryEvents implements Listener {
         if (!found) {
           player.sendMessage(ChatColor.RED + "No items in shop have price set! Set their prices using /vda setprice! You can ignore this warning");
         }
-        LocationUtils.saveLoc(plugin, config, "arenas", "instances." + arena.getId() + ".shop", targetBlock.getLocation());
+        LocationSerializer.saveLoc(plugin, config, "arenas", "instances." + arena.getId() + ".shop", targetBlock.getLocation());
         player.sendMessage(ChatColor.GREEN + "Shop for chest set!");
         player.sendMessage(plugin.getChatManager().colorRawMessage("&e&lTIP: &7You can use special items in shops! Check out https://bit.ly/2T2GhA9"));
         break;
@@ -244,7 +234,7 @@ public class SetupInventoryEvents implements Listener {
         String[] spawns = new String[] {"zombiespawns", "villagerspawns"};
         for (String s : locations) {
           if (!config.isSet("instances." + arena.getId() + "." + s) || config.getString("instances." + arena.getId() + "." + s)
-              .equals(LocationUtils.locationToString(Bukkit.getWorlds().get(0).getSpawnLocation()))) {
+              .equals(LocationSerializer.locationToString(Bukkit.getWorlds().get(0).getSpawnLocation()))) {
             event.getWhoClicked().sendMessage(ChatColor.RED + "Arena validation failed! Please configure following spawn properly: " + s + " (cannot be world spawn location)");
             return;
           }
@@ -276,21 +266,21 @@ public class SetupInventoryEvents implements Listener {
         arena.setMinimumPlayers(config.getInt("instances." + arena.getId() + ".minimumplayers"));
         arena.setMaximumPlayers(config.getInt("instances." + arena.getId() + ".maximumplayers"));
         arena.setMapName(config.getString("instances." + arena.getId() + ".mapname"));
-        arena.setLobbyLocation(LocationUtils.getLocation(config.getString("instances." + arena.getId() + ".lobbylocation")));
-        arena.setStartLocation(LocationUtils.getLocation(config.getString("instances." + arena.getId() + ".Startlocation")));
-        arena.setEndLocation(LocationUtils.getLocation(config.getString("instances." + arena.getId() + ".Endlocation")));
+        arena.setLobbyLocation(LocationSerializer.getLocation(config.getString("instances." + arena.getId() + ".lobbylocation")));
+        arena.setStartLocation(LocationSerializer.getLocation(config.getString("instances." + arena.getId() + ".Startlocation")));
+        arena.setEndLocation(LocationSerializer.getLocation(config.getString("instances." + arena.getId() + ".Endlocation")));
         ArenaUtils.setWorld(arena);
         for (String string : config.getConfigurationSection("instances." + arena.getId() + ".zombiespawns").getKeys(false)) {
           String path = "instances." + arena.getId() + ".zombiespawns." + string;
-          arena.addZombieSpawn(LocationUtils.getLocation(config.getString(path)));
+          arena.addZombieSpawn(LocationSerializer.getLocation(config.getString(path)));
         }
         for (String string : config.getConfigurationSection("instances." + arena.getId() + ".villagerspawns").getKeys(false)) {
           String path = "instances." + arena.getId() + ".villagerspawns." + string;
-          arena.addVillagerSpawn(LocationUtils.getLocation(config.getString(path)));
+          arena.addVillagerSpawn(LocationSerializer.getLocation(config.getString(path)));
         }
         for (String string : config.getConfigurationSection("instances." + arena.getId() + ".doors").getKeys(false)) {
           String path = "instances." + arena.getId() + ".doors." + string + ".";
-          arena.getMapRestorerManager().addDoor(LocationUtils.getLocation(config.getString(path + "location")),
+          arena.getMapRestorerManager().addDoor(LocationSerializer.getLocation(config.getString(path + "location")),
               (byte) config.getInt(path + "byte"));
         }
         ArenaRegistry.registerArena(arena);

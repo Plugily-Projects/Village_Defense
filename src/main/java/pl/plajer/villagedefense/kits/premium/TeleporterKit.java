@@ -39,13 +39,13 @@ import org.bukkit.inventory.meta.SkullMeta;
 import pl.plajer.villagedefense.arena.Arena;
 import pl.plajer.villagedefense.arena.ArenaRegistry;
 import pl.plajer.villagedefense.handlers.PermissionsManager;
-import pl.plajer.villagedefense.kits.kitapi.KitRegistry;
-import pl.plajer.villagedefense.kits.kitapi.basekits.PremiumKit;
+import pl.plajer.villagedefense.kits.KitRegistry;
+import pl.plajer.villagedefense.kits.basekits.PremiumKit;
 import pl.plajer.villagedefense.utils.ArmorHelper;
 import pl.plajer.villagedefense.utils.CompatMaterialConstants;
 import pl.plajer.villagedefense.utils.Utils;
 import pl.plajer.villagedefense.utils.WeaponHelper;
-import pl.plajerlair.core.utils.ItemBuilder;
+import pl.plajerlair.commonsbox.minecraft.item.ItemBuilder;
 
 /**
  * Created by Tom on 18/08/2014.
@@ -73,7 +73,7 @@ public class TeleporterKit extends PremiumKit implements Listener {
 
     player.getInventory().addItem(new ItemStack(Material.COOKED_BEEF, 10));
     player.getInventory().addItem(new ItemStack(Material.SADDLE));
-    player.getInventory().addItem(new ItemBuilder(new ItemStack(Material.GHAST_TEAR))
+    player.getInventory().addItem(new ItemBuilder(Material.GHAST_TEAR)
         .name(getPlugin().getChatManager().colorMessage("Kits.Teleporter.Game-Item-Name"))
         .lore(Utils.splitString(getPlugin().getChatManager().colorMessage("Kits.Teleporter.Game-Item-Lore"), 40))
         .build());

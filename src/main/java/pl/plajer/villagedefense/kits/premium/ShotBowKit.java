@@ -33,8 +33,8 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
 import pl.plajer.villagedefense.handlers.PermissionsManager;
-import pl.plajer.villagedefense.kits.kitapi.KitRegistry;
-import pl.plajer.villagedefense.kits.kitapi.basekits.PremiumKit;
+import pl.plajer.villagedefense.kits.KitRegistry;
+import pl.plajer.villagedefense.kits.basekits.PremiumKit;
 import pl.plajer.villagedefense.user.User;
 import pl.plajer.villagedefense.utils.ArmorHelper;
 import pl.plajer.villagedefense.utils.Utils;
@@ -90,27 +90,24 @@ public class ShotBowKit extends PremiumKit implements Listener {
         || user.isSpectator()) {
       return;
     }
-    if (user.getCooldown("shotbow") == 0) {
-      for (int i = 0; i < 4; i++) {
-        Bukkit.getScheduler().runTaskLater(getPlugin(), () -> {
-          Arrow pr = e.getPlayer().launchProjectile(Arrow.class);
-          pr.setVelocity(e.getPlayer().getLocation().getDirection().multiply(3));
-          pr.setBounce(false);
-          pr.setShooter(e.getPlayer());
-          pr.setCritical(true);
-
-          if (e.getPlayer().getInventory().contains(Material.ARROW)) {
-            e.getPlayer().getInventory().removeItem(new ItemStack(Material.ARROW, 1));
-          }
-        }, 2 * (2 * i));
-      }
-      e.setCancelled(true);
-      user.setCooldown("shotbow", 5);
-    } else {
-      String message = getPlugin().getChatManager().colorMessage("Kits.Ability-Still-On-Cooldown");
-      message = message.replaceFirst("%COOLDOWN%", Long.toString(user.getCooldown("shotbow")));
-      e.getPlayer().sendMessage(message);
+    if (!user.checkCanCastCooldownAndMessage("shotbow")) {
+      return;
     }
+    for (int i = 0; i < 4; i++) {
+      Bukkit.getScheduler().runTaskLater(getPlugin(), () -> {
+        Arrow pr = e.getPlayer().launchProjectile(Arrow.class);
+        pr.setVelocity(e.getPlayer().getLocation().getDirection().multiply(3));
+        pr.setBounce(false);
+        pr.setShooter(e.getPlayer());
+        pr.setCritical(true);
+
+        if (e.getPlayer().getInventory().contains(Material.ARROW)) {
+          e.getPlayer().getInventory().removeItem(new ItemStack(Material.ARROW, 1));
+        }
+      }, 2 * (2 * i));
+    }
+    e.setCancelled(true);
+    user.setCooldown("shotbow", 5);
   }
 
 }

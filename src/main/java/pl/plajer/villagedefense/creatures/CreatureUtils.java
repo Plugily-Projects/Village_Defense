@@ -34,7 +34,7 @@ import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.arena.Arena;
 import pl.plajer.villagedefense.arena.options.ArenaOption;
 import pl.plajer.villagedefense.handlers.language.LanguageManager;
-import pl.plajerlair.core.utils.MinigameUtils;
+import pl.plajerlair.commonsbox.string.StringFormatUtils;
 
 /**
  * @author Plajer
@@ -92,7 +92,7 @@ public class CreatureUtils {
     zombie.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(zombie.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue() + arena.getOption(ArenaOption.ZOMBIE_DIFFICULTY_MULTIPLIER));
     if (plugin.getConfig().getBoolean("Simple-Zombie-Health-Bar-Enabled", true)) {
       zombie.setCustomNameVisible(true);
-      zombie.setCustomName(MinigameUtils.getProgressBar((int) zombie.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue(),
+      zombie.setCustomName(StringFormatUtils.getProgressBar((int) zombie.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue(),
           (int) zombie.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue(), 50, "|",
           ChatColor.YELLOW + "", ChatColor.GRAY + ""));
     }

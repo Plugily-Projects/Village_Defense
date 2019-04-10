@@ -31,8 +31,8 @@ import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.api.StatsStorage;
 import pl.plajer.villagedefense.arena.ArenaRegistry;
 import pl.plajer.villagedefense.handlers.PermissionsManager;
-import pl.plajerlair.core.services.update.UpdateChecker;
-import pl.plajerlair.core.utils.InventoryUtils;
+import pl.plajer.villagedefense.utils.UpdateChecker;
+import pl.plajerlair.commonsbox.minecraft.serialization.InventorySerializer;
 
 /**
  * Created by Tom on 10/07/2015.
@@ -79,7 +79,7 @@ public class JoinEvent implements Listener {
     //load player inventory in case of server crash, file is deleted once loaded so if file was already
     //deleted player won't receive his backup, in case of crash he will get it back
     if (plugin.getConfigPreferences().getOption(ConfigPreferences.Option.INVENTORY_MANAGER_ENABLED)) {
-      InventoryUtils.loadInventory(plugin, event.getPlayer());
+      InventorySerializer.loadInventory(plugin, event.getPlayer());
     }
   }
 

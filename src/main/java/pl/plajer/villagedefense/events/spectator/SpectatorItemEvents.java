@@ -39,8 +39,7 @@ import pl.plajer.villagedefense.arena.Arena;
 import pl.plajer.villagedefense.arena.ArenaRegistry;
 import pl.plajer.villagedefense.utils.CompatMaterialConstants;
 import pl.plajer.villagedefense.utils.Utils;
-import pl.plajerlair.core.spectator.SpectatorSettingsMenu;
-import pl.plajerlair.core.utils.MinigameUtils;
+import pl.plajerlair.commonsbox.number.NumberUtils;
 
 public class SpectatorItemEvents implements Listener {
 
@@ -74,7 +73,7 @@ public class SpectatorItemEvents implements Listener {
   }
 
   private void openSpectatorMenu(World world, Player p) {
-    Inventory inventory = plugin.getServer().createInventory(null, MinigameUtils.serializeInt(ArenaRegistry.getArena(p).getPlayers().size()),
+    Inventory inventory = plugin.getServer().createInventory(null, Utils.serializeInt(ArenaRegistry.getArena(p).getPlayers().size()),
         plugin.getChatManager().colorMessage("In-Game.Spectator.Spectator-Menu-Name"));
     Set<Player> players = ArenaRegistry.getArena(p).getPlayers();
     for (Player player : world.getPlayers()) {
@@ -84,7 +83,7 @@ public class SpectatorItemEvents implements Listener {
         meta.setOwningPlayer(player);
         meta.setDisplayName(player.getName());
         meta.setLore(Collections.singletonList(plugin.getChatManager().colorMessage("In-Game.Spectator.Target-Player-Health").replace("%health%",
-            String.valueOf(MinigameUtils.round(player.getHealth(), 2)))));
+            String.valueOf(NumberUtils.round(player.getHealth(), 2)))));
         skull.setItemMeta(meta);
         inventory.addItem(skull);
       }

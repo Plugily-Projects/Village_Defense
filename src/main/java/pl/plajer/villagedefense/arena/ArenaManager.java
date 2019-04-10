@@ -46,16 +46,15 @@ import pl.plajer.villagedefense.handlers.ChatManager;
 import pl.plajer.villagedefense.handlers.PermissionsManager;
 import pl.plajer.villagedefense.handlers.items.SpecialItemManager;
 import pl.plajer.villagedefense.handlers.language.LanguageManager;
-import pl.plajer.villagedefense.handlers.reward.GameReward;
-import pl.plajer.villagedefense.kits.kitapi.KitRegistry;
+import pl.plajer.villagedefense.handlers.reward.Reward;
+import pl.plajer.villagedefense.kits.KitRegistry;
 import pl.plajer.villagedefense.kits.level.GolemFriendKit;
 import pl.plajer.villagedefense.user.User;
-import pl.plajerlair.core.debug.Debugger;
-import pl.plajerlair.core.debug.LogLevel;
-import pl.plajerlair.core.utils.InventoryUtils;
-import pl.plajerlair.core.utils.ItemBuilder;
-import pl.plajerlair.core.utils.MinigameUtils;
-import pl.plajerlair.core.utils.XMaterial;
+import pl.plajer.villagedefense.utils.Debugger;
+import pl.plajerlair.commonsbox.minecraft.compat.XMaterial;
+import pl.plajerlair.commonsbox.minecraft.item.ItemBuilder;
+import pl.plajerlair.commonsbox.minecraft.misc.MiscUtils;
+import pl.plajerlair.commonsbox.minecraft.serialization.InventorySerializer;
 
 /**
  * @author Plajer
@@ -75,18 +74,18 @@ public class ArenaManager {
    * @see VillageGameJoinAttemptEvent
    */
   public static void joinAttempt(Player p, Arena arena) {
-    Debugger.debug(LogLevel.INFO, "Initial join attempt, " + p.getName());
+    Debugger.debug(Debugger.Level.INFO, "Initial join attempt, " + p.getName());
     if (!canJoinArenaAndMessage(p, arena)) {
       return;
     }
-    Debugger.debug(LogLevel.INFO, "Final join attempt, " + p.getName());
-    Debugger.debug(LogLevel.INFO, "Join task, " + p.getName());
+    Debugger.debug(Debugger.Level.INFO, "Final join attempt, " + p.getName());
+    Debugger.debug(Debugger.Level.INFO, "Join task, " + p.getName());
     arena.addPlayer(p);
     User user = plugin.getUserManager().getUser(p);
     arena.getScoreboardManager().createScoreboard(user);
     if ((arena.getArenaState() == ArenaState.IN_GAME || (arena.getArenaState() == ArenaState.STARTING && arena.getTimer() <= 3) || arena.getArenaState() == ArenaState.ENDING)) {
       if (plugin.getConfigPreferences().getOption(ConfigPreferences.Option.INVENTORY_MANAGER_ENABLED)) {
-        InventoryUtils.saveInventoryToFile(plugin, p);
+        InventorySerializer.saveInventoryToFile(plugin, p);
       }
       arena.teleportToStartLocation(p);
       p.sendMessage(plugin.getChatManager().colorMessage("In-Game.You-Are-Spectator"));
@@ -122,7 +121,7 @@ public class ArenaManager {
       return;
     }
     if (plugin.getConfigPreferences().getOption(ConfigPreferences.Option.INVENTORY_MANAGER_ENABLED)) {
-      InventoryUtils.saveInventoryToFile(plugin, p);
+      InventorySerializer.saveInventoryToFile(plugin, p);
     }
     arena.teleportToLobby(p);
     p.setHealth(p.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue());
@@ -148,7 +147,7 @@ public class ArenaManager {
       player.setLevel(0);
     }
     arena.showPlayers();
-    Debugger.debug(LogLevel.INFO, "Join task end, " + p.getName());
+    Debugger.debug(Debugger.Level.INFO, "Join task end, " + p.getName());
   }
 
   private static boolean canJoinArenaAndMessage(Player p, Arena arena) {
@@ -183,7 +182,7 @@ public class ArenaManager {
   public static void leaveAttempt(Player p, Arena arena) {
     p.setExp(0);
     p.setLevel(0);
-    Debugger.debug(LogLevel.INFO, "Initial leave attempt, " + p.getName());
+    Debugger.debug(Debugger.Level.INFO, "Initial leave attempt, " + p.getName());
     VillageGameLeaveAttemptEvent villageGameLeaveAttemptEvent = new VillageGameLeaveAttemptEvent(p, arena);
     Bukkit.getPluginManager().callEvent(villageGameLeaveAttemptEvent);
     User user = plugin.getUserManager().getUser(p);
@@ -229,9 +228,9 @@ public class ArenaManager {
     arena.teleportToEndLocation(p);
     if (!plugin.getConfigPreferences().getOption(ConfigPreferences.Option.BUNGEE_ENABLED)
         && plugin.getConfigPreferences().getOption(ConfigPreferences.Option.INVENTORY_MANAGER_ENABLED)) {
-      InventoryUtils.loadInventory(plugin, p);
+      InventorySerializer.loadInventory(plugin, p);
     }
-    Debugger.debug(LogLevel.INFO, "Final leave attempt, " + p.getName());
+    Debugger.debug(Debugger.Level.INFO, "Final leave attempt, " + p.getName());
   }
 
   /**
@@ -241,7 +240,7 @@ public class ArenaManager {
    * @see VillageGameStopEvent
    */
   public static void stopGame(boolean quickStop, Arena arena) {
-    Debugger.debug(LogLevel.INFO, "Game stop event initiate, arena " + arena.getId());
+    Debugger.debug(Debugger.Level.INFO, "Game stop event initiate, arena " + arena.getId());
     VillageGameStopEvent villageGameStopEvent = new VillageGameStopEvent(arena);
     Bukkit.getPluginManager().callEvent(villageGameStopEvent);
     String summaryEnding;
@@ -259,7 +258,7 @@ public class ArenaManager {
         user.setStat(StatsStorage.StatisticType.HIGHEST_WAVE, arena.getWave());
       }
       for (String msg : summaryMessages) {
-        MinigameUtils.sendCenteredMessage(player, formatSummaryPlaceholders(msg, arena, user, summaryEnding));
+        MiscUtils.sendCenteredMessage(player, formatSummaryPlaceholders(msg, arena, user, summaryEnding));
       }
       ArenaUtils.addExperience(player, arena.getWave());
 
@@ -279,7 +278,7 @@ public class ArenaManager {
     }
     arena.getMapRestorerManager().fullyRestoreArena();
     arena.setArenaState(ArenaState.ENDING);
-    Debugger.debug(LogLevel.INFO, "Game stop event finish, arena " + arena.getId());
+    Debugger.debug(Debugger.Level.INFO, "Game stop event finish, arena " + arena.getId());
   }
 
   private static String formatSummaryPlaceholders(String msg, Arena a, User user, String summary) {
@@ -304,7 +303,7 @@ public class ArenaManager {
           this.cancel();
           return;
         }
-        MinigameUtils.spawnRandomFirework(p.getLocation());
+        MiscUtils.spawnRandomFirework(p.getLocation());
         i++;
       }
     }.runTaskTimer(plugin, 30, 30);
@@ -321,7 +320,7 @@ public class ArenaManager {
       stopGame(false, arena);
       return;
     }
-    plugin.getRewardsHandler().performReward(arena, GameReward.RewardType.END_WAVE);
+    plugin.getRewardsHandler().performReward(arena, Reward.RewardType.END_WAVE);
     arena.setTimer(plugin.getConfig().getInt("Cooldown-Before-Next-Wave", 25));
     arena.getZombieCheckerLocations().clear();
     arena.setWave(arena.getWave() + 1);
@@ -358,14 +357,14 @@ public class ArenaManager {
     int zombiesAmount = (int) Math.ceil((arena.getPlayers().size() * 0.5) * (arena.getOption(ArenaOption.WAVE) * arena.getOption(ArenaOption.WAVE)) / 2);
     if (zombiesAmount > 750) {
       arena.setOptionValue(ArenaOption.ZOMBIE_DIFFICULTY_MULTIPLIER, (int) Math.ceil((zombiesAmount - 750.0) / 15));
-      Debugger.debug(LogLevel.INFO, "Detected abnormal wave (" + arena.getWave() + ") in arena " + arena.getId() + "! Applying zombie limit and difficulty multiplier to "
+      Debugger.debug(Debugger.Level.INFO, "Detected abnormal wave (" + arena.getWave() + ") in arena " + arena.getId() + "! Applying zombie limit and difficulty multiplier to "
           + arena.getOption(ArenaOption.ZOMBIE_DIFFICULTY_MULTIPLIER));
       zombiesAmount = 750;
     }
     arena.setOptionValue(ArenaOption.ZOMBIES_TO_SPAWN, zombiesAmount);
     arena.setOptionValue(ArenaOption.ZOMBIE_IDLE_PROCESS, (int) Math.floor((double) arena.getWave() / 15));
     if (arena.getOption(ArenaOption.ZOMBIE_IDLE_PROCESS) > 0) {
-      Debugger.debug(LogLevel.INFO, "Spawn idle process initiated for arena " + arena.getId() + " to prevent server overload! Value: " + arena.getOption(ArenaOption.ZOMBIE_IDLE_PROCESS));
+      Debugger.debug(Debugger.Level.INFO, "Spawn idle process initiated for arena " + arena.getId() + " to prevent server overload! Value: " + arena.getOption(ArenaOption.ZOMBIE_IDLE_PROCESS));
     }
     if (plugin.getConfig().getBoolean("Respawn-After-Wave", true)) {
       ArenaUtils.bringDeathPlayersBack(arena);

@@ -23,7 +23,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.api.StatsStorage;
 import pl.plajer.villagedefense.user.User;
-import pl.plajerlair.core.utils.ConfigUtils;
+import pl.plajerlair.commonsbox.minecraft.configuration.ConfigUtils;
 
 /**
  * Created by Tom on 17/06/2015.

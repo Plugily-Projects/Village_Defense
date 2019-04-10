@@ -28,18 +28,18 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 import pl.plajer.villagedefense.arena.Arena;
 import pl.plajer.villagedefense.arena.ArenaRegistry;
-import pl.plajer.villagedefense.kits.kitapi.KitRegistry;
-import pl.plajer.villagedefense.kits.kitapi.basekits.LevelKit;
+import pl.plajer.villagedefense.kits.KitRegistry;
+import pl.plajer.villagedefense.kits.basekits.LevelKit;
 import pl.plajer.villagedefense.user.User;
 import pl.plajer.villagedefense.utils.Utils;
 import pl.plajer.villagedefense.utils.WeaponHelper;
-import pl.plajerlair.core.utils.XMaterial;
+import pl.plajerlair.commonsbox.minecraft.compat.XMaterial;
+import pl.plajerlair.commonsbox.minecraft.item.ItemBuilder;
 
 /**
  * Created by Tom on 21/07/2015.
@@ -64,12 +64,10 @@ public class ZombieFinderKit extends LevelKit implements Listener {
   public void giveKitItems(Player player) {
     player.getInventory().addItem(WeaponHelper.getUnBreakingSword(WeaponHelper.ResourceType.WOOD, 10));
     player.getInventory().addItem(new ItemStack(XMaterial.COOKED_PORKCHOP.parseMaterial(), 8));
-    ItemStack zombieteleporter = WeaponHelper.getEnchanted(new ItemStack(Material.BOOK), new Enchantment[] {Enchantment.DAMAGE_ALL}, new int[] {1});
-    ItemMeta im = zombieteleporter.getItemMeta();
-    im.setDisplayName(getPlugin().getChatManager().colorMessage("Kits.Zombie-Teleporter.Game-Item-Name"));
-    im.setLore(Utils.splitString(getPlugin().getChatManager().colorMessage("Kits.Zombie-Teleporter.Game-Item-Lore"), 40));
-    zombieteleporter.setItemMeta(im);
-    player.getInventory().addItem(zombieteleporter);
+    player.getInventory().addItem(new ItemBuilder(WeaponHelper.getEnchanted(new ItemStack(Material.BOOK), new Enchantment[] {Enchantment.DAMAGE_ALL}, new int[] {1}))
+        .name(getPlugin().getChatManager().colorMessage("Kits.Zombie-Teleporter.Game-Item-Name"))
+        .lore(Utils.splitString(getPlugin().getChatManager().colorMessage("Kits.Zombie-Teleporter.Game-Item-Lore"), 40))
+        .build());
   }
 
   @Override
@@ -79,7 +77,6 @@ public class ZombieFinderKit extends LevelKit implements Listener {
 
   @Override
   public void reStock(Player player) {
-
   }
 
   @EventHandler

@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package pl.plajer.villagedefense.kits.kitapi.basekits;
+package pl.plajer.villagedefense.kits.basekits;
 
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -25,8 +25,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import pl.plajer.villagedefense.Main;
-import pl.plajerlair.core.utils.ConfigUtils;
-import pl.plajerlair.core.utils.ItemBuilder;
+import pl.plajerlair.commonsbox.minecraft.configuration.ConfigUtils;
+import pl.plajerlair.commonsbox.minecraft.item.ItemBuilder;
 
 /**
  * Created by Tom on 25/07/2014.
@@ -94,7 +94,7 @@ public abstract class Kit {
   public abstract Material getMaterial();
 
   public ItemStack getItemStack() {
-    return new ItemBuilder(new ItemStack(getMaterial()))
+    return new ItemBuilder(getMaterial())
         .name(getName())
         .lore(getDescription())
         .build();

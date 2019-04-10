@@ -31,12 +31,12 @@ import pl.plajer.villagedefense.arena.initializers.ArenaInitializer1_12_R1;
 import pl.plajer.villagedefense.arena.initializers.ArenaInitializer1_13_R1;
 import pl.plajer.villagedefense.arena.initializers.ArenaInitializer1_13_R2;
 import pl.plajer.villagedefense.handlers.PermissionsManager;
-import pl.plajer.villagedefense.kits.kitapi.KitRegistry;
-import pl.plajer.villagedefense.kits.kitapi.basekits.PremiumKit;
+import pl.plajer.villagedefense.kits.KitRegistry;
+import pl.plajer.villagedefense.kits.basekits.PremiumKit;
 import pl.plajer.villagedefense.utils.ArmorHelper;
 import pl.plajer.villagedefense.utils.Utils;
 import pl.plajer.villagedefense.utils.WeaponHelper;
-import pl.plajerlair.core.utils.XMaterial;
+import pl.plajerlair.commonsbox.minecraft.compat.XMaterial;
 
 /**
  * Created by Tom on 18/07/2015.

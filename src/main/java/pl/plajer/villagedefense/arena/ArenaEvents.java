@@ -47,10 +47,10 @@ import pl.plajer.villagedefense.api.StatsStorage;
 import pl.plajer.villagedefense.arena.options.ArenaOption;
 import pl.plajer.villagedefense.handlers.ChatManager;
 import pl.plajer.villagedefense.handlers.items.SpecialItemManager;
-import pl.plajer.villagedefense.handlers.reward.GameReward;
+import pl.plajer.villagedefense.handlers.reward.Reward;
 import pl.plajer.villagedefense.user.User;
-import pl.plajerlair.core.utils.ItemBuilder;
-import pl.plajerlair.core.utils.XMaterial;
+import pl.plajerlair.commonsbox.minecraft.compat.XMaterial;
+import pl.plajerlair.commonsbox.minecraft.item.ItemBuilder;
 
 /**
  * @author Plajer
@@ -146,7 +146,7 @@ public class ArenaEvents implements Listener {
           if (ArenaRegistry.getArena(e.getEntity().getKiller()) != null) {
             ArenaUtils.addStat(e.getEntity().getKiller(), StatsStorage.StatisticType.KILLS);
             ArenaUtils.addExperience(e.getEntity().getKiller(), 2);
-            plugin.getRewardsHandler().performReward(e.getEntity().getKiller(), GameReward.RewardType.ZOMBIE_KILL);
+            plugin.getRewardsHandler().performReward(e.getEntity().getKiller(), Reward.RewardType.ZOMBIE_KILL);
             plugin.getPowerupRegistry().spawnPowerup(e.getEntity().getLocation(), ArenaRegistry.getArena(e.getEntity().getKiller()));
           }
           return;

@@ -32,13 +32,13 @@ import pl.plajer.villagedefense.arena.Arena;
 import pl.plajer.villagedefense.arena.ArenaRegistry;
 import pl.plajer.villagedefense.arena.ArenaUtils;
 import pl.plajer.villagedefense.handlers.PermissionsManager;
-import pl.plajer.villagedefense.kits.kitapi.KitRegistry;
-import pl.plajer.villagedefense.kits.kitapi.basekits.PremiumKit;
+import pl.plajer.villagedefense.kits.KitRegistry;
+import pl.plajer.villagedefense.kits.basekits.PremiumKit;
 import pl.plajer.villagedefense.user.User;
 import pl.plajer.villagedefense.utils.ArmorHelper;
 import pl.plajer.villagedefense.utils.Utils;
 import pl.plajer.villagedefense.utils.WeaponHelper;
-import pl.plajerlair.core.utils.ItemBuilder;
+import pl.plajerlair.commonsbox.minecraft.item.ItemBuilder;
 
 /**
  * Created by Tom on 18/08/2014.
@@ -62,7 +62,7 @@ public class CleanerKit extends PremiumKit implements Listener {
   public void giveKitItems(Player player) {
     ArmorHelper.setColouredArmor(Color.YELLOW, player);
     player.getInventory().addItem(WeaponHelper.getUnBreakingSword(WeaponHelper.ResourceType.WOOD, 10));
-    player.getInventory().addItem(new ItemBuilder(new ItemStack(Material.BLAZE_ROD))
+    player.getInventory().addItem(new ItemBuilder(Material.BLAZE_ROD)
         .name(getPlugin().getChatManager().colorMessage("Kits.Cleaner.Game-Item-Name"))
         .lore(Utils.splitString(getPlugin().getChatManager().colorMessage("Kits.Cleaner.Game-Item-Lore"), 40))
         .build());

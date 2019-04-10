@@ -31,8 +31,8 @@ import pl.plajer.villagedefense.api.StatsStorage;
 import pl.plajer.villagedefense.api.event.player.VillagePlayerStatisticChangeEvent;
 import pl.plajer.villagedefense.arena.Arena;
 import pl.plajer.villagedefense.arena.ArenaRegistry;
-import pl.plajer.villagedefense.kits.kitapi.KitRegistry;
-import pl.plajer.villagedefense.kits.kitapi.basekits.Kit;
+import pl.plajer.villagedefense.kits.KitRegistry;
+import pl.plajer.villagedefense.kits.basekits.Kit;
 
 /**
  * Created by Tom on 27/07/2014.
@@ -52,7 +52,7 @@ public class User {
   }
 
   public static void cooldownHandlerTask() {
-    Bukkit.getScheduler().runTaskTimerAsynchronously(plugin, () -> cooldownCounter++, 20, 20);
+    Bukkit.getScheduler().runTaskTimer(plugin, () -> cooldownCounter++, 20, 20);
   }
 
   public Kit getKit() {
@@ -107,6 +107,16 @@ public class User {
       VillagePlayerStatisticChangeEvent event = new VillagePlayerStatisticChangeEvent(getArena(), player, s, getStat(s));
       Bukkit.getPluginManager().callEvent(event);
     });
+  }
+
+  public boolean checkCanCastCooldownAndMessage(String cooldown) {
+    if (getCooldown(cooldown) <= 0) {
+      return true;
+    }
+    String message = plugin.getChatManager().colorMessage("Kits.Ability-Still-On-Cooldown");
+    message = message.replaceFirst("%COOLDOWN%", Long.toString(getCooldown(cooldown)));
+    player.sendMessage(message);
+    return false;
   }
 
   public void setCooldown(String s, int seconds) {

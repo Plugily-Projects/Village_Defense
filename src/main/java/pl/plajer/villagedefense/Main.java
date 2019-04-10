@@ -61,22 +61,20 @@ import pl.plajer.villagedefense.handlers.language.LanguageManager;
 import pl.plajer.villagedefense.handlers.powerup.PowerupRegistry;
 import pl.plajer.villagedefense.handlers.reward.RewardsFactory;
 import pl.plajer.villagedefense.handlers.setup.SetupInventoryEvents;
-import pl.plajer.villagedefense.kits.kitapi.KitManager;
-import pl.plajer.villagedefense.kits.kitapi.KitRegistry;
+import pl.plajer.villagedefense.kits.KitManager;
+import pl.plajer.villagedefense.kits.KitRegistry;
 import pl.plajer.villagedefense.user.User;
 import pl.plajer.villagedefense.user.UserManager;
-import pl.plajer.villagedefense.user.data.MySQLManager;
+import pl.plajer.villagedefense.utils.Debugger;
 import pl.plajer.villagedefense.utils.ExceptionLogHandler;
 import pl.plajer.villagedefense.utils.LegacyDataFixer;
 import pl.plajer.villagedefense.utils.MessageUtils;
+import pl.plajer.villagedefense.utils.UpdateChecker;
 import pl.plajer.villagedefense.utils.Utils;
-import pl.plajerlair.core.database.MySQLDatabase;
-import pl.plajerlair.core.debug.Debugger;
-import pl.plajerlair.core.debug.LogLevel;
-import pl.plajerlair.core.services.ServiceRegistry;
-import pl.plajerlair.core.services.update.UpdateChecker;
-import pl.plajerlair.core.utils.ConfigUtils;
-import pl.plajerlair.core.utils.InventoryUtils;
+import pl.plajerlair.commonsbox.database.MysqlDatabase;
+import pl.plajerlair.commonsbox.minecraft.configuration.ConfigUtils;
+import pl.plajerlair.commonsbox.minecraft.serialization.InventorySerializer;
+import pl.plajerlair.services.ServiceRegistry;
 
 
 /**
@@ -88,7 +86,7 @@ public class Main extends JavaPlugin {
   private ChatManager chatManager;
   private UserManager userManager;
   private ConfigPreferences configPreferences;
-  private MySQLDatabase database;
+  private MysqlDatabase database;
   private ArgumentsRegistry registry;
   private SignManager signManager;
   private BungeeManager bungeeManager;
@@ -143,8 +141,7 @@ public class Main extends JavaPlugin {
     LanguageManager.init(this);
     saveDefaultConfig();
     Debugger.setEnabled(getConfig().getBoolean("Debug", false));
-    Debugger.setPrefix("[Village Debugger]");
-    Debugger.debug(LogLevel.INFO, "Main setup start");
+    Debugger.debug(Debugger.Level.INFO, "Main setup start");
     chatManager = new ChatManager(ChatColor.translateAlternateColorCodes('&', LanguageManager.getLanguageMessage("In-Game.Plugin-Prefix")));
     configPreferences = new ConfigPreferences(this);
     setupFiles();
@@ -154,7 +151,7 @@ public class Main extends JavaPlugin {
 
     if (configPreferences.getOption(ConfigPreferences.Option.DATABASE_ENABLED)) {
       FileConfiguration config = ConfigUtils.getConfig(this, "mysql");
-      database = new MySQLDatabase(this, config.getString("address"), config.getString("user"), config.getString("password"),
+      database = new MysqlDatabase(config.getString("address"), config.getString("user"), config.getString("password"),
           config.getInt("min-connections"), config.getInt("max-connections"));
     }
     userManager = new UserManager(this);
@@ -167,7 +164,7 @@ public class Main extends JavaPlugin {
     signManager = new SignManager(this);
 
     PermissionsManager.init();
-    Debugger.debug(LogLevel.INFO, "Main setup done");
+    Debugger.debug(Debugger.Level.INFO, "Main setup done");
   }
 
   private boolean validateIfPluginShouldStart() {
@@ -212,7 +209,7 @@ public class Main extends JavaPlugin {
     new ChatEvents(this);
     setupPluginMetrics();
     if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
-      Debugger.debug(LogLevel.INFO, "Hooking into PlaceholderAPI");
+      Debugger.debug(Debugger.Level.INFO, "Hooking into PlaceholderAPI");
       new PlaceholderManager().register();
     }
     new Events(this);
@@ -306,7 +303,7 @@ public class Main extends JavaPlugin {
     return holidayManager;
   }
 
-  public MySQLDatabase getMySQLDatabase() {
+  public MysqlDatabase getMysqlDatabase() {
     return database;
   }
 
@@ -327,7 +324,7 @@ public class Main extends JavaPlugin {
     if (forceDisable) {
       return;
     }
-    Debugger.debug(LogLevel.INFO, "System disable init");
+    Debugger.debug(Debugger.Level.INFO, "System disable init");
     Bukkit.getLogger().removeHandler(exceptionLogHandler);
     for (Arena arena : ArenaRegistry.getArenas()) {
       arena.getScoreboardManager().stopAllScoreboards();
@@ -335,7 +332,7 @@ public class Main extends JavaPlugin {
         arena.doBarAction(Arena.BarAction.REMOVE, player);
         arena.teleportToEndLocation(player);
         if (configPreferences.getOption(ConfigPreferences.Option.INVENTORY_MANAGER_ENABLED)) {
-          InventoryUtils.loadInventory(this, player);
+          InventorySerializer.loadInventory(this, player);
           continue;
         }
         player.getInventory().clear();
@@ -354,9 +351,9 @@ public class Main extends JavaPlugin {
       }
     }
     if (configPreferences.getOption(ConfigPreferences.Option.DATABASE_ENABLED)) {
-      getMySQLDatabase().getManager().shutdownConnPool();
+      getMysqlDatabase().shutdownConnPool();
     }
-    Debugger.debug(LogLevel.INFO, "System disable finalize");
+    Debugger.debug(Debugger.Level.INFO, "System disable finalize");
   }
 
   private void saveAllUserStatistics() {
@@ -368,8 +365,8 @@ public class Main extends JavaPlugin {
         if (!stat.isPersistent()) {
           continue;
         }
-        if (userManager.getDatabase() instanceof MySQLManager) {
-          ((MySQLManager) userManager.getDatabase()).getDatabase().executeUpdate("UPDATE playerstats SET " + stat.getName() + "=" + user.getStat(stat) + " WHERE UUID='" + user.getPlayer().getUniqueId().toString() + "';");
+        if (userManager.getDatabase() instanceof MysqlDatabase) {
+          ((MysqlDatabase) userManager.getDatabase()).executeUpdate("UPDATE playerstats SET " + stat.getName() + "=" + user.getStat(stat) + " WHERE UUID='" + user.getPlayer().getUniqueId().toString() + "';");
           continue;
         }
         userManager.getDatabase().saveStatistic(user, stat);

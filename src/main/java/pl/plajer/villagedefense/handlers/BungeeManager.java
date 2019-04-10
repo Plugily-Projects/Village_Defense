@@ -21,6 +21,7 @@ package pl.plajer.villagedefense.handlers;
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
 
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -34,9 +35,8 @@ import pl.plajer.villagedefense.arena.Arena;
 import pl.plajer.villagedefense.arena.ArenaManager;
 import pl.plajer.villagedefense.arena.ArenaRegistry;
 import pl.plajer.villagedefense.arena.ArenaState;
-import pl.plajerlair.core.debug.Debugger;
-import pl.plajerlair.core.debug.LogLevel;
-import pl.plajerlair.core.utils.ConfigUtils;
+import pl.plajer.villagedefense.utils.Debugger;
+import pl.plajerlair.commonsbox.minecraft.configuration.ConfigUtils;
 
 /**
  * Created by Tom on 31/08/2014.
@@ -44,9 +44,11 @@ import pl.plajerlair.core.utils.ConfigUtils;
 public class BungeeManager implements Listener {
 
   private Main plugin;
+  private FileConfiguration config;
 
   public BungeeManager(Main plugin) {
     this.plugin = plugin;
+    this.config = ConfigUtils.getConfig(plugin, "bungee");
     plugin.getServer().getMessenger().registerOutgoingPluginChannel(plugin, "BungeeCord");
     plugin.getServer().getPluginManager().registerEvents(this, plugin);
   }
@@ -68,13 +70,13 @@ public class BungeeManager implements Listener {
   }
 
   private String getHubServerName() {
-    return ConfigUtils.getConfig(plugin, "bungee").getString("Hub");
+    return config.getString("Hub");
   }
 
   @EventHandler(priority = EventPriority.HIGHEST)
   public void onServerListPing(ServerListPingEvent event) {
     if (ArenaRegistry.getArenas().isEmpty()) {
-      Debugger.debug(LogLevel.WARN, "No ready arena found! Please create one before activating bungee mode!");
+      Debugger.debug(Debugger.Level.WARN, "No ready arena found! Please create one before activating bungee mode!");
       return;
     }
     event.setMaxPlayers(ArenaRegistry.getArenas().get(0).getMaximumPlayers());

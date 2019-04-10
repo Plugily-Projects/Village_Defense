@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package pl.plajer.villagedefense.kits.kitapi;
+package pl.plajer.villagedefense.kits;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -24,15 +24,16 @@ import java.util.List;
 import java.util.logging.Level;
 
 import org.bukkit.Material;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import pl.plajer.villagedefense.Main;
+import pl.plajer.villagedefense.kits.basekits.FreeKit;
+import pl.plajer.villagedefense.kits.basekits.Kit;
 import pl.plajer.villagedefense.kits.free.KnightKit;
 import pl.plajer.villagedefense.kits.free.LightTankKit;
 import pl.plajer.villagedefense.kits.free.ZombieFinderKit;
-import pl.plajer.villagedefense.kits.kitapi.basekits.FreeKit;
-import pl.plajer.villagedefense.kits.kitapi.basekits.Kit;
 import pl.plajer.villagedefense.kits.level.ArcherKit;
 import pl.plajer.villagedefense.kits.level.GolemFriendKit;
 import pl.plajer.villagedefense.kits.level.HardcoreKit;
@@ -54,7 +55,7 @@ import pl.plajer.villagedefense.kits.premium.ShotBowKit;
 import pl.plajer.villagedefense.kits.premium.TeleporterKit;
 import pl.plajer.villagedefense.kits.premium.TornadoKit;
 import pl.plajer.villagedefense.kits.premium.WizardKit;
-import pl.plajerlair.core.utils.ConfigUtils;
+import pl.plajerlair.commonsbox.minecraft.configuration.ConfigUtils;
 
 /**
  * Kit registry class for registering new kits.
@@ -130,8 +131,9 @@ public class KitRegistry {
 
   private static void setupGameKits() {
     KnightKit knightkit = new KnightKit();
+    FileConfiguration config = ConfigUtils.getConfig(plugin, "kits");
     for (Class kitClass : classKitNames) {
-      if (ConfigUtils.getConfig(plugin, "kits").getBoolean("Enabled-Game-Kits." + kitClass.getSimpleName().replace("Kit", ""))) {
+      if (config.getBoolean("Enabled-Game-Kits." + kitClass.getSimpleName().replace("Kit", ""))) {
         try {
           Class.forName(kitClass.getName()).newInstance();
         } catch (ClassNotFoundException | IllegalAccessException | InstantiationException e) {

@@ -29,10 +29,9 @@ import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.api.StatsStorage;
 import pl.plajer.villagedefense.arena.Arena;
 import pl.plajer.villagedefense.user.data.FileStats;
-import pl.plajer.villagedefense.user.data.MySQLManager;
+import pl.plajer.villagedefense.user.data.MysqlManager;
 import pl.plajer.villagedefense.user.data.UserDatabase;
-import pl.plajerlair.core.debug.Debugger;
-import pl.plajerlair.core.debug.LogLevel;
+import pl.plajer.villagedefense.utils.Debugger;
 
 /**
  * Created by Tom on 27/07/2014.
@@ -44,7 +43,7 @@ public class UserManager {
 
   public UserManager(Main plugin) {
     if (plugin.getConfigPreferences().getOption(ConfigPreferences.Option.DATABASE_ENABLED)) {
-      database = new MySQLManager(plugin);
+      database = new MysqlManager(plugin);
     } else {
       database = new FileStats(plugin);
     }
@@ -66,7 +65,7 @@ public class UserManager {
         return user;
       }
     }
-    Debugger.debug(LogLevel.INFO, "Registering new user with UUID: " + player.getUniqueId() + " (" + player.getName() + ")");
+    Debugger.debug(Debugger.Level.INFO, "Registering new user with UUID: " + player.getUniqueId() + " (" + player.getName() + ")");
     User user = new User(player);
     users.add(user);
     return user;

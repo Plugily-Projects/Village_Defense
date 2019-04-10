@@ -24,8 +24,7 @@ import java.util.List;
 import java.util.logging.Level;
 
 import pl.plajer.villagedefense.Main;
-import pl.plajerlair.core.debug.Debugger;
-import pl.plajerlair.core.debug.LogLevel;
+import pl.plajer.villagedefense.utils.Debugger;
 
 /**
  * @author Plajer
@@ -35,12 +34,12 @@ import pl.plajerlair.core.debug.LogLevel;
 public class EntityRegistry {
 
   public EntityRegistry(Main plugin) {
-    Debugger.debug(LogLevel.INFO, "Initial entity registry startup");
+    Debugger.debug(Debugger.Level.INFO, "Initial entity registry startup");
     List<String> classes = Arrays.asList("FastZombie", "BabyZombie", "PlayerBuster", "GolemBuster", "HardZombie", "TankerZombie", "VillagerSlayer", "RidableVillager", "RidableIronGolem", "WorkingWolf");
     String version = plugin.getVersion();
     if (version.equalsIgnoreCase("v1_11_R1") || version.equalsIgnoreCase("v1_12_R1") || version.equalsIgnoreCase("v1_13_R1") || version.equalsIgnoreCase("v1_13_R2")) {
       if (version.equalsIgnoreCase("v1_13_R1") || version.equalsIgnoreCase("v1_13_R2")) {
-        Debugger.debug(LogLevel.INFO, "Skipping entity registering for 1.13");
+        Debugger.debug(Debugger.Level.INFO, "Skipping entity registering for 1.13");
         return;
       }
       try {
@@ -69,7 +68,7 @@ public class EntityRegistry {
         plugin.getLogger().log(Level.WARNING, "Cause: " + e.getMessage());
       }
     }
-    Debugger.debug(LogLevel.INFO, "Entities registering completed");
+    Debugger.debug(Debugger.Level.INFO, "Entities registering completed");
   }
 
   @SuppressWarnings("unused")

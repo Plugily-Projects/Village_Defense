@@ -75,8 +75,8 @@ import pl.plajer.villagedefense.handlers.items.SpecialItemManager;
 import pl.plajer.villagedefense.user.User;
 import pl.plajer.villagedefense.utils.CompatMaterialConstants;
 import pl.plajer.villagedefense.utils.Utils;
-import pl.plajerlair.core.utils.MinigameUtils;
-import pl.plajerlair.core.utils.XMaterial;
+import pl.plajerlair.commonsbox.minecraft.compat.XMaterial;
+import pl.plajerlair.commonsbox.string.StringFormatUtils;
 
 /**
  * Created by Tom on 16/08/2014.
@@ -365,7 +365,7 @@ public class Events implements Listener {
         if (!arena.getZombies().contains(e.getEntity())) {
           continue;
         }
-        e.getEntity().setCustomName(MinigameUtils.getProgressBar((int) ((Zombie) e.getEntity()).getHealth(),
+        e.getEntity().setCustomName(StringFormatUtils.getProgressBar((int) ((Zombie) e.getEntity()).getHealth(),
             (int) ((Zombie) e.getEntity()).getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue(),
             50, "|", ChatColor.YELLOW + "", ChatColor.GRAY + ""));
       }

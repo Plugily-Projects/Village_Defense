@@ -22,8 +22,7 @@ import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
 
-import pl.plajerlair.core.debug.Debugger;
-import pl.plajerlair.core.debug.LogLevel;
+import pl.plajer.villagedefense.utils.Debugger;
 
 /**
  * @author Plajer
@@ -43,7 +42,7 @@ public class ConfigPreferences {
     //load custom permissions
     for (String key : plugin.getConfig().getConfigurationSection("CustomPermissions").getKeys(false)) {
       customPermissions.put(key, plugin.getConfig().getInt("CustomPermissions." + key));
-      Debugger.debug(LogLevel.INFO, "Loaded custom permission " + key);
+      Debugger.debug(Debugger.Level.INFO, "Loaded custom permission " + key);
     }
   }
 

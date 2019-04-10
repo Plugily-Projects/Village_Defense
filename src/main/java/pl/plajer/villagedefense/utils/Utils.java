@@ -71,6 +71,31 @@ public class Utils {
     return stack.hasItemMeta() && stack.getItemMeta().hasDisplayName();
   }
 
+  public static void takeOneItem(Player player, ItemStack stack) {
+    if (stack.getAmount() <= 1) {
+      player.getInventory().setItemInMainHand(new ItemStack(Material.AIR));
+    } else {
+      player.getInventory().getItemInMainHand().setAmount(stack.getAmount() - 1);
+    }
+  }
+
+  /**
+   * Serialize int to use it in Inventories size
+   * ex. you have 38 kits and it will serialize it to 45 (9*5)
+   * because it is valid inventory size
+   * next ex. you have 55 items and it will serialize it to 63 (9*7) not 54 because it's too less
+   *
+   * @param i integer to serialize
+   * @return serialized number
+   */
+  public static int serializeInt(Integer i) {
+    if ((i % 9) == 0) {
+      return i;
+    } else {
+      return (int) ((Math.ceil(i / 9) * 9) + 9);
+    }
+  }
+
   public static Queue<Block> getNearbyDoors(LivingEntity entity, int maxDistance, int maxLength) {
     if (maxDistance > 120) {
       maxDistance = 120;

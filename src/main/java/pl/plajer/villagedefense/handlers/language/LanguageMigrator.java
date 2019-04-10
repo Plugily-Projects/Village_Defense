@@ -29,8 +29,8 @@ import org.bukkit.configuration.file.FileConfiguration;
 
 import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.utils.MessageUtils;
-import pl.plajerlair.core.utils.ConfigUtils;
-import pl.plajerlair.core.utils.MigratorUtils;
+import pl.plajerlair.commonsbox.minecraft.configuration.ConfigUtils;
+import pl.plajerlair.commonsbox.minecraft.migrator.MigratorUtils;
 
 /*
   NOTE FOR CONTRIBUTORS - Please do not touch this class if you don't now how it works! You can break migrator modyfing these values!
@@ -235,15 +235,16 @@ public class LanguageMigrator {
     Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "Village Defense is migrating all files to the new file format...");
     Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "Don't worry! Old files will be renamed not overridden!");
     for (String fileName : migratable) {
-      File file = ConfigUtils.getFile(plugin, fileName);
-      if (file.exists()) {
-        boolean success = file.renameTo(new File(plugin.getDataFolder(), plugin.getDataFolder() + "/VD2_" + file + ".yml"));
-        if (success) {
-          Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "Renamed file " + file + ".yml");
-          continue;
-        }
-        Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "Couldn't rename file " + file + ".yml. Problems might occur!");
+      File file = new File(plugin.getDataFolder() + "/" + fileName + ".yml");
+      if (!file.exists()) {
+        continue;
       }
+      boolean success = file.renameTo(new File(plugin.getDataFolder(), plugin.getDataFolder() + "/VD2_" + file + ".yml"));
+      if (success) {
+        Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "Renamed file " + file + ".yml");
+        continue;
+      }
+      Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "Couldn't rename file " + file + ".yml. Problems might occur!");
     }
     Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "Done! Enabling Village Defense...");
   }

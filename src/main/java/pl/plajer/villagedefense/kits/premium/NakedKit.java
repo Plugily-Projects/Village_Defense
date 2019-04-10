@@ -31,16 +31,17 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.PotionType;
 
 import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.arena.ArenaRegistry;
 import pl.plajer.villagedefense.handlers.PermissionsManager;
-import pl.plajer.villagedefense.kits.kitapi.KitRegistry;
-import pl.plajer.villagedefense.kits.kitapi.basekits.PremiumKit;
+import pl.plajer.villagedefense.kits.KitRegistry;
+import pl.plajer.villagedefense.kits.basekits.PremiumKit;
 import pl.plajer.villagedefense.user.User;
 import pl.plajer.villagedefense.utils.Utils;
-import pl.plajerlair.core.utils.XMaterial;
+import pl.plajerlair.commonsbox.minecraft.compat.XMaterial;
 
 /**
  * Created by Tom on 8/02/2015.
@@ -121,7 +122,7 @@ public class NakedKit extends PremiumKit implements Listener {
     if (!(event.getInventory().getType().equals(InventoryType.PLAYER) || event.getInventory().getType().equals(InventoryType.CRAFTING))) {
       return;
     }
-    Bukkit.getScheduler().runTaskLater(Main.getPlugin(Main.class), () -> {
+    Bukkit.getScheduler().runTaskLater(JavaPlugin.getPlugin(Main.class), () -> {
       for (ItemStack stack : event.getWhoClicked().getInventory().getArmorContents()) {
         if (stack == null || !armorTypes.contains(stack.getType())) {
           continue;

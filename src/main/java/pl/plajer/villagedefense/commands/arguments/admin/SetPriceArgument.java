@@ -31,7 +31,7 @@ import pl.plajer.villagedefense.commands.arguments.ArgumentsRegistry;
 import pl.plajer.villagedefense.commands.arguments.data.CommandArgument;
 import pl.plajer.villagedefense.commands.arguments.data.LabelData;
 import pl.plajer.villagedefense.commands.arguments.data.LabeledCommandArgument;
-import pl.plajerlair.core.utils.MinigameUtils;
+import pl.plajerlair.commonsbox.minecraft.item.ItemBuilder;
 
 /**
  * @author Plajer
@@ -57,7 +57,8 @@ public class SetPriceArgument {
           return;
         }
         if (!item.hasItemMeta() || !item.getItemMeta().hasLore()) {
-          MinigameUtils.addLore(item, ChatColor.GOLD + args[1] + " " + registry.getPlugin().getChatManager().colorMessage("In-Game.Messages.Shop-Messages.Currency-In-Shop"));
+          player.getInventory().setItemInMainHand(new ItemBuilder(item)
+              .lore(ChatColor.GOLD + args[1] + " " + registry.getPlugin().getChatManager().colorMessage("In-Game.Messages.Shop-Messages.Currency-In-Shop")).build());
           player.sendMessage(registry.getPlugin().getChatManager().getPrefix() + registry.getPlugin().getChatManager().colorMessage("Commands.Command-Executed"));
         }
         //check any price from lore

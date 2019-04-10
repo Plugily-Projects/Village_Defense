@@ -54,12 +54,11 @@ import pl.plajer.villagedefense.arena.managers.ScoreboardManager;
 import pl.plajer.villagedefense.arena.managers.ShopManager;
 import pl.plajer.villagedefense.arena.managers.ZombieSpawnManager;
 import pl.plajer.villagedefense.arena.options.ArenaOption;
-import pl.plajer.villagedefense.handlers.reward.GameReward;
+import pl.plajer.villagedefense.handlers.reward.Reward;
 import pl.plajer.villagedefense.user.User;
-import pl.plajerlair.core.debug.Debugger;
-import pl.plajerlair.core.debug.LogLevel;
-import pl.plajerlair.core.utils.ConfigUtils;
-import pl.plajerlair.core.utils.InventoryUtils;
+import pl.plajer.villagedefense.utils.Debugger;
+import pl.plajerlair.commonsbox.minecraft.configuration.ConfigUtils;
+import pl.plajerlair.commonsbox.minecraft.serialization.InventorySerializer;
 
 /**
  * Created by Tom on 12/08/2014.
@@ -353,7 +352,7 @@ public abstract class Arena extends BukkitRunnable {
           teleportAllToEndLocation();
           if (plugin.getConfigPreferences().getOption(ConfigPreferences.Option.INVENTORY_MANAGER_ENABLED)) {
             for (Player player : getPlayers()) {
-              InventoryUtils.loadInventory(plugin, player);
+              InventorySerializer.loadInventory(plugin, player);
             }
           }
           plugin.getChatManager().broadcast(this, plugin.getChatManager().colorMessage("Commands.Teleported-To-The-Lobby"));
@@ -362,7 +361,7 @@ public abstract class Arena extends BukkitRunnable {
             user.setSpectator(false);
             user.setStat(StatsStorage.StatisticType.ORBS, 0);
           }
-          plugin.getRewardsHandler().performReward(this, GameReward.RewardType.END_GAME);
+          plugin.getRewardsHandler().performReward(this, Reward.RewardType.END_GAME);
           players.clear();
           if (plugin.getConfigPreferences().getOption(ConfigPreferences.Option.BUNGEE_ENABLED)) {
             if (ConfigUtils.getConfig(plugin, "bungee").getBoolean("Shutdown-When-Game-Ends")) {
@@ -403,14 +402,14 @@ public abstract class Arena extends BukkitRunnable {
       return;
     }
     if (getVillagerSpawns() == null || getVillagerSpawns().isEmpty()) {
-      Debugger.debug(LogLevel.WARN, "No villager spawns for " + getId() + ", game won't start");
+      Debugger.debug(Debugger.Level.WARN, "No villager spawns for " + getId() + ", game won't start");
       return;
     }
     for (Location location : getVillagerSpawns()) {
       spawnVillager(location);
     }
     if (getVillagers().isEmpty()) {
-      Debugger.debug(LogLevel.WARN, "There was a problem with spawning villagers for arena " + id + "! Are villager spawns set in safe and valid locations?");
+      Debugger.debug(Debugger.Level.WARN, "There was a problem with spawning villagers for arena " + id + "! Are villager spawns set in safe and valid locations?");
       return;
     }
     spawnVillagers();
@@ -548,7 +547,7 @@ public abstract class Arena extends BukkitRunnable {
     }
     Location location = getLobbyLocation();
     if (location == null) {
-      Debugger.debug(LogLevel.WARN, "Lobby location of arena " + getId() + " doesn't exist!");
+      Debugger.debug(Debugger.Level.WARN, "Lobby location of arena " + getId() + " doesn't exist!");
     }
     player.teleport(location);
   }
@@ -593,7 +592,7 @@ public abstract class Arena extends BukkitRunnable {
     if (gameLocations.get(GameLocation.START) != null) {
       player.teleport(gameLocations.get(GameLocation.START));
     } else {
-      Debugger.debug(LogLevel.WARN, "Start location of arena " + getId() + " doesn't exist!");
+      Debugger.debug(Debugger.Level.WARN, "Start location of arena " + getId() + " doesn't exist!");
     }
   }
 
@@ -602,7 +601,7 @@ public abstract class Arena extends BukkitRunnable {
       if (gameLocations.get(GameLocation.START) != null) {
         player.teleport(gameLocations.get(GameLocation.START));
       } else {
-        Debugger.debug(LogLevel.WARN, "Start location of arena " + getId() + " doesn't exist!");
+        Debugger.debug(Debugger.Level.WARN, "Start location of arena " + getId() + " doesn't exist!");
       }
     }
   }
@@ -618,7 +617,7 @@ public abstract class Arena extends BukkitRunnable {
 
     if (location == null) {
       location = getLobbyLocation();
-      Debugger.debug(LogLevel.WARN, "Ending location of arena " + getId() + " doesn't exist!");
+      Debugger.debug(Debugger.Level.WARN, "Ending location of arena " + getId() + " doesn't exist!");
     }
     for (Player player : getPlayers()) {
       player.teleport(location);
@@ -633,7 +632,7 @@ public abstract class Arena extends BukkitRunnable {
     Location location = getEndLocation();
     if (location == null) {
       location = getLobbyLocation();
-      Debugger.debug(LogLevel.WARN, "Ending location of arena " + getId() + " doesn't exist!");
+      Debugger.debug(Debugger.Level.WARN, "Ending location of arena " + getId() + " doesn't exist!");
     }
 
     player.teleport(location);
@@ -658,7 +657,7 @@ public abstract class Arena extends BukkitRunnable {
   }
 
   public void start() {
-    Debugger.debug(LogLevel.INFO, "Game instance started, arena " + this.getId());
+    Debugger.debug(Debugger.Level.INFO, "Game instance started, arena " + this.getId());
     this.runTaskTimer(plugin, 20L, 20L);
     this.setArenaState(ArenaState.RESTARTING);
   }

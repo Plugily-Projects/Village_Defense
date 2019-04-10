@@ -44,12 +44,10 @@ import pl.plajer.villagedefense.arena.Arena;
 import pl.plajer.villagedefense.arena.ArenaRegistry;
 import pl.plajer.villagedefense.arena.options.ArenaOption;
 import pl.plajer.villagedefense.user.User;
+import pl.plajer.villagedefense.utils.Debugger;
 import pl.plajer.villagedefense.utils.Utils;
-import pl.plajerlair.core.debug.Debugger;
-import pl.plajerlair.core.debug.LogLevel;
-import pl.plajerlair.core.utils.ConfigUtils;
-import pl.plajerlair.core.utils.LocationUtils;
-import pl.plajerlair.core.utils.MinigameUtils;
+import pl.plajerlair.commonsbox.minecraft.configuration.ConfigUtils;
+import pl.plajerlair.commonsbox.minecraft.serialization.LocationSerializer;
 
 /**
  * Created by Tom on 16/08/2014.
@@ -104,11 +102,11 @@ public class ShopManager {
     if (!validateShop()) {
       return;
     }
-    ItemStack[] contents = ((Chest) LocationUtils.getLocation(config.getString("instances." + arena.getId() + ".shop"))
+    ItemStack[] contents = ((Chest) LocationSerializer.getLocation(config.getString("instances." + arena.getId() + ".shop"))
         .getBlock().getState()).getInventory().getContents();
     int i = contents.length;
-    Gui gui = new Gui(plugin, MinigameUtils.serializeInt(i) / 9, plugin.getChatManager().colorMessage("In-Game.Messages.Shop-Messages.Shop-GUI-Name"));
-    StaticPane pane = new StaticPane(9, MinigameUtils.serializeInt(i) / 9);
+    Gui gui = new Gui(plugin, Utils.serializeInt(i) / 9, plugin.getChatManager().colorMessage("In-Game.Messages.Shop-Messages.Shop-GUI-Name"));
+    StaticPane pane = new StaticPane(9, Utils.serializeInt(i) / 9);
     int x = 0;
     int y = 0;
     for (ItemStack itemStack : contents) {
@@ -134,7 +132,7 @@ public class ShopManager {
         }
       }
       if (!found) {
-        Debugger.debug(LogLevel.WARN, "No price set for shop item in arena " + arena.getId() + " skipping!");
+        Debugger.debug(Debugger.Level.WARN, "No price set for shop item in arena " + arena.getId() + " skipping!");
         continue;
       }
       final int cost = Integer.parseInt(costString);
@@ -217,16 +215,16 @@ public class ShopManager {
 
   private boolean validateShop() {
     if (config.getString("instances." + arena.getId() + ".shop", "").equals("") || config.getString("instances." + arena.getId() + ".shop", "").split(",").length == 0) {
-      Debugger.debug(LogLevel.WARN, "There is no shop for arena " + arena.getId() + "! Aborting registering shop!");
+      Debugger.debug(Debugger.Level.WARN, "There is no shop for arena " + arena.getId() + "! Aborting registering shop!");
       return false;
     }
-    Location location = LocationUtils.getLocation(config.getString("instances." + arena.getId() + ".shop"));
+    Location location = LocationSerializer.getLocation(config.getString("instances." + arena.getId() + ".shop"));
+    //todo are these still revelant checks
     if (location.getWorld() == null || location.getBlock() == null || !(location.getBlock().getState() instanceof Chest)) {
-      Debugger.debug(LogLevel.WARN, "Shop failed to load, invalid location for loc " + location);
+      Debugger.debug(Debugger.Level.WARN, "Shop failed to load, invalid location for loc " + location);
       return false;
     }
     return true;
   }
-
 
 }

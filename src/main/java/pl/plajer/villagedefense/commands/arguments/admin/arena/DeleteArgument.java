@@ -28,7 +28,7 @@ import pl.plajer.villagedefense.commands.arguments.ArgumentsRegistry;
 import pl.plajer.villagedefense.commands.arguments.data.CommandArgument;
 import pl.plajer.villagedefense.commands.arguments.data.LabelData;
 import pl.plajer.villagedefense.commands.arguments.data.LabeledCommandArgument;
-import pl.plajerlair.core.utils.ConfigUtils;
+import pl.plajerlair.commonsbox.minecraft.configuration.ConfigUtils;
 
 /**
  * @author Plajer

@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package pl.plajer.villagedefense.kits.kitapi;
+package pl.plajer.villagedefense.kits;
 
 import com.github.stefvanschie.inventoryframework.Gui;
 import com.github.stefvanschie.inventoryframework.GuiItem;
@@ -38,10 +38,10 @@ import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.api.event.player.VillagePlayerChooseKitEvent;
 import pl.plajer.villagedefense.arena.Arena;
 import pl.plajer.villagedefense.arena.ArenaRegistry;
-import pl.plajer.villagedefense.kits.kitapi.basekits.Kit;
+import pl.plajer.villagedefense.kits.basekits.Kit;
 import pl.plajer.villagedefense.user.User;
 import pl.plajer.villagedefense.utils.Utils;
-import pl.plajerlair.core.utils.MinigameUtils;
+import pl.plajerlair.commonsbox.minecraft.item.ItemBuilder;
 
 /**
  * Class for setting Kit values.
@@ -87,16 +87,16 @@ public class KitManager implements Listener {
   }
 
   public void createKitMenu(Player player) {
-    Gui guiMenu = new Gui(plugin, MinigameUtils.serializeInt(KitRegistry.getKits().size()) / 9, getMenuName());
+    Gui guiMenu = new Gui(plugin, Utils.serializeInt(KitRegistry.getKits().size()) / 9, getMenuName());
     StaticPane pane = new StaticPane(9, guiMenu.getRows());
     int x = 0;
     int y = 0;
     for (Kit kit : KitRegistry.getKits()) {
       ItemStack itemStack = kit.getItemStack();
       if (kit.isUnlockedByPlayer(player)) {
-        MinigameUtils.addLore(itemStack, unlockedString);
+        itemStack = new ItemBuilder(itemStack).lore(unlockedString).build();
       } else {
-        MinigameUtils.addLore(itemStack, lockedString);
+        itemStack = new ItemBuilder(itemStack).lore(lockedString).build();
       }
 
       pane.addItem(new GuiItem(itemStack, e -> {
@@ -173,7 +173,6 @@ public class KitManager implements Listener {
     itemStack.setItemMeta(itemMeta);
     player.getInventory().addItem(itemStack);
   }
-
 
   @EventHandler
   public void onKitMenuItemClick(PlayerInteractEvent e) {
