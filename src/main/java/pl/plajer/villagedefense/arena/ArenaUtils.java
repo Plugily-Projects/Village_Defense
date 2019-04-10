@@ -20,11 +20,14 @@ package pl.plajer.villagedefense.arena;
 
 import org.bukkit.GameMode;
 import org.bukkit.Particle;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Zombie;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
+import pl.plajer.villagedefense.ConfigPreferences;
 import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.api.StatsStorage;
 import pl.plajer.villagedefense.arena.initializers.ArenaInitializer1_11_R1;
@@ -33,6 +36,7 @@ import pl.plajer.villagedefense.arena.initializers.ArenaInitializer1_13_R1;
 import pl.plajer.villagedefense.arena.initializers.ArenaInitializer1_13_R2;
 import pl.plajer.villagedefense.handlers.PermissionsManager;
 import pl.plajer.villagedefense.user.User;
+import pl.plajerlair.commonsbox.minecraft.serialization.InventorySerializer;
 
 /**
  * @author Plajer
@@ -55,14 +59,28 @@ public class ArenaUtils {
     }
   }
 
-  public static void hidePlayersOutsideTheGame(Player player, Arena arena) {
+  public static void resetPlayerAfterGame(Player player) {
     for (Player players : plugin.getServer().getOnlinePlayers()) {
-      if (arena.getPlayers().contains(players)) {
-        continue;
-      }
-      player.hidePlayer(players);
-      players.hidePlayer(player);
+      players.showPlayer(player);
+      player.showPlayer(players);
     }
+    player.setGlowing(false);
+    if (plugin.getConfigPreferences().getOption(ConfigPreferences.Option.INVENTORY_MANAGER_ENABLED)) {
+      InventorySerializer.loadInventory(plugin, player);
+      return;
+    }
+    player.setGameMode(GameMode.SURVIVAL);
+    for (PotionEffect effect : player.getActivePotionEffects()) {
+      player.removePotionEffect(effect.getType());
+    }
+    player.setFlying(false);
+    player.setAllowFlight(false);
+    player.getInventory().clear();
+    player.getInventory().setArmorContents(null);
+    player.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(20.0);
+    player.setHealth(player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue());
+    player.setFireTicks(0);
+    player.setFoodLevel(20);
   }
 
   public static void bringDeathPlayersBack(Arena arena) {

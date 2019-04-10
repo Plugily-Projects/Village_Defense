@@ -117,7 +117,6 @@ public class ArenaManager {
           p.showPlayer(spectator);
         }
       }
-      ArenaUtils.hidePlayersOutsideTheGame(p, arena);
       return;
     }
     if (plugin.getConfigPreferences().getOption(ConfigPreferences.Option.INVENTORY_MANAGER_ENABLED)) {
@@ -176,25 +175,22 @@ public class ArenaManager {
    * Attempts player to leave arena.
    * Calls VillageGameLeaveAttemptEvent event.
    *
-   * @param p player to join
+   * @param player player to join
    * @see VillageGameLeaveAttemptEvent
    */
-  public static void leaveAttempt(Player p, Arena arena) {
-    p.setExp(0);
-    p.setLevel(0);
-    Debugger.debug(Debugger.Level.INFO, "Initial leave attempt, " + p.getName());
-    VillageGameLeaveAttemptEvent villageGameLeaveAttemptEvent = new VillageGameLeaveAttemptEvent(p, arena);
+  public static void leaveAttempt(Player player, Arena arena) {
+    player.setExp(0);
+    player.setLevel(0);
+    Debugger.debug(Debugger.Level.INFO, "Initial leave attempt, " + player.getName());
+    VillageGameLeaveAttemptEvent villageGameLeaveAttemptEvent = new VillageGameLeaveAttemptEvent(player, arena);
     Bukkit.getPluginManager().callEvent(villageGameLeaveAttemptEvent);
-    User user = plugin.getUserManager().getUser(p);
+    User user = plugin.getUserManager().getUser(player);
     user.setStat(StatsStorage.StatisticType.ORBS, 0);
-    p.getInventory().clear();
-    p.getInventory().setArmorContents(null);
     arena.getScoreboardManager().removeScoreboard(user);
-    arena.removePlayer(p);
+    arena.removePlayer(player);
     if (!user.isSpectator()) {
-      plugin.getChatManager().broadcastAction(arena, p, ChatManager.ActionType.LEAVE);
+      plugin.getChatManager().broadcastAction(arena, player, ChatManager.ActionType.LEAVE);
     }
-    p.setGlowing(false);
     user.setSpectator(false);
     if (user.getKit() instanceof GolemFriendKit) {
       for (IronGolem ironGolem : arena.getIronGolems()) {
@@ -203,34 +199,14 @@ public class ArenaManager {
         }
       }
     }
-    arena.doBarAction(Arena.BarAction.REMOVE, p);
-    p.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(20.0);
-    p.setHealth(p.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue());
-    p.setFoodLevel(20);
-    p.setFlying(false);
-    p.setAllowFlight(false);
-    for (PotionEffect effect : p.getActivePotionEffects()) {
-      p.removePotionEffect(effect.getType());
-    }
-    p.setFireTicks(0);
+    arena.doBarAction(Arena.BarAction.REMOVE, player);
     if (arena.getPlayers().isEmpty() && arena.getArenaState() != ArenaState.WAITING_FOR_PLAYERS) {
       arena.setArenaState(ArenaState.ENDING);
       arena.setTimer(0);
     }
-
-    p.setGameMode(GameMode.SURVIVAL);
-    for (Player players : plugin.getServer().getOnlinePlayers()) {
-      if (ArenaRegistry.getArena(players) == null) {
-        players.showPlayer(p);
-      }
-      p.showPlayer(players);
-    }
-    arena.teleportToEndLocation(p);
-    if (!plugin.getConfigPreferences().getOption(ConfigPreferences.Option.BUNGEE_ENABLED)
-        && plugin.getConfigPreferences().getOption(ConfigPreferences.Option.INVENTORY_MANAGER_ENABLED)) {
-      InventorySerializer.loadInventory(plugin, p);
-    }
-    Debugger.debug(Debugger.Level.INFO, "Final leave attempt, " + p.getName());
+    ArenaUtils.resetPlayerAfterGame(player);
+    arena.teleportToEndLocation(player);
+    Debugger.debug(Debugger.Level.INFO, "Final leave attempt, " + player.getName());
   }
 
   /**

@@ -31,7 +31,6 @@ import java.util.Set;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
-import org.bukkit.attribute.Attribute;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
@@ -41,7 +40,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.entity.Villager;
 import org.bukkit.entity.Wolf;
 import org.bukkit.entity.Zombie;
-import org.bukkit.potion.PotionEffect;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import pl.plajer.villagedefense.ConfigPreferences;
@@ -58,40 +56,42 @@ import pl.plajer.villagedefense.handlers.reward.Reward;
 import pl.plajer.villagedefense.user.User;
 import pl.plajer.villagedefense.utils.Debugger;
 import pl.plajerlair.commonsbox.minecraft.configuration.ConfigUtils;
-import pl.plajerlair.commonsbox.minecraft.serialization.InventorySerializer;
 
 /**
  * Created by Tom on 12/08/2014.
  */
 public abstract class Arena extends BukkitRunnable {
 
-  private final List<Location> zombieSpawns = new ArrayList<>();
-  private final Main plugin;
-  private final List<Zombie> zombies = new ArrayList<>();
-  private final List<Wolf> wolfs = new ArrayList<>();
-  private final List<Villager> villagers = new ArrayList<>();
-  private final List<IronGolem> ironGolems = new ArrayList<>();
-  private final List<Location> villagerSpawnPoints = new ArrayList<>();
-  private final Random random = new Random();
-  private final List<Zombie> glitchedZombies = new ArrayList<>();
-  private final Map<Zombie, Location> zombieCheckerLocations = new HashMap<>();
-  private final Set<Player> players = new HashSet<>();
-  private final List<Item> droppedFleshes = new ArrayList<>();
-  private ShopManager shopManager;
-  private ZombieSpawnManager zombieSpawnManager;
-  private ScoreboardManager scoreboardManager;
-  private MapRestorerManager mapRestorerManager;
-  private boolean fighting = false;
-  private ArenaState arenaState = ArenaState.WAITING_FOR_PLAYERS;
-  private BossBar gameBar;
-  private String mapName = "";
-  private String id;
+  private Main plugin;
+  private Random random = new Random();
+
+  private Set<Player> players = new HashSet<>();
+  private List<Zombie> zombies = new ArrayList<>();
+  private List<Wolf> wolfs = new ArrayList<>();
+  private List<Villager> villagers = new ArrayList<>();
+  private List<IronGolem> ironGolems = new ArrayList<>();
+  private List<Zombie> glitchedZombies = new ArrayList<>();
+  private List<Item> droppedFleshes = new ArrayList<>();
+  private Map<Zombie, Location> zombieCheckerLocations = new HashMap<>();
+
   //all arena values that are integers, contains constant and floating values
   private Map<ArenaOption, Integer> arenaOptions = new EnumMap<>(ArenaOption.class);
   //instead of 3 location fields we use map with GameLocation enum
   private Map<GameLocation, Location> gameLocations = new EnumMap<>(GameLocation.class);
-  private boolean ready = true;
+  private Map<SpawnPoint, List<Location>> spawnPoints = new EnumMap<>(SpawnPoint.class);
+
+  private ScoreboardManager scoreboardManager;
+  private MapRestorerManager mapRestorerManager;
+  private ShopManager shopManager;
+  private ZombieSpawnManager zombieSpawnManager;
+
+  private ArenaState arenaState = ArenaState.WAITING_FOR_PLAYERS;
+  private BossBar gameBar;
+  private String mapName = "";
+  private String id;
+  private boolean fighting = false;
   private boolean forceStart = false;
+  private boolean ready = true;
 
   public Arena(String id, Main plugin) {
     this.plugin = plugin;
@@ -101,8 +101,12 @@ public abstract class Arena extends BukkitRunnable {
     zombieSpawnManager = new ZombieSpawnManager(this);
     scoreboardManager = new ScoreboardManager(this);
     mapRestorerManager = new MapRestorerManager(this);
+    //initialize with default values
     for (ArenaOption option : ArenaOption.values()) {
       arenaOptions.put(option, option.getDefaultValue());
+    }
+    for (SpawnPoint point : SpawnPoint.values()) {
+      spawnPoints.put(point, new ArrayList<>());
     }
   }
 
@@ -140,6 +144,7 @@ public abstract class Arena extends BukkitRunnable {
     }
   }
 
+  @Override
   public void run() {
     //idle task
     if (getPlayers().isEmpty() && getArenaState() == ArenaState.WAITING_FOR_PLAYERS) {
@@ -201,7 +206,6 @@ public abstract class Arena extends BukkitRunnable {
             player.setGameMode(GameMode.SURVIVAL);
             User user = plugin.getUserManager().getUser(player);
             user.setStat(StatsStorage.StatisticType.ORBS, plugin.getConfig().getInt("Orbs-Starting-Amount", 20));
-            ArenaUtils.hidePlayersOutsideTheGame(player, this);
             plugin.getUserManager().getUser(player).getKit().giveKitItems(player);
             player.updateInventory();
             ArenaUtils.addStat(player, StatsStorage.StatisticType.GAMES_PLAYED);
@@ -266,7 +270,7 @@ public abstract class Arena extends BukkitRunnable {
               Location location = zombieCheckerLocations.get(zombie);
 
               if (zombie.getLocation().distance(location) <= 1) {
-                zombie.teleport(zombieSpawns.get(random.nextInt(zombieSpawns.size() - 1)));
+                zombie.teleport(getZombieSpawns().get(random.nextInt(getZombieSpawns().size() - 1)));
                 zombieCheckerLocations.put(zombie, zombie.getLocation());
                 glitchedZombies.add(zombie);
               }
@@ -318,43 +322,12 @@ public abstract class Arena extends BukkitRunnable {
         }
         if (getTimer() <= 0) {
           gameBar.setTitle(plugin.getChatManager().colorMessage("Bossbar.Game-Ended"));
-          mapRestorerManager.clearVillagersFromArena();
-          mapRestorerManager.clearZombiesFromArena();
-          mapRestorerManager.clearGolemsFromArena();
-          mapRestorerManager.clearWolvesFromArena();
 
           for (Player player : getPlayers()) {
-            player.setGameMode(GameMode.SURVIVAL);
-            for (Player players : Bukkit.getOnlinePlayers()) {
-              player.showPlayer(players);
-              players.hidePlayer(player);
-            }
-            for (PotionEffect effect : player.getActivePotionEffects()) {
-              player.removePotionEffect(effect.getType());
-            }
-            player.setFlying(false);
-            player.setAllowFlight(false);
-            player.getInventory().clear();
-
-            player.getInventory().setArmorContents(null);
+            ArenaUtils.resetPlayerAfterGame(player);
             doBarAction(BarAction.REMOVE, player);
-            player.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(20.0);
-            player.setHealth(player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue());
-            player.setFireTicks(0);
-            player.setFoodLevel(20);
-            for (Player players : plugin.getServer().getOnlinePlayers()) {
-              if (ArenaRegistry.getArena(players) != null) {
-                players.showPlayer(player);
-              }
-              player.showPlayer(players);
-            }
           }
           teleportAllToEndLocation();
-          if (plugin.getConfigPreferences().getOption(ConfigPreferences.Option.INVENTORY_MANAGER_ENABLED)) {
-            for (Player player : getPlayers()) {
-              InventorySerializer.loadInventory(plugin, player);
-            }
-          }
           plugin.getChatManager().broadcast(this, plugin.getChatManager().colorMessage("Commands.Teleported-To-The-Lobby"));
 
           for (User user : plugin.getUserManager().getUsers(this)) {
@@ -363,11 +336,6 @@ public abstract class Arena extends BukkitRunnable {
           }
           plugin.getRewardsHandler().performReward(this, Reward.RewardType.END_GAME);
           players.clear();
-          if (plugin.getConfigPreferences().getOption(ConfigPreferences.Option.BUNGEE_ENABLED)) {
-            if (ConfigUtils.getConfig(plugin, "bungee").getBoolean("Shutdown-When-Game-Ends")) {
-              plugin.getServer().shutdown();
-            }
-          }
           setArenaState(ArenaState.RESTARTING);
         }
         setTimer(getTimer() - 1);
@@ -386,6 +354,11 @@ public abstract class Arena extends BukkitRunnable {
           }
         }
         droppedFleshes.clear();
+        if (plugin.getConfigPreferences().getOption(ConfigPreferences.Option.BUNGEE_ENABLED)) {
+          if (ConfigUtils.getConfig(plugin, "bungee").getBoolean("Shutdown-When-Game-Ends")) {
+            plugin.getServer().shutdown();
+          }
+        }
         if (plugin.getConfigPreferences().getOption(ConfigPreferences.Option.BUNGEE_ENABLED)) {
           for (Player player : plugin.getServer().getOnlinePlayers()) {
             this.addPlayer(player);
@@ -538,13 +511,6 @@ public abstract class Arena extends BukkitRunnable {
   }
 
   public void teleportToLobby(Player player) {
-    player.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(20.0);
-    player.setFoodLevel(20);
-    player.setFlying(false);
-    player.setAllowFlight(false);
-    for (PotionEffect effect : player.getActivePotionEffects()) {
-      player.removePotionEffect(effect.getType());
-    }
     Location location = getLobbyLocation();
     if (location == null) {
       Debugger.debug(Debugger.Level.WARN, "Lobby location of arena " + getId() + " doesn't exist!");
@@ -659,7 +625,12 @@ public abstract class Arena extends BukkitRunnable {
   public void start() {
     Debugger.debug(Debugger.Level.INFO, "Game instance started, arena " + this.getId());
     this.runTaskTimer(plugin, 20L, 20L);
-    this.setArenaState(ArenaState.RESTARTING);
+    this.setArenaState(ArenaState.WAITING_FOR_PLAYERS);
+    if (plugin.getConfigPreferences().getOption(ConfigPreferences.Option.BUNGEE_ENABLED)) {
+      for (Player player : plugin.getServer().getOnlinePlayers()) {
+        this.addPlayer(player);
+      }
+    }
   }
 
   public ScoreboardManager getScoreboardManager() {
@@ -681,15 +652,15 @@ public abstract class Arena extends BukkitRunnable {
   }
 
   public List<Location> getVillagerSpawns() {
-    return villagerSpawnPoints;
+    return spawnPoints.get(SpawnPoint.VILLAGER);
   }
 
   public void addVillagerSpawn(Location location) {
-    this.villagerSpawnPoints.add(location);
+    spawnPoints.get(SpawnPoint.VILLAGER).add(location);
   }
 
   public void addZombieSpawn(Location location) {
-    zombieSpawns.add(location);
+    spawnPoints.get(SpawnPoint.ZOMBIE).add(location);
   }
 
   public void addDroppedFlesh(Item item) {
@@ -845,7 +816,7 @@ public abstract class Arena extends BukkitRunnable {
   }
 
   public List<Location> getZombieSpawns() {
-    return zombieSpawns;
+    return spawnPoints.get(SpawnPoint.ZOMBIE);
   }
 
   protected void addIronGolem(IronGolem ironGolem) {
@@ -879,6 +850,10 @@ public abstract class Arena extends BukkitRunnable {
 
   public enum GameLocation {
     START, LOBBY, END
+  }
+
+  public enum SpawnPoint {
+    ZOMBIE, VILLAGER
   }
 
 }

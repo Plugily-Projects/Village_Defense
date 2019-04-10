@@ -20,7 +20,6 @@ package pl.plajer.villagedefense.events;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -64,13 +63,6 @@ public class JoinEvent implements Listener {
         ArenaRegistry.getArenas().get(0).teleportToLobby(event.getPlayer());
       }
       return;
-    }
-    for (Player player : plugin.getServer().getOnlinePlayers()) {
-      if (ArenaRegistry.getArena(player) == null) {
-        continue;
-      }
-      player.hidePlayer(event.getPlayer());
-      event.getPlayer().hidePlayer(player);
     }
 
     for (StatsStorage.StatisticType stat : StatsStorage.StatisticType.values()) {
