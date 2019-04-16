@@ -31,8 +31,4 @@ Thanks to Code Whale for Open Source license for POEditor project.
 ## Contributors
 [List of all contributors here](https://plajer.xyz/contributors/villagedefense.html)
 
-
-### 👾 Join our discord to be up to date with updates and development beta builds!
-https://discord.gg/UXzUdTP
-
 <img align="right" src="https://i.imgur.com/EmFfDXN.png">
