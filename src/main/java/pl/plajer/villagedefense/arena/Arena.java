@@ -252,7 +252,6 @@ public abstract class Arena extends BukkitRunnable {
             setTimer(500);
           } else if (getTimer() == 0) {
             mapRestorerManager.clearZombiesFromArena();
-            setOptionValue(ArenaOption.ZOMBIES_TO_SPAWN, 0);
             if (getZombiesLeft() <= 5) {
               plugin.getChatManager().broadcast(this, plugin.getChatManager().colorMessage("In-Game.Messages.Zombie-Got-Stuck-In-The-Map"));
             } else {
@@ -260,6 +259,7 @@ public abstract class Arena extends BukkitRunnable {
                 spawnFastZombie(random);
               }
             }
+            setOptionValue(ArenaOption.ZOMBIES_TO_SPAWN, 0);
           }
           if (getOption(ArenaOption.ZOMBIES_TO_SPAWN) < 0) {
             setOptionValue(ArenaOption.ZOMBIES_TO_SPAWN, 0);
