@@ -9,6 +9,7 @@ now so we don't need to remind about them anymore
 * Removed hiding/showing players outside/inside arenas, now all players will be visible to everyone, this thing was bit buggy
 and sometimes player were invisible to each other after a game so it's deleted
 * Now you'll receive confirmation message when doing /vda stop
+* Fixed leveled kits didn't work because permission was `villagefense` not `villagedefense`
 
 ### 4.1.2 Release (15/27.03.2019)
 * Leaderboard command doesn't include XP statistic in tab completion now
