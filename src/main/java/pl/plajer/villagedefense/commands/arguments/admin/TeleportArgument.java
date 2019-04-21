@@ -82,7 +82,7 @@ public class TeleportArgument {
           player.sendMessage(ChatColor.RED + "Start location isn't set for this arena!");
           return;
         }
-        arena.teleportToStartLocation(player);
+        player.teleport(arena.getStartLocation());
         player.sendMessage(ChatColor.GRAY + "Teleported to START location from arena " + arena.getId());
         break;
       case END:

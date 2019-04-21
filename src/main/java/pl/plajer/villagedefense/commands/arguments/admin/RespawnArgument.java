@@ -81,7 +81,7 @@ public class RespawnArgument {
         target.removePotionEffect(PotionEffectType.NIGHT_VISION);
         target.removePotionEffect(PotionEffectType.SPEED);
         user.setSpectator(false);
-        arena.teleportToStartLocation(target);
+        target.teleport(arena.getStartLocation());
         target.setFlying(false);
         target.setAllowFlight(false);
         ArenaUtils.showPlayer(target, arena);

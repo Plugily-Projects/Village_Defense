@@ -49,7 +49,7 @@ import pl.plajer.villagedefense.creatures.v1_13_R2.RidableVillager;
 import pl.plajer.villagedefense.creatures.v1_13_R2.TankerZombie;
 import pl.plajer.villagedefense.creatures.v1_13_R2.VillagerSlayer;
 import pl.plajer.villagedefense.creatures.v1_13_R2.WorkingWolf;
-import pl.plajerlair.core.utils.XMaterial;
+import pl.plajerlair.commonsbox.minecraft.compat.XMaterial;
 
 /**
  * @author Plajer

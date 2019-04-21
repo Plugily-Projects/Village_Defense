@@ -65,10 +65,6 @@ public class ArenaUtils {
       player.showPlayer(players);
     }
     player.setGlowing(false);
-    if (plugin.getConfigPreferences().getOption(ConfigPreferences.Option.INVENTORY_MANAGER_ENABLED)) {
-      InventorySerializer.loadInventory(plugin, player);
-      return;
-    }
     player.setGameMode(GameMode.SURVIVAL);
     for (PotionEffect effect : player.getActivePotionEffects()) {
       player.removePotionEffect(effect.getType());
@@ -81,6 +77,9 @@ public class ArenaUtils {
     player.setHealth(player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue());
     player.setFireTicks(0);
     player.setFoodLevel(20);
+    if (plugin.getConfigPreferences().getOption(ConfigPreferences.Option.INVENTORY_MANAGER_ENABLED)) {
+      InventorySerializer.loadInventory(plugin, player);
+    }
   }
 
   public static void bringDeathPlayersBack(Arena arena) {
@@ -91,14 +90,14 @@ public class ArenaUtils {
       User user = plugin.getUserManager().getUser(player);
       user.setSpectator(false);
 
-      arena.teleportToStartLocation(player);
+      player.teleport(arena.getStartLocation());
       player.setFlying(false);
       player.setAllowFlight(false);
       player.setGameMode(GameMode.SURVIVAL);
       player.removePotionEffect(PotionEffectType.NIGHT_VISION);
       player.removePotionEffect(PotionEffectType.SPEED);
-      arena.showPlayers();
       player.getInventory().clear();
+      ArenaUtils.showPlayer(player, arena);
       user.getKit().giveKitItems(player);
       player.sendMessage(plugin.getChatManager().colorMessage("In-Game.Back-In-Game"));
     }

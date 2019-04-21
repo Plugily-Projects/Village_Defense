@@ -36,7 +36,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.utils.CompatMaterialConstants;
 import pl.plajer.villagedefense.utils.Utils;
-import pl.plajerlair.core.utils.XMaterial;
+import pl.plajerlair.commonsbox.minecraft.compat.XMaterial;
 
 /**
  * Created by Tom on 14/08/2014.
