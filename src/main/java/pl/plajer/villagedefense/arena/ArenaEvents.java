@@ -25,6 +25,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
+import org.bukkit.entity.IronGolem;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Villager;
@@ -132,7 +133,7 @@ public class ArenaEvents implements Listener {
 
   @EventHandler
   public void onDieEntity(EntityDeathEvent e) {
-    if (!(e.getEntity() instanceof Zombie || e.getEntity() instanceof Villager)) {
+    if (!(e.getEntity() instanceof Zombie || e.getEntity() instanceof Villager || e.getEntity() instanceof IronGolem)) {
       return;
     }
     for (Arena arena : ArenaRegistry.getArenas()) {

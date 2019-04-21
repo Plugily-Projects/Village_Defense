@@ -10,6 +10,7 @@ now so we don't need to remind about them anymore
 and sometimes player were invisible to each other after a game so it's deleted
 * Now you'll receive confirmation message when doing /vda stop
 * Fixed leveled kits didn't work because permission was `villagefense` not `villagedefense`
+* Iron golems on death won't drop items anymore
 
 ### 4.1.2 Release (15/27.03.2019)
 * Leaderboard command doesn't include XP statistic in tab completion now
