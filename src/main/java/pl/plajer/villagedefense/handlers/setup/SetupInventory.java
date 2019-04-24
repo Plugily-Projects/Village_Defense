@@ -45,6 +45,7 @@ public class SetupInventory {
 
   public static final String VIDEO_LINK = "https://tutorial.plajer.xyz";
   private static Main plugin = JavaPlugin.getPlugin(Main.class);
+  private static Random random = new Random();
   private Inventory inventory;
 
   public SetupInventory(Arena arena) {
@@ -156,7 +157,7 @@ public class SetupInventory {
   }
 
   public static void sendProTip(Player p) {
-    int rand = new Random().nextInt(8 + 1);
+    int rand = random.nextInt(8 + 1);
     switch (rand) {
       case 0:
         p.sendMessage(plugin.getChatManager().colorRawMessage("&e&lTIP: &7Console can execute /vda addorbs [amount] (player) command! Add game orbs via console!"));
