@@ -82,13 +82,14 @@ public class CreatureUtils {
   }
 
   /**
-   * Applies health attributes (i.e. health bar (if enabled) and
-   * health multiplier) to target zombie.
+   * Applies attributes (i.e. health bar (if enabled),
+   * health multiplier and follow range) to target zombie.
    *
    * @param zombie zombie to apply attributes for
    * @param arena  arena to get health multiplier from
    */
-  public static void applyHealthAttributes(Zombie zombie, Arena arena) {
+  public static void applyAttributes(Zombie zombie, Arena arena) {
+    zombie.getAttribute(Attribute.GENERIC_FOLLOW_RANGE).setBaseValue(200.0D);
     zombie.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(zombie.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue() + arena.getOption(ArenaOption.ZOMBIE_DIFFICULTY_MULTIPLIER));
     if (plugin.getConfig().getBoolean("Simple-Zombie-Health-Bar-Enabled", true)) {
       zombie.setCustomNameVisible(true);

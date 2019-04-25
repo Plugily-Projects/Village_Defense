@@ -77,7 +77,7 @@ public class FastZombie extends net.minecraft.server.v1_13_R1.EntityZombie {
   @Override
   protected void initAttributes() {
     super.initAttributes();
-    this.getAttributeInstance(GenericAttributes.FOLLOW_RANGE).setValue(100.0D);
+    this.getAttributeInstance(GenericAttributes.FOLLOW_RANGE).setValue(200.0D);
   }
 
 

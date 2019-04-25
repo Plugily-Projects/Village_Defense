@@ -12,6 +12,7 @@ and sometimes player were invisible to each other after a game so it's deleted
 * Fixed leveled kits didn't work because permission was `villagefense` not `villagedefense`
 * Iron golems on death won't drop items anymore
 * Added better descriptions to setup options in setup menu [(uservoice suggestion)](https://uservoice.plajer.xyz/index.php?id=VillageDefense&view=22)
+* Zombies were introduced with new pathfinder and forced overwrite of follow range attribute, they won't be stuck in the spawn point any longer
 
 ### 4.1.2 Release (15/27.03.2019)
 * Leaderboard command doesn't include XP statistic in tab completion now

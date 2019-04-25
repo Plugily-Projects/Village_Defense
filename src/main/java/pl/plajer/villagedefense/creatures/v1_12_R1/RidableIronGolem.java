@@ -116,7 +116,7 @@ public class RidableIronGolem extends EntityIronGolem {
   @Override
   protected void initAttributes() {
     super.initAttributes();
-    this.getAttributeInstance(GenericAttributes.FOLLOW_RANGE).setValue(150D);
+    this.getAttributeInstance(GenericAttributes.FOLLOW_RANGE).setValue(200.0D);
   }
 
   @Override

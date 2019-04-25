@@ -120,7 +120,7 @@ public class WorkingWolf extends EntityWolf {
   @Override
   protected void initAttributes() {
     super.initAttributes();
-    this.getAttributeInstance(GenericAttributes.FOLLOW_RANGE).setValue(70.0D);
+    this.getAttributeInstance(GenericAttributes.FOLLOW_RANGE).setValue(200.0D);
   }
 
 
