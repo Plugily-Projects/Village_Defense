@@ -63,6 +63,8 @@ public class SetupInventory {
         .name(ChatColor.GOLD + "► Set" + ChatColor.WHITE + " lobby " + ChatColor.GOLD + "location")
         .lore(ChatColor.GRAY + "Click to set the lobby location")
         .lore(ChatColor.GRAY + "on the place where you are standing")
+        .lore(ChatColor.DARK_GRAY + "(location where players will wait")
+        .lore(ChatColor.DARK_GRAY + "before the game starts)")
         .lore(isOptionDoneBool("instances." + arena.getId() + ".lobbylocation"))
         .build());
     inventory.setItem(ClickPosition.SET_STARTING.getPosition(), new ItemBuilder(Material.EMERALD_BLOCK)
@@ -101,7 +103,8 @@ public class SetupInventory {
       inventory.setItem(ClickPosition.ADD_SIGN.getPosition(), new ItemBuilder(Material.SIGN)
           .name(ChatColor.GOLD + "► Add game" + ChatColor.AQUA + " sign")
           .lore(ChatColor.GRAY + "Target a sign and click this.")
-          .lore(ChatColor.DARK_GRAY + "(this will set target sign as game sign)")
+          .lore(ChatColor.DARK_GRAY + "(this will set target sign as game sign")
+          .lore(ChatColor.DARK_GRAY + "which you can use to join the game)")
           .build());
     }
 
@@ -116,23 +119,29 @@ public class SetupInventory {
         .name(ChatColor.GOLD + "► Add" + ChatColor.GREEN + " villager " + ChatColor.GOLD + "spawn")
         .lore(ChatColor.GRAY + "Add new villager spawn")
         .lore(ChatColor.GRAY + "on the place you're standing at.")
+        .lore(ChatColor.DARK_GRAY + "(villagers will spawn at this location)")
         .lore(isOptionDoneList("instances." + arena.getId() + ".villagerspawns"))
         .build());
     inventory.setItem(ClickPosition.ADD_ZOMBIE_SPAWN.getPosition(), new ItemBuilder(Material.ROTTEN_FLESH)
         .name(ChatColor.GOLD + "► Add" + ChatColor.BLUE + " zombie " + ChatColor.GOLD + "spawn")
         .lore(ChatColor.GRAY + "Add new zombie spawn")
         .lore(ChatColor.GRAY + "on the place you're standing at.")
+        .lore(ChatColor.DARK_GRAY + "(zombies will spawn at this location)")
         .lore(isOptionDoneList("instances." + arena.getId() + ".zombiespawns"))
         .build());
     inventory.setItem(ClickPosition.ADD_DOORS.getPosition(), new ItemBuilder(CompatMaterialConstants.OAK_DOOR_ITEM)
         .name(ChatColor.GOLD + "► Add doors")
         .lore(ChatColor.GRAY + "Target arena door and click this.")
+        .lore(ChatColor.DARK_GRAY + "(doors are required and will be")
+        .lore(ChatColor.DARK_GRAY + "regenerated each game, villagers will hide")
+        .lore(ChatColor.DARK_GRAY + "in houses so you can put doors there)")
         .lore(isOptionDoneList("instances." + arena.getId() + ".doors"))
         .build());
     inventory.setItem(ClickPosition.SET_CHEST_SHOP.getPosition(), new ItemBuilder(Material.CHEST)
         .name(ChatColor.GOLD + "► Set" + ChatColor.LIGHT_PURPLE + " chest " + ChatColor.GOLD + "shop")
         .lore(ChatColor.GRAY + "Target chest with configured game items")
         .lore(ChatColor.GRAY + "and click this.")
+        .lore(ChatColor.DARK_GRAY + "(it allows to click villagers to buy game items)")
         .lore(ChatColor.RED + "Remember to set item prices for the game")
         .lore(ChatColor.RED + "using /vda setprice command!")
         .build());

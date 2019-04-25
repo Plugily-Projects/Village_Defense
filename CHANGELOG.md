@@ -1,6 +1,6 @@
 # Village Defense Changelog
 
-### 4.1.3 Release (06/10.04.2019)
+### 4.1.3 Release (06/25.04.2019)
 * Fixed [#611 exception when there was no section for some rewards](https://www.plajer.xyz/errorservice/viewer.php?id=611) but plugin attempted to register them
 * Fixed experience saving via InventoryManager
 * Fixed plugin couldn't start up when Cloudflare was blocked in your country (or services were offline)
@@ -11,6 +11,7 @@ and sometimes player were invisible to each other after a game so it's deleted
 * Now you'll receive confirmation message when doing /vda stop
 * Fixed leveled kits didn't work because permission was `villagefense` not `villagedefense`
 * Iron golems on death won't drop items anymore
+* Added better descriptions to setup options in setup menu [(uservoice suggestion)](https://uservoice.plajer.xyz/index.php?id=VillageDefense&view=22)
 
 ### 4.1.2 Release (15/27.03.2019)
 * Leaderboard command doesn't include XP statistic in tab completion now
