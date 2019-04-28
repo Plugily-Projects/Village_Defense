@@ -264,8 +264,12 @@
                         <configuration>
                             <relocations>
                                 <relocation>
-                                    <pattern>pl.plajerlair.core</pattern>
-                                    <shadedPattern>pl.plajer.villagedefense.plajerlair.core</shadedPattern>
+                                    <pattern>me.tigerhix.lib.scoreboard</pattern>
+                                    <shadedPattern>pl.plajer.villagedefense.utils.scoreboard</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>pl.plajerlair.services</pattern>
+                                    <shadedPattern>pl.plajer.villagedefense.plajerlair.services</shadedPattern>
                                 </relocation>
                                 <relocation>
                                     <pattern>org.bstats</pattern>

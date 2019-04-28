@@ -1,5 +1,8 @@
 # Village Defense Changelog
 
+### 4.1.4 Release (28.04.2019)
+* Relocate Plajer's Lair Services and TigerHix's ScoreboardLib packages in order to avoid conflict between our minigames if used on same server
+
 ### 4.1.3 Release (06/25.04.2019)
 * Fixed [#611 exception when there was no section for some rewards](https://www.plajer.xyz/errorservice/viewer.php?id=611) but plugin attempted to register them
 * Fixed experience saving via InventoryManager
