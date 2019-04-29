@@ -86,8 +86,12 @@
             <configuration>
               <relocations>
                 <relocation>
-                  <pattern>pl.plajerlair.core</pattern>
-                  <shadedPattern>pl.plajer.villagedefense.plajerlair.core</shadedPattern>
+                    <pattern>me.tigerhix.lib.scoreboard</pattern>
+                    <shadedPattern>pl.plajer.villagedefense.utils.scoreboard</shadedPattern>
+                </relocation>
+                  <relocation>
+                      <pattern>pl.plajerlair.services</pattern>
+                      <shadedPattern>pl.plajer.villagedefense.plajerlair.services</shadedPattern>
                 </relocation>
                 <relocation>
                   <pattern>org.bstats</pattern>
@@ -235,6 +239,13 @@
       <scope>system</scope>
       <systemPath>${project.basedir}/lib/spigot/1.12.1-R0.1.jar</systemPath>
     </dependency>
+      <dependency>
+          <groupId>1.14_R1</groupId>
+          <artifactId>spigot_1_14_R1</artifactId>
+          <version>1.14</version>
+          <scope>system</scope>
+          <systemPath>${project.basedir}/lib/spigot/1.14-R0.1.jar</systemPath>
+      </dependency>
     <dependency>
       <groupId>1.13_R1</groupId>
       <artifactId>spigot_1_13_R1</artifactId>
