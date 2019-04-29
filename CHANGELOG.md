@@ -1,6 +1,6 @@
 # Village Defense Changelog
 
-### 4.1.4 Release (28/29.04.2019)
+### 4.2.0 Beta 1 (28/29.04.2019)
 * Relocate Plajer's Lair Services and TigerHix's ScoreboardLib packages in order to avoid conflict between our minigames if used on same server
 * Fixed data save on disable while using MySQL
 
