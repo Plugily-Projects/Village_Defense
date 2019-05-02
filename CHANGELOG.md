@@ -1,8 +1,9 @@
 # Village Defense Changelog
 
-### 4.2.0 Beta 1 (28/29.04.2019)
+### 4.2.0 Beta 1 (28.04.2019 - 02.05.2019)
 * Relocate Plajer's Lair Services and TigerHix's ScoreboardLib packages in order to avoid conflict between our minigames if used on same server
 * Fixed data save on disable while using MySQL
+* /vda delete and /vda reload requires confirmation before execution now, you must type the command twice to confirm
 
 ### 4.1.3 Release (06/25.04.2019)
 * Fixed [#611 exception when there was no section for some rewards](https://www.plajer.xyz/errorservice/viewer.php?id=611) but plugin attempted to register them
