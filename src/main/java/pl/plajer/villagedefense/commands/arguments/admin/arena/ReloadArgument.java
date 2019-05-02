@@ -54,6 +54,7 @@ public class ReloadArgument {
               + registry.getPlugin().getChatManager().colorRawMessage("&cAre you sure you want to do this action? Type the command again &6within 10 seconds &cto confirm!"));
           return;
         }
+        confirmations.remove(sender);
         for (Arena arena : ArenaRegistry.getArenas()) {
           ArenaManager.stopGame(true, arena);
         }
