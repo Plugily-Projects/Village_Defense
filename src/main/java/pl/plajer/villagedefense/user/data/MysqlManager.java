@@ -104,6 +104,7 @@ public class MysqlManager implements UserDatabase {
         user.setStat(stat, set.getInt(1));
       } catch (SQLException e) {
         e.printStackTrace();
+        user.setStat(stat, 0);
       }
     });
   }
