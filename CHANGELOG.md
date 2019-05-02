@@ -5,6 +5,7 @@
 * Fixed data save on disable while using MySQL
 * /vda delete and /vda reload requires confirmation before execution now, you must type the command twice to confirm
 * Fixed update notify message was sent to everybody without proper permission check
+* Implemented HikariCP as a database connection pool library, it's better and jar size went 3 times smaller
 
 ### 4.1.3 Release (06/25.04.2019)
 * Fixed [#611 exception when there was no section for some rewards](https://www.plajer.xyz/errorservice/viewer.php?id=611) but plugin attempted to register them

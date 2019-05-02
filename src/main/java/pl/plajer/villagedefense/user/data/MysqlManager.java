@@ -20,6 +20,7 @@ package pl.plajer.villagedefense.user.data;
 
 import com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException;
 
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -47,38 +48,37 @@ public class MysqlManager implements UserDatabase {
   public MysqlManager(Main plugin) {
     this.plugin = plugin;
     database = plugin.getMysqlDatabase();
-    try (Statement statement = database.getConnection().createStatement()) {
-      statement.executeUpdate("CREATE TABLE IF NOT EXISTS `playerstats` (\n"
-          + "  `UUID` text NOT NULL,\n"
-          + "  `name` text NOT NULL,\n"
-          + "  `kills` int(11) NOT NULL DEFAULT '0',\n"
-          + "  `deaths` int(11) NOT NULL DEFAULT '0',\n"
-          + "  `highestwave` int(11) NOT NULL DEFAULT '0',\n"
-          + "  `gamesplayed` int(11) NOT NULL DEFAULT '0',\n"
-          + "  `level` int(11) NOT NULL DEFAULT '0',\n"
-          + "  `xp` int(11) NOT NULL DEFAULT '0',\n"
-          + "  `orbs` int(11) NOT NULL DEFAULT '0'\n"
-          + ");");
+    Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
+      try (Connection connection = database.getConnection()) {
+        Statement statement = connection.createStatement();
+        statement.executeUpdate("CREATE TABLE IF NOT EXISTS `playerstats` (\n"
+            + "  `UUID` text NOT NULL,\n"
+            + "  `name` text NOT NULL,\n"
+            + "  `kills` int(11) NOT NULL DEFAULT '0',\n"
+            + "  `deaths` int(11) NOT NULL DEFAULT '0',\n"
+            + "  `highestwave` int(11) NOT NULL DEFAULT '0',\n"
+            + "  `gamesplayed` int(11) NOT NULL DEFAULT '0',\n"
+            + "  `level` int(11) NOT NULL DEFAULT '0',\n"
+            + "  `xp` int(11) NOT NULL DEFAULT '0',\n"
+            + "  `orbs` int(11) NOT NULL DEFAULT '0'\n"
+            + ");");
 
-      //temporary workaround
-      try {
-        statement.executeUpdate("ALTER TABLE playerstats ADD `name` text NOT NULL");
-      } catch (MySQLSyntaxErrorException e) {
-        if (!e.getMessage().contains("Duplicate column name")) {
-          plugin.getLogger().log(Level.WARNING, "Failed altering table 'name'! Cause: " + e.getSQLState() + " (" + e.getErrorCode() + ")");
-          e.printStackTrace();
+        //temporary workaround
+        try {
+          statement.executeUpdate("ALTER TABLE playerstats ADD `name` text NOT NULL");
+        } catch (MySQLSyntaxErrorException e) {
+          if (!e.getMessage().contains("Duplicate column name")) {
+            plugin.getLogger().log(Level.WARNING, "Failed altering table 'name'! Cause: " + e.getSQLState() + " (" + e.getErrorCode() + ")");
+            e.printStackTrace();
+          }
         }
+      } catch (SQLException e) {
+        plugin.getLogger().log(Level.WARNING, "Could not connect to MySQL database! Cause: " + e.getSQLState() + " (" + e.getErrorCode() + ")");
+        MessageUtils.errorOccurred();
+        Bukkit.getConsoleSender().sendMessage("Cannot save contents to MySQL database!");
+        Bukkit.getConsoleSender().sendMessage("Check configuration of mysql.yml file or disable mysql option in config.yml");
       }
-    } catch (SQLException e) {
-      plugin.getLogger().log(Level.WARNING, "Could not connect to MySQL database! Cause: " + e.getSQLState() + " (" + e.getErrorCode() + ")");
-      MessageUtils.errorOccurred();
-      Bukkit.getConsoleSender().sendMessage("Cannot save contents to MySQL database!");
-      Bukkit.getConsoleSender().sendMessage("Check configuration of mysql.yml file or disable mysql option in config.yml");
-    }
-  }
-
-  public void insertPlayer(Player player) {
-    database.executeUpdate("INSERT INTO playerstats (UUID,name,xp) VALUES ('" + player.getUniqueId().toString() + "','" + player.getName() + "',0)");
+    });
   }
 
   @Override
@@ -89,18 +89,14 @@ public class MysqlManager implements UserDatabase {
   @Override
   public void loadStatistic(User user, StatsStorage.StatisticType stat) {
     Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
-      ResultSet resultSet = database.executeQuery("SELECT UUID from playerstats WHERE UUID='" + user.getPlayer().getUniqueId().toString() + "'");
-      //insert into the database
-      try {
-        if (!resultSet.next()) {
+      try (Connection connection = database.getConnection()) {
+        Statement statement = connection.createStatement();
+        //insert into the database
+        if (!statement.executeQuery("SELECT UUID from playerstats WHERE UUID='" + user.getPlayer().getUniqueId().toString() + "'").next()) {
           insertPlayer(user.getPlayer());
         }
-      } catch (SQLException e) {
-        plugin.getLogger().log(Level.WARNING, "MySQL connection failed for player " + user.getPlayer().getName() + "! Cause: " + e.getSQLState() + " (" + e.getErrorCode() + ")");
-      }
 
-      ResultSet set = database.executeQuery("SELECT " + stat.getName() + " FROM playerstats WHERE UUID='" + user.getPlayer().getUniqueId().toString() + "'");
-      try {
+        ResultSet set = statement.executeQuery("SELECT " + stat.getName() + " FROM playerstats WHERE UUID='" + user.getPlayer().getUniqueId().toString() + "'");
         if (!set.next()) {
           user.setStat(stat, 0);
           return;
@@ -108,9 +104,12 @@ public class MysqlManager implements UserDatabase {
         user.setStat(stat, set.getInt(1));
       } catch (SQLException e) {
         e.printStackTrace();
-        user.setStat(stat, 0);
       }
     });
+  }
+
+  private void insertPlayer(Player player) {
+    database.executeUpdate("INSERT INTO playerstats (UUID,name,xp) VALUES ('" + player.getUniqueId().toString() + "','" + player.getName() + "',0)");
   }
 
   public MysqlDatabase getDatabase() {
