@@ -65,6 +65,7 @@ public class DeleteArgument {
               + registry.getPlugin().getChatManager().colorRawMessage("&cAre you sure you want to do this action? Type the command again &6within 10 seconds &cto confirm!"));
           return;
         }
+        confirmations.remove(sender);
         ArenaManager.stopGame(false, arena);
         FileConfiguration config = ConfigUtils.getConfig(registry.getPlugin(), "arenas");
         config.set("instances." + args[1], null);
