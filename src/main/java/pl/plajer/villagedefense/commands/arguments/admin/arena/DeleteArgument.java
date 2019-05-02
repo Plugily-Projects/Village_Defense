@@ -18,6 +18,10 @@
 
 package pl.plajer.villagedefense.commands.arguments.admin.arena;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 
@@ -37,6 +41,8 @@ import pl.plajerlair.commonsbox.minecraft.configuration.ConfigUtils;
  */
 public class DeleteArgument {
 
+  private Set<CommandSender> confirmations = new HashSet<>();
+
   public DeleteArgument(ArgumentsRegistry registry) {
     registry.mapArgument("villagedefenseadmin", new LabeledCommandArgument("delete", "villagedefense.admin.delete", CommandArgument.ExecutorType.PLAYER,
         new LabelData("/vda delete &6<arena>", "/vda delete <arena>",
@@ -50,6 +56,13 @@ public class DeleteArgument {
         Arena arena = ArenaRegistry.getArena(args[1]);
         if (arena == null) {
           sender.sendMessage(registry.getPlugin().getChatManager().getPrefix() + registry.getPlugin().getChatManager().colorMessage("Commands.No-Arena-Like-That"));
+          return;
+        }
+        if (!confirmations.contains(sender)) {
+          confirmations.add(sender);
+          Bukkit.getScheduler().runTaskLater(registry.getPlugin(), () -> confirmations.remove(sender), 20 * 10);
+          sender.sendMessage(registry.getPlugin().getChatManager().getPrefix()
+              + registry.getPlugin().getChatManager().colorRawMessage("&cAre you sure you want to do this action? Type the command again &6within 10 seconds &cto confirm!"));
           return;
         }
         ArenaManager.stopGame(false, arena);
