@@ -78,7 +78,7 @@ public class JoinEvent implements Listener {
   @EventHandler
   public void onJoinCheckVersion(final PlayerJoinEvent event) {
     //we want to be the first :)
-    if (!(plugin.getConfig().getBoolean("Update-Notifier.Enabled", true) || event.getPlayer().hasPermission("villagedefense.updatenotify"))) {
+    if (!plugin.getConfig().getBoolean("Update-Notifier.Enabled", true) || !event.getPlayer().hasPermission("villagedefense.updatenotify")) {
       return;
     }
     Bukkit.getScheduler().runTaskLater(plugin, () -> UpdateChecker.init(plugin, 41869).requestUpdateCheck().whenComplete((result, exception) -> {
