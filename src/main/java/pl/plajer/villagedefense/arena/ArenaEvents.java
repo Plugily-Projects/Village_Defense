@@ -213,7 +213,7 @@ public class ArenaEvents implements Listener {
       sendSpectatorActionBar(user, arena);
       plugin.getChatManager().broadcastAction(arena, player, ChatManager.ActionType.DEATH);
 
-      //running in a scheduler of 1 tick due to 1.13 bug
+      //running in a scheduler of 1 tick due to respawn bug
       Bukkit.getScheduler().runTaskLater(plugin, () -> {
         player.getInventory().setItem(0, new ItemBuilder(XMaterial.COMPASS.parseItem()).name(plugin.getChatManager().colorMessage("In-Game.Spectator.Spectator-Item-Name")).build());
         player.getInventory().setItem(4, new ItemBuilder(XMaterial.COMPARATOR.parseItem()).name(plugin.getChatManager().colorMessage("In-Game.Spectator.Settings-Menu.Item-Name")).build());

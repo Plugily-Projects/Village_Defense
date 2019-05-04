@@ -27,6 +27,7 @@ import org.jetbrains.annotations.Nullable;
 /**
  * Created by Tom on 5/02/2016.
  */
+@Deprecated //non static
 public class SpecialItemManager {
 
   private static Map<String, SpecialItem> specialItems = new HashMap<>();
@@ -52,4 +53,9 @@ public class SpecialItemManager {
     }
     return null;
   }
+
+  public static Map<String, SpecialItem> getSpecialItems() {
+    return specialItems;
+  }
+
 }
