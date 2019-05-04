@@ -37,9 +37,10 @@ public class EntityRegistry {
     Debugger.debug(Debugger.Level.INFO, "Initial entity registry startup");
     List<String> classes = Arrays.asList("FastZombie", "BabyZombie", "PlayerBuster", "GolemBuster", "HardZombie", "TankerZombie", "VillagerSlayer", "RidableVillager", "RidableIronGolem", "WorkingWolf");
     String version = plugin.getVersion();
-    if (version.equalsIgnoreCase("v1_11_R1") || version.equalsIgnoreCase("v1_12_R1") || version.equalsIgnoreCase("v1_13_R1") || version.equalsIgnoreCase("v1_13_R2")) {
-      if (version.equalsIgnoreCase("v1_13_R1") || version.equalsIgnoreCase("v1_13_R2")) {
-        Debugger.debug(Debugger.Level.INFO, "Skipping entity registering for 1.13");
+    if (version.equalsIgnoreCase("v1_11_R1") || version.equalsIgnoreCase("v1_12_R1") || version.equalsIgnoreCase("v1_13_R1")
+        || version.equalsIgnoreCase("v1_13_R2") || version.equalsIgnoreCase("v1_14_R1")) {
+      if (version.equalsIgnoreCase("v1_13_R1") || version.equalsIgnoreCase("v1_13_R2") || version.equalsIgnoreCase("v1_14_R1")) {
+        Debugger.debug(Debugger.Level.INFO, "Skipping entity registering for 1.13 and 1.14");
         return;
       }
       try {

@@ -22,9 +22,7 @@ import com.github.stefvanschie.inventoryframework.Gui;
 import com.github.stefvanschie.inventoryframework.GuiItem;
 import com.github.stefvanschie.inventoryframework.pane.StaticPane;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.util.stream.Collectors;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -188,16 +186,9 @@ public class ShopManager {
 
         ItemStack stack = itemStack.clone();
         ItemMeta itemMeta = stack.getItemMeta();
-        Iterator<String> lore = itemMeta.getLore().iterator();
-        while (lore.hasNext()) {
-          String next = lore.next();
-          if (next.contains(plugin.getChatManager().colorMessage("In-Game.Messages.Shop-Messages.Currency-In-Shop"))) {
-            lore.remove();
-          }
-        }
-        List<String> newLore = new ArrayList<>();
-        lore.forEachRemaining(newLore::add);
-        itemMeta.setLore(newLore);
+        itemMeta.setLore(itemMeta.getLore().stream().filter(lore ->
+            !lore.contains(plugin.getChatManager().colorMessage("In-Game.Messages.Shop-Messages.Currency-In-Shop")))
+            .collect(Collectors.toList()));
         stack.setItemMeta(itemMeta);
         player.getInventory().addItem(stack);
         user.setStat(StatsStorage.StatisticType.ORBS, user.getStat(StatsStorage.StatisticType.ORBS) - cost);
