@@ -289,8 +289,13 @@ public class SetupInventoryEvents implements Listener {
           plugin.getSignManager().getLoadedSigns().put(s, arena);
         }
         break;
+      case ENHANCEMENTS_AD:
+        player.sendMessage(plugin.getChatManager().getPrefix()
+            + plugin.getChatManager().colorRawMessage("&6Check patron program here: https://download.plajer.xyz/preview/minecraft.php"));
+        break;
       case VIEW_SETUP_VIDEO:
-        player.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorRawMessage("&6Check out this video: " + SetupInventory.VIDEO_LINK));
+        player.sendMessage(plugin.getChatManager().getPrefix()
+            + plugin.getChatManager().colorRawMessage("&6Check out this video: " + SetupInventory.VIDEO_LINK));
         break;
       default:
         break;

@@ -180,13 +180,14 @@ public class SignManager implements Listener {
 
   public void loadSigns() {
     loadedSigns.clear();
-    if (!ConfigUtils.getConfig(plugin, "arenas").contains("instances")) {
+    FileConfiguration config = ConfigUtils.getConfig(plugin, "arenas");
+    if (!config.contains("instances")) {
       Debugger.debug(Debugger.Level.WARN, "Arena instances not found. Signs not loaded");
       return;
     }
 
-    for (String path : ConfigUtils.getConfig(plugin, "arenas").getConfigurationSection("instances").getKeys(false)) {
-      for (String sign : ConfigUtils.getConfig(plugin, "arenas").getStringList("instances." + path + ".signs")) {
+    for (String path : config.getConfigurationSection("instances").getKeys(false)) {
+      for (String sign : config.getStringList("instances." + path + ".signs")) {
         Location loc = LocationSerializer.getLocation(sign);
         if (loc.getBlock().getState() instanceof Sign) {
           loadedSigns.put((Sign) loc.getBlock().getState(), ArenaRegistry.getArena(path));
