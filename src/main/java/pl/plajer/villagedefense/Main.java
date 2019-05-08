@@ -111,9 +111,12 @@ public class Main extends JavaPlugin {
     return version.equalsIgnoreCase("v1_13_R1");
   }
 
-  @Deprecated //unsafe
   public boolean is1_13_R2() {
-    return version.equalsIgnoreCase("v1_13_R2") || version.equalsIgnoreCase("v1_14_R1");
+    return version.equalsIgnoreCase("v1_13_R2");
+  }
+
+  public boolean is1_14_R1() {
+    return version.equalsIgnoreCase("v1_14_R1");
   }
 
   public BungeeManager getBungeeManager() {

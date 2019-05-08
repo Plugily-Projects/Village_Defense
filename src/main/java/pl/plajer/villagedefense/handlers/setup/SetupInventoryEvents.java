@@ -67,7 +67,7 @@ public class SetupInventoryEvents implements Listener {
       return;
     }
     Player player = (Player) event.getWhoClicked();
-    if (!(player.hasPermission("villagedefense.admin.create") && event.getInventory().getName().contains("Arena VD:")
+    if (!(player.hasPermission("villagedefense.admin.create") && event.getView().getTitle().contains("Arena VD:")
         && Utils.isNamed(event.getCurrentItem()))) {
       return;
     }
@@ -81,7 +81,7 @@ public class SetupInventoryEvents implements Listener {
       event.setCancelled(true);
     }
 
-    Arena arena = ArenaRegistry.getArena(event.getInventory().getName().replace("Arena VD: ", ""));
+    Arena arena = ArenaRegistry.getArena(event.getView().getTitle().replace("Arena VD: ", ""));
     ClickType clickType = event.getClick();
     String locationString = player.getLocation().getWorld().getName() + "," + player.getLocation().getX() + "," + player.getLocation().getY() + ","
         + player.getLocation().getZ() + "," + player.getLocation().getYaw() + ",0.0";

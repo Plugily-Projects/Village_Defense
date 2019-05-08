@@ -130,7 +130,7 @@ public class TeleporterKit extends PremiumKit implements Listener {
     if (arena == null || !Utils.isNamed(e.getCurrentItem()) || !e.getCurrentItem().getItemMeta().hasLore()) {
       return;
     }
-    if (!e.getInventory().getName().equals(getPlugin().getChatManager().colorMessage("Kits.Teleporter.Game-Item-Menu-Name")) || !(e.isLeftClick() || e.isRightClick())) {
+    if (!e.getView().getTitle().equals(getPlugin().getChatManager().colorMessage("Kits.Teleporter.Game-Item-Menu-Name")) || !(e.isLeftClick() || e.isRightClick())) {
       return;
     }
     e.setCancelled(true);

@@ -1,5 +1,15 @@
 # Village Defense Changelog
 
+### 4.2.0 Beta 2 (08.05.2019)
+* Got working 1.14 build
+
+**Not working things in 1.14:**
+* After in-game death you don't get instant respawn
+* Sounds don't work
+* Zombies can't break doors due to sounds not working
+* Entities aren't ridable
+* Sign game states are disabled
+
 ### 4.2.0 Beta 1 (28.04.2019 - 08.05.2019)
 * Relocate Plajer's Lair Services and TigerHix's ScoreboardLib packages in order to avoid conflict between our minigames if used on same server
 * Fixed data save on disable while using MySQL
