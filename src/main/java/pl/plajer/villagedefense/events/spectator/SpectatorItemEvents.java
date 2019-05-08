@@ -101,7 +101,7 @@ public class SpectatorItemEvents implements Listener {
     if (!Utils.isNamed(e.getCurrentItem()) || !e.getCurrentItem().getItemMeta().hasLore()) {
       return;
     }
-    if (e.getInventory().getName().equalsIgnoreCase(plugin.getChatManager().colorMessage("In-Game.Spectator.Spectator-Menu-Name"))) {
+    if (e.getView().getTitle().equalsIgnoreCase(plugin.getChatManager().colorMessage("In-Game.Spectator.Spectator-Menu-Name"))) {
       e.setCancelled(true);
       ItemMeta meta = e.getCurrentItem().getItemMeta();
       for (Player player : arena.getPlayers()) {

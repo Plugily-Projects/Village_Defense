@@ -28,7 +28,7 @@ import me.tigerhix.lib.scoreboard.type.Entry;
 import me.tigerhix.lib.scoreboard.type.Scoreboard;
 import me.tigerhix.lib.scoreboard.type.ScoreboardHandler;
 
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 

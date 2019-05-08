@@ -205,7 +205,7 @@ public class SignManager implements Listener {
         for (int i = 0; i < signLines.size(); i++) {
           sign.setLine(i, formatSign(signLines.get(i), entry.getValue()));
         }
-        if (plugin.getConfig().getBoolean("Signs-Block-States-Enabled", true)) {
+        if (plugin.getConfig().getBoolean("Signs-Block-States-Enabled", true) && !plugin.is1_14_R1()) {
           Block behind = sign.getBlock().getRelative(((org.bukkit.material.Sign) sign.getData()).getAttachedFace());
           switch (entry.getValue().getArenaState()) {
             case WAITING_FOR_PLAYERS:

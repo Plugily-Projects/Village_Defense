@@ -20,11 +20,11 @@ package pl.plajer.villagedefense.creatures.v1_14_R1;
 
 import java.util.LinkedHashSet;
 
-import net.minecraft.server.v1_13_R2.IMonster;
 import net.minecraft.server.v1_14_R1.EntityHuman;
 import net.minecraft.server.v1_14_R1.EntityIronGolem;
 import net.minecraft.server.v1_14_R1.EntityTypes;
 import net.minecraft.server.v1_14_R1.GenericAttributes;
+import net.minecraft.server.v1_14_R1.IMonster;
 import net.minecraft.server.v1_14_R1.PathfinderGoalDefendVillage;
 import net.minecraft.server.v1_14_R1.PathfinderGoalFloat;
 import net.minecraft.server.v1_14_R1.PathfinderGoalHurtByTarget;
@@ -55,14 +55,10 @@ public class RidableIronGolem extends EntityIronGolem {
   public RidableIronGolem(World world) {
     super(EntityTypes.IRON_GOLEM, world);
 
-    LinkedHashSet goalB = (LinkedHashSet) CreatureUtils.getPrivateField("b", PathfinderGoalSelector.class, goalSelector);
-    goalB.clear();
-    LinkedHashSet goalC = (LinkedHashSet) CreatureUtils.getPrivateField("c", PathfinderGoalSelector.class, goalSelector);
-    goalC.clear();
-    LinkedHashSet targetB = (LinkedHashSet) CreatureUtils.getPrivateField("b", PathfinderGoalSelector.class, targetSelector);
-    targetB.clear();
-    LinkedHashSet targetC = (LinkedHashSet) CreatureUtils.getPrivateField("c", PathfinderGoalSelector.class, targetSelector);
-    targetC.clear();
+    LinkedHashSet goalD = (LinkedHashSet) CreatureUtils.getPrivateField("d", PathfinderGoalSelector.class, goalSelector);
+    goalD.clear();
+    LinkedHashSet targetD = (LinkedHashSet) CreatureUtils.getPrivateField("d", PathfinderGoalSelector.class, targetSelector);
+    targetD.clear();
 
     this.a(1.4F, 2.9F);
     getNavigation().q().b(true);

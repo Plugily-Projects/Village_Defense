@@ -54,14 +54,10 @@ public class RidableVillager extends EntityVillager {
   public RidableVillager(World world) {
     super(EntityTypes.VILLAGER, world);
 
-    LinkedHashSet goalB = (LinkedHashSet) CreatureUtils.getPrivateField("b", PathfinderGoalSelector.class, goalSelector);
-    goalB.clear();
-    LinkedHashSet goalC = (LinkedHashSet) CreatureUtils.getPrivateField("c", PathfinderGoalSelector.class, goalSelector);
-    goalC.clear();
-    LinkedHashSet targetB = (LinkedHashSet) CreatureUtils.getPrivateField("b", PathfinderGoalSelector.class, targetSelector);
-    targetB.clear();
-    LinkedHashSet targetC = (LinkedHashSet) CreatureUtils.getPrivateField("c", PathfinderGoalSelector.class, targetSelector);
-    targetC.clear();
+    LinkedHashSet goalD = (LinkedHashSet) CreatureUtils.getPrivateField("d", PathfinderGoalSelector.class, goalSelector);
+    goalD.clear();
+    LinkedHashSet targetD = (LinkedHashSet) CreatureUtils.getPrivateField("d", PathfinderGoalSelector.class, targetSelector);
+    targetD.clear();
 
     //todo this.setSize(0.6F, 1.8F);
     getNavigation().q().b(true);
