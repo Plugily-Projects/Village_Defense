@@ -1,7 +1,8 @@
 # Village Defense Changelog
 
-### 4.2.0 Beta 2 (08.05.2019)
+### 4.2.0 Beta 2 (08/09.05.2019)
 * Got working 1.14 build
+* Dog Friend and Golem Friend classes will spawn entities in 1.14 now
 
 **Not working things in 1.14:**
 * After in-game death you don't get instant respawn
