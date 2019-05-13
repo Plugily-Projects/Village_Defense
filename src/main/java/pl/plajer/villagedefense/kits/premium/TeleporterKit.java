@@ -18,10 +18,13 @@
 
 package pl.plajer.villagedefense.kits.premium;
 
+import com.github.stefvanschie.inventoryframework.Gui;
+import com.github.stefvanschie.inventoryframework.GuiItem;
+import com.github.stefvanschie.inventoryframework.pane.OutlinePane;
+
 import java.util.Collections;
 import java.util.List;
 
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.entity.Player;
@@ -29,11 +32,8 @@ import org.bukkit.entity.Villager;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
-import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 
 import pl.plajer.villagedefense.arena.Arena;
@@ -50,7 +50,6 @@ import pl.plajerlair.commonsbox.minecraft.item.ItemBuilder;
 /**
  * Created by Tom on 18/08/2014.
  */
-//todo use GUI instead of Inventory here please
 public class TeleporterKit extends PremiumKit implements Listener {
 
   public TeleporterKit() {
@@ -101,66 +100,52 @@ public class TeleporterKit extends PremiumKit implements Listener {
     if (!stack.getItemMeta().getDisplayName().equalsIgnoreCase(getPlugin().getChatManager().colorMessage("Kits.Teleporter.Game-Item-Name"))) {
       return;
     }
-    Inventory inventory = getPlugin().getServer().createInventory(null, 18, getPlugin().getChatManager().colorMessage("Kits.Teleporter.Game-Item-Menu-Name"));
-    for (Player player : e.getPlayer().getWorld().getPlayers()) {
-      if (ArenaRegistry.getArena(player) != null && !getPlugin().getUserManager().getUser(player).isSpectator()) {
-        ItemStack skull = CompatMaterialConstants.PLAYER_HEAD_ITEM.clone();
-        SkullMeta meta = (SkullMeta) skull.getItemMeta();
-        meta.setOwningPlayer(player);
-        meta.setDisplayName(player.getName());
-        meta.setLore(Collections.singletonList(""));
-        skull.setItemMeta(meta);
-        inventory.addItem(skull);
+    int rows = arena.getVillagers().size();
+    for (Player player : arena.getPlayers()) {
+      if (getPlugin().getUserManager().getUser(player).isSpectator()) {
+        continue;
       }
+      rows++;
     }
-    for (Villager villager : arena.getVillagers()) {
-      inventory.addItem(new ItemBuilder(new ItemStack(Material.EMERALD))
-          .name(villager.getCustomName())
-          .lore(villager.getUniqueId().toString())
-          .build());
-    }
-    e.getPlayer().openInventory(inventory);
+    rows = Utils.serializeInt(rows) / 9;
+    prepareTeleporterGui(e.getPlayer(), arena, rows);
   }
 
-
-  @EventHandler
-  public void onInventoryClick(InventoryClickEvent e) {
-    Player p = (Player) e.getWhoClicked();
-    Arena arena = ArenaRegistry.getArena(p);
-    if (arena == null || !Utils.isNamed(e.getCurrentItem()) || !e.getCurrentItem().getItemMeta().hasLore()) {
-      return;
-    }
-    if (!e.getView().getTitle().equals(getPlugin().getChatManager().colorMessage("Kits.Teleporter.Game-Item-Menu-Name")) || !(e.isLeftClick() || e.isRightClick())) {
-      return;
-    }
-    e.setCancelled(true);
-    if (e.getCurrentItem().getType() == Material.EMERALD) {
-      for (Villager villager : arena.getVillagers()) {
-        if (villager.getCustomName().equals(e.getCurrentItem().getItemMeta().getDisplayName()) && villager.getUniqueId().toString().equals((ChatColor.stripColor(e.getCurrentItem().getItemMeta().getLore().get(0))))) {
-          e.getWhoClicked().teleport(villager.getLocation());
-          Utils.playSound(p.getLocation(), "ENTITY_ENDERMEN_TELEPORT", "ENTITY_ENDERMAN_TELEPORT");
-          p.getWorld().spawnParticle(Particle.PORTAL, p.getLocation(), 30);
-          p.sendMessage(getPlugin().getChatManager().colorMessage("Kits.Teleporter.Teleported-To-Villager"));
-          return;
-        }
+  private void prepareTeleporterGui(Player player, Arena arena, int rows) {
+    Gui gui = new Gui(getPlugin(), rows, getPlugin().getChatManager().colorMessage("Kits.Teleporter.Game-Item-Menu-Name"));
+    gui.setOnGlobalClick(onClick -> onClick.setCancelled(true));
+    OutlinePane pane = new OutlinePane(9, rows);
+    gui.addPane(pane);
+    for (Player arenaPlayer : arena.getPlayers()) {
+      if (getPlugin().getUserManager().getUser(arenaPlayer).isSpectator()) {
+        continue;
       }
-      p.sendMessage(getPlugin().getChatManager().colorMessage("Kits.Teleporter.Villager-Warning"));
-      return;
+      ItemStack skull = CompatMaterialConstants.PLAYER_HEAD_ITEM.clone();
+      SkullMeta meta = (SkullMeta) skull.getItemMeta();
+      meta.setOwningPlayer(arenaPlayer);
+      meta.setDisplayName(arenaPlayer.getName());
+      meta.setLore(Collections.singletonList(""));
+      skull.setItemMeta(meta);
+      pane.addItem(new GuiItem(skull, onClick -> {
+        player.sendMessage(getPlugin().getChatManager().formatMessage(arena, getPlugin().getChatManager().colorMessage("Kits.Teleporter.Teleported-To-Player"), arenaPlayer));
+        player.teleport(arenaPlayer);
+        Utils.playSound(player.getLocation(), "ENTITY_ENDERMEN_TELEPORT", "ENTITY_ENDERMAN_TELEPORT");
+        player.getWorld().spawnParticle(Particle.PORTAL, player.getLocation(), 30);
+        player.closeInventory();
+      }));
     }
-    //teleports to player
-    ItemMeta meta = e.getCurrentItem().getItemMeta();
-    for (Player player : arena.getPlayersLeft()) {
-      if (player.getName().equals(meta.getDisplayName()) || ChatColor.stripColor(meta.getDisplayName()).contains(player.getName())) {
-        p.sendMessage(getPlugin().getChatManager().formatMessage(arena, getPlugin().getChatManager().colorMessage("Kits.Teleporter.Teleported-To-Player"), player));
-        p.teleport(player);
-        Utils.playSound(p.getLocation(), "ENTITY_ENDERMEN_TELEPORT", "ENTITY_ENDERMAN_TELEPORT");
-        p.getWorld().spawnParticle(Particle.PORTAL, p.getLocation(), 30);
-        p.closeInventory();
-        e.setCancelled(true);
-        return;
-      }
+    for (Villager villager : arena.getVillagers()) {
+      pane.addItem(new GuiItem(new ItemBuilder(new ItemStack(Material.EMERALD))
+          .name(villager.getCustomName())
+          .lore(villager.getUniqueId().toString())
+          .build(), onClick -> {
+        player.teleport(villager.getLocation());
+        Utils.playSound(player.getLocation(), "ENTITY_ENDERMEN_TELEPORT", "ENTITY_ENDERMAN_TELEPORT");
+        player.getWorld().spawnParticle(Particle.PORTAL, player.getLocation(), 30);
+        player.sendMessage(getPlugin().getChatManager().colorMessage("Kits.Teleporter.Teleported-To-Villager"));
+      }));
     }
-    p.sendMessage(getPlugin().getChatManager().colorMessage("Kits.Teleporter.Player-Not-Found"));
+    gui.show(player);
   }
 
 }
