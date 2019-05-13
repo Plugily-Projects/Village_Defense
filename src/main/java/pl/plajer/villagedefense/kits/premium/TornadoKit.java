@@ -156,8 +156,9 @@ public class TornadoKit extends PremiumKit implements Listener {
         double heightIncrease = 0.5;
         for (double y = 0; y < maxHeight; y += heightIncrease) {
           double radius = y * radiusIncrement;
-          double x = Math.cos(Math.toRadians(360 / lines * l + y * 25 - angle)) * radius;
-          double z = Math.sin(Math.toRadians(360 / lines * l + y * 25 - angle)) * radius;
+          double radians = Math.toRadians(360.0 / lines * l + y * 25 - angle);
+          double x = Math.cos(radians) * radius;
+          double z = Math.sin(radians) * radius;
           getLocation().getWorld().spawnParticle(Particle.CLOUD, getLocation().clone().add(x, y, z), 1, 0, 0, 0, 0);
         }
       }

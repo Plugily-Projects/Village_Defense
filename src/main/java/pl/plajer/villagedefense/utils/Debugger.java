@@ -31,6 +31,9 @@ public class Debugger {
   private static boolean enabled = false;
   private static String prefix = "[Village Defense Debugger]";
 
+  private Debugger() {
+  }
+
   public static void setEnabled(boolean enabled) {
     Debugger.enabled = enabled;
   }

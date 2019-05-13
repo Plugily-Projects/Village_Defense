@@ -31,6 +31,9 @@ import pl.plajerlair.commonsbox.minecraft.compat.XMaterial;
  */
 public class ArmorHelper {
 
+  private ArmorHelper() {
+  }
+
   public static void setArmor(Player player, ArmorType type) {
     switch (type) {
       case LEATHER:

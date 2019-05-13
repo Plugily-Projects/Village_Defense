@@ -50,6 +50,9 @@ public class CreatureUtils {
   private static Main plugin = JavaPlugin.getPlugin(Main.class);
   private static List<CachedObject> cachedObjects = new ArrayList<>();
 
+  private CreatureUtils() {
+  }
+
   public static void init(Main plugin) {
     zombieSpeed = (float) plugin.getConfig().getDouble("Zombie-Speed", 1.3);
     babyZombieSpeed = (float) plugin.getConfig().getDouble("Mini-Zombie-Speed", 2.0);
