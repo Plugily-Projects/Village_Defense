@@ -97,7 +97,6 @@ public class GolemBuster extends EntityZombie {
       org.bukkit.inventory.ItemStack[] itemStack = new org.bukkit.inventory.ItemStack[] {new org.bukkit.inventory.ItemStack(org.bukkit.Material.ROTTEN_FLESH)};
       Bukkit.getServer().getPluginManager().callEvent(new EntityDeathEvent((LivingEntity) this.getBukkitEntity(), Arrays.asList(itemStack), expToDrop));
       IronGolem golem = (IronGolem) damagesource.getEntity().getBukkitEntity();
-      //golem.getWorld().createExplosion(golem.getLocation(), 4);
       golem.getWorld().spawnEntity(golem.getLocation(), EntityType.PRIMED_TNT);
       return true;
     } else {

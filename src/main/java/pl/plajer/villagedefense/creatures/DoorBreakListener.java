@@ -55,7 +55,7 @@ public class DoorBreakListener extends BukkitRunnable {
   public void run() {
     for (World world : Bukkit.getServer().getWorlds()) {
       for (Entity entity : world.getEntities()) {
-        if (!(entity.getType() == EntityType.ZOMBIE)) {
+        if (entity.getType() != EntityType.ZOMBIE) {
           continue;
         }
         Queue<Block> blocks = Utils.getNearbyDoors((LivingEntity) entity, 1, 1);

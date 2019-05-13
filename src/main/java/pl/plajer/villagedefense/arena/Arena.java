@@ -597,13 +597,13 @@ public abstract class Arena extends BukkitRunnable {
   }
 
   public List<Player> getPlayersLeft() {
-    List<Player> players = new ArrayList<>();
+    List<Player> playersLeft = new ArrayList<>();
     for (User user : plugin.getUserManager().getUsers(this)) {
       if (!user.isSpectator()) {
-        players.add(user.getPlayer());
+        playersLeft.add(user.getPlayer());
       }
     }
-    return players;
+    return playersLeft;
   }
 
   protected void addZombie(Zombie zombie) {

@@ -54,6 +54,9 @@ public class Utils {
 
   private static Main plugin;
 
+  private Utils() {
+  }
+
   public static void init(Main plugin) {
     Utils.plugin = plugin;
   }

@@ -41,4 +41,7 @@ public class CompatMaterialConstants {
   public static final Material OAK_DOOR_BLOCK = plugin.is1_11_R1() || plugin.is1_12_R1() ? Material.WOODEN_DOOR : XMaterial.OAK_DOOR.parseMaterial();
   public static final Material OAK_DOOR_ITEM = plugin.is1_11_R1() || plugin.is1_12_R1() ? Material.WOOD_DOOR : XMaterial.OAK_DOOR.parseMaterial();
 
+  private CompatMaterialConstants() {
+  }
+
 }

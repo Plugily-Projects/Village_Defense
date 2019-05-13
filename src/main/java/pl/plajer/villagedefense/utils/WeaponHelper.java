@@ -32,6 +32,9 @@ import pl.plajerlair.commonsbox.minecraft.compat.XMaterial;
  */
 public class WeaponHelper {
 
+  private WeaponHelper() {
+  }
+
   public static ItemStack getEnchantedBow(Enchantment enchantment, int level) {
     ItemStack itemStack = new ItemStack(Material.BOW);
     itemStack.addUnsafeEnchantment(enchantment, level);
