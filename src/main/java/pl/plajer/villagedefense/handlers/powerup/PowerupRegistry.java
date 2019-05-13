@@ -50,6 +50,7 @@ import pl.plajerlair.commonsbox.minecraft.compat.XMaterial;
  */
 public class PowerupRegistry {
 
+  private Random random = new Random();
   private List<Powerup> registeredPowerups = new ArrayList<>();
   private boolean enabled = false;
   private Main plugin;
@@ -141,8 +142,7 @@ public class PowerupRegistry {
    * @return random powerup from list of registered ones
    */
   public Powerup getRandomPowerup() {
-    Random r = new Random();
-    return registeredPowerups.get(r.nextInt(registeredPowerups.size()));
+    return registeredPowerups.get(random.nextInt(registeredPowerups.size()));
   }
 
   public void spawnPowerup(Location loc, Arena arena) {
