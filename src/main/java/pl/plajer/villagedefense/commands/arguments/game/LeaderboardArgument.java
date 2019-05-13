@@ -18,8 +18,10 @@
 
 package pl.plajer.villagedefense.commands.arguments.game;
 
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -57,47 +59,52 @@ public class LeaderboardArgument {
     registry.mapArgument("villagedefense", new CommandArgument("top", "", CommandArgument.ExecutorType.PLAYER) {
       @Override
       public void execute(CommandSender sender, String[] args) {
+        if (args.length == 1) {
+          sender.sendMessage(registry.getPlugin().getChatManager().getPrefix() + registry.getPlugin().getChatManager().colorMessage("Commands.Statistics.Type-Name"));
+          return;
+        }
         try {
-          if (args.length == 1) {
-            sender.sendMessage(registry.getPlugin().getChatManager().getPrefix() + registry.getPlugin().getChatManager().colorMessage("Commands.Statistics.Type-Name"));
-            return;
-          }
           StatsStorage.StatisticType statisticType = StatsStorage.StatisticType.valueOf(args[1].toUpperCase());
           if (statisticType == StatsStorage.StatisticType.XP) {
             sender.sendMessage(registry.getPlugin().getChatManager().getPrefix() + registry.getPlugin().getChatManager().colorMessage("Commands.Statistics.Invalid-Name"));
             return;
           }
-          LinkedHashMap<UUID, Integer> stats = (LinkedHashMap<UUID, Integer>) StatsStorage.getStats(statisticType);
-          sender.sendMessage(registry.getPlugin().getChatManager().colorMessage("Commands.Statistics.Header"));
-          String statistic = StringUtils.capitalize(statisticType.toString().toLowerCase().replace("_", " "));
-          for (int i = 0; i < 10; i++) {
-            try {
-              UUID current = (UUID) stats.keySet().toArray()[stats.keySet().toArray().length - 1];
-              sender.sendMessage(formatMessage(statistic, Bukkit.getOfflinePlayer(current).getName(), i + 1, stats.get(current)));
-              stats.remove(current);
-            } catch (IndexOutOfBoundsException ex) {
-              sender.sendMessage(formatMessage(statistic, "Empty", i + 1, 0));
-            } catch (NullPointerException ex) {
-              UUID current = (UUID) stats.keySet().toArray()[stats.keySet().toArray().length - 1];
-              if (registry.getPlugin().getConfigPreferences().getOption(ConfigPreferences.Option.DATABASE_ENABLED)) {
-                ResultSet set = registry.getPlugin().getMysqlDatabase().executeQuery("SELECT name FROM playerstats WHERE UUID='" + current.toString() + "'");
-                try {
-                  if (set.next()) {
-                    sender.sendMessage(formatMessage(statistic, set.getString(1), i + 1, stats.get(current)));
-                    continue;
-                  }
-                } catch (SQLException ignored) {
-                  //it has failed second time, cannot continue
-                }
-              }
-              sender.sendMessage(formatMessage(statistic, "Unknown Player", i + 1, stats.get(current)));
-            }
-          }
+          printLeaderboard(sender, statisticType);
         } catch (IllegalArgumentException e) {
           sender.sendMessage(registry.getPlugin().getChatManager().getPrefix() + registry.getPlugin().getChatManager().colorMessage("Commands.Statistics.Invalid-Name"));
         }
       }
     });
+  }
+
+  private void printLeaderboard(CommandSender sender, StatsStorage.StatisticType statisticType) {
+    LinkedHashMap<UUID, Integer> stats = (LinkedHashMap<UUID, Integer>) StatsStorage.getStats(statisticType);
+    sender.sendMessage(registry.getPlugin().getChatManager().colorMessage("Commands.Statistics.Header"));
+    String statistic = StringUtils.capitalize(statisticType.toString().toLowerCase().replace("_", " "));
+    for (int i = 0; i < 10; i++) {
+      try {
+        UUID current = (UUID) stats.keySet().toArray()[stats.keySet().toArray().length - 1];
+        sender.sendMessage(formatMessage(statistic, Bukkit.getOfflinePlayer(current).getName(), i + 1, stats.get(current)));
+        stats.remove(current);
+      } catch (IndexOutOfBoundsException ex) {
+        sender.sendMessage(formatMessage(statistic, "Empty", i + 1, 0));
+      } catch (NullPointerException ex) {
+        UUID current = (UUID) stats.keySet().toArray()[stats.keySet().toArray().length - 1];
+        if (registry.getPlugin().getConfigPreferences().getOption(ConfigPreferences.Option.DATABASE_ENABLED)) {
+          try (Connection connection = registry.getPlugin().getMysqlDatabase().getConnection()) {
+            Statement statement = connection.createStatement();
+            ResultSet set = statement.executeQuery("SELECT name FROM playerstats WHERE UUID='" + current.toString() + "'");
+            if (set.next()) {
+              sender.sendMessage(formatMessage(statistic, set.getString(1), i + 1, stats.get(current)));
+              continue;
+            }
+          } catch (SQLException ignored) {
+            //it has failed second time, cannot continue
+          }
+        }
+        sender.sendMessage(formatMessage(statistic, "Unknown Player", i + 1, stats.get(current)));
+      }
+    }
   }
 
   private String formatMessage(String statisticName, String playerName, int position, int value) {
