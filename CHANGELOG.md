@@ -1,14 +1,13 @@
 # Village Defense Changelog
 
-### 4.2.0 Beta 2 (08/13.05.2019)
+### 4.2.0 Beta 2 (08/14.05.2019)
 * Got working 1.14 build
 * Dog Friend and Golem Friend classes will spawn entities in 1.14 now
 * Fixed MySQL connection leak issues with VD API and Leaderboard command
+* Sounds on 1.14 are working properly now, no more exceptions
 
 **Not working things in 1.14:**
 * After in-game death you don't get instant respawn
-* Sounds don't work
-* Zombies can't break doors due to sounds not working
 * Entities aren't ridable
 * Sign game states are disabled
 
