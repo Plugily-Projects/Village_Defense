@@ -27,7 +27,6 @@ import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
-import org.bukkit.Tag;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -206,22 +205,8 @@ public class SignManager implements Listener {
         for (int i = 0; i < signLines.size(); i++) {
           sign.setLine(i, formatSign(signLines.get(i), entry.getValue()));
         }
-        if (plugin.getConfig().getBoolean("Signs-Block-States-Enabled", true)) {
-          Block behind = null;
-          if (plugin.is1_14_R1()) {
-            if (Tag.WALL_SIGNS.isTagged(sign.getType())) {
-              org.bukkit.block.data.type.WallSign data = (org.bukkit.block.data.type.WallSign)
-                sign.getBlock().getState().getBlockData();
-              org.bukkit.block.BlockFace bf = data.getFacing();
-              Location loc = sign.getLocation();
-              Location loc2 = new Location(loc.getWorld(), loc.getBlockX() - bf.getModX(), loc.getBlockY() - bf.getModY(),
-                loc.getBlockZ() - bf.getModZ());
-              behind = loc2.getBlock();
-            }
-          } else {
-            behind = sign.getBlock().getRelative(((org.bukkit.material.Sign) sign.getData()).getAttachedFace());
-          }
-
+        if (plugin.getConfig().getBoolean("Signs-Block-States-Enabled", true) && !plugin.is1_14_R1() /* not supported */) {
+          Block behind = sign.getBlock().getRelative(((org.bukkit.material.Sign) sign.getData()).getAttachedFace());
           switch (entry.getValue().getArenaState()) {
             case WAITING_FOR_PLAYERS:
               behind.setType(XMaterial.WHITE_STAINED_GLASS.parseMaterial());

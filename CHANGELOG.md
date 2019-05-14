@@ -5,11 +5,11 @@
 * Dog Friend and Golem Friend classes will spawn entities in 1.14 now
 * Fixed MySQL connection leak issues with VD API and Leaderboard command
 * Sounds on 1.14 are working properly now, no more exceptions
+* Sign game states are disabled on 1.14 for now
 
 **Not working things in 1.14:**
 * After in-game death you don't get instant respawn
 * Entities aren't ridable
-* Sign game states are disabled
 
 ### 4.2.0 Beta 1 (28.04.2019 - 08.05.2019)
 * Relocate Plajer's Lair Services and TigerHix's ScoreboardLib packages in order to avoid conflict between our minigames if used on same server
