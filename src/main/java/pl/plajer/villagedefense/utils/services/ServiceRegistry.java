@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package pl.plajerlair.services;
+package pl.plajer.villagedefense.utils.services;
 
 import java.io.IOException;
 import java.net.URL;
@@ -26,8 +26,8 @@ import javax.net.ssl.HttpsURLConnection;
 
 import org.bukkit.plugin.java.JavaPlugin;
 
-import pl.plajerlair.services.locale.LocaleService;
-import pl.plajerlair.services.metrics.MetricsService;
+import pl.plajer.villagedefense.utils.services.locale.LocaleService;
+import pl.plajer.villagedefense.utils.services.metrics.MetricsService;
 
 /**
  * Class for registering new services
@@ -45,14 +45,15 @@ public class ServiceRegistry {
     }
     plugin.getLogger().log(Level.INFO, "Connecting to services, please wait! Server may freeze a bit!");
     try {
-      HttpsURLConnection connection = (HttpsURLConnection) new URL("https://plajer.xyz").openConnection();
+      HttpsURLConnection connection = (HttpsURLConnection) new URL("https://api.plajer.xyz").openConnection();
       connection.setConnectTimeout(3000);
       connection.setReadTimeout(2000);
       connection.setRequestMethod("HEAD");
       connection.setRequestProperty("User-Agent", "PLService/1.0");
       int responseCode = connection.getResponseCode();
       if (responseCode != 200) {
-        plugin.getLogger().log(Level.WARNING, "Plajer's Lair services aren't online or inaccessible from your location! Response: " + responseCode + ". Do you think it's site problem? Contact developer! Make sure Cloudflare isn't blocked in your area!");
+        plugin.getLogger().log(Level.WARNING, "Plajer's Lair services aren't online or inaccessible from your location! Response: {0}. Do you think it's site problem? Contact developer! Make sure " +
+            "Cloudflare isn't blocked in your area!", responseCode);
         serviceEnabled = false;
         return false;
       }

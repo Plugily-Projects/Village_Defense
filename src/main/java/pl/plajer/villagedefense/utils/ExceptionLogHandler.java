@@ -27,7 +27,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import pl.plajer.villagedefense.Main;
-import pl.plajerlair.services.exception.ReportedException;
+import pl.plajer.villagedefense.utils.services.exception.ReportedException;
 
 /**
  * @author Plajer

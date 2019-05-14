@@ -106,7 +106,7 @@
                       <shadedPattern>pl.plajer.villagedefense.plajerlair.commonsbox</shadedPattern>
                 </relocation>
                   <relocation>
-                      <pattern>pl.plajerlair.services</pattern>
+                      <pattern>pl.plajer.villagedefense.utils.services</pattern>
                       <shadedPattern>pl.plajer.villagedefense.plajerlair.services</shadedPattern>
                 </relocation>
                 <relocation>

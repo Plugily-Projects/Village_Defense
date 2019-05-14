@@ -127,7 +127,7 @@
         <dependency>
             <groupId>org.bstats</groupId>
             <artifactId>bstats-bukkit</artifactId>
-            <version>1.4</version>
+            <version>1.5</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
@@ -260,10 +260,6 @@
                                 <relocation>
                                     <pattern>pl.plajerlair.commonsbox</pattern>
                                     <shadedPattern>pl.plajer.villagedefense.plajerlair.commonsbox</shadedPattern>
-                                </relocation>
-                                <relocation>
-                                    <pattern>pl.plajerlair.services</pattern>
-                                    <shadedPattern>pl.plajer.villagedefense.plajerlair.services</shadedPattern>
                                 </relocation>
                                 <relocation>
                                     <pattern>org.bstats</pattern>

@@ -22,6 +22,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -69,7 +70,6 @@ public class StatsStorage {
    * @param stat Statistic type to get (kills, deaths etc.)
    * @return Map of UUID keys and Integer values sorted in ascending order of requested statistic type
    */
-  @Nullable
   public static Map<UUID, Integer> getStats(StatisticType stat) {
     if (plugin.getConfigPreferences().getOption(ConfigPreferences.Option.DATABASE_ENABLED)) {
       try (Connection connection = plugin.getMysqlDatabase().getConnection()) {
@@ -85,7 +85,7 @@ public class StatsStorage {
         MessageUtils.errorOccurred();
         Bukkit.getConsoleSender().sendMessage("Cannot get contents from MySQL database!");
         Bukkit.getConsoleSender().sendMessage("Check configuration of mysql.yml file or disable mysql option in config.yml");
-        return null;
+        return Collections.emptyMap();
       }
     }
     FileConfiguration config = ConfigUtils.getConfig(plugin, "stats");

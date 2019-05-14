@@ -75,7 +75,7 @@ import pl.plajer.villagedefense.utils.Utils;
 import pl.plajerlair.commonsbox.database.MysqlDatabase;
 import pl.plajerlair.commonsbox.minecraft.configuration.ConfigUtils;
 import pl.plajerlair.commonsbox.minecraft.serialization.InventorySerializer;
-import pl.plajerlair.services.ServiceRegistry;
+import pl.plajer.villagedefense.utils.services.ServiceRegistry;
 
 
 /**

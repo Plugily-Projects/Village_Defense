@@ -35,10 +35,10 @@ import org.bukkit.configuration.file.FileConfiguration;
 import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.utils.MessageUtils;
 import pl.plajerlair.commonsbox.minecraft.configuration.ConfigUtils;
-import pl.plajerlair.services.ServiceRegistry;
-import pl.plajerlair.services.locale.Locale;
-import pl.plajerlair.services.locale.LocaleRegistry;
-import pl.plajerlair.services.locale.LocaleService;
+import pl.plajer.villagedefense.utils.services.ServiceRegistry;
+import pl.plajer.villagedefense.utils.services.locale.Locale;
+import pl.plajer.villagedefense.utils.services.locale.LocaleRegistry;
+import pl.plajer.villagedefense.utils.services.locale.LocaleService;
 
 public class LanguageManager {
 

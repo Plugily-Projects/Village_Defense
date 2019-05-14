@@ -29,7 +29,7 @@ import pl.plajer.villagedefense.arena.Arena;
 import pl.plajer.villagedefense.handlers.language.LanguageManager;
 import pl.plajer.villagedefense.utils.MessageUtils;
 import pl.plajerlair.commonsbox.string.StringFormatUtils;
-import pl.plajerlair.services.exception.ReportedException;
+import pl.plajer.villagedefense.utils.services.exception.ReportedException;
 
 /**
  * Created by Tom on 27/07/2014.
