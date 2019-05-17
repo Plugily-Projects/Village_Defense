@@ -12,8 +12,7 @@
 # Village Defense commands messages
 Commands:
   Did-You-Mean: "&6Did you mean &e/%command%&6?"
-  Command-Executed: "&aCommand succesfully executed!"
-  Command-Executed-Item-Updated: "&aCommand succesfully executed, item updated!"
+  Command-Executed: "&aCommand successfully executed!"
   Teleported-To-The-Lobby: "Teleported to the lobby!"
   Removed-Game-Instance: "&cSuccessfully removed game instance!"
   No-Arena-Like-That: "&cNo arena with that ID!"
@@ -26,7 +25,6 @@ Commands:
     Invalid-Name: "&cName of statistic is invalid! Type: kills, deaths, games_played, highest_wave, level"
     Header: "&8&m-------------------[&6 Top 10 &8&m]-------------------"
     Format: "&e#%position% %name% - %value% &7%statistic%"
-  Type-Statistic-Name: "&cPlease type statistic name to view!"
   Only-By-Player: "&cYou can execute this command only as player!"
   Not-Playing: "&cYou must play to execute this command!"
   No-Permission: "&cYou don't have permission to use this command!"
@@ -35,7 +33,6 @@ Commands:
   Location-Teleport-Invalid: "&cLocation to teleport is invalid!"
   Wrong-Usage: "&cWrong usage. Do %correct%"
   Admin-Commands:
-    Player-Not-Found: "&cPlayer not found!"
     Added-Orbs: "&7Added orbs to the player!"
     Received-Orbs: "&7You received &a%orbs% orbs&7!"
     Added-Level: "&7Added level to the player!"

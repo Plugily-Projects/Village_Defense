@@ -20,6 +20,7 @@ package pl.plajer.villagedefense.kits.basekits;
 
 import org.bukkit.inventory.ItemStack;
 
+import pl.plajer.villagedefense.handlers.language.Messages;
 import pl.plajerlair.commonsbox.minecraft.item.ItemBuilder;
 
 /**
@@ -42,7 +43,7 @@ public abstract class LevelKit extends Kit {
     return new ItemBuilder(getMaterial())
         .name(getName())
         .lore(getDescription())
-        .lore(getPlugin().getChatManager().colorMessage("Kits.Kit-Menu.Locked-Lores.Unlock-At-Level")
+        .lore(getPlugin().getChatManager().colorMessage(Messages.KITS_MENU_LOCKED_UNLOCK_AT_LEVEL)
             .replace("%NUMBER%", Integer.toString(getLevel())))
         .build();
   }

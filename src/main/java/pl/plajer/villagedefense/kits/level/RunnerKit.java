@@ -29,6 +29,7 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 import pl.plajer.villagedefense.api.StatsStorage;
+import pl.plajer.villagedefense.handlers.language.Messages;
 import pl.plajer.villagedefense.kits.KitRegistry;
 import pl.plajer.villagedefense.kits.basekits.LevelKit;
 import pl.plajer.villagedefense.utils.ArmorHelper;
@@ -43,8 +44,8 @@ public class RunnerKit extends LevelKit {
 
   public RunnerKit() {
     setLevel(getKitsConfig().getInt("Required-Level.Runner"));
-    setName(getPlugin().getChatManager().colorMessage("Kits.Runner.Kit-Name"));
-    List<String> description = Utils.splitString(getPlugin().getChatManager().colorMessage("Kits.Runner.Kit-Description"), 40);
+    setName(getPlugin().getChatManager().colorMessage(Messages.KITS_RUNNER_NAME));
+    List<String> description = Utils.splitString(getPlugin().getChatManager().colorMessage(Messages.KITS_RUNNER_DESCRIPTION), 40);
     this.setDescription(description.toArray(new String[0]));
     KitRegistry.registerKit(this);
   }

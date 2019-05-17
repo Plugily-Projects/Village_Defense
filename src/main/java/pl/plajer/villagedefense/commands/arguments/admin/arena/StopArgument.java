@@ -28,6 +28,7 @@ import pl.plajer.villagedefense.commands.arguments.ArgumentsRegistry;
 import pl.plajer.villagedefense.commands.arguments.data.CommandArgument;
 import pl.plajer.villagedefense.commands.arguments.data.LabelData;
 import pl.plajer.villagedefense.commands.arguments.data.LabeledCommandArgument;
+import pl.plajer.villagedefense.handlers.language.Messages;
 import pl.plajer.villagedefense.utils.Utils;
 
 /**
@@ -48,7 +49,7 @@ public class StopArgument {
         }
         if (ArenaRegistry.getArena((Player) sender).getArenaState() != ArenaState.ENDING) {
           ArenaManager.stopGame(false, ArenaRegistry.getArena((Player) sender));
-          sender.sendMessage(registry.getPlugin().getChatManager().colorMessage("Commands.Command-Executed"));
+          sender.sendMessage(registry.getPlugin().getChatManager().colorMessage(Messages.COMMANDS_COMMAND_EXECUTED));
         }
       }
     });

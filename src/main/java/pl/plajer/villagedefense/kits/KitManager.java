@@ -38,6 +38,7 @@ import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.api.event.player.VillagePlayerChooseKitEvent;
 import pl.plajer.villagedefense.arena.Arena;
 import pl.plajer.villagedefense.arena.ArenaRegistry;
+import pl.plajer.villagedefense.handlers.language.Messages;
 import pl.plajer.villagedefense.kits.basekits.Kit;
 import pl.plajer.villagedefense.user.User;
 import pl.plajer.villagedefense.utils.Utils;
@@ -62,9 +63,9 @@ public class KitManager implements Listener {
 
   public KitManager(Main plugin) {
     this.plugin = plugin;
-    itemName = plugin.getChatManager().colorMessage("Kits.Kit-Menu-Item-Name");
-    unlockedString = plugin.getChatManager().colorMessage("Kits.Kit-Menu.Unlocked-Kit-Lore");
-    lockedString = plugin.getChatManager().colorMessage("Kits.Kit-Menu.Locked-Lores.Locked-Lore");
+    itemName = plugin.getChatManager().colorMessage(Messages.KITS_KIT_MENU_ITEM_NAME);
+    unlockedString = plugin.getChatManager().colorMessage(Messages.KITS_MENU_UNLOCKED_LORE);
+    lockedString = plugin.getChatManager().colorMessage(Messages.KITS_MENU_LOCKED_LORE);
     plugin.getServer().getPluginManager().registerEvents(this, plugin);
   }
 
@@ -87,8 +88,9 @@ public class KitManager implements Listener {
   }
 
   public void createKitMenu(Player player) {
-    Gui guiMenu = new Gui(plugin, Utils.serializeInt(KitRegistry.getKits().size()) / 9, getMenuName());
-    StaticPane pane = new StaticPane(9, guiMenu.getRows());
+    Gui gui = new Gui(plugin, Utils.serializeInt(KitRegistry.getKits().size()) / 9, getMenuName());
+    StaticPane pane = new StaticPane(9, gui.getRows());
+    gui.addPane(pane);
     int x = 0;
     int y = 0;
     for (Kit kit : KitRegistry.getKits()) {
@@ -117,8 +119,7 @@ public class KitManager implements Listener {
         y++;
       }
     }
-    guiMenu.addPane(pane);
-    guiMenu.show(player);
+    gui.show(player);
   }
 
   /**
@@ -191,13 +192,12 @@ public class KitManager implements Listener {
 
   @EventHandler
   public void onKitChoose(VillagePlayerChooseKitEvent e) {
-    if (e.getKit().isUnlockedByPlayer(e.getPlayer())) {
-      User user = plugin.getUserManager().getUser(e.getPlayer());
-      user.setKit(e.getKit());
-      e.getPlayer().sendMessage(plugin.getChatManager().colorMessage("Kits.Choose-Message").replace("%KIT%", e.getKit().getName()));
-    } else {
-      e.getPlayer().sendMessage(plugin.getChatManager().colorMessage("Kits.Not-Unlocked-Message").replace("%KIT%", e.getKit().getName()));
+    if (!e.getKit().isUnlockedByPlayer(e.getPlayer())) {
+      e.getPlayer().sendMessage(plugin.getChatManager().colorMessage(Messages.KITS_NOT_UNLOCKED_MESSAGE).replace("%KIT%", e.getKit().getName()));
+      return;
     }
-
+    User user = plugin.getUserManager().getUser(e.getPlayer());
+    user.setKit(e.getKit());
+    e.getPlayer().sendMessage(plugin.getChatManager().colorMessage(Messages.KITS_CHOOSE_MESSAGE).replace("%KIT%", e.getKit().getName()));
   }
 }

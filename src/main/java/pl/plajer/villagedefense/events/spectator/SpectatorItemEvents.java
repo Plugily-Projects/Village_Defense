@@ -18,39 +18,38 @@
 
 package pl.plajer.villagedefense.events.spectator;
 
+import com.github.stefvanschie.inventoryframework.Gui;
+import com.github.stefvanschie.inventoryframework.GuiItem;
+import com.github.stefvanschie.inventoryframework.pane.OutlinePane;
+
 import java.util.Collections;
 import java.util.Set;
 
-import org.bukkit.ChatColor;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
-import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 
 import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.arena.Arena;
 import pl.plajer.villagedefense.arena.ArenaRegistry;
+import pl.plajer.villagedefense.handlers.language.Messages;
 import pl.plajer.villagedefense.utils.CompatMaterialConstants;
 import pl.plajer.villagedefense.utils.Utils;
 import pl.plajerlair.commonsbox.number.NumberUtils;
 
-public class SpectatorItemEvents implements Listener {
+public class SpectatorItemEvents {
 
   private Main plugin;
   private SpectatorSettingsMenu spectatorSettingsMenu;
 
   public SpectatorItemEvents(Main plugin) {
     this.plugin = plugin;
-    plugin.getServer().getPluginManager().registerEvents(this, plugin);
-    spectatorSettingsMenu = new SpectatorSettingsMenu(plugin, plugin.getChatManager().colorMessage("In-Game.Spectator.Settings-Menu.Inventory-Name"),
-        plugin.getChatManager().colorMessage("In-Game.Spectator.Settings-Menu.Speed-Name"));
+    spectatorSettingsMenu = new SpectatorSettingsMenu(plugin, plugin.getChatManager().colorMessage(Messages.SPECTATOR_SETTINGS_MENU_INVENTORY_NAME),
+        plugin.getChatManager().colorMessage(Messages.SPECTATOR_SETTINGS_MENU_SPEED_NAME));
   }
 
   @EventHandler
@@ -63,58 +62,40 @@ public class SpectatorItemEvents implements Listener {
     if (arena == null || !Utils.isNamed(stack)) {
       return;
     }
-    if (stack.getItemMeta().getDisplayName().equalsIgnoreCase(plugin.getChatManager().colorMessage("In-Game.Spectator.Spectator-Item-Name"))) {
+    if (stack.getItemMeta().getDisplayName().equalsIgnoreCase(plugin.getChatManager().colorMessage(Messages.SPECTATOR_ITEM_NAME))) {
       e.setCancelled(true);
       openSpectatorMenu(e.getPlayer().getWorld(), e.getPlayer());
-    } else if (stack.getItemMeta().getDisplayName().equalsIgnoreCase(plugin.getChatManager().colorMessage("In-Game.Spectator.Settings-Menu.Item-Name"))) {
+    } else if (stack.getItemMeta().getDisplayName().equalsIgnoreCase(plugin.getChatManager().colorMessage(Messages.SPECTATOR_SETTINGS_MENU_ITEM_NAME))) {
       e.setCancelled(true);
       spectatorSettingsMenu.openSpectatorSettingsMenu(e.getPlayer());
     }
   }
 
   private void openSpectatorMenu(World world, Player p) {
-    Inventory inventory = plugin.getServer().createInventory(null, Utils.serializeInt(ArenaRegistry.getArena(p).getPlayers().size()),
-        plugin.getChatManager().colorMessage("In-Game.Spectator.Spectator-Menu-Name"));
-    Set<Player> players = ArenaRegistry.getArena(p).getPlayers();
+    int rows = Utils.serializeInt(ArenaRegistry.getArena(p).getPlayers().size()) / 9;
+    Gui gui = new Gui(plugin, rows, plugin.getChatManager().colorMessage(Messages.SPECTATOR_MENU_NAME));
+    OutlinePane pane = new OutlinePane(9, rows);
+    gui.addPane(pane);
+
+    final Arena arena = ArenaRegistry.getArena(p);
+    Set<Player> players = arena.getPlayers();
     for (Player player : world.getPlayers()) {
       if (players.contains(player) && !plugin.getUserManager().getUser(player).isSpectator()) {
         ItemStack skull = CompatMaterialConstants.PLAYER_HEAD_ITEM.clone();
         SkullMeta meta = (SkullMeta) skull.getItemMeta();
         meta.setOwningPlayer(player);
         meta.setDisplayName(player.getName());
-        meta.setLore(Collections.singletonList(plugin.getChatManager().colorMessage("In-Game.Spectator.Target-Player-Health").replace("%health%",
-            String.valueOf(NumberUtils.round(player.getHealth(), 2)))));
+        meta.setLore(Collections.singletonList(plugin.getChatManager().colorMessage(Messages.SPECTATOR_TARGET_PLAYER_HEALTH)
+            .replace("%health%", String.valueOf(NumberUtils.round(player.getHealth(), 2)))));
         skull.setItemMeta(meta);
-        inventory.addItem(skull);
-      }
-    }
-    p.openInventory(inventory);
-  }
-
-  @EventHandler
-  public void onSpectatorInventoryClick(InventoryClickEvent e) {
-    Player p = (Player) e.getWhoClicked();
-    if (ArenaRegistry.getArena(p) == null || !(e.isLeftClick() || e.isRightClick())) {
-      return;
-    }
-    Arena arena = ArenaRegistry.getArena(p);
-    if (!Utils.isNamed(e.getCurrentItem()) || !e.getCurrentItem().getItemMeta().hasLore()) {
-      return;
-    }
-    if (e.getView().getTitle().equalsIgnoreCase(plugin.getChatManager().colorMessage("In-Game.Spectator.Spectator-Menu-Name"))) {
-      e.setCancelled(true);
-      ItemMeta meta = e.getCurrentItem().getItemMeta();
-      for (Player player : arena.getPlayers()) {
-        if (player.getName().equalsIgnoreCase(meta.getDisplayName()) || ChatColor.stripColor(meta.getDisplayName()).contains(player.getName())) {
-          p.sendMessage(plugin.getChatManager().formatMessage(arena, plugin.getChatManager().colorMessage("Kits.Teleporter.Teleported-To-Player"), player));
-          p.teleport(player);
-          p.closeInventory();
+        pane.addItem(new GuiItem(skull, e -> {
           e.setCancelled(true);
-          return;
-
-        }
+          e.getWhoClicked().sendMessage(plugin.getChatManager().formatMessage(arena, plugin.getChatManager().colorMessage(Messages.KITS_TELEPORTER_TELEPORTED_TO_PLAYER), player));
+          e.getWhoClicked().closeInventory();
+          e.getWhoClicked().teleport(player);
+        }));
       }
-      p.sendMessage(plugin.getChatManager().colorMessage("Kits.Teleporter.Player-Not-Found"));
     }
+    gui.show(p);
   }
 }

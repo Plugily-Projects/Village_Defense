@@ -36,6 +36,7 @@ import pl.plajer.villagedefense.api.StatsStorage;
 import pl.plajer.villagedefense.commands.arguments.ArgumentsRegistry;
 import pl.plajer.villagedefense.commands.arguments.data.CommandArgument;
 import pl.plajer.villagedefense.commands.completion.CompletableArgument;
+import pl.plajer.villagedefense.handlers.language.Messages;
 
 /**
  * @author Plajer
@@ -60,18 +61,18 @@ public class LeaderboardArgument {
       @Override
       public void execute(CommandSender sender, String[] args) {
         if (args.length == 1) {
-          sender.sendMessage(registry.getPlugin().getChatManager().getPrefix() + registry.getPlugin().getChatManager().colorMessage("Commands.Statistics.Type-Name"));
+          sender.sendMessage(registry.getPlugin().getChatManager().getPrefix() + registry.getPlugin().getChatManager().colorMessage(Messages.LEADERBOARD_TYPE_NAME));
           return;
         }
         try {
           StatsStorage.StatisticType statisticType = StatsStorage.StatisticType.valueOf(args[1].toUpperCase());
           if (statisticType == StatsStorage.StatisticType.XP) {
-            sender.sendMessage(registry.getPlugin().getChatManager().getPrefix() + registry.getPlugin().getChatManager().colorMessage("Commands.Statistics.Invalid-Name"));
+            sender.sendMessage(registry.getPlugin().getChatManager().getPrefix() + registry.getPlugin().getChatManager().colorMessage(Messages.LEADERBOARD_INVALID_NAME));
             return;
           }
           printLeaderboard(sender, statisticType);
         } catch (IllegalArgumentException e) {
-          sender.sendMessage(registry.getPlugin().getChatManager().getPrefix() + registry.getPlugin().getChatManager().colorMessage("Commands.Statistics.Invalid-Name"));
+          sender.sendMessage(registry.getPlugin().getChatManager().getPrefix() + registry.getPlugin().getChatManager().colorMessage(Messages.LEADERBOARD_INVALID_NAME));
         }
       }
     });
@@ -79,7 +80,7 @@ public class LeaderboardArgument {
 
   private void printLeaderboard(CommandSender sender, StatsStorage.StatisticType statisticType) {
     LinkedHashMap<UUID, Integer> stats = (LinkedHashMap<UUID, Integer>) StatsStorage.getStats(statisticType);
-    sender.sendMessage(registry.getPlugin().getChatManager().colorMessage("Commands.Statistics.Header"));
+    sender.sendMessage(registry.getPlugin().getChatManager().colorMessage(Messages.LEADERBOARD_HEADER));
     String statistic = StringUtils.capitalize(statisticType.toString().toLowerCase().replace("_", " "));
     for (int i = 0; i < 10; i++) {
       try {
@@ -108,7 +109,7 @@ public class LeaderboardArgument {
   }
 
   private String formatMessage(String statisticName, String playerName, int position, int value) {
-    String message = registry.getPlugin().getChatManager().colorMessage("Commands.Statistics.Format");
+    String message = registry.getPlugin().getChatManager().colorMessage(Messages.LEADERBOARD_FORMAT);
     message = StringUtils.replace(message, "%position%", String.valueOf(position));
     message = StringUtils.replace(message, "%name%", playerName);
     message = StringUtils.replace(message, "%value%", String.valueOf(value));

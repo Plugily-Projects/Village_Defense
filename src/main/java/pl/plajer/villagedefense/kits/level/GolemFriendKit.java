@@ -33,6 +33,7 @@ import pl.plajer.villagedefense.arena.initializers.ArenaInitializer1_12_R1;
 import pl.plajer.villagedefense.arena.initializers.ArenaInitializer1_13_R1;
 import pl.plajer.villagedefense.arena.initializers.ArenaInitializer1_13_R2;
 import pl.plajer.villagedefense.arena.initializers.ArenaInitializer1_14_R1;
+import pl.plajer.villagedefense.handlers.language.Messages;
 import pl.plajer.villagedefense.kits.KitRegistry;
 import pl.plajer.villagedefense.kits.basekits.LevelKit;
 import pl.plajer.villagedefense.utils.ArmorHelper;
@@ -46,8 +47,8 @@ import pl.plajerlair.commonsbox.minecraft.compat.XMaterial;
 public class GolemFriendKit extends LevelKit {
 
   public GolemFriendKit() {
-    setName(getPlugin().getChatManager().colorMessage("Kits.Golem-Friend.Kit-Name"));
-    List<String> description = Utils.splitString(getPlugin().getChatManager().colorMessage("Kits.Golem-Friend.Kit-Description"), 40);
+    setName(getPlugin().getChatManager().colorMessage(Messages.KITS_GOLEM_FRIEND_NAME));
+    List<String> description = Utils.splitString(getPlugin().getChatManager().colorMessage(Messages.KITS_GOLEM_FRIEND_DESCRIPTION), 40);
     this.setDescription(description.toArray(new String[0]));
     setLevel(getKitsConfig().getInt("Required-Level.GolemFriend"));
     KitRegistry.registerKit(this);

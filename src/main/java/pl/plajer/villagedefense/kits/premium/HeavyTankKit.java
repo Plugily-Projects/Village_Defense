@@ -27,6 +27,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import pl.plajer.villagedefense.handlers.PermissionsManager;
+import pl.plajer.villagedefense.handlers.language.Messages;
 import pl.plajer.villagedefense.kits.KitRegistry;
 import pl.plajer.villagedefense.kits.basekits.PremiumKit;
 import pl.plajer.villagedefense.utils.ArmorHelper;
@@ -40,8 +41,8 @@ import pl.plajerlair.commonsbox.minecraft.compat.XMaterial;
 public class HeavyTankKit extends PremiumKit {
 
   public HeavyTankKit() {
-    setName(getPlugin().getChatManager().colorMessage("Kits.Heavy-Tank.Kit-Name"));
-    List<String> description = Utils.splitString(getPlugin().getChatManager().colorMessage("Kits.Heavy-Tank.Kit-Description"), 40);
+    setName(getPlugin().getChatManager().colorMessage(Messages.KITS_HEAVY_TANK_NAME));
+    List<String> description = Utils.splitString(getPlugin().getChatManager().colorMessage(Messages.KITS_HEAVY_TANK_DESCRIPTION), 40);
     this.setDescription(description.toArray(new String[0]));
     KitRegistry.registerKit(this);
   }

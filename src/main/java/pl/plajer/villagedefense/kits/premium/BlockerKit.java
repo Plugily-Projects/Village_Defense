@@ -36,6 +36,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import pl.plajer.villagedefense.arena.ArenaRegistry;
 import pl.plajer.villagedefense.handlers.PermissionsManager;
+import pl.plajer.villagedefense.handlers.language.Messages;
 import pl.plajer.villagedefense.kits.KitRegistry;
 import pl.plajer.villagedefense.kits.basekits.PremiumKit;
 import pl.plajer.villagedefense.utils.ArmorHelper;
@@ -50,8 +51,8 @@ import pl.plajerlair.commonsbox.minecraft.item.ItemBuilder;
 public class BlockerKit extends PremiumKit implements Listener {
 
   public BlockerKit() {
-    setName(getPlugin().getChatManager().colorMessage("Kits.Blocker.Kit-Name"));
-    List<String> description = Utils.splitString(getPlugin().getChatManager().colorMessage("Kits.Blocker.Kit-Description"), 40);
+    setName(getPlugin().getChatManager().colorMessage(Messages.KITS_BLOCKER_NAME));
+    List<String> description = Utils.splitString(getPlugin().getChatManager().colorMessage(Messages.KITS_BLOCKER_DESCRIPTION), 40);
     this.setDescription(description.toArray(new String[0]));
     getPlugin().getServer().getPluginManager().registerEvents(this, getPlugin());
     KitRegistry.registerKit(this);
@@ -68,8 +69,8 @@ public class BlockerKit extends PremiumKit implements Listener {
     player.getInventory().addItem(WeaponHelper.getEnchanted(new ItemStack(Material.STONE_SWORD), new org.bukkit.enchantments.Enchantment[] {org.bukkit.enchantments.Enchantment.DURABILITY}, new int[] {10}));
     player.getInventory().addItem(new ItemStack(Material.COOKED_BEEF, 10));
     player.getInventory().addItem(new ItemBuilder(new ItemStack(XMaterial.OAK_FENCE.parseMaterial(), 3))
-        .name(getPlugin().getChatManager().colorMessage("Kits.Blocker.Game-Item-Name"))
-        .lore(getPlugin().getChatManager().colorMessage("Kits.Blocker.Game-Item-Lore").split("\n"))
+        .name(getPlugin().getChatManager().colorMessage(Messages.KITS_BLOCKER_GAME_ITEM_NAME))
+        .lore(Utils.splitString(getPlugin().getChatManager().colorMessage(Messages.KITS_BLOCKER_GAME_ITEM_LORE), 40))
         .build());
     player.getInventory().addItem(new ItemStack(Material.SADDLE));
 
@@ -83,8 +84,8 @@ public class BlockerKit extends PremiumKit implements Listener {
   @Override
   public void reStock(Player player) {
     player.getInventory().addItem(new ItemBuilder(new ItemStack(XMaterial.OAK_FENCE.parseMaterial(), 3))
-        .name(getPlugin().getChatManager().colorMessage("Kits.Blocker.Game-Item-Name"))
-        .lore(Utils.splitString(getPlugin().getChatManager().colorMessage("Kits.Blocker.Game-Item-Lore"), 40))
+        .name(getPlugin().getChatManager().colorMessage(Messages.KITS_BLOCKER_GAME_ITEM_NAME))
+        .lore(Utils.splitString(getPlugin().getChatManager().colorMessage(Messages.KITS_BLOCKER_GAME_ITEM_LORE), 40))
         .build());
   }
 
@@ -95,7 +96,8 @@ public class BlockerKit extends PremiumKit implements Listener {
     }
     Player player = event.getPlayer();
     ItemStack stack = player.getInventory().getItemInMainHand();
-    if (!ArenaRegistry.isInArena(player) || !Utils.isNamed(stack) || !stack.getItemMeta().getDisplayName().equalsIgnoreCase(getPlugin().getChatManager().colorMessage("Kits.Blocker.Game-Item-Name"))) {
+    if (!ArenaRegistry.isInArena(player) || !Utils.isNamed(stack) || !stack.getItemMeta().getDisplayName()
+        .equalsIgnoreCase(getPlugin().getChatManager().colorMessage(Messages.KITS_BLOCKER_GAME_ITEM_NAME))) {
       return;
     }
     Block block = null;
@@ -105,13 +107,13 @@ public class BlockerKit extends PremiumKit implements Listener {
       }
     }
     if (block == null) {
-      event.getPlayer().sendMessage(getPlugin().getChatManager().colorMessage("Kits.Blocker.Game-Item-Place-Fail"));
+      event.getPlayer().sendMessage(getPlugin().getChatManager().colorMessage(Messages.KITS_BLOCKER_GAME_ITEM_PLACE_FAIL));
       return;
     }
     Utils.takeOneItem(player, stack);
     event.setCancelled(false);
 
-    event.getPlayer().sendMessage(getPlugin().getChatManager().colorMessage("Kits.Blocker.Game-Item-Place-Message"));
+    event.getPlayer().sendMessage(getPlugin().getChatManager().colorMessage(Messages.KITS_BLOCKER_GAME_ITEM_PLACE_MESSAGE));
     ZombieBarrier zombieBarrier = new ZombieBarrier();
     zombieBarrier.setLocation(block.getLocation());
     zombieBarrier.getLocation().getWorld().spawnParticle(Particle.FIREWORKS_SPARK, zombieBarrier.getLocation(), 20);

@@ -41,6 +41,7 @@ import pl.plajer.villagedefense.api.StatsStorage;
 import pl.plajer.villagedefense.arena.Arena;
 import pl.plajer.villagedefense.arena.ArenaRegistry;
 import pl.plajer.villagedefense.arena.options.ArenaOption;
+import pl.plajer.villagedefense.handlers.language.Messages;
 import pl.plajer.villagedefense.user.User;
 import pl.plajer.villagedefense.utils.Debugger;
 import pl.plajer.villagedefense.utils.Utils;
@@ -90,7 +91,7 @@ public class ShopManager {
       return;
     }
     if (gui == null) {
-      player.sendMessage(plugin.getChatManager().colorMessage("In-Game.Messages.Shop-Messages.No-Shop-Defined"));
+      player.sendMessage(plugin.getChatManager().colorMessage(Messages.SHOP_MESSAGES_NO_SHOP_DEFINED));
       return;
     }
     gui.show(player);
@@ -103,7 +104,7 @@ public class ShopManager {
     ItemStack[] contents = ((Chest) LocationSerializer.getLocation(config.getString("instances." + arena.getId() + ".shop"))
         .getBlock().getState()).getInventory().getContents();
     int i = contents.length;
-    Gui gui = new Gui(plugin, Utils.serializeInt(i) / 9, plugin.getChatManager().colorMessage("In-Game.Messages.Shop-Messages.Shop-GUI-Name"));
+    Gui gui = new Gui(plugin, Utils.serializeInt(i) / 9, plugin.getChatManager().colorMessage(Messages.SHOP_MESSAGES_SHOP_GUI_NAME));
     StaticPane pane = new StaticPane(9, Utils.serializeInt(i) / 9);
     int x = 0;
     int y = 0;
@@ -122,7 +123,7 @@ public class ShopManager {
       //seek for item price
       if (itemStack.hasItemMeta() && itemStack.getItemMeta().hasLore()) {
         for (String s : itemStack.getItemMeta().getLore()) {
-          if (s.contains(plugin.getChatManager().colorMessage("In-Game.Messages.Shop-Messages.Currency-In-Shop")) || s.contains("orbs")) {
+          if (s.contains(plugin.getChatManager().colorMessage(Messages.SHOP_MESSAGES_CURRENCY_IN_SHOP)) || s.contains("orbs")) {
             costString = ChatColor.stripColor(s).replaceAll("[^0-9]", "");
             found = true;
             break;
@@ -143,42 +144,42 @@ public class ShopManager {
         e.setCancelled(true);
         User user = plugin.getUserManager().getUser(player);
         if (cost > user.getStat(StatsStorage.StatisticType.ORBS)) {
-          player.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage("In-Game.Messages.Shop-Messages.Not-Enough-Orbs"));
+          player.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage(Messages.SHOP_MESSAGES_NOT_ENOUGH_ORBS));
           return;
         }
         if (Utils.isNamed(itemStack)) {
           String name = itemStack.getItemMeta().getDisplayName();
           int spawnedAmount = 0;
-          if (name.contains(plugin.getChatManager().colorMessage("In-Game.Messages.Shop-Messages.Golem-Item-Name"))
+          if (name.contains(plugin.getChatManager().colorMessage(Messages.SHOP_MESSAGES_GOLEM_ITEM_NAME))
               || name.contains(DEFAULT_GOLEM_ITEM_NAME)) {
             for (IronGolem golem : arena.getIronGolems()) {
-              if (golem.getCustomName().equals(plugin.getChatManager().colorMessage("In-Game.Spawned-Golem-Name").replace("%player%", player.getName()))) {
+              if (golem.getCustomName().equals(plugin.getChatManager().colorMessage(Messages.SPAWNED_GOLEM_NAME).replace("%player%", player.getName()))) {
                 spawnedAmount++;
               }
             }
             if (spawnedAmount >= plugin.getConfig().getInt("Golems-Spawn-Limit", 15)) {
-              player.sendMessage(plugin.getChatManager().colorMessage("In-Game.Messages.Shop-Messages.Mob-Limit-Reached")
+              player.sendMessage(plugin.getChatManager().colorMessage(Messages.SHOP_MESSAGES_MOB_LIMIT_REACHED)
                   .replace("%amount%", String.valueOf(plugin.getConfig().getInt("Golems-Spawn-Limit", 15))));
               return;
             }
             arena.spawnGolem(arena.getStartLocation(), player);
-            player.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage("In-Game.Messages.Golem-Spawned"));
+            player.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage(Messages.GOLEM_SPAWNED));
             user.setStat(StatsStorage.StatisticType.ORBS, user.getStat(StatsStorage.StatisticType.ORBS) - cost);
             return;
-          } else if (name.contains(plugin.getChatManager().colorMessage("In-Game.Messages.Shop-Messages.Wolf-Item-Name"))
+          } else if (name.contains(plugin.getChatManager().colorMessage(Messages.SHOP_MESSAGES_WOLF_ITEM_NAME))
               || name.contains(DEFAULT_WOLF_ITEM_NAME)) {
             for (Wolf wolf : arena.getWolves()) {
-              if (wolf.getCustomName().equals(plugin.getChatManager().colorMessage("In-Game.Spawned-Wolf-Name").replace("%player%", player.getName()))) {
+              if (wolf.getCustomName().equals(plugin.getChatManager().colorMessage(Messages.SPAWNED_WOLF_NAME).replace("%player%", player.getName()))) {
                 spawnedAmount++;
               }
             }
             if (spawnedAmount >= plugin.getConfig().getInt("Wolves-Spawn-Limit", 20)) {
-              player.sendMessage(plugin.getChatManager().colorMessage("In-Game.Messages.Shop-Messages.Mob-Limit-Reached")
+              player.sendMessage(plugin.getChatManager().colorMessage(Messages.SHOP_MESSAGES_MOB_LIMIT_REACHED)
                   .replace("%amount%", String.valueOf(plugin.getConfig().getInt("Wolves-Spawn-Limit", 20))));
               return;
             }
             arena.spawnWolf(arena.getStartLocation(), player);
-            player.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage("In-Game.Messages.Wolf-Spawned"));
+            player.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage(Messages.WOLF_SPAWNED));
             user.setStat(StatsStorage.StatisticType.ORBS, user.getStat(StatsStorage.StatisticType.ORBS) - cost);
             return;
           }
@@ -187,7 +188,7 @@ public class ShopManager {
         ItemStack stack = itemStack.clone();
         ItemMeta itemMeta = stack.getItemMeta();
         itemMeta.setLore(itemMeta.getLore().stream().filter(lore ->
-            !lore.contains(plugin.getChatManager().colorMessage("In-Game.Messages.Shop-Messages.Currency-In-Shop")))
+            !lore.contains(plugin.getChatManager().colorMessage(Messages.SHOP_MESSAGES_CURRENCY_IN_SHOP)))
             .collect(Collectors.toList()));
         stack.setItemMeta(itemMeta);
         player.getInventory().addItem(stack);

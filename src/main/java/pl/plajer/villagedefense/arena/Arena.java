@@ -52,6 +52,7 @@ import pl.plajer.villagedefense.arena.managers.ScoreboardManager;
 import pl.plajer.villagedefense.arena.managers.ShopManager;
 import pl.plajer.villagedefense.arena.managers.ZombieSpawnManager;
 import pl.plajer.villagedefense.arena.options.ArenaOption;
+import pl.plajer.villagedefense.handlers.language.Messages;
 import pl.plajer.villagedefense.handlers.reward.Reward;
 import pl.plajer.villagedefense.user.User;
 import pl.plajer.villagedefense.utils.Debugger;
@@ -94,7 +95,7 @@ public abstract class Arena extends BukkitRunnable {
   public Arena(String id, Main plugin) {
     this.plugin = plugin;
     this.id = id;
-    gameBar = Bukkit.createBossBar(plugin.getChatManager().colorMessage("Bossbar.Main-Title"), BarColor.BLUE, BarStyle.SOLID);
+    gameBar = Bukkit.createBossBar(plugin.getChatManager().colorMessage(Messages.BOSSBAR_MAIN_TITLE), BarColor.BLUE, BarStyle.SOLID);
     shopManager = new ShopManager(this);
     zombieSpawnManager = new ZombieSpawnManager(this);
     scoreboardManager = new ScoreboardManager(this);
@@ -163,12 +164,12 @@ public abstract class Arena extends BukkitRunnable {
         if (getPlayers().size() < getMinimumPlayers()) {
           if (getTimer() <= 0) {
             setTimer(15);
-            plugin.getChatManager().broadcast(this, plugin.getChatManager().formatMessage(this, plugin.getChatManager().colorMessage("In-Game.Messages.Lobby-Messages.Waiting-For-Players"), getMinimumPlayers()));
+            plugin.getChatManager().broadcastMessage(this, plugin.getChatManager().formatMessage(this, plugin.getChatManager().colorMessage(Messages.LOBBY_MESSAGES_WAITING_FOR_PLAYERS), getMinimumPlayers()));
             return;
           }
         } else {
-          gameBar.setTitle(plugin.getChatManager().colorMessage("Bossbar.Waiting-For-Players"));
-          plugin.getChatManager().broadcast(this, plugin.getChatManager().colorMessage("In-Game.Messages.Lobby-Messages.Enough-Players-To-Start"));
+          gameBar.setTitle(plugin.getChatManager().colorMessage(Messages.BOSSBAR_WAITING_FOR_PLAYERS));
+          plugin.getChatManager().broadcast(this, Messages.LOBBY_MESSAGES_ENOUGH_PLAYERS_TO_START);
           setArenaState(ArenaState.STARTING);
           setTimer(plugin.getConfig().getInt("Starting-Waiting-Time", 60));
           return;
@@ -176,16 +177,16 @@ public abstract class Arena extends BukkitRunnable {
         setTimer(getTimer() - 1);
         break;
       case STARTING:
-        gameBar.setTitle(plugin.getChatManager().colorMessage("Bossbar.Starting-In").replace("%time%", String.valueOf(getTimer())));
+        gameBar.setTitle(plugin.getChatManager().colorMessage(Messages.BOSSBAR_STARTING_IN).replace("%time%", String.valueOf(getTimer())));
         gameBar.setProgress(getTimer() / plugin.getConfig().getDouble("Starting-Waiting-Time", 60));
         for (Player player : getPlayers()) {
           player.setExp((float) (getTimer() / plugin.getConfig().getDouble("Starting-Waiting-Time", 60)));
           player.setLevel(getTimer());
         }
         if (getPlayers().size() < getMinimumPlayers() && !forceStart) {
-          gameBar.setTitle(plugin.getChatManager().colorMessage("Bossbar.Waiting-For-Players"));
+          gameBar.setTitle(plugin.getChatManager().colorMessage(Messages.BOSSBAR_WAITING_FOR_PLAYERS));
           gameBar.setProgress(1.0);
-          plugin.getChatManager().broadcast(this, plugin.getChatManager().formatMessage(this, plugin.getChatManager().colorMessage("In-Game.Messages.Lobby-Messages.Waiting-For-Players"), getMinimumPlayers()));
+          plugin.getChatManager().broadcastMessage(this, plugin.getChatManager().formatMessage(this, plugin.getChatManager().colorMessage(Messages.LOBBY_MESSAGES_WAITING_FOR_PLAYERS), getMinimumPlayers()));
           setArenaState(ArenaState.WAITING_FOR_PLAYERS);
           Bukkit.getPluginManager().callEvent(new VillageGameStartEvent(this));
           setTimer(15);
@@ -214,7 +215,7 @@ public abstract class Arena extends BukkitRunnable {
             ArenaUtils.addStat(player, StatsStorage.StatisticType.GAMES_PLAYED);
             ArenaUtils.addExperience(player, 10);
             setTimer(plugin.getConfig().getInt("Cooldown-Before-Next-Wave", 25));
-            player.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage("In-Game.Messages.Lobby-Messages.Game-Started"));
+            player.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage(Messages.LOBBY_MESSAGES_GAME_STARTED));
           }
           fighting = false;
         }
@@ -225,13 +226,13 @@ public abstract class Arena extends BukkitRunnable {
         break;
       case IN_GAME:
         if (getOption(ArenaOption.BAR_TOGGLE_VALUE) > 5) {
-          gameBar.setTitle(plugin.getChatManager().colorMessage("Bossbar.In-Game-Wave").replace("%wave%", String.valueOf(getWave())));
+          gameBar.setTitle(plugin.getChatManager().colorMessage(Messages.BOSSBAR_IN_GAME_WAVE).replace("%wave%", String.valueOf(getWave())));
           addOptionValue(ArenaOption.BAR_TOGGLE_VALUE, 1);
           if (getOption(ArenaOption.BAR_TOGGLE_VALUE) > 10) {
             setOptionValue(ArenaOption.BAR_TOGGLE_VALUE, 0);
           }
         } else {
-          gameBar.setTitle(plugin.getChatManager().colorMessage("Bossbar.In-Game-Info").replace("%wave%", String.valueOf(getWave())));
+          gameBar.setTitle(plugin.getChatManager().colorMessage(Messages.BOSSBAR_IN_GAME_INFO).replace("%wave%", String.valueOf(getWave())));
           addOptionValue(ArenaOption.BAR_TOGGLE_VALUE, 1);
         }
         if (plugin.getConfigPreferences().getOption(ConfigPreferences.Option.BUNGEE_ENABLED)) {
@@ -253,7 +254,7 @@ public abstract class Arena extends BukkitRunnable {
           } else if (getTimer() == 0) {
             mapRestorerManager.clearZombiesFromArena();
             if (getZombiesLeft() <= 5) {
-              plugin.getChatManager().broadcast(this, plugin.getChatManager().colorMessage("In-Game.Messages.Zombie-Got-Stuck-In-The-Map"));
+              plugin.getChatManager().broadcast(this, Messages.ZOMBIE_GOT_STUCK_IN_THE_MAP);
             } else {
               for (int i = getZombiesLeft(); i > 0; i++) {
                 spawnFastZombie(random);
@@ -279,14 +280,14 @@ public abstract class Arena extends BukkitRunnable {
           plugin.getServer().setWhitelist(false);
         }
         if (getTimer() <= 0) {
-          gameBar.setTitle(plugin.getChatManager().colorMessage("Bossbar.Game-Ended"));
+          gameBar.setTitle(plugin.getChatManager().colorMessage(Messages.BOSSBAR_GAME_ENDED));
 
           for (Player player : getPlayers()) {
             ArenaUtils.resetPlayerAfterGame(player);
             doBarAction(BarAction.REMOVE, player);
           }
           players.forEach(this::teleportToEndLocation);
-          plugin.getChatManager().broadcast(this, plugin.getChatManager().colorMessage("Commands.Teleported-To-The-Lobby"));
+          plugin.getChatManager().broadcast(this, Messages.COMMANDS_TELEPORTED_TO_THE_LOBBY);
 
           for (User user : plugin.getUserManager().getUsers(this)) {
             user.setSpectator(false);

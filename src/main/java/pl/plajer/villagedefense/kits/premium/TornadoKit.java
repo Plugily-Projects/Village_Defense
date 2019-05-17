@@ -36,6 +36,7 @@ import org.bukkit.util.Vector;
 
 import pl.plajer.villagedefense.arena.ArenaRegistry;
 import pl.plajer.villagedefense.handlers.PermissionsManager;
+import pl.plajer.villagedefense.handlers.language.Messages;
 import pl.plajer.villagedefense.kits.KitRegistry;
 import pl.plajer.villagedefense.kits.basekits.PremiumKit;
 import pl.plajer.villagedefense.utils.ArmorHelper;
@@ -54,8 +55,8 @@ public class TornadoKit extends PremiumKit implements Listener {
   private double radiusIncrement = maxRadius / maxHeight;
 
   public TornadoKit() {
-    setName(getPlugin().getChatManager().colorMessage("Kits.Tornado.Kit-Name"));
-    List<String> description = Utils.splitString(getPlugin().getChatManager().colorMessage("Kits.Tornado.Kit-Description"), 40);
+    setName(getPlugin().getChatManager().colorMessage(Messages.KITS_TORNADO_NAME));
+    List<String> description = Utils.splitString(getPlugin().getChatManager().colorMessage(Messages.KITS_TORNADO_DESCRIPTION), 40);
     this.setDescription(description.toArray(new String[0]));
     getPlugin().getServer().getPluginManager().registerEvents(this, getPlugin());
     KitRegistry.registerKit(this);
@@ -74,8 +75,8 @@ public class TornadoKit extends PremiumKit implements Listener {
     player.getInventory().addItem(new ItemStack(Material.COOKED_BEEF, 10));
     player.getInventory().addItem(new ItemStack(Material.SADDLE));
     player.getInventory().addItem(new ItemBuilder(new ItemStack(XMaterial.COBWEB.parseMaterial(), 5))
-        .name(getPlugin().getChatManager().colorMessage("Kits.Tornado.Game-Item-Name"))
-        .lore(Utils.splitString(getPlugin().getChatManager().colorMessage("Kits.Tornado.Game-Item-Lore"), 40))
+        .name(getPlugin().getChatManager().colorMessage(Messages.KITS_TORNADO_GAME_ITEM_NAME))
+        .lore(Utils.splitString(getPlugin().getChatManager().colorMessage(Messages.KITS_TORNADO_GAME_ITEM_LORE), 40))
         .build());
   }
 
@@ -87,8 +88,8 @@ public class TornadoKit extends PremiumKit implements Listener {
   @Override
   public void reStock(Player player) {
     player.getInventory().addItem(new ItemBuilder(new ItemStack(XMaterial.COBWEB.parseMaterial(), 5))
-        .name(getPlugin().getChatManager().colorMessage("Kits.Tornado.Game-Item-Name"))
-        .lore(Utils.splitString(getPlugin().getChatManager().colorMessage("Kits.Tornado.Game-Item-Lore"), 40))
+        .name(getPlugin().getChatManager().colorMessage(Messages.KITS_TORNADO_GAME_ITEM_NAME))
+        .lore(Utils.splitString(getPlugin().getChatManager().colorMessage(Messages.KITS_TORNADO_GAME_ITEM_LORE), 40))
         .build());
   }
 
@@ -100,7 +101,7 @@ public class TornadoKit extends PremiumKit implements Listener {
     Player player = e.getPlayer();
     ItemStack stack = player.getInventory().getItemInMainHand();
     if (!ArenaRegistry.isInArena(player) || !Utils.isNamed(stack)
-        || !stack.getItemMeta().getDisplayName().equalsIgnoreCase(getPlugin().getChatManager().colorMessage("Kits.Tornado.Game-Item-Name"))) {
+        || !stack.getItemMeta().getDisplayName().equalsIgnoreCase(getPlugin().getChatManager().colorMessage(Messages.KITS_TORNADO_GAME_ITEM_NAME))) {
       return;
     }
     Utils.takeOneItem(player, stack);

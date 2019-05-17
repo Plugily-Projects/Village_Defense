@@ -36,6 +36,7 @@ import pl.plajer.villagedefense.arena.initializers.ArenaInitializer1_13_R1;
 import pl.plajer.villagedefense.arena.initializers.ArenaInitializer1_13_R2;
 import pl.plajer.villagedefense.arena.initializers.ArenaInitializer1_14_R1;
 import pl.plajer.villagedefense.handlers.PermissionsManager;
+import pl.plajer.villagedefense.handlers.language.Messages;
 import pl.plajer.villagedefense.user.User;
 import pl.plajerlair.commonsbox.minecraft.serialization.InventorySerializer;
 
@@ -100,7 +101,7 @@ public class ArenaUtils {
       player.getInventory().clear();
       ArenaUtils.showPlayer(player, arena);
       user.getKit().giveKitItems(player);
-      player.sendMessage(plugin.getChatManager().colorMessage("In-Game.Back-In-Game"));
+      player.sendMessage(plugin.getChatManager().colorMessage(Messages.BACK_IN_GAME));
     }
   }
 
@@ -109,7 +110,7 @@ public class ArenaUtils {
     User user = plugin.getUserManager().getUser(player);
     if (Math.pow(50 * user.getStat(StatsStorage.StatisticType.LEVEL), 1.5) < user.getStat(StatsStorage.StatisticType.XP)) {
       user.addStat(StatsStorage.StatisticType.LEVEL, 1);
-      player.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().formatMessage(arena, plugin.getChatManager().colorMessage("In-Game.You-Leveled-Up"), user.getStat(StatsStorage.StatisticType.LEVEL)));
+      player.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().formatMessage(arena, plugin.getChatManager().colorMessage(Messages.YOU_LEVELED_UP), user.getStat(StatsStorage.StatisticType.LEVEL)));
     }
   }
 

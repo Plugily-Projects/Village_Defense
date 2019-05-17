@@ -44,6 +44,7 @@ import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.arena.Arena;
 import pl.plajer.villagedefense.arena.ArenaRegistry;
 import pl.plajer.villagedefense.arena.ArenaUtils;
+import pl.plajer.villagedefense.handlers.language.Messages;
 import pl.plajer.villagedefense.utils.Utils;
 import pl.plajerlair.commonsbox.minecraft.compat.XMaterial;
 import pl.plajerlair.commonsbox.minecraft.configuration.ConfigUtils;
@@ -122,11 +123,11 @@ public class SetupInventoryEvents implements Listener {
       case ADD_SIGN:
         Location location = player.getTargetBlock(null, 10).getLocation();
         if (!(location.getBlock().getState() instanceof Sign)) {
-          player.sendMessage(plugin.getChatManager().colorMessage("Commands.Look-Sign"));
+          player.sendMessage(plugin.getChatManager().colorMessage(Messages.COMMANDS_LOOK_AT_SIGN));
           break;
         }
         plugin.getSignManager().getLoadedSigns().put((Sign) location.getBlock().getState(), arena);
-        player.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage("Signs.Sign-Created"));
+        player.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage(Messages.SIGNS_SIGN_CREATED));
         String loc = location.getBlock().getWorld().getName() + "," + location.getBlock().getX() + "," + location.getBlock().getY() + "," + location.getBlock().getZ() + ",0.0,0.0";
         List<String> locs = config.getStringList("instances." + arena.getId() + ".signs");
         locs.add(loc);
@@ -212,7 +213,7 @@ public class SetupInventoryEvents implements Listener {
           }
           if (stack.hasItemMeta() && stack.getItemMeta().hasLore()) {
             if (stack.getItemMeta().getLore().get(stack.getItemMeta().getLore().size() - 1)
-                .contains(plugin.getChatManager().colorMessage("In-Game.Messages.Shop-Messages.Currency-In-Shop"))) {
+                .contains(plugin.getChatManager().colorMessage(Messages.SHOP_MESSAGES_CURRENCY_IN_SHOP))) {
               found = true;
               break;
             }

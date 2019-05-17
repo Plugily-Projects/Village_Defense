@@ -28,6 +28,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import pl.plajer.villagedefense.Main;
+import pl.plajer.villagedefense.handlers.language.Messages;
 import pl.plajer.villagedefense.utils.Debugger;
 import pl.plajerlair.commonsbox.minecraft.configuration.ConfigUtils;
 import pl.plajerlair.commonsbox.minecraft.serialization.LocationSerializer;
@@ -120,7 +121,7 @@ public class ArenaRegistry {
 
     ConfigurationSection section = config.getConfigurationSection("instances");
     if (section == null) {
-      Bukkit.getConsoleSender().sendMessage(plugin.getChatManager().colorMessage("Validator.No-Instances-Created"));
+      Bukkit.getConsoleSender().sendMessage(plugin.getChatManager().colorMessage(Messages.VALIDATOR_NO_INSTANCES_CREATED));
       return;
     }
     for (String id : section.getKeys(false)) {
@@ -138,7 +139,7 @@ public class ArenaRegistry {
       ArenaUtils.setWorld(arena);
 
       if (!config.getBoolean(key + "isdone", false)) {
-        Bukkit.getConsoleSender().sendMessage(plugin.getChatManager().colorMessage("Validator.Invalid-Arena-Configuration").replace("%arena%", id).replace("%error%", "NOT VALIDATED"));
+        Bukkit.getConsoleSender().sendMessage(plugin.getChatManager().colorMessage(Messages.VALIDATOR_INVALID_ARENA_CONFIGURATION).replace("%arena%", id).replace("%error%", "NOT VALIDATED"));
         arena.setReady(false);
         ArenaRegistry.registerArena(arena);
         continue;
@@ -150,7 +151,7 @@ public class ArenaRegistry {
           arena.addZombieSpawn(LocationSerializer.getLocation(config.getString(path)));
         }
       } else {
-        Bukkit.getConsoleSender().sendMessage(plugin.getChatManager().colorMessage("Validator.Invalid-Arena-Configuration").replace("%arena%", id).replace("%error%", "ZOMBIE SPAWNS"));
+        Bukkit.getConsoleSender().sendMessage(plugin.getChatManager().colorMessage(Messages.VALIDATOR_INVALID_ARENA_CONFIGURATION).replace("%arena%", id).replace("%error%", "ZOMBIE SPAWNS"));
         arena.setReady(false);
         ArenaRegistry.registerArena(arena);
         continue;
@@ -162,7 +163,7 @@ public class ArenaRegistry {
           arena.addVillagerSpawn(LocationSerializer.getLocation(config.getString(path)));
         }
       } else {
-        Bukkit.getConsoleSender().sendMessage(plugin.getChatManager().colorMessage("Validator.Invalid-Arena-Configuration").replace("%arena%", id).replace("%error%", "VILLAGER SPAWNS"));
+        Bukkit.getConsoleSender().sendMessage(plugin.getChatManager().colorMessage(Messages.VALIDATOR_INVALID_ARENA_CONFIGURATION).replace("%arena%", id).replace("%error%", "VILLAGER SPAWNS"));
         arena.setReady(false);
         ArenaRegistry.registerArena(arena);
         continue;
@@ -174,14 +175,14 @@ public class ArenaRegistry {
               (byte) config.getInt(path + "byte"));
         }
       } else {
-        Bukkit.getConsoleSender().sendMessage(plugin.getChatManager().colorMessage("Validator.Invalid-Arena-Configuration").replace("%arena%", id).replace("%error%", "DOORS"));
+        Bukkit.getConsoleSender().sendMessage(plugin.getChatManager().colorMessage(Messages.VALIDATOR_INVALID_ARENA_CONFIGURATION).replace("%arena%", id).replace("%error%", "DOORS"));
         arena.setReady(false);
         ArenaRegistry.registerArena(arena);
         continue;
       }
       ArenaRegistry.registerArena(arena);
       arena.start();
-      Bukkit.getConsoleSender().sendMessage(plugin.getChatManager().colorMessage("Validator.Instance-Started").replace("%arena%", id));
+      Bukkit.getConsoleSender().sendMessage(plugin.getChatManager().colorMessage(Messages.VALIDATOR_INSTANCE_STARTED).replace("%arena%", id));
     }
     Debugger.debug(Debugger.Level.INFO, "Arenas registration completed");
   }

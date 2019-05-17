@@ -28,6 +28,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionType;
 
 import pl.plajer.villagedefense.api.StatsStorage;
+import pl.plajer.villagedefense.handlers.language.Messages;
 import pl.plajer.villagedefense.kits.KitRegistry;
 import pl.plajer.villagedefense.kits.basekits.LevelKit;
 import pl.plajer.villagedefense.utils.ArmorHelper;
@@ -41,8 +42,8 @@ import pl.plajer.villagedefense.utils.WeaponHelper;
 public class HardcoreKit extends LevelKit {
 
   public HardcoreKit() {
-    setName(getPlugin().getChatManager().colorMessage("Kits.Hardcore.Kit-Name"));
-    List<String> description = Utils.splitString(getPlugin().getChatManager().colorMessage("Kits.Hardcore.Kit-Description"), 40);
+    setName(getPlugin().getChatManager().colorMessage(Messages.KITS_HARDCORE_NAME));
+    List<String> description = Utils.splitString(getPlugin().getChatManager().colorMessage(Messages.KITS_HARDCORE_DESCRIPTION), 40);
     this.setDescription(description.toArray(new String[0]));
     setLevel(getKitsConfig().getInt("Required-Level.Hardcore"));
     KitRegistry.registerKit(this);

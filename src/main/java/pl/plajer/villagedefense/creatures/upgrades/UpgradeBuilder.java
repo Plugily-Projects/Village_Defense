@@ -24,6 +24,7 @@ import java.util.List;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import pl.plajer.villagedefense.Main;
+import pl.plajer.villagedefense.handlers.language.LanguageManager;
 
 /**
  * @author Plajer
@@ -37,8 +38,8 @@ public class UpgradeBuilder {
 
   public UpgradeBuilder(String id) {
     this.upgrade = new Upgrade(id);
-    upgrade.setName(plugin.getChatManager().colorMessage("Upgrade-Menu.Upgrades." + id + ".Name"));
-    upgrade.setDescription(Arrays.asList(plugin.getChatManager().colorMessage("Upgrade-Menu.Upgrades." + id + ".Description").split(";")));
+    upgrade.setName(plugin.getChatManager().colorRawMessage(LanguageManager.getLanguageMessage("Upgrade-Menu.Upgrades." + id + ".Name")));
+    upgrade.setDescription(Arrays.asList(plugin.getChatManager().colorRawMessage(LanguageManager.getLanguageMessage("Upgrade-Menu.Upgrades." + id + ".Description")).split(";")));
   }
 
   //for other usages

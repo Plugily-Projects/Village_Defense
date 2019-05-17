@@ -38,6 +38,7 @@ import pl.plajer.villagedefense.api.StatsStorage;
 import pl.plajer.villagedefense.arena.Arena;
 import pl.plajer.villagedefense.arena.ArenaRegistry;
 import pl.plajer.villagedefense.handlers.language.LanguageManager;
+import pl.plajer.villagedefense.handlers.language.Messages;
 import pl.plajer.villagedefense.user.User;
 
 /**
@@ -108,7 +109,7 @@ public class ChatEvents implements Listener {
     formatted = plugin.getChatManager().colorRawMessage(formatted);
     formatted = StringUtils.replace(formatted, "%level%", String.valueOf(user.getStat(StatsStorage.StatisticType.LEVEL)));
     if (user.isSpectator()) {
-      formatted = StringUtils.replace(formatted, "%kit%", plugin.getChatManager().colorMessage("In-Game.Dead-Tag-On-Death"));
+      formatted = StringUtils.replace(formatted, "%kit%", plugin.getChatManager().colorMessage(Messages.DEAD_TAG_ON_DEATH));
     } else {
       formatted = StringUtils.replace(formatted, "%kit%", user.getKit().getName());
     }

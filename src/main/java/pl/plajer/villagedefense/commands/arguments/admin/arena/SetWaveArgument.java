@@ -31,6 +31,7 @@ import pl.plajer.villagedefense.commands.arguments.ArgumentsRegistry;
 import pl.plajer.villagedefense.commands.arguments.data.CommandArgument;
 import pl.plajer.villagedefense.commands.arguments.data.LabelData;
 import pl.plajer.villagedefense.commands.arguments.data.LabeledCommandArgument;
+import pl.plajer.villagedefense.handlers.language.Messages;
 import pl.plajer.villagedefense.utils.Utils;
 
 /**
@@ -55,12 +56,12 @@ public class SetWaveArgument {
         }
         Arena arena = ArenaRegistry.getArena((Player) sender);
         if (!Utils.isInteger(args[1])) {
-          sender.sendMessage(registry.getPlugin().getChatManager().getPrefix() + registry.getPlugin().getChatManager().colorMessage("Commands.Invalid-Number").replace("%correct%", "/vda setwave <number>"));
+          sender.sendMessage(registry.getPlugin().getChatManager().getPrefix() + registry.getPlugin().getChatManager().colorMessage(Messages.COMMANDS_INVALID_NUMBER).replace("%correct%", "/vda setwave <number>"));
           return;
         }
         arena.setWave(Integer.parseInt(args[1]) - 1);
         ArenaManager.endWave(arena);
-        String message = registry.getPlugin().getChatManager().formatMessage(arena, registry.getPlugin().getChatManager().colorMessage("In-Game.Messages.Admin-Messages.Changed-Wave"), arena.getWave());
+        String message = registry.getPlugin().getChatManager().formatMessage(arena, registry.getPlugin().getChatManager().colorMessage(Messages.ADMIN_MESSAGES_CHANGED_WAVE), arena.getWave());
         for (Player player : arena.getPlayers()) {
           player.sendMessage(registry.getPlugin().getChatManager().getPrefix() + message);
         }

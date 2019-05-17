@@ -37,6 +37,7 @@ import org.bukkit.potion.PotionType;
 import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.arena.ArenaRegistry;
 import pl.plajer.villagedefense.handlers.PermissionsManager;
+import pl.plajer.villagedefense.handlers.language.Messages;
 import pl.plajer.villagedefense.kits.KitRegistry;
 import pl.plajer.villagedefense.kits.basekits.PremiumKit;
 import pl.plajer.villagedefense.user.User;
@@ -51,9 +52,9 @@ public class NakedKit extends PremiumKit implements Listener {
   private List<Material> armorTypes = new ArrayList<>();
 
   public NakedKit() {
-    List<String> description = Utils.splitString(getPlugin().getChatManager().colorMessage("Kits.Wild-Naked.Kit-Description"), 40);
+    setName(getPlugin().getChatManager().colorMessage(Messages.KITS_WILD_NAKED_NAME));
+    List<String> description = Utils.splitString(getPlugin().getChatManager().colorMessage(Messages.KITS_WILD_NAKED_DESCRIPTION), 40);
     this.setDescription(description.toArray(new String[0]));
-    setName(getPlugin().getChatManager().colorMessage("Kits.Wild-Naked.Kit-Name"));
     getPlugin().getServer().getPluginManager().registerEvents(this, getPlugin());
     KitRegistry.registerKit(this);
     setupArmorTypes();
@@ -128,7 +129,7 @@ public class NakedKit extends PremiumKit implements Listener {
           continue;
         }
         //we cannot cancel event using scheduler, we must remove all armor contents from inventory manually
-        event.getWhoClicked().sendMessage(getPlugin().getChatManager().colorMessage("Kits.Wild-Naked.Cannot-Wear-Armor"));
+        event.getWhoClicked().sendMessage(getPlugin().getChatManager().colorMessage(Messages.KITS_WILD_NAKED_CANNOT_WEAR_ARMOR));
         event.getWhoClicked().getInventory().setHelmet(new ItemStack(Material.AIR, 1));
         event.getWhoClicked().getInventory().setChestplate(new ItemStack(Material.AIR, 1));
         event.getWhoClicked().getInventory().setLeggings(new ItemStack(Material.AIR, 1));
@@ -149,7 +150,7 @@ public class NakedKit extends PremiumKit implements Listener {
     }
     if (armorTypes.contains(event.getItem().getType())) {
       event.setCancelled(true);
-      event.getPlayer().sendMessage(getPlugin().getChatManager().colorMessage("Kits.Wild-Naked.Cannot-Wear-Armor"));
+      event.getPlayer().sendMessage(getPlugin().getChatManager().colorMessage(Messages.KITS_WILD_NAKED_CANNOT_WEAR_ARMOR));
     }
   }
 }

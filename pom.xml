@@ -166,12 +166,6 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <artifactId>commons-io</artifactId>
-            <groupId>commons-io</groupId>
-            <scope>compile</scope>
-            <version>2.6</version>
-        </dependency>
-        <dependency>
             <groupId>org.powermock</groupId>
             <artifactId>powermock</artifactId>
             <version>1.6.4</version>
@@ -244,10 +238,6 @@
                                 <relocation>
                                     <pattern>com.github.stefvanschie.inventoryframework</pattern>
                                     <shadedPattern>pl.plajer.villagedefense.utils.inventoryframework</shadedPattern>
-                                </relocation>
-                                <relocation>
-                                    <pattern>org.apache.commons.io</pattern>
-                                    <shadedPattern>pl.plajer.villagedefense.utils.commons.io</shadedPattern>
                                 </relocation>
                                 <relocation>
                                     <pattern>com.zaxxer.hikari</pattern>

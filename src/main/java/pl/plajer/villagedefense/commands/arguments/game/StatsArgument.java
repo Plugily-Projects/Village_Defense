@@ -25,6 +25,7 @@ import org.bukkit.entity.Player;
 import pl.plajer.villagedefense.api.StatsStorage;
 import pl.plajer.villagedefense.commands.arguments.ArgumentsRegistry;
 import pl.plajer.villagedefense.commands.arguments.data.CommandArgument;
+import pl.plajer.villagedefense.handlers.language.Messages;
 import pl.plajer.villagedefense.user.User;
 
 /**
@@ -40,23 +41,23 @@ public class StatsArgument {
       public void execute(CommandSender sender, String[] args) {
         Player player = args.length == 2 ? Bukkit.getPlayerExact(args[1]) : (Player) sender;
         if (player == null) {
-          sender.sendMessage(registry.getPlugin().getChatManager().getPrefix() + registry.getPlugin().getChatManager().colorMessage("Commands.Admin-Commands.Player-Not-Found"));
+          sender.sendMessage(registry.getPlugin().getChatManager().getPrefix() + registry.getPlugin().getChatManager().colorMessage(Messages.COMMANDS_TARGET_PLAYER_NOT_FOUND));
           return;
         }
         User user = registry.getPlugin().getUserManager().getUser(player);
         if (player.equals(sender)) {
-          sender.sendMessage(registry.getPlugin().getChatManager().colorMessage("Commands.Stats-Command.Header"));
+          sender.sendMessage(registry.getPlugin().getChatManager().colorMessage(Messages.COMMANDS_STATISTICS_HEADER));
         } else {
-          sender.sendMessage(registry.getPlugin().getChatManager().colorMessage("Commands.Stats-Command.Header-Other").replace("%player%", player.getName()));
+          sender.sendMessage(registry.getPlugin().getChatManager().colorMessage(Messages.COMMANDS_STATISTICS_HEADER_OTHER).replace("%player%", player.getName()));
         }
-        sender.sendMessage(registry.getPlugin().getChatManager().colorMessage("Commands.Stats-Command.Kills") + user.getStat(StatsStorage.StatisticType.KILLS));
-        sender.sendMessage(registry.getPlugin().getChatManager().colorMessage("Commands.Stats-Command.Deaths") + user.getStat(StatsStorage.StatisticType.DEATHS));
-        sender.sendMessage(registry.getPlugin().getChatManager().colorMessage("Commands.Stats-Command.Games-Played") + user.getStat(StatsStorage.StatisticType.GAMES_PLAYED));
-        sender.sendMessage(registry.getPlugin().getChatManager().colorMessage("Commands.Stats-Command.Highest-Wave") + user.getStat(StatsStorage.StatisticType.HIGHEST_WAVE));
-        sender.sendMessage(registry.getPlugin().getChatManager().colorMessage("Commands.Stats-Command.Level") + user.getStat(StatsStorage.StatisticType.LEVEL));
-        sender.sendMessage(registry.getPlugin().getChatManager().colorMessage("Commands.Stats-Command.Exp") + user.getStat(StatsStorage.StatisticType.XP));
-        sender.sendMessage(registry.getPlugin().getChatManager().colorMessage("Commands.Stats-Command.Next-Level-Exp") + Math.ceil(Math.pow(50 * user.getStat(StatsStorage.StatisticType.LEVEL), 1.5)));
-        sender.sendMessage(registry.getPlugin().getChatManager().colorMessage("Commands.Stats-Command.Footer"));
+        sender.sendMessage(registry.getPlugin().getChatManager().colorMessage(Messages.COMMANDS_STATISTICS_KILLS) + user.getStat(StatsStorage.StatisticType.KILLS));
+        sender.sendMessage(registry.getPlugin().getChatManager().colorMessage(Messages.COMMANDS_STATISTICS_DEATHS) + user.getStat(StatsStorage.StatisticType.DEATHS));
+        sender.sendMessage(registry.getPlugin().getChatManager().colorMessage(Messages.COMMANDS_STATISTICS_GAMES_PLAYED) + user.getStat(StatsStorage.StatisticType.GAMES_PLAYED));
+        sender.sendMessage(registry.getPlugin().getChatManager().colorMessage(Messages.COMMANDS_STATISTICS_HIGHEST_WAVE) + user.getStat(StatsStorage.StatisticType.HIGHEST_WAVE));
+        sender.sendMessage(registry.getPlugin().getChatManager().colorMessage(Messages.COMMANDS_STATISTICS_LEVEL) + user.getStat(StatsStorage.StatisticType.LEVEL));
+        sender.sendMessage(registry.getPlugin().getChatManager().colorMessage(Messages.COMMANDS_STATISTICS_EXP) + user.getStat(StatsStorage.StatisticType.XP));
+        sender.sendMessage(registry.getPlugin().getChatManager().colorMessage(Messages.COMMANDS_STATISTICS_NEXT_LEVEL_EXP) + Math.ceil(Math.pow(50 * user.getStat(StatsStorage.StatisticType.LEVEL), 1.5)));
+        sender.sendMessage(registry.getPlugin().getChatManager().colorMessage(Messages.COMMANDS_STATISTICS_FOOTER));
       }
     });
   }

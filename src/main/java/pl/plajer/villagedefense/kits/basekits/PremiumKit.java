@@ -20,6 +20,7 @@ package pl.plajer.villagedefense.kits.basekits;
 
 import org.bukkit.inventory.ItemStack;
 
+import pl.plajer.villagedefense.handlers.language.Messages;
 import pl.plajerlair.commonsbox.minecraft.item.ItemBuilder;
 
 /**
@@ -32,7 +33,7 @@ public abstract class PremiumKit extends Kit {
     return new ItemBuilder(new ItemStack(getMaterial()))
         .name(getName())
         .lore(getDescription())
-        .lore(getPlugin().getChatManager().colorMessage("Kits.Kit-Menu.Locked-Lores.Unlock-In-Store"))
+        .lore(getPlugin().getChatManager().colorMessage(Messages.KITS_MENU_LOCKED_UNLOCK_IN_STORE))
         .build();
   }
 }

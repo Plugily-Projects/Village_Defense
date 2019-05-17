@@ -48,6 +48,7 @@ import pl.plajer.villagedefense.api.StatsStorage;
 import pl.plajer.villagedefense.arena.options.ArenaOption;
 import pl.plajer.villagedefense.handlers.ChatManager;
 import pl.plajer.villagedefense.handlers.items.SpecialItemManager;
+import pl.plajer.villagedefense.handlers.language.Messages;
 import pl.plajer.villagedefense.handlers.reward.Reward;
 import pl.plajer.villagedefense.user.User;
 import pl.plajerlair.commonsbox.minecraft.compat.XMaterial;
@@ -158,7 +159,7 @@ public class ArenaEvents implements Listener {
           arena.getStartLocation().getWorld().strikeLightningEffect(e.getEntity().getLocation());
           arena.removeVillager((Villager) e.getEntity());
           plugin.getHolidayManager().applyHolidayDeathEffects(e.getEntity());
-          plugin.getChatManager().broadcast(arena, plugin.getChatManager().colorMessage("In-Game.Messages.Villager-Died"));
+          plugin.getChatManager().broadcast(arena, Messages.VILLAGER_DIED);
           return;
         case IRON_GOLEM:
           if (!arena.getIronGolems().contains(e.getEntity())) {
@@ -209,14 +210,14 @@ public class ArenaEvents implements Listener {
       player.setAllowFlight(true);
       player.setFlying(true);
       player.getInventory().clear();
-      player.sendTitle(plugin.getChatManager().colorMessage("In-Game.Death-Screen"), null, 0, 5 * 20, 0);
+      player.sendTitle(plugin.getChatManager().colorMessage(Messages.DEATH_SCREEN), null, 0, 5 * 20, 0);
       sendSpectatorActionBar(user, arena);
       plugin.getChatManager().broadcastAction(arena, player, ChatManager.ActionType.DEATH);
 
       //running in a scheduler of 1 tick due to respawn bug
       Bukkit.getScheduler().runTaskLater(plugin, () -> {
-        player.getInventory().setItem(0, new ItemBuilder(XMaterial.COMPASS.parseItem()).name(plugin.getChatManager().colorMessage("In-Game.Spectator.Spectator-Item-Name")).build());
-        player.getInventory().setItem(4, new ItemBuilder(XMaterial.COMPARATOR.parseItem()).name(plugin.getChatManager().colorMessage("In-Game.Spectator.Settings-Menu.Item-Name")).build());
+        player.getInventory().setItem(0, new ItemBuilder(XMaterial.COMPASS.parseItem()).name(plugin.getChatManager().colorMessage(Messages.SPECTATOR_ITEM_NAME)).build());
+        player.getInventory().setItem(4, new ItemBuilder(XMaterial.COMPARATOR.parseItem()).name(plugin.getChatManager().colorMessage(Messages.SPECTATOR_SETTINGS_MENU_ITEM_NAME)).build());
         player.getInventory().setItem(8, SpecialItemManager.getSpecialItem("Leave").getItemStack());
       }, 1);
 
@@ -237,7 +238,7 @@ public class ArenaEvents implements Listener {
           return;
         }
         if (user.isSpectator()) {
-          user.getPlayer().spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(plugin.getChatManager().colorMessage("In-Game.Died-Respawn-In-Next-Wave")));
+          user.getPlayer().spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(plugin.getChatManager().colorMessage(Messages.DIED_RESPAWN_IN_NEXT_WAVE)));
         } else {
           this.cancel();
         }

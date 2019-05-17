@@ -34,6 +34,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionType;
 
 import pl.plajer.villagedefense.handlers.PermissionsManager;
+import pl.plajer.villagedefense.handlers.language.Messages;
 import pl.plajer.villagedefense.kits.KitRegistry;
 import pl.plajer.villagedefense.kits.basekits.PremiumKit;
 import pl.plajer.villagedefense.user.User;
@@ -48,8 +49,8 @@ import pl.plajerlair.commonsbox.minecraft.compat.XMaterial;
 public class MedicKit extends PremiumKit implements Listener {
 
   public MedicKit() {
-    setName(getPlugin().getChatManager().colorMessage("Kits.Medic.Kit-Name"));
-    List<String> description = Utils.splitString(getPlugin().getChatManager().colorMessage("Kits.Medic.Kit-Description"), 40);
+    setName(getPlugin().getChatManager().colorMessage(Messages.KITS_MEDIC_NAME));
+    List<String> description = Utils.splitString(getPlugin().getChatManager().colorMessage(Messages.KITS_MEDIC_DESCRIPTION), 40);
     this.setDescription(description.toArray(new String[0]));
     getPlugin().getServer().getPluginManager().registerEvents(this, getPlugin());
     KitRegistry.registerKit(this);

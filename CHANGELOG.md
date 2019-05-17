@@ -1,6 +1,10 @@
 # Village Defense Changelog
 
-### 4.2.0 Release (28.04.2019 - 14.05.2019)
+### 4.2.0 Release (28.04.2019 - 17.05.2019)
+   * Blocker kit no longer has very long lore in barrier item and no longer receives separate barrier item on restock
+   * Implemented Messages enum and messages integrity check to validate that all messages in language.yml file
+   are set properly, this is purely code based change to decrease chance of broking the plugin by doing a typo
+   in new messages added to plugin, centralized class will perform better size of this project
    > Beta 2
    * Got working 1.14 build
    * Dog Friend and Golem Friend classes will spawn entities in 1.14 now

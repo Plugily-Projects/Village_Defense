@@ -49,7 +49,7 @@ public class ScoreboardManager {
 
   private List<Scoreboard> scoreboards = new ArrayList<>();
   private Main plugin = JavaPlugin.getPlugin(Main.class);
-  private String boardTitle = plugin.getChatManager().colorMessage("Scoreboard.Title");
+  private String boardTitle = plugin.getChatManager().colorRawMessage(LanguageManager.getLanguageMessage("Scoreboard.Title"));
   private Arena arena;
 
   public ScoreboardManager(Arena arena) {

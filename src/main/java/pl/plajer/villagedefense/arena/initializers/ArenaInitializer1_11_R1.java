@@ -49,6 +49,7 @@ import pl.plajer.villagedefense.creatures.v1_11_R1.RidableVillager;
 import pl.plajer.villagedefense.creatures.v1_11_R1.TankerZombie;
 import pl.plajer.villagedefense.creatures.v1_11_R1.VillagerSlayer;
 import pl.plajer.villagedefense.creatures.v1_11_R1.WorkingWolf;
+import pl.plajer.villagedefense.handlers.language.Messages;
 
 public class ArenaInitializer1_11_R1 extends Arena {
 
@@ -225,7 +226,7 @@ public class ArenaInitializer1_11_R1 extends Arena {
   public void spawnGolem(Location location, Player player) {
     RidableIronGolem ironGolem = new RidableIronGolem(location.getWorld());
     ironGolem.setPosition(location.getX(), location.getY(), location.getZ());
-    ironGolem.setCustomName(plugin.getChatManager().colorMessage("In-Game.Spawned-Golem-Name").replace("%player%", player.getName()));
+    ironGolem.setCustomName(plugin.getChatManager().colorMessage(Messages.SPAWNED_GOLEM_NAME).replace("%player%", player.getName()));
     ironGolem.setCustomNameVisible(true);
     world.addEntity(ironGolem, CreatureSpawnEvent.SpawnReason.CUSTOM);
     this.addIronGolem((org.bukkit.entity.IronGolem) ironGolem.getBukkitEntity());
@@ -235,7 +236,7 @@ public class ArenaInitializer1_11_R1 extends Arena {
     WorkingWolf wolf = new WorkingWolf(location.getWorld());
     wolf.setPosition(location.getX(), location.getY(), location.getZ());
     world.addEntity(wolf, CreatureSpawnEvent.SpawnReason.CUSTOM);
-    wolf.setCustomName(plugin.getChatManager().colorMessage("In-Game.Spawned-Wolf-Name").replace("%player%", player.getName()));
+    wolf.setCustomName(plugin.getChatManager().colorMessage(Messages.SPAWNED_WOLF_NAME).replace("%player%", player.getName()));
     wolf.setCustomNameVisible(true);
     wolf.setInvisible(false);
     ((Wolf) wolf.getBukkitEntity()).setOwner(player);

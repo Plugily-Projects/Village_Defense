@@ -31,6 +31,7 @@ import pl.plajer.villagedefense.api.StatsStorage;
 import pl.plajer.villagedefense.api.event.player.VillagePlayerStatisticChangeEvent;
 import pl.plajer.villagedefense.arena.Arena;
 import pl.plajer.villagedefense.arena.ArenaRegistry;
+import pl.plajer.villagedefense.handlers.language.Messages;
 import pl.plajer.villagedefense.kits.KitRegistry;
 import pl.plajer.villagedefense.kits.basekits.Kit;
 
@@ -113,7 +114,7 @@ public class User {
     if (getCooldown(cooldown) <= 0) {
       return true;
     }
-    String message = plugin.getChatManager().colorMessage("Kits.Ability-Still-On-Cooldown");
+    String message = plugin.getChatManager().colorMessage(Messages.KITS_ABILITY_STILL_ON_COOLDOWN);
     message = message.replaceFirst("%COOLDOWN%", Long.toString(getCooldown(cooldown)));
     player.sendMessage(message);
     return false;

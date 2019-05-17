@@ -24,6 +24,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import pl.plajer.villagedefense.handlers.language.Messages;
 import pl.plajer.villagedefense.kits.KitRegistry;
 import pl.plajer.villagedefense.kits.basekits.FreeKit;
 import pl.plajer.villagedefense.utils.ArmorHelper;
@@ -37,8 +38,8 @@ import pl.plajerlair.commonsbox.minecraft.compat.XMaterial;
 public class KnightKit extends FreeKit {
 
   public KnightKit() {
-    this.setName(getPlugin().getChatManager().colorMessage("Kits.Knight.Kit-Name"));
-    List<String> description = Utils.splitString(getPlugin().getChatManager().colorMessage("Kits.Knight.Kit-Description"), 40);
+    this.setName(getPlugin().getChatManager().colorMessage(Messages.KITS_KNIGHT_NAME));
+    List<String> description = Utils.splitString(getPlugin().getChatManager().colorMessage(Messages.KITS_KNIGHT_DESCRIPTION), 40);
     this.setDescription(description.toArray(new String[0]));
     KitRegistry.registerKit(this);
   }

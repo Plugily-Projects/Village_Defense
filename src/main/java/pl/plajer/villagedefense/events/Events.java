@@ -72,6 +72,7 @@ import pl.plajer.villagedefense.arena.options.ArenaOption;
 import pl.plajer.villagedefense.handlers.PermissionsManager;
 import pl.plajer.villagedefense.handlers.items.SpecialItem;
 import pl.plajer.villagedefense.handlers.items.SpecialItemManager;
+import pl.plajer.villagedefense.handlers.language.Messages;
 import pl.plajer.villagedefense.user.User;
 import pl.plajer.villagedefense.utils.CompatMaterialConstants;
 import pl.plajer.villagedefense.utils.Utils;
@@ -134,7 +135,7 @@ public class Events implements Listener {
       amount += event.getAmount();
       user.addStat(StatsStorage.StatisticType.ORBS, event.getAmount());
     }
-    event.getPlayer().sendMessage(plugin.getChatManager().colorMessage("In-Game.Orbs-Pickup").replace("%number%", String.valueOf(amount)));
+    event.getPlayer().sendMessage(plugin.getChatManager().colorMessage(Messages.ORBS_PICKUP).replace("%number%", String.valueOf(amount)));
   }
 
   @EventHandler
@@ -230,7 +231,7 @@ public class Events implements Listener {
       if (ironGolem.getCustomName() != null && ironGolem.getCustomName().contains(event.getPlayer().getName())) {
         event.getRightClicked().setPassenger(event.getPlayer());
       } else {
-        event.getPlayer().sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage("In-Game.Messages.Cant-Ride-Others-Golem"));
+        event.getPlayer().sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage(Messages.CANT_RIDE_OTHERS_GOLEM));
       }
     } else if (event.getRightClicked().getType() == EntityType.WOLF) {
       if (event.getPlayer().isSneaking()) {
@@ -264,7 +265,7 @@ public class Events implements Listener {
       return;
     }
     event.setCancelled(true);
-    event.getPlayer().sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage("In-Game.Only-Command-Ingame-Is-Leave"));
+    event.getPlayer().sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage(Messages.ONLY_COMMAND_IN_GAME_IS_LEAVE));
   }
 
   @EventHandler
@@ -477,7 +478,7 @@ public class Events implements Listener {
       }
       for (Player p : arena.getPlayers()) {
         p.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(p.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue() + 2.0);
-        p.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage("In-Game.Rotten-Flesh-Level-Up"));
+        p.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage(Messages.ROTTEN_FLESH_LEVEL_UP));
       }
     }
   }

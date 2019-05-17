@@ -22,7 +22,7 @@
   <groupId>pl.plajer</groupId>
   <artifactId>villagedefense</artifactId>
   <name>VillageDefense</name>
-    <version>4.2.0-pre-2</version>
+    <version>4.2.0</version>
   <licenses>
     <license>
       <name>GNU General Public License v3</name>
@@ -88,10 +88,6 @@
                   <relocation>
                       <pattern>com.github.stefvanschie.inventoryframework</pattern>
                       <shadedPattern>pl.plajer.villagedefense.utils.inventoryframework</shadedPattern>
-                  </relocation>
-                  <relocation>
-                      <pattern>org.apache.commons.io</pattern>
-                      <shadedPattern>pl.plajer.villagedefense.utils.commons.io</shadedPattern>
                   </relocation>
                   <relocation>
                       <pattern>com.zaxxer.hikari</pattern>

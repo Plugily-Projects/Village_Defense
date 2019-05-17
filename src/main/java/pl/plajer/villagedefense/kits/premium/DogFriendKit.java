@@ -32,6 +32,7 @@ import pl.plajer.villagedefense.arena.initializers.ArenaInitializer1_13_R1;
 import pl.plajer.villagedefense.arena.initializers.ArenaInitializer1_13_R2;
 import pl.plajer.villagedefense.arena.initializers.ArenaInitializer1_14_R1;
 import pl.plajer.villagedefense.handlers.PermissionsManager;
+import pl.plajer.villagedefense.handlers.language.Messages;
 import pl.plajer.villagedefense.kits.KitRegistry;
 import pl.plajer.villagedefense.kits.basekits.PremiumKit;
 import pl.plajer.villagedefense.utils.ArmorHelper;
@@ -45,8 +46,8 @@ import pl.plajerlair.commonsbox.minecraft.compat.XMaterial;
 public class DogFriendKit extends PremiumKit {
 
   public DogFriendKit() {
-    this.setName(getPlugin().getChatManager().colorMessage("Kits.Dog-Friend.Kit-Name"));
-    List<String> description = Utils.splitString(getPlugin().getChatManager().colorMessage("Kits.Dog-Friend.Kit-Description"), 40);
+    this.setName(getPlugin().getChatManager().colorMessage(Messages.KITS_DOG_FRIEND_NAME));
+    List<String> description = Utils.splitString(getPlugin().getChatManager().colorMessage(Messages.KITS_DOG_FRIEND_DESCRIPTION), 40);
     this.setDescription(description.toArray(new String[0]));
     KitRegistry.registerKit(this);
   }

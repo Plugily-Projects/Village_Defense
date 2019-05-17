@@ -42,6 +42,7 @@ import org.bukkit.util.Vector;
 
 import pl.plajer.villagedefense.arena.ArenaRegistry;
 import pl.plajer.villagedefense.handlers.PermissionsManager;
+import pl.plajer.villagedefense.handlers.language.Messages;
 import pl.plajer.villagedefense.kits.KitRegistry;
 import pl.plajer.villagedefense.kits.basekits.PremiumKit;
 import pl.plajer.villagedefense.user.User;
@@ -60,8 +61,8 @@ public class WizardKit extends PremiumKit implements Listener {
   private List<Player> wizardsOnDuty = new ArrayList<>();
 
   public WizardKit() {
-    setName(getPlugin().getChatManager().colorMessage("Kits.Wizard.Kit-Name"));
-    List<String> description = Utils.splitString(getPlugin().getChatManager().colorMessage("Kits.Wizard.Kit-Description"), 40);
+    setName(getPlugin().getChatManager().colorMessage(Messages.KITS_WIZARD_NAME));
+    List<String> description = Utils.splitString(getPlugin().getChatManager().colorMessage(Messages.KITS_WIZARD_DESCRIPTION), 40);
     this.setDescription(description.toArray(new String[0]));
     KitRegistry.registerKit(this);
     getPlugin().getServer().getPluginManager().registerEvents(this, getPlugin());
@@ -75,12 +76,12 @@ public class WizardKit extends PremiumKit implements Listener {
   @Override
   public void giveKitItems(Player player) {
     player.getInventory().addItem(new ItemBuilder(Material.BLAZE_ROD)
-        .name(getPlugin().getChatManager().colorMessage("Kits.Wizard.Staff-Item-Name"))
-        .lore(Utils.splitString(getPlugin().getChatManager().colorMessage("Kits.Wizard.Staff-Item-Lore"), 40))
+        .name(getPlugin().getChatManager().colorMessage(Messages.KITS_WIZARD_STAFF_ITEM_NAME))
+        .lore(Utils.splitString(getPlugin().getChatManager().colorMessage(Messages.KITS_WIZARD_STAFF_ITEM_LORE), 40))
         .build());
     player.getInventory().addItem(new ItemBuilder(new ItemStack(XMaterial.INK_SAC.parseMaterial(), 4))
-        .name(getPlugin().getChatManager().colorMessage("Kits.Wizard.Essence-Item-Name"))
-        .lore(Utils.splitString(getPlugin().getChatManager().colorMessage("Kits.Wizard.Essence-Item-Lore"), 40))
+        .name(getPlugin().getChatManager().colorMessage(Messages.KITS_WIZARD_ESSENCE_ITEM_NAME))
+        .lore(Utils.splitString(getPlugin().getChatManager().colorMessage(Messages.KITS_WIZARD_ESSENCE_ITEM_LORE), 40))
         .build());
 
     ArmorHelper.setColouredArmor(Color.GRAY, player);
@@ -96,8 +97,8 @@ public class WizardKit extends PremiumKit implements Listener {
   @Override
   public void reStock(Player player) {
     player.getInventory().addItem(new ItemBuilder(new ItemStack(XMaterial.INK_SAC.parseMaterial()))
-        .name(getPlugin().getChatManager().colorMessage("Kits.Wizard.Essence-Item-Name"))
-        .lore(Utils.splitString(getPlugin().getChatManager().colorMessage("Kits.Wizard.Essence-Item-Lore"), 40))
+        .name(getPlugin().getChatManager().colorMessage(Messages.KITS_WIZARD_ESSENCE_ITEM_NAME))
+        .lore(Utils.splitString(getPlugin().getChatManager().colorMessage(Messages.KITS_WIZARD_ESSENCE_ITEM_LORE), 40))
         .build());
   }
 
@@ -134,7 +135,7 @@ public class WizardKit extends PremiumKit implements Listener {
       return;
     }
     Player player = e.getPlayer();
-    if (stack.getItemMeta().getDisplayName().equals(getPlugin().getChatManager().colorMessage("Kits.Wizard.Essence-Item-Name"))) {
+    if (stack.getItemMeta().getDisplayName().equals(getPlugin().getChatManager().colorMessage(Messages.KITS_WIZARD_ESSENCE_ITEM_NAME))) {
       if (!user.checkCanCastCooldownAndMessage("essence")) {
         return;
       }
@@ -157,7 +158,7 @@ public class WizardKit extends PremiumKit implements Listener {
         wizardsOnDuty.remove(player);
       }, 20 * 15);
       user.setCooldown("essence", 15);
-    } else if (stack.getItemMeta().getDisplayName().equals(getPlugin().getChatManager().colorMessage("Kits.Wizard.Staff-Item-Name"))) {
+    } else if (stack.getItemMeta().getDisplayName().equals(getPlugin().getChatManager().colorMessage(Messages.KITS_WIZARD_STAFF_ITEM_NAME))) {
       if (!user.checkCanCastCooldownAndMessage("wizard_staff")) {
         return;
       }

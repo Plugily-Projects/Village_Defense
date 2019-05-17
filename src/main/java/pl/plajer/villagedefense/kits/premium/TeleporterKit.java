@@ -39,6 +39,7 @@ import org.bukkit.inventory.meta.SkullMeta;
 import pl.plajer.villagedefense.arena.Arena;
 import pl.plajer.villagedefense.arena.ArenaRegistry;
 import pl.plajer.villagedefense.handlers.PermissionsManager;
+import pl.plajer.villagedefense.handlers.language.Messages;
 import pl.plajer.villagedefense.kits.KitRegistry;
 import pl.plajer.villagedefense.kits.basekits.PremiumKit;
 import pl.plajer.villagedefense.utils.ArmorHelper;
@@ -53,8 +54,8 @@ import pl.plajerlair.commonsbox.minecraft.item.ItemBuilder;
 public class TeleporterKit extends PremiumKit implements Listener {
 
   public TeleporterKit() {
-    setName(getPlugin().getChatManager().colorMessage("Kits.Teleporter.Kit-Name"));
-    List<String> description = Utils.splitString(getPlugin().getChatManager().colorMessage("Kits.Teleporter.Kit-Description"), 40);
+    setName(getPlugin().getChatManager().colorMessage(Messages.KITS_TELEPORTER_NAME));
+    List<String> description = Utils.splitString(getPlugin().getChatManager().colorMessage(Messages.KITS_TELEPORTER_DESCRIPTION), 40);
     this.setDescription(description.toArray(new String[0]));
     getPlugin().getServer().getPluginManager().registerEvents(this, getPlugin());
     KitRegistry.registerKit(this);
@@ -73,8 +74,8 @@ public class TeleporterKit extends PremiumKit implements Listener {
     player.getInventory().addItem(new ItemStack(Material.COOKED_BEEF, 10));
     player.getInventory().addItem(new ItemStack(Material.SADDLE));
     player.getInventory().addItem(new ItemBuilder(Material.GHAST_TEAR)
-        .name(getPlugin().getChatManager().colorMessage("Kits.Teleporter.Game-Item-Name"))
-        .lore(Utils.splitString(getPlugin().getChatManager().colorMessage("Kits.Teleporter.Game-Item-Lore"), 40))
+        .name(getPlugin().getChatManager().colorMessage(Messages.KITS_TELEPORTER_GAME_ITEM_NAME))
+        .lore(Utils.splitString(getPlugin().getChatManager().colorMessage(Messages.KITS_TELEPORTER_GAME_ITEM_LORE), 40))
         .build());
   }
 
@@ -97,7 +98,7 @@ public class TeleporterKit extends PremiumKit implements Listener {
     if (arena == null || !Utils.isNamed(stack)) {
       return;
     }
-    if (!stack.getItemMeta().getDisplayName().equalsIgnoreCase(getPlugin().getChatManager().colorMessage("Kits.Teleporter.Game-Item-Name"))) {
+    if (!stack.getItemMeta().getDisplayName().equalsIgnoreCase(getPlugin().getChatManager().colorMessage(Messages.KITS_TELEPORTER_GAME_ITEM_NAME))) {
       return;
     }
     int rows = arena.getVillagers().size();
@@ -112,7 +113,7 @@ public class TeleporterKit extends PremiumKit implements Listener {
   }
 
   private void prepareTeleporterGui(Player player, Arena arena, int rows) {
-    Gui gui = new Gui(getPlugin(), rows, getPlugin().getChatManager().colorMessage("Kits.Teleporter.Game-Item-Menu-Name"));
+    Gui gui = new Gui(getPlugin(), rows, getPlugin().getChatManager().colorMessage(Messages.KITS_TELEPORTER_GAME_ITEM_MENU_NAME));
     gui.setOnGlobalClick(onClick -> onClick.setCancelled(true));
     OutlinePane pane = new OutlinePane(9, rows);
     gui.addPane(pane);
@@ -127,7 +128,7 @@ public class TeleporterKit extends PremiumKit implements Listener {
       meta.setLore(Collections.singletonList(""));
       skull.setItemMeta(meta);
       pane.addItem(new GuiItem(skull, onClick -> {
-        player.sendMessage(getPlugin().getChatManager().formatMessage(arena, getPlugin().getChatManager().colorMessage("Kits.Teleporter.Teleported-To-Player"), arenaPlayer));
+        player.sendMessage(getPlugin().getChatManager().formatMessage(arena, getPlugin().getChatManager().colorMessage(Messages.KITS_TELEPORTER_TELEPORTED_TO_PLAYER), arenaPlayer));
         player.teleport(arenaPlayer);
         Utils.playSound(player.getLocation(), "ENTITY_ENDERMEN_TELEPORT", "ENTITY_ENDERMAN_TELEPORT");
         player.getWorld().spawnParticle(Particle.PORTAL, player.getLocation(), 30);
@@ -142,7 +143,7 @@ public class TeleporterKit extends PremiumKit implements Listener {
         player.teleport(villager.getLocation());
         Utils.playSound(player.getLocation(), "ENTITY_ENDERMEN_TELEPORT", "ENTITY_ENDERMAN_TELEPORT");
         player.getWorld().spawnParticle(Particle.PORTAL, player.getLocation(), 30);
-        player.sendMessage(getPlugin().getChatManager().colorMessage("Kits.Teleporter.Teleported-To-Villager"));
+        player.sendMessage(getPlugin().getChatManager().colorMessage(Messages.KITS_TELEPORTER_TELEPORTED_TO_VILLAGER));
       }));
     }
     gui.show(player);

@@ -27,6 +27,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import pl.plajer.villagedefense.api.StatsStorage;
+import pl.plajer.villagedefense.handlers.language.Messages;
 import pl.plajer.villagedefense.kits.KitRegistry;
 import pl.plajer.villagedefense.kits.basekits.LevelKit;
 import pl.plajer.villagedefense.utils.ArmorHelper;
@@ -40,8 +41,8 @@ import pl.plajerlair.commonsbox.minecraft.compat.XMaterial;
 public class PuncherKit extends LevelKit {
 
   public PuncherKit() {
-    setName(getPlugin().getChatManager().colorMessage("Kits.Puncher.Kit-Name"));
-    List<String> description = Utils.splitString(getPlugin().getChatManager().colorMessage("Kits.Puncher.Kit-Description"), 40);
+    setName(getPlugin().getChatManager().colorMessage(Messages.KITS_PUNCHER_NAME));
+    List<String> description = Utils.splitString(getPlugin().getChatManager().colorMessage(Messages.KITS_PUNCHER_DESCRIPTION), 40);
     this.setDescription(description.toArray(new String[0]));
     setLevel(getKitsConfig().getInt("Required-Level.Puncher"));
     KitRegistry.registerKit(this);
@@ -69,6 +70,5 @@ public class PuncherKit extends LevelKit {
 
   @Override
   public void reStock(Player player) {
-
   }
 }

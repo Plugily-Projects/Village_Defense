@@ -62,6 +62,7 @@ import pl.plajer.villagedefense.commands.arguments.game.LeaveArgument;
 import pl.plajer.villagedefense.commands.arguments.game.SelectKitArgument;
 import pl.plajer.villagedefense.commands.arguments.game.StatsArgument;
 import pl.plajer.villagedefense.commands.completion.TabCompletion;
+import pl.plajer.villagedefense.handlers.language.Messages;
 import pl.plajer.villagedefense.handlers.setup.SetupInventory;
 import pl.plajer.villagedefense.utils.Utils;
 import pl.plajerlair.commonsbox.string.StringMatcher;
@@ -133,7 +134,7 @@ public class ArgumentsRegistry implements CommandExecutor {
             return true;
           }
           if (ArenaRegistry.getArena(args[0]) == null) {
-            sender.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage("Commands.No-Arena-Like-That"));
+            sender.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage(Messages.COMMANDS_NO_ARENA_LIKE_THAT));
             return true;
           }
 
@@ -176,7 +177,7 @@ public class ArgumentsRegistry implements CommandExecutor {
       //sending did you mean help
       List<StringMatcher.Match> matches = StringMatcher.match(args[0], entry.getValue().stream().map(CommandArgument::getArgumentName).collect(Collectors.toList()));
       if (!matches.isEmpty()) {
-        sender.sendMessage(plugin.getChatManager().colorMessage("Commands.Did-You-Mean").replace("%command%", label + " " + matches.get(0).getMatch()));
+        sender.sendMessage(plugin.getChatManager().colorMessage(Messages.COMMANDS_DID_YOU_MEAN).replace("%command%", label + " " + matches.get(0).getMatch()));
         return true;
       }
     }
@@ -184,12 +185,12 @@ public class ArgumentsRegistry implements CommandExecutor {
   }
 
   private void sendHelpCommand(CommandSender sender) {
-    sender.sendMessage(plugin.getChatManager().colorMessage("Commands.Main-Command.Header"));
-    sender.sendMessage(plugin.getChatManager().colorMessage("Commands.Main-Command.Description"));
+    sender.sendMessage(plugin.getChatManager().colorMessage(Messages.COMMANDS_MAIN_HEADER));
+    sender.sendMessage(plugin.getChatManager().colorMessage(Messages.COMMANDS_MAIN_DESCRIPTION));
     if (sender.hasPermission("villagedefense.admin")) {
-      sender.sendMessage(plugin.getChatManager().colorMessage("Commands.Main-Command.Admin-Bonus-Description"));
+      sender.sendMessage(plugin.getChatManager().colorMessage(Messages.COMMANDS_MAIN_ADMIN_BONUS_DESCRIPTION));
     }
-    sender.sendMessage(plugin.getChatManager().colorMessage("Commands.Main-Command.Footer"));
+    sender.sendMessage(plugin.getChatManager().colorMessage(Messages.COMMANDS_MAIN_FOOTER));
   }
 
   private void sendAdminHelpCommand(CommandSender sender) {
@@ -234,7 +235,7 @@ public class ArgumentsRegistry implements CommandExecutor {
         if (sender instanceof Player) {
           return true;
         }
-        sender.sendMessage(plugin.getChatManager().colorMessage("Commands.Only-By-Player"));
+        sender.sendMessage(plugin.getChatManager().colorMessage(Messages.COMMANDS_ONLY_BY_PLAYER));
         return false;
       default:
         return false;

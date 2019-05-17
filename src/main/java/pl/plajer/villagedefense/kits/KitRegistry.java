@@ -29,6 +29,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import pl.plajer.villagedefense.Main;
+import pl.plajer.villagedefense.handlers.language.Messages;
 import pl.plajer.villagedefense.kits.basekits.FreeKit;
 import pl.plajer.villagedefense.kits.basekits.Kit;
 import pl.plajer.villagedefense.kits.free.KnightKit;
@@ -148,9 +149,9 @@ public class KitRegistry {
 
   private static void setupKitSelectorItem() {
     plugin.getKitManager().setMaterial(Material.NETHER_STAR);
-    plugin.getKitManager().setItemName(plugin.getChatManager().colorMessage("Kits.Kit-Menu-Item-Name"));
-    plugin.getKitManager().setMenuName(plugin.getChatManager().colorMessage("Kits.Kit-Menu.Title"));
-    plugin.getKitManager().setDescription(new String[] {plugin.getChatManager().colorMessage("Kits.Open-Kit-Menu")});
+    plugin.getKitManager().setItemName(plugin.getChatManager().colorMessage(Messages.KITS_KIT_MENU_ITEM_NAME));
+    plugin.getKitManager().setMenuName(plugin.getChatManager().colorMessage(Messages.KITS_MENU_TITLE));
+    plugin.getKitManager().setDescription(new String[] {plugin.getChatManager().colorMessage(Messages.KITS_OPEN_KIT_MENU)});
   }
 
 }

@@ -40,6 +40,7 @@ import pl.plajer.villagedefense.arena.Arena;
 import pl.plajer.villagedefense.arena.ArenaRegistry;
 import pl.plajer.villagedefense.arena.ArenaUtils;
 import pl.plajer.villagedefense.handlers.ChatManager;
+import pl.plajer.villagedefense.handlers.language.Messages;
 import pl.plajer.villagedefense.utils.Debugger;
 import pl.plajerlair.commonsbox.minecraft.compat.XMaterial;
 
@@ -75,8 +76,8 @@ public class PowerupRegistry {
 
   private void registerPowerups() {
     ChatManager chatManager = plugin.getChatManager();
-    registerPowerup(new Powerup("MAP_CLEAN", chatManager.colorMessage("Powerups.Map-Clean-Powerup.Name"),
-        chatManager.colorMessage("Powerups.Map-Clean-Powerup.Description"), XMaterial.BLAZE_POWDER, pickup -> {
+    registerPowerup(new Powerup("MAP_CLEAN", chatManager.colorMessage(Messages.POWERUPS_MAP_CLEAN_NAME),
+        chatManager.colorMessage(Messages.POWERUPS_MAP_CLEAN_DESCRIPTION), XMaterial.BLAZE_POWDER, pickup -> {
       if (pickup.getArena().getZombies() != null) {
         ArenaUtils.removeSpawnedZombies(pickup.getArena());
         pickup.getArena().getZombies().clear();
@@ -86,8 +87,8 @@ public class PowerupRegistry {
         p.sendTitle(pickup.getPowerup().getName(), pickup.getPowerup().getDescription(), 5, 30, 5);
       }
     }));
-    registerPowerup(new Powerup("DOUBLE_DAMAGE", chatManager.colorMessage("Powerups.Double-Damage-Powerup.Name"),
-        chatManager.colorMessage("Powerups.Double-Damage-Powerup.Description"), XMaterial.REDSTONE, pickup -> {
+    registerPowerup(new Powerup("DOUBLE_DAMAGE", chatManager.colorMessage(Messages.POWERUPS_DOUBLE_DAMAGE_NAME),
+        chatManager.colorMessage(Messages.POWERUPS_DOUBLE_DAMAGE_DESCRIPTION), XMaterial.REDSTONE, pickup -> {
       for (Player p : pickup.getArena().getPlayers()) {
         p.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 20
             * plugin.getConfig().getInt("Powerups.List.Double-Damage-For-Players.Time", 15), 0, false, false));
@@ -100,8 +101,8 @@ public class PowerupRegistry {
         p.sendTitle(pickup.getPowerup().getName(), subTitle, 5, 30, 5);
       }
     }));
-    registerPowerup(new Powerup("GOLEM_RAID", chatManager.colorMessage("Powerups.Golem-Raid-Powerup.Name"),
-        chatManager.colorMessage("Powerups.Golem-Raid-Powerup.Description"), XMaterial.GOLDEN_APPLE, pickup -> {
+    registerPowerup(new Powerup("GOLEM_RAID", chatManager.colorMessage(Messages.POWERUPS_GOLEM_RAID_NAME),
+        chatManager.colorMessage(Messages.POWERUPS_GOLEM_RAID_DESCRIPTION), XMaterial.GOLDEN_APPLE, pickup -> {
       for (int i = 0; i < plugin.getConfig().getInt("Powerups.List.Golem-Raid.Golems-Amount", 3); i++) {
         pickup.getArena().spawnGolem(pickup.getArena().getStartLocation(), pickup.getPlayer());
       }
@@ -110,11 +111,11 @@ public class PowerupRegistry {
         p.sendTitle(pickup.getPowerup().getName(), pickup.getPowerup().getDescription(), 5, 30, 5);
       }
     }));
-    registerPowerup(new Powerup("HEALING", chatManager.colorMessage("Powerups.Healing-Powerup.Name"),
-        chatManager.colorMessage("Powerups.Healing-Powerup.Description"), XMaterial.IRON_INGOT, pickup -> {
+    registerPowerup(new Powerup("HEALING", chatManager.colorMessage(Messages.POWERUPS_HEALING_NAME),
+        chatManager.colorMessage(Messages.POWERUPS_HEALING_DESCRIPTION), XMaterial.IRON_INGOT, pickup -> {
       for (Player p : pickup.getArena().getPlayers()) {
-        p.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 20
-            * plugin.getConfig().getInt("Powerups.List.Healing-For-Players.Time-Of-Healing", 10), 0, false, false));
+        p.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 20 * plugin.getConfig()
+            .getInt("Powerups.List.Healing-For-Players.Time-Of-Healing", 10), 0, false, false));
       }
       String subTitle = pickup.getPowerup().getDescription();
       subTitle = StringUtils.replace(subTitle, "%time%", plugin.getConfig().getString("Powerups.List.Healing-For-Players.Time-Of-Healing", "10"));
@@ -123,8 +124,8 @@ public class PowerupRegistry {
         p.sendTitle(pickup.getPowerup().getName(), subTitle, 5, 30, 5);
       }
     }));
-    registerPowerup(new Powerup("ONE_SHOT_ONE_KILL", chatManager.colorMessage("Powerups.One-Shot-One-Kill-Powerup.Name"),
-        chatManager.colorMessage("Powerups.One-Shot-One-Kill-Powerup.Description"), XMaterial.DIAMOND_SWORD, pickup -> {
+    registerPowerup(new Powerup("ONE_SHOT_ONE_KILL", chatManager.colorMessage(Messages.POWERUPS_ONE_SHOT_ONE_KILL_NAME),
+        chatManager.colorMessage(Messages.POWERUPS_ONE_SHOT_ONE_KILL_DESCRIPTION), XMaterial.DIAMOND_SWORD, pickup -> {
       for (Player p : pickup.getArena().getPlayers()) {
         p.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 20
             * plugin.getConfig().getInt("Powerups.List.One-Shot-One-Kill.Time", 15), 255, false, false));

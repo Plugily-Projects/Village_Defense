@@ -33,6 +33,7 @@ import org.bukkit.inventory.ItemStack;
 import pl.plajer.villagedefense.api.StatsStorage;
 import pl.plajer.villagedefense.arena.Arena;
 import pl.plajer.villagedefense.arena.ArenaRegistry;
+import pl.plajer.villagedefense.handlers.language.Messages;
 import pl.plajer.villagedefense.kits.KitRegistry;
 import pl.plajer.villagedefense.kits.basekits.LevelKit;
 import pl.plajer.villagedefense.user.User;
@@ -48,8 +49,8 @@ public class WorkerKit extends LevelKit implements Listener {
 
   public WorkerKit() {
     this.setLevel(getKitsConfig().getInt("Required-Level.Worker"));
-    this.setName(getPlugin().getChatManager().colorMessage("Kits.Worker.Kit-Name"));
-    List<String> description = Utils.splitString(getPlugin().getChatManager().colorMessage("Kits.Worker.Kit-Description"), 40);
+    this.setName(getPlugin().getChatManager().colorMessage(Messages.KITS_WORKER_NAME));
+    List<String> description = Utils.splitString(getPlugin().getChatManager().colorMessage(Messages.KITS_WORKER_DESCRIPTION), 40);
     this.setDescription(description.toArray(new String[0]));
     KitRegistry.registerKit(this);
     getPlugin().getServer().getPluginManager().registerEvents(this, getPlugin());
@@ -98,8 +99,9 @@ public class WorkerKit extends LevelKit implements Listener {
       e.setCancelled(true);
       return;
     }
+    //to override world guard protection
     e.setCancelled(false);
-    e.getPlayer().sendMessage(getPlugin().getChatManager().colorMessage("Kits.Worker.Game-Item-Place-Message"));
+    e.getPlayer().sendMessage(getPlugin().getChatManager().colorMessage(Messages.KITS_WORKER_GAME_ITEM_PLACE_MESSAGE));
   }
 
 }

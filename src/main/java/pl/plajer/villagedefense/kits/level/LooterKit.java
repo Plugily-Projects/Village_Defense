@@ -31,6 +31,7 @@ import org.bukkit.inventory.ItemStack;
 
 import pl.plajer.villagedefense.api.StatsStorage;
 import pl.plajer.villagedefense.arena.ArenaRegistry;
+import pl.plajer.villagedefense.handlers.language.Messages;
 import pl.plajer.villagedefense.kits.KitRegistry;
 import pl.plajer.villagedefense.kits.basekits.LevelKit;
 import pl.plajer.villagedefense.user.User;
@@ -45,8 +46,8 @@ import pl.plajerlair.commonsbox.minecraft.compat.XMaterial;
 public class LooterKit extends LevelKit implements Listener {
 
   public LooterKit() {
-    setName(getPlugin().getChatManager().colorMessage("Kits.Looter.Kit-Name"));
-    List<String> description = Utils.splitString(getPlugin().getChatManager().colorMessage("Kits.Looter.Kit-Description"), 40);
+    setName(getPlugin().getChatManager().colorMessage(Messages.KITS_LOOTER_NAME));
+    List<String> description = Utils.splitString(getPlugin().getChatManager().colorMessage(Messages.KITS_LOOTER_DESCRIPTION), 40);
     this.setDescription(description.toArray(new String[0]));
     setLevel(getKitsConfig().getInt("Required-Level.Looter"));
     getPlugin().getServer().getPluginManager().registerEvents(this, getPlugin());

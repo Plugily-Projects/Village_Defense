@@ -34,11 +34,11 @@ import org.bukkit.configuration.file.FileConfiguration;
 
 import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.utils.MessageUtils;
-import pl.plajerlair.commonsbox.minecraft.configuration.ConfigUtils;
 import pl.plajer.villagedefense.utils.services.ServiceRegistry;
 import pl.plajer.villagedefense.utils.services.locale.Locale;
 import pl.plajer.villagedefense.utils.services.locale.LocaleRegistry;
 import pl.plajer.villagedefense.utils.services.locale.LocaleService;
+import pl.plajerlair.commonsbox.minecraft.configuration.ConfigUtils;
 
 public class LanguageManager {
 
@@ -46,6 +46,7 @@ public class LanguageManager {
   private static Locale pluginLocale;
   private static Properties properties = new Properties();
   private static FileConfiguration languageConfig;
+  private static boolean messagesIntegrityPassed = true;
 
   /**
    * Initializes language management system
@@ -63,6 +64,24 @@ public class LanguageManager {
     languageConfig = ConfigUtils.getConfig(plugin, "language");
     registerLocales();
     setupLocale();
+    if (isDefaultLanguageUsed()) {
+      validateMessagesIntegrity();
+    }
+  }
+
+  private static void validateMessagesIntegrity() {
+    for (Messages message : Messages.values()) {
+      if (languageConfig.isSet(message.getAccessor())) {
+        continue;
+      }
+      Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "[Village Defense] Language file integrity check failed! Message "
+          + message.getAccessor() + " not found! It will be set to default value of ERR_MSG_" + message.name() + "_NOT_FOUND");
+      languageConfig.set(message.getAccessor(), "ERR_MSG_" + message.name() + "_NOT_FOUND");
+      messagesIntegrityPassed = false;
+    }
+    if (!messagesIntegrityPassed) {
+      ConfigUtils.saveConfig(plugin, languageConfig, "language");
+    }
   }
 
   private static void registerLocales() {
@@ -100,9 +119,9 @@ public class LanguageManager {
         Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "[Village Defense] Locale service couldn't download latest locale for plugin! English locale will be used instead!");
         return;
       } else if (status == LocaleService.DownloadStatus.SUCCESS) {
-        Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "[Village Defense] Downloaded locale " + pluginLocale.getPrefix() + " properly!");
+        Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "[Village Defense] Downloaded locale " + pluginLocale.getPrefix() + " properly!");
       } else if (status == LocaleService.DownloadStatus.LATEST) {
-        Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "[Village Defense] Locale " + pluginLocale.getPrefix() + " is latest! Awesome!");
+        Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "[Village Defense] Locale " + pluginLocale.getPrefix() + " is latest! Awesome!");
       }
     } else {
       pluginLocale = LocaleRegistry.getByName("English");
@@ -148,31 +167,53 @@ public class LanguageManager {
     return pluginLocale.getName().equals("English");
   }
 
+  /**
+   * Low level language.yml file accessor.
+   * For normal usages we suggest ChatManager and its methods.
+   * <p>
+   * <p>
+   * Gets list of strings from language.yml flat file or locale if enabled
+   *
+   * @param path path to list
+   * @return raw list of language strings
+   * @see pl.plajer.villagedefense.handlers.ChatManager
+   */
   public static List<String> getLanguageList(String path) {
     if (isDefaultLanguageUsed()) {
       return languageConfig.getStringList(path);
     } else {
-      return Arrays.asList(plugin.getChatManager().colorMessage(path).split(";"));
+      return Arrays.asList(getLanguageMessage(path).split(";"));
     }
   }
 
-  public static String getLanguageMessage(String message) {
+  /**
+   * Low level language.yml file accessor.
+   * For normal usages we suggest ChatManager and its methods.
+   * <p>
+   * <p>
+   * Gets message from language.yml flat file or locale if enabled
+   *
+   * @param path messages to get
+   * @return raw language message
+   * @see pl.plajer.villagedefense.handlers.ChatManager
+   */
+  public static String getLanguageMessage(String path) {
     if (isDefaultLanguageUsed()) {
-      String str = languageConfig.getString(message, "ERR_MESSAGE_NOT_FOUND");
+      String str = languageConfig.getString(path, "ERR_MESSAGE_NOT_FOUND");
       if (str.equals("ERR_MESSAGE_NOT_FOUND")) {
         Bukkit.getConsoleSender().sendMessage("Game message not found!");
         Bukkit.getConsoleSender().sendMessage("Please regenerate your language.yml file! If error still occurs report it to the developer!");
-        Bukkit.getConsoleSender().sendMessage("Access string: " + message);
+        Bukkit.getConsoleSender().sendMessage("Access string: " + path);
       }
       return str;
     }
     try {
-      return properties.getProperty(ChatColor.translateAlternateColorCodes('&', message));
+      return properties.getProperty(path);
     } catch (NullPointerException ex) {
       MessageUtils.errorOccurred();
       Bukkit.getConsoleSender().sendMessage("Game message not found!");
       Bukkit.getConsoleSender().sendMessage("Please contact the developer!");
-      Bukkit.getConsoleSender().sendMessage("Access string: " + message);
+      Bukkit.getConsoleSender().sendMessage("Access string: " + path);
       return "ERR_MESSAGE_NOT_FOUND";
     }
   }

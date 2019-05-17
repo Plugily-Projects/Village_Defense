@@ -42,6 +42,7 @@ import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.api.StatsStorage;
 import pl.plajer.villagedefense.api.event.player.VillagePlayerEntityUpgradeEvent;
 import pl.plajer.villagedefense.arena.ArenaRegistry;
+import pl.plajer.villagedefense.handlers.language.Messages;
 import pl.plajer.villagedefense.user.User;
 import pl.plajer.villagedefense.utils.Utils;
 import pl.plajerlair.commonsbox.minecraft.compat.XMaterial;
@@ -115,7 +116,7 @@ public class EntityUpgradeMenu {
    * @param player player who will see inventory
    */
   public void openUpgradeMenu(LivingEntity en, Player player) {
-    Gui gui = new Gui(plugin, 6, plugin.getChatManager().colorMessage("Upgrade-Menu.Title"));
+    Gui gui = new Gui(plugin, 6, plugin.getChatManager().colorMessage(Messages.UPGRADES_MENU_TITLE));
     StaticPane pane = new StaticPane(9, 6);
     User user = plugin.getUserManager().getUser(player);
 
@@ -129,16 +130,16 @@ public class EntityUpgradeMenu {
         int nextTier = getTier(en, upgrade) + 1;
         int cost = upgrade.getCost(nextTier);
         if (nextTier > upgrade.getMaxTier()) {
-          player.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage("Upgrade-Menu.Max-Tier"));
+          player.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage(Messages.UPGRADES_MAX_TIER));
           return;
         }
         if (user.getStat(StatsStorage.StatisticType.ORBS) < cost) {
-          player.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage("Upgrade-Menu.Cannot-Afford"));
+          player.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage(Messages.UPGRADES_CANNOT_AFFORD));
           return;
         }
         user.setStat(StatsStorage.StatisticType.ORBS, user.getStat(StatsStorage.StatisticType.ORBS) - cost);
         player.sendMessage(plugin.getChatManager().getPrefix()
-            + plugin.getChatManager().colorMessage("Upgrade-Menu.Upgraded-Entity").replace("%tier%", String.valueOf(nextTier)));
+            + plugin.getChatManager().colorMessage(Messages.UPGRADES_UPGRADED_ENTITY).replace("%tier%", String.valueOf(nextTier)));
         applyUpgrade(en, upgrade);
 
         VillagePlayerEntityUpgradeEvent event = new VillagePlayerEntityUpgradeEvent(ArenaRegistry.getArena(player), en, player, upgrade, nextTier);
@@ -163,8 +164,8 @@ public class EntityUpgradeMenu {
 
   private void applyStatisticsBookOfEntityToPane(StaticPane pane, LivingEntity en) {
     pane.addItem(new GuiItem(new ItemBuilder(new ItemStack(Material.BOOK))
-        .name(plugin.getChatManager().colorMessage("Upgrade-Menu.Stats-Item.Name"))
-        .lore(Arrays.stream(plugin.getChatManager().colorMessage("Upgrade-Menu.Stats-Item.Description").split(";"))
+        .name(plugin.getChatManager().colorMessage(Messages.UPGRADES_STATS_ITEM_NAME))
+        .lore(Arrays.stream(plugin.getChatManager().colorMessage(Messages.UPGRADES_STATS_ITEM_DESCRIPTION).split(";"))
             .map(lore -> lore = plugin.getChatManager().colorRawMessage(lore)
                 .replace("%speed%", String.valueOf(getUpgrade("Speed").getValueForTier(getTier(en, getUpgrade("Speed")))))
                 .replace("%damage%", String.valueOf(getUpgrade("Damage").getValueForTier(getTier(en, getUpgrade("Damage")))))

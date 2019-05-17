@@ -27,9 +27,10 @@ import org.bukkit.plugin.java.JavaPlugin;
 import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.arena.Arena;
 import pl.plajer.villagedefense.handlers.language.LanguageManager;
+import pl.plajer.villagedefense.handlers.language.Messages;
 import pl.plajer.villagedefense.utils.MessageUtils;
-import pl.plajerlair.commonsbox.string.StringFormatUtils;
 import pl.plajer.villagedefense.utils.services.exception.ReportedException;
+import pl.plajerlair.commonsbox.string.StringFormatUtils;
 
 /**
  * Created by Tom on 27/07/2014.
@@ -54,21 +55,34 @@ public class ChatManager {
   }
 
   /**
+   * Broadcasts constant message to all players in arena
+   * Includes game prefix!
+   *
+   * @param arena   arena to get players from
+   * @param message constant message to broadcast
+   */
+  public void broadcast(Arena arena, Messages message) {
+    for (Player p : arena.getPlayers()) {
+      p.sendMessage(prefix + message.getMessage());
+    }
+  }
+
+  /**
    * Broadcasts message to all players in arena
    * Includes game prefix!
    *
    * @param arena   arena to get players from
    * @param message message to broadcast
    */
-  public void broadcast(Arena arena, String message) {
+  public void broadcastMessage(Arena arena, String message) {
     for (Player p : arena.getPlayers()) {
       p.sendMessage(prefix + message);
     }
   }
 
-  public String colorMessage(String message) {
+  public String colorMessage(Messages message) {
     try {
-      return ChatColor.translateAlternateColorCodes('&', LanguageManager.getLanguageMessage(message));
+      return ChatColor.translateAlternateColorCodes('&', LanguageManager.getLanguageMessage(message.getAccessor()));
     } catch (NullPointerException ex) {
       MessageUtils.errorOccurred();
       Bukkit.getConsoleSender().sendMessage("Game message not found!");
@@ -78,7 +92,7 @@ public class ChatManager {
         Bukkit.getConsoleSender().sendMessage("Locale message string not found! Please contact developer!");
         new ReportedException(JavaPlugin.getPlugin(Main.class), ex);
       }
-      Bukkit.getConsoleSender().sendMessage("Access string: " + message);
+      Bukkit.getConsoleSender().sendMessage("Access string: " + message.getAccessor());
       return "ERR_MESSAGE_NOT_FOUND";
     }
   }
@@ -110,13 +124,13 @@ public class ChatManager {
   public void broadcastAction(Arena a, Player p, ActionType action) {
     switch (action) {
       case JOIN:
-        broadcast(a, formatMessage(a, colorMessage("In-Game.Messages.Join"), p));
+        broadcastMessage(a, formatMessage(a, colorMessage(Messages.JOIN), p));
         break;
       case LEAVE:
-        broadcast(a, formatMessage(a, colorMessage("In-Game.Messages.Leave"), p));
+        broadcastMessage(a, formatMessage(a, colorMessage(Messages.LEAVE), p));
         break;
       case DEATH:
-        broadcast(a, formatMessage(a, colorMessage("In-Game.Messages.Death"), p));
+        broadcastMessage(a, formatMessage(a, colorMessage(Messages.DEATH), p));
         break;
       default:
         break;
