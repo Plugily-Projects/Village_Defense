@@ -1,24 +1,24 @@
 # Village Defense Changelog
 
-### 4.2.0 Beta 2 (08/14.05.2019)
-* Got working 1.14 build
-* Dog Friend and Golem Friend classes will spawn entities in 1.14 now
-* Fixed MySQL connection leak issues with VD API and Leaderboard command
-* Sounds on 1.14 are working properly now, no more exceptions
-* Sign game states are disabled on 1.14 for now
-
-**Not working things in 1.14:**
-* After in-game death you don't get instant respawn
-* Entities aren't ridable
-
-### 4.2.0 Beta 1 (28.04.2019 - 08.05.2019)
-* Relocate Plajer's Lair Services and TigerHix's ScoreboardLib packages in order to avoid conflict between our minigames if used on same server
-* Fixed data save on disable while using MySQL
-* /vda delete and /vda reload requires confirmation before execution now, you must type the command twice to confirm
-* Fixed update notify message was sent to everybody without proper permission check
-* Implemented HikariCP as a database connection pool library, it's better and jar size went 3 times smaller
-* First time database creation is now made async not in main server thread
-* Fixed item lores from shops got cropped, only price line should
+### 4.2.0 Release (28.04.2019 - 14.05.2019)
+   > Beta 2
+   * Got working 1.14 build
+   * Dog Friend and Golem Friend classes will spawn entities in 1.14 now
+   * Fixed MySQL connection leak issues with VD API and Leaderboard command
+   * Sounds on 1.14 are working properly now, no more exceptions
+   * Sign game states are disabled on 1.14 for now
+   > Beta 1
+   * Relocate Plajer's Lair Services and TigerHix's ScoreboardLib packages in order to avoid conflict between our minigames if used on same server
+   * Fixed data save on disable while using MySQL
+   * /vda delete and /vda reload requires confirmation before execution now, you must type the command twice to confirm
+   * Fixed update notify message was sent to everybody without proper permission check
+   * Implemented HikariCP as a database connection pool library, it's better and jar size went 3 times smaller
+   * First time database creation is now made async not in main server thread
+   * Fixed item lores from shops got cropped, only price line should
+   > **Not working things in 1.14:**
+   * After in-game death you don't get instant respawn
+   * Sign game states are disabled
+   * Entities aren't ridable
 
 ### 4.1.3 Release (06/25.04.2019)
 * Fixed [#611 exception when there was no section for some rewards](https://www.plajer.xyz/errorservice/viewer.php?id=611) but plugin attempted to register them
