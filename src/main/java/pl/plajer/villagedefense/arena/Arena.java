@@ -40,6 +40,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.entity.Villager;
 import org.bukkit.entity.Wolf;
 import org.bukkit.entity.Zombie;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import pl.plajer.villagedefense.ConfigPreferences;
@@ -63,8 +64,9 @@ import pl.plajerlair.commonsbox.minecraft.configuration.ConfigUtils;
  */
 public abstract class Arena extends BukkitRunnable {
 
-  private Main plugin;
-  private Random random = new Random();
+  private static final Main plugin = JavaPlugin.getPlugin(Main.class);
+  private static final Random random = new Random();
+  private final String id;
 
   private Set<Player> players = new HashSet<>();
   private List<Zombie> zombies = new ArrayList<>();
@@ -87,13 +89,11 @@ public abstract class Arena extends BukkitRunnable {
   private ArenaState arenaState = ArenaState.WAITING_FOR_PLAYERS;
   private BossBar gameBar;
   private String mapName = "";
-  private String id;
   private boolean fighting = false;
   private boolean forceStart = false;
   private boolean ready = true;
 
-  public Arena(String id, Main plugin) {
-    this.plugin = plugin;
+  public Arena(String id) {
     this.id = id;
     gameBar = Bukkit.createBossBar(plugin.getChatManager().colorMessage(Messages.BOSSBAR_MAIN_TITLE), BarColor.BLUE, BarStyle.SOLID);
     shopManager = new ShopManager(this);

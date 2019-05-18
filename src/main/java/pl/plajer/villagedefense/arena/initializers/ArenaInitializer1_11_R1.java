@@ -57,7 +57,7 @@ public class ArenaInitializer1_11_R1 extends Arena {
   private Main plugin;
 
   public ArenaInitializer1_11_R1(String id, Main plugin) {
-    super(id, plugin);
+    super(id);
     this.plugin = plugin;
   }
 

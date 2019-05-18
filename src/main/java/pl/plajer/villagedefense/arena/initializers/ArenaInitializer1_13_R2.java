@@ -63,7 +63,7 @@ public class ArenaInitializer1_13_R2 extends Arena {
   private Main plugin;
 
   public ArenaInitializer1_13_R2(String id, Main plugin) {
-    super(id, plugin);
+    super(id);
     this.plugin = plugin;
   }
 
