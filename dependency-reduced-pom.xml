@@ -158,16 +158,30 @@
           <artifactId>junit</artifactId>
           <version>4.12</version>
           <scope>test</scope>
+          <exclusions>
+              <exclusion>
+                  <artifactId>hamcrest-core</artifactId>
+                  <groupId>org.hamcrest</groupId>
+              </exclusion>
+          </exclusions>
       </dependency>
       <dependency>
-          <groupId>org.easymock</groupId>
-          <artifactId>easymock</artifactId>
-          <version>4.0.2</version>
+          <groupId>com.github.seeseemelk</groupId>
+          <artifactId>MockBukkit-v1.13</artifactId>
+          <version>0.1.1</version>
           <scope>test</scope>
           <exclusions>
               <exclusion>
-                  <artifactId>objenesis</artifactId>
-                  <groupId>org.objenesis</groupId>
+                  <artifactId>bukkit</artifactId>
+                  <groupId>org.bukkit</groupId>
+              </exclusion>
+              <exclusion>
+                  <artifactId>hamcrest-library</artifactId>
+                  <groupId>org.hamcrest</groupId>
+              </exclusion>
+              <exclusion>
+                  <artifactId>commons-io</artifactId>
+                  <groupId>commons-io</groupId>
               </exclusion>
           </exclusions>
       </dependency>

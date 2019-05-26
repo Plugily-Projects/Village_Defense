@@ -72,6 +72,11 @@
             <systemPath>${project.basedir}/lib/spigot/1.12.1-R0.1.jar</systemPath>
         </dependency>
         <dependency>
+            <groupId>org.spigotmc</groupId>
+            <artifactId>spigot-api</artifactId>
+            <version>1.12.2-R0.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
             <groupId>1.14_R1</groupId>
             <artifactId>spigot_1_14_R1</artifactId>
             <version>1.14</version>
@@ -175,7 +180,8 @@
         <dependency>
             <groupId>com.github.seeseemelk</groupId>
             <artifactId>MockBukkit-v1.13</artifactId>
-            <version>0.2.0</version>
+            <version>0.1.1</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 

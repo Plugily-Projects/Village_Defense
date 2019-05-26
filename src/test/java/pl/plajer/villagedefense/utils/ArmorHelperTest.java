@@ -19,28 +19,30 @@
 package pl.plajer.villagedefense.utils;
 
 import org.bukkit.Material;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 import org.junit.Assert;
 import org.junit.Test;
 
 import pl.plajer.villagedefense.MockUtils;
 
+import be.seeseemelk.mockbukkit.entity.PlayerMock;
+
 /**
  * @author Plajer
  * <p>
  * Created at 26.05.2019
  */
-public class WeaponHelperTest {
+public class ArmorHelperTest {
 
   @Test
-  public void getEnchantedBow() {
-    MockUtils.getServerMockSafe();
-    ItemStack stack = WeaponHelper.getEnchantedBow(Enchantment.ARROW_DAMAGE, 2);
-    Assert.assertSame(stack.getType(), Material.BOW);
-    Assert.assertTrue(stack.getEnchantments().containsKey(Enchantment.ARROW_DAMAGE));
-    Assert.assertEquals(2, (int) stack.getEnchantments().get(Enchantment.ARROW_DAMAGE));
-    System.out.println("> WeaponHelper#getEnchantedBow true material and enchantment with level | PASSED");
+  public void setArmor() {
+    PlayerMock player = MockUtils.getServerMockSafe().addPlayer();
+    ArmorHelper.setArmor(player, ArmorHelper.ArmorType.IRON);
+    Assert.assertEquals(new ItemStack(Material.IRON_HELMET), player.getInventory().getHelmet());
+    Assert.assertEquals(new ItemStack(Material.IRON_CHESTPLATE), player.getInventory().getChestplate());
+    Assert.assertEquals(new ItemStack(Material.IRON_LEGGINGS), player.getInventory().getLeggings());
+    Assert.assertEquals(new ItemStack(Material.IRON_BOOTS), player.getInventory().getBoots());
+    System.out.println("> ArmorHelper#setArmor equal set for IRON armor type | PASSED");
   }
 
 }

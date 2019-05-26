@@ -16,31 +16,23 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package pl.plajer.villagedefense.utils;
+package pl.plajer.villagedefense;
 
-import org.bukkit.Material;
-import org.bukkit.enchantments.Enchantment;
-import org.bukkit.inventory.ItemStack;
-import org.junit.Assert;
-import org.junit.Test;
-
-import pl.plajer.villagedefense.MockUtils;
+import be.seeseemelk.mockbukkit.MockBukkit;
+import be.seeseemelk.mockbukkit.ServerMock;
 
 /**
  * @author Plajer
  * <p>
  * Created at 26.05.2019
  */
-public class WeaponHelperTest {
+public class MockUtils {
 
-  @Test
-  public void getEnchantedBow() {
-    MockUtils.getServerMockSafe();
-    ItemStack stack = WeaponHelper.getEnchantedBow(Enchantment.ARROW_DAMAGE, 2);
-    Assert.assertSame(stack.getType(), Material.BOW);
-    Assert.assertTrue(stack.getEnchantments().containsKey(Enchantment.ARROW_DAMAGE));
-    Assert.assertEquals(2, (int) stack.getEnchantments().get(Enchantment.ARROW_DAMAGE));
-    System.out.println("> WeaponHelper#getEnchantedBow true material and enchantment with level | PASSED");
+  public static ServerMock getServerMockSafe() {
+    if (MockBukkit.isMocked()) {
+      return MockBukkit.getMock();
+    }
+    return MockBukkit.mock();
   }
 
 }
