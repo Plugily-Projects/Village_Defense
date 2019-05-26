@@ -1,7 +1,7 @@
 # Village Defense Changelog
 
-### 4.2.1 Release (25.05.2019)
-*
+### 4.2.1 Release (25/26.05.2019)
+* Fixed possible issues with scoreboard colors
 
 ### 4.2.0 Release (28.04.2019 - 17.05.2019)
    * Blocker kit no longer has very long lore in barrier item and no longer receives separate barrier item on restock
