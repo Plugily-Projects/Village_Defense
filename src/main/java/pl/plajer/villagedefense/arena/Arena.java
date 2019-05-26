@@ -313,6 +313,7 @@ public abstract class Arena extends BukkitRunnable {
           }
           players.addAll(plugin.getServer().getOnlinePlayers());
         }
+        gameBar.setTitle(plugin.getChatManager().colorMessage(Messages.BOSSBAR_WAITING_FOR_PLAYERS));
         break;
       default:
         break; //o.o?

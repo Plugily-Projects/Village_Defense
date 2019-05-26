@@ -218,6 +218,10 @@ public class LanguageManager {
     }
   }
 
+  public static void reloadConfig() {
+    languageConfig = ConfigUtils.getConfig(plugin, "language");
+  }
+
   public static Locale getPluginLocale() {
     return pluginLocale;
   }
