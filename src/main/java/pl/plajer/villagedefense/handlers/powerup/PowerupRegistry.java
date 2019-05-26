@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.logging.Level;
 
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
@@ -61,20 +62,22 @@ public class PowerupRegistry {
       return;
     }
     if (!plugin.getServer().getPluginManager().isPluginEnabled("HolographicDisplays")) {
-      Debugger.debug(Debugger.Level.WARN, "Power up module: Holographic Displays dependency not found, disabling");
+      Debugger.debug(Level.WARNING, "[PowerupRegistry] Holographic Displays dependency not found, disabling");
       return;
     }
     enabled = true;
     this.plugin = plugin;
-    Debugger.debug(Debugger.Level.INFO, "Registering power ups module!");
     registerPowerups();
     if (registeredPowerups.isEmpty()) {
-      Debugger.debug(Debugger.Level.WARN, "Disabling power up module, all power ups disabled");
+      Debugger.debug(Level.WARNING, "[PowerupRegistry] Disabling power up module, all power ups disabled");
       enabled = false;
     }
   }
 
   private void registerPowerups() {
+    Debugger.debug(Level.INFO, "[PowerupRegistry] Registering power ups");
+    long start = System.currentTimeMillis();
+
     ChatManager chatManager = plugin.getChatManager();
     registerPowerup(new Powerup("MAP_CLEAN", chatManager.colorMessage(Messages.POWERUPS_MAP_CLEAN_NAME),
         chatManager.colorMessage(Messages.POWERUPS_MAP_CLEAN_DESCRIPTION), XMaterial.BLAZE_POWDER, pickup -> {
@@ -137,6 +140,7 @@ public class PowerupRegistry {
         p.sendTitle(pickup.getPowerup().getName(), subTitle, 5, 30, 5);
       }
     }));
+    Debugger.debug(Level.INFO, "[PowerupRegistry] Registered all powerups took {0}ms", System.currentTimeMillis() - start);
   }
 
   /**

@@ -23,6 +23,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.logging.Level;
 
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
@@ -66,7 +67,7 @@ public class RewardsFactory {
       return;
     }
     if (!config.contains("rewards")) {
-      Debugger.debug(Debugger.Level.WARN, "[RewardsFactory] Rewards section not found in the file. Rewards won't be loaded.");
+      Debugger.debug(Level.WARNING, "[RewardsFactory] Rewards section not found in the file. Rewards won't be loaded.");
       return;
     }
     Arena arena = ArenaRegistry.getArena(player);
@@ -117,12 +118,15 @@ public class RewardsFactory {
     if (!enabled) {
       return;
     }
+    Debugger.debug(Level.INFO, "[RewardsFactory] Starting rewards registration");
+    long start = System.currentTimeMillis();
+
     Map<Reward.RewardType, Integer> registeredRewards = new EnumMap<>(Reward.RewardType.class);
     for (Reward.RewardType rewardType : Reward.RewardType.values()) {
       if (rewardType == Reward.RewardType.END_WAVE) {
         ConfigurationSection section = config.getConfigurationSection("rewards." + rewardType.getPath());
         if (section == null) {
-          Debugger.debug(Debugger.Level.WARN, "Rewards section " + rewardType.getPath() + " is missing! Was it manually removed?");
+          Debugger.debug(Level.WARNING, "Rewards section {0} is missing! Was it manually removed?", rewardType.getPath());
           continue;
         }
         for (String key : section.getKeys(false)) {
@@ -139,8 +143,9 @@ public class RewardsFactory {
       }
     }
     for (Map.Entry<Reward.RewardType, Integer> entry : registeredRewards.entrySet()) {
-      Debugger.debug(Debugger.Level.INFO, "[RewardsFactory] Registered " + entry.getValue() + " " + entry.getKey().name() + " rewards!");
+      Debugger.debug(Level.INFO, "[RewardsFactory] Registered {0} {1} rewards!", entry.getValue(), entry.getKey().name());
     }
+    Debugger.debug(Level.INFO, "[RewardsFactory] Registered all rewards took {0}ms", System.currentTimeMillis() - start);
   }
 
 }

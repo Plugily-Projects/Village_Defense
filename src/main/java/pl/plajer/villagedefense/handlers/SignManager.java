@@ -22,6 +22,7 @@ import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
 
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
@@ -181,7 +182,7 @@ public class SignManager implements Listener {
     loadedSigns.clear();
     FileConfiguration config = ConfigUtils.getConfig(plugin, "arenas");
     if (!config.contains("instances")) {
-      Debugger.debug(Debugger.Level.WARN, "Arena instances not found. Signs not loaded");
+      Debugger.debug(Level.WARNING, "No arena instances found. Signs won't be loaded");
       return;
     }
 
@@ -192,13 +193,16 @@ public class SignManager implements Listener {
           loadedSigns.put((Sign) loc.getBlock().getState(), ArenaRegistry.getArena(path));
           continue;
         }
-        Debugger.debug(Debugger.Level.WARN, "Block at loc " + LocationSerializer.locationToString(loc) + " for arena " + path + " not a sign");
+        Debugger.debug(Level.WARNING, "Block at location {0} for arena {1} is not a sign!", LocationSerializer.locationToString(loc), path);
       }
     }
   }
 
   private void updateSignScheduler() {
     Bukkit.getScheduler().runTaskTimer(plugin, () -> {
+      Debugger.performance("SignUpdate", "[PerformanceMonitor] [SignUpdate] Updating signs");
+      long start = System.currentTimeMillis();
+
       for (Map.Entry<Sign, Arena> entry : loadedSigns.entrySet()) {
         Sign sign = entry.getKey();
         for (int i = 0; i < signLines.size(); i++) {
@@ -243,6 +247,7 @@ public class SignManager implements Listener {
         }
         sign.update();
       }
+      Debugger.performance("SignUpdate", "[PerformanceMonitor] [SignUpdate] Updated signs took {0}ms", System.currentTimeMillis() - start);
     }, 10, 10);
   }
 

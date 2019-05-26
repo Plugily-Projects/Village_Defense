@@ -18,6 +18,8 @@
 
 package pl.plajer.villagedefense.utils;
 
+import java.util.logging.Level;
+
 import org.bukkit.configuration.file.FileConfiguration;
 
 import pl.plajer.villagedefense.ConfigPreferences;
@@ -45,7 +47,7 @@ public class LegacyDataFixer {
     if (config.getInt("data-version", 0) >= DATA_VERSION || plugin.getConfigPreferences().getOption(ConfigPreferences.Option.DATABASE_ENABLED)) {
       return;
     }
-    Debugger.debug(Debugger.Level.TASK, "Legacy fixer started, fixing player data for yaml storage...");
+    Debugger.debug(Level.WARNING, "Legacy fixer started, fixing player data for yaml storage...");
 
     int migrated = 0;
 
@@ -65,12 +67,12 @@ public class LegacyDataFixer {
         config.set(key + "." + stat, null);
         migratedLocal++;
       }
-      Debugger.debug(Debugger.Level.INFO, "[Legacy fixer] Migrated new record, " + migratedLocal + " records fixed");
+      Debugger.debug(Level.WARNING, "[Legacy fixer] Migrated new record {0} records fixed", migratedLocal);
       migrated++;
     }
     config.set("data-version", DATA_VERSION);
     ConfigUtils.saveConfig(plugin, config, "stats");
-    Debugger.debug(Debugger.Level.INFO, "[Legacy fixer] Fixed and migrated " + migrated + " records. Data scheme fixed.");
+    Debugger.debug(Level.WARNING, "[Legacy fixer] Fixed and migrated {0} records. Data scheme fixed.", migrated);
   }
 
 }

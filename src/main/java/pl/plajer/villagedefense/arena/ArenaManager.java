@@ -19,6 +19,7 @@
 package pl.plajer.villagedefense.arena;
 
 import java.util.List;
+import java.util.logging.Level;
 
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
@@ -32,6 +33,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.jetbrains.annotations.NotNull;
 
 import pl.plajer.villagedefense.ConfigPreferences;
 import pl.plajer.villagedefense.Main;
@@ -71,99 +73,102 @@ public class ArenaManager {
    * Calls VillageGameJoinAttemptEvent.
    * Can be cancelled only via above-mentioned event
    *
-   * @param p player to join
+   * @param player player to join
    * @see VillageGameJoinAttemptEvent
    */
-  public static void joinAttempt(Player p, Arena arena) {
-    Debugger.debug(Debugger.Level.INFO, "Initial join attempt, " + p.getName());
-    if (!canJoinArenaAndMessage(p, arena)) {
+  public static void joinAttempt(@NotNull Player player, @NotNull Arena arena) {
+    Debugger.debug(Level.INFO, "[{0}] Initial join attempt for {1}", arena.getId(), player.getName());
+    if (!canJoinArenaAndMessage(player, arena)) {
       return;
     }
-    Debugger.debug(Debugger.Level.INFO, "Final join attempt, " + p.getName());
-    Debugger.debug(Debugger.Level.INFO, "Join task, " + p.getName());
-    arena.getPlayers().add(p);
-    User user = plugin.getUserManager().getUser(p);
+    Debugger.debug(Level.INFO, "[{0}] Checked join attempt for {1}", arena.getId(), player.getName());
+    long start = System.currentTimeMillis();
+
+    arena.getPlayers().add(player);
+    User user = plugin.getUserManager().getUser(player);
     arena.getScoreboardManager().createScoreboard(user);
     if ((arena.getArenaState() == ArenaState.IN_GAME || (arena.getArenaState() == ArenaState.STARTING && arena.getTimer() <= 3) || arena.getArenaState() == ArenaState.ENDING)) {
       if (plugin.getConfigPreferences().getOption(ConfigPreferences.Option.INVENTORY_MANAGER_ENABLED)) {
-        InventorySerializer.saveInventoryToFile(plugin, p);
+        InventorySerializer.saveInventoryToFile(plugin, player);
       }
-      p.teleport(arena.getStartLocation());
-      p.sendMessage(plugin.getChatManager().colorMessage(Messages.YOU_ARE_SPECTATOR));
-      p.getInventory().clear();
+      player.teleport(arena.getStartLocation());
+      player.sendMessage(plugin.getChatManager().colorMessage(Messages.YOU_ARE_SPECTATOR));
+      player.getInventory().clear();
 
-      p.getInventory().setItem(0, new ItemBuilder(XMaterial.COMPASS.parseItem()).name(plugin.getChatManager().colorMessage(Messages.SPECTATOR_ITEM_NAME)).build());
-      p.getInventory().setItem(4, new ItemBuilder(XMaterial.COMPARATOR.parseItem()).name(plugin.getChatManager().colorMessage(Messages.SPECTATOR_SETTINGS_MENU_ITEM_NAME)).build());
-      p.getInventory().setItem(8, SpecialItemManager.getSpecialItem("Leave").getItemStack());
+      player.getInventory().setItem(0, new ItemBuilder(XMaterial.COMPASS.parseItem()).name(plugin.getChatManager().colorMessage(Messages.SPECTATOR_ITEM_NAME)).build());
+      player.getInventory().setItem(4, new ItemBuilder(XMaterial.COMPARATOR.parseItem()).name(plugin.getChatManager().colorMessage(Messages.SPECTATOR_SETTINGS_MENU_ITEM_NAME)).build());
+      player.getInventory().setItem(8, SpecialItemManager.getSpecialItem("Leave").getItemStack());
 
-      for (PotionEffect potionEffect : p.getActivePotionEffects()) {
-        p.removePotionEffect(potionEffect.getType());
+      for (PotionEffect potionEffect : player.getActivePotionEffects()) {
+        player.removePotionEffect(potionEffect.getType());
       }
 
-      p.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(p.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue() + arena.getOption(ArenaOption.ROTTEN_FLESH_LEVEL));
-      p.setHealth(p.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue());
-      p.setFoodLevel(20);
-      p.setGameMode(GameMode.SURVIVAL);
-      p.setAllowFlight(true);
-      p.setFlying(true);
+      player.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue() + arena.getOption(ArenaOption.ROTTEN_FLESH_LEVEL));
+      player.setHealth(player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue());
+      player.setFoodLevel(20);
+      player.setGameMode(GameMode.SURVIVAL);
+      player.setAllowFlight(true);
+      player.setFlying(true);
       user.setSpectator(true);
       user.setStat(StatsStorage.StatisticType.ORBS, 0);
-      p.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, Integer.MAX_VALUE, 0));
-      ArenaUtils.hidePlayer(p, arena);
+      player.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, Integer.MAX_VALUE, 0));
+      ArenaUtils.hidePlayer(player, arena);
 
       for (Player spectator : arena.getPlayers()) {
         if (plugin.getUserManager().getUser(spectator).isSpectator()) {
-          p.hidePlayer(spectator);
+          player.hidePlayer(spectator);
         } else {
-          p.showPlayer(spectator);
+          player.showPlayer(spectator);
         }
       }
+      Debugger.debug(Level.INFO, "[{0}] Final join attempt as spectator for {1} took {2}ms", arena.getId(), player.getName(), System.currentTimeMillis() - start);
       return;
     }
     if (plugin.getConfigPreferences().getOption(ConfigPreferences.Option.INVENTORY_MANAGER_ENABLED)) {
-      InventorySerializer.saveInventoryToFile(plugin, p);
+      InventorySerializer.saveInventoryToFile(plugin, player);
     }
-    p.teleport(arena.getLobbyLocation());
-    p.setHealth(p.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue());
-    p.setFoodLevel(20);
-    p.getInventory().setArmorContents(new ItemStack[] {new ItemStack(Material.AIR), new ItemStack(Material.AIR), new ItemStack(Material.AIR), new ItemStack(Material.AIR)});
-    p.setFlying(false);
-    p.setAllowFlight(false);
-    p.getInventory().clear();
-    arena.doBarAction(Arena.BarAction.ADD, p);
-    if (!plugin.getUserManager().getUser(p).isSpectator()) {
-      plugin.getChatManager().broadcastAction(arena, p, ChatManager.ActionType.JOIN);
+    player.teleport(arena.getLobbyLocation());
+    player.setHealth(player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue());
+    player.setFoodLevel(20);
+    player.getInventory().setArmorContents(new ItemStack[] {new ItemStack(Material.AIR), new ItemStack(Material.AIR), new ItemStack(Material.AIR), new ItemStack(Material.AIR)});
+    player.setFlying(false);
+    player.setAllowFlight(false);
+    player.getInventory().clear();
+    arena.doBarAction(Arena.BarAction.ADD, player);
+    if (!plugin.getUserManager().getUser(player).isSpectator()) {
+      plugin.getChatManager().broadcastAction(arena, player, ChatManager.ActionType.JOIN);
     }
     user.setKit(KitRegistry.getDefaultKit());
-    plugin.getKitManager().giveKitMenuItem(p);
+    plugin.getKitManager().giveKitMenuItem(player);
     if (arena.getArenaState() == ArenaState.STARTING || arena.getArenaState() == ArenaState.WAITING_FOR_PLAYERS) {
-      p.getInventory().setItem(SpecialItemManager.getSpecialItem("Leave").getSlot(), SpecialItemManager.getSpecialItem("Leave").getItemStack());
+      player.getInventory().setItem(SpecialItemManager.getSpecialItem("Leave").getSlot(), SpecialItemManager.getSpecialItem("Leave").getItemStack());
     }
-    p.updateInventory();
-    for (Player player : arena.getPlayers()) {
-      ArenaUtils.showPlayer(player, arena);
-      player.setExp(1);
-      player.setLevel(0);
+    player.updateInventory();
+    for (Player arenaPlayer : arena.getPlayers()) {
+      ArenaUtils.showPlayer(arenaPlayer, arena);
+      arenaPlayer.setExp(1);
+      arenaPlayer.setLevel(0);
     }
-    Debugger.debug(Debugger.Level.INFO, "Join task end, " + p.getName());
+    Debugger.debug(Level.INFO, "[{0}] Final join attempt as player for {1} took {2}ms", arena.getId(), player.getName(), System.currentTimeMillis() - start);
   }
 
-  private static boolean canJoinArenaAndMessage(Player p, Arena arena) {
+  private static boolean canJoinArenaAndMessage(Player player, Arena arena) {
     if (!arena.isReady()) {
-      p.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage(Messages.ARENA_NOT_CONFIGURED));
+      player.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage(Messages.ARENA_NOT_CONFIGURED));
       return false;
     }
 
-    VillageGameJoinAttemptEvent event = new VillageGameJoinAttemptEvent(p, arena);
+    VillageGameJoinAttemptEvent event = new VillageGameJoinAttemptEvent(player, arena);
     Bukkit.getPluginManager().callEvent(event);
     if (event.isCancelled()) {
-      p.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage(Messages.JOIN_CANCELLED_VIA_API));
+      player.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage(Messages.JOIN_CANCELLED_VIA_API));
       return false;
     }
 
     if (!plugin.getConfigPreferences().getOption(ConfigPreferences.Option.BUNGEE_ENABLED)) {
-      if (!(p.hasPermission(PermissionsManager.getJoinPerm().replace("<arena>", "*")) || p.hasPermission(PermissionsManager.getJoinPerm().replace("<arena>", arena.getId())))) {
-        p.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage(Messages.JOIN_NO_PERMISSION));
+      String perm = PermissionsManager.getJoinPerm();
+      if (!(player.hasPermission(perm.replace("<arena>", "*")) || player.hasPermission(perm.replace("<arena>", arena.getId())))) {
+        player.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage(Messages.JOIN_NO_PERMISSION));
         return false;
       }
     }
@@ -177,10 +182,12 @@ public class ArenaManager {
    * @param player player to join
    * @see VillageGameLeaveAttemptEvent
    */
-  public static void leaveAttempt(Player player, Arena arena) {
+  public static void leaveAttempt(@NotNull Player player, @NotNull Arena arena) {
+    Debugger.debug(Level.INFO, "[{0}] Initial leave attempt of {1}", arena.getId(), player.getName());
+    long start = System.currentTimeMillis();
+
     player.setExp(0);
     player.setLevel(0);
-    Debugger.debug(Debugger.Level.INFO, "Initial leave attempt, " + player.getName());
     VillageGameLeaveAttemptEvent villageGameLeaveAttemptEvent = new VillageGameLeaveAttemptEvent(player, arena);
     Bukkit.getPluginManager().callEvent(villageGameLeaveAttemptEvent);
     User user = plugin.getUserManager().getUser(player);
@@ -205,7 +212,7 @@ public class ArenaManager {
     }
     ArenaUtils.resetPlayerAfterGame(player);
     arena.teleportToEndLocation(player);
-    Debugger.debug(Debugger.Level.INFO, "Final leave attempt, " + player.getName());
+    Debugger.debug(Level.INFO, "[{0}] Final leave attempt for {1} took {2}ms", arena.getId(), player.getName(), System.currentTimeMillis() - start);
   }
 
   /**
@@ -214,8 +221,10 @@ public class ArenaManager {
    * @param quickStop should arena be stopped immediately? (use only in important cases)
    * @see VillageGameStopEvent
    */
-  public static void stopGame(boolean quickStop, Arena arena) {
-    Debugger.debug(Debugger.Level.INFO, "Game stop event initiate, arena " + arena.getId());
+  public static void stopGame(boolean quickStop, @NotNull Arena arena) {
+    Debugger.debug(Level.INFO, "[{0}] Game stop event start", arena.getId());
+    long start = System.currentTimeMillis();
+
     VillageGameStopEvent villageGameStopEvent = new VillageGameStopEvent(arena);
     Bukkit.getPluginManager().callEvent(villageGameStopEvent);
     String summaryEnding;
@@ -248,20 +257,20 @@ public class ArenaManager {
     arena.setTimer(arena.getVillagers().isEmpty() ? 10 : 5);
     arena.getMapRestorerManager().fullyRestoreArena();
     arena.setArenaState(ArenaState.ENDING);
-    Debugger.debug(Debugger.Level.INFO, "Game stop event finish, arena " + arena.getId());
+    Debugger.debug(Level.INFO, "[{0}] Game stop event finished took {1}ms", arena.getId(), System.currentTimeMillis() - start);
   }
 
-  private static String formatSummaryPlaceholders(String msg, Arena a, User user, String summary) {
+  private static String formatSummaryPlaceholders(String msg, Arena arena, User user, String summary) {
     String formatted = msg;
     formatted = StringUtils.replace(formatted, "%summary%", summary);
-    formatted = StringUtils.replace(formatted, "%wave%", String.valueOf(a.getWave()));
+    formatted = StringUtils.replace(formatted, "%wave%", String.valueOf(arena.getWave()));
     formatted = StringUtils.replace(formatted, "%player_best_wave%", String.valueOf(user.getStat(StatsStorage.StatisticType.HIGHEST_WAVE)));
-    formatted = StringUtils.replace(formatted, "%zombies%", String.valueOf(a.getOption(ArenaOption.TOTAL_KILLED_ZOMBIES)));
-    formatted = StringUtils.replace(formatted, "%orbs_spent%", String.valueOf(a.getOption(ArenaOption.TOTAL_ORBS_SPENT)));
+    formatted = StringUtils.replace(formatted, "%zombies%", String.valueOf(arena.getOption(ArenaOption.TOTAL_KILLED_ZOMBIES)));
+    formatted = StringUtils.replace(formatted, "%orbs_spent%", String.valueOf(arena.getOption(ArenaOption.TOTAL_ORBS_SPENT)));
     return formatted;
   }
 
-  private static void spawnFireworks(Arena arena, Player p) {
+  private static void spawnFireworks(Arena arena, Player player) {
     if (!plugin.getConfig().getBoolean("Firework-When-Game-Ends", true)) {
       return;
     }
@@ -269,11 +278,11 @@ public class ArenaManager {
       int i = 0;
 
       public void run() {
-        if (i == 4 || !arena.getPlayers().contains(p)) {
+        if (i == 4 || !arena.getPlayers().contains(player)) {
           this.cancel();
           return;
         }
-        MiscUtils.spawnRandomFirework(p.getLocation());
+        MiscUtils.spawnRandomFirework(player.getLocation());
         i++;
       }
     }.runTaskTimer(plugin, 30, 30);
@@ -285,7 +294,7 @@ public class ArenaManager {
    *
    * @see VillageWaveEndEvent
    */
-  public static void endWave(Arena arena) {
+  public static void endWave(@NotNull Arena arena) {
     if (plugin.getConfig().getBoolean("Wave-Limit.Enabled", false) && arena.getWave() >= plugin.getConfig().getInt("Wave-Limit.Limit", 25)) {
       stopGame(false, arena);
       return;
@@ -320,20 +329,23 @@ public class ArenaManager {
    *
    * @see VillageWaveStartEvent
    */
-  public static void startWave(Arena arena) {
+  public static void startWave(@NotNull Arena arena) {
+    Debugger.debug(Level.INFO, "[{0}] Wave start event called", arena.getId());
+    long start = System.currentTimeMillis();
+
     VillageWaveStartEvent event = new VillageWaveStartEvent(arena, arena.getWave());
     Bukkit.getPluginManager().callEvent(event);
     int zombiesAmount = (int) Math.ceil((arena.getPlayers().size() * 0.5) * (arena.getOption(ArenaOption.WAVE) * arena.getOption(ArenaOption.WAVE)) / 2);
     if (zombiesAmount > 750) {
       arena.setOptionValue(ArenaOption.ZOMBIE_DIFFICULTY_MULTIPLIER, (int) Math.ceil((zombiesAmount - 750.0) / 15));
-      Debugger.debug(Debugger.Level.INFO, "Detected abnormal wave (" + arena.getWave() + ") in arena " + arena.getId() + "! Applying zombie limit and difficulty multiplier to "
-          + arena.getOption(ArenaOption.ZOMBIE_DIFFICULTY_MULTIPLIER));
+      Debugger.debug(Level.WARNING, "[{0}] Detected abnormal wave ({1})! Applying zombie limit and difficulty multiplier to {2}",
+          arena.getId(), arena.getWave(), arena.getOption(ArenaOption.ZOMBIE_DIFFICULTY_MULTIPLIER));
       zombiesAmount = 750;
     }
     arena.setOptionValue(ArenaOption.ZOMBIES_TO_SPAWN, zombiesAmount);
     arena.setOptionValue(ArenaOption.ZOMBIE_IDLE_PROCESS, (int) Math.floor((double) arena.getWave() / 15));
     if (arena.getOption(ArenaOption.ZOMBIE_IDLE_PROCESS) > 0) {
-      Debugger.debug(Debugger.Level.INFO, "Spawn idle process initiated for arena " + arena.getId() + " to prevent server overload! Value: " + arena.getOption(ArenaOption.ZOMBIE_IDLE_PROCESS));
+      Debugger.debug(Level.INFO, "[{0}] Spawn idle process initiated to prevent server overload! Value: {1}", arena.getId(), arena.getOption(ArenaOption.ZOMBIE_IDLE_PROCESS));
     }
     if (plugin.getConfig().getBoolean("Respawn-After-Wave", true)) {
       ArenaUtils.bringDeathPlayersBack(arena);
@@ -342,6 +354,7 @@ public class ArenaManager {
       user.getKit().reStock(user.getPlayer());
     }
     plugin.getChatManager().broadcastMessage(arena, plugin.getChatManager().formatMessage(arena, plugin.getChatManager().colorMessage(Messages.WAVE_STARTED), arena.getWave()));
+    Debugger.debug(Level.INFO, "[{0}] Wave start event finished took {1}ms", arena.getId(), System.currentTimeMillis() - start);
   }
 
 }

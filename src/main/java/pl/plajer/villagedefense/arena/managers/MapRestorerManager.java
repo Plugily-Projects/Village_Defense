@@ -20,6 +20,7 @@ package pl.plajer.villagedefense.arena.managers;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.logging.Level;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -122,13 +123,12 @@ public class MapRestorerManager {
           restoreBottomHalfDoorPart(block, doorData);
           i++;
         } catch (Exception ex) {
-          Debugger.debug(Debugger.Level.WARN, "Door has failed to load for arena " + arena.getId() + ", skipping!");
+          Debugger.debug(Level.WARNING, "Door has failed to load for arena {0} message {1} type {2} skipping!", arena.getId(), ex.getMessage(), ex.getCause());
         }
       }
     }
     if (i != getGameDoorLocations().size()) {
-      Debugger.debug(Debugger.Level.WARN, "Some doors has failed to load for arena " + arena.getId() + "! Expected "
-          + getGameDoorLocations().size() + " but loaded only " + i + "!");
+      Debugger.debug(Level.WARNING, "Failed to load doors for {0}! Expected {1} got {2}", arena.getId(), getGameDoorLocations().size(), i);
     }
   }
 

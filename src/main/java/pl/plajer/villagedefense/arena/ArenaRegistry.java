@@ -20,12 +20,15 @@ package pl.plajer.villagedefense.arena;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.handlers.language.Messages;
@@ -47,7 +50,7 @@ public class ArenaRegistry {
    * @param player player to check
    * @return true when player is in arena, false if otherwise
    */
-  public static boolean isInArena(Player player) {
+  public static boolean isInArena(@NotNull Player player) {
     for (Arena arena : arenas) {
       if (arena.getPlayers().contains(player)) {
         return true;
@@ -59,18 +62,19 @@ public class ArenaRegistry {
   /**
    * Returns arena where the player is
    *
-   * @param p target player
+   * @param player target player
    * @return Arena or null if not playing
    * @see #isInArena(Player) to check if player is playing
    */
-  public static Arena getArena(Player p) {
+  @Nullable
+  public static Arena getArena(@NotNull Player player) {
     Arena arena = null;
-    if (p == null || !p.isOnline()) {
+    if (!player.isOnline()) {
       return null;
     }
     for (Arena loopArena : arenas) {
-      for (Player player : loopArena.getPlayers()) {
-        if (player.getUniqueId() == p.getUniqueId()) {
+      for (Player arenaPlayer : loopArena.getPlayers()) {
+        if (arenaPlayer.getUniqueId().equals(player.getUniqueId())) {
           arena = loopArena;
           break;
         }
@@ -85,6 +89,7 @@ public class ArenaRegistry {
    * @param id name of arena
    * @return Arena or null if not found
    */
+  @Nullable
   public static Arena getArena(String id) {
     Arena arena = null;
     for (Arena loopArena : arenas) {
@@ -97,17 +102,19 @@ public class ArenaRegistry {
   }
 
   public static void registerArena(Arena arena) {
-    Debugger.debug(Debugger.Level.INFO, "Registering new game instance, " + arena.getId());
+    Debugger.debug(Level.INFO, "[[0}] Instance registered", arena.getId());
     arenas.add(arena);
   }
 
   public static void unregisterArena(Arena arena) {
-    Debugger.debug(Debugger.Level.INFO, "Unegistering game instance, " + arena.getId());
+    Debugger.debug(Level.INFO, "[{0}] Instance unregistered", arena.getId());
     arenas.remove(arena);
   }
 
   public static void registerArenas() {
-    Debugger.debug(Debugger.Level.INFO, "Initial arenas registration");
+    Debugger.debug(Level.INFO, "[ArenaRegistry] Initial arenas registration");
+    long start = System.currentTimeMillis();
+
     if (ArenaRegistry.getArenas() != null && !ArenaRegistry.getArenas().isEmpty()) {
       for (Arena arena : new ArrayList<>(ArenaRegistry.getArenas())) {
         arena.getMapRestorerManager().clearZombiesFromArena();
@@ -184,7 +191,7 @@ public class ArenaRegistry {
       arena.start();
       Bukkit.getConsoleSender().sendMessage(plugin.getChatManager().colorMessage(Messages.VALIDATOR_INSTANCE_STARTED).replace("%arena%", id));
     }
-    Debugger.debug(Debugger.Level.INFO, "Arenas registration completed");
+    Debugger.debug(Level.INFO, "[ArenaRegistry] Arenas registration completed took {0}ms", System.currentTimeMillis() - start);
   }
 
   public static List<Arena> getArenas() {

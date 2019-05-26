@@ -22,7 +22,9 @@ import com.gmail.filoghost.holographicdisplays.api.Hologram;
 import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.logging.Level;
 
 import me.tigerhix.lib.scoreboard.ScoreboardLib;
 
@@ -72,10 +74,10 @@ import pl.plajer.villagedefense.utils.LegacyDataFixer;
 import pl.plajer.villagedefense.utils.MessageUtils;
 import pl.plajer.villagedefense.utils.UpdateChecker;
 import pl.plajer.villagedefense.utils.Utils;
+import pl.plajer.villagedefense.utils.services.ServiceRegistry;
 import pl.plajerlair.commonsbox.database.MysqlDatabase;
 import pl.plajerlair.commonsbox.minecraft.configuration.ConfigUtils;
 import pl.plajerlair.commonsbox.minecraft.serialization.InventorySerializer;
-import pl.plajer.villagedefense.utils.services.ServiceRegistry;
 
 
 /**
@@ -146,29 +148,23 @@ public class Main extends JavaPlugin {
     LanguageManager.init(this);
     saveDefaultConfig();
     Debugger.setEnabled(getConfig().getBoolean("Debug", false));
-    Debugger.debug(Debugger.Level.INFO, "Main setup start");
+    Debugger.debug(Level.INFO, "[System] Initialization start");
+    if (getConfig().getBoolean("Developer-Mode", false)) {
+      Debugger.deepDebug(true);
+      Debugger.debug(Level.FINE, "Deep debug enabled");
+      for (String listenable : new ArrayList<>(getConfig().getStringList("Performance-Listenable"))) {
+        Debugger.monitorPerformance(listenable);
+      }
+    }
+    long start = System.currentTimeMillis();
+
     chatManager = new ChatManager(ChatColor.translateAlternateColorCodes('&', LanguageManager.getLanguageMessage("In-Game.Plugin-Prefix")));
     configPreferences = new ConfigPreferences(this);
     setupFiles();
     new LegacyDataFixer(this);
     initializeClasses();
     checkUpdate();
-
-    if (configPreferences.getOption(ConfigPreferences.Option.DATABASE_ENABLED)) {
-      FileConfiguration config = ConfigUtils.getConfig(this, "mysql");
-      database = new MysqlDatabase(config.getString("user"), config.getString("password"), config.getString("address"));
-    }
-    userManager = new UserManager(this);
-    new DoorBreakListener(this);
-    KitRegistry.init();
-
-    SpecialItem.loadAll();
-    ArenaRegistry.registerArenas();
-    //we must start it after instances load!
-    signManager = new SignManager(this);
-
-    PermissionsManager.init();
-    Debugger.debug(Debugger.Level.INFO, "Main setup done");
+    Debugger.debug(Level.INFO, "[System] Initialization finished took {0}ms", System.currentTimeMillis() - start);
   }
 
   private boolean validateIfPluginShouldStart() {
@@ -214,7 +210,7 @@ public class Main extends JavaPlugin {
     new ChatEvents(this);
     setupPluginMetrics();
     if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
-      Debugger.debug(Debugger.Level.INFO, "Hooking into PlaceholderAPI");
+      Debugger.debug(Level.INFO, "Hooking into PlaceholderAPI");
       new PlaceholderManager().register();
     }
     new Events(this);
@@ -224,6 +220,20 @@ public class Main extends JavaPlugin {
     rewardsHandler = new RewardsFactory(this);
     holidayManager = new HolidayManager(this);
     User.cooldownHandlerTask();
+    if (configPreferences.getOption(ConfigPreferences.Option.DATABASE_ENABLED)) {
+      FileConfiguration config = ConfigUtils.getConfig(this, "mysql");
+      database = new MysqlDatabase(config.getString("user"), config.getString("password"), config.getString("address"));
+    }
+    userManager = new UserManager(this);
+    new DoorBreakListener(this);
+    KitRegistry.init();
+
+    SpecialItem.loadAll();
+    ArenaRegistry.registerArenas();
+    //we must start it after instances load!
+    signManager = new SignManager(this);
+
+    PermissionsManager.init();
   }
 
   private void setupPluginMetrics() {
@@ -329,7 +339,9 @@ public class Main extends JavaPlugin {
     if (forceDisable) {
       return;
     }
-    Debugger.debug(Debugger.Level.INFO, "System disable init");
+    Debugger.debug(Level.INFO, "System disable initialized");
+    long start = System.currentTimeMillis();
+
     Bukkit.getLogger().removeHandler(exceptionLogHandler);
     for (Arena arena : ArenaRegistry.getArenas()) {
       arena.getScoreboardManager().stopAllScoreboards();
@@ -358,7 +370,7 @@ public class Main extends JavaPlugin {
     if (configPreferences.getOption(ConfigPreferences.Option.DATABASE_ENABLED)) {
       getMysqlDatabase().shutdownConnPool();
     }
-    Debugger.debug(Debugger.Level.INFO, "System disable finalize");
+    Debugger.debug(Level.INFO, "System disable finished took {0}ms", System.currentTimeMillis() - start);
   }
 
   private void saveAllUserStatistics() {

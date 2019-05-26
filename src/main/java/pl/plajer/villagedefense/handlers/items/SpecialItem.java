@@ -21,6 +21,7 @@ package pl.plajer.villagedefense.handlers.items;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Level;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -66,7 +67,7 @@ public class SpecialItem {
     } else {
       if (!config.isSet(name + ".material-name")) {
         config.set(name + ".material-name", material.toString());
-        Debugger.debug(Debugger.Level.INFO, "Found outdated item in lobbyitems.yml! We've converted it to the newest version!");
+        Debugger.debug(Level.WARNING, "Found outdated item {0} in lobbyitems.yml! We've converted it to the newest version!", name);
       }
     }
     ConfigUtils.saveConfig(JavaPlugin.getPlugin(Main.class), config, "lobbyitems");

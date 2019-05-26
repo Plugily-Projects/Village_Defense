@@ -22,6 +22,7 @@ import com.github.stefvanschie.inventoryframework.Gui;
 import com.github.stefvanschie.inventoryframework.GuiItem;
 import com.github.stefvanschie.inventoryframework.pane.StaticPane;
 
+import java.util.logging.Level;
 import java.util.stream.Collectors;
 
 import org.bukkit.ChatColor;
@@ -131,7 +132,7 @@ public class ShopManager {
         }
       }
       if (!found) {
-        Debugger.debug(Debugger.Level.WARN, "No price set for shop item in arena " + arena.getId() + " skipping!");
+        Debugger.debug(Level.WARNING, "No price set for shop item in arena {0} skipping item!", arena.getId());
         continue;
       }
       final int cost = Integer.parseInt(costString);
@@ -207,13 +208,13 @@ public class ShopManager {
 
   private boolean validateShop() {
     if (config.getString("instances." + arena.getId() + ".shop", "").equals("") || config.getString("instances." + arena.getId() + ".shop", "").split(",").length == 0) {
-      Debugger.debug(Debugger.Level.WARN, "There is no shop for arena " + arena.getId() + "! Aborting registering shop!");
+      Debugger.debug(Level.WARNING, "There is no shop for arena {0}! Aborting registering shop!", arena.getId());
       return false;
     }
     Location location = LocationSerializer.getLocation(config.getString("instances." + arena.getId() + ".shop"));
     //todo are these still revelant checks
     if (location.getWorld() == null || location.getBlock() == null || !(location.getBlock().getState() instanceof Chest)) {
-      Debugger.debug(Debugger.Level.WARN, "Shop failed to load, invalid location for loc " + location);
+      Debugger.debug(Level.WARNING, "Shop failed to load, invalid location for location {0}", LocationSerializer.locationToString(location));
       return false;
     }
     return true;

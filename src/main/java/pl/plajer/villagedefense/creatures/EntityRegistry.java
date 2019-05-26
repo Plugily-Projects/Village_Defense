@@ -34,13 +34,15 @@ import pl.plajer.villagedefense.utils.Debugger;
 public class EntityRegistry {
 
   public EntityRegistry(Main plugin) {
-    Debugger.debug(Debugger.Level.INFO, "Initial entity registry startup");
+    Debugger.debug(Level.INFO, "[EntityRegistry] Registry startup");
+    long start = System.currentTimeMillis();
+
     List<String> classes = Arrays.asList("FastZombie", "BabyZombie", "PlayerBuster", "GolemBuster", "HardZombie", "TankerZombie", "VillagerSlayer", "RidableVillager", "RidableIronGolem", "WorkingWolf");
     String version = plugin.getVersion();
     if (version.equalsIgnoreCase("v1_11_R1") || version.equalsIgnoreCase("v1_12_R1") || version.equalsIgnoreCase("v1_13_R1")
         || version.equalsIgnoreCase("v1_13_R2") || version.equalsIgnoreCase("v1_14_R1")) {
       if (version.equalsIgnoreCase("v1_13_R1") || version.equalsIgnoreCase("v1_13_R2") || version.equalsIgnoreCase("v1_14_R1")) {
-        Debugger.debug(Debugger.Level.INFO, "Skipping entity registering for 1.13 and 1.14");
+        Debugger.debug(Level.INFO, "[EntityRegistry] Registry skipped for 1.13 and 1.14 took {0}ms", System.currentTimeMillis() - start);
         return;
       }
       try {
@@ -69,7 +71,7 @@ public class EntityRegistry {
         plugin.getLogger().log(Level.WARNING, "Cause: " + e.getMessage());
       }
     }
-    Debugger.debug(Debugger.Level.INFO, "Entities registering completed");
+    Debugger.debug(Level.INFO, "[EntityRegistry] Registry job finished took {0}ms", System.currentTimeMillis() - start);
   }
 
   @SuppressWarnings("unused")

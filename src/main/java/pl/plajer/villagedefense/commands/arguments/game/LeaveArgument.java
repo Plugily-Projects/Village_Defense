@@ -18,10 +18,13 @@
 
 package pl.plajer.villagedefense.commands.arguments.game;
 
+import java.util.logging.Level;
+
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import pl.plajer.villagedefense.ConfigPreferences;
+import pl.plajer.villagedefense.arena.Arena;
 import pl.plajer.villagedefense.arena.ArenaManager;
 import pl.plajer.villagedefense.arena.ArenaRegistry;
 import pl.plajer.villagedefense.commands.arguments.ArgumentsRegistry;
@@ -42,19 +45,20 @@ public class LeaveArgument {
       @Override
       public void execute(CommandSender sender, String[] args) {
         if (!registry.getPlugin().getConfig().getBoolean("Disable-Leave-Command", false)) {
-          Player p = (Player) sender;
+          Player player = (Player) sender;
           if (!Utils.checkIsInGameInstance((Player) sender)) {
             return;
           }
-          p.sendMessage(registry.getPlugin().getChatManager().getPrefix() + registry.getPlugin().getChatManager().colorMessage(Messages.COMMANDS_TELEPORTED_TO_THE_LOBBY));
+          player.sendMessage(registry.getPlugin().getChatManager().getPrefix() + registry.getPlugin().getChatManager().colorMessage(Messages.COMMANDS_TELEPORTED_TO_THE_LOBBY));
           if (registry.getPlugin().getConfigPreferences().getOption(ConfigPreferences.Option.BUNGEE_ENABLED)) {
-            registry.getPlugin().getBungeeManager().connectToHub(p);
-            Debugger.debug(Debugger.Level.INFO, p.getName() + " was teleported to the Hub server");
+            registry.getPlugin().getBungeeManager().connectToHub(player);
+            Debugger.debug(Level.INFO, "{0} was teleported to the Hub server", player.getName());
             return;
           }
-          ArenaRegistry.getArena(p).teleportToEndLocation(p);
-          ArenaManager.leaveAttempt(p, ArenaRegistry.getArena(p));
-          Debugger.debug(Debugger.Level.INFO, p.getName() + " has left the arena! He is teleported to the end location.");
+          Arena arena = ArenaRegistry.getArena(player);
+          arena.teleportToEndLocation(player);
+          ArenaManager.leaveAttempt(player, arena);
+          Debugger.debug(Level.INFO, "{0} has left the arena {1}! Teleported to end location.", player.getName(), arena.getId());
         }
       }
     });

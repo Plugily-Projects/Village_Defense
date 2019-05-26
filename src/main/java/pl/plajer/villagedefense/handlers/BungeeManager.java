@@ -35,7 +35,6 @@ import pl.plajer.villagedefense.arena.Arena;
 import pl.plajer.villagedefense.arena.ArenaManager;
 import pl.plajer.villagedefense.arena.ArenaRegistry;
 import pl.plajer.villagedefense.arena.ArenaState;
-import pl.plajer.villagedefense.utils.Debugger;
 import pl.plajerlair.commonsbox.minecraft.configuration.ConfigUtils;
 
 /**
@@ -76,7 +75,6 @@ public class BungeeManager implements Listener {
   @EventHandler(priority = EventPriority.HIGHEST)
   public void onServerListPing(ServerListPingEvent event) {
     if (ArenaRegistry.getArenas().isEmpty()) {
-      Debugger.debug(Debugger.Level.WARN, "No ready arena found! Please create one before activating bungee mode!");
       return;
     }
     event.setMaxPlayers(ArenaRegistry.getArenas().get(0).getMaximumPlayers());

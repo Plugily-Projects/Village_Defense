@@ -26,6 +26,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Random;
 import java.util.Set;
+import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
@@ -156,6 +157,9 @@ public abstract class Arena extends BukkitRunnable {
     if (getPlayers().isEmpty() && getArenaState() == ArenaState.WAITING_FOR_PLAYERS) {
       return;
     }
+    Debugger.performance("ArenaTask", "[PerformanceMonitor] [{0}] Running game task", getId());
+    long start = System.currentTimeMillis();
+
     switch (getArenaState()) {
       case WAITING_FOR_PLAYERS:
         if (plugin.getConfigPreferences().getOption(ConfigPreferences.Option.BUNGEE_ENABLED)) {
@@ -165,14 +169,13 @@ public abstract class Arena extends BukkitRunnable {
           if (getTimer() <= 0) {
             setTimer(15);
             plugin.getChatManager().broadcastMessage(this, plugin.getChatManager().formatMessage(this, plugin.getChatManager().colorMessage(Messages.LOBBY_MESSAGES_WAITING_FOR_PLAYERS), getMinimumPlayers()));
-            return;
+            break;
           }
         } else {
           gameBar.setTitle(plugin.getChatManager().colorMessage(Messages.BOSSBAR_WAITING_FOR_PLAYERS));
           plugin.getChatManager().broadcast(this, Messages.LOBBY_MESSAGES_ENOUGH_PLAYERS_TO_START);
           setArenaState(ArenaState.STARTING);
           setTimer(plugin.getConfig().getInt("Starting-Waiting-Time", 60));
-          return;
         }
         setTimer(getTimer() - 1);
         break;
@@ -309,7 +312,6 @@ public abstract class Arena extends BukkitRunnable {
         if (plugin.getConfigPreferences().getOption(ConfigPreferences.Option.BUNGEE_ENABLED)) {
           if (ConfigUtils.getConfig(plugin, "bungee").getBoolean("Shutdown-When-Game-Ends")) {
             plugin.getServer().shutdown();
-            return;
           }
           players.addAll(plugin.getServer().getOnlinePlayers());
         }
@@ -318,6 +320,7 @@ public abstract class Arena extends BukkitRunnable {
       default:
         break; //o.o?
     }
+    Debugger.performance("ArenaTask", "[PerformanceMonitor] [{0}] Game task finished took {1}ms", getId(), System.currentTimeMillis() - start);
   }
 
   private void spawnVillagers() {
@@ -325,14 +328,14 @@ public abstract class Arena extends BukkitRunnable {
       return;
     }
     if (getVillagerSpawns().isEmpty()) {
-      Debugger.debug(Debugger.Level.WARN, "No villager spawns for " + getId() + ", game won't start");
+      Debugger.debug(Level.WARNING, "No villager spawns set for {0} game won't start", id);
       return;
     }
     for (Location location : getVillagerSpawns()) {
       spawnVillager(location);
     }
     if (getVillagers().isEmpty()) {
-      Debugger.debug(Debugger.Level.WARN, "There was a problem with spawning villagers for arena " + id + "! Are villager spawns set in safe and valid locations?");
+      Debugger.debug(Level.WARNING, "Spawning villagers for {0} failed! Are villager spawns set in safe and valid locations?", id);
       return;
     }
     spawnVillagers();
@@ -463,7 +466,7 @@ public abstract class Arena extends BukkitRunnable {
   }
 
   public void start() {
-    Debugger.debug(Debugger.Level.INFO, "Game instance started, arena " + this.getId());
+    Debugger.debug(Level.INFO, "[{0}] Instance started", this.getId());
     this.runTaskTimer(plugin, 20L, 20L);
     this.setArenaState(ArenaState.WAITING_FOR_PLAYERS);
     if (plugin.getConfigPreferences().getOption(ConfigPreferences.Option.BUNGEE_ENABLED)) {
