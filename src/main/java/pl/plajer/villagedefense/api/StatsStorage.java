@@ -35,8 +35,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import pl.plajer.villagedefense.ConfigPreferences;
 import pl.plajer.villagedefense.Main;
@@ -107,7 +105,6 @@ public class StatsStorage {
    * @return int of statistic
    * @see StatisticType
    */
-  @NotNull
   public static int getUserStats(Player player, StatisticType statisticType) {
     return plugin.getUserManager().getUser(player).getStat(statisticType);
   }

@@ -33,17 +33,17 @@ public class UtilsTest {
   public void getFacingByByte() {
     Assert.assertEquals(BlockFace.EAST, Utils.getFacingByByte((byte) 3));
     Assert.assertEquals(BlockFace.NORTH, Utils.getFacingByByte((byte) 4));
-    System.out.println("> Utils#getFacingByByte -> 3, 4 | PASSED");
+    System.out.println("> Utils#getFacingByByte false for EAST is 3, false for NORTH is 4 | PASSED");
   }
 
   @Test
   public void isInteger() {
     Assert.assertFalse(Utils.isInteger("1.5"));
-    System.out.println("> Utils#isInteger -> false | PASSED");
+    System.out.println("> Utils#isInteger false for 1.5 | PASSED");
     Assert.assertFalse(Utils.isInteger("text"));
-    System.out.println("> Utils#isInteger -> false #2 | PASSED");
+    System.out.println("> Utils#isInteger false for 'text' | PASSED");
     Assert.assertTrue(Utils.isInteger("123"));
-    System.out.println("> Utils#isInteger -> true | PASSED");
+    System.out.println("> Utils#isInteger true for 123 | PASSED");
   }
 
 }
