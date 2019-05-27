@@ -105,7 +105,7 @@ public class ShotBowKit extends PremiumKit implements Listener {
         if (e.getPlayer().getInventory().contains(Material.ARROW)) {
           e.getPlayer().getInventory().removeItem(new ItemStack(Material.ARROW, 1));
         }
-      }, 2 * (2 * i));
+      }, 2L * (2 * i));
     }
     e.setCancelled(true);
     user.setCooldown("shotbow", 5);

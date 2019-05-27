@@ -56,7 +56,8 @@ public class StatsArgument {
         sender.sendMessage(registry.getPlugin().getChatManager().colorMessage(Messages.COMMANDS_STATISTICS_HIGHEST_WAVE) + user.getStat(StatsStorage.StatisticType.HIGHEST_WAVE));
         sender.sendMessage(registry.getPlugin().getChatManager().colorMessage(Messages.COMMANDS_STATISTICS_LEVEL) + user.getStat(StatsStorage.StatisticType.LEVEL));
         sender.sendMessage(registry.getPlugin().getChatManager().colorMessage(Messages.COMMANDS_STATISTICS_EXP) + user.getStat(StatsStorage.StatisticType.XP));
-        sender.sendMessage(registry.getPlugin().getChatManager().colorMessage(Messages.COMMANDS_STATISTICS_NEXT_LEVEL_EXP) + Math.ceil(Math.pow(50 * user.getStat(StatsStorage.StatisticType.LEVEL), 1.5)));
+        sender.sendMessage(registry.getPlugin().getChatManager().colorMessage(Messages.COMMANDS_STATISTICS_NEXT_LEVEL_EXP)
+            + Math.ceil(Math.pow(50.0 * user.getStat(StatsStorage.StatisticType.LEVEL), 1.5)));
         sender.sendMessage(registry.getPlugin().getChatManager().colorMessage(Messages.COMMANDS_STATISTICS_FOOTER));
       }
     });

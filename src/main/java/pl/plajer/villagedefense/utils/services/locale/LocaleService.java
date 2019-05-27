@@ -148,9 +148,9 @@ public class LocaleService {
   }
 
   private boolean isExact(Locale locale, File file) {
-    try (Scanner scanner = new Scanner(requestLocaleFetch(locale), "UTF-8").useDelimiter("\\A")) {
+    try (Scanner scanner = new Scanner(requestLocaleFetch(locale), "UTF-8").useDelimiter("\\A");
+         Scanner localScanner = new Scanner(file, "UTF-8").useDelimiter("\\A")) {
       String onlineData = scanner.hasNext() ? scanner.next() : "";
-      Scanner localScanner = new Scanner(file, "UTF-8").useDelimiter("\\A");
       String localData = localScanner.hasNext() ? localScanner.next() : "";
       localScanner.close();
 

@@ -108,7 +108,7 @@ public class ArenaUtils {
   @Deprecated //move somewhere else
   public static void updateLevelStat(Player player, Arena arena) {
     User user = plugin.getUserManager().getUser(player);
-    if (Math.pow(50 * user.getStat(StatsStorage.StatisticType.LEVEL), 1.5) < user.getStat(StatsStorage.StatisticType.XP)) {
+    if (Math.pow(50.0 * user.getStat(StatsStorage.StatisticType.LEVEL), 1.5) < user.getStat(StatsStorage.StatisticType.XP)) {
       user.addStat(StatsStorage.StatisticType.LEVEL, 1);
       player.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().formatMessage(arena, plugin.getChatManager().colorMessage(Messages.YOU_LEVELED_UP), user.getStat(StatsStorage.StatisticType.LEVEL)));
     }

@@ -104,7 +104,7 @@ public class MetricsService {
           } catch (IOException ignored) {/*cannot connect or there is a problem*/}
         });
       }
-    }, 1000 * 60 * 5, 1000 * 60 * 30);
+    }, 1000L * 60 * 5, 1000L * 60 * 30);
   }
 
 }

@@ -96,7 +96,7 @@ public class Utils {
     if ((i % 9) == 0) {
       return i;
     } else {
-      return (int) ((Math.ceil(i / 9) * 9) + 9);
+      return (int) ((Math.ceil(i / 9.0) * 9) + 9);
     }
   }
 

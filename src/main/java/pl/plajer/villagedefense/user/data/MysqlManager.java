@@ -104,7 +104,6 @@ public class MysqlManager implements UserDatabase {
         }
       } catch (SQLException e) {
         plugin.getLogger().log(Level.WARNING, "Could not connect to MySQL database! Cause: {0} ({1})", new Object[] {e.getSQLState(), e.getErrorCode()});
-        e.printStackTrace();
         user.setStat(stat, 0);
       }
     });

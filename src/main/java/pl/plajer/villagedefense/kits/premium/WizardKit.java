@@ -156,7 +156,7 @@ public class WizardKit extends PremiumKit implements Listener {
       Bukkit.getScheduler().runTaskLater(getPlugin(), () -> {
         player.setGlowing(false);
         wizardsOnDuty.remove(player);
-      }, 20 * 15);
+      }, 20L * 15);
       user.setCooldown("essence", 15);
     } else if (stack.getItemMeta().getDisplayName().equals(getPlugin().getChatManager().colorMessage(Messages.KITS_WIZARD_STAFF_ITEM_NAME))) {
       if (!user.checkCanCastCooldownAndMessage("wizard_staff")) {

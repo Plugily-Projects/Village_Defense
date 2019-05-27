@@ -61,7 +61,7 @@ public class DeleteArgument {
         }
         if (!confirmations.contains(sender)) {
           confirmations.add(sender);
-          Bukkit.getScheduler().runTaskLater(registry.getPlugin(), () -> confirmations.remove(sender), 20 * 10);
+          Bukkit.getScheduler().runTaskLater(registry.getPlugin(), () -> confirmations.remove(sender), 20L * 10);
           sender.sendMessage(registry.getPlugin().getChatManager().getPrefix()
               + registry.getPlugin().getChatManager().colorRawMessage("&cAre you sure you want to do this action? Type the command again &6within 10 seconds &cto confirm!"));
           return;
