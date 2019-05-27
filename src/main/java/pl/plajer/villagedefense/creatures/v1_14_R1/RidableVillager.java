@@ -18,7 +18,6 @@
 
 package pl.plajer.villagedefense.creatures.v1_14_R1;
 
-import java.util.LinkedHashSet;
 import java.util.Random;
 
 import net.minecraft.server.v1_14_R1.EntityHuman;
@@ -34,7 +33,6 @@ import net.minecraft.server.v1_14_R1.PathfinderGoalLookAtPlayer;
 import net.minecraft.server.v1_14_R1.PathfinderGoalLookAtTradingPlayer;
 import net.minecraft.server.v1_14_R1.PathfinderGoalMoveTowardsRestriction;
 import net.minecraft.server.v1_14_R1.PathfinderGoalRandomStroll;
-import net.minecraft.server.v1_14_R1.PathfinderGoalSelector;
 import net.minecraft.server.v1_14_R1.PathfinderGoalTradeWithPlayer;
 import net.minecraft.server.v1_14_R1.World;
 
@@ -54,10 +52,7 @@ public class RidableVillager extends EntityVillager {
   public RidableVillager(World world) {
     super(EntityTypes.VILLAGER, world);
 
-    LinkedHashSet goalD = (LinkedHashSet) CreatureUtils.getPrivateField("d", PathfinderGoalSelector.class, goalSelector);
-    goalD.clear();
-    LinkedHashSet targetD = (LinkedHashSet) CreatureUtils.getPrivateField("d", PathfinderGoalSelector.class, targetSelector);
-    targetD.clear();
+    GoalSelectorCleaner.clearSelectors(this);
 
     //todo this.setSize(0.6F, 1.8F);
     getNavigation().q().b(true);

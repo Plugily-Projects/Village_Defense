@@ -18,8 +18,6 @@
 
 package pl.plajer.villagedefense.creatures.v1_13_R1;
 
-import java.util.LinkedHashSet;
-
 import net.minecraft.server.v1_13_R1.EntityVillager;
 import net.minecraft.server.v1_13_R1.EntityZombie;
 import net.minecraft.server.v1_13_R1.GenericAttributes;
@@ -30,12 +28,9 @@ import net.minecraft.server.v1_13_R1.PathfinderGoalMeleeAttack;
 import net.minecraft.server.v1_13_R1.PathfinderGoalMoveTowardsRestriction;
 import net.minecraft.server.v1_13_R1.PathfinderGoalNearestAttackableTarget;
 import net.minecraft.server.v1_13_R1.PathfinderGoalRandomLookaround;
-import net.minecraft.server.v1_13_R1.PathfinderGoalSelector;
 import net.minecraft.server.v1_13_R1.World;
 
 import org.bukkit.craftbukkit.v1_13_R1.CraftWorld;
-
-import pl.plajer.villagedefense.creatures.CreatureUtils;
 
 /**
  * @author Plajer
@@ -51,14 +46,7 @@ public class VillagerSlayer extends EntityZombie {
   public VillagerSlayer(World world) {
     super(world);
 
-    LinkedHashSet goalB = (LinkedHashSet) CreatureUtils.getPrivateField("b", PathfinderGoalSelector.class, goalSelector);
-    goalB.clear();
-    LinkedHashSet goalC = (LinkedHashSet) CreatureUtils.getPrivateField("c", PathfinderGoalSelector.class, goalSelector);
-    goalC.clear();
-    LinkedHashSet targetB = (LinkedHashSet) CreatureUtils.getPrivateField("b", PathfinderGoalSelector.class, targetSelector);
-    targetB.clear();
-    LinkedHashSet targetC = (LinkedHashSet) CreatureUtils.getPrivateField("c", PathfinderGoalSelector.class, targetSelector);
-    targetC.clear();
+    GoalSelectorCleaner.clearSelectors(this);
 
     ((Navigation) getNavigation()).b(true);
 

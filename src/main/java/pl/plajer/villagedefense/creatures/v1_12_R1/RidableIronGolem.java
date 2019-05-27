@@ -18,8 +18,6 @@
 
 package pl.plajer.villagedefense.creatures.v1_12_R1;
 
-import java.util.LinkedHashSet;
-
 import net.minecraft.server.v1_12_R1.Entity;
 import net.minecraft.server.v1_12_R1.EntityHuman;
 import net.minecraft.server.v1_12_R1.EntityIronGolem;
@@ -38,12 +36,9 @@ import net.minecraft.server.v1_12_R1.PathfinderGoalMoveTowardsTarget;
 import net.minecraft.server.v1_12_R1.PathfinderGoalNearestAttackableTarget;
 import net.minecraft.server.v1_12_R1.PathfinderGoalRandomLookaround;
 import net.minecraft.server.v1_12_R1.PathfinderGoalRandomStroll;
-import net.minecraft.server.v1_12_R1.PathfinderGoalSelector;
 import net.minecraft.server.v1_12_R1.World;
 
 import org.bukkit.craftbukkit.v1_12_R1.CraftWorld;
-
-import pl.plajer.villagedefense.creatures.CreatureUtils;
 
 /**
  * Created by Tom on 17/08/2014.
@@ -57,14 +52,7 @@ public class RidableIronGolem extends EntityIronGolem {
   public RidableIronGolem(World world) {
     super(world);
 
-    LinkedHashSet goalB = (LinkedHashSet) CreatureUtils.getPrivateField("b", PathfinderGoalSelector.class, goalSelector);
-    goalB.clear();
-    LinkedHashSet goalC = (LinkedHashSet) CreatureUtils.getPrivateField("c", PathfinderGoalSelector.class, goalSelector);
-    goalC.clear();
-    LinkedHashSet targetB = (LinkedHashSet) CreatureUtils.getPrivateField("b", PathfinderGoalSelector.class, targetSelector);
-    targetB.clear();
-    LinkedHashSet targetC = (LinkedHashSet) CreatureUtils.getPrivateField("c", PathfinderGoalSelector.class, targetSelector);
-    targetC.clear();
+    GoalSelectorCleaner.clearSelectors(this);
 
     this.a(1.4F, 2.9F);
     ((Navigation) getNavigation()).b(true);

@@ -18,8 +18,6 @@
 
 package pl.plajer.villagedefense.creatures.v1_13_R2;
 
-import java.util.LinkedHashSet;
-
 import net.minecraft.server.v1_13_R2.EntityHuman;
 import net.minecraft.server.v1_13_R2.EntityIronGolem;
 import net.minecraft.server.v1_13_R2.EntityVillager;
@@ -33,7 +31,6 @@ import net.minecraft.server.v1_13_R2.PathfinderGoalLookAtPlayer;
 import net.minecraft.server.v1_13_R2.PathfinderGoalMoveTowardsRestriction;
 import net.minecraft.server.v1_13_R2.PathfinderGoalNearestAttackableTarget;
 import net.minecraft.server.v1_13_R2.PathfinderGoalRandomLookaround;
-import net.minecraft.server.v1_13_R2.PathfinderGoalSelector;
 import net.minecraft.server.v1_13_R2.PathfinderGoalZombieAttack;
 import net.minecraft.server.v1_13_R2.World;
 
@@ -53,15 +50,7 @@ public class HardZombie extends EntityZombie {
   public HardZombie(World world) {
     super(world);
 
-    LinkedHashSet goalB = (LinkedHashSet) CreatureUtils.getPrivateField("b", PathfinderGoalSelector.class, goalSelector);
-    goalB.clear();
-    LinkedHashSet goalC = (LinkedHashSet) CreatureUtils.getPrivateField("c", PathfinderGoalSelector.class, goalSelector);
-    goalC.clear();
-    LinkedHashSet targetB = (LinkedHashSet) CreatureUtils.getPrivateField("b", PathfinderGoalSelector.class, targetSelector);
-    targetB.clear();
-    LinkedHashSet targetC = (LinkedHashSet) CreatureUtils.getPrivateField("c", PathfinderGoalSelector.class, targetSelector);
-    targetC.clear();
-
+    GoalSelectorCleaner.clearSelectors(this);
     ((Navigation) getNavigation()).b(true);
 
     this.goalSelector.a(0, new PathfinderGoalFloat(this));

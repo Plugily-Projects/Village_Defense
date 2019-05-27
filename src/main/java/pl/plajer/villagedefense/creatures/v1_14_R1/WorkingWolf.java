@@ -18,8 +18,6 @@
 
 package pl.plajer.villagedefense.creatures.v1_14_R1;
 
-import java.util.LinkedHashSet;
-
 import net.minecraft.server.v1_14_R1.EntityHuman;
 import net.minecraft.server.v1_14_R1.EntityTypes;
 import net.minecraft.server.v1_14_R1.EntityWolf;
@@ -36,12 +34,9 @@ import net.minecraft.server.v1_14_R1.PathfinderGoalMoveTowardsRestriction;
 import net.minecraft.server.v1_14_R1.PathfinderGoalNearestAttackableTarget;
 import net.minecraft.server.v1_14_R1.PathfinderGoalRandomLookaround;
 import net.minecraft.server.v1_14_R1.PathfinderGoalRandomStroll;
-import net.minecraft.server.v1_14_R1.PathfinderGoalSelector;
 import net.minecraft.server.v1_14_R1.World;
 
 import org.bukkit.craftbukkit.v1_14_R1.CraftWorld;
-
-import pl.plajer.villagedefense.creatures.CreatureUtils;
 
 /**
  * Created by Tom on 17/08/2014.
@@ -55,10 +50,7 @@ public class WorkingWolf extends EntityWolf {
   public WorkingWolf(World world) {
     super(EntityTypes.WOLF, world);
 
-    LinkedHashSet goalD = (LinkedHashSet) CreatureUtils.getPrivateField("d", PathfinderGoalSelector.class, goalSelector);
-    goalD.clear();
-    LinkedHashSet targetD = (LinkedHashSet) CreatureUtils.getPrivateField("d", PathfinderGoalSelector.class, targetSelector);
-    targetD.clear();
+    GoalSelectorCleaner.clearSelectors(this);
 
     this.a(1.4F, 2.9F);
     ((Navigation) getNavigation()).a(true);

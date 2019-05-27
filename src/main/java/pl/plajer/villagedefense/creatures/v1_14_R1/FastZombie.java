@@ -18,8 +18,6 @@
 
 package pl.plajer.villagedefense.creatures.v1_14_R1;
 
-import java.util.LinkedHashSet;
-
 import net.minecraft.server.v1_14_R1.EntityHuman;
 import net.minecraft.server.v1_14_R1.EntityIronGolem;
 import net.minecraft.server.v1_14_R1.EntityVillager;
@@ -31,7 +29,6 @@ import net.minecraft.server.v1_14_R1.PathfinderGoalLookAtPlayer;
 import net.minecraft.server.v1_14_R1.PathfinderGoalMoveTowardsRestriction;
 import net.minecraft.server.v1_14_R1.PathfinderGoalNearestAttackableTarget;
 import net.minecraft.server.v1_14_R1.PathfinderGoalRandomLookaround;
-import net.minecraft.server.v1_14_R1.PathfinderGoalSelector;
 import net.minecraft.server.v1_14_R1.PathfinderGoalZombieAttack;
 import net.minecraft.server.v1_14_R1.World;
 
@@ -51,10 +48,7 @@ public class FastZombie extends EntityZombie {
   public FastZombie(World world) {
     super(world);
 
-    LinkedHashSet goalD = (LinkedHashSet) CreatureUtils.getPrivateField("d", PathfinderGoalSelector.class, goalSelector);
-    goalD.clear();
-    LinkedHashSet targetD = (LinkedHashSet) CreatureUtils.getPrivateField("d", PathfinderGoalSelector.class, targetSelector);
-    targetD.clear();
+    GoalSelectorCleaner.clearSelectors(this);
     getNavigation().q().b(true);
 
     this.goalSelector.a(0, new PathfinderGoalFloat(this));
