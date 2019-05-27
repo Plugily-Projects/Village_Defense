@@ -93,8 +93,8 @@ public class LocaleService {
       os.flush();
       os.close();
       return conn.getInputStream();
-    } catch (Exception e) {
-      e.printStackTrace();
+    } catch (IOException e) {
+      plugin.getLogger().log(Level.SEVERE, "Could not fetch locale from plajer.xyz api! Cause: {0} ({1})", new Object[] {e.getCause(), e.getMessage()});
       return new InputStream() {
         @Override
         public int read() {

@@ -68,12 +68,11 @@ public class MysqlManager implements UserDatabase {
           statement.executeUpdate("ALTER TABLE playerstats ADD `name` text NOT NULL");
         } catch (MySQLSyntaxErrorException e) {
           if (!e.getMessage().contains("Duplicate column name")) {
-            plugin.getLogger().log(Level.WARNING, "Failed altering table 'name'! Cause: " + e.getSQLState() + " (" + e.getErrorCode() + ")");
-            e.printStackTrace();
+            plugin.getLogger().log(Level.WARNING, "Could not connect to MySQL database! Cause: {0} ({1})", new Object[] {e.getSQLState(), e.getErrorCode()});
           }
         }
       } catch (SQLException e) {
-        plugin.getLogger().log(Level.WARNING, "Could not connect to MySQL database! Cause: " + e.getSQLState() + " (" + e.getErrorCode() + ")");
+        plugin.getLogger().log(Level.WARNING, "Could not connect to MySQL database! Cause: {0} ({1})", new Object[] {e.getSQLState(), e.getErrorCode()});
         MessageUtils.errorOccurred();
         Bukkit.getConsoleSender().sendMessage("Cannot save contents to MySQL database!");
         Bukkit.getConsoleSender().sendMessage("Check configuration of mysql.yml file or disable mysql option in config.yml");
@@ -103,6 +102,7 @@ public class MysqlManager implements UserDatabase {
         }
         user.setStat(stat, set.getInt(1));
       } catch (SQLException e) {
+        plugin.getLogger().log(Level.WARNING, "Could not connect to MySQL database! Cause: {0} ({1})", new Object[] {e.getSQLState(), e.getErrorCode()});
         e.printStackTrace();
         user.setStat(stat, 0);
       }
