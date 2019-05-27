@@ -21,7 +21,6 @@ package pl.plajer.villagedefense.handlers;
 import java.util.logging.Level;
 
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.java.JavaPlugin;
 
 import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.utils.Debugger;
@@ -31,14 +30,15 @@ import pl.plajer.villagedefense.utils.Debugger;
  */
 public class PermissionsManager {
 
-  private static Main plugin = JavaPlugin.getPlugin(Main.class);
+  private static Main plugin;
   private static String joinFullPerm = "villagedefense.fullgames";
   private static String vipPerm = "villagedefense.vip";
   private static String mvpPerm = "villagedefense.mvp";
   private static String elitePerm = "villagedefense.elite";
   private static String joinPerm = "villagedefense.join.<arena>";
 
-  public static void init() {
+  public static void init(Main plugin) {
+    PermissionsManager.plugin = plugin;
     setupPermissions();
   }
 

@@ -16,7 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package pl.plajer.villagedefense.handlers.reward;
+package pl.plajer.villagedefense.commands.completion;
+
+import java.util.Arrays;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -25,45 +27,32 @@ import org.junit.Test;
 /**
  * @author Plajer
  * <p>
- * Created at 26.05.2019
+ * Created at 27.05.2019
  */
-public class RewardTest {
+public class CompletableArgumentTest {
 
-  private Reward reward;
+  private CompletableArgument completableArgument;
 
   @Before
   public void setUp() {
-    reward = new Reward(Reward.RewardType.END_GAME, "chance(10):p:test");
+    completableArgument = new CompletableArgument("villagedefense", "testing", Arrays.asList("yes", "no"));
   }
 
   @Test
-  public void getExecutor() {
-    Assert.assertEquals(Reward.RewardExecutor.PLAYER, reward.getExecutor());
-    System.out.println("> Reward#getExecutor | PASSED");
+  public void getMainCommand() {
+    Assert.assertEquals("villagedefense", completableArgument.getMainCommand());
+    System.out.println("> CompletableArgument#getMainCommand | PASSED");
   }
 
   @Test
-  public void getExecutableCode() {
-    Assert.assertEquals("test", reward.getExecutableCode());
-    System.out.println("> Reward#getExecutableCode| PASSED");
+  public void getArgument() {
+    Assert.assertEquals("testing", completableArgument.getArgument());
+    System.out.println("> CompletableArgument#getArgument | PASSED");
   }
 
   @Test
-  public void getChance() {
-    Assert.assertEquals(10, reward.getChance(), 0);
-    System.out.println("> Reward#getChance | PASSED");
+  public void getCompletions() {
+    Assert.assertEquals(Arrays.asList("yes", "no"), completableArgument.getCompletions());
+    System.out.println("> CompletableArgument#getCompletions | PASSED");
   }
-
-  @Test
-  public void getWaveExecute() {
-    Assert.assertEquals(-1, reward.getWaveExecute());
-    System.out.println("> Reward#getWaveExecute | PASSED");
-  }
-
-  @Test
-  public void getType() {
-    Assert.assertEquals(Reward.RewardType.END_GAME, reward.getType());
-    System.out.println("> Reward#getType | PASSED");
-  }
-
 }

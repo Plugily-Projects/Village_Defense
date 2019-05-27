@@ -16,28 +16,26 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package pl.plajer.villagedefense;
+package pl.plajer.villagedefense.handlers;
 
-import be.seeseemelk.mockbukkit.MockBukkit;
-import be.seeseemelk.mockbukkit.ServerMock;
-import be.seeseemelk.mockbukkit.entity.PlayerMock;
+import org.bukkit.entity.Player;
+import org.junit.Assert;
+import org.junit.Test;
+
+import pl.plajer.villagedefense.MockUtils;
 
 /**
  * @author Plajer
  * <p>
- * Created at 26.05.2019
+ * Created at 27.05.2019
  */
-public class MockUtils {
+public class PermissionsManagerTest {
 
-  public static ServerMock getServerMockSafe() {
-    if (MockBukkit.isMocked()) {
-      return MockBukkit.getMock();
-    }
-    return MockBukkit.mock();
-  }
-
-  public static PlayerMock getDefaultPlayer() {
-    return getServerMockSafe().addPlayer();
+  @Test
+  public void isPremiumByDefaultNo() {
+    Player player = MockUtils.getDefaultPlayer();
+    Assert.assertFalse(PermissionsManager.isPremium(player));
+    System.out.println("> PermissionsManager#isPremium | PASSED");
   }
 
 }

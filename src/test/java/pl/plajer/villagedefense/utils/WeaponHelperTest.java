@@ -22,9 +22,11 @@ import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 
 import pl.plajer.villagedefense.MockUtils;
+import pl.plajerlair.commonsbox.minecraft.compat.XMaterial;
 
 /**
  * @author Plajer
@@ -33,14 +35,57 @@ import pl.plajer.villagedefense.MockUtils;
  */
 public class WeaponHelperTest {
 
+  @Before
+  public void setUp() {
+    MockUtils.getServerMockSafe();
+  }
+
   @Test
   public void getEnchantedBow() {
-    MockUtils.getServerMockSafe();
     ItemStack stack = WeaponHelper.getEnchantedBow(Enchantment.ARROW_DAMAGE, 2);
-    Assert.assertSame(stack.getType(), Material.BOW);
+    Assert.assertSame(Material.BOW, stack.getType());
     Assert.assertTrue(stack.getEnchantments().containsKey(Enchantment.ARROW_DAMAGE));
     Assert.assertEquals(2, (int) stack.getEnchantments().get(Enchantment.ARROW_DAMAGE));
-    System.out.println("> WeaponHelper#getEnchantedBow true material and enchantment with level | PASSED");
+    System.out.println("> WeaponHelper#getEnchantedBow | PASSED");
+  }
+
+  @Test
+  public void getUnBreakingSword() {
+    ItemStack stone = WeaponHelper.getUnBreakingSword(WeaponHelper.ResourceType.STONE, 1);
+    Assert.assertEquals(Material.STONE_SWORD, stone.getType());
+    Assert.assertTrue(stone.containsEnchantment(Enchantment.DURABILITY));
+    Assert.assertEquals(1, stone.getEnchantmentLevel(Enchantment.DURABILITY));
+
+    ItemStack iron = WeaponHelper.getUnBreakingSword(WeaponHelper.ResourceType.IRON, 50);
+    Assert.assertEquals(Material.IRON_SWORD, iron.getType());
+    Assert.assertTrue(iron.containsEnchantment(Enchantment.DURABILITY));
+    Assert.assertEquals(50, iron.getEnchantmentLevel(Enchantment.DURABILITY));
+
+    ItemStack gold = WeaponHelper.getUnBreakingSword(WeaponHelper.ResourceType.GOLD, 25);
+    Assert.assertEquals(XMaterial.GOLDEN_SWORD.parseMaterial(), gold.getType());
+    Assert.assertTrue(gold.containsEnchantment(Enchantment.DURABILITY));
+    Assert.assertEquals(25, gold.getEnchantmentLevel(Enchantment.DURABILITY));
+
+    ItemStack diamond = WeaponHelper.getUnBreakingSword(WeaponHelper.ResourceType.DIAMOND, -1);
+    Assert.assertEquals(Material.DIAMOND_SWORD, diamond.getType());
+    Assert.assertTrue(diamond.containsEnchantment(Enchantment.DURABILITY));
+    Assert.assertEquals(-1, diamond.getEnchantmentLevel(Enchantment.DURABILITY));
+
+    ItemStack wood = WeaponHelper.getUnBreakingSword(WeaponHelper.ResourceType.WOOD, 0);
+    Assert.assertEquals(Material.WOOD_SWORD, wood.getType());
+    Assert.assertTrue(wood.containsEnchantment(Enchantment.DURABILITY));
+    Assert.assertEquals(0, wood.getEnchantmentLevel(Enchantment.DURABILITY));
+    System.out.println("> WeaponHelper#getUnBreakingSword | PASSED");
+  }
+
+  @Test
+  public void getEnchantedBowArray() {
+    ItemStack enchantedBowMany = WeaponHelper.getEnchantedBow(new Enchantment[] {Enchantment.DURABILITY, Enchantment.PROTECTION_FALL}, new int[] {1, 2});
+    Assert.assertTrue(enchantedBowMany.containsEnchantment(Enchantment.DURABILITY));
+    Assert.assertTrue(enchantedBowMany.containsEnchantment(Enchantment.PROTECTION_FALL));
+    Assert.assertEquals(1, enchantedBowMany.getEnchantmentLevel(Enchantment.DURABILITY));
+    Assert.assertEquals(2, enchantedBowMany.getEnchantmentLevel(Enchantment.PROTECTION_FALL));
+    System.out.println("> WeaponHelper#getEnchantedBowArray | PASSED");
   }
 
 }

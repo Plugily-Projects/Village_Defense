@@ -16,54 +16,49 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package pl.plajer.villagedefense.handlers.reward;
+package pl.plajer.villagedefense.handlers.powerup;
 
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import pl.plajerlair.commonsbox.minecraft.compat.XMaterial;
+
 /**
  * @author Plajer
  * <p>
- * Created at 26.05.2019
+ * Created at 27.05.2019
  */
-public class RewardTest {
+public class PowerupTest {
 
-  private Reward reward;
+  private Powerup powerup;
 
   @Before
   public void setUp() {
-    reward = new Reward(Reward.RewardType.END_GAME, "chance(10):p:test");
+    powerup = new Powerup("test", "MyName", "DESC", XMaterial.POPPY, null);
   }
 
   @Test
-  public void getExecutor() {
-    Assert.assertEquals(Reward.RewardExecutor.PLAYER, reward.getExecutor());
-    System.out.println("> Reward#getExecutor | PASSED");
+  public void getId() {
+    Assert.assertEquals("test", powerup.getId());
+    System.out.println("> Powerup#getId | PASSED");
   }
 
   @Test
-  public void getExecutableCode() {
-    Assert.assertEquals("test", reward.getExecutableCode());
-    System.out.println("> Reward#getExecutableCode| PASSED");
+  public void getName() {
+    Assert.assertEquals("MyName", powerup.getName());
+    System.out.println("> Powerup#getId | PASSED");
   }
 
   @Test
-  public void getChance() {
-    Assert.assertEquals(10, reward.getChance(), 0);
-    System.out.println("> Reward#getChance | PASSED");
+  public void getDescription() {
+    Assert.assertEquals("DESC", powerup.getDescription());
+    System.out.println("> Powerup#getDescription | PASSED");
   }
 
   @Test
-  public void getWaveExecute() {
-    Assert.assertEquals(-1, reward.getWaveExecute());
-    System.out.println("> Reward#getWaveExecute | PASSED");
+  public void getMaterial() {
+    Assert.assertEquals(XMaterial.POPPY, powerup.getMaterial());
+    System.out.println("> Powerup#getMaterial | PASSED");
   }
-
-  @Test
-  public void getType() {
-    Assert.assertEquals(Reward.RewardType.END_GAME, reward.getType());
-    System.out.println("> Reward#getType | PASSED");
-  }
-
 }

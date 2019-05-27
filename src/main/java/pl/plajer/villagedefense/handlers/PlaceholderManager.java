@@ -40,10 +40,6 @@ public class PlaceholderManager extends PlaceholderExpansion {
     return "villagedefense";
   }
 
-  public String getPlugin() {
-    return null;
-  }
-
   public String getAuthor() {
     return "Plajer";
   }

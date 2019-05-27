@@ -233,7 +233,7 @@ public class Main extends JavaPlugin {
     //we must start it after instances load!
     signManager = new SignManager(this);
 
-    PermissionsManager.init();
+    PermissionsManager.init(this);
   }
 
   private void setupPluginMetrics() {

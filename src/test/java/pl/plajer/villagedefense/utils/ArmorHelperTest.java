@@ -24,6 +24,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import pl.plajer.villagedefense.MockUtils;
+import pl.plajerlair.commonsbox.minecraft.compat.XMaterial;
 
 import be.seeseemelk.mockbukkit.entity.PlayerMock;
 
@@ -35,14 +36,26 @@ import be.seeseemelk.mockbukkit.entity.PlayerMock;
 public class ArmorHelperTest {
 
   @Test
-  public void setArmor() {
-    PlayerMock player = MockUtils.getServerMockSafe().addPlayer();
+  public void checkIfWearProperArmor() {
+    PlayerMock player = MockUtils.getDefaultPlayer();
     ArmorHelper.setArmor(player, ArmorHelper.ArmorType.IRON);
     Assert.assertEquals(new ItemStack(Material.IRON_HELMET), player.getInventory().getHelmet());
     Assert.assertEquals(new ItemStack(Material.IRON_CHESTPLATE), player.getInventory().getChestplate());
     Assert.assertEquals(new ItemStack(Material.IRON_LEGGINGS), player.getInventory().getLeggings());
     Assert.assertEquals(new ItemStack(Material.IRON_BOOTS), player.getInventory().getBoots());
-    System.out.println("> ArmorHelper#setArmor equal set for IRON armor type | PASSED");
+
+    ArmorHelper.setArmor(player, ArmorHelper.ArmorType.DIAMOND);
+    Assert.assertEquals(new ItemStack(Material.DIAMOND_HELMET), player.getInventory().getHelmet());
+    Assert.assertEquals(new ItemStack(Material.DIAMOND_CHESTPLATE), player.getInventory().getChestplate());
+    Assert.assertEquals(new ItemStack(Material.DIAMOND_LEGGINGS), player.getInventory().getLeggings());
+    Assert.assertEquals(new ItemStack(Material.DIAMOND_BOOTS), player.getInventory().getBoots());
+
+    ArmorHelper.setArmor(player, ArmorHelper.ArmorType.GOLD);
+    Assert.assertEquals(new ItemStack(XMaterial.GOLDEN_HELMET.parseMaterial()), player.getInventory().getHelmet());
+    Assert.assertEquals(new ItemStack(XMaterial.GOLDEN_CHESTPLATE.parseMaterial()), player.getInventory().getChestplate());
+    Assert.assertEquals(new ItemStack(XMaterial.GOLDEN_LEGGINGS.parseMaterial()), player.getInventory().getLeggings());
+    Assert.assertEquals(new ItemStack(XMaterial.GOLDEN_BOOTS.parseMaterial()), player.getInventory().getBoots());
+    System.out.println("> ArmorHelper#setArmor equal armor sets | PASSED");
   }
 
 }
