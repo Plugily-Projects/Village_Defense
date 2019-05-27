@@ -49,8 +49,8 @@ public class MysqlManager implements UserDatabase {
     this.plugin = plugin;
     database = plugin.getMysqlDatabase();
     Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
-      try (Connection connection = database.getConnection()) {
-        Statement statement = connection.createStatement();
+      try (Connection connection = database.getConnection();
+           Statement statement = connection.createStatement()) {
         statement.executeUpdate("CREATE TABLE IF NOT EXISTS `playerstats` (\n"
             + "  `UUID` text NOT NULL,\n"
             + "  `name` text NOT NULL,\n"
@@ -88,19 +88,20 @@ public class MysqlManager implements UserDatabase {
   @Override
   public void loadStatistic(User user, StatsStorage.StatisticType stat) {
     Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
-      try (Connection connection = database.getConnection()) {
-        Statement statement = connection.createStatement();
+      try (Connection connection = database.getConnection();
+           Statement statement = connection.createStatement()) {
         //insert into the database
         if (!statement.executeQuery("SELECT UUID from playerstats WHERE UUID='" + user.getPlayer().getUniqueId().toString() + "'").next()) {
           insertPlayer(user.getPlayer());
         }
 
-        ResultSet set = statement.executeQuery("SELECT " + stat.getName() + " FROM playerstats WHERE UUID='" + user.getPlayer().getUniqueId().toString() + "'");
-        if (!set.next()) {
-          user.setStat(stat, 0);
-          return;
+        try (ResultSet set = statement.executeQuery("SELECT " + stat.getName() + " FROM playerstats WHERE UUID='" + user.getPlayer().getUniqueId().toString() + "'")) {
+          if (!set.next()) {
+            user.setStat(stat, 0);
+            return;
+          }
+          user.setStat(stat, set.getInt(1));
         }
-        user.setStat(stat, set.getInt(1));
       } catch (SQLException e) {
         plugin.getLogger().log(Level.WARNING, "Could not connect to MySQL database! Cause: {0} ({1})", new Object[] {e.getSQLState(), e.getErrorCode()});
         e.printStackTrace();

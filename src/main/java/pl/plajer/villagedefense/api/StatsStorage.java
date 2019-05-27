@@ -70,9 +70,9 @@ public class StatsStorage {
    */
   public static Map<UUID, Integer> getStats(StatisticType stat) {
     if (plugin.getConfigPreferences().getOption(ConfigPreferences.Option.DATABASE_ENABLED)) {
-      try (Connection connection = plugin.getMysqlDatabase().getConnection()) {
-        Statement statement = connection.createStatement();
-        ResultSet set = statement.executeQuery("SELECT UUID, " + stat.getName() + " FROM playerstats ORDER BY " + stat.getName() + " ASC");
+      try (Connection connection = plugin.getMysqlDatabase().getConnection();
+           Statement statement = connection.createStatement();
+           ResultSet set = statement.executeQuery("SELECT UUID, " + stat.getName() + " FROM playerstats ORDER BY " + stat.getName() + " ASC")) {
         Map<UUID, java.lang.Integer> column = new LinkedHashMap<>();
         while (set.next()) {
           column.put(UUID.fromString(set.getString("UUID")), set.getInt(stat.getName()));

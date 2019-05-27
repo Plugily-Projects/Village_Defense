@@ -4,6 +4,7 @@
 * Fixed possible issues with scoreboard colors
 * Fixed boss bar displayed game end message not waiting for players after game restart
 * /vda reload command is no longer discouraged and does reload config and language files
+* Fixed MySQL possible leaks problem
 
 ### 4.2.0 Release (28.04.2019 - 17.05.2019)
    * Blocker kit no longer has very long lore in barrier item and no longer receives separate barrier item on restock
