@@ -18,44 +18,20 @@
 
 package pl.plajer.villagedefense;
 
-import org.junit.BeforeClass;
-
-import be.seeseemelk.mockbukkit.MockBukkit;
-import be.seeseemelk.mockbukkit.ServerMock;
-import be.seeseemelk.mockbukkit.entity.PlayerMock;
+import org.junit.Assert;
+import org.junit.Test;
 
 /**
  * @author Plajer
  * <p>
- * Created at 26.05.2019
+ * Created at 01.06.2019
  */
-public class MockUtils {
+public class ConfigPreferencesTest {
 
-  private static MainMock mockPlugin;
-
-  @BeforeClass
-  public static void beforeAllTestMethods() {
-    getServerMockSafe();
-    getPluginMockSafe();
-  }
-
-  public static ServerMock getServerMockSafe() {
-    if (MockBukkit.isMocked()) {
-      return MockBukkit.getMock();
-    }
-    return MockBukkit.mock();
-  }
-
-  public static PlayerMock getDefaultPlayer() {
-    return getServerMockSafe().addPlayer();
-  }
-
-  public static MainMock getPluginMockSafe() {
-    if (mockPlugin == null) {
-      getServerMockSafe();
-      MockUtils.mockPlugin = MockBukkit.load(MainMock.class);
-    }
-    return mockPlugin;
+  @Test
+  public void getOption() {
+    Assert.assertTrue(MockUtils.getPluginMockSafe().getConfigPreferences().getOption(ConfigPreferences.Option.BOSSBAR_ENABLED));
+    System.out.println("> ConfigPreferences#getOption() | PASSED");
   }
 
 }

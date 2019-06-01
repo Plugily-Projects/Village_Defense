@@ -33,7 +33,9 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.plugin.java.JavaPluginLoader;
 import org.bukkit.potion.PotionEffect;
 
 import pl.plajer.villagedefense.api.StatsStorage;
@@ -100,6 +102,16 @@ public class Main extends JavaPlugin {
   private EntityUpgradeMenu entityUpgradeMenu;
   private boolean forceDisable = false;
   private String version;
+
+  //for MockBukkit purposes
+  public Main() {
+    super();
+  }
+
+  //for MockBukkit purposes
+  protected Main(JavaPluginLoader loader, PluginDescriptionFile description, File dataFolder, File file) {
+    super(loader, description, dataFolder, file);
+  }
 
   public boolean is1_11_R1() {
     return version.equalsIgnoreCase("v1_11_R1");

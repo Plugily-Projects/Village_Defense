@@ -1,0 +1,4 @@
+name: Sneak100-Not-A-Real-Plugin-Just-For-Tests
+main: pl.plajer.villagedefense.MainMock
+authors: [TailsTheCoverageProvider]
+version: 1.2.3
