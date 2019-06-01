@@ -1,4 +1,4 @@
-name: Sneak100-Not-A-Real-Plugin-Just-For-Tests
+name: VillageDefense
 main: pl.plajer.villagedefense.MainMock
 authors: [TailsTheCoverageProvider]
-version: 1.2.3
+version: ${project.version}

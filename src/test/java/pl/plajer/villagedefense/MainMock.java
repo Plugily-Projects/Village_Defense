@@ -29,12 +29,15 @@ import pl.plajer.villagedefense.handlers.BungeeManager;
 import pl.plajer.villagedefense.handlers.ChatManager;
 import pl.plajer.villagedefense.handlers.HolidayManager;
 import pl.plajer.villagedefense.handlers.SignManager;
+import pl.plajer.villagedefense.handlers.language.Messages;
 import pl.plajer.villagedefense.handlers.powerup.PowerupRegistry;
 import pl.plajer.villagedefense.handlers.reward.RewardsFactory;
 import pl.plajer.villagedefense.kits.KitManager;
+import pl.plajer.villagedefense.user.User;
 import pl.plajer.villagedefense.user.UserManager;
 import pl.plajerlair.commonsbox.database.MysqlDatabase;
 
+import be.seeseemelk.mockbukkit.MockBukkit;
 import be.seeseemelk.mockbukkit.UnimplementedOperationException;
 
 /**
@@ -45,6 +48,8 @@ import be.seeseemelk.mockbukkit.UnimplementedOperationException;
 public class MainMock extends Main {
 
   private ConfigPreferences configPreferences;
+  private UserManager userManager;
+  private RewardsFactory rewardsFactory;
 
   public MainMock() {
     super();
@@ -101,7 +106,14 @@ public class MainMock extends Main {
 
   @Override
   public void onEnable() {
+    User.init(this);
+    Messages.init(this);
     this.configPreferences = new ConfigPreferences(this);
+    this.userManager = new UserManager(this);
+    this.rewardsFactory = new RewardsFactory(this);
+
+    //trick to clean up server directory after tests
+    Runtime.getRuntime().addShutdownHook(new Thread(MockBukkit::unload));
   }
 
   @Override
@@ -116,12 +128,12 @@ public class MainMock extends Main {
 
   @Override
   public UserManager getUserManager() {
-    throw new UnimplementedOperationException();
+    return userManager;
   }
 
   @Override
   public RewardsFactory getRewardsHandler() {
-    throw new UnimplementedOperationException();
+    return rewardsFactory;
   }
 
   @Override
@@ -151,6 +163,6 @@ public class MainMock extends Main {
 
   @Override
   public void onDisable() {
-    throw new UnimplementedOperationException();
+    //do nothing
   }
 }

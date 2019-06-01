@@ -62,6 +62,7 @@ import pl.plajer.villagedefense.handlers.PlaceholderManager;
 import pl.plajer.villagedefense.handlers.SignManager;
 import pl.plajer.villagedefense.handlers.items.SpecialItem;
 import pl.plajer.villagedefense.handlers.language.LanguageManager;
+import pl.plajer.villagedefense.handlers.language.Messages;
 import pl.plajer.villagedefense.handlers.powerup.PowerupRegistry;
 import pl.plajer.villagedefense.handlers.reward.RewardsFactory;
 import pl.plajer.villagedefense.handlers.setup.SetupInventoryEvents;
@@ -157,6 +158,7 @@ public class Main extends JavaPlugin {
 
     ServiceRegistry.registerService(this);
     exceptionLogHandler = new ExceptionLogHandler();
+    Messages.init(this);
     LanguageManager.init(this);
     saveDefaultConfig();
     Debugger.setEnabled(getConfig().getBoolean("Debug", false));
@@ -207,6 +209,7 @@ public class Main extends JavaPlugin {
     Utils.init(this);
     ScoreboardLib.setPluginInstance(this);
     CreatureUtils.init(this);
+    User.init(this);
     if (getConfig().getBoolean("BungeeActivated", false)) {
       bungeeManager = new BungeeManager(this);
     }

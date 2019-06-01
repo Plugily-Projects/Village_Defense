@@ -18,8 +18,6 @@
 
 package pl.plajer.villagedefense.handlers.language;
 
-import org.bukkit.plugin.java.JavaPlugin;
-
 import pl.plajer.villagedefense.Main;
 
 /**
@@ -341,11 +339,15 @@ public enum Messages {
   VALIDATOR_INSTANCE_STARTED("Validator.Instance-Started"),
   VALIDATOR_NO_INSTANCES_CREATED("Validator.No-Instances-Created");
 
-  private static Main plugin = JavaPlugin.getPlugin(Main.class);
+  private static Main plugin;
   private String accessor;
 
   Messages(String accessor) {
     this.accessor = accessor;
+  }
+
+  public static void init(Main plugin) {
+    Messages.plugin = plugin;
   }
 
   public String getAccessor() {

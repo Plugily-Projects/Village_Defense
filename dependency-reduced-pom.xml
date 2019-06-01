@@ -43,6 +43,12 @@
         <directory>src/main/resources</directory>
       </resource>
     </resources>
+      <testResources>
+          <testResource>
+              <filtering>true</filtering>
+              <directory>src/test/resources</directory>
+          </testResource>
+      </testResources>
     <plugins>
       <plugin>
         <artifactId>maven-site-plugin</artifactId>
@@ -208,6 +214,18 @@
               <exclusion>
                   <artifactId>commons-io</artifactId>
                   <groupId>commons-io</groupId>
+              </exclusion>
+          </exclusions>
+      </dependency>
+      <dependency>
+          <groupId>org.easymock</groupId>
+          <artifactId>easymock</artifactId>
+          <version>4.0.2</version>
+          <scope>test</scope>
+          <exclusions>
+              <exclusion>
+                  <artifactId>objenesis</artifactId>
+                  <groupId>org.objenesis</groupId>
               </exclusion>
           </exclusions>
       </dependency>

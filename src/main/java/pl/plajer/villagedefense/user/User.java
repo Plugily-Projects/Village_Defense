@@ -24,7 +24,6 @@ import java.util.Map;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.java.JavaPlugin;
 
 import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.api.StatsStorage;
@@ -40,7 +39,7 @@ import pl.plajer.villagedefense.kits.basekits.Kit;
  */
 public class User {
 
-  private static Main plugin = JavaPlugin.getPlugin(Main.class);
+  private static Main plugin;
   private static long cooldownCounter = 0;
   private Player player;
   private boolean spectator = false;
@@ -50,6 +49,10 @@ public class User {
 
   public User(Player player) {
     this.player = player;
+  }
+
+  public static void init(Main plugin) {
+    User.plugin = plugin;
   }
 
   public static void cooldownHandlerTask() {

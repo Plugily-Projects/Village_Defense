@@ -18,8 +18,6 @@
 
 package pl.plajer.villagedefense;
 
-import org.junit.BeforeClass;
-
 import be.seeseemelk.mockbukkit.MockBukkit;
 import be.seeseemelk.mockbukkit.ServerMock;
 import be.seeseemelk.mockbukkit.entity.PlayerMock;
@@ -32,12 +30,6 @@ import be.seeseemelk.mockbukkit.entity.PlayerMock;
 public class MockUtils {
 
   private static MainMock mockPlugin;
-
-  @BeforeClass
-  public static void beforeAllTestMethods() {
-    getServerMockSafe();
-    getPluginMockSafe();
-  }
 
   public static ServerMock getServerMockSafe() {
     if (MockBukkit.isMocked()) {
