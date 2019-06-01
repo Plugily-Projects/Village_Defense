@@ -19,41 +19,40 @@
 package pl.plajer.villagedefense.commands.arguments.data;
 
 import org.bukkit.ChatColor;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * @author Plajer
  * <p>
- * Created at 03.05.2018
+ * Created at 01.06.2019
  */
-public class LabelData {
+public class LabelDataTest {
 
-  private String text;
-  private String command;
-  private String description;
+  private LabelData labelData;
 
-  public LabelData(String text, String command, String description) {
-    this.text = ChatColor.translateAlternateColorCodes('&', text);
-    this.command = command;
-    this.description = ChatColor.translateAlternateColorCodes('&', description);
+  @Before
+  public void setUp() {
+    labelData = new LabelData("&6&lTest", "command", "&fDescription");
   }
 
-  public String getText() {
-    return text;
+  @Test
+  public void getText() {
+    Assert.assertEquals(ChatColor.GOLD + "" + ChatColor.BOLD + "Test", labelData.getText());
+    System.out.println("> LabelData#getText | PASSED");
   }
 
-  public String getCommand() {
-    return command;
+  @Test
+  public void getCommand() {
+    Assert.assertEquals("command", labelData.getCommand());
+    System.out.println("> LabelData#getCommand | PASSED");
   }
 
-  public void setCommand(String command) {
-    this.command = command;
+  @Test
+  public void getDescription() {
+    Assert.assertEquals(ChatColor.WHITE + "Description", labelData.getDescription());
+    System.out.println("> LabelData#getDescription | PASSED");
   }
 
-  public String getDescription() {
-    return description;
-  }
-
-  public void setDescription(String description) {
-    this.description = description;
-  }
 }

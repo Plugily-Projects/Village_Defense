@@ -18,21 +18,23 @@
 
 package pl.plajer.villagedefense.arena;
 
+import org.junit.Assert;
+import org.junit.Test;
+
 /**
- * @author TomTheDeveloper
+ * @author Plajer
  * <p>
- * Contains all GameStates.
+ * Created at 01.06.2019
  */
-public enum ArenaState {
-  WAITING_FOR_PLAYERS("Waiting"), STARTING("Starting"), IN_GAME("Playing"), ENDING("Finishing"), RESTARTING("Restarting");
+public class ArenaStateTest {
 
-  private String formattedName;
-
-  ArenaState(String formattedName) {
-    this.formattedName = formattedName;
-  }
-
-  public String getFormattedName() {
-    return formattedName;
+  @Test
+  public void getFormattedName() {
+    Assert.assertEquals("Waiting", ArenaState.WAITING_FOR_PLAYERS.getFormattedName());
+    Assert.assertEquals("Starting", ArenaState.STARTING.getFormattedName());
+    Assert.assertEquals("Playing", ArenaState.IN_GAME.getFormattedName());
+    Assert.assertEquals("Finishing", ArenaState.ENDING.getFormattedName());
+    Assert.assertEquals("Restarting", ArenaState.RESTARTING.getFormattedName());
+    System.out.println("> ArenaState#getFormattedName | PASSED");
   }
 }
