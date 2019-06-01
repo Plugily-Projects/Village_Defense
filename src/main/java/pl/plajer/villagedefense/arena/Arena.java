@@ -259,6 +259,7 @@ public abstract class Arena extends BukkitRunnable {
             if (getZombiesLeft() <= 5) {
               plugin.getChatManager().broadcast(this, Messages.ZOMBIE_GOT_STUCK_IN_THE_MAP);
             } else {
+              //todo test
               for (int i = getZombiesLeft(); i > 0; i++) {
                 spawnFastZombie(random);
               }
