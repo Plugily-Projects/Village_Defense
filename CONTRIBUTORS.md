@@ -1,5 +1,7 @@
 ## This file is dedicated to **Village Defense** project's all-time contributors.
 
+## ***very outdated, please nag me if this notice is still here***
+
 **I'm sincerely glad to everyone who supported our project every time!**
 
 **Contributors are listed in alphabetical order, every contributor is equally important!**

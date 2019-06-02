@@ -1,6 +1,6 @@
 name: VillageDefense
 main: pl.plajer.villagedefense.Main
-authors: [TomTheDeveloper, Plajer, Tigerpanzer]
+authors: [TomTheDeveloper, Plajer, Tigerpanzer, montlikadani]
 version: ${project.version}
 softdepend: [HolographicDisplays, PlaceholderAPI]
 api-version: 1.13
