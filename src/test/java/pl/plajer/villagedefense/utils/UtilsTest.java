@@ -25,9 +25,12 @@ import org.bukkit.inventory.ItemStack;
 import org.junit.Assert;
 import org.junit.Test;
 
+import pl.plajer.villagedefense.MainMock;
 import pl.plajer.villagedefense.MockUtils;
+import pl.plajer.villagedefense.handlers.language.Messages;
 import pl.plajerlair.commonsbox.minecraft.item.ItemBuilder;
 
+import be.seeseemelk.mockbukkit.entity.PlayerMock;
 import be.seeseemelk.mockbukkit.inventory.InventoryMock;
 
 /**
@@ -93,6 +96,14 @@ public class UtilsTest {
     Utils.takeOneItem(player, new ItemStack(Material.SANDSTONE));
     ((InventoryMock) player.getInventory()).assertContainsAtLeast(new ItemStack(Material.SANDSTONE), 2);
     System.out.println("> Utils#takeOneItem | PASSED");
+  }
+
+  @Test
+  public void hasPermission() {
+    MainMock plugin = MockUtils.getPluginMockSafe();
+    PlayerMock player = MockUtils.getDefaultPlayer();
+    Assert.assertFalse(Utils.hasPermission(player, "never.gained.permission"));
+    Assert.assertTrue(player.nextMessage().contains(plugin.getChatManager().colorMessage(Messages.COMMANDS_NO_PERMISSION)));
   }
 
 }
