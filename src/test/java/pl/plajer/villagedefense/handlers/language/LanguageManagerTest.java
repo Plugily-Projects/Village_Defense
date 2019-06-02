@@ -26,6 +26,7 @@ import org.junit.Test;
 
 import pl.plajer.villagedefense.MainMock;
 import pl.plajer.villagedefense.MockUtils;
+import pl.plajer.villagedefense.utils.services.ServiceRegistry;
 import pl.plajerlair.commonsbox.minecraft.configuration.ConfigUtils;
 
 import be.seeseemelk.mockbukkit.command.ConsoleCommandSenderMock;
@@ -55,7 +56,7 @@ public class LanguageManagerTest {
     Assert.assertTrue(LanguageManager.isDefaultLanguageUsed());
   }
 
-  /*@Test
+  @Test
   public void testCustomLocale() {
     MainMock plugin = MockUtils.getPluginMockSafe();
     FileConfiguration config = plugin.getConfig();
@@ -66,11 +67,7 @@ public class LanguageManagerTest {
     //to allow locale service
     ServiceRegistry.registerService(plugin);
     LanguageManager.init(plugin);
-    for(String msg : ((ConsoleCommandSenderMock) MockUtils.getServerMockSafe().getConsoleSender()).messages) {
-      System.out.println(msg);
-    }
-    System.out.println(" THE VERSIO N IS " + plugin.getDescription().getVersion());
     Assert.assertFalse(LanguageManager.isDefaultLanguageUsed());
-  }*/
+  }
 
 }

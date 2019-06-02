@@ -23,6 +23,48 @@
   <artifactId>villagedefense</artifactId>
   <name>VillageDefense</name>
     <version>4.2.0</version>
+    <developers>
+        <developer>
+            <name>IvanTheBuilder</name>
+            <url>https://www.spigotmc.org/members/18881/</url>
+            <roles>
+                <role>former developer - Village Defense 1</role>
+            </roles>
+        </developer>
+        <developer>
+            <name>TomTheDeveloper</name>
+            <url>https://www.spigotmc.org/members/4729/</url>
+            <roles>
+                <role>former developer - Village Defense 1 and 2</role>
+            </roles>
+        </developer>
+        <developer>
+            <name>Plajer</name>
+            <url>https://www.spigotmc.org/members/423193/</url>
+            <roles>
+                <role>developer - Village Defense 2, 3 and 4</role>
+                <role>translator - Polish language</role>
+            </roles>
+        </developer>
+        <developer>
+            <name>Tigerpanzer</name>
+            <url>https://www.spigotmc.org/members/414545/</url>
+            <roles>
+                <role>helper developer - Village Defense 3</role>
+                <role>translator - German language</role>
+                <role>tester</role>
+            </roles>
+        </developer>
+    </developers>
+    <contributors>
+        <contributor>
+            <name>montlikadani</name>
+            <url>https://www.spigotmc.org/members/251100/</url>
+            <roles>
+                <role>code contributor</role>
+            </roles>
+        </contributor>
+    </contributors>
   <licenses>
     <license>
       <name>GNU General Public License v3</name>
@@ -214,18 +256,6 @@
               <exclusion>
                   <artifactId>commons-io</artifactId>
                   <groupId>commons-io</groupId>
-              </exclusion>
-          </exclusions>
-      </dependency>
-      <dependency>
-          <groupId>org.easymock</groupId>
-          <artifactId>easymock</artifactId>
-          <version>4.0.2</version>
-          <scope>test</scope>
-          <exclusions>
-              <exclusion>
-                  <artifactId>objenesis</artifactId>
-                  <groupId>org.objenesis</groupId>
               </exclusion>
           </exclusions>
       </dependency>
