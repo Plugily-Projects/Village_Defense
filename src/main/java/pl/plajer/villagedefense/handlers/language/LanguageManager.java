@@ -199,23 +199,23 @@ public class LanguageManager {
    */
   public static String getLanguageMessage(String path) {
     if (isDefaultLanguageUsed()) {
-      String str = languageConfig.getString(path, "ERR_MESSAGE_NOT_FOUND");
-      if (str.equals("ERR_MESSAGE_NOT_FOUND")) {
+      if (!languageConfig.isSet(path)) {
         Bukkit.getConsoleSender().sendMessage("Game message not found!");
         Bukkit.getConsoleSender().sendMessage("Please regenerate your language.yml file! If error still occurs report it to the developer!");
         Bukkit.getConsoleSender().sendMessage("Access string: " + path);
+        return "ERR_MESSAGE_NOT_FOUND";
       }
-      return str;
+      return languageConfig.getString(path);
     }
-    try {
-      return properties.getProperty(path);
-    } catch (NullPointerException ex) {
+    String prop = properties.getProperty(path);
+    if (prop == null) {
       MessageUtils.errorOccurred();
       Bukkit.getConsoleSender().sendMessage("Game message not found!");
       Bukkit.getConsoleSender().sendMessage("Please contact the developer!");
       Bukkit.getConsoleSender().sendMessage("Access string: " + path);
       return "ERR_MESSAGE_NOT_FOUND";
     }
+    return prop;
   }
 
   public static void reloadConfig() {

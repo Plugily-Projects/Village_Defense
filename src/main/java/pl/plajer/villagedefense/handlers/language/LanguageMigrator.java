@@ -118,19 +118,21 @@ public class LanguageMigrator {
       }
       version++;
     }
+    plugin.reloadConfig();
     Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "[Village Defense] [System notify] Config updated, no comments were removed :)");
     Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "[Village Defense] [System notify] You're using latest config file version! Nice!");
   }
 
   private void languageFileUpdate() {
-    if (ConfigUtils.getConfig(plugin, "language").getString("File-Version-Do-Not-Edit", "").equals(String.valueOf(LANGUAGE_FILE_VERSION))) {
+    FileConfiguration config = ConfigUtils.getConfig(plugin, "language");
+    if (config.getString("File-Version-Do-Not-Edit", "").equals(String.valueOf(LANGUAGE_FILE_VERSION))) {
       return;
     }
     Bukkit.getConsoleSender().sendMessage(ChatColor.YELLOW + "[Village Defense] [System notify] Your language file is outdated! Updating...");
 
     int version = LANGUAGE_FILE_VERSION - 1;
-    if (NumberUtils.isNumber(ConfigUtils.getConfig(plugin, "language").getString("File-Version-Do-Not-Edit"))) {
-      version = Integer.parseInt(ConfigUtils.getConfig(plugin, "language").getString("File-Version-Do-Not-Edit"));
+    if (NumberUtils.isNumber(config.getString("File-Version-Do-Not-Edit"))) {
+      version = Integer.parseInt(config.getString("File-Version-Do-Not-Edit"));
     } else {
       Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "[Village Defense] [System notify] Failed to parse language file version!");
     }

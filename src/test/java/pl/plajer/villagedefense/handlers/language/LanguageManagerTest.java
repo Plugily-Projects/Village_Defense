@@ -68,6 +68,56 @@ public class LanguageManagerTest {
     ServiceRegistry.registerService(plugin);
     LanguageManager.init(plugin);
     Assert.assertFalse(LanguageManager.isDefaultLanguageUsed());
+    Assert.assertEquals("Polish", LanguageManager.getPluginLocale().getName());
+  }
+
+  @Test
+  public void testInvalidCustomLocale() {
+    MainMock plugin = MockUtils.getPluginMockSafe();
+    FileConfiguration config = plugin.getConfig();
+    config.set("locale", "somebrokenlocale");
+    plugin.saveConfig();
+
+    //to allow locale service
+    ServiceRegistry.registerService(plugin);
+    LanguageManager.init(plugin);
+    Assert.assertTrue(LanguageManager.isDefaultLanguageUsed());
+  }
+
+  @Test
+  public void testGetLanguageMessage() {
+    MainMock plugin = MockUtils.getPluginMockSafe();
+    //on default locale
+    plugin.getConfig().set("locale", "default");
+    plugin.saveConfig();
+    LanguageManager.init(plugin);
+
+    Assert.assertNotEquals("ERR_MESSAGE_NOT_FOUND", LanguageManager.getLanguageMessage("Commands.Did-You-Mean"));
+
+    //on custom locale
+    plugin.getConfig().set("locale", "pl");
+    plugin.saveConfig();
+    LanguageManager.init(plugin);
+
+    Assert.assertNotEquals("ERR_MESSAGE_NOT_FOUND", LanguageManager.getLanguageMessage("Commands.Did-You-Mean"));
+  }
+
+  @Test
+  public void testGetInvalidLanguageMessage() {
+    MainMock plugin = MockUtils.getPluginMockSafe();
+    //on default locale
+    plugin.getConfig().set("locale", "default");
+    plugin.saveConfig();
+    LanguageManager.init(plugin);
+
+    Assert.assertEquals("ERR_MESSAGE_NOT_FOUND", LanguageManager.getLanguageMessage("Invalid.Path.Name"));
+
+    //on custom locale
+    plugin.getConfig().set("locale", "pl");
+    plugin.saveConfig();
+    LanguageManager.init(plugin);
+
+    Assert.assertEquals("ERR_MESSAGE_NOT_FOUND", LanguageManager.getLanguageMessage("Invalid.Path.Name"));
   }
 
 }
