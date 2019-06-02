@@ -64,7 +64,6 @@ public class LocaleService {
       this.localeData = ConfigUtils.getConfig(plugin, "/locales/locale_data");
       plugin.getLogger().log(Level.INFO, "Fetched latest localization file from repository.");
     } catch (IOException ignored) {
-      ignored.printStackTrace();
       //ignore exceptions
       plugin.getLogger().log(Level.WARNING, "Couldn't access locale fetcher service or there is other problem! You should notify author!");
     }
