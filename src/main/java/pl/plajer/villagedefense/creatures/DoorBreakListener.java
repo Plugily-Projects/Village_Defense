@@ -18,7 +18,6 @@
 
 package pl.plajer.villagedefense.creatures;
 
-import java.util.Queue;
 import java.util.Random;
 
 import org.bukkit.Bukkit;
@@ -27,10 +26,8 @@ import org.bukkit.Particle;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
-import org.bukkit.material.MaterialData;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import pl.plajer.villagedefense.Main;
@@ -54,31 +51,19 @@ public class DoorBreakListener extends BukkitRunnable {
   @Override
   public void run() {
     for (World world : Bukkit.getServer().getWorlds()) {
-      for (Entity entity : world.getEntities()) {
+      for (LivingEntity entity : world.getLivingEntities()) {
         if (entity.getType() != EntityType.ZOMBIE) {
           continue;
         }
-        Queue<Block> blocks = Utils.getNearbyDoors((LivingEntity) entity, 1, 1);
-        for (Block block : blocks) {
-          if (plugin.is1_11_R1() || plugin.is1_12_R1()) {
-            if (block.getType() != Material.WOODEN_DOOR && block.getType() != Material.WOOD_DOOR) {
-              continue;
-            }
-          } else {
-            if (block.getType() != XMaterial.OAK_DOOR.parseMaterial()) {
-              continue;
-            }
+        for (Block block : Utils.getNearbyBlocks(entity, 1)) {
+          if (!isDoor(block)) {
+            continue;
           }
-          //todo bring back block crack for 1.13
-
-          if (plugin.is1_11_R1() || plugin.is1_12_R1()) {
-            block.getWorld().spawnParticle(Particle.BLOCK_CRACK, block.getLocation(), 10, 0.1, 0.1, 0.1, new MaterialData(XMaterial.OAK_DOOR.parseMaterial()));
-          }
+          block.getLocation().getWorld().spawnParticle(Particle.SMOKE_LARGE, block.getLocation(), 5, 0.1, 0.1, 0.1);
           Utils.playSound(block.getLocation(), "ENTITY_ZOMBIE_ATTACK_DOOR_WOOD", "ENTITY_ZOMBIE_ATTACK_WOODEN_DOOR");
           if (random.nextInt(20) == 5) {
-            if (plugin.is1_11_R1() || plugin.is1_12_R1()) {
-              block.getWorld().spawnParticle(Particle.BLOCK_CRACK, block.getLocation(), 10, 0.1, 0.1, 0.1, new MaterialData(XMaterial.OAK_DOOR.parseMaterial()));
-            }
+            block.getLocation().getWorld().spawnParticle(Particle.SMOKE_LARGE, block.getLocation(), 15, 0.1, 0.1, 0.1);
+            block.getLocation().getWorld().spawnParticle(Particle.EXPLOSION_HUGE, block.getLocation(), 1, 0.1, 0.1, 0.1);
             if (block.getRelative(BlockFace.UP).getType() == CompatMaterialConstants.OAK_DOOR_BLOCK) {
               block.getRelative(BlockFace.UP).setType(Material.AIR);
             } else if (block.getRelative(BlockFace.DOWN).getType() == CompatMaterialConstants.OAK_DOOR_BLOCK) {
@@ -89,6 +74,14 @@ public class DoorBreakListener extends BukkitRunnable {
           }
         }
       }
+    }
+  }
+
+  private boolean isDoor(Block block) {
+    if (plugin.is1_11_R1() || plugin.is1_12_R1()) {
+      return block.getType() == Material.WOODEN_DOOR || block.getType() == Material.WOOD_DOOR;
+    } else {
+      return block.getType() == XMaterial.OAK_DOOR.parseMaterial();
     }
   }
 

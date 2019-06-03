@@ -23,7 +23,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Queue;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -99,22 +98,15 @@ public class Utils {
     }
   }
 
-  public static Queue<Block> getNearbyDoors(LivingEntity entity, int maxDistance, int maxLength) {
-    if (maxDistance > 120) {
-      maxDistance = 120;
-    }
-
-    Queue<Block> blocks = new LinkedList<>();
-    Iterator<Block> itr = new BlockIterator(entity, maxDistance);
+  public static List<Block> getNearbyBlocks(LivingEntity entity, int distance) {
+    List<Block> blocks = new LinkedList<>();
+    Iterator<Block> itr = new BlockIterator(entity, distance);
     while (itr.hasNext()) {
       Block block = itr.next();
       if (block.getType().isTransparent()) {
         continue;
       }
       blocks.add(block);
-      if (maxLength != 0 && blocks.size() > maxLength) {
-        blocks.remove(0);
-      }
     }
     return blocks;
   }
