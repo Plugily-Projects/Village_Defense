@@ -23,18 +23,15 @@ import java.util.EnumMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Random;
 import java.util.Set;
 import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
-import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.IronGolem;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
@@ -43,22 +40,25 @@ import org.bukkit.entity.Wolf;
 import org.bukkit.entity.Zombie;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.jetbrains.annotations.Nullable;
 
 import pl.plajer.villagedefense.ConfigPreferences;
 import pl.plajer.villagedefense.Main;
-import pl.plajer.villagedefense.api.StatsStorage;
-import pl.plajer.villagedefense.api.event.game.VillageGameStartEvent;
 import pl.plajer.villagedefense.api.event.game.VillageGameStateChangeEvent;
 import pl.plajer.villagedefense.arena.managers.MapRestorerManager;
 import pl.plajer.villagedefense.arena.managers.ScoreboardManager;
 import pl.plajer.villagedefense.arena.managers.ShopManager;
 import pl.plajer.villagedefense.arena.managers.ZombieSpawnManager;
 import pl.plajer.villagedefense.arena.options.ArenaOption;
+import pl.plajer.villagedefense.arena.states.ArenaStateHandler;
+import pl.plajer.villagedefense.arena.states.EndingState;
+import pl.plajer.villagedefense.arena.states.InGameState;
+import pl.plajer.villagedefense.arena.states.RestartingState;
+import pl.plajer.villagedefense.arena.states.StartingState;
+import pl.plajer.villagedefense.arena.states.WaitingState;
 import pl.plajer.villagedefense.handlers.language.Messages;
-import pl.plajer.villagedefense.handlers.reward.Reward;
 import pl.plajer.villagedefense.user.User;
 import pl.plajer.villagedefense.utils.Debugger;
-import pl.plajerlair.commonsbox.minecraft.configuration.ConfigUtils;
 
 /**
  * Created by Tom on 12/08/2014.
@@ -81,6 +81,8 @@ public abstract class Arena extends BukkitRunnable {
   //instead of 3 location fields we use map with GameLocation enum
   private Map<GameLocation, Location> gameLocations = new EnumMap<>(GameLocation.class);
   private Map<SpawnPoint, List<Location>> spawnPoints = new EnumMap<>(SpawnPoint.class);
+  //all handlers for all game states, we don't include them all in one runnable because it would be too big
+  private Map<ArenaState, ArenaStateHandler> gameStateHandlers = new EnumMap<>(ArenaState.class);
 
   private ScoreboardManager scoreboardManager;
   private MapRestorerManager mapRestorerManager;
@@ -110,6 +112,14 @@ public abstract class Arena extends BukkitRunnable {
     }
     for (SpawnPoint point : SpawnPoint.values()) {
       spawnPoints.put(point, new ArrayList<>());
+    }
+    gameStateHandlers.put(ArenaState.WAITING_FOR_PLAYERS, new WaitingState());
+    gameStateHandlers.put(ArenaState.STARTING, new StartingState());
+    gameStateHandlers.put(ArenaState.IN_GAME, new InGameState());
+    gameStateHandlers.put(ArenaState.ENDING, new EndingState());
+    gameStateHandlers.put(ArenaState.RESTARTING, new RestartingState());
+    for (ArenaStateHandler handler : gameStateHandlers.values()) {
+      handler.init(plugin);
     }
   }
 
@@ -160,171 +170,11 @@ public abstract class Arena extends BukkitRunnable {
     Debugger.performance("ArenaTask", "[PerformanceMonitor] [{0}] Running game task", getId());
     long start = System.currentTimeMillis();
 
-    switch (getArenaState()) {
-      case WAITING_FOR_PLAYERS:
-        if (plugin.getConfigPreferences().getOption(ConfigPreferences.Option.BUNGEE_ENABLED)) {
-          plugin.getServer().setWhitelist(false);
-        }
-        if (getPlayers().size() < getMinimumPlayers()) {
-          if (getTimer() <= 0) {
-            setTimer(15);
-            plugin.getChatManager().broadcastMessage(this, plugin.getChatManager().formatMessage(this, plugin.getChatManager().colorMessage(Messages.LOBBY_MESSAGES_WAITING_FOR_PLAYERS), getMinimumPlayers()));
-            break;
-          }
-        } else {
-          gameBar.setTitle(plugin.getChatManager().colorMessage(Messages.BOSSBAR_WAITING_FOR_PLAYERS));
-          plugin.getChatManager().broadcast(this, Messages.LOBBY_MESSAGES_ENOUGH_PLAYERS_TO_START);
-          setArenaState(ArenaState.STARTING);
-          setTimer(plugin.getConfig().getInt("Starting-Waiting-Time", 60));
-        }
-        setTimer(getTimer() - 1);
-        break;
-      case STARTING:
-        gameBar.setTitle(plugin.getChatManager().colorMessage(Messages.BOSSBAR_STARTING_IN).replace("%time%", String.valueOf(getTimer())));
-        gameBar.setProgress(getTimer() / plugin.getConfig().getDouble("Starting-Waiting-Time", 60));
-        for (Player player : getPlayers()) {
-          player.setExp((float) (getTimer() / plugin.getConfig().getDouble("Starting-Waiting-Time", 60)));
-          player.setLevel(getTimer());
-        }
-        if (getPlayers().size() < getMinimumPlayers() && !forceStart) {
-          gameBar.setTitle(plugin.getChatManager().colorMessage(Messages.BOSSBAR_WAITING_FOR_PLAYERS));
-          gameBar.setProgress(1.0);
-          plugin.getChatManager().broadcastMessage(this, plugin.getChatManager().formatMessage(this, plugin.getChatManager().colorMessage(Messages.LOBBY_MESSAGES_WAITING_FOR_PLAYERS), getMinimumPlayers()));
-          setArenaState(ArenaState.WAITING_FOR_PLAYERS);
-          Bukkit.getPluginManager().callEvent(new VillageGameStartEvent(this));
-          setTimer(15);
-          for (Player player : getPlayers()) {
-            player.setExp(1);
-            player.setLevel(0);
-          }
-          break;
-        }
-        if (getTimer() == 0 || forceStart) {
-          spawnVillagers();
-          Bukkit.getPluginManager().callEvent(new VillageGameStartEvent(this));
-          setArenaState(ArenaState.IN_GAME);
-          gameBar.setProgress(1.0);
-          setTimer(5);
-          for (Player player : getPlayers()) {
-            player.teleport(getStartLocation());
-            player.setExp(0);
-            player.setLevel(0);
-            player.getInventory().clear();
-            player.setGameMode(GameMode.SURVIVAL);
-            User user = plugin.getUserManager().getUser(player);
-            user.setStat(StatsStorage.StatisticType.ORBS, plugin.getConfig().getInt("Orbs-Starting-Amount", 20));
-            plugin.getUserManager().getUser(player).getKit().giveKitItems(player);
-            player.updateInventory();
-            ArenaUtils.addStat(player, StatsStorage.StatisticType.GAMES_PLAYED);
-            ArenaUtils.addExperience(player, 10);
-            setTimer(plugin.getConfig().getInt("Cooldown-Before-Next-Wave", 25));
-            player.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage(Messages.LOBBY_MESSAGES_GAME_STARTED));
-          }
-          fighting = false;
-        }
-        if (forceStart) {
-          forceStart = false;
-        }
-        setTimer(getTimer() - 1);
-        break;
-      case IN_GAME:
-        if (getOption(ArenaOption.BAR_TOGGLE_VALUE) > 5) {
-          gameBar.setTitle(plugin.getChatManager().colorMessage(Messages.BOSSBAR_IN_GAME_WAVE).replace("%wave%", String.valueOf(getWave())));
-          addOptionValue(ArenaOption.BAR_TOGGLE_VALUE, 1);
-          if (getOption(ArenaOption.BAR_TOGGLE_VALUE) > 10) {
-            setOptionValue(ArenaOption.BAR_TOGGLE_VALUE, 0);
-          }
-        } else {
-          gameBar.setTitle(plugin.getChatManager().colorMessage(Messages.BOSSBAR_IN_GAME_INFO).replace("%wave%", String.valueOf(getWave())));
-          addOptionValue(ArenaOption.BAR_TOGGLE_VALUE, 1);
-        }
-        if (plugin.getConfigPreferences().getOption(ConfigPreferences.Option.BUNGEE_ENABLED)) {
-          plugin.getServer().setWhitelist(getMaximumPlayers() <= getPlayers().size());
-        }
-        zombieSpawnManager.spawnGlitchCheck();
-        if (getVillagers().isEmpty() || getPlayersLeft().isEmpty() && getArenaState() != ArenaState.ENDING) {
-          ArenaManager.stopGame(false, this);
-          return;
-        }
-        if (fighting) {
-          if (getZombiesLeft() <= 0) {
-            fighting = false;
-            ArenaManager.endWave(this);
-          }
-          if (getOption(ArenaOption.ZOMBIES_TO_SPAWN) > 0) {
-            zombieSpawnManager.spawnZombies();
-            setTimer(500);
-          } else if (getTimer() == 0) {
-            mapRestorerManager.clearZombiesFromArena();
-            if (getZombiesLeft() <= 5) {
-              plugin.getChatManager().broadcast(this, Messages.ZOMBIE_GOT_STUCK_IN_THE_MAP);
-            } else {
-              //todo test
-              for (int i = getZombiesLeft(); i > 0; i++) {
-                spawnFastZombie(random);
-              }
-            }
-            setOptionValue(ArenaOption.ZOMBIES_TO_SPAWN, 0);
-          }
-          if (getOption(ArenaOption.ZOMBIES_TO_SPAWN) < 0) {
-            setOptionValue(ArenaOption.ZOMBIES_TO_SPAWN, 0);
-          }
-          setTimer(getTimer() - 1);
-        } else {
-          if (getTimer() <= 0) {
-            fighting = true;
-            ArenaManager.startWave(this);
-          }
-        }
-        setTimer(getTimer() - 1);
-        break;
-      case ENDING:
-        scoreboardManager.stopAllScoreboards();
-        if (plugin.getConfigPreferences().getOption(ConfigPreferences.Option.BUNGEE_ENABLED)) {
-          plugin.getServer().setWhitelist(false);
-        }
-        if (getTimer() <= 0) {
-          gameBar.setTitle(plugin.getChatManager().colorMessage(Messages.BOSSBAR_GAME_ENDED));
-
-          for (Player player : getPlayers()) {
-            ArenaUtils.resetPlayerAfterGame(player);
-            doBarAction(BarAction.REMOVE, player);
-          }
-          players.forEach(this::teleportToEndLocation);
-          plugin.getChatManager().broadcast(this, Messages.COMMANDS_TELEPORTED_TO_THE_LOBBY);
-
-          for (User user : plugin.getUserManager().getUsers(this)) {
-            user.setSpectator(false);
-            user.setStat(StatsStorage.StatisticType.ORBS, 0);
-          }
-          plugin.getRewardsHandler().performReward(this, Reward.RewardType.END_GAME);
-          setArenaState(ArenaState.RESTARTING);
-        }
-        setTimer(getTimer() - 1);
-        break;
-      case RESTARTING:
-        mapRestorerManager.fullyRestoreArena();
-        getPlayers().clear();
-        setArenaState(ArenaState.WAITING_FOR_PLAYERS);
-
-        resetOptionValues();
-        droppedFleshes.stream().filter(Objects::nonNull).forEach(Entity::remove);
-        droppedFleshes.clear();
-        if (plugin.getConfigPreferences().getOption(ConfigPreferences.Option.BUNGEE_ENABLED)) {
-          if (ConfigUtils.getConfig(plugin, "bungee").getBoolean("Shutdown-When-Game-Ends")) {
-            plugin.getServer().shutdown();
-          }
-          players.addAll(plugin.getServer().getOnlinePlayers());
-        }
-        gameBar.setTitle(plugin.getChatManager().colorMessage(Messages.BOSSBAR_WAITING_FOR_PLAYERS));
-        break;
-      default:
-        break; //o.o?
-    }
+    gameStateHandlers.get(getArenaState()).handleCall(this);
     Debugger.performance("ArenaTask", "[PerformanceMonitor] [{0}] Game task finished took {1}ms", getId(), System.currentTimeMillis() - start);
   }
 
-  private void spawnVillagers() {
+  public void spawnVillagers() {
     if (getVillagers().size() > 10) {
       return;
     }
@@ -342,8 +192,32 @@ public abstract class Arena extends BukkitRunnable {
     spawnVillagers();
   }
 
+  public boolean isForceStart() {
+    return forceStart;
+  }
+
+  public void setFighting(boolean fighting) {
+    this.fighting = fighting;
+  }
+
   public boolean isFighting() {
     return fighting;
+  }
+
+  public Random getRandom() {
+    return random;
+  }
+
+  /**
+   * Returns boss bar of the game.
+   * Please use doBarAction if possible as it's fail safe
+   *
+   * @return game boss bar
+   * @see Arena#doBarAction(BarAction, Player)
+   */
+  @Nullable
+  public BossBar getGameBar() {
+    return gameBar;
   }
 
   /**
@@ -505,6 +379,10 @@ public abstract class Arena extends BukkitRunnable {
     spawnPoints.get(SpawnPoint.ZOMBIE).add(location);
   }
 
+  public List<Item> getDroppedFleshes() {
+    return droppedFleshes;
+  }
+
   public void addDroppedFlesh(Item item) {
     droppedFleshes.add(item);
   }
@@ -634,7 +512,7 @@ public abstract class Arena extends BukkitRunnable {
     ironGolems.add(ironGolem);
   }
 
-  private void resetOptionValues() {
+  public void resetOptionValues() {
     setOptionValue(ArenaOption.WAVE, 1);
     setOptionValue(ArenaOption.TOTAL_KILLED_ZOMBIES, 0);
     setOptionValue(ArenaOption.TOTAL_ORBS_SPENT, 0);

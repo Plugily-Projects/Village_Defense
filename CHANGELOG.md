@@ -8,6 +8,7 @@
 * Fixed PlaceholderAPI placeholders on in-game scoreboard didn't work
 * Fixed locales couldn't be loaded without locales folder
 * Fixed locales would throw errors if accessed message that doesn't exist
+* Game will no longer throw errors if boss bar is disabled
 
 ### 4.2.0 Release (28.04.2019 - 17.05.2019)
    * Blocker kit no longer has very long lore in barrier item and no longer receives separate barrier item on restock
