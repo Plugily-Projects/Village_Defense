@@ -21,6 +21,8 @@ package pl.plajer.villagedefense.utils;
 import org.junit.Assert;
 import org.junit.Test;
 
+import pl.plajer.villagedefense.utils.constants.Constants;
+
 /**
  * @author Plajer
  * <p>

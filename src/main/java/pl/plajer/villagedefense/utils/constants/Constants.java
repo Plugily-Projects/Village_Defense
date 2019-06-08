@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package pl.plajer.villagedefense.utils;
+package pl.plajer.villagedefense.utils.constants;
 
 /**
  * Class that represents some hard coded constant values like file names

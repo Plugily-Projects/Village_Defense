@@ -31,8 +31,8 @@ import org.jetbrains.annotations.Nullable;
 
 import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.handlers.language.Messages;
-import pl.plajer.villagedefense.utils.Constants;
 import pl.plajer.villagedefense.utils.Debugger;
+import pl.plajer.villagedefense.utils.constants.Constants;
 import pl.plajerlair.commonsbox.minecraft.configuration.ConfigUtils;
 import pl.plajerlair.commonsbox.minecraft.serialization.LocationSerializer;
 

@@ -33,8 +33,8 @@ import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 
 import pl.plajer.villagedefense.Main;
-import pl.plajer.villagedefense.utils.Constants;
 import pl.plajer.villagedefense.utils.MessageUtils;
+import pl.plajer.villagedefense.utils.constants.Constants;
 import pl.plajer.villagedefense.utils.services.ServiceRegistry;
 import pl.plajer.villagedefense.utils.services.locale.Locale;
 import pl.plajer.villagedefense.utils.services.locale.LocaleRegistry;

@@ -37,8 +37,8 @@ import org.bukkit.entity.Player;
 
 import pl.plajer.villagedefense.ConfigPreferences;
 import pl.plajer.villagedefense.Main;
-import pl.plajer.villagedefense.utils.Constants;
 import pl.plajer.villagedefense.utils.MessageUtils;
+import pl.plajer.villagedefense.utils.constants.Constants;
 import pl.plajerlair.commonsbox.minecraft.configuration.ConfigUtils;
 
 /**

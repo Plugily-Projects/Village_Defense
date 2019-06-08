@@ -38,9 +38,9 @@ import pl.plajer.villagedefense.kits.KitRegistry;
 import pl.plajer.villagedefense.kits.basekits.LevelKit;
 import pl.plajer.villagedefense.user.User;
 import pl.plajer.villagedefense.utils.ArmorHelper;
-import pl.plajer.villagedefense.utils.CompatMaterialConstants;
 import pl.plajer.villagedefense.utils.Utils;
 import pl.plajer.villagedefense.utils.WeaponHelper;
+import pl.plajer.villagedefense.utils.constants.CompatMaterialConstants;
 
 /**
  * Created by Tom on 19/07/2015.

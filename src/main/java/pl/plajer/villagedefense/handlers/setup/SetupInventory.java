@@ -32,7 +32,7 @@ import pl.plajer.villagedefense.handlers.setup.components.ArenaRegisterComponent
 import pl.plajer.villagedefense.handlers.setup.components.MiscComponents;
 import pl.plajer.villagedefense.handlers.setup.components.PlayerAmountComponents;
 import pl.plajer.villagedefense.handlers.setup.components.SpawnComponents;
-import pl.plajer.villagedefense.utils.Constants;
+import pl.plajer.villagedefense.utils.constants.Constants;
 import pl.plajerlair.commonsbox.minecraft.configuration.ConfigUtils;
 
 /**

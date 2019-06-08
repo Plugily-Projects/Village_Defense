@@ -25,6 +25,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import pl.plajer.villagedefense.MockUtils;
+import pl.plajer.villagedefense.utils.constants.CompatMaterialConstants;
 
 /**
  * @author Plajer
