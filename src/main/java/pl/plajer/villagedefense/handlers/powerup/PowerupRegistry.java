@@ -155,8 +155,7 @@ public class PowerupRegistry {
       return;
     }
     final Powerup powerup = getRandomPowerup();
-    if (!(ThreadLocalRandom.current().nextDouble(0.0, 100.0)
-        <= plugin.getConfig().getDouble("Powerups.Drop-Chance", 1.0))) {
+    if (ThreadLocalRandom.current().nextDouble(0.0, 100.0) > plugin.getConfig().getDouble("Powerups.Drop-Chance", 1.0)) {
       return;
     }
 

@@ -49,6 +49,9 @@ public class LanguageManager {
   private static FileConfiguration languageConfig;
   private static boolean messagesIntegrityPassed = true;
 
+  private LanguageManager() {
+  }
+
   /**
    * Initializes language management system
    * Executes language migration if needed

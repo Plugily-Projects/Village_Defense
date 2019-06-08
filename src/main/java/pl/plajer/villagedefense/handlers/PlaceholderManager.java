@@ -48,6 +48,7 @@ public class PlaceholderManager extends PlaceholderExpansion {
     return "1.0.0";
   }
 
+  @Override
   public String onPlaceholderRequest(Player player, String id) {
     if (player == null) {
       return null;

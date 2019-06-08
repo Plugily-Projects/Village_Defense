@@ -98,8 +98,7 @@ public class MetricsService {
                 }
 
                 plugin.getLogger().log(Level.FINE, "Metrics response: " + content.toString());
-              } catch (IOException ignored) {
-              }
+              } catch (IOException ignored) {/*fail silently*/}
             }).start();
           } catch (IOException ignored) {/*cannot connect or there is a problem*/}
         });

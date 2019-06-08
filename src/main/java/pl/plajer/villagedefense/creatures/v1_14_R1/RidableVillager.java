@@ -80,45 +80,4 @@ public class RidableVillager extends EntityVillager {
     this.setCustomNameVisible(true);
   }
 
-  /*@Override
-  public void a(float f, float f1, float f2) {
-    EntityLiving entityliving = null;
-    for (final Entity e : passengers) {
-      if (e instanceof EntityHuman) {
-        entityliving = (EntityLiving) e;
-        break;
-      }
-    }
-    if (entityliving == null) {
-      this.P = 0.5F;
-      this.aR = 0.02F;
-      o(0.12f);
-      this.k((float) 0.12);
-      super.a(f, f1, f2);
-      return;
-    }
-    this.lastYaw = this.yaw = entityliving.yaw;
-    this.pitch = entityliving.pitch * 0.5F;
-    this.setYawPitch(this.yaw, this.pitch);
-    this.aO = this.aM = this.yaw;
-
-    f = entityliving.bh * 0.5F * 0.75F;
-    f2 = entityliving.bj;
-    if (f2 <= 0.0f) {
-      f2 *= 0.25F;
-    }
-
-    //for 1.13
-    entityliving.bj = 0.12f;
-    o(0.12f);
-
-    super.a(f, f1, f2);
-    P = (float) 1.0;
-  }*/ //todo
-
-  /*@Override
-  public EntityAgeable createChild(EntityAgeable entityAgeable) {
-    return this.b(entityAgeable);
-  }*/ //todo
-
 }

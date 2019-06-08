@@ -30,6 +30,9 @@ public class LocaleRegistry {
 
   private static List<Locale> registeredLocales = new ArrayList<>();
 
+  private LocaleRegistry() {
+  }
+
   /**
    * Register new locale into registry
    *

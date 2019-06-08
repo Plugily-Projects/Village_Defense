@@ -18,7 +18,6 @@
 
 package pl.plajer.villagedefense.creatures.upgrades;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -128,9 +127,6 @@ public class Upgrade {
   }
 
   public ItemStack asItemStack(int currentTier) {
-    String name = this.name;
-    List<String> description = new ArrayList<>(this.description);
-
     double valCurrent = tieredValues.get(currentTier);
     double valNext = tieredValues.getOrDefault(currentTier + 1, tieredValues.get(currentTier));
 

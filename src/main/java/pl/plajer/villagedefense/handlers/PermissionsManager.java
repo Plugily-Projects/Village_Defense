@@ -37,6 +37,9 @@ public class PermissionsManager {
   private static String elitePerm = "villagedefense.elite";
   private static String joinPerm = "villagedefense.join.<arena>";
 
+  private PermissionsManager() {
+  }
+
   public static void init(Main plugin) {
     PermissionsManager.plugin = plugin;
     setupPermissions();

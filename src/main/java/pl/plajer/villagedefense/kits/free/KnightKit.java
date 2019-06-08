@@ -64,5 +64,6 @@ public class KnightKit extends FreeKit {
 
   @Override
   public void reStock(Player player) {
+    //no restock items for this kit
   }
 }

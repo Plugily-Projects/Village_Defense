@@ -86,6 +86,7 @@ public class TeleporterKit extends PremiumKit implements Listener {
 
   @Override
   public void reStock(Player player) {
+    //no restock items for this kit
   }
 
   @EventHandler

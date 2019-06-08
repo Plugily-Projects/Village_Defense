@@ -67,6 +67,9 @@ public class ArenaManager {
 
   private static Main plugin;
 
+  private ArenaManager() {
+  }
+
   public static void init(Main plugin) {
     ArenaManager.plugin = plugin;
   }

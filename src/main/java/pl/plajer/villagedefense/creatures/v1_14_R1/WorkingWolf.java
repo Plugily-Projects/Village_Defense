@@ -18,9 +18,7 @@
 
 package pl.plajer.villagedefense.creatures.v1_14_R1;
 
-import net.minecraft.server.v1_14_R1.Entity;
 import net.minecraft.server.v1_14_R1.EntityHuman;
-import net.minecraft.server.v1_14_R1.EntityLiving;
 import net.minecraft.server.v1_14_R1.EntityTypes;
 import net.minecraft.server.v1_14_R1.EntityWolf;
 import net.minecraft.server.v1_14_R1.EntityZombie;
@@ -36,7 +34,6 @@ import net.minecraft.server.v1_14_R1.PathfinderGoalMoveTowardsRestriction;
 import net.minecraft.server.v1_14_R1.PathfinderGoalNearestAttackableTarget;
 import net.minecraft.server.v1_14_R1.PathfinderGoalRandomLookaround;
 import net.minecraft.server.v1_14_R1.PathfinderGoalRandomStroll;
-import net.minecraft.server.v1_14_R1.Vec3D;
 import net.minecraft.server.v1_14_R1.World;
 
 import org.bukkit.craftbukkit.v1_14_R1.CraftWorld;
@@ -68,44 +65,8 @@ public class WorkingWolf extends EntityWolf {
     this.goalSelector.a(8, new PathfinderGoalRandomLookaround(this));
     this.targetSelector.a(2, new PathfinderGoalNearestAttackableTarget<>(this, EntityZombie.class, true));
     this.targetSelector.a(1, new PathfinderGoalHurtByTarget(this));
-
   }
 
-  @Override
-  public void e(Vec3D vector) {
-    EntityLiving entityliving = null;
-    for (final Entity e : passengers) {
-      if (e instanceof EntityHuman) {
-        entityliving = (EntityLiving) e;
-        break;
-      }
-    }
-    if (entityliving == null) {
-      this.J = 0.5F;
-      this.aL = 0.02F;
-      o(0.12f);
-      this.l((float) 0.12);
-      super.e(new Vec3D(f, 0.12f, 0.12f));
-      return;
-    }
-    this.lastYaw = this.yaw = entityliving.yaw;
-    this.pitch = entityliving.pitch * 0.5F;
-    this.setYawPitch(this.yaw, this.pitch);
-    this.aO = this.aM = this.yaw;
-
-    float vec1 = entityliving.bb * 0.5F * 0.75F;
-    float vec2 = entityliving.bd;
-    if (vec2 <= 0.0f) {
-      vec2 *= 0.25F;
-    }
-
-    //for 1.13
-    entityliving.bd = 0.12f;
-    o(0.12f);
-
-    super.e(new Vec3D(f, vec1, vec2));
-    J = (float) 1.0;
-  }
 
   @Override
   protected void initAttributes() {

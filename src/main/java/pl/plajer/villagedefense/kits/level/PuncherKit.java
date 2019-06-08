@@ -70,5 +70,6 @@ public class PuncherKit extends LevelKit {
 
   @Override
   public void reStock(Player player) {
+    //no restock items for this kit
   }
 }

@@ -73,6 +73,7 @@ public class LooterKit extends LevelKit implements Listener {
 
   @Override
   public void reStock(Player player) {
+    //no restock items for this kit
   }
 
   @EventHandler

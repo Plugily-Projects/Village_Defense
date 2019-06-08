@@ -47,10 +47,12 @@ public class ExceptionLogHandler extends Handler {
 
   @Override
   public void close() {
+    //unused in this handler
   }
 
   @Override
   public void flush() {
+    //unused in this handler
   }
 
   @Override

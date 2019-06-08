@@ -72,6 +72,9 @@ public class KitRegistry {
       MediumTankKit.class, WorkerKit.class, GolemFriendKit.class, TerminatorKit.class, HardcoreKit.class, CleanerKit.class, TeleporterKit.class, HeavyTankKit.class, ShotBowKit.class,
       DogFriendKit.class, PremiumHardcoreKit.class, TornadoKit.class, BlockerKit.class, MedicKit.class, NakedKit.class, WizardKit.class);
 
+  private KitRegistry() {
+  }
+
   public static void init(Main plugin) {
     KitRegistry.plugin = plugin;
     setupGameKits();
