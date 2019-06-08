@@ -58,7 +58,10 @@ public class LocaleService {
       File file = new File(plugin.getDataFolder().getPath() + "/locales/locale_data.yml");
       if (!file.exists()) {
         new File(plugin.getDataFolder().getPath() + "/locales").mkdir();
-        file.createNewFile();
+        if (!file.createNewFile()) {
+          plugin.getLogger().log(Level.WARNING, "Couldn't create locales folder! We must disable locales support.");
+          return;
+        }
       }
       Files.write(file.toPath(), data.getBytes());
       this.localeData = ConfigUtils.getConfig(plugin, "/locales/locale_data");
@@ -157,7 +160,6 @@ public class LocaleService {
          Scanner localScanner = new Scanner(file, "UTF-8").useDelimiter("\\A")) {
       String onlineData = scanner.hasNext() ? scanner.next() : "";
       String localData = localScanner.hasNext() ? localScanner.next() : "";
-      localScanner.close();
 
       return onlineData.equals(localData);
     } catch (IOException ignored) {

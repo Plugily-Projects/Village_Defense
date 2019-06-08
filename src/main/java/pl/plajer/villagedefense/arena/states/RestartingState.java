@@ -58,9 +58,7 @@ public class RestartingState implements ArenaStateHandler {
       }
       arena.getPlayers().addAll(plugin.getServer().getOnlinePlayers());
     }
-    if (plugin.getConfigPreferences().getOption(ConfigPreferences.Option.BOSSBAR_ENABLED)) {
-      arena.getGameBar().setTitle(plugin.getChatManager().colorMessage(Messages.BOSSBAR_WAITING_FOR_PLAYERS));
-    }
+    arena.getGameBar().setTitle(plugin.getChatManager().colorMessage(Messages.BOSSBAR_WAITING_FOR_PLAYERS));
   }
 
 }

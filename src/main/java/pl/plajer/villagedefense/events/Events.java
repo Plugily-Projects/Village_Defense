@@ -71,7 +71,6 @@ import pl.plajer.villagedefense.arena.ArenaState;
 import pl.plajer.villagedefense.arena.options.ArenaOption;
 import pl.plajer.villagedefense.handlers.PermissionsManager;
 import pl.plajer.villagedefense.handlers.items.SpecialItem;
-import pl.plajer.villagedefense.handlers.items.SpecialItemManager;
 import pl.plajer.villagedefense.handlers.language.Messages;
 import pl.plajer.villagedefense.user.User;
 import pl.plajer.villagedefense.utils.CompatMaterialConstants;
@@ -271,7 +270,7 @@ public class Events implements Listener {
   @EventHandler
   public void onDoorDrop(ItemSpawnEvent event) {
     if (event.getEntity().getItemStack().getType() == XMaterial.OAK_DOOR.parseMaterial()
-        || event.getEntity().getItemStack().getType() == CompatMaterialConstants.OAK_DOOR_ITEM) {
+        || event.getEntity().getItemStack().getType() == CompatMaterialConstants.getOakDoorItem()) {
       for (Entity entity : Utils.getNearbyEntities(event.getLocation(), 20)) {
         if (!(entity instanceof Player)) {
           continue;
@@ -296,8 +295,8 @@ public class Events implements Listener {
     if (itemStack == null || itemStack.getItemMeta() == null || itemStack.getItemMeta().getDisplayName() == null) {
       return;
     }
-    SpecialItem key = SpecialItemManager.getSpecialItem("Leave");
-    if (key == null) {
+    SpecialItem key = plugin.getSpecialItemManager().getSpecialItem("Leave");
+    if (key == SpecialItem.INVALID_ITEM) {
       return;
     }
     if (key.getItemStack().getItemMeta().getDisplayName().equalsIgnoreCase(itemStack.getItemMeta().getDisplayName())) {

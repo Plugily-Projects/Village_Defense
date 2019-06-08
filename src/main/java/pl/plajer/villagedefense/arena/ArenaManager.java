@@ -29,7 +29,6 @@ import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.IronGolem;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -46,7 +45,7 @@ import pl.plajer.villagedefense.api.event.wave.VillageWaveStartEvent;
 import pl.plajer.villagedefense.arena.options.ArenaOption;
 import pl.plajer.villagedefense.handlers.ChatManager;
 import pl.plajer.villagedefense.handlers.PermissionsManager;
-import pl.plajer.villagedefense.handlers.items.SpecialItemManager;
+import pl.plajer.villagedefense.handlers.items.SpecialItem;
 import pl.plajer.villagedefense.handlers.language.LanguageManager;
 import pl.plajer.villagedefense.handlers.language.Messages;
 import pl.plajer.villagedefense.handlers.reward.Reward;
@@ -66,7 +65,11 @@ import pl.plajerlair.commonsbox.minecraft.serialization.InventorySerializer;
  */
 public class ArenaManager {
 
-  private static Main plugin = JavaPlugin.getPlugin(Main.class);
+  private static Main plugin;
+
+  public static void init(Main plugin) {
+    ArenaManager.plugin = plugin;
+  }
 
   /**
    * Attempts player to join arena.
@@ -97,7 +100,9 @@ public class ArenaManager {
 
       player.getInventory().setItem(0, new ItemBuilder(XMaterial.COMPASS.parseItem()).name(plugin.getChatManager().colorMessage(Messages.SPECTATOR_ITEM_NAME)).build());
       player.getInventory().setItem(4, new ItemBuilder(XMaterial.COMPARATOR.parseItem()).name(plugin.getChatManager().colorMessage(Messages.SPECTATOR_SETTINGS_MENU_ITEM_NAME)).build());
-      player.getInventory().setItem(8, SpecialItemManager.getSpecialItem("Leave").getItemStack());
+      for (SpecialItem item : plugin.getSpecialItemManager().getSpecialItems()) {
+        player.getInventory().setItem(item.getSlot(), item.getItemStack());
+      }
 
       for (PotionEffect potionEffect : player.getActivePotionEffects()) {
         player.removePotionEffect(potionEffect.getType());
@@ -141,7 +146,9 @@ public class ArenaManager {
     user.setKit(KitRegistry.getDefaultKit());
     plugin.getKitManager().giveKitMenuItem(player);
     if (arena.getArenaState() == ArenaState.STARTING || arena.getArenaState() == ArenaState.WAITING_FOR_PLAYERS) {
-      player.getInventory().setItem(SpecialItemManager.getSpecialItem("Leave").getSlot(), SpecialItemManager.getSpecialItem("Leave").getItemStack());
+      for (SpecialItem item : plugin.getSpecialItemManager().getSpecialItems()) {
+        player.getInventory().setItem(item.getSlot(), item.getItemStack());
+      }
     }
     player.updateInventory();
     for (Player arenaPlayer : arena.getPlayers()) {

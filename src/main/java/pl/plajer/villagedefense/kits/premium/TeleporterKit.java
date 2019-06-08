@@ -121,7 +121,7 @@ public class TeleporterKit extends PremiumKit implements Listener {
       if (getPlugin().getUserManager().getUser(arenaPlayer).isSpectator()) {
         continue;
       }
-      ItemStack skull = CompatMaterialConstants.PLAYER_HEAD_ITEM.clone();
+      ItemStack skull = CompatMaterialConstants.getPlayerHeadItem();
       SkullMeta meta = (SkullMeta) skull.getItemMeta();
       meta.setOwningPlayer(arenaPlayer);
       meta.setDisplayName(arenaPlayer.getName());

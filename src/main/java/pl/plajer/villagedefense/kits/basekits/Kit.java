@@ -22,7 +22,6 @@ import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.plugin.java.JavaPlugin;
 
 import pl.plajer.villagedefense.Main;
 import pl.plajerlair.commonsbox.minecraft.configuration.ConfigUtils;
@@ -33,8 +32,8 @@ import pl.plajerlair.commonsbox.minecraft.item.ItemBuilder;
  */
 public abstract class Kit {
 
+  private static Main plugin;
   private FileConfiguration kitsConfig;
-  private Main plugin = JavaPlugin.getPlugin(Main.class);
   private String name;
   private boolean unlockedOnDefault = false;
   private String[] description = {""};
@@ -46,6 +45,10 @@ public abstract class Kit {
   public Kit(String name) {
     this.name = name;
     kitsConfig = ConfigUtils.getConfig(plugin, "kits");
+  }
+
+  public static void init(Main plugin) {
+    Kit.plugin = plugin;
   }
 
   public abstract boolean isUnlockedByPlayer(Player p);

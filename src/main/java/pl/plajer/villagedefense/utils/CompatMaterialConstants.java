@@ -20,7 +20,6 @@ package pl.plajer.villagedefense.utils;
 
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.plugin.java.JavaPlugin;
 
 import pl.plajer.villagedefense.Main;
 import pl.plajerlair.commonsbox.minecraft.compat.XMaterial;
@@ -35,13 +34,34 @@ import pl.plajerlair.commonsbox.minecraft.compat.XMaterial;
  */
 public class CompatMaterialConstants {
 
-  private static Main plugin = JavaPlugin.getPlugin(Main.class);
-  public static final Material PLAYER_HEAD = plugin.is1_11_R1() || plugin.is1_12_R1() ? Material.SKULL_ITEM : XMaterial.PLAYER_HEAD.parseMaterial();
-  public static final ItemStack PLAYER_HEAD_ITEM = plugin.is1_11_R1() || plugin.is1_12_R1() ? new ItemStack(Material.SKULL_ITEM, 1, (short) 3) : XMaterial.PLAYER_HEAD.parseItem();
-  public static final Material OAK_DOOR_BLOCK = plugin.is1_11_R1() || plugin.is1_12_R1() ? Material.WOODEN_DOOR : XMaterial.OAK_DOOR.parseMaterial();
-  public static final Material OAK_DOOR_ITEM = plugin.is1_11_R1() || plugin.is1_12_R1() ? Material.WOOD_DOOR : XMaterial.OAK_DOOR.parseMaterial();
+  private static Material playerHead;
+  private static ItemStack playerHeadItem;
+  private static Material oakDoorBlock;
+  private static Material oakDoorItem;
 
   private CompatMaterialConstants() {
   }
 
+  public static void init(Main plugin) {
+    playerHead = plugin.is1_11_R1() || plugin.is1_12_R1() ? Material.SKULL_ITEM : XMaterial.PLAYER_HEAD.parseMaterial();
+    playerHeadItem = plugin.is1_11_R1() || plugin.is1_12_R1() ? new ItemStack(Material.SKULL_ITEM, 1, (short) 3) : XMaterial.PLAYER_HEAD.parseItem();
+    oakDoorBlock = plugin.is1_11_R1() || plugin.is1_12_R1() ? Material.WOODEN_DOOR : XMaterial.OAK_DOOR.parseMaterial();
+    oakDoorItem = plugin.is1_11_R1() || plugin.is1_12_R1() ? Material.WOOD_DOOR : XMaterial.OAK_DOOR.parseMaterial();
+  }
+
+  public static Material getPlayerHead() {
+    return playerHead;
+  }
+
+  public static ItemStack getPlayerHeadItem() {
+    return playerHeadItem.clone();
+  }
+
+  public static Material getOakDoorBlock() {
+    return oakDoorBlock;
+  }
+
+  public static Material getOakDoorItem() {
+    return oakDoorItem;
+  }
 }

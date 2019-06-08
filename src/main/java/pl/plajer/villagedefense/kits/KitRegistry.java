@@ -26,7 +26,6 @@ import java.util.logging.Level;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.plugin.java.JavaPlugin;
 
 import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.handlers.language.Messages;
@@ -67,12 +66,13 @@ public class KitRegistry {
 
   private static List<Kit> kits = new ArrayList<>();
   private static Kit defaultKit = null;
-  private static Main plugin = JavaPlugin.getPlugin(Main.class);
+  private static Main plugin;
   private static List<Class> classKitNames = Arrays.asList(LightTankKit.class, ZombieFinderKit.class, ArcherKit.class, PuncherKit.class, HealerKit.class, LooterKit.class, RunnerKit.class,
       MediumTankKit.class, WorkerKit.class, GolemFriendKit.class, TerminatorKit.class, HardcoreKit.class, CleanerKit.class, TeleporterKit.class, HeavyTankKit.class, ShotBowKit.class,
       DogFriendKit.class, PremiumHardcoreKit.class, TornadoKit.class, BlockerKit.class, MedicKit.class, NakedKit.class, WizardKit.class);
 
-  public static void init() {
+  public static void init(Main plugin) {
+    KitRegistry.plugin = plugin;
     setupGameKits();
     setupKitSelectorItem();
   }

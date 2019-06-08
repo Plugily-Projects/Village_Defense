@@ -41,12 +41,15 @@ import org.bukkit.potion.PotionEffect;
 import pl.plajer.villagedefense.api.StatsStorage;
 import pl.plajer.villagedefense.arena.Arena;
 import pl.plajer.villagedefense.arena.ArenaEvents;
+import pl.plajer.villagedefense.arena.ArenaManager;
 import pl.plajer.villagedefense.arena.ArenaRegistry;
+import pl.plajer.villagedefense.arena.ArenaUtils;
 import pl.plajer.villagedefense.commands.arguments.ArgumentsRegistry;
 import pl.plajer.villagedefense.creatures.CreatureUtils;
 import pl.plajer.villagedefense.creatures.DoorBreakListener;
 import pl.plajer.villagedefense.creatures.EntityRegistry;
 import pl.plajer.villagedefense.creatures.upgrades.EntityUpgradeMenu;
+import pl.plajer.villagedefense.creatures.upgrades.Upgrade;
 import pl.plajer.villagedefense.events.ChatEvents;
 import pl.plajer.villagedefense.events.Events;
 import pl.plajer.villagedefense.events.JoinEvent;
@@ -60,17 +63,20 @@ import pl.plajer.villagedefense.handlers.HolidayManager;
 import pl.plajer.villagedefense.handlers.PermissionsManager;
 import pl.plajer.villagedefense.handlers.PlaceholderManager;
 import pl.plajer.villagedefense.handlers.SignManager;
-import pl.plajer.villagedefense.handlers.items.SpecialItem;
+import pl.plajer.villagedefense.handlers.items.SpecialItemManager;
 import pl.plajer.villagedefense.handlers.language.LanguageManager;
 import pl.plajer.villagedefense.handlers.language.Messages;
 import pl.plajer.villagedefense.handlers.powerup.PowerupRegistry;
 import pl.plajer.villagedefense.handlers.reward.RewardsFactory;
+import pl.plajer.villagedefense.handlers.setup.SetupInventory;
 import pl.plajer.villagedefense.handlers.setup.SetupInventoryEvents;
 import pl.plajer.villagedefense.kits.KitManager;
 import pl.plajer.villagedefense.kits.KitRegistry;
+import pl.plajer.villagedefense.kits.basekits.Kit;
 import pl.plajer.villagedefense.user.User;
 import pl.plajer.villagedefense.user.UserManager;
 import pl.plajer.villagedefense.user.data.MysqlManager;
+import pl.plajer.villagedefense.utils.CompatMaterialConstants;
 import pl.plajer.villagedefense.utils.Debugger;
 import pl.plajer.villagedefense.utils.ExceptionLogHandler;
 import pl.plajer.villagedefense.utils.LegacyDataFixer;
@@ -96,6 +102,7 @@ public class Main extends JavaPlugin {
   private ArgumentsRegistry registry;
   private SignManager signManager;
   private BungeeManager bungeeManager;
+  private SpecialItemManager specialItemManager;
   private KitManager kitManager;
   private PowerupRegistry powerupRegistry;
   private RewardsFactory rewardsHandler;
@@ -157,7 +164,7 @@ public class Main extends JavaPlugin {
     }
 
     ServiceRegistry.registerService(this);
-    exceptionLogHandler = new ExceptionLogHandler();
+    exceptionLogHandler = new ExceptionLogHandler(this);
     Messages.init(this);
     LanguageManager.init(this);
     saveDefaultConfig();
@@ -172,7 +179,8 @@ public class Main extends JavaPlugin {
     }
     long start = System.currentTimeMillis();
 
-    chatManager = new ChatManager(ChatColor.translateAlternateColorCodes('&', LanguageManager.getLanguageMessage("In-Game.Plugin-Prefix")));
+    chatManager = new ChatManager(this, ChatColor.translateAlternateColorCodes('&',
+        LanguageManager.getLanguageMessage("In-Game.Plugin-Prefix")));
     configPreferences = new ConfigPreferences(this);
     setupFiles();
     new LegacyDataFixer(this);
@@ -205,11 +213,11 @@ public class Main extends JavaPlugin {
     return true;
   }
 
+  //order matters
   private void initializeClasses() {
-    Utils.init(this);
+    startInitiableClasses();
+
     ScoreboardLib.setPluginInstance(this);
-    CreatureUtils.init(this);
-    User.init(this);
     if (getConfig().getBoolean("BungeeActivated", false)) {
       bungeeManager = new BungeeManager(this);
     }
@@ -218,6 +226,7 @@ public class Main extends JavaPlugin {
     new EntityRegistry(this);
     new ArenaEvents(this);
     kitManager = new KitManager(this);
+    KitRegistry.init(this);
     new SpectatorEvents(this);
     new QuitEvent(this);
     new SetupInventoryEvents(this);
@@ -241,14 +250,28 @@ public class Main extends JavaPlugin {
     }
     userManager = new UserManager(this);
     new DoorBreakListener(this);
-    KitRegistry.init();
 
-    SpecialItem.loadAll();
+    specialItemManager = new SpecialItemManager(this);
+    specialItemManager.registerItems();
     ArenaRegistry.registerArenas();
     //we must start it after instances load!
     signManager = new SignManager(this);
+  }
 
+  private void startInitiableClasses() {
+    StatsStorage.init(this);
+    ArenaRegistry.init(this);
+    CompatMaterialConstants.init(this);
+    Utils.init(this);
+    CreatureUtils.init(this);
+    User.init(this);
+    ArenaManager.init(this);
+    Kit.init(this);
+    Upgrade.init(this);
     PermissionsManager.init(this);
+    SetupInventory.init(this);
+    ArenaUtils.init(this);
+    Arena.init(this);
   }
 
   private void setupPluginMetrics() {
@@ -323,6 +346,10 @@ public class Main extends JavaPlugin {
 
   public UserManager getUserManager() {
     return userManager;
+  }
+
+  public SpecialItemManager getSpecialItemManager() {
+    return specialItemManager;
   }
 
   public RewardsFactory getRewardsHandler() {

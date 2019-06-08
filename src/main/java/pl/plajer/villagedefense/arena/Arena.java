@@ -38,9 +38,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.entity.Villager;
 import org.bukkit.entity.Wolf;
 import org.bukkit.entity.Zombie;
-import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.jetbrains.annotations.Nullable;
 
 import pl.plajer.villagedefense.ConfigPreferences;
 import pl.plajer.villagedefense.Main;
@@ -65,8 +63,8 @@ import pl.plajer.villagedefense.utils.Debugger;
  */
 public abstract class Arena extends BukkitRunnable {
 
-  private static final Main plugin = JavaPlugin.getPlugin(Main.class);
   private static final Random random = new Random();
+  private static Main plugin;
   private final String id;
 
   private Set<Player> players = new HashSet<>();
@@ -103,7 +101,22 @@ public abstract class Arena extends BukkitRunnable {
     zombieSpawnManager = new ZombieSpawnManager(this);
     scoreboardManager = new ScoreboardManager(this);
     mapRestorerManager = new MapRestorerManager(this);
-    //initialize with default values
+    setDefaultValues();
+    gameStateHandlers.put(ArenaState.WAITING_FOR_PLAYERS, new WaitingState());
+    gameStateHandlers.put(ArenaState.STARTING, new StartingState());
+    gameStateHandlers.put(ArenaState.IN_GAME, new InGameState());
+    gameStateHandlers.put(ArenaState.ENDING, new EndingState());
+    gameStateHandlers.put(ArenaState.RESTARTING, new RestartingState());
+    for (ArenaStateHandler handler : gameStateHandlers.values()) {
+      handler.init(plugin);
+    }
+  }
+
+  public static void init(Main plugin) {
+    Arena.plugin = plugin;
+  }
+
+  private void setDefaultValues() {
     for (ArenaOption option : ArenaOption.values()) {
       arenaOptions.put(option, option.getDefaultValue());
     }
@@ -112,14 +125,6 @@ public abstract class Arena extends BukkitRunnable {
     }
     for (SpawnPoint point : SpawnPoint.values()) {
       spawnPoints.put(point, new ArrayList<>());
-    }
-    gameStateHandlers.put(ArenaState.WAITING_FOR_PLAYERS, new WaitingState());
-    gameStateHandlers.put(ArenaState.STARTING, new StartingState());
-    gameStateHandlers.put(ArenaState.IN_GAME, new InGameState());
-    gameStateHandlers.put(ArenaState.ENDING, new EndingState());
-    gameStateHandlers.put(ArenaState.RESTARTING, new RestartingState());
-    for (ArenaStateHandler handler : gameStateHandlers.values()) {
-      handler.init(plugin);
     }
   }
 
@@ -196,12 +201,16 @@ public abstract class Arena extends BukkitRunnable {
     return forceStart;
   }
 
-  public void setFighting(boolean fighting) {
-    this.fighting = fighting;
+  public void setForceStart(boolean forceStart) {
+    this.forceStart = forceStart;
   }
 
   public boolean isFighting() {
     return fighting;
+  }
+
+  public void setFighting(boolean fighting) {
+    this.fighting = fighting;
   }
 
   public Random getRandom() {
@@ -210,12 +219,11 @@ public abstract class Arena extends BukkitRunnable {
 
   /**
    * Returns boss bar of the game.
-   * Please use doBarAction if possible as it's fail safe
+   * Please use doBarAction if possible
    *
    * @return game boss bar
    * @see Arena#doBarAction(BarAction, Player)
    */
-  @Nullable
   public BossBar getGameBar() {
     return gameBar;
   }
@@ -433,10 +441,6 @@ public abstract class Arena extends BukkitRunnable {
 
   public abstract void spawnVillagerSlayer(Random random);
 
-  public void setForceStart(boolean forceStart) {
-    this.forceStart = forceStart;
-  }
-
   protected void addWolf(Wolf wolf) {
     wolves.add(wolf);
   }
@@ -488,6 +492,10 @@ public abstract class Arena extends BukkitRunnable {
       }
     }
     return playersLeft;
+  }
+
+  public Main getPlugin() {
+    return plugin;
   }
 
   protected void addZombie(Zombie zombie) {

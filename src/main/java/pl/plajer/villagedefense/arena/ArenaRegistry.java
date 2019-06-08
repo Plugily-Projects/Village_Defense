@@ -26,7 +26,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -41,8 +40,15 @@ import pl.plajerlair.commonsbox.minecraft.serialization.LocationSerializer;
  */
 public class ArenaRegistry {
 
-  private static Main plugin = JavaPlugin.getPlugin(Main.class);
   private static List<Arena> arenas = new ArrayList<>();
+  private static Main plugin;
+
+  private ArenaRegistry() {
+  }
+
+  public static void init(Main plugin) {
+    ArenaRegistry.plugin = plugin;
+  }
 
   /**
    * Checks if player is in any arena
@@ -67,9 +73,9 @@ public class ArenaRegistry {
    * @see #isInArena(Player) to check if player is playing
    */
   @Nullable
-  public static Arena getArena(@NotNull Player player) {
+  public static Arena getArena(Player player) {
     Arena arena = null;
-    if (!player.isOnline()) {
+    if (player == null || !player.isOnline()) {
       return null;
     }
     for (Arena loopArena : arenas) {

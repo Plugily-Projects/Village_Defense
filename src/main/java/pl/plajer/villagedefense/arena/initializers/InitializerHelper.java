@@ -31,6 +31,9 @@ import pl.plajerlair.commonsbox.minecraft.compat.XMaterial;
  */
 class InitializerHelper {
 
+  private InitializerHelper() {
+  }
+
   static void prepareHardZombie(Zombie zombie, Arena arena) {
     zombie.getEquipment().setBoots(new ItemStack(Material.DIAMOND_BOOTS));
     zombie.getEquipment().setLeggings(new ItemStack(Material.DIAMOND_LEGGINGS));

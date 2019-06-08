@@ -21,9 +21,8 @@ package pl.plajer.villagedefense.creatures.upgrades;
 import java.util.Arrays;
 import java.util.List;
 
-import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.ChatColor;
 
-import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.handlers.language.LanguageManager;
 
 /**
@@ -34,17 +33,16 @@ import pl.plajer.villagedefense.handlers.language.LanguageManager;
 public class UpgradeBuilder {
 
   private final Upgrade upgrade;
-  private Main plugin = JavaPlugin.getPlugin(Main.class);
 
   public UpgradeBuilder(String id) {
     this.upgrade = new Upgrade(id);
-    upgrade.setName(plugin.getChatManager().colorRawMessage(LanguageManager.getLanguageMessage("Upgrade-Menu.Upgrades." + id + ".Name")));
-    upgrade.setDescription(Arrays.asList(plugin.getChatManager().colorRawMessage(LanguageManager.getLanguageMessage("Upgrade-Menu.Upgrades." + id + ".Description")).split(";")));
+    upgrade.setName(ChatColor.translateAlternateColorCodes('&', LanguageManager.getLanguageMessage("Upgrade-Menu.Upgrades." + id + ".Name")));
+    upgrade.setDescription(Arrays.asList(ChatColor.translateAlternateColorCodes('&', LanguageManager.getLanguageMessage("Upgrade-Menu.Upgrades." + id + ".Description")).split(";")));
   }
 
   //for other usages
   public UpgradeBuilder name(String name) {
-    upgrade.setName(plugin.getChatManager().colorRawMessage(name));
+    upgrade.setName(ChatColor.translateAlternateColorCodes('&', name));
     return this;
   }
 

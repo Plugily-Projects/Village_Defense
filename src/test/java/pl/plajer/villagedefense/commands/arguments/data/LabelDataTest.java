@@ -33,7 +33,7 @@ public class LabelDataTest {
   private LabelData labelData;
 
   @Before
-  public void setUp() {
+  public void setUpClass() {
     labelData = new LabelData("&6&lTest", "command", "&fDescription");
   }
 

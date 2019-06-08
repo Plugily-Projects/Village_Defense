@@ -47,7 +47,7 @@ import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.api.StatsStorage;
 import pl.plajer.villagedefense.arena.options.ArenaOption;
 import pl.plajer.villagedefense.handlers.ChatManager;
-import pl.plajer.villagedefense.handlers.items.SpecialItemManager;
+import pl.plajer.villagedefense.handlers.items.SpecialItem;
 import pl.plajer.villagedefense.handlers.language.Messages;
 import pl.plajer.villagedefense.handlers.reward.Reward;
 import pl.plajer.villagedefense.user.User;
@@ -218,7 +218,9 @@ public class ArenaEvents implements Listener {
       Bukkit.getScheduler().runTaskLater(plugin, () -> {
         player.getInventory().setItem(0, new ItemBuilder(XMaterial.COMPASS.parseItem()).name(plugin.getChatManager().colorMessage(Messages.SPECTATOR_ITEM_NAME)).build());
         player.getInventory().setItem(4, new ItemBuilder(XMaterial.COMPARATOR.parseItem()).name(plugin.getChatManager().colorMessage(Messages.SPECTATOR_SETTINGS_MENU_ITEM_NAME)).build());
-        player.getInventory().setItem(8, SpecialItemManager.getSpecialItem("Leave").getItemStack());
+        for (SpecialItem item : plugin.getSpecialItemManager().getSpecialItems()) {
+          player.getInventory().setItem(item.getSlot(), item.getItemStack());
+        }
       }, 1);
 
       untargetPlayerFromZombies(player, arena);

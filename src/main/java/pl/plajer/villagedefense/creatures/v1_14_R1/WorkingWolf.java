@@ -18,7 +18,9 @@
 
 package pl.plajer.villagedefense.creatures.v1_14_R1;
 
+import net.minecraft.server.v1_14_R1.Entity;
 import net.minecraft.server.v1_14_R1.EntityHuman;
+import net.minecraft.server.v1_14_R1.EntityLiving;
 import net.minecraft.server.v1_14_R1.EntityTypes;
 import net.minecraft.server.v1_14_R1.EntityWolf;
 import net.minecraft.server.v1_14_R1.EntityZombie;
@@ -34,6 +36,7 @@ import net.minecraft.server.v1_14_R1.PathfinderGoalMoveTowardsRestriction;
 import net.minecraft.server.v1_14_R1.PathfinderGoalNearestAttackableTarget;
 import net.minecraft.server.v1_14_R1.PathfinderGoalRandomLookaround;
 import net.minecraft.server.v1_14_R1.PathfinderGoalRandomStroll;
+import net.minecraft.server.v1_14_R1.Vec3D;
 import net.minecraft.server.v1_14_R1.World;
 
 import org.bukkit.craftbukkit.v1_14_R1.CraftWorld;
@@ -68,8 +71,8 @@ public class WorkingWolf extends EntityWolf {
 
   }
 
-  /*@Override
-  public void a(float f, float f1, float f2) {
+  @Override
+  public void e(Vec3D vector) {
     EntityLiving entityliving = null;
     for (final Entity e : passengers) {
       if (e instanceof EntityHuman) {
@@ -78,11 +81,11 @@ public class WorkingWolf extends EntityWolf {
       }
     }
     if (entityliving == null) {
-      this.P = 0.5F;
-      this.aR = 0.02F;
+      this.J = 0.5F;
+      this.aL = 0.02F;
       o(0.12f);
-      this.k((float) 0.12);
-      super.a(f, f1, f2);
+      this.l((float) 0.12);
+      super.e(new Vec3D(f, 0.12f, 0.12f));
       return;
     }
     this.lastYaw = this.yaw = entityliving.yaw;
@@ -90,19 +93,19 @@ public class WorkingWolf extends EntityWolf {
     this.setYawPitch(this.yaw, this.pitch);
     this.aO = this.aM = this.yaw;
 
-    f = entityliving.bh * 0.5F * 0.75F;
-    f2 = entityliving.bj;
-    if (f2 <= 0.0f) {
-      f2 *= 0.25F;
+    float vec1 = entityliving.bb * 0.5F * 0.75F;
+    float vec2 = entityliving.bd;
+    if (vec2 <= 0.0f) {
+      vec2 *= 0.25F;
     }
 
     //for 1.13
-    entityliving.bj = 0.12f;
+    entityliving.bd = 0.12f;
     o(0.12f);
 
-    super.a(f, f1, f2);
-    P = (float) 1.0;
-  }*/
+    super.e(new Vec3D(f, vec1, vec2));
+    J = (float) 1.0;
+  }
 
   @Override
   protected void initAttributes() {

@@ -34,7 +34,6 @@ import java.util.logging.Level;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.java.JavaPlugin;
 
 import pl.plajer.villagedefense.ConfigPreferences;
 import pl.plajer.villagedefense.Main;
@@ -49,7 +48,14 @@ import pl.plajerlair.commonsbox.minecraft.configuration.ConfigUtils;
  */
 public class StatsStorage {
 
-  private static Main plugin = JavaPlugin.getPlugin(Main.class);
+  private static Main plugin;
+
+  private StatsStorage() {
+  }
+
+  public static void init(Main plugin) {
+    StatsStorage.plugin = plugin;
+  }
 
   private static Map sortByValue(Map<?, ?> unsortMap) {
     List list = new LinkedList<>(unsortMap.entrySet());

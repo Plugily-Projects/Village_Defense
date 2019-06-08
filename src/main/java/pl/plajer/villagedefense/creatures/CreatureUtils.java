@@ -28,7 +28,6 @@ import java.util.logging.Level;
 import org.bukkit.ChatColor;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Zombie;
-import org.bukkit.plugin.java.JavaPlugin;
 
 import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.arena.Arena;
@@ -47,13 +46,14 @@ public class CreatureUtils {
   private static float babyZombieSpeed = 2.0f;
   private static String[] villagerNames = ("Jagger,Kelsey,Kelton,Haylie,Harlow,Howard,Wulffric,Winfred,Ashley,Bailey,Beckett,Alfredo,Alfred,Adair,Edgar,ED,Eadwig,Edgaras,Buckley,Stanley,Nuffley,"
       + "Mary,Jeffry,Rosaly,Elliot,Harry,Sam,Rosaline,Tom,Ivan,Kevin,Adam").split(",");
-  private static Main plugin = JavaPlugin.getPlugin(Main.class);
+  private static Main plugin;
   private static List<CachedObject> cachedObjects = new ArrayList<>();
 
   private CreatureUtils() {
   }
 
   public static void init(Main plugin) {
+    CreatureUtils.plugin = plugin;
     zombieSpeed = (float) plugin.getConfig().getDouble("Zombie-Speed", 1.3);
     babyZombieSpeed = (float) plugin.getConfig().getDouble("Mini-Zombie-Speed", 2.0);
     villagerNames = LanguageManager.getLanguageMessage("In-Game.Villager-Names").split(",");

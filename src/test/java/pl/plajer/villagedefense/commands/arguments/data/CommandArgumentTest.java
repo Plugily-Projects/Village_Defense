@@ -34,7 +34,7 @@ public class CommandArgumentTest {
   private CommandArgument commandArgument;
 
   @Before
-  public void setUp() {
+  public void setUpClass() {
     commandArgument = new CommandArgument("argument", "no.permission", CommandArgument.ExecutorType.BOTH);
   }
 

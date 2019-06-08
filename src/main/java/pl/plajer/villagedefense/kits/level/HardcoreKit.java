@@ -66,7 +66,7 @@ public class HardcoreKit extends LevelKit {
 
   @Override
   public Material getMaterial() {
-    return CompatMaterialConstants.PLAYER_HEAD;
+    return CompatMaterialConstants.getPlayerHead();
   }
 
   @Override

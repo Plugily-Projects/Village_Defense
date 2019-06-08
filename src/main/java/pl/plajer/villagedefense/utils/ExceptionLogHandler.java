@@ -24,7 +24,6 @@ import java.util.logging.Handler;
 import java.util.logging.LogRecord;
 
 import org.bukkit.Bukkit;
-import org.bukkit.plugin.java.JavaPlugin;
 
 import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.utils.services.exception.ReportedException;
@@ -39,8 +38,10 @@ public class ExceptionLogHandler extends Handler {
   //these classes if found in stacktraces won't be reported
   //to the Error Service
   private List<String> blacklistedClasses = Arrays.asList("pl.plajer.villagedefense.user.data.MySQLManager", "pl.plajerlair.commonsbox.database.MySQLDatabase");
+  private Main plugin;
 
-  public ExceptionLogHandler() {
+  public ExceptionLogHandler(Main plugin) {
+    this.plugin = plugin;
     Bukkit.getLogger().addHandler(this);
   }
 
@@ -65,7 +66,7 @@ public class ExceptionLogHandler extends Handler {
     if (containsBlacklistedClass(throwable)) {
       return;
     }
-    new ReportedException(JavaPlugin.getPlugin(Main.class), (Exception) throwable);
+    new ReportedException(plugin, (Exception) throwable);
   }
 
   private boolean containsBlacklistedClass(Throwable throwable) {

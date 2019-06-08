@@ -30,7 +30,6 @@ import me.tigerhix.lib.scoreboard.type.ScoreboardHandler;
 
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.java.JavaPlugin;
 
 import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.api.StatsStorage;
@@ -48,12 +47,14 @@ import pl.plajer.villagedefense.user.User;
 public class ScoreboardManager {
 
   private List<Scoreboard> scoreboards = new ArrayList<>();
-  private Main plugin = JavaPlugin.getPlugin(Main.class);
-  private String boardTitle = plugin.getChatManager().colorRawMessage(LanguageManager.getLanguageMessage("Scoreboard.Title"));
+  private Main plugin;
+  private String boardTitle;
   private Arena arena;
 
   public ScoreboardManager(Arena arena) {
     this.arena = arena;
+    this.plugin = arena.getPlugin();
+    this.boardTitle = plugin.getChatManager().colorRawMessage(LanguageManager.getLanguageMessage("Scoreboard.Title"));
   }
 
   /**

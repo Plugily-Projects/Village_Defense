@@ -64,38 +64,37 @@ public class SpectatorItemEvents {
     }
     if (stack.getItemMeta().getDisplayName().equalsIgnoreCase(plugin.getChatManager().colorMessage(Messages.SPECTATOR_ITEM_NAME))) {
       e.setCancelled(true);
-      openSpectatorMenu(e.getPlayer().getWorld(), e.getPlayer());
+      openSpectatorMenu(e.getPlayer().getWorld(), e.getPlayer(), arena);
     } else if (stack.getItemMeta().getDisplayName().equalsIgnoreCase(plugin.getChatManager().colorMessage(Messages.SPECTATOR_SETTINGS_MENU_ITEM_NAME))) {
       e.setCancelled(true);
       spectatorSettingsMenu.openSpectatorSettingsMenu(e.getPlayer());
     }
   }
 
-  private void openSpectatorMenu(World world, Player p) {
-    int rows = Utils.serializeInt(ArenaRegistry.getArena(p).getPlayers().size()) / 9;
+  private void openSpectatorMenu(World world, Player player, Arena arena) {
+    int rows = Utils.serializeInt(arena.getPlayers().size()) / 9;
     Gui gui = new Gui(plugin, rows, plugin.getChatManager().colorMessage(Messages.SPECTATOR_MENU_NAME));
     OutlinePane pane = new OutlinePane(9, rows);
     gui.addPane(pane);
 
-    final Arena arena = ArenaRegistry.getArena(p);
     Set<Player> players = arena.getPlayers();
-    for (Player player : world.getPlayers()) {
-      if (players.contains(player) && !plugin.getUserManager().getUser(player).isSpectator()) {
-        ItemStack skull = CompatMaterialConstants.PLAYER_HEAD_ITEM.clone();
+    for (Player arenaPlayer : world.getPlayers()) {
+      if (players.contains(arenaPlayer) && !plugin.getUserManager().getUser(arenaPlayer).isSpectator()) {
+        ItemStack skull = CompatMaterialConstants.getPlayerHeadItem();
         SkullMeta meta = (SkullMeta) skull.getItemMeta();
-        meta.setOwningPlayer(player);
-        meta.setDisplayName(player.getName());
+        meta.setOwningPlayer(arenaPlayer);
+        meta.setDisplayName(arenaPlayer.getName());
         meta.setLore(Collections.singletonList(plugin.getChatManager().colorMessage(Messages.SPECTATOR_TARGET_PLAYER_HEALTH)
-            .replace("%health%", String.valueOf(NumberUtils.round(player.getHealth(), 2)))));
+            .replace("%health%", String.valueOf(NumberUtils.round(arenaPlayer.getHealth(), 2)))));
         skull.setItemMeta(meta);
         pane.addItem(new GuiItem(skull, e -> {
           e.setCancelled(true);
-          e.getWhoClicked().sendMessage(plugin.getChatManager().formatMessage(arena, plugin.getChatManager().colorMessage(Messages.KITS_TELEPORTER_TELEPORTED_TO_PLAYER), player));
+          e.getWhoClicked().sendMessage(plugin.getChatManager().formatMessage(arena, plugin.getChatManager().colorMessage(Messages.KITS_TELEPORTER_TELEPORTED_TO_PLAYER), arenaPlayer));
           e.getWhoClicked().closeInventory();
-          e.getWhoClicked().teleport(player);
+          e.getWhoClicked().teleport(arenaPlayer);
         }));
       }
     }
-    gui.show(p);
+    gui.show(player);
   }
 }

@@ -37,6 +37,7 @@ import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
 import pl.plajer.villagedefense.Main;
+import pl.plajer.villagedefense.arena.Arena;
 import pl.plajer.villagedefense.arena.ArenaRegistry;
 import pl.plajer.villagedefense.commands.arguments.admin.AddOrbsArgument;
 import pl.plajer.villagedefense.commands.arguments.admin.ClearEntitiesArgument;
@@ -133,13 +134,14 @@ public class ArgumentsRegistry implements CommandExecutor {
               || !Utils.hasPermission(sender, "villagedefense.admin.create")) {
             return true;
           }
-          if (ArenaRegistry.getArena(args[0]) == null) {
+          Arena arena = ArenaRegistry.getArena(args[0]);
+          if (arena == null) {
             sender.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage(Messages.COMMANDS_NO_ARENA_LIKE_THAT));
             return true;
           }
 
           SetupInventory.sendProTip((Player) sender);
-          new SetupInventory(ArenaRegistry.getArena(args[0])).openInventory((Player) sender);
+          new SetupInventory(arena).openInventory((Player) sender);
           return true;
         }
       }

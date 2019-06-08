@@ -50,9 +50,7 @@ public class WaitingState implements ArenaStateHandler {
         return;
       }
     } else {
-      if (plugin.getConfigPreferences().getOption(ConfigPreferences.Option.BOSSBAR_ENABLED)) {
-        arena.getGameBar().setTitle(plugin.getChatManager().colorMessage(Messages.BOSSBAR_WAITING_FOR_PLAYERS));
-      }
+      arena.getGameBar().setTitle(plugin.getChatManager().colorMessage(Messages.BOSSBAR_WAITING_FOR_PLAYERS));
       plugin.getChatManager().broadcast(arena, Messages.LOBBY_MESSAGES_ENOUGH_PLAYERS_TO_START);
       arena.setArenaState(ArenaState.STARTING);
       arena.setTimer(plugin.getConfig().getInt("Starting-Waiting-Time", 60));

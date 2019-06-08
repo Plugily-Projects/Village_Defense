@@ -27,7 +27,6 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.plugin.java.JavaPlugin;
 
 import pl.plajer.villagedefense.ConfigPreferences;
 import pl.plajer.villagedefense.Main;
@@ -44,8 +43,8 @@ import pl.plajerlair.commonsbox.minecraft.serialization.LocationSerializer;
 public class SetupInventory {
 
   public static final String VIDEO_LINK = "https://tutorial.plajer.xyz";
-  private static Main plugin = JavaPlugin.getPlugin(Main.class);
   private static Random random = new Random();
+  private static Main plugin;
   private Inventory inventory;
 
   public SetupInventory(Arena arena) {
@@ -129,7 +128,7 @@ public class SetupInventory {
         .lore(ChatColor.DARK_GRAY + "(zombies will spawn at this location)")
         .lore(isOptionDoneList("instances." + arena.getId() + ".zombiespawns"))
         .build());
-    inventory.setItem(ClickPosition.ADD_DOORS.getPosition(), new ItemBuilder(CompatMaterialConstants.OAK_DOOR_ITEM)
+    inventory.setItem(ClickPosition.ADD_DOORS.getPosition(), new ItemBuilder(CompatMaterialConstants.getOakDoorItem())
         .name(ChatColor.GOLD + "► Add doors")
         .lore(ChatColor.GRAY + "Target arena door and click this.")
         .lore(ChatColor.DARK_GRAY + "(doors are required and will be")
@@ -163,6 +162,10 @@ public class SetupInventory {
         .lore(ChatColor.GRAY + "Having problems with setup or wanna")
         .lore(ChatColor.GRAY + "know some useful tips? Click to get video link!")
         .build());
+  }
+
+  public static void init(Main plugin) {
+    SetupInventory.plugin = plugin;
   }
 
   private static String isOptionDone(String path) {

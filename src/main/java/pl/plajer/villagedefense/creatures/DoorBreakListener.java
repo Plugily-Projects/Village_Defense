@@ -64,9 +64,9 @@ public class DoorBreakListener extends BukkitRunnable {
           if (random.nextInt(20) == 5) {
             block.getLocation().getWorld().spawnParticle(Particle.SMOKE_LARGE, block.getLocation(), 15, 0.1, 0.1, 0.1);
             block.getLocation().getWorld().spawnParticle(Particle.EXPLOSION_HUGE, block.getLocation(), 1, 0.1, 0.1, 0.1);
-            if (block.getRelative(BlockFace.UP).getType() == CompatMaterialConstants.OAK_DOOR_BLOCK) {
+            if (block.getRelative(BlockFace.UP).getType() == CompatMaterialConstants.getOakDoorBlock()) {
               block.getRelative(BlockFace.UP).setType(Material.AIR);
-            } else if (block.getRelative(BlockFace.DOWN).getType() == CompatMaterialConstants.OAK_DOOR_BLOCK) {
+            } else if (block.getRelative(BlockFace.DOWN).getType() == CompatMaterialConstants.getOakDoorBlock()) {
               block.getRelative(BlockFace.DOWN).setType(Material.AIR);
             }
             block.setType(Material.AIR);

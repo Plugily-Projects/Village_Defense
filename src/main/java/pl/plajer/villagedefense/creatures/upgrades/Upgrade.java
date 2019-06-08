@@ -25,7 +25,6 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.plugin.java.JavaPlugin;
 
 import pl.plajer.villagedefense.Main;
 import pl.plajerlair.commonsbox.minecraft.compat.XMaterial;
@@ -38,7 +37,7 @@ import pl.plajerlair.commonsbox.minecraft.item.ItemBuilder;
  */
 public class Upgrade {
 
-  private Main plugin = JavaPlugin.getPlugin(Main.class);
+  private static Main plugin;
   private String id;
   private int slotX;
   private int slotY;
@@ -53,6 +52,10 @@ public class Upgrade {
   public Upgrade(String id) {
     this.id = id;
     this.configAccessor = "Entity-Upgrades." + id + "-Tiers";
+  }
+
+  public static void init(Main plugin) {
+    Upgrade.plugin = plugin;
   }
 
   public void setEntityType(EntityType entityType) {

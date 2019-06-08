@@ -34,7 +34,7 @@ public class CompletableArgumentTest {
   private CompletableArgument completableArgument;
 
   @Before
-  public void setUp() {
+  public void setUpClass() {
     completableArgument = new CompletableArgument("villagedefense", "testing", Arrays.asList("yes", "no"));
   }
 

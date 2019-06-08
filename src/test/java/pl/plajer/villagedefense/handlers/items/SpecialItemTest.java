@@ -16,54 +16,50 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package pl.plajer.villagedefense.handlers.reward;
+package pl.plajer.villagedefense.handlers.items;
 
+import org.bukkit.Material;
+import org.bukkit.inventory.ItemStack;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import pl.plajer.villagedefense.MockUtils;
+
 /**
  * @author Plajer
  * <p>
- * Created at 26.05.2019
+ * Created at 06.06.2019
  */
-public class RewardTest {
+public class SpecialItemTest {
 
-  private Reward reward;
+  private SpecialItem specialItem;
 
   @Before
   public void setUpClass() {
-    reward = new Reward(Reward.RewardType.END_GAME, "chance(10):p:test");
+    MockUtils.getServerMockSafe();
+    specialItem = new SpecialItem("Test", new ItemStack(Material.STONE), 2);
   }
 
   @Test
-  public void getExecutor() {
-    Assert.assertEquals(Reward.RewardExecutor.PLAYER, reward.getExecutor());
-    System.out.println("> Reward#getExecutor | PASSED");
+  public void getName() {
+    Assert.assertEquals("Test", specialItem.getName());
   }
 
   @Test
-  public void getExecutableCode() {
-    Assert.assertEquals("test", reward.getExecutableCode());
-    System.out.println("> Reward#getExecutableCode| PASSED");
+  public void getItemStack() {
+    Assert.assertEquals(new ItemStack(Material.STONE), specialItem.getItemStack());
   }
 
   @Test
-  public void getChance() {
-    Assert.assertEquals(10, reward.getChance(), 0);
-    System.out.println("> Reward#getChance | PASSED");
+  public void getSlot() {
+    Assert.assertEquals(2, specialItem.getSlot());
   }
 
   @Test
-  public void getWaveExecute() {
-    Assert.assertEquals(-1, reward.getWaveExecute());
-    System.out.println("> Reward#getWaveExecute | PASSED");
-  }
-
-  @Test
-  public void getType() {
-    Assert.assertEquals(Reward.RewardType.END_GAME, reward.getType());
-    System.out.println("> Reward#getType | PASSED");
+  public void setSlot() {
+    specialItem.setSlot(6);
+    Assert.assertEquals(6, specialItem.getSlot());
   }
 
 }

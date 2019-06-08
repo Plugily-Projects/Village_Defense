@@ -32,9 +32,7 @@ import org.bukkit.entity.Villager;
 import org.bukkit.entity.Wolf;
 import org.bukkit.entity.Zombie;
 import org.bukkit.material.Door;
-import org.bukkit.plugin.java.JavaPlugin;
 
-import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.arena.Arena;
 import pl.plajer.villagedefense.utils.Debugger;
 import pl.plajer.villagedefense.utils.Utils;
@@ -48,7 +46,6 @@ import pl.plajerlair.commonsbox.minecraft.compat.XMaterial;
 public class MapRestorerManager {
 
   private Map<Location, Byte> doorBlocks = new LinkedHashMap<>();
-  private Main plugin = JavaPlugin.getPlugin(Main.class);
   private Arena arena;
 
   public MapRestorerManager(Arena arena) {
@@ -104,7 +101,7 @@ public class MapRestorerManager {
     for (Map.Entry<Location, Byte> entry : getGameDoorLocations().entrySet()) {
       Block block = entry.getKey().getBlock();
       Byte doorData = entry.getValue();
-      if (plugin.is1_11_R1() || plugin.is1_12_R1()) {
+      if (arena.getPlugin().is1_11_R1() || arena.getPlugin().is1_12_R1()) {
         int id = Material.WOODEN_DOOR.getId();
         block.setTypeIdAndData(id, doorData, false);
         i++;

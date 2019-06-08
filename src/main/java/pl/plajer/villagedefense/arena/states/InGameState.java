@@ -64,9 +64,6 @@ public class InGameState implements ArenaStateHandler {
         if (arena.getZombiesLeft() > 0) {
           plugin.getChatManager().broadcast(arena, Messages.ZOMBIE_GOT_STUCK_IN_THE_MAP);
         }
-        for (int i = arena.getZombiesLeft(); i > 0; i++) {
-          arena.spawnFastZombie(arena.getRandom());
-        }
         arena.setOptionValue(ArenaOption.ZOMBIES_TO_SPAWN, 0);
       }
       if (arena.getOption(ArenaOption.ZOMBIES_TO_SPAWN) < 0) {
@@ -83,9 +80,6 @@ public class InGameState implements ArenaStateHandler {
   }
 
   private void bossBarUpdate(Arena arena) {
-    if (!plugin.getConfigPreferences().getOption(ConfigPreferences.Option.BOSSBAR_ENABLED)) {
-      return;
-    }
     if (arena.getOption(ArenaOption.BAR_TOGGLE_VALUE) > 5) {
       arena.getGameBar().setTitle(plugin.getChatManager().colorMessage(Messages.BOSSBAR_IN_GAME_WAVE).replace("%wave%", String.valueOf(arena.getWave())));
       arena.addOptionValue(ArenaOption.BAR_TOGGLE_VALUE, 1);

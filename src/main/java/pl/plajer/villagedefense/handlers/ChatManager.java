@@ -22,7 +22,6 @@ import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.java.JavaPlugin;
 
 import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.arena.Arena;
@@ -37,9 +36,11 @@ import pl.plajerlair.commonsbox.string.StringFormatUtils;
  */
 public class ChatManager {
 
+  private Main plugin;
   private String prefix;
 
-  public ChatManager(String prefix) {
+  public ChatManager(Main plugin, String prefix) {
+    this.plugin = plugin;
     this.prefix = prefix;
   }
 
@@ -90,7 +91,7 @@ public class ChatManager {
         Bukkit.getConsoleSender().sendMessage("Please regenerate your language.yml file! If error still occurs report it to the developer!");
       } else {
         Bukkit.getConsoleSender().sendMessage("Locale message string not found! Please contact developer!");
-        new ReportedException(JavaPlugin.getPlugin(Main.class), ex);
+        new ReportedException(plugin, ex);
       }
       Bukkit.getConsoleSender().sendMessage("Access string: " + message.getAccessor());
       return "ERR_MESSAGE_NOT_FOUND";

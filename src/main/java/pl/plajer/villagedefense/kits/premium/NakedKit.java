@@ -31,10 +31,8 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.PotionType;
 
-import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.arena.ArenaRegistry;
 import pl.plajer.villagedefense.handlers.PermissionsManager;
 import pl.plajer.villagedefense.handlers.language.Messages;
@@ -123,7 +121,7 @@ public class NakedKit extends PremiumKit implements Listener {
     if (!(event.getInventory().getType().equals(InventoryType.PLAYER) || event.getInventory().getType().equals(InventoryType.CRAFTING))) {
       return;
     }
-    Bukkit.getScheduler().runTaskLater(JavaPlugin.getPlugin(Main.class), () -> {
+    Bukkit.getScheduler().runTaskLater(getPlugin(), () -> {
       for (ItemStack stack : event.getWhoClicked().getInventory().getArmorContents()) {
         if (stack == null || !armorTypes.contains(stack.getType())) {
           continue;

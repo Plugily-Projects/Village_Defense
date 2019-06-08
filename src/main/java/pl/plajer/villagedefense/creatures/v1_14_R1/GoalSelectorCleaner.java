@@ -30,6 +30,9 @@ import pl.plajer.villagedefense.creatures.CreatureUtils;
  */
 class GoalSelectorCleaner {
 
+  private GoalSelectorCleaner() {
+  }
+
   static void clearSelectors(EntityCreature creature) {
     LinkedHashSet goalD = (LinkedHashSet) CreatureUtils.getPrivateField("d", PathfinderGoalSelector.class, creature.goalSelector);
     goalD.clear();

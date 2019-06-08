@@ -16,49 +16,40 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package pl.plajer.villagedefense.handlers.powerup;
+package pl.plajer.villagedefense.user;
 
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import pl.plajerlair.commonsbox.minecraft.compat.XMaterial;
+import pl.plajer.villagedefense.Main;
+import pl.plajer.villagedefense.MockUtils;
+import pl.plajer.villagedefense.user.data.FileStats;
 
 /**
  * @author Plajer
  * <p>
- * Created at 27.05.2019
+ * Created at 06.06.2019
  */
-public class PowerupTest {
+public class UserManagerTest {
 
-  private Powerup powerup;
+  private Main plugin;
+  private User user;
 
   @Before
   public void setUpClass() {
-    powerup = new Powerup("test", "MyName", "DESC", XMaterial.POPPY, null);
+    this.plugin = MockUtils.getPluginMockSafe();
+    this.user = plugin.getUserManager().getUser(MockUtils.getDefaultPlayer());
   }
 
   @Test
-  public void getId() {
-    Assert.assertEquals("test", powerup.getId());
-    System.out.println("> Powerup#getId | PASSED");
+  public void getUser() {
+    Assert.assertNotNull(user);
   }
 
   @Test
-  public void getName() {
-    Assert.assertEquals("MyName", powerup.getName());
-    System.out.println("> Powerup#getId | PASSED");
+  public void getDatabase() {
+    Assert.assertTrue(plugin.getUserManager().getDatabase() instanceof FileStats);
   }
 
-  @Test
-  public void getDescription() {
-    Assert.assertEquals("DESC", powerup.getDescription());
-    System.out.println("> Powerup#getDescription | PASSED");
-  }
-
-  @Test
-  public void getMaterial() {
-    Assert.assertEquals(XMaterial.POPPY, powerup.getMaterial());
-    System.out.println("> Powerup#getMaterial | PASSED");
-  }
 }

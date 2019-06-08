@@ -22,7 +22,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 
-import pl.plajer.villagedefense.ConfigPreferences;
 import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.api.StatsStorage;
 import pl.plajer.villagedefense.api.event.game.VillageGameStartEvent;
@@ -48,19 +47,15 @@ public class StartingState implements ArenaStateHandler {
 
   @Override
   public void handleCall(Arena arena) {
-    if (plugin.getConfigPreferences().getOption(ConfigPreferences.Option.BOSSBAR_ENABLED)) {
-      arena.getGameBar().setTitle(plugin.getChatManager().colorMessage(Messages.BOSSBAR_STARTING_IN).replace("%time%", String.valueOf(arena.getTimer())));
-      arena.getGameBar().setProgress(arena.getTimer() / plugin.getConfig().getDouble("Starting-Waiting-Time", 60));
-    }
+    arena.getGameBar().setTitle(plugin.getChatManager().colorMessage(Messages.BOSSBAR_STARTING_IN).replace("%time%", String.valueOf(arena.getTimer())));
+    arena.getGameBar().setProgress(arena.getTimer() / plugin.getConfig().getDouble("Starting-Waiting-Time", 60));
     for (Player player : arena.getPlayers()) {
       player.setExp((float) (arena.getTimer() / plugin.getConfig().getDouble("Starting-Waiting-Time", 60)));
       player.setLevel(arena.getTimer());
     }
     if (arena.getPlayers().size() < arena.getMinimumPlayers() && !arena.isForceStart()) {
-      if (plugin.getConfigPreferences().getOption(ConfigPreferences.Option.BOSSBAR_ENABLED)) {
-        arena.getGameBar().setTitle(plugin.getChatManager().colorMessage(Messages.BOSSBAR_WAITING_FOR_PLAYERS));
-        arena.getGameBar().setProgress(1.0);
-      }
+      arena.getGameBar().setTitle(plugin.getChatManager().colorMessage(Messages.BOSSBAR_WAITING_FOR_PLAYERS));
+      arena.getGameBar().setProgress(1.0);
       plugin.getChatManager().broadcastMessage(arena, plugin.getChatManager().formatMessage(arena, plugin.getChatManager().colorMessage(Messages.LOBBY_MESSAGES_WAITING_FOR_PLAYERS), arena.getMinimumPlayers()));
       arena.setArenaState(ArenaState.WAITING_FOR_PLAYERS);
       Bukkit.getPluginManager().callEvent(new VillageGameStartEvent(arena));
@@ -75,9 +70,7 @@ public class StartingState implements ArenaStateHandler {
       arena.spawnVillagers();
       Bukkit.getPluginManager().callEvent(new VillageGameStartEvent(arena));
       arena.setArenaState(ArenaState.IN_GAME);
-      if (plugin.getConfigPreferences().getOption(ConfigPreferences.Option.BOSSBAR_ENABLED)) {
-        arena.getGameBar().setProgress(1.0);
-      }
+      arena.getGameBar().setProgress(1.0);
       arena.setTimer(5);
       for (Player player : arena.getPlayers()) {
         player.teleport(arena.getStartLocation());

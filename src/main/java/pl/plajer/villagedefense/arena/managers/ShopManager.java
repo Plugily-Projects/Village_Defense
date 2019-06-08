@@ -35,7 +35,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.entity.Wolf;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.plugin.java.JavaPlugin;
 
 import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.api.StatsStorage;
@@ -54,29 +53,20 @@ import pl.plajerlair.commonsbox.minecraft.serialization.LocationSerializer;
  */
 public class ShopManager {
 
-  /**
-   * Default name of golem spawn item from language.yml
-   */
-  public static final String DEFAULT_GOLEM_ITEM_NAME;
-  /**
-   * Default name of wolf spawn item from language.yml
-   */
-  public static final String DEFAULT_WOLF_ITEM_NAME;
+  private String defaultGolemItemName;
+  private String defaultWolfItemName;
 
-  static {
-    FileConfiguration config = ConfigUtils.getConfig(JavaPlugin.getPlugin(Main.class), "language");
-    DEFAULT_GOLEM_ITEM_NAME = config.getString("In-Game.Messages.Shop-Messages.Golem-Item-Name");
-    DEFAULT_WOLF_ITEM_NAME = config.getString("In-Game.Messages.Shop-Messages.Wolf-Item-Name");
-  }
-
-  private Main plugin = JavaPlugin.getPlugin(Main.class);
+  private Main plugin;
   private FileConfiguration config;
   private Gui gui;
   private Arena arena;
 
   public ShopManager(Arena arena) {
-    this.config = ConfigUtils.getConfig(JavaPlugin.getPlugin(Main.class), "arenas");
+    this.config = ConfigUtils.getConfig(arena.getPlugin(), "arenas");
+    this.plugin = arena.getPlugin();
     this.arena = arena;
+    defaultGolemItemName = config.getString("In-Game.Messages.Shop-Messages.Golem-Item-Name");
+    defaultWolfItemName = config.getString("In-Game.Messages.Shop-Messages.Wolf-Item-Name");
     if (config.isSet("instances." + arena.getId() + ".shop")) {
       registerShop();
     }
@@ -84,6 +74,20 @@ public class ShopManager {
 
   public Gui getShop() {
     return gui;
+  }
+
+  /**
+   * Default name of golem spawn item from language.yml
+   */
+  public String getDefaultGolemItemName() {
+    return defaultGolemItemName;
+  }
+
+  /**
+   * Default name of wolf spawn item from language.yml
+   */
+  public String getDefaultWolfItemName() {
+    return defaultWolfItemName;
   }
 
   public void openShop(Player player) {
@@ -152,7 +156,7 @@ public class ShopManager {
           String name = itemStack.getItemMeta().getDisplayName();
           int spawnedAmount = 0;
           if (name.contains(plugin.getChatManager().colorMessage(Messages.SHOP_MESSAGES_GOLEM_ITEM_NAME))
-              || name.contains(DEFAULT_GOLEM_ITEM_NAME)) {
+              || name.contains(defaultGolemItemName)) {
             for (IronGolem golem : arena.getIronGolems()) {
               if (golem.getCustomName().equals(plugin.getChatManager().colorMessage(Messages.SPAWNED_GOLEM_NAME).replace("%player%", player.getName()))) {
                 spawnedAmount++;
@@ -168,7 +172,7 @@ public class ShopManager {
             user.setStat(StatsStorage.StatisticType.ORBS, user.getStat(StatsStorage.StatisticType.ORBS) - cost);
             return;
           } else if (name.contains(plugin.getChatManager().colorMessage(Messages.SHOP_MESSAGES_WOLF_ITEM_NAME))
-              || name.contains(DEFAULT_WOLF_ITEM_NAME)) {
+              || name.contains(defaultWolfItemName)) {
             for (Wolf wolf : arena.getWolves()) {
               if (wolf.getCustomName().equals(plugin.getChatManager().colorMessage(Messages.SPAWNED_WOLF_NAME).replace("%player%", player.getName()))) {
                 spawnedAmount++;

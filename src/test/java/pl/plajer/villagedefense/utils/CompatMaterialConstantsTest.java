@@ -16,54 +16,47 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package pl.plajer.villagedefense.handlers.reward;
+package pl.plajer.villagedefense.utils;
 
+import org.bukkit.Material;
+import org.bukkit.inventory.ItemStack;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import pl.plajer.villagedefense.MockUtils;
+
 /**
  * @author Plajer
  * <p>
- * Created at 26.05.2019
+ * Created at 06.06.2019
  */
-public class RewardTest {
-
-  private Reward reward;
+public class CompatMaterialConstantsTest {
 
   @Before
   public void setUpClass() {
-    reward = new Reward(Reward.RewardType.END_GAME, "chance(10):p:test");
+    //to make sure test is done for 1.12
+    Assert.assertTrue(MockUtils.getPluginMockSafe().is1_12_R1());
   }
 
   @Test
-  public void getExecutor() {
-    Assert.assertEquals(Reward.RewardExecutor.PLAYER, reward.getExecutor());
-    System.out.println("> Reward#getExecutor | PASSED");
+  public void getPlayerHead() {
+    Assert.assertEquals(Material.SKULL_ITEM, CompatMaterialConstants.getPlayerHead());
   }
 
   @Test
-  public void getExecutableCode() {
-    Assert.assertEquals("test", reward.getExecutableCode());
-    System.out.println("> Reward#getExecutableCode| PASSED");
+  public void getPlayerHeadItem() {
+    Assert.assertEquals(new ItemStack(Material.SKULL_ITEM, 1, (short) 3), CompatMaterialConstants.getPlayerHeadItem());
   }
 
   @Test
-  public void getChance() {
-    Assert.assertEquals(10, reward.getChance(), 0);
-    System.out.println("> Reward#getChance | PASSED");
+  public void getOakDoorBlock() {
+    Assert.assertEquals(Material.WOODEN_DOOR, CompatMaterialConstants.getOakDoorBlock());
   }
 
   @Test
-  public void getWaveExecute() {
-    Assert.assertEquals(-1, reward.getWaveExecute());
-    System.out.println("> Reward#getWaveExecute | PASSED");
-  }
-
-  @Test
-  public void getType() {
-    Assert.assertEquals(Reward.RewardType.END_GAME, reward.getType());
-    System.out.println("> Reward#getType | PASSED");
+  public void getOakDoorItem() {
+    Assert.assertEquals(Material.WOOD_DOOR, CompatMaterialConstants.getOakDoorItem());
   }
 
 }

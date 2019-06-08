@@ -18,43 +18,91 @@
 
 package pl.plajer.villagedefense.handlers.items;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.stream.Collectors;
 
+import org.bukkit.Material;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.inventory.ItemStack;
-import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.NotNull;
+
+import pl.plajer.villagedefense.Main;
+import pl.plajer.villagedefense.utils.Debugger;
+import pl.plajerlair.commonsbox.minecraft.compat.XMaterial;
+import pl.plajerlair.commonsbox.minecraft.configuration.ConfigUtils;
+import pl.plajerlair.commonsbox.minecraft.item.ItemBuilder;
 
 /**
  * Created by Tom on 5/02/2016.
  */
-@Deprecated //non static
 public class SpecialItemManager {
 
-  private static Map<String, SpecialItem> specialItems = new HashMap<>();
+  private List<SpecialItem> specialItems = new ArrayList<>();
+  private FileConfiguration config;
+  private Main plugin;
 
-  public static void addItem(String name, SpecialItem entityItem) {
-    specialItems.put(name, entityItem);
+  public SpecialItemManager(Main plugin) {
+    this.plugin = plugin;
+    this.config = ConfigUtils.getConfig(plugin, "lobbyitems");
   }
 
-  @Nullable
-  public static SpecialItem getSpecialItem(String name) {
-    if (specialItems.containsKey(name)) {
-      return specialItems.get(name);
-    }
-    return null;
+  public void addItem(SpecialItem item) {
+    specialItems.add(item);
   }
 
-  @Nullable
-  public static String getRelatedSpecialItem(ItemStack itemStack) {
-    for (Map.Entry<String, SpecialItem> entry : specialItems.entrySet()) {
-      if (entry.getValue().getItemStack().getItemMeta().getDisplayName().equalsIgnoreCase(itemStack.getItemMeta().getDisplayName())) {
-        return entry.getKey();
+  @NotNull
+  public SpecialItem getSpecialItem(String name) {
+    for (SpecialItem item : specialItems) {
+      if (item.getName().equals(name)) {
+        return item;
       }
     }
-    return null;
+    return SpecialItem.INVALID_ITEM;
   }
 
-  public static Map<String, SpecialItem> getSpecialItems() {
+  @NotNull
+  public SpecialItem getRelatedSpecialItem(ItemStack itemStack) {
+    for (SpecialItem item : specialItems) {
+      if (item.getItemStack().isSimilar(itemStack)) {
+        return item;
+      }
+    }
+    return SpecialItem.INVALID_ITEM;
+  }
+
+  public void registerItems() {
+    for (String key : config.getKeys(false)) {
+      XMaterial mat = XMaterial.fromString(config.getString(key + ".material-name"));
+      String name = plugin.getChatManager().colorRawMessage(config.getString(key + ".displayname"));
+      List<String> lore = config.getStringList(key + ".lore").stream().map(itemLore -> itemLore = plugin.getChatManager().colorRawMessage(itemLore))
+          .collect(Collectors.toList());
+      int slot = config.getInt(key + ".slot");
+
+      validateItem(key, name, lore, mat.parseMaterial(), slot);
+      SpecialItem item = new SpecialItem(key, new ItemBuilder(mat.parseItem()).name(name).lore(lore).build(), slot);
+      addItem(item);
+    }
+  }
+
+  private void validateItem(String path, String name, List<String> lore, Material material, int slot) {
+    if (!config.contains(path)) {
+      config.set(path + ".data", 0);
+      config.set(path + ".displayname", name);
+      config.set(path + ".lore", lore);
+      config.set(path + ".material-name", material.toString());
+      config.set(path + ".slot", slot);
+    } else {
+      if (!config.isSet(path + ".material-name")) {
+        config.set(path + ".material-name", material.toString());
+        Debugger.debug(Level.WARNING, "Found outdated item {0} in lobbyitems.yml! We've converted it to the newest version!", path);
+      }
+    }
+    ConfigUtils.saveConfig(plugin, config, "lobbyitems");
+  }
+
+  public List<SpecialItem> getSpecialItems() {
     return specialItems;
   }
 

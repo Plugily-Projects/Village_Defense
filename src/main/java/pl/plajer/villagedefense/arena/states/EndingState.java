@@ -51,9 +51,7 @@ public class EndingState implements ArenaStateHandler {
       plugin.getServer().setWhitelist(false);
     }
     if (arena.getTimer() <= 0) {
-      if (plugin.getConfigPreferences().getOption(ConfigPreferences.Option.BOSSBAR_ENABLED)) {
-        arena.getGameBar().setTitle(plugin.getChatManager().colorMessage(Messages.BOSSBAR_GAME_ENDED));
-      }
+      arena.getGameBar().setTitle(plugin.getChatManager().colorMessage(Messages.BOSSBAR_GAME_ENDED));
 
       for (Player player : arena.getPlayers()) {
         ArenaUtils.resetPlayerAfterGame(player);

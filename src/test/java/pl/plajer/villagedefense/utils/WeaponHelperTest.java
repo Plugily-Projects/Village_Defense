@@ -36,7 +36,7 @@ import pl.plajerlair.commonsbox.minecraft.compat.XMaterial;
 public class WeaponHelperTest {
 
   @Before
-  public void setUp() {
+  public void setUpClass() {
     MockUtils.getServerMockSafe();
   }
 

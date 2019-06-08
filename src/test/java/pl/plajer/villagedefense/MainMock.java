@@ -29,6 +29,7 @@ import pl.plajer.villagedefense.handlers.BungeeManager;
 import pl.plajer.villagedefense.handlers.ChatManager;
 import pl.plajer.villagedefense.handlers.HolidayManager;
 import pl.plajer.villagedefense.handlers.SignManager;
+import pl.plajer.villagedefense.handlers.items.SpecialItemManager;
 import pl.plajer.villagedefense.handlers.language.LanguageManager;
 import pl.plajer.villagedefense.handlers.language.Messages;
 import pl.plajer.villagedefense.handlers.powerup.PowerupRegistry;
@@ -36,6 +37,7 @@ import pl.plajer.villagedefense.handlers.reward.RewardsFactory;
 import pl.plajer.villagedefense.kits.KitManager;
 import pl.plajer.villagedefense.user.User;
 import pl.plajer.villagedefense.user.UserManager;
+import pl.plajer.villagedefense.utils.CompatMaterialConstants;
 import pl.plajer.villagedefense.utils.Utils;
 import pl.plajerlair.commonsbox.database.MysqlDatabase;
 
@@ -53,6 +55,7 @@ public class MainMock extends Main {
   private UserManager userManager;
   private RewardsFactory rewardsFactory;
   private ChatManager chatManager;
+  private SpecialItemManager specialItemManager;
 
   public MainMock() {
     super();
@@ -110,13 +113,16 @@ public class MainMock extends Main {
   @Override
   public void onEnable() {
     User.init(this);
+    User.cooldownHandlerTask();
     Utils.init(this);
     Messages.init(this);
     LanguageManager.init(this);
+    CompatMaterialConstants.init(this);
     this.configPreferences = new ConfigPreferences(this);
     this.userManager = new UserManager(this);
     this.rewardsFactory = new RewardsFactory(this);
-    this.chatManager = new ChatManager("[Village Defense] ");
+    this.chatManager = new ChatManager(this, "[Village Defense] ");
+    this.specialItemManager = new SpecialItemManager(this);
 
     //trick to clean up server directory after tests
     Runtime.getRuntime().addShutdownHook(new Thread(MockBukkit::unload));
@@ -140,6 +146,11 @@ public class MainMock extends Main {
   @Override
   public RewardsFactory getRewardsHandler() {
     return rewardsFactory;
+  }
+
+  @Override
+  public SpecialItemManager getSpecialItemManager() {
+    return specialItemManager;
   }
 
   @Override
