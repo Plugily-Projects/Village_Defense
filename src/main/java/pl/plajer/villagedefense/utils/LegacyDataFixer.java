@@ -43,7 +43,7 @@ public class LegacyDataFixer {
   }
 
   private void initiate() {
-    FileConfiguration config = ConfigUtils.getConfig(plugin, "stats");
+    FileConfiguration config = ConfigUtils.getConfig(plugin, Constants.Files.STATS.getName());
     if (config.getInt("data-version", 0) >= DATA_VERSION || plugin.getConfigPreferences().getOption(ConfigPreferences.Option.DATABASE_ENABLED)) {
       return;
     }
@@ -71,7 +71,7 @@ public class LegacyDataFixer {
       migrated++;
     }
     config.set("data-version", DATA_VERSION);
-    ConfigUtils.saveConfig(plugin, config, "stats");
+    ConfigUtils.saveConfig(plugin, config, Constants.Files.STATS.getName());
     Debugger.debug(Level.WARNING, "[Legacy fixer] Fixed and migrated {0} records. Data scheme fixed.", migrated);
   }
 

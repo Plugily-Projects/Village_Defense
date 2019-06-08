@@ -28,6 +28,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 
 import pl.plajer.villagedefense.Main;
+import pl.plajer.villagedefense.utils.Constants;
 import pl.plajer.villagedefense.utils.MessageUtils;
 import pl.plajerlair.commonsbox.minecraft.configuration.ConfigUtils;
 import pl.plajerlair.commonsbox.minecraft.migrator.MigratorUtils;
@@ -40,14 +41,15 @@ public class LanguageMigrator {
   public static final int LANGUAGE_FILE_VERSION = 10;
   public static final int CONFIG_FILE_VERSION = 8;
   private Main plugin;
-  private List<String> migratable = Arrays.asList("bungee", "config", "kits", "language", "lobbyitems", "mysql");
+  private List<String> migratable = Arrays.asList(Constants.Files.BUNGEE.getName(), Constants.Files.CONFIG.getName(), Constants.Files.KITS.getName(),
+      Constants.Files.KITS.getName(), Constants.Files.LANGUAGE.getName(), Constants.Files.LOBBY_ITEMS.getName(), Constants.Files.MYSQL.getName());
 
   public LanguageMigrator(Main plugin) {
     this.plugin = plugin;
 
     //checks if file architecture don't need to be updated to 3.x format
     //check if using releases before 2.1.0 or 2.1.0+
-    FileConfiguration lang = ConfigUtils.getConfig(plugin, "language");
+    FileConfiguration lang = ConfigUtils.getConfig(plugin, Constants.Files.LANGUAGE.getName());
     if ((lang.isSet("STATS-AboveLine") && lang.isSet("SCOREBOARD-Zombies"))
         || (lang.isSet("File-Version") && plugin.getConfig().isSet("Config-Version"))) {
       migrateToNewFormat();
@@ -124,7 +126,7 @@ public class LanguageMigrator {
   }
 
   private void languageFileUpdate() {
-    FileConfiguration config = ConfigUtils.getConfig(plugin, "language");
+    FileConfiguration config = ConfigUtils.getConfig(plugin, Constants.Files.LANGUAGE.getName());
     if (config.getString("File-Version-Do-Not-Edit", "").equals(String.valueOf(LANGUAGE_FILE_VERSION))) {
       return;
     }

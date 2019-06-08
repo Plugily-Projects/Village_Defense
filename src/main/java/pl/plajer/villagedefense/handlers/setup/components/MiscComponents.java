@@ -47,6 +47,7 @@ import pl.plajer.villagedefense.arena.Arena;
 import pl.plajer.villagedefense.handlers.language.Messages;
 import pl.plajer.villagedefense.handlers.setup.SetupInventory;
 import pl.plajer.villagedefense.utils.CompatMaterialConstants;
+import pl.plajer.villagedefense.utils.Constants;
 import pl.plajer.villagedefense.utils.Utils;
 import pl.plajer.villagedefense.utils.conversation.SimpleConversationBuilder;
 import pl.plajerlair.commonsbox.minecraft.compat.XMaterial;
@@ -112,7 +113,7 @@ public class MiscComponents implements SetupComponent {
       List<String> locs = config.getStringList("instances." + arena.getId() + ".signs");
       locs.add(signLoc);
       config.set("instances." + arena.getId() + ".signs", locs);
-      ConfigUtils.saveConfig(plugin, config, "arenas");
+      ConfigUtils.saveConfig(plugin, config, Constants.Files.ARENAS.getName());
     }), 5, 0);
 
     pane.addItem(new GuiItem(new ItemBuilder(Material.NAME_TAG)
@@ -133,7 +134,7 @@ public class MiscComponents implements SetupComponent {
           player.sendRawMessage(plugin.getChatManager().colorRawMessage("&e✔ Completed | &aName of arena " + arena.getId() + " set to " + name));
           arena.setMapName(name);
           config.set("instances." + arena.getId() + ".mapname", arena.getMapName());
-          ConfigUtils.saveConfig(plugin, config, "arenas");
+          ConfigUtils.saveConfig(plugin, config, Constants.Files.ARENAS.getName());
 
           new SetupInventory(arena, player).openInventory();
           return Prompt.END_OF_CONVERSATION;
@@ -173,7 +174,7 @@ public class MiscComponents implements SetupComponent {
       LocationSerializer.saveLoc(plugin, config, "arenas", "instances." + arena.getId() + ".shop", targetBlock.getLocation());
       player.sendMessage(ChatColor.GREEN + "Shop for chest set!");
       player.sendMessage(plugin.getChatManager().colorRawMessage("&e&lTIP: &7You can use special items in shops! Check out https://bit.ly/2T2GhA9"));
-      ConfigUtils.saveConfig(plugin, config, "arenas");
+      ConfigUtils.saveConfig(plugin, config, Constants.Files.ARENAS.getName());
     }), 7, 0);
 
     pane.addItem(new GuiItem(new ItemBuilder(Material.EMERALD_BLOCK)
@@ -189,7 +190,7 @@ public class MiscComponents implements SetupComponent {
         arena.getVillagerSpawns().clear();
         player.sendMessage(plugin.getChatManager().colorRawMessage("&eDone | &aVillager spawn points deleted, you can add them again now!"));
         arena.setReady(false);
-        ConfigUtils.saveConfig(plugin, config, "arenas");
+        ConfigUtils.saveConfig(plugin, config, Constants.Files.ARENAS.getName());
         return;
       }
       int villagers = (config.isSet("instances." + arena.getId() + ".villagerspawns")
@@ -201,7 +202,7 @@ public class MiscComponents implements SetupComponent {
         player.sendMessage(plugin.getChatManager().colorRawMessage("&eInfo | &aYou can add more than 2 villager spawns! Two is just a minimum!"));
       }
       arena.getVillagerSpawns().add(player.getLocation());
-      ConfigUtils.saveConfig(plugin, config, "arenas");
+      ConfigUtils.saveConfig(plugin, config, Constants.Files.ARENAS.getName());
     }), 8, 0);
 
     pane.addItem(new GuiItem(new ItemBuilder(Material.ROTTEN_FLESH)
@@ -217,7 +218,7 @@ public class MiscComponents implements SetupComponent {
         arena.getZombieSpawns().clear();
         player.sendMessage(plugin.getChatManager().colorRawMessage("&eDone | &aZombie spawn points deleted, you can add them again now!"));
         arena.setReady(false);
-        ConfigUtils.saveConfig(plugin, config, "arenas");
+        ConfigUtils.saveConfig(plugin, config, Constants.Files.ARENAS.getName());
         return;
       }
       int zombies = (config.isSet("instances." + arena.getId() + ".zombiespawns")
@@ -229,7 +230,7 @@ public class MiscComponents implements SetupComponent {
         player.sendMessage(plugin.getChatManager().colorRawMessage("&eInfo | &aYou can add more than 2 zombie spawns! Two is just a minimum!"));
       }
       arena.getZombieSpawns().add(player.getLocation());
-      ConfigUtils.saveConfig(plugin, config, "arenas");
+      ConfigUtils.saveConfig(plugin, config, Constants.Files.ARENAS.getName());
     }), 0, 1);
 
     pane.addItem(new GuiItem(new ItemBuilder(CompatMaterialConstants.getOakDoorItem())
@@ -247,7 +248,7 @@ public class MiscComponents implements SetupComponent {
         arena.getMapRestorerManager().getGameDoorLocations().clear();
         player.sendMessage(plugin.getChatManager().colorRawMessage("&eDone | &aDoor locations deleted, you can add them again now!"));
         arena.setReady(false);
-        ConfigUtils.saveConfig(plugin, config, "arenas");
+        ConfigUtils.saveConfig(plugin, config, Constants.Files.ARENAS.getName());
         return;
       }
       Block block = player.getTargetBlock(null, 10);
@@ -283,7 +284,7 @@ public class MiscComponents implements SetupComponent {
         config.set("instances." + arena.getId() + ".doors." + doors + ".byte", block.getData());
       }
       player.sendMessage(plugin.getChatManager().colorRawMessage("&a&l✔ &aDoor successfully added! To apply door changes you must either re-register arena or reload plugin via /vda reload"));
-      ConfigUtils.saveConfig(plugin, config, "arenas");
+      ConfigUtils.saveConfig(plugin, config, Constants.Files.ARENAS.getName());
     }), 1, 1);
 
     pane.addItem(new GuiItem(new ItemBuilder(XMaterial.GOLD_INGOT.parseItem())

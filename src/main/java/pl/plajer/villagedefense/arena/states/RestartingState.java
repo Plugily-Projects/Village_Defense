@@ -27,6 +27,7 @@ import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.arena.Arena;
 import pl.plajer.villagedefense.arena.ArenaState;
 import pl.plajer.villagedefense.handlers.language.Messages;
+import pl.plajer.villagedefense.utils.Constants;
 import pl.plajerlair.commonsbox.minecraft.configuration.ConfigUtils;
 
 /**
@@ -53,7 +54,7 @@ public class RestartingState implements ArenaStateHandler {
     arena.getDroppedFleshes().stream().filter(Objects::nonNull).forEach(Entity::remove);
     arena.getDroppedFleshes().clear();
     if (plugin.getConfigPreferences().getOption(ConfigPreferences.Option.BUNGEE_ENABLED)) {
-      if (ConfigUtils.getConfig(plugin, "bungee").getBoolean("Shutdown-When-Game-Ends")) {
+      if (ConfigUtils.getConfig(plugin, Constants.Files.BUNGEE.getName()).getBoolean("Shutdown-When-Game-Ends")) {
         plugin.getServer().shutdown();
       }
       arena.getPlayers().addAll(plugin.getServer().getOnlinePlayers());

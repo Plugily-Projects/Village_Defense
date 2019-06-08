@@ -23,6 +23,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.api.StatsStorage;
 import pl.plajer.villagedefense.user.User;
+import pl.plajer.villagedefense.utils.Constants;
 import pl.plajerlair.commonsbox.minecraft.configuration.ConfigUtils;
 
 /**
@@ -35,13 +36,13 @@ public class FileStats implements UserDatabase {
 
   public FileStats(Main plugin) {
     this.plugin = plugin;
-    config = ConfigUtils.getConfig(plugin, "stats");
+    config = ConfigUtils.getConfig(plugin, Constants.Files.STATS.getName());
   }
 
   @Override
   public void saveStatistic(User user, StatsStorage.StatisticType stat) {
     config.set(user.getPlayer().getUniqueId().toString() + "." + stat.getName(), user.getStat(stat));
-    ConfigUtils.saveConfig(plugin, config, "stats");
+    ConfigUtils.saveConfig(plugin, config, Constants.Files.STATS.getName());
   }
 
   @Override

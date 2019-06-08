@@ -46,6 +46,7 @@ import pl.plajer.villagedefense.arena.ArenaRegistry;
 import pl.plajer.villagedefense.arena.ArenaState;
 import pl.plajer.villagedefense.handlers.language.LanguageManager;
 import pl.plajer.villagedefense.handlers.language.Messages;
+import pl.plajer.villagedefense.utils.Constants;
 import pl.plajer.villagedefense.utils.Debugger;
 import pl.plajerlair.commonsbox.minecraft.compat.XMaterial;
 import pl.plajerlair.commonsbox.minecraft.configuration.ConfigUtils;
@@ -91,11 +92,11 @@ public class SignManager implements Listener {
       loadedSigns.put((Sign) e.getBlock().getState(), arena);
       e.getPlayer().sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage(Messages.SIGNS_SIGN_CREATED));
       String location = e.getBlock().getWorld().getName() + "," + e.getBlock().getX() + "," + e.getBlock().getY() + "," + e.getBlock().getZ() + ",0.0,0.0";
-      FileConfiguration config = ConfigUtils.getConfig(plugin, "arenas");
+      FileConfiguration config = ConfigUtils.getConfig(plugin, Constants.Files.ARENAS.getName());
       List<String> locs = config.getStringList("instances." + arena.getId() + ".signs");
       locs.add(location);
       config.set("instances." + arena.getId() + ".signs", locs);
-      ConfigUtils.saveConfig(plugin, config, "arenas");
+      ConfigUtils.saveConfig(plugin, config, Constants.Files.ARENAS.getName());
       return;
     }
     e.getPlayer().sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage(Messages.SIGNS_ARENA_DOESNT_EXISTS));
@@ -123,16 +124,16 @@ public class SignManager implements Listener {
     }
     loadedSigns.remove(e.getBlock().getState());
     String location = e.getBlock().getWorld().getName() + "," + e.getBlock().getX() + "," + e.getBlock().getY() + "," + e.getBlock().getZ() + "," + "0.0,0.0";
-    for (String arena : ConfigUtils.getConfig(plugin, "arenas").getConfigurationSection("instances").getKeys(false)) {
-      for (String sign : ConfigUtils.getConfig(plugin, "arenas").getStringList("instances." + arena + ".signs")) {
+    FileConfiguration config = ConfigUtils.getConfig(plugin, Constants.Files.ARENAS.getName());
+    for (String arena : config.getConfigurationSection("instances").getKeys(false)) {
+      for (String sign : config.getStringList("instances." + arena + ".signs")) {
         if (!sign.equals(location)) {
           continue;
         }
-        FileConfiguration config = ConfigUtils.getConfig(plugin, "arenas");
         List<String> signs = config.getStringList("instances." + arena + ".signs");
         signs.remove(location);
         config.set(arena + ".signs", signs);
-        ConfigUtils.saveConfig(plugin, config, "arenas");
+        ConfigUtils.saveConfig(plugin, config, Constants.Files.ARENAS.getName());
         e.getPlayer().sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage(Messages.SIGNS_SIGN_REMOVED));
         return;
       }
@@ -180,7 +181,7 @@ public class SignManager implements Listener {
 
   public void loadSigns() {
     loadedSigns.clear();
-    FileConfiguration config = ConfigUtils.getConfig(plugin, "arenas");
+    FileConfiguration config = ConfigUtils.getConfig(plugin, Constants.Files.ARENAS.getName());
     if (!config.contains("instances")) {
       Debugger.debug(Level.WARNING, "No arena instances found. Signs won't be loaded");
       return;

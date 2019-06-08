@@ -33,6 +33,7 @@ import pl.plajer.villagedefense.commands.arguments.data.CommandArgument;
 import pl.plajer.villagedefense.commands.arguments.data.LabelData;
 import pl.plajer.villagedefense.commands.arguments.data.LabeledCommandArgument;
 import pl.plajer.villagedefense.handlers.language.Messages;
+import pl.plajer.villagedefense.utils.Constants;
 import pl.plajerlair.commonsbox.minecraft.configuration.ConfigUtils;
 
 /**
@@ -68,9 +69,9 @@ public class DeleteArgument {
         }
         confirmations.remove(sender);
         ArenaManager.stopGame(false, arena);
-        FileConfiguration config = ConfigUtils.getConfig(registry.getPlugin(), "arenas");
+        FileConfiguration config = ConfigUtils.getConfig(registry.getPlugin(), Constants.Files.ARENAS.getName());
         config.set("instances." + args[1], null);
-        ConfigUtils.saveConfig(registry.getPlugin(), config, "arenas");
+        ConfigUtils.saveConfig(registry.getPlugin(), config, Constants.Files.ARENAS.getName());
         ArenaRegistry.unregisterArena(arena);
         sender.sendMessage(registry.getPlugin().getChatManager().getPrefix() + registry.getPlugin().getChatManager().colorMessage(Messages.COMMANDS_REMOVED_GAME_INSTANCE));
       }

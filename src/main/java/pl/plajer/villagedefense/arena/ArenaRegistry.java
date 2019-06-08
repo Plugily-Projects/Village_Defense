@@ -31,6 +31,7 @@ import org.jetbrains.annotations.Nullable;
 
 import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.handlers.language.Messages;
+import pl.plajer.villagedefense.utils.Constants;
 import pl.plajer.villagedefense.utils.Debugger;
 import pl.plajerlair.commonsbox.minecraft.configuration.ConfigUtils;
 import pl.plajerlair.commonsbox.minecraft.serialization.LocationSerializer;
@@ -130,7 +131,7 @@ public class ArenaRegistry {
         unregisterArena(arena);
       }
     }
-    FileConfiguration config = ConfigUtils.getConfig(plugin, "arenas");
+    FileConfiguration config = ConfigUtils.getConfig(plugin, Constants.Files.ARENAS.getName());
 
     ConfigurationSection section = config.getConfigurationSection("instances");
     if (section == null) {

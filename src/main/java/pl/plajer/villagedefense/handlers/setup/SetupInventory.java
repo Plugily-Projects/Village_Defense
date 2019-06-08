@@ -32,6 +32,7 @@ import pl.plajer.villagedefense.handlers.setup.components.ArenaRegisterComponent
 import pl.plajer.villagedefense.handlers.setup.components.MiscComponents;
 import pl.plajer.villagedefense.handlers.setup.components.PlayerAmountComponents;
 import pl.plajer.villagedefense.handlers.setup.components.SpawnComponents;
+import pl.plajer.villagedefense.utils.Constants;
 import pl.plajerlair.commonsbox.minecraft.configuration.ConfigUtils;
 
 /**
@@ -49,7 +50,7 @@ public class SetupInventory {
   private SetupUtilities setupUtilities;
 
   public SetupInventory(Arena arena, Player player) {
-    this.config = ConfigUtils.getConfig(plugin, "arenas");
+    this.config = ConfigUtils.getConfig(plugin, Constants.Files.ARENAS.getName());
     this.arena = arena;
     this.player = player;
     this.setupUtilities = new SetupUtilities(config, arena);

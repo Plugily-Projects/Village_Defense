@@ -24,6 +24,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import pl.plajer.villagedefense.Main;
+import pl.plajer.villagedefense.utils.Constants;
 import pl.plajerlair.commonsbox.minecraft.configuration.ConfigUtils;
 import pl.plajerlair.commonsbox.minecraft.item.ItemBuilder;
 
@@ -39,12 +40,12 @@ public abstract class Kit {
   private String[] description = {""};
 
   protected Kit() {
-    kitsConfig = ConfigUtils.getConfig(plugin, "kits");
+    kitsConfig = ConfigUtils.getConfig(plugin, Constants.Files.KITS.getName());
   }
 
   public Kit(String name) {
     this.name = name;
-    kitsConfig = ConfigUtils.getConfig(plugin, "kits");
+    kitsConfig = ConfigUtils.getConfig(plugin, Constants.Files.KITS.getName());
   }
 
   public static void init(Main plugin) {

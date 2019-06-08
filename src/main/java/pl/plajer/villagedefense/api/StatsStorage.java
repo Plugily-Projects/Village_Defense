@@ -37,6 +37,7 @@ import org.bukkit.entity.Player;
 
 import pl.plajer.villagedefense.ConfigPreferences;
 import pl.plajer.villagedefense.Main;
+import pl.plajer.villagedefense.utils.Constants;
 import pl.plajer.villagedefense.utils.MessageUtils;
 import pl.plajerlair.commonsbox.minecraft.configuration.ConfigUtils;
 
@@ -92,7 +93,7 @@ public class StatsStorage {
         return Collections.emptyMap();
       }
     }
-    FileConfiguration config = ConfigUtils.getConfig(plugin, "stats");
+    FileConfiguration config = ConfigUtils.getConfig(plugin, Constants.Files.STATS.getName());
     Map<UUID, Integer> stats = new TreeMap<>();
     for (String string : config.getKeys(false)) {
       if (string.equals("data-version")) {

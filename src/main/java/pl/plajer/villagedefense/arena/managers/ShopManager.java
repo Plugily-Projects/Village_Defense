@@ -43,6 +43,7 @@ import pl.plajer.villagedefense.arena.ArenaRegistry;
 import pl.plajer.villagedefense.arena.options.ArenaOption;
 import pl.plajer.villagedefense.handlers.language.Messages;
 import pl.plajer.villagedefense.user.User;
+import pl.plajer.villagedefense.utils.Constants;
 import pl.plajer.villagedefense.utils.Debugger;
 import pl.plajer.villagedefense.utils.Utils;
 import pl.plajerlair.commonsbox.minecraft.configuration.ConfigUtils;
@@ -62,7 +63,7 @@ public class ShopManager {
   private Arena arena;
 
   public ShopManager(Arena arena) {
-    this.config = ConfigUtils.getConfig(arena.getPlugin(), "arenas");
+    this.config = ConfigUtils.getConfig(arena.getPlugin(), Constants.Files.ARENAS.getName());
     this.plugin = arena.getPlugin();
     this.arena = arena;
     defaultGolemItemName = config.getString("In-Game.Messages.Shop-Messages.Golem-Item-Name");

@@ -34,6 +34,7 @@ import org.bukkit.entity.Player;
 import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.arena.Arena;
 import pl.plajer.villagedefense.arena.ArenaRegistry;
+import pl.plajer.villagedefense.utils.Constants;
 import pl.plajer.villagedefense.utils.Debugger;
 import pl.plajerlair.commonsbox.minecraft.configuration.ConfigUtils;
 import pl.plajerlair.commonsbox.minecraft.engine.ScriptEngine;
@@ -49,7 +50,7 @@ public class RewardsFactory {
 
   public RewardsFactory(Main plugin) {
     enabled = plugin.getConfig().getBoolean("Rewards-Enabled");
-    config = ConfigUtils.getConfig(plugin, "rewards");
+    config = ConfigUtils.getConfig(plugin, Constants.Files.REWARDS.getName());
     registerRewards();
   }
 

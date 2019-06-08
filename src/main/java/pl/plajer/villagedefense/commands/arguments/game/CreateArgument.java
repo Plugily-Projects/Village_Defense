@@ -35,6 +35,7 @@ import pl.plajer.villagedefense.commands.arguments.data.LabelData;
 import pl.plajer.villagedefense.commands.arguments.data.LabeledCommandArgument;
 import pl.plajer.villagedefense.handlers.language.Messages;
 import pl.plajer.villagedefense.handlers.setup.SetupInventory;
+import pl.plajer.villagedefense.utils.Constants;
 import pl.plajerlair.commonsbox.minecraft.configuration.ConfigUtils;
 import pl.plajerlair.commonsbox.minecraft.serialization.LocationSerializer;
 
@@ -66,7 +67,7 @@ public class CreateArgument {
             return;
           }
         }
-        if (ConfigUtils.getConfig(registry.getPlugin(), "arenas").contains("instances." + args[1])) {
+        if (ConfigUtils.getConfig(registry.getPlugin(), Constants.Files.ARENAS.getName()).contains("instances." + args[1])) {
           player.sendMessage(ChatColor.DARK_RED + "Instance/Arena already exists! Use another ID or delete it first!");
         } else {
           createInstanceInConfig(args[1], player.getWorld().getName());
@@ -84,17 +85,17 @@ public class CreateArgument {
 
   private void createInstanceInConfig(String id, String worldName) {
     String path = "instances." + id + ".";
-    FileConfiguration config = ConfigUtils.getConfig(registry.getPlugin(), "arenas");
-    LocationSerializer.saveLoc(registry.getPlugin(), config, "arenas", path + "lobbylocation", Bukkit.getServer().getWorlds().get(0).getSpawnLocation());
-    LocationSerializer.saveLoc(registry.getPlugin(), config, "arenas", path + "Startlocation", Bukkit.getServer().getWorlds().get(0).getSpawnLocation());
-    LocationSerializer.saveLoc(registry.getPlugin(), config, "arenas", path + "Endlocation", Bukkit.getServer().getWorlds().get(0).getSpawnLocation());
+    FileConfiguration config = ConfigUtils.getConfig(registry.getPlugin(), Constants.Files.ARENAS.getName());
+    LocationSerializer.saveLoc(registry.getPlugin(), config, Constants.Files.ARENAS.getName(), path + "lobbylocation", Bukkit.getServer().getWorlds().get(0).getSpawnLocation());
+    LocationSerializer.saveLoc(registry.getPlugin(), config, Constants.Files.ARENAS.getName(), path + "Startlocation", Bukkit.getServer().getWorlds().get(0).getSpawnLocation());
+    LocationSerializer.saveLoc(registry.getPlugin(), config, Constants.Files.ARENAS.getName(), path + "Endlocation", Bukkit.getServer().getWorlds().get(0).getSpawnLocation());
     config.set(path + "minimumplayers", 1);
     config.set(path + "maximumplayers", 10);
     config.set(path + "mapname", id);
     config.set(path + "signs", new ArrayList<>());
     config.set(path + "isdone", false);
     config.set(path + "world", worldName);
-    ConfigUtils.saveConfig(registry.getPlugin(), config, "arenas");
+    ConfigUtils.saveConfig(registry.getPlugin(), config, Constants.Files.ARENAS.getName());
 
     Arena arena = ArenaUtils.initializeArena(id);
 

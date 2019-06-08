@@ -29,6 +29,7 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 import pl.plajer.villagedefense.Main;
+import pl.plajer.villagedefense.utils.Constants;
 import pl.plajer.villagedefense.utils.Debugger;
 import pl.plajerlair.commonsbox.minecraft.compat.XMaterial;
 import pl.plajerlair.commonsbox.minecraft.configuration.ConfigUtils;
@@ -45,7 +46,7 @@ public class SpecialItemManager {
 
   public SpecialItemManager(Main plugin) {
     this.plugin = plugin;
-    this.config = ConfigUtils.getConfig(plugin, "lobbyitems");
+    this.config = ConfigUtils.getConfig(plugin, Constants.Files.LOBBY_ITEMS.getName());
   }
 
   public void addItem(SpecialItem item) {
@@ -99,7 +100,7 @@ public class SpecialItemManager {
         Debugger.debug(Level.WARNING, "Found outdated item {0} in lobbyitems.yml! We've converted it to the newest version!", path);
       }
     }
-    ConfigUtils.saveConfig(plugin, config, "lobbyitems");
+    ConfigUtils.saveConfig(plugin, config, Constants.Files.LOBBY_ITEMS.getName());
   }
 
   public List<SpecialItem> getSpecialItems() {

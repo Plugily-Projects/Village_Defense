@@ -55,6 +55,7 @@ import pl.plajer.villagedefense.kits.premium.ShotBowKit;
 import pl.plajer.villagedefense.kits.premium.TeleporterKit;
 import pl.plajer.villagedefense.kits.premium.TornadoKit;
 import pl.plajer.villagedefense.kits.premium.WizardKit;
+import pl.plajer.villagedefense.utils.Constants;
 import pl.plajerlair.commonsbox.minecraft.configuration.ConfigUtils;
 
 /**
@@ -132,7 +133,7 @@ public class KitRegistry {
 
   private static void setupGameKits() {
     KnightKit knightkit = new KnightKit();
-    FileConfiguration config = ConfigUtils.getConfig(plugin, "kits");
+    FileConfiguration config = ConfigUtils.getConfig(plugin, Constants.Files.KITS.getName());
     for (Class kitClass : classKitNames) {
       if (config.getBoolean("Enabled-Game-Kits." + kitClass.getSimpleName().replace("Kit", ""))) {
         try {

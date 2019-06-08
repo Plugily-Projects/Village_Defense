@@ -76,6 +76,7 @@ import pl.plajer.villagedefense.user.User;
 import pl.plajer.villagedefense.user.UserManager;
 import pl.plajer.villagedefense.user.data.MysqlManager;
 import pl.plajer.villagedefense.utils.CompatMaterialConstants;
+import pl.plajer.villagedefense.utils.Constants;
 import pl.plajer.villagedefense.utils.Debugger;
 import pl.plajer.villagedefense.utils.ExceptionLogHandler;
 import pl.plajer.villagedefense.utils.LegacyDataFixer;
@@ -243,7 +244,7 @@ public class Main extends JavaPlugin {
     holidayManager = new HolidayManager(this);
     User.cooldownHandlerTask();
     if (configPreferences.getOption(ConfigPreferences.Option.DATABASE_ENABLED)) {
-      FileConfiguration config = ConfigUtils.getConfig(this, "mysql");
+      FileConfiguration config = ConfigUtils.getConfig(this, Constants.Files.MYSQL.getName());
       database = new MysqlDatabase(config.getString("user"), config.getString("password"), config.getString("address"));
     }
     userManager = new UserManager(this);

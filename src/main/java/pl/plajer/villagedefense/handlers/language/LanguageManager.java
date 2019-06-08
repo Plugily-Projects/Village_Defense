@@ -33,6 +33,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 
 import pl.plajer.villagedefense.Main;
+import pl.plajer.villagedefense.utils.Constants;
 import pl.plajer.villagedefense.utils.MessageUtils;
 import pl.plajer.villagedefense.utils.services.ServiceRegistry;
 import pl.plajer.villagedefense.utils.services.locale.Locale;
@@ -61,7 +62,7 @@ public class LanguageManager {
       plugin.saveResource("language.yml", false);
     }
     new LanguageMigrator(plugin);
-    languageConfig = ConfigUtils.getConfig(plugin, "language");
+    languageConfig = ConfigUtils.getConfig(plugin, Constants.Files.LANGUAGE.getName());
     registerLocales();
     setupLocale();
     if (isDefaultLanguageUsed()) {
@@ -80,7 +81,7 @@ public class LanguageManager {
       messagesIntegrityPassed = false;
     }
     if (!messagesIntegrityPassed) {
-      ConfigUtils.saveConfig(plugin, languageConfig, "language");
+      ConfigUtils.saveConfig(plugin, languageConfig, Constants.Files.LANGUAGE.getName());
     }
   }
 
@@ -219,7 +220,7 @@ public class LanguageManager {
   }
 
   public static void reloadConfig() {
-    languageConfig = ConfigUtils.getConfig(plugin, "language");
+    languageConfig = ConfigUtils.getConfig(plugin, Constants.Files.LANGUAGE.getName());
   }
 
   public static Locale getPluginLocale() {

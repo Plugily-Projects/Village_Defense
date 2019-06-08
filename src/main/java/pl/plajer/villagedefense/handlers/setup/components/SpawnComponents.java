@@ -29,6 +29,7 @@ import org.bukkit.entity.Player;
 import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.arena.Arena;
 import pl.plajer.villagedefense.handlers.setup.SetupInventory;
+import pl.plajer.villagedefense.utils.Constants;
 import pl.plajerlair.commonsbox.minecraft.configuration.ConfigUtils;
 import pl.plajerlair.commonsbox.minecraft.item.ItemBuilder;
 
@@ -66,7 +67,7 @@ public class SpawnComponents implements SetupComponent {
       config.set("instances." + arena.getId() + ".Endlocation", serializedLocation);
       arena.setEndLocation(player.getLocation());
       player.sendMessage(plugin.getChatManager().colorRawMessage("&e✔ Completed | &aEnding location for arena " + arena.getId() + " set at your location!"));
-      ConfigUtils.saveConfig(plugin, config, "arenas");
+      ConfigUtils.saveConfig(plugin, config, Constants.Files.ARENAS.getName());
     }), 0, 0);
 
     pane.addItem(new GuiItem(new ItemBuilder(Material.LAPIS_BLOCK)
@@ -79,7 +80,7 @@ public class SpawnComponents implements SetupComponent {
       config.set("instances." + arena.getId() + ".lobbylocation", serializedLocation);
       arena.setLobbyLocation(player.getLocation());
       player.sendMessage(plugin.getChatManager().colorRawMessage("&e✔ Completed | &aLobby location for arena " + arena.getId() + " set at your location!"));
-      ConfigUtils.saveConfig(plugin, config, "arenas");
+      ConfigUtils.saveConfig(plugin, config, Constants.Files.ARENAS.getName());
     }), 1, 0);
 
     pane.addItem(new GuiItem(new ItemBuilder(Material.EMERALD_BLOCK)
@@ -94,7 +95,7 @@ public class SpawnComponents implements SetupComponent {
       config.set("instances." + arena.getId() + ".Startlocation", serializedLocation);
       arena.setStartLocation(player.getLocation());
       player.sendMessage(plugin.getChatManager().colorRawMessage("&e✔ Completed | &aStarting location for arena " + arena.getId() + " set at your location!"));
-      ConfigUtils.saveConfig(plugin, config, "arenas");
+      ConfigUtils.saveConfig(plugin, config, Constants.Files.ARENAS.getName());
     }), 2, 0);
   }
 

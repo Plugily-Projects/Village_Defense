@@ -28,6 +28,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.arena.Arena;
 import pl.plajer.villagedefense.handlers.setup.SetupInventory;
+import pl.plajer.villagedefense.utils.Constants;
 import pl.plajerlair.commonsbox.minecraft.configuration.ConfigUtils;
 import pl.plajerlair.commonsbox.minecraft.item.ItemBuilder;
 
@@ -70,7 +71,7 @@ public class PlayerAmountComponents implements SetupComponent {
       }
       config.set("instances." + arena.getId() + ".minimumplayers", e.getCurrentItem().getAmount());
       arena.setMinimumPlayers(e.getCurrentItem().getAmount());
-      ConfigUtils.saveConfig(plugin, config, "arenas");
+      ConfigUtils.saveConfig(plugin, config, Constants.Files.ARENAS.getName());
       new SetupInventory(arena, setupInventory.getPlayer()).openInventory();
     }), 3, 0);
 
@@ -94,7 +95,7 @@ public class PlayerAmountComponents implements SetupComponent {
       }
       config.set("instances." + arena.getId() + ".maximumplayers", e.getCurrentItem().getAmount());
       arena.setMaximumPlayers(e.getCurrentItem().getAmount());
-      ConfigUtils.saveConfig(plugin, config, "arenas");
+      ConfigUtils.saveConfig(plugin, config, Constants.Files.ARENAS.getName());
       new SetupInventory(arena, setupInventory.getPlayer()).openInventory();
     }), 4, 0);
   }

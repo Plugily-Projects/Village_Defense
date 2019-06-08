@@ -37,6 +37,7 @@ import pl.plajer.villagedefense.arena.Arena;
 import pl.plajer.villagedefense.arena.ArenaRegistry;
 import pl.plajer.villagedefense.arena.ArenaUtils;
 import pl.plajer.villagedefense.handlers.setup.SetupInventory;
+import pl.plajer.villagedefense.utils.Constants;
 import pl.plajerlair.commonsbox.minecraft.compat.XMaterial;
 import pl.plajerlair.commonsbox.minecraft.configuration.ConfigUtils;
 import pl.plajerlair.commonsbox.minecraft.item.ItemBuilder;
@@ -103,7 +104,7 @@ public class ArenaRegisterComponent implements SetupComponent {
       }
       e.getWhoClicked().sendMessage(plugin.getChatManager().colorRawMessage("&a&l✔ &aValidation succeeded! Registering new arena instance: " + arena.getId()));
       config.set("instances." + arena.getId() + ".isdone", true);
-      ConfigUtils.saveConfig(plugin, config, "arenas");
+      ConfigUtils.saveConfig(plugin, config, Constants.Files.ARENAS.getName());
       List<Sign> signsToUpdate = new ArrayList<>();
       ArenaRegistry.unregisterArena(arena);
       if (plugin.getSignManager().getLoadedSigns().containsValue(arena)) {

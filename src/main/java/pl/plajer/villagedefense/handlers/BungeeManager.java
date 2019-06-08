@@ -35,6 +35,7 @@ import pl.plajer.villagedefense.arena.Arena;
 import pl.plajer.villagedefense.arena.ArenaManager;
 import pl.plajer.villagedefense.arena.ArenaRegistry;
 import pl.plajer.villagedefense.arena.ArenaState;
+import pl.plajer.villagedefense.utils.Constants;
 import pl.plajerlair.commonsbox.minecraft.configuration.ConfigUtils;
 
 /**
@@ -47,7 +48,7 @@ public class BungeeManager implements Listener {
 
   public BungeeManager(Main plugin) {
     this.plugin = plugin;
-    this.config = ConfigUtils.getConfig(plugin, "bungee");
+    this.config = ConfigUtils.getConfig(plugin, Constants.Files.BUNGEE.getName());
     plugin.getServer().getMessenger().registerOutgoingPluginChannel(plugin, "BungeeCord");
     plugin.getServer().getPluginManager().registerEvents(this, plugin);
   }
