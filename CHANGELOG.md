@@ -1,6 +1,6 @@
 # Village Defense Changelog
 
-### 4.2.1 Release (25.05.2019 - 03.06.2019)
+### 4.2.1 Release (25.05.2019 - 08.06.2019)
 * Fixed possible issues with scoreboard colors
 * Fixed boss bar displayed game end message not waiting for players after game restart
 * /vda reload command is no longer discouraged and does reload config and language files
@@ -9,7 +9,13 @@
 * Fixed locales couldn't be loaded without locales folder
 * Fixed locales would throw errors if accessed message that doesn't exist
 * Game will no longer throw errors if boss bar is disabled
-* When breaking doors zombies will generate other particles now and will generate them on 1.13 and 1.14 (couldn't before)
+* When breaking doors zombies will generate other particles now and wil generate them on 1.13 and 1.14 (couldn't before)
+* You will now receive additional message when adding zombie/villager spawns that 2 is minimum spawns amount so you can add more
+* Totally recoded arena setup gui UI and code structure, now all changes applies to arena instantly
+* Arena setup map name option now is chat based not name tag based
+* Added shift + right click to delete all zombie/villager/door spawns (useful if you made a mistake, better than nothing)
+* Added sign spawn protection radius warning, non opped players can't join via signs if sign is in radius of spawn protection
+* Plugin will actually react for `/vd help` or `/vda help` commands now
 
 ### 4.2.0 Release (28.04.2019 - 17.05.2019)
    * Blocker kit no longer has very long lore in barrier item and no longer receives separate barrier item on restock

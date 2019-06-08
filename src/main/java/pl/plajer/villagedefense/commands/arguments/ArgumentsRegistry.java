@@ -125,7 +125,7 @@ public class ArgumentsRegistry implements CommandExecutor {
         continue;
       }
       if (cmd.getName().equalsIgnoreCase("villagedefense")) {
-        if (args.length == 0) {
+        if (args.length == 0 || args[0].equalsIgnoreCase("help")) {
           sendHelpCommand(sender);
           return true;
         }
@@ -140,12 +140,11 @@ public class ArgumentsRegistry implements CommandExecutor {
             return true;
           }
 
-          SetupInventory.sendProTip((Player) sender);
-          new SetupInventory(arena).openInventory((Player) sender);
+          new SetupInventory(arena, (Player) sender).openInventory();
           return true;
         }
       }
-      if (cmd.getName().equalsIgnoreCase("villagedefenseadmin") && args.length == 0) {
+      if (cmd.getName().equalsIgnoreCase("villagedefenseadmin") && (args.length == 0 || args[0].equalsIgnoreCase("help"))) {
         if (!sender.hasPermission("villagedefense.admin")) {
           return true;
         }
