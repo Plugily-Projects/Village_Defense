@@ -35,7 +35,7 @@
    * Fixed update notify message was sent to everybody without proper permission check
    * Implemented HikariCP as a database connection pool library, it's better and jar size went 3 times smaller
    * First time database creation is now made async not in main server thread
-   * Fixed item lores from shops got cropped, only price line should
+   * Fixed item lores from shop as got cropped, only price line should
    > **Not working things in 1.14:**
    * After in-game death you don't get instant respawn
    * Sign game states are disabled

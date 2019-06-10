@@ -22,7 +22,7 @@
   <groupId>pl.plajer</groupId>
   <artifactId>villagedefense</artifactId>
   <name>VillageDefense</name>
-    <version>4.2.0</version>
+    <version>4.2.1</version>
     <developers>
         <developer>
             <name>IvanTheBuilder</name>
@@ -338,6 +338,7 @@
     </site>
   </distributionManagement>
   <properties>
+      <maven.test.skip>true</maven.test.skip>
       <sonar.language>java</sonar.language>
       <sonar.jacoco.reportPath>${project.basedir}/../target/jacoco.exec</sonar.jacoco.reportPath>
     <java.version>1.8</java.version>
