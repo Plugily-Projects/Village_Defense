@@ -18,6 +18,7 @@
 
 package pl.plajer.villagedefense.creatures.upgrades;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -43,7 +44,7 @@ public class Upgrade {
   private EntityType entityType;
   private int maxTier;
   private String name;
-  private List<String> description;
+  private List<String> description = new ArrayList<>();
   private String metadataAccessor;
   private String configAccessor;
   private Map<Integer, Double> tieredValues = new HashMap<>();
