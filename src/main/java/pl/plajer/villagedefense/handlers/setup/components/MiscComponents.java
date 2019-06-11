@@ -21,7 +21,6 @@ package pl.plajer.villagedefense.handlers.setup.components;
 import com.github.stefvanschie.inventoryframework.GuiItem;
 import com.github.stefvanschie.inventoryframework.pane.StaticPane;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.Bukkit;
@@ -186,7 +185,7 @@ public class MiscComponents implements SetupComponent {
         .build(), e -> {
       e.getWhoClicked().closeInventory();
       if (e.getClick() == ClickType.SHIFT_RIGHT) {
-        config.set("instances." + arena.getId() + ".villagerspawns", new ArrayList<>());
+        config.set("instances." + arena.getId() + ".villagerspawns", null);
         arena.getVillagerSpawns().clear();
         player.sendMessage(plugin.getChatManager().colorRawMessage("&eDone | &aVillager spawn points deleted, you can add them again now!"));
         arena.setReady(false);
@@ -214,7 +213,7 @@ public class MiscComponents implements SetupComponent {
         .build(), e -> {
       e.getWhoClicked().closeInventory();
       if (e.getClick() == ClickType.SHIFT_RIGHT) {
-        config.set("instances." + arena.getId() + ".zombiespawns", new ArrayList<>());
+        config.set("instances." + arena.getId() + ".zombiespawns", null);
         arena.getZombieSpawns().clear();
         player.sendMessage(plugin.getChatManager().colorRawMessage("&eDone | &aZombie spawn points deleted, you can add them again now!"));
         arena.setReady(false);
@@ -244,7 +243,7 @@ public class MiscComponents implements SetupComponent {
         .build(), e -> {
       e.getWhoClicked().closeInventory();
       if (e.getClick() == ClickType.SHIFT_RIGHT) {
-        config.set("instances." + arena.getId() + ".doors", new ArrayList<>());
+        config.set("instances." + arena.getId() + ".doors", null);
         arena.getMapRestorerManager().getGameDoorLocations().clear();
         player.sendMessage(plugin.getChatManager().colorRawMessage("&eDone | &aDoor locations deleted, you can add them again now!"));
         arena.setReady(false);
