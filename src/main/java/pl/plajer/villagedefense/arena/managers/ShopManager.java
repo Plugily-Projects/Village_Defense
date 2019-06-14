@@ -66,8 +66,9 @@ public class ShopManager {
     this.config = ConfigUtils.getConfig(arena.getPlugin(), Constants.Files.ARENAS.getName());
     this.plugin = arena.getPlugin();
     this.arena = arena;
-    defaultGolemItemName = config.getString("In-Game.Messages.Shop-Messages.Golem-Item-Name");
-    defaultWolfItemName = config.getString("In-Game.Messages.Shop-Messages.Wolf-Item-Name");
+    FileConfiguration languageConfig = ConfigUtils.getConfig(arena.getPlugin(), Constants.Files.LANGUAGE.getName());
+    defaultGolemItemName = languageConfig.getString("In-Game.Messages.Shop-Messages.Golem-Item-Name");
+    defaultWolfItemName = languageConfig.getString("In-Game.Messages.Shop-Messages.Wolf-Item-Name");
     if (config.isSet("instances." + arena.getId() + ".shop")) {
       registerShop();
     }
@@ -171,6 +172,7 @@ public class ShopManager {
             arena.spawnGolem(arena.getStartLocation(), player);
             player.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage(Messages.GOLEM_SPAWNED));
             user.setStat(StatsStorage.StatisticType.ORBS, user.getStat(StatsStorage.StatisticType.ORBS) - cost);
+            arena.addOptionValue(ArenaOption.TOTAL_ORBS_SPENT, cost);
             return;
           } else if (name.contains(plugin.getChatManager().colorMessage(Messages.SHOP_MESSAGES_WOLF_ITEM_NAME))
               || name.contains(defaultWolfItemName)) {
@@ -187,6 +189,7 @@ public class ShopManager {
             arena.spawnWolf(arena.getStartLocation(), player);
             player.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage(Messages.WOLF_SPAWNED));
             user.setStat(StatsStorage.StatisticType.ORBS, user.getStat(StatsStorage.StatisticType.ORBS) - cost);
+            arena.addOptionValue(ArenaOption.TOTAL_ORBS_SPENT, cost);
             return;
           }
         }

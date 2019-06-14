@@ -37,6 +37,7 @@ import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.java.JavaPluginLoader;
 import org.bukkit.potion.PotionEffect;
+import org.jetbrains.annotations.TestOnly;
 
 import pl.plajer.villagedefense.api.StatsStorage;
 import pl.plajer.villagedefense.arena.Arena;
@@ -111,12 +112,12 @@ public class Main extends JavaPlugin {
   private boolean forceDisable = false;
   private String version;
 
-  //for MockBukkit purposes
+  @TestOnly
   public Main() {
     super();
   }
 
-  //for MockBukkit purposes
+  @TestOnly
   protected Main(JavaPluginLoader loader, PluginDescriptionFile description, File dataFolder, File file) {
     super(loader, description, dataFolder, file);
   }

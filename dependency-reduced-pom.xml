@@ -159,6 +159,14 @@
         </executions>
       </plugin>
         <plugin>
+            <groupId>pl.plajer</groupId>
+            <artifactId>betty-maven-plugin</artifactId>
+            <version>1.0.0</version>
+            <configuration>
+                <changelogFile>${project.basedir}/CHANGELOG.md</changelogFile>
+            </configuration>
+        </plugin>
+        <plugin>
             <artifactId>maven-surefire-plugin</artifactId>
             <version>3.0.0-M3</version>
         </plugin>
@@ -338,7 +346,6 @@
     </site>
   </distributionManagement>
   <properties>
-      <maven.test.skip>true</maven.test.skip>
       <sonar.language>java</sonar.language>
       <sonar.jacoco.reportPath>${project.basedir}/../target/jacoco.exec</sonar.jacoco.reportPath>
     <java.version>1.8</java.version>

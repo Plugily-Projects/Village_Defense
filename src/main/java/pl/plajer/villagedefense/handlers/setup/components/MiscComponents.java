@@ -141,7 +141,7 @@ public class MiscComponents implements SetupComponent {
       }).buildFor(player);
     }), 6, 0);
 
-    pane.addItem(new GuiItem(new ItemBuilder(Material.GOLD_INGOT)
+    pane.addItem(new GuiItem(new ItemBuilder(Material.CHEST)
         .name(plugin.getChatManager().colorRawMessage("&e&lSet Game Shop"))
         .lore(ChatColor.GRAY + "Look at chest with items")
         .lore(ChatColor.GRAY + "and click it to set it as game shop.")

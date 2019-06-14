@@ -23,6 +23,9 @@ import java.io.File;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPluginLoader;
 
+import pl.plajer.villagedefense.arena.Arena;
+import pl.plajer.villagedefense.arena.ArenaMock;
+import pl.plajer.villagedefense.arena.ArenaRegistry;
 import pl.plajer.villagedefense.commands.arguments.ArgumentsRegistry;
 import pl.plajer.villagedefense.creatures.upgrades.EntityUpgradeMenu;
 import pl.plajer.villagedefense.handlers.BungeeManager;
@@ -56,6 +59,7 @@ public class MainMock extends Main {
   private RewardsFactory rewardsFactory;
   private ChatManager chatManager;
   private SpecialItemManager specialItemManager;
+  private ArenaMock testArena;
 
   public MainMock() {
     super();
@@ -112,6 +116,8 @@ public class MainMock extends Main {
 
   @Override
   public void onEnable() {
+    Arena.init(this);
+    ArenaRegistry.init(this);
     User.init(this);
     User.cooldownHandlerTask();
     Utils.init(this);
@@ -123,6 +129,9 @@ public class MainMock extends Main {
     this.rewardsFactory = new RewardsFactory(this);
     this.chatManager = new ChatManager(this, "[Village Defense] ");
     this.specialItemManager = new SpecialItemManager(this);
+
+    this.testArena = new ArenaMock();
+    ArenaRegistry.registerArena(testArena);
 
     //trick to clean up server directory after tests
     Runtime.getRuntime().addShutdownHook(new Thread(MockBukkit::unload));
@@ -176,6 +185,10 @@ public class MainMock extends Main {
   @Override
   public ArgumentsRegistry getArgumentsRegistry() {
     throw new UnimplementedOperationException();
+  }
+
+  public ArenaMock getTestArena() {
+    return testArena;
   }
 
   @Override

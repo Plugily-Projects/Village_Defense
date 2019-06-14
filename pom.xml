@@ -24,7 +24,7 @@
 
     <groupId>pl.plajer</groupId>
     <artifactId>villagedefense</artifactId>
-    <version>4.2.1</version>
+    <version>4.2.2</version>
     <name>VillageDefense</name>
 
     <properties>
@@ -319,6 +319,18 @@
                     </execution>
                 </executions>
             </plugin>
+
+            <!-- External beta versions discord deployer plugin -->
+            <plugin>
+                <groupId>pl.plajer</groupId>
+                <artifactId>betty-maven-plugin</artifactId>
+                <version>1.0.0</version>
+                <configuration>
+                    <changelogFile>${project.basedir}/CHANGELOG.md</changelogFile>
+                </configuration>
+            </plugin>
+            <!-- External beta versions discord deployer plugin -->
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>

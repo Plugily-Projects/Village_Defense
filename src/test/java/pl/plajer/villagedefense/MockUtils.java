@@ -29,6 +29,7 @@ import be.seeseemelk.mockbukkit.entity.PlayerMock;
  */
 public class MockUtils {
 
+  private static PlayerMock playerMock;
   private static MainMock mockPlugin;
 
   public static ServerMock getServerMockSafe() {
@@ -40,6 +41,13 @@ public class MockUtils {
 
   public static PlayerMock getDefaultPlayer() {
     return getServerMockSafe().addPlayer();
+  }
+
+  public static PlayerMock getConstantPlayer() {
+    if (playerMock == null) {
+      playerMock = getServerMockSafe().addPlayer();
+    }
+    return playerMock;
   }
 
   public static MainMock getPluginMockSafe() {

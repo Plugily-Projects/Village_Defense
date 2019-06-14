@@ -1,5 +1,19 @@
 # Village Defense Changelog
 
+Changelog is followed by special scheme which is required in order to allow automatic discord
+deploy webhooks to print changelog successfully
+
+## Log scheme
+`### <current version from pom.xml> <anything else here>`
+`<update log line>`
+
+That's all, matcher will stop when detects next line started with `###` match
+
+### 4.2.2 Release (14.06.2019)
+* Fixed setup menu completed/not completed values were buggy
+* Fixed /vda setprice message was sent twice
+* Now shop will count wolf/golem spawn items to total price spent in game in game summary
+
 ### 4.2.1 Release (25.05.2019 - 08.06.2019)
 * Fixed possible issues with scoreboard colors
 * Fixed boss bar displayed game end message not waiting for players after game restart
