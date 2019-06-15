@@ -22,9 +22,9 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
 
-import pl.plajer.villagedefense.ConfigPreferences;
 import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.api.StatsStorage;
+import pl.plajer.villagedefense.arena.Arena;
 import pl.plajer.villagedefense.arena.ArenaManager;
 import pl.plajer.villagedefense.arena.ArenaRegistry;
 import pl.plajer.villagedefense.user.User;
@@ -42,19 +42,10 @@ public class QuitEvent implements Listener {
   }
 
   @EventHandler
-  public void onQuit(PlayerQuitEvent event) {
-    if (ArenaRegistry.getArena(event.getPlayer()) == null) {
-      return;
-    }
-    if (!plugin.getConfigPreferences().getOption(ConfigPreferences.Option.BUNGEE_ENABLED)) {
-      ArenaManager.leaveAttempt(event.getPlayer(), ArenaRegistry.getArena(event.getPlayer()));
-    }
-  }
-
-  @EventHandler
   public void onQuitSaveStats(PlayerQuitEvent event) {
-    if (ArenaRegistry.getArena(event.getPlayer()) != null) {
-      ArenaManager.leaveAttempt(event.getPlayer(), ArenaRegistry.getArena(event.getPlayer()));
+    Arena arena = ArenaRegistry.getArena(event.getPlayer());
+    if (arena != null) {
+      ArenaManager.leaveAttempt(event.getPlayer(), arena);
     }
     User user = plugin.getUserManager().getUser(event.getPlayer());
     for (StatsStorage.StatisticType stat : StatsStorage.StatisticType.values()) {
