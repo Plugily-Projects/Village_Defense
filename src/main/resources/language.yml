@@ -239,7 +239,7 @@ In-Game:
   #Used in most game messages.
   Plugin-Prefix: "&a[Village Defense] "
   Already-Playing: "&cYou are already queued for a game! You can leave a game with /vd leave."
-  Join-No-Permission: "&cYou don't have permission to join this arena!"
+  Join-No-Permission: "&cYou don't have &6%permission% &cpermission to join this arena!"
   Full-Game-No-Permission: "&cYou don't have the permission to join full games!"
   No-Slots-For-Premium: "&cThis game is already full of premium players! Sorry"
   Dead-Tag-On-Death: "&8Dead"
