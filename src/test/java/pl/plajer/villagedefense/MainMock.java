@@ -27,8 +27,6 @@ import pl.plajer.villagedefense.arena.Arena;
 import pl.plajer.villagedefense.arena.ArenaMock;
 import pl.plajer.villagedefense.arena.ArenaRegistry;
 import pl.plajer.villagedefense.commands.arguments.ArgumentsRegistry;
-import pl.plajer.villagedefense.creatures.upgrades.EntityUpgradeMenu;
-import pl.plajer.villagedefense.handlers.BungeeManager;
 import pl.plajer.villagedefense.handlers.ChatManager;
 import pl.plajer.villagedefense.handlers.HolidayManager;
 import pl.plajer.villagedefense.handlers.SignManager;
@@ -95,11 +93,6 @@ public class MainMock extends Main {
   }
 
   @Override
-  public BungeeManager getBungeeManager() {
-    throw new UnimplementedOperationException();
-  }
-
-  @Override
   public SignManager getSignManager() {
     throw new UnimplementedOperationException();
   }
@@ -135,11 +128,6 @@ public class MainMock extends Main {
 
     //trick to clean up server directory after tests
     Runtime.getRuntime().addShutdownHook(new Thread(MockBukkit::unload));
-  }
-
-  @Override
-  public EntityUpgradeMenu getEntityUpgradeMenu() {
-    throw new UnimplementedOperationException();
   }
 
   @Override

@@ -61,7 +61,6 @@ import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 
-import pl.plajer.villagedefense.ConfigPreferences;
 import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.api.StatsStorage;
 import pl.plajer.villagedefense.arena.Arena;
@@ -301,11 +300,7 @@ public class Events implements Listener {
     }
     if (key.getItemStack().getItemMeta().getDisplayName().equalsIgnoreCase(itemStack.getItemMeta().getDisplayName())) {
       event.setCancelled(true);
-      if (plugin.getConfigPreferences().getOption(ConfigPreferences.Option.BUNGEE_ENABLED)) {
-        plugin.getBungeeManager().connectToHub(event.getPlayer());
-      } else {
-        ArenaManager.leaveAttempt(event.getPlayer(), arena);
-      }
+      ArenaManager.leaveAttempt(event.getPlayer(), arena);
     }
   }
 

@@ -47,9 +47,6 @@ public class EndingState implements ArenaStateHandler {
   @Override
   public void handleCall(Arena arena) {
     arena.getScoreboardManager().stopAllScoreboards();
-    if (plugin.getConfigPreferences().getOption(ConfigPreferences.Option.BUNGEE_ENABLED)) {
-      plugin.getServer().setWhitelist(false);
-    }
     if (arena.getTimer() <= 0) {
       arena.getGameBar().setTitle(plugin.getChatManager().colorMessage(Messages.BOSSBAR_GAME_ENDED));
 

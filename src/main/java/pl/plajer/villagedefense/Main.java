@@ -40,6 +40,7 @@ import org.bukkit.potion.PotionEffect;
 import org.jetbrains.annotations.TestOnly;
 
 import pl.plajer.villagedefense.api.StatsStorage;
+import pl.plajer.villagedefense.api.module.ModuleHelper;
 import pl.plajer.villagedefense.arena.Arena;
 import pl.plajer.villagedefense.arena.ArenaEvents;
 import pl.plajer.villagedefense.arena.ArenaManager;
@@ -49,8 +50,6 @@ import pl.plajer.villagedefense.commands.arguments.ArgumentsRegistry;
 import pl.plajer.villagedefense.creatures.CreatureUtils;
 import pl.plajer.villagedefense.creatures.DoorBreakListener;
 import pl.plajer.villagedefense.creatures.EntityRegistry;
-import pl.plajer.villagedefense.creatures.upgrades.EntityUpgradeMenu;
-import pl.plajer.villagedefense.creatures.upgrades.Upgrade;
 import pl.plajer.villagedefense.events.ChatEvents;
 import pl.plajer.villagedefense.events.Events;
 import pl.plajer.villagedefense.events.JoinEvent;
@@ -58,7 +57,6 @@ import pl.plajer.villagedefense.events.LobbyEvents;
 import pl.plajer.villagedefense.events.QuitEvent;
 import pl.plajer.villagedefense.events.spectator.SpectatorEvents;
 import pl.plajer.villagedefense.events.spectator.SpectatorItemEvents;
-import pl.plajer.villagedefense.handlers.BungeeManager;
 import pl.plajer.villagedefense.handlers.ChatManager;
 import pl.plajer.villagedefense.handlers.HolidayManager;
 import pl.plajer.villagedefense.handlers.PermissionsManager;
@@ -67,6 +65,9 @@ import pl.plajer.villagedefense.handlers.SignManager;
 import pl.plajer.villagedefense.handlers.items.SpecialItemManager;
 import pl.plajer.villagedefense.handlers.language.LanguageManager;
 import pl.plajer.villagedefense.handlers.language.Messages;
+import pl.plajer.villagedefense.handlers.module.ModuleLoader;
+import pl.plajer.villagedefense.handlers.module.ModuleVisualizer;
+import pl.plajer.villagedefense.handlers.module.ModuleWrapper;
 import pl.plajer.villagedefense.handlers.powerup.PowerupRegistry;
 import pl.plajer.villagedefense.handlers.reward.RewardsFactory;
 import pl.plajer.villagedefense.handlers.setup.SetupInventory;
@@ -102,13 +103,12 @@ public class Main extends JavaPlugin {
   private MysqlDatabase database;
   private ArgumentsRegistry registry;
   private SignManager signManager;
-  private BungeeManager bungeeManager;
   private SpecialItemManager specialItemManager;
   private KitManager kitManager;
   private PowerupRegistry powerupRegistry;
   private RewardsFactory rewardsHandler;
   private HolidayManager holidayManager;
-  private EntityUpgradeMenu entityUpgradeMenu;
+  private ModuleLoader moduleLoader;
   private boolean forceDisable = false;
   private String version;
 
@@ -140,10 +140,6 @@ public class Main extends JavaPlugin {
 
   public boolean is1_14_R1() {
     return version.equalsIgnoreCase("v1_14_R1");
-  }
-
-  public BungeeManager getBungeeManager() {
-    return bungeeManager;
   }
 
   public SignManager getSignManager() {
@@ -186,6 +182,8 @@ public class Main extends JavaPlugin {
     setupFiles();
     new LegacyDataFixer(this);
     initializeClasses();
+
+    moduleLoader = new ModuleLoader(this);
     checkUpdate();
     Debugger.debug(Level.INFO, "[System] Initialization finished took {0}ms", System.currentTimeMillis() - start);
   }
@@ -219,11 +217,7 @@ public class Main extends JavaPlugin {
     startInitiableClasses();
 
     ScoreboardLib.setPluginInstance(this);
-    if (getConfig().getBoolean("BungeeActivated", false)) {
-      bungeeManager = new BungeeManager(this);
-    }
     registry = new ArgumentsRegistry(this);
-    entityUpgradeMenu = new EntityUpgradeMenu(this);
     new EntityRegistry(this);
     new ArenaEvents(this);
     kitManager = new KitManager(this);
@@ -267,17 +261,18 @@ public class Main extends JavaPlugin {
     User.init(this);
     ArenaManager.init(this);
     Kit.init(this);
-    Upgrade.init(this);
     PermissionsManager.init(this);
     SetupInventory.init(this);
     ArenaUtils.init(this);
     Arena.init(this);
+    ModuleHelper.init(this);
+    ModuleVisualizer.init(this);
   }
 
   private void setupPluginMetrics() {
     Metrics metrics = new Metrics(this);
     metrics.addCustomChart(new Metrics.SimplePie("database_enabled", () -> String.valueOf(configPreferences.getOption(ConfigPreferences.Option.DATABASE_ENABLED))));
-    metrics.addCustomChart(new Metrics.SimplePie("bungeecord_hooked", () -> String.valueOf(configPreferences.getOption(ConfigPreferences.Option.BUNGEE_ENABLED))));
+    metrics.addCustomChart(new Metrics.SimplePie("bungeecord_hooked", () -> String.valueOf(moduleLoader.isModulePresent("Bungee Cord"))));
     metrics.addCustomChart(new Metrics.SimplePie("locale_used", () -> LanguageManager.getPluginLocale().getPrefix()));
     metrics.addCustomChart(new Metrics.SimplePie("update_notifier", () -> {
       if (getConfig().getBoolean("Update-Notifier.Enabled", true)) {
@@ -328,16 +323,12 @@ public class Main extends JavaPlugin {
   }
 
   private void setupFiles() {
-    for (String fileName : Arrays.asList("arenas", "bungee", "rewards", "stats", "lobbyitems", "mysql", "kits")) {
+    for (String fileName : Arrays.asList("arenas", "rewards", "stats", "lobbyitems", "mysql", "kits")) {
       File file = new File(getDataFolder() + File.separator + fileName + ".yml");
       if (!file.exists()) {
         saveResource(fileName + ".yml", false);
       }
     }
-  }
-
-  public EntityUpgradeMenu getEntityUpgradeMenu() {
-    return entityUpgradeMenu;
   }
 
   public ChatManager getChatManager() {
@@ -376,6 +367,10 @@ public class Main extends JavaPlugin {
     return registry;
   }
 
+  public ModuleLoader getModuleLoader() {
+    return moduleLoader;
+  }
+
   @Override
   public void onDisable() {
     if (forceDisable) {
@@ -409,6 +404,13 @@ public class Main extends JavaPlugin {
         holo.delete();
       }
     }
+    for (ModuleWrapper moduleInfo : moduleLoader.getModulesInfo()) {
+      try {
+        moduleInfo.getModule().onDisable(this);
+      } catch (Exception ignored) {
+      }
+    }
+    moduleLoader.disable();
     if (configPreferences.getOption(ConfigPreferences.Option.DATABASE_ENABLED)) {
       getMysqlDatabase().shutdownConnPool();
     }

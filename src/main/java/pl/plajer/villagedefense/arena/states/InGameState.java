@@ -43,9 +43,6 @@ public class InGameState implements ArenaStateHandler {
   @Override
   public void handleCall(Arena arena) {
     bossBarUpdate(arena);
-    if (plugin.getConfigPreferences().getOption(ConfigPreferences.Option.BUNGEE_ENABLED)) {
-      plugin.getServer().setWhitelist(arena.getMaximumPlayers() <= arena.getPlayers().size());
-    }
     arena.getZombieSpawnManager().spawnGlitchCheck();
     if (arena.getVillagers().isEmpty() || arena.getPlayersLeft().isEmpty() && arena.getArenaState() != ArenaState.ENDING) {
       ArenaManager.stopGame(false, arena);

@@ -46,25 +46,7 @@ public class JoinEvent implements Listener {
   }
 
   @EventHandler
-  public void onLogin(PlayerLoginEvent e) {
-    if (!plugin.getConfigPreferences().getOption(ConfigPreferences.Option.BUNGEE_ENABLED) && !plugin.getServer().hasWhitelist()
-        || e.getResult() != PlayerLoginEvent.Result.KICK_WHITELIST) {
-      return;
-    }
-    if (e.getPlayer().hasPermission(PermissionsManager.getJoinFullGames())) {
-      e.setResult(PlayerLoginEvent.Result.ALLOWED);
-    }
-  }
-
-  @EventHandler
   public void onJoin(PlayerJoinEvent event) {
-    if (plugin.getConfigPreferences().getOption(ConfigPreferences.Option.BUNGEE_ENABLED)) {
-      if (!ArenaRegistry.getArenas().isEmpty()) {
-        event.getPlayer().teleport(ArenaRegistry.getArenas().get(0).getLobbyLocation());
-      }
-      return;
-    }
-
     for (StatsStorage.StatisticType stat : StatsStorage.StatisticType.values()) {
       plugin.getUserManager().loadStatistic(plugin.getUserManager().getUser(event.getPlayer()), stat);
     }
@@ -72,6 +54,17 @@ public class JoinEvent implements Listener {
     //deleted player won't receive his backup, in case of crash he will get it back
     if (plugin.getConfigPreferences().getOption(ConfigPreferences.Option.INVENTORY_MANAGER_ENABLED)) {
       InventorySerializer.loadInventory(plugin, event.getPlayer());
+    }
+
+    int amount = plugin.getModuleLoader().getNotLoadedModulesAmount();
+    if(event.getPlayer().hasPermission("villagedefense.admin.modules") && amount > 0) {
+      Bukkit.getScheduler().runTaskLater(plugin, () -> {
+        event.getPlayer().sendMessage("");
+        event.getPlayer().sendMessage(plugin.getChatManager().colorRawMessage("&6&lVillage Defense Module Notifier"));
+        event.getPlayer().sendMessage("");
+        event.getPlayer().sendMessage(plugin.getChatManager().colorRawMessage("&eThere are &4&l" + amount + " modules &ethat failed to load! " +
+            "Check them out via &6/vda modules"));
+      }, 30);
     }
   }
 

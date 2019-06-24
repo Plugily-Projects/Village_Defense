@@ -75,7 +75,7 @@ public class MiscComponents implements SetupComponent {
     Arena arena = setupInventory.getArena();
     Main plugin = setupInventory.getPlugin();
     ItemStack bungeeItem;
-    if (!plugin.getConfigPreferences().getOption(ConfigPreferences.Option.BUNGEE_ENABLED)) {
+    if (!plugin.getModuleLoader().isModulePresent("Bungee Cord")) {
       bungeeItem = new ItemBuilder(Material.SIGN)
           .name(plugin.getChatManager().colorRawMessage("&e&lAdd Game Sign"))
           .lore(ChatColor.GRAY + "Target a sign and click this.")
@@ -84,13 +84,13 @@ public class MiscComponents implements SetupComponent {
     } else {
       bungeeItem = new ItemBuilder(Material.BARRIER)
           .name(plugin.getChatManager().colorRawMessage("&c&lAdd Game Sign"))
-          .lore(ChatColor.GRAY + "Option disabled in bungee cord mode.")
+          .lore(ChatColor.GRAY + "Option disabled with Bungee Cord module.")
           .lore(ChatColor.DARK_GRAY + "Bungee mode is meant to be one arena per server")
           .lore(ChatColor.DARK_GRAY + "If you wish to have multi arena, disable bungee in config!")
           .build();
     }
     pane.addItem(new GuiItem(bungeeItem, e -> {
-      if (plugin.getConfigPreferences().getOption(ConfigPreferences.Option.BUNGEE_ENABLED)) {
+      if (plugin.getModuleLoader().isModulePresent("Bungee Cord")) {
         return;
       }
       e.getWhoClicked().closeInventory();

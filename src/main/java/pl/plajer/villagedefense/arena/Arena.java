@@ -348,10 +348,6 @@ public abstract class Arena extends BukkitRunnable {
   }
 
   public void teleportToEndLocation(Player player) {
-    if (plugin.getConfigPreferences().getOption(ConfigPreferences.Option.BUNGEE_ENABLED)) {
-      plugin.getBungeeManager().connectToHub(player);
-      return;
-    }
     player.teleport(getEndLocation());
   }
 
@@ -367,9 +363,6 @@ public abstract class Arena extends BukkitRunnable {
     Debugger.debug(Level.INFO, "[{0}] Instance started", this.getId());
     this.runTaskTimer(plugin, 20L, 20L);
     this.setArenaState(ArenaState.WAITING_FOR_PLAYERS);
-    if (plugin.getConfigPreferences().getOption(ConfigPreferences.Option.BUNGEE_ENABLED)) {
-      players.addAll(plugin.getServer().getOnlinePlayers());
-    }
   }
 
   public ScoreboardManager getScoreboardManager() {

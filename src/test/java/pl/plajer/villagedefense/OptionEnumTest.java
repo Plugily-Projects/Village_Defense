@@ -31,7 +31,6 @@ public class OptionEnumTest {
   @Test
   public void getPath() {
     Assert.assertEquals("Bossbar-Enabled", ConfigPreferences.Option.BOSSBAR_ENABLED.getPath());
-    Assert.assertEquals("BungeeActivated", ConfigPreferences.Option.BUNGEE_ENABLED.getPath());
     Assert.assertEquals("ChatFormat-Enabled", ConfigPreferences.Option.CHAT_FORMAT_ENABLED.getPath());
     Assert.assertEquals("DatabaseActivated", ConfigPreferences.Option.DATABASE_ENABLED.getPath());
     Assert.assertEquals("InventoryManager", ConfigPreferences.Option.INVENTORY_MANAGER_ENABLED.getPath());
@@ -41,7 +40,6 @@ public class OptionEnumTest {
   @Test
   public void getDefault() {
     Assert.assertTrue(ConfigPreferences.Option.BOSSBAR_ENABLED.getDefault());
-    Assert.assertFalse(ConfigPreferences.Option.BUNGEE_ENABLED.getDefault());
     Assert.assertTrue(ConfigPreferences.Option.CHAT_FORMAT_ENABLED.getDefault());
     Assert.assertFalse(ConfigPreferences.Option.DATABASE_ENABLED.getDefault());
     Assert.assertTrue(ConfigPreferences.Option.INVENTORY_MANAGER_ENABLED.getDefault());

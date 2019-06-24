@@ -42,6 +42,7 @@ import pl.plajer.villagedefense.arena.ArenaRegistry;
 import pl.plajer.villagedefense.commands.arguments.admin.AddOrbsArgument;
 import pl.plajer.villagedefense.commands.arguments.admin.ClearEntitiesArgument;
 import pl.plajer.villagedefense.commands.arguments.admin.ListArenasArgument;
+import pl.plajer.villagedefense.commands.arguments.admin.ModulesArgument;
 import pl.plajer.villagedefense.commands.arguments.admin.ReloadArgument;
 import pl.plajer.villagedefense.commands.arguments.admin.RespawnArgument;
 import pl.plajer.villagedefense.commands.arguments.admin.SetPriceArgument;
@@ -116,6 +117,7 @@ public class ArgumentsRegistry implements CommandExecutor {
     new SetPriceArgument(this);
     spyChat = new SpyChatArgument(this);
     new TeleportArgument(this);
+    new ModulesArgument(this);
   }
 
   @Override

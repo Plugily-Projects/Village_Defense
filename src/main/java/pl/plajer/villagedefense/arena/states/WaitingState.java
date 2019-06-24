@@ -18,7 +18,6 @@
 
 package pl.plajer.villagedefense.arena.states;
 
-import pl.plajer.villagedefense.ConfigPreferences;
 import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.arena.Arena;
 import pl.plajer.villagedefense.arena.ArenaState;
@@ -40,9 +39,6 @@ public class WaitingState implements ArenaStateHandler {
 
   @Override
   public void handleCall(Arena arena) {
-    if (plugin.getConfigPreferences().getOption(ConfigPreferences.Option.BUNGEE_ENABLED)) {
-      plugin.getServer().setWhitelist(false);
-    }
     if (arena.getPlayers().size() < arena.getMinimumPlayers()) {
       if (arena.getTimer() <= 0) {
         arena.setTimer(15);

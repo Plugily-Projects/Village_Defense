@@ -21,11 +21,9 @@ package pl.plajer.villagedefense.commands.arguments.game;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import pl.plajer.villagedefense.ConfigPreferences;
 import pl.plajer.villagedefense.arena.Arena;
 import pl.plajer.villagedefense.arena.ArenaManager;
 import pl.plajer.villagedefense.arena.ArenaRegistry;
-import pl.plajer.villagedefense.arena.ArenaState;
 import pl.plajer.villagedefense.commands.arguments.ArgumentsRegistry;
 import pl.plajer.villagedefense.commands.arguments.data.CommandArgument;
 import pl.plajer.villagedefense.handlers.language.Messages;
@@ -59,26 +57,6 @@ public class JoinArguments {
         sender.sendMessage(registry.getPlugin().getChatManager().getPrefix() + registry.getPlugin().getChatManager().colorMessage(Messages.COMMANDS_NO_ARENA_LIKE_THAT));
       }
     });
-
-    //random join argument, register only for multi arena
-    if (!registry.getPlugin().getConfigPreferences().getOption(ConfigPreferences.Option.BUNGEE_ENABLED)) {
-      registry.mapArgument("villagedefense", new CommandArgument("randomjoin", "", CommandArgument.ExecutorType.PLAYER) {
-        @Override
-        public void execute(CommandSender sender, String[] args) {
-          if (ArenaRegistry.isInArena(((Player) sender))) {
-            sender.sendMessage(registry.getPlugin().getChatManager().getPrefix() + registry.getPlugin().getChatManager().colorMessage(Messages.ALREADY_PLAYING));
-            return;
-          }
-          for (Arena arena : ArenaRegistry.getArenas()) {
-            if (arena.getArenaState() == ArenaState.WAITING_FOR_PLAYERS || arena.getArenaState() == ArenaState.STARTING) {
-              ArenaManager.joinAttempt((Player) sender, arena);
-              return;
-            }
-          }
-          sender.sendMessage(registry.getPlugin().getChatManager().getPrefix() + registry.getPlugin().getChatManager().colorMessage(Messages.COMMANDS_NO_FREE_ARENAS));
-        }
-      });
-    }
   }
 
 }

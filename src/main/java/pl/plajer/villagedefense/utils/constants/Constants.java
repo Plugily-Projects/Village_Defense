@@ -24,7 +24,7 @@ package pl.plajer.villagedefense.utils.constants;
 public class Constants {
 
   public enum Files {
-    ARENAS("arenas"), BUNGEE("bungee"), CONFIG("config"), KITS("kits"), LANGUAGE("language"),
+    ARENAS("arenas"), CONFIG("config"), KITS("kits"), LANGUAGE("language"),
     LOBBY_ITEMS("lobbyitems"), MYSQL("mysql"), REWARDS("rewards"), STATS("stats");
 
     private String name;

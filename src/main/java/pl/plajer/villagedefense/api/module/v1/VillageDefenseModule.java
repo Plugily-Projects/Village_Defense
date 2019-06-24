@@ -16,30 +16,34 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package pl.plajer.villagedefense.utils;
+package pl.plajer.villagedefense.api.module.v1;
 
-import org.junit.Assert;
-import org.junit.Test;
+import java.util.List;
 
-import pl.plajer.villagedefense.utils.constants.Constants;
+import pl.plajer.villagedefense.Main;
+import pl.plajer.villagedefense.api.module.ModuleCompatibility;
 
 /**
  * @author Plajer
  * <p>
- * Created at 08.06.2019
+ * Created at 16.06.2019
  */
-public class ConstantsTest {
+public interface VillageDefenseModule {
 
-  @Test
-  public void testAllConstants() {
-    Assert.assertEquals("arenas", Constants.Files.ARENAS.getName());
-    Assert.assertEquals("config", Constants.Files.CONFIG.getName());
-    Assert.assertEquals("language", Constants.Files.LANGUAGE.getName());
-    Assert.assertEquals("kits", Constants.Files.KITS.getName());
-    Assert.assertEquals("lobbyitems", Constants.Files.LOBBY_ITEMS.getName());
-    Assert.assertEquals("mysql", Constants.Files.MYSQL.getName());
-    Assert.assertEquals("rewards", Constants.Files.REWARDS.getName());
-    Assert.assertEquals("stats", Constants.Files.STATS.getName());
-  }
+  void onLoad(Main villageDefense);
+
+  String getModuleName();
+
+  String getAuthor();
+
+  String getVersion();
+
+  String getDescription();
+
+  List<ModuleCompatibility> getCompatibleVersions();
+
+  void onDisable(Main villageDefense);
+
+  List<String> incompatibleModules();
 
 }

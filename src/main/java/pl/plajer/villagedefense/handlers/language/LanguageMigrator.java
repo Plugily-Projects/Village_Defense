@@ -41,7 +41,7 @@ public class LanguageMigrator {
   public static final int LANGUAGE_FILE_VERSION = 10;
   public static final int CONFIG_FILE_VERSION = 8;
   private Main plugin;
-  private List<String> migratable = Arrays.asList(Constants.Files.BUNGEE.getName(), Constants.Files.CONFIG.getName(), Constants.Files.KITS.getName(),
+  private List<String> migratable = Arrays.asList(Constants.Files.CONFIG.getName(), Constants.Files.KITS.getName(),
       Constants.Files.KITS.getName(), Constants.Files.LANGUAGE.getName(), Constants.Files.LOBBY_ITEMS.getName(), Constants.Files.MYSQL.getName());
 
   public LanguageMigrator(Main plugin) {
