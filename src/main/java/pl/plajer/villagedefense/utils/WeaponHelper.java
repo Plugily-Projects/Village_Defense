@@ -43,24 +43,17 @@ public class WeaponHelper {
 
   public static ItemStack getEnchantedBow(Enchantment[] enchantments, int[] levels) {
     ItemStack itemStack = new ItemStack(Material.BOW);
-    Map<Enchantment, Integer> enchantmentsmap = new HashMap<>();
-    int i = 0;
-    for (Enchantment enchantment : enchantments) {
-      enchantmentsmap.put(enchantment, levels[i]);
-      i++;
-    }
-    itemStack.addUnsafeEnchantments(enchantmentsmap);
-    return itemStack;
+    return getEnchanted(itemStack, enchantments, levels);
   }
 
   public static ItemStack getEnchanted(ItemStack itemStack, Enchantment[] enchantments, int[] levels) {
-    Map<Enchantment, Integer> enchantmentsmap = new HashMap<>();
+    Map<Enchantment, Integer> enchants = new HashMap<>();
     int i = 0;
     for (Enchantment enchantment : enchantments) {
-      enchantmentsmap.put(enchantment, levels[i]);
+      enchants.put(enchantment, levels[i]);
       i++;
     }
-    itemStack.addUnsafeEnchantments(enchantmentsmap);
+    itemStack.addUnsafeEnchantments(enchants);
     return itemStack;
   }
 
