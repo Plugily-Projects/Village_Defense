@@ -40,11 +40,11 @@ import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.Door;
 
-import pl.plajer.villagedefense.ConfigPreferences;
 import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.arena.Arena;
 import pl.plajer.villagedefense.handlers.language.Messages;
 import pl.plajer.villagedefense.handlers.setup.SetupInventory;
+import pl.plajer.villagedefense.handlers.sign.ArenaSign;
 import pl.plajer.villagedefense.utils.Utils;
 import pl.plajer.villagedefense.utils.constants.CompatMaterialConstants;
 import pl.plajer.villagedefense.utils.constants.Constants;
@@ -106,7 +106,7 @@ public class MiscComponents implements SetupComponent {
         e.getWhoClicked().sendMessage(plugin.getChatManager().colorRawMessage("&cYou can ignore this warning and add sign with Shift + Left Click, but for now &c&loperation is cancelled"));
         return;
       }
-      plugin.getSignManager().getLoadedSigns().put((Sign) location.getBlock().getState(), arena);
+      plugin.getSignManager().getArenaSigns().add(new ArenaSign((Sign) location.getBlock().getState(), arena));
       player.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage(Messages.SIGNS_SIGN_CREATED));
       String signLoc = location.getBlock().getWorld().getName() + "," + location.getBlock().getX() + "," + location.getBlock().getY() + "," + location.getBlock().getZ() + ",0.0,0.0";
       List<String> locs = config.getStringList("instances." + arena.getId() + ".signs");

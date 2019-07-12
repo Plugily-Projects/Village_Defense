@@ -61,7 +61,6 @@ import pl.plajer.villagedefense.handlers.ChatManager;
 import pl.plajer.villagedefense.handlers.HolidayManager;
 import pl.plajer.villagedefense.handlers.PermissionsManager;
 import pl.plajer.villagedefense.handlers.PlaceholderManager;
-import pl.plajer.villagedefense.handlers.SignManager;
 import pl.plajer.villagedefense.handlers.items.SpecialItemManager;
 import pl.plajer.villagedefense.handlers.language.LanguageManager;
 import pl.plajer.villagedefense.handlers.language.Messages;
@@ -71,6 +70,8 @@ import pl.plajer.villagedefense.handlers.module.ModuleWrapper;
 import pl.plajer.villagedefense.handlers.powerup.PowerupRegistry;
 import pl.plajer.villagedefense.handlers.reward.RewardsFactory;
 import pl.plajer.villagedefense.handlers.setup.SetupInventory;
+import pl.plajer.villagedefense.handlers.sign.ArenaSign;
+import pl.plajer.villagedefense.handlers.sign.SignManager;
 import pl.plajer.villagedefense.kits.KitMenuHandler;
 import pl.plajer.villagedefense.kits.KitRegistry;
 import pl.plajer.villagedefense.kits.basekits.Kit;
@@ -253,6 +254,7 @@ public class Main extends JavaPlugin {
   }
 
   private void startInitiableClasses() {
+    ArenaSign.init(this);
     StatsStorage.init(this);
     ArenaRegistry.init(this);
     CompatMaterialConstants.init(this);

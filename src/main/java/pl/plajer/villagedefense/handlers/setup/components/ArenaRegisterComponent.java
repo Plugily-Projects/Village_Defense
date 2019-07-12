@@ -23,7 +23,6 @@ import com.github.stefvanschie.inventoryframework.pane.StaticPane;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -37,6 +36,7 @@ import pl.plajer.villagedefense.arena.Arena;
 import pl.plajer.villagedefense.arena.ArenaRegistry;
 import pl.plajer.villagedefense.arena.ArenaUtils;
 import pl.plajer.villagedefense.handlers.setup.SetupInventory;
+import pl.plajer.villagedefense.handlers.sign.ArenaSign;
 import pl.plajer.villagedefense.utils.constants.Constants;
 import pl.plajerlair.commonsbox.minecraft.compat.XMaterial;
 import pl.plajerlair.commonsbox.minecraft.configuration.ConfigUtils;
@@ -107,11 +107,10 @@ public class ArenaRegisterComponent implements SetupComponent {
       ConfigUtils.saveConfig(plugin, config, Constants.Files.ARENAS.getName());
       List<Sign> signsToUpdate = new ArrayList<>();
       ArenaRegistry.unregisterArena(arena);
-      if (plugin.getSignManager().getLoadedSigns().containsValue(arena)) {
-        for (Map.Entry<Sign, Arena> entry : plugin.getSignManager().getLoadedSigns().entrySet()) {
-          if (entry.getValue().equals(arena)) {
-            signsToUpdate.add(entry.getKey());
-          }
+
+      for (ArenaSign arenaSign : plugin.getSignManager().getArenaSigns()) {
+        if (arenaSign.getArena().equals(setupInventory.getArena())) {
+          signsToUpdate.add(arenaSign.getSign());
         }
       }
       arena = ArenaUtils.initializeArena(arena.getId());
@@ -139,7 +138,7 @@ public class ArenaRegisterComponent implements SetupComponent {
       ArenaRegistry.registerArena(arena);
       arena.start();
       for (Sign s : signsToUpdate) {
-        plugin.getSignManager().getLoadedSigns().put(s, arena);
+        plugin.getSignManager().getArenaSigns().add(new ArenaSign(s, arena));
       }
     }), 2, 1);
   }
