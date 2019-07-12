@@ -216,7 +216,7 @@ public class ArenaEvents implements Listener {
       Bukkit.getScheduler().runTaskLater(plugin, () -> {
         for (SpecialItem item : plugin.getSpecialItemManager().getSpecialItems()) {
           if (item.getDisplayStage() != SpecialItem.DisplayStage.SPECTATOR) {
-
+            continue;
           }
           player.getInventory().setItem(item.getSlot(), item.getItemStack());
         }
