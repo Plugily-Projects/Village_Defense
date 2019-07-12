@@ -70,16 +70,6 @@ public class UtilsTest {
     System.out.println("> Utils#isInteger true for 123 | PASSED");
   }
 
-
-  @Test
-  public void isItemNamed() {
-    MockUtils.getServerMockSafe();
-    Assert.assertFalse(Utils.isNamed(null));
-    Assert.assertFalse(Utils.isNamed(new ItemStack(Material.DIRT)));
-    Assert.assertTrue(Utils.isNamed(new ItemBuilder(Material.DIRT).name("test").build()));
-    System.out.println("> Utils#isNamed | PASSED");
-  }
-
   @Test
   public void serializeInt() {
     Assert.assertEquals(27, Utils.serializeInt(25));

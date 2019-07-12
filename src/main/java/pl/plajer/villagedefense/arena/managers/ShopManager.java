@@ -47,6 +47,7 @@ import pl.plajer.villagedefense.utils.Debugger;
 import pl.plajer.villagedefense.utils.Utils;
 import pl.plajer.villagedefense.utils.constants.Constants;
 import pl.plajerlair.commonsbox.minecraft.configuration.ConfigUtils;
+import pl.plajerlair.commonsbox.minecraft.item.ItemUtils;
 import pl.plajerlair.commonsbox.minecraft.serialization.LocationSerializer;
 
 /**
@@ -154,7 +155,7 @@ public class ShopManager {
           player.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage(Messages.SHOP_MESSAGES_NOT_ENOUGH_ORBS));
           return;
         }
-        if (Utils.isNamed(itemStack)) {
+        if (ItemUtils.isItemStackNamed(itemStack)) {
           String name = itemStack.getItemMeta().getDisplayName();
           int spawnedAmount = 0;
           if (name.contains(plugin.getChatManager().colorMessage(Messages.SHOP_MESSAGES_GOLEM_ITEM_NAME))

@@ -44,6 +44,7 @@ import pl.plajer.villagedefense.utils.Utils;
 import pl.plajer.villagedefense.utils.WeaponHelper;
 import pl.plajerlair.commonsbox.minecraft.compat.XMaterial;
 import pl.plajerlair.commonsbox.minecraft.item.ItemBuilder;
+import pl.plajerlair.commonsbox.minecraft.item.ItemUtils;
 
 /**
  * Created by Tom on 30/12/2015.
@@ -100,7 +101,7 @@ public class TornadoKit extends PremiumKit implements Listener {
     }
     Player player = e.getPlayer();
     ItemStack stack = player.getInventory().getItemInMainHand();
-    if (!ArenaRegistry.isInArena(player) || !Utils.isNamed(stack)
+    if (!ArenaRegistry.isInArena(player) || !ItemUtils.isItemStackNamed(stack)
         || !stack.getItemMeta().getDisplayName().equalsIgnoreCase(getPlugin().getChatManager().colorMessage(Messages.KITS_TORNADO_GAME_ITEM_NAME))) {
       return;
     }

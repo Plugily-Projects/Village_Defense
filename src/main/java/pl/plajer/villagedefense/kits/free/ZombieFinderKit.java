@@ -41,6 +41,7 @@ import pl.plajer.villagedefense.utils.Utils;
 import pl.plajer.villagedefense.utils.WeaponHelper;
 import pl.plajerlair.commonsbox.minecraft.compat.XMaterial;
 import pl.plajerlair.commonsbox.minecraft.item.ItemBuilder;
+import pl.plajerlair.commonsbox.minecraft.item.ItemUtils;
 
 /**
  * Created by Tom on 21/07/2015.
@@ -84,7 +85,7 @@ public class ZombieFinderKit extends LevelKit implements Listener {
   @EventHandler
   public void onTeleport(PlayerInteractEvent event) {
     Arena arena = ArenaRegistry.getArena(event.getPlayer());
-    if (arena == null || !Utils.isNamed(event.getItem()) || event.getItem().getType() != Material.BOOK
+    if (arena == null || !ItemUtils.isItemStackNamed(event.getItem()) || event.getItem().getType() != Material.BOOK
         || !event.getItem().getItemMeta().getDisplayName().equals(getPlugin().getChatManager().colorMessage(Messages.KITS_ZOMBIE_TELEPORTER_GAME_ITEM_NAME))) {
       return;
     }

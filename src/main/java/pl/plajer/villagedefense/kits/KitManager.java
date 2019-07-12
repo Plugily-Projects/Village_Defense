@@ -43,6 +43,7 @@ import pl.plajer.villagedefense.kits.basekits.Kit;
 import pl.plajer.villagedefense.user.User;
 import pl.plajer.villagedefense.utils.Utils;
 import pl.plajerlair.commonsbox.minecraft.item.ItemBuilder;
+import pl.plajerlair.commonsbox.minecraft.item.ItemUtils;
 
 /**
  * Class for setting Kit values.
@@ -107,7 +108,7 @@ public class KitManager implements Listener {
         }
         Arena arena = ArenaRegistry.getArena(player);
         e.setCancelled(true);
-        if (!Utils.isNamed(e.getCurrentItem()) || arena == null) {
+        if (!ItemUtils.isItemStackNamed(e.getCurrentItem()) || arena == null) {
           return;
         }
         VillagePlayerChooseKitEvent event = new VillagePlayerChooseKitEvent(player, KitRegistry.getKit(e.getCurrentItem()), arena);

@@ -60,19 +60,6 @@ public class Utils {
     Utils.plugin = plugin;
   }
 
-  /**
-   * Checks whether itemstack is named (not null, has meta and display name)
-   *
-   * @param stack item stack to check
-   * @return true if named, false otherwise
-   */
-  public static boolean isNamed(ItemStack stack) {
-    if (stack == null) {
-      return false;
-    }
-    return stack.hasItemMeta() && stack.getItemMeta().hasDisplayName();
-  }
-
   public static void takeOneItem(Player player, ItemStack stack) {
     if (stack.getAmount() <= 1) {
       player.getInventory().setItemInMainHand(new ItemStack(Material.AIR));
@@ -177,14 +164,13 @@ public class Utils {
 
   public static BlockFace getFacingByByte(byte bt) {
     switch (bt) {
-      case 1:
-        return BlockFace.SOUTH;
       case 2:
         return BlockFace.WEST;
       case 3:
         return BlockFace.EAST;
       case 4:
         return BlockFace.NORTH;
+      case 1:
       default:
         return BlockFace.SOUTH;
     }

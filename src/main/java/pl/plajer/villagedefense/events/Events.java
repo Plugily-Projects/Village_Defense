@@ -75,6 +75,7 @@ import pl.plajer.villagedefense.user.User;
 import pl.plajer.villagedefense.utils.Utils;
 import pl.plajer.villagedefense.utils.constants.CompatMaterialConstants;
 import pl.plajerlair.commonsbox.minecraft.compat.XMaterial;
+import pl.plajerlair.commonsbox.minecraft.item.ItemUtils;
 import pl.plajerlair.commonsbox.string.StringFormatUtils;
 
 /**
@@ -154,7 +155,7 @@ public class Events implements Listener {
     if (arena == null) {
       return;
     }
-    if (!Utils.isNamed(stack) || stack.getType() != plugin.getKitManager().getMaterial()
+    if (!ItemUtils.isItemStackNamed(stack) || stack.getType() != plugin.getKitManager().getMaterial()
         || !stack.getItemMeta().getDisplayName().equalsIgnoreCase(plugin.getKitManager().getItemName())) {
       return;
     }
@@ -168,7 +169,7 @@ public class Events implements Listener {
     if (arena == null) {
       return;
     }
-    if (!Utils.isNamed(stack) || stack.getType() != plugin.getKitManager().getMaterial()
+    if (!ItemUtils.isItemStackNamed(stack) || stack.getType() != plugin.getKitManager().getMaterial()
         || !stack.getItemMeta().getDisplayName().equalsIgnoreCase(plugin.getKitManager().getItemName())) {
       return;
     }
