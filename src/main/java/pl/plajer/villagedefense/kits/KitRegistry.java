@@ -23,12 +23,10 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
 
-import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.inventory.ItemStack;
 
 import pl.plajer.villagedefense.Main;
-import pl.plajer.villagedefense.handlers.language.Messages;
 import pl.plajer.villagedefense.kits.basekits.FreeKit;
 import pl.plajer.villagedefense.kits.basekits.Kit;
 import pl.plajer.villagedefense.kits.free.KnightKit;
@@ -78,7 +76,6 @@ public class KitRegistry {
   public static void init(Main plugin) {
     KitRegistry.plugin = plugin;
     setupGameKits();
-    setupKitSelectorItem();
   }
 
   /**
@@ -149,13 +146,6 @@ public class KitRegistry {
     }
 
     KitRegistry.setDefaultKit(knightkit);
-  }
-
-  private static void setupKitSelectorItem() {
-    plugin.getKitManager().setMaterial(Material.NETHER_STAR);
-    plugin.getKitManager().setItemName(plugin.getChatManager().colorMessage(Messages.KITS_KIT_MENU_ITEM_NAME));
-    plugin.getKitManager().setMenuName(plugin.getChatManager().colorMessage(Messages.KITS_MENU_TITLE));
-    plugin.getKitManager().setDescription(new String[] {plugin.getChatManager().colorMessage(Messages.KITS_OPEN_KIT_MENU)});
   }
 
 }

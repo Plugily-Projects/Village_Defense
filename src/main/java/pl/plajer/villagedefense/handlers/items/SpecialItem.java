@@ -26,15 +26,17 @@ import org.bukkit.inventory.ItemStack;
  */
 public class SpecialItem {
 
-  public static final SpecialItem INVALID_ITEM = new SpecialItem("INVALID", new ItemStack(Material.BEDROCK), -1);
+  public static final SpecialItem INVALID_ITEM = new SpecialItem("INVALID", new ItemStack(Material.BEDROCK), -1, DisplayStage.LOBBY);
   private final String name;
   private ItemStack itemStack;
   private int slot;
+  private DisplayStage displayStage;
 
-  public SpecialItem(String name, ItemStack itemStack, int slot) {
+  public SpecialItem(String name, ItemStack itemStack, int slot, DisplayStage displayStage) {
     this.name = name;
     this.itemStack = itemStack;
     this.slot = slot;
+    this.displayStage = displayStage;
   }
 
   public String getName() {
@@ -53,5 +55,12 @@ public class SpecialItem {
     this.slot = slot;
   }
 
+  public DisplayStage getDisplayStage() {
+    return displayStage;
+  }
+
+  public enum DisplayStage {
+    LOBBY, SPECTATOR
+  }
 
 }

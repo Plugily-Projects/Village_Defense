@@ -23,7 +23,6 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
 
-import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
@@ -46,7 +45,7 @@ public class SpecialItemManager {
 
   public SpecialItemManager(Main plugin) {
     this.plugin = plugin;
-    this.config = ConfigUtils.getConfig(plugin, Constants.Files.LOBBY_ITEMS.getName());
+    this.config = ConfigUtils.getConfig(plugin, Constants.Files.SPECIAL_ITEMS.getName());
   }
 
   public void addItem(SpecialItem item) {
@@ -75,36 +74,45 @@ public class SpecialItemManager {
 
   public void registerItems() {
     for (String key : config.getKeys(false)) {
+      if (key.equals("Version")) {
+        continue;
+      }
       XMaterial mat = XMaterial.fromString(config.getString(key + ".material-name"));
       String name = plugin.getChatManager().colorRawMessage(config.getString(key + ".displayname"));
-      List<String> lore = config.getStringList(key + ".lore").stream().map(itemLore -> itemLore = plugin.getChatManager().colorRawMessage(itemLore))
+      List<String> lore = config.getStringList(key + ".lore").stream()
+          .map(itemLore -> itemLore = plugin.getChatManager().colorRawMessage(itemLore))
           .collect(Collectors.toList());
       int slot = config.getInt(key + ".slot");
+      SpecialItem.DisplayStage stage;
+      try {
+        stage = SpecialItem.DisplayStage.valueOf(config.getString(key + ".stage"));
+      } catch (Exception ex) {
+        Debugger.debug(Level.WARNING, "Invalid display stage of special item " + key + " in special_items.yml! Please use lobby or spectator!");
+        stage = SpecialItem.DisplayStage.LOBBY;
+      }
 
-      validateItem(key, name, lore, mat.parseMaterial(), slot);
-      SpecialItem item = new SpecialItem(key, new ItemBuilder(mat.parseItem()).name(name).lore(lore).build(), slot);
+      SpecialItem item = new SpecialItem(key, new ItemBuilder(mat.parseItem()).name(name).lore(lore).build(), slot, stage);
       addItem(item);
     }
   }
 
-  private void validateItem(String path, String name, List<String> lore, Material material, int slot) {
-    if (!config.contains(path)) {
-      config.set(path + ".data", 0);
-      config.set(path + ".displayname", name);
-      config.set(path + ".lore", lore);
-      config.set(path + ".material-name", material.toString());
-      config.set(path + ".slot", slot);
-    } else {
-      if (!config.isSet(path + ".material-name")) {
-        config.set(path + ".material-name", material.toString());
-        Debugger.debug(Level.WARNING, "Found outdated item {0} in lobbyitems.yml! We've converted it to the newest version!", path);
-      }
-    }
-    ConfigUtils.saveConfig(plugin, config, Constants.Files.LOBBY_ITEMS.getName());
-  }
-
   public List<SpecialItem> getSpecialItems() {
     return specialItems;
+  }
+
+  public enum SpecialItems {
+    KIT_SELECTOR("Kit-Menu"), LOBBY_LEAVE_ITEM("Leave-Lobby"), PLAYERS_LIST("Player-List"),
+    SPECTATOR_OPTIONS("Spectator-Options"), SPECTATOR_LEAVE_ITEM("Leave-Spectator");
+
+    private String name;
+
+    SpecialItems(String name) {
+      this.name = name;
+    }
+
+    public String getName() {
+      return name;
+    }
   }
 
 }

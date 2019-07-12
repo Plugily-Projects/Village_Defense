@@ -71,7 +71,7 @@ import pl.plajer.villagedefense.handlers.module.ModuleWrapper;
 import pl.plajer.villagedefense.handlers.powerup.PowerupRegistry;
 import pl.plajer.villagedefense.handlers.reward.RewardsFactory;
 import pl.plajer.villagedefense.handlers.setup.SetupInventory;
-import pl.plajer.villagedefense.kits.KitManager;
+import pl.plajer.villagedefense.kits.KitMenuHandler;
 import pl.plajer.villagedefense.kits.KitRegistry;
 import pl.plajer.villagedefense.kits.basekits.Kit;
 import pl.plajer.villagedefense.user.User;
@@ -104,7 +104,7 @@ public class Main extends JavaPlugin {
   private ArgumentsRegistry registry;
   private SignManager signManager;
   private SpecialItemManager specialItemManager;
-  private KitManager kitManager;
+  private KitMenuHandler kitMenuHandler;
   private PowerupRegistry powerupRegistry;
   private RewardsFactory rewardsHandler;
   private HolidayManager holidayManager;
@@ -146,8 +146,8 @@ public class Main extends JavaPlugin {
     return signManager;
   }
 
-  public KitManager getKitManager() {
-    return kitManager;
+  public KitMenuHandler getKitMenuHandler() {
+    return kitMenuHandler;
   }
 
   public String getVersion() {
@@ -220,7 +220,7 @@ public class Main extends JavaPlugin {
     registry = new ArgumentsRegistry(this);
     new EntityRegistry(this);
     new ArenaEvents(this);
-    kitManager = new KitManager(this);
+    kitMenuHandler = new KitMenuHandler(this);
     KitRegistry.init(this);
     new SpectatorEvents(this);
     new QuitEvent(this);
@@ -323,7 +323,7 @@ public class Main extends JavaPlugin {
   }
 
   private void setupFiles() {
-    for (String fileName : Arrays.asList("arenas", "rewards", "stats", "lobbyitems", "mysql", "kits")) {
+    for (String fileName : Arrays.asList("arenas", "rewards", "stats", "special_items", "mysql", "kits")) {
       File file = new File(getDataFolder() + File.separator + fileName + ".yml");
       if (!file.exists()) {
         saveResource(fileName + ".yml", false);

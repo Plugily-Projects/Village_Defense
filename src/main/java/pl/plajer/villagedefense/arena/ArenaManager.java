@@ -53,8 +53,6 @@ import pl.plajer.villagedefense.kits.KitRegistry;
 import pl.plajer.villagedefense.kits.level.GolemFriendKit;
 import pl.plajer.villagedefense.user.User;
 import pl.plajer.villagedefense.utils.Debugger;
-import pl.plajerlair.commonsbox.minecraft.compat.XMaterial;
-import pl.plajerlair.commonsbox.minecraft.item.ItemBuilder;
 import pl.plajerlair.commonsbox.minecraft.misc.MiscUtils;
 import pl.plajerlair.commonsbox.minecraft.serialization.InventorySerializer;
 
@@ -101,9 +99,10 @@ public class ArenaManager {
       player.sendMessage(plugin.getChatManager().colorMessage(Messages.YOU_ARE_SPECTATOR));
       player.getInventory().clear();
 
-      player.getInventory().setItem(0, new ItemBuilder(XMaterial.COMPASS.parseItem()).name(plugin.getChatManager().colorMessage(Messages.SPECTATOR_ITEM_NAME)).build());
-      player.getInventory().setItem(4, new ItemBuilder(XMaterial.COMPARATOR.parseItem()).name(plugin.getChatManager().colorMessage(Messages.SPECTATOR_SETTINGS_MENU_ITEM_NAME)).build());
       for (SpecialItem item : plugin.getSpecialItemManager().getSpecialItems()) {
+        if (item.getDisplayStage() != SpecialItem.DisplayStage.SPECTATOR) {
+          continue;
+        }
         player.getInventory().setItem(item.getSlot(), item.getItemStack());
       }
 
@@ -147,11 +146,11 @@ public class ArenaManager {
       plugin.getChatManager().broadcastAction(arena, player, ChatManager.ActionType.JOIN);
     }
     user.setKit(KitRegistry.getDefaultKit());
-    plugin.getKitManager().giveKitMenuItem(player);
-    if (arena.getArenaState() == ArenaState.STARTING || arena.getArenaState() == ArenaState.WAITING_FOR_PLAYERS) {
-      for (SpecialItem item : plugin.getSpecialItemManager().getSpecialItems()) {
-        player.getInventory().setItem(item.getSlot(), item.getItemStack());
+    for (SpecialItem item : plugin.getSpecialItemManager().getSpecialItems()) {
+      if (item.getDisplayStage() != SpecialItem.DisplayStage.LOBBY) {
+        continue;
       }
+      player.getInventory().setItem(item.getSlot(), item.getItemStack());
     }
     player.updateInventory();
     for (Player arenaPlayer : arena.getPlayers()) {

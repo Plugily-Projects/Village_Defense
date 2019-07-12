@@ -9,7 +9,7 @@ deploy webhooks to print changelog successfully
 
 That's all, matcher will stop when detects next line started with `###` match
 
-### 4.2.2 Release (14/26.06.2019)
+### 4.2.2 Release (14.06.2019 - 12.07.2019)
 * Fixed setup menu completed/not completed values were buggy
 * Fixed /vda setprice message was sent twice
 * Now shop will count wolf/golem spawn items to total price spent in game in game summary
@@ -21,6 +21,10 @@ That's all, matcher will stop when detects next line started with `###` match
 * Stripped plugin from Wolves/Golems upgrades in favor of Entities Upgrades Module
 * **Implemented modular system to handle addons for VillageDefense, code was split into modules that can
 be downloaded from our repository page or in game GUI**
+* Redesigned lobby items into special_items, they are now fully customizable by player not hardcoded like they were before
+(it includes spectator items and kit selector), check special_items.yml for more
+* VillagePlayerChooseKitEvent now reacts to event#isCancelled() method and won't give player kit if event is cancelled
+(did give always before)
 
 ### 4.2.1 Release (25.05.2019 - 08.06.2019)
 * Fixed possible issues with scoreboard colors

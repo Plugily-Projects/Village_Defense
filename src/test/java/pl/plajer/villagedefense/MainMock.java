@@ -35,7 +35,7 @@ import pl.plajer.villagedefense.handlers.language.LanguageManager;
 import pl.plajer.villagedefense.handlers.language.Messages;
 import pl.plajer.villagedefense.handlers.powerup.PowerupRegistry;
 import pl.plajer.villagedefense.handlers.reward.RewardsFactory;
-import pl.plajer.villagedefense.kits.KitManager;
+import pl.plajer.villagedefense.kits.KitMenuHandler;
 import pl.plajer.villagedefense.user.User;
 import pl.plajer.villagedefense.user.UserManager;
 import pl.plajer.villagedefense.utils.Utils;
@@ -98,7 +98,7 @@ public class MainMock extends Main {
   }
 
   @Override
-  public KitManager getKitManager() {
+  public KitMenuHandler getKitMenuHandler() {
     throw new UnimplementedOperationException();
   }
 

@@ -49,7 +49,6 @@ import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.entity.ItemSpawnEvent;
 import org.bukkit.event.entity.PlayerLeashEntityEvent;
-import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryPickupItemEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
@@ -75,7 +74,6 @@ import pl.plajer.villagedefense.user.User;
 import pl.plajer.villagedefense.utils.Utils;
 import pl.plajer.villagedefense.utils.constants.CompatMaterialConstants;
 import pl.plajerlair.commonsbox.minecraft.compat.XMaterial;
-import pl.plajerlair.commonsbox.minecraft.item.ItemUtils;
 import pl.plajerlair.commonsbox.string.StringFormatUtils;
 
 /**
@@ -146,34 +144,6 @@ public class Events implements Listener {
     if (plugin.getUserManager().getUser(event.getPlayer()).isSpectator()) {
       event.setCancelled(true);
     }
-  }
-
-  @EventHandler
-  public void onKitMenuItemClick(InventoryClickEvent event) {
-    ItemStack stack = event.getCurrentItem();
-    Arena arena = ArenaRegistry.getArena((Player) event.getWhoClicked());
-    if (arena == null) {
-      return;
-    }
-    if (!ItemUtils.isItemStackNamed(stack) || stack.getType() != plugin.getKitManager().getMaterial()
-        || !stack.getItemMeta().getDisplayName().equalsIgnoreCase(plugin.getKitManager().getItemName())) {
-      return;
-    }
-    event.setCancelled(true);
-  }
-
-  @EventHandler
-  public void onKitMenuItemClickWithCursor(InventoryClickEvent event) {
-    ItemStack stack = event.getCursor();
-    Arena arena = ArenaRegistry.getArena((Player) event.getWhoClicked());
-    if (arena == null) {
-      return;
-    }
-    if (!ItemUtils.isItemStackNamed(stack) || stack.getType() != plugin.getKitManager().getMaterial()
-        || !stack.getItemMeta().getDisplayName().equalsIgnoreCase(plugin.getKitManager().getItemName())) {
-      return;
-    }
-    event.setCancelled(true);
   }
 
   @EventHandler
@@ -321,12 +291,9 @@ public class Events implements Listener {
       }
     } else if (e.getEntity() instanceof IronGolem || e.getEntity() instanceof Villager || e.getEntity() instanceof Wolf) {
       for (Arena a : ArenaRegistry.getArenas()) {
-        if (e.getEntity() instanceof IronGolem && a.getIronGolems().contains(e.getEntity())) {
+        if (a.getWolves().contains(e.getEntity()) || a.getVillagers().contains(e.getEntity()) || a.getIronGolems().contains(e.getEntity())) {
           e.setCancelled(true);
-        } else if (e.getEntity() instanceof Villager && a.getVillagers().contains(e.getEntity())) {
-          e.setCancelled(true);
-        } else if (a.getWolves().contains(e.getEntity())) {
-          e.setCancelled(true);
+          return;
         }
       }
     }
@@ -353,18 +320,16 @@ public class Events implements Listener {
 
   @EventHandler(priority = EventPriority.HIGH)
   public void onZombieHurt(EntityDamageEvent e) {
-    if (plugin.getConfig().getBoolean("Simple-Zombie-Health-Bar-Enabled", true)) {
-      if (!(e.getEntity() instanceof Zombie)) {
-        return;
+    if (!(e.getEntity() instanceof Zombie) || !plugin.getConfig().getBoolean("Simple-Zombie-Health-Bar-Enabled", true)) {
+      return;
+    }
+    for (Arena arena : ArenaRegistry.getArenas()) {
+      if (!arena.getZombies().contains(e.getEntity())) {
+        continue;
       }
-      for (Arena arena : ArenaRegistry.getArenas()) {
-        if (!arena.getZombies().contains(e.getEntity())) {
-          continue;
-        }
-        e.getEntity().setCustomName(StringFormatUtils.getProgressBar((int) ((Zombie) e.getEntity()).getHealth(),
-            (int) ((Zombie) e.getEntity()).getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue(),
-            50, "|", ChatColor.YELLOW + "", ChatColor.GRAY + ""));
-      }
+      e.getEntity().setCustomName(StringFormatUtils.getProgressBar((int) ((Zombie) e.getEntity()).getHealth(),
+          (int) ((Zombie) e.getEntity()).getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue(),
+          50, "|", ChatColor.YELLOW + "", ChatColor.GRAY + ""));
     }
   }
 
@@ -374,17 +339,12 @@ public class Events implements Listener {
       return;
     }
     Arrow arrow = (Arrow) e.getDamager();
-    if (arrow.getShooter() == null) {
-      return;
-    }
     if (!(arrow.getShooter() instanceof Player)) {
       return;
     }
     Arena arena = ArenaRegistry.getArena((Player) arrow.getShooter());
-    if (arena == null) {
-      return;
-    }
-    if (!(e.getEntity() instanceof Player || e.getEntity() instanceof Wolf || e.getEntity() instanceof IronGolem || e.getEntity() instanceof Villager)) {
+    if (arena == null || !(e.getEntity() instanceof Player || e.getEntity() instanceof Wolf
+        || e.getEntity() instanceof IronGolem || e.getEntity() instanceof Villager)) {
       return;
     }
     e.setCancelled(true);

@@ -124,7 +124,6 @@ Kits:
       Unlock-In-Store: "&bUnlock this in the store!"
   Not-Unlocked-Message: "&cYou haven't unlocked &b%KIT%&c yet!"
   Choose-Message: "&aYou have chosen: &b%KIT%&a!"
-  Kit-Menu-Item-Name: "Kit-Menu"
   Open-Kit-Menu: "Open Kit Menu"
   Ability-Still-On-Cooldown: "&cThis ability is on cooldown! Wait %COOLDOWN% more seconds!"
   # Kit descriptions and kit items wraps their descriptions every 40 characters and don't support \n character
@@ -258,11 +257,9 @@ In-Game:
   Join-Cancelled-Via-API: "&cYou can't join this game!"
   Arena-Not-Configured: "&cArena is not configured yet! Contact staff!"
   Spectator:
-    Spectator-Item-Name: "&7Players list"
     Spectator-Menu-Name: "Alive players list"
     Target-Player-Health: "&cHealth: &7%health%"
     Settings-Menu:
-      Item-Name: "&b&lSpectator Settings &7(Right-click)"
       Inventory-Name: "&7Spectator settings"
       Speed-Name: "&aSpeed"
   Messages:
