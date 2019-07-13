@@ -9,7 +9,7 @@ deploy webhooks to print changelog successfully
 
 That's all, matcher will stop when detects next line started with `###` match
 
-### 4.2.2 Release (14.06.2019 - 12.07.2019)
+### 4.2.2 Release (14.06.2019 - 13.07.2019)
 * Fixed setup menu completed/not completed values were buggy
 * Fixed /vda setprice message was sent twice
 * Now shop will count wolf/golem spawn items to total price spent in game in game summary
@@ -27,6 +27,7 @@ be downloaded from our repository page or in game GUI**
 (did give always before)
 * Added 1.14 sign game states (thanks to montlikadani)
 * Changed Chinese (Simplified) locale prefix from zh to cn
+* Locales with special characters like Russian or Korean will now work properly and won't be seen as `?` characters
 
 ### 4.2.1 Release (25.05.2019 - 08.06.2019)
 * Fixed possible issues with scoreboard colors
