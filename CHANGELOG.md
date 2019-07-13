@@ -26,6 +26,7 @@ be downloaded from our repository page or in game GUI**
 * VillagePlayerChooseKitEvent now reacts to event#isCancelled() method and won't give player kit if event is cancelled
 (did give always before)
 * Added 1.14 sign game states (thanks to montlikadani)
+* Changed Chinese (Simplified) locale prefix from zh to cn
 
 ### 4.2.1 Release (25.05.2019 - 08.06.2019)
 * Fixed possible issues with scoreboard colors
