@@ -37,7 +37,7 @@ public class ExceptionLogHandler extends Handler {
 
   //these classes if found in stacktraces won't be reported
   //to the Error Service
-  private List<String> blacklistedClasses = Arrays.asList("pl.plajer.villagedefense.user.data.MySQLManager", "pl.plajerlair.commonsbox.database.MySQLDatabase");
+  private List<String> blacklistedClasses = Arrays.asList("pl.plajer.villagedefense.user.data.MysqlManager", "pl.plajer.villagedefense.plajerlair.commonsbox.database.MysqlDatabase");
   private Main plugin;
 
   public ExceptionLogHandler(Main plugin) {
