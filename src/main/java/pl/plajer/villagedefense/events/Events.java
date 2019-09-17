@@ -254,7 +254,7 @@ public class Events implements Listener {
 
   @EventHandler(priority = EventPriority.LOWEST)
   public void onLeave(PlayerInteractEvent event) {
-    if (event.getAction() == Action.LEFT_CLICK_AIR || event.getAction() == Action.LEFT_CLICK_BLOCK) {
+    if (event.getAction() == Action.LEFT_CLICK_AIR || event.getAction() == Action.LEFT_CLICK_BLOCK || event.getAction() == Action.PHYSICAL) {
       return;
     }
     Arena arena = ArenaRegistry.getArena(event.getPlayer());

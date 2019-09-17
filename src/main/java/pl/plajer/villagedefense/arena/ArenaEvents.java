@@ -223,7 +223,7 @@ public class ArenaEvents implements Listener {
       }, 1);
 
       untargetPlayerFromZombies(player, arena);
-    }, 2);
+    }, 5);
   }
 
   private void sendSpectatorActionBar(User user, Arena arena) {

@@ -97,7 +97,7 @@ public class TeleporterKit extends PremiumKit implements Listener {
     }
     Arena arena = ArenaRegistry.getArena(e.getPlayer());
     ItemStack stack = e.getPlayer().getInventory().getItemInMainHand();
-    if (arena == null || !ItemUtils.isItemStackNamed(stack)) {
+    if (arena == null || !ItemUtils.isItemName(stack)) {
       return;
     }
     if (!stack.getItemMeta().getDisplayName().equalsIgnoreCase(getPlugin().getChatManager().colorMessage(Messages.KITS_TELEPORTER_GAME_ITEM_NAME))) {

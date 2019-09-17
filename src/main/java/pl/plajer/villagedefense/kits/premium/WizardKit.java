@@ -132,7 +132,7 @@ public class WizardKit extends PremiumKit implements Listener {
       return;
     }
     ItemStack stack = e.getPlayer().getInventory().getItemInMainHand();
-    if (!ItemUtils.isItemStackNamed(stack)) {
+    if (!ItemUtils.isItemName(stack)) {
       return;
     }
     Player player = e.getPlayer();

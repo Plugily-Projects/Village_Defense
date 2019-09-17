@@ -55,12 +55,12 @@ public class SpectatorItemEvents {
 
   @EventHandler
   public void onSpectatorItemClick(PlayerInteractEvent e) {
-    if (e.getAction() == Action.LEFT_CLICK_AIR || e.getAction() == Action.LEFT_CLICK_BLOCK) {
+    if (e.getAction() == Action.LEFT_CLICK_AIR || e.getAction() == Action.LEFT_CLICK_BLOCK || e.getAction() == Action.PHYSICAL) {
       return;
     }
     Arena arena = ArenaRegistry.getArena(e.getPlayer());
     ItemStack stack = e.getPlayer().getInventory().getItemInMainHand();
-    if (arena == null || !ItemUtils.isItemStackNamed(stack)) {
+    if (arena == null || !ItemUtils.isItemName(stack)) {
       return;
     }
     if (stack.getItemMeta().getDisplayName().equalsIgnoreCase(plugin.getChatManager().colorMessage(Messages.SPECTATOR_ITEM_NAME))) {

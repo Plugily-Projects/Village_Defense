@@ -97,7 +97,7 @@ public class BlockerKit extends PremiumKit implements Listener {
     }
     Player player = event.getPlayer();
     ItemStack stack = player.getInventory().getItemInMainHand();
-    if (!ArenaRegistry.isInArena(player) || !ItemUtils.isItemStackNamed(stack) || !stack.getItemMeta().getDisplayName()
+    if (!ArenaRegistry.isInArena(player) || !ItemUtils.isItemName(stack) || !stack.getItemMeta().getDisplayName()
         .equalsIgnoreCase(getPlugin().getChatManager().colorMessage(Messages.KITS_BLOCKER_GAME_ITEM_NAME))) {
       return;
     }

@@ -155,7 +155,7 @@ public class ShopManager {
           player.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage(Messages.SHOP_MESSAGES_NOT_ENOUGH_ORBS));
           return;
         }
-        if (ItemUtils.isItemStackNamed(itemStack)) {
+        if (ItemUtils.isItemName(itemStack)) {
           String name = itemStack.getItemMeta().getDisplayName();
           int spawnedAmount = 0;
           if (name.contains(plugin.getChatManager().colorMessage(Messages.SHOP_MESSAGES_GOLEM_ITEM_NAME))
