@@ -29,6 +29,9 @@ import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.IronGolem;
+import org.bukkit.entity.ItemFrame;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Painting;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Villager;
 import org.bukkit.entity.Wolf;
@@ -49,8 +52,10 @@ import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.entity.ItemSpawnEvent;
 import org.bukkit.event.entity.PlayerLeashEntityEvent;
+import org.bukkit.event.hanging.HangingBreakByEntityEvent;
 import org.bukkit.event.inventory.InventoryPickupItemEvent;
 import org.bukkit.event.inventory.InventoryType;
+import org.bukkit.event.player.PlayerArmorStandManipulateEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerExpChangeEvent;
@@ -373,7 +378,7 @@ public class Events implements Listener {
   }
 
   @EventHandler(priority = EventPriority.HIGH)
-  //highest priority to fully protecc our game (i didn't set it because my test server was destroyed, n-no......)
+  //highest priority to fully protect our game (i didn't set it because my test server was destroyed, n-no......)
   public void onBlockBreakEvent(BlockBreakEvent event) {
     if (!ArenaRegistry.isInArena(event.getPlayer())) {
       return;
@@ -382,7 +387,7 @@ public class Events implements Listener {
   }
 
   @EventHandler(priority = EventPriority.HIGH)
-  //highest priority to fully protecc our game (i didn't set it because my test server was destroyed, n-no......)
+  //highest priority to fully protect our game (i didn't set it because my test server was destroyed, n-no......)
   public void onBuild(BlockPlaceEvent event) {
     if (!ArenaRegistry.isInArena(event.getPlayer())) {
       return;
@@ -458,5 +463,52 @@ public class Events implements Listener {
       }
     }
   }
+
+  @EventHandler(priority = EventPriority.HIGH)
+  //highest priority to fully protect our game (i didn't set it because my test server was destroyed, n-no......)
+  public void onHangingBreakEvent(HangingBreakByEntityEvent event) {
+    if (event.getEntity() instanceof ItemFrame || event.getEntity() instanceof Painting) {
+      if (event.getRemover() instanceof Player && ArenaRegistry.isInArena((Player) event.getRemover())) {
+        event.setCancelled(true);
+        return;
+      }
+      if (!(event.getRemover() instanceof Arrow)) {
+        return;
+      }
+      Arrow arrow = (Arrow) event.getRemover();
+      if (arrow.getShooter() instanceof Player && ArenaRegistry.isInArena((Player) arrow.getShooter())) {
+        event.setCancelled(true);
+      }
+    }
+  }
+
+  @EventHandler(priority = EventPriority.HIGH)
+  public void onArmorStandDestroy(EntityDamageByEntityEvent e) {
+    if (!(e.getEntity() instanceof LivingEntity)) {
+      return;
+    }
+    final LivingEntity livingEntity = (LivingEntity) e.getEntity();
+    if (!livingEntity.getType().equals(EntityType.ARMOR_STAND)) {
+      return;
+    }
+    if (e.getDamager() instanceof Player && ArenaRegistry.isInArena((Player) e.getDamager())) {
+      e.setCancelled(true);
+    } else if (e.getDamager() instanceof Arrow) {
+      Arrow arrow = (Arrow) e.getDamager();
+      if (arrow.getShooter() instanceof Player && ArenaRegistry.isInArena((Player) arrow.getShooter())) {
+        e.setCancelled(true);
+        return;
+      }
+      e.setCancelled(true);
+    }
+  }
+
+  @EventHandler(priority = EventPriority.HIGH)
+  public void onInteractWithArmorStand(PlayerArmorStandManipulateEvent event) {
+    if (ArenaRegistry.isInArena(event.getPlayer())) {
+      event.setCancelled(true);
+    }
+  }
+
 
 }
