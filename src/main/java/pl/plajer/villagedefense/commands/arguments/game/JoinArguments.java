@@ -44,10 +44,6 @@ public class JoinArguments {
           sender.sendMessage(registry.getPlugin().getChatManager().getPrefix() + registry.getPlugin().getChatManager().colorMessage(Messages.COMMANDS_TYPE_ARENA_NAME));
           return;
         }
-        if (ArenaRegistry.isInArena(((Player) sender))) {
-          sender.sendMessage(registry.getPlugin().getChatManager().getPrefix() + registry.getPlugin().getChatManager().colorMessage(Messages.ALREADY_PLAYING));
-          return;
-        }
         for (Arena arena : ArenaRegistry.getArenas()) {
           if (args[1].equalsIgnoreCase(arena.getId())) {
             ArenaManager.joinAttempt((Player) sender, arena);

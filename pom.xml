@@ -95,10 +95,11 @@
             <id>plajerlair-repo</id>
             <url>https://maven.plajer.xyz/minecraft/</url>
         </repository>
-        <repository>
+        <!-- repository is dead, contents moved to maven.plajer.xyz
+         <repository>
             <id>tiger-repo</id>
             <url>http://repo.tigerhix.me/content/repositories/snapshots/</url>
-        </repository>
+        </repository> -->
         <repository>
             <id>bstats-repo</id>
             <url>https://repo.codemc.org/repository/maven-public</url>
@@ -112,17 +113,23 @@
     <dependencies>
         <!-- Spigot APIs -->
         <dependency>
+            <groupId>com.destroystokyo.paper</groupId>
+            <artifactId>paper-api</artifactId>
+            <version>1.12.2-R0.1-SNAPSHOT</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.bukkit</groupId>
+            <artifactId>bukkit</artifactId>
+            <version>1.12.2-R0.1-SNAPSHOT</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
             <groupId>1.12_R1</groupId>
             <artifactId>spigot_1_12_R1</artifactId>
             <version>1.12.1</version>
             <scope>system</scope>
             <systemPath>${project.basedir}/lib/spigot/1.12.1-R0.1.jar</systemPath>
-        </dependency>
-        <dependency>
-            <groupId>org.spigotmc</groupId>
-            <artifactId>spigot-api</artifactId>
-            <version>1.12.2-R0.1-SNAPSHOT</version>
-            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>1.14_R1</groupId>
@@ -161,12 +168,6 @@
         </dependency>
         <dependency>
             <groupId>pl.plajer</groupId>
-            <artifactId>commons-box-minecraft</artifactId>
-            <version>1.1.1</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>pl.plajer</groupId>
             <artifactId>commons-box-classic</artifactId>
             <version>1.1.1</version>
             <scope>compile</scope>
@@ -175,6 +176,18 @@
             <groupId>pl.plajer</groupId>
             <artifactId>commons-box-database</artifactId>
             <version>1.1.1</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>pl.plajer</groupId>
+            <artifactId>commons-box-minecraft</artifactId>
+            <version>1.1.1</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>me.tigerhix.lib</groupId>
+            <artifactId>scoreboard</artifactId>
+            <version>1.0.2</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
@@ -188,23 +201,6 @@
             <artifactId>IF</artifactId>
             <version>0.5.4</version>
             <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>me.tigerhix.lib</groupId>
-            <artifactId>scoreboard</artifactId>
-            <version>1.0.2</version>
-            <scope>compile</scope>
-            <!-- Some broken and outdated repos -->
-            <exclusions>
-                <exclusion>
-                    <groupId>org</groupId>
-                    <artifactId>spigotmc.api</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org</groupId>
-                    <artifactId>spigotmc</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
         <dependency>
             <groupId>me.clip</groupId>
@@ -230,6 +226,13 @@
             <artifactId>MockBukkit-v1.13</artifactId>
             <version>0.1.1</version>
             <scope>test</scope>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/commons-io/commons-io -->
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>2.6</version>
+            <scope>compile</scope>
         </dependency>
     </dependencies>
 

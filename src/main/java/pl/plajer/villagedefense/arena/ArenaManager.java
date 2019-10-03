@@ -87,7 +87,10 @@ public class ArenaManager {
     }
     Debugger.debug(Level.INFO, "[{0}] Checked join attempt for {1}", arena.getId(), player.getName());
     long start = System.currentTimeMillis();
-
+    if (ArenaRegistry.isInArena(player)) {
+      player.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage(Messages.ALREADY_PLAYING));
+      return;
+    }
     arena.getPlayers().add(player);
     User user = plugin.getUserManager().getUser(player);
     arena.getScoreboardManager().createScoreboard(user);
