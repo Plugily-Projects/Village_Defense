@@ -36,6 +36,7 @@ import org.bukkit.inventory.meta.SkullMeta;
 import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.arena.Arena;
 import pl.plajer.villagedefense.arena.ArenaRegistry;
+import pl.plajer.villagedefense.handlers.items.SpecialItemManager;
 import pl.plajer.villagedefense.handlers.language.Messages;
 import pl.plajer.villagedefense.utils.Utils;
 import pl.plajer.villagedefense.utils.constants.CompatMaterialConstants;
@@ -60,13 +61,13 @@ public class SpectatorItemEvents {
     }
     Arena arena = ArenaRegistry.getArena(e.getPlayer());
     ItemStack stack = e.getPlayer().getInventory().getItemInMainHand();
-    if (arena == null || !ItemUtils.isItemName(stack)) {
+    if (arena == null || !ItemUtils.isItemStackNamed(stack)) {
       return;
     }
-    if (stack.getItemMeta().getDisplayName().equalsIgnoreCase(plugin.getChatManager().colorMessage(Messages.SPECTATOR_ITEM_NAME))) {
+    if (plugin.getSpecialItemManager().getRelatedSpecialItem(stack).getName().equals(SpecialItemManager.SpecialItems.PLAYERS_LIST.getName())) {
       e.setCancelled(true);
       openSpectatorMenu(e.getPlayer().getWorld(), e.getPlayer(), arena);
-    } else if (stack.getItemMeta().getDisplayName().equalsIgnoreCase(plugin.getChatManager().colorMessage(Messages.SPECTATOR_SETTINGS_MENU_ITEM_NAME))) {
+    } else if (plugin.getSpecialItemManager().getRelatedSpecialItem(stack).getName().equals(SpecialItemManager.SpecialItems.SPECTATOR_OPTIONS.getName())) {
       e.setCancelled(true);
       spectatorSettingsMenu.openSpectatorSettingsMenu(e.getPlayer());
     }
@@ -83,6 +84,7 @@ public class SpectatorItemEvents {
       if (players.contains(arenaPlayer) && !plugin.getUserManager().getUser(arenaPlayer).isSpectator()) {
         ItemStack skull = CompatMaterialConstants.getPlayerHeadItem();
         SkullMeta meta = (SkullMeta) skull.getItemMeta();
+        //todo paper improvements for heads fetching
         meta.setOwningPlayer(arenaPlayer);
         meta.setDisplayName(arenaPlayer.getName());
         meta.setLore(Collections.singletonList(plugin.getChatManager().colorMessage(Messages.SPECTATOR_TARGET_PLAYER_HEALTH)

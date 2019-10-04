@@ -83,7 +83,7 @@ public class KitMenuHandler implements Listener {
         }
         Arena arena = ArenaRegistry.getArena(player);
         e.setCancelled(true);
-        if (!ItemUtils.isItemName(e.getCurrentItem()) || arena == null) {
+        if (!ItemUtils.isItemStackNamed(e.getCurrentItem()) || arena == null) {
           return;
         }
         VillagePlayerChooseKitEvent event = new VillagePlayerChooseKitEvent(player, KitRegistry.getKit(e.getCurrentItem()), arena);
