@@ -40,6 +40,8 @@ public interface VillageDefenseModule {
 
   String getDescription();
 
+  List<String> getProvidedResources();
+
   List<ModuleCompatibility> getCompatibleVersions();
 
   void onDisable(Main villageDefense);

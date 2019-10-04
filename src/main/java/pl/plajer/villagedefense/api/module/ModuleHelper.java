@@ -19,10 +19,10 @@
 package pl.plajer.villagedefense.api.module;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
+
+import org.apache.commons.io.FileUtils;
 
 import pl.plajer.villagedefense.Main;
 
@@ -42,20 +42,11 @@ public class ModuleHelper {
     ModuleHelper.plugin = plugin;
   }
 
-  public static void createFileInPluginDirectory(InputStream stream, String fileName) {
-    File file = new File(plugin.getDataFolder(), fileName);
-    if (file.exists()) {
-      return;
-    }
-    try (OutputStream outputStream = new FileOutputStream(file)) {
-      int read;
-      byte[] bytes = new byte[1024];
-      while ((read = stream.read(bytes)) != 1) {
-        outputStream.write(bytes, 0, read);
-      }
-    } catch (IOException e) {
-      e.printStackTrace();
+  public static void createFileInPluginDirectory(InputStream initialStream, String fileName)
+      throws IOException {
+    File targetFile = new File(plugin.getDataFolder(), fileName);
+    if (!targetFile.exists()) {
+      FileUtils.copyInputStreamToFile(initialStream, targetFile);
     }
   }
-
 }

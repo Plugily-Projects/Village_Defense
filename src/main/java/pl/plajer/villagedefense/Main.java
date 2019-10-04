@@ -221,8 +221,6 @@ public class Main extends JavaPlugin {
     registry = new ArgumentsRegistry(this);
     new EntityRegistry(this);
     new ArenaEvents(this);
-    kitMenuHandler = new KitMenuHandler(this);
-    KitRegistry.init(this);
     new SpectatorEvents(this);
     new QuitEvent(this);
     new JoinEvent(this);
@@ -238,6 +236,10 @@ public class Main extends JavaPlugin {
     powerupRegistry = new PowerupRegistry(this);
     rewardsHandler = new RewardsFactory(this);
     holidayManager = new HolidayManager(this);
+    specialItemManager = new SpecialItemManager(this);
+    specialItemManager.registerItems();
+    kitMenuHandler = new KitMenuHandler(this);
+    KitRegistry.init(this);
     User.cooldownHandlerTask();
     if (configPreferences.getOption(ConfigPreferences.Option.DATABASE_ENABLED)) {
       FileConfiguration config = ConfigUtils.getConfig(this, Constants.Files.MYSQL.getName());
@@ -246,8 +248,6 @@ public class Main extends JavaPlugin {
     userManager = new UserManager(this);
     new DoorBreakListener(this);
 
-    specialItemManager = new SpecialItemManager(this);
-    specialItemManager.registerItems();
     ArenaRegistry.registerArenas();
     //we must start it after instances load!
     signManager = new SignManager(this);
@@ -406,13 +406,15 @@ public class Main extends JavaPlugin {
         holo.delete();
       }
     }
-    for (ModuleWrapper moduleInfo : moduleLoader.getModulesInfo()) {
-      try {
-        moduleInfo.getModule().onDisable(this);
-      } catch (Exception ignored) {
+    if (moduleLoader != null) {
+      for (ModuleWrapper moduleInfo : moduleLoader.getModulesInfo()) {
+        try {
+          moduleInfo.getModule().onDisable(this);
+        } catch (Exception ignored) {
+        }
       }
+      moduleLoader.disable();
     }
-    moduleLoader.disable();
     if (configPreferences.getOption(ConfigPreferences.Option.DATABASE_ENABLED)) {
       getMysqlDatabase().shutdownConnPool();
     }

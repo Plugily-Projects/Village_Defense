@@ -47,10 +47,10 @@ public class SpecialItemManagerTest {
     this.plugin = MockUtils.getPluginMockSafe();
     //create some dummy items
     this.item1 = new ItemBuilder(Material.BARRIER).name("test_item1").build();
-    this.dummyItem1 = new SpecialItem("test", item1, 2);
+    this.dummyItem1 = new SpecialItem("test", item1, 2, SpecialItem.DisplayStage.LOBBY);
     plugin.getSpecialItemManager().addItem(dummyItem1);
     this.item2 = new ItemBuilder(Material.BED).name("item_test2").build();
-    this.dummyItem2 = new SpecialItem("test2", item2, 4);
+    this.dummyItem2 = new SpecialItem("test2", item2, 4, SpecialItem.DisplayStage.LOBBY);
     plugin.getSpecialItemManager().addItem(dummyItem2);
   }
 

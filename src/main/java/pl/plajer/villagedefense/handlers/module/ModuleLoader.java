@@ -20,6 +20,7 @@ package pl.plajer.villagedefense.handlers.module;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
@@ -35,6 +36,7 @@ import org.bukkit.Bukkit;
 
 import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.api.module.ModuleCompatibility;
+import pl.plajer.villagedefense.api.module.ModuleHelper;
 import pl.plajer.villagedefense.api.module.v1.VillageDefenseModule;
 
 /**
@@ -124,6 +126,14 @@ public class ModuleLoader {
       moduleInfo.applyInfo(ModuleWrapper.LogInfoKey.AMBIGUOUS_NAME.getKey(), module.getModuleName());
       modules.add(moduleInfo);
       return;
+    }
+    try {
+      for (String filename : module.getProvidedResources()) {
+        InputStream stream = module.getClass().getClassLoader().getResourceAsStream(filename);
+        ModuleHelper.createFileInPluginDirectory(stream, filename);
+      }
+    } catch (Exception ex) {
+      ex.printStackTrace();
     }
     ModuleWrapper moduleInfo = new ModuleWrapper(module, clazz.getName(), ModuleWrapper.LoadStatus.LOADED);
     modulesClassesNames.add(clazz.getName());

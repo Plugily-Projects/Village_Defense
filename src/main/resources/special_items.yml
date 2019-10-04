@@ -41,6 +41,7 @@ Spectator-Options:
   displayname: "&b&lSpectator Settings &7(Right Click)"
   lore:
     - "&7Right-click to adjust spectator settings"
+  material-name: COMPASS
   slot: 4
   stage: spectator
 

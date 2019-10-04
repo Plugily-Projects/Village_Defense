@@ -38,7 +38,7 @@ public class SpecialItemTest {
   @Before
   public void setUpClass() {
     MockUtils.getServerMockSafe();
-    specialItem = new SpecialItem("Test", new ItemStack(Material.STONE), 2);
+    specialItem = new SpecialItem("Test", new ItemStack(Material.STONE), 2, SpecialItem.DisplayStage.LOBBY);
   }
 
   @Test

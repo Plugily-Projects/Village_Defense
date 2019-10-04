@@ -36,7 +36,7 @@ public class ConstantsTest {
     Assert.assertEquals("config", Constants.Files.CONFIG.getName());
     Assert.assertEquals("language", Constants.Files.LANGUAGE.getName());
     Assert.assertEquals("kits", Constants.Files.KITS.getName());
-    Assert.assertEquals("lobbyitems", Constants.Files.SPECIAL_ITEMS.getName());
+    Assert.assertEquals("special_items", Constants.Files.SPECIAL_ITEMS.getName());
     Assert.assertEquals("mysql", Constants.Files.MYSQL.getName());
     Assert.assertEquals("rewards", Constants.Files.REWARDS.getName());
     Assert.assertEquals("stats", Constants.Files.STATS.getName());
