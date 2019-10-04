@@ -32,8 +32,6 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.logging.Level;
 
-import org.bukkit.Bukkit;
-
 import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.api.module.ModuleCompatibility;
 import pl.plajer.villagedefense.api.module.ModuleHelper;
@@ -97,7 +95,6 @@ public class ModuleLoader {
       try (URLClassLoader classLoader = URLClassLoader.newInstance(urls, plugin.getClass().getClassLoader())) {
         while (entries.hasMoreElements()) {
           JarEntry entry = entries.nextElement();
-          Bukkit.broadcastMessage(entry.getName() + " ENTRY DETECT");
           if (entry.isDirectory() || !entry.getName().endsWith(".class")) {
             continue;
           }
@@ -133,7 +130,11 @@ public class ModuleLoader {
         ModuleHelper.createFileInPluginDirectory(stream, filename);
       }
     } catch (Exception ex) {
-      ex.printStackTrace();
+      plugin.getLogger().log(Level.WARNING, "Module with name {0} contains invalid file reference! Skipping registration....", new Object[] {module.getModuleName()});
+      ModuleWrapper moduleInfo = new ModuleWrapper(module, clazz.getName(), ModuleWrapper.LoadStatus.FAILED_TO_LOAD);
+      moduleInfo.applyInfo(ModuleWrapper.LogInfoKey.LOAD_EXCEPTION.getKey(), "Invalid file reference! " + ex.getMessage() + " (" + ex.getCause() + ")");
+      modules.add(moduleInfo);
+      return;
     }
     ModuleWrapper moduleInfo = new ModuleWrapper(module, clazz.getName(), ModuleWrapper.LoadStatus.LOADED);
     modulesClassesNames.add(clazz.getName());
