@@ -25,6 +25,7 @@ import com.github.stefvanschie.inventoryframework.pane.OutlinePane;
 import java.util.Collections;
 import java.util.Set;
 
+import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -47,6 +48,7 @@ public class SpectatorItemEvents {
 
   private Main plugin;
   private SpectatorSettingsMenu spectatorSettingsMenu;
+  private boolean usesPaperSpigot = Bukkit.getServer().getVersion().contains("Paper");
 
   public SpectatorItemEvents(Main plugin) {
     this.plugin = plugin;
@@ -84,8 +86,11 @@ public class SpectatorItemEvents {
       if (players.contains(arenaPlayer) && !plugin.getUserManager().getUser(arenaPlayer).isSpectator()) {
         ItemStack skull = CompatMaterialConstants.getPlayerHeadItem();
         SkullMeta meta = (SkullMeta) skull.getItemMeta();
-        //todo paper improvements for heads fetching
-        meta.setOwningPlayer(arenaPlayer);
+        if (usesPaperSpigot && player.getPlayerProfile().hasTextures()) {
+          meta.setPlayerProfile(player.getPlayerProfile());
+        } else {
+          meta.setOwningPlayer(player);
+        }
         meta.setDisplayName(arenaPlayer.getName());
         meta.setLore(Collections.singletonList(plugin.getChatManager().colorMessage(Messages.SPECTATOR_TARGET_PLAYER_HEALTH)
             .replace("%health%", String.valueOf(NumberUtils.round(arenaPlayer.getHealth(), 2)))));
