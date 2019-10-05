@@ -15,6 +15,9 @@ That's all, matcher will stop when detects next line started with `###` match
 * Fixed fast respawn bug
 * Now players can´t interact with armorstands when they are in the arena
 * Now players can´t destroy itemframes, paintings, and armorstands when they are in the arena
+* Fixed SpectatorItemEvent not loaded, now spectator items will work on click
+* Fixed special items stage loading is always lobby
+* Fixed leave special items not working
 
 ### 4.2.2 Release (14.06.2019 - 13.07.2019)
 * Fixed setup menu completed/not completed values were buggy

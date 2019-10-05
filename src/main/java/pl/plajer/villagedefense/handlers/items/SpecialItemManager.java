@@ -85,12 +85,11 @@ public class SpecialItemManager {
       int slot = config.getInt(key + ".slot");
       SpecialItem.DisplayStage stage;
       try {
-        stage = SpecialItem.DisplayStage.valueOf(config.getString(key + ".stage"));
+        stage = SpecialItem.DisplayStage.valueOf(config.getString(key + ".stage").toUpperCase());
       } catch (Exception ex) {
         Debugger.debug(Level.WARNING, "Invalid display stage of special item " + key + " in special_items.yml! Please use lobby or spectator!");
         stage = SpecialItem.DisplayStage.LOBBY;
       }
-
       SpecialItem item = new SpecialItem(key, new ItemBuilder(mat.parseItem()).name(name).lore(lore).build(), slot, stage);
       addItem(item);
     }

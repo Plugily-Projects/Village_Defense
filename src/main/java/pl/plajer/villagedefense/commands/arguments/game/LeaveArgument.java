@@ -51,7 +51,6 @@ public class LeaveArgument {
           }
           player.sendMessage(registry.getPlugin().getChatManager().getPrefix() + registry.getPlugin().getChatManager().colorMessage(Messages.COMMANDS_TELEPORTED_TO_THE_LOBBY));
           Arena arena = ArenaRegistry.getArena(player);
-          arena.teleportToEndLocation(player);
           ArenaManager.leaveAttempt(player, arena);
           Debugger.debug(Level.INFO, "{0} has left the arena {1}! Teleported to end location.", player.getName(), arena.getId());
         }

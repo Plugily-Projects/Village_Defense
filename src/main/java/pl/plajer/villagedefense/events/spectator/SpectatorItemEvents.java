@@ -29,6 +29,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
@@ -36,6 +37,7 @@ import org.bukkit.inventory.meta.SkullMeta;
 
 import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.arena.Arena;
+import pl.plajer.villagedefense.arena.ArenaManager;
 import pl.plajer.villagedefense.arena.ArenaRegistry;
 import pl.plajer.villagedefense.handlers.items.SpecialItemManager;
 import pl.plajer.villagedefense.handlers.language.Messages;
@@ -44,7 +46,7 @@ import pl.plajer.villagedefense.utils.constants.CompatMaterialConstants;
 import pl.plajerlair.commonsbox.minecraft.item.ItemUtils;
 import pl.plajerlair.commonsbox.number.NumberUtils;
 
-public class SpectatorItemEvents {
+public class SpectatorItemEvents implements Listener {
 
   private Main plugin;
   private SpectatorSettingsMenu spectatorSettingsMenu;
@@ -52,6 +54,7 @@ public class SpectatorItemEvents {
 
   public SpectatorItemEvents(Main plugin) {
     this.plugin = plugin;
+    plugin.getServer().getPluginManager().registerEvents(this, plugin);
     spectatorSettingsMenu = new SpectatorSettingsMenu(plugin, plugin.getChatManager().colorMessage(Messages.SPECTATOR_SETTINGS_MENU_INVENTORY_NAME),
         plugin.getChatManager().colorMessage(Messages.SPECTATOR_SETTINGS_MENU_SPEED_NAME));
   }
@@ -72,6 +75,9 @@ public class SpectatorItemEvents {
     } else if (plugin.getSpecialItemManager().getRelatedSpecialItem(stack).getName().equals(SpecialItemManager.SpecialItems.SPECTATOR_OPTIONS.getName())) {
       e.setCancelled(true);
       spectatorSettingsMenu.openSpectatorSettingsMenu(e.getPlayer());
+    } else if (plugin.getSpecialItemManager().getRelatedSpecialItem(stack).getName().equals(SpecialItemManager.SpecialItems.SPECTATOR_LEAVE_ITEM.getName())) {
+      e.setCancelled(true);
+      ArenaManager.leaveAttempt(e.getPlayer(), arena);
     }
   }
 
@@ -95,6 +101,7 @@ public class SpectatorItemEvents {
         meta.setLore(Collections.singletonList(plugin.getChatManager().colorMessage(Messages.SPECTATOR_TARGET_PLAYER_HEALTH)
             .replace("%health%", String.valueOf(NumberUtils.round(arenaPlayer.getHealth(), 2)))));
         skull.setItemMeta(meta);
+        //todo check why panes are not working! Also bb issue!
         pane.addItem(new GuiItem(skull, e -> {
           e.setCancelled(true);
           e.getWhoClicked().sendMessage(plugin.getChatManager().formatMessage(arena, plugin.getChatManager().colorMessage(Messages.KITS_TELEPORTER_TELEPORTED_TO_PLAYER), arenaPlayer));

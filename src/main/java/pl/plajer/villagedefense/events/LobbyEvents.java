@@ -24,20 +24,28 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.ItemStack;
 
 import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.arena.Arena;
+import pl.plajer.villagedefense.arena.ArenaManager;
 import pl.plajer.villagedefense.arena.ArenaRegistry;
 import pl.plajer.villagedefense.arena.ArenaState;
+import pl.plajer.villagedefense.handlers.items.SpecialItemManager;
+import pl.plajerlair.commonsbox.minecraft.item.ItemUtils;
 
 /**
  * Created by Tom on 16/06/2015.
  */
 public class LobbyEvents implements Listener {
+  private Main plugin;
 
   public LobbyEvents(Main plugin) {
+    this.plugin = plugin;
     plugin.getServer().getPluginManager().registerEvents(this, plugin);
   }
 
@@ -68,6 +76,22 @@ public class LobbyEvents implements Listener {
     }
     event.setCancelled(true);
     player.setHealth(player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue());
+  }
+
+  @EventHandler
+  public void onLobbyItemClick(PlayerInteractEvent e) {
+    if (e.getAction() == Action.LEFT_CLICK_AIR || e.getAction() == Action.LEFT_CLICK_BLOCK || e.getAction() == Action.PHYSICAL) {
+      return;
+    }
+    Arena arena = ArenaRegistry.getArena(e.getPlayer());
+    ItemStack stack = e.getPlayer().getInventory().getItemInMainHand();
+    if (arena == null || !ItemUtils.isItemStackNamed(stack)) {
+      return;
+    }
+    if (plugin.getSpecialItemManager().getRelatedSpecialItem(stack).getName().equals(SpecialItemManager.SpecialItems.LOBBY_LEAVE_ITEM.getName())) {
+      e.setCancelled(true);
+      ArenaManager.leaveAttempt(e.getPlayer(), arena);
+    }
   }
 
 }
