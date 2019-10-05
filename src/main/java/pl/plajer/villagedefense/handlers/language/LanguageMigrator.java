@@ -106,6 +106,7 @@ public class LanguageMigrator {
               + "  # Limit of waves, if this wave ends game will end\r\n  Limit: 25");
           break;
         case 7:
+          /*Moved to modules
           MigratorUtils.addNewLines(file, "# Entity upgrades section\r\n"
               + "Entity-Upgrades:\r\n" + "  # Should entity (wolves and golems) upgrades be enabled?\r\n"
               + "  # If you want to have classic Village Defense game mode i recommend to disable this.\r\n"
@@ -113,7 +114,7 @@ public class LanguageMigrator {
               + "  Health-Tiers:\r\n" + "    '1': 100\r\n" + "    '2': 200\r\n" + "    '3': 350\r\n" + "    '4': 500\r\n"
               + "  Damage-Tiers:\r\n" + "    '1': 150\r\n" + "    '2': 300\r\n" + "    '3': 450\r\n" + "    '4': 600\r\n"
               + "  Speed-Tiers:\r\n" + "    '1': 50\r\n" + "    '2': 100\r\n" + "    '3': 150\r\n" + "    '4': 250\r\n"
-              + "  Final-Defense-Tiers:\r\n" + "    '1': 200\r\n" + "    '2': 350\r\n" + "  Swarm-Awareness-Tiers:\r\n" + "    '1': 200\r\n" + "    '2': 350");
+              + "  Final-Defense-Tiers:\r\n" + "    '1': 200\r\n" + "    '2': 350\r\n" + "  Swarm-Awareness-Tiers:\r\n" + "    '1': 200\r\n" + "    '2': 350");*/
           break;
         default:
           break;
@@ -207,6 +208,7 @@ public class LanguageMigrator {
         case 9:
           MigratorUtils.insertAfterLine(file, "Admin-Commands", "    Received-Orbs: \"&7You received &a%orbs% orbs&7!\"");
           MigratorUtils.insertAfterLine(file, "Admin-Messages:", "      Removed-Wolves: \"&b%PLAYER% has cleared the wolves!\"");
+          /*Moved to modules
           MigratorUtils.addNewLines(file, "Upgrade-Menu:\n" + "  Title: \"&e&lUpgrade entity\"\r\n" + "  Stats-Item:\r\n"
               + "    Name: \"&e&lCurrent Stats\"\r\n"
               + "    Description: \"&eMovement speed: &7%speed%;&eAttack Damage: &7%damage%;&eHealth: &7%current_hp%/%max_hp%\"\r\n"
@@ -223,7 +225,7 @@ public class LanguageMigrator {
               + "      Description: \"&7Upgrade final defense to tier &e%tier%&7!;&7From &e%from% explosion radius &7to &e%to%;&7Golem will explode after death killing nearby;&7zombies and stun all alive ones;"
               + "&7Cost of upgrade: &e%cost%;;&eClick to purchase\"\r\n"
               + "  Upgraded-Entity: \"&7Upgraded entity to tier &e%tier%&7!\"\r\n" + "  Cannot-Afford: \"&cYou don't have enough orbs to apply that upgrade!\"\r\n"
-              + "  Max-Tier: \"&cEntity is at max tier of this upgrade!\"");
+              + "  Max-Tier: \"&cEntity is at max tier of this upgrade!\"");*/
           break;
         default:
           break;

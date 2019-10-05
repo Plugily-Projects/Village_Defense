@@ -292,7 +292,9 @@ public enum Messages {
 
   POWERUPS_POWERUP_ENDED_TITLE_MESSAGE("Powerups.Powerup-Ended-Title-Message"),
 
+  /*Now in modules
   UPGRADES_MENU_TITLE("Upgrade-Menu.Title"),
+
   UPGRADES_STATS_ITEM_NAME("Upgrade-Menu.Stats-Item.Name"),
   UPGRADES_STATS_ITEM_DESCRIPTION("Upgrade-Menu.Stats-Item.Description"),
 
@@ -319,6 +321,7 @@ public enum Messages {
   UPGRADES_UPGRADED_ENTITY("Upgrade-Menu.Upgraded-Entity"),
   UPGRADES_CANNOT_AFFORD("Upgrade-Menu.Cannot-Afford"),
   UPGRADES_MAX_TIER("Upgrade-Menu.Max-Tier"),
+  */
 
   SIGNS_PLEASE_TYPE_ARENA_NAME("Signs.Please-Type-Arena-Name"),
   SIGNS_ARENA_DOESNT_EXISTS("Signs.Arena-Doesnt-Exists"),
