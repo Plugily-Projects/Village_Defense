@@ -33,6 +33,7 @@ import org.bukkit.entity.ItemFrame;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Painting;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Projectile;
 import org.bukkit.entity.Villager;
 import org.bukkit.entity.Wolf;
 import org.bukkit.entity.Zombie;
@@ -282,15 +283,15 @@ public class Events implements Listener {
 
   @EventHandler
   public void onEntityCombust(EntityCombustByEntityEvent e) {
-    if (!(e.getCombuster() instanceof Arrow)) {
+    if (!(e.getCombuster() instanceof Projectile)) {
       return;
     }
-    Arrow arrow = (Arrow) e.getCombuster();
-    if (!(arrow.getShooter() instanceof Player)) {
+    Projectile projectile = (Projectile) e.getCombuster();
+    if (!(projectile.getShooter() instanceof Player)) {
       return;
     }
     if (e.getEntity() instanceof Player) {
-      Arena arena = ArenaRegistry.getArena((Player) arrow.getShooter());
+      Arena arena = ArenaRegistry.getArena((Player) projectile.getShooter());
       if (arena != null && arena.equals(ArenaRegistry.getArena((Player) e.getEntity()))) {
         e.setCancelled(true);
       }
@@ -340,14 +341,14 @@ public class Events implements Listener {
 
   @EventHandler(priority = EventPriority.HIGHEST)
   public void onSecond(EntityDamageByEntityEvent e) {
-    if (!(e.getDamager() instanceof Arrow)) {
+    if (!(e.getDamager() instanceof Projectile)) {
       return;
     }
-    Arrow arrow = (Arrow) e.getDamager();
-    if (!(arrow.getShooter() instanceof Player)) {
+    Projectile projectile = (Projectile) e.getDamager();
+    if (!(projectile.getShooter() instanceof Player)) {
       return;
     }
-    Arena arena = ArenaRegistry.getArena((Player) arrow.getShooter());
+    Arena arena = ArenaRegistry.getArena((Player) projectile.getShooter());
     if (arena == null || !(e.getEntity() instanceof Player || e.getEntity() instanceof Wolf
         || e.getEntity() instanceof IronGolem || e.getEntity() instanceof Villager)) {
       return;
@@ -472,11 +473,11 @@ public class Events implements Listener {
         event.setCancelled(true);
         return;
       }
-      if (!(event.getRemover() instanceof Arrow)) {
+      if (!(event.getRemover() instanceof Projectile)) {
         return;
       }
-      Arrow arrow = (Arrow) event.getRemover();
-      if (arrow.getShooter() instanceof Player && ArenaRegistry.isInArena((Player) arrow.getShooter())) {
+      Projectile projectile = (Projectile) event.getRemover();
+      if (projectile.getShooter() instanceof Player && ArenaRegistry.isInArena((Player) projectile.getShooter())) {
         event.setCancelled(true);
       }
     }
@@ -493,9 +494,9 @@ public class Events implements Listener {
     }
     if (e.getDamager() instanceof Player && ArenaRegistry.isInArena((Player) e.getDamager())) {
       e.setCancelled(true);
-    } else if (e.getDamager() instanceof Arrow) {
-      Arrow arrow = (Arrow) e.getDamager();
-      if (arrow.getShooter() instanceof Player && ArenaRegistry.isInArena((Player) arrow.getShooter())) {
+    } else if (e.getDamager() instanceof Projectile) {
+      Projectile projectile = (Projectile) e.getDamager();
+      if (projectile.getShooter() instanceof Player && ArenaRegistry.isInArena((Player) projectile.getShooter())) {
         e.setCancelled(true);
         return;
       }
