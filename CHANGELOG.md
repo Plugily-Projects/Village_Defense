@@ -20,7 +20,8 @@ That's all, matcher will stop when detects next line started with `###` match
 * Fixed leave special items not working
 * Added difficulty validator
 * Fixed a lot of projectiles that could damage villagers, golems and wolfs (for example Fireball, FishHook, Trident)
-* Fixed the NoSuchMethodException on arena sign load when the sign isn´t a wallsign  
+* Fixed the NoSuchMethodException on arena signs load when the sign isn´t a wallsign  
+* Fixed sign deletion is on the wrong path (now you can delete signs, that get really removed)
 
 ### 4.2.2 Release (14.06.2019 - 13.07.2019)
 * Fixed setup menu completed/not completed values were buggy

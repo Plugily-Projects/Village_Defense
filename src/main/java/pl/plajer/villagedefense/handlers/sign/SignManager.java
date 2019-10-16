@@ -134,7 +134,7 @@ public class SignManager implements Listener {
         }
         List<String> signs = config.getStringList("instances." + arena + ".signs");
         signs.remove(location);
-        config.set(arena + ".signs", signs);
+        config.set("instances." + arena + ".signs", signs);
         ConfigUtils.saveConfig(plugin, config, Constants.Files.ARENAS.getName());
         e.getPlayer().sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage(Messages.SIGNS_SIGN_REMOVED));
         return;
