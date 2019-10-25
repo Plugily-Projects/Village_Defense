@@ -62,13 +62,16 @@ public class ExceptionLogHandler extends Handler {
       return;
     }
     if (throwable.getStackTrace().length == 0
-        || !throwable.getStackTrace()[0].getClassName().contains("pl.plajer.villagedefense")) {
+        || throwable.getCause() != null ? !throwable.getCause().getStackTrace()[0].getClassName().contains("pl.plajer.villagedefense")
+        : !throwable.getStackTrace()[0].getClassName().contains("pl.plajer.villagedefense")) {
       return;
     }
     if (containsBlacklistedClass(throwable)) {
       return;
     }
     new ReportedException(plugin, (Exception) throwable);
+    record.setThrown(null);
+    record.setMessage("[VillageDefense] We have found a bug in the code. Contact us at our official discord server (Invite link: https://discordapp.com/invite/UXzUdTP) with the following error given above!");
   }
 
   private boolean containsBlacklistedClass(Throwable throwable) {
