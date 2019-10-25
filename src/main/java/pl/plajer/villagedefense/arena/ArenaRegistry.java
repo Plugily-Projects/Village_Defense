@@ -110,7 +110,7 @@ public class ArenaRegistry {
   }
 
   public static void registerArena(Arena arena) {
-    Debugger.debug(Level.INFO, "[[0}] Instance registered", arena.getId());
+    Debugger.debug(Level.INFO, "[{0}] Instance registered", arena.getId());
     arenas.add(arena);
   }
 
