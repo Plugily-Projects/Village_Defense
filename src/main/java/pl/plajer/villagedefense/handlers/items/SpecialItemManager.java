@@ -77,12 +77,21 @@ public class SpecialItemManager {
       if (key.equals("Version")) {
         continue;
       }
-      XMaterial mat = XMaterial.fromString(config.getString(key + ".material-name"));
-      String name = plugin.getChatManager().colorRawMessage(config.getString(key + ".displayname"));
-      List<String> lore = config.getStringList(key + ".lore").stream()
-          .map(itemLore -> itemLore = plugin.getChatManager().colorRawMessage(itemLore))
-          .collect(Collectors.toList());
-      int slot = config.getInt(key + ".slot");
+      XMaterial mat;
+      String name;
+      List<String> lore;
+      int slot;
+      try {
+        mat = XMaterial.fromString(config.getString(key + ".material-name"));
+        name = plugin.getChatManager().colorRawMessage(config.getString(key + ".displayname"));
+        lore = config.getStringList(key + ".lore").stream()
+            .map(itemLore -> itemLore = plugin.getChatManager().colorRawMessage(itemLore))
+            .collect(Collectors.toList());
+        slot = config.getInt(key + ".slot");
+      } catch (Exception ex) {
+        plugin.getLogger().log(Level.WARNING, "Configuration of " + key + "is missing a value. (material-name, displayname, lore or slot)");
+        continue;
+      }
       SpecialItem.DisplayStage stage;
       try {
         stage = SpecialItem.DisplayStage.valueOf(config.getString(key + ".stage").toUpperCase());
