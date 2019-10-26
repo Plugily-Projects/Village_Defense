@@ -24,6 +24,7 @@ That's all, matcher will stop when detects next line started with `###` match
 * Fixed sign deletion is on the wrong path (now you can delete signs, that get really removed)
 * Fix plugin crash when you forgot a value in specialitems file
 * Clearer way of error reporting
+* Fix alive player heads texture
 
 ### 4.2.2 Release (14.06.2019 - 13.07.2019)
 * Fixed setup menu completed/not completed values were buggy

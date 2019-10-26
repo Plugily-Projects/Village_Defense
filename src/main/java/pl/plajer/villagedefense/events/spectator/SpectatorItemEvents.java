@@ -92,10 +92,10 @@ public class SpectatorItemEvents implements Listener {
       if (players.contains(arenaPlayer) && !plugin.getUserManager().getUser(arenaPlayer).isSpectator()) {
         ItemStack skull = CompatMaterialConstants.getPlayerHeadItem();
         SkullMeta meta = (SkullMeta) skull.getItemMeta();
-        if (usesPaperSpigot && player.getPlayerProfile().hasTextures()) {
-          meta.setPlayerProfile(player.getPlayerProfile());
+        if (usesPaperSpigot && arenaPlayer.getPlayerProfile().hasTextures()) {
+          meta.setPlayerProfile(arenaPlayer.getPlayerProfile());
         } else {
-          meta.setOwningPlayer(player);
+          meta.setOwningPlayer(arenaPlayer);
         }
         meta.setDisplayName(arenaPlayer.getName());
         meta.setLore(Collections.singletonList(plugin.getChatManager().colorMessage(Messages.SPECTATOR_TARGET_PLAYER_HEALTH)
