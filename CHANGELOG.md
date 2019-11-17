@@ -1,5 +1,51 @@
 # Village Defense Changelog
 
+Changelog is followed by special scheme which is required in order to allow automatic discord
+deploy webhooks to print changelog successfully
+
+## Log scheme
+`### <current version from pom.xml> <anything else here>`
+`<update log line>`
+
+That's all, matcher will stop when detects next line started with `###` match
+
+### DEV
+* The map will now remove dropped items & orbs after game finish
+* Fixed some bugs that trigger events on physical action (for example spectator gui opens on redstone block)
+* Fixed fast respawn bug
+* Now players can´t interact with armorstands when they are in the arena
+* Now players can´t destroy itemframes, paintings, and armorstands when they are in the arena
+* Fixed SpectatorItemEvent not loaded, now spectator items will work on click
+* Fixed special items stage loading is always lobby
+* Fixed leave special items not working
+* Added difficulty validator
+* Fixed a lot of projectiles that could damage villagers, golems and wolfs (for example Fireball, FishHook, Trident)
+* Fixed the NoSuchMethodException on arena signs load when the sign isn´t a wallsign  
+* Fixed sign deletion is on the wrong path (now you can delete signs, that get really removed)
+* Fix plugin crash when you forgot a value in specialitems file
+* Clearer way of error reporting
+* Fix alive player heads texture
+
+### 4.2.2 Release (14.06.2019 - 13.07.2019)
+* Fixed setup menu completed/not completed values were buggy
+* Fixed /vda setprice message was sent twice
+* Now shop will count wolf/golem spawn items to total price spent in game in game summary
+* Join permission message outputs required permission node now
+* Fixed bungee failed to add players after the game if shutdown on game finish was disabled
+* Implemented modules - more info needed
+* Stripped plugin from BungeeCord in favor of Bungee Cord Module
+* Stripped plugin from /vd randomjoin command in favor of RandomJoin Module
+* Stripped plugin from Wolves/Golems upgrades in favor of Entities Upgrades Module
+* **Implemented modular system to handle addons for VillageDefense, code was split into modules that can
+be downloaded from our repository page or in game GUI**
+* Redesigned lobby items into special_items, they are now fully customizable by player not hardcoded like they were before
+(it includes spectator items and kit selector), check special_items.yml for more
+* VillagePlayerChooseKitEvent now reacts to event#isCancelled() method and won't give player kit if event is cancelled
+(did give always before)
+* Added 1.14 sign game states (thanks to montlikadani)
+* Changed Chinese (Simplified) locale prefix from zh to cn
+* Locales with special characters like Russian or Korean will now work properly and won't be seen as `?` characters
+
 ### 4.2.1 Release (25.05.2019 - 08.06.2019)
 * Fixed possible issues with scoreboard colors
 * Fixed boss bar displayed game end message not waiting for players after game restart

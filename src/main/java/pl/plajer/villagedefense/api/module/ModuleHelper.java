@@ -16,30 +16,37 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package pl.plajer.villagedefense.utils;
+package pl.plajer.villagedefense.api.module;
 
-import org.junit.Assert;
-import org.junit.Test;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 
-import pl.plajer.villagedefense.utils.constants.Constants;
+import org.apache.commons.io.FileUtils;
+
+import pl.plajer.villagedefense.Main;
 
 /**
  * @author Plajer
  * <p>
- * Created at 08.06.2019
+ * Created at 16.06.2019
  */
-public class ConstantsTest {
+public class ModuleHelper {
 
-  @Test
-  public void testAllConstants() {
-    Assert.assertEquals("arenas", Constants.Files.ARENAS.getName());
-    Assert.assertEquals("config", Constants.Files.CONFIG.getName());
-    Assert.assertEquals("language", Constants.Files.LANGUAGE.getName());
-    Assert.assertEquals("kits", Constants.Files.KITS.getName());
-    Assert.assertEquals("special_items", Constants.Files.SPECIAL_ITEMS.getName());
-    Assert.assertEquals("mysql", Constants.Files.MYSQL.getName());
-    Assert.assertEquals("rewards", Constants.Files.REWARDS.getName());
-    Assert.assertEquals("stats", Constants.Files.STATS.getName());
+  private static Main plugin;
+
+  private ModuleHelper() {
   }
 
+  public static void init(Main plugin) {
+    ModuleHelper.plugin = plugin;
+  }
+
+  public static void createFileInPluginDirectory(InputStream initialStream, String fileName)
+      throws IOException {
+    File targetFile = new File(plugin.getDataFolder(), fileName);
+    if (!targetFile.exists()) {
+      FileUtils.copyInputStreamToFile(initialStream, targetFile);
+    }
+  }
 }

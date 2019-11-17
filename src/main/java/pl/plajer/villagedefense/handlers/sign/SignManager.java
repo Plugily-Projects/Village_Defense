@@ -16,10 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package pl.plajer.villagedefense.handlers;
+package pl.plajer.villagedefense.handlers.sign;
 
+import java.util.ArrayList;
 import java.util.EnumMap;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
@@ -38,12 +38,14 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.jetbrains.annotations.Nullable;
 
 import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.arena.Arena;
 import pl.plajer.villagedefense.arena.ArenaManager;
 import pl.plajer.villagedefense.arena.ArenaRegistry;
 import pl.plajer.villagedefense.arena.ArenaState;
+import pl.plajer.villagedefense.handlers.PermissionsManager;
 import pl.plajer.villagedefense.handlers.language.LanguageManager;
 import pl.plajer.villagedefense.handlers.language.Messages;
 import pl.plajer.villagedefense.utils.Debugger;
@@ -55,7 +57,7 @@ import pl.plajerlair.commonsbox.minecraft.serialization.LocationSerializer;
 public class SignManager implements Listener {
 
   private Main plugin;
-  private Map<Sign, Arena> loadedSigns = new HashMap<>();
+  private List<ArenaSign> arenaSigns = new ArrayList<>();
   private Map<ArenaState, String> gameStateToString = new EnumMap<>(ArenaState.class);
   private List<String> signLines;
 
@@ -89,7 +91,7 @@ public class SignManager implements Listener {
       for (int i = 0; i < signLines.size(); i++) {
         e.setLine(i, formatSign(signLines.get(i), arena));
       }
-      loadedSigns.put((Sign) e.getBlock().getState(), arena);
+      arenaSigns.add(new ArenaSign((Sign) e.getBlock().getState(), arena));
       e.getPlayer().sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage(Messages.SIGNS_SIGN_CREATED));
       String location = e.getBlock().getWorld().getName() + "," + e.getBlock().getX() + "," + e.getBlock().getY() + "," + e.getBlock().getZ() + ",0.0,0.0";
       FileConfiguration config = ConfigUtils.getConfig(plugin, Constants.Files.ARENAS.getName());
@@ -118,11 +120,11 @@ public class SignManager implements Listener {
 
   @EventHandler
   public void onSignDestroy(BlockBreakEvent e) {
-    if (!e.getPlayer().hasPermission("villagedefense.admin.sign.break")
-        || loadedSigns.get(e.getBlock().getState()) == null) {
+    ArenaSign arenaSign = getArenaSignByBlock(e.getBlock());
+    if (!e.getPlayer().hasPermission("villagedefense.admin.sign.break") || arenaSign == null) {
       return;
     }
-    loadedSigns.remove(e.getBlock().getState());
+    arenaSigns.remove(arenaSign);
     String location = e.getBlock().getWorld().getName() + "," + e.getBlock().getX() + "," + e.getBlock().getY() + "," + e.getBlock().getZ() + "," + "0.0,0.0";
     FileConfiguration config = ConfigUtils.getConfig(plugin, Constants.Files.ARENAS.getName());
     for (String arena : config.getConfigurationSection("instances").getKeys(false)) {
@@ -132,7 +134,7 @@ public class SignManager implements Listener {
         }
         List<String> signs = config.getStringList("instances." + arena + ".signs");
         signs.remove(location);
-        config.set(arena + ".signs", signs);
+        config.set("instances." + arena + ".signs", signs);
         ConfigUtils.saveConfig(plugin, config, Constants.Files.ARENAS.getName());
         e.getPlayer().sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage(Messages.SIGNS_SIGN_REMOVED));
         return;
@@ -143,10 +145,9 @@ public class SignManager implements Listener {
 
   @EventHandler
   public void onJoinAttempt(PlayerInteractEvent e) {
-    if (e.getAction() == Action.RIGHT_CLICK_BLOCK
-        && e.getClickedBlock().getState() instanceof Sign && loadedSigns.containsKey(e.getClickedBlock().getState())) {
-
-      Arena arena = loadedSigns.get(e.getClickedBlock().getState());
+    ArenaSign arenaSign = getArenaSignByBlock(e.getClickedBlock());
+    if (e.getAction() == Action.RIGHT_CLICK_BLOCK && e.getClickedBlock().getState() instanceof Sign && arenaSign != null) {
+      Arena arena = arenaSign.getArena();
       if (arena == null) {
         return;
       }
@@ -154,7 +155,7 @@ public class SignManager implements Listener {
         e.getPlayer().sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage(Messages.ALREADY_PLAYING));
         return;
       }
-      if (!(arena.getPlayers().size() >= arena.getMaximumPlayers())) {
+      if (arena.getPlayers().size() < arena.getMaximumPlayers()) {
         ArenaManager.joinAttempt(e.getPlayer(), arena);
         return;
       }
@@ -179,8 +180,26 @@ public class SignManager implements Listener {
     }
   }
 
+  @Nullable
+  private ArenaSign getArenaSignByBlock(Block block) {
+    if (block == null) {
+      return null;
+    }
+    ArenaSign arenaSign = null;
+    for (ArenaSign sign : arenaSigns) {
+      if (sign.getSign().getLocation().equals(block.getLocation())) {
+        arenaSign = sign;
+        break;
+      }
+    }
+    return arenaSign;
+  }
+
   public void loadSigns() {
-    loadedSigns.clear();
+    Debugger.debug(Level.INFO, "Signs load event started");
+    long start = System.currentTimeMillis();
+
+    arenaSigns.clear();
     FileConfiguration config = ConfigUtils.getConfig(plugin, Constants.Files.ARENAS.getName());
     if (!config.contains("instances")) {
       Debugger.debug(Level.WARNING, "No arena instances found. Signs won't be loaded");
@@ -191,12 +210,13 @@ public class SignManager implements Listener {
       for (String sign : config.getStringList("instances." + path + ".signs")) {
         Location loc = LocationSerializer.getLocation(sign);
         if (loc.getBlock().getState() instanceof Sign) {
-          loadedSigns.put((Sign) loc.getBlock().getState(), ArenaRegistry.getArena(path));
+          arenaSigns.add(new ArenaSign((Sign) loc.getBlock().getState(), ArenaRegistry.getArena(path)));
           continue;
         }
         Debugger.debug(Level.WARNING, "Block at location {0} for arena {1} is not a sign!", LocationSerializer.locationToString(loc), path);
       }
     }
+    Debugger.debug(Level.INFO, "Sign load event finished took {0}ms", System.currentTimeMillis() - start);
   }
 
   private void updateSignScheduler() {
@@ -204,14 +224,14 @@ public class SignManager implements Listener {
       Debugger.performance("SignUpdate", "[PerformanceMonitor] [SignUpdate] Updating signs");
       long start = System.currentTimeMillis();
 
-      for (Map.Entry<Sign, Arena> entry : loadedSigns.entrySet()) {
-        Sign sign = entry.getKey();
+      for (ArenaSign arenaSign : arenaSigns) {
+        Sign sign = arenaSign.getSign();
         for (int i = 0; i < signLines.size(); i++) {
-          sign.setLine(i, formatSign(signLines.get(i), entry.getValue()));
+          sign.setLine(i, formatSign(signLines.get(i), arenaSign.getArena()));
         }
-        if (plugin.getConfig().getBoolean("Signs-Block-States-Enabled", true) && !plugin.is1_14_R1() /* not supported */) {
-          Block behind = sign.getBlock().getRelative(((org.bukkit.material.Sign) sign.getData()).getAttachedFace());
-          switch (entry.getValue().getArenaState()) {
+        if (plugin.getConfig().getBoolean("Signs-Block-States-Enabled", true) && arenaSign.getBehind() != null) {
+          Block behind = arenaSign.getBehind();
+          switch (arenaSign.getArena().getArenaState()) {
             case WAITING_FOR_PLAYERS:
               behind.setType(XMaterial.WHITE_STAINED_GLASS.parseMaterial());
               if (plugin.is1_11_R1() || plugin.is1_12_R1()) {
@@ -252,7 +272,7 @@ public class SignManager implements Listener {
     }, 10, 10);
   }
 
-  public Map<Sign, Arena> getLoadedSigns() {
-    return loadedSigns;
+  public List<ArenaSign> getArenaSigns() {
+    return arenaSigns;
   }
 }

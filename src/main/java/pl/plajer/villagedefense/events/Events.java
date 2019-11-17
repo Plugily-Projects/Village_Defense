@@ -25,11 +25,14 @@ import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.World;
 import org.bukkit.attribute.Attribute;
-import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.IronGolem;
+import org.bukkit.entity.ItemFrame;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Painting;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Projectile;
 import org.bukkit.entity.Villager;
 import org.bukkit.entity.Wolf;
 import org.bukkit.entity.Zombie;
@@ -49,9 +52,10 @@ import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.entity.ItemSpawnEvent;
 import org.bukkit.event.entity.PlayerLeashEntityEvent;
-import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.hanging.HangingBreakByEntityEvent;
 import org.bukkit.event.inventory.InventoryPickupItemEvent;
 import org.bukkit.event.inventory.InventoryType;
+import org.bukkit.event.player.PlayerArmorStandManipulateEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerExpChangeEvent;
@@ -61,7 +65,6 @@ import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 
-import pl.plajer.villagedefense.ConfigPreferences;
 import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.api.StatsStorage;
 import pl.plajer.villagedefense.arena.Arena;
@@ -149,34 +152,6 @@ public class Events implements Listener {
   }
 
   @EventHandler
-  public void onKitMenuItemClick(InventoryClickEvent event) {
-    ItemStack stack = event.getCurrentItem();
-    Arena arena = ArenaRegistry.getArena((Player) event.getWhoClicked());
-    if (arena == null) {
-      return;
-    }
-    if (!Utils.isNamed(stack) || stack.getType() != plugin.getKitManager().getMaterial()
-        || !stack.getItemMeta().getDisplayName().equalsIgnoreCase(plugin.getKitManager().getItemName())) {
-      return;
-    }
-    event.setCancelled(true);
-  }
-
-  @EventHandler
-  public void onKitMenuItemClickWithCursor(InventoryClickEvent event) {
-    ItemStack stack = event.getCursor();
-    Arena arena = ArenaRegistry.getArena((Player) event.getWhoClicked());
-    if (arena == null) {
-      return;
-    }
-    if (!Utils.isNamed(stack) || stack.getType() != plugin.getKitManager().getMaterial()
-        || !stack.getItemMeta().getDisplayName().equalsIgnoreCase(plugin.getKitManager().getItemName())) {
-      return;
-    }
-    event.setCancelled(true);
-  }
-
-  @EventHandler
   public void onDrop(PlayerDropItemEvent event) {
     Arena arena = ArenaRegistry.getArena(event.getPlayer());
     if (arena == null) {
@@ -243,7 +218,7 @@ public class Events implements Listener {
     }
   }
 
-  @EventHandler(priority = EventPriority.HIGHEST)
+  @EventHandler
   public void onCommandExecute(PlayerCommandPreprocessEvent event) {
     Arena arena = ArenaRegistry.getArena(event.getPlayer());
     if (arena == null) {
@@ -284,7 +259,7 @@ public class Events implements Listener {
 
   @EventHandler(priority = EventPriority.LOWEST)
   public void onLeave(PlayerInteractEvent event) {
-    if (event.getAction() == Action.LEFT_CLICK_AIR || event.getAction() == Action.LEFT_CLICK_BLOCK) {
+    if (event.getAction() == Action.LEFT_CLICK_AIR || event.getAction() == Action.LEFT_CLICK_BLOCK || event.getAction() == Action.PHYSICAL) {
       return;
     }
     Arena arena = ArenaRegistry.getArena(event.getPlayer());
@@ -301,36 +276,29 @@ public class Events implements Listener {
     }
     if (key.getItemStack().getItemMeta().getDisplayName().equalsIgnoreCase(itemStack.getItemMeta().getDisplayName())) {
       event.setCancelled(true);
-      if (plugin.getConfigPreferences().getOption(ConfigPreferences.Option.BUNGEE_ENABLED)) {
-        plugin.getBungeeManager().connectToHub(event.getPlayer());
-      } else {
-        ArenaManager.leaveAttempt(event.getPlayer(), arena);
-      }
+      ArenaManager.leaveAttempt(event.getPlayer(), arena);
     }
   }
 
   @EventHandler
   public void onEntityCombust(EntityCombustByEntityEvent e) {
-    if (!(e.getCombuster() instanceof Arrow)) {
+    if (!(e.getCombuster() instanceof Projectile)) {
       return;
     }
-    Arrow arrow = (Arrow) e.getCombuster();
-    if (!(arrow.getShooter() instanceof Player)) {
+    Projectile projectile = (Projectile) e.getCombuster();
+    if (!(projectile.getShooter() instanceof Player)) {
       return;
     }
     if (e.getEntity() instanceof Player) {
-      Arena arena = ArenaRegistry.getArena((Player) arrow.getShooter());
+      Arena arena = ArenaRegistry.getArena((Player) projectile.getShooter());
       if (arena != null && arena.equals(ArenaRegistry.getArena((Player) e.getEntity()))) {
         e.setCancelled(true);
       }
     } else if (e.getEntity() instanceof IronGolem || e.getEntity() instanceof Villager || e.getEntity() instanceof Wolf) {
       for (Arena a : ArenaRegistry.getArenas()) {
-        if (e.getEntity() instanceof IronGolem && a.getIronGolems().contains(e.getEntity())) {
+        if (a.getWolves().contains(e.getEntity()) || a.getVillagers().contains(e.getEntity()) || a.getIronGolems().contains(e.getEntity())) {
           e.setCancelled(true);
-        } else if (e.getEntity() instanceof Villager && a.getVillagers().contains(e.getEntity())) {
-          e.setCancelled(true);
-        } else if (a.getWolves().contains(e.getEntity())) {
-          e.setCancelled(true);
+          return;
         }
       }
     }
@@ -357,38 +325,31 @@ public class Events implements Listener {
 
   @EventHandler(priority = EventPriority.HIGH)
   public void onZombieHurt(EntityDamageEvent e) {
-    if (plugin.getConfig().getBoolean("Simple-Zombie-Health-Bar-Enabled", true)) {
-      if (!(e.getEntity() instanceof Zombie)) {
-        return;
+    if (!(e.getEntity() instanceof Zombie) || !plugin.getConfig().getBoolean("Simple-Zombie-Health-Bar-Enabled", true)) {
+      return;
+    }
+    for (Arena arena : ArenaRegistry.getArenas()) {
+      if (!arena.getZombies().contains(e.getEntity())) {
+        continue;
       }
-      for (Arena arena : ArenaRegistry.getArenas()) {
-        if (!arena.getZombies().contains(e.getEntity())) {
-          continue;
-        }
-        e.getEntity().setCustomName(StringFormatUtils.getProgressBar((int) ((Zombie) e.getEntity()).getHealth(),
-            (int) ((Zombie) e.getEntity()).getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue(),
-            50, "|", ChatColor.YELLOW + "", ChatColor.GRAY + ""));
-      }
+      e.getEntity().setCustomName(StringFormatUtils.getProgressBar((int) ((Zombie) e.getEntity()).getHealth(),
+          (int) ((Zombie) e.getEntity()).getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue(),
+          50, "|", ChatColor.YELLOW + "", ChatColor.GRAY + ""));
     }
   }
 
   @EventHandler(priority = EventPriority.HIGHEST)
   public void onSecond(EntityDamageByEntityEvent e) {
-    if (!(e.getDamager() instanceof Arrow)) {
+    if (!(e.getDamager() instanceof Projectile)) {
       return;
     }
-    Arrow arrow = (Arrow) e.getDamager();
-    if (arrow.getShooter() == null) {
+    Projectile projectile = (Projectile) e.getDamager();
+    if (!(projectile.getShooter() instanceof Player)) {
       return;
     }
-    if (!(arrow.getShooter() instanceof Player)) {
-      return;
-    }
-    Arena arena = ArenaRegistry.getArena((Player) arrow.getShooter());
-    if (arena == null) {
-      return;
-    }
-    if (!(e.getEntity() instanceof Player || e.getEntity() instanceof Wolf || e.getEntity() instanceof IronGolem || e.getEntity() instanceof Villager)) {
+    Arena arena = ArenaRegistry.getArena((Player) projectile.getShooter());
+    if (arena == null || !(e.getEntity() instanceof Player || e.getEntity() instanceof Wolf
+        || e.getEntity() instanceof IronGolem || e.getEntity() instanceof Villager)) {
       return;
     }
     e.setCancelled(true);
@@ -417,7 +378,7 @@ public class Events implements Listener {
   }
 
   @EventHandler(priority = EventPriority.HIGH)
-  //highest priority to fully protecc our game (i didn't set it because my test server was destroyed, n-no......)
+  //highest priority to fully protect our game (i didn't set it because my test server was destroyed, n-no......)
   public void onBlockBreakEvent(BlockBreakEvent event) {
     if (!ArenaRegistry.isInArena(event.getPlayer())) {
       return;
@@ -426,7 +387,7 @@ public class Events implements Listener {
   }
 
   @EventHandler(priority = EventPriority.HIGH)
-  //highest priority to fully protecc our game (i didn't set it because my test server was destroyed, n-no......)
+  //highest priority to fully protect our game (i didn't set it because my test server was destroyed, n-no......)
   public void onBuild(BlockPlaceEvent event) {
     if (!ArenaRegistry.isInArena(event.getPlayer())) {
       return;
@@ -502,5 +463,52 @@ public class Events implements Listener {
       }
     }
   }
+
+  @EventHandler(priority = EventPriority.HIGH)
+  //highest priority to fully protect our game (i didn't set it because my test server was destroyed, n-no......)
+  public void onHangingBreakEvent(HangingBreakByEntityEvent event) {
+    if (event.getEntity() instanceof ItemFrame || event.getEntity() instanceof Painting) {
+      if (event.getRemover() instanceof Player && ArenaRegistry.isInArena((Player) event.getRemover())) {
+        event.setCancelled(true);
+        return;
+      }
+      if (!(event.getRemover() instanceof Projectile)) {
+        return;
+      }
+      Projectile projectile = (Projectile) event.getRemover();
+      if (projectile.getShooter() instanceof Player && ArenaRegistry.isInArena((Player) projectile.getShooter())) {
+        event.setCancelled(true);
+      }
+    }
+  }
+
+  @EventHandler(priority = EventPriority.HIGH)
+  public void onArmorStandDestroy(EntityDamageByEntityEvent e) {
+    if (!(e.getEntity() instanceof LivingEntity)) {
+      return;
+    }
+    final LivingEntity livingEntity = (LivingEntity) e.getEntity();
+    if (!livingEntity.getType().equals(EntityType.ARMOR_STAND)) {
+      return;
+    }
+    if (e.getDamager() instanceof Player && ArenaRegistry.isInArena((Player) e.getDamager())) {
+      e.setCancelled(true);
+    } else if (e.getDamager() instanceof Projectile) {
+      Projectile projectile = (Projectile) e.getDamager();
+      if (projectile.getShooter() instanceof Player && ArenaRegistry.isInArena((Player) projectile.getShooter())) {
+        e.setCancelled(true);
+        return;
+      }
+      e.setCancelled(true);
+    }
+  }
+
+  @EventHandler(priority = EventPriority.HIGH)
+  public void onInteractWithArmorStand(PlayerArmorStandManipulateEvent event) {
+    if (ArenaRegistry.isInArena(event.getPlayer())) {
+      event.setCancelled(true);
+    }
+  }
+
 
 }

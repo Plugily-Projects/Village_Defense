@@ -44,6 +44,7 @@ import pl.plajer.villagedefense.utils.Utils;
 import pl.plajer.villagedefense.utils.WeaponHelper;
 import pl.plajerlair.commonsbox.minecraft.compat.XMaterial;
 import pl.plajerlair.commonsbox.minecraft.item.ItemBuilder;
+import pl.plajerlair.commonsbox.minecraft.item.ItemUtils;
 
 /**
  * Created by Tom on 17/12/2015.
@@ -96,7 +97,7 @@ public class BlockerKit extends PremiumKit implements Listener {
     }
     Player player = event.getPlayer();
     ItemStack stack = player.getInventory().getItemInMainHand();
-    if (!ArenaRegistry.isInArena(player) || !Utils.isNamed(stack) || !stack.getItemMeta().getDisplayName()
+    if (!ArenaRegistry.isInArena(player) || !ItemUtils.isItemStackNamed(stack) || !stack.getItemMeta().getDisplayName()
         .equalsIgnoreCase(getPlugin().getChatManager().colorMessage(Messages.KITS_BLOCKER_GAME_ITEM_NAME))) {
       return;
     }

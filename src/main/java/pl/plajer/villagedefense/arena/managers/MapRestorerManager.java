@@ -27,6 +27,8 @@ import org.bukkit.Material;
 import org.bukkit.TreeSpecies;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.IronGolem;
 import org.bukkit.entity.Villager;
 import org.bukkit.entity.Wolf;
@@ -66,6 +68,7 @@ public class MapRestorerManager {
     clearGolemsFromArena();
     clearVillagersFromArena();
     clearWolvesFromArena();
+    clearDroppedEntities();
   }
 
   public void clearZombiesFromArena() {
@@ -73,6 +76,14 @@ public class MapRestorerManager {
       zombie.remove();
     }
     arena.getZombies().clear();
+  }
+
+  public void clearDroppedEntities() {
+    for (Entity entity : Utils.getNearbyEntities(arena.getStartLocation(), 200)) {
+      if (entity.getType() == EntityType.EXPERIENCE_ORB || entity.getType() == EntityType.DROPPED_ITEM){
+        entity.remove();
+      }
+    }
   }
 
   public void clearGolemsFromArena() {

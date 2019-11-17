@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Difficulty;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -109,7 +110,7 @@ public class ArenaRegistry {
   }
 
   public static void registerArena(Arena arena) {
-    Debugger.debug(Level.INFO, "[[0}] Instance registered", arena.getId());
+    Debugger.debug(Level.INFO, "[{0}] Instance registered", arena.getId());
     arenas.add(arena);
   }
 
@@ -151,7 +152,6 @@ public class ArenaRegistry {
       arena.setStartLocation(LocationSerializer.getLocation(config.getString(key + "Startlocation", "world,364.0,63.0,-72.0,0.0,0.0")));
       arena.setEndLocation(LocationSerializer.getLocation(config.getString(key + "Endlocation", "world,364.0,63.0,-72.0,0.0,0.0")));
       ArenaUtils.setWorld(arena);
-
       if (!config.getBoolean(key + "isdone", false)) {
         Bukkit.getConsoleSender().sendMessage(plugin.getChatManager().colorMessage(Messages.VALIDATOR_INVALID_ARENA_CONFIGURATION).replace("%arena%", id).replace("%error%", "NOT VALIDATED"));
         arena.setReady(false);
@@ -190,6 +190,13 @@ public class ArenaRegistry {
         }
       } else {
         Bukkit.getConsoleSender().sendMessage(plugin.getChatManager().colorMessage(Messages.VALIDATOR_INVALID_ARENA_CONFIGURATION).replace("%arena%", id).replace("%error%", "DOORS"));
+        arena.setReady(false);
+        ArenaRegistry.registerArena(arena);
+        continue;
+      }
+      if (arena.getStartLocation().getWorld().getDifficulty() == Difficulty.PEACEFUL){
+        Bukkit.getConsoleSender().sendMessage(plugin.getChatManager().colorMessage(Messages.VALIDATOR_INVALID_ARENA_CONFIGURATION).replace("%arena%", id).replace("%error%", "THERE IS A WRONG " +
+            "DIFFICULTY -> SET IT TO ANOTHER ONE THAN PEACEFUL"));
         arena.setReady(false);
         ArenaRegistry.registerArena(arena);
         continue;

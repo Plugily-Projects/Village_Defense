@@ -89,7 +89,7 @@ public class SpawnComponents implements SetupComponent {
         .lore(ChatColor.GRAY + "on the place where you are standing.")
         .lore(ChatColor.DARK_GRAY + "(locations where players will be")
         .lore(ChatColor.DARK_GRAY + "teleported when game starts)")
-        .lore("", setupInventory.getSetupUtilities().isOptionDoneBool("instanaces." + arena.getId() + ".Startlocation"))
+        .lore("", setupInventory.getSetupUtilities().isOptionDoneBool("instances." + arena.getId() + ".Startlocation"))
         .build(), e -> {
       e.getWhoClicked().closeInventory();
       config.set("instances." + arena.getId() + ".Startlocation", serializedLocation);

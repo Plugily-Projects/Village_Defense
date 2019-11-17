@@ -39,6 +39,7 @@ import org.bukkit.entity.Villager;
 import org.bukkit.entity.Wolf;
 import org.bukkit.entity.Zombie;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.jetbrains.annotations.TestOnly;
 
 import pl.plajer.villagedefense.ConfigPreferences;
 import pl.plajer.villagedefense.Main;
@@ -93,6 +94,20 @@ public abstract class Arena extends BukkitRunnable {
   private boolean fighting = false;
   private boolean forceStart = false;
   private boolean ready = true;
+
+  @TestOnly
+  protected Arena(String id, String mapName) {
+    this.id = id;
+    this.mapName = mapName;
+    gameStateHandlers.put(ArenaState.WAITING_FOR_PLAYERS, new WaitingState());
+    gameStateHandlers.put(ArenaState.STARTING, new StartingState());
+    gameStateHandlers.put(ArenaState.IN_GAME, new InGameState());
+    gameStateHandlers.put(ArenaState.ENDING, new EndingState());
+    gameStateHandlers.put(ArenaState.RESTARTING, new RestartingState());
+    for (ArenaStateHandler handler : gameStateHandlers.values()) {
+      handler.init(plugin);
+    }
+  }
 
   public Arena(String id) {
     this.id = id;
@@ -333,10 +348,6 @@ public abstract class Arena extends BukkitRunnable {
   }
 
   public void teleportToEndLocation(Player player) {
-    if (plugin.getConfigPreferences().getOption(ConfigPreferences.Option.BUNGEE_ENABLED)) {
-      plugin.getBungeeManager().connectToHub(player);
-      return;
-    }
     player.teleport(getEndLocation());
   }
 
@@ -352,9 +363,6 @@ public abstract class Arena extends BukkitRunnable {
     Debugger.debug(Level.INFO, "[{0}] Instance started", this.getId());
     this.runTaskTimer(plugin, 20L, 20L);
     this.setArenaState(ArenaState.WAITING_FOR_PLAYERS);
-    if (plugin.getConfigPreferences().getOption(ConfigPreferences.Option.BUNGEE_ENABLED)) {
-      players.addAll(plugin.getServer().getOnlinePlayers());
-    }
   }
 
   public ScoreboardManager getScoreboardManager() {

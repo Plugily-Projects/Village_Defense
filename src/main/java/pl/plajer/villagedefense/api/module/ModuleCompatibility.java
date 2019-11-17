@@ -16,30 +16,24 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package pl.plajer.villagedefense.utils;
-
-import org.junit.Assert;
-import org.junit.Test;
-
-import pl.plajer.villagedefense.utils.constants.Constants;
+package pl.plajer.villagedefense.api.module;
 
 /**
  * @author Plajer
  * <p>
- * Created at 08.06.2019
+ * Created at 16.06.2019
  */
-public class ConstantsTest {
+public enum ModuleCompatibility {
 
-  @Test
-  public void testAllConstants() {
-    Assert.assertEquals("arenas", Constants.Files.ARENAS.getName());
-    Assert.assertEquals("config", Constants.Files.CONFIG.getName());
-    Assert.assertEquals("language", Constants.Files.LANGUAGE.getName());
-    Assert.assertEquals("kits", Constants.Files.KITS.getName());
-    Assert.assertEquals("special_items", Constants.Files.SPECIAL_ITEMS.getName());
-    Assert.assertEquals("mysql", Constants.Files.MYSQL.getName());
-    Assert.assertEquals("rewards", Constants.Files.REWARDS.getName());
-    Assert.assertEquals("stats", Constants.Files.STATS.getName());
+  API_V1(0), API_V2(1), API_V3(2);
+
+  private int version;
+
+  ModuleCompatibility(int version) {
+    this.version = version;
   }
 
+  public int getVersion() {
+    return version;
+  }
 }

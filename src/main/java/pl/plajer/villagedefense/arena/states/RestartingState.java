@@ -20,11 +20,14 @@ package pl.plajer.villagedefense.arena.states;
 
 import java.util.Objects;
 
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
 
 import pl.plajer.villagedefense.ConfigPreferences;
 import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.arena.Arena;
+import pl.plajer.villagedefense.arena.ArenaManager;
 import pl.plajer.villagedefense.arena.ArenaState;
 import pl.plajer.villagedefense.handlers.language.Messages;
 import pl.plajer.villagedefense.utils.constants.Constants;
@@ -53,11 +56,13 @@ public class RestartingState implements ArenaStateHandler {
     arena.resetOptionValues();
     arena.getDroppedFleshes().stream().filter(Objects::nonNull).forEach(Entity::remove);
     arena.getDroppedFleshes().clear();
-    if (plugin.getConfigPreferences().getOption(ConfigPreferences.Option.BUNGEE_ENABLED)) {
-      if (ConfigUtils.getConfig(plugin, Constants.Files.BUNGEE.getName()).getBoolean("Shutdown-When-Game-Ends")) {
+    if (plugin.getModuleLoader().isModulePresent("Bungee Cord")) {
+      if (ConfigUtils.getConfig(plugin, "bungee").getBoolean("Shutdown-When-Game-Ends", false)) {
         plugin.getServer().shutdown();
       }
-      arena.getPlayers().addAll(plugin.getServer().getOnlinePlayers());
+      for(Player player : Bukkit.getOnlinePlayers()) {
+        ArenaManager.joinAttempt(player, arena);
+      }
     }
     arena.getGameBar().setTitle(plugin.getChatManager().colorMessage(Messages.BOSSBAR_WAITING_FOR_PLAYERS));
   }

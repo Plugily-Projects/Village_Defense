@@ -23,18 +23,19 @@ import java.io.File;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPluginLoader;
 
+import pl.plajer.villagedefense.arena.Arena;
+import pl.plajer.villagedefense.arena.ArenaMock;
+import pl.plajer.villagedefense.arena.ArenaRegistry;
 import pl.plajer.villagedefense.commands.arguments.ArgumentsRegistry;
-import pl.plajer.villagedefense.creatures.upgrades.EntityUpgradeMenu;
-import pl.plajer.villagedefense.handlers.BungeeManager;
 import pl.plajer.villagedefense.handlers.ChatManager;
 import pl.plajer.villagedefense.handlers.HolidayManager;
-import pl.plajer.villagedefense.handlers.SignManager;
 import pl.plajer.villagedefense.handlers.items.SpecialItemManager;
 import pl.plajer.villagedefense.handlers.language.LanguageManager;
 import pl.plajer.villagedefense.handlers.language.Messages;
 import pl.plajer.villagedefense.handlers.powerup.PowerupRegistry;
 import pl.plajer.villagedefense.handlers.reward.RewardsFactory;
-import pl.plajer.villagedefense.kits.KitManager;
+import pl.plajer.villagedefense.handlers.sign.SignManager;
+import pl.plajer.villagedefense.kits.KitMenuHandler;
 import pl.plajer.villagedefense.user.User;
 import pl.plajer.villagedefense.user.UserManager;
 import pl.plajer.villagedefense.utils.Utils;
@@ -56,6 +57,7 @@ public class MainMock extends Main {
   private RewardsFactory rewardsFactory;
   private ChatManager chatManager;
   private SpecialItemManager specialItemManager;
+  private ArenaMock testArena;
 
   public MainMock() {
     super();
@@ -91,17 +93,12 @@ public class MainMock extends Main {
   }
 
   @Override
-  public BungeeManager getBungeeManager() {
-    throw new UnimplementedOperationException();
-  }
-
-  @Override
   public SignManager getSignManager() {
     throw new UnimplementedOperationException();
   }
 
   @Override
-  public KitManager getKitManager() {
+  public KitMenuHandler getKitMenuHandler() {
     throw new UnimplementedOperationException();
   }
 
@@ -112,6 +109,8 @@ public class MainMock extends Main {
 
   @Override
   public void onEnable() {
+    Arena.init(this);
+    ArenaRegistry.init(this);
     User.init(this);
     User.cooldownHandlerTask();
     Utils.init(this);
@@ -124,13 +123,11 @@ public class MainMock extends Main {
     this.chatManager = new ChatManager(this, "[Village Defense] ");
     this.specialItemManager = new SpecialItemManager(this);
 
+    this.testArena = new ArenaMock();
+    ArenaRegistry.registerArena(testArena);
+
     //trick to clean up server directory after tests
     Runtime.getRuntime().addShutdownHook(new Thread(MockBukkit::unload));
-  }
-
-  @Override
-  public EntityUpgradeMenu getEntityUpgradeMenu() {
-    throw new UnimplementedOperationException();
   }
 
   @Override
@@ -176,6 +173,10 @@ public class MainMock extends Main {
   @Override
   public ArgumentsRegistry getArgumentsRegistry() {
     throw new UnimplementedOperationException();
+  }
+
+  public ArenaMock getTestArena() {
+    return testArena;
   }
 
   @Override

@@ -21,7 +21,6 @@ package pl.plajer.villagedefense.handlers.setup.components;
 import com.github.stefvanschie.inventoryframework.GuiItem;
 import com.github.stefvanschie.inventoryframework.pane.StaticPane;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.Bukkit;
@@ -41,11 +40,11 @@ import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.Door;
 
-import pl.plajer.villagedefense.ConfigPreferences;
 import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.arena.Arena;
 import pl.plajer.villagedefense.handlers.language.Messages;
 import pl.plajer.villagedefense.handlers.setup.SetupInventory;
+import pl.plajer.villagedefense.handlers.sign.ArenaSign;
 import pl.plajer.villagedefense.utils.Utils;
 import pl.plajer.villagedefense.utils.constants.CompatMaterialConstants;
 import pl.plajer.villagedefense.utils.constants.Constants;
@@ -76,7 +75,7 @@ public class MiscComponents implements SetupComponent {
     Arena arena = setupInventory.getArena();
     Main plugin = setupInventory.getPlugin();
     ItemStack bungeeItem;
-    if (!plugin.getConfigPreferences().getOption(ConfigPreferences.Option.BUNGEE_ENABLED)) {
+    if (!plugin.getModuleLoader().isModulePresent("Bungee Cord")) {
       bungeeItem = new ItemBuilder(Material.SIGN)
           .name(plugin.getChatManager().colorRawMessage("&e&lAdd Game Sign"))
           .lore(ChatColor.GRAY + "Target a sign and click this.")
@@ -85,13 +84,13 @@ public class MiscComponents implements SetupComponent {
     } else {
       bungeeItem = new ItemBuilder(Material.BARRIER)
           .name(plugin.getChatManager().colorRawMessage("&c&lAdd Game Sign"))
-          .lore(ChatColor.GRAY + "Option disabled in bungee cord mode.")
+          .lore(ChatColor.GRAY + "Option disabled with Bungee Cord module.")
           .lore(ChatColor.DARK_GRAY + "Bungee mode is meant to be one arena per server")
           .lore(ChatColor.DARK_GRAY + "If you wish to have multi arena, disable bungee in config!")
           .build();
     }
     pane.addItem(new GuiItem(bungeeItem, e -> {
-      if (plugin.getConfigPreferences().getOption(ConfigPreferences.Option.BUNGEE_ENABLED)) {
+      if (plugin.getModuleLoader().isModulePresent("Bungee Cord")) {
         return;
       }
       e.getWhoClicked().closeInventory();
@@ -107,7 +106,7 @@ public class MiscComponents implements SetupComponent {
         e.getWhoClicked().sendMessage(plugin.getChatManager().colorRawMessage("&cYou can ignore this warning and add sign with Shift + Left Click, but for now &c&loperation is cancelled"));
         return;
       }
-      plugin.getSignManager().getLoadedSigns().put((Sign) location.getBlock().getState(), arena);
+      plugin.getSignManager().getArenaSigns().add(new ArenaSign((Sign) location.getBlock().getState(), arena));
       player.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage(Messages.SIGNS_SIGN_CREATED));
       String signLoc = location.getBlock().getWorld().getName() + "," + location.getBlock().getX() + "," + location.getBlock().getY() + "," + location.getBlock().getZ() + ",0.0,0.0";
       List<String> locs = config.getStringList("instances." + arena.getId() + ".signs");
@@ -142,7 +141,7 @@ public class MiscComponents implements SetupComponent {
       }).buildFor(player);
     }), 6, 0);
 
-    pane.addItem(new GuiItem(new ItemBuilder(Material.GOLD_INGOT)
+    pane.addItem(new GuiItem(new ItemBuilder(Material.CHEST)
         .name(plugin.getChatManager().colorRawMessage("&e&lSet Game Shop"))
         .lore(ChatColor.GRAY + "Look at chest with items")
         .lore(ChatColor.GRAY + "and click it to set it as game shop.")
@@ -186,7 +185,7 @@ public class MiscComponents implements SetupComponent {
         .build(), e -> {
       e.getWhoClicked().closeInventory();
       if (e.getClick() == ClickType.SHIFT_RIGHT) {
-        config.set("instances." + arena.getId() + ".villagerspawns", new ArrayList<>());
+        config.set("instances." + arena.getId() + ".villagerspawns", null);
         arena.getVillagerSpawns().clear();
         player.sendMessage(plugin.getChatManager().colorRawMessage("&eDone | &aVillager spawn points deleted, you can add them again now!"));
         arena.setReady(false);
@@ -214,7 +213,7 @@ public class MiscComponents implements SetupComponent {
         .build(), e -> {
       e.getWhoClicked().closeInventory();
       if (e.getClick() == ClickType.SHIFT_RIGHT) {
-        config.set("instances." + arena.getId() + ".zombiespawns", new ArrayList<>());
+        config.set("instances." + arena.getId() + ".zombiespawns", null);
         arena.getZombieSpawns().clear();
         player.sendMessage(plugin.getChatManager().colorRawMessage("&eDone | &aZombie spawn points deleted, you can add them again now!"));
         arena.setReady(false);
@@ -244,7 +243,7 @@ public class MiscComponents implements SetupComponent {
         .build(), e -> {
       e.getWhoClicked().closeInventory();
       if (e.getClick() == ClickType.SHIFT_RIGHT) {
-        config.set("instances." + arena.getId() + ".doors", new ArrayList<>());
+        config.set("instances." + arena.getId() + ".doors", null);
         arena.getMapRestorerManager().getGameDoorLocations().clear();
         player.sendMessage(plugin.getChatManager().colorRawMessage("&eDone | &aDoor locations deleted, you can add them again now!"));
         arena.setReady(false);

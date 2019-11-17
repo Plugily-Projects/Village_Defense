@@ -49,7 +49,7 @@ public class SetupUtilities {
 
   public String isOptionDoneSection(String path, int minimum) {
     if (config.isSet(path)) {
-      if (config.getStringList(path).size() < minimum) {
+      if (config.getConfigurationSection(path).getKeys(false).size() < minimum) {
         return color("&c&l✘ Not Completed | &cPlease add more locations");
       }
       return color("&a&l✔ Completed &7(value: &8" + config.getConfigurationSection(path).getKeys(false).size() + "&7)");

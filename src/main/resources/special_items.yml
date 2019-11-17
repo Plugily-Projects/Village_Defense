@@ -1,0 +1,49 @@
+# Custom in-game lobby items.
+# Probably you will only translate displayname and lore so don't mess with it.
+#
+# Please don't modify 'Kit-Menu', 'Leave-Lobby', 'Leave-Spectator', 'Player-List' and 'Spectator-Options'
+# nodes as they are hardcoded in code!
+
+Kit-Menu:
+  displayname: "&b&lKit Menu &7(Right Click)"
+  lore:
+    - "&7Right-click to select in-game kit"
+  material-name: NETHER_STAR
+  slot: 0
+  # stage can be: 'lobby' or 'spectator'
+  stage: lobby
+
+Leave-Lobby:
+  displayname: "&c&lReturn to Lobby &7(Right Click)"
+  lore:
+    - "&7Right-click to leave to the lobby"
+  material-name: BED
+  slot: 8
+  stage: lobby
+
+Leave-Spectator:
+  displayname: "&c&lLeave the Game &7(Right Click)"
+  lore:
+    - "&7Right-click to leave to the lobby"
+  material-name: BED
+  slot: 8
+  stage: spectator
+
+Player-List:
+  displayname: "&a&lAlive Players &7(Right Click)"
+  lore:
+    - "&7Right-click to see alive players list"
+  material-name: COMPASS
+  slot: 0
+  stage: spectator
+
+Spectator-Options:
+  displayname: "&b&lSpectator Settings &7(Right Click)"
+  lore:
+    - "&7Right-click to adjust spectator settings"
+  material-name: COMPASS
+  slot: 4
+  stage: spectator
+
+# Don't touch this
+Version: 1

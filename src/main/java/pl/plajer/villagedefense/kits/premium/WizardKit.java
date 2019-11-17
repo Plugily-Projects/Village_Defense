@@ -50,6 +50,7 @@ import pl.plajer.villagedefense.utils.ArmorHelper;
 import pl.plajer.villagedefense.utils.Utils;
 import pl.plajerlair.commonsbox.minecraft.compat.XMaterial;
 import pl.plajerlair.commonsbox.minecraft.item.ItemBuilder;
+import pl.plajerlair.commonsbox.minecraft.item.ItemUtils;
 
 /**
  * @author Plajer
@@ -131,7 +132,7 @@ public class WizardKit extends PremiumKit implements Listener {
       return;
     }
     ItemStack stack = e.getPlayer().getInventory().getItemInMainHand();
-    if (!Utils.isNamed(stack)) {
+    if (!ItemUtils.isItemStackNamed(stack)) {
       return;
     }
     Player player = e.getPlayer();

@@ -47,6 +47,7 @@ import pl.plajer.villagedefense.utils.Utils;
 import pl.plajer.villagedefense.utils.WeaponHelper;
 import pl.plajer.villagedefense.utils.constants.CompatMaterialConstants;
 import pl.plajerlair.commonsbox.minecraft.item.ItemBuilder;
+import pl.plajerlair.commonsbox.minecraft.item.ItemUtils;
 
 /**
  * Created by Tom on 18/08/2014.
@@ -96,7 +97,7 @@ public class TeleporterKit extends PremiumKit implements Listener {
     }
     Arena arena = ArenaRegistry.getArena(e.getPlayer());
     ItemStack stack = e.getPlayer().getInventory().getItemInMainHand();
-    if (arena == null || !Utils.isNamed(stack)) {
+    if (arena == null || !ItemUtils.isItemStackNamed(stack)) {
       return;
     }
     if (!stack.getItemMeta().getDisplayName().equalsIgnoreCase(getPlugin().getChatManager().colorMessage(Messages.KITS_TELEPORTER_GAME_ITEM_NAME))) {

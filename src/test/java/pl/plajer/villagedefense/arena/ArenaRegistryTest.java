@@ -16,50 +16,52 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package pl.plajer.villagedefense.handlers.items;
+package pl.plajer.villagedefense.arena;
 
-import org.bukkit.Material;
-import org.bukkit.inventory.ItemStack;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 import pl.plajer.villagedefense.MockUtils;
 
+import be.seeseemelk.mockbukkit.entity.PlayerMock;
+
 /**
  * @author Plajer
  * <p>
- * Created at 06.06.2019
+ * Created at 12.06.2019
  */
-public class SpecialItemTest {
+public class ArenaRegistryTest {
 
-  private SpecialItem specialItem;
+  private PlayerMock player;
+  private ArenaMock arena;
 
   @Before
-  public void setUpClass() {
-    MockUtils.getServerMockSafe();
-    specialItem = new SpecialItem("Test", new ItemStack(Material.STONE), 2, SpecialItem.DisplayStage.LOBBY);
+  public void setUp() {
+    this.player = MockUtils.getConstantPlayer();
+    this.arena = MockUtils.getPluginMockSafe().getTestArena();
   }
 
   @Test
-  public void getName() {
-    Assert.assertEquals("Test", specialItem.getName());
+  public void isInArena() {
+    Assert.assertFalse(ArenaRegistry.isInArena(player));
+    arena.getPlayers().add(player);
+    Assert.assertTrue(ArenaRegistry.isInArena(player));
+    arena.getPlayers().remove(player);
   }
 
   @Test
-  public void getItemStack() {
-    Assert.assertEquals(new ItemStack(Material.STONE), specialItem.getItemStack());
+  public void getArenaOfPlayer() {
+    Assert.assertNull(ArenaRegistry.getArena(player));
+    arena.getPlayers().add(player);
+    Assert.assertEquals(arena, ArenaRegistry.getArena(player));
+    arena.getPlayers().remove(player);
   }
 
   @Test
-  public void getSlot() {
-    Assert.assertEquals(2, specialItem.getSlot());
-  }
-
-  @Test
-  public void setSlot() {
-    specialItem.setSlot(6);
-    Assert.assertEquals(6, specialItem.getSlot());
+  public void getArenaById() {
+    Assert.assertNull(ArenaRegistry.getArena("non-existing_Arena"));
+    Assert.assertEquals(arena, ArenaRegistry.getArena("test-arena"));
   }
 
 }

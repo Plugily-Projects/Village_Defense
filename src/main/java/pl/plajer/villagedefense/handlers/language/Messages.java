@@ -104,7 +104,6 @@ public enum Messages {
   KITS_MENU_LOCKED_UNLOCK_IN_STORE("Kits.Kit-Menu.Locked-Lores.Unlock-In-Store"),
   KITS_NOT_UNLOCKED_MESSAGE("Kits.Not-Unlocked-Message"),
   KITS_CHOOSE_MESSAGE("Kits.Choose-Message"),
-  KITS_KIT_MENU_ITEM_NAME("Kits.Kit-Menu-Item-Name"),
   KITS_OPEN_KIT_MENU("Kits.Open-Kit-Menu"),
   KITS_ABILITY_STILL_ON_COOLDOWN("Kits.Ability-Still-On-Cooldown"),
 
@@ -244,10 +243,8 @@ public enum Messages {
   WOLF_SPAWNED("In-Game.Messages.Wolf-Spawned"),
   ZOMBIE_GOT_STUCK_IN_THE_MAP("In-Game.Messages.Zombie-Got-Stuck-In-The-Map"),
 
-  SPECTATOR_ITEM_NAME("In-Game.Spectator.Spectator-Item-Name"),
   SPECTATOR_MENU_NAME("In-Game.Spectator.Spectator-Menu-Name"),
   SPECTATOR_TARGET_PLAYER_HEALTH("In-Game.Spectator.Target-Player-Health"),
-  SPECTATOR_SETTINGS_MENU_ITEM_NAME("In-Game.Spectator.Settings-Menu.Item-Name"),
   SPECTATOR_SETTINGS_MENU_INVENTORY_NAME("In-Game.Spectator.Settings-Menu.Inventory-Name"),
   SPECTATOR_SETTINGS_MENU_SPEED_NAME("In-Game.Spectator.Settings-Menu.Speed-Name"),
 
@@ -295,7 +292,9 @@ public enum Messages {
 
   POWERUPS_POWERUP_ENDED_TITLE_MESSAGE("Powerups.Powerup-Ended-Title-Message"),
 
+  /*Now in modules
   UPGRADES_MENU_TITLE("Upgrade-Menu.Title"),
+
   UPGRADES_STATS_ITEM_NAME("Upgrade-Menu.Stats-Item.Name"),
   UPGRADES_STATS_ITEM_DESCRIPTION("Upgrade-Menu.Stats-Item.Description"),
 
@@ -322,6 +321,7 @@ public enum Messages {
   UPGRADES_UPGRADED_ENTITY("Upgrade-Menu.Upgraded-Entity"),
   UPGRADES_CANNOT_AFFORD("Upgrade-Menu.Cannot-Afford"),
   UPGRADES_MAX_TIER("Upgrade-Menu.Max-Tier"),
+  */
 
   SIGNS_PLEASE_TYPE_ARENA_NAME("Signs.Please-Type-Arena-Name"),
   SIGNS_ARENA_DOESNT_EXISTS("Signs.Arena-Doesnt-Exists"),

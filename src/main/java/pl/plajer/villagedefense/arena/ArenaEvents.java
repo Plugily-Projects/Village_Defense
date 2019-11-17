@@ -51,8 +51,6 @@ import pl.plajer.villagedefense.handlers.items.SpecialItem;
 import pl.plajer.villagedefense.handlers.language.Messages;
 import pl.plajer.villagedefense.handlers.reward.Reward;
 import pl.plajer.villagedefense.user.User;
-import pl.plajerlair.commonsbox.minecraft.compat.XMaterial;
-import pl.plajerlair.commonsbox.minecraft.item.ItemBuilder;
 
 /**
  * @author Plajer
@@ -216,15 +214,16 @@ public class ArenaEvents implements Listener {
 
       //running in a scheduler of 1 tick due to respawn bug
       Bukkit.getScheduler().runTaskLater(plugin, () -> {
-        player.getInventory().setItem(0, new ItemBuilder(XMaterial.COMPASS.parseItem()).name(plugin.getChatManager().colorMessage(Messages.SPECTATOR_ITEM_NAME)).build());
-        player.getInventory().setItem(4, new ItemBuilder(XMaterial.COMPARATOR.parseItem()).name(plugin.getChatManager().colorMessage(Messages.SPECTATOR_SETTINGS_MENU_ITEM_NAME)).build());
         for (SpecialItem item : plugin.getSpecialItemManager().getSpecialItems()) {
+          if (item.getDisplayStage() != SpecialItem.DisplayStage.SPECTATOR) {
+            continue;
+          }
           player.getInventory().setItem(item.getSlot(), item.getItemStack());
         }
       }, 1);
 
       untargetPlayerFromZombies(player, arena);
-    }, 2);
+    }, 5);
   }
 
   private void sendSpectatorActionBar(User user, Arena arena) {

@@ -124,7 +124,6 @@ Kits:
       Unlock-In-Store: "&bUnlock this in the store!"
   Not-Unlocked-Message: "&cYou haven't unlocked &b%KIT%&c yet!"
   Choose-Message: "&aYou have chosen: &b%KIT%&a!"
-  Kit-Menu-Item-Name: "Kit-Menu"
   Open-Kit-Menu: "Open Kit Menu"
   Ability-Still-On-Cooldown: "&cThis ability is on cooldown! Wait %COOLDOWN% more seconds!"
   # Kit descriptions and kit items wraps their descriptions every 40 characters and don't support \n character
@@ -239,7 +238,7 @@ In-Game:
   #Used in most game messages.
   Plugin-Prefix: "&a[Village Defense] "
   Already-Playing: "&cYou are already queued for a game! You can leave a game with /vd leave."
-  Join-No-Permission: "&cYou don't have permission to join this arena!"
+  Join-No-Permission: "&cYou don't have &6%permission% &cpermission to join this arena!"
   Full-Game-No-Permission: "&cYou don't have the permission to join full games!"
   No-Slots-For-Premium: "&cThis game is already full of premium players! Sorry"
   Dead-Tag-On-Death: "&8Dead"
@@ -258,11 +257,9 @@ In-Game:
   Join-Cancelled-Via-API: "&cYou can't join this game!"
   Arena-Not-Configured: "&cArena is not configured yet! Contact staff!"
   Spectator:
-    Spectator-Item-Name: "&7Players list"
     Spectator-Menu-Name: "Alive players list"
     Target-Player-Health: "&cHealth: &7%health%"
     Settings-Menu:
-      Item-Name: "&b&lSpectator Settings &7(Right-click)"
       Inventory-Name: "&7Spectator settings"
       Speed-Name: "&aSpeed"
   Messages:
@@ -334,32 +331,6 @@ Powerups:
     Name: "&b&lFRENZY"
     Description: "&7Every zombie for 1 hit!"
   Powerup-Ended-Title-Message: "&4Powerup %powerup% has ended!"
-
-Upgrade-Menu:
-  Title: "&e&lUpgrade entity"
-  Stats-Item:
-    Name: "&e&lCurrent Stats"
-    Description: "&eMovement speed: &7%speed%;&eAttack Damage: &7%damage%;&eHealth: &7%current_hp%/%max_hp%"
-  Upgrades:
-    Health:
-      Name: "&a&lUpgrade Health"
-      Description: "&7Upgrade max health to tier &e%tier%&7!;&7From &e%from% &7to &e%to%;&7Cost of upgrade: &e%cost%;;&eClick to purchase"
-    Damage:
-      Name: "&a&lUpgrade Damage"
-      Description: "&7Upgrade entity damage to tier &e%tier%&7!;&7From &e%from% &7to &e%to%;&7Cost of upgrade: &e%cost%;;&eClick to purchase"
-    Speed:
-      Name: "&a&lUpgrade Speed"
-      Description: "&7Upgrade movement speed to tier &e%tier%&7!;&7From &e%from% &7to &e%to%;&7Cost of upgrade: &e%cost%;;&eClick to purchase"
-    Swarm-Awareness:
-      Name: "&a&lSwarm Awareness"
-      Description: "&7Upgrade swarm awareness to tier &e%tier%&7!;&7From &e%from% &edamage multiplier per wolf in radius;&eof 3 blocks &7to %to%;&7The more wolves near attacking wolf;&7the more damage wolf deal;&7Cost of upgrade: &e%cost%;;&eClick to purchase"
-    Final-Defense:
-      Name: "&a&lFinal Defense"
-      Description: "&7Upgrade final defense to tier &e%tier%&7!;&7From &e%from% explosion radius &7to &e%to%;&7Golem will explode after death killing nearby;&7zombies and stun all alive ones;&7Cost of upgrade: &e%cost%;;&eClick to purchase"
-  Upgraded-Entity: "&7Upgraded entity to tier &e%tier%&7!"
-  Cannot-Afford: "&cYou don't have enough orbs to apply that upgrade!"
-  Max-Tier: "&cEntity is at max tier of this upgrade!"
-
 
 Signs:
   Please-Type-Arena-Name: "&cPlease type arena name in second line!"

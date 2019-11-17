@@ -47,6 +47,7 @@ import pl.plajer.villagedefense.utils.Debugger;
 import pl.plajer.villagedefense.utils.Utils;
 import pl.plajer.villagedefense.utils.constants.Constants;
 import pl.plajerlair.commonsbox.minecraft.configuration.ConfigUtils;
+import pl.plajerlair.commonsbox.minecraft.item.ItemUtils;
 import pl.plajerlair.commonsbox.minecraft.serialization.LocationSerializer;
 
 /**
@@ -154,7 +155,7 @@ public class ShopManager {
           player.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage(Messages.SHOP_MESSAGES_NOT_ENOUGH_ORBS));
           return;
         }
-        if (Utils.isNamed(itemStack)) {
+        if (ItemUtils.isItemStackNamed(itemStack)) {
           String name = itemStack.getItemMeta().getDisplayName();
           int spawnedAmount = 0;
           if (name.contains(plugin.getChatManager().colorMessage(Messages.SHOP_MESSAGES_GOLEM_ITEM_NAME))
@@ -172,6 +173,7 @@ public class ShopManager {
             arena.spawnGolem(arena.getStartLocation(), player);
             player.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage(Messages.GOLEM_SPAWNED));
             user.setStat(StatsStorage.StatisticType.ORBS, user.getStat(StatsStorage.StatisticType.ORBS) - cost);
+            arena.addOptionValue(ArenaOption.TOTAL_ORBS_SPENT, cost);
             return;
           } else if (name.contains(plugin.getChatManager().colorMessage(Messages.SHOP_MESSAGES_WOLF_ITEM_NAME))
               || name.contains(defaultWolfItemName)) {
@@ -188,6 +190,7 @@ public class ShopManager {
             arena.spawnWolf(arena.getStartLocation(), player);
             player.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage(Messages.WOLF_SPAWNED));
             user.setStat(StatsStorage.StatisticType.ORBS, user.getStat(StatsStorage.StatisticType.ORBS) - cost);
+            arena.addOptionValue(ArenaOption.TOTAL_ORBS_SPENT, cost);
             return;
           }
         }

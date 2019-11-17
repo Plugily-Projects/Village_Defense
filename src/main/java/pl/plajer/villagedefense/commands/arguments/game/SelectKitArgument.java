@@ -39,7 +39,7 @@ public class SelectKitArgument {
         if (!Utils.checkIsInGameInstance((Player) sender)) {
           return;
         }
-        registry.getPlugin().getKitManager().createKitMenu((Player) sender);
+        registry.getPlugin().getKitMenuHandler().createMenu((Player) sender);
       }
     });
   }

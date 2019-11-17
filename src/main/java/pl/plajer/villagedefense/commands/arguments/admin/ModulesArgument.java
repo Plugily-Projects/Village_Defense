@@ -16,41 +16,31 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package pl.plajer.villagedefense.commands.arguments.game;
+package pl.plajer.villagedefense.commands.arguments.admin;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import pl.plajer.villagedefense.arena.Arena;
-import pl.plajer.villagedefense.arena.ArenaManager;
-import pl.plajer.villagedefense.arena.ArenaRegistry;
 import pl.plajer.villagedefense.commands.arguments.ArgumentsRegistry;
 import pl.plajer.villagedefense.commands.arguments.data.CommandArgument;
-import pl.plajer.villagedefense.handlers.language.Messages;
+import pl.plajer.villagedefense.commands.arguments.data.LabelData;
+import pl.plajer.villagedefense.commands.arguments.data.LabeledCommandArgument;
+import pl.plajer.villagedefense.handlers.module.ModuleVisualizer;
 
 /**
  * @author Plajer
  * <p>
- * Created at 24.11.2018
+ * Created at 17.06.2019
  */
-public class JoinArguments {
+public class ModulesArgument {
 
-  public JoinArguments(ArgumentsRegistry registry) {
-    //join argument
-    registry.mapArgument("villagedefense", new CommandArgument("join", "", CommandArgument.ExecutorType.PLAYER) {
+  public ModulesArgument(ArgumentsRegistry registry) {
+    registry.mapArgument("villagedefenseadmin", new LabeledCommandArgument("modules", "villagedefense.admin.modules", CommandArgument.ExecutorType.PLAYER,
+        new LabelData("/vda modules", "/vda modules",
+            "&7Displays GUI with all Village Defense modules\n&6Permission: &7villagedefense.admin.modules")) {
       @Override
       public void execute(CommandSender sender, String[] args) {
-        if (args.length == 1) {
-          sender.sendMessage(registry.getPlugin().getChatManager().getPrefix() + registry.getPlugin().getChatManager().colorMessage(Messages.COMMANDS_TYPE_ARENA_NAME));
-          return;
-        }
-        for (Arena arena : ArenaRegistry.getArenas()) {
-          if (args[1].equalsIgnoreCase(arena.getId())) {
-            ArenaManager.joinAttempt((Player) sender, arena);
-            return;
-          }
-        }
-        sender.sendMessage(registry.getPlugin().getChatManager().getPrefix() + registry.getPlugin().getChatManager().colorMessage(Messages.COMMANDS_NO_ARENA_LIKE_THAT));
+        new ModuleVisualizer().openInventory((Player) sender);
       }
     });
   }
