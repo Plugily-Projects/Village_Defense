@@ -25,7 +25,6 @@ import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.World;
 import org.bukkit.attribute.Attribute;
-import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.IronGolem;
@@ -219,7 +218,7 @@ public class Events implements Listener {
     }
   }
 
-  @EventHandler(priority = EventPriority.HIGHEST)
+  @EventHandler
   public void onCommandExecute(PlayerCommandPreprocessEvent event) {
     Arena arena = ArenaRegistry.getArena(event.getPlayer());
     if (arena == null) {
