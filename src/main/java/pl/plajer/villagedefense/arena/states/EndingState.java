@@ -20,7 +20,6 @@ package pl.plajer.villagedefense.arena.states;
 
 import org.bukkit.entity.Player;
 
-import pl.plajer.villagedefense.ConfigPreferences;
 import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.api.StatsStorage;
 import pl.plajer.villagedefense.arena.Arena;

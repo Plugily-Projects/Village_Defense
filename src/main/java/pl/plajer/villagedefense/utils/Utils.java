@@ -151,12 +151,11 @@ public class Utils {
     switch (face) {
       case NORTH:
         return 3;
-      case EAST:
-        return 0;
       case SOUTH:
         return 1;
       case WEST:
         return 2;
+      case EAST:
       default:
         return 0;
     }

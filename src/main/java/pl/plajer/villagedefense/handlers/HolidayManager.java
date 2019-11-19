@@ -149,7 +149,6 @@ public class HolidayManager implements Listener {
         }
         break;
       case NONE:
-        break;
       default:
         break;
     }

@@ -28,7 +28,6 @@ import org.junit.Test;
 import pl.plajer.villagedefense.MainMock;
 import pl.plajer.villagedefense.MockUtils;
 import pl.plajer.villagedefense.handlers.language.Messages;
-import pl.plajerlair.commonsbox.minecraft.item.ItemBuilder;
 
 import be.seeseemelk.mockbukkit.entity.PlayerMock;
 import be.seeseemelk.mockbukkit.inventory.InventoryMock;

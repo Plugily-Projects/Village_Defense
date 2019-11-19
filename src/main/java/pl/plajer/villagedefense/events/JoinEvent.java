@@ -23,13 +23,10 @@ import org.bukkit.ChatColor;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerLoginEvent;
 
 import pl.plajer.villagedefense.ConfigPreferences;
 import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.api.StatsStorage;
-import pl.plajer.villagedefense.arena.ArenaRegistry;
-import pl.plajer.villagedefense.handlers.PermissionsManager;
 import pl.plajer.villagedefense.utils.UpdateChecker;
 import pl.plajerlair.commonsbox.minecraft.serialization.InventorySerializer;
 
@@ -57,7 +54,7 @@ public class JoinEvent implements Listener {
     }
 
     int amount = plugin.getModuleLoader().getNotLoadedModulesAmount();
-    if(event.getPlayer().hasPermission("villagedefense.admin.modules") && amount > 0) {
+    if (event.getPlayer().hasPermission("villagedefense.admin.modules") && amount > 0) {
       Bukkit.getScheduler().runTaskLater(plugin, () -> {
         event.getPlayer().sendMessage("");
         event.getPlayer().sendMessage(plugin.getChatManager().colorRawMessage("&6&lVillage Defense Module Notifier"));

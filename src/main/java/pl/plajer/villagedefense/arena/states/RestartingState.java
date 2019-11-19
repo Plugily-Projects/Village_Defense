@@ -24,13 +24,11 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
-import pl.plajer.villagedefense.ConfigPreferences;
 import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.arena.Arena;
 import pl.plajer.villagedefense.arena.ArenaManager;
 import pl.plajer.villagedefense.arena.ArenaState;
 import pl.plajer.villagedefense.handlers.language.Messages;
-import pl.plajer.villagedefense.utils.constants.Constants;
 import pl.plajerlair.commonsbox.minecraft.configuration.ConfigUtils;
 
 /**
@@ -60,7 +58,7 @@ public class RestartingState implements ArenaStateHandler {
       if (ConfigUtils.getConfig(plugin, "bungee").getBoolean("Shutdown-When-Game-Ends", false)) {
         plugin.getServer().shutdown();
       }
-      for(Player player : Bukkit.getOnlinePlayers()) {
+      for (Player player : Bukkit.getOnlinePlayers()) {
         ArenaManager.joinAttempt(player, arena);
       }
     }

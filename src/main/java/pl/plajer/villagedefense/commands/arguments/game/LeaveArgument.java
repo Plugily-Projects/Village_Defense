@@ -23,7 +23,6 @@ import java.util.logging.Level;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import pl.plajer.villagedefense.ConfigPreferences;
 import pl.plajer.villagedefense.arena.Arena;
 import pl.plajer.villagedefense.arena.ArenaManager;
 import pl.plajer.villagedefense.arena.ArenaRegistry;
