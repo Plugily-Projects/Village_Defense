@@ -52,17 +52,6 @@ public class JoinEvent implements Listener {
     if (plugin.getConfigPreferences().getOption(ConfigPreferences.Option.INVENTORY_MANAGER_ENABLED)) {
       InventorySerializer.loadInventory(plugin, event.getPlayer());
     }
-
-    int amount = plugin.getModuleLoader().getNotLoadedModulesAmount();
-    if (event.getPlayer().hasPermission("villagedefense.admin.modules") && amount > 0) {
-      Bukkit.getScheduler().runTaskLater(plugin, () -> {
-        event.getPlayer().sendMessage("");
-        event.getPlayer().sendMessage(plugin.getChatManager().colorRawMessage("&6&lVillage Defense Module Notifier"));
-        event.getPlayer().sendMessage("");
-        event.getPlayer().sendMessage(plugin.getChatManager().colorRawMessage("&eThere are &4&l" + amount + " modules &ethat failed to load! " +
-            "Check them out via &6/vda modules"));
-      }, 30);
-    }
   }
 
   @EventHandler

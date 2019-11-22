@@ -24,6 +24,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
+import pl.plajer.villagedefense.ConfigPreferences;
 import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.arena.Arena;
 import pl.plajer.villagedefense.arena.ArenaManager;
@@ -54,7 +55,7 @@ public class RestartingState implements ArenaStateHandler {
     arena.resetOptionValues();
     arena.getDroppedFleshes().stream().filter(Objects::nonNull).forEach(Entity::remove);
     arena.getDroppedFleshes().clear();
-    if (plugin.getModuleLoader().isModulePresent("Bungee Cord")) {
+    if (plugin.getConfigPreferences().getOption(ConfigPreferences.Option.BUNGEE_ENABLED)) {
       if (ConfigUtils.getConfig(plugin, "bungee").getBoolean("Shutdown-When-Game-Ends", false)) {
         plugin.getServer().shutdown();
       }

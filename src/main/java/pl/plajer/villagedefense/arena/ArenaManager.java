@@ -177,7 +177,7 @@ public class ArenaManager {
       return false;
     }
 
-    if (!plugin.getModuleLoader().isModulePresent("Bungee Cord")) {
+    if (plugin.getConfigPreferences().getOption(ConfigPreferences.Option.BUNGEE_ENABLED)) {
       String perm = PermissionsManager.getJoinPerm();
       if (!(player.hasPermission(perm.replace("<arena>", "*")) || player.hasPermission(perm.replace("<arena>", arena.getId())))) {
         player.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage(Messages.JOIN_NO_PERMISSION)

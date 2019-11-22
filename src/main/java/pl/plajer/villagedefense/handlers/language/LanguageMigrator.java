@@ -39,7 +39,7 @@ import pl.plajerlair.commonsbox.minecraft.migrator.MigratorUtils;
 public class LanguageMigrator {
 
   public static final int LANGUAGE_FILE_VERSION = 10;
-  public static final int CONFIG_FILE_VERSION = 8;
+  public static final int CONFIG_FILE_VERSION = 9;
   private Main plugin;
   private List<String> migratable = Arrays.asList(Constants.Files.CONFIG.getName(), Constants.Files.KITS.getName(),
       Constants.Files.KITS.getName(), Constants.Files.LANGUAGE.getName(), Constants.Files.SPECIAL_ITEMS.getName(), Constants.Files.MYSQL.getName());
@@ -71,7 +71,7 @@ public class LanguageMigrator {
     updateConfigVersionControl(version);
 
     for (int i = version; i < CONFIG_FILE_VERSION; i++) {
-      switch (version) {
+      switch (i) {
         case 1:
           MigratorUtils.addNewLines(file, "# Power ups section. If you want to have classic Village Defense game mode i recommend to disable this.\r\nPowerups:\r\n"
               + "  # Do you want to enable in-game power ups?\r\n  # This will make zombies to drop some power ups when they're killed\r\n"
@@ -106,7 +106,7 @@ public class LanguageMigrator {
               + "  # Limit of waves, if this wave ends game will end\r\n  Limit: 25");
           break;
         case 7:
-          /*Moved to modules
+          /*Moved to entity_upgrades.yml
           MigratorUtils.addNewLines(file, "# Entity upgrades section\r\n"
               + "Entity-Upgrades:\r\n" + "  # Should entity (wolves and golems) upgrades be enabled?\r\n"
               + "  # If you want to have classic Village Defense game mode i recommend to disable this.\r\n"
@@ -116,10 +116,23 @@ public class LanguageMigrator {
               + "  Speed-Tiers:\r\n" + "    '1': 50\r\n" + "    '2': 100\r\n" + "    '3': 150\r\n" + "    '4': 250\r\n"
               + "  Final-Defense-Tiers:\r\n" + "    '1': 200\r\n" + "    '2': 350\r\n" + "  Swarm-Awareness-Tiers:\r\n" + "    '1': 200\r\n" + "    '2': 350");*/
           break;
+        case 8:
+          MigratorUtils.addNewLines(file, "\r\n# Should we hook into bungee cord? (If you wanna use arena per server option)\r\n" +
+              "# You STILL need to use external addon for HUB server game signs\r\n" +
+              "# Check here for more info: https://wiki.plajer.xyz/minecraft/villagedefense/addons.php#bungee-signs-not-official\r\n" +
+              "BungeeActivated: false\r\n" +
+              "\r\n" +
+              "# Should we hook into Holograpic Displays? (If you wanna use (leaderboard)holograms)\r\n" +
+              "# You will be able to create holograms\r\n" +
+              "HologramsActivated: false\r\n" +
+              "\r\n" +
+              "# Should we add support for upgradeable Wolves and Golems in game?\r\n" +
+              "# Configure upgrades pricing in entity_upgrades.yml after enabling it.\r\n" +
+              "UpgradesActivated: false\r\n");
+          break;
         default:
           break;
       }
-      version++;
     }
     plugin.reloadConfig();
     Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "[Village Defense] [System notify] Config updated, no comments were removed :)");

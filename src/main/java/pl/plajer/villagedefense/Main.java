@@ -40,12 +40,12 @@ import org.bukkit.potion.PotionEffect;
 import org.jetbrains.annotations.TestOnly;
 
 import pl.plajer.villagedefense.api.StatsStorage;
-import pl.plajer.villagedefense.api.module.ModuleHelper;
 import pl.plajer.villagedefense.arena.Arena;
 import pl.plajer.villagedefense.arena.ArenaEvents;
 import pl.plajer.villagedefense.arena.ArenaManager;
 import pl.plajer.villagedefense.arena.ArenaRegistry;
 import pl.plajer.villagedefense.arena.ArenaUtils;
+import pl.plajer.villagedefense.arena.managers.BungeeManager;
 import pl.plajer.villagedefense.commands.arguments.ArgumentsRegistry;
 import pl.plajer.villagedefense.creatures.CreatureUtils;
 import pl.plajer.villagedefense.creatures.DoorBreakListener;
@@ -55,23 +55,26 @@ import pl.plajer.villagedefense.events.Events;
 import pl.plajer.villagedefense.events.JoinEvent;
 import pl.plajer.villagedefense.events.LobbyEvents;
 import pl.plajer.villagedefense.events.QuitEvent;
+import pl.plajer.villagedefense.events.bungee.MiscEvents;
 import pl.plajer.villagedefense.events.spectator.SpectatorEvents;
 import pl.plajer.villagedefense.events.spectator.SpectatorItemEvents;
 import pl.plajer.villagedefense.handlers.ChatManager;
 import pl.plajer.villagedefense.handlers.HolidayManager;
 import pl.plajer.villagedefense.handlers.PermissionsManager;
 import pl.plajer.villagedefense.handlers.PlaceholderManager;
+import pl.plajer.villagedefense.handlers.hologram.HologramsRegistry;
 import pl.plajer.villagedefense.handlers.items.SpecialItemManager;
+import pl.plajer.villagedefense.handlers.language.LanguageFileUpdater;
 import pl.plajer.villagedefense.handlers.language.LanguageManager;
 import pl.plajer.villagedefense.handlers.language.Messages;
-import pl.plajer.villagedefense.handlers.module.ModuleLoader;
-import pl.plajer.villagedefense.handlers.module.ModuleVisualizer;
-import pl.plajer.villagedefense.handlers.module.ModuleWrapper;
 import pl.plajer.villagedefense.handlers.powerup.PowerupRegistry;
 import pl.plajer.villagedefense.handlers.reward.RewardsFactory;
 import pl.plajer.villagedefense.handlers.setup.SetupInventory;
 import pl.plajer.villagedefense.handlers.sign.ArenaSign;
 import pl.plajer.villagedefense.handlers.sign.SignManager;
+import pl.plajer.villagedefense.handlers.upgrade.EntityUpgradeMenu;
+import pl.plajer.villagedefense.handlers.upgrade.upgrades.Upgrade;
+import pl.plajer.villagedefense.handlers.upgrade.upgrades.UpgradeBuilder;
 import pl.plajer.villagedefense.kits.KitMenuHandler;
 import pl.plajer.villagedefense.kits.KitRegistry;
 import pl.plajer.villagedefense.kits.basekits.Kit;
@@ -98,6 +101,7 @@ import pl.plajerlair.commonsbox.minecraft.serialization.InventorySerializer;
 public class Main extends JavaPlugin {
 
   private ExceptionLogHandler exceptionLogHandler;
+  private BungeeManager bungeeManager;
   private ChatManager chatManager;
   private UserManager userManager;
   private ConfigPreferences configPreferences;
@@ -109,7 +113,9 @@ public class Main extends JavaPlugin {
   private PowerupRegistry powerupRegistry;
   private RewardsFactory rewardsHandler;
   private HolidayManager holidayManager;
-  private ModuleLoader moduleLoader;
+  private FileConfiguration languageConfig;
+  private HologramsRegistry hologramsRegistry;
+  private FileConfiguration entityUpgradesConfig;
   private boolean forceDisable = false;
   private String version;
 
@@ -143,12 +149,28 @@ public class Main extends JavaPlugin {
     return version.equalsIgnoreCase("v1_14_R1");
   }
 
+  public BungeeManager getBungeeManager() {
+    return bungeeManager;
+  }
+
   public SignManager getSignManager() {
     return signManager;
   }
 
   public KitMenuHandler getKitMenuHandler() {
     return kitMenuHandler;
+  }
+
+  public HologramsRegistry getHologramsRegistry() {
+    return hologramsRegistry;
+  }
+
+  public FileConfiguration getLanguageConfig() {
+    return languageConfig;
+  }
+
+  public FileConfiguration getEntityUpgradesConfig() {
+    return entityUpgradesConfig;
   }
 
   public String getVersion() {
@@ -183,8 +205,7 @@ public class Main extends JavaPlugin {
     setupFiles();
     new LegacyDataFixer(this);
     initializeClasses();
-
-    moduleLoader = new ModuleLoader(this);
+    this.languageConfig = ConfigUtils.getConfig(this, "language");
     checkUpdate();
     Debugger.debug(Level.INFO, "[System] Initialization finished took {0}ms", System.currentTimeMillis() - start);
   }
@@ -245,6 +266,28 @@ public class Main extends JavaPlugin {
       FileConfiguration config = ConfigUtils.getConfig(this, Constants.Files.MYSQL.getName());
       database = new MysqlDatabase(config.getString("user"), config.getString("password"), config.getString("address"));
     }
+    if (configPreferences.getOption(ConfigPreferences.Option.BUNGEE_ENABLED)) {
+      bungeeManager = new BungeeManager(this);
+      new MiscEvents(this);
+    }
+    if (configPreferences.getOption(ConfigPreferences.Option.HOLOGRAMS_ENABLED)) {
+      if (Bukkit.getServer().getPluginManager().isPluginEnabled("HolographicDisplays")) {
+        Debugger.debug(Level.INFO, "Hooking into HolographicDisplays");
+        if (!new File(getDataFolder(), "internal/holograms_data.yml").exists()) {
+          new File(getDataFolder().getPath() + "/internal").mkdir();
+        }
+        new LanguageFileUpdater(this);
+        this.hologramsRegistry = new HologramsRegistry(this);
+      } else {
+        Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "You need to install HolographicDisplays to use holograms!");
+      }
+    }
+    if (configPreferences.getOption(ConfigPreferences.Option.UPGRADES_ENABLED)) {
+      this.entityUpgradesConfig = ConfigUtils.getConfig(this, "entity_upgrades");
+      Upgrade.init(this);
+      UpgradeBuilder.init(this);
+      new EntityUpgradeMenu(this);
+    }
     userManager = new UserManager(this);
     new DoorBreakListener(this);
 
@@ -267,14 +310,11 @@ public class Main extends JavaPlugin {
     SetupInventory.init(this);
     ArenaUtils.init(this);
     Arena.init(this);
-    ModuleHelper.init(this);
-    ModuleVisualizer.init(this);
   }
 
   private void setupPluginMetrics() {
     Metrics metrics = new Metrics(this);
     metrics.addCustomChart(new Metrics.SimplePie("database_enabled", () -> String.valueOf(configPreferences.getOption(ConfigPreferences.Option.DATABASE_ENABLED))));
-    metrics.addCustomChart(new Metrics.SimplePie("bungeecord_hooked", () -> String.valueOf(moduleLoader.isModulePresent("Bungee Cord"))));
     metrics.addCustomChart(new Metrics.SimplePie("locale_used", () -> LanguageManager.getPluginLocale().getPrefix()));
     metrics.addCustomChart(new Metrics.SimplePie("update_notifier", () -> {
       if (getConfig().getBoolean("Update-Notifier.Enabled", true)) {
@@ -369,10 +409,6 @@ public class Main extends JavaPlugin {
     return registry;
   }
 
-  public ModuleLoader getModuleLoader() {
-    return moduleLoader;
-  }
-
   @Override
   public void onDisable() {
     if (forceDisable) {
@@ -401,19 +437,14 @@ public class Main extends JavaPlugin {
       arena.getPlayers().forEach(arena::teleportToEndLocation);
     }
     saveAllUserStatistics();
+    if (configPreferences.getOption(ConfigPreferences.Option.HOLOGRAMS_ENABLED)) {
+      hologramsRegistry.disableHolograms();
+    }
+    //hmm? Can be removed?
     if (getServer().getPluginManager().isPluginEnabled("HolographicDisplays")) {
       for (Hologram holo : HologramsAPI.getHolograms(this)) {
         holo.delete();
       }
-    }
-    if (moduleLoader != null) {
-      for (ModuleWrapper moduleInfo : moduleLoader.getModulesInfo()) {
-        try {
-          moduleInfo.getModule().onDisable(this);
-        } catch (Exception ignored) {
-        }
-      }
-      moduleLoader.disable();
     }
     if (configPreferences.getOption(ConfigPreferences.Option.DATABASE_ENABLED)) {
       getMysqlDatabase().shutdownConnPool();

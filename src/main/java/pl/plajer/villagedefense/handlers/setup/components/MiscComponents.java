@@ -40,6 +40,7 @@ import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.Door;
 
+import pl.plajer.villagedefense.ConfigPreferences;
 import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.arena.Arena;
 import pl.plajer.villagedefense.handlers.language.Messages;
@@ -75,7 +76,7 @@ public class MiscComponents implements SetupComponent {
     Arena arena = setupInventory.getArena();
     Main plugin = setupInventory.getPlugin();
     ItemStack bungeeItem;
-    if (!plugin.getModuleLoader().isModulePresent("Bungee Cord")) {
+    if (!plugin.getConfigPreferences().getOption(ConfigPreferences.Option.BUNGEE_ENABLED)) {
       bungeeItem = new ItemBuilder(Material.SIGN)
           .name(plugin.getChatManager().colorRawMessage("&e&lAdd Game Sign"))
           .lore(ChatColor.GRAY + "Target a sign and click this.")
@@ -90,7 +91,7 @@ public class MiscComponents implements SetupComponent {
           .build();
     }
     pane.addItem(new GuiItem(bungeeItem, e -> {
-      if (plugin.getModuleLoader().isModulePresent("Bungee Cord")) {
+      if (plugin.getConfigPreferences().getOption(ConfigPreferences.Option.BUNGEE_ENABLED)) {
         return;
       }
       e.getWhoClicked().closeInventory();

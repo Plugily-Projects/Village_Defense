@@ -25,6 +25,8 @@ That's all, matcher will stop when detects next line started with `###` match
 * Fix plugin crash when you forgot a value in specialitems file
 * Clearer way of error reporting
 * Fix alive player heads texture
+* Removed Modules (Integrated all in one)
+* Changed the MOTD Manager
 
 ### 4.2.2 Release (14.06.2019 - 13.07.2019)
 * Fixed setup menu completed/not completed values were buggy

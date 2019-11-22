@@ -24,7 +24,7 @@
 
     <groupId>pl.plajer</groupId>
     <artifactId>villagedefense</artifactId>
-    <version>4.2.2-modules-beta-2</version>
+    <version>4.3.0-removed-modules-b</version>
     <name>VillageDefense</name>
 
     <properties>
