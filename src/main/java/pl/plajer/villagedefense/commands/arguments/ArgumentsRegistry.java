@@ -36,6 +36,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
+import pl.plajer.villagedefense.ConfigPreferences;
 import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.arena.Arena;
 import pl.plajer.villagedefense.arena.ArenaRegistry;
@@ -119,7 +120,9 @@ public class ArgumentsRegistry implements CommandExecutor {
     new SetPriceArgument(this);
     spyChat = new SpyChatArgument(this);
     new TeleportArgument(this);
-    new HologramArgument(this);
+    if (plugin.getConfigPreferences().getOption(ConfigPreferences.Option.HOLOGRAMS_ENABLED)) {
+      new HologramArgument(this);
+    }
   }
 
   @Override
