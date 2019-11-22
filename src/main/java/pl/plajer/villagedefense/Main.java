@@ -204,8 +204,8 @@ public class Main extends JavaPlugin {
     configPreferences = new ConfigPreferences(this);
     setupFiles();
     new LegacyDataFixer(this);
-    initializeClasses();
     this.languageConfig = ConfigUtils.getConfig(this, "language");
+    initializeClasses();
     checkUpdate();
     Debugger.debug(Level.INFO, "[System] Initialization finished took {0}ms", System.currentTimeMillis() - start);
   }
