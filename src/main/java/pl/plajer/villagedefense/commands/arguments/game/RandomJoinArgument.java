@@ -18,7 +18,7 @@ import pl.plajer.villagedefense.handlers.language.Messages;
 public class RandomJoinArgument {
 
   public RandomJoinArgument(ArgumentsRegistry registry) {
-    registry.getPlugin().getArgumentsRegistry().mapArgument("villagedefense", new CommandArgument("randomjoin", "", CommandArgument.ExecutorType.PLAYER) {
+    registry.mapArgument("villagedefense", new CommandArgument("randomjoin", "", CommandArgument.ExecutorType.PLAYER) {
 
       @Override
       public void execute(CommandSender sender, String[] args) {

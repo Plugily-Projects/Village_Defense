@@ -26,7 +26,7 @@ public class HologramArgument {
 
   public HologramArgument(ArgumentsRegistry registry) {
     this.registry = registry;
-    registry.getPlugin().getArgumentsRegistry().mapArgument("villagedefenseadmin", new LabeledCommandArgument("hologram", "villagedefense.admin.hologram.manage", CommandArgument.ExecutorType.PLAYER,
+    registry.mapArgument("villagedefenseadmin", new LabeledCommandArgument("hologram", "villagedefense.admin.hologram.manage", CommandArgument.ExecutorType.PLAYER,
         new LabelData("/vda hologram &6<action>", "/vda hologram <action>", "&7Command handles 3 arguments:\n&7• /vda hologram add <statistic type> <amount> - creates new hologram"
             + "of target statistic\n&7with top X amount of players (max 20)\n&7• /vda hologram remove <id> - removes hologram of target ID\n"
             + "&7• /vda hologram list - prints list of all leaderboard holograms")) {
