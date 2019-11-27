@@ -348,6 +348,10 @@ public abstract class Arena extends BukkitRunnable {
   }
 
   public void teleportToEndLocation(Player player) {
+    if (plugin.getConfigPreferences().getOption(ConfigPreferences.Option.BUNGEE_ENABLED)) {
+      plugin.getBungeeManager().connectToHub(player);
+      Debugger.debug(Level.INFO, "{0} has left the arena {1}! Teleported to the Hub server.", player.getName(), this);
+    }
     player.teleport(getEndLocation());
   }
 

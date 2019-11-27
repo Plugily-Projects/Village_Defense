@@ -6,6 +6,7 @@ import com.google.common.io.ByteStreams;
 
 import java.util.EnumMap;
 import java.util.Map;
+import java.util.logging.Level;
 
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -22,6 +23,7 @@ import pl.plajer.villagedefense.arena.Arena;
 import pl.plajer.villagedefense.arena.ArenaManager;
 import pl.plajer.villagedefense.arena.ArenaRegistry;
 import pl.plajer.villagedefense.arena.ArenaState;
+import pl.plajer.villagedefense.utils.Debugger;
 import pl.plajerlair.commonsbox.minecraft.configuration.ConfigUtils;
 
 /**
@@ -51,6 +53,7 @@ public class BungeeManager implements Listener {
     if (!config.getBoolean("Shutdown-When-Game-Ends", true)) {
       return;
     }
+    Debugger.debug(Level.INFO, "Server name that we try to connect {0} ({1})", getHubServerName(), player.getName());
     ByteArrayDataOutput out = ByteStreams.newDataOutput();
     out.writeUTF("Connect");
     out.writeUTF(getHubServerName());
@@ -67,10 +70,6 @@ public class BungeeManager implements Listener {
     return config.getString("Hub");
   }
 
-  @EventHandler
-  public void onGameLeave(VillageGameLeaveAttemptEvent event) {
-    connectToHub(event.getPlayer());
-  }
 
   @EventHandler(priority = EventPriority.HIGHEST)
   public void onServerListPing(ServerListPingEvent event) {

@@ -263,10 +263,12 @@ public class Main extends JavaPlugin {
     KitRegistry.init(this);
     User.cooldownHandlerTask();
     if (configPreferences.getOption(ConfigPreferences.Option.DATABASE_ENABLED)) {
+      Debugger.debug(Level.INFO, "Database enabled");
       FileConfiguration config = ConfigUtils.getConfig(this, Constants.Files.MYSQL.getName());
       database = new MysqlDatabase(config.getString("user"), config.getString("password"), config.getString("address"));
     }
     if (configPreferences.getOption(ConfigPreferences.Option.BUNGEE_ENABLED)) {
+      Debugger.debug(Level.INFO, "Bungee enabled");
       bungeeManager = new BungeeManager(this);
       new MiscEvents(this);
     }
