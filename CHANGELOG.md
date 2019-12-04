@@ -9,7 +9,7 @@ deploy webhooks to print changelog successfully
 
 That's all, matcher will stop when detects next line started with `###` match
 
-### DEV
+### 4.3.0 Release (01.11.2019 - 04.12.2019)
 * The map will now remove dropped items & orbs after game finish
 * Fixed some bugs that trigger events on physical action (for example spectator gui opens on redstone block)
 * Fixed fast respawn bug

@@ -66,6 +66,7 @@ public class LanguageMigrator {
     }
     Bukkit.getConsoleSender().sendMessage(ChatColor.YELLOW + "[Village Defense] System notify >> Your config file is outdated! Updating...");
     File file = new File(plugin.getDataFolder() + "/config.yml");
+    File bungeefile = new File(plugin.getDataFolder() + "/bungee.yml");
 
     int version = plugin.getConfig().getInt("Version", CONFIG_FILE_VERSION - 1);
 
@@ -116,11 +117,12 @@ public class LanguageMigrator {
               + "  Final-Defense-Tiers:\r\n" + "    '1': 200\r\n" + "    '2': 350\r\n" + "  Swarm-Awareness-Tiers:\r\n" + "    '1': 200\r\n" + "    '2': 350");*/
           break;
         case 8:
+          /*Was only needed from modules version
           MigratorUtils.addNewLines(file, "\r\n# Should we hook into bungee cord? (If you wanna use arena per server option)\r\n" +
-              "# You STILL need to use external addon for HUB server game signs\r\n" +
-              "# Check here for more info: https://wiki.plajer.xyz/minecraft/villagedefense/addons.php#bungee-signs-not-official\r\n" +
-              "BungeeActivated: false\r\n" +
-              "\r\n" +
+          /    "# You STILL need to use external addon for HUB server game signs\r\n" +
+          /    "# Check here for more info: https://wiki.plajer.xyz/minecraft/villagedefense/addons.php#bungee-signs-not-official\r\n" +
+          /    "BungeeActivated: false\r\n");*/
+          MigratorUtils.addNewLines(file, "\r\n" +
               "# Should we hook into Holograpic Displays? (If you wanna use (leaderboard)holograms)\r\n" +
               "# You will be able to create holograms\r\n" +
               "HologramsActivated: false\r\n" +
@@ -128,6 +130,22 @@ public class LanguageMigrator {
               "# Should we add support for upgradeable Wolves and Golems in game?\r\n" +
               "# Configure upgrades pricing in entity_upgrades.yml after enabling it.\r\n" +
               "UpgradesActivated: false\r\n");
+          MigratorUtils.removeLineFromFile(bungeefile, "# This is useful for bungee game systems.");
+          MigratorUtils.removeLineFromFile(bungeefile, "# Game state will be visible at MOTD.");
+          MigratorUtils.removeLineFromFile(bungeefile, "MOTD-manager: false");
+          MigratorUtils.removeLineFromFile(bungeefile, "MOTD-manager: true");
+          MigratorUtils.addNewLines(bungeefile, "\r\n# This is useful for bungee game systems.\r\n" +
+              "# %state% - Game state will be visible at MOTD.\r\n" +
+              "MOTD:\r\n" +
+              "  Manager: false\r\n" +
+              "  Message: \"The actual game state of bb is %state%\"\r\n" +
+              "  Game-States:\r\n" +
+              "    Inactive: \"&lInactive...\"\r\n" +
+              "    In-Game: \"&lIn-game\"\r\n" +
+              "    Starting: \"&e&lStarting\"\r\n" +
+              "    Full-Game: \"&4&lFULL\"\r\n" +
+              "    Ending: \"&lEnding\"\r\n" +
+              "    Restarting: \"&c&lRestarting\"\r\n");
           break;
         default:
           break;

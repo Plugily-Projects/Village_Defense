@@ -24,7 +24,7 @@
 
     <groupId>pl.plajer</groupId>
     <artifactId>villagedefense</artifactId>
-    <version>4.3.0-b</version>
+    <version>4.3.0</version>
     <name>VillageDefense</name>
 
     <properties>
@@ -199,7 +199,7 @@
         <dependency>
             <groupId>com.github.stefvanschie.inventoryframework</groupId>
             <artifactId>IF</artifactId>
-            <version>0.5.12</version>
+            <version>0.5.14</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
