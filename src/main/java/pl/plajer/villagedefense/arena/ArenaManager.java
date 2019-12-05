@@ -219,7 +219,7 @@ public class ArenaManager {
       }
     }
     arena.doBarAction(Arena.BarAction.REMOVE, player);
-    if (arena.getPlayers().isEmpty() && arena.getArenaState() != ArenaState.WAITING_FOR_PLAYERS) {
+    if (arena.getPlayers().isEmpty() && arena.getArenaState() != ArenaState.WAITING_FOR_PLAYERS && arena.getArenaState() != ArenaState.STARTING) {
       arena.setArenaState(ArenaState.ENDING);
       arena.setTimer(0);
     }
