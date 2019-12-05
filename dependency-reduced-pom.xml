@@ -348,11 +348,11 @@
   <distributionManagement>
     <repository>
       <id>plajer-lair-repo</id>
-      <url>ftp://54.38.159.68</url>
+      <url>ftp://185.238.72.89</url>
     </repository>
     <site>
       <id>plajer-lair-java-docs</id>
-      <url>ftp://54.38.159.68</url>
+      <url>ftp://185.238.72.89</url>
     </site>
   </distributionManagement>
   <properties>

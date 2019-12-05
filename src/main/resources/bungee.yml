@@ -11,7 +11,7 @@ Shutdown-When-Game-Ends: true
 # %state% - Game state will be visible at MOTD.
 MOTD:
   Manager: false
-  Message: "The actual game state of bb is %state%"
+  Message: "The actual game state of vd is %state%"
   Game-States:
     Inactive: "&lInactive..."
     In-Game: "&lIn-game"

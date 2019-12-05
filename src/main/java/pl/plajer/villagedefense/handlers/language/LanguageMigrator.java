@@ -138,7 +138,7 @@ public class LanguageMigrator {
               "# %state% - Game state will be visible at MOTD.\r\n" +
               "MOTD:\r\n" +
               "  Manager: false\r\n" +
-              "  Message: \"The actual game state of bb is %state%\"\r\n" +
+              "  Message: \"The actual game state of vd is %state%\"\r\n" +
               "  Game-States:\r\n" +
               "    Inactive: \"&lInactive...\"\r\n" +
               "    In-Game: \"&lIn-game\"\r\n" +
