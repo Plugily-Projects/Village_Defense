@@ -27,6 +27,7 @@ That's all, matcher will stop when detects next line started with `###` match
 * Fix alive player heads texture
 * Removed Modules (Integrated all in one)
 * Changed the MOTD Manager
+* Arena will not be stopped anymore on ingame phase when there are null players (only resetting it to waiting for players)
 
 ### 4.2.2 Release (14.06.2019 - 13.07.2019)
 * Fixed setup menu completed/not completed values were buggy
