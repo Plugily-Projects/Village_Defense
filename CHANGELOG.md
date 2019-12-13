@@ -11,6 +11,7 @@ That's all, matcher will stop when detects next line started with `###` match
 
 ### 4.3.1 Hotfix (13.12.2019)
 * Arena will not be stopped anymore on starting phase when there are null players (only resetting it to waiting for players)
+* Added 1.15 compatibility 
 
 ### 4.3.0 Release (01.11.2019 - 04.12.2019)
 * The map will now remove dropped items & orbs after game finish

@@ -176,7 +176,7 @@ public class Utils {
   }
 
   public static void playSound(Location loc, String before1_13, String after1_13) {
-    if (plugin.is1_13_R1() || plugin.is1_13_R2() || plugin.is1_14_R1()) {
+    if (plugin.is1_13_R1() || plugin.is1_13_R2() || plugin.is1_14_R1() || plugin.is1_15_R1()) {
       loc.getWorld().playSound(loc, Sound.valueOf(after1_13), 1, 1);
     } else {
       loc.getWorld().playSound(loc, before1_13, 1, 1);

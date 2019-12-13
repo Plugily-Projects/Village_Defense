@@ -31,6 +31,7 @@ import pl.plajer.villagedefense.arena.initializers.ArenaInitializer1_12_R1;
 import pl.plajer.villagedefense.arena.initializers.ArenaInitializer1_13_R1;
 import pl.plajer.villagedefense.arena.initializers.ArenaInitializer1_13_R2;
 import pl.plajer.villagedefense.arena.initializers.ArenaInitializer1_14_R1;
+import pl.plajer.villagedefense.arena.initializers.ArenaInitializer1_15_R1;
 import pl.plajer.villagedefense.handlers.PermissionsManager;
 import pl.plajer.villagedefense.handlers.language.Messages;
 import pl.plajer.villagedefense.kits.KitRegistry;
@@ -101,6 +102,9 @@ public class DogFriendKit extends PremiumKit {
       initializer.spawnWolf(initializer.getStartLocation(), player);
     } else if (getPlugin().is1_14_R1()) {
       ArenaInitializer1_14_R1 initializer = (ArenaInitializer1_14_R1) arena;
+      initializer.spawnWolf(initializer.getStartLocation(), player);
+    } else if (getPlugin().is1_15_R1()) {
+      ArenaInitializer1_15_R1 initializer = (ArenaInitializer1_15_R1) arena;
       initializer.spawnWolf(initializer.getStartLocation(), player);
     }
   }
