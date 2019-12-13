@@ -9,6 +9,9 @@ deploy webhooks to print changelog successfully
 
 That's all, matcher will stop when detects next line started with `###` match
 
+### 4.3.1 Hotfix (13.12.2019)
+* Arena will not be stopped anymore on starting phase when there are null players (only resetting it to waiting for players)
+
 ### 4.3.0 Release (01.11.2019 - 04.12.2019)
 * The map will now remove dropped items & orbs after game finish
 * Fixed some bugs that trigger events on physical action (for example spectator gui opens on redstone block)
@@ -27,7 +30,6 @@ That's all, matcher will stop when detects next line started with `###` match
 * Fix alive player heads texture
 * Removed Modules (Integrated all in one)
 * Changed the MOTD Manager
-* Arena will not be stopped anymore on starting phase when there are null players (only resetting it to waiting for players)
 
 ### 4.2.2 Release (14.06.2019 - 13.07.2019)
 * Fixed setup menu completed/not completed values were buggy
