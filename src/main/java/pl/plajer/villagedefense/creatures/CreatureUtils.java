@@ -113,4 +113,8 @@ public class CreatureUtils {
   public static String[] getVillagerNames() {
     return villagerNames.clone();
   }
+
+  public static Main getPlugin() {
+    return plugin;
+  }
 }

@@ -47,6 +47,7 @@ import pl.plajer.villagedefense.creatures.v1_15_R1.PlayerBuster;
 import pl.plajer.villagedefense.creatures.v1_15_R1.RidableIronGolem;
 import pl.plajer.villagedefense.creatures.v1_15_R1.RidableVillager;
 import pl.plajer.villagedefense.creatures.v1_15_R1.TankerZombie;
+import pl.plajer.villagedefense.creatures.v1_15_R1.VillagerBuster;
 import pl.plajer.villagedefense.creatures.v1_15_R1.VillagerSlayer;
 import pl.plajer.villagedefense.creatures.v1_15_R1.WorkingWolf;
 import pl.plajer.villagedefense.handlers.language.Messages;
@@ -104,11 +105,11 @@ public class ArenaInitializer1_15_R1 extends Arena {
   @Override
   public void spawnKnockbackResistantZombies(Random random) {
     Location location = getZombieSpawns().get(random.nextInt(getZombieSpawns().size()));
-    TankerZombie fastZombie = new TankerZombie(world);
-    fastZombie.getAttributeInstance(GenericAttributes.KNOCKBACK_RESISTANCE).setValue(Double.MAX_VALUE);
-    fastZombie.setPosition(location.getX(), location.getY(), location.getZ());
-    world.addEntity(fastZombie, CreatureSpawnEvent.SpawnReason.CUSTOM);
-    Zombie zombie = (Zombie) fastZombie.getBukkitEntity();
+    TankerZombie tankerZombie = new TankerZombie(world);
+    tankerZombie.getAttributeInstance(GenericAttributes.KNOCKBACK_RESISTANCE).setValue(Double.MAX_VALUE);
+    tankerZombie.setPosition(location.getX(), location.getY(), location.getZ());
+    world.addEntity(tankerZombie, CreatureSpawnEvent.SpawnReason.CUSTOM);
+    Zombie zombie = (Zombie) tankerZombie.getBukkitEntity();
     InitializerHelper.prepareKnockbackResistantZombie(zombie, this);
     this.addZombie(zombie);
 
@@ -118,14 +119,14 @@ public class ArenaInitializer1_15_R1 extends Arena {
   @Override
   public void spawnBabyZombie(Random random) {
     Location location = getZombieSpawns().get(random.nextInt(getZombieSpawns().size()));
-    BabyZombie fastZombie = new BabyZombie(world);
-    fastZombie.setPosition(location.getX(), location.getY(), location.getZ());
-    Zombie zombie = (Zombie) fastZombie.getBukkitEntity();
+    BabyZombie babyZombie = new BabyZombie(world);
+    babyZombie.setPosition(location.getX(), location.getY(), location.getZ());
+    Zombie zombie = (Zombie) babyZombie.getBukkitEntity();
     CreatureUtils.applyAttributes(zombie, this);
     plugin.getHolidayManager().applyHolidayZombieEffects(zombie);
     zombie.setRemoveWhenFarAway(false);
-    world.addEntity(fastZombie, CreatureSpawnEvent.SpawnReason.CUSTOM);
-    this.addZombie((Zombie) fastZombie.getBukkitEntity());
+    world.addEntity(babyZombie, CreatureSpawnEvent.SpawnReason.CUSTOM);
+    this.addZombie((Zombie) babyZombie.getBukkitEntity());
 
     super.setOptionValue(ArenaOption.ZOMBIES_TO_SPAWN, getOption(ArenaOption.ZOMBIES_TO_SPAWN) - 1);
   }
@@ -133,10 +134,10 @@ public class ArenaInitializer1_15_R1 extends Arena {
   @Override
   public void spawnHardZombie(Random random) {
     Location location = getZombieSpawns().get(random.nextInt(getZombieSpawns().size()));
-    HardZombie fastZombie = new HardZombie(world);
-    fastZombie.setPosition(location.getX(), location.getY(), location.getZ());
-    world.addEntity(fastZombie, CreatureSpawnEvent.SpawnReason.CUSTOM);
-    Zombie zombie = (Zombie) fastZombie.getBukkitEntity();
+    HardZombie hardZombie = new HardZombie(world);
+    hardZombie.setPosition(location.getX(), location.getY(), location.getZ());
+    world.addEntity(hardZombie, CreatureSpawnEvent.SpawnReason.CUSTOM);
+    Zombie zombie = (Zombie) hardZombie.getBukkitEntity();
     InitializerHelper.prepareHardZombie(zombie, this);
     this.addZombie(zombie);
     super.setOptionValue(ArenaOption.ZOMBIES_TO_SPAWN, getOption(ArenaOption.ZOMBIES_TO_SPAWN) - 1);
@@ -145,10 +146,10 @@ public class ArenaInitializer1_15_R1 extends Arena {
   @Override
   public void spawnSoftHardZombie(Random random) {
     Location location = getZombieSpawns().get(random.nextInt(getZombieSpawns().size()));
-    HardZombie fastZombie = new HardZombie(world);
-    fastZombie.setPosition(location.getX(), location.getY(), location.getZ());
-    world.addEntity(fastZombie, CreatureSpawnEvent.SpawnReason.CUSTOM);
-    Zombie zombie = (Zombie) fastZombie.getBukkitEntity();
+    HardZombie hardZombie = new HardZombie(world);
+    hardZombie.setPosition(location.getX(), location.getY(), location.getZ());
+    world.addEntity(hardZombie, CreatureSpawnEvent.SpawnReason.CUSTOM);
+    Zombie zombie = (Zombie) hardZombie.getBukkitEntity();
     InitializerHelper.prepareSoftHardZombie(zombie, this);
     this.addZombie(zombie);
     super.setOptionValue(ArenaOption.ZOMBIES_TO_SPAWN, getOption(ArenaOption.ZOMBIES_TO_SPAWN) - 1);
@@ -156,13 +157,11 @@ public class ArenaInitializer1_15_R1 extends Arena {
 
   public void spawnGolemBuster(Random random) {
     Location location = getZombieSpawns().get(random.nextInt(getZombieSpawns().size()));
-    GolemBuster fastZombie = new GolemBuster(world);
-    fastZombie.setPosition(location.getX(), location.getY(), location.getZ());
-    world.addEntity(fastZombie, CreatureSpawnEvent.SpawnReason.CUSTOM);
-    Zombie zombie = (Zombie) fastZombie.getBukkitEntity();
-    zombie.getEquipment().setHelmet(new ItemStack(Material.TNT));
-    zombie.getEquipment().setHelmetDropChance(0.0F);
-    zombie.getEquipment().setItemInMainHandDropChance(0F);
+    GolemBuster golemBuster = new GolemBuster(world);
+    golemBuster.setPosition(location.getX(), location.getY(), location.getZ());
+    world.addEntity(golemBuster, CreatureSpawnEvent.SpawnReason.CUSTOM);
+    Zombie zombie = (Zombie) golemBuster.getBukkitEntity();
+    InitializerHelper.prepareGolemBusterZombie(zombie, this);
     zombie.setRemoveWhenFarAway(false);
     CreatureUtils.applyAttributes(zombie, this);
     this.addZombie(zombie);
@@ -173,11 +172,24 @@ public class ArenaInitializer1_15_R1 extends Arena {
   @Override
   public void spawnPlayerBuster(Random random) {
     Location location = getZombieSpawns().get(random.nextInt(getZombieSpawns().size()));
-    PlayerBuster fastZombie = new PlayerBuster(world);
-    fastZombie.setPosition(location.getX(), location.getY(), location.getZ());
-    world.addEntity(fastZombie, CreatureSpawnEvent.SpawnReason.CUSTOM);
-    Zombie zombie = (Zombie) fastZombie.getBukkitEntity();
+    PlayerBuster playerBuster = new PlayerBuster(world);
+    playerBuster.setPosition(location.getX(), location.getY(), location.getZ());
+    world.addEntity(playerBuster, CreatureSpawnEvent.SpawnReason.CUSTOM);
+    Zombie zombie = (Zombie) playerBuster.getBukkitEntity();
     InitializerHelper.preparePlayerBusterZombie(zombie, this);
+    this.addZombie(zombie);
+
+    super.setOptionValue(ArenaOption.ZOMBIES_TO_SPAWN, getOption(ArenaOption.ZOMBIES_TO_SPAWN) - 1);
+  }
+
+  @Override
+  public void spawnVillagerBuster(Random random) {
+    Location location = getZombieSpawns().get(random.nextInt(getZombieSpawns().size()));
+    VillagerBuster villagerBuster = new VillagerBuster(world);
+    villagerBuster.setPosition(location.getX(), location.getY(), location.getZ());
+    world.addEntity(villagerBuster, CreatureSpawnEvent.SpawnReason.CUSTOM);
+    Zombie zombie = (Zombie) villagerBuster.getBukkitEntity();
+    InitializerHelper.prepareVillagerBusterZombie(zombie, this);
     this.addZombie(zombie);
 
     super.setOptionValue(ArenaOption.ZOMBIES_TO_SPAWN, getOption(ArenaOption.ZOMBIES_TO_SPAWN) - 1);

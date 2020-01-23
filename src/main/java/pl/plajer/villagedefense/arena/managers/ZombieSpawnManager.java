@@ -163,7 +163,10 @@ public class ZombieSpawnManager {
       } else {
         for (int i = 0; i <= wave; i++) {
           if (zombiesToSpawn > 0) {
-            arena.spawnBabyZombie(random);
+            arena.spawnPlayerBuster(random);
+            arena.spawnGolemBuster(random);
+            arena.spawnVillagerBuster(random);
+            // arena.spawnBabyZombie(random);
           }
         }
       }
@@ -215,6 +218,13 @@ public class ZombieSpawnManager {
       for (int i = 0; i < (wave - 4); i++) {
         if (zombiesToSpawn > 0) {
           arena.spawnGolemBuster(random);
+        }
+      }
+    }
+    if (random.nextInt(8) == 0 && !arena.getVillagers().isEmpty() && wave >= 15) {
+      for (int i = 0; i < (wave - 13); i++) {
+        if (zombiesToSpawn > 0) {
+          arena.spawnVillagerBuster(random);
         }
       }
     }

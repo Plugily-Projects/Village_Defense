@@ -9,6 +9,12 @@ deploy webhooks to print changelog successfully
 
 That's all, matcher will stop when detects next line started with `###` match
 
+### 4.3.2 Release (23.01.2020)
+* Added new Zombie VillagerBuster (wave 15 and up)
+* Fixed zombie PlayerBuster & GolemBuster
+* Fixed spectator can hit zombie_buster zombies
+* Changed Event priority to work with CMI
+
 ### 4.3.1 Hotfix (13.12.2019)
 * Arena will not be stopped anymore on starting phase when there are null players (only resetting it to waiting for players)
 * Added 1.15 compatibility 

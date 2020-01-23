@@ -192,9 +192,9 @@ public class Main extends JavaPlugin {
     Messages.init(this);
     LanguageManager.init(this);
     saveDefaultConfig();
-    Debugger.setEnabled(getConfig().getBoolean("Debug", false));
+    Debugger.setEnabled(getDescription().getVersion().contains("b") || getConfig().getBoolean("Debug", false));
     Debugger.debug(Level.INFO, "[System] Initialization start");
-    if (getConfig().getBoolean("Developer-Mode", false)) {
+    if (getDescription().getVersion().contains("b") || getConfig().getBoolean("Developer-Mode", false)) {
       Debugger.deepDebug(true);
       Debugger.debug(Level.FINE, "Deep debug enabled");
       for (String listenable : new ArrayList<>(getConfig().getStringList("Performance-Listenable"))) {

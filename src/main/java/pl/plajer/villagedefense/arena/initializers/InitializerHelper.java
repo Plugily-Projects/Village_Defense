@@ -52,6 +52,26 @@ class InitializerHelper {
     CreatureUtils.applyAttributes(zombie, arena);
   }
 
+  static void prepareVillagerBusterZombie(Zombie zombie, Arena arena) {
+    zombie.getEquipment().setHelmet(new ItemStack(Material.TNT));
+    zombie.getEquipment().setHelmetDropChance(0.0F);
+    zombie.getEquipment().setItemInMainHandDropChance(0F);
+    zombie.getEquipment().setBoots(XMaterial.LEATHER_BOOTS.parseItem());
+    zombie.getEquipment().setLeggings(XMaterial.LEATHER_LEGGINGS.parseItem());
+    zombie.getEquipment().setChestplate(XMaterial.LEATHER_CHESTPLATE.parseItem());
+    CreatureUtils.applyAttributes(zombie, arena);
+  }
+
+  static void prepareGolemBusterZombie(Zombie zombie, Arena arena) {
+    zombie.getEquipment().setHelmet(new ItemStack(Material.TNT));
+    zombie.getEquipment().setHelmetDropChance(0.0F);
+    zombie.getEquipment().setItemInMainHandDropChance(0F);
+    zombie.getEquipment().setBoots(XMaterial.IRON_BOOTS.parseItem());
+    zombie.getEquipment().setLeggings(XMaterial.IRON_LEGGINGS.parseItem());
+    zombie.getEquipment().setChestplate(XMaterial.IRON_CHESTPLATE.parseItem());
+    CreatureUtils.applyAttributes(zombie, arena);
+  }
+
   static void preparePlayerBusterZombie(Zombie zombie, Arena arena) {
     zombie.getEquipment().setHelmet(new ItemStack(Material.TNT));
     zombie.getEquipment().setHelmetDropChance(0.0F);

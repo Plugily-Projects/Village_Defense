@@ -37,11 +37,12 @@ public class EntityRegistry {
     Debugger.debug(Level.INFO, "[EntityRegistry] Registry startup");
     long start = System.currentTimeMillis();
 
-    List<String> classes = Arrays.asList("FastZombie", "BabyZombie", "PlayerBuster", "GolemBuster", "HardZombie", "TankerZombie", "VillagerSlayer", "RidableVillager", "RidableIronGolem", "WorkingWolf");
+    List<String> classes = Arrays.asList("FastZombie", "BabyZombie", "PlayerBuster", "GolemBuster", "HardZombie", "TankerZombie", "VillagerSlayer", "RidableVillager", "RidableIronGolem",
+        "WorkingWolf", "VillagerBuster");
     String version = plugin.getVersion();
     if (version.equalsIgnoreCase("v1_11_R1") || version.equalsIgnoreCase("v1_12_R1") || version.equalsIgnoreCase("v1_13_R1")
-        || version.equalsIgnoreCase("v1_13_R2") || version.equalsIgnoreCase("v1_14_R1")) {
-      if (version.equalsIgnoreCase("v1_13_R1") || version.equalsIgnoreCase("v1_13_R2") || version.equalsIgnoreCase("v1_14_R1")) {
+        || version.equalsIgnoreCase("v1_13_R2") || version.equalsIgnoreCase("v1_14_R1") || version.equalsIgnoreCase("v1_15_R1")) {
+      if (version.equalsIgnoreCase("v1_13_R1") || version.equalsIgnoreCase("v1_13_R2") || version.equalsIgnoreCase("v1_14_R1") || version.equalsIgnoreCase("v1_15_R1")) {
         Debugger.debug(Level.INFO, "[EntityRegistry] Registry skipped for 1.13 and 1.14 took {0}ms", System.currentTimeMillis() - start);
         return;
       }
@@ -66,6 +67,9 @@ public class EntityRegistry {
             .invoke(this, "VillageVillagerGolem", 99, Class.forName("pl.plajer.villagedefense.creatures." + version + "." + classes.toArray()[8]));
         this.getClass().getMethod("register" + version + "Entity", String.class, int.class, Class.class)
             .invoke(this, "VillageWolf", 95, Class.forName("pl.plajer.villagedefense.creatures." + version + "." + classes.toArray()[9]));
+        this.getClass().getMethod("register" + version + "Entity", String.class, int.class, Class.class)
+            .invoke(this, "VillageZombie", 54, Class.forName("pl.plajer.villagedefense.creatures." + version + "." + classes.toArray()[10]));
+
       } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
         plugin.getLogger().log(Level.WARNING, "Could not register custom mobs in version 1.11-1.12! Plugin won't work properly!");
         plugin.getLogger().log(Level.WARNING, "Cause: " + e.getMessage());

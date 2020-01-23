@@ -33,6 +33,7 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByBlockEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.event.entity.EntityTargetEvent;
 import org.bukkit.event.entity.EntityTargetLivingEntityEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
@@ -42,7 +43,6 @@ import org.bukkit.event.player.PlayerExpChangeEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
-import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.player.PlayerShearEntityEvent;
 
 import pl.plajer.villagedefense.Main;
@@ -160,7 +160,7 @@ public class SpectatorEvents implements Listener {
     event.setCancelled(true);
   }
 
-  @EventHandler(priority = EventPriority.HIGH)
+  @EventHandler(priority = EventPriority.HIGHEST)
   public void onDamageByBlock(EntityDamageByBlockEvent event) {
     if (!(event.getEntity() instanceof Player)) {
       return;
@@ -171,7 +171,7 @@ public class SpectatorEvents implements Listener {
     }
   }
 
-  @EventHandler(priority = EventPriority.HIGH)
+  @EventHandler(priority = EventPriority.HIGHEST)
   public void onDamageByEntity(EntityDamageByEntityEvent event) {
     if (!(event.getDamager() instanceof Player)) {
       return;
@@ -183,15 +183,18 @@ public class SpectatorEvents implements Listener {
   }
 
   @EventHandler(priority = EventPriority.HIGH)
-  public void onPickup(PlayerPickupItemEvent event) {
-    if (plugin.getUserManager().getUser(event.getPlayer()).isSpectator()) {
+  public void onPickup(EntityPickupItemEvent event) {
+    if (!(event.getEntity() instanceof Player)) {
+      return;
+    }
+    if (plugin.getUserManager().getUser((Player) event.getEntity()).isSpectator()) {
       event.setCancelled(true);
     }
   }
 
   //this will spawn orb at spec location when it's taken by spectator
   @EventHandler
-  public void onPickup(PlayerExpChangeEvent e) {
+  public void onPlayerExpChange(PlayerExpChangeEvent e) {
     if (plugin.getUserManager().getUser(e.getPlayer()).isSpectator()) {
       Location loc = e.getPlayer().getLocation();
       e.setAmount(0);
@@ -209,13 +212,6 @@ public class SpectatorEvents implements Listener {
         e.setCancelled(true);
         e.setTarget(null);
       }
-    }
-  }
-
-  @EventHandler
-  public void onSpectate(PlayerPickupItemEvent event) {
-    if (plugin.getUserManager().getUser(event.getPlayer()).isSpectator()) {
-      event.setCancelled(true);
     }
   }
 

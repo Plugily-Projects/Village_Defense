@@ -445,6 +445,8 @@ public abstract class Arena extends BukkitRunnable {
 
   public abstract void spawnGolemBuster(Random random);
 
+  public abstract void spawnVillagerBuster(Random random);
+
   public abstract void spawnSoftHardZombie(Random random);
 
   public abstract void spawnHalfInvisibleZombie(Random random);
