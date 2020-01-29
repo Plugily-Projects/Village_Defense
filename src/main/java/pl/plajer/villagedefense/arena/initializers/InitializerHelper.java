@@ -93,7 +93,7 @@ class InitializerHelper {
   }
 
   static void prepareKnockbackResistantZombie(Zombie zombie, Arena arena) {
-    zombie.getEquipment().setItemInMainHand(new ItemStack(Material.GOLD_AXE));
+    zombie.getEquipment().setItemInMainHand(XMaterial.GOLDEN_AXE.parseItem());
     zombie.getEquipment().setBoots(new ItemStack(Material.DIAMOND_BOOTS));
     zombie.getEquipment().setLeggings(new ItemStack(Material.DIAMOND_LEGGINGS));
     zombie.getEquipment().setChestplate(new ItemStack(Material.DIAMOND_CHESTPLATE));
