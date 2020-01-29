@@ -4,6 +4,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 
 import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.handlers.hologram.messages.LanguageMessage;
+import pl.plajer.villagedefense.handlers.upgrade.messages.LanguageValues;
 import pl.plajerlair.commonsbox.minecraft.configuration.ConfigUtils;
 
 /**
@@ -28,7 +29,7 @@ public class LanguageFileUpdater {
 
   public static void insertUpgradeMessages(Main plugin) {
     FileConfiguration config = ConfigUtils.getConfig(plugin, "language");
-    for (LanguageMessage message : LanguageMessage.values()) {
+    for (LanguageValues message : LanguageValues.values()) {
       if (!config.isSet(message.getAccessor())) {
         config.set(message.getAccessor(), message.getDefaultMessage());
       }
