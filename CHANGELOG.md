@@ -14,6 +14,8 @@ That's all, matcher will stop when detects next line started with `###` match
 * Fixed zombie PlayerBuster & GolemBuster
 * Fixed spectator can hit zombie_buster zombies
 * Changed Event priority to work with CMI
+* Fixed 1.15 Material issue
+* Fixed upgrade messages are not added to language.yml
 
 ### 4.3.1 Hotfix (13.12.2019)
 * Arena will not be stopped anymore on starting phase when there are null players (only resetting it to waiting for players)
