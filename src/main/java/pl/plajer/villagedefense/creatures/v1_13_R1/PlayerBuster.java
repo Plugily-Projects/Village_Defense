@@ -19,7 +19,6 @@
 package pl.plajer.villagedefense.creatures.v1_13_R1;
 
 import java.util.Arrays;
-import java.util.logging.Level;
 
 import net.minecraft.server.v1_13_R1.DamageSource;
 import net.minecraft.server.v1_13_R1.EntityHuman;
@@ -49,7 +48,6 @@ import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.inventory.ItemStack;
 
 import pl.plajer.villagedefense.creatures.CreatureUtils;
-import pl.plajer.villagedefense.utils.Debugger;
 
 /**
  * Created by Tom on 15/08/2014.
@@ -91,9 +89,10 @@ public class PlayerBuster extends EntityZombie {
 
   @Override
   public boolean damageEntity(DamageSource damagesource, float f) {
-    if (damagesource != null && damagesource.getEntity() != null && damagesource.getEntity().getBukkitEntity().getType() == EntityType.PLAYER && !CreatureUtils.getPlugin().getUserManager().getUser((Player) damagesource.getEntity().getBukkitEntity()).isSpectator()) {
-      Debugger.debug(Level.INFO,
-          "[PlayerBuster] Is player spectator? " + damagesource.getEntity().getBukkitEntity().getName() + " " + CreatureUtils.getPlugin().getUserManager().getUser((Player) damagesource.getEntity().getBukkitEntity()).isSpectator());
+    if (damagesource != null && damagesource.getEntity() != null && damagesource.getEntity().getBukkitEntity().getType() == EntityType.PLAYER) {
+      if (CreatureUtils.getPlugin().getUserManager().getUser((Player) damagesource.getEntity().getBukkitEntity()).isSpectator()) {
+        return true;
+      }
       ItemStack[] itemStack = new ItemStack[] {new ItemStack(Material.ROTTEN_FLESH)};
       Bukkit.getServer().getPluginManager().callEvent(new EntityDeathEvent((LivingEntity) this.getBukkitEntity(), Arrays.asList(itemStack), expToDrop));
       getBukkitEntity().getWorld().spawnEntity(getBukkitEntity().getLocation(), EntityType.PRIMED_TNT);
