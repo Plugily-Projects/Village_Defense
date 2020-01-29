@@ -13,14 +13,23 @@ import pl.plajerlair.commonsbox.minecraft.configuration.ConfigUtils;
  */
 public class LanguageFileUpdater {
 
-  public LanguageFileUpdater(Main plugin) {
-    insertModuleMessages(plugin);
+  public LanguageFileUpdater() {
   }
 
-  private void insertModuleMessages(Main plugin) {
+  public static void insertHologramMessages(Main plugin) {
     FileConfiguration config = ConfigUtils.getConfig(plugin, "language");
-    for(LanguageMessage message : LanguageMessage.values()) {
-      if(!config.isSet(message.getAccessor())) {
+    for (LanguageMessage message : LanguageMessage.values()) {
+      if (!config.isSet(message.getAccessor())) {
+        config.set(message.getAccessor(), message.getDefaultMessage());
+      }
+    }
+    ConfigUtils.saveConfig(plugin, config, "language");
+  }
+
+  public static void insertUpgradeMessages(Main plugin) {
+    FileConfiguration config = ConfigUtils.getConfig(plugin, "language");
+    for (LanguageMessage message : LanguageMessage.values()) {
+      if (!config.isSet(message.getAccessor())) {
         config.set(message.getAccessor(), message.getDefaultMessage());
       }
     }

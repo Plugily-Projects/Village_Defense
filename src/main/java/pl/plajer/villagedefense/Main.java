@@ -282,7 +282,7 @@ public class Main extends JavaPlugin {
         if (!new File(getDataFolder(), "internal/holograms_data.yml").exists()) {
           new File(getDataFolder().getPath() + "/internal").mkdir();
         }
-        new LanguageFileUpdater(this);
+        LanguageFileUpdater.insertHologramMessages(this);
         this.hologramsRegistry = new HologramsRegistry(this);
       } else {
         Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "You need to install HolographicDisplays to use holograms!");
@@ -290,6 +290,7 @@ public class Main extends JavaPlugin {
     }
     if (configPreferences.getOption(ConfigPreferences.Option.UPGRADES_ENABLED)) {
       this.entityUpgradesConfig = ConfigUtils.getConfig(this, "entity_upgrades");
+      LanguageFileUpdater.insertUpgradeMessages(this);
       Upgrade.init(this);
       UpgradeBuilder.init(this);
       new EntityUpgradeMenu(this);
