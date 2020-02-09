@@ -26,7 +26,6 @@ import org.bukkit.event.player.PlayerJoinEvent;
 
 import pl.plajer.villagedefense.ConfigPreferences;
 import pl.plajer.villagedefense.Main;
-import pl.plajer.villagedefense.api.StatsStorage;
 import pl.plajer.villagedefense.utils.UpdateChecker;
 import pl.plajerlair.commonsbox.minecraft.serialization.InventorySerializer;
 
@@ -44,9 +43,7 @@ public class JoinEvent implements Listener {
 
   @EventHandler
   public void onJoin(PlayerJoinEvent event) {
-    for (StatsStorage.StatisticType stat : StatsStorage.StatisticType.values()) {
-      plugin.getUserManager().loadStatistic(plugin.getUserManager().getUser(event.getPlayer()), stat);
-    }
+    plugin.getUserManager().loadStatistics(plugin.getUserManager().getUser(event.getPlayer()));
     //load player inventory in case of server crash, file is deleted once loaded so if file was already
     //deleted player won't receive his backup, in case of crash he will get it back
     if (plugin.getConfigPreferences().getOption(ConfigPreferences.Option.INVENTORY_MANAGER_ENABLED)) {

@@ -9,13 +9,22 @@ deploy webhooks to print changelog successfully
 
 That's all, matcher will stop when detects next line started with `###` match
 
-### 4.3.2 Release (23.01.2020)
+### 4.3.2 Release (23.01.2020 - 09.02.2020)
 * Added new Zombie VillagerBuster (wave 15 and up)
 * Fixed zombie PlayerBuster & GolemBuster
 * Fixed spectator can hit zombie_buster zombies
 * Changed Event priority to work with CMI
 * Fixed 1.15 Material issue
 * Fixed upgrade messages are not added to language.yml
+* PlaceholderAPI placeholders are no longer case sensitive
+* Added arena state placeholders for PlaceholderAPI:
+   * %murdermystery_{arena id}:{data}% where data types are:
+      * players - amount of players in arena
+      * max_players - max players in arena
+      * state - current state raw enum name eg. STARTING
+      * state_pretty - prettified name of enum eg. Waiting (instead WAITING_FOR_PLAYERS)
+      * mapname - name of arena map
+* Fixed mysql database - Create a new one and your stats should be saved correctly
 
 ### 4.3.1 Hotfix (13.12.2019)
 * Arena will not be stopped anymore on starting phase when there are null players (only resetting it to waiting for players)

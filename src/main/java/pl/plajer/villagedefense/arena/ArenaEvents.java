@@ -19,7 +19,6 @@
 package pl.plajer.villagedefense.arena;
 
 import java.util.Arrays;
-import java.util.logging.Level;
 
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -56,7 +55,6 @@ import pl.plajer.villagedefense.handlers.items.SpecialItem;
 import pl.plajer.villagedefense.handlers.language.Messages;
 import pl.plajer.villagedefense.handlers.reward.Reward;
 import pl.plajer.villagedefense.user.User;
-import pl.plajer.villagedefense.utils.Debugger;
 
 /**
  * @author Plajer
@@ -81,8 +79,6 @@ public class ArenaEvents implements Listener {
     for (Arena a : ArenaRegistry.getArenas()) {
       if (a.getVillagers().contains(e.getEntity()) && a.getZombies().contains(e.getDamager())) {
         //check villagerbuster
-        Debugger.debug(Level.INFO,
-            "" + ((Zombie) e.getDamager()).getEquipment() + ((Zombie) e.getDamager()).getEquipment().getHelmet().getType().isBlock() + ((Zombie) e.getDamager()).getEquipment().getChestplate().getType());
         if (((Zombie) e.getDamager()).getEquipment().getHelmet().getType().isBlock() && ((Zombie) e.getDamager()).getEquipment().getChestplate().getType() == Material.LEATHER_CHESTPLATE) {
           ((Zombie) e.getDamager()).damage(((Zombie) e.getDamager()).getHealth() * 2);
           ItemStack[] itemStack = new ItemStack[] {new ItemStack(Material.ROTTEN_FLESH)};
