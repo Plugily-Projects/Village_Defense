@@ -25,6 +25,7 @@ That's all, matcher will stop when detects next line started with `###` match
       * state_pretty - prettified name of enum eg. Waiting (instead WAITING_FOR_PLAYERS)
       * mapname - name of arena map
 * Fixed mysql database - Create a new one and your stats should be saved correctly
+* Fixed inventory bug
 
 ### 4.3.1 Hotfix (13.12.2019)
 * Arena will not be stopped anymore on starting phase when there are null players (only resetting it to waiting for players)
