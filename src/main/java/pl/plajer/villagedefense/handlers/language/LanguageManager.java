@@ -24,16 +24,17 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
+import java.util.stream.Collectors;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 
 import pl.plajer.villagedefense.Main;
-import pl.plajer.villagedefense.utils.MessageUtils;
 import pl.plajer.villagedefense.utils.constants.Constants;
 import pl.plajer.villagedefense.utils.services.ServiceRegistry;
 import pl.plajer.villagedefense.utils.services.locale.Locale;
@@ -190,10 +191,33 @@ public class LanguageManager {
    */
   public static List<String> getLanguageList(String path) {
     if (isDefaultLanguageUsed()) {
-      return languageConfig.getStringList(path);
-    } else {
-      return Arrays.asList(getLanguageMessage(path).split(";"));
+      if (!languageConfig.isSet(path)) {
+        Bukkit.getConsoleSender().sendMessage("Game message not found!");
+        Bukkit.getConsoleSender().sendMessage("Please regenerate your language.yml file! If error still occurs report it to the developer!");
+        Bukkit.getConsoleSender().sendMessage("Access string: " + path);
+        return Collections.singletonList("ERR_MESSAGE_" + path + "_NOT_FOUND");
+      }
+      List<String> list = languageConfig.getStringList(path);
+      list = list.stream().map(string -> ChatColor.translateAlternateColorCodes('&', string)).collect(Collectors.toList());
+      return list;
     }
+    String prop = properties.getProperty(path);
+    if (prop == null) {
+      //check normal language if nothing found in specific language
+      if (!languageConfig.isSet(path)) {
+        Bukkit.getConsoleSender().sendMessage("Game message not found in your locale!");
+        Bukkit.getConsoleSender().sendMessage("Please regenerate your language.yml file! If error still occurs report it to the developer!");
+        Bukkit.getConsoleSender().sendMessage("Access string: " + path);
+        return Collections.singletonList("ERR_MESSAGE_" + path + "_NOT_FOUND");
+      }
+      //send normal english message - User can change this translation on his own
+      Bukkit.getConsoleSender().sendMessage("Game message not found in your locale!");
+      Bukkit.getConsoleSender().sendMessage("Path: " + path + " | Translate it on your own in language.yml!");
+      List<String> list = languageConfig.getStringList(path);
+      list = list.stream().map(string -> ChatColor.translateAlternateColorCodes('&', string)).collect(Collectors.toList());
+      return list;
+    }
+    return Arrays.asList(path.replace("&", "§").split(";"));
   }
 
   /**
@@ -213,17 +237,23 @@ public class LanguageManager {
         Bukkit.getConsoleSender().sendMessage("Game message not found!");
         Bukkit.getConsoleSender().sendMessage("Please regenerate your language.yml file! If error still occurs report it to the developer!");
         Bukkit.getConsoleSender().sendMessage("Access string: " + path);
-        return "ERR_MESSAGE_NOT_FOUND";
+        return "ERR_MESSAGE_" + path + "_NOT_FOUND";
       }
       return languageConfig.getString(path);
     }
     String prop = properties.getProperty(path);
     if (prop == null) {
-      MessageUtils.errorOccurred();
-      Bukkit.getConsoleSender().sendMessage("Game message not found!");
-      Bukkit.getConsoleSender().sendMessage("Please contact the developer!");
-      Bukkit.getConsoleSender().sendMessage("Access string: " + path);
-      return "ERR_MESSAGE_NOT_FOUND";
+      //check normal language if nothing found in specific language
+      if (!languageConfig.isSet(path)) {
+        Bukkit.getConsoleSender().sendMessage("Game message not found in your locale!");
+        Bukkit.getConsoleSender().sendMessage("Please regenerate your language.yml file! If error still occurs report it to the developer!");
+        Bukkit.getConsoleSender().sendMessage("Access string: " + path);
+        return "ERR_MESSAGE_" + path + "_NOT_FOUND";
+      }
+      //send normal english message - User can change this translation on his own
+      Bukkit.getConsoleSender().sendMessage("Game message not found in your locale!");
+      Bukkit.getConsoleSender().sendMessage("Path: " + path + " | Translate it on your own in language.yml!");
+      return languageConfig.getString(path);
     }
     return prop;
   }
