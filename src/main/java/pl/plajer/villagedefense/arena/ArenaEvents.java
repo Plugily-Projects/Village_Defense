@@ -1,6 +1,6 @@
 /*
  * Village Defense - Protect villagers from hordes of zombies
- * Copyright (C) 2019  Plajer's Lair - maintained by Plajer and contributors
+ * Copyright (C) 2020  Plajer's Lair - maintained by Plajer and contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,6 +18,7 @@
 
 package pl.plajer.villagedefense.arena;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 import net.md_5.bungee.api.ChatMessageType;
@@ -82,7 +83,7 @@ public class ArenaEvents implements Listener {
         if (((Zombie) e.getDamager()).getEquipment().getHelmet().getType().isBlock() && ((Zombie) e.getDamager()).getEquipment().getChestplate().getType() == Material.LEATHER_CHESTPLATE) {
           ((Zombie) e.getDamager()).damage(((Zombie) e.getDamager()).getHealth() * 2);
           ItemStack[] itemStack = new ItemStack[] {new ItemStack(Material.ROTTEN_FLESH)};
-          Bukkit.getServer().getPluginManager().callEvent(new EntityDeathEvent((LivingEntity) e.getDamager(), Arrays.asList(itemStack), 6));
+          Bukkit.getServer().getPluginManager().callEvent(new EntityDeathEvent((LivingEntity) e.getDamager(), new ArrayList<>(Arrays.asList(itemStack)), 6));
           (e.getDamager()).getWorld().spawnEntity((e.getDamager()).getLocation(), EntityType.PRIMED_TNT);
           e.setCancelled(true);
         } else {
