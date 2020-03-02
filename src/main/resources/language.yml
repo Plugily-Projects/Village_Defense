@@ -255,6 +255,7 @@ In-Game:
   Spawned-Golem-Name: "%player%'s Golem"
   # Join cancelled via external plugin that uses VillageDefense API.
   Join-Cancelled-Via-API: "&cYou can't join this game!"
+  Join-As-Party-Member: "&cYou joined %ARENANAME% because the party leader joined it!"
   Arena-Not-Configured: "&cArena is not configured yet! Contact staff!"
   Spectator:
     Spectator-Menu-Name: "Alive players list"
@@ -270,6 +271,7 @@ In-Game:
       Game-Started: "&7The game has started! Defend the village against waves of zombies!"
       Kicked-For-Premium-Slot: "&c%PLAYER% got removed from the game to make a place for premium players!"
       You-Were-Kicked-For-Premium-Slot: "&cYou got kicked out of the game to make a place for a premium player!"
+      Not-Enough-Space-For-Party: "&cYour party is bigger than free places on the arena %ARENANAME%"
     Join: "&b%PLAYER%&7 joined the game (%PLAYERSIZE%/%MAXPLAYERS%)!"
     Leave: "&b%PLAYER% &7left the game (%PLAYERSIZE%/%MAXPLAYERS%)!"
     Death: "&b%PLAYER% &7died!"
@@ -357,4 +359,4 @@ Validator:
 
 # Don't edit it. But who's stopping you? It's your server!
 # Really, don't edit ;p
-File-Version-Do-Not-Edit: 10
+File-Version-Do-Not-Edit: 11

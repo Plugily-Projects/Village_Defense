@@ -18,6 +18,7 @@
 
 package pl.plajer.villagedefense.creatures.v1_13_R1;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 import net.minecraft.server.v1_13_R1.DamageSource;
@@ -94,7 +95,7 @@ public class PlayerBuster extends EntityZombie {
         return true;
       }
       ItemStack[] itemStack = new ItemStack[] {new ItemStack(Material.ROTTEN_FLESH)};
-      Bukkit.getServer().getPluginManager().callEvent(new EntityDeathEvent((LivingEntity) this.getBukkitEntity(), Arrays.asList(itemStack), expToDrop));
+      Bukkit.getServer().getPluginManager().callEvent(new EntityDeathEvent((LivingEntity) this.getBukkitEntity(), new ArrayList<>(Arrays.asList(itemStack)), expToDrop));
       getBukkitEntity().getWorld().spawnEntity(getBukkitEntity().getLocation(), EntityType.PRIMED_TNT);
       this.die();
       return true;

@@ -2,7 +2,7 @@ name: VillageDefense
 main: pl.plajer.villagedefense.Main
 authors: [TomTheDeveloper, Plajer, Tigerpanzer, montlikadani]
 version: ${project.version}
-softdepend: [HolographicDisplays, PlaceholderAPI]
+softdepend: [HolographicDisplays, PlaceholderAPI, Parties, Spigot-Party-API-PAF, PartyAndFriends]
 api-version: 1.13
 
 commands:

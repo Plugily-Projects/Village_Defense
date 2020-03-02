@@ -67,6 +67,8 @@ import pl.plajer.villagedefense.handlers.items.SpecialItemManager;
 import pl.plajer.villagedefense.handlers.language.LanguageFileUpdater;
 import pl.plajer.villagedefense.handlers.language.LanguageManager;
 import pl.plajer.villagedefense.handlers.language.Messages;
+import pl.plajer.villagedefense.handlers.party.PartyHandler;
+import pl.plajer.villagedefense.handlers.party.PartySupportInitializer;
 import pl.plajer.villagedefense.handlers.powerup.PowerupRegistry;
 import pl.plajer.villagedefense.handlers.reward.RewardsFactory;
 import pl.plajer.villagedefense.handlers.setup.SetupInventory;
@@ -110,6 +112,7 @@ public class Main extends JavaPlugin {
   private SignManager signManager;
   private SpecialItemManager specialItemManager;
   private KitMenuHandler kitMenuHandler;
+  private PartyHandler partyHandler;
   private PowerupRegistry powerupRegistry;
   private RewardsFactory rewardsHandler;
   private HolidayManager holidayManager;
@@ -264,6 +267,7 @@ public class Main extends JavaPlugin {
     specialItemManager = new SpecialItemManager(this);
     specialItemManager.registerItems();
     kitMenuHandler = new KitMenuHandler(this);
+    partyHandler = new PartySupportInitializer().initialize();
     KitRegistry.init(this);
     User.cooldownHandlerTask();
     if (configPreferences.getOption(ConfigPreferences.Option.DATABASE_ENABLED)) {
@@ -402,6 +406,10 @@ public class Main extends JavaPlugin {
 
   public MysqlDatabase getMysqlDatabase() {
     return database;
+  }
+
+  public PartyHandler getPartyHandler() {
+    return partyHandler;
   }
 
   public PowerupRegistry getPowerupRegistry() {

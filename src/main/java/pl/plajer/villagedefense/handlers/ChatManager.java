@@ -84,6 +84,7 @@ public class ChatManager {
 
   public String formatMessage(Arena arena, String message, int integer) {
     String returnString = message;
+    returnString = StringUtils.replace(returnString, "%ARENANAME%", arena.getMapName());
     returnString = StringUtils.replace(returnString, "%NUMBER%", Integer.toString(integer));
     returnString = colorRawMessage(formatPlaceholders(returnString, arena));
     return returnString;
@@ -91,6 +92,7 @@ public class ChatManager {
 
   public String formatMessage(Arena arena, String message, Player player) {
     String returnString = message;
+    returnString = StringUtils.replace(returnString, "%ARENANAME%", arena.getMapName());
     returnString = StringUtils.replace(returnString, "%PLAYER%", player.getName());
     returnString = colorRawMessage(formatPlaceholders(returnString, arena));
     return returnString;
@@ -98,6 +100,7 @@ public class ChatManager {
 
   private String formatPlaceholders(String message, Arena arena) {
     String returnString = message;
+    returnString = StringUtils.replace(returnString, "%ARENANAME%", arena.getMapName());
     returnString = StringUtils.replace(returnString, "%TIME%", Integer.toString(arena.getTimer()));
     returnString = StringUtils.replace(returnString, "%FORMATTEDTIME%", StringFormatUtils.formatIntoMMSS((arena.getTimer())));
     returnString = StringUtils.replace(returnString, "%PLAYERSIZE%", Integer.toString(arena.getPlayers().size()));

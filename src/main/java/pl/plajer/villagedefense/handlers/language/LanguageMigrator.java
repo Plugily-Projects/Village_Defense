@@ -38,7 +38,7 @@ import pl.plajerlair.commonsbox.minecraft.migrator.MigratorUtils;
  */
 public class LanguageMigrator {
 
-  public static final int LANGUAGE_FILE_VERSION = 10;
+  public static final int LANGUAGE_FILE_VERSION = 11;
   public static final int CONFIG_FILE_VERSION = 9;
   private Main plugin;
   private List<String> migratable = Arrays.asList(Constants.Files.CONFIG.getName(), Constants.Files.KITS.getName(),
@@ -257,6 +257,10 @@ public class LanguageMigrator {
               + "&7Cost of upgrade: &e%cost%;;&eClick to purchase\"\r\n"
               + "  Upgraded-Entity: \"&7Upgraded entity to tier &e%tier%&7!\"\r\n" + "  Cannot-Afford: \"&cYou don't have enough orbs to apply that upgrade!\"\r\n"
               + "  Max-Tier: \"&cEntity is at max tier of this upgrade!\"");*/
+          break;
+        case 10:
+          MigratorUtils.insertAfterLine(file, "Lobby-Messages:", "Not-Enough-Space-For-Party: \"&cYour party is bigger than free places on the arena %ARENANAME%\"");
+          MigratorUtils.insertAfterLine(file, "In-Game:", "Join-As-Party-Member: \"&cYou joined %ARENANAME% because the party leader joined it!\"");
           break;
         default:
           break;

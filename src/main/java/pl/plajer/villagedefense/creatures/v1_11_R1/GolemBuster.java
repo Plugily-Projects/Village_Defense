@@ -18,6 +18,7 @@
 
 package pl.plajer.villagedefense.creatures.v1_11_R1;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 import net.minecraft.server.v1_11_R1.DamageSource;
@@ -88,7 +89,7 @@ public class GolemBuster extends EntityZombie {
     if (damagesource != null && damagesource.getEntity() != null && damagesource.getEntity().getBukkitEntity().getType() == EntityType.IRON_GOLEM) {
       this.die();
       org.bukkit.inventory.ItemStack[] itemStack = new org.bukkit.inventory.ItemStack[] {new org.bukkit.inventory.ItemStack(org.bukkit.Material.ROTTEN_FLESH)};
-      Bukkit.getServer().getPluginManager().callEvent(new EntityDeathEvent((LivingEntity) this.getBukkitEntity(), Arrays.asList(itemStack), expToDrop));
+      Bukkit.getServer().getPluginManager().callEvent(new EntityDeathEvent((LivingEntity) this.getBukkitEntity(), new ArrayList<>(Arrays.asList(itemStack)), expToDrop));
       IronGolem golem = (IronGolem) damagesource.getEntity().getBukkitEntity();
       golem.getWorld().spawnEntity(golem.getLocation(), EntityType.PRIMED_TNT);
       return true;
