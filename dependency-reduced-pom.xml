@@ -4,7 +4,7 @@
   <groupId>pl.plajer</groupId>
   <artifactId>villagedefense</artifactId>
   <name>VillageDefense</name>
-  <version>4.3.2</version>
+  <version>4.3.2-b</version>
   <developers>
     <developer>
       <name>IvanTheBuilder</name>
@@ -193,6 +193,14 @@
       <id>filoghost-repo</id>
       <url>https://ci.filoghost.me/plugin/repository/everything/</url>
     </repository>
+    <repository>
+      <id>simonsators-repo</id>
+      <url>http://simonsator.de/repo/</url>
+    </repository>
+    <repository>
+      <id>codemc-repo</id>
+      <url>https://repo.codemc.org/repository/maven-public/</url>
+    </repository>
   </repositories>
   <dependencies>
     <dependency>
@@ -350,6 +358,13 @@
       <version>1.11.2</version>
       <scope>system</scope>
       <systemPath>${project.basedir}/lib/spigot/1.11.2-R0.1.jar</systemPath>
+    </dependency>
+    <dependency>
+      <groupId>de.simonsator</groupId>
+      <artifactId>partyandfriends</artifactId>
+      <version>1.0.52</version>
+      <scope>system</scope>
+      <systemPath>${project.basedir}/lib/PAFSpigot.jar</systemPath>
     </dependency>
   </dependencies>
   <distributionManagement>
