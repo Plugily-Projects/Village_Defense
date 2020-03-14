@@ -29,6 +29,7 @@ That's all, matcher will stop when detects next line started with `###` match
 * Fixed incompatibility with UltimateStacker and similar 
 * Added party dependency, you can join with more players to one arena
 * Moved adding games played to ending stage
+* Fixed spectators can use menu item in next round
 
 ### 4.3.1 Hotfix (13.12.2019)
 * Arena will not be stopped anymore on starting phase when there are null players (only resetting it to waiting for players)
