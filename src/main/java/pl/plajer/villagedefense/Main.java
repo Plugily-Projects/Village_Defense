@@ -20,14 +20,7 @@ package pl.plajer.villagedefense;
 
 import com.gmail.filoghost.holographicdisplays.api.Hologram;
 import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.logging.Level;
-
 import me.tigerhix.lib.scoreboard.ScoreboardLib;
-
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -38,23 +31,14 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.java.JavaPluginLoader;
 import org.bukkit.potion.PotionEffect;
 import org.jetbrains.annotations.TestOnly;
-
 import pl.plajer.villagedefense.api.StatsStorage;
-import pl.plajer.villagedefense.arena.Arena;
-import pl.plajer.villagedefense.arena.ArenaEvents;
-import pl.plajer.villagedefense.arena.ArenaManager;
-import pl.plajer.villagedefense.arena.ArenaRegistry;
-import pl.plajer.villagedefense.arena.ArenaUtils;
+import pl.plajer.villagedefense.arena.*;
 import pl.plajer.villagedefense.arena.managers.BungeeManager;
 import pl.plajer.villagedefense.commands.arguments.ArgumentsRegistry;
 import pl.plajer.villagedefense.creatures.CreatureUtils;
 import pl.plajer.villagedefense.creatures.DoorBreakListener;
 import pl.plajer.villagedefense.creatures.EntityRegistry;
-import pl.plajer.villagedefense.events.ChatEvents;
-import pl.plajer.villagedefense.events.Events;
-import pl.plajer.villagedefense.events.JoinEvent;
-import pl.plajer.villagedefense.events.LobbyEvents;
-import pl.plajer.villagedefense.events.QuitEvent;
+import pl.plajer.villagedefense.events.*;
 import pl.plajer.villagedefense.events.bungee.MiscEvents;
 import pl.plajer.villagedefense.events.spectator.SpectatorEvents;
 import pl.plajer.villagedefense.events.spectator.SpectatorItemEvents;
@@ -83,18 +67,18 @@ import pl.plajer.villagedefense.kits.basekits.Kit;
 import pl.plajer.villagedefense.user.User;
 import pl.plajer.villagedefense.user.UserManager;
 import pl.plajer.villagedefense.user.data.MysqlManager;
-import pl.plajer.villagedefense.utils.Debugger;
-import pl.plajer.villagedefense.utils.ExceptionLogHandler;
-import pl.plajer.villagedefense.utils.LegacyDataFixer;
-import pl.plajer.villagedefense.utils.MessageUtils;
-import pl.plajer.villagedefense.utils.UpdateChecker;
-import pl.plajer.villagedefense.utils.Utils;
+import pl.plajer.villagedefense.utils.*;
 import pl.plajer.villagedefense.utils.constants.CompatMaterialConstants;
 import pl.plajer.villagedefense.utils.constants.Constants;
 import pl.plajer.villagedefense.utils.services.ServiceRegistry;
 import pl.plajerlair.commonsbox.database.MysqlDatabase;
 import pl.plajerlair.commonsbox.minecraft.configuration.ConfigUtils;
 import pl.plajerlair.commonsbox.minecraft.serialization.InventorySerializer;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.logging.Level;
 
 
 /**
@@ -287,6 +271,7 @@ public class Main extends JavaPlugin {
           new File(getDataFolder().getPath() + "/internal").mkdir();
         }
         LanguageFileUpdater.insertHologramMessages(this);
+        this.languageConfig = ConfigUtils.getConfig(this, "language");
         this.hologramsRegistry = new HologramsRegistry(this);
       } else {
         Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "You need to install HolographicDisplays to use holograms!");
@@ -295,6 +280,7 @@ public class Main extends JavaPlugin {
     if (configPreferences.getOption(ConfigPreferences.Option.UPGRADES_ENABLED)) {
       this.entityUpgradesConfig = ConfigUtils.getConfig(this, "entity_upgrades");
       LanguageFileUpdater.insertUpgradeMessages(this);
+      this.languageConfig = ConfigUtils.getConfig(this, "language");
       Upgrade.init(this);
       UpgradeBuilder.init(this);
       new EntityUpgradeMenu(this);
