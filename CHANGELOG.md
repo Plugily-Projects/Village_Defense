@@ -32,6 +32,7 @@ That's all, matcher will stop when detects next line started with `###` match
 * Fixed spectators can use menu item in next round
 * Fixed startup error after activating Upgrades/Holograms 
 * Added Connect-To-Hub boolean to bungee.yml
+* Added End-Location-Hub boolean to bungee.yml
 
 ### 4.3.1 Hotfix (13.12.2019)
 * Arena will not be stopped anymore on starting phase when there are null players (only resetting it to waiting for players)

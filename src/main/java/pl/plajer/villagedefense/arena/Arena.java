@@ -18,29 +18,14 @@
 
 package pl.plajer.villagedefense.arena;
 
-import java.util.ArrayList;
-import java.util.EnumMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
-import java.util.Set;
-import java.util.logging.Level;
-
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
-import org.bukkit.entity.IronGolem;
-import org.bukkit.entity.Item;
-import org.bukkit.entity.Player;
-import org.bukkit.entity.Villager;
-import org.bukkit.entity.Wolf;
-import org.bukkit.entity.Zombie;
+import org.bukkit.entity.*;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.TestOnly;
-
 import pl.plajer.villagedefense.ConfigPreferences;
 import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.api.event.game.VillageGameStateChangeEvent;
@@ -49,15 +34,14 @@ import pl.plajer.villagedefense.arena.managers.ScoreboardManager;
 import pl.plajer.villagedefense.arena.managers.ShopManager;
 import pl.plajer.villagedefense.arena.managers.ZombieSpawnManager;
 import pl.plajer.villagedefense.arena.options.ArenaOption;
-import pl.plajer.villagedefense.arena.states.ArenaStateHandler;
-import pl.plajer.villagedefense.arena.states.EndingState;
-import pl.plajer.villagedefense.arena.states.InGameState;
-import pl.plajer.villagedefense.arena.states.RestartingState;
-import pl.plajer.villagedefense.arena.states.StartingState;
-import pl.plajer.villagedefense.arena.states.WaitingState;
+import pl.plajer.villagedefense.arena.states.*;
 import pl.plajer.villagedefense.handlers.language.Messages;
 import pl.plajer.villagedefense.user.User;
 import pl.plajer.villagedefense.utils.Debugger;
+import pl.plajerlair.commonsbox.minecraft.configuration.ConfigUtils;
+
+import java.util.*;
+import java.util.logging.Level;
 
 /**
  * Created by Tom on 12/08/2014.
@@ -348,7 +332,7 @@ public abstract class Arena extends BukkitRunnable {
   }
 
   public void teleportToEndLocation(Player player) {
-    if (plugin.getConfigPreferences().getOption(ConfigPreferences.Option.BUNGEE_ENABLED)) {
+    if (plugin.getConfigPreferences().getOption(ConfigPreferences.Option.BUNGEE_ENABLED) && ConfigUtils.getConfig(plugin, "bungee").getBoolean("End-Location-Hub", true)) {
       plugin.getBungeeManager().connectToHub(player);
       Debugger.debug(Level.INFO, "{0} has left the arena {1}! Teleported to the Hub server.", player.getName(), this);
     }
