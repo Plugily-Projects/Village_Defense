@@ -27,7 +27,6 @@ import java.sql.Statement;
 import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
 
 import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.api.StatsStorage;
@@ -52,8 +51,8 @@ public class MysqlManager implements UserDatabase {
       try (Connection connection = database.getConnection();
            Statement statement = connection.createStatement()) {
         statement.executeUpdate("CREATE TABLE IF NOT EXISTS `playerstats` (\n"
-            + "  `UUID` text NOT NULL,\n"
-            + "  `name` text NOT NULL,\n"
+            + "  `UUID` char(36) NOT NULL PRIMARY KEY,\n"
+            + "  `name` varchar(32) NOT NULL,\n"
             + "  `kills` int(11) NOT NULL DEFAULT '0',\n"
             + "  `deaths` int(11) NOT NULL DEFAULT '0',\n"
             + "  `highestwave` int(11) NOT NULL DEFAULT '0',\n"
@@ -82,36 +81,42 @@ public class MysqlManager implements UserDatabase {
 
   @Override
   public void saveStatistic(User user, StatsStorage.StatisticType stat) {
-    Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> database.executeUpdate("UPDATE playerstats SET " + stat.getName() + "=" + user.getStat(stat) + " WHERE UUID='" + user.getPlayer().getUniqueId().toString() + "';"));
+    Bukkit.getScheduler().runTaskAsynchronously(plugin, () ->
+        database.executeUpdate("UPDATE playerstats SET " + stat.getName() + "=" + user.getStat(stat) + " WHERE UUID='" + user.getPlayer().getUniqueId().toString() + "';"));
   }
 
   @Override
-  public void loadStatistic(User user, StatsStorage.StatisticType stat) {
+  public void loadStatistics(User user) {
     Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
-      try (Connection connection = database.getConnection();
-           Statement statement = connection.createStatement()) {
-        //insert into the database
-        if (!statement.executeQuery("SELECT UUID from playerstats WHERE UUID='" + user.getPlayer().getUniqueId().toString() + "'").next()) {
-          insertPlayer(user.getPlayer());
-        }
-
-        try (ResultSet set = statement.executeQuery("SELECT " + stat.getName() + " FROM playerstats WHERE UUID='" + user.getPlayer().getUniqueId().toString() + "'")) {
-          if (!set.next()) {
-            user.setStat(stat, 0);
-            return;
+      String uuid = user.getPlayer().getUniqueId().toString();
+      try (Connection connection = database.getConnection()) {
+        Statement statement = connection.createStatement();
+        ResultSet rs = statement.executeQuery("SELECT * from playerstats WHERE UUID='" + uuid + "'");
+        if (rs.next()) {
+          //player already exists - get the stats
+          for (StatsStorage.StatisticType stat : StatsStorage.StatisticType.values()) {
+            if (!stat.isPersistent()) {
+              continue;
+            }
+            int val = rs.getInt(stat.getName());
+            user.setStat(stat, val);
           }
-          user.setStat(stat, set.getInt(1));
+        } else {
+          //player doesn't exist - make a new record
+          statement.executeUpdate("INSERT INTO playerstats (UUID,name) VALUES ('" + uuid + "','" + user.getPlayer().getName() + "')");
+          for (StatsStorage.StatisticType stat : StatsStorage.StatisticType.values()) {
+            if (!stat.isPersistent()) {
+              continue;
+            }
+            user.setStat(stat, 0);
+          }
         }
       } catch (SQLException e) {
         plugin.getLogger().log(Level.WARNING, "Could not connect to MySQL database! Cause: {0} ({1})", new Object[] {e.getSQLState(), e.getErrorCode()});
-        user.setStat(stat, 0);
       }
     });
   }
 
-  private void insertPlayer(Player player) {
-    database.executeUpdate("INSERT INTO playerstats (UUID,name,xp) VALUES ('" + player.getUniqueId().toString() + "','" + player.getName() + "',0)");
-  }
 
   public MysqlDatabase getDatabase() {
     return database;

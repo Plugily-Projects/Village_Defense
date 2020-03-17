@@ -219,6 +219,8 @@ public enum Messages {
   NO_SLOTS_FOR_PREMIUM("In-Game.No-Slots-For-Premium"),
   DEAD_TAG_ON_DEATH("In-Game.Dead-Tag-On-Death"),
   GAME_CHAT_FORMAT("In-Game.Game-Chat-Format"),
+  JOIN_AS_PARTY_MEMBER("In-Game.Join-As-Party-Member"),
+  NOT_ENOUGH_SPACE_FOR_PARTY("In-Game.Messages.Lobby-Messages.Not-Enough-Space-For-Party"),
   DEATH_SCREEN("In-Game.Death-Screen"),
   DIED_RESPAWN_IN_NEXT_WAVE("In-Game.Died-Respawn-In-Next-Wave"),
   BACK_IN_GAME("In-Game.Back-In-Game"),

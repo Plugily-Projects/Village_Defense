@@ -38,8 +38,8 @@ import pl.plajerlair.commonsbox.minecraft.migrator.MigratorUtils;
  */
 public class LanguageMigrator {
 
-  public static final int LANGUAGE_FILE_VERSION = 10;
-  public static final int CONFIG_FILE_VERSION = 8;
+  public static final int LANGUAGE_FILE_VERSION = 11;
+  public static final int CONFIG_FILE_VERSION = 9;
   private Main plugin;
   private List<String> migratable = Arrays.asList(Constants.Files.CONFIG.getName(), Constants.Files.KITS.getName(),
       Constants.Files.KITS.getName(), Constants.Files.LANGUAGE.getName(), Constants.Files.SPECIAL_ITEMS.getName(), Constants.Files.MYSQL.getName());
@@ -66,12 +66,12 @@ public class LanguageMigrator {
     }
     Bukkit.getConsoleSender().sendMessage(ChatColor.YELLOW + "[Village Defense] System notify >> Your config file is outdated! Updating...");
     File file = new File(plugin.getDataFolder() + "/config.yml");
+    File bungeefile = new File(plugin.getDataFolder() + "/bungee.yml");
 
     int version = plugin.getConfig().getInt("Version", CONFIG_FILE_VERSION - 1);
-    updateConfigVersionControl(version);
 
     for (int i = version; i < CONFIG_FILE_VERSION; i++) {
-      switch (version) {
+      switch (i) {
         case 1:
           MigratorUtils.addNewLines(file, "# Power ups section. If you want to have classic Village Defense game mode i recommend to disable this.\r\nPowerups:\r\n"
               + "  # Do you want to enable in-game power ups?\r\n  # This will make zombies to drop some power ups when they're killed\r\n"
@@ -106,7 +106,7 @@ public class LanguageMigrator {
               + "  # Limit of waves, if this wave ends game will end\r\n  Limit: 25");
           break;
         case 7:
-          /*Moved to modules
+          /*Moved to entity_upgrades.yml
           MigratorUtils.addNewLines(file, "# Entity upgrades section\r\n"
               + "Entity-Upgrades:\r\n" + "  # Should entity (wolves and golems) upgrades be enabled?\r\n"
               + "  # If you want to have classic Village Defense game mode i recommend to disable this.\r\n"
@@ -116,11 +116,42 @@ public class LanguageMigrator {
               + "  Speed-Tiers:\r\n" + "    '1': 50\r\n" + "    '2': 100\r\n" + "    '3': 150\r\n" + "    '4': 250\r\n"
               + "  Final-Defense-Tiers:\r\n" + "    '1': 200\r\n" + "    '2': 350\r\n" + "  Swarm-Awareness-Tiers:\r\n" + "    '1': 200\r\n" + "    '2': 350");*/
           break;
+        case 8:
+          /*Was only needed from modules version
+          MigratorUtils.addNewLines(file, "\r\n# Should we hook into bungee cord? (If you wanna use arena per server option)\r\n" +
+          /    "# You STILL need to use external addon for HUB server game signs\r\n" +
+          /    "# Check here for more info: https://wiki.plajer.xyz/minecraft/villagedefense/addons.php#bungee-signs-not-official\r\n" +
+          /    "BungeeActivated: false\r\n");*/
+          MigratorUtils.addNewLines(file, "\r\n" +
+              "# Should we hook into Holograpic Displays? (If you wanna use (leaderboard)holograms)\r\n" +
+              "# You will be able to create holograms\r\n" +
+              "HologramsActivated: false\r\n" +
+              "\r\n" +
+              "# Should we add support for upgradeable Wolves and Golems in game?\r\n" +
+              "# Configure upgrades pricing in entity_upgrades.yml after enabling it.\r\n" +
+              "UpgradesActivated: false\r\n");
+          MigratorUtils.removeLineFromFile(bungeefile, "# This is useful for bungee game systems.");
+          MigratorUtils.removeLineFromFile(bungeefile, "# Game state will be visible at MOTD.");
+          MigratorUtils.removeLineFromFile(bungeefile, "MOTD-manager: false");
+          MigratorUtils.removeLineFromFile(bungeefile, "MOTD-manager: true");
+          MigratorUtils.addNewLines(bungeefile, "\r\n# This is useful for bungee game systems.\r\n" +
+              "# %state% - Game state will be visible at MOTD.\r\n" +
+              "MOTD:\r\n" +
+              "  Manager: false\r\n" +
+              "  Message: \"The actual game state of vd is %state%\"\r\n" +
+              "  Game-States:\r\n" +
+              "    Inactive: \"&lInactive...\"\r\n" +
+              "    In-Game: \"&lIn-game\"\r\n" +
+              "    Starting: \"&e&lStarting\"\r\n" +
+              "    Full-Game: \"&4&lFULL\"\r\n" +
+              "    Ending: \"&lEnding\"\r\n" +
+              "    Restarting: \"&c&lRestarting\"\r\n");
+          break;
         default:
           break;
       }
-      version++;
     }
+    updateConfigVersionControl(version);
     plugin.reloadConfig();
     Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "[Village Defense] [System notify] Config updated, no comments were removed :)");
     Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "[Village Defense] [System notify] You're using latest config file version! Nice!");
@@ -226,6 +257,10 @@ public class LanguageMigrator {
               + "&7Cost of upgrade: &e%cost%;;&eClick to purchase\"\r\n"
               + "  Upgraded-Entity: \"&7Upgraded entity to tier &e%tier%&7!\"\r\n" + "  Cannot-Afford: \"&cYou don't have enough orbs to apply that upgrade!\"\r\n"
               + "  Max-Tier: \"&cEntity is at max tier of this upgrade!\"");*/
+          break;
+        case 10:
+          MigratorUtils.insertAfterLine(file, "Lobby-Messages:", "Not-Enough-Space-For-Party: \"&cYour party is bigger than free places on the arena %ARENANAME%\"");
+          MigratorUtils.insertAfterLine(file, "In-Game:", "Join-As-Party-Member: \"&cYou joined %ARENANAME% because the party leader joined it!\"");
           break;
         default:
           break;

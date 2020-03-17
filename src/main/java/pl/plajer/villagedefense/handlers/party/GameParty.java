@@ -1,6 +1,6 @@
 /*
- * Village Defense - Protect villagers from hordes of zombies
- * Copyright (C) 2019  Plajer's Lair - maintained by Plajer and contributors
+ * MurderMystery - Find the murderer, kill him and survive!
+ * Copyright (C) 2020  Plajer's Lair - maintained by Tigerpanzer_02, Plajer and contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,24 +16,32 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package pl.plajer.villagedefense.api.module;
+package pl.plajer.villagedefense.handlers.party;
+
+import java.util.List;
+
+import org.bukkit.entity.Player;
 
 /**
  * @author Plajer
  * <p>
- * Created at 16.06.2019
+ * Created at 09.02.2020
  */
-public enum ModuleCompatibility {
+public class GameParty {
 
-  API_V1(0), API_V2(1), API_V3(2);
+  private List<Player> players;
+  private Player leader;
 
-  private int version;
-
-  ModuleCompatibility(int version) {
-    this.version = version;
+  public GameParty(List<Player> players, Player leader) {
+    this.players = players;
+    this.leader = leader;
   }
 
-  public int getVersion() {
-    return version;
+  public List<Player> getPlayers() {
+    return players;
+  }
+
+  public Player getLeader() {
+    return leader;
   }
 }

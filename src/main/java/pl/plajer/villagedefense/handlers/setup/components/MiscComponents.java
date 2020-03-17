@@ -40,6 +40,7 @@ import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.Door;
 
+import pl.plajer.villagedefense.ConfigPreferences;
 import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.arena.Arena;
 import pl.plajer.villagedefense.handlers.language.Messages;
@@ -75,7 +76,7 @@ public class MiscComponents implements SetupComponent {
     Arena arena = setupInventory.getArena();
     Main plugin = setupInventory.getPlugin();
     ItemStack bungeeItem;
-    if (!plugin.getModuleLoader().isModulePresent("Bungee Cord")) {
+    if (!plugin.getConfigPreferences().getOption(ConfigPreferences.Option.BUNGEE_ENABLED)) {
       bungeeItem = new ItemBuilder(Material.SIGN)
           .name(plugin.getChatManager().colorRawMessage("&e&lAdd Game Sign"))
           .lore(ChatColor.GRAY + "Target a sign and click this.")
@@ -90,7 +91,7 @@ public class MiscComponents implements SetupComponent {
           .build();
     }
     pane.addItem(new GuiItem(bungeeItem, e -> {
-      if (plugin.getModuleLoader().isModulePresent("Bungee Cord")) {
+      if (plugin.getConfigPreferences().getOption(ConfigPreferences.Option.BUNGEE_ENABLED)) {
         return;
       }
       e.getWhoClicked().closeInventory();
@@ -277,7 +278,7 @@ public class MiscComponents implements SetupComponent {
 
       String doorLocation = block.getWorld().getName() + "," + block.getX() + "," + block.getY() + "," + block.getZ() + ",0.0" + ",0.0";
       config.set("instances." + arena.getId() + ".doors." + doors + ".location", doorLocation);
-      if (plugin.is1_13_R1() || plugin.is1_13_R2()) {
+      if (plugin.is1_13_R1() || plugin.is1_13_R2() || plugin.is1_14_R1() || plugin.is1_15_R1()) {
         config.set("instances." + arena.getId() + ".doors." + doors + ".byte", Utils.getDoorByte(((Door) block.getState().getData()).getFacing()));
       } else {
         config.set("instances." + arena.getId() + ".doors." + doors + ".byte", block.getData());

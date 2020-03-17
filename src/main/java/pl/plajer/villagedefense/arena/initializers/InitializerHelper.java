@@ -52,6 +52,26 @@ class InitializerHelper {
     CreatureUtils.applyAttributes(zombie, arena);
   }
 
+  static void prepareVillagerBusterZombie(Zombie zombie, Arena arena) {
+    zombie.getEquipment().setHelmet(new ItemStack(Material.TNT));
+    zombie.getEquipment().setHelmetDropChance(0.0F);
+    zombie.getEquipment().setItemInMainHandDropChance(0F);
+    zombie.getEquipment().setBoots(XMaterial.LEATHER_BOOTS.parseItem());
+    zombie.getEquipment().setLeggings(XMaterial.LEATHER_LEGGINGS.parseItem());
+    zombie.getEquipment().setChestplate(XMaterial.LEATHER_CHESTPLATE.parseItem());
+    CreatureUtils.applyAttributes(zombie, arena);
+  }
+
+  static void prepareGolemBusterZombie(Zombie zombie, Arena arena) {
+    zombie.getEquipment().setHelmet(new ItemStack(Material.TNT));
+    zombie.getEquipment().setHelmetDropChance(0.0F);
+    zombie.getEquipment().setItemInMainHandDropChance(0F);
+    zombie.getEquipment().setBoots(XMaterial.IRON_BOOTS.parseItem());
+    zombie.getEquipment().setLeggings(XMaterial.IRON_LEGGINGS.parseItem());
+    zombie.getEquipment().setChestplate(XMaterial.IRON_CHESTPLATE.parseItem());
+    CreatureUtils.applyAttributes(zombie, arena);
+  }
+
   static void preparePlayerBusterZombie(Zombie zombie, Arena arena) {
     zombie.getEquipment().setHelmet(new ItemStack(Material.TNT));
     zombie.getEquipment().setHelmetDropChance(0.0F);
@@ -73,7 +93,7 @@ class InitializerHelper {
   }
 
   static void prepareKnockbackResistantZombie(Zombie zombie, Arena arena) {
-    zombie.getEquipment().setItemInMainHand(new ItemStack(Material.GOLD_AXE));
+    zombie.getEquipment().setItemInMainHand(XMaterial.GOLDEN_AXE.parseItem());
     zombie.getEquipment().setBoots(new ItemStack(Material.DIAMOND_BOOTS));
     zombie.getEquipment().setLeggings(new ItemStack(Material.DIAMOND_LEGGINGS));
     zombie.getEquipment().setChestplate(new ItemStack(Material.DIAMOND_CHESTPLATE));

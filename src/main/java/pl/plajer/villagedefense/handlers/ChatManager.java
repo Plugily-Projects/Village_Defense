@@ -19,7 +19,6 @@
 package pl.plajer.villagedefense.handlers;
 
 import org.apache.commons.lang.StringUtils;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
@@ -27,8 +26,6 @@ import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.arena.Arena;
 import pl.plajer.villagedefense.handlers.language.LanguageManager;
 import pl.plajer.villagedefense.handlers.language.Messages;
-import pl.plajer.villagedefense.utils.MessageUtils;
-import pl.plajer.villagedefense.utils.services.exception.ReportedException;
 import pl.plajerlair.commonsbox.string.StringFormatUtils;
 
 /**
@@ -82,24 +79,12 @@ public class ChatManager {
   }
 
   public String colorMessage(Messages message) {
-    try {
       return ChatColor.translateAlternateColorCodes('&', LanguageManager.getLanguageMessage(message.getAccessor()));
-    } catch (NullPointerException ex) {
-      MessageUtils.errorOccurred();
-      Bukkit.getConsoleSender().sendMessage("Game message not found!");
-      if (LanguageManager.isDefaultLanguageUsed()) {
-        Bukkit.getConsoleSender().sendMessage("Please regenerate your language.yml file! If error still occurs report it to the developer!");
-      } else {
-        Bukkit.getConsoleSender().sendMessage("Locale message string not found! Please contact developer!");
-        new ReportedException(plugin, ex);
-      }
-      Bukkit.getConsoleSender().sendMessage("Access string: " + message.getAccessor());
-      return "ERR_MESSAGE_NOT_FOUND";
-    }
   }
 
   public String formatMessage(Arena arena, String message, int integer) {
     String returnString = message;
+    returnString = StringUtils.replace(returnString, "%ARENANAME%", arena.getMapName());
     returnString = StringUtils.replace(returnString, "%NUMBER%", Integer.toString(integer));
     returnString = colorRawMessage(formatPlaceholders(returnString, arena));
     return returnString;
@@ -107,6 +92,7 @@ public class ChatManager {
 
   public String formatMessage(Arena arena, String message, Player player) {
     String returnString = message;
+    returnString = StringUtils.replace(returnString, "%ARENANAME%", arena.getMapName());
     returnString = StringUtils.replace(returnString, "%PLAYER%", player.getName());
     returnString = colorRawMessage(formatPlaceholders(returnString, arena));
     return returnString;
@@ -114,6 +100,7 @@ public class ChatManager {
 
   private String formatPlaceholders(String message, Arena arena) {
     String returnString = message;
+    returnString = StringUtils.replace(returnString, "%ARENANAME%", arena.getMapName());
     returnString = StringUtils.replace(returnString, "%TIME%", Integer.toString(arena.getTimer()));
     returnString = StringUtils.replace(returnString, "%FORMATTEDTIME%", StringFormatUtils.formatIntoMMSS((arena.getTimer())));
     returnString = StringUtils.replace(returnString, "%PLAYERSIZE%", Integer.toString(arena.getPlayers().size()));

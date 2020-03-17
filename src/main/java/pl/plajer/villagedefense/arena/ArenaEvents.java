@@ -1,6 +1,6 @@
 /*
  * Village Defense - Protect villagers from hordes of zombies
- * Copyright (C) 2019  Plajer's Lair - maintained by Plajer and contributors
+ * Copyright (C) 2020  Plajer's Lair - maintained by Plajer and contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,6 +18,9 @@
 
 package pl.plajer.villagedefense.arena;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 
@@ -25,6 +28,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.IronGolem;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -40,6 +44,7 @@ import org.bukkit.event.entity.ItemSpawnEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -74,7 +79,16 @@ public class ArenaEvents implements Listener {
     }
     for (Arena a : ArenaRegistry.getArenas()) {
       if (a.getVillagers().contains(e.getEntity()) && a.getZombies().contains(e.getDamager())) {
-        e.setCancelled(false);
+        //check villagerbuster
+        if (((Zombie) e.getDamager()).getEquipment().getHelmet().getType().isBlock() && ((Zombie) e.getDamager()).getEquipment().getChestplate().getType() == Material.LEATHER_CHESTPLATE) {
+          ((Zombie) e.getDamager()).damage(((Zombie) e.getDamager()).getHealth() * 2);
+          ItemStack[] itemStack = new ItemStack[] {new ItemStack(Material.ROTTEN_FLESH)};
+          Bukkit.getServer().getPluginManager().callEvent(new EntityDeathEvent((LivingEntity) e.getDamager(), new ArrayList<>(Arrays.asList(itemStack)), 6));
+          (e.getDamager()).getWorld().spawnEntity((e.getDamager()).getLocation(), EntityType.PRIMED_TNT);
+          e.setCancelled(true);
+        } else {
+          e.setCancelled(false);
+        }
       }
     }
   }
@@ -184,6 +198,7 @@ public class ArenaEvents implements Listener {
     e.getDrops().clear();
     e.setDroppedExp(0);
     plugin.getHolidayManager().applyHolidayDeathEffects(e.getEntity());
+    plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () -> e.getEntity().spigot().respawn(), 5);
     Bukkit.getScheduler().runTaskLater(plugin, () -> {
       e.getEntity().spigot().respawn();
       Player player = e.getEntity();

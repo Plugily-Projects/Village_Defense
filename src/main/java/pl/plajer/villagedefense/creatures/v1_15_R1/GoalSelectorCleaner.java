@@ -16,37 +16,28 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package pl.plajer.villagedefense.api.module;
+package pl.plajer.villagedefense.creatures.v1_15_R1;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
+import java.util.LinkedHashSet;
 
-import org.apache.commons.io.FileUtils;
+import net.minecraft.server.v1_15_R1.EntityCreature;
+import net.minecraft.server.v1_15_R1.PathfinderGoalSelector;
 
-import pl.plajer.villagedefense.Main;
+import pl.plajer.villagedefense.creatures.CreatureUtils;
 
 /**
- * @author Plajer
- * <p>
- * Created at 16.06.2019
+ * Internal helper class
  */
-public class ModuleHelper {
+class GoalSelectorCleaner {
 
-  private static Main plugin;
-
-  private ModuleHelper() {
+  private GoalSelectorCleaner() {
   }
 
-  public static void init(Main plugin) {
-    ModuleHelper.plugin = plugin;
+  static void clearSelectors(EntityCreature creature) {
+    LinkedHashSet goalD = (LinkedHashSet) CreatureUtils.getPrivateField("d", PathfinderGoalSelector.class, creature.goalSelector);
+    goalD.clear();
+    LinkedHashSet targetD = (LinkedHashSet) CreatureUtils.getPrivateField("d", PathfinderGoalSelector.class, creature.targetSelector);
+    targetD.clear();
   }
 
-  public static void createFileInPluginDirectory(InputStream initialStream, String fileName)
-      throws IOException {
-    File targetFile = new File(plugin.getDataFolder(), fileName);
-    if (!targetFile.exists()) {
-      FileUtils.copyInputStreamToFile(initialStream, targetFile);
-    }
-  }
 }

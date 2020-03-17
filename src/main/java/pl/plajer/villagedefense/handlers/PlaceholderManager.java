@@ -23,6 +23,8 @@ import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.entity.Player;
 
 import pl.plajer.villagedefense.api.StatsStorage;
+import pl.plajer.villagedefense.arena.Arena;
+import pl.plajer.villagedefense.arena.ArenaRegistry;
 
 /**
  * @author Plajer
@@ -45,7 +47,7 @@ public class PlaceholderManager extends PlaceholderExpansion {
   }
 
   public String getVersion() {
-    return "1.0.0";
+    return "1.0.1";
   }
 
   @Override
@@ -53,7 +55,7 @@ public class PlaceholderManager extends PlaceholderExpansion {
     if (player == null) {
       return null;
     }
-    switch (id) {
+    switch (id.toLowerCase()) {
       case "kills":
         return String.valueOf(StatsStorage.getUserStats(player, StatsStorage.StatisticType.KILLS));
       case "deaths":
@@ -69,7 +71,33 @@ public class PlaceholderManager extends PlaceholderExpansion {
       case "exp_to_next_level":
         return String.valueOf(Math.ceil(Math.pow(50 * StatsStorage.getUserStats(player, StatsStorage.StatisticType.LEVEL), 1.5)));
       default:
+        return handleArenaPlaceholderRequest(id);
+    }
+  }
+
+  private String handleArenaPlaceholderRequest(String id) {
+    if (!id.contains(":")) {
+      return null;
+    }
+    String[] data = id.split(":");
+    Arena arena = ArenaRegistry.getArena(data[0]);
+    if (arena == null) {
+      return null;
+    }
+    switch (data[1].toLowerCase()) {
+      case "players":
+        return String.valueOf(arena.getPlayers().size());
+      case "max_players":
+        return String.valueOf(arena.getMaximumPlayers());
+      case "state":
+        return String.valueOf(arena.getArenaState());
+      case "state_pretty":
+        return arena.getArenaState().getFormattedName();
+      case "mapname":
+        return arena.getMapName();
+      default:
         return null;
     }
   }
+
 }

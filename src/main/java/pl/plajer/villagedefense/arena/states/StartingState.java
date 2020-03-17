@@ -21,7 +21,6 @@ package pl.plajer.villagedefense.arena.states;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
-
 import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.api.StatsStorage;
 import pl.plajer.villagedefense.api.event.game.VillageGameStartEvent;
@@ -82,7 +81,6 @@ public class StartingState implements ArenaStateHandler {
         user.setStat(StatsStorage.StatisticType.ORBS, plugin.getConfig().getInt("Orbs-Starting-Amount", 20));
         plugin.getUserManager().getUser(player).getKit().giveKitItems(player);
         player.updateInventory();
-        ArenaUtils.addStat(player, StatsStorage.StatisticType.GAMES_PLAYED);
         ArenaUtils.addExperience(player, 10);
         arena.setTimer(plugin.getConfig().getInt("Cooldown-Before-Next-Wave", 25));
         player.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage(Messages.LOBBY_MESSAGES_GAME_STARTED));

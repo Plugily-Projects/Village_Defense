@@ -9,7 +9,36 @@ deploy webhooks to print changelog successfully
 
 That's all, matcher will stop when detects next line started with `###` match
 
-### DEV
+### 4.4.0 Release (23.01.2020 - 18.03.2020)
+* Added new Zombie VillagerBuster (wave 15 and up)
+* Fixed zombie PlayerBuster & GolemBuster
+* Fixed spectator can hit zombie_buster zombies
+* Changed Event priority to work with CMI
+* Fixed 1.15 Material issue
+* Fixed upgrade messages are not added to language.yml
+* PlaceholderAPI placeholders are no longer case sensitive
+* Added arena state placeholders for PlaceholderAPI:
+   * %murdermystery_{arena id}:{data}% where data types are:
+      * players - amount of players in arena
+      * max_players - max players in arena
+      * state - current state raw enum name eg. STARTING
+      * state_pretty - prettified name of enum eg. Waiting (instead WAITING_FOR_PLAYERS)
+      * mapname - name of arena map
+* Fixed mysql database - Create a new one and your stats should be saved correctly
+* Fixed inventory bug
+* Fixed incompatibility with UltimateStacker and similar 
+* Added party dependency, you can join with more players to one arena
+* Moved adding games played to ending stage
+* Fixed spectators can use menu item in next round
+* Fixed startup error after activating Upgrades/Holograms 
+* Added Connect-To-Hub boolean to bungee.yml
+* Added End-Location-Hub boolean to bungee.yml
+
+### 4.3.1 Hotfix (13.12.2019)
+* Arena will not be stopped anymore on starting phase when there are null players (only resetting it to waiting for players)
+* Added 1.15 compatibility 
+
+### 4.3.0 Release (01.11.2019 - 04.12.2019)
 * The map will now remove dropped items & orbs after game finish
 * Fixed some bugs that trigger events on physical action (for example spectator gui opens on redstone block)
 * Fixed fast respawn bug
@@ -25,6 +54,8 @@ That's all, matcher will stop when detects next line started with `###` match
 * Fix plugin crash when you forgot a value in specialitems file
 * Clearer way of error reporting
 * Fix alive player heads texture
+* Removed Modules (Integrated all in one)
+* Changed the MOTD Manager
 
 ### 4.2.2 Release (14.06.2019 - 13.07.2019)
 * Fixed setup menu completed/not completed values were buggy

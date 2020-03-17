@@ -51,11 +51,17 @@ public class LeaveArgument {
           }
           player.sendMessage(registry.getPlugin().getChatManager().getPrefix() + registry.getPlugin().getChatManager().colorMessage(Messages.COMMANDS_TELEPORTED_TO_THE_LOBBY));
           Arena arena = ArenaRegistry.getArena(player);
-          ArenaManager.leaveAttempt(player, arena);
-          Debugger.debug(Level.INFO, "{0} has left the arena {1}! Teleported to end location.", player.getName(), arena.getId());
+          assert arena != null;
+          if (registry.getPlugin().getConfigPreferences().getOption(ConfigPreferences.Option.BUNGEE_ENABLED)) {
+            registry.getPlugin().getBungeeManager().connectToHub(player);
+            Debugger.debug(Level.INFO, "{0} has left the arena {1}! Teleported to the Hub server.", player.getName(), arena.getId());
+          } else {
+            arena.teleportToEndLocation(player);
+            ArenaManager.leaveAttempt(player, arena);
+            Debugger.debug(Level.INFO, "{0} has left the arena {1}! Teleported to end location.", player.getName(), arena.getId());
+          }
         }
       }
     });
   }
-
 }

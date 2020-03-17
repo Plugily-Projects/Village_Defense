@@ -48,6 +48,7 @@ import pl.plajer.villagedefense.handlers.PermissionsManager;
 import pl.plajer.villagedefense.handlers.items.SpecialItem;
 import pl.plajer.villagedefense.handlers.language.LanguageManager;
 import pl.plajer.villagedefense.handlers.language.Messages;
+import pl.plajer.villagedefense.handlers.party.GameParty;
 import pl.plajer.villagedefense.handlers.reward.Reward;
 import pl.plajer.villagedefense.kits.KitRegistry;
 import pl.plajer.villagedefense.kits.level.GolemFriendKit;
@@ -90,6 +91,30 @@ public class ArenaManager {
     if (ArenaRegistry.isInArena(player)) {
       player.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage(Messages.ALREADY_PLAYING));
       return;
+    }
+    //check if player is in party and send party members to the game
+    if (plugin.getPartyHandler().isPlayerInParty(player)) {
+      GameParty party = plugin.getPartyHandler().getParty(player);
+      if (party.getLeader().equals(player)) {
+        if (arena.getMaximumPlayers() - arena.getPlayers().size() >= party.getPlayers().size()) {
+          for (Player partyPlayer : party.getPlayers()) {
+            if (partyPlayer == player) {
+              continue;
+            }
+            if (ArenaRegistry.isInArena(partyPlayer)) {
+              if (ArenaRegistry.getArena(partyPlayer).getArenaState() == ArenaState.IN_GAME) {
+                continue;
+              }
+              leaveAttempt(partyPlayer, ArenaRegistry.getArena(partyPlayer));
+            }
+            partyPlayer.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().formatMessage(arena, plugin.getChatManager().colorMessage(Messages.JOIN_AS_PARTY_MEMBER), partyPlayer));
+            joinAttempt(partyPlayer, arena);
+          }
+        } else {
+          player.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().formatMessage(arena, plugin.getChatManager().colorMessage(Messages.NOT_ENOUGH_SPACE_FOR_PARTY), player));
+          return;
+        }
+      }
     }
     arena.getPlayers().add(player);
     User user = plugin.getUserManager().getUser(player);
@@ -177,7 +202,7 @@ public class ArenaManager {
       return false;
     }
 
-    if (!plugin.getModuleLoader().isModulePresent("Bungee Cord")) {
+    if (plugin.getConfigPreferences().getOption(ConfigPreferences.Option.BUNGEE_ENABLED)) {
       String perm = PermissionsManager.getJoinPerm();
       if (!(player.hasPermission(perm.replace("<arena>", "*")) || player.hasPermission(perm.replace("<arena>", arena.getId())))) {
         player.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage(Messages.JOIN_NO_PERMISSION)
@@ -219,7 +244,7 @@ public class ArenaManager {
       }
     }
     arena.doBarAction(Arena.BarAction.REMOVE, player);
-    if (arena.getPlayers().isEmpty() && arena.getArenaState() != ArenaState.WAITING_FOR_PLAYERS) {
+    if (arena.getPlayers().isEmpty() && arena.getArenaState() != ArenaState.WAITING_FOR_PLAYERS && arena.getArenaState() != ArenaState.STARTING) {
       arena.setArenaState(ArenaState.ENDING);
       arena.setTimer(0);
     }

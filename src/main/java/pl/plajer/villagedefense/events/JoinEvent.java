@@ -23,13 +23,9 @@ import org.bukkit.ChatColor;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerLoginEvent;
 
 import pl.plajer.villagedefense.ConfigPreferences;
 import pl.plajer.villagedefense.Main;
-import pl.plajer.villagedefense.api.StatsStorage;
-import pl.plajer.villagedefense.arena.ArenaRegistry;
-import pl.plajer.villagedefense.handlers.PermissionsManager;
 import pl.plajer.villagedefense.utils.UpdateChecker;
 import pl.plajerlair.commonsbox.minecraft.serialization.InventorySerializer;
 
@@ -47,24 +43,11 @@ public class JoinEvent implements Listener {
 
   @EventHandler
   public void onJoin(PlayerJoinEvent event) {
-    for (StatsStorage.StatisticType stat : StatsStorage.StatisticType.values()) {
-      plugin.getUserManager().loadStatistic(plugin.getUserManager().getUser(event.getPlayer()), stat);
-    }
+    plugin.getUserManager().loadStatistics(plugin.getUserManager().getUser(event.getPlayer()));
     //load player inventory in case of server crash, file is deleted once loaded so if file was already
     //deleted player won't receive his backup, in case of crash he will get it back
     if (plugin.getConfigPreferences().getOption(ConfigPreferences.Option.INVENTORY_MANAGER_ENABLED)) {
       InventorySerializer.loadInventory(plugin, event.getPlayer());
-    }
-
-    int amount = plugin.getModuleLoader().getNotLoadedModulesAmount();
-    if(event.getPlayer().hasPermission("villagedefense.admin.modules") && amount > 0) {
-      Bukkit.getScheduler().runTaskLater(plugin, () -> {
-        event.getPlayer().sendMessage("");
-        event.getPlayer().sendMessage(plugin.getChatManager().colorRawMessage("&6&lVillage Defense Module Notifier"));
-        event.getPlayer().sendMessage("");
-        event.getPlayer().sendMessage(plugin.getChatManager().colorRawMessage("&eThere are &4&l" + amount + " modules &ethat failed to load! " +
-            "Check them out via &6/vda modules"));
-      }, 30);
     }
   }
 

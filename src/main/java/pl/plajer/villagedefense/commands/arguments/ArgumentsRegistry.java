@@ -36,13 +36,14 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
+import pl.plajer.villagedefense.ConfigPreferences;
 import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.arena.Arena;
 import pl.plajer.villagedefense.arena.ArenaRegistry;
 import pl.plajer.villagedefense.commands.arguments.admin.AddOrbsArgument;
 import pl.plajer.villagedefense.commands.arguments.admin.ClearEntitiesArgument;
+import pl.plajer.villagedefense.commands.arguments.admin.HologramArgument;
 import pl.plajer.villagedefense.commands.arguments.admin.ListArenasArgument;
-import pl.plajer.villagedefense.commands.arguments.admin.ModulesArgument;
 import pl.plajer.villagedefense.commands.arguments.admin.ReloadArgument;
 import pl.plajer.villagedefense.commands.arguments.admin.RespawnArgument;
 import pl.plajer.villagedefense.commands.arguments.admin.SetPriceArgument;
@@ -61,6 +62,7 @@ import pl.plajer.villagedefense.commands.arguments.game.CreateArgument;
 import pl.plajer.villagedefense.commands.arguments.game.JoinArguments;
 import pl.plajer.villagedefense.commands.arguments.game.LeaderboardArgument;
 import pl.plajer.villagedefense.commands.arguments.game.LeaveArgument;
+import pl.plajer.villagedefense.commands.arguments.game.RandomJoinArgument;
 import pl.plajer.villagedefense.commands.arguments.game.SelectKitArgument;
 import pl.plajer.villagedefense.commands.arguments.game.StatsArgument;
 import pl.plajer.villagedefense.commands.completion.TabCompletion;
@@ -92,6 +94,7 @@ public class ArgumentsRegistry implements CommandExecutor {
     //register Village Defense basic arguments
     new CreateArgument(this);
     new JoinArguments(this);
+    new RandomJoinArgument(this);
     new LeaderboardArgument(this);
     new LeaveArgument(this);
     new SelectKitArgument(this);
@@ -117,7 +120,9 @@ public class ArgumentsRegistry implements CommandExecutor {
     new SetPriceArgument(this);
     spyChat = new SpyChatArgument(this);
     new TeleportArgument(this);
-    new ModulesArgument(this);
+    if (plugin.getConfigPreferences().getOption(ConfigPreferences.Option.HOLOGRAMS_ENABLED)) {
+      new HologramArgument(this);
+    }
   }
 
   @Override

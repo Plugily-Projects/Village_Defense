@@ -88,6 +88,11 @@ public class ArenaMock extends Arena {
   }
 
   @Override
+  public void spawnVillagerBuster(Random random) {
+    throw new UnimplementedOperationException();
+  }
+
+  @Override
   public void spawnSoftHardZombie(Random random) {
     throw new UnimplementedOperationException();
   }

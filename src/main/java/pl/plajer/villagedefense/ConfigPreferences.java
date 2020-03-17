@@ -69,7 +69,9 @@ public class ConfigPreferences {
 
   public enum Option {
     BOSSBAR_ENABLED("Bossbar-Enabled", true), CHAT_FORMAT_ENABLED("ChatFormat-Enabled", true),
-    DATABASE_ENABLED("DatabaseActivated", false), INVENTORY_MANAGER_ENABLED("InventoryManager", true);
+    DATABASE_ENABLED("DatabaseActivated", false), INVENTORY_MANAGER_ENABLED("InventoryManager", true),
+    BUNGEE_ENABLED("BungeeActivated", false), HOLOGRAMS_ENABLED("HologramsActivated", false),
+    UPGRADES_ENABLED("UpgradesActivated", false);
 
     private String path;
     private boolean def;

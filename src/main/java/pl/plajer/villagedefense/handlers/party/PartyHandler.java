@@ -1,6 +1,6 @@
 /*
- * Village Defense - Protect villagers from hordes of zombies
- * Copyright (C) 2019  Plajer's Lair - maintained by Plajer and contributors
+ * MurderMystery - Find the murderer, kill him and survive!
+ * Copyright (C) 2020  Plajer's Lair - maintained by Tigerpanzer_02, Plajer and contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,36 +16,27 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package pl.plajer.villagedefense.api.module.v1;
+package pl.plajer.villagedefense.handlers.party;
 
-import java.util.List;
-
-import pl.plajer.villagedefense.Main;
-import pl.plajer.villagedefense.api.module.ModuleCompatibility;
+import org.bukkit.entity.Player;
 
 /**
  * @author Plajer
  * <p>
- * Created at 16.06.2019
+ * Created at 09.02.2020
  */
-public interface VillageDefenseModule {
+public interface PartyHandler {
 
-  void onLoad(Main villageDefense);
+  boolean isPlayerInParty(Player player);
 
-  String getModuleName();
+  GameParty getParty(Player player);
 
-  String getAuthor();
+  boolean partiesSupported();
 
-  String getVersion();
+  PartyPluginType getPartyPluginType();
 
-  String getDescription();
-
-  List<String> getProvidedResources();
-
-  List<ModuleCompatibility> getCompatibleVersions();
-
-  void onDisable(Main villageDefense);
-
-  List<String> incompatibleModules();
+  enum PartyPluginType {
+    PARTIES, PAFSpigot, PAFBungee, NONE
+  }
 
 }

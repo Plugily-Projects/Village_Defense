@@ -19,6 +19,7 @@
 package pl.plajer.villagedefense.events;
 
 import java.util.Map;
+import java.util.logging.Level;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -65,6 +66,7 @@ import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 
+import pl.plajer.villagedefense.ConfigPreferences;
 import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.api.StatsStorage;
 import pl.plajer.villagedefense.arena.Arena;
@@ -76,6 +78,7 @@ import pl.plajer.villagedefense.handlers.PermissionsManager;
 import pl.plajer.villagedefense.handlers.items.SpecialItem;
 import pl.plajer.villagedefense.handlers.language.Messages;
 import pl.plajer.villagedefense.user.User;
+import pl.plajer.villagedefense.utils.Debugger;
 import pl.plajer.villagedefense.utils.Utils;
 import pl.plajer.villagedefense.utils.constants.CompatMaterialConstants;
 import pl.plajerlair.commonsbox.minecraft.compat.XMaterial;
@@ -276,7 +279,12 @@ public class Events implements Listener {
     }
     if (key.getItemStack().getItemMeta().getDisplayName().equalsIgnoreCase(itemStack.getItemMeta().getDisplayName())) {
       event.setCancelled(true);
-      ArenaManager.leaveAttempt(event.getPlayer(), arena);
+      if (plugin.getConfigPreferences().getOption(ConfigPreferences.Option.BUNGEE_ENABLED)) {
+        plugin.getBungeeManager().connectToHub(event.getPlayer());
+        Debugger.debug(Level.INFO, "{0} has left the arena {1}! Teleported to the Hub server.", event.getPlayer().getName(), arena.getId());
+      } else {
+        ArenaManager.leaveAttempt(event.getPlayer(), arena);
+      }
     }
   }
 

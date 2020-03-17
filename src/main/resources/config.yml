@@ -20,6 +20,19 @@ locale: default
 # Enable bossbar support?
 Bossbar-Enabled: true
 
+# Should we hook into bungee cord? (If you wanna use arena per server option)
+# You STILL need to use external addon for HUB server game signs
+# Check here for more info: https://wiki.plajer.xyz/minecraft/villagedefense/addons.php#bungee-signs-not-official
+BungeeActivated: false
+
+# Should we hook into Holograpic Displays? (If you wanna use (leaderboard)holograms)
+# You will be able to create holograms
+HologramsActivated: false
+
+# Should we add support for upgradeable Wolves and Golems in game?
+# Configure upgrades pricing in entity_upgrades.yml after enabling it.
+UpgradesActivated: false
+
 # Enable Inventory Manager for your games? (VERY USEFUL feature for MULTI ARENA)
 # This saves inventory of players and restores it after player leaves arena.
 # Saved elements: max health, health, food, experience, full inventory, armor contents, fire ticks, active potions
@@ -157,6 +170,6 @@ Update-Notifier:
   Notify-Beta-Versions: true
 
 # Don't modify.
-Version: 8
+Version: 9
 
 # No way! You've reached the end! But... where's the dragon!?
