@@ -9,6 +9,9 @@ deploy webhooks to print changelog successfully
 
 That's all, matcher will stop when detects next line started with `###` match
 
+### 4.4.1 Release 
+* Fixed leave item events not working
+
 ### 4.4.0 Release (23.01.2020 - 18.03.2020)
 * Added new Zombie VillagerBuster (wave 15 and up)
 * Fixed zombie PlayerBuster & GolemBuster
