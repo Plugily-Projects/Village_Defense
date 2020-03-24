@@ -48,7 +48,6 @@ import pl.plajer.villagedefense.handlers.PermissionsManager;
 import pl.plajer.villagedefense.handlers.PlaceholderManager;
 import pl.plajer.villagedefense.handlers.hologram.HologramsRegistry;
 import pl.plajer.villagedefense.handlers.items.SpecialItemManager;
-import pl.plajer.villagedefense.handlers.language.LanguageFileUpdater;
 import pl.plajer.villagedefense.handlers.language.LanguageManager;
 import pl.plajer.villagedefense.handlers.language.Messages;
 import pl.plajer.villagedefense.handlers.party.PartyHandler;
@@ -270,7 +269,6 @@ public class Main extends JavaPlugin {
         if (!new File(getDataFolder(), "internal/holograms_data.yml").exists()) {
           new File(getDataFolder().getPath() + "/internal").mkdir();
         }
-        LanguageFileUpdater.insertHologramMessages(this);
         this.languageConfig = ConfigUtils.getConfig(this, "language");
         this.hologramsRegistry = new HologramsRegistry(this);
       } else {
@@ -279,7 +277,6 @@ public class Main extends JavaPlugin {
     }
     if (configPreferences.getOption(ConfigPreferences.Option.UPGRADES_ENABLED)) {
       this.entityUpgradesConfig = ConfigUtils.getConfig(this, "entity_upgrades");
-      LanguageFileUpdater.insertUpgradeMessages(this);
       this.languageConfig = ConfigUtils.getConfig(this, "language");
       Upgrade.init(this);
       UpgradeBuilder.init(this);
