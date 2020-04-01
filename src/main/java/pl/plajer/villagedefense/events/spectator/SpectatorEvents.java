@@ -37,6 +37,7 @@ import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.event.entity.EntityTargetEvent;
 import org.bukkit.event.entity.EntityTargetLivingEntityEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerBucketEmptyEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerExpChangeEvent;
@@ -238,6 +239,14 @@ public class SpectatorEvents implements Listener {
   public void onRightClick(PlayerInteractEvent event) {
     Arena arena = ArenaRegistry.getArena(event.getPlayer());
     if (arena != null && plugin.getUserManager().getUser(event.getPlayer()).isSpectator()) {
+      event.setCancelled(true);
+    }
+  }
+
+  @EventHandler
+  public void onInventoryClick(InventoryClickEvent event) {
+    Arena arena = ArenaRegistry.getArena((Player) event.getWhoClicked());
+    if (arena != null && plugin.getUserManager().getUser((Player) event.getWhoClicked()).isSpectator()) {
       event.setCancelled(true);
     }
   }
