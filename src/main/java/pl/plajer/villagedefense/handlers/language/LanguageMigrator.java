@@ -37,7 +37,7 @@ import java.util.List;
  */
 public class LanguageMigrator {
 
-  public static final int LANGUAGE_FILE_VERSION = 11;
+  public static final int LANGUAGE_FILE_VERSION = 12;
   public static final int CONFIG_FILE_VERSION = 9;
   private Main plugin;
   private List<String> migratable = Arrays.asList(Constants.Files.CONFIG.getName(), Constants.Files.KITS.getName(),
@@ -262,53 +262,57 @@ public class LanguageMigrator {
           MigratorUtils.insertAfterLine(file, "In-Game:", "  Join-As-Party-Member: \"&cYou joined %ARENANAME% because the party leader joined it!\"");
           break;
         case 11:
-          MigratorUtils.addNewLines(file, "\n" +
-                  "Leaderboard-Holograms:\n" +
-                  "  Header: '&6&lTop %amount% in %statistic%'\n" +
-                  "  Format: '&e%place%. &f%nickname% (%value%)'\n" +
-                  "  Format-Empty: '&e%place%. &fEmpty (0)'\n" +
-                  "  Unknow-Player: '&fUnknown Player'\n" +
-                  "  Statistics:\n" +
-                  "    Kills: '&eKills'\n" +
-                  "    Deaths: '&eDeaths'\n" +
-                  "    Games-Played: '&eGames Played'\n" +
-                  "    Highest-Wave: '&eHighest Wave'\n" +
-                  "    Level: '&eLevel'\n" +
-                  "    Xp: '&eExperience'\n");
-          MigratorUtils.addNewLines(file, "\n" +
-                  "Upgrade-Menu:\n" +
-                  "  Title: '&3&lUpgrade entity'\n" +
-                  "  Stats-Item:\n" +
-                  "    Name: '&3&lCurrent Stats'\n" +
-                  "    Description: '&3Movement speed: &8%speed%; &3Attack Damage: &8%damage%; &3Health:\n" +
-                  "      &8%current_hp%/%max_hp%'\n" +
-                  "  Upgrades:\n" +
-                  "    Health:\n" +
-                  "      Name: '&3&lUpgrade Health'\n" +
-                  "      Description: '&3Upgrade max health to tier &8%tier%&3!;&3From &8%from% &3to\n" +
-                  "        &8%to%;&3Cost of upgrade: &8%cost%;;&3Click to purchase'\n" +
-                  "    Damage:\n" +
-                  "      Name: '&3&lUpgrade Damage'\n" +
-                  "      Description: '&3Upgrade entity damage to tier &8%tier%&3!;&3From &8%from% &3to\n" +
-                  "        &8%to%;&3Cost of upgrade: &8%cost%;;&8Click to purchase'\n" +
-                  "    Speed:\n" +
-                  "      Name: '&3&lUpgrade Speed'\n" +
-                  "      Description: '&3Upgrade movement speed to tier &8%tier%&3!;&3From &8%from% &3to\n" +
-                  "        &8%to%;&3Cost of upgrade: &8%cost%;;&8Click to purchase'\n" +
-                  "    Swarm-Awareness:\n" +
-                  "      Name: '&3&lSwarm Awareness'\n" +
-                  "      Description: '&3Upgrade swarm awareness to tier &8%tier%&3!;&3From &8%from%\n" +
-                  "        &8damage multiplier per wolf in radius;&8of 3 blocks &3to %to%;&3The more\n" +
-                  "        wolves near attacking wolf;&3the more damage wolf deal;&3Cost of upgrade:         &8%cost%;;&8Click\n" +
-                  "        to purchase'\n" +
-                  "    Final-Defense:\n" +
-                  "      Name: '&3&lFinal Defense'\n" +
-                  "      Description: '&3Upgrade final defense to tier &8%tier%&3!;&3From &8%from% explosion\n" +
-                  "        radius &3to &8%to%;&3Golem will explode after death killing nearby;&3zombies\n" +
-                  "        and stun all alive ones;&3Cost of upgrade: &8%cost%;;&8Click to purchase'\n" +
-                  "  Upgraded-Entity: '&3Upgraded entity to tier &8%tier%&3!'\n" +
-                  "  Cannot-Afford: '&3You don''t have enough orbs to apply that upgrade!'\n" +
-                  "  Max-Tier: '&3Entity is at max tier of this upgrade!'\n");
+          if (config.getString("Leaderboard-Holograms.Header", "null").equals("null")) {
+            MigratorUtils.addNewLines(file, "\n" +
+                    "Leaderboard-Holograms:\n" +
+                    "  Header: '&6&lTop %amount% in %statistic%'\n" +
+                    "  Format: '&e%place%. &f%nickname% (%value%)'\n" +
+                    "  Format-Empty: '&e%place%. &fEmpty (0)'\n" +
+                    "  Unknow-Player: '&fUnknown Player'\n" +
+                    "  Statistics:\n" +
+                    "    Kills: '&eKills'\n" +
+                    "    Deaths: '&eDeaths'\n" +
+                    "    Games-Played: '&eGames Played'\n" +
+                    "    Highest-Wave: '&eHighest Wave'\n" +
+                    "    Level: '&eLevel'\n" +
+                    "    Xp: '&eExperience'\n");
+          }
+          if (config.getString("Upgrade-Menu.Title", "null").equals("null")) {
+            MigratorUtils.addNewLines(file, "\n" +
+                    "Upgrade-Menu:\n" +
+                    "  Title: '&3&lUpgrade entity'\n" +
+                    "  Stats-Item:\n" +
+                    "    Name: '&3&lCurrent Stats'\n" +
+                    "    Description: '&3Movement speed: &8%speed%; &3Attack Damage: &8%damage%; &3Health:\n" +
+                    "      &8%current_hp%/%max_hp%'\n" +
+                    "  Upgrades:\n" +
+                    "    Health:\n" +
+                    "      Name: '&3&lUpgrade Health'\n" +
+                    "      Description: '&3Upgrade max health to tier &8%tier%&3!;&3From &8%from% &3to\n" +
+                    "        &8%to%;&3Cost of upgrade: &8%cost%;;&3Click to purchase'\n" +
+                    "    Damage:\n" +
+                    "      Name: '&3&lUpgrade Damage'\n" +
+                    "      Description: '&3Upgrade entity damage to tier &8%tier%&3!;&3From &8%from% &3to\n" +
+                    "        &8%to%;&3Cost of upgrade: &8%cost%;;&8Click to purchase'\n" +
+                    "    Speed:\n" +
+                    "      Name: '&3&lUpgrade Speed'\n" +
+                    "      Description: '&3Upgrade movement speed to tier &8%tier%&3!;&3From &8%from% &3to\n" +
+                    "        &8%to%;&3Cost of upgrade: &8%cost%;;&8Click to purchase'\n" +
+                    "    Swarm-Awareness:\n" +
+                    "      Name: '&3&lSwarm Awareness'\n" +
+                    "      Description: '&3Upgrade swarm awareness to tier &8%tier%&3!;&3From &8%from%\n" +
+                    "        &8damage multiplier per wolf in radius;&8of 3 blocks &3to %to%;&3The more\n" +
+                    "        wolves near attacking wolf;&3the more damage wolf deal;&3Cost of upgrade:         &8%cost%;;&8Click\n" +
+                    "        to purchase'\n" +
+                    "    Final-Defense:\n" +
+                    "      Name: '&3&lFinal Defense'\n" +
+                    "      Description: '&3Upgrade final defense to tier &8%tier%&3!;&3From &8%from% explosion\n" +
+                    "        radius &3to &8%to%;&3Golem will explode after death killing nearby;&3zombies\n" +
+                    "        and stun all alive ones;&3Cost of upgrade: &8%cost%;;&8Click to purchase'\n" +
+                    "  Upgraded-Entity: '&3Upgraded entity to tier &8%tier%&3!'\n" +
+                    "  Cannot-Afford: '&3You don''t have enough orbs to apply that upgrade!'\n" +
+                    "  Max-Tier: '&3Entity is at max tier of this upgrade!'\n");
+          }
           break;
         default:
           break;
