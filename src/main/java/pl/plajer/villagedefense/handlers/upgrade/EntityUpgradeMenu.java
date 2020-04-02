@@ -3,12 +3,6 @@ package pl.plajer.villagedefense.handlers.upgrade;
 import com.github.stefvanschie.inventoryframework.Gui;
 import com.github.stefvanschie.inventoryframework.GuiItem;
 import com.github.stefvanschie.inventoryframework.pane.StaticPane;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
-
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -20,20 +14,23 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
-
 import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.api.StatsStorage;
 import pl.plajer.villagedefense.api.event.player.VillagePlayerEntityUpgradeEvent;
 import pl.plajer.villagedefense.arena.ArenaRegistry;
 import pl.plajer.villagedefense.events.EntityUpgradeListener;
 import pl.plajer.villagedefense.handlers.language.Messages;
-import pl.plajer.villagedefense.handlers.upgrade.messages.LanguageValues;
 import pl.plajer.villagedefense.handlers.upgrade.upgrades.Upgrade;
 import pl.plajer.villagedefense.handlers.upgrade.upgrades.UpgradeBuilder;
 import pl.plajer.villagedefense.user.User;
 import pl.plajer.villagedefense.utils.Utils;
 import pl.plajerlair.commonsbox.minecraft.compat.XMaterial;
 import pl.plajerlair.commonsbox.minecraft.item.ItemBuilder;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 /**
@@ -103,7 +100,7 @@ public class EntityUpgradeMenu {
    * @param player player who will see inventory
    */
   public void openUpgradeMenu(LivingEntity en, Player player) {
-    Gui gui = new Gui(plugin, 6, color(LanguageValues.UPGRADE_MENU_TITLE));
+    Gui gui = new Gui(plugin, 6, color(Messages.UPGRADES_MENU_TITLE));
     StaticPane pane = new StaticPane(9, 6);
     User user = plugin.getUserManager().getUser(player);
 
@@ -116,15 +113,15 @@ public class EntityUpgradeMenu {
         int nextTier = getTier(en, upgrade) + 1;
         int cost = upgrade.getCost(nextTier);
         if (nextTier > upgrade.getMaxTier()) {
-          player.sendMessage(pluginPrefix + color(LanguageValues.MAX_TIER_UPGRADE));
+          player.sendMessage(pluginPrefix + color(Messages.UPGRADES_MAX_TIER));
           return;
         }
         if (user.getStat(StatsStorage.StatisticType.ORBS) < cost) {
-          player.sendMessage(pluginPrefix + color(LanguageValues.CANNOT_AFFORD_UPGRADE));
+          player.sendMessage(pluginPrefix + color(Messages.UPGRADES_CANNOT_AFFORD));
           return;
         }
         user.setStat(StatsStorage.StatisticType.ORBS, user.getStat(StatsStorage.StatisticType.ORBS) - cost);
-        player.sendMessage(pluginPrefix + color(LanguageValues.UPGRADED_ENTITY).replace("%tier%", String.valueOf(nextTier)));
+        player.sendMessage(pluginPrefix + color(Messages.UPGRADES_UPGRADED_ENTITY).replace("%tier%", String.valueOf(nextTier)));
         applyUpgrade(en, upgrade);
 
         VillagePlayerEntityUpgradeEvent event = new VillagePlayerEntityUpgradeEvent(ArenaRegistry.getArena(player), en, player, upgrade, nextTier);
@@ -147,19 +144,19 @@ public class EntityUpgradeMenu {
     gui.show(player);
   }
 
-  private String color(LanguageValues value) {
+  private String color(Messages value) {
     return ChatColor.translateAlternateColorCodes('&', plugin.getLanguageConfig().getString(value.getAccessor()));
   }
 
   private void applyStatisticsBookOfEntityToPane(StaticPane pane, LivingEntity en) {
     pane.addItem(new GuiItem(new ItemBuilder(new ItemStack(Material.BOOK))
-        .name(color(LanguageValues.UPGRADE_MENU_STATS_ITEM_NAME))
-        .lore(Arrays.stream(color(LanguageValues.UPGRADE_MENU_STATS_ITEM_LORE).split(";"))
-            .map(lore -> lore = plugin.getChatManager().colorRawMessage(lore)
-                .replace("%speed%", String.valueOf(getUpgrade("Speed").getValueForTier(getTier(en, getUpgrade("Speed")))))
-                .replace("%damage%", String.valueOf(getUpgrade("Damage").getValueForTier(getTier(en, getUpgrade("Damage")))))
-                .replace("%max_hp%", String.valueOf(getUpgrade("Health").getValueForTier(getTier(en, getUpgrade("Health")))))
-                .replace("%current_hp%", String.valueOf(en.getHealth()))).collect(Collectors.toList()))
+            .name(color(Messages.UPGRADES_STATS_ITEM_NAME))
+            .lore(Arrays.stream(color(Messages.UPGRADES_STATS_ITEM_DESCRIPTION).split(";"))
+                    .map(lore -> lore = plugin.getChatManager().colorRawMessage(lore)
+                            .replace("%speed%", String.valueOf(getUpgrade("Speed").getValueForTier(getTier(en, getUpgrade("Speed")))))
+                            .replace("%damage%", String.valueOf(getUpgrade("Damage").getValueForTier(getTier(en, getUpgrade("Damage")))))
+                            .replace("%max_hp%", String.valueOf(getUpgrade("Health").getValueForTier(getTier(en, getUpgrade("Health")))))
+                            .replace("%current_hp%", String.valueOf(en.getHealth()))).collect(Collectors.toList()))
         .build(), e -> e.setCancelled(true)), 4, 0);
   }
 

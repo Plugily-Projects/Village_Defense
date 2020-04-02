@@ -9,6 +9,13 @@ deploy webhooks to print changelog successfully
 
 That's all, matcher will stop when detects next line started with `###` match
 
+### 4.4.1 Release 
+* Fixed leave item events not working
+* Added missing string to default bungee.yml
+* Fixed new messages from last update
+* Tried to fix parties
+* Added back all messages to language.yml (Upgrades and Holograms)
+
 ### 4.4.0 Release (23.01.2020 - 18.03.2020)
 * Added new Zombie VillagerBuster (wave 15 and up)
 * Fixed zombie PlayerBuster & GolemBuster

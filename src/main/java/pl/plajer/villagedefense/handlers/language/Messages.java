@@ -294,7 +294,6 @@ public enum Messages {
 
   POWERUPS_POWERUP_ENDED_TITLE_MESSAGE("Powerups.Powerup-Ended-Title-Message"),
 
-  /*Now in modules
   UPGRADES_MENU_TITLE("Upgrade-Menu.Title"),
 
   UPGRADES_STATS_ITEM_NAME("Upgrade-Menu.Stats-Item.Name"),
@@ -323,7 +322,7 @@ public enum Messages {
   UPGRADES_UPGRADED_ENTITY("Upgrade-Menu.Upgraded-Entity"),
   UPGRADES_CANNOT_AFFORD("Upgrade-Menu.Cannot-Afford"),
   UPGRADES_MAX_TIER("Upgrade-Menu.Max-Tier"),
-  */
+
 
   SIGNS_PLEASE_TYPE_ARENA_NAME("Signs.Please-Type-Arena-Name"),
   SIGNS_ARENA_DOESNT_EXISTS("Signs.Arena-Doesnt-Exists"),
@@ -339,7 +338,18 @@ public enum Messages {
 
   VALIDATOR_INVALID_ARENA_CONFIGURATION("Validator.Invalid-Arena-Configuration"),
   VALIDATOR_INSTANCE_STARTED("Validator.Instance-Started"),
-  VALIDATOR_NO_INSTANCES_CREATED("Validator.No-Instances-Created");
+  VALIDATOR_NO_INSTANCES_CREATED("Validator.No-Instances-Created"),
+
+  HOLOGRAMS_HEADER("Leaderboard-Holograms.Header"),
+  HOLOGRAMS_FORMAT("Leaderboard-Holograms.Format"),
+  HOLOGRAMS_FORMAT_EMPTY("Leaderboard-Holograms.Format-Empty"),
+  HOLOGRAMS_UNKNOWN_PLAYER("Leaderboard-Holograms.Unknown-Player"),
+  STATISTIC_KILLS("Leaderboard-Holograms.Statistic.Kills"),
+  STATISTIC_DEATHS("Leaderboard-Holograms.Statistic.Deaths"),
+  STATISTIC_GAMES_PLAYED("Leaderboard-Holograms.Statistic.Games-Played"),
+  STATISTIC_HIGHEST_WAVE("Leaderboard-Holograms.Statistic.Highest-Wave"),
+  STATISTIC_LEVEL("Leaderboard-Holograms.Statistic.Level"),
+  STATISTIC_EXP("Leaderboard-Holograms.Statistic.Xp");
 
   private static Main plugin;
   private String accessor;
