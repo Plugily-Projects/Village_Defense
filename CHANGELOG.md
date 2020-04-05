@@ -9,6 +9,9 @@ deploy webhooks to print changelog successfully
 
 That's all, matcher will stop when detects next line started with `###` match
 
+### 4.4.2
+* Fixed Leaderbord Statistic messages
+
 ### 4.4.1 Release 
 * Fixed leave item events not working
 * Added missing string to default bungee.yml

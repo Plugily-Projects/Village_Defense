@@ -4,7 +4,6 @@ import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
-
 import pl.plajer.villagedefense.api.StatsStorage;
 import pl.plajer.villagedefense.commands.arguments.ArgumentsRegistry;
 import pl.plajer.villagedefense.commands.arguments.data.CommandArgument;
@@ -77,7 +76,7 @@ public class HologramArgument {
 
     FileConfiguration config = ConfigUtils.getConfig(registry.getPlugin(), "internal/holograms_data");
     int nextValue = config.getConfigurationSection("holograms").getKeys(false).size() + 1;
-    config.set("holograms." + nextValue + ".statistic", statistic.name());
+    config.set("holograms." + nextValue + ".statistics", statistic.name());
     config.set("holograms." + nextValue + ".top-amount", amount);
     config.set("holograms." + nextValue + ".location", LocationSerializer.locationToString(player.getLocation()));
     ConfigUtils.saveConfig(registry.getPlugin(), config, "internal/holograms_data");
@@ -102,7 +101,7 @@ public class HologramArgument {
     for (String key : config.getConfigurationSection("holograms").getKeys(false)) {
       sender.sendMessage(registry.getPlugin().getChatManager().colorRawMessage("&aID " + key));
       sender.sendMessage(registry.getPlugin().getChatManager().colorRawMessage(" &eTop: " + config.getInt("holograms." + key + ".top-amount")
-       + " Stat: " + config.getStringList("holograms." + key + ".statistic")));
+              + " Stat: " + config.getStringList("holograms." + key + ".statistics")));
       sender.sendMessage(registry.getPlugin().getChatManager().colorRawMessage(" &eLocation: " + getFriendlyLocation(LocationSerializer.getLocation(config.getString("holograms." + key + ".location")))));
     }
   }
