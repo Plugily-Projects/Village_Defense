@@ -12,6 +12,7 @@ That's all, matcher will stop when detects next line started with `###` match
 ### 4.4.2 Release 
 * Fixed spectator item can be moved and used after respawn (Thanks to MadFox)
 * Fixed Leaderbord Statistic messages
+* Fixed bat damage
 
 ### 4.4.1 Release 
 * Fixed leave item events not working
