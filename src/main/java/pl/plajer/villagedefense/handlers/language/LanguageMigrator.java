@@ -38,10 +38,10 @@ import java.util.List;
 public class LanguageMigrator {
 
   public static final int LANGUAGE_FILE_VERSION = 12;
-  public static final int CONFIG_FILE_VERSION = 9;
-  private Main plugin;
-  private List<String> migratable = Arrays.asList(Constants.Files.CONFIG.getName(), Constants.Files.KITS.getName(),
-      Constants.Files.KITS.getName(), Constants.Files.LANGUAGE.getName(), Constants.Files.SPECIAL_ITEMS.getName(), Constants.Files.MYSQL.getName());
+  public static final int CONFIG_FILE_VERSION = 10;
+  private final Main plugin;
+  private final List<String> migratable = Arrays.asList(Constants.Files.CONFIG.getName(), Constants.Files.KITS.getName(),
+          Constants.Files.KITS.getName(), Constants.Files.LANGUAGE.getName(), Constants.Files.SPECIAL_ITEMS.getName(), Constants.Files.MYSQL.getName());
 
   public LanguageMigrator(Main plugin) {
     this.plugin = plugin;
@@ -50,7 +50,7 @@ public class LanguageMigrator {
     //check if using releases before 2.1.0 or 2.1.0+
     FileConfiguration lang = ConfigUtils.getConfig(plugin, Constants.Files.LANGUAGE.getName());
     if ((lang.isSet("STATS-AboveLine") && lang.isSet("SCOREBOARD-Zombies"))
-        || (lang.isSet("File-Version") && plugin.getConfig().isSet("Config-Version"))) {
+            || (lang.isSet("File-Version") && plugin.getConfig().isSet("Config-Version"))) {
       migrateToNewFormat();
     }
 
@@ -135,16 +135,22 @@ public class LanguageMigrator {
           MigratorUtils.removeLineFromFile(bungeefile, "MOTD-manager: true");
           MigratorUtils.addNewLines(bungeefile, "\r\n# This is useful for bungee game systems.\r\n" +
               "# %state% - Game state will be visible at MOTD.\r\n" +
-              "MOTD:\r\n" +
-              "  Manager: false\r\n" +
-              "  Message: \"The actual game state of vd is %state%\"\r\n" +
-              "  Game-States:\r\n" +
-              "    Inactive: \"&lInactive...\"\r\n" +
-              "    In-Game: \"&lIn-game\"\r\n" +
-              "    Starting: \"&e&lStarting\"\r\n" +
-              "    Full-Game: \"&4&lFULL\"\r\n" +
-              "    Ending: \"&lEnding\"\r\n" +
-              "    Restarting: \"&c&lRestarting\"\r\n");
+                  "MOTD:\r\n" +
+                  "  Manager: false\r\n" +
+                  "  Message: \"The actual game state of vd is %state%\"\r\n" +
+                  "  Game-States:\r\n" +
+                  "    Inactive: \"&lInactive...\"\r\n" +
+                  "    In-Game: \"&lIn-game\"\r\n" +
+                  "    Starting: \"&e&lStarting\"\r\n" +
+                  "    Full-Game: \"&4&lFULL\"\r\n" +
+                  "    Ending: \"&lEnding\"\r\n" +
+                  "    Restarting: \"&c&lRestarting\"\r\n");
+          break;
+        case 9:
+          MigratorUtils.addNewLines(file, "  \r\n" +
+                  "#After how many zombies should we limit them?\r\n" +
+                  "#Once limit is reached zombies get more health so it's still harder each wave\r\n" +
+                  "Zombies-Limit: 75\r\n");
           break;
         default:
           break;

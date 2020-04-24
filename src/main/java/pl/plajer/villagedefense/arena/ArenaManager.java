@@ -18,9 +18,6 @@
 
 package pl.plajer.villagedefense.arena;
 
-import java.util.List;
-import java.util.logging.Level;
-
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
@@ -33,7 +30,6 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
-
 import pl.plajer.villagedefense.ConfigPreferences;
 import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.api.StatsStorage;
@@ -56,6 +52,9 @@ import pl.plajer.villagedefense.user.User;
 import pl.plajer.villagedefense.utils.Debugger;
 import pl.plajerlair.commonsbox.minecraft.misc.MiscUtils;
 import pl.plajerlair.commonsbox.minecraft.serialization.InventorySerializer;
+
+import java.util.List;
+import java.util.logging.Level;
 
 /**
  * @author Plajer
@@ -374,11 +373,12 @@ public class ArenaManager {
     VillageWaveStartEvent event = new VillageWaveStartEvent(arena, arena.getWave());
     Bukkit.getPluginManager().callEvent(event);
     int zombiesAmount = (int) Math.ceil((arena.getPlayers().size() * 0.5) * (arena.getOption(ArenaOption.WAVE) * arena.getOption(ArenaOption.WAVE)) / 2);
-    if (zombiesAmount > 750) {
-      arena.setOptionValue(ArenaOption.ZOMBIE_DIFFICULTY_MULTIPLIER, (int) Math.ceil((zombiesAmount - 750.0) / 15));
+    int maxzombies = plugin.getConfig().getInt("Zombies-Limit", 75);
+    if (zombiesAmount > maxzombies) {
+      arena.setOptionValue(ArenaOption.ZOMBIE_DIFFICULTY_MULTIPLIER, (int) Math.ceil((zombiesAmount - (double) maxzombies) / 15));
       Debugger.debug(Level.WARNING, "[{0}] Detected abnormal wave ({1})! Applying zombie limit and difficulty multiplier to {2}",
-          arena.getId(), arena.getWave(), arena.getOption(ArenaOption.ZOMBIE_DIFFICULTY_MULTIPLIER));
-      zombiesAmount = 750;
+              arena.getId(), arena.getWave(), arena.getOption(ArenaOption.ZOMBIE_DIFFICULTY_MULTIPLIER));
+      zombiesAmount = maxzombies;
     }
     arena.setOptionValue(ArenaOption.ZOMBIES_TO_SPAWN, zombiesAmount);
     arena.setOptionValue(ArenaOption.ZOMBIE_IDLE_PROCESS, (int) Math.floor((double) arena.getWave() / 15));
