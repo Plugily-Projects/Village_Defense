@@ -1,6 +1,6 @@
 /*
  * Village Defense - Protect villagers from hordes of zombies
- * Copyright (C) 2019  Plajer's Lair - maintained by Plajer and contributors
+ * Copyright (C) 2020  Plajer's Lair - maintained by Plajer and contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -81,6 +81,8 @@ public class RespawnArgument {
         target.setGameMode(GameMode.SURVIVAL);
         target.removePotionEffect(PotionEffectType.NIGHT_VISION);
         target.removePotionEffect(PotionEffectType.SPEED);
+        //the default fly speed
+        target.setFlySpeed(0.1f);
         user.setSpectator(false);
         target.teleport(arena.getStartLocation());
         target.setFlying(false);
