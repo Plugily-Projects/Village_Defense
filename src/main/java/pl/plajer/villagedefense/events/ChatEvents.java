@@ -1,6 +1,6 @@
 /*
  * Village Defense - Protect villagers from hordes of zombies
- * Copyright (C) 2019  Plajer's Lair - maintained by Plajer and contributors
+ * Copyright (C) 2020  Plajer's Lair - maintained by Plajer and contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,6 +27,7 @@ import me.clip.placeholderapi.PlaceholderAPI;
 
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -114,7 +115,7 @@ public class ChatEvents implements Listener {
       formatted = StringUtils.replace(formatted, "%kit%", user.getKit().getName());
     }
     formatted = StringUtils.replace(formatted, "%player%", user.getPlayer().getName());
-    formatted = StringUtils.replace(formatted, "%message%", saidMessage);
+    formatted = StringUtils.replace(formatted, "%message%", ChatColor.stripColor(saidMessage));
     if (plugin.getServer().getPluginManager().isPluginEnabled("PlaceholderAPI") && PlaceholderAPI.containsPlaceholders(formatted)) {
       formatted = PlaceholderAPI.setPlaceholders(user.getPlayer(), formatted);
     }
