@@ -1,6 +1,6 @@
 /*
  * Village Defense - Protect villagers from hordes of zombies
- * Copyright (C) 2019  Plajer's Lair - maintained by Plajer and contributors
+ * Copyright (C) 2020  Plajer's Lair - maintained by Plajer and contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,10 +25,16 @@ import org.bukkit.entity.Player;
 import org.bukkit.entity.Zombie;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+
 import pl.plajer.villagedefense.ConfigPreferences;
 import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.api.StatsStorage;
-import pl.plajer.villagedefense.arena.initializers.*;
+import pl.plajer.villagedefense.arena.initializers.ArenaInitializer1_11_R1;
+import pl.plajer.villagedefense.arena.initializers.ArenaInitializer1_12_R1;
+import pl.plajer.villagedefense.arena.initializers.ArenaInitializer1_13_R1;
+import pl.plajer.villagedefense.arena.initializers.ArenaInitializer1_13_R2;
+import pl.plajer.villagedefense.arena.initializers.ArenaInitializer1_14_R1;
+import pl.plajer.villagedefense.arena.initializers.ArenaInitializer1_15_R1;
 import pl.plajer.villagedefense.handlers.PermissionsManager;
 import pl.plajer.villagedefense.handlers.language.Messages;
 import pl.plajer.villagedefense.user.User;
@@ -96,6 +102,8 @@ public class ArenaUtils {
       player.teleport(arena.getStartLocation());
       player.setFlying(false);
       player.setAllowFlight(false);
+      //the default fly speed
+      player.setFlySpeed(0.1f);
       player.setGameMode(GameMode.SURVIVAL);
       player.removePotionEffect(PotionEffectType.NIGHT_VISION);
       player.removePotionEffect(PotionEffectType.SPEED);
