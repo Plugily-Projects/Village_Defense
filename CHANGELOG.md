@@ -14,6 +14,7 @@ That's all, matcher will stop when detects next line started with `###` match
 * Fixed Leaderbord Statistic messages
 * Fixed bat damage
 * Added configurable Zombies-Limit
+* Fixed baby zombies are now spawing again
 
 ### 4.4.1 Release 
 * Fixed leave item events not working
