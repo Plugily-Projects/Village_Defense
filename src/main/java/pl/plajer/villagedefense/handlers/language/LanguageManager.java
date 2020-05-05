@@ -217,7 +217,7 @@ public class LanguageManager {
       list = list.stream().map(string -> ChatColor.translateAlternateColorCodes('&', string)).collect(Collectors.toList());
       return list;
     }
-    return Arrays.asList(path.replace("&", "§").split(";"));
+    return Arrays.asList(prop.replace("&", "§").split(";"));
   }
 
   /**
