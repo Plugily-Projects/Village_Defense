@@ -24,7 +24,7 @@
 
     <groupId>pl.plajer</groupId>
     <artifactId>villagedefense</artifactId>
-    <version>4.4.2-b</version>
+    <version>4.4.2</version>
     <name>VillageDefense</name>
 
     <properties>
@@ -367,6 +367,7 @@
                                     <shadedPattern>pl.plajer.villagedefense.utils</shadedPattern>
                                 </relocation>
                             </relocations>
+                            <createDependencyReducedPom>false</createDependencyReducedPom>
                         </configuration>
                     </execution>
                 </executions>
