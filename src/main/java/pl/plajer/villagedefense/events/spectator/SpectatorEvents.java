@@ -20,31 +20,16 @@ package pl.plajer.villagedefense.events.spectator;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.ExperienceOrb;
-import org.bukkit.entity.Player;
-import org.bukkit.entity.Wolf;
-import org.bukkit.entity.Zombie;
+import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
-import org.bukkit.event.entity.EntityDamageByBlockEvent;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.entity.EntityPickupItemEvent;
-import org.bukkit.event.entity.EntityTargetEvent;
-import org.bukkit.event.entity.EntityTargetLivingEntityEvent;
-import org.bukkit.event.entity.FoodLevelChangeEvent;
-import org.bukkit.event.player.PlayerBucketEmptyEvent;
-import org.bukkit.event.player.PlayerDropItemEvent;
-import org.bukkit.event.player.PlayerExpChangeEvent;
-import org.bukkit.event.player.PlayerInteractEntityEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerItemConsumeEvent;
-import org.bukkit.event.player.PlayerShearEntityEvent;
-
+import org.bukkit.event.entity.*;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryType;
+import org.bukkit.event.player.*;
 import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.arena.Arena;
 import pl.plajer.villagedefense.arena.ArenaRegistry;
@@ -56,7 +41,7 @@ import pl.plajer.villagedefense.user.User;
  */
 public class SpectatorEvents implements Listener {
 
-  private Main plugin;
+  private final Main plugin;
 
   public SpectatorEvents(Main plugin) {
     this.plugin = plugin;
@@ -239,6 +224,16 @@ public class SpectatorEvents implements Listener {
     Arena arena = ArenaRegistry.getArena(event.getPlayer());
     if (arena != null && plugin.getUserManager().getUser(event.getPlayer()).isSpectator()) {
       event.setCancelled(true);
+    }
+  }
+
+  @EventHandler
+  public void onInventoryClick(InventoryClickEvent event) {
+    Arena arena = ArenaRegistry.getArena((Player) event.getWhoClicked());
+    if (event.getClickedInventory().getType() == InventoryType.PLAYER) {
+      if (arena != null && plugin.getUserManager().getUser((Player) event.getWhoClicked()).isSpectator()) {
+        event.setCancelled(true);
+      }
     }
   }
 

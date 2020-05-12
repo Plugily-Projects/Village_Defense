@@ -1,6 +1,6 @@
 /*
  * Village Defense - Protect villagers from hordes of zombies
- * Copyright (C) 2019  Plajer's Lair - maintained by Plajer and contributors
+ * Copyright (C) 2020  Plajer's Lair - maintained by Plajer and contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -224,6 +224,8 @@ public class ArenaManager {
     Debugger.debug(Level.INFO, "[{0}] Initial leave attempt of {1}", arena.getId(), player.getName());
     long start = System.currentTimeMillis();
 
+    //the default fly speed
+    player.setFlySpeed(0.1f);
     player.setExp(0);
     player.setLevel(0);
     VillageGameLeaveAttemptEvent villageGameLeaveAttemptEvent = new VillageGameLeaveAttemptEvent(player, arena);
@@ -374,11 +376,12 @@ public class ArenaManager {
     VillageWaveStartEvent event = new VillageWaveStartEvent(arena, arena.getWave());
     Bukkit.getPluginManager().callEvent(event);
     int zombiesAmount = (int) Math.ceil((arena.getPlayers().size() * 0.5) * (arena.getOption(ArenaOption.WAVE) * arena.getOption(ArenaOption.WAVE)) / 2);
-    if (zombiesAmount > 750) {
-      arena.setOptionValue(ArenaOption.ZOMBIE_DIFFICULTY_MULTIPLIER, (int) Math.ceil((zombiesAmount - 750.0) / 15));
+    int maxzombies = plugin.getConfig().getInt("Zombies-Limit", 75);
+    if (zombiesAmount > maxzombies) {
+      arena.setOptionValue(ArenaOption.ZOMBIE_DIFFICULTY_MULTIPLIER, (int) Math.ceil((zombiesAmount - (double) maxzombies) / 15));
       Debugger.debug(Level.WARNING, "[{0}] Detected abnormal wave ({1})! Applying zombie limit and difficulty multiplier to {2}",
-          arena.getId(), arena.getWave(), arena.getOption(ArenaOption.ZOMBIE_DIFFICULTY_MULTIPLIER));
-      zombiesAmount = 750;
+              arena.getId(), arena.getWave(), arena.getOption(ArenaOption.ZOMBIE_DIFFICULTY_MULTIPLIER));
+      zombiesAmount = maxzombies;
     }
     arena.setOptionValue(ArenaOption.ZOMBIES_TO_SPAWN, zombiesAmount);
     arena.setOptionValue(ArenaOption.ZOMBIE_IDLE_PROCESS, (int) Math.floor((double) arena.getWave() / 15));

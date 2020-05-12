@@ -18,6 +18,17 @@
 
 package pl.plajer.villagedefense.handlers.language;
 
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.configuration.file.FileConfiguration;
+import pl.plajer.villagedefense.Main;
+import pl.plajer.villagedefense.utils.constants.Constants;
+import pl.plajer.villagedefense.utils.services.ServiceRegistry;
+import pl.plajer.villagedefense.utils.services.locale.Locale;
+import pl.plajer.villagedefense.utils.services.locale.LocaleRegistry;
+import pl.plajer.villagedefense.utils.services.locale.LocaleService;
+import pl.plajerlair.commonsbox.minecraft.configuration.ConfigUtils;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -30,23 +41,11 @@ import java.util.Properties;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
 
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.configuration.file.FileConfiguration;
-
-import pl.plajer.villagedefense.Main;
-import pl.plajer.villagedefense.utils.constants.Constants;
-import pl.plajer.villagedefense.utils.services.ServiceRegistry;
-import pl.plajer.villagedefense.utils.services.locale.Locale;
-import pl.plajer.villagedefense.utils.services.locale.LocaleRegistry;
-import pl.plajer.villagedefense.utils.services.locale.LocaleService;
-import pl.plajerlair.commonsbox.minecraft.configuration.ConfigUtils;
-
 public class LanguageManager {
 
   private static Main plugin;
   private static Locale pluginLocale;
-  private static Properties properties = new Properties();
+  private static final Properties properties = new Properties();
   private static FileConfiguration languageConfig;
   private static boolean messagesIntegrityPassed = true;
 
@@ -217,7 +216,7 @@ public class LanguageManager {
       list = list.stream().map(string -> ChatColor.translateAlternateColorCodes('&', string)).collect(Collectors.toList());
       return list;
     }
-    return Arrays.asList(path.replace("&", "§").split(";"));
+    return Arrays.asList(prop.replace("&", "§").split(";"));
   }
 
   /**

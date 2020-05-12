@@ -9,6 +9,15 @@ deploy webhooks to print changelog successfully
 
 That's all, matcher will stop when detects next line started with `###` match
 
+### 4.4.2 Release 
+* Fixed spectator item can be moved and used after respawn (Thanks to MadFox)
+* Fixed Leaderboard Statistic messages
+* Fixed bat damage
+* Added configurable Zombies-Limit
+* Update setup tips Feedback page link
+* Fixed baby zombies are now spawing again
+* Disabled creation of reducedDependencyPom
+
 ### 4.4.1 Release 
 * Fixed leave item events not working
 * Added missing string to default bungee.yml

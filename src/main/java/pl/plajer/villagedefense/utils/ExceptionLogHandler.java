@@ -18,15 +18,14 @@
 
 package pl.plajer.villagedefense.utils;
 
+import org.bukkit.Bukkit;
+import pl.plajer.villagedefense.Main;
+import pl.plajer.villagedefense.utils.services.exception.ReportedException;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Handler;
 import java.util.logging.LogRecord;
-
-import org.bukkit.Bukkit;
-
-import pl.plajer.villagedefense.Main;
-import pl.plajer.villagedefense.utils.services.exception.ReportedException;
 
 /**
  * @author Plajer
@@ -37,8 +36,8 @@ public class ExceptionLogHandler extends Handler {
 
   //these classes if found in stacktraces won't be reported
   //to the Error Service
-  private List<String> blacklistedClasses = Arrays.asList("pl.plajer.villagedefense.user.data.MysqlManager", "pl.plajer.villagedefense.plajerlair.commonsbox.database.MysqlDatabase");
-  private Main plugin;
+  private final List<String> blacklistedClasses = Arrays.asList("pl.plajer.villagedefense.user.data.MysqlManager", "pl.plajer.villagedefense.plajerlair.commonsbox.database.MysqlDatabase");
+  private final Main plugin;
 
   public ExceptionLogHandler(Main plugin) {
     this.plugin = plugin;
@@ -61,9 +60,21 @@ public class ExceptionLogHandler extends Handler {
     if (!(throwable instanceof Exception) || !throwable.getClass().getSimpleName().contains("Exception")) {
       return;
     }
-    if (throwable.getStackTrace().length == 0
+    /*if (throwable.getStackTrace().length == 0
         || throwable.getCause() != null ? !throwable.getCause().getStackTrace()[0].getClassName().contains("pl.plajer.villagedefense")
         : !throwable.getStackTrace()[0].getClassName().contains("pl.plajer.villagedefense")) {
+      return;
+    }*/
+
+    if (throwable.getStackTrace().length <= 0) {
+      return;
+    }
+    if (throwable.getCause() != null && throwable.getCause().getStackTrace() != null) {
+      if (!throwable.getCause().getStackTrace()[0].getClassName().contains("pl.plajer.villagedefense")) {
+        return;
+      }
+    }
+    if (!throwable.getStackTrace()[0].getClassName().contains("pl.plajer.villagedefense")) {
       return;
     }
     if (containsBlacklistedClass(throwable)) {

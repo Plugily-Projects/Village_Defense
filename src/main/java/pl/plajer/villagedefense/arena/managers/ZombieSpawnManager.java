@@ -18,19 +18,13 @@
 
 package pl.plajer.villagedefense.arena.managers;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
-
 import org.bukkit.Location;
 import org.bukkit.entity.Villager;
 import org.bukkit.entity.Zombie;
-
 import pl.plajer.villagedefense.arena.Arena;
 import pl.plajer.villagedefense.arena.options.ArenaOption;
+
+import java.util.*;
 
 /**
  * @author Plajer
@@ -39,11 +33,11 @@ import pl.plajer.villagedefense.arena.options.ArenaOption;
  */
 public class ZombieSpawnManager {
 
-  private Random random;
-  private Arena arena;
+  private final Random random;
+  private final Arena arena;
   private int localIdleProcess = 0;
-  private List<Zombie> glitchedZombies = new ArrayList<>();
-  private Map<Zombie, Location> zombieCheckerLocations = new HashMap<>();
+  private final List<Zombie> glitchedZombies = new ArrayList<>();
+  private final Map<Zombie, Location> zombieCheckerLocations = new HashMap<>();
 
   public ZombieSpawnManager(Arena arena) {
     this.arena = arena;
@@ -166,7 +160,7 @@ public class ZombieSpawnManager {
             arena.spawnPlayerBuster(random);
             arena.spawnGolemBuster(random);
             arena.spawnVillagerBuster(random);
-            // arena.spawnBabyZombie(random);
+            arena.spawnBabyZombie(random);
           }
         }
       }

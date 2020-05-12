@@ -161,6 +161,10 @@ Wave-Limit:
   # Limit of waves, if this wave ends game will end
   Limit: 25
 
+#After how many zombies should we limit them?
+#Once limit is reached zombies get more health so it's still harder each wave
+Zombies-Limit: 75
+
 Update-Notifier:
   # Should we check for updates on plugin start/after admin join?
   # You REALLY should have this true!
@@ -170,6 +174,6 @@ Update-Notifier:
   Notify-Beta-Versions: true
 
 # Don't modify.
-Version: 9
+Version: 10
 
 # No way! You've reached the end! But... where's the dragon!?
