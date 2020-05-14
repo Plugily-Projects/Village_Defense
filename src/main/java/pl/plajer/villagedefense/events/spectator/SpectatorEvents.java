@@ -230,6 +230,9 @@ public class SpectatorEvents implements Listener {
   @EventHandler
   public void onInventoryClick(InventoryClickEvent event) {
     Arena arena = ArenaRegistry.getArena((Player) event.getWhoClicked());
+    if (event.getClickedInventory() == null) {
+      return;
+    }
     if (event.getClickedInventory().getType() == InventoryType.PLAYER) {
       if (arena != null && plugin.getUserManager().getUser((Player) event.getWhoClicked()).isSpectator()) {
         event.setCancelled(true);

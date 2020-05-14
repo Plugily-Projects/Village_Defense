@@ -212,7 +212,7 @@ public class HolidayManager implements Listener {
 
   @EventHandler
   public void onBatDamage(EntityDamageEvent e) {
-    if (!e.getEntityType().equals(EntityType.BAT) || e.getEntity().getCustomName() != null) {
+    if (!e.getEntityType().equals(EntityType.BAT) || e.getEntity().getCustomName() == null) {
       return;
     }
     if (e.getEntity().getCustomName().equals(plugin.getChatManager().colorRawMessage("&6Halloween!"))) {
