@@ -25,6 +25,7 @@ import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.arena.Arena;
 import pl.plajer.villagedefense.arena.options.ArenaOption;
 import pl.plajer.villagedefense.handlers.language.LanguageManager;
+import pl.plajer.villagedefense.utils.Debugger;
 import pl.plajerlair.commonsbox.string.StringFormatUtils;
 
 import java.lang.reflect.Field;
@@ -93,11 +94,13 @@ public class CreatureUtils {
   public static void applyAttributes(Zombie zombie, Arena arena) {
     zombie.getAttribute(Attribute.GENERIC_FOLLOW_RANGE).setBaseValue(200.0D);
     zombie.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(zombie.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue() * arena.getOption(ArenaOption.ZOMBIE_DIFFICULTY_MULTIPLIER));
+    Debugger.debug(Level.INFO, "[{0}] Detected abnormal wave ({1})! Applying zombie limit and difficulty multiplier to {2}! Zombie: {3}, Life: {4}",
+            arena.getId(), arena.getWave(), arena.getOption(ArenaOption.ZOMBIE_DIFFICULTY_MULTIPLIER), zombie, zombie.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue());
     if (plugin.getConfig().getBoolean("Simple-Zombie-Health-Bar-Enabled", true)) {
       zombie.setCustomNameVisible(true);
       zombie.setCustomName(StringFormatUtils.getProgressBar((int) zombie.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue(),
-          (int) zombie.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue(), 50, "|",
-          ChatColor.YELLOW + "", ChatColor.GRAY + ""));
+              (int) zombie.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue(), 50, "|",
+              ChatColor.YELLOW + "", ChatColor.GRAY + ""));
     }
   }
 
