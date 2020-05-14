@@ -18,22 +18,21 @@
 
 package pl.plajer.villagedefense.creatures;
 
+import org.bukkit.ChatColor;
+import org.bukkit.attribute.Attribute;
+import org.bukkit.entity.Zombie;
+import pl.plajer.villagedefense.Main;
+import pl.plajer.villagedefense.arena.Arena;
+import pl.plajer.villagedefense.arena.options.ArenaOption;
+import pl.plajer.villagedefense.handlers.language.LanguageManager;
+import pl.plajerlair.commonsbox.string.StringFormatUtils;
+
 import java.lang.reflect.Field;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
-
-import org.bukkit.ChatColor;
-import org.bukkit.attribute.Attribute;
-import org.bukkit.entity.Zombie;
-
-import pl.plajer.villagedefense.Main;
-import pl.plajer.villagedefense.arena.Arena;
-import pl.plajer.villagedefense.arena.options.ArenaOption;
-import pl.plajer.villagedefense.handlers.language.LanguageManager;
-import pl.plajerlair.commonsbox.string.StringFormatUtils;
 
 /**
  * @author Plajer
@@ -47,7 +46,7 @@ public class CreatureUtils {
   private static String[] villagerNames = ("Jagger,Kelsey,Kelton,Haylie,Harlow,Howard,Wulffric,Winfred,Ashley,Bailey,Beckett,Alfredo,Alfred,Adair,Edgar,ED,Eadwig,Edgaras,Buckley,Stanley,Nuffley,"
       + "Mary,Jeffry,Rosaly,Elliot,Harry,Sam,Rosaline,Tom,Ivan,Kevin,Adam").split(",");
   private static Main plugin;
-  private static List<CachedObject> cachedObjects = new ArrayList<>();
+  private static final List<CachedObject> cachedObjects = new ArrayList<>();
 
   private CreatureUtils() {
   }
@@ -93,7 +92,7 @@ public class CreatureUtils {
    */
   public static void applyAttributes(Zombie zombie, Arena arena) {
     zombie.getAttribute(Attribute.GENERIC_FOLLOW_RANGE).setBaseValue(200.0D);
-    zombie.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(zombie.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue() + arena.getOption(ArenaOption.ZOMBIE_DIFFICULTY_MULTIPLIER));
+    zombie.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(zombie.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue() * arena.getOption(ArenaOption.ZOMBIE_DIFFICULTY_MULTIPLIER));
     if (plugin.getConfig().getBoolean("Simple-Zombie-Health-Bar-Enabled", true)) {
       zombie.setCustomNameVisible(true);
       zombie.setCustomName(StringFormatUtils.getProgressBar((int) zombie.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue(),

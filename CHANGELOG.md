@@ -12,6 +12,7 @@ That's all, matcher will stop when detects next line started with `###` match
 ### 4.4.3 Hotfix
 * Fixed spectator NullPointerException
 * Fixed HolidayManager NullPointerException
+* Changed zombie multiplier to real * and not just +
 
 ### 4.4.2 Release 
 * Fixed spectator item can be moved and used after respawn (Thanks to MadFox)
