@@ -18,23 +18,13 @@
 
 package pl.plajer.villagedefense.arena;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
-
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.IronGolem;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
-import org.bukkit.entity.Villager;
-import org.bukkit.entity.Wolf;
-import org.bukkit.entity.Zombie;
+import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -47,7 +37,6 @@ import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
-
 import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.api.StatsStorage;
 import pl.plajer.villagedefense.arena.options.ArenaOption;
@@ -57,6 +46,9 @@ import pl.plajer.villagedefense.handlers.language.Messages;
 import pl.plajer.villagedefense.handlers.reward.Reward;
 import pl.plajer.villagedefense.user.User;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 /**
  * @author Plajer
  * <p>
@@ -64,7 +56,7 @@ import pl.plajer.villagedefense.user.User;
  */
 public class ArenaEvents implements Listener {
 
-  private Main plugin;
+  private final Main plugin;
 
   public ArenaEvents(Main plugin) {
     this.plugin = plugin;
@@ -111,7 +103,7 @@ public class ArenaEvents implements Listener {
         Player player = (Player) ((Wolf) e.getDamager()).getOwner();
         if (ArenaRegistry.getArena(player) != null) {
           ArenaUtils.addStat(player, StatsStorage.StatisticType.KILLS);
-          ArenaUtils.addExperience(player, 2);
+          ArenaUtils.addExperience(player, 2 * arena.getOption(ArenaOption.ZOMBIE_DIFFICULTY_MULTIPLIER));
         }
         return;
       }
@@ -159,7 +151,7 @@ public class ArenaEvents implements Listener {
           arena.addOptionValue(ArenaOption.TOTAL_KILLED_ZOMBIES, 1);
           if (ArenaRegistry.getArena(e.getEntity().getKiller()) != null) {
             ArenaUtils.addStat(e.getEntity().getKiller(), StatsStorage.StatisticType.KILLS);
-            ArenaUtils.addExperience(e.getEntity().getKiller(), 2);
+            ArenaUtils.addExperience(e.getEntity().getKiller(), 2 * arena.getOption(ArenaOption.ZOMBIE_DIFFICULTY_MULTIPLIER));
             plugin.getRewardsHandler().performReward(e.getEntity().getKiller(), Reward.RewardType.ZOMBIE_KILL);
             plugin.getPowerupRegistry().spawnPowerup(e.getEntity().getLocation(), ArenaRegistry.getArena(e.getEntity().getKiller()));
           }

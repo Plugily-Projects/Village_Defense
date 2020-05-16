@@ -24,7 +24,7 @@
 
     <groupId>pl.plajer</groupId>
     <artifactId>villagedefense</artifactId>
-    <version>4.4.2</version>
+    <version>4.4.4</version>
     <name>VillageDefense</name>
 
     <properties>

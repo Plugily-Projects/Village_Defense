@@ -9,6 +9,20 @@ deploy webhooks to print changelog successfully
 
 That's all, matcher will stop when detects next line started with `###` match
 
+### 4.4.4 Release
+* Added multiplier to orbs and experience when zombie limit were reached
+* Added a min multiplier of 2
+* Fixed zombie default multiplier is 0 (Players can kill zombies one hit)
+* Fixed new zombie health wasn't applied
+* Fixed debug message were called on every zombie without that it should apply
+* Fixed after limiter is on only the default zombie were spawned
+* Fixed 'zombie to spawn' amount
+
+### 4.4.3 Hotfix
+* Fixed spectator NullPointerException
+* Fixed HolidayManager NullPointerException
+* Changed zombie multiplier to real * and not just +
+
 ### 4.4.2 Release 
 * Fixed spectator item can be moved and used after respawn (Thanks to MadFox)
 * Fixed Leaderboard Statistic messages
