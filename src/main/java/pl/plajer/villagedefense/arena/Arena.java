@@ -1,6 +1,6 @@
 /*
  * Village Defense - Protect villagers from hordes of zombies
- * Copyright (C) 2019  Plajer's Lair - maintained by Plajer and contributors
+ * Copyright (C) 2020  Plajer's Lair - maintained by Plajer and contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -52,20 +52,20 @@ public abstract class Arena extends BukkitRunnable {
   private static Main plugin;
   private final String id;
 
-  private Set<Player> players = new HashSet<>();
-  private List<Zombie> zombies = new ArrayList<>();
-  private List<Wolf> wolves = new ArrayList<>();
-  private List<Villager> villagers = new ArrayList<>();
-  private List<IronGolem> ironGolems = new ArrayList<>();
-  private List<Item> droppedFleshes = new ArrayList<>();
+  private final Set<Player> players = new HashSet<>();
+  private final List<Zombie> zombies = new ArrayList<>();
+  private final List<Wolf> wolves = new ArrayList<>();
+  private final List<Villager> villagers = new ArrayList<>();
+  private final List<IronGolem> ironGolems = new ArrayList<>();
+  private final List<Item> droppedFleshes = new ArrayList<>();
 
   //all arena values that are integers, contains constant and floating values
-  private Map<ArenaOption, Integer> arenaOptions = new EnumMap<>(ArenaOption.class);
+  private final Map<ArenaOption, Integer> arenaOptions = new EnumMap<>(ArenaOption.class);
   //instead of 3 location fields we use map with GameLocation enum
-  private Map<GameLocation, Location> gameLocations = new EnumMap<>(GameLocation.class);
-  private Map<SpawnPoint, List<Location>> spawnPoints = new EnumMap<>(SpawnPoint.class);
+  private final Map<GameLocation, Location> gameLocations = new EnumMap<>(GameLocation.class);
+  private final Map<SpawnPoint, List<Location>> spawnPoints = new EnumMap<>(SpawnPoint.class);
   //all handlers for all game states, we don't include them all in one runnable because it would be too big
-  private Map<ArenaState, ArenaStateHandler> gameStateHandlers = new EnumMap<>(ArenaState.class);
+  private final Map<ArenaState, ArenaStateHandler> gameStateHandlers = new EnumMap<>(ArenaState.class);
 
   private ScoreboardManager scoreboardManager;
   private MapRestorerManager mapRestorerManager;
@@ -522,7 +522,7 @@ public abstract class Arena extends BukkitRunnable {
     setOptionValue(ArenaOption.WAVE, 1);
     setOptionValue(ArenaOption.TOTAL_KILLED_ZOMBIES, 0);
     setOptionValue(ArenaOption.TOTAL_ORBS_SPENT, 0);
-    setOptionValue(ArenaOption.ZOMBIE_DIFFICULTY_MULTIPLIER, 0);
+    setOptionValue(ArenaOption.ZOMBIE_DIFFICULTY_MULTIPLIER, 1);
     setOptionValue(ArenaOption.ZOMBIE_IDLE_PROCESS, 0);
     zombieSpawnManager.applyIdle(0);
   }

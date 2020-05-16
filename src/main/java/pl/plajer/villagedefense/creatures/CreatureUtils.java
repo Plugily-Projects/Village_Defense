@@ -42,81 +42,83 @@ import java.util.logging.Level;
  */
 public class CreatureUtils {
 
-  private static float zombieSpeed = 1.3f;
-  private static float babyZombieSpeed = 2.0f;
-  private static String[] villagerNames = ("Jagger,Kelsey,Kelton,Haylie,Harlow,Howard,Wulffric,Winfred,Ashley,Bailey,Beckett,Alfredo,Alfred,Adair,Edgar,ED,Eadwig,Edgaras,Buckley,Stanley,Nuffley,"
-      + "Mary,Jeffry,Rosaly,Elliot,Harry,Sam,Rosaline,Tom,Ivan,Kevin,Adam").split(",");
-  private static Main plugin;
-  private static final List<CachedObject> cachedObjects = new ArrayList<>();
+    private static float zombieSpeed = 1.3f;
+    private static float babyZombieSpeed = 2.0f;
+    private static String[] villagerNames = ("Jagger,Kelsey,Kelton,Haylie,Harlow,Howard,Wulffric,Winfred,Ashley,Bailey,Beckett,Alfredo,Alfred,Adair,Edgar,ED,Eadwig,Edgaras,Buckley,Stanley,Nuffley,"
+            + "Mary,Jeffry,Rosaly,Elliot,Harry,Sam,Rosaline,Tom,Ivan,Kevin,Adam").split(",");
+    private static Main plugin;
+    private static final List<CachedObject> cachedObjects = new ArrayList<>();
 
-  private CreatureUtils() {
-  }
-
-  public static void init(Main plugin) {
-    CreatureUtils.plugin = plugin;
-    zombieSpeed = (float) plugin.getConfig().getDouble("Zombie-Speed", 1.3);
-    babyZombieSpeed = (float) plugin.getConfig().getDouble("Mini-Zombie-Speed", 2.0);
-    villagerNames = LanguageManager.getLanguageMessage("In-Game.Villager-Names").split(",");
-  }
-
-  public static Object getPrivateField(String fieldName, Class clazz, Object object) {
-    for (CachedObject cachedObject : cachedObjects) {
-      if (cachedObject.getClazz().equals(clazz) && cachedObject.getFieldName().equals(fieldName)) {
-        return cachedObject.getObject();
-      }
+    private CreatureUtils() {
     }
-    Field field;
-    Object o = null;
-    try {
-      field = clazz.getDeclaredField(fieldName);
 
-      AccessController.doPrivileged((PrivilegedAction<Object>) () -> {
-        field.setAccessible(true);
-        return null;
-      });
-
-      o = field.get(object);
-      cachedObjects.add(new CachedObject(fieldName, clazz, o));
-    } catch (NoSuchFieldException | IllegalAccessException e) {
-      plugin.getLogger().log(Level.WARNING, "Failed to retrieve private field of object " + object.getClass() + "!");
-      plugin.getLogger().log(Level.WARNING, e.getMessage() + " (fieldName " + fieldName + ", class " + clazz.getName() + ")");
+    public static void init(Main plugin) {
+        CreatureUtils.plugin = plugin;
+        zombieSpeed = (float) plugin.getConfig().getDouble("Zombie-Speed", 1.3);
+        babyZombieSpeed = (float) plugin.getConfig().getDouble("Mini-Zombie-Speed", 2.0);
+        villagerNames = LanguageManager.getLanguageMessage("In-Game.Villager-Names").split(",");
     }
-    return o;
-  }
 
-  /**
-   * Applies attributes (i.e. health bar (if enabled),
-   * health multiplier and follow range) to target zombie.
-   *
-   * @param zombie zombie to apply attributes for
-   * @param arena  arena to get health multiplier from
-   */
-  public static void applyAttributes(Zombie zombie, Arena arena) {
-    zombie.getAttribute(Attribute.GENERIC_FOLLOW_RANGE).setBaseValue(200.0D);
-    zombie.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(zombie.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue() * arena.getOption(ArenaOption.ZOMBIE_DIFFICULTY_MULTIPLIER));
-    Debugger.debug(Level.INFO, "[{0}] Detected abnormal wave ({1})! Applying zombie limit and difficulty multiplier to {2}! Zombie: {3}, Life: {4}",
-            arena.getId(), arena.getWave(), arena.getOption(ArenaOption.ZOMBIE_DIFFICULTY_MULTIPLIER), zombie, zombie.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue());
-    if (plugin.getConfig().getBoolean("Simple-Zombie-Health-Bar-Enabled", true)) {
-      zombie.setCustomNameVisible(true);
-      zombie.setCustomName(StringFormatUtils.getProgressBar((int) zombie.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue(),
-              (int) zombie.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue(), 50, "|",
-              ChatColor.YELLOW + "", ChatColor.GRAY + ""));
+    public static Object getPrivateField(String fieldName, Class clazz, Object object) {
+        for (CachedObject cachedObject : cachedObjects) {
+            if (cachedObject.getClazz().equals(clazz) && cachedObject.getFieldName().equals(fieldName)) {
+                return cachedObject.getObject();
+            }
+        }
+        Field field;
+        Object o = null;
+        try {
+            field = clazz.getDeclaredField(fieldName);
+
+            AccessController.doPrivileged((PrivilegedAction<Object>) () -> {
+                field.setAccessible(true);
+                return null;
+            });
+
+            o = field.get(object);
+            cachedObjects.add(new CachedObject(fieldName, clazz, o));
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            plugin.getLogger().log(Level.WARNING, "Failed to retrieve private field of object " + object.getClass() + "!");
+            plugin.getLogger().log(Level.WARNING, e.getMessage() + " (fieldName " + fieldName + ", class " + clazz.getName() + ")");
+        }
+        return o;
     }
-  }
 
-  public static float getZombieSpeed() {
-    return zombieSpeed;
-  }
+    /**
+     * Applies attributes (i.e. health bar (if enabled),
+     * health multiplier and follow range) to target zombie.
+     *
+     * @param zombie zombie to apply attributes for
+     * @param arena  arena to get health multiplier from
+     */
+    public static void applyAttributes(Zombie zombie, Arena arena) {
+        zombie.getAttribute(Attribute.GENERIC_FOLLOW_RANGE).setBaseValue(200.0D);
+        zombie.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(zombie.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue() * arena.getOption(ArenaOption.ZOMBIE_DIFFICULTY_MULTIPLIER));
+        zombie.setHealth(zombie.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue());
+        if (arena.getOption(ArenaOption.ZOMBIE_DIFFICULTY_MULTIPLIER) > 1)
+            Debugger.debug(Level.INFO, "[{0}] Detected abnormal wave ({1})! Applying zombie limit and difficulty multiplier to {2}! Zombie: {3}, Life: {4}",
+                    arena.getId(), arena.getWave(), arena.getOption(ArenaOption.ZOMBIE_DIFFICULTY_MULTIPLIER), zombie, zombie.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue());
+        if (plugin.getConfig().getBoolean("Simple-Zombie-Health-Bar-Enabled", true)) {
+            zombie.setCustomNameVisible(true);
+            zombie.setCustomName(StringFormatUtils.getProgressBar((int) zombie.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue(),
+                    (int) zombie.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue(), 50, "|",
+                    ChatColor.YELLOW + "", ChatColor.GRAY + ""));
+        }
+    }
 
-  public static float getBabyZombieSpeed() {
-    return babyZombieSpeed;
-  }
+    public static float getZombieSpeed() {
+        return zombieSpeed;
+    }
 
-  public static String[] getVillagerNames() {
-    return villagerNames.clone();
-  }
+    public static float getBabyZombieSpeed() {
+        return babyZombieSpeed;
+    }
 
-  public static Main getPlugin() {
-    return plugin;
-  }
+    public static String[] getVillagerNames() {
+        return villagerNames.clone();
+    }
+
+    public static Main getPlugin() {
+        return plugin;
+    }
 }

@@ -64,7 +64,7 @@ import java.util.logging.Level;
  */
 public class Events implements Listener {
 
-  private Main plugin;
+  private final Main plugin;
 
   public Events(Main plugin) {
     this.plugin = plugin;
@@ -86,7 +86,8 @@ public class Events implements Listener {
     if (ArenaRegistry.getArena(event.getPlayer()) == null) {
       return;
     }
-    int amount = (int) Math.ceil(event.getAmount() * 1.6);
+    int multiplier = ArenaRegistry.getArena(event.getPlayer()).getOption(ArenaOption.ZOMBIE_DIFFICULTY_MULTIPLIER);
+    int amount = (int) Math.ceil(event.getAmount() * 1.6 * multiplier);
     User user = plugin.getUserManager().getUser(event.getPlayer());
     event.setAmount(amount);
     if (user.isSpectator()) {

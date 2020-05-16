@@ -1,6 +1,6 @@
 /*
  * Village Defense - Protect villagers from hordes of zombies
- * Copyright (C) 2019  Plajer's Lair - maintained by Plajer and contributors
+ * Copyright (C) 2020  Plajer's Lair - maintained by Plajer and contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -102,9 +102,9 @@ public enum ArenaOption {
    * Example: 12 players in wave 20 will receive 30 difficulty multiplier.
    * So each zombie will get 30 HP more, harder!
    */
-  ZOMBIE_DIFFICULTY_MULTIPLIER(0);
+  ZOMBIE_DIFFICULTY_MULTIPLIER(1);
 
-  private int defaultValue;
+  private final int defaultValue;
 
   ArenaOption(int defaultValue) {
     this.defaultValue = defaultValue;

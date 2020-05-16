@@ -43,7 +43,7 @@ public class ArenaOptionTest {
     Assert.assertEquals(0, ArenaOption.ZOMBIE_GLITCH_CHECKER.getDefaultValue());
     Assert.assertEquals(0, ArenaOption.ZOMBIE_SPAWN_COUNTER.getDefaultValue());
     Assert.assertEquals(0, ArenaOption.ZOMBIE_IDLE_PROCESS.getDefaultValue());
-    Assert.assertEquals(0, ArenaOption.ZOMBIE_DIFFICULTY_MULTIPLIER.getDefaultValue());
+    Assert.assertEquals(1, ArenaOption.ZOMBIE_DIFFICULTY_MULTIPLIER.getDefaultValue());
     System.out.println("> ArenaOption#getDefaultValue | PASSED");
   }
 
