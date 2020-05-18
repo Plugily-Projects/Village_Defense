@@ -18,9 +18,10 @@
 
 package pl.plajer.villagedefense.creatures;
 
+import java.util.HashSet;
 import java.util.Random;
+import java.util.Set;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.World;
@@ -31,6 +32,8 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import pl.plajer.villagedefense.Main;
+import pl.plajer.villagedefense.arena.Arena;
+import pl.plajer.villagedefense.arena.ArenaRegistry;
 import pl.plajer.villagedefense.utils.Utils;
 import pl.plajer.villagedefense.utils.constants.CompatMaterialConstants;
 import pl.plajerlair.commonsbox.minecraft.compat.XMaterial;
@@ -50,7 +53,7 @@ public class DoorBreakListener extends BukkitRunnable {
 
   @Override
   public void run() {
-    for (World world : Bukkit.getServer().getWorlds()) {
+    for (World world : getWorlds()) {
       for (LivingEntity entity : world.getLivingEntities()) {
         if (entity.getType() != EntityType.ZOMBIE) {
           continue;
@@ -85,4 +88,11 @@ public class DoorBreakListener extends BukkitRunnable {
     }
   }
 
+  private Set<World> getWorlds() {
+    Set<World> worlds = new HashSet<>();
+    for (Arena arena : ArenaRegistry.getArenas()) {
+      worlds.add(arena.getStartLocation().getWorld());
+    }
+    return worlds;
+  }
 }
