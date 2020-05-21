@@ -18,22 +18,16 @@
 
 package pl.plajer.villagedefense.creatures;
 
-import java.util.HashSet;
 import java.util.Random;
-import java.util.Set;
-
 import org.bukkit.Material;
 import org.bukkit.Particle;
-import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.scheduler.BukkitRunnable;
-
 import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.arena.Arena;
-import pl.plajer.villagedefense.arena.ArenaRegistry;
 import pl.plajer.villagedefense.utils.Utils;
 import pl.plajer.villagedefense.utils.constants.CompatMaterialConstants;
 import pl.plajerlair.commonsbox.minecraft.compat.XMaterial;
@@ -45,36 +39,35 @@ public class DoorBreakListener extends BukkitRunnable {
 
   private Random random = new Random();
   private Main plugin;
+  private Arena arena;
 
-  public DoorBreakListener(Main plugin) {
+  public DoorBreakListener(Main plugin, Arena arena) {
     this.plugin = plugin;
-    this.runTaskTimer(plugin, 1, 20);
+    this.arena = arena;
   }
 
   @Override
   public void run() {
-    for (World world : getWorlds()) {
-      for (LivingEntity entity : world.getLivingEntities()) {
-        if (entity.getType() != EntityType.ZOMBIE) {
+    for (LivingEntity entity : arena.getStartLocation().getWorld().getLivingEntities()) {
+      if (entity.getType() != EntityType.ZOMBIE) {
+        continue;
+      }
+      for (Block block : Utils.getNearbyBlocks(entity, 1)) {
+        if (!isDoor(block)) {
           continue;
         }
-        for (Block block : Utils.getNearbyBlocks(entity, 1)) {
-          if (!isDoor(block)) {
-            continue;
+        block.getLocation().getWorld().spawnParticle(Particle.SMOKE_LARGE, block.getLocation(), 5, 0.1, 0.1, 0.1);
+        Utils.playSound(block.getLocation(), "ENTITY_ZOMBIE_ATTACK_DOOR_WOOD", "ENTITY_ZOMBIE_ATTACK_WOODEN_DOOR");
+        if (random.nextInt(20) == 5) {
+          block.getLocation().getWorld().spawnParticle(Particle.SMOKE_LARGE, block.getLocation(), 15, 0.1, 0.1, 0.1);
+          block.getLocation().getWorld().spawnParticle(Particle.EXPLOSION_HUGE, block.getLocation(), 1, 0.1, 0.1, 0.1);
+          if (block.getRelative(BlockFace.UP).getType() == CompatMaterialConstants.getOakDoorBlock()) {
+            block.getRelative(BlockFace.UP).setType(Material.AIR);
+          } else if (block.getRelative(BlockFace.DOWN).getType() == CompatMaterialConstants.getOakDoorBlock()) {
+            block.getRelative(BlockFace.DOWN).setType(Material.AIR);
           }
-          block.getLocation().getWorld().spawnParticle(Particle.SMOKE_LARGE, block.getLocation(), 5, 0.1, 0.1, 0.1);
-          Utils.playSound(block.getLocation(), "ENTITY_ZOMBIE_ATTACK_DOOR_WOOD", "ENTITY_ZOMBIE_ATTACK_WOODEN_DOOR");
-          if (random.nextInt(20) == 5) {
-            block.getLocation().getWorld().spawnParticle(Particle.SMOKE_LARGE, block.getLocation(), 15, 0.1, 0.1, 0.1);
-            block.getLocation().getWorld().spawnParticle(Particle.EXPLOSION_HUGE, block.getLocation(), 1, 0.1, 0.1, 0.1);
-            if (block.getRelative(BlockFace.UP).getType() == CompatMaterialConstants.getOakDoorBlock()) {
-              block.getRelative(BlockFace.UP).setType(Material.AIR);
-            } else if (block.getRelative(BlockFace.DOWN).getType() == CompatMaterialConstants.getOakDoorBlock()) {
-              block.getRelative(BlockFace.DOWN).setType(Material.AIR);
-            }
-            block.setType(Material.AIR);
-            Utils.playSound(block.getLocation(), "ENTITY_ZOMBIE_BREAK_DOOR_WOOD", "ENTITY_ZOMBIE_BREAK_WOODEN_DOOR");
-          }
+          block.setType(Material.AIR);
+          Utils.playSound(block.getLocation(), "ENTITY_ZOMBIE_BREAK_DOOR_WOOD", "ENTITY_ZOMBIE_BREAK_WOODEN_DOOR");
         }
       }
     }
@@ -88,11 +81,4 @@ public class DoorBreakListener extends BukkitRunnable {
     }
   }
 
-  private Set<World> getWorlds() {
-    Set<World> worlds = new HashSet<>();
-    for (Arena arena : ArenaRegistry.getArenas()) {
-      worlds.add(arena.getStartLocation().getWorld());
-    }
-    return worlds;
-  }
 }

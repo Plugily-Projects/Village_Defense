@@ -48,7 +48,6 @@ import pl.plajer.villagedefense.arena.ArenaUtils;
 import pl.plajer.villagedefense.arena.managers.BungeeManager;
 import pl.plajer.villagedefense.commands.arguments.ArgumentsRegistry;
 import pl.plajer.villagedefense.creatures.CreatureUtils;
-import pl.plajer.villagedefense.creatures.DoorBreakListener;
 import pl.plajer.villagedefense.creatures.EntityRegistry;
 import pl.plajer.villagedefense.events.ChatEvents;
 import pl.plajer.villagedefense.events.Events;
@@ -299,7 +298,6 @@ public class Main extends JavaPlugin {
       new EntityUpgradeMenu(this);
     }
     userManager = new UserManager(this);
-    new DoorBreakListener(this);
 
     ArenaRegistry.registerArenas();
     //we must start it after instances load!

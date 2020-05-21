@@ -86,6 +86,7 @@ public class StartingState implements ArenaStateHandler {
         player.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage(Messages.LOBBY_MESSAGES_GAME_STARTED));
       }
       arena.setFighting(false);
+      ArenaUtils.startDoorBreakListener(arena);
     }
     if (arena.isForceStart()) {
       arena.setForceStart(false);

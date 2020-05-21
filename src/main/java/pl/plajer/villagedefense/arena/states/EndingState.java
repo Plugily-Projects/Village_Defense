@@ -63,6 +63,7 @@ public class EndingState implements ArenaStateHandler {
       plugin.getRewardsHandler().performReward(arena, Reward.RewardType.END_GAME);
       arena.setArenaState(ArenaState.RESTARTING);
     }
+    ArenaUtils.stopDoorBreakListener(arena);
     arena.setTimer(arena.getTimer() - 1);
   }
 

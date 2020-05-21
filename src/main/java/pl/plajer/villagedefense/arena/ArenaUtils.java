@@ -18,6 +18,9 @@
 
 package pl.plajer.villagedefense.arena;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.bukkit.GameMode;
 import org.bukkit.Particle;
 import org.bukkit.attribute.Attribute;
@@ -25,6 +28,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.entity.Zombie;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import org.bukkit.scheduler.BukkitTask;
 
 import pl.plajer.villagedefense.ConfigPreferences;
 import pl.plajer.villagedefense.Main;
@@ -35,6 +39,7 @@ import pl.plajer.villagedefense.arena.initializers.ArenaInitializer1_13_R1;
 import pl.plajer.villagedefense.arena.initializers.ArenaInitializer1_13_R2;
 import pl.plajer.villagedefense.arena.initializers.ArenaInitializer1_14_R1;
 import pl.plajer.villagedefense.arena.initializers.ArenaInitializer1_15_R1;
+import pl.plajer.villagedefense.creatures.DoorBreakListener;
 import pl.plajer.villagedefense.handlers.PermissionsManager;
 import pl.plajer.villagedefense.handlers.language.Messages;
 import pl.plajer.villagedefense.user.User;
@@ -48,6 +53,7 @@ import pl.plajerlair.commonsbox.minecraft.serialization.InventorySerializer;
 public class ArenaUtils {
 
   private static Main plugin;
+  private static Map<String, BukkitTask> taskMap = new HashMap<String, BukkitTask>();
 
   private ArenaUtils() {
   }
@@ -193,4 +199,16 @@ public class ArenaUtils {
     }
   }
 
+  public static void startDoorBreakListener(Arena arena) {
+	  BukkitTask doorBreakTask = new DoorBreakListener(plugin, arena).runTaskTimer(plugin, 1, 20);
+	  taskMap.put(arena.getId(), doorBreakTask);
+  }
+
+  public static void stopDoorBreakListener(Arena arena) {
+	  if (!taskMap.containsKey(arena.getId())) {
+		  return;
+	  }
+	  taskMap.get(arena.getId()).cancel();
+	  taskMap.remove(arena.getId());
+  }
 }
