@@ -1,4 +1,4 @@
-![](https://plajer.xyz/images/banner_display.php?id=VillageDefense)
+![](https://plugily.xyz/images/banner_display.php?id=VillageDefense)
 
 # Village Defense [![](https://img.shields.io/badge/javadocs-latest-green.svg)](https://jd.plajer.xyz/minecraft/villagedefense) [![](https://img.shields.io/badge/wiki-click-blue.svg)](https://wiki.plajer.xyz/minecraft/villagedefense/index.php) [![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=Plajer-Lair_Village_Defense&metric=sqale_rating)](https://sonarcloud.io/dashboard?id=Plajer-Lair_Village_Defense) [![Discord](https://img.shields.io/discord/345628548716822530.svg?color=7289DA&label=discord)](https://discord.gg/UXzUdTP)
 Village Defense is a Minecraft minigame designed for small and big servers. This minigame is unique and very configurable, 100% free and open source! 
