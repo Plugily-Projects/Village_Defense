@@ -11,6 +11,8 @@ That's all, matcher will stop when detects next line started with `###` match
 
 ### 4.5.0
 * Added short commands such as start and leave
+* Added option to disable separate chat
+* Added possibility to change table name of mysql database
 
 ### 4.4.4 Release
 * Added multiplier to orbs and experience when zombie limit were reached

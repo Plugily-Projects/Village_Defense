@@ -37,6 +37,7 @@ import org.bukkit.entity.Player;
 
 import pl.plajer.villagedefense.ConfigPreferences;
 import pl.plajer.villagedefense.Main;
+import pl.plajer.villagedefense.user.data.MysqlManager;
 import pl.plajer.villagedefense.utils.MessageUtils;
 import pl.plajer.villagedefense.utils.constants.Constants;
 import pl.plajerlair.commonsbox.minecraft.configuration.ConfigUtils;
@@ -79,7 +80,7 @@ public class StatsStorage {
     if (plugin.getConfigPreferences().getOption(ConfigPreferences.Option.DATABASE_ENABLED)) {
       try (Connection connection = plugin.getMysqlDatabase().getConnection();
            Statement statement = connection.createStatement();
-           ResultSet set = statement.executeQuery("SELECT UUID, " + stat.getName() + " FROM playerstats ORDER BY " + stat.getName())) {
+           ResultSet set = statement.executeQuery("SELECT UUID, " + stat.getName() + " FROM "+ ((MysqlManager) plugin.getUserManager().getDatabase()).getTableName() +" ORDER BY " + stat.getName())) {
         Map<UUID, java.lang.Integer> column = new LinkedHashMap<>();
         while (set.next()) {
           column.put(UUID.fromString(set.getString("UUID")), set.getInt(stat.getName()));
