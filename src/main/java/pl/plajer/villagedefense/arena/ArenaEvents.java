@@ -32,11 +32,13 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.ItemSpawnEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
+import pl.plajer.villagedefense.ConfigPreferences;
 import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.api.StatsStorage;
 import pl.plajer.villagedefense.arena.options.ArenaOption;
@@ -284,6 +286,22 @@ public class ArenaEvents implements Listener {
       user.setStat(StatsStorage.StatisticType.ORBS, 0);
     }
     e.setRespawnLocation(arena.getStartLocation());
+  }
+
+  @EventHandler
+  public void playerCommandExecution(PlayerCommandPreprocessEvent e) {
+    if (plugin.getConfigPreferences().getOption(ConfigPreferences.Option.ENABLE_SHORT_COMMANDS)) {
+      Player player = e.getPlayer();
+      if (e.getMessage().equalsIgnoreCase("/start")) {
+        player.performCommand("vda forcestart");
+        e.setCancelled(true);
+        return;
+      }
+      if (e.getMessage().equalsIgnoreCase("/leave")) {
+        player.performCommand("vd leave");
+        e.setCancelled(true);
+      }
+    }
   }
 
 }

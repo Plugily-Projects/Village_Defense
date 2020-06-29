@@ -9,6 +9,9 @@ deploy webhooks to print changelog successfully
 
 That's all, matcher will stop when detects next line started with `###` match
 
+### 4.5.0
+* Added short commands such as start and leave
+
 ### 4.4.4 Release
 * Added multiplier to orbs and experience when zombie limit were reached
 * Added a min multiplier of 2

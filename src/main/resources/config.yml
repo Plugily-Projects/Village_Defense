@@ -68,6 +68,9 @@ Whitelisted-Commands:
   - me
   - help
 
+# Should we enable short commands such as /start and /leave
+Enable-Short-Commands: false
+
 # Enable this option when you're using MySQL, otherwise it won't work.
 # Be careful when changing this because there is NO migrator between
 # flat file and MySQL for player stats.
@@ -174,6 +177,6 @@ Update-Notifier:
   Notify-Beta-Versions: true
 
 # Don't modify.
-Version: 10
+Version: 11
 
 # No way! You've reached the end! But... where's the dragon!?

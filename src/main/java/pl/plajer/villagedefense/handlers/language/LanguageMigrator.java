@@ -38,7 +38,7 @@ import java.util.List;
 public class LanguageMigrator {
 
   public static final int LANGUAGE_FILE_VERSION = 12;
-  public static final int CONFIG_FILE_VERSION = 10;
+  public static final int CONFIG_FILE_VERSION = 11;
   private final Main plugin;
   private final List<String> migratable = Arrays.asList(Constants.Files.CONFIG.getName(), Constants.Files.KITS.getName(),
           Constants.Files.KITS.getName(), Constants.Files.LANGUAGE.getName(), Constants.Files.SPECIAL_ITEMS.getName(), Constants.Files.MYSQL.getName());
@@ -151,6 +151,11 @@ public class LanguageMigrator {
                   "#After how many zombies should we limit them?\r\n" +
                   "#Once limit is reached zombies get more health so it's still harder each wave\r\n" +
                   "Zombies-Limit: 75\r\n");
+          break;
+        case 10:
+          MigratorUtils.addNewLines(file, "\r\n" +
+                  "# Should we enable short commands such as /start and /leave\r\n" +
+                  "Enable-Short-Commands: false\r\n");
           break;
         default:
           break;
