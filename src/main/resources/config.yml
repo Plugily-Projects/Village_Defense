@@ -96,6 +96,10 @@ Rewards-Enabled: false
 # You can use PlaceholderAPI placeholders in chat format!
 ChatFormat-Enabled: true
 
+# Should we disable all chat related stuff?
+# It will disable the separated chat, for example
+Disable-Separate-Chat: false
+
 # Amount of orbs given to player when game starts
 Orbs-Starting-Amount: 20
 

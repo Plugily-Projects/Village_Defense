@@ -58,16 +58,6 @@ public class ChatEvents implements Listener {
   @EventHandler
   public void onChatIngame(AsyncPlayerChatEvent event) {
     Arena arena = ArenaRegistry.getArena(event.getPlayer());
-    if (arena == null) {
-      for (Arena loopArena : ArenaRegistry.getArenas()) {
-        for (Player player : loopArena.getPlayers()) {
-          if (event.getRecipients().contains(player) && !plugin.getArgumentsRegistry().getSpyChat().isSpyChatEnabled(player)) {
-            event.getRecipients().remove(player);
-          }
-        }
-      }
-      return;
-    }
     if (plugin.getConfigPreferences().getOption(ConfigPreferences.Option.CHAT_FORMAT_ENABLED)) {
       event.setCancelled(true);
       Iterator<Player> iterator = event.getRecipients().iterator();
@@ -96,8 +86,20 @@ public class ChatEvents implements Listener {
       Bukkit.getConsoleSender().sendMessage(message);
       return;
     }
-    event.getRecipients().clear();
-    event.getRecipients().addAll(new ArrayList<>(arena.getPlayers()));
+    if (!plugin.getConfigPreferences().getOption(ConfigPreferences.Option.DISABLE_SEPARATE_CHAT)) {
+      if (arena == null) {
+        for (Arena loopArena : ArenaRegistry.getArenas()) {
+          for (Player player : loopArena.getPlayers()) {
+            if (event.getRecipients().contains(player) && !plugin.getArgumentsRegistry().getSpyChat().isSpyChatEnabled(player)) {
+              event.getRecipients().remove(player);
+            }
+          }
+        }
+        return;
+      }
+      event.getRecipients().clear();
+      event.getRecipients().addAll(new ArrayList<>(arena.getPlayers()));
+    }
     String message = event.getMessage().replace("%kit%", plugin.getUserManager().getUser(event.getPlayer()).getKit().getName());
     if (plugin.getServer().getPluginManager().isPluginEnabled("PlaceholderAPI") && PlaceholderAPI.containsPlaceholders(message)) {
       message = PlaceholderAPI.setPlaceholders(event.getPlayer(), message);
