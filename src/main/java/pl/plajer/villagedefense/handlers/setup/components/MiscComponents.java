@@ -278,7 +278,7 @@ public class MiscComponents implements SetupComponent {
 
       String doorLocation = block.getWorld().getName() + "," + block.getX() + "," + block.getY() + "," + block.getZ() + ",0.0" + ",0.0";
       config.set("instances." + arena.getId() + ".doors." + doors + ".location", doorLocation);
-      if (plugin.is1_13_R1() || plugin.is1_13_R2() || plugin.is1_14_R1() || plugin.is1_15_R1()) {
+      if (!plugin.is1_11_R1() && !plugin.is1_12_R1()) {
         config.set("instances." + arena.getId() + ".doors." + doors + ".byte", Utils.getDoorByte(((Door) block.getState().getData()).getFacing()));
       } else {
         config.set("instances." + arena.getId() + ".doors." + doors + ".byte", block.getData());

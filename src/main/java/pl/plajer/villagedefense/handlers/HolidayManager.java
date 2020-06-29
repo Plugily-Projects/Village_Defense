@@ -73,7 +73,7 @@ public class HolidayManager implements Listener {
           currentHoliday = HolidayType.VALENTINES_DAY;
           Powerup powerup = new Powerup("VALENTINES_HEALING", plugin.getChatManager().colorRawMessage("&c&l<3"),
               plugin.getChatManager().colorRawMessage("&d&lHappy Valentine's Day!"), XMaterial.POPPY, pickup -> {
-            pickup.getPlayer().setHealth(pickup.getPlayer().getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue());
+            pickup.getPlayer().setHealth(pickup.getPlayer().getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue());
             pickup.getPlayer().sendTitle(pickup.getPowerup().getDescription(), null, 5, 30, 5);
           });
           plugin.getPowerupRegistry().registerPowerup(powerup);

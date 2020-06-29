@@ -186,7 +186,7 @@ public class ArenaEvents implements Listener {
       return;
     }
     if (e.getEntity().isDead()) {
-      e.getEntity().setHealth(e.getEntity().getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue());
+      e.getEntity().setHealth(e.getEntity().getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue());
     }
     e.setDeathMessage("");
     e.getDrops().clear();

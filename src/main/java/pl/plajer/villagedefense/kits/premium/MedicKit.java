@@ -100,10 +100,10 @@ public class MedicKit extends PremiumKit implements Listener {
         continue;
       }
       Player player = (Player) entity;
-      if (player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue() > (player.getHealth() + 1)) {
+      if (player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue() > (player.getHealth() + 1)) {
         player.setHealth(player.getHealth() + 1);
       } else {
-        player.setHealth(player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue());
+        player.setHealth(player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue());
       }
       player.getEyeLocation().getWorld().spawnParticle(Particle.HEART, player.getLocation(), 20);
     }

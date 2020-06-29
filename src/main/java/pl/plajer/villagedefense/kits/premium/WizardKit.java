@@ -141,10 +141,10 @@ public class WizardKit extends PremiumKit implements Listener {
         return;
       }
       wizardsOnDuty.add(player);
-      if (player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue() > (player.getHealth() + 3)) {
+      if (player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue() > (player.getHealth() + 3)) {
         player.setHealth(player.getHealth() + 3);
       } else {
-        player.setHealth(player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue());
+        player.setHealth(player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue());
       }
       Utils.takeOneItem(player, stack);
       player.setGlowing(true);

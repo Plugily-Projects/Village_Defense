@@ -41,9 +41,9 @@ public class EntityRegistry {
         "WorkingWolf", "VillagerBuster");
     String version = plugin.getVersion();
     if (version.equalsIgnoreCase("v1_11_R1") || version.equalsIgnoreCase("v1_12_R1") || version.equalsIgnoreCase("v1_13_R1")
-        || version.equalsIgnoreCase("v1_13_R2") || version.equalsIgnoreCase("v1_14_R1") || version.equalsIgnoreCase("v1_15_R1")) {
-      if (version.equalsIgnoreCase("v1_13_R1") || version.equalsIgnoreCase("v1_13_R2") || version.equalsIgnoreCase("v1_14_R1") || version.equalsIgnoreCase("v1_15_R1")) {
-        Debugger.debug(Level.INFO, "[EntityRegistry] Registry skipped for 1.13 and 1.14 took {0}ms", System.currentTimeMillis() - start);
+        || version.equalsIgnoreCase("v1_13_R2") || version.equalsIgnoreCase("v1_14_R1") || version.equalsIgnoreCase("v1_15_R1") || version.equalsIgnoreCase("v1_16_R1")) {
+      if (version.equalsIgnoreCase("v1_13_R1") || version.equalsIgnoreCase("v1_13_R2") || version.equalsIgnoreCase("v1_14_R1") || version.equalsIgnoreCase("v1_15_R1") || version.equalsIgnoreCase("v1_16_R1")) {
+        Debugger.debug(Level.INFO, "[EntityRegistry] Registry skipped for 1.13, 1.14, 1.15 and 1.16 took {0}ms", System.currentTimeMillis() - start);
         return;
       }
       try {

@@ -137,8 +137,8 @@ public class ArenaManager {
         player.removePotionEffect(potionEffect.getType());
       }
 
-      player.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue() + arena.getOption(ArenaOption.ROTTEN_FLESH_LEVEL));
-      player.setHealth(player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue());
+      player.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue() + arena.getOption(ArenaOption.ROTTEN_FLESH_LEVEL));
+      player.setHealth(player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue());
       player.setFoodLevel(20);
       player.setGameMode(GameMode.SURVIVAL);
       player.setAllowFlight(true);
@@ -162,7 +162,7 @@ public class ArenaManager {
       InventorySerializer.saveInventoryToFile(plugin, player);
     }
     player.teleport(arena.getLobbyLocation());
-    player.setHealth(player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue());
+    player.setHealth(player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue());
     player.setFoodLevel(20);
     player.getInventory().setArmorContents(new ItemStack[] {new ItemStack(Material.AIR), new ItemStack(Material.AIR), new ItemStack(Material.AIR), new ItemStack(Material.AIR)});
     player.setFlying(false);
@@ -356,7 +356,7 @@ public class ArenaManager {
     for (Player player : arena.getPlayers()) {
       player.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().formatMessage(arena, plugin.getChatManager().colorMessage(Messages.NEXT_WAVE_IN), arena.getTimer()));
       player.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage(Messages.YOU_FEEL_REFRESHED));
-      player.setHealth(player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue());
+      player.setHealth(player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue());
       User user = plugin.getUserManager().getUser(player);
       user.addStat(StatsStorage.StatisticType.ORBS, arena.getWave() * 10);
     }
