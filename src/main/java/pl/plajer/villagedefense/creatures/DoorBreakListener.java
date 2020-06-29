@@ -31,6 +31,9 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import pl.plajer.villagedefense.Main;
+import pl.plajer.villagedefense.arena.Arena;
+import pl.plajer.villagedefense.arena.ArenaManager;
+import pl.plajer.villagedefense.arena.ArenaRegistry;
 import pl.plajer.villagedefense.utils.Utils;
 import pl.plajer.villagedefense.utils.constants.CompatMaterialConstants;
 import pl.plajerlair.commonsbox.minecraft.compat.XMaterial;
@@ -50,7 +53,7 @@ public class DoorBreakListener extends BukkitRunnable {
 
   @Override
   public void run() {
-    for (World world : Bukkit.getServer().getWorlds()) {
+    for (World world : ArenaRegistry.getArenaIngameWorlds()) {
       for (LivingEntity entity : world.getLivingEntities()) {
         if (entity.getType() != EntityType.ZOMBIE) {
           continue;

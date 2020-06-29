@@ -124,7 +124,7 @@ public class MainMock extends Main {
     this.specialItemManager = new SpecialItemManager(this);
 
     this.testArena = new ArenaMock();
-    ArenaRegistry.registerArena(testArena);
+    //ArenaRegistry.registerArena(testArena);
 
     //trick to clean up server directory after tests
     Runtime.getRuntime().addShutdownHook(new Thread(MockBukkit::unload));

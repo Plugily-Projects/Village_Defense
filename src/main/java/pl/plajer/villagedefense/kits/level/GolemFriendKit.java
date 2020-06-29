@@ -28,12 +28,7 @@ import org.bukkit.inventory.ItemStack;
 import pl.plajer.villagedefense.api.StatsStorage;
 import pl.plajer.villagedefense.arena.Arena;
 import pl.plajer.villagedefense.arena.ArenaRegistry;
-import pl.plajer.villagedefense.arena.initializers.ArenaInitializer1_11_R1;
-import pl.plajer.villagedefense.arena.initializers.ArenaInitializer1_12_R1;
-import pl.plajer.villagedefense.arena.initializers.ArenaInitializer1_13_R1;
-import pl.plajer.villagedefense.arena.initializers.ArenaInitializer1_13_R2;
-import pl.plajer.villagedefense.arena.initializers.ArenaInitializer1_14_R1;
-import pl.plajer.villagedefense.arena.initializers.ArenaInitializer1_15_R1;
+import pl.plajer.villagedefense.arena.initializers.*;
 import pl.plajer.villagedefense.handlers.language.Messages;
 import pl.plajer.villagedefense.kits.KitRegistry;
 import pl.plajer.villagedefense.kits.basekits.LevelKit;
@@ -105,7 +100,7 @@ public class GolemFriendKit extends LevelKit {
       ArenaInitializer1_15_R1 initializer = (ArenaInitializer1_15_R1) arena;
       initializer.spawnGolem(initializer.getStartLocation(), player);
     } else if (getPlugin().is1_16_R1()) {
-      ArenaInitializer1_15_R1 initializer = (ArenaInitializer1_15_R1) arena;
+      ArenaInitializer1_16_R1 initializer = (ArenaInitializer1_16_R1) arena;
       initializer.spawnGolem(initializer.getStartLocation(), player);
     }
   }

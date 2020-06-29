@@ -29,12 +29,7 @@ import org.bukkit.potion.PotionEffectType;
 import pl.plajer.villagedefense.ConfigPreferences;
 import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.api.StatsStorage;
-import pl.plajer.villagedefense.arena.initializers.ArenaInitializer1_11_R1;
-import pl.plajer.villagedefense.arena.initializers.ArenaInitializer1_12_R1;
-import pl.plajer.villagedefense.arena.initializers.ArenaInitializer1_13_R1;
-import pl.plajer.villagedefense.arena.initializers.ArenaInitializer1_13_R2;
-import pl.plajer.villagedefense.arena.initializers.ArenaInitializer1_14_R1;
-import pl.plajer.villagedefense.arena.initializers.ArenaInitializer1_15_R1;
+import pl.plajer.villagedefense.arena.initializers.*;
 import pl.plajer.villagedefense.handlers.PermissionsManager;
 import pl.plajer.villagedefense.handlers.language.Messages;
 import pl.plajer.villagedefense.user.User;
@@ -136,8 +131,10 @@ public class ArenaUtils {
       arena = new ArenaInitializer1_13_R2(id, plugin);
     } else if (plugin.is1_14_R1()) {
       arena = new ArenaInitializer1_14_R1(id, plugin);
-    } else {
+    } else if (plugin.is1_15_R1()){
       arena = new ArenaInitializer1_15_R1(id, plugin);
+    } else {
+      arena = new ArenaInitializer1_16_R1(id, plugin);
     }
     return arena;
   }
@@ -153,8 +150,10 @@ public class ArenaUtils {
       ((ArenaInitializer1_13_R2) arena).setWorld(arena.getStartLocation());
     } else if (plugin.is1_14_R1()) {
       ((ArenaInitializer1_14_R1) arena).setWorld(arena.getStartLocation());
-    } else {
+    } else if (plugin.is1_15_R1()) {
       ((ArenaInitializer1_15_R1) arena).setWorld(arena.getStartLocation());
+    } else if (plugin.is1_16_R1()) {
+      ((ArenaInitializer1_16_R1) arena).setWorld(arena.getStartLocation());
     }
   }
 
