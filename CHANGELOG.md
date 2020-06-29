@@ -14,6 +14,8 @@ That's all, matcher will stop when detects next line started with `###` match
 * Added option to disable separate chat
 * Added possibility to change table name of mysql database
 * Added 1.16.x compatibility 
+* Fixed bungeemanager enable null text error
+* Added bungeemode Arena shuffler
 
 ### 4.4.4 Release
 * Added multiplier to orbs and experience when zombie limit were reached

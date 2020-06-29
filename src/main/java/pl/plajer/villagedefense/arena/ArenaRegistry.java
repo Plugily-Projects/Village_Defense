@@ -20,6 +20,7 @@ package pl.plajer.villagedefense.arena;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
@@ -46,6 +47,8 @@ public class ArenaRegistry {
   private static List<Arena> arenas = new ArrayList<>();
   private static Main plugin;
   private static List<World> arenaIngameWorlds = new ArrayList<>();
+
+  private static int bungeeArena = -999;
 
   private ArenaRegistry() {
   }
@@ -218,5 +221,16 @@ public class ArenaRegistry {
 
   public static List<World> getArenaIngameWorlds() {
     return arenaIngameWorlds;
+  }
+
+  public static void shuffleBungeeArena() {
+    bungeeArena = new Random().nextInt(arenas.size());
+  }
+
+  public static int getBungeeArena() {
+    if (bungeeArena == -999) {
+      bungeeArena = new Random().nextInt(arenas.size());
+    }
+    return bungeeArena;
   }
 }
