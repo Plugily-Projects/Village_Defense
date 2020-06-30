@@ -317,7 +317,7 @@ public class ArenaManager {
       int i = 0;
 
       public void run() {
-        if (i == 4 || !arena.getPlayers().contains(player)) {
+        if (i == 4 || !arena.getPlayers().contains(player) || arena.getArenaState() == ArenaState.RESTARTING) {
           this.cancel();
           return;
         }
