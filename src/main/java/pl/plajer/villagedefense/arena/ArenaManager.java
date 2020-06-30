@@ -85,6 +85,9 @@ public class ArenaManager {
     if (!canJoinArenaAndMessage(player, arena)) {
       return;
     }
+    if (!checkFullGamePermission(player, arena)) {
+      return;
+    }
     Debugger.debug(Level.INFO, "[{0}] Checked join attempt for {1}", arena.getId(), player.getName());
     long start = System.currentTimeMillis();
     if (ArenaRegistry.isInArena(player)) {
@@ -188,6 +191,30 @@ public class ArenaManager {
     Debugger.debug(Level.INFO, "[{0}] Final join attempt as player for {1} took {2}ms", arena.getId(), player.getName(), System.currentTimeMillis() - start);
   }
 
+  private static boolean checkFullGamePermission(Player player, Arena arena){
+    if (arena.getPlayers().size() + 1 <= arena.getMaximumPlayers()){
+      return true;
+    }
+    if (!PermissionsManager.isPremium(player) || !player.hasPermission(PermissionsManager.getJoinFullGames())) {
+      player.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage(Messages.FULL_GAME_NO_PERMISSION));
+      return false;
+    }
+    for (Player players : arena.getPlayers()) {
+      if (PermissionsManager.isPremium(players) || players.hasPermission(PermissionsManager.getJoinFullGames())) {
+        continue;
+      }
+      if (arena.getArenaState() == ArenaState.STARTING || arena.getArenaState() == ArenaState.WAITING_FOR_PLAYERS) {
+        ArenaManager.leaveAttempt(players, arena);
+        players.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage(Messages.LOBBY_MESSAGES_YOU_WERE_KICKED_FOR_PREMIUM_SLOT));
+        plugin.getChatManager().broadcastMessage(arena, plugin.getChatManager().formatMessage(arena, plugin.getChatManager().colorMessage(Messages.LOBBY_MESSAGES_KICKED_FOR_PREMIUM_SLOT), players));
+        return true;
+      }
+      return true;
+    }
+    player.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage(Messages.NO_SLOTS_FOR_PREMIUM));
+    return false;
+  }
+
   private static boolean canJoinArenaAndMessage(Player player, Arena arena) {
     if (!arena.isReady()) {
       player.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage(Messages.ARENA_NOT_CONFIGURED));
@@ -200,7 +227,6 @@ public class ArenaManager {
       player.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage(Messages.JOIN_CANCELLED_VIA_API));
       return false;
     }
-
     if (plugin.getConfigPreferences().getOption(ConfigPreferences.Option.BUNGEE_ENABLED)) {
       String perm = PermissionsManager.getJoinPerm();
       if (!(player.hasPermission(perm.replace("<arena>", "*")) || player.hasPermission(perm.replace("<arena>", arena.getId())))) {

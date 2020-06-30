@@ -155,28 +155,7 @@ public class SignManager implements Listener {
         e.getPlayer().sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage(Messages.ALREADY_PLAYING));
         return;
       }
-      if (arena.getPlayers().size() < arena.getMaximumPlayers()) {
         ArenaManager.joinAttempt(e.getPlayer(), arena);
-        return;
-      }
-      if (!PermissionsManager.isPremium(e.getPlayer()) || !e.getPlayer().hasPermission(PermissionsManager.getJoinFullGames())) {
-        e.getPlayer().sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage(Messages.FULL_GAME_NO_PERMISSION));
-      }
-      for (Player player : arena.getPlayers()) {
-        if (PermissionsManager.isPremium(player) || player.hasPermission(PermissionsManager.getJoinFullGames())) {
-          continue;
-        }
-        if (arena.getArenaState() == ArenaState.STARTING || arena.getArenaState() == ArenaState.WAITING_FOR_PLAYERS) {
-          ArenaManager.leaveAttempt(player, arena);
-          player.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage(Messages.LOBBY_MESSAGES_YOU_WERE_KICKED_FOR_PREMIUM_SLOT));
-          plugin.getChatManager().broadcastMessage(arena, plugin.getChatManager().formatMessage(arena, plugin.getChatManager().colorMessage(Messages.LOBBY_MESSAGES_KICKED_FOR_PREMIUM_SLOT), player));
-          ArenaManager.joinAttempt(e.getPlayer(), arena);
-          return;
-        }
-        ArenaManager.joinAttempt(e.getPlayer(), arena);
-        return;
-      }
-      e.getPlayer().sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage(Messages.NO_SLOTS_FOR_PREMIUM));
     }
   }
 

@@ -194,8 +194,8 @@ public class ArenaEvents implements Listener {
     plugin.getHolidayManager().applyHolidayDeathEffects(e.getEntity());
     plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () -> e.getEntity().spigot().respawn(), 5);
     Bukkit.getScheduler().runTaskLater(plugin, () -> {
-      e.getEntity().spigot().respawn();
       Player player = e.getEntity();
+      player.spigot().respawn();
       User user = plugin.getUserManager().getUser(player);
       if (arena.getArenaState() == ArenaState.STARTING) {
         player.teleport(arena.getStartLocation());
@@ -232,7 +232,7 @@ public class ArenaEvents implements Listener {
       }, 1);
 
       untargetPlayerFromZombies(player, arena);
-    }, 5);
+    }, 10);
   }
 
   private void sendSpectatorActionBar(User user, Arena arena) {

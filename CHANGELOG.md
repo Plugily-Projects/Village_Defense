@@ -18,6 +18,7 @@ That's all, matcher will stop when detects next line started with `###` match
 * Added bungeemode Arena shuffler
 * Added adjustable zombie divider to handle strength of zombies
 * Optimized fireworks will stop spawning on restarting stage
+* Fixed players can join full game without perms
 
 ### 4.4.4 Release
 * Added multiplier to orbs and experience when zombie limit were reached
