@@ -16,6 +16,7 @@ That's all, matcher will stop when detects next line started with `###` match
 * Added 1.16.x compatibility 
 * Fixed bungeemanager enable null text error
 * Added bungeemode Arena shuffler
+* Added adjustable zombie divider to handle strength of zombies
 
 ### 4.4.4 Release
 * Added multiplier to orbs and experience when zombie limit were reached

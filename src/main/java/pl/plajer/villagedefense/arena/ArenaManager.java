@@ -377,7 +377,7 @@ public class ArenaManager {
     int zombiesAmount = (int) Math.ceil((arena.getPlayers().size() * 0.5) * (arena.getOption(ArenaOption.WAVE) * arena.getOption(ArenaOption.WAVE)) / 2);
     int maxzombies = plugin.getConfig().getInt("Zombies-Limit", 75);
     if (zombiesAmount > maxzombies) {
-      int multiplier = (int) Math.ceil((zombiesAmount - (double) maxzombies) / 15);
+      int multiplier = (int) Math.ceil((zombiesAmount - (double) maxzombies) / plugin.getConfig().getInt("Zombie-Multiplier-Divider", 18));
       if (multiplier < 2) multiplier = 2;
       arena.setOptionValue(ArenaOption.ZOMBIE_DIFFICULTY_MULTIPLIER, multiplier);
       Debugger.debug(Level.INFO, "[{0}] Detected abnormal wave ({1})! Applying zombie limit and difficulty multiplier to {2} | ZombiesAmount: {3} | MaxZombies: {4}",

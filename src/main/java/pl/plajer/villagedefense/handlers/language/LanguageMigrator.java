@@ -38,7 +38,7 @@ import java.util.List;
 public class LanguageMigrator {
 
   public static final int LANGUAGE_FILE_VERSION = 12;
-  public static final int CONFIG_FILE_VERSION = 11;
+  public static final int CONFIG_FILE_VERSION = 12;
   private final Main plugin;
   private final List<String> migratable = Arrays.asList(Constants.Files.CONFIG.getName(), Constants.Files.KITS.getName(),
           Constants.Files.KITS.getName(), Constants.Files.LANGUAGE.getName(), Constants.Files.SPECIAL_ITEMS.getName(), Constants.Files.MYSQL.getName());
@@ -161,6 +161,10 @@ public class LanguageMigrator {
                   "# It will disable the separated chat, for example\r\n" +
                   "Disable-Separate-Chat: false\r\n");
           break;
+        case 11:
+          MigratorUtils.addNewLines(file, "#Active after zombies limit is reached\r\n" +
+                  "#Higher value means weaker zombies\r\n" +
+                  "Zombie-Multiplier-Divider: 18\r\n");
         default:
           break;
       }

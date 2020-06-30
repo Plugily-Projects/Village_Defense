@@ -172,6 +172,10 @@ Wave-Limit:
 #Once limit is reached zombies get more health so it's still harder each wave
 Zombies-Limit: 75
 
+#Active after zombies limit is reached
+#Higher value means weaker zombies
+Zombie-Multiplier-Divider: 18
+
 Update-Notifier:
   # Should we check for updates on plugin start/after admin join?
   # You REALLY should have this true!
@@ -181,6 +185,6 @@ Update-Notifier:
   Notify-Beta-Versions: true
 
 # Don't modify.
-Version: 11
+Version: 12
 
 # No way! You've reached the end! But... where's the dragon!?

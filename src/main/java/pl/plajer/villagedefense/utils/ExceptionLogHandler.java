@@ -70,9 +70,15 @@ public class ExceptionLogHandler extends Handler {
       return;
     }
     if (throwable.getCause() != null && throwable.getCause().getStackTrace() != null) {
+      if (throwable.getCause().getStackTrace()[0] == null){
+        return;
+      }
       if (!throwable.getCause().getStackTrace()[0].getClassName().contains("pl.plajer.villagedefense")) {
         return;
       }
+    }
+    if (throwable.getStackTrace()[0] == null) {
+      return;
     }
     if (!throwable.getStackTrace()[0].getClassName().contains("pl.plajer.villagedefense")) {
       return;
