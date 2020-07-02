@@ -40,7 +40,7 @@ import pl.plajerlair.commonsbox.minecraft.configuration.ConfigUtils;
  */
 public class SetupInventory {
 
-  public static final String VIDEO_LINK = "https://tutorial.plajer.xyz";
+  public static final String VIDEO_LINK = "https://tutorial.plugily.xyz";
   private static Random random = new Random();
   private static Main plugin;
   private FileConfiguration config;
@@ -98,7 +98,7 @@ public class SetupInventory {
         p.sendMessage(plugin.getChatManager().colorRawMessage("&e&lTIP: &7Build Secret Well for your arena! Check how: https://bit.ly/2DTYxZc"));
         break;
       case 2:
-        p.sendMessage(plugin.getChatManager().colorRawMessage("&e&lTIP: &7Help us translating plugin to your language here: https://translate.plajer.xyz"));
+        p.sendMessage(plugin.getChatManager().colorRawMessage("&e&lTIP: &7Help us translating plugin to your language here: https://translate.plugily.xyz"));
         break;
       case 3:
         p.sendMessage(plugin.getChatManager().colorRawMessage("&e&lTIP: &7LeaderHeads leaderboard plugin is supported with our plugin! Check here: https://bit.ly/2Riu5L0"));
@@ -107,10 +107,10 @@ public class SetupInventory {
         p.sendMessage(plugin.getChatManager().colorRawMessage("&e&lTIP: &7Achievements, custom kits and replay ability are things available in our paid addon for this minigame!"));
         break;
       case 5:
-        p.sendMessage(plugin.getChatManager().colorRawMessage("&e&lTIP: &7We are open source! You can always help us by contributing! Check https://github.com/Plajer-Lair/Village_Defense"));
+        p.sendMessage(plugin.getChatManager().colorRawMessage("&e&lTIP: &7We are open source! You can always help us by contributing! Check https://github.com/Plugily-Projects/Village_Defense"));
         break;
       case 6:
-        p.sendMessage(plugin.getChatManager().colorRawMessage("&e&lTIP: &7Need help? Check wiki &8https://wiki.plajer.xyz/minecraft/villagedefense &7or discord https://discord.gg/UXzUdTP"));
+        p.sendMessage(plugin.getChatManager().colorRawMessage("&e&lTIP: &7Need help? Check wiki &8https://wiki.plugily.xyz/minecraft/villagedefense &7or discord https://discord.gg/UXzUdTP"));
         break;
       case 7:
         p.sendMessage(plugin.getChatManager().colorRawMessage("&e&lTIP: &7Install HolographicDisplays plugin to access power-ups in game! (configure them in config.yml)"));

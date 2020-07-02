@@ -1,8 +1,8 @@
 # Contributing to Village Defense project
 
 ## Table of contents
-* [Report issue/request feature](https://github.com/Plajer-Lair/Village_Defense/issues/new/choose)
-* [Pull requests](hhttps://github.com/Plajer-Lair/Village_Defense/blob/master/.github/CONTRIBUTING.md#pull-requests)
+* [Report issue/request feature](https://github.com/Plugily-Projects/Village_Defense/issues/new/choose)
+* [Pull requests](hhttps://github.com/Plugily-Projects/Village_Defense/blob/master/.github/CONTRIBUTING.md#pull-requests)
 
 ## Pull requests
 ### First contribution

@@ -116,8 +116,8 @@ public class LocaleService {
   }
 
   /**
-   * Sends a demand request to download latest locale from Plajer-Lair/locale_storage repository
-   * Whole repository can be seen here https://github.com/Plajer-Lair/locale_storage
+   * Sends a demand request to download latest locale from Plugily-Projects/locale_storage repository
+   * Whole repository can be seen here https://github.com/Plugily-Projects/locale_storage
    *
    * @param locale locale to download
    * @return SUCCESS for downloaded locale, FAIL for service fault, LATEST when locale is latest as one in repository

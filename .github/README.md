@@ -8,7 +8,7 @@ The goal is to protect Villagers from hordes of undead Zombies. However, the gam
 Have fun using it! Leave a good rating if you really like it.
 
 ## Want to contribute in this project?
-[**🉑 Code Contributions**](https://github.com/Plajer-Lair/Village_Defense/blob/master/.github/CONTRIBUTING.md)        [**💣 Issues Reporting (Discord)**](https://discordapp.com/invite/UXzUdTP)        [**❤ Make Donation**](https://www.paypal.me/Plajer)
+[**🉑 Code Contributions**](https://github.com/Plugily-Projects/Village_Defense/blob/master/.github/CONTRIBUTING.md)        [**💣 Issues Reporting (Discord)**](https://discordapp.com/invite/UXzUdTP)        [**❤ Make Donation**](https://www.paypal.me/Plajer)
 
 # Credits
 ## Open Source Libraries
