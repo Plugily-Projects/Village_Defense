@@ -81,7 +81,7 @@ public class StartingState implements ArenaStateHandler {
         user.setStat(StatsStorage.StatisticType.ORBS, plugin.getConfig().getInt("Orbs-Starting-Amount", 20));
         plugin.getUserManager().getUser(player).getKit().giveKitItems(player);
         player.updateInventory();
-        ArenaUtils.addExperience(player, 10);
+        plugin.getUserManager().addExperience(player, 10);
         arena.setTimer(plugin.getConfig().getInt("Cooldown-Before-Next-Wave", 25));
         player.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage(Messages.LOBBY_MESSAGES_GAME_STARTED));
       }

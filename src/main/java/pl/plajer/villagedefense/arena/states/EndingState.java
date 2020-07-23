@@ -51,7 +51,7 @@ public class EndingState implements ArenaStateHandler {
       for (Player player : arena.getPlayers()) {
         ArenaUtils.resetPlayerAfterGame(player);
         arena.doBarAction(Arena.BarAction.REMOVE, player);
-        ArenaUtils.addStat(player, StatsStorage.StatisticType.GAMES_PLAYED);
+        plugin.getUserManager().addStat(player, StatsStorage.StatisticType.GAMES_PLAYED);
       }
       arena.getPlayers().forEach(arena::teleportToEndLocation);
       plugin.getChatManager().broadcast(arena, Messages.COMMANDS_TELEPORTED_TO_THE_LOBBY);

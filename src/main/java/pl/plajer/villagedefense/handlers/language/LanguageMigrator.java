@@ -38,7 +38,7 @@ import java.util.List;
 public class LanguageMigrator {
 
   public static final int LANGUAGE_FILE_VERSION = 12;
-  public static final int CONFIG_FILE_VERSION = 12;
+  public static final int CONFIG_FILE_VERSION = 13;
   private final Main plugin;
   private final List<String> migratable = Arrays.asList(Constants.Files.CONFIG.getName(), Constants.Files.KITS.getName(),
           Constants.Files.KITS.getName(), Constants.Files.LANGUAGE.getName(), Constants.Files.SPECIAL_ITEMS.getName(), Constants.Files.MYSQL.getName());
@@ -165,6 +165,11 @@ public class LanguageMigrator {
           MigratorUtils.addNewLines(file, "#Active after zombies limit is reached\r\n" +
                   "#Higher value means weaker zombies\r\n" +
                   "Zombie-Multiplier-Divider: 18\r\n");
+        case 12:
+          MigratorUtils.addNewLines(file, "\r\n" +
+                  "#Disable Party features of external party plugins (such as PAF, Parties ...)\r\n" +
+                  "Disable-Parties: true\r\n");
+          break;
         default:
           break;
       }

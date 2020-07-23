@@ -48,9 +48,7 @@ public class QuitEvent implements Listener {
       ArenaManager.leaveAttempt(event.getPlayer(), arena);
     }
     User user = plugin.getUserManager().getUser(event.getPlayer());
-    for (StatsStorage.StatisticType stat : StatsStorage.StatisticType.values()) {
-      plugin.getUserManager().saveStatistic(user, stat);
-    }
+    plugin.getUserManager().saveAllStatistic(user);
     plugin.getUserManager().removeUser(user);
 
     plugin.getArgumentsRegistry().getSpyChat().disableSpyChat(event.getPlayer());

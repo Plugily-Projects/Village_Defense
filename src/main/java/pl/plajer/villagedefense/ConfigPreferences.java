@@ -72,7 +72,7 @@ public class ConfigPreferences {
     DATABASE_ENABLED("DatabaseActivated", false), INVENTORY_MANAGER_ENABLED("InventoryManager", true),
     BUNGEE_ENABLED("BungeeActivated", false), HOLOGRAMS_ENABLED("HologramsActivated", false),
     UPGRADES_ENABLED("UpgradesActivated", false), ENABLE_SHORT_COMMANDS("Enable-Short-Commands", false),
-    DISABLE_SEPARATE_CHAT("Disable-Separate-Chat", false);
+    DISABLE_SEPARATE_CHAT("Disable-Separate-Chat", false), DISABLE_PARTIES("Disable-Parties", true);
 
     private String path;
     private boolean def;

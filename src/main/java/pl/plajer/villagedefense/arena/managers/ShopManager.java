@@ -81,6 +81,7 @@ public class ShopManager {
 
   /**
    * Default name of golem spawn item from language.yml
+   * @return the default golem item name
    */
   public String getDefaultGolemItemName() {
     return defaultGolemItemName;
@@ -88,6 +89,7 @@ public class ShopManager {
 
   /**
    * Default name of wolf spawn item from language.yml
+   * @return the default wolf item name
    */
   public String getDefaultWolfItemName() {
     return defaultWolfItemName;

@@ -82,7 +82,7 @@ public class SpecialItemManager {
       List<String> lore;
       int slot;
       try {
-        mat = XMaterial.fromString(config.getString(key + ".material-name"));
+        mat = XMaterial.matchXMaterial(config.getString(key + ".material-name")).get();
         name = plugin.getChatManager().colorRawMessage(config.getString(key + ".displayname"));
         lore = config.getStringList(key + ".lore").stream()
             .map(itemLore -> itemLore = plugin.getChatManager().colorRawMessage(itemLore))

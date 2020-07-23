@@ -104,8 +104,8 @@ public class ArenaEvents implements Listener {
         }
         Player player = (Player) ((Wolf) e.getDamager()).getOwner();
         if (ArenaRegistry.getArena(player) != null) {
-          ArenaUtils.addStat(player, StatsStorage.StatisticType.KILLS);
-          ArenaUtils.addExperience(player, 2 * arena.getOption(ArenaOption.ZOMBIE_DIFFICULTY_MULTIPLIER));
+          plugin.getUserManager().addStat(player, StatsStorage.StatisticType.KILLS);
+          plugin.getUserManager().addExperience(player, 2 * arena.getOption(ArenaOption.ZOMBIE_DIFFICULTY_MULTIPLIER));
         }
         return;
       }
@@ -152,8 +152,8 @@ public class ArenaEvents implements Listener {
           arena.removeZombie((Zombie) e.getEntity());
           arena.addOptionValue(ArenaOption.TOTAL_KILLED_ZOMBIES, 1);
           if (ArenaRegistry.getArena(e.getEntity().getKiller()) != null) {
-            ArenaUtils.addStat(e.getEntity().getKiller(), StatsStorage.StatisticType.KILLS);
-            ArenaUtils.addExperience(e.getEntity().getKiller(), 2 * arena.getOption(ArenaOption.ZOMBIE_DIFFICULTY_MULTIPLIER));
+            plugin.getUserManager().addStat(e.getEntity().getKiller(), StatsStorage.StatisticType.KILLS);
+            plugin.getUserManager().addExperience(e.getEntity().getKiller(), 2 * arena.getOption(ArenaOption.ZOMBIE_DIFFICULTY_MULTIPLIER));
             plugin.getRewardsHandler().performReward(e.getEntity().getKiller(), Reward.RewardType.ZOMBIE_KILL);
             plugin.getPowerupRegistry().spawnPowerup(e.getEntity().getLocation(), ArenaRegistry.getArena(e.getEntity().getKiller()));
           }
@@ -208,7 +208,7 @@ public class ArenaEvents implements Listener {
         player.teleport(arena.getEndLocation());
         return;
       }
-      ArenaUtils.addStat(player, StatsStorage.StatisticType.DEATHS);
+      plugin.getUserManager().addStat(player, StatsStorage.StatisticType.DEATHS);
       player.teleport(arena.getStartLocation());
       user.setSpectator(true);
       player.setGameMode(GameMode.SURVIVAL);

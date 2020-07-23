@@ -58,20 +58,21 @@ public class ChatEvents implements Listener {
   @EventHandler
   public void onChatIngame(AsyncPlayerChatEvent event) {
     Arena arena = ArenaRegistry.getArena(event.getPlayer());
-      if (arena == null) {
-        if (!plugin.getConfigPreferences().getOption(ConfigPreferences.Option.DISABLE_SEPARATE_CHAT)) {
-          for (Arena loopArena : ArenaRegistry.getArenas()) {
-            for (Player player : loopArena.getPlayers()) {
-              if (event.getRecipients().contains(player) && !plugin.getArgumentsRegistry().getSpyChat().isSpyChatEnabled(player)) {
-                event.getRecipients().remove(player);
-              }
+    if (arena == null) {
+      if (!plugin.getConfigPreferences().getOption(ConfigPreferences.Option.DISABLE_SEPARATE_CHAT)) {
+        for (Arena loopArena : ArenaRegistry.getArenas()) {
+          for (Player player : loopArena.getPlayers()) {
+            if (event.getRecipients().contains(player) && !plugin.getArgumentsRegistry().getSpyChat().isSpyChatEnabled(player)) {
+              event.getRecipients().remove(player);
             }
           }
         }
-        return;
+        event.getRecipients().removeIf(player -> !plugin.getArgumentsRegistry().getSpyChat().isSpyChatEnabled(player));
+      }
+      return;
     }
     if (plugin.getConfigPreferences().getOption(ConfigPreferences.Option.CHAT_FORMAT_ENABLED)) {
-      event.setCancelled(true);
+     // event.setCancelled(true);
       String eventMessage = event.getMessage();
       for (String regexChar : regexChars) {
         if (eventMessage.contains(regexChar)) {
@@ -88,7 +89,6 @@ public class ChatEvents implements Listener {
     if (!plugin.getConfigPreferences().getOption(ConfigPreferences.Option.DISABLE_SEPARATE_CHAT)) {
       event.getRecipients().clear();
       event.getRecipients().addAll(new ArrayList<>(arena.getPlayers()));
-      event.getRecipients().removeIf(player -> !plugin.getArgumentsRegistry().getSpyChat().isSpyChatEnabled(player));
     }
   }
 

@@ -78,6 +78,7 @@ public class ArenaManager {
    * Can be cancelled only via above-mentioned event
    *
    * @param player player to join
+   * @param arena arena to join
    * @see VillageGameJoinAttemptEvent
    */
   public static void joinAttempt(@NotNull Player player, @NotNull Arena arena) {
@@ -242,7 +243,8 @@ public class ArenaManager {
    * Attempts player to leave arena.
    * Calls VillageGameLeaveAttemptEvent event.
    *
-   * @param player player to join
+   * @param player player to leave
+   * @param arena arena to leave
    * @see VillageGameLeaveAttemptEvent
    */
   public static void leaveAttempt(@NotNull Player player, @NotNull Arena arena) {
@@ -284,6 +286,7 @@ public class ArenaManager {
    * Stops current arena. Calls VillageGameStopEvent event
    *
    * @param quickStop should arena be stopped immediately? (use only in important cases)
+   * @param arena which arena should stop
    * @see VillageGameStopEvent
    */
   public static void stopGame(boolean quickStop, @NotNull Arena arena) {
@@ -309,8 +312,7 @@ public class ArenaManager {
       for (String msg : summaryMessages) {
         MiscUtils.sendCenteredMessage(player, formatSummaryPlaceholders(msg, arena, user, summaryEnding));
       }
-      ArenaUtils.addExperience(player, arena.getWave());
-
+      plugin.getUserManager().addExperience(player, arena.getWave());
       if (!quickStop) {
         spawnFireworks(arena, player);
       }
@@ -357,6 +359,7 @@ public class ArenaManager {
    * End wave in game.
    * Calls VillageWaveEndEvent event
    *
+   * @param arena End wave on which arena
    * @see VillageWaveEndEvent
    */
   public static void endWave(@NotNull Arena arena) {
@@ -374,7 +377,7 @@ public class ArenaManager {
       ArenaUtils.bringDeathPlayersBack(arena);
     }
     for (Player player : arena.getPlayersLeft()) {
-      ArenaUtils.addExperience(player, 5);
+      plugin.getUserManager().addExperience(player, 5);
     }
   }
 
@@ -392,6 +395,7 @@ public class ArenaManager {
    * Starts wave in game.
    * Calls VillageWaveStartEvent event
    *
+   * @param arena start wave on this arena
    * @see VillageWaveStartEvent
    */
   public static void startWave(@NotNull Arena arena) {

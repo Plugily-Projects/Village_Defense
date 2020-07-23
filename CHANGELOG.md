@@ -9,7 +9,7 @@ deploy webhooks to print changelog successfully
 
 That's all, matcher will stop when detects next line started with `###` match
 
-### 4.5.0
+### 4.5.0 Beta
 * Added short commands such as start and leave
 * Added option to disable separate chat
 * Added possibility to change table name of mysql database
@@ -19,6 +19,10 @@ That's all, matcher will stop when detects next line started with `###` match
 * Added adjustable zombie divider to handle strength of zombies
 * Optimized fireworks will stop spawning on restarting stage
 * Fixed players can join full game without perms
+* Added missing 1.14 & 1.15 & 1.16 Materials
+* Fixed mysql connection
+* Changed mysql updates to do only one instead of more than 10 (should improve performance)
+* Possibility to disable parties
 
 ### 4.4.4 Release
 * Added multiplier to orbs and experience when zombie limit were reached
