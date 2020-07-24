@@ -22,7 +22,7 @@ Bossbar-Enabled: true
 
 # Should we hook into bungee cord? (If you wanna use arena per server option)
 # You STILL need to use external addon for HUB server game signs
-# Check here for more info: https://wiki.plajer.xyz/minecraft/villagedefense/addons.php#bungee-signs-not-official
+# Check here for more info: https://wiki.plugily.xyz/minecraft/villagedefense/addons.php#bungee-signs-not-official
 BungeeActivated: false
 
 # Should we hook into Holograpic Displays? (If you wanna use (leaderboard)holograms)
@@ -44,13 +44,13 @@ Respawn-After-Wave: true
 # You can create custom players permissions here.
 # Player with your custom permission will get % bonus orbs
 # when he lift up experience from killed zombie.
-# More here: https://wiki.plajer.xyz/minecraft/villagedefense/cmds_and_perms.php#custom-permissions
+# More here: https://wiki.plugily.xyz/minecraft/villagedefense/cmds_and_perms.php#custom-permissions
 CustomPermissions:
   # Player with permission my-permission-one get 10% more orbs
   # Do not use dots (.), they won't work.
   my-permission-one: 10
 
-# Basic permissions for game, permissions explained here: https://wiki.plajer.xyz/minecraft/villagedefense/cmds_and_perms.php#basic-permissions
+# Basic permissions for game, permissions explained here: https://wiki.plugily.xyz/minecraft/villagedefense/cmds_and_perms.php#basic-permissions
 Basic-Permissions:
   Full-Games-Permission: "villagedefense.fullgames"
   Vip-Permission: "villagedefense.vip"

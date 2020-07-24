@@ -119,7 +119,7 @@ public class LanguageMigrator {
           /*Was only needed from modules version
           MigratorUtils.addNewLines(file, "\r\n# Should we hook into bungee cord? (If you wanna use arena per server option)\r\n" +
           /    "# You STILL need to use external addon for HUB server game signs\r\n" +
-          /    "# Check here for more info: https://wiki.plajer.xyz/minecraft/villagedefense/addons.php#bungee-signs-not-official\r\n" +
+          /    "# Check here for more info: https://wiki.plugily.xyz/minecraft/villagedefense/addons.php#bungee-signs-not-official\r\n" +
           /    "BungeeActivated: false\r\n");*/
           MigratorUtils.addNewLines(file, "\r\n" +
               "# Should we hook into Holograpic Displays? (If you wanna use (leaderboard)holograms)\r\n" +
