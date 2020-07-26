@@ -54,6 +54,7 @@ public class TornadoKit extends PremiumKit implements Listener {
   private int maxHeight = 5;
   private double maxRadius = 4;
   private double radiusIncrement = maxRadius / maxHeight;
+  private int active = 0;
 
   public TornadoKit() {
     setName(getPlugin().getChatManager().colorMessage(Messages.KITS_TORNADO_NAME));
@@ -105,6 +106,9 @@ public class TornadoKit extends PremiumKit implements Listener {
         || !stack.getItemMeta().getDisplayName().equalsIgnoreCase(getPlugin().getChatManager().colorMessage(Messages.KITS_TORNADO_GAME_ITEM_NAME))) {
       return;
     }
+    if (active >= 2){
+      return;
+    }
     Utils.takeOneItem(player, stack);
     e.setCancelled(true);
     prepareTornado(player.getLocation());
@@ -112,12 +116,14 @@ public class TornadoKit extends PremiumKit implements Listener {
 
   private void prepareTornado(Location location) {
     Tornado tornado = new Tornado(location);
+    active++;
     new BukkitRunnable() {
       @Override
       public void run() {
         tornado.update();
-        if (tornado.getTimes() > 75) {
+        if (tornado.entities >= 7 || tornado.getTimes() > 55) {
           this.cancel();
+          active--;
         }
       }
     }.runTaskTimer(getPlugin(), 1, 1);
@@ -128,11 +134,13 @@ public class TornadoKit extends PremiumKit implements Listener {
     private Vector vector;
     private int angle;
     private int times;
+    private int entities;
 
     Tornado(Location location) {
       this.location = location;
       this.vector = location.getDirection();
       times = 0;
+      entities = 0;
     }
 
     int getTimes() {
@@ -145,6 +153,10 @@ public class TornadoKit extends PremiumKit implements Listener {
 
     Location getLocation() {
       return location;
+    }
+
+    public int getEntities() {
+      return entities;
     }
 
     void setLocation(Location location) {
@@ -164,7 +176,6 @@ public class TornadoKit extends PremiumKit implements Listener {
           getLocation().getWorld().spawnParticle(Particle.CLOUD, getLocation().clone().add(x, y, z), 1, 0, 0, 0, 0);
         }
       }
-
       pushNearbyZombies();
       setLocation(getLocation().add(getVector().getX() / (3 + Math.random() / 2), 0, getVector().getZ() / (3 + Math.random() / 2)));
 
@@ -173,8 +184,9 @@ public class TornadoKit extends PremiumKit implements Listener {
     }
 
     private void pushNearbyZombies() {
-      for (Entity entity : getLocation().getWorld().getNearbyEntities(getLocation(), 2, 2, 2)) {
+      for (Entity entity : getLocation().getWorld().getNearbyLivingEntities(getLocation(), 2, 2, 2)) {
         if (entity.getType() == EntityType.ZOMBIE) {
+          entities++;
           entity.setVelocity(getVector().multiply(2).setY(0).add(new Vector(0, 1, 0)));
         }
       }
