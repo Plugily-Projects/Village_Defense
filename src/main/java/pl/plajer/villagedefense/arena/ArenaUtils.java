@@ -91,7 +91,11 @@ public class ArenaUtils {
       if (arena.getPlayersLeft().contains(player)) {
         continue;
       }
+
       User user = plugin.getUserManager().getUser(player);
+      if (!plugin.getConfigPreferences().getOption(ConfigPreferences.Option.INGAME_JOIN_RESPAWN) && user.isPermanentSpectator()){
+        continue;
+      }
       user.setSpectator(false);
 
       player.teleport(arena.getStartLocation());

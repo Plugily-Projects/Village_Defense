@@ -38,7 +38,7 @@ import java.util.List;
 public class LanguageMigrator {
 
   public static final int LANGUAGE_FILE_VERSION = 12;
-  public static final int CONFIG_FILE_VERSION = 13;
+  public static final int CONFIG_FILE_VERSION = 14;
   private final Main plugin;
   private final List<String> migratable = Arrays.asList(Constants.Files.CONFIG.getName(), Constants.Files.KITS.getName(),
           Constants.Files.KITS.getName(), Constants.Files.LANGUAGE.getName(), Constants.Files.SPECIAL_ITEMS.getName(), Constants.Files.MYSQL.getName());
@@ -169,6 +169,13 @@ public class LanguageMigrator {
           MigratorUtils.addNewLines(file, "\r\n" +
                   "#Disable Party features of external party plugins (such as PAF, Parties ...)\r\n" +
                   "Disable-Parties: true\r\n");
+          break;
+        case 13:
+          MigratorUtils.addNewLines(file, "\r\n" +
+                  "# Should player be able that join on ingame stage to respawn after wave?\r\n" +
+                  "# Default: true\r\n" +
+                  "InGame-Join-Respawn: true\r\n" +
+                  "\r\n");
           break;
         default:
           break;

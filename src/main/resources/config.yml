@@ -41,6 +41,10 @@ InventoryManager: true
 # Respawn players when wave ends/starts?
 Respawn-After-Wave: true
 
+# Should player be able that join on ingame stage to respawn after wave?
+# Default: true
+InGame-Join-Respawn: true
+
 # You can create custom players permissions here.
 # Player with your custom permission will get % bonus orbs
 # when he lift up experience from killed zombie.
@@ -188,6 +192,6 @@ Update-Notifier:
 Disable-Parties: true
 
 # Don't modify.
-Version: 13
+Version: 14
 
 # No way! You've reached the end! But... where's the dragon!?

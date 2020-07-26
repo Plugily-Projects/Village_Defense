@@ -123,6 +123,9 @@ public class ArenaManager {
     User user = plugin.getUserManager().getUser(player);
     arena.getScoreboardManager().createScoreboard(user);
     if ((arena.getArenaState() == ArenaState.IN_GAME || (arena.getArenaState() == ArenaState.STARTING && arena.getTimer() <= 3) || arena.getArenaState() == ArenaState.ENDING)) {
+      if (!plugin.getConfigPreferences().getOption(ConfigPreferences.Option.INGAME_JOIN_RESPAWN)){
+        user.setPermanentSpectator(true);
+      }
       if (plugin.getConfigPreferences().getOption(ConfigPreferences.Option.INVENTORY_MANAGER_ENABLED)) {
         InventorySerializer.saveInventoryToFile(plugin, player);
       }
@@ -265,6 +268,8 @@ public class ArenaManager {
       plugin.getChatManager().broadcastAction(arena, player, ChatManager.ActionType.LEAVE);
     }
     user.setSpectator(false);
+    user.setPermanentSpectator(false);
+
     if (user.getKit() instanceof GolemFriendKit) {
       for (IronGolem ironGolem : arena.getIronGolems()) {
         if (ironGolem.getCustomName().contains(user.getPlayer().getName())) {

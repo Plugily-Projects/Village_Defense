@@ -43,6 +43,7 @@ public class User {
   private static long cooldownCounter = 0;
   private Player player;
   private boolean spectator = false;
+  private boolean permanentSpectator = false;
   private Kit kit = KitRegistry.getDefaultKit();
   private Map<StatsStorage.StatisticType, Integer> stats = new EnumMap<>(StatsStorage.StatisticType.class);
   private Map<String, Long> cooldowns = new HashMap<>();
@@ -81,6 +82,14 @@ public class User {
 
   public void setSpectator(boolean b) {
     spectator = b;
+  }
+
+  public boolean isPermanentSpectator() {
+    return permanentSpectator;
+  }
+
+  public void setPermanentSpectator(boolean permanentSpectator) {
+    this.permanentSpectator = permanentSpectator;
   }
 
   public int getStat(StatsStorage.StatisticType s) {
