@@ -206,12 +206,13 @@ public class Events implements Listener {
     if (!plugin.getConfig().getBoolean("Block-Commands-In-Game", true)) {
       return;
     }
+    String command = event.getMessage().toLowerCase();
     for (String msg : plugin.getConfig().getStringList("Whitelisted-Commands")) {
-      if (event.getMessage().toLowerCase().startsWith(msg.toLowerCase())) {
+      if (command.startsWith("/" + msg.toLowerCase())) {
         return;
       }
     }
-    if (event.getMessage().startsWith("/vd") || event.getMessage().contains("leave") || event.getMessage().contains("stats") || event.getMessage().startsWith("/vda")) {
+    if (command.startsWith("/vd") || command.contains("leave") || command.contains("stats") || command.startsWith("/vda")) {
       return;
     }
     if (event.getPlayer().isOp() || event.getPlayer().hasPermission("villagedefense.command.override")) {
