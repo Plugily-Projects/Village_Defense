@@ -9,7 +9,7 @@ deploy webhooks to print changelog successfully
 
 That's all, matcher will stop when detects next line started with `###` match
 
-### 4.5.0 Beta
+### 4.5.0 Release (01.07.2020 - 26.07.2020)
 * Added short commands such as start and leave
 * Added option to disable separate chat
 * Added possibility to change table name of mysql database
@@ -23,6 +23,7 @@ That's all, matcher will stop when detects next line started with `###` match
 * Fixed mysql connection
 * Changed mysql updates to do only one instead of more than 10 (should improve performance)
 * Possibility to disable parties
+* Fixed "Language file integrity check failed" for Holograms
 
 ### 4.4.4 Release
 * Added multiplier to orbs and experience when zombie limit were reached

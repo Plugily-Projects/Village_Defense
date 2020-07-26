@@ -392,7 +392,7 @@ Leaderboard-Holograms:
   Header: '&6&lTop %amount% in %statistic%'
   Format: '&e%place%. &f%nickname% (%value%)'
   Format-Empty: '&e%place%. &fEmpty (0)'
-  Unknow-Player: '&fUnknown Player'
+  Unknown-Player: '&fUnknown Player'
   Statistics:
     Kills: '&eKills'
     Deaths: '&eDeaths'
