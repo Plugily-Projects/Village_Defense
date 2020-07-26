@@ -25,6 +25,7 @@ That's all, matcher will stop when detects next line started with `###` match
 * Possibility to disable parties
 * Fixed "Language file integrity check failed" for Holograms
 * Fixed weird PlayerChatEvent
+* Fixed when Respawn-After-Wave is disabled players will get the highest wave stat for waves after death
 
 ### 4.4.4 Release
 * Added multiplier to orbs and experience when zombie limit were reached

@@ -307,6 +307,9 @@ public class ArenaManager {
     for (Player player : arena.getPlayers()) {
       User user = plugin.getUserManager().getUser(player);
       if (user.getStat(StatsStorage.StatisticType.HIGHEST_WAVE) <= arena.getWave()) {
+        if (plugin.getConfigPreferences().getOption(ConfigPreferences.Option.RESPAWN_AFTER_WAVE) && user.isSpectator()) {
+          continue;
+        }
         user.setStat(StatsStorage.StatisticType.HIGHEST_WAVE, arena.getWave());
       }
       for (String msg : summaryMessages) {
@@ -373,7 +376,7 @@ public class ArenaManager {
     arena.setWave(arena.getWave() + 1);
     Bukkit.getPluginManager().callEvent(new VillageWaveEndEvent(arena, arena.getWave()));
     refreshAllPlayers(arena);
-    if (plugin.getConfig().getBoolean("Respawn-After-Wave", true)) {
+    if (plugin.getConfigPreferences().getOption(ConfigPreferences.Option.RESPAWN_AFTER_WAVE)) {
       ArenaUtils.bringDeathPlayersBack(arena);
     }
     for (Player player : arena.getPlayersLeft()) {
@@ -419,7 +422,7 @@ public class ArenaManager {
     if (arena.getOption(ArenaOption.ZOMBIE_IDLE_PROCESS) > 0) {
       Debugger.debug(Level.INFO, "[{0}] Spawn idle process initiated to prevent server overload! Value: {1}", arena.getId(), arena.getOption(ArenaOption.ZOMBIE_IDLE_PROCESS));
     }
-    if (plugin.getConfig().getBoolean("Respawn-After-Wave", true)) {
+    if (plugin.getConfigPreferences().getOption(ConfigPreferences.Option.RESPAWN_AFTER_WAVE)) {
       ArenaUtils.bringDeathPlayersBack(arena);
     }
     for (User user : plugin.getUserManager().getUsers(arena)) {
