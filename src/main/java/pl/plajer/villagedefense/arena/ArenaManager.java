@@ -281,6 +281,8 @@ public class ArenaManager {
     if (arena.getPlayers().isEmpty() && arena.getArenaState() != ArenaState.WAITING_FOR_PLAYERS && arena.getArenaState() != ArenaState.STARTING) {
       arena.setArenaState(ArenaState.ENDING);
       arena.setTimer(0);
+      //needed as no players online and else it is auto canceled
+      arena.getMapRestorerManager().fullyRestoreArena();
     }
     ArenaUtils.resetPlayerAfterGame(player);
     arena.teleportToEndLocation(player);

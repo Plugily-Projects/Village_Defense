@@ -25,6 +25,7 @@ That's all, matcher will stop when detects next line started with `###` match
 * Fixed "Language file integrity check failed" for Holograms
 * Fixed weird PlayerChatEvent
 * Fixed when Respawn-After-Wave is disabled players will get the highest wave stat for waves after death
+* Fixed Map Restorer when no players left
 * Changed mysql updates to do only one instead of more than 10 (should improve performance)
 * Changed Tornado kit a bit to optimize performance and strength of the kit (max active 2 - max entities 7)
 * Optimized fireworks will stop spawning on restarting stage
