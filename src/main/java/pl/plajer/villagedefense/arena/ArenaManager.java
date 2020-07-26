@@ -307,7 +307,7 @@ public class ArenaManager {
     for (Player player : arena.getPlayers()) {
       User user = plugin.getUserManager().getUser(player);
       if (user.getStat(StatsStorage.StatisticType.HIGHEST_WAVE) <= arena.getWave()) {
-        if (plugin.getConfigPreferences().getOption(ConfigPreferences.Option.RESPAWN_AFTER_WAVE) && user.isSpectator()) {
+        if (!plugin.getConfigPreferences().getOption(ConfigPreferences.Option.RESPAWN_AFTER_WAVE) && user.isSpectator()) {
           continue;
         }
         user.setStat(StatsStorage.StatisticType.HIGHEST_WAVE, arena.getWave());
