@@ -24,6 +24,7 @@ That's all, matcher will stop when detects next line started with `###` match
 * Changed mysql updates to do only one instead of more than 10 (should improve performance)
 * Possibility to disable parties
 * Fixed "Language file integrity check failed" for Holograms
+* Fixed weird PlayerChatEvent
 
 ### 4.4.4 Release
 * Added multiplier to orbs and experience when zombie limit were reached

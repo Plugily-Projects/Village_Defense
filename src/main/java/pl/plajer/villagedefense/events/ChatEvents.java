@@ -67,12 +67,10 @@ public class ChatEvents implements Listener {
             }
           }
         }
-        event.getRecipients().removeIf(player -> !plugin.getArgumentsRegistry().getSpyChat().isSpyChatEnabled(player));
       }
       return;
     }
     if (plugin.getConfigPreferences().getOption(ConfigPreferences.Option.CHAT_FORMAT_ENABLED)) {
-     // event.setCancelled(true);
       String eventMessage = event.getMessage();
       for (String regexChar : regexChars) {
         if (eventMessage.contains(regexChar)) {
@@ -87,7 +85,7 @@ public class ChatEvents implements Listener {
       event.setMessage(message);
     }
     if (!plugin.getConfigPreferences().getOption(ConfigPreferences.Option.DISABLE_SEPARATE_CHAT)) {
-      event.getRecipients().clear();
+      event.getRecipients().removeIf(player -> !plugin.getArgumentsRegistry().getSpyChat().isSpyChatEnabled(player));
       event.getRecipients().addAll(new ArrayList<>(arena.getPlayers()));
     }
   }
