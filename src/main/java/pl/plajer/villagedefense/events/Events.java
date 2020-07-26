@@ -207,7 +207,7 @@ public class Events implements Listener {
       return;
     }
     for (String msg : plugin.getConfig().getStringList("Whitelisted-Commands")) {
-      if (event.getMessage().startsWith(msg)) {
+      if (event.getMessage().toLowerCase().startsWith(msg.toLowerCase())) {
         return;
       }
     }
