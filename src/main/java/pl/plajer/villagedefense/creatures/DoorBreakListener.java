@@ -1,6 +1,6 @@
 /*
  * Village Defense - Protect villagers from hordes of zombies
- * Copyright (C) 2019  Plajer's Lair - maintained by Plajer and contributors
+ * Copyright (C) 2020  Plugily Projects - maintained by 2Wild4You, Tigerpanzer_02 and contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,9 +18,6 @@
 
 package pl.plajer.villagedefense.creatures;
 
-import java.util.Random;
-
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.World;
@@ -29,19 +26,21 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.scheduler.BukkitRunnable;
-
 import pl.plajer.villagedefense.Main;
+import pl.plajer.villagedefense.arena.ArenaRegistry;
 import pl.plajer.villagedefense.utils.Utils;
 import pl.plajer.villagedefense.utils.constants.CompatMaterialConstants;
 import pl.plajerlair.commonsbox.minecraft.compat.XMaterial;
+
+import java.util.Random;
 
 /**
  * Created by Tom on 14/08/2014.
  */
 public class DoorBreakListener extends BukkitRunnable {
 
-  private Random random = new Random();
-  private Main plugin;
+  private final Random random = new Random();
+  private final Main plugin;
 
   public DoorBreakListener(Main plugin) {
     this.plugin = plugin;
@@ -50,7 +49,7 @@ public class DoorBreakListener extends BukkitRunnable {
 
   @Override
   public void run() {
-    for (World world : Bukkit.getServer().getWorlds()) {
+    for (World world : ArenaRegistry.getArenaIngameWorlds()) {
       for (LivingEntity entity : world.getLivingEntities()) {
         if (entity.getType() != EntityType.ZOMBIE) {
           continue;

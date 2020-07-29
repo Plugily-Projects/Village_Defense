@@ -1,6 +1,6 @@
 /*
  * Village Defense - Protect villagers from hordes of zombies
- * Copyright (C) 2019  Plajer's Lair - maintained by Plajer and contributors
+ * Copyright (C) 2020  Plugily Projects - maintained by 2Wild4You, Tigerpanzer_02 and contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -206,12 +206,14 @@ public class Events implements Listener {
     if (!plugin.getConfig().getBoolean("Block-Commands-In-Game", true)) {
       return;
     }
+    String command = event.getMessage().substring(1);
+    command = (command.indexOf(' ') >= 0 ? command.substring(0, command.indexOf(' ')) : command);
     for (String msg : plugin.getConfig().getStringList("Whitelisted-Commands")) {
-      if (event.getMessage().contains(msg)) {
+      if (command.equalsIgnoreCase(msg.toLowerCase())) {
         return;
       }
     }
-    if (event.getMessage().startsWith("/vd") || event.getMessage().contains("leave") || event.getMessage().contains("stats") || event.getMessage().startsWith("/vda")) {
+    if (command.equalsIgnoreCase("vd") || event.getMessage().contains("leave") || event.getMessage().contains("stats") || command.equalsIgnoreCase("vda")) {
       return;
     }
     if (event.getPlayer().isOp() || event.getPlayer().hasPermission("villagedefense.command.override")) {
@@ -317,7 +319,7 @@ public class Events implements Listener {
         continue;
       }
       e.getEntity().setCustomName(StringFormatUtils.getProgressBar((int) ((Zombie) e.getEntity()).getHealth(),
-          (int) ((Zombie) e.getEntity()).getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue(),
+          (int) ((Zombie) e.getEntity()).getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue(),
           50, "|", ChatColor.YELLOW + "", ChatColor.GRAY + ""));
     }
   }
@@ -421,7 +423,7 @@ public class Events implements Listener {
         return;
       }
       for (Player p : arena.getPlayers()) {
-        p.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(p.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue() + 2.0);
+        p.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(p.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue() + 2.0);
         p.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage(Messages.ROTTEN_FLESH_LEVEL_UP));
       }
     }

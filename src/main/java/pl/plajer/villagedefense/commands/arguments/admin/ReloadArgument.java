@@ -1,6 +1,6 @@
 /*
  * Village Defense - Protect villagers from hordes of zombies
- * Copyright (C) 2019  Plajer's Lair - maintained by Plajer and contributors
+ * Copyright (C) 2020  Plugily Projects - maintained by 2Wild4You, Tigerpanzer_02 and contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,14 +18,10 @@
 
 package pl.plajer.villagedefense.commands.arguments.admin;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
-
 import pl.plajer.villagedefense.ConfigPreferences;
 import pl.plajer.villagedefense.arena.Arena;
 import pl.plajer.villagedefense.arena.ArenaManager;
@@ -38,6 +34,9 @@ import pl.plajer.villagedefense.handlers.language.LanguageManager;
 import pl.plajer.villagedefense.handlers.language.Messages;
 import pl.plajerlair.commonsbox.minecraft.serialization.InventorySerializer;
 
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * @author Plajer
  * <p>
@@ -45,7 +44,7 @@ import pl.plajerlair.commonsbox.minecraft.serialization.InventorySerializer;
  */
 public class ReloadArgument {
 
-  private Set<CommandSender> confirmations = new HashSet<>();
+  private final Set<CommandSender> confirmations = new HashSet<>();
 
   public ReloadArgument(ArgumentsRegistry registry) {
     registry.mapArgument("villagedefenseadmin", new LabeledCommandArgument("reload", "villagedefense.admin.reload", CommandArgument.ExecutorType.BOTH,

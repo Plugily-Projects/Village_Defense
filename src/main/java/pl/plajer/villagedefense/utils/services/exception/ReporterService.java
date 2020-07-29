@@ -1,6 +1,6 @@
 /*
  * Village Defense - Protect villagers from hordes of zombies
- * Copyright (C) 2019  Plajer's Lair - maintained by Plajer and contributors
+ * Copyright (C) 2020  Plugily Projects - maintained by 2Wild4You, Tigerpanzer_02 and contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,28 +18,26 @@
 
 package pl.plajer.villagedefense.utils.services.exception;
 
+import org.bukkit.plugin.java.JavaPlugin;
+import pl.plajer.villagedefense.utils.Debugger;
+
+import javax.net.ssl.HttpsURLConnection;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.logging.Level;
 
-import javax.net.ssl.HttpsURLConnection;
-
-import org.bukkit.plugin.java.JavaPlugin;
-
-import pl.plajer.villagedefense.utils.Debugger;
-
 /**
  * Reporter service for reporting exceptions directly to website reporter panel
  */
 public class ReporterService {
 
-  private JavaPlugin plugin;
-  private String pluginName;
-  private String pluginVersion;
-  private String serverVersion;
-  private String error;
+  private final JavaPlugin plugin;
+  private final String pluginName;
+  private final String pluginVersion;
+  private final String serverVersion;
+  private final String error;
 
   //don't create it outside core
   ReporterService(JavaPlugin plugin, String pluginName, String pluginVersion, String serverVersion, String error) {

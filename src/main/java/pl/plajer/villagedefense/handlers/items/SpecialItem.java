@@ -1,6 +1,6 @@
 /*
  * Village Defense - Protect villagers from hordes of zombies
- * Copyright (C) 2019  Plajer's Lair - maintained by Plajer and contributors
+ * Copyright (C) 2020  Plugily Projects - maintained by 2Wild4You, Tigerpanzer_02 and contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,9 +28,9 @@ public class SpecialItem {
 
   public static final SpecialItem INVALID_ITEM = new SpecialItem("INVALID", new ItemStack(Material.BEDROCK), -1, DisplayStage.LOBBY);
   private final String name;
-  private ItemStack itemStack;
+  private final ItemStack itemStack;
   private int slot;
-  private DisplayStage displayStage;
+  private final DisplayStage displayStage;
 
   public SpecialItem(String name, ItemStack itemStack, int slot, DisplayStage displayStage) {
     this.name = name;

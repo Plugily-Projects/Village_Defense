@@ -1,6 +1,6 @@
 /*
  * Village Defense - Protect villagers from hordes of zombies
- * Copyright (C) 2019  Plajer's Lair - maintained by Plajer and contributors
+ * Copyright (C) 2020  Plugily Projects - maintained by 2Wild4You, Tigerpanzer_02 and contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,11 +18,8 @@
 
 package pl.plajer.villagedefense.commands.arguments.game;
 
-import java.util.logging.Level;
-
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-
 import pl.plajer.villagedefense.ConfigPreferences;
 import pl.plajer.villagedefense.arena.Arena;
 import pl.plajer.villagedefense.arena.ArenaManager;
@@ -32,6 +29,8 @@ import pl.plajer.villagedefense.commands.arguments.data.CommandArgument;
 import pl.plajer.villagedefense.handlers.language.Messages;
 import pl.plajer.villagedefense.utils.Debugger;
 import pl.plajer.villagedefense.utils.Utils;
+
+import java.util.logging.Level;
 
 /**
  * @author Plajer

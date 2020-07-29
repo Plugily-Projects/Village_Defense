@@ -1,6 +1,6 @@
 /*
  * Village Defense - Protect villagers from hordes of zombies
- * Copyright (C) 2019  Plajer's Lair - maintained by Plajer and contributors
+ * Copyright (C) 2020  Plugily Projects - maintained by 2Wild4You, Tigerpanzer_02 and contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -344,15 +344,15 @@ public enum Messages {
   HOLOGRAMS_FORMAT("Leaderboard-Holograms.Format"),
   HOLOGRAMS_FORMAT_EMPTY("Leaderboard-Holograms.Format-Empty"),
   HOLOGRAMS_UNKNOWN_PLAYER("Leaderboard-Holograms.Unknown-Player"),
-  STATISTIC_KILLS("Leaderboard-Holograms.Statistic.Kills"),
-  STATISTIC_DEATHS("Leaderboard-Holograms.Statistic.Deaths"),
-  STATISTIC_GAMES_PLAYED("Leaderboard-Holograms.Statistic.Games-Played"),
-  STATISTIC_HIGHEST_WAVE("Leaderboard-Holograms.Statistic.Highest-Wave"),
-  STATISTIC_LEVEL("Leaderboard-Holograms.Statistic.Level"),
-  STATISTIC_EXP("Leaderboard-Holograms.Statistic.Xp");
+  STATISTIC_KILLS("Leaderboard-Holograms.Statistics.Kills"),
+  STATISTIC_DEATHS("Leaderboard-Holograms.Statistics.Deaths"),
+  STATISTIC_GAMES_PLAYED("Leaderboard-Holograms.Statistics.Games-Played"),
+  STATISTIC_HIGHEST_WAVE("Leaderboard-Holograms.Statistics.Highest-Wave"),
+  STATISTIC_LEVEL("Leaderboard-Holograms.Statistics.Level"),
+  STATISTIC_EXP("Leaderboard-Holograms.Statistics.Xp");
 
   private static Main plugin;
-  private String accessor;
+  private final String accessor;
 
   Messages(String accessor) {
     this.accessor = accessor;

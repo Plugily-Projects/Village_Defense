@@ -1,6 +1,6 @@
 /*
  * Village Defense - Protect villagers from hordes of zombies
- * Copyright (C) 2019  Plajer's Lair - maintained by Plajer and contributors
+ * Copyright (C) 2020  Plugily Projects - maintained by 2Wild4You, Tigerpanzer_02 and contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -51,7 +51,7 @@ public class EndingState implements ArenaStateHandler {
       for (Player player : arena.getPlayers()) {
         ArenaUtils.resetPlayerAfterGame(player);
         arena.doBarAction(Arena.BarAction.REMOVE, player);
-        ArenaUtils.addStat(player, StatsStorage.StatisticType.GAMES_PLAYED);
+        plugin.getUserManager().addStat(player, StatsStorage.StatisticType.GAMES_PLAYED);
       }
       arena.getPlayers().forEach(arena::teleportToEndLocation);
       plugin.getChatManager().broadcast(arena, Messages.COMMANDS_TELEPORTED_TO_THE_LOBBY);

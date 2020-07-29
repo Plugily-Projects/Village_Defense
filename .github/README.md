@@ -1,6 +1,6 @@
-![](https://plajer.xyz/images/banner_display.php?id=VillageDefense)
+![](https://plugily.xyz/images/banner_display.php?id=VillageDefense)
 
-# Village Defense [![](https://img.shields.io/badge/javadocs-latest-green.svg)](https://jd.plajer.xyz/minecraft/villagedefense) [![](https://img.shields.io/badge/wiki-click-blue.svg)](https://wiki.plajer.xyz/minecraft/villagedefense/index.php) [![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=Plajer-Lair_Village_Defense&metric=sqale_rating)](https://sonarcloud.io/dashboard?id=Plajer-Lair_Village_Defense) [![Discord](https://img.shields.io/discord/345628548716822530.svg?color=7289DA&label=discord)](https://discord.gg/UXzUdTP)
+# Village Defense [![](https://img.shields.io/badge/javadocs-latest-green.svg)](https://jd.plugily.xyz/minecraft/villagedefense) [![](https://img.shields.io/badge/wiki-click-blue.svg)](https://wiki.plugily.xyz/minecraft/villagedefense/index.php) [![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=Plajer-Lair_Village_Defense&metric=sqale_rating)](https://sonarcloud.io/dashboard?id=Plajer-Lair_Village_Defense) [![Discord](https://img.shields.io/discord/345628548716822530.svg?color=7289DA&label=discord)](https://discord.gg/UXzUdTP)
 Village Defense is a Minecraft minigame designed for small and big servers. This minigame is unique and very configurable, 100% free and open source! 
 
 The goal is to protect Villagers from hordes of undead Zombies. However, the game isn't that easy. There are more and more zombies every wave and more types of them come in higher waves. There is no wave limit so try to survive as long as you can!
@@ -8,7 +8,7 @@ The goal is to protect Villagers from hordes of undead Zombies. However, the gam
 Have fun using it! Leave a good rating if you really like it.
 
 ## Want to contribute in this project?
-[**🉑 Code Contributions**](https://github.com/Plajer-Lair/Village_Defense/blob/master/.github/CONTRIBUTING.md)        [**💣 Issues Reporting (Discord)**](https://discordapp.com/invite/UXzUdTP)        [**❤ Make Donation**](https://www.paypal.me/Plajer)
+[**🉑 Code Contributions**](https://github.com/Plugily-Projects/Village_Defense/blob/master/.github/CONTRIBUTING.md)        [**💣 Issues Reporting (Discord)**](https://discordapp.com/invite/UXzUdTP)        [**❤ Make Donation**](https://www.paypal.me/plugilyprojects)
 
 # Credits
 ## Open Source Libraries

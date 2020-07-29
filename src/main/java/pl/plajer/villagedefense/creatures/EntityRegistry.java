@@ -1,6 +1,6 @@
 /*
  * Village Defense - Protect villagers from hordes of zombies
- * Copyright (C) 2019  Plajer's Lair - maintained by Plajer and contributors
+ * Copyright (C) 2020  Plugily Projects - maintained by 2Wild4You, Tigerpanzer_02 and contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,13 +18,13 @@
 
 package pl.plajer.villagedefense.creatures;
 
+import pl.plajer.villagedefense.Main;
+import pl.plajer.villagedefense.utils.Debugger;
+
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
-
-import pl.plajer.villagedefense.Main;
-import pl.plajer.villagedefense.utils.Debugger;
 
 /**
  * @author Plajer
@@ -41,9 +41,9 @@ public class EntityRegistry {
         "WorkingWolf", "VillagerBuster");
     String version = plugin.getVersion();
     if (version.equalsIgnoreCase("v1_11_R1") || version.equalsIgnoreCase("v1_12_R1") || version.equalsIgnoreCase("v1_13_R1")
-        || version.equalsIgnoreCase("v1_13_R2") || version.equalsIgnoreCase("v1_14_R1") || version.equalsIgnoreCase("v1_15_R1")) {
-      if (version.equalsIgnoreCase("v1_13_R1") || version.equalsIgnoreCase("v1_13_R2") || version.equalsIgnoreCase("v1_14_R1") || version.equalsIgnoreCase("v1_15_R1")) {
-        Debugger.debug(Level.INFO, "[EntityRegistry] Registry skipped for 1.13 and 1.14 took {0}ms", System.currentTimeMillis() - start);
+        || version.equalsIgnoreCase("v1_13_R2") || version.equalsIgnoreCase("v1_14_R1") || version.equalsIgnoreCase("v1_15_R1") || version.equalsIgnoreCase("v1_16_R1")) {
+      if (version.equalsIgnoreCase("v1_13_R1") || version.equalsIgnoreCase("v1_13_R2") || version.equalsIgnoreCase("v1_14_R1") || version.equalsIgnoreCase("v1_15_R1") || version.equalsIgnoreCase("v1_16_R1")) {
+        Debugger.debug(Level.INFO, "[EntityRegistry] Registry skipped for 1.13, 1.14, 1.15 and 1.16 took {0}ms", System.currentTimeMillis() - start);
         return;
       }
       try {

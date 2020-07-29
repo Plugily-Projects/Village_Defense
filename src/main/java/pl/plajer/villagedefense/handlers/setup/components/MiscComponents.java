@@ -1,6 +1,6 @@
 /*
  * Village Defense - Protect villagers from hordes of zombies
- * Copyright (C) 2019  Plajer's Lair - maintained by Plajer and contributors
+ * Copyright (C) 2020  Plugily Projects - maintained by 2Wild4You, Tigerpanzer_02 and contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,9 +20,6 @@ package pl.plajer.villagedefense.handlers.setup.components;
 
 import com.github.stefvanschie.inventoryframework.GuiItem;
 import com.github.stefvanschie.inventoryframework.pane.StaticPane;
-
-import java.util.List;
-
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -39,7 +36,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.Door;
-
 import pl.plajer.villagedefense.ConfigPreferences;
 import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.arena.Arena;
@@ -54,6 +50,8 @@ import pl.plajerlair.commonsbox.minecraft.compat.XMaterial;
 import pl.plajerlair.commonsbox.minecraft.configuration.ConfigUtils;
 import pl.plajerlair.commonsbox.minecraft.item.ItemBuilder;
 import pl.plajerlair.commonsbox.minecraft.serialization.LocationSerializer;
+
+import java.util.List;
 
 /**
  * @author Plajer
@@ -278,7 +276,7 @@ public class MiscComponents implements SetupComponent {
 
       String doorLocation = block.getWorld().getName() + "," + block.getX() + "," + block.getY() + "," + block.getZ() + ",0.0" + ",0.0";
       config.set("instances." + arena.getId() + ".doors." + doors + ".location", doorLocation);
-      if (plugin.is1_13_R1() || plugin.is1_13_R2() || plugin.is1_14_R1() || plugin.is1_15_R1()) {
+      if (!plugin.is1_11_R1() && !plugin.is1_12_R1()) {
         config.set("instances." + arena.getId() + ".doors." + doors + ".byte", Utils.getDoorByte(((Door) block.getState().getData()).getFacing()));
       } else {
         config.set("instances." + arena.getId() + ".doors." + doors + ".byte", block.getData());
@@ -295,7 +293,7 @@ public class MiscComponents implements SetupComponent {
         .lore(ChatColor.GRAY + "Click to get link for patron program!")
         .build(), e -> {
       e.getWhoClicked().closeInventory();
-      player.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorRawMessage("&6Check patron program here: https://download.plajer.xyz/preview/minecraft.php"));
+      player.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorRawMessage("&6Check patron program here: https://download.plugily.xyz/preview/minecraft.php"));
     }), 7, 1);
 
     pane.addItem(new GuiItem(new ItemBuilder(XMaterial.FILLED_MAP.parseItem())

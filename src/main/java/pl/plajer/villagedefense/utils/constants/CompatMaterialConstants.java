@@ -1,6 +1,6 @@
 /*
  * Village Defense - Protect villagers from hordes of zombies
- * Copyright (C) 2019  Plajer's Lair - maintained by Plajer and contributors
+ * Copyright (C) 2020  Plugily Projects - maintained by 2Wild4You, Tigerpanzer_02 and contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,7 +20,6 @@ package pl.plajer.villagedefense.utils.constants;
 
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
-
 import pl.plajer.villagedefense.Main;
 import pl.plajerlair.commonsbox.minecraft.compat.XMaterial;
 

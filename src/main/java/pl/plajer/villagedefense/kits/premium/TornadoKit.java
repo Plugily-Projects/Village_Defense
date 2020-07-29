@@ -1,6 +1,6 @@
 /*
  * Village Defense - Protect villagers from hordes of zombies
- * Copyright (C) 2019  Plajer's Lair - maintained by Plajer and contributors
+ * Copyright (C) 2020  Plugily Projects - maintained by 2Wild4You, Tigerpanzer_02 and contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,8 +18,6 @@
 
 package pl.plajer.villagedefense.kits.premium;
 
-import java.util.List;
-
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
@@ -33,7 +31,6 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
-
 import pl.plajer.villagedefense.arena.ArenaRegistry;
 import pl.plajer.villagedefense.handlers.PermissionsManager;
 import pl.plajer.villagedefense.handlers.language.Messages;
@@ -46,14 +43,17 @@ import pl.plajerlair.commonsbox.minecraft.compat.XMaterial;
 import pl.plajerlair.commonsbox.minecraft.item.ItemBuilder;
 import pl.plajerlair.commonsbox.minecraft.item.ItemUtils;
 
+import java.util.List;
+
 /**
  * Created by Tom on 30/12/2015.
  */
 public class TornadoKit extends PremiumKit implements Listener {
 
-  private int maxHeight = 5;
-  private double maxRadius = 4;
-  private double radiusIncrement = maxRadius / maxHeight;
+  private final int maxHeight = 5;
+  private final double maxRadius = 4;
+  private final double radiusIncrement = maxRadius / maxHeight;
+  private int active = 0;
 
   public TornadoKit() {
     setName(getPlugin().getChatManager().colorMessage(Messages.KITS_TORNADO_NAME));
@@ -105,6 +105,9 @@ public class TornadoKit extends PremiumKit implements Listener {
         || !stack.getItemMeta().getDisplayName().equalsIgnoreCase(getPlugin().getChatManager().colorMessage(Messages.KITS_TORNADO_GAME_ITEM_NAME))) {
       return;
     }
+    if (active >= 2){
+      return;
+    }
     Utils.takeOneItem(player, stack);
     e.setCancelled(true);
     prepareTornado(player.getLocation());
@@ -112,12 +115,14 @@ public class TornadoKit extends PremiumKit implements Listener {
 
   private void prepareTornado(Location location) {
     Tornado tornado = new Tornado(location);
+    active++;
     new BukkitRunnable() {
       @Override
       public void run() {
         tornado.update();
-        if (tornado.getTimes() > 75) {
+        if (tornado.entities >= 7 || tornado.getTimes() > 55) {
           this.cancel();
+          active--;
         }
       }
     }.runTaskTimer(getPlugin(), 1, 1);
@@ -125,14 +130,16 @@ public class TornadoKit extends PremiumKit implements Listener {
 
   private class Tornado {
     private Location location;
-    private Vector vector;
+    private final Vector vector;
     private int angle;
     private int times;
+    private int entities;
 
     Tornado(Location location) {
       this.location = location;
       this.vector = location.getDirection();
       times = 0;
+      entities = 0;
     }
 
     int getTimes() {
@@ -145,6 +152,10 @@ public class TornadoKit extends PremiumKit implements Listener {
 
     Location getLocation() {
       return location;
+    }
+
+    public int getEntities() {
+      return entities;
     }
 
     void setLocation(Location location) {
@@ -164,7 +175,6 @@ public class TornadoKit extends PremiumKit implements Listener {
           getLocation().getWorld().spawnParticle(Particle.CLOUD, getLocation().clone().add(x, y, z), 1, 0, 0, 0, 0);
         }
       }
-
       pushNearbyZombies();
       setLocation(getLocation().add(getVector().getX() / (3 + Math.random() / 2), 0, getVector().getZ() / (3 + Math.random() / 2)));
 
@@ -173,8 +183,9 @@ public class TornadoKit extends PremiumKit implements Listener {
     }
 
     private void pushNearbyZombies() {
-      for (Entity entity : getLocation().getWorld().getNearbyEntities(getLocation(), 2, 2, 2)) {
+      for (Entity entity : getLocation().getWorld().getNearbyLivingEntities(getLocation(), 2, 2, 2)) {
         if (entity.getType() == EntityType.ZOMBIE) {
+          entities++;
           entity.setVelocity(getVector().multiply(2).setY(0).add(new Vector(0, 1, 0)));
         }
       }

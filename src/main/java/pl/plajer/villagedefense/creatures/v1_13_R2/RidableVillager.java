@@ -1,6 +1,6 @@
 /*
  * Village Defense - Protect villagers from hordes of zombies
- * Copyright (C) 2019  Plajer's Lair - maintained by Plajer and contributors
+ * Copyright (C) 2020  Plugily Projects - maintained by 2Wild4You, Tigerpanzer_02 and contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,34 +18,11 @@
 
 package pl.plajer.villagedefense.creatures.v1_13_R2;
 
-import java.util.Random;
-
-import net.minecraft.server.v1_13_R2.Entity;
-import net.minecraft.server.v1_13_R2.EntityAgeable;
-import net.minecraft.server.v1_13_R2.EntityHuman;
-import net.minecraft.server.v1_13_R2.EntityInsentient;
-import net.minecraft.server.v1_13_R2.EntityLiving;
-import net.minecraft.server.v1_13_R2.EntityVillager;
-import net.minecraft.server.v1_13_R2.EntityZombie;
-import net.minecraft.server.v1_13_R2.Navigation;
-import net.minecraft.server.v1_13_R2.PathfinderGoalAvoidTarget;
-import net.minecraft.server.v1_13_R2.PathfinderGoalFloat;
-import net.minecraft.server.v1_13_R2.PathfinderGoalInteract;
-import net.minecraft.server.v1_13_R2.PathfinderGoalLookAtPlayer;
-import net.minecraft.server.v1_13_R2.PathfinderGoalLookAtTradingPlayer;
-import net.minecraft.server.v1_13_R2.PathfinderGoalMakeLove;
-import net.minecraft.server.v1_13_R2.PathfinderGoalMoveIndoors;
-import net.minecraft.server.v1_13_R2.PathfinderGoalMoveTowardsRestriction;
-import net.minecraft.server.v1_13_R2.PathfinderGoalOpenDoor;
-import net.minecraft.server.v1_13_R2.PathfinderGoalPlay;
-import net.minecraft.server.v1_13_R2.PathfinderGoalRandomStroll;
-import net.minecraft.server.v1_13_R2.PathfinderGoalRestrictOpenDoor;
-import net.minecraft.server.v1_13_R2.PathfinderGoalTradeWithPlayer;
-import net.minecraft.server.v1_13_R2.World;
-
+import net.minecraft.server.v1_13_R2.*;
 import org.bukkit.craftbukkit.v1_13_R2.CraftWorld;
-
 import pl.plajer.villagedefense.creatures.CreatureUtils;
+
+import java.util.Random;
 
 /**
  * Created by Tom on 15/08/2014.

@@ -9,6 +9,27 @@ deploy webhooks to print changelog successfully
 
 That's all, matcher will stop when detects next line started with `###` match
 
+### 4.5.0 Release (01.07.2020 - 26.07.2020)
+* Added 1.16.x compatibility 
+* Added missing 1.14 & 1.15 & 1.16 Materials
+* Added short commands such as start and leave
+* Added option to disable separate chat
+* Added possibility to change table name of mysql database
+* Added bungeemode Arena shuffler
+* Added adjustable zombie divider to handle strength of zombies
+* Added an option to disable respawn after a wave just for players that joined ingame 
+* Possibility to disable parties
+* Fixed bungeemanager enable null text error
+* Fixed players can join full game without perms
+* Fixed mysql connection
+* Fixed "Language file integrity check failed" for Holograms
+* Fixed weird PlayerChatEvent
+* Fixed when Respawn-After-Wave is disabled players will get the highest wave stat for waves after death
+* Fixed Map Restorer when no players left
+* Changed mysql updates to do only one instead of more than 10 (should improve performance)
+* Changed Tornado kit a bit to optimize performance and strength of the kit (max active 2 - max entities 7)
+* Optimized fireworks will stop spawning on restarting stage
+
 ### 4.4.4 Release
 * Added multiplier to orbs and experience when zombie limit were reached
 * Added a min multiplier of 2

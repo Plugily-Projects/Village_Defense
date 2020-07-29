@@ -1,6 +1,6 @@
 /*
  * Village Defense - Protect villagers from hordes of zombies
- * Copyright (C) 2020  Plajer's Lair - maintained by Plajer and contributors
+ * Copyright (C) 2020  Plugily Projects - maintained by 2Wild4You, Tigerpanzer_02 and contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -32,11 +32,13 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.ItemSpawnEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
+import pl.plajer.villagedefense.ConfigPreferences;
 import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.api.StatsStorage;
 import pl.plajer.villagedefense.arena.options.ArenaOption;
@@ -102,8 +104,8 @@ public class ArenaEvents implements Listener {
         }
         Player player = (Player) ((Wolf) e.getDamager()).getOwner();
         if (ArenaRegistry.getArena(player) != null) {
-          ArenaUtils.addStat(player, StatsStorage.StatisticType.KILLS);
-          ArenaUtils.addExperience(player, 2 * arena.getOption(ArenaOption.ZOMBIE_DIFFICULTY_MULTIPLIER));
+          plugin.getUserManager().addStat(player, StatsStorage.StatisticType.KILLS);
+          plugin.getUserManager().addExperience(player, 2 * arena.getOption(ArenaOption.ZOMBIE_DIFFICULTY_MULTIPLIER));
         }
         return;
       }
@@ -150,8 +152,8 @@ public class ArenaEvents implements Listener {
           arena.removeZombie((Zombie) e.getEntity());
           arena.addOptionValue(ArenaOption.TOTAL_KILLED_ZOMBIES, 1);
           if (ArenaRegistry.getArena(e.getEntity().getKiller()) != null) {
-            ArenaUtils.addStat(e.getEntity().getKiller(), StatsStorage.StatisticType.KILLS);
-            ArenaUtils.addExperience(e.getEntity().getKiller(), 2 * arena.getOption(ArenaOption.ZOMBIE_DIFFICULTY_MULTIPLIER));
+            plugin.getUserManager().addStat(e.getEntity().getKiller(), StatsStorage.StatisticType.KILLS);
+            plugin.getUserManager().addExperience(e.getEntity().getKiller(), 2 * arena.getOption(ArenaOption.ZOMBIE_DIFFICULTY_MULTIPLIER));
             plugin.getRewardsHandler().performReward(e.getEntity().getKiller(), Reward.RewardType.ZOMBIE_KILL);
             plugin.getPowerupRegistry().spawnPowerup(e.getEntity().getLocation(), ArenaRegistry.getArena(e.getEntity().getKiller()));
           }
@@ -184,7 +186,7 @@ public class ArenaEvents implements Listener {
       return;
     }
     if (e.getEntity().isDead()) {
-      e.getEntity().setHealth(e.getEntity().getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue());
+      e.getEntity().setHealth(e.getEntity().getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue());
     }
     e.setDeathMessage("");
     e.getDrops().clear();
@@ -192,8 +194,8 @@ public class ArenaEvents implements Listener {
     plugin.getHolidayManager().applyHolidayDeathEffects(e.getEntity());
     plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () -> e.getEntity().spigot().respawn(), 5);
     Bukkit.getScheduler().runTaskLater(plugin, () -> {
-      e.getEntity().spigot().respawn();
       Player player = e.getEntity();
+      player.spigot().respawn();
       User user = plugin.getUserManager().getUser(player);
       if (arena.getArenaState() == ArenaState.STARTING) {
         player.teleport(arena.getStartLocation());
@@ -206,7 +208,7 @@ public class ArenaEvents implements Listener {
         player.teleport(arena.getEndLocation());
         return;
       }
-      ArenaUtils.addStat(player, StatsStorage.StatisticType.DEATHS);
+      plugin.getUserManager().addStat(player, StatsStorage.StatisticType.DEATHS);
       player.teleport(arena.getStartLocation());
       user.setSpectator(true);
       player.setGameMode(GameMode.SURVIVAL);
@@ -230,7 +232,7 @@ public class ArenaEvents implements Listener {
       }, 1);
 
       untargetPlayerFromZombies(player, arena);
-    }, 5);
+    }, 10);
   }
 
   private void sendSpectatorActionBar(User user, Arena arena) {
@@ -284,6 +286,22 @@ public class ArenaEvents implements Listener {
       user.setStat(StatsStorage.StatisticType.ORBS, 0);
     }
     e.setRespawnLocation(arena.getStartLocation());
+  }
+
+  @EventHandler
+  public void playerCommandExecution(PlayerCommandPreprocessEvent e) {
+    if (plugin.getConfigPreferences().getOption(ConfigPreferences.Option.ENABLE_SHORT_COMMANDS)) {
+      Player player = e.getPlayer();
+      if (e.getMessage().equalsIgnoreCase("/start")) {
+        player.performCommand("vda forcestart");
+        e.setCancelled(true);
+        return;
+      }
+      if (e.getMessage().equalsIgnoreCase("/leave")) {
+        player.performCommand("vd leave");
+        e.setCancelled(true);
+      }
+    }
   }
 
 }

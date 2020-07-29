@@ -1,6 +1,6 @@
 /*
  * Village Defense - Protect villagers from hordes of zombies
- * Copyright (C) 2019  Plajer's Lair - maintained by Plajer and contributors
+ * Copyright (C) 2020  Plugily Projects - maintained by 2Wild4You, Tigerpanzer_02 and contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,15 +18,6 @@
 
 package pl.plajer.villagedefense.utils;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -41,10 +32,13 @@ import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionData;
 import org.bukkit.potion.PotionType;
 import org.bukkit.util.BlockIterator;
-
 import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.arena.ArenaRegistry;
 import pl.plajer.villagedefense.handlers.language.Messages;
+
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by Tom on 29/07/2014.
@@ -176,7 +170,7 @@ public class Utils {
   }
 
   public static void playSound(Location loc, String before1_13, String after1_13) {
-    if (plugin.is1_13_R1() || plugin.is1_13_R2() || plugin.is1_14_R1() || plugin.is1_15_R1()) {
+    if (!plugin.is1_11_R1() && !plugin.is1_12_R1()) {
       loc.getWorld().playSound(loc, Sound.valueOf(after1_13), 1, 1);
     } else {
       loc.getWorld().playSound(loc, before1_13, 1, 1);

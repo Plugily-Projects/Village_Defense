@@ -1,6 +1,6 @@
 /*
  * Village Defense - Protect villagers from hordes of zombies
- * Copyright (C) 2019  Plajer's Lair - maintained by Plajer and contributors
+ * Copyright (C) 2020  Plugily Projects - maintained by 2Wild4You, Tigerpanzer_02 and contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,7 +21,6 @@ package pl.plajer.villagedefense.handlers.setup;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
-
 import pl.plajer.villagedefense.arena.Arena;
 import pl.plajerlair.commonsbox.minecraft.serialization.LocationSerializer;
 
@@ -32,28 +31,28 @@ import pl.plajerlair.commonsbox.minecraft.serialization.LocationSerializer;
  */
 public class SetupUtilities {
 
-  private FileConfiguration config;
-  private Arena arena;
+    private final FileConfiguration config;
+    private final Arena arena;
 
-  SetupUtilities(FileConfiguration config, Arena arena) {
-    this.config = config;
-    this.arena = arena;
-  }
-
-  public String isOptionDone(String path) {
-    if (config.isSet(path)) {
-      return color("&a&l✔ Completed &7(value: &8" + config.getString(path) + "&7)");
+    SetupUtilities(FileConfiguration config, Arena arena) {
+        this.config = config;
+        this.arena = arena;
     }
-    return color("&c&l✘ Not Completed");
-  }
 
-  public String isOptionDoneSection(String path, int minimum) {
-    if (config.isSet(path)) {
-      if (config.getConfigurationSection(path).getKeys(false).size() < minimum) {
-        return color("&c&l✘ Not Completed | &cPlease add more locations");
-      }
-      return color("&a&l✔ Completed &7(value: &8" + config.getConfigurationSection(path).getKeys(false).size() + "&7)");
+    public String isOptionDone(String path) {
+        if (config.isSet(path)) {
+            return color("&a&l✔ Completed &7(value: &8" + config.getString(path) + "&7)");
+        }
+        return color("&c&l✘ Not Completed");
     }
+
+    public String isOptionDoneSection(String path, int minimum) {
+        if (config.isSet(path)) {
+            if (config.getConfigurationSection(path).getKeys(false).size() < minimum) {
+                return color("&c&l✘ Not Completed | &cPlease add more locations");
+            }
+            return color("&a&l✔ Completed &7(value: &8" + config.getConfigurationSection(path).getKeys(false).size() + "&7)");
+        }
     return color("&c&l✘ Not Completed");
   }
 

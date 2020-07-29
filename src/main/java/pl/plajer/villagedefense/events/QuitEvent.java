@@ -1,6 +1,6 @@
 /*
  * Village Defense - Protect villagers from hordes of zombies
- * Copyright (C) 2019  Plajer's Lair - maintained by Plajer and contributors
+ * Copyright (C) 2020  Plugily Projects - maintained by 2Wild4You, Tigerpanzer_02 and contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,9 +21,7 @@ package pl.plajer.villagedefense.events;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
-
 import pl.plajer.villagedefense.Main;
-import pl.plajer.villagedefense.api.StatsStorage;
 import pl.plajer.villagedefense.arena.Arena;
 import pl.plajer.villagedefense.arena.ArenaManager;
 import pl.plajer.villagedefense.arena.ArenaRegistry;
@@ -34,7 +32,7 @@ import pl.plajer.villagedefense.user.User;
  */
 public class QuitEvent implements Listener {
 
-  private Main plugin;
+  private final Main plugin;
 
   public QuitEvent(Main plugin) {
     this.plugin = plugin;
@@ -48,9 +46,7 @@ public class QuitEvent implements Listener {
       ArenaManager.leaveAttempt(event.getPlayer(), arena);
     }
     User user = plugin.getUserManager().getUser(event.getPlayer());
-    for (StatsStorage.StatisticType stat : StatsStorage.StatisticType.values()) {
-      plugin.getUserManager().saveStatistic(user, stat);
-    }
+    plugin.getUserManager().saveAllStatistic(user);
     plugin.getUserManager().removeUser(user);
 
     plugin.getArgumentsRegistry().getSpyChat().disableSpyChat(event.getPlayer());

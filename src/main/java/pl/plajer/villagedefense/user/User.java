@@ -1,6 +1,6 @@
 /*
  * Village Defense - Protect villagers from hordes of zombies
- * Copyright (C) 2019  Plajer's Lair - maintained by Plajer and contributors
+ * Copyright (C) 2020  Plugily Projects - maintained by 2Wild4You, Tigerpanzer_02 and contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,13 +18,8 @@
 
 package pl.plajer.villagedefense.user;
 
-import java.util.EnumMap;
-import java.util.HashMap;
-import java.util.Map;
-
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-
 import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.api.StatsStorage;
 import pl.plajer.villagedefense.api.event.player.VillagePlayerStatisticChangeEvent;
@@ -34,6 +29,10 @@ import pl.plajer.villagedefense.handlers.language.Messages;
 import pl.plajer.villagedefense.kits.KitRegistry;
 import pl.plajer.villagedefense.kits.basekits.Kit;
 
+import java.util.EnumMap;
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Created by Tom on 27/07/2014.
  */
@@ -41,11 +40,12 @@ public class User {
 
   private static Main plugin;
   private static long cooldownCounter = 0;
-  private Player player;
+  private final Player player;
   private boolean spectator = false;
+  private boolean permanentSpectator = false;
   private Kit kit = KitRegistry.getDefaultKit();
-  private Map<StatsStorage.StatisticType, Integer> stats = new EnumMap<>(StatsStorage.StatisticType.class);
-  private Map<String, Long> cooldowns = new HashMap<>();
+  private final Map<StatsStorage.StatisticType, Integer> stats = new EnumMap<>(StatsStorage.StatisticType.class);
+  private final Map<String, Long> cooldowns = new HashMap<>();
 
   public User(Player player) {
     this.player = player;
@@ -81,6 +81,14 @@ public class User {
 
   public void setSpectator(boolean b) {
     spectator = b;
+  }
+
+  public boolean isPermanentSpectator() {
+    return permanentSpectator;
+  }
+
+  public void setPermanentSpectator(boolean permanentSpectator) {
+    this.permanentSpectator = permanentSpectator;
   }
 
   public int getStat(StatsStorage.StatisticType s) {

@@ -1,3 +1,21 @@
+/*
+ * Village Defense - Protect villagers from hordes of zombies
+ * Copyright (C) 2020  Plugily Projects - maintained by 2Wild4You, Tigerpanzer_02 and contributors
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package pl.plajer.villagedefense.handlers.upgrade;
 
 import com.github.stefvanschie.inventoryframework.Gui;
@@ -40,39 +58,39 @@ import java.util.stream.Collectors;
  */
 public class EntityUpgradeMenu {
 
-  private String pluginPrefix;
-  private List<Upgrade> upgrades = new ArrayList<>();
-  private Main plugin;
+  private final String pluginPrefix;
+  private final List<Upgrade> upgrades = new ArrayList<>();
+  private final Main plugin;
 
   public EntityUpgradeMenu(Main plugin) {
     this.plugin = plugin;
     this.pluginPrefix = plugin.getChatManager().colorMessage(Messages.PLUGIN_PREFIX);
     new EntityUpgradeListener(this);
     registerUpgrade(new UpgradeBuilder("Damage")
-        .entity(Upgrade.EntityType.BOTH).slot(2, 1).maxTier(4).metadata("VD_Damage")
-        //2.0 + (tier * 3)
-        .tierValue(0, 2.0).tierValue(1, 5.0).tierValue(2, 8.0).tierValue(3, 11.0).tierValue(4, 14.0)
-        .build());
+            .entity(Upgrade.EntityType.BOTH).slot(2, 1).maxTier(4).metadata("VD_Damage")
+            //2.0 + (tier * 3)
+            .tierValue(0, 2.0).tierValue(1, 5.0).tierValue(2, 8.0).tierValue(3, 11.0).tierValue(4, 14.0)
+            .build());
     registerUpgrade(new UpgradeBuilder("Health")
-        .entity(Upgrade.EntityType.BOTH).slot(2, 2).maxTier(4).metadata("VD_Health")
-        //100.0 + (100.0 * (tier / 2.0))
-        .tierValue(0, 100.0).tierValue(1, 150.0).tierValue(2, 200.0).tierValue(3, 250.0).tierValue(4, 300.0)
-        .build());
+            .entity(Upgrade.EntityType.BOTH).slot(2, 2).maxTier(4).metadata("VD_Health")
+            //100.0 + (100.0 * (tier / 2.0))
+            .tierValue(0, 100.0).tierValue(1, 150.0).tierValue(2, 200.0).tierValue(3, 250.0).tierValue(4, 300.0)
+            .build());
     registerUpgrade(new UpgradeBuilder("Speed")
-        .entity(Upgrade.EntityType.BOTH).slot(2, 3).maxTier(4).metadata("VD_Speed")
-        //0.25 + (0.25 * ((double) tier / 5.0))
-        .tierValue(0, 0.25).tierValue(1, 0.3).tierValue(2, 0.35).tierValue(3, 0.4).tierValue(4, 0.45)
-        .build());
+            .entity(Upgrade.EntityType.BOTH).slot(2, 3).maxTier(4).metadata("VD_Speed")
+            //0.25 + (0.25 * ((double) tier / 5.0))
+            .tierValue(0, 0.25).tierValue(1, 0.3).tierValue(2, 0.35).tierValue(3, 0.4).tierValue(4, 0.45)
+            .build());
     registerUpgrade(new UpgradeBuilder("Swarm-Awareness")
-        .entity(Upgrade.EntityType.WOLF).slot(3, 4).maxTier(2).metadata("VD_SwarmAwareness")
-        //tier * 0.2
-        .tierValue(0, 0).tierValue(1, 0.2).tierValue(2, 0.4)
-        .build());
+            .entity(Upgrade.EntityType.WOLF).slot(3, 4).maxTier(2).metadata("VD_SwarmAwareness")
+            //tier * 0.2
+            .tierValue(0, 0).tierValue(1, 0.2).tierValue(2, 0.4)
+            .build());
     registerUpgrade(new UpgradeBuilder("Final-Defense")
-        .entity(Upgrade.EntityType.IRON_GOLEM).slot(3, 4).maxTier(2).metadata("VD_FinalDefense")
-        //tier * 5
-        .tierValue(0, 0).tierValue(1, 5).tierValue(2, 10)
-        .build());
+            .entity(Upgrade.EntityType.IRON_GOLEM).slot(3, 4).maxTier(2).metadata("VD_FinalDefense")
+            //tier * 5
+            .tierValue(0, 0).tierValue(1, 5).tierValue(2, 10)
+            .build());
   }
 
   /**
@@ -131,10 +149,10 @@ public class EntityUpgradeMenu {
       for (int i = 0; i < upgrade.getMaxTier(); i++) {
         if (i < getTier(en, upgrade)) {
           pane.addItem(new GuiItem(new ItemBuilder(XMaterial.YELLOW_STAINED_GLASS_PANE.parseItem())
-              .name(" ").build(), e -> e.setCancelled(true)), upgrade.getSlotX() + 1 + i, upgrade.getSlotY());
+                  .name(" ").build(), e -> e.setCancelled(true)), upgrade.getSlotX() + 1 + i, upgrade.getSlotY());
         } else {
           pane.addItem(new GuiItem(new ItemBuilder(XMaterial.WHITE_STAINED_GLASS_PANE.parseItem())
-              .name(" ").build(), e -> e.setCancelled(true)), upgrade.getSlotX() + 1 + i, upgrade.getSlotY());
+                  .name(" ").build(), e -> e.setCancelled(true)), upgrade.getSlotX() + 1 + i, upgrade.getSlotY());
         }
       }
     }
@@ -157,7 +175,7 @@ public class EntityUpgradeMenu {
                             .replace("%damage%", String.valueOf(getUpgrade("Damage").getValueForTier(getTier(en, getUpgrade("Damage")))))
                             .replace("%max_hp%", String.valueOf(getUpgrade("Health").getValueForTier(getTier(en, getUpgrade("Health")))))
                             .replace("%current_hp%", String.valueOf(en.getHealth()))).collect(Collectors.toList()))
-        .build(), e -> e.setCancelled(true)), 4, 0);
+            .build(), e -> e.setCancelled(true)), 4, 0);
   }
 
   /**

@@ -1,6 +1,6 @@
 /*
  * Village Defense - Protect villagers from hordes of zombies
- * Copyright (C) 2019  Plajer's Lair - maintained by Plajer and contributors
+ * Copyright (C) 2020  Plugily Projects - maintained by 2Wild4You, Tigerpanzer_02 and contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,18 +18,16 @@
 
 package pl.plajer.villagedefense.user;
 
-import static org.junit.Assert.assertEquals;
-
+import be.seeseemelk.mockbukkit.entity.PlayerMock;
 import org.bukkit.event.Listener;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-
 import pl.plajer.villagedefense.MockUtils;
 import pl.plajer.villagedefense.api.StatsStorage;
 import pl.plajer.villagedefense.handlers.language.Messages;
 
-import be.seeseemelk.mockbukkit.entity.PlayerMock;
+import static org.junit.Assert.assertEquals;
 
 /**
  * @author Plajer

@@ -1,6 +1,6 @@
 /*
  * Village Defense - Protect villagers from hordes of zombies
- * Copyright (C) 2019  Plajer's Lair - maintained by Plajer and contributors
+ * Copyright (C) 2020  Plugily Projects - maintained by 2Wild4You, Tigerpanzer_02 and contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,10 +18,10 @@
 
 package pl.plajer.villagedefense.handlers.reward;
 
-import java.util.logging.Level;
-
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
+
+import java.util.logging.Level;
 
 /**
  * @author Plajer
@@ -30,10 +30,10 @@ import org.bukkit.Bukkit;
  */
 public class Reward {
 
-  private RewardType type;
-  private RewardExecutor executor;
+  private final RewardType type;
+  private final RewardExecutor executor;
   private String executableCode;
-  private double chance;
+  private final double chance;
   private int waveExecute = -1;
 
   public Reward(RewardType type, String rawCode, int waveExecute) {
@@ -99,7 +99,7 @@ public class Reward {
   public enum RewardType {
     END_GAME("endgame"), END_WAVE("endwave"), ZOMBIE_KILL("zombiekill");
 
-    private String path;
+    private final String path;
 
     RewardType(String path) {
       this.path = path;

@@ -1,6 +1,6 @@
 /*
  * Village Defense - Protect villagers from hordes of zombies
- * Copyright (C) 2019  Plajer's Lair - maintained by Plajer and contributors
+ * Copyright (C) 2020  Plugily Projects - maintained by 2Wild4You, Tigerpanzer_02 and contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -56,33 +56,37 @@ public class ExceptionLogHandler extends Handler {
 
   @Override
   public void publish(LogRecord record) {
-    Throwable throwable = record.getThrown();
-    if (!(throwable instanceof Exception) || !throwable.getClass().getSimpleName().contains("Exception")) {
-      return;
-    }
-    /*if (throwable.getStackTrace().length == 0
-        || throwable.getCause() != null ? !throwable.getCause().getStackTrace()[0].getClassName().contains("pl.plajer.villagedefense")
-        : !throwable.getStackTrace()[0].getClassName().contains("pl.plajer.villagedefense")) {
-      return;
-    }*/
-
-    if (throwable.getStackTrace().length <= 0) {
-      return;
-    }
-    if (throwable.getCause() != null && throwable.getCause().getStackTrace() != null) {
-      if (!throwable.getCause().getStackTrace()[0].getClassName().contains("pl.plajer.villagedefense")) {
+    try {
+      Throwable throwable = record.getThrown();
+      if (!(throwable instanceof Exception) || !throwable.getClass().getSimpleName().contains("Exception")) {
         return;
       }
+      if (throwable.getStackTrace().length <= 0) {
+        return;
+      }
+      if (throwable.getCause() != null && throwable.getCause().getStackTrace() != null) {
+        if (throwable.getCause().getStackTrace()[0] == null){
+          return;
+        }
+        if (!throwable.getCause().getStackTrace()[0].getClassName().contains("pl.plajer.villagedefense")) {
+          return;
+        }
+      }
+      if (throwable.getStackTrace()[0] == null) {
+        return;
+      }
+      if (!throwable.getStackTrace()[0].getClassName().contains("pl.plajer.villagedefense")) {
+        return;
+      }
+      if (containsBlacklistedClass(throwable)) {
+        return;
+      }
+      new ReportedException(plugin, (Exception) throwable);
+      record.setThrown(null);
+      record.setMessage("[VillageDefense] We have found a bug in the code. Contact us at our official discord server (Invite link: https://discordapp.com/invite/UXzUdTP) with the following error given above!");
+    } catch (ArrayIndexOutOfBoundsException ignored){
+      //ignored
     }
-    if (!throwable.getStackTrace()[0].getClassName().contains("pl.plajer.villagedefense")) {
-      return;
-    }
-    if (containsBlacklistedClass(throwable)) {
-      return;
-    }
-    new ReportedException(plugin, (Exception) throwable);
-    record.setThrown(null);
-    record.setMessage("[VillageDefense] We have found a bug in the code. Contact us at our official discord server (Invite link: https://discordapp.com/invite/UXzUdTP) with the following error given above!");
   }
 
   private boolean containsBlacklistedClass(Throwable throwable) {

@@ -1,6 +1,6 @@
 /*
  * Village Defense - Protect villagers from hordes of zombies
- * Copyright (C) 2019  Plajer's Lair - maintained by Plajer and contributors
+ * Copyright (C) 2020  Plugily Projects - maintained by 2Wild4You, Tigerpanzer_02 and contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,43 +18,23 @@
 
 package pl.plajer.villagedefense.kits;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.logging.Level;
-
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.inventory.ItemStack;
-
 import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.kits.basekits.FreeKit;
 import pl.plajer.villagedefense.kits.basekits.Kit;
 import pl.plajer.villagedefense.kits.free.KnightKit;
 import pl.plajer.villagedefense.kits.free.LightTankKit;
 import pl.plajer.villagedefense.kits.free.ZombieFinderKit;
-import pl.plajer.villagedefense.kits.level.ArcherKit;
-import pl.plajer.villagedefense.kits.level.GolemFriendKit;
-import pl.plajer.villagedefense.kits.level.HardcoreKit;
-import pl.plajer.villagedefense.kits.level.HealerKit;
-import pl.plajer.villagedefense.kits.level.LooterKit;
-import pl.plajer.villagedefense.kits.level.MediumTankKit;
-import pl.plajer.villagedefense.kits.level.PuncherKit;
-import pl.plajer.villagedefense.kits.level.RunnerKit;
-import pl.plajer.villagedefense.kits.level.TerminatorKit;
-import pl.plajer.villagedefense.kits.level.WorkerKit;
-import pl.plajer.villagedefense.kits.premium.BlockerKit;
-import pl.plajer.villagedefense.kits.premium.CleanerKit;
-import pl.plajer.villagedefense.kits.premium.DogFriendKit;
-import pl.plajer.villagedefense.kits.premium.HeavyTankKit;
-import pl.plajer.villagedefense.kits.premium.MedicKit;
-import pl.plajer.villagedefense.kits.premium.NakedKit;
-import pl.plajer.villagedefense.kits.premium.PremiumHardcoreKit;
-import pl.plajer.villagedefense.kits.premium.ShotBowKit;
-import pl.plajer.villagedefense.kits.premium.TeleporterKit;
-import pl.plajer.villagedefense.kits.premium.TornadoKit;
-import pl.plajer.villagedefense.kits.premium.WizardKit;
+import pl.plajer.villagedefense.kits.level.*;
+import pl.plajer.villagedefense.kits.premium.*;
 import pl.plajer.villagedefense.utils.constants.Constants;
 import pl.plajerlair.commonsbox.minecraft.configuration.ConfigUtils;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.logging.Level;
 
 /**
  * Kit registry class for registering new kits.
@@ -63,12 +43,12 @@ import pl.plajerlair.commonsbox.minecraft.configuration.ConfigUtils;
  */
 public class KitRegistry {
 
-  private static List<Kit> kits = new ArrayList<>();
+  private static final List<Kit> kits = new ArrayList<>();
   private static Kit defaultKit = null;
   private static Main plugin;
-  private static List<Class> classKitNames = Arrays.asList(LightTankKit.class, ZombieFinderKit.class, ArcherKit.class, PuncherKit.class, HealerKit.class, LooterKit.class, RunnerKit.class,
-      MediumTankKit.class, WorkerKit.class, GolemFriendKit.class, TerminatorKit.class, HardcoreKit.class, CleanerKit.class, TeleporterKit.class, HeavyTankKit.class, ShotBowKit.class,
-      DogFriendKit.class, PremiumHardcoreKit.class, TornadoKit.class, BlockerKit.class, MedicKit.class, NakedKit.class, WizardKit.class);
+  private static final List<Class> classKitNames = Arrays.asList(LightTankKit.class, ZombieFinderKit.class, ArcherKit.class, PuncherKit.class, HealerKit.class, LooterKit.class, RunnerKit.class,
+          MediumTankKit.class, WorkerKit.class, GolemFriendKit.class, TerminatorKit.class, HardcoreKit.class, CleanerKit.class, TeleporterKit.class, HeavyTankKit.class, ShotBowKit.class,
+          DogFriendKit.class, PremiumHardcoreKit.class, TornadoKit.class, BlockerKit.class, MedicKit.class, NakedKit.class, WizardKit.class);
 
   private KitRegistry() {
   }

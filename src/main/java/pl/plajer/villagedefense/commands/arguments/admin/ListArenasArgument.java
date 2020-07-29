@@ -1,6 +1,6 @@
 /*
  * Village Defense - Protect villagers from hordes of zombies
- * Copyright (C) 2019  Plajer's Lair - maintained by Plajer and contributors
+ * Copyright (C) 2020  Plugily Projects - maintained by 2Wild4You, Tigerpanzer_02 and contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,7 +19,6 @@
 package pl.plajer.villagedefense.commands.arguments.admin;
 
 import org.bukkit.command.CommandSender;
-
 import pl.plajer.villagedefense.arena.Arena;
 import pl.plajer.villagedefense.arena.ArenaRegistry;
 import pl.plajer.villagedefense.commands.arguments.ArgumentsRegistry;
@@ -51,7 +50,7 @@ public class ListArenasArgument {
         }
         if (i == 0) {
           sender.sendMessage(registry.getPlugin().getChatManager().colorMessage(Messages.COMMANDS_ADMIN_LIST_NO_ARENAS));
-          sender.sendMessage(registry.getPlugin().getChatManager().colorRawMessage("&e&lTIP: &7You can get free maps with configs at our wiki! Just head to https://wiki.plajer.xyz/minecraft/villagedefense/free_maps.php"));
+          sender.sendMessage(registry.getPlugin().getChatManager().colorRawMessage("&e&lTIP: &7You can get free maps with configs at our wiki! Just head to https://wiki.plugily.xyz/minecraft/villagedefense/free_maps.php"));
         }
       }
     });

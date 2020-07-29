@@ -1,6 +1,6 @@
 /*
  * Village Defense - Protect villagers from hordes of zombies
- * Copyright (C) 2019  Plajer's Lair - maintained by Plajer and contributors
+ * Copyright (C) 2020  Plugily Projects - maintained by 2Wild4You, Tigerpanzer_02 and contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -38,7 +38,7 @@ import java.util.List;
 public class LanguageMigrator {
 
   public static final int LANGUAGE_FILE_VERSION = 12;
-  public static final int CONFIG_FILE_VERSION = 10;
+  public static final int CONFIG_FILE_VERSION = 14;
   private final Main plugin;
   private final List<String> migratable = Arrays.asList(Constants.Files.CONFIG.getName(), Constants.Files.KITS.getName(),
           Constants.Files.KITS.getName(), Constants.Files.LANGUAGE.getName(), Constants.Files.SPECIAL_ITEMS.getName(), Constants.Files.MYSQL.getName());
@@ -119,7 +119,7 @@ public class LanguageMigrator {
           /*Was only needed from modules version
           MigratorUtils.addNewLines(file, "\r\n# Should we hook into bungee cord? (If you wanna use arena per server option)\r\n" +
           /    "# You STILL need to use external addon for HUB server game signs\r\n" +
-          /    "# Check here for more info: https://wiki.plajer.xyz/minecraft/villagedefense/addons.php#bungee-signs-not-official\r\n" +
+          /    "# Check here for more info: https://wiki.plugily.xyz/minecraft/villagedefense/addons.php#bungee-signs-not-official\r\n" +
           /    "BungeeActivated: false\r\n");*/
           MigratorUtils.addNewLines(file, "\r\n" +
               "# Should we hook into Holograpic Displays? (If you wanna use (leaderboard)holograms)\r\n" +
@@ -151,6 +151,31 @@ public class LanguageMigrator {
                   "#After how many zombies should we limit them?\r\n" +
                   "#Once limit is reached zombies get more health so it's still harder each wave\r\n" +
                   "Zombies-Limit: 75\r\n");
+          break;
+        case 10:
+          MigratorUtils.addNewLines(file, "\r\n" +
+                  "# Should we enable short commands such as /start and /leave\r\n" +
+                  "Enable-Short-Commands: false\r\n");
+          MigratorUtils.addNewLines(file, "\r\n" +
+                  "# Should we disable all chat related stuff?\r\n" +
+                  "# It will disable the separated chat, for example\r\n" +
+                  "Disable-Separate-Chat: false\r\n");
+          break;
+        case 11:
+          MigratorUtils.addNewLines(file, "#Active after zombies limit is reached\r\n" +
+                  "#Higher value means weaker zombies\r\n" +
+                  "Zombie-Multiplier-Divider: 18\r\n");
+        case 12:
+          MigratorUtils.addNewLines(file, "\r\n" +
+                  "#Disable Party features of external party plugins (such as PAF, Parties ...)\r\n" +
+                  "Disable-Parties: true\r\n");
+          break;
+        case 13:
+          MigratorUtils.addNewLines(file, "\r\n" +
+                  "# Should player be able that join on ingame stage to respawn after wave?\r\n" +
+                  "# Default: true\r\n" +
+                  "InGame-Join-Respawn: true\r\n" +
+                  "\r\n");
           break;
         default:
           break;

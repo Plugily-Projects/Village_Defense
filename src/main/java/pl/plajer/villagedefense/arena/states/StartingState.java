@@ -1,6 +1,6 @@
 /*
  * Village Defense - Protect villagers from hordes of zombies
- * Copyright (C) 2019  Plajer's Lair - maintained by Plajer and contributors
+ * Copyright (C) 2020  Plugily Projects - maintained by 2Wild4You, Tigerpanzer_02 and contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,7 +26,6 @@ import pl.plajer.villagedefense.api.StatsStorage;
 import pl.plajer.villagedefense.api.event.game.VillageGameStartEvent;
 import pl.plajer.villagedefense.arena.Arena;
 import pl.plajer.villagedefense.arena.ArenaState;
-import pl.plajer.villagedefense.arena.ArenaUtils;
 import pl.plajer.villagedefense.handlers.language.Messages;
 import pl.plajer.villagedefense.user.User;
 
@@ -81,7 +80,7 @@ public class StartingState implements ArenaStateHandler {
         user.setStat(StatsStorage.StatisticType.ORBS, plugin.getConfig().getInt("Orbs-Starting-Amount", 20));
         plugin.getUserManager().getUser(player).getKit().giveKitItems(player);
         player.updateInventory();
-        ArenaUtils.addExperience(player, 10);
+        plugin.getUserManager().addExperience(player, 10);
         arena.setTimer(plugin.getConfig().getInt("Cooldown-Before-Next-Wave", 25));
         player.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage(Messages.LOBBY_MESSAGES_GAME_STARTED));
       }

@@ -1,6 +1,6 @@
 /*
  * Village Defense - Protect villagers from hordes of zombies
- * Copyright (C) 2020  Plajer's Lair - maintained by Plajer and contributors
+ * Copyright (C) 2020  Plugily Projects - maintained by 2Wild4You, Tigerpanzer_02 and contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,14 +20,7 @@ package pl.plajer.villagedefense;
 
 import com.gmail.filoghost.holographicdisplays.api.Hologram;
 import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.logging.Level;
-
 import me.tigerhix.lib.scoreboard.ScoreboardLib;
-
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -38,23 +31,14 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.java.JavaPluginLoader;
 import org.bukkit.potion.PotionEffect;
 import org.jetbrains.annotations.TestOnly;
-
 import pl.plajer.villagedefense.api.StatsStorage;
-import pl.plajer.villagedefense.arena.Arena;
-import pl.plajer.villagedefense.arena.ArenaEvents;
-import pl.plajer.villagedefense.arena.ArenaManager;
-import pl.plajer.villagedefense.arena.ArenaRegistry;
-import pl.plajer.villagedefense.arena.ArenaUtils;
+import pl.plajer.villagedefense.arena.*;
 import pl.plajer.villagedefense.arena.managers.BungeeManager;
 import pl.plajer.villagedefense.commands.arguments.ArgumentsRegistry;
 import pl.plajer.villagedefense.creatures.CreatureUtils;
 import pl.plajer.villagedefense.creatures.DoorBreakListener;
 import pl.plajer.villagedefense.creatures.EntityRegistry;
-import pl.plajer.villagedefense.events.ChatEvents;
-import pl.plajer.villagedefense.events.Events;
-import pl.plajer.villagedefense.events.JoinEvent;
-import pl.plajer.villagedefense.events.LobbyEvents;
-import pl.plajer.villagedefense.events.QuitEvent;
+import pl.plajer.villagedefense.events.*;
 import pl.plajer.villagedefense.events.bungee.MiscEvents;
 import pl.plajer.villagedefense.events.spectator.SpectatorEvents;
 import pl.plajer.villagedefense.events.spectator.SpectatorItemEvents;
@@ -82,18 +66,18 @@ import pl.plajer.villagedefense.kits.basekits.Kit;
 import pl.plajer.villagedefense.user.User;
 import pl.plajer.villagedefense.user.UserManager;
 import pl.plajer.villagedefense.user.data.MysqlManager;
-import pl.plajer.villagedefense.utils.Debugger;
-import pl.plajer.villagedefense.utils.ExceptionLogHandler;
-import pl.plajer.villagedefense.utils.LegacyDataFixer;
-import pl.plajer.villagedefense.utils.MessageUtils;
-import pl.plajer.villagedefense.utils.UpdateChecker;
-import pl.plajer.villagedefense.utils.Utils;
+import pl.plajer.villagedefense.utils.*;
 import pl.plajer.villagedefense.utils.constants.CompatMaterialConstants;
 import pl.plajer.villagedefense.utils.constants.Constants;
 import pl.plajer.villagedefense.utils.services.ServiceRegistry;
 import pl.plajerlair.commonsbox.database.MysqlDatabase;
 import pl.plajerlair.commonsbox.minecraft.configuration.ConfigUtils;
 import pl.plajerlair.commonsbox.minecraft.serialization.InventorySerializer;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.logging.Level;
 
 
 /**
@@ -153,6 +137,10 @@ public class Main extends JavaPlugin {
 
   public boolean is1_15_R1() {
     return version.equalsIgnoreCase("v1_15_R1");
+  }
+
+  public boolean is1_16_R1() {
+    return version.equalsIgnoreCase("v1_16_R1");
   }
 
   public BungeeManager getBungeeManager() {
@@ -219,7 +207,7 @@ public class Main extends JavaPlugin {
   private boolean validateIfPluginShouldStart() {
     version = Bukkit.getServer().getClass().getPackage().getName().replace(".", ",").split(",")[3];
     if (!(version.equalsIgnoreCase("v1_11_R1") || version.equalsIgnoreCase("v1_12_R1") || version.equalsIgnoreCase("v1_13_R1") || version.equalsIgnoreCase("v1_13_R2") ||
-        version.equalsIgnoreCase("v1_14_R1") || version.equalsIgnoreCase("v1_15_R1"))) {
+        version.equalsIgnoreCase("v1_14_R1") || version.equalsIgnoreCase("v1_15_R1") || version.equalsIgnoreCase("v1_16_R1"))) {
       MessageUtils.thisVersionIsNotSupported();
       Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "Your server version is not supported by Village Defense!");
       Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "Sadly, we must shut off. Maybe you consider changing your server version?");
@@ -266,7 +254,7 @@ public class Main extends JavaPlugin {
     specialItemManager = new SpecialItemManager(this);
     specialItemManager.registerItems();
     kitMenuHandler = new KitMenuHandler(this);
-    partyHandler = new PartySupportInitializer().initialize();
+    partyHandler = new PartySupportInitializer().initialize(this);
     KitRegistry.init(this);
     User.cooldownHandlerTask();
     if (configPreferences.getOption(ConfigPreferences.Option.DATABASE_ENABLED)) {
@@ -470,18 +458,23 @@ public class Main extends JavaPlugin {
   private void saveAllUserStatistics() {
     for (Player player : getServer().getOnlinePlayers()) {
       User user = userManager.getUser(player);
-
-      //copy of userManager#saveStatistic but without async database call that's not allowed in onDisable method.
+      StringBuilder update = new StringBuilder(" SET ");
       for (StatsStorage.StatisticType stat : StatsStorage.StatisticType.values()) {
         if (!stat.isPersistent()) {
           continue;
         }
-        if (userManager.getDatabase() instanceof MysqlManager) {
-          ((MysqlManager) userManager.getDatabase()).getDatabase().executeUpdate("UPDATE playerstats SET " + stat.getName() + "=" + user.getStat(stat) + " WHERE UUID='" + user.getPlayer().getUniqueId().toString() + "';");
-          continue;
+        if (update.toString().equalsIgnoreCase(" SET ")){
+          update.append(stat.getName()).append("=").append(user.getStat(stat));
         }
-        userManager.getDatabase().saveStatistic(user, stat);
+        update.append(", ").append(stat.getName()).append("=").append(user.getStat(stat));
       }
+      String finalUpdate = update.toString();
+      //copy of userManager#saveStatistic but without async database call that's not allowed in onDisable method.
+      if (userManager.getDatabase() instanceof MysqlManager) {
+        ((MysqlManager) userManager.getDatabase()).getDatabase().executeUpdate("UPDATE "+((MysqlManager) getUserManager().getDatabase()).getTableName()+ finalUpdate + " WHERE UUID='" + user.getPlayer().getUniqueId().toString() + "';");
+        continue;
+      }
+      userManager.getDatabase().saveAllStatistic(user);
     }
   }
 }

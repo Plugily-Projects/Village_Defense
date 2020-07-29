@@ -78,7 +78,7 @@ Scoreboard:
       - "&fRotten Flesh: &e%ROTTEN_FLESH%"
       - "&fOrbs: &e%ORBS%"
       - ""
-      - "&ewww.spigotmc.org"
+      - "&ewww.plugily.xyz"
     # Contents while players are waiting for the wave
     Playing-Waiting:
       - "&fVillagers Left: &e%VILLAGERS%"
@@ -89,13 +89,13 @@ Scoreboard:
       - "&fRotten Flesh: &e%ROTTEN_FLESH%"
       - "&fOrbs: &e%ORBS%"
       - ""
-      - "&ewww.spigotmc.org"
+      - "&ewww.plugily.xyz"
     Waiting:
       - "&fPlayers: &e%PLAYERS%"
       - ""
       - "&fMinimum Players: &e%MIN_PLAYERS%"
       - ""
-      - "&ewww.spigotmc.org"
+      - "&ewww.plugily.xyz"
     Starting:
       - "&fStarting In: &e%TIME%"
       - ""
@@ -103,16 +103,16 @@ Scoreboard:
       - ""
       - "&fMinimum Players: &e%MIN_PLAYERS%"
       - ""
-      - "&ewww.spigotmc.org"
+      - "&ewww.plugily.xyz"
 
 # Has usage only when bossbar is enabled in config.yml
 Bossbar:
-  Main-Title: "&a&lVillage Defense &6- www.spigotmc.org"
+  Main-Title: "&a&lVillage Defense &6- www.plugily.xyz"
   Starting-In: "&f&lStarting in: &e&l%time%"
   Waiting-For-Players: "&4&lWaiting for more players..."
   In-Game-Wave: "&f&lCurrent wave: &e&l%wave%"
-  In-Game-Info: "&e&lPlaying &f&lVILLAGE DEFENSE &e&lon &b&lSPIGOTMC.ORG"
-  Game-Ended: "&c&lGame has ended! You were playing on &b&lSPIGOTMC.ORG"
+  In-Game-Info: "&e&lPlaying &f&lVILLAGE DEFENSE &e&lon &b&lPLUGILY.XYZ"
+  Game-Ended: "&c&lGame has ended! You were playing on &b&lPLUGILY.XYZ"
 
 Kits:
   Kit-Menu:
@@ -392,7 +392,7 @@ Leaderboard-Holograms:
   Header: '&6&lTop %amount% in %statistic%'
   Format: '&e%place%. &f%nickname% (%value%)'
   Format-Empty: '&e%place%. &fEmpty (0)'
-  Unknow-Player: '&fUnknown Player'
+  Unknown-Player: '&fUnknown Player'
   Statistics:
     Kills: '&eKills'
     Deaths: '&eDeaths'

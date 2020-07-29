@@ -1,6 +1,6 @@
 /*
  * Village Defense - Protect villagers from hordes of zombies
- * Copyright (C) 2019  Plajer's Lair - maintained by Plajer and contributors
+ * Copyright (C) 2020  Plugily Projects - maintained by 2Wild4You, Tigerpanzer_02 and contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,17 +18,16 @@
 
 package pl.plajer.villagedefense.handlers.sign;
 
-import java.lang.reflect.InvocationTargetException;
-
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.Sign;
 import org.jetbrains.annotations.Nullable;
-
 import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.arena.Arena;
+
+import java.lang.reflect.InvocationTargetException;
 
 /**
  * Created for 1.14 compatibility purposes, it will cache block behind sign that will be
@@ -37,9 +36,9 @@ import pl.plajer.villagedefense.arena.Arena;
 public class ArenaSign {
 
   private static Main plugin;
-  private Sign sign;
+  private final Sign sign;
   private Block behind;
-  private Arena arena;
+  private final Arena arena;
 
   public ArenaSign(Sign sign, Arena arena) {
     this.sign = sign;
@@ -54,7 +53,7 @@ public class ArenaSign {
   private void setBehindBlock() {
     this.behind = null;
     if (sign.getBlock().getType() == Material.WALL_SIGN) {
-      if (plugin.is1_14_R1() || plugin.is1_15_R1()) {
+      if (plugin.is1_14_R1() || plugin.is1_15_R1() || plugin.is1_16_R1()) {
         this.behind = getBlockBehind();
       } else {
         this.behind = getBlockBehindLegacy();

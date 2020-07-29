@@ -34,7 +34,7 @@ public class MiscEvents implements Listener {
     }
 
     if (!ArenaRegistry.getArenas().isEmpty()) {
-      e.getPlayer().teleport(ArenaRegistry.getArenas().get(0).getLobbyLocation());
+      e.getPlayer().teleport(ArenaRegistry.getArenas().get(ArenaRegistry.getBungeeArena()).getLobbyLocation());
     }
   }
 

@@ -1,6 +1,6 @@
 /*
  * Village Defense - Protect villagers from hordes of zombies
- * Copyright (C) 2019  Plajer's Lair - maintained by Plajer and contributors
+ * Copyright (C) 2020  Plugily Projects - maintained by 2Wild4You, Tigerpanzer_02 and contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,20 +21,12 @@ package pl.plajer.villagedefense.handlers.powerup;
 import com.gmail.filoghost.holographicdisplays.api.Hologram;
 import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
 import com.gmail.filoghost.holographicdisplays.api.line.ItemLine;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-import java.util.concurrent.ThreadLocalRandom;
-import java.util.logging.Level;
-
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
-
 import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.api.event.player.VillagePlayerPowerupPickupEvent;
 import pl.plajer.villagedefense.arena.Arena;
@@ -45,6 +37,12 @@ import pl.plajer.villagedefense.handlers.language.Messages;
 import pl.plajer.villagedefense.utils.Debugger;
 import pl.plajerlair.commonsbox.minecraft.compat.XMaterial;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
+import java.util.logging.Level;
+
 /**
  * @author Plajer
  * <p>
@@ -52,8 +50,8 @@ import pl.plajerlair.commonsbox.minecraft.compat.XMaterial;
  */
 public class PowerupRegistry {
 
-  private Random random = new Random();
-  private List<Powerup> registeredPowerups = new ArrayList<>();
+  private final Random random = new Random();
+  private final List<Powerup> registeredPowerups = new ArrayList<>();
   private boolean enabled = false;
   private Main plugin;
 

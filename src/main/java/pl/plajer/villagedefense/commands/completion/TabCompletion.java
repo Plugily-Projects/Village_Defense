@@ -1,6 +1,6 @@
 /*
  * Village Defense - Protect villagers from hordes of zombies
- * Copyright (C) 2019  Plajer's Lair - maintained by Plajer and contributors
+ * Copyright (C) 2020  Plugily Projects - maintained by 2Wild4You, Tigerpanzer_02 and contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,20 +18,19 @@
 
 package pl.plajer.villagedefense.commands.completion;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.stream.Collectors;
-
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
-
 import pl.plajer.villagedefense.arena.Arena;
 import pl.plajer.villagedefense.arena.ArenaRegistry;
 import pl.plajer.villagedefense.commands.arguments.ArgumentsRegistry;
 import pl.plajer.villagedefense.commands.arguments.data.CommandArgument;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author Plajer
@@ -40,26 +39,26 @@ import pl.plajer.villagedefense.commands.arguments.data.CommandArgument;
  */
 public class TabCompletion implements TabCompleter {
 
-  private List<CompletableArgument> registeredCompletions = new ArrayList<>();
-  private ArgumentsRegistry registry;
+    private final List<CompletableArgument> registeredCompletions = new ArrayList<>();
+    private final ArgumentsRegistry registry;
 
-  public TabCompletion(ArgumentsRegistry registry) {
-    this.registry = registry;
-  }
-
-  public void registerCompletion(CompletableArgument completion) {
-    registeredCompletions.add(completion);
-  }
-
-  @Override
-  public List<String> onTabComplete(CommandSender sender, Command cmd, String label, String[] args) {
-    if (!(sender instanceof Player)) {
-      return Collections.emptyList();
+    public TabCompletion(ArgumentsRegistry registry) {
+        this.registry = registry;
     }
-    if (cmd.getName().equalsIgnoreCase("villagedefenseadmin") && args.length == 1) {
-      return registry.getMappedArguments().get(cmd.getName().toLowerCase()).stream().map(CommandArgument::getArgumentName).collect(Collectors.toList());
+
+    public void registerCompletion(CompletableArgument completion) {
+        registeredCompletions.add(completion);
     }
-    if (cmd.getName().equalsIgnoreCase("villagedefense")) {
+
+    @Override
+    public List<String> onTabComplete(CommandSender sender, Command cmd, String label, String[] args) {
+        if (!(sender instanceof Player)) {
+            return Collections.emptyList();
+        }
+        if (cmd.getName().equalsIgnoreCase("villagedefenseadmin") && args.length == 1) {
+            return registry.getMappedArguments().get(cmd.getName().toLowerCase()).stream().map(CommandArgument::getArgumentName).collect(Collectors.toList());
+        }
+        if (cmd.getName().equalsIgnoreCase("villagedefense")) {
       if (args.length == 2 && args[0].equalsIgnoreCase("join")) {
         List<String> arenaIds = new ArrayList<>();
         for (Arena arena : ArenaRegistry.getArenas()) {

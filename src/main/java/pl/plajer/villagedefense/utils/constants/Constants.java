@@ -1,6 +1,6 @@
 /*
  * Village Defense - Protect villagers from hordes of zombies
- * Copyright (C) 2019  Plajer's Lair - maintained by Plajer and contributors
+ * Copyright (C) 2020  Plugily Projects - maintained by 2Wild4You, Tigerpanzer_02 and contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,7 +27,7 @@ public class Constants {
     ARENAS("arenas"), CONFIG("config"), KITS("kits"), LANGUAGE("language"),
     SPECIAL_ITEMS("special_items"), MYSQL("mysql"), REWARDS("rewards"), STATS("stats");
 
-    private String name;
+    private final String name;
 
     Files(String name) {
       this.name = name;

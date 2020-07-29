@@ -1,6 +1,6 @@
 /*
  * Village Defense - Protect villagers from hordes of zombies
- * Copyright (C) 2019  Plajer's Lair - maintained by Plajer and contributors
+ * Copyright (C) 2020  Plugily Projects - maintained by 2Wild4You, Tigerpanzer_02 and contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,17 +18,16 @@
 
 package pl.plajer.villagedefense.commands.arguments.admin;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-
 import pl.plajer.villagedefense.commands.arguments.ArgumentsRegistry;
 import pl.plajer.villagedefense.commands.arguments.data.CommandArgument;
 import pl.plajer.villagedefense.commands.arguments.data.LabelData;
 import pl.plajer.villagedefense.commands.arguments.data.LabeledCommandArgument;
+
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author Plajer
@@ -37,7 +36,7 @@ import pl.plajer.villagedefense.commands.arguments.data.LabeledCommandArgument;
  */
 public class SpyChatArgument {
 
-  private Set<Player> spyChatters = new HashSet<>();
+  private final Set<Player> spyChatters = new HashSet<>();
 
   public SpyChatArgument(ArgumentsRegistry registry) {
     registry.mapArgument("villagedefenseadmin", new LabeledCommandArgument("spychat", "villagedefense.admin.spychat", CommandArgument.ExecutorType.PLAYER,

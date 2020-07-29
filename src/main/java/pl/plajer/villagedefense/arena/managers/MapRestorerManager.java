@@ -1,6 +1,6 @@
 /*
  * Village Defense - Protect villagers from hordes of zombies
- * Copyright (C) 2019  Plajer's Lair - maintained by Plajer and contributors
+ * Copyright (C) 2020  Plugily Projects - maintained by 2Wild4You, Tigerpanzer_02 and contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,27 +18,21 @@
 
 package pl.plajer.villagedefense.arena.managers;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.logging.Level;
-
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.TreeSpecies;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.IronGolem;
-import org.bukkit.entity.Villager;
-import org.bukkit.entity.Wolf;
-import org.bukkit.entity.Zombie;
+import org.bukkit.entity.*;
 import org.bukkit.material.Door;
-
 import pl.plajer.villagedefense.arena.Arena;
 import pl.plajer.villagedefense.utils.Debugger;
 import pl.plajer.villagedefense.utils.Utils;
 import pl.plajerlair.commonsbox.minecraft.compat.XMaterial;
+
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.logging.Level;
 
 /**
  * @author Plajer
@@ -47,8 +41,8 @@ import pl.plajerlair.commonsbox.minecraft.compat.XMaterial;
  */
 public class MapRestorerManager {
 
-  private Map<Location, Byte> doorBlocks = new LinkedHashMap<>();
-  private Arena arena;
+  private final Map<Location, Byte> doorBlocks = new LinkedHashMap<>();
+  private final Arena arena;
 
   public MapRestorerManager(Arena arena) {
     this.arena = arena;

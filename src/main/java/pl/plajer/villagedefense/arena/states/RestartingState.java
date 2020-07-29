@@ -1,6 +1,6 @@
 /*
  * Village Defense - Protect villagers from hordes of zombies
- * Copyright (C) 2019  Plajer's Lair - maintained by Plajer and contributors
+ * Copyright (C) 2020  Plugily Projects - maintained by 2Wild4You, Tigerpanzer_02 and contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,19 +18,19 @@
 
 package pl.plajer.villagedefense.arena.states;
 
-import java.util.Objects;
-
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-
 import pl.plajer.villagedefense.ConfigPreferences;
 import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.arena.Arena;
 import pl.plajer.villagedefense.arena.ArenaManager;
+import pl.plajer.villagedefense.arena.ArenaRegistry;
 import pl.plajer.villagedefense.arena.ArenaState;
 import pl.plajer.villagedefense.handlers.language.Messages;
 import pl.plajerlair.commonsbox.minecraft.configuration.ConfigUtils;
+
+import java.util.Objects;
 
 /**
  * @author Plajer
@@ -59,8 +59,9 @@ public class RestartingState implements ArenaStateHandler {
       if (ConfigUtils.getConfig(plugin, "bungee").getBoolean("Shutdown-When-Game-Ends", false)) {
         plugin.getServer().shutdown();
       }
+      ArenaRegistry.shuffleBungeeArena();
       for (Player player : Bukkit.getOnlinePlayers()) {
-        ArenaManager.joinAttempt(player, arena);
+        ArenaManager.joinAttempt(player, ArenaRegistry.getArenas().get(ArenaRegistry.getBungeeArena()));
       }
     }
     arena.getGameBar().setTitle(plugin.getChatManager().colorMessage(Messages.BOSSBAR_WAITING_FOR_PLAYERS));

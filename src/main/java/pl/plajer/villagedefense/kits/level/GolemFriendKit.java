@@ -1,6 +1,6 @@
 /*
  * Village Defense - Protect villagers from hordes of zombies
- * Copyright (C) 2019  Plajer's Lair - maintained by Plajer and contributors
+ * Copyright (C) 2020  Plugily Projects - maintained by 2Wild4You, Tigerpanzer_02 and contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,22 +18,14 @@
 
 package pl.plajer.villagedefense.kits.level;
 
-import java.util.List;
-
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-
 import pl.plajer.villagedefense.api.StatsStorage;
 import pl.plajer.villagedefense.arena.Arena;
 import pl.plajer.villagedefense.arena.ArenaRegistry;
-import pl.plajer.villagedefense.arena.initializers.ArenaInitializer1_11_R1;
-import pl.plajer.villagedefense.arena.initializers.ArenaInitializer1_12_R1;
-import pl.plajer.villagedefense.arena.initializers.ArenaInitializer1_13_R1;
-import pl.plajer.villagedefense.arena.initializers.ArenaInitializer1_13_R2;
-import pl.plajer.villagedefense.arena.initializers.ArenaInitializer1_14_R1;
-import pl.plajer.villagedefense.arena.initializers.ArenaInitializer1_15_R1;
+import pl.plajer.villagedefense.arena.initializers.*;
 import pl.plajer.villagedefense.handlers.language.Messages;
 import pl.plajer.villagedefense.kits.KitRegistry;
 import pl.plajer.villagedefense.kits.basekits.LevelKit;
@@ -41,6 +33,8 @@ import pl.plajer.villagedefense.utils.ArmorHelper;
 import pl.plajer.villagedefense.utils.Utils;
 import pl.plajer.villagedefense.utils.WeaponHelper;
 import pl.plajerlair.commonsbox.minecraft.compat.XMaterial;
+
+import java.util.List;
 
 /**
  * Created by Tom on 21/07/2015.
@@ -101,8 +95,11 @@ public class GolemFriendKit extends LevelKit {
     } else if (getPlugin().is1_14_R1()) {
       ArenaInitializer1_14_R1 initializer = (ArenaInitializer1_14_R1) arena;
       initializer.spawnGolem(initializer.getStartLocation(), player);
-    } else  if (getPlugin().is1_15_R1()) {
+    } else if (getPlugin().is1_15_R1()) {
       ArenaInitializer1_15_R1 initializer = (ArenaInitializer1_15_R1) arena;
+      initializer.spawnGolem(initializer.getStartLocation(), player);
+    } else if (getPlugin().is1_16_R1()) {
+      ArenaInitializer1_16_R1 initializer = (ArenaInitializer1_16_R1) arena;
       initializer.spawnGolem(initializer.getStartLocation(), player);
     }
   }

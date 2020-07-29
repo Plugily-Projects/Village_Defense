@@ -1,6 +1,6 @@
 /*
  * Village Defense - Protect villagers from hordes of zombies
- * Copyright (C) 2019  Plajer's Lair - maintained by Plajer and contributors
+ * Copyright (C) 2020  Plugily Projects - maintained by 2Wild4You, Tigerpanzer_02 and contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,27 +18,11 @@
 
 package pl.plajer.villagedefense.creatures.v1_14_R1;
 
-import java.util.Random;
-
-import net.minecraft.server.v1_14_R1.EntityHuman;
-import net.minecraft.server.v1_14_R1.EntityInsentient;
-import net.minecraft.server.v1_14_R1.EntityTypes;
-import net.minecraft.server.v1_14_R1.EntityVillager;
-import net.minecraft.server.v1_14_R1.EntityZombie;
-import net.minecraft.server.v1_14_R1.Navigation;
-import net.minecraft.server.v1_14_R1.PathfinderGoalAvoidTarget;
-import net.minecraft.server.v1_14_R1.PathfinderGoalFloat;
-import net.minecraft.server.v1_14_R1.PathfinderGoalInteract;
-import net.minecraft.server.v1_14_R1.PathfinderGoalLookAtPlayer;
-import net.minecraft.server.v1_14_R1.PathfinderGoalLookAtTradingPlayer;
-import net.minecraft.server.v1_14_R1.PathfinderGoalMoveTowardsRestriction;
-import net.minecraft.server.v1_14_R1.PathfinderGoalRandomStroll;
-import net.minecraft.server.v1_14_R1.PathfinderGoalTradeWithPlayer;
-import net.minecraft.server.v1_14_R1.World;
-
+import net.minecraft.server.v1_14_R1.*;
 import org.bukkit.craftbukkit.v1_14_R1.CraftWorld;
-
 import pl.plajer.villagedefense.creatures.CreatureUtils;
+
+import java.util.Random;
 
 /**
  * Created by Tom on 15/08/2014.
