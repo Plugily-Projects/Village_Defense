@@ -1,6 +1,6 @@
 /*
  * Village Defense - Protect villagers from hordes of zombies
- * Copyright (C) 2020  Plajer's Lair - maintained by Plajer and contributors
+ * Copyright (C) 2020  Plugily Projects - maintained by 2Wild4You, Tigerpanzer_02 and contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,21 +18,13 @@
 
 package pl.plajer.villagedefense.events;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.regex.Pattern;
-
 import me.clip.placeholderapi.PlaceholderAPI;
-
 import org.apache.commons.lang.StringUtils;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
-
 import pl.plajer.villagedefense.ConfigPreferences;
 import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.api.StatsStorage;
@@ -42,13 +34,16 @@ import pl.plajer.villagedefense.handlers.language.LanguageManager;
 import pl.plajer.villagedefense.handlers.language.Messages;
 import pl.plajer.villagedefense.user.User;
 
+import java.util.ArrayList;
+import java.util.regex.Pattern;
+
 /**
  * Created by Tom on 13/08/2014.
  */
 public class ChatEvents implements Listener {
 
-  private Main plugin;
-  private String[] regexChars = new String[] {"$", "\\"};
+  private final Main plugin;
+  private final String[] regexChars = new String[]{"$", "\\"};
 
   public ChatEvents(Main plugin) {
     this.plugin = plugin;

@@ -1,6 +1,6 @@
 /*
  * Village Defense - Protect villagers from hordes of zombies
- * Copyright (C) 2019  Plajer's Lair - maintained by Plajer and contributors
+ * Copyright (C) 2020  Plugily Projects - maintained by 2Wild4You, Tigerpanzer_02 and contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,12 +18,12 @@
 
 package pl.plajer.villagedefense;
 
+import pl.plajer.villagedefense.utils.Debugger;
+
 import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
-
-import pl.plajer.villagedefense.utils.Debugger;
 
 /**
  * @author Plajer
@@ -32,9 +32,9 @@ import pl.plajer.villagedefense.utils.Debugger;
  */
 public class ConfigPreferences {
 
-  private Main plugin;
-  private Map<Option, Boolean> options = new EnumMap<>(Option.class);
-  private Map<String, Integer> customPermissions = new HashMap<>();
+  private final Main plugin;
+  private final Map<Option, Boolean> options = new EnumMap<>(Option.class);
+  private final Map<String, Integer> customPermissions = new HashMap<>();
 
   public ConfigPreferences(Main plugin) {
     this.plugin = plugin;
@@ -75,8 +75,8 @@ public class ConfigPreferences {
     DISABLE_SEPARATE_CHAT("Disable-Separate-Chat", false), DISABLE_PARTIES("Disable-Parties", true),
     RESPAWN_AFTER_WAVE("Respawn-After-Wave", true), INGAME_JOIN_RESPAWN("InGame-Join-Respawn", true);
 
-    private String path;
-    private boolean def;
+    private final String path;
+    private final boolean def;
 
     Option(String path, boolean def) {
       this.path = path;

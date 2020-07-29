@@ -1,6 +1,6 @@
 /*
  * Village Defense - Protect villagers from hordes of zombies
- * Copyright (C) 2019  Plajer's Lair - maintained by Plajer and contributors
+ * Copyright (C) 2020  Plugily Projects - maintained by 2Wild4You, Tigerpanzer_02 and contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -48,7 +48,7 @@ public class TankerZombie extends EntityZombie {
     this.targetSelector.a(2, new PathfinderGoalNearestAttackableTarget<>(this, EntityVillager.class, false));
     this.targetSelector.a(3, new PathfinderGoalNearestAttackableTarget<>(this, EntityIronGolem.class, false));
     this.setHealth(35);
-    this.p().a(GenericAttributes.FOLLOW_RANGE, 200.0D).a(GenericAttributes.KNOCKBACK_RESISTANCE, 0D);
+    p().a(GenericAttributes.FOLLOW_RANGE, 200.0D).a(GenericAttributes.KNOCKBACK_RESISTANCE, 0D);
   }
 
 

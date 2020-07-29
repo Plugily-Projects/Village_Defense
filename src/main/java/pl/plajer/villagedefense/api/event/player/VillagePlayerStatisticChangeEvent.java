@@ -1,6 +1,6 @@
 /*
  * Village Defense - Protect villagers from hordes of zombies
- * Copyright (C) 2019  Plajer's Lair - maintained by Plajer and contributors
+ * Copyright (C) 2020  Plugily Projects - maintained by 2Wild4You, Tigerpanzer_02 and contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,7 +20,6 @@ package pl.plajer.villagedefense.api.event.player;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
-
 import pl.plajer.villagedefense.api.StatsStorage;
 import pl.plajer.villagedefense.api.event.VillageEvent;
 import pl.plajer.villagedefense.arena.Arena;
@@ -34,29 +33,29 @@ import pl.plajer.villagedefense.arena.Arena;
  */
 public class VillagePlayerStatisticChangeEvent extends VillageEvent {
 
-  private static final HandlerList HANDLERS = new HandlerList();
-  private Player player;
-  private StatsStorage.StatisticType statisticType;
-  private int number;
+    private static final HandlerList HANDLERS = new HandlerList();
+    private final Player player;
+    private final StatsStorage.StatisticType statisticType;
+    private final int number;
 
-  public VillagePlayerStatisticChangeEvent(Arena eventArena, Player player, StatsStorage.StatisticType statisticType, int number) {
-    super(eventArena);
-    this.player = player;
-    this.statisticType = statisticType;
-    this.number = number;
-  }
+    public VillagePlayerStatisticChangeEvent(Arena eventArena, Player player, StatsStorage.StatisticType statisticType, int number) {
+        super(eventArena);
+        this.player = player;
+        this.statisticType = statisticType;
+        this.number = number;
+    }
 
-  public static HandlerList getHandlerList() {
-    return HANDLERS;
-  }
+    public static HandlerList getHandlerList() {
+        return HANDLERS;
+    }
 
-  public HandlerList getHandlers() {
-    return HANDLERS;
-  }
+    public HandlerList getHandlers() {
+        return HANDLERS;
+    }
 
-  public Player getPlayer() {
-    return player;
-  }
+    public Player getPlayer() {
+        return player;
+    }
 
   public StatsStorage.StatisticType getStatisticType() {
     return statisticType;

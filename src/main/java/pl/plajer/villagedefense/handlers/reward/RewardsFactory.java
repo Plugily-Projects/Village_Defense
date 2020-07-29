@@ -1,6 +1,6 @@
 /*
  * Village Defense - Protect villagers from hordes of zombies
- * Copyright (C) 2019  Plajer's Lair - maintained by Plajer and contributors
+ * Copyright (C) 2020  Plugily Projects - maintained by 2Wild4You, Tigerpanzer_02 and contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,19 +18,11 @@
 
 package pl.plajer.villagedefense.handlers.reward;
 
-import java.util.EnumMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.ThreadLocalRandom;
-import java.util.logging.Level;
-
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
-
 import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.arena.Arena;
 import pl.plajer.villagedefense.arena.ArenaRegistry;
@@ -39,14 +31,21 @@ import pl.plajer.villagedefense.utils.constants.Constants;
 import pl.plajerlair.commonsbox.minecraft.configuration.ConfigUtils;
 import pl.plajerlair.commonsbox.minecraft.engine.ScriptEngine;
 
+import java.util.EnumMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.ThreadLocalRandom;
+import java.util.logging.Level;
+
 /**
  * Created by Tom on 30/01/2016.
  */
 public class RewardsFactory {
 
-  private Set<Reward> rewards = new HashSet<>();
-  private FileConfiguration config;
-  private boolean enabled;
+  private final Set<Reward> rewards = new HashSet<>();
+  private final FileConfiguration config;
+  private final boolean enabled;
 
   public RewardsFactory(Main plugin) {
     enabled = plugin.getConfig().getBoolean("Rewards-Enabled");

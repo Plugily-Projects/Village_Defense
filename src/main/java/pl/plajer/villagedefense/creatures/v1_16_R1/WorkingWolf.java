@@ -1,6 +1,6 @@
 /*
  * Village Defense - Protect villagers from hordes of zombies
- * Copyright (C) 2019  Plajer's Lair - maintained by Plajer and contributors
+ * Copyright (C) 2020  Plugily Projects - maintained by 2Wild4You, Tigerpanzer_02 and contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -48,7 +48,7 @@ public class WorkingWolf extends EntityWolf {
     this.goalSelector.a(8, new PathfinderGoalRandomLookaround(this));
     this.targetSelector.a(2, new PathfinderGoalNearestAttackableTarget<>(this, EntityZombie.class, true));
     this.targetSelector.a(1, new PathfinderGoalHurtByTarget(this));
-    this.p().a(GenericAttributes.FOLLOW_RANGE, 200.0D);
+    p().a(GenericAttributes.FOLLOW_RANGE, 200.0D);
   }
 
 }

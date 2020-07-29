@@ -1,6 +1,6 @@
 /*
  * Village Defense - Protect villagers from hordes of zombies
- * Copyright (C) 2019  Plajer's Lair - maintained by Plajer and contributors
+ * Copyright (C) 2020  Plugily Projects - maintained by 2Wild4You, Tigerpanzer_02 and contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,25 +25,25 @@ package pl.plajer.villagedefense.creatures;
  */
 public class CachedObject {
 
-  private String fieldName;
-  private Class clazz;
-  private Object object;
+    private final String fieldName;
+    private final Class clazz;
+    private final Object object;
 
-  public CachedObject(String fieldName, Class clazz, Object object) {
-    this.fieldName = fieldName;
-    this.clazz = clazz;
-    this.object = object;
-  }
+    public CachedObject(String fieldName, Class clazz, Object object) {
+        this.fieldName = fieldName;
+        this.clazz = clazz;
+        this.object = object;
+    }
 
-  public String getFieldName() {
-    return fieldName;
-  }
+    public String getFieldName() {
+        return fieldName;
+    }
 
-  public Class getClazz() {
-    return clazz;
-  }
+    public Class getClazz() {
+        return clazz;
+    }
 
-  public Object getObject() {
-    return object;
-  }
+    public Object getObject() {
+        return object;
+    }
 }

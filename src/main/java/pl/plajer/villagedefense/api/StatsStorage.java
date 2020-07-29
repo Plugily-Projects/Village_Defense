@@ -1,6 +1,6 @@
 /*
  * Village Defense - Protect villagers from hordes of zombies
- * Copyright (C) 2019  Plajer's Lair - maintained by Plajer and contributors
+ * Copyright (C) 2020  Plugily Projects - maintained by 2Wild4You, Tigerpanzer_02 and contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,29 +18,22 @@
 
 package pl.plajer.villagedefense.api;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
-import java.util.UUID;
-import java.util.logging.Level;
-
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
-
 import pl.plajer.villagedefense.ConfigPreferences;
 import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.user.data.MysqlManager;
 import pl.plajer.villagedefense.utils.MessageUtils;
 import pl.plajer.villagedefense.utils.constants.Constants;
 import pl.plajerlair.commonsbox.minecraft.configuration.ConfigUtils;
+
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.*;
+import java.util.logging.Level;
 
 /**
  * @author Plajer, TomTheDeveloper
@@ -124,8 +117,8 @@ public class StatsStorage {
     ORBS("orbs", false), KILLS("kills", true), DEATHS("deaths", true), GAMES_PLAYED("gamesplayed", true),
     HIGHEST_WAVE("highestwave", true), LEVEL("level", true), XP("xp", true);
 
-    private String name;
-    private boolean persistent;
+    private final String name;
+    private final boolean persistent;
 
     StatisticType(String name, boolean persistent) {
       this.name = name;

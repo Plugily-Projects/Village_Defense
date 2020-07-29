@@ -1,6 +1,6 @@
 /*
  * Village Defense - Protect villagers from hordes of zombies
- * Copyright (C) 2019  Plajer's Lair - maintained by Plajer and contributors
+ * Copyright (C) 2020  Plugily Projects - maintained by 2Wild4You, Tigerpanzer_02 and contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,11 +18,8 @@
 
 package pl.plajer.villagedefense.arena.initializers;
 
-import java.util.Random;
-
 import net.minecraft.server.v1_12_R1.GenericAttributes;
 import net.minecraft.server.v1_12_R1.World;
-
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.craftbukkit.v1_12_R1.CraftWorld;
@@ -34,23 +31,14 @@ import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
-
 import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.arena.Arena;
 import pl.plajer.villagedefense.arena.options.ArenaOption;
 import pl.plajer.villagedefense.creatures.CreatureUtils;
-import pl.plajer.villagedefense.creatures.v1_12_R1.BabyZombie;
-import pl.plajer.villagedefense.creatures.v1_12_R1.FastZombie;
-import pl.plajer.villagedefense.creatures.v1_12_R1.GolemBuster;
-import pl.plajer.villagedefense.creatures.v1_12_R1.HardZombie;
-import pl.plajer.villagedefense.creatures.v1_12_R1.PlayerBuster;
-import pl.plajer.villagedefense.creatures.v1_12_R1.RidableIronGolem;
-import pl.plajer.villagedefense.creatures.v1_12_R1.RidableVillager;
-import pl.plajer.villagedefense.creatures.v1_12_R1.TankerZombie;
-import pl.plajer.villagedefense.creatures.v1_12_R1.VillagerBuster;
-import pl.plajer.villagedefense.creatures.v1_12_R1.VillagerSlayer;
-import pl.plajer.villagedefense.creatures.v1_12_R1.WorkingWolf;
+import pl.plajer.villagedefense.creatures.v1_12_R1.*;
 import pl.plajer.villagedefense.handlers.language.Messages;
+
+import java.util.Random;
 
 /**
  * Created by TomVerschueren on 9/06/2017.
@@ -58,7 +46,7 @@ import pl.plajer.villagedefense.handlers.language.Messages;
 public class ArenaInitializer1_12_R1 extends Arena {
 
   private World world;
-  private Main plugin;
+  private final Main plugin;
 
   public ArenaInitializer1_12_R1(String id, Main plugin) {
     super(id);

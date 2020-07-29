@@ -1,6 +1,6 @@
 /*
  * Village Defense - Protect villagers from hordes of zombies
- * Copyright (C) 2019  Plajer's Lair - maintained by Plajer and contributors
+ * Copyright (C) 2020  Plugily Projects - maintained by 2Wild4You, Tigerpanzer_02 and contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,8 +24,8 @@ import net.minecraft.server.v1_16_R1.PathfinderGoalBreakDoor;
 
 public class PathfinderGoalBreakDoorFaster extends PathfinderGoalBreakDoor {
 
-  private int i = 0;
-  private int j = -1;
+  private final int i = 0;
+  private final int j = -1;
 
   public PathfinderGoalBreakDoorFaster(EntityInsentient entityinsentient) {
     super(entityinsentient, enumDifficulty -> true);

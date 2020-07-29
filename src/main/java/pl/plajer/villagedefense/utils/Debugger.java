@@ -1,6 +1,6 @@
 /*
  * Village Defense - Protect villagers from hordes of zombies
- * Copyright (C) 2019  Plajer's Lair - maintained by Plajer and contributors
+ * Copyright (C) 2020  Plugily Projects - maintained by 2Wild4You, Tigerpanzer_02 and contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,10 +29,10 @@ import java.util.logging.Logger;
  */
 public class Debugger {
 
-  private static HashSet<String> listenedPerformance = new HashSet<>();
+  private static final HashSet<String> listenedPerformance = new HashSet<>();
   private static boolean enabled = false;
   private static boolean deep = false;
-  private static Logger logger = Logger.getLogger("Village Defense");
+  private static final Logger logger = Logger.getLogger("Village Defense");
 
   private Debugger() {
   }

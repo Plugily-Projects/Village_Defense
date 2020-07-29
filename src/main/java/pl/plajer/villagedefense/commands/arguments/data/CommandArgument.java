@@ -1,6 +1,6 @@
 /*
  * Village Defense - Protect villagers from hordes of zombies
- * Copyright (C) 2019  Plajer's Lair - maintained by Plajer and contributors
+ * Copyright (C) 2020  Plugily Projects - maintained by 2Wild4You, Tigerpanzer_02 and contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,10 +18,10 @@
 
 package pl.plajer.villagedefense.commands.arguments.data;
 
+import org.bukkit.command.CommandSender;
+
 import java.util.Collections;
 import java.util.List;
-
-import org.bukkit.command.CommandSender;
 
 /**
  * @author Plajer
@@ -30,29 +30,29 @@ import org.bukkit.command.CommandSender;
  */
 public class CommandArgument {
 
-  private String argumentName;
-  private List<String> permissions;
-  private ExecutorType validExecutors;
+    private final String argumentName;
+    private final List<String> permissions;
+    private final ExecutorType validExecutors;
 
-  public CommandArgument(String argumentName, String permissions, ExecutorType validExecutors) {
-    this.argumentName = argumentName;
-    this.permissions = Collections.singletonList(permissions);
-    this.validExecutors = validExecutors;
-  }
+    public CommandArgument(String argumentName, String permissions, ExecutorType validExecutors) {
+        this.argumentName = argumentName;
+        this.permissions = Collections.singletonList(permissions);
+        this.validExecutors = validExecutors;
+    }
 
-  public CommandArgument(String argumentName, List<String> permissions, ExecutorType validExecutors) {
-    this.argumentName = argumentName;
-    this.permissions = permissions;
-    this.validExecutors = validExecutors;
-  }
+    public CommandArgument(String argumentName, List<String> permissions, ExecutorType validExecutors) {
+        this.argumentName = argumentName;
+        this.permissions = permissions;
+        this.validExecutors = validExecutors;
+    }
 
-  public String getArgumentName() {
-    return argumentName;
-  }
+    public String getArgumentName() {
+        return argumentName;
+    }
 
-  public List<String> getPermissions() {
-    return permissions;
-  }
+    public List<String> getPermissions() {
+        return permissions;
+    }
 
   public ExecutorType getValidExecutors() {
     return validExecutors;

@@ -1,6 +1,6 @@
 /*
  * Village Defense - Protect villagers from hordes of zombies
- * Copyright (C) 2019  Plajer's Lair - maintained by Plajer and contributors
+ * Copyright (C) 2020  Plugily Projects - maintained by 2Wild4You, Tigerpanzer_02 and contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,34 +18,17 @@
 
 package pl.plajer.villagedefense.creatures.v1_13_R2;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
-import net.minecraft.server.v1_13_R2.DamageSource;
-import net.minecraft.server.v1_13_R2.EntityHuman;
-import net.minecraft.server.v1_13_R2.EntityIronGolem;
-import net.minecraft.server.v1_13_R2.EntityPlayer;
-import net.minecraft.server.v1_13_R2.EntityVillager;
-import net.minecraft.server.v1_13_R2.EntityZombie;
-import net.minecraft.server.v1_13_R2.GenericAttributes;
-import net.minecraft.server.v1_13_R2.Navigation;
-import net.minecraft.server.v1_13_R2.PathfinderGoalBreakDoor;
-import net.minecraft.server.v1_13_R2.PathfinderGoalFloat;
-import net.minecraft.server.v1_13_R2.PathfinderGoalLookAtPlayer;
-import net.minecraft.server.v1_13_R2.PathfinderGoalMoveTowardsRestriction;
-import net.minecraft.server.v1_13_R2.PathfinderGoalNearestAttackableTarget;
-import net.minecraft.server.v1_13_R2.PathfinderGoalRandomLookaround;
-import net.minecraft.server.v1_13_R2.PathfinderGoalZombieAttack;
-import net.minecraft.server.v1_13_R2.World;
-
+import net.minecraft.server.v1_13_R2.*;
 import org.bukkit.Bukkit;
 import org.bukkit.craftbukkit.v1_13_R2.CraftWorld;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.IronGolem;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.entity.EntityDeathEvent;
-
 import pl.plajer.villagedefense.creatures.CreatureUtils;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * Created by Tom on 14/08/2014.

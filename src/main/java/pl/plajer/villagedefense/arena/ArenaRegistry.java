@@ -1,6 +1,6 @@
 /*
  * Village Defense - Protect villagers from hordes of zombies
- * Copyright (C) 2019  Plajer's Lair - maintained by Plajer and contributors
+ * Copyright (C) 2020  Plugily Projects - maintained by 2Wild4You, Tigerpanzer_02 and contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,11 +18,6 @@
 
 package pl.plajer.villagedefense.arena;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-import java.util.logging.Level;
-
 import org.bukkit.Bukkit;
 import org.bukkit.Difficulty;
 import org.bukkit.World;
@@ -31,7 +26,6 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
 import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.handlers.language.Messages;
 import pl.plajer.villagedefense.utils.Debugger;
@@ -39,14 +33,19 @@ import pl.plajer.villagedefense.utils.constants.Constants;
 import pl.plajerlair.commonsbox.minecraft.configuration.ConfigUtils;
 import pl.plajerlair.commonsbox.minecraft.serialization.LocationSerializer;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+import java.util.logging.Level;
+
 /**
  * Created by Tom on 27/07/2014.
  */
 public class ArenaRegistry {
 
-  private static List<Arena> arenas = new ArrayList<>();
+  private static final List<Arena> arenas = new ArrayList<>();
   private static Main plugin;
-  private static List<World> arenaIngameWorlds = new ArrayList<>();
+  private static final List<World> arenaIngameWorlds = new ArrayList<>();
 
   private static int bungeeArena = -999;
 

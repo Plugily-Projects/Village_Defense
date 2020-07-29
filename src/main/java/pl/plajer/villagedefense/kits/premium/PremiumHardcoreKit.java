@@ -1,6 +1,6 @@
 /*
  * Village Defense - Protect villagers from hordes of zombies
- * Copyright (C) 2019  Plajer's Lair - maintained by Plajer and contributors
+ * Copyright (C) 2020  Plugily Projects - maintained by 2Wild4You, Tigerpanzer_02 and contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,14 +18,11 @@
 
 package pl.plajer.villagedefense.kits.premium;
 
-import java.util.List;
-
 import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-
 import pl.plajer.villagedefense.handlers.PermissionsManager;
 import pl.plajer.villagedefense.handlers.language.Messages;
 import pl.plajer.villagedefense.kits.KitRegistry;
@@ -33,25 +30,27 @@ import pl.plajer.villagedefense.kits.basekits.PremiumKit;
 import pl.plajer.villagedefense.utils.Utils;
 import pl.plajer.villagedefense.utils.WeaponHelper;
 
+import java.util.List;
+
 /**
  * Created by Tom on 28/07/2015.
  */
 public class PremiumHardcoreKit extends PremiumKit {
 
-  public PremiumHardcoreKit() {
-    setName(getPlugin().getChatManager().colorMessage(Messages.KITS_PREMIUM_HARDCORE_NAME));
-    List<String> description = Utils.splitString(getPlugin().getChatManager().colorMessage(Messages.KITS_PREMIUM_HARDCORE_DESCRIPTION), 40);
-    this.setDescription(description.toArray(new String[0]));
-    KitRegistry.registerKit(this);
-  }
+    public PremiumHardcoreKit() {
+        setName(getPlugin().getChatManager().colorMessage(Messages.KITS_PREMIUM_HARDCORE_NAME));
+        List<String> description = Utils.splitString(getPlugin().getChatManager().colorMessage(Messages.KITS_PREMIUM_HARDCORE_DESCRIPTION), 40);
+        this.setDescription(description.toArray(new String[0]));
+        KitRegistry.registerKit(this);
+    }
 
-  @Override
-  public boolean isUnlockedByPlayer(Player player) {
-    return PermissionsManager.isPremium(player) || player.hasPermission("villagedefense.kit.premiumhardcore");
-  }
+    @Override
+    public boolean isUnlockedByPlayer(Player player) {
+        return PermissionsManager.isPremium(player) || player.hasPermission("villagedefense.kit.premiumhardcore");
+    }
 
-  @Override
-  public void giveKitItems(Player player) {
+    @Override
+    public void giveKitItems(Player player) {
     player.getInventory().addItem(WeaponHelper.getEnchanted(new ItemStack(Material.DIAMOND_SWORD),
         new Enchantment[] {Enchantment.DAMAGE_ALL}, new int[] {11}));
     player.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(6);

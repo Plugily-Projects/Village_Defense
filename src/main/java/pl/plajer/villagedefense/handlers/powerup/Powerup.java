@@ -1,6 +1,6 @@
 /*
  * Village Defense - Protect villagers from hordes of zombies
- * Copyright (C) 2019  Plajer's Lair - maintained by Plajer and contributors
+ * Copyright (C) 2020  Plugily Projects - maintained by 2Wild4You, Tigerpanzer_02 and contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,9 +18,9 @@
 
 package pl.plajer.villagedefense.handlers.powerup;
 
-import java.util.function.Consumer;
-
 import pl.plajerlair.commonsbox.minecraft.compat.XMaterial;
+
+import java.util.function.Consumer;
 
 /**
  * @author Plajer
@@ -29,11 +29,11 @@ import pl.plajerlair.commonsbox.minecraft.compat.XMaterial;
  */
 public class Powerup {
 
-  private String id;
-  private String name;
-  private String description;
-  private XMaterial material;
-  private Consumer<PowerupPickupHandler> onPickup;
+  private final String id;
+  private final String name;
+  private final String description;
+  private final XMaterial material;
+  private final Consumer<PowerupPickupHandler> onPickup;
 
   public Powerup(String id, String name, String description, XMaterial material, Consumer<PowerupPickupHandler> pickup) {
     this.id = id;

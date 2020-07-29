@@ -1,6 +1,6 @@
 /*
  * Village Defense - Protect villagers from hordes of zombies
- * Copyright (C) 2019  Plajer's Lair - maintained by Plajer and contributors
+ * Copyright (C) 2020  Plugily Projects - maintained by 2Wild4You, Tigerpanzer_02 and contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,9 +18,6 @@
 
 package pl.plajer.villagedefense.kits.premium;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -32,7 +29,6 @@ import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionType;
-
 import pl.plajer.villagedefense.arena.ArenaRegistry;
 import pl.plajer.villagedefense.handlers.PermissionsManager;
 import pl.plajer.villagedefense.handlers.language.Messages;
@@ -42,12 +38,15 @@ import pl.plajer.villagedefense.user.User;
 import pl.plajer.villagedefense.utils.Utils;
 import pl.plajerlair.commonsbox.minecraft.compat.XMaterial;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by Tom on 8/02/2015.
  */
 public class NakedKit extends PremiumKit implements Listener {
 
-  private List<Material> armorTypes = new ArrayList<>();
+  private final List<Material> armorTypes = new ArrayList<>();
 
   public NakedKit() {
     setName(getPlugin().getChatManager().colorMessage(Messages.KITS_WILD_NAKED_NAME));

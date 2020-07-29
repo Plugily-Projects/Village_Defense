@@ -1,6 +1,6 @@
 /*
  * Village Defense - Protect villagers from hordes of zombies
- * Copyright (C) 2019  Plajer's Lair - maintained by Plajer and contributors
+ * Copyright (C) 2020  Plugily Projects - maintained by 2Wild4You, Tigerpanzer_02 and contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,13 +18,9 @@
 
 package pl.plajer.villagedefense.commands.arguments.admin.arena;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
-
 import pl.plajer.villagedefense.arena.Arena;
 import pl.plajer.villagedefense.arena.ArenaManager;
 import pl.plajer.villagedefense.arena.ArenaRegistry;
@@ -36,6 +32,9 @@ import pl.plajer.villagedefense.handlers.language.Messages;
 import pl.plajer.villagedefense.utils.constants.Constants;
 import pl.plajerlair.commonsbox.minecraft.configuration.ConfigUtils;
 
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * @author Plajer
  * <p>
@@ -43,7 +42,7 @@ import pl.plajerlair.commonsbox.minecraft.configuration.ConfigUtils;
  */
 public class DeleteArgument {
 
-  private Set<CommandSender> confirmations = new HashSet<>();
+  private final Set<CommandSender> confirmations = new HashSet<>();
 
   public DeleteArgument(ArgumentsRegistry registry) {
     registry.mapArgument("villagedefenseadmin", new LabeledCommandArgument("delete", "villagedefense.admin.delete", CommandArgument.ExecutorType.PLAYER,

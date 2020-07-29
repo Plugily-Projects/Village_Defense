@@ -1,6 +1,6 @@
 /*
  * Village Defense - Protect villagers from hordes of zombies
- * Copyright (C) 2019  Plajer's Lair - maintained by Plajer and contributors
+ * Copyright (C) 2020  Plugily Projects - maintained by 2Wild4You, Tigerpanzer_02 and contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,13 +18,8 @@
 
 package pl.plajer.villagedefense.user;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.logging.Level;
-
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-
 import pl.plajer.villagedefense.ConfigPreferences;
 import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.api.StatsStorage;
@@ -37,13 +32,17 @@ import pl.plajer.villagedefense.user.data.MysqlManager;
 import pl.plajer.villagedefense.user.data.UserDatabase;
 import pl.plajer.villagedefense.utils.Debugger;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+
 /**
  * Created by Tom on 27/07/2014.
  */
 public class UserManager {
 
-  private UserDatabase database;
-  private List<User> users = new ArrayList<>();
+  private final UserDatabase database;
+  private final List<User> users = new ArrayList<>();
   private static Main plugin;
 
   public UserManager(Main main) {

@@ -1,6 +1,6 @@
 /*
  * Village Defense - Protect villagers from hordes of zombies
- * Copyright (C) 2019  Plajer's Lair - maintained by Plajer and contributors
+ * Copyright (C) 2020  Plugily Projects - maintained by 2Wild4You, Tigerpanzer_02 and contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,14 +18,11 @@
 
 package pl.plajer.villagedefense.commands.arguments.game;
 
-import java.util.ArrayList;
-
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
-
 import pl.plajer.villagedefense.arena.Arena;
 import pl.plajer.villagedefense.arena.ArenaRegistry;
 import pl.plajer.villagedefense.arena.ArenaUtils;
@@ -39,6 +36,8 @@ import pl.plajer.villagedefense.utils.constants.Constants;
 import pl.plajerlair.commonsbox.minecraft.configuration.ConfigUtils;
 import pl.plajerlair.commonsbox.minecraft.serialization.LocationSerializer;
 
+import java.util.ArrayList;
+
 /**
  * @author Plajer
  * <p>
@@ -46,7 +45,7 @@ import pl.plajerlair.commonsbox.minecraft.serialization.LocationSerializer;
  */
 public class CreateArgument {
 
-  private ArgumentsRegistry registry;
+  private final ArgumentsRegistry registry;
 
   public CreateArgument(ArgumentsRegistry registry) {
     this.registry = registry;

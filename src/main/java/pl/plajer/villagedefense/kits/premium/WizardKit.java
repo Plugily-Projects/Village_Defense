@@ -1,6 +1,6 @@
 /*
  * Village Defense - Protect villagers from hordes of zombies
- * Copyright (C) 2019  Plajer's Lair - maintained by Plajer and contributors
+ * Copyright (C) 2020  Plugily Projects - maintained by 2Wild4You, Tigerpanzer_02 and contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,14 +18,7 @@
 
 package pl.plajer.villagedefense.kits.premium;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.bukkit.Bukkit;
-import org.bukkit.Color;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.Particle;
+import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
@@ -39,7 +32,6 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
-
 import pl.plajer.villagedefense.arena.ArenaRegistry;
 import pl.plajer.villagedefense.handlers.PermissionsManager;
 import pl.plajer.villagedefense.handlers.language.Messages;
@@ -52,6 +44,9 @@ import pl.plajerlair.commonsbox.minecraft.compat.XMaterial;
 import pl.plajerlair.commonsbox.minecraft.item.ItemBuilder;
 import pl.plajerlair.commonsbox.minecraft.item.ItemUtils;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author Plajer
  * <p>
@@ -59,7 +54,7 @@ import pl.plajerlair.commonsbox.minecraft.item.ItemUtils;
  */
 public class WizardKit extends PremiumKit implements Listener {
 
-  private List<Player> wizardsOnDuty = new ArrayList<>();
+  private final List<Player> wizardsOnDuty = new ArrayList<>();
 
   public WizardKit() {
     setName(getPlugin().getChatManager().colorMessage(Messages.KITS_WIZARD_NAME));
@@ -185,8 +180,8 @@ public class WizardKit extends PremiumKit implements Listener {
   private void applyMagicAttack(Player player) {
     new BukkitRunnable() {
       double positionModifier = 0;
-      Location loc = player.getLocation();
-      Vector direction = loc.getDirection().normalize();
+      final Location loc = player.getLocation();
+      final Vector direction = loc.getDirection().normalize();
 
       @Override
       public void run() {

@@ -1,6 +1,6 @@
 /*
  * Village Defense - Protect villagers from hordes of zombies
- * Copyright (C) 2019  Plajer's Lair - maintained by Plajer and contributors
+ * Copyright (C) 2020  Plugily Projects - maintained by 2Wild4You, Tigerpanzer_02 and contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,15 +18,9 @@
 
 package pl.plajer.villagedefense.handlers.items;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.stream.Collectors;
-
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
-
 import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.utils.Debugger;
 import pl.plajer.villagedefense.utils.constants.Constants;
@@ -34,14 +28,19 @@ import pl.plajerlair.commonsbox.minecraft.compat.XMaterial;
 import pl.plajerlair.commonsbox.minecraft.configuration.ConfigUtils;
 import pl.plajerlair.commonsbox.minecraft.item.ItemBuilder;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.stream.Collectors;
+
 /**
  * Created by Tom on 5/02/2016.
  */
 public class SpecialItemManager {
 
-  private List<SpecialItem> specialItems = new ArrayList<>();
-  private FileConfiguration config;
-  private Main plugin;
+  private final List<SpecialItem> specialItems = new ArrayList<>();
+  private final FileConfiguration config;
+  private final Main plugin;
 
   public SpecialItemManager(Main plugin) {
     this.plugin = plugin;
@@ -112,7 +111,7 @@ public class SpecialItemManager {
     KIT_SELECTOR("Kit-Menu"), LOBBY_LEAVE_ITEM("Leave-Lobby"), PLAYERS_LIST("Player-List"),
     SPECTATOR_OPTIONS("Spectator-Options"), SPECTATOR_LEAVE_ITEM("Leave-Spectator");
 
-    private String name;
+    private final String name;
 
     SpecialItems(String name) {
       this.name = name;

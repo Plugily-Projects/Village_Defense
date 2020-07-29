@@ -1,6 +1,6 @@
 /*
  * Village Defense - Protect villagers from hordes of zombies
- * Copyright (C) 2019  Plajer's Lair - maintained by Plajer and contributors
+ * Copyright (C) 2020  Plugily Projects - maintained by 2Wild4You, Tigerpanzer_02 and contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,8 +18,6 @@
 
 package pl.plajer.villagedefense.kits.premium;
 
-import java.util.List;
-
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
@@ -33,7 +31,6 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
-
 import pl.plajer.villagedefense.arena.ArenaRegistry;
 import pl.plajer.villagedefense.handlers.PermissionsManager;
 import pl.plajer.villagedefense.handlers.language.Messages;
@@ -46,14 +43,16 @@ import pl.plajerlair.commonsbox.minecraft.compat.XMaterial;
 import pl.plajerlair.commonsbox.minecraft.item.ItemBuilder;
 import pl.plajerlair.commonsbox.minecraft.item.ItemUtils;
 
+import java.util.List;
+
 /**
  * Created by Tom on 30/12/2015.
  */
 public class TornadoKit extends PremiumKit implements Listener {
 
-  private int maxHeight = 5;
-  private double maxRadius = 4;
-  private double radiusIncrement = maxRadius / maxHeight;
+  private final int maxHeight = 5;
+  private final double maxRadius = 4;
+  private final double radiusIncrement = maxRadius / maxHeight;
   private int active = 0;
 
   public TornadoKit() {
@@ -131,7 +130,7 @@ public class TornadoKit extends PremiumKit implements Listener {
 
   private class Tornado {
     private Location location;
-    private Vector vector;
+    private final Vector vector;
     private int angle;
     private int times;
     private int entities;

@@ -1,6 +1,6 @@
 /*
  * MurderMystery - Find the murderer, kill him and survive!
- * Copyright (C) 2020  Plajer's Lair - maintained by Tigerpanzer_02, Plajer and contributors
+ * Copyright (C) 2020  Plugily Projects - maintained by 2Wild4You, Tigerpanzer_02 and contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,9 +18,9 @@
 
 package pl.plajer.villagedefense.handlers.party;
 
-import java.util.List;
-
 import org.bukkit.entity.Player;
+
+import java.util.List;
 
 /**
  * @author Plajer
@@ -29,8 +29,8 @@ import org.bukkit.entity.Player;
  */
 public class GameParty {
 
-  private List<Player> players;
-  private Player leader;
+  private final List<Player> players;
+  private final Player leader;
 
   public GameParty(List<Player> players, Player leader) {
     this.players = players;

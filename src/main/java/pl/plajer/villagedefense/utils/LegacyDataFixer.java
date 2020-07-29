@@ -1,6 +1,6 @@
 /*
  * Village Defense - Protect villagers from hordes of zombies
- * Copyright (C) 2019  Plajer's Lair - maintained by Plajer and contributors
+ * Copyright (C) 2020  Plugily Projects - maintained by 2Wild4You, Tigerpanzer_02 and contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,15 +18,14 @@
 
 package pl.plajer.villagedefense.utils;
 
-import java.util.logging.Level;
-
 import org.bukkit.configuration.file.FileConfiguration;
-
 import pl.plajer.villagedefense.ConfigPreferences;
 import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.api.StatsStorage;
 import pl.plajer.villagedefense.utils.constants.Constants;
 import pl.plajerlair.commonsbox.minecraft.configuration.ConfigUtils;
+
+import java.util.logging.Level;
 
 /**
  * @author Plajer
@@ -36,7 +35,7 @@ import pl.plajerlair.commonsbox.minecraft.configuration.ConfigUtils;
 public class LegacyDataFixer {
 
   public static final int DATA_VERSION = 1;
-  private Main plugin;
+  private final Main plugin;
 
   public LegacyDataFixer(Main plugin) {
     this.plugin = plugin;

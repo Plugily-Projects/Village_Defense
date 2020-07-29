@@ -1,6 +1,6 @@
 /*
  * MurderMystery - Find the murderer, kill him and survive!
- * Copyright (C) 2020  Plajer's Lair - maintained by Tigerpanzer_02, Plajer and contributors
+ * Copyright (C) 2020  Plugily Projects - maintained by 2Wild4You, Tigerpanzer_02 and contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,13 +19,12 @@
 package pl.plajer.villagedefense.handlers.party;
 
 
-import java.util.stream.Collectors;
-
+import de.simonsator.partyandfriends.api.party.PartyManager;
+import de.simonsator.partyandfriends.api.party.PlayerParty;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-import de.simonsator.partyandfriends.api.party.PartyManager;
-import de.simonsator.partyandfriends.api.party.PlayerParty;
+import java.util.stream.Collectors;
 
 /**
  * @author Plajer

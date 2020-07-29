@@ -1,6 +1,6 @@
 /*
  * Village Defense - Protect villagers from hordes of zombies
- * Copyright (C) 2019  Plajer's Lair - maintained by Plajer and contributors
+ * Copyright (C) 2020  Plugily Projects - maintained by 2Wild4You, Tigerpanzer_02 and contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,37 +18,21 @@
 
 package pl.plajer.villagedefense.commands.arguments;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
-
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
-
 import pl.plajer.villagedefense.ConfigPreferences;
 import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.arena.Arena;
 import pl.plajer.villagedefense.arena.ArenaRegistry;
-import pl.plajer.villagedefense.commands.arguments.admin.AddOrbsArgument;
-import pl.plajer.villagedefense.commands.arguments.admin.ClearEntitiesArgument;
-import pl.plajer.villagedefense.commands.arguments.admin.HologramArgument;
-import pl.plajer.villagedefense.commands.arguments.admin.ListArenasArgument;
-import pl.plajer.villagedefense.commands.arguments.admin.ReloadArgument;
-import pl.plajer.villagedefense.commands.arguments.admin.RespawnArgument;
-import pl.plajer.villagedefense.commands.arguments.admin.SetPriceArgument;
-import pl.plajer.villagedefense.commands.arguments.admin.SpyChatArgument;
-import pl.plajer.villagedefense.commands.arguments.admin.TeleportArgument;
+import pl.plajer.villagedefense.commands.arguments.admin.*;
 import pl.plajer.villagedefense.commands.arguments.admin.arena.DeleteArgument;
 import pl.plajer.villagedefense.commands.arguments.admin.arena.ForceStartArgument;
 import pl.plajer.villagedefense.commands.arguments.admin.arena.SetWaveArgument;
@@ -58,18 +42,18 @@ import pl.plajer.villagedefense.commands.arguments.admin.level.SetLevelArgument;
 import pl.plajer.villagedefense.commands.arguments.data.CommandArgument;
 import pl.plajer.villagedefense.commands.arguments.data.LabelData;
 import pl.plajer.villagedefense.commands.arguments.data.LabeledCommandArgument;
-import pl.plajer.villagedefense.commands.arguments.game.CreateArgument;
-import pl.plajer.villagedefense.commands.arguments.game.JoinArguments;
-import pl.plajer.villagedefense.commands.arguments.game.LeaderboardArgument;
-import pl.plajer.villagedefense.commands.arguments.game.LeaveArgument;
-import pl.plajer.villagedefense.commands.arguments.game.RandomJoinArgument;
-import pl.plajer.villagedefense.commands.arguments.game.SelectKitArgument;
-import pl.plajer.villagedefense.commands.arguments.game.StatsArgument;
+import pl.plajer.villagedefense.commands.arguments.game.*;
 import pl.plajer.villagedefense.commands.completion.TabCompletion;
 import pl.plajer.villagedefense.handlers.language.Messages;
 import pl.plajer.villagedefense.handlers.setup.SetupInventory;
 import pl.plajer.villagedefense.utils.Utils;
 import pl.plajerlair.commonsbox.string.StringMatcher;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @author Plajer
@@ -78,10 +62,10 @@ import pl.plajerlair.commonsbox.string.StringMatcher;
  */
 public class ArgumentsRegistry implements CommandExecutor {
 
-  private SpyChatArgument spyChat;
-  private Main plugin;
-  private TabCompletion tabCompletion;
-  private Map<String, List<CommandArgument>> mappedArguments = new HashMap<>();
+  private final SpyChatArgument spyChat;
+  private final Main plugin;
+  private final TabCompletion tabCompletion;
+  private final Map<String, List<CommandArgument>> mappedArguments = new HashMap<>();
 
   public ArgumentsRegistry(Main plugin) {
     this.plugin = plugin;

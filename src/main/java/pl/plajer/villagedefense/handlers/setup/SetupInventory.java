@@ -1,6 +1,6 @@
 /*
  * Village Defense - Protect villagers from hordes of zombies
- * Copyright (C) 2020  Plajer's Lair - maintained by Plajer and contributors
+ * Copyright (C) 2020  Plugily Projects - maintained by 2Wild4You, Tigerpanzer_02 and contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,12 +20,8 @@ package pl.plajer.villagedefense.handlers.setup;
 
 import com.github.stefvanschie.inventoryframework.Gui;
 import com.github.stefvanschie.inventoryframework.pane.StaticPane;
-
-import java.util.Random;
-
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
-
 import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.arena.Arena;
 import pl.plajer.villagedefense.handlers.setup.components.ArenaRegisterComponent;
@@ -35,19 +31,21 @@ import pl.plajer.villagedefense.handlers.setup.components.SpawnComponents;
 import pl.plajer.villagedefense.utils.constants.Constants;
 import pl.plajerlair.commonsbox.minecraft.configuration.ConfigUtils;
 
+import java.util.Random;
+
 /**
  * Created by Tom on 15/06/2015.
  */
 public class SetupInventory {
 
   public static final String VIDEO_LINK = "https://tutorial.plugily.xyz";
-  private static Random random = new Random();
+  private static final Random random = new Random();
   private static Main plugin;
-  private FileConfiguration config;
-  private Arena arena;
-  private Player player;
+  private final FileConfiguration config;
+  private final Arena arena;
+  private final Player player;
   private Gui gui;
-  private SetupUtilities setupUtilities;
+  private final SetupUtilities setupUtilities;
 
   public SetupInventory(Arena arena, Player player) {
     this.config = ConfigUtils.getConfig(plugin, Constants.Files.ARENAS.getName());

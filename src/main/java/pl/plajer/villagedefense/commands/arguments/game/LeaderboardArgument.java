@@ -1,6 +1,6 @@
 /*
  * Village Defense - Protect villagers from hordes of zombies
- * Copyright (C) 2019  Plajer's Lair - maintained by Plajer and contributors
+ * Copyright (C) 2020  Plugily Projects - maintained by 2Wild4You, Tigerpanzer_02 and contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,6 +18,17 @@
 
 package pl.plajer.villagedefense.commands.arguments.game;
 
+import org.apache.commons.lang.StringUtils;
+import org.bukkit.Bukkit;
+import org.bukkit.command.CommandSender;
+import pl.plajer.villagedefense.ConfigPreferences;
+import pl.plajer.villagedefense.api.StatsStorage;
+import pl.plajer.villagedefense.commands.arguments.ArgumentsRegistry;
+import pl.plajer.villagedefense.commands.arguments.data.CommandArgument;
+import pl.plajer.villagedefense.commands.completion.CompletableArgument;
+import pl.plajer.villagedefense.handlers.language.Messages;
+import pl.plajer.villagedefense.user.data.MysqlManager;
+
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -27,18 +38,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.UUID;
 
-import org.apache.commons.lang.StringUtils;
-import org.bukkit.Bukkit;
-import org.bukkit.command.CommandSender;
-
-import pl.plajer.villagedefense.ConfigPreferences;
-import pl.plajer.villagedefense.api.StatsStorage;
-import pl.plajer.villagedefense.commands.arguments.ArgumentsRegistry;
-import pl.plajer.villagedefense.commands.arguments.data.CommandArgument;
-import pl.plajer.villagedefense.commands.completion.CompletableArgument;
-import pl.plajer.villagedefense.handlers.language.Messages;
-import pl.plajer.villagedefense.user.data.MysqlManager;
-
 /**
  * @author Plajer
  * <p>
@@ -46,7 +45,7 @@ import pl.plajer.villagedefense.user.data.MysqlManager;
  */
 public class LeaderboardArgument {
 
-  private ArgumentsRegistry registry;
+  private final ArgumentsRegistry registry;
 
   public LeaderboardArgument(ArgumentsRegistry registry) {
     this.registry = registry;

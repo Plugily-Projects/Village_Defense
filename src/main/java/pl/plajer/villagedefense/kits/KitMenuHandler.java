@@ -1,6 +1,6 @@
 /*
  * Village Defense - Protect villagers from hordes of zombies
- * Copyright (C) 2019  Plajer's Lair - maintained by Plajer and contributors
+ * Copyright (C) 2020  Plugily Projects - maintained by 2Wild4You, Tigerpanzer_02 and contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,7 +21,6 @@ package pl.plajer.villagedefense.kits;
 import com.github.stefvanschie.inventoryframework.Gui;
 import com.github.stefvanschie.inventoryframework.GuiItem;
 import com.github.stefvanschie.inventoryframework.pane.StaticPane;
-
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -29,7 +28,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
-
 import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.api.event.player.VillagePlayerChooseKitEvent;
 import pl.plajer.villagedefense.arena.Arena;
@@ -50,10 +48,10 @@ import pl.plajerlair.commonsbox.minecraft.item.ItemUtils;
  */
 public class KitMenuHandler implements Listener {
 
-  private Main plugin;
-  private String unlockedString;
-  private String lockedString;
-  private SpecialItem kitItem;
+  private final Main plugin;
+  private final String unlockedString;
+  private final String lockedString;
+  private final SpecialItem kitItem;
 
   public KitMenuHandler(Main plugin) {
     this.plugin = plugin;

@@ -1,6 +1,6 @@
 /*
  * Village Defense - Protect villagers from hordes of zombies
- * Copyright (C) 2019  Plajer's Lair - maintained by Plajer and contributors
+ * Copyright (C) 2020  Plugily Projects - maintained by 2Wild4You, Tigerpanzer_02 and contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,15 +19,7 @@
 package pl.plajer.villagedefense.user.data;
 
 import com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException;
-
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.logging.Level;
-
 import org.bukkit.Bukkit;
-
 import org.bukkit.configuration.file.FileConfiguration;
 import pl.plajer.villagedefense.Main;
 import pl.plajer.villagedefense.api.StatsStorage;
@@ -36,6 +28,12 @@ import pl.plajer.villagedefense.utils.MessageUtils;
 import pl.plajerlair.commonsbox.database.MysqlDatabase;
 import pl.plajerlair.commonsbox.minecraft.configuration.ConfigUtils;
 
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.logging.Level;
+
 /**
  * @author Plajer
  * <p>
@@ -43,8 +41,8 @@ import pl.plajerlair.commonsbox.minecraft.configuration.ConfigUtils;
  */
 public class MysqlManager implements UserDatabase {
 
-  private Main plugin;
-  private MysqlDatabase database;
+  private final Main plugin;
+  private final MysqlDatabase database;
 
   public MysqlManager(Main plugin) {
     this.plugin = plugin;
@@ -52,17 +50,17 @@ public class MysqlManager implements UserDatabase {
     Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
       try (Connection connection = database.getConnection();
            Statement statement = connection.createStatement()) {
-        statement.executeUpdate("CREATE TABLE IF NOT EXISTS `"+getTableName()+"` (\n"
-            + "  `UUID` char(36) NOT NULL PRIMARY KEY,\n"
-            + "  `name` varchar(32) NOT NULL,\n"
-            + "  `kills` int(11) NOT NULL DEFAULT '0',\n"
-            + "  `deaths` int(11) NOT NULL DEFAULT '0',\n"
-            + "  `highestwave` int(11) NOT NULL DEFAULT '0',\n"
-            + "  `gamesplayed` int(11) NOT NULL DEFAULT '0',\n"
-            + "  `level` int(11) NOT NULL DEFAULT '0',\n"
-            + "  `xp` int(11) NOT NULL DEFAULT '0',\n"
-            + "  `orbs` int(11) NOT NULL DEFAULT '0'\n"
-            + ");");
+        statement.executeUpdate("CREATE TABLE IF NOT EXISTS `" + getTableName() + "` (\n"
+                + "  `UUID` char(36) NOT NULL PRIMARY KEY,\n"
+                + "  `name` varchar(32) NOT NULL,\n"
+                + "  `kills` int(11) NOT NULL DEFAULT '0',\n"
+                + "  `deaths` int(11) NOT NULL DEFAULT '0',\n"
+                + "  `highestwave` int(11) NOT NULL DEFAULT '0',\n"
+                + "  `gamesplayed` int(11) NOT NULL DEFAULT '0',\n"
+                + "  `level` int(11) NOT NULL DEFAULT '0',\n"
+                + "  `xp` int(11) NOT NULL DEFAULT '0',\n"
+                + "  `orbs` int(11) NOT NULL DEFAULT '0'\n"
+                + ");");
 
         //temporary workaround
         try {

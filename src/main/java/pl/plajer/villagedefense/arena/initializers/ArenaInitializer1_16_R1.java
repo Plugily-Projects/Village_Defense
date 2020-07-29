@@ -1,6 +1,6 @@
 /*
  * Village Defense - Protect villagers from hordes of zombies
- * Copyright (C) 2019  Plajer's Lair - maintained by Plajer and contributors
+ * Copyright (C) 2020  Plugily Projects - maintained by 2Wild4You, Tigerpanzer_02 and contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -48,7 +48,7 @@ import java.util.Random;
 public class ArenaInitializer1_16_R1 extends Arena {
 
   private World world;
-  private Main plugin;
+  private final Main plugin;
 
   public ArenaInitializer1_16_R1(String id, Main plugin) {
     super(id);

@@ -1,6 +1,6 @@
 /*
  * Village Defense - Protect villagers from hordes of zombies
- * Copyright (C) 2019  Plajer's Lair - maintained by Plajer and contributors
+ * Copyright (C) 2020  Plugily Projects - maintained by 2Wild4You, Tigerpanzer_02 and contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,12 +18,11 @@
 
 package pl.plajer.villagedefense.creatures.v1_12_R1;
 
-import java.util.LinkedHashSet;
-
 import net.minecraft.server.v1_12_R1.EntityCreature;
 import net.minecraft.server.v1_12_R1.PathfinderGoalSelector;
-
 import pl.plajer.villagedefense.creatures.CreatureUtils;
+
+import java.util.LinkedHashSet;
 
 /**
  * Internal helper class
