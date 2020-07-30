@@ -9,6 +9,9 @@ deploy webhooks to print changelog successfully
 
 That's all, matcher will stop when detects next line started with `###` match
 
+### 4.5.1 Release (30.07.2020)
+* (Developer Alert - Class rename)
+
 ### 4.5.0 Release (01.07.2020 - 26.07.2020)
 * Added 1.16.x compatibility 
 * Added missing 1.14 & 1.15 & 1.16 Materials
