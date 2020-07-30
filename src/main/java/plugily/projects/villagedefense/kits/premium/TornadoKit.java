@@ -183,7 +183,7 @@ public class TornadoKit extends PremiumKit implements Listener {
     }
 
     private void pushNearbyZombies() {
-      for (Entity entity : getLocation().getWorld().getNearbyLivingEntities(getLocation(), 2, 2, 2)) {
+      for (Entity entity : getLocation().getWorld().getNearbyEntities(getLocation(), 2, 2, 2)) {
         if (entity.getType() == EntityType.ZOMBIE) {
           entities++;
           entity.setVelocity(getVector().multiply(2).setY(0).add(new Vector(0, 1, 0)));
