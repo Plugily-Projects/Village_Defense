@@ -72,12 +72,14 @@ public class ChatEvents implements Listener {
           eventMessage = eventMessage.replaceAll(Pattern.quote(regexChar), "");
         }
       }
-      String message = formatChatPlaceholders(LanguageManager.getLanguageMessage("In-Game.Game-Chat-Format"), plugin.getUserManager().getUser(event.getPlayer()), eventMessage);
-      message = message.replace("%kit%", plugin.getUserManager().getUser(event.getPlayer()).getKit().getName());
-      if (plugin.getServer().getPluginManager().isPluginEnabled("PlaceholderAPI") && PlaceholderAPI.containsPlaceholders(message)) {
-        message = PlaceholderAPI.setPlaceholders(event.getPlayer(), message);
+      event.setMessage(ChatColor.stripColor(eventMessage));
+
+      String format = formatChatPlaceholders(LanguageManager.getLanguageMessage("In-Game.Game-Chat-Format"), plugin.getUserManager().getUser(event.getPlayer()));
+      format = format.replace("%kit%", plugin.getUserManager().getUser(event.getPlayer()).getKit().getName());
+      if (plugin.getServer().getPluginManager().isPluginEnabled("PlaceholderAPI") && PlaceholderAPI.containsPlaceholders(format)) {
+        format = PlaceholderAPI.setPlaceholders(event.getPlayer(), format);
       }
-      event.setMessage(message);
+      event.setFormat(format);
     }
     if (!plugin.getConfigPreferences().getOption(ConfigPreferences.Option.DISABLE_SEPARATE_CHAT)) {
       event.getRecipients().removeIf(player -> !plugin.getArgumentsRegistry().getSpyChat().isSpyChatEnabled(player));
@@ -85,7 +87,7 @@ public class ChatEvents implements Listener {
     }
   }
 
-  private String formatChatPlaceholders(String message, User user, String saidMessage) {
+  private String formatChatPlaceholders(String message, User user) {
     String formatted = message;
     formatted = plugin.getChatManager().colorRawMessage(formatted);
     formatted = StringUtils.replace(formatted, "%level%", String.valueOf(user.getStat(StatsStorage.StatisticType.LEVEL)));
@@ -94,8 +96,8 @@ public class ChatEvents implements Listener {
     } else {
       formatted = StringUtils.replace(formatted, "%kit%", user.getKit().getName());
     }
-    formatted = StringUtils.replace(formatted, "%player%", user.getPlayer().getName());
-    formatted = StringUtils.replace(formatted, "%message%", ChatColor.stripColor(saidMessage));
+    formatted = StringUtils.replace(formatted, "%player%", "%1$s");
+    formatted = StringUtils.replace(formatted, "%message%", "%2$s");
     if (plugin.getServer().getPluginManager().isPluginEnabled("PlaceholderAPI") && PlaceholderAPI.containsPlaceholders(formatted)) {
       formatted = PlaceholderAPI.setPlaceholders(user.getPlayer(), formatted);
     }
