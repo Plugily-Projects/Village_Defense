@@ -36,7 +36,7 @@ public class ExceptionLogHandler extends Handler {
 
   //these classes if found in stacktraces won't be reported
   //to the Error Service
-  private final List<String> blacklistedClasses = Arrays.asList("pl.plajer.villagedefense.user.data.MysqlManager", "pl.plajer.villagedefense.plajerlair.commonsbox.database.MysqlDatabase");
+  private final List<String> blacklistedClasses = Arrays.asList("plugily.projects.villagedefense.user.data.MysqlManager", "plugily.projects.villagedefense.plajerlair.commonsbox.database.MysqlDatabase");
   private final Main plugin;
 
   public ExceptionLogHandler(Main plugin) {
@@ -65,17 +65,17 @@ public class ExceptionLogHandler extends Handler {
         return;
       }
       if (throwable.getCause() != null && throwable.getCause().getStackTrace() != null) {
-        if (throwable.getCause().getStackTrace()[0] == null){
+        if (throwable.getCause().getStackTrace()[0] == null) {
           return;
         }
-        if (!throwable.getCause().getStackTrace()[0].getClassName().contains("pl.plajer.villagedefense")) {
+        if (!throwable.getCause().getStackTrace()[0].getClassName().contains("plugily.projects.villagedefense")) {
           return;
         }
       }
       if (throwable.getStackTrace()[0] == null) {
         return;
       }
-      if (!throwable.getStackTrace()[0].getClassName().contains("pl.plajer.villagedefense")) {
+      if (!throwable.getStackTrace()[0].getClassName().contains("plugily.projects.villagedefense")) {
         return;
       }
       if (containsBlacklistedClass(throwable)) {
