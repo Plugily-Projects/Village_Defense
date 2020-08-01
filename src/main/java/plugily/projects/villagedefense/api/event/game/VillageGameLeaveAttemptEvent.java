@@ -47,6 +47,7 @@ public class VillageGameLeaveAttemptEvent extends VillageEvent {
     return player;
   }
 
+  @Override
   public HandlerList getHandlers() {
     return HANDLERS;
   }

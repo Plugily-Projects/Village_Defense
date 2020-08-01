@@ -43,6 +43,7 @@ public class VillageGameStateChangeEvent extends VillageEvent {
     return HANDLERS;
   }
 
+  @Override
   public HandlerList getHandlers() {
     return HANDLERS;
   }

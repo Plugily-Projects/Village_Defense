@@ -26,6 +26,7 @@ import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.arena.Arena;
 import plugily.projects.villagedefense.handlers.language.LanguageManager;
 import plugily.projects.villagedefense.handlers.language.Messages;
+import plugily.projects.villagedefense.utils.Utils;
 
 /**
  * Created by Tom on 27/07/2014.
@@ -37,7 +38,7 @@ public class ChatManager {
 
   public ChatManager(Main plugin, String prefix) {
     this.plugin = plugin;
-    this.prefix = prefix;
+    this.prefix = colorRawMessage(prefix);
   }
 
   /**
@@ -48,6 +49,10 @@ public class ChatManager {
   }
 
   public String colorRawMessage(String message) {
+    if (message.contains("#") && plugin.is1_16_R1()) {
+      message = Utils.matchColorRegex(message);
+    }
+
     return ChatColor.translateAlternateColorCodes('&', message);
   }
 
@@ -78,7 +83,7 @@ public class ChatManager {
   }
 
   public String colorMessage(Messages message) {
-      return ChatColor.translateAlternateColorCodes('&', LanguageManager.getLanguageMessage(message.getAccessor()));
+      return colorRawMessage(LanguageManager.getLanguageMessage(message.getAccessor()));
   }
 
   public String formatMessage(Arena arena, String message, int integer) {

@@ -22,8 +22,6 @@ import org.bukkit.entity.Player;
 import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.utils.Debugger;
 
-import java.util.logging.Level;
-
 /**
  * Created by Tom on 14/08/2014.
  */
@@ -94,7 +92,7 @@ public class PermissionsManager {
     PermissionsManager.setMvp(plugin.getConfig().getString("Basic-Permissions.Mvp-Permission", "villagedefense.mvp"));
     PermissionsManager.setElite(plugin.getConfig().getString("Basic-Permissions.Elite-Permission", "villagedefense.elite"));
     PermissionsManager.setJoinPerm(plugin.getConfig().getString("Basic-Permissions.Join-Permission", "villagedefense.join.<arena>"));
-    Debugger.debug(Level.INFO, "Basic permissions registered");
+    Debugger.debug("Basic permissions registered");
   }
 
 }

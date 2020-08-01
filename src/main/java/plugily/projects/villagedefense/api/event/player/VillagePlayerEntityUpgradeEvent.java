@@ -33,6 +33,7 @@ public class VillagePlayerEntityUpgradeEvent extends VillageEvent {
     return HANDLERS;
   }
 
+  @Override
   public HandlerList getHandlers() {
     return HANDLERS;
   }

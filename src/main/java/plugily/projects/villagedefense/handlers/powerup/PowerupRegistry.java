@@ -73,7 +73,7 @@ public class PowerupRegistry {
   }
 
   private void registerPowerups() {
-    Debugger.debug(Level.INFO, "[PowerupRegistry] Registering power ups");
+    Debugger.debug("[PowerupRegistry] Registering power ups");
     long start = System.currentTimeMillis();
 
     ChatManager chatManager = plugin.getChatManager();
@@ -138,7 +138,7 @@ public class PowerupRegistry {
         p.sendTitle(pickup.getPowerup().getName(), subTitle, 5, 30, 5);
       }
     }));
-    Debugger.debug(Level.INFO, "[PowerupRegistry] Registered all powerups took {0}ms", System.currentTimeMillis() - start);
+    Debugger.debug("[PowerupRegistry] Registered all powerups took {0}ms", System.currentTimeMillis() - start);
   }
 
   /**

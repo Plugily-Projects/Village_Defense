@@ -118,7 +118,7 @@ public class RewardsFactory {
     if (!enabled) {
       return;
     }
-    Debugger.debug(Level.INFO, "[RewardsFactory] Starting rewards registration");
+    Debugger.debug("[RewardsFactory] Starting rewards registration");
     long start = System.currentTimeMillis();
 
     Map<Reward.RewardType, Integer> registeredRewards = new EnumMap<>(Reward.RewardType.class);
@@ -143,9 +143,9 @@ public class RewardsFactory {
       }
     }
     for (Map.Entry<Reward.RewardType, Integer> entry : registeredRewards.entrySet()) {
-      Debugger.debug(Level.INFO, "[RewardsFactory] Registered {0} {1} rewards!", entry.getValue(), entry.getKey().name());
+      Debugger.debug("[RewardsFactory] Registered {0} {1} rewards!", entry.getValue(), entry.getKey().name());
     }
-    Debugger.debug(Level.INFO, "[RewardsFactory] Registered all rewards took {0}ms", System.currentTimeMillis() - start);
+    Debugger.debug("[RewardsFactory] Registered all rewards took {0}ms", System.currentTimeMillis() - start);
   }
 
 }

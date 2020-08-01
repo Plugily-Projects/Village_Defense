@@ -4,8 +4,8 @@ import com.gmail.filoghost.holographicdisplays.api.Hologram;
 import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import plugily.projects.villagedefense.Main;
@@ -131,7 +131,7 @@ public class LeaderboardHologram {
   }
 
   private String color(String message) {
-    return ChatColor.translateAlternateColorCodes('&', message);
+    return JavaPlugin.getPlugin(Main.class).getChatManager().colorRawMessage(message);
   }
 
 }

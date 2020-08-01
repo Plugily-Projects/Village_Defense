@@ -239,11 +239,11 @@ public class ZombieSpawnManager {
     if (localIdleProcess > 0) {
       localIdleProcess--;
       return false;
-    } else {
-      applyIdle(arena.getOption(ArenaOption.ZOMBIE_IDLE_PROCESS));
-      //continue spawning
-      return true;
     }
+
+    applyIdle(arena.getOption(ArenaOption.ZOMBIE_IDLE_PROCESS));
+    //continue spawning
+    return true;
   }
 
 }

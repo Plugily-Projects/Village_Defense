@@ -66,9 +66,7 @@ public class MapRestorerManager {
   }
 
   public void clearZombiesFromArena() {
-    for (Zombie zombie : arena.getZombies()) {
-      zombie.remove();
-    }
+    arena.getZombies().forEach(Zombie::remove);
     arena.getZombies().clear();
   }
 
@@ -81,23 +79,17 @@ public class MapRestorerManager {
   }
 
   public void clearGolemsFromArena() {
-    for (IronGolem ironGolem : arena.getIronGolems()) {
-      ironGolem.remove();
-    }
+    arena.getIronGolems().forEach(IronGolem::remove);
     arena.getIronGolems().clear();
   }
 
   public void clearVillagersFromArena() {
-    for (Villager villager : arena.getVillagers()) {
-      villager.remove();
-    }
+    arena.getVillagers().forEach(Villager::remove);
     arena.getVillagers().clear();
   }
 
   public void clearWolvesFromArena() {
-    for (Wolf wolf : arena.getWolves()) {
-      wolf.remove();
-    }
+    arena.getWolves().forEach(Wolf::remove);
     arena.getWolves().clear();
   }
 
@@ -107,8 +99,14 @@ public class MapRestorerManager {
       Block block = entry.getKey().getBlock();
       Byte doorData = entry.getValue();
       if (arena.getPlugin().is1_11_R1() || arena.getPlugin().is1_12_R1()) {
-        int id = Material.WOODEN_DOOR.getId();
-        block.setTypeIdAndData(id, doorData, false);
+        int id = Material.getMaterial("WOODEN_DOOR").getId();
+        try {
+          Block.class.getDeclaredMethod("setTypeIdAndData", int.class, Byte.class, boolean.class)
+            .invoke(block, id, doorData, false);
+        } catch (Exception e) {
+          e.printStackTrace();
+        }
+
         i++;
       } else {
         //idk how does this work

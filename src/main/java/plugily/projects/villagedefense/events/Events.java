@@ -57,7 +57,6 @@ import plugily.projects.villagedefense.utils.Utils;
 import plugily.projects.villagedefense.utils.constants.CompatMaterialConstants;
 
 import java.util.Map;
-import java.util.logging.Level;
 
 /**
  * Created by Tom on 16/08/2014.
@@ -259,7 +258,7 @@ public class Events implements Listener {
       event.setCancelled(true);
       if (plugin.getConfigPreferences().getOption(ConfigPreferences.Option.BUNGEE_ENABLED)) {
         plugin.getBungeeManager().connectToHub(event.getPlayer());
-        Debugger.debug(Level.INFO, "{0} has left the arena {1}! Teleported to the Hub server.", event.getPlayer().getName(), arena.getId());
+        Debugger.debug("{0} has left the arena {1}! Teleported to the Hub server.", event.getPlayer().getName(), arena.getId());
       } else {
         ArenaManager.leaveAttempt(event.getPlayer(), arena);
       }
@@ -366,27 +365,22 @@ public class Events implements Listener {
   @EventHandler(priority = EventPriority.HIGH)
   //highest priority to fully protect our game (i didn't set it because my test server was destroyed, n-no......)
   public void onBlockBreakEvent(BlockBreakEvent event) {
-    if (!ArenaRegistry.isInArena(event.getPlayer())) {
-      return;
+    if (ArenaRegistry.isInArena(event.getPlayer())) {
+      event.setCancelled(true);
     }
-    event.setCancelled(true);
   }
 
   @EventHandler(priority = EventPriority.HIGH)
   //highest priority to fully protect our game (i didn't set it because my test server was destroyed, n-no......)
   public void onBuild(BlockPlaceEvent event) {
-    if (!ArenaRegistry.isInArena(event.getPlayer())) {
-      return;
+    if (ArenaRegistry.isInArena(event.getPlayer())) {
+      event.setCancelled(true);
     }
-    event.setCancelled(true);
   }
 
   @EventHandler
   public void onCraft(PlayerInteractEvent event) {
-    if (!ArenaRegistry.isInArena(event.getPlayer())) {
-      return;
-    }
-    if (event.getPlayer().getTargetBlock(null, 7).getType() == XMaterial.CRAFTING_TABLE.parseMaterial()) {
+    if (ArenaRegistry.isInArena(event.getPlayer()) && event.getPlayer().getTargetBlock(null, 7).getType() == XMaterial.CRAFTING_TABLE.parseMaterial()) {
       event.setCancelled(true);
     }
   }

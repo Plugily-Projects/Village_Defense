@@ -22,7 +22,6 @@ import com.github.stefvanschie.inventoryframework.Gui;
 import com.github.stefvanschie.inventoryframework.GuiItem;
 import com.github.stefvanschie.inventoryframework.pane.StaticPane;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.attribute.Attribute;
@@ -163,7 +162,7 @@ public class EntityUpgradeMenu {
   }
 
   private String color(Messages value) {
-    return ChatColor.translateAlternateColorCodes('&', plugin.getLanguageConfig().getString(value.getAccessor()));
+    return plugin.getChatManager().colorRawMessage(plugin.getLanguageConfig().getString(value.getAccessor()));
   }
 
   private void applyStatisticsBookOfEntityToPane(StaticPane pane, LivingEntity en) {
@@ -265,10 +264,7 @@ public class EntityUpgradeMenu {
    * @return current tier of upgrade for target entity
    */
   public int getTier(Entity en, Upgrade upgrade) {
-    if (!en.hasMetadata(upgrade.getMetadataAccessor())) {
-      return 0;
-    }
-    return en.getMetadata(upgrade.getMetadataAccessor()).get(0).asInt();
+    return !en.hasMetadata(upgrade.getMetadataAccessor()) ? 0 : en.getMetadata(upgrade.getMetadataAccessor()).get(0).asInt();
   }
 
   public Main getPlugin() {

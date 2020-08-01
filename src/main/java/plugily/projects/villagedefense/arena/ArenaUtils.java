@@ -23,7 +23,6 @@ import org.bukkit.Particle;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Zombie;
-import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import pl.plajerlair.commonsbox.minecraft.serialization.InventorySerializer;
 import plugily.projects.villagedefense.ConfigPreferences;
@@ -67,9 +66,7 @@ public class ArenaUtils {
     }
     player.setGlowing(false);
     player.setGameMode(GameMode.SURVIVAL);
-    for (PotionEffect effect : player.getActivePotionEffects()) {
-      player.removePotionEffect(effect.getType());
-    }
+    player.getActivePotionEffects().forEach(effect -> player.removePotionEffect(effect.getType()));
     player.setFlying(false);
     player.setAllowFlight(false);
     player.getInventory().clear();

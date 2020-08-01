@@ -19,9 +19,11 @@
 package plugily.projects.villagedefense.handlers.setup;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.plugin.java.JavaPlugin;
+
 import pl.plajerlair.commonsbox.minecraft.serialization.LocationSerializer;
+import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.arena.Arena;
 
 /**
@@ -68,14 +70,11 @@ public class SetupUtilities {
 
   public int getMinimumValueHigherThanZero(String path) {
     int amount = config.getInt("instances." + arena.getId() + "." + path);
-    if (amount == 0) {
-      amount = 1;
-    }
-    return amount;
+    return amount == 0 ? 1 : amount;
   }
 
   private String color(String msg) {
-    return ChatColor.translateAlternateColorCodes('&', msg);
+    return JavaPlugin.getPlugin(Main.class).getChatManager().colorRawMessage(msg);
   }
 
 }

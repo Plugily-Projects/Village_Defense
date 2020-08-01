@@ -23,13 +23,11 @@ import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
 import me.tigerhix.lib.scoreboard.ScoreboardLib;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.java.JavaPluginLoader;
-import org.bukkit.potion.PotionEffect;
 import org.jetbrains.annotations.TestOnly;
 import pl.plajerlair.commonsbox.database.MysqlDatabase;
 import pl.plajerlair.commonsbox.minecraft.configuration.ConfigUtils;
@@ -177,31 +175,30 @@ public class Main extends JavaPlugin {
       return;
     }
 
+    long start = System.currentTimeMillis();
+
     ServiceRegistry.registerService(this);
     exceptionLogHandler = new ExceptionLogHandler(this);
     Messages.init(this);
     LanguageManager.init(this);
     saveDefaultConfig();
     Debugger.setEnabled(getDescription().getVersion().contains("b") || getConfig().getBoolean("Debug", false));
-    Debugger.debug(Level.INFO, "[System] Initialization start");
+    Debugger.debug("[System] Initialization start");
     if (getDescription().getVersion().contains("b") || getConfig().getBoolean("Developer-Mode", false)) {
       Debugger.deepDebug(true);
       Debugger.debug(Level.FINE, "Deep debug enabled");
-      for (String listenable : new ArrayList<>(getConfig().getStringList("Performance-Listenable"))) {
-        Debugger.monitorPerformance(listenable);
-      }
-    }
-    long start = System.currentTimeMillis();
 
-    chatManager = new ChatManager(this, ChatColor.translateAlternateColorCodes('&',
-        LanguageManager.getLanguageMessage("In-Game.Plugin-Prefix")));
+      new ArrayList<>(getConfig().getStringList("Performance-Listenable")).forEach(Debugger::monitorPerformance);
+    }
+
+    chatManager = new ChatManager(this, LanguageManager.getLanguageMessage("In-Game.Plugin-Prefix"));
     configPreferences = new ConfigPreferences(this);
     setupFiles();
     new LegacyDataFixer(this);
     this.languageConfig = ConfigUtils.getConfig(this, "language");
     initializeClasses();
     checkUpdate();
-    Debugger.debug(Level.INFO, "[System] Initialization finished took {0}ms", System.currentTimeMillis() - start);
+    Debugger.debug("[System] Initialization finished took {0}ms", System.currentTimeMillis() - start);
   }
 
   private boolean validateIfPluginShouldStart() {
@@ -209,8 +206,8 @@ public class Main extends JavaPlugin {
     if (!(version.equalsIgnoreCase("v1_11_R1") || version.equalsIgnoreCase("v1_12_R1") || version.equalsIgnoreCase("v1_13_R1") || version.equalsIgnoreCase("v1_13_R2") ||
         version.equalsIgnoreCase("v1_14_R1") || version.equalsIgnoreCase("v1_15_R1") || version.equalsIgnoreCase("v1_16_R1"))) {
       MessageUtils.thisVersionIsNotSupported();
-      Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "Your server version is not supported by Village Defense!");
-      Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "Sadly, we must shut off. Maybe you consider changing your server version?");
+      Debugger.sendConsoleMsg("&cYour server version is not supported by Village Defense!");
+      Debugger.sendConsoleMsg("&cSadly, we must shut off. Maybe you consider changing your server version?");
       forceDisable = true;
       getServer().getPluginManager().disablePlugin(this);
       return false;
@@ -219,8 +216,8 @@ public class Main extends JavaPlugin {
       Class.forName("org.spigotmc.SpigotConfig");
     } catch (Exception e) {
       MessageUtils.thisVersionIsNotSupported();
-      Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "Your server software is not supported by Village Defense!");
-      Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "We support only Spigot and Spigot forks only! Shutting off...");
+      Debugger.sendConsoleMsg("&cYour server software is not supported by Village Defense!");
+      Debugger.sendConsoleMsg("&cWe support only Spigot and Spigot forks only! Shutting off...");
       forceDisable = true;
       getServer().getPluginManager().disablePlugin(this);
       return false;
@@ -242,7 +239,7 @@ public class Main extends JavaPlugin {
     new ChatEvents(this);
     setupPluginMetrics();
     if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
-      Debugger.debug(Level.INFO, "Hooking into PlaceholderAPI");
+      Debugger.debug("Hooking into PlaceholderAPI");
       new PlaceholderManager().register();
     }
     new Events(this);
@@ -258,25 +255,25 @@ public class Main extends JavaPlugin {
     KitRegistry.init(this);
     User.cooldownHandlerTask();
     if (configPreferences.getOption(ConfigPreferences.Option.DATABASE_ENABLED)) {
-      Debugger.debug(Level.INFO, "Database enabled");
+      Debugger.debug("Database enabled");
       FileConfiguration config = ConfigUtils.getConfig(this, Constants.Files.MYSQL.getName());
       database = new MysqlDatabase(config.getString("user"), config.getString("password"), config.getString("address"));
     }
     if (configPreferences.getOption(ConfigPreferences.Option.BUNGEE_ENABLED)) {
-      Debugger.debug(Level.INFO, "Bungee enabled");
+      Debugger.debug("Bungee enabled");
       bungeeManager = new BungeeManager(this);
       new MiscEvents(this);
     }
     if (configPreferences.getOption(ConfigPreferences.Option.HOLOGRAMS_ENABLED)) {
       if (Bukkit.getServer().getPluginManager().isPluginEnabled("HolographicDisplays")) {
-        Debugger.debug(Level.INFO, "Hooking into HolographicDisplays");
+        Debugger.debug("Hooking into HolographicDisplays");
         if (!new File(getDataFolder(), "internal/holograms_data.yml").exists()) {
           new File(getDataFolder().getPath() + "/internal").mkdir();
         }
         this.languageConfig = ConfigUtils.getConfig(this, "language");
         this.hologramsRegistry = new HologramsRegistry(this);
       } else {
-        Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "You need to install HolographicDisplays to use holograms!");
+        Debugger.sendConsoleMsg("&cYou need to install HolographicDisplays to use holograms!");
       }
     }
     if (configPreferences.getOption(ConfigPreferences.Option.UPGRADES_ENABLED)) {
@@ -316,18 +313,10 @@ public class Main extends JavaPlugin {
     metrics.addCustomChart(new Metrics.SimplePie("locale_used", () -> LanguageManager.getPluginLocale().getPrefix()));
     metrics.addCustomChart(new Metrics.SimplePie("update_notifier", () -> {
       if (getConfig().getBoolean("Update-Notifier.Enabled", true)) {
-        if (getConfig().getBoolean("Update-Notifier.Notify-Beta-Versions", true)) {
-          return "Enabled with beta notifier";
-        } else {
-          return "Enabled";
-        }
-      } else {
-        if (getConfig().getBoolean("Update-Notifier.Notify-Beta-Versions", true)) {
-          return "Beta notifier only";
-        } else {
-          return "Disabled";
-        }
+        return getConfig().getBoolean("Update-Notifier.Notify-Beta-Versions", true) ? "Enabled with beta notifier" : "Enabled";
       }
+
+      return getConfig().getBoolean("Update-Notifier.Notify-Beta-Versions", true) ? "Beta notifier only" : "Disabled";
     }));
     metrics.addCustomChart(new Metrics.SimplePie("hooked_addons", () -> {
       if (getServer().getPluginManager().getPlugin("VillageDefense-Enhancements") != null) {
@@ -349,16 +338,16 @@ public class Main extends JavaPlugin {
       }
       if (result.getNewestVersion().contains("b")) {
         if (getConfig().getBoolean("Update-Notifier.Notify-Beta-Versions", true)) {
-          Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "[VillageDefense] Your software is ready for update! However it's a BETA VERSION. Proceed with caution.");
-          Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "[VillageDefense] Current version %old%, latest version %new%".replace("%old%", getDescription().getVersion()).replace("%new%",
+          Debugger.sendConsoleMsg("&c[VillageDefense] Your software is ready for update! However it's a BETA VERSION. Proceed with caution.");
+          Debugger.sendConsoleMsg("&c[VillageDefense] Current version %old%, latest version %new%".replace("%old%", getDescription().getVersion()).replace("%new%",
               result.getNewestVersion()));
         }
         return;
       }
       MessageUtils.updateIsHere();
-      Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "Your VillageDefense plugin is outdated! Download it to keep with latest changes and fixes.");
-      Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "Disable this option in config.yml if you wish.");
-      Bukkit.getConsoleSender().sendMessage(ChatColor.YELLOW + "Current version: " + ChatColor.RED + getDescription().getVersion() + ChatColor.YELLOW + " Latest version: " + ChatColor.GREEN + result.getNewestVersion());
+      Debugger.sendConsoleMsg("&aYour VillageDefense plugin is outdated! Download it to keep with latest changes and fixes.");
+      Debugger.sendConsoleMsg("&aDisable this option in config.yml if you wish.");
+      Debugger.sendConsoleMsg("&eCurrent version: &c" + getDescription().getVersion() + " &eLatest version: &a" + result.getNewestVersion());
     });
   }
 
@@ -416,7 +405,7 @@ public class Main extends JavaPlugin {
     if (forceDisable) {
       return;
     }
-    Debugger.debug(Level.INFO, "System disable initialized");
+    Debugger.debug("System disable initialized");
     long start = System.currentTimeMillis();
 
     Bukkit.getLogger().removeHandler(exceptionLogHandler);
@@ -432,9 +421,7 @@ public class Main extends JavaPlugin {
         }
         player.getInventory().clear();
         player.getInventory().setArmorContents(null);
-        for (PotionEffect pe : player.getActivePotionEffects()) {
-          player.removePotionEffect(pe.getType());
-        }
+        player.getActivePotionEffects().forEach(pe -> player.removePotionEffect(pe.getType()));
       }
       arena.getMapRestorerManager().fullyRestoreArena();
       arena.getPlayers().forEach(arena::teleportToEndLocation);
@@ -452,7 +439,7 @@ public class Main extends JavaPlugin {
     if (configPreferences.getOption(ConfigPreferences.Option.DATABASE_ENABLED)) {
       getMysqlDatabase().shutdownConnPool();
     }
-    Debugger.debug(Level.INFO, "System disable finished took {0}ms", System.currentTimeMillis() - start);
+    Debugger.debug("System disable finished took {0}ms", System.currentTimeMillis() - start);
   }
 
   private void saveAllUserStatistics() {

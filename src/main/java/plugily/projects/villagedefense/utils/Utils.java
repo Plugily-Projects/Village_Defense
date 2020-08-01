@@ -32,6 +32,7 @@ import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionData;
 import org.bukkit.potion.PotionType;
 import org.bukkit.util.BlockIterator;
+
 import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.arena.ArenaRegistry;
 import plugily.projects.villagedefense.handlers.language.Messages;
@@ -72,11 +73,7 @@ public class Utils {
    * @return serialized number
    */
   public static int serializeInt(Integer i) {
-    if ((i % 9) == 0) {
-      return i;
-    } else {
-      return (int) ((Math.ceil(i / 9) * 9) + 9);
-    }
+    return (i % 9) == 0 ? i : (int) ((Math.ceil(i / 9) * 9) + 9);
   }
 
   public static List<Block> getNearbyBlocks(LivingEntity entity, int distance) {
@@ -97,9 +94,9 @@ public class Utils {
     Set<Entity> radiusEntities = new HashSet<>();
     for (int chunkX = 0 - chunkRadius; chunkX <= chunkRadius; chunkX++) {
       for (int chunkZ = 0 - chunkRadius; chunkZ <= chunkRadius; chunkZ++) {
-        int x = (int) loc.getX();
-        int y = (int) loc.getY();
-        int z = (int) loc.getZ();
+        int x = (int) loc.getX(),
+          y = (int) loc.getY(),
+          z = (int) loc.getZ();
         for (Entity e : new Location(loc.getWorld(), x + chunkX * 16, y, z + chunkZ * 16).getChunk().getEntities()) {
           if (!(loc.getWorld().getName().equalsIgnoreCase(e.getWorld().getName()))) {
             continue;
@@ -124,19 +121,9 @@ public class Utils {
   }
 
   public static ItemStack getPotion(PotionType type, int tier, boolean splash) {
-    ItemStack potion;
-    if (!splash) {
-      potion = new ItemStack(Material.POTION, 1);
-    } else {
-      potion = new ItemStack(Material.SPLASH_POTION, 1);
-    }
-
+    ItemStack potion = new ItemStack(!splash ? Material.POTION : Material.SPLASH_POTION, 1);
     PotionMeta meta = (PotionMeta) potion.getItemMeta();
-    if (tier >= 2 && !splash) {
-      meta.setBasePotionData(new PotionData(type, false, true));
-    } else {
-      meta.setBasePotionData(new PotionData(type, false, false));
-    }
+    meta.setBasePotionData(new PotionData(type, false, tier >= 2 && !splash ? true : false));
     potion.setItemMeta(meta);
     return potion;
   }
@@ -204,6 +191,23 @@ public class Utils {
     }
     sender.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage(Messages.COMMANDS_NO_PERMISSION));
     return false;
+  }
+
+  public static String matchColorRegex(String s) {
+    String regex = "&?#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})";
+    Matcher matcher = Pattern.compile(regex).matcher(s);
+    while (matcher.find()) {
+      String group = matcher.group(0);
+      String group2 = matcher.group(1);
+
+      try {
+        s = s.replace(group, net.md_5.bungee.api.ChatColor.of("#" + group2) + "");
+      } catch (Exception e) {
+        Debugger.debug("Bad hex color match: " + group);
+      }
+    }
+
+    return s;
   }
 
 }

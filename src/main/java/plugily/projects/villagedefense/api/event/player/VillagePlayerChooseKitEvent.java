@@ -57,14 +57,17 @@ public class VillagePlayerChooseKitEvent extends VillageEvent implements Cancell
     return kit;
   }
 
+  @Override
   public boolean isCancelled() {
     return this.isCancelled;
   }
 
+  @Override
   public void setCancelled(boolean cancelled) {
     this.isCancelled = cancelled;
   }
 
+  @Override
   public HandlerList getHandlers() {
     return handlers;
   }

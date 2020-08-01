@@ -23,7 +23,6 @@ import plugily.projects.villagedefense.utils.Debugger;
 import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Level;
 
 /**
  * @author Plajer
@@ -43,7 +42,7 @@ public class ConfigPreferences {
     //load custom permissions
     for (String key : plugin.getConfig().getConfigurationSection("CustomPermissions").getKeys(false)) {
       customPermissions.put(key, plugin.getConfig().getInt("CustomPermissions." + key));
-      Debugger.debug(Level.INFO, "Loaded custom permission {0}", key);
+      Debugger.debug("Loaded custom permission {0}", key);
     }
   }
 

@@ -40,6 +40,7 @@ public class VillageGameStartEvent extends VillageEvent {
     return HANDLERS;
   }
 
+  @Override
   public HandlerList getHandlers() {
     return HANDLERS;
   }

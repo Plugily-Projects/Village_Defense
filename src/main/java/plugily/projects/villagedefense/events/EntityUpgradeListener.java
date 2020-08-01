@@ -100,10 +100,7 @@ public class EntityUpgradeListener implements Listener {
         || (e.getRightClicked().getType() != EntityType.IRON_GOLEM && e.getRightClicked().getType() != EntityType.WOLF) || e.getRightClicked().getCustomName() == null) {
       return;
     }
-    if (e.getHand() == EquipmentSlot.OFF_HAND) {
-      return;
-    }
-    if (!e.getPlayer().isSneaking()) {
+    if (e.getHand() == EquipmentSlot.OFF_HAND || !e.getPlayer().isSneaking()) {
       return;
     }
     //to prevent wolves sitting

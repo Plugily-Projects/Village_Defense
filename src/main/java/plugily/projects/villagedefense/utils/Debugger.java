@@ -22,6 +22,11 @@ import java.util.HashSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.bukkit.Bukkit;
+import org.bukkit.plugin.java.JavaPlugin;
+
+import plugily.projects.villagedefense.Main;
+
 /**
  * @author Plajer
  * <p>
@@ -49,6 +54,14 @@ public class Debugger {
     listenedPerformance.add(task);
   }
 
+  public static void sendConsoleMsg(String msg) {
+    Bukkit.getConsoleSender().sendMessage(JavaPlugin.getPlugin(Main.class).getChatManager().colorRawMessage(msg));
+  }
+
+  public static void debug(String msg) {
+    debug(Level.INFO, msg);
+  }
+
   /**
    * Prints debug message with selected log level.
    * Messages of level INFO or TASK won't be posted if
@@ -62,6 +75,10 @@ public class Debugger {
       return;
     }
     logger.log(level, "[VDDBG] " + msg);
+  }
+
+  public static void debug(String msg, Object... params) {
+    debug(Level.INFO, msg, params);
   }
 
   /**

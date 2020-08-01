@@ -42,6 +42,7 @@ import plugily.projects.villagedefense.utils.Debugger;
 
 import java.util.*;
 import java.util.logging.Level;
+import java.util.stream.Collectors;
 
 /**
  * Created by Tom on 12/08/2014.
@@ -186,9 +187,7 @@ public abstract class Arena extends BukkitRunnable {
       Debugger.debug(Level.WARNING, "No villager spawns set for {0} game won't start", id);
       return;
     }
-    for (Location location : getVillagerSpawns()) {
-      spawnVillager(location);
-    }
+    getVillagerSpawns().forEach(this::spawnVillager);
     if (getVillagers().isEmpty()) {
       Debugger.debug(Level.WARNING, "Spawning villagers for {0} failed! Are villager spawns set in safe and valid locations?", id);
       return;
@@ -334,7 +333,7 @@ public abstract class Arena extends BukkitRunnable {
   public void teleportToEndLocation(Player player) {
     if (plugin.getConfigPreferences().getOption(ConfigPreferences.Option.BUNGEE_ENABLED) && ConfigUtils.getConfig(plugin, "bungee").getBoolean("End-Location-Hub", true)) {
       plugin.getBungeeManager().connectToHub(player);
-      Debugger.debug(Level.INFO, "{0} has left the arena {1}! Teleported to the Hub server.", player.getName(), this);
+      Debugger.debug("{0} has left the arena {1}! Teleported to the Hub server.", player.getName(), this);
     }
     player.teleport(getEndLocation());
   }
@@ -348,7 +347,7 @@ public abstract class Arena extends BukkitRunnable {
   }
 
   public void start() {
-    Debugger.debug(Level.INFO, "[{0}] Instance started", this.getId());
+    Debugger.debug("[{0}] Instance started", this.getId());
     this.runTaskTimer(plugin, 20L, 20L);
     this.setArenaState(ArenaState.WAITING_FOR_PLAYERS);
   }
@@ -372,15 +371,15 @@ public abstract class Arena extends BukkitRunnable {
   }
 
   public List<Location> getVillagerSpawns() {
-    return spawnPoints.get(SpawnPoint.VILLAGER);
+    return spawnPoints.getOrDefault(SpawnPoint.VILLAGER, new ArrayList<>());
   }
 
   public void addVillagerSpawn(Location location) {
-    spawnPoints.get(SpawnPoint.VILLAGER).add(location);
+    spawnPoints.getOrDefault(SpawnPoint.VILLAGER, new ArrayList<>()).add(location);
   }
 
   public void addZombieSpawn(Location location) {
-    spawnPoints.get(SpawnPoint.ZOMBIE).add(location);
+    spawnPoints.getOrDefault(SpawnPoint.ZOMBIE, new ArrayList<>()).add(location);
   }
 
   public List<Item> getDroppedFleshes() {
@@ -483,13 +482,8 @@ public abstract class Arena extends BukkitRunnable {
   }
 
   public List<Player> getPlayersLeft() {
-    List<Player> playersLeft = new ArrayList<>();
-    for (User user : plugin.getUserManager().getUsers(this)) {
-      if (!user.isSpectator()) {
-        playersLeft.add(user.getPlayer());
-      }
-    }
-    return playersLeft;
+    return plugin.getUserManager().getUsers(this).stream().filter(user -> !user.isSpectator())
+      .map(User::getPlayer).collect(Collectors.toList());
   }
 
   public Main getPlugin() {
@@ -511,7 +505,7 @@ public abstract class Arena extends BukkitRunnable {
   }
 
   public List<Location> getZombieSpawns() {
-    return spawnPoints.get(SpawnPoint.ZOMBIE);
+    return spawnPoints.getOrDefault(SpawnPoint.ZOMBIE, new ArrayList<>());
   }
 
   protected void addIronGolem(IronGolem ironGolem) {

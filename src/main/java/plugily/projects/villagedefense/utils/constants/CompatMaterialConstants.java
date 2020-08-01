@@ -42,10 +42,10 @@ public class CompatMaterialConstants {
   }
 
   public static void init(Main plugin) {
-    playerHead = plugin.is1_11_R1() || plugin.is1_12_R1() ? Material.SKULL_ITEM : XMaterial.PLAYER_HEAD.parseMaterial();
-    playerHeadItem = plugin.is1_11_R1() || plugin.is1_12_R1() ? new ItemStack(Material.SKULL_ITEM, 1, (short) 3) : XMaterial.PLAYER_HEAD.parseItem();
-    oakDoorBlock = plugin.is1_11_R1() || plugin.is1_12_R1() ? Material.WOODEN_DOOR : XMaterial.OAK_DOOR.parseMaterial();
-    oakDoorItem = plugin.is1_11_R1() || plugin.is1_12_R1() ? Material.WOOD_DOOR : XMaterial.OAK_DOOR.parseMaterial();
+    playerHead = plugin.is1_11_R1() || plugin.is1_12_R1() ? Material.getMaterial("SKULL_ITEM") : XMaterial.PLAYER_HEAD.parseMaterial();
+    playerHeadItem = plugin.is1_11_R1() || plugin.is1_12_R1() ? new ItemStack(Material.getMaterial("SKULL_ITEM"), 1, (short) 3) : XMaterial.PLAYER_HEAD.parseItem();
+    oakDoorBlock = plugin.is1_11_R1() || plugin.is1_12_R1() ? Material.getMaterial("WOODEN_DOOR") : XMaterial.OAK_DOOR.parseMaterial();
+    oakDoorItem = plugin.is1_11_R1() || plugin.is1_12_R1() ? Material.getMaterial("WOOD_DOOR") : XMaterial.OAK_DOOR.parseMaterial();
   }
 
   public static Material getPlayerHead() {

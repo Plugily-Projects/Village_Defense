@@ -18,7 +18,6 @@
 
 package plugily.projects.villagedefense.handlers.upgrade.upgrades;
 
-import org.bukkit.ChatColor;
 import plugily.projects.villagedefense.Main;
 
 import java.util.Arrays;
@@ -36,8 +35,8 @@ public class UpgradeBuilder {
 
   public UpgradeBuilder(String id) {
     this.upgrade = new Upgrade(id);
-    upgrade.setName(ChatColor.translateAlternateColorCodes('&', plugin.getLanguageConfig().getString("Upgrade-Menu.Upgrades." + id + ".Name")));
-    upgrade.setDescription(Arrays.asList(ChatColor.translateAlternateColorCodes('&', plugin.getLanguageConfig().getString("Upgrade-Menu.Upgrades." + id + ".Description")).split(";")));
+    upgrade.setName(plugin.getChatManager().colorRawMessage(plugin.getLanguageConfig().getString("Upgrade-Menu.Upgrades." + id + ".Name")));
+    upgrade.setDescription(Arrays.asList(plugin.getChatManager().colorRawMessage(plugin.getLanguageConfig().getString("Upgrade-Menu.Upgrades." + id + ".Description")).split(";")));
   }
 
   public static void init(Main plugin) {
@@ -46,7 +45,7 @@ public class UpgradeBuilder {
 
   //for other usages
   public UpgradeBuilder name(String name) {
-    upgrade.setName(ChatColor.translateAlternateColorCodes('&', name));
+    upgrade.setName(plugin.getChatManager().colorRawMessage(name));
     return this;
   }
 

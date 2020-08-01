@@ -58,27 +58,18 @@ public class ExceptionLogHandler extends Handler {
   public void publish(LogRecord record) {
     try {
       Throwable throwable = record.getThrown();
-      if (!(throwable instanceof Exception) || !throwable.getClass().getSimpleName().contains("Exception")) {
-        return;
-      }
-      if (throwable.getStackTrace().length <= 0) {
+      if (!(throwable instanceof Exception) || !throwable.getClass().getSimpleName().contains("Exception")
+          || throwable.getStackTrace().length <= 0) {
         return;
       }
       if (throwable.getCause() != null && throwable.getCause().getStackTrace() != null) {
-        if (throwable.getCause().getStackTrace()[0] == null) {
-          return;
-        }
-        if (!throwable.getCause().getStackTrace()[0].getClassName().contains("plugily.projects.villagedefense")) {
+        if (throwable.getCause().getStackTrace()[0] == null || !throwable.getCause().getStackTrace()[0].getClassName().contains("plugily.projects.villagedefense")) {
           return;
         }
       }
-      if (throwable.getStackTrace()[0] == null) {
-        return;
-      }
-      if (!throwable.getStackTrace()[0].getClassName().contains("plugily.projects.villagedefense")) {
-        return;
-      }
-      if (containsBlacklistedClass(throwable)) {
+      if (throwable.getStackTrace()[0] == null
+          || !throwable.getStackTrace()[0].getClassName().contains("plugily.projects.villagedefense")
+          || containsBlacklistedClass(throwable)) {
         return;
       }
       new ReportedException(plugin, (Exception) throwable);

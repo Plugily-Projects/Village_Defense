@@ -46,10 +46,12 @@ public class VillageGameJoinAttemptEvent extends VillageEvent implements Cancell
     return HANDLERS;
   }
 
+  @Override
   public boolean isCancelled() {
     return this.isCancelled;
   }
 
+  @Override
   public void setCancelled(boolean isCancelled) {
     this.isCancelled = isCancelled;
   }
@@ -58,6 +60,7 @@ public class VillageGameJoinAttemptEvent extends VillageEvent implements Cancell
     return player;
   }
 
+  @Override
   public HandlerList getHandlers() {
     return HANDLERS;
   }

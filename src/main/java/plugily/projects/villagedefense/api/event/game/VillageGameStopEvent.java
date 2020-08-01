@@ -40,6 +40,7 @@ public class VillageGameStopEvent extends VillageEvent {
     return HANDLERS;
   }
 
+  @Override
   public HandlerList getHandlers() {
     return HANDLERS;
   }

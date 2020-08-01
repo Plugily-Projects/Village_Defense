@@ -97,9 +97,7 @@ public class ScoreboardManager {
    * Forces all scoreboards to deactivate.
    */
   public void stopAllScoreboards() {
-    for (Scoreboard board : scoreboards) {
-      board.deactivate();
-    }
+    scoreboards.forEach(Scoreboard::deactivate);
     scoreboards.clear();
   }
 

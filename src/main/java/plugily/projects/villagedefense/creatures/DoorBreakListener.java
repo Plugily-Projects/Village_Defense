@@ -78,10 +78,10 @@ public class DoorBreakListener extends BukkitRunnable {
 
   private boolean isDoor(Block block) {
     if (plugin.is1_11_R1() || plugin.is1_12_R1()) {
-      return block.getType() == Material.WOODEN_DOOR || block.getType() == Material.WOOD_DOOR;
-    } else {
-      return block.getType() == XMaterial.OAK_DOOR.parseMaterial();
+      return block.getType() == Material.getMaterial("WOODEN_DOOR") || block.getType() == Material.getMaterial("WOOD_DOOR");
     }
+
+    return block.getType() == XMaterial.OAK_DOOR.parseMaterial();
   }
 
 }

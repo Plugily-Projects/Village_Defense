@@ -54,7 +54,6 @@ import plugily.projects.villagedefense.user.User;
 import plugily.projects.villagedefense.utils.Debugger;
 
 import java.util.List;
-import java.util.logging.Level;
 
 /**
  * @author Plajer
@@ -82,14 +81,11 @@ public class ArenaManager {
    * @see VillageGameJoinAttemptEvent
    */
   public static void joinAttempt(@NotNull Player player, @NotNull Arena arena) {
-    Debugger.debug(Level.INFO, "[{0}] Initial join attempt for {1}", arena.getId(), player.getName());
-    if (!canJoinArenaAndMessage(player, arena)) {
+    Debugger.debug("[{0}] Initial join attempt for {1}", arena.getId(), player.getName());
+    if (!canJoinArenaAndMessage(player, arena) || !checkFullGamePermission(player, arena)) {
       return;
     }
-    if (!checkFullGamePermission(player, arena)) {
-      return;
-    }
-    Debugger.debug(Level.INFO, "[{0}] Checked join attempt for {1}", arena.getId(), player.getName());
+    Debugger.debug("[{0}] Checked join attempt for {1}", arena.getId(), player.getName());
     long start = System.currentTimeMillis();
     if (ArenaRegistry.isInArena(player)) {
       player.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage(Messages.ALREADY_PLAYING));
@@ -140,9 +136,7 @@ public class ArenaManager {
         player.getInventory().setItem(item.getSlot(), item.getItemStack());
       }
 
-      for (PotionEffect potionEffect : player.getActivePotionEffects()) {
-        player.removePotionEffect(potionEffect.getType());
-      }
+      player.getActivePotionEffects().forEach(potionEffect -> player.removePotionEffect(potionEffect.getType()));
 
       player.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue() + arena.getOption(ArenaOption.ROTTEN_FLESH_LEVEL));
       player.setHealth(player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue());
@@ -162,7 +156,7 @@ public class ArenaManager {
           player.showPlayer(spectator);
         }
       }
-      Debugger.debug(Level.INFO, "[{0}] Final join attempt as spectator for {1} took {2}ms", arena.getId(), player.getName(), System.currentTimeMillis() - start);
+      Debugger.debug("[{0}] Final join attempt as spectator for {1} took {2}ms", arena.getId(), player.getName(), System.currentTimeMillis() - start);
       return;
     }
     if (plugin.getConfigPreferences().getOption(ConfigPreferences.Option.INVENTORY_MANAGER_ENABLED)) {
@@ -192,7 +186,7 @@ public class ArenaManager {
       arenaPlayer.setExp(1);
       arenaPlayer.setLevel(0);
     }
-    Debugger.debug(Level.INFO, "[{0}] Final join attempt as player for {1} took {2}ms", arena.getId(), player.getName(), System.currentTimeMillis() - start);
+    Debugger.debug("[{0}] Final join attempt as player for {1} took {2}ms", arena.getId(), player.getName(), System.currentTimeMillis() - start);
   }
 
   private static boolean checkFullGamePermission(Player player, Arena arena){
@@ -251,7 +245,7 @@ public class ArenaManager {
    * @see VillageGameLeaveAttemptEvent
    */
   public static void leaveAttempt(@NotNull Player player, @NotNull Arena arena) {
-    Debugger.debug(Level.INFO, "[{0}] Initial leave attempt of {1}", arena.getId(), player.getName());
+    Debugger.debug("[{0}] Initial leave attempt of {1}", arena.getId(), player.getName());
     long start = System.currentTimeMillis();
 
     //the default fly speed
@@ -271,11 +265,8 @@ public class ArenaManager {
     user.setPermanentSpectator(false);
 
     if (user.getKit() instanceof GolemFriendKit) {
-      for (IronGolem ironGolem : arena.getIronGolems()) {
-        if (ironGolem.getCustomName().contains(user.getPlayer().getName())) {
-          ironGolem.remove();
-        }
-      }
+      arena.getIronGolems().stream().filter(ironGolem -> ironGolem.getCustomName().contains(user.getPlayer().getName()))
+        .forEach(IronGolem::remove);
     }
     arena.doBarAction(Arena.BarAction.REMOVE, player);
     if (arena.getPlayers().isEmpty() && arena.getArenaState() != ArenaState.WAITING_FOR_PLAYERS && arena.getArenaState() != ArenaState.STARTING) {
@@ -286,7 +277,7 @@ public class ArenaManager {
     }
     ArenaUtils.resetPlayerAfterGame(player);
     arena.teleportToEndLocation(player);
-    Debugger.debug(Level.INFO, "[{0}] Final leave attempt for {1} took {2}ms", arena.getId(), player.getName(), System.currentTimeMillis() - start);
+    Debugger.debug("[{0}] Final leave attempt for {1} took {2}ms", arena.getId(), player.getName(), System.currentTimeMillis() - start);
   }
 
   /**
@@ -297,7 +288,7 @@ public class ArenaManager {
    * @see VillageGameStopEvent
    */
   public static void stopGame(boolean quickStop, @NotNull Arena arena) {
-    Debugger.debug(Level.INFO, "[{0}] Game stop event start", arena.getId());
+    Debugger.debug("[{0}] Game stop event start", arena.getId());
     long start = System.currentTimeMillis();
 
     VillageGameStopEvent villageGameStopEvent = new VillageGameStopEvent(arena);
@@ -334,7 +325,7 @@ public class ArenaManager {
     arena.setTimer(arena.getVillagers().isEmpty() ? 10 : 5);
     arena.getMapRestorerManager().fullyRestoreArena();
     arena.setArenaState(ArenaState.ENDING);
-    Debugger.debug(Level.INFO, "[{0}] Game stop event finished took {1}ms", arena.getId(), System.currentTimeMillis() - start);
+    Debugger.debug("[{0}] Game stop event finished took {1}ms", arena.getId(), System.currentTimeMillis() - start);
   }
 
   private static String formatSummaryPlaceholders(String msg, Arena arena, User user, String summary) {
@@ -354,6 +345,7 @@ public class ArenaManager {
     new BukkitRunnable() {
       int i = 0;
 
+      @Override
       public void run() {
         if (i == 4 || !arena.getPlayers().contains(player) || arena.getArenaState() == ArenaState.RESTARTING) {
           this.cancel();
@@ -409,7 +401,7 @@ public class ArenaManager {
    * @see VillageWaveStartEvent
    */
   public static void startWave(@NotNull Arena arena) {
-    Debugger.debug(Level.INFO, "[{0}] Wave start event called", arena.getId());
+    Debugger.debug("[{0}] Wave start event called", arena.getId());
     long start = System.currentTimeMillis();
 
     VillageWaveStartEvent event = new VillageWaveStartEvent(arena, arena.getWave());
@@ -420,14 +412,14 @@ public class ArenaManager {
       int multiplier = (int) Math.ceil((zombiesAmount - (double) maxzombies) / plugin.getConfig().getInt("Zombie-Multiplier-Divider", 18));
       if (multiplier < 2) multiplier = 2;
       arena.setOptionValue(ArenaOption.ZOMBIE_DIFFICULTY_MULTIPLIER, multiplier);
-      Debugger.debug(Level.INFO, "[{0}] Detected abnormal wave ({1})! Applying zombie limit and difficulty multiplier to {2} | ZombiesAmount: {3} | MaxZombies: {4}",
+      Debugger.debug("[{0}] Detected abnormal wave ({1})! Applying zombie limit and difficulty multiplier to {2} | ZombiesAmount: {3} | MaxZombies: {4}",
               arena.getId(), arena.getWave(), arena.getOption(ArenaOption.ZOMBIE_DIFFICULTY_MULTIPLIER), zombiesAmount, maxzombies);
       zombiesAmount = maxzombies;
     }
     arena.setOptionValue(ArenaOption.ZOMBIES_TO_SPAWN, zombiesAmount);
     arena.setOptionValue(ArenaOption.ZOMBIE_IDLE_PROCESS, (int) Math.floor((double) arena.getWave() / 15));
     if (arena.getOption(ArenaOption.ZOMBIE_IDLE_PROCESS) > 0) {
-      Debugger.debug(Level.INFO, "[{0}] Spawn idle process initiated to prevent server overload! Value: {1}", arena.getId(), arena.getOption(ArenaOption.ZOMBIE_IDLE_PROCESS));
+      Debugger.debug("[{0}] Spawn idle process initiated to prevent server overload! Value: {1}", arena.getId(), arena.getOption(ArenaOption.ZOMBIE_IDLE_PROCESS));
     }
     if (plugin.getConfigPreferences().getOption(ConfigPreferences.Option.RESPAWN_AFTER_WAVE)) {
       ArenaUtils.bringDeathPlayersBack(arena);
@@ -436,7 +428,7 @@ public class ArenaManager {
       user.getKit().reStock(user.getPlayer());
     }
     plugin.getChatManager().broadcastMessage(arena, plugin.getChatManager().formatMessage(arena, plugin.getChatManager().colorMessage(Messages.WAVE_STARTED), arena.getWave()));
-    Debugger.debug(Level.INFO, "[{0}] Wave start event finished took {1}ms", arena.getId(), System.currentTimeMillis() - start);
+    Debugger.debug("[{0}] Wave start event finished took {1}ms", arena.getId(), System.currentTimeMillis() - start);
   }
 
 }

@@ -239,11 +239,7 @@ public class ArenaEvents implements Listener {
     new BukkitRunnable() {
       @Override
       public void run() {
-        if (plugin.is1_11_R1()) {
-          this.cancel();
-          return;
-        }
-        if (arena.getArenaState() == ArenaState.ENDING) {
+        if (plugin.is1_11_R1() || arena.getArenaState() == ArenaState.ENDING) {
           this.cancel();
           return;
         }

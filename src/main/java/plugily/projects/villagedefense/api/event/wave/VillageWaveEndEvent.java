@@ -46,6 +46,7 @@ public class VillageWaveEndEvent extends VillageEvent {
     return waveNumber;
   }
 
+  @Override
   public HandlerList getHandlers() {
     return HANDLERS;
   }

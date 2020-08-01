@@ -49,9 +49,7 @@ public class HologramsRegistry {
   }
 
   public void disableHolograms() {
-    for (LeaderboardHologram hologram : leaderboardHolograms) {
-      hologram.stopLeaderboardUpdateTask();
-    }
+    leaderboardHolograms.forEach(LeaderboardHologram::stopLeaderboardUpdateTask);
   }
 
 }

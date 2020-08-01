@@ -197,9 +197,7 @@ public class HolidayManager implements Listener {
           diamonds.add(item);
         }
         Bukkit.getScheduler().runTaskLater(plugin, () -> {
-          for (Item diamond : diamonds) {
-            diamond.remove();
-          }
+          diamonds.forEach(Item::remove);
           diamonds.clear();
         }, 30);
         break;
@@ -212,10 +210,7 @@ public class HolidayManager implements Listener {
 
   @EventHandler
   public void onBatDamage(EntityDamageEvent e) {
-    if (!e.getEntityType().equals(EntityType.BAT)) {
-      return;
-    }
-    if (e.getEntity().getCustomName() == null) {
+    if (e.getEntityType() != EntityType.BAT || e.getEntity().getCustomName() == null) {
       return;
     }
     if (e.getEntity().getCustomName().equals(plugin.getChatManager().colorRawMessage("&6Halloween!"))) {

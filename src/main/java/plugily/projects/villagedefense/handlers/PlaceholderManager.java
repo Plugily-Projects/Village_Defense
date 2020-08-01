@@ -36,14 +36,17 @@ public class PlaceholderManager extends PlaceholderExpansion {
     return true;
   }
 
+  @Override
   public String getIdentifier() {
     return "villagedefense";
   }
 
+  @Override
   public String getAuthor() {
     return "Plajer";
   }
 
+  @Override
   public String getVersion() {
     return "1.0.1";
   }

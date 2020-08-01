@@ -56,6 +56,7 @@ public class VillagePlayerPowerupPickupEvent extends VillageEvent {
     return powerup;
   }
 
+  @Override
   public HandlerList getHandlers() {
     return HANDLERS;
   }

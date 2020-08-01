@@ -34,7 +34,7 @@ import plugily.projects.villagedefense.utils.Debugger;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
+import java.util.stream.Collectors;
 
 /**
  * Created by Tom on 27/07/2014.
@@ -56,10 +56,7 @@ public class UserManager {
   }
 
   private void loadStatsForPlayersOnline() {
-    for (Player player : Bukkit.getServer().getOnlinePlayers()) {
-      User user = getUser(player);
-      loadStatistics(user);
-    }
+    Bukkit.getServer().getOnlinePlayers().stream().map(this::getUser).forEach(this::loadStatistics);
   }
 
   public User getUser(Player player) {
@@ -68,18 +65,14 @@ public class UserManager {
         return user;
       }
     }
-    Debugger.debug(Level.INFO, "Registering new user {0} ({1})", player.getUniqueId(), player.getName());
+    Debugger.debug("Registering new user {0} ({1})", player.getUniqueId(), player.getName());
     User user = new User(player);
     users.add(user);
     return user;
   }
 
   public List<User> getUsers(Arena arena) {
-    List<User> users = new ArrayList<>();
-    for (Player player : arena.getPlayers()) {
-      users.add(getUser(player));
-    }
-    return users;
+    return arena.getPlayers().stream().map(this::getUser).collect(Collectors.toList());
   }
 
   public void saveStatistic(User user, StatsStorage.StatisticType stat) {

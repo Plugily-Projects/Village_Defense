@@ -19,12 +19,12 @@
 package plugily.projects.villagedefense.handlers.language;
 
 import org.apache.commons.lang.math.NumberUtils;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import pl.plajerlair.commonsbox.minecraft.configuration.ConfigUtils;
 import pl.plajerlair.commonsbox.minecraft.migrator.MigratorUtils;
 import plugily.projects.villagedefense.Main;
+import plugily.projects.villagedefense.utils.Debugger;
 import plugily.projects.villagedefense.utils.MessageUtils;
 import plugily.projects.villagedefense.utils.constants.Constants;
 
@@ -63,7 +63,7 @@ public class LanguageMigrator {
     if (plugin.getConfig().getInt("Version") == CONFIG_FILE_VERSION) {
       return;
     }
-    Bukkit.getConsoleSender().sendMessage(ChatColor.YELLOW + "[Village Defense] System notify >> Your config file is outdated! Updating...");
+    Debugger.sendConsoleMsg(ChatColor.YELLOW + "[Village Defense] System notify >> Your config file is outdated! Updating...");
     File file = new File(plugin.getDataFolder() + "/config.yml");
     File bungeefile = new File(plugin.getDataFolder() + "/bungee.yml");
 
@@ -183,8 +183,8 @@ public class LanguageMigrator {
     }
     updateConfigVersionControl(version);
     plugin.reloadConfig();
-    Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "[Village Defense] [System notify] Config updated, no comments were removed :)");
-    Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "[Village Defense] [System notify] You're using latest config file version! Nice!");
+    Debugger.sendConsoleMsg("&a[Village Defense] [System notify] Config updated, no comments were removed :)");
+    Debugger.sendConsoleMsg("&a[Village Defense] [System notify] You're using latest config file version! Nice!");
   }
 
   private void languageFileUpdate() {
@@ -192,13 +192,13 @@ public class LanguageMigrator {
     if (config.getString("File-Version-Do-Not-Edit", "").equals(String.valueOf(LANGUAGE_FILE_VERSION))) {
       return;
     }
-    Bukkit.getConsoleSender().sendMessage(ChatColor.YELLOW + "[Village Defense] [System notify] Your language file is outdated! Updating...");
+    Debugger.sendConsoleMsg(ChatColor.YELLOW + "[Village Defense] [System notify] Your language file is outdated! Updating...");
 
     int version = LANGUAGE_FILE_VERSION - 1;
     if (NumberUtils.isNumber(config.getString("File-Version-Do-Not-Edit"))) {
       version = Integer.parseInt(config.getString("File-Version-Do-Not-Edit"));
     } else {
-      Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "[Village Defense] [System notify] Failed to parse language file version!");
+      Debugger.sendConsoleMsg(ChatColor.RED + "[Village Defense] [System notify] Failed to parse language file version!");
     }
     updateLanguageVersionControl(version);
 
@@ -350,14 +350,14 @@ public class LanguageMigrator {
       }
       version++;
     }
-    Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "[Village Defense] [System notify] Language file updated! Nice!");
-    Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "[Village Defense] [System notify] You're using latest language file version! Nice!");
+    Debugger.sendConsoleMsg("&a[Village Defense] [System notify] Language file updated! Nice!");
+    Debugger.sendConsoleMsg("&a[Village Defense] [System notify] You're using latest language file version! Nice!");
   }
 
   private void migrateToNewFormat() {
     MessageUtils.gonnaMigrate();
-    Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "Village Defense is migrating all files to the new file format...");
-    Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "Don't worry! Old files will be renamed not overridden!");
+    Debugger.sendConsoleMsg("&aVillage Defense is migrating all files to the new file format...");
+    Debugger.sendConsoleMsg("&aDon't worry! Old files will be renamed not overridden!");
     for (String fileName : migratable) {
       File file = new File(plugin.getDataFolder() + "/" + fileName + ".yml");
       if (!file.exists()) {
@@ -365,12 +365,12 @@ public class LanguageMigrator {
       }
       boolean success = file.renameTo(new File(plugin.getDataFolder(), plugin.getDataFolder() + "/VD2_" + file + ".yml"));
       if (success) {
-        Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "Renamed file " + file + ".yml");
+        Debugger.sendConsoleMsg("&aRenamed file " + file + ".yml");
         continue;
       }
-      Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "Couldn't rename file " + file + ".yml. Problems might occur!");
+      Debugger.sendConsoleMsg("&cCouldn't rename file " + file + ".yml. Problems might occur!");
     }
-    Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "Done! Enabling Village Defense...");
+    Debugger.sendConsoleMsg("&aDone! Enabling Village Defense...");
   }
 
   private void updateLanguageVersionControl(int oldVersion) {

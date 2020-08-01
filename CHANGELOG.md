@@ -12,6 +12,7 @@ That's all, matcher will stop when detects next line started with `###` match
 ### 4.5.1 Release (30.07.2020)
 * Fixed NoSuchMethodError when used tornado kit
 * (Developer Alert - Class rename)
+* Properly replace player & message to return the correct variable
 
 ### 4.5.0 Release (01.07.2020 - 26.07.2020)
 * Added 1.16.x compatibility 
