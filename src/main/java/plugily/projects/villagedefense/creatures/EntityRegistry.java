@@ -40,11 +40,11 @@ public class EntityRegistry {
       return;
      }
 
-    if (Version.isCurrentEqual(Version.v1_11_R1) || Version.isCurrentEqual(Version.v1_12_R1)) {
+    if (Version.isCurrentEqualOrLower(Version.v1_12_R1)) {
       String[] classes =  { "FastZombie", "BabyZombie", "PlayerBuster", "GolemBuster", "HardZombie", "TankerZombie", "VillagerSlayer", "RidableVillager", "RidableIronGolem",
             "WorkingWolf", "VillagerBuster" };
 
-      String version = plugin.getServerVersion().getVersion().name();
+      String version = plugin.getServerVersion().getVersion().getPackageVersion();
       try {
           this.getClass().getMethod("register" + version + "Entity", String.class, int.class, Class.class)
           .invoke(this, "VillageZombie", 54, Class.forName("plugily.projects.villagedefense.creatures." + version + "." + classes[0]));

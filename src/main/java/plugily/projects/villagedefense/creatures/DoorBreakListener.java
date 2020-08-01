@@ -76,7 +76,7 @@ public class DoorBreakListener extends BukkitRunnable {
   }
 
   private boolean isDoor(Block block) {
-    if (Version.isCurrentEqual(Version.v1_11_R1) || Version.isCurrentEqual(Version.v1_12_R1)) {
+    if (Version.isCurrentEqualOrLower(Version.v1_12_R1)) {
       return block.getType() == Material.getMaterial("WOODEN_DOOR") || block.getType() == Material.getMaterial("WOOD_DOOR");
     }
 

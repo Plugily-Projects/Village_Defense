@@ -222,7 +222,7 @@ public class Main extends JavaPlugin {
     serverVersion = new ServerVersion();
     version = Bukkit.getServer().getClass().getPackage().getName().replace(".", ",").split(",")[3];
 
-    if (ServerVersion.Version.isCurrentLower(ServerVersion.Version.v1_11_R1)) {
+    if (serverVersion.getVersion().isLower(ServerVersion.Version.v1_11_R1)) {
       MessageUtils.thisVersionIsNotSupported();
       Debugger.sendConsoleMsg("&cYour server version is not supported by Village Defense!");
       Debugger.sendConsoleMsg("&cSadly, we must shut off. Maybe you consider changing your server version?");

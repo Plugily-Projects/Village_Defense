@@ -43,7 +43,7 @@ public class CompatMaterialConstants {
 
   @SuppressWarnings("deprecation")
   public static void init() {
-    if (Version.isCurrentEqual(Version.v1_11_R1) || Version.isCurrentEqual(Version.v1_12_R1)) {
+    if (Version.isCurrentEqualOrLower(Version.v1_12_R1)) {
       playerHead = Material.getMaterial("SKULL_ITEM");
       playerHeadItem = new ItemStack(Material.getMaterial("SKULL_ITEM"), 1, (short) 3);
       oakDoorBlock = Material.getMaterial("WOODEN_DOOR");
