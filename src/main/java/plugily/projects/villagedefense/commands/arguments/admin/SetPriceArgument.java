@@ -74,7 +74,7 @@ public class SetPriceArgument {
         lore.add(0, ChatColor.GOLD + args[1] + " " + registry.getPlugin().getChatManager().colorMessage(Messages.SHOP_MESSAGES_CURRENCY_IN_SHOP));
         meta.setLore(lore);
         item.setItemMeta(meta);
-        player.sendMessage(registry.getPlugin().getChatManager().getPrefix() + registry.getPlugin().getChatManager().colorMessage(Messages.COMMANDS_COMMAND_EXECUTED_ITEM_UPDATED));
+        player.sendMessage(registry.getPlugin().getChatManager().getPrefix() + registry.getPlugin().getChatManager().colorMessage(Messages.COMMANDS_COMMAND_EXECUTED));
       }
     });
   }

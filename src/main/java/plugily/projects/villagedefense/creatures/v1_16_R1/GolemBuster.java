@@ -71,9 +71,8 @@ public class GolemBuster extends EntityZombie {
       IronGolem golem = (IronGolem) damagesource.getEntity().getBukkitEntity();
       golem.getWorld().spawnEntity(golem.getLocation(), EntityType.PRIMED_TNT);
       return true;
-    } else {
-      super.damageEntity(damagesource, f);
-      return false;
     }
+    super.damageEntity(damagesource, f);
+    return false;
   }
 }

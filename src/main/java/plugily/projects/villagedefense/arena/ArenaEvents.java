@@ -244,7 +244,11 @@ public class ArenaEvents implements Listener {
           return;
         }
         if (user.isSpectator()) {
-          user.getPlayer().spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(plugin.getChatManager().colorMessage(Messages.DIED_RESPAWN_IN_NEXT_WAVE)));
+          if (plugin.is1_16_R1()) {
+            user.getPlayer().sendActionBar(TextComponent.fromLegacyText(plugin.getChatManager().colorMessage(Messages.DIED_RESPAWN_IN_NEXT_WAVE)));
+          } else {
+            user.getPlayer().spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(plugin.getChatManager().colorMessage(Messages.DIED_RESPAWN_IN_NEXT_WAVE)));
+          }
         } else {
           this.cancel();
         }

@@ -134,7 +134,6 @@ Kits:
     Game-Item-Lore: "&7Right click to kill all zombies! Cooldown: 60 seconds"
     Cleaned-Map: "&b%PLAYER% has cleaned the map!"
     Nothing-To-Clean: "&aThe map is already empty!" #WARNING: used for admin clean commands too!!!
-    Spectator-Warning: "&cYou can't clean the map now! You are a spectator! You'll respawn at the start of the next wave!"
   Zombie-Teleporter:
     Kit-Name: "&2Zombie Teleporter"
     Kit-Description: "&7Teleport those zombies to you! Many people think this is the worst kit! I must admit they are totally wrong!"
@@ -195,7 +194,6 @@ Kits:
     Game-Item-Lore: "&7Right click to open teleportation menu!"
     Game-Item-Menu-Name: "Teleporter Menu"
     Teleported-To-Villager: "&aTeleported!"
-    Spectator-Warning: "&cYou can't teleport zombies to you now! You are a spectator! You'll respawn at the start of the next wave!"
     Villager-Warning: "&4Village defense didn't found that villager! That villager is probably already dead!"
     Teleported-To-Player: "&aTeleported to %PLAYER%"
     Player-Not-Found: "&cPlayer not found! Try again!"
@@ -260,6 +258,7 @@ In-Game:
   Spectator:
     Spectator-Menu-Name: "Alive players list"
     Target-Player-Health: "&cHealth: &7%health%"
+    Spectator-Warning: "&cYou are a spectator! You can't do anything until you'd respawned at the start of the next wave!"
     Settings-Menu:
       Inventory-Name: "&7Spectator settings"
       Speed-Name: "&aSpeed"

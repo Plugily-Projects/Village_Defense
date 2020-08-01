@@ -75,9 +75,8 @@ public class PlayerBuster extends EntityZombie {
       getBukkitEntity().getWorld().spawnEntity(getBukkitEntity().getLocation(), EntityType.PRIMED_TNT);
       this.die();
       return true;
-    } else {
-      super.damageEntity(damagesource, f);
-      return false;
     }
+    super.damageEntity(damagesource, f);
+    return false;
   }
 }

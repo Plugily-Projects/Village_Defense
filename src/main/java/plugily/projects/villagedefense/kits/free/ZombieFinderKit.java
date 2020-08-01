@@ -90,7 +90,7 @@ public class ZombieFinderKit extends LevelKit implements Listener {
     }
     User user = getPlugin().getUserManager().getUser(event.getPlayer());
     if (user.isSpectator()) {
-      event.getPlayer().sendMessage(getPlugin().getChatManager().colorMessage(Messages.KITS_CLEANER_SPECTATOR_WARNING));
+      event.getPlayer().sendMessage(getPlugin().getChatManager().colorMessage(Messages.SPECTATOR_WARNING));
       return;
     }
     if (user.getCooldown("zombie") > 0 && !user.isSpectator()) {

@@ -76,15 +76,15 @@ public class Utils {
     return (i % 9) == 0 ? i : (int) ((Math.ceil(i / 9) * 9) + 9);
   }
 
+  @SuppressWarnings("deprecation")
   public static List<Block> getNearbyBlocks(LivingEntity entity, int distance) {
     List<Block> blocks = new LinkedList<>();
     Iterator<Block> itr = new BlockIterator(entity, distance);
     while (itr.hasNext()) {
       Block block = itr.next();
-      if (block.getType().isTransparent()) {
-        continue;
+      if (!block.getType().isTransparent()) {
+        blocks.add(block);
       }
-      blocks.add(block);
     }
     return blocks;
   }

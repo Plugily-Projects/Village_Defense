@@ -154,10 +154,6 @@ public class TornadoKit extends PremiumKit implements Listener {
       return location;
     }
 
-    public int getEntities() {
-      return entities;
-    }
-
     void setLocation(Location location) {
       this.location = location;
     }

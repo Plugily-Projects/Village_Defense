@@ -178,8 +178,6 @@ public enum Messages {
       KITS_TELEPORTER_SPECTATOR_WARNING("Kits.Teleporter.Spectator-Warning"),
   KITS_TELEPORTER_VILLAGER_WARNING("Kits.Teleporter.Villager-Warning"),
   KITS_TELEPORTER_TELEPORTED_TO_PLAYER("Kits.Teleporter.Teleported-To-Player"),
-  @Deprecated //unused
-      KITS_TELEPORTER_PLAYER_NOT_FOUND("Kits.Teleporter.Player-Not-Found"),
 
   KITS_HEAVY_TANK_NAME("Kits.Heavy-Tank.Kit-Name"),
   KITS_HEAVY_TANK_DESCRIPTION("Kits.Heavy-Tank.Kit-Description"),
@@ -249,6 +247,7 @@ public enum Messages {
   SPECTATOR_TARGET_PLAYER_HEALTH("In-Game.Spectator.Target-Player-Health"),
   SPECTATOR_SETTINGS_MENU_INVENTORY_NAME("In-Game.Spectator.Settings-Menu.Inventory-Name"),
   SPECTATOR_SETTINGS_MENU_SPEED_NAME("In-Game.Spectator.Settings-Menu.Speed-Name"),
+  SPECTATOR_WARNING("In-Game.Spectator.Spectator-Warning"),
 
   LOBBY_MESSAGES_START_IN("In-Game.Messages.Lobby-Messages.Start-In"),
   LOBBY_MESSAGES_WAITING_FOR_PLAYERS("In-Game.Messages.Lobby-Messages.Waiting-For-Players"),

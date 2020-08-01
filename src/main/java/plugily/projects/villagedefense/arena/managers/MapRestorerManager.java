@@ -99,8 +99,9 @@ public class MapRestorerManager {
       Block block = entry.getKey().getBlock();
       Byte doorData = entry.getValue();
       if (arena.getPlugin().is1_11_R1() || arena.getPlugin().is1_12_R1()) {
-        int id = Material.getMaterial("WOODEN_DOOR").getId();
+        Material mat = Material.getMaterial("WOODEN_DOOR");
         try {
+          int id = (int) mat.getClass().getDeclaredMethod("getId").invoke(mat);
           Block.class.getDeclaredMethod("setTypeIdAndData", int.class, Byte.class, boolean.class)
             .invoke(block, id, doorData, false);
         } catch (Exception e) {

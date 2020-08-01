@@ -143,6 +143,7 @@ public class ArenaInitializer1_13_R2 extends Arena {
     super.setOptionValue(ArenaOption.ZOMBIES_TO_SPAWN, getOption(ArenaOption.ZOMBIES_TO_SPAWN) - 1);
   }
 
+  @Override
   public void spawnGolemBuster(Random random) {
     Location location = getZombieSpawns().get(random.nextInt(getZombieSpawns().size()));
     GolemBuster golemBuster = new GolemBuster(world);
