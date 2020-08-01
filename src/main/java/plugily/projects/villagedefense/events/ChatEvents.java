@@ -75,9 +75,6 @@ public class ChatEvents implements Listener {
       event.setMessage(ChatColor.stripColor(eventMessage));
 
       String format = formatChatPlaceholders(LanguageManager.getLanguageMessage("In-Game.Game-Chat-Format"), plugin.getUserManager().getUser(event.getPlayer()));
-      if (plugin.getServer().getPluginManager().isPluginEnabled("PlaceholderAPI") && PlaceholderAPI.containsPlaceholders(format)) {
-        format = PlaceholderAPI.setPlaceholders(event.getPlayer(), format);
-      }
       event.setFormat(format);
     }
     if (!plugin.getConfigPreferences().getOption(ConfigPreferences.Option.DISABLE_SEPARATE_CHAT)) {
