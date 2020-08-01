@@ -21,7 +21,7 @@ package plugily.projects.villagedefense.utils.constants;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import pl.plajerlair.commonsbox.minecraft.compat.XMaterial;
-import plugily.projects.villagedefense.Main;
+import plugily.projects.villagedefense.utils.ServerVersion.Version;
 
 /**
  * Bridge for compatibility between 1.12 and 1.13
@@ -41,11 +41,19 @@ public class CompatMaterialConstants {
   private CompatMaterialConstants() {
   }
 
-  public static void init(Main plugin) {
-    playerHead = plugin.is1_11_R1() || plugin.is1_12_R1() ? Material.getMaterial("SKULL_ITEM") : XMaterial.PLAYER_HEAD.parseMaterial();
-    playerHeadItem = plugin.is1_11_R1() || plugin.is1_12_R1() ? new ItemStack(Material.getMaterial("SKULL_ITEM"), 1, (short) 3) : XMaterial.PLAYER_HEAD.parseItem();
-    oakDoorBlock = plugin.is1_11_R1() || plugin.is1_12_R1() ? Material.getMaterial("WOODEN_DOOR") : XMaterial.OAK_DOOR.parseMaterial();
-    oakDoorItem = plugin.is1_11_R1() || plugin.is1_12_R1() ? Material.getMaterial("WOOD_DOOR") : XMaterial.OAK_DOOR.parseMaterial();
+  @SuppressWarnings("deprecation")
+  public static void init() {
+    if (Version.isCurrentEqual(Version.v1_11_R1) || Version.isCurrentEqual(Version.v1_12_R1)) {
+      playerHead = Material.getMaterial("SKULL_ITEM");
+      playerHeadItem = new ItemStack(Material.getMaterial("SKULL_ITEM"), 1, (short) 3);
+      oakDoorBlock = Material.getMaterial("WOODEN_DOOR");
+      oakDoorItem = Material.getMaterial("WOOD_DOOR");
+    } else {
+      playerHead = XMaterial.PLAYER_HEAD.parseMaterial();
+      playerHeadItem = XMaterial.PLAYER_HEAD.parseItem();
+      oakDoorBlock = XMaterial.OAK_DOOR.parseMaterial();
+      oakDoorItem = XMaterial.OAK_DOOR.parseMaterial();
+    }
   }
 
   public static Material getPlayerHead() {

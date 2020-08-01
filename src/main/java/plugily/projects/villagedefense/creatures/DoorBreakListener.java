@@ -30,6 +30,7 @@ import pl.plajerlair.commonsbox.minecraft.compat.XMaterial;
 import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.arena.ArenaRegistry;
 import plugily.projects.villagedefense.utils.Utils;
+import plugily.projects.villagedefense.utils.ServerVersion.Version;
 import plugily.projects.villagedefense.utils.constants.CompatMaterialConstants;
 
 import java.util.Random;
@@ -40,11 +41,9 @@ import java.util.Random;
 public class DoorBreakListener extends BukkitRunnable {
 
   private final Random random = new Random();
-  private final Main plugin;
 
   public DoorBreakListener(Main plugin) {
-    this.plugin = plugin;
-    this.runTaskTimer(plugin, 1, 20);
+    runTaskTimer(plugin, 1, 20);
   }
 
   @Override
@@ -77,7 +76,7 @@ public class DoorBreakListener extends BukkitRunnable {
   }
 
   private boolean isDoor(Block block) {
-    if (plugin.is1_11_R1() || plugin.is1_12_R1()) {
+    if (Version.isCurrentEqual(Version.v1_11_R1) || Version.isCurrentEqual(Version.v1_12_R1)) {
       return block.getType() == Material.getMaterial("WOODEN_DOOR") || block.getType() == Material.getMaterial("WOOD_DOOR");
     }
 

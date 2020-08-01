@@ -47,6 +47,7 @@ import plugily.projects.villagedefense.handlers.items.SpecialItem;
 import plugily.projects.villagedefense.handlers.language.Messages;
 import plugily.projects.villagedefense.handlers.reward.Reward;
 import plugily.projects.villagedefense.user.User;
+import plugily.projects.villagedefense.utils.ServerVersion.Version;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -239,12 +240,12 @@ public class ArenaEvents implements Listener {
     new BukkitRunnable() {
       @Override
       public void run() {
-        if (plugin.is1_11_R1() || arena.getArenaState() == ArenaState.ENDING) {
+        if (Version.isCurrentEqual(Version.v1_11_R1) || arena.getArenaState() == ArenaState.ENDING) {
           this.cancel();
           return;
         }
         if (user.isSpectator()) {
-          if (plugin.is1_16_R1()) {
+          if (Version.isCurrentEqualOrHigher(Version.v1_16_R1)) {
             user.getPlayer().sendActionBar(TextComponent.fromLegacyText(plugin.getChatManager().colorMessage(Messages.DIED_RESPAWN_IN_NEXT_WAVE)));
           } else {
             user.getPlayer().spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(plugin.getChatManager().colorMessage(Messages.DIED_RESPAWN_IN_NEXT_WAVE)));

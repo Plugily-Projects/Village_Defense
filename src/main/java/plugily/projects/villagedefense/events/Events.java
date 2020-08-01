@@ -53,6 +53,7 @@ import plugily.projects.villagedefense.handlers.items.SpecialItemManager;
 import plugily.projects.villagedefense.handlers.language.Messages;
 import plugily.projects.villagedefense.user.User;
 import plugily.projects.villagedefense.utils.Debugger;
+import plugily.projects.villagedefense.utils.NMS;
 import plugily.projects.villagedefense.utils.Utils;
 import plugily.projects.villagedefense.utils.constants.CompatMaterialConstants;
 
@@ -167,7 +168,7 @@ public class Events implements Listener {
     }
     if (event.getPlayer().getInventory().getItemInMainHand().getType() == Material.SADDLE) {
       if (event.getRightClicked().getType() == EntityType.IRON_GOLEM || event.getRightClicked().getType() == EntityType.VILLAGER || event.getRightClicked().getType() == EntityType.WOLF) {
-        event.getRightClicked().setPassenger(event.getPlayer());
+        NMS.setPassenger(event.getRightClicked(), event.getPlayer());
         event.setCancelled(true);
         return;
       }
@@ -181,7 +182,7 @@ public class Events implements Listener {
         return;
       }
       if (ironGolem.getCustomName() != null && ironGolem.getCustomName().contains(event.getPlayer().getName())) {
-        event.getRightClicked().setPassenger(event.getPlayer());
+        NMS.setPassenger(event.getRightClicked(), event.getPlayer());
       } else {
         event.getPlayer().sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage(Messages.CANT_RIDE_OTHERS_GOLEM));
       }
@@ -191,7 +192,7 @@ public class Events implements Listener {
       }
       Wolf wolf = (Wolf) event.getRightClicked();
       if (wolf.getCustomName() != null && wolf.getCustomName().contains(event.getPlayer().getName())) {
-        event.getRightClicked().setPassenger(event.getPlayer());
+        NMS.setPassenger(event.getRightClicked(), event.getPlayer());
       }
     }
   }

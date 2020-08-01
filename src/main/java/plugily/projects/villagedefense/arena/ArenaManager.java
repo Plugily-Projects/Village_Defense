@@ -52,6 +52,7 @@ import plugily.projects.villagedefense.kits.KitRegistry;
 import plugily.projects.villagedefense.kits.level.GolemFriendKit;
 import plugily.projects.villagedefense.user.User;
 import plugily.projects.villagedefense.utils.Debugger;
+import plugily.projects.villagedefense.utils.NMS;
 
 import java.util.List;
 
@@ -151,9 +152,9 @@ public class ArenaManager {
 
       for (Player spectator : arena.getPlayers()) {
         if (plugin.getUserManager().getUser(spectator).isSpectator()) {
-          player.hidePlayer(spectator);
+          NMS.hidePlayer(player, spectator);
         } else {
-          player.showPlayer(spectator);
+          NMS.showPlayer(player, spectator);
         }
       }
       Debugger.debug("[{0}] Final join attempt as spectator for {1} took {2}ms", arena.getId(), player.getName(), System.currentTimeMillis() - start);

@@ -23,11 +23,13 @@ import org.bukkit.Material;
 import org.bukkit.TreeSpecies;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
+import org.bukkit.block.data.Bisected.Half;
 import org.bukkit.entity.*;
 import org.bukkit.material.Door;
 import pl.plajerlair.commonsbox.minecraft.compat.XMaterial;
 import plugily.projects.villagedefense.arena.Arena;
 import plugily.projects.villagedefense.utils.Debugger;
+import plugily.projects.villagedefense.utils.ServerVersion.Version;
 import plugily.projects.villagedefense.utils.Utils;
 
 import java.util.LinkedHashMap;
@@ -39,6 +41,7 @@ import java.util.logging.Level;
  * <p>
  * Created at 14.02.2019
  */
+@SuppressWarnings("deprecation")
 public class MapRestorerManager {
 
   private final Map<Location, Byte> doorBlocks = new LinkedHashMap<>();
@@ -98,7 +101,7 @@ public class MapRestorerManager {
     for (Map.Entry<Location, Byte> entry : getGameDoorLocations().entrySet()) {
       Block block = entry.getKey().getBlock();
       Byte doorData = entry.getValue();
-      if (arena.getPlugin().is1_11_R1() || arena.getPlugin().is1_12_R1()) {
+      if (Version.isCurrentEqual(Version.v1_11_R1) || Version.isCurrentEqual(Version.v1_12_R1)) {
         Material mat = Material.getMaterial("WOODEN_DOOR");
         try {
           int id = (int) mat.getClass().getDeclaredMethod("getId").invoke(mat);
@@ -136,25 +139,45 @@ public class MapRestorerManager {
   private void restoreTopHalfDoorPart(Block block) {
     block.setType(XMaterial.OAK_DOOR.parseMaterial());
     BlockState doorBlockState = block.getState();
-    Door doorBlockData = new Door(TreeSpecies.GENERIC, Utils.getFacingByByte((byte) 8));
+    if (Version.isCurrentEqualOrLower(Version.v1_13_R1)) {
+      Door doorBlockData = new Door(TreeSpecies.GENERIC, Utils.getFacingByByte((byte) 8));
 
-    doorBlockData.setTopHalf(true);
-    doorBlockData.setFacingDirection(doorBlockData.getFacing());
+      doorBlockData.setTopHalf(true);
+      doorBlockData.setFacingDirection(doorBlockData.getFacing());
 
-    doorBlockState.setType(doorBlockData.getItemType());
-    doorBlockState.setData(doorBlockData);
+      doorBlockState.setType(doorBlockData.getItemType());
+      doorBlockState.setData(doorBlockData);
+    } else {
+      org.bukkit.block.data.type.Door doorBlockData = (org.bukkit.block.data.type.Door) block.getBlockData();
+
+      doorBlockData.setHalf(Half.TOP);
+      doorBlockData.setFacing(doorBlockData.getFacing());
+
+      doorBlockState.setType(doorBlockData.getMaterial());
+      doorBlockState.setBlockData(doorBlockData);
+    }
     doorBlockState.update(true);
   }
 
   private void restoreBottomHalfDoorPart(Block block, byte doorData) {
     block.setType(XMaterial.OAK_DOOR.parseMaterial());
     BlockState doorBlockState = block.getState();
-    Door doorBlockData = new Door(TreeSpecies.GENERIC, Utils.getFacingByByte(doorData));
+    if (Version.isCurrentEqualOrLower(Version.v1_13_R1)) {
+      Door doorBlockData = new Door(TreeSpecies.GENERIC, Utils.getFacingByByte(doorData));
 
-    doorBlockData.setTopHalf(false);
-    doorBlockData.setFacingDirection(doorBlockData.getFacing());
+      doorBlockData.setTopHalf(false);
+      doorBlockData.setFacingDirection(doorBlockData.getFacing());
 
-    doorBlockState.setData(doorBlockData);
+      doorBlockState.setData(doorBlockData);
+    } else {
+      org.bukkit.block.data.type.Door doorBlockData = (org.bukkit.block.data.type.Door) block.getBlockData();
+
+      doorBlockData.setHalf(Half.BOTTOM);
+      doorBlockData.setFacing(doorBlockData.getFacing());
+
+      doorBlockState.setType(doorBlockData.getMaterial());
+      doorBlockState.setBlockData(doorBlockData);
+    }
     doorBlockState.update(true);
   }
 

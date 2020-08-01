@@ -47,6 +47,7 @@ import plugily.projects.villagedefense.handlers.language.Messages;
 import plugily.projects.villagedefense.handlers.setup.SetupInventory;
 import plugily.projects.villagedefense.handlers.sign.ArenaSign;
 import plugily.projects.villagedefense.utils.Utils;
+import plugily.projects.villagedefense.utils.ServerVersion.Version;
 import plugily.projects.villagedefense.utils.constants.CompatMaterialConstants;
 import plugily.projects.villagedefense.utils.constants.Constants;
 import plugily.projects.villagedefense.utils.conversation.SimpleConversationBuilder;
@@ -276,10 +277,14 @@ public class MiscComponents implements SetupComponent {
 
       String doorLocation = block.getWorld().getName() + "," + block.getX() + "," + block.getY() + "," + block.getZ() + ",0.0" + ",0.0";
       config.set("instances." + arena.getId() + ".doors." + doors + ".location", doorLocation);
-      if (!plugin.is1_11_R1() && !plugin.is1_12_R1()) {
+      if (!Version.isCurrentEqual(Version.v1_11_R1) && !Version.isCurrentEqual(Version.v1_12_R1)) {
         config.set("instances." + arena.getId() + ".doors." + doors + ".byte", Utils.getDoorByte(((Door) block.getState().getData()).getFacing()));
       } else {
-        config.set("instances." + arena.getId() + ".doors." + doors + ".byte", block.getData());
+        try {
+          config.set("instances." + arena.getId() + ".doors." + doors + ".byte", block.getClass().getDeclaredMethod("getData").invoke(block));
+        } catch (Exception e1) {
+          e1.printStackTrace();
+        }
       }
       player.sendMessage(plugin.getChatManager().colorRawMessage("&a&l✔ &aDoor successfully added! To apply door changes you must either re-register arena or reload plugin via /vda reload"));
       ConfigUtils.saveConfig(plugin, config, Constants.Files.ARENAS.getName());
