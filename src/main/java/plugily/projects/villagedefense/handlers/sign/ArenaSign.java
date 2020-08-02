@@ -23,8 +23,8 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.Sign;
 import org.jetbrains.annotations.Nullable;
-import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.arena.Arena;
+import plugily.projects.villagedefense.utils.ServerVersion.Version;
 import plugily.projects.villagedefense.utils.MaterialUtil;
 
 import java.lang.reflect.InvocationTargetException;
@@ -35,7 +35,6 @@ import java.lang.reflect.InvocationTargetException;
  */
 public class ArenaSign {
 
-  private static Main plugin;
   private final Sign sign;
   private Block behind;
   private final Arena arena;
@@ -46,14 +45,10 @@ public class ArenaSign {
     setBehindBlock();
   }
 
-  public static void init(Main plugin) {
-    ArenaSign.plugin = plugin;
-  }
-
   private void setBehindBlock() {
     this.behind = null;
     if (MaterialUtil.isWallSign(sign.getBlock().getType())) {
-      this.behind = (plugin.is1_14_R1() || plugin.is1_15_R1() || plugin.is1_16_R1()) ? getBlockBehind() : getBlockBehindLegacy();
+      this.behind = Version.isCurrentEqualOrHigher(Version.v1_14_R1) ? getBlockBehind() : getBlockBehindLegacy();
     }
   }
 

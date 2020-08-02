@@ -22,10 +22,10 @@ import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import pl.plajerlair.commonsbox.string.StringFormatUtils;
-import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.arena.Arena;
 import plugily.projects.villagedefense.handlers.language.LanguageManager;
 import plugily.projects.villagedefense.handlers.language.Messages;
+import plugily.projects.villagedefense.utils.ServerVersion.Version;
 import plugily.projects.villagedefense.utils.Utils;
 
 /**
@@ -33,11 +33,9 @@ import plugily.projects.villagedefense.utils.Utils;
  */
 public class ChatManager {
 
-  private final Main plugin;
   private final String prefix;
 
-  public ChatManager(Main plugin, String prefix) {
-    this.plugin = plugin;
+  public ChatManager(String prefix) {
     this.prefix = colorRawMessage(prefix);
   }
 
@@ -49,7 +47,7 @@ public class ChatManager {
   }
 
   public String colorRawMessage(String message) {
-    if (message.contains("#") && plugin.is1_16_R1()) {
+    if (message.contains("#") && Version.isCurrentEqualOrHigher(Version.v1_16_R1)) {
       message = Utils.matchColorRegex(message);
     }
 

@@ -56,7 +56,6 @@ import plugily.projects.villagedefense.handlers.party.PartySupportInitializer;
 import plugily.projects.villagedefense.handlers.powerup.PowerupRegistry;
 import plugily.projects.villagedefense.handlers.reward.RewardsFactory;
 import plugily.projects.villagedefense.handlers.setup.SetupInventory;
-import plugily.projects.villagedefense.handlers.sign.ArenaSign;
 import plugily.projects.villagedefense.handlers.sign.SignManager;
 import plugily.projects.villagedefense.handlers.upgrade.EntityUpgradeMenu;
 import plugily.projects.villagedefense.handlers.upgrade.upgrades.Upgrade;
@@ -101,7 +100,9 @@ public class Main extends JavaPlugin {
   private HologramsRegistry hologramsRegistry;
   private FileConfiguration entityUpgradesConfig;
   private boolean forceDisable = false;
-  private String version;
+
+  private ServerVersion serverVersion;
+  @Deprecated private String version;
 
   @TestOnly
   public Main() {
@@ -113,30 +114,37 @@ public class Main extends JavaPlugin {
     super(loader, description, dataFolder, file);
   }
 
+  @Deprecated
   public boolean is1_11_R1() {
     return version.equalsIgnoreCase("v1_11_R1");
   }
 
+  @Deprecated
   public boolean is1_12_R1() {
     return version.equalsIgnoreCase("v1_12_R1");
   }
 
+  @Deprecated
   public boolean is1_13_R1() {
     return version.equalsIgnoreCase("v1_13_R1");
   }
 
+  @Deprecated
   public boolean is1_13_R2() {
     return version.equalsIgnoreCase("v1_13_R2");
   }
 
+  @Deprecated
   public boolean is1_14_R1() {
     return version.equalsIgnoreCase("v1_14_R1");
   }
 
+  @Deprecated
   public boolean is1_15_R1() {
     return version.equalsIgnoreCase("v1_15_R1");
   }
 
+  @Deprecated
   public boolean is1_16_R1() {
     return version.equalsIgnoreCase("v1_16_R1");
   }
@@ -165,8 +173,17 @@ public class Main extends JavaPlugin {
     return entityUpgradesConfig;
   }
 
+  /**
+   * @deprecated use {@link #getServerVersion()}
+   * @return {@link String}
+   */
+  @Deprecated
   public String getVersion() {
     return version;
+  }
+
+  public ServerVersion getServerVersion() {
+    return serverVersion;
   }
 
   @Override
@@ -191,7 +208,7 @@ public class Main extends JavaPlugin {
       new ArrayList<>(getConfig().getStringList("Performance-Listenable")).forEach(Debugger::monitorPerformance);
     }
 
-    chatManager = new ChatManager(this, LanguageManager.getLanguageMessage("In-Game.Plugin-Prefix"));
+    chatManager = new ChatManager(LanguageManager.getLanguageMessage("In-Game.Plugin-Prefix"));
     configPreferences = new ConfigPreferences(this);
     setupFiles();
     new LegacyDataFixer(this);
@@ -202,9 +219,10 @@ public class Main extends JavaPlugin {
   }
 
   private boolean validateIfPluginShouldStart() {
+    serverVersion = new ServerVersion();
     version = Bukkit.getServer().getClass().getPackage().getName().replace(".", ",").split(",")[3];
-    if (!(version.equalsIgnoreCase("v1_11_R1") || version.equalsIgnoreCase("v1_12_R1") || version.equalsIgnoreCase("v1_13_R1") || version.equalsIgnoreCase("v1_13_R2") ||
-        version.equalsIgnoreCase("v1_14_R1") || version.equalsIgnoreCase("v1_15_R1") || version.equalsIgnoreCase("v1_16_R1"))) {
+
+    if (serverVersion.getVersion().isLower(ServerVersion.Version.v1_11_R1)) {
       MessageUtils.thisVersionIsNotSupported();
       Debugger.sendConsoleMsg("&cYour server version is not supported by Village Defense!");
       Debugger.sendConsoleMsg("&cSadly, we must shut off. Maybe you consider changing your server version?");
@@ -212,6 +230,7 @@ public class Main extends JavaPlugin {
       getServer().getPluginManager().disablePlugin(this);
       return false;
     }
+
     try {
       Class.forName("org.spigotmc.SpigotConfig");
     } catch (Exception e) {
@@ -292,10 +311,9 @@ public class Main extends JavaPlugin {
   }
 
   private void startInitiableClasses() {
-    ArenaSign.init(this);
     StatsStorage.init(this);
     ArenaRegistry.init(this);
-    CompatMaterialConstants.init(this);
+    CompatMaterialConstants.init();
     Utils.init(this);
     CreatureUtils.init(this);
     User.init(this);

@@ -36,6 +36,7 @@ import org.bukkit.util.BlockIterator;
 import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.arena.ArenaRegistry;
 import plugily.projects.villagedefense.handlers.language.Messages;
+import plugily.projects.villagedefense.utils.ServerVersion.Version;
 
 import java.util.*;
 import java.util.regex.Matcher;
@@ -157,7 +158,7 @@ public class Utils {
   }
 
   public static void playSound(Location loc, String before1_13, String after1_13) {
-    if (!plugin.is1_11_R1() && !plugin.is1_12_R1()) {
+    if (!Version.isCurrentEqual(Version.v1_11_R1) && !Version.isCurrentEqual(Version.v1_12_R1)) {
       loc.getWorld().playSound(loc, Sound.valueOf(after1_13), 1, 1);
     } else {
       loc.getWorld().playSound(loc, before1_13, 1, 1);

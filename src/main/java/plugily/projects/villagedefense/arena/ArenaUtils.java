@@ -30,6 +30,7 @@ import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.arena.initializers.*;
 import plugily.projects.villagedefense.handlers.language.Messages;
 import plugily.projects.villagedefense.user.User;
+import plugily.projects.villagedefense.utils.NMS;
 
 /**
  * @author Plajer
@@ -49,20 +50,20 @@ public class ArenaUtils {
 
   public static void hidePlayer(Player p, Arena arena) {
     for (Player player : arena.getPlayers()) {
-      player.hidePlayer(p);
+      NMS.hidePlayer(player, p);
     }
   }
 
   public static void showPlayer(Player p, Arena arena) {
     for (Player player : arena.getPlayers()) {
-      player.showPlayer(p);
+      NMS.showPlayer(player, p);
     }
   }
 
   public static void resetPlayerAfterGame(Player player) {
     for (Player players : plugin.getServer().getOnlinePlayers()) {
-      players.showPlayer(player);
-      player.showPlayer(players);
+      NMS.showPlayer(players, player);
+      NMS.showPlayer(player, players);
     }
     player.setGlowing(false);
     player.setGameMode(GameMode.SURVIVAL);

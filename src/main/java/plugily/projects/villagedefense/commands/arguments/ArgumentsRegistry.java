@@ -48,6 +48,7 @@ import plugily.projects.villagedefense.commands.arguments.game.*;
 import plugily.projects.villagedefense.commands.completion.TabCompletion;
 import plugily.projects.villagedefense.handlers.language.Messages;
 import plugily.projects.villagedefense.handlers.setup.SetupInventory;
+import plugily.projects.villagedefense.utils.ServerVersion.Version;
 import plugily.projects.villagedefense.utils.Utils;
 
 import java.util.ArrayList;
@@ -194,7 +195,7 @@ public class ArgumentsRegistry implements CommandExecutor {
         "&7Edit existing arena\n&6Permission: &7villagedefense.admin.edit"));
     data.addAll(mappedArguments.get("villagedefense").stream().filter(arg -> arg instanceof LabeledCommandArgument)
         .map(arg -> ((LabeledCommandArgument) arg).getLabelData()).collect(Collectors.toList()));
-    if (plugin.is1_11_R1()) {
+    if (Version.isCurrentEqual(Version.v1_11_R1)) {
       for (LabelData labelData : data) {
         sender.sendMessage(labelData.getText() + " - " + labelData.getDescription().split("\n")[0]);
       }
