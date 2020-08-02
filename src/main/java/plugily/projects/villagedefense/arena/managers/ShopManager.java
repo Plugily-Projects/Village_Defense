@@ -216,11 +216,12 @@ public class ShopManager {
   }
 
   private boolean validateShop() {
-    if (config.getString("instances." + arena.getId() + ".shop", "").equals("") || config.getString("instances." + arena.getId() + ".shop", "").split(",").length == 0) {
+    String shop = config.getString("instances." + arena.getId() + ".shop", "");
+    if (shop.isEmpty() || shop.split(",").length == 0) {
       Debugger.debug(Level.WARNING, "There is no shop for arena {0}! Aborting registering shop!", arena.getId());
       return false;
     }
-    Location location = LocationSerializer.getLocation(config.getString("instances." + arena.getId() + ".shop"));
+    Location location = LocationSerializer.getLocation(shop);
     //todo are these still revelant checks
     if (location.getWorld() == null || location.getBlock() == null || !(location.getBlock().getState() instanceof Chest)) {
       Debugger.debug(Level.WARNING, "Shop failed to load, invalid location for location {0}", LocationSerializer.locationToString(location));

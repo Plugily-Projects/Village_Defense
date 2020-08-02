@@ -19,9 +19,10 @@
 package plugily.projects.villagedefense.commands.arguments;
 
 import net.md_5.bungee.api.chat.ClickEvent;
-import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
+import net.md_5.bungee.api.chat.hover.content.Text;
+
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -209,7 +210,7 @@ public class ArgumentsRegistry implements CommandExecutor {
         component = new TextComponent(labelData.getText() + " - " + labelData.getDescription().split("\n")[0]);
       }
       component.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, labelData.getCommand()));
-      component.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(labelData.getDescription()).create()));
+      component.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text(labelData.getDescription())));
       sender.spigot().sendMessage(component);
     }
   }

@@ -31,6 +31,8 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
+import org.jetbrains.annotations.Nullable;
+
 import pl.plajerlair.commonsbox.minecraft.compat.XMaterial;
 import pl.plajerlair.commonsbox.minecraft.item.ItemBuilder;
 import plugily.projects.villagedefense.Main;
@@ -101,6 +103,7 @@ public class EntityUpgradeMenu {
     upgrades.add(upgrade);
   }
 
+  @Nullable
   public Upgrade getUpgrade(String id) {
     for (Upgrade upgrade : upgrades) {
       if (upgrade.getId().equals(id)) {

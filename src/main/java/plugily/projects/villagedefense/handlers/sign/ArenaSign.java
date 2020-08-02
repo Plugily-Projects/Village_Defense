@@ -19,13 +19,13 @@
 package plugily.projects.villagedefense.handlers.sign;
 
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.Sign;
 import org.jetbrains.annotations.Nullable;
 import plugily.projects.villagedefense.arena.Arena;
 import plugily.projects.villagedefense.utils.ServerVersion.Version;
+import plugily.projects.villagedefense.utils.MaterialUtil;
 
 import java.lang.reflect.InvocationTargetException;
 
@@ -47,7 +47,7 @@ public class ArenaSign {
 
   private void setBehindBlock() {
     this.behind = null;
-    if (sign.getBlock().getType() == Material.getMaterial("WALL_SIGN")) {
+    if (MaterialUtil.isWallSign(sign.getBlock().getType())) {
       this.behind = Version.isCurrentEqualOrHigher(Version.v1_14_R1) ? getBlockBehind() : getBlockBehindLegacy();
     }
   }
