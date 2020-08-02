@@ -76,10 +76,9 @@ public class UserManager {
   }
 
   public void saveStatistic(User user, StatsStorage.StatisticType stat) {
-    if (!stat.isPersistent()) {
-      return;
+    if (stat.isPersistent()) {
+      database.saveStatistic(user, stat);
     }
-    database.saveStatistic(user, stat);
   }
 
   public void addExperience(Player player, int i) {

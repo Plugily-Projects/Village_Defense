@@ -22,6 +22,7 @@ import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
 import pl.plajerlair.commonsbox.minecraft.compat.XMaterial;
 
@@ -34,30 +35,31 @@ public class ArmorHelper {
   }
 
   public static void setArmor(Player player, ArmorType type) {
+    PlayerInventory inv = player.getInventory();
     switch (type) {
       case LEATHER:
-        player.getInventory().setBoots(new ItemStack(Material.LEATHER_BOOTS));
-        player.getInventory().setLeggings(new ItemStack(Material.LEATHER_LEGGINGS));
-        player.getInventory().setChestplate(new ItemStack(Material.LEATHER_CHESTPLATE));
-        player.getInventory().setHelmet(new ItemStack(Material.LEATHER_HELMET));
+        inv.setBoots(new ItemStack(Material.LEATHER_BOOTS));
+        inv.setLeggings(new ItemStack(Material.LEATHER_LEGGINGS));
+        inv.setChestplate(new ItemStack(Material.LEATHER_CHESTPLATE));
+        inv.setHelmet(new ItemStack(Material.LEATHER_HELMET));
         break;
       case IRON:
-        player.getInventory().setBoots(new ItemStack(Material.IRON_BOOTS));
-        player.getInventory().setLeggings(new ItemStack(Material.IRON_LEGGINGS));
-        player.getInventory().setChestplate(new ItemStack(Material.IRON_CHESTPLATE));
-        player.getInventory().setHelmet(new ItemStack(Material.IRON_HELMET));
+        inv.setBoots(new ItemStack(Material.IRON_BOOTS));
+        inv.setLeggings(new ItemStack(Material.IRON_LEGGINGS));
+        inv.setChestplate(new ItemStack(Material.IRON_CHESTPLATE));
+        inv.setHelmet(new ItemStack(Material.IRON_HELMET));
         break;
       case GOLD:
-        player.getInventory().setBoots(XMaterial.GOLDEN_BOOTS.parseItem());
-        player.getInventory().setLeggings(XMaterial.GOLDEN_LEGGINGS.parseItem());
-        player.getInventory().setChestplate(XMaterial.GOLDEN_CHESTPLATE.parseItem());
-        player.getInventory().setHelmet(XMaterial.GOLDEN_HELMET.parseItem());
+        inv.setBoots(XMaterial.GOLDEN_BOOTS.parseItem());
+        inv.setLeggings(XMaterial.GOLDEN_LEGGINGS.parseItem());
+        inv.setChestplate(XMaterial.GOLDEN_CHESTPLATE.parseItem());
+        inv.setHelmet(XMaterial.GOLDEN_HELMET.parseItem());
         break;
       case DIAMOND:
-        player.getInventory().setBoots(new ItemStack(Material.DIAMOND_BOOTS));
-        player.getInventory().setLeggings(new ItemStack(Material.DIAMOND_LEGGINGS));
-        player.getInventory().setChestplate(new ItemStack(Material.DIAMOND_CHESTPLATE));
-        player.getInventory().setHelmet(new ItemStack(Material.DIAMOND_HELMET));
+        inv.setBoots(new ItemStack(Material.DIAMOND_BOOTS));
+        inv.setLeggings(new ItemStack(Material.DIAMOND_LEGGINGS));
+        inv.setChestplate(new ItemStack(Material.DIAMOND_CHESTPLATE));
+        inv.setHelmet(new ItemStack(Material.DIAMOND_HELMET));
         break;
       default:
         break; //o.o
@@ -65,10 +67,11 @@ public class ArmorHelper {
   }
 
   public static void setColouredArmor(Color color, Player player) {
-    ItemStack helmet = new ItemStack(Material.LEATHER_HELMET);
-    ItemStack chestplate = new ItemStack(Material.LEATHER_CHESTPLATE);
-    ItemStack leggings = new ItemStack(Material.LEATHER_LEGGINGS);
-    ItemStack boots = new ItemStack(Material.LEATHER_BOOTS);
+    ItemStack helmet = new ItemStack(Material.LEATHER_HELMET),
+      chestplate = new ItemStack(Material.LEATHER_CHESTPLATE),
+      leggings = new ItemStack(Material.LEATHER_LEGGINGS),
+      boots = new ItemStack(Material.LEATHER_BOOTS);
+
     LeatherArmorMeta helmMeta = (LeatherArmorMeta) helmet.getItemMeta();
     helmMeta.setColor(color);
     LeatherArmorMeta armorMeta = (LeatherArmorMeta) chestplate.getItemMeta();
@@ -77,15 +80,18 @@ public class ArmorHelper {
     legsMeta.setColor(color);
     LeatherArmorMeta bootsMeta = (LeatherArmorMeta) boots.getItemMeta();
     bootsMeta.setColor(color);
+
     boots.setItemMeta(bootsMeta);
     helmet.setItemMeta(helmMeta);
     chestplate.setItemMeta(armorMeta);
     leggings.setItemMeta(legsMeta);
     boots.setItemMeta(bootsMeta);
-    player.getInventory().setHelmet(helmet);
-    player.getInventory().setChestplate(chestplate);
-    player.getInventory().setLeggings(leggings);
-    player.getInventory().setBoots(boots);
+
+    PlayerInventory inv = player.getInventory();
+    inv.setHelmet(helmet);
+    inv.setChestplate(chestplate);
+    inv.setLeggings(leggings);
+    inv.setBoots(boots);
   }
 
   public enum ArmorType {
