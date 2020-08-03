@@ -24,8 +24,8 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.block.Sign;
 import org.jetbrains.annotations.Nullable;
 import plugily.projects.villagedefense.arena.Arena;
-import plugily.projects.villagedefense.utils.ServerVersion.Version;
 import plugily.projects.villagedefense.utils.MaterialUtil;
+import plugily.projects.villagedefense.utils.ServerVersion.Version;
 
 import java.lang.reflect.InvocationTargetException;
 

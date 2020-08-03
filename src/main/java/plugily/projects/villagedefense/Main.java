@@ -450,9 +450,7 @@ public class Main extends JavaPlugin {
     }
     //hmm? Can be removed?
     if (getServer().getPluginManager().isPluginEnabled("HolographicDisplays")) {
-      for (Hologram holo : HologramsAPI.getHolograms(this)) {
-        holo.delete();
-      }
+      HologramsAPI.getHolograms(this).forEach(Hologram::delete);
     }
     if (configPreferences.getOption(ConfigPreferences.Option.DATABASE_ENABLED)) {
       getMysqlDatabase().shutdownConnPool();
@@ -476,7 +474,8 @@ public class Main extends JavaPlugin {
       String finalUpdate = update.toString();
       //copy of userManager#saveStatistic but without async database call that's not allowed in onDisable method.
       if (userManager.getDatabase() instanceof MysqlManager) {
-        ((MysqlManager) userManager.getDatabase()).getDatabase().executeUpdate("UPDATE "+((MysqlManager) getUserManager().getDatabase()).getTableName()+ finalUpdate + " WHERE UUID='" + user.getPlayer().getUniqueId().toString() + "';");
+        ((MysqlManager) userManager.getDatabase()).getDatabase().executeUpdate("UPDATE " + ((MysqlManager) getUserManager().getDatabase()).getTableName()
+          + finalUpdate + " WHERE UUID='" + user.getPlayer().getUniqueId().toString() + "';");
         continue;
       }
       userManager.getDatabase().saveAllStatistic(user);
