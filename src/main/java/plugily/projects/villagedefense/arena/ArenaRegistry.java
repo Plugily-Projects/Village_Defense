@@ -78,19 +78,19 @@ public class ArenaRegistry {
    */
   @Nullable
   public static Arena getArena(Player player) {
-    Arena arena = null;
     if (player == null || !player.isOnline()) {
       return null;
     }
+
     for (Arena loopArena : arenas) {
       for (Player arenaPlayer : loopArena.getPlayers()) {
         if (arenaPlayer.getUniqueId().equals(player.getUniqueId())) {
-          arena = loopArena;
-          break;
+          return loopArena;
         }
       }
     }
-    return arena;
+
+    return null;
   }
 
   /**
@@ -101,14 +101,13 @@ public class ArenaRegistry {
    */
   @Nullable
   public static Arena getArena(String id) {
-    Arena arena = null;
     for (Arena loopArena : arenas) {
       if (loopArena.getId().equalsIgnoreCase(id)) {
-        arena = loopArena;
-        break;
+        return loopArena;
       }
     }
-    return arena;
+
+    return null;
   }
 
   public static void registerArena(Arena arena) {

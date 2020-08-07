@@ -101,14 +101,13 @@ public class KitRegistry {
    * @return Registered kit or default if not found
    */
   public static Kit getKit(ItemStack itemStack) {
-    Kit returnKit = getDefaultKit();
     for (Kit kit : kits) {
       if (itemStack.getType() == kit.getMaterial()) {
-        returnKit = kit;
-        break;
+        return kit;
       }
     }
-    return returnKit;
+
+    return getDefaultKit();
   }
 
   private static void setupGameKits() {

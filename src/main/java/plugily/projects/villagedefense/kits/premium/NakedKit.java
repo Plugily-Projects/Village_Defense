@@ -40,6 +40,7 @@ import plugily.projects.villagedefense.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 
 /**
  * Created by Tom on 8/02/2015.
@@ -58,26 +59,12 @@ public class NakedKit extends PremiumKit implements Listener {
   }
 
   private void setupArmorTypes() {
-    armorTypes.add(Material.LEATHER_BOOTS);
-    armorTypes.add(Material.LEATHER_CHESTPLATE);
-    armorTypes.add(Material.LEATHER_LEGGINGS);
-    armorTypes.add(Material.LEATHER_HELMET);
-    armorTypes.add(XMaterial.GOLDEN_BOOTS.parseMaterial());
-    armorTypes.add(XMaterial.GOLDEN_CHESTPLATE.parseMaterial());
-    armorTypes.add(XMaterial.GOLDEN_LEGGINGS.parseMaterial());
-    armorTypes.add(XMaterial.GOLDEN_HELMET.parseMaterial());
-    armorTypes.add(Material.DIAMOND_BOOTS);
-    armorTypes.add(Material.DIAMOND_LEGGINGS);
-    armorTypes.add(Material.DIAMOND_CHESTPLATE);
-    armorTypes.add(Material.DIAMOND_HELMET);
-    armorTypes.add(Material.IRON_CHESTPLATE);
-    armorTypes.add(Material.IRON_BOOTS);
-    armorTypes.add(Material.IRON_HELMET);
-    armorTypes.add(Material.IRON_LEGGINGS);
-    armorTypes.add(Material.CHAINMAIL_BOOTS);
-    armorTypes.add(Material.CHAINMAIL_LEGGINGS);
-    armorTypes.add(Material.CHAINMAIL_CHESTPLATE);
-    armorTypes.add(Material.CHAINMAIL_HELMET);
+    Stream.of(Material.LEATHER_BOOTS, Material.LEATHER_CHESTPLATE, Material.LEATHER_LEGGINGS, Material.LEATHER_HELMET,
+        XMaterial.GOLDEN_BOOTS.parseMaterial(), XMaterial.GOLDEN_CHESTPLATE.parseMaterial(), XMaterial.GOLDEN_LEGGINGS.parseMaterial(),
+        XMaterial.GOLDEN_HELMET.parseMaterial(), Material.DIAMOND_BOOTS, Material.DIAMOND_LEGGINGS, Material.DIAMOND_CHESTPLATE,
+        Material.DIAMOND_HELMET, Material.IRON_CHESTPLATE, Material.IRON_BOOTS, Material.IRON_HELMET, Material.IRON_LEGGINGS,
+        Material.CHAINMAIL_BOOTS, Material.CHAINMAIL_LEGGINGS, Material.CHAINMAIL_CHESTPLATE, Material.CHAINMAIL_HELMET)
+    .forEach(armorTypes::add);
   }
 
   @Override
@@ -87,7 +74,7 @@ public class NakedKit extends PremiumKit implements Listener {
 
   @Override
   public void giveKitItems(Player player) {
-    ItemStack itemStack = new ItemStack(Material.IRON_SWORD);
+    ItemStack itemStack = new ItemStack(getMaterial());
     itemStack.addUnsafeEnchantment(Enchantment.DAMAGE_ALL, 6);
     itemStack.addUnsafeEnchantment(Enchantment.DAMAGE_UNDEAD, 2);
     itemStack.addUnsafeEnchantment(Enchantment.DURABILITY, 10);

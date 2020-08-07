@@ -263,9 +263,7 @@ public class ArenaEvents implements Listener {
         continue;
       }
       //set new target as villager so zombies won't stay still waiting for nothing
-      for (Villager villager : arena.getVillagers()) {
-        zombie.setTarget(villager);
-      }
+      arena.getVillagers().forEach(zombie::setTarget);
     }
   }
 

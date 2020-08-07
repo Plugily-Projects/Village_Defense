@@ -75,10 +75,9 @@ public class DogFriendKit extends PremiumKit {
   @Override
   public void reStock(Player player) {
     Arena arena = ArenaRegistry.getArena(player);
-    if (arena == null) {
-      return;
+    if (arena != null) {
+      spawnWolf(arena, player);
     }
-    spawnWolf(arena, player);
   }
 
   private void spawnWolf(Arena arena, Player player) {

@@ -75,7 +75,7 @@ public class TornadoKit extends PremiumKit implements Listener {
 
     player.getInventory().addItem(new ItemStack(Material.COOKED_BEEF, 10));
     player.getInventory().addItem(new ItemStack(Material.SADDLE));
-    player.getInventory().addItem(new ItemBuilder(new ItemStack(XMaterial.COBWEB.parseMaterial(), 5))
+    player.getInventory().addItem(new ItemBuilder(new ItemStack(getMaterial(), 5))
         .name(getPlugin().getChatManager().colorMessage(Messages.KITS_TORNADO_GAME_ITEM_NAME))
         .lore(Utils.splitString(getPlugin().getChatManager().colorMessage(Messages.KITS_TORNADO_GAME_ITEM_LORE), 40))
         .build());
@@ -88,7 +88,7 @@ public class TornadoKit extends PremiumKit implements Listener {
 
   @Override
   public void reStock(Player player) {
-    player.getInventory().addItem(new ItemBuilder(new ItemStack(XMaterial.COBWEB.parseMaterial(), 5))
+    player.getInventory().addItem(new ItemBuilder(new ItemStack(getMaterial(), 5))
         .name(getPlugin().getChatManager().colorMessage(Messages.KITS_TORNADO_GAME_ITEM_NAME))
         .lore(Utils.splitString(getPlugin().getChatManager().colorMessage(Messages.KITS_TORNADO_GAME_ITEM_LORE), 40))
         .build());
@@ -164,10 +164,10 @@ public class TornadoKit extends PremiumKit implements Listener {
       for (int l = 0; l < lines; l++) {
         double heightIncrease = 0.5;
         for (double y = 0; y < maxHeight; y += heightIncrease) {
-          double radius = y * radiusIncrement;
-          double radians = Math.toRadians(360.0 / lines * l + y * 25 - angle);
-          double x = Math.cos(radians) * radius;
-          double z = Math.sin(radians) * radius;
+          double radius = y * radiusIncrement,
+              radians = Math.toRadians(360.0 / lines * l + y * 25 - angle),
+              x = Math.cos(radians) * radius,
+              z = Math.sin(radians) * radius;
           getLocation().getWorld().spawnParticle(Particle.CLOUD, getLocation().clone().add(x, y, z), 1, 0, 0, 0, 0);
         }
       }

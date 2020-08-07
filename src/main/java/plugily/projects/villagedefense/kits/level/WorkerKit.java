@@ -68,7 +68,7 @@ public class WorkerKit extends LevelKit implements Listener {
     player.getInventory().addItem(WeaponHelper.getEnchantedBow(Enchantment.DURABILITY, 10));
     player.getInventory().addItem(new ItemStack(Material.ARROW, 64));
     player.getInventory().addItem(new ItemStack(Material.COOKED_BEEF, 10));
-    player.getInventory().addItem(new ItemStack(CompatMaterialConstants.getOakDoorItem(), 2));
+    player.getInventory().addItem(new ItemStack(getMaterial(), 2));
   }
 
   @Override
@@ -78,7 +78,7 @@ public class WorkerKit extends LevelKit implements Listener {
 
   @Override
   public void reStock(Player player) {
-    player.getInventory().addItem(new ItemStack(CompatMaterialConstants.getOakDoorItem()));
+    player.getInventory().addItem(new ItemStack(getMaterial()));
   }
 
   @EventHandler(priority = EventPriority.HIGHEST)
@@ -94,7 +94,7 @@ public class WorkerKit extends LevelKit implements Listener {
       e.setCancelled(true);
       return;
     }
-    if (stack.getType() != CompatMaterialConstants.getOakDoorItem()) {
+    if (stack.getType() != getMaterial()) {
       e.setCancelled(true);
       return;
     }

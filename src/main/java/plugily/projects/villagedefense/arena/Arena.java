@@ -25,6 +25,8 @@ import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
 import org.bukkit.entity.*;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.TestOnly;
 import pl.plajerlair.commonsbox.minecraft.configuration.ConfigUtils;
 import plugily.projects.villagedefense.ConfigPreferences;
@@ -49,7 +51,6 @@ import java.util.stream.Collectors;
  */
 public abstract class Arena extends BukkitRunnable {
 
-  private static final Random random = new Random();
   private static Main plugin;
   private final String id;
 
@@ -211,10 +212,6 @@ public abstract class Arena extends BukkitRunnable {
     this.fighting = fighting;
   }
 
-  public Random getRandom() {
-    return random;
-  }
-
   /**
    * Returns boss bar of the game.
    * Please use doBarAction if possible
@@ -293,6 +290,7 @@ public abstract class Arena extends BukkitRunnable {
     setOptionValue(ArenaOption.MAXIMUM_PLAYERS, maximumPlayers);
   }
 
+  @NotNull
   public ArenaState getArenaState() {
     return arenaState;
   }
@@ -305,11 +303,12 @@ public abstract class Arena extends BukkitRunnable {
    * @see ArenaState
    * @see VillageGameStateChangeEvent
    */
-  public void setArenaState(ArenaState arenaState) {
+  public void setArenaState(@NotNull ArenaState arenaState) {
     this.arenaState = arenaState;
     Bukkit.getPluginManager().callEvent(new VillageGameStateChangeEvent(this, getArenaState()));
   }
 
+  @NotNull
   public Set<Player> getPlayers() {
     return players;
   }
@@ -362,6 +361,7 @@ public abstract class Arena extends BukkitRunnable {
    *
    * @return list of spawned zombies in arena
    */
+  @NotNull
   public List<Zombie> getZombies() {
     return zombies;
   }
@@ -370,6 +370,7 @@ public abstract class Arena extends BukkitRunnable {
     zombies.remove(zombie);
   }
 
+  @NotNull
   public List<Location> getVillagerSpawns() {
     return spawnPoints.getOrDefault(SpawnPoint.VILLAGER, new ArrayList<>());
   }
@@ -382,6 +383,7 @@ public abstract class Arena extends BukkitRunnable {
     spawnPoints.getOrDefault(SpawnPoint.ZOMBIE, new ArrayList<>()).add(location);
   }
 
+  @NotNull
   public List<Item> getDroppedFleshes() {
     return droppedFleshes;
   }
@@ -447,6 +449,7 @@ public abstract class Arena extends BukkitRunnable {
    *
    * @return alive wolves in game
    */
+  @NotNull
   public List<Wolf> getWolves() {
     return wolves;
   }
@@ -456,6 +459,7 @@ public abstract class Arena extends BukkitRunnable {
    *
    * @return alive iron golems in game
    */
+  @NotNull
   public List<IronGolem> getIronGolems() {
     return ironGolems;
   }
@@ -465,6 +469,7 @@ public abstract class Arena extends BukkitRunnable {
    *
    * @return alive villagers in game
    */
+  @NotNull
   public List<Villager> getVillagers() {
     return villagers;
   }
@@ -481,6 +486,7 @@ public abstract class Arena extends BukkitRunnable {
     return false;
   }
 
+  @NotNull
   public List<Player> getPlayersLeft() {
     return plugin.getUserManager().getUsers(this).stream().filter(user -> !user.isSpectator())
       .map(User::getPlayer).collect(Collectors.toList());
@@ -504,6 +510,7 @@ public abstract class Arena extends BukkitRunnable {
     villagers.remove(villager);
   }
 
+  @NotNull
   public List<Location> getZombieSpawns() {
     return spawnPoints.getOrDefault(SpawnPoint.ZOMBIE, new ArrayList<>());
   }
@@ -521,6 +528,7 @@ public abstract class Arena extends BukkitRunnable {
     zombieSpawnManager.applyIdle(0);
   }
 
+  @Nullable
   public int getOption(ArenaOption option) {
     return arenaOptions.get(option);
   }
