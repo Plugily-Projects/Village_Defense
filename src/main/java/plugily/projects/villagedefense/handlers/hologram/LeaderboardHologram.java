@@ -11,6 +11,7 @@ import org.bukkit.scheduler.BukkitTask;
 import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.api.StatsStorage;
 import plugily.projects.villagedefense.handlers.hologram.messages.LanguageMessage;
+import plugily.projects.villagedefense.user.data.MysqlManager;
 
 import java.util.*;
 
@@ -77,6 +78,10 @@ public class LeaderboardHologram {
 
   private String getPlayerNameSafely(UUID uuid, Main plugin) {
     try {
+      if (plugin.getUserManager().getDatabase() instanceof MysqlManager) {
+        return ((MysqlManager) plugin.getUserManager().getDatabase()).getDatabase().executeQuery("Select `name` FROM " + ((MysqlManager) plugin.getUserManager().getDatabase()).getTableName()
+                + " WHERE UUID='" + uuid.toString() + "';").toString();
+      }
       return Bukkit.getOfflinePlayer(uuid).getName();
     } catch (NullPointerException ex) {
       return color(plugin.getLanguageConfig().getString(LanguageMessage.HOLOGRAMS_UNKNOWN_PLAYER.getAccessor()));

@@ -17,6 +17,7 @@ That's all, matcher will stop when detects next line started with `###` match
 * Fix for new 1.16 wall signs
 * Fixed dogfirendkit is spawning golem on 1.16
 * Fixed IllegalPluginAccessException on plugin disable
+* Fixed player names for stats (with mysql enabled)
 
 ### 4.5.0 Release (01.07.2020 - 26.07.2020)
 * Added 1.16.x compatibility 

@@ -110,6 +110,7 @@ public class MysqlManager implements UserDatabase {
       String uuid = user.getPlayer().getUniqueId().toString();
       try (Connection connection = database.getConnection()) {
         Statement statement = connection.createStatement();
+        database.executeUpdate("UPDATE " + getTableName() + " SET " + "name" + "=" + user.getPlayer().getName() + " WHERE UUID='" + user.getPlayer().getUniqueId().toString() + "';");
         ResultSet rs = statement.executeQuery("SELECT * from "+getTableName()+" WHERE UUID='" + uuid + "'");
         if (rs.next()) {
           //player already exists - get the stats
