@@ -15,6 +15,8 @@ That's all, matcher will stop when detects next line started with `###` match
 * Properly replace player & message to return the correct variable
 * Added support for 1.16 hex colors
 * Fix for new 1.16 wall signs
+* Fixed dogfirendkit is spawning golem on 1.16
+* Fixed IllegalPluginAccessException on plugin disable
 
 ### 4.5.0 Release (01.07.2020 - 26.07.2020)
 * Added 1.16.x compatibility 
