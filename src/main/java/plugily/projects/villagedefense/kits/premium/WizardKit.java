@@ -71,7 +71,7 @@ public class WizardKit extends PremiumKit implements Listener {
 
   @Override
   public void giveKitItems(Player player) {
-    player.getInventory().addItem(new ItemBuilder(Material.BLAZE_ROD)
+    player.getInventory().addItem(new ItemBuilder(getMaterial())
         .name(getPlugin().getChatManager().colorMessage(Messages.KITS_WIZARD_STAFF_ITEM_NAME))
         .lore(Utils.splitString(getPlugin().getChatManager().colorMessage(Messages.KITS_WIZARD_STAFF_ITEM_LORE), 40))
         .build());
@@ -108,10 +108,7 @@ public class WizardKit extends PremiumKit implements Listener {
     if (!(e.getDamager() instanceof Zombie && e.getEntity() instanceof Player)) {
       return;
     }
-    if (!wizardsOnDuty.contains(e.getEntity())) {
-      return;
-    }
-    if (ArenaRegistry.getArena((Player) e.getEntity()) == null) {
+    if (!wizardsOnDuty.contains(e.getEntity()) || ArenaRegistry.getArena((Player) e.getEntity()) == null) {
       return;
     }
     ((Zombie) e.getDamager()).damage(2.0, e.getEntity());
@@ -186,9 +183,9 @@ public class WizardKit extends PremiumKit implements Listener {
       @Override
       public void run() {
         positionModifier += 0.5;
-        double x = direction.getX() * positionModifier;
-        double y = direction.getY() * positionModifier + 1.5;
-        double z = direction.getZ() * positionModifier;
+        double x = direction.getX() * positionModifier,
+            y = direction.getY() * positionModifier + 1.5,
+            z = direction.getZ() * positionModifier;
         loc.add(x, y, z);
         player.getWorld().spawnParticle(Particle.TOWN_AURA, loc, 5);
         for (Entity en : loc.getChunk().getEntities()) {

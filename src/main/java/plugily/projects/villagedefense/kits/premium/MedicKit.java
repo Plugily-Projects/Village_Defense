@@ -84,10 +84,7 @@ public class MedicKit extends PremiumKit implements Listener {
       return;
     }
     User user = getPlugin().getUserManager().getUser((Player) e.getDamager());
-    if (!(user.getKit() instanceof MedicKit)) {
-      return;
-    }
-    if (Math.random() > 0.1) {
+    if (!(user.getKit() instanceof MedicKit) || Math.random() > 0.1) {
       return;
     }
     healNearbyPlayers(e.getDamager());

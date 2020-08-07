@@ -248,7 +248,7 @@ public class Events implements Listener {
       return;
     }
     ItemStack itemStack = event.getPlayer().getInventory().getItemInMainHand();
-    if (itemStack == null || itemStack.getItemMeta() == null || itemStack.getItemMeta().getDisplayName() == null) {
+    if (!itemStack.hasItemMeta() || !itemStack.getItemMeta().hasDisplayName()) {
       return;
     }
     SpecialItem key = plugin.getSpecialItemManager().getSpecialItem(SpecialItemManager.SpecialItems.LOBBY_LEAVE_ITEM.getName());

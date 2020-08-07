@@ -43,16 +43,14 @@ public class CompatMaterialConstants {
 
   @SuppressWarnings("deprecation")
   public static void init() {
+    playerHead = XMaterial.PLAYER_HEAD.parseMaterial();
+    oakDoorBlock = XMaterial.OAK_DOOR.parseMaterial();
+    oakDoorItem = XMaterial.OAK_DOOR.parseMaterial();
+
     if (Version.isCurrentEqualOrLower(Version.v1_12_R1)) {
-      playerHead = Material.getMaterial("SKULL_ITEM");
-      playerHeadItem = new ItemStack(Material.getMaterial("SKULL_ITEM"), 1, (short) 3);
-      oakDoorBlock = Material.getMaterial("WOODEN_DOOR");
-      oakDoorItem = Material.getMaterial("WOOD_DOOR");
+      playerHeadItem = new ItemStack(playerHead, 1, (short) 3);
     } else {
-      playerHead = XMaterial.PLAYER_HEAD.parseMaterial();
       playerHeadItem = XMaterial.PLAYER_HEAD.parseItem();
-      oakDoorBlock = XMaterial.OAK_DOOR.parseMaterial();
-      oakDoorItem = XMaterial.OAK_DOOR.parseMaterial();
     }
   }
 

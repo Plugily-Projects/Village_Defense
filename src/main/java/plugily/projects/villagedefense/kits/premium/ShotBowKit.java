@@ -61,8 +61,8 @@ public class ShotBowKit extends PremiumKit implements Listener {
   @Override
   public void giveKitItems(Player player) {
     player.getInventory().addItem(WeaponHelper.getEnchantedBow(new Enchantment[] {Enchantment.DURABILITY, Enchantment.ARROW_KNOCKBACK}, new int[] {10, 1}));
-    player.getInventory().addItem(new ItemStack(Material.ARROW, 64));
-    player.getInventory().addItem(new ItemStack(Material.ARROW, 64));
+    player.getInventory().addItem(new ItemStack(getMaterial(), 64));
+    player.getInventory().addItem(new ItemStack(getMaterial(), 64));
     ArmorHelper.setColouredArmor(Color.YELLOW, player);
     player.getInventory().addItem(new ItemStack(Material.COOKED_BEEF, 8));
     player.getInventory().addItem(new ItemStack(Material.SADDLE));
@@ -75,7 +75,7 @@ public class ShotBowKit extends PremiumKit implements Listener {
 
   @Override
   public void reStock(Player player) {
-    player.getInventory().addItem(new ItemStack(Material.ARROW, 64));
+    player.getInventory().addItem(new ItemStack(getMaterial(), 64));
   }
 
   @EventHandler
@@ -85,7 +85,7 @@ public class ShotBowKit extends PremiumKit implements Listener {
     }
     ItemStack stack = e.getPlayer().getInventory().getItemInMainHand();
     User user = getPlugin().getUserManager().getUser(e.getPlayer());
-    if (stack == null || stack.getType() != Material.BOW || !e.getPlayer().getInventory().contains(Material.ARROW)
+    if (stack == null || stack.getType() != Material.BOW || !e.getPlayer().getInventory().contains(getMaterial())
         || !(user.getKit() instanceof ShotBowKit)
         || user.isSpectator()) {
       return;
@@ -101,8 +101,8 @@ public class ShotBowKit extends PremiumKit implements Listener {
         pr.setShooter(e.getPlayer());
         pr.setCritical(true);
 
-        if (e.getPlayer().getInventory().contains(Material.ARROW)) {
-          e.getPlayer().getInventory().removeItem(new ItemStack(Material.ARROW, 1));
+        if (e.getPlayer().getInventory().contains(getMaterial())) {
+          e.getPlayer().getInventory().removeItem(new ItemStack(getMaterial(), 1));
         }
       }, 2L * (2 * i));
     }
