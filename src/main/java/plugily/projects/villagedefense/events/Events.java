@@ -54,6 +54,7 @@ import plugily.projects.villagedefense.handlers.language.Messages;
 import plugily.projects.villagedefense.user.User;
 import plugily.projects.villagedefense.utils.Debugger;
 import plugily.projects.villagedefense.utils.NMS;
+import plugily.projects.villagedefense.utils.ServerVersion.Version;
 import plugily.projects.villagedefense.utils.Utils;
 import plugily.projects.villagedefense.utils.constants.CompatMaterialConstants;
 
@@ -191,6 +192,10 @@ public class Events implements Listener {
         return;
       }
       Wolf wolf = (Wolf) event.getRightClicked();
+      if (Version.isCurrentEqualOrHigher(Version.v1_12_R1)) {
+        wolf.setSitting(false);
+      }
+
       if (wolf.getCustomName() != null && wolf.getCustomName().contains(event.getPlayer().getName())) {
         NMS.setPassenger(event.getRightClicked(), event.getPlayer());
       }
