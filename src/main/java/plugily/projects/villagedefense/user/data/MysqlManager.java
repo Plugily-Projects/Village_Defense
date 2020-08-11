@@ -65,7 +65,7 @@ public class MysqlManager implements UserDatabase {
 
         //temporary workaround
         try {
-          statement.executeUpdate("ALTER TABLE "+getTableName()+" ADD `name` text NOT NULL");
+          statement.executeUpdate("ALTER TABLE " + getTableName() + " ADD `name` text NOT NULL");
         } catch (MySQLSyntaxErrorException e) {
           if (!e.getMessage().contains("Duplicate column name")) {
             plugin.getLogger().log(Level.WARNING, "Could not connect to MySQL database! Cause: {0} ({1})", new Object[] {e.getSQLState(), e.getErrorCode()});
@@ -83,7 +83,7 @@ public class MysqlManager implements UserDatabase {
   @Override
   public void saveStatistic(User user, StatsStorage.StatisticType stat) {
     Bukkit.getScheduler().runTaskAsynchronously(plugin, () ->
-        database.executeUpdate("UPDATE "+getTableName()+" SET " + stat.getName() + "=" + user.getStat(stat) + " WHERE UUID='" + user.getPlayer().getUniqueId().toString() + "';"));
+        database.executeUpdate("UPDATE " + getTableName() + " SET " + stat.getName() + "=" + user.getStat(stat) + " WHERE UUID='" + user.getPlayer().getUniqueId().toString() + "';"));
   }
 
   @Override

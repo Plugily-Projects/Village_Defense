@@ -53,6 +53,7 @@ import plugily.projects.villagedefense.kits.level.GolemFriendKit;
 import plugily.projects.villagedefense.user.User;
 import plugily.projects.villagedefense.utils.Debugger;
 import plugily.projects.villagedefense.utils.NMS;
+import plugily.projects.villagedefense.utils.Utils;
 
 import java.util.List;
 
@@ -370,15 +371,40 @@ public class ArenaManager {
       stopGame(false, arena);
       return;
     }
+
+    String titleTimes = plugin.getConfig().getString("Wave-Title-Messages.EndWave.Times", "20, 30, 20");
+    String[] split = titleTimes.split(", ");
+
+    int fadeIn = split.length > 1 ? Integer.parseInt(split[0]) : 20,
+        stay = split.length > 2 ? Integer.parseInt(split[1]) : 30,
+        fadeOut = split.length > 3 ? Integer.parseInt(split[2]) : 20;
+
+    String title = plugin.getConfig().getString("Wave-Title-Messages.EndWave.Title", "");
+    String subTitle = plugin.getConfig().getString("Wave-Title-Messages.EndWave.SubTitle", "");
+
+    title = title.replace("%wave%", Integer.toString(arena.getWave()));
+    subTitle = subTitle.replace("%wave%", Integer.toString(arena.getWave()));
+    title = plugin.getChatManager().colorRawMessage(title);
+    subTitle = plugin.getChatManager().colorRawMessage(subTitle);
+
+    for (User user : plugin.getUserManager().getUsers(arena)) {
+      Utils.sendTitle(user.getPlayer(), fadeIn, stay, fadeOut, title, subTitle);
+    }
+
     plugin.getRewardsHandler().performReward(arena, Reward.RewardType.END_WAVE);
+
     arena.setTimer(plugin.getConfig().getInt("Cooldown-Before-Next-Wave", 25));
     arena.getZombieSpawnManager().getZombieCheckerLocations().clear();
     arena.setWave(arena.getWave() + 1);
+
     Bukkit.getPluginManager().callEvent(new VillageWaveEndEvent(arena, arena.getWave()));
+
     refreshAllPlayers(arena);
+
     if (plugin.getConfigPreferences().getOption(ConfigPreferences.Option.RESPAWN_AFTER_WAVE)) {
       ArenaUtils.bringDeathPlayersBack(arena);
     }
+
     for (Player player : arena.getPlayersLeft()) {
       plugin.getUserManager().addExperience(player, 5);
     }
@@ -407,6 +433,7 @@ public class ArenaManager {
 
     VillageWaveStartEvent event = new VillageWaveStartEvent(arena, arena.getWave());
     Bukkit.getPluginManager().callEvent(event);
+
     int zombiesAmount = (int) Math.ceil((arena.getPlayers().size() * 0.5) * (arena.getOption(ArenaOption.WAVE) * arena.getOption(ArenaOption.WAVE)) / 2);
     int maxzombies = plugin.getConfig().getInt("Zombies-Limit", 75);
     if (zombiesAmount > maxzombies) {
@@ -417,17 +444,37 @@ public class ArenaManager {
               arena.getId(), arena.getWave(), arena.getOption(ArenaOption.ZOMBIE_DIFFICULTY_MULTIPLIER), zombiesAmount, maxzombies);
       zombiesAmount = maxzombies;
     }
+
     arena.setOptionValue(ArenaOption.ZOMBIES_TO_SPAWN, zombiesAmount);
     arena.setOptionValue(ArenaOption.ZOMBIE_IDLE_PROCESS, (int) Math.floor((double) arena.getWave() / 15));
     if (arena.getOption(ArenaOption.ZOMBIE_IDLE_PROCESS) > 0) {
       Debugger.debug("[{0}] Spawn idle process initiated to prevent server overload! Value: {1}", arena.getId(), arena.getOption(ArenaOption.ZOMBIE_IDLE_PROCESS));
     }
+
     if (plugin.getConfigPreferences().getOption(ConfigPreferences.Option.RESPAWN_AFTER_WAVE)) {
       ArenaUtils.bringDeathPlayersBack(arena);
     }
+
+    String titleTimes = plugin.getConfig().getString("Wave-Title-Messages.StartWave.Times", "20, 30, 20");
+    String[] split = titleTimes.split(", ");
+
+    int fadeIn = split.length > 1 ? Integer.parseInt(split[0]) : 20,
+        stay = split.length > 2 ? Integer.parseInt(split[1]) : 30,
+        fadeOut = split.length > 3 ? Integer.parseInt(split[2]) : 20;
+
+    String title = plugin.getConfig().getString("Wave-Title-Messages.StartWave.Title", "");
+    String subTitle = plugin.getConfig().getString("Wave-Title-Messages.StartWave.SubTitle", "");
+
+    title = title.replace("%wave%", Integer.toString(arena.getWave()));
+    subTitle = subTitle.replace("%wave%", Integer.toString(arena.getWave()));
+    title = plugin.getChatManager().colorRawMessage(title);
+    subTitle = plugin.getChatManager().colorRawMessage(subTitle);
+
     for (User user : plugin.getUserManager().getUsers(arena)) {
       user.getKit().reStock(user.getPlayer());
+      Utils.sendTitle(user.getPlayer(), fadeIn, stay, fadeOut, title, subTitle);
     }
+
     plugin.getChatManager().broadcastMessage(arena, plugin.getChatManager().formatMessage(arena, plugin.getChatManager().colorMessage(Messages.WAVE_STARTED), arena.getWave()));
     Debugger.debug("[{0}] Wave start event finished took {1}ms", arena.getId(), System.currentTimeMillis() - start);
   }

@@ -130,7 +130,7 @@ public class LeaderboardHologram {
 
   public void stopLeaderboardUpdateTask() {
     hologram.delete();
-    if(task != null && !task.isCancelled()) {
+    if (task != null && !task.isCancelled()) {
       task.cancel();
     }
   }

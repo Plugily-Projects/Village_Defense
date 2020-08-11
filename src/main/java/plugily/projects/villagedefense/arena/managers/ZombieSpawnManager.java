@@ -120,7 +120,7 @@ public class ZombieSpawnManager {
       spawn = (int) Math.ceil(plugin.getConfig().getInt("Zombies-Limit", 75) / 2.0);
     }
 
-    if (arena.getZombies() == null || arena.getZombies().isEmpty()) {
+    if (arena.getZombies().isEmpty()) {
       for (int i = 0; i <= spawn; i++) {
         if (arena.getOption(ArenaOption.ZOMBIES_TO_SPAWN) > 0) {
           arena.spawnFastZombie(random);
