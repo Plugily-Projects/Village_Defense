@@ -162,14 +162,14 @@ public class SignManager implements Listener {
     if (block == null) {
       return null;
     }
-    ArenaSign arenaSign = null;
+
     for (ArenaSign sign : arenaSigns) {
       if (sign.getSign().getLocation().equals(block.getLocation())) {
-        arenaSign = sign;
-        break;
+        return sign;
       }
     }
-    return arenaSign;
+
+    return null;
   }
 
   public void loadSigns() {

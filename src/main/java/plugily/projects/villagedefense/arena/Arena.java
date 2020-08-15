@@ -330,10 +330,14 @@ public abstract class Arena extends BukkitRunnable {
   }
 
   public void teleportToEndLocation(Player player) {
-    if (plugin.getConfigPreferences().getOption(ConfigPreferences.Option.BUNGEE_ENABLED) && ConfigUtils.getConfig(plugin, "bungee").getBoolean("End-Location-Hub", true)) {
+    // We should check for #isEnabled to make sure plugin is enabled
+    // This happens in some cases
+    if (plugin.isEnabled() && plugin.getConfigPreferences().getOption(ConfigPreferences.Option.BUNGEE_ENABLED)
+        && ConfigUtils.getConfig(plugin, "bungee").getBoolean("End-Location-Hub", true)) {
       plugin.getBungeeManager().connectToHub(player);
       Debugger.debug("{0} has left the arena {1}! Teleported to the Hub server.", player.getName(), this);
     }
+
     player.teleport(getEndLocation());
   }
 

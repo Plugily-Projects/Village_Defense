@@ -75,7 +75,7 @@ public class MapRestorerManager {
 
   public void clearDroppedEntities() {
     for (Entity entity : Utils.getNearbyEntities(arena.getStartLocation(), 200)) {
-      if (entity.getType() == EntityType.EXPERIENCE_ORB || entity.getType() == EntityType.DROPPED_ITEM){
+      if (entity.getType() == EntityType.EXPERIENCE_ORB || entity.getType() == EntityType.DROPPED_ITEM) {
         entity.remove();
       }
     }

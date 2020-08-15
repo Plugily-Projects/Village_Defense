@@ -30,17 +30,14 @@ import pl.plajerlair.commonsbox.minecraft.compat.XMaterial;
 import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.arena.ArenaRegistry;
 import plugily.projects.villagedefense.utils.Utils;
-import plugily.projects.villagedefense.utils.ServerVersion.Version;
 import plugily.projects.villagedefense.utils.constants.CompatMaterialConstants;
 
-import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * Created by Tom on 14/08/2014.
  */
 public class DoorBreakListener extends BukkitRunnable {
-
-  private final Random random = new Random();
 
   public DoorBreakListener(Main plugin) {
     runTaskTimer(plugin, 1, 20);
@@ -54,12 +51,12 @@ public class DoorBreakListener extends BukkitRunnable {
           continue;
         }
         for (Block block : Utils.getNearbyBlocks(entity, 1)) {
-          if (!isDoor(block)) {
+          if (block.getType() != XMaterial.OAK_DOOR.parseMaterial()) {
             continue;
           }
           block.getLocation().getWorld().spawnParticle(Particle.SMOKE_LARGE, block.getLocation(), 5, 0.1, 0.1, 0.1);
           Utils.playSound(block.getLocation(), "ENTITY_ZOMBIE_ATTACK_DOOR_WOOD", "ENTITY_ZOMBIE_ATTACK_WOODEN_DOOR");
-          if (random.nextInt(20) == 5) {
+          if (ThreadLocalRandom.current().nextInt(20) == 5) {
             block.getLocation().getWorld().spawnParticle(Particle.SMOKE_LARGE, block.getLocation(), 15, 0.1, 0.1, 0.1);
             block.getLocation().getWorld().spawnParticle(Particle.EXPLOSION_HUGE, block.getLocation(), 1, 0.1, 0.1, 0.1);
             if (block.getRelative(BlockFace.UP).getType() == CompatMaterialConstants.getOakDoorBlock()) {
@@ -73,14 +70,6 @@ public class DoorBreakListener extends BukkitRunnable {
         }
       }
     }
-  }
-
-  private boolean isDoor(Block block) {
-    if (Version.isCurrentEqualOrLower(Version.v1_12_R1)) {
-      return block.getType() == Material.getMaterial("WOODEN_DOOR") || block.getType() == Material.getMaterial("WOOD_DOOR");
-    }
-
-    return block.getType() == XMaterial.OAK_DOOR.parseMaterial();
   }
 
 }

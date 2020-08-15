@@ -48,6 +48,7 @@ import plugily.projects.villagedefense.handlers.language.Messages;
 import plugily.projects.villagedefense.handlers.reward.Reward;
 import plugily.projects.villagedefense.user.User;
 import plugily.projects.villagedefense.utils.ServerVersion.Version;
+import plugily.projects.villagedefense.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -218,7 +219,7 @@ public class ArenaEvents implements Listener {
       player.setAllowFlight(true);
       player.setFlying(true);
       player.getInventory().clear();
-      player.sendTitle(plugin.getChatManager().colorMessage(Messages.DEATH_SCREEN), null, 0, 5 * 20, 0);
+      Utils.sendTitle(player, 0, 5 * 20, 0, plugin.getChatManager().colorMessage(Messages.DEATH_SCREEN), null);
       sendSpectatorActionBar(user, arena);
       plugin.getChatManager().broadcastAction(arena, player, ChatManager.ActionType.DEATH);
 

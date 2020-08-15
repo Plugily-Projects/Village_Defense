@@ -428,10 +428,11 @@ public class Main extends JavaPlugin {
 
     Bukkit.getLogger().removeHandler(exceptionLogHandler);
     for (Arena arena : ArenaRegistry.getArenas()) {
+      arena.getPlayers().forEach(arena::teleportToEndLocation);
       arena.getScoreboardManager().stopAllScoreboards();
+
       for (Player player : arena.getPlayers()) {
         arena.doBarAction(Arena.BarAction.REMOVE, player);
-        arena.teleportToEndLocation(player);
         player.setFlySpeed(0.1f);
         if (configPreferences.getOption(ConfigPreferences.Option.INVENTORY_MANAGER_ENABLED)) {
           InventorySerializer.loadInventory(this, player);
@@ -441,8 +442,8 @@ public class Main extends JavaPlugin {
         player.getInventory().setArmorContents(null);
         player.getActivePotionEffects().forEach(pe -> player.removePotionEffect(pe.getType()));
       }
+
       arena.getMapRestorerManager().fullyRestoreArena();
-      arena.getPlayers().forEach(arena::teleportToEndLocation);
     }
     saveAllUserStatistics();
     if (configPreferences.getOption(ConfigPreferences.Option.HOLOGRAMS_ENABLED)) {
