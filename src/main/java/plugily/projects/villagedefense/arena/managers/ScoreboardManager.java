@@ -130,6 +130,8 @@ public class ScoreboardManager {
     formattedLine = StringUtils.replace(formattedLine, "%ORBS%", String.valueOf(user.getStat(StatsStorage.StatisticType.ORBS)));
     formattedLine = StringUtils.replace(formattedLine, "%ZOMBIES%", String.valueOf(arena.getZombiesLeft()));
     formattedLine = StringUtils.replace(formattedLine, "%ROTTEN_FLESH%", String.valueOf(arena.getOption(ArenaOption.ROTTEN_FLESH_AMOUNT)));
+    formattedLine = StringUtils.replace(formattedLine, "%ARENA_NAME%", arena.getMapName());
+    formattedLine = StringUtils.replace(formattedLine, "%ARENA_ID%", arena.getId());
     formattedLine = plugin.getChatManager().colorRawMessage(formattedLine);
     if (plugin.getServer().getPluginManager().isPluginEnabled("PlaceholderAPI")) {
       formattedLine = PlaceholderAPI.setPlaceholders(user.getPlayer(), formattedLine);
