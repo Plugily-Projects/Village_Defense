@@ -66,6 +66,18 @@ Commands:
 
 # In-game scoreboard messages.
 # Please do not use more than 48 chars here! COLOR CODES INCLUDED.
+# Placeholders:
+# %ARENA_NAME% - Returns arena name.
+# %ARENA_ID% - Returns arena id.
+# %VILLAGERS% - Returns villagers amount that are still alive.
+# %PLAYERS_LEFT% - Returns amount of players that is still left.
+# %MIN_PLAYERS% - Returns back the amount of minimum players needed to start the game
+# %PLAYERS% - The amount of players in the arena currently (dead + alive players)
+# %ZOMBIES% - Returns amount of zombies left in wave.
+# %ROTTEN_FLESH% - Returns back how much rotten flesh has been dropped in the magic well.
+# %TIME% - Returns the time back in seconds. 
+# %ORBS% - Returns the amount of orbs (currency) the player has.
+
 Scoreboard:
   Title: "&a&lVillage Defense"
   Content:
