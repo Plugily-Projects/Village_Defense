@@ -335,6 +335,9 @@ public enum Messages {
   SIGNS_GAME_STATES_RESTARTING("Signs.Game-States.Restarting"),
   //list of strings SIGNS_LINES("Signs.Lines")
 
+  ARENA_SELECTOR_INV_TITLE("Arena-Selector.Inv-Title"),
+  ARENA_SELECTOR_ITEM_LORE("Arena-Selector.Item.Lore"),
+
   VALIDATOR_INVALID_ARENA_CONFIGURATION("Validator.Invalid-Arena-Configuration"),
   VALIDATOR_INSTANCE_STARTED("Validator.Instance-Started"),
   VALIDATOR_NO_INSTANCES_CREATED("Validator.No-Instances-Created"),

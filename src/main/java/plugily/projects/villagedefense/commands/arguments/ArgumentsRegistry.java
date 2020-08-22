@@ -22,7 +22,6 @@ import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.chat.hover.content.Text;
-
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -146,15 +145,15 @@ public class ArgumentsRegistry implements CommandExecutor {
       }
       for (CommandArgument argument : entry.getValue()) {
         if (argument.getArgumentName().equalsIgnoreCase(args[0])) {
-          boolean hasPerm = false;
+          //does it make sense that it is a list?
           for (String perm : argument.getPermissions()) {
-            if (perm.isEmpty() || sender.hasPermission(perm)) {
-              hasPerm = true;
+            if (perm.isEmpty()) break;
+            if (Utils.hasPermission(sender, perm)) {
               break;
+            } else {
+              //user has no permission to execute command
+              return true;
             }
-          }
-          if (!hasPerm) {
-            return true;
           }
           if (checkSenderIsExecutorType(sender, argument.getValidExecutors())) {
             argument.execute(sender, args);

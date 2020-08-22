@@ -37,7 +37,7 @@ import java.util.List;
  */
 public class LanguageMigrator {
 
-  public static final int LANGUAGE_FILE_VERSION = 12;
+  public static final int LANGUAGE_FILE_VERSION = 13;
   public static final int CONFIG_FILE_VERSION = 14;
   private final Main plugin;
   private final List<String> migratable = Arrays.asList(Constants.Files.CONFIG.getName(), Constants.Files.KITS.getName(),
@@ -344,6 +344,20 @@ public class LanguageMigrator {
                     "  Cannot-Afford: '&3You don''t have enough orbs to apply that upgrade!'\n" +
                     "  Max-Tier: '&3Entity is at max tier of this upgrade!'\n");
           }
+          break;
+        case 12:
+          MigratorUtils.addNewLines(file, "Arena-Selector:\r\n" +
+                  "  Inv-Title: \"Arena selector\"\r\n" +
+                  "  Item:\r\n" +
+                  "    Lore:\r\n" +
+                  "      - \"&aVillage Defense &f- &e%mapname%\"\r\n" +
+                  "      - \" \"\r\n" +
+                  "      - \" \"\r\n" +
+                  "      - \"  &fOnline: %playersize%/%maxplayers%\"\r\n" +
+                  "      - \"  &fState: %state%\"\r\n" +
+                  "      - \" \"\r\n" +
+                  "      - \" \"\r\n" +
+                  "      - \"&eClick to join this arena\"\r\n");
           break;
         default:
           break;

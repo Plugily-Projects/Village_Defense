@@ -363,6 +363,19 @@ Signs:
     - "%mapname%"
     - "&5[%playersize%/%maxplayers%]"
 
+Arena-Selector:
+  Inv-Title: "Arena selector"
+  Item:
+    Lore:
+      - "&aVillage Defense &f- &e%mapname%"
+      - " "
+      - " "
+      - "  &fOnline: %playersize%/%maxplayers%"
+      - "  &fState: %state%"
+      - " "
+      - " "
+      - "&eClick to join this arena"
+
 #Only used if you enable UpgradesActivated in config!
 Upgrade-Menu:
   Title: '&3&lUpgrade entity'
@@ -419,4 +432,4 @@ Validator:
 
 # Don't edit it. But who's stopping you? It's your server!
 # Really, don't edit ;p
-File-Version-Do-Not-Edit: 12
+File-Version-Do-Not-Edit: 13

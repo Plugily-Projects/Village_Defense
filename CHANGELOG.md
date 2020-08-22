@@ -9,7 +9,7 @@ deploy webhooks to print changelog successfully
 
 That's all, matcher will stop when detects next line started with `###` match
 
-### 4.5.1 Release (30.07.2020)
+### 4.5.1-b Beta 
 * Fixed NoSuchMethodError when used tornado kit
 * (Developer Alert - Class rename)
 * Properly replace player & message to return the correct variable
@@ -20,6 +20,7 @@ That's all, matcher will stop when detects next line started with `###` match
 * Fixed player names for stats (with mysql enabled)
 * Make wolf standing when right clicked
 * Added wave-title messages
+* Added arena selector
 
 ### 4.5.0 Release (01.07.2020 - 26.07.2020)
 * Added 1.16.x compatibility 
