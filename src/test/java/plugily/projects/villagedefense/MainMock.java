@@ -114,11 +114,11 @@ public class MainMock extends Main {
     Utils.init(this);
     Messages.init(this);
     LanguageManager.init(this);
-    CompatMaterialConstants.init(this);
+    CompatMaterialConstants.init();
     this.configPreferences = new ConfigPreferences(this);
     this.userManager = new UserManager(this);
     this.rewardsFactory = new RewardsFactory(this);
-    this.chatManager = new ChatManager(this, "[Village Defense] ");
+    this.chatManager = new ChatManager("[Village Defense] ");
     this.specialItemManager = new SpecialItemManager(this);
 
     this.testArena = new ArenaMock();

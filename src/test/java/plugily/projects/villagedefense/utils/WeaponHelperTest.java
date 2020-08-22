@@ -71,7 +71,7 @@ public class WeaponHelperTest {
     Assert.assertEquals(-1, diamond.getEnchantmentLevel(Enchantment.DURABILITY));
 
     ItemStack wood = WeaponHelper.getUnBreakingSword(WeaponHelper.ResourceType.WOOD, 0);
-    Assert.assertEquals(Material.WOOD_SWORD, wood.getType());
+    Assert.assertEquals(XMaterial.WOODEN_SWORD, wood.getType());
     Assert.assertTrue(wood.containsEnchantment(Enchantment.DURABILITY));
     Assert.assertEquals(0, wood.getEnchantmentLevel(Enchantment.DURABILITY));
     System.out.println("> WeaponHelper#getUnBreakingSword | PASSED");

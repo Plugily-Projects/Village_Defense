@@ -23,6 +23,7 @@ import org.bukkit.inventory.ItemStack;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import pl.plajerlair.commonsbox.minecraft.compat.XMaterial;
 import pl.plajerlair.commonsbox.minecraft.item.ItemBuilder;
 import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.MockUtils;
@@ -48,7 +49,7 @@ public class SpecialItemManagerTest {
     this.item1 = new ItemBuilder(Material.BARRIER).name("test_item1").build();
     this.dummyItem1 = new SpecialItem("test", item1, 2, SpecialItem.DisplayStage.LOBBY);
     plugin.getSpecialItemManager().addItem(dummyItem1);
-    this.item2 = new ItemBuilder(Material.BED).name("item_test2").build();
+    this.item2 = new ItemBuilder(XMaterial.RED_BED.parseItem()).name("item_test2").build();
     this.dummyItem2 = new SpecialItem("test2", item2, 4, SpecialItem.DisplayStage.LOBBY);
     plugin.getSpecialItemManager().addItem(dummyItem2);
   }

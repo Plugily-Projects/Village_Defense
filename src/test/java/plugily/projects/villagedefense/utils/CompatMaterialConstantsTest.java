@@ -18,11 +18,11 @@
 
 package plugily.projects.villagedefense.utils;
 
-import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import pl.plajerlair.commonsbox.minecraft.compat.XMaterial;
 import plugily.projects.villagedefense.MockUtils;
 import plugily.projects.villagedefense.utils.constants.CompatMaterialConstants;
 
@@ -41,22 +41,22 @@ public class CompatMaterialConstantsTest {
 
   @Test
   public void getPlayerHead() {
-    Assert.assertEquals(Material.SKULL_ITEM, CompatMaterialConstants.getPlayerHead());
+    Assert.assertEquals(XMaterial.PLAYER_HEAD, CompatMaterialConstants.getPlayerHead());
   }
 
   @Test
   public void getPlayerHeadItem() {
-    Assert.assertEquals(new ItemStack(Material.SKULL_ITEM, 1, (short) 3), CompatMaterialConstants.getPlayerHeadItem());
+    Assert.assertEquals(new ItemStack(XMaterial.PLAYER_HEAD.parseMaterial(), 1, (short) 3), CompatMaterialConstants.getPlayerHeadItem());
   }
 
   @Test
   public void getOakDoorBlock() {
-    Assert.assertEquals(Material.WOODEN_DOOR, CompatMaterialConstants.getOakDoorBlock());
+    Assert.assertEquals(XMaterial.DARK_OAK_DOOR, CompatMaterialConstants.getOakDoorBlock());
   }
 
   @Test
   public void getOakDoorItem() {
-    Assert.assertEquals(Material.WOOD_DOOR, CompatMaterialConstants.getOakDoorItem());
+    Assert.assertEquals(XMaterial.DARK_OAK_DOOR, CompatMaterialConstants.getOakDoorItem());
   }
 
 }
