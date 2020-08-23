@@ -18,14 +18,12 @@
 
 package plugily.projects.villagedefense.utils;
 
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+
 import java.util.HashSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import org.bukkit.Bukkit;
-import org.bukkit.plugin.java.JavaPlugin;
-
-import plugily.projects.villagedefense.Main;
 
 /**
  * @author Plajer
@@ -55,7 +53,7 @@ public class Debugger {
   }
 
   public static void sendConsoleMsg(String msg) {
-    Bukkit.getConsoleSender().sendMessage(JavaPlugin.getPlugin(Main.class).getChatManager().colorRawMessage(msg));
+    Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&', msg));
   }
 
   public static void debug(String msg) {

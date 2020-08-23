@@ -9,6 +9,9 @@ deploy webhooks to print changelog successfully
 
 That's all, matcher will stop when detects next line started with `###` match
 
+### 4.5.1-b2 Beta 
+* Fixed NullPointerException (sendConsoleMsg(Debugger.java:58))
+
 ### 4.5.1-b Beta 
 * Fixed NoSuchMethodError when used tornado kit
 * (Developer Alert - Class rename)
