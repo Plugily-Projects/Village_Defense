@@ -92,7 +92,7 @@ public class ChatEvents implements Listener {
     } else {
       formatted = StringUtils.replace(formatted, "%kit%", user.getKit().getName());
     }
-    formatted = StringUtils.replace(formatted, "%player%", "%1$s");
+    formatted = StringUtils.replace(formatted, "%player%", user.getPlayer().getName());
     formatted = StringUtils.replace(formatted, "%message%", "%2$s");
     if (plugin.getServer().getPluginManager().isPluginEnabled("PlaceholderAPI") && PlaceholderAPI.containsPlaceholders(formatted)) {
       formatted = PlaceholderAPI.setPlaceholders(user.getPlayer(), formatted);
