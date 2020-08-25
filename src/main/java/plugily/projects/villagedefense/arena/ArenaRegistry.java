@@ -25,6 +25,8 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import io.netty.util.internal.ThreadLocalRandom;
 import pl.plajerlair.commonsbox.minecraft.configuration.ConfigUtils;
 import pl.plajerlair.commonsbox.minecraft.serialization.LocationSerializer;
 import plugily.projects.villagedefense.Main;
@@ -34,7 +36,6 @@ import plugily.projects.villagedefense.utils.constants.Constants;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 /**
  * Created by Tom on 27/07/2014.
@@ -220,12 +221,14 @@ public class ArenaRegistry {
   }
 
   public static void shuffleBungeeArena() {
-    bungeeArena = new Random().nextInt(arenas.size());
+    if (!arenas.isEmpty()) {
+      bungeeArena = ThreadLocalRandom.current().nextInt(arenas.size());
+    }
   }
 
   public static int getBungeeArena() {
-    if (bungeeArena == -999) {
-      bungeeArena = new Random().nextInt(arenas.size());
+    if (bungeeArena == -999 && !arenas.isEmpty()) {
+      bungeeArena = ThreadLocalRandom.current().nextInt(arenas.size());
     }
     return bungeeArena;
   }

@@ -102,7 +102,7 @@ public class MapRestorerManager {
       Block block = entry.getKey().getBlock();
       Byte doorData = entry.getValue();
       if (Version.isCurrentEqualOrLower(Version.v1_12_R1)) {
-        Material mat = Material.getMaterial("WOODEN_DOOR");
+        Material mat = XMaterial.OAK_DOOR.parseMaterial();
         try {
           int id = (int) mat.getClass().getDeclaredMethod("getId").invoke(mat);
           Block.class.getDeclaredMethod("setTypeIdAndData", int.class, Byte.class, boolean.class)
@@ -139,7 +139,7 @@ public class MapRestorerManager {
   private void restoreTopHalfDoorPart(Block block) {
     block.setType(XMaterial.OAK_DOOR.parseMaterial());
     BlockState doorBlockState = block.getState();
-    if (Version.isCurrentEqualOrLower(Version.v1_13_R1)) {
+    if (Version.isCurrentEqualOrLower(Version.v1_12_R1)) {
       Door doorBlockData = new Door(TreeSpecies.GENERIC, Utils.getFacingByByte((byte) 8));
 
       doorBlockData.setTopHalf(true);
@@ -162,7 +162,7 @@ public class MapRestorerManager {
   private void restoreBottomHalfDoorPart(Block block, byte doorData) {
     block.setType(XMaterial.OAK_DOOR.parseMaterial());
     BlockState doorBlockState = block.getState();
-    if (Version.isCurrentEqualOrLower(Version.v1_13_R1)) {
+    if (Version.isCurrentEqualOrLower(Version.v1_12_R1)) {
       Door doorBlockData = new Door(TreeSpecies.GENERIC, Utils.getFacingByByte(doorData));
 
       doorBlockData.setTopHalf(false);

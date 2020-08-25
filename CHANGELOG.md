@@ -11,6 +11,8 @@ That's all, matcher will stop when detects next line started with `###` match
 
 ### 4.5.1-b2 Beta 
 * Fixed NullPointerException (sendConsoleMsg(Debugger.java:58))
+* Fixed IllegalArgumentException when there are no arena when connecting via bungee
+* Fix NoClassDefFoundError on plugin startup
 
 ### 4.5.1-b Beta 
 * Fixed NoSuchMethodError when used tornado kit
