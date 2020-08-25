@@ -26,7 +26,6 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import io.netty.util.internal.ThreadLocalRandom;
 import pl.plajerlair.commonsbox.minecraft.configuration.ConfigUtils;
 import pl.plajerlair.commonsbox.minecraft.serialization.LocationSerializer;
 import plugily.projects.villagedefense.Main;
@@ -36,6 +35,7 @@ import plugily.projects.villagedefense.utils.constants.Constants;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * Created by Tom on 27/07/2014.
