@@ -127,8 +127,8 @@ public class ArenaRegistry {
     Debugger.debug("[ArenaRegistry] Initial arenas registration");
     long start = System.currentTimeMillis();
 
-    if (ArenaRegistry.getArenas() != null && !ArenaRegistry.getArenas().isEmpty()) {
-      for (Arena arena : new ArrayList<>(ArenaRegistry.getArenas())) {
+    if (!arenas.isEmpty()) {
+      for (Arena arena : new ArrayList<>(arenas)) {
         arena.getMapRestorerManager().clearZombiesFromArena();
         arena.getMapRestorerManager().clearVillagersFromArena();
         arena.getMapRestorerManager().clearWolvesFromArena();
@@ -159,11 +159,11 @@ public class ArenaRegistry {
       if (!config.getBoolean(key + "isdone", false)) {
         Debugger.sendConsoleMsg(plugin.getChatManager().colorMessage(Messages.VALIDATOR_INVALID_ARENA_CONFIGURATION).replace("%arena%", id).replace("%error%", "NOT VALIDATED"));
         arena.setReady(false);
-        ArenaRegistry.registerArena(arena);
+        registerArena(arena);
         continue;
       }
 
-      if (config.isSet(key + "zombiespawns")) {
+      if (config.isConfigurationSection(key + "zombiespawns")) {
         for (String string : config.getConfigurationSection(key + "zombiespawns").getKeys(false)) {
           String path = key + "zombiespawns." + string;
           arena.addZombieSpawn(LocationSerializer.getLocation(config.getString(path)));
@@ -171,11 +171,11 @@ public class ArenaRegistry {
       } else {
         Debugger.sendConsoleMsg(plugin.getChatManager().colorMessage(Messages.VALIDATOR_INVALID_ARENA_CONFIGURATION).replace("%arena%", id).replace("%error%", "ZOMBIE SPAWNS"));
         arena.setReady(false);
-        ArenaRegistry.registerArena(arena);
+        registerArena(arena);
         continue;
       }
 
-      if (config.isSet(key + "villagerspawns")) {
+      if (config.isConfigurationSection(key + "villagerspawns")) {
         for (String string : config.getConfigurationSection(key + "villagerspawns").getKeys(false)) {
           String path = key + "villagerspawns." + string;
           arena.addVillagerSpawn(LocationSerializer.getLocation(config.getString(path)));
@@ -183,10 +183,10 @@ public class ArenaRegistry {
       } else {
         Debugger.sendConsoleMsg(plugin.getChatManager().colorMessage(Messages.VALIDATOR_INVALID_ARENA_CONFIGURATION).replace("%arena%", id).replace("%error%", "VILLAGER SPAWNS"));
         arena.setReady(false);
-        ArenaRegistry.registerArena(arena);
+        registerArena(arena);
         continue;
       }
-      if (config.isSet(key + "doors")) {
+      if (config.isConfigurationSection(key + "doors")) {
         for (String string : config.getConfigurationSection(key + "doors").getKeys(false)) {
           String path = key + "doors." + string + ".";
           arena.getMapRestorerManager().addDoor(LocationSerializer.getLocation(config.getString(path + "location")),
@@ -195,23 +195,24 @@ public class ArenaRegistry {
       } else {
         Debugger.sendConsoleMsg(plugin.getChatManager().colorMessage(Messages.VALIDATOR_INVALID_ARENA_CONFIGURATION).replace("%arena%", id).replace("%error%", "DOORS"));
         arena.setReady(false);
-        ArenaRegistry.registerArena(arena);
+        registerArena(arena);
         continue;
       }
       if (arena.getStartLocation().getWorld().getDifficulty() == Difficulty.PEACEFUL){
         Debugger.sendConsoleMsg(plugin.getChatManager().colorMessage(Messages.VALIDATOR_INVALID_ARENA_CONFIGURATION).replace("%arena%", id).replace("%error%", "THERE IS A WRONG " +
             "DIFFICULTY -> SET IT TO ANOTHER ONE THAN PEACEFUL"));
         arena.setReady(false);
-        ArenaRegistry.registerArena(arena);
+        registerArena(arena);
         continue;
       }
-      ArenaRegistry.registerArena(arena);
+      registerArena(arena);
       arena.start();
       Debugger.sendConsoleMsg(plugin.getChatManager().colorMessage(Messages.VALIDATOR_INSTANCE_STARTED).replace("%arena%", id));
     }
     Debugger.debug("[ArenaRegistry] Arenas registration completed took {0}ms", System.currentTimeMillis() - start);
   }
 
+  @NotNull
   public static List<Arena> getArenas() {
     return arenas;
   }

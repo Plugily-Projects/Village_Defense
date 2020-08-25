@@ -57,6 +57,10 @@ public class BungeeManager implements Listener {
   }
 
   private ArenaState getArenaState() {
+    if (ArenaRegistry.getArenas().isEmpty()) {
+      return ArenaState.ENDING;
+    }
+
     Arena arena = ArenaRegistry.getArenas().get(ArenaRegistry.getBungeeArena());
     return arena.getArenaState();
   }
@@ -69,10 +73,7 @@ public class BungeeManager implements Listener {
 
   @EventHandler(priority = EventPriority.HIGHEST)
   public void onServerListPing(ServerListPingEvent event) {
-    if (!config.getBoolean("MOTD.Manager", false)) {
-      return;
-    }
-    if (ArenaRegistry.getArenas().isEmpty()) {
+    if (!config.getBoolean("MOTD.Manager", false) || ArenaRegistry.getArenas().isEmpty()) {
       return;
     }
     event.setMaxPlayers(ArenaRegistry.getArenas().get(ArenaRegistry.getBungeeArena()).getMaximumPlayers());

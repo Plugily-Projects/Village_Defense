@@ -161,7 +161,7 @@ public class ShopManager {
           if (name.contains(plugin.getChatManager().colorMessage(Messages.SHOP_MESSAGES_GOLEM_ITEM_NAME))
               || name.contains(defaultGolemItemName)) {
             for (IronGolem golem : arena.getIronGolems()) {
-              if (golem.getCustomName().equals(plugin.getChatManager().colorMessage(Messages.SPAWNED_GOLEM_NAME).replace("%player%", player.getName()))) {
+              if (plugin.getChatManager().colorMessage(Messages.SPAWNED_GOLEM_NAME).replace("%player%", player.getName()).equals(golem.getCustomName())) {
                 spawnedAmount++;
               }
             }
@@ -178,7 +178,7 @@ public class ShopManager {
           } else if (name.contains(plugin.getChatManager().colorMessage(Messages.SHOP_MESSAGES_WOLF_ITEM_NAME))
               || name.contains(defaultWolfItemName)) {
             for (Wolf wolf : arena.getWolves()) {
-              if (wolf.getCustomName().equals(plugin.getChatManager().colorMessage(Messages.SPAWNED_WOLF_NAME).replace("%player%", player.getName()))) {
+              if (plugin.getChatManager().colorMessage(Messages.SPAWNED_WOLF_NAME).replace("%player%", player.getName()).equals(wolf.getCustomName())) {
                 spawnedAmount++;
               }
             }
