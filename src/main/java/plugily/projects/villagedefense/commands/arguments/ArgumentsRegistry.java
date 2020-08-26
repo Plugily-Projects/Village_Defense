@@ -209,7 +209,13 @@ public class ArgumentsRegistry implements CommandExecutor {
         component = new TextComponent(labelData.getText() + " - " + labelData.getDescription().split("\n")[0]);
       }
       component.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, labelData.getCommand()));
-      component.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text(labelData.getDescription())));
+
+      // Backwards compatibility
+      if (plugin.is1_16_R1()) {
+        component.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text(labelData.getDescription())));
+      } else {
+        component.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, TextComponent.fromLegacyText(labelData.getDescription())));
+      }
       sender.spigot().sendMessage(component);
     }
   }
