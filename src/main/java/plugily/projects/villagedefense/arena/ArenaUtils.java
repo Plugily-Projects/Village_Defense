@@ -123,8 +123,10 @@ public class ArenaUtils {
       arena = new ArenaInitializer1_14_R1(id, plugin);
     } else if (plugin.is1_15_R1()){
       arena = new ArenaInitializer1_15_R1(id, plugin);
-    } else {
+    } else if (plugin.is1_16_R1()){
       arena = new ArenaInitializer1_16_R1(id, plugin);
+    } else {
+      arena = new ArenaInitializer1_16_R2(id, plugin);
     }
     return arena;
   }
@@ -144,6 +146,8 @@ public class ArenaUtils {
       ((ArenaInitializer1_15_R1) arena).setWorld(arena.getStartLocation());
     } else if (plugin.is1_16_R1()) {
       ((ArenaInitializer1_16_R1) arena).setWorld(arena.getStartLocation());
+    } else {
+      ((ArenaInitializer1_16_R2) arena).setWorld(arena.getStartLocation());
     }
   }
 

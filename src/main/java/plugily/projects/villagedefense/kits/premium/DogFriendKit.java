@@ -102,6 +102,9 @@ public class DogFriendKit extends PremiumKit {
     } else if (getPlugin().is1_16_R1()) {
       ArenaInitializer1_16_R1 initializer = (ArenaInitializer1_16_R1) arena;
       initializer.spawnWolf(initializer.getStartLocation(), player);
+    } else {
+      ArenaInitializer1_16_R2 initializer = (ArenaInitializer1_16_R2) arena;
+      initializer.spawnWolf(initializer.getStartLocation(), player);
     }
   }
 

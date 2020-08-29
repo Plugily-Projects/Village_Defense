@@ -9,6 +9,10 @@ deploy webhooks to print changelog successfully
 
 That's all, matcher will stop when detects next line started with `###` match
 
+### 4.5.1-b4 Beta 
+* Added 1.16.2 compatibility
+* Fixed Villager death is not working on multiarena mode if more than 1 arena is active
+
 ### 4.5.1-b3 Beta 
 * Fixed IllegalArgumentException when there are no arena when connecting via bungee
 * Fix NoClassDefFoundError on plugin startup

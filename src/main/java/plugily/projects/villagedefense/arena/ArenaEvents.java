@@ -162,7 +162,7 @@ public class ArenaEvents implements Listener {
           return;
         case VILLAGER:
           if (!arena.getVillagers().contains(e.getEntity())) {
-            return;
+            continue;
           }
           arena.getStartLocation().getWorld().strikeLightningEffect(e.getEntity().getLocation());
           arena.removeVillager((Villager) e.getEntity());

@@ -24,7 +24,7 @@
 
     <groupId>plugily.projects</groupId>
     <artifactId>villagedefense</artifactId>
-    <version>4.5.1-b3</version>
+    <version>4.5.1-b4</version>
     <name>VillageDefense</name>
 
     <properties>
@@ -179,6 +179,13 @@
             <version>1.16.1</version>
             <scope>system</scope>
             <systemPath>${project.basedir}/lib/spigot/1.16.1-R0.1.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>1.16_R2</groupId>
+            <artifactId>spigot_1_16_R2</artifactId>
+            <version>1.16.2</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/lib/spigot/1.16.2-R0.1.jar</systemPath>
         </dependency>
         <!-- Spigot APIs -->
         <dependency>
