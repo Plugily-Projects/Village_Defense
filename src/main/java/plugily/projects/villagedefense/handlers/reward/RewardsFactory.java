@@ -71,6 +71,10 @@ public class RewardsFactory {
       return;
     }
     Arena arena = ArenaRegistry.getArena(player);
+    if (arena == null) {
+      return;
+    }
+
     ScriptEngine engine = new ScriptEngine();
     engine.setValue("player", player);
     engine.setValue("server", Bukkit.getServer());
