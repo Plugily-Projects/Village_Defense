@@ -10,7 +10,8 @@ deploy webhooks to print changelog successfully
 That's all, matcher will stop when detects next line started with `###` match
 
 ### 4.5.1-b5 Beta
-* Fix NPE during giving rewards to players
+* Fixed NPE during giving rewards to players
+* Fixed Holograms
 
 ### 4.5.1-b4 Beta 
 * Added 1.16.2 compatibility

@@ -48,7 +48,7 @@ public class LeaderboardHologram {
         hologram.clearLines();
         String header = color(plugin.getLanguageConfig().getString(LanguageMessage.HOLOGRAMS_HEADER.getAccessor()));
         header = StringUtils.replace(header, "%amount%", String.valueOf(topAmount));
-        header = StringUtils.replace(header, "%statistic%", color(plugin.getLanguageConfig().getString(statisticToMessage().getAccessor())));
+        header = StringUtils.replace(header, "%statistic%", statisticToMessage() != null ? color(plugin.getLanguageConfig().getString(statisticToMessage().getAccessor())) : "null");
         hologram.appendTextLine(header);
         int limit = topAmount;
         LinkedHashMap<UUID, Integer> values = (LinkedHashMap<UUID, Integer>) StatsStorage.getStats(statistic);
