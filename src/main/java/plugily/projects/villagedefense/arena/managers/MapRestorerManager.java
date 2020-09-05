@@ -139,7 +139,7 @@ public class MapRestorerManager {
   private void restoreTopHalfDoorPart(Block block) {
     block.setType(XMaterial.OAK_DOOR.parseMaterial());
     BlockState doorBlockState = block.getState();
-    if (Version.isCurrentLower(Version.v1_12_R1)) {
+    if (Version.isCurrentLower(Version.v1_16_R1)) {
       Door doorBlockData = new Door(TreeSpecies.GENERIC, Utils.getFacingByByte((byte) 8));
 
       doorBlockData.setTopHalf(true);
@@ -162,7 +162,7 @@ public class MapRestorerManager {
   private void restoreBottomHalfDoorPart(Block block, byte doorData) {
     block.setType(XMaterial.OAK_DOOR.parseMaterial());
     BlockState doorBlockState = block.getState();
-    if (Version.isCurrentLower(Version.v1_12_R1)) {
+    if (Version.isCurrentLower(Version.v1_16_R1)) {
       Door doorBlockData = new Door(TreeSpecies.GENERIC, Utils.getFacingByByte(doorData));
 
       doorBlockData.setTopHalf(false);
