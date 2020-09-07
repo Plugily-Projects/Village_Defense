@@ -23,7 +23,6 @@ import org.bukkit.Material;
 import org.bukkit.TreeSpecies;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
-import org.bukkit.block.data.Bisected.Half;
 import org.bukkit.entity.*;
 import org.bukkit.material.Door;
 import pl.plajerlair.commonsbox.minecraft.compat.XMaterial;
@@ -150,11 +149,11 @@ public class MapRestorerManager {
     } else {
       org.bukkit.block.data.type.Door doorBlockData = (org.bukkit.block.data.type.Door) block.getBlockData();
 
-      doorBlockData.setHalf(Half.TOP);
+      doorBlockData.setHalf(org.bukkit.block.data.Bisected.Half.TOP);
       doorBlockData.setFacing(doorBlockData.getFacing());
 
       doorBlockState.setType(doorBlockData.getMaterial());
-      doorBlockState.setBlockData(doorBlockData);
+      //doorBlockState.setBlockData(doorBlockData);
     }
     doorBlockState.update(true);
   }
@@ -172,11 +171,11 @@ public class MapRestorerManager {
     } else {
       org.bukkit.block.data.type.Door doorBlockData = (org.bukkit.block.data.type.Door) block.getBlockData();
 
-      doorBlockData.setHalf(Half.BOTTOM);
+      doorBlockData.setHalf(org.bukkit.block.data.Bisected.Half.BOTTOM);
       doorBlockData.setFacing(doorBlockData.getFacing());
 
       doorBlockState.setType(doorBlockData.getMaterial());
-      doorBlockState.setBlockData(doorBlockData);
+      //doorBlockState.setBlockData(doorBlockData);
     }
     doorBlockState.update(true);
   }
