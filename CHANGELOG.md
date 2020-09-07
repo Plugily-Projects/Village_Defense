@@ -12,6 +12,7 @@ That's all, matcher will stop when detects next line started with `###` match
 ### 4.5.1-b5 Beta
 * Fixed NPE during giving rewards to players
 * Fixed Holograms
+* Fixed noclassfound on 1.15 and lower
 
 ### 4.5.1-b4 Beta 
 * Added 1.16.2 compatibility
