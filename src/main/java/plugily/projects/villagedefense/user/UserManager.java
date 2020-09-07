@@ -106,7 +106,9 @@ public class UserManager {
     User user = plugin.getUserManager().getUser(player);
     if (Math.pow(50.0 * user.getStat(StatsStorage.StatisticType.LEVEL), 1.5) < user.getStat(StatsStorage.StatisticType.XP)) {
       user.addStat(StatsStorage.StatisticType.LEVEL, 1);
-      player.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().formatMessage(arena, plugin.getChatManager().colorMessage(Messages.YOU_LEVELED_UP), user.getStat(StatsStorage.StatisticType.LEVEL)));
+      //Arena can be null when player has left the arena before this message the arean is retrieved.
+      if(arena != null)
+        player.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().formatMessage(arena, plugin.getChatManager().colorMessage(Messages.YOU_LEVELED_UP), user.getStat(StatsStorage.StatisticType.LEVEL)));
     }
   }
 
