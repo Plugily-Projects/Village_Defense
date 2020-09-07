@@ -153,7 +153,12 @@ public class MapRestorerManager {
       doorBlockData.setFacing(doorBlockData.getFacing());
 
       doorBlockState.setType(doorBlockData.getMaterial());
-      //doorBlockState.setBlockData(doorBlockData);
+      try {
+        doorBlockState.getClass().getDeclaredMethod("setBlockData", doorBlockData.getClass()).invoke(doorBlockData);
+      } catch (NoSuchMethodException n) {
+      } catch (Exception e) {
+        e.printStackTrace();
+      }
     }
     doorBlockState.update(true);
   }
@@ -175,7 +180,12 @@ public class MapRestorerManager {
       doorBlockData.setFacing(doorBlockData.getFacing());
 
       doorBlockState.setType(doorBlockData.getMaterial());
-      //doorBlockState.setBlockData(doorBlockData);
+      try {
+        doorBlockState.getClass().getDeclaredMethod("setBlockData", doorBlockData.getClass()).invoke(doorBlockData);
+      } catch (NoSuchMethodException n) {
+      } catch (Exception e) {
+        e.printStackTrace();
+      }
     }
     doorBlockState.update(true);
   }
