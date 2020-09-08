@@ -9,6 +9,9 @@ deploy webhooks to print changelog successfully
 
 That's all, matcher will stop when detects next line started with `###` match
 
+### 4.5.1-b6 Beta
+* Fix ArrayIndexOutOfBoundsException when there is no game when joining through bungee
+
 ### 4.5.1-b5 Beta
 * Fixed NPE during giving rewards to players
 * Fixed Holograms
