@@ -47,6 +47,10 @@ public class ChatManager {
   }
 
   public String colorRawMessage(String message) {
+    if (message == null) {
+      return "";
+    }
+
     if (message.contains("#") && Version.isCurrentEqualOrHigher(Version.v1_16_R1)) {
       message = Utils.matchColorRegex(message);
     }
