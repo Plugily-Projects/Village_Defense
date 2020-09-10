@@ -100,7 +100,7 @@ public class MapRestorerManager {
     for (Map.Entry<Location, Byte> entry : getGameDoorLocations().entrySet()) {
       Block block = entry.getKey().getBlock();
       Byte doorData = entry.getValue();
-      if (Version.isCurrentEqualOrLower(Version.v1_12_R1)) {
+      if (Version.isCurrentEqualOrLower(Version.v1_11_R1)) {
         Material mat = XMaterial.OAK_DOOR.parseMaterial();
         try {
           int id = (int) mat.getClass().getDeclaredMethod("getId").invoke(mat);
