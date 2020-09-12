@@ -148,6 +148,8 @@ public class MiscComponents implements SetupComponent {
         .lore(ChatColor.DARK_GRAY + "(it allows to click villagers to buy game items)")
         .lore(ChatColor.RED + "Remember to set item prices for the game")
         .lore(ChatColor.RED + "using /vda setprice command!")
+        .lore(ChatColor.BOLD + ChatColor.DARK_RED + "Setting/Changing this chest requires")
+        .lore(ChatColor.BOLD + ChatColor.DARK_RED + "a full server restart to take effect!")
         .build(), e -> {
       e.getWhoClicked().closeInventory();
       Block targetBlock = player.getTargetBlock(null, 100);
