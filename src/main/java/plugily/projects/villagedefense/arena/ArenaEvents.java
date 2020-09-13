@@ -28,10 +28,7 @@ import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityDeathEvent;
-import org.bukkit.event.entity.ItemSpawnEvent;
-import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.entity.*;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
@@ -141,8 +138,43 @@ public class ArenaEvents implements Listener {
   }
 
   @EventHandler
+  public void onEntityDamage(EntityDamageEvent event) {
+    if (!(event.getEntity() instanceof IronGolem || event.getEntity() instanceof Wolf)) {
+      return;
+    }
+    for (Arena arena : ArenaRegistry.getArenas()) {
+      switch (event.getEntityType()) {
+        case IRON_GOLEM:
+          if (!arena.getIronGolems().contains(event.getEntity())) {
+            continue;
+          }
+          if (((Creature) event.getEntity()).getHealth() <= event.getDamage()) {
+            event.setCancelled(true);
+            event.setDamage(0);
+            arena.removeIronGolem((IronGolem) event.getEntity());
+          }
+          return;
+        case WOLF:
+          if (!arena.getWolves().contains(event.getEntity())) {
+            continue;
+          }
+          if (((Creature) event.getEntity()).getHealth() <= event.getDamage()) {
+            event.setCancelled(true);
+            event.setDamage(0);
+            Player player = (Player) ((Wolf) event.getEntity()).getOwner();
+            if (player != null) {
+              player.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage(Messages.WOLF_DIED));
+            }
+            arena.removeWolf((Wolf) event.getEntity());
+          }
+          return;
+      }
+    }
+  }
+
+  @EventHandler
   public void onDieEntity(EntityDeathEvent e) {
-    if (!(e.getEntity() instanceof Zombie || e.getEntity() instanceof Villager || e.getEntity() instanceof IronGolem || e.getEntity() instanceof Wolf)) {
+    if (!(e.getEntity() instanceof Zombie || e.getEntity() instanceof Villager)) {
       return;
     }
     for (Arena arena : ArenaRegistry.getArenas()) {
@@ -168,25 +200,6 @@ public class ArenaEvents implements Listener {
           arena.removeVillager((Villager) e.getEntity());
           plugin.getHolidayManager().applyHolidayDeathEffects(e.getEntity());
           plugin.getChatManager().broadcast(arena, Messages.VILLAGER_DIED);
-          return;
-        case IRON_GOLEM:
-          if (!arena.getIronGolems().contains(e.getEntity())) {
-            continue;
-          }
-          arena.removeIronGolem((IronGolem) e.getEntity());
-          e.getDrops().clear();
-          return;
-        case WOLF:
-          if (!arena.getWolves().contains(e.getEntity())) {
-            continue;
-          }
-          if (Bukkit.getServer().getVersion().contains("Paper")) {
-            //only on paper
-            e.setCancelled(true);
-          }
-          //todo remove odd wolf death message on spigot
-          arena.removeWolf((Wolf) e.getEntity());
-          arena.getPlayers().forEach(player -> player.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().formatMessage(arena, plugin.getChatManager().colorMessage(Messages.WOLF_DIED), (Player) ((Wolf) e.getEntity()).getOwner())));
           return;
         default:
           break;

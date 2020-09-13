@@ -360,7 +360,7 @@ public class LanguageMigrator {
                   "      - \"&eClick to join this arena\"\r\n");
           break;
         case 13:
-          MigratorUtils.insertAfterLine(file, "In-Game:", "  Spawned-Wolf-Death: \"%PLAYER%'s wolf died\"");
+          MigratorUtils.insertAfterLine(file, "In-Game:", "  Spawned-Wolf-Death: \"One of your wolves were killed!\"");
           break;
         default:
           break;
