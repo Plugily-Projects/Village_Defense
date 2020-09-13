@@ -142,7 +142,7 @@ public class ArenaEvents implements Listener {
 
   @EventHandler
   public void onDieEntity(EntityDeathEvent e) {
-    if (!(e.getEntity() instanceof Zombie || e.getEntity() instanceof Villager || e.getEntity() instanceof IronGolem)) {
+    if (!(e.getEntity() instanceof Zombie || e.getEntity() instanceof Villager || e.getEntity() instanceof IronGolem || e.getEntity() instanceof Wolf)) {
       return;
     }
     for (Arena arena : ArenaRegistry.getArenas()) {
@@ -173,8 +173,16 @@ public class ArenaEvents implements Listener {
           if (!arena.getIronGolems().contains(e.getEntity())) {
             continue;
           }
+          arena.removeIronGolem((IronGolem) e.getEntity());
           e.getDrops().clear();
           return;
+        case WOLF:
+          if (!arena.getWolves().contains(e.getEntity())) {
+            continue;
+          }
+          e.setCancelled(true);
+          arena.removeWolf((Wolf) e.getEntity());
+          arena.getPlayers().forEach(player -> player.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().formatMessage(arena, plugin.getChatManager().colorMessage(Messages.WOLF_DIED), (Player) ((Wolf) e.getEntity()).getOwner())));
         default:
           break;
       }

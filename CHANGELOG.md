@@ -15,6 +15,7 @@ That's all, matcher will stop when detects next line started with `###` match
 * Added arena selector
 * Added 1.16.2 compatibility
 * Added support for 1.16 hex colors
+* Added custom wolf death message
 * Fixed ArrayIndexOutOfBoundsException when there is no game when joining through bungee
 * Fixed NPE during giving rewards to players
 * Fixed Holograms

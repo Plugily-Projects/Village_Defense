@@ -228,6 +228,7 @@ public enum Messages {
   ROTTEN_FLESH_LEVEL_UP("In-Game.Rotten-Flesh-Level-Up"),
   ONLY_COMMAND_IN_GAME_IS_LEAVE("In-Game.Only-Command-Ingame-Is-Leave"),
   SPAWNED_WOLF_NAME("In-Game.Spawned-Wolf-Name"),
+  WOLF_DIED("In-Game.Spawned-Wolf-Death"),
   SPAWNED_GOLEM_NAME("In-Game.Spawned-Golem-Name"),
   JOIN_CANCELLED_VIA_API("In-Game.Join-Cancelled-Via-API"),
   ARENA_NOT_CONFIGURED("In-Game.Arena-Not-Configured"),

@@ -262,6 +262,7 @@ In-Game:
   Rotten-Flesh-Level-Up: "&bThe gods were happy with the rotten flesh! &bTherefor they gave you an extra heart!"
   Only-Command-Ingame-Is-Leave: "&cYou have to leave the game first to perform commands. The only command that works is /vd leave!"
   Spawned-Wolf-Name: "%player%'s Wolf"
+  Spawned-Wolf-Death: "%PLAYER%'s wolf died"
   Spawned-Golem-Name: "%player%'s Golem"
   # Join cancelled via external plugin that uses VillageDefense API.
   Join-Cancelled-Via-API: "&cYou can't join this game!"
@@ -432,4 +433,4 @@ Validator:
 
 # Don't edit it. But who's stopping you? It's your server!
 # Really, don't edit ;p
-File-Version-Do-Not-Edit: 13
+File-Version-Do-Not-Edit: 14

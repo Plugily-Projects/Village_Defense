@@ -37,7 +37,7 @@ import java.util.List;
  */
 public class LanguageMigrator {
 
-  public static final int LANGUAGE_FILE_VERSION = 13;
+  public static final int LANGUAGE_FILE_VERSION = 14;
   public static final int CONFIG_FILE_VERSION = 14;
   private final Main plugin;
   private final List<String> migratable = Arrays.asList(Constants.Files.CONFIG.getName(), Constants.Files.KITS.getName(),
@@ -358,6 +358,9 @@ public class LanguageMigrator {
                   "      - \" \"\r\n" +
                   "      - \" \"\r\n" +
                   "      - \"&eClick to join this arena\"\r\n");
+          break;
+        case 13:
+          MigratorUtils.insertAfterLine(file, "In-Game:", "  Spawned-Wolf-Death: \"%PLAYER%'s wolf died\"");
           break;
         default:
           break;

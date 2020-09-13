@@ -523,6 +523,18 @@ public abstract class Arena extends BukkitRunnable {
     ironGolems.add(ironGolem);
   }
 
+  public void removeIronGolem(IronGolem ironGolem) {
+    ironGolem.remove();
+    ironGolem.setHealth(0);
+    ironGolems.remove(ironGolem);
+  }
+
+  public void removeWolf(Wolf wolf) {
+    wolf.remove();
+    wolf.setHealth(0);
+    wolves.remove(wolf);
+  }
+
   public void resetOptionValues() {
     setOptionValue(ArenaOption.WAVE, 1);
     setOptionValue(ArenaOption.TOTAL_KILLED_ZOMBIES, 0);
