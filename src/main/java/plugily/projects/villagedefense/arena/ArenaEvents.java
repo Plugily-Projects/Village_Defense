@@ -187,6 +187,7 @@ public class ArenaEvents implements Listener {
           //todo remove odd wolf death message on spigot
           arena.removeWolf((Wolf) e.getEntity());
           arena.getPlayers().forEach(player -> player.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().formatMessage(arena, plugin.getChatManager().colorMessage(Messages.WOLF_DIED), (Player) ((Wolf) e.getEntity()).getOwner())));
+          return;
         default:
           break;
       }
