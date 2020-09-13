@@ -103,10 +103,6 @@ public class EntityUpgradeListener implements Listener {
     if (e.getHand() == EquipmentSlot.OFF_HAND || !e.getPlayer().isSneaking()) {
       return;
     }
-    //to prevent wolves sitting
-    if (e.getRightClicked() instanceof Wolf) {
-      ((Wolf) e.getRightClicked()).setSitting(false);
-    }
     upgradeMenu.openUpgradeMenu((LivingEntity) e.getRightClicked(), e.getPlayer());
   }
 
