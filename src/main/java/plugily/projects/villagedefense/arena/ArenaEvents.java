@@ -180,7 +180,11 @@ public class ArenaEvents implements Listener {
           if (!arena.getWolves().contains(e.getEntity())) {
             continue;
           }
-          e.setCancelled(true);
+          if (Bukkit.getServer().getVersion().contains("Paper")) {
+            //only on paper
+            e.setCancelled(true);
+          }
+          //todo remove odd wolf death message on spigot
           arena.removeWolf((Wolf) e.getEntity());
           arena.getPlayers().forEach(player -> player.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().formatMessage(arena, plugin.getChatManager().colorMessage(Messages.WOLF_DIED), (Player) ((Wolf) e.getEntity()).getOwner())));
         default:
