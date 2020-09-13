@@ -31,6 +31,7 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
+import pl.plajerlair.commonsbox.minecraft.compat.XMaterial;
 import pl.plajerlair.commonsbox.minecraft.item.ItemBuilder;
 import pl.plajerlair.commonsbox.minecraft.item.ItemUtils;
 import plugily.projects.villagedefense.arena.Arena;
@@ -42,7 +43,6 @@ import plugily.projects.villagedefense.kits.basekits.PremiumKit;
 import plugily.projects.villagedefense.utils.ArmorHelper;
 import plugily.projects.villagedefense.utils.Utils;
 import plugily.projects.villagedefense.utils.WeaponHelper;
-import plugily.projects.villagedefense.utils.constants.CompatMaterialConstants;
 
 import java.util.Collections;
 import java.util.List;
@@ -121,7 +121,7 @@ public class TeleporterKit extends PremiumKit implements Listener {
       if (getPlugin().getUserManager().getUser(arenaPlayer).isSpectator()) {
         continue;
       }
-      ItemStack skull = CompatMaterialConstants.getPlayerHeadItem();
+      ItemStack skull = XMaterial.PLAYER_HEAD.parseItem();
       SkullMeta meta = (SkullMeta) skull.getItemMeta();
       meta.setOwningPlayer(arenaPlayer);
       meta.setDisplayName(arenaPlayer.getName());

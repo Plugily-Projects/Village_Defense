@@ -46,9 +46,8 @@ import plugily.projects.villagedefense.arena.Arena;
 import plugily.projects.villagedefense.handlers.language.Messages;
 import plugily.projects.villagedefense.handlers.setup.SetupInventory;
 import plugily.projects.villagedefense.handlers.sign.ArenaSign;
-import plugily.projects.villagedefense.utils.Utils;
 import plugily.projects.villagedefense.utils.ServerVersion.Version;
-import plugily.projects.villagedefense.utils.constants.CompatMaterialConstants;
+import plugily.projects.villagedefense.utils.Utils;
 import plugily.projects.villagedefense.utils.constants.Constants;
 import plugily.projects.villagedefense.utils.conversation.SimpleConversationBuilder;
 
@@ -232,15 +231,15 @@ public class MiscComponents implements SetupComponent {
       ConfigUtils.saveConfig(plugin, config, Constants.Files.ARENAS.getName());
     }), 0, 1);
 
-    pane.addItem(new GuiItem(new ItemBuilder(CompatMaterialConstants.getOakDoorItem())
-        .name(plugin.getChatManager().colorRawMessage("&e&lAdd Game Door"))
-        .lore(ChatColor.GRAY + "Target arena door and click this.")
-        .lore(ChatColor.DARK_GRAY + "(doors are required and will be")
-        .lore(ChatColor.DARK_GRAY + "regenerated each game, villagers will hide")
-        .lore(ChatColor.DARK_GRAY + "in houses so you can put doors there)")
-        .lore("", setupInventory.getSetupUtilities().isOptionDoneSection("instances." + arena.getId() + ".doors", 1))
-        .lore("", plugin.getChatManager().colorRawMessage("&8Shift + Right Click to remove all locations"))
-        .build(), e -> {
+    pane.addItem(new GuiItem(new ItemBuilder(XMaterial.OAK_DOOR.parseItem())
+            .name(plugin.getChatManager().colorRawMessage("&e&lAdd Game Door"))
+            .lore(ChatColor.GRAY + "Target arena door and click this.")
+            .lore(ChatColor.DARK_GRAY + "(doors are required and will be")
+            .lore(ChatColor.DARK_GRAY + "regenerated each game, villagers will hide")
+            .lore(ChatColor.DARK_GRAY + "in houses so you can put doors there)")
+            .lore("", setupInventory.getSetupUtilities().isOptionDoneSection("instances." + arena.getId() + ".doors", 1))
+            .lore("", plugin.getChatManager().colorRawMessage("&8Shift + Right Click to remove all locations"))
+            .build(), e -> {
       e.getWhoClicked().closeInventory();
       if (e.getClick() == ClickType.SHIFT_RIGHT) {
         config.set("instances." + arena.getId() + ".doors", null);
@@ -251,7 +250,7 @@ public class MiscComponents implements SetupComponent {
         return;
       }
       Block block = player.getTargetBlock(null, 10);
-      Material door = CompatMaterialConstants.getOakDoorBlock();
+      Material door = XMaterial.OAK_DOOR.parseMaterial();
       if (block.getType() != door) {
         player.sendMessage(plugin.getChatManager().colorRawMessage("&c&l✘ &cTarget block is not oak door!"));
         return;

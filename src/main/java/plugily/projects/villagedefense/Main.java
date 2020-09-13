@@ -67,7 +67,6 @@ import plugily.projects.villagedefense.user.User;
 import plugily.projects.villagedefense.user.UserManager;
 import plugily.projects.villagedefense.user.data.MysqlManager;
 import plugily.projects.villagedefense.utils.*;
-import plugily.projects.villagedefense.utils.constants.CompatMaterialConstants;
 import plugily.projects.villagedefense.utils.constants.Constants;
 import plugily.projects.villagedefense.utils.services.ServiceRegistry;
 
@@ -313,7 +312,6 @@ public class Main extends JavaPlugin {
   private void startInitiableClasses() {
     StatsStorage.init(this);
     ArenaRegistry.init(this);
-    CompatMaterialConstants.init();
     Utils.init(this);
     CreatureUtils.init(this);
     User.init(this);

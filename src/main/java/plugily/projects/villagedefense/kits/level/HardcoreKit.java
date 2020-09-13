@@ -24,6 +24,7 @@ import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionType;
+import pl.plajerlair.commonsbox.minecraft.compat.XMaterial;
 import plugily.projects.villagedefense.api.StatsStorage;
 import plugily.projects.villagedefense.handlers.language.Messages;
 import plugily.projects.villagedefense.kits.KitRegistry;
@@ -31,7 +32,6 @@ import plugily.projects.villagedefense.kits.basekits.LevelKit;
 import plugily.projects.villagedefense.utils.ArmorHelper;
 import plugily.projects.villagedefense.utils.Utils;
 import plugily.projects.villagedefense.utils.WeaponHelper;
-import plugily.projects.villagedefense.utils.constants.CompatMaterialConstants;
 
 import java.util.List;
 
@@ -65,7 +65,7 @@ public class HardcoreKit extends LevelKit {
 
   @Override
   public Material getMaterial() {
-    return CompatMaterialConstants.getPlayerHead();
+      return XMaterial.PLAYER_HEAD.parseMaterial();
   }
 
   @Override

@@ -30,7 +30,6 @@ import pl.plajerlair.commonsbox.minecraft.compat.XMaterial;
 import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.arena.ArenaRegistry;
 import plugily.projects.villagedefense.utils.Utils;
-import plugily.projects.villagedefense.utils.constants.CompatMaterialConstants;
 
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -59,9 +58,9 @@ public class DoorBreakListener extends BukkitRunnable {
           if (ThreadLocalRandom.current().nextInt(20) == 5) {
             block.getLocation().getWorld().spawnParticle(Particle.SMOKE_LARGE, block.getLocation(), 15, 0.1, 0.1, 0.1);
             block.getLocation().getWorld().spawnParticle(Particle.EXPLOSION_HUGE, block.getLocation(), 1, 0.1, 0.1, 0.1);
-            if (block.getRelative(BlockFace.UP).getType() == CompatMaterialConstants.getOakDoorBlock()) {
+            if (block.getRelative(BlockFace.UP).getType() == XMaterial.OAK_DOOR.parseMaterial()) {
               block.getRelative(BlockFace.UP).setType(Material.AIR);
-            } else if (block.getRelative(BlockFace.DOWN).getType() == CompatMaterialConstants.getOakDoorBlock()) {
+            } else if (block.getRelative(BlockFace.DOWN).getType() == XMaterial.OAK_DOOR.parseMaterial()) {
               block.getRelative(BlockFace.DOWN).setType(Material.AIR);
             }
             block.setType(Material.AIR);

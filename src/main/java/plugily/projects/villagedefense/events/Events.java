@@ -56,7 +56,6 @@ import plugily.projects.villagedefense.utils.Debugger;
 import plugily.projects.villagedefense.utils.NMS;
 import plugily.projects.villagedefense.utils.ServerVersion.Version;
 import plugily.projects.villagedefense.utils.Utils;
-import plugily.projects.villagedefense.utils.constants.CompatMaterialConstants;
 
 import java.util.Map;
 
@@ -231,7 +230,7 @@ public class Events implements Listener {
   @EventHandler
   public void onDoorDrop(ItemSpawnEvent event) {
     if (event.getEntity().getItemStack().getType() == XMaterial.OAK_DOOR.parseMaterial()
-        || event.getEntity().getItemStack().getType() == CompatMaterialConstants.getOakDoorItem()) {
+            || event.getEntity().getItemStack().getType() == XMaterial.OAK_DOOR.parseMaterial()) {
       for (Entity entity : Utils.getNearbyEntities(event.getLocation(), 20)) {
         if (!(entity instanceof Player)) {
           continue;

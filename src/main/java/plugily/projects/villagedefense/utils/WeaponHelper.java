@@ -64,7 +64,7 @@ public class WeaponHelper {
         itemStack.addUnsafeEnchantment(Enchantment.DURABILITY, level);
         return itemStack;
       case IRON:
-        itemStack = new ItemStack(Material.IRON_SWORD);
+        itemStack = XMaterial.IRON_SWORD.parseItem();
         itemStack.addUnsafeEnchantment(Enchantment.DURABILITY, level);
         return itemStack;
       case GOLD:
@@ -72,11 +72,11 @@ public class WeaponHelper {
         itemStack.addUnsafeEnchantment(Enchantment.DURABILITY, level);
         return itemStack;
       case DIAMOND:
-        itemStack = new ItemStack(Material.DIAMOND_SWORD);
+        itemStack = XMaterial.DIAMOND_SWORD.parseItem();
         itemStack.addUnsafeEnchantment(Enchantment.DURABILITY, level);
         return itemStack;
       case STONE:
-        itemStack = new ItemStack(Material.STONE_SWORD);
+        itemStack = XMaterial.STONE_SWORD.parseItem();
         itemStack.addUnsafeEnchantment(Enchantment.DURABILITY, level);
         return itemStack;
       default:

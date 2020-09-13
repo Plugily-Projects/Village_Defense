@@ -39,7 +39,6 @@ import plugily.projects.villagedefense.kits.KitMenuHandler;
 import plugily.projects.villagedefense.user.User;
 import plugily.projects.villagedefense.user.UserManager;
 import plugily.projects.villagedefense.utils.Utils;
-import plugily.projects.villagedefense.utils.constants.CompatMaterialConstants;
 
 import java.io.File;
 
@@ -114,7 +113,6 @@ public class MainMock extends Main {
     Utils.init(this);
     Messages.init(this);
     LanguageManager.init(this);
-    CompatMaterialConstants.init();
     this.configPreferences = new ConfigPreferences(this);
     this.userManager = new UserManager(this);
     this.rewardsFactory = new RewardsFactory(this);

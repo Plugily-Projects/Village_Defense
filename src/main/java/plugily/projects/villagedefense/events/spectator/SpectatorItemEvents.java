@@ -30,6 +30,7 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
+import pl.plajerlair.commonsbox.minecraft.compat.XMaterial;
 import pl.plajerlair.commonsbox.minecraft.item.ItemUtils;
 import pl.plajerlair.commonsbox.number.NumberUtils;
 import plugily.projects.villagedefense.Main;
@@ -39,7 +40,6 @@ import plugily.projects.villagedefense.arena.ArenaRegistry;
 import plugily.projects.villagedefense.handlers.items.SpecialItemManager;
 import plugily.projects.villagedefense.handlers.language.Messages;
 import plugily.projects.villagedefense.utils.Utils;
-import plugily.projects.villagedefense.utils.constants.CompatMaterialConstants;
 
 import java.util.Collections;
 import java.util.Set;
@@ -88,7 +88,7 @@ public class SpectatorItemEvents implements Listener {
     Set<Player> players = arena.getPlayers();
     for (Player arenaPlayer : world.getPlayers()) {
       if (players.contains(arenaPlayer) && !plugin.getUserManager().getUser(arenaPlayer).isSpectator()) {
-        ItemStack skull = CompatMaterialConstants.getPlayerHeadItem();
+        ItemStack skull = XMaterial.PLAYER_HEAD.parseItem();
         SkullMeta meta = (SkullMeta) skull.getItemMeta();
         if (usesPaperSpigot && arenaPlayer.getPlayerProfile().hasTextures()) {
           meta.setPlayerProfile(arenaPlayer.getPlayerProfile());

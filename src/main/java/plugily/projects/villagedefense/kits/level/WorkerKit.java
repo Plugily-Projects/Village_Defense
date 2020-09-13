@@ -27,6 +27,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.inventory.ItemStack;
+import pl.plajerlair.commonsbox.minecraft.compat.XMaterial;
 import plugily.projects.villagedefense.api.StatsStorage;
 import plugily.projects.villagedefense.arena.Arena;
 import plugily.projects.villagedefense.arena.ArenaRegistry;
@@ -37,7 +38,6 @@ import plugily.projects.villagedefense.user.User;
 import plugily.projects.villagedefense.utils.ArmorHelper;
 import plugily.projects.villagedefense.utils.Utils;
 import plugily.projects.villagedefense.utils.WeaponHelper;
-import plugily.projects.villagedefense.utils.constants.CompatMaterialConstants;
 
 import java.util.List;
 
@@ -66,14 +66,14 @@ public class WorkerKit extends LevelKit implements Listener {
     ArmorHelper.setColouredArmor(Color.PURPLE, player);
     player.getInventory().addItem(WeaponHelper.getUnBreakingSword(WeaponHelper.ResourceType.WOOD, 10));
     player.getInventory().addItem(WeaponHelper.getEnchantedBow(Enchantment.DURABILITY, 10));
-    player.getInventory().addItem(new ItemStack(Material.ARROW, 64));
-    player.getInventory().addItem(new ItemStack(Material.COOKED_BEEF, 10));
+    player.getInventory().addItem(new ItemStack(XMaterial.ARROW.parseMaterial(), 64));
+    player.getInventory().addItem(new ItemStack(XMaterial.COOKED_BEEF.parseMaterial(), 10));
     player.getInventory().addItem(new ItemStack(getMaterial(), 2));
   }
 
   @Override
   public Material getMaterial() {
-    return CompatMaterialConstants.getOakDoorItem();
+    return XMaterial.OAK_DOOR.parseMaterial();
   }
 
   @Override
