@@ -23,6 +23,7 @@ import com.github.stefvanschie.inventoryframework.pane.StaticPane;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.inventory.ItemStack;
 import pl.plajerlair.commonsbox.minecraft.configuration.ConfigUtils;
 import pl.plajerlair.commonsbox.minecraft.item.ItemBuilder;
 import plugily.projects.villagedefense.Main;
@@ -57,15 +58,19 @@ public class PlayerAmountComponents implements SetupComponent {
         .lore(ChatColor.DARK_GRAY + "for game to start lobby countdown)")
         .lore("", setupInventory.getSetupUtilities().isOptionDone("instances." + arena.getId() + ".minimumplayers"))
         .build(), e -> {
+      ItemStack itemStack = e.getInventory().getItem(e.getSlot());
+      if (itemStack == null || e.getCurrentItem() == null) {
+        return;
+      }
       if (e.getClick().isRightClick()) {
-        e.getInventory().getItem(e.getSlot()).setAmount(e.getCurrentItem().getAmount() + 1);
+        itemStack.setAmount(e.getCurrentItem().getAmount() + 1);
       }
       if (e.getClick().isLeftClick()) {
-        e.getInventory().getItem(e.getSlot()).setAmount(e.getCurrentItem().getAmount() - 1);
+        itemStack.setAmount(e.getCurrentItem().getAmount() - 1);
       }
-      if (e.getInventory().getItem(e.getSlot()).getAmount() < 1) {
+      if (itemStack.getAmount() < 1) {
         e.getWhoClicked().sendMessage(plugin.getChatManager().colorRawMessage("&c&l✖ &cWarning | Please do not set amount lower than 1!"));
-        e.getInventory().getItem(e.getSlot()).setAmount(1);
+        itemStack.setAmount(1);
       }
       config.set("instances." + arena.getId() + ".minimumplayers", e.getCurrentItem().getAmount());
       arena.setMinimumPlayers(e.getCurrentItem().getAmount());
@@ -81,15 +86,19 @@ public class PlayerAmountComponents implements SetupComponent {
         .lore(ChatColor.DARK_GRAY + "(how many players arena can hold)")
         .lore("", setupInventory.getSetupUtilities().isOptionDone("instances." + arena.getId() + ".maximumplayers"))
         .build(), e -> {
+      ItemStack itemStack = e.getInventory().getItem(e.getSlot());
+      if (itemStack == null || e.getCurrentItem() == null) {
+        return;
+      }
       if (e.getClick().isRightClick()) {
         e.getCurrentItem().setAmount(e.getCurrentItem().getAmount() + 1);
       }
       if (e.getClick().isLeftClick()) {
         e.getCurrentItem().setAmount(e.getCurrentItem().getAmount() - 1);
       }
-      if (e.getInventory().getItem(e.getSlot()).getAmount() < 1) {
+      if (itemStack.getAmount() < 1) {
         e.getWhoClicked().sendMessage(plugin.getChatManager().colorRawMessage("&c&l✖ &cWarning | Please do not set amount lower than 1!"));
-        e.getInventory().getItem(e.getSlot()).setAmount(1);
+        itemStack.setAmount(1);
       }
       config.set("instances." + arena.getId() + ".maximumplayers", e.getCurrentItem().getAmount());
       arena.setMaximumPlayers(e.getCurrentItem().getAmount());
