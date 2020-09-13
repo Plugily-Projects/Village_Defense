@@ -114,7 +114,7 @@ public enum Messages {
   KITS_CLEANER_CLEANED_MAP("Kits.Cleaner.Cleaned-Map"),
   KITS_CLEANER_NOTHING_TO_CLEAN("Kits.Cleaner.Nothing-To-Clean"),
   @Deprecated //must be merged to SPECTATOR_WARNING
-      KITS_CLEANER_SPECTATOR_WARNING("Kits.Cleaner.Spectator-Warning"),
+  KITS_CLEANER_SPECTATOR_WARNING("In-Game.Spectator.Spectator-Warning"),
 
   KITS_ZOMBIE_TELEPORTER_NAME("Kits.Zombie-Teleporter.Kit-Name"),
   KITS_ZOMBIE_TELEPORTER_DESCRIPTION("Kits.Zombie-Teleporter.Kit-Description"),
@@ -175,7 +175,7 @@ public enum Messages {
   KITS_TELEPORTER_GAME_ITEM_MENU_NAME("Kits.Teleporter.Game-Item-Menu-Name"),
   KITS_TELEPORTER_TELEPORTED_TO_VILLAGER("Kits.Teleporter.Teleported-To-Villager"),
   @Deprecated //must be merged to SPECTATOR_WARNING
-      KITS_TELEPORTER_SPECTATOR_WARNING("Kits.Teleporter.Spectator-Warning"),
+  KITS_TELEPORTER_SPECTATOR_WARNING("In-Game.Spectator.Spectator-Warning"),
   KITS_TELEPORTER_VILLAGER_WARNING("Kits.Teleporter.Villager-Warning"),
   KITS_TELEPORTER_TELEPORTED_TO_PLAYER("Kits.Teleporter.Teleported-To-Player"),
 
