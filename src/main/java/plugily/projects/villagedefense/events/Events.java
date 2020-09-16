@@ -188,10 +188,10 @@ public class Events implements Listener {
     } else if (event.getRightClicked() instanceof Wolf) {
       Wolf wolf = (Wolf) event.getRightClicked();
       //to prevent wolves sitting
-      wolf.setSitting(false);
       if (wolf.getCustomName() != null && wolf.getCustomName().contains(event.getPlayer().getName())) {
         NMS.setPassenger(event.getRightClicked(), event.getPlayer());
       }
+      wolf.setSitting(false);
     }
   }
 

@@ -325,23 +325,26 @@ public class Main extends JavaPlugin {
 
   private void setupPluginMetrics() {
     Metrics metrics = new Metrics(this);
-    metrics.addCustomChart(new Metrics.SimplePie("database_enabled", () -> String.valueOf(configPreferences.getOption(ConfigPreferences.Option.DATABASE_ENABLED))));
-    metrics.addCustomChart(new Metrics.SimplePie("locale_used", () -> LanguageManager.getPluginLocale().getPrefix()));
-    metrics.addCustomChart(new Metrics.SimplePie("update_notifier", () -> {
-      if (getConfig().getBoolean("Update-Notifier.Enabled", true)) {
-        return getConfig().getBoolean("Update-Notifier.Notify-Beta-Versions", true) ? "Enabled with beta notifier" : "Enabled";
-      }
+    if (metrics.isEnabled()) {
+      metrics.addCustomChart(new Metrics.SimplePie("database_enabled", () -> String.valueOf(configPreferences
+          .getOption(ConfigPreferences.Option.DATABASE_ENABLED))));
+      metrics.addCustomChart(new Metrics.SimplePie("locale_used", () -> LanguageManager.getPluginLocale().getPrefix()));
+      metrics.addCustomChart(new Metrics.SimplePie("update_notifier", () -> {
+        if (getConfig().getBoolean("Update-Notifier.Enabled", true)) {
+          return getConfig().getBoolean("Update-Notifier.Notify-Beta-Versions", true) ? "Enabled with beta notifier" : "Enabled";
+        }
 
-      return getConfig().getBoolean("Update-Notifier.Notify-Beta-Versions", true) ? "Beta notifier only" : "Disabled";
-    }));
-    metrics.addCustomChart(new Metrics.SimplePie("hooked_addons", () -> {
-      if (getServer().getPluginManager().getPlugin("VillageDefense-Enhancements") != null) {
-        return "Enhancements";
-      } else if (getServer().getPluginManager().getPlugin("VillageDefense-CustomKits") != null) {
-        return "Custom Kits";
-      }
-      return "None";
-    }));
+        return getConfig().getBoolean("Update-Notifier.Notify-Beta-Versions", true) ? "Beta notifier only" : "Disabled";
+      }));
+      metrics.addCustomChart(new Metrics.SimplePie("hooked_addons", () -> {
+        if (getServer().getPluginManager().getPlugin("VillageDefense-Enhancements") != null) {
+          return "Enhancements";
+        } else if (getServer().getPluginManager().getPlugin("VillageDefense-CustomKits") != null) {
+          return "Custom Kits";
+        }
+        return "None";
+      }));
+    }
   }
 
   private void checkUpdate() {
