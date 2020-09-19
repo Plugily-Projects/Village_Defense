@@ -79,8 +79,7 @@ public class LocaleService {
 
   private InputStream requestLocaleFetch(Locale locale) {
     try {
-      //todo /v2/
-      URL url = new URL("https://api.plajer.xyz/locale/fetch.php");
+      URL url = new URL("https://api.plugily.xyz/locale/v2/fetch.php");
       HttpsURLConnection conn = (HttpsURLConnection) url.openConnection();
       conn.setRequestMethod("POST");
       conn.setRequestProperty("User-Agent", "PLLocale/1.0");
@@ -98,7 +97,7 @@ public class LocaleService {
       os.close();
       return conn.getInputStream();
     } catch (IOException e) {
-      plugin.getLogger().log(Level.SEVERE, "Could not fetch locale from plajer.xyz api! Cause: {0} ({1})", new Object[] {e.getCause(), e.getMessage()});
+      plugin.getLogger().log(Level.SEVERE, "Could not fetch locale from plugily.xyz api! Cause: {0} ({1})", new Object[]{e.getCause(), e.getMessage()});
       return new InputStream() {
         @Override
         public int read() {
