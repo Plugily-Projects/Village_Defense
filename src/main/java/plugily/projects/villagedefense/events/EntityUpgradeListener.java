@@ -1,7 +1,12 @@
 package plugily.projects.villagedefense.events;
 
 import org.bukkit.Particle;
-import org.bukkit.entity.*;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.IronGolem;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Wolf;
+import org.bukkit.entity.Zombie;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;

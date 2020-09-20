@@ -73,7 +73,7 @@ public class SpecialItemManager {
 
   public void registerItems() {
     for (String key : config.getKeys(false)) {
-      if (key.equals("Version")) {
+      if ("Version".equals(key)) {
         continue;
       }
       XMaterial mat;
@@ -81,7 +81,7 @@ public class SpecialItemManager {
       List<String> lore;
       int slot;
       try {
-        mat = XMaterial.matchXMaterial(config.getString(key + ".material-name")).get();
+        mat = XMaterial.matchXMaterial(config.getString(key + ".material-name", "bedrock").toUpperCase()).orElse(XMaterial.BEDROCK);
         name = plugin.getChatManager().colorRawMessage(config.getString(key + ".displayname"));
         lore = config.getStringList(key + ".lore").stream()
             .map(itemLore -> itemLore = plugin.getChatManager().colorRawMessage(itemLore))

@@ -51,7 +51,7 @@ public class JoinEvent implements Listener {
   }
 
   @EventHandler
-  public void onJoinCheckVersion(final PlayerJoinEvent event) {
+  public void onJoinCheckVersion(PlayerJoinEvent event) {
     //we want to be the first :)
     if (!plugin.getConfig().getBoolean("Update-Notifier.Enabled", true) || !event.getPlayer().hasPermission("villagedefense.updatenotify")) {
       return;

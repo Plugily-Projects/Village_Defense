@@ -23,18 +23,43 @@ import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.World;
 import org.bukkit.attribute.Attribute;
-import org.bukkit.entity.*;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.IronGolem;
+import org.bukkit.entity.ItemFrame;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Painting;
+import org.bukkit.entity.Player;
+import org.bukkit.entity.Projectile;
+import org.bukkit.entity.Villager;
+import org.bukkit.entity.Wolf;
+import org.bukkit.entity.Zombie;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
-import org.bukkit.event.entity.*;
+import org.bukkit.event.entity.CreatureSpawnEvent;
+import org.bukkit.event.entity.EntityCombustByBlockEvent;
+import org.bukkit.event.entity.EntityCombustByEntityEvent;
+import org.bukkit.event.entity.EntityCombustEvent;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityExplodeEvent;
+import org.bukkit.event.entity.FoodLevelChangeEvent;
+import org.bukkit.event.entity.ItemSpawnEvent;
+import org.bukkit.event.entity.PlayerLeashEntityEvent;
 import org.bukkit.event.hanging.HangingBreakByEntityEvent;
 import org.bukkit.event.inventory.InventoryPickupItemEvent;
 import org.bukkit.event.inventory.InventoryType;
-import org.bukkit.event.player.*;
+import org.bukkit.event.player.PlayerArmorStandManipulateEvent;
+import org.bukkit.event.player.PlayerCommandPreprocessEvent;
+import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.event.player.PlayerExpChangeEvent;
+import org.bukkit.event.player.PlayerInteractEntityEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import pl.plajerlair.commonsbox.minecraft.compat.XMaterial;
@@ -185,7 +210,7 @@ public class Events implements Listener {
       } else {
         event.getPlayer().sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage(Messages.CANT_RIDE_OTHERS_GOLEM));
       }
-    } else if (event.getRightClicked() instanceof Wolf) {
+    } else if (event.getRightClicked().getType() == EntityType.WOLF) {
       Wolf wolf = (Wolf) event.getRightClicked();
       //to prevent wolves sitting
       if (wolf.getCustomName() != null && wolf.getCustomName().contains(event.getPlayer().getName())) {
@@ -226,10 +251,7 @@ public class Events implements Listener {
     if (event.getEntity().getItemStack().getType() == XMaterial.OAK_DOOR.parseMaterial()
             || event.getEntity().getItemStack().getType() == XMaterial.OAK_DOOR.parseMaterial()) {
       for (Entity entity : Utils.getNearbyEntities(event.getLocation(), 20)) {
-        if (!(entity instanceof Player)) {
-          continue;
-        }
-        if (ArenaRegistry.getArena((Player) entity) != null) {
+        if (entity instanceof Player && ArenaRegistry.getArena((Player) entity) != null) {
           event.getEntity().remove();
         }
       }
@@ -427,7 +449,7 @@ public class Events implements Listener {
    * Thanks to @HomieDion for part of this class!
    */
   @EventHandler(ignoreCancelled = true)
-  public void onCombust(final EntityCombustEvent e) {
+  public void onCombust(EntityCombustEvent e) {
     // Ignore if this is caused by an event lower down the chain.
     if (e instanceof EntityCombustByEntityEvent || e instanceof EntityCombustByBlockEvent
         || !(e.getEntity() instanceof Zombie)
@@ -467,7 +489,7 @@ public class Events implements Listener {
       return;
     }
     final LivingEntity livingEntity = (LivingEntity) e.getEntity();
-    if (!livingEntity.getType().equals(EntityType.ARMOR_STAND)) {
+    if (livingEntity.getType() != EntityType.ARMOR_STAND) {
       return;
     }
     if (e.getDamager() instanceof Player && ArenaRegistry.isInArena((Player) e.getDamager())) {

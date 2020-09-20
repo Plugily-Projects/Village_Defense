@@ -30,6 +30,7 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.PotionMeta;
+import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.potion.PotionData;
 import org.bukkit.potion.PotionType;
 import org.bukkit.util.BlockIterator;
@@ -42,6 +43,7 @@ import plugily.projects.villagedefense.utils.ServerVersion.Version;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -212,6 +214,21 @@ public class Utils {
     }
 
     return s;
+  }
+
+  public static SkullMeta setPlayerHead(Player player, SkullMeta meta) {
+    if (Bukkit.getServer().getVersion().contains("Paper") && player.getPlayerProfile().hasTextures()) {
+      return CompletableFuture.supplyAsync(() -> {
+        meta.setPlayerProfile(player.getPlayerProfile());
+        return meta;
+      }).exceptionally(e -> {
+        Debugger.debug(java.util.logging.Level.WARNING, "Retrieving player profile of " + player.getName() + " failed!");
+        return meta;
+      }).join();
+    }
+
+    meta.setOwningPlayer(player);
+    return meta;
   }
 
   public static void sendTitle(Player player, Integer fadeIn, Integer stay, Integer fadeOut, String title, String subtitle) {

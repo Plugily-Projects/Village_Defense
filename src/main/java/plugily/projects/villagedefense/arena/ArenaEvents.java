@@ -24,7 +24,13 @@ import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
-import org.bukkit.entity.*;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.IronGolem;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
+import org.bukkit.entity.Villager;
+import org.bukkit.entity.Wolf;
+import org.bukkit.entity.Zombie;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -148,7 +154,7 @@ public class ArenaEvents implements Listener {
           if (!arena.getIronGolems().contains(event.getEntity())) {
             continue;
           }
-          if (((Creature) event.getEntity()).getHealth() <= event.getDamage()) {
+          if (((org.bukkit.entity.Creature) event.getEntity()).getHealth() <= event.getDamage()) {
             event.setCancelled(true);
             event.setDamage(0);
             arena.removeIronGolem((IronGolem) event.getEntity());
@@ -158,7 +164,7 @@ public class ArenaEvents implements Listener {
           if (!arena.getWolves().contains(event.getEntity())) {
             continue;
           }
-          if (((Creature) event.getEntity()).getHealth() <= event.getDamage()) {
+          if (((org.bukkit.entity.Creature) event.getEntity()).getHealth() <= event.getDamage()) {
             event.setCancelled(true);
             event.setDamage(0);
             Player player = (Player) ((Wolf) event.getEntity()).getOwner();
