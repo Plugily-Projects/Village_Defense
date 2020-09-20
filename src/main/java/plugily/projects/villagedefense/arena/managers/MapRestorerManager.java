@@ -155,7 +155,7 @@ public class MapRestorerManager {
       doorBlockState.setType(doorBlockData.getMaterial());
       try {
         doorBlockState.getClass().getDeclaredMethod("setBlockData", doorBlockData.getClass()).invoke(doorBlockData);
-      } catch (NoSuchMethodException n) {
+      } catch (NoSuchMethodException ignored) {
       } catch (Exception e) {
         e.printStackTrace();
       }

@@ -21,7 +21,6 @@ package plugily.projects.villagedefense.handlers.language;
 import org.bukkit.configuration.file.FileConfiguration;
 import pl.plajerlair.commonsbox.minecraft.configuration.ConfigUtils;
 import plugily.projects.villagedefense.Main;
-import plugily.projects.villagedefense.handlers.ChatManager;
 import plugily.projects.villagedefense.utils.Debugger;
 import plugily.projects.villagedefense.utils.constants.Constants;
 import plugily.projects.villagedefense.utils.services.ServiceRegistry;
@@ -49,6 +48,7 @@ public class LanguageManager {
   private static final Properties properties = new Properties();
   private static FileConfiguration languageConfig;
   private static boolean messagesIntegrityPassed = true;
+  private static FileConfiguration defaultLanguageConfig;
 
   private LanguageManager() {
   }
@@ -65,8 +65,12 @@ public class LanguageManager {
     if (!new File(plugin.getDataFolder() + File.separator + "language.yml").exists()) {
       plugin.saveResource("language.yml", false);
     }
+    //auto update
+    plugin.saveResource("locales/language_default.yml", true);
+
     new LanguageMigrator(plugin);
     languageConfig = ConfigUtils.getConfig(plugin, Constants.Files.LANGUAGE.getName());
+    defaultLanguageConfig = ConfigUtils.getConfig(plugin, "locales/language_default");
     registerLocales();
     setupLocale();
     if (isDefaultLanguageUsed()) {
@@ -172,7 +176,7 @@ public class LanguageManager {
       return;
     }
     Debugger.sendConsoleMsg("&a[Village Defense] Loaded locale " + pluginLocale.getName() + " (" + pluginLocale.getOriginalName() + " ID: "
-        + pluginLocale.getPrefix() + ") by " + pluginLocale.getAuthor());
+            + pluginLocale.getPrefix() + ") by " + pluginLocale.getAuthor());
     loadProperties();
   }
 
@@ -180,84 +184,56 @@ public class LanguageManager {
     return pluginLocale.getName().equals("English");
   }
 
-  /**
-   * Low level language.yml file accessor.
-   * For normal usages we suggest ChatManager and its methods.
-   * <p>
-   * <p>
-   * Gets list of strings from language.yml flat file or locale if enabled
-   *
-   * @param path path to list
-   * @return raw list of language strings
-   * @see ChatManager
-   */
-  public static List<String> getLanguageList(String path) {
-    if (isDefaultLanguageUsed()) {
-      if (!languageConfig.isSet(path)) {
-        Debugger.sendConsoleMsg("Game message not found!");
-        Debugger.sendConsoleMsg("Please regenerate your language.yml file! If error still occurs report it to the developer!");
-        Debugger.sendConsoleMsg("Access string: " + path);
-        return Collections.singletonList("ERR_MESSAGE_" + path + "_NOT_FOUND");
-      }
-      List<String> list = languageConfig.getStringList(path);
-      list = list.stream().map(string -> plugin.getChatManager().colorRawMessage(string)).collect(Collectors.toList());
-      return list;
-    }
-    String prop = properties.getProperty(path);
-    if (prop == null) {
-      //check normal language if nothing found in specific language
-      if (!languageConfig.isSet(path)) {
-        Debugger.sendConsoleMsg("Game message not found in your locale!");
-        Debugger.sendConsoleMsg("Please regenerate your language.yml file! If error still occurs report it to the developer!");
-        Debugger.sendConsoleMsg("Access string: " + path);
-        return Collections.singletonList("ERR_MESSAGE_" + path + "_NOT_FOUND");
-      }
-      //send normal english message - User can change this translation on his own
-      Debugger.sendConsoleMsg("Game message not found in your locale!");
-      Debugger.sendConsoleMsg("Path: " + path + " | Translate it on your own in language.yml!");
-      List<String> list = languageConfig.getStringList(path);
-      list = list.stream().map(string -> plugin.getChatManager().colorRawMessage(string)).collect(Collectors.toList());
-      return list;
-    }
-    return Arrays.asList(prop.replace("&", "§").split(";"));
-  }
-
-  /**
-   * Low level language.yml file accessor.
-   * For normal usages we suggest ChatManager and its methods.
-   * <p>
-   * <p>
-   * Gets message from language.yml flat file or locale if enabled
-   *
-   * @param path messages to get
-   * @return raw language message
-   * @see ChatManager
-   */
   public static String getLanguageMessage(String path) {
     if (isDefaultLanguageUsed()) {
-      if (!languageConfig.isSet(path)) {
-        Debugger.sendConsoleMsg("Game message not found!");
-        Debugger.sendConsoleMsg("Please regenerate your language.yml file! If error still occurs report it to the developer!");
-        Debugger.sendConsoleMsg("Access string: " + path);
-        return "ERR_MESSAGE_" + path + "_NOT_FOUND";
-      }
-      return languageConfig.getString(path);
+      return getString(path);
     }
     String prop = properties.getProperty(path);
     if (prop == null) {
-      //check normal language if nothing found in specific language
-      if (!languageConfig.isSet(path)) {
-        Debugger.sendConsoleMsg("Game message not found in your locale!");
-        Debugger.sendConsoleMsg("Please regenerate your language.yml file! If error still occurs report it to the developer!");
-        Debugger.sendConsoleMsg("Access string: " + path);
-        return "ERR_MESSAGE_" + path + "_NOT_FOUND";
-      }
-      //send normal english message - User can change this translation on his own
-      Debugger.sendConsoleMsg("Game message not found in your locale!");
-      Debugger.sendConsoleMsg("Path: " + path + " | Translate it on your own in language.yml!");
-      return languageConfig.getString(path);
+      return getString(path);
     }
-    return prop;
+    if (getString(path).equalsIgnoreCase(defaultLanguageConfig.getString(path, "not found"))) {
+      return prop;
+    }
+    return getString(path);
+  }
+
+  public static List<String> getLanguageList(String path) {
+    if (isDefaultLanguageUsed()) {
+      return getStrings(path);
+    }
+    String prop = properties.getProperty(path);
+    if (prop == null) {
+      return getStrings(path);
+    }
+    if (getString(path).equalsIgnoreCase(defaultLanguageConfig.getString(path, "not found"))) {
+      return Arrays.asList(plugin.getChatManager().colorRawMessage(prop).split(";"));
+    }
+    return getStrings(path);
+  }
+
+
+  private static List<String> getStrings(String path) {
+    if (!languageConfig.isSet(path)) {
+      Debugger.sendConsoleMsg("&c[VillageDefense] Game message not found in your locale!");
+      Debugger.sendConsoleMsg("&c[VillageDefense] Please regenerate your language.yml file! If error still occurs report it to the developer on discord!");
+      Debugger.sendConsoleMsg("&c[VillageDefense] Path: " + path);
+      return Collections.singletonList("ERR_MESSAGE_" + path + "_NOT_FOUND");
+    }
+    List<String> list = languageConfig.getStringList(path);
+    list = list.stream().map(string -> plugin.getChatManager().colorRawMessage(string)).collect(Collectors.toList());
+    return list;
+  }
+
+
+  private static String getString(String path) {
+    if (!languageConfig.isSet(path)) {
+      Debugger.sendConsoleMsg("&c[VillageDefense] Game message not found in your locale!");
+      Debugger.sendConsoleMsg("&c[VillageDefense] Please regenerate your language.yml file! If error still occurs report it to the developer on discord!");
+      Debugger.sendConsoleMsg("&c[VillageDefense] Path: " + path);
+      return "ERR_MESSAGE_" + path + "_NOT_FOUND";
+    }
+    return languageConfig.getString(path, "not found");
   }
 
   public static void reloadConfig() {

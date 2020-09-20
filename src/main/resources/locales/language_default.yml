@@ -1,0 +1,431 @@
+# Leave this file as it is!
+#
+### !!!Do not change anything here!!!
+#
+### THIS FILE AUTOMATICALLY REGENERATES ON SERVER RESTART
+#
+# Needed as it can be possible that the api is not working
+Commands:
+  Did-You-Mean: "&6Did you mean &e/%command%&6?"
+  Command-Executed: "&aCommand successfully executed!"
+  Teleported-To-The-Lobby: "Teleported to the lobby!"
+  Removed-Game-Instance: "&cSuccessfully removed game instance!"
+  No-Arena-Like-That: "&cNo arena with that ID!"
+  Look-Sign: "&cYou have to look at a sign to perform this command!"
+  Type-Arena-Name: "&cPlease type arena ID!"
+  Hold-Any-Item: "&cYou must hold any item!"
+  No-Free-Arenas: "&cThere are no free arenas!"
+  Statistics:
+    Type-Name: "&cPlease type statistic name to view!"
+    Invalid-Name: "&cName of statistic is invalid! Type: kills, deaths, games_played, highest_wave, level"
+    Header: "&8&m-------------------[&6 Top 10 &8&m]-------------------"
+    Format: "&e#%position% %name% - %value% &7%statistic%"
+  Only-By-Player: "&cYou can execute this command only as player!"
+  Not-Playing: "&cYou must play to execute this command!"
+  No-Permission: "&cYou don't have permission to use this command!"
+  Invalid-Number: "&cWave needs to be number! Do %correct%"
+  Target-Player-Not-Found: "&cTarget player doesn't exist!"
+  Location-Teleport-Invalid: "&cLocation to teleport is invalid!"
+  Wrong-Usage: "&cWrong usage. Do %correct%"
+  Admin-Commands:
+    Added-Orbs: "&7Added orbs to the player!"
+    Received-Orbs: "&7You received &a%orbs% orbs&7!"
+    Added-Level: "&7Added level to the player!"
+    Success-Reload: "&aArenas reloaded!"
+    List-Command:
+      Header: "&aVillage Defense &6arenas:"
+      Format: "&a%arena% &e%status% &6%players%/%maxplayers%"
+      No-Arenas: "&cThere are no game instances!"
+  Stats-Command:
+    Header: "&l-----YOUR STATS-----"
+    Header-Other: "&l-----STATS FOR %player%-----"
+    Footer: "&l--------------------"
+    Kills: "&aZombie kills: &e"
+    Deaths: "&aDeaths: &e"
+    Games-Played: "&aGames played: &e"
+    Highest-Wave: "&aHighest wave: &e"
+    Level: "&aLevel: &e"
+    Exp: "&aExp: &e"
+    Next-Level-Exp: "&aExp to Level Up &e"
+  Main-Command:
+    Header: "&6----------------{VillageDefense commands}----------"
+    Description: "&aGame commands:\n
+    &b/vd stats: &7Shows your stats!\n
+    &b/vd leave: &7Quits current arena!\n
+    &b/vd join <arena>: &7Joins specified arena!\n
+    &b/vd top <statistic>: &7Shows top 10 players!\n
+    &b/vd selectkit: &7Select new game kit!\n
+    &b/vd randomjoin: &7Join random arena!"
+    Admin-Bonus-Description: "\n&b/vda: &7Shows all the admin commands"
+    Footer: "&6-------------------------------------------------"
+
+# In-game scoreboard messages.
+# Please do not use more than 48 chars here! COLOR CODES INCLUDED.
+# Placeholders:
+# %ARENA_NAME% - Returns arena name.
+# %ARENA_ID% - Returns arena id.
+# %VILLAGERS% - Returns villagers amount that are still alive.
+# %PLAYERS_LEFT% - Returns amount of players that is still left.
+# %MIN_PLAYERS% - Returns back the amount of minimum players needed to start the game
+# %PLAYERS% - The amount of players in the arena currently (dead + alive players)
+# %ZOMBIES% - Returns amount of zombies left in wave.
+# %ROTTEN_FLESH% - Returns back how much rotten flesh has been dropped in the magic well.
+# %TIME% - Returns the time back in seconds. 
+# %ORBS% - Returns the amount of orbs (currency) the player has.
+
+Scoreboard:
+  Title: "&a&lVillage Defense"
+  Content:
+    # Contents of scoreboard while wave is running
+    Playing:
+      - "&fVillagers Left: &e%VILLAGERS%"
+      - "&fPlayers Left: &e%PLAYERS_LEFT%"
+      - "&fZombies Left: &e%ZOMBIES%"
+      - ""
+      - "&fRotten Flesh: &e%ROTTEN_FLESH%"
+      - "&fOrbs: &e%ORBS%"
+      - ""
+      - "&ewww.plugily.xyz"
+    # Contents while players are waiting for the wave
+    Playing-Waiting:
+      - "&fVillagers Left: &e%VILLAGERS%"
+      - "&fPlayers Left: &e%PLAYERS_LEFT%"
+      - ""
+      - "&fNext Wave In: &e%TIME%"
+      - ""
+      - "&fRotten Flesh: &e%ROTTEN_FLESH%"
+      - "&fOrbs: &e%ORBS%"
+      - ""
+      - "&ewww.plugily.xyz"
+    Waiting:
+      - "&fPlayers: &e%PLAYERS%"
+      - ""
+      - "&fMinimum Players: &e%MIN_PLAYERS%"
+      - ""
+      - "&ewww.plugily.xyz"
+    Starting:
+      - "&fStarting In: &e%TIME%"
+      - ""
+      - "&fPlayers: &e%PLAYERS%"
+      - ""
+      - "&fMinimum Players: &e%MIN_PLAYERS%"
+      - ""
+      - "&ewww.plugily.xyz"
+
+# Has usage only when bossbar is enabled in config.yml
+Bossbar:
+  Main-Title: "&a&lVillage Defense &6- www.plugily.xyz"
+  Starting-In: "&f&lStarting in: &e&l%time%"
+  Waiting-For-Players: "&4&lWaiting for more players..."
+  In-Game-Wave: "&f&lCurrent wave: &e&l%wave%"
+  In-Game-Info: "&e&lPlaying &f&lVILLAGE DEFENSE &e&lon &b&lPLUGILY.XYZ"
+  Game-Ended: "&c&lGame has ended! You were playing on &b&lPLUGILY.XYZ"
+
+Kits:
+  Kit-Menu:
+    Title: "Kit Menu"
+    Unlocked-Kit-Lore: "&aUNLOCKED!"
+    Locked-Lores:
+      Locked-Lore: "&cLOCKED!"
+      Unlock-At-Level: "&aUnlocks at level %NUMBER%"
+      Unlock-In-Store: "&bUnlock this in the store!"
+  Not-Unlocked-Message: "&cYou haven't unlocked &b%KIT%&c yet!"
+  Choose-Message: "&aYou have chosen: &b%KIT%&a!"
+  Open-Kit-Menu: "Open Kit Menu"
+  Ability-Still-On-Cooldown: "&cThis ability is on cooldown! Wait %COOLDOWN% more seconds!"
+  # Kit descriptions and kit items wraps their descriptions every 40 characters and don't support \n character
+  Cleaner:
+    Kit-Name: "&bCleaner"
+    Kit-Description: "&7The cleaner has a special ability. With this ability, he can make all the zombies disappear. However, it takes a lot of effort to do this!"
+    Game-Item-Name: "&6Cleaner Wand!"
+    Game-Item-Lore: "&7Right click to kill all zombies! Cooldown: 60 seconds"
+    Cleaned-Map: "&b%PLAYER% has cleaned the map!"
+    Nothing-To-Clean: "&aThe map is already empty!" #WARNING: used for admin clean commands too!!!
+  Zombie-Teleporter:
+    Kit-Name: "&2Zombie Teleporter"
+    Kit-Description: "&7Teleport those zombies to you! Many people think this is the worst kit! I must admit they are totally wrong!"
+    Game-Item-Name: "Zombie Teleporter" #WARNING: this is Zombie Teleporter GUI name too!
+    Game-Item-Lore: "&7Teleport zombies to you!"
+    Zombie-Teleported: "&aTeleported weakened zombie to you!"
+    No-Available-Zombies: "&cThere are no zombies to teleport!"
+  Knight:
+    Kit-Name: "&2Knight"
+    Kit-Description: "&7This is the one and only knight kit! Many people think this is the worst kit! I must admit they are totally wrong!"
+  Light-Tank:
+    Kit-Name: "&2Light Tank"
+    Kit-Description: "&7You are Junior tank!"
+  Archer:
+    Kit-Name: "&6Archer"
+    Kit-Description: "&7Start with a bow, leather armor and a wooden sword. Archers are loved by the villagers, know that!"
+  Puncher:
+    Kit-Name: "&6Puncher"
+    Kit-Description: "&7Punch those zombies back with your epic shovel! Knockback V is not unknown to you!"
+  Healer:
+    Kit-Name: "&6Healer"
+    Kit-Description: "&7Being a healer is the same as being loved. You are able to heal your teammates and villagers! Gets a restock every wave!"
+  Looter:
+    Kit-Name: "&6Looter"
+    Kit-Description: "&7Get one additional rotten flesh on every zombie kill!"
+  Runner:
+    Kit-Name: "&6Runner"
+    Kit-Description: "&7Parkour is your passion! You are able to run faster than everybody else. You have also the ability to jump higher."
+  Medium-Tank:
+    Kit-Name: "&6Medium Tank"
+    Kit-Description: "&7Start off with 6 more hearts! Don't be afraid! You have plenty hearts left to lose!"
+  Worker:
+    Kit-Name: "&6Worker"
+    Kit-Description: "&7Get each round a door and start off with 2 additional doors. This way you can replace the doors!"
+    Game-Item-Place-Message: "&aDoor placed!"
+  Dog-Friend:
+    Kit-Name: "&bDog Friend"
+    Kit-Description: "&7Start off with three dogs and get one extra dog every wave!"
+  Hardcore:
+    Kit-Name: "&6Hardcore"
+    Kit-Description: "&7You'll see yourself why this is hardcore"
+  Golem-Friend:
+    Kit-Name: "&6Golem Friend"
+    Kit-Description: "&7Start with a golem and get new every 5 waves!"
+  Tornado:
+    Kit-Name: "&bTornado"
+    Kit-Description: "&7Spawn in an awesome tornado!"
+    Game-Item-Name: "Tornado Time"
+    Game-Item-Lore: "&7Right click to spawn a tornado at your location!"
+  Terminator:
+    Kit-Name: "&6Terminator"
+    Kit-Description: "&7Easily kill those zombies with your strength powers!"
+  Teleporter:
+    Kit-Name: "&bTeleporter"
+    Kit-Description: "&7Everybody is astonished about your teleportation. Nobody knows how to do it except you! Due to this, you are able to teleport to villagers
+  that need help in no time!"
+    Game-Item-Name: "&rTeleportation Menu"
+    Game-Item-Lore: "&7Right click to open teleportation menu!"
+    Game-Item-Menu-Name: "Teleporter Menu"
+    Teleported-To-Villager: "&aTeleported!"
+    Villager-Warning: "&4Village defense didn't found that villager! That villager is probably already dead!"
+    Teleported-To-Player: "&aTeleported to %PLAYER%"
+    Player-Not-Found: "&cPlayer not found! Try again!"
+  Heavy-Tank:
+    Kit-Name: "&bHeavy Tank"
+    Kit-Description: "&7Start off with iron armor and a double amount of hearts!
+  Yup, that's right, you'll be the last man standing!"
+  Shot-Bow:
+    Kit-Name: "&bShotbow Master"
+    Kit-Description: "&7You invented a crazy shotbow!"
+  Blocker:
+    Kit-Name: "&bBlocker"
+    Kit-Description: "&7Hold the zombies back with your special barriers. These barriers last for 10 seconds"
+    Game-Item-Name: "Fence"
+    Game-Item-Lore: "&7Place this barrier to hold back zombies! These barriers last for 10 seconds"
+    Game-Item-Place-Message: "&aBarrier placed!"
+    Game-Item-Place-Fail: "&cUnable to place barrier here"
+  Premium-Hardcore:
+    Kit-Name: "&bPremium Hardcore Master"
+    Kit-Description: "&7One hit most zombies with your OP sword! However be careful. this kit is only for the pros! Do not use it if you aren't a pro!"
+  Medic:
+    Kit-Name: "&6Medic"
+    Kit-Description: "&7This kit activates your passive powers. Every time you hit a zombie,
+  you have a 1/10 chance to heal the players in a 5 block radius around you."
+  Wild-Naked:
+    Kit-Name: "&bWild Naked"
+    Kit-Description: "&7You are the ultimate master! You start off with a iron Sharpness VI and Smite II sword!"
+    Cannot-Wear-Armor: "&cYou can't wear armor with the Wild Naked kit!"
+  Wizard:
+    Kit-Name: "&bWizard"
+    Kit-Description: "&7You're half blood. You've come to the village to protect villagers from hordes of undead. Use your dark powers to kill them all!"
+    Staff-Item-Name: "Magic wand"
+    Staff-Item-Lore: "&7Right click to cast dark matter"
+    Essence-Item-Name: "Dark essence"
+    Essence-Item-Lore: "&7Click to absorb surrounded matter and use it as your personal thorn shield! Lasts for 5 seconds"
+
+In-Game:
+  # Do not use spaces between villager names. No limit in names size and amount :)
+  Villager-Names: "Jagger,Kelsey,Kelton,Haylie,Harlow,Howard,Wulffric,Winfred,Ashley,Bailey,Beckett,Alfredo,Alfred,Adair,Edgar,ED,Eadwig,Edgaras,Buckley,Stanley,Nuffley,Mary,Jeffry,Rosaly,Elliot,Harry,Sam,Rosaline,Tom,Ivan,Kevin,Adam"
+  #Used in most game messages.
+  Plugin-Prefix: "&a[Village Defense] "
+  Already-Playing: "&cYou are already queued for a game! You can leave a game with /vd leave."
+  Join-No-Permission: "&cYou don't have &6%permission% &cpermission to join this arena!"
+  Full-Game-No-Permission: "&cYou don't have the permission to join full games!"
+  No-Slots-For-Premium: "&cThis game is already full of premium players! Sorry"
+  Dead-Tag-On-Death: "&8Dead"
+  Game-Chat-Format: "&6[&5%level%&6]&6[%kit%&6] %player%: &f%message%"
+  Death-Screen: "&cYou died!"
+  Died-Respawn-In-Next-Wave: "&e&lDON'T LEAVE! &aYou'll respawn once the next wave ends!"
+  Back-In-Game: "&aYou're not a spectator anymore! You're back in the game!"
+  You-Are-Spectator: "&cYou're now a spectator! You can fly now!"
+  You-Leveled-Up: "&7You leveled up! You're now level %NUMBER%!"
+  Orbs-Pickup: "&6+ %number% orbs"
+  Rotten-Flesh-Level-Up: "&bThe gods were happy with the rotten flesh! &bTherefor they gave you an extra heart!"
+  Only-Command-Ingame-Is-Leave: "&cYou have to leave the game first to perform commands. The only command that works is /vd leave!"
+  Spawned-Wolf-Name: "%player%'s Wolf"
+  Spawned-Wolf-Death: "One of your wolves were killed!"
+  Spawned-Golem-Name: "%player%'s Golem"
+  # Join cancelled via external plugin that uses VillageDefense API.
+  Join-Cancelled-Via-API: "&cYou can't join this game!"
+  Join-As-Party-Member: "&cYou joined %ARENANAME% because the party leader joined it!"
+  Arena-Not-Configured: "&cArena is not configured yet! Contact staff!"
+  Spectator:
+    Spectator-Menu-Name: "Alive players list"
+    Target-Player-Health: "&cHealth: &7%health%"
+    Spectator-Warning: "&cYou are a spectator! You can't do anything until you'd respawned at the start of the next wave!"
+    Settings-Menu:
+      Inventory-Name: "&7Spectator settings"
+      Speed-Name: "&aSpeed"
+  Messages:
+    Lobby-Messages:
+      Start-In: "&7The game starts in &b%TIME%&7 seconds!"
+      Waiting-For-Players: "&7Waiting for players... We need at least &b%MINPLAYERS%&7 players to start."
+      Enough-Players-To-Start: "&7We now have enough players. The game is starting soon!"
+      Game-Started: "&7The game has started! Defend the village against waves of zombies!"
+      Kicked-For-Premium-Slot: "&c%PLAYER% got removed from the game to make a place for premium players!"
+      You-Were-Kicked-For-Premium-Slot: "&cYou got kicked out of the game to make a place for a premium player!"
+      Not-Enough-Space-For-Party: "&cYour party is bigger than free places on the arena %ARENANAME%"
+    Join: "&b%PLAYER%&7 joined the game (%PLAYERSIZE%/%MAXPLAYERS%)!"
+    Leave: "&b%PLAYER% &7left the game (%PLAYERSIZE%/%MAXPLAYERS%)!"
+    Death: "&b%PLAYER% &7died!"
+    Next-Wave-In: "&7Next wave starts in &b%NUMBER%&7 seconds!"
+    Wave-Started: "&7Wave &b%NUMBER%&7 started!"
+    Villager-Died: "&cA villager has died!"
+    You-Feel-Refreshed: "&aYou feel refreshed!"
+    Cant-Ride-Others-Golem: "&cYou can't ride the golem of somebody else!"
+    Golem-Spawned: "&aGolem spawned in the village!"
+    Wolf-Spawned: "&aWolf spawned in the village!"
+    Zombie-Got-Stuck-In-The-Map: "&cIt seems like the last zombie got stuck somewhere. No worries! The gods killed him for you!"
+    Shop-Messages:
+      Shop-GUI-Name: "&lShop"
+      Golem-Item-Name: "Spawn Golem"
+      Wolf-Item-Name: "Spawn Wolf"
+      Mob-Limit-Reached: "&cYou can't buy mobs! You've reached the limit of %amount% mobs!"
+      Not-Enough-Orbs: "&cYou need more orbs to buy this item!"
+      Currency-In-Shop: "orbs"
+      No-Shop-Defined: "&cShop wasn't set up! Contact staff!"
+    Game-End-Messages:
+      Summary-Message:
+        - "&a&m--------------------------------------------------"
+        - "&f&lVillage Defense"
+        - ""
+        - "%summary%"
+        - ""
+        - ""
+        - "&e&lReached wave: &7%wave% &8(best %player_best_wave%)"
+        - "&6&lTotal zombies killed: &7%zombies%"
+        - "&c&lTotal coins spent: &7%orbs_spent%"
+        - ""
+        - "&a&m--------------------------------------------------"
+      Summary-Players-Died: "&7All players died!"
+      Summary-Villagers-Died: "&7All villagers died!"
+      Summary-Win-Game: "&7You survived all the waves"
+    Admin-Messages:
+      Set-Starting-In-To-0: "&bAn admin set waiting time to 0. The game starts now!"
+      Removed-Villagers: "&b%PLAYER% has removed all the villagers!"
+      Removed-Golems: "&b%PLAYER% has removed all the golems!"
+      Removed-Zombies: "&b%PLAYER% has cleared the zombies!"
+      Removed-Wolves: "&b%PLAYER% has cleared the wolves!"
+      Changed-Wave: "&bAdmin changed the wave to %NUMBER%"
+
+Powerups:
+  Map-Clean-Powerup:
+    Name: "&e&lMAP CLEANER"
+    # Used as sub title description
+    Description: "&7Map has been cleaned!"
+  Double-Damage-Powerup:
+    Name: "&c&lDOUBLE DAMAGE"
+    Description: "&7Double damage for %time% seconds!"
+  Healing-Powerup:
+    Name: "&6&lREJUVENATION"
+    Description: "&7Healing for %time% seconds!"
+  Golem-Raid-Powerup:
+    Name: "&a&lIRONBOUND RAID"
+    Description: "&7Golems have invaded this village!"
+  One-Shot-One-Kill-Powerup:
+    Name: "&b&lFRENZY"
+    Description: "&7Every zombie for 1 hit!"
+  Powerup-Ended-Title-Message: "&4Powerup %powerup% has ended!"
+
+Signs:
+  Please-Type-Arena-Name: "&cPlease type arena name in second line!"
+  Arena-Doesnt-Exists: "&cArena with that name doesn't exists!"
+  Sign-Created: "&aSign created successfully!"
+  Sign-Removed: "&aSign successfully removed!"
+  Game-States:
+    Inactive: "&lInactive..."
+    In-Game: "&lIn-game"
+    Starting: "&e&lStarting"
+    Full-Game: "&4&lFULL"
+    Ending: "&lEnding"
+    Restarting: "&c&lRestarting"
+  Lines:
+    - "&a&lVillage Defense"
+    - "%state%"
+    - "%mapname%"
+    - "&5[%playersize%/%maxplayers%]"
+
+Arena-Selector:
+  Inv-Title: "Arena selector"
+  Item:
+    Lore:
+      - "&aVillage Defense &f- &e%mapname%"
+      - " "
+      - " "
+      - "  &fOnline: %playersize%/%maxplayers%"
+      - "  &fState: %state%"
+      - " "
+      - " "
+      - "&eClick to join this arena"
+
+#Only used if you enable UpgradesActivated in config!
+Upgrade-Menu:
+  Title: '&3&lUpgrade entity'
+  Stats-Item:
+    Name: '&3&lCurrent Stats'
+    Description: '&3Movement speed: &8%speed%; &3Attack Damage: &8%damage%; &3Health:
+      &8%current_hp%/%max_hp%'
+  Upgrades:
+    Health:
+      Name: '&3&lUpgrade Health'
+      Description: '&3Upgrade max health to tier &8%tier%&3!;&3From &8%from% &3to
+        &8%to%;&3Cost of upgrade: &8%cost%;;&3Click to purchase'
+    Damage:
+      Name: '&3&lUpgrade Damage'
+      Description: '&3Upgrade entity damage to tier &8%tier%&3!;&3From &8%from% &3to
+        &8%to%;&3Cost of upgrade: &8%cost%;;&8Click to purchase'
+    Speed:
+      Name: '&3&lUpgrade Speed'
+      Description: '&3Upgrade movement speed to tier &8%tier%&3!;&3From &8%from% &3to
+        &8%to%;&3Cost of upgrade: &8%cost%;;&8Click to purchase'
+    Swarm-Awareness:
+      Name: '&3&lSwarm Awareness'
+      Description: '&3Upgrade swarm awareness to tier &8%tier%&3!;&3From &8%from%
+        &8damage multiplier per wolf in radius;&8of 3 blocks &3to %to%;&3The more
+        wolves near attacking wolf;&3the more damage wolf deal;&3Cost of upgrade: &8%cost%;;&8Click
+        to purchase'
+    Final-Defense:
+      Name: '&3&lFinal Defense'
+      Description: '&3Upgrade final defense to tier &8%tier%&3!;&3From &8%from% explosion
+        radius &3to &8%to%;&3Golem will explode after death killing nearby;&3zombies
+        and stun all alive ones;&3Cost of upgrade: &8%cost%;;&8Click to purchase'
+  Upgraded-Entity: '&3Upgraded entity to tier &8%tier%&3!'
+  Cannot-Afford: '&3You don''t have enough orbs to apply that upgrade!'
+  Max-Tier: '&3Entity is at max tier of this upgrade!'
+
+#Only used if you enable Holograms in config!
+Leaderboard-Holograms:
+  Header: '&6&lTop %amount% in %statistic%'
+  Format: '&e%place%. &f%nickname% (%value%)'
+  Format-Empty: '&e%place%. &fEmpty (0)'
+  Unknown-Player: '&fUnknown Player'
+  Statistics:
+    Kills: '&eKills'
+    Deaths: '&eDeaths'
+    Games-Played: '&eGames Played'
+    Highest-Wave: '&eHighest Wave'
+    Level: '&eLevel'
+    Xp: '&eExperience'
+
+Validator:
+  Invalid-Arena-Configuration: "[Village Defense] Arena %arena% has invalid configuration! Missing node: %error%"
+  Instance-Started: "[Village Defense] Arena %arena% instance successfully started!"
+  No-Instances-Created: "[Village Defense] There are no arena instances created in configuration!"
+
+# Don't edit it. But who's stopping you? It's your server!
+# Really, don't edit ;p
+File-Version-Do-Not-Edit: 14

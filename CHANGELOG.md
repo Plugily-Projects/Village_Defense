@@ -9,7 +9,7 @@ deploy webhooks to print changelog successfully
 
 That's all, matcher will stop when detects next line started with `###` match
 
-### 4.5.1 Release (01.08.2020 - 13.09.2020)
+### 4.5.1 Release (01.08.2020 - 20.09.2020)
 * (Developer Alert - Class rename)
 * Added wave-title messages
 * Added arena selector
@@ -33,7 +33,8 @@ That's all, matcher will stop when detects next line started with `###` match
 + Fixed language file integrity check
 * Changed wolf will stand when right clicked
 * Properly replaced player & message to return the correct variable
-
+* Updated locales to latest version
+* Added the possibility to change messages of locales on language.yml 
 
 ### 4.5.0 Release (01.07.2020 - 26.07.2020)
 * Added 1.16.x compatibility 
