@@ -9,6 +9,34 @@ deploy webhooks to print changelog successfully
 
 That's all, matcher will stop when detects next line started with `###` match
 
+### 4.5.1 Release (01.08.2020 - 30.09.2020)
+* (Developer Alert - Class rename)
+* Added wave-title messages
+* Added arena selector
+* Added 1.16.2 compatibility
+* Added support for 1.16 hex colors
+* Added custom wolf death message
+* Fixed ArrayIndexOutOfBoundsException when there is no game when joining through bungee
+* Fixed NPE during giving rewards to players
+* Fixed Holograms
+* Fixed noclassfound on 1.15 and lower
+* Fixed Villager death is not working on multiarena mode if more than 1 arena is active
+* Fixed IllegalArgumentException when there are no arena when connecting via bungee
+* Fixed NoClassDefFoundError on plugin startup
+* Fixed for chat formatting when you have another displayname in chat
+* Fixed NullPointerException (sendConsoleMsg(Debugger.java:58))
+* Fixed NoSuchMethodError when used tornado kit
+* Fixed for new 1.16 wall signs
+* Fixed dogfirendkit is spawning golem on 1.16
+* Fixed IllegalPluginAccessException on plugin disable
+* Fixed player names for stats (with mysql enabled)
++ Fixed language file integrity check
+* Changed wolf will stand when right clicked
+* Properly replaced player & message to return the correct variable
+* Updated locales to latest version
+* Added the possibility to change messages of locales on language.yml 
+* Fixed materials 
+
 ### 4.5.0 Release (01.07.2020 - 26.07.2020)
 * Added 1.16.x compatibility 
 * Added missing 1.14 & 1.15 & 1.16 Materials
