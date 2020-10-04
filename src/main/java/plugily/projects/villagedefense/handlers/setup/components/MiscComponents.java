@@ -69,9 +69,12 @@ public class MiscComponents implements SetupComponent {
 
   @Override
   public void injectComponents(StaticPane pane) {
+    Arena arena = setupInventory.getArena();
+    if (arena == null) {
+      return;
+    }
     Player player = setupInventory.getPlayer();
     FileConfiguration config = setupInventory.getConfig();
-    Arena arena = setupInventory.getArena();
     Main plugin = setupInventory.getPlugin();
     ItemStack bungeeItem;
     if (!plugin.getConfigPreferences().getOption(ConfigPreferences.Option.BUNGEE_ENABLED)) {

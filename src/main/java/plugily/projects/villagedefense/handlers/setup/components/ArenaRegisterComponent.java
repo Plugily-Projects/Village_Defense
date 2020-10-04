@@ -76,6 +76,9 @@ public class ArenaRegisterComponent implements SetupComponent {
     }
     pane.addItem(new GuiItem(registeredItem, e -> {
       Arena arena = setupInventory.getArena();
+      if (arena == null) {
+        return;
+      }
       if (arena.isReady()) {
         e.getWhoClicked().sendMessage(ChatColor.GREEN + "This arena was already validated and is ready to use!");
         return;
