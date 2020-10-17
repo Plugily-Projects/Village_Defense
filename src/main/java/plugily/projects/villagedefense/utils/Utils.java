@@ -216,6 +216,7 @@ public class Utils {
     return s;
   }
 
+  @SuppressWarnings("deprecation")
   public static SkullMeta setPlayerHead(Player player, SkullMeta meta) {
     if (Bukkit.getServer().getVersion().contains("Paper") && player.getPlayerProfile().hasTextures()) {
       return CompletableFuture.supplyAsync(() -> {
@@ -227,7 +228,11 @@ public class Utils {
       }).join();
     }
 
-    meta.setOwningPlayer(player);
+    if (Version.isCurrentHigher(Version.v1_12_R1)) {
+      meta.setOwningPlayer(player);
+    } else {
+      meta.setOwner(player.getName());
+    }
     return meta;
   }
 
