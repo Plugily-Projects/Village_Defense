@@ -9,6 +9,9 @@ deploy webhooks to print changelog successfully
 
 That's all, matcher will stop when detects next line started with `###` match
 
+### 4.5.2 Release (08.10.2020)
+* Fixed statistics names won't show on hologram
+
 ### 4.5.1 Release (01.08.2020 - 30.09.2020)
 * (Developer Alert - Class rename)
 * Added wave-title messages
