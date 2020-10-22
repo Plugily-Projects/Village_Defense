@@ -188,6 +188,7 @@ public class ArenaManager {
       arenaPlayer.setExp(1);
       arenaPlayer.setLevel(0);
     }
+    plugin.getSignManager().updateSigns();
     Debugger.debug("[{0}] Final join attempt as player for {1} took {2}ms", arena.getId(), player.getName(), System.currentTimeMillis() - start);
   }
 
@@ -204,7 +205,7 @@ public class ArenaManager {
         continue;
       }
       if (arena.getArenaState() == ArenaState.STARTING || arena.getArenaState() == ArenaState.WAITING_FOR_PLAYERS) {
-        ArenaManager.leaveAttempt(players, arena);
+        leaveAttempt(players, arena);
         players.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage(Messages.LOBBY_MESSAGES_YOU_WERE_KICKED_FOR_PREMIUM_SLOT));
         plugin.getChatManager().broadcastMessage(arena, plugin.getChatManager().formatMessage(arena, plugin.getChatManager().colorMessage(Messages.LOBBY_MESSAGES_KICKED_FOR_PREMIUM_SLOT), players));
         return true;
@@ -279,6 +280,7 @@ public class ArenaManager {
     }
     ArenaUtils.resetPlayerAfterGame(player);
     arena.teleportToEndLocation(player);
+    plugin.getSignManager().updateSigns();
     Debugger.debug("[{0}] Final leave attempt for {1} took {2}ms", arena.getId(), player.getName(), System.currentTimeMillis() - start);
   }
 

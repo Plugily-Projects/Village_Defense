@@ -305,7 +305,8 @@ public abstract class Arena extends BukkitRunnable {
    */
   public void setArenaState(@NotNull ArenaState arenaState) {
     this.arenaState = arenaState;
-    Bukkit.getPluginManager().callEvent(new VillageGameStateChangeEvent(this, getArenaState()));
+    Bukkit.getPluginManager().callEvent(new VillageGameStateChangeEvent(this, arenaState));
+    plugin.getSignManager().updateSigns();
   }
 
   @NotNull
@@ -401,7 +402,7 @@ public abstract class Arena extends BukkitRunnable {
   }
 
   public int getZombiesLeft() {
-    return getOption(ArenaOption.ZOMBIES_TO_SPAWN) + getZombies().size();
+    return getOption(ArenaOption.ZOMBIES_TO_SPAWN) + zombies.size();
   }
 
   public int getWave() {
