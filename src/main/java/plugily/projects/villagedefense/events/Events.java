@@ -59,7 +59,6 @@ import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerExpChangeEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import pl.plajerlair.commonsbox.minecraft.compat.XMaterial;
@@ -141,17 +140,6 @@ public class Events implements Listener {
       user.addStat(StatsStorage.StatisticType.ORBS, event.getAmount());
     }
     event.getPlayer().sendMessage(plugin.getChatManager().colorMessage(Messages.ORBS_PICKUP).replace("%number%", String.valueOf(amount)));
-  }
-
-  @EventHandler
-  public void onItemPickup(PlayerPickupItemEvent event) {
-    Arena arena = ArenaRegistry.getArena(event.getPlayer());
-    if (arena == null) {
-      return;
-    }
-    if (plugin.getUserManager().getUser(event.getPlayer()).isSpectator()) {
-      event.setCancelled(true);
-    }
   }
 
   @EventHandler

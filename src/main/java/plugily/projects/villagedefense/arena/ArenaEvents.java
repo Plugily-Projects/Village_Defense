@@ -30,7 +30,6 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.*;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
-import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffectType;
@@ -39,6 +38,8 @@ import plugily.projects.villagedefense.ConfigPreferences;
 import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.api.StatsStorage;
 import plugily.projects.villagedefense.arena.options.ArenaOption;
+import plugily.projects.villagedefense.events.Events1_8;
+import plugily.projects.villagedefense.events.Events1_9;
 import plugily.projects.villagedefense.handlers.ChatManager;
 import plugily.projects.villagedefense.handlers.items.SpecialItem;
 import plugily.projects.villagedefense.handlers.language.Messages;
@@ -61,6 +62,11 @@ public class ArenaEvents implements Listener {
 
   public ArenaEvents(Main plugin) {
     this.plugin = plugin;
+    if (Version.isCurrentEqualOrLower(Version.v1_12_R1)) {
+      plugin.getServer().getPluginManager().registerEvents(new Events1_8(), plugin);
+    } else {
+      plugin.getServer().getPluginManager().registerEvents(new Events1_9(), plugin);
+    }
     plugin.getServer().getPluginManager().registerEvents(this, plugin);
   }
 
@@ -125,16 +131,6 @@ public class ArenaEvents implements Listener {
       }
       arena.addDroppedFlesh(e.getEntity());
     }
-  }
-
-  @Deprecated //should use EntityPickupItemEvent
-  @EventHandler
-  public void onDropPickup(PlayerPickupItemEvent e) {
-    Arena arena = ArenaRegistry.getArena(e.getPlayer());
-    if (arena == null) {
-      return;
-    }
-    arena.removeDroppedFlesh(e.getItem());
   }
 
   @EventHandler

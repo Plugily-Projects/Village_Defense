@@ -54,6 +54,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -71,10 +72,14 @@ public class ArgumentsRegistry implements CommandExecutor {
   public ArgumentsRegistry(Main plugin) {
     this.plugin = plugin;
     tabCompletion = new TabCompletion(this);
-    plugin.getCommand("villagedefense").setExecutor(this);
-    plugin.getCommand("villagedefense").setTabCompleter(tabCompletion);
-    plugin.getCommand("villagedefenseadmin").setExecutor(this);
-    plugin.getCommand("villagedefenseadmin").setTabCompleter(tabCompletion);
+    Optional.ofNullable(plugin.getCommand("villagedefense")).ifPresent(vd -> {
+      vd.setExecutor(this);
+      vd.setTabCompleter(tabCompletion);
+    });
+    Optional.ofNullable(plugin.getCommand("villagedefenseadmin")).ifPresent(vda -> {
+      vda.setExecutor(this);
+      vda.setTabCompleter(tabCompletion);
+    });
 
     //register Village Defense basic arguments
     new CreateArgument(this);
@@ -147,8 +152,7 @@ public class ArgumentsRegistry implements CommandExecutor {
         if (argument.getArgumentName().equalsIgnoreCase(args[0])) {
           //does it make sense that it is a list?
           for (String perm : argument.getPermissions()) {
-            if (perm.isEmpty()) break;
-            if (Utils.hasPermission(sender, perm)) {
+            if (perm.isEmpty() || Utils.hasPermission(sender, perm)) {
               break;
             }
             //user has no permission to execute command

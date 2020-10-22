@@ -31,7 +31,7 @@ public class ServerVersion {
 		Version() {
 			value = Integer.valueOf(name().replaceAll("[^\\d.]", ""));
 			shortVersion = name().substring(0, name().length() - 3);
-			packageVersion = Bukkit.getServer().getClass().getPackage().getName().replace(".", ",").split(",")[3];
+			packageVersion = Bukkit.getServer().getClass().getPackage().getName().replace('.', ',').split(",")[3];
 		}
 
 		public Integer getValue() {

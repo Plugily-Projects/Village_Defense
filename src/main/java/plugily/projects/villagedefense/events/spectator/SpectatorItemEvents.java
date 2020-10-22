@@ -21,7 +21,7 @@ package plugily.projects.villagedefense.events.spectator;
 import com.github.stefvanschie.inventoryframework.Gui;
 import com.github.stefvanschie.inventoryframework.GuiItem;
 import com.github.stefvanschie.inventoryframework.pane.OutlinePane;
-import org.bukkit.Bukkit;
+
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -48,7 +48,6 @@ public class SpectatorItemEvents implements Listener {
 
   private final Main plugin;
   private final SpectatorSettingsMenu spectatorSettingsMenu;
-  private final boolean usesPaperSpigot = Bukkit.getServer().getVersion().contains("Paper");
 
   public SpectatorItemEvents(Main plugin) {
     this.plugin = plugin;

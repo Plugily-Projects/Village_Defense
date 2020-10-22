@@ -198,9 +198,9 @@ public class Main extends JavaPlugin {
     Messages.init(this);
     LanguageManager.init(this);
     saveDefaultConfig();
-    Debugger.setEnabled(getDescription().getVersion().contains("b") || getConfig().getBoolean("Debug", false));
+    Debugger.setEnabled(getDescription().getVersion().contains("b") || getConfig().getBoolean("Debug"));
     Debugger.debug("[System] Initialization start");
-    if (getDescription().getVersion().contains("b") || getConfig().getBoolean("Developer-Mode", false)) {
+    if (getDescription().getVersion().contains("b") || getConfig().getBoolean("Developer-Mode")) {
       Debugger.deepDebug(true);
       Debugger.debug(Level.FINE, "Deep debug enabled");
 
