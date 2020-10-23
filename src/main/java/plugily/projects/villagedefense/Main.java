@@ -306,6 +306,8 @@ public class Main extends JavaPlugin {
 
     signManager = new SignManager(this);
     ArenaRegistry.registerArenas();
+    signManager.loadSigns();
+    signManager.updateSigns();
   }
 
   private void startInitiableClasses() {
