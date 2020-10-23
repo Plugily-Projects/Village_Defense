@@ -219,7 +219,7 @@ public class Main extends JavaPlugin {
 
   private boolean validateIfPluginShouldStart() {
     serverVersion = new ServerVersion();
-    version = Bukkit.getServer().getClass().getPackage().getName().replace(".", ",").split(",")[3];
+    version = Bukkit.getServer().getClass().getPackage().getName().replace('.', ',').split(",")[3];
 
     if (serverVersion.getVersion().isLower(ServerVersion.Version.v1_11_R1)) {
       MessageUtils.thisVersionIsNotSupported();
@@ -304,9 +304,8 @@ public class Main extends JavaPlugin {
     userManager = new UserManager(this);
     new DoorBreakListener(this);
 
-    ArenaRegistry.registerArenas();
-    //we must start it after instances load!
     signManager = new SignManager(this);
+    ArenaRegistry.registerArenas();
   }
 
   private void startInitiableClasses() {

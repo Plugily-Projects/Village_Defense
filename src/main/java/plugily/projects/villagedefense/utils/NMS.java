@@ -8,7 +8,7 @@ import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.utils.ServerVersion.Version;
 
 @SuppressWarnings("deprecation")
-public class NMS {
+public abstract class NMS {
 
 	private static final Main PLUGIN = JavaPlugin.getPlugin(Main.class);
 
