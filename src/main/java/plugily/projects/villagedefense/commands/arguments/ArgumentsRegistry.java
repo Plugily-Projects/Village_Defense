@@ -28,6 +28,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
+import pl.plajerlair.commonsbox.minecraft.compat.ServerVersion;
 import pl.plajerlair.commonsbox.string.StringMatcher;
 import plugily.projects.villagedefense.ConfigPreferences;
 import plugily.projects.villagedefense.Main;
@@ -47,14 +48,9 @@ import plugily.projects.villagedefense.commands.arguments.game.*;
 import plugily.projects.villagedefense.commands.completion.TabCompletion;
 import plugily.projects.villagedefense.handlers.language.Messages;
 import plugily.projects.villagedefense.handlers.setup.SetupInventory;
-import plugily.projects.villagedefense.utils.ServerVersion.Version;
 import plugily.projects.villagedefense.utils.Utils;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -197,7 +193,7 @@ public class ArgumentsRegistry implements CommandExecutor {
         "&7Edit existing arena\n&6Permission: &7villagedefense.admin.edit"));
     data.addAll(mappedArguments.get("villagedefense").stream().filter(arg -> arg instanceof LabeledCommandArgument)
         .map(arg -> ((LabeledCommandArgument) arg).getLabelData()).collect(Collectors.toList()));
-    if (Version.isCurrentEqual(Version.v1_11_R1)) {
+    if (ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_11_R1)) {
       for (LabelData labelData : data) {
         sender.sendMessage(labelData.getText() + " - " + labelData.getDescription().split("\n")[0]);
       }

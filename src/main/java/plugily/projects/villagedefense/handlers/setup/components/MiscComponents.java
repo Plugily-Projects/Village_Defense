@@ -36,6 +36,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.Door;
+import pl.plajerlair.commonsbox.minecraft.compat.ServerVersion;
 import pl.plajerlair.commonsbox.minecraft.compat.XMaterial;
 import pl.plajerlair.commonsbox.minecraft.configuration.ConfigUtils;
 import pl.plajerlair.commonsbox.minecraft.item.ItemBuilder;
@@ -46,7 +47,6 @@ import plugily.projects.villagedefense.arena.Arena;
 import plugily.projects.villagedefense.handlers.language.Messages;
 import plugily.projects.villagedefense.handlers.setup.SetupInventory;
 import plugily.projects.villagedefense.handlers.sign.ArenaSign;
-import plugily.projects.villagedefense.utils.ServerVersion.Version;
 import plugily.projects.villagedefense.utils.Utils;
 import plugily.projects.villagedefense.utils.constants.Constants;
 import plugily.projects.villagedefense.utils.conversation.SimpleConversationBuilder;
@@ -253,7 +253,7 @@ public class MiscComponents implements SetupComponent {
         return;
       }
       Block block = player.getTargetBlock(null, 10);
-      Material door = XMaterial.OAK_DOOR.parseMaterial();
+      Material door = Utils.getOakDoor();
       if (block.getType() != door) {
         player.sendMessage(plugin.getChatManager().colorRawMessage("&c&l✘ &cTarget block is not oak door!"));
         return;
@@ -279,7 +279,7 @@ public class MiscComponents implements SetupComponent {
 
       String doorLocation = block.getWorld().getName() + "," + block.getX() + "," + block.getY() + "," + block.getZ() + ",0.0" + ",0.0";
       config.set("instances." + arena.getId() + ".doors." + doors + ".location", doorLocation);
-      if (!Version.isCurrentEqual(Version.v1_11_R1) && !Version.isCurrentEqual(Version.v1_12_R1)) {
+      if (!ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_11_R1) && !ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_12_R1)) {
         config.set("instances." + arena.getId() + ".doors." + doors + ".byte", Utils.getDoorByte(((Door) block.getState().getData()).getFacing()));
       } else {
         try {

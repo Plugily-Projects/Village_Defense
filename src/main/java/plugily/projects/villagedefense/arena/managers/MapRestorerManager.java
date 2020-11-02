@@ -23,17 +23,12 @@ import org.bukkit.Material;
 import org.bukkit.TreeSpecies;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.IronGolem;
-import org.bukkit.entity.Villager;
-import org.bukkit.entity.Wolf;
-import org.bukkit.entity.Zombie;
+import org.bukkit.entity.*;
 import org.bukkit.material.Door;
+import pl.plajerlair.commonsbox.minecraft.compat.ServerVersion;
 import pl.plajerlair.commonsbox.minecraft.compat.XMaterial;
 import plugily.projects.villagedefense.arena.Arena;
 import plugily.projects.villagedefense.utils.Debugger;
-import plugily.projects.villagedefense.utils.ServerVersion.Version;
 import plugily.projects.villagedefense.utils.Utils;
 
 import java.util.LinkedHashMap;
@@ -105,12 +100,12 @@ public class MapRestorerManager {
     for (Map.Entry<Location, Byte> entry : getGameDoorLocations().entrySet()) {
       Block block = entry.getKey().getBlock();
       Byte doorData = entry.getValue();
-      if (Version.isCurrentEqualOrLower(Version.v1_11_R1)) {
-        Material mat = XMaterial.OAK_DOOR.parseMaterial();
+      if (ServerVersion.Version.isCurrentEqualOrLower(ServerVersion.Version.v1_11_R1)) {
+        Material mat = Utils.getOakDoor();
         try {
           int id = (int) mat.getClass().getDeclaredMethod("getId").invoke(mat);
           Block.class.getDeclaredMethod("setTypeIdAndData", int.class, Byte.class, boolean.class)
-            .invoke(block, id, doorData, false);
+                  .invoke(block, id, doorData, false);
         } catch (Exception e) {
           e.printStackTrace();
         }
@@ -143,7 +138,7 @@ public class MapRestorerManager {
   private void restoreTopHalfDoorPart(Block block) {
     block.setType(XMaterial.OAK_DOOR.parseMaterial());
     BlockState doorBlockState = block.getState();
-    if (Version.isCurrentLower(Version.v1_16_R1)) {
+    if (ServerVersion.Version.isCurrentLower(ServerVersion.Version.v1_16_R1)) {
       Door doorBlockData = new Door(TreeSpecies.GENERIC, Utils.getFacingByByte((byte) 8));
 
       doorBlockData.setTopHalf(true);
@@ -169,9 +164,9 @@ public class MapRestorerManager {
   }
 
   private void restoreBottomHalfDoorPart(Block block, byte doorData) {
-    block.setType(XMaterial.OAK_DOOR.parseMaterial());
+    block.setType(Utils.getOakDoor());
     BlockState doorBlockState = block.getState();
-    if (Version.isCurrentLower(Version.v1_16_R1)) {
+    if (ServerVersion.Version.isCurrentLower(ServerVersion.Version.v1_16_R1)) {
       Door doorBlockData = new Door(TreeSpecies.GENERIC, Utils.getFacingByByte(doorData));
 
       doorBlockData.setTopHalf(false);

@@ -50,7 +50,7 @@ public class DoorBreakListener extends BukkitRunnable {
           continue;
         }
         for (Block block : Utils.getNearbyBlocks(entity, 1)) {
-          if (block.getType() != XMaterial.OAK_DOOR.parseMaterial()) {
+          if (block.getType() != Utils.getOakDoor()) {
             continue;
           }
           block.getLocation().getWorld().spawnParticle(Particle.SMOKE_LARGE, block.getLocation(), 5, 0.1, 0.1, 0.1);
@@ -60,7 +60,7 @@ public class DoorBreakListener extends BukkitRunnable {
             block.getLocation().getWorld().spawnParticle(Particle.EXPLOSION_HUGE, block.getLocation(), 1, 0.1, 0.1, 0.1);
             if (block.getRelative(BlockFace.UP).getType() == XMaterial.OAK_DOOR.parseMaterial()) {
               block.getRelative(BlockFace.UP).setType(Material.AIR);
-            } else if (block.getRelative(BlockFace.DOWN).getType() == XMaterial.OAK_DOOR.parseMaterial()) {
+            } else if (block.getRelative(BlockFace.DOWN).getType() == Utils.getOakDoor()) {
               block.getRelative(BlockFace.DOWN).setType(Material.AIR);
             }
             block.setType(Material.AIR);

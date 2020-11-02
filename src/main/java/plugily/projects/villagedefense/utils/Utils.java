@@ -34,11 +34,11 @@ import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.potion.PotionData;
 import org.bukkit.potion.PotionType;
 import org.bukkit.util.BlockIterator;
-
+import pl.plajerlair.commonsbox.minecraft.compat.ServerVersion;
+import pl.plajerlair.commonsbox.minecraft.compat.XMaterial;
 import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.arena.ArenaRegistry;
 import plugily.projects.villagedefense.handlers.language.Messages;
-import plugily.projects.villagedefense.utils.ServerVersion.Version;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
@@ -129,8 +129,8 @@ public class Utils {
   public static ItemStack getPotion(PotionType type, int tier, boolean splash) {
     ItemStack potion = new ItemStack(!splash ? Material.POTION : Material.SPLASH_POTION, 1);
     PotionMeta meta = (PotionMeta) potion.getItemMeta();
-    meta.setBasePotionData(new PotionData(type, false, tier >= 2 && !splash ? true : false));
-    potion.setItemMeta(meta);
+      meta.setBasePotionData(new PotionData(type, false, tier >= 2 && !splash));
+      potion.setItemMeta(meta);
     return potion;
   }
 
@@ -163,11 +163,11 @@ public class Utils {
   }
 
   public static void playSound(Location loc, String before1_13, String after1_13) {
-    if (!Version.isCurrentEqual(Version.v1_11_R1) && !Version.isCurrentEqual(Version.v1_12_R1)) {
-      loc.getWorld().playSound(loc, Sound.valueOf(after1_13), 1, 1);
-    } else {
-      loc.getWorld().playSound(loc, before1_13, 1, 1);
-    }
+      if (!ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_11_R1) && !ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_12_R1)) {
+          loc.getWorld().playSound(loc, Sound.valueOf(after1_13), 1, 1);
+      } else {
+          loc.getWorld().playSound(loc, before1_13, 1, 1);
+      }
   }
 
   /**
@@ -228,11 +228,11 @@ public class Utils {
       }).join();
     }
 
-    if (Version.isCurrentHigher(Version.v1_12_R1)) {
-      meta.setOwningPlayer(player);
-    } else {
-      meta.setOwner(player.getName());
-    }
+      if (ServerVersion.Version.isCurrentHigher(ServerVersion.Version.v1_12_R1)) {
+          meta.setOwningPlayer(player);
+      } else {
+          meta.setOwner(player.getName());
+      }
     return meta;
   }
 
@@ -244,25 +244,25 @@ public class Utils {
       if (title == null)
         title = "";
 
-      e = getNMSClass("PacketPlayOutTitle").getDeclaredClasses()[0].getField("TIMES").get((Object) null);
-      chatTitle = getAsIChatBaseComponent(title);
+        e = getNMSClass("PacketPlayOutTitle").getDeclaredClasses()[0].getField("TIMES").get(null);
+        chatTitle = getAsIChatBaseComponent(title);
       subtitleConstructor = getNMSClass("PacketPlayOutTitle").getConstructor(
           getNMSClass("PacketPlayOutTitle").getDeclaredClasses()[0],
           getNMSClass("IChatBaseComponent"), Integer.TYPE, Integer.TYPE, Integer.TYPE);
       titlePacket = subtitleConstructor.newInstance(e, chatTitle, fadeIn, stay, fadeOut);
       sendPacket(player, titlePacket);
 
-      e = getNMSClass("PacketPlayOutTitle").getDeclaredClasses()[0].getField("TITLE").get((Object) null);
-      chatTitle = getNMSClass("IChatBaseComponent").getDeclaredClasses()[0].getMethod("a", String.class)
-          .invoke((Object) null, "{\"text\":\"" + title + "\"}");
-      subtitleConstructor = getNMSClass("PacketPlayOutTitle").getConstructor(
-          getNMSClass("PacketPlayOutTitle").getDeclaredClasses()[0],
-          getNMSClass("IChatBaseComponent"));
+        e = getNMSClass("PacketPlayOutTitle").getDeclaredClasses()[0].getField("TITLE").get(null);
+        chatTitle = getNMSClass("IChatBaseComponent").getDeclaredClasses()[0].getMethod("a", String.class)
+                .invoke(null, "{\"text\":\"" + title + "\"}");
+        subtitleConstructor = getNMSClass("PacketPlayOutTitle").getConstructor(
+                getNMSClass("PacketPlayOutTitle").getDeclaredClasses()[0],
+                getNMSClass("IChatBaseComponent"));
       titlePacket = subtitleConstructor.newInstance(e, chatTitle);
       sendPacket(player, titlePacket);
 
-      e = getNMSClass("PacketPlayOutTitle").getDeclaredClasses()[0].getField("TIMES").get((Object) null);
-      chatSubtitle = getAsIChatBaseComponent(title);
+        e = getNMSClass("PacketPlayOutTitle").getDeclaredClasses()[0].getField("TIMES").get(null);
+        chatSubtitle = getAsIChatBaseComponent(title);
       subtitleConstructor = getNMSClass("PacketPlayOutTitle").getConstructor(
           getNMSClass("PacketPlayOutTitle").getDeclaredClasses()[0],
           getNMSClass("IChatBaseComponent"), Integer.TYPE, Integer.TYPE, Integer.TYPE);
@@ -272,8 +272,8 @@ public class Utils {
       if (subtitle == null)
         subtitle = "";
 
-      e = getNMSClass("PacketPlayOutTitle").getDeclaredClasses()[0].getField("SUBTITLE").get((Object) null);
-      chatSubtitle = getAsIChatBaseComponent(subtitle);
+        e = getNMSClass("PacketPlayOutTitle").getDeclaredClasses()[0].getField("SUBTITLE").get(null);
+        chatSubtitle = getAsIChatBaseComponent(subtitle);
       subtitleConstructor = getNMSClass("PacketPlayOutTitle").getConstructor(
           getNMSClass("PacketPlayOutTitle").getDeclaredClasses()[0],
           getNMSClass("IChatBaseComponent"), Integer.TYPE, Integer.TYPE, Integer.TYPE);
@@ -292,14 +292,25 @@ public class Utils {
   public static Object getAsIChatBaseComponent(String name) throws Exception {
     Class<?> iChatBaseComponent = getNMSClass("IChatBaseComponent");
     Class<?> declaredClass = iChatBaseComponent.getDeclaredClasses()[0];
-    Method m = declaredClass.getMethod("a", String.class);
-    return m.invoke(iChatBaseComponent, "{\"text\":\"" + name + "\"}");
+      Method m = declaredClass.getMethod("a", String.class);
+      return m.invoke(iChatBaseComponent, "{\"text\":\"" + name + "\"}");
   }
 
-  public static void sendPacket(Player player, Object packet) throws Exception {
-    Object handle = player.getClass().getMethod("getHandle").invoke(player);
-    Object playerConnection = handle.getClass().getField("playerConnection").get(handle);
-    playerConnection.getClass().getMethod("sendPacket", getNMSClass("Packet")).invoke(playerConnection, packet);
-  }
+    public static void sendPacket(Player player, Object packet) throws Exception {
+        Object handle = player.getClass().getMethod("getHandle").invoke(player);
+        Object playerConnection = handle.getClass().getField("playerConnection").get(handle);
+        playerConnection.getClass().getMethod("sendPacket", getNMSClass("Packet")).invoke(playerConnection, packet);
+    }
 
+    //cache material as XMaterial will do heavy load if it is executed on every event
+    private static Material oakDoor;
+
+    //todo not only OakDoor, any door ;)
+    public static Material getOakDoor() {
+        if (oakDoor != null) {
+            return oakDoor;
+        }
+        oakDoor = ServerVersion.Version.isCurrentHigher(ServerVersion.Version.v1_13_R1) ? XMaterial.OAK_DOOR.parseMaterial() : Material.valueOf(XMaterial.OAK_DOOR.getLegacy()[0]);
+        return oakDoor;
+    }
 }

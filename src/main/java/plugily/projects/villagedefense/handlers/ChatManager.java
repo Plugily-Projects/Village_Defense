@@ -21,11 +21,11 @@ package plugily.projects.villagedefense.handlers;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
+import pl.plajerlair.commonsbox.minecraft.compat.ServerVersion;
 import pl.plajerlair.commonsbox.string.StringFormatUtils;
 import plugily.projects.villagedefense.arena.Arena;
 import plugily.projects.villagedefense.handlers.language.LanguageManager;
 import plugily.projects.villagedefense.handlers.language.Messages;
-import plugily.projects.villagedefense.utils.ServerVersion.Version;
 import plugily.projects.villagedefense.utils.Utils;
 
 /**
@@ -51,7 +51,7 @@ public class ChatManager {
       return "";
     }
 
-    if (message.contains("#") && Version.isCurrentEqualOrHigher(Version.v1_16_R1)) {
+    if (message.contains("#") && ServerVersion.Version.isCurrentEqualOrHigher(ServerVersion.Version.v1_16_R1)) {
       message = Utils.matchColorRegex(message);
     }
 
