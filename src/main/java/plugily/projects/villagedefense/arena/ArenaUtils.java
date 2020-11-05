@@ -24,6 +24,7 @@ import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Zombie;
 import org.bukkit.potion.PotionEffectType;
+import pl.plajerlair.commonsbox.minecraft.compat.ServerVersion;
 import pl.plajerlair.commonsbox.minecraft.serialization.InventorySerializer;
 import plugily.projects.villagedefense.ConfigPreferences;
 import plugily.projects.villagedefense.Main;
@@ -111,43 +112,47 @@ public class ArenaUtils {
 
   public static Arena initializeArena(String id) {
     Arena arena;
-    if (plugin.is1_11_R1()) {
+    if (ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_11_R1)) {
       arena = new ArenaInitializer1_11_R1(id, plugin);
-    } else if (plugin.is1_12_R1()) {
+    } else if (ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_12_R1)) {
       arena = new ArenaInitializer1_12_R1(id, plugin);
-    } else if (plugin.is1_13_R1()) {
+    } else if (ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_13_R1)) {
       arena = new ArenaInitializer1_13_R1(id, plugin);
-    } else if (plugin.is1_13_R2()) {
+    } else if (ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_13_R2)) {
       arena = new ArenaInitializer1_13_R2(id, plugin);
-    } else if (plugin.is1_14_R1()) {
+    } else if (ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_14_R1)) {
       arena = new ArenaInitializer1_14_R1(id, plugin);
-    } else if (plugin.is1_15_R1()){
+    } else if (ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_15_R1)){
       arena = new ArenaInitializer1_15_R1(id, plugin);
-    } else if (plugin.is1_16_R1()){
+    } else if (ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_16_R1)){
       arena = new ArenaInitializer1_16_R1(id, plugin);
-    } else {
+    } else if(ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_16_R2)) {
       arena = new ArenaInitializer1_16_R2(id, plugin);
+    } else {
+      arena = new ArenaInitializer1_16_R3(id, plugin);
     }
     return arena;
   }
 
   public static void setWorld(Arena arena) {
-    if (plugin.is1_11_R1()) {
+    if (ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_11_R1)) {
       ((ArenaInitializer1_11_R1) arena).setWorld(arena.getStartLocation());
-    } else if (plugin.is1_12_R1()) {
+    } else if (ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_12_R1)) {
       ((ArenaInitializer1_12_R1) arena).setWorld(arena.getStartLocation());
-    } else if (plugin.is1_13_R1()) {
+    } else if (ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_13_R1)) {
       ((ArenaInitializer1_13_R1) arena).setWorld(arena.getStartLocation());
-    } else if (plugin.is1_13_R2()) {
+    } else if (ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_13_R2)) {
       ((ArenaInitializer1_13_R2) arena).setWorld(arena.getStartLocation());
-    } else if (plugin.is1_14_R1()) {
+    } else if (ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_14_R1)) {
       ((ArenaInitializer1_14_R1) arena).setWorld(arena.getStartLocation());
-    } else if (plugin.is1_15_R1()) {
+    } else if (ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_15_R1)) {
       ((ArenaInitializer1_15_R1) arena).setWorld(arena.getStartLocation());
-    } else if (plugin.is1_16_R1()) {
+    } else if (ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_16_R1)) {
       ((ArenaInitializer1_16_R1) arena).setWorld(arena.getStartLocation());
-    } else {
+    } else if (ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_16_R2)) {
       ((ArenaInitializer1_16_R2) arena).setWorld(arena.getStartLocation());
+    } else {
+      ((ArenaInitializer1_16_R3) arena).setWorld(arena.getStartLocation());
     }
   }
 

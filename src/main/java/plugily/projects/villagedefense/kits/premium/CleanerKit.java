@@ -98,7 +98,7 @@ public class CleanerKit extends PremiumKit implements Listener {
       e.getPlayer().sendMessage(message);
       return;
     }
-    if (arena.getZombies() == null || arena.getZombies().isEmpty()) {
+    if (arena.getZombies().isEmpty()) {
       e.getPlayer().sendMessage(getPlugin().getChatManager().colorMessage(Messages.KITS_CLEANER_NOTHING_TO_CLEAN));
       return;
     }

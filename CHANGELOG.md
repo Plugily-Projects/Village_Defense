@@ -13,6 +13,7 @@ That's all, matcher will stop when detects next line started with `###` match
 * Fixed statistics names won't show on hologram
 * Fixed OakDoor material on 1.12.2 and lower versions
 * Changed ServerVersion utility to commonsbox
+* Added 1.16.4 compatibility 
 
 ### 4.5.1 Release (01.08.2020 - 30.09.2020)
 * (Developer Alert - Class rename)
