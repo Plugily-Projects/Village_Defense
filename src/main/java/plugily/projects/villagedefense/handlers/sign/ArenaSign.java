@@ -23,9 +23,9 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.Sign;
 import org.jetbrains.annotations.Nullable;
+import pl.plajerlair.commonsbox.minecraft.compat.ServerVersion;
 import plugily.projects.villagedefense.arena.Arena;
 import plugily.projects.villagedefense.utils.MaterialUtil;
-import plugily.projects.villagedefense.utils.ServerVersion.Version;
 
 import java.lang.reflect.InvocationTargetException;
 
@@ -48,7 +48,7 @@ public class ArenaSign {
   private void setBehindBlock() {
     this.behind = null;
     if (MaterialUtil.isWallSign(sign.getBlock().getType())) {
-      this.behind = Version.isCurrentEqualOrHigher(Version.v1_14_R1) ? getBlockBehind() : getBlockBehindLegacy();
+      this.behind = ServerVersion.Version.isCurrentEqualOrHigher(ServerVersion.Version.v1_14_R1) ? getBlockBehind() : getBlockBehindLegacy();
     }
   }
 

@@ -35,6 +35,7 @@ import java.util.List;
 /*
   NOTE FOR CONTRIBUTORS - Please do not touch this class if you don't now how it works! You can break migrator modyfing these values!
  */
+@SuppressWarnings("deprecation")
 public class LanguageMigrator {
 
   public static final int LANGUAGE_FILE_VERSION = 14;
@@ -165,6 +166,7 @@ public class LanguageMigrator {
           MigratorUtils.addNewLines(file, "#Active after zombies limit is reached\r\n" +
                   "#Higher value means weaker zombies\r\n" +
                   "Zombie-Multiplier-Divider: 18\r\n");
+          break;
         case 12:
           MigratorUtils.addNewLines(file, "\r\n" +
                   "#Disable Party features of external party plugins (such as PAF, Parties ...)\r\n" +

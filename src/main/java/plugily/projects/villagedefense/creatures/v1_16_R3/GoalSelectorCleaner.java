@@ -16,34 +16,27 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package plugily.projects.villagedefense.creatures;
+package plugily.projects.villagedefense.creatures.v1_16_R3;
+
+import net.minecraft.server.v1_16_R3.EntityCreature;
+import net.minecraft.server.v1_16_R3.PathfinderGoalSelector;
+import plugily.projects.villagedefense.creatures.CreatureUtils;
+
+import java.util.LinkedHashSet;
 
 /**
- * @author Plajer
- * <p>
- * Created at 06.01.2019
+ * Internal helper class
  */
-public class CachedObject {
+class GoalSelectorCleaner {
 
-    private final String fieldName;
-    private final Class<?> clazz;
-    private final Object object;
+  private GoalSelectorCleaner() {
+  }
 
-    public CachedObject(String fieldName, Class<?> clazz, Object object) {
-        this.fieldName = fieldName;
-        this.clazz = clazz;
-        this.object = object;
-    }
+  static void clearSelectors(EntityCreature creature) {
+    LinkedHashSet goalD = (LinkedHashSet) CreatureUtils.getPrivateField("d", PathfinderGoalSelector.class, creature.goalSelector);
+    goalD.clear();
+    LinkedHashSet targetD = (LinkedHashSet) CreatureUtils.getPrivateField("d", PathfinderGoalSelector.class, creature.targetSelector);
+    targetD.clear();
+  }
 
-    public String getFieldName() {
-        return fieldName;
-    }
-
-    public Class<?> getClazz() {
-        return clazz;
-    }
-
-    public Object getObject() {
-        return object;
-    }
 }

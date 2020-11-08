@@ -47,9 +47,12 @@ public class SpawnComponents implements SetupComponent {
 
   @Override
   public void injectComponents(StaticPane pane) {
+    Arena arena = setupInventory.getArena();
+    if (arena == null) {
+      return;
+    }
     Player player = setupInventory.getPlayer();
     FileConfiguration config = setupInventory.getConfig();
-    Arena arena = setupInventory.getArena();
     Main plugin = setupInventory.getPlugin();
     String serializedLocation = player.getLocation().getWorld().getName() + "," + player.getLocation().getX() + "," + player.getLocation().getY() + ","
         + player.getLocation().getZ() + "," + player.getLocation().getYaw() + ",0.0";

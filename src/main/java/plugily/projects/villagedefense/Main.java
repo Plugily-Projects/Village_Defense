@@ -30,6 +30,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.java.JavaPluginLoader;
 import org.jetbrains.annotations.TestOnly;
 import pl.plajerlair.commonsbox.database.MysqlDatabase;
+import pl.plajerlair.commonsbox.minecraft.compat.ServerVersion;
 import pl.plajerlair.commonsbox.minecraft.configuration.ConfigUtils;
 import pl.plajerlair.commonsbox.minecraft.serialization.InventorySerializer;
 import plugily.projects.villagedefense.api.StatsStorage;
@@ -100,7 +101,6 @@ public class Main extends JavaPlugin {
   private FileConfiguration entityUpgradesConfig;
   private boolean forceDisable = false;
 
-  private ServerVersion serverVersion;
   @Deprecated private String version;
 
   @TestOnly
@@ -173,16 +173,12 @@ public class Main extends JavaPlugin {
   }
 
   /**
-   * @deprecated use {@link #getServerVersion()}
    * @return {@link String}
+   * @deprecated
    */
   @Deprecated
   public String getVersion() {
     return version;
-  }
-
-  public ServerVersion getServerVersion() {
-    return serverVersion;
   }
 
   @Override
@@ -198,9 +194,9 @@ public class Main extends JavaPlugin {
     Messages.init(this);
     LanguageManager.init(this);
     saveDefaultConfig();
-    Debugger.setEnabled(getDescription().getVersion().contains("b") || getConfig().getBoolean("Debug", false));
+    Debugger.setEnabled(getDescription().getVersion().contains("b") || getConfig().getBoolean("Debug"));
     Debugger.debug("[System] Initialization start");
-    if (getDescription().getVersion().contains("b") || getConfig().getBoolean("Developer-Mode", false)) {
+    if (getDescription().getVersion().contains("b") || getConfig().getBoolean("Developer-Mode")) {
       Debugger.deepDebug(true);
       Debugger.debug(Level.FINE, "Deep debug enabled");
 
@@ -218,10 +214,9 @@ public class Main extends JavaPlugin {
   }
 
   private boolean validateIfPluginShouldStart() {
-    serverVersion = new ServerVersion();
-    version = Bukkit.getServer().getClass().getPackage().getName().replace(".", ",").split(",")[3];
+    version = Bukkit.getServer().getClass().getPackage().getName().replace('.', ',').split(",")[3];
 
-    if (serverVersion.getVersion().isLower(ServerVersion.Version.v1_11_R1)) {
+    if (ServerVersion.Version.isCurrentLower(ServerVersion.Version.v1_11_R1)) {
       MessageUtils.thisVersionIsNotSupported();
       Debugger.sendConsoleMsg("&cYour server version is not supported by Village Defense!");
       Debugger.sendConsoleMsg("&cSadly, we must shut off. Maybe you consider changing your server version?");
@@ -304,9 +299,10 @@ public class Main extends JavaPlugin {
     userManager = new UserManager(this);
     new DoorBreakListener(this);
 
-    ArenaRegistry.registerArenas();
-    //we must start it after instances load!
     signManager = new SignManager(this);
+    ArenaRegistry.registerArenas();
+    signManager.loadSigns();
+    signManager.updateSigns();
   }
 
   private void startInitiableClasses() {

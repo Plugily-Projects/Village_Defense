@@ -22,6 +22,7 @@ import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import pl.plajerlair.commonsbox.minecraft.compat.ServerVersion;
 import pl.plajerlair.commonsbox.minecraft.compat.XMaterial;
 import plugily.projects.villagedefense.api.StatsStorage;
 import plugily.projects.villagedefense.arena.Arena;
@@ -80,29 +81,32 @@ public class GolemFriendKit extends LevelKit {
   }
 
   private void spawnGolem(Player player, Arena arena) {
-    if (getPlugin().is1_11_R1()) {
+    if (ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_11_R1)) {
       ArenaInitializer1_11_R1 initializer = (ArenaInitializer1_11_R1) arena;
       initializer.spawnGolem(initializer.getStartLocation(), player);
-    } else if (getPlugin().is1_12_R1()) {
+    } else if (ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_12_R1)) {
       ArenaInitializer1_12_R1 initializer = (ArenaInitializer1_12_R1) arena;
       initializer.spawnGolem(initializer.getStartLocation(), player);
-    } else if (getPlugin().is1_13_R1()) {
+    } else if (ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_13_R1)) {
       ArenaInitializer1_13_R1 initializer = (ArenaInitializer1_13_R1) arena;
       initializer.spawnGolem(initializer.getStartLocation(), player);
-    } else if (getPlugin().is1_13_R2()) {
+    } else if (ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_13_R2)) {
       ArenaInitializer1_13_R2 initializer = (ArenaInitializer1_13_R2) arena;
       initializer.spawnGolem(initializer.getStartLocation(), player);
-    } else if (getPlugin().is1_14_R1()) {
+    } else if (ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_14_R1)) {
       ArenaInitializer1_14_R1 initializer = (ArenaInitializer1_14_R1) arena;
       initializer.spawnGolem(initializer.getStartLocation(), player);
-    } else if (getPlugin().is1_15_R1()) {
+    } else if (ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_15_R1)) {
       ArenaInitializer1_15_R1 initializer = (ArenaInitializer1_15_R1) arena;
       initializer.spawnGolem(initializer.getStartLocation(), player);
-    } else if (getPlugin().is1_16_R1()) {
+    } else if (ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_16_R1)) {
       ArenaInitializer1_16_R1 initializer = (ArenaInitializer1_16_R1) arena;
       initializer.spawnGolem(initializer.getStartLocation(), player);
-    } else {
+    } else if (ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_16_R2)) {
       ArenaInitializer1_16_R2 initializer = (ArenaInitializer1_16_R2) arena;
+      initializer.spawnGolem(initializer.getStartLocation(), player);
+    } else {
+      ArenaInitializer1_16_R3 initializer = (ArenaInitializer1_16_R3) arena;
       initializer.spawnGolem(initializer.getStartLocation(), player);
     }
   }

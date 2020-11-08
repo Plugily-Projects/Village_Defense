@@ -30,21 +30,22 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.*;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
-import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
+import pl.plajerlair.commonsbox.minecraft.compat.ServerVersion;
 import plugily.projects.villagedefense.ConfigPreferences;
 import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.api.StatsStorage;
 import plugily.projects.villagedefense.arena.options.ArenaOption;
+import plugily.projects.villagedefense.events.Events1_8;
+import plugily.projects.villagedefense.events.Events1_9;
 import plugily.projects.villagedefense.handlers.ChatManager;
 import plugily.projects.villagedefense.handlers.items.SpecialItem;
 import plugily.projects.villagedefense.handlers.language.Messages;
 import plugily.projects.villagedefense.handlers.reward.Reward;
 import plugily.projects.villagedefense.user.User;
-import plugily.projects.villagedefense.utils.ServerVersion.Version;
 import plugily.projects.villagedefense.utils.Utils;
 
 import java.util.ArrayList;
@@ -61,6 +62,11 @@ public class ArenaEvents implements Listener {
 
   public ArenaEvents(Main plugin) {
     this.plugin = plugin;
+    if (ServerVersion.Version.isCurrentEqualOrLower(ServerVersion.Version.v1_12_R1)) {
+      plugin.getServer().getPluginManager().registerEvents(new Events1_8(), plugin);
+    } else {
+      plugin.getServer().getPluginManager().registerEvents(new Events1_9(), plugin);
+    }
     plugin.getServer().getPluginManager().registerEvents(this, plugin);
   }
 
@@ -127,16 +133,6 @@ public class ArenaEvents implements Listener {
     }
   }
 
-  @Deprecated //should use EntityPickupItemEvent
-  @EventHandler
-  public void onDropPickup(PlayerPickupItemEvent e) {
-    Arena arena = ArenaRegistry.getArena(e.getPlayer());
-    if (arena == null) {
-      return;
-    }
-    arena.removeDroppedFlesh(e.getItem());
-  }
-
   @EventHandler
   public void onEntityDamage(EntityDamageEvent event) {
     if (!(event.getEntity() instanceof IronGolem || event.getEntity() instanceof Wolf)) {
@@ -161,12 +157,14 @@ public class ArenaEvents implements Listener {
           if (((org.bukkit.entity.Creature) event.getEntity()).getHealth() <= event.getDamage()) {
             event.setCancelled(true);
             event.setDamage(0);
-            Player player = (Player) ((Wolf) event.getEntity()).getOwner();
-            if (player != null) {
-              player.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage(Messages.WOLF_DIED));
+            java.util.UUID ownerUUID = ((Wolf) event.getEntity()).getOwnerUniqueId();
+            if (ownerUUID != null && Bukkit.getPlayer(ownerUUID) != null) {
+              Bukkit.getPlayer(ownerUUID).sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage(Messages.WOLF_DIED));
             }
             arena.removeWolf((Wolf) event.getEntity());
           }
+          return;
+        default:
           return;
       }
     }
@@ -267,12 +265,12 @@ public class ArenaEvents implements Listener {
     new BukkitRunnable() {
       @Override
       public void run() {
-        if (Version.isCurrentEqual(Version.v1_11_R1) || arena.getArenaState() == ArenaState.ENDING) {
+        if (ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_11_R1) || arena.getArenaState() == ArenaState.ENDING) {
           this.cancel();
           return;
         }
         if (user.isSpectator()) {
-          if (Version.isCurrentEqualOrHigher(Version.v1_16_R1)) {
+          if (ServerVersion.Version.isCurrentEqualOrHigher(ServerVersion.Version.v1_16_R1)) {
             user.getPlayer().sendActionBar(TextComponent.fromLegacyText(plugin.getChatManager().colorMessage(Messages.DIED_RESPAWN_IN_NEXT_WAVE)));
           } else {
             user.getPlayer().spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(plugin.getChatManager().colorMessage(Messages.DIED_RESPAWN_IN_NEXT_WAVE)));

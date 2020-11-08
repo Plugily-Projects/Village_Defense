@@ -58,7 +58,7 @@ public class CreatureUtils {
         villagerNames = LanguageManager.getLanguageMessage("In-Game.Villager-Names").split(",");
     }
 
-    public static Object getPrivateField(String fieldName, Class clazz, Object object) {
+    public static Object getPrivateField(String fieldName, Class<?> clazz, Object object) {
         for (CachedObject cachedObject : cachedObjects) {
             if (cachedObject.getClazz().equals(clazz) && cachedObject.getFieldName().equals(fieldName)) {
                 return cachedObject.getObject();

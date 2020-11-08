@@ -73,7 +73,7 @@ public class WorkerKit extends LevelKit implements Listener {
 
   @Override
   public Material getMaterial() {
-    return XMaterial.OAK_DOOR.parseMaterial();
+    return Utils.getOakDoor();
   }
 
   @Override

@@ -47,8 +47,11 @@ public class PlayerAmountComponents implements SetupComponent {
 
   @Override
   public void injectComponents(StaticPane pane) {
-    FileConfiguration config = setupInventory.getConfig();
     Arena arena = setupInventory.getArena();
+    if (arena == null) {
+      return;
+    }
+    FileConfiguration config = setupInventory.getConfig();
     Main plugin = setupInventory.getPlugin();
     pane.addItem(new GuiItem(new ItemBuilder(Material.COAL).amount(setupInventory.getSetupUtilities().getMinimumValueHigherThanZero("minimumplayers"))
         .name(plugin.getChatManager().colorRawMessage("&e&lSet Minimum Players Amount"))

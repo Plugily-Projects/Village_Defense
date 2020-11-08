@@ -24,7 +24,7 @@
 
     <groupId>plugily.projects</groupId>
     <artifactId>villagedefense</artifactId>
-    <version>4.5.1</version>
+    <version>4.5.2</version>
     <name>VillageDefense</name>
 
     <properties>
@@ -93,6 +93,10 @@
             <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
         </repository>
         <repository>
+            <id>papermc</id>
+            <url>https://papermc.io/repo/repository/maven-public/</url>
+        </repository>
+        <repository>
             <id>papi-repo</id>
             <url>http://repo.extendedclip.com/content/repositories/placeholderapi/</url>
         </repository>
@@ -128,7 +132,7 @@
         <dependency>
             <groupId>com.destroystokyo.paper</groupId>
             <artifactId>paper-api</artifactId>
-            <version>1.16.1-R0.1-SNAPSHOT</version>
+            <version>1.16.3-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -187,6 +191,13 @@
             <scope>system</scope>
             <systemPath>${project.basedir}/lib/spigot/1.16.2-R0.1.jar</systemPath>
         </dependency>
+        <dependency>
+            <groupId>1.16_R4</groupId>
+            <artifactId>spigot_1_16_R4</artifactId>
+            <version>1.16.4</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/lib/spigot/1.16.4-R0.1.jar</systemPath>
+        </dependency>
         <!-- Spigot APIs -->
         <dependency>
             <groupId>com.gmail.filoghost.holographicdisplays</groupId>
@@ -197,19 +208,19 @@
         <dependency>
             <groupId>pl.plajer</groupId>
             <artifactId>commons-box-classic</artifactId>
-            <version>1.1.5</version>
+            <version>1.1.7</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>pl.plajer</groupId>
             <artifactId>commons-box-database</artifactId>
-            <version>1.1.5</version>
+            <version>1.1.7</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>pl.plajer</groupId>
             <artifactId>commons-box-minecraft</artifactId>
-            <version>1.1.5</version>
+            <version>1.1.7</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
@@ -449,7 +460,7 @@
         <extensions>
             <extension>
                 <groupId>org.apache.maven.wagon</groupId>
-                <artifactId>wagon-ssh</artifactId>
+                <artifactId>wagon-ftp</artifactId>
                 <version>3.4.1</version>
             </extension>
         </extensions>
@@ -457,12 +468,12 @@
     <distributionManagement>
         <repository>
             <id>plugily-projects-repo</id>
-            <url>sftp://167.86.90.57/home/maven-repo-mc/maven</url>
+            <url>ftp://plugily.xyz</url>
         </repository>
         <site>
             <id>plugily-projects-java-docs</id>
             <name>VillageDefense</name>
-            <url>sftp://167.86.90.57/home/maven-javadocs-mc/jd</url>
+            <url>ftp://plugily.xyz</url>
         </site>
     </distributionManagement>
 </project>

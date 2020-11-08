@@ -28,6 +28,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
+import pl.plajerlair.commonsbox.minecraft.compat.ServerVersion;
 import pl.plajerlair.commonsbox.string.StringMatcher;
 import plugily.projects.villagedefense.ConfigPreferences;
 import plugily.projects.villagedefense.Main;
@@ -47,13 +48,9 @@ import plugily.projects.villagedefense.commands.arguments.game.*;
 import plugily.projects.villagedefense.commands.completion.TabCompletion;
 import plugily.projects.villagedefense.handlers.language.Messages;
 import plugily.projects.villagedefense.handlers.setup.SetupInventory;
-import plugily.projects.villagedefense.utils.ServerVersion.Version;
 import plugily.projects.villagedefense.utils.Utils;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -71,10 +68,14 @@ public class ArgumentsRegistry implements CommandExecutor {
   public ArgumentsRegistry(Main plugin) {
     this.plugin = plugin;
     tabCompletion = new TabCompletion(this);
-    plugin.getCommand("villagedefense").setExecutor(this);
-    plugin.getCommand("villagedefense").setTabCompleter(tabCompletion);
-    plugin.getCommand("villagedefenseadmin").setExecutor(this);
-    plugin.getCommand("villagedefenseadmin").setTabCompleter(tabCompletion);
+    Optional.ofNullable(plugin.getCommand("villagedefense")).ifPresent(vd -> {
+      vd.setExecutor(this);
+      vd.setTabCompleter(tabCompletion);
+    });
+    Optional.ofNullable(plugin.getCommand("villagedefenseadmin")).ifPresent(vda -> {
+      vda.setExecutor(this);
+      vda.setTabCompleter(tabCompletion);
+    });
 
     //register Village Defense basic arguments
     new CreateArgument(this);
@@ -147,8 +148,7 @@ public class ArgumentsRegistry implements CommandExecutor {
         if (argument.getArgumentName().equalsIgnoreCase(args[0])) {
           //does it make sense that it is a list?
           for (String perm : argument.getPermissions()) {
-            if (perm.isEmpty()) break;
-            if (Utils.hasPermission(sender, perm)) {
+            if (perm.isEmpty() || Utils.hasPermission(sender, perm)) {
               break;
             }
             //user has no permission to execute command
@@ -193,7 +193,7 @@ public class ArgumentsRegistry implements CommandExecutor {
         "&7Edit existing arena\n&6Permission: &7villagedefense.admin.edit"));
     data.addAll(mappedArguments.get("villagedefense").stream().filter(arg -> arg instanceof LabeledCommandArgument)
         .map(arg -> ((LabeledCommandArgument) arg).getLabelData()).collect(Collectors.toList()));
-    if (Version.isCurrentEqual(Version.v1_11_R1)) {
+    if (ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_11_R1)) {
       for (LabelData labelData : data) {
         sender.sendMessage(labelData.getText() + " - " + labelData.getDescription().split("\n")[0]);
       }
@@ -210,7 +210,7 @@ public class ArgumentsRegistry implements CommandExecutor {
       component.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, labelData.getCommand()));
 
       // Backwards compatibility
-      if (plugin.is1_16_R1()) {
+      if (ServerVersion.Version.isCurrentEqualOrHigher(ServerVersion.Version.v1_16_R1)) {
         component.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text(labelData.getDescription())));
       } else {
         component.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, TextComponent.fromLegacyText(labelData.getDescription())));
