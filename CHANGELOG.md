@@ -9,7 +9,7 @@ deploy webhooks to print changelog successfully
 
 That's all, matcher will stop when detects next line started with `###` match
 
-### 4.5.2 Release (08.10.2020 - 02.11.2020)
+### 4.5.2 Release (08.10.2020 - 08.11.2020)
 * Fixed statistics names won't show on hologram
 * Fixed OakDoor material on 1.12.2 and lower versions
 * Changed ServerVersion utility to commonsbox
