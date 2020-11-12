@@ -18,13 +18,13 @@
 
 package plugily.projects.villagedefense.commands.arguments.admin;
 
-import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import plugily.projects.villagedefense.commands.arguments.ArgumentsRegistry;
 import plugily.projects.villagedefense.commands.arguments.data.CommandArgument;
 import plugily.projects.villagedefense.commands.arguments.data.LabelData;
 import plugily.projects.villagedefense.commands.arguments.data.LabeledCommandArgument;
+import plugily.projects.villagedefense.handlers.language.Messages;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -45,12 +45,14 @@ public class SpyChatArgument {
       @Override
       public void execute(CommandSender sender, String[] args) {
         Player player = (Player) sender;
-        if (spyChatters.contains(player)) {
-          spyChatters.remove(player);
+        if (isSpyChatEnabled(player)) {
+          disableSpyChat(player);
         } else {
           spyChatters.add(player);
         }
-        sender.sendMessage(registry.getPlugin().getChatManager().getPrefix() + ChatColor.GREEN + "Game spy chat toggled to " + spyChatters.contains(player));
+        sender.sendMessage(registry.getPlugin().getChatManager().getPrefix() +
+            registry.getPlugin().getChatManager().colorMessage(Messages.COMMANDS_ADMIN_SPYCHAT_TOGGLED)
+            .replace("%value%", String.valueOf(isSpyChatEnabled(player))));
       }
     });
   }

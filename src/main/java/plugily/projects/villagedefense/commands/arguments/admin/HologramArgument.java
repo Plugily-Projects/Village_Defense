@@ -91,7 +91,7 @@ public class HologramArgument {
   private void sendInvalidStatisticMessage(Player player) {
     StringBuilder values = new StringBuilder();
     for (StatsStorage.StatisticType value : StatsStorage.StatisticType.values()) {
-      values.append(value).append(" ");
+      values.append(value).append(' ');
     }
     player.sendMessage(registry.getPlugin().getChatManager().colorRawMessage("&cInvalid statistic type! Valid types: &e" + values));
   }
