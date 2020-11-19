@@ -137,7 +137,7 @@ public class MapRestorerManager {
   private void restoreTopHalfDoorPart(Block block) {
     block.setType(Utils.getCachedDoor(block));
     BlockState doorBlockState = block.getState();
-    if (ServerVersion.Version.isCurrentLower(ServerVersion.Version.v1_16_R1)) {
+    //if (ServerVersion.Version.isCurrentLower(ServerVersion.Version.v1_16_R1)) {
       Door doorBlockData = new Door(TreeSpecies.GENERIC, Utils.getFacingByByte((byte) 8));
 
       doorBlockData.setTopHalf(true);
@@ -145,7 +145,7 @@ public class MapRestorerManager {
 
       doorBlockState.setType(doorBlockData.getItemType());
       doorBlockState.setData(doorBlockData);
-    } else {
+    /*} else {
       org.bukkit.block.data.type.Door doorBlockData = (org.bukkit.block.data.type.Door) block.getBlockData();
 
       doorBlockData.setHalf(org.bukkit.block.data.Bisected.Half.TOP);
@@ -159,21 +159,21 @@ public class MapRestorerManager {
       } catch (Exception e) {
         e.printStackTrace();
       }*/
-    }
+    //}
     doorBlockState.update(true);
   }
 
   private void restoreBottomHalfDoorPart(Block block, byte doorData) {
     block.setType(Utils.getCachedDoor(block));
     BlockState doorBlockState = block.getState();
-    if (ServerVersion.Version.isCurrentLower(ServerVersion.Version.v1_16_R1)) {
+    //if (ServerVersion.Version.isCurrentLower(ServerVersion.Version.v1_16_R1)) {
       Door doorBlockData = new Door(TreeSpecies.GENERIC, Utils.getFacingByByte(doorData));
 
       doorBlockData.setTopHalf(false);
       doorBlockData.setFacingDirection(doorBlockData.getFacing());
 
       doorBlockState.setData(doorBlockData);
-    } else {
+    /*} else {
       org.bukkit.block.data.type.Door doorBlockData = (org.bukkit.block.data.type.Door) block.getBlockData();
 
       doorBlockData.setHalf(org.bukkit.block.data.Bisected.Half.BOTTOM);
@@ -187,7 +187,7 @@ public class MapRestorerManager {
       } catch (Exception e) {
         e.printStackTrace();
       }*/
-    }
+    //}
     doorBlockState.update(true);
   }
 
