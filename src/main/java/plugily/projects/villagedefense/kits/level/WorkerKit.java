@@ -73,7 +73,7 @@ public class WorkerKit extends LevelKit implements Listener {
 
   @Override
   public Material getMaterial() {
-    return Utils.getOakDoor();
+    return Utils.getCachedDoor(null);
   }
 
   @Override
@@ -89,12 +89,12 @@ public class WorkerKit extends LevelKit implements Listener {
     }
     User user = getPlugin().getUserManager().getUser(e.getPlayer());
     ItemStack stack = e.getPlayer().getInventory().getItemInMainHand();
-    if (stack == null || user.isSpectator() || !arena.getMapRestorerManager().getGameDoorLocations()
+    if (user.isSpectator() || !arena.getMapRestorerManager().getGameDoorLocations()
         .containsKey(e.getBlock().getLocation())) {
       e.setCancelled(true);
       return;
     }
-    if (stack.getType() != getMaterial()) {
+    if (stack.getType() != Utils.getCachedDoor(e.getBlock())) {
       e.setCancelled(true);
       return;
     }

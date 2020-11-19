@@ -253,7 +253,7 @@ public class MiscComponents implements SetupComponent {
         return;
       }
       Block block = player.getTargetBlock(null, 10);
-      Material door = Utils.getOakDoor();
+      Material door = Utils.getCachedDoor(block);
       if (block.getType() != door) {
         player.sendMessage(plugin.getChatManager().colorRawMessage("&c&l✘ &cTarget block is not oak door!"));
         return;

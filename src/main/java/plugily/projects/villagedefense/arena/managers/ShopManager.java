@@ -225,7 +225,7 @@ public class ShopManager {
     }
     Location location = LocationSerializer.getLocation(shop);
     //todo are these still revelant checks
-    if (location.getWorld() == null || location.getBlock() == null || !(location.getBlock().getState() instanceof Chest)) {
+    if (location.getWorld() == null || !(location.getBlock().getState() instanceof Chest)) {
       Debugger.debug(Level.WARNING, "Shop failed to load, invalid location for location {0}", LocationSerializer.locationToString(location));
       return false;
     }

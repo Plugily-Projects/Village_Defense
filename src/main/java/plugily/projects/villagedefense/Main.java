@@ -149,6 +149,7 @@ public class Main extends JavaPlugin {
       Class.forName("com.destroystokyo.paper.PaperConfig");
       isPaper = true;
     } catch (ClassNotFoundException e) {
+      isPaper = false;
     }
 
     ServiceRegistry.registerService(this);

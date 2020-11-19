@@ -303,14 +303,36 @@ public class Utils {
     }
 
     //cache material as XMaterial will do heavy load if it is executed on every event
-    private static Material oakDoor;
+    private static Material cachedDoor;
 
-    //todo not only OakDoor, any door ;)
-    public static Material getOakDoor() {
-        if (oakDoor != null) {
-            return oakDoor;
+    public static Material getCachedDoor(Block block) {
+        if (cachedDoor != null) {
+            return cachedDoor;
         }
-        oakDoor = ServerVersion.Version.isCurrentHigher(ServerVersion.Version.v1_13_R1) ? XMaterial.OAK_DOOR.parseMaterial() : Material.valueOf(XMaterial.OAK_DOOR.getLegacy()[0]);
-        return oakDoor;
+
+        if (block == null) {
+          return cachedDoor = Material.OAK_DOOR;
+        }
+
+        switch (XMaterial.matchXMaterial(block.getType())) {
+        case ACACIA_DOOR:
+          return cachedDoor = XMaterial.ACACIA_DOOR.parseMaterial();
+        case BIRCH_DOOR:
+          return cachedDoor = XMaterial.BIRCH_DOOR.parseMaterial();
+        case CRIMSON_DOOR:
+          return cachedDoor = XMaterial.CRIMSON_DOOR.parseMaterial();
+        case DARK_OAK_DOOR:
+          return cachedDoor = XMaterial.DARK_OAK_DOOR.parseMaterial();
+        case JUNGLE_DOOR:
+          return cachedDoor = XMaterial.JUNGLE_DOOR.parseMaterial();
+        case SPRUCE_DOOR:
+          return cachedDoor = XMaterial.SPRUCE_DOOR.parseMaterial();
+        case WARPED_DOOR:
+          return cachedDoor = XMaterial.WARPED_DOOR.parseMaterial();
+        case OAK_DOOR:
+          return cachedDoor = XMaterial.OAK_DOOR.parseMaterial();
+        default:
+          return Material.AIR;
+        }
     }
 }

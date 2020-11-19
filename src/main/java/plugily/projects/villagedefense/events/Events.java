@@ -212,8 +212,8 @@ public class Events implements Listener {
 
   @EventHandler
   public void onDoorDrop(ItemSpawnEvent event) {
-    if (event.getEntity().getItemStack().getType() == Utils.getOakDoor()
-            || event.getEntity().getItemStack().getType() == Utils.getOakDoor()) {
+    if (event.getEntity().getItemStack().getType() == Utils.getCachedDoor(event.getLocation().getBlock())
+            || event.getEntity().getItemStack().getType() == Utils.getCachedDoor(event.getLocation().getBlock())) {
       for (Entity entity : Utils.getNearbyEntities(event.getLocation(), 20)) {
         if (entity instanceof Player && ArenaRegistry.getArena((Player) entity) != null) {
           event.getEntity().remove();

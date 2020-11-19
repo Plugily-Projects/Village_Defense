@@ -255,8 +255,9 @@ public class ArenaManager {
     player.setFlySpeed(0.1f);
     player.setExp(0);
     player.setLevel(0);
-    VillageGameLeaveAttemptEvent villageGameLeaveAttemptEvent = new VillageGameLeaveAttemptEvent(player, arena);
-    Bukkit.getPluginManager().callEvent(villageGameLeaveAttemptEvent);
+
+    Bukkit.getPluginManager().callEvent(new VillageGameLeaveAttemptEvent(player, arena));
+
     User user = plugin.getUserManager().getUser(player);
     user.setStat(StatsStorage.StatisticType.ORBS, 0);
     arena.getScoreboardManager().removeScoreboard(user);
@@ -295,8 +296,8 @@ public class ArenaManager {
     Debugger.debug("[{0}] Game stop event start", arena.getId());
     long start = System.currentTimeMillis();
 
-    VillageGameStopEvent villageGameStopEvent = new VillageGameStopEvent(arena);
-    Bukkit.getPluginManager().callEvent(villageGameStopEvent);
+    Bukkit.getPluginManager().callEvent(new VillageGameStopEvent(arena));
+
     String summaryEnding;
     if (plugin.getConfig().getBoolean("Wave-Limit.Enabled", false) && arena.getWave() >= plugin.getConfig().getInt("Wave-Limit.Limit", 25)) {
       summaryEnding = plugin.getChatManager().colorMessage(Messages.END_MESSAGES_SUMMARY_WIN_GAME);
@@ -433,8 +434,7 @@ public class ArenaManager {
     Debugger.debug("[{0}] Wave start event called", arena.getId());
     long start = System.currentTimeMillis();
 
-    VillageWaveStartEvent event = new VillageWaveStartEvent(arena, arena.getWave());
-    Bukkit.getPluginManager().callEvent(event);
+    Bukkit.getPluginManager().callEvent(new VillageWaveStartEvent(arena, arena.getWave()));
 
     int zombiesAmount = (int) Math.ceil((arena.getPlayers().size() * 0.5) * (arena.getOption(ArenaOption.WAVE) * arena.getOption(ArenaOption.WAVE)) / 2);
     int maxzombies = plugin.getConfig().getInt("Zombies-Limit", 75);

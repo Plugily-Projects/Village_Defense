@@ -11,6 +11,8 @@ That's all, matcher will stop when detects next line started with `###` match
 
 ### 4.5.3-b Beta (12.11.2020)
 * Spychat message is now translateable
+* Now doors will get restored if it was broken in game
+* Added more cacheable door types, so players can use any type of door, except iron door
 
 ### 4.5.2 Release (08.10.2020 - 08.11.2020)
 * Fixed statistics names won't show on hologram
