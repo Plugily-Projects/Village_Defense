@@ -35,7 +35,6 @@ import org.bukkit.potion.PotionData;
 import org.bukkit.potion.PotionType;
 import org.bukkit.util.BlockIterator;
 import pl.plajerlair.commonsbox.minecraft.compat.ServerVersion;
-import pl.plajerlair.commonsbox.minecraft.compat.XMaterial;
 import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.arena.ArenaRegistry;
 import plugily.projects.villagedefense.handlers.language.Messages;
@@ -218,7 +217,7 @@ public class Utils {
 
   @SuppressWarnings("deprecation")
   public static SkullMeta setPlayerHead(Player player, SkullMeta meta) {
-    if (Bukkit.getServer().getVersion().contains("Paper") && player.getPlayerProfile().hasTextures()) {
+    if (plugin.isPaper() && player.getPlayerProfile().hasTextures()) {
       return CompletableFuture.supplyAsync(() -> {
         meta.setPlayerProfile(player.getPlayerProfile());
         return meta;
@@ -292,47 +291,28 @@ public class Utils {
   public static Object getAsIChatBaseComponent(String name) throws Exception {
     Class<?> iChatBaseComponent = getNMSClass("IChatBaseComponent");
     Class<?> declaredClass = iChatBaseComponent.getDeclaredClasses()[0];
-      Method m = declaredClass.getMethod("a", String.class);
-      return m.invoke(iChatBaseComponent, "{\"text\":\"" + name + "\"}");
+    Method m = declaredClass.getMethod("a", String.class);
+    return m.invoke(iChatBaseComponent, "{\"text\":\"" + name + "\"}");
   }
 
-    public static void sendPacket(Player player, Object packet) throws Exception {
-        Object handle = player.getClass().getMethod("getHandle").invoke(player);
-        Object playerConnection = handle.getClass().getField("playerConnection").get(handle);
-        playerConnection.getClass().getMethod("sendPacket", getNMSClass("Packet")).invoke(playerConnection, packet);
+  public static void sendPacket(Player player, Object packet) throws Exception {
+    Object handle = player.getClass().getMethod("getHandle").invoke(player);
+    Object playerConnection = handle.getClass().getField("playerConnection").get(handle);
+    playerConnection.getClass().getMethod("sendPacket", getNMSClass("Packet")).invoke(playerConnection, packet);
+  }
+
+  //cache material to avoid heavy load when it is executed on every event
+  private static Material cachedDoor;
+
+  public static Material getCachedDoor(Block block) {
+    if (cachedDoor != null) {
+      return cachedDoor;
     }
 
-    //cache material as XMaterial will do heavy load if it is executed on every event
-    private static Material cachedDoor;
-
-    public static Material getCachedDoor(Block block) {
-        if (cachedDoor != null) {
-            return cachedDoor;
-        }
-
-        if (block == null) {
-          return cachedDoor = Material.OAK_DOOR;
-        }
-
-        switch (XMaterial.matchXMaterial(block.getType())) {
-        case ACACIA_DOOR:
-          return cachedDoor = XMaterial.ACACIA_DOOR.parseMaterial();
-        case BIRCH_DOOR:
-          return cachedDoor = XMaterial.BIRCH_DOOR.parseMaterial();
-        case CRIMSON_DOOR:
-          return cachedDoor = XMaterial.CRIMSON_DOOR.parseMaterial();
-        case DARK_OAK_DOOR:
-          return cachedDoor = XMaterial.DARK_OAK_DOOR.parseMaterial();
-        case JUNGLE_DOOR:
-          return cachedDoor = XMaterial.JUNGLE_DOOR.parseMaterial();
-        case SPRUCE_DOOR:
-          return cachedDoor = XMaterial.SPRUCE_DOOR.parseMaterial();
-        case WARPED_DOOR:
-          return cachedDoor = XMaterial.WARPED_DOOR.parseMaterial();
-        case OAK_DOOR:
-          return cachedDoor = XMaterial.OAK_DOOR.parseMaterial();
-        default:
-          return Material.AIR;
-        }
+    if (block == null) {
+      return cachedDoor = Material.OAK_DOOR;
     }
+
+    return cachedDoor = (MaterialUtil.isDoor(block.getType()) ? block.getType() : Material.AIR);
+  }
 }
