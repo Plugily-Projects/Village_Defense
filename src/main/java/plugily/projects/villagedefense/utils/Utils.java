@@ -18,7 +18,6 @@
 
 package plugily.projects.villagedefense.utils;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -34,6 +33,8 @@ import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.potion.PotionData;
 import org.bukkit.potion.PotionType;
 import org.bukkit.util.BlockIterator;
+
+import pl.plajerlair.commonsbox.minecraft.compat.PacketUtils;
 import pl.plajerlair.commonsbox.minecraft.compat.ServerVersion;
 import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.arena.ArenaRegistry;
@@ -243,62 +244,51 @@ public class Utils {
       if (title == null)
         title = "";
 
-        e = getNMSClass("PacketPlayOutTitle").getDeclaredClasses()[0].getField("TIMES").get(null);
+        e = PacketUtils.getNMSClass("PacketPlayOutTitle").getDeclaredClasses()[0].getField("TIMES").get(null);
         chatTitle = getAsIChatBaseComponent(title);
-      subtitleConstructor = getNMSClass("PacketPlayOutTitle").getConstructor(
-          getNMSClass("PacketPlayOutTitle").getDeclaredClasses()[0],
-          getNMSClass("IChatBaseComponent"), Integer.TYPE, Integer.TYPE, Integer.TYPE);
+      subtitleConstructor = PacketUtils.getNMSClass("PacketPlayOutTitle").getConstructor(
+          PacketUtils.getNMSClass("PacketPlayOutTitle").getDeclaredClasses()[0],
+          PacketUtils.getNMSClass("IChatBaseComponent"), Integer.TYPE, Integer.TYPE, Integer.TYPE);
       titlePacket = subtitleConstructor.newInstance(e, chatTitle, fadeIn, stay, fadeOut);
-      sendPacket(player, titlePacket);
+      PacketUtils.sendPacket(player, titlePacket);
 
-        e = getNMSClass("PacketPlayOutTitle").getDeclaredClasses()[0].getField("TITLE").get(null);
-        chatTitle = getNMSClass("IChatBaseComponent").getDeclaredClasses()[0].getMethod("a", String.class)
+        e = PacketUtils.getNMSClass("PacketPlayOutTitle").getDeclaredClasses()[0].getField("TITLE").get(null);
+        chatTitle = PacketUtils.getNMSClass("IChatBaseComponent").getDeclaredClasses()[0].getMethod("a", String.class)
                 .invoke(null, "{\"text\":\"" + title + "\"}");
-        subtitleConstructor = getNMSClass("PacketPlayOutTitle").getConstructor(
-                getNMSClass("PacketPlayOutTitle").getDeclaredClasses()[0],
-                getNMSClass("IChatBaseComponent"));
+        subtitleConstructor = PacketUtils.getNMSClass("PacketPlayOutTitle").getConstructor(
+                PacketUtils.getNMSClass("PacketPlayOutTitle").getDeclaredClasses()[0],
+                PacketUtils.getNMSClass("IChatBaseComponent"));
       titlePacket = subtitleConstructor.newInstance(e, chatTitle);
-      sendPacket(player, titlePacket);
+      PacketUtils.sendPacket(player, titlePacket);
 
-        e = getNMSClass("PacketPlayOutTitle").getDeclaredClasses()[0].getField("TIMES").get(null);
+        e = PacketUtils.getNMSClass("PacketPlayOutTitle").getDeclaredClasses()[0].getField("TIMES").get(null);
         chatSubtitle = getAsIChatBaseComponent(title);
-      subtitleConstructor = getNMSClass("PacketPlayOutTitle").getConstructor(
-          getNMSClass("PacketPlayOutTitle").getDeclaredClasses()[0],
-          getNMSClass("IChatBaseComponent"), Integer.TYPE, Integer.TYPE, Integer.TYPE);
+      subtitleConstructor = PacketUtils.getNMSClass("PacketPlayOutTitle").getConstructor(
+          PacketUtils.getNMSClass("PacketPlayOutTitle").getDeclaredClasses()[0],
+          PacketUtils.getNMSClass("IChatBaseComponent"), Integer.TYPE, Integer.TYPE, Integer.TYPE);
       subtitlePacket = subtitleConstructor.newInstance(e, chatSubtitle, fadeIn, stay, fadeOut);
-      sendPacket(player, subtitlePacket);
+      PacketUtils.sendPacket(player, subtitlePacket);
 
       if (subtitle == null)
         subtitle = "";
 
-        e = getNMSClass("PacketPlayOutTitle").getDeclaredClasses()[0].getField("SUBTITLE").get(null);
+        e = PacketUtils.getNMSClass("PacketPlayOutTitle").getDeclaredClasses()[0].getField("SUBTITLE").get(null);
         chatSubtitle = getAsIChatBaseComponent(subtitle);
-      subtitleConstructor = getNMSClass("PacketPlayOutTitle").getConstructor(
-          getNMSClass("PacketPlayOutTitle").getDeclaredClasses()[0],
-          getNMSClass("IChatBaseComponent"), Integer.TYPE, Integer.TYPE, Integer.TYPE);
+      subtitleConstructor = PacketUtils.getNMSClass("PacketPlayOutTitle").getConstructor(
+          PacketUtils.getNMSClass("PacketPlayOutTitle").getDeclaredClasses()[0],
+          PacketUtils.getNMSClass("IChatBaseComponent"), Integer.TYPE, Integer.TYPE, Integer.TYPE);
       subtitlePacket = subtitleConstructor.newInstance(e, chatSubtitle, fadeIn, stay, fadeOut);
-      sendPacket(player, subtitlePacket);
+      PacketUtils.sendPacket(player, subtitlePacket);
     } catch (Throwable e) {
       e.printStackTrace();
     }
   }
 
-  public static Class<?> getNMSClass(String name) throws ClassNotFoundException {
-    String ver = Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3];
-    return Class.forName("net.minecraft.server." + ver + "." + name);
-  }
-
   public static Object getAsIChatBaseComponent(String name) throws Exception {
-    Class<?> iChatBaseComponent = getNMSClass("IChatBaseComponent");
+    Class<?> iChatBaseComponent = PacketUtils.getNMSClass("IChatBaseComponent");
     Class<?> declaredClass = iChatBaseComponent.getDeclaredClasses()[0];
     Method m = declaredClass.getMethod("a", String.class);
     return m.invoke(iChatBaseComponent, "{\"text\":\"" + name + "\"}");
-  }
-
-  public static void sendPacket(Player player, Object packet) throws Exception {
-    Object handle = player.getClass().getMethod("getHandle").invoke(player);
-    Object playerConnection = handle.getClass().getField("playerConnection").get(handle);
-    playerConnection.getClass().getMethod("sendPacket", getNMSClass("Packet")).invoke(playerConnection, packet);
   }
 
   //cache material to avoid heavy load when it is executed on every event
