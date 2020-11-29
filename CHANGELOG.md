@@ -15,6 +15,7 @@ That's all, matcher will stop when detects next line started with `###` match
 * Added more cacheable door types, so players can use any type of door, except iron door
 * Fixed scoreboard flickering issue when trying to replace zombies placeholder
 * Fixed joining through a sign while hotbar slot for leave-item is active
+* Added permission based wolf and iron golem spawn limit
 
 ### 4.5.2 Release (08.10.2020 - 08.11.2020)
 * Fixed statistics names won't show on hologram

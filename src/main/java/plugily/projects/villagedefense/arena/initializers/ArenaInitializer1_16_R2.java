@@ -209,6 +209,10 @@ public class ArenaInitializer1_16_R2 extends Arena {
 
   @Override
   public void spawnGolem(Location location, Player player) {
+    if (!canSpawnMobForPlayer(player, org.bukkit.entity.EntityType.IRON_GOLEM)) {
+      return;
+    }
+
     RidableIronGolem ironGolem = new RidableIronGolem(location.getWorld());
     ironGolem.setPosition(location.getX(), location.getY(), location.getZ());
     ironGolem.getBukkitEntity().setCustomName(plugin.getChatManager().colorMessage(Messages.SPAWNED_GOLEM_NAME).replace("%player%", player.getName()));
@@ -220,6 +224,10 @@ public class ArenaInitializer1_16_R2 extends Arena {
 
   @Override
   public void spawnWolf(Location location, Player player) {
+    if (!canSpawnMobForPlayer(player, org.bukkit.entity.EntityType.WOLF)) {
+      return;
+    }
+
     WorkingWolf wolf = new WorkingWolf(location.getWorld());
     wolf.setPosition(location.getX(), location.getY(), location.getZ());
     world.addEntity(wolf, CreatureSpawnEvent.SpawnReason.CUSTOM);
