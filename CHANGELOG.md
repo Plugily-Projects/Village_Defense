@@ -16,6 +16,7 @@ That's all, matcher will stop when detects next line started with `###` match
 * Fixed scoreboard flickering issue when trying to replace zombies placeholder
 * Fixed joining through a sign while hotbar slot for leave-item is active
 * Added permission based wolf and iron golem spawn limit
+* Fix NoSuchMethodError when CommandSender#spigot does not exists on 1.11
 
 ### 4.5.2 Release (08.10.2020 - 08.11.2020)
 * Fixed statistics names won't show on hologram
