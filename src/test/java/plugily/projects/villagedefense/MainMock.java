@@ -65,31 +65,6 @@ public class MainMock extends Main {
   }
 
   @Override
-  public boolean is1_11_R1() {
-    return false;
-  }
-
-  @Override
-  public boolean is1_12_R1() {
-    return true;
-  }
-
-  @Override
-  public boolean is1_13_R1() {
-    return false;
-  }
-
-  @Override
-  public boolean is1_13_R2() {
-    return false;
-  }
-
-  @Override
-  public boolean is1_14_R1() {
-    return false;
-  }
-
-  @Override
   public SignManager getSignManager() {
     throw new UnimplementedOperationException();
   }
@@ -97,11 +72,6 @@ public class MainMock extends Main {
   @Override
   public KitMenuHandler getKitMenuHandler() {
     throw new UnimplementedOperationException();
-  }
-
-  @Override
-  public String getVersion() {
-    return "v1_12_R1";
   }
 
   @Override

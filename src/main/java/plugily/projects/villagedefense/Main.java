@@ -99,9 +99,9 @@ public class Main extends JavaPlugin {
   private FileConfiguration languageConfig;
   private HologramsRegistry hologramsRegistry;
   private FileConfiguration entityUpgradesConfig;
-  private boolean forceDisable = false;
 
-  @Deprecated private String version;
+  private boolean forceDisable = false;
+  private boolean isPaper = false;
 
   @TestOnly
   public Main() {
@@ -111,41 +111,6 @@ public class Main extends JavaPlugin {
   @TestOnly
   protected Main(JavaPluginLoader loader, PluginDescriptionFile description, File dataFolder, File file) {
     super(loader, description, dataFolder, file);
-  }
-
-  @Deprecated
-  public boolean is1_11_R1() {
-    return version.equalsIgnoreCase("v1_11_R1");
-  }
-
-  @Deprecated
-  public boolean is1_12_R1() {
-    return version.equalsIgnoreCase("v1_12_R1");
-  }
-
-  @Deprecated
-  public boolean is1_13_R1() {
-    return version.equalsIgnoreCase("v1_13_R1");
-  }
-
-  @Deprecated
-  public boolean is1_13_R2() {
-    return version.equalsIgnoreCase("v1_13_R2");
-  }
-
-  @Deprecated
-  public boolean is1_14_R1() {
-    return version.equalsIgnoreCase("v1_14_R1");
-  }
-
-  @Deprecated
-  public boolean is1_15_R1() {
-    return version.equalsIgnoreCase("v1_15_R1");
-  }
-
-  @Deprecated
-  public boolean is1_16_R1() {
-    return version.equalsIgnoreCase("v1_16_R1");
   }
 
   public BungeeManager getBungeeManager() {
@@ -172,15 +137,6 @@ public class Main extends JavaPlugin {
     return entityUpgradesConfig;
   }
 
-  /**
-   * @return {@link String}
-   * @deprecated
-   */
-  @Deprecated
-  public String getVersion() {
-    return version;
-  }
-
   @Override
   public void onEnable() {
     if (!validateIfPluginShouldStart()) {
@@ -188,6 +144,13 @@ public class Main extends JavaPlugin {
     }
 
     long start = System.currentTimeMillis();
+
+    try {
+      Class.forName("com.destroystokyo.paper.PaperConfig");
+      isPaper = true;
+    } catch (ClassNotFoundException e) {
+      isPaper = false;
+    }
 
     ServiceRegistry.registerService(this);
     exceptionLogHandler = new ExceptionLogHandler(this);
@@ -214,8 +177,6 @@ public class Main extends JavaPlugin {
   }
 
   private boolean validateIfPluginShouldStart() {
-    version = Bukkit.getServer().getClass().getPackage().getName().replace('.', ',').split(",")[3];
-
     if (ServerVersion.Version.isCurrentLower(ServerVersion.Version.v1_11_R1)) {
       MessageUtils.thisVersionIsNotSupported();
       Debugger.sendConsoleMsg("&cYour server version is not supported by Village Defense!");
@@ -415,6 +376,10 @@ public class Main extends JavaPlugin {
     return registry;
   }
 
+  public boolean isPaper() {
+    return isPaper;
+  }
+
   @Override
   public void onDisable() {
     if (forceDisable) {
@@ -464,9 +429,9 @@ public class Main extends JavaPlugin {
         for (StatsStorage.StatisticType stat : StatsStorage.StatisticType.values()) {
           if (!stat.isPersistent()) continue;
           if (update.toString().equalsIgnoreCase(" SET ")) {
-            update.append(stat.getName()).append("=").append(user.getStat(stat));
+            update.append(stat.getName()).append('=').append(user.getStat(stat));
           }
-          update.append(", ").append(stat.getName()).append("=").append(user.getStat(stat));
+          update.append(", ").append(stat.getName()).append('=').append(user.getStat(stat));
         }
         String finalUpdate = update.toString();
         //copy of userManager#saveStatistic but without async database call that's not allowed in onDisable method.

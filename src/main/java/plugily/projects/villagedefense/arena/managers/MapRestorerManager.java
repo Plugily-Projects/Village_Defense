@@ -23,7 +23,7 @@ import org.bukkit.Material;
 import org.bukkit.TreeSpecies;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
-import org.bukkit.entity.*;
+import org.bukkit.entity.EntityType;
 import org.bukkit.material.Door;
 import pl.plajerlair.commonsbox.minecraft.compat.ServerVersion;
 import pl.plajerlair.commonsbox.minecraft.compat.XMaterial;
@@ -68,12 +68,12 @@ public class MapRestorerManager {
   }
 
   public void clearZombiesFromArena() {
-    arena.getZombies().forEach(Zombie::remove);
+    arena.getZombies().forEach(org.bukkit.entity.Zombie::remove);
     arena.getZombies().clear();
   }
 
   public void clearDroppedEntities() {
-    for (Entity entity : Utils.getNearbyEntities(arena.getStartLocation(), 200)) {
+    for (org.bukkit.entity.Entity entity : Utils.getNearbyEntities(arena.getStartLocation(), 200)) {
       if (entity.getType() == EntityType.EXPERIENCE_ORB || entity.getType() == EntityType.DROPPED_ITEM) {
         entity.remove();
       }
@@ -81,27 +81,27 @@ public class MapRestorerManager {
   }
 
   public void clearGolemsFromArena() {
-    arena.getIronGolems().forEach(IronGolem::remove);
+    arena.getIronGolems().forEach(org.bukkit.entity.IronGolem::remove);
     arena.getIronGolems().clear();
   }
 
   public void clearVillagersFromArena() {
-    arena.getVillagers().forEach(Villager::remove);
+    arena.getVillagers().forEach(org.bukkit.entity.Villager::remove);
     arena.getVillagers().clear();
   }
 
   public void clearWolvesFromArena() {
-    arena.getWolves().forEach(Wolf::remove);
+    arena.getWolves().forEach(org.bukkit.entity.Wolf::remove);
     arena.getWolves().clear();
   }
 
   private void restoreDoors() {
     int i = 0;
-    for (Map.Entry<Location, Byte> entry : getGameDoorLocations().entrySet()) {
+    for (Map.Entry<Location, Byte> entry : doorBlocks.entrySet()) {
       Block block = entry.getKey().getBlock();
       Byte doorData = entry.getValue();
       if (ServerVersion.Version.isCurrentEqualOrLower(ServerVersion.Version.v1_11_R1)) {
-        Material mat = Utils.getOakDoor();
+        Material mat = Utils.getCachedDoor(block);
         try {
           int id = (int) mat.getClass().getDeclaredMethod("getId").invoke(mat);
           Block.class.getDeclaredMethod("setTypeIdAndData", int.class, Byte.class, boolean.class)
@@ -112,7 +112,6 @@ public class MapRestorerManager {
 
         i++;
       } else {
-        //idk how does this work
         try {
           if (block.getType() != XMaterial.AIR.parseMaterial()) {
             i++;
@@ -130,15 +129,15 @@ public class MapRestorerManager {
         }
       }
     }
-    if (i != getGameDoorLocations().size()) {
-      Debugger.debug(Level.WARNING, "Failed to load doors for {0}! Expected {1} got {2}", arena.getId(), getGameDoorLocations().size(), i);
+    if (i != doorBlocks.size()) {
+      Debugger.debug(Level.WARNING, "Failed to load doors for {0}! Expected {1} got {2}", arena.getId(), doorBlocks.size(), i);
     }
   }
 
   private void restoreTopHalfDoorPart(Block block) {
-    block.setType(Utils.getOakDoor());
+    block.setType(Utils.getCachedDoor(block));
     BlockState doorBlockState = block.getState();
-    if (ServerVersion.Version.isCurrentLower(ServerVersion.Version.v1_16_R1)) {
+    //if (ServerVersion.Version.isCurrentLower(ServerVersion.Version.v1_16_R1)) {
       Door doorBlockData = new Door(TreeSpecies.GENERIC, Utils.getFacingByByte((byte) 8));
 
       doorBlockData.setTopHalf(true);
@@ -146,47 +145,49 @@ public class MapRestorerManager {
 
       doorBlockState.setType(doorBlockData.getItemType());
       doorBlockState.setData(doorBlockData);
-    } else {
+    /*} else {
       org.bukkit.block.data.type.Door doorBlockData = (org.bukkit.block.data.type.Door) block.getBlockData();
 
       doorBlockData.setHalf(org.bukkit.block.data.Bisected.Half.TOP);
       doorBlockData.setFacing(doorBlockData.getFacing());
 
       doorBlockState.setType(doorBlockData.getMaterial());
-      try {
+      doorBlockState.setBlockData(doorBlockData);
+      /*try {
         doorBlockState.getClass().getDeclaredMethod("setBlockData", doorBlockData.getClass()).invoke(doorBlockData);
       } catch (NoSuchMethodException ignored) {
       } catch (Exception e) {
         e.printStackTrace();
-      }
-    }
+      }*/
+    //}
     doorBlockState.update(true);
   }
 
   private void restoreBottomHalfDoorPart(Block block, byte doorData) {
-    block.setType(Utils.getOakDoor());
+    block.setType(Utils.getCachedDoor(block));
     BlockState doorBlockState = block.getState();
-    if (ServerVersion.Version.isCurrentLower(ServerVersion.Version.v1_16_R1)) {
+    //if (ServerVersion.Version.isCurrentLower(ServerVersion.Version.v1_16_R1)) {
       Door doorBlockData = new Door(TreeSpecies.GENERIC, Utils.getFacingByByte(doorData));
 
       doorBlockData.setTopHalf(false);
       doorBlockData.setFacingDirection(doorBlockData.getFacing());
 
       doorBlockState.setData(doorBlockData);
-    } else {
+    /*} else {
       org.bukkit.block.data.type.Door doorBlockData = (org.bukkit.block.data.type.Door) block.getBlockData();
 
       doorBlockData.setHalf(org.bukkit.block.data.Bisected.Half.BOTTOM);
       doorBlockData.setFacing(doorBlockData.getFacing());
 
       doorBlockState.setType(doorBlockData.getMaterial());
-      try {
+      doorBlockState.setBlockData(doorBlockData);
+      /*try {
         doorBlockState.getClass().getDeclaredMethod("setBlockData", doorBlockData.getClass()).invoke(doorBlockData);
       } catch (NoSuchMethodException n) {
       } catch (Exception e) {
         e.printStackTrace();
-      }
-    }
+      }*/
+    //}
     doorBlockState.update(true);
   }
 

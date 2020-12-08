@@ -34,8 +34,6 @@ public enum Messages {
 
   COMMANDS_DID_YOU_MEAN("Commands.Did-You-Mean"),
   COMMANDS_COMMAND_EXECUTED("Commands.Command-Executed"),
-  @Deprecated //to remove, replaced with COMMANDS_COMMAND_EXECUTED
-      COMMANDS_COMMAND_EXECUTED_ITEM_UPDATED("Commands.Command-Executed"),
   COMMANDS_TELEPORTED_TO_THE_LOBBY("Commands.Teleported-To-The-Lobby"),
   COMMANDS_REMOVED_GAME_INSTANCE("Commands.Removed-Game-Instance"),
   COMMANDS_NO_ARENA_LIKE_THAT("Commands.No-Arena-Like-That"),
@@ -51,8 +49,6 @@ public enum Messages {
   COMMANDS_TELEPORT_LOCATION_INVALID("Commands.Location-Teleport-Invalid"),
   COMMANDS_WRONG_USAGE("Commands.Wrong-Usage"),
 
-  @Deprecated //replaced with COMMANDS_TARGET_PLAYER_NOT_FOUND
-      COMMANDS_ADMIN_PLAYER_NOT_FOUND("Commands.Target-Player-Not-Found"),
   COMMANDS_ADMIN_ADDED_ORBS("Commands.Admin-Commands.Added-Orbs"),
   COMMANDS_ADMIN_RECEIVED_ORBS("Commands.Admin-Commands.Received-Orbs"),
   COMMANDS_ADMIN_ADDED_LEVEL("Commands.Admin-Commands.Added-Level"),
@@ -60,6 +56,7 @@ public enum Messages {
   COMMANDS_ADMIN_LIST_HEADER("Commands.Admin-Commands.List-Command.Header"),
   COMMANDS_ADMIN_LIST_FORMAT("Commands.Admin-Commands.List-Command.Format"),
   COMMANDS_ADMIN_LIST_NO_ARENAS("Commands.Admin-Commands.List-Command.No-Arenas"),
+  COMMANDS_ADMIN_SPYCHAT_TOGGLED("Commands.Admin-Commands.Spychat-Command.Toggled"),
 
   COMMANDS_STATISTICS_HEADER("Commands.Stats-Command.Header"),
   COMMANDS_STATISTICS_HEADER_OTHER("Commands.Stats-Command.Header-Other"),
@@ -113,8 +110,6 @@ public enum Messages {
   KITS_CLEANER_GAME_ITEM_LORE("Kits.Cleaner.Game-Item-Lore"),
   KITS_CLEANER_CLEANED_MAP("Kits.Cleaner.Cleaned-Map"),
   KITS_CLEANER_NOTHING_TO_CLEAN("Kits.Cleaner.Nothing-To-Clean"),
-  @Deprecated //must be merged to SPECTATOR_WARNING
-  KITS_CLEANER_SPECTATOR_WARNING("In-Game.Spectator.Spectator-Warning"),
 
   KITS_ZOMBIE_TELEPORTER_NAME("Kits.Zombie-Teleporter.Kit-Name"),
   KITS_ZOMBIE_TELEPORTER_DESCRIPTION("Kits.Zombie-Teleporter.Kit-Description"),
@@ -174,8 +169,6 @@ public enum Messages {
   KITS_TELEPORTER_GAME_ITEM_LORE("Kits.Teleporter.Game-Item-Lore"),
   KITS_TELEPORTER_GAME_ITEM_MENU_NAME("Kits.Teleporter.Game-Item-Menu-Name"),
   KITS_TELEPORTER_TELEPORTED_TO_VILLAGER("Kits.Teleporter.Teleported-To-Villager"),
-  @Deprecated //must be merged to SPECTATOR_WARNING
-  KITS_TELEPORTER_SPECTATOR_WARNING("In-Game.Spectator.Spectator-Warning"),
   KITS_TELEPORTER_VILLAGER_WARNING("Kits.Teleporter.Villager-Warning"),
   KITS_TELEPORTER_TELEPORTED_TO_PLAYER("Kits.Teleporter.Teleported-To-Player"),
 

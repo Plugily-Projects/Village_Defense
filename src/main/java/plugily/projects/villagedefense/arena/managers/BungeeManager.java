@@ -56,15 +56,6 @@ public class BungeeManager implements Listener {
     player.sendPluginMessage(plugin, "BungeeCord", out.toByteArray());
   }
 
-  private ArenaState getArenaState() {
-    if (ArenaRegistry.getArenas().isEmpty()) {
-      return ArenaState.ENDING;
-    }
-
-    Arena arena = ArenaRegistry.getArenas().get(ArenaRegistry.getBungeeArena());
-    return arena.getArenaState();
-  }
-
 
   private String getHubServerName() {
     return config.getString("Hub");
@@ -76,8 +67,9 @@ public class BungeeManager implements Listener {
     if (!config.getBoolean("MOTD.Manager", false) || ArenaRegistry.getArenas().isEmpty()) {
       return;
     }
-    event.setMaxPlayers(ArenaRegistry.getArenas().get(ArenaRegistry.getBungeeArena()).getMaximumPlayers());
-    event.setMotd(MOTD.replace("%state%", gameStateToString.get(getArenaState())));
+    Arena arena = ArenaRegistry.getArenas().get(ArenaRegistry.getBungeeArena());
+    event.setMaxPlayers(arena.getMaximumPlayers());
+    event.setMotd(MOTD.replace("%state%", gameStateToString.get(arena.getArenaState())));
   }
 
 

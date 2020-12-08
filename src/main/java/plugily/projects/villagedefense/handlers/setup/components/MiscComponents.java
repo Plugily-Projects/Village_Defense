@@ -47,6 +47,7 @@ import plugily.projects.villagedefense.arena.Arena;
 import plugily.projects.villagedefense.handlers.language.Messages;
 import plugily.projects.villagedefense.handlers.setup.SetupInventory;
 import plugily.projects.villagedefense.handlers.sign.ArenaSign;
+import plugily.projects.villagedefense.utils.MaterialUtil;
 import plugily.projects.villagedefense.utils.Utils;
 import plugily.projects.villagedefense.utils.constants.Constants;
 import plugily.projects.villagedefense.utils.conversation.SimpleConversationBuilder;
@@ -152,7 +153,7 @@ public class MiscComponents implements SetupComponent {
         .lore(ChatColor.RED + "using /vda setprice command!")
         .build(), e -> {
       e.getWhoClicked().closeInventory();
-      Block targetBlock = player.getTargetBlock(null, 100);
+      Block targetBlock = player.getTargetBlock(null, 10);
       if (targetBlock == null || targetBlock.getType() != Material.CHEST) {
         player.sendMessage(plugin.getChatManager().colorRawMessage("&c&l✘ &cLook at the chest! You are targeting something else!"));
         return;
@@ -252,10 +253,10 @@ public class MiscComponents implements SetupComponent {
         ConfigUtils.saveConfig(plugin, config, Constants.Files.ARENAS.getName());
         return;
       }
-      Block block = player.getTargetBlock(null, 10);
-      Material door = Utils.getOakDoor();
-      if (block.getType() != door) {
-        player.sendMessage(plugin.getChatManager().colorRawMessage("&c&l✘ &cTarget block is not oak door!"));
+      Block block = player.getTargetBlock(null, 5);
+      Material door = block.getType();
+      if (!MaterialUtil.isDoor(door)) {
+        player.sendMessage(plugin.getChatManager().colorRawMessage("&c&l✘ &cTarget block is not an wood door!"));
         return;
       }
       int doors = (config.isSet("instances." + arena.getId() + ".doors")

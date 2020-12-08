@@ -47,10 +47,8 @@ public class WeaponHelper {
 
   public static ItemStack getEnchanted(ItemStack itemStack, Enchantment[] enchantments, int[] levels) {
     Map<Enchantment, Integer> enchants = new HashMap<>();
-    int i = 0;
-    for (Enchantment enchantment : enchantments) {
-      enchants.put(enchantment, levels[i]);
-      i++;
+    for (int i = 0; i < enchantments.length; i++) {
+      enchants.put(enchantments[i], levels[i]);
     }
     itemStack.addUnsafeEnchantments(enchants);
     return itemStack;

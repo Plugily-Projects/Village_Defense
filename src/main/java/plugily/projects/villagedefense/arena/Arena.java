@@ -24,6 +24,7 @@ import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
 import org.bukkit.entity.*;
+import org.bukkit.permissions.PermissionAttachmentInfo;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -447,6 +448,46 @@ public abstract class Arena extends BukkitRunnable {
 
   protected void addWolf(Wolf wolf) {
     wolves.add(wolf);
+  }
+
+  protected boolean canSpawnMobForPlayer(Player player, EntityType type) {
+    if (type != EntityType.IRON_GOLEM && type != EntityType.WOLF) {
+      return true;
+    }
+
+    for (Map.Entry<String, Boolean> map : getAllEffectivePermissions(player).entrySet()) {
+      if (!map.getValue()) {
+        continue;
+      }
+
+      int limit = 0;
+      try {
+        limit = Integer.parseInt(map.getKey().split("\\.")[1]);
+      } catch (NumberFormatException ex) {
+      }
+
+      if (limit < 1) {
+        continue;
+      }
+
+      if ((type == EntityType.IRON_GOLEM && map.getKey().endsWith("limit.golem." + limit) && ironGolems.size() + 1 < limit)
+          || (type == EntityType.WOLF && map.getKey().endsWith("limit.wolf." + limit) && wolves.size() + 1 < limit)) {
+        return false;
+      }
+    }
+
+    return true;
+  }
+
+  private Map<String, Boolean> getAllEffectivePermissions(Player player) {
+    Map<String, Boolean> permLimits = new HashMap<>();
+    for (PermissionAttachmentInfo permission : player.getEffectivePermissions()) {
+      if (permission.getPermission().startsWith("villagedefense.limit.")) {
+        permLimits.put(permission.getPermission(), permission.getValue());
+      }
+    }
+
+    return permLimits;
   }
 
   /**

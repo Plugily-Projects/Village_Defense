@@ -41,6 +41,8 @@ Commands:
       Header: "&aVillage Defense &6arenas:"
       Format: "&a%arena% &e%status% &6%players%/%maxplayers%"
       No-Arenas: "&cThere are no game instances!"
+    Spychat-Command:
+      Toggled: "&aGame spy chat toggled to&c %value%"
   Stats-Command:
     Header: "&l-----YOUR STATS-----"
     Header-Other: "&l-----STATS FOR %player%-----"
@@ -433,4 +435,4 @@ Validator:
 
 # Don't edit it. But who's stopping you? It's your server!
 # Really, don't edit ;p
-File-Version-Do-Not-Edit: 14
+File-Version-Do-Not-Edit: 15

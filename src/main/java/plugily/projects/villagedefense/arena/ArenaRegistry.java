@@ -144,11 +144,12 @@ public class ArenaRegistry {
       return;
     }
     for (String id : section.getKeys(false)) {
-      Arena arena = ArenaUtils.initializeArena(id);
-      String key = "instances." + id + ".";
-      if (key.contains("default")) {
+      if (id.equalsIgnoreCase("default")) {
         continue;
       }
+      Arena arena = ArenaUtils.initializeArena(id);
+      String key = "instances." + id + ".";
+
       arena.setMinimumPlayers(config.getInt(key + "minimumplayers", 1));
       arena.setMaximumPlayers(config.getInt(key + "maximumplayers", 2));
       arena.setMapName(config.getString(key + "mapname", "none"));
@@ -156,7 +157,7 @@ public class ArenaRegistry {
       arena.setStartLocation(LocationSerializer.getLocation(config.getString(key + "Startlocation", "world,364.0,63.0,-72.0,0.0,0.0")));
       arena.setEndLocation(LocationSerializer.getLocation(config.getString(key + "Endlocation", "world,364.0,63.0,-72.0,0.0,0.0")));
       ArenaUtils.setWorld(arena);
-      if (!config.getBoolean(key + "isdone", false)) {
+      if (!config.getBoolean(key + "isdone")) {
         Debugger.sendConsoleMsg(plugin.getChatManager().colorMessage(Messages.VALIDATOR_INVALID_ARENA_CONFIGURATION).replace("%arena%", id).replace("%error%", "NOT VALIDATED"));
         arena.setReady(false);
         registerArena(arena);

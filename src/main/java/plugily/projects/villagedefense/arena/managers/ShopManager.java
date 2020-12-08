@@ -126,19 +126,17 @@ public class ShopManager {
         continue;
       }
 
-      String costString = null;
-      boolean found = false;
+      String costString = "";
       //seek for item price
       if (itemStack.hasItemMeta() && itemStack.getItemMeta().hasLore()) {
         for (String s : itemStack.getItemMeta().getLore()) {
           if (s.contains(plugin.getChatManager().colorMessage(Messages.SHOP_MESSAGES_CURRENCY_IN_SHOP)) || s.contains("orbs")) {
             costString = ChatColor.stripColor(s).replaceAll("[^0-9]", "");
-            found = true;
             break;
           }
         }
       }
-      if (!found) {
+      if (costString.isEmpty()) {
         Debugger.debug(Level.WARNING, "No price set for shop item in arena {0} skipping item!", arena.getId());
         continue;
       }
@@ -225,7 +223,7 @@ public class ShopManager {
     }
     Location location = LocationSerializer.getLocation(shop);
     //todo are these still revelant checks
-    if (location.getWorld() == null || location.getBlock() == null || !(location.getBlock().getState() instanceof Chest)) {
+    if (location.getWorld() == null || !(location.getBlock().getState() instanceof Chest)) {
       Debugger.debug(Level.WARNING, "Shop failed to load, invalid location for location {0}", LocationSerializer.locationToString(location));
       return false;
     }

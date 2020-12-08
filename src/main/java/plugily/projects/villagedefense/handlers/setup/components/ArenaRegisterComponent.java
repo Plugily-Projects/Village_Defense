@@ -83,16 +83,16 @@ public class ArenaRegisterComponent implements SetupComponent {
         e.getWhoClicked().sendMessage(ChatColor.GREEN + "This arena was already validated and is ready to use!");
         return;
       }
-      String[] locations = {"lobbylocation", "Startlocation", "Endlocation"};
-      String[] spawns = {"zombiespawns", "villagerspawns"};
-      for (String s : locations) {
+
+      for (String s : new String[] {"lobbylocation", "Startlocation", "Endlocation"}) {
         if (!config.isSet("instances." + arena.getId() + "." + s) || config.getString("instances." + arena.getId() + "." + s)
             .equals(LocationSerializer.locationToString(Bukkit.getWorlds().get(0).getSpawnLocation()))) {
           e.getWhoClicked().sendMessage(plugin.getChatManager().colorRawMessage("&c&l✘ &cArena validation failed! Please configure following spawns properly: " + s + " (cannot be world spawn location)"));
           return;
         }
       }
-      for (String s : spawns) {
+
+      for (String s : new String[] {"zombiespawns", "villagerspawns"}) {
         if (!config.isSet("instances." + arena.getId() + "." + s)
             || config.getConfigurationSection("instances." + arena.getId() + "." + s).getKeys(false).size() < 2) {
           e.getWhoClicked().sendMessage(plugin.getChatManager().colorRawMessage("&c&l✘ &cArena validation failed! Please configure following spawns properly: " + s + " (must be minimum 2 spawns)"));
