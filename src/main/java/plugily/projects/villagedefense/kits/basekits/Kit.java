@@ -22,6 +22,8 @@ import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.java.JavaPlugin;
+
 import pl.plajerlair.commonsbox.minecraft.configuration.ConfigUtils;
 import pl.plajerlair.commonsbox.minecraft.item.ItemBuilder;
 import plugily.projects.villagedefense.Main;
@@ -32,23 +34,19 @@ import plugily.projects.villagedefense.utils.constants.Constants;
  */
 public abstract class Kit {
 
-  private static Main plugin;
-  private final FileConfiguration kitsConfig;
+  private static Main plugin = JavaPlugin.getPlugin(Main.class);
+
+  private final FileConfiguration kitsConfig = ConfigUtils.getConfig(plugin, Constants.Files.KITS.getName());
+
   private String name;
   private boolean unlockedOnDefault = false;
-  private String[] description = {""};
+  private String[] description = new String[0];
 
   protected Kit() {
-    kitsConfig = ConfigUtils.getConfig(plugin, Constants.Files.KITS.getName());
   }
 
   public Kit(String name) {
-    this.name = name;
-    kitsConfig = ConfigUtils.getConfig(plugin, Constants.Files.KITS.getName());
-  }
-
-  public static void init(Main plugin) {
-    Kit.plugin = plugin;
+    setName(name);
   }
 
   public abstract boolean isUnlockedByPlayer(Player p);
@@ -60,7 +58,6 @@ public abstract class Kit {
   public void setUnlockedOnDefault(boolean unlockedOnDefault) {
     this.unlockedOnDefault = unlockedOnDefault;
   }
-
 
   /**
    * @return main plugin
@@ -81,7 +78,7 @@ public abstract class Kit {
   }
 
   public void setName(String name) {
-    this.name = name;
+    this.name = name == null ? "" : name;
   }
 
   public String[] getDescription() {
@@ -92,10 +89,6 @@ public abstract class Kit {
     this.description = description.clone();
   }
 
-  public abstract void giveKitItems(Player player);
-
-  public abstract Material getMaterial();
-
   public ItemStack getItemStack() {
     return new ItemBuilder(getMaterial())
         .name(getName())
@@ -103,7 +96,10 @@ public abstract class Kit {
         .build();
   }
 
-  public abstract void reStock(Player player);
+  public abstract void giveKitItems(Player player);
 
+  public abstract Material getMaterial();
+
+  public abstract void reStock(Player player);
 
 }

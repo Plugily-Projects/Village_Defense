@@ -63,7 +63,6 @@ import plugily.projects.villagedefense.handlers.upgrade.upgrades.Upgrade;
 import plugily.projects.villagedefense.handlers.upgrade.upgrades.UpgradeBuilder;
 import plugily.projects.villagedefense.kits.KitMenuHandler;
 import plugily.projects.villagedefense.kits.KitRegistry;
-import plugily.projects.villagedefense.kits.basekits.Kit;
 import plugily.projects.villagedefense.user.User;
 import plugily.projects.villagedefense.user.UserManager;
 import plugily.projects.villagedefense.user.data.MysqlManager;
@@ -273,7 +272,6 @@ public class Main extends JavaPlugin {
     CreatureUtils.init(this);
     User.init(this);
     ArenaManager.init(this);
-    Kit.init(this);
     PermissionsManager.init(this);
     SetupInventory.init(this);
     ArenaUtils.init(this);
