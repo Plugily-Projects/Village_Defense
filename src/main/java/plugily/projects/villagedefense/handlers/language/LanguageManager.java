@@ -169,7 +169,7 @@ public class LanguageManager {
       pluginLocale = LocaleRegistry.getByName("English");
     }
     /* is beta release */
-    if ((plugin.getDescription().getVersion().contains("b") || plugin.getDescription().getVersion().contains("pre")) && !plugin.getConfig().getBoolean("Developer-Mode", false)) {
+    if ((plugin.getDescription().getVersion().contains("locales") || plugin.getDescription().getVersion().contains("pre")) && !plugin.getConfig().getBoolean("Developer-Mode", false)) {
       Debugger.sendConsoleMsg("&c[Village Defense] Locales aren't supported in beta versions because they're lacking latest translations! Enabling English one...");
       pluginLocale = LocaleRegistry.getByName("English");
       return;
