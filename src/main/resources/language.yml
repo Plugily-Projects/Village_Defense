@@ -53,6 +53,7 @@ Commands:
     Highest-Wave: "&aHighest wave: &e"
     Level: "&aLevel: &e"
     Exp: "&aExp: &e"
+    Orbs: "&aOrbs: &e"
     Next-Level-Exp: "&aExp to Level Up &e"
   Main-Command:
     Header: "&6----------------{VillageDefense commands}----------"
@@ -427,6 +428,7 @@ Leaderboard-Holograms:
     Highest-Wave: '&eHighest Wave'
     Level: '&eLevel'
     Xp: '&eExperience'
+    Orbs: '&eOrbs'
 
 Validator:
   Invalid-Arena-Configuration: "[Village Defense] Arena %arena% has invalid configuration! Missing node: %error%"
@@ -435,4 +437,4 @@ Validator:
 
 # Don't edit it. But who's stopping you? It's your server!
 # Really, don't edit ;p
-File-Version-Do-Not-Edit: 15
+File-Version-Do-Not-Edit: 16

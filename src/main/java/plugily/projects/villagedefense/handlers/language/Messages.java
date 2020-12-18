@@ -67,6 +67,7 @@ public enum Messages {
   COMMANDS_STATISTICS_HIGHEST_WAVE("Commands.Stats-Command.Highest-Wave"),
   COMMANDS_STATISTICS_LEVEL("Commands.Stats-Command.Level"),
   COMMANDS_STATISTICS_EXP("Commands.Stats-Command.Exp"),
+  COMMANDS_STATISTICS_ORBS("Commands.Stats-Command.Orbs"),
   COMMANDS_STATISTICS_NEXT_LEVEL_EXP("Commands.Stats-Command.Next-Level-Exp"),
 
   COMMANDS_MAIN_HEADER("Commands.Main-Command.Header"),
@@ -340,6 +341,7 @@ public enum Messages {
   HOLOGRAMS_FORMAT("Leaderboard-Holograms.Format"),
   HOLOGRAMS_FORMAT_EMPTY("Leaderboard-Holograms.Format-Empty"),
   HOLOGRAMS_UNKNOWN_PLAYER("Leaderboard-Holograms.Unknown-Player"),
+  STATISTIC_ORBS("Leaderboard-Holograms.Statistics.Orbs"),
   STATISTIC_KILLS("Leaderboard-Holograms.Statistics.Kills"),
   STATISTIC_DEATHS("Leaderboard-Holograms.Statistics.Deaths"),
   STATISTIC_GAMES_PLAYED("Leaderboard-Holograms.Statistics.Games-Played"),
