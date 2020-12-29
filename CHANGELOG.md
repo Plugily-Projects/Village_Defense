@@ -13,6 +13,8 @@ That's all, matcher will stop when detects next line started with `###` match
 * Fix NPE when kit name not found in language file
 * Now players can see their orbs in stats command
 * Rewritten scoreboardlib (fixed flickering and color matching) -> 122 chars for 1.14 up and 48 for lower versions
+* ArenaSelector was not initialized
+* Fixed some NPEs
 
 ### 4.5.3 (19.11.2020 - 08.12.2020)
 * Added permission based wolf and iron golem spawn limit
