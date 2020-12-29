@@ -24,7 +24,7 @@
 
     <groupId>plugily.projects</groupId>
     <artifactId>villagedefense</artifactId>
-    <version>4.5.3</version>
+    <version>4.5.4</version>
     <name>VillageDefense</name>
 
     <properties>
@@ -208,25 +208,25 @@
         <dependency>
             <groupId>pl.plajer</groupId>
             <artifactId>commons-box-classic</artifactId>
-            <version>1.1.9</version>
+            <version>1.2.0</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>pl.plajer</groupId>
             <artifactId>commons-box-database</artifactId>
-            <version>1.1.9</version>
+            <version>1.2.0</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>pl.plajer</groupId>
             <artifactId>commons-box-minecraft</artifactId>
-            <version>1.1.9</version>
+            <version>1.2.0</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>me.tigerhix.lib</groupId>
             <artifactId>scoreboard</artifactId>
-            <version>1.0.2</version>
+            <version>1.0.5</version>
             <scope>compile</scope>
         </dependency>
         <dependency>

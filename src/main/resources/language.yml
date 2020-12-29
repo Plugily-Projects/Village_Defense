@@ -77,9 +77,8 @@ Commands:
 # %PLAYERS% - The amount of players in the arena currently (dead + alive players)
 # %ZOMBIES% - Returns amount of zombies left in wave.
 # %ROTTEN_FLESH% - Returns back how much rotten flesh has been dropped in the magic well.
-# %TIME% - Returns the time back in seconds. 
+# %TIME% - Returns the time back in seconds.
 # %ORBS% - Returns the amount of orbs (currency) the player has.
-
 Scoreboard:
   Title: "&a&lVillage Defense"
   Content:
