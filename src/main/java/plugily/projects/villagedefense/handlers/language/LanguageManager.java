@@ -44,7 +44,7 @@ public class LanguageManager {
 
   private static Main plugin;
   private static Locale pluginLocale;
-  private static final Properties properties = new Properties();
+  private static final Properties PROPERTIES = new Properties();
   private static FileConfiguration languageConfig;
   private static boolean messagesIntegrityPassed = true;
   private static FileConfiguration defaultLanguageConfig;
@@ -142,7 +142,7 @@ public class LanguageManager {
     }
     try (InputStreamReader reader = new InputStreamReader(new FileInputStream(plugin.getDataFolder() + "/locales/"
         + pluginLocale.getPrefix() + ".properties"), StandardCharsets.UTF_8)) {
-      properties.load(reader);
+      PROPERTIES.load(reader);
     } catch (IOException e) {
       plugin.getLogger().log(Level.WARNING, "Failed to load localization file for locale " + pluginLocale.getPrefix() + "! Using English instead");
       plugin.getLogger().log(Level.WARNING, "Cause: " + e.getMessage());
@@ -180,14 +180,14 @@ public class LanguageManager {
   }
 
   public static boolean isDefaultLanguageUsed() {
-    return pluginLocale.getName().equals("English");
+    return "English".equals(pluginLocale.getName());
   }
 
   public static String getLanguageMessage(String path) {
     if (isDefaultLanguageUsed()) {
       return getString(path);
     }
-    String prop = properties.getProperty(path);
+    String prop = PROPERTIES.getProperty(path);
     if (prop == null) {
       return getString(path);
     }
@@ -201,7 +201,7 @@ public class LanguageManager {
     if (isDefaultLanguageUsed()) {
       return getStrings(path);
     }
-    String prop = properties.getProperty(path);
+    String prop = PROPERTIES.getProperty(path);
     if (prop == null) {
       return getStrings(path);
     }

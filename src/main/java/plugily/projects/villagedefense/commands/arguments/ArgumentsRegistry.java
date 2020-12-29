@@ -82,6 +82,7 @@ public class ArgumentsRegistry implements CommandExecutor {
     new CreateArgument(this);
     new JoinArguments(this);
     new RandomJoinArgument(this);
+    new ArenaSelectorArgument(this, plugin.getChatManager());
     new LeaderboardArgument(this);
     new LeaveArgument(this);
     new SelectKitArgument(this);

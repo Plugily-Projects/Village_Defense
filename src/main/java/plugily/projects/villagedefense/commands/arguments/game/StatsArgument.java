@@ -44,11 +44,12 @@ public class StatsArgument {
           return;
         }
         User user = registry.getPlugin().getUserManager().getUser(player);
-        if (player.equals(sender)) {
+        if (player == sender) {
           sender.sendMessage(registry.getPlugin().getChatManager().colorMessage(Messages.COMMANDS_STATISTICS_HEADER));
         } else {
           sender.sendMessage(registry.getPlugin().getChatManager().colorMessage(Messages.COMMANDS_STATISTICS_HEADER_OTHER).replace("%player%", player.getName()));
         }
+        sender.sendMessage(registry.getPlugin().getChatManager().colorMessage(Messages.COMMANDS_STATISTICS_ORBS) + user.getStat(StatsStorage.StatisticType.ORBS));
         sender.sendMessage(registry.getPlugin().getChatManager().colorMessage(Messages.COMMANDS_STATISTICS_KILLS) + user.getStat(StatsStorage.StatisticType.KILLS));
         sender.sendMessage(registry.getPlugin().getChatManager().colorMessage(Messages.COMMANDS_STATISTICS_DEATHS) + user.getStat(StatsStorage.StatisticType.DEATHS));
         sender.sendMessage(registry.getPlugin().getChatManager().colorMessage(Messages.COMMANDS_STATISTICS_GAMES_PLAYED) + user.getStat(StatsStorage.StatisticType.GAMES_PLAYED));

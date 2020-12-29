@@ -11,6 +11,7 @@ That's all, matcher will stop when detects next line started with `###` match
 
 ### 4.5.4 (09.12.2020 - 29.12.2020)
 * Fix NPE when kit name not found in language file
+* Now players can see their orbs in stats command
 * Rewritten scoreboardlib (fixed flickering and color matching) -> 122 chars for 1.14 up and 48 for lower versions
 
 ### 4.5.3 (19.11.2020 - 08.12.2020)

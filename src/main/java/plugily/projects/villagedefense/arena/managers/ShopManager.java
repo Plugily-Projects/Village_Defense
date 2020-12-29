@@ -195,12 +195,14 @@ public class ShopManager {
 
         ItemStack stack = itemStack.clone();
         ItemMeta itemMeta = stack.getItemMeta();
-        if (itemMeta.hasLore()) {
-          itemMeta.setLore(itemMeta.getLore().stream().filter(lore ->
-              !lore.contains(plugin.getChatManager().colorMessage(Messages.SHOP_MESSAGES_CURRENCY_IN_SHOP)))
-              .collect(Collectors.toList()));
+        if (itemMeta != null) {
+          if (itemMeta.hasLore()) {
+            itemMeta.setLore(itemMeta.getLore().stream().filter(lore ->
+                !lore.contains(plugin.getChatManager().colorMessage(Messages.SHOP_MESSAGES_CURRENCY_IN_SHOP)))
+                .collect(Collectors.toList()));
+          }
+          stack.setItemMeta(itemMeta);
         }
-        stack.setItemMeta(itemMeta);
         player.getInventory().addItem(stack);
         user.setStat(StatsStorage.StatisticType.ORBS, user.getStat(StatsStorage.StatisticType.ORBS) - cost);
         arena.addOptionValue(ArenaOption.TOTAL_ORBS_SPENT, cost);
