@@ -29,14 +29,14 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
+import pl.plajerlair.commonsbox.minecraft.helper.ArmorHelper;
+import pl.plajerlair.commonsbox.minecraft.helper.WeaponHelper;
 import plugily.projects.villagedefense.handlers.PermissionsManager;
 import plugily.projects.villagedefense.handlers.language.Messages;
 import plugily.projects.villagedefense.kits.KitRegistry;
 import plugily.projects.villagedefense.kits.basekits.PremiumKit;
 import plugily.projects.villagedefense.user.User;
-import plugily.projects.villagedefense.utils.ArmorHelper;
 import plugily.projects.villagedefense.utils.Utils;
-import plugily.projects.villagedefense.utils.WeaponHelper;
 
 import java.util.List;
 

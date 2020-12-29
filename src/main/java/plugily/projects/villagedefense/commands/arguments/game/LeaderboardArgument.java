@@ -81,7 +81,7 @@ public class LeaderboardArgument {
   private void printLeaderboard(CommandSender sender, StatsStorage.StatisticType statisticType) {
     LinkedHashMap<UUID, Integer> stats = (LinkedHashMap<UUID, Integer>) StatsStorage.getStats(statisticType);
     sender.sendMessage(registry.getPlugin().getChatManager().colorMessage(Messages.LEADERBOARD_HEADER));
-    String statistic = StringUtils.capitalize(statisticType.toString().toLowerCase().replace("_", " "));
+    String statistic = StringUtils.capitalize(statisticType.toString().toLowerCase().replace('_', ' '));
     for (int i = 0; i < 10; i++) {
       try {
         UUID current = (UUID) stats.keySet().toArray()[stats.keySet().toArray().length - 1];

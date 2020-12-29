@@ -19,7 +19,6 @@
 package plugily.projects.villagedefense.handlers.language;
 
 import org.apache.commons.lang.math.NumberUtils;
-import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import pl.plajerlair.commonsbox.minecraft.configuration.ConfigUtils;
 import pl.plajerlair.commonsbox.minecraft.migrator.MigratorUtils;
@@ -38,7 +37,7 @@ import java.util.List;
 @SuppressWarnings("deprecation")
 public class LanguageMigrator {
 
-  public static final int LANGUAGE_FILE_VERSION = 15;
+  public static final int LANGUAGE_FILE_VERSION = 16;
   public static final int CONFIG_FILE_VERSION = 14;
   private final Main plugin;
   private final List<String> migratable = Arrays.asList(Constants.Files.CONFIG.getName(), Constants.Files.KITS.getName(),
@@ -64,7 +63,7 @@ public class LanguageMigrator {
     if (plugin.getConfig().getInt("Version") == CONFIG_FILE_VERSION) {
       return;
     }
-    Debugger.sendConsoleMsg(ChatColor.YELLOW + "[Village Defense] System notify >> Your config file is outdated! Updating...");
+    Debugger.sendConsoleMsg("&e[Village Defense] System notify >> Your config file is outdated! Updating...");
     File file = new File(plugin.getDataFolder() + "/config.yml");
     File bungeefile = new File(plugin.getDataFolder() + "/bungee.yml");
 
@@ -194,13 +193,13 @@ public class LanguageMigrator {
     if (config.getString("File-Version-Do-Not-Edit", "").equals(String.valueOf(LANGUAGE_FILE_VERSION))) {
       return;
     }
-    Debugger.sendConsoleMsg(ChatColor.YELLOW + "[Village Defense] [System notify] Your language file is outdated! Updating...");
+    Debugger.sendConsoleMsg("&e[Village Defense] [System notify] Your language file is outdated! Updating...");
 
     int version = LANGUAGE_FILE_VERSION - 1;
     if (NumberUtils.isNumber(config.getString("File-Version-Do-Not-Edit"))) {
       version = Integer.parseInt(config.getString("File-Version-Do-Not-Edit"));
     } else {
-      Debugger.sendConsoleMsg(ChatColor.RED + "[Village Defense] [System notify] Failed to parse language file version!");
+      Debugger.sendConsoleMsg("&c[Village Defense] [System notify] Failed to parse language file version!");
     }
     updateLanguageVersionControl(version);
 

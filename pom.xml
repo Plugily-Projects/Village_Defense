@@ -24,7 +24,7 @@
 
     <groupId>plugily.projects</groupId>
     <artifactId>villagedefense</artifactId>
-    <version>4.5.3</version>
+    <version>4.5.4</version>
     <name>VillageDefense</name>
 
     <properties>
@@ -208,25 +208,25 @@
         <dependency>
             <groupId>pl.plajer</groupId>
             <artifactId>commons-box-classic</artifactId>
-            <version>1.1.7</version>
+            <version>1.2.0</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>pl.plajer</groupId>
             <artifactId>commons-box-database</artifactId>
-            <version>1.1.7</version>
+            <version>1.2.0</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>pl.plajer</groupId>
             <artifactId>commons-box-minecraft</artifactId>
-            <version>1.1.7</version>
+            <version>1.2.0</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>me.tigerhix.lib</groupId>
             <artifactId>scoreboard</artifactId>
-            <version>1.0.2</version>
+            <version>1.0.5</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
@@ -365,7 +365,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.8.0</version>
+                <version>3.8.1</version>
                 <goals>
                     <goal>compile</goal>
                 </goals>
@@ -382,7 +382,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
-                <version>3.1.1</version>
+                <version>3.2.4</version>
                 <executions>
                     <execution>
                         <phase>package</phase>
@@ -469,12 +469,12 @@
     <distributionManagement>
         <repository>
             <id>plugily-projects-repo</id>
-            <url>ftp://plugily.xyz</url>
+            <url>ftp://46.249.204.191</url>
         </repository>
         <site>
             <id>plugily-projects-java-docs</id>
             <name>VillageDefense</name>
-            <url>ftp://plugily.xyz</url>
+            <url>ftp://46.249.204.191</url>
         </site>
     </distributionManagement>
 </project>

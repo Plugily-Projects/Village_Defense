@@ -32,6 +32,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 import pl.plajerlair.commonsbox.minecraft.compat.XMaterial;
+import pl.plajerlair.commonsbox.minecraft.helper.ArmorHelper;
+import pl.plajerlair.commonsbox.minecraft.helper.WeaponHelper;
 import pl.plajerlair.commonsbox.minecraft.item.ItemBuilder;
 import pl.plajerlair.commonsbox.minecraft.item.ItemUtils;
 import plugily.projects.villagedefense.arena.ArenaRegistry;
@@ -39,9 +41,7 @@ import plugily.projects.villagedefense.handlers.PermissionsManager;
 import plugily.projects.villagedefense.handlers.language.Messages;
 import plugily.projects.villagedefense.kits.KitRegistry;
 import plugily.projects.villagedefense.kits.basekits.PremiumKit;
-import plugily.projects.villagedefense.utils.ArmorHelper;
 import plugily.projects.villagedefense.utils.Utils;
-import plugily.projects.villagedefense.utils.WeaponHelper;
 
 import java.util.List;
 

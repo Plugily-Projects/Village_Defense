@@ -63,7 +63,6 @@ import plugily.projects.villagedefense.handlers.upgrade.upgrades.Upgrade;
 import plugily.projects.villagedefense.handlers.upgrade.upgrades.UpgradeBuilder;
 import plugily.projects.villagedefense.kits.KitMenuHandler;
 import plugily.projects.villagedefense.kits.KitRegistry;
-import plugily.projects.villagedefense.kits.basekits.Kit;
 import plugily.projects.villagedefense.user.User;
 import plugily.projects.villagedefense.user.UserManager;
 import plugily.projects.villagedefense.user.data.MysqlManager;
@@ -157,9 +156,9 @@ public class Main extends JavaPlugin {
     Messages.init(this);
     LanguageManager.init(this);
     saveDefaultConfig();
-    Debugger.setEnabled(getDescription().getVersion().contains("b") || getConfig().getBoolean("Debug"));
+    Debugger.setEnabled(getDescription().getVersion().contains("debug") || getConfig().getBoolean("Debug"));
     Debugger.debug("[System] Initialization start");
-    if (getDescription().getVersion().contains("b") || getConfig().getBoolean("Developer-Mode")) {
+    if (getDescription().getVersion().contains("debug") || getConfig().getBoolean("Developer-Mode")) {
       Debugger.deepDebug(true);
       Debugger.debug(Level.FINE, "Deep debug enabled");
 
@@ -273,7 +272,6 @@ public class Main extends JavaPlugin {
     CreatureUtils.init(this);
     User.init(this);
     ArenaManager.init(this);
-    Kit.init(this);
     PermissionsManager.init(this);
     SetupInventory.init(this);
     ArenaUtils.init(this);
