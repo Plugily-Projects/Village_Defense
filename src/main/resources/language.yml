@@ -367,7 +367,7 @@ Signs:
     - "&5[%playersize%/%maxplayers%]"
 
 Arena-Selector:
-  Inv-Title: "Arena selector"
+  Inv-Title: "VD > Arena selector"
   Item:
     Lore:
       - "&aVillage Defense &f- &e%mapname%"
