@@ -40,7 +40,7 @@ public class PremiumHardcoreKit extends PremiumKit {
     public PremiumHardcoreKit() {
         setName(getPlugin().getChatManager().colorMessage(Messages.KITS_PREMIUM_HARDCORE_NAME));
         List<String> description = Utils.splitString(getPlugin().getChatManager().colorMessage(Messages.KITS_PREMIUM_HARDCORE_DESCRIPTION), 40);
-        this.setDescription(description.toArray(new String[0]));
+        setDescription(description.toArray(new String[0]));
         KitRegistry.registerKit(this);
     }
 

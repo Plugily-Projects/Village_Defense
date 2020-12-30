@@ -45,7 +45,7 @@ public class GolemFriendKit extends LevelKit {
   public GolemFriendKit() {
     setName(getPlugin().getChatManager().colorMessage(Messages.KITS_GOLEM_FRIEND_NAME));
     List<String> description = Utils.splitString(getPlugin().getChatManager().colorMessage(Messages.KITS_GOLEM_FRIEND_DESCRIPTION), 40);
-    this.setDescription(description.toArray(new String[0]));
+    setDescription(description.toArray(new String[0]));
     setLevel(getKitsConfig().getInt("Required-Level.GolemFriend"));
     KitRegistry.registerKit(this);
   }

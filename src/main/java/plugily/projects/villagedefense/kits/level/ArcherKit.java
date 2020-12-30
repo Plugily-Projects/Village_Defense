@@ -39,10 +39,10 @@ import java.util.List;
 public class ArcherKit extends LevelKit {
 
     public ArcherKit() {
-        this.setLevel(getKitsConfig().getInt("Required-Level.Archer"));
-        this.setName(getPlugin().getChatManager().colorMessage(Messages.KITS_ARCHER_NAME));
+        setLevel(getKitsConfig().getInt("Required-Level.Archer"));
+        setName(getPlugin().getChatManager().colorMessage(Messages.KITS_ARCHER_NAME));
         List<String> description = Utils.splitString(getPlugin().getChatManager().colorMessage(Messages.KITS_ARCHER_DESCRIPTION), 40);
-        this.setDescription(description.toArray(new String[0]));
+        setDescription(description.toArray(new String[0]));
         KitRegistry.registerKit(this);
     }
 

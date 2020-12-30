@@ -37,9 +37,9 @@ import java.util.List;
 public class KnightKit extends FreeKit {
 
   public KnightKit() {
-    this.setName(getPlugin().getChatManager().colorMessage(Messages.KITS_KNIGHT_NAME));
+    setName(getPlugin().getChatManager().colorMessage(Messages.KITS_KNIGHT_NAME));
     List<String> description = Utils.splitString(getPlugin().getChatManager().colorMessage(Messages.KITS_KNIGHT_DESCRIPTION), 40);
-    this.setDescription(description.toArray(new String[0]));
+    setDescription(description.toArray(new String[0]));
     KitRegistry.registerKit(this);
   }
 

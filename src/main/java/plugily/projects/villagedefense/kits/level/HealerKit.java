@@ -42,7 +42,7 @@ public class HealerKit extends LevelKit {
   public HealerKit() {
     setName(getPlugin().getChatManager().colorMessage(Messages.KITS_HEALER_NAME));
     List<String> description = Utils.splitString(getPlugin().getChatManager().colorMessage(Messages.KITS_HEALER_DESCRIPTION), 40);
-    this.setDescription(description.toArray(new String[0]));
+    setDescription(description.toArray(new String[0]));
     setLevel(getKitsConfig().getInt("Required-Level.Healer"));
     KitRegistry.registerKit(this);
   }

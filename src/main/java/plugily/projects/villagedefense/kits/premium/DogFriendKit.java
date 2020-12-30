@@ -42,9 +42,9 @@ import java.util.List;
 public class DogFriendKit extends PremiumKit {
 
   public DogFriendKit() {
-    this.setName(getPlugin().getChatManager().colorMessage(Messages.KITS_DOG_FRIEND_NAME));
+    setName(getPlugin().getChatManager().colorMessage(Messages.KITS_DOG_FRIEND_NAME));
     List<String> description = Utils.splitString(getPlugin().getChatManager().colorMessage(Messages.KITS_DOG_FRIEND_DESCRIPTION), 40);
-    this.setDescription(description.toArray(new String[0]));
+    setDescription(description.toArray(new String[0]));
     KitRegistry.registerKit(this);
   }
 

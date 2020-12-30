@@ -102,9 +102,9 @@ public class PlayerAmountComponents implements SetupComponent {
       if (e.getClick().isLeftClick()) {
         e.getCurrentItem().setAmount(e.getCurrentItem().getAmount() - 1);
       }
-      if (itemStack.getAmount() < 1) {
+      if (e.getCurrentItem().getAmount() < 1) {
         e.getWhoClicked().sendMessage(plugin.getChatManager().colorRawMessage("&c&l✖ &cWarning | Please do not set amount lower than 1!"));
-        itemStack.setAmount(1);
+        e.getCurrentItem().setAmount(1);
       }
       config.set("instances." + arena.getId() + ".maximumplayers", e.getCurrentItem().getAmount());
       arena.setMaximumPlayers(e.getCurrentItem().getAmount());
