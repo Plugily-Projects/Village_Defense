@@ -53,7 +53,7 @@ public class BlockerKit extends PremiumKit implements Listener {
   public BlockerKit() {
     setName(getPlugin().getChatManager().colorMessage(Messages.KITS_BLOCKER_NAME));
     List<String> description = Utils.splitString(getPlugin().getChatManager().colorMessage(Messages.KITS_BLOCKER_DESCRIPTION), 40);
-    this.setDescription(description.toArray(new String[0]));
+    setDescription(description.toArray(new String[0]));
     getPlugin().getServer().getPluginManager().registerEvents(this, getPlugin());
     KitRegistry.registerKit(this);
   }

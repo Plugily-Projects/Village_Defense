@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package plugily.projects.villagedefense.kits.free;
+package plugily.projects.villagedefense.kits.level;
 
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -50,8 +50,8 @@ public class ZombieFinderKit extends LevelKit implements Listener {
   public ZombieFinderKit() {
     setName(getPlugin().getChatManager().colorMessage(Messages.KITS_ZOMBIE_TELEPORTER_NAME));
     List<String> description = Utils.splitString(getPlugin().getChatManager().colorMessage(Messages.KITS_ZOMBIE_TELEPORTER_DESCRIPTION), 40);
-    this.setDescription(description.toArray(new String[0]));
-    this.setLevel(getKitsConfig().getInt("Required-Level.ZombieFinder"));
+    setDescription(description.toArray(new String[0]));
+    setLevel(getKitsConfig().getInt("Required-Level.ZombieFinder"));
     getPlugin().getServer().getPluginManager().registerEvents(this, getPlugin());
     KitRegistry.registerKit(this);
   }

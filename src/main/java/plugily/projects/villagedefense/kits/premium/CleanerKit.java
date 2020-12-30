@@ -49,7 +49,7 @@ public class CleanerKit extends PremiumKit implements Listener {
   public CleanerKit() {
     setName(getPlugin().getChatManager().colorMessage(Messages.KITS_CLEANER_NAME));
     List<String> description = Utils.splitString(getPlugin().getChatManager().colorMessage(Messages.KITS_CLEANER_DESCRIPTION), 40);
-    this.setDescription(description.toArray(new String[0]));
+    setDescription(description.toArray(new String[0]));
     getPlugin().getServer().getPluginManager().registerEvents(this, getPlugin());
     KitRegistry.registerKit(this);
   }

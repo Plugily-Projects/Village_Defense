@@ -26,7 +26,7 @@ import plugily.projects.villagedefense.kits.basekits.FreeKit;
 import plugily.projects.villagedefense.kits.basekits.Kit;
 import plugily.projects.villagedefense.kits.free.KnightKit;
 import plugily.projects.villagedefense.kits.free.LightTankKit;
-import plugily.projects.villagedefense.kits.free.ZombieFinderKit;
+import plugily.projects.villagedefense.kits.level.ZombieFinderKit;
 import plugily.projects.villagedefense.kits.level.*;
 import plugily.projects.villagedefense.kits.premium.*;
 import plugily.projects.villagedefense.utils.constants.Constants;

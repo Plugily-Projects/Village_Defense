@@ -47,10 +47,10 @@ import java.util.List;
 public class WorkerKit extends LevelKit implements Listener {
 
   public WorkerKit() {
-    this.setLevel(getKitsConfig().getInt("Required-Level.Worker"));
-    this.setName(getPlugin().getChatManager().colorMessage(Messages.KITS_WORKER_NAME));
+    setLevel(getKitsConfig().getInt("Required-Level.Worker"));
+    setName(getPlugin().getChatManager().colorMessage(Messages.KITS_WORKER_NAME));
     List<String> description = Utils.splitString(getPlugin().getChatManager().colorMessage(Messages.KITS_WORKER_DESCRIPTION), 40);
-    this.setDescription(description.toArray(new String[0]));
+    setDescription(description.toArray(new String[0]));
     KitRegistry.registerKit(this);
     getPlugin().getServer().getPluginManager().registerEvents(this, getPlugin());
   }

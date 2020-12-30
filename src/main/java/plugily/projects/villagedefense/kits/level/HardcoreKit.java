@@ -43,7 +43,7 @@ public class HardcoreKit extends LevelKit {
     public HardcoreKit() {
         setName(getPlugin().getChatManager().colorMessage(Messages.KITS_HARDCORE_NAME));
         List<String> description = Utils.splitString(getPlugin().getChatManager().colorMessage(Messages.KITS_HARDCORE_DESCRIPTION), 40);
-        this.setDescription(description.toArray(new String[0]));
+        setDescription(description.toArray(new String[0]));
         setLevel(getKitsConfig().getInt("Required-Level.Hardcore"));
         KitRegistry.registerKit(this);
     }

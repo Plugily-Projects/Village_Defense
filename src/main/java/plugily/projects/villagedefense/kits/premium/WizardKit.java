@@ -59,7 +59,7 @@ public class WizardKit extends PremiumKit implements Listener {
   public WizardKit() {
     setName(getPlugin().getChatManager().colorMessage(Messages.KITS_WIZARD_NAME));
     List<String> description = Utils.splitString(getPlugin().getChatManager().colorMessage(Messages.KITS_WIZARD_DESCRIPTION), 40);
-    this.setDescription(description.toArray(new String[0]));
+    setDescription(description.toArray(new String[0]));
     KitRegistry.registerKit(this);
     getPlugin().getServer().getPluginManager().registerEvents(this, getPlugin());
   }

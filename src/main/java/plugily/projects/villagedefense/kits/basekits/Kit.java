@@ -18,6 +18,7 @@
 
 package plugily.projects.villagedefense.kits.basekits;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -34,7 +35,7 @@ import plugily.projects.villagedefense.utils.constants.Constants;
  */
 public abstract class Kit {
 
-  private static Main plugin = JavaPlugin.getPlugin(Main.class);
+  private static final Main plugin = JavaPlugin.getPlugin(Main.class);
 
   private final FileConfiguration kitsConfig = ConfigUtils.getConfig(plugin, Constants.Files.KITS.getName());
 

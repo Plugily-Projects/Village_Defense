@@ -40,7 +40,7 @@ public class LightTankKit extends FreeKit {
     public LightTankKit() {
         setName(getPlugin().getChatManager().colorMessage(Messages.KITS_LIGHT_TANK_NAME));
         List<String> description = Utils.splitString(getPlugin().getChatManager().colorMessage(Messages.KITS_LIGHT_TANK_DESCRIPTION), 40);
-        this.setDescription(description.toArray(new String[0]));
+        setDescription(description.toArray(new String[0]));
         KitRegistry.registerKit(this);
     }
 

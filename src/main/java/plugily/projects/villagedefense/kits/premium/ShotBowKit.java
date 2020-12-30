@@ -48,7 +48,7 @@ public class ShotBowKit extends PremiumKit implements Listener {
   public ShotBowKit() {
     setName(getPlugin().getChatManager().colorMessage(Messages.KITS_SHOT_BOW_NAME));
     List<String> description = Utils.splitString(getPlugin().getChatManager().colorMessage(Messages.KITS_SHOT_BOW_DESCRIPTION), 40);
-    this.setDescription(description.toArray(new String[0]));
+    setDescription(description.toArray(new String[0]));
     getPlugin().getServer().getPluginManager().registerEvents(this, getPlugin());
     KitRegistry.registerKit(this);
   }
