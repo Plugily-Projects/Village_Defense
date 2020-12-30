@@ -97,7 +97,7 @@ public abstract class Arena extends BukkitRunnable {
   }
 
   public Arena(String id) {
-    this.id = id;
+    this.id = id == null ? "" : id;
     gameBar = Bukkit.createBossBar(plugin.getChatManager().colorMessage(Messages.BOSSBAR_MAIN_TITLE), BarColor.BLUE, BarStyle.SOLID);
     shopManager = new ShopManager(this);
     zombieSpawnManager = new ZombieSpawnManager(this);

@@ -18,7 +18,6 @@
 
 package plugily.projects.villagedefense.kits.basekits;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -39,7 +38,7 @@ public abstract class Kit {
 
   private final FileConfiguration kitsConfig = ConfigUtils.getConfig(plugin, Constants.Files.KITS.getName());
 
-  private String name;
+  private String name = "";
   private boolean unlockedOnDefault = false;
   private String[] description = new String[0];
 
