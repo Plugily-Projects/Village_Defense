@@ -21,6 +21,8 @@ package plugily.projects.villagedefense.commands.arguments.admin.arena;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+
+import pl.plajerlair.commonsbox.number.NumberUtils;
 import plugily.projects.villagedefense.arena.Arena;
 import plugily.projects.villagedefense.arena.ArenaManager;
 import plugily.projects.villagedefense.arena.ArenaRegistry;
@@ -54,7 +56,7 @@ public class SetWaveArgument {
           return;
         }
         Arena arena = ArenaRegistry.getArena((Player) sender);
-        if (!Utils.isInteger(args[1])) {
+        if (!NumberUtils.isInteger(args[1])) {
           sender.sendMessage(registry.getPlugin().getChatManager().getPrefix() + registry.getPlugin().getChatManager().colorMessage(Messages.COMMANDS_INVALID_NUMBER).replace("%correct%", "/vda setwave <number>"));
           return;
         }
