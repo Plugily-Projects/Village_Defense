@@ -129,6 +129,10 @@ Signs-Block-States-Enabled: true
 Wolves-Spawn-Limit: 20
 Golems-Spawn-Limit: 15
 
+# Can the players buy again iron golems or wolves if these
+# entities died? The config limit and permission will be ignored.
+Players-Can-Buy-GolemsWolves-If-They-Died: false
+
 # Should holiday events for Village Defense be enabled?
 # Eg. 4 days before and 4 days after Halloween special effects
 # for death and zombies will be applied, spooky!
@@ -207,6 +211,6 @@ Update-Notifier:
 Disable-Parties: true
 
 # Don't modify.
-Version: 14
+Version: 15
 
 # No way! You've reached the end! But... where's the dragon!?

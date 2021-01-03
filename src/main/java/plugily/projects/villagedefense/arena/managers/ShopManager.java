@@ -34,6 +34,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import pl.plajerlair.commonsbox.minecraft.configuration.ConfigUtils;
 import pl.plajerlair.commonsbox.minecraft.item.ItemUtils;
 import pl.plajerlair.commonsbox.minecraft.serialization.LocationSerializer;
+import plugily.projects.villagedefense.ConfigPreferences.Option;
 import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.api.StatsStorage;
 import plugily.projects.villagedefense.arena.Arena;
@@ -45,6 +46,7 @@ import plugily.projects.villagedefense.utils.Debugger;
 import plugily.projects.villagedefense.utils.Utils;
 import plugily.projects.villagedefense.utils.constants.Constants;
 
+import java.util.List;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
 
@@ -158,7 +160,11 @@ public class ShopManager {
           int spawnedAmount = 0;
           if (name.contains(plugin.getChatManager().colorMessage(Messages.SHOP_MESSAGES_GOLEM_ITEM_NAME))
               || name.contains(defaultGolemItemName)) {
-            for (IronGolem golem : arena.getIronGolems()) {
+            List<IronGolem> golems = arena.getIronGolems();
+            if (plugin.getConfigPreferences().getOption(Option.CAN_BUY_GOLEMSWOLVES_IF_THEY_DIED)) {
+              golems = golems.stream().filter(IronGolem::isDead).collect(Collectors.toList());
+            }
+            for (IronGolem golem : golems) {
               if (plugin.getChatManager().colorMessage(Messages.SPAWNED_GOLEM_NAME).replace("%player%", player.getName()).equals(golem.getCustomName())) {
                 spawnedAmount++;
               }
@@ -175,7 +181,11 @@ public class ShopManager {
             return;
           } else if (name.contains(plugin.getChatManager().colorMessage(Messages.SHOP_MESSAGES_WOLF_ITEM_NAME))
               || name.contains(defaultWolfItemName)) {
-            for (Wolf wolf : arena.getWolves()) {
+            List<Wolf> wolves = arena.getWolves();
+            if (plugin.getConfigPreferences().getOption(Option.CAN_BUY_GOLEMSWOLVES_IF_THEY_DIED)) {
+              wolves = wolves.stream().filter(Wolf::isDead).collect(Collectors.toList());
+            }
+            for (Wolf wolf : wolves) {
               if (plugin.getChatManager().colorMessage(Messages.SPAWNED_WOLF_NAME).replace("%player%", player.getName()).equals(wolf.getCustomName())) {
                 spawnedAmount++;
               }

@@ -38,7 +38,7 @@ import java.util.List;
 public class LanguageMigrator {
 
   public static final int LANGUAGE_FILE_VERSION = 16;
-  public static final int CONFIG_FILE_VERSION = 14;
+  public static final int CONFIG_FILE_VERSION = 15;
   private final Main plugin;
   private final List<String> migratable = Arrays.asList(Constants.Files.CONFIG.getName(), Constants.Files.KITS.getName(),
           Constants.Files.KITS.getName(), Constants.Files.LANGUAGE.getName(), Constants.Files.SPECIAL_ITEMS.getName(), Constants.Files.MYSQL.getName());
@@ -177,6 +177,12 @@ public class LanguageMigrator {
                   "# Default: true\r\n" +
                   "InGame-Join-Respawn: true\r\n" +
                   "\r\n");
+          break;
+        case 14:
+          MigratorUtils.addNewLines(file, "\r\n" +
+                  "# Can the players buy again iron golems or wolves if these\r\n" +
+                  "# entities died? The config limit and permission will be ignored." +
+                  "Players-Can-Buy-GolemsWolves-If-They-Died: false\r\n\r\n");
           break;
         default:
           break;
