@@ -1,13 +1,18 @@
 package plugily.projects.villagedefense.utils;
 
+import java.util.Optional;
+
+import org.bukkit.attribute.Attribute;
+import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import pl.plajerlair.commonsbox.minecraft.compat.ServerVersion;
 import plugily.projects.villagedefense.Main;
 
 @SuppressWarnings("deprecation")
-public abstract class NMS {
+public abstract class Misc {
 
 	private static final Main PLUGIN = JavaPlugin.getPlugin(Main.class);
 
@@ -33,5 +38,9 @@ public abstract class NMS {
 		for (Entity ps : passengers) {
 			to.addPassenger(ps);
 		}
+	}
+
+	public static Optional<AttributeInstance> getEntityAttribute(LivingEntity entity, Attribute attribute) {
+		return Optional.ofNullable(entity.getAttribute(attribute));
 	}
 }

@@ -31,7 +31,7 @@ import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.arena.initializers.*;
 import plugily.projects.villagedefense.handlers.language.Messages;
 import plugily.projects.villagedefense.user.User;
-import plugily.projects.villagedefense.utils.NMS;
+import plugily.projects.villagedefense.utils.Misc;
 
 /**
  * @author Plajer
@@ -51,20 +51,20 @@ public class ArenaUtils {
 
   public static void hidePlayer(Player p, Arena arena) {
     for (Player player : arena.getPlayers()) {
-      NMS.hidePlayer(player, p);
+      Misc.hidePlayer(player, p);
     }
   }
 
   public static void showPlayer(Player p, Arena arena) {
     for (Player player : arena.getPlayers()) {
-      NMS.showPlayer(player, p);
+      Misc.showPlayer(player, p);
     }
   }
 
   public static void resetPlayerAfterGame(Player player) {
     for (Player players : plugin.getServer().getOnlinePlayers()) {
-      NMS.showPlayer(players, player);
-      NMS.showPlayer(player, players);
+      Misc.showPlayer(players, player);
+      Misc.showPlayer(player, players);
     }
     player.setGlowing(false);
     player.setGameMode(GameMode.SURVIVAL);
@@ -73,8 +73,10 @@ public class ArenaUtils {
     player.setAllowFlight(false);
     player.getInventory().clear();
     player.getInventory().setArmorContents(null);
-    player.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(20.0);
-    player.setHealth(player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue());
+    Misc.getEntityAttribute(player, Attribute.GENERIC_MAX_HEALTH).ifPresent(ai -> {
+      ai.setBaseValue(20.0);
+      player.setHealth(ai.getValue());
+    });
     player.setFireTicks(0);
     player.setFoodLevel(20);
     if (plugin.getConfigPreferences().getOption(ConfigPreferences.Option.INVENTORY_MANAGER_ENABLED)) {
