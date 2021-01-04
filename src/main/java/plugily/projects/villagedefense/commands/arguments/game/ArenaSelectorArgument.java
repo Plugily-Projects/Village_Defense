@@ -43,6 +43,9 @@ import plugily.projects.villagedefense.handlers.language.Messages;
 import plugily.projects.villagedefense.utils.Utils;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
 
 /**
  * @author 2Wild4You
@@ -52,6 +55,7 @@ import java.util.ArrayList;
 public class ArenaSelectorArgument implements Listener {
 
   private final ChatManager chatManager;
+  private final Map<Integer, Arena> arenas = new HashMap<>();
 
   public ArenaSelectorArgument(ArgumentsRegistry registry, ChatManager chatManager) {
     this.chatManager = chatManager;
@@ -65,8 +69,11 @@ public class ArenaSelectorArgument implements Listener {
           player.sendMessage(chatManager.colorMessage(Messages.COMMANDS_ADMIN_LIST_NO_ARENAS));
           return;
         }
+        int slot = 0;
+        arenas.clear();
         Inventory inventory = Bukkit.createInventory(player, Utils.serializeInt(ArenaRegistry.getArenas().size()), chatManager.colorMessage(Messages.ARENA_SELECTOR_INV_TITLE));
         for (Arena arena : ArenaRegistry.getArenas()) {
+          arenas.put(slot, arena);
           ItemStack itemStack;
           switch (arena.getArenaState()) {
             case WAITING_FOR_PLAYERS:
@@ -80,7 +87,7 @@ public class ArenaSelectorArgument implements Listener {
               break;
           }
           ItemMeta itemMeta = itemStack.getItemMeta();
-          itemMeta.setDisplayName(arena.getId());
+          itemMeta.setDisplayName(formatItem(LanguageManager.getLanguageMessage("Arena-Selector.Item.Name"), arena, registry.getPlugin()));
 
           ArrayList<String> lore = new ArrayList<>();
           for (String string : LanguageManager.getLanguageList(Messages.ARENA_SELECTOR_ITEM_LORE.getAccessor())) {
@@ -90,6 +97,7 @@ public class ArenaSelectorArgument implements Listener {
           itemMeta.setLore(lore);
           itemStack.setItemMeta(itemMeta);
           inventory.addItem(itemStack);
+          slot++;
         }
         player.openInventory(inventory);
       }
@@ -122,7 +130,7 @@ public class ArenaSelectorArgument implements Listener {
     Player player = (Player) e.getWhoClicked();
     player.closeInventory();
 
-    Arena arena = ArenaRegistry.getArena(e.getCurrentItem().getItemMeta().getDisplayName());
+    Arena arena = arenas.get(e.getRawSlot());
     if (arena != null) {
       ArenaManager.joinAttempt(player, arena);
     } else {

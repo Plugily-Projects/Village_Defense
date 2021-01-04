@@ -37,7 +37,7 @@ import java.util.List;
 @SuppressWarnings("deprecation")
 public class LanguageMigrator {
 
-  public static final int LANGUAGE_FILE_VERSION = 16;
+  public static final int LANGUAGE_FILE_VERSION = 17;
   public static final int CONFIG_FILE_VERSION = 15;
   private final Main plugin;
   private final List<String> migratable = Arrays.asList(Constants.Files.CONFIG.getName(), Constants.Files.KITS.getName(),
@@ -373,6 +373,11 @@ public class LanguageMigrator {
           MigratorUtils.insertAfterLine(file, "Admin-Commands:", "    Spychat-Command:");
           MigratorUtils.insertAfterLine(file, "Spychat-Command:", "      Toggled: \"&aGame spy chat toggled to&c %value%\"");
           break;
+        case 15:
+          //??? MISSED ???
+          break;
+        case 16:
+          MigratorUtils.insertAfterLine(file, "  Item:", "    Name: \"&f%mapname%\"");
         default:
           break;
       }
