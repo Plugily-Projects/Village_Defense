@@ -9,11 +9,13 @@ deploy webhooks to print changelog successfully
 
 That's all, matcher will stop when detects next line started with `###` match
 
-### 4.5.5 (30.12.2020)
-* Fixed Kit Menu does not work (NPE)
+### 4.5.6 (04.12.2020)
 * Added option to allow players to buy golems/wolves again if they died
 * Fix parsing oak door material in old versions
 * Added customizable item name in arena selector gui (by ajgeiss0702)
+
+### 4.5.5 (30.12.2020)
+* Fixed Kit Menu does not work (NPE)
 
 ### 4.5.4 (09.12.2020 - 29.12.2020)
 * Fix NPE when kit name not found in language file
