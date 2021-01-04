@@ -35,6 +35,7 @@ import org.bukkit.util.BlockIterator;
 
 import pl.plajerlair.commonsbox.minecraft.compat.PacketUtils;
 import pl.plajerlair.commonsbox.minecraft.compat.ServerVersion;
+import pl.plajerlair.commonsbox.minecraft.compat.XMaterial;
 import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.arena.ArenaRegistry;
 import plugily.projects.villagedefense.handlers.language.Messages;
@@ -248,7 +249,7 @@ public class Utils {
     }
 
     if (block == null) {
-      return cachedDoor = Material.OAK_DOOR;
+      return cachedDoor = XMaterial.OAK_DOOR.parseMaterial();
     }
 
     return cachedDoor = (MaterialUtil.isDoor(block.getType()) ? block.getType() : Material.AIR);
