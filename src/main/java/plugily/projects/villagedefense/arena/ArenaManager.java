@@ -96,7 +96,7 @@ public class ArenaManager {
     //check if player is in party and send party members to the game
     if (plugin.getPartyHandler().isPlayerInParty(player)) {
       GameParty party = plugin.getPartyHandler().getParty(player);
-      if (party.getLeader().equals(player)) {
+      if (player == party.getLeader()) {
         if (arena.getMaximumPlayers() - arena.getPlayers().size() >= party.getPlayers().size()) {
           for (Player partyPlayer : party.getPlayers()) {
             if (partyPlayer == player) {
@@ -132,10 +132,9 @@ public class ArenaManager {
       player.getInventory().clear();
 
       for (SpecialItem item : plugin.getSpecialItemManager().getSpecialItems()) {
-        if (item.getDisplayStage() != SpecialItem.DisplayStage.SPECTATOR) {
-          continue;
+        if (item.getDisplayStage() == SpecialItem.DisplayStage.SPECTATOR) {
+          player.getInventory().setItem(item.getSlot(), item.getItemStack());
         }
-        player.getInventory().setItem(item.getSlot(), item.getItemStack());
       }
 
       player.getActivePotionEffects().forEach(potionEffect -> player.removePotionEffect(potionEffect.getType()));
@@ -180,9 +179,8 @@ public class ArenaManager {
     user.setKit(KitRegistry.getDefaultKit());
     for (SpecialItem item : plugin.getSpecialItemManager().getSpecialItems()) {
       if (item.getDisplayStage() != SpecialItem.DisplayStage.LOBBY) {
-        continue;
+        player.getInventory().setItem(item.getSlot(), item.getItemStack());
       }
-      player.getInventory().setItem(item.getSlot(), item.getItemStack());
     }
     player.updateInventory();
     for (Player arenaPlayer : arena.getPlayers()) {
