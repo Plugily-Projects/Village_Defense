@@ -35,6 +35,7 @@ import org.jetbrains.annotations.Nullable;
 
 import pl.plajerlair.commonsbox.minecraft.compat.XMaterial;
 import pl.plajerlair.commonsbox.minecraft.item.ItemBuilder;
+import pl.plajerlair.commonsbox.minecraft.misc.MiscUtils;
 import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.api.StatsStorage;
 import plugily.projects.villagedefense.api.event.player.VillagePlayerEntityUpgradeEvent;
@@ -44,7 +45,6 @@ import plugily.projects.villagedefense.handlers.language.Messages;
 import plugily.projects.villagedefense.handlers.upgrade.upgrades.Upgrade;
 import plugily.projects.villagedefense.handlers.upgrade.upgrades.UpgradeBuilder;
 import plugily.projects.villagedefense.user.User;
-import plugily.projects.villagedefense.utils.Misc;
 import plugily.projects.villagedefense.utils.Utils;
 
 import java.util.ArrayList;
@@ -220,15 +220,15 @@ public class EntityUpgradeMenu {
     switch (upgrade.getId()) {
       case "Damage":
         if (en.getType() == EntityType.WOLF) {
-          Misc.getEntityAttribute((LivingEntity) en, Attribute.GENERIC_MAX_HEALTH).ifPresent(ai -> ai.setBaseValue(2.0 + (tier * 3)));
+          MiscUtils.getEntityAttribute((LivingEntity) en, Attribute.GENERIC_MAX_HEALTH).ifPresent(ai -> ai.setBaseValue(2.0 + (tier * 3)));
         }
         //attribute damage doesn't exist for golems
         break;
       case "Health":
-        Misc.getEntityAttribute((LivingEntity) en, Attribute.GENERIC_MAX_HEALTH).ifPresent(ai -> ai.setBaseValue(100.0 + (100.0 * ((double) tier / 2.0))));
+        MiscUtils.getEntityAttribute((LivingEntity) en, Attribute.GENERIC_MAX_HEALTH).ifPresent(ai -> ai.setBaseValue(100.0 + (100.0 * ((double) tier / 2.0))));
         break;
       case "Speed":
-        Misc.getEntityAttribute((LivingEntity) en, Attribute.GENERIC_MOVEMENT_SPEED).ifPresent(ai -> ai.setBaseValue(0.25 + (0.25 * ((double) tier / 5.0))));
+        MiscUtils.getEntityAttribute((LivingEntity) en, Attribute.GENERIC_MOVEMENT_SPEED).ifPresent(ai -> ai.setBaseValue(0.25 + (0.25 * ((double) tier / 5.0))));
         break;
       case "Swarm-Awareness":
       case "Final-Defense":

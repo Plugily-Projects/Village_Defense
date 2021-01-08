@@ -18,8 +18,6 @@
 
 package plugily.projects.villagedefense.arena;
 
-import net.md_5.bungee.api.ChatMessageType;
-import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
@@ -269,13 +267,13 @@ public class ArenaEvents implements Listener {
       @Override
       public void run() {
         if (ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_11_R1) || arena.getArenaState() == ArenaState.ENDING) {
-          this.cancel();
+          cancel();
           return;
         }
         if (user.isSpectator()) {
           MiscUtils.sendActionBar(user.getPlayer(), plugin.getChatManager().colorMessage(Messages.DIED_RESPAWN_IN_NEXT_WAVE));
         } else {
-          this.cancel();
+          cancel();
         }
       }
     }.runTaskTimer(plugin, 30, 30);

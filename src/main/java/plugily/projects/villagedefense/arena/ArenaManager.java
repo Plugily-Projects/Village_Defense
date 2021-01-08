@@ -52,7 +52,6 @@ import plugily.projects.villagedefense.kits.KitRegistry;
 import plugily.projects.villagedefense.kits.level.GolemFriendKit;
 import plugily.projects.villagedefense.user.User;
 import plugily.projects.villagedefense.utils.Debugger;
-import plugily.projects.villagedefense.utils.Misc;
 import plugily.projects.villagedefense.utils.Utils;
 
 import java.util.List;
@@ -139,7 +138,7 @@ public class ArenaManager {
 
       player.getActivePotionEffects().forEach(potionEffect -> player.removePotionEffect(potionEffect.getType()));
 
-      Misc.getEntityAttribute(player, Attribute.GENERIC_MAX_HEALTH).ifPresent(ai -> {
+      MiscUtils.getEntityAttribute(player, Attribute.GENERIC_MAX_HEALTH).ifPresent(ai -> {
         ai.setBaseValue(ai.getValue() + arena.getOption(ArenaOption.ROTTEN_FLESH_LEVEL));
         player.setHealth(ai.getValue());
       });
@@ -154,9 +153,9 @@ public class ArenaManager {
 
       for (Player spectator : arena.getPlayers()) {
         if (plugin.getUserManager().getUser(spectator).isSpectator()) {
-          Misc.hidePlayer(player, spectator);
+          MiscUtils.hidePlayer(plugin, player, spectator);
         } else {
-          Misc.showPlayer(player, spectator);
+          MiscUtils.showPlayer(plugin, player, spectator);
         }
       }
       Debugger.debug("[{0}] Final join attempt as spectator for {1} took {2}ms", arena.getId(), player.getName(), System.currentTimeMillis() - start);
@@ -166,7 +165,7 @@ public class ArenaManager {
       InventorySerializer.saveInventoryToFile(plugin, player);
     }
     player.teleport(arena.getLobbyLocation());
-    Misc.getEntityAttribute(player, Attribute.GENERIC_MAX_HEALTH).ifPresent(ai -> player.setHealth(ai.getValue()));
+    MiscUtils.getEntityAttribute(player, Attribute.GENERIC_MAX_HEALTH).ifPresent(ai -> player.setHealth(ai.getValue()));
     player.setFoodLevel(20);
     player.getInventory().setArmorContents(new ItemStack[] {new ItemStack(Material.AIR), new ItemStack(Material.AIR), new ItemStack(Material.AIR), new ItemStack(Material.AIR)});
     player.setFlying(false);
@@ -417,7 +416,7 @@ public class ArenaManager {
     for (Player player : arena.getPlayers()) {
       player.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().formatMessage(arena, plugin.getChatManager().colorMessage(Messages.NEXT_WAVE_IN), arena.getTimer()));
       player.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage(Messages.YOU_FEEL_REFRESHED));
-      Misc.getEntityAttribute(player, Attribute.GENERIC_MAX_HEALTH).ifPresent(ai -> player.setHealth(ai.getValue()));
+      MiscUtils.getEntityAttribute(player, Attribute.GENERIC_MAX_HEALTH).ifPresent(ai -> player.setHealth(ai.getValue()));
       User user = plugin.getUserManager().getUser(player);
       user.addStat(StatsStorage.StatisticType.ORBS, arena.getWave() * 10);
     }

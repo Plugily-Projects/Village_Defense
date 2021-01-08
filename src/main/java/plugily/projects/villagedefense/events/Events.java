@@ -38,6 +38,7 @@ import org.bukkit.event.player.*;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import pl.plajerlair.commonsbox.minecraft.compat.XMaterial;
+import pl.plajerlair.commonsbox.minecraft.misc.MiscUtils;
 import pl.plajerlair.commonsbox.string.StringFormatUtils;
 import plugily.projects.villagedefense.ConfigPreferences;
 import plugily.projects.villagedefense.Main;
@@ -53,7 +54,6 @@ import plugily.projects.villagedefense.handlers.items.SpecialItemManager;
 import plugily.projects.villagedefense.handlers.language.Messages;
 import plugily.projects.villagedefense.user.User;
 import plugily.projects.villagedefense.utils.Debugger;
-import plugily.projects.villagedefense.utils.Misc;
 import plugily.projects.villagedefense.utils.Utils;
 
 import java.util.Map;
@@ -156,7 +156,7 @@ public class Events implements Listener {
     }
     if (event.getPlayer().getInventory().getItemInMainHand().getType() == Material.SADDLE) {
       if (event.getRightClicked().getType() == EntityType.IRON_GOLEM || event.getRightClicked().getType() == EntityType.VILLAGER || event.getRightClicked().getType() == EntityType.WOLF) {
-        Misc.setPassenger(event.getRightClicked(), event.getPlayer());
+        MiscUtils.setPassenger(event.getRightClicked(), event.getPlayer());
         event.setCancelled(true);
         return;
       }
@@ -170,7 +170,7 @@ public class Events implements Listener {
         return;
       }
       if (ironGolem.getCustomName() != null && ironGolem.getCustomName().contains(event.getPlayer().getName())) {
-        Misc.setPassenger(event.getRightClicked(), event.getPlayer());
+        MiscUtils.setPassenger(event.getRightClicked(), event.getPlayer());
       } else {
         event.getPlayer().sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage(Messages.CANT_RIDE_OTHERS_GOLEM));
       }
@@ -178,7 +178,7 @@ public class Events implements Listener {
       Wolf wolf = (Wolf) event.getRightClicked();
       //to prevent wolves sitting
       if (wolf.getCustomName() != null && wolf.getCustomName().contains(event.getPlayer().getName())) {
-        Misc.setPassenger(event.getRightClicked(), event.getPlayer());
+        MiscUtils.setPassenger(event.getRightClicked(), event.getPlayer());
       }
       wolf.setSitting(false);
     }
@@ -302,7 +302,7 @@ public class Events implements Listener {
       if (!arena.getZombies().contains(e.getEntity())) {
         continue;
       }
-      Misc.getEntityAttribute((Zombie) e.getEntity(), Attribute.GENERIC_MAX_HEALTH).ifPresent(ai -> {
+      MiscUtils.getEntityAttribute((Zombie) e.getEntity(), Attribute.GENERIC_MAX_HEALTH).ifPresent(ai -> {
         e.getEntity().setCustomName(StringFormatUtils.getProgressBar((int) ((Zombie) e.getEntity()).getHealth(),
             (int) ai.getValue(),
             50, "|", ChatColor.YELLOW + "", ChatColor.GRAY + ""));
@@ -404,7 +404,7 @@ public class Events implements Listener {
         return;
       }
       for (Player p : arena.getPlayers()) {
-        Misc.getEntityAttribute(p, Attribute.GENERIC_MAX_HEALTH).ifPresent(ai -> ai.setBaseValue(ai.getValue() + 2.0));
+        MiscUtils.getEntityAttribute(p, Attribute.GENERIC_MAX_HEALTH).ifPresent(ai -> ai.setBaseValue(ai.getValue() + 2.0));
         p.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage(Messages.ROTTEN_FLESH_LEVEL_UP));
       }
     }

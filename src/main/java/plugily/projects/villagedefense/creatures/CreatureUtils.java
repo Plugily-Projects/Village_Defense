@@ -21,12 +21,13 @@ package plugily.projects.villagedefense.creatures;
 import org.bukkit.ChatColor;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Zombie;
+
+import pl.plajerlair.commonsbox.minecraft.misc.MiscUtils;
 import pl.plajerlair.commonsbox.string.StringFormatUtils;
 import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.arena.Arena;
 import plugily.projects.villagedefense.arena.options.ArenaOption;
 import plugily.projects.villagedefense.handlers.language.LanguageManager;
-import plugily.projects.villagedefense.utils.Misc;
 
 import java.lang.reflect.Field;
 import java.security.AccessController;
@@ -92,8 +93,8 @@ public class CreatureUtils {
      * @param arena  arena to get health multiplier from
      */
     public static void applyAttributes(Zombie zombie, Arena arena) {
-        Misc.getEntityAttribute(zombie, Attribute.GENERIC_FOLLOW_RANGE).ifPresent(ai -> ai.setBaseValue(200.0D));
-        Misc.getEntityAttribute(zombie, Attribute.GENERIC_MAX_HEALTH).ifPresent(ai -> {
+        MiscUtils.getEntityAttribute(zombie, Attribute.GENERIC_FOLLOW_RANGE).ifPresent(ai -> ai.setBaseValue(200.0D));
+        MiscUtils.getEntityAttribute(zombie, Attribute.GENERIC_MAX_HEALTH).ifPresent(ai -> {
           ai.setBaseValue(ai.getValue() * arena.getOption(ArenaOption.ZOMBIE_DIFFICULTY_MULTIPLIER));
           zombie.setHealth(ai.getValue());
           if (plugin.getConfig().getBoolean("Simple-Zombie-Health-Bar-Enabled", true)) {

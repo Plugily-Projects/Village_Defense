@@ -25,13 +25,13 @@ import org.bukkit.entity.Player;
 import org.bukkit.entity.Zombie;
 import org.bukkit.potion.PotionEffectType;
 import pl.plajerlair.commonsbox.minecraft.compat.ServerVersion;
+import pl.plajerlair.commonsbox.minecraft.misc.MiscUtils;
 import pl.plajerlair.commonsbox.minecraft.serialization.InventorySerializer;
 import plugily.projects.villagedefense.ConfigPreferences;
 import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.arena.initializers.*;
 import plugily.projects.villagedefense.handlers.language.Messages;
 import plugily.projects.villagedefense.user.User;
-import plugily.projects.villagedefense.utils.Misc;
 
 /**
  * @author Plajer
@@ -51,20 +51,20 @@ public class ArenaUtils {
 
   public static void hidePlayer(Player p, Arena arena) {
     for (Player player : arena.getPlayers()) {
-      Misc.hidePlayer(player, p);
+      MiscUtils.hidePlayer(plugin, player, p);
     }
   }
 
   public static void showPlayer(Player p, Arena arena) {
     for (Player player : arena.getPlayers()) {
-      Misc.showPlayer(player, p);
+      MiscUtils.showPlayer(plugin, player, p);
     }
   }
 
   public static void resetPlayerAfterGame(Player player) {
     for (Player players : plugin.getServer().getOnlinePlayers()) {
-      Misc.showPlayer(players, player);
-      Misc.showPlayer(player, players);
+      MiscUtils.showPlayer(plugin, players, player);
+      MiscUtils.showPlayer(plugin, player, players);
     }
     player.setGlowing(false);
     player.setGameMode(GameMode.SURVIVAL);
@@ -73,7 +73,7 @@ public class ArenaUtils {
     player.setAllowFlight(false);
     player.getInventory().clear();
     player.getInventory().setArmorContents(null);
-    Misc.getEntityAttribute(player, Attribute.GENERIC_MAX_HEALTH).ifPresent(ai -> {
+    MiscUtils.getEntityAttribute(player, Attribute.GENERIC_MAX_HEALTH).ifPresent(ai -> {
       ai.setBaseValue(20.0);
       player.setHealth(ai.getValue());
     });
