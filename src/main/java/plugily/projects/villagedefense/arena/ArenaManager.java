@@ -177,7 +177,7 @@ public class ArenaManager {
     }
     user.setKit(KitRegistry.getDefaultKit());
     for (SpecialItem item : plugin.getSpecialItemManager().getSpecialItems()) {
-      if (item.getDisplayStage() != SpecialItem.DisplayStage.LOBBY) {
+      if (item.getDisplayStage() == SpecialItem.DisplayStage.LOBBY) {
         player.getInventory().setItem(item.getSlot(), item.getItemStack());
       }
     }
