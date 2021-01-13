@@ -240,18 +240,11 @@ public class Utils {
     return m.invoke(iChatBaseComponent, "{\"text\":\"" + name + "\"}");
   }
 
-  //cache material to avoid heavy load when it is executed on every event
-  private static Material cachedDoor;
-
   public static Material getCachedDoor(Block block) {
-    if (cachedDoor != null) {
-      return cachedDoor;
-    }
-
+    //material can not be cached as we allow other door types
     if (block == null) {
-      return cachedDoor = XMaterial.OAK_DOOR.parseMaterial();
+      return XMaterial.OAK_DOOR.parseMaterial();
     }
-
-    return cachedDoor = (MaterialUtil.isDoor(block.getType()) ? block.getType() : Material.AIR);
+    return (MaterialUtil.isDoor(block.getType()) ? block.getType() : Material.AIR);
   }
 }

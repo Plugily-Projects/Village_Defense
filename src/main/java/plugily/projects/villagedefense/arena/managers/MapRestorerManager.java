@@ -137,7 +137,7 @@ public class MapRestorerManager {
   private void restoreTopHalfDoorPart(Block block) {
     block.setType(Utils.getCachedDoor(block));
     BlockState doorBlockState = block.getState();
-    //if (ServerVersion.Version.isCurrentLower(ServerVersion.Version.v1_16_R1)) {
+    if (ServerVersion.Version.isCurrentLower(ServerVersion.Version.v1_16_R1)) {
       Door doorBlockData = new Door(TreeSpecies.GENERIC, Utils.getFacingByByte((byte) 8));
 
       doorBlockData.setTopHalf(true);
@@ -145,49 +145,47 @@ public class MapRestorerManager {
 
       doorBlockState.setType(doorBlockData.getItemType());
       doorBlockState.setData(doorBlockData);
-    /*} else {
+    } else {
       org.bukkit.block.data.type.Door doorBlockData = (org.bukkit.block.data.type.Door) block.getBlockData();
 
       doorBlockData.setHalf(org.bukkit.block.data.Bisected.Half.TOP);
       doorBlockData.setFacing(doorBlockData.getFacing());
 
       doorBlockState.setType(doorBlockData.getMaterial());
-      doorBlockState.setBlockData(doorBlockData);
-      /*try {
+      try {
         doorBlockState.getClass().getDeclaredMethod("setBlockData", doorBlockData.getClass()).invoke(doorBlockData);
       } catch (NoSuchMethodException ignored) {
       } catch (Exception e) {
         e.printStackTrace();
-      }*/
-    //}
+      }
+    }
     doorBlockState.update(true);
   }
 
   private void restoreBottomHalfDoorPart(Block block, byte doorData) {
     block.setType(Utils.getCachedDoor(block));
     BlockState doorBlockState = block.getState();
-    //if (ServerVersion.Version.isCurrentLower(ServerVersion.Version.v1_16_R1)) {
+    if (ServerVersion.Version.isCurrentLower(ServerVersion.Version.v1_16_R1)) {
       Door doorBlockData = new Door(TreeSpecies.GENERIC, Utils.getFacingByByte(doorData));
 
       doorBlockData.setTopHalf(false);
       doorBlockData.setFacingDirection(doorBlockData.getFacing());
 
       doorBlockState.setData(doorBlockData);
-    /*} else {
+    } else {
       org.bukkit.block.data.type.Door doorBlockData = (org.bukkit.block.data.type.Door) block.getBlockData();
 
       doorBlockData.setHalf(org.bukkit.block.data.Bisected.Half.BOTTOM);
       doorBlockData.setFacing(doorBlockData.getFacing());
 
       doorBlockState.setType(doorBlockData.getMaterial());
-      doorBlockState.setBlockData(doorBlockData);
-      /*try {
+      try {
         doorBlockState.getClass().getDeclaredMethod("setBlockData", doorBlockData.getClass()).invoke(doorBlockData);
       } catch (NoSuchMethodException n) {
       } catch (Exception e) {
         e.printStackTrace();
-      }*/
-    //}
+      }
+    }
     doorBlockState.update(true);
   }
 
