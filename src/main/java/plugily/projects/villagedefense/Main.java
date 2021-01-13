@@ -394,13 +394,12 @@ public class Main extends JavaPlugin {
       for (Player player : arena.getPlayers()) {
         arena.doBarAction(Arena.BarAction.REMOVE, player);
         player.setFlySpeed(0.1f);
-        if (configPreferences.getOption(ConfigPreferences.Option.INVENTORY_MANAGER_ENABLED)) {
-          InventorySerializer.loadInventory(this, player);
-          continue;
-        }
         player.getInventory().clear();
         player.getInventory().setArmorContents(null);
         player.getActivePotionEffects().forEach(pe -> player.removePotionEffect(pe.getType()));
+        if (configPreferences.getOption(ConfigPreferences.Option.INVENTORY_MANAGER_ENABLED)) {
+          InventorySerializer.loadInventory(this, player);
+        }
       }
 
       arena.getMapRestorerManager().fullyRestoreArena();
