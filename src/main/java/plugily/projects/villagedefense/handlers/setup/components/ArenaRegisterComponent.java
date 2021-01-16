@@ -124,12 +124,10 @@ public class ArenaRegisterComponent implements SetupComponent {
       arena.setEndLocation(LocationSerializer.getLocation(config.getString("instances." + arena.getId() + ".Endlocation")));
       ArenaUtils.setWorld(arena);
       for (String string : config.getConfigurationSection("instances." + arena.getId() + ".zombiespawns").getKeys(false)) {
-        String path = "instances." + arena.getId() + ".zombiespawns." + string;
-        arena.addZombieSpawn(LocationSerializer.getLocation(config.getString(path)));
+        arena.addZombieSpawn(LocationSerializer.getLocation(config.getString("instances." + arena.getId() + ".zombiespawns." + string)));
       }
       for (String string : config.getConfigurationSection("instances." + arena.getId() + ".villagerspawns").getKeys(false)) {
-        String path = "instances." + arena.getId() + ".villagerspawns." + string;
-        arena.addVillagerSpawn(LocationSerializer.getLocation(config.getString(path)));
+        arena.addVillagerSpawn(LocationSerializer.getLocation(config.getString("instances." + arena.getId() + ".villagerspawns." + string)));
       }
       for (String string : config.getConfigurationSection("instances." + arena.getId() + ".doors").getKeys(false)) {
         String path = "instances." + arena.getId() + ".doors." + string + ".";

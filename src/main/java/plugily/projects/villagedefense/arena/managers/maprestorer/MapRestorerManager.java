@@ -16,16 +16,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package plugily.projects.villagedefense.arena.managers;
+package plugily.projects.villagedefense.arena.managers.maprestorer;
 
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.TreeSpecies;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.entity.EntityType;
 import org.bukkit.material.Door;
-import pl.plajerlair.commonsbox.minecraft.compat.ServerVersion;
 import pl.plajerlair.commonsbox.minecraft.compat.XMaterial;
 import plugily.projects.villagedefense.arena.Arena;
 import plugily.projects.villagedefense.utils.Debugger;
@@ -43,8 +41,8 @@ import java.util.logging.Level;
 @SuppressWarnings("deprecation")
 public class MapRestorerManager {
 
-  private final Map<Location, Byte> doorBlocks = new LinkedHashMap<>();
-  private final Arena arena;
+  public final Map<Location, Byte> doorBlocks = new LinkedHashMap<>();
+  public final Arena arena;
 
   public MapRestorerManager(Arena arena) {
     this.arena = arena;
@@ -95,23 +93,11 @@ public class MapRestorerManager {
     arena.getWolves().clear();
   }
 
-  private void restoreDoors() {
+  public void restoreDoors() {
     int i = 0;
     for (Map.Entry<Location, Byte> entry : doorBlocks.entrySet()) {
       Block block = entry.getKey().getBlock();
       Byte doorData = entry.getValue();
-      if (ServerVersion.Version.isCurrentEqualOrLower(ServerVersion.Version.v1_11_R1)) {
-        Material mat = Utils.getCachedDoor(block);
-        try {
-          int id = (int) mat.getClass().getDeclaredMethod("getId").invoke(mat);
-          Block.class.getDeclaredMethod("setTypeIdAndData", int.class, Byte.class, boolean.class)
-                  .invoke(block, id, doorData, false);
-        } catch (Exception e) {
-          e.printStackTrace();
-        }
-
-        i++;
-      } else {
         try {
           if (block.getType() != XMaterial.AIR.parseMaterial()) {
             i++;
@@ -127,17 +113,15 @@ public class MapRestorerManager {
         } catch (Exception ex) {
           Debugger.debug(Level.WARNING, "Door has failed to load for arena {0} message {1} type {2} skipping!", arena.getId(), ex.getMessage(), ex.getCause());
         }
-      }
     }
     if (i != doorBlocks.size()) {
       Debugger.debug(Level.WARNING, "Failed to load doors for {0}! Expected {1} got {2}", arena.getId(), doorBlocks.size(), i);
     }
   }
 
-  private void restoreTopHalfDoorPart(Block block) {
+  public void restoreTopHalfDoorPart(Block block) {
     block.setType(Utils.getCachedDoor(block));
     BlockState doorBlockState = block.getState();
-    //if (ServerVersion.Version.isCurrentLower(ServerVersion.Version.v1_16_R1)) {
       Door doorBlockData = new Door(TreeSpecies.GENERIC, Utils.getFacingByByte((byte) 8));
 
       doorBlockData.setTopHalf(true);
@@ -145,49 +129,19 @@ public class MapRestorerManager {
 
       doorBlockState.setType(doorBlockData.getItemType());
       doorBlockState.setData(doorBlockData);
-    /*} else {
-      org.bukkit.block.data.type.Door doorBlockData = (org.bukkit.block.data.type.Door) block.getBlockData();
 
-      doorBlockData.setHalf(org.bukkit.block.data.Bisected.Half.TOP);
-      doorBlockData.setFacing(doorBlockData.getFacing());
-
-      doorBlockState.setType(doorBlockData.getMaterial());
-      doorBlockState.setBlockData(doorBlockData);
-      /*try {
-        doorBlockState.getClass().getDeclaredMethod("setBlockData", doorBlockData.getClass()).invoke(doorBlockData);
-      } catch (NoSuchMethodException ignored) {
-      } catch (Exception e) {
-        e.printStackTrace();
-      }*/
-    //}
     doorBlockState.update(true);
   }
 
-  private void restoreBottomHalfDoorPart(Block block, byte doorData) {
+  public void restoreBottomHalfDoorPart(Block block, byte doorData) {
     block.setType(Utils.getCachedDoor(block));
     BlockState doorBlockState = block.getState();
-    //if (ServerVersion.Version.isCurrentLower(ServerVersion.Version.v1_16_R1)) {
       Door doorBlockData = new Door(TreeSpecies.GENERIC, Utils.getFacingByByte(doorData));
 
       doorBlockData.setTopHalf(false);
       doorBlockData.setFacingDirection(doorBlockData.getFacing());
 
       doorBlockState.setData(doorBlockData);
-    /*} else {
-      org.bukkit.block.data.type.Door doorBlockData = (org.bukkit.block.data.type.Door) block.getBlockData();
-
-      doorBlockData.setHalf(org.bukkit.block.data.Bisected.Half.BOTTOM);
-      doorBlockData.setFacing(doorBlockData.getFacing());
-
-      doorBlockState.setType(doorBlockData.getMaterial());
-      doorBlockState.setBlockData(doorBlockData);
-      /*try {
-        doorBlockState.getClass().getDeclaredMethod("setBlockData", doorBlockData.getClass()).invoke(doorBlockData);
-      } catch (NoSuchMethodException n) {
-      } catch (Exception e) {
-        e.printStackTrace();
-      }*/
-    //}
     doorBlockState.update(true);
   }
 

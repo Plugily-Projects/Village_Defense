@@ -361,8 +361,9 @@ Signs:
     - "&5[%playersize%/%maxplayers%]"
 
 Arena-Selector:
-  Inv-Title: "Arena selector"
+  Inv-Title: "VD > Arena selector"
   Item:
+    Name: "&f%mapname%"
     Lore:
       - "&aVillage Defense &f- &e%mapname%"
       - " "
@@ -430,4 +431,4 @@ Validator:
 
 # Don't edit it. But who's stopping you? It's your server!
 # Really, don't edit ;p
-File-Version-Do-Not-Edit: 16
+File-Version-Do-Not-Edit: 17

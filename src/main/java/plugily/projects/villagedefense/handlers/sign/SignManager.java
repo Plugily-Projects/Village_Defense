@@ -121,8 +121,12 @@ public class SignManager implements Listener {
       return;
     }
     arenaSigns.remove(arenaSign);
-    String location = e.getBlock().getWorld().getName() + "," + e.getBlock().getX() + "," + e.getBlock().getY() + "," + e.getBlock().getZ() + "," + "0.0,0.0";
     FileConfiguration config = ConfigUtils.getConfig(plugin, Constants.Files.ARENAS.getName());
+    if (!config.isConfigurationSection("instances")) {
+      return;
+    }
+
+    String location = e.getBlock().getWorld().getName() + "," + e.getBlock().getX() + "," + e.getBlock().getY() + "," + e.getBlock().getZ() + "," + "0.0,0.0";
     for (String arena : config.getConfigurationSection("instances").getKeys(false)) {
       for (String sign : config.getStringList("instances." + arena + ".signs")) {
         if (!sign.equals(location)) {
@@ -176,7 +180,7 @@ public class SignManager implements Listener {
 
     arenaSigns.clear();
     FileConfiguration config = ConfigUtils.getConfig(plugin, Constants.Files.ARENAS.getName());
-    if (!config.contains("instances")) {
+    if (!config.isConfigurationSection("instances")) {
       Debugger.debug(Level.WARNING, "No arena instances found. Signs won't be loaded");
       return;
     }

@@ -24,7 +24,7 @@
 
     <groupId>plugily.projects</groupId>
     <artifactId>villagedefense</artifactId>
-    <version>4.5.5</version>
+    <version>4.5.5-b5-debug</version>
     <name>VillageDefense</name>
 
     <properties>
@@ -203,19 +203,19 @@
         <dependency>
             <groupId>pl.plajer</groupId>
             <artifactId>commons-box-classic</artifactId>
-            <version>1.2.0</version>
+            <version>1.2.2</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>pl.plajer</groupId>
             <artifactId>commons-box-database</artifactId>
-            <version>1.2.0</version>
+            <version>1.2.2</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>pl.plajer</groupId>
             <artifactId>commons-box-minecraft</artifactId>
-            <version>1.2.0</version>
+            <version>1.2.2</version>
             <scope>compile</scope>
         </dependency>
         <dependency>

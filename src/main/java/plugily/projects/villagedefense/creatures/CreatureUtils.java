@@ -21,6 +21,8 @@ package plugily.projects.villagedefense.creatures;
 import org.bukkit.ChatColor;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Zombie;
+
+import pl.plajerlair.commonsbox.minecraft.misc.MiscUtils;
 import pl.plajerlair.commonsbox.string.StringFormatUtils;
 import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.arena.Arena;
@@ -91,15 +93,16 @@ public class CreatureUtils {
      * @param arena  arena to get health multiplier from
      */
     public static void applyAttributes(Zombie zombie, Arena arena) {
-        zombie.getAttribute(Attribute.GENERIC_FOLLOW_RANGE).setBaseValue(200.0D);
-        zombie.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(zombie.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue() * arena.getOption(ArenaOption.ZOMBIE_DIFFICULTY_MULTIPLIER));
-        zombie.setHealth(zombie.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue());
-        if (plugin.getConfig().getBoolean("Simple-Zombie-Health-Bar-Enabled", true)) {
-            zombie.setCustomNameVisible(true);
-            zombie.setCustomName(StringFormatUtils.getProgressBar((int) zombie.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue(),
-                    (int) zombie.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue(), 50, "|",
-                    ChatColor.YELLOW + "", ChatColor.GRAY + ""));
-        }
+        MiscUtils.getEntityAttribute(zombie, Attribute.GENERIC_FOLLOW_RANGE).ifPresent(ai -> ai.setBaseValue(200.0D));
+        MiscUtils.getEntityAttribute(zombie, Attribute.GENERIC_MAX_HEALTH).ifPresent(ai -> {
+          ai.setBaseValue(ai.getValue() * arena.getOption(ArenaOption.ZOMBIE_DIFFICULTY_MULTIPLIER));
+          zombie.setHealth(ai.getValue());
+          if (plugin.getConfig().getBoolean("Simple-Zombie-Health-Bar-Enabled", true)) {
+              zombie.setCustomNameVisible(true);
+              zombie.setCustomName(StringFormatUtils.getProgressBar((int) ai.getValue(), (int) ai.getValue(), 50, "|",
+                      ChatColor.YELLOW + "", ChatColor.GRAY + ""));
+          }
+        });
     }
 
     public static float getZombieSpeed() {
