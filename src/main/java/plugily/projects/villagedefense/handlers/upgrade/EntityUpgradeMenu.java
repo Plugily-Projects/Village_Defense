@@ -1,6 +1,6 @@
 /*
  * Village Defense - Protect villagers from hordes of zombies
- * Copyright (C) 2020  Plugily Projects - maintained by 2Wild4You, Tigerpanzer_02 and contributors
+ * Copyright (C) 2021  Plugily Projects - maintained by 2Wild4You, Tigerpanzer_02 and contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -35,6 +35,7 @@ import org.jetbrains.annotations.Nullable;
 
 import pl.plajerlair.commonsbox.minecraft.compat.XMaterial;
 import pl.plajerlair.commonsbox.minecraft.item.ItemBuilder;
+import pl.plajerlair.commonsbox.minecraft.misc.MiscUtils;
 import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.api.StatsStorage;
 import plugily.projects.villagedefense.api.event.player.VillagePlayerEntityUpgradeEvent;
@@ -219,15 +220,15 @@ public class EntityUpgradeMenu {
     switch (upgrade.getId()) {
       case "Damage":
         if (en.getType() == EntityType.WOLF) {
-          ((LivingEntity) en).getAttribute(Attribute.GENERIC_ATTACK_DAMAGE).setBaseValue(2.0 + (tier * 3));
+          MiscUtils.getEntityAttribute((LivingEntity) en, Attribute.GENERIC_MAX_HEALTH).ifPresent(ai -> ai.setBaseValue(2.0 + (tier * 3)));
         }
         //attribute damage doesn't exist for golems
         break;
       case "Health":
-        ((LivingEntity) en).getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(100.0 + (100.0 * ((double) tier / 2.0)));
+        MiscUtils.getEntityAttribute((LivingEntity) en, Attribute.GENERIC_MAX_HEALTH).ifPresent(ai -> ai.setBaseValue(100.0 + (100.0 * ((double) tier / 2.0))));
         break;
       case "Speed":
-        ((LivingEntity) en).getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(0.25 + (0.25 * ((double) tier / 5.0)));
+        MiscUtils.getEntityAttribute((LivingEntity) en, Attribute.GENERIC_MOVEMENT_SPEED).ifPresent(ai -> ai.setBaseValue(0.25 + (0.25 * ((double) tier / 5.0))));
         break;
       case "Swarm-Awareness":
       case "Final-Defense":

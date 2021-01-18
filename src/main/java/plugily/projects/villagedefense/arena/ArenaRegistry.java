@@ -1,6 +1,6 @@
 /*
  * Village Defense - Protect villagers from hordes of zombies
- * Copyright (C) 2020  Plugily Projects - maintained by 2Wild4You, Tigerpanzer_02 and contributors
+ * Copyright (C) 2021  Plugily Projects - maintained by 2Wild4You, Tigerpanzer_02 and contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -166,8 +166,7 @@ public class ArenaRegistry {
 
       if (config.isConfigurationSection(key + "zombiespawns")) {
         for (String string : config.getConfigurationSection(key + "zombiespawns").getKeys(false)) {
-          String path = key + "zombiespawns." + string;
-          arena.addZombieSpawn(LocationSerializer.getLocation(config.getString(path)));
+          arena.addZombieSpawn(LocationSerializer.getLocation(config.getString(key + "zombiespawns." + string)));
         }
       } else {
         Debugger.sendConsoleMsg(plugin.getChatManager().colorMessage(Messages.VALIDATOR_INVALID_ARENA_CONFIGURATION).replace("%arena%", id).replace("%error%", "ZOMBIE SPAWNS"));
@@ -178,8 +177,7 @@ public class ArenaRegistry {
 
       if (config.isConfigurationSection(key + "villagerspawns")) {
         for (String string : config.getConfigurationSection(key + "villagerspawns").getKeys(false)) {
-          String path = key + "villagerspawns." + string;
-          arena.addVillagerSpawn(LocationSerializer.getLocation(config.getString(path)));
+          arena.addVillagerSpawn(LocationSerializer.getLocation(config.getString(key + "villagerspawns." + string)));
         }
       } else {
         Debugger.sendConsoleMsg(plugin.getChatManager().colorMessage(Messages.VALIDATOR_INVALID_ARENA_CONFIGURATION).replace("%arena%", id).replace("%error%", "VILLAGER SPAWNS"));

@@ -1,6 +1,6 @@
 /*
  * Village Defense - Protect villagers from hordes of zombies
- * Copyright (C) 2020  Plugily Projects - maintained by 2Wild4You, Tigerpanzer_02 and contributors
+ * Copyright (C) 2021  Plugily Projects - maintained by 2Wild4You, Tigerpanzer_02 and contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,14 +29,16 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.TestOnly;
+import pl.plajerlair.commonsbox.minecraft.compat.ServerVersion;
 import pl.plajerlair.commonsbox.minecraft.configuration.ConfigUtils;
 import plugily.projects.villagedefense.ConfigPreferences;
 import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.api.event.game.VillageGameStateChangeEvent;
-import plugily.projects.villagedefense.arena.managers.MapRestorerManager;
+import plugily.projects.villagedefense.arena.managers.maprestorer.MapRestorerManager;
 import plugily.projects.villagedefense.arena.managers.ScoreboardManager;
 import plugily.projects.villagedefense.arena.managers.ShopManager;
 import plugily.projects.villagedefense.arena.managers.ZombieSpawnManager;
+import plugily.projects.villagedefense.arena.managers.maprestorer.MapRestorerManagerLegacy;
 import plugily.projects.villagedefense.arena.options.ArenaOption;
 import plugily.projects.villagedefense.arena.states.*;
 import plugily.projects.villagedefense.handlers.language.Messages;
@@ -102,6 +104,9 @@ public abstract class Arena extends BukkitRunnable {
     shopManager = new ShopManager(this);
     zombieSpawnManager = new ZombieSpawnManager(this);
     scoreboardManager = new ScoreboardManager(this);
+    if (ServerVersion.Version.isCurrentEqualOrLower(ServerVersion.Version.v1_16_R1)) {
+      mapRestorerManager = new MapRestorerManagerLegacy(this);
+    } else
     mapRestorerManager = new MapRestorerManager(this);
     setDefaultValues();
     gameStateHandlers.put(ArenaState.WAITING_FOR_PLAYERS, new WaitingState());

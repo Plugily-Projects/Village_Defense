@@ -1,6 +1,6 @@
 /*
  * Village Defense - Protect villagers from hordes of zombies
- * Copyright (C) 2020  Plugily Projects - maintained by 2Wild4You, Tigerpanzer_02 and contributors
+ * Copyright (C) 2021  Plugily Projects - maintained by 2Wild4You, Tigerpanzer_02 and contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -72,7 +72,9 @@ public class ConfigPreferences {
     BUNGEE_ENABLED("BungeeActivated", false), HOLOGRAMS_ENABLED("HologramsActivated", false),
     UPGRADES_ENABLED("UpgradesActivated", false), ENABLE_SHORT_COMMANDS("Enable-Short-Commands", false),
     DISABLE_SEPARATE_CHAT("Disable-Separate-Chat", false), DISABLE_PARTIES("Disable-Parties", true),
-    RESPAWN_AFTER_WAVE("Respawn-After-Wave", true), INGAME_JOIN_RESPAWN("InGame-Join-Respawn", true);
+    RESPAWN_AFTER_WAVE("Respawn-After-Wave", true), INGAME_JOIN_RESPAWN("InGame-Join-Respawn", true),
+    CAN_BUY_GOLEMSWOLVES_IF_THEY_DIED("Players-Can-Buy-GolemsWolves-If-They-Died", false),
+    ;
 
     private final String path;
     private final boolean def;

@@ -1,6 +1,6 @@
 /*
  * Village Defense - Protect villagers from hordes of zombies
- * Copyright (C) 2020  Plugily Projects - maintained by 2Wild4You, Tigerpanzer_02 and contributors
+ * Copyright (C) 2021  Plugily Projects - maintained by 2Wild4You, Tigerpanzer_02 and contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -64,22 +64,22 @@ public class PlayerAmountComponents implements SetupComponent {
         .lore(ChatColor.DARK_GRAY + "for game to start lobby countdown)")
         .lore("", setupInventory.getSetupUtilities().isOptionDone("instances." + arena.getId() + ".minimumplayers"))
         .build(), e -> {
-      ItemStack itemStack = e.getInventory().getItem(e.getSlot());
-      if (itemStack == null || e.getCurrentItem() == null) {
+      ItemStack itemStack = e.getInventory().getItem(e.getSlot()), currentItem = e.getCurrentItem();
+      if (itemStack == null || currentItem == null) {
         return;
       }
       if (e.getClick().isRightClick()) {
-        itemStack.setAmount(e.getCurrentItem().getAmount() + 1);
+        itemStack.setAmount(currentItem.getAmount() + 1);
       }
       if (e.getClick().isLeftClick()) {
-        itemStack.setAmount(e.getCurrentItem().getAmount() - 1);
+        itemStack.setAmount(currentItem.getAmount() - 1);
       }
       if (itemStack.getAmount() < 1) {
         e.getWhoClicked().sendMessage(plugin.getChatManager().colorRawMessage("&c&l✖ &cWarning | Please do not set amount lower than 1!"));
         itemStack.setAmount(1);
       }
-      config.set("instances." + arena.getId() + ".minimumplayers", e.getCurrentItem().getAmount());
-      arena.setMinimumPlayers(e.getCurrentItem().getAmount());
+      config.set("instances." + arena.getId() + ".minimumplayers", currentItem.getAmount());
+      arena.setMinimumPlayers(currentItem.getAmount());
       ConfigUtils.saveConfig(plugin, config, Constants.Files.ARENAS.getName());
       new SetupInventory(arena, setupInventory.getPlayer()).openInventory();
     }), 3, 0);
@@ -92,22 +92,22 @@ public class PlayerAmountComponents implements SetupComponent {
         .lore(ChatColor.DARK_GRAY + "(how many players arena can hold)")
         .lore("", setupInventory.getSetupUtilities().isOptionDone("instances." + arena.getId() + ".maximumplayers"))
         .build(), e -> {
-      ItemStack itemStack = e.getInventory().getItem(e.getSlot());
-      if (itemStack == null || e.getCurrentItem() == null) {
+      ItemStack itemStack = e.getInventory().getItem(e.getSlot()), currentItem = e.getCurrentItem();
+      if (itemStack == null || currentItem == null) {
         return;
       }
       if (e.getClick().isRightClick()) {
-        e.getCurrentItem().setAmount(e.getCurrentItem().getAmount() + 1);
+        currentItem.setAmount(currentItem.getAmount() + 1);
       }
       if (e.getClick().isLeftClick()) {
-        e.getCurrentItem().setAmount(e.getCurrentItem().getAmount() - 1);
+        currentItem.setAmount(currentItem.getAmount() - 1);
       }
-      if (e.getCurrentItem().getAmount() < 1) {
+      if (currentItem.getAmount() < 1) {
         e.getWhoClicked().sendMessage(plugin.getChatManager().colorRawMessage("&c&l✖ &cWarning | Please do not set amount lower than 1!"));
-        e.getCurrentItem().setAmount(1);
+        currentItem.setAmount(1);
       }
-      config.set("instances." + arena.getId() + ".maximumplayers", e.getCurrentItem().getAmount());
-      arena.setMaximumPlayers(e.getCurrentItem().getAmount());
+      config.set("instances." + arena.getId() + ".maximumplayers", currentItem.getAmount());
+      arena.setMaximumPlayers(currentItem.getAmount());
       ConfigUtils.saveConfig(plugin, config, Constants.Files.ARENAS.getName());
       new SetupInventory(arena, setupInventory.getPlayer()).openInventory();
     }), 4, 0);

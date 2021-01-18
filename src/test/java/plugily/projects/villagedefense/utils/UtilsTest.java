@@ -1,6 +1,6 @@
 /*
  * Village Defense - Protect villagers from hordes of zombies
- * Copyright (C) 2020  Plugily Projects - maintained by 2Wild4You, Tigerpanzer_02 and contributors
+ * Copyright (C) 2021  Plugily Projects - maintained by 2Wild4You, Tigerpanzer_02 and contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,6 +26,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.junit.Assert;
 import org.junit.Test;
+import pl.plajerlair.commonsbox.number.NumberUtils;
 import plugily.projects.villagedefense.MainMock;
 import plugily.projects.villagedefense.MockUtils;
 import plugily.projects.villagedefense.handlers.language.Messages;
@@ -59,11 +60,11 @@ public class UtilsTest {
 
   @Test
   public void isInteger() {
-    Assert.assertFalse(Utils.isInteger("1.5"));
+    Assert.assertFalse(NumberUtils.isInteger("1.5"));
     System.out.println("> Utils#isInteger false for 1.5 | PASSED");
-    Assert.assertFalse(Utils.isInteger("text"));
+    Assert.assertFalse(NumberUtils.isInteger("text"));
     System.out.println("> Utils#isInteger false for 'text' | PASSED");
-    Assert.assertTrue(Utils.isInteger("123"));
+    Assert.assertTrue(NumberUtils.isInteger("123"));
     System.out.println("> Utils#isInteger true for 123 | PASSED");
   }
 

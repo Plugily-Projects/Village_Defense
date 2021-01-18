@@ -1,6 +1,6 @@
 /*
  * Village Defense - Protect villagers from hordes of zombies
- * Copyright (C) 2020  Plugily Projects - maintained by 2Wild4You, Tigerpanzer_02 and contributors
+ * Copyright (C) 2021  Plugily Projects - maintained by 2Wild4You, Tigerpanzer_02 and contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -124,12 +124,10 @@ public class ArenaRegisterComponent implements SetupComponent {
       arena.setEndLocation(LocationSerializer.getLocation(config.getString("instances." + arena.getId() + ".Endlocation")));
       ArenaUtils.setWorld(arena);
       for (String string : config.getConfigurationSection("instances." + arena.getId() + ".zombiespawns").getKeys(false)) {
-        String path = "instances." + arena.getId() + ".zombiespawns." + string;
-        arena.addZombieSpawn(LocationSerializer.getLocation(config.getString(path)));
+        arena.addZombieSpawn(LocationSerializer.getLocation(config.getString("instances." + arena.getId() + ".zombiespawns." + string)));
       }
       for (String string : config.getConfigurationSection("instances." + arena.getId() + ".villagerspawns").getKeys(false)) {
-        String path = "instances." + arena.getId() + ".villagerspawns." + string;
-        arena.addVillagerSpawn(LocationSerializer.getLocation(config.getString(path)));
+        arena.addVillagerSpawn(LocationSerializer.getLocation(config.getString("instances." + arena.getId() + ".villagerspawns." + string)));
       }
       for (String string : config.getConfigurationSection("instances." + arena.getId() + ".doors").getKeys(false)) {
         String path = "instances." + arena.getId() + ".doors." + string + ".";

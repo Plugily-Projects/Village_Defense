@@ -1,6 +1,6 @@
 /*
  * Village Defense - Protect villagers from hordes of zombies
- * Copyright (C) 2020  Plugily Projects - maintained by 2Wild4You, Tigerpanzer_02 and contributors
+ * Copyright (C) 2021  Plugily Projects - maintained by 2Wild4You, Tigerpanzer_02 and contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,13 +25,13 @@ import org.bukkit.entity.Player;
 import org.bukkit.entity.Zombie;
 import org.bukkit.potion.PotionEffectType;
 import pl.plajerlair.commonsbox.minecraft.compat.ServerVersion;
+import pl.plajerlair.commonsbox.minecraft.misc.MiscUtils;
 import pl.plajerlair.commonsbox.minecraft.serialization.InventorySerializer;
 import plugily.projects.villagedefense.ConfigPreferences;
 import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.arena.initializers.*;
 import plugily.projects.villagedefense.handlers.language.Messages;
 import plugily.projects.villagedefense.user.User;
-import plugily.projects.villagedefense.utils.NMS;
 
 /**
  * @author Plajer
@@ -51,20 +51,20 @@ public class ArenaUtils {
 
   public static void hidePlayer(Player p, Arena arena) {
     for (Player player : arena.getPlayers()) {
-      NMS.hidePlayer(player, p);
+      MiscUtils.hidePlayer(plugin, player, p);
     }
   }
 
   public static void showPlayer(Player p, Arena arena) {
     for (Player player : arena.getPlayers()) {
-      NMS.showPlayer(player, p);
+      MiscUtils.showPlayer(plugin, player, p);
     }
   }
 
   public static void resetPlayerAfterGame(Player player) {
     for (Player players : plugin.getServer().getOnlinePlayers()) {
-      NMS.showPlayer(players, player);
-      NMS.showPlayer(player, players);
+      MiscUtils.showPlayer(plugin, players, player);
+      MiscUtils.showPlayer(plugin, player, players);
     }
     player.setGlowing(false);
     player.setGameMode(GameMode.SURVIVAL);
@@ -73,8 +73,10 @@ public class ArenaUtils {
     player.setAllowFlight(false);
     player.getInventory().clear();
     player.getInventory().setArmorContents(null);
-    player.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(20.0);
-    player.setHealth(player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue());
+    MiscUtils.getEntityAttribute(player, Attribute.GENERIC_MAX_HEALTH).ifPresent(ai -> {
+      ai.setBaseValue(20.0);
+      player.setHealth(ai.getValue());
+    });
     player.setFireTicks(0);
     player.setFoodLevel(20);
     if (plugin.getConfigPreferences().getOption(ConfigPreferences.Option.INVENTORY_MANAGER_ENABLED)) {
@@ -89,7 +91,7 @@ public class ArenaUtils {
       }
 
       User user = plugin.getUserManager().getUser(player);
-      if (!plugin.getConfigPreferences().getOption(ConfigPreferences.Option.INGAME_JOIN_RESPAWN) && user.isPermanentSpectator()){
+      if (!plugin.getConfigPreferences().getOption(ConfigPreferences.Option.INGAME_JOIN_RESPAWN) && user.isPermanentSpectator()) {
         continue;
       }
       user.setSpectator(false);

@@ -9,6 +9,13 @@ deploy webhooks to print changelog successfully
 
 That's all, matcher will stop when detects next line started with `###` match
 
+### 4.5.6 (04.12.2020 - 18.01.2021)
+* Added option to allow players to buy golems/wolves again if they died
+* Fix parsing oak door material in old versions
+* Added customizable item name in arena selector gui (by ajgeiss0702)
+* Fixed issue when sign instances section not found in file
+* Fixed vd items are not removed if inventory manager is enabled and the server is stopping
+
 ### 4.5.5 (30.12.2020)
 * Fixed Kit Menu does not work (NPE)
 

@@ -1,6 +1,6 @@
 /*
  * Village Defense - Protect villagers from hordes of zombies
- * Copyright (C) 2020  Plugily Projects - maintained by 2Wild4You, Tigerpanzer_02 and contributors
+ * Copyright (C) 2021  Plugily Projects - maintained by 2Wild4You, Tigerpanzer_02 and contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -121,8 +121,12 @@ public class SignManager implements Listener {
       return;
     }
     arenaSigns.remove(arenaSign);
-    String location = e.getBlock().getWorld().getName() + "," + e.getBlock().getX() + "," + e.getBlock().getY() + "," + e.getBlock().getZ() + "," + "0.0,0.0";
     FileConfiguration config = ConfigUtils.getConfig(plugin, Constants.Files.ARENAS.getName());
+    if (!config.isConfigurationSection("instances")) {
+      return;
+    }
+
+    String location = e.getBlock().getWorld().getName() + "," + e.getBlock().getX() + "," + e.getBlock().getY() + "," + e.getBlock().getZ() + "," + "0.0,0.0";
     for (String arena : config.getConfigurationSection("instances").getKeys(false)) {
       for (String sign : config.getStringList("instances." + arena + ".signs")) {
         if (!sign.equals(location)) {
@@ -176,7 +180,7 @@ public class SignManager implements Listener {
 
     arenaSigns.clear();
     FileConfiguration config = ConfigUtils.getConfig(plugin, Constants.Files.ARENAS.getName());
-    if (!config.contains("instances")) {
+    if (!config.isConfigurationSection("instances")) {
       Debugger.debug(Level.WARNING, "No arena instances found. Signs won't be loaded");
       return;
     }

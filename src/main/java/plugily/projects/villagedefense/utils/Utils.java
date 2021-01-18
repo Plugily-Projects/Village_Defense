@@ -1,6 +1,6 @@
 /*
  * Village Defense - Protect villagers from hordes of zombies
- * Copyright (C) 2020  Plugily Projects - maintained by 2Wild4You, Tigerpanzer_02 and contributors
+ * Copyright (C) 2021  Plugily Projects - maintained by 2Wild4You, Tigerpanzer_02 and contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,13 +29,13 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.PotionMeta;
-import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.potion.PotionData;
 import org.bukkit.potion.PotionType;
 import org.bukkit.util.BlockIterator;
 
 import pl.plajerlair.commonsbox.minecraft.compat.PacketUtils;
 import pl.plajerlair.commonsbox.minecraft.compat.ServerVersion;
+import pl.plajerlair.commonsbox.minecraft.compat.XMaterial;
 import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.arena.ArenaRegistry;
 import plugily.projects.villagedefense.handlers.language.Messages;
@@ -43,7 +43,6 @@ import plugily.projects.villagedefense.handlers.language.Messages;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.util.*;
-import java.util.concurrent.CompletableFuture;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -129,8 +128,8 @@ public class Utils {
   public static ItemStack getPotion(PotionType type, int tier, boolean splash) {
     ItemStack potion = new ItemStack(!splash ? Material.POTION : Material.SPLASH_POTION, 1);
     PotionMeta meta = (PotionMeta) potion.getItemMeta();
-      meta.setBasePotionData(new PotionData(type, false, tier >= 2 && !splash));
-      potion.setItemMeta(meta);
+    meta.setBasePotionData(new PotionData(type, false, tier >= 2 && !splash));
+    potion.setItemMeta(meta);
     return potion;
   }
 
@@ -170,19 +169,6 @@ public class Utils {
       }
   }
 
-  /**
-   * @param s string to check whether is integer number
-   * @return true if it is, false otherwise, like 12a, 12.03 33333333333333 etc.
-   */
-  public static boolean isInteger(String s) {
-    try {
-      Integer.parseInt(s);
-      return true;
-    } catch (NumberFormatException ex) {
-      return false;
-    }
-  }
-
   public static boolean checkIsInGameInstance(Player player) {
     if (ArenaRegistry.getArena(player) == null) {
       player.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage(Messages.COMMANDS_NOT_PLAYING));
@@ -197,43 +183,6 @@ public class Utils {
     }
     sender.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage(Messages.COMMANDS_NO_PERMISSION));
     return false;
-  }
-
-  public static String matchColorRegex(String s) {
-    String regex = "&?#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})";
-    Matcher matcher = Pattern.compile(regex).matcher(s);
-    while (matcher.find()) {
-      String group = matcher.group(0);
-      String group2 = matcher.group(1);
-
-      try {
-        s = s.replace(group, net.md_5.bungee.api.ChatColor.of("#" + group2) + "");
-      } catch (Exception e) {
-        Debugger.debug("Bad hex color match: " + group);
-      }
-    }
-
-    return s;
-  }
-
-  @SuppressWarnings("deprecation")
-  public static SkullMeta setPlayerHead(Player player, SkullMeta meta) {
-    if (plugin.isPaper() && player.getPlayerProfile().hasTextures()) {
-      return CompletableFuture.supplyAsync(() -> {
-        meta.setPlayerProfile(player.getPlayerProfile());
-        return meta;
-      }).exceptionally(e -> {
-        Debugger.debug(java.util.logging.Level.WARNING, "Retrieving player profile of " + player.getName() + " failed!");
-        return meta;
-      }).join();
-    }
-
-      if (ServerVersion.Version.isCurrentHigher(ServerVersion.Version.v1_12_R1)) {
-          meta.setOwningPlayer(player);
-      } else {
-          meta.setOwner(player.getName());
-      }
-    return meta;
   }
 
   public static void sendTitle(Player player, Integer fadeIn, Integer stay, Integer fadeOut, String title, String subtitle) {
@@ -291,18 +240,11 @@ public class Utils {
     return m.invoke(iChatBaseComponent, "{\"text\":\"" + name + "\"}");
   }
 
-  //cache material to avoid heavy load when it is executed on every event
-  private static Material cachedDoor;
-
   public static Material getCachedDoor(Block block) {
-    if (cachedDoor != null) {
-      return cachedDoor;
-    }
-
+    //material can not be cached as we allow other door types
     if (block == null) {
-      return cachedDoor = Material.OAK_DOOR;
+      return XMaterial.OAK_DOOR.parseMaterial();
     }
-
-    return cachedDoor = (MaterialUtil.isDoor(block.getType()) ? block.getType() : Material.AIR);
+    return (MaterialUtil.isDoor(block.getType()) ? block.getType() : Material.AIR);
   }
 }
