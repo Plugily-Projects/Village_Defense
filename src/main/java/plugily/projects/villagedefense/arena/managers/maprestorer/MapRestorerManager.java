@@ -122,13 +122,13 @@ public class MapRestorerManager {
   public void restoreTopHalfDoorPart(Block block) {
     block.setType(Utils.getCachedDoor(block));
     BlockState doorBlockState = block.getState();
-      Door doorBlockData = new Door(TreeSpecies.GENERIC, Utils.getFacingByByte((byte) 8));
+    Door doorBlockData = new Door(TreeSpecies.GENERIC, Utils.getFacingByByte((byte) 8));
 
-      doorBlockData.setTopHalf(true);
-      doorBlockData.setFacingDirection(doorBlockData.getFacing());
+    doorBlockData.setTopHalf(true);
+    doorBlockData.setFacingDirection(doorBlockData.getFacing());
 
-      doorBlockState.setType(doorBlockData.getItemType());
-      doorBlockState.setData(doorBlockData);
+    doorBlockState.setType(doorBlockData.getItemType());
+    doorBlockState.setData(doorBlockData);
 
     doorBlockState.update(true);
   }
@@ -136,12 +136,14 @@ public class MapRestorerManager {
   public void restoreBottomHalfDoorPart(Block block, byte doorData) {
     block.setType(Utils.getCachedDoor(block));
     BlockState doorBlockState = block.getState();
-      Door doorBlockData = new Door(TreeSpecies.GENERIC, Utils.getFacingByByte(doorData));
+    Door doorBlockData = new Door(TreeSpecies.GENERIC, Utils.getFacingByByte(doorData));
 
-      doorBlockData.setTopHalf(false);
-      doorBlockData.setFacingDirection(doorBlockData.getFacing());
+    doorBlockData.setTopHalf(false);
+    doorBlockData.setFacingDirection(doorBlockData.getFacing());
 
-      doorBlockState.setData(doorBlockData);
+    doorBlockState.setType(doorBlockData.getItemType());
+    doorBlockState.setData(doorBlockData);
+
     doorBlockState.update(true);
   }
 

@@ -20,16 +20,16 @@ package plugily.projects.villagedefense.arena.managers.maprestorer;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.TreeSpecies;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
-import org.bukkit.entity.EntityType;
+import org.bukkit.material.Door;
 import pl.plajerlair.commonsbox.minecraft.compat.ServerVersion;
 import pl.plajerlair.commonsbox.minecraft.compat.XMaterial;
 import plugily.projects.villagedefense.arena.Arena;
 import plugily.projects.villagedefense.utils.Debugger;
 import plugily.projects.villagedefense.utils.Utils;
 
-import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.logging.Level;
 
@@ -60,7 +60,6 @@ public class MapRestorerManagerLegacy extends MapRestorerManager {
         } catch (Exception e) {
           e.printStackTrace();
         }
-
         i++;
       } else {
         try {
@@ -89,18 +88,11 @@ public class MapRestorerManagerLegacy extends MapRestorerManager {
   public void restoreTopHalfDoorPart(Block block) {
     block.setType(Utils.getCachedDoor(block));
     BlockState doorBlockState = block.getState();
-      org.bukkit.block.data.type.Door doorBlockData = (org.bukkit.block.data.type.Door) block.getBlockData();
-
-      doorBlockData.setHalf(org.bukkit.block.data.Bisected.Half.TOP);
-      doorBlockData.setFacing(doorBlockData.getFacing());
-
-      doorBlockState.setType(doorBlockData.getMaterial());
-      try {
-        doorBlockState.getClass().getDeclaredMethod("setBlockData", doorBlockData.getClass()).invoke(doorBlockData);
-      } catch (NoSuchMethodException ignored) {
-      } catch (Exception e) {
-        e.printStackTrace();
-      }
+    Door doorBlockData = new Door(TreeSpecies.GENERIC, Utils.getFacingByByte((byte) 8));
+    doorBlockData.setTopHalf(true);
+    doorBlockData.setFacingDirection(doorBlockData.getFacing());
+    doorBlockState.setType(doorBlockData.getItemType());
+    doorBlockState.setData(doorBlockData);
     doorBlockState.update(true);
   }
 
@@ -108,18 +100,11 @@ public class MapRestorerManagerLegacy extends MapRestorerManager {
   public void restoreBottomHalfDoorPart(Block block, byte doorData) {
     block.setType(Utils.getCachedDoor(block));
     BlockState doorBlockState = block.getState();
-      org.bukkit.block.data.type.Door doorBlockData = (org.bukkit.block.data.type.Door) block.getBlockData();
-
-      doorBlockData.setHalf(org.bukkit.block.data.Bisected.Half.BOTTOM);
-      doorBlockData.setFacing(doorBlockData.getFacing());
-
-      doorBlockState.setType(doorBlockData.getMaterial());
-      try {
-        doorBlockState.getClass().getDeclaredMethod("setBlockData", doorBlockData.getClass()).invoke(doorBlockData);
-      } catch (NoSuchMethodException n) {
-      } catch (Exception e) {
-        e.printStackTrace();
-      }
+    Door doorBlockData = new Door(TreeSpecies.GENERIC, Utils.getFacingByByte(doorData));
+    doorBlockData.setTopHalf(false);
+    doorBlockData.setFacingDirection(doorBlockData.getFacing());
+    doorBlockState.setType(doorBlockData.getItemType());
+    doorBlockState.setData(doorBlockData);
     doorBlockState.update(true);
   }
 
