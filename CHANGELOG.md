@@ -9,7 +9,7 @@ deploy webhooks to print changelog successfully
 
 That's all, matcher will stop when detects next line started with `###` match
 
-### 4.5.6 (04.12.2020 - 12.01.2021)
+### 4.5.6 (04.12.2020 - 18.01.2021)
 * Added option to allow players to buy golems/wolves again if they died
 * Fix parsing oak door material in old versions
 * Added customizable item name in arena selector gui (by ajgeiss0702)
