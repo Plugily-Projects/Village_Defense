@@ -184,7 +184,7 @@ public class SpectatorEvents implements Listener {
     }
   }
 
-  @EventHandler(priority = EventPriority.HIGH)
+  @EventHandler(priority = EventPriority.HIGHEST)
   public void onPickup(EntityPickupItemEvent event) {
     if (!(event.getEntity() instanceof Player)) {
       return;

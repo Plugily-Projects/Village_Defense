@@ -129,7 +129,7 @@ public class PowerupRegistry {
         chatManager.colorMessage(Messages.POWERUPS_ONE_SHOT_ONE_KILL_DESCRIPTION), XMaterial.DIAMOND_SWORD, pickup -> {
       for (Player p : pickup.getArena().getPlayers()) {
         p.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 20
-            * plugin.getConfig().getInt("Powerups.List.One-Shot-One-Kill.Time", 15), 255, false, false));
+            * plugin.getConfig().getInt("Powerups.List.One-Shot-One-Kill.Time", 15), 1000, false, false));
       }
       String subTitle = pickup.getPowerup().getDescription();
       subTitle = StringUtils.replace(subTitle, "%time%", plugin.getConfig().getString("Powerups.List.One-Shot-One-Kill.Time", "15"));
