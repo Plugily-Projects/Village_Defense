@@ -13,6 +13,7 @@ That's all, matcher will stop when detects next line started with `###` match
 >>> b
 * Increased Damage for PowerUp ONE_SHOT_ONE_KILL
 * SpectatorEvent EntityPickupItemEvent is now on Highest Priority
+* Fix when block state data is not door object (cast exception)
 
 ### 4.5.6 (04.12.2020 - 18.01.2021)
 * Added option to allow players to buy golems/wolves again if they died

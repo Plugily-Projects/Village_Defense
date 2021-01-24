@@ -280,7 +280,8 @@ public class MiscComponents implements SetupComponent {
 
       String doorLocation = block.getWorld().getName() + "," + block.getX() + "," + block.getY() + "," + block.getZ() + ",0.0" + ",0.0";
       config.set("instances." + arena.getId() + ".doors." + doors + ".location", doorLocation);
-      if (!ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_11_R1) && !ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_12_R1)) {
+      if (!ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_11_R1) && !ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_12_R1)
+          && block.getState().getData() instanceof Door) {
         config.set("instances." + arena.getId() + ".doors." + doors + ".byte", Utils.getDoorByte(((Door) block.getState().getData()).getFacing()));
       } else {
         try {
