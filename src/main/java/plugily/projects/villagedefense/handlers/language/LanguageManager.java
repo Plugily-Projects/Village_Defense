@@ -61,7 +61,7 @@ public class LanguageManager {
    */
   public static void init(Main plugin) {
     LanguageManager.plugin = plugin;
-    if (!new File(plugin.getDataFolder() + File.separator + "language.yml").exists()) {
+    if(!new File(plugin.getDataFolder() + File.separator + "language.yml").exists()) {
       plugin.saveResource("language.yml", false);
     }
     //auto update
@@ -72,14 +72,14 @@ public class LanguageManager {
     defaultLanguageConfig = ConfigUtils.getConfig(plugin, "locales/language_default");
     registerLocales();
     setupLocale();
-    if (isDefaultLanguageUsed()) {
+    if(isDefaultLanguageUsed()) {
       validateMessagesIntegrity();
     }
   }
 
   private static void validateMessagesIntegrity() {
-    for (Messages message : Messages.values()) {
-      if (languageConfig.isSet(message.getAccessor())) {
+    for(Messages message : Messages.values()) {
+      if(languageConfig.isSet(message.getAccessor())) {
         continue;
       }
       Debugger.sendConsoleMsg("&c[Village Defense] Language file integrity check failed! Message "
@@ -87,52 +87,52 @@ public class LanguageManager {
       languageConfig.set(message.getAccessor(), "ERR_MSG_" + message.name() + "_NOT_FOUND");
       messagesIntegrityPassed = false;
     }
-    if (!messagesIntegrityPassed) {
+    if(!messagesIntegrityPassed) {
       ConfigUtils.saveConfig(plugin, languageConfig, Constants.Files.LANGUAGE.getName());
     }
   }
 
   private static void registerLocales() {
     Arrays.asList(new Locale("Chinese (Traditional)", "简体中文", "zh_HK", "POEditor contributors", Arrays.asList("中文(傳統)", "中國傳統", "chinese_traditional", "zh")),
-            new Locale("Chinese (Simplified)", "简体中文", "zh_CN", "POEditor contributors", Arrays.asList("简体中文", "中文", "chinese", "chinese_simplified", "cn")),
-            new Locale("Czech", "Český", "cs_CZ", "POEditor contributors", Arrays.asList("czech", "cesky", "český", "cs")),
-            new Locale("Dutch", "Nederlands", "nl_NL", "POEditor contributors", Arrays.asList("dutch", "nederlands", "nl")),
-            new Locale("English", "English", "en_GB", "Plajer", Arrays.asList("default", "english", "en")),
-            new Locale("French", "Français", "fr_FR", "POEditor contributors", Arrays.asList("french", "francais", "français", "fr")),
-            new Locale("German", "Deutsch", "de_DE", "Tigerkatze and POEditor contributors", Arrays.asList("deutsch", "german", "de")),
-            new Locale("Hungarian", "Magyar", "hu_HU", "POEditor contributors", Arrays.asList("hungarian", "magyar", "hu")),
-            new Locale("Indonesian", "Indonesia", "id_ID", "POEditor contributors", Arrays.asList("indonesian", "indonesia", "id")),
-            new Locale("Italian", "Italiano", "it_IT", "POEditor contributors", Arrays.asList("italian", "italiano", "it")),
-            new Locale("Korean", "한국의", "ko_KR", "POEditor contributors", Arrays.asList("korean", "한국의", "kr")),
-            new Locale("Lithuanian", "Lietuviešu", "lt_LT", "POEditor contributors", Arrays.asList("lithuanian", "lietuviešu", "lietuviesu", "lt")),
-            new Locale("Polish", "Polski", "pl_PL", "Plajer", Arrays.asList("polish", "polski", "pl")),
-            new Locale("Portuguese (BR)", "Português Brasileiro", "pt_BR", "POEditor contributors", Arrays.asList("brazilian", "brasil", "brasileiro", "pt-br", "pt_br")),
-            new Locale("Romanian", "Românesc", "ro_RO", "POEditor contributors", Arrays.asList("romanian", "romanesc", "românesc", "ro")),
-            new Locale("Russian", "Pусский", "ru_RU", "POEditor contributors", Arrays.asList("russian", "pусский", "pyccknn", "russkiy", "ru")),
-            new Locale("Spanish", "Español", "es_ES", "POEditor contributors", Arrays.asList("spanish", "espanol", "español", "es")),
-            new Locale("Vietnamese", "Việt", "vn_VN", "POEditor contributors", Arrays.asList("vietnamese", "viet", "việt", "vn")))
-    .forEach(LocaleRegistry::registerLocale);
+        new Locale("Chinese (Simplified)", "简体中文", "zh_CN", "POEditor contributors", Arrays.asList("简体中文", "中文", "chinese", "chinese_simplified", "cn")),
+        new Locale("Czech", "Český", "cs_CZ", "POEditor contributors", Arrays.asList("czech", "cesky", "český", "cs")),
+        new Locale("Dutch", "Nederlands", "nl_NL", "POEditor contributors", Arrays.asList("dutch", "nederlands", "nl")),
+        new Locale("English", "English", "en_GB", "Plajer", Arrays.asList("default", "english", "en")),
+        new Locale("French", "Français", "fr_FR", "POEditor contributors", Arrays.asList("french", "francais", "français", "fr")),
+        new Locale("German", "Deutsch", "de_DE", "Tigerkatze and POEditor contributors", Arrays.asList("deutsch", "german", "de")),
+        new Locale("Hungarian", "Magyar", "hu_HU", "POEditor contributors", Arrays.asList("hungarian", "magyar", "hu")),
+        new Locale("Indonesian", "Indonesia", "id_ID", "POEditor contributors", Arrays.asList("indonesian", "indonesia", "id")),
+        new Locale("Italian", "Italiano", "it_IT", "POEditor contributors", Arrays.asList("italian", "italiano", "it")),
+        new Locale("Korean", "한국의", "ko_KR", "POEditor contributors", Arrays.asList("korean", "한국의", "kr")),
+        new Locale("Lithuanian", "Lietuviešu", "lt_LT", "POEditor contributors", Arrays.asList("lithuanian", "lietuviešu", "lietuviesu", "lt")),
+        new Locale("Polish", "Polski", "pl_PL", "Plajer", Arrays.asList("polish", "polski", "pl")),
+        new Locale("Portuguese (BR)", "Português Brasileiro", "pt_BR", "POEditor contributors", Arrays.asList("brazilian", "brasil", "brasileiro", "pt-br", "pt_br")),
+        new Locale("Romanian", "Românesc", "ro_RO", "POEditor contributors", Arrays.asList("romanian", "romanesc", "românesc", "ro")),
+        new Locale("Russian", "Pусский", "ru_RU", "POEditor contributors", Arrays.asList("russian", "pусский", "pyccknn", "russkiy", "ru")),
+        new Locale("Spanish", "Español", "es_ES", "POEditor contributors", Arrays.asList("spanish", "espanol", "español", "es")),
+        new Locale("Vietnamese", "Việt", "vn_VN", "POEditor contributors", Arrays.asList("vietnamese", "viet", "việt", "vn")))
+        .forEach(LocaleRegistry::registerLocale);
   }
 
   private static void loadProperties() {
-    if (isDefaultLanguageUsed()) {
+    if(isDefaultLanguageUsed()) {
       return;
     }
     LocaleService service = ServiceRegistry.getLocaleService(plugin);
-    if (service == null) {
+    if(service == null) {
       Debugger.sendConsoleMsg("&c[Village Defense] Locales cannot be downloaded because API website is unreachable, locales will be disabled.");
       pluginLocale = LocaleRegistry.getByName("English");
       return;
     }
-    if (service.isValidVersion()) {
+    if(service.isValidVersion()) {
       LocaleService.DownloadStatus status = service.demandLocaleDownload(pluginLocale);
-      if (status == LocaleService.DownloadStatus.FAIL) {
+      if(status == LocaleService.DownloadStatus.FAIL) {
         pluginLocale = LocaleRegistry.getByName("English");
         Debugger.sendConsoleMsg("&c[Village Defense] Locale service couldn't download latest locale for plugin! English locale will be used instead!");
         return;
-      } else if (status == LocaleService.DownloadStatus.SUCCESS) {
+      } else if(status == LocaleService.DownloadStatus.SUCCESS) {
         Debugger.sendConsoleMsg("&a[Village Defense] Downloaded locale " + pluginLocale.getPrefix() + " properly!");
-      } else if (status == LocaleService.DownloadStatus.LATEST) {
+      } else if(status == LocaleService.DownloadStatus.LATEST) {
         Debugger.sendConsoleMsg("&a[Village Defense] Locale " + pluginLocale.getPrefix() + " is latest! Awesome!");
       }
     } else {
@@ -140,10 +140,10 @@ public class LanguageManager {
       Debugger.sendConsoleMsg("&c[Village Defense] Your plugin version is too old to use latest locale! Please update plugin to access latest updates of locale!");
       return;
     }
-    try (InputStreamReader reader = new InputStreamReader(new FileInputStream(plugin.getDataFolder() + "/locales/"
+    try(InputStreamReader reader = new InputStreamReader(new FileInputStream(plugin.getDataFolder() + "/locales/"
         + pluginLocale.getPrefix() + ".properties"), StandardCharsets.UTF_8)) {
       PROPERTIES.load(reader);
-    } catch (IOException e) {
+    } catch(IOException e) {
       plugin.getLogger().log(Level.WARNING, "Failed to load localization file for locale " + pluginLocale.getPrefix() + "! Using English instead");
       plugin.getLogger().log(Level.WARNING, "Cause: " + e.getMessage());
       pluginLocale = LocaleRegistry.getByName("English");
@@ -152,30 +152,30 @@ public class LanguageManager {
 
   private static void setupLocale() {
     String localeName = plugin.getConfig().getString("locale", "default").toLowerCase();
-    for (Locale locale : LocaleRegistry.getRegisteredLocales()) {
-      if (locale.getPrefix().equalsIgnoreCase(localeName)) {
+    for(Locale locale : LocaleRegistry.getRegisteredLocales()) {
+      if(locale.getPrefix().equalsIgnoreCase(localeName)) {
         pluginLocale = locale;
         break;
       }
-      for (String alias : locale.getAliases()) {
-        if (alias.equals(localeName)) {
+      for(String alias : locale.getAliases()) {
+        if(alias.equals(localeName)) {
           pluginLocale = locale;
           break;
         }
       }
     }
-    if (pluginLocale == null) {
+    if(pluginLocale == null) {
       Debugger.sendConsoleMsg("&c[Village Defense] Plugin locale is invalid! Using default one...");
       pluginLocale = LocaleRegistry.getByName("English");
     }
     /* is beta release */
-    if ((plugin.getDescription().getVersion().contains("locales") || plugin.getDescription().getVersion().contains("pre")) && !plugin.getConfig().getBoolean("Developer-Mode", false)) {
+    if((plugin.getDescription().getVersion().contains("locales") || plugin.getDescription().getVersion().contains("pre")) && !plugin.getConfig().getBoolean("Developer-Mode", false)) {
       Debugger.sendConsoleMsg("&c[Village Defense] Locales aren't supported in beta versions because they're lacking latest translations! Enabling English one...");
       pluginLocale = LocaleRegistry.getByName("English");
       return;
     }
     Debugger.sendConsoleMsg("&a[Village Defense] Loaded locale " + pluginLocale.getName() + " (" + pluginLocale.getOriginalName() + " ID: "
-            + pluginLocale.getPrefix() + ") by " + pluginLocale.getAuthor());
+        + pluginLocale.getPrefix() + ") by " + pluginLocale.getAuthor());
     loadProperties();
   }
 
@@ -184,28 +184,28 @@ public class LanguageManager {
   }
 
   public static String getLanguageMessage(String path) {
-    if (isDefaultLanguageUsed()) {
+    if(isDefaultLanguageUsed()) {
       return getString(path);
     }
     String prop = PROPERTIES.getProperty(path);
-    if (prop == null) {
+    if(prop == null) {
       return getString(path);
     }
-    if (getString(path).equalsIgnoreCase(defaultLanguageConfig.getString(path, "not found"))) {
+    if(getString(path).equalsIgnoreCase(defaultLanguageConfig.getString(path, "not found"))) {
       return prop;
     }
     return getString(path);
   }
 
   public static List<String> getLanguageList(String path) {
-    if (isDefaultLanguageUsed()) {
+    if(isDefaultLanguageUsed()) {
       return getStrings(path);
     }
     String prop = PROPERTIES.getProperty(path);
-    if (prop == null) {
+    if(prop == null) {
       return getStrings(path);
     }
-    if (getString(path).equalsIgnoreCase(defaultLanguageConfig.getString(path, "not found"))) {
+    if(getString(path).equalsIgnoreCase(defaultLanguageConfig.getString(path, "not found"))) {
       return Arrays.asList(plugin.getChatManager().colorRawMessage(prop).split(";"));
     }
     return getStrings(path);
@@ -213,7 +213,7 @@ public class LanguageManager {
 
 
   private static List<String> getStrings(String path) {
-    if (!languageConfig.isSet(path)) {
+    if(!languageConfig.isSet(path)) {
       Debugger.sendConsoleMsg("&c[VillageDefense] Game message not found in your locale!");
       Debugger.sendConsoleMsg("&c[VillageDefense] Please regenerate your language.yml file! If error still occurs report it to the developer on discord!");
       Debugger.sendConsoleMsg("&c[VillageDefense] Path: " + path);
@@ -226,7 +226,7 @@ public class LanguageManager {
 
 
   private static String getString(String path) {
-    if (!languageConfig.isSet(path)) {
+    if(!languageConfig.isSet(path)) {
       Debugger.sendConsoleMsg("&c[VillageDefense] Game message not found in your locale!");
       Debugger.sendConsoleMsg("&c[VillageDefense] Please regenerate your language.yml file! If error still occurs report it to the developer on discord!");
       Debugger.sendConsoleMsg("&c[VillageDefense] Path: " + path);

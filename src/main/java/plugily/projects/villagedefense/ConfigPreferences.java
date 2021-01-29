@@ -40,7 +40,7 @@ public class ConfigPreferences {
     loadOptions();
 
     //load custom permissions
-    for (String key : plugin.getConfig().getConfigurationSection("CustomPermissions").getKeys(false)) {
+    for(String key : plugin.getConfig().getConfigurationSection("CustomPermissions").getKeys(false)) {
       customPermissions.put(key, plugin.getConfig().getInt("CustomPermissions." + key));
       Debugger.debug("Loaded custom permission {0}", key);
     }
@@ -61,7 +61,7 @@ public class ConfigPreferences {
   }
 
   private void loadOptions() {
-    for (Option option : Option.values()) {
+    for(Option option : Option.values()) {
       options.put(option, plugin.getConfig().getBoolean(option.getPath(), option.getDefault()));
     }
   }

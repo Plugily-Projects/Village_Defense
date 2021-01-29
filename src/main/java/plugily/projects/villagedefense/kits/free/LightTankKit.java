@@ -37,20 +37,20 @@ import java.util.List;
  */
 public class LightTankKit extends FreeKit {
 
-    public LightTankKit() {
-        setName(getPlugin().getChatManager().colorMessage(Messages.KITS_LIGHT_TANK_NAME));
-        List<String> description = Utils.splitString(getPlugin().getChatManager().colorMessage(Messages.KITS_LIGHT_TANK_DESCRIPTION), 40);
-        setDescription(description.toArray(new String[0]));
-        KitRegistry.registerKit(this);
-    }
+  public LightTankKit() {
+    setName(getPlugin().getChatManager().colorMessage(Messages.KITS_LIGHT_TANK_NAME));
+    List<String> description = Utils.splitString(getPlugin().getChatManager().colorMessage(Messages.KITS_LIGHT_TANK_DESCRIPTION), 40);
+    setDescription(description.toArray(new String[0]));
+    KitRegistry.registerKit(this);
+  }
 
-    @Override
-    public boolean isUnlockedByPlayer(Player player) {
-        return true;
-    }
+  @Override
+  public boolean isUnlockedByPlayer(Player player) {
+    return true;
+  }
 
-    @Override
-    public void giveKitItems(Player player) {
+  @Override
+  public void giveKitItems(Player player) {
     player.getInventory().addItem(WeaponHelper.getUnBreakingSword(WeaponHelper.ResourceType.WOOD, 10));
     player.getInventory().addItem(new ItemStack(XMaterial.COOKED_PORKCHOP.parseMaterial(), 8));
     ArmorHelper.setArmor(player, ArmorHelper.ArmorType.IRON);

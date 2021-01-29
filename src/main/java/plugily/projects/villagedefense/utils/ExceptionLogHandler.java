@@ -58,15 +58,15 @@ public class ExceptionLogHandler extends Handler {
   public void publish(LogRecord record) {
     try {
       Throwable throwable = record.getThrown();
-      if (!(throwable instanceof Exception) || !throwable.getClass().getSimpleName().contains("Exception")
+      if(!(throwable instanceof Exception) || !throwable.getClass().getSimpleName().contains("Exception")
           || throwable.getStackTrace().length == 0) {
         return;
       }
-      if (throwable.getCause() != null && (throwable.getCause().getStackTrace().length == 0 ||
+      if(throwable.getCause() != null && (throwable.getCause().getStackTrace().length == 0 ||
           throwable.getCause().getStackTrace()[0] == null || !throwable.getCause().getStackTrace()[0].getClassName().contains("plugily.projects.villagedefense"))) {
         return;
       }
-      if (throwable.getStackTrace()[0] == null
+      if(throwable.getStackTrace()[0] == null
           || !throwable.getStackTrace()[0].getClassName().contains("plugily.projects.villagedefense")
           || containsBlacklistedClass(throwable)) {
         return;
@@ -74,15 +74,15 @@ public class ExceptionLogHandler extends Handler {
       new ReportedException(plugin, (Exception) throwable);
       record.setThrown(null);
       record.setMessage("[VillageDefense] We have found a bug in the code. Contact us at our official discord server (Invite link: https://discordapp.com/invite/UXzUdTP) with the following error given above!");
-    } catch (ArrayIndexOutOfBoundsException ignored){
+    } catch(ArrayIndexOutOfBoundsException ignored) {
       //ignored
     }
   }
 
   private boolean containsBlacklistedClass(Throwable throwable) {
-    for (StackTraceElement element : throwable.getStackTrace()) {
-      for (String blacklist : blacklistedClasses) {
-        if (element.getClassName().contains(blacklist)) {
+    for(StackTraceElement element : throwable.getStackTrace()) {
+      for(String blacklist : blacklistedClasses) {
+        if(element.getClassName().contains(blacklist)) {
           return true;
         }
       }

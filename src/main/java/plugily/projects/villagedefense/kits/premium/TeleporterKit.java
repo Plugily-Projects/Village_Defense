@@ -90,20 +90,20 @@ public class TeleporterKit extends PremiumKit implements Listener {
 
   @EventHandler
   public void onRightClick(PlayerInteractEvent e) {
-    if (!(e.getAction() == Action.RIGHT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_BLOCK)) {
+    if(!(e.getAction() == Action.RIGHT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_BLOCK)) {
       return;
     }
     Arena arena = ArenaRegistry.getArena(e.getPlayer());
     ItemStack stack = e.getPlayer().getInventory().getItemInMainHand();
-    if (arena == null || !ItemUtils.isItemStackNamed(stack)) {
+    if(arena == null || !ItemUtils.isItemStackNamed(stack)) {
       return;
     }
-    if (!stack.getItemMeta().getDisplayName().equalsIgnoreCase(getPlugin().getChatManager().colorMessage(Messages.KITS_TELEPORTER_GAME_ITEM_NAME))) {
+    if(!stack.getItemMeta().getDisplayName().equalsIgnoreCase(getPlugin().getChatManager().colorMessage(Messages.KITS_TELEPORTER_GAME_ITEM_NAME))) {
       return;
     }
     int rows = arena.getVillagers().size();
-    for (Player player : arena.getPlayers()) {
-      if (getPlugin().getUserManager().getUser(player).isSpectator()) {
+    for(Player player : arena.getPlayers()) {
+      if(getPlugin().getUserManager().getUser(player).isSpectator()) {
         continue;
       }
       rows++;
@@ -117,8 +117,8 @@ public class TeleporterKit extends PremiumKit implements Listener {
     gui.setOnGlobalClick(onClick -> onClick.setCancelled(true));
     OutlinePane pane = new OutlinePane(9, rows);
     gui.addPane(pane);
-    for (Player arenaPlayer : arena.getPlayers()) {
-      if (getPlugin().getUserManager().getUser(arenaPlayer).isSpectator()) {
+    for(Player arenaPlayer : arena.getPlayers()) {
+      if(getPlugin().getUserManager().getUser(arenaPlayer).isSpectator()) {
         continue;
       }
       ItemStack skull = XMaterial.PLAYER_HEAD.parseItem();
@@ -135,7 +135,7 @@ public class TeleporterKit extends PremiumKit implements Listener {
         player.closeInventory();
       }));
     }
-    for (Villager villager : arena.getVillagers()) {
+    for(Villager villager : arena.getVillagers()) {
       pane.addItem(new GuiItem(new ItemBuilder(new ItemStack(Material.EMERALD))
           .name(villager.getCustomName())
           .lore(villager.getUniqueId().toString())

@@ -23,7 +23,11 @@ import org.bukkit.Effect;
 import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.attribute.Attribute;
-import org.bukkit.entity.*;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Item;
+import org.bukkit.entity.Player;
+import org.bukkit.entity.Zombie;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -55,7 +59,7 @@ public class HolidayManager implements Listener {
   private Main plugin;
 
   public HolidayManager(Main plugin) {
-    if (!plugin.getConfig().getBoolean("Holidays-Enabled", true)) {
+    if(!plugin.getConfig().getBoolean("Holidays-Enabled", true)) {
       enabled = false;
       return;
     }
@@ -67,9 +71,9 @@ public class HolidayManager implements Listener {
     int day = time.getDayOfMonth();
     int month = time.getMonthValue();
 
-    switch (month) {
+    switch(month) {
       case 2:
-        if (day >= 10 && day <= 18) {
+        if(day >= 10 && day <= 18) {
           currentHoliday = HolidayType.VALENTINES_DAY;
           Powerup powerup = new Powerup("VALENTINES_HEALING", plugin.getChatManager().colorRawMessage("&c&l<3"),
               plugin.getChatManager().colorRawMessage("&d&lHappy Valentine's Day!"), XMaterial.POPPY, pickup -> {
@@ -80,7 +84,7 @@ public class HolidayManager implements Listener {
         }
         break;
       case 3:
-        if (day >= 28) {
+        if(day >= 28) {
           currentHoliday = HolidayType.APRIL_FOOLS;
           Powerup powerup = new Powerup("APRIL_FOOL", plugin.getChatManager().colorRawMessage("&a&llololol"),
               plugin.getChatManager().colorRawMessage("&a&lApril Fools!"), XMaterial.DIRT, pickup -> {
@@ -91,7 +95,7 @@ public class HolidayManager implements Listener {
         }
         break;
       case 4:
-        if (day <= 5) {
+        if(day <= 5) {
           currentHoliday = HolidayType.APRIL_FOOLS;
           Powerup powerup = new Powerup("APRIL_FOOL", plugin.getChatManager().colorRawMessage("&a&llololol"),
               plugin.getChatManager().colorRawMessage("&a&lApril Fools!"), XMaterial.DIRT, pickup -> {
@@ -103,13 +107,13 @@ public class HolidayManager implements Listener {
         break;
       case 10:
         //4 days before halloween
-        if (day >= 27) {
+        if(day >= 27) {
           currentHoliday = HolidayType.HALLOWEEN;
         }
         break;
       case 11:
         //4 days after halloween
-        if (day <= 4) {
+        if(day <= 4) {
           currentHoliday = HolidayType.HALLOWEEN;
         }
         break;
@@ -129,14 +133,14 @@ public class HolidayManager implements Listener {
    * @param zombie entity to apply effects for
    */
   public void applyHolidayZombieEffects(Zombie zombie) {
-    if (!enabled) {
+    if(!enabled) {
       return;
     }
-    switch (currentHoliday) {
+    switch(currentHoliday) {
       case HALLOWEEN:
-        if (zombie.getEquipment().getHelmet() == null) {
+        if(zombie.getEquipment().getHelmet() == null) {
           //randomizing head type
-          if (rand.nextBoolean()) {
+          if(rand.nextBoolean()) {
             zombie.getEquipment().setHelmet(new ItemStack(Material.JACK_O_LANTERN, 1));
           } else {
             zombie.getEquipment().setHelmet(new ItemStack(Material.PUMPKIN, 1));
@@ -156,28 +160,28 @@ public class HolidayManager implements Listener {
    * @param en entity to apply effects for
    */
   public void applyHolidayDeathEffects(Entity en) {
-    if (!enabled) {
+    if(!enabled) {
       return;
     }
-    switch (currentHoliday) {
+    switch(currentHoliday) {
       case HALLOWEEN:
         en.getWorld().strikeLightningEffect(en.getLocation());
         //randomizing sound
-        if (rand.nextBoolean()) {
+        if(rand.nextBoolean()) {
           Utils.playSound(en.getLocation(), "ENTITY_WOLF_HOWL", "ENTITY_WOLF_HOWL");
         } else {
           Utils.playSound(en.getLocation(), "ENTITY_WITHER_DEATH", "ENTITY_WITHER_DEATH");
         }
         //randomizing bats spawn chance
-        if (rand.nextBoolean()) {
+        if(rand.nextBoolean()) {
           final List<Entity> bats = new ArrayList<>();
-          for (int i = 0; i < rand.nextInt(6); i++) {
+          for(int i = 0; i < rand.nextInt(6); i++) {
             final Entity bat = en.getWorld().spawnEntity(en.getLocation(), EntityType.BAT);
             bat.setCustomName(plugin.getChatManager().colorRawMessage("&6Halloween!"));
             bats.add(bat);
           }
           Bukkit.getScheduler().runTaskLater(plugin, () -> {
-            for (Entity bat : bats) {
+            for(Entity bat : bats) {
               bat.getWorld().playEffect(bat.getLocation(), Effect.SMOKE, 3);
               bat.remove();
             }
@@ -186,11 +190,11 @@ public class HolidayManager implements Listener {
         }
         break;
       case APRIL_FOOLS:
-        if (!rand.nextBoolean()) {
+        if(!rand.nextBoolean()) {
           return;
         }
         final List<Item> diamonds = new ArrayList<>();
-        for (int i = 0; i < rand.nextInt(6); i++) {
+        for(int i = 0; i < rand.nextInt(6); i++) {
           Item item = en.getWorld().dropItem(en.getLocation(), XMaterial.DIAMOND.parseItem());
           item.setPickupDelay(1000000);
           item.setVelocity(getRandomVector());
@@ -210,33 +214,33 @@ public class HolidayManager implements Listener {
 
   @EventHandler
   public void onBatDamage(EntityDamageEvent e) {
-    if (e.getEntityType() != EntityType.BAT || e.getEntity().getCustomName() == null) {
+    if(e.getEntityType() != EntityType.BAT || e.getEntity().getCustomName() == null) {
       return;
     }
-    if (e.getEntity().getCustomName().equals(plugin.getChatManager().colorRawMessage("&6Halloween!"))) {
+    if(e.getEntity().getCustomName().equals(plugin.getChatManager().colorRawMessage("&6Halloween!"))) {
       e.setCancelled(true);
     }
   }
 
   @EventHandler
   public void onArrowShoot(EntityShootBowEvent e) {
-    if (!(e.getEntity() instanceof Player) || ArenaRegistry.getArena((Player) e.getEntity()) == null) {
+    if(!(e.getEntity() instanceof Player) || ArenaRegistry.getArena((Player) e.getEntity()) == null) {
       return;
     }
-    if (currentHoliday == HolidayType.VALENTINES_DAY) {
+    if(currentHoliday == HolidayType.VALENTINES_DAY) {
       Entity en = e.getProjectile();
       new BukkitRunnable() {
         @Override
         public void run() {
-          if (en == null || en.isOnGround() || en.isDead()) {
+          if(en == null || en.isOnGround() || en.isDead()) {
             this.cancel();
             return;
           }
           en.getLocation().getWorld().spawnParticle(Particle.HEART, en.getLocation(), 1, 0, 0, 0, 1);
         }
       }.runTaskTimer(plugin, 1, 1);
-    } else if (currentHoliday == HolidayType.APRIL_FOOLS) {
-      if (rand.nextInt(4) == 0) {
+    } else if(currentHoliday == HolidayType.APRIL_FOOLS) {
+      if(rand.nextInt(4) == 0) {
         //chance to make arrow shoot somewhere else
         e.getProjectile().setVelocity(getRandomVector());
       }

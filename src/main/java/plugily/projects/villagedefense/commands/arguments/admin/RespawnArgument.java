@@ -50,23 +50,23 @@ public class RespawnArgument {
       @Override
       public void execute(CommandSender sender, String[] args) {
         Player player = (Player) sender;
-        if (!Utils.checkIsInGameInstance(player)) {
+        if(!Utils.checkIsInGameInstance(player)) {
           return;
         }
         Arena arena = ArenaRegistry.getArena(player);
 
         Player target = null;
-        if (args.length == 2) {
-          if (!Utils.hasPermission(sender, "villagedefense.admin.respawn.others")) {
+        if(args.length == 2) {
+          if(!Utils.hasPermission(sender, "villagedefense.admin.respawn.others")) {
             return;
           }
-          for (Player loopPlayer : arena.getPlayers()) {
-            if (loopPlayer.getName().equalsIgnoreCase(args[1])) {
+          for(Player loopPlayer : arena.getPlayers()) {
+            if(loopPlayer.getName().equalsIgnoreCase(args[1])) {
               target = loopPlayer;
               break;
             }
           }
-          if (target == null) {
+          if(target == null) {
             sender.sendMessage(registry.getPlugin().getChatManager().getPrefix() + registry.getPlugin().getChatManager().colorMessage(Messages.COMMANDS_TARGET_PLAYER_NOT_FOUND));
             return;
           }
@@ -74,7 +74,7 @@ public class RespawnArgument {
           target = player;
         }
         User user = registry.getPlugin().getUserManager().getUser(target);
-        if (!user.isSpectator()) {
+        if(!user.isSpectator()) {
           return;
         }
         target.setGameMode(GameMode.SURVIVAL);

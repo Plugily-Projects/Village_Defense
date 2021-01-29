@@ -39,8 +39,8 @@ public class WaitingState implements ArenaStateHandler {
 
   @Override
   public void handleCall(Arena arena) {
-    if (arena.getPlayers().size() < arena.getMinimumPlayers()) {
-      if (arena.getTimer() <= 0) {
+    if(arena.getPlayers().size() < arena.getMinimumPlayers()) {
+      if(arena.getTimer() <= 0) {
         arena.setTimer(45);
         plugin.getChatManager().broadcastMessage(arena, plugin.getChatManager().formatMessage(arena, plugin.getChatManager().colorMessage(Messages.LOBBY_MESSAGES_WAITING_FOR_PLAYERS), arena.getMinimumPlayers()));
         return;

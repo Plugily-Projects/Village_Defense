@@ -39,12 +39,12 @@ public class JoinArguments {
     registry.mapArgument("villagedefense", new CommandArgument("join", "", CommandArgument.ExecutorType.PLAYER) {
       @Override
       public void execute(CommandSender sender, String[] args) {
-        if (args.length == 1) {
+        if(args.length == 1) {
           sender.sendMessage(registry.getPlugin().getChatManager().getPrefix() + registry.getPlugin().getChatManager().colorMessage(Messages.COMMANDS_TYPE_ARENA_NAME));
           return;
         }
-        for (Arena arena : ArenaRegistry.getArenas()) {
-          if (args[1].equalsIgnoreCase(arena.getId())) {
+        for(Arena arena : ArenaRegistry.getArenas()) {
+          if(args[1].equalsIgnoreCase(arena.getId())) {
             ArenaManager.joinAttempt((Player) sender, arena);
             return;
           }

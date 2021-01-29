@@ -18,7 +18,22 @@
 
 package plugily.projects.villagedefense.creatures.v1_13_R1;
 
-import net.minecraft.server.v1_13_R1.*;
+import net.minecraft.server.v1_13_R1.DamageSource;
+import net.minecraft.server.v1_13_R1.EntityHuman;
+import net.minecraft.server.v1_13_R1.EntityIronGolem;
+import net.minecraft.server.v1_13_R1.EntityPlayer;
+import net.minecraft.server.v1_13_R1.EntityVillager;
+import net.minecraft.server.v1_13_R1.EntityZombie;
+import net.minecraft.server.v1_13_R1.GenericAttributes;
+import net.minecraft.server.v1_13_R1.Navigation;
+import net.minecraft.server.v1_13_R1.PathfinderGoalBreakDoor;
+import net.minecraft.server.v1_13_R1.PathfinderGoalFloat;
+import net.minecraft.server.v1_13_R1.PathfinderGoalLookAtPlayer;
+import net.minecraft.server.v1_13_R1.PathfinderGoalMoveTowardsRestriction;
+import net.minecraft.server.v1_13_R1.PathfinderGoalNearestAttackableTarget;
+import net.minecraft.server.v1_13_R1.PathfinderGoalRandomLookaround;
+import net.minecraft.server.v1_13_R1.PathfinderGoalZombieAttack;
+import net.minecraft.server.v1_13_R1.World;
 import org.bukkit.Bukkit;
 import org.bukkit.craftbukkit.v1_13_R1.CraftWorld;
 import org.bukkit.entity.EntityType;
@@ -69,9 +84,9 @@ public class GolemBuster extends EntityZombie {
 
   @Override
   public boolean damageEntity(DamageSource damagesource, float f) {
-    if (damagesource != null && damagesource.getEntity() != null && damagesource.getEntity().getBukkitEntity().getType() == EntityType.IRON_GOLEM) {
+    if(damagesource != null && damagesource.getEntity() != null && damagesource.getEntity().getBukkitEntity().getType() == EntityType.IRON_GOLEM) {
       this.die();
-      org.bukkit.inventory.ItemStack[] itemStack = new org.bukkit.inventory.ItemStack[] {new org.bukkit.inventory.ItemStack(org.bukkit.Material.ROTTEN_FLESH)};
+      org.bukkit.inventory.ItemStack[] itemStack = new org.bukkit.inventory.ItemStack[]{new org.bukkit.inventory.ItemStack(org.bukkit.Material.ROTTEN_FLESH)};
       Bukkit.getServer().getPluginManager().callEvent(new EntityDeathEvent((LivingEntity) this.getBukkitEntity(), new ArrayList<>(Arrays.asList(itemStack)), expToDrop));
       IronGolem golem = (IronGolem) damagesource.getEntity().getBukkitEntity();
       golem.getWorld().spawnEntity(golem.getLocation(), EntityType.PRIMED_TNT);

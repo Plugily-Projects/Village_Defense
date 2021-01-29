@@ -96,16 +96,16 @@ public class TornadoKit extends PremiumKit implements Listener {
 
   @EventHandler
   public void onTornadoSpawn(PlayerInteractEvent e) {
-    if (e.getAction() != Action.RIGHT_CLICK_AIR && e.getAction() != Action.RIGHT_CLICK_BLOCK) {
+    if(e.getAction() != Action.RIGHT_CLICK_AIR && e.getAction() != Action.RIGHT_CLICK_BLOCK) {
       return;
     }
     Player player = e.getPlayer();
     ItemStack stack = player.getInventory().getItemInMainHand();
-    if (!ArenaRegistry.isInArena(player) || !ItemUtils.isItemStackNamed(stack)
+    if(!ArenaRegistry.isInArena(player) || !ItemUtils.isItemStackNamed(stack)
         || !stack.getItemMeta().getDisplayName().equalsIgnoreCase(getPlugin().getChatManager().colorMessage(Messages.KITS_TORNADO_GAME_ITEM_NAME))) {
       return;
     }
-    if (active >= 2){
+    if(active >= 2) {
       return;
     }
     Utils.takeOneItem(player, stack);
@@ -120,7 +120,7 @@ public class TornadoKit extends PremiumKit implements Listener {
       @Override
       public void run() {
         tornado.update();
-        if (tornado.entities >= 7 || tornado.getTimes() > 55) {
+        if(tornado.entities >= 7 || tornado.getTimes() > 55) {
           this.cancel();
           active--;
         }
@@ -161,9 +161,9 @@ public class TornadoKit extends PremiumKit implements Listener {
     void update() {
       times++;
       int lines = 3;
-      for (int l = 0; l < lines; l++) {
+      for(int l = 0; l < lines; l++) {
         double heightIncrease = 0.5;
-        for (double y = 0; y < maxHeight; y += heightIncrease) {
+        for(double y = 0; y < maxHeight; y += heightIncrease) {
           double radius = y * radiusIncrement,
               radians = Math.toRadians(360.0 / lines * l + y * 25 - angle),
               x = Math.cos(radians) * radius,
@@ -179,8 +179,8 @@ public class TornadoKit extends PremiumKit implements Listener {
     }
 
     private void pushNearbyZombies() {
-      for (Entity entity : getLocation().getWorld().getNearbyEntities(getLocation(), 2, 2, 2)) {
-        if (entity.getType() == EntityType.ZOMBIE) {
+      for(Entity entity : getLocation().getWorld().getNearbyEntities(getLocation(), 2, 2, 2)) {
+        if(entity.getType() == EntityType.ZOMBIE) {
           entities++;
           entity.setVelocity(getVector().multiply(2).setY(0).add(new Vector(0, 1, 0)));
         }

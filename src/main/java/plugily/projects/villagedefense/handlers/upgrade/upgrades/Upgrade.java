@@ -131,12 +131,12 @@ public class Upgrade {
     double valCurrent = tieredValues.get(currentTier);
     double valNext = tieredValues.getOrDefault(currentTier + 1, tieredValues.get(currentTier));
     return new ItemBuilder(XMaterial.BLACK_STAINED_GLASS_PANE.parseItem())
-            .name(getName())
-            .lore(getDescription().stream().map(lore -> lore = plugin.getChatManager().colorRawMessage(lore)
-                    .replace("%cost%", String.valueOf(getCost(currentTier + 1)))
-                    .replace("%tier%", String.valueOf(currentTier + 1))
-                    .replace("%from%", String.valueOf(valCurrent))
-                    .replace("%to%", String.valueOf(valNext))).collect(Collectors.toList())).build();
+        .name(getName())
+        .lore(getDescription().stream().map(lore -> lore = plugin.getChatManager().colorRawMessage(lore)
+            .replace("%cost%", String.valueOf(getCost(currentTier + 1)))
+            .replace("%tier%", String.valueOf(currentTier + 1))
+            .replace("%from%", String.valueOf(valCurrent))
+            .replace("%to%", String.valueOf(valNext))).collect(Collectors.toList())).build();
   }
 
   public enum EntityType {

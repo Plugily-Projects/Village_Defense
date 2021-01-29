@@ -44,10 +44,10 @@ public class HologramsRegistry {
 
   private void registerHolograms() {
     FileConfiguration config = ConfigUtils.getConfig(plugin, "internal/holograms_data");
-    for (String key : config.getConfigurationSection("holograms").getKeys(false)) {
+    for(String key : config.getConfigurationSection("holograms").getKeys(false)) {
       String accessor = "holograms." + key + ".";
       LeaderboardHologram hologram = new LeaderboardHologram(Integer.parseInt(key), StatsStorage.StatisticType.valueOf(config.getString(accessor + "statistics")),
-              config.getInt(accessor + "top-amount"), LocationSerializer.getLocation(config.getString(accessor + "location", "")));
+          config.getInt(accessor + "top-amount"), LocationSerializer.getLocation(config.getString(accessor + "location", "")));
       hologram.initHologram(plugin);
       leaderboardHolograms.add(hologram);
     }

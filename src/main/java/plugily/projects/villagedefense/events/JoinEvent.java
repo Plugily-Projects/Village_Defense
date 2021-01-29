@@ -45,7 +45,7 @@ public class JoinEvent implements Listener {
     plugin.getUserManager().loadStatistics(plugin.getUserManager().getUser(event.getPlayer()));
     //load player inventory in case of server crash, file is deleted once loaded so if file was already
     //deleted player won't receive his backup, in case of crash he will get it back
-    if (plugin.getConfigPreferences().getOption(ConfigPreferences.Option.INVENTORY_MANAGER_ENABLED)) {
+    if(plugin.getConfigPreferences().getOption(ConfigPreferences.Option.INVENTORY_MANAGER_ENABLED)) {
       InventorySerializer.loadInventory(plugin, event.getPlayer());
     }
   }
@@ -53,14 +53,14 @@ public class JoinEvent implements Listener {
   @EventHandler
   public void onJoinCheckVersion(PlayerJoinEvent event) {
     //we want to be the first :)
-    if (!plugin.getConfig().getBoolean("Update-Notifier.Enabled", true) || !event.getPlayer().hasPermission("villagedefense.updatenotify")) {
+    if(!plugin.getConfig().getBoolean("Update-Notifier.Enabled", true) || !event.getPlayer().hasPermission("villagedefense.updatenotify")) {
       return;
     }
     Bukkit.getScheduler().runTaskLater(plugin, () -> UpdateChecker.init(plugin, 41869).requestUpdateCheck().whenComplete((result, exception) -> {
-      if (!result.requiresUpdate()) {
+      if(!result.requiresUpdate()) {
         return;
       }
-      if (result.getNewestVersion().contains("b")) {
+      if(result.getNewestVersion().contains("b")) {
         event.getPlayer().sendMessage("");
         event.getPlayer().sendMessage(ChatColor.BOLD + "VILLAGE DEFENSE UPDATE NOTIFY");
         event.getPlayer().sendMessage(ChatColor.RED + "BETA version of software is ready for update! Proceed with caution.");

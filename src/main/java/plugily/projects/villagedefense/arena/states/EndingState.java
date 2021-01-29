@@ -45,10 +45,10 @@ public class EndingState implements ArenaStateHandler {
   @Override
   public void handleCall(Arena arena) {
     arena.getScoreboardManager().stopAllScoreboards();
-    if (arena.getTimer() <= 0) {
+    if(arena.getTimer() <= 0) {
       arena.getGameBar().setTitle(plugin.getChatManager().colorMessage(Messages.BOSSBAR_GAME_ENDED));
 
-      for (Player player : arena.getPlayers()) {
+      for(Player player : arena.getPlayers()) {
         ArenaUtils.resetPlayerAfterGame(player);
         arena.doBarAction(Arena.BarAction.REMOVE, player);
         plugin.getUserManager().addStat(player, StatsStorage.StatisticType.GAMES_PLAYED);
@@ -56,7 +56,7 @@ public class EndingState implements ArenaStateHandler {
       arena.getPlayers().forEach(arena::teleportToEndLocation);
       plugin.getChatManager().broadcast(arena, Messages.COMMANDS_TELEPORTED_TO_THE_LOBBY);
 
-      for (User user : plugin.getUserManager().getUsers(arena)) {
+      for(User user : plugin.getUserManager().getUsers(arena)) {
         user.setSpectator(false);
         user.setStat(StatsStorage.StatisticType.ORBS, 0);
       }

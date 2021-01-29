@@ -48,7 +48,7 @@ public class SpawnComponents implements SetupComponent {
   @Override
   public void injectComponents(StaticPane pane) {
     Arena arena = setupInventory.getArena();
-    if (arena == null) {
+    if(arena == null) {
       return;
     }
     Player player = setupInventory.getPlayer();

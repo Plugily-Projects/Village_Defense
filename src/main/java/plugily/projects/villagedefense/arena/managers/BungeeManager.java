@@ -64,7 +64,7 @@ public class BungeeManager implements Listener {
   }
 
   public void connectToHub(Player player) {
-    if (!config.getBoolean("Connect-To-Hub", true)) {
+    if(!config.getBoolean("Connect-To-Hub", true)) {
       return;
     }
     Debugger.debug(Level.INFO, "Server name that we try to connect {0} ({1})", getHubServerName(), player.getName());
@@ -82,7 +82,7 @@ public class BungeeManager implements Listener {
 
   @EventHandler(priority = EventPriority.HIGHEST)
   public void onServerListPing(ServerListPingEvent event) {
-    if (!config.getBoolean("MOTD.Manager", false) || ArenaRegistry.getArenas().isEmpty()) {
+    if(!config.getBoolean("MOTD.Manager", false) || ArenaRegistry.getArenas().isEmpty()) {
       return;
     }
     Arena arena = ArenaRegistry.getArenas().get(ArenaRegistry.getBungeeArena());
@@ -94,7 +94,7 @@ public class BungeeManager implements Listener {
   @EventHandler(priority = EventPriority.HIGHEST)
   public void onJoin(PlayerJoinEvent event) {
     event.setJoinMessage("");
-    if (!ArenaRegistry.getArenas().isEmpty()) {
+    if(!ArenaRegistry.getArenas().isEmpty()) {
       ArenaManager.joinAttempt(event.getPlayer(), ArenaRegistry.getArenas().get(ArenaRegistry.getBungeeArena()));
     }
   }
@@ -102,7 +102,7 @@ public class BungeeManager implements Listener {
   @EventHandler(priority = EventPriority.HIGHEST)
   public void onQuit(PlayerQuitEvent event) {
     event.setQuitMessage("");
-    if (ArenaRegistry.getArena(event.getPlayer()) != null && !ArenaRegistry.getArenas().isEmpty()) {
+    if(ArenaRegistry.getArena(event.getPlayer()) != null && !ArenaRegistry.getArenas().isEmpty()) {
       ArenaManager.leaveAttempt(event.getPlayer(), ArenaRegistry.getArenas().get(ArenaRegistry.getBungeeArena()));
     }
 

@@ -48,11 +48,11 @@ public class PlayerAmountComponents implements SetupComponent {
   @Override
   public void injectComponents(StaticPane pane) {
     Arena arena = setupInventory.getArena();
-    if (arena == null) {
+    if(arena == null) {
       return;
     }
     FileConfiguration config = setupInventory.getConfig();
-    if (config == null) {
+    if(config == null) {
       return;
     }
     Main plugin = setupInventory.getPlugin();
@@ -65,16 +65,16 @@ public class PlayerAmountComponents implements SetupComponent {
         .lore("", setupInventory.getSetupUtilities().isOptionDone("instances." + arena.getId() + ".minimumplayers"))
         .build(), e -> {
       ItemStack itemStack = e.getInventory().getItem(e.getSlot()), currentItem = e.getCurrentItem();
-      if (itemStack == null || currentItem == null) {
+      if(itemStack == null || currentItem == null) {
         return;
       }
-      if (e.getClick().isRightClick()) {
+      if(e.getClick().isRightClick()) {
         itemStack.setAmount(currentItem.getAmount() + 1);
       }
-      if (e.getClick().isLeftClick()) {
+      if(e.getClick().isLeftClick()) {
         itemStack.setAmount(currentItem.getAmount() - 1);
       }
-      if (itemStack.getAmount() < 1) {
+      if(itemStack.getAmount() < 1) {
         e.getWhoClicked().sendMessage(plugin.getChatManager().colorRawMessage("&c&l✖ &cWarning | Please do not set amount lower than 1!"));
         itemStack.setAmount(1);
       }
@@ -93,16 +93,16 @@ public class PlayerAmountComponents implements SetupComponent {
         .lore("", setupInventory.getSetupUtilities().isOptionDone("instances." + arena.getId() + ".maximumplayers"))
         .build(), e -> {
       ItemStack itemStack = e.getInventory().getItem(e.getSlot()), currentItem = e.getCurrentItem();
-      if (itemStack == null || currentItem == null) {
+      if(itemStack == null || currentItem == null) {
         return;
       }
-      if (e.getClick().isRightClick()) {
+      if(e.getClick().isRightClick()) {
         currentItem.setAmount(currentItem.getAmount() + 1);
       }
-      if (e.getClick().isLeftClick()) {
+      if(e.getClick().isLeftClick()) {
         currentItem.setAmount(currentItem.getAmount() - 1);
       }
-      if (currentItem.getAmount() < 1) {
+      if(currentItem.getAmount() < 1) {
         e.getWhoClicked().sendMessage(plugin.getChatManager().colorRawMessage("&c&l✖ &cWarning | Please do not set amount lower than 1!"));
         currentItem.setAmount(1);
       }

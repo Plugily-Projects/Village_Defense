@@ -80,23 +80,23 @@ public class MedicKit extends PremiumKit implements Listener {
 
   @EventHandler
   public void onZombieHit(EntityDamageByEntityEvent e) {
-    if (!(e.getEntity() instanceof Zombie) || !(e.getDamager() instanceof Player)) {
+    if(!(e.getEntity() instanceof Zombie) || !(e.getDamager() instanceof Player)) {
       return;
     }
     User user = getPlugin().getUserManager().getUser((Player) e.getDamager());
-    if (!(user.getKit() instanceof MedicKit) || Math.random() > 0.1) {
+    if(!(user.getKit() instanceof MedicKit) || Math.random() > 0.1) {
       return;
     }
     healNearbyPlayers(e.getDamager());
   }
 
   private void healNearbyPlayers(Entity en) {
-    for (Entity entity : en.getNearbyEntities(5, 5, 5)) {
-      if (!(entity instanceof Player)) {
+    for(Entity entity : en.getNearbyEntities(5, 5, 5)) {
+      if(!(entity instanceof Player)) {
         continue;
       }
       Player player = (Player) entity;
-      if (player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue() > (player.getHealth() + 1)) {
+      if(player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue() > (player.getHealth() + 1)) {
         player.setHealth(player.getHealth() + 1);
       } else {
         player.setHealth(player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue());

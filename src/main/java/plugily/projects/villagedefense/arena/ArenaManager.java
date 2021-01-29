@@ -78,31 +78,31 @@ public class ArenaManager {
    * Can be cancelled only via above-mentioned event
    *
    * @param player player to join
-   * @param arena arena to join
+   * @param arena  arena to join
    * @see VillageGameJoinAttemptEvent
    */
   public static void joinAttempt(@NotNull Player player, @NotNull Arena arena) {
     Debugger.debug("[{0}] Initial join attempt for {1}", arena.getId(), player.getName());
-    if (!canJoinArenaAndMessage(player, arena) || !checkFullGamePermission(player, arena)) {
+    if(!canJoinArenaAndMessage(player, arena) || !checkFullGamePermission(player, arena)) {
       return;
     }
     Debugger.debug("[{0}] Checked join attempt for {1}", arena.getId(), player.getName());
     long start = System.currentTimeMillis();
-    if (ArenaRegistry.isInArena(player)) {
+    if(ArenaRegistry.isInArena(player)) {
       player.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage(Messages.ALREADY_PLAYING));
       return;
     }
     //check if player is in party and send party members to the game
-    if (plugin.getPartyHandler().isPlayerInParty(player)) {
+    if(plugin.getPartyHandler().isPlayerInParty(player)) {
       GameParty party = plugin.getPartyHandler().getParty(player);
-      if (player == party.getLeader()) {
-        if (arena.getMaximumPlayers() - arena.getPlayers().size() >= party.getPlayers().size()) {
-          for (Player partyPlayer : party.getPlayers()) {
-            if (partyPlayer == player) {
+      if(player == party.getLeader()) {
+        if(arena.getMaximumPlayers() - arena.getPlayers().size() >= party.getPlayers().size()) {
+          for(Player partyPlayer : party.getPlayers()) {
+            if(partyPlayer == player) {
               continue;
             }
-            if (ArenaRegistry.isInArena(partyPlayer)) {
-              if (ArenaRegistry.getArena(partyPlayer).getArenaState() == ArenaState.IN_GAME) {
+            if(ArenaRegistry.isInArena(partyPlayer)) {
+              if(ArenaRegistry.getArena(partyPlayer).getArenaState() == ArenaState.IN_GAME) {
                 continue;
               }
               leaveAttempt(partyPlayer, ArenaRegistry.getArena(partyPlayer));
@@ -119,19 +119,19 @@ public class ArenaManager {
     arena.getPlayers().add(player);
     User user = plugin.getUserManager().getUser(player);
     arena.getScoreboardManager().createScoreboard(user);
-    if ((arena.getArenaState() == ArenaState.IN_GAME || (arena.getArenaState() == ArenaState.STARTING && arena.getTimer() <= 3) || arena.getArenaState() == ArenaState.ENDING)) {
-      if (!plugin.getConfigPreferences().getOption(ConfigPreferences.Option.INGAME_JOIN_RESPAWN)){
+    if((arena.getArenaState() == ArenaState.IN_GAME || (arena.getArenaState() == ArenaState.STARTING && arena.getTimer() <= 3) || arena.getArenaState() == ArenaState.ENDING)) {
+      if(!plugin.getConfigPreferences().getOption(ConfigPreferences.Option.INGAME_JOIN_RESPAWN)) {
         user.setPermanentSpectator(true);
       }
-      if (plugin.getConfigPreferences().getOption(ConfigPreferences.Option.INVENTORY_MANAGER_ENABLED)) {
+      if(plugin.getConfigPreferences().getOption(ConfigPreferences.Option.INVENTORY_MANAGER_ENABLED)) {
         InventorySerializer.saveInventoryToFile(plugin, player);
       }
       player.teleport(arena.getStartLocation());
       player.sendMessage(plugin.getChatManager().colorMessage(Messages.YOU_ARE_SPECTATOR));
       player.getInventory().clear();
 
-      for (SpecialItem item : plugin.getSpecialItemManager().getSpecialItems()) {
-        if (item.getDisplayStage() == SpecialItem.DisplayStage.SPECTATOR) {
+      for(SpecialItem item : plugin.getSpecialItemManager().getSpecialItems()) {
+        if(item.getDisplayStage() == SpecialItem.DisplayStage.SPECTATOR) {
           player.getInventory().setItem(item.getSlot(), item.getItemStack());
         }
       }
@@ -151,8 +151,8 @@ public class ArenaManager {
       player.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, Integer.MAX_VALUE, 0));
       ArenaUtils.hidePlayer(player, arena);
 
-      for (Player spectator : arena.getPlayers()) {
-        if (plugin.getUserManager().getUser(spectator).isSpectator()) {
+      for(Player spectator : arena.getPlayers()) {
+        if(plugin.getUserManager().getUser(spectator).isSpectator()) {
           MiscUtils.hidePlayer(plugin, player, spectator);
         } else {
           MiscUtils.showPlayer(plugin, player, spectator);
@@ -161,28 +161,28 @@ public class ArenaManager {
       Debugger.debug("[{0}] Final join attempt as spectator for {1} took {2}ms", arena.getId(), player.getName(), System.currentTimeMillis() - start);
       return;
     }
-    if (plugin.getConfigPreferences().getOption(ConfigPreferences.Option.INVENTORY_MANAGER_ENABLED)) {
+    if(plugin.getConfigPreferences().getOption(ConfigPreferences.Option.INVENTORY_MANAGER_ENABLED)) {
       InventorySerializer.saveInventoryToFile(plugin, player);
     }
     player.teleport(arena.getLobbyLocation());
     MiscUtils.getEntityAttribute(player, Attribute.GENERIC_MAX_HEALTH).ifPresent(ai -> player.setHealth(ai.getValue()));
     player.setFoodLevel(20);
-    player.getInventory().setArmorContents(new ItemStack[] {new ItemStack(Material.AIR), new ItemStack(Material.AIR), new ItemStack(Material.AIR), new ItemStack(Material.AIR)});
+    player.getInventory().setArmorContents(new ItemStack[]{new ItemStack(Material.AIR), new ItemStack(Material.AIR), new ItemStack(Material.AIR), new ItemStack(Material.AIR)});
     player.setFlying(false);
     player.setAllowFlight(false);
     player.getInventory().clear();
     arena.doBarAction(Arena.BarAction.ADD, player);
-    if (!plugin.getUserManager().getUser(player).isSpectator()) {
+    if(!plugin.getUserManager().getUser(player).isSpectator()) {
       plugin.getChatManager().broadcastAction(arena, player, ChatManager.ActionType.JOIN);
     }
     user.setKit(KitRegistry.getDefaultKit());
-    for (SpecialItem item : plugin.getSpecialItemManager().getSpecialItems()) {
-      if (item.getDisplayStage() == SpecialItem.DisplayStage.LOBBY) {
+    for(SpecialItem item : plugin.getSpecialItemManager().getSpecialItems()) {
+      if(item.getDisplayStage() == SpecialItem.DisplayStage.LOBBY) {
         player.getInventory().setItem(item.getSlot(), item.getItemStack());
       }
     }
     player.updateInventory();
-    for (Player arenaPlayer : arena.getPlayers()) {
+    for(Player arenaPlayer : arena.getPlayers()) {
       ArenaUtils.showPlayer(arenaPlayer, arena);
       arenaPlayer.setExp(1);
       arenaPlayer.setLevel(0);
@@ -191,19 +191,19 @@ public class ArenaManager {
     Debugger.debug("[{0}] Final join attempt as player for {1} took {2}ms", arena.getId(), player.getName(), System.currentTimeMillis() - start);
   }
 
-  private static boolean checkFullGamePermission(Player player, Arena arena){
-    if (arena.getPlayers().size() + 1 <= arena.getMaximumPlayers()){
+  private static boolean checkFullGamePermission(Player player, Arena arena) {
+    if(arena.getPlayers().size() + 1 <= arena.getMaximumPlayers()) {
       return true;
     }
-    if (!PermissionsManager.isPremium(player) || !player.hasPermission(PermissionsManager.getJoinFullGames())) {
+    if(!PermissionsManager.isPremium(player) || !player.hasPermission(PermissionsManager.getJoinFullGames())) {
       player.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage(Messages.FULL_GAME_NO_PERMISSION));
       return false;
     }
-    for (Player players : arena.getPlayers()) {
-      if (PermissionsManager.isPremium(players) || players.hasPermission(PermissionsManager.getJoinFullGames())) {
+    for(Player players : arena.getPlayers()) {
+      if(PermissionsManager.isPremium(players) || players.hasPermission(PermissionsManager.getJoinFullGames())) {
         continue;
       }
-      if (arena.getArenaState() == ArenaState.STARTING || arena.getArenaState() == ArenaState.WAITING_FOR_PLAYERS) {
+      if(arena.getArenaState() == ArenaState.STARTING || arena.getArenaState() == ArenaState.WAITING_FOR_PLAYERS) {
         leaveAttempt(players, arena);
         players.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage(Messages.LOBBY_MESSAGES_YOU_WERE_KICKED_FOR_PREMIUM_SLOT));
         plugin.getChatManager().broadcastMessage(arena, plugin.getChatManager().formatMessage(arena, plugin.getChatManager().colorMessage(Messages.LOBBY_MESSAGES_KICKED_FOR_PREMIUM_SLOT), players));
@@ -216,20 +216,20 @@ public class ArenaManager {
   }
 
   private static boolean canJoinArenaAndMessage(Player player, Arena arena) {
-    if (!arena.isReady()) {
+    if(!arena.isReady()) {
       player.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage(Messages.ARENA_NOT_CONFIGURED));
       return false;
     }
 
     VillageGameJoinAttemptEvent event = new VillageGameJoinAttemptEvent(player, arena);
     Bukkit.getPluginManager().callEvent(event);
-    if (event.isCancelled()) {
+    if(event.isCancelled()) {
       player.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage(Messages.JOIN_CANCELLED_VIA_API));
       return false;
     }
-    if (plugin.getConfigPreferences().getOption(ConfigPreferences.Option.BUNGEE_ENABLED)) {
+    if(plugin.getConfigPreferences().getOption(ConfigPreferences.Option.BUNGEE_ENABLED)) {
       String perm = PermissionsManager.getJoinPerm();
-      if (!(player.hasPermission(perm.replace("<arena>", "*")) || player.hasPermission(perm.replace("<arena>", arena.getId())))) {
+      if(!(player.hasPermission(perm.replace("<arena>", "*")) || player.hasPermission(perm.replace("<arena>", arena.getId())))) {
         player.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage(Messages.JOIN_NO_PERMISSION)
             .replace("%permission%", perm.replace("<arena>", arena.getId())));
         return false;
@@ -243,7 +243,7 @@ public class ArenaManager {
    * Calls VillageGameLeaveAttemptEvent event.
    *
    * @param player player to leave
-   * @param arena arena to leave
+   * @param arena  arena to leave
    * @see VillageGameLeaveAttemptEvent
    */
   public static void leaveAttempt(@NotNull Player player, @NotNull Arena arena) {
@@ -261,18 +261,18 @@ public class ArenaManager {
     user.setStat(StatsStorage.StatisticType.ORBS, 0);
     arena.getScoreboardManager().removeScoreboard(user);
     arena.getPlayers().remove(player);
-    if (!user.isSpectator()) {
+    if(!user.isSpectator()) {
       plugin.getChatManager().broadcastAction(arena, player, ChatManager.ActionType.LEAVE);
     }
     user.setSpectator(false);
     user.setPermanentSpectator(false);
 
-    if (user.getKit() instanceof GolemFriendKit) {
+    if(user.getKit() instanceof GolemFriendKit) {
       arena.getIronGolems().stream().filter(ironGolem -> ironGolem.getCustomName().contains(user.getPlayer().getName()))
-        .forEach(IronGolem::remove);
+          .forEach(IronGolem::remove);
     }
     arena.doBarAction(Arena.BarAction.REMOVE, player);
-    if (arena.getPlayers().isEmpty() && arena.getArenaState() != ArenaState.WAITING_FOR_PLAYERS && arena.getArenaState() != ArenaState.STARTING) {
+    if(arena.getPlayers().isEmpty() && arena.getArenaState() != ArenaState.WAITING_FOR_PLAYERS && arena.getArenaState() != ArenaState.STARTING) {
       arena.setArenaState(ArenaState.ENDING);
       arena.setTimer(0);
       //needed as no players online and else it is auto canceled
@@ -288,7 +288,7 @@ public class ArenaManager {
    * Stops current arena. Calls VillageGameStopEvent event
    *
    * @param quickStop should arena be stopped immediately? (use only in important cases)
-   * @param arena which arena should stop
+   * @param arena     which arena should stop
    * @see VillageGameStopEvent
    */
   public static void stopGame(boolean quickStop, @NotNull Arena arena) {
@@ -298,27 +298,27 @@ public class ArenaManager {
     Bukkit.getPluginManager().callEvent(new VillageGameStopEvent(arena));
 
     String summaryEnding;
-    if (plugin.getConfig().getBoolean("Wave-Limit.Enabled", false) && arena.getWave() >= plugin.getConfig().getInt("Wave-Limit.Limit", 25)) {
+    if(plugin.getConfig().getBoolean("Wave-Limit.Enabled", false) && arena.getWave() >= plugin.getConfig().getInt("Wave-Limit.Limit", 25)) {
       summaryEnding = plugin.getChatManager().colorMessage(Messages.END_MESSAGES_SUMMARY_WIN_GAME);
-    } else if (!arena.getPlayersLeft().isEmpty()) {
+    } else if(!arena.getPlayersLeft().isEmpty()) {
       summaryEnding = plugin.getChatManager().colorMessage(Messages.END_MESSAGES_SUMMARY_VILLAGERS_DIED);
     } else {
       summaryEnding = plugin.getChatManager().colorMessage(Messages.END_MESSAGES_SUMMARY_PLAYERS_DIED);
     }
     List<String> summaryMessages = LanguageManager.getLanguageList("In-Game.Messages.Game-End-Messages.Summary-Message");
-    for (Player player : arena.getPlayers()) {
+    for(Player player : arena.getPlayers()) {
       User user = plugin.getUserManager().getUser(player);
-      if (user.getStat(StatsStorage.StatisticType.HIGHEST_WAVE) <= arena.getWave()) {
-        if (!plugin.getConfigPreferences().getOption(ConfigPreferences.Option.RESPAWN_AFTER_WAVE) && user.isSpectator()) {
+      if(user.getStat(StatsStorage.StatisticType.HIGHEST_WAVE) <= arena.getWave()) {
+        if(!plugin.getConfigPreferences().getOption(ConfigPreferences.Option.RESPAWN_AFTER_WAVE) && user.isSpectator()) {
           continue;
         }
         user.setStat(StatsStorage.StatisticType.HIGHEST_WAVE, arena.getWave());
       }
-      for (String msg : summaryMessages) {
+      for(String msg : summaryMessages) {
         MiscUtils.sendCenteredMessage(player, formatSummaryPlaceholders(msg, arena, user, summaryEnding));
       }
       plugin.getUserManager().addExperience(player, arena.getWave());
-      if (!quickStop) {
+      if(!quickStop) {
         spawnFireworks(arena, player);
       }
     }
@@ -343,7 +343,7 @@ public class ArenaManager {
   }
 
   private static void spawnFireworks(Arena arena, Player player) {
-    if (!plugin.getConfig().getBoolean("Firework-When-Game-Ends", true)) {
+    if(!plugin.getConfig().getBoolean("Firework-When-Game-Ends", true)) {
       return;
     }
     new BukkitRunnable() {
@@ -351,7 +351,7 @@ public class ArenaManager {
 
       @Override
       public void run() {
-        if (i == 4 || !arena.getPlayers().contains(player) || arena.getArenaState() == ArenaState.RESTARTING) {
+        if(i == 4 || !arena.getPlayers().contains(player) || arena.getArenaState() == ArenaState.RESTARTING) {
           this.cancel();
           return;
         }
@@ -369,7 +369,7 @@ public class ArenaManager {
    * @see VillageWaveEndEvent
    */
   public static void endWave(@NotNull Arena arena) {
-    if (plugin.getConfig().getBoolean("Wave-Limit.Enabled", false) && arena.getWave() >= plugin.getConfig().getInt("Wave-Limit.Limit", 25)) {
+    if(plugin.getConfig().getBoolean("Wave-Limit.Enabled", false) && arena.getWave() >= plugin.getConfig().getInt("Wave-Limit.Limit", 25)) {
       stopGame(false, arena);
       return;
     }
@@ -389,7 +389,7 @@ public class ArenaManager {
     title = plugin.getChatManager().colorRawMessage(title);
     subTitle = plugin.getChatManager().colorRawMessage(subTitle);
 
-    for (User user : plugin.getUserManager().getUsers(arena)) {
+    for(User user : plugin.getUserManager().getUsers(arena)) {
       Utils.sendTitle(user.getPlayer(), fadeIn, stay, fadeOut, title, subTitle);
     }
 
@@ -403,17 +403,17 @@ public class ArenaManager {
 
     refreshAllPlayers(arena);
 
-    if (plugin.getConfigPreferences().getOption(ConfigPreferences.Option.RESPAWN_AFTER_WAVE)) {
+    if(plugin.getConfigPreferences().getOption(ConfigPreferences.Option.RESPAWN_AFTER_WAVE)) {
       ArenaUtils.bringDeathPlayersBack(arena);
     }
 
-    for (Player player : arena.getPlayersLeft()) {
+    for(Player player : arena.getPlayersLeft()) {
       plugin.getUserManager().addExperience(player, 5);
     }
   }
 
   private static void refreshAllPlayers(Arena arena) {
-    for (Player player : arena.getPlayers()) {
+    for(Player player : arena.getPlayers()) {
       player.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().formatMessage(arena, plugin.getChatManager().colorMessage(Messages.NEXT_WAVE_IN), arena.getTimer()));
       player.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage(Messages.YOU_FEEL_REFRESHED));
       MiscUtils.getEntityAttribute(player, Attribute.GENERIC_MAX_HEALTH).ifPresent(ai -> player.setHealth(ai.getValue()));
@@ -437,22 +437,22 @@ public class ArenaManager {
 
     int zombiesAmount = (int) Math.ceil((arena.getPlayers().size() * 0.5) * (arena.getOption(ArenaOption.WAVE) * arena.getOption(ArenaOption.WAVE)) / 2);
     int maxzombies = plugin.getConfig().getInt("Zombies-Limit", 75);
-    if (zombiesAmount > maxzombies) {
+    if(zombiesAmount > maxzombies) {
       int multiplier = (int) Math.ceil((zombiesAmount - (double) maxzombies) / plugin.getConfig().getInt("Zombie-Multiplier-Divider", 18));
-      if (multiplier < 2) multiplier = 2;
+      if(multiplier < 2) multiplier = 2;
       arena.setOptionValue(ArenaOption.ZOMBIE_DIFFICULTY_MULTIPLIER, multiplier);
       Debugger.debug("[{0}] Detected abnormal wave ({1})! Applying zombie limit and difficulty multiplier to {2} | ZombiesAmount: {3} | MaxZombies: {4}",
-              arena.getId(), arena.getWave(), arena.getOption(ArenaOption.ZOMBIE_DIFFICULTY_MULTIPLIER), zombiesAmount, maxzombies);
+          arena.getId(), arena.getWave(), arena.getOption(ArenaOption.ZOMBIE_DIFFICULTY_MULTIPLIER), zombiesAmount, maxzombies);
       zombiesAmount = maxzombies;
     }
 
     arena.setOptionValue(ArenaOption.ZOMBIES_TO_SPAWN, zombiesAmount);
     arena.setOptionValue(ArenaOption.ZOMBIE_IDLE_PROCESS, (int) Math.floor((double) arena.getWave() / 15));
-    if (arena.getOption(ArenaOption.ZOMBIE_IDLE_PROCESS) > 0) {
+    if(arena.getOption(ArenaOption.ZOMBIE_IDLE_PROCESS) > 0) {
       Debugger.debug("[{0}] Spawn idle process initiated to prevent server overload! Value: {1}", arena.getId(), arena.getOption(ArenaOption.ZOMBIE_IDLE_PROCESS));
     }
 
-    if (plugin.getConfigPreferences().getOption(ConfigPreferences.Option.RESPAWN_AFTER_WAVE)) {
+    if(plugin.getConfigPreferences().getOption(ConfigPreferences.Option.RESPAWN_AFTER_WAVE)) {
       ArenaUtils.bringDeathPlayersBack(arena);
     }
 
@@ -471,7 +471,7 @@ public class ArenaManager {
     title = plugin.getChatManager().colorRawMessage(title);
     subTitle = plugin.getChatManager().colorRawMessage(subTitle);
 
-    for (User user : plugin.getUserManager().getUsers(arena)) {
+    for(User user : plugin.getUserManager().getUsers(arena)) {
       user.getKit().reStock(user.getPlayer());
       Utils.sendTitle(user.getPlayer(), fadeIn, stay, fadeOut, title, subTitle);
     }

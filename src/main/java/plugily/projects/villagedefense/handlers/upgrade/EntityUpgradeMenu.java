@@ -32,7 +32,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.jetbrains.annotations.Nullable;
-
 import pl.plajerlair.commonsbox.minecraft.compat.XMaterial;
 import pl.plajerlair.commonsbox.minecraft.item.ItemBuilder;
 import pl.plajerlair.commonsbox.minecraft.misc.MiscUtils;
@@ -69,30 +68,30 @@ public class EntityUpgradeMenu {
     this.pluginPrefix = plugin.getChatManager().colorMessage(Messages.PLUGIN_PREFIX);
     new EntityUpgradeListener(this);
     registerUpgrade(new UpgradeBuilder("Damage")
-            .entity(Upgrade.EntityType.BOTH).slot(2, 1).maxTier(4).metadata("VD_Damage")
-            //2.0 + (tier * 3)
-            .tierValue(0, 2.0).tierValue(1, 5.0).tierValue(2, 8.0).tierValue(3, 11.0).tierValue(4, 14.0)
-            .build());
+        .entity(Upgrade.EntityType.BOTH).slot(2, 1).maxTier(4).metadata("VD_Damage")
+        //2.0 + (tier * 3)
+        .tierValue(0, 2.0).tierValue(1, 5.0).tierValue(2, 8.0).tierValue(3, 11.0).tierValue(4, 14.0)
+        .build());
     registerUpgrade(new UpgradeBuilder("Health")
-            .entity(Upgrade.EntityType.BOTH).slot(2, 2).maxTier(4).metadata("VD_Health")
-            //100.0 + (100.0 * (tier / 2.0))
-            .tierValue(0, 100.0).tierValue(1, 150.0).tierValue(2, 200.0).tierValue(3, 250.0).tierValue(4, 300.0)
-            .build());
+        .entity(Upgrade.EntityType.BOTH).slot(2, 2).maxTier(4).metadata("VD_Health")
+        //100.0 + (100.0 * (tier / 2.0))
+        .tierValue(0, 100.0).tierValue(1, 150.0).tierValue(2, 200.0).tierValue(3, 250.0).tierValue(4, 300.0)
+        .build());
     registerUpgrade(new UpgradeBuilder("Speed")
-            .entity(Upgrade.EntityType.BOTH).slot(2, 3).maxTier(4).metadata("VD_Speed")
-            //0.25 + (0.25 * ((double) tier / 5.0))
-            .tierValue(0, 0.25).tierValue(1, 0.3).tierValue(2, 0.35).tierValue(3, 0.4).tierValue(4, 0.45)
-            .build());
+        .entity(Upgrade.EntityType.BOTH).slot(2, 3).maxTier(4).metadata("VD_Speed")
+        //0.25 + (0.25 * ((double) tier / 5.0))
+        .tierValue(0, 0.25).tierValue(1, 0.3).tierValue(2, 0.35).tierValue(3, 0.4).tierValue(4, 0.45)
+        .build());
     registerUpgrade(new UpgradeBuilder("Swarm-Awareness")
-            .entity(Upgrade.EntityType.WOLF).slot(3, 4).maxTier(2).metadata("VD_SwarmAwareness")
-            //tier * 0.2
-            .tierValue(0, 0).tierValue(1, 0.2).tierValue(2, 0.4)
-            .build());
+        .entity(Upgrade.EntityType.WOLF).slot(3, 4).maxTier(2).metadata("VD_SwarmAwareness")
+        //tier * 0.2
+        .tierValue(0, 0).tierValue(1, 0.2).tierValue(2, 0.4)
+        .build());
     registerUpgrade(new UpgradeBuilder("Final-Defense")
-            .entity(Upgrade.EntityType.IRON_GOLEM).slot(3, 4).maxTier(2).metadata("VD_FinalDefense")
-            //tier * 5
-            .tierValue(0, 0).tierValue(1, 5).tierValue(2, 10)
-            .build());
+        .entity(Upgrade.EntityType.IRON_GOLEM).slot(3, 4).maxTier(2).metadata("VD_FinalDefense")
+        //tier * 5
+        .tierValue(0, 0).tierValue(1, 5).tierValue(2, 10)
+        .build());
   }
 
   /**
@@ -106,8 +105,8 @@ public class EntityUpgradeMenu {
 
   @Nullable
   public Upgrade getUpgrade(String id) {
-    for (Upgrade upgrade : upgrades) {
-      if (upgrade.getId().equals(id)) {
+    for(Upgrade upgrade : upgrades) {
+      if(upgrade.getId().equals(id)) {
         return upgrade;
       }
     }
@@ -125,19 +124,19 @@ public class EntityUpgradeMenu {
     StaticPane pane = new StaticPane(9, 6);
     User user = plugin.getUserManager().getUser(player);
 
-    for (Upgrade upgrade : upgrades) {
-      if (upgrade.getApplicableFor() != Upgrade.EntityType.BOTH && !en.getType().toString().equals(upgrade.getApplicableFor().toString())) {
+    for(Upgrade upgrade : upgrades) {
+      if(upgrade.getApplicableFor() != Upgrade.EntityType.BOTH && !en.getType().toString().equals(upgrade.getApplicableFor().toString())) {
         continue;
       }
       pane.addItem(new GuiItem(upgrade.asItemStack(getTier(en, upgrade)), e -> {
         e.setCancelled(true);
         int nextTier = getTier(en, upgrade) + 1;
         int cost = upgrade.getCost(nextTier);
-        if (nextTier > upgrade.getMaxTier()) {
+        if(nextTier > upgrade.getMaxTier()) {
           player.sendMessage(pluginPrefix + color(Messages.UPGRADES_MAX_TIER));
           return;
         }
-        if (user.getStat(StatsStorage.StatisticType.ORBS) < cost) {
+        if(user.getStat(StatsStorage.StatisticType.ORBS) < cost) {
           player.sendMessage(pluginPrefix + color(Messages.UPGRADES_CANNOT_AFFORD));
           return;
         }
@@ -149,13 +148,13 @@ public class EntityUpgradeMenu {
         Bukkit.getPluginManager().callEvent(event);
         player.closeInventory();
       }), upgrade.getSlotX(), upgrade.getSlotY());
-      for (int i = 0; i < upgrade.getMaxTier(); i++) {
-        if (i < getTier(en, upgrade)) {
+      for(int i = 0; i < upgrade.getMaxTier(); i++) {
+        if(i < getTier(en, upgrade)) {
           pane.addItem(new GuiItem(new ItemBuilder(XMaterial.YELLOW_STAINED_GLASS_PANE.parseItem())
-                  .name(" ").build(), e -> e.setCancelled(true)), upgrade.getSlotX() + 1 + i, upgrade.getSlotY());
+              .name(" ").build(), e -> e.setCancelled(true)), upgrade.getSlotX() + 1 + i, upgrade.getSlotY());
         } else {
           pane.addItem(new GuiItem(new ItemBuilder(XMaterial.WHITE_STAINED_GLASS_PANE.parseItem())
-                  .name(" ").build(), e -> e.setCancelled(true)), upgrade.getSlotX() + 1 + i, upgrade.getSlotY());
+              .name(" ").build(), e -> e.setCancelled(true)), upgrade.getSlotX() + 1 + i, upgrade.getSlotY());
         }
       }
     }
@@ -171,14 +170,14 @@ public class EntityUpgradeMenu {
 
   private void applyStatisticsBookOfEntityToPane(StaticPane pane, LivingEntity en) {
     pane.addItem(new GuiItem(new ItemBuilder(new ItemStack(Material.BOOK))
-            .name(color(Messages.UPGRADES_STATS_ITEM_NAME))
-            .lore(Arrays.stream(color(Messages.UPGRADES_STATS_ITEM_DESCRIPTION).split(";"))
-                    .map(lore -> lore = plugin.getChatManager().colorRawMessage(lore)
-                            .replace("%speed%", String.valueOf(getUpgrade("Speed").getValueForTier(getTier(en, getUpgrade("Speed")))))
-                            .replace("%damage%", String.valueOf(getUpgrade("Damage").getValueForTier(getTier(en, getUpgrade("Damage")))))
-                            .replace("%max_hp%", String.valueOf(getUpgrade("Health").getValueForTier(getTier(en, getUpgrade("Health")))))
-                            .replace("%current_hp%", String.valueOf(en.getHealth()))).collect(Collectors.toList()))
-            .build(), e -> e.setCancelled(true)), 4, 0);
+        .name(color(Messages.UPGRADES_STATS_ITEM_NAME))
+        .lore(Arrays.stream(color(Messages.UPGRADES_STATS_ITEM_DESCRIPTION).split(";"))
+            .map(lore -> lore = plugin.getChatManager().colorRawMessage(lore)
+                .replace("%speed%", String.valueOf(getUpgrade("Speed").getValueForTier(getTier(en, getUpgrade("Speed")))))
+                .replace("%damage%", String.valueOf(getUpgrade("Damage").getValueForTier(getTier(en, getUpgrade("Damage")))))
+                .replace("%max_hp%", String.valueOf(getUpgrade("Health").getValueForTier(getTier(en, getUpgrade("Health")))))
+                .replace("%current_hp%", String.valueOf(en.getHealth()))).collect(Collectors.toList()))
+        .build(), e -> e.setCancelled(true)), 4, 0);
   }
 
   /**
@@ -190,18 +189,18 @@ public class EntityUpgradeMenu {
    * @return true if applied successfully, false if tier is max and cannot be applied more
    */
   public boolean applyUpgrade(Entity en, Upgrade upgrade) {
-    if (!en.hasMetadata(upgrade.getMetadataAccessor())) {
+    if(!en.hasMetadata(upgrade.getMetadataAccessor())) {
       en.setMetadata(upgrade.getMetadataAccessor(), new FixedMetadataValue(plugin, 1));
       applyUpgradeEffect(en, upgrade, 1);
       return true;
     }
-    if (en.getMetadata(upgrade.getMetadataAccessor()).get(0).asInt() == upgrade.getMaxTier()) {
+    if(en.getMetadata(upgrade.getMetadataAccessor()).get(0).asInt() == upgrade.getMaxTier()) {
       return false;
     }
     int tier = getTier(en, upgrade) + 1;
     en.setMetadata(upgrade.getMetadataAccessor(), new FixedMetadataValue(plugin, tier));
     applyUpgradeEffect(en, upgrade, tier);
-    if (upgrade.getMaxTier() == tier) {
+    if(upgrade.getMaxTier() == tier) {
       Utils.playSound(en.getLocation(), "BLOCK_ANVIL_USE", "BLOCK_ANVIL_USE");
       en.getWorld().spawnParticle(Particle.EXPLOSION_LARGE, en.getLocation().add(0, 0.5, 0), 5);
     }
@@ -212,14 +211,14 @@ public class EntityUpgradeMenu {
     en.getWorld().spawnParticle(Particle.FIREWORKS_SPARK, en.getLocation().add(0, 1, 0), 30, 0.7, 0.7, 0.7, 0);
     en.getWorld().spawnParticle(Particle.HEART, en.getLocation().add(0, 1.6, 0), 5, 0, 0, 0);
     Utils.playSound(en.getLocation(), "ENTITY_PLAYER_LEVELUP", "ENTITY_PLAYER_LEVELUP");
-    int[] baseValues = new int[] {getTier(en, getUpgrade("Health")), getTier(en, getUpgrade("Speed")), getTier(en, getUpgrade("Damage"))};
-    if (areAllEqualOrHigher(baseValues) && getMinValue(baseValues) == 4) {
+    int[] baseValues = new int[]{getTier(en, getUpgrade("Health")), getTier(en, getUpgrade("Speed")), getTier(en, getUpgrade("Damage"))};
+    if(areAllEqualOrHigher(baseValues) && getMinValue(baseValues) == 4) {
       //final mode! rage!!!
       en.setGlowing(true);
     }
-    switch (upgrade.getId()) {
+    switch(upgrade.getId()) {
       case "Damage":
-        if (en.getType() == EntityType.WOLF) {
+        if(en.getType() == EntityType.WOLF) {
           MiscUtils.getEntityAttribute((LivingEntity) en, Attribute.GENERIC_MAX_HEALTH).ifPresent(ai -> ai.setBaseValue(2.0 + (tier * 3)));
         }
         //attribute damage doesn't exist for golems
@@ -244,8 +243,8 @@ public class EntityUpgradeMenu {
   }
 
   private boolean areAllEqualOrHigher(int[] a) {
-    for (int i = 1; i < a.length; i++) {
-      if (a[0] < a[i]) {
+    for(int i = 1; i < a.length; i++) {
+      if(a[0] < a[i]) {
         return false;
       }
     }
@@ -254,8 +253,8 @@ public class EntityUpgradeMenu {
 
   private int getMinValue(int[] numbers) {
     int minValue = numbers[0];
-    for (int i = 1; i < numbers.length; i++) {
-      if (numbers[i] < minValue) {
+    for(int i = 1; i < numbers.length; i++) {
+      if(numbers[i] < minValue) {
         minValue = numbers[i];
       }
     }

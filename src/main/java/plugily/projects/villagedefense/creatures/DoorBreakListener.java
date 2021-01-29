@@ -43,23 +43,23 @@ public class DoorBreakListener extends BukkitRunnable {
 
   @Override
   public void run() {
-    for (World world : ArenaRegistry.getArenaIngameWorlds()) {
-      for (LivingEntity entity : world.getLivingEntities()) {
-        if (entity.getType() != EntityType.ZOMBIE) {
+    for(World world : ArenaRegistry.getArenaIngameWorlds()) {
+      for(LivingEntity entity : world.getLivingEntities()) {
+        if(entity.getType() != EntityType.ZOMBIE) {
           continue;
         }
-        for (Block block : Utils.getNearbyBlocks(entity, 1)) {
-          if (block.getType() != Utils.getCachedDoor(block)) {
+        for(Block block : Utils.getNearbyBlocks(entity, 1)) {
+          if(block.getType() != Utils.getCachedDoor(block)) {
             continue;
           }
           block.getLocation().getWorld().spawnParticle(Particle.SMOKE_LARGE, block.getLocation(), 5, 0.1, 0.1, 0.1);
           Utils.playSound(block.getLocation(), "ENTITY_ZOMBIE_ATTACK_DOOR_WOOD", "ENTITY_ZOMBIE_ATTACK_WOODEN_DOOR");
-          if (ThreadLocalRandom.current().nextInt(20) == 5) {
+          if(ThreadLocalRandom.current().nextInt(20) == 5) {
             block.getLocation().getWorld().spawnParticle(Particle.SMOKE_LARGE, block.getLocation(), 15, 0.1, 0.1, 0.1);
             block.getLocation().getWorld().spawnParticle(Particle.EXPLOSION_HUGE, block.getLocation(), 1, 0.1, 0.1, 0.1);
-            if (block.getRelative(BlockFace.UP).getType() == Utils.getCachedDoor(block)) {
+            if(block.getRelative(BlockFace.UP).getType() == Utils.getCachedDoor(block)) {
               block.getRelative(BlockFace.UP).setType(Material.AIR);
-            } else if (block.getRelative(BlockFace.DOWN).getType() == Utils.getCachedDoor(block)) {
+            } else if(block.getRelative(BlockFace.DOWN).getType() == Utils.getCachedDoor(block)) {
               block.getRelative(BlockFace.DOWN).setType(Material.AIR);
             }
             block.setType(Material.AIR);

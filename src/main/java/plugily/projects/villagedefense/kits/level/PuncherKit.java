@@ -39,23 +39,23 @@ import java.util.List;
  */
 public class PuncherKit extends LevelKit {
 
-    public PuncherKit() {
-        setName(getPlugin().getChatManager().colorMessage(Messages.KITS_PUNCHER_NAME));
-        List<String> description = Utils.splitString(getPlugin().getChatManager().colorMessage(Messages.KITS_PUNCHER_DESCRIPTION), 40);
-        setDescription(description.toArray(new String[0]));
-        setLevel(getKitsConfig().getInt("Required-Level.Puncher"));
-        KitRegistry.registerKit(this);
-    }
+  public PuncherKit() {
+    setName(getPlugin().getChatManager().colorMessage(Messages.KITS_PUNCHER_NAME));
+    List<String> description = Utils.splitString(getPlugin().getChatManager().colorMessage(Messages.KITS_PUNCHER_DESCRIPTION), 40);
+    setDescription(description.toArray(new String[0]));
+    setLevel(getKitsConfig().getInt("Required-Level.Puncher"));
+    KitRegistry.registerKit(this);
+  }
 
-    @Override
-    public boolean isUnlockedByPlayer(Player player) {
-        return getPlugin().getUserManager().getUser(player).getStat(StatsStorage.StatisticType.LEVEL) >= this.getLevel() || player.hasPermission("villagedefense.kit.puncher");
-    }
+  @Override
+  public boolean isUnlockedByPlayer(Player player) {
+    return getPlugin().getUserManager().getUser(player).getStat(StatsStorage.StatisticType.LEVEL) >= this.getLevel() || player.hasPermission("villagedefense.kit.puncher");
+  }
 
-    @Override
+  @Override
   public void giveKitItems(Player player) {
-    player.getInventory().addItem(WeaponHelper.getEnchanted(XMaterial.DIAMOND_SHOVEL.parseItem(), new Enchantment[] {
-        Enchantment.DURABILITY, Enchantment.KNOCKBACK, Enchantment.DAMAGE_ALL}, new int[] {10, 5, 2}));
+    player.getInventory().addItem(WeaponHelper.getEnchanted(XMaterial.DIAMOND_SHOVEL.parseItem(), new Enchantment[]{
+        Enchantment.DURABILITY, Enchantment.KNOCKBACK, Enchantment.DAMAGE_ALL}, new int[]{10, 5, 2}));
     ArmorHelper.setColouredArmor(Color.BLACK, player);
     player.getInventory().addItem(WeaponHelper.getEnchantedBow(Enchantment.DURABILITY, 5));
     player.getInventory().addItem(new ItemStack(Material.ARROW, 25));

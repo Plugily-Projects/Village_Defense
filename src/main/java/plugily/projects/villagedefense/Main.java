@@ -34,13 +34,21 @@ import pl.plajerlair.commonsbox.minecraft.compat.ServerVersion;
 import pl.plajerlair.commonsbox.minecraft.configuration.ConfigUtils;
 import pl.plajerlair.commonsbox.minecraft.serialization.InventorySerializer;
 import plugily.projects.villagedefense.api.StatsStorage;
-import plugily.projects.villagedefense.arena.*;
+import plugily.projects.villagedefense.arena.Arena;
+import plugily.projects.villagedefense.arena.ArenaEvents;
+import plugily.projects.villagedefense.arena.ArenaManager;
+import plugily.projects.villagedefense.arena.ArenaRegistry;
+import plugily.projects.villagedefense.arena.ArenaUtils;
 import plugily.projects.villagedefense.arena.managers.BungeeManager;
 import plugily.projects.villagedefense.commands.arguments.ArgumentsRegistry;
 import plugily.projects.villagedefense.creatures.CreatureUtils;
 import plugily.projects.villagedefense.creatures.DoorBreakListener;
 import plugily.projects.villagedefense.creatures.EntityRegistry;
-import plugily.projects.villagedefense.events.*;
+import plugily.projects.villagedefense.events.ChatEvents;
+import plugily.projects.villagedefense.events.Events;
+import plugily.projects.villagedefense.events.JoinEvent;
+import plugily.projects.villagedefense.events.LobbyEvents;
+import plugily.projects.villagedefense.events.QuitEvent;
 import plugily.projects.villagedefense.events.bungee.MiscEvents;
 import plugily.projects.villagedefense.events.spectator.SpectatorEvents;
 import plugily.projects.villagedefense.events.spectator.SpectatorItemEvents;
@@ -66,7 +74,12 @@ import plugily.projects.villagedefense.kits.KitRegistry;
 import plugily.projects.villagedefense.user.User;
 import plugily.projects.villagedefense.user.UserManager;
 import plugily.projects.villagedefense.user.data.MysqlManager;
-import plugily.projects.villagedefense.utils.*;
+import plugily.projects.villagedefense.utils.Debugger;
+import plugily.projects.villagedefense.utils.ExceptionLogHandler;
+import plugily.projects.villagedefense.utils.LegacyDataFixer;
+import plugily.projects.villagedefense.utils.MessageUtils;
+import plugily.projects.villagedefense.utils.UpdateChecker;
+import plugily.projects.villagedefense.utils.Utils;
 import plugily.projects.villagedefense.utils.constants.Constants;
 import plugily.projects.villagedefense.utils.services.ServiceRegistry;
 
@@ -138,7 +151,7 @@ public class Main extends JavaPlugin {
 
   @Override
   public void onEnable() {
-    if (!validateIfPluginShouldStart()) {
+    if(!validateIfPluginShouldStart()) {
       return;
     }
 
@@ -147,7 +160,7 @@ public class Main extends JavaPlugin {
     try {
       Class.forName("com.destroystokyo.paper.PaperConfig");
       isPaper = true;
-    } catch (ClassNotFoundException e) {
+    } catch(ClassNotFoundException e) {
       isPaper = false;
     }
 
@@ -158,7 +171,7 @@ public class Main extends JavaPlugin {
     saveDefaultConfig();
     Debugger.setEnabled(getDescription().getVersion().contains("debug") || getConfig().getBoolean("Debug"));
     Debugger.debug("[System] Initialization start");
-    if (getDescription().getVersion().contains("debug") || getConfig().getBoolean("Developer-Mode")) {
+    if(getDescription().getVersion().contains("debug") || getConfig().getBoolean("Developer-Mode")) {
       Debugger.deepDebug(true);
       Debugger.debug(Level.FINE, "Deep debug enabled");
 
@@ -176,7 +189,7 @@ public class Main extends JavaPlugin {
   }
 
   private boolean validateIfPluginShouldStart() {
-    if (ServerVersion.Version.isCurrentLower(ServerVersion.Version.v1_11_R1)) {
+    if(ServerVersion.Version.isCurrentLower(ServerVersion.Version.v1_11_R1)) {
       MessageUtils.thisVersionIsNotSupported();
       Debugger.sendConsoleMsg("&cYour server version is not supported by Village Defense!");
       Debugger.sendConsoleMsg("&cSadly, we must shut off. Maybe you consider changing your server version?");
@@ -187,7 +200,7 @@ public class Main extends JavaPlugin {
 
     try {
       Class.forName("org.spigotmc.SpigotConfig");
-    } catch (Exception e) {
+    } catch(Exception e) {
       MessageUtils.thisVersionIsNotSupported();
       Debugger.sendConsoleMsg("&cYour server software is not supported by Village Defense!");
       Debugger.sendConsoleMsg("&cWe support only Spigot and Spigot forks only! Shutting off...");
@@ -211,7 +224,7 @@ public class Main extends JavaPlugin {
     new JoinEvent(this);
     new ChatEvents(this);
     setupPluginMetrics();
-    if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
+    if(Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
       Debugger.debug("Hooking into PlaceholderAPI");
       new PlaceholderManager().register();
     }
@@ -227,20 +240,20 @@ public class Main extends JavaPlugin {
     partyHandler = new PartySupportInitializer().initialize(this);
     KitRegistry.init(this);
     User.cooldownHandlerTask();
-    if (configPreferences.getOption(ConfigPreferences.Option.DATABASE_ENABLED)) {
+    if(configPreferences.getOption(ConfigPreferences.Option.DATABASE_ENABLED)) {
       Debugger.debug("Database enabled");
       FileConfiguration config = ConfigUtils.getConfig(this, Constants.Files.MYSQL.getName());
       database = new MysqlDatabase(config.getString("user"), config.getString("password"), config.getString("address"));
     }
-    if (configPreferences.getOption(ConfigPreferences.Option.BUNGEE_ENABLED)) {
+    if(configPreferences.getOption(ConfigPreferences.Option.BUNGEE_ENABLED)) {
       Debugger.debug("Bungee enabled");
       bungeeManager = new BungeeManager(this);
       new MiscEvents(this);
     }
-    if (configPreferences.getOption(ConfigPreferences.Option.HOLOGRAMS_ENABLED)) {
-      if (Bukkit.getServer().getPluginManager().isPluginEnabled("HolographicDisplays")) {
+    if(configPreferences.getOption(ConfigPreferences.Option.HOLOGRAMS_ENABLED)) {
+      if(Bukkit.getServer().getPluginManager().isPluginEnabled("HolographicDisplays")) {
         Debugger.debug("Hooking into HolographicDisplays");
-        if (!new File(getDataFolder(), "internal/holograms_data.yml").exists()) {
+        if(!new File(getDataFolder(), "internal/holograms_data.yml").exists()) {
           new File(getDataFolder().getPath() + "/internal").mkdir();
         }
         this.languageConfig = ConfigUtils.getConfig(this, "language");
@@ -249,7 +262,7 @@ public class Main extends JavaPlugin {
         Debugger.sendConsoleMsg("&cYou need to install HolographicDisplays to use holograms!");
       }
     }
-    if (configPreferences.getOption(ConfigPreferences.Option.UPGRADES_ENABLED)) {
+    if(configPreferences.getOption(ConfigPreferences.Option.UPGRADES_ENABLED)) {
       this.entityUpgradesConfig = ConfigUtils.getConfig(this, "entity_upgrades");
       this.languageConfig = ConfigUtils.getConfig(this, "language");
       Upgrade.init(this);
@@ -285,16 +298,16 @@ public class Main extends JavaPlugin {
         .getOption(ConfigPreferences.Option.DATABASE_ENABLED))));
     metrics.addCustomChart(new org.bstats.charts.SimplePie("locale_used", () -> LanguageManager.getPluginLocale().getPrefix()));
     metrics.addCustomChart(new org.bstats.charts.SimplePie("update_notifier", () -> {
-      if (getConfig().getBoolean("Update-Notifier.Enabled", true)) {
+      if(getConfig().getBoolean("Update-Notifier.Enabled", true)) {
         return getConfig().getBoolean("Update-Notifier.Notify-Beta-Versions", true) ? "Enabled with beta notifier" : "Enabled";
       }
 
       return getConfig().getBoolean("Update-Notifier.Notify-Beta-Versions", true) ? "Beta notifier only" : "Disabled";
     }));
     metrics.addCustomChart(new org.bstats.charts.SimplePie("hooked_addons", () -> {
-      if (getServer().getPluginManager().getPlugin("VillageDefense-Enhancements") != null) {
+      if(getServer().getPluginManager().getPlugin("VillageDefense-Enhancements") != null) {
         return "Enhancements";
-      } else if (getServer().getPluginManager().getPlugin("VillageDefense-CustomKits") != null) {
+      } else if(getServer().getPluginManager().getPlugin("VillageDefense-CustomKits") != null) {
         return "Custom Kits";
       }
       return "None";
@@ -302,15 +315,15 @@ public class Main extends JavaPlugin {
   }
 
   private void checkUpdate() {
-    if (!getConfig().getBoolean("Update-Notifier.Enabled", true)) {
+    if(!getConfig().getBoolean("Update-Notifier.Enabled", true)) {
       return;
     }
     UpdateChecker.init(this, 41869).requestUpdateCheck().whenComplete((result, exception) -> {
-      if (!result.requiresUpdate()) {
+      if(!result.requiresUpdate()) {
         return;
       }
-      if (result.getNewestVersion().contains("b")) {
-        if (getConfig().getBoolean("Update-Notifier.Notify-Beta-Versions", true)) {
+      if(result.getNewestVersion().contains("b")) {
+        if(getConfig().getBoolean("Update-Notifier.Notify-Beta-Versions", true)) {
           Debugger.sendConsoleMsg("&c[VillageDefense] Your software is ready for update! However it's a BETA VERSION. Proceed with caution.");
           Debugger.sendConsoleMsg("&c[VillageDefense] Current version %old%, latest version %new%".replace("%old%", getDescription().getVersion()).replace("%new%",
               result.getNewestVersion()));
@@ -325,9 +338,9 @@ public class Main extends JavaPlugin {
   }
 
   private void setupFiles() {
-    for (String fileName : Arrays.asList("arenas", "rewards", "stats", "special_items", "mysql", "kits")) {
+    for(String fileName : Arrays.asList("arenas", "rewards", "stats", "special_items", "mysql", "kits")) {
       File file = new File(getDataFolder() + File.separator + fileName + ".yml");
-      if (!file.exists()) {
+      if(!file.exists()) {
         saveResource(fileName + ".yml", false);
       }
     }
@@ -379,24 +392,24 @@ public class Main extends JavaPlugin {
 
   @Override
   public void onDisable() {
-    if (forceDisable) {
+    if(forceDisable) {
       return;
     }
     Debugger.debug("System disable initialized");
     long start = System.currentTimeMillis();
 
     Bukkit.getLogger().removeHandler(exceptionLogHandler);
-    for (Arena arena : ArenaRegistry.getArenas()) {
+    for(Arena arena : ArenaRegistry.getArenas()) {
       arena.getPlayers().forEach(arena::teleportToEndLocation);
       arena.getScoreboardManager().stopAllScoreboards();
 
-      for (Player player : arena.getPlayers()) {
+      for(Player player : arena.getPlayers()) {
         arena.doBarAction(Arena.BarAction.REMOVE, player);
         player.setFlySpeed(0.1f);
         player.getInventory().clear();
         player.getInventory().setArmorContents(null);
         player.getActivePotionEffects().forEach(pe -> player.removePotionEffect(pe.getType()));
-        if (configPreferences.getOption(ConfigPreferences.Option.INVENTORY_MANAGER_ENABLED)) {
+        if(configPreferences.getOption(ConfigPreferences.Option.INVENTORY_MANAGER_ENABLED)) {
           InventorySerializer.loadInventory(this, player);
         }
       }
@@ -404,27 +417,27 @@ public class Main extends JavaPlugin {
       arena.getMapRestorerManager().fullyRestoreArena();
     }
     saveAllUserStatistics();
-    if (configPreferences.getOption(ConfigPreferences.Option.HOLOGRAMS_ENABLED)) {
+    if(configPreferences.getOption(ConfigPreferences.Option.HOLOGRAMS_ENABLED)) {
       hologramsRegistry.disableHolograms();
     }
     //hmm? Can be removed?
-    if (getServer().getPluginManager().isPluginEnabled("HolographicDisplays")) {
+    if(getServer().getPluginManager().isPluginEnabled("HolographicDisplays")) {
       HologramsAPI.getHolograms(this).forEach(Hologram::delete);
     }
-    if (configPreferences.getOption(ConfigPreferences.Option.DATABASE_ENABLED)) {
+    if(configPreferences.getOption(ConfigPreferences.Option.DATABASE_ENABLED)) {
       getMysqlDatabase().shutdownConnPool();
     }
     Debugger.debug("System disable finished took {0}ms", System.currentTimeMillis() - start);
   }
 
   private void saveAllUserStatistics() {
-    for (Player player : getServer().getOnlinePlayers()) {
+    for(Player player : getServer().getOnlinePlayers()) {
       User user = userManager.getUser(player);
-      if (userManager.getDatabase() instanceof MysqlManager) {
+      if(userManager.getDatabase() instanceof MysqlManager) {
         StringBuilder update = new StringBuilder(" SET ");
-        for (StatsStorage.StatisticType stat : StatsStorage.StatisticType.values()) {
-          if (!stat.isPersistent()) continue;
-          if (update.toString().equalsIgnoreCase(" SET ")) {
+        for(StatsStorage.StatisticType stat : StatsStorage.StatisticType.values()) {
+          if(!stat.isPersistent()) continue;
+          if(update.toString().equalsIgnoreCase(" SET ")) {
             update.append(stat.getName()).append('=').append(user.getStat(stat));
           }
           update.append(", ").append(stat.getName()).append('=').append(user.getStat(stat));
@@ -432,10 +445,10 @@ public class Main extends JavaPlugin {
         String finalUpdate = update.toString();
         //copy of userManager#saveStatistic but without async database call that's not allowed in onDisable method.
         ((MysqlManager) userManager.getDatabase()).getDatabase().executeUpdate("UPDATE " + ((MysqlManager) getUserManager().getDatabase()).getTableName()
-                + finalUpdate + " WHERE UUID='" + user.getPlayer().getUniqueId().toString() + "';");
+            + finalUpdate + " WHERE UUID='" + user.getPlayer().getUniqueId().toString() + "';");
         continue;
       }
-      for (StatsStorage.StatisticType stat : StatsStorage.StatisticType.values()) {
+      for(StatsStorage.StatisticType stat : StatsStorage.StatisticType.values()) {
         userManager.getDatabase().saveStatistic(user, stat);
       }
     }

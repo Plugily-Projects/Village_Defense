@@ -55,12 +55,12 @@ public class RestartingState implements ArenaStateHandler {
     arena.resetOptionValues();
     arena.getDroppedFleshes().stream().filter(Objects::nonNull).forEach(Entity::remove);
     arena.getDroppedFleshes().clear();
-    if (plugin.getConfigPreferences().getOption(ConfigPreferences.Option.BUNGEE_ENABLED)) {
-      if (ConfigUtils.getConfig(plugin, "bungee").getBoolean("Shutdown-When-Game-Ends", false)) {
+    if(plugin.getConfigPreferences().getOption(ConfigPreferences.Option.BUNGEE_ENABLED)) {
+      if(ConfigUtils.getConfig(plugin, "bungee").getBoolean("Shutdown-When-Game-Ends", false)) {
         plugin.getServer().shutdown();
       }
       ArenaRegistry.shuffleBungeeArena();
-      for (Player player : Bukkit.getOnlinePlayers()) {
+      for(Player player : Bukkit.getOnlinePlayers()) {
         ArenaManager.joinAttempt(player, ArenaRegistry.getArenas().get(ArenaRegistry.getBungeeArena()));
       }
     }

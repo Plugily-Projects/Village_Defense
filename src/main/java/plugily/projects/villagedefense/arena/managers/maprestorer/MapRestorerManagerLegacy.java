@@ -48,38 +48,38 @@ public class MapRestorerManagerLegacy extends MapRestorerManager {
   @Override
   public void restoreDoors() {
     int i = 0;
-    for (Map.Entry<Location, Byte> entry : doorBlocks.entrySet()) {
+    for(Map.Entry<Location, Byte> entry : doorBlocks.entrySet()) {
       Block block = entry.getKey().getBlock();
       Byte doorData = entry.getValue();
-      if (ServerVersion.Version.isCurrentEqualOrLower(ServerVersion.Version.v1_11_R1)) {
+      if(ServerVersion.Version.isCurrentEqualOrLower(ServerVersion.Version.v1_11_R1)) {
         Material mat = Utils.getCachedDoor(block);
         try {
           int id = (int) mat.getClass().getDeclaredMethod("getId").invoke(mat);
           Block.class.getDeclaredMethod("setTypeIdAndData", int.class, Byte.class, boolean.class)
-                  .invoke(block, id, doorData, false);
-        } catch (Exception e) {
+              .invoke(block, id, doorData, false);
+        } catch(Exception e) {
           e.printStackTrace();
         }
         i++;
       } else {
         try {
-          if (block.getType() != XMaterial.AIR.parseMaterial()) {
+          if(block.getType() != XMaterial.AIR.parseMaterial()) {
             i++;
             continue;
           }
-          if (doorData == (byte) 8) {
+          if(doorData == (byte) 8) {
             restoreTopHalfDoorPart(block);
             i++;
             continue;
           }
           restoreBottomHalfDoorPart(block, doorData);
           i++;
-        } catch (Exception ex) {
+        } catch(Exception ex) {
           Debugger.debug(Level.WARNING, "Door has failed to load for arena {0} message {1} type {2} skipping!", arena.getId(), ex.getMessage(), ex.getCause());
         }
       }
     }
-    if (i != doorBlocks.size()) {
+    if(i != doorBlocks.size()) {
       Debugger.debug(Level.WARNING, "Failed to load doors for {0}! Expected {1} got {2}", arena.getId(), doorBlocks.size(), i);
     }
   }

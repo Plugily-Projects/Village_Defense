@@ -83,22 +83,22 @@ public class CleanerKit extends PremiumKit implements Listener {
   @EventHandler
   public void onClean(PlayerInteractEvent e) {
     Arena arena = ArenaRegistry.getArena(e.getPlayer());
-    if (!ItemUtils.isItemStackNamed(e.getItem()) || e.getItem().getType() != Material.BLAZE_ROD || !e.getItem().getItemMeta().getDisplayName()
+    if(!ItemUtils.isItemStackNamed(e.getItem()) || e.getItem().getType() != Material.BLAZE_ROD || !e.getItem().getItemMeta().getDisplayName()
         .contains(getPlugin().getChatManager().colorMessage(Messages.KITS_CLEANER_GAME_ITEM_NAME)) || arena == null) {
       return;
     }
     User user = (getPlugin().getUserManager().getUser(e.getPlayer()));
-    if (user.isSpectator()) {
+    if(user.isSpectator()) {
       e.getPlayer().sendMessage(getPlugin().getChatManager().colorMessage(Messages.SPECTATOR_WARNING));
       return;
     }
-    if (user.getCooldown("clean") > 0 && !user.isSpectator()) {
+    if(user.getCooldown("clean") > 0 && !user.isSpectator()) {
       String message = getPlugin().getChatManager().colorMessage(Messages.KITS_ABILITY_STILL_ON_COOLDOWN);
       message = message.replaceFirst("%COOLDOWN%", Long.toString(user.getCooldown("clean")));
       e.getPlayer().sendMessage(message);
       return;
     }
-    if (arena.getZombies().isEmpty()) {
+    if(arena.getZombies().isEmpty()) {
       e.getPlayer().sendMessage(getPlugin().getChatManager().colorMessage(Messages.KITS_CLEANER_NOTHING_TO_CLEAN));
       return;
     }

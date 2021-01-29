@@ -32,7 +32,6 @@ import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionData;
 import org.bukkit.potion.PotionType;
 import org.bukkit.util.BlockIterator;
-
 import pl.plajerlair.commonsbox.minecraft.compat.PacketUtils;
 import pl.plajerlair.commonsbox.minecraft.compat.ServerVersion;
 import pl.plajerlair.commonsbox.minecraft.compat.XMaterial;
@@ -42,7 +41,12 @@ import plugily.projects.villagedefense.handlers.language.Messages;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -61,7 +65,7 @@ public class Utils {
   }
 
   public static void takeOneItem(Player player, ItemStack stack) {
-    if (stack.getAmount() <= 1) {
+    if(stack.getAmount() <= 1) {
       player.getInventory().setItemInMainHand(new ItemStack(Material.AIR));
     } else {
       player.getInventory().getItemInMainHand().setAmount(stack.getAmount() - 1);
@@ -85,9 +89,9 @@ public class Utils {
   public static List<Block> getNearbyBlocks(LivingEntity entity, int distance) {
     List<Block> blocks = new LinkedList<>();
     Iterator<Block> itr = new BlockIterator(entity, distance);
-    while (itr.hasNext()) {
+    while(itr.hasNext()) {
       Block block = itr.next();
-      if (!block.getType().isTransparent()) {
+      if(!block.getType().isTransparent()) {
         blocks.add(block);
       }
     }
@@ -97,16 +101,16 @@ public class Utils {
   public static Entity[] getNearbyEntities(Location loc, int radius) {
     int chunkRadius = radius < 16 ? 1 : radius / 16;
     Set<Entity> radiusEntities = new HashSet<>();
-    for (int chunkX = 0 - chunkRadius; chunkX <= chunkRadius; chunkX++) {
-      for (int chunkZ = 0 - chunkRadius; chunkZ <= chunkRadius; chunkZ++) {
+    for(int chunkX = 0 - chunkRadius; chunkX <= chunkRadius; chunkX++) {
+      for(int chunkZ = 0 - chunkRadius; chunkZ <= chunkRadius; chunkZ++) {
         int x = (int) loc.getX(),
-          y = (int) loc.getY(),
-          z = (int) loc.getZ();
-        for (Entity e : new Location(loc.getWorld(), x + chunkX * 16, y, z + chunkZ * 16).getChunk().getEntities()) {
-          if (!(loc.getWorld().getName().equalsIgnoreCase(e.getWorld().getName()))) {
+            y = (int) loc.getY(),
+            z = (int) loc.getZ();
+        for(Entity e : new Location(loc.getWorld(), x + chunkX * 16, y, z + chunkZ * 16).getChunk().getEntities()) {
+          if(!(loc.getWorld().getName().equalsIgnoreCase(e.getWorld().getName()))) {
             continue;
           }
-          if (e.getLocation().distanceSquared(loc) <= radius * radius && e.getLocation().getBlock() != loc.getBlock()) {
+          if(e.getLocation().distanceSquared(loc) <= radius * radius && e.getLocation().getBlock() != loc.getBlock()) {
             radiusEntities.add(e);
           }
         }
@@ -119,7 +123,7 @@ public class Utils {
     List<String> matchList = new ArrayList<>();
     Pattern regex = Pattern.compile(".{1," + max + "}(?:\\s|$)", Pattern.DOTALL);
     Matcher regexMatcher = regex.matcher(string);
-    while (regexMatcher.find()) {
+    while(regexMatcher.find()) {
       matchList.add(plugin.getChatManager().colorRawMessage("&7") + regexMatcher.group());
     }
     return matchList;
@@ -134,7 +138,7 @@ public class Utils {
   }
 
   public static byte getDoorByte(BlockFace face) {
-    switch (face) {
+    switch(face) {
       case NORTH:
         return 3;
       case SOUTH:
@@ -148,7 +152,7 @@ public class Utils {
   }
 
   public static BlockFace getFacingByByte(byte bt) {
-    switch (bt) {
+    switch(bt) {
       case 2:
         return BlockFace.WEST;
       case 3:
@@ -162,15 +166,15 @@ public class Utils {
   }
 
   public static void playSound(Location loc, String before1_13, String after1_13) {
-      if (!ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_11_R1) && !ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_12_R1)) {
-          loc.getWorld().playSound(loc, Sound.valueOf(after1_13), 1, 1);
-      } else {
-          loc.getWorld().playSound(loc, before1_13, 1, 1);
-      }
+    if(!ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_11_R1) && !ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_12_R1)) {
+      loc.getWorld().playSound(loc, Sound.valueOf(after1_13), 1, 1);
+    } else {
+      loc.getWorld().playSound(loc, before1_13, 1, 1);
+    }
   }
 
   public static boolean checkIsInGameInstance(Player player) {
-    if (ArenaRegistry.getArena(player) == null) {
+    if(ArenaRegistry.getArena(player) == null) {
       player.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage(Messages.COMMANDS_NOT_PLAYING));
       return false;
     }
@@ -178,7 +182,7 @@ public class Utils {
   }
 
   public static boolean hasPermission(CommandSender sender, String perm) {
-    if (sender.hasPermission(perm)) {
+    if(sender.hasPermission(perm)) {
       return true;
     }
     sender.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage(Messages.COMMANDS_NO_PERMISSION));
@@ -190,45 +194,45 @@ public class Utils {
       Object e, chatTitle, chatSubtitle, titlePacket, subtitlePacket;
       Constructor<?> subtitleConstructor;
 
-      if (title == null)
+      if(title == null)
         title = "";
 
-        e = PacketUtils.getNMSClass("PacketPlayOutTitle").getDeclaredClasses()[0].getField("TIMES").get(null);
-        chatTitle = getAsIChatBaseComponent(title);
+      e = PacketUtils.getNMSClass("PacketPlayOutTitle").getDeclaredClasses()[0].getField("TIMES").get(null);
+      chatTitle = getAsIChatBaseComponent(title);
       subtitleConstructor = PacketUtils.getNMSClass("PacketPlayOutTitle").getConstructor(
           PacketUtils.getNMSClass("PacketPlayOutTitle").getDeclaredClasses()[0],
           PacketUtils.getNMSClass("IChatBaseComponent"), Integer.TYPE, Integer.TYPE, Integer.TYPE);
       titlePacket = subtitleConstructor.newInstance(e, chatTitle, fadeIn, stay, fadeOut);
       PacketUtils.sendPacket(player, titlePacket);
 
-        e = PacketUtils.getNMSClass("PacketPlayOutTitle").getDeclaredClasses()[0].getField("TITLE").get(null);
-        chatTitle = PacketUtils.getNMSClass("IChatBaseComponent").getDeclaredClasses()[0].getMethod("a", String.class)
-                .invoke(null, "{\"text\":\"" + title + "\"}");
-        subtitleConstructor = PacketUtils.getNMSClass("PacketPlayOutTitle").getConstructor(
-                PacketUtils.getNMSClass("PacketPlayOutTitle").getDeclaredClasses()[0],
-                PacketUtils.getNMSClass("IChatBaseComponent"));
+      e = PacketUtils.getNMSClass("PacketPlayOutTitle").getDeclaredClasses()[0].getField("TITLE").get(null);
+      chatTitle = PacketUtils.getNMSClass("IChatBaseComponent").getDeclaredClasses()[0].getMethod("a", String.class)
+          .invoke(null, "{\"text\":\"" + title + "\"}");
+      subtitleConstructor = PacketUtils.getNMSClass("PacketPlayOutTitle").getConstructor(
+          PacketUtils.getNMSClass("PacketPlayOutTitle").getDeclaredClasses()[0],
+          PacketUtils.getNMSClass("IChatBaseComponent"));
       titlePacket = subtitleConstructor.newInstance(e, chatTitle);
       PacketUtils.sendPacket(player, titlePacket);
 
-        e = PacketUtils.getNMSClass("PacketPlayOutTitle").getDeclaredClasses()[0].getField("TIMES").get(null);
-        chatSubtitle = getAsIChatBaseComponent(title);
+      e = PacketUtils.getNMSClass("PacketPlayOutTitle").getDeclaredClasses()[0].getField("TIMES").get(null);
+      chatSubtitle = getAsIChatBaseComponent(title);
       subtitleConstructor = PacketUtils.getNMSClass("PacketPlayOutTitle").getConstructor(
           PacketUtils.getNMSClass("PacketPlayOutTitle").getDeclaredClasses()[0],
           PacketUtils.getNMSClass("IChatBaseComponent"), Integer.TYPE, Integer.TYPE, Integer.TYPE);
       subtitlePacket = subtitleConstructor.newInstance(e, chatSubtitle, fadeIn, stay, fadeOut);
       PacketUtils.sendPacket(player, subtitlePacket);
 
-      if (subtitle == null)
+      if(subtitle == null)
         subtitle = "";
 
-        e = PacketUtils.getNMSClass("PacketPlayOutTitle").getDeclaredClasses()[0].getField("SUBTITLE").get(null);
-        chatSubtitle = getAsIChatBaseComponent(subtitle);
+      e = PacketUtils.getNMSClass("PacketPlayOutTitle").getDeclaredClasses()[0].getField("SUBTITLE").get(null);
+      chatSubtitle = getAsIChatBaseComponent(subtitle);
       subtitleConstructor = PacketUtils.getNMSClass("PacketPlayOutTitle").getConstructor(
           PacketUtils.getNMSClass("PacketPlayOutTitle").getDeclaredClasses()[0],
           PacketUtils.getNMSClass("IChatBaseComponent"), Integer.TYPE, Integer.TYPE, Integer.TYPE);
       subtitlePacket = subtitleConstructor.newInstance(e, chatSubtitle, fadeIn, stay, fadeOut);
       PacketUtils.sendPacket(player, subtitlePacket);
-    } catch (Throwable e) {
+    } catch(Throwable e) {
       e.printStackTrace();
     }
   }
@@ -242,7 +246,7 @@ public class Utils {
 
   public static Material getCachedDoor(Block block) {
     //material can not be cached as we allow other door types
-    if (block == null) {
+    if(block == null) {
       return XMaterial.OAK_DOOR.parseMaterial();
     }
     return (MaterialUtil.isDoor(block.getType()) ? block.getType() : Material.AIR);

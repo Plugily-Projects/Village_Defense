@@ -69,10 +69,10 @@ public class HealerKit extends LevelKit {
 
   @Override
   public void reStock(Player player) {
-    for (int i = 0; i < 2; i++) {
+    for(int i = 0; i < 2; i++) {
       player.getInventory().addItem(Utils.getPotion(PotionType.INSTANT_HEAL, 2, true));
     }
-    for (int i = 0; i < 2; i++) {
+    for(int i = 0; i < 2; i++) {
       player.getInventory().addItem(Utils.getPotion(PotionType.REGEN, 1, true));
     }
   }

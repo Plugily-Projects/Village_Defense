@@ -25,7 +25,12 @@ import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.arena.Arena;
 import plugily.projects.villagedefense.arena.options.ArenaOption;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
 
 /**
  * @author Plajer
@@ -60,11 +65,11 @@ public class ZombieSpawnManager {
    */
   public void spawnGlitchCheck() {
     arena.addOptionValue(ArenaOption.ZOMBIE_GLITCH_CHECKER, 1);
-    if (arena.getOption(ArenaOption.ZOMBIE_GLITCH_CHECKER) >= 60) {
+    if(arena.getOption(ArenaOption.ZOMBIE_GLITCH_CHECKER) >= 60) {
       Iterator<Villager> villagerIterator = arena.getVillagers().iterator();
-      while (villagerIterator.hasNext()) {
+      while(villagerIterator.hasNext()) {
         Villager villager = villagerIterator.next();
-        if (villager.isDead()) {
+        if(villager.isDead()) {
           villagerIterator.remove();
           arena.removeVillager(villager);
         }
@@ -72,25 +77,25 @@ public class ZombieSpawnManager {
       arena.setOptionValue(ArenaOption.ZOMBIE_GLITCH_CHECKER, 0);
 
       Iterator<Zombie> zombieIterator = arena.getZombies().iterator();
-      while (zombieIterator.hasNext()) {
+      while(zombieIterator.hasNext()) {
         Zombie zombie = zombieIterator.next();
-        if (zombie.isDead()) {
+        if(zombie.isDead()) {
           zombieIterator.remove();
           arena.removeZombie(zombie);
           continue;
         }
-        if (glitchedZombies.contains(zombie) && zombie.getLocation().distance(zombieCheckerLocations.get(zombie)) <= 1) {
+        if(glitchedZombies.contains(zombie) && zombie.getLocation().distance(zombieCheckerLocations.get(zombie)) <= 1) {
           zombieIterator.remove();
           arena.removeZombie(zombie);
           zombieCheckerLocations.remove(zombie);
           zombie.remove();
         }
-        if (zombieCheckerLocations.get(zombie) == null) {
+        if(zombieCheckerLocations.get(zombie) == null) {
           zombieCheckerLocations.put(zombie, zombie.getLocation());
         } else {
           Location location = zombieCheckerLocations.get(zombie);
 
-          if (zombie.getLocation().distance(location) <= 1) {
+          if(zombie.getLocation().distance(location) <= 1) {
             zombie.teleport(arena.getZombieSpawns().get(random.nextInt(arena.getZombieSpawns().size() - 1)));
             zombieCheckerLocations.put(zombie, zombie.getLocation());
             glitchedZombies.add(zombie);
@@ -111,48 +116,48 @@ public class ZombieSpawnManager {
    * on random value and current wave
    */
   public void spawnZombies() {
-    if (!checkForIdle()) {
+    if(!checkForIdle()) {
       return;
     }
     int wave = arena.getOption(ArenaOption.WAVE);
     int spawn = arena.getOption(ArenaOption.WAVE);
-    if (plugin.getConfig().getInt("Zombies-Limit", 75) < wave) {
+    if(plugin.getConfig().getInt("Zombies-Limit", 75) < wave) {
       spawn = (int) Math.ceil(plugin.getConfig().getInt("Zombies-Limit", 75) / 2.0);
     }
 
-    if (arena.getZombies().isEmpty()) {
-      for (int i = 0; i <= spawn; i++) {
-        if (arena.getOption(ArenaOption.ZOMBIES_TO_SPAWN) > 0) {
+    if(arena.getZombies().isEmpty()) {
+      for(int i = 0; i <= spawn; i++) {
+        if(arena.getOption(ArenaOption.ZOMBIES_TO_SPAWN) > 0) {
           arena.spawnFastZombie(random);
         }
       }
     }
     arena.addOptionValue(ArenaOption.ZOMBIE_SPAWN_COUNTER, 1);
-    if (arena.getOption(ArenaOption.ZOMBIE_SPAWN_COUNTER) == 20) {
+    if(arena.getOption(ArenaOption.ZOMBIE_SPAWN_COUNTER) == 20) {
       arena.setOptionValue(ArenaOption.ZOMBIE_SPAWN_COUNTER, 0);
     }
-    if (arena.getOption(ArenaOption.ZOMBIES_TO_SPAWN) < 5 && arena.getOption(ArenaOption.ZOMBIES_TO_SPAWN) > 0) {
+    if(arena.getOption(ArenaOption.ZOMBIES_TO_SPAWN) < 5 && arena.getOption(ArenaOption.ZOMBIES_TO_SPAWN) > 0) {
       arena.spawnFastZombie(random);
       return;
     }
-    if (arena.getOption(ArenaOption.ZOMBIE_SPAWN_COUNTER) == 5) {
-      if (random.nextInt(3) != 2) {
-        for (int i = 0; i <= spawn; i++) {
-          if (arena.getOption(ArenaOption.ZOMBIES_TO_SPAWN) > 0) {
-            if (wave > 23) {
-              if (random.nextInt(4) == 1) {
+    if(arena.getOption(ArenaOption.ZOMBIE_SPAWN_COUNTER) == 5) {
+      if(random.nextInt(3) != 2) {
+        for(int i = 0; i <= spawn; i++) {
+          if(arena.getOption(ArenaOption.ZOMBIES_TO_SPAWN) > 0) {
+            if(wave > 23) {
+              if(random.nextInt(4) == 1) {
                 arena.spawnVillagerSlayer(random);
               }
-            } else if (wave > 20) {
-              if (random.nextInt(3) == 1) {
+            } else if(wave > 20) {
+              if(random.nextInt(3) == 1) {
                 arena.spawnKnockbackResistantZombies(random);
               }
-            } else if (wave > 14) {
-              if (random.nextInt(2) == 1) {
+            } else if(wave > 14) {
+              if(random.nextInt(2) == 1) {
                 arena.spawnHardZombie(random);
               }
-            } else if (wave > 7) {
-              if (random.nextInt(2) == 1) {
+            } else if(wave > 7) {
+              if(random.nextInt(2) == 1) {
                 arena.spawnSoftHardZombie(random);
               }
             } else {
@@ -161,73 +166,73 @@ public class ZombieSpawnManager {
           }
         }
       } else {
-        for (int i = 0; i <= spawn; i++) {
-          if (arena.getOption(ArenaOption.ZOMBIES_TO_SPAWN) > 0) {
+        for(int i = 0; i <= spawn; i++) {
+          if(arena.getOption(ArenaOption.ZOMBIES_TO_SPAWN) > 0) {
             arena.spawnPlayerBuster(random);
           }
-          if (arena.getOption(ArenaOption.ZOMBIES_TO_SPAWN) > 0) {
+          if(arena.getOption(ArenaOption.ZOMBIES_TO_SPAWN) > 0) {
             arena.spawnGolemBuster(random);
           }
-          if (arena.getOption(ArenaOption.ZOMBIES_TO_SPAWN) > 0) {
+          if(arena.getOption(ArenaOption.ZOMBIES_TO_SPAWN) > 0) {
             arena.spawnVillagerBuster(random);
           }
-          if (arena.getOption(ArenaOption.ZOMBIES_TO_SPAWN) > 0) {
+          if(arena.getOption(ArenaOption.ZOMBIES_TO_SPAWN) > 0) {
             arena.spawnBabyZombie(random);
           }
         }
       }
     }
-    if (arena.getOption(ArenaOption.ZOMBIE_SPAWN_COUNTER) == 15 && wave > 4) {
-      if (wave > 8) {
-        for (int i = 0; i < (spawn - 7); i++) {
-          if (arena.getOption(ArenaOption.ZOMBIES_TO_SPAWN) > 0) {
+    if(arena.getOption(ArenaOption.ZOMBIE_SPAWN_COUNTER) == 15 && wave > 4) {
+      if(wave > 8) {
+        for(int i = 0; i < (spawn - 7); i++) {
+          if(arena.getOption(ArenaOption.ZOMBIES_TO_SPAWN) > 0) {
             arena.spawnHardZombie(random);
           }
         }
       } else {
-        for (int i = 0; i < (spawn - 3); i++) {
-          if (arena.getOption(ArenaOption.ZOMBIES_TO_SPAWN) > 0) {
+        for(int i = 0; i < (spawn - 3); i++) {
+          if(arena.getOption(ArenaOption.ZOMBIES_TO_SPAWN) > 0) {
             arena.spawnSoftHardZombie(random);
           }
         }
       }
     }
-    if (random.nextInt(8) == 0 && wave > 10) {
-      for (int i = 0; i < (spawn - 8); i++) {
-        if (arena.getOption(ArenaOption.ZOMBIES_TO_SPAWN) > 0) {
+    if(random.nextInt(8) == 0 && wave > 10) {
+      for(int i = 0; i < (spawn - 8); i++) {
+        if(arena.getOption(ArenaOption.ZOMBIES_TO_SPAWN) > 0) {
           arena.spawnPlayerBuster(random);
         }
       }
     }
-    if (random.nextInt(8) == 0 && wave > 7) {
-      for (int i = 0; i < (spawn - 5); i++) {
-        if (arena.getOption(ArenaOption.ZOMBIES_TO_SPAWN) > 0) {
+    if(random.nextInt(8) == 0 && wave > 7) {
+      for(int i = 0; i < (spawn - 5); i++) {
+        if(arena.getOption(ArenaOption.ZOMBIES_TO_SPAWN) > 0) {
           arena.spawnHalfInvisibleZombie(random);
         }
       }
     }
-    if (random.nextInt(8) == 0 && wave > 15) {
-      for (int i = 0; i < (spawn - 13); i++) {
-        if (arena.getOption(ArenaOption.ZOMBIES_TO_SPAWN) > 0) {
+    if(random.nextInt(8) == 0 && wave > 15) {
+      for(int i = 0; i < (spawn - 13); i++) {
+        if(arena.getOption(ArenaOption.ZOMBIES_TO_SPAWN) > 0) {
           arena.spawnHalfInvisibleZombie(random);
         }
       }
     }
-    if (random.nextInt(8) == 0 && wave > 23) {
-      if (arena.getOption(ArenaOption.ZOMBIES_TO_SPAWN) > 0) {
+    if(random.nextInt(8) == 0 && wave > 23) {
+      if(arena.getOption(ArenaOption.ZOMBIES_TO_SPAWN) > 0) {
         arena.spawnHalfInvisibleZombie(random);
       }
     }
-    if (random.nextInt(8) == 0 && !arena.getIronGolems().isEmpty() && wave >= 6) {
-      for (int i = 0; i < (spawn - 4); i++) {
-        if (arena.getOption(ArenaOption.ZOMBIES_TO_SPAWN) > 0) {
+    if(random.nextInt(8) == 0 && !arena.getIronGolems().isEmpty() && wave >= 6) {
+      for(int i = 0; i < (spawn - 4); i++) {
+        if(arena.getOption(ArenaOption.ZOMBIES_TO_SPAWN) > 0) {
           arena.spawnGolemBuster(random);
         }
       }
     }
-    if (random.nextInt(8) == 0 && !arena.getVillagers().isEmpty() && wave >= 15) {
-      for (int i = 0; i < (spawn - 13); i++) {
-        if (arena.getOption(ArenaOption.ZOMBIES_TO_SPAWN) > 0) {
+    if(random.nextInt(8) == 0 && !arena.getVillagers().isEmpty() && wave >= 15) {
+      for(int i = 0; i < (spawn - 13); i++) {
+        if(arena.getOption(ArenaOption.ZOMBIES_TO_SPAWN) > 0) {
           arena.spawnVillagerBuster(random);
         }
       }
@@ -236,7 +241,7 @@ public class ZombieSpawnManager {
 
   private boolean checkForIdle() {
     //Idling to ~~save server stability~~ protect against hordes of zombies
-    if (localIdleProcess > 0) {
+    if(localIdleProcess > 0) {
       localIdleProcess--;
       return false;
     }

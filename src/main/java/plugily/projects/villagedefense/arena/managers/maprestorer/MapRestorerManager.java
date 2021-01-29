@@ -71,8 +71,8 @@ public class MapRestorerManager {
   }
 
   public void clearDroppedEntities() {
-    for (org.bukkit.entity.Entity entity : Utils.getNearbyEntities(arena.getStartLocation(), 200)) {
-      if (entity.getType() == EntityType.EXPERIENCE_ORB || entity.getType() == EntityType.DROPPED_ITEM) {
+    for(org.bukkit.entity.Entity entity : Utils.getNearbyEntities(arena.getStartLocation(), 200)) {
+      if(entity.getType() == EntityType.EXPERIENCE_ORB || entity.getType() == EntityType.DROPPED_ITEM) {
         entity.remove();
       }
     }
@@ -95,26 +95,26 @@ public class MapRestorerManager {
 
   public void restoreDoors() {
     int i = 0;
-    for (Map.Entry<Location, Byte> entry : doorBlocks.entrySet()) {
+    for(Map.Entry<Location, Byte> entry : doorBlocks.entrySet()) {
       Block block = entry.getKey().getBlock();
       Byte doorData = entry.getValue();
-        try {
-          if (block.getType() != XMaterial.AIR.parseMaterial()) {
-            i++;
-            continue;
-          }
-          if (doorData == (byte) 8) {
-            restoreTopHalfDoorPart(block);
-            i++;
-            continue;
-          }
-          restoreBottomHalfDoorPart(block, doorData);
+      try {
+        if(block.getType() != XMaterial.AIR.parseMaterial()) {
           i++;
-        } catch (Exception ex) {
-          Debugger.debug(Level.WARNING, "Door has failed to load for arena {0} message {1} type {2} skipping!", arena.getId(), ex.getMessage(), ex.getCause());
+          continue;
         }
+        if(doorData == (byte) 8) {
+          restoreTopHalfDoorPart(block);
+          i++;
+          continue;
+        }
+        restoreBottomHalfDoorPart(block, doorData);
+        i++;
+      } catch(Exception ex) {
+        Debugger.debug(Level.WARNING, "Door has failed to load for arena {0} message {1} type {2} skipping!", arena.getId(), ex.getMessage(), ex.getCause());
+      }
     }
-    if (i != doorBlocks.size()) {
+    if(i != doorBlocks.size()) {
       Debugger.debug(Level.WARNING, "Failed to load doors for {0}! Expected {1} got {2}", arena.getId(), doorBlocks.size(), i);
     }
   }

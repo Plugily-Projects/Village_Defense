@@ -27,7 +27,15 @@ import pl.plajerlair.commonsbox.minecraft.helper.ArmorHelper;
 import pl.plajerlair.commonsbox.minecraft.helper.WeaponHelper;
 import plugily.projects.villagedefense.arena.Arena;
 import plugily.projects.villagedefense.arena.ArenaRegistry;
-import plugily.projects.villagedefense.arena.initializers.*;
+import plugily.projects.villagedefense.arena.initializers.ArenaInitializer1_11_R1;
+import plugily.projects.villagedefense.arena.initializers.ArenaInitializer1_12_R1;
+import plugily.projects.villagedefense.arena.initializers.ArenaInitializer1_13_R1;
+import plugily.projects.villagedefense.arena.initializers.ArenaInitializer1_13_R2;
+import plugily.projects.villagedefense.arena.initializers.ArenaInitializer1_14_R1;
+import plugily.projects.villagedefense.arena.initializers.ArenaInitializer1_15_R1;
+import plugily.projects.villagedefense.arena.initializers.ArenaInitializer1_16_R1;
+import plugily.projects.villagedefense.arena.initializers.ArenaInitializer1_16_R2;
+import plugily.projects.villagedefense.arena.initializers.ArenaInitializer1_16_R3;
 import plugily.projects.villagedefense.handlers.PermissionsManager;
 import plugily.projects.villagedefense.handlers.language.Messages;
 import plugily.projects.villagedefense.kits.KitRegistry;
@@ -60,10 +68,10 @@ public class DogFriendKit extends PremiumKit {
     player.getInventory().addItem(new ItemStack(XMaterial.COOKED_PORKCHOP.parseMaterial(), 8));
     player.getInventory().addItem(new ItemStack(Material.SADDLE));
     Arena arena = ArenaRegistry.getArena(player);
-    if (arena == null) {
+    if(arena == null) {
       return;
     }
-    for (int i = 0; i < 3; i++) {
+    for(int i = 0; i < 3; i++) {
       spawnWolf(arena, player);
     }
   }
@@ -76,34 +84,34 @@ public class DogFriendKit extends PremiumKit {
   @Override
   public void reStock(Player player) {
     Arena arena = ArenaRegistry.getArena(player);
-    if (arena != null) {
+    if(arena != null) {
       spawnWolf(arena, player);
     }
   }
 
   private void spawnWolf(Arena arena, Player player) {
-    if (ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_11_R1)) {
+    if(ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_11_R1)) {
       ArenaInitializer1_11_R1 initializer = (ArenaInitializer1_11_R1) arena;
       initializer.spawnWolf(initializer.getStartLocation(), player);
-    } else if (ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_12_R1)) {
+    } else if(ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_12_R1)) {
       ArenaInitializer1_12_R1 initializer = (ArenaInitializer1_12_R1) arena;
       initializer.spawnWolf(initializer.getStartLocation(), player);
-    } else if (ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_13_R1)) {
+    } else if(ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_13_R1)) {
       ArenaInitializer1_13_R1 initializer = (ArenaInitializer1_13_R1) arena;
       initializer.spawnWolf(initializer.getStartLocation(), player);
-    } else if (ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_13_R2)) {
+    } else if(ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_13_R2)) {
       ArenaInitializer1_13_R2 initializer = (ArenaInitializer1_13_R2) arena;
       initializer.spawnWolf(initializer.getStartLocation(), player);
-    } else if (ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_14_R1)) {
+    } else if(ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_14_R1)) {
       ArenaInitializer1_14_R1 initializer = (ArenaInitializer1_14_R1) arena;
       initializer.spawnWolf(initializer.getStartLocation(), player);
-    } else if (ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_15_R1)) {
+    } else if(ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_15_R1)) {
       ArenaInitializer1_15_R1 initializer = (ArenaInitializer1_15_R1) arena;
       initializer.spawnWolf(initializer.getStartLocation(), player);
-    } else if (ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_16_R1)) {
+    } else if(ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_16_R1)) {
       ArenaInitializer1_16_R1 initializer = (ArenaInitializer1_16_R1) arena;
       initializer.spawnWolf(initializer.getStartLocation(), player);
-    } else if (ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_16_R2)) {
+    } else if(ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_16_R2)) {
       ArenaInitializer1_16_R2 initializer = (ArenaInitializer1_16_R2) arena;
       initializer.spawnWolf(initializer.getStartLocation(), player);
     } else {

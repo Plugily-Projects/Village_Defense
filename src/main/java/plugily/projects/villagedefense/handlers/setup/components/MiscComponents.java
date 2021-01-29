@@ -71,14 +71,14 @@ public class MiscComponents implements SetupComponent {
   @Override
   public void injectComponents(StaticPane pane) {
     Arena arena = setupInventory.getArena();
-    if (arena == null) {
+    if(arena == null) {
       return;
     }
     Player player = setupInventory.getPlayer();
     FileConfiguration config = setupInventory.getConfig();
     Main plugin = setupInventory.getPlugin();
     ItemStack bungeeItem;
-    if (!plugin.getConfigPreferences().getOption(ConfigPreferences.Option.BUNGEE_ENABLED)) {
+    if(!plugin.getConfigPreferences().getOption(ConfigPreferences.Option.BUNGEE_ENABLED)) {
       bungeeItem = new ItemBuilder(XMaterial.OAK_SIGN.parseMaterial())
           .name(plugin.getChatManager().colorRawMessage("&e&lAdd Game Sign"))
           .lore(ChatColor.GRAY + "Target a sign and click this.")
@@ -93,16 +93,16 @@ public class MiscComponents implements SetupComponent {
           .build();
     }
     pane.addItem(new GuiItem(bungeeItem, e -> {
-      if (plugin.getConfigPreferences().getOption(ConfigPreferences.Option.BUNGEE_ENABLED)) {
+      if(plugin.getConfigPreferences().getOption(ConfigPreferences.Option.BUNGEE_ENABLED)) {
         return;
       }
       e.getWhoClicked().closeInventory();
       Location location = player.getTargetBlock(null, 10).getLocation();
-      if (!(location.getBlock().getState() instanceof Sign)) {
+      if(!(location.getBlock().getState() instanceof Sign)) {
         player.sendMessage(plugin.getChatManager().colorRawMessage("&c&l✘ &cPlease look at sign to add as a game sign!"));
         return;
       }
-      if (location.distance(e.getWhoClicked().getWorld().getSpawnLocation()) <= Bukkit.getServer().getSpawnRadius()
+      if(location.distance(e.getWhoClicked().getWorld().getSpawnLocation()) <= Bukkit.getServer().getSpawnRadius()
           && e.getClick() != ClickType.SHIFT_LEFT) {
         e.getWhoClicked().sendMessage(plugin.getChatManager().colorRawMessage("&c&l✖ &cWarning | Server spawn protection is set to &6" + Bukkit.getServer().getSpawnRadius()
             + " &cand sign you want to place is in radius of this protection! &c&lNon opped players won't be able to interact with this sign and can't join the game so."));
@@ -154,23 +154,23 @@ public class MiscComponents implements SetupComponent {
         .build(), e -> {
       e.getWhoClicked().closeInventory();
       Block targetBlock = player.getTargetBlock(null, 10);
-      if (targetBlock == null || targetBlock.getType() != Material.CHEST) {
+      if(targetBlock == null || targetBlock.getType() != Material.CHEST) {
         player.sendMessage(plugin.getChatManager().colorRawMessage("&c&l✘ &cLook at the chest! You are targeting something else!"));
         return;
       }
       boolean found = false;
-      for (ItemStack stack : ((Chest) targetBlock.getState()).getBlockInventory()) {
-        if (stack == null) {
+      for(ItemStack stack : ((Chest) targetBlock.getState()).getBlockInventory()) {
+        if(stack == null) {
           continue;
         }
-        if (stack.hasItemMeta() && stack.getItemMeta().hasLore()
+        if(stack.hasItemMeta() && stack.getItemMeta().hasLore()
             && stack.getItemMeta().getLore().get(stack.getItemMeta().getLore().size() - 1)
             .contains(plugin.getChatManager().colorMessage(Messages.SHOP_MESSAGES_CURRENCY_IN_SHOP))) {
           found = true;
           break;
         }
       }
-      if (!found) {
+      if(!found) {
         player.sendMessage(plugin.getChatManager().colorRawMessage("&c&l✖ &cWarning | No items in shop have price set! Set their prices using &6/vda setprice&c! You can ignore this warning"));
       }
       LocationSerializer.saveLoc(plugin, config, "arenas", "instances." + arena.getId() + ".shop", targetBlock.getLocation());
@@ -187,7 +187,7 @@ public class MiscComponents implements SetupComponent {
         .lore("", plugin.getChatManager().colorRawMessage("&8Shift + Right Click to remove all spawns"))
         .build(), e -> {
       e.getWhoClicked().closeInventory();
-      if (e.getClick() == ClickType.SHIFT_RIGHT) {
+      if(e.getClick() == ClickType.SHIFT_RIGHT) {
         config.set("instances." + arena.getId() + ".villagerspawns", null);
         arena.getVillagerSpawns().clear();
         player.sendMessage(plugin.getChatManager().colorRawMessage("&eDone | &aVillager spawn points deleted, you can add them again now!"));
@@ -200,7 +200,7 @@ public class MiscComponents implements SetupComponent {
       LocationSerializer.saveLoc(plugin, config, "arenas", "instances." + arena.getId() + ".villagerspawns." + villagers, player.getLocation());
       String progress = villagers >= 2 ? "&e✔ Completed | " : "&c✘ Not completed | ";
       player.sendMessage(plugin.getChatManager().colorRawMessage(progress + "&aVillager spawn added! &8(&7" + villagers + "/2&8)"));
-      if (villagers == 2) {
+      if(villagers == 2) {
         player.sendMessage(plugin.getChatManager().colorRawMessage("&eInfo | &aYou can add more than 2 villager spawns! Two is just a minimum!"));
       }
       arena.getVillagerSpawns().add(player.getLocation());
@@ -215,7 +215,7 @@ public class MiscComponents implements SetupComponent {
         .lore("", plugin.getChatManager().colorRawMessage("&8Shift + Right Click to remove all spawns"))
         .build(), e -> {
       e.getWhoClicked().closeInventory();
-      if (e.getClick() == ClickType.SHIFT_RIGHT) {
+      if(e.getClick() == ClickType.SHIFT_RIGHT) {
         config.set("instances." + arena.getId() + ".zombiespawns", null);
         arena.getZombieSpawns().clear();
         player.sendMessage(plugin.getChatManager().colorRawMessage("&eDone | &aZombie spawn points deleted, you can add them again now!"));
@@ -228,7 +228,7 @@ public class MiscComponents implements SetupComponent {
       LocationSerializer.saveLoc(plugin, config, "arenas", "instances." + arena.getId() + ".zombiespawns." + zombies, player.getLocation());
       String progress = zombies >= 2 ? "&e✔ Completed | " : "&c✘ Not completed | ";
       player.sendMessage(plugin.getChatManager().colorRawMessage(progress + "&aZombie spawn added! &8(&7" + zombies + "/2&8)"));
-      if (zombies == 2) {
+      if(zombies == 2) {
         player.sendMessage(plugin.getChatManager().colorRawMessage("&eInfo | &aYou can add more than 2 zombie spawns! Two is just a minimum!"));
       }
       arena.getZombieSpawns().add(player.getLocation());
@@ -236,16 +236,16 @@ public class MiscComponents implements SetupComponent {
     }), 0, 1);
 
     pane.addItem(new GuiItem(new ItemBuilder(XMaterial.OAK_DOOR.parseItem())
-            .name(plugin.getChatManager().colorRawMessage("&e&lAdd Game Door"))
-            .lore(ChatColor.GRAY + "Target arena door and click this.")
-            .lore(ChatColor.DARK_GRAY + "(doors are required and will be")
-            .lore(ChatColor.DARK_GRAY + "regenerated each game, villagers will hide")
-            .lore(ChatColor.DARK_GRAY + "in houses so you can put doors there)")
-            .lore("", setupInventory.getSetupUtilities().isOptionDoneSection("instances." + arena.getId() + ".doors", 1))
-            .lore("", plugin.getChatManager().colorRawMessage("&8Shift + Right Click to remove all locations"))
-            .build(), e -> {
+        .name(plugin.getChatManager().colorRawMessage("&e&lAdd Game Door"))
+        .lore(ChatColor.GRAY + "Target arena door and click this.")
+        .lore(ChatColor.DARK_GRAY + "(doors are required and will be")
+        .lore(ChatColor.DARK_GRAY + "regenerated each game, villagers will hide")
+        .lore(ChatColor.DARK_GRAY + "in houses so you can put doors there)")
+        .lore("", setupInventory.getSetupUtilities().isOptionDoneSection("instances." + arena.getId() + ".doors", 1))
+        .lore("", plugin.getChatManager().colorRawMessage("&8Shift + Right Click to remove all locations"))
+        .build(), e -> {
       e.getWhoClicked().closeInventory();
-      if (e.getClick() == ClickType.SHIFT_RIGHT) {
+      if(e.getClick() == ClickType.SHIFT_RIGHT) {
         config.set("instances." + arena.getId() + ".doors", null);
         arena.getMapRestorerManager().getGameDoorLocations().clear();
         player.sendMessage(plugin.getChatManager().colorRawMessage("&eDone | &aDoor locations deleted, you can add them again now!"));
@@ -255,7 +255,7 @@ public class MiscComponents implements SetupComponent {
       }
       Block block = player.getTargetBlock(null, 5);
       Material door = block.getType();
-      if (!MaterialUtil.isDoor(door)) {
+      if(!MaterialUtil.isDoor(door)) {
         player.sendMessage(plugin.getChatManager().colorRawMessage("&c&l✘ &cTarget block is not an wood door!"));
         return;
       }
@@ -263,13 +263,13 @@ public class MiscComponents implements SetupComponent {
           ? config.getConfigurationSection("instances." + arena.getId() + ".doors").getKeys(false).size() : 0) + 1;
 
       Block relativeBlock = null;
-      if (block.getRelative(BlockFace.DOWN).getType() == door) {
+      if(block.getRelative(BlockFace.DOWN).getType() == door) {
         relativeBlock = block;
         block = block.getRelative(BlockFace.DOWN);
-      } else if (block.getRelative(BlockFace.UP).getType() == door) {
+      } else if(block.getRelative(BlockFace.UP).getType() == door) {
         relativeBlock = block.getRelative(BlockFace.UP);
       }
-      if (relativeBlock == null) {
+      if(relativeBlock == null) {
         player.sendMessage(plugin.getChatManager().colorRawMessage("&c&l✘ &cThis door doesn't have 2 blocks? Maybe it's bugged? Try placing it again."));
         return;
       }
@@ -280,13 +280,13 @@ public class MiscComponents implements SetupComponent {
 
       String doorLocation = block.getWorld().getName() + "," + block.getX() + "," + block.getY() + "," + block.getZ() + ",0.0" + ",0.0";
       config.set("instances." + arena.getId() + ".doors." + doors + ".location", doorLocation);
-      if (!ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_11_R1) && !ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_12_R1)
+      if(!ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_11_R1) && !ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_12_R1)
           && block.getState().getData() instanceof Door) {
         config.set("instances." + arena.getId() + ".doors." + doors + ".byte", Utils.getDoorByte(((Door) block.getState().getData()).getFacing()));
       } else {
         try {
           config.set("instances." + arena.getId() + ".doors." + doors + ".byte", block.getClass().getDeclaredMethod("getData").invoke(block));
-        } catch (Exception e1) {
+        } catch(Exception e1) {
           e1.printStackTrace();
         }
       }

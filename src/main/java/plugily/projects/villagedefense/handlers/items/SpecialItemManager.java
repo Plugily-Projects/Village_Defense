@@ -53,8 +53,8 @@ public class SpecialItemManager {
 
   @NotNull
   public SpecialItem getSpecialItem(String name) {
-    for (SpecialItem item : specialItems) {
-      if (item.getName().equals(name)) {
+    for(SpecialItem item : specialItems) {
+      if(item.getName().equals(name)) {
         return item;
       }
     }
@@ -63,8 +63,8 @@ public class SpecialItemManager {
 
   @NotNull
   public SpecialItem getRelatedSpecialItem(ItemStack itemStack) {
-    for (SpecialItem item : specialItems) {
-      if (item.getItemStack().isSimilar(itemStack)) {
+    for(SpecialItem item : specialItems) {
+      if(item.getItemStack().isSimilar(itemStack)) {
         return item;
       }
     }
@@ -72,8 +72,8 @@ public class SpecialItemManager {
   }
 
   public void registerItems() {
-    for (String key : config.getKeys(false)) {
-      if ("Version".equals(key)) {
+    for(String key : config.getKeys(false)) {
+      if("Version".equals(key)) {
         continue;
       }
       XMaterial mat;
@@ -87,14 +87,14 @@ public class SpecialItemManager {
             .map(itemLore -> itemLore = plugin.getChatManager().colorRawMessage(itemLore))
             .collect(Collectors.toList());
         slot = config.getInt(key + ".slot");
-      } catch (Exception ex) {
+      } catch(Exception ex) {
         plugin.getLogger().log(Level.WARNING, "Configuration of " + key + "is missing a value. (material-name, displayname, lore or slot)");
         continue;
       }
       SpecialItem.DisplayStage stage;
       try {
         stage = SpecialItem.DisplayStage.valueOf(config.getString(key + ".stage").toUpperCase());
-      } catch (Exception ex) {
+      } catch(Exception ex) {
         Debugger.debug(Level.WARNING, "Invalid display stage of special item " + key + " in special_items.yml! Please use lobby or spectator!");
         stage = SpecialItem.DisplayStage.LOBBY;
       }

@@ -35,40 +35,40 @@ public class EntityRegistry {
     Debugger.debug("[EntityRegistry] Registry startup");
     long start = System.currentTimeMillis();
 
-    if (ServerVersion.Version.isCurrentEqualOrHigher(ServerVersion.Version.v1_13_R1)) {
+    if(ServerVersion.Version.isCurrentEqualOrHigher(ServerVersion.Version.v1_13_R1)) {
       Debugger.debug("[EntityRegistry] Registry skipped for 1.13, 1.14, 1.15 and 1.16 took {0}ms", System.currentTimeMillis() - start);
       return;
     }
 
-    if (ServerVersion.Version.isCurrentEqualOrLower(ServerVersion.Version.v1_12_R1)) {
+    if(ServerVersion.Version.isCurrentEqualOrLower(ServerVersion.Version.v1_12_R1)) {
       String[] classes = {"FastZombie", "BabyZombie", "PlayerBuster", "GolemBuster", "HardZombie", "TankerZombie", "VillagerSlayer", "RidableVillager", "RidableIronGolem",
-              "WorkingWolf", "VillagerBuster"};
+          "WorkingWolf", "VillagerBuster"};
 
       String version = ServerVersion.Version.getCurrent().getPackageVersion();
       try {
         this.getClass().getMethod("register" + version + "Entity", String.class, int.class, Class.class)
-                .invoke(this, "VillageZombie", 54, Class.forName("plugily.projects.villagedefense.creatures." + version + "." + classes[0]));
+            .invoke(this, "VillageZombie", 54, Class.forName("plugily.projects.villagedefense.creatures." + version + "." + classes[0]));
         this.getClass().getMethod("register" + version + "Entity", String.class, int.class, Class.class)
-                .invoke(this, "VillageZombie", 54, Class.forName("plugily.projects.villagedefense.creatures." + version + "." + classes[1]));
+            .invoke(this, "VillageZombie", 54, Class.forName("plugily.projects.villagedefense.creatures." + version + "." + classes[1]));
         this.getClass().getMethod("register" + version + "Entity", String.class, int.class, Class.class)
-          .invoke(this, "VillageZombie", 54, Class.forName("plugily.projects.villagedefense.creatures." + version + "." + classes[2]));
-      this.getClass().getMethod("register" + version + "Entity", String.class, int.class, Class.class)
-          .invoke(this, "VillageZombie", 54, Class.forName("plugily.projects.villagedefense.creatures." + version + "." + classes[3]));
-      this.getClass().getMethod("register" + version + "Entity", String.class, int.class, Class.class)
-          .invoke(this, "VillageZombie", 54, Class.forName("plugily.projects.villagedefense.creatures." + version + "." + classes[4]));
-      this.getClass().getMethod("register" + version + "Entity", String.class, int.class, Class.class)
-          .invoke(this, "VillageZombie", 54, Class.forName("plugily.projects.villagedefense.creatures." + version + "." + classes[5]));
-      this.getClass().getMethod("register" + version + "Entity", String.class, int.class, Class.class)
-          .invoke(this, "VillageZombie", 54, Class.forName("plugily.projects.villagedefense.creatures." + version + "." + classes[6]));
-      this.getClass().getMethod("register" + version + "Entity", String.class, int.class, Class.class)
-          .invoke(this, "VillageVillager", 120, Class.forName("plugily.projects.villagedefense.creatures." + version + "." + classes[7]));
-      this.getClass().getMethod("register" + version + "Entity", String.class, int.class, Class.class)
-          .invoke(this, "VillageVillagerGolem", 99, Class.forName("plugily.projects.villagedefense.creatures." + version + "." + classes[8]));
-      this.getClass().getMethod("register" + version + "Entity", String.class, int.class, Class.class)
-          .invoke(this, "VillageWolf", 95, Class.forName("plugily.projects.villagedefense.creatures." + version + "." + classes[9]));
-      this.getClass().getMethod("register" + version + "Entity", String.class, int.class, Class.class)
-          .invoke(this, "VillageZombie", 54, Class.forName("plugily.projects.villagedefense.creatures." + version + "." + classes[10]));
-      } catch (Exception e) {
+            .invoke(this, "VillageZombie", 54, Class.forName("plugily.projects.villagedefense.creatures." + version + "." + classes[2]));
+        this.getClass().getMethod("register" + version + "Entity", String.class, int.class, Class.class)
+            .invoke(this, "VillageZombie", 54, Class.forName("plugily.projects.villagedefense.creatures." + version + "." + classes[3]));
+        this.getClass().getMethod("register" + version + "Entity", String.class, int.class, Class.class)
+            .invoke(this, "VillageZombie", 54, Class.forName("plugily.projects.villagedefense.creatures." + version + "." + classes[4]));
+        this.getClass().getMethod("register" + version + "Entity", String.class, int.class, Class.class)
+            .invoke(this, "VillageZombie", 54, Class.forName("plugily.projects.villagedefense.creatures." + version + "." + classes[5]));
+        this.getClass().getMethod("register" + version + "Entity", String.class, int.class, Class.class)
+            .invoke(this, "VillageZombie", 54, Class.forName("plugily.projects.villagedefense.creatures." + version + "." + classes[6]));
+        this.getClass().getMethod("register" + version + "Entity", String.class, int.class, Class.class)
+            .invoke(this, "VillageVillager", 120, Class.forName("plugily.projects.villagedefense.creatures." + version + "." + classes[7]));
+        this.getClass().getMethod("register" + version + "Entity", String.class, int.class, Class.class)
+            .invoke(this, "VillageVillagerGolem", 99, Class.forName("plugily.projects.villagedefense.creatures." + version + "." + classes[8]));
+        this.getClass().getMethod("register" + version + "Entity", String.class, int.class, Class.class)
+            .invoke(this, "VillageWolf", 95, Class.forName("plugily.projects.villagedefense.creatures." + version + "." + classes[9]));
+        this.getClass().getMethod("register" + version + "Entity", String.class, int.class, Class.class)
+            .invoke(this, "VillageZombie", 54, Class.forName("plugily.projects.villagedefense.creatures." + version + "." + classes[10]));
+      } catch(Exception e) {
         plugin.getLogger().log(Level.WARNING, "Could not register custom mobs in version 1.11-1.12! Plugin won't work properly!");
         plugin.getLogger().log(Level.WARNING, "Cause: " + e.getMessage());
       }

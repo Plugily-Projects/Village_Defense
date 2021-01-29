@@ -45,14 +45,14 @@ public class SpyChatArgument {
       @Override
       public void execute(CommandSender sender, String[] args) {
         Player player = (Player) sender;
-        if (isSpyChatEnabled(player)) {
+        if(isSpyChatEnabled(player)) {
           disableSpyChat(player);
         } else {
           spyChatters.add(player);
         }
         sender.sendMessage(registry.getPlugin().getChatManager().getPrefix() +
             registry.getPlugin().getChatManager().colorMessage(Messages.COMMANDS_ADMIN_SPYCHAT_TOGGLED)
-            .replace("%value%", String.valueOf(isSpyChatEnabled(player))));
+                .replace("%value%", String.valueOf(isSpyChatEnabled(player))));
       }
     });
   }

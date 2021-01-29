@@ -47,11 +47,11 @@ public class ChatManager {
   }
 
   public String colorRawMessage(String message) {
-    if (message == null) {
+    if(message == null) {
       return "";
     }
 
-    if (ServerVersion.Version.isCurrentEqualOrHigher(ServerVersion.Version.v1_16_R1) && message.contains("#")) {
+    if(ServerVersion.Version.isCurrentEqualOrHigher(ServerVersion.Version.v1_16_R1) && message.contains("#")) {
       message = MiscUtils.matchColorRegex(message);
     }
 
@@ -66,7 +66,7 @@ public class ChatManager {
    * @param message constant message to broadcast
    */
   public void broadcast(Arena arena, Messages message) {
-    for (Player p : arena.getPlayers()) {
+    for(Player p : arena.getPlayers()) {
       p.sendMessage(prefix + message.getMessage());
     }
   }
@@ -79,13 +79,13 @@ public class ChatManager {
    * @param message message to broadcast
    */
   public void broadcastMessage(Arena arena, String message) {
-    for (Player p : arena.getPlayers()) {
+    for(Player p : arena.getPlayers()) {
       p.sendMessage(prefix + message);
     }
   }
 
   public String colorMessage(Messages message) {
-      return colorRawMessage(LanguageManager.getLanguageMessage(message.getAccessor()));
+    return colorRawMessage(LanguageManager.getLanguageMessage(message.getAccessor()));
   }
 
   public String formatMessage(Arena arena, String message, int integer) {
@@ -116,7 +116,7 @@ public class ChatManager {
   }
 
   public void broadcastAction(Arena a, Player p, ActionType action) {
-    switch (action) {
+    switch(action) {
       case JOIN:
         broadcastMessage(a, formatMessage(a, colorMessage(Messages.JOIN), p));
         break;

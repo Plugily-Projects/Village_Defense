@@ -41,7 +41,7 @@ public class LanguageMigrator {
   public static final int CONFIG_FILE_VERSION = 15;
   private final Main plugin;
   private final List<String> migratable = Arrays.asList(Constants.Files.CONFIG.getName(), Constants.Files.KITS.getName(),
-          Constants.Files.KITS.getName(), Constants.Files.LANGUAGE.getName(), Constants.Files.SPECIAL_ITEMS.getName(), Constants.Files.MYSQL.getName());
+      Constants.Files.KITS.getName(), Constants.Files.LANGUAGE.getName(), Constants.Files.SPECIAL_ITEMS.getName(), Constants.Files.MYSQL.getName());
 
   public LanguageMigrator(Main plugin) {
     this.plugin = plugin;
@@ -49,8 +49,8 @@ public class LanguageMigrator {
     //checks if file architecture don't need to be updated to 3.x format
     //check if using releases before 2.1.0 or 2.1.0+
     FileConfiguration lang = ConfigUtils.getConfig(plugin, Constants.Files.LANGUAGE.getName());
-    if ((lang.isSet("STATS-AboveLine") && lang.isSet("SCOREBOARD-Zombies"))
-            || (lang.isSet("File-Version") && plugin.getConfig().isSet("Config-Version"))) {
+    if((lang.isSet("STATS-AboveLine") && lang.isSet("SCOREBOARD-Zombies"))
+        || (lang.isSet("File-Version") && plugin.getConfig().isSet("Config-Version"))) {
       migrateToNewFormat();
     }
 
@@ -60,7 +60,7 @@ public class LanguageMigrator {
   }
 
   private void configUpdate() {
-    if (plugin.getConfig().getInt("Version") == CONFIG_FILE_VERSION) {
+    if(plugin.getConfig().getInt("Version") == CONFIG_FILE_VERSION) {
       return;
     }
     Debugger.sendConsoleMsg("&e[Village Defense] System notify >> Your config file is outdated! Updating...");
@@ -69,8 +69,8 @@ public class LanguageMigrator {
 
     int version = plugin.getConfig().getInt("Version", CONFIG_FILE_VERSION - 1);
 
-    for (int i = version; i < CONFIG_FILE_VERSION; i++) {
-      switch (i) {
+    for(int i = version; i < CONFIG_FILE_VERSION; i++) {
+      switch(i) {
         case 1:
           MigratorUtils.addNewLines(file, "# Power ups section. If you want to have classic Village Defense game mode i recommend to disable this.\r\nPowerups:\r\n"
               + "  # Do you want to enable in-game power ups?\r\n  # This will make zombies to drop some power ups when they're killed\r\n"
@@ -135,54 +135,54 @@ public class LanguageMigrator {
           MigratorUtils.removeLineFromFile(bungeefile, "MOTD-manager: true");
           MigratorUtils.addNewLines(bungeefile, "\r\n# This is useful for bungee game systems.\r\n" +
               "# %state% - Game state will be visible at MOTD.\r\n" +
-                  "MOTD:\r\n" +
-                  "  Manager: false\r\n" +
-                  "  Message: \"The actual game state of vd is %state%\"\r\n" +
-                  "  Game-States:\r\n" +
-                  "    Inactive: \"&lInactive...\"\r\n" +
-                  "    In-Game: \"&lIn-game\"\r\n" +
-                  "    Starting: \"&e&lStarting\"\r\n" +
-                  "    Full-Game: \"&4&lFULL\"\r\n" +
-                  "    Ending: \"&lEnding\"\r\n" +
-                  "    Restarting: \"&c&lRestarting\"\r\n");
+              "MOTD:\r\n" +
+              "  Manager: false\r\n" +
+              "  Message: \"The actual game state of vd is %state%\"\r\n" +
+              "  Game-States:\r\n" +
+              "    Inactive: \"&lInactive...\"\r\n" +
+              "    In-Game: \"&lIn-game\"\r\n" +
+              "    Starting: \"&e&lStarting\"\r\n" +
+              "    Full-Game: \"&4&lFULL\"\r\n" +
+              "    Ending: \"&lEnding\"\r\n" +
+              "    Restarting: \"&c&lRestarting\"\r\n");
           break;
         case 9:
           MigratorUtils.addNewLines(file, "  \r\n" +
-                  "#After how many zombies should we limit them?\r\n" +
-                  "#Once limit is reached zombies get more health so it's still harder each wave\r\n" +
-                  "Zombies-Limit: 75\r\n");
+              "#After how many zombies should we limit them?\r\n" +
+              "#Once limit is reached zombies get more health so it's still harder each wave\r\n" +
+              "Zombies-Limit: 75\r\n");
           break;
         case 10:
           MigratorUtils.addNewLines(file, "\r\n" +
-                  "# Should we enable short commands such as /start and /leave\r\n" +
-                  "Enable-Short-Commands: false\r\n");
+              "# Should we enable short commands such as /start and /leave\r\n" +
+              "Enable-Short-Commands: false\r\n");
           MigratorUtils.addNewLines(file, "\r\n" +
-                  "# Should we disable all chat related stuff?\r\n" +
-                  "# It will disable the separated chat, for example\r\n" +
-                  "Disable-Separate-Chat: false\r\n");
+              "# Should we disable all chat related stuff?\r\n" +
+              "# It will disable the separated chat, for example\r\n" +
+              "Disable-Separate-Chat: false\r\n");
           break;
         case 11:
           MigratorUtils.addNewLines(file, "#Active after zombies limit is reached\r\n" +
-                  "#Higher value means weaker zombies\r\n" +
-                  "Zombie-Multiplier-Divider: 18\r\n");
+              "#Higher value means weaker zombies\r\n" +
+              "Zombie-Multiplier-Divider: 18\r\n");
           break;
         case 12:
           MigratorUtils.addNewLines(file, "\r\n" +
-                  "#Disable Party features of external party plugins (such as PAF, Parties ...)\r\n" +
-                  "Disable-Parties: true\r\n");
+              "#Disable Party features of external party plugins (such as PAF, Parties ...)\r\n" +
+              "Disable-Parties: true\r\n");
           break;
         case 13:
           MigratorUtils.addNewLines(file, "\r\n" +
-                  "# Should player be able that join on ingame stage to respawn after wave?\r\n" +
-                  "# Default: true\r\n" +
-                  "InGame-Join-Respawn: true\r\n" +
-                  "\r\n");
+              "# Should player be able that join on ingame stage to respawn after wave?\r\n" +
+              "# Default: true\r\n" +
+              "InGame-Join-Respawn: true\r\n" +
+              "\r\n");
           break;
         case 14:
           MigratorUtils.addNewLines(file, "\r\n" +
-                  "# Can the players buy again iron golems or wolves if these\r\n" +
-                  "# entities died? The config limit and permission will be ignored." +
-                  "Players-Can-Buy-GolemsWolves-If-They-Died: false\r\n\r\n");
+              "# Can the players buy again iron golems or wolves if these\r\n" +
+              "# entities died? The config limit and permission will be ignored." +
+              "Players-Can-Buy-GolemsWolves-If-They-Died: false\r\n\r\n");
           break;
         default:
           break;
@@ -196,13 +196,13 @@ public class LanguageMigrator {
 
   private void languageFileUpdate() {
     FileConfiguration config = ConfigUtils.getConfig(plugin, Constants.Files.LANGUAGE.getName());
-    if (config.getString("File-Version-Do-Not-Edit", "").equals(String.valueOf(LANGUAGE_FILE_VERSION))) {
+    if(config.getString("File-Version-Do-Not-Edit", "").equals(String.valueOf(LANGUAGE_FILE_VERSION))) {
       return;
     }
     Debugger.sendConsoleMsg("&e[Village Defense] [System notify] Your language file is outdated! Updating...");
 
     int version = LANGUAGE_FILE_VERSION - 1;
-    if (NumberUtils.isNumber(config.getString("File-Version-Do-Not-Edit"))) {
+    if(NumberUtils.isNumber(config.getString("File-Version-Do-Not-Edit"))) {
       version = Integer.parseInt(config.getString("File-Version-Do-Not-Edit"));
     } else {
       Debugger.sendConsoleMsg("&c[Village Defense] [System notify] Failed to parse language file version!");
@@ -211,8 +211,8 @@ public class LanguageMigrator {
 
     File file = new File(plugin.getDataFolder() + "/language.yml");
 
-    for (int i = version; i < LANGUAGE_FILE_VERSION; i++) {
-      switch (version) {
+    for(int i = version; i < LANGUAGE_FILE_VERSION; i++) {
+      switch(version) {
         case 0:
           MigratorUtils.insertAfterLine(file, "Spectator-Menu-Name", "    Target-Player-Health: \"&cHealth: &7%health%\"");
           MigratorUtils.insertAfterLine(file, "Scoreboard:", "  Footer: \"&ewww.spigotmc.org\"");
@@ -300,71 +300,71 @@ public class LanguageMigrator {
           MigratorUtils.insertAfterLine(file, "In-Game:", "  Join-As-Party-Member: \"&cYou joined %ARENANAME% because the party leader joined it!\"");
           break;
         case 11:
-          if (config.getString("Leaderboard-Holograms.Header", "null").equals("null")) {
+          if(config.getString("Leaderboard-Holograms.Header", "null").equals("null")) {
             MigratorUtils.addNewLines(file, "\n" +
-                    "Leaderboard-Holograms:\n" +
-                    "  Header: '&6&lTop %amount% in %statistic%'\n" +
-                    "  Format: '&e%place%. &f%nickname% (%value%)'\n" +
-                    "  Format-Empty: '&e%place%. &fEmpty (0)'\n" +
-                    "  Unknow-Player: '&fUnknown Player'\n" +
-                    "  Statistics:\n" +
-                    "    Kills: '&eKills'\n" +
-                    "    Deaths: '&eDeaths'\n" +
-                    "    Games-Played: '&eGames Played'\n" +
-                    "    Highest-Wave: '&eHighest Wave'\n" +
-                    "    Level: '&eLevel'\n" +
-                    "    Xp: '&eExperience'\n");
+                "Leaderboard-Holograms:\n" +
+                "  Header: '&6&lTop %amount% in %statistic%'\n" +
+                "  Format: '&e%place%. &f%nickname% (%value%)'\n" +
+                "  Format-Empty: '&e%place%. &fEmpty (0)'\n" +
+                "  Unknow-Player: '&fUnknown Player'\n" +
+                "  Statistics:\n" +
+                "    Kills: '&eKills'\n" +
+                "    Deaths: '&eDeaths'\n" +
+                "    Games-Played: '&eGames Played'\n" +
+                "    Highest-Wave: '&eHighest Wave'\n" +
+                "    Level: '&eLevel'\n" +
+                "    Xp: '&eExperience'\n");
           }
-          if (config.getString("Upgrade-Menu.Title", "null").equals("null")) {
+          if(config.getString("Upgrade-Menu.Title", "null").equals("null")) {
             MigratorUtils.addNewLines(file, "\n" +
-                    "Upgrade-Menu:\n" +
-                    "  Title: '&3&lUpgrade entity'\n" +
-                    "  Stats-Item:\n" +
-                    "    Name: '&3&lCurrent Stats'\n" +
-                    "    Description: '&3Movement speed: &8%speed%; &3Attack Damage: &8%damage%; &3Health:\n" +
-                    "      &8%current_hp%/%max_hp%'\n" +
-                    "  Upgrades:\n" +
-                    "    Health:\n" +
-                    "      Name: '&3&lUpgrade Health'\n" +
-                    "      Description: '&3Upgrade max health to tier &8%tier%&3!;&3From &8%from% &3to\n" +
-                    "        &8%to%;&3Cost of upgrade: &8%cost%;;&3Click to purchase'\n" +
-                    "    Damage:\n" +
-                    "      Name: '&3&lUpgrade Damage'\n" +
-                    "      Description: '&3Upgrade entity damage to tier &8%tier%&3!;&3From &8%from% &3to\n" +
-                    "        &8%to%;&3Cost of upgrade: &8%cost%;;&8Click to purchase'\n" +
-                    "    Speed:\n" +
-                    "      Name: '&3&lUpgrade Speed'\n" +
-                    "      Description: '&3Upgrade movement speed to tier &8%tier%&3!;&3From &8%from% &3to\n" +
-                    "        &8%to%;&3Cost of upgrade: &8%cost%;;&8Click to purchase'\n" +
-                    "    Swarm-Awareness:\n" +
-                    "      Name: '&3&lSwarm Awareness'\n" +
-                    "      Description: '&3Upgrade swarm awareness to tier &8%tier%&3!;&3From &8%from%\n" +
-                    "        &8damage multiplier per wolf in radius;&8of 3 blocks &3to %to%;&3The more\n" +
-                    "        wolves near attacking wolf;&3the more damage wolf deal;&3Cost of upgrade:         &8%cost%;;&8Click\n" +
-                    "        to purchase'\n" +
-                    "    Final-Defense:\n" +
-                    "      Name: '&3&lFinal Defense'\n" +
-                    "      Description: '&3Upgrade final defense to tier &8%tier%&3!;&3From &8%from% explosion\n" +
-                    "        radius &3to &8%to%;&3Golem will explode after death killing nearby;&3zombies\n" +
-                    "        and stun all alive ones;&3Cost of upgrade: &8%cost%;;&8Click to purchase'\n" +
-                    "  Upgraded-Entity: '&3Upgraded entity to tier &8%tier%&3!'\n" +
-                    "  Cannot-Afford: '&3You don''t have enough orbs to apply that upgrade!'\n" +
-                    "  Max-Tier: '&3Entity is at max tier of this upgrade!'\n");
+                "Upgrade-Menu:\n" +
+                "  Title: '&3&lUpgrade entity'\n" +
+                "  Stats-Item:\n" +
+                "    Name: '&3&lCurrent Stats'\n" +
+                "    Description: '&3Movement speed: &8%speed%; &3Attack Damage: &8%damage%; &3Health:\n" +
+                "      &8%current_hp%/%max_hp%'\n" +
+                "  Upgrades:\n" +
+                "    Health:\n" +
+                "      Name: '&3&lUpgrade Health'\n" +
+                "      Description: '&3Upgrade max health to tier &8%tier%&3!;&3From &8%from% &3to\n" +
+                "        &8%to%;&3Cost of upgrade: &8%cost%;;&3Click to purchase'\n" +
+                "    Damage:\n" +
+                "      Name: '&3&lUpgrade Damage'\n" +
+                "      Description: '&3Upgrade entity damage to tier &8%tier%&3!;&3From &8%from% &3to\n" +
+                "        &8%to%;&3Cost of upgrade: &8%cost%;;&8Click to purchase'\n" +
+                "    Speed:\n" +
+                "      Name: '&3&lUpgrade Speed'\n" +
+                "      Description: '&3Upgrade movement speed to tier &8%tier%&3!;&3From &8%from% &3to\n" +
+                "        &8%to%;&3Cost of upgrade: &8%cost%;;&8Click to purchase'\n" +
+                "    Swarm-Awareness:\n" +
+                "      Name: '&3&lSwarm Awareness'\n" +
+                "      Description: '&3Upgrade swarm awareness to tier &8%tier%&3!;&3From &8%from%\n" +
+                "        &8damage multiplier per wolf in radius;&8of 3 blocks &3to %to%;&3The more\n" +
+                "        wolves near attacking wolf;&3the more damage wolf deal;&3Cost of upgrade:         &8%cost%;;&8Click\n" +
+                "        to purchase'\n" +
+                "    Final-Defense:\n" +
+                "      Name: '&3&lFinal Defense'\n" +
+                "      Description: '&3Upgrade final defense to tier &8%tier%&3!;&3From &8%from% explosion\n" +
+                "        radius &3to &8%to%;&3Golem will explode after death killing nearby;&3zombies\n" +
+                "        and stun all alive ones;&3Cost of upgrade: &8%cost%;;&8Click to purchase'\n" +
+                "  Upgraded-Entity: '&3Upgraded entity to tier &8%tier%&3!'\n" +
+                "  Cannot-Afford: '&3You don''t have enough orbs to apply that upgrade!'\n" +
+                "  Max-Tier: '&3Entity is at max tier of this upgrade!'\n");
           }
           break;
         case 12:
           MigratorUtils.addNewLines(file, "Arena-Selector:\r\n" +
-                  "  Inv-Title: \"Arena selector\"\r\n" +
-                  "  Item:\r\n" +
-                  "    Lore:\r\n" +
-                  "      - \"&aVillage Defense &f- &e%mapname%\"\r\n" +
-                  "      - \" \"\r\n" +
-                  "      - \" \"\r\n" +
-                  "      - \"  &fOnline: %playersize%/%maxplayers%\"\r\n" +
-                  "      - \"  &fState: %state%\"\r\n" +
-                  "      - \" \"\r\n" +
-                  "      - \" \"\r\n" +
-                  "      - \"&eClick to join this arena\"\r\n");
+              "  Inv-Title: \"Arena selector\"\r\n" +
+              "  Item:\r\n" +
+              "    Lore:\r\n" +
+              "      - \"&aVillage Defense &f- &e%mapname%\"\r\n" +
+              "      - \" \"\r\n" +
+              "      - \" \"\r\n" +
+              "      - \"  &fOnline: %playersize%/%maxplayers%\"\r\n" +
+              "      - \"  &fState: %state%\"\r\n" +
+              "      - \" \"\r\n" +
+              "      - \" \"\r\n" +
+              "      - \"&eClick to join this arena\"\r\n");
           break;
         case 13:
           MigratorUtils.insertAfterLine(file, "In-Game:", "  Spawned-Wolf-Death: \"One of your wolves were killed!\"");
@@ -391,13 +391,13 @@ public class LanguageMigrator {
     MessageUtils.gonnaMigrate();
     Debugger.sendConsoleMsg("&aVillage Defense is migrating all files to the new file format...");
     Debugger.sendConsoleMsg("&aDon't worry! Old files will be renamed not overridden!");
-    for (String fileName : migratable) {
+    for(String fileName : migratable) {
       File file = new File(plugin.getDataFolder() + "/" + fileName + ".yml");
-      if (!file.exists()) {
+      if(!file.exists()) {
         continue;
       }
       boolean success = file.renameTo(new File(plugin.getDataFolder(), plugin.getDataFolder() + "/VD2_" + file + ".yml"));
-      if (success) {
+      if(success) {
         Debugger.sendConsoleMsg("&aRenamed file " + file + ".yml");
         continue;
       }

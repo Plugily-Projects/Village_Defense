@@ -25,25 +25,25 @@ package plugily.projects.villagedefense.creatures;
  */
 public class CachedObject {
 
-    private final String fieldName;
-    private final Class<?> clazz;
-    private final Object object;
+  private final String fieldName;
+  private final Class<?> clazz;
+  private final Object object;
 
-    public CachedObject(String fieldName, Class<?> clazz, Object object) {
-        this.fieldName = fieldName;
-        this.clazz = clazz;
-        this.object = object;
-    }
+  public CachedObject(String fieldName, Class<?> clazz, Object object) {
+    this.fieldName = fieldName;
+    this.clazz = clazz;
+    this.object = object;
+  }
 
-    public String getFieldName() {
-        return fieldName;
-    }
+  public String getFieldName() {
+    return fieldName;
+  }
 
-    public Class<?> getClazz() {
-        return clazz;
-    }
+  public Class<?> getClazz() {
+    return clazz;
+  }
 
-    public Object getObject() {
-        return object;
-    }
+  public Object getObject() {
+    return object;
+  }
 }

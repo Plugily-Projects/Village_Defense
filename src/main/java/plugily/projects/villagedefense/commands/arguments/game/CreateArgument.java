@@ -54,19 +54,19 @@ public class CreateArgument {
             "&7Create new arena\n&6Permission: &7villagedefense.admin.create")) {
       @Override
       public void execute(CommandSender sender, String[] args) {
-        if (args.length == 1) {
+        if(args.length == 1) {
           sender.sendMessage(registry.getPlugin().getChatManager().colorMessage(Messages.COMMANDS_TYPE_ARENA_NAME));
           return;
         }
         Player player = (Player) sender;
-        for (Arena arena : ArenaRegistry.getArenas()) {
-          if (arena.getId().equalsIgnoreCase(args[1])) {
+        for(Arena arena : ArenaRegistry.getArenas()) {
+          if(arena.getId().equalsIgnoreCase(args[1])) {
             player.sendMessage(ChatColor.DARK_RED + "Arena with that ID already exists!");
             player.sendMessage(ChatColor.DARK_RED + "Usage: /vd create <ID>");
             return;
           }
         }
-        if (ConfigUtils.getConfig(registry.getPlugin(), Constants.Files.ARENAS.getName()).contains("instances." + args[1])) {
+        if(ConfigUtils.getConfig(registry.getPlugin(), Constants.Files.ARENAS.getName()).contains("instances." + args[1])) {
           player.sendMessage(ChatColor.DARK_RED + "Instance/Arena already exists! Use another ID or delete it first!");
         } else {
           createInstanceInConfig(args[1], player.getWorld().getName());

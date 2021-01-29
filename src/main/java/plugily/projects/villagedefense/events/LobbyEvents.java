@@ -50,27 +50,27 @@ public class LobbyEvents implements Listener {
 
   @EventHandler(priority = EventPriority.HIGHEST)
   public void onFoodLose(FoodLevelChangeEvent event) {
-    if (event.getEntity().getType() != EntityType.PLAYER) {
+    if(event.getEntity().getType() != EntityType.PLAYER) {
       return;
     }
     Player player = (Player) event.getEntity();
-    if (ArenaRegistry.getArena(player) == null) {
+    if(ArenaRegistry.getArena(player) == null) {
       return;
     }
     Arena arena = ArenaRegistry.getArena(player);
-    if (arena.getArenaState() == ArenaState.STARTING || arena.getArenaState() == ArenaState.WAITING_FOR_PLAYERS) {
+    if(arena.getArenaState() == ArenaState.STARTING || arena.getArenaState() == ArenaState.WAITING_FOR_PLAYERS) {
       event.setCancelled(true);
     }
   }
 
   @EventHandler
   public void onLobbyDamage(EntityDamageEvent event) {
-    if (event.getEntity().getType() != EntityType.PLAYER) {
+    if(event.getEntity().getType() != EntityType.PLAYER) {
       return;
     }
     Player player = (Player) event.getEntity();
     Arena arena = ArenaRegistry.getArena(player);
-    if (arena == null || arena.getArenaState() == ArenaState.IN_GAME) {
+    if(arena == null || arena.getArenaState() == ArenaState.IN_GAME) {
       return;
     }
     event.setCancelled(true);
@@ -79,15 +79,15 @@ public class LobbyEvents implements Listener {
 
   @EventHandler
   public void onLobbyItemClick(PlayerInteractEvent e) {
-    if (e.getAction() == Action.LEFT_CLICK_AIR || e.getAction() == Action.LEFT_CLICK_BLOCK || e.getAction() == Action.PHYSICAL) {
+    if(e.getAction() == Action.LEFT_CLICK_AIR || e.getAction() == Action.LEFT_CLICK_BLOCK || e.getAction() == Action.PHYSICAL) {
       return;
     }
     Arena arena = ArenaRegistry.getArena(e.getPlayer());
     ItemStack stack = e.getPlayer().getInventory().getItemInMainHand();
-    if (arena == null || !ItemUtils.isItemStackNamed(stack)) {
+    if(arena == null || !ItemUtils.isItemStackNamed(stack)) {
       return;
     }
-    if (plugin.getSpecialItemManager().getRelatedSpecialItem(stack).getName().equals(SpecialItemManager.SpecialItems.LOBBY_LEAVE_ITEM.getName())) {
+    if(plugin.getSpecialItemManager().getRelatedSpecialItem(stack).getName().equals(SpecialItemManager.SpecialItems.LOBBY_LEAVE_ITEM.getName())) {
       e.setCancelled(true);
       ArenaManager.leaveAttempt(e.getPlayer(), arena);
     }

@@ -50,8 +50,8 @@ public class LeaderboardArgument {
   public LeaderboardArgument(ArgumentsRegistry registry) {
     this.registry = registry;
     List<String> stats = new ArrayList<>();
-    for (StatsStorage.StatisticType val : StatsStorage.StatisticType.values()) {
-      if (!val.isPersistent() || val == StatsStorage.StatisticType.XP) {
+    for(StatsStorage.StatisticType val : StatsStorage.StatisticType.values()) {
+      if(!val.isPersistent() || val == StatsStorage.StatisticType.XP) {
         continue;
       }
       stats.add(val.name().toLowerCase());
@@ -60,18 +60,18 @@ public class LeaderboardArgument {
     registry.mapArgument("villagedefense", new CommandArgument("top", "", CommandArgument.ExecutorType.PLAYER) {
       @Override
       public void execute(CommandSender sender, String[] args) {
-        if (args.length == 1) {
+        if(args.length == 1) {
           sender.sendMessage(registry.getPlugin().getChatManager().getPrefix() + registry.getPlugin().getChatManager().colorMessage(Messages.LEADERBOARD_TYPE_NAME));
           return;
         }
         try {
           StatsStorage.StatisticType statisticType = StatsStorage.StatisticType.valueOf(args[1].toUpperCase());
-          if (statisticType == StatsStorage.StatisticType.XP) {
+          if(statisticType == StatsStorage.StatisticType.XP) {
             sender.sendMessage(registry.getPlugin().getChatManager().getPrefix() + registry.getPlugin().getChatManager().colorMessage(Messages.LEADERBOARD_INVALID_NAME));
             return;
           }
           printLeaderboard(sender, statisticType);
-        } catch (IllegalArgumentException e) {
+        } catch(IllegalArgumentException e) {
           sender.sendMessage(registry.getPlugin().getChatManager().getPrefix() + registry.getPlugin().getChatManager().colorMessage(Messages.LEADERBOARD_INVALID_NAME));
         }
       }
@@ -82,24 +82,24 @@ public class LeaderboardArgument {
     LinkedHashMap<UUID, Integer> stats = (LinkedHashMap<UUID, Integer>) StatsStorage.getStats(statisticType);
     sender.sendMessage(registry.getPlugin().getChatManager().colorMessage(Messages.LEADERBOARD_HEADER));
     String statistic = StringUtils.capitalize(statisticType.toString().toLowerCase().replace('_', ' '));
-    for (int i = 0; i < 10; i++) {
+    for(int i = 0; i < 10; i++) {
       try {
         UUID current = (UUID) stats.keySet().toArray()[stats.keySet().toArray().length - 1];
         sender.sendMessage(formatMessage(statistic, Bukkit.getOfflinePlayer(current).getName(), i + 1, stats.get(current)));
         stats.remove(current);
-      } catch (IndexOutOfBoundsException ex) {
+      } catch(IndexOutOfBoundsException ex) {
         sender.sendMessage(formatMessage(statistic, "Empty", i + 1, 0));
-      } catch (NullPointerException ex) {
+      } catch(NullPointerException ex) {
         UUID current = (UUID) stats.keySet().toArray()[stats.keySet().toArray().length - 1];
-        if (registry.getPlugin().getConfigPreferences().getOption(ConfigPreferences.Option.DATABASE_ENABLED)) {
-          try (Connection connection = registry.getPlugin().getMysqlDatabase().getConnection();
-               Statement statement = connection.createStatement();
-               ResultSet set = statement.executeQuery("SELECT name FROM "+ ((MysqlManager) registry.getPlugin().getUserManager().getDatabase()).getTableName() +" WHERE UUID='" + current.toString() + "'")) {
-            if (set.next()) {
+        if(registry.getPlugin().getConfigPreferences().getOption(ConfigPreferences.Option.DATABASE_ENABLED)) {
+          try(Connection connection = registry.getPlugin().getMysqlDatabase().getConnection();
+              Statement statement = connection.createStatement();
+              ResultSet set = statement.executeQuery("SELECT name FROM " + ((MysqlManager) registry.getPlugin().getUserManager().getDatabase()).getTableName() + " WHERE UUID='" + current.toString() + "'")) {
+            if(set.next()) {
               sender.sendMessage(formatMessage(statistic, set.getString(1), i + 1, stats.get(current)));
               continue;
             }
-          } catch (SQLException ignored) {
+          } catch(SQLException ignored) {
             //it has failed second time, cannot continue
           }
         }

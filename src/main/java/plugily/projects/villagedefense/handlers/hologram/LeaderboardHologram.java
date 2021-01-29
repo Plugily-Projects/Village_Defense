@@ -31,7 +31,11 @@ import plugily.projects.villagedefense.api.StatsStorage;
 import plugily.projects.villagedefense.handlers.hologram.messages.LanguageMessage;
 import plugily.projects.villagedefense.user.data.MysqlManager;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.UUID;
 
 /**
  * @author Plajer
@@ -72,8 +76,8 @@ public class LeaderboardHologram {
         LinkedHashMap<UUID, Integer> values = (LinkedHashMap<UUID, Integer>) StatsStorage.getStats(statistic);
         List<UUID> reverseKeys = new ArrayList<>(values.keySet());
         Collections.reverse(reverseKeys);
-        for (UUID key : reverseKeys) {
-          if (limit == 0) {
+        for(UUID key : reverseKeys) {
+          if(limit == 0) {
             break;
           }
           String format = color(plugin.getLanguageConfig().getString(LanguageMessage.HOLOGRAMS_FORMAT.getAccessor()));
@@ -83,8 +87,8 @@ public class LeaderboardHologram {
           hologram.appendTextLine(format);
           limit--;
         }
-        if (limit > 0) {
-          for (int i = 0; i < limit; limit--) {
+        if(limit > 0) {
+          for(int i = 0; i < limit; limit--) {
             String format = color(plugin.getLanguageConfig().getString(LanguageMessage.HOLOGRAMS_FORMAT_EMPTY.getAccessor()));
             format = StringUtils.replace(format, "%place%", String.valueOf((topAmount - limit) + 1));
             hologram.appendTextLine(format);
@@ -96,18 +100,18 @@ public class LeaderboardHologram {
 
   private String getPlayerNameSafely(UUID uuid, Main plugin) {
     try {
-      if (plugin.getUserManager().getDatabase() instanceof MysqlManager) {
+      if(plugin.getUserManager().getDatabase() instanceof MysqlManager) {
         return ((MysqlManager) plugin.getUserManager().getDatabase()).getDatabase().executeQuery("Select `name` FROM " + ((MysqlManager) plugin.getUserManager().getDatabase()).getTableName()
-                + " WHERE UUID='" + uuid.toString() + "';").toString();
+            + " WHERE UUID='" + uuid.toString() + "';").toString();
       }
       return Bukkit.getOfflinePlayer(uuid).getName();
-    } catch (NullPointerException ex) {
+    } catch(NullPointerException ex) {
       return color(plugin.getLanguageConfig().getString(LanguageMessage.HOLOGRAMS_UNKNOWN_PLAYER.getAccessor()));
     }
   }
 
   private LanguageMessage statisticToMessage() {
-    switch (statistic) {
+    switch(statistic) {
       case KILLS:
         return LanguageMessage.STATISTIC_KILLS;
       case DEATHS:
@@ -148,7 +152,7 @@ public class LeaderboardHologram {
 
   public void stopLeaderboardUpdateTask() {
     hologram.delete();
-    if (task != null && !task.isCancelled()) {
+    if(task != null && !task.isCancelled()) {
       task.cancel();
     }
   }

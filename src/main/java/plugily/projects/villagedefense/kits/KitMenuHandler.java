@@ -67,9 +67,9 @@ public class KitMenuHandler implements Listener {
     gui.addPane(pane);
     int x = 0;
     int y = 0;
-    for (Kit kit : KitRegistry.getKits()) {
+    for(Kit kit : KitRegistry.getKits()) {
       ItemStack itemStack = kit.getItemStack();
-      if (kit.isUnlockedByPlayer(player)) {
+      if(kit.isUnlockedByPlayer(player)) {
         itemStack = new ItemBuilder(itemStack).lore(unlockedString).build();
       } else {
         itemStack = new ItemBuilder(itemStack).lore(lockedString).build();
@@ -77,19 +77,19 @@ public class KitMenuHandler implements Listener {
 
       pane.addItem(new GuiItem(itemStack, e -> {
         e.setCancelled(true);
-        if (!(e.getWhoClicked() instanceof Player) || !(e.isLeftClick() || e.isRightClick())) {
+        if(!(e.getWhoClicked() instanceof Player) || !(e.isLeftClick() || e.isRightClick())) {
           return;
         }
         Arena arena = ArenaRegistry.getArena(player);
-        if (!ItemUtils.isItemStackNamed(e.getCurrentItem()) || arena == null) {
+        if(!ItemUtils.isItemStackNamed(e.getCurrentItem()) || arena == null) {
           return;
         }
         VillagePlayerChooseKitEvent event = new VillagePlayerChooseKitEvent(player, KitRegistry.getKit(e.getCurrentItem()), arena);
         Bukkit.getPluginManager().callEvent(event);
-        if (event.isCancelled()) {
+        if(event.isCancelled()) {
           return;
         }
-        if (!kit.isUnlockedByPlayer(player)) {
+        if(!kit.isUnlockedByPlayer(player)) {
           player.sendMessage(plugin.getChatManager().colorMessage(Messages.KITS_NOT_UNLOCKED_MESSAGE).replace("%KIT%", kit.getName()));
           return;
         }
@@ -98,7 +98,7 @@ public class KitMenuHandler implements Listener {
         player.sendMessage(plugin.getChatManager().colorMessage(Messages.KITS_CHOOSE_MESSAGE).replace("%KIT%", kit.getName()));
       }), x, y);
       x++;
-      if (x == 9) {
+      if(x == 9) {
         x = 0;
         y++;
       }
@@ -108,11 +108,11 @@ public class KitMenuHandler implements Listener {
 
   @EventHandler
   public void onKitMenuItemClick(PlayerInteractEvent e) {
-    if (!(e.getAction() == Action.RIGHT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_BLOCK)) {
+    if(!(e.getAction() == Action.RIGHT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_BLOCK)) {
       return;
     }
     ItemStack stack = e.getPlayer().getInventory().getItemInMainHand();
-    if (!stack.equals(kitItem.getItemStack())) {
+    if(!stack.equals(kitItem.getItemStack())) {
       return;
     }
     e.setCancelled(true);

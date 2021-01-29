@@ -40,20 +40,20 @@ import java.util.List;
  */
 public class HardcoreKit extends LevelKit {
 
-    public HardcoreKit() {
-        setName(getPlugin().getChatManager().colorMessage(Messages.KITS_HARDCORE_NAME));
-        List<String> description = Utils.splitString(getPlugin().getChatManager().colorMessage(Messages.KITS_HARDCORE_DESCRIPTION), 40);
-        setDescription(description.toArray(new String[0]));
-        setLevel(getKitsConfig().getInt("Required-Level.Hardcore"));
-        KitRegistry.registerKit(this);
-    }
+  public HardcoreKit() {
+    setName(getPlugin().getChatManager().colorMessage(Messages.KITS_HARDCORE_NAME));
+    List<String> description = Utils.splitString(getPlugin().getChatManager().colorMessage(Messages.KITS_HARDCORE_DESCRIPTION), 40);
+    setDescription(description.toArray(new String[0]));
+    setLevel(getKitsConfig().getInt("Required-Level.Hardcore"));
+    KitRegistry.registerKit(this);
+  }
 
-    @Override
-    public boolean isUnlockedByPlayer(Player player) {
-        return getPlugin().getUserManager().getUser(player).getStat(StatsStorage.StatisticType.LEVEL) >= this.getLevel() || player.hasPermission("villagedefense.kit.hardcore");
-    }
+  @Override
+  public boolean isUnlockedByPlayer(Player player) {
+    return getPlugin().getUserManager().getUser(player).getStat(StatsStorage.StatisticType.LEVEL) >= this.getLevel() || player.hasPermission("villagedefense.kit.hardcore");
+  }
 
-    @Override
+  @Override
   public void giveKitItems(Player player) {
     player.getInventory().addItem(WeaponHelper.getUnBreakingSword(WeaponHelper.ResourceType.WOOD, 10));
     ArmorHelper.setColouredArmor(Color.WHITE, player);
@@ -65,7 +65,7 @@ public class HardcoreKit extends LevelKit {
 
   @Override
   public Material getMaterial() {
-      return XMaterial.PLAYER_HEAD.parseMaterial();
+    return XMaterial.PLAYER_HEAD.parseMaterial();
   }
 
   @Override

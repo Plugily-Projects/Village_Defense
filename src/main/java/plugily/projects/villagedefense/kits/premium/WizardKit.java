@@ -18,7 +18,11 @@
 
 package plugily.projects.villagedefense.kits.premium;
 
-import org.bukkit.*;
+import org.bukkit.Bukkit;
+import org.bukkit.Color;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.Particle;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
@@ -105,10 +109,10 @@ public class WizardKit extends PremiumKit implements Listener {
 
   @EventHandler
   public void onWizardDamage(EntityDamageByEntityEvent e) {
-    if (!(e.getDamager() instanceof Zombie && e.getEntity() instanceof Player)) {
+    if(!(e.getDamager() instanceof Zombie && e.getEntity() instanceof Player)) {
       return;
     }
-    if (!wizardsOnDuty.contains(e.getEntity()) || ArenaRegistry.getArena((Player) e.getEntity()) == null) {
+    if(!wizardsOnDuty.contains(e.getEntity()) || ArenaRegistry.getArena((Player) e.getEntity()) == null) {
       return;
     }
     ((Zombie) e.getDamager()).damage(2.0, e.getEntity());
@@ -117,23 +121,23 @@ public class WizardKit extends PremiumKit implements Listener {
   @EventHandler
   public void onStaffUse(PlayerInteractEvent e) {
     User user = getPlugin().getUserManager().getUser(e.getPlayer());
-    if (ArenaRegistry.getArena(e.getPlayer()) == null) {
+    if(ArenaRegistry.getArena(e.getPlayer()) == null) {
       return;
     }
-    if (!(user.getKit() instanceof WizardKit) || user.isSpectator()) {
+    if(!(user.getKit() instanceof WizardKit) || user.isSpectator()) {
       return;
     }
     ItemStack stack = e.getPlayer().getInventory().getItemInMainHand();
-    if (!ItemUtils.isItemStackNamed(stack)) {
+    if(!ItemUtils.isItemStackNamed(stack)) {
       return;
     }
     Player player = e.getPlayer();
-    if (stack.getItemMeta().getDisplayName().equals(getPlugin().getChatManager().colorMessage(Messages.KITS_WIZARD_ESSENCE_ITEM_NAME))) {
-      if (!user.checkCanCastCooldownAndMessage("essence")) {
+    if(stack.getItemMeta().getDisplayName().equals(getPlugin().getChatManager().colorMessage(Messages.KITS_WIZARD_ESSENCE_ITEM_NAME))) {
+      if(!user.checkCanCastCooldownAndMessage("essence")) {
         return;
       }
       wizardsOnDuty.add(player);
-      if (player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue() > (player.getHealth() + 3)) {
+      if(player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue() > (player.getHealth() + 3)) {
         player.setHealth(player.getHealth() + 3);
       } else {
         player.setHealth(player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue());
@@ -141,8 +145,8 @@ public class WizardKit extends PremiumKit implements Listener {
       Utils.takeOneItem(player, stack);
       player.setGlowing(true);
       applyRageParticles(player);
-      for (Entity en : player.getNearbyEntities(2, 2, 2)) {
-        if (en instanceof Zombie) {
+      for(Entity en : player.getNearbyEntities(2, 2, 2)) {
+        if(en instanceof Zombie) {
           ((Zombie) en).damage(9.0, player);
         }
       }
@@ -151,8 +155,8 @@ public class WizardKit extends PremiumKit implements Listener {
         wizardsOnDuty.remove(player);
       }, 20L * 15);
       user.setCooldown("essence", 15);
-    } else if (stack.getItemMeta().getDisplayName().equals(getPlugin().getChatManager().colorMessage(Messages.KITS_WIZARD_STAFF_ITEM_NAME))) {
-      if (!user.checkCanCastCooldownAndMessage("wizard_staff")) {
+    } else if(stack.getItemMeta().getDisplayName().equals(getPlugin().getChatManager().colorMessage(Messages.KITS_WIZARD_STAFF_ITEM_NAME))) {
+      if(!user.checkCanCastCooldownAndMessage("wizard_staff")) {
         return;
       }
       applyMagicAttack(player);
@@ -167,7 +171,7 @@ public class WizardKit extends PremiumKit implements Listener {
         Location loc = player.getLocation();
         loc.add(0, 0.8, 0);
         player.getWorld().spawnParticle(Particle.VILLAGER_ANGRY, loc, 5, 0, 0, 0, 0);
-        if (!wizardsOnDuty.contains(player) || !ArenaRegistry.isInArena(player)) {
+        if(!wizardsOnDuty.contains(player) || !ArenaRegistry.isInArena(player)) {
           this.cancel();
         }
       }
@@ -188,15 +192,15 @@ public class WizardKit extends PremiumKit implements Listener {
             z = direction.getZ() * positionModifier;
         loc.add(x, y, z);
         player.getWorld().spawnParticle(Particle.TOWN_AURA, loc, 5);
-        for (Entity en : loc.getChunk().getEntities()) {
-          if (!(en instanceof Zombie) || en.getLocation().distance(loc) >= 1.5 || en.equals(player)) {
+        for(Entity en : loc.getChunk().getEntities()) {
+          if(!(en instanceof Zombie) || en.getLocation().distance(loc) >= 1.5 || en.equals(player)) {
             continue;
           }
           ((LivingEntity) en).damage(6.0, player);
           en.getWorld().spawnParticle(Particle.FIREWORKS_SPARK, en.getLocation(), 2, 0.5, 0.5, 0.5, 0);
         }
         loc.subtract(x, y, z);
-        if (positionModifier > 40) {
+        if(positionModifier > 40) {
           this.cancel();
         }
       }

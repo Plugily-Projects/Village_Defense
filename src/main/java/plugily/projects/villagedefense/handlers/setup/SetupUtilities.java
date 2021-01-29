@@ -21,7 +21,6 @@ package plugily.projects.villagedefense.handlers.setup;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
-
 import pl.plajerlair.commonsbox.minecraft.serialization.LocationSerializer;
 import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.arena.Arena;
@@ -33,34 +32,34 @@ import plugily.projects.villagedefense.arena.Arena;
  */
 public class SetupUtilities {
 
-    private final FileConfiguration config;
-    private final Arena arena;
+  private final FileConfiguration config;
+  private final Arena arena;
 
-    SetupUtilities(FileConfiguration config, Arena arena) {
-        this.config = config;
-        this.arena = arena;
+  SetupUtilities(FileConfiguration config, Arena arena) {
+    this.config = config;
+    this.arena = arena;
+  }
+
+  public String isOptionDone(String path) {
+    if(config.isSet(path)) {
+      return color("&a&l✔ Completed &7(value: &8" + config.getString(path) + "&7)");
     }
+    return color("&c&l✘ Not Completed");
+  }
 
-    public String isOptionDone(String path) {
-        if (config.isSet(path)) {
-            return color("&a&l✔ Completed &7(value: &8" + config.getString(path) + "&7)");
-        }
-        return color("&c&l✘ Not Completed");
+  public String isOptionDoneSection(String path, int minimum) {
+    if(config.isSet(path)) {
+      if(config.getConfigurationSection(path).getKeys(false).size() < minimum) {
+        return color("&c&l✘ Not Completed | &cPlease add more locations");
+      }
+      return color("&a&l✔ Completed &7(value: &8" + config.getConfigurationSection(path).getKeys(false).size() + "&7)");
     }
-
-    public String isOptionDoneSection(String path, int minimum) {
-        if (config.isSet(path)) {
-            if (config.getConfigurationSection(path).getKeys(false).size() < minimum) {
-                return color("&c&l✘ Not Completed | &cPlease add more locations");
-            }
-            return color("&a&l✔ Completed &7(value: &8" + config.getConfigurationSection(path).getKeys(false).size() + "&7)");
-        }
     return color("&c&l✘ Not Completed");
   }
 
   public String isOptionDoneBool(String path) {
-    if (config.isSet(path)) {
-      if (Bukkit.getServer().getWorlds().get(0).getSpawnLocation().equals(LocationSerializer.getLocation(config.getString(path)))) {
+    if(config.isSet(path)) {
+      if(Bukkit.getServer().getWorlds().get(0).getSpawnLocation().equals(LocationSerializer.getLocation(config.getString(path)))) {
         return color("&c&l✘ Not Completed");
       }
       return color("&a&l✔ Completed");

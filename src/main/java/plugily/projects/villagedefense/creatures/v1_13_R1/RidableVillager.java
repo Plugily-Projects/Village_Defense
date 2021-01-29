@@ -18,7 +18,28 @@
 
 package plugily.projects.villagedefense.creatures.v1_13_R1;
 
-import net.minecraft.server.v1_13_R1.*;
+import net.minecraft.server.v1_13_R1.Entity;
+import net.minecraft.server.v1_13_R1.EntityAgeable;
+import net.minecraft.server.v1_13_R1.EntityHuman;
+import net.minecraft.server.v1_13_R1.EntityInsentient;
+import net.minecraft.server.v1_13_R1.EntityLiving;
+import net.minecraft.server.v1_13_R1.EntityVillager;
+import net.minecraft.server.v1_13_R1.EntityZombie;
+import net.minecraft.server.v1_13_R1.Navigation;
+import net.minecraft.server.v1_13_R1.PathfinderGoalAvoidTarget;
+import net.minecraft.server.v1_13_R1.PathfinderGoalFloat;
+import net.minecraft.server.v1_13_R1.PathfinderGoalInteract;
+import net.minecraft.server.v1_13_R1.PathfinderGoalLookAtPlayer;
+import net.minecraft.server.v1_13_R1.PathfinderGoalLookAtTradingPlayer;
+import net.minecraft.server.v1_13_R1.PathfinderGoalMakeLove;
+import net.minecraft.server.v1_13_R1.PathfinderGoalMoveIndoors;
+import net.minecraft.server.v1_13_R1.PathfinderGoalMoveTowardsRestriction;
+import net.minecraft.server.v1_13_R1.PathfinderGoalOpenDoor;
+import net.minecraft.server.v1_13_R1.PathfinderGoalPlay;
+import net.minecraft.server.v1_13_R1.PathfinderGoalRandomStroll;
+import net.minecraft.server.v1_13_R1.PathfinderGoalRestrictOpenDoor;
+import net.minecraft.server.v1_13_R1.PathfinderGoalTradeWithPlayer;
+import net.minecraft.server.v1_13_R1.World;
 import org.bukkit.craftbukkit.v1_13_R1.CraftWorld;
 import plugily.projects.villagedefense.creatures.CreatureUtils;
 
@@ -66,13 +87,13 @@ public class RidableVillager extends EntityVillager {
   @Override
   public void a(float f, float f1, float f2) {
     EntityLiving entityliving = null;
-    for (final Entity e : passengers) {
-      if (e instanceof EntityHuman) {
+    for(final Entity e : passengers) {
+      if(e instanceof EntityHuman) {
         entityliving = (EntityLiving) e;
         break;
       }
     }
-    if (entityliving == null) {
+    if(entityliving == null) {
       this.P = 0.5F;
       this.aR = 0.02F;
       o(0.12f);
@@ -87,7 +108,7 @@ public class RidableVillager extends EntityVillager {
 
     f = entityliving.bh * 0.5F * 0.75F;
     f2 = entityliving.bj;
-    if (f2 <= 0.0f) {
+    if(f2 <= 0.0f) {
       f2 *= 0.25F;
     }
 

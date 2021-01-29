@@ -30,29 +30,29 @@ import java.util.List;
  */
 public class CommandArgument {
 
-    private final String argumentName;
-    private final List<String> permissions;
-    private final ExecutorType validExecutors;
+  private final String argumentName;
+  private final List<String> permissions;
+  private final ExecutorType validExecutors;
 
-    public CommandArgument(String argumentName, String permissions, ExecutorType validExecutors) {
-        this.argumentName = argumentName;
-        this.permissions = Collections.singletonList(permissions);
-        this.validExecutors = validExecutors;
-    }
+  public CommandArgument(String argumentName, String permissions, ExecutorType validExecutors) {
+    this.argumentName = argumentName;
+    this.permissions = Collections.singletonList(permissions);
+    this.validExecutors = validExecutors;
+  }
 
-    public CommandArgument(String argumentName, List<String> permissions, ExecutorType validExecutors) {
-        this.argumentName = argumentName;
-        this.permissions = permissions;
-        this.validExecutors = validExecutors;
-    }
+  public CommandArgument(String argumentName, List<String> permissions, ExecutorType validExecutors) {
+    this.argumentName = argumentName;
+    this.permissions = permissions;
+    this.validExecutors = validExecutors;
+  }
 
-    public String getArgumentName() {
-        return argumentName;
-    }
+  public String getArgumentName() {
+    return argumentName;
+  }
 
-    public List<String> getPermissions() {
-        return permissions;
-    }
+  public List<String> getPermissions() {
+    return permissions;
+  }
 
   public ExecutorType getValidExecutors() {
     return validExecutors;

@@ -44,22 +44,22 @@ public class LegacyDataFixer {
 
   private void initiate() {
     FileConfiguration config = ConfigUtils.getConfig(plugin, Constants.Files.STATS.getName());
-    if (config.getInt("data-version", 0) >= DATA_VERSION || plugin.getConfigPreferences().getOption(ConfigPreferences.Option.DATABASE_ENABLED)) {
+    if(config.getInt("data-version", 0) >= DATA_VERSION || plugin.getConfigPreferences().getOption(ConfigPreferences.Option.DATABASE_ENABLED)) {
       return;
     }
     Debugger.debug(Level.WARNING, "Legacy fixer started, fixing player data for yaml storage...");
 
     int migrated = 0;
 
-    for (String key : config.getKeys(false)) {
-      if (key.equals("data-version")) {
+    for(String key : config.getKeys(false)) {
+      if(key.equals("data-version")) {
         continue;
       }
 
       int migratedLocal = 0;
 
-      for (StatsStorage.StatisticType stat : StatsStorage.StatisticType.values()) {
-        if (!config.isSet(key + "." + stat)) {
+      for(StatsStorage.StatisticType stat : StatsStorage.StatisticType.values()) {
+        if(!config.isSet(key + "." + stat)) {
           continue;
         }
         int value = config.getInt(key + "." + stat);

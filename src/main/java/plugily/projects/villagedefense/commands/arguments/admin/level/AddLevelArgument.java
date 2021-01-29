@@ -22,7 +22,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-
 import pl.plajerlair.commonsbox.number.NumberUtils;
 import plugily.projects.villagedefense.api.StatsStorage;
 import plugily.projects.villagedefense.commands.arguments.ArgumentsRegistry;
@@ -46,23 +45,23 @@ public class AddLevelArgument {
             + "&6Permission: &7villagedefense.admin.addlevel.others (for others)")) {
       @Override
       public void execute(CommandSender sender, String[] args) {
-        if (args.length == 1) {
+        if(args.length == 1) {
           sender.sendMessage(registry.getPlugin().getChatManager().getPrefix() + ChatColor.RED + "Please type number of levels to set!");
           return;
         }
         Player target;
-        if (args.length == 2) {
+        if(args.length == 2) {
           target = (Player) sender;
         } else {
           target = Bukkit.getPlayerExact(args[2]);
         }
 
-        if (target == null) {
+        if(target == null) {
           sender.sendMessage(registry.getPlugin().getChatManager().colorMessage(Messages.COMMANDS_TARGET_PLAYER_NOT_FOUND));
           return;
         }
 
-        if (NumberUtils.isInteger(args[1])) {
+        if(NumberUtils.isInteger(args[1])) {
           User user = registry.getPlugin().getUserManager().getUser(target);
           user.setStat(StatsStorage.StatisticType.LEVEL, user.getStat(StatsStorage.StatisticType.LEVEL) + Integer.parseInt(args[1]));
           sender.sendMessage(registry.getPlugin().getChatManager().getPrefix() + registry.getPlugin().getChatManager().colorMessage(Messages.COMMANDS_ADMIN_ADDED_LEVEL));

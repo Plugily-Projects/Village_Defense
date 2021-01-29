@@ -33,30 +33,30 @@ import plugily.projects.villagedefense.arena.Arena;
  */
 public class VillagePlayerStatisticChangeEvent extends VillageEvent {
 
-    private static final HandlerList HANDLERS = new HandlerList();
-    private final Player player;
-    private final StatsStorage.StatisticType statisticType;
-    private final int number;
+  private static final HandlerList HANDLERS = new HandlerList();
+  private final Player player;
+  private final StatsStorage.StatisticType statisticType;
+  private final int number;
 
-    public VillagePlayerStatisticChangeEvent(Arena eventArena, Player player, StatsStorage.StatisticType statisticType, int number) {
-        super(eventArena);
-        this.player = player;
-        this.statisticType = statisticType;
-        this.number = number;
-    }
+  public VillagePlayerStatisticChangeEvent(Arena eventArena, Player player, StatsStorage.StatisticType statisticType, int number) {
+    super(eventArena);
+    this.player = player;
+    this.statisticType = statisticType;
+    this.number = number;
+  }
 
-    public static HandlerList getHandlerList() {
-        return HANDLERS;
-    }
+  public static HandlerList getHandlerList() {
+    return HANDLERS;
+  }
 
-    @Override
-    public HandlerList getHandlers() {
-        return HANDLERS;
-    }
+  @Override
+  public HandlerList getHandlers() {
+    return HANDLERS;
+  }
 
-    public Player getPlayer() {
-        return player;
-    }
+  public Player getPlayer() {
+    return player;
+  }
 
   public StatsStorage.StatisticType getStatisticType() {
     return statisticType;
