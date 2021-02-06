@@ -71,7 +71,7 @@ public class LeaderboardHologram {
         String header = color(plugin.getLanguageConfig().getString(LanguageMessage.HOLOGRAMS_HEADER.getAccessor()));
         header = StringUtils.replace(header, "%amount%", String.valueOf(topAmount));
         header = StringUtils.replace(header, "%statistic%", statisticToMessage() != null ? color(plugin.getLanguageConfig().getString(statisticToMessage().getAccessor())) : "null");
-        hologram.appendTextLine(header);
+        appendHoloText(plugin, header);
         int limit = topAmount;
         LinkedHashMap<UUID, Integer> values = (LinkedHashMap<UUID, Integer>) StatsStorage.getStats(statistic);
         List<UUID> reverseKeys = new ArrayList<>(values.keySet());
@@ -84,18 +84,25 @@ public class LeaderboardHologram {
           format = StringUtils.replace(format, "%place%", String.valueOf((topAmount - limit) + 1));
           format = StringUtils.replace(format, "%nickname%", getPlayerNameSafely(key, plugin));
           format = StringUtils.replace(format, "%value%", String.valueOf(values.get(key)));
-          hologram.appendTextLine(format);
+          appendHoloText(plugin, format);
           limit--;
         }
         if(limit > 0) {
           for(int i = 0; i < limit; limit--) {
             String format = color(plugin.getLanguageConfig().getString(LanguageMessage.HOLOGRAMS_FORMAT_EMPTY.getAccessor()));
             format = StringUtils.replace(format, "%place%", String.valueOf((topAmount - limit) + 1));
-            hologram.appendTextLine(format);
+            appendHoloText(plugin, format);
           }
         }
       }
-    }.runTaskTimer(plugin, 0, 100);
+    }.runTaskTimerAsynchronously(plugin, 0, 100);
+  }
+
+  // We should perform hologram api in synchronous thread to do not cause "async catchop" problems
+  // See this method:
+  // github.com/filoghost/HolographicDisplays/blob/af038ac93f7a0d5c1d5a7abfa4a08176b9765d16/Plugin/src/main/java/com/gmail/filoghost/holographicdisplays/object/CraftHologram.java#L179
+  private void appendHoloText(final Main plugin, final String text) {
+    Bukkit.getScheduler().runTaskLater(plugin, () -> hologram.appendTextLine(text), 0L);
   }
 
   private String getPlayerNameSafely(UUID uuid, Main plugin) {
