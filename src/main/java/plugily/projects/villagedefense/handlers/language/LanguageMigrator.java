@@ -37,7 +37,7 @@ import java.util.List;
 @SuppressWarnings("deprecation")
 public class LanguageMigrator {
 
-  public static final int LANGUAGE_FILE_VERSION = 17;
+  public static final int LANGUAGE_FILE_VERSION = 18;
   public static final int CONFIG_FILE_VERSION = 15;
   private final Main plugin;
   private final List<String> migratable = Arrays.asList(Constants.Files.CONFIG.getName(), Constants.Files.KITS.getName(),
@@ -378,6 +378,16 @@ public class LanguageMigrator {
           break;
         case 16:
           MigratorUtils.insertAfterLine(file, "  Item:", "    Name: \"&f%mapname%\"");
+          break;
+        case 17:
+          MigratorUtils.addNewLines(file, "Placeholders:\r\n" +
+              "  Game-States:\r\n" +
+              "    Waiting: \"&lWaiting for players...\"" +
+              "    Starting: \"&e&lStarting\"" +
+              "    In-Game: \"&lIn-game\"" +
+              "    Ending: \"&lEnding\"" +
+              "    Restarting: \"&c&lRestarting\"");
+          break;
         default:
           break;
       }

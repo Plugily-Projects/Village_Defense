@@ -18,21 +18,33 @@
 
 package plugily.projects.villagedefense.arena;
 
+import org.bukkit.plugin.java.JavaPlugin;
+
+import plugily.projects.villagedefense.Main;
+import plugily.projects.villagedefense.handlers.language.LanguageManager;
+
 /**
  * @author TomTheDeveloper
  * <p>
  * Contains all GameStates.
  */
 public enum ArenaState {
-  WAITING_FOR_PLAYERS("Waiting"), STARTING("Starting"), IN_GAME("Playing"), ENDING("Finishing"), RESTARTING("Restarting");
+  WAITING_FOR_PLAYERS("Waiting"), STARTING("Starting"), IN_GAME("In-Game"), ENDING("Ending"), RESTARTING("Restarting");
 
   private final String formattedName;
+  private final String placeholder;
 
   ArenaState(String formattedName) {
     this.formattedName = formattedName;
+    this.placeholder = JavaPlugin.getPlugin(Main.class).getChatManager()
+        .colorRawMessage(LanguageManager.getLanguageMessage("Placeholders.Game-States." + formattedName));
   }
 
   public String getFormattedName() {
     return formattedName;
+  }
+
+  public String getPlaceholder() {
+    return placeholder;
   }
 }
