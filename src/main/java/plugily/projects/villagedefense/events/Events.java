@@ -384,7 +384,7 @@ public class Events implements Listener {
   @EventHandler(priority = EventPriority.HIGH)
   //highest priority to fully protect our game (i didn't set it because my test server was destroyed, n-no......)
   public void onBuild(BlockPlaceEvent event) {
-    if(ArenaRegistry.isInArena(event.getPlayer())) {
+    if(ArenaRegistry.isInArena(event.getPlayer()) && event.getBlock().getType() != Utils.getCachedDoor(event.getBlock())) {
       event.setCancelled(true);
     }
   }
