@@ -63,6 +63,10 @@ public class RewardsFactory {
   }
 
   public void performReward(Player player, Reward.RewardType type) {
+    performReward(player, null, type);
+  }
+
+  public void performReward(Player player, Arena arena, Reward.RewardType type) {
     if(!enabled) {
       return;
     }
@@ -70,10 +74,13 @@ public class RewardsFactory {
       Debugger.debug(Level.WARNING, "[RewardsFactory] Rewards section not found in the file. Rewards won't be loaded.");
       return;
     }
-    Arena arena = ArenaRegistry.getArena(player);
-    if(arena == null) {
+
+    if (arena == null && player != null)
+      arena = ArenaRegistry.getArena(player);
+
+    if (arena == null)
       return;
-    }
+
     for(Reward reward : rewards) {
       if(reward.getType() == type) {
         //reward isn't for this wave
@@ -84,15 +91,21 @@ public class RewardsFactory {
         if(reward.getChance() != -1 && ThreadLocalRandom.current().nextInt(0, 100) > reward.getChance()) {
           continue;
         }
+
         String command = reward.getExecutableCode();
-        command = StringUtils.replace(command, "%PLAYER%", player.getName());
+
+        if (player != null)
+          command = StringUtils.replace(command, "%PLAYER%", player.getName());
+
         command = formatCommandPlaceholders(command, arena);
         switch(reward.getExecutor()) {
           case CONSOLE:
             Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), command);
             break;
           case PLAYER:
-            player.performCommand(command);
+            if (player != null)
+              player.performCommand(command);
+
             break;
           case SCRIPT:
             ScriptEngine engine = new ScriptEngine();

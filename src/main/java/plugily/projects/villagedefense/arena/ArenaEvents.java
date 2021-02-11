@@ -207,6 +207,7 @@ public class ArenaEvents implements Listener {
           }
           arena.getStartLocation().getWorld().strikeLightningEffect(e.getEntity().getLocation());
           arena.removeVillager((Villager) e.getEntity());
+          plugin.getRewardsHandler().performReward(null, arena, Reward.RewardType.VILLAGER_DEATH);
           plugin.getHolidayManager().applyHolidayDeathEffects(e.getEntity());
           plugin.getChatManager().broadcast(arena, Messages.VILLAGER_DIED);
           return;
@@ -223,8 +224,10 @@ public class ArenaEvents implements Listener {
       return;
     }
     if(e.getEntity().isDead()) {
-      e.getEntity().setHealth(e.getEntity().getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue());
+      MiscUtils.getEntityAttribute(e.getEntity(), Attribute.GENERIC_MAX_HEALTH).ifPresent(ai ->
+          e.getEntity().setHealth(ai.getValue()));
     }
+    plugin.getRewardsHandler().performReward(e.getEntity(), arena, Reward.RewardType.PLAYER_DEATH);
     e.setDeathMessage("");
     e.getDrops().clear();
     e.setDroppedExp(0);
