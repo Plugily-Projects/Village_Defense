@@ -232,7 +232,7 @@ public class ArenaEvents implements Listener {
     e.getDrops().clear();
     e.setDroppedExp(0);
     plugin.getHolidayManager().applyHolidayDeathEffects(e.getEntity());
-    plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () -> e.getEntity().spigot().respawn(), 5);
+
     Bukkit.getScheduler().runTaskLater(plugin, () -> {
       Player player = e.getEntity();
       player.spigot().respawn();
