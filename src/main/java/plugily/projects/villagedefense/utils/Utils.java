@@ -32,15 +32,12 @@ import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionData;
 import org.bukkit.potion.PotionType;
 import org.bukkit.util.BlockIterator;
-import pl.plajerlair.commonsbox.minecraft.compat.PacketUtils;
 import pl.plajerlair.commonsbox.minecraft.compat.ServerVersion;
-import pl.plajerlair.commonsbox.minecraft.compat.XMaterial;
+import pl.plajerlair.commonsbox.minecraft.compat.xseries.XMaterial;
 import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.arena.ArenaRegistry;
 import plugily.projects.villagedefense.handlers.language.Messages;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -187,61 +184,6 @@ public class Utils {
     }
     sender.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage(Messages.COMMANDS_NO_PERMISSION));
     return false;
-  }
-
-  public static void sendTitle(Player player, Integer fadeIn, Integer stay, Integer fadeOut, String title, String subtitle) {
-    try {
-      Object e, chatTitle, chatSubtitle, titlePacket, subtitlePacket;
-      Constructor<?> subtitleConstructor;
-
-      if(title == null)
-        title = "";
-
-      e = PacketUtils.getNMSClass("PacketPlayOutTitle").getDeclaredClasses()[0].getField("TIMES").get(null);
-      chatTitle = getAsIChatBaseComponent(title);
-      subtitleConstructor = PacketUtils.getNMSClass("PacketPlayOutTitle").getConstructor(
-          PacketUtils.getNMSClass("PacketPlayOutTitle").getDeclaredClasses()[0],
-          PacketUtils.getNMSClass("IChatBaseComponent"), Integer.TYPE, Integer.TYPE, Integer.TYPE);
-      titlePacket = subtitleConstructor.newInstance(e, chatTitle, fadeIn, stay, fadeOut);
-      PacketUtils.sendPacket(player, titlePacket);
-
-      e = PacketUtils.getNMSClass("PacketPlayOutTitle").getDeclaredClasses()[0].getField("TITLE").get(null);
-      chatTitle = PacketUtils.getNMSClass("IChatBaseComponent").getDeclaredClasses()[0].getMethod("a", String.class)
-          .invoke(null, "{\"text\":\"" + title + "\"}");
-      subtitleConstructor = PacketUtils.getNMSClass("PacketPlayOutTitle").getConstructor(
-          PacketUtils.getNMSClass("PacketPlayOutTitle").getDeclaredClasses()[0],
-          PacketUtils.getNMSClass("IChatBaseComponent"));
-      titlePacket = subtitleConstructor.newInstance(e, chatTitle);
-      PacketUtils.sendPacket(player, titlePacket);
-
-      e = PacketUtils.getNMSClass("PacketPlayOutTitle").getDeclaredClasses()[0].getField("TIMES").get(null);
-      chatSubtitle = getAsIChatBaseComponent(title);
-      subtitleConstructor = PacketUtils.getNMSClass("PacketPlayOutTitle").getConstructor(
-          PacketUtils.getNMSClass("PacketPlayOutTitle").getDeclaredClasses()[0],
-          PacketUtils.getNMSClass("IChatBaseComponent"), Integer.TYPE, Integer.TYPE, Integer.TYPE);
-      subtitlePacket = subtitleConstructor.newInstance(e, chatSubtitle, fadeIn, stay, fadeOut);
-      PacketUtils.sendPacket(player, subtitlePacket);
-
-      if(subtitle == null)
-        subtitle = "";
-
-      e = PacketUtils.getNMSClass("PacketPlayOutTitle").getDeclaredClasses()[0].getField("SUBTITLE").get(null);
-      chatSubtitle = getAsIChatBaseComponent(subtitle);
-      subtitleConstructor = PacketUtils.getNMSClass("PacketPlayOutTitle").getConstructor(
-          PacketUtils.getNMSClass("PacketPlayOutTitle").getDeclaredClasses()[0],
-          PacketUtils.getNMSClass("IChatBaseComponent"), Integer.TYPE, Integer.TYPE, Integer.TYPE);
-      subtitlePacket = subtitleConstructor.newInstance(e, chatSubtitle, fadeIn, stay, fadeOut);
-      PacketUtils.sendPacket(player, subtitlePacket);
-    } catch(Throwable e) {
-      e.printStackTrace();
-    }
-  }
-
-  public static Object getAsIChatBaseComponent(String name) throws Exception {
-    Class<?> iChatBaseComponent = PacketUtils.getNMSClass("IChatBaseComponent");
-    Class<?> declaredClass = iChatBaseComponent.getDeclaredClasses()[0];
-    Method m = declaredClass.getMethod("a", String.class);
-    return m.invoke(iChatBaseComponent, "{\"text\":\"" + name + "\"}");
   }
 
   public static Material getCachedDoor(Block block) {

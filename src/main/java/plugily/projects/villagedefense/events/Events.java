@@ -61,7 +61,9 @@ import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
-import pl.plajerlair.commonsbox.minecraft.compat.XMaterial;
+
+import pl.plajerlair.commonsbox.minecraft.compat.VersionUtils;
+import pl.plajerlair.commonsbox.minecraft.compat.xseries.XMaterial;
 import pl.plajerlair.commonsbox.minecraft.misc.MiscUtils;
 import pl.plajerlair.commonsbox.string.StringFormatUtils;
 import plugily.projects.villagedefense.ConfigPreferences;
@@ -145,14 +147,7 @@ public class Events implements Listener {
   @EventHandler
   public void onDrop(PlayerDropItemEvent event) {
     Arena arena = ArenaRegistry.getArena(event.getPlayer());
-    if(arena == null) {
-      return;
-    }
-    if(plugin.getUserManager().getUser(event.getPlayer()).isSpectator()) {
-      event.setCancelled(true);
-      return;
-    }
-    if(event.getItemDrop().getItemStack().getType() == Material.SADDLE) {
+    if(arena != null && (plugin.getUserManager().getUser(event.getPlayer()).isSpectator() || event.getItemDrop().getItemStack().getType() == Material.SADDLE)) {
       event.setCancelled(true);
     }
   }
@@ -180,7 +175,7 @@ public class Events implements Listener {
     }
     if(event.getPlayer().getInventory().getItemInMainHand().getType() == Material.SADDLE) {
       if(event.getRightClicked().getType() == EntityType.IRON_GOLEM || event.getRightClicked().getType() == EntityType.VILLAGER || event.getRightClicked().getType() == EntityType.WOLF) {
-        MiscUtils.setPassenger(event.getRightClicked(), event.getPlayer());
+        VersionUtils.setPassenger(event.getRightClicked(), event.getPlayer());
         event.setCancelled(true);
         return;
       }
@@ -194,7 +189,7 @@ public class Events implements Listener {
         return;
       }
       if(ironGolem.getCustomName() != null && ironGolem.getCustomName().contains(event.getPlayer().getName())) {
-        MiscUtils.setPassenger(event.getRightClicked(), event.getPlayer());
+        VersionUtils.setPassenger(event.getRightClicked(), event.getPlayer());
       } else {
         event.getPlayer().sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage(Messages.CANT_RIDE_OTHERS_GOLEM));
       }
@@ -202,7 +197,7 @@ public class Events implements Listener {
       Wolf wolf = (Wolf) event.getRightClicked();
       //to prevent wolves sitting
       if(wolf.getCustomName() != null && wolf.getCustomName().contains(event.getPlayer().getName())) {
-        MiscUtils.setPassenger(event.getRightClicked(), event.getPlayer());
+        VersionUtils.setPassenger(event.getRightClicked(), event.getPlayer());
       }
       wolf.setSitting(false);
     }

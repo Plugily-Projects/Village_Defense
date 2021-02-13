@@ -30,6 +30,8 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
+
+import pl.plajerlair.commonsbox.minecraft.compat.VersionUtils;
 import pl.plajerlair.commonsbox.minecraft.misc.MiscUtils;
 import pl.plajerlair.commonsbox.minecraft.serialization.InventorySerializer;
 import plugily.projects.villagedefense.ConfigPreferences;
@@ -52,7 +54,6 @@ import plugily.projects.villagedefense.kits.KitRegistry;
 import plugily.projects.villagedefense.kits.level.GolemFriendKit;
 import plugily.projects.villagedefense.user.User;
 import plugily.projects.villagedefense.utils.Debugger;
-import plugily.projects.villagedefense.utils.Utils;
 
 import java.util.List;
 
@@ -153,9 +154,9 @@ public class ArenaManager {
 
       for(Player spectator : arena.getPlayers()) {
         if(plugin.getUserManager().getUser(spectator).isSpectator()) {
-          MiscUtils.hidePlayer(plugin, player, spectator);
+          VersionUtils.hidePlayer(plugin, player, spectator);
         } else {
-          MiscUtils.showPlayer(plugin, player, spectator);
+          VersionUtils.showPlayer(plugin, player, spectator);
         }
       }
       Debugger.debug("[{0}] Final join attempt as spectator for {1} took {2}ms", arena.getId(), player.getName(), System.currentTimeMillis() - start);
@@ -390,7 +391,7 @@ public class ArenaManager {
     subTitle = plugin.getChatManager().colorRawMessage(subTitle);
 
     for(User user : plugin.getUserManager().getUsers(arena)) {
-      Utils.sendTitle(user.getPlayer(), fadeIn, stay, fadeOut, title, subTitle);
+      VersionUtils.sendTitles(user.getPlayer(), title, subTitle, fadeIn, stay, fadeOut);
     }
 
     plugin.getRewardsHandler().performReward(arena, Reward.RewardType.END_WAVE);
@@ -473,7 +474,7 @@ public class ArenaManager {
 
     for(User user : plugin.getUserManager().getUsers(arena)) {
       user.getKit().reStock(user.getPlayer());
-      Utils.sendTitle(user.getPlayer(), fadeIn, stay, fadeOut, title, subTitle);
+      VersionUtils.sendTitles(user.getPlayer(), title, subTitle, fadeIn, stay, fadeOut);
     }
 
     plugin.getChatManager().broadcastMessage(arena, plugin.getChatManager().formatMessage(arena, plugin.getChatManager().colorMessage(Messages.WAVE_STARTED), arena.getWave()));

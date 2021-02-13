@@ -22,7 +22,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.Effect;
 import org.bukkit.Material;
 import org.bukkit.Particle;
-import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Item;
@@ -35,7 +34,9 @@ import org.bukkit.event.entity.EntityShootBowEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
-import pl.plajerlair.commonsbox.minecraft.compat.XMaterial;
+
+import pl.plajerlair.commonsbox.minecraft.compat.VersionUtils;
+import pl.plajerlair.commonsbox.minecraft.compat.xseries.XMaterial;
 import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.arena.ArenaRegistry;
 import plugily.projects.villagedefense.handlers.powerup.Powerup;
@@ -77,7 +78,7 @@ public class HolidayManager implements Listener {
           currentHoliday = HolidayType.VALENTINES_DAY;
           Powerup powerup = new Powerup("VALENTINES_HEALING", plugin.getChatManager().colorRawMessage("&c&l<3"),
               plugin.getChatManager().colorRawMessage("&d&lHappy Valentine's Day!"), XMaterial.POPPY, pickup -> {
-            pickup.getPlayer().setHealth(pickup.getPlayer().getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue());
+            pickup.getPlayer().setHealth(VersionUtils.getHealth(pickup.getPlayer()));
             pickup.getPlayer().sendTitle(pickup.getPowerup().getDescription(), null, 5, 30, 5);
           });
           plugin.getPowerupRegistry().registerPowerup(powerup);

@@ -13,6 +13,7 @@ That's all, matcher will stop when detects next line started with `###` match
 * Perform leader board refreshing in async thread
 * Added modifiable arena state names to language
 * Allow door placement after zombie door break
+* Added more rewards types (playerDeath, villagerDeath)
 
 ### 4.5.7 (22.01.2021)
 >>> b

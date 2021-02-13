@@ -44,7 +44,7 @@ public class EntityRegistry {
       String[] classes = {"FastZombie", "BabyZombie", "PlayerBuster", "GolemBuster", "HardZombie", "TankerZombie", "VillagerSlayer", "RidableVillager", "RidableIronGolem",
           "WorkingWolf", "VillagerBuster"};
 
-      String version = ServerVersion.Version.getCurrent().getPackageVersion();
+      String version = ServerVersion.Version.getPackageVersion()[3];
       try {
         this.getClass().getMethod("register" + version + "Entity", String.class, int.class, Class.class)
             .invoke(this, "VillageZombie", 54, Class.forName("plugily.projects.villagedefense.creatures." + version + "." + classes[0]));

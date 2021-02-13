@@ -25,6 +25,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.entity.Zombie;
 import org.bukkit.potion.PotionEffectType;
 import pl.plajerlair.commonsbox.minecraft.compat.ServerVersion;
+import pl.plajerlair.commonsbox.minecraft.compat.VersionUtils;
 import pl.plajerlair.commonsbox.minecraft.misc.MiscUtils;
 import pl.plajerlair.commonsbox.minecraft.serialization.InventorySerializer;
 import plugily.projects.villagedefense.ConfigPreferences;
@@ -59,20 +60,20 @@ public class ArenaUtils {
 
   public static void hidePlayer(Player p, Arena arena) {
     for(Player player : arena.getPlayers()) {
-      MiscUtils.hidePlayer(plugin, player, p);
+      VersionUtils.hidePlayer(plugin, player, p);
     }
   }
 
   public static void showPlayer(Player p, Arena arena) {
     for(Player player : arena.getPlayers()) {
-      MiscUtils.showPlayer(plugin, player, p);
+      VersionUtils.showPlayer(plugin, player, p);
     }
   }
 
   public static void resetPlayerAfterGame(Player player) {
     for(Player players : plugin.getServer().getOnlinePlayers()) {
-      MiscUtils.showPlayer(plugin, players, player);
-      MiscUtils.showPlayer(plugin, player, players);
+      VersionUtils.showPlayer(plugin, players, player);
+      VersionUtils.showPlayer(plugin, player, players);
     }
     player.setGlowing(false);
     player.setGameMode(GameMode.SURVIVAL);

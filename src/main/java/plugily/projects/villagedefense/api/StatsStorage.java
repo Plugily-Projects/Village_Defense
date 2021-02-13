@@ -22,6 +22,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import pl.plajerlair.commonsbox.minecraft.configuration.ConfigUtils;
+import pl.plajerlair.commonsbox.sorter.SortUtils;
 import plugily.projects.villagedefense.ConfigPreferences;
 import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.user.data.MysqlManager;
@@ -34,8 +35,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Collections;
 import java.util.LinkedHashMap;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.UUID;
@@ -56,17 +55,6 @@ public class StatsStorage {
 
   public static void init(Main plugin) {
     StatsStorage.plugin = plugin;
-  }
-
-  private static Map sortByValue(Map<?, ?> unsortMap) {
-    List list = new LinkedList<>(unsortMap.entrySet());
-    list.sort((o1, o2) -> ((Comparable) ((Map.Entry) (o1)).getValue()).compareTo(((Map.Entry) (o2)).getValue()));
-    Map sortedMap = new LinkedHashMap();
-    for(Object sort : list) {
-      Map.Entry entry = (Map.Entry) sort;
-      sortedMap.put(entry.getKey(), entry.getValue());
-    }
-    return sortedMap;
   }
 
   /**
@@ -101,7 +89,7 @@ public class StatsStorage {
       }
       stats.put(UUID.fromString(string), config.getInt(string + "." + stat.getName()));
     }
-    return sortByValue(stats);
+    return SortUtils.sortByValue(stats);
   }
 
   /**
