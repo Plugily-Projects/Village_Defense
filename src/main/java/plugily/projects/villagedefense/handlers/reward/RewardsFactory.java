@@ -109,7 +109,10 @@ public class RewardsFactory {
             break;
           case SCRIPT:
             ScriptEngine engine = new ScriptEngine();
-            engine.setValue("player", player);
+
+            if (player != null)
+              engine.setValue("player", player);
+
             engine.setValue("server", Bukkit.getServer());
             engine.setValue("arena", arena);
             engine.execute(command);
