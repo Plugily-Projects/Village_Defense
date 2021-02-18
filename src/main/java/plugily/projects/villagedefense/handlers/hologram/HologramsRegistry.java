@@ -44,6 +44,10 @@ public class HologramsRegistry {
 
   private void registerHolograms() {
     FileConfiguration config = ConfigUtils.getConfig(plugin, "internal/holograms_data");
+    if (!config.isConfigurationSection("holograms")) {
+      return;
+    }
+
     for(String key : config.getConfigurationSection("holograms").getKeys(false)) {
       String accessor = "holograms." + key + ".";
       LeaderboardHologram hologram = new LeaderboardHologram(Integer.parseInt(key), StatsStorage.StatisticType.valueOf(config.getString(accessor + "statistics")),
