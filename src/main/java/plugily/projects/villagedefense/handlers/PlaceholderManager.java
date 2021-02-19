@@ -94,6 +94,8 @@ public class PlaceholderManager extends PlaceholderExpansion {
         return String.valueOf(arena.getArenaState());
       case "state_pretty":
         return arena.getArenaState().getFormattedName();
+      case "wave":
+        return String.valueOf(arena.getWave());
       case "mapname":
         return arena.getMapName();
       default:

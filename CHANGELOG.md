@@ -14,6 +14,8 @@ That's all, matcher will stop when detects next line started with `###` match
 * Added modifiable arena state names to language
 * Allow door placement after zombie door break
 * Added more rewards types (playerDeath, villagerDeath)
+* Added the papi placeholder %villagedefense_{arena}:wave%
+* Added the scoreboard placeholder %WAVE%
 
 ### 4.5.7 (22.01.2021)
 >>> b

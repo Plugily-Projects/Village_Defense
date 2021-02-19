@@ -128,6 +128,7 @@ public class ScoreboardManager {
     formattedLine = StringUtils.replace(formattedLine, "%PLAYERS_LEFT%", String.valueOf(arena.getPlayersLeft().size()));
     formattedLine = StringUtils.replace(formattedLine, "%VILLAGERS%", String.valueOf(arena.getVillagers().size()));
     formattedLine = StringUtils.replace(formattedLine, "%ORBS%", String.valueOf(user.getStat(StatsStorage.StatisticType.ORBS)));
+    formattedLine = StringUtils.replace(formattedLine, "%WAVE%", String.valueOf(arena.getWave()));
     if(arena.getZombiesLeft() > 0 && formattedLine.contains("%ZOMBIES%")) {
       formattedLine = StringUtils.replace(formattedLine, "%ZOMBIES%", String.valueOf(arena.getZombiesLeft()));
     }
