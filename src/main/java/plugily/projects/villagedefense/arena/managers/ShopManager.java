@@ -133,7 +133,7 @@ public class ShopManager {
       String costString = "";
       //seek for item price
       if(itemStack.hasItemMeta() && itemStack.getItemMeta().hasLore()) {
-        for(String s : itemStack.getItemMeta().getLore()) {
+        for(String s : plugin.getComplement().getLore(itemStack.getItemMeta())) {
           if(s.contains(plugin.getChatManager().colorMessage(Messages.SHOP_MESSAGES_CURRENCY_IN_SHOP)) || s.contains("orbs")) {
             costString = ChatColor.stripColor(s).replaceAll("[^0-9]", "");
             break;
@@ -158,7 +158,7 @@ public class ShopManager {
           return;
         }
         if(ItemUtils.isItemStackNamed(itemStack)) {
-          String name = itemStack.getItemMeta().getDisplayName();
+          String name = plugin.getComplement().getDisplayName(itemStack.getItemMeta());
           int spawnedAmount = 0;
           if(name.contains(plugin.getChatManager().colorMessage(Messages.SHOP_MESSAGES_GOLEM_ITEM_NAME))
               || name.contains(defaultGolemItemName)) {
@@ -209,7 +209,7 @@ public class ShopManager {
         ItemMeta itemMeta = stack.getItemMeta();
         if(itemMeta != null) {
           if(itemMeta.hasLore()) {
-            itemMeta.setLore(itemMeta.getLore().stream().filter(lore ->
+            plugin.getComplement().setLore(itemMeta, plugin.getComplement().getLore(itemMeta).stream().filter(lore ->
                 !lore.contains(plugin.getChatManager().colorMessage(Messages.SHOP_MESSAGES_CURRENCY_IN_SHOP)))
                 .collect(Collectors.toList()));
           }

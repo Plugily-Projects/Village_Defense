@@ -164,7 +164,7 @@ public class MiscComponents implements SetupComponent {
           continue;
         }
         if(stack.hasItemMeta() && stack.getItemMeta().hasLore()
-            && stack.getItemMeta().getLore().get(stack.getItemMeta().getLore().size() - 1)
+            && plugin.getComplement().getLore(stack.getItemMeta()).get(plugin.getComplement().getLore(stack.getItemMeta()).size() - 1)
             .contains(plugin.getChatManager().colorMessage(Messages.SHOP_MESSAGES_CURRENCY_IN_SHOP))) {
           found = true;
           break;

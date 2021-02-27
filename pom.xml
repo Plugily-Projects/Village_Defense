@@ -42,50 +42,6 @@
         </license>
     </licenses>
 
-    <developers>
-        <developer>
-            <name>IvanTheBuilder</name>
-            <url>https://www.spigotmc.org/members/18881/</url>
-            <roles>
-                <role>former developer - Village Defense 1</role>
-            </roles>
-        </developer>
-        <developer>
-            <name>TomTheDeveloper</name>
-            <url>https://www.spigotmc.org/members/4729/</url>
-            <roles>
-                <role>former developer - Village Defense 1 and 2</role>
-            </roles>
-        </developer>
-        <developer>
-            <name>Plajer</name>
-            <url>https://www.spigotmc.org/members/423193/</url>
-            <roles>
-                <role>developer - Village Defense 2, 3 and 4</role>
-                <role>translator - Polish language</role>
-            </roles>
-        </developer>
-        <developer>
-            <name>Tigerpanzer</name>
-            <url>https://www.spigotmc.org/members/414545/</url>
-            <roles>
-                <role>helper developer - Village Defense 3</role>
-                <role>translator - German language</role>
-                <role>tester</role>
-            </roles>
-        </developer>
-    </developers>
-
-    <contributors>
-        <contributor>
-            <name>montlikadani</name>
-            <url>https://www.spigotmc.org/members/251100/</url>
-            <roles>
-                <role>code contributor</role>
-            </roles>
-        </contributor>
-    </contributors>
-
     <repositories>
         <!-- This adds the Spigot Maven repository to the build -->
         <repository>
@@ -127,7 +83,7 @@
         <dependency>
             <groupId>com.destroystokyo.paper</groupId>
             <artifactId>paper-api</artifactId>
-            <version>1.16.4-R0.1-SNAPSHOT</version>
+            <version>1.16.5-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>

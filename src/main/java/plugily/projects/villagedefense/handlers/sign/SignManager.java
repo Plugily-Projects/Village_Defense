@@ -73,19 +73,19 @@ public class SignManager implements Listener {
   @EventHandler
   public void onSignChange(SignChangeEvent e) {
     if(!e.getPlayer().hasPermission("villagedefense.admin.sign.create")
-        || !e.getLine(0).equalsIgnoreCase("[villagedefense]")) {
+        || !plugin.getComplement().getLine(e, 0).equalsIgnoreCase("[villagedefense]")) {
       return;
     }
-    if(e.getLine(1).isEmpty()) {
+    if(plugin.getComplement().getLine(e, 1).isEmpty()) {
       e.getPlayer().sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage(Messages.COMMANDS_TYPE_ARENA_NAME));
       return;
     }
     for(Arena arena : ArenaRegistry.getArenas()) {
-      if(!arena.getId().equalsIgnoreCase(e.getLine(1))) {
+      if(!arena.getId().equalsIgnoreCase(plugin.getComplement().getLine(e, 1))) {
         continue;
       }
       for(int i = 0; i < signLines.size(); i++) {
-        e.setLine(i, formatSign(signLines.get(i), arena));
+        plugin.getComplement().setLine(e, i, formatSign(signLines.get(i), arena));
       }
       arenaSigns.add(new ArenaSign((Sign) e.getBlock().getState(), arena));
       e.getPlayer().sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage(Messages.SIGNS_SIGN_CREATED));
@@ -205,7 +205,7 @@ public class SignManager implements Listener {
     for(ArenaSign arenaSign : arenaSigns) {
       Sign sign = arenaSign.getSign();
       for(int i = 0; i < signLines.size(); i++) {
-        sign.setLine(i, formatSign(signLines.get(i), arenaSign.getArena()));
+        plugin.getComplement().setLine(sign, i, formatSign(signLines.get(i), arenaSign.getArena()));
       }
       if(plugin.getConfig().getBoolean("Signs-Block-States-Enabled", true) && arenaSign.getBehind() != null) {
         Block behind = arenaSign.getBehind();

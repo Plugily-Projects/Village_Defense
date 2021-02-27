@@ -132,7 +132,7 @@ public class WizardKit extends PremiumKit implements Listener {
       return;
     }
     Player player = e.getPlayer();
-    if(stack.getItemMeta().getDisplayName().equals(getPlugin().getChatManager().colorMessage(Messages.KITS_WIZARD_ESSENCE_ITEM_NAME))) {
+    if(getPlugin().getComplement().getDisplayName(stack.getItemMeta()).equals(getPlugin().getChatManager().colorMessage(Messages.KITS_WIZARD_ESSENCE_ITEM_NAME))) {
       if(!user.checkCanCastCooldownAndMessage("essence")) {
         return;
       }
@@ -155,7 +155,7 @@ public class WizardKit extends PremiumKit implements Listener {
         wizardsOnDuty.remove(player);
       }, 20L * 15);
       user.setCooldown("essence", 15);
-    } else if(stack.getItemMeta().getDisplayName().equals(getPlugin().getChatManager().colorMessage(Messages.KITS_WIZARD_STAFF_ITEM_NAME))) {
+    } else if(getPlugin().getComplement().getDisplayName(stack.getItemMeta()).equals(getPlugin().getChatManager().colorMessage(Messages.KITS_WIZARD_STAFF_ITEM_NAME))) {
       if(!user.checkCanCastCooldownAndMessage("wizard_staff")) {
         return;
       }

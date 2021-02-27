@@ -98,7 +98,7 @@ public class TeleporterKit extends PremiumKit implements Listener {
     if(arena == null || !ItemUtils.isItemStackNamed(stack)) {
       return;
     }
-    if(!stack.getItemMeta().getDisplayName().equalsIgnoreCase(getPlugin().getChatManager().colorMessage(Messages.KITS_TELEPORTER_GAME_ITEM_NAME))) {
+    if(!getPlugin().getComplement().getDisplayName(stack.getItemMeta()).equalsIgnoreCase(getPlugin().getChatManager().colorMessage(Messages.KITS_TELEPORTER_GAME_ITEM_NAME))) {
       return;
     }
     int rows = arena.getVillagers().size();
@@ -124,8 +124,8 @@ public class TeleporterKit extends PremiumKit implements Listener {
       ItemStack skull = XMaterial.PLAYER_HEAD.parseItem();
       SkullMeta meta = (SkullMeta) skull.getItemMeta();
       meta.setOwningPlayer(arenaPlayer);
-      meta.setDisplayName(arenaPlayer.getName());
-      meta.setLore(Collections.singletonList(""));
+      getPlugin().getComplement().setDisplayName(meta, arenaPlayer.getName());
+      getPlugin().getComplement().setLore(meta, Collections.singletonList(""));
       skull.setItemMeta(meta);
       pane.addItem(new GuiItem(skull, onClick -> {
         player.sendMessage(getPlugin().getChatManager().formatMessage(arena, getPlugin().getChatManager().colorMessage(Messages.KITS_TELEPORTER_TELEPORTED_TO_PLAYER), arenaPlayer));

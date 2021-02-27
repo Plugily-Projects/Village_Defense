@@ -102,7 +102,7 @@ public class TornadoKit extends PremiumKit implements Listener {
     Player player = e.getPlayer();
     ItemStack stack = player.getInventory().getItemInMainHand();
     if(!ArenaRegistry.isInArena(player) || !ItemUtils.isItemStackNamed(stack)
-        || !stack.getItemMeta().getDisplayName().equalsIgnoreCase(getPlugin().getChatManager().colorMessage(Messages.KITS_TORNADO_GAME_ITEM_NAME))) {
+        || !getPlugin().getComplement().getDisplayName(stack.getItemMeta()).equalsIgnoreCase(getPlugin().getChatManager().colorMessage(Messages.KITS_TORNADO_GAME_ITEM_NAME))) {
       return;
     }
     if(active >= 2) {

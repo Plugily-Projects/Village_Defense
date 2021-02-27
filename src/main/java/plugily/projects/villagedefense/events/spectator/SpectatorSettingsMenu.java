@@ -18,7 +18,6 @@
 
 package plugily.projects.villagedefense.events.spectator;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -55,7 +54,7 @@ public class SpectatorSettingsMenu implements Listener {
 
   @EventHandler
   public void onSpectatorMenuClick(InventoryClickEvent e) {
-    if(e.getInventory() == null || !e.getView().getTitle().equals(plugin.getChatManager().colorRawMessage(inventoryName))) {
+    if(e.getInventory() == null || !plugin.getComplement().getTitle(e.getView()).equals(plugin.getChatManager().colorRawMessage(inventoryName))) {
       return;
     }
     if(e.getCurrentItem() == null || !e.getCurrentItem().hasItemMeta()) {
@@ -87,7 +86,7 @@ public class SpectatorSettingsMenu implements Listener {
   }
 
   private Inventory initInventory() {
-    Inventory inv = Bukkit.createInventory(null, 9 * 3, inventoryName);
+    Inventory inv = plugin.getComplement().createInventory(null, 9 * 3, inventoryName);
     ChatManager chatManager = plugin.getChatManager();
     inv.setItem(11, new ItemBuilder(Material.LEATHER_BOOTS)
         .name(chatManager.colorRawMessage(speedOptionName + " I")).build());

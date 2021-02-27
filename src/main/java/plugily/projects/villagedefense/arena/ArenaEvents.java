@@ -228,7 +228,7 @@ public class ArenaEvents implements Listener {
           e.getEntity().setHealth(ai.getValue()));
     }
     plugin.getRewardsHandler().performReward(e.getEntity(), arena, Reward.RewardType.PLAYER_DEATH);
-    e.setDeathMessage("");
+    plugin.getComplement().setDeathMessage(e, "");
     e.getDrops().clear();
     e.setDroppedExp(0);
     plugin.getHolidayManager().applyHolidayDeathEffects(e.getEntity());

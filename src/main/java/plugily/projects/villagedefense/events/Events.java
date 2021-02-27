@@ -258,7 +258,8 @@ public class Events implements Listener {
     if(key == SpecialItem.INVALID_ITEM) {
       return;
     }
-    if(key.getItemStack().getItemMeta().getDisplayName().equalsIgnoreCase(itemStack.getItemMeta().getDisplayName())) {
+    if(plugin.getComplement().getDisplayName(key.getItemStack().getItemMeta())
+        .equalsIgnoreCase(plugin.getComplement().getDisplayName(itemStack.getItemMeta()))) {
       event.setCancelled(true);
       if(plugin.getConfigPreferences().getOption(ConfigPreferences.Option.BUNGEE_ENABLED)) {
         plugin.getBungeeManager().connectToHub(event.getPlayer());

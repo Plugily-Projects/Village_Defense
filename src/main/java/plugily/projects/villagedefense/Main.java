@@ -20,6 +20,7 @@ package plugily.projects.villagedefense;
 
 import com.gmail.filoghost.holographicdisplays.api.Hologram;
 import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
+
 import me.tigerhix.lib.scoreboard.ScoreboardLib;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
@@ -32,6 +33,9 @@ import org.jetbrains.annotations.TestOnly;
 import pl.plajerlair.commonsbox.database.MysqlDatabase;
 import pl.plajerlair.commonsbox.minecraft.compat.ServerVersion;
 import pl.plajerlair.commonsbox.minecraft.configuration.ConfigUtils;
+import pl.plajerlair.commonsbox.minecraft.misc.stuff.Complement;
+import pl.plajerlair.commonsbox.minecraft.misc.stuff.Complement1;
+import pl.plajerlair.commonsbox.minecraft.misc.stuff.Complement2;
 import pl.plajerlair.commonsbox.minecraft.serialization.InventorySerializer;
 import plugily.projects.villagedefense.api.StatsStorage;
 import plugily.projects.villagedefense.arena.Arena;
@@ -88,7 +92,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.logging.Level;
 
-
 /**
  * Created by Tom on 12/08/2014.
  */
@@ -111,6 +114,7 @@ public class Main extends JavaPlugin {
   private FileConfiguration languageConfig;
   private HologramsRegistry hologramsRegistry;
   private FileConfiguration entityUpgradesConfig;
+  private Complement complement;
 
   private boolean forceDisable = false;
   private boolean isPaper = false;
@@ -149,7 +153,11 @@ public class Main extends JavaPlugin {
     return entityUpgradesConfig;
   }
 
-  @Override
+  public Complement getComplement() {
+    return complement;
+  }
+
+@Override
   public void onEnable() {
     if(!validateIfPluginShouldStart()) {
       return;
@@ -213,6 +221,16 @@ public class Main extends JavaPlugin {
 
   //order matters
   private void initializeClasses() {
+    boolean kyoriSupported = false;
+    try {
+        Class.forName("net.kyori.adventure.text.Component");
+        kyoriSupported = true;
+    } catch (ClassNotFoundException e) {
+    }
+
+    complement = (ServerVersion.Version.isCurrentEqualOrHigher(ServerVersion.Version.v1_16_R3) && kyoriSupported) ? new Complement2()
+            : new Complement1();
+
     startInitiableClasses();
 
     ScoreboardLib.setPluginInstance(this);

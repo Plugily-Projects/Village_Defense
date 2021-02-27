@@ -33,9 +33,9 @@ class GoalSelectorCleaner {
   }
 
   static void clearSelectors(EntityCreature creature) {
-    LinkedHashSet goalD = (LinkedHashSet) CreatureUtils.getPrivateField("d", PathfinderGoalSelector.class, creature.goalSelector);
+    LinkedHashSet<?> goalD = (LinkedHashSet<?>) CreatureUtils.getPrivateField("d", PathfinderGoalSelector.class, creature.goalSelector);
     goalD.clear();
-    LinkedHashSet targetD = (LinkedHashSet) CreatureUtils.getPrivateField("d", PathfinderGoalSelector.class, creature.targetSelector);
+    LinkedHashSet<?> targetD = (LinkedHashSet<?>) CreatureUtils.getPrivateField("d", PathfinderGoalSelector.class, creature.targetSelector);
     targetD.clear();
   }
 
