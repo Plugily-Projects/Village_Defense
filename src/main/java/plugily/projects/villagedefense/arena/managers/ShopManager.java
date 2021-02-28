@@ -33,6 +33,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import pl.plajerlair.commonsbox.minecraft.configuration.ConfigUtils;
 import pl.plajerlair.commonsbox.minecraft.item.ItemUtils;
+import pl.plajerlair.commonsbox.minecraft.misc.stuff.ComplementAccessor;
 import pl.plajerlair.commonsbox.minecraft.serialization.LocationSerializer;
 import plugily.projects.villagedefense.ConfigPreferences.Option;
 import plugily.projects.villagedefense.Main;
@@ -133,7 +134,7 @@ public class ShopManager {
       String costString = "";
       //seek for item price
       if(itemStack.hasItemMeta() && itemStack.getItemMeta().hasLore()) {
-        for(String s : plugin.getComplement().getLore(itemStack.getItemMeta())) {
+        for(String s : ComplementAccessor.getComplement().getLore(itemStack.getItemMeta())) {
           if(s.contains(plugin.getChatManager().colorMessage(Messages.SHOP_MESSAGES_CURRENCY_IN_SHOP)) || s.contains("orbs")) {
             costString = ChatColor.stripColor(s).replaceAll("[^0-9]", "");
             break;
@@ -158,7 +159,7 @@ public class ShopManager {
           return;
         }
         if(ItemUtils.isItemStackNamed(itemStack)) {
-          String name = plugin.getComplement().getDisplayName(itemStack.getItemMeta());
+          String name = ComplementAccessor.getComplement().getDisplayName(itemStack.getItemMeta());
           int spawnedAmount = 0;
           if(name.contains(plugin.getChatManager().colorMessage(Messages.SHOP_MESSAGES_GOLEM_ITEM_NAME))
               || name.contains(defaultGolemItemName)) {
@@ -209,7 +210,7 @@ public class ShopManager {
         ItemMeta itemMeta = stack.getItemMeta();
         if(itemMeta != null) {
           if(itemMeta.hasLore()) {
-            plugin.getComplement().setLore(itemMeta, plugin.getComplement().getLore(itemMeta).stream().filter(lore ->
+            ComplementAccessor.getComplement().setLore(itemMeta, ComplementAccessor.getComplement().getLore(itemMeta).stream().filter(lore ->
                 !lore.contains(plugin.getChatManager().colorMessage(Messages.SHOP_MESSAGES_CURRENCY_IN_SHOP)))
                 .collect(Collectors.toList()));
           }

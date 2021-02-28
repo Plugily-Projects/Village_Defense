@@ -27,9 +27,9 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.plugin.java.JavaPlugin;
 
 import pl.plajerlair.commonsbox.minecraft.compat.xseries.XMaterial;
+import pl.plajerlair.commonsbox.minecraft.misc.stuff.ComplementAccessor;
 import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.arena.Arena;
 import plugily.projects.villagedefense.arena.ArenaManager;
@@ -72,7 +72,7 @@ public class ArenaSelectorArgument implements Listener {
         }
         int slot = 0;
         arenas.clear();
-        Inventory inventory = registry.getPlugin().getComplement().createInventory(player, Utils.serializeInt(ArenaRegistry.getArenas().size()), chatManager.colorMessage(Messages.ARENA_SELECTOR_INV_TITLE));
+        Inventory inventory = ComplementAccessor.getComplement().createInventory(player, Utils.serializeInt(ArenaRegistry.getArenas().size()), chatManager.colorMessage(Messages.ARENA_SELECTOR_INV_TITLE));
         for(Arena arena : ArenaRegistry.getArenas()) {
           arenas.put(slot, arena);
           ItemStack itemStack;
@@ -88,14 +88,14 @@ public class ArenaSelectorArgument implements Listener {
               break;
           }
           ItemMeta itemMeta = itemStack.getItemMeta();
-          registry.getPlugin().getComplement().setDisplayName(itemMeta, formatItem(LanguageManager.getLanguageMessage("Arena-Selector.Item.Name"), arena, registry.getPlugin()));
+          ComplementAccessor.getComplement().setDisplayName(itemMeta, formatItem(LanguageManager.getLanguageMessage("Arena-Selector.Item.Name"), arena, registry.getPlugin()));
 
           ArrayList<String> lore = new ArrayList<>();
           for(String string : LanguageManager.getLanguageList(Messages.ARENA_SELECTOR_ITEM_LORE.getAccessor())) {
             lore.add(formatItem(string, arena, registry.getPlugin()));
           }
 
-          registry.getPlugin().getComplement().setLore(itemMeta, lore);
+          ComplementAccessor.getComplement().setLore(itemMeta, lore);
           itemStack.setItemMeta(itemMeta);
           inventory.addItem(itemStack);
           slot++;
@@ -122,7 +122,7 @@ public class ArenaSelectorArgument implements Listener {
 
   @EventHandler
   public void onArenaSelectorMenuClick(InventoryClickEvent e) {
-    if(!JavaPlugin.getPlugin(Main.class).getComplement().getTitle(e.getView()).equals(chatManager.colorMessage(Messages.ARENA_SELECTOR_INV_TITLE))) {
+    if(!ComplementAccessor.getComplement().getTitle(e.getView()).equals(chatManager.colorMessage(Messages.ARENA_SELECTOR_INV_TITLE))) {
       return;
     }
     if(e.getCurrentItem() == null || !e.getCurrentItem().hasItemMeta()) {

@@ -33,6 +33,7 @@ import org.bukkit.inventory.meta.SkullMeta;
 import pl.plajerlair.commonsbox.minecraft.compat.VersionUtils;
 import pl.plajerlair.commonsbox.minecraft.compat.xseries.XMaterial;
 import pl.plajerlair.commonsbox.minecraft.item.ItemUtils;
+import pl.plajerlair.commonsbox.minecraft.misc.stuff.ComplementAccessor;
 import pl.plajerlair.commonsbox.number.NumberUtils;
 import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.arena.Arena;
@@ -91,8 +92,8 @@ public class SpectatorItemEvents implements Listener {
         ItemStack skull = XMaterial.PLAYER_HEAD.parseItem();
         SkullMeta meta = (SkullMeta) skull.getItemMeta();
         meta = VersionUtils.setPlayerHead(arenaPlayer, meta);
-        plugin.getComplement().setDisplayName(meta, arenaPlayer.getName());
-        plugin.getComplement().setLore(meta, Collections.singletonList(plugin.getChatManager().colorMessage(Messages.SPECTATOR_TARGET_PLAYER_HEALTH)
+        ComplementAccessor.getComplement().setDisplayName(meta, arenaPlayer.getName());
+        ComplementAccessor.getComplement().setLore(meta, Collections.singletonList(plugin.getChatManager().colorMessage(Messages.SPECTATOR_TARGET_PLAYER_HEALTH)
             .replace("%health%", String.valueOf(NumberUtils.round(arenaPlayer.getHealth(), 2)))));
         skull.setItemMeta(meta);
         pane.addItem(new GuiItem(skull, e -> {

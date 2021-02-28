@@ -40,6 +40,7 @@ import pl.plajerlair.commonsbox.minecraft.compat.xseries.XMaterial;
 import pl.plajerlair.commonsbox.minecraft.helper.ArmorHelper;
 import pl.plajerlair.commonsbox.minecraft.item.ItemBuilder;
 import pl.plajerlair.commonsbox.minecraft.item.ItemUtils;
+import pl.plajerlair.commonsbox.minecraft.misc.stuff.ComplementAccessor;
 import plugily.projects.villagedefense.arena.ArenaRegistry;
 import plugily.projects.villagedefense.handlers.PermissionsManager;
 import plugily.projects.villagedefense.handlers.language.Messages;
@@ -132,7 +133,7 @@ public class WizardKit extends PremiumKit implements Listener {
       return;
     }
     Player player = e.getPlayer();
-    if(getPlugin().getComplement().getDisplayName(stack.getItemMeta()).equals(getPlugin().getChatManager().colorMessage(Messages.KITS_WIZARD_ESSENCE_ITEM_NAME))) {
+    if(ComplementAccessor.getComplement().getDisplayName(stack.getItemMeta()).equals(getPlugin().getChatManager().colorMessage(Messages.KITS_WIZARD_ESSENCE_ITEM_NAME))) {
       if(!user.checkCanCastCooldownAndMessage("essence")) {
         return;
       }
@@ -155,7 +156,7 @@ public class WizardKit extends PremiumKit implements Listener {
         wizardsOnDuty.remove(player);
       }, 20L * 15);
       user.setCooldown("essence", 15);
-    } else if(getPlugin().getComplement().getDisplayName(stack.getItemMeta()).equals(getPlugin().getChatManager().colorMessage(Messages.KITS_WIZARD_STAFF_ITEM_NAME))) {
+    } else if(ComplementAccessor.getComplement().getDisplayName(stack.getItemMeta()).equals(getPlugin().getChatManager().colorMessage(Messages.KITS_WIZARD_STAFF_ITEM_NAME))) {
       if(!user.checkCanCastCooldownAndMessage("wizard_staff")) {
         return;
       }

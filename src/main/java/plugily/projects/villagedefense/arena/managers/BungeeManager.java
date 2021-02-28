@@ -29,6 +29,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.server.ServerListPingEvent;
 import pl.plajerlair.commonsbox.minecraft.configuration.ConfigUtils;
+import pl.plajerlair.commonsbox.minecraft.misc.stuff.ComplementAccessor;
 import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.arena.Arena;
 import plugily.projects.villagedefense.arena.ArenaManager;
@@ -87,13 +88,13 @@ public class BungeeManager implements Listener {
     }
     Arena arena = ArenaRegistry.getArenas().get(ArenaRegistry.getBungeeArena());
     event.setMaxPlayers(arena.getMaximumPlayers());
-    plugin.getComplement().setMotd(event, motd.replace("%state%", gameStateToString.get(arena.getArenaState())));
+    ComplementAccessor.getComplement().setMotd(event, motd.replace("%state%", gameStateToString.get(arena.getArenaState())));
   }
 
 
   @EventHandler(priority = EventPriority.HIGHEST)
   public void onJoin(PlayerJoinEvent event) {
-    plugin.getComplement().setJoinMessage(event, "");
+    ComplementAccessor.getComplement().setJoinMessage(event, "");
     if(!ArenaRegistry.getArenas().isEmpty()) {
       ArenaManager.joinAttempt(event.getPlayer(), ArenaRegistry.getArenas().get(ArenaRegistry.getBungeeArena()));
     }
@@ -101,7 +102,7 @@ public class BungeeManager implements Listener {
 
   @EventHandler(priority = EventPriority.HIGHEST)
   public void onQuit(PlayerQuitEvent event) {
-    plugin.getComplement().setQuitMessage(event, "");
+    ComplementAccessor.getComplement().setQuitMessage(event, "");
     if(ArenaRegistry.getArena(event.getPlayer()) != null && !ArenaRegistry.getArenas().isEmpty()) {
       ArenaManager.leaveAttempt(event.getPlayer(), ArenaRegistry.getArenas().get(ArenaRegistry.getBungeeArena()));
     }

@@ -25,6 +25,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import pl.plajerlair.commonsbox.minecraft.item.ItemBuilder;
+import pl.plajerlair.commonsbox.minecraft.misc.stuff.ComplementAccessor;
 import plugily.projects.villagedefense.commands.arguments.ArgumentsRegistry;
 import plugily.projects.villagedefense.commands.arguments.data.CommandArgument;
 import plugily.projects.villagedefense.commands.arguments.data.LabelData;
@@ -64,7 +65,7 @@ public class SetPriceArgument {
         }
         //check any price from lore
         ItemMeta meta = item.getItemMeta();
-        List<String> lore = registry.getPlugin().getComplement().getLore(item.getItemMeta());
+        List<String> lore = ComplementAccessor.getComplement().getLore(item.getItemMeta());
         for(String search : lore) {
           if(search.contains(registry.getPlugin().getChatManager().colorMessage(Messages.SHOP_MESSAGES_CURRENCY_IN_SHOP))) {
             lore.remove(search);
@@ -72,7 +73,7 @@ public class SetPriceArgument {
           }
         }
         lore.add(0, ChatColor.GOLD + args[1] + " " + registry.getPlugin().getChatManager().colorMessage(Messages.SHOP_MESSAGES_CURRENCY_IN_SHOP));
-        registry.getPlugin().getComplement().setLore(meta, lore);
+        ComplementAccessor.getComplement().setLore(meta, lore);
         item.setItemMeta(meta);
         player.sendMessage(registry.getPlugin().getChatManager().getPrefix() + registry.getPlugin().getChatManager().colorMessage(Messages.COMMANDS_COMMAND_EXECUTED));
       }

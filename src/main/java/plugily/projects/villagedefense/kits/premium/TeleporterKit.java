@@ -36,6 +36,7 @@ import pl.plajerlair.commonsbox.minecraft.helper.ArmorHelper;
 import pl.plajerlair.commonsbox.minecraft.helper.WeaponHelper;
 import pl.plajerlair.commonsbox.minecraft.item.ItemBuilder;
 import pl.plajerlair.commonsbox.minecraft.item.ItemUtils;
+import pl.plajerlair.commonsbox.minecraft.misc.stuff.ComplementAccessor;
 import plugily.projects.villagedefense.arena.Arena;
 import plugily.projects.villagedefense.arena.ArenaRegistry;
 import plugily.projects.villagedefense.handlers.PermissionsManager;
@@ -98,7 +99,7 @@ public class TeleporterKit extends PremiumKit implements Listener {
     if(arena == null || !ItemUtils.isItemStackNamed(stack)) {
       return;
     }
-    if(!getPlugin().getComplement().getDisplayName(stack.getItemMeta()).equalsIgnoreCase(getPlugin().getChatManager().colorMessage(Messages.KITS_TELEPORTER_GAME_ITEM_NAME))) {
+    if(!ComplementAccessor.getComplement().getDisplayName(stack.getItemMeta()).equalsIgnoreCase(getPlugin().getChatManager().colorMessage(Messages.KITS_TELEPORTER_GAME_ITEM_NAME))) {
       return;
     }
     int rows = arena.getVillagers().size();
@@ -124,8 +125,8 @@ public class TeleporterKit extends PremiumKit implements Listener {
       ItemStack skull = XMaterial.PLAYER_HEAD.parseItem();
       SkullMeta meta = (SkullMeta) skull.getItemMeta();
       meta.setOwningPlayer(arenaPlayer);
-      getPlugin().getComplement().setDisplayName(meta, arenaPlayer.getName());
-      getPlugin().getComplement().setLore(meta, Collections.singletonList(""));
+      ComplementAccessor.getComplement().setDisplayName(meta, arenaPlayer.getName());
+      ComplementAccessor.getComplement().setLore(meta, Collections.singletonList(""));
       skull.setItemMeta(meta);
       pane.addItem(new GuiItem(skull, onClick -> {
         player.sendMessage(getPlugin().getChatManager().formatMessage(arena, getPlugin().getChatManager().colorMessage(Messages.KITS_TELEPORTER_TELEPORTED_TO_PLAYER), arenaPlayer));

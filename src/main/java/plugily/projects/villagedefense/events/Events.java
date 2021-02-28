@@ -65,6 +65,7 @@ import org.bukkit.inventory.ItemStack;
 import pl.plajerlair.commonsbox.minecraft.compat.VersionUtils;
 import pl.plajerlair.commonsbox.minecraft.compat.xseries.XMaterial;
 import pl.plajerlair.commonsbox.minecraft.misc.MiscUtils;
+import pl.plajerlair.commonsbox.minecraft.misc.stuff.ComplementAccessor;
 import pl.plajerlair.commonsbox.string.StringFormatUtils;
 import plugily.projects.villagedefense.ConfigPreferences;
 import plugily.projects.villagedefense.Main;
@@ -258,8 +259,8 @@ public class Events implements Listener {
     if(key == SpecialItem.INVALID_ITEM) {
       return;
     }
-    if(plugin.getComplement().getDisplayName(key.getItemStack().getItemMeta())
-        .equalsIgnoreCase(plugin.getComplement().getDisplayName(itemStack.getItemMeta()))) {
+    if(ComplementAccessor.getComplement().getDisplayName(key.getItemStack().getItemMeta())
+        .equalsIgnoreCase(ComplementAccessor.getComplement().getDisplayName(itemStack.getItemMeta()))) {
       event.setCancelled(true);
       if(plugin.getConfigPreferences().getOption(ConfigPreferences.Option.BUNGEE_ENABLED)) {
         plugin.getBungeeManager().connectToHub(event.getPlayer());

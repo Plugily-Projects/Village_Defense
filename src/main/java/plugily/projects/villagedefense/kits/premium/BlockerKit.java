@@ -36,6 +36,7 @@ import pl.plajerlair.commonsbox.minecraft.helper.ArmorHelper;
 import pl.plajerlair.commonsbox.minecraft.helper.WeaponHelper;
 import pl.plajerlair.commonsbox.minecraft.item.ItemBuilder;
 import pl.plajerlair.commonsbox.minecraft.item.ItemUtils;
+import pl.plajerlair.commonsbox.minecraft.misc.stuff.ComplementAccessor;
 import plugily.projects.villagedefense.arena.ArenaRegistry;
 import plugily.projects.villagedefense.handlers.PermissionsManager;
 import plugily.projects.villagedefense.handlers.language.Messages;
@@ -96,7 +97,7 @@ public class BlockerKit extends PremiumKit implements Listener {
     }
     Player player = event.getPlayer();
     ItemStack stack = player.getInventory().getItemInMainHand();
-    if(!ArenaRegistry.isInArena(player) || !ItemUtils.isItemStackNamed(stack) || !getPlugin().getComplement().getDisplayName(stack.getItemMeta())
+    if(!ArenaRegistry.isInArena(player) || !ItemUtils.isItemStackNamed(stack) || !ComplementAccessor.getComplement().getDisplayName(stack.getItemMeta())
         .equalsIgnoreCase(getPlugin().getChatManager().colorMessage(Messages.KITS_BLOCKER_GAME_ITEM_NAME))) {
       return;
     }

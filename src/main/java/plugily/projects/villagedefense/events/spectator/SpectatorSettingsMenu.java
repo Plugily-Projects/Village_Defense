@@ -30,6 +30,7 @@ import org.bukkit.potion.PotionEffectType;
 
 import pl.plajerlair.commonsbox.minecraft.compat.xseries.XMaterial;
 import pl.plajerlair.commonsbox.minecraft.item.ItemBuilder;
+import pl.plajerlair.commonsbox.minecraft.misc.stuff.ComplementAccessor;
 import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.handlers.ChatManager;
 
@@ -54,7 +55,7 @@ public class SpectatorSettingsMenu implements Listener {
 
   @EventHandler
   public void onSpectatorMenuClick(InventoryClickEvent e) {
-    if(e.getInventory() == null || !plugin.getComplement().getTitle(e.getView()).equals(plugin.getChatManager().colorRawMessage(inventoryName))) {
+    if(e.getInventory() == null || !ComplementAccessor.getComplement().getTitle(e.getView()).equals(plugin.getChatManager().colorRawMessage(inventoryName))) {
       return;
     }
     if(e.getCurrentItem() == null || !e.getCurrentItem().hasItemMeta()) {
@@ -86,7 +87,7 @@ public class SpectatorSettingsMenu implements Listener {
   }
 
   private Inventory initInventory() {
-    Inventory inv = plugin.getComplement().createInventory(null, 9 * 3, inventoryName);
+    Inventory inv = ComplementAccessor.getComplement().createInventory(null, 9 * 3, inventoryName);
     ChatManager chatManager = plugin.getChatManager();
     inv.setItem(11, new ItemBuilder(Material.LEATHER_BOOTS)
         .name(chatManager.colorRawMessage(speedOptionName + " I")).build());

@@ -29,6 +29,7 @@ import pl.plajerlair.commonsbox.minecraft.helper.ArmorHelper;
 import pl.plajerlair.commonsbox.minecraft.helper.WeaponHelper;
 import pl.plajerlair.commonsbox.minecraft.item.ItemBuilder;
 import pl.plajerlair.commonsbox.minecraft.item.ItemUtils;
+import pl.plajerlair.commonsbox.minecraft.misc.stuff.ComplementAccessor;
 import plugily.projects.villagedefense.arena.Arena;
 import plugily.projects.villagedefense.arena.ArenaRegistry;
 import plugily.projects.villagedefense.arena.ArenaUtils;
@@ -84,7 +85,7 @@ public class CleanerKit extends PremiumKit implements Listener {
   public void onClean(PlayerInteractEvent e) {
     Arena arena = ArenaRegistry.getArena(e.getPlayer());
     if(!ItemUtils.isItemStackNamed(e.getItem()) || e.getItem().getType() != Material.BLAZE_ROD
-        || !getPlugin().getComplement().getDisplayName(e.getItem().getItemMeta())
+        || !ComplementAccessor.getComplement().getDisplayName(e.getItem().getItemMeta())
         .contains(getPlugin().getChatManager().colorMessage(Messages.KITS_CLEANER_GAME_ITEM_NAME)) || arena == null) {
       return;
     }

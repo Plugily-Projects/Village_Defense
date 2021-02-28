@@ -45,6 +45,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import pl.plajerlair.commonsbox.minecraft.compat.ServerVersion;
 import pl.plajerlair.commonsbox.minecraft.compat.VersionUtils;
 import pl.plajerlair.commonsbox.minecraft.misc.MiscUtils;
+import pl.plajerlair.commonsbox.minecraft.misc.stuff.ComplementAccessor;
 import plugily.projects.villagedefense.ConfigPreferences;
 import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.api.StatsStorage;
@@ -228,7 +229,7 @@ public class ArenaEvents implements Listener {
           e.getEntity().setHealth(ai.getValue()));
     }
     plugin.getRewardsHandler().performReward(e.getEntity(), arena, Reward.RewardType.PLAYER_DEATH);
-    plugin.getComplement().setDeathMessage(e, "");
+    ComplementAccessor.getComplement().setDeathMessage(e, "");
     e.getDrops().clear();
     e.setDroppedExp(0);
     plugin.getHolidayManager().applyHolidayDeathEffects(e.getEntity());

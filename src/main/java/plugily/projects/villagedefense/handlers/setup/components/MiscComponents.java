@@ -40,6 +40,7 @@ import pl.plajerlair.commonsbox.minecraft.compat.ServerVersion;
 import pl.plajerlair.commonsbox.minecraft.compat.xseries.XMaterial;
 import pl.plajerlair.commonsbox.minecraft.configuration.ConfigUtils;
 import pl.plajerlair.commonsbox.minecraft.item.ItemBuilder;
+import pl.plajerlair.commonsbox.minecraft.misc.stuff.ComplementAccessor;
 import pl.plajerlair.commonsbox.minecraft.serialization.LocationSerializer;
 import plugily.projects.villagedefense.ConfigPreferences;
 import plugily.projects.villagedefense.Main;
@@ -164,7 +165,7 @@ public class MiscComponents implements SetupComponent {
           continue;
         }
         if(stack.hasItemMeta() && stack.getItemMeta().hasLore()
-            && plugin.getComplement().getLore(stack.getItemMeta()).get(plugin.getComplement().getLore(stack.getItemMeta()).size() - 1)
+            && ComplementAccessor.getComplement().getLore(stack.getItemMeta()).get(ComplementAccessor.getComplement().getLore(stack.getItemMeta()).size() - 1)
             .contains(plugin.getChatManager().colorMessage(Messages.SHOP_MESSAGES_CURRENCY_IN_SHOP))) {
           found = true;
           break;
