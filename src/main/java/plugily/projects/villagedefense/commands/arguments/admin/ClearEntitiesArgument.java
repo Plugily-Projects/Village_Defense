@@ -19,12 +19,12 @@
 package plugily.projects.villagedefense.commands.arguments.admin;
 
 import org.bukkit.ChatColor;
-import org.bukkit.Particle;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.IronGolem;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Villager;
 import org.bukkit.entity.Wolf;
+import pl.plajerlair.commonsbox.minecraft.compat.VersionUtils;
 import plugily.projects.villagedefense.arena.Arena;
 import plugily.projects.villagedefense.arena.ArenaRegistry;
 import plugily.projects.villagedefense.arena.ArenaUtils;
@@ -70,7 +70,7 @@ public class ClearEntitiesArgument {
               return;
             }
             for(Villager villager : arena.getVillagers()) {
-              villager.getWorld().spawnParticle(Particle.LAVA, villager.getLocation(), 20);
+              VersionUtils.sendParticles("LAVA", arena.getPlayers(), villager.getLocation(), 20);
               villager.remove();
             }
             arena.getVillagers().clear();
@@ -94,7 +94,7 @@ public class ClearEntitiesArgument {
               return;
             }
             for(IronGolem golem : arena.getIronGolems()) {
-              golem.getWorld().spawnParticle(Particle.LAVA, golem.getLocation(), 20);
+              VersionUtils.sendParticles("LAVA", arena.getPlayers(), golem.getLocation(), 20);
               golem.remove();
             }
             arena.getIronGolems().clear();
@@ -107,7 +107,7 @@ public class ClearEntitiesArgument {
               return;
             }
             for(Wolf wolf : arena.getWolves()) {
-              wolf.getWorld().spawnParticle(Particle.LAVA, wolf.getLocation(), 20);
+              VersionUtils.sendParticles("LAVA", arena.getPlayers(), wolf.getLocation(), 20);
               wolf.remove();
             }
             arena.getWolves().clear();

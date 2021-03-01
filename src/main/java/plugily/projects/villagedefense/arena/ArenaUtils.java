@@ -19,17 +19,15 @@
 package plugily.projects.villagedefense.arena;
 
 import org.bukkit.GameMode;
-import org.bukkit.Particle;
-import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Zombie;
 import org.bukkit.potion.PotionEffectType;
 import pl.plajerlair.commonsbox.minecraft.compat.ServerVersion;
 import pl.plajerlair.commonsbox.minecraft.compat.VersionUtils;
-import pl.plajerlair.commonsbox.minecraft.misc.MiscUtils;
 import pl.plajerlair.commonsbox.minecraft.serialization.InventorySerializer;
 import plugily.projects.villagedefense.ConfigPreferences;
 import plugily.projects.villagedefense.Main;
+import plugily.projects.villagedefense.arena.initializers.ArenaInitializer1_10_R1;
 import plugily.projects.villagedefense.arena.initializers.ArenaInitializer1_11_R1;
 import plugily.projects.villagedefense.arena.initializers.ArenaInitializer1_12_R1;
 import plugily.projects.villagedefense.arena.initializers.ArenaInitializer1_13_R1;
@@ -39,6 +37,9 @@ import plugily.projects.villagedefense.arena.initializers.ArenaInitializer1_15_R
 import plugily.projects.villagedefense.arena.initializers.ArenaInitializer1_16_R1;
 import plugily.projects.villagedefense.arena.initializers.ArenaInitializer1_16_R2;
 import plugily.projects.villagedefense.arena.initializers.ArenaInitializer1_16_R3;
+import plugily.projects.villagedefense.arena.initializers.ArenaInitializer1_8_R3;
+import plugily.projects.villagedefense.arena.initializers.ArenaInitializer1_9_R1;
+import plugily.projects.villagedefense.arena.initializers.ArenaInitializer1_9_R2;
 import plugily.projects.villagedefense.handlers.language.Messages;
 import plugily.projects.villagedefense.user.User;
 
@@ -82,10 +83,8 @@ public class ArenaUtils {
     player.setAllowFlight(false);
     player.getInventory().clear();
     player.getInventory().setArmorContents(null);
-    MiscUtils.getEntityAttribute(player, Attribute.GENERIC_MAX_HEALTH).ifPresent(ai -> {
-      ai.setBaseValue(20.0);
-      player.setHealth(ai.getValue());
-    });
+    VersionUtils.setMaxHealth(player, 20);
+    player.setHealth(VersionUtils.getHealth(player));
     player.setFireTicks(0);
     player.setFoodLevel(20);
     if(plugin.getConfigPreferences().getOption(ConfigPreferences.Option.INVENTORY_MANAGER_ENABLED)) {
@@ -123,7 +122,15 @@ public class ArenaUtils {
 
   public static Arena initializeArena(String id) {
     Arena arena;
-    if(ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_11_R1)) {
+    if(ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_8_R3)) {
+      arena = new ArenaInitializer1_8_R3(id, plugin);
+    } else if(ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_9_R1)) {
+      arena = new ArenaInitializer1_9_R1(id, plugin);
+    } else if(ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_9_R2)) {
+      arena = new ArenaInitializer1_9_R2(id, plugin);
+    } else if(ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_10_R1)) {
+      arena = new ArenaInitializer1_10_R1(id, plugin);
+    } else if(ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_11_R1)) {
       arena = new ArenaInitializer1_11_R1(id, plugin);
     } else if(ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_12_R1)) {
       arena = new ArenaInitializer1_12_R1(id, plugin);
@@ -146,7 +153,15 @@ public class ArenaUtils {
   }
 
   public static void setWorld(Arena arena) {
-    if(ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_11_R1)) {
+    if(ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_8_R3)) {
+      ((ArenaInitializer1_8_R3) arena).setWorld(arena.getStartLocation());
+    } else if(ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_9_R1)) {
+      ((ArenaInitializer1_9_R1) arena).setWorld(arena.getStartLocation());
+    } else if(ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_9_R2)) {
+      ((ArenaInitializer1_9_R2) arena).setWorld(arena.getStartLocation());
+    } else if(ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_10_R1)) {
+      ((ArenaInitializer1_10_R1) arena).setWorld(arena.getStartLocation());
+    } else if(ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_11_R1)) {
       ((ArenaInitializer1_11_R1) arena).setWorld(arena.getStartLocation());
     } else if(ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_12_R1)) {
       ((ArenaInitializer1_12_R1) arena).setWorld(arena.getStartLocation());
@@ -172,7 +187,7 @@ public class ArenaUtils {
     int i = 0;
     for(Zombie zombie : arena.getZombies()) {
       if(eachThree && (i % 3) == 0) {
-        zombie.getWorld().spawnParticle(Particle.LAVA, zombie.getLocation(), 20);
+        VersionUtils.sendParticles("LAVA", arena.getPlayers(), zombie.getLocation(), 20);
       }
       zombie.remove();
       i++;

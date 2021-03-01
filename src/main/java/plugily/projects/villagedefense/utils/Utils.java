@@ -33,6 +33,7 @@ import org.bukkit.potion.PotionData;
 import org.bukkit.potion.PotionType;
 import org.bukkit.util.BlockIterator;
 import pl.plajerlair.commonsbox.minecraft.compat.ServerVersion;
+import pl.plajerlair.commonsbox.minecraft.compat.VersionUtils;
 import pl.plajerlair.commonsbox.minecraft.compat.xseries.XMaterial;
 import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.arena.ArenaRegistry;
@@ -65,7 +66,7 @@ public class Utils {
     if(stack.getAmount() <= 1) {
       player.getInventory().setItemInMainHand(new ItemStack(Material.AIR));
     } else {
-      player.getInventory().getItemInMainHand().setAmount(stack.getAmount() - 1);
+      VersionUtils.getItemInHand(player).setAmount(stack.getAmount() - 1);
     }
   }
 

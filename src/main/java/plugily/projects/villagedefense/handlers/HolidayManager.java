@@ -21,7 +21,6 @@ package plugily.projects.villagedefense.handlers;
 import org.bukkit.Bukkit;
 import org.bukkit.Effect;
 import org.bukkit.Material;
-import org.bukkit.Particle;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Item;
@@ -46,6 +45,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 
 /**
  * @author Plajer
@@ -79,7 +79,7 @@ public class HolidayManager implements Listener {
           Powerup powerup = new Powerup("VALENTINES_HEALING", plugin.getChatManager().colorRawMessage("&c&l<3"),
               plugin.getChatManager().colorRawMessage("&d&lHappy Valentine's Day!"), XMaterial.POPPY, pickup -> {
             pickup.getPlayer().setHealth(VersionUtils.getHealth(pickup.getPlayer()));
-            pickup.getPlayer().sendTitle(pickup.getPowerup().getDescription(), null, 5, 30, 5);
+            VersionUtils.sendTitle(pickup.getPlayer(), pickup.getPowerup().getDescription(), 5, 30, 5);
           });
           plugin.getPowerupRegistry().registerPowerup(powerup);
         }
@@ -90,7 +90,7 @@ public class HolidayManager implements Listener {
           Powerup powerup = new Powerup("APRIL_FOOL", plugin.getChatManager().colorRawMessage("&a&llololol"),
               plugin.getChatManager().colorRawMessage("&a&lApril Fools!"), XMaterial.DIRT, pickup -> {
             pickup.getPlayer().damage(0);
-            pickup.getPlayer().sendTitle(pickup.getPowerup().getDescription(), null, 5, 30, 5);
+            VersionUtils.sendTitle(pickup.getPlayer(), pickup.getPowerup().getDescription(), 5, 30, 5);
           });
           plugin.getPowerupRegistry().registerPowerup(powerup);
         }
@@ -101,7 +101,7 @@ public class HolidayManager implements Listener {
           Powerup powerup = new Powerup("APRIL_FOOL", plugin.getChatManager().colorRawMessage("&a&llololol"),
               plugin.getChatManager().colorRawMessage("&a&lApril Fools!"), XMaterial.DIRT, pickup -> {
             pickup.getPlayer().damage(0);
-            pickup.getPlayer().sendTitle(pickup.getPowerup().getDescription(), null, 5, 30, 5);
+            VersionUtils.sendTitle(pickup.getPlayer(), pickup.getPowerup().getDescription(), 5, 30, 5);
           });
           plugin.getPowerupRegistry().registerPowerup(powerup);
         }
@@ -237,7 +237,7 @@ public class HolidayManager implements Listener {
             this.cancel();
             return;
           }
-          en.getLocation().getWorld().spawnParticle(Particle.HEART, en.getLocation(), 1, 0, 0, 0, 1);
+          VersionUtils.sendParticles("HEART", (Set<Player>) null, en.getLocation(), 1);
         }
       }.runTaskTimer(plugin, 1, 1);
     } else if(currentHoliday == HolidayType.APRIL_FOOLS) {

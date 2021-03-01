@@ -20,7 +20,6 @@ package plugily.projects.villagedefense.kits.premium;
 
 import org.bukkit.Color;
 import org.bukkit.Material;
-import org.bukkit.Particle;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -30,6 +29,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionType;
+import pl.plajerlair.commonsbox.minecraft.compat.VersionUtils;
 import pl.plajerlair.commonsbox.minecraft.compat.xseries.XMaterial;
 import pl.plajerlair.commonsbox.minecraft.helper.ArmorHelper;
 import pl.plajerlair.commonsbox.minecraft.helper.WeaponHelper;
@@ -101,7 +101,7 @@ public class MedicKit extends PremiumKit implements Listener {
       } else {
         player.setHealth(player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue());
       }
-      player.getEyeLocation().getWorld().spawnParticle(Particle.HEART, player.getLocation(), 20);
+      VersionUtils.sendParticles("HEART", player, player.getLocation(), 20);
     }
   }
 

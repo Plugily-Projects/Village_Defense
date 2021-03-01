@@ -33,7 +33,6 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByBlockEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.event.entity.EntityTargetEvent;
 import org.bukkit.event.entity.EntityTargetLivingEntityEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
@@ -42,10 +41,11 @@ import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerBucketEmptyEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerExpChangeEvent;
-import org.bukkit.event.player.PlayerInteractEntityEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.event.player.PlayerShearEntityEvent;
+import pl.plajerlair.commonsbox.minecraft.compat.events.api.CBEntityPickupItemEvent;
+import pl.plajerlair.commonsbox.minecraft.compat.events.api.CBPlayerInteractEntityEvent;
+import pl.plajerlair.commonsbox.minecraft.compat.events.api.CBPlayerInteractEvent;
 import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.arena.Arena;
 import plugily.projects.villagedefense.arena.ArenaRegistry;
@@ -115,7 +115,7 @@ public class SpectatorEvents implements Listener {
   }
 
   @EventHandler(priority = EventPriority.HIGH)
-  public void onInteract(PlayerInteractEntityEvent event) {
+  public void onInteract(CBPlayerInteractEntityEvent event) {
     if(plugin.getUserManager().getUser(event.getPlayer()).isSpectator()) {
       event.setCancelled(true);
     }
@@ -184,7 +184,7 @@ public class SpectatorEvents implements Listener {
   }
 
   @EventHandler(priority = EventPriority.HIGHEST)
-  public void onPickup(EntityPickupItemEvent event) {
+  public void onPickup(CBEntityPickupItemEvent event) {
     if(!(event.getEntity() instanceof Player)) {
       return;
     }
@@ -228,7 +228,7 @@ public class SpectatorEvents implements Listener {
   }
 
   @EventHandler
-  public void onInteractEntityInteract(PlayerInteractEntityEvent event) {
+  public void onInteractEntityInteract(CBPlayerInteractEntityEvent event) {
     User user = plugin.getUserManager().getUser(event.getPlayer());
     if(user.isSpectator()) {
       event.setCancelled(true);
@@ -236,7 +236,7 @@ public class SpectatorEvents implements Listener {
   }
 
   @EventHandler
-  public void onRightClick(PlayerInteractEvent event) {
+  public void onRightClick(CBPlayerInteractEvent event) {
     Arena arena = ArenaRegistry.getArena(event.getPlayer());
     if(arena != null && plugin.getUserManager().getUser(event.getPlayer()).isSpectator()) {
       event.setCancelled(true);

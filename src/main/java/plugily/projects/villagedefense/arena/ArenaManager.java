@@ -22,7 +22,6 @@ import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
-import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.IronGolem;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -138,11 +137,8 @@ public class ArenaManager {
       }
 
       player.getActivePotionEffects().forEach(potionEffect -> player.removePotionEffect(potionEffect.getType()));
-
-      MiscUtils.getEntityAttribute(player, Attribute.GENERIC_MAX_HEALTH).ifPresent(ai -> {
-        ai.setBaseValue(ai.getValue() + arena.getOption(ArenaOption.ROTTEN_FLESH_LEVEL));
-        player.setHealth(ai.getValue());
-      });
+      VersionUtils.setMaxHealth(player, VersionUtils.getHealth(player) + arena.getOption(ArenaOption.ROTTEN_FLESH_LEVEL));
+      player.setHealth(VersionUtils.getHealth(player));
       player.setFoodLevel(20);
       player.setGameMode(GameMode.SURVIVAL);
       player.setAllowFlight(true);
@@ -166,7 +162,7 @@ public class ArenaManager {
       InventorySerializer.saveInventoryToFile(plugin, player);
     }
     player.teleport(arena.getLobbyLocation());
-    MiscUtils.getEntityAttribute(player, Attribute.GENERIC_MAX_HEALTH).ifPresent(ai -> player.setHealth(ai.getValue()));
+    player.setHealth(VersionUtils.getHealth(player));
     player.setFoodLevel(20);
     player.getInventory().setArmorContents(new ItemStack[]{new ItemStack(Material.AIR), new ItemStack(Material.AIR), new ItemStack(Material.AIR), new ItemStack(Material.AIR)});
     player.setFlying(false);
@@ -417,7 +413,7 @@ public class ArenaManager {
     for(Player player : arena.getPlayers()) {
       player.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().formatMessage(arena, plugin.getChatManager().colorMessage(Messages.NEXT_WAVE_IN), arena.getTimer()));
       player.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage(Messages.YOU_FEEL_REFRESHED));
-      MiscUtils.getEntityAttribute(player, Attribute.GENERIC_MAX_HEALTH).ifPresent(ai -> player.setHealth(ai.getValue()));
+      player.setHealth(VersionUtils.getHealth(player));
       User user = plugin.getUserManager().getUser(player);
       user.addStat(StatsStorage.StatisticType.ORBS, arena.getWave() * 10);
     }

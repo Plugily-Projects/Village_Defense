@@ -21,6 +21,7 @@ package plugily.projects.villagedefense.creatures;
 import org.bukkit.ChatColor;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Zombie;
+import pl.plajerlair.commonsbox.minecraft.compat.VersionUtils;
 import pl.plajerlair.commonsbox.minecraft.misc.MiscUtils;
 import pl.plajerlair.commonsbox.string.StringFormatUtils;
 import plugily.projects.villagedefense.Main;
@@ -93,15 +94,13 @@ public class CreatureUtils {
    */
   public static void applyAttributes(Zombie zombie, Arena arena) {
     MiscUtils.getEntityAttribute(zombie, Attribute.GENERIC_FOLLOW_RANGE).ifPresent(ai -> ai.setBaseValue(200.0D));
-    MiscUtils.getEntityAttribute(zombie, Attribute.GENERIC_MAX_HEALTH).ifPresent(ai -> {
-      ai.setBaseValue(ai.getValue() * arena.getOption(ArenaOption.ZOMBIE_DIFFICULTY_MULTIPLIER));
-      zombie.setHealth(ai.getValue());
-      if(plugin.getConfig().getBoolean("Simple-Zombie-Health-Bar-Enabled", true)) {
-        zombie.setCustomNameVisible(true);
-        zombie.setCustomName(StringFormatUtils.getProgressBar((int) ai.getValue(), (int) ai.getValue(), 50, "|",
-            ChatColor.YELLOW + "", ChatColor.GRAY + ""));
-      }
-    });
+    VersionUtils.setMaxHealth(zombie, VersionUtils.getMaxHealth(zombie) + arena.getOption(ArenaOption.ZOMBIE_DIFFICULTY_MULTIPLIER));
+    zombie.setHealth(VersionUtils.getMaxHealth(zombie));
+    if(plugin.getConfig().getBoolean("Simple-Zombie-Health-Bar-Enabled", true)) {
+      zombie.setCustomNameVisible(true);
+      zombie.setCustomName(StringFormatUtils.getProgressBar((int) zombie.getHealth(), (int) VersionUtils.getMaxHealth(zombie), 50, "|",
+          ChatColor.YELLOW + "", ChatColor.GRAY + ""));
+    }
   }
 
   public static float getZombieSpeed() {

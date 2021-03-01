@@ -27,8 +27,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
-import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
+import pl.plajerlair.commonsbox.minecraft.compat.VersionUtils;
+import pl.plajerlair.commonsbox.minecraft.compat.events.api.CBPlayerInteractEvent;
 import pl.plajerlair.commonsbox.minecraft.helper.ArmorHelper;
 import pl.plajerlair.commonsbox.minecraft.helper.WeaponHelper;
 import plugily.projects.villagedefense.handlers.PermissionsManager;
@@ -79,11 +80,11 @@ public class ShotBowKit extends PremiumKit implements Listener {
   }
 
   @EventHandler
-  public void onBowInteract(PlayerInteractEvent e) {
+  public void onBowInteract(CBPlayerInteractEvent e) {
     if(!(e.getAction() == Action.LEFT_CLICK_AIR || e.getAction() == Action.LEFT_CLICK_BLOCK || e.getAction() == Action.PHYSICAL)) {
       return;
     }
-    ItemStack stack = e.getPlayer().getInventory().getItemInMainHand();
+    ItemStack stack = VersionUtils.getItemInHand(e.getPlayer());
     User user = getPlugin().getUserManager().getUser(e.getPlayer());
     if(stack == null || stack.getType() != Material.BOW || !e.getPlayer().getInventory().contains(getMaterial())
         || !(user.getKit() instanceof ShotBowKit)

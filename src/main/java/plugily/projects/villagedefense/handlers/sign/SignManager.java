@@ -30,9 +30,9 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.SignChangeEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
 import org.jetbrains.annotations.Nullable;
 import pl.plajerlair.commonsbox.minecraft.compat.ServerVersion;
+import pl.plajerlair.commonsbox.minecraft.compat.events.api.CBPlayerInteractEvent;
 import pl.plajerlair.commonsbox.minecraft.compat.xseries.XMaterial;
 import pl.plajerlair.commonsbox.minecraft.configuration.ConfigUtils;
 import pl.plajerlair.commonsbox.minecraft.misc.stuff.ComplementAccessor;
@@ -145,7 +145,7 @@ public class SignManager implements Listener {
   }
 
   @EventHandler(priority = EventPriority.HIGH)
-  public void onJoinAttempt(PlayerInteractEvent e) {
+  public void onJoinAttempt(CBPlayerInteractEvent e) {
     ArenaSign arenaSign = getArenaSignByBlock(e.getClickedBlock());
     if(e.getAction() == Action.RIGHT_CLICK_BLOCK && e.getClickedBlock().getState() instanceof Sign && arenaSign != null) {
       Arena arena = arenaSign.getArena();

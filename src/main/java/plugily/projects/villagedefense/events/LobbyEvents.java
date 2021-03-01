@@ -27,8 +27,9 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
+import pl.plajerlair.commonsbox.minecraft.compat.VersionUtils;
+import pl.plajerlair.commonsbox.minecraft.compat.events.api.CBPlayerInteractEvent;
 import pl.plajerlair.commonsbox.minecraft.item.ItemUtils;
 import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.arena.Arena;
@@ -78,12 +79,12 @@ public class LobbyEvents implements Listener {
   }
 
   @EventHandler
-  public void onLobbyItemClick(PlayerInteractEvent e) {
+  public void onLobbyItemClick(CBPlayerInteractEvent e) {
     if(e.getAction() == Action.LEFT_CLICK_AIR || e.getAction() == Action.LEFT_CLICK_BLOCK || e.getAction() == Action.PHYSICAL) {
       return;
     }
     Arena arena = ArenaRegistry.getArena(e.getPlayer());
-    ItemStack stack = e.getPlayer().getInventory().getItemInMainHand();
+    ItemStack stack = VersionUtils.getItemInHand(e.getPlayer());
     if(arena == null || !ItemUtils.isItemStackNamed(stack)) {
       return;
     }

@@ -23,8 +23,8 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
+import pl.plajerlair.commonsbox.minecraft.compat.events.api.CBPlayerInteractEvent;
 import pl.plajerlair.commonsbox.minecraft.helper.ArmorHelper;
 import pl.plajerlair.commonsbox.minecraft.helper.WeaponHelper;
 import pl.plajerlair.commonsbox.minecraft.item.ItemBuilder;
@@ -82,7 +82,7 @@ public class CleanerKit extends PremiumKit implements Listener {
   }
 
   @EventHandler
-  public void onClean(PlayerInteractEvent e) {
+  public void onClean(CBPlayerInteractEvent e) {
     Arena arena = ArenaRegistry.getArena(e.getPlayer());
     if(!ItemUtils.isItemStackNamed(e.getItem()) || e.getItem().getType() != Material.BLAZE_ROD
         || !ComplementAccessor.getComplement().getDisplayName(e.getItem().getItemMeta())

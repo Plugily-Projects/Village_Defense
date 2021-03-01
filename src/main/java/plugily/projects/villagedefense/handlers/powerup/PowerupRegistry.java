@@ -27,6 +27,7 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import pl.plajerlair.commonsbox.minecraft.compat.VersionUtils;
 import pl.plajerlair.commonsbox.minecraft.compat.xseries.XMaterial;
 import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.api.event.player.VillagePlayerPowerupPickupEvent;
@@ -85,7 +86,7 @@ public class PowerupRegistry {
       }
 
       for(Player p : pickup.getArena().getPlayers()) {
-        p.sendTitle(pickup.getPowerup().getName(), pickup.getPowerup().getDescription(), 5, 30, 5);
+        VersionUtils.sendTitles(p, pickup.getPowerup().getName(), pickup.getPowerup().getDescription(), 5, 30, 5);
       }
     }));
     registerPowerup(new Powerup("DOUBLE_DAMAGE", chatManager.colorMessage(Messages.POWERUPS_DOUBLE_DAMAGE_NAME),
@@ -99,7 +100,7 @@ public class PowerupRegistry {
       subTitle = StringUtils.replace(subTitle, "%time%", plugin.getConfig().getString("Powerups.List.Double-Damage-For-Players.Time", "15"));
 
       for(Player p : pickup.getArena().getPlayers()) {
-        p.sendTitle(pickup.getPowerup().getName(), subTitle, 5, 30, 5);
+        VersionUtils.sendTitles(p, pickup.getPowerup().getName(), subTitle, 5, 30, 5);
       }
     }));
     registerPowerup(new Powerup("GOLEM_RAID", chatManager.colorMessage(Messages.POWERUPS_GOLEM_RAID_NAME),
@@ -109,7 +110,7 @@ public class PowerupRegistry {
       }
 
       for(Player p : pickup.getArena().getPlayers()) {
-        p.sendTitle(pickup.getPowerup().getName(), pickup.getPowerup().getDescription(), 5, 30, 5);
+        VersionUtils.sendTitles(p, pickup.getPowerup().getName(), pickup.getPowerup().getDescription(), 5, 30, 5);
       }
     }));
     registerPowerup(new Powerup("HEALING", chatManager.colorMessage(Messages.POWERUPS_HEALING_NAME),
@@ -122,7 +123,7 @@ public class PowerupRegistry {
       subTitle = StringUtils.replace(subTitle, "%time%", plugin.getConfig().getString("Powerups.List.Healing-For-Players.Time-Of-Healing", "10"));
 
       for(Player p : pickup.getArena().getPlayers()) {
-        p.sendTitle(pickup.getPowerup().getName(), subTitle, 5, 30, 5);
+        VersionUtils.sendTitles(p, pickup.getPowerup().getName(), subTitle, 5, 30, 5);
       }
     }));
     registerPowerup(new Powerup("ONE_SHOT_ONE_KILL", chatManager.colorMessage(Messages.POWERUPS_ONE_SHOT_ONE_KILL_NAME),
@@ -135,7 +136,7 @@ public class PowerupRegistry {
       subTitle = StringUtils.replace(subTitle, "%time%", plugin.getConfig().getString("Powerups.List.One-Shot-One-Kill.Time", "15"));
 
       for(Player p : pickup.getArena().getPlayers()) {
-        p.sendTitle(pickup.getPowerup().getName(), subTitle, 5, 30, 5);
+        VersionUtils.sendTitles(p, pickup.getPowerup().getName(), subTitle, 5, 30, 5);
       }
     }));
     Debugger.debug("[PowerupRegistry] Registered all powerups took {0}ms", System.currentTimeMillis() - start);

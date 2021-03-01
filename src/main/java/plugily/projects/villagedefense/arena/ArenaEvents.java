@@ -21,7 +21,6 @@ package plugily.projects.villagedefense.arena;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
-import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.IronGolem;
 import org.bukkit.entity.LivingEntity;
@@ -40,18 +39,17 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import pl.plajerlair.commonsbox.minecraft.compat.ServerVersion;
 import pl.plajerlair.commonsbox.minecraft.compat.VersionUtils;
-import pl.plajerlair.commonsbox.minecraft.misc.MiscUtils;
+import pl.plajerlair.commonsbox.minecraft.compat.events.api.CBEntityPickupItemEvent;
 import pl.plajerlair.commonsbox.minecraft.misc.stuff.ComplementAccessor;
 import plugily.projects.villagedefense.ConfigPreferences;
 import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.api.StatsStorage;
 import plugily.projects.villagedefense.arena.options.ArenaOption;
-import plugily.projects.villagedefense.events.Events1_8;
-import plugily.projects.villagedefense.events.Events1_9;
 import plugily.projects.villagedefense.handlers.ChatManager;
 import plugily.projects.villagedefense.handlers.items.SpecialItem;
 import plugily.projects.villagedefense.handlers.language.Messages;
@@ -72,11 +70,6 @@ public class ArenaEvents implements Listener {
 
   public ArenaEvents(Main plugin) {
     this.plugin = plugin;
-    if(ServerVersion.Version.isCurrentEqualOrLower(ServerVersion.Version.v1_12_R1)) {
-      plugin.getServer().getPluginManager().registerEvents(new Events1_8(), plugin);
-    } else {
-      plugin.getServer().getPluginManager().registerEvents(new Events1_9(), plugin);
-    }
     plugin.getServer().getPluginManager().registerEvents(this, plugin);
   }
 
@@ -225,8 +218,7 @@ public class ArenaEvents implements Listener {
       return;
     }
     if(e.getEntity().isDead()) {
-      MiscUtils.getEntityAttribute(e.getEntity(), Attribute.GENERIC_MAX_HEALTH).ifPresent(ai ->
-          e.getEntity().setHealth(ai.getValue()));
+      e.getEntity().setHealth(VersionUtils.getHealth(e.getEntity()));
     }
     plugin.getRewardsHandler().performReward(e.getEntity(), arena, Reward.RewardType.PLAYER_DEATH);
     ComplementAccessor.getComplement().setDeathMessage(e, "");
@@ -341,4 +333,18 @@ public class ArenaEvents implements Listener {
     }
   }
 
+  @EventHandler
+  public void onPickup(CBEntityPickupItemEvent e) {
+    if(e.getEntity().getType() != EntityType.PLAYER) {
+      return;
+    }
+    Arena arena = ArenaRegistry.getArena((Player) e.getEntity());
+    if(arena == null) {
+      return;
+    }
+    if(JavaPlugin.getPlugin(Main.class).getUserManager().getUser((Player) e.getEntity()).isSpectator()) {
+      e.setCancelled(true);
+    }
+    arena.removeDroppedFlesh(e.getItem());
+  }
 }

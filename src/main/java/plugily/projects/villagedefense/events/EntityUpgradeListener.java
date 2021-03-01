@@ -18,7 +18,6 @@
 
 package plugily.projects.villagedefense.events;
 
-import org.bukkit.Particle;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.IronGolem;
@@ -29,10 +28,10 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
-import org.bukkit.event.player.PlayerInteractEntityEvent;
-import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import pl.plajerlair.commonsbox.minecraft.compat.VersionUtils;
+import pl.plajerlair.commonsbox.minecraft.compat.events.api.CBPlayerInteractEntityEvent;
 import plugily.projects.villagedefense.arena.Arena;
 import plugily.projects.villagedefense.arena.ArenaRegistry;
 import plugily.projects.villagedefense.handlers.upgrade.EntityUpgradeMenu;
@@ -104,7 +103,7 @@ public class EntityUpgradeListener implements Listener {
       if(tier == 0) {
         return;
       }
-      e.getEntity().getLocation().getWorld().spawnParticle(Particle.EXPLOSION_HUGE, e.getEntity().getLocation(), 5);
+      VersionUtils.sendParticles("EXPLOSION_HUGE", arena.getPlayers(), e.getEntity().getLocation(), 5);
       for(Entity en : Utils.getNearbyEntities(e.getEntity().getLocation(), tier * 5)) {
         if(en instanceof Zombie) {
           ((Zombie) en).damage(10000.0, e.getEntity());
@@ -118,12 +117,12 @@ public class EntityUpgradeListener implements Listener {
   }
 
   @EventHandler
-  public void onEntityClick(PlayerInteractEntityEvent e) {
+  public void onEntityClick(CBPlayerInteractEntityEvent e) {
     if(ArenaRegistry.getArena(e.getPlayer()) == null || upgradeMenu.getPlugin().getUserManager().getUser(e.getPlayer()).isSpectator()
         || (e.getRightClicked().getType() != EntityType.IRON_GOLEM && e.getRightClicked().getType() != EntityType.WOLF) || e.getRightClicked().getCustomName() == null) {
       return;
     }
-    if(e.getHand() == EquipmentSlot.OFF_HAND || !e.getPlayer().isSneaking()) {
+    if(VersionUtils.checkOffHand(e.getHand()) || !e.getPlayer().isSneaking()) {
       return;
     }
     upgradeMenu.openUpgradeMenu((LivingEntity) e.getRightClicked(), e.getPlayer());

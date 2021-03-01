@@ -20,9 +20,7 @@ package plugily.projects.villagedefense.events;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.Particle;
 import org.bukkit.World;
-import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.IronGolem;
@@ -57,12 +55,10 @@ import org.bukkit.event.player.PlayerArmorStandManipulateEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerExpChangeEvent;
-import org.bukkit.event.player.PlayerInteractEntityEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
-
 import pl.plajerlair.commonsbox.minecraft.compat.VersionUtils;
+import pl.plajerlair.commonsbox.minecraft.compat.events.api.CBPlayerInteractEntityEvent;
+import pl.plajerlair.commonsbox.minecraft.compat.events.api.CBPlayerInteractEvent;
 import pl.plajerlair.commonsbox.minecraft.compat.xseries.XMaterial;
 import pl.plajerlair.commonsbox.minecraft.misc.MiscUtils;
 import pl.plajerlair.commonsbox.minecraft.misc.stuff.ComplementAccessor;
@@ -164,9 +160,9 @@ public class Events implements Listener {
   }
 
   @EventHandler
-  public void onEntityInteractEntity(PlayerInteractEntityEvent event) {
+  public void onEntityInteractEntity(CBPlayerInteractEntityEvent event) {
     Arena arena = ArenaRegistry.getArena(event.getPlayer());
-    if(event.getHand() == EquipmentSlot.OFF_HAND || arena == null) {
+    if(VersionUtils.checkOffHand(event.getHand()) || arena == null) {
       return;
     }
     User user = plugin.getUserManager().getUser(event.getPlayer());
@@ -174,7 +170,7 @@ public class Events implements Listener {
       event.setCancelled(true);
       return;
     }
-    if(event.getPlayer().getInventory().getItemInMainHand().getType() == Material.SADDLE) {
+    if(VersionUtils.getItemInHand(event.getPlayer()).getType() == Material.SADDLE) {
       if(event.getRightClicked().getType() == EntityType.IRON_GOLEM || event.getRightClicked().getType() == EntityType.VILLAGER || event.getRightClicked().getType() == EntityType.WOLF) {
         VersionUtils.setPassenger(event.getRightClicked(), event.getPlayer());
         event.setCancelled(true);
@@ -243,7 +239,7 @@ public class Events implements Listener {
   }
 
   @EventHandler(priority = EventPriority.LOWEST)
-  public void onLeave(PlayerInteractEvent event) {
+  public void onLeave(CBPlayerInteractEvent event) {
     if(event.getAction() == Action.LEFT_CLICK_AIR || event.getAction() == Action.LEFT_CLICK_BLOCK || event.getAction() == Action.PHYSICAL) {
       return;
     }
@@ -251,7 +247,7 @@ public class Events implements Listener {
     if(arena == null) {
       return;
     }
-    ItemStack itemStack = event.getPlayer().getInventory().getItemInMainHand();
+    ItemStack itemStack = VersionUtils.getItemInHand(event.getPlayer());
     if(!itemStack.hasItemMeta() || !itemStack.getItemMeta().hasDisplayName()) {
       return;
     }
@@ -323,11 +319,9 @@ public class Events implements Listener {
       if(!arena.getZombies().contains(e.getEntity())) {
         continue;
       }
-      MiscUtils.getEntityAttribute((Zombie) e.getEntity(), Attribute.GENERIC_MAX_HEALTH).ifPresent(ai -> {
-        e.getEntity().setCustomName(StringFormatUtils.getProgressBar((int) ((Zombie) e.getEntity()).getHealth(),
-            (int) ai.getValue(),
-            50, "|", ChatColor.YELLOW + "", ChatColor.GRAY + ""));
-      });
+      e.getEntity().setCustomName(StringFormatUtils.getProgressBar((int) ((Zombie) e.getEntity()).getHealth(),
+          (int) VersionUtils.getMaxHealth((Zombie) e.getEntity()),
+          50, "|", ChatColor.YELLOW + "", ChatColor.GRAY + ""));
     }
   }
 
@@ -387,7 +381,7 @@ public class Events implements Listener {
   }
 
   @EventHandler
-  public void onCraft(PlayerInteractEvent event) {
+  public void onCraft(CBPlayerInteractEvent event) {
     if(ArenaRegistry.isInArena(event.getPlayer()) && event.getPlayer().getTargetBlock(null, 7).getType() == XMaterial.CRAFTING_TABLE.parseMaterial()) {
       event.setCancelled(true);
     }
@@ -420,12 +414,12 @@ public class Events implements Listener {
       e.getItem().remove();
       e.setCancelled(true);
       e.getInventory().clear();
-      e.getItem().getLocation().getWorld().spawnParticle(Particle.CLOUD, e.getItem().getLocation(), 50, 2, 2, 2);
+      VersionUtils.sendParticles("CLOUD", arena.getPlayers(), e.getItem().getLocation(), 50, 2, 2, 2);
       if(!arena.checkLevelUpRottenFlesh() || arena.getOption(ArenaOption.ROTTEN_FLESH_LEVEL) >= 30) {
         return;
       }
       for(Player p : arena.getPlayers()) {
-        MiscUtils.getEntityAttribute(p, Attribute.GENERIC_MAX_HEALTH).ifPresent(ai -> ai.setBaseValue(ai.getValue() + 2.0));
+        VersionUtils.setMaxHealth(p, VersionUtils.getMaxHealth(p) + 2.0);
         p.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage(Messages.ROTTEN_FLESH_LEVEL_UP));
       }
     }

@@ -26,8 +26,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
-import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
+import pl.plajerlair.commonsbox.minecraft.compat.VersionUtils;
+import pl.plajerlair.commonsbox.minecraft.compat.events.api.CBPlayerInteractEvent;
 import pl.plajerlair.commonsbox.minecraft.item.ItemBuilder;
 import pl.plajerlair.commonsbox.minecraft.item.ItemUtils;
 import plugily.projects.villagedefense.Main;
@@ -107,11 +108,11 @@ public class KitMenuHandler implements Listener {
   }
 
   @EventHandler
-  public void onKitMenuItemClick(PlayerInteractEvent e) {
+  public void onKitMenuItemClick(CBPlayerInteractEvent e) {
     if(!(e.getAction() == Action.RIGHT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_BLOCK)) {
       return;
     }
-    ItemStack stack = e.getPlayer().getInventory().getItemInMainHand();
+    ItemStack stack = VersionUtils.getItemInHand(e.getPlayer());
     if(!stack.equals(kitItem.getItemStack())) {
       return;
     }

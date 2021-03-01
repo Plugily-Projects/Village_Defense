@@ -26,9 +26,9 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
-import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionType;
+import pl.plajerlair.commonsbox.minecraft.compat.events.api.CBPlayerInteractEvent;
 import pl.plajerlair.commonsbox.minecraft.compat.xseries.XMaterial;
 import plugily.projects.villagedefense.arena.ArenaRegistry;
 import plugily.projects.villagedefense.handlers.PermissionsManager;
@@ -124,7 +124,7 @@ public class NakedKit extends PremiumKit implements Listener {
   }
 
   @EventHandler
-  public void onArmorClick(PlayerInteractEvent event) {
+  public void onArmorClick(CBPlayerInteractEvent event) {
     if(!ArenaRegistry.isInArena(event.getPlayer())) {
       return;
     }

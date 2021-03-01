@@ -26,11 +26,11 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
-import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
 
 import pl.plajerlair.commonsbox.minecraft.compat.VersionUtils;
+import pl.plajerlair.commonsbox.minecraft.compat.events.api.CBPlayerInteractEvent;
 import pl.plajerlair.commonsbox.minecraft.compat.xseries.XMaterial;
 import pl.plajerlair.commonsbox.minecraft.item.ItemUtils;
 import pl.plajerlair.commonsbox.minecraft.misc.stuff.ComplementAccessor;
@@ -59,12 +59,12 @@ public class SpectatorItemEvents implements Listener {
   }
 
   @EventHandler
-  public void onSpectatorItemClick(PlayerInteractEvent e) {
+  public void onSpectatorItemClick(CBPlayerInteractEvent e) {
     if(e.getAction() == Action.LEFT_CLICK_AIR || e.getAction() == Action.LEFT_CLICK_BLOCK || e.getAction() == Action.PHYSICAL) {
       return;
     }
     Arena arena = ArenaRegistry.getArena(e.getPlayer());
-    ItemStack stack = e.getPlayer().getInventory().getItemInMainHand();
+    ItemStack stack = VersionUtils.getItemInHand(e.getPlayer());
     if(arena == null || !ItemUtils.isItemStackNamed(stack)) {
       return;
     }

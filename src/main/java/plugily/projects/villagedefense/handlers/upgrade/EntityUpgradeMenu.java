@@ -23,7 +23,6 @@ import com.github.stefvanschie.inventoryframework.GuiItem;
 import com.github.stefvanschie.inventoryframework.pane.StaticPane;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.Particle;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -33,6 +32,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.jetbrains.annotations.Nullable;
 
+import pl.plajerlair.commonsbox.minecraft.compat.VersionUtils;
 import pl.plajerlair.commonsbox.minecraft.compat.xseries.XMaterial;
 import pl.plajerlair.commonsbox.minecraft.item.ItemBuilder;
 import pl.plajerlair.commonsbox.minecraft.misc.MiscUtils;
@@ -50,6 +50,7 @@ import plugily.projects.villagedefense.utils.Utils;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 
@@ -203,14 +204,14 @@ public class EntityUpgradeMenu {
     applyUpgradeEffect(en, upgrade, tier);
     if(upgrade.getMaxTier() == tier) {
       Utils.playSound(en.getLocation(), "BLOCK_ANVIL_USE", "BLOCK_ANVIL_USE");
-      en.getWorld().spawnParticle(Particle.EXPLOSION_LARGE, en.getLocation().add(0, 0.5, 0), 5);
+      VersionUtils.sendParticles("EXPLOSION_LARGE", (Set<Player>) null, en.getLocation(), 5);
     }
     return true;
   }
 
   private void applyUpgradeEffect(Entity en, Upgrade upgrade, int tier) {
-    en.getWorld().spawnParticle(Particle.FIREWORKS_SPARK, en.getLocation().add(0, 1, 0), 30, 0.7, 0.7, 0.7, 0);
-    en.getWorld().spawnParticle(Particle.HEART, en.getLocation().add(0, 1.6, 0), 5, 0, 0, 0);
+    VersionUtils.sendParticles("FIREWORKS_SPARK", null, en.getLocation().add(0, 1, 0), 30, 0.7, 0.7, 0.7);
+    VersionUtils.sendParticles("HEART", (Set<Player>) null, en.getLocation().add(0, 1.6, 0), 5);
     Utils.playSound(en.getLocation(), "ENTITY_PLAYER_LEVELUP", "ENTITY_PLAYER_LEVELUP");
     int[] baseValues = new int[]{getTier(en, getUpgrade("Health")), getTier(en, getUpgrade("Speed")), getTier(en, getUpgrade("Damage"))};
     if(areAllEqualOrHigher(baseValues) && getMinValue(baseValues) == 4) {
@@ -220,12 +221,12 @@ public class EntityUpgradeMenu {
     switch(upgrade.getId()) {
       case "Damage":
         if(en.getType() == EntityType.WOLF) {
-          MiscUtils.getEntityAttribute((LivingEntity) en, Attribute.GENERIC_MAX_HEALTH).ifPresent(ai -> ai.setBaseValue(2.0 + (tier * 3)));
+          MiscUtils.getEntityAttribute((LivingEntity) en, Attribute.GENERIC_ATTACK_DAMAGE).ifPresent(ai -> ai.setBaseValue(2.0 + (tier * 3)));
         }
         //attribute damage doesn't exist for golems
         break;
       case "Health":
-        MiscUtils.getEntityAttribute((LivingEntity) en, Attribute.GENERIC_MAX_HEALTH).ifPresent(ai -> ai.setBaseValue(100.0 + (100.0 * ((double) tier / 2.0))));
+        VersionUtils.setMaxHealth((LivingEntity) en, 100.0 + (100.0 * ((double) tier / 2.0)));
         break;
       case "Speed":
         MiscUtils.getEntityAttribute((LivingEntity) en, Attribute.GENERIC_MOVEMENT_SPEED).ifPresent(ai -> ai.setBaseValue(0.25 + (0.25 * ((double) tier / 5.0))));

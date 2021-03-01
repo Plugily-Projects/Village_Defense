@@ -27,6 +27,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.inventory.ItemStack;
+import pl.plajerlair.commonsbox.minecraft.compat.VersionUtils;
 import pl.plajerlair.commonsbox.minecraft.compat.xseries.XMaterial;
 import pl.plajerlair.commonsbox.minecraft.helper.ArmorHelper;
 import pl.plajerlair.commonsbox.minecraft.helper.WeaponHelper;
@@ -88,7 +89,7 @@ public class WorkerKit extends LevelKit implements Listener {
       return;
     }
     User user = getPlugin().getUserManager().getUser(e.getPlayer());
-    ItemStack stack = e.getPlayer().getInventory().getItemInMainHand();
+    ItemStack stack = VersionUtils.getItemInHand(e.getPlayer());
     if(user.isSpectator() || !arena.getMapRestorerManager().getGameDoorLocations()
         .containsKey(e.getBlock().getLocation())) {
       e.setCancelled(true);

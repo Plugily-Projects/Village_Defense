@@ -22,15 +22,15 @@ import com.github.stefvanschie.inventoryframework.Gui;
 import com.github.stefvanschie.inventoryframework.GuiItem;
 import com.github.stefvanschie.inventoryframework.pane.OutlinePane;
 import org.bukkit.Material;
-import org.bukkit.Particle;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Villager;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
-import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
+import pl.plajerlair.commonsbox.minecraft.compat.VersionUtils;
+import pl.plajerlair.commonsbox.minecraft.compat.events.api.CBPlayerInteractEvent;
 import pl.plajerlair.commonsbox.minecraft.compat.xseries.XMaterial;
 import pl.plajerlair.commonsbox.minecraft.helper.ArmorHelper;
 import pl.plajerlair.commonsbox.minecraft.helper.WeaponHelper;
@@ -90,12 +90,12 @@ public class TeleporterKit extends PremiumKit implements Listener {
   }
 
   @EventHandler
-  public void onRightClick(PlayerInteractEvent e) {
+  public void onRightClick(CBPlayerInteractEvent e) {
     if(!(e.getAction() == Action.RIGHT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_BLOCK)) {
       return;
     }
     Arena arena = ArenaRegistry.getArena(e.getPlayer());
-    ItemStack stack = e.getPlayer().getInventory().getItemInMainHand();
+    ItemStack stack = VersionUtils.getItemInHand(e.getPlayer());
     if(arena == null || !ItemUtils.isItemStackNamed(stack)) {
       return;
     }
@@ -132,7 +132,7 @@ public class TeleporterKit extends PremiumKit implements Listener {
         player.sendMessage(getPlugin().getChatManager().formatMessage(arena, getPlugin().getChatManager().colorMessage(Messages.KITS_TELEPORTER_TELEPORTED_TO_PLAYER), arenaPlayer));
         player.teleport(arenaPlayer);
         Utils.playSound(player.getLocation(), "ENTITY_ENDERMEN_TELEPORT", "ENTITY_ENDERMAN_TELEPORT");
-        player.getWorld().spawnParticle(Particle.PORTAL, player.getLocation(), 30);
+        VersionUtils.sendParticles("PORTAL", arena.getPlayers(), player.getLocation(), 30);
         player.closeInventory();
       }));
     }
@@ -143,7 +143,7 @@ public class TeleporterKit extends PremiumKit implements Listener {
           .build(), onClick -> {
         player.teleport(villager.getLocation());
         Utils.playSound(player.getLocation(), "ENTITY_ENDERMEN_TELEPORT", "ENTITY_ENDERMAN_TELEPORT");
-        player.getWorld().spawnParticle(Particle.PORTAL, player.getLocation(), 30);
+        VersionUtils.sendParticles("PORTAL", arena.getPlayers(), player.getLocation(), 30);
         player.sendMessage(getPlugin().getChatManager().colorMessage(Messages.KITS_TELEPORTER_TELEPORTED_TO_VILLAGER));
       }));
     }

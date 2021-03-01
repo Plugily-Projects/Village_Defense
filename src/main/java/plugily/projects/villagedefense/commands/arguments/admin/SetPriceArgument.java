@@ -24,6 +24,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import pl.plajerlair.commonsbox.minecraft.compat.VersionUtils;
 import pl.plajerlair.commonsbox.minecraft.item.ItemBuilder;
 import pl.plajerlair.commonsbox.minecraft.misc.stuff.ComplementAccessor;
 import plugily.projects.villagedefense.commands.arguments.ArgumentsRegistry;
@@ -52,7 +53,7 @@ public class SetPriceArgument {
           return;
         }
         Player player = (Player) sender;
-        ItemStack item = player.getInventory().getItemInMainHand();
+        ItemStack item = VersionUtils.getItemInHand(player);
         if(item == null || item.getType().equals(Material.AIR)) {
           player.sendMessage(registry.getPlugin().getChatManager().getPrefix() + registry.getPlugin().getChatManager().colorMessage(Messages.COMMANDS_HOLD_ANY_ITEM));
           return;

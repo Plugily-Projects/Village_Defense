@@ -21,7 +21,7 @@ package plugily.projects.villagedefense.handlers.powerup;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import pl.plajerlair.commonsbox.minecraft.compat.XMaterial;
+import pl.plajerlair.commonsbox.minecraft.compat.xseries.XMaterial;
 
 /**
  * @author Plajer

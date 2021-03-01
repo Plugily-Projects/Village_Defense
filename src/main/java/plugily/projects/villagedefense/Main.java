@@ -32,7 +32,9 @@ import org.bukkit.plugin.java.JavaPluginLoader;
 import org.jetbrains.annotations.TestOnly;
 import pl.plajerlair.commonsbox.database.MysqlDatabase;
 import pl.plajerlair.commonsbox.minecraft.compat.ServerVersion;
+import pl.plajerlair.commonsbox.minecraft.compat.events.EventsInitializer;
 import pl.plajerlair.commonsbox.minecraft.configuration.ConfigUtils;
+import pl.plajerlair.commonsbox.minecraft.misc.MiscUtils;
 import pl.plajerlair.commonsbox.minecraft.serialization.InventorySerializer;
 import plugily.projects.villagedefense.api.StatsStorage;
 import plugily.projects.villagedefense.arena.Arena;
@@ -157,13 +159,6 @@ public class Main extends JavaPlugin {
 
     long start = System.currentTimeMillis();
 
-    try {
-      Class.forName("com.destroystokyo.paper.PaperConfig");
-      isPaper = true;
-    } catch(ClassNotFoundException e) {
-      isPaper = false;
-    }
-
     ServiceRegistry.registerService(this);
     exceptionLogHandler = new ExceptionLogHandler(this);
     Messages.init(this);
@@ -189,15 +184,6 @@ public class Main extends JavaPlugin {
   }
 
   private boolean validateIfPluginShouldStart() {
-    if(ServerVersion.Version.isCurrentLower(ServerVersion.Version.v1_11_R1)) {
-      MessageUtils.thisVersionIsNotSupported();
-      Debugger.sendConsoleMsg("&cYour server version is not supported by Village Defense!");
-      Debugger.sendConsoleMsg("&cSadly, we must shut off. Maybe you consider changing your server version?");
-      forceDisable = true;
-      getServer().getPluginManager().disablePlugin(this);
-      return false;
-    }
-
     try {
       Class.forName("org.spigotmc.SpigotConfig");
     } catch(Exception e) {
@@ -207,6 +193,20 @@ public class Main extends JavaPlugin {
       forceDisable = true;
       getServer().getPluginManager().disablePlugin(this);
       return false;
+    }
+    if(ServerVersion.Version.isCurrentLower(ServerVersion.Version.v1_8_R3)) {
+      MessageUtils.thisVersionIsNotSupported();
+      Debugger.sendConsoleMsg("&cYour server version is not supported by Village Defense!");
+      Debugger.sendConsoleMsg("&cSadly, we must shut off. Maybe you consider changing your server version?");
+      forceDisable = true;
+      getServer().getPluginManager().disablePlugin(this);
+      return false;
+    }
+    try {
+      Class.forName("com.destroystokyo.paper.PaperConfig");
+      isPaper = true;
+    } catch(ClassNotFoundException e) {
+      isPaper = false;
     }
     return true;
   }
@@ -276,6 +276,8 @@ public class Main extends JavaPlugin {
     ArenaRegistry.registerArenas();
     signManager.loadSigns();
     signManager.updateSigns();
+    new EventsInitializer().initialize(this);
+    MiscUtils.sendStartUpMessage(this, "VillageDefense", getDescription(),true, true);
   }
 
   private void startInitiableClasses() {

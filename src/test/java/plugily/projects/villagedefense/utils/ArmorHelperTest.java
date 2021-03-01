@@ -23,7 +23,7 @@ import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.junit.Assert;
 import org.junit.Test;
-import pl.plajerlair.commonsbox.minecraft.compat.XMaterial;
+import pl.plajerlair.commonsbox.minecraft.compat.xseries.XMaterial;
 import pl.plajerlair.commonsbox.minecraft.helper.ArmorHelper;
 import plugily.projects.villagedefense.MockUtils;
 

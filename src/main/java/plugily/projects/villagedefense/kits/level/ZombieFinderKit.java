@@ -23,10 +23,10 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import pl.plajerlair.commonsbox.minecraft.compat.events.api.CBPlayerInteractEvent;
 import pl.plajerlair.commonsbox.minecraft.compat.xseries.XMaterial;
 import pl.plajerlair.commonsbox.minecraft.helper.WeaponHelper;
 import pl.plajerlair.commonsbox.minecraft.item.ItemBuilder;
@@ -83,7 +83,7 @@ public class ZombieFinderKit extends LevelKit implements Listener {
   }
 
   @EventHandler
-  public void onTeleport(PlayerInteractEvent event) {
+  public void onTeleport(CBPlayerInteractEvent event) {
     Arena arena = ArenaRegistry.getArena(event.getPlayer());
     if(arena == null || !ItemUtils.isItemStackNamed(event.getItem()) || event.getItem().getType() != Material.BOOK
         || !ComplementAccessor.getComplement().getDisplayName(event.getItem().getItemMeta()).equals(getPlugin().getChatManager().colorMessage(Messages.KITS_ZOMBIE_TELEPORTER_GAME_ITEM_NAME))) {

@@ -22,7 +22,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.Particle;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
@@ -31,11 +30,12 @@ import org.bukkit.entity.Zombie;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
+import pl.plajerlair.commonsbox.minecraft.compat.VersionUtils;
+import pl.plajerlair.commonsbox.minecraft.compat.events.api.CBPlayerInteractEvent;
 import pl.plajerlair.commonsbox.minecraft.compat.xseries.XMaterial;
 import pl.plajerlair.commonsbox.minecraft.helper.ArmorHelper;
 import pl.plajerlair.commonsbox.minecraft.item.ItemBuilder;
@@ -120,7 +120,7 @@ public class WizardKit extends PremiumKit implements Listener {
   }
 
   @EventHandler
-  public void onStaffUse(PlayerInteractEvent e) {
+  public void onStaffUse(CBPlayerInteractEvent e) {
     User user = getPlugin().getUserManager().getUser(e.getPlayer());
     if(ArenaRegistry.getArena(e.getPlayer()) == null) {
       return;
@@ -128,7 +128,7 @@ public class WizardKit extends PremiumKit implements Listener {
     if(!(user.getKit() instanceof WizardKit) || user.isSpectator()) {
       return;
     }
-    ItemStack stack = e.getPlayer().getInventory().getItemInMainHand();
+    ItemStack stack = VersionUtils.getItemInHand(e.getPlayer());
     if(!ItemUtils.isItemStackNamed(stack)) {
       return;
     }
@@ -171,7 +171,7 @@ public class WizardKit extends PremiumKit implements Listener {
       public void run() {
         Location loc = player.getLocation();
         loc.add(0, 0.8, 0);
-        player.getWorld().spawnParticle(Particle.VILLAGER_ANGRY, loc, 5, 0, 0, 0, 0);
+        VersionUtils.sendParticles("VILLAGER_ANGRY", null, loc, 5, 0, 0, 0);
         if(!wizardsOnDuty.contains(player) || !ArenaRegistry.isInArena(player)) {
           this.cancel();
         }
@@ -192,13 +192,13 @@ public class WizardKit extends PremiumKit implements Listener {
             y = direction.getY() * positionModifier + 1.5,
             z = direction.getZ() * positionModifier;
         loc.add(x, y, z);
-        player.getWorld().spawnParticle(Particle.TOWN_AURA, loc, 5);
+        VersionUtils.sendParticles("TOWN_AURA", null, loc, 5, 0, 0, 0);
         for(Entity en : loc.getChunk().getEntities()) {
           if(!(en instanceof Zombie) || en.getLocation().distance(loc) >= 1.5 || en.equals(player)) {
             continue;
           }
           ((LivingEntity) en).damage(6.0, player);
-          en.getWorld().spawnParticle(Particle.FIREWORKS_SPARK, en.getLocation(), 2, 0.5, 0.5, 0.5, 0);
+          VersionUtils.sendParticles("FIREWORKS_SPARK", null, en.getLocation(), 2, 0.5, 0.5, 0.5);
         }
         loc.subtract(x, y, z);
         if(positionModifier > 40) {

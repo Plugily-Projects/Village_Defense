@@ -20,17 +20,17 @@ package plugily.projects.villagedefense.kits.premium;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.Particle;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
-import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
+import pl.plajerlair.commonsbox.minecraft.compat.VersionUtils;
+import pl.plajerlair.commonsbox.minecraft.compat.events.api.CBPlayerInteractEvent;
 import pl.plajerlair.commonsbox.minecraft.compat.xseries.XMaterial;
 import pl.plajerlair.commonsbox.minecraft.helper.ArmorHelper;
 import pl.plajerlair.commonsbox.minecraft.helper.WeaponHelper;
@@ -96,12 +96,12 @@ public class TornadoKit extends PremiumKit implements Listener {
   }
 
   @EventHandler
-  public void onTornadoSpawn(PlayerInteractEvent e) {
+  public void onTornadoSpawn(CBPlayerInteractEvent e) {
     if(e.getAction() != Action.RIGHT_CLICK_AIR && e.getAction() != Action.RIGHT_CLICK_BLOCK) {
       return;
     }
     Player player = e.getPlayer();
-    ItemStack stack = player.getInventory().getItemInMainHand();
+    ItemStack stack = VersionUtils.getItemInHand(player);
     if(!ArenaRegistry.isInArena(player) || !ItemUtils.isItemStackNamed(stack)
         || !ComplementAccessor.getComplement().getDisplayName(stack.getItemMeta()).equalsIgnoreCase(getPlugin().getChatManager().colorMessage(Messages.KITS_TORNADO_GAME_ITEM_NAME))) {
       return;
@@ -169,7 +169,7 @@ public class TornadoKit extends PremiumKit implements Listener {
               radians = Math.toRadians(360.0 / lines * l + y * 25 - angle),
               x = Math.cos(radians) * radius,
               z = Math.sin(radians) * radius;
-          getLocation().getWorld().spawnParticle(Particle.CLOUD, getLocation().clone().add(x, y, z), 1, 0, 0, 0, 0);
+          VersionUtils.sendParticles("CLOUD", null, getLocation().clone().add(x, y, z), 1, 0, 0, 0);
         }
       }
       pushNearbyZombies();
