@@ -9,7 +9,7 @@ deploy webhooks to print changelog successfully
 
 That's all, matcher will stop when detects next line started with `###` match
 
-### 4.5.8
+### 4.5.7 b2
 * Perform leader board refreshing in async thread
 * Added modifiable arena state names to language
 * Allow door placement after zombie door break
