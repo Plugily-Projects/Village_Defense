@@ -95,10 +95,10 @@ public class ArenaManager {
     //check if player is in party and send party members to the game
     if(plugin.getPartyHandler().isPlayerInParty(player)) {
       GameParty party = plugin.getPartyHandler().getParty(player);
-      if(player == party.getLeader()) {
+      if(party.getLeader() != null && player.getUniqueId().equals(party.getLeader().getUniqueId())) {
         if(arena.getMaximumPlayers() - arena.getPlayers().size() >= party.getPlayers().size()) {
           for(Player partyPlayer : party.getPlayers()) {
-            if(partyPlayer == player) {
+            if(player.getUniqueId().equals(partyPlayer.getUniqueId())) {
               continue;
             }
             if(ArenaRegistry.isInArena(partyPlayer)) {
@@ -137,8 +137,8 @@ public class ArenaManager {
       }
 
       player.getActivePotionEffects().forEach(potionEffect -> player.removePotionEffect(potionEffect.getType()));
-      VersionUtils.setMaxHealth(player, VersionUtils.getHealth(player) + arena.getOption(ArenaOption.ROTTEN_FLESH_LEVEL));
-      player.setHealth(VersionUtils.getHealth(player));
+      VersionUtils.setMaxHealth(player, VersionUtils.getMaxHealth(player) + arena.getOption(ArenaOption.ROTTEN_FLESH_LEVEL));
+      player.setHealth(VersionUtils.getMaxHealth(player));
       player.setFoodLevel(20);
       player.setGameMode(GameMode.SURVIVAL);
       player.setAllowFlight(true);
@@ -162,7 +162,7 @@ public class ArenaManager {
       InventorySerializer.saveInventoryToFile(plugin, player);
     }
     player.teleport(arena.getLobbyLocation());
-    player.setHealth(VersionUtils.getHealth(player));
+    player.setHealth(VersionUtils.getMaxHealth(player));
     player.setFoodLevel(20);
     player.getInventory().setArmorContents(new ItemStack[]{new ItemStack(Material.AIR), new ItemStack(Material.AIR), new ItemStack(Material.AIR), new ItemStack(Material.AIR)});
     player.setFlying(false);
@@ -387,10 +387,11 @@ public class ArenaManager {
     subTitle = plugin.getChatManager().colorRawMessage(subTitle);
 
     for(User user : plugin.getUserManager().getUsers(arena)) {
-      VersionUtils.sendTitles(user.getPlayer(), title, subTitle, fadeIn, stay, fadeOut);
+      if (!user.isSpectator() && !user.isPermanentSpectator()) {
+        VersionUtils.sendTitles(user.getPlayer(), title, subTitle, fadeIn, stay, fadeOut);
+        plugin.getRewardsHandler().performReward(user.getPlayer(), arena, Reward.RewardType.END_WAVE);
+      }
     }
-
-    plugin.getRewardsHandler().performReward(arena, Reward.RewardType.END_WAVE);
 
     arena.setTimer(plugin.getConfig().getInt("Cooldown-Before-Next-Wave", 25));
     arena.getZombieSpawnManager().getZombieCheckerLocations().clear();
@@ -413,9 +414,8 @@ public class ArenaManager {
     for(Player player : arena.getPlayers()) {
       player.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().formatMessage(arena, plugin.getChatManager().colorMessage(Messages.NEXT_WAVE_IN), arena.getTimer()));
       player.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage(Messages.YOU_FEEL_REFRESHED));
-      player.setHealth(VersionUtils.getHealth(player));
-      User user = plugin.getUserManager().getUser(player);
-      user.addStat(StatsStorage.StatisticType.ORBS, arena.getWave() * 10);
+      player.setHealth(VersionUtils.getMaxHealth(player));
+      plugin.getUserManager().getUser(player).addStat(StatsStorage.StatisticType.ORBS, arena.getWave() * 10);
     }
   }
 

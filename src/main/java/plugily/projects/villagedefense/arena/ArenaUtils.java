@@ -84,7 +84,7 @@ public class ArenaUtils {
     player.getInventory().clear();
     player.getInventory().setArmorContents(null);
     VersionUtils.setMaxHealth(player, 20);
-    player.setHealth(VersionUtils.getHealth(player));
+    player.setHealth(VersionUtils.getMaxHealth(player));
     player.setFireTicks(0);
     player.setFoodLevel(20);
     if(plugin.getConfigPreferences().getOption(ConfigPreferences.Option.INVENTORY_MANAGER_ENABLED)) {

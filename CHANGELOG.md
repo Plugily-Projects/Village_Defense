@@ -16,6 +16,8 @@ That's all, matcher will stop when detects next line started with `###` match
 * Added more rewards types (playerDeath, villagerDeath)
 * Added the papi placeholder %villagedefense_{arena}:wave%
 * Added the scoreboard placeholder %WAVE%
+* Spectator players will not receives rewards anymore when one of the wave is ended.
+* Fix when players are losed their components (like inventory items) when forcefully restarted the server.
 
 ### 4.5.7 (22.01.2021)
 >>> b

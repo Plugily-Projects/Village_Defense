@@ -151,7 +151,7 @@ public class Main extends JavaPlugin {
     return entityUpgradesConfig;
   }
 
-@Override
+  @Override
   public void onEnable() {
     if(!validateIfPluginShouldStart()) {
       return;
@@ -402,15 +402,11 @@ public class Main extends JavaPlugin {
 
     Bukkit.getLogger().removeHandler(exceptionLogHandler);
     for(Arena arena : ArenaRegistry.getArenas()) {
-      arena.getPlayers().forEach(arena::teleportToEndLocation);
       arena.getScoreboardManager().stopAllScoreboards();
 
       for(Player player : arena.getPlayers()) {
+        arena.teleportToEndLocation(player);
         arena.doBarAction(Arena.BarAction.REMOVE, player);
-        player.setFlySpeed(0.1f);
-        player.getInventory().clear();
-        player.getInventory().setArmorContents(null);
-        player.getActivePotionEffects().forEach(pe -> player.removePotionEffect(pe.getType()));
         if(configPreferences.getOption(ConfigPreferences.Option.INVENTORY_MANAGER_ENABLED)) {
           InventorySerializer.loadInventory(this, player);
         }
@@ -444,10 +440,9 @@ public class Main extends JavaPlugin {
           }
           update.append(", ").append(stat.getName()).append('=').append(user.getStat(stat));
         }
-        String finalUpdate = update.toString();
         //copy of userManager#saveStatistic but without async database call that's not allowed in onDisable method.
         ((MysqlManager) userManager.getDatabase()).getDatabase().executeUpdate("UPDATE " + ((MysqlManager) getUserManager().getDatabase()).getTableName()
-            + finalUpdate + " WHERE UUID='" + user.getPlayer().getUniqueId().toString() + "';");
+            + update.toString() + " WHERE UUID='" + user.getPlayer().getUniqueId().toString() + "';");
         continue;
       }
       for(StatsStorage.StatisticType stat : StatsStorage.StatisticType.values()) {
