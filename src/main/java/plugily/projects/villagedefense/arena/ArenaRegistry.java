@@ -61,12 +61,7 @@ public class ArenaRegistry {
    * @return true when player is in arena, false if otherwise
    */
   public static boolean isInArena(@NotNull Player player) {
-    for(Arena arena : arenas) {
-      if(arena.getPlayers().contains(player)) {
-        return true;
-      }
-    }
-    return false;
+    return getArena(player) != null;
   }
 
   /**

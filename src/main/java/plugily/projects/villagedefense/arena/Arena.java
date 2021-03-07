@@ -194,13 +194,13 @@ public abstract class Arena extends BukkitRunnable {
   @Override
   public void run() {
     //idle task
-    if(getPlayers().isEmpty() && getArenaState() == ArenaState.WAITING_FOR_PLAYERS) {
+    if(getPlayers().isEmpty() && arenaState == ArenaState.WAITING_FOR_PLAYERS) {
       return;
     }
     Debugger.performance("ArenaTask", "[PerformanceMonitor] [{0}] Running game task", getId());
     long start = System.currentTimeMillis();
 
-    gameStateHandlers.get(getArenaState()).handleCall(this);
+    gameStateHandlers.get(arenaState).handleCall(this);
     Debugger.performance("ArenaTask", "[PerformanceMonitor] [{0}] Game task finished took {1}ms", getId(), System.currentTimeMillis() - start);
   }
 
