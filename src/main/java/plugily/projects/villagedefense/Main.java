@@ -243,7 +243,7 @@ public class Main extends JavaPlugin {
     if(configPreferences.getOption(ConfigPreferences.Option.DATABASE_ENABLED)) {
       Debugger.debug("Database enabled");
       FileConfiguration config = ConfigUtils.getConfig(this, Constants.Files.MYSQL.getName());
-      database = new MysqlDatabase(config.getString("user"), config.getString("password"), config.getString("address"));
+      database = new MysqlDatabase(config.getString("user"), config.getString("password"), config.getString("address"), config.getLong("maxLifeTime"));
     }
     if(configPreferences.getOption(ConfigPreferences.Option.BUNGEE_ENABLED)) {
       Debugger.debug("Bungee enabled");
