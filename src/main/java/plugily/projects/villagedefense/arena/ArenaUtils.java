@@ -76,7 +76,7 @@ public class ArenaUtils {
       VersionUtils.showPlayer(plugin, players, player);
       VersionUtils.showPlayer(plugin, player, players);
     }
-    player.setGlowing(false);
+    VersionUtils.setGlowing(player, false);
     player.setGameMode(GameMode.SURVIVAL);
     player.getActivePotionEffects().forEach(effect -> player.removePotionEffect(effect.getType()));
     player.setFlying(false);

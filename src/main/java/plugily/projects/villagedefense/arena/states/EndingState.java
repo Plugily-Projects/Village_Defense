@@ -19,6 +19,8 @@
 package plugily.projects.villagedefense.arena.states;
 
 import org.bukkit.entity.Player;
+import pl.plajerlair.commonsbox.minecraft.compat.ServerVersion;
+import plugily.projects.villagedefense.ConfigPreferences;
 import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.api.StatsStorage;
 import plugily.projects.villagedefense.arena.Arena;
@@ -46,7 +48,9 @@ public class EndingState implements ArenaStateHandler {
   public void handleCall(Arena arena) {
     arena.getScoreboardManager().stopAllScoreboards();
     if(arena.getTimer() <= 0) {
-      arena.getGameBar().setTitle(plugin.getChatManager().colorMessage(Messages.BOSSBAR_GAME_ENDED));
+      if(plugin.getConfigPreferences().getOption(ConfigPreferences.Option.BOSSBAR_ENABLED) && ServerVersion.Version.isCurrentEqualOrHigher(ServerVersion.Version.v1_9_R1)) {
+        arena.getGameBar().setTitle(plugin.getChatManager().colorMessage(Messages.BOSSBAR_GAME_ENDED));
+      }
 
       for(Player player : arena.getPlayers()) {
         ArenaUtils.resetPlayerAfterGame(player);

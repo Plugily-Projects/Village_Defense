@@ -21,9 +21,14 @@ package plugily.projects.villagedefense.handlers.upgrade;
 import com.github.stefvanschie.inventoryframework.Gui;
 import com.github.stefvanschie.inventoryframework.GuiItem;
 import com.github.stefvanschie.inventoryframework.pane.StaticPane;
+import net.minecraft.server.v1_8_R3.AttributeInstance;
+import net.minecraft.server.v1_8_R3.AttributeModifier;
+import net.minecraft.server.v1_8_R3.EntityInsentient;
+import net.minecraft.server.v1_8_R3.GenericAttributes;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftLivingEntity;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
@@ -31,7 +36,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.jetbrains.annotations.Nullable;
-
+import pl.plajerlair.commonsbox.minecraft.compat.ServerVersion;
 import pl.plajerlair.commonsbox.minecraft.compat.VersionUtils;
 import pl.plajerlair.commonsbox.minecraft.compat.xseries.XMaterial;
 import pl.plajerlair.commonsbox.minecraft.item.ItemBuilder;
@@ -51,6 +56,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 
@@ -216,12 +222,19 @@ public class EntityUpgradeMenu {
     int[] baseValues = new int[]{getTier(en, getUpgrade("Health")), getTier(en, getUpgrade("Speed")), getTier(en, getUpgrade("Damage"))};
     if(areAllEqualOrHigher(baseValues) && getMinValue(baseValues) == 4) {
       //final mode! rage!!!
-      en.setGlowing(true);
+      VersionUtils.setGlowing(en, true);
     }
     switch(upgrade.getId()) {
       case "Damage":
         if(en.getType() == EntityType.WOLF) {
-          MiscUtils.getEntityAttribute((LivingEntity) en, Attribute.GENERIC_ATTACK_DAMAGE).ifPresent(ai -> ai.setBaseValue(2.0 + (tier * 3)));
+          if(ServerVersion.Version.isCurrentEqualOrHigher(ServerVersion.Version.v1_9_R1)) {
+            MiscUtils.getEntityAttribute((LivingEntity) en, Attribute.GENERIC_ATTACK_DAMAGE).ifPresent(ai -> ai.setBaseValue(2.0 + (tier * 3)));
+            break;
+          }
+          EntityInsentient nmsEntity = (EntityInsentient) ((CraftLivingEntity) en).getHandle();
+          AttributeInstance attributes = nmsEntity.getAttributeInstance(GenericAttributes.ATTACK_DAMAGE);
+          AttributeModifier modifier = new AttributeModifier(UUID.fromString("206a89dc-ae78-4c4d-b42c-3b31db3f5a7d"), "attack damage multiplier", 2.0 + (tier * 3), 1);
+          attributes.b(modifier);
         }
         //attribute damage doesn't exist for golems
         break;
@@ -229,7 +242,14 @@ public class EntityUpgradeMenu {
         VersionUtils.setMaxHealth((LivingEntity) en, 100.0 + (100.0 * ((double) tier / 2.0)));
         break;
       case "Speed":
-        MiscUtils.getEntityAttribute((LivingEntity) en, Attribute.GENERIC_MOVEMENT_SPEED).ifPresent(ai -> ai.setBaseValue(0.25 + (0.25 * ((double) tier / 5.0))));
+        if(ServerVersion.Version.isCurrentEqualOrHigher(ServerVersion.Version.v1_9_R1)) {
+          MiscUtils.getEntityAttribute((LivingEntity) en, Attribute.GENERIC_MOVEMENT_SPEED).ifPresent(ai -> ai.setBaseValue(0.25 + (0.25 * ((double) tier / 5.0))));
+          break;
+        }
+        EntityInsentient nmsEntity = (EntityInsentient) ((CraftLivingEntity) en).getHandle();
+        AttributeInstance attributes = nmsEntity.getAttributeInstance(GenericAttributes.MOVEMENT_SPEED);
+        AttributeModifier modifier = new AttributeModifier(UUID.fromString("206a89dc-ae78-4c4d-b42c-3b31db3f5a7c"), "movement speed multiplier", 0.25 + (0.25 * ((double) tier / 5.0)), 1);
+        attributes.b(modifier);
         break;
       case "Swarm-Awareness":
       case "Final-Defense":

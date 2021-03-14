@@ -22,7 +22,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -138,13 +137,13 @@ public class WizardKit extends PremiumKit implements Listener {
         return;
       }
       wizardsOnDuty.add(player);
-      if(player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue() > (player.getHealth() + 3)) {
+      if(VersionUtils.getMaxHealth(player) > (player.getHealth() + 3)) {
         player.setHealth(player.getHealth() + 3);
       } else {
-        player.setHealth(player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue());
+        player.setHealth(VersionUtils.getMaxHealth(player));
       }
       Utils.takeOneItem(player, stack);
-      player.setGlowing(true);
+      VersionUtils.setGlowing(player, true);
       applyRageParticles(player);
       for(Entity en : player.getNearbyEntities(2, 2, 2)) {
         if(en instanceof Zombie) {
@@ -152,7 +151,7 @@ public class WizardKit extends PremiumKit implements Listener {
         }
       }
       Bukkit.getScheduler().runTaskLater(getPlugin(), () -> {
-        player.setGlowing(false);
+        VersionUtils.setGlowing(player, false);
         wizardsOnDuty.remove(player);
       }, 20L * 15);
       user.setCooldown("essence", 15);

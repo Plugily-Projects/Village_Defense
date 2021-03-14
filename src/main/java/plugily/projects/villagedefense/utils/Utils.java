@@ -35,6 +35,7 @@ import org.bukkit.util.BlockIterator;
 import pl.plajerlair.commonsbox.minecraft.compat.ServerVersion;
 import pl.plajerlair.commonsbox.minecraft.compat.VersionUtils;
 import pl.plajerlair.commonsbox.minecraft.compat.xseries.XMaterial;
+import pl.plajerlair.commonsbox.minecraft.compat.xseries.XSound;
 import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.arena.ArenaRegistry;
 import plugily.projects.villagedefense.handlers.language.Messages;
@@ -64,7 +65,7 @@ public class Utils {
 
   public static void takeOneItem(Player player, ItemStack stack) {
     if(stack.getAmount() <= 1) {
-      player.getInventory().setItemInMainHand(new ItemStack(Material.AIR));
+      VersionUtils.setItemInHand(player, new ItemStack(Material.AIR));
     } else {
       VersionUtils.getItemInHand(player).setAmount(stack.getAmount() - 1);
     }
@@ -165,9 +166,9 @@ public class Utils {
 
   public static void playSound(Location loc, String before1_13, String after1_13) {
     if(!ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_11_R1) && !ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_12_R1)) {
-      loc.getWorld().playSound(loc, Sound.valueOf(after1_13), 1, 1);
+      XSound.matchXSound(after1_13).get().play(loc, 1, 1);
     } else {
-      loc.getWorld().playSound(loc, before1_13, 1, 1);
+      XSound.matchXSound(before1_13).get().play(loc, 1, 1);
     }
   }
 

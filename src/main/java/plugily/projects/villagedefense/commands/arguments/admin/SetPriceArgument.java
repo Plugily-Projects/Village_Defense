@@ -59,8 +59,8 @@ public class SetPriceArgument {
           return;
         }
         if(!item.hasItemMeta() || !item.getItemMeta().hasLore()) {
-          player.getInventory().setItemInMainHand(new ItemBuilder(item)
-              .lore(ChatColor.GOLD + args[1] + " " + registry.getPlugin().getChatManager().colorMessage(Messages.SHOP_MESSAGES_CURRENCY_IN_SHOP)).build());
+          VersionUtils.setItemInHand(player, (new ItemBuilder(item)
+              .lore(ChatColor.GOLD + args[1] + " " + registry.getPlugin().getChatManager().colorMessage(Messages.SHOP_MESSAGES_CURRENCY_IN_SHOP)).build()));
           player.sendMessage(registry.getPlugin().getChatManager().getPrefix() + registry.getPlugin().getChatManager().colorMessage(Messages.COMMANDS_COMMAND_EXECUTED));
           return;
         }

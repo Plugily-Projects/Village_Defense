@@ -19,10 +19,10 @@
 package plugily.projects.villagedefense.kits.premium;
 
 import org.bukkit.Material;
-import org.bukkit.attribute.Attribute;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import pl.plajerlair.commonsbox.minecraft.compat.VersionUtils;
 import pl.plajerlair.commonsbox.minecraft.helper.WeaponHelper;
 import plugily.projects.villagedefense.handlers.PermissionsManager;
 import plugily.projects.villagedefense.handlers.language.Messages;
@@ -53,7 +53,7 @@ public class PremiumHardcoreKit extends PremiumKit {
   public void giveKitItems(Player player) {
     player.getInventory().addItem(WeaponHelper.getEnchanted(new ItemStack(getMaterial()),
         new Enchantment[]{Enchantment.DAMAGE_ALL}, new int[]{11}));
-    player.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(6);
+    VersionUtils.setMaxHealth(player, 6);
     player.getInventory().addItem(new ItemStack(Material.SADDLE));
   }
 

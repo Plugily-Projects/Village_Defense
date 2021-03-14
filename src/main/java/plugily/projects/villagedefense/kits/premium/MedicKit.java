@@ -20,7 +20,6 @@ package plugily.projects.villagedefense.kits.premium;
 
 import org.bukkit.Color;
 import org.bukkit.Material;
-import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Zombie;
@@ -96,10 +95,10 @@ public class MedicKit extends PremiumKit implements Listener {
         continue;
       }
       Player player = (Player) entity;
-      if(player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue() > (player.getHealth() + 1)) {
+      if(VersionUtils.getMaxHealth(player) > (player.getHealth() + 1)) {
         player.setHealth(player.getHealth() + 1);
       } else {
-        player.setHealth(player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue());
+        player.setHealth(VersionUtils.getMaxHealth(player));
       }
       VersionUtils.sendParticles("HEART", player, player.getLocation(), 20);
     }

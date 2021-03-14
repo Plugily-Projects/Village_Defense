@@ -22,6 +22,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.Zombie;
 import org.bukkit.inventory.ItemStack;
 
+import pl.plajerlair.commonsbox.minecraft.compat.VersionUtils;
 import pl.plajerlair.commonsbox.minecraft.compat.xseries.XMaterial;
 import plugily.projects.villagedefense.arena.Arena;
 import plugily.projects.villagedefense.creatures.CreatureUtils;
@@ -55,7 +56,7 @@ class InitializerHelper {
   static void prepareVillagerBusterZombie(Zombie zombie, Arena arena) {
     zombie.getEquipment().setHelmet(new ItemStack(Material.TNT));
     zombie.getEquipment().setHelmetDropChance(0.0F);
-    zombie.getEquipment().setItemInMainHandDropChance(0F);
+    VersionUtils.setItemInHandDropChance(zombie, 0F);
     zombie.getEquipment().setBoots(XMaterial.LEATHER_BOOTS.parseItem());
     zombie.getEquipment().setLeggings(XMaterial.LEATHER_LEGGINGS.parseItem());
     zombie.getEquipment().setChestplate(XMaterial.LEATHER_CHESTPLATE.parseItem());
@@ -65,7 +66,7 @@ class InitializerHelper {
   static void prepareGolemBusterZombie(Zombie zombie, Arena arena) {
     zombie.getEquipment().setHelmet(new ItemStack(Material.TNT));
     zombie.getEquipment().setHelmetDropChance(0.0F);
-    zombie.getEquipment().setItemInMainHandDropChance(0F);
+    VersionUtils.setItemInHandDropChance(zombie, 0F);
     zombie.getEquipment().setBoots(XMaterial.IRON_BOOTS.parseItem());
     zombie.getEquipment().setLeggings(XMaterial.IRON_LEGGINGS.parseItem());
     zombie.getEquipment().setChestplate(XMaterial.IRON_CHESTPLATE.parseItem());
@@ -75,7 +76,7 @@ class InitializerHelper {
   static void preparePlayerBusterZombie(Zombie zombie, Arena arena) {
     zombie.getEquipment().setHelmet(new ItemStack(Material.TNT));
     zombie.getEquipment().setHelmetDropChance(0.0F);
-    zombie.getEquipment().setItemInMainHandDropChance(0F);
+    VersionUtils.setItemInHandDropChance(zombie, 0F);
     zombie.getEquipment().setBoots(XMaterial.GOLDEN_BOOTS.parseItem());
     zombie.getEquipment().setLeggings(XMaterial.GOLDEN_LEGGINGS.parseItem());
     zombie.getEquipment().setChestplate(XMaterial.GOLDEN_CHESTPLATE.parseItem());
@@ -83,8 +84,8 @@ class InitializerHelper {
   }
 
   static void prepareVillagerSlayerZombie(Zombie zombie, Arena arena) {
-    zombie.getEquipment().setItemInMainHand(new ItemStack(Material.EMERALD));
-    zombie.getEquipment().setItemInMainHandDropChance(0F);
+    VersionUtils.setItemInHand(zombie, XMaterial.EMERALD.parseItem());
+    VersionUtils.setItemInHandDropChance(zombie, 0F);
     zombie.getEquipment().setBoots(new ItemStack(Material.CHAINMAIL_BOOTS));
     zombie.getEquipment().setLeggings(new ItemStack(Material.CHAINMAIL_LEGGINGS));
     zombie.getEquipment().setChestplate(new ItemStack(Material.CHAINMAIL_CHESTPLATE));
@@ -93,7 +94,7 @@ class InitializerHelper {
   }
 
   static void prepareKnockbackResistantZombie(Zombie zombie, Arena arena) {
-    zombie.getEquipment().setItemInMainHand(XMaterial.GOLDEN_AXE.parseItem());
+    VersionUtils.setItemInHand(zombie, XMaterial.GOLDEN_AXE.parseItem());
     zombie.getEquipment().setBoots(new ItemStack(Material.DIAMOND_BOOTS));
     zombie.getEquipment().setLeggings(new ItemStack(Material.DIAMOND_LEGGINGS));
     zombie.getEquipment().setChestplate(new ItemStack(Material.DIAMOND_CHESTPLATE));

@@ -18,7 +18,6 @@
 
 package plugily.projects.villagedefense.events;
 
-import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -75,7 +74,7 @@ public class LobbyEvents implements Listener {
       return;
     }
     event.setCancelled(true);
-    player.setHealth(player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue());
+    player.setHealth(VersionUtils.getMaxHealth(player));
   }
 
   @EventHandler

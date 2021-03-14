@@ -20,6 +20,7 @@ package plugily.projects.villagedefense.creatures.v1_8_R3;
 
 import net.minecraft.server.v1_8_R3.EntityCreature;
 import net.minecraft.server.v1_8_R3.PathfinderGoalSelector;
+import org.bukkit.craftbukkit.v1_8_R3.util.UnsafeList;
 import plugily.projects.villagedefense.creatures.CreatureUtils;
 
 import java.util.LinkedHashSet;
@@ -33,13 +34,13 @@ class GoalSelectorCleaner {
   }
 
   static void clearSelectors(EntityCreature creature) {
-    LinkedHashSet goalB = (LinkedHashSet) CreatureUtils.getPrivateField("b", PathfinderGoalSelector.class, creature.goalSelector);
+    UnsafeList goalB = (UnsafeList) CreatureUtils.getPrivateField("b", PathfinderGoalSelector.class, creature.goalSelector);
     goalB.clear();
-    LinkedHashSet goalC = (LinkedHashSet) CreatureUtils.getPrivateField("c", PathfinderGoalSelector.class, creature.goalSelector);
+    UnsafeList goalC = (UnsafeList) CreatureUtils.getPrivateField("c", PathfinderGoalSelector.class, creature.goalSelector);
     goalC.clear();
-    LinkedHashSet targetB = (LinkedHashSet) CreatureUtils.getPrivateField("b", PathfinderGoalSelector.class, creature.targetSelector);
+    UnsafeList targetB = (UnsafeList) CreatureUtils.getPrivateField("b", PathfinderGoalSelector.class, creature.targetSelector);
     targetB.clear();
-    LinkedHashSet targetC = (LinkedHashSet) CreatureUtils.getPrivateField("c", PathfinderGoalSelector.class, creature.targetSelector);
+    UnsafeList targetC = (UnsafeList) CreatureUtils.getPrivateField("c", PathfinderGoalSelector.class, creature.targetSelector);
     targetC.clear();
   }
 

@@ -20,10 +20,10 @@ package plugily.projects.villagedefense.kits.level;
 
 import org.bukkit.Color;
 import org.bukkit.Material;
-import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionType;
+import pl.plajerlair.commonsbox.minecraft.compat.VersionUtils;
 import pl.plajerlair.commonsbox.minecraft.compat.xseries.XMaterial;
 import pl.plajerlair.commonsbox.minecraft.helper.ArmorHelper;
 import pl.plajerlair.commonsbox.minecraft.helper.WeaponHelper;
@@ -59,7 +59,7 @@ public class HardcoreKit extends LevelKit {
     ArmorHelper.setColouredArmor(Color.WHITE, player);
     player.getInventory().addItem(Utils.getPotion(PotionType.INSTANT_HEAL, 2, true));
     player.getInventory().addItem(new ItemStack(Material.COOKIE, 10));
-    player.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(10.0);
+    VersionUtils.setMaxHealth(player, 10.0);
 
   }
 
