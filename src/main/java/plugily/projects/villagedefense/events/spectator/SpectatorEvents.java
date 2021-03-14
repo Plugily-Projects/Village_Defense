@@ -157,6 +157,7 @@ public class SpectatorEvents implements Listener {
     }
     if(player.getLocation().getY() < 1) {
       player.teleport(ArenaRegistry.getArena(player).getStartLocation());
+      event.setDamage(0);
     }
     event.setCancelled(true);
   }
