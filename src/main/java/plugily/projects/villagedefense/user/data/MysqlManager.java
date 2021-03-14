@@ -20,7 +20,6 @@ package plugily.projects.villagedefense.user.data;
 
 import com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException;
 import org.bukkit.Bukkit;
-import org.bukkit.configuration.file.FileConfiguration;
 import pl.plajerlair.commonsbox.database.MysqlDatabase;
 import pl.plajerlair.commonsbox.minecraft.configuration.ConfigUtils;
 import plugily.projects.villagedefense.Main;
@@ -138,10 +137,8 @@ public class MysqlManager implements UserDatabase {
   }
 
   public String getTableName() {
-    FileConfiguration config = ConfigUtils.getConfig(plugin, "mysql");
-    return config.getString("table", "playerstats");
+    return ConfigUtils.getConfig(plugin, "mysql").getString("table", "playerstats");
   }
-
 
   public MysqlDatabase getDatabase() {
     return database;

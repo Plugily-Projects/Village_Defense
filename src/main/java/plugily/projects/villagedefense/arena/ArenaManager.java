@@ -169,7 +169,7 @@ public class ArenaManager {
     player.setAllowFlight(false);
     player.getInventory().clear();
     arena.doBarAction(Arena.BarAction.ADD, player);
-    if(!plugin.getUserManager().getUser(player).isSpectator()) {
+    if(!user.isSpectator()) {
       plugin.getChatManager().broadcastAction(arena, player, ChatManager.ActionType.JOIN);
     }
     user.setKit(KitRegistry.getDefaultKit());

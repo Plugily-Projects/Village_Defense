@@ -23,7 +23,6 @@ import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import plugily.projects.villagedefense.Main;
@@ -68,19 +67,19 @@ public class LeaderboardHologram {
       @Override
       public void run() {
         hologram.clearLines();
-        String header = color(plugin.getLanguageConfig().getString(LanguageMessage.HOLOGRAMS_HEADER.getAccessor()));
+        String header = color(plugin, plugin.getLanguageConfig().getString(LanguageMessage.HOLOGRAMS_HEADER.getAccessor()));
         header = StringUtils.replace(header, "%amount%", String.valueOf(topAmount));
-        header = StringUtils.replace(header, "%statistic%", statisticToMessage() != null ? color(plugin.getLanguageConfig().getString(statisticToMessage().getAccessor())) : "null");
+        header = StringUtils.replace(header, "%statistic%", statisticToMessage() != null ? color(plugin, plugin.getLanguageConfig().getString(statisticToMessage().getAccessor())) : "null");
         appendHoloText(plugin, header);
         int limit = topAmount;
-        LinkedHashMap<UUID, Integer> values = (LinkedHashMap<UUID, Integer>) StatsStorage.getStats(statistic);
+        java.util.Map<UUID, Integer> values = (LinkedHashMap<UUID, Integer>) StatsStorage.getStats(statistic);
         List<UUID> reverseKeys = new ArrayList<>(values.keySet());
         Collections.reverse(reverseKeys);
         for(UUID key : reverseKeys) {
           if(limit == 0) {
             break;
           }
-          String format = color(plugin.getLanguageConfig().getString(LanguageMessage.HOLOGRAMS_FORMAT.getAccessor()));
+          String format = color(plugin, plugin.getLanguageConfig().getString(LanguageMessage.HOLOGRAMS_FORMAT.getAccessor()));
           format = StringUtils.replace(format, "%place%", String.valueOf((topAmount - limit) + 1));
           format = StringUtils.replace(format, "%nickname%", getPlayerNameSafely(key, plugin));
           format = StringUtils.replace(format, "%value%", String.valueOf(values.get(key)));
@@ -89,7 +88,7 @@ public class LeaderboardHologram {
         }
         if(limit > 0) {
           for(int i = 0; i < limit; limit--) {
-            String format = color(plugin.getLanguageConfig().getString(LanguageMessage.HOLOGRAMS_FORMAT_EMPTY.getAccessor()));
+            String format = color(plugin, plugin.getLanguageConfig().getString(LanguageMessage.HOLOGRAMS_FORMAT_EMPTY.getAccessor()));
             format = StringUtils.replace(format, "%place%", String.valueOf((topAmount - limit) + 1));
             appendHoloText(plugin, format);
           }
@@ -113,7 +112,7 @@ public class LeaderboardHologram {
       }
       return Bukkit.getOfflinePlayer(uuid).getName();
     } catch(NullPointerException ex) {
-      return color(plugin.getLanguageConfig().getString(LanguageMessage.HOLOGRAMS_UNKNOWN_PLAYER.getAccessor()));
+      return color(plugin, plugin.getLanguageConfig().getString(LanguageMessage.HOLOGRAMS_UNKNOWN_PLAYER.getAccessor()));
     }
   }
 
@@ -164,8 +163,8 @@ public class LeaderboardHologram {
     }
   }
 
-  private String color(String message) {
-    return JavaPlugin.getPlugin(Main.class).getChatManager().colorRawMessage(message);
+  private String color(Main plugin, String message) {
+    return plugin.getChatManager().colorRawMessage(message);
   }
 
 }

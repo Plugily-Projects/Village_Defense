@@ -412,8 +412,7 @@ public class LanguageMigrator {
       if(!file.exists()) {
         continue;
       }
-      boolean success = file.renameTo(new File(plugin.getDataFolder(), plugin.getDataFolder() + "/VD2_" + file + ".yml"));
-      if(success) {
+      if(file.renameTo(new File(plugin.getDataFolder(), plugin.getDataFolder() + "/VD2_" + file + ".yml"))) {
         Debugger.sendConsoleMsg("&aRenamed file " + file + ".yml");
         continue;
       }

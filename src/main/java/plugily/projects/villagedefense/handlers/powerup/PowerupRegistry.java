@@ -150,14 +150,11 @@ public class PowerupRegistry {
   }
 
   public void spawnPowerup(Location loc, Arena arena) {
-    if(!enabled) {
-      return;
-    }
-    final Powerup powerup = getRandomPowerup();
-    if(ThreadLocalRandom.current().nextDouble(0.0, 100.0) > plugin.getConfig().getDouble("Powerups.Drop-Chance", 1.0)) {
+    if(!enabled || ThreadLocalRandom.current().nextDouble(0.0, 100.0) > plugin.getConfig().getDouble("Powerups.Drop-Chance", 1.0)) {
       return;
     }
 
+    final Powerup powerup = getRandomPowerup();
     final Hologram hologram = HologramsAPI.createHologram(plugin, loc.clone().add(0.0, 1.2, 0.0));
     hologram.appendTextLine(powerup.getName());
     ItemLine itemLine = hologram.appendItemLine(powerup.getMaterial().parseItem());

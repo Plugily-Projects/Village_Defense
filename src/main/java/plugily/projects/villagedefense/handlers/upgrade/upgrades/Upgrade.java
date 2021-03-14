@@ -130,7 +130,7 @@ public class Upgrade {
 
   public ItemStack asItemStack(int currentTier) {
     double valCurrent = tieredValues.get(currentTier);
-    double valNext = tieredValues.getOrDefault(currentTier + 1, tieredValues.get(currentTier));
+    double valNext = tieredValues.getOrDefault(currentTier + 1, valCurrent);
     return new ItemBuilder(XMaterial.BLACK_STAINED_GLASS_PANE.parseItem())
         .name(getName())
         .lore(getDescription().stream().map(lore -> lore = plugin.getChatManager().colorRawMessage(lore)

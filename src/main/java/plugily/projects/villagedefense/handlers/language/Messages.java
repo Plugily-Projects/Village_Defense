@@ -259,7 +259,6 @@ public enum Messages {
   SHOP_MESSAGES_CURRENCY_IN_SHOP("In-Game.Messages.Shop-Messages.Currency-In-Shop"),
   SHOP_MESSAGES_NO_SHOP_DEFINED("In-Game.Messages.Shop-Messages.No-Shop-Defined"),
 
-  //list of strings END_MESSAGES_SUMMARY_MESSAGE("In-Game.Messages.Game-End-Messages.Summary-Message")
   END_MESSAGES_SUMMARY_PLAYERS_DIED("In-Game.Messages.Game-End-Messages.Summary-Players-Died"),
   END_MESSAGES_SUMMARY_VILLAGERS_DIED("In-Game.Messages.Game-End-Messages.Summary-Villagers-Died"),
   END_MESSAGES_SUMMARY_WIN_GAME("In-Game.Messages.Game-End-Messages.Summary-Win-Game"),
@@ -328,7 +327,6 @@ public enum Messages {
   SIGNS_GAME_STATES_FULL_GAME("Signs.Game-States.Full-Game"),
   SIGNS_GAME_STATES_ENDING("Signs.Game-States.Ending"),
   SIGNS_GAME_STATES_RESTARTING("Signs.Game-States.Restarting"),
-  //list of strings SIGNS_LINES("Signs.Lines")
 
   ARENA_SELECTOR_INV_TITLE("Arena-Selector.Inv-Title"),
   ARENA_SELECTOR_ITEM_LORE("Arena-Selector.Item.Lore"),

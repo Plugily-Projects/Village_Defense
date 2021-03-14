@@ -219,9 +219,7 @@ public class LanguageManager {
       Debugger.sendConsoleMsg("&c[VillageDefense] Path: " + path);
       return Collections.singletonList("ERR_MESSAGE_" + path + "_NOT_FOUND");
     }
-    List<String> list = languageConfig.getStringList(path);
-    list = list.stream().map(string -> plugin.getChatManager().colorRawMessage(string)).collect(Collectors.toList());
-    return list;
+    return languageConfig.getStringList(path).stream().map(string -> plugin.getChatManager().colorRawMessage(string)).collect(Collectors.toList());
   }
 
 
