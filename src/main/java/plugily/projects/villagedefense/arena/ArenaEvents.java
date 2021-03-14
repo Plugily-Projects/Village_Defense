@@ -218,7 +218,7 @@ public class ArenaEvents implements Listener {
       return;
     }
     if(e.getEntity().isDead()) {
-      e.getEntity().setHealth(VersionUtils.getHealth(e.getEntity()));
+      e.getEntity().setHealth(VersionUtils.getMaxHealth(e.getEntity()));
     }
     plugin.getRewardsHandler().performReward(e.getEntity(), arena, Reward.RewardType.PLAYER_DEATH);
     ComplementAccessor.getComplement().setDeathMessage(e, "");
@@ -346,5 +346,39 @@ public class ArenaEvents implements Listener {
       e.setCancelled(true);
     }
     arena.removeDroppedFlesh(e.getItem());
+  }
+
+  @EventHandler
+  public void onEntityDamageEvent(EntityDamageEvent e) {
+    if(!(e.getEntity() instanceof Player)) {
+      return;
+    }
+    Player victim = (Player) e.getEntity();
+    Arena arena = ArenaRegistry.getArena(victim);
+    if(arena == null) {
+      return;
+    }
+    if(e.getCause() == EntityDamageEvent.DamageCause.DROWNING && plugin.getConfigPreferences().getOption(ConfigPreferences.Option.DISABLE_DROWNING_DAMAGE)) {
+      e.setCancelled(true);
+    }
+    if(e.getCause() == EntityDamageEvent.DamageCause.FALL) {
+      if(!plugin.getConfigPreferences().getOption(ConfigPreferences.Option.DISABLE_FALL_DAMAGE)) {
+        if(e.getDamage() >= 20.0) {
+          //kill the player for suicidal death, else do not
+          victim.damage(1000.0);
+        }
+      }
+      e.setCancelled(true);
+    }
+    //kill the player on void
+    if(e.getCause() == EntityDamageEvent.DamageCause.VOID) {
+      if(arena.getArenaState() == ArenaState.WAITING_FOR_PLAYERS || arena.getArenaState() == ArenaState.STARTING) {
+        victim.damage(0);
+        victim.teleport(arena.getLobbyLocation());
+      } else {
+        victim.damage(1000.0);
+        victim.teleport(arena.getStartLocation());
+      }
+    }
   }
 }
