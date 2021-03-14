@@ -1,6 +1,5 @@
 /.idea/
 /out/
-/lib/
 *.iml
 /target/
 /mvn/
