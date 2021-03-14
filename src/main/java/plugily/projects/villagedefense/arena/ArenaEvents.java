@@ -81,12 +81,12 @@ public class ArenaEvents implements Listener {
     }
     for(Arena a : ArenaRegistry.getArenas()) {
       if(a.getVillagers().contains(e.getEntity()) && a.getZombies().contains(e.getDamager())) {
+        Zombie zombie = (Zombie) e.getDamager();
         //check villagerbuster
-        if(((Zombie) e.getDamager()).getEquipment().getHelmet().getType().isBlock() && ((Zombie) e.getDamager()).getEquipment().getChestplate().getType() == Material.LEATHER_CHESTPLATE) {
-          ((Zombie) e.getDamager()).damage(((Zombie) e.getDamager()).getHealth() * 2);
-          ItemStack[] itemStack = new ItemStack[]{new ItemStack(Material.ROTTEN_FLESH)};
-          Bukkit.getServer().getPluginManager().callEvent(new EntityDeathEvent((LivingEntity) e.getDamager(), new ArrayList<>(Arrays.asList(itemStack)), 6));
-          (e.getDamager()).getWorld().spawnEntity((e.getDamager()).getLocation(), EntityType.PRIMED_TNT);
+        if(zombie.getEquipment().getHelmet().getType().isBlock() && zombie.getEquipment().getChestplate().getType() == Material.LEATHER_CHESTPLATE) {
+          zombie.damage(zombie.getHealth() * 2);
+          Bukkit.getServer().getPluginManager().callEvent(new EntityDeathEvent(zombie, new ArrayList<>(Arrays.asList(new ItemStack(Material.ROTTEN_FLESH))), 6));
+          zombie.getWorld().spawnEntity(zombie.getLocation(), EntityType.PRIMED_TNT);
           e.setCancelled(true);
         } else {
           e.setCancelled(false);

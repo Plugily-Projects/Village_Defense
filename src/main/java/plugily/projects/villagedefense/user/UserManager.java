@@ -82,7 +82,7 @@ public class UserManager {
   }
 
   public void addExperience(Player player, int i) {
-    User user = plugin.getUserManager().getUser(player);
+    User user = getUser(player);
     user.addStat(StatsStorage.StatisticType.XP, i);
     if(player.hasPermission(PermissionsManager.getVip())) {
       user.addStat(StatsStorage.StatisticType.XP, (int) Math.ceil(i / 2.0));
@@ -97,13 +97,12 @@ public class UserManager {
   }
 
   public void addStat(Player player, StatsStorage.StatisticType stat) {
-    User user = plugin.getUserManager().getUser(player);
-    user.addStat(stat, 1);
+    getUser(player).addStat(stat, 1);
     updateLevelStat(player, ArenaRegistry.getArena(player));
   }
 
   public void updateLevelStat(Player player, Arena arena) {
-    User user = plugin.getUserManager().getUser(player);
+    User user = getUser(player);
     if(Math.pow(50.0 * user.getStat(StatsStorage.StatisticType.LEVEL), 1.5) < user.getStat(StatsStorage.StatisticType.XP)) {
       user.addStat(StatsStorage.StatisticType.LEVEL, 1);
       //Arena can be null when player has left the arena before this message the arean is retrieved.

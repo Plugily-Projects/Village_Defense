@@ -20,7 +20,6 @@ package plugily.projects.villagedefense.utils;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.command.CommandSender;
@@ -166,9 +165,9 @@ public class Utils {
 
   public static void playSound(Location loc, String before1_13, String after1_13) {
     if(!ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_11_R1) && !ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_12_R1)) {
-      XSound.matchXSound(after1_13).get().play(loc, 1, 1);
+      XSound.matchXSound(after1_13).orElse(XSound.BLOCK_ANVIL_HIT).play(loc, 1, 1);
     } else {
-      XSound.matchXSound(before1_13).get().play(loc, 1, 1);
+      XSound.matchXSound(before1_13).orElse(XSound.BLOCK_ANVIL_HIT).play(loc, 1, 1);
     }
   }
 

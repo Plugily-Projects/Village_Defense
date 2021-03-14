@@ -178,10 +178,8 @@ public abstract class Arena extends BukkitRunnable {
    * @param p      player
    */
   public void doBarAction(BarAction action, Player p) {
-    if(!ServerVersion.Version.isCurrentEqualOrHigher(ServerVersion.Version.v1_9_R1)) {
-      return;
-    }
-    if(!plugin.getConfigPreferences().getOption(ConfigPreferences.Option.BOSSBAR_ENABLED)) {
+    if(!ServerVersion.Version.isCurrentEqualOrHigher(ServerVersion.Version.v1_9_R1)
+        || !plugin.getConfigPreferences().getOption(ConfigPreferences.Option.BOSSBAR_ENABLED)) {
       return;
     }
     switch(action) {
@@ -213,11 +211,12 @@ public abstract class Arena extends BukkitRunnable {
     if(getVillagers().size() > 10) {
       return;
     }
-    if(getVillagerSpawns().isEmpty()) {
+    List<Location> villagerSpawns = getVillagerSpawns();
+    if(villagerSpawns.isEmpty()) {
       Debugger.debug(Level.WARNING, "No villager spawns set for {0} game won't start", id);
       return;
     }
-    getVillagerSpawns().forEach(this::spawnVillager);
+    villagerSpawns.forEach(this::spawnVillager);
     if(getVillagers().isEmpty()) {
       Debugger.debug(Level.WARNING, "Spawning villagers for {0} failed! Are villager spawns set in safe and valid locations?", id);
       return;
@@ -380,9 +379,9 @@ public abstract class Arena extends BukkitRunnable {
   }
 
   public void start() {
-    Debugger.debug("[{0}] Instance started", this.getId());
-    this.runTaskTimer(plugin, 20L, 20L);
-    this.setArenaState(ArenaState.WAITING_FOR_PLAYERS);
+    Debugger.debug("[{0}] Instance started", getId());
+    runTaskTimer(plugin, 20L, 20L);
+    setArenaState(ArenaState.WAITING_FOR_PLAYERS);
   }
 
   public ScoreboardManager getScoreboardManager() {
