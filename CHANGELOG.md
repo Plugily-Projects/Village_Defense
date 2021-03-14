@@ -22,6 +22,7 @@ That's all, matcher will stop when detects next line started with `###` match
 * Fix when block state data is not door object (cast exception)
 * Added two new config options (disable fall and drowning damage)
 * Players are now killed if they fall into void
+* Fixed Teleporter Kit Gui not showing
 
 ### 4.5.6 (04.12.2020 - 18.01.2021)
 * Added option to allow players to buy golems/wolves again if they died
