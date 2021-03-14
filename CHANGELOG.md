@@ -16,6 +16,7 @@ That's all, matcher will stop when detects next line started with `###` match
 * Added more rewards types (playerDeath, villagerDeath)
 * Added the papi placeholder %villagedefense_{arena}:wave%
 * Added the scoreboard placeholder %WAVE%
+* Added new RewardType scoreboard_remove
 * Fixed when block state data is not door object (cast exception)
 * Fixed Teleporter Kit Gui not showing
 * Allow door placement after zombie door break

@@ -62,4 +62,7 @@ rewards:
   zombiekill:
     - eco give %PLAYER% 2
     - chance(10):eco give %PLAYER% 8
+  #Helpful for servers that are using more than one scoreboard!
+  scoreboard_remove:
+    - p:sb on
 
