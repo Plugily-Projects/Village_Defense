@@ -92,14 +92,11 @@ public class ZombieSpawnManager {
         }
         if(zombieCheckerLocations.get(zombie) == null) {
           zombieCheckerLocations.put(zombie, zombie.getLocation());
-        } else {
-          Location location = zombieCheckerLocations.get(zombie);
-
-          if(zombie.getLocation().distance(location) <= 1) {
-            zombie.teleport(arena.getZombieSpawns().get(random.nextInt(arena.getZombieSpawns().size() - 1)));
-            zombieCheckerLocations.put(zombie, zombie.getLocation());
-            glitchedZombies.add(zombie);
-          }
+        } else if(zombie.getLocation().distance(zombieCheckerLocations.get(zombie)) <= 1) {
+          List<Location> spawns = arena.getZombieSpawns();
+          zombie.teleport(spawns.get(random.nextInt(spawns.size() - 1)));
+          zombieCheckerLocations.put(zombie, zombie.getLocation());
+          glitchedZombies.add(zombie);
         }
       }
     }

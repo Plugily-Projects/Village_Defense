@@ -41,16 +41,17 @@ public class ListArenasArgument {
       @Override
       public void execute(CommandSender sender, String[] args) {
         sender.sendMessage(registry.getPlugin().getChatManager().colorMessage(Messages.COMMANDS_ADMIN_LIST_HEADER));
-        int i = 0;
+
+        if(ArenaRegistry.getArenas().isEmpty()) {
+          sender.sendMessage(registry.getPlugin().getChatManager().colorMessage(Messages.COMMANDS_ADMIN_LIST_NO_ARENAS));
+          sender.sendMessage(registry.getPlugin().getChatManager().colorRawMessage("&e&lTIP: &7You can get free maps with configs at our wiki! Just head to https://wiki.plugily.xyz/minecraft/villagedefense/free_maps.php"));
+          return;
+        }
+
         for(Arena arena : ArenaRegistry.getArenas()) {
           sender.sendMessage(registry.getPlugin().getChatManager().colorMessage(Messages.COMMANDS_ADMIN_LIST_FORMAT).replace("%arena%", arena.getId())
               .replace("%status%", arena.getArenaState().getFormattedName()).replace("%players%", String.valueOf(arena.getPlayers().size()))
               .replace("%maxplayers%", String.valueOf(arena.getMaximumPlayers())));
-          i++;
-        }
-        if(i == 0) {
-          sender.sendMessage(registry.getPlugin().getChatManager().colorMessage(Messages.COMMANDS_ADMIN_LIST_NO_ARENAS));
-          sender.sendMessage(registry.getPlugin().getChatManager().colorRawMessage("&e&lTIP: &7You can get free maps with configs at our wiki! Just head to https://wiki.plugily.xyz/minecraft/villagedefense/free_maps.php"));
         }
       }
     });

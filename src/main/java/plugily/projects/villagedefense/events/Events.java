@@ -60,7 +60,6 @@ import pl.plajerlair.commonsbox.minecraft.compat.VersionUtils;
 import pl.plajerlair.commonsbox.minecraft.compat.events.api.CBPlayerInteractEntityEvent;
 import pl.plajerlair.commonsbox.minecraft.compat.events.api.CBPlayerInteractEvent;
 import pl.plajerlair.commonsbox.minecraft.compat.xseries.XMaterial;
-import pl.plajerlair.commonsbox.minecraft.misc.MiscUtils;
 import pl.plajerlair.commonsbox.minecraft.misc.stuff.ComplementAccessor;
 import pl.plajerlair.commonsbox.string.StringFormatUtils;
 import plugily.projects.villagedefense.ConfigPreferences;
@@ -138,7 +137,7 @@ public class Events implements Listener {
       amount += event.getAmount();
       user.addStat(StatsStorage.StatisticType.ORBS, event.getAmount());
     }
-    event.getPlayer().sendMessage(plugin.getChatManager().colorMessage(Messages.ORBS_PICKUP).replace("%number%", String.valueOf(amount)));
+    event.getPlayer().sendMessage(plugin.getChatManager().colorMessage(Messages.ORBS_PICKUP).replace("%number%", Integer.toString(amount)));
   }
 
   @EventHandler
@@ -203,10 +202,7 @@ public class Events implements Listener {
   @EventHandler
   public void onCommandExecute(PlayerCommandPreprocessEvent event) {
     Arena arena = ArenaRegistry.getArena(event.getPlayer());
-    if(arena == null) {
-      return;
-    }
-    if(!plugin.getConfig().getBoolean("Block-Commands-In-Game", true)) {
+    if(arena == null || !plugin.getConfig().getBoolean("Block-Commands-In-Game", true)) {
       return;
     }
     String command = event.getMessage().substring(1);

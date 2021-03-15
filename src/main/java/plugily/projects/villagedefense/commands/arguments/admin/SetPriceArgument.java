@@ -66,7 +66,7 @@ public class SetPriceArgument {
         }
         //check any price from lore
         ItemMeta meta = item.getItemMeta();
-        List<String> lore = ComplementAccessor.getComplement().getLore(item.getItemMeta());
+        List<String> lore = ComplementAccessor.getComplement().getLore(meta);
         for(String search : lore) {
           if(search.contains(registry.getPlugin().getChatManager().colorMessage(Messages.SHOP_MESSAGES_CURRENCY_IN_SHOP))) {
             lore.remove(search);

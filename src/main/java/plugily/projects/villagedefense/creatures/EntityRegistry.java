@@ -101,7 +101,6 @@ public class EntityRegistry {
     }
   }
 
-  @SuppressWarnings("unused")
   public void registerv1_9_R1Entity(String name, int id, Class<? extends net.minecraft.server.v1_9_R1.EntityInsentient> customClass) {
     try {
       List<Map<?, ?>> dataMaps = new ArrayList<>();
@@ -121,7 +120,6 @@ public class EntityRegistry {
     }
   }
 
-  @SuppressWarnings("unused")
   public void registerv1_9_R2Entity(String name, int id, Class<? extends net.minecraft.server.v1_9_R2.EntityInsentient> customClass) {
     try {
       List<Map<?, ?>> dataMaps = new ArrayList<>();
@@ -141,7 +139,6 @@ public class EntityRegistry {
     }
   }
 
-  @SuppressWarnings("unused")
   public static void registerv1_10_R1Entity(String name, int id, final Class<? extends net.minecraft.server.v1_10_R1.EntityInsentient> customClass) {
     try {
       List<Map<?, ?>> dataMaps = new ArrayList<>();

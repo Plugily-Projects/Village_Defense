@@ -39,7 +39,6 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import pl.plajerlair.commonsbox.minecraft.compat.ServerVersion;
@@ -342,7 +341,7 @@ public class ArenaEvents implements Listener {
     if(arena == null) {
       return;
     }
-    if(JavaPlugin.getPlugin(Main.class).getUserManager().getUser((Player) e.getEntity()).isSpectator()) {
+    if(plugin.getUserManager().getUser((Player) e.getEntity()).isSpectator()) {
       e.setCancelled(true);
     }
     arena.removeDroppedFlesh(e.getItem());

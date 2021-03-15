@@ -349,7 +349,7 @@ public class ArenaManager {
       @Override
       public void run() {
         if(i == 4 || !arena.getPlayers().contains(player) || arena.getArenaState() == ArenaState.RESTARTING) {
-          this.cancel();
+          cancel();
           return;
         }
         MiscUtils.spawnRandomFirework(player.getLocation());
@@ -432,7 +432,7 @@ public class ArenaManager {
 
     Bukkit.getPluginManager().callEvent(new VillageWaveStartEvent(arena, arena.getWave()));
 
-    int zombiesAmount = (int) Math.ceil((arena.getPlayers().size() * 0.5) * (arena.getOption(ArenaOption.WAVE) * arena.getOption(ArenaOption.WAVE)) / 2);
+    int zombiesAmount = (int) Math.ceil((arena.getPlayers().size() * 0.5) * (arena.getWave() * arena.getWave()) / 2);
     int maxzombies = plugin.getConfig().getInt("Zombies-Limit", 75);
     if(zombiesAmount > maxzombies) {
       int multiplier = (int) Math.ceil((zombiesAmount - (double) maxzombies) / plugin.getConfig().getInt("Zombie-Multiplier-Divider", 18));

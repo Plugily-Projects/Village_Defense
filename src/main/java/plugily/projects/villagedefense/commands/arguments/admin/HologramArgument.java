@@ -129,7 +129,6 @@ public class HologramArgument {
   }
 
   private void handleDeleteArgument(CommandSender sender, String[] args) {
-    FileConfiguration config = ConfigUtils.getConfig(registry.getPlugin(), "internal/holograms_data");
     if(args.length != 3) {
       sender.sendMessage(registry.getPlugin().getChatManager().colorRawMessage("&cPlease type leaderboard ID to remove it!"));
       return;
@@ -138,6 +137,7 @@ public class HologramArgument {
       sender.sendMessage(registry.getPlugin().getChatManager().colorRawMessage("&cLeaderboard ID must be a number!"));
       return;
     }
+    FileConfiguration config = ConfigUtils.getConfig(registry.getPlugin(), "internal/holograms_data");
     if(!config.isSet("holograms." + args[2])) {
       sender.sendMessage(registry.getPlugin().getChatManager().colorRawMessage("&cLeaderboard with that ID doesn't exist!"));
       return;

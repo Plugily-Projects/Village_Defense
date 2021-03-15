@@ -152,8 +152,7 @@ public class EntityUpgradeMenu {
         player.sendMessage(pluginPrefix + color(Messages.UPGRADES_UPGRADED_ENTITY).replace("%tier%", String.valueOf(nextTier)));
         applyUpgrade(en, upgrade);
 
-        VillagePlayerEntityUpgradeEvent event = new VillagePlayerEntityUpgradeEvent(ArenaRegistry.getArena(player), en, player, upgrade, nextTier);
-        Bukkit.getPluginManager().callEvent(event);
+        Bukkit.getPluginManager().callEvent(new VillagePlayerEntityUpgradeEvent(ArenaRegistry.getArena(player), en, player, upgrade, nextTier));
         player.closeInventory();
       }), upgrade.getSlotX(), upgrade.getSlotY());
       for(int i = 0; i < upgrade.getMaxTier(); i++) {

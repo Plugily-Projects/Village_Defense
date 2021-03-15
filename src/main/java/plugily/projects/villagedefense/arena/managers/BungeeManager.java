@@ -68,22 +68,17 @@ public class BungeeManager implements Listener {
     if(!config.getBoolean("Connect-To-Hub", true)) {
       return;
     }
-    Debugger.debug(Level.INFO, "Server name that we try to connect {0} ({1})", getHubServerName(), player.getName());
+    String serverName = config.getString("Hub");
+    Debugger.debug(Level.INFO, "Server name that we try to connect {0} ({1})", serverName, player.getName());
     ByteArrayDataOutput out = ByteStreams.newDataOutput();
     out.writeUTF("Connect");
-    out.writeUTF(getHubServerName());
+    out.writeUTF(serverName);
     player.sendPluginMessage(plugin, "BungeeCord", out.toByteArray());
   }
 
-
-  private String getHubServerName() {
-    return config.getString("Hub");
-  }
-
-
   @EventHandler(priority = EventPriority.HIGHEST)
   public void onServerListPing(ServerListPingEvent event) {
-    if(!config.getBoolean("MOTD.Manager", false) || ArenaRegistry.getArenas().isEmpty()) {
+    if(!config.getBoolean("MOTD.Manager") || ArenaRegistry.getArenas().isEmpty()) {
       return;
     }
     Arena arena = ArenaRegistry.getArenas().get(ArenaRegistry.getBungeeArena());

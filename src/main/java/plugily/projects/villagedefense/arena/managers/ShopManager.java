@@ -116,9 +116,9 @@ public class ShopManager {
     }
     ItemStack[] contents = ((Chest) LocationSerializer.getLocation(config.getString("instances." + arena.getId() + ".shop"))
         .getBlock().getState()).getInventory().getContents();
-    int i = contents.length;
-    Gui gui = new Gui(plugin, Utils.serializeInt(i) / 9, plugin.getChatManager().colorMessage(Messages.SHOP_MESSAGES_SHOP_GUI_NAME));
-    StaticPane pane = new StaticPane(9, Utils.serializeInt(i) / 9);
+    int size = Utils.serializeInt(contents.length) / 9;
+    Gui gui = new Gui(plugin, size, plugin.getChatManager().colorMessage(Messages.SHOP_MESSAGES_SHOP_GUI_NAME));
+    StaticPane pane = new StaticPane(9, size);
     int x = 0;
     int y = 0;
     for(ItemStack itemStack : contents) {

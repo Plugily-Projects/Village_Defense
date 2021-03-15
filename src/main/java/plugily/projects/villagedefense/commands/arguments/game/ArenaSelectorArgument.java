@@ -90,7 +90,7 @@ public class ArenaSelectorArgument implements Listener {
           ItemMeta itemMeta = itemStack.getItemMeta();
           ComplementAccessor.getComplement().setDisplayName(itemMeta, formatItem(LanguageManager.getLanguageMessage("Arena-Selector.Item.Name"), arena, registry.getPlugin()));
 
-          ArrayList<String> lore = new ArrayList<>();
+          java.util.List<String> lore = new ArrayList<>();
           for(String string : LanguageManager.getLanguageList(Messages.ARENA_SELECTOR_ITEM_LORE.getAccessor())) {
             lore.add(formatItem(string, arena, registry.getPlugin()));
           }

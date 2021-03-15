@@ -65,7 +65,6 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 import java.util.logging.Level;
-import java.util.stream.Collectors;
 
 /**
  * Created by Tom on 12/08/2014.
@@ -561,8 +560,16 @@ public abstract class Arena extends BukkitRunnable {
 
   @NotNull
   public List<Player> getPlayersLeft() {
-    return plugin.getUserManager().getUsers(this).stream().filter(user -> !user.isSpectator())
-        .map(User::getPlayer).collect(Collectors.toList());
+    List<Player> list = new ArrayList<>();
+
+    for (Player player : players) {
+      User user = plugin.getUserManager().getUser(player);
+      if (!user.isSpectator()) {
+        list.add(user.getPlayer());
+      }
+    }
+
+    return list;
   }
 
   public Main getPlugin() {

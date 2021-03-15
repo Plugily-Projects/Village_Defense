@@ -21,14 +21,12 @@ package plugily.projects.villagedefense.commands.completion;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
-import org.bukkit.util.StringUtil;
 import plugily.projects.villagedefense.arena.Arena;
 import plugily.projects.villagedefense.arena.ArenaRegistry;
 import plugily.projects.villagedefense.commands.arguments.ArgumentsRegistry;
 import plugily.projects.villagedefense.commands.arguments.data.CommandArgument;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -52,32 +50,27 @@ public class TabCompletion implements TabCompleter {
 
   @Override
   public List<String> onTabComplete(CommandSender sender, Command cmd, String label, String[] args) {
-    List<String> completionList = new ArrayList<>(), cmds = new ArrayList<>();
-    String partOfCommand = null;
+    List<String> cmds = new ArrayList<>();
 
     if(cmd.getName().equalsIgnoreCase("villagedefenseadmin")) {
       if(args.length == 1) {
         cmds.addAll(registry.getMappedArguments().get(cmd.getName().toLowerCase()).stream().map(CommandArgument::getArgumentName)
             .collect(Collectors.toList()));
-        partOfCommand = args[0];
       } else if(args.length == 2 && (args[0].equalsIgnoreCase("delete") || args[0].equalsIgnoreCase("tp"))) {
         cmds.addAll(ArenaRegistry.getArenas().stream().map(Arena::getId).collect(Collectors.toList()));
-        partOfCommand = args[1];
       }
     }
 
     if(cmd.getName().equalsIgnoreCase("villagedefense")) {
       if(args.length == 2 && args[0].equalsIgnoreCase("join")) {
         cmds.addAll(ArenaRegistry.getArenas().stream().map(Arena::getId).collect(Collectors.toList()));
-        partOfCommand = args[1];
       } else if(args.length == 1) {
         cmds.addAll(registry.getMappedArguments().get(cmd.getName().toLowerCase()).stream().map(CommandArgument::getArgumentName)
             .collect(Collectors.toList()));
-        partOfCommand = args[0];
       }
     }
 
-    if(cmds.isEmpty() || partOfCommand == null) {
+    if(cmds.isEmpty()) {
       for(CompletableArgument completion : registeredCompletions) {
         if(!cmd.getName().equalsIgnoreCase(completion.getMainCommand()) || !completion.getArgument().equalsIgnoreCase(args[0])) {
           continue;
@@ -88,8 +81,6 @@ public class TabCompletion implements TabCompleter {
       return null;
     }
 
-    StringUtil.copyPartialMatches(partOfCommand, cmds, completionList);
-    Collections.sort(completionList);
-    return completionList;
+    return cmds;
   }
 }

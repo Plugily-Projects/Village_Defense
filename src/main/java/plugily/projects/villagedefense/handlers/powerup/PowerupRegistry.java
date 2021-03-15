@@ -20,7 +20,6 @@ package plugily.projects.villagedefense.handlers.powerup;
 
 import com.gmail.filoghost.holographicdisplays.api.Hologram;
 import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
-import com.gmail.filoghost.holographicdisplays.api.line.ItemLine;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -157,8 +156,7 @@ public class PowerupRegistry {
     final Powerup powerup = getRandomPowerup();
     final Hologram hologram = HologramsAPI.createHologram(plugin, loc.clone().add(0.0, 1.2, 0.0));
     hologram.appendTextLine(powerup.getName());
-    ItemLine itemLine = hologram.appendItemLine(powerup.getMaterial().parseItem());
-    itemLine.setPickupHandler(player -> {
+    hologram.appendItemLine(powerup.getMaterial().parseItem()).setPickupHandler(player -> {
       if(ArenaRegistry.getArena(player) != arena) {
         return;
       }
