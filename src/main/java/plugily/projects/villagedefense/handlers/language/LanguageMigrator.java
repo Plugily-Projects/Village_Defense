@@ -388,11 +388,11 @@ public class LanguageMigrator {
         case 17:
           MigratorUtils.addNewLines(file, "Placeholders:\r\n" +
               "  Game-States:\r\n" +
-              "    Waiting: \"&lWaiting for players...\"" +
-              "    Starting: \"&e&lStarting\"" +
-              "    In-Game: \"&lIn-game\"" +
-              "    Ending: \"&lEnding\"" +
-              "    Restarting: \"&c&lRestarting\"");
+              "    Waiting: \"&lWaiting for players...\"\r\n" +
+              "    Starting: \"&e&lStarting\"\r\n" +
+              "    Playing: \"&lPlaying\"\r\n" +
+              "    Ending: \"&lEnding\"\r\n" +
+              "    Restarting: \"&c&lRestarting\"\r\n");
           break;
         default:
           break;
