@@ -34,7 +34,15 @@ import plugily.projects.villagedefense.ConfigPreferences;
 import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.arena.Arena;
 import plugily.projects.villagedefense.arena.ArenaRegistry;
-import plugily.projects.villagedefense.commands.arguments.admin.*;
+import plugily.projects.villagedefense.commands.arguments.admin.AddOrbsArgument;
+import plugily.projects.villagedefense.commands.arguments.admin.ClearEntitiesArgument;
+import plugily.projects.villagedefense.commands.arguments.admin.HologramArgument;
+import plugily.projects.villagedefense.commands.arguments.admin.ListArenasArgument;
+import plugily.projects.villagedefense.commands.arguments.admin.ReloadArgument;
+import plugily.projects.villagedefense.commands.arguments.admin.RespawnArgument;
+import plugily.projects.villagedefense.commands.arguments.admin.SetPriceArgument;
+import plugily.projects.villagedefense.commands.arguments.admin.SpyChatArgument;
+import plugily.projects.villagedefense.commands.arguments.admin.TeleportArgument;
 import plugily.projects.villagedefense.commands.arguments.admin.arena.DeleteArgument;
 import plugily.projects.villagedefense.commands.arguments.admin.arena.ForceStartArgument;
 import plugily.projects.villagedefense.commands.arguments.admin.arena.SetWaveArgument;
@@ -44,14 +52,25 @@ import plugily.projects.villagedefense.commands.arguments.admin.level.SetLevelAr
 import plugily.projects.villagedefense.commands.arguments.data.CommandArgument;
 import plugily.projects.villagedefense.commands.arguments.data.LabelData;
 import plugily.projects.villagedefense.commands.arguments.data.LabeledCommandArgument;
-import plugily.projects.villagedefense.commands.arguments.game.*;
+import plugily.projects.villagedefense.commands.arguments.game.ArenaSelectorArgument;
+import plugily.projects.villagedefense.commands.arguments.game.CreateArgument;
+import plugily.projects.villagedefense.commands.arguments.game.JoinArguments;
+import plugily.projects.villagedefense.commands.arguments.game.LeaderboardArgument;
+import plugily.projects.villagedefense.commands.arguments.game.LeaveArgument;
+import plugily.projects.villagedefense.commands.arguments.game.RandomJoinArgument;
+import plugily.projects.villagedefense.commands.arguments.game.SelectKitArgument;
+import plugily.projects.villagedefense.commands.arguments.game.StatsArgument;
 import plugily.projects.villagedefense.commands.completion.TabCompletion;
 import plugily.projects.villagedefense.handlers.language.Messages;
 import plugily.projects.villagedefense.handlers.setup.SetupInventory;
 import plugily.projects.villagedefense.utils.Debugger;
 import plugily.projects.villagedefense.utils.Utils;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -108,29 +127,29 @@ public class ArgumentsRegistry implements CommandExecutor {
     new SetPriceArgument(this);
     spyChat = new SpyChatArgument(this);
     new TeleportArgument(this);
-    if (plugin.getConfigPreferences().getOption(ConfigPreferences.Option.HOLOGRAMS_ENABLED)) {
+    if(plugin.getConfigPreferences().getOption(ConfigPreferences.Option.HOLOGRAMS_ENABLED)) {
       new HologramArgument(this);
     }
   }
 
   @Override
   public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-    for (Map.Entry<String, List<CommandArgument>> entry : mappedArguments.entrySet()) {
-      if (!cmd.getName().equalsIgnoreCase(entry.getKey())) {
+    for(Map.Entry<String, List<CommandArgument>> entry : mappedArguments.entrySet()) {
+      if(!cmd.getName().equalsIgnoreCase(entry.getKey())) {
         continue;
       }
-      if (cmd.getName().equalsIgnoreCase("villagedefense")) {
-        if (args.length == 0 || args[0].equalsIgnoreCase("help")) {
+      if(cmd.getName().equalsIgnoreCase("villagedefense")) {
+        if(args.length == 0 || args[0].equalsIgnoreCase("help")) {
           sendHelpCommand(sender);
           return true;
         }
-        if (args.length > 1 && args[1].equalsIgnoreCase("edit")) {
-          if (!checkSenderIsExecutorType(sender, CommandArgument.ExecutorType.PLAYER)
+        if(args.length > 1 && args[1].equalsIgnoreCase("edit")) {
+          if(!checkSenderIsExecutorType(sender, CommandArgument.ExecutorType.PLAYER)
               || !Utils.hasPermission(sender, "villagedefense.admin.create")) {
             return true;
           }
           Arena arena = ArenaRegistry.getArena(args[0]);
-          if (arena == null) {
+          if(arena == null) {
             sender.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage(Messages.COMMANDS_NO_ARENA_LIKE_THAT));
             return true;
           }
@@ -139,24 +158,24 @@ public class ArgumentsRegistry implements CommandExecutor {
           return true;
         }
       }
-      if (cmd.getName().equalsIgnoreCase("villagedefenseadmin") && (args.length == 0 || args[0].equalsIgnoreCase("help"))) {
-        if (!sender.hasPermission("villagedefense.admin")) {
+      if(cmd.getName().equalsIgnoreCase("villagedefenseadmin") && (args.length == 0 || args[0].equalsIgnoreCase("help"))) {
+        if(!sender.hasPermission("villagedefense.admin")) {
           return true;
         }
         sendAdminHelpCommand(sender);
         return true;
       }
-      for (CommandArgument argument : entry.getValue()) {
-        if (argument.getArgumentName().equalsIgnoreCase(args[0])) {
+      for(CommandArgument argument : entry.getValue()) {
+        if(argument.getArgumentName().equalsIgnoreCase(args[0])) {
           //does it make sense that it is a list?
-          for (String perm : argument.getPermissions()) {
-            if (perm.isEmpty() || Utils.hasPermission(sender, perm)) {
+          for(String perm : argument.getPermissions()) {
+            if(perm.isEmpty() || Utils.hasPermission(sender, perm)) {
               break;
             }
             //user has no permission to execute command
             return true;
           }
-          if (checkSenderIsExecutorType(sender, argument.getValidExecutors())) {
+          if(checkSenderIsExecutorType(sender, argument.getValidExecutors())) {
             argument.execute(sender, args);
           }
           //return true even if sender is not good executor or hasn't got permission
@@ -166,7 +185,7 @@ public class ArgumentsRegistry implements CommandExecutor {
 
       //sending did you mean help
       List<StringMatcher.Match> matches = StringMatcher.match(args[0], entry.getValue().stream().map(CommandArgument::getArgumentName).collect(Collectors.toList()));
-      if (!matches.isEmpty()) {
+      if(!matches.isEmpty()) {
         sender.sendMessage(plugin.getChatManager().colorMessage(Messages.COMMANDS_DID_YOU_MEAN).replace("%command%", label + " " + matches.get(0).getMatch()));
         return true;
       }
@@ -177,7 +196,7 @@ public class ArgumentsRegistry implements CommandExecutor {
   private void sendHelpCommand(CommandSender sender) {
     sender.sendMessage(plugin.getChatManager().colorMessage(Messages.COMMANDS_MAIN_HEADER));
     sender.sendMessage(plugin.getChatManager().colorMessage(Messages.COMMANDS_MAIN_DESCRIPTION));
-    if (sender.hasPermission("villagedefense.admin")) {
+    if(sender.hasPermission("villagedefense.admin")) {
       sender.sendMessage(plugin.getChatManager().colorMessage(Messages.COMMANDS_MAIN_ADMIN_BONUS_DESCRIPTION));
     }
     sender.sendMessage(plugin.getChatManager().colorMessage(Messages.COMMANDS_MAIN_FOOTER));
@@ -186,7 +205,7 @@ public class ArgumentsRegistry implements CommandExecutor {
   private void sendAdminHelpCommand(CommandSender sender) {
     sender.sendMessage(ChatColor.GREEN + "  " + ChatColor.BOLD + "Village Defense " + ChatColor.GRAY + plugin.getDescription().getVersion());
     sender.sendMessage(ChatColor.RED + " []" + ChatColor.GRAY + " = optional  " + ChatColor.GOLD + "<>" + ChatColor.GRAY + " = required");
-    if (sender instanceof Player) {
+    if(sender instanceof Player) {
       sender.sendMessage(ChatColor.GRAY + "Hover command to see more, click command to suggest it.");
     }
     List<LabelData> data = mappedArguments.get("villagedefenseadmin").stream().filter(arg -> arg instanceof LabeledCommandArgument)
@@ -195,19 +214,19 @@ public class ArgumentsRegistry implements CommandExecutor {
         "&7Edit existing arena\n&6Permission: &7villagedefense.admin.edit"));
     data.addAll(mappedArguments.get("villagedefense").stream().filter(arg -> arg instanceof LabeledCommandArgument)
         .map(arg -> ((LabeledCommandArgument) arg).getLabelData()).collect(Collectors.toList()));
-    if (ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_11_R1)) {
-      for (LabelData labelData : data) {
+    if(ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_11_R1)) {
+      for(LabelData labelData : data) {
         sender.sendMessage(labelData.getText() + " - " + labelData.getDescription().split("\n")[0]);
       }
       return;
     }
-    for (LabelData labelData : data) {
-      if (sender instanceof Player) {
+    for(LabelData labelData : data) {
+      if(sender instanceof Player) {
         TextComponent component = new TextComponent(labelData.getText());
         component.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, labelData.getCommand()));
 
         // Backwards compatibility
-        if (ServerVersion.Version.isCurrentEqualOrHigher(ServerVersion.Version.v1_16_R1)) {
+        if(ServerVersion.Version.isCurrentEqualOrHigher(ServerVersion.Version.v1_16_R1)) {
           component.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text(labelData.getDescription())));
         } else {
           component.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, TextComponent.fromLegacyText(labelData.getDescription())));
@@ -222,13 +241,13 @@ public class ArgumentsRegistry implements CommandExecutor {
   }
 
   private boolean checkSenderIsExecutorType(CommandSender sender, CommandArgument.ExecutorType type) {
-    switch (type) {
+    switch(type) {
       case BOTH:
         return sender instanceof ConsoleCommandSender || sender instanceof Player;
       case CONSOLE:
         return sender instanceof ConsoleCommandSender;
       case PLAYER:
-        if (sender instanceof Player) {
+        if(sender instanceof Player) {
           return true;
         }
         sender.sendMessage(plugin.getChatManager().colorMessage(Messages.COMMANDS_ONLY_BY_PLAYER));

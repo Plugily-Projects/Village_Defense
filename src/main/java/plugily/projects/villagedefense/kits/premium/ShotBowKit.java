@@ -27,8 +27,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
-import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
+import pl.plajerlair.commonsbox.minecraft.compat.VersionUtils;
+import pl.plajerlair.commonsbox.minecraft.compat.events.api.CBPlayerInteractEvent;
 import pl.plajerlair.commonsbox.minecraft.helper.ArmorHelper;
 import pl.plajerlair.commonsbox.minecraft.helper.WeaponHelper;
 import plugily.projects.villagedefense.handlers.PermissionsManager;
@@ -60,7 +61,7 @@ public class ShotBowKit extends PremiumKit implements Listener {
 
   @Override
   public void giveKitItems(Player player) {
-    player.getInventory().addItem(WeaponHelper.getEnchantedBow(new Enchantment[] {Enchantment.DURABILITY, Enchantment.ARROW_KNOCKBACK}, new int[] {10, 1}));
+    player.getInventory().addItem(WeaponHelper.getEnchantedBow(new Enchantment[]{Enchantment.DURABILITY, Enchantment.ARROW_KNOCKBACK}, new int[]{10, 1}));
     player.getInventory().addItem(new ItemStack(getMaterial(), 64));
     player.getInventory().addItem(new ItemStack(getMaterial(), 64));
     ArmorHelper.setColouredArmor(Color.YELLOW, player);
@@ -79,21 +80,21 @@ public class ShotBowKit extends PremiumKit implements Listener {
   }
 
   @EventHandler
-  public void onBowInteract(PlayerInteractEvent e) {
-    if (!(e.getAction() == Action.LEFT_CLICK_AIR || e.getAction() == Action.LEFT_CLICK_BLOCK || e.getAction() == Action.PHYSICAL)) {
+  public void onBowInteract(CBPlayerInteractEvent e) {
+    if(!(e.getAction() == Action.LEFT_CLICK_AIR || e.getAction() == Action.LEFT_CLICK_BLOCK || e.getAction() == Action.PHYSICAL)) {
       return;
     }
-    ItemStack stack = e.getPlayer().getInventory().getItemInMainHand();
+    ItemStack stack = VersionUtils.getItemInHand(e.getPlayer());
     User user = getPlugin().getUserManager().getUser(e.getPlayer());
-    if (stack == null || stack.getType() != Material.BOW || !e.getPlayer().getInventory().contains(getMaterial())
+    if(stack == null || stack.getType() != Material.BOW || !e.getPlayer().getInventory().contains(getMaterial())
         || !(user.getKit() instanceof ShotBowKit)
         || user.isSpectator()) {
       return;
     }
-    if (!user.checkCanCastCooldownAndMessage("shotbow")) {
+    if(!user.checkCanCastCooldownAndMessage("shotbow")) {
       return;
     }
-    for (int i = 0; i < 4; i++) {
+    for(int i = 0; i < 4; i++) {
       Bukkit.getScheduler().runTaskLater(getPlugin(), () -> {
         Arrow pr = e.getPlayer().launchProjectile(Arrow.class);
         pr.setVelocity(e.getPlayer().getLocation().getDirection().multiply(3));
@@ -101,7 +102,7 @@ public class ShotBowKit extends PremiumKit implements Listener {
         pr.setShooter(e.getPlayer());
         pr.setCritical(true);
 
-        if (e.getPlayer().getInventory().contains(getMaterial())) {
+        if(e.getPlayer().getInventory().contains(getMaterial())) {
           e.getPlayer().getInventory().removeItem(new ItemStack(getMaterial(), 1));
         }
       }, 2L * (2 * i));

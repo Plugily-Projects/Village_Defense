@@ -87,8 +87,7 @@ public class SetupInventory {
   }
 
   private void sendProTip(Player p) {
-    int rand = random.nextInt(8 + 1);
-    switch (rand) {
+    switch(random.nextInt(8 + 1)) {
       case 0:
         p.sendMessage(plugin.getChatManager().colorRawMessage("&e&lTIP: &7Console can execute /vda addorbs [amount] (player) command! Add game orbs via console!"));
         break;

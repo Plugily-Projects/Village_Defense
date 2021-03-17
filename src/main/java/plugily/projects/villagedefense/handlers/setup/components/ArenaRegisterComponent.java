@@ -26,7 +26,8 @@ import org.bukkit.Material;
 import org.bukkit.block.Sign;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.inventory.ItemStack;
-import pl.plajerlair.commonsbox.minecraft.compat.XMaterial;
+
+import pl.plajerlair.commonsbox.minecraft.compat.xseries.XMaterial;
 import pl.plajerlair.commonsbox.minecraft.configuration.ConfigUtils;
 import pl.plajerlair.commonsbox.minecraft.item.ItemBuilder;
 import pl.plajerlair.commonsbox.minecraft.serialization.LocationSerializer;
@@ -60,7 +61,7 @@ public class ArenaRegisterComponent implements SetupComponent {
     FileConfiguration config = setupInventory.getConfig();
     Main plugin = setupInventory.getPlugin();
     ItemStack registeredItem;
-    if (!setupInventory.getArena().isReady()) {
+    if(!setupInventory.getArena().isReady()) {
       registeredItem = new ItemBuilder(XMaterial.FIREWORK_ROCKET.parseItem())
           .name(plugin.getChatManager().colorRawMessage("&e&lRegister Arena - Finish Setup"))
           .lore(ChatColor.GRAY + "Click this when you're done with configuration.")
@@ -76,30 +77,30 @@ public class ArenaRegisterComponent implements SetupComponent {
     }
     pane.addItem(new GuiItem(registeredItem, e -> {
       Arena arena = setupInventory.getArena();
-      if (arena == null) {
+      if(arena == null) {
         return;
       }
-      if (arena.isReady()) {
+      if(arena.isReady()) {
         e.getWhoClicked().sendMessage(ChatColor.GREEN + "This arena was already validated and is ready to use!");
         return;
       }
 
-      for (String s : new String[] {"lobbylocation", "Startlocation", "Endlocation"}) {
-        if (!config.isSet("instances." + arena.getId() + "." + s) || config.getString("instances." + arena.getId() + "." + s)
+      for(String s : new String[]{"lobbylocation", "Startlocation", "Endlocation"}) {
+        if(!config.isSet("instances." + arena.getId() + "." + s) || config.getString("instances." + arena.getId() + "." + s)
             .equals(LocationSerializer.locationToString(Bukkit.getWorlds().get(0).getSpawnLocation()))) {
           e.getWhoClicked().sendMessage(plugin.getChatManager().colorRawMessage("&c&l✘ &cArena validation failed! Please configure following spawns properly: " + s + " (cannot be world spawn location)"));
           return;
         }
       }
 
-      for (String s : new String[] {"zombiespawns", "villagerspawns"}) {
-        if (!config.isSet("instances." + arena.getId() + "." + s)
+      for(String s : new String[]{"zombiespawns", "villagerspawns"}) {
+        if(!config.isSet("instances." + arena.getId() + "." + s)
             || config.getConfigurationSection("instances." + arena.getId() + "." + s).getKeys(false).size() < 2) {
           e.getWhoClicked().sendMessage(plugin.getChatManager().colorRawMessage("&c&l✘ &cArena validation failed! Please configure following spawns properly: " + s + " (must be minimum 2 spawns)"));
           return;
         }
       }
-      if (config.getConfigurationSection("instances." + arena.getId() + ".doors") == null) {
+      if(config.getConfigurationSection("instances." + arena.getId() + ".doors") == null) {
         e.getWhoClicked().sendMessage(plugin.getChatManager().colorRawMessage("&c&l✘ &cArena validation failed! Please configure doors properly!"));
         return;
       }
@@ -109,8 +110,8 @@ public class ArenaRegisterComponent implements SetupComponent {
       List<Sign> signsToUpdate = new ArrayList<>();
       ArenaRegistry.unregisterArena(arena);
 
-      for (ArenaSign arenaSign : plugin.getSignManager().getArenaSigns()) {
-        if (arenaSign.getArena().equals(setupInventory.getArena())) {
+      for(ArenaSign arenaSign : plugin.getSignManager().getArenaSigns()) {
+        if(arenaSign.getArena().equals(setupInventory.getArena())) {
           signsToUpdate.add(arenaSign.getSign());
         }
       }
@@ -123,20 +124,20 @@ public class ArenaRegisterComponent implements SetupComponent {
       arena.setStartLocation(LocationSerializer.getLocation(config.getString("instances." + arena.getId() + ".Startlocation")));
       arena.setEndLocation(LocationSerializer.getLocation(config.getString("instances." + arena.getId() + ".Endlocation")));
       ArenaUtils.setWorld(arena);
-      for (String string : config.getConfigurationSection("instances." + arena.getId() + ".zombiespawns").getKeys(false)) {
+      for(String string : config.getConfigurationSection("instances." + arena.getId() + ".zombiespawns").getKeys(false)) {
         arena.addZombieSpawn(LocationSerializer.getLocation(config.getString("instances." + arena.getId() + ".zombiespawns." + string)));
       }
-      for (String string : config.getConfigurationSection("instances." + arena.getId() + ".villagerspawns").getKeys(false)) {
+      for(String string : config.getConfigurationSection("instances." + arena.getId() + ".villagerspawns").getKeys(false)) {
         arena.addVillagerSpawn(LocationSerializer.getLocation(config.getString("instances." + arena.getId() + ".villagerspawns." + string)));
       }
-      for (String string : config.getConfigurationSection("instances." + arena.getId() + ".doors").getKeys(false)) {
+      for(String string : config.getConfigurationSection("instances." + arena.getId() + ".doors").getKeys(false)) {
         String path = "instances." + arena.getId() + ".doors." + string + ".";
         arena.getMapRestorerManager().addDoor(LocationSerializer.getLocation(config.getString(path + "location")),
             (byte) config.getInt(path + "byte"));
       }
       ArenaRegistry.registerArena(arena);
       arena.start();
-      for (Sign s : signsToUpdate) {
+      for(Sign s : signsToUpdate) {
         plugin.getSignManager().getArenaSigns().add(new ArenaSign(s, arena));
       }
     }), 2, 1);

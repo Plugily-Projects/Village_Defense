@@ -26,9 +26,28 @@ import plugily.projects.villagedefense.kits.basekits.FreeKit;
 import plugily.projects.villagedefense.kits.basekits.Kit;
 import plugily.projects.villagedefense.kits.free.KnightKit;
 import plugily.projects.villagedefense.kits.free.LightTankKit;
+import plugily.projects.villagedefense.kits.level.ArcherKit;
+import plugily.projects.villagedefense.kits.level.GolemFriendKit;
+import plugily.projects.villagedefense.kits.level.HardcoreKit;
+import plugily.projects.villagedefense.kits.level.HealerKit;
+import plugily.projects.villagedefense.kits.level.LooterKit;
+import plugily.projects.villagedefense.kits.level.MediumTankKit;
+import plugily.projects.villagedefense.kits.level.PuncherKit;
+import plugily.projects.villagedefense.kits.level.RunnerKit;
+import plugily.projects.villagedefense.kits.level.TerminatorKit;
+import plugily.projects.villagedefense.kits.level.WorkerKit;
 import plugily.projects.villagedefense.kits.level.ZombieFinderKit;
-import plugily.projects.villagedefense.kits.level.*;
-import plugily.projects.villagedefense.kits.premium.*;
+import plugily.projects.villagedefense.kits.premium.BlockerKit;
+import plugily.projects.villagedefense.kits.premium.CleanerKit;
+import plugily.projects.villagedefense.kits.premium.DogFriendKit;
+import plugily.projects.villagedefense.kits.premium.HeavyTankKit;
+import plugily.projects.villagedefense.kits.premium.MedicKit;
+import plugily.projects.villagedefense.kits.premium.NakedKit;
+import plugily.projects.villagedefense.kits.premium.PremiumHardcoreKit;
+import plugily.projects.villagedefense.kits.premium.ShotBowKit;
+import plugily.projects.villagedefense.kits.premium.TeleporterKit;
+import plugily.projects.villagedefense.kits.premium.TornadoKit;
+import plugily.projects.villagedefense.kits.premium.WizardKit;
 import plugily.projects.villagedefense.utils.constants.Constants;
 
 import java.util.ArrayList;
@@ -47,8 +66,8 @@ public class KitRegistry {
   private static Kit defaultKit = null;
   private static Main plugin;
   private static final List<Class<?>> classKitNames = Arrays.asList(LightTankKit.class, ZombieFinderKit.class, ArcherKit.class, PuncherKit.class, HealerKit.class, LooterKit.class, RunnerKit.class,
-          MediumTankKit.class, WorkerKit.class, GolemFriendKit.class, TerminatorKit.class, HardcoreKit.class, CleanerKit.class, TeleporterKit.class, HeavyTankKit.class, ShotBowKit.class,
-          DogFriendKit.class, PremiumHardcoreKit.class, TornadoKit.class, BlockerKit.class, MedicKit.class, NakedKit.class, WizardKit.class);
+      MediumTankKit.class, WorkerKit.class, GolemFriendKit.class, TerminatorKit.class, HardcoreKit.class, CleanerKit.class, TeleporterKit.class, HeavyTankKit.class, ShotBowKit.class,
+      DogFriendKit.class, PremiumHardcoreKit.class, TornadoKit.class, BlockerKit.class, MedicKit.class, NakedKit.class, WizardKit.class);
 
   private KitRegistry() {
   }
@@ -101,8 +120,8 @@ public class KitRegistry {
    * @return Registered kit or default if not found
    */
   public static Kit getKit(ItemStack itemStack) {
-    for (Kit kit : kits) {
-      if (itemStack.getType() == kit.getMaterial()) {
+    for(Kit kit : kits) {
+      if(itemStack.getType() == kit.getMaterial()) {
         return kit;
       }
     }
@@ -113,11 +132,11 @@ public class KitRegistry {
   private static void setupGameKits() {
     KnightKit knightkit = new KnightKit();
     FileConfiguration config = ConfigUtils.getConfig(plugin, Constants.Files.KITS.getName());
-    for (Class<?> kitClass : classKitNames) {
-      if (config.getBoolean("Enabled-Game-Kits." + kitClass.getSimpleName().replace("Kit", ""))) {
+    for(Class<?> kitClass : classKitNames) {
+      if(config.getBoolean("Enabled-Game-Kits." + kitClass.getSimpleName().replace("Kit", ""))) {
         try {
           Class.forName(kitClass.getName()).newInstance();
-        } catch (ClassNotFoundException | IllegalAccessException | InstantiationException e) {
+        } catch(ClassNotFoundException | IllegalAccessException | InstantiationException e) {
           plugin.getLogger().log(Level.SEVERE, "Fatal error while registering existing game kit! Report this error to the developer!");
           plugin.getLogger().log(Level.SEVERE, "Cause: " + e.getMessage() + " (kitClass " + kitClass.getName() + ")");
         }

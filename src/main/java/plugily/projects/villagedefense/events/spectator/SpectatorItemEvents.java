@@ -21,18 +21,19 @@ package plugily.projects.villagedefense.events.spectator;
 import com.github.stefvanschie.inventoryframework.Gui;
 import com.github.stefvanschie.inventoryframework.GuiItem;
 import com.github.stefvanschie.inventoryframework.pane.OutlinePane;
-
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
-import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
-import pl.plajerlair.commonsbox.minecraft.compat.XMaterial;
+
+import pl.plajerlair.commonsbox.minecraft.compat.VersionUtils;
+import pl.plajerlair.commonsbox.minecraft.compat.events.api.CBPlayerInteractEvent;
+import pl.plajerlair.commonsbox.minecraft.compat.xseries.XMaterial;
 import pl.plajerlair.commonsbox.minecraft.item.ItemUtils;
-import pl.plajerlair.commonsbox.minecraft.misc.MiscUtils;
+import pl.plajerlair.commonsbox.minecraft.misc.stuff.ComplementAccessor;
 import pl.plajerlair.commonsbox.number.NumberUtils;
 import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.arena.Arena;
@@ -54,26 +55,26 @@ public class SpectatorItemEvents implements Listener {
     this.plugin = plugin;
     plugin.getServer().getPluginManager().registerEvents(this, plugin);
     spectatorSettingsMenu = new SpectatorSettingsMenu(plugin, plugin.getChatManager().colorMessage(Messages.SPECTATOR_SETTINGS_MENU_INVENTORY_NAME),
-            plugin.getChatManager().colorMessage(Messages.SPECTATOR_SETTINGS_MENU_SPEED_NAME));
+        plugin.getChatManager().colorMessage(Messages.SPECTATOR_SETTINGS_MENU_SPEED_NAME));
   }
 
   @EventHandler
-  public void onSpectatorItemClick(PlayerInteractEvent e) {
-    if (e.getAction() == Action.LEFT_CLICK_AIR || e.getAction() == Action.LEFT_CLICK_BLOCK || e.getAction() == Action.PHYSICAL) {
+  public void onSpectatorItemClick(CBPlayerInteractEvent e) {
+    if(e.getAction() == Action.LEFT_CLICK_AIR || e.getAction() == Action.LEFT_CLICK_BLOCK || e.getAction() == Action.PHYSICAL) {
       return;
     }
     Arena arena = ArenaRegistry.getArena(e.getPlayer());
-    ItemStack stack = e.getPlayer().getInventory().getItemInMainHand();
-    if (arena == null || !ItemUtils.isItemStackNamed(stack)) {
+    ItemStack stack = VersionUtils.getItemInHand(e.getPlayer());
+    if(arena == null || !ItemUtils.isItemStackNamed(stack)) {
       return;
     }
-    if (plugin.getSpecialItemManager().getRelatedSpecialItem(stack).getName().equals(SpecialItemManager.SpecialItems.PLAYERS_LIST.getName())) {
+    if(plugin.getSpecialItemManager().getRelatedSpecialItem(stack).getName().equals(SpecialItemManager.SpecialItems.PLAYERS_LIST.getName())) {
       e.setCancelled(true);
       openSpectatorMenu(e.getPlayer().getWorld(), e.getPlayer(), arena);
-    } else if (plugin.getSpecialItemManager().getRelatedSpecialItem(stack).getName().equals(SpecialItemManager.SpecialItems.SPECTATOR_OPTIONS.getName())) {
+    } else if(plugin.getSpecialItemManager().getRelatedSpecialItem(stack).getName().equals(SpecialItemManager.SpecialItems.SPECTATOR_OPTIONS.getName())) {
       e.setCancelled(true);
       spectatorSettingsMenu.openSpectatorSettingsMenu(e.getPlayer());
-    } else if (plugin.getSpecialItemManager().getRelatedSpecialItem(stack).getName().equals(SpecialItemManager.SpecialItems.SPECTATOR_LEAVE_ITEM.getName())) {
+    } else if(plugin.getSpecialItemManager().getRelatedSpecialItem(stack).getName().equals(SpecialItemManager.SpecialItems.SPECTATOR_LEAVE_ITEM.getName())) {
       e.setCancelled(true);
       ArenaManager.leaveAttempt(e.getPlayer(), arena);
     }
@@ -86,16 +87,15 @@ public class SpectatorItemEvents implements Listener {
     gui.addPane(pane);
 
     Set<Player> players = arena.getPlayers();
-    for (Player arenaPlayer : world.getPlayers()) {
-      if (players.contains(arenaPlayer) && !plugin.getUserManager().getUser(arenaPlayer).isSpectator()) {
+    for(Player arenaPlayer : world.getPlayers()) {
+      if(players.contains(arenaPlayer) && !plugin.getUserManager().getUser(arenaPlayer).isSpectator()) {
         ItemStack skull = XMaterial.PLAYER_HEAD.parseItem();
         SkullMeta meta = (SkullMeta) skull.getItemMeta();
-        meta = MiscUtils.setPlayerHead(arenaPlayer, meta);
-        meta.setDisplayName(arenaPlayer.getName());
-        meta.setLore(Collections.singletonList(plugin.getChatManager().colorMessage(Messages.SPECTATOR_TARGET_PLAYER_HEALTH)
+        meta = VersionUtils.setPlayerHead(arenaPlayer, meta);
+        ComplementAccessor.getComplement().setDisplayName(meta, arenaPlayer.getName());
+        ComplementAccessor.getComplement().setLore(meta, Collections.singletonList(plugin.getChatManager().colorMessage(Messages.SPECTATOR_TARGET_PLAYER_HEALTH)
             .replace("%health%", String.valueOf(NumberUtils.round(arenaPlayer.getHealth(), 2)))));
         skull.setItemMeta(meta);
-        //todo check why panes are not working! Also bb issue!
         pane.addItem(new GuiItem(skull, e -> {
           e.setCancelled(true);
           e.getWhoClicked().sendMessage(plugin.getChatManager().formatMessage(arena, plugin.getChatManager().colorMessage(Messages.KITS_TELEPORTER_TELEPORTED_TO_PLAYER), arenaPlayer));

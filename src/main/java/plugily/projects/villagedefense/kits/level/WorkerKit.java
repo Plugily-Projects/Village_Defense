@@ -27,7 +27,8 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.inventory.ItemStack;
-import pl.plajerlair.commonsbox.minecraft.compat.XMaterial;
+import pl.plajerlair.commonsbox.minecraft.compat.VersionUtils;
+import pl.plajerlair.commonsbox.minecraft.compat.xseries.XMaterial;
 import pl.plajerlair.commonsbox.minecraft.helper.ArmorHelper;
 import pl.plajerlair.commonsbox.minecraft.helper.WeaponHelper;
 import plugily.projects.villagedefense.api.StatsStorage;
@@ -84,17 +85,17 @@ public class WorkerKit extends LevelKit implements Listener {
   @EventHandler(priority = EventPriority.HIGHEST)
   public void onDoorPlace(BlockPlaceEvent e) {
     Arena arena = ArenaRegistry.getArena(e.getPlayer());
-    if (arena == null) {
+    if(arena == null) {
       return;
     }
     User user = getPlugin().getUserManager().getUser(e.getPlayer());
-    ItemStack stack = e.getPlayer().getInventory().getItemInMainHand();
-    if (user.isSpectator() || !arena.getMapRestorerManager().getGameDoorLocations()
+    ItemStack stack = VersionUtils.getItemInHand(e.getPlayer());
+    if(user.isSpectator() || !arena.getMapRestorerManager().getGameDoorLocations()
         .containsKey(e.getBlock().getLocation())) {
       e.setCancelled(true);
       return;
     }
-    if (stack.getType() != Utils.getCachedDoor(e.getBlock())) {
+    if(stack.getType() != Utils.getCachedDoor(e.getBlock())) {
       e.setCancelled(true);
       return;
     }

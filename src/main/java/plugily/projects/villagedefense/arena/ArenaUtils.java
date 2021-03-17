@@ -19,17 +19,27 @@
 package plugily.projects.villagedefense.arena;
 
 import org.bukkit.GameMode;
-import org.bukkit.Particle;
-import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Zombie;
 import org.bukkit.potion.PotionEffectType;
 import pl.plajerlair.commonsbox.minecraft.compat.ServerVersion;
-import pl.plajerlair.commonsbox.minecraft.misc.MiscUtils;
+import pl.plajerlair.commonsbox.minecraft.compat.VersionUtils;
 import pl.plajerlair.commonsbox.minecraft.serialization.InventorySerializer;
 import plugily.projects.villagedefense.ConfigPreferences;
 import plugily.projects.villagedefense.Main;
-import plugily.projects.villagedefense.arena.initializers.*;
+import plugily.projects.villagedefense.arena.initializers.ArenaInitializer1_10_R1;
+import plugily.projects.villagedefense.arena.initializers.ArenaInitializer1_11_R1;
+import plugily.projects.villagedefense.arena.initializers.ArenaInitializer1_12_R1;
+import plugily.projects.villagedefense.arena.initializers.ArenaInitializer1_13_R1;
+import plugily.projects.villagedefense.arena.initializers.ArenaInitializer1_13_R2;
+import plugily.projects.villagedefense.arena.initializers.ArenaInitializer1_14_R1;
+import plugily.projects.villagedefense.arena.initializers.ArenaInitializer1_15_R1;
+import plugily.projects.villagedefense.arena.initializers.ArenaInitializer1_16_R1;
+import plugily.projects.villagedefense.arena.initializers.ArenaInitializer1_16_R2;
+import plugily.projects.villagedefense.arena.initializers.ArenaInitializer1_16_R3;
+import plugily.projects.villagedefense.arena.initializers.ArenaInitializer1_8_R3;
+import plugily.projects.villagedefense.arena.initializers.ArenaInitializer1_9_R1;
+import plugily.projects.villagedefense.arena.initializers.ArenaInitializer1_9_R2;
 import plugily.projects.villagedefense.handlers.language.Messages;
 import plugily.projects.villagedefense.user.User;
 
@@ -50,48 +60,46 @@ public class ArenaUtils {
   }
 
   public static void hidePlayer(Player p, Arena arena) {
-    for (Player player : arena.getPlayers()) {
-      MiscUtils.hidePlayer(plugin, player, p);
+    for(Player player : arena.getPlayers()) {
+      VersionUtils.hidePlayer(plugin, player, p);
     }
   }
 
   public static void showPlayer(Player p, Arena arena) {
-    for (Player player : arena.getPlayers()) {
-      MiscUtils.showPlayer(plugin, player, p);
+    for(Player player : arena.getPlayers()) {
+      VersionUtils.showPlayer(plugin, player, p);
     }
   }
 
   public static void resetPlayerAfterGame(Player player) {
-    for (Player players : plugin.getServer().getOnlinePlayers()) {
-      MiscUtils.showPlayer(plugin, players, player);
-      MiscUtils.showPlayer(plugin, player, players);
+    for(Player players : plugin.getServer().getOnlinePlayers()) {
+      VersionUtils.showPlayer(plugin, players, player);
+      VersionUtils.showPlayer(plugin, player, players);
     }
-    player.setGlowing(false);
+    VersionUtils.setGlowing(player, false);
     player.setGameMode(GameMode.SURVIVAL);
     player.getActivePotionEffects().forEach(effect -> player.removePotionEffect(effect.getType()));
     player.setFlying(false);
     player.setAllowFlight(false);
     player.getInventory().clear();
     player.getInventory().setArmorContents(null);
-    MiscUtils.getEntityAttribute(player, Attribute.GENERIC_MAX_HEALTH).ifPresent(ai -> {
-      ai.setBaseValue(20.0);
-      player.setHealth(ai.getValue());
-    });
+    VersionUtils.setMaxHealth(player, 20);
+    player.setHealth(VersionUtils.getMaxHealth(player));
     player.setFireTicks(0);
     player.setFoodLevel(20);
-    if (plugin.getConfigPreferences().getOption(ConfigPreferences.Option.INVENTORY_MANAGER_ENABLED)) {
+    if(plugin.getConfigPreferences().getOption(ConfigPreferences.Option.INVENTORY_MANAGER_ENABLED)) {
       InventorySerializer.loadInventory(plugin, player);
     }
   }
 
   public static void bringDeathPlayersBack(Arena arena) {
-    for (Player player : arena.getPlayers()) {
-      if (arena.getPlayersLeft().contains(player)) {
+    for(Player player : arena.getPlayers()) {
+      if(arena.getPlayersLeft().contains(player)) {
         continue;
       }
 
       User user = plugin.getUserManager().getUser(player);
-      if (!plugin.getConfigPreferences().getOption(ConfigPreferences.Option.INGAME_JOIN_RESPAWN) && user.isPermanentSpectator()) {
+      if(!plugin.getConfigPreferences().getOption(ConfigPreferences.Option.INGAME_JOIN_RESPAWN) && user.isPermanentSpectator()) {
         continue;
       }
       user.setSpectator(false);
@@ -114,19 +122,27 @@ public class ArenaUtils {
 
   public static Arena initializeArena(String id) {
     Arena arena;
-    if (ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_11_R1)) {
+    if(ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_8_R3)) {
+      arena = new ArenaInitializer1_8_R3(id, plugin);
+    } else if(ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_9_R1)) {
+      arena = new ArenaInitializer1_9_R1(id, plugin);
+    } else if(ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_9_R2)) {
+      arena = new ArenaInitializer1_9_R2(id, plugin);
+    } else if(ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_10_R1)) {
+      arena = new ArenaInitializer1_10_R1(id, plugin);
+    } else if(ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_11_R1)) {
       arena = new ArenaInitializer1_11_R1(id, plugin);
-    } else if (ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_12_R1)) {
+    } else if(ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_12_R1)) {
       arena = new ArenaInitializer1_12_R1(id, plugin);
-    } else if (ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_13_R1)) {
+    } else if(ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_13_R1)) {
       arena = new ArenaInitializer1_13_R1(id, plugin);
-    } else if (ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_13_R2)) {
+    } else if(ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_13_R2)) {
       arena = new ArenaInitializer1_13_R2(id, plugin);
-    } else if (ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_14_R1)) {
+    } else if(ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_14_R1)) {
       arena = new ArenaInitializer1_14_R1(id, plugin);
-    } else if (ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_15_R1)){
+    } else if(ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_15_R1)) {
       arena = new ArenaInitializer1_15_R1(id, plugin);
-    } else if (ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_16_R1)){
+    } else if(ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_16_R1)) {
       arena = new ArenaInitializer1_16_R1(id, plugin);
     } else if(ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_16_R2)) {
       arena = new ArenaInitializer1_16_R2(id, plugin);
@@ -137,21 +153,29 @@ public class ArenaUtils {
   }
 
   public static void setWorld(Arena arena) {
-    if (ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_11_R1)) {
+    if(ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_8_R3)) {
+      ((ArenaInitializer1_8_R3) arena).setWorld(arena.getStartLocation());
+    } else if(ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_9_R1)) {
+      ((ArenaInitializer1_9_R1) arena).setWorld(arena.getStartLocation());
+    } else if(ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_9_R2)) {
+      ((ArenaInitializer1_9_R2) arena).setWorld(arena.getStartLocation());
+    } else if(ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_10_R1)) {
+      ((ArenaInitializer1_10_R1) arena).setWorld(arena.getStartLocation());
+    } else if(ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_11_R1)) {
       ((ArenaInitializer1_11_R1) arena).setWorld(arena.getStartLocation());
-    } else if (ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_12_R1)) {
+    } else if(ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_12_R1)) {
       ((ArenaInitializer1_12_R1) arena).setWorld(arena.getStartLocation());
-    } else if (ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_13_R1)) {
+    } else if(ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_13_R1)) {
       ((ArenaInitializer1_13_R1) arena).setWorld(arena.getStartLocation());
-    } else if (ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_13_R2)) {
+    } else if(ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_13_R2)) {
       ((ArenaInitializer1_13_R2) arena).setWorld(arena.getStartLocation());
-    } else if (ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_14_R1)) {
+    } else if(ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_14_R1)) {
       ((ArenaInitializer1_14_R1) arena).setWorld(arena.getStartLocation());
-    } else if (ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_15_R1)) {
+    } else if(ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_15_R1)) {
       ((ArenaInitializer1_15_R1) arena).setWorld(arena.getStartLocation());
-    } else if (ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_16_R1)) {
+    } else if(ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_16_R1)) {
       ((ArenaInitializer1_16_R1) arena).setWorld(arena.getStartLocation());
-    } else if (ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_16_R2)) {
+    } else if(ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_16_R2)) {
       ((ArenaInitializer1_16_R2) arena).setWorld(arena.getStartLocation());
     } else {
       ((ArenaInitializer1_16_R3) arena).setWorld(arena.getStartLocation());
@@ -161,9 +185,9 @@ public class ArenaUtils {
   public static void removeSpawnedZombies(Arena arena) {
     boolean eachThree = arena.getZombies().size() > 70;
     int i = 0;
-    for (Zombie zombie : arena.getZombies()) {
-      if (eachThree && (i % 3) == 0) {
-        zombie.getWorld().spawnParticle(Particle.LAVA, zombie.getLocation(), 20);
+    for(Zombie zombie : arena.getZombies()) {
+      if(eachThree && (i % 3) == 0) {
+        VersionUtils.sendParticles("LAVA", arena.getPlayers(), zombie.getLocation(), 20);
       }
       zombie.remove();
       i++;

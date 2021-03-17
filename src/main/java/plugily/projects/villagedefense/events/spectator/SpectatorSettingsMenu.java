@@ -18,7 +18,6 @@
 
 package plugily.projects.villagedefense.events.spectator;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -28,17 +27,19 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
-import pl.plajerlair.commonsbox.minecraft.compat.XMaterial;
+
+import pl.plajerlair.commonsbox.minecraft.compat.xseries.XMaterial;
 import pl.plajerlair.commonsbox.minecraft.item.ItemBuilder;
+import pl.plajerlair.commonsbox.minecraft.misc.stuff.ComplementAccessor;
 import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.handlers.ChatManager;
 
 public class SpectatorSettingsMenu implements Listener {
 
-  private Main plugin;
+  private final Main plugin;
   private final String inventoryName;
   private final String speedOptionName;
-  private Inventory inv;
+  private final Inventory inv;
 
   public SpectatorSettingsMenu(JavaPlugin plugin, String inventoryName, String speedOptionName) {
     this.plugin = (Main) plugin;
@@ -54,31 +55,31 @@ public class SpectatorSettingsMenu implements Listener {
 
   @EventHandler
   public void onSpectatorMenuClick(InventoryClickEvent e) {
-    if (e.getInventory() == null || !e.getView().getTitle().equals(plugin.getChatManager().colorRawMessage(inventoryName))) {
+    if(e.getInventory() == null || !ComplementAccessor.getComplement().getTitle(e.getView()).equals(plugin.getChatManager().colorRawMessage(inventoryName))) {
       return;
     }
-    if (e.getCurrentItem() == null || !e.getCurrentItem().hasItemMeta()) {
+    if(e.getCurrentItem() == null || !e.getCurrentItem().hasItemMeta()) {
       return;
     }
     Player p = (Player) e.getWhoClicked();
     p.closeInventory();
-    if (e.getCurrentItem().getType() == Material.LEATHER_BOOTS) {
+    if(e.getCurrentItem().getType() == Material.LEATHER_BOOTS) {
       p.removePotionEffect(PotionEffectType.SPEED);
       p.setFlySpeed(0.15f);
       p.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, Integer.MAX_VALUE, 0, false, false));
-    } else if (e.getCurrentItem().getType() == Material.CHAINMAIL_BOOTS) {
+    } else if(e.getCurrentItem().getType() == Material.CHAINMAIL_BOOTS) {
       p.removePotionEffect(PotionEffectType.SPEED);
       p.setFlySpeed(0.2f);
       p.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, Integer.MAX_VALUE, 1, false, false));
-    } else if (e.getCurrentItem().getType() == Material.IRON_BOOTS) {
+    } else if(e.getCurrentItem().getType() == Material.IRON_BOOTS) {
       p.removePotionEffect(PotionEffectType.SPEED);
       p.setFlySpeed(0.25f);
       p.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, Integer.MAX_VALUE, 2, false, false));
-    } else if (e.getCurrentItem().getType() == XMaterial.GOLDEN_BOOTS.parseMaterial()) {
+    } else if(e.getCurrentItem().getType() == XMaterial.GOLDEN_BOOTS.parseMaterial()) {
       p.removePotionEffect(PotionEffectType.SPEED);
       p.setFlySpeed(0.3f);
       p.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, Integer.MAX_VALUE, 3, false, false));
-    } else if (e.getCurrentItem().getType() == Material.DIAMOND_BOOTS) {
+    } else if(e.getCurrentItem().getType() == Material.DIAMOND_BOOTS) {
       p.removePotionEffect(PotionEffectType.SPEED);
       p.setFlySpeed(0.35f);
       p.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, Integer.MAX_VALUE, 4, false, false));
@@ -86,7 +87,7 @@ public class SpectatorSettingsMenu implements Listener {
   }
 
   private Inventory initInventory() {
-    Inventory inv = Bukkit.createInventory(null, 9 * 3, inventoryName);
+    Inventory inv = ComplementAccessor.getComplement().createInventory(null, 9 * 3, inventoryName);
     ChatManager chatManager = plugin.getChatManager();
     inv.setItem(11, new ItemBuilder(Material.LEATHER_BOOTS)
         .name(chatManager.colorRawMessage(speedOptionName + " I")).build());

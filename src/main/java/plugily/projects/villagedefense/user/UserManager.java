@@ -47,7 +47,7 @@ public class UserManager {
 
   public UserManager(Main main) {
     plugin = main;
-    if (plugin.getConfigPreferences().getOption(ConfigPreferences.Option.DATABASE_ENABLED)) {
+    if(plugin.getConfigPreferences().getOption(ConfigPreferences.Option.DATABASE_ENABLED)) {
       database = new MysqlManager(plugin);
     } else {
       database = new FileStats(plugin);
@@ -60,8 +60,8 @@ public class UserManager {
   }
 
   public User getUser(Player player) {
-    for (User user : users) {
-      if (user.getPlayer().equals(player)) {
+    for(User user : users) {
+      if(user.getPlayer().equals(player)) {
         return user;
       }
     }
@@ -76,35 +76,34 @@ public class UserManager {
   }
 
   public void saveStatistic(User user, StatsStorage.StatisticType stat) {
-    if (stat.isPersistent()) {
+    if(stat.isPersistent()) {
       database.saveStatistic(user, stat);
     }
   }
 
   public void addExperience(Player player, int i) {
-    User user = plugin.getUserManager().getUser(player);
+    User user = getUser(player);
     user.addStat(StatsStorage.StatisticType.XP, i);
-    if (player.hasPermission(PermissionsManager.getVip())) {
+    if(player.hasPermission(PermissionsManager.getVip())) {
       user.addStat(StatsStorage.StatisticType.XP, (int) Math.ceil(i / 2.0));
     }
-    if (player.hasPermission(PermissionsManager.getMvp())) {
+    if(player.hasPermission(PermissionsManager.getMvp())) {
       user.addStat(StatsStorage.StatisticType.XP, (int) Math.ceil(i / 2.0));
     }
-    if (player.hasPermission(PermissionsManager.getElite())) {
+    if(player.hasPermission(PermissionsManager.getElite())) {
       user.addStat(StatsStorage.StatisticType.XP, (int) Math.ceil(i / 2.0));
     }
     updateLevelStat(player, ArenaRegistry.getArena(player));
   }
 
   public void addStat(Player player, StatsStorage.StatisticType stat) {
-    User user = plugin.getUserManager().getUser(player);
-    user.addStat(stat, 1);
+    getUser(player).addStat(stat, 1);
     updateLevelStat(player, ArenaRegistry.getArena(player));
   }
 
   public void updateLevelStat(Player player, Arena arena) {
-    User user = plugin.getUserManager().getUser(player);
-    if (Math.pow(50.0 * user.getStat(StatsStorage.StatisticType.LEVEL), 1.5) < user.getStat(StatsStorage.StatisticType.XP)) {
+    User user = getUser(player);
+    if(Math.pow(50.0 * user.getStat(StatsStorage.StatisticType.LEVEL), 1.5) < user.getStat(StatsStorage.StatisticType.XP)) {
       user.addStat(StatsStorage.StatisticType.LEVEL, 1);
       //Arena can be null when player has left the arena before this message the arean is retrieved.
       if(arena != null)

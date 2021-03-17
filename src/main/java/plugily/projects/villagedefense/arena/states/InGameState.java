@@ -18,6 +18,8 @@
 
 package plugily.projects.villagedefense.arena.states;
 
+import pl.plajerlair.commonsbox.minecraft.compat.ServerVersion;
+import plugily.projects.villagedefense.ConfigPreferences;
 import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.arena.Arena;
 import plugily.projects.villagedefense.arena.ArenaManager;
@@ -43,31 +45,31 @@ public class InGameState implements ArenaStateHandler {
   public void handleCall(Arena arena) {
     bossBarUpdate(arena);
     arena.getZombieSpawnManager().spawnGlitchCheck();
-    if (arena.getVillagers().isEmpty() || arena.getPlayersLeft().isEmpty() && arena.getArenaState() != ArenaState.ENDING) {
+    if(arena.getVillagers().isEmpty() || arena.getPlayersLeft().isEmpty() && arena.getArenaState() != ArenaState.ENDING) {
       ArenaManager.stopGame(false, arena);
       return;
     }
-    if (arena.isFighting()) {
-      if (arena.getZombiesLeft() <= 0) {
+    if(arena.isFighting()) {
+      if(arena.getZombiesLeft() <= 0) {
         arena.setFighting(false);
         ArenaManager.endWave(arena);
       }
-      if (arena.getOption(ArenaOption.ZOMBIES_TO_SPAWN) > 0) {
+      if(arena.getOption(ArenaOption.ZOMBIES_TO_SPAWN) > 0) {
         arena.getZombieSpawnManager().spawnZombies();
         arena.setTimer(500);
-      } else if (arena.getTimer() == 0) {
+      } else if(arena.getTimer() == 0) {
         arena.getMapRestorerManager().clearZombiesFromArena();
-        if (arena.getZombiesLeft() > 0) {
+        if(arena.getZombiesLeft() > 0) {
           plugin.getChatManager().broadcast(arena, Messages.ZOMBIE_GOT_STUCK_IN_THE_MAP);
         }
         arena.setOptionValue(ArenaOption.ZOMBIES_TO_SPAWN, 0);
       }
-      if (arena.getOption(ArenaOption.ZOMBIES_TO_SPAWN) < 0) {
+      if(arena.getOption(ArenaOption.ZOMBIES_TO_SPAWN) < 0) {
         arena.setOptionValue(ArenaOption.ZOMBIES_TO_SPAWN, 0);
       }
       arena.setTimer(arena.getTimer() - 1);
     } else {
-      if (arena.getTimer() <= 0) {
+      if(arena.getTimer() <= 0) {
         arena.setFighting(true);
         ArenaManager.startWave(arena);
       }
@@ -76,14 +78,18 @@ public class InGameState implements ArenaStateHandler {
   }
 
   private void bossBarUpdate(Arena arena) {
-    if (arena.getOption(ArenaOption.BAR_TOGGLE_VALUE) > 5) {
-      arena.getGameBar().setTitle(plugin.getChatManager().colorMessage(Messages.BOSSBAR_IN_GAME_WAVE).replace("%wave%", String.valueOf(arena.getWave())));
+    if(arena.getOption(ArenaOption.BAR_TOGGLE_VALUE) > 5) {
+      if(plugin.getConfigPreferences().getOption(ConfigPreferences.Option.BOSSBAR_ENABLED) && ServerVersion.Version.isCurrentEqualOrHigher(ServerVersion.Version.v1_9_R1)) {
+        arena.getGameBar().setTitle(plugin.getChatManager().colorMessage(Messages.BOSSBAR_IN_GAME_WAVE).replace("%wave%", String.valueOf(arena.getWave())));
+      }
       arena.addOptionValue(ArenaOption.BAR_TOGGLE_VALUE, 1);
-      if (arena.getOption(ArenaOption.BAR_TOGGLE_VALUE) > 10) {
+      if(arena.getOption(ArenaOption.BAR_TOGGLE_VALUE) > 10) {
         arena.setOptionValue(ArenaOption.BAR_TOGGLE_VALUE, 0);
       }
     } else {
-      arena.getGameBar().setTitle(plugin.getChatManager().colorMessage(Messages.BOSSBAR_IN_GAME_INFO).replace("%wave%", String.valueOf(arena.getWave())));
+      if(plugin.getConfigPreferences().getOption(ConfigPreferences.Option.BOSSBAR_ENABLED) && ServerVersion.Version.isCurrentEqualOrHigher(ServerVersion.Version.v1_9_R1)) {
+        arena.getGameBar().setTitle(plugin.getChatManager().colorMessage(Messages.BOSSBAR_IN_GAME_INFO).replace("%wave%", String.valueOf(arena.getWave())));
+      }
       arena.addOptionValue(ArenaOption.BAR_TOGGLE_VALUE, 1);
     }
   }

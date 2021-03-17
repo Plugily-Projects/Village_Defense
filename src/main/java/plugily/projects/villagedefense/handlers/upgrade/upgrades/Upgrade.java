@@ -19,7 +19,8 @@
 package plugily.projects.villagedefense.handlers.upgrade.upgrades;
 
 import org.bukkit.inventory.ItemStack;
-import pl.plajerlair.commonsbox.minecraft.compat.XMaterial;
+
+import pl.plajerlair.commonsbox.minecraft.compat.xseries.XMaterial;
 import pl.plajerlair.commonsbox.minecraft.item.ItemBuilder;
 import plugily.projects.villagedefense.Main;
 
@@ -129,14 +130,14 @@ public class Upgrade {
 
   public ItemStack asItemStack(int currentTier) {
     double valCurrent = tieredValues.get(currentTier);
-    double valNext = tieredValues.getOrDefault(currentTier + 1, tieredValues.get(currentTier));
+    double valNext = tieredValues.getOrDefault(currentTier + 1, valCurrent);
     return new ItemBuilder(XMaterial.BLACK_STAINED_GLASS_PANE.parseItem())
-            .name(getName())
-            .lore(getDescription().stream().map(lore -> lore = plugin.getChatManager().colorRawMessage(lore)
-                    .replace("%cost%", String.valueOf(getCost(currentTier + 1)))
-                    .replace("%tier%", String.valueOf(currentTier + 1))
-                    .replace("%from%", String.valueOf(valCurrent))
-                    .replace("%to%", String.valueOf(valNext))).collect(Collectors.toList())).build();
+        .name(getName())
+        .lore(getDescription().stream().map(lore -> lore = plugin.getChatManager().colorRawMessage(lore)
+            .replace("%cost%", Integer.toString(getCost(currentTier + 1)))
+            .replace("%tier%", Integer.toString(currentTier + 1))
+            .replace("%from%", Double.toString(valCurrent))
+            .replace("%to%", Double.toString(valNext))).collect(Collectors.toList())).build();
   }
 
   public enum EntityType {

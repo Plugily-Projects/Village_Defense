@@ -18,7 +18,24 @@
 
 package plugily.projects.villagedefense.creatures.v1_11_R1;
 
-import net.minecraft.server.v1_11_R1.*;
+import net.minecraft.server.v1_11_R1.Entity;
+import net.minecraft.server.v1_11_R1.EntityHuman;
+import net.minecraft.server.v1_11_R1.EntityLiving;
+import net.minecraft.server.v1_11_R1.EntityWolf;
+import net.minecraft.server.v1_11_R1.EntityZombie;
+import net.minecraft.server.v1_11_R1.GenericAttributes;
+import net.minecraft.server.v1_11_R1.Navigation;
+import net.minecraft.server.v1_11_R1.PathfinderGoalFloat;
+import net.minecraft.server.v1_11_R1.PathfinderGoalFollowOwner;
+import net.minecraft.server.v1_11_R1.PathfinderGoalHurtByTarget;
+import net.minecraft.server.v1_11_R1.PathfinderGoalLeapAtTarget;
+import net.minecraft.server.v1_11_R1.PathfinderGoalLookAtPlayer;
+import net.minecraft.server.v1_11_R1.PathfinderGoalMeleeAttack;
+import net.minecraft.server.v1_11_R1.PathfinderGoalMoveTowardsRestriction;
+import net.minecraft.server.v1_11_R1.PathfinderGoalNearestAttackableTarget;
+import net.minecraft.server.v1_11_R1.PathfinderGoalRandomLookaround;
+import net.minecraft.server.v1_11_R1.PathfinderGoalRandomStroll;
+import net.minecraft.server.v1_11_R1.World;
 import org.bukkit.craftbukkit.v1_11_R1.CraftWorld;
 
 /**
@@ -54,15 +71,15 @@ public class WorkingWolf extends EntityWolf {
   @Override
   public void g(float f, float f1) {
     EntityLiving entityliving = (EntityLiving) bw();
-    if (entityliving == null) {
+    if(entityliving == null) {
       // search first human passenger
-      for (final Entity e : passengers) {
-        if (e instanceof EntityHuman) {
+      for(final Entity e : passengers) {
+        if(e instanceof EntityHuman) {
           entityliving = (EntityLiving) e;
           break;
         }
       }
-      if (entityliving == null) {
+      if(entityliving == null) {
         this.l((float) 0.12);
         super.g(f, f1);
         return;
@@ -74,7 +91,7 @@ public class WorkingWolf extends EntityWolf {
     this.aQ = this.aO = this.yaw;
     f = entityliving.be * 0.75F;
     f1 = entityliving.bf;
-    if (f1 <= 0.0f) {
+    if(f1 <= 0.0f) {
       f1 *= 0.25F;
     }
     this.l((float) 0.12);

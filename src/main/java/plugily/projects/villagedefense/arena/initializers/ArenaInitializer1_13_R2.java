@@ -35,7 +35,17 @@ import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.arena.Arena;
 import plugily.projects.villagedefense.arena.options.ArenaOption;
 import plugily.projects.villagedefense.creatures.CreatureUtils;
-import plugily.projects.villagedefense.creatures.v1_13_R2.*;
+import plugily.projects.villagedefense.creatures.v1_13_R2.BabyZombie;
+import plugily.projects.villagedefense.creatures.v1_13_R2.FastZombie;
+import plugily.projects.villagedefense.creatures.v1_13_R2.GolemBuster;
+import plugily.projects.villagedefense.creatures.v1_13_R2.HardZombie;
+import plugily.projects.villagedefense.creatures.v1_13_R2.PlayerBuster;
+import plugily.projects.villagedefense.creatures.v1_13_R2.RidableIronGolem;
+import plugily.projects.villagedefense.creatures.v1_13_R2.RidableVillager;
+import plugily.projects.villagedefense.creatures.v1_13_R2.TankerZombie;
+import plugily.projects.villagedefense.creatures.v1_13_R2.VillagerBuster;
+import plugily.projects.villagedefense.creatures.v1_13_R2.VillagerSlayer;
+import plugily.projects.villagedefense.creatures.v1_13_R2.WorkingWolf;
 import plugily.projects.villagedefense.handlers.language.Messages;
 
 import java.util.Random;
@@ -209,7 +219,7 @@ public class ArenaInitializer1_13_R2 extends Arena {
 
   @Override
   public void spawnGolem(Location location, Player player) {
-    if (!canSpawnMobForPlayer(player, org.bukkit.entity.EntityType.IRON_GOLEM)) {
+    if(!canSpawnMobForPlayer(player, org.bukkit.entity.EntityType.IRON_GOLEM)) {
       return;
     }
 
@@ -224,7 +234,7 @@ public class ArenaInitializer1_13_R2 extends Arena {
 
   @Override
   public void spawnWolf(Location location, Player player) {
-    if (!canSpawnMobForPlayer(player, org.bukkit.entity.EntityType.WOLF)) {
+    if(!canSpawnMobForPlayer(player, org.bukkit.entity.EntityType.WOLF)) {
       return;
     }
 

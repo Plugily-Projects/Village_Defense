@@ -28,26 +28,26 @@ import plugily.projects.villagedefense.arena.Arena;
  */
 public class PowerupPickupHandler {
 
-    private final Powerup powerup;
-    private final Arena arena;
-    private final Player player;
+  private final Powerup powerup;
+  private final Arena arena;
+  private final Player player;
 
-    public PowerupPickupHandler(Powerup powerup, Arena arena, Player player) {
-        this.powerup = powerup;
-        this.arena = arena;
-        this.player = player;
-    }
+  public PowerupPickupHandler(Powerup powerup, Arena arena, Player player) {
+    this.powerup = powerup;
+    this.arena = arena;
+    this.player = player;
+  }
 
-    public Powerup getPowerup() {
-        return powerup;
-    }
+  public Powerup getPowerup() {
+    return powerup;
+  }
 
-    public Arena getArena() {
-        return arena;
-    }
+  public Arena getArena() {
+    return arena;
+  }
 
-    public Player getPlayer() {
-        return player;
-    }
+  public Player getPlayer() {
+    return player;
+  }
 
 }

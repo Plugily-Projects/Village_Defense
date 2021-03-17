@@ -19,6 +19,9 @@
 #       ^ YOU CAN EVEN SWAP CHANCE WITH PLAYER!
 #    - chance(50):eco give %PLAYER% 10                # Console has 10% chance to give player 10$
 #
+#  Performed rewards:
+#  villagerDeath, endgame, playerDeath, zombieKill, endwave
+#
 #   You can unlock full potential of rewards using our script engine! (since 4.0.0)
 #    Just add example reward:
 #    - script:player.sendMessage("oh, hi %PLAYER%");      # It will send "oh, hi <player name>" to player! 100% plain java!
@@ -40,6 +43,8 @@ rewards:
   endgame:
     - say %MAPNAME% has ended, reached wave %WAVE%
     - say Ooh and there were playing %PLAYERAMOUNT% players
+  playerDeath:
+  - script:player.sendMessage("Hey, you died");
   # Commands performed every wave end
   # Use "WAVE NUMBER:" to execute command in specific wave (ex. 1:)
   # Delete everything if you don't want to use this section
@@ -57,4 +62,7 @@ rewards:
   zombiekill:
     - eco give %PLAYER% 2
     - chance(10):eco give %PLAYER% 8
+  #Helpful for servers that are using more than one scoreboard!
+  scoreboard_remove:
+    - p:sb on
 

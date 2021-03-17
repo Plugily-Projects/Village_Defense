@@ -25,7 +25,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
-import pl.plajerlair.commonsbox.minecraft.compat.XMaterial;
+import pl.plajerlair.commonsbox.minecraft.compat.xseries.XMaterial;
 import pl.plajerlair.commonsbox.minecraft.helper.ArmorHelper;
 import pl.plajerlair.commonsbox.minecraft.helper.WeaponHelper;
 import plugily.projects.villagedefense.api.StatsStorage;
@@ -41,23 +41,23 @@ import java.util.List;
  */
 public class RunnerKit extends LevelKit {
 
-    public RunnerKit() {
-        setLevel(getKitsConfig().getInt("Required-Level.Runner"));
-        setName(getPlugin().getChatManager().colorMessage(Messages.KITS_RUNNER_NAME));
-        List<String> description = Utils.splitString(getPlugin().getChatManager().colorMessage(Messages.KITS_RUNNER_DESCRIPTION), 40);
-        setDescription(description.toArray(new String[0]));
-        KitRegistry.registerKit(this);
-    }
+  public RunnerKit() {
+    setLevel(getKitsConfig().getInt("Required-Level.Runner"));
+    setName(getPlugin().getChatManager().colorMessage(Messages.KITS_RUNNER_NAME));
+    List<String> description = Utils.splitString(getPlugin().getChatManager().colorMessage(Messages.KITS_RUNNER_DESCRIPTION), 40);
+    setDescription(description.toArray(new String[0]));
+    KitRegistry.registerKit(this);
+  }
 
-    @Override
-    public boolean isUnlockedByPlayer(Player player) {
-        return getPlugin().getUserManager().getUser(player).getStat(StatsStorage.StatisticType.LEVEL) >= this.getLevel() || player.hasPermission("villagedefense.kit.runner");
-    }
+  @Override
+  public boolean isUnlockedByPlayer(Player player) {
+    return getPlugin().getUserManager().getUser(player).getStat(StatsStorage.StatisticType.LEVEL) >= this.getLevel() || player.hasPermission("villagedefense.kit.runner");
+  }
 
-    @Override
+  @Override
   public void giveKitItems(Player player) {
-    player.getInventory().addItem(WeaponHelper.getEnchanted(new ItemStack(Material.STICK), new Enchantment[] {
-        Enchantment.KNOCKBACK, Enchantment.DAMAGE_UNDEAD, Enchantment.DURABILITY}, new int[] {2, 1, 10}));
+    player.getInventory().addItem(WeaponHelper.getEnchanted(new ItemStack(Material.STICK), new Enchantment[]{
+        Enchantment.KNOCKBACK, Enchantment.DAMAGE_UNDEAD, Enchantment.DURABILITY}, new int[]{2, 1, 10}));
     ArmorHelper.setColouredArmor(Color.BLUE, player);
     player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, Integer.MAX_VALUE, 2));
     player.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, Integer.MAX_VALUE, 1));

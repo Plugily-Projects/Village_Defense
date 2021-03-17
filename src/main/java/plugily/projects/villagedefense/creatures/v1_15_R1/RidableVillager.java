@@ -18,7 +18,21 @@
 
 package plugily.projects.villagedefense.creatures.v1_15_R1;
 
-import net.minecraft.server.v1_15_R1.*;
+import net.minecraft.server.v1_15_R1.EntityHuman;
+import net.minecraft.server.v1_15_R1.EntityInsentient;
+import net.minecraft.server.v1_15_R1.EntityTypes;
+import net.minecraft.server.v1_15_R1.EntityVillager;
+import net.minecraft.server.v1_15_R1.EntityZombie;
+import net.minecraft.server.v1_15_R1.Navigation;
+import net.minecraft.server.v1_15_R1.PathfinderGoalAvoidTarget;
+import net.minecraft.server.v1_15_R1.PathfinderGoalFloat;
+import net.minecraft.server.v1_15_R1.PathfinderGoalInteract;
+import net.minecraft.server.v1_15_R1.PathfinderGoalLookAtPlayer;
+import net.minecraft.server.v1_15_R1.PathfinderGoalLookAtTradingPlayer;
+import net.minecraft.server.v1_15_R1.PathfinderGoalMoveTowardsRestriction;
+import net.minecraft.server.v1_15_R1.PathfinderGoalRandomStroll;
+import net.minecraft.server.v1_15_R1.PathfinderGoalTradeWithPlayer;
+import net.minecraft.server.v1_15_R1.World;
 import org.bukkit.craftbukkit.v1_15_R1.CraftWorld;
 import plugily.projects.villagedefense.creatures.CreatureUtils;
 

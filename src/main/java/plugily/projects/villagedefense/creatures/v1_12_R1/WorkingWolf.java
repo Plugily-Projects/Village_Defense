@@ -18,7 +18,24 @@
 
 package plugily.projects.villagedefense.creatures.v1_12_R1;
 
-import net.minecraft.server.v1_12_R1.*;
+import net.minecraft.server.v1_12_R1.Entity;
+import net.minecraft.server.v1_12_R1.EntityHuman;
+import net.minecraft.server.v1_12_R1.EntityLiving;
+import net.minecraft.server.v1_12_R1.EntityWolf;
+import net.minecraft.server.v1_12_R1.EntityZombie;
+import net.minecraft.server.v1_12_R1.GenericAttributes;
+import net.minecraft.server.v1_12_R1.Navigation;
+import net.minecraft.server.v1_12_R1.PathfinderGoalFloat;
+import net.minecraft.server.v1_12_R1.PathfinderGoalFollowOwner;
+import net.minecraft.server.v1_12_R1.PathfinderGoalHurtByTarget;
+import net.minecraft.server.v1_12_R1.PathfinderGoalLeapAtTarget;
+import net.minecraft.server.v1_12_R1.PathfinderGoalLookAtPlayer;
+import net.minecraft.server.v1_12_R1.PathfinderGoalMeleeAttack;
+import net.minecraft.server.v1_12_R1.PathfinderGoalMoveTowardsRestriction;
+import net.minecraft.server.v1_12_R1.PathfinderGoalNearestAttackableTarget;
+import net.minecraft.server.v1_12_R1.PathfinderGoalRandomLookaround;
+import net.minecraft.server.v1_12_R1.PathfinderGoalRandomStroll;
+import net.minecraft.server.v1_12_R1.World;
 import org.bukkit.craftbukkit.v1_12_R1.CraftWorld;
 
 /**
@@ -54,13 +71,13 @@ public class WorkingWolf extends EntityWolf {
   @Override
   public void a(float f, float f1, float f2) {
     EntityLiving entityliving = null;
-    for (final Entity e : passengers) {
-      if (e instanceof EntityHuman) {
+    for(final Entity e : passengers) {
+      if(e instanceof EntityHuman) {
         entityliving = (EntityLiving) e;
         break;
       }
     }
-    if (entityliving == null) {
+    if(entityliving == null) {
       this.P = 0.5F;
       this.aR = 0.02F;
       this.k((float) 0.12);
@@ -74,7 +91,7 @@ public class WorkingWolf extends EntityWolf {
 
     f = entityliving.be * 0.5F * 0.75F;
     f2 = entityliving.bg;
-    if (f2 <= 0.0f) {
+    if(f2 <= 0.0f) {
       f2 *= 0.25F;
     }
     k(0.12f);

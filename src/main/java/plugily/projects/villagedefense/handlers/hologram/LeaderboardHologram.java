@@ -23,7 +23,6 @@ import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import plugily.projects.villagedefense.Main;
@@ -31,7 +30,11 @@ import plugily.projects.villagedefense.api.StatsStorage;
 import plugily.projects.villagedefense.handlers.hologram.messages.LanguageMessage;
 import plugily.projects.villagedefense.user.data.MysqlManager;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.UUID;
 
 /**
  * @author Plajer
@@ -64,50 +67,57 @@ public class LeaderboardHologram {
       @Override
       public void run() {
         hologram.clearLines();
-        String header = color(plugin.getLanguageConfig().getString(LanguageMessage.HOLOGRAMS_HEADER.getAccessor()));
+        String header = color(plugin, plugin.getLanguageConfig().getString(LanguageMessage.HOLOGRAMS_HEADER.getAccessor()));
         header = StringUtils.replace(header, "%amount%", String.valueOf(topAmount));
-        header = StringUtils.replace(header, "%statistic%", statisticToMessage() != null ? color(plugin.getLanguageConfig().getString(statisticToMessage().getAccessor())) : "null");
-        hologram.appendTextLine(header);
+        header = StringUtils.replace(header, "%statistic%", statisticToMessage() != null ? color(plugin, plugin.getLanguageConfig().getString(statisticToMessage().getAccessor())) : "null");
+        appendHoloText(plugin, header);
         int limit = topAmount;
-        LinkedHashMap<UUID, Integer> values = (LinkedHashMap<UUID, Integer>) StatsStorage.getStats(statistic);
+        java.util.Map<UUID, Integer> values = (LinkedHashMap<UUID, Integer>) StatsStorage.getStats(statistic);
         List<UUID> reverseKeys = new ArrayList<>(values.keySet());
         Collections.reverse(reverseKeys);
-        for (UUID key : reverseKeys) {
-          if (limit == 0) {
+        for(UUID key : reverseKeys) {
+          if(limit == 0) {
             break;
           }
-          String format = color(plugin.getLanguageConfig().getString(LanguageMessage.HOLOGRAMS_FORMAT.getAccessor()));
+          String format = color(plugin, plugin.getLanguageConfig().getString(LanguageMessage.HOLOGRAMS_FORMAT.getAccessor()));
           format = StringUtils.replace(format, "%place%", String.valueOf((topAmount - limit) + 1));
           format = StringUtils.replace(format, "%nickname%", getPlayerNameSafely(key, plugin));
           format = StringUtils.replace(format, "%value%", String.valueOf(values.get(key)));
-          hologram.appendTextLine(format);
+          appendHoloText(plugin, format);
           limit--;
         }
-        if (limit > 0) {
-          for (int i = 0; i < limit; limit--) {
-            String format = color(plugin.getLanguageConfig().getString(LanguageMessage.HOLOGRAMS_FORMAT_EMPTY.getAccessor()));
+        if(limit > 0) {
+          for(int i = 0; i < limit; limit--) {
+            String format = color(plugin, plugin.getLanguageConfig().getString(LanguageMessage.HOLOGRAMS_FORMAT_EMPTY.getAccessor()));
             format = StringUtils.replace(format, "%place%", String.valueOf((topAmount - limit) + 1));
-            hologram.appendTextLine(format);
+            appendHoloText(plugin, format);
           }
         }
       }
-    }.runTaskTimer(plugin, 0, 100);
+    }.runTaskTimerAsynchronously(plugin, 0, 100);
+  }
+
+  // We should perform hologram api in synchronous thread to do not cause "async catchop" problems
+  // See this method:
+  // github.com/filoghost/HolographicDisplays/blob/af038ac93f7a0d5c1d5a7abfa4a08176b9765d16/Plugin/src/main/java/com/gmail/filoghost/holographicdisplays/object/CraftHologram.java#L179
+  private void appendHoloText(final Main plugin, final String text) {
+    Bukkit.getScheduler().runTaskLater(plugin, () -> hologram.appendTextLine(text), 0L);
   }
 
   private String getPlayerNameSafely(UUID uuid, Main plugin) {
     try {
-      if (plugin.getUserManager().getDatabase() instanceof MysqlManager) {
+      if(plugin.getUserManager().getDatabase() instanceof MysqlManager) {
         return ((MysqlManager) plugin.getUserManager().getDatabase()).getDatabase().executeQuery("Select `name` FROM " + ((MysqlManager) plugin.getUserManager().getDatabase()).getTableName()
-                + " WHERE UUID='" + uuid.toString() + "';").toString();
+            + " WHERE UUID='" + uuid.toString() + "';").toString();
       }
       return Bukkit.getOfflinePlayer(uuid).getName();
-    } catch (NullPointerException ex) {
-      return color(plugin.getLanguageConfig().getString(LanguageMessage.HOLOGRAMS_UNKNOWN_PLAYER.getAccessor()));
+    } catch(NullPointerException ex) {
+      return color(plugin, plugin.getLanguageConfig().getString(LanguageMessage.HOLOGRAMS_UNKNOWN_PLAYER.getAccessor()));
     }
   }
 
   private LanguageMessage statisticToMessage() {
-    switch (statistic) {
+    switch(statistic) {
       case KILLS:
         return LanguageMessage.STATISTIC_KILLS;
       case DEATHS:
@@ -148,13 +158,13 @@ public class LeaderboardHologram {
 
   public void stopLeaderboardUpdateTask() {
     hologram.delete();
-    if (task != null && !task.isCancelled()) {
+    if(task != null && !task.isCancelled()) {
       task.cancel();
     }
   }
 
-  private String color(String message) {
-    return JavaPlugin.getPlugin(Main.class).getChatManager().colorRawMessage(message);
+  private String color(Main plugin, String message) {
+    return plugin.getChatManager().colorRawMessage(message);
   }
 
 }

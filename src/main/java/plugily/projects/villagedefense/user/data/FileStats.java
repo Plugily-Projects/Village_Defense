@@ -30,34 +30,34 @@ import plugily.projects.villagedefense.utils.constants.Constants;
  */
 public class FileStats implements UserDatabase {
 
-    private final Main plugin;
-    private final FileConfiguration config;
+  private final Main plugin;
+  private final FileConfiguration config;
 
-    public FileStats(Main plugin) {
-        this.plugin = plugin;
-        config = ConfigUtils.getConfig(plugin, Constants.Files.STATS.getName());
+  public FileStats(Main plugin) {
+    this.plugin = plugin;
+    config = ConfigUtils.getConfig(plugin, Constants.Files.STATS.getName());
+  }
+
+  @Override
+  public void saveStatistic(User user, StatsStorage.StatisticType stat) {
+    config.set(user.getPlayer().getUniqueId().toString() + "." + stat.getName(), user.getStat(stat));
+    ConfigUtils.saveConfig(plugin, config, Constants.Files.STATS.getName());
+  }
+
+  @Override
+  public void saveAllStatistic(User user) {
+    for(StatsStorage.StatisticType stat : StatsStorage.StatisticType.values()) {
+      if(!stat.isPersistent()) {
+        continue;
+      }
+      config.set(user.getPlayer().getUniqueId().toString() + "." + stat.getName(), user.getStat(stat));
     }
-
-    @Override
-    public void saveStatistic(User user, StatsStorage.StatisticType stat) {
-        config.set(user.getPlayer().getUniqueId().toString() + "." + stat.getName(), user.getStat(stat));
-        ConfigUtils.saveConfig(plugin, config, Constants.Files.STATS.getName());
-    }
-
-    @Override
-    public void saveAllStatistic(User user) {
-        for (StatsStorage.StatisticType stat : StatsStorage.StatisticType.values()) {
-            if (!stat.isPersistent()) {
-                continue;
-            }
-            config.set(user.getPlayer().getUniqueId().toString() + "." + stat.getName(), user.getStat(stat));
-        }
     ConfigUtils.saveConfig(plugin, config, Constants.Files.STATS.getName());
   }
 
   @Override
   public void loadStatistics(User user) {
-    for (StatsStorage.StatisticType stat : StatsStorage.StatisticType.values()) {
+    for(StatsStorage.StatisticType stat : StatsStorage.StatisticType.values()) {
       user.setStat(stat, config.getInt(user.getPlayer().getUniqueId().toString() + "." + stat.getName(), 0));
     }
   }

@@ -23,7 +23,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionType;
-import pl.plajerlair.commonsbox.minecraft.compat.XMaterial;
+import pl.plajerlair.commonsbox.minecraft.compat.xseries.XMaterial;
 import pl.plajerlair.commonsbox.minecraft.helper.ArmorHelper;
 import pl.plajerlair.commonsbox.minecraft.helper.WeaponHelper;
 import plugily.projects.villagedefense.api.StatsStorage;
@@ -69,10 +69,10 @@ public class HealerKit extends LevelKit {
 
   @Override
   public void reStock(Player player) {
-    for (int i = 0; i < 2; i++) {
+    for(int i = 0; i < 2; i++) {
       player.getInventory().addItem(Utils.getPotion(PotionType.INSTANT_HEAL, 2, true));
     }
-    for (int i = 0; i < 2; i++) {
+    for(int i = 0; i < 2; i++) {
       player.getInventory().addItem(Utils.getPotion(PotionType.REGEN, 1, true));
     }
   }

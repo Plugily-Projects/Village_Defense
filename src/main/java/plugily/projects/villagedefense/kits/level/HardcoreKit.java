@@ -20,11 +20,11 @@ package plugily.projects.villagedefense.kits.level;
 
 import org.bukkit.Color;
 import org.bukkit.Material;
-import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionType;
-import pl.plajerlair.commonsbox.minecraft.compat.XMaterial;
+import pl.plajerlair.commonsbox.minecraft.compat.VersionUtils;
+import pl.plajerlair.commonsbox.minecraft.compat.xseries.XMaterial;
 import pl.plajerlair.commonsbox.minecraft.helper.ArmorHelper;
 import pl.plajerlair.commonsbox.minecraft.helper.WeaponHelper;
 import plugily.projects.villagedefense.api.StatsStorage;
@@ -40,32 +40,32 @@ import java.util.List;
  */
 public class HardcoreKit extends LevelKit {
 
-    public HardcoreKit() {
-        setName(getPlugin().getChatManager().colorMessage(Messages.KITS_HARDCORE_NAME));
-        List<String> description = Utils.splitString(getPlugin().getChatManager().colorMessage(Messages.KITS_HARDCORE_DESCRIPTION), 40);
-        setDescription(description.toArray(new String[0]));
-        setLevel(getKitsConfig().getInt("Required-Level.Hardcore"));
-        KitRegistry.registerKit(this);
-    }
+  public HardcoreKit() {
+    setName(getPlugin().getChatManager().colorMessage(Messages.KITS_HARDCORE_NAME));
+    List<String> description = Utils.splitString(getPlugin().getChatManager().colorMessage(Messages.KITS_HARDCORE_DESCRIPTION), 40);
+    setDescription(description.toArray(new String[0]));
+    setLevel(getKitsConfig().getInt("Required-Level.Hardcore"));
+    KitRegistry.registerKit(this);
+  }
 
-    @Override
-    public boolean isUnlockedByPlayer(Player player) {
-        return getPlugin().getUserManager().getUser(player).getStat(StatsStorage.StatisticType.LEVEL) >= this.getLevel() || player.hasPermission("villagedefense.kit.hardcore");
-    }
+  @Override
+  public boolean isUnlockedByPlayer(Player player) {
+    return getPlugin().getUserManager().getUser(player).getStat(StatsStorage.StatisticType.LEVEL) >= this.getLevel() || player.hasPermission("villagedefense.kit.hardcore");
+  }
 
-    @Override
+  @Override
   public void giveKitItems(Player player) {
     player.getInventory().addItem(WeaponHelper.getUnBreakingSword(WeaponHelper.ResourceType.WOOD, 10));
     ArmorHelper.setColouredArmor(Color.WHITE, player);
     player.getInventory().addItem(Utils.getPotion(PotionType.INSTANT_HEAL, 2, true));
     player.getInventory().addItem(new ItemStack(Material.COOKIE, 10));
-    player.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(10.0);
+    VersionUtils.setMaxHealth(player, 10.0);
 
   }
 
   @Override
   public Material getMaterial() {
-      return XMaterial.PLAYER_HEAD.parseMaterial();
+    return XMaterial.PLAYER_HEAD.parseMaterial();
   }
 
   @Override

@@ -24,7 +24,7 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionType;
-import pl.plajerlair.commonsbox.minecraft.compat.XMaterial;
+import pl.plajerlair.commonsbox.minecraft.compat.xseries.XMaterial;
 import pl.plajerlair.commonsbox.minecraft.helper.ArmorHelper;
 import pl.plajerlair.commonsbox.minecraft.helper.WeaponHelper;
 import plugily.projects.villagedefense.api.StatsStorage;
@@ -40,23 +40,23 @@ import java.util.List;
  */
 public class TerminatorKit extends LevelKit {
 
-    public TerminatorKit() {
-        setName(getPlugin().getChatManager().colorMessage(Messages.KITS_TERMINATOR_NAME));
-        List<String> description = Utils.splitString(getPlugin().getChatManager().colorMessage(Messages.KITS_TERMINATOR_DESCRIPTION), 40);
-        setDescription(description.toArray(new String[0]));
-        setLevel(getKitsConfig().getInt("Required-Level.Terminator"));
-        KitRegistry.registerKit(this);
-    }
+  public TerminatorKit() {
+    setName(getPlugin().getChatManager().colorMessage(Messages.KITS_TERMINATOR_NAME));
+    List<String> description = Utils.splitString(getPlugin().getChatManager().colorMessage(Messages.KITS_TERMINATOR_DESCRIPTION), 40);
+    setDescription(description.toArray(new String[0]));
+    setLevel(getKitsConfig().getInt("Required-Level.Terminator"));
+    KitRegistry.registerKit(this);
+  }
 
-    @Override
-    public boolean isUnlockedByPlayer(Player player) {
-        return getPlugin().getUserManager().getUser(player).getStat(StatsStorage.StatisticType.LEVEL) >= this.getLevel() || player.hasPermission("villagedefense.kit.terminator");
-    }
+  @Override
+  public boolean isUnlockedByPlayer(Player player) {
+    return getPlugin().getUserManager().getUser(player).getStat(StatsStorage.StatisticType.LEVEL) >= this.getLevel() || player.hasPermission("villagedefense.kit.terminator");
+  }
 
-    @Override
+  @Override
   public void giveKitItems(Player player) {
     player.getInventory().addItem(WeaponHelper.getUnBreakingSword(WeaponHelper.ResourceType.STONE, 10));
-    player.getInventory().addItem(WeaponHelper.getEnchanted(new ItemStack(Material.BONE), new Enchantment[] {Enchantment.DAMAGE_ALL, Enchantment.KNOCKBACK}, new int[] {3, 7}));
+    player.getInventory().addItem(WeaponHelper.getEnchanted(new ItemStack(Material.BONE), new Enchantment[]{Enchantment.DAMAGE_ALL, Enchantment.KNOCKBACK}, new int[]{3, 7}));
     ArmorHelper.setColouredArmor(Color.BLACK, player);
     player.getInventory().addItem(new ItemStack(XMaterial.COOKED_PORKCHOP.parseMaterial(), 8));
     player.getInventory().addItem(Utils.getPotion(PotionType.STRENGTH, 2, true));
@@ -71,7 +71,7 @@ public class TerminatorKit extends LevelKit {
 
   @Override
   public void reStock(Player player) {
-    for (int i = 0; i < 2; i++) {
+    for(int i = 0; i < 2; i++) {
       player.getInventory().addItem(Utils.getPotion(PotionType.STRENGTH, 2, true));
     }
   }

@@ -25,7 +25,6 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
 import pl.plajerlair.commonsbox.minecraft.configuration.ConfigUtils;
 import pl.plajerlair.commonsbox.minecraft.serialization.LocationSerializer;
 import plugily.projects.villagedefense.Main;
@@ -62,12 +61,7 @@ public class ArenaRegistry {
    * @return true when player is in arena, false if otherwise
    */
   public static boolean isInArena(@NotNull Player player) {
-    for (Arena arena : arenas) {
-      if (arena.getPlayers().contains(player)) {
-        return true;
-      }
-    }
-    return false;
+    return getArena(player) != null;
   }
 
   /**
@@ -79,13 +73,13 @@ public class ArenaRegistry {
    */
   @Nullable
   public static Arena getArena(Player player) {
-    if (player == null || !player.isOnline()) {
+    if(player == null || !player.isOnline()) {
       return null;
     }
 
-    for (Arena loopArena : arenas) {
-      for (Player arenaPlayer : loopArena.getPlayers()) {
-        if (arenaPlayer.getUniqueId().equals(player.getUniqueId())) {
+    for(Arena loopArena : arenas) {
+      for(Player arenaPlayer : loopArena.getPlayers()) {
+        if(arenaPlayer.getUniqueId().equals(player.getUniqueId())) {
           return loopArena;
         }
       }
@@ -102,8 +96,8 @@ public class ArenaRegistry {
    */
   @Nullable
   public static Arena getArena(String id) {
-    for (Arena loopArena : arenas) {
-      if (loopArena.getId().equalsIgnoreCase(id)) {
+    for(Arena loopArena : arenas) {
+      if(loopArena.getId().equalsIgnoreCase(id)) {
         return loopArena;
       }
     }
@@ -127,8 +121,8 @@ public class ArenaRegistry {
     Debugger.debug("[ArenaRegistry] Initial arenas registration");
     long start = System.currentTimeMillis();
 
-    if (!arenas.isEmpty()) {
-      for (Arena arena : new ArrayList<>(arenas)) {
+    if(!arenas.isEmpty()) {
+      for(Arena arena : new ArrayList<>(arenas)) {
         arena.getMapRestorerManager().clearZombiesFromArena();
         arena.getMapRestorerManager().clearVillagersFromArena();
         arena.getMapRestorerManager().clearWolvesFromArena();
@@ -139,12 +133,12 @@ public class ArenaRegistry {
     FileConfiguration config = ConfigUtils.getConfig(plugin, Constants.Files.ARENAS.getName());
 
     ConfigurationSection section = config.getConfigurationSection("instances");
-    if (section == null) {
+    if(section == null) {
       Debugger.sendConsoleMsg(plugin.getChatManager().colorMessage(Messages.VALIDATOR_NO_INSTANCES_CREATED));
       return;
     }
-    for (String id : section.getKeys(false)) {
-      if (id.equalsIgnoreCase("default")) {
+    for(String id : section.getKeys(false)) {
+      if(id.equalsIgnoreCase("default")) {
         continue;
       }
       Arena arena = ArenaUtils.initializeArena(id);
@@ -157,15 +151,15 @@ public class ArenaRegistry {
       arena.setStartLocation(LocationSerializer.getLocation(config.getString(key + "Startlocation", "world,364.0,63.0,-72.0,0.0,0.0")));
       arena.setEndLocation(LocationSerializer.getLocation(config.getString(key + "Endlocation", "world,364.0,63.0,-72.0,0.0,0.0")));
       ArenaUtils.setWorld(arena);
-      if (!config.getBoolean(key + "isdone")) {
+      if(!config.getBoolean(key + "isdone")) {
         Debugger.sendConsoleMsg(plugin.getChatManager().colorMessage(Messages.VALIDATOR_INVALID_ARENA_CONFIGURATION).replace("%arena%", id).replace("%error%", "NOT VALIDATED"));
         arena.setReady(false);
         registerArena(arena);
         continue;
       }
 
-      if (config.isConfigurationSection(key + "zombiespawns")) {
-        for (String string : config.getConfigurationSection(key + "zombiespawns").getKeys(false)) {
+      if(config.isConfigurationSection(key + "zombiespawns")) {
+        for(String string : config.getConfigurationSection(key + "zombiespawns").getKeys(false)) {
           arena.addZombieSpawn(LocationSerializer.getLocation(config.getString(key + "zombiespawns." + string)));
         }
       } else {
@@ -175,8 +169,8 @@ public class ArenaRegistry {
         continue;
       }
 
-      if (config.isConfigurationSection(key + "villagerspawns")) {
-        for (String string : config.getConfigurationSection(key + "villagerspawns").getKeys(false)) {
+      if(config.isConfigurationSection(key + "villagerspawns")) {
+        for(String string : config.getConfigurationSection(key + "villagerspawns").getKeys(false)) {
           arena.addVillagerSpawn(LocationSerializer.getLocation(config.getString(key + "villagerspawns." + string)));
         }
       } else {
@@ -185,8 +179,8 @@ public class ArenaRegistry {
         registerArena(arena);
         continue;
       }
-      if (config.isConfigurationSection(key + "doors")) {
-        for (String string : config.getConfigurationSection(key + "doors").getKeys(false)) {
+      if(config.isConfigurationSection(key + "doors")) {
+        for(String string : config.getConfigurationSection(key + "doors").getKeys(false)) {
           String path = key + "doors." + string + ".";
           arena.getMapRestorerManager().addDoor(LocationSerializer.getLocation(config.getString(path + "location")),
               (byte) config.getInt(path + "byte"));
@@ -197,7 +191,7 @@ public class ArenaRegistry {
         registerArena(arena);
         continue;
       }
-      if (arena.getStartLocation().getWorld().getDifficulty() == Difficulty.PEACEFUL){
+      if(arena.getStartLocation().getWorld().getDifficulty() == Difficulty.PEACEFUL) {
         Debugger.sendConsoleMsg(plugin.getChatManager().colorMessage(Messages.VALIDATOR_INVALID_ARENA_CONFIGURATION).replace("%arena%", id).replace("%error%", "THERE IS A WRONG " +
             "DIFFICULTY -> SET IT TO ANOTHER ONE THAN PEACEFUL"));
         arena.setReady(false);
@@ -221,13 +215,13 @@ public class ArenaRegistry {
   }
 
   public static void shuffleBungeeArena() {
-    if (!arenas.isEmpty()) {
+    if(!arenas.isEmpty()) {
       bungeeArena = ThreadLocalRandom.current().nextInt(arenas.size());
     }
   }
 
   public static int getBungeeArena() {
-    if (bungeeArena == -999 && !arenas.isEmpty()) {
+    if(bungeeArena == -999 && !arenas.isEmpty()) {
       bungeeArena = ThreadLocalRandom.current().nextInt(arenas.size());
     }
     return bungeeArena;

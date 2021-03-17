@@ -32,6 +32,7 @@ import plugily.projects.villagedefense.arena.Arena;
 import plugily.projects.villagedefense.arena.ArenaState;
 import plugily.projects.villagedefense.arena.options.ArenaOption;
 import plugily.projects.villagedefense.handlers.language.LanguageManager;
+import plugily.projects.villagedefense.handlers.reward.Reward;
 import plugily.projects.villagedefense.user.User;
 
 import java.util.ArrayList;
@@ -84,10 +85,11 @@ public class ScoreboardManager {
    * @see User
    */
   public void removeScoreboard(User user) {
-    for (Scoreboard board : scoreboards) {
-      if (board.getHolder().equals(user.getPlayer())) {
+    for(Scoreboard board : scoreboards) {
+      if(board.getHolder().equals(user.getPlayer())) {
         scoreboards.remove(board);
         board.deactivate();
+        plugin.getRewardsHandler().performReward(user.getPlayer(), Reward.RewardType.SCOREBOARD_REMOVED);
         return;
       }
     }
@@ -104,17 +106,17 @@ public class ScoreboardManager {
   private List<Entry> formatScoreboard(User user) {
     EntryBuilder builder = new EntryBuilder();
     List<String> lines;
-    if (arena.getArenaState() == ArenaState.IN_GAME) {
+    if(arena.getArenaState() == ArenaState.IN_GAME) {
       lines = LanguageManager.getLanguageList("Scoreboard.Content.Playing" + (arena.isFighting() ? "" : "-Waiting"));
     } else {
       //apply fix
-      if (arena.getArenaState() == ArenaState.ENDING) {
+      if(arena.getArenaState() == ArenaState.ENDING) {
         lines = LanguageManager.getLanguageList("Scoreboard.Content.Playing");
       } else {
         lines = LanguageManager.getLanguageList("Scoreboard.Content." + arena.getArenaState().getFormattedName());
       }
     }
-    for (String line : lines) {
+    for(String line : lines) {
       builder.next(formatScoreboardLine(line, user));
     }
     return builder.build();
@@ -128,14 +130,15 @@ public class ScoreboardManager {
     formattedLine = StringUtils.replace(formattedLine, "%PLAYERS_LEFT%", String.valueOf(arena.getPlayersLeft().size()));
     formattedLine = StringUtils.replace(formattedLine, "%VILLAGERS%", String.valueOf(arena.getVillagers().size()));
     formattedLine = StringUtils.replace(formattedLine, "%ORBS%", String.valueOf(user.getStat(StatsStorage.StatisticType.ORBS)));
-    if (arena.getZombiesLeft() > 0 && formattedLine.contains("%ZOMBIES%")) {
+    formattedLine = StringUtils.replace(formattedLine, "%WAVE%", String.valueOf(arena.getWave()));
+    if(arena.getZombiesLeft() > 0 && formattedLine.contains("%ZOMBIES%")) {
       formattedLine = StringUtils.replace(formattedLine, "%ZOMBIES%", String.valueOf(arena.getZombiesLeft()));
     }
     formattedLine = StringUtils.replace(formattedLine, "%ROTTEN_FLESH%", String.valueOf(arena.getOption(ArenaOption.ROTTEN_FLESH_AMOUNT)));
     formattedLine = StringUtils.replace(formattedLine, "%ARENA_NAME%", arena.getMapName());
     formattedLine = StringUtils.replace(formattedLine, "%ARENA_ID%", arena.getId());
     formattedLine = plugin.getChatManager().colorRawMessage(formattedLine);
-    if (plugin.getServer().getPluginManager().isPluginEnabled("PlaceholderAPI")) {
+    if(plugin.getServer().getPluginManager().isPluginEnabled("PlaceholderAPI")) {
       formattedLine = PlaceholderAPI.setPlaceholders(user.getPlayer(), formattedLine);
     }
     return formattedLine;

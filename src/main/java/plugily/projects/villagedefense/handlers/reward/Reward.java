@@ -46,10 +46,10 @@ public class Reward {
     String processedCode = rawCode;
 
     //set reward executor based on provided code
-    if (rawCode.contains("p:")) {
+    if(rawCode.contains("p:")) {
       this.executor = RewardExecutor.PLAYER;
       processedCode = StringUtils.replace(processedCode, "p:", "");
-    } else if (rawCode.contains("script:")) {
+    } else if(rawCode.contains("script:")) {
       this.executor = RewardExecutor.SCRIPT;
       processedCode = StringUtils.replace(processedCode, "script:", "");
     } else {
@@ -57,10 +57,10 @@ public class Reward {
     }
 
     //search for chance modifier
-    if (processedCode.contains("chance(")) {
+    if(processedCode.contains("chance(")) {
       int loc = processedCode.indexOf(')');
       //modifier is invalid
-      if (loc == -1) {
+      if(loc == -1) {
         Bukkit.getLogger().log(Level.WARNING, "[VillageDefense] rewards.yml configuration is broken! Make sure you did not forget using ) character in chance condition! Command: {0}", rawCode);
         //invalid code, 0% chance to execute
         this.chance = 0.0;
@@ -97,7 +97,7 @@ public class Reward {
   }
 
   public enum RewardType {
-    END_GAME("endgame"), END_WAVE("endwave"), ZOMBIE_KILL("zombiekill");
+    END_GAME("endgame"), END_WAVE("endwave"), ZOMBIE_KILL("zombiekill"), PLAYER_DEATH("playerDeath"), VILLAGER_DEATH("villagerDeath"), SCOREBOARD_REMOVED("scoreboard_remove");
 
     private final String path;
 
@@ -108,7 +108,6 @@ public class Reward {
     public String getPath() {
       return path;
     }
-
   }
 
   public enum RewardExecutor {

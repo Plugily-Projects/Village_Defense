@@ -54,49 +54,65 @@ public class RewardsFactory {
   }
 
   public void performReward(Arena arena, Reward.RewardType type) {
-    if (!enabled) {
+    if(!enabled) {
       return;
     }
-    for (Player p : arena.getPlayers()) {
+    for(Player p : arena.getPlayers()) {
       performReward(p, type);
     }
   }
 
   public void performReward(Player player, Reward.RewardType type) {
-    if (!enabled) {
+    performReward(player, null, type);
+  }
+
+  public void performReward(Player player, Arena arena, Reward.RewardType type) {
+    if(!enabled) {
       return;
     }
-    if (!config.contains("rewards")) {
+    if(!config.contains("rewards")) {
       Debugger.debug(Level.WARNING, "[RewardsFactory] Rewards section not found in the file. Rewards won't be loaded.");
       return;
     }
-    Arena arena = ArenaRegistry.getArena(player);
-    if (arena == null) {
+
+    if (arena == null && player != null)
+      arena = ArenaRegistry.getArena(player);
+
+    if (arena == null)
       return;
-    }
-    for (Reward reward : rewards) {
-      if (reward.getType() == type) {
+
+    for(Reward reward : rewards) {
+      if(reward.getType() == type) {
         //reward isn't for this wave
-        if (type == Reward.RewardType.END_WAVE && reward.getWaveExecute() != arena.getWave()) {
+        if(type == Reward.RewardType.END_WAVE && reward.getWaveExecute() != arena.getWave()) {
           continue;
         }
         //cannot execute if chance wasn't met
-        if (reward.getChance() != -1 && ThreadLocalRandom.current().nextInt(0, 100) > reward.getChance()) {
+        if(reward.getChance() != -1 && ThreadLocalRandom.current().nextInt(0, 100) > reward.getChance()) {
           continue;
         }
+
         String command = reward.getExecutableCode();
-        command = StringUtils.replace(command, "%PLAYER%", player.getName());
+
+        if (player != null)
+          command = StringUtils.replace(command, "%PLAYER%", player.getName());
+
         command = formatCommandPlaceholders(command, arena);
-        switch (reward.getExecutor()) {
+        switch(reward.getExecutor()) {
           case CONSOLE:
             Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), command);
             break;
           case PLAYER:
-            player.performCommand(command);
+            if (player != null)
+              player.performCommand(command);
+
             break;
           case SCRIPT:
             ScriptEngine engine = new ScriptEngine();
-            engine.setValue("player", player);
+
+            if (player != null)
+              engine.setValue("player", player);
+
             engine.setValue("server", Bukkit.getServer());
             engine.setValue("arena", arena);
             engine.execute(command);
@@ -118,34 +134,34 @@ public class RewardsFactory {
   }
 
   private void registerRewards() {
-    if (!enabled) {
+    if(!enabled) {
       return;
     }
     Debugger.debug("[RewardsFactory] Starting rewards registration");
     long start = System.currentTimeMillis();
 
     Map<Reward.RewardType, Integer> registeredRewards = new EnumMap<>(Reward.RewardType.class);
-    for (Reward.RewardType rewardType : Reward.RewardType.values()) {
-      if (rewardType == Reward.RewardType.END_WAVE) {
+    for(Reward.RewardType rewardType : Reward.RewardType.values()) {
+      if(rewardType == Reward.RewardType.END_WAVE) {
         ConfigurationSection section = config.getConfigurationSection("rewards." + rewardType.getPath());
-        if (section == null) {
+        if(section == null) {
           Debugger.debug(Level.WARNING, "Rewards section {0} is missing! Was it manually removed?", rewardType.getPath());
           continue;
         }
-        for (String key : section.getKeys(false)) {
-          for (String reward : config.getStringList("rewards." + rewardType.getPath() + "." + key)) {
+        for(String key : section.getKeys(false)) {
+          for(String reward : config.getStringList("rewards." + rewardType.getPath() + "." + key)) {
             rewards.add(new Reward(rewardType, reward, Integer.parseInt(key)));
             registeredRewards.put(rewardType, registeredRewards.getOrDefault(rewardType, 0) + 1);
           }
         }
         continue;
       }
-      for (String reward : config.getStringList("rewards." + rewardType.getPath())) {
+      for(String reward : config.getStringList("rewards." + rewardType.getPath())) {
         rewards.add(new Reward(rewardType, reward));
         registeredRewards.put(rewardType, registeredRewards.getOrDefault(rewardType, 0) + 1);
       }
     }
-    for (Map.Entry<Reward.RewardType, Integer> entry : registeredRewards.entrySet()) {
+    for(Map.Entry<Reward.RewardType, Integer> entry : registeredRewards.entrySet()) {
       Debugger.debug("[RewardsFactory] Registered {0} {1} rewards!", entry.getValue(), entry.getKey().name());
     }
     Debugger.debug("[RewardsFactory] Registered all rewards took {0}ms", System.currentTimeMillis() - start);

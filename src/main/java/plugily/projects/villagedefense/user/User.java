@@ -92,10 +92,10 @@ public class User {
   }
 
   public int getStat(StatsStorage.StatisticType s) {
-    if (!stats.containsKey(s)) {
+    if(!stats.containsKey(s)) {
       stats.put(s, 0);
       return 0;
-    } else if (stats.get(s) == null) {
+    } else if(stats.get(s) == null) {
       return 0;
     }
     return stats.get(s);
@@ -122,7 +122,7 @@ public class User {
   }
 
   public boolean checkCanCastCooldownAndMessage(String cooldown) {
-    if (getCooldown(cooldown) <= 0) {
+    if(getCooldown(cooldown) <= 0) {
       return true;
     }
     String message = plugin.getChatManager().colorMessage(Messages.KITS_ABILITY_STILL_ON_COOLDOWN);

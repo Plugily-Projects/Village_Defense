@@ -27,29 +27,29 @@ import java.util.List;
  */
 public class CompletableArgument {
 
-    private final String mainCommand;
-    private final String argument;
-    private final List<String> completions;
+  private final String mainCommand;
+  private final String argument;
+  private final List<String> completions;
 
-    public CompletableArgument(String mainCommand, String argument, List<String> completions) {
-        this.mainCommand = mainCommand;
-        this.argument = argument;
-        this.completions = completions;
-    }
+  public CompletableArgument(String mainCommand, String argument, List<String> completions) {
+    this.mainCommand = mainCommand;
+    this.argument = argument;
+    this.completions = completions;
+  }
 
-    /**
-     * @return main command of the argument
-     */
-    public String getMainCommand() {
-        return mainCommand;
-    }
+  /**
+   * @return main command of the argument
+   */
+  public String getMainCommand() {
+    return mainCommand;
+  }
 
-    /**
-     * @return argument name
-     */
-    public String getArgument() {
-        return argument;
-    }
+  /**
+   * @return argument name
+   */
+  public String getArgument() {
+    return argument;
+  }
 
   /**
    * @return all possible completions for this command argument

@@ -38,20 +38,20 @@ import java.util.List;
  */
 public class ArcherKit extends LevelKit {
 
-    public ArcherKit() {
-        setLevel(getKitsConfig().getInt("Required-Level.Archer"));
-        setName(getPlugin().getChatManager().colorMessage(Messages.KITS_ARCHER_NAME));
-        List<String> description = Utils.splitString(getPlugin().getChatManager().colorMessage(Messages.KITS_ARCHER_DESCRIPTION), 40);
-        setDescription(description.toArray(new String[0]));
-        KitRegistry.registerKit(this);
-    }
+  public ArcherKit() {
+    setLevel(getKitsConfig().getInt("Required-Level.Archer"));
+    setName(getPlugin().getChatManager().colorMessage(Messages.KITS_ARCHER_NAME));
+    List<String> description = Utils.splitString(getPlugin().getChatManager().colorMessage(Messages.KITS_ARCHER_DESCRIPTION), 40);
+    setDescription(description.toArray(new String[0]));
+    KitRegistry.registerKit(this);
+  }
 
-    @Override
-    public boolean isUnlockedByPlayer(Player player) {
-        return getPlugin().getUserManager().getUser(player).getStat(StatsStorage.StatisticType.LEVEL) >= this.getLevel() || player.hasPermission("villagedefense.kit.archer");
-    }
+  @Override
+  public boolean isUnlockedByPlayer(Player player) {
+    return getPlugin().getUserManager().getUser(player).getStat(StatsStorage.StatisticType.LEVEL) >= this.getLevel() || player.hasPermission("villagedefense.kit.archer");
+  }
 
-    @Override
+  @Override
   public void giveKitItems(Player player) {
     ArmorHelper.setColouredArmor(Color.GREEN, player);
     player.getInventory().addItem(WeaponHelper.getUnBreakingSword(WeaponHelper.ResourceType.WOOD, 10));

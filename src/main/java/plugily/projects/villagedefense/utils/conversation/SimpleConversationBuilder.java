@@ -31,7 +31,7 @@ import plugily.projects.villagedefense.Main;
  */
 public class SimpleConversationBuilder {
 
-    private final ConversationFactory conversationFactory;
+  private final ConversationFactory conversationFactory;
 
   public SimpleConversationBuilder(Main plugin) {
     conversationFactory = new ConversationFactory(plugin)
@@ -40,7 +40,7 @@ public class SimpleConversationBuilder {
         .withEscapeSequence("cancel")
         .withTimeout(30)
         .addConversationAbandonedListener(listener -> {
-          if (listener.gracefulExit()) {
+          if(listener.gracefulExit()) {
             return;
           }
           listener.getContext().getForWhom().sendRawMessage(plugin.getChatManager().colorRawMessage("&7Operation cancelled!"));

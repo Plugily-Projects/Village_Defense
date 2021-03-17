@@ -23,13 +23,21 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import pl.plajerlair.commonsbox.minecraft.compat.ServerVersion;
-import pl.plajerlair.commonsbox.minecraft.compat.XMaterial;
+import pl.plajerlair.commonsbox.minecraft.compat.xseries.XMaterial;
 import pl.plajerlair.commonsbox.minecraft.helper.ArmorHelper;
 import pl.plajerlair.commonsbox.minecraft.helper.WeaponHelper;
 import plugily.projects.villagedefense.api.StatsStorage;
 import plugily.projects.villagedefense.arena.Arena;
 import plugily.projects.villagedefense.arena.ArenaRegistry;
-import plugily.projects.villagedefense.arena.initializers.*;
+import plugily.projects.villagedefense.arena.initializers.ArenaInitializer1_11_R1;
+import plugily.projects.villagedefense.arena.initializers.ArenaInitializer1_12_R1;
+import plugily.projects.villagedefense.arena.initializers.ArenaInitializer1_13_R1;
+import plugily.projects.villagedefense.arena.initializers.ArenaInitializer1_13_R2;
+import plugily.projects.villagedefense.arena.initializers.ArenaInitializer1_14_R1;
+import plugily.projects.villagedefense.arena.initializers.ArenaInitializer1_15_R1;
+import plugily.projects.villagedefense.arena.initializers.ArenaInitializer1_16_R1;
+import plugily.projects.villagedefense.arena.initializers.ArenaInitializer1_16_R2;
+import plugily.projects.villagedefense.arena.initializers.ArenaInitializer1_16_R3;
 import plugily.projects.villagedefense.handlers.language.Messages;
 import plugily.projects.villagedefense.kits.KitRegistry;
 import plugily.projects.villagedefense.kits.basekits.LevelKit;
@@ -61,7 +69,7 @@ public class GolemFriendKit extends LevelKit {
     ArmorHelper.setColouredArmor(Color.WHITE, player);
     player.getInventory().addItem(new ItemStack(XMaterial.COOKED_PORKCHOP.parseMaterial(), 8));
     Arena arena = ArenaRegistry.getArena(player);
-    if (arena == null) {
+    if(arena == null) {
       return;
     }
     spawnGolem(player, arena);
@@ -75,34 +83,34 @@ public class GolemFriendKit extends LevelKit {
   @Override
   public void reStock(Player player) {
     Arena arena = ArenaRegistry.getArena(player);
-    if (arena.getWave() % 5 == 0) {
+    if(arena.getWave() % 5 == 0) {
       spawnGolem(player, arena);
     }
   }
 
   private void spawnGolem(Player player, Arena arena) {
-    if (ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_11_R1)) {
+    if(ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_11_R1)) {
       ArenaInitializer1_11_R1 initializer = (ArenaInitializer1_11_R1) arena;
       initializer.spawnGolem(initializer.getStartLocation(), player);
-    } else if (ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_12_R1)) {
+    } else if(ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_12_R1)) {
       ArenaInitializer1_12_R1 initializer = (ArenaInitializer1_12_R1) arena;
       initializer.spawnGolem(initializer.getStartLocation(), player);
-    } else if (ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_13_R1)) {
+    } else if(ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_13_R1)) {
       ArenaInitializer1_13_R1 initializer = (ArenaInitializer1_13_R1) arena;
       initializer.spawnGolem(initializer.getStartLocation(), player);
-    } else if (ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_13_R2)) {
+    } else if(ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_13_R2)) {
       ArenaInitializer1_13_R2 initializer = (ArenaInitializer1_13_R2) arena;
       initializer.spawnGolem(initializer.getStartLocation(), player);
-    } else if (ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_14_R1)) {
+    } else if(ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_14_R1)) {
       ArenaInitializer1_14_R1 initializer = (ArenaInitializer1_14_R1) arena;
       initializer.spawnGolem(initializer.getStartLocation(), player);
-    } else if (ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_15_R1)) {
+    } else if(ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_15_R1)) {
       ArenaInitializer1_15_R1 initializer = (ArenaInitializer1_15_R1) arena;
       initializer.spawnGolem(initializer.getStartLocation(), player);
-    } else if (ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_16_R1)) {
+    } else if(ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_16_R1)) {
       ArenaInitializer1_16_R1 initializer = (ArenaInitializer1_16_R1) arena;
       initializer.spawnGolem(initializer.getStartLocation(), player);
-    } else if (ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_16_R2)) {
+    } else if(ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_16_R2)) {
       ArenaInitializer1_16_R2 initializer = (ArenaInitializer1_16_R2) arena;
       initializer.spawnGolem(initializer.getStartLocation(), player);
     } else {

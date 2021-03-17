@@ -29,6 +29,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.server.ServerListPingEvent;
 import pl.plajerlair.commonsbox.minecraft.configuration.ConfigUtils;
+import pl.plajerlair.commonsbox.minecraft.misc.stuff.ComplementAccessor;
 import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.arena.Arena;
 import plugily.projects.villagedefense.arena.ArenaManager;
@@ -48,7 +49,7 @@ public class BungeeManager implements Listener {
   private final Main plugin;
   private final FileConfiguration config;
   private final Map<ArenaState, String> gameStateToString = new EnumMap<>(ArenaState.class);
-  private final String MOTD;
+  private final String motd;
 
   public BungeeManager(Main plugin) {
     this.plugin = plugin;
@@ -58,51 +59,46 @@ public class BungeeManager implements Listener {
     gameStateToString.put(ArenaState.IN_GAME, plugin.getChatManager().colorRawMessage(config.getString("MOTD.Game-States.In-Game", "In-Game")));
     gameStateToString.put(ArenaState.ENDING, plugin.getChatManager().colorRawMessage(config.getString("MOTD.Game-States.Ending", "Ending")));
     gameStateToString.put(ArenaState.RESTARTING, plugin.getChatManager().colorRawMessage(config.getString("MOTD.Game-States.Restarting", "Restarting")));
-    MOTD = plugin.getChatManager().colorRawMessage(config.getString("MOTD.Message", "The actual game state of vd is %state%"));
+    motd = plugin.getChatManager().colorRawMessage(config.getString("MOTD.Message", "The actual game state of vd is %state%"));
     plugin.getServer().getMessenger().registerOutgoingPluginChannel(plugin, "BungeeCord");
     plugin.getServer().getPluginManager().registerEvents(this, plugin);
   }
 
   public void connectToHub(Player player) {
-    if (!config.getBoolean("Connect-To-Hub", true)) {
+    if(!config.getBoolean("Connect-To-Hub", true)) {
       return;
     }
-    Debugger.debug(Level.INFO, "Server name that we try to connect {0} ({1})", getHubServerName(), player.getName());
+    String serverName = config.getString("Hub");
+    Debugger.debug(Level.INFO, "Server name that we try to connect {0} ({1})", serverName, player.getName());
     ByteArrayDataOutput out = ByteStreams.newDataOutput();
     out.writeUTF("Connect");
-    out.writeUTF(getHubServerName());
+    out.writeUTF(serverName);
     player.sendPluginMessage(plugin, "BungeeCord", out.toByteArray());
   }
 
-
-  private String getHubServerName() {
-    return config.getString("Hub");
-  }
-
-
   @EventHandler(priority = EventPriority.HIGHEST)
   public void onServerListPing(ServerListPingEvent event) {
-    if (!config.getBoolean("MOTD.Manager", false) || ArenaRegistry.getArenas().isEmpty()) {
+    if(!config.getBoolean("MOTD.Manager") || ArenaRegistry.getArenas().isEmpty()) {
       return;
     }
     Arena arena = ArenaRegistry.getArenas().get(ArenaRegistry.getBungeeArena());
     event.setMaxPlayers(arena.getMaximumPlayers());
-    event.setMotd(MOTD.replace("%state%", gameStateToString.get(arena.getArenaState())));
+    ComplementAccessor.getComplement().setMotd(event, motd.replace("%state%", gameStateToString.get(arena.getArenaState())));
   }
 
 
   @EventHandler(priority = EventPriority.HIGHEST)
   public void onJoin(PlayerJoinEvent event) {
-    event.setJoinMessage("");
-    if (!ArenaRegistry.getArenas().isEmpty()) {
+    ComplementAccessor.getComplement().setJoinMessage(event, "");
+    if(!ArenaRegistry.getArenas().isEmpty()) {
       ArenaManager.joinAttempt(event.getPlayer(), ArenaRegistry.getArenas().get(ArenaRegistry.getBungeeArena()));
     }
   }
 
   @EventHandler(priority = EventPriority.HIGHEST)
   public void onQuit(PlayerQuitEvent event) {
-    event.setQuitMessage("");
-    if (ArenaRegistry.getArena(event.getPlayer()) != null && !ArenaRegistry.getArenas().isEmpty()) {
+    ComplementAccessor.getComplement().setQuitMessage(event, "");
+    if(ArenaRegistry.getArena(event.getPlayer()) != null && !ArenaRegistry.getArenas().isEmpty()) {
       ArenaManager.leaveAttempt(event.getPlayer(), ArenaRegistry.getArenas().get(ArenaRegistry.getBungeeArena()));
     }
 

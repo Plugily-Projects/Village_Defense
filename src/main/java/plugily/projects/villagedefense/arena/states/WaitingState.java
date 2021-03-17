@@ -18,6 +18,8 @@
 
 package plugily.projects.villagedefense.arena.states;
 
+import pl.plajerlair.commonsbox.minecraft.compat.ServerVersion;
+import plugily.projects.villagedefense.ConfigPreferences;
 import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.arena.Arena;
 import plugily.projects.villagedefense.arena.ArenaState;
@@ -39,14 +41,16 @@ public class WaitingState implements ArenaStateHandler {
 
   @Override
   public void handleCall(Arena arena) {
-    if (arena.getPlayers().size() < arena.getMinimumPlayers()) {
-      if (arena.getTimer() <= 0) {
+    if(arena.getPlayers().size() < arena.getMinimumPlayers()) {
+      if(arena.getTimer() <= 0) {
         arena.setTimer(45);
         plugin.getChatManager().broadcastMessage(arena, plugin.getChatManager().formatMessage(arena, plugin.getChatManager().colorMessage(Messages.LOBBY_MESSAGES_WAITING_FOR_PLAYERS), arena.getMinimumPlayers()));
         return;
       }
     } else {
-      arena.getGameBar().setTitle(plugin.getChatManager().colorMessage(Messages.BOSSBAR_WAITING_FOR_PLAYERS));
+      if(plugin.getConfigPreferences().getOption(ConfigPreferences.Option.BOSSBAR_ENABLED) && ServerVersion.Version.isCurrentEqualOrHigher(ServerVersion.Version.v1_9_R1)) {
+        arena.getGameBar().setTitle(plugin.getChatManager().colorMessage(Messages.BOSSBAR_WAITING_FOR_PLAYERS));
+      }
       plugin.getChatManager().broadcast(arena, Messages.LOBBY_MESSAGES_ENOUGH_PLAYERS_TO_START);
       arena.setArenaState(ArenaState.STARTING);
       arena.setTimer(plugin.getConfig().getInt("Starting-Waiting-Time", 60));

@@ -20,8 +20,6 @@ package plugily.projects.villagedefense.kits.premium;
 
 import org.bukkit.Color;
 import org.bukkit.Material;
-import org.bukkit.Particle;
-import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Zombie;
@@ -30,7 +28,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionType;
-import pl.plajerlair.commonsbox.minecraft.compat.XMaterial;
+import pl.plajerlair.commonsbox.minecraft.compat.VersionUtils;
+import pl.plajerlair.commonsbox.minecraft.compat.xseries.XMaterial;
 import pl.plajerlair.commonsbox.minecraft.helper.ArmorHelper;
 import pl.plajerlair.commonsbox.minecraft.helper.WeaponHelper;
 import plugily.projects.villagedefense.handlers.PermissionsManager;
@@ -80,28 +79,28 @@ public class MedicKit extends PremiumKit implements Listener {
 
   @EventHandler
   public void onZombieHit(EntityDamageByEntityEvent e) {
-    if (!(e.getEntity() instanceof Zombie) || !(e.getDamager() instanceof Player)) {
+    if(!(e.getEntity() instanceof Zombie) || !(e.getDamager() instanceof Player)) {
       return;
     }
     User user = getPlugin().getUserManager().getUser((Player) e.getDamager());
-    if (!(user.getKit() instanceof MedicKit) || Math.random() > 0.1) {
+    if(!(user.getKit() instanceof MedicKit) || Math.random() > 0.1) {
       return;
     }
     healNearbyPlayers(e.getDamager());
   }
 
   private void healNearbyPlayers(Entity en) {
-    for (Entity entity : en.getNearbyEntities(5, 5, 5)) {
-      if (!(entity instanceof Player)) {
+    for(Entity entity : en.getNearbyEntities(5, 5, 5)) {
+      if(!(entity instanceof Player)) {
         continue;
       }
       Player player = (Player) entity;
-      if (player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue() > (player.getHealth() + 1)) {
+      if(VersionUtils.getMaxHealth(player) > (player.getHealth() + 1)) {
         player.setHealth(player.getHealth() + 1);
       } else {
-        player.setHealth(player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue());
+        player.setHealth(VersionUtils.getMaxHealth(player));
       }
-      player.getEyeLocation().getWorld().spawnParticle(Particle.HEART, player.getLocation(), 20);
+      VersionUtils.sendParticles("HEART", player, player.getLocation(), 20);
     }
   }
 

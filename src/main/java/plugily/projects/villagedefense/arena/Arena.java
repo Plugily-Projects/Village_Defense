@@ -23,7 +23,13 @@ import org.bukkit.Location;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
-import org.bukkit.entity.*;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.IronGolem;
+import org.bukkit.entity.Item;
+import org.bukkit.entity.Player;
+import org.bukkit.entity.Villager;
+import org.bukkit.entity.Wolf;
+import org.bukkit.entity.Zombie;
 import org.bukkit.permissions.PermissionAttachmentInfo;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
@@ -34,20 +40,31 @@ import pl.plajerlair.commonsbox.minecraft.configuration.ConfigUtils;
 import plugily.projects.villagedefense.ConfigPreferences;
 import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.api.event.game.VillageGameStateChangeEvent;
-import plugily.projects.villagedefense.arena.managers.maprestorer.MapRestorerManager;
 import plugily.projects.villagedefense.arena.managers.ScoreboardManager;
 import plugily.projects.villagedefense.arena.managers.ShopManager;
 import plugily.projects.villagedefense.arena.managers.ZombieSpawnManager;
+import plugily.projects.villagedefense.arena.managers.maprestorer.MapRestorerManager;
 import plugily.projects.villagedefense.arena.managers.maprestorer.MapRestorerManagerLegacy;
 import plugily.projects.villagedefense.arena.options.ArenaOption;
-import plugily.projects.villagedefense.arena.states.*;
+import plugily.projects.villagedefense.arena.states.ArenaStateHandler;
+import plugily.projects.villagedefense.arena.states.EndingState;
+import plugily.projects.villagedefense.arena.states.InGameState;
+import plugily.projects.villagedefense.arena.states.RestartingState;
+import plugily.projects.villagedefense.arena.states.StartingState;
+import plugily.projects.villagedefense.arena.states.WaitingState;
 import plugily.projects.villagedefense.handlers.language.Messages;
 import plugily.projects.villagedefense.user.User;
 import plugily.projects.villagedefense.utils.Debugger;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.EnumMap;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
+import java.util.Set;
 import java.util.logging.Level;
-import java.util.stream.Collectors;
 
 /**
  * Created by Tom on 12/08/2014.
@@ -93,28 +110,30 @@ public abstract class Arena extends BukkitRunnable {
     gameStateHandlers.put(ArenaState.IN_GAME, new InGameState());
     gameStateHandlers.put(ArenaState.ENDING, new EndingState());
     gameStateHandlers.put(ArenaState.RESTARTING, new RestartingState());
-    for (ArenaStateHandler handler : gameStateHandlers.values()) {
+    for(ArenaStateHandler handler : gameStateHandlers.values()) {
       handler.init(plugin);
     }
   }
 
   public Arena(String id) {
     this.id = id == null ? "" : id;
-    gameBar = Bukkit.createBossBar(plugin.getChatManager().colorMessage(Messages.BOSSBAR_MAIN_TITLE), BarColor.BLUE, BarStyle.SOLID);
+    if(plugin.getConfigPreferences().getOption(ConfigPreferences.Option.BOSSBAR_ENABLED) && ServerVersion.Version.isCurrentEqualOrHigher(ServerVersion.Version.v1_9_R1)) {
+      gameBar = Bukkit.createBossBar(plugin.getChatManager().colorMessage(Messages.BOSSBAR_MAIN_TITLE), BarColor.BLUE, BarStyle.SOLID);
+    }
     shopManager = new ShopManager(this);
     zombieSpawnManager = new ZombieSpawnManager(this);
     scoreboardManager = new ScoreboardManager(this);
-    if (ServerVersion.Version.isCurrentEqualOrLower(ServerVersion.Version.v1_16_R1)) {
+    if(ServerVersion.Version.isCurrentEqualOrLower(ServerVersion.Version.v1_16_R1)) {
       mapRestorerManager = new MapRestorerManagerLegacy(this);
     } else
-    mapRestorerManager = new MapRestorerManager(this);
+      mapRestorerManager = new MapRestorerManager(this);
     setDefaultValues();
     gameStateHandlers.put(ArenaState.WAITING_FOR_PLAYERS, new WaitingState());
     gameStateHandlers.put(ArenaState.STARTING, new StartingState());
     gameStateHandlers.put(ArenaState.IN_GAME, new InGameState());
     gameStateHandlers.put(ArenaState.ENDING, new EndingState());
     gameStateHandlers.put(ArenaState.RESTARTING, new RestartingState());
-    for (ArenaStateHandler handler : gameStateHandlers.values()) {
+    for(ArenaStateHandler handler : gameStateHandlers.values()) {
       handler.init(plugin);
     }
   }
@@ -124,13 +143,13 @@ public abstract class Arena extends BukkitRunnable {
   }
 
   private void setDefaultValues() {
-    for (ArenaOption option : ArenaOption.values()) {
+    for(ArenaOption option : ArenaOption.values()) {
       arenaOptions.put(option, option.getDefaultValue());
     }
-    for (GameLocation location : GameLocation.values()) {
+    for(GameLocation location : GameLocation.values()) {
       gameLocations.put(location, Bukkit.getWorlds().get(0).getSpawnLocation());
     }
-    for (SpawnPoint point : SpawnPoint.values()) {
+    for(SpawnPoint point : SpawnPoint.values()) {
       spawnPoints.put(point, new ArrayList<>());
     }
   }
@@ -158,10 +177,11 @@ public abstract class Arena extends BukkitRunnable {
    * @param p      player
    */
   public void doBarAction(BarAction action, Player p) {
-    if (!plugin.getConfigPreferences().getOption(ConfigPreferences.Option.BOSSBAR_ENABLED)) {
+    if(!ServerVersion.Version.isCurrentEqualOrHigher(ServerVersion.Version.v1_9_R1)
+        || !plugin.getConfigPreferences().getOption(ConfigPreferences.Option.BOSSBAR_ENABLED)) {
       return;
     }
-    switch (action) {
+    switch(action) {
       case ADD:
         gameBar.addPlayer(p);
         break;
@@ -176,26 +196,27 @@ public abstract class Arena extends BukkitRunnable {
   @Override
   public void run() {
     //idle task
-    if (getPlayers().isEmpty() && getArenaState() == ArenaState.WAITING_FOR_PLAYERS) {
+    if(getPlayers().isEmpty() && arenaState == ArenaState.WAITING_FOR_PLAYERS) {
       return;
     }
     Debugger.performance("ArenaTask", "[PerformanceMonitor] [{0}] Running game task", getId());
     long start = System.currentTimeMillis();
 
-    gameStateHandlers.get(getArenaState()).handleCall(this);
+    gameStateHandlers.get(arenaState).handleCall(this);
     Debugger.performance("ArenaTask", "[PerformanceMonitor] [{0}] Game task finished took {1}ms", getId(), System.currentTimeMillis() - start);
   }
 
   public void spawnVillagers() {
-    if (getVillagers().size() > 10) {
+    if(getVillagers().size() > 10) {
       return;
     }
-    if (getVillagerSpawns().isEmpty()) {
+    List<Location> villagerSpawns = getVillagerSpawns();
+    if(villagerSpawns.isEmpty()) {
       Debugger.debug(Level.WARNING, "No villager spawns set for {0} game won't start", id);
       return;
     }
-    getVillagerSpawns().forEach(this::spawnVillager);
-    if (getVillagers().isEmpty()) {
+    villagerSpawns.forEach(this::spawnVillager);
+    if(getVillagers().isEmpty()) {
       Debugger.debug(Level.WARNING, "Spawning villagers for {0} failed! Are villager spawns set in safe and valid locations?", id);
       return;
     }
@@ -339,7 +360,7 @@ public abstract class Arena extends BukkitRunnable {
   public void teleportToEndLocation(Player player) {
     // We should check for #isEnabled to make sure plugin is enabled
     // This happens in some cases
-    if (plugin.isEnabled() && plugin.getConfigPreferences().getOption(ConfigPreferences.Option.BUNGEE_ENABLED)
+    if(plugin.isEnabled() && plugin.getConfigPreferences().getOption(ConfigPreferences.Option.BUNGEE_ENABLED)
         && ConfigUtils.getConfig(plugin, "bungee").getBoolean("End-Location-Hub", true)) {
       plugin.getBungeeManager().connectToHub(player);
       Debugger.debug("{0} has left the arena {1}! Teleported to the Hub server.", player.getName(), this);
@@ -357,9 +378,9 @@ public abstract class Arena extends BukkitRunnable {
   }
 
   public void start() {
-    Debugger.debug("[{0}] Instance started", this.getId());
-    this.runTaskTimer(plugin, 20L, 20L);
-    this.setArenaState(ArenaState.WAITING_FOR_PLAYERS);
+    Debugger.debug("[{0}] Instance started", getId());
+    runTaskTimer(plugin, 20L, 20L);
+    setArenaState(ArenaState.WAITING_FOR_PLAYERS);
   }
 
   public ScoreboardManager getScoreboardManager() {
@@ -456,26 +477,26 @@ public abstract class Arena extends BukkitRunnable {
   }
 
   protected boolean canSpawnMobForPlayer(Player player, EntityType type) {
-    if (type != EntityType.IRON_GOLEM && type != EntityType.WOLF) {
+    if(type != EntityType.IRON_GOLEM && type != EntityType.WOLF) {
       return true;
     }
 
-    for (Map.Entry<String, Boolean> map : getAllEffectivePermissions(player).entrySet()) {
-      if (!map.getValue()) {
+    for(Map.Entry<String, Boolean> map : getAllEffectivePermissions(player).entrySet()) {
+      if(!map.getValue()) {
         continue;
       }
 
       int limit = 0;
       try {
         limit = Integer.parseInt(map.getKey().split("\\.")[1]);
-      } catch (NumberFormatException ex) {
+      } catch(NumberFormatException ex) {
       }
 
-      if (limit < 1) {
+      if(limit < 1) {
         continue;
       }
 
-      if ((type == EntityType.IRON_GOLEM && map.getKey().endsWith("limit.golem." + limit) && ironGolems.size() + 1 < limit)
+      if((type == EntityType.IRON_GOLEM && map.getKey().endsWith("limit.golem." + limit) && ironGolems.size() + 1 < limit)
           || (type == EntityType.WOLF && map.getKey().endsWith("limit.wolf." + limit) && wolves.size() + 1 < limit)) {
         return false;
       }
@@ -486,8 +507,8 @@ public abstract class Arena extends BukkitRunnable {
 
   private Map<String, Boolean> getAllEffectivePermissions(Player player) {
     Map<String, Boolean> permLimits = new HashMap<>();
-    for (PermissionAttachmentInfo permission : player.getEffectivePermissions()) {
-      if (permission.getPermission().startsWith("villagedefense.limit.")) {
+    for(PermissionAttachmentInfo permission : player.getEffectivePermissions()) {
+      if(permission.getPermission().startsWith("villagedefense.limit.")) {
         permLimits.put(permission.getPermission(), permission.getValue());
       }
     }
@@ -526,11 +547,11 @@ public abstract class Arena extends BukkitRunnable {
   }
 
   public boolean checkLevelUpRottenFlesh() {
-    if (getOption(ArenaOption.ROTTEN_FLESH_LEVEL) == 0 && getOption(ArenaOption.ROTTEN_FLESH_AMOUNT) > 50) {
+    if(getOption(ArenaOption.ROTTEN_FLESH_LEVEL) == 0 && getOption(ArenaOption.ROTTEN_FLESH_AMOUNT) > 50) {
       setOptionValue(ArenaOption.ROTTEN_FLESH_LEVEL, 1);
       return true;
     }
-    if (getOption(ArenaOption.ROTTEN_FLESH_LEVEL) * 10 * getPlayers().size() + 10 < getOption(ArenaOption.ROTTEN_FLESH_AMOUNT)) {
+    if(getOption(ArenaOption.ROTTEN_FLESH_LEVEL) * 10 * getPlayers().size() + 10 < getOption(ArenaOption.ROTTEN_FLESH_AMOUNT)) {
       addOptionValue(ArenaOption.ROTTEN_FLESH_LEVEL, 1);
       return true;
     }
@@ -539,8 +560,16 @@ public abstract class Arena extends BukkitRunnable {
 
   @NotNull
   public List<Player> getPlayersLeft() {
-    return plugin.getUserManager().getUsers(this).stream().filter(user -> !user.isSpectator())
-      .map(User::getPlayer).collect(Collectors.toList());
+    List<Player> list = new ArrayList<>();
+
+    for (Player player : players) {
+      User user = plugin.getUserManager().getUser(player);
+      if (!user.isSpectator()) {
+        list.add(user.getPlayer());
+      }
+    }
+
+    return list;
   }
 
   public Main getPlugin() {

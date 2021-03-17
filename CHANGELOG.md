@@ -9,6 +9,23 @@ deploy webhooks to print changelog successfully
 
 That's all, matcher will stop when detects next line started with `###` match
 
+### 4.5.7 (22.01.2021 - 17.03.2021)
+* Added legacy support
+* Added two new config options (disable fall and drowning damage)
+* Added modifiable arena state names to language
+* Added more rewards types (playerDeath, villagerDeath)
+* Added the papi placeholder %villagedefense_{arena}:wave%
+* Added the scoreboard placeholder %WAVE%
+* Added new RewardType scoreboard_remove
+* Fixed when block state data is not door object (cast exception)
+* Fixed Teleporter Kit Gui not showing
+* Allow door placement after zombie door break
+* Perform leader board refreshing in async thread
+* Players are now killed if they fall into void
+* Spectator players will not receives rewards anymore when one of the wave is ended.
+* Increased Damage for PowerUp ONE_SHOT_ONE_KILL
+* SpectatorEvent EntityPickupItemEvent is now on Highest Priority
+
 ### 4.5.6 (04.12.2020 - 18.01.2021)
 * Added option to allow players to buy golems/wolves again if they died
 * Fix parsing oak door material in old versions

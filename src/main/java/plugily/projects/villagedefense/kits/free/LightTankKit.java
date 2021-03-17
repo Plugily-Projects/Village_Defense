@@ -19,10 +19,10 @@
 package plugily.projects.villagedefense.kits.free;
 
 import org.bukkit.Material;
-import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import pl.plajerlair.commonsbox.minecraft.compat.XMaterial;
+import pl.plajerlair.commonsbox.minecraft.compat.VersionUtils;
+import pl.plajerlair.commonsbox.minecraft.compat.xseries.XMaterial;
 import pl.plajerlair.commonsbox.minecraft.helper.ArmorHelper;
 import pl.plajerlair.commonsbox.minecraft.helper.WeaponHelper;
 import plugily.projects.villagedefense.handlers.language.Messages;
@@ -37,24 +37,24 @@ import java.util.List;
  */
 public class LightTankKit extends FreeKit {
 
-    public LightTankKit() {
-        setName(getPlugin().getChatManager().colorMessage(Messages.KITS_LIGHT_TANK_NAME));
-        List<String> description = Utils.splitString(getPlugin().getChatManager().colorMessage(Messages.KITS_LIGHT_TANK_DESCRIPTION), 40);
-        setDescription(description.toArray(new String[0]));
-        KitRegistry.registerKit(this);
-    }
+  public LightTankKit() {
+    setName(getPlugin().getChatManager().colorMessage(Messages.KITS_LIGHT_TANK_NAME));
+    List<String> description = Utils.splitString(getPlugin().getChatManager().colorMessage(Messages.KITS_LIGHT_TANK_DESCRIPTION), 40);
+    setDescription(description.toArray(new String[0]));
+    KitRegistry.registerKit(this);
+  }
 
-    @Override
-    public boolean isUnlockedByPlayer(Player player) {
-        return true;
-    }
+  @Override
+  public boolean isUnlockedByPlayer(Player player) {
+    return true;
+  }
 
-    @Override
-    public void giveKitItems(Player player) {
+  @Override
+  public void giveKitItems(Player player) {
     player.getInventory().addItem(WeaponHelper.getUnBreakingSword(WeaponHelper.ResourceType.WOOD, 10));
     player.getInventory().addItem(new ItemStack(XMaterial.COOKED_PORKCHOP.parseMaterial(), 8));
     ArmorHelper.setArmor(player, ArmorHelper.ArmorType.IRON);
-    player.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(26.0);
+    VersionUtils.setMaxHealth(player, 26.0);
     player.setHealth(26.0);
   }
 

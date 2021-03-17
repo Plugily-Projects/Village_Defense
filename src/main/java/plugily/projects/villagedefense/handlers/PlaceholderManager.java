@@ -53,47 +53,49 @@ public class PlaceholderManager extends PlaceholderExpansion {
 
   @Override
   public String onPlaceholderRequest(Player player, String id) {
-    if (player == null) {
+    if(player == null) {
       return null;
     }
-    switch (id.toLowerCase()) {
+    switch(id.toLowerCase()) {
       case "kills":
-        return String.valueOf(StatsStorage.getUserStats(player, StatsStorage.StatisticType.KILLS));
+        return Integer.toString(StatsStorage.getUserStats(player, StatsStorage.StatisticType.KILLS));
       case "deaths":
-        return String.valueOf(StatsStorage.getUserStats(player, StatsStorage.StatisticType.DEATHS));
+        return Integer.toString(StatsStorage.getUserStats(player, StatsStorage.StatisticType.DEATHS));
       case "games_played":
-        return String.valueOf(StatsStorage.getUserStats(player, StatsStorage.StatisticType.GAMES_PLAYED));
+        return Integer.toString(StatsStorage.getUserStats(player, StatsStorage.StatisticType.GAMES_PLAYED));
       case "highest_wave":
-        return String.valueOf(StatsStorage.getUserStats(player, StatsStorage.StatisticType.HIGHEST_WAVE));
+        return Integer.toString(StatsStorage.getUserStats(player, StatsStorage.StatisticType.HIGHEST_WAVE));
       case "level":
-        return String.valueOf(StatsStorage.getUserStats(player, StatsStorage.StatisticType.LEVEL));
+        return Integer.toString(StatsStorage.getUserStats(player, StatsStorage.StatisticType.LEVEL));
       case "exp":
-        return String.valueOf(StatsStorage.getUserStats(player, StatsStorage.StatisticType.XP));
+        return Integer.toString(StatsStorage.getUserStats(player, StatsStorage.StatisticType.XP));
       case "exp_to_next_level":
-        return String.valueOf(Math.ceil(Math.pow(50 * StatsStorage.getUserStats(player, StatsStorage.StatisticType.LEVEL), 1.5)));
+        return Double.toString(Math.ceil(Math.pow(50 * StatsStorage.getUserStats(player, StatsStorage.StatisticType.LEVEL), 1.5)));
       default:
         return handleArenaPlaceholderRequest(id);
     }
   }
 
   private String handleArenaPlaceholderRequest(String id) {
-    if (!id.contains(":")) {
+    if(!id.contains(":")) {
       return null;
     }
     String[] data = id.split(":");
     Arena arena = ArenaRegistry.getArena(data[0]);
-    if (arena == null) {
+    if(arena == null) {
       return null;
     }
-    switch (data[1].toLowerCase()) {
+    switch(data[1].toLowerCase()) {
       case "players":
-        return String.valueOf(arena.getPlayers().size());
+        return Integer.toString(arena.getPlayers().size());
       case "max_players":
-        return String.valueOf(arena.getMaximumPlayers());
+        return Integer.toString(arena.getMaximumPlayers());
       case "state":
-        return String.valueOf(arena.getArenaState());
+        return arena.getArenaState().toString().toLowerCase();
       case "state_pretty":
         return arena.getArenaState().getFormattedName();
+      case "wave":
+        return Integer.toString(arena.getWave());
       case "mapname":
         return arena.getMapName();
       default:

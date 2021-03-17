@@ -18,7 +18,23 @@
 
 package plugily.projects.villagedefense.creatures.v1_16_R3;
 
-import net.minecraft.server.v1_16_R3.*;
+import net.minecraft.server.v1_16_R3.EntityHuman;
+import net.minecraft.server.v1_16_R3.EntityIronGolem;
+import net.minecraft.server.v1_16_R3.EntityTypes;
+import net.minecraft.server.v1_16_R3.GenericAttributes;
+import net.minecraft.server.v1_16_R3.IMonster;
+import net.minecraft.server.v1_16_R3.PathfinderGoalDefendVillage;
+import net.minecraft.server.v1_16_R3.PathfinderGoalFloat;
+import net.minecraft.server.v1_16_R3.PathfinderGoalHurtByTarget;
+import net.minecraft.server.v1_16_R3.PathfinderGoalLookAtPlayer;
+import net.minecraft.server.v1_16_R3.PathfinderGoalMeleeAttack;
+import net.minecraft.server.v1_16_R3.PathfinderGoalMoveThroughVillage;
+import net.minecraft.server.v1_16_R3.PathfinderGoalMoveTowardsRestriction;
+import net.minecraft.server.v1_16_R3.PathfinderGoalMoveTowardsTarget;
+import net.minecraft.server.v1_16_R3.PathfinderGoalNearestAttackableTarget;
+import net.minecraft.server.v1_16_R3.PathfinderGoalRandomLookaround;
+import net.minecraft.server.v1_16_R3.PathfinderGoalRandomStroll;
+import net.minecraft.server.v1_16_R3.World;
 import org.bukkit.craftbukkit.v1_16_R3.CraftWorld;
 
 /**

@@ -47,7 +47,7 @@ public class ArenaSign {
 
   private void setBehindBlock() {
     this.behind = null;
-    if (MaterialUtil.isWallSign(sign.getBlock().getType())) {
+    if(MaterialUtil.isWallSign(sign.getBlock().getType())) {
       this.behind = ServerVersion.Version.isCurrentEqualOrHigher(ServerVersion.Version.v1_14_R1) ? getBlockBehind() : getBlockBehindLegacy();
     }
   }
@@ -58,10 +58,9 @@ public class ArenaSign {
       BlockFace face = (BlockFace) blockData.getClass().getMethod("getFacing").invoke(blockData);
 
       Location loc = sign.getLocation();
-      Location location = new Location(sign.getWorld(), loc.getBlockX() - face.getModX(), loc.getBlockY() - face.getModY(),
-          loc.getBlockZ() - face.getModZ());
-      return location.getBlock();
-    } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+      return new Location(sign.getWorld(), loc.getBlockX() - face.getModX(), loc.getBlockY() - face.getModY(),
+              loc.getBlockZ() - face.getModZ()).getBlock();
+    } catch(NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
       e.printStackTrace();
       return null;
     }

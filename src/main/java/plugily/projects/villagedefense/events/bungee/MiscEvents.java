@@ -43,21 +43,21 @@ public class MiscEvents implements Listener {
 
   @EventHandler
   public void onLogin(PlayerLoginEvent e) {
-    if (!plugin.getServer().hasWhitelist() || e.getResult() != PlayerLoginEvent.Result.KICK_WHITELIST) {
+    if(!plugin.getServer().hasWhitelist() || e.getResult() != PlayerLoginEvent.Result.KICK_WHITELIST) {
       return;
     }
-    if (e.getPlayer().hasPermission(PermissionsManager.getJoinFullGames())) {
+    if(e.getPlayer().hasPermission(PermissionsManager.getJoinFullGames())) {
       e.setResult(PlayerLoginEvent.Result.ALLOWED);
     }
 
-    if (!ArenaRegistry.getArenas().isEmpty()) {
+    if(!ArenaRegistry.getArenas().isEmpty()) {
       e.getPlayer().teleport(ArenaRegistry.getArenas().get(ArenaRegistry.getBungeeArena()).getLobbyLocation());
     }
   }
 
   @EventHandler
   public void onGameStateChange(VillageGameStateChangeEvent e) {
-    switch (e.getArenaState()) {
+    switch(e.getArenaState()) {
       case WAITING_FOR_PLAYERS:
         plugin.getServer().setWhitelist(false);
         break;
@@ -72,7 +72,7 @@ public class MiscEvents implements Listener {
       default:
         break;
     }
-    if (e.getArenaState() == ArenaState.ENDING) {
+    if(e.getArenaState() == ArenaState.ENDING) {
       plugin.getServer().setWhitelist(false);
     }
   }

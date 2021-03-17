@@ -40,7 +40,7 @@ public class ConfigPreferences {
     loadOptions();
 
     //load custom permissions
-    for (String key : plugin.getConfig().getConfigurationSection("CustomPermissions").getKeys(false)) {
+    for(String key : plugin.getConfig().getConfigurationSection("CustomPermissions").getKeys(false)) {
       customPermissions.put(key, plugin.getConfig().getInt("CustomPermissions." + key));
       Debugger.debug("Loaded custom permission {0}", key);
     }
@@ -61,7 +61,7 @@ public class ConfigPreferences {
   }
 
   private void loadOptions() {
-    for (Option option : Option.values()) {
+    for(Option option : Option.values()) {
       options.put(option, plugin.getConfig().getBoolean(option.getPath(), option.getDefault()));
     }
   }
@@ -74,7 +74,7 @@ public class ConfigPreferences {
     DISABLE_SEPARATE_CHAT("Disable-Separate-Chat", false), DISABLE_PARTIES("Disable-Parties", true),
     RESPAWN_AFTER_WAVE("Respawn-After-Wave", true), INGAME_JOIN_RESPAWN("InGame-Join-Respawn", true),
     CAN_BUY_GOLEMSWOLVES_IF_THEY_DIED("Players-Can-Buy-GolemsWolves-If-They-Died", false),
-    ;
+    DISABLE_FALL_DAMAGE("Disable-Fall-Damage", false), DISABLE_DROWNING_DAMAGE("Disable-Drowning-Damage", false);
 
     private final String path;
     private final boolean def;

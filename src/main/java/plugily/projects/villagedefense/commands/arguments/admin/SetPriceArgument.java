@@ -24,7 +24,9 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import pl.plajerlair.commonsbox.minecraft.compat.VersionUtils;
 import pl.plajerlair.commonsbox.minecraft.item.ItemBuilder;
+import pl.plajerlair.commonsbox.minecraft.misc.stuff.ComplementAccessor;
 import plugily.projects.villagedefense.commands.arguments.ArgumentsRegistry;
 import plugily.projects.villagedefense.commands.arguments.data.CommandArgument;
 import plugily.projects.villagedefense.commands.arguments.data.LabelData;
@@ -46,33 +48,33 @@ public class SetPriceArgument {
             "&7Set price of holding item, it's required for game shop\n&6Permission: &7villagedefense.admin.setprice")) {
       @Override
       public void execute(CommandSender sender, String[] args) {
-        if (args.length == 1) {
+        if(args.length == 1) {
           sender.sendMessage(registry.getPlugin().getChatManager().getPrefix() + ChatColor.RED + "Please type price of item!");
           return;
         }
         Player player = (Player) sender;
-        ItemStack item = player.getInventory().getItemInMainHand();
-        if (item == null || item.getType().equals(Material.AIR)) {
+        ItemStack item = VersionUtils.getItemInHand(player);
+        if(item == null || item.getType().equals(Material.AIR)) {
           player.sendMessage(registry.getPlugin().getChatManager().getPrefix() + registry.getPlugin().getChatManager().colorMessage(Messages.COMMANDS_HOLD_ANY_ITEM));
           return;
         }
-        if (!item.hasItemMeta() || !item.getItemMeta().hasLore()) {
-          player.getInventory().setItemInMainHand(new ItemBuilder(item)
-              .lore(ChatColor.GOLD + args[1] + " " + registry.getPlugin().getChatManager().colorMessage(Messages.SHOP_MESSAGES_CURRENCY_IN_SHOP)).build());
+        if(!item.hasItemMeta() || !item.getItemMeta().hasLore()) {
+          VersionUtils.setItemInHand(player, (new ItemBuilder(item)
+              .lore(ChatColor.GOLD + args[1] + " " + registry.getPlugin().getChatManager().colorMessage(Messages.SHOP_MESSAGES_CURRENCY_IN_SHOP)).build()));
           player.sendMessage(registry.getPlugin().getChatManager().getPrefix() + registry.getPlugin().getChatManager().colorMessage(Messages.COMMANDS_COMMAND_EXECUTED));
           return;
         }
         //check any price from lore
         ItemMeta meta = item.getItemMeta();
-        List<String> lore = item.getItemMeta().getLore();
-        for (String search : lore) {
-          if (search.contains(registry.getPlugin().getChatManager().colorMessage(Messages.SHOP_MESSAGES_CURRENCY_IN_SHOP))) {
+        List<String> lore = ComplementAccessor.getComplement().getLore(meta);
+        for(String search : lore) {
+          if(search.contains(registry.getPlugin().getChatManager().colorMessage(Messages.SHOP_MESSAGES_CURRENCY_IN_SHOP))) {
             lore.remove(search);
             break;
           }
         }
         lore.add(0, ChatColor.GOLD + args[1] + " " + registry.getPlugin().getChatManager().colorMessage(Messages.SHOP_MESSAGES_CURRENCY_IN_SHOP));
-        meta.setLore(lore);
+        ComplementAccessor.getComplement().setLore(meta, lore);
         item.setItemMeta(meta);
         player.sendMessage(registry.getPlugin().getChatManager().getPrefix() + registry.getPlugin().getChatManager().colorMessage(Messages.COMMANDS_COMMAND_EXECUTED));
       }

@@ -43,24 +43,24 @@ public class TeleportArgument {
                 + "&7• END - ending location\n&6Permission: &7villagedefense.admin.teleport")) {
       @Override
       public void execute(CommandSender sender, String[] args) {
-        if (args.length == 1) {
+        if(args.length == 1) {
           sender.sendMessage(registry.getPlugin().getChatManager().getPrefix() + registry.getPlugin().getChatManager().colorMessage(Messages.COMMANDS_TYPE_ARENA_NAME));
           return;
         }
-        if (args.length == 2) {
+        if(args.length == 2) {
           sender.sendMessage(registry.getPlugin().getChatManager().getPrefix() + ChatColor.RED + "Please type location type: END, START, LOBBY");
           return;
         }
-        Player player = (Player) sender;
         try {
           LocationType.valueOf(args[2].toUpperCase());
-        } catch (Exception e) {
+        } catch(IllegalArgumentException e) {
           sender.sendMessage(registry.getPlugin().getChatManager().getPrefix() + registry.getPlugin().getChatManager().colorMessage(Messages.COMMANDS_TELEPORT_LOCATION_INVALID));
           return;
         }
-        for (Arena arena : ArenaRegistry.getArenas()) {
-          if (arena.getId().equalsIgnoreCase(args[1])) {
-            teleport(player, arena, LocationType.valueOf(args[2].toUpperCase()));
+        for(Arena arena : ArenaRegistry.getArenas()) {
+          if(arena.getId().equalsIgnoreCase(args[1])) {
+            teleport((Player) sender, arena, LocationType.valueOf(args[2].toUpperCase()));
+            break;
           }
         }
       }
@@ -68,17 +68,18 @@ public class TeleportArgument {
   }
 
   private void teleport(Player player, Arena arena, LocationType locationType) {
-    switch (locationType) {
+    switch(locationType) {
       case LOBBY:
-        if (arena.getLobbyLocation() == null) {
+        org.bukkit.Location lobby = arena.getLobbyLocation();
+        if(lobby == null) {
           player.sendMessage(ChatColor.RED + "Lobby location isn't set for this arena!");
           return;
         }
-        player.teleport(arena.getLobbyLocation());
+        player.teleport(lobby);
         player.sendMessage(ChatColor.GRAY + "Teleported to LOBBY location from arena " + arena.getId());
         break;
       case START:
-        if (arena.getLobbyLocation() == null) {
+        if(arena.getLobbyLocation() == null) {
           player.sendMessage(ChatColor.RED + "Start location isn't set for this arena!");
           return;
         }
@@ -86,7 +87,7 @@ public class TeleportArgument {
         player.sendMessage(ChatColor.GRAY + "Teleported to START location from arena " + arena.getId());
         break;
       case END:
-        if (arena.getLobbyLocation() == null) {
+        if(arena.getLobbyLocation() == null) {
           player.sendMessage(ChatColor.RED + "End location isn't set for this arena!");
           return;
         }

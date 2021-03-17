@@ -69,7 +69,7 @@ public class Debugger {
    * @param msg   debugged message
    */
   public static void debug(Level level, String msg) {
-    if (!enabled && (level != Level.WARNING || level != Level.SEVERE)) {
+    if(!enabled && (level != Level.WARNING || level != Level.SEVERE)) {
       return;
     }
     logger.log(level, "[VDDBG] " + msg);
@@ -88,7 +88,7 @@ public class Debugger {
    * @param msg   debugged message
    */
   public static void debug(Level level, String msg, Object... params) {
-    if (!enabled && (level != Level.WARNING || level != Level.SEVERE)) {
+    if(!enabled && (level != Level.WARNING || level != Level.SEVERE)) {
       return;
     }
     logger.log(level, "[VDDBG] " + msg, params);
@@ -100,10 +100,10 @@ public class Debugger {
    * @param msg debugged message
    */
   public static void performance(String monitorName, String msg, Object... params) {
-    if (!deep) {
+    if(!deep) {
       return;
     }
-    if (!listenedPerformance.contains(monitorName)) {
+    if(!listenedPerformance.contains(monitorName)) {
       return;
     }
     logger.log(Level.INFO, "[VDDBG] " + msg, params);

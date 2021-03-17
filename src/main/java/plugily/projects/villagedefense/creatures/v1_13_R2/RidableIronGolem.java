@@ -18,7 +18,25 @@
 
 package plugily.projects.villagedefense.creatures.v1_13_R2;
 
-import net.minecraft.server.v1_13_R2.*;
+import net.minecraft.server.v1_13_R2.Entity;
+import net.minecraft.server.v1_13_R2.EntityHuman;
+import net.minecraft.server.v1_13_R2.EntityIronGolem;
+import net.minecraft.server.v1_13_R2.EntityLiving;
+import net.minecraft.server.v1_13_R2.GenericAttributes;
+import net.minecraft.server.v1_13_R2.IMonster;
+import net.minecraft.server.v1_13_R2.Navigation;
+import net.minecraft.server.v1_13_R2.PathfinderGoalDefendVillage;
+import net.minecraft.server.v1_13_R2.PathfinderGoalFloat;
+import net.minecraft.server.v1_13_R2.PathfinderGoalHurtByTarget;
+import net.minecraft.server.v1_13_R2.PathfinderGoalLookAtPlayer;
+import net.minecraft.server.v1_13_R2.PathfinderGoalMeleeAttack;
+import net.minecraft.server.v1_13_R2.PathfinderGoalMoveThroughVillage;
+import net.minecraft.server.v1_13_R2.PathfinderGoalMoveTowardsRestriction;
+import net.minecraft.server.v1_13_R2.PathfinderGoalMoveTowardsTarget;
+import net.minecraft.server.v1_13_R2.PathfinderGoalNearestAttackableTarget;
+import net.minecraft.server.v1_13_R2.PathfinderGoalRandomLookaround;
+import net.minecraft.server.v1_13_R2.PathfinderGoalRandomStroll;
+import net.minecraft.server.v1_13_R2.World;
 import org.bukkit.craftbukkit.v1_13_R2.CraftWorld;
 
 /**
@@ -54,13 +72,13 @@ public class RidableIronGolem extends EntityIronGolem {
   @Override
   public void a(float f, float f1, float f2) {
     EntityLiving entityliving = null;
-    for (final Entity e : passengers) {
-      if (e instanceof EntityHuman) {
+    for(final Entity e : passengers) {
+      if(e instanceof EntityHuman) {
         entityliving = (EntityLiving) e;
         break;
       }
     }
-    if (entityliving == null) {
+    if(entityliving == null) {
       this.P = 0.5F;
       this.aR = 0.02F;
       o(0.12f);
@@ -75,7 +93,7 @@ public class RidableIronGolem extends EntityIronGolem {
 
     f = entityliving.bh * 0.5F * 0.75F;
     f2 = entityliving.bj;
-    if (f2 <= 0.0f) {
+    if(f2 <= 0.0f) {
       f2 *= 0.25F;
     }
 

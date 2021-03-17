@@ -51,7 +51,7 @@ public class ReloadArgument {
         new LabelData("/vda reload", "/vda reload", "&7Reload all game arenas and configuration files\n&7&lArenas will be stopped!\n&6Permission: &7villagedefense.admin.reload")) {
       @Override
       public void execute(CommandSender sender, String[] args) {
-        if (!confirmations.contains(sender)) {
+        if(!confirmations.contains(sender)) {
           confirmations.add(sender);
           Bukkit.getScheduler().runTaskLater(registry.getPlugin(), () -> confirmations.remove(sender), 20L * 10);
           sender.sendMessage(registry.getPlugin().getChatManager().getPrefix()
@@ -63,16 +63,16 @@ public class ReloadArgument {
         registry.getPlugin().reloadConfig();
         LanguageManager.reloadConfig();
 
-        for (Arena arena : ArenaRegistry.getArenas()) {
-          for (Player player : arena.getPlayers()) {
+        for(Arena arena : ArenaRegistry.getArenas()) {
+          for(Player player : arena.getPlayers()) {
             arena.doBarAction(Arena.BarAction.REMOVE, player);
             arena.teleportToEndLocation(player);
-            if (registry.getPlugin().getConfigPreferences().getOption(ConfigPreferences.Option.INVENTORY_MANAGER_ENABLED)) {
+            if(registry.getPlugin().getConfigPreferences().getOption(ConfigPreferences.Option.INVENTORY_MANAGER_ENABLED)) {
               InventorySerializer.loadInventory(registry.getPlugin(), player);
             } else {
               player.getInventory().clear();
               player.getInventory().setArmorContents(null);
-              for (PotionEffect pe : player.getActivePotionEffects()) {
+              for(PotionEffect pe : player.getActivePotionEffects()) {
                 player.removePotionEffect(pe.getType());
               }
             }

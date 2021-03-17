@@ -21,7 +21,6 @@ package plugily.projects.villagedefense.commands.arguments.admin.arena;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-
 import pl.plajerlair.commonsbox.number.NumberUtils;
 import plugily.projects.villagedefense.arena.Arena;
 import plugily.projects.villagedefense.arena.ArenaManager;
@@ -48,25 +47,25 @@ public class SetWaveArgument {
             "&7Set wave number in arena you're in\n&6Permission: &7villagedefense.admin.setwave")) {
       @Override
       public void execute(CommandSender sender, String[] args) {
-        if (!Utils.checkIsInGameInstance((Player) sender)) {
+        if(!Utils.checkIsInGameInstance((Player) sender)) {
           return;
         }
-        if (args.length == 1) {
+        if(args.length == 1) {
           sender.sendMessage(registry.getPlugin().getChatManager().getPrefix() + ChatColor.RED + "Please type number of wave to set!");
           return;
         }
         Arena arena = ArenaRegistry.getArena((Player) sender);
-        if (!NumberUtils.isInteger(args[1])) {
+        if(!NumberUtils.isInteger(args[1])) {
           sender.sendMessage(registry.getPlugin().getChatManager().getPrefix() + registry.getPlugin().getChatManager().colorMessage(Messages.COMMANDS_INVALID_NUMBER).replace("%correct%", "/vda setwave <number>"));
           return;
         }
         arena.setWave(Integer.parseInt(args[1]) - 1);
         ArenaManager.endWave(arena);
         String message = registry.getPlugin().getChatManager().formatMessage(arena, registry.getPlugin().getChatManager().colorMessage(Messages.ADMIN_MESSAGES_CHANGED_WAVE), arena.getWave());
-        for (Player player : arena.getPlayers()) {
+        for(Player player : arena.getPlayers()) {
           player.sendMessage(registry.getPlugin().getChatManager().getPrefix() + message);
         }
-        if (arena.getZombies() != null) {
+        if(arena.getZombies() != null) {
           ArenaUtils.removeSpawnedZombies(arena);
           arena.getZombies().clear();
           arena.setOptionValue(ArenaOption.ZOMBIES_TO_SPAWN, 0);

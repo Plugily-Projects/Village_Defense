@@ -26,7 +26,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.inventory.ItemStack;
-import pl.plajerlair.commonsbox.minecraft.compat.XMaterial;
+import pl.plajerlair.commonsbox.minecraft.compat.xseries.XMaterial;
 import pl.plajerlair.commonsbox.minecraft.helper.ArmorHelper;
 import pl.plajerlair.commonsbox.minecraft.helper.WeaponHelper;
 import plugily.projects.villagedefense.api.StatsStorage;
@@ -77,18 +77,18 @@ public class LooterKit extends LevelKit implements Listener {
 
   @EventHandler
   public void onDeath(EntityDeathEvent event) {
-    if (event.getEntity().getType() != EntityType.ZOMBIE) {
+    if(event.getEntity().getType() != EntityType.ZOMBIE) {
       return;
     }
-    if (event.getEntity().getKiller() == null) {
+    if(event.getEntity().getKiller() == null) {
       return;
     }
     Player player = event.getEntity().getKiller();
-    if (ArenaRegistry.getArena(player) == null) {
+    if(ArenaRegistry.getArena(player) == null) {
       return;
     }
     User user = getPlugin().getUserManager().getUser(player);
-    if (user.getKit() instanceof LooterKit) {
+    if(user.getKit() instanceof LooterKit) {
       player.getInventory().addItem(new ItemStack(getMaterial(), 1));
     }
   }

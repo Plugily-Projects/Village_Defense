@@ -49,13 +49,13 @@ public class HologramArgument {
             + "&7• /vda hologram list - prints list of all leaderboard holograms")) {
       @Override
       public void execute(CommandSender sender, String[] args) {
-        if (args.length < 2) {
+        if(args.length < 2) {
           sender.sendMessage(registry.getPlugin().getChatManager().colorRawMessage("&cToo few arguments! Please type /vda hologram <add/remove/list>"));
           return;
         }
-        if (args[1].equalsIgnoreCase("add")) {
+        if(args[1].equalsIgnoreCase("add")) {
           handleAddArgument((Player) sender, args);
-        } else if (args[1].equalsIgnoreCase("list")) {
+        } else if(args[1].equalsIgnoreCase("list")) {
           handleListArgument(sender);
         } else if(args[1].equalsIgnoreCase("remove")) {
           handleDeleteArgument(sender, args);
@@ -70,24 +70,24 @@ public class HologramArgument {
     StatsStorage.StatisticType statistic;
     try {
       statistic = StatsStorage.StatisticType.valueOf(args[2].toUpperCase());
-      if (!statistic.isPersistent()) {
+      if(!statistic.isPersistent()) {
         sendInvalidStatisticMessage(player);
         return;
       }
-    } catch (Exception ex) {
+    } catch(Exception ex) {
       sendInvalidStatisticMessage(player);
       return;
     }
-    if (args.length != 4) {
+    if(args.length != 4) {
       player.sendMessage(registry.getPlugin().getChatManager().colorRawMessage("&cToo few arguments! Please type /vda hologram add <statistic type> <amount>"));
       return;
     }
-    if (!NumberUtils.isInteger(args[3])) {
+    if(!NumberUtils.isInteger(args[3])) {
       player.sendMessage(registry.getPlugin().getChatManager().colorRawMessage("&cLeaderboard amount entries must be a number!"));
       return;
     }
     int amount = Integer.parseInt(args[3]);
-    if (amount <= 0 || amount > 20) {
+    if(amount <= 0 || amount > 20) {
       player.sendMessage(registry.getPlugin().getChatManager().colorRawMessage("&cLeaderboard amount entries amount are limited to 20 and minimum of 0!"));
       return;
     }
@@ -108,7 +108,7 @@ public class HologramArgument {
 
   private void sendInvalidStatisticMessage(Player player) {
     StringBuilder values = new StringBuilder();
-    for (StatsStorage.StatisticType value : StatsStorage.StatisticType.values()) {
+    for(StatsStorage.StatisticType value : StatsStorage.StatisticType.values()) {
       values.append(value).append(' ');
     }
     player.sendMessage(registry.getPlugin().getChatManager().colorRawMessage("&cInvalid statistic type! Valid types: &e" + values));
@@ -116,10 +116,10 @@ public class HologramArgument {
 
   private void handleListArgument(CommandSender sender) {
     FileConfiguration config = ConfigUtils.getConfig(registry.getPlugin(), "internal/holograms_data");
-    for (String key : config.getConfigurationSection("holograms").getKeys(false)) {
+    for(String key : config.getConfigurationSection("holograms").getKeys(false)) {
       sender.sendMessage(registry.getPlugin().getChatManager().colorRawMessage("&aID " + key));
       sender.sendMessage(registry.getPlugin().getChatManager().colorRawMessage(" &eTop: " + config.getInt("holograms." + key + ".top-amount")
-              + " Stat: " + config.getStringList("holograms." + key + ".statistics")));
+          + " Stat: " + config.getStringList("holograms." + key + ".statistics")));
       sender.sendMessage(registry.getPlugin().getChatManager().colorRawMessage(" &eLocation: " + getFriendlyLocation(LocationSerializer.getLocation(config.getString("holograms." + key + ".location")))));
     }
   }
@@ -129,7 +129,6 @@ public class HologramArgument {
   }
 
   private void handleDeleteArgument(CommandSender sender, String[] args) {
-    FileConfiguration config = ConfigUtils.getConfig(registry.getPlugin(), "internal/holograms_data");
     if(args.length != 3) {
       sender.sendMessage(registry.getPlugin().getChatManager().colorRawMessage("&cPlease type leaderboard ID to remove it!"));
       return;
@@ -138,6 +137,7 @@ public class HologramArgument {
       sender.sendMessage(registry.getPlugin().getChatManager().colorRawMessage("&cLeaderboard ID must be a number!"));
       return;
     }
+    FileConfiguration config = ConfigUtils.getConfig(registry.getPlugin(), "internal/holograms_data");
     if(!config.isSet("holograms." + args[2])) {
       sender.sendMessage(registry.getPlugin().getChatManager().colorRawMessage("&cLeaderboard with that ID doesn't exist!"));
       return;

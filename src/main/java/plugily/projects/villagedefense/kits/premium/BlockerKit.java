@@ -21,21 +21,23 @@ package plugily.projects.villagedefense.kits.premium;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.Particle;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
-import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
-import pl.plajerlair.commonsbox.minecraft.compat.XMaterial;
+import pl.plajerlair.commonsbox.minecraft.compat.VersionUtils;
+import pl.plajerlair.commonsbox.minecraft.compat.events.api.CBPlayerInteractEvent;
+import pl.plajerlair.commonsbox.minecraft.compat.xseries.XMaterial;
 import pl.plajerlair.commonsbox.minecraft.helper.ArmorHelper;
 import pl.plajerlair.commonsbox.minecraft.helper.WeaponHelper;
 import pl.plajerlair.commonsbox.minecraft.item.ItemBuilder;
 import pl.plajerlair.commonsbox.minecraft.item.ItemUtils;
+import plugily.projects.villagedefense.arena.Arena;
+import pl.plajerlair.commonsbox.minecraft.misc.stuff.ComplementAccessor;
 import plugily.projects.villagedefense.arena.ArenaRegistry;
 import plugily.projects.villagedefense.handlers.PermissionsManager;
 import plugily.projects.villagedefense.handlers.language.Messages;
@@ -66,7 +68,7 @@ public class BlockerKit extends PremiumKit implements Listener {
   @Override
   public void giveKitItems(Player player) {
     ArmorHelper.setColouredArmor(Color.RED, player);
-    player.getInventory().addItem(WeaponHelper.getEnchanted(new ItemStack(Material.STONE_SWORD), new org.bukkit.enchantments.Enchantment[] {org.bukkit.enchantments.Enchantment.DURABILITY}, new int[] {10}));
+    player.getInventory().addItem(WeaponHelper.getEnchanted(new ItemStack(Material.STONE_SWORD), new org.bukkit.enchantments.Enchantment[]{org.bukkit.enchantments.Enchantment.DURABILITY}, new int[]{10}));
     player.getInventory().addItem(new ItemStack(Material.COOKED_BEEF, 10));
     player.getInventory().addItem(new ItemBuilder(new ItemStack(XMaterial.OAK_FENCE.parseMaterial(), 3))
         .name(getPlugin().getChatManager().colorMessage(Messages.KITS_BLOCKER_GAME_ITEM_NAME))
@@ -90,23 +92,24 @@ public class BlockerKit extends PremiumKit implements Listener {
   }
 
   @EventHandler(priority = EventPriority.HIGHEST)
-  public void onBarrierPlace(PlayerInteractEvent event) {
-    if (event.getAction() != Action.RIGHT_CLICK_AIR && event.getAction() != Action.RIGHT_CLICK_BLOCK) {
+  public void onBarrierPlace(CBPlayerInteractEvent event) {
+    if(event.getAction() != Action.RIGHT_CLICK_AIR && event.getAction() != Action.RIGHT_CLICK_BLOCK) {
       return;
     }
     Player player = event.getPlayer();
-    ItemStack stack = player.getInventory().getItemInMainHand();
-    if (!ArenaRegistry.isInArena(player) || !ItemUtils.isItemStackNamed(stack) || !stack.getItemMeta().getDisplayName()
+    ItemStack stack = VersionUtils.getItemInHand(player);
+    if(!ArenaRegistry.isInArena(player) || !ItemUtils.isItemStackNamed(stack)
+        || !ComplementAccessor.getComplement().getDisplayName(stack.getItemMeta())
         .equalsIgnoreCase(getPlugin().getChatManager().colorMessage(Messages.KITS_BLOCKER_GAME_ITEM_NAME))) {
       return;
     }
     Block block = null;
-    for (Block blocks : player.getLastTwoTargetBlocks(null, 5)) {
-      if (blocks.getType() == Material.AIR) {
+    for(Block blocks : player.getLastTwoTargetBlocks(null, 5)) {
+      if(blocks.getType() == Material.AIR) {
         block = blocks;
       }
     }
-    if (block == null) {
+    if(block == null) {
       event.getPlayer().sendMessage(getPlugin().getChatManager().colorMessage(Messages.KITS_BLOCKER_GAME_ITEM_PLACE_FAIL));
       return;
     }
@@ -116,19 +119,19 @@ public class BlockerKit extends PremiumKit implements Listener {
     event.getPlayer().sendMessage(getPlugin().getChatManager().colorMessage(Messages.KITS_BLOCKER_GAME_ITEM_PLACE_MESSAGE));
     ZombieBarrier zombieBarrier = new ZombieBarrier();
     zombieBarrier.setLocation(block.getLocation());
-    zombieBarrier.getLocation().getWorld().spawnParticle(Particle.FIREWORKS_SPARK, zombieBarrier.getLocation(), 20);
-    removeBarrierLater(zombieBarrier);
+    VersionUtils.sendParticles("FIREWORKS_SPARK", ArenaRegistry.getArena(player).getPlayers(), zombieBarrier.getLocation(), 20);
+    removeBarrierLater(zombieBarrier, ArenaRegistry.getArena(player));
     block.setType(XMaterial.OAK_FENCE.parseMaterial());
   }
 
-  private void removeBarrierLater(ZombieBarrier zombieBarrier) {
+  private void removeBarrierLater(ZombieBarrier zombieBarrier, Arena arena) {
     new BukkitRunnable() {
       @Override
       public void run() {
         zombieBarrier.decrementSeconds();
-        if (zombieBarrier.getSeconds() <= 0) {
+        if(zombieBarrier.getSeconds() <= 0) {
           zombieBarrier.getLocation().getBlock().setType(Material.AIR);
-          zombieBarrier.getLocation().getWorld().spawnParticle(Particle.FIREWORKS_SPARK, zombieBarrier.getLocation(), 20);
+          VersionUtils.sendParticles("FIREWORKS_SPARK", arena.getPlayers(), zombieBarrier.getLocation(), 20);
           this.cancel();
         }
       }
@@ -152,7 +155,7 @@ public class BlockerKit extends PremiumKit implements Listener {
     }
 
     void decrementSeconds() {
-      this.seconds = seconds - 1;
+      this.seconds--;
     }
   }
 }

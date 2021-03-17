@@ -18,7 +18,21 @@
 
 package plugily.projects.villagedefense.creatures.v1_11_R1;
 
-import net.minecraft.server.v1_11_R1.*;
+import net.minecraft.server.v1_11_R1.EntityHuman;
+import net.minecraft.server.v1_11_R1.EntityIronGolem;
+import net.minecraft.server.v1_11_R1.EntityPlayer;
+import net.minecraft.server.v1_11_R1.EntityVillager;
+import net.minecraft.server.v1_11_R1.EntityZombie;
+import net.minecraft.server.v1_11_R1.GenericAttributes;
+import net.minecraft.server.v1_11_R1.Navigation;
+import net.minecraft.server.v1_11_R1.PathfinderGoalBreakDoor;
+import net.minecraft.server.v1_11_R1.PathfinderGoalFloat;
+import net.minecraft.server.v1_11_R1.PathfinderGoalLookAtPlayer;
+import net.minecraft.server.v1_11_R1.PathfinderGoalMoveTowardsRestriction;
+import net.minecraft.server.v1_11_R1.PathfinderGoalNearestAttackableTarget;
+import net.minecraft.server.v1_11_R1.PathfinderGoalRandomLookaround;
+import net.minecraft.server.v1_11_R1.PathfinderGoalZombieAttack;
+import net.minecraft.server.v1_11_R1.World;
 import org.bukkit.craftbukkit.v1_11_R1.CraftWorld;
 import plugily.projects.villagedefense.creatures.CreatureUtils;
 

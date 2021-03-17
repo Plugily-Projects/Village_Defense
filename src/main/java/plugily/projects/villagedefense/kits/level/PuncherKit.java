@@ -23,7 +23,7 @@ import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import pl.plajerlair.commonsbox.minecraft.compat.XMaterial;
+import pl.plajerlair.commonsbox.minecraft.compat.xseries.XMaterial;
 import pl.plajerlair.commonsbox.minecraft.helper.ArmorHelper;
 import pl.plajerlair.commonsbox.minecraft.helper.WeaponHelper;
 import plugily.projects.villagedefense.api.StatsStorage;
@@ -39,23 +39,23 @@ import java.util.List;
  */
 public class PuncherKit extends LevelKit {
 
-    public PuncherKit() {
-        setName(getPlugin().getChatManager().colorMessage(Messages.KITS_PUNCHER_NAME));
-        List<String> description = Utils.splitString(getPlugin().getChatManager().colorMessage(Messages.KITS_PUNCHER_DESCRIPTION), 40);
-        setDescription(description.toArray(new String[0]));
-        setLevel(getKitsConfig().getInt("Required-Level.Puncher"));
-        KitRegistry.registerKit(this);
-    }
+  public PuncherKit() {
+    setName(getPlugin().getChatManager().colorMessage(Messages.KITS_PUNCHER_NAME));
+    List<String> description = Utils.splitString(getPlugin().getChatManager().colorMessage(Messages.KITS_PUNCHER_DESCRIPTION), 40);
+    setDescription(description.toArray(new String[0]));
+    setLevel(getKitsConfig().getInt("Required-Level.Puncher"));
+    KitRegistry.registerKit(this);
+  }
 
-    @Override
-    public boolean isUnlockedByPlayer(Player player) {
-        return getPlugin().getUserManager().getUser(player).getStat(StatsStorage.StatisticType.LEVEL) >= this.getLevel() || player.hasPermission("villagedefense.kit.puncher");
-    }
+  @Override
+  public boolean isUnlockedByPlayer(Player player) {
+    return getPlugin().getUserManager().getUser(player).getStat(StatsStorage.StatisticType.LEVEL) >= this.getLevel() || player.hasPermission("villagedefense.kit.puncher");
+  }
 
-    @Override
+  @Override
   public void giveKitItems(Player player) {
-    player.getInventory().addItem(WeaponHelper.getEnchanted(XMaterial.DIAMOND_SHOVEL.parseItem(), new Enchantment[] {
-        Enchantment.DURABILITY, Enchantment.KNOCKBACK, Enchantment.DAMAGE_ALL}, new int[] {10, 5, 2}));
+    player.getInventory().addItem(WeaponHelper.getEnchanted(XMaterial.DIAMOND_SHOVEL.parseItem(), new Enchantment[]{
+        Enchantment.DURABILITY, Enchantment.KNOCKBACK, Enchantment.DAMAGE_ALL}, new int[]{10, 5, 2}));
     ArmorHelper.setColouredArmor(Color.BLACK, player);
     player.getInventory().addItem(WeaponHelper.getEnchantedBow(Enchantment.DURABILITY, 5));
     player.getInventory().addItem(new ItemStack(Material.ARROW, 25));

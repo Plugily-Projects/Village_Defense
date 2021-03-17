@@ -50,16 +50,16 @@ public class DeleteArgument {
             "&7Deletes specified arena\n&6Permission: &7villagedefense.admin.delete")) {
       @Override
       public void execute(CommandSender sender, String[] args) {
-        if (args.length == 1) {
+        if(args.length == 1) {
           sender.sendMessage(registry.getPlugin().getChatManager().getPrefix() + registry.getPlugin().getChatManager().colorMessage(Messages.COMMANDS_TYPE_ARENA_NAME));
           return;
         }
         Arena arena = ArenaRegistry.getArena(args[1]);
-        if (arena == null) {
+        if(arena == null) {
           sender.sendMessage(registry.getPlugin().getChatManager().getPrefix() + registry.getPlugin().getChatManager().colorMessage(Messages.COMMANDS_NO_ARENA_LIKE_THAT));
           return;
         }
-        if (!confirmations.contains(sender)) {
+        if(!confirmations.contains(sender)) {
           confirmations.add(sender);
           Bukkit.getScheduler().runTaskLater(registry.getPlugin(), () -> confirmations.remove(sender), 20L * 10);
           sender.sendMessage(registry.getPlugin().getChatManager().getPrefix()

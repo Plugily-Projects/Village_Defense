@@ -23,12 +23,13 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
+import pl.plajerlair.commonsbox.minecraft.compat.events.api.CBPlayerInteractEvent;
 import pl.plajerlair.commonsbox.minecraft.helper.ArmorHelper;
 import pl.plajerlair.commonsbox.minecraft.helper.WeaponHelper;
 import pl.plajerlair.commonsbox.minecraft.item.ItemBuilder;
 import pl.plajerlair.commonsbox.minecraft.item.ItemUtils;
+import pl.plajerlair.commonsbox.minecraft.misc.stuff.ComplementAccessor;
 import plugily.projects.villagedefense.arena.Arena;
 import plugily.projects.villagedefense.arena.ArenaRegistry;
 import plugily.projects.villagedefense.arena.ArenaUtils;
@@ -81,24 +82,25 @@ public class CleanerKit extends PremiumKit implements Listener {
   }
 
   @EventHandler
-  public void onClean(PlayerInteractEvent e) {
+  public void onClean(CBPlayerInteractEvent e) {
     Arena arena = ArenaRegistry.getArena(e.getPlayer());
-    if (!ItemUtils.isItemStackNamed(e.getItem()) || e.getItem().getType() != Material.BLAZE_ROD || !e.getItem().getItemMeta().getDisplayName()
+    if(!ItemUtils.isItemStackNamed(e.getItem()) || e.getItem().getType() != Material.BLAZE_ROD
+        || !ComplementAccessor.getComplement().getDisplayName(e.getItem().getItemMeta())
         .contains(getPlugin().getChatManager().colorMessage(Messages.KITS_CLEANER_GAME_ITEM_NAME)) || arena == null) {
       return;
     }
     User user = (getPlugin().getUserManager().getUser(e.getPlayer()));
-    if (user.isSpectator()) {
+    if(user.isSpectator()) {
       e.getPlayer().sendMessage(getPlugin().getChatManager().colorMessage(Messages.SPECTATOR_WARNING));
       return;
     }
-    if (user.getCooldown("clean") > 0 && !user.isSpectator()) {
+    if(user.getCooldown("clean") > 0 && !user.isSpectator()) {
       String message = getPlugin().getChatManager().colorMessage(Messages.KITS_ABILITY_STILL_ON_COOLDOWN);
       message = message.replaceFirst("%COOLDOWN%", Long.toString(user.getCooldown("clean")));
       e.getPlayer().sendMessage(message);
       return;
     }
-    if (arena.getZombies().isEmpty()) {
+    if(arena.getZombies().isEmpty()) {
       e.getPlayer().sendMessage(getPlugin().getChatManager().colorMessage(Messages.KITS_CLEANER_NOTHING_TO_CLEAN));
       return;
     }
