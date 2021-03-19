@@ -38,7 +38,7 @@ import java.util.List;
 public class LanguageMigrator {
 
   public static final int LANGUAGE_FILE_VERSION = 18;
-  public static final int CONFIG_FILE_VERSION = 16;
+  public static final int CONFIG_FILE_VERSION = 17;
   private final Main plugin;
   private final List<String> migratable = Arrays.asList(Constants.Files.CONFIG.getName(), Constants.Files.KITS.getName(),
       Constants.Files.KITS.getName(), Constants.Files.LANGUAGE.getName(), Constants.Files.SPECIAL_ITEMS.getName(), Constants.Files.MYSQL.getName());
@@ -189,6 +189,17 @@ public class LanguageMigrator {
               "Disable-Fall-Damage: false\r\n");
           MigratorUtils.addNewLines(file, "\r\n# Should players get no drowning damage?\r\n" +
               "Disable-Drowning-Damage: false\r\n");
+          break;
+        case 16:
+          MigratorUtils.addNewLines(file, "\r\n" +
+              "Arena-Selector:\r\n" +
+              "  # Change items of arena selector\r\n" +
+              "  State-Item:\r\n" +
+              "    Waiting: LIME_CONCRETE\r\n" +
+              "    Starting: YELLOW_CONCRETE\r\n" +
+              "    In-Game: RED_CONCRETE\r\n" +
+              "    Ending: RED_CONCRETE\r\n" +
+              "    Restarting: RED_CONCRETE\r\n");
           break;
         default:
           break;

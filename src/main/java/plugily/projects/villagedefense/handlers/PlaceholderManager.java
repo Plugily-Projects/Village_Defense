@@ -93,7 +93,7 @@ public class PlaceholderManager extends PlaceholderExpansion {
       case "state":
         return arena.getArenaState().toString().toLowerCase();
       case "state_pretty":
-        return arena.getArenaState().getFormattedName();
+        return arena.getArenaState().getPlaceholder();
       case "wave":
         return Integer.toString(arena.getWave());
       case "mapname":

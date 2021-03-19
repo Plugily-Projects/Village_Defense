@@ -9,6 +9,9 @@ deploy webhooks to print changelog successfully
 
 That's all, matcher will stop when detects next line started with `###` match
 
+### 4.5.8 (19.03.2021 - xx)
+* Added configurable arena selector items (per state)
+
 ### 4.5.7 (22.01.2021 - 17.03.2021)
 * Added legacy support
 * Added two new config options (disable fall and drowning damage)
