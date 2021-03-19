@@ -30,6 +30,9 @@ import plugily.projects.villagedefense.api.StatsStorage;
 import plugily.projects.villagedefense.handlers.hologram.messages.LanguageMessage;
 import plugily.projects.villagedefense.user.data.MysqlManager;
 
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashMap;
@@ -105,15 +108,16 @@ public class LeaderboardHologram {
   }
 
   private String getPlayerNameSafely(UUID uuid, Main plugin) {
-    try {
-      if(plugin.getUserManager().getDatabase() instanceof MysqlManager) {
-        return ((MysqlManager) plugin.getUserManager().getDatabase()).getDatabase().executeQuery("Select `name` FROM " + ((MysqlManager) plugin.getUserManager().getDatabase()).getTableName()
-            + " WHERE UUID='" + uuid.toString() + "';").toString();
+    if(plugin.getUserManager().getDatabase() instanceof MysqlManager) {
+      try(Connection connection = plugin.getMysqlDatabase().getConnection()) {
+        Statement statement = connection.createStatement();
+        return statement.executeQuery("Select `name` FROM " + ((MysqlManager) plugin.getUserManager().getDatabase()).getTableName()
+            + " WHERE UUID='" + uuid.toString() + "'").toString();
+      } catch(SQLException | NullPointerException e) {
+        return color(plugin, plugin.getLanguageConfig().getString(LanguageMessage.HOLOGRAMS_UNKNOWN_PLAYER.getAccessor()));
       }
-      return Bukkit.getOfflinePlayer(uuid).getName();
-    } catch(NullPointerException ex) {
-      return color(plugin, plugin.getLanguageConfig().getString(LanguageMessage.HOLOGRAMS_UNKNOWN_PLAYER.getAccessor()));
     }
+    return Bukkit.getOfflinePlayer(uuid).getName();
   }
 
   private LanguageMessage statisticToMessage() {
