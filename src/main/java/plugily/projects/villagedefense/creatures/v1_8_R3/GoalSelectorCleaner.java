@@ -23,8 +23,6 @@ import net.minecraft.server.v1_8_R3.PathfinderGoalSelector;
 import org.bukkit.craftbukkit.v1_8_R3.util.UnsafeList;
 import plugily.projects.villagedefense.creatures.CreatureUtils;
 
-import java.util.LinkedHashSet;
-
 /**
  * Internal helper class
  */

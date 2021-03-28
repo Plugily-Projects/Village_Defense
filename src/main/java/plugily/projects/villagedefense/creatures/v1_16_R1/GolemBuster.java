@@ -59,19 +59,19 @@ public class GolemBuster extends EntityZombie {
     GoalSelectorCleaner.clearSelectors(this);
     getNavigation().q().b(true);
 
-    this.goalSelector.a(0, new PathfinderGoalFloat(this));
-    this.goalSelector.a(1, new PathfinderGoalBreakDoor(this, enumDifficulty -> true));
-    this.goalSelector.a(2, new PathfinderGoalZombieAttack(this, CreatureUtils.getZombieSpeed(), false));
-    this.goalSelector.a(4, new PathfinderGoalMoveTowardsRestriction(this, CreatureUtils.getZombieSpeed()));
-    this.goalSelector.a(5, new PathfinderGoalBreakDoorFaster(this));
-    this.goalSelector.a(7, new PathfinderGoalLookAtPlayer(this, EntityIronGolem.class, 8.0F)); // this one to look at IronGolem
-    this.goalSelector.a(7, new PathfinderGoalRandomLookaround(this));
+    goalSelector.a(0, new PathfinderGoalFloat(this));
+    goalSelector.a(1, new PathfinderGoalBreakDoor(this, enumDifficulty -> true));
+    goalSelector.a(2, new PathfinderGoalZombieAttack(this, CreatureUtils.getZombieSpeed(), false));
+    goalSelector.a(4, new PathfinderGoalMoveTowardsRestriction(this, CreatureUtils.getZombieSpeed()));
+    goalSelector.a(5, new PathfinderGoalBreakDoorFaster(this));
+    goalSelector.a(7, new PathfinderGoalLookAtPlayer(this, EntityIronGolem.class, 8.0F)); // this one to look at IronGolem
+    goalSelector.a(7, new PathfinderGoalRandomLookaround(this));
     //this.targetSelector.a(1, new PathfinderGoalHurtByTarget(this));
-    this.targetSelector.a(2, new PathfinderGoalNearestAttackableTarget<>(this, EntityPlayer.class, false));
-    this.targetSelector.a(2, new PathfinderGoalNearestAttackableTarget<>(this, EntityHuman.class, false));
-    this.targetSelector.a(2, new PathfinderGoalNearestAttackableTarget<>(this, EntityVillager.class, false));
-    this.targetSelector.a(2, new PathfinderGoalNearestAttackableTarget<>(this, EntityIronGolem.class, true)); // this one to target
-    this.setHealth(5);
+    targetSelector.a(2, new PathfinderGoalNearestAttackableTarget<>(this, EntityPlayer.class, false));
+    targetSelector.a(2, new PathfinderGoalNearestAttackableTarget<>(this, EntityHuman.class, false));
+    targetSelector.a(2, new PathfinderGoalNearestAttackableTarget<>(this, EntityVillager.class, false));
+    targetSelector.a(2, new PathfinderGoalNearestAttackableTarget<>(this, EntityIronGolem.class, true)); // this one to target
+    setHealth(5);
     p().a(GenericAttributes.FOLLOW_RANGE, 200.0D);
   }
 
@@ -81,7 +81,7 @@ public class GolemBuster extends EntityZombie {
     if(damagesource != null && damagesource.getEntity() != null && damagesource.getEntity().getBukkitEntity().getType() == EntityType.IRON_GOLEM) {
       this.die();
       org.bukkit.inventory.ItemStack[] itemStack = new org.bukkit.inventory.ItemStack[]{new org.bukkit.inventory.ItemStack(org.bukkit.Material.ROTTEN_FLESH)};
-      Bukkit.getServer().getPluginManager().callEvent(new EntityDeathEvent((LivingEntity) this.getBukkitEntity(), new ArrayList<>(Arrays.asList(itemStack)), expToDrop));
+      Bukkit.getServer().getPluginManager().callEvent(new EntityDeathEvent((LivingEntity) getBukkitEntity(), new ArrayList<>(Arrays.asList(itemStack)), expToDrop));
       IronGolem golem = (IronGolem) damagesource.getEntity().getBukkitEntity();
       golem.getWorld().spawnEntity(golem.getLocation(), EntityType.PRIMED_TNT);
       return true;

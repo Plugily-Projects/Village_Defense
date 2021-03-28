@@ -89,7 +89,7 @@ public class CleanerKit extends PremiumKit implements Listener {
         .contains(getPlugin().getChatManager().colorMessage(Messages.KITS_CLEANER_GAME_ITEM_NAME)) || arena == null) {
       return;
     }
-    User user = (getPlugin().getUserManager().getUser(e.getPlayer()));
+    User user = getPlugin().getUserManager().getUser(e.getPlayer());
     if(user.isSpectator()) {
       e.getPlayer().sendMessage(getPlugin().getChatManager().colorMessage(Messages.SPECTATOR_WARNING));
       return;

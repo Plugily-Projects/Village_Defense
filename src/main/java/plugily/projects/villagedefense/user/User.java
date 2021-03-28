@@ -95,10 +95,9 @@ public class User {
     if(!stats.containsKey(s)) {
       stats.put(s, 0);
       return 0;
-    } else if(stats.get(s) == null) {
-      return 0;
     }
-    return stats.get(s);
+
+    return stats.getOrDefault(s, 0);
   }
 
   public void setStat(StatsStorage.StatisticType s, int i) {

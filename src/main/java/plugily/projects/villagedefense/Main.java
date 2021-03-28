@@ -177,7 +177,7 @@ public class Main extends JavaPlugin {
     configPreferences = new ConfigPreferences(this);
     setupFiles();
     new LegacyDataFixer(this);
-    this.languageConfig = ConfigUtils.getConfig(this, "language");
+    languageConfig = ConfigUtils.getConfig(this, "language");
     initializeClasses();
     checkUpdate();
     Debugger.debug("[System] Initialization finished took {0}ms", System.currentTimeMillis() - start);
@@ -256,15 +256,15 @@ public class Main extends JavaPlugin {
         if(!new File(getDataFolder(), "internal/holograms_data.yml").exists()) {
           new File(getDataFolder().getPath() + "/internal").mkdir();
         }
-        this.languageConfig = ConfigUtils.getConfig(this, "language");
-        this.hologramsRegistry = new HologramsRegistry(this);
+        languageConfig = ConfigUtils.getConfig(this, "language");
+        hologramsRegistry = new HologramsRegistry(this);
       } else {
         Debugger.sendConsoleMsg("&cYou need to install HolographicDisplays to use holograms!");
       }
     }
     if(configPreferences.getOption(ConfigPreferences.Option.UPGRADES_ENABLED)) {
-      this.entityUpgradesConfig = ConfigUtils.getConfig(this, "entity_upgrades");
-      this.languageConfig = ConfigUtils.getConfig(this, "language");
+      entityUpgradesConfig = ConfigUtils.getConfig(this, "entity_upgrades");
+      languageConfig = ConfigUtils.getConfig(this, "language");
       Upgrade.init(this);
       UpgradeBuilder.init(this);
       new EntityUpgradeMenu(this);
@@ -309,7 +309,8 @@ public class Main extends JavaPlugin {
     metrics.addCustomChart(new org.bstats.charts.SimplePie("hooked_addons", () -> {
       if(getServer().getPluginManager().getPlugin("VillageDefense-Enhancements") != null) {
         return "Enhancements";
-      } else if(getServer().getPluginManager().getPlugin("VillageDefense-CustomKits") != null) {
+      }
+      if(getServer().getPluginManager().getPlugin("VillageDefense-CustomKits") != null) {
         return "Custom Kits";
       }
       return "None";

@@ -34,7 +34,7 @@ public class UpgradeBuilder {
   private final Upgrade upgrade;
 
   public UpgradeBuilder(String id) {
-    this.upgrade = new Upgrade(id);
+    upgrade = new Upgrade(id);
     upgrade.setName(plugin.getChatManager().colorRawMessage(plugin.getLanguageConfig().getString("Upgrade-Menu.Upgrades." + id + ".Name")));
     upgrade.setDescription(Arrays.asList(plugin.getChatManager().colorRawMessage(plugin.getLanguageConfig().getString("Upgrade-Menu.Upgrades." + id + ".Description")).split(";")));
   }

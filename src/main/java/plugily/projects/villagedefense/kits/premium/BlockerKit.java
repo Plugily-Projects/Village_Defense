@@ -132,7 +132,7 @@ public class BlockerKit extends PremiumKit implements Listener {
         if(zombieBarrier.getSeconds() <= 0) {
           zombieBarrier.getLocation().getBlock().setType(Material.AIR);
           VersionUtils.sendParticles("FIREWORKS_SPARK", arena.getPlayers(), zombieBarrier.getLocation(), 20);
-          this.cancel();
+          cancel();
         }
       }
     }.runTaskTimer(getPlugin(), 20, 20);
@@ -155,7 +155,7 @@ public class BlockerKit extends PremiumKit implements Listener {
     }
 
     void decrementSeconds() {
-      this.seconds--;
+      seconds--;
     }
   }
 }

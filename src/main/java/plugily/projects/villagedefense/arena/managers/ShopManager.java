@@ -65,8 +65,8 @@ public class ShopManager {
   private final Arena arena;
 
   public ShopManager(Arena arena) {
-    this.config = ConfigUtils.getConfig(arena.getPlugin(), Constants.Files.ARENAS.getName());
-    this.plugin = arena.getPlugin();
+    config = ConfigUtils.getConfig(arena.getPlugin(), Constants.Files.ARENAS.getName());
+    plugin = arena.getPlugin();
     this.arena = arena;
     FileConfiguration languageConfig = ConfigUtils.getConfig(arena.getPlugin(), Constants.Files.LANGUAGE.getName());
     defaultGolemItemName = languageConfig.getString("In-Game.Messages.Shop-Messages.Golem-Item-Name");
@@ -182,7 +182,8 @@ public class ShopManager {
             user.setStat(StatsStorage.StatisticType.ORBS, user.getStat(StatsStorage.StatisticType.ORBS) - cost);
             arena.addOptionValue(ArenaOption.TOTAL_ORBS_SPENT, cost);
             return;
-          } else if(name.contains(plugin.getChatManager().colorMessage(Messages.SHOP_MESSAGES_WOLF_ITEM_NAME))
+          }
+          if(name.contains(plugin.getChatManager().colorMessage(Messages.SHOP_MESSAGES_WOLF_ITEM_NAME))
               || name.contains(defaultWolfItemName)) {
             List<Wolf> wolves = arena.getWolves();
             if(plugin.getConfigPreferences().getOption(Option.CAN_BUY_GOLEMSWOLVES_IF_THEY_DIED)) {

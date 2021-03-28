@@ -55,27 +55,27 @@ public class RidableVillager extends EntityVillager {
     //todo this.setSize(0.6F, 1.8F);
     getNavigation().q().b(true);
     ((Navigation) getNavigation()).a(true);
-    this.goalSelector.a(0, new PathfinderGoalFloat(this));
-    this.goalSelector.a(1, new PathfinderGoalAvoidTarget<>(this, EntityZombie.class,
+    goalSelector.a(0, new PathfinderGoalFloat(this));
+    goalSelector.a(1, new PathfinderGoalAvoidTarget<>(this, EntityZombie.class,
         8.0F, 0.6D, 0.6D));
-    this.goalSelector.a(1, new PathfinderGoalTradeWithPlayer(this));
-    this.goalSelector.a(1, new PathfinderGoalLookAtTradingPlayer(this));
+    goalSelector.a(1, new PathfinderGoalTradeWithPlayer(this));
+    goalSelector.a(1, new PathfinderGoalLookAtTradingPlayer(this));
     //todo
     //this.goalSelector.a(2, new PathfinderGoalMoveIndoors(this));
     //this.goalSelector.a(3, new PathfinderGoalRestrictOpenDoor(this));
     //this.goalSelector.a(4, new PathfinderGoalOpenDoor(this, true));
-    this.goalSelector.a(5, new PathfinderGoalMoveTowardsRestriction(this, 0.6D));
+    goalSelector.a(5, new PathfinderGoalMoveTowardsRestriction(this, 0.6D));
     //this.goalSelector.a(6, new PathfinderGoalMakeLove(this));
     //this.goalSelector.a(8, new PathfinderGoalPlay(this, 0.32D));
-    this.goalSelector.a(9, new PathfinderGoalInteract(this, EntityHuman.class,
+    goalSelector.a(9, new PathfinderGoalInteract(this, EntityHuman.class,
         3.0F, 1.0F));
-    this.goalSelector.a(9, new PathfinderGoalInteract(this, EntityVillager.class,
+    goalSelector.a(9, new PathfinderGoalInteract(this, EntityVillager.class,
         5.0F, 0.02F));
-    this.goalSelector.a(9, new PathfinderGoalRandomStroll(this, 0.6D));
-    this.goalSelector.a(10, new PathfinderGoalLookAtPlayer(this,
+    goalSelector.a(9, new PathfinderGoalRandomStroll(this, 0.6D));
+    goalSelector.a(10, new PathfinderGoalLookAtPlayer(this,
         EntityInsentient.class, 8.0F));
-    this.getBukkitEntity().setCustomName(CreatureUtils.getVillagerNames()[new Random().nextInt(CreatureUtils.getVillagerNames().length)]);
-    this.setCustomNameVisible(true);
+    getBukkitEntity().setCustomName(CreatureUtils.getVillagerNames()[new Random().nextInt(CreatureUtils.getVillagerNames().length)]);
+    setCustomNameVisible(true);
   }
 
 }

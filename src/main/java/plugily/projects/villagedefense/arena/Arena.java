@@ -196,7 +196,7 @@ public abstract class Arena extends BukkitRunnable {
   @Override
   public void run() {
     //idle task
-    if(getPlayers().isEmpty() && arenaState == ArenaState.WAITING_FOR_PLAYERS) {
+    if(players.isEmpty() && arenaState == ArenaState.WAITING_FOR_PLAYERS) {
       return;
     }
     Debugger.performance("ArenaTask", "[PerformanceMonitor] [{0}] Running game task", getId());
@@ -285,10 +285,10 @@ public abstract class Arena extends BukkitRunnable {
   /**
    * Set arena map name.
    *
-   * @param mapname new map name, [b]it's not arena id[/b]
+   * @param mapName new map name, [b]it's not arena id[/b]
    */
-  public void setMapName(String mapname) {
-    this.mapName = mapname;
+  public void setMapName(String mapName) {
+    this.mapName = mapName;
   }
 
   /**
@@ -472,6 +472,8 @@ public abstract class Arena extends BukkitRunnable {
 
   public abstract void spawnVillagerSlayer(Random random);
 
+  public abstract void setWorld(Location loc);
+
   protected void addWolf(Wolf wolf) {
     wolves.add(wolf);
   }
@@ -488,7 +490,7 @@ public abstract class Arena extends BukkitRunnable {
 
       int limit = 0;
       try {
-        limit = Integer.parseInt(map.getKey().split("\\.")[1]);
+        limit = Integer.parseInt(map.getKey().split("\\.", 2)[1]);
       } catch(NumberFormatException ex) {
       }
 

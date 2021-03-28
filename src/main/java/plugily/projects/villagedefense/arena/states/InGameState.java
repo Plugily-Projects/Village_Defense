@@ -68,11 +68,9 @@ public class InGameState implements ArenaStateHandler {
         arena.setOptionValue(ArenaOption.ZOMBIES_TO_SPAWN, 0);
       }
       arena.setTimer(arena.getTimer() - 1);
-    } else {
-      if(arena.getTimer() <= 0) {
-        arena.setFighting(true);
-        ArenaManager.startWave(arena);
-      }
+    } else if(arena.getTimer() <= 0) {
+      arena.setFighting(true);
+      ArenaManager.startWave(arena);
     }
     arena.setTimer(arena.getTimer() - 1);
   }

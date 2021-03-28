@@ -65,8 +65,9 @@ public class ArenaInitializer1_14_R1 extends Arena {
     this.plugin = plugin;
   }
 
+  @Override
   public void setWorld(Location loc) {
-    this.world = ((CraftWorld) loc.getWorld()).getHandle();
+    world = ((CraftWorld) loc.getWorld()).getHandle();
   }
 
   @Override
@@ -79,7 +80,7 @@ public class ArenaInitializer1_14_R1 extends Arena {
     zombie.setRemoveWhenFarAway(false);
     CreatureUtils.applyAttributes(zombie, this);
     plugin.getHolidayManager().applyHolidayZombieEffects(zombie);
-    this.addZombie((Zombie) fastZombie.getBukkitEntity());
+    addZombie((Zombie) fastZombie.getBukkitEntity());
 
     super.setOptionValue(ArenaOption.ZOMBIES_TO_SPAWN, getOption(ArenaOption.ZOMBIES_TO_SPAWN) - 1);
   }
@@ -95,7 +96,7 @@ public class ArenaInitializer1_14_R1 extends Arena {
     zombie.getEquipment().setBoots(new ItemStack(Material.CHAINMAIL_BOOTS));
     zombie.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, Integer.MAX_VALUE, 1));
     CreatureUtils.applyAttributes(zombie, this);
-    this.addZombie((Zombie) fastZombie.getBukkitEntity());
+    addZombie((Zombie) fastZombie.getBukkitEntity());
 
     super.setOptionValue(ArenaOption.ZOMBIES_TO_SPAWN, getOption(ArenaOption.ZOMBIES_TO_SPAWN) - 1);
   }
@@ -109,7 +110,7 @@ public class ArenaInitializer1_14_R1 extends Arena {
     world.addEntity(fastZombie, CreatureSpawnEvent.SpawnReason.CUSTOM);
     Zombie zombie = (Zombie) fastZombie.getBukkitEntity();
     InitializerHelper.prepareKnockbackResistantZombie(zombie, this);
-    this.addZombie(zombie);
+    addZombie(zombie);
 
     super.setOptionValue(ArenaOption.ZOMBIES_TO_SPAWN, getOption(ArenaOption.ZOMBIES_TO_SPAWN) - 1);
   }
@@ -124,7 +125,7 @@ public class ArenaInitializer1_14_R1 extends Arena {
     plugin.getHolidayManager().applyHolidayZombieEffects(zombie);
     zombie.setRemoveWhenFarAway(false);
     world.addEntity(fastZombie, CreatureSpawnEvent.SpawnReason.CUSTOM);
-    this.addZombie((Zombie) fastZombie.getBukkitEntity());
+    addZombie((Zombie) fastZombie.getBukkitEntity());
 
     super.setOptionValue(ArenaOption.ZOMBIES_TO_SPAWN, getOption(ArenaOption.ZOMBIES_TO_SPAWN) - 1);
   }
@@ -137,7 +138,7 @@ public class ArenaInitializer1_14_R1 extends Arena {
     world.addEntity(fastZombie, CreatureSpawnEvent.SpawnReason.CUSTOM);
     Zombie zombie = (Zombie) fastZombie.getBukkitEntity();
     InitializerHelper.prepareHardZombie(zombie, this);
-    this.addZombie(zombie);
+    addZombie(zombie);
     super.setOptionValue(ArenaOption.ZOMBIES_TO_SPAWN, getOption(ArenaOption.ZOMBIES_TO_SPAWN) - 1);
   }
 
@@ -149,7 +150,7 @@ public class ArenaInitializer1_14_R1 extends Arena {
     world.addEntity(fastZombie, CreatureSpawnEvent.SpawnReason.CUSTOM);
     Zombie zombie = (Zombie) fastZombie.getBukkitEntity();
     InitializerHelper.prepareSoftHardZombie(zombie, this);
-    this.addZombie(zombie);
+    addZombie(zombie);
     super.setOptionValue(ArenaOption.ZOMBIES_TO_SPAWN, getOption(ArenaOption.ZOMBIES_TO_SPAWN) - 1);
   }
 
@@ -163,7 +164,7 @@ public class ArenaInitializer1_14_R1 extends Arena {
     InitializerHelper.prepareGolemBusterZombie(zombie, this);
     zombie.setRemoveWhenFarAway(false);
     CreatureUtils.applyAttributes(zombie, this);
-    this.addZombie(zombie);
+    addZombie(zombie);
 
     super.setOptionValue(ArenaOption.ZOMBIES_TO_SPAWN, getOption(ArenaOption.ZOMBIES_TO_SPAWN) - 1);
   }
@@ -176,7 +177,7 @@ public class ArenaInitializer1_14_R1 extends Arena {
     world.addEntity(playerBuster, CreatureSpawnEvent.SpawnReason.CUSTOM);
     Zombie zombie = (Zombie) playerBuster.getBukkitEntity();
     InitializerHelper.preparePlayerBusterZombie(zombie, this);
-    this.addZombie(zombie);
+    addZombie(zombie);
 
     super.setOptionValue(ArenaOption.ZOMBIES_TO_SPAWN, getOption(ArenaOption.ZOMBIES_TO_SPAWN) - 1);
   }
@@ -189,7 +190,7 @@ public class ArenaInitializer1_14_R1 extends Arena {
     world.addEntity(villagerBuster, CreatureSpawnEvent.SpawnReason.CUSTOM);
     Zombie zombie = (Zombie) villagerBuster.getBukkitEntity();
     InitializerHelper.prepareVillagerBusterZombie(zombie, this);
-    this.addZombie(zombie);
+    addZombie(zombie);
 
     super.setOptionValue(ArenaOption.ZOMBIES_TO_SPAWN, getOption(ArenaOption.ZOMBIES_TO_SPAWN) - 1);
   }
@@ -203,7 +204,7 @@ public class ArenaInitializer1_14_R1 extends Arena {
     world.addEntity(villagerSlayer, CreatureSpawnEvent.SpawnReason.CUSTOM);
     Zombie zombie = (Zombie) villagerSlayer.getBukkitEntity();
     InitializerHelper.prepareVillagerSlayerZombie(zombie, this);
-    this.addZombie(zombie);
+    addZombie(zombie);
 
     super.setOptionValue(ArenaOption.ZOMBIES_TO_SPAWN, getOption(ArenaOption.ZOMBIES_TO_SPAWN) - 1);
   }
@@ -215,7 +216,7 @@ public class ArenaInitializer1_14_R1 extends Arena {
     world.addEntity(ridableVillager, CreatureSpawnEvent.SpawnReason.CUSTOM);
     Villager villager = (Villager) ridableVillager.getBukkitEntity();
     villager.setRemoveWhenFarAway(false);
-    this.addVillager((Villager) ridableVillager.getBukkitEntity());
+    addVillager((Villager) ridableVillager.getBukkitEntity());
   }
 
   @Override
@@ -230,7 +231,7 @@ public class ArenaInitializer1_14_R1 extends Arena {
     ironGolem.setCustomNameVisible(true);
     world.addEntity(ironGolem, CreatureSpawnEvent.SpawnReason.CUSTOM);
 
-    this.addIronGolem((org.bukkit.entity.IronGolem) ironGolem.getBukkitEntity());
+    addIronGolem((org.bukkit.entity.IronGolem) ironGolem.getBukkitEntity());
   }
 
   @Override
@@ -247,7 +248,7 @@ public class ArenaInitializer1_14_R1 extends Arena {
     wolf.setInvisible(false);
     ((Wolf) wolf.getBukkitEntity()).setOwner(player);
 
-    this.addWolf((Wolf) wolf.getBukkitEntity());
+    addWolf((Wolf) wolf.getBukkitEntity());
   }
 
 }

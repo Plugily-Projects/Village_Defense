@@ -48,10 +48,10 @@ public class SetupInventory {
   private final SetupUtilities setupUtilities;
 
   public SetupInventory(Arena arena, Player player) {
-    this.config = ConfigUtils.getConfig(plugin, Constants.Files.ARENAS.getName());
+    config = ConfigUtils.getConfig(plugin, Constants.Files.ARENAS.getName());
     this.arena = arena;
     this.player = player;
-    this.setupUtilities = new SetupUtilities(config, arena);
+    setupUtilities = new SetupUtilities(config, arena);
     prepareGui();
   }
 
@@ -60,10 +60,10 @@ public class SetupInventory {
   }
 
   private void prepareGui() {
-    this.gui = new Gui(plugin, 2, "Village Defense Arena Setup");
-    this.gui.setOnGlobalClick(e -> e.setCancelled(true));
+    gui = new Gui(plugin, 2, "Village Defense Arena Setup");
+    gui.setOnGlobalClick(e -> e.setCancelled(true));
     StaticPane pane = new StaticPane(9, 4);
-    this.gui.addPane(pane);
+    gui.addPane(pane);
 
     prepareComponents(pane);
   }

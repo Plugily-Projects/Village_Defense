@@ -216,17 +216,19 @@ public class ArenaEvents implements Listener {
     if(arena == null) {
       return;
     }
-    if(e.getEntity().isDead()) {
-      e.getEntity().setHealth(VersionUtils.getMaxHealth(e.getEntity()));
+
+    final Player player = e.getEntity();
+
+    if(player.isDead()) {
+      player.setHealth(VersionUtils.getMaxHealth(player));
     }
-    plugin.getRewardsHandler().performReward(e.getEntity(), arena, Reward.RewardType.PLAYER_DEATH);
+    plugin.getRewardsHandler().performReward(player, arena, Reward.RewardType.PLAYER_DEATH);
     ComplementAccessor.getComplement().setDeathMessage(e, "");
     e.getDrops().clear();
     e.setDroppedExp(0);
-    plugin.getHolidayManager().applyHolidayDeathEffects(e.getEntity());
+    plugin.getHolidayManager().applyHolidayDeathEffects(player);
 
     Bukkit.getScheduler().runTaskLater(plugin, () -> {
-      Player player = e.getEntity();
       player.spigot().respawn();
       User user = plugin.getUserManager().getUser(player);
       if(arena.getArenaState() == ArenaState.STARTING) {
@@ -299,7 +301,7 @@ public class ArenaEvents implements Listener {
   @EventHandler
   public void onRespawn(PlayerRespawnEvent e) {
     Arena arena = ArenaRegistry.getArena(e.getPlayer());
-    if(arena == null || !arena.getPlayers().contains(e.getPlayer())) {
+    if(arena == null) {
       return;
     }
     Player player = e.getPlayer();

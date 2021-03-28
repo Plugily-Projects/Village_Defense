@@ -79,7 +79,7 @@ public class LeaderboardArgument {
   }
 
   private void printLeaderboard(CommandSender sender, StatsStorage.StatisticType statisticType) {
-    java.util.Map<UUID, Integer> stats = (LinkedHashMap<UUID, Integer>) StatsStorage.getStats(statisticType);
+    java.util.Map<UUID, Integer> stats = StatsStorage.getStats(statisticType);
     sender.sendMessage(registry.getPlugin().getChatManager().colorMessage(Messages.LEADERBOARD_HEADER));
     String statistic = StringUtils.capitalize(statisticType.toString().toLowerCase().replace('_', ' '));
     for(int i = 0; i < 10; i++) {

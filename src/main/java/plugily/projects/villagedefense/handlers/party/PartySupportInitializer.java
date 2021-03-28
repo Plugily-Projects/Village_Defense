@@ -35,7 +35,8 @@ public class PartySupportInitializer {
     if(!plugin.getConfigPreferences().getOption(ConfigPreferences.Option.DISABLE_PARTIES)) {
       if(Bukkit.getServer().getPluginManager().getPlugin("Parties") != null) {
         return new PartiesPartyHandlerImpl();
-      } else if(Bukkit.getServer().getPluginManager().getPlugin("Spigot-Party-API-PAF") != null) {
+      }
+      if(Bukkit.getServer().getPluginManager().getPlugin("Spigot-Party-API-PAF") != null) {
         return new PAFBPartyHandlerImpl();
       } else if(Bukkit.getServer().getPluginManager().getPlugin("PartyAndFriends") != null) {
         return new PAFSPartyHandlerImpl();

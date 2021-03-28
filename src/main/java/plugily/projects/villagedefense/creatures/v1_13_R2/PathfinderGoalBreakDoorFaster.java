@@ -35,22 +35,22 @@ public class PathfinderGoalBreakDoorFaster extends PathfinderGoalBreakDoor {
   @Override
   public void e() {
     super.e();
-    if(this.a.getRandom().nextInt(8) == 0) {
-      this.a.world.triggerEffect(1010, this.b, 0);
+    if(a.getRandom().nextInt(8) == 0) {
+      a.world.triggerEffect(1010, b, 0);
     }
 
-    ++this.i;
-    int i = (int) ((float) this.i / 240.0F * 10.0F);
+    ++i;
+    int i = (int) (this.i / 240.0F * 10.0F);
 
-    if(i != this.j) {
-      this.a.world.c(this.a.getId(), this.b, i);
-      this.j = i;
+    if(i != j) {
+      a.world.c(a.getId(), b, i);
+      j = i;
     }
 
     if(this.i == 70) {
-      this.a.world.setAir(this.b);
-      this.a.world.triggerEffect(1012, this.b, 0);
-      this.a.world.triggerEffect(2001, this.b, Block.getCombinedId(this.a.world.getType(this.b)));
+      a.world.setAir(b);
+      a.world.triggerEffect(1012, b, 0);
+      a.world.triggerEffect(2001, b, Block.getCombinedId(a.world.getType(b)));
     }
   }
 

@@ -55,18 +55,18 @@ public class RidableIronGolem extends EntityIronGolem {
 
     this.a(1.4F, 2.9F);
     ((Navigation) getNavigation()).b(true);
-    this.goalSelector.a(0, new PathfinderGoalFloat(this));
-    this.goalSelector.a(1, new PathfinderGoalMeleeAttack(this, 1.0D, true));
-    this.goalSelector.a(2, new PathfinderGoalMoveTowardsTarget(this, 0.9D, 32.0F));
-    this.goalSelector.a(3, new PathfinderGoalMoveThroughVillage(this, 0.6D, true));
-    this.goalSelector.a(4, new PathfinderGoalMoveTowardsRestriction(this, 1.0D));
-    this.goalSelector.a(5, new PathfinderGoalRandomStroll(this, 0.6D));
-    this.goalSelector.a(6, new PathfinderGoalLookAtPlayer(this, EntityHuman.class, 6.0F));
-    this.goalSelector.a(7, new PathfinderGoalRandomLookaround(this));
-    this.targetSelector.a(1, new PathfinderGoalDefendVillage(this));
-    this.targetSelector.a(2, new PathfinderGoalHurtByTarget(this, false));
-    this.targetSelector.a(3, new PathfinderGoalNearestAttackableTarget<>(this, EntityHuman.class, 0, false, true, IMonster.e));
-    this.setHealth(500);
+    goalSelector.a(0, new PathfinderGoalFloat(this));
+    goalSelector.a(1, new PathfinderGoalMeleeAttack(this, 1.0D, true));
+    goalSelector.a(2, new PathfinderGoalMoveTowardsTarget(this, 0.9D, 32.0F));
+    goalSelector.a(3, new PathfinderGoalMoveThroughVillage(this, 0.6D, true));
+    goalSelector.a(4, new PathfinderGoalMoveTowardsRestriction(this, 1.0D));
+    goalSelector.a(5, new PathfinderGoalRandomStroll(this, 0.6D));
+    goalSelector.a(6, new PathfinderGoalLookAtPlayer(this, EntityHuman.class, 6.0F));
+    goalSelector.a(7, new PathfinderGoalRandomLookaround(this));
+    targetSelector.a(1, new PathfinderGoalDefendVillage(this));
+    targetSelector.a(2, new PathfinderGoalHurtByTarget(this, false));
+    targetSelector.a(3, new PathfinderGoalNearestAttackableTarget<>(this, EntityHuman.class, 0, false, true, IMonster.e));
+    setHealth(500);
   }
 
   @Override
@@ -79,17 +79,17 @@ public class RidableIronGolem extends EntityIronGolem {
       }
     }
     if(entityliving == null) {
-      this.P = 0.5F;
-      this.aR = 0.02F;
+      P = 0.5F;
+      aR = 0.02F;
       o(0.12f);
       this.k((float) 0.12);
       super.a(f, f1, f2);
       return;
     }
-    this.lastYaw = this.yaw = entityliving.yaw;
-    this.pitch = entityliving.pitch * 0.5F;
-    this.setYawPitch(this.yaw, this.pitch);
-    this.aO = this.aM = this.yaw;
+    lastYaw = yaw = entityliving.yaw;
+    pitch = entityliving.pitch * 0.5F;
+    setYawPitch(yaw, pitch);
+    aO = aM = yaw;
 
     f = entityliving.bh * 0.5F * 0.75F;
     f2 = entityliving.bj;
@@ -108,7 +108,7 @@ public class RidableIronGolem extends EntityIronGolem {
   @Override
   protected void initAttributes() {
     super.initAttributes();
-    this.getAttributeInstance(GenericAttributes.FOLLOW_RANGE).setValue(200.0D);
+    getAttributeInstance(GenericAttributes.FOLLOW_RANGE).setValue(200.0D);
   }
 
   @Override

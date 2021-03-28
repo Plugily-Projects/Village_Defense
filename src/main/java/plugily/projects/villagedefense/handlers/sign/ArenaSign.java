@@ -46,9 +46,9 @@ public class ArenaSign {
   }
 
   private void setBehindBlock() {
-    this.behind = null;
+    behind = null;
     if(MaterialUtil.isWallSign(sign.getBlock().getType())) {
-      this.behind = ServerVersion.Version.isCurrentEqualOrHigher(ServerVersion.Version.v1_14_R1) ? getBlockBehind() : getBlockBehindLegacy();
+      behind = ServerVersion.Version.isCurrentEqualOrHigher(ServerVersion.Version.v1_14_R1) ? getBlockBehind() : getBlockBehindLegacy();
     }
   }
 

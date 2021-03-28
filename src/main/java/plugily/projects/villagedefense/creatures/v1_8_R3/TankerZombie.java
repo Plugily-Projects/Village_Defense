@@ -51,25 +51,25 @@ public class TankerZombie extends EntityZombie {
     GoalSelectorCleaner.clearSelectors(this);
     ((Navigation) getNavigation()).b(true);
 
-    this.goalSelector.a(0, new PathfinderGoalFloat(this));
-    this.goalSelector.a(1, new PathfinderGoalBreakDoor(this));
-    this.goalSelector.a(2, new PathfinderGoalMeleeAttack(this, CreatureUtils.getZombieSpeed(), false));
-    this.goalSelector.a(4, new PathfinderGoalMoveTowardsRestriction(this, CreatureUtils.getZombieSpeed()));
-    this.goalSelector.a(7, new PathfinderGoalLookAtPlayer(this, EntityHuman.class, 8.0F)); // this one to look at human
-    this.goalSelector.a(7, new PathfinderGoalRandomLookaround(this));
-    this.targetSelector.a(1, new PathfinderGoalHurtByTarget(this, false));
-    this.targetSelector.a(4, new PathfinderGoalNearestAttackableTarget<>(this, EntityHuman.class, true)); // this one to target human
-    this.targetSelector.a(2, new PathfinderGoalNearestAttackableTarget<>(this, EntityVillager.class, false));
-    this.targetSelector.a(3, new PathfinderGoalNearestAttackableTarget<>(this, EntityIronGolem.class, false));
-    this.setHealth(35);
+    goalSelector.a(0, new PathfinderGoalFloat(this));
+    goalSelector.a(1, new PathfinderGoalBreakDoor(this));
+    goalSelector.a(2, new PathfinderGoalMeleeAttack(this, CreatureUtils.getZombieSpeed(), false));
+    goalSelector.a(4, new PathfinderGoalMoveTowardsRestriction(this, CreatureUtils.getZombieSpeed()));
+    goalSelector.a(7, new PathfinderGoalLookAtPlayer(this, EntityHuman.class, 8.0F)); // this one to look at human
+    goalSelector.a(7, new PathfinderGoalRandomLookaround(this));
+    targetSelector.a(1, new PathfinderGoalHurtByTarget(this, false));
+    targetSelector.a(4, new PathfinderGoalNearestAttackableTarget<>(this, EntityHuman.class, true)); // this one to target human
+    targetSelector.a(2, new PathfinderGoalNearestAttackableTarget<>(this, EntityVillager.class, false));
+    targetSelector.a(3, new PathfinderGoalNearestAttackableTarget<>(this, EntityIronGolem.class, false));
+    setHealth(35);
 
   }
 
   @Override
   protected void initAttributes() {
     super.initAttributes();
-    this.getAttributeInstance(GenericAttributes.FOLLOW_RANGE).setValue(100.0D);
-    this.getAttributeInstance(GenericAttributes.c).setValue(0D);
+    getAttributeInstance(GenericAttributes.FOLLOW_RANGE).setValue(100.0D);
+    getAttributeInstance(GenericAttributes.c).setValue(0D);
   }
 
 }

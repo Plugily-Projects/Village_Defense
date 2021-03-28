@@ -54,17 +54,17 @@ public class WorkingWolf extends EntityWolf {
 
     this.a(1.4F, 2.9F);
     ((Navigation) getNavigation()).a(true);
-    this.goalSelector.a(0, new PathfinderGoalFloat(this));
-    this.goalSelector.a(3, new PathfinderGoalLeapAtTarget(this, 0.4F));
-    this.goalSelector.a(4, new PathfinderGoalMeleeAttack(this, 1.0D, true));
-    this.goalSelector.a(5, new PathfinderGoalFollowOwner(this, 1.0D, 10.0F, 2.0F));
-    this.goalSelector.a(2, new PathfinderGoalMeleeAttack(this, 1.5F, false));
-    this.goalSelector.a(4, new PathfinderGoalMoveTowardsRestriction(this, 1.0D));
-    this.goalSelector.a(6, new PathfinderGoalRandomStroll(this, 0.6D));
-    this.goalSelector.a(7, new PathfinderGoalLookAtPlayer(this, EntityHuman.class, 6.0F));
-    this.goalSelector.a(8, new PathfinderGoalRandomLookaround(this));
-    this.targetSelector.a(2, new PathfinderGoalNearestAttackableTarget<>(this, EntityZombie.class, true));
-    this.targetSelector.a(1, new PathfinderGoalHurtByTarget(this, true));
+    goalSelector.a(0, new PathfinderGoalFloat(this));
+    goalSelector.a(3, new PathfinderGoalLeapAtTarget(this, 0.4F));
+    goalSelector.a(4, new PathfinderGoalMeleeAttack(this, 1.0D, true));
+    goalSelector.a(5, new PathfinderGoalFollowOwner(this, 1.0D, 10.0F, 2.0F));
+    goalSelector.a(2, new PathfinderGoalMeleeAttack(this, 1.5F, false));
+    goalSelector.a(4, new PathfinderGoalMoveTowardsRestriction(this, 1.0D));
+    goalSelector.a(6, new PathfinderGoalRandomStroll(this, 0.6D));
+    goalSelector.a(7, new PathfinderGoalLookAtPlayer(this, EntityHuman.class, 6.0F));
+    goalSelector.a(8, new PathfinderGoalRandomLookaround(this));
+    targetSelector.a(2, new PathfinderGoalNearestAttackableTarget<>(this, EntityZombie.class, true));
+    targetSelector.a(1, new PathfinderGoalHurtByTarget(this, true));
 
   }
 
@@ -78,17 +78,17 @@ public class WorkingWolf extends EntityWolf {
       }
     }
     if(entityliving == null) {
-      this.P = 0.5F;
-      this.aR = 0.02F;
+      P = 0.5F;
+      aR = 0.02F;
       o(0.12f);
       this.k((float) 0.12);
       super.a(f, f1, f2);
       return;
     }
-    this.lastYaw = this.yaw = entityliving.yaw;
-    this.pitch = entityliving.pitch * 0.5F;
-    this.setYawPitch(this.yaw, this.pitch);
-    this.aO = this.aM = this.yaw;
+    lastYaw = yaw = entityliving.yaw;
+    pitch = entityliving.pitch * 0.5F;
+    setYawPitch(yaw, pitch);
+    aO = aM = yaw;
 
     f = entityliving.bh * 0.5F * 0.75F;
     f2 = entityliving.bj;
@@ -107,7 +107,7 @@ public class WorkingWolf extends EntityWolf {
   @Override
   protected void initAttributes() {
     super.initAttributes();
-    this.getAttributeInstance(GenericAttributes.FOLLOW_RANGE).setValue(200.0D);
+    getAttributeInstance(GenericAttributes.FOLLOW_RANGE).setValue(200.0D);
   }
 
 
