@@ -35,7 +35,6 @@ import plugily.projects.villagedefense.handlers.PermissionsManager;
 import plugily.projects.villagedefense.handlers.language.Messages;
 import plugily.projects.villagedefense.kits.KitRegistry;
 import plugily.projects.villagedefense.kits.basekits.PremiumKit;
-import plugily.projects.villagedefense.user.User;
 import plugily.projects.villagedefense.utils.Utils;
 
 import java.util.ArrayList;
@@ -97,27 +96,27 @@ public class NakedKit extends PremiumKit implements Listener {
     if(!(event.getWhoClicked() instanceof Player)) {
       return;
     }
-    User user = getPlugin().getUserManager().getUser((Player) event.getWhoClicked());
-    if(!ArenaRegistry.isInArena((Player) event.getWhoClicked())) {
+    Player who = (Player) event.getWhoClicked();
+    if(!ArenaRegistry.isInArena(who)) {
       return;
     }
-    if(!(user.getKit() instanceof NakedKit)) {
+    if(!(getPlugin().getUserManager().getUser(who).getKit() instanceof NakedKit)) {
       return;
     }
-    if(!(event.getInventory().getType().equals(InventoryType.PLAYER) || event.getInventory().getType().equals(InventoryType.CRAFTING))) {
+    if(event.getInventory().getType() != InventoryType.PLAYER || event.getInventory().getType() == InventoryType.CRAFTING) {
       return;
     }
     Bukkit.getScheduler().runTaskLater(getPlugin(), () -> {
-      for(ItemStack stack : event.getWhoClicked().getInventory().getArmorContents()) {
+      for(ItemStack stack : who.getInventory().getArmorContents()) {
         if(stack == null || !armorTypes.contains(stack.getType())) {
           continue;
         }
         //we cannot cancel event using scheduler, we must remove all armor contents from inventory manually
-        event.getWhoClicked().sendMessage(getPlugin().getChatManager().colorMessage(Messages.KITS_WILD_NAKED_CANNOT_WEAR_ARMOR));
-        event.getWhoClicked().getInventory().setHelmet(new ItemStack(Material.AIR, 1));
-        event.getWhoClicked().getInventory().setChestplate(new ItemStack(Material.AIR, 1));
-        event.getWhoClicked().getInventory().setLeggings(new ItemStack(Material.AIR, 1));
-        event.getWhoClicked().getInventory().setBoots(new ItemStack(Material.AIR, 1));
+        who.sendMessage(getPlugin().getChatManager().colorMessage(Messages.KITS_WILD_NAKED_CANNOT_WEAR_ARMOR));
+        who.getInventory().setHelmet(new ItemStack(Material.AIR, 1));
+        who.getInventory().setChestplate(new ItemStack(Material.AIR, 1));
+        who.getInventory().setLeggings(new ItemStack(Material.AIR, 1));
+        who.getInventory().setBoots(new ItemStack(Material.AIR, 1));
         return;
       }
     }, 1);
@@ -128,8 +127,7 @@ public class NakedKit extends PremiumKit implements Listener {
     if(!ArenaRegistry.isInArena(event.getPlayer())) {
       return;
     }
-    User user = getPlugin().getUserManager().getUser(event.getPlayer());
-    if(!(user.getKit() instanceof NakedKit) || !event.hasItem()) {
+    if(!(getPlugin().getUserManager().getUser(event.getPlayer()).getKit() instanceof NakedKit) || !event.hasItem()) {
       return;
     }
     if(armorTypes.contains(event.getItem().getType())) {
