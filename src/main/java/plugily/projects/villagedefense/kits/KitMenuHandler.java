@@ -39,7 +39,6 @@ import plugily.projects.villagedefense.handlers.items.SpecialItem;
 import plugily.projects.villagedefense.handlers.items.SpecialItemManager;
 import plugily.projects.villagedefense.handlers.language.Messages;
 import plugily.projects.villagedefense.kits.basekits.Kit;
-import plugily.projects.villagedefense.user.User;
 import plugily.projects.villagedefense.utils.Utils;
 
 /**
@@ -94,8 +93,7 @@ public class KitMenuHandler implements Listener {
           player.sendMessage(plugin.getChatManager().colorMessage(Messages.KITS_NOT_UNLOCKED_MESSAGE).replace("%KIT%", kit.getName()));
           return;
         }
-        User user = plugin.getUserManager().getUser(player);
-        user.setKit(kit);
+        plugin.getUserManager().getUser(player).setKit(kit);
         player.sendMessage(plugin.getChatManager().colorMessage(Messages.KITS_CHOOSE_MESSAGE).replace("%KIT%", kit.getName()));
       }), x, y);
       x++;

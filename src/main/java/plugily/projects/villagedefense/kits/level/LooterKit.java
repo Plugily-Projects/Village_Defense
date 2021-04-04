@@ -34,7 +34,6 @@ import plugily.projects.villagedefense.arena.ArenaRegistry;
 import plugily.projects.villagedefense.handlers.language.Messages;
 import plugily.projects.villagedefense.kits.KitRegistry;
 import plugily.projects.villagedefense.kits.basekits.LevelKit;
-import plugily.projects.villagedefense.user.User;
 import plugily.projects.villagedefense.utils.Utils;
 
 import java.util.List;
@@ -77,18 +76,14 @@ public class LooterKit extends LevelKit implements Listener {
 
   @EventHandler
   public void onDeath(EntityDeathEvent event) {
-    if(event.getEntity().getType() != EntityType.ZOMBIE) {
-      return;
-    }
-    if(event.getEntity().getKiller() == null) {
+    if(event.getEntity().getType() != EntityType.ZOMBIE || event.getEntity().getKiller() == null) {
       return;
     }
     Player player = event.getEntity().getKiller();
     if(ArenaRegistry.getArena(player) == null) {
       return;
     }
-    User user = getPlugin().getUserManager().getUser(player);
-    if(user.getKit() instanceof LooterKit) {
+    if(getPlugin().getUserManager().getUser(player).getKit() instanceof LooterKit) {
       player.getInventory().addItem(new ItemStack(getMaterial(), 1));
     }
   }
