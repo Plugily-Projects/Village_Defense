@@ -57,6 +57,8 @@ public class CreatureUtils {
   private static Main plugin;
   private static final List<CachedObject> cachedObjects = new ArrayList<>();
 
+  private static final UUID uId = UUID.fromString("206a89dc-ae78-4c4d-b42c-3b31db3f5a7e");
+
   private CreatureUtils() {
   }
 
@@ -105,8 +107,9 @@ public class CreatureUtils {
     } else {
       EntityInsentient nmsEntity = (EntityInsentient) ((CraftLivingEntity) zombie).getHandle();
       AttributeInstance attributes = nmsEntity.getAttributeInstance(GenericAttributes.FOLLOW_RANGE);
-      AttributeModifier modifier = new AttributeModifier(UUID.fromString("206a89dc-ae78-4c4d-b42c-3b31db3f5a7e"), "follow range multiplier", 200.0D, 1);
-      attributes.b(modifier);
+      if (attributes.a(uId) == null) { // Check if the attribute is not set
+        attributes.b(new AttributeModifier(uId, "follow range multiplier", 200.0D, 1));
+      }
     }
     VersionUtils.setMaxHealth(zombie, VersionUtils.getMaxHealth(zombie) + arena.getOption(ArenaOption.ZOMBIE_DIFFICULTY_MULTIPLIER));
     zombie.setHealth(VersionUtils.getMaxHealth(zombie));

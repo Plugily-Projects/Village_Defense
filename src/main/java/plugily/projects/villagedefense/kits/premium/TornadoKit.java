@@ -133,26 +133,16 @@ public class TornadoKit extends PremiumKit implements Listener {
     private Location location;
     private final Vector vector;
     private int angle;
-    private int times;
-    private int entities;
+    private int times = 0;
+    private int entities = 0;
 
     Tornado(Location location) {
       this.location = location;
       vector = location.getDirection();
-      times = 0;
-      entities = 0;
     }
 
     int getTimes() {
       return times;
-    }
-
-    Vector getVector() {
-      return vector;
-    }
-
-    Location getLocation() {
-      return location;
     }
 
     void setLocation(Location location) {
@@ -169,21 +159,20 @@ public class TornadoKit extends PremiumKit implements Listener {
               radians = Math.toRadians(360.0 / lines * l + y * 25 - angle),
               x = Math.cos(radians) * radius,
               z = Math.sin(radians) * radius;
-          VersionUtils.sendParticles("CLOUD", null, getLocation().clone().add(x, y, z), 1, 0, 0, 0);
+          VersionUtils.sendParticles("CLOUD", null, location.clone().add(x, y, z), 1, 0, 0, 0);
         }
       }
       pushNearbyZombies();
-      setLocation(getLocation().add(getVector().getX() / (3 + Math.random() / 2), 0, getVector().getZ() / (3 + Math.random() / 2)));
+      setLocation(location.add(vector.getX() / (3 + Math.random() / 2), 0, vector.getZ() / (3 + Math.random() / 2)));
 
       angle += 50;
-
     }
 
     private void pushNearbyZombies() {
-      for(Entity entity : getLocation().getWorld().getNearbyEntities(getLocation(), 2, 2, 2)) {
+      for(Entity entity : location.getWorld().getNearbyEntities(location, 2, 2, 2)) {
         if(entity.getType() == EntityType.ZOMBIE) {
           entities++;
-          entity.setVelocity(getVector().multiply(2).setY(0).add(new Vector(0, 1, 0)));
+          entity.setVelocity(vector.multiply(2).setY(0).add(new Vector(0, 1, 0)));
         }
       }
     }
