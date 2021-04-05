@@ -101,11 +101,12 @@ public class ArenaManager {
             if(player.getUniqueId().equals(partyPlayer.getUniqueId())) {
               continue;
             }
-            if(ArenaRegistry.isInArena(partyPlayer)) {
-              if(ArenaRegistry.getArena(partyPlayer).getArenaState() == ArenaState.IN_GAME) {
+            Arena partyPlayerGame = ArenaRegistry.getArena(partyPlayer);
+            if(partyPlayerGame != null) {
+              if(partyPlayerGame.getArenaState() == ArenaState.IN_GAME) {
                 continue;
               }
-              leaveAttempt(partyPlayer, ArenaRegistry.getArena(partyPlayer));
+              leaveAttempt(partyPlayer, partyPlayerGame);
             }
             partyPlayer.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().formatMessage(arena, plugin.getChatManager().colorMessage(Messages.JOIN_AS_PARTY_MEMBER), partyPlayer));
             joinAttempt(partyPlayer, arena);

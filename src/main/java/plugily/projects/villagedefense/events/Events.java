@@ -104,10 +104,11 @@ public class Events implements Listener {
 
   @EventHandler
   public void onItemPickup(PlayerExpChangeEvent event) {
-    if(ArenaRegistry.getArena(event.getPlayer()) == null) {
+    Arena arena = ArenaRegistry.getArena(event.getPlayer());
+    if(arena == null) {
       return;
     }
-    int multiplier = ArenaRegistry.getArena(event.getPlayer()).getOption(ArenaOption.ZOMBIE_DIFFICULTY_MULTIPLIER);
+    int multiplier = arena.getOption(ArenaOption.ZOMBIE_DIFFICULTY_MULTIPLIER);
     int amount = (int) Math.ceil(event.getAmount() * 1.6 * multiplier);
     User user = plugin.getUserManager().getUser(event.getPlayer());
     event.setAmount(amount);

@@ -34,7 +34,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.UUID;
 
@@ -84,13 +83,15 @@ public class LeaderboardArgument {
     String statistic = StringUtils.capitalize(statisticType.toString().toLowerCase().replace('_', ' '));
     for(int i = 0; i < 10; i++) {
       try {
-        UUID current = (UUID) stats.keySet().toArray()[stats.keySet().toArray().length - 1];
+        Object[] array = stats.keySet().toArray();
+        UUID current = (UUID) array[array.length - 1];
         sender.sendMessage(formatMessage(statistic, Bukkit.getOfflinePlayer(current).getName(), i + 1, stats.get(current)));
         stats.remove(current);
       } catch(IndexOutOfBoundsException ex) {
         sender.sendMessage(formatMessage(statistic, "Empty", i + 1, 0));
       } catch(NullPointerException ex) {
-        UUID current = (UUID) stats.keySet().toArray()[stats.keySet().toArray().length - 1];
+        Object[] array = stats.keySet().toArray();
+        UUID current = (UUID) array[array.length - 1];
         if(registry.getPlugin().getConfigPreferences().getOption(ConfigPreferences.Option.DATABASE_ENABLED)) {
           try(Connection connection = registry.getPlugin().getMysqlDatabase().getConnection();
               Statement statement = connection.createStatement();
@@ -110,9 +111,9 @@ public class LeaderboardArgument {
 
   private String formatMessage(String statisticName, String playerName, int position, int value) {
     String message = registry.getPlugin().getChatManager().colorMessage(Messages.LEADERBOARD_FORMAT);
-    message = StringUtils.replace(message, "%position%", String.valueOf(position));
+    message = StringUtils.replace(message, "%position%", Integer.toString(position));
     message = StringUtils.replace(message, "%name%", playerName);
-    message = StringUtils.replace(message, "%value%", String.valueOf(value));
+    message = StringUtils.replace(message, "%value%", Integer.toString(value));
     message = StringUtils.replace(message, "%statistic%", statisticName);
     return message;
   }

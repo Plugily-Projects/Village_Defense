@@ -86,7 +86,7 @@ public class StartingState implements ArenaStateHandler {
         player.setGameMode(GameMode.SURVIVAL);
         User user = plugin.getUserManager().getUser(player);
         user.setStat(StatsStorage.StatisticType.ORBS, plugin.getConfig().getInt("Orbs-Starting-Amount", 20));
-        plugin.getUserManager().getUser(player).getKit().giveKitItems(player);
+        user.getKit().giveKitItems(player);
         player.updateInventory();
         plugin.getUserManager().addExperience(player, 10);
         arena.setTimer(plugin.getConfig().getInt("Cooldown-Before-Next-Wave", 25));

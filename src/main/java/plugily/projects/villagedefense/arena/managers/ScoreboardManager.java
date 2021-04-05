@@ -124,17 +124,18 @@ public class ScoreboardManager {
 
   private String formatScoreboardLine(String line, User user) {
     String formattedLine = line;
-    formattedLine = StringUtils.replace(formattedLine, "%TIME%", String.valueOf(arena.getTimer()));
-    formattedLine = StringUtils.replace(formattedLine, "%PLAYERS%", String.valueOf(arena.getPlayers().size()));
-    formattedLine = StringUtils.replace(formattedLine, "%MIN_PLAYERS%", String.valueOf(arena.getMinimumPlayers()));
-    formattedLine = StringUtils.replace(formattedLine, "%PLAYERS_LEFT%", String.valueOf(arena.getPlayersLeft().size()));
-    formattedLine = StringUtils.replace(formattedLine, "%VILLAGERS%", String.valueOf(arena.getVillagers().size()));
-    formattedLine = StringUtils.replace(formattedLine, "%ORBS%", String.valueOf(user.getStat(StatsStorage.StatisticType.ORBS)));
-    formattedLine = StringUtils.replace(formattedLine, "%WAVE%", String.valueOf(arena.getWave()));
-    if(arena.getZombiesLeft() > 0 && formattedLine.contains("%ZOMBIES%")) {
-      formattedLine = StringUtils.replace(formattedLine, "%ZOMBIES%", String.valueOf(arena.getZombiesLeft()));
+    formattedLine = StringUtils.replace(formattedLine, "%TIME%", Integer.toString(arena.getTimer()));
+    formattedLine = StringUtils.replace(formattedLine, "%PLAYERS%", Integer.toString(arena.getPlayers().size()));
+    formattedLine = StringUtils.replace(formattedLine, "%MIN_PLAYERS%", Integer.toString(arena.getMinimumPlayers()));
+    formattedLine = StringUtils.replace(formattedLine, "%PLAYERS_LEFT%", Integer.toString(arena.getPlayersLeft().size()));
+    formattedLine = StringUtils.replace(formattedLine, "%VILLAGERS%", Integer.toString(arena.getVillagers().size()));
+    formattedLine = StringUtils.replace(formattedLine, "%ORBS%", Integer.toString(user.getStat(StatsStorage.StatisticType.ORBS)));
+    formattedLine = StringUtils.replace(formattedLine, "%WAVE%", Integer.toString(arena.getWave()));
+    int zombiesLeft = arena.getZombiesLeft();
+    if(zombiesLeft > 0 && formattedLine.contains("%ZOMBIES%")) {
+      formattedLine = StringUtils.replace(formattedLine, "%ZOMBIES%", Integer.toString(zombiesLeft));
     }
-    formattedLine = StringUtils.replace(formattedLine, "%ROTTEN_FLESH%", String.valueOf(arena.getOption(ArenaOption.ROTTEN_FLESH_AMOUNT)));
+    formattedLine = StringUtils.replace(formattedLine, "%ROTTEN_FLESH%", Integer.toString(arena.getOption(ArenaOption.ROTTEN_FLESH_AMOUNT)));
     formattedLine = StringUtils.replace(formattedLine, "%ARENA_NAME%", arena.getMapName());
     formattedLine = StringUtils.replace(formattedLine, "%ARENA_ID%", arena.getId());
     formattedLine = plugin.getChatManager().colorRawMessage(formattedLine);

@@ -162,10 +162,11 @@ public class ArenaEvents implements Listener {
             Wolf wolf = ((Wolf) event.getEntity());
             java.util.UUID ownerUUID = plugin.isPaper() ? wolf.getOwnerUniqueId()
                 : (wolf.getOwner() != null) ? wolf.getOwner().getUniqueId() : null;
-            if(ownerUUID != null && Bukkit.getPlayer(ownerUUID) != null) {
-              Bukkit.getPlayer(ownerUUID).sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage(Messages.WOLF_DIED));
+            Player playerOwner = ownerUUID != null ? Bukkit.getPlayer(ownerUUID) : null;
+            if(playerOwner != null) {
+              playerOwner.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage(Messages.WOLF_DIED));
             }
-            arena.removeWolf((Wolf) event.getEntity());
+            arena.removeWolf(wolf);
           }
           return;
         default:
@@ -176,32 +177,34 @@ public class ArenaEvents implements Listener {
 
   @EventHandler
   public void onDieEntity(EntityDeathEvent e) {
-    if(!(e.getEntity() instanceof Zombie || e.getEntity() instanceof Villager)) {
+    LivingEntity entity = e.getEntity();
+    if(!(entity instanceof Zombie || entity instanceof Villager)) {
       return;
     }
     for(Arena arena : ArenaRegistry.getArenas()) {
       switch(e.getEntityType()) {
         case ZOMBIE:
-          if(!arena.getZombies().contains(e.getEntity())) {
+          if(!arena.getZombies().contains(entity)) {
             continue;
           }
-          arena.removeZombie((Zombie) e.getEntity());
+          arena.removeZombie((Zombie) entity);
           arena.addOptionValue(ArenaOption.TOTAL_KILLED_ZOMBIES, 1);
-          if(ArenaRegistry.getArena(e.getEntity().getKiller()) != null) {
-            plugin.getUserManager().addStat(e.getEntity().getKiller(), StatsStorage.StatisticType.KILLS);
-            plugin.getUserManager().addExperience(e.getEntity().getKiller(), 2 * arena.getOption(ArenaOption.ZOMBIE_DIFFICULTY_MULTIPLIER));
-            plugin.getRewardsHandler().performReward(e.getEntity().getKiller(), Reward.RewardType.ZOMBIE_KILL);
-            plugin.getPowerupRegistry().spawnPowerup(e.getEntity().getLocation(), ArenaRegistry.getArena(e.getEntity().getKiller()));
+          Arena killerArena = ArenaRegistry.getArena(entity.getKiller());
+          if(killerArena != null) {
+            plugin.getUserManager().addStat(entity.getKiller(), StatsStorage.StatisticType.KILLS);
+            plugin.getUserManager().addExperience(entity.getKiller(), 2 * arena.getOption(ArenaOption.ZOMBIE_DIFFICULTY_MULTIPLIER));
+            plugin.getRewardsHandler().performReward(entity.getKiller(), Reward.RewardType.ZOMBIE_KILL);
+            plugin.getPowerupRegistry().spawnPowerup(entity.getLocation(), killerArena);
           }
           return;
         case VILLAGER:
-          if(!arena.getVillagers().contains(e.getEntity())) {
+          if(!arena.getVillagers().contains(entity)) {
             continue;
           }
-          arena.getStartLocation().getWorld().strikeLightningEffect(e.getEntity().getLocation());
-          arena.removeVillager((Villager) e.getEntity());
+          arena.getStartLocation().getWorld().strikeLightningEffect(entity.getLocation());
+          arena.removeVillager((Villager) entity);
           plugin.getRewardsHandler().performReward(null, arena, Reward.RewardType.VILLAGER_DEATH);
-          plugin.getHolidayManager().applyHolidayDeathEffects(e.getEntity());
+          plugin.getHolidayManager().applyHolidayDeathEffects(entity);
           plugin.getChatManager().broadcast(arena, Messages.VILLAGER_DIED);
           return;
         default:
@@ -258,10 +261,9 @@ public class ArenaEvents implements Listener {
       //running in a scheduler of 1 tick due to respawn bug
       Bukkit.getScheduler().runTaskLater(plugin, () -> {
         for(SpecialItem item : plugin.getSpecialItemManager().getSpecialItems()) {
-          if(item.getDisplayStage() != SpecialItem.DisplayStage.SPECTATOR) {
-            continue;
+          if(item.getDisplayStage() == SpecialItem.DisplayStage.SPECTATOR) {
+            player.getInventory().setItem(item.getSlot(), item.getItemStack());
           }
-          player.getInventory().setItem(item.getSlot(), item.getItemStack());
         }
       }, 1);
 
@@ -321,14 +323,13 @@ public class ArenaEvents implements Listener {
   @EventHandler
   public void playerCommandExecution(PlayerCommandPreprocessEvent e) {
     if(plugin.getConfigPreferences().getOption(ConfigPreferences.Option.ENABLE_SHORT_COMMANDS)) {
-      Player player = e.getPlayer();
       if(e.getMessage().equalsIgnoreCase("/start")) {
-        player.performCommand("vda forcestart");
+        e.getPlayer().performCommand("vda forcestart");
         e.setCancelled(true);
         return;
       }
       if(e.getMessage().equalsIgnoreCase("/leave")) {
-        player.performCommand("vd leave");
+        e.getPlayer().performCommand("vd leave");
         e.setCancelled(true);
       }
     }

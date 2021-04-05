@@ -199,11 +199,11 @@ public abstract class Arena extends BukkitRunnable {
     if(players.isEmpty() && arenaState == ArenaState.WAITING_FOR_PLAYERS) {
       return;
     }
-    Debugger.performance("ArenaTask", "[PerformanceMonitor] [{0}] Running game task", getId());
+    Debugger.performance("ArenaTask", "[PerformanceMonitor] [{0}] Running game task", id);
     long start = System.currentTimeMillis();
 
     gameStateHandlers.get(arenaState).handleCall(this);
-    Debugger.performance("ArenaTask", "[PerformanceMonitor] [{0}] Game task finished took {1}ms", getId(), System.currentTimeMillis() - start);
+    Debugger.performance("ArenaTask", "[PerformanceMonitor] [{0}] Game task finished took {1}ms", id, System.currentTimeMillis() - start);
   }
 
   public void spawnVillagers() {
@@ -378,7 +378,7 @@ public abstract class Arena extends BukkitRunnable {
   }
 
   public void start() {
-    Debugger.debug("[{0}] Instance started", getId());
+    Debugger.debug("[{0}] Instance started", id);
     runTaskTimer(plugin, 20L, 20L);
     setArenaState(ArenaState.WAITING_FOR_PLAYERS);
   }
@@ -553,7 +553,7 @@ public abstract class Arena extends BukkitRunnable {
       setOptionValue(ArenaOption.ROTTEN_FLESH_LEVEL, 1);
       return true;
     }
-    if(getOption(ArenaOption.ROTTEN_FLESH_LEVEL) * 10 * getPlayers().size() + 10 < getOption(ArenaOption.ROTTEN_FLESH_AMOUNT)) {
+    if(getOption(ArenaOption.ROTTEN_FLESH_LEVEL) * 10 * players.size() + 10 < getOption(ArenaOption.ROTTEN_FLESH_AMOUNT)) {
       addOptionValue(ArenaOption.ROTTEN_FLESH_LEVEL, 1);
       return true;
     }

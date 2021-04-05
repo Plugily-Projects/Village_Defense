@@ -42,7 +42,7 @@ import java.util.logging.Level;
 @SuppressWarnings("deprecation")
 public class MapRestorerManager {
 
-  public final Map<Location, Byte> doorBlocks = new LinkedHashMap<>();
+  protected final Map<Location, Byte> doorBlocks = new LinkedHashMap<>();
   public final Arena arena;
 
   public MapRestorerManager(Arena arena) {

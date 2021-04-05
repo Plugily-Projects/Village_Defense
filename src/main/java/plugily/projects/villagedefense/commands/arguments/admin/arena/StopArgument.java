@@ -20,6 +20,8 @@ package plugily.projects.villagedefense.commands.arguments.admin.arena;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+
+import plugily.projects.villagedefense.arena.Arena;
 import plugily.projects.villagedefense.arena.ArenaManager;
 import plugily.projects.villagedefense.arena.ArenaRegistry;
 import plugily.projects.villagedefense.arena.ArenaState;
@@ -43,9 +45,12 @@ public class StopArgument {
             "&7Stops the arena you're in\n&7&lYou must be in target arena!\n&6Permission: &7villagedefense.admin.stop")) {
       @Override
       public void execute(CommandSender sender, String[] args) {
-        if(Utils.checkIsInGameInstance((Player) sender) && ArenaRegistry.getArena((Player) sender).getArenaState() != ArenaState.ENDING) {
-          ArenaManager.stopGame(false, ArenaRegistry.getArena((Player) sender));
-          sender.sendMessage(registry.getPlugin().getChatManager().colorMessage(Messages.COMMANDS_COMMAND_EXECUTED));
+        if(Utils.checkIsInGameInstance((Player) sender)) {
+          Arena arena = ArenaRegistry.getArena((Player) sender);
+          if (arena.getArenaState() != ArenaState.ENDING) {
+            ArenaManager.stopGame(false, arena);
+            sender.sendMessage(registry.getPlugin().getChatManager().colorMessage(Messages.COMMANDS_COMMAND_EXECUTED));
+          }
         }
       }
     });

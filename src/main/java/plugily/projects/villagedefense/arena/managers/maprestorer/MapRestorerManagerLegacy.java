@@ -55,7 +55,7 @@ public class MapRestorerManagerLegacy extends MapRestorerManager {
         Material mat = Utils.getCachedDoor(block);
         try {
           int id = (int) mat.getClass().getDeclaredMethod("getId").invoke(mat);
-          Block.class.getDeclaredMethod("setTypeIdAndData", int.class, byte.class, boolean.class)
+          block.getClass().getDeclaredMethod("setTypeIdAndData", int.class, byte.class, boolean.class)
               .invoke(block, id, doorData, false);
         } catch(Exception e) {
           e.printStackTrace();

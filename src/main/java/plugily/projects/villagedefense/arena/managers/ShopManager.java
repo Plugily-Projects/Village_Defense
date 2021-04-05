@@ -65,10 +65,10 @@ public class ShopManager {
   private final Arena arena;
 
   public ShopManager(Arena arena) {
-    config = ConfigUtils.getConfig(arena.getPlugin(), Constants.Files.ARENAS.getName());
     plugin = arena.getPlugin();
+    config = ConfigUtils.getConfig(plugin, Constants.Files.ARENAS.getName());
     this.arena = arena;
-    FileConfiguration languageConfig = ConfigUtils.getConfig(arena.getPlugin(), Constants.Files.LANGUAGE.getName());
+    FileConfiguration languageConfig = ConfigUtils.getConfig(plugin, Constants.Files.LANGUAGE.getName());
     defaultGolemItemName = languageConfig.getString("In-Game.Messages.Shop-Messages.Golem-Item-Name");
     defaultWolfItemName = languageConfig.getString("In-Game.Messages.Shop-Messages.Wolf-Item-Name");
     if(config.isSet("instances." + arena.getId() + ".shop")) {
