@@ -71,27 +71,28 @@ public class ArenaSelectorArgument implements Listener {
         }
         int slot = 0;
         arenas.clear();
+
         Inventory inventory = ComplementAccessor.getComplement().createInventory(player, Utils.serializeInt(ArenaRegistry.getArenas().size()), chatManager.colorMessage(Messages.ARENA_SELECTOR_INV_TITLE));
+
         for(Arena arena : ArenaRegistry.getArenas()) {
           arenas.put(slot, arena);
-          ItemStack itemStack = XMaterial.matchXMaterial(registry.getPlugin().getConfig().getString("Arena-Selector.State-Item." + arena.getArenaState().getFormattedName(), "YELLOW_CONCRETE").toUpperCase()).orElse(XMaterial.YELLOW_WOOL).parseItem();
+          ItemStack itemStack = XMaterial.matchXMaterial(registry.getPlugin().getConfig().getString("Arena-Selector.State-Item." + arena.getArenaState().getFormattedName(), "YELLOW_WOOL").toUpperCase()).orElse(XMaterial.YELLOW_WOOL).parseItem();
 
           if(itemStack == null)
-            return;
+            continue;
 
           ItemMeta itemMeta = itemStack.getItemMeta();
-          if(itemMeta == null) {
-            return;
-          }
-          ComplementAccessor.getComplement().setDisplayName(itemMeta, formatItem(LanguageManager.getLanguageMessage("Arena-Selector.Item.Name"), arena));
+          if(itemMeta != null) {
+            ComplementAccessor.getComplement().setDisplayName(itemMeta, formatItem(LanguageManager.getLanguageMessage("Arena-Selector.Item.Name"), arena));
 
-          java.util.List<String> lore = new ArrayList<>();
-          for(String string : LanguageManager.getLanguageList(Messages.ARENA_SELECTOR_ITEM_LORE.getAccessor())) {
-            lore.add(formatItem(string, arena));
-          }
+            java.util.List<String> lore = new ArrayList<>();
+            for(String string : LanguageManager.getLanguageList(Messages.ARENA_SELECTOR_ITEM_LORE.getAccessor())) {
+              lore.add(formatItem(string, arena));
+            }
 
-          ComplementAccessor.getComplement().setLore(itemMeta, lore);
-          itemStack.setItemMeta(itemMeta);
+            ComplementAccessor.getComplement().setLore(itemMeta, lore);
+            itemStack.setItemMeta(itemMeta);
+          }
           inventory.addItem(itemStack);
           slot++;
         }
