@@ -61,8 +61,9 @@ public class DogFriendKit extends PremiumKit {
     if(arena == null) {
       return;
     }
+    org.bukkit.Location start = arena.getStartLocation();
     for(int i = 0; i < 3; i++) {
-      arena.spawnWolf(arena.getStartLocation(), player);
+      arena.spawnWolf(start, player);
     }
   }
 

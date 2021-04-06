@@ -150,14 +150,9 @@ public class SignManager implements Listener {
     ArenaSign arenaSign = getArenaSignByBlock(e.getClickedBlock());
     if(e.getAction() == Action.RIGHT_CLICK_BLOCK && e.getClickedBlock().getState() instanceof Sign && arenaSign != null) {
       Arena arena = arenaSign.getArena();
-      if(arena == null) {
-        return;
+      if(arena != null) {
+        ArenaManager.joinAttempt(e.getPlayer(), arena);
       }
-      if(ArenaRegistry.isInArena(e.getPlayer())) {
-        e.getPlayer().sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage(Messages.ALREADY_PLAYING));
-        return;
-      }
-      ArenaManager.joinAttempt(e.getPlayer(), arena);
     }
   }
 
@@ -205,9 +200,8 @@ public class SignManager implements Listener {
     long start = System.currentTimeMillis();
 
     for(ArenaSign arenaSign : arenaSigns) {
-      Sign sign = arenaSign.getSign();
       for(int i = 0; i < signLines.size(); i++) {
-        ComplementAccessor.getComplement().setLine(sign, i, formatSign(signLines.get(i), arenaSign.getArena()));
+        ComplementAccessor.getComplement().setLine(arenaSign.getSign(), i, formatSign(signLines.get(i), arenaSign.getArena()));
       }
       if(plugin.getConfig().getBoolean("Signs-Block-States-Enabled", true) && arenaSign.getBehind() != null) {
         Block behind = arenaSign.getBehind();
@@ -249,7 +243,7 @@ public class SignManager implements Listener {
         } catch(Exception ignored) {
         }
       }
-      sign.update();
+      arenaSign.getSign().update();
     }
     Debugger.performance("SignUpdate", "[PerformanceMonitor] [SignUpdate] Updated signs took {0}ms", System.currentTimeMillis() - start);
   }

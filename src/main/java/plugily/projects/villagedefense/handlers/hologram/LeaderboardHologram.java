@@ -71,7 +71,7 @@ public class LeaderboardHologram {
       public void run() {
         hologram.clearLines();
         String header = color(plugin, plugin.getLanguageConfig().getString(LanguageMessage.HOLOGRAMS_HEADER.getAccessor()));
-        header = StringUtils.replace(header, "%amount%", String.valueOf(topAmount));
+        header = StringUtils.replace(header, "%amount%", Integer.toString(topAmount));
         header = StringUtils.replace(header, "%statistic%", statisticToMessage() != null ? color(plugin, plugin.getLanguageConfig().getString(statisticToMessage().getAccessor())) : "null");
         appendHoloText(plugin, header);
         int limit = topAmount;
@@ -83,7 +83,7 @@ public class LeaderboardHologram {
             break;
           }
           String format = color(plugin, plugin.getLanguageConfig().getString(LanguageMessage.HOLOGRAMS_FORMAT.getAccessor()));
-          format = StringUtils.replace(format, "%place%", String.valueOf((topAmount - limit) + 1));
+          format = StringUtils.replace(format, "%place%", Integer.toString((topAmount - limit) + 1));
           format = StringUtils.replace(format, "%nickname%", getPlayerNameSafely(key, plugin));
           format = StringUtils.replace(format, "%value%", String.valueOf(values.get(key)));
           appendHoloText(plugin, format);
@@ -92,7 +92,7 @@ public class LeaderboardHologram {
         if(limit > 0) {
           for(int i = 0; i < limit; limit--) {
             String format = color(plugin, plugin.getLanguageConfig().getString(LanguageMessage.HOLOGRAMS_FORMAT_EMPTY.getAccessor()));
-            format = StringUtils.replace(format, "%place%", String.valueOf((topAmount - limit) + 1));
+            format = StringUtils.replace(format, "%place%", Integer.toString((topAmount - limit) + 1));
             appendHoloText(plugin, format);
           }
         }

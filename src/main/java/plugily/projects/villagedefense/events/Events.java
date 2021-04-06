@@ -224,8 +224,7 @@ public class Events implements Listener {
 
   @EventHandler
   public void onDoorDrop(ItemSpawnEvent event) {
-    if(event.getEntity().getItemStack().getType() == Utils.getCachedDoor(event.getLocation().getBlock())
-        || event.getEntity().getItemStack().getType() == Utils.getCachedDoor(event.getLocation().getBlock())) {
+    if(event.getEntity().getItemStack().getType() == Utils.getCachedDoor(event.getLocation().getBlock())) {
       for(Entity entity : Utils.getNearbyEntities(event.getLocation(), 20)) {
         if(entity instanceof Player && ArenaRegistry.getArena((Player) entity) != null) {
           event.getEntity().remove();
@@ -311,8 +310,8 @@ public class Events implements Listener {
       if(!arena.getZombies().contains(e.getEntity())) {
         continue;
       }
-      e.getEntity().setCustomName(StringFormatUtils.getProgressBar((int) ((Zombie) e.getEntity()).getHealth(),
-          (int) VersionUtils.getMaxHealth((Zombie) e.getEntity()),
+      Zombie zombie = (Zombie) e.getEntity();
+      zombie.setCustomName(StringFormatUtils.getProgressBar((int) zombie.getHealth(), (int) VersionUtils.getMaxHealth(zombie),
           50, "|", ChatColor.YELLOW + "", ChatColor.GRAY + ""));
     }
   }
@@ -326,8 +325,7 @@ public class Events implements Listener {
     if(!(projectile.getShooter() instanceof Player)) {
       return;
     }
-    Arena arena = ArenaRegistry.getArena((Player) projectile.getShooter());
-    if(arena == null || !(e.getEntity() instanceof Player || e.getEntity() instanceof Wolf
+    if(ArenaRegistry.getArena((Player) projectile.getShooter()) == null || !(e.getEntity() instanceof Player || e.getEntity() instanceof Wolf
         || e.getEntity() instanceof IronGolem || e.getEntity() instanceof Villager)) {
       return;
     }

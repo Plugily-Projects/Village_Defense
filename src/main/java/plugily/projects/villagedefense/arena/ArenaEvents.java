@@ -121,17 +121,16 @@ public class ArenaEvents implements Listener {
 
   @EventHandler
   public void onItemDrop(ItemSpawnEvent e) {
-    if(e.getEntity().getItemStack().getType() != Material.ROTTEN_FLESH) {
+    org.bukkit.entity.Item item = e.getEntity();
+    if(item.getItemStack().getType() != Material.ROTTEN_FLESH) {
       return;
     }
     for(Arena arena : ArenaRegistry.getArenas()) {
-      if(!e.getEntity().getWorld().equals(arena.getStartLocation().getWorld())) {
+      org.bukkit.Location start = arena.getStartLocation();
+      if(!item.getWorld().equals(start.getWorld()) || item.getLocation().distance(start) > 150) {
         continue;
       }
-      if(e.getEntity().getLocation().distance(arena.getStartLocation()) > 150) {
-        continue;
-      }
-      arena.addDroppedFlesh(e.getEntity());
+      arena.addDroppedFlesh(item);
     }
   }
 
@@ -160,7 +159,7 @@ public class ArenaEvents implements Listener {
             event.setCancelled(true);
             event.setDamage(0);
             Wolf wolf = ((Wolf) event.getEntity());
-            java.util.UUID ownerUUID = plugin.isPaper() ? wolf.getOwnerUniqueId()
+            java.util.UUID ownerUUID = VersionUtils.isPaper() ? wolf.getOwnerUniqueId()
                 : (wolf.getOwner() != null) ? wolf.getOwner().getUniqueId() : null;
             Player playerOwner = ownerUUID != null ? Bukkit.getPlayer(ownerUUID) : null;
             if(playerOwner != null) {

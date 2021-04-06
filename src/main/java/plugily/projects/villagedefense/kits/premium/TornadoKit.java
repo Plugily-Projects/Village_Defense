@@ -121,7 +121,7 @@ public class TornadoKit extends PremiumKit implements Listener {
       @Override
       public void run() {
         tornado.update();
-        if(tornado.entities >= 7 || tornado.getTimes() > 55) {
+        if(tornado.entities >= 7 || tornado.times > 55) {
           cancel();
           active--;
         }
@@ -139,10 +139,6 @@ public class TornadoKit extends PremiumKit implements Listener {
     Tornado(Location location) {
       this.location = location;
       vector = location.getDirection();
-    }
-
-    int getTimes() {
-      return times;
     }
 
     void setLocation(Location location) {

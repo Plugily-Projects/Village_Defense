@@ -333,10 +333,10 @@ public class ArenaManager {
   private static String formatSummaryPlaceholders(String msg, Arena arena, User user, String summary) {
     String formatted = msg;
     formatted = StringUtils.replace(formatted, "%summary%", summary);
-    formatted = StringUtils.replace(formatted, "%wave%", String.valueOf(arena.getWave()));
-    formatted = StringUtils.replace(formatted, "%player_best_wave%", String.valueOf(user.getStat(StatsStorage.StatisticType.HIGHEST_WAVE)));
-    formatted = StringUtils.replace(formatted, "%zombies%", String.valueOf(arena.getOption(ArenaOption.TOTAL_KILLED_ZOMBIES)));
-    formatted = StringUtils.replace(formatted, "%orbs_spent%", String.valueOf(arena.getOption(ArenaOption.TOTAL_ORBS_SPENT)));
+    formatted = StringUtils.replace(formatted, "%wave%", Integer.toString(arena.getWave()));
+    formatted = StringUtils.replace(formatted, "%player_best_wave%", Integer.toString(user.getStat(StatsStorage.StatisticType.HIGHEST_WAVE)));
+    formatted = StringUtils.replace(formatted, "%zombies%", Integer.toString(arena.getOption(ArenaOption.TOTAL_KILLED_ZOMBIES)));
+    formatted = StringUtils.replace(formatted, "%orbs_spent%", Integer.toString(arena.getOption(ArenaOption.TOTAL_ORBS_SPENT)));
     return formatted;
   }
 

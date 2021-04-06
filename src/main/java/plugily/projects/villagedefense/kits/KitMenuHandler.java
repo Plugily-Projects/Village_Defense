@@ -77,11 +77,11 @@ public class KitMenuHandler implements Listener {
 
       pane.addItem(new GuiItem(itemStack, e -> {
         e.setCancelled(true);
-        if(!(e.getWhoClicked() instanceof Player) || !(e.isLeftClick() || e.isRightClick())) {
+        if(!(e.getWhoClicked() instanceof Player) || !(e.isLeftClick() || e.isRightClick()) || !ItemUtils.isItemStackNamed(e.getCurrentItem())) {
           return;
         }
         Arena arena = ArenaRegistry.getArena(player);
-        if(!ItemUtils.isItemStackNamed(e.getCurrentItem()) || arena == null) {
+        if(arena == null) {
           return;
         }
         VillagePlayerChooseKitEvent event = new VillagePlayerChooseKitEvent(player, KitRegistry.getKit(e.getCurrentItem()), arena);

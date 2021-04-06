@@ -87,7 +87,6 @@ import plugily.projects.villagedefense.utils.constants.Constants;
 import plugily.projects.villagedefense.utils.services.ServiceRegistry;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.logging.Level;
 
@@ -114,8 +113,7 @@ public class Main extends JavaPlugin {
   private HologramsRegistry hologramsRegistry;
   private FileConfiguration entityUpgradesConfig;
 
-  private boolean forceDisable = false;
-  private boolean isPaper = false;
+  private boolean forceDisable = false, holographicEnabled = false;
 
   @TestOnly
   public Main() {
@@ -170,7 +168,7 @@ public class Main extends JavaPlugin {
       Debugger.deepDebug(true);
       Debugger.debug(Level.FINE, "Deep debug enabled");
 
-      new ArrayList<>(getConfig().getStringList("Performance-Listenable")).forEach(Debugger::monitorPerformance);
+      getConfig().getStringList("Performance-Listenable").forEach(Debugger::monitorPerformance);
     }
 
     chatManager = new ChatManager(LanguageManager.getLanguageMessage("In-Game.Plugin-Prefix"));
@@ -201,12 +199,6 @@ public class Main extends JavaPlugin {
       forceDisable = true;
       getServer().getPluginManager().disablePlugin(this);
       return false;
-    }
-    try {
-      Class.forName("com.destroystokyo.paper.PaperConfig");
-      isPaper = true;
-    } catch(ClassNotFoundException e) {
-      isPaper = false;
     }
     return true;
   }
@@ -251,7 +243,7 @@ public class Main extends JavaPlugin {
       new MiscEvents(this);
     }
     if(configPreferences.getOption(ConfigPreferences.Option.HOLOGRAMS_ENABLED)) {
-      if(Bukkit.getServer().getPluginManager().isPluginEnabled("HolographicDisplays")) {
+      if(holographicEnabled = Bukkit.getServer().getPluginManager().isPluginEnabled("HolographicDisplays")) {
         Debugger.debug("Hooking into HolographicDisplays");
         if(!new File(getDataFolder(), "internal/holograms_data.yml").exists()) {
           new File(getDataFolder().getPath() + "/internal").mkdir();
@@ -389,10 +381,6 @@ public class Main extends JavaPlugin {
     return registry;
   }
 
-  public boolean isPaper() {
-    return isPaper;
-  }
-
   @Override
   public void onDisable() {
     if(forceDisable) {
@@ -420,11 +408,10 @@ public class Main extends JavaPlugin {
       arena.getMapRestorerManager().fullyRestoreArena();
     }
     saveAllUserStatistics();
-    if(configPreferences.getOption(ConfigPreferences.Option.HOLOGRAMS_ENABLED)) {
-      hologramsRegistry.disableHolograms();
-    }
-    //hmm? Can be removed?
-    if(getServer().getPluginManager().isPluginEnabled("HolographicDisplays")) {
+    if(holographicEnabled) {
+      if(configPreferences.getOption(ConfigPreferences.Option.HOLOGRAMS_ENABLED)) {
+        hologramsRegistry.disableHolograms();
+      }
       HologramsAPI.getHolograms(this).forEach(Hologram::delete);
     }
     if(configPreferences.getOption(ConfigPreferences.Option.DATABASE_ENABLED)) {

@@ -37,7 +37,6 @@ import plugily.projects.villagedefense.arena.ArenaRegistry;
 import plugily.projects.villagedefense.handlers.language.Messages;
 import plugily.projects.villagedefense.kits.KitRegistry;
 import plugily.projects.villagedefense.kits.basekits.LevelKit;
-import plugily.projects.villagedefense.user.User;
 import plugily.projects.villagedefense.utils.Utils;
 
 import java.util.List;
@@ -88,14 +87,12 @@ public class WorkerKit extends LevelKit implements Listener {
     if(arena == null) {
       return;
     }
-    User user = getPlugin().getUserManager().getUser(e.getPlayer());
-    ItemStack stack = VersionUtils.getItemInHand(e.getPlayer());
-    if(user.isSpectator() || !arena.getMapRestorerManager().getGameDoorLocations()
+    if(getPlugin().getUserManager().getUser(e.getPlayer()).isSpectator() || !arena.getMapRestorerManager().getGameDoorLocations()
         .containsKey(e.getBlock().getLocation())) {
       e.setCancelled(true);
       return;
     }
-    if(stack.getType() != Utils.getCachedDoor(e.getBlock())) {
+    if(VersionUtils.getItemInHand(e.getPlayer()).getType() != Utils.getCachedDoor(e.getBlock())) {
       e.setCancelled(true);
       return;
     }
