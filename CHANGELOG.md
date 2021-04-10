@@ -11,6 +11,7 @@ That's all, matcher will stop when detects next line started with `###` match
 
 ### 4.5.9 (.2021 - )
 * Fix when Splash_potion material not existed on 1.8 servers
+* Fix when arena selector GUI does not opened
 
 ### 4.5.8 (18.03.2021 - 19.03.2021)
 * Added configurable arena selector items (per state)
