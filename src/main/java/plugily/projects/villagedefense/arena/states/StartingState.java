@@ -47,8 +47,9 @@ public class StartingState implements ArenaStateHandler {
 
   @Override
   public void handleCall(Arena arena) {
-    if(plugin.getConfigPreferences().getOption(ConfigPreferences.Option.BOSSBAR_ENABLED) && ServerVersion.Version.isCurrentEqualOrHigher(ServerVersion.Version.v1_9_R1)) {
-      arena.getGameBar().setTitle(plugin.getChatManager().colorMessage(Messages.BOSSBAR_STARTING_IN).replace("%time%", String.valueOf(arena.getTimer())));
+    boolean bossBarEnabled = ServerVersion.Version.isCurrentEqualOrHigher(ServerVersion.Version.v1_9_R1) && plugin.getConfigPreferences().getOption(ConfigPreferences.Option.BOSSBAR_ENABLED);
+    if(bossBarEnabled) {
+      arena.getGameBar().setTitle(plugin.getChatManager().colorMessage(Messages.BOSSBAR_STARTING_IN).replace("%time%", Integer.toString(arena.getTimer())));
       arena.getGameBar().setProgress(arena.getTimer() / plugin.getConfig().getDouble("Starting-Waiting-Time", 60));
     }
     for(Player player : arena.getPlayers()) {
@@ -56,7 +57,7 @@ public class StartingState implements ArenaStateHandler {
       player.setLevel(arena.getTimer());
     }
     if(arena.getPlayers().size() < arena.getMinimumPlayers() && !arena.isForceStart()) {
-      if(plugin.getConfigPreferences().getOption(ConfigPreferences.Option.BOSSBAR_ENABLED) && ServerVersion.Version.isCurrentEqualOrHigher(ServerVersion.Version.v1_9_R1)) {
+      if(bossBarEnabled) {
         arena.getGameBar().setTitle(plugin.getChatManager().colorMessage(Messages.BOSSBAR_WAITING_FOR_PLAYERS));
         arena.getGameBar().setProgress(1.0);
       }
@@ -74,7 +75,7 @@ public class StartingState implements ArenaStateHandler {
       arena.spawnVillagers();
       Bukkit.getPluginManager().callEvent(new VillageGameStartEvent(arena));
       arena.setArenaState(ArenaState.IN_GAME);
-      if(plugin.getConfigPreferences().getOption(ConfigPreferences.Option.BOSSBAR_ENABLED) && ServerVersion.Version.isCurrentEqualOrHigher(ServerVersion.Version.v1_9_R1)) {
+      if(bossBarEnabled) {
         arena.getGameBar().setProgress(1.0);
       }
       arena.setTimer(5);

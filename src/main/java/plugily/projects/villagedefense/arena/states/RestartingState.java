@@ -57,7 +57,7 @@ public class RestartingState implements ArenaStateHandler {
     arena.getDroppedFleshes().stream().filter(Objects::nonNull).forEach(Entity::remove);
     arena.getDroppedFleshes().clear();
     if(plugin.getConfigPreferences().getOption(ConfigPreferences.Option.BUNGEE_ENABLED)) {
-      if(ConfigUtils.getConfig(plugin, "bungee").getBoolean("Shutdown-When-Game-Ends", false)) {
+      if(ConfigUtils.getConfig(plugin, "bungee").getBoolean("Shutdown-When-Game-Ends")) {
         plugin.getServer().shutdown();
       }
       ArenaRegistry.shuffleBungeeArena();
@@ -65,7 +65,7 @@ public class RestartingState implements ArenaStateHandler {
         ArenaManager.joinAttempt(player, ArenaRegistry.getArenas().get(ArenaRegistry.getBungeeArena()));
       }
     }
-    if(plugin.getConfigPreferences().getOption(ConfigPreferences.Option.BOSSBAR_ENABLED) && ServerVersion.Version.isCurrentEqualOrHigher(ServerVersion.Version.v1_9_R1)) {
+    if(ServerVersion.Version.isCurrentEqualOrHigher(ServerVersion.Version.v1_9_R1) && plugin.getConfigPreferences().getOption(ConfigPreferences.Option.BOSSBAR_ENABLED)) {
       arena.getGameBar().setTitle(plugin.getChatManager().colorMessage(Messages.BOSSBAR_WAITING_FOR_PLAYERS));
     }
   }
