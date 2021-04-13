@@ -79,10 +79,8 @@ public class PowerupRegistry {
     ChatManager chatManager = plugin.getChatManager();
     registerPowerup(new Powerup("MAP_CLEAN", chatManager.colorMessage(Messages.POWERUPS_MAP_CLEAN_NAME),
         chatManager.colorMessage(Messages.POWERUPS_MAP_CLEAN_DESCRIPTION), XMaterial.BLAZE_POWDER, pickup -> {
-      if(pickup.getArena().getZombies() != null) {
-        ArenaUtils.removeSpawnedZombies(pickup.getArena());
-        pickup.getArena().getZombies().clear();
-      }
+      ArenaUtils.removeSpawnedZombies(pickup.getArena());
+      pickup.getArena().getZombies().clear();
 
       for(Player p : pickup.getArena().getPlayers()) {
         VersionUtils.sendTitles(p, pickup.getPowerup().getName(), pickup.getPowerup().getDescription(), 5, 30, 5);
@@ -160,8 +158,7 @@ public class PowerupRegistry {
       if(ArenaRegistry.getArena(player) != arena) {
         return;
       }
-      VillagePlayerPowerupPickupEvent event = new VillagePlayerPowerupPickupEvent(arena, player, powerup);
-      Bukkit.getPluginManager().callEvent(event);
+      Bukkit.getPluginManager().callEvent(new VillagePlayerPowerupPickupEvent(arena, player, powerup));
       powerup.getOnPickup().accept(new PowerupPickupHandler(powerup, arena, player));
       hologram.delete();
     });

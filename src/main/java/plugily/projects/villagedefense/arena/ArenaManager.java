@@ -101,11 +101,12 @@ public class ArenaManager {
             if(player.getUniqueId().equals(partyPlayer.getUniqueId())) {
               continue;
             }
-            if(ArenaRegistry.isInArena(partyPlayer)) {
-              if(ArenaRegistry.getArena(partyPlayer).getArenaState() == ArenaState.IN_GAME) {
+            Arena partyPlayerGame = ArenaRegistry.getArena(partyPlayer);
+            if(partyPlayerGame != null) {
+              if(partyPlayerGame.getArenaState() == ArenaState.IN_GAME) {
                 continue;
               }
-              leaveAttempt(partyPlayer, ArenaRegistry.getArena(partyPlayer));
+              leaveAttempt(partyPlayer, partyPlayerGame);
             }
             partyPlayer.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().formatMessage(arena, plugin.getChatManager().colorMessage(Messages.JOIN_AS_PARTY_MEMBER), partyPlayer));
             joinAttempt(partyPlayer, arena);
@@ -295,7 +296,7 @@ public class ArenaManager {
     Bukkit.getPluginManager().callEvent(new VillageGameStopEvent(arena));
 
     String summaryEnding;
-    if(plugin.getConfig().getBoolean("Wave-Limit.Enabled", false) && arena.getWave() >= plugin.getConfig().getInt("Wave-Limit.Limit", 25)) {
+    if(plugin.getConfig().getBoolean("Wave-Limit.Enabled") && arena.getWave() >= plugin.getConfig().getInt("Wave-Limit.Limit", 25)) {
       summaryEnding = plugin.getChatManager().colorMessage(Messages.END_MESSAGES_SUMMARY_WIN_GAME);
     } else if(!arena.getPlayersLeft().isEmpty()) {
       summaryEnding = plugin.getChatManager().colorMessage(Messages.END_MESSAGES_SUMMARY_VILLAGERS_DIED);
@@ -332,10 +333,10 @@ public class ArenaManager {
   private static String formatSummaryPlaceholders(String msg, Arena arena, User user, String summary) {
     String formatted = msg;
     formatted = StringUtils.replace(formatted, "%summary%", summary);
-    formatted = StringUtils.replace(formatted, "%wave%", String.valueOf(arena.getWave()));
-    formatted = StringUtils.replace(formatted, "%player_best_wave%", String.valueOf(user.getStat(StatsStorage.StatisticType.HIGHEST_WAVE)));
-    formatted = StringUtils.replace(formatted, "%zombies%", String.valueOf(arena.getOption(ArenaOption.TOTAL_KILLED_ZOMBIES)));
-    formatted = StringUtils.replace(formatted, "%orbs_spent%", String.valueOf(arena.getOption(ArenaOption.TOTAL_ORBS_SPENT)));
+    formatted = StringUtils.replace(formatted, "%wave%", Integer.toString(arena.getWave()));
+    formatted = StringUtils.replace(formatted, "%player_best_wave%", Integer.toString(user.getStat(StatsStorage.StatisticType.HIGHEST_WAVE)));
+    formatted = StringUtils.replace(formatted, "%zombies%", Integer.toString(arena.getOption(ArenaOption.TOTAL_KILLED_ZOMBIES)));
+    formatted = StringUtils.replace(formatted, "%orbs_spent%", Integer.toString(arena.getOption(ArenaOption.TOTAL_ORBS_SPENT)));
     return formatted;
   }
 
@@ -366,7 +367,7 @@ public class ArenaManager {
    * @see VillageWaveEndEvent
    */
   public static void endWave(@NotNull Arena arena) {
-    if(plugin.getConfig().getBoolean("Wave-Limit.Enabled", false) && arena.getWave() >= plugin.getConfig().getInt("Wave-Limit.Limit", 25)) {
+    if(plugin.getConfig().getBoolean("Wave-Limit.Enabled") && arena.getWave() >= plugin.getConfig().getInt("Wave-Limit.Limit", 25)) {
       stopGame(false, arena);
       return;
     }
@@ -388,8 +389,9 @@ public class ArenaManager {
 
     for(User user : plugin.getUserManager().getUsers(arena)) {
       if (!user.isSpectator() && !user.isPermanentSpectator()) {
-        VersionUtils.sendTitles(user.getPlayer(), title, subTitle, fadeIn, stay, fadeOut);
-        plugin.getRewardsHandler().performReward(user.getPlayer(), arena, Reward.RewardType.END_WAVE);
+        Player player = user.getPlayer();
+        VersionUtils.sendTitles(player, title, subTitle, fadeIn, stay, fadeOut);
+        plugin.getRewardsHandler().performReward(player, arena, Reward.RewardType.END_WAVE);
       }
     }
 
@@ -445,8 +447,9 @@ public class ArenaManager {
 
     arena.setOptionValue(ArenaOption.ZOMBIES_TO_SPAWN, zombiesAmount);
     arena.setOptionValue(ArenaOption.ZOMBIE_IDLE_PROCESS, (int) Math.floor((double) arena.getWave() / 15));
-    if(arena.getOption(ArenaOption.ZOMBIE_IDLE_PROCESS) > 0) {
-      Debugger.debug("[{0}] Spawn idle process initiated to prevent server overload! Value: {1}", arena.getId(), arena.getOption(ArenaOption.ZOMBIE_IDLE_PROCESS));
+    int zombieIdeProcess = arena.getOption(ArenaOption.ZOMBIE_IDLE_PROCESS);
+    if(zombieIdeProcess > 0) {
+      Debugger.debug("[{0}] Spawn idle process initiated to prevent server overload! Value: {1}", arena.getId(), zombieIdeProcess);
     }
 
     if(plugin.getConfigPreferences().getOption(ConfigPreferences.Option.RESPAWN_AFTER_WAVE)) {
@@ -454,7 +457,7 @@ public class ArenaManager {
     }
 
     String titleTimes = plugin.getConfig().getString("Wave-Title-Messages.StartWave.Times", "20, 30, 20");
-    String[] split = titleTimes.split(", ");
+    String[] split = titleTimes.split(", ", 3);
 
     int fadeIn = split.length > 1 ? Integer.parseInt(split[0]) : 20,
         stay = split.length > 2 ? Integer.parseInt(split[1]) : 30,
@@ -469,8 +472,9 @@ public class ArenaManager {
     subTitle = plugin.getChatManager().colorRawMessage(subTitle);
 
     for(User user : plugin.getUserManager().getUsers(arena)) {
-      user.getKit().reStock(user.getPlayer());
-      VersionUtils.sendTitles(user.getPlayer(), title, subTitle, fadeIn, stay, fadeOut);
+      Player player = user.getPlayer();
+      user.getKit().reStock(player);
+      VersionUtils.sendTitles(player, title, subTitle, fadeIn, stay, fadeOut);
     }
 
     plugin.getChatManager().broadcastMessage(arena, plugin.getChatManager().formatMessage(arena, plugin.getChatManager().colorMessage(Messages.WAVE_STARTED), arena.getWave()));

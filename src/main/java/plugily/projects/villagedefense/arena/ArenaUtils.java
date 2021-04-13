@@ -153,33 +153,9 @@ public class ArenaUtils {
   }
 
   public static void setWorld(Arena arena) {
-    if(ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_8_R3)) {
-      ((ArenaInitializer1_8_R3) arena).setWorld(arena.getStartLocation());
-    } else if(ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_9_R1)) {
-      ((ArenaInitializer1_9_R1) arena).setWorld(arena.getStartLocation());
-    } else if(ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_9_R2)) {
-      ((ArenaInitializer1_9_R2) arena).setWorld(arena.getStartLocation());
-    } else if(ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_10_R1)) {
-      ((ArenaInitializer1_10_R1) arena).setWorld(arena.getStartLocation());
-    } else if(ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_11_R1)) {
-      ((ArenaInitializer1_11_R1) arena).setWorld(arena.getStartLocation());
-    } else if(ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_12_R1)) {
-      ((ArenaInitializer1_12_R1) arena).setWorld(arena.getStartLocation());
-    } else if(ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_13_R1)) {
-      ((ArenaInitializer1_13_R1) arena).setWorld(arena.getStartLocation());
-    } else if(ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_13_R2)) {
-      ((ArenaInitializer1_13_R2) arena).setWorld(arena.getStartLocation());
-    } else if(ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_14_R1)) {
-      ((ArenaInitializer1_14_R1) arena).setWorld(arena.getStartLocation());
-    } else if(ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_15_R1)) {
-      ((ArenaInitializer1_15_R1) arena).setWorld(arena.getStartLocation());
-    } else if(ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_16_R1)) {
-      ((ArenaInitializer1_16_R1) arena).setWorld(arena.getStartLocation());
-    } else if(ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_16_R2)) {
-      ((ArenaInitializer1_16_R2) arena).setWorld(arena.getStartLocation());
-    } else {
-      ((ArenaInitializer1_16_R3) arena).setWorld(arena.getStartLocation());
-    }
+    org.bukkit.Location start = arena.getStartLocation();
+    if (start.getWorld() != null)
+      arena.setWorld(start);
   }
 
   public static void removeSpawnedZombies(Arena arena) {

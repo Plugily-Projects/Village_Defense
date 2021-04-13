@@ -119,8 +119,9 @@ public class BlockerKit extends PremiumKit implements Listener {
     event.getPlayer().sendMessage(getPlugin().getChatManager().colorMessage(Messages.KITS_BLOCKER_GAME_ITEM_PLACE_MESSAGE));
     ZombieBarrier zombieBarrier = new ZombieBarrier();
     zombieBarrier.setLocation(block.getLocation());
-    VersionUtils.sendParticles("FIREWORKS_SPARK", ArenaRegistry.getArena(player).getPlayers(), zombieBarrier.getLocation(), 20);
-    removeBarrierLater(zombieBarrier, ArenaRegistry.getArena(player));
+    Arena arena = ArenaRegistry.getArena(player);
+    VersionUtils.sendParticles("FIREWORKS_SPARK", arena.getPlayers(), zombieBarrier.location, 20);
+    removeBarrierLater(zombieBarrier, arena);
     block.setType(XMaterial.OAK_FENCE.parseMaterial());
   }
 
@@ -129,10 +130,10 @@ public class BlockerKit extends PremiumKit implements Listener {
       @Override
       public void run() {
         zombieBarrier.decrementSeconds();
-        if(zombieBarrier.getSeconds() <= 0) {
-          zombieBarrier.getLocation().getBlock().setType(Material.AIR);
-          VersionUtils.sendParticles("FIREWORKS_SPARK", arena.getPlayers(), zombieBarrier.getLocation(), 20);
-          this.cancel();
+        if(zombieBarrier.seconds <= 0) {
+          zombieBarrier.location.getBlock().setType(Material.AIR);
+          VersionUtils.sendParticles("FIREWORKS_SPARK", arena.getPlayers(), zombieBarrier.location, 20);
+          cancel();
         }
       }
     }.runTaskTimer(getPlugin(), 20, 20);
@@ -142,20 +143,12 @@ public class BlockerKit extends PremiumKit implements Listener {
     private Location location;
     private int seconds = 10;
 
-    Location getLocation() {
-      return location;
-    }
-
     void setLocation(Location location) {
       this.location = location;
     }
 
-    int getSeconds() {
-      return seconds;
-    }
-
     void decrementSeconds() {
-      this.seconds--;
+      seconds--;
     }
   }
 }

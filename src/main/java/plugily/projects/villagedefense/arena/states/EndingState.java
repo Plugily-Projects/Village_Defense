@@ -48,7 +48,7 @@ public class EndingState implements ArenaStateHandler {
   public void handleCall(Arena arena) {
     arena.getScoreboardManager().stopAllScoreboards();
     if(arena.getTimer() <= 0) {
-      if(plugin.getConfigPreferences().getOption(ConfigPreferences.Option.BOSSBAR_ENABLED) && ServerVersion.Version.isCurrentEqualOrHigher(ServerVersion.Version.v1_9_R1)) {
+      if(ServerVersion.Version.isCurrentEqualOrHigher(ServerVersion.Version.v1_9_R1) && plugin.getConfigPreferences().getOption(ConfigPreferences.Option.BOSSBAR_ENABLED)) {
         arena.getGameBar().setTitle(plugin.getChatManager().colorMessage(Messages.BOSSBAR_GAME_ENDED));
       }
 
@@ -56,15 +56,14 @@ public class EndingState implements ArenaStateHandler {
         ArenaUtils.resetPlayerAfterGame(player);
         arena.doBarAction(Arena.BarAction.REMOVE, player);
         plugin.getUserManager().addStat(player, StatsStorage.StatisticType.GAMES_PLAYED);
-      }
-      arena.getPlayers().forEach(arena::teleportToEndLocation);
-      plugin.getChatManager().broadcast(arena, Messages.COMMANDS_TELEPORTED_TO_THE_LOBBY);
-
-      for(User user : plugin.getUserManager().getUsers(arena)) {
+        arena.teleportToEndLocation(player);
+        User user = plugin.getUserManager().getUser(player);
         user.setSpectator(false);
         user.setStat(StatsStorage.StatisticType.ORBS, 0);
+        plugin.getRewardsHandler().performReward(player, arena, Reward.RewardType.END_GAME);
       }
-      plugin.getRewardsHandler().performReward(arena, Reward.RewardType.END_GAME);
+      plugin.getChatManager().broadcast(arena, Messages.COMMANDS_TELEPORTED_TO_THE_LOBBY);
+
       arena.setArenaState(ArenaState.RESTARTING);
     }
     arena.setTimer(arena.getTimer() - 1);

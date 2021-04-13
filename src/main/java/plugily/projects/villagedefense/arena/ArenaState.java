@@ -36,7 +36,7 @@ public enum ArenaState {
 
   ArenaState(String formattedName) {
     this.formattedName = formattedName;
-    this.placeholder = JavaPlugin.getPlugin(Main.class).getChatManager()
+    placeholder = JavaPlugin.getPlugin(Main.class).getChatManager()
         .colorRawMessage(LanguageManager.getLanguageMessage("Placeholders.Game-States." + formattedName));
   }
 

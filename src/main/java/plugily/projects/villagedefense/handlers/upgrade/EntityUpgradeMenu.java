@@ -71,6 +71,9 @@ public class EntityUpgradeMenu {
   private final List<Upgrade> upgrades = new ArrayList<>();
   private final Main plugin;
 
+  private final UUID movementSpeedUuId = UUID.fromString("206a89dc-ae78-4c4d-b42c-3b31db3f5a7c"),
+      attackDamageUuId = UUID.fromString("206a89dc-ae78-4c4d-b42c-3b31db3f5a7d");
+
   public EntityUpgradeMenu(Main plugin) {
     this.plugin = plugin;
     this.pluginPrefix = plugin.getChatManager().colorMessage(Messages.PLUGIN_PREFIX);
@@ -180,10 +183,10 @@ public class EntityUpgradeMenu {
         .name(color(Messages.UPGRADES_STATS_ITEM_NAME))
         .lore(Arrays.stream(color(Messages.UPGRADES_STATS_ITEM_DESCRIPTION).split(";"))
             .map(lore -> lore = plugin.getChatManager().colorRawMessage(lore)
-                .replace("%speed%", String.valueOf(getUpgrade("Speed").getValueForTier(getTier(en, getUpgrade("Speed")))))
-                .replace("%damage%", String.valueOf(getUpgrade("Damage").getValueForTier(getTier(en, getUpgrade("Damage")))))
-                .replace("%max_hp%", String.valueOf(getUpgrade("Health").getValueForTier(getTier(en, getUpgrade("Health")))))
-                .replace("%current_hp%", String.valueOf(en.getHealth()))).collect(Collectors.toList()))
+                .replace("%speed%", Double.toString(getUpgrade("Speed").getValueForTier(getTier(en, getUpgrade("Speed")))))
+                .replace("%damage%", Double.toString(getUpgrade("Damage").getValueForTier(getTier(en, getUpgrade("Damage")))))
+                .replace("%max_hp%", Double.toString(getUpgrade("Health").getValueForTier(getTier(en, getUpgrade("Health")))))
+                .replace("%current_hp%", Double.toString(en.getHealth()))).collect(Collectors.toList()))
         .build(), e -> e.setCancelled(true)), 4, 0);
   }
 
@@ -232,8 +235,9 @@ public class EntityUpgradeMenu {
           }
           EntityInsentient nmsEntity = (EntityInsentient) ((CraftLivingEntity) en).getHandle();
           AttributeInstance attributes = nmsEntity.getAttributeInstance(GenericAttributes.ATTACK_DAMAGE);
-          AttributeModifier modifier = new AttributeModifier(UUID.fromString("206a89dc-ae78-4c4d-b42c-3b31db3f5a7d"), "attack damage multiplier", 2.0 + (tier * 3), 1);
-          attributes.b(modifier);
+          if (attributes.a(attackDamageUuId) == null) {
+            attributes.b(new AttributeModifier(attackDamageUuId, "attack damage multiplier", 2.0 + (tier * 3), 1));
+          }
         }
         //attribute damage doesn't exist for golems
         break;
@@ -247,8 +251,9 @@ public class EntityUpgradeMenu {
         }
         EntityInsentient nmsEntity = (EntityInsentient) ((CraftLivingEntity) en).getHandle();
         AttributeInstance attributes = nmsEntity.getAttributeInstance(GenericAttributes.MOVEMENT_SPEED);
-        AttributeModifier modifier = new AttributeModifier(UUID.fromString("206a89dc-ae78-4c4d-b42c-3b31db3f5a7c"), "movement speed multiplier", 0.25 + (0.25 * ((double) tier / 5.0)), 1);
-        attributes.b(modifier);
+        if (attributes.a(movementSpeedUuId) == null) {
+          attributes.b(new AttributeModifier(movementSpeedUuId, "movement speed multiplier", 0.25 + (0.25 * ((double) tier / 5.0)), 1));
+        }
         break;
       case "Swarm-Awareness":
       case "Final-Defense":

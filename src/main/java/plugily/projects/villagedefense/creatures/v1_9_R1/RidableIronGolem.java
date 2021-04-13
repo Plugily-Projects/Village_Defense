@@ -55,24 +55,24 @@ public class RidableIronGolem extends EntityIronGolem {
 
     this.a(1.4F, 2.9F);
     ((Navigation) getNavigation()).b(true);
-    this.goalSelector.a(0, new PathfinderGoalFloat(this));
-    this.goalSelector.a(1, new PathfinderGoalMeleeAttack(this, 1.0D, true));
-    this.goalSelector.a(2, new PathfinderGoalMoveTowardsTarget(this, 0.9D, 32.0F));
-    this.goalSelector.a(3, new PathfinderGoalMoveThroughVillage(this, 0.6D, true));
-    this.goalSelector.a(4, new PathfinderGoalMoveTowardsRestriction(this, 1.0D));
-    this.goalSelector.a(5, new PathfinderGoalRandomStroll(this, 0.6D));
-    this.goalSelector.a(6, new PathfinderGoalLookAtPlayer(this, EntityHuman.class, 6.0F));
-    this.goalSelector.a(7, new PathfinderGoalRandomLookaround(this));
-    this.targetSelector.a(1, new PathfinderGoalDefendVillage(this));
-    this.targetSelector.a(2, new PathfinderGoalHurtByTarget(this, false));
-    this.targetSelector.a(3, new PathfinderGoalNearestAttackableTarget<>(this, EntityHuman.class, 0, false, true, IMonster.e));
-    this.setHealth(500);
+    goalSelector.a(0, new PathfinderGoalFloat(this));
+    goalSelector.a(1, new PathfinderGoalMeleeAttack(this, 1.0D, true));
+    goalSelector.a(2, new PathfinderGoalMoveTowardsTarget(this, 0.9D, 32.0F));
+    goalSelector.a(3, new PathfinderGoalMoveThroughVillage(this, 0.6D, true));
+    goalSelector.a(4, new PathfinderGoalMoveTowardsRestriction(this, 1.0D));
+    goalSelector.a(5, new PathfinderGoalRandomStroll(this, 0.6D));
+    goalSelector.a(6, new PathfinderGoalLookAtPlayer(this, EntityHuman.class, 6.0F));
+    goalSelector.a(7, new PathfinderGoalRandomLookaround(this));
+    targetSelector.a(1, new PathfinderGoalDefendVillage(this));
+    targetSelector.a(2, new PathfinderGoalHurtByTarget(this, false));
+    targetSelector.a(3, new PathfinderGoalNearestAttackableTarget<>(this, EntityHuman.class, 0, false, true, IMonster.e));
+    setHealth(500);
   }
 
   @Override
   protected void initAttributes() {
     super.initAttributes();
-    this.getAttributeInstance(GenericAttributes.FOLLOW_RANGE).setValue(150D);
+    getAttributeInstance(GenericAttributes.FOLLOW_RANGE).setValue(150D);
   }
 
   @Override

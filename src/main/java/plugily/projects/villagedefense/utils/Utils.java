@@ -128,7 +128,8 @@ public class Utils {
   }
 
   public static ItemStack getPotion(PotionType type, int tier, boolean splash) {
-    ItemStack potion = new ItemStack(!splash ? Material.POTION : Material.SPLASH_POTION, 1);
+    ItemStack potion = new ItemStack((ServerVersion.Version.isCurrentLower(ServerVersion.Version.v1_9_R1) || !splash)
+        ? Material.POTION : Material.SPLASH_POTION, 1);
     PotionMeta meta = (PotionMeta) potion.getItemMeta();
     meta.setBasePotionData(new PotionData(type, false, tier >= 2 && !splash));
     potion.setItemMeta(meta);

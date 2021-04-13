@@ -44,7 +44,7 @@ public class SpecialItemManager {
 
   public SpecialItemManager(Main plugin) {
     this.plugin = plugin;
-    this.config = ConfigUtils.getConfig(plugin, Constants.Files.SPECIAL_ITEMS.getName());
+    config = ConfigUtils.getConfig(plugin, Constants.Files.SPECIAL_ITEMS.getName());
   }
 
   public void addItem(SpecialItem item) {

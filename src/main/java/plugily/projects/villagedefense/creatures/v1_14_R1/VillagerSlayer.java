@@ -47,21 +47,21 @@ public class VillagerSlayer extends EntityZombie {
     GoalSelectorCleaner.clearSelectors(this);
     getNavigation().q().b(true);
 
-    this.goalSelector.a(0, new PathfinderGoalFloat(this));
-    this.goalSelector.a(1, new PathfinderGoalBreakDoor(this, enumDifficulty -> true));
-    this.goalSelector.a(2, new PathfinderGoalMeleeAttack(this, 1.0f, false));
-    this.goalSelector.a(4, new PathfinderGoalMoveTowardsRestriction(this, 1.0f));
-    this.goalSelector.a(7, new PathfinderGoalRandomLookaround(this));
-    this.targetSelector.a(2, new PathfinderGoalNearestAttackableTarget<>(this, EntityVillager.class, true));
-    this.setHealth(70);
+    goalSelector.a(0, new PathfinderGoalFloat(this));
+    goalSelector.a(1, new PathfinderGoalBreakDoor(this, enumDifficulty -> true));
+    goalSelector.a(2, new PathfinderGoalMeleeAttack(this, 1.0f, false));
+    goalSelector.a(4, new PathfinderGoalMoveTowardsRestriction(this, 1.0f));
+    goalSelector.a(7, new PathfinderGoalRandomLookaround(this));
+    targetSelector.a(2, new PathfinderGoalNearestAttackableTarget<>(this, EntityVillager.class, true));
+    setHealth(70);
     this.p(true);
   }
 
   @Override
   protected void initAttributes() {
     super.initAttributes();
-    this.getAttributeInstance(GenericAttributes.FOLLOW_RANGE).setValue(200.0D);
-    this.getAttributeInstance(GenericAttributes.KNOCKBACK_RESISTANCE).setValue(0D);
+    getAttributeInstance(GenericAttributes.FOLLOW_RANGE).setValue(200.0D);
+    getAttributeInstance(GenericAttributes.KNOCKBACK_RESISTANCE).setValue(0D);
   }
 
 }

@@ -51,7 +51,7 @@ public class RunnerKit extends LevelKit {
 
   @Override
   public boolean isUnlockedByPlayer(Player player) {
-    return getPlugin().getUserManager().getUser(player).getStat(StatsStorage.StatisticType.LEVEL) >= this.getLevel() || player.hasPermission("villagedefense.kit.runner");
+    return getPlugin().getUserManager().getUser(player).getStat(StatsStorage.StatisticType.LEVEL) >= getLevel() || player.hasPermission("villagedefense.kit.runner");
   }
 
   @Override

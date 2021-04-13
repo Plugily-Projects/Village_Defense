@@ -104,10 +104,11 @@ public class Events implements Listener {
 
   @EventHandler
   public void onItemPickup(PlayerExpChangeEvent event) {
-    if(ArenaRegistry.getArena(event.getPlayer()) == null) {
+    Arena arena = ArenaRegistry.getArena(event.getPlayer());
+    if(arena == null) {
       return;
     }
-    int multiplier = ArenaRegistry.getArena(event.getPlayer()).getOption(ArenaOption.ZOMBIE_DIFFICULTY_MULTIPLIER);
+    int multiplier = arena.getOption(ArenaOption.ZOMBIE_DIFFICULTY_MULTIPLIER);
     int amount = (int) Math.ceil(event.getAmount() * 1.6 * multiplier);
     User user = plugin.getUserManager().getUser(event.getPlayer());
     event.setAmount(amount);
@@ -142,8 +143,7 @@ public class Events implements Listener {
 
   @EventHandler
   public void onDrop(PlayerDropItemEvent event) {
-    Arena arena = ArenaRegistry.getArena(event.getPlayer());
-    if(arena != null && (plugin.getUserManager().getUser(event.getPlayer()).isSpectator() || event.getItemDrop().getItemStack().getType() == Material.SADDLE)) {
+    if(ArenaRegistry.getArena(event.getPlayer()) != null && (plugin.getUserManager().getUser(event.getPlayer()).isSpectator() || event.getItemDrop().getItemStack().getType() == Material.SADDLE)) {
       event.setCancelled(true);
     }
   }
@@ -151,8 +151,9 @@ public class Events implements Listener {
   @EventHandler
   public void onExplosionCancel(EntityExplodeEvent event) {
     for(Arena arena : ArenaRegistry.getArenas()) {
-      if(arena.getStartLocation().getWorld().getName().equals(event.getLocation().getWorld().getName())
-          && arena.getStartLocation().distance(event.getLocation()) < 300) {
+      org.bukkit.Location start = arena.getStartLocation();
+      if(start.getWorld().getName().equals(event.getLocation().getWorld().getName())
+          && start.distance(event.getLocation()) < 300) {
         event.blockList().clear();
       }
     }
@@ -164,8 +165,7 @@ public class Events implements Listener {
     if(VersionUtils.checkOffHand(event.getHand()) || arena == null) {
       return;
     }
-    User user = plugin.getUserManager().getUser(event.getPlayer());
-    if(user.isSpectator()) {
+    if(plugin.getUserManager().getUser(event.getPlayer()).isSpectator()) {
       event.setCancelled(true);
       return;
     }
@@ -180,10 +180,10 @@ public class Events implements Listener {
       event.setCancelled(true);
       arena.getShopManager().openShop(event.getPlayer());
     } else if(event.getRightClicked().getType() == EntityType.IRON_GOLEM) {
-      IronGolem ironGolem = (IronGolem) event.getRightClicked();
       if(event.getPlayer().isSneaking()) {
         return;
       }
+      IronGolem ironGolem = (IronGolem) event.getRightClicked();
       if(ironGolem.getCustomName() != null && ironGolem.getCustomName().contains(event.getPlayer().getName())) {
         VersionUtils.setPassenger(event.getRightClicked(), event.getPlayer());
       } else {
@@ -224,8 +224,7 @@ public class Events implements Listener {
 
   @EventHandler
   public void onDoorDrop(ItemSpawnEvent event) {
-    if(event.getEntity().getItemStack().getType() == Utils.getCachedDoor(event.getLocation().getBlock())
-        || event.getEntity().getItemStack().getType() == Utils.getCachedDoor(event.getLocation().getBlock())) {
+    if(event.getEntity().getItemStack().getType() == Utils.getCachedDoor(event.getLocation().getBlock())) {
       for(Entity entity : Utils.getNearbyEntities(event.getLocation(), 20)) {
         if(entity instanceof Player && ArenaRegistry.getArena((Player) entity) != null) {
           event.getEntity().remove();
@@ -289,11 +288,7 @@ public class Events implements Listener {
 
   @EventHandler(priority = EventPriority.HIGHEST)
   public void onFriendHurt(EntityDamageByEntityEvent e) {
-    if(!(e.getDamager() instanceof Player)) {
-      return;
-    }
-    Arena arena = ArenaRegistry.getArena((Player) e.getDamager());
-    if(arena == null) {
+    if(!(e.getDamager() instanceof Player) || ArenaRegistry.getArena((Player) e.getDamager()) == null) {
       return;
     }
     if(plugin.getUserManager().getUser((Player) e.getDamager()).isSpectator()) {
@@ -315,8 +310,8 @@ public class Events implements Listener {
       if(!arena.getZombies().contains(e.getEntity())) {
         continue;
       }
-      e.getEntity().setCustomName(StringFormatUtils.getProgressBar((int) ((Zombie) e.getEntity()).getHealth(),
-          (int) VersionUtils.getMaxHealth((Zombie) e.getEntity()),
+      Zombie zombie = (Zombie) e.getEntity();
+      zombie.setCustomName(StringFormatUtils.getProgressBar((int) zombie.getHealth(), (int) VersionUtils.getMaxHealth(zombie),
           50, "|", ChatColor.YELLOW + "", ChatColor.GRAY + ""));
     }
   }
@@ -330,8 +325,7 @@ public class Events implements Listener {
     if(!(projectile.getShooter() instanceof Player)) {
       return;
     }
-    Arena arena = ArenaRegistry.getArena((Player) projectile.getShooter());
-    if(arena == null || !(e.getEntity() instanceof Player || e.getEntity() instanceof Wolf
+    if(ArenaRegistry.getArena((Player) projectile.getShooter()) == null || !(e.getEntity() instanceof Player || e.getEntity() instanceof Wolf
         || e.getEntity() instanceof IronGolem || e.getEntity() instanceof Villager)) {
       return;
     }

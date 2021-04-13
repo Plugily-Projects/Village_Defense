@@ -77,12 +77,13 @@ public class SignManager implements Listener {
         || !ComplementAccessor.getComplement().getLine(e, 0).equalsIgnoreCase("[villagedefense]")) {
       return;
     }
-    if(ComplementAccessor.getComplement().getLine(e, 1).isEmpty()) {
+    String line1 = ComplementAccessor.getComplement().getLine(e, 1);
+    if(line1.isEmpty()) {
       e.getPlayer().sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage(Messages.COMMANDS_TYPE_ARENA_NAME));
       return;
     }
     for(Arena arena : ArenaRegistry.getArenas()) {
-      if(!arena.getId().equalsIgnoreCase(ComplementAccessor.getComplement().getLine(e, 1))) {
+      if(!arena.getId().equalsIgnoreCase(line1)) {
         continue;
       }
       for(int i = 0; i < signLines.size(); i++) {
@@ -104,13 +105,14 @@ public class SignManager implements Listener {
   private String formatSign(String msg, Arena a) {
     String formatted = msg;
     formatted = StringUtils.replace(formatted, "%mapname%", a.getMapName());
-    if(a.getPlayers().size() >= a.getMaximumPlayers()) {
+    int maximumPlayers = a.getMaximumPlayers();
+    if(a.getPlayers().size() >= maximumPlayers) {
       formatted = StringUtils.replace(formatted, "%state%", plugin.getChatManager().colorMessage(Messages.SIGNS_GAME_STATES_FULL_GAME));
     } else {
       formatted = StringUtils.replace(formatted, "%state%", gameStateToString.get(a.getArenaState()));
     }
-    formatted = StringUtils.replace(formatted, "%playersize%", String.valueOf(a.getPlayers().size()));
-    formatted = StringUtils.replace(formatted, "%maxplayers%", String.valueOf(a.getMaximumPlayers()));
+    formatted = StringUtils.replace(formatted, "%playersize%", Integer.toString(a.getPlayers().size()));
+    formatted = StringUtils.replace(formatted, "%maxplayers%", Integer.toString(maximumPlayers));
     formatted = plugin.getChatManager().colorRawMessage(formatted);
     return formatted;
   }
@@ -149,14 +151,9 @@ public class SignManager implements Listener {
     ArenaSign arenaSign = getArenaSignByBlock(e.getClickedBlock());
     if(e.getAction() == Action.RIGHT_CLICK_BLOCK && e.getClickedBlock().getState() instanceof Sign && arenaSign != null) {
       Arena arena = arenaSign.getArena();
-      if(arena == null) {
-        return;
+      if(arena != null) {
+        ArenaManager.joinAttempt(e.getPlayer(), arena);
       }
-      if(ArenaRegistry.isInArena(e.getPlayer())) {
-        e.getPlayer().sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage(Messages.ALREADY_PLAYING));
-        return;
-      }
-      ArenaManager.joinAttempt(e.getPlayer(), arena);
     }
   }
 
@@ -204,9 +201,8 @@ public class SignManager implements Listener {
     long start = System.currentTimeMillis();
 
     for(ArenaSign arenaSign : arenaSigns) {
-      Sign sign = arenaSign.getSign();
       for(int i = 0; i < signLines.size(); i++) {
-        ComplementAccessor.getComplement().setLine(sign, i, formatSign(signLines.get(i), arenaSign.getArena()));
+        ComplementAccessor.getComplement().setLine(arenaSign.getSign(), i, formatSign(signLines.get(i), arenaSign.getArena()));
       }
       if(plugin.getConfig().getBoolean("Signs-Block-States-Enabled", true) && arenaSign.getBehind() != null) {
         Block behind = arenaSign.getBehind();
@@ -248,7 +244,7 @@ public class SignManager implements Listener {
         } catch(Exception ignored) {
         }
       }
-      sign.update();
+      arenaSign.getSign().update();
     }
     Debugger.performance("SignUpdate", "[PerformanceMonitor] [SignUpdate] Updated signs took {0}ms", System.currentTimeMillis() - start);
   }

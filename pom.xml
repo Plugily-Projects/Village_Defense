@@ -24,7 +24,7 @@
 
     <groupId>plugily.projects</groupId>
     <artifactId>villagedefense</artifactId>
-    <version>4.5.8</version>
+    <version>4.5.9</version>
     <name>VillageDefense</name>
 
     <properties>
@@ -187,19 +187,19 @@
         <dependency>
             <groupId>pl.plajer</groupId>
             <artifactId>commons-box-classic</artifactId>
-            <version>1.2.6</version>
+            <version>1.2.7</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>pl.plajer</groupId>
             <artifactId>commons-box-database</artifactId>
-            <version>1.2.6</version>
+            <version>1.2.7</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>pl.plajer</groupId>
             <artifactId>commons-box-minecraft</artifactId>
-            <version>1.2.6</version>
+            <version>1.2.7</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
@@ -240,23 +240,20 @@
         </dependency>
         <!-- https://mvnrepository.com/artifact/junit/junit -->
         <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.13.1</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
             <groupId>com.github.seeseemelk</groupId>
             <artifactId>MockBukkit-v1.13</artifactId>
             <version>0.1.1</version>
             <scope>test</scope>
-        </dependency>
-        <!-- https://mvnrepository.com/artifact/commons-io/commons-io -->
-        <dependency>
-            <groupId>commons-io</groupId>
-            <artifactId>commons-io</artifactId>
-            <version>2.6</version>
-            <scope>compile</scope>
+            <exclusions>
+            	<exclusion>
+            		<groupId>commons-io</groupId>
+            		<artifactId>commons-io</artifactId>
+            	</exclusion>
+            	<exclusion>
+            		<groupId>org.bukkit</groupId>
+            		<artifactId>bukkit</artifactId>
+            	</exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>de.simonsator</groupId>
@@ -282,6 +279,12 @@
             <artifactId>Spigot-Party-API-For-RedisBungee</artifactId>
             <version>1.0-SNAPSHOT</version>
             <scope>provided</scope>
+            <exclusions>
+            	<exclusion>
+            		<groupId>redis.clients</groupId>
+            		<artifactId>jedis</artifactId>
+            	</exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>com.alessiodp.parties</groupId>
@@ -293,7 +296,7 @@
         <dependency>
             <groupId>org.jetbrains</groupId>
             <artifactId>annotations</artifactId>
-            <version>16.0.1</version>
+            <version>20.1.0</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>
@@ -315,12 +318,12 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-site-plugin</artifactId>
-                <version>3.7.1</version>
+                <version>3.9.1</version>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
-                <version>3.0.1</version>
+                <version>3.2.0</version>
                 <configuration>
                     <windowtitle>Village Defense API docs for v${project.version}</windowtitle>
                     <description>Minecraft cooperation minigame.
@@ -356,7 +359,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
-                <version>3.1.0</version>
+                <version>3.2.0</version>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -411,7 +414,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.0.0-M3</version>
+                <version>3.0.0-M5</version>
             </plugin>
             <plugin>
                 <groupId>org.jacoco</groupId>
@@ -441,7 +444,7 @@
             <extension>
                 <groupId>org.apache.maven.wagon</groupId>
                 <artifactId>wagon-ftp</artifactId>
-                <version>3.4.1</version>
+                <version>3.4.3</version>
             </extension>
         </extensions>
     </build>

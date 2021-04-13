@@ -39,7 +39,6 @@ import plugily.projects.villagedefense.handlers.items.SpecialItem;
 import plugily.projects.villagedefense.handlers.items.SpecialItemManager;
 import plugily.projects.villagedefense.handlers.language.Messages;
 import plugily.projects.villagedefense.kits.basekits.Kit;
-import plugily.projects.villagedefense.user.User;
 import plugily.projects.villagedefense.utils.Utils;
 
 /**
@@ -78,11 +77,11 @@ public class KitMenuHandler implements Listener {
 
       pane.addItem(new GuiItem(itemStack, e -> {
         e.setCancelled(true);
-        if(!(e.getWhoClicked() instanceof Player) || !(e.isLeftClick() || e.isRightClick())) {
+        if(!(e.getWhoClicked() instanceof Player) || !(e.isLeftClick() || e.isRightClick()) || !ItemUtils.isItemStackNamed(e.getCurrentItem())) {
           return;
         }
         Arena arena = ArenaRegistry.getArena(player);
-        if(!ItemUtils.isItemStackNamed(e.getCurrentItem()) || arena == null) {
+        if(arena == null) {
           return;
         }
         VillagePlayerChooseKitEvent event = new VillagePlayerChooseKitEvent(player, KitRegistry.getKit(e.getCurrentItem()), arena);
@@ -94,8 +93,7 @@ public class KitMenuHandler implements Listener {
           player.sendMessage(plugin.getChatManager().colorMessage(Messages.KITS_NOT_UNLOCKED_MESSAGE).replace("%KIT%", kit.getName()));
           return;
         }
-        User user = plugin.getUserManager().getUser(player);
-        user.setKit(kit);
+        plugin.getUserManager().getUser(player).setKit(kit);
         player.sendMessage(plugin.getChatManager().colorMessage(Messages.KITS_CHOOSE_MESSAGE).replace("%KIT%", kit.getName()));
       }), x, y);
       x++;

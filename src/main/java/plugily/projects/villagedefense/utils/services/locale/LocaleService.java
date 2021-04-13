@@ -64,7 +64,7 @@ public class LocaleService {
         }
       }
       Files.write(file.toPath(), data.getBytes());
-      this.localeData = ConfigUtils.getConfig(plugin, "/locales/locale_data");
+      localeData = ConfigUtils.getConfig(plugin, "/locales/locale_data");
       plugin.getLogger().log(Level.INFO, "Fetched latest localization file from repository.");
     } catch(IOException ignored) {
       //ignore exceptions

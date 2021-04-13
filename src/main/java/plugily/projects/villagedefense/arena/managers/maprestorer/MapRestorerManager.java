@@ -42,22 +42,22 @@ import java.util.logging.Level;
 @SuppressWarnings("deprecation")
 public class MapRestorerManager {
 
-  public final Map<Location, Byte> doorBlocks = new LinkedHashMap<>();
+  protected final Map<Location, Byte> doorBlocks = new LinkedHashMap<>();
   public final Arena arena;
 
   public MapRestorerManager(Arena arena) {
     this.arena = arena;
   }
 
-  public void addDoor(Location location, byte data) {
+  public final void addDoor(Location location, byte data) {
     doorBlocks.put(location, data);
   }
 
-  public Map<Location, Byte> getGameDoorLocations() {
+  public final Map<Location, Byte> getGameDoorLocations() {
     return doorBlocks;
   }
 
-  public void fullyRestoreArena() {
+  public final void fullyRestoreArena() {
     restoreDoors();
     clearZombiesFromArena();
     clearGolemsFromArena();
@@ -66,12 +66,12 @@ public class MapRestorerManager {
     clearDroppedEntities();
   }
 
-  public void clearZombiesFromArena() {
+  public final void clearZombiesFromArena() {
     arena.getZombies().forEach(org.bukkit.entity.Zombie::remove);
     arena.getZombies().clear();
   }
 
-  public void clearDroppedEntities() {
+  public final void clearDroppedEntities() {
     for(org.bukkit.entity.Entity entity : Utils.getNearbyEntities(arena.getStartLocation(), 200)) {
       if(entity.getType() == EntityType.EXPERIENCE_ORB || entity.getType() == EntityType.DROPPED_ITEM) {
         entity.remove();
@@ -79,17 +79,17 @@ public class MapRestorerManager {
     }
   }
 
-  public void clearGolemsFromArena() {
+  public final void clearGolemsFromArena() {
     arena.getIronGolems().forEach(org.bukkit.entity.IronGolem::remove);
     arena.getIronGolems().clear();
   }
 
-  public void clearVillagersFromArena() {
+  public final void clearVillagersFromArena() {
     arena.getVillagers().forEach(org.bukkit.entity.Villager::remove);
     arena.getVillagers().clear();
   }
 
-  public void clearWolvesFromArena() {
+  public final void clearWolvesFromArena() {
     arena.getWolves().forEach(org.bukkit.entity.Wolf::remove);
     arena.getWolves().clear();
   }

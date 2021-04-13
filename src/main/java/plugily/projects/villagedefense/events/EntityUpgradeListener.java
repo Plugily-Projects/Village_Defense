@@ -92,26 +92,27 @@ public class EntityUpgradeListener implements Listener {
 
   @EventHandler
   public void onFinalDefense(EntityDeathEvent e) {
-    if(!(e.getEntity() instanceof IronGolem)) {
+    LivingEntity entity = e.getEntity();
+    if(!(entity instanceof IronGolem)) {
       return;
     }
     for(Arena arena : ArenaRegistry.getArenas()) {
-      if(!arena.getIronGolems().contains(e.getEntity())) {
+      if(!arena.getIronGolems().contains(entity)) {
         continue;
       }
-      int tier = upgradeMenu.getTier(e.getEntity(), upgradeMenu.getUpgrade("Final-Defense"));
+      int tier = upgradeMenu.getTier(entity, upgradeMenu.getUpgrade("Final-Defense"));
       if(tier == 0) {
         return;
       }
-      VersionUtils.sendParticles("EXPLOSION_HUGE", arena.getPlayers(), e.getEntity().getLocation(), 5);
-      for(Entity en : Utils.getNearbyEntities(e.getEntity().getLocation(), tier * 5)) {
+      VersionUtils.sendParticles("EXPLOSION_HUGE", arena.getPlayers(), entity.getLocation(), 5);
+      for(Entity en : Utils.getNearbyEntities(entity.getLocation(), tier * 5)) {
         if(en instanceof Zombie) {
-          ((Zombie) en).damage(10000.0, e.getEntity());
+          ((Zombie) en).damage(10000.0, entity);
         }
       }
       for(Zombie zombie : new ArrayList<>(arena.getZombies())) {
         zombie.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 5, 0));
-        zombie.damage(0.5, e.getEntity());
+        zombie.damage(0.5, entity);
       }
     }
   }

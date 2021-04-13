@@ -87,8 +87,7 @@ public class ShotBowKit extends PremiumKit implements Listener {
     ItemStack stack = VersionUtils.getItemInHand(e.getPlayer());
     User user = getPlugin().getUserManager().getUser(e.getPlayer());
     if(stack == null || stack.getType() != Material.BOW || !e.getPlayer().getInventory().contains(getMaterial())
-        || !(user.getKit() instanceof ShotBowKit)
-        || user.isSpectator()) {
+        || !(user.getKit() instanceof ShotBowKit) || user.isSpectator()) {
       return;
     }
     if(!user.checkCanCastCooldownAndMessage("shotbow")) {

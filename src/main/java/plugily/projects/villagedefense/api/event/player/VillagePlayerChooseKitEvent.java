@@ -42,7 +42,7 @@ public class VillagePlayerChooseKitEvent extends VillageEvent implements Cancell
     super(arena);
     this.player = player;
     this.kit = kit;
-    this.isCancelled = false;
+    isCancelled = false;
   }
 
   public static HandlerList getHandlerList() {
@@ -59,12 +59,12 @@ public class VillagePlayerChooseKitEvent extends VillageEvent implements Cancell
 
   @Override
   public boolean isCancelled() {
-    return this.isCancelled;
+    return isCancelled;
   }
 
   @Override
   public void setCancelled(boolean cancelled) {
-    this.isCancelled = cancelled;
+    isCancelled = cancelled;
   }
 
   @Override

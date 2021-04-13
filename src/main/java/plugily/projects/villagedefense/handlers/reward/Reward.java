@@ -47,13 +47,13 @@ public class Reward {
 
     //set reward executor based on provided code
     if(rawCode.contains("p:")) {
-      this.executor = RewardExecutor.PLAYER;
+      executor = RewardExecutor.PLAYER;
       processedCode = StringUtils.replace(processedCode, "p:", "");
     } else if(rawCode.contains("script:")) {
-      this.executor = RewardExecutor.SCRIPT;
+      executor = RewardExecutor.SCRIPT;
       processedCode = StringUtils.replace(processedCode, "script:", "");
     } else {
-      this.executor = RewardExecutor.CONSOLE;
+      executor = RewardExecutor.CONSOLE;
     }
 
     //search for chance modifier
@@ -63,17 +63,17 @@ public class Reward {
       if(loc == -1) {
         Bukkit.getLogger().log(Level.WARNING, "[VillageDefense] rewards.yml configuration is broken! Make sure you did not forget using ) character in chance condition! Command: {0}", rawCode);
         //invalid code, 0% chance to execute
-        this.chance = 0.0;
+        chance = 0.0;
         return;
       }
       String chanceStr = processedCode;
       chanceStr = chanceStr.substring(0, loc).replaceAll("[^0-9]+", "");
       processedCode = StringUtils.replace(processedCode, "chance(" + chanceStr + "):", "");
-      this.chance = Double.parseDouble(chanceStr);
+      chance = Double.parseDouble(chanceStr);
     } else {
-      this.chance = 100.0;
+      chance = 100.0;
     }
-    this.executableCode = processedCode;
+    executableCode = processedCode;
   }
 
   public RewardExecutor getExecutor() {

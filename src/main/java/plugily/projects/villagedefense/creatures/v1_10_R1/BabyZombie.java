@@ -32,7 +32,6 @@ import net.minecraft.server.v1_10_R1.PathfinderGoalLookAtPlayer;
 import net.minecraft.server.v1_10_R1.PathfinderGoalMoveTowardsRestriction;
 import net.minecraft.server.v1_10_R1.PathfinderGoalNearestAttackableTarget;
 import net.minecraft.server.v1_10_R1.PathfinderGoalRandomLookaround;
-import net.minecraft.server.v1_10_R1.PathfinderGoalSelector;
 import net.minecraft.server.v1_10_R1.PathfinderGoalZombieAttack;
 import net.minecraft.server.v1_10_R1.World;
 
@@ -52,7 +51,6 @@ public class BabyZombie extends EntityZombie {
     this(((CraftWorld) world).getHandle());
   }
 
-  @SuppressWarnings("rawtypes")
   public BabyZombie(World world) {
     super(world);
     this.bw = CreatureUtils.getBabyZombieSpeed(); //Change this to your liking. this is were you set the speed

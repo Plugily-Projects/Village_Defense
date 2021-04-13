@@ -32,6 +32,7 @@ import plugily.projects.villagedefense.kits.basekits.Kit;
 import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * Created by Tom on 27/07/2014.
@@ -40,15 +41,24 @@ public class User {
 
   private static Main plugin;
   private static long cooldownCounter = 0;
-  private final Player player;
+  private final UUID uuid;
   private boolean spectator = false;
   private boolean permanentSpectator = false;
   private Kit kit = KitRegistry.getDefaultKit();
   private final Map<StatsStorage.StatisticType, Integer> stats = new EnumMap<>(StatsStorage.StatisticType.class);
   private final Map<String, Long> cooldowns = new HashMap<>();
 
+  @Deprecated
   public User(Player player) {
-    this.player = player;
+    this(player.getUniqueId());
+  }
+
+  public User(UUID uuid) {
+    this.uuid = uuid;
+  }
+
+  public UUID getUniqueId() {
+    return uuid;
   }
 
   public static void init(Main plugin) {
@@ -68,11 +78,11 @@ public class User {
   }
 
   public Arena getArena() {
-    return ArenaRegistry.getArena(player);
+    return ArenaRegistry.getArena(getPlayer());
   }
 
   public Player getPlayer() {
-    return player;
+    return Bukkit.getPlayer(uuid);
   }
 
   public boolean isSpectator() {
@@ -95,30 +105,23 @@ public class User {
     if(!stats.containsKey(s)) {
       stats.put(s, 0);
       return 0;
-    } else if(stats.get(s) == null) {
-      return 0;
     }
-    return stats.get(s);
+
+    return stats.getOrDefault(s, 0);
   }
 
   public void setStat(StatsStorage.StatisticType s, int i) {
     stats.put(s, i);
 
     //statistics manipulation events are called async when using mysql
-    Bukkit.getScheduler().runTask(plugin, () -> {
-      VillagePlayerStatisticChangeEvent event = new VillagePlayerStatisticChangeEvent(getArena(), player, s, i);
-      Bukkit.getPluginManager().callEvent(event);
-    });
+    Bukkit.getScheduler().runTask(plugin, () -> Bukkit.getPluginManager().callEvent(new VillagePlayerStatisticChangeEvent(getArena(), getPlayer(), s, i)));
   }
 
   public void addStat(StatsStorage.StatisticType s, int i) {
     stats.put(s, getStat(s) + i);
 
     //statistics manipulation events are called async when using mysql
-    Bukkit.getScheduler().runTask(plugin, () -> {
-      VillagePlayerStatisticChangeEvent event = new VillagePlayerStatisticChangeEvent(getArena(), player, s, getStat(s));
-      Bukkit.getPluginManager().callEvent(event);
-    });
+    Bukkit.getScheduler().runTask(plugin, () -> Bukkit.getPluginManager().callEvent(new VillagePlayerStatisticChangeEvent(getArena(), getPlayer(), s, getStat(s))));
   }
 
   public boolean checkCanCastCooldownAndMessage(String cooldown) {
@@ -127,7 +130,7 @@ public class User {
     }
     String message = plugin.getChatManager().colorMessage(Messages.KITS_ABILITY_STILL_ON_COOLDOWN);
     message = message.replaceFirst("%COOLDOWN%", Long.toString(getCooldown(cooldown)));
-    player.sendMessage(message);
+    getPlayer().sendMessage(message);
     return false;
   }
 

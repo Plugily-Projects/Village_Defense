@@ -63,7 +63,7 @@ import java.util.logging.Level;
 public class KitRegistry {
 
   private static final List<Kit> kits = new ArrayList<>();
-  private static Kit defaultKit = null;
+  private static Kit defaultKit;
   private static Main plugin;
   private static final List<Class<?>> classKitNames = Arrays.asList(LightTankKit.class, ZombieFinderKit.class, ArcherKit.class, PuncherKit.class, HealerKit.class, LooterKit.class, RunnerKit.class,
       MediumTankKit.class, WorkerKit.class, GolemFriendKit.class, TerminatorKit.class, HardcoreKit.class, CleanerKit.class, TeleporterKit.class, HeavyTankKit.class, ShotBowKit.class,
@@ -143,7 +143,7 @@ public class KitRegistry {
       }
     }
 
-    KitRegistry.setDefaultKit(knightkit);
+    setDefaultKit(knightkit);
   }
 
 }

@@ -68,27 +68,25 @@ public class InGameState implements ArenaStateHandler {
         arena.setOptionValue(ArenaOption.ZOMBIES_TO_SPAWN, 0);
       }
       arena.setTimer(arena.getTimer() - 1);
-    } else {
-      if(arena.getTimer() <= 0) {
-        arena.setFighting(true);
-        ArenaManager.startWave(arena);
-      }
+    } else if(arena.getTimer() <= 0) {
+      arena.setFighting(true);
+      ArenaManager.startWave(arena);
     }
     arena.setTimer(arena.getTimer() - 1);
   }
 
   private void bossBarUpdate(Arena arena) {
     if(arena.getOption(ArenaOption.BAR_TOGGLE_VALUE) > 5) {
-      if(plugin.getConfigPreferences().getOption(ConfigPreferences.Option.BOSSBAR_ENABLED) && ServerVersion.Version.isCurrentEqualOrHigher(ServerVersion.Version.v1_9_R1)) {
-        arena.getGameBar().setTitle(plugin.getChatManager().colorMessage(Messages.BOSSBAR_IN_GAME_WAVE).replace("%wave%", String.valueOf(arena.getWave())));
+      if(ServerVersion.Version.isCurrentEqualOrHigher(ServerVersion.Version.v1_9_R1) && plugin.getConfigPreferences().getOption(ConfigPreferences.Option.BOSSBAR_ENABLED)) {
+        arena.getGameBar().setTitle(plugin.getChatManager().colorMessage(Messages.BOSSBAR_IN_GAME_WAVE).replace("%wave%", Integer.toString(arena.getWave())));
       }
       arena.addOptionValue(ArenaOption.BAR_TOGGLE_VALUE, 1);
       if(arena.getOption(ArenaOption.BAR_TOGGLE_VALUE) > 10) {
         arena.setOptionValue(ArenaOption.BAR_TOGGLE_VALUE, 0);
       }
     } else {
-      if(plugin.getConfigPreferences().getOption(ConfigPreferences.Option.BOSSBAR_ENABLED) && ServerVersion.Version.isCurrentEqualOrHigher(ServerVersion.Version.v1_9_R1)) {
-        arena.getGameBar().setTitle(plugin.getChatManager().colorMessage(Messages.BOSSBAR_IN_GAME_INFO).replace("%wave%", String.valueOf(arena.getWave())));
+      if(ServerVersion.Version.isCurrentEqualOrHigher(ServerVersion.Version.v1_9_R1) && plugin.getConfigPreferences().getOption(ConfigPreferences.Option.BOSSBAR_ENABLED)) {
+        arena.getGameBar().setTitle(plugin.getChatManager().colorMessage(Messages.BOSSBAR_IN_GAME_INFO).replace("%wave%", Integer.toString(arena.getWave())));
       }
       arena.addOptionValue(ArenaOption.BAR_TOGGLE_VALUE, 1);
     }

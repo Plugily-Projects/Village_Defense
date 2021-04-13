@@ -50,7 +50,7 @@ public class SpectatorSettingsMenu implements Listener {
   }
 
   public void openSpectatorSettingsMenu(Player player) {
-    player.openInventory(this.inv);
+    player.openInventory(inv);
   }
 
   @EventHandler

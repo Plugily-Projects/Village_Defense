@@ -53,7 +53,7 @@ public class BungeeManager implements Listener {
 
   public BungeeManager(Main plugin) {
     this.plugin = plugin;
-    this.config = ConfigUtils.getConfig(plugin, "bungee");
+    config = ConfigUtils.getConfig(plugin, "bungee");
     gameStateToString.put(ArenaState.WAITING_FOR_PLAYERS, plugin.getChatManager().colorRawMessage(config.getString("MOTD.Game-States.Inactive", "Inactive")));
     gameStateToString.put(ArenaState.STARTING, plugin.getChatManager().colorRawMessage(config.getString("MOTD.Game-States.Starting", "Starting")));
     gameStateToString.put(ArenaState.IN_GAME, plugin.getChatManager().colorRawMessage(config.getString("MOTD.Game-States.In-Game", "In-Game")));
@@ -98,7 +98,7 @@ public class BungeeManager implements Listener {
   @EventHandler(priority = EventPriority.HIGHEST)
   public void onQuit(PlayerQuitEvent event) {
     ComplementAccessor.getComplement().setQuitMessage(event, "");
-    if(ArenaRegistry.getArena(event.getPlayer()) != null && !ArenaRegistry.getArenas().isEmpty()) {
+    if(ArenaRegistry.isInArena(event.getPlayer()) && !ArenaRegistry.getArenas().isEmpty()) {
       ArenaManager.leaveAttempt(event.getPlayer(), ArenaRegistry.getArenas().get(ArenaRegistry.getBungeeArena()));
     }
 

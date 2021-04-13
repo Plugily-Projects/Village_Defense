@@ -40,7 +40,7 @@ public class Powerup {
     this.name = name;
     this.description = description;
     this.material = material;
-    this.onPickup = pickup;
+    onPickup = pickup;
   }
 
   public String getId() {

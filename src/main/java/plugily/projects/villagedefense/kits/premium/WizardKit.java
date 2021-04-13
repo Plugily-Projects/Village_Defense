@@ -172,7 +172,7 @@ public class WizardKit extends PremiumKit implements Listener {
         loc.add(0, 0.8, 0);
         VersionUtils.sendParticles("VILLAGER_ANGRY", null, loc, 5, 0, 0, 0);
         if(!wizardsOnDuty.contains(player) || !ArenaRegistry.isInArena(player)) {
-          this.cancel();
+          cancel();
         }
       }
     }.runTaskTimer(getPlugin(), 0, 2);
@@ -201,7 +201,7 @@ public class WizardKit extends PremiumKit implements Listener {
         }
         loc.subtract(x, y, z);
         if(positionModifier > 40) {
-          this.cancel();
+          cancel();
         }
       }
     }.runTaskTimer(getPlugin(), 0, 1);

@@ -24,9 +24,6 @@ import net.minecraft.server.v1_16_R1.PathfinderGoalBreakDoor;
 
 public class PathfinderGoalBreakDoorFaster extends PathfinderGoalBreakDoor {
 
-  private final int i = 0;
-  private final int j = -1;
-
   public PathfinderGoalBreakDoorFaster(EntityInsentient entityinsentient) {
     super(entityinsentient, enumDifficulty -> true);
   }

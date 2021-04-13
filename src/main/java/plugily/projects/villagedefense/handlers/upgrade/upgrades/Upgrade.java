@@ -52,7 +52,7 @@ public class Upgrade {
 
   public Upgrade(String id) {
     this.id = id;
-    this.configAccessor = "Entity-Upgrades." + id + "-Tiers";
+    configAccessor = "Entity-Upgrades." + id + "-Tiers";
   }
 
   public static void init(Main plugin) {
@@ -80,8 +80,8 @@ public class Upgrade {
   }
 
   public void setSlot(int x, int y) {
-    this.slotX = x;
-    this.slotY = y;
+    slotX = x;
+    slotY = y;
   }
 
   public EntityType getApplicableFor() {

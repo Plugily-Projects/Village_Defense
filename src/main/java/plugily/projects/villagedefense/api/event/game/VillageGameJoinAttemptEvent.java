@@ -39,7 +39,7 @@ public class VillageGameJoinAttemptEvent extends VillageEvent implements Cancell
   public VillageGameJoinAttemptEvent(Player player, Arena targetArena) {
     super(targetArena);
     this.player = player;
-    this.isCancelled = false;
+    isCancelled = false;
   }
 
   public static HandlerList getHandlerList() {
@@ -48,7 +48,7 @@ public class VillageGameJoinAttemptEvent extends VillageEvent implements Cancell
 
   @Override
   public boolean isCancelled() {
-    return this.isCancelled;
+    return isCancelled;
   }
 
   @Override

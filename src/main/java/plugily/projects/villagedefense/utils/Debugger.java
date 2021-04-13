@@ -32,7 +32,7 @@ import java.util.logging.Logger;
  */
 public class Debugger {
 
-  private static final HashSet<String> listenedPerformance = new HashSet<>();
+  private static final java.util.Set<String> listenedPerformance = new HashSet<>();
   private static boolean enabled = false;
   private static boolean deep = false;
   private static final Logger logger = Logger.getLogger("Village Defense");

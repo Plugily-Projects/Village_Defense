@@ -117,7 +117,7 @@ public abstract class Arena extends BukkitRunnable {
 
   public Arena(String id) {
     this.id = id == null ? "" : id;
-    if(plugin.getConfigPreferences().getOption(ConfigPreferences.Option.BOSSBAR_ENABLED) && ServerVersion.Version.isCurrentEqualOrHigher(ServerVersion.Version.v1_9_R1)) {
+    if(ServerVersion.Version.isCurrentEqualOrHigher(ServerVersion.Version.v1_9_R1) && plugin.getConfigPreferences().getOption(ConfigPreferences.Option.BOSSBAR_ENABLED)) {
       gameBar = Bukkit.createBossBar(plugin.getChatManager().colorMessage(Messages.BOSSBAR_MAIN_TITLE), BarColor.BLUE, BarStyle.SOLID);
     }
     shopManager = new ShopManager(this);
@@ -196,14 +196,14 @@ public abstract class Arena extends BukkitRunnable {
   @Override
   public void run() {
     //idle task
-    if(getPlayers().isEmpty() && arenaState == ArenaState.WAITING_FOR_PLAYERS) {
+    if(players.isEmpty() && arenaState == ArenaState.WAITING_FOR_PLAYERS) {
       return;
     }
-    Debugger.performance("ArenaTask", "[PerformanceMonitor] [{0}] Running game task", getId());
+    Debugger.performance("ArenaTask", "[PerformanceMonitor] [{0}] Running game task", id);
     long start = System.currentTimeMillis();
 
     gameStateHandlers.get(arenaState).handleCall(this);
-    Debugger.performance("ArenaTask", "[PerformanceMonitor] [{0}] Game task finished took {1}ms", getId(), System.currentTimeMillis() - start);
+    Debugger.performance("ArenaTask", "[PerformanceMonitor] [{0}] Game task finished took {1}ms", id, System.currentTimeMillis() - start);
   }
 
   public void spawnVillagers() {
@@ -285,10 +285,10 @@ public abstract class Arena extends BukkitRunnable {
   /**
    * Set arena map name.
    *
-   * @param mapname new map name, [b]it's not arena id[/b]
+   * @param mapName new map name, [b]it's not arena id[/b]
    */
-  public void setMapName(String mapname) {
-    this.mapName = mapname;
+  public void setMapName(String mapName) {
+    this.mapName = mapName;
   }
 
   /**
@@ -378,7 +378,7 @@ public abstract class Arena extends BukkitRunnable {
   }
 
   public void start() {
-    Debugger.debug("[{0}] Instance started", getId());
+    Debugger.debug("[{0}] Instance started", id);
     runTaskTimer(plugin, 20L, 20L);
     setArenaState(ArenaState.WAITING_FOR_PLAYERS);
   }
@@ -472,6 +472,8 @@ public abstract class Arena extends BukkitRunnable {
 
   public abstract void spawnVillagerSlayer(Random random);
 
+  public abstract void setWorld(Location loc);
+
   protected void addWolf(Wolf wolf) {
     wolves.add(wolf);
   }
@@ -488,7 +490,7 @@ public abstract class Arena extends BukkitRunnable {
 
       int limit = 0;
       try {
-        limit = Integer.parseInt(map.getKey().split("\\.")[1]);
+        limit = Integer.parseInt(map.getKey().split("\\.", 2)[1]);
       } catch(NumberFormatException ex) {
       }
 
@@ -551,7 +553,7 @@ public abstract class Arena extends BukkitRunnable {
       setOptionValue(ArenaOption.ROTTEN_FLESH_LEVEL, 1);
       return true;
     }
-    if(getOption(ArenaOption.ROTTEN_FLESH_LEVEL) * 10 * getPlayers().size() + 10 < getOption(ArenaOption.ROTTEN_FLESH_AMOUNT)) {
+    if(getOption(ArenaOption.ROTTEN_FLESH_LEVEL) * 10 * players.size() + 10 < getOption(ArenaOption.ROTTEN_FLESH_AMOUNT)) {
       addOptionValue(ArenaOption.ROTTEN_FLESH_LEVEL, 1);
       return true;
     }
