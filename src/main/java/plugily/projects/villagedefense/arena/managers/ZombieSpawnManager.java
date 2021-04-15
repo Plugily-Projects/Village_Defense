@@ -39,6 +39,9 @@ import java.util.Random;
  */
 public class ZombieSpawnManager {
 
+  /**
+   * The list of custom zombie spawn managers
+   */
   public static final List<CustomZombieSpawnManager> CUSTOM_ZOMBIE_SPAWN_MANAGERS = new ArrayList<>();
 
   private final Random random;
