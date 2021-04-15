@@ -46,7 +46,7 @@ public class ZombieSpawnManager {
    *
    * @param customZombieSpawnManager the manager
    */
-  public void addCustomZombieManager(CustomZombieSpawnManager customZombieSpawnManager) {
+  public static void addCustomZombieManager(CustomZombieSpawnManager customZombieSpawnManager) {
     CUSTOM_ZOMBIE_SPAWN_MANAGERS.add(customZombieSpawnManager);
   }
 
@@ -55,7 +55,7 @@ public class ZombieSpawnManager {
    *
    * @param customZombieSpawnManager the manager
    */
-  public void removeCustomZombieManager(CustomZombieSpawnManager customZombieSpawnManager) {
+  public static void removeCustomZombieManager(CustomZombieSpawnManager customZombieSpawnManager) {
     CUSTOM_ZOMBIE_SPAWN_MANAGERS.remove(customZombieSpawnManager);
   }
 
