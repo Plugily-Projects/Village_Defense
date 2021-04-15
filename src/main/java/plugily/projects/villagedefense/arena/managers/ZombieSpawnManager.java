@@ -39,25 +39,7 @@ import java.util.Random;
  */
 public class ZombieSpawnManager {
 
-  private static final List<CustomZombieSpawnManager> CUSTOM_ZOMBIE_SPAWN_MANAGERS = new ArrayList<>();
-
-  /**
-   * Add a custom zombie spawn manager
-   *
-   * @param customZombieSpawnManager the manager
-   */
-  public static void addCustomZombieManager(CustomZombieSpawnManager customZombieSpawnManager) {
-    CUSTOM_ZOMBIE_SPAWN_MANAGERS.add(customZombieSpawnManager);
-  }
-
-  /**
-   * Remove a custom zombie spawn manager
-   *
-   * @param customZombieSpawnManager the manager
-   */
-  public static void removeCustomZombieManager(CustomZombieSpawnManager customZombieSpawnManager) {
-    CUSTOM_ZOMBIE_SPAWN_MANAGERS.remove(customZombieSpawnManager);
-  }
+  public static final List<CustomZombieSpawnManager> CUSTOM_ZOMBIE_SPAWN_MANAGERS = new ArrayList<>();
 
   private final Random random;
   private final Arena arena;
