@@ -39,6 +39,26 @@ import java.util.Random;
  */
 public class ZombieSpawnManager {
 
+  private static final List<CustomZombieSpawnManager> CUSTOM_ZOMBIE_SPAWN_MANAGERS = new ArrayList<>();
+
+  /**
+   * Add a custom zombie spawn manager
+   *
+   * @param customZombieSpawnManager the manager
+   */
+  public void addCustomZombieManager(CustomZombieSpawnManager customZombieSpawnManager) {
+    CUSTOM_ZOMBIE_SPAWN_MANAGERS.add(customZombieSpawnManager);
+  }
+
+  /**
+   * Remove a custom zombie spawn manager
+   *
+   * @param customZombieSpawnManager the manager
+   */
+  public void removeCustomZombieManager(CustomZombieSpawnManager customZombieSpawnManager) {
+    CUSTOM_ZOMBIE_SPAWN_MANAGERS.remove(customZombieSpawnManager);
+  }
+
   private final Random random;
   private final Arena arena;
   private int localIdleProcess = 0;
@@ -133,10 +153,16 @@ public class ZombieSpawnManager {
     if(arena.getOption(ArenaOption.ZOMBIE_SPAWN_COUNTER) == 20) {
       arena.setOptionValue(ArenaOption.ZOMBIE_SPAWN_COUNTER, 0);
     }
+
+    for(CustomZombieSpawnManager customZombieSpawnManager : CUSTOM_ZOMBIE_SPAWN_MANAGERS) {
+      customZombieSpawnManager.spawnZombie(random, arena, spawn);
+    }
+
     if(arena.getOption(ArenaOption.ZOMBIES_TO_SPAWN) < 5 && arena.getOption(ArenaOption.ZOMBIES_TO_SPAWN) > 0) {
       arena.spawnFastZombie(random);
       return;
     }
+
     if(arena.getOption(ArenaOption.ZOMBIE_SPAWN_COUNTER) == 5) {
       if(random.nextInt(3) != 2) {
         for(int i = 0; i <= spawn; i++) {

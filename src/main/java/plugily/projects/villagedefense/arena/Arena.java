@@ -578,7 +578,7 @@ public abstract class Arena extends BukkitRunnable {
     return plugin;
   }
 
-  protected void addZombie(Zombie zombie) {
+  public void addZombie(Zombie zombie) {
     zombies.add(zombie);
   }
 
