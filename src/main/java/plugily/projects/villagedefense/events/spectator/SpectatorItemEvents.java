@@ -18,8 +18,8 @@
 
 package plugily.projects.villagedefense.events.spectator;
 
-import com.github.stefvanschie.inventoryframework.Gui;
-import com.github.stefvanschie.inventoryframework.GuiItem;
+import com.github.stefvanschie.inventoryframework.gui.GuiItem;
+import com.github.stefvanschie.inventoryframework.gui.type.ChestGui;
 import com.github.stefvanschie.inventoryframework.pane.OutlinePane;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -44,7 +44,6 @@ import plugily.projects.villagedefense.handlers.language.Messages;
 import plugily.projects.villagedefense.utils.Utils;
 
 import java.util.Collections;
-import java.util.Set;
 
 public class SpectatorItemEvents implements Listener {
 
@@ -82,19 +81,19 @@ public class SpectatorItemEvents implements Listener {
 
   private void openSpectatorMenu(World world, Player player, Arena arena) {
     int rows = Utils.serializeInt(arena.getPlayers().size()) / 9;
-    Gui gui = new Gui(plugin, rows, plugin.getChatManager().colorMessage(Messages.SPECTATOR_MENU_NAME));
+    ChestGui gui = new ChestGui(rows, plugin.getChatManager().colorMessage(Messages.SPECTATOR_MENU_NAME));
     OutlinePane pane = new OutlinePane(9, rows);
     gui.addPane(pane);
 
-    Set<Player> players = arena.getPlayers();
+    ItemStack skull = XMaterial.PLAYER_HEAD.parseItem();
+    SkullMeta meta = (SkullMeta) skull.getItemMeta();
+
     for(Player arenaPlayer : world.getPlayers()) {
-      if(players.contains(arenaPlayer) && !plugin.getUserManager().getUser(arenaPlayer).isSpectator()) {
-        ItemStack skull = XMaterial.PLAYER_HEAD.parseItem();
-        SkullMeta meta = (SkullMeta) skull.getItemMeta();
+      if(arena.getPlayers().contains(arenaPlayer) && !plugin.getUserManager().getUser(arenaPlayer).isSpectator()) {
         meta = VersionUtils.setPlayerHead(arenaPlayer, meta);
         ComplementAccessor.getComplement().setDisplayName(meta, arenaPlayer.getName());
         ComplementAccessor.getComplement().setLore(meta, Collections.singletonList(plugin.getChatManager().colorMessage(Messages.SPECTATOR_TARGET_PLAYER_HEALTH)
-            .replace("%health%", String.valueOf(NumberUtils.round(arenaPlayer.getHealth(), 2)))));
+            .replace("%health%", Double.toString(NumberUtils.round(arenaPlayer.getHealth(), 2)))));
         skull.setItemMeta(meta);
         pane.addItem(new GuiItem(skull, e -> {
           e.setCancelled(true);

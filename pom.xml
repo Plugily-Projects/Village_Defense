@@ -54,7 +54,7 @@
         </repository>
         <repository>
             <id>papi-repo</id>
-            <url>http://repo.extendedclip.com/content/repositories/placeholderapi/</url>
+            <url>https://repo.extendedclip.com/content/repositories/placeholderapi/</url>
         </repository>
         <repository>
             <id>plugilyprojects-repo</id>
@@ -70,7 +70,7 @@
         </repository>
         <repository>
             <id>simonsators-repo</id>
-            <url>http://simonsator.de/repo/</url>
+            <url>https://simonsator.de/repo/</url>
         </repository>
         <repository>
             <id>codemc-repo</id>
@@ -211,13 +211,13 @@
         <dependency>
             <groupId>org.bstats</groupId>
             <artifactId>bstats-bukkit</artifactId>
-            <version>2.1.0</version>
+            <version>2.2.1</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>com.github.stefvanschie.inventoryframework</groupId>
             <artifactId>IF</artifactId>
-            <version>0.5.19</version>
+            <version>0.9.5</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
