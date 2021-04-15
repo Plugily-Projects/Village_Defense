@@ -4,6 +4,9 @@ import plugily.projects.villagedefense.arena.Arena;
 
 import java.util.Random;
 
+/**
+ * Spawn manager for custom zombies (API purpose only)
+ */
 public interface CustomZombieSpawnManager {
   /**
    * Handle the zombie spawn
