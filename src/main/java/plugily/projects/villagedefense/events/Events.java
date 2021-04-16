@@ -238,11 +238,14 @@ public class Events implements Listener {
     if(event.getAction() == Action.LEFT_CLICK_AIR || event.getAction() == Action.LEFT_CLICK_BLOCK || event.getAction() == Action.PHYSICAL) {
       return;
     }
+    if (!event.hasItem()) {
+      return;
+    }
     Arena arena = ArenaRegistry.getArena(event.getPlayer());
     if(arena == null) {
       return;
     }
-    ItemStack itemStack = VersionUtils.getItemInHand(event.getPlayer());
+    ItemStack itemStack = event.getItem();
     if(!itemStack.hasItemMeta() || !itemStack.getItemMeta().hasDisplayName()) {
       return;
     }
