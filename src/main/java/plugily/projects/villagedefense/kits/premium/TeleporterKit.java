@@ -18,8 +18,8 @@
 
 package plugily.projects.villagedefense.kits.premium;
 
-import com.github.stefvanschie.inventoryframework.gui.GuiItem;
-import com.github.stefvanschie.inventoryframework.gui.type.ChestGui;
+import com.github.stefvanschie.inventoryframework.GuiItem;
+import com.github.stefvanschie.inventoryframework.Gui;
 import com.github.stefvanschie.inventoryframework.pane.OutlinePane;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -115,7 +115,7 @@ public class TeleporterKit extends PremiumKit implements Listener {
   }
 
   private void prepareTeleporterGui(Player player, Arena arena, int rows) {
-    ChestGui gui = new ChestGui(rows, getPlugin().getChatManager().colorMessage(Messages.KITS_TELEPORTER_GAME_ITEM_MENU_NAME));
+    Gui gui = new Gui(getPlugin(), rows, getPlugin().getChatManager().colorMessage(Messages.KITS_TELEPORTER_GAME_ITEM_MENU_NAME));
     gui.setOnGlobalClick(onClick -> onClick.setCancelled(true));
     OutlinePane pane = new OutlinePane(9, rows);
     gui.addPane(pane);

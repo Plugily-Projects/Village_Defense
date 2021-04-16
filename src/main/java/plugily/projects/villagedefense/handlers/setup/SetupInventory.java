@@ -18,7 +18,7 @@
 
 package plugily.projects.villagedefense.handlers.setup;
 
-import com.github.stefvanschie.inventoryframework.gui.type.ChestGui;
+import com.github.stefvanschie.inventoryframework.Gui;
 import com.github.stefvanschie.inventoryframework.pane.StaticPane;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -44,7 +44,7 @@ public class SetupInventory {
   private final FileConfiguration config;
   private final Arena arena;
   private final Player player;
-  private ChestGui gui;
+  private Gui gui;
   private final SetupUtilities setupUtilities;
 
   public SetupInventory(Arena arena, Player player) {
@@ -60,7 +60,7 @@ public class SetupInventory {
   }
 
   private void prepareGui() {
-    gui = new ChestGui(2, "Village Defense Arena Setup");
+    gui = new Gui(plugin, 2, "Village Defense Arena Setup");
     gui.setOnGlobalClick(e -> e.setCancelled(true));
     StaticPane pane = new StaticPane(9, 4);
     gui.addPane(pane);
@@ -141,7 +141,7 @@ public class SetupInventory {
     return player;
   }
 
-  public ChestGui getGui() {
+  public Gui getGui() {
     return gui;
   }
 
