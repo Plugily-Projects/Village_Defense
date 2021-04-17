@@ -62,11 +62,8 @@ public class SpectatorItemEvents implements Listener {
     if(e.getAction() == Action.LEFT_CLICK_AIR || e.getAction() == Action.LEFT_CLICK_BLOCK || e.getAction() == Action.PHYSICAL) {
       return;
     }
-    if (!e.hasItem()) {
-      return;
-    }
     Arena arena = ArenaRegistry.getArena(e.getPlayer());
-    ItemStack stack = e.getItem();
+    ItemStack stack = VersionUtils.getItemInHand(e.getPlayer());
     if(arena == null || !ItemUtils.isItemStackNamed(stack)) {
       return;
     }
