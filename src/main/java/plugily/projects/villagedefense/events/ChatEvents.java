@@ -86,7 +86,7 @@ public class ChatEvents implements Listener {
   private String formatChatPlaceholders(String message, User user) {
     String formatted = message;
     formatted = plugin.getChatManager().colorRawMessage(formatted);
-    formatted = StringUtils.replace(formatted, "%level%", String.valueOf(user.getStat(StatsStorage.StatisticType.LEVEL)));
+    formatted = StringUtils.replace(formatted, "%level%", Integer.toString(user.getStat(StatsStorage.StatisticType.LEVEL)));
     if(user.isSpectator()) {
       formatted = StringUtils.replace(formatted, "%kit%", plugin.getChatManager().colorMessage(Messages.DEAD_TAG_ON_DEATH));
     } else {

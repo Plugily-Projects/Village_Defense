@@ -75,23 +75,22 @@ public class CreatureUtils {
         return cachedObject.getObject();
       }
     }
-    Field field;
-    Object o = null;
     try {
-      field = clazz.getDeclaredField(fieldName);
+      Field field = clazz.getDeclaredField(fieldName);
 
       AccessController.doPrivileged((PrivilegedAction<Object>) () -> {
         field.setAccessible(true);
         return null;
       });
 
-      o = field.get(object);
+      Object o = field.get(object);
       cachedObjects.add(new CachedObject(fieldName, clazz, o));
+      return o;
     } catch(NoSuchFieldException | IllegalAccessException e) {
       plugin.getLogger().log(Level.WARNING, "Failed to retrieve private field of object " + object.getClass() + "!");
       plugin.getLogger().log(Level.WARNING, e.getMessage() + " (fieldName " + fieldName + ", class " + clazz.getName() + ")");
     }
-    return o;
+    return null;
   }
 
   /**

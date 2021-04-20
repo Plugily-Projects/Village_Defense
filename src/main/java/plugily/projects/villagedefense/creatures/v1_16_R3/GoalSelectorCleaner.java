@@ -22,7 +22,7 @@ import net.minecraft.server.v1_16_R3.EntityCreature;
 import net.minecraft.server.v1_16_R3.PathfinderGoalSelector;
 import plugily.projects.villagedefense.creatures.CreatureUtils;
 
-import java.util.LinkedHashSet;
+import java.util.Set;
 
 /**
  * Internal helper class
@@ -33,9 +33,9 @@ class GoalSelectorCleaner {
   }
 
   static void clearSelectors(EntityCreature creature) {
-    LinkedHashSet<?> goalD = (LinkedHashSet<?>) CreatureUtils.getPrivateField("d", PathfinderGoalSelector.class, creature.goalSelector);
+    Set<?> goalD = (Set<?>) CreatureUtils.getPrivateField("d", PathfinderGoalSelector.class, creature.goalSelector);
     goalD.clear();
-    LinkedHashSet<?> targetD = (LinkedHashSet<?>) CreatureUtils.getPrivateField("d", PathfinderGoalSelector.class, creature.targetSelector);
+    Set<?>targetD = (Set<?>) CreatureUtils.getPrivateField("d", PathfinderGoalSelector.class, creature.targetSelector);
     targetD.clear();
   }
 
