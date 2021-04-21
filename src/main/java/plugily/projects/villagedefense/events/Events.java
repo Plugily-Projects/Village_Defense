@@ -304,10 +304,10 @@ public class Events implements Listener {
   @EventHandler
   public void onDecay(LeavesDecayEvent event) {
     for (Arena arena : ArenaRegistry.getArenas()) {
-      if (!event.getBlock().getWorld().equals(arena.getStartLocation().getWorld())) {
-        continue;
+      Location startLoc = arena.getStartLocation();
+      if (startLoc != null && event.getBlock().getWorld().equals(startLoc.getWorld())) {
+        event.setCancelled(true);
       }
-      event.setCancelled(true);
     }
   }
 
