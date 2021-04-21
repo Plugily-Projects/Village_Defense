@@ -19,6 +19,7 @@
 package plugily.projects.villagedefense.events;
 
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.Entity;
@@ -38,6 +39,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.block.LeavesDecayEvent;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityCombustByBlockEvent;
 import org.bukkit.event.entity.EntityCombustByEntityEvent;
@@ -99,10 +101,13 @@ public class Events implements Listener {
   @EventHandler
   public void onSpawn(CreatureSpawnEvent event) {
     for(Arena arena : ArenaRegistry.getArenas()) {
-      if(!event.getEntity().getWorld().equals(arena.getStartLocation().getWorld()) || event.getSpawnReason() == CreatureSpawnEvent.SpawnReason.CUSTOM) {
-        continue;
+      Location startLoc = arena.getStartLocation();
+
+      if (startLoc != null && event.getSpawnReason() != CreatureSpawnEvent.SpawnReason.CUSTOM && event.getEntity().getWorld().equals(startLoc.getWorld())
+		  && event.getEntity().getLocation().distance(startLoc) < 150) {
+        event.setCancelled(true);
+        break;
       }
-      event.setCancelled(true);
     }
   }
 
@@ -297,6 +302,18 @@ public class Events implements Listener {
   public void onSwap(CBPlayerSwapHandItemsEvent event) {
     if (checkSpecialItem(event.getOffHandItem(), event.getPlayer())) {
       event.setCancelled(true);
+    }
+  }
+
+  @EventHandler
+  public void onDecay(LeavesDecayEvent event) {
+    for (Arena arena : ArenaRegistry.getArenas()) {
+      Location startLoc = arena.getStartLocation();
+
+      if (startLoc != null && event.getBlock().getWorld().equals(startLoc.getWorld()) && event.getBlock().getLocation().distance(startLoc) < 150) {
+        event.setCancelled(true);
+        break;
+      }
     }
   }
 
