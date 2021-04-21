@@ -102,9 +102,11 @@ public class Events implements Listener {
   public void onSpawn(CreatureSpawnEvent event) {
     for(Arena arena : ArenaRegistry.getArenas()) {
       Location startLoc = arena.getStartLocation();
-      if (startLoc != null && event.getEntity().getWorld().equals(startLoc.getWorld()) && event.getSpawnReason() != CreatureSpawnEvent.SpawnReason.CUSTOM) {
+
+      if (startLoc != null && event.getSpawnReason() != CreatureSpawnEvent.SpawnReason.CUSTOM && event.getEntity().getWorld().equals(startLoc.getWorld())
+		  && event.getEntity().getLocation().distance(startLoc) < 150) {
         event.setCancelled(true);
-        return;
+        break;
       }
     }
   }
@@ -307,9 +309,10 @@ public class Events implements Listener {
   public void onDecay(LeavesDecayEvent event) {
     for (Arena arena : ArenaRegistry.getArenas()) {
       Location startLoc = arena.getStartLocation();
-      if (startLoc != null && event.getBlock().getWorld().equals(startLoc.getWorld())) {
+
+      if (startLoc != null && event.getBlock().getWorld().equals(startLoc.getWorld()) && event.getBlock().getLocation().distance(startLoc) < 150) {
         event.setCancelled(true);
-        return;
+        break;
       }
     }
   }
