@@ -19,6 +19,7 @@
 package plugily.projects.villagedefense.events;
 
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.Entity;
@@ -100,10 +101,11 @@ public class Events implements Listener {
   @EventHandler
   public void onSpawn(CreatureSpawnEvent event) {
     for(Arena arena : ArenaRegistry.getArenas()) {
-      if(!event.getEntity().getWorld().equals(arena.getStartLocation().getWorld()) || event.getSpawnReason() == CreatureSpawnEvent.SpawnReason.CUSTOM) {
-        continue;
+      Location startLoc = arena.getStartLocation();
+      if (startLoc != null && event.getEntity().getWorld().equals(startLoc.getWorld()) && event.getSpawnReason() != CreatureSpawnEvent.SpawnReason.CUSTOM) {
+        event.setCancelled(true);
+        return;
       }
-      event.setCancelled(true);
     }
   }
 
@@ -307,6 +309,7 @@ public class Events implements Listener {
       Location startLoc = arena.getStartLocation();
       if (startLoc != null && event.getBlock().getWorld().equals(startLoc.getWorld())) {
         event.setCancelled(true);
+        return;
       }
     }
   }
