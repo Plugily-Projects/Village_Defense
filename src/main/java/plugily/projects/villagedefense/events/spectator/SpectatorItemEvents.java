@@ -35,6 +35,7 @@ import pl.plajerlair.commonsbox.minecraft.compat.xseries.XMaterial;
 import pl.plajerlair.commonsbox.minecraft.item.ItemUtils;
 import pl.plajerlair.commonsbox.minecraft.misc.stuff.ComplementAccessor;
 import pl.plajerlair.commonsbox.number.NumberUtils;
+import plugily.projects.villagedefense.ConfigPreferences;
 import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.arena.Arena;
 import plugily.projects.villagedefense.arena.ArenaManager;
@@ -90,7 +91,9 @@ public class SpectatorItemEvents implements Listener {
 
     for(Player arenaPlayer : world.getPlayers()) {
       if(arena.getPlayers().contains(arenaPlayer) && !plugin.getUserManager().getUser(arenaPlayer).isSpectator()) {
-        meta = VersionUtils.setPlayerHead(arenaPlayer, meta);
+        if (plugin.getConfigPreferences().getOption(ConfigPreferences.Option.FETCH_PROFILE_ON_PLAYER_HEAD)) {
+          meta = VersionUtils.setPlayerHead(arenaPlayer, meta);
+        }
         ComplementAccessor.getComplement().setDisplayName(meta, arenaPlayer.getName());
         ComplementAccessor.getComplement().setLore(meta, Collections.singletonList(plugin.getChatManager().colorMessage(Messages.SPECTATOR_TARGET_PLAYER_HEALTH)
             .replace("%health%", Double.toString(NumberUtils.round(arenaPlayer.getHealth(), 2)))));

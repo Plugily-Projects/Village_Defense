@@ -216,6 +216,9 @@ Disable-Fall-Damage: false
 # Should players get no drowning damage?
 Disable-Drowning-Damage: false
 
+# Should the plugin fetch the profile for the player head?
+Fetch-Profile-On-Player-Head: true
+
 Arena-Selector:
   # Change items of arena selector
   State-Item:

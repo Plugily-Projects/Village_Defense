@@ -38,6 +38,7 @@ import pl.plajerlair.commonsbox.minecraft.helper.WeaponHelper;
 import pl.plajerlair.commonsbox.minecraft.item.ItemBuilder;
 import pl.plajerlair.commonsbox.minecraft.item.ItemUtils;
 import pl.plajerlair.commonsbox.minecraft.misc.stuff.ComplementAccessor;
+import plugily.projects.villagedefense.ConfigPreferences;
 import plugily.projects.villagedefense.arena.Arena;
 import plugily.projects.villagedefense.arena.ArenaRegistry;
 import plugily.projects.villagedefense.handlers.PermissionsManager;
@@ -125,7 +126,9 @@ public class TeleporterKit extends PremiumKit implements Listener {
       }
       ItemStack skull = XMaterial.PLAYER_HEAD.parseItem();
       SkullMeta meta = (SkullMeta) skull.getItemMeta();
-      meta = VersionUtils.setPlayerHead(player, meta);
+      if (getPlugin().getConfigPreferences().getOption(ConfigPreferences.Option.FETCH_PROFILE_ON_PLAYER_HEAD)) {
+        meta = VersionUtils.setPlayerHead(player, meta);
+      }
       ComplementAccessor.getComplement().setDisplayName(meta, arenaPlayer.getName());
       ComplementAccessor.getComplement().setLore(meta, Collections.singletonList(""));
       skull.setItemMeta(meta);

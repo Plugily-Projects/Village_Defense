@@ -74,7 +74,8 @@ public class ConfigPreferences {
     DISABLE_SEPARATE_CHAT("Disable-Separate-Chat", false), DISABLE_PARTIES("Disable-Parties", true),
     RESPAWN_AFTER_WAVE("Respawn-After-Wave", true), INGAME_JOIN_RESPAWN("InGame-Join-Respawn", true),
     CAN_BUY_GOLEMSWOLVES_IF_THEY_DIED("Players-Can-Buy-GolemsWolves-If-They-Died", false),
-    DISABLE_FALL_DAMAGE("Disable-Fall-Damage", false), DISABLE_DROWNING_DAMAGE("Disable-Drowning-Damage", false);
+    DISABLE_FALL_DAMAGE("Disable-Fall-Damage", false), DISABLE_DROWNING_DAMAGE("Disable-Drowning-Damage", false),
+    FETCH_PROFILE_ON_PLAYER_HEAD("Fetch-Profile-On-Player-Head", true);
 
     private final String path;
     private final boolean def;
