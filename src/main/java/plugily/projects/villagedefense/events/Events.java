@@ -298,7 +298,7 @@ public class Events implements Listener {
 
   @EventHandler
   public void onSwap(CBPlayerSwapHandItemsEvent event) {
-    if (checkSpecialItem(event.getMainHandItem(), event.getPlayer())) {
+    if (checkSpecialItem(event.getOffHandItem(), event.getPlayer())) {
       event.setCancelled(true);
     }
   }
