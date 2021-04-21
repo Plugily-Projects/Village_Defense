@@ -288,10 +288,7 @@ public class Events implements Listener {
 
   @EventHandler
   public void onClick(InventoryClickEvent event) {
-    if (!(event.getClickedInventory() instanceof PlayerInventory)) {
-      return;
-    }
-    if (checkSpecialItem(event.getCurrentItem(), (Player) event.getWhoClicked())) {
+    if (event.getWhoClicked() instanceof Player && event.getClickedInventory() instanceof PlayerInventory && checkSpecialItem(event.getCurrentItem(), (Player) event.getWhoClicked())) {
       event.setCancelled(true);
     }
   }
