@@ -99,7 +99,7 @@ public class ArenaUtils {
       }
 
       User user = plugin.getUserManager().getUser(player);
-      if(!plugin.getConfigPreferences().getOption(ConfigPreferences.Option.INGAME_JOIN_RESPAWN) && user.isPermanentSpectator()) {
+      if(user.isPermanentSpectator()) {
         continue;
       }
       user.setSpectator(false);
