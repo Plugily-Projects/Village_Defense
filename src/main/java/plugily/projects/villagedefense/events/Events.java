@@ -38,6 +38,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.block.LeavesDecayEvent;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityCombustByBlockEvent;
 import org.bukkit.event.entity.EntityCombustByEntityEvent;
@@ -296,6 +297,16 @@ public class Events implements Listener {
   @EventHandler
   public void onSwap(CBPlayerSwapHandItemsEvent event) {
     if (checkSpecialItem(event.getOffHandItem(), event.getPlayer())) {
+      event.setCancelled(true);
+    }
+  }
+
+  @EventHandler
+  public void onDecay(LeavesDecayEvent event) {
+    for (Arena arena : ArenaRegistry.getArenas()) {
+      if (!event.getBlock().getWorld().equals(arena.getStartLocation().getWorld())) {
+        continue;
+      }
       event.setCancelled(true);
     }
   }
