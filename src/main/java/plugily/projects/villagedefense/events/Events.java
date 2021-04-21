@@ -49,6 +49,7 @@ import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.entity.ItemSpawnEvent;
 import org.bukkit.event.entity.PlayerLeashEntityEvent;
 import org.bukkit.event.hanging.HangingBreakByEntityEvent;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryPickupItemEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerArmorStandManipulateEvent;
@@ -56,10 +57,13 @@ import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerExpChangeEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
 import pl.plajerlair.commonsbox.minecraft.compat.VersionUtils;
 import pl.plajerlair.commonsbox.minecraft.compat.events.api.CBPlayerInteractEntityEvent;
 import pl.plajerlair.commonsbox.minecraft.compat.events.api.CBPlayerInteractEvent;
+import pl.plajerlair.commonsbox.minecraft.compat.events.api.CBPlayerSwapHandItemsEvent;
 import pl.plajerlair.commonsbox.minecraft.compat.xseries.XMaterial;
+import pl.plajerlair.commonsbox.minecraft.item.ItemUtils;
 import pl.plajerlair.commonsbox.minecraft.misc.stuff.ComplementAccessor;
 import pl.plajerlair.commonsbox.string.StringFormatUtils;
 import plugily.projects.villagedefense.ConfigPreferences;
@@ -243,7 +247,7 @@ public class Events implements Listener {
       return;
     }
     ItemStack itemStack = VersionUtils.getItemInHand(event.getPlayer());
-    if(!itemStack.hasItemMeta() || !itemStack.getItemMeta().hasDisplayName()) {
+    if (!ItemUtils.isItemStackNamed(itemStack)) {
       return;
     }
     SpecialItem key = plugin.getSpecialItemManager().getSpecialItem(SpecialItemManager.SpecialItems.LOBBY_LEAVE_ITEM.getName());
@@ -259,6 +263,40 @@ public class Events implements Listener {
       } else {
         ArenaManager.leaveAttempt(event.getPlayer(), arena);
       }
+    }
+  }
+
+  private boolean checkSpecialItem(ItemStack itemStack, Player player) {
+    if (!ItemUtils.isItemStackNamed(itemStack)) {
+      return false;
+    }
+    Arena arena = ArenaRegistry.getArena(player);
+    if(arena == null) {
+      return false;
+    }
+    SpecialItem key = plugin.getSpecialItemManager().getRelatedSpecialItem(itemStack);
+    if (key == SpecialItem.INVALID_ITEM) {
+      return false;
+    }
+    for (SpecialItemManager.SpecialItems specialItem : SpecialItemManager.SpecialItems.values()) {
+      if (specialItem.getName().equalsIgnoreCase(key.getName())) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  @EventHandler
+  public void onClick(InventoryClickEvent event) {
+    if (event.getWhoClicked() instanceof Player && event.getClickedInventory() instanceof PlayerInventory && checkSpecialItem(event.getCurrentItem(), (Player) event.getWhoClicked())) {
+      event.setCancelled(true);
+    }
+  }
+
+  @EventHandler
+  public void onSwap(CBPlayerSwapHandItemsEvent event) {
+    if (checkSpecialItem(event.getOffHandItem(), event.getPlayer())) {
+      event.setCancelled(true);
     }
   }
 
