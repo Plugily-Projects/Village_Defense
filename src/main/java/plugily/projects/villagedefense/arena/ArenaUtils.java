@@ -121,35 +121,33 @@ public class ArenaUtils {
   }
 
   public static Arena initializeArena(String id) {
-    Arena arena;
     if(ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_8_R3)) {
-      arena = new ArenaInitializer1_8_R3(id, plugin);
+      return  new ArenaInitializer1_8_R3(id, plugin);
     } else if(ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_9_R1)) {
-      arena = new ArenaInitializer1_9_R1(id, plugin);
+      return  new ArenaInitializer1_9_R1(id, plugin);
     } else if(ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_9_R2)) {
-      arena = new ArenaInitializer1_9_R2(id, plugin);
+      return  new ArenaInitializer1_9_R2(id, plugin);
     } else if(ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_10_R1)) {
-      arena = new ArenaInitializer1_10_R1(id, plugin);
+      return  new ArenaInitializer1_10_R1(id, plugin);
     } else if(ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_11_R1)) {
-      arena = new ArenaInitializer1_11_R1(id, plugin);
+      return  new ArenaInitializer1_11_R1(id, plugin);
     } else if(ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_12_R1)) {
-      arena = new ArenaInitializer1_12_R1(id, plugin);
+      return  new ArenaInitializer1_12_R1(id, plugin);
     } else if(ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_13_R1)) {
-      arena = new ArenaInitializer1_13_R1(id, plugin);
+      return  new ArenaInitializer1_13_R1(id, plugin);
     } else if(ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_13_R2)) {
-      arena = new ArenaInitializer1_13_R2(id, plugin);
+      return  new ArenaInitializer1_13_R2(id, plugin);
     } else if(ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_14_R1)) {
-      arena = new ArenaInitializer1_14_R1(id, plugin);
+      return  new ArenaInitializer1_14_R1(id, plugin);
     } else if(ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_15_R1)) {
-      arena = new ArenaInitializer1_15_R1(id, plugin);
+      return  new ArenaInitializer1_15_R1(id, plugin);
     } else if(ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_16_R1)) {
-      arena = new ArenaInitializer1_16_R1(id, plugin);
+      return  new ArenaInitializer1_16_R1(id, plugin);
     } else if(ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_16_R2)) {
-      arena = new ArenaInitializer1_16_R2(id, plugin);
-    } else {
-      arena = new ArenaInitializer1_16_R3(id, plugin);
+      return  new ArenaInitializer1_16_R2(id, plugin);
     }
-    return arena;
+
+    return  new ArenaInitializer1_16_R3(id, plugin);
   }
 
   public static void setWorld(Arena arena) {

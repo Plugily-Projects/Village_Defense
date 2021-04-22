@@ -19,6 +19,7 @@
 package plugily.projects.villagedefense.arena;
 
 import org.bukkit.Difficulty;
+import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -130,37 +131,48 @@ public class ArenaRegistry {
         unregisterArena(arena);
       }
     }
-    FileConfiguration config = ConfigUtils.getConfig(plugin, Constants.Files.ARENAS.getName());
 
+    FileConfiguration config = ConfigUtils.getConfig(plugin, Constants.Files.ARENAS.getName());
     ConfigurationSection section = config.getConfigurationSection("instances");
     if(section == null) {
       Debugger.sendConsoleMsg(plugin.getChatManager().colorMessage(Messages.VALIDATOR_NO_INSTANCES_CREATED));
       return;
     }
+
     for(String id : section.getKeys(false)) {
       if(id.equalsIgnoreCase("default")) {
         continue;
       }
-      Arena arena = ArenaUtils.initializeArena(id);
-      String key = "instances." + id + ".";
 
-      arena.setMinimumPlayers(config.getInt(key + "minimumplayers", 1));
-      arena.setMaximumPlayers(config.getInt(key + "maximumplayers", 2));
-      arena.setMapName(config.getString(key + "mapname", "none"));
-      arena.setLobbyLocation(LocationSerializer.getLocation(config.getString(key + "lobbylocation", "world,364.0,63.0,-72.0,0.0,0.0")));
-      arena.setStartLocation(LocationSerializer.getLocation(config.getString(key + "Startlocation", "world,364.0,63.0,-72.0,0.0,0.0")));
-      arena.setEndLocation(LocationSerializer.getLocation(config.getString(key + "Endlocation", "world,364.0,63.0,-72.0,0.0,0.0")));
-      ArenaUtils.setWorld(arena);
-      if(!config.getBoolean(key + "isdone")) {
+      Arena arena = ArenaUtils.initializeArena(id);
+
+      arena.setMinimumPlayers(section.getInt(id + ".minimumplayers", 1));
+      arena.setMaximumPlayers(section.getInt(id + ".maximumplayers", 2));
+      arena.setMapName(section.getString(id + ".mapname", "none"));
+
+      Location startLoc = LocationSerializer.getLocation(section.getString(id + ".Startlocation", "world,364.0,63.0,-72.0,0.0,0.0"));
+      Location lobbyLoc = LocationSerializer.getLocation(section.getString(id + ".lobbylocation", "world,364.0,63.0,-72.0,0.0,0.0"));
+      Location endLoc = LocationSerializer.getLocation(section.getString(id + ".Endlocation", "world,364.0,63.0,-72.0,0.0,0.0"));
+      if (lobbyLoc == null || lobbyLoc.getWorld() == null || startLoc == null || startLoc.getWorld() == null
+          || endLoc == null || endLoc.getWorld() == null) {
+        section.set(id + ".isdone", false);
+      } else {
+        arena.setLobbyLocation(lobbyLoc);
+        arena.setStartLocation(startLoc);
+        arena.setEndLocation(endLoc);
+        ArenaUtils.setWorld(arena);
+      }
+
+      if(!section.getBoolean(id + ".isdone")) {
         Debugger.sendConsoleMsg(plugin.getChatManager().colorMessage(Messages.VALIDATOR_INVALID_ARENA_CONFIGURATION).replace("%arena%", id).replace("%error%", "NOT VALIDATED"));
         arena.setReady(false);
         registerArena(arena);
         continue;
       }
 
-      if(config.isConfigurationSection(key + "zombiespawns")) {
-        for(String string : config.getConfigurationSection(key + "zombiespawns").getKeys(false)) {
-          arena.addZombieSpawn(LocationSerializer.getLocation(config.getString(key + "zombiespawns." + string)));
+      if(section.isConfigurationSection(id + ".zombiespawns")) {
+        for(String string : section.getConfigurationSection(id + ".zombiespawns").getKeys(false)) {
+          arena.addZombieSpawn(LocationSerializer.getLocation(section.getString(id + ".zombiespawns." + string)));
         }
       } else {
         Debugger.sendConsoleMsg(plugin.getChatManager().colorMessage(Messages.VALIDATOR_INVALID_ARENA_CONFIGURATION).replace("%arena%", id).replace("%error%", "ZOMBIE SPAWNS"));
@@ -169,9 +181,9 @@ public class ArenaRegistry {
         continue;
       }
 
-      if(config.isConfigurationSection(key + "villagerspawns")) {
-        for(String string : config.getConfigurationSection(key + "villagerspawns").getKeys(false)) {
-          arena.addVillagerSpawn(LocationSerializer.getLocation(config.getString(key + "villagerspawns." + string)));
+      if(section.isConfigurationSection(id + ".villagerspawns")) {
+        for(String string : section.getConfigurationSection(id + ".villagerspawns").getKeys(false)) {
+          arena.addVillagerSpawn(LocationSerializer.getLocation(section.getString(id + ".villagerspawns." + string)));
         }
       } else {
         Debugger.sendConsoleMsg(plugin.getChatManager().colorMessage(Messages.VALIDATOR_INVALID_ARENA_CONFIGURATION).replace("%arena%", id).replace("%error%", "VILLAGER SPAWNS"));
@@ -179,11 +191,11 @@ public class ArenaRegistry {
         registerArena(arena);
         continue;
       }
-      if(config.isConfigurationSection(key + "doors")) {
-        for(String string : config.getConfigurationSection(key + "doors").getKeys(false)) {
-          String path = key + "doors." + string + ".";
-          arena.getMapRestorerManager().addDoor(LocationSerializer.getLocation(config.getString(path + "location")),
-              (byte) config.getInt(path + "byte"));
+      if(section.isConfigurationSection(id + ".doors")) {
+        for(String string : section.getConfigurationSection(id + ".doors").getKeys(false)) {
+          String path = id + ".doors." + string + ".";
+          arena.getMapRestorerManager().addDoor(LocationSerializer.getLocation(section.getString(path + "location")),
+              (byte) section.getInt(path + "byte"));
         }
       } else {
         Debugger.sendConsoleMsg(plugin.getChatManager().colorMessage(Messages.VALIDATOR_INVALID_ARENA_CONFIGURATION).replace("%arena%", id).replace("%error%", "DOORS"));
@@ -202,6 +214,7 @@ public class ArenaRegistry {
       arena.start();
       Debugger.sendConsoleMsg(plugin.getChatManager().colorMessage(Messages.VALIDATOR_INSTANCE_STARTED).replace("%arena%", id));
     }
+    ConfigUtils.saveConfig(plugin, config, Constants.Files.ARENAS.getName());
     Debugger.debug("[ArenaRegistry] Arenas registration completed took {0}ms", System.currentTimeMillis() - start);
   }
 
