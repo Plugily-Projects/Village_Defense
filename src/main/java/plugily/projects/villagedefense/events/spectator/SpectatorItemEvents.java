@@ -21,7 +21,6 @@ package plugily.projects.villagedefense.events.spectator;
 import com.github.stefvanschie.inventoryframework.gui.GuiItem;
 import com.github.stefvanschie.inventoryframework.gui.type.ChestGui;
 import com.github.stefvanschie.inventoryframework.pane.OutlinePane;
-import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -69,7 +68,7 @@ public class SpectatorItemEvents implements Listener {
     }
     if(plugin.getSpecialItemManager().getRelatedSpecialItem(stack).getName().equals(SpecialItemManager.SpecialItems.PLAYERS_LIST.getName())) {
       e.setCancelled(true);
-      openSpectatorMenu(e.getPlayer().getWorld(), e.getPlayer(), arena);
+      openSpectatorMenu(e.getPlayer(), arena);
     } else if(plugin.getSpecialItemManager().getRelatedSpecialItem(stack).getName().equals(SpecialItemManager.SpecialItems.SPECTATOR_OPTIONS.getName())) {
       e.setCancelled(true);
       spectatorSettingsMenu.openSpectatorSettingsMenu(e.getPlayer());
@@ -79,29 +78,30 @@ public class SpectatorItemEvents implements Listener {
     }
   }
 
-  private void openSpectatorMenu(World world, Player player, Arena arena) {
+  private void openSpectatorMenu(Player player, Arena arena) {
     int rows = Utils.serializeInt(arena.getPlayers().size()) / 9;
     ChestGui gui = new ChestGui(rows, plugin.getChatManager().colorMessage(Messages.SPECTATOR_MENU_NAME));
     OutlinePane pane = new OutlinePane(9, rows);
     gui.addPane(pane);
 
     ItemStack skull = XMaterial.PLAYER_HEAD.parseItem();
-    SkullMeta meta = (SkullMeta) skull.getItemMeta();
 
-    for(Player arenaPlayer : world.getPlayers()) {
-      if(arena.getPlayers().contains(arenaPlayer) && !plugin.getUserManager().getUser(arenaPlayer).isSpectator()) {
-        meta = VersionUtils.setPlayerHead(arenaPlayer, meta);
-        ComplementAccessor.getComplement().setDisplayName(meta, arenaPlayer.getName());
-        ComplementAccessor.getComplement().setLore(meta, Collections.singletonList(plugin.getChatManager().colorMessage(Messages.SPECTATOR_TARGET_PLAYER_HEALTH)
-            .replace("%health%", Double.toString(NumberUtils.round(arenaPlayer.getHealth(), 2)))));
-        skull.setItemMeta(meta);
-        pane.addItem(new GuiItem(skull, e -> {
-          e.setCancelled(true);
-          e.getWhoClicked().sendMessage(plugin.getChatManager().formatMessage(arena, plugin.getChatManager().colorMessage(Messages.KITS_TELEPORTER_TELEPORTED_TO_PLAYER), arenaPlayer));
-          e.getWhoClicked().closeInventory();
-          e.getWhoClicked().teleport(arenaPlayer);
-        }));
+    for(Player arenaPlayer : arena.getPlayers()) {
+      if(plugin.getUserManager().getUser(arenaPlayer).isSpectator()) {
+        continue;
       }
+      ItemStack cloneSkull = skull.clone();
+      SkullMeta meta = VersionUtils.setPlayerHead(arenaPlayer, (SkullMeta) cloneSkull.getItemMeta());
+      ComplementAccessor.getComplement().setDisplayName(meta, arenaPlayer.getName());
+      ComplementAccessor.getComplement().setLore(meta, Collections.singletonList(plugin.getChatManager().colorMessage(Messages.SPECTATOR_TARGET_PLAYER_HEALTH)
+              .replace("%health%", Double.toString(NumberUtils.round(arenaPlayer.getHealth(), 2)))));
+      cloneSkull.setItemMeta(meta);
+      pane.addItem(new GuiItem(cloneSkull, e -> {
+        e.setCancelled(true);
+        e.getWhoClicked().sendMessage(plugin.getChatManager().formatMessage(arena, plugin.getChatManager().colorMessage(Messages.KITS_TELEPORTER_TELEPORTED_TO_PLAYER), arenaPlayer));
+        e.getWhoClicked().closeInventory();
+        e.getWhoClicked().teleport(arenaPlayer);
+      }));
     }
     gui.show(player);
   }
