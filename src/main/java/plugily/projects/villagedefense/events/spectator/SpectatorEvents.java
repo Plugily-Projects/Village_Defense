@@ -46,6 +46,7 @@ import org.bukkit.event.player.PlayerShearEntityEvent;
 import pl.plajerlair.commonsbox.minecraft.compat.events.api.CBEntityPickupItemEvent;
 import pl.plajerlair.commonsbox.minecraft.compat.events.api.CBPlayerInteractEntityEvent;
 import pl.plajerlair.commonsbox.minecraft.compat.events.api.CBPlayerInteractEvent;
+import pl.plajerlair.commonsbox.minecraft.compat.events.api.CBPlayerPickupArrow;
 import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.arena.Arena;
 import plugily.projects.villagedefense.arena.ArenaRegistry;
@@ -172,6 +173,13 @@ public class SpectatorEvents implements Listener {
   @EventHandler(priority = EventPriority.HIGHEST)
   public void onPickup(CBEntityPickupItemEvent event) {
     if(event.getEntity() instanceof Player && plugin.getUserManager().getUser((Player) event.getEntity()).isSpectator()) {
+      event.setCancelled(true);
+    }
+  }
+
+  @EventHandler(priority = EventPriority.HIGHEST)
+  public void onArrowPickup(CBPlayerPickupArrow event) {
+    if (plugin.getUserManager().getUser(event.getPlayer()).isSpectator()) {
       event.setCancelled(true);
     }
   }
