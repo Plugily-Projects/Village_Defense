@@ -13,12 +13,11 @@ public class VillagePlayerRespawnEvent extends VillageEvent implements Cancellab
 
     private static final HandlerList handlers = new HandlerList();
     private final Player player;
-    private boolean isCancelled;
+    private boolean isCancelled = false;
 
     public VillagePlayerRespawnEvent(Player player, Arena arena) {
         super(arena);
         this.player = player;
-        isCancelled = false;
     }
 
     public static HandlerList getHandlerList() {
