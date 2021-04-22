@@ -84,23 +84,22 @@ public class SpectatorItemEvents implements Listener {
     OutlinePane pane = new OutlinePane(9, rows);
     gui.addPane(pane);
 
-    ItemStack skull = XMaterial.PLAYER_HEAD.parseItem();
-    SkullMeta meta = (SkullMeta) skull.getItemMeta();
-
     for(Player arenaPlayer : arena.getPlayers()) {
-      if(!plugin.getUserManager().getUser(arenaPlayer).isSpectator()) {
-        meta = VersionUtils.setPlayerHead(arenaPlayer, meta);
-        ComplementAccessor.getComplement().setDisplayName(meta, arenaPlayer.getName());
-        ComplementAccessor.getComplement().setLore(meta, Collections.singletonList(plugin.getChatManager().colorMessage(Messages.SPECTATOR_TARGET_PLAYER_HEALTH)
-            .replace("%health%", Double.toString(NumberUtils.round(arenaPlayer.getHealth(), 2)))));
-        skull.setItemMeta(meta);
-        pane.addItem(new GuiItem(skull, e -> {
-          e.setCancelled(true);
-          e.getWhoClicked().sendMessage(plugin.getChatManager().formatMessage(arena, plugin.getChatManager().colorMessage(Messages.KITS_TELEPORTER_TELEPORTED_TO_PLAYER), arenaPlayer));
-          e.getWhoClicked().closeInventory();
-          e.getWhoClicked().teleport(arenaPlayer);
-        }));
+      if(plugin.getUserManager().getUser(arenaPlayer).isSpectator()) {
+        continue;
       }
+      ItemStack skull = XMaterial.PLAYER_HEAD.parseItem();
+      SkullMeta meta = VersionUtils.setPlayerHead(arenaPlayer, (SkullMeta) skull.getItemMeta());
+      ComplementAccessor.getComplement().setDisplayName(meta, arenaPlayer.getName());
+      ComplementAccessor.getComplement().setLore(meta, Collections.singletonList(plugin.getChatManager().colorMessage(Messages.SPECTATOR_TARGET_PLAYER_HEALTH)
+              .replace("%health%", Double.toString(NumberUtils.round(arenaPlayer.getHealth(), 2)))));
+      skull.setItemMeta(meta);
+      pane.addItem(new GuiItem(skull, e -> {
+        e.setCancelled(true);
+        e.getWhoClicked().sendMessage(plugin.getChatManager().formatMessage(arena, plugin.getChatManager().colorMessage(Messages.KITS_TELEPORTER_TELEPORTED_TO_PLAYER), arenaPlayer));
+        e.getWhoClicked().closeInventory();
+        e.getWhoClicked().teleport(arenaPlayer);
+      }));
     }
     gui.show(player);
   }
