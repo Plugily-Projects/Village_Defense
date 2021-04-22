@@ -58,7 +58,7 @@ public class ExceptionLogHandler extends Handler {
   public void publish(LogRecord record) {
     try {
       Throwable throwable = record.getThrown();
-      if(throwable.getCause() == null) {
+      if(throwable == null || throwable.getCause() == null) {
         return;
       }
       StackTraceElement[] element = throwable.getCause().getStackTrace();
