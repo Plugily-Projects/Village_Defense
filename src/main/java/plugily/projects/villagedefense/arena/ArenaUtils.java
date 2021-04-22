@@ -18,6 +18,7 @@
 
 package plugily.projects.villagedefense.arena;
 
+import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Zombie;
@@ -27,6 +28,7 @@ import pl.plajerlair.commonsbox.minecraft.compat.VersionUtils;
 import pl.plajerlair.commonsbox.minecraft.serialization.InventorySerializer;
 import plugily.projects.villagedefense.ConfigPreferences;
 import plugily.projects.villagedefense.Main;
+import plugily.projects.villagedefense.api.event.player.VillagePlayerRespawnEvent;
 import plugily.projects.villagedefense.arena.initializers.ArenaInitializer1_10_R1;
 import plugily.projects.villagedefense.arena.initializers.ArenaInitializer1_11_R1;
 import plugily.projects.villagedefense.arena.initializers.ArenaInitializer1_12_R1;
@@ -102,6 +104,13 @@ public class ArenaUtils {
       if(!plugin.getConfigPreferences().getOption(ConfigPreferences.Option.INGAME_JOIN_RESPAWN) && user.isPermanentSpectator()) {
         continue;
       }
+
+      VillagePlayerRespawnEvent event = new VillagePlayerRespawnEvent(player, arena);
+      Bukkit.getPluginManager().callEvent(event);
+      if (event.isCancelled()) {
+        continue;
+      }
+
       user.setSpectator(false);
 
       player.teleport(arena.getStartLocation());
