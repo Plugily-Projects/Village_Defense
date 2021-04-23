@@ -57,7 +57,6 @@ import plugily.projects.villagedefense.commands.arguments.game.CreateArgument;
 import plugily.projects.villagedefense.commands.arguments.game.JoinArguments;
 import plugily.projects.villagedefense.commands.arguments.game.LeaderboardArgument;
 import plugily.projects.villagedefense.commands.arguments.game.LeaveArgument;
-import plugily.projects.villagedefense.commands.arguments.game.RandomJoinArgument;
 import plugily.projects.villagedefense.commands.arguments.game.SelectKitArgument;
 import plugily.projects.villagedefense.commands.arguments.game.StatsArgument;
 import plugily.projects.villagedefense.commands.completion.TabCompletion;
@@ -100,7 +99,6 @@ public class ArgumentsRegistry implements CommandExecutor {
     //register Village Defense basic arguments
     new CreateArgument(this);
     new JoinArguments(this);
-    new RandomJoinArgument(this);
     new ArenaSelectorArgument(this, plugin.getChatManager());
     new LeaderboardArgument(this);
     new LeaveArgument(this);

@@ -20,12 +20,21 @@ package plugily.projects.villagedefense.commands.arguments.game;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import plugily.projects.villagedefense.ConfigPreferences;
 import plugily.projects.villagedefense.arena.Arena;
 import plugily.projects.villagedefense.arena.ArenaManager;
 import plugily.projects.villagedefense.arena.ArenaRegistry;
+import plugily.projects.villagedefense.arena.ArenaState;
 import plugily.projects.villagedefense.commands.arguments.ArgumentsRegistry;
 import plugily.projects.villagedefense.commands.arguments.data.CommandArgument;
 import plugily.projects.villagedefense.handlers.language.Messages;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ThreadLocalRandom;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * @author Plajer
@@ -43,6 +52,22 @@ public class JoinArguments {
           sender.sendMessage(registry.getPlugin().getChatManager().getPrefix() + registry.getPlugin().getChatManager().colorMessage(Messages.COMMANDS_TYPE_ARENA_NAME));
           return;
         }
+        if(args[1].equalsIgnoreCase("maxplayers") && ArenaRegistry.getArena("maxplayers") == null) {
+          Map<Arena, Integer> arenas = new HashMap<>();
+          for(Arena arena : ArenaRegistry.getArenas()) {
+            arenas.put(arena, arena.getPlayers().size());
+          }
+          if(ArenaRegistry.getArenaPlayersOnline() == 0) {
+            ArenaManager.joinAttempt((Player) sender, ArenaRegistry.getArenas().get(ThreadLocalRandom.current().nextInt(ArenaRegistry.getArenas().size())));
+            return;
+          }
+          Stream<Map.Entry<Arena, Integer>> sorted = arenas.entrySet().stream().sorted(Map.Entry.comparingByValue());
+          if(sorted.findFirst().isPresent()) {
+            Arena arena = sorted.findFirst().get().getKey();
+            ArenaManager.joinAttempt((Player) sender, arena);
+            return;
+          }
+        }
         for(Arena arena : ArenaRegistry.getArenas()) {
           if(args[1].equalsIgnoreCase(arena.getId())) {
             ArenaManager.joinAttempt((Player) sender, arena);
@@ -52,5 +77,31 @@ public class JoinArguments {
         sender.sendMessage(registry.getPlugin().getChatManager().getPrefix() + registry.getPlugin().getChatManager().colorMessage(Messages.COMMANDS_NO_ARENA_LIKE_THAT));
       }
     });
+
+    //random join argument, disable for bungee
+    if(!registry.getPlugin().getConfigPreferences().getOption(ConfigPreferences.Option.BUNGEE_ENABLED)) {
+      registry.mapArgument("villagedefense", new CommandArgument("randomjoin", "", CommandArgument.ExecutorType.PLAYER) {
+
+        @Override
+        public void execute(CommandSender sender, String[] args) {
+          //check starting arenas -> random
+          List<Arena> arenas = ArenaRegistry.getArenas().stream().filter(arena -> arena.getArenaState() == ArenaState.STARTING && arena.getPlayers().size() < arena.getMaximumPlayers()).collect(Collectors.toList());
+          if(!arenas.isEmpty()) {
+            Arena arena = arenas.get(ThreadLocalRandom.current().nextInt(arenas.size()));
+            ArenaManager.joinAttempt((Player) sender, arena);
+            return;
+          }
+          //check waiting arenas -> random
+          arenas = ArenaRegistry.getArenas().stream().filter(arena -> (arena.getArenaState() == ArenaState.WAITING_FOR_PLAYERS || arena.getArenaState() == ArenaState.STARTING)
+              && arena.getPlayers().size() < arena.getMaximumPlayers()).collect(Collectors.toList());
+          if(!arenas.isEmpty()) {
+            Arena arena = arenas.get(ThreadLocalRandom.current().nextInt(arenas.size()));
+            ArenaManager.joinAttempt((Player) sender, arena);
+            return;
+          }
+          sender.sendMessage(registry.getPlugin().getChatManager().getPrefix() + registry.getPlugin().getChatManager().colorMessage(Messages.COMMANDS_NO_FREE_ARENAS));
+        }
+      });
+    }
   }
 }

@@ -9,10 +9,13 @@ deploy webhooks to print changelog successfully
 
 That's all, matcher will stop when detects next line started with `###` match
 
-### 4.6.0
+### 4.6.0 (15.04.2021 - XX.XX.2021)
 * Now players who's in a game can't swap items to off hand
 * Players now can't drag special items in theirs inventory
 * Leaves will no longer be decayed if this is within an arena.
+* Changed randomjoin mechanics -> Searches for starting -> random join -> Searches for waiting -> random join
+* Added /vd join maxplayers which tries to get the arena with the highest amount of players
+* Added placeholder arena_players_online
 
 ### 4.5.9 (28.03.2021 - 13.04.2021)
 * Fix when Splash_potion material not existed on 1.8 servers

@@ -20,6 +20,7 @@ package plugily.projects.villagedefense.handlers;
 
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 import plugily.projects.villagedefense.api.StatsStorage;
 import plugily.projects.villagedefense.arena.Arena;
 import plugily.projects.villagedefense.arena.ArenaRegistry;
@@ -37,18 +38,18 @@ public class PlaceholderManager extends PlaceholderExpansion {
   }
 
   @Override
-  public String getIdentifier() {
+  public @NotNull String getIdentifier() {
     return "villagedefense";
   }
 
   @Override
-  public String getAuthor() {
-    return "Plajer";
+  public @NotNull String getAuthor() {
+    return "Plugily Projects";
   }
 
   @Override
-  public String getVersion() {
-    return "1.0.1";
+  public @NotNull String getVersion() {
+    return "1.0.2";
   }
 
   @Override
@@ -71,6 +72,8 @@ public class PlaceholderManager extends PlaceholderExpansion {
         return Integer.toString(StatsStorage.getUserStats(player, StatsStorage.StatisticType.XP));
       case "exp_to_next_level":
         return Double.toString(Math.ceil(Math.pow(50 * StatsStorage.getUserStats(player, StatsStorage.StatisticType.LEVEL), 1.5)));
+      case "arena_players_online":
+        return Integer.toString(ArenaRegistry.getArenaPlayersOnline());
       default:
         return handleArenaPlaceholderRequest(id);
     }
