@@ -23,11 +23,11 @@ import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.IronGolem;
+import org.bukkit.entity.Creature;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Villager;
 import org.bukkit.entity.Wolf;
-import org.bukkit.entity.Zombie;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -75,12 +75,12 @@ public class ArenaEvents implements Listener {
   //override WorldGuard build deny flag where villagers cannot be damaged
   @EventHandler(priority = EventPriority.HIGHEST)
   public void onVillagerDamage(EntityDamageByEntityEvent e) {
-    if(!(e.getEntity() instanceof Villager && e.getDamager() instanceof Zombie)) {
+    if(!(e.getEntity() instanceof Villager && e.getDamager() instanceof Creature)) {
       return;
     }
     for(Arena a : ArenaRegistry.getArenas()) {
       if(a.getVillagers().contains(e.getEntity()) && a.getZombies().contains(e.getDamager())) {
-        Zombie zombie = (Zombie) e.getDamager();
+        Creature zombie = (Creature) e.getDamager();
         //check villagerbuster
         if(zombie.getEquipment().getHelmet().getType().isBlock() && zombie.getEquipment().getChestplate().getType() == Material.LEATHER_CHESTPLATE) {
           zombie.damage(zombie.getHealth() * 2);
@@ -96,7 +96,7 @@ public class ArenaEvents implements Listener {
 
   @EventHandler
   public void onDieEntity(EntityDamageByEntityEvent e) {
-    if(!(e.getEntity() instanceof LivingEntity && e.getDamager() instanceof Wolf && e.getEntity() instanceof Zombie)) {
+    if(!(e.getEntity() instanceof LivingEntity && e.getDamager() instanceof Wolf)) {
       return;
     }
     //trick to get non player killer of zombie
@@ -177,25 +177,11 @@ public class ArenaEvents implements Listener {
   @EventHandler
   public void onDieEntity(EntityDeathEvent e) {
     LivingEntity entity = e.getEntity();
-    if(!(entity instanceof Zombie || entity instanceof Villager)) {
+    if(!(entity instanceof Creature)) {
       return;
     }
     for(Arena arena : ArenaRegistry.getArenas()) {
       switch(e.getEntityType()) {
-        case ZOMBIE:
-          if(!arena.getZombies().contains(entity)) {
-            continue;
-          }
-          arena.removeZombie((Zombie) entity);
-          arena.addOptionValue(ArenaOption.TOTAL_KILLED_ZOMBIES, 1);
-          Arena killerArena = ArenaRegistry.getArena(entity.getKiller());
-          if(killerArena != null) {
-            plugin.getUserManager().addStat(entity.getKiller(), StatsStorage.StatisticType.KILLS);
-            plugin.getUserManager().addExperience(entity.getKiller(), 2 * arena.getOption(ArenaOption.ZOMBIE_DIFFICULTY_MULTIPLIER));
-            plugin.getRewardsHandler().performReward(entity.getKiller(), Reward.RewardType.ZOMBIE_KILL);
-            plugin.getPowerupRegistry().spawnPowerup(entity.getLocation(), killerArena);
-          }
-          return;
         case VILLAGER:
           if(!arena.getVillagers().contains(entity)) {
             continue;
@@ -205,8 +191,20 @@ public class ArenaEvents implements Listener {
           plugin.getRewardsHandler().performReward(null, arena, Reward.RewardType.VILLAGER_DEATH);
           plugin.getHolidayManager().applyHolidayDeathEffects(entity);
           plugin.getChatManager().broadcast(arena, Messages.VILLAGER_DIED);
-          return;
+          break;
         default:
+          if(!arena.getZombies().contains(entity)) {
+            continue;
+          }
+          arena.removeZombie((Creature) entity);
+          arena.addOptionValue(ArenaOption.TOTAL_KILLED_ZOMBIES, 1);
+          Arena killerArena = ArenaRegistry.getArena(entity.getKiller());
+          if(killerArena != null) {
+            plugin.getUserManager().addStat(entity.getKiller(), StatsStorage.StatisticType.KILLS);
+            plugin.getUserManager().addExperience(entity.getKiller(), 2 * arena.getOption(ArenaOption.ZOMBIE_DIFFICULTY_MULTIPLIER));
+            plugin.getRewardsHandler().performReward(entity.getKiller(), Reward.RewardType.ZOMBIE_KILL);
+            plugin.getPowerupRegistry().spawnPowerup(entity.getLocation(), killerArena);
+          }
           break;
       }
     }
@@ -288,7 +286,7 @@ public class ArenaEvents implements Listener {
   }
 
   private void untargetPlayerFromZombies(Player player, Arena arena) {
-    for(Zombie zombie : arena.getZombies()) {
+    for(Creature zombie : arena.getZombies()) {
       if(zombie.getTarget() == null || !zombie.getTarget().equals(player)) {
         continue;
       }

@@ -20,8 +20,8 @@ package plugily.projects.villagedefense.arena;
 
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.entity.Zombie;
 import org.bukkit.potion.PotionEffectType;
 import pl.plajerlair.commonsbox.minecraft.compat.ServerVersion;
 import pl.plajerlair.commonsbox.minecraft.compat.VersionUtils;
@@ -168,7 +168,7 @@ public class ArenaUtils {
   public static void removeSpawnedZombies(Arena arena) {
     boolean eachThree = arena.getZombies().size() > 70;
     int i = 0;
-    for(Zombie zombie : arena.getZombies()) {
+    for(LivingEntity zombie : arena.getZombies()) {
       if(eachThree && (i % 3) == 0) {
         VersionUtils.sendParticles("LAVA", arena.getPlayers(), zombie.getLocation(), 20);
       }

@@ -21,9 +21,9 @@ package plugily.projects.villagedefense.events;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.IronGolem;
+import org.bukkit.entity.Creature;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Wolf;
-import org.bukkit.entity.Zombie;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -106,11 +106,11 @@ public class EntityUpgradeListener implements Listener {
       }
       VersionUtils.sendParticles("EXPLOSION_HUGE", arena.getPlayers(), entity.getLocation(), 5);
       for(Entity en : Utils.getNearbyEntities(entity.getLocation(), tier * 5)) {
-        if(en instanceof Zombie) {
-          ((Zombie) en).damage(10000.0, entity);
+        if(en instanceof Creature) {
+          ((Creature) en).damage(10000.0, entity);
         }
       }
-      for(Zombie zombie : new ArrayList<>(arena.getZombies())) {
+      for(Creature zombie : new ArrayList<>(arena.getZombies())) {
         zombie.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 5, 0));
         zombie.damage(0.5, entity);
       }

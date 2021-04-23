@@ -67,7 +67,7 @@ public class MapRestorerManager {
   }
 
   public final void clearZombiesFromArena() {
-    arena.getZombies().forEach(org.bukkit.entity.Zombie::remove);
+    arena.getZombies().forEach(org.bukkit.entity.Creature::remove);
     arena.getZombies().clear();
   }
 

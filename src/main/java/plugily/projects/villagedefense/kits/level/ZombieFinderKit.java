@@ -105,7 +105,7 @@ public class ZombieFinderKit extends LevelKit implements Listener {
       return;
     }
     int rand = new Random().nextInt(arena.getZombies().size());
-    org.bukkit.entity.Zombie zombie = arena.getZombies().get(rand);
+    org.bukkit.entity.Creature zombie = arena.getZombies().get(rand);
     zombie.teleport(event.getPlayer());
     zombie.addPotionEffect(new PotionEffect(PotionEffectType.WEAKNESS, 20 * 30, 0));
     event.getPlayer().sendMessage(getPlugin().getChatManager().colorMessage(Messages.KITS_ZOMBIE_TELEPORTER_ZOMBIE_TELEPORTED));
