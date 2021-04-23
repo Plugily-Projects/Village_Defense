@@ -24,8 +24,11 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Creature;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.IronGolem;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Villager;
+import org.bukkit.entity.Wolf;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -146,7 +149,7 @@ public class WizardKit extends PremiumKit implements Listener {
       VersionUtils.setGlowing(player, true);
       applyRageParticles(player);
       for(Entity en : player.getNearbyEntities(2, 2, 2)) {
-        if(en instanceof Creature) {
+        if(en instanceof Creature && !(en instanceof Villager) && !(en instanceof Wolf) && !(en instanceof IronGolem)) {
           ((Creature) en).damage(9.0, player);
         }
       }
@@ -193,7 +196,7 @@ public class WizardKit extends PremiumKit implements Listener {
         loc.add(x, y, z);
         VersionUtils.sendParticles("TOWN_AURA", null, loc, 5, 0, 0, 0);
         for(Entity en : loc.getChunk().getEntities()) {
-          if(!(en instanceof Creature) || en.getLocation().distance(loc) >= 1.5 || en.equals(player)) {
+          if(!(en instanceof Creature) || en instanceof Villager || en instanceof Wolf || en instanceof IronGolem || en.getLocation().distance(loc) >= 1.5 || en.equals(player)) {
             continue;
           }
           ((LivingEntity) en).damage(6.0, player);

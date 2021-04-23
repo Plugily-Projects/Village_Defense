@@ -23,6 +23,7 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.IronGolem;
 import org.bukkit.entity.Creature;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Villager;
 import org.bukkit.entity.Wolf;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -106,7 +107,7 @@ public class EntityUpgradeListener implements Listener {
       }
       VersionUtils.sendParticles("EXPLOSION_HUGE", arena.getPlayers(), entity.getLocation(), 5);
       for(Entity en : Utils.getNearbyEntities(entity.getLocation(), tier * 5)) {
-        if(en instanceof Creature) {
+        if(en instanceof Creature && !(en instanceof Villager) && !(en instanceof Wolf) && !(en instanceof IronGolem)) {
           ((Creature) en).damage(10000.0, entity);
         }
       }

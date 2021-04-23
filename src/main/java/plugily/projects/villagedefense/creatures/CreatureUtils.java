@@ -25,7 +25,7 @@ import net.minecraft.server.v1_8_R3.GenericAttributes;
 import org.bukkit.ChatColor;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftLivingEntity;
-import org.bukkit.entity.Zombie;
+import org.bukkit.entity.Creature;
 import pl.plajerlair.commonsbox.minecraft.compat.ServerVersion;
 import pl.plajerlair.commonsbox.minecraft.compat.VersionUtils;
 import pl.plajerlair.commonsbox.minecraft.misc.MiscUtils;
@@ -100,7 +100,7 @@ public class CreatureUtils {
    * @param zombie zombie to apply attributes for
    * @param arena  arena to get health multiplier from
    */
-  public static void applyAttributes(Zombie zombie, Arena arena) {
+  public static void applyAttributes(Creature zombie, Arena arena) {
     if(ServerVersion.Version.isCurrentEqualOrHigher(ServerVersion.Version.v1_9_R1)) {
       MiscUtils.getEntityAttribute(zombie, Attribute.GENERIC_FOLLOW_RANGE).ifPresent(ai -> ai.setBaseValue(200.0D));
     } else {
