@@ -18,6 +18,7 @@
 
 package plugily.projects.villagedefense.events;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -71,6 +72,7 @@ import pl.plajerlair.commonsbox.string.StringFormatUtils;
 import plugily.projects.villagedefense.ConfigPreferences;
 import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.api.StatsStorage;
+import plugily.projects.villagedefense.api.event.game.VillageGameSecretWellEvent;
 import plugily.projects.villagedefense.arena.Arena;
 import plugily.projects.villagedefense.arena.ArenaManager;
 import plugily.projects.villagedefense.arena.ArenaRegistry;
@@ -433,39 +435,48 @@ public class Events implements Listener {
   }
 
   @EventHandler
-  public void onRottenFleshDrop(InventoryPickupItemEvent e) {
+  public void onSecretWellDrop(InventoryPickupItemEvent e) {
     if(e.getInventory().getType() != InventoryType.HOPPER) {
       return;
     }
-    if(e.getItem().getItemStack().getType() != Material.ROTTEN_FLESH) {
-      for(Arena arena : ArenaRegistry.getArenas()) {
-        if(e.getItem().getWorld().equals(arena.getStartLocation().getWorld())) {
-          e.getItem().remove();
-          e.getInventory().clear();
-          return;
-        }
+    Arena currentArena = null;
+    for(Arena arena : ArenaRegistry.getArenas()) {
+      if(e.getItem().getWorld().equals(arena.getStartLocation().getWorld())) {
+        currentArena = arena;
+        e.getItem().remove();
+        e.setCancelled(true);
+        e.getInventory().clear();
+        break;
       }
+    }
+    if (currentArena == null) {
       return;
     }
-    for(Entity entity : Utils.getNearbyEntities(e.getItem().getLocation(), 20)) {
-      if(!(entity instanceof Player)) {
-        continue;
-      }
-      Arena arena = ArenaRegistry.getArena((Player) entity);
-      if(arena == null) {
-        continue;
-      }
-      arena.addOptionValue(ArenaOption.ROTTEN_FLESH_AMOUNT, e.getItem().getItemStack().getAmount());
-      e.getItem().remove();
-      e.setCancelled(true);
-      e.getInventory().clear();
-      VersionUtils.sendParticles("CLOUD", arena.getPlayers(), e.getItem().getLocation(), 50, 2, 2, 2);
-      if(!arena.checkLevelUpRottenFlesh() || arena.getOption(ArenaOption.ROTTEN_FLESH_LEVEL) >= 30) {
-        return;
-      }
-      for(Player p : arena.getPlayers()) {
-        VersionUtils.setMaxHealth(p, VersionUtils.getMaxHealth(p) + 2.0);
-        p.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage(Messages.ROTTEN_FLESH_LEVEL_UP));
+
+    VillageGameSecretWellEvent villageGameSecretWellEvent = new VillageGameSecretWellEvent(currentArena, e.getItem());
+    Bukkit.getPluginManager().callEvent(villageGameSecretWellEvent);
+    if (villageGameSecretWellEvent.isCancelled()) {
+      return;
+    }
+
+    if(e.getItem().getItemStack().getType() == Material.ROTTEN_FLESH) {
+      for(Entity entity : Utils.getNearbyEntities(e.getItem().getLocation(), 20)) {
+        if(!(entity instanceof Player)) {
+          continue;
+        }
+        Arena arena = ArenaRegistry.getArena((Player) entity);
+        if(arena == null) {
+          continue;
+        }
+        arena.addOptionValue(ArenaOption.ROTTEN_FLESH_AMOUNT, e.getItem().getItemStack().getAmount());
+        VersionUtils.sendParticles("CLOUD", arena.getPlayers(), e.getItem().getLocation(), 50, 2, 2, 2);
+        if(!arena.checkLevelUpRottenFlesh() || arena.getOption(ArenaOption.ROTTEN_FLESH_LEVEL) >= 30) {
+          return;
+        }
+        for(Player p : arena.getPlayers()) {
+          VersionUtils.setMaxHealth(p, VersionUtils.getMaxHealth(p) + 2.0);
+          p.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage(Messages.ROTTEN_FLESH_LEVEL_UP));
+        }
       }
     }
   }
