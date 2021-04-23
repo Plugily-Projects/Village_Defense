@@ -22,6 +22,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.entity.Creature;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.IronGolem;
@@ -32,7 +33,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.entity.Villager;
 import org.bukkit.entity.Wolf;
-import org.bukkit.entity.Zombie;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -358,14 +358,14 @@ public class Events implements Listener {
 
   @EventHandler(priority = EventPriority.HIGH)
   public void onZombieHurt(EntityDamageEvent e) {
-    if(!(e.getEntity() instanceof Zombie) || !plugin.getConfig().getBoolean("Simple-Zombie-Health-Bar-Enabled", true)) {
+    if(!(e.getEntity() instanceof Creature) || !plugin.getConfig().getBoolean("Simple-Zombie-Health-Bar-Enabled", true)) {
       return;
     }
     for(Arena arena : ArenaRegistry.getArenas()) {
       if(!arena.getZombies().contains(e.getEntity())) {
         continue;
       }
-      Zombie zombie = (Zombie) e.getEntity();
+      Creature zombie = (Creature) e.getEntity();
       zombie.setCustomName(StringFormatUtils.getProgressBar((int) zombie.getHealth(), (int) VersionUtils.getMaxHealth(zombie),
           50, "|", ChatColor.YELLOW + "", ChatColor.GRAY + ""));
     }
@@ -478,7 +478,7 @@ public class Events implements Listener {
   public void onCombust(EntityCombustEvent e) {
     // Ignore if this is caused by an event lower down the chain.
     if(e instanceof EntityCombustByEntityEvent || e instanceof EntityCombustByBlockEvent
-        || !(e.getEntity() instanceof Zombie)
+        || !(e.getEntity() instanceof Creature)
         || e.getEntity().getWorld().getEnvironment() != World.Environment.NORMAL) {
       return;
     }

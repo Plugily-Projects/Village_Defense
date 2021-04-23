@@ -20,9 +20,9 @@ package plugily.projects.villagedefense.kits.premium;
 
 import org.bukkit.Color;
 import org.bukkit.Material;
+import org.bukkit.entity.Creature;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-import org.bukkit.entity.Zombie;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -79,7 +79,7 @@ public class MedicKit extends PremiumKit implements Listener {
 
   @EventHandler
   public void onZombieHit(EntityDamageByEntityEvent e) {
-    if(!(e.getEntity() instanceof Zombie) || !(e.getDamager() instanceof Player)) {
+    if(!(e.getEntity() instanceof Creature) || !(e.getDamager() instanceof Player)) {
       return;
     }
     User user = getPlugin().getUserManager().getUser((Player) e.getDamager());

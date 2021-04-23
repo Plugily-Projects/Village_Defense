@@ -20,11 +20,11 @@ package plugily.projects.villagedefense.events.spectator;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.entity.Creature;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.ExperienceOrb;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Wolf;
-import org.bukkit.entity.Zombie;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -197,7 +197,7 @@ public class SpectatorEvents implements Listener {
   @EventHandler(priority = EventPriority.HIGHEST)
   public void onTarget(EntityTargetEvent e) {
     if(e.getTarget() instanceof Player && plugin.getUserManager().getUser((Player) e.getTarget()).isSpectator()
-        && (e.getEntity() instanceof ExperienceOrb || e.getEntity() instanceof Zombie || e.getEntity() instanceof Wolf)) {
+        && (e.getEntity() instanceof ExperienceOrb || e.getEntity() instanceof Creature || e.getEntity() instanceof Wolf)) {
       e.setCancelled(true);
       e.setTarget(null);
     }
