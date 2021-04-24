@@ -359,6 +359,9 @@ public class ArenaEvents implements Listener {
     if(arena == null) {
       return;
     }
+    if (plugin.getUserManager().getUser(victim).isSpectator()) {
+      return;
+    }
     if(e.getCause() == EntityDamageEvent.DamageCause.DROWNING && plugin.getConfigPreferences().getOption(ConfigPreferences.Option.DISABLE_DROWNING_DAMAGE)) {
       e.setCancelled(true);
     }
