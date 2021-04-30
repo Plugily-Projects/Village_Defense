@@ -50,9 +50,9 @@ public class HologramsRegistry {
 
     for(String key : config.getConfigurationSection("holograms").getKeys(false)) {
       String accessor = "holograms." + key + ".";
-      LeaderboardHologram hologram = new LeaderboardHologram(Integer.parseInt(key), StatsStorage.StatisticType.valueOf(config.getString(accessor + "statistics")),
+      LeaderboardHologram hologram = new LeaderboardHologram(plugin, Integer.parseInt(key), StatsStorage.StatisticType.valueOf(config.getString(accessor + "statistics")),
           config.getInt(accessor + "top-amount"), LocationSerializer.getLocation(config.getString(accessor + "location", "")));
-      hologram.initHologram(plugin);
+      hologram.initUpdateTask();
       registerHologram(hologram);
     }
   }
@@ -64,14 +64,14 @@ public class HologramsRegistry {
   public void disableHologram(int id) {
     for(LeaderboardHologram hologram : leaderboardHolograms) {
       if(hologram.getId() == id) {
-        hologram.stopLeaderboardUpdateTask();
+        hologram.cancel();
         return;
       }
     }
   }
 
   public void disableHolograms() {
-    leaderboardHolograms.forEach(LeaderboardHologram::stopLeaderboardUpdateTask);
+    leaderboardHolograms.forEach(LeaderboardHologram::cancel);
   }
 
 }

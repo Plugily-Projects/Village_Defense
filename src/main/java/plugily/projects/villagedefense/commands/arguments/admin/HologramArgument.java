@@ -99,8 +99,8 @@ public class HologramArgument {
     config.set("holograms." + nextValue + ".location", LocationSerializer.locationToString(player.getLocation()));
     ConfigUtils.saveConfig(registry.getPlugin(), config, "internal/holograms_data");
 
-    LeaderboardHologram leaderboard = new LeaderboardHologram(nextValue, statistic, amount, player.getLocation());
-    leaderboard.initHologram(registry.getPlugin());
+    LeaderboardHologram leaderboard = new LeaderboardHologram(registry.getPlugin(), nextValue, statistic, amount, player.getLocation());
+    leaderboard.initUpdateTask();
     registry.getPlugin().getHologramsRegistry().registerHologram(leaderboard);
 
     player.sendMessage(registry.getPlugin().getChatManager().colorRawMessage("&aHologram with ID " + nextValue + " with statistic " + statistic.name() + " added!"));
