@@ -54,10 +54,10 @@ public class LeaderboardHologram extends BukkitRunnable {
   public LeaderboardHologram(Main plugin, int id, StatsStorage.StatisticType statistic, int amount, Location location) {
     this.plugin = plugin;
     this.id = id;
-    this.hologram = HologramsAPI.createHologram(plugin, location);
     this.statistic = statistic;
     this.topAmount = amount;
     this.location = location;
+    this.hologram = HologramsAPI.createHologram(plugin, location);
   }
 
   public void initUpdateTask() {
