@@ -26,6 +26,7 @@ import org.bukkit.World;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.IronGolem;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.ItemFrame;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Painting;
@@ -439,11 +440,16 @@ public class Events implements Listener {
     if(e.getInventory().getType() != InventoryType.HOPPER) {
       return;
     }
+
+    Item item = e.getItem();
+    ItemStack itemStack = item.getItemStack();
+    Location location = item.getLocation();
+
     Arena currentArena = null;
     for(Arena arena : ArenaRegistry.getArenas()) {
-      if(e.getItem().getWorld().equals(arena.getStartLocation().getWorld())) {
+      if(item.getWorld().equals(arena.getStartLocation().getWorld())) {
         currentArena = arena;
-        e.getItem().remove();
+        item.remove();
         e.setCancelled(true);
         e.getInventory().clear();
         break;
@@ -453,30 +459,21 @@ public class Events implements Listener {
       return;
     }
 
-    VillageGameSecretWellEvent villageGameSecretWellEvent = new VillageGameSecretWellEvent(currentArena, e.getItem());
+    VillageGameSecretWellEvent villageGameSecretWellEvent = new VillageGameSecretWellEvent(currentArena, itemStack, location);
     Bukkit.getPluginManager().callEvent(villageGameSecretWellEvent);
     if (villageGameSecretWellEvent.isCancelled()) {
       return;
     }
 
-    if(e.getItem().getItemStack().getType() == Material.ROTTEN_FLESH) {
-      for(Entity entity : Utils.getNearbyEntities(e.getItem().getLocation(), 20)) {
-        if(!(entity instanceof Player)) {
-          continue;
-        }
-        Arena arena = ArenaRegistry.getArena((Player) entity);
-        if(arena == null) {
-          continue;
-        }
-        arena.addOptionValue(ArenaOption.ROTTEN_FLESH_AMOUNT, e.getItem().getItemStack().getAmount());
-        VersionUtils.sendParticles("CLOUD", arena.getPlayers(), e.getItem().getLocation(), 50, 2, 2, 2);
-        if(!arena.checkLevelUpRottenFlesh() || arena.getOption(ArenaOption.ROTTEN_FLESH_LEVEL) >= 30) {
-          return;
-        }
-        for(Player p : arena.getPlayers()) {
-          VersionUtils.setMaxHealth(p, VersionUtils.getMaxHealth(p) + 2.0);
-          p.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage(Messages.ROTTEN_FLESH_LEVEL_UP));
-        }
+    if(itemStack.getType() == Material.ROTTEN_FLESH) {
+      currentArena.addOptionValue(ArenaOption.ROTTEN_FLESH_AMOUNT, itemStack.getAmount());
+      VersionUtils.sendParticles("CLOUD", currentArena.getPlayers(), location, 50, 2, 2, 2);
+      if(!currentArena.checkLevelUpRottenFlesh() || currentArena.getOption(ArenaOption.ROTTEN_FLESH_LEVEL) >= 30) {
+        return;
+      }
+      for(Player p : currentArena.getPlayers()) {
+        VersionUtils.setMaxHealth(p, VersionUtils.getMaxHealth(p) + 2.0);
+        p.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage(Messages.ROTTEN_FLESH_LEVEL_UP));
       }
     }
   }

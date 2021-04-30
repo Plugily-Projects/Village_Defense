@@ -1,8 +1,9 @@
 package plugily.projects.villagedefense.api.event.game;
 
-import org.bukkit.entity.Item;
+import org.bukkit.Location;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.HandlerList;
+import org.bukkit.inventory.ItemStack;
 import plugily.projects.villagedefense.api.event.VillageEvent;
 import plugily.projects.villagedefense.arena.Arena;
 
@@ -12,11 +13,13 @@ import plugily.projects.villagedefense.arena.Arena;
 public class VillageGameSecretWellEvent extends VillageEvent implements Cancellable {
     private static final HandlerList HANDLERS = new HandlerList();
     private boolean isCancelled = false;
-    private final Item item;
+    private final ItemStack item;
+    private final Location location;
 
-    public VillageGameSecretWellEvent(Arena arena, Item item) {
+    public VillageGameSecretWellEvent(Arena arena, ItemStack item, Location location) {
         super(arena);
         this.item = item;
+        this.location = location;
     }
 
     public static HandlerList getHandlerList() {
@@ -38,7 +41,11 @@ public class VillageGameSecretWellEvent extends VillageEvent implements Cancella
         isCancelled = cancelled;
     }
 
-    public Item getItem() {
+    public ItemStack getItem() {
         return item;
+    }
+
+    public Location getLocation() {
+        return location;
     }
 }
