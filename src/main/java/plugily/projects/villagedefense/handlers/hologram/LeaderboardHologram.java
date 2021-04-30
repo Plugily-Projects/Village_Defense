@@ -35,7 +35,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.UUID;
 
@@ -75,7 +74,7 @@ public class LeaderboardHologram {
         header = StringUtils.replace(header, "%statistic%", statisticToMessage() != null ? color(plugin, plugin.getLanguageConfig().getString(statisticToMessage().getAccessor())) : "null");
         appendHoloText(plugin, header);
         int limit = topAmount;
-        java.util.Map<UUID, Integer> values = (LinkedHashMap<UUID, Integer>) StatsStorage.getStats(statistic);
+        java.util.Map<UUID, Integer> values = StatsStorage.getStats(statistic);
         List<UUID> reverseKeys = new ArrayList<>(values.keySet());
         Collections.reverse(reverseKeys);
         for(UUID key : reverseKeys) {
@@ -104,7 +103,9 @@ public class LeaderboardHologram {
   // See this method:
   // github.com/filoghost/HolographicDisplays/blob/af038ac93f7a0d5c1d5a7abfa4a08176b9765d16/Plugin/src/main/java/com/gmail/filoghost/holographicdisplays/object/CraftHologram.java#L179
   private void appendHoloText(final Main plugin, final String text) {
-    Bukkit.getScheduler().runTaskLater(plugin, () -> hologram.appendTextLine(text), 0L);
+    if (plugin.isEnabled()) {
+      Bukkit.getScheduler().runTaskLater(plugin, () -> hologram.appendTextLine(text), 0L);
+    }
   }
 
   private String getPlayerNameSafely(UUID uuid, Main plugin) {
