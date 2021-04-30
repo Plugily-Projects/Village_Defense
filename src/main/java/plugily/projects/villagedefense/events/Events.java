@@ -466,14 +466,23 @@ public class Events implements Listener {
     }
 
     if(itemStack.getType() == Material.ROTTEN_FLESH) {
-      currentArena.addOptionValue(ArenaOption.ROTTEN_FLESH_AMOUNT, itemStack.getAmount());
-      VersionUtils.sendParticles("CLOUD", currentArena.getPlayers(), location, 50, 2, 2, 2);
-      if(!currentArena.checkLevelUpRottenFlesh() || currentArena.getOption(ArenaOption.ROTTEN_FLESH_LEVEL) >= 30) {
-        return;
-      }
-      for(Player p : currentArena.getPlayers()) {
-        VersionUtils.setMaxHealth(p, VersionUtils.getMaxHealth(p) + 2.0);
-        p.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage(Messages.ROTTEN_FLESH_LEVEL_UP));
+      for(Entity entity : Utils.getNearbyEntities(location, 20)) {
+        if(!(entity instanceof Player)) {
+          continue;
+        }
+        Arena arena = ArenaRegistry.getArena((Player) entity);
+        if(arena == null) {
+          continue;
+        }
+        arena.addOptionValue(ArenaOption.ROTTEN_FLESH_AMOUNT, itemStack.getAmount());
+        VersionUtils.sendParticles("CLOUD", arena.getPlayers(), location, 50, 2, 2, 2);
+        if(!arena.checkLevelUpRottenFlesh() || arena.getOption(ArenaOption.ROTTEN_FLESH_LEVEL) >= 30) {
+          return;
+        }
+        for(Player p : arena.getPlayers()) {
+          VersionUtils.setMaxHealth(p, VersionUtils.getMaxHealth(p) + 2.0);
+          p.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage(Messages.ROTTEN_FLESH_LEVEL_UP));
+        }
       }
     }
   }
