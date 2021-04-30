@@ -96,7 +96,7 @@ public class LeaderboardHologram extends BukkitRunnable {
   }
 
   @Override
-  public synchronized void cancel() {
+  public void cancel() {
     super.cancel();
     hologram.delete();
   }
