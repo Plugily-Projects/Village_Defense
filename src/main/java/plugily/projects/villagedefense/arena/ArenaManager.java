@@ -95,7 +95,7 @@ public class ArenaManager {
     //check if player is in party and send party members to the game
     if(plugin.getPartyHandler().isPlayerInParty(player)) {
       GameParty party = plugin.getPartyHandler().getParty(player);
-      if(party.getLeader() != null && player.getUniqueId().equals(party.getLeader().getUniqueId())) {
+      if(player.getUniqueId().equals(party.getLeader().getUniqueId())) {
         if(arena.getMaximumPlayers() - arena.getPlayers().size() >= party.getPlayers().size()) {
           for(Player partyPlayer : party.getPlayers()) {
             if(player.getUniqueId().equals(partyPlayer.getUniqueId())) {
@@ -373,7 +373,7 @@ public class ArenaManager {
     }
 
     String titleTimes = plugin.getConfig().getString("Wave-Title-Messages.EndWave.Times", "20, 30, 20");
-    String[] split = titleTimes.split(", ");
+    String[] split = titleTimes.split(", ", 3);
 
     int fadeIn = split.length > 1 ? Integer.parseInt(split[0]) : 20,
         stay = split.length > 2 ? Integer.parseInt(split[1]) : 30,

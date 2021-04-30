@@ -43,14 +43,16 @@ public class LeaveArgument {
     registry.mapArgument("villagedefense", new CommandArgument("leave", "", CommandArgument.ExecutorType.PLAYER) {
       @Override
       public void execute(CommandSender sender, String[] args) {
-        if(!registry.getPlugin().getConfig().getBoolean("Disable-Leave-Command", false)) {
+        if(!registry.getPlugin().getConfig().getBoolean("Disable-Leave-Command")) {
           Player player = (Player) sender;
-          if(!Utils.checkIsInGameInstance((Player) sender)) {
+          if(!Utils.checkIsInGameInstance(player)) {
             return;
           }
           player.sendMessage(registry.getPlugin().getChatManager().getPrefix() + registry.getPlugin().getChatManager().colorMessage(Messages.COMMANDS_TELEPORTED_TO_THE_LOBBY));
           Arena arena = ArenaRegistry.getArena(player);
-          assert arena != null;
+          if (arena == null)
+            return;
+
           if(registry.getPlugin().getConfigPreferences().getOption(ConfigPreferences.Option.BUNGEE_ENABLED)) {
             registry.getPlugin().getBungeeManager().connectToHub(player);
             Debugger.debug(Level.INFO, "{0} has left the arena {1}! Teleported to the Hub server.", player.getName(), arena.getId());

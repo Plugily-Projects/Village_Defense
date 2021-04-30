@@ -95,9 +95,11 @@ public class ZombieSpawnManager {
           zombieCheckerLocations.remove(zombie);
           zombie.remove();
         }
-        if(zombieCheckerLocations.get(zombie) == null) {
+
+        Location checkerLoc = zombieCheckerLocations.get(zombie);
+        if(checkerLoc == null) {
           zombieCheckerLocations.put(zombie, zombie.getLocation());
-        } else if(zombie.getLocation().distance(zombieCheckerLocations.get(zombie)) <= 1) {
+        } else if(zombie.getLocation().distance(checkerLoc) <= 1) {
           List<Location> spawns = arena.getZombieSpawns();
           zombie.teleport(spawns.get(random.nextInt(spawns.size() - 1)));
           zombieCheckerLocations.put(zombie, zombie.getLocation());
@@ -121,10 +123,12 @@ public class ZombieSpawnManager {
     if(!checkForIdle()) {
       return;
     }
+
     int wave = arena.getOption(ArenaOption.WAVE);
     int spawn = arena.getOption(ArenaOption.WAVE);
-    if(plugin.getConfig().getInt("Zombies-Limit", 75) < wave) {
-      spawn = (int) Math.ceil(plugin.getConfig().getInt("Zombies-Limit", 75) / 2.0);
+    int zombiesLimit = plugin.getConfig().getInt("Zombies-Limit", 75);
+    if(zombiesLimit < wave) {
+      spawn = (int) Math.ceil(zombiesLimit / 2.0);
     }
 
     if(arena.getZombies().isEmpty()) {
