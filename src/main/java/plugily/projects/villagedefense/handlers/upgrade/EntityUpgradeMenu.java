@@ -243,6 +243,7 @@ public class EntityUpgradeMenu {
         break;
       case "Health":
         VersionUtils.setMaxHealth((LivingEntity) en, 100.0 + (100.0 * ((double) tier / 2.0)));
+        ((LivingEntity) en).setHealth(VersionUtils.getMaxHealth((LivingEntity) en));
         break;
       case "Speed":
         if(ServerVersion.Version.isCurrentEqualOrHigher(ServerVersion.Version.v1_9_R1)) {
