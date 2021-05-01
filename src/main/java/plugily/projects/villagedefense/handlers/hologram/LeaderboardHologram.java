@@ -24,7 +24,6 @@ import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.scheduler.BukkitTask;
 import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.api.StatsStorage;
 import plugily.projects.villagedefense.handlers.hologram.messages.LanguageMessage;
@@ -35,7 +34,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.UUID;
 
@@ -44,77 +42,82 @@ import java.util.UUID;
  * <p>
  * Created at 17.06.2019
  */
-public class LeaderboardHologram {
+public class LeaderboardHologram extends BukkitRunnable {
 
+  private final Main plugin;
   private final int id;
   private final StatsStorage.StatisticType statistic;
   private final int topAmount;
-  private Hologram hologram;
+  private final Hologram hologram;
   private final Location location;
-  private BukkitTask task;
 
-  public LeaderboardHologram(int id, StatsStorage.StatisticType statistic, int amount, Location location) {
+  public LeaderboardHologram(Main plugin, int id, StatsStorage.StatisticType statistic, int amount, Location location) {
+    this.plugin = plugin;
     this.id = id;
     this.statistic = statistic;
     this.topAmount = amount;
     this.location = location;
+    this.hologram = HologramsAPI.createHologram(plugin, location);
   }
 
-  public void initHologram(Main plugin) {
-    hologram = HologramsAPI.createHologram(plugin, location);
-    hologramUpdateTask(plugin);
+  public void initUpdateTask() {
+    runTaskTimerAsynchronously(plugin, 0, 100);
   }
 
-  private void hologramUpdateTask(Main plugin) {
-    task = new BukkitRunnable() {
-      @Override
-      public void run() {
-        hologram.clearLines();
-        String header = color(plugin, plugin.getLanguageConfig().getString(LanguageMessage.HOLOGRAMS_HEADER.getAccessor()));
-        header = StringUtils.replace(header, "%amount%", Integer.toString(topAmount));
-        header = StringUtils.replace(header, "%statistic%", statisticToMessage() != null ? color(plugin, plugin.getLanguageConfig().getString(statisticToMessage().getAccessor())) : "null");
-        appendHoloText(plugin, header);
-        int limit = topAmount;
-        java.util.Map<UUID, Integer> values = (LinkedHashMap<UUID, Integer>) StatsStorage.getStats(statistic);
-        List<UUID> reverseKeys = new ArrayList<>(values.keySet());
-        Collections.reverse(reverseKeys);
-        for(UUID key : reverseKeys) {
-          if(limit == 0) {
-            break;
-          }
-          String format = color(plugin, plugin.getLanguageConfig().getString(LanguageMessage.HOLOGRAMS_FORMAT.getAccessor()));
-          format = StringUtils.replace(format, "%place%", Integer.toString((topAmount - limit) + 1));
-          format = StringUtils.replace(format, "%nickname%", getPlayerNameSafely(key, plugin));
-          format = StringUtils.replace(format, "%value%", String.valueOf(values.get(key)));
-          appendHoloText(plugin, format);
-          limit--;
-        }
-        if(limit > 0) {
-          for(int i = 0; i < limit; limit--) {
-            String format = color(plugin, plugin.getLanguageConfig().getString(LanguageMessage.HOLOGRAMS_FORMAT_EMPTY.getAccessor()));
-            format = StringUtils.replace(format, "%place%", Integer.toString((topAmount - limit) + 1));
-            appendHoloText(plugin, format);
-          }
-        }
+  @Override
+  public void run() {
+    hologram.clearLines();
+    String header = color(plugin.getLanguageConfig().getString(LanguageMessage.HOLOGRAMS_HEADER.getAccessor()));
+    header = StringUtils.replace(header, "%amount%", Integer.toString(topAmount));
+    header = StringUtils.replace(header, "%statistic%", statisticToMessage() != null ? color(plugin.getLanguageConfig().getString(statisticToMessage().getAccessor())) : "null");
+    appendHoloText(header);
+    int limit = topAmount;
+    java.util.Map<UUID, Integer> values = StatsStorage.getStats(statistic);
+    List<UUID> reverseKeys = new ArrayList<>(values.keySet());
+    Collections.reverse(reverseKeys);
+    for(UUID key : reverseKeys) {
+      if(limit == 0) {
+        break;
       }
-    }.runTaskTimerAsynchronously(plugin, 0, 100);
+      String format = color(plugin.getLanguageConfig().getString(LanguageMessage.HOLOGRAMS_FORMAT.getAccessor()));
+      format = StringUtils.replace(format, "%place%", Integer.toString((topAmount - limit) + 1));
+      format = StringUtils.replace(format, "%nickname%", getPlayerNameSafely(key));
+      format = StringUtils.replace(format, "%value%", String.valueOf(values.get(key)));
+      appendHoloText(format);
+      limit--;
+    }
+    if(limit > 0) {
+      for(int i = 0; i < limit; limit--) {
+        String format = color(plugin.getLanguageConfig().getString(LanguageMessage.HOLOGRAMS_FORMAT_EMPTY.getAccessor()));
+        format = StringUtils.replace(format, "%place%", Integer.toString((topAmount - limit) + 1));
+        appendHoloText(format);
+      }
+    }
+  }
+
+  @Override
+  public void cancel() {
+    super.cancel();
+    hologram.delete();
   }
 
   // We should perform hologram api in synchronous thread to do not cause "async catchop" problems
   // See this method:
   // github.com/filoghost/HolographicDisplays/blob/af038ac93f7a0d5c1d5a7abfa4a08176b9765d16/Plugin/src/main/java/com/gmail/filoghost/holographicdisplays/object/CraftHologram.java#L179
-  private void appendHoloText(final Main plugin, final String text) {
-    Bukkit.getScheduler().runTaskLater(plugin, () -> hologram.appendTextLine(text), 0L);
+  private void appendHoloText(final String text) {
+    if (plugin.isEnabled()) {
+      Bukkit.getScheduler().runTask(plugin, () -> hologram.appendTextLine(text));
+    }
   }
 
-  private String getPlayerNameSafely(UUID uuid, Main plugin) {
+  private String getPlayerNameSafely(UUID uuid) {
     if(plugin.getUserManager().getDatabase() instanceof MysqlManager) {
       try(Connection connection = plugin.getMysqlDatabase().getConnection()) {
         Statement statement = connection.createStatement();
         return statement.executeQuery("Select `name` FROM " + ((MysqlManager) plugin.getUserManager().getDatabase()).getTableName()
             + " WHERE UUID='" + uuid.toString() + "'").toString();
       } catch(SQLException | NullPointerException e) {
-        return color(plugin, plugin.getLanguageConfig().getString(LanguageMessage.HOLOGRAMS_UNKNOWN_PLAYER.getAccessor()));
+        return color(plugin.getLanguageConfig().getString(LanguageMessage.HOLOGRAMS_UNKNOWN_PLAYER.getAccessor()));
       }
     }
     return Bukkit.getOfflinePlayer(uuid).getName();
@@ -160,15 +163,7 @@ public class LeaderboardHologram {
     return location;
   }
 
-  public void stopLeaderboardUpdateTask() {
-    hologram.delete();
-    if(task != null && !task.isCancelled()) {
-      task.cancel();
-    }
-  }
-
-  private String color(Main plugin, String message) {
+  private String color(String message) {
     return plugin.getChatManager().colorRawMessage(message);
   }
-
 }

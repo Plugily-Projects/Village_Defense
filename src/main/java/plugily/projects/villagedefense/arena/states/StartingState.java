@@ -47,13 +47,14 @@ public class StartingState implements ArenaStateHandler {
 
   @Override
   public void handleCall(Arena arena) {
+    double startWaiting = plugin.getConfig().getDouble("Starting-Waiting-Time", 60);
     boolean bossBarEnabled = ServerVersion.Version.isCurrentEqualOrHigher(ServerVersion.Version.v1_9_R1) && plugin.getConfigPreferences().getOption(ConfigPreferences.Option.BOSSBAR_ENABLED);
     if(bossBarEnabled) {
       arena.getGameBar().setTitle(plugin.getChatManager().colorMessage(Messages.BOSSBAR_STARTING_IN).replace("%time%", Integer.toString(arena.getTimer())));
-      arena.getGameBar().setProgress(arena.getTimer() / plugin.getConfig().getDouble("Starting-Waiting-Time", 60));
+      arena.getGameBar().setProgress(arena.getTimer() / startWaiting);
     }
     for(Player player : arena.getPlayers()) {
-      player.setExp((float) (arena.getTimer() / plugin.getConfig().getDouble("Starting-Waiting-Time", 60)));
+      player.setExp((float) (arena.getTimer() / startWaiting));
       player.setLevel(arena.getTimer());
     }
     if(arena.getPlayers().size() < arena.getMinimumPlayers() && !arena.isForceStart()) {

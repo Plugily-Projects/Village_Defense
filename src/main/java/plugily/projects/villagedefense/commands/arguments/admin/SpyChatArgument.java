@@ -45,9 +45,7 @@ public class SpyChatArgument {
       @Override
       public void execute(CommandSender sender, String[] args) {
         Player player = (Player) sender;
-        if(isSpyChatEnabled(player)) {
-          disableSpyChat(player);
-        } else {
+        if(!disableSpyChat(player)) {
           spyChatters.add(player);
         }
         sender.sendMessage(registry.getPlugin().getChatManager().getPrefix() +
@@ -61,8 +59,7 @@ public class SpyChatArgument {
     return spyChatters.contains(player);
   }
 
-  public void disableSpyChat(Player player) {
-    spyChatters.remove(player);
+  public boolean disableSpyChat(Player player) {
+    return spyChatters.remove(player);
   }
-
 }

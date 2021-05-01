@@ -50,8 +50,8 @@ public class ListArenasArgument {
 
         for(Arena arena : ArenaRegistry.getArenas()) {
           sender.sendMessage(registry.getPlugin().getChatManager().colorMessage(Messages.COMMANDS_ADMIN_LIST_FORMAT).replace("%arena%", arena.getId())
-              .replace("%status%", arena.getArenaState().getFormattedName()).replace("%players%", String.valueOf(arena.getPlayers().size()))
-              .replace("%maxplayers%", String.valueOf(arena.getMaximumPlayers())));
+              .replace("%status%", arena.getArenaState().getFormattedName()).replace("%players%", Integer.toString(arena.getPlayers().size()))
+              .replace("%maxplayers%", Integer.toString(arena.getMaximumPlayers())));
         }
       }
     });

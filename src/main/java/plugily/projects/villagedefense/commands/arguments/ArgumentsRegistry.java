@@ -99,7 +99,7 @@ public class ArgumentsRegistry implements CommandExecutor {
     //register Village Defense basic arguments
     new CreateArgument(this);
     new JoinArguments(this);
-    new ArenaSelectorArgument(this, plugin.getChatManager());
+    new ArenaSelectorArgument(this);
     new LeaderboardArgument(this);
     new LeaveArgument(this);
     new SelectKitArgument(this);

@@ -35,8 +35,9 @@ public class SelectKitArgument {
     registry.mapArgument("villagedefense", new CommandArgument("selectkit", "villagedefense.command.selectkit", CommandArgument.ExecutorType.PLAYER) {
       @Override
       public void execute(CommandSender sender, String[] args) {
-        if(Utils.checkIsInGameInstance((Player) sender)) {
-          registry.getPlugin().getKitMenuHandler().createMenu((Player) sender);
+        Player player = (Player) sender;
+        if(Utils.checkIsInGameInstance(player)) {
+          registry.getPlugin().getKitMenuHandler().createMenu(player);
         }
       }
     });

@@ -51,15 +51,16 @@ public class TeleportArgument {
           sender.sendMessage(registry.getPlugin().getChatManager().getPrefix() + ChatColor.RED + "Please type location type: END, START, LOBBY");
           return;
         }
+        LocationType type;
         try {
-          LocationType.valueOf(args[2].toUpperCase());
+          type = LocationType.valueOf(args[2].toUpperCase());
         } catch(IllegalArgumentException e) {
           sender.sendMessage(registry.getPlugin().getChatManager().getPrefix() + registry.getPlugin().getChatManager().colorMessage(Messages.COMMANDS_TELEPORT_LOCATION_INVALID));
           return;
         }
         for(Arena arena : ArenaRegistry.getArenas()) {
           if(arena.getId().equalsIgnoreCase(args[1])) {
-            teleport((Player) sender, arena, LocationType.valueOf(args[2].toUpperCase()));
+            teleport((Player) sender, arena, type);
             break;
           }
         }

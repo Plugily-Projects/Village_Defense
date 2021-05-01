@@ -278,10 +278,11 @@ public class ArenaEvents implements Listener {
           cancel();
           return;
         }
-        if(user.isSpectator()) {
-          VersionUtils.sendActionBar(user.getPlayer(), plugin.getChatManager().colorMessage(Messages.DIED_RESPAWN_IN_NEXT_WAVE));
-        } else {
+        Player player = user.getPlayer();
+        if (player == null || !user.isSpectator()) {
           cancel();
+        } else {
+          VersionUtils.sendActionBar(player, plugin.getChatManager().colorMessage(Messages.DIED_RESPAWN_IN_NEXT_WAVE));
         }
       }
     }.runTaskTimer(plugin, 30, 30);

@@ -149,8 +149,7 @@ public class TornadoKit extends PremiumKit implements Listener {
       times++;
       int lines = 3;
       for(int l = 0; l < lines; l++) {
-        double heightIncrease = 0.5;
-        for(double y = 0; y < maxHeight; y += heightIncrease) {
+        for(double y = 0; y < maxHeight; y += 0.5) {
           double radius = y * radiusIncrement,
               radians = Math.toRadians(360.0 / lines * l + y * 25 - angle),
               x = Math.cos(radians) * radius,
@@ -168,7 +167,13 @@ public class TornadoKit extends PremiumKit implements Listener {
       for(Entity entity : location.getWorld().getNearbyEntities(location, 2, 2, 2)) {
         if(entity.getType() == EntityType.ZOMBIE) {
           entities++;
-          entity.setVelocity(vector.multiply(2).setY(0).add(new Vector(0, 1, 0)));
+
+          Vector velocityVec = vector.multiply(2).setY(0).add(new Vector(0, 1, 0));
+          if (VersionUtils.isPaper() && (vector.getX() > 4.0 || vector.getZ() > 4.0)) {
+            velocityVec = vector.setX(2.0).setZ(1.0); // Paper's sh*t
+          }
+
+          entity.setVelocity(velocityVec);
         }
       }
     }

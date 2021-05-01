@@ -133,7 +133,7 @@ public class ScoreboardManager {
     formattedLine = StringUtils.replace(formattedLine, "%ORBS%", Integer.toString(user.getStat(StatsStorage.StatisticType.ORBS)));
     formattedLine = StringUtils.replace(formattedLine, "%WAVE%", Integer.toString(arena.getWave()));
     int zombiesLeft = arena.getZombiesLeft();
-    if(zombiesLeft > 0 && formattedLine.contains("%ZOMBIES%")) {
+    if(zombiesLeft >= 0) {
       formattedLine = StringUtils.replace(formattedLine, "%ZOMBIES%", Integer.toString(zombiesLeft));
     }
     formattedLine = StringUtils.replace(formattedLine, "%ROTTEN_FLESH%", Integer.toString(arena.getOption(ArenaOption.ROTTEN_FLESH_AMOUNT)));
