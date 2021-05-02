@@ -38,7 +38,7 @@ import java.util.List;
 public class LanguageMigrator {
 
   public static final int LANGUAGE_FILE_VERSION = 18;
-  public static final int CONFIG_FILE_VERSION = 17;
+  public static final int CONFIG_FILE_VERSION = 18;
   private final Main plugin;
   private final List<String> migratable = Arrays.asList(Constants.Files.CONFIG.getName(), Constants.Files.KITS.getName(),
       Constants.Files.KITS.getName(), Constants.Files.LANGUAGE.getName(), Constants.Files.SPECIAL_ITEMS.getName(), Constants.Files.MYSQL.getName());
