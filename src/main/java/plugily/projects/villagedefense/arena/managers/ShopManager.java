@@ -48,7 +48,6 @@ import plugily.projects.villagedefense.utils.Utils;
 import plugily.projects.villagedefense.utils.constants.Constants;
 
 import java.util.List;
-import java.util.Locale;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
 
