@@ -216,6 +216,9 @@ Disable-Fall-Damage: false
 # Should players get no drowning damage?
 Disable-Drowning-Damage: false
 
+# How many villagers will be spawned in a arena?
+Villager-Amount: 10
+
 Arena-Selector:
   # Change items of arena selector
   State-Item:
