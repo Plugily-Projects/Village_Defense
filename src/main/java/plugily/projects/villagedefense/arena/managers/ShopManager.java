@@ -48,6 +48,7 @@ import plugily.projects.villagedefense.utils.Utils;
 import plugily.projects.villagedefense.utils.constants.Constants;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
 
@@ -136,7 +137,7 @@ public class ShopManager {
       if(itemStack.hasItemMeta() && itemStack.getItemMeta().hasLore()) {
         for(String s : ComplementAccessor.getComplement().getLore(itemStack.getItemMeta())) {
           if(s.contains(plugin.getChatManager().colorMessage(Messages.SHOP_MESSAGES_CURRENCY_IN_SHOP)) || s.contains("orbs")) {
-            costString = ChatColor.stripColor(s).replaceAll("[^0-9]", "");
+            costString = ChatColor.stripColor(s).replaceAll("&[0-9a-zA-Z]", "").replaceAll("[^0-9]", "");
             break;
           }
         }
