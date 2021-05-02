@@ -33,7 +33,6 @@ import org.bukkit.entity.Zombie;
 import org.bukkit.permissions.PermissionAttachmentInfo;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.TestOnly;
 import pl.plajerlair.commonsbox.minecraft.compat.ServerVersion;
 import pl.plajerlair.commonsbox.minecraft.configuration.ConfigUtils;
@@ -621,9 +620,9 @@ public abstract class Arena extends BukkitRunnable {
     zombieSpawnManager.applyIdle(0);
   }
 
-  @Nullable
+  @NotNull
   public int getOption(ArenaOption option) {
-    return arenaOptions.get(option);
+    return arenaOptions.getOrDefault(option, 0);
   }
 
   public void setOptionValue(ArenaOption option, int value) {
@@ -631,7 +630,7 @@ public abstract class Arena extends BukkitRunnable {
   }
 
   public void addOptionValue(ArenaOption option, int value) {
-    arenaOptions.put(option, arenaOptions.get(option) + value);
+    arenaOptions.put(option, getOption(option) + value);
   }
 
   public enum BarAction {

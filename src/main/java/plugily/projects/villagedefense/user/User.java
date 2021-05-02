@@ -102,12 +102,13 @@ public class User {
   }
 
   public int getStat(StatsStorage.StatisticType s) {
-    if(!stats.containsKey(s)) {
+    Integer stat = stats.get(s);
+    if(stat == null) {
       stats.put(s, 0);
       return 0;
     }
 
-    return stats.getOrDefault(s, 0);
+    return stat.intValue();
   }
 
   public void setStat(StatsStorage.StatisticType s, int i) {
@@ -139,7 +140,8 @@ public class User {
   }
 
   public long getCooldown(String s) {
-    return (!cooldowns.containsKey(s) || cooldowns.get(s) <= cooldownCounter) ? 0 : cooldowns.get(s) - cooldownCounter;
+    Long coold = cooldowns.get(s);
+    return (coold == null || coold.longValue() <= cooldownCounter) ? 0 : coold.longValue() - cooldownCounter;
   }
 
 }

@@ -230,7 +230,7 @@ public class LanguageMigrator {
 
   private void languageFileUpdate() {
     FileConfiguration config = ConfigUtils.getConfig(plugin, Constants.Files.LANGUAGE.getName());
-    if(config.getString("File-Version-Do-Not-Edit", "").equals(String.valueOf(LANGUAGE_FILE_VERSION))) {
+    if(config.getString("File-Version-Do-Not-Edit", "").equals(Integer.toString(LANGUAGE_FILE_VERSION))) {
       return;
     }
     Debugger.sendConsoleMsg("&e[Village Defense] [System notify] Your language file is outdated! Updating...");
