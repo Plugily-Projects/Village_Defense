@@ -207,14 +207,13 @@ public abstract class Arena extends BukkitRunnable {
   }
 
   public void spawnVillagers() {
-    int amount = plugin.getConfig().getInt("Villager-Amount", 10);
-
     List<Location> villagerSpawns = getVillagerSpawns();
     if(villagerSpawns.isEmpty()) {
       Debugger.debug(Level.WARNING, "No villager spawns set for {0} game won't start", id);
       return;
     }
 
+    int amount = plugin.getConfig().getInt("Villager-Amount", 10);
     int spawnSize = villagerSpawns.size();
     for (int i = 0; i < amount; i++) {
       spawnVillager(villagerSpawns.get(i % spawnSize));
