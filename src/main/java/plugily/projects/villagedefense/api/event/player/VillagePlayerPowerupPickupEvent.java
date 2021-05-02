@@ -22,7 +22,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 import plugily.projects.villagedefense.api.event.VillageEvent;
 import plugily.projects.villagedefense.arena.Arena;
-import plugily.projects.villagedefense.handlers.powerup.Powerup;
+import plugily.projects.villagedefense.handlers.powerup.BasePowerup;
 import plugily.projects.villagedefense.handlers.powerup.PowerupRegistry;
 
 /**
@@ -36,9 +36,9 @@ public class VillagePlayerPowerupPickupEvent extends VillageEvent {
 
   private static final HandlerList HANDLERS = new HandlerList();
   private final Player player;
-  private final Powerup powerup;
+  private final BasePowerup powerup;
 
-  public VillagePlayerPowerupPickupEvent(Arena eventArena, Player player, Powerup powerup) {
+  public VillagePlayerPowerupPickupEvent(Arena eventArena, Player player, BasePowerup powerup) {
     super(eventArena);
     this.player = player;
     this.powerup = powerup;
@@ -52,7 +52,7 @@ public class VillagePlayerPowerupPickupEvent extends VillageEvent {
     return player;
   }
 
-  public Powerup getPowerup() {
+  public BasePowerup getPowerup() {
     return powerup;
   }
 

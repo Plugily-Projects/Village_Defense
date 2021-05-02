@@ -51,7 +51,7 @@ import java.util.logging.Level;
 public class PowerupRegistry {
 
   private final Random random = new Random();
-  private final List<Powerup> registeredPowerups = new ArrayList<>();
+  private final List<BasePowerup> registeredPowerups = new ArrayList<>();
   private boolean enabled = false;
   private Main plugin;
 
@@ -142,7 +142,7 @@ public class PowerupRegistry {
   /**
    * @return random powerup from list of registered ones
    */
-  public Powerup getRandomPowerup() {
+  public BasePowerup getRandomPowerup() {
     return registeredPowerups.get(random.nextInt(registeredPowerups.size()));
   }
 
@@ -151,7 +151,7 @@ public class PowerupRegistry {
       return;
     }
 
-    final Powerup powerup = getRandomPowerup();
+    final BasePowerup powerup = getRandomPowerup();
     final Hologram hologram = HologramsAPI.createHologram(plugin, loc.clone().add(0.0, 1.2, 0.0));
     hologram.appendTextLine(powerup.getName());
     hologram.appendItemLine(powerup.getMaterial().parseItem()).setPickupHandler(player -> {
@@ -175,8 +175,8 @@ public class PowerupRegistry {
    * @param powerup powerup to register
    * @throws IllegalArgumentException if power-up with same ID currently exist
    */
-  public void registerPowerup(Powerup powerup) {
-    for(Powerup pwup : registeredPowerups) {
+  public void registerPowerup(BasePowerup powerup) {
+    for(BasePowerup pwup : registeredPowerups) {
       if(pwup.getId().equals(powerup.getId())) {
         throw new IllegalArgumentException("Cannot register new power-up with same ID!");
       }
