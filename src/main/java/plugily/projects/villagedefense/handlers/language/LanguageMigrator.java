@@ -201,6 +201,11 @@ public class LanguageMigrator {
               "    Ending: RED_wool\r\n" +
               "    Restarting: RED_wool\r\n");
           break;
+        case 17:
+          MigratorUtils.addNewLines(file, "\r\n" +
+              "# How many villagers will be spawned in a arena?\r\n" +
+              "Villager-Amount: 10\r\n");
+          break;
         default:
           break;
       }
