@@ -205,6 +205,18 @@ public class LanguageMigrator {
           MigratorUtils.addNewLines(file, "\r\n" +
               "# How many villagers will be spawned in a arena?\r\n" +
               "Villager-Amount: 10\r\n");
+          MigratorUtils.addNewLines(file, "\r\n" +
+              "Wave-Title-Messages:\r\n" +
+              "  # Title times specified in game ticks: fade in, stay, fade out\r\n" +
+              "\r\n" +
+              "  StartWave:\r\n" +
+              "    Times: \"20, 30, 20\"\r\n" +
+              "    Title: \"\"\r\n" +
+              "    SubTitle: \"\"\r\n" +
+              "  EndWave:\r\n" +
+              "    Times: \"20, 30, 20\"\r\n" +
+              "    Title: \"\"\r\n" +
+              "    SubTitle: \"\"\r\n");
           break;
         default:
           break;
