@@ -38,7 +38,7 @@ public class VillagePlayerPowerupPickupEvent extends VillageEvent implements Can
   private static final HandlerList HANDLERS = new HandlerList();
   private final Player player;
   private final BasePowerup powerup;
-  private boolean isCancelled;
+  private boolean isCancelled = false;
 
   public VillagePlayerPowerupPickupEvent(Arena eventArena, Player player, BasePowerup powerup) {
     super(eventArena);
