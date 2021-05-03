@@ -372,20 +372,18 @@ public class ArenaManager {
       return;
     }
 
-    String titleTimes = plugin.getConfig().getString("Wave-Title.End.Times", "20, 30, 20");
+    String titleTimes = LanguageManager.getLanguageMessage(Messages.WAVE_TITLE_END_TIMES.getAccessor());
     String[] split = titleTimes.split(", ", 3);
 
     int fadeIn = split.length > 1 ? Integer.parseInt(split[0]) : 20,
         stay = split.length > 2 ? Integer.parseInt(split[1]) : 30,
         fadeOut = split.length > 3 ? Integer.parseInt(split[2]) : 20;
 
-    String title = plugin.getConfig().getString("Wave-Title.End.Title", "");
-    String subTitle = plugin.getConfig().getString("Wave-Title.End.SubTitle", "");
+    String title = Messages.WAVE_TITLE_END_TITLE.getMessage();
+    String subTitle = Messages.WAVE_TITLE_END_SUBTITLE.getMessage();
 
     title = title.replace("%wave%", Integer.toString(arena.getWave()));
     subTitle = subTitle.replace("%wave%", Integer.toString(arena.getWave()));
-    title = plugin.getChatManager().colorRawMessage(title);
-    subTitle = plugin.getChatManager().colorRawMessage(subTitle);
 
     for(User user : plugin.getUserManager().getUsers(arena)) {
       if (!user.isSpectator() && !user.isPermanentSpectator()) {
@@ -456,20 +454,18 @@ public class ArenaManager {
       ArenaUtils.bringDeathPlayersBack(arena);
     }
 
-    String titleTimes = plugin.getConfig().getString("Wave-Title.Start.Times", "20, 30, 20");
+    String titleTimes = LanguageManager.getLanguageMessage(Messages.WAVE_TITLE_START_TIMES.getAccessor());
     String[] split = titleTimes.split(", ", 3);
 
     int fadeIn = split.length > 1 ? Integer.parseInt(split[0]) : 20,
         stay = split.length > 2 ? Integer.parseInt(split[1]) : 30,
         fadeOut = split.length > 3 ? Integer.parseInt(split[2]) : 20;
 
-    String title = plugin.getConfig().getString("Wave-Title.Start.Title", "");
-    String subTitle = plugin.getConfig().getString("Wave-Title.Start.SubTitle", "");
+    String title = Messages.WAVE_TITLE_START_TITLE.getMessage();
+    String subTitle = Messages.WAVE_TITLE_START_SUBTITLE.getMessage();
 
     title = title.replace("%wave%", Integer.toString(arena.getWave()));
     subTitle = subTitle.replace("%wave%", Integer.toString(arena.getWave()));
-    title = plugin.getChatManager().colorRawMessage(title);
-    subTitle = plugin.getChatManager().colorRawMessage(subTitle);
 
     for(User user : plugin.getUserManager().getUsers(arena)) {
       Player player = user.getPlayer();
