@@ -158,7 +158,13 @@ public class PowerupRegistry {
       if(ArenaRegistry.getArena(player) != arena) {
         return;
       }
-      Bukkit.getPluginManager().callEvent(new VillagePlayerPowerupPickupEvent(arena, player, powerup));
+
+      VillagePlayerPowerupPickupEvent event = new VillagePlayerPowerupPickupEvent(arena, player, powerup);
+      Bukkit.getPluginManager().callEvent(event);
+      if (event.isCancelled()) {
+        return;
+      }
+
       powerup.getOnPickup().accept(new PowerupPickupHandler(powerup, arena, player));
       hologram.delete();
     });
