@@ -37,7 +37,7 @@ import java.util.List;
 @SuppressWarnings("deprecation")
 public class LanguageMigrator {
 
-  public static final int LANGUAGE_FILE_VERSION = 18;
+  public static final int LANGUAGE_FILE_VERSION = 19;
   public static final int CONFIG_FILE_VERSION = 18;
   private final Main plugin;
   private final List<String> migratable = Arrays.asList(Constants.Files.CONFIG.getName(), Constants.Files.KITS.getName(),
@@ -205,18 +205,6 @@ public class LanguageMigrator {
           MigratorUtils.addNewLines(file, "\r\n" +
               "# How many villagers will be spawned in a arena?\r\n" +
               "Villager-Amount: 10\r\n");
-          MigratorUtils.addNewLines(file, "\r\n" +
-              "Wave-Title-Messages:\r\n" +
-              "  # Title times specified in game ticks: fade in, stay, fade out\r\n" +
-              "\r\n" +
-              "  StartWave:\r\n" +
-              "    Times: \"20, 30, 20\"\r\n" +
-              "    Title: \"\"\r\n" +
-              "    SubTitle: \"\"\r\n" +
-              "  EndWave:\r\n" +
-              "    Times: \"20, 30, 20\"\r\n" +
-              "    Title: \"\"\r\n" +
-              "    SubTitle: \"\"\r\n");
           break;
         default:
           break;
@@ -422,6 +410,19 @@ public class LanguageMigrator {
               "    Ending: \"&lEnding\"\r\n" +
               "    Restarting: \"&c&lRestarting\"\r\n");
           break;
+        case 18:
+          MigratorUtils.insertAfterLine(file, "  Messages:", "\r\n" +
+              "    Wave-Title:\r\n" +
+              "      # Title times specified in game ticks: fade in, stay, fade out\r\n" +
+              "      # %wave%\r\n" +
+              "      Start:\r\n" +
+              "        Times: \"20, 30, 20\"\r\n" +
+              "        Title: \"Wave %wave%\"\r\n" +
+              "        SubTitle: \"\"\r\n" +
+              "      End:\r\n" +
+              "        Times: \"20, 30, 20\"\r\n" +
+              "        Title: \"Wave %wave% ended\"\r\n" +
+              "        SubTitle: \"\"\r\n");
         default:
           break;
       }

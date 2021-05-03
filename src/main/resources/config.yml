@@ -178,18 +178,6 @@ Wave-Limit:
   # Limit of waves, if this wave ends game will end
   Limit: 25
 
-Wave-Title-Messages:
-  # Title times specified in game ticks: fade in, stay, fade out
-
-  StartWave:
-    Times: "20, 30, 20"
-    Title: ""
-    SubTitle: ""
-
-  EndWave:
-    Times: "20, 30, 20"
-    Title: ""
-    SubTitle: ""
 
 #After how many zombies should we limit them?
 #Once limit is reached zombies get more health so it's still harder each wave

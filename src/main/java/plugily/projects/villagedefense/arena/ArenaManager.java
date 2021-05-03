@@ -372,15 +372,15 @@ public class ArenaManager {
       return;
     }
 
-    String titleTimes = plugin.getConfig().getString("Wave-Title-Messages.EndWave.Times", "20, 30, 20");
+    String titleTimes = plugin.getConfig().getString("Wave-Title.End.Times", "20, 30, 20");
     String[] split = titleTimes.split(", ", 3);
 
     int fadeIn = split.length > 1 ? Integer.parseInt(split[0]) : 20,
         stay = split.length > 2 ? Integer.parseInt(split[1]) : 30,
         fadeOut = split.length > 3 ? Integer.parseInt(split[2]) : 20;
 
-    String title = plugin.getConfig().getString("Wave-Title-Messages.EndWave.Title", "");
-    String subTitle = plugin.getConfig().getString("Wave-Title-Messages.EndWave.SubTitle", "");
+    String title = plugin.getConfig().getString("Wave-Title.End.Title", "");
+    String subTitle = plugin.getConfig().getString("Wave-Title.End.SubTitle", "");
 
     title = title.replace("%wave%", Integer.toString(arena.getWave()));
     subTitle = subTitle.replace("%wave%", Integer.toString(arena.getWave()));
@@ -456,15 +456,15 @@ public class ArenaManager {
       ArenaUtils.bringDeathPlayersBack(arena);
     }
 
-    String titleTimes = plugin.getConfig().getString("Wave-Title-Messages.StartWave.Times", "20, 30, 20");
+    String titleTimes = plugin.getConfig().getString("Wave-Title.Start.Times", "20, 30, 20");
     String[] split = titleTimes.split(", ", 3);
 
     int fadeIn = split.length > 1 ? Integer.parseInt(split[0]) : 20,
         stay = split.length > 2 ? Integer.parseInt(split[1]) : 30,
         fadeOut = split.length > 3 ? Integer.parseInt(split[2]) : 20;
 
-    String title = plugin.getConfig().getString("Wave-Title-Messages.StartWave.Title", "");
-    String subTitle = plugin.getConfig().getString("Wave-Title-Messages.StartWave.SubTitle", "");
+    String title = plugin.getConfig().getString("Wave-Title.Start.Title", "");
+    String subTitle = plugin.getConfig().getString("Wave-Title.Start.SubTitle", "");
 
     title = title.replace("%wave%", Integer.toString(arena.getWave()));
     subTitle = subTitle.replace("%wave%", Integer.toString(arena.getWave()));

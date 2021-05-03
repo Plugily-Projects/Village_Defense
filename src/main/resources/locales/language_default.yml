@@ -285,6 +285,17 @@ In-Game:
     Death: "&b%PLAYER% &7died!"
     Next-Wave-In: "&7Next wave starts in &b%NUMBER%&7 seconds!"
     Wave-Started: "&7Wave &b%NUMBER%&7 started!"
+    Wave-Title:
+      # Title times specified in game ticks: fade in, stay, fade out
+      # %wave%
+      Start:
+        Times: "20, 30, 20"
+        Title: "Wave %wave%"
+        SubTitle: ""
+      End:
+        Times: "20, 30, 20"
+        Title: "Wave %wave% ended"
+        SubTitle: ""
     Villager-Died: "&cA villager has died!"
     You-Feel-Refreshed: "&aYou feel refreshed!"
     Cant-Ride-Others-Golem: "&cYou can't ride the golem of somebody else!"
@@ -439,4 +450,4 @@ Placeholders:
 
 # Don't edit it. But who's stopping you? It's your server!
 # Really, don't edit ;p
-File-Version-Do-Not-Edit: 18
+File-Version-Do-Not-Edit: 19
