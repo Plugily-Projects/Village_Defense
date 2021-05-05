@@ -1,16 +1,16 @@
-package plugily.projects.villagedefense.creatures.v1_14_R1;
+package plugily.projects.villagedefense.creatures.v1_15_R1;
 
-import net.minecraft.server.v1_14_R1.World;
+import net.minecraft.server.v1_15_R1.World;
 import org.bukkit.Location;
-import org.bukkit.craftbukkit.v1_14_R1.CraftWorld;
+import org.bukkit.craftbukkit.v1_15_R1.CraftWorld;
 import org.bukkit.entity.Golem;
 import org.bukkit.entity.Villager;
 import org.bukkit.entity.Wolf;
 import org.bukkit.entity.Zombie;
 import org.bukkit.event.entity.CreatureSpawnEvent;
-import plugily.projects.villagedefense.creatures.CreatureInitializer;
+import plugily.projects.villagedefense.creatures.BaseCreatureInitializer;
 
-public class CreatureInitializer1_14_R1 implements CreatureInitializer {
+public class CreatureInitializer implements BaseCreatureInitializer {
 
     private World getWorld(Location location) {
         return ((CraftWorld) location.getWorld()).getHandle();

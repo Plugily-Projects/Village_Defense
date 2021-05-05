@@ -1,16 +1,65 @@
-package plugily.projects.villagedefense.creatures.v1_13_R2;
+package plugily.projects.villagedefense.creatures.v1_8_R3;
 
-import net.minecraft.server.v1_13_R2.World;
+import net.minecraft.server.v1_8_R3.AttributeInstance;
+import net.minecraft.server.v1_8_R3.AttributeModifier;
+import net.minecraft.server.v1_8_R3.EntityInsentient;
+import net.minecraft.server.v1_8_R3.EntityTypes;
+import net.minecraft.server.v1_8_R3.GenericAttributes;
+import net.minecraft.server.v1_8_R3.World;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.craftbukkit.v1_13_R2.CraftWorld;
+import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftLivingEntity;
 import org.bukkit.entity.Golem;
 import org.bukkit.entity.Villager;
 import org.bukkit.entity.Wolf;
 import org.bukkit.entity.Zombie;
 import org.bukkit.event.entity.CreatureSpawnEvent;
-import plugily.projects.villagedefense.creatures.CreatureInitializer;
+import plugily.projects.villagedefense.creatures.BaseCreatureInitializer;
+import plugily.projects.villagedefense.utils.MessageUtils;
 
-public class CreatureInitializer1_13_R2 implements CreatureInitializer {
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+
+public class CreatureInitializer implements BaseCreatureInitializer {
+
+    private static final UUID uId = UUID.fromString("206a89dc-ae78-4c4d-b42c-3b31db3f5a7e");
+
+    public CreatureInitializer() {
+        registerEntity("VillageZombie", 54, FastZombie.class);
+        registerEntity("VillageZombie", 54, BabyZombie.class);
+        registerEntity("VillageZombie", 54, PlayerBuster.class);
+        registerEntity("VillageZombie", 54, GolemBuster.class);
+        registerEntity("VillageZombie", 54, HardZombie.class);
+        registerEntity("VillageZombie", 54, TankerZombie.class);
+        registerEntity("VillageZombie", 54, VillagerSlayer.class);
+        registerEntity("VillageVillager", 120, RidableVillager.class);
+        registerEntity("VillageVillagerGolem", 99, RidableIronGolem.class);
+        registerEntity("VillageWolf", 95, WorkingWolf.class);
+        registerEntity("VillageZombie", 54, VillagerBuster.class);
+    }
+
+    private void registerEntity(String name, int id, Class<? extends EntityInsentient> customClass) {
+        try {
+            List<Map<?, ?>> dataMaps = new ArrayList<>();
+            for (Field f : EntityTypes.class.getDeclaredFields()) {
+                if (f.getType().getSimpleName().equals(Map.class.getSimpleName())) {
+                    f.setAccessible(true);
+                    dataMaps.add((Map<?, ?>) f.get(null));
+                }
+            }
+            ((Map<Class<? extends EntityInsentient>, String>) dataMaps.get(1)).put(customClass, name);
+            ((Map<Class<? extends EntityInsentient>, Integer>) dataMaps.get(3)).put(customClass, id);
+        } catch (Exception e) {
+            e.printStackTrace();
+            MessageUtils.errorOccurred();
+            Bukkit.getConsoleSender().sendMessage("[VillageDefense] Entities has failed to register!");
+            Bukkit.getConsoleSender().sendMessage("[VillageDefense] Restart server or change your server version!");
+        }
+    }
 
     private World getWorld(Location location) {
         return ((CraftWorld) location.getWorld()).getHandle();
@@ -131,5 +180,14 @@ public class CreatureInitializer1_13_R2 implements CreatureInitializer {
         world.addEntity(villagerSlayer, CreatureSpawnEvent.SpawnReason.CUSTOM);
         zombie.setRemoveWhenFarAway(false);
         return zombie;
+    }
+
+    @Override
+    public void applyFollowRange(Zombie zombie) {
+        EntityInsentient nmsEntity = (EntityInsentient) ((CraftLivingEntity) zombie).getHandle();
+        AttributeInstance attributes = nmsEntity.getAttributeInstance(GenericAttributes.FOLLOW_RANGE);
+        if (attributes.a(uId) == null) { // Check if the attribute is not set
+            attributes.b(new AttributeModifier(uId, "follow range multiplier", 200.0D, 1));
+        }
     }
 }

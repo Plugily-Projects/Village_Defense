@@ -1,16 +1,39 @@
-package plugily.projects.villagedefense.creatures.v1_13_R1;
+package plugily.projects.villagedefense.creatures.v1_11_R1;
 
-import net.minecraft.server.v1_13_R1.World;
+import net.minecraft.server.v1_11_R1.EntityInsentient;
+import net.minecraft.server.v1_11_R1.EntityTypes;
+import net.minecraft.server.v1_11_R1.MinecraftKey;
+import net.minecraft.server.v1_11_R1.World;
 import org.bukkit.Location;
-import org.bukkit.craftbukkit.v1_13_R1.CraftWorld;
+import org.bukkit.craftbukkit.v1_11_R1.CraftWorld;
 import org.bukkit.entity.Golem;
 import org.bukkit.entity.Villager;
 import org.bukkit.entity.Wolf;
 import org.bukkit.entity.Zombie;
 import org.bukkit.event.entity.CreatureSpawnEvent;
-import plugily.projects.villagedefense.creatures.CreatureInitializer;
+import plugily.projects.villagedefense.creatures.BaseCreatureInitializer;
 
-public class CreatureInitializer1_13_R1 implements CreatureInitializer {
+public class CreatureInitializer implements BaseCreatureInitializer {
+
+    public CreatureInitializer() {
+        registerEntity("VillageZombie", 54, FastZombie.class);
+        registerEntity("VillageZombie", 54, BabyZombie.class);
+        registerEntity("VillageZombie", 54, PlayerBuster.class);
+        registerEntity("VillageZombie", 54, GolemBuster.class);
+        registerEntity("VillageZombie", 54, HardZombie.class);
+        registerEntity("VillageZombie", 54, TankerZombie.class);
+        registerEntity("VillageZombie", 54, VillagerSlayer.class);
+        registerEntity("VillageVillager", 120, RidableVillager.class);
+        registerEntity("VillageVillagerGolem", 99, RidableIronGolem.class);
+        registerEntity("VillageWolf", 95, WorkingWolf.class);
+        registerEntity("VillageZombie", 54, VillagerBuster.class);
+    }
+
+    private void registerEntity(String name, int id, Class<? extends EntityInsentient> customClass) {
+        final MinecraftKey key = new MinecraftKey(name);
+        EntityTypes.b.a(id, key, customClass);
+        EntityTypes.d.add(key);
+    }
 
     private World getWorld(Location location) {
         return ((CraftWorld) location.getWorld()).getHandle();

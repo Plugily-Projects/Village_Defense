@@ -1,58 +1,16 @@
-package plugily.projects.villagedefense.creatures.v1_9_R1;
+package plugily.projects.villagedefense.creatures.v1_16_R3;
 
-import net.minecraft.server.v1_9_R1.EntityInsentient;
-import net.minecraft.server.v1_9_R1.EntityTypes;
-import net.minecraft.server.v1_9_R1.World;
-import org.bukkit.Bukkit;
+import net.minecraft.server.v1_16_R3.World;
 import org.bukkit.Location;
-import org.bukkit.craftbukkit.v1_9_R1.CraftWorld;
+import org.bukkit.craftbukkit.v1_16_R3.CraftWorld;
 import org.bukkit.entity.Golem;
 import org.bukkit.entity.Villager;
 import org.bukkit.entity.Wolf;
 import org.bukkit.entity.Zombie;
 import org.bukkit.event.entity.CreatureSpawnEvent;
-import plugily.projects.villagedefense.creatures.CreatureInitializer;
-import plugily.projects.villagedefense.utils.MessageUtils;
+import plugily.projects.villagedefense.creatures.BaseCreatureInitializer;
 
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
-public class CreatureInitializer1_9_R1 implements CreatureInitializer {
-
-    public CreatureInitializer1_9_R1() {
-        registerEntity("VillageZombie", 54, FastZombie.class);
-        registerEntity("VillageZombie", 54, BabyZombie.class);
-        registerEntity("VillageZombie", 54, PlayerBuster.class);
-        registerEntity("VillageZombie", 54, GolemBuster.class);
-        registerEntity("VillageZombie", 54, HardZombie.class);
-        registerEntity("VillageZombie", 54, TankerZombie.class);
-        registerEntity("VillageZombie", 54, VillagerSlayer.class);
-        registerEntity("VillageVillager", 120, RidableVillager.class);
-        registerEntity("VillageVillagerGolem", 99, RidableIronGolem.class);
-        registerEntity("VillageWolf", 95, WorkingWolf.class);
-        registerEntity("VillageZombie", 54, VillagerBuster.class);
-    }
-
-    private void registerEntity(String name, int id, Class<? extends EntityInsentient> customClass) {
-        try {
-            List<Map<?, ?>> dataMaps = new ArrayList<>();
-            for (Field f : EntityTypes.class.getDeclaredFields()) {
-                if (f.getType().getSimpleName().equals(Map.class.getSimpleName())) {
-                    f.setAccessible(true);
-                    dataMaps.add((Map<?, ?>) f.get(null));
-                }
-            }
-            ((Map<Class<? extends EntityInsentient>, String>) dataMaps.get(1)).put(customClass, name);
-            ((Map<Class<? extends EntityInsentient>, Integer>) dataMaps.get(3)).put(customClass, id);
-        } catch (Exception e) {
-            e.printStackTrace();
-            MessageUtils.errorOccurred();
-            Bukkit.getConsoleSender().sendMessage("[VillageDefense] Entities has failed to register!");
-            Bukkit.getConsoleSender().sendMessage("[VillageDefense] Restart server or change your server version!");
-        }
-    }
+public class CreatureInitializer implements BaseCreatureInitializer {
 
     private World getWorld(Location location) {
         return ((CraftWorld) location.getWorld()).getHandle();

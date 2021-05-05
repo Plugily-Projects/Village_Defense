@@ -1,17 +1,17 @@
-package plugily.projects.villagedefense.creatures.v1_10_R1;
+package plugily.projects.villagedefense.creatures.v1_9_R1;
 
-import net.minecraft.server.v1_10_R1.EntityInsentient;
-import net.minecraft.server.v1_10_R1.EntityTypes;
-import net.minecraft.server.v1_10_R1.World;
+import net.minecraft.server.v1_9_R1.EntityInsentient;
+import net.minecraft.server.v1_9_R1.EntityTypes;
+import net.minecraft.server.v1_9_R1.World;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.craftbukkit.v1_10_R1.CraftWorld;
+import org.bukkit.craftbukkit.v1_9_R1.CraftWorld;
 import org.bukkit.entity.Golem;
 import org.bukkit.entity.Villager;
 import org.bukkit.entity.Wolf;
 import org.bukkit.entity.Zombie;
 import org.bukkit.event.entity.CreatureSpawnEvent;
-import plugily.projects.villagedefense.creatures.CreatureInitializer;
+import plugily.projects.villagedefense.creatures.BaseCreatureInitializer;
 import plugily.projects.villagedefense.utils.MessageUtils;
 
 import java.lang.reflect.Field;
@@ -19,9 +19,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class CreatureInitializer1_10_R1 implements CreatureInitializer {
+public class CreatureInitializer implements BaseCreatureInitializer {
 
-    public CreatureInitializer1_10_R1() {
+    public CreatureInitializer() {
         registerEntity("VillageZombie", 54, FastZombie.class);
         registerEntity("VillageZombie", 54, BabyZombie.class);
         registerEntity("VillageZombie", 54, PlayerBuster.class);

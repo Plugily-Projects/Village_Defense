@@ -8,7 +8,7 @@ import org.bukkit.entity.Wolf;
 import org.bukkit.entity.Zombie;
 import pl.plajerlair.commonsbox.minecraft.misc.MiscUtils;
 
-public interface CreatureInitializer {
+public interface BaseCreatureInitializer {
     Villager spawnVillager(Location location);
 
     Wolf spawnWolf(Location location);
