@@ -62,33 +62,34 @@ public class CreatureUtils {
   }
 
   public static BaseCreatureInitializer initCreatureInitializer() {
-    if(ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_8_R3)) {
-      return new plugily.projects.villagedefense.creatures.v1_8_R3.CreatureInitializer();
-    } else if(ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_9_R1)) {
-      return new plugily.projects.villagedefense.creatures.v1_9_R1.CreatureInitializer();
-    } else if(ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_9_R2)) {
-      return new plugily.projects.villagedefense.creatures.v1_9_R2.CreatureInitializer();
-    } else if(ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_10_R1)) {
-      return new plugily.projects.villagedefense.creatures.v1_10_R1.CreatureInitializer();
-    } else if(ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_11_R1)) {
-      return new plugily.projects.villagedefense.creatures.v1_11_R1.CreatureInitializer();
-    } else if(ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_12_R1)) {
-      return new plugily.projects.villagedefense.creatures.v1_12_R1.CreatureInitializer();
-    } else if(ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_13_R1)) {
-      return new plugily.projects.villagedefense.creatures.v1_13_R1.CreatureInitializer();
-    } else if(ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_13_R2)) {
-      return new plugily.projects.villagedefense.creatures.v1_13_R2.CreatureInitializer();
-    } else if(ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_14_R1)) {
-      return new plugily.projects.villagedefense.creatures.v1_14_R1.CreatureInitializer();
-    } else if(ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_15_R1)) {
-      return new plugily.projects.villagedefense.creatures.v1_15_R1.CreatureInitializer();
-    } else if(ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_16_R1)) {
-      return new plugily.projects.villagedefense.creatures.v1_16_R1.CreatureInitializer();
-    } else if(ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_16_R2)) {
-      return new plugily.projects.villagedefense.creatures.v1_16_R2.CreatureInitializer();
+    switch (ServerVersion.Version.getCurrent()) {
+      case v1_8_R3:
+        return new plugily.projects.villagedefense.creatures.v1_8_R3.CreatureInitializer();
+      case v1_9_R1:
+        return new plugily.projects.villagedefense.creatures.v1_9_R1.CreatureInitializer();
+      case v1_9_R2:
+        return new plugily.projects.villagedefense.creatures.v1_9_R2.CreatureInitializer();
+      case v1_10_R1:
+        return new plugily.projects.villagedefense.creatures.v1_10_R1.CreatureInitializer();
+      case v1_11_R1:
+        return new plugily.projects.villagedefense.creatures.v1_11_R1.CreatureInitializer();
+      case v1_12_R1:
+        return new plugily.projects.villagedefense.creatures.v1_12_R1.CreatureInitializer();
+      case v1_13_R1:
+        return new plugily.projects.villagedefense.creatures.v1_13_R1.CreatureInitializer();
+      case v1_13_R2:
+        return new plugily.projects.villagedefense.creatures.v1_13_R2.CreatureInitializer();
+      case v1_14_R1:
+        return new plugily.projects.villagedefense.creatures.v1_14_R1.CreatureInitializer();
+      case v1_15_R1:
+        return new plugily.projects.villagedefense.creatures.v1_15_R1.CreatureInitializer();
+      case v1_16_R1:
+        return new plugily.projects.villagedefense.creatures.v1_16_R1.CreatureInitializer();
+      case v1_16_R2:
+        return new plugily.projects.villagedefense.creatures.v1_16_R2.CreatureInitializer();
+      default:
+        return new plugily.projects.villagedefense.creatures.v1_16_R3.CreatureInitializer();
     }
-
-    return new plugily.projects.villagedefense.creatures.v1_16_R3.CreatureInitializer();
   }
 
   public static Object getPrivateField(String fieldName, Class<?> clazz, Object object) {

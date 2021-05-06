@@ -167,7 +167,6 @@ public class ArenaRegistry {
         arena.setLobbyLocation(lobbyLoc);
         arena.setStartLocation(startLoc);
         arena.setEndLocation(endLoc);
-        ArenaUtils.setWorld(arena);
       }
 
       if(!section.getBoolean(id + ".isdone")) {

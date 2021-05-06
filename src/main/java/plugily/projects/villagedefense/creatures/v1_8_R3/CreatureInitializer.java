@@ -10,7 +10,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftLivingEntity;
-import org.bukkit.entity.Golem;
+import org.bukkit.entity.IronGolem;
 import org.bukkit.entity.Villager;
 import org.bukkit.entity.Wolf;
 import org.bukkit.entity.Zombie;
@@ -46,7 +46,7 @@ public class CreatureInitializer implements BaseCreatureInitializer {
         try {
             List<Map<?, ?>> dataMaps = new ArrayList<>();
             for (Field f : EntityTypes.class.getDeclaredFields()) {
-                if (f.getType().getSimpleName().equals(Map.class.getSimpleName())) {
+                if (f.getType().isAssignableFrom(Map.class)) {
                     f.setAccessible(true);
                     dataMaps.add((Map<?, ?>) f.get(null));
                 }
@@ -86,12 +86,12 @@ public class CreatureInitializer implements BaseCreatureInitializer {
     }
 
     @Override
-    public Golem spawnGolem(Location location) {
+    public IronGolem spawnGolem(Location location) {
         RidableIronGolem ironGolem = new RidableIronGolem(location.getWorld());
         ironGolem.setPosition(location.getX(), location.getY(), location.getZ());
         ironGolem.setCustomNameVisible(true);
         getWorld(location).addEntity(ironGolem, CreatureSpawnEvent.SpawnReason.CUSTOM);
-        return (Golem) ironGolem.getBukkitEntity();
+        return (IronGolem) ironGolem.getBukkitEntity();
     }
 
     @Override
@@ -108,10 +108,10 @@ public class CreatureInitializer implements BaseCreatureInitializer {
     @Override
     public Zombie spawnBabyZombie(Location location) {
         World world = getWorld(location);
-        BabyZombie fastZombie = new BabyZombie(world);
-        fastZombie.setPosition(location.getX(), location.getY(), location.getZ());
-        Zombie zombie = (Zombie) fastZombie.getBukkitEntity();
-        world.addEntity(fastZombie, CreatureSpawnEvent.SpawnReason.CUSTOM);
+        BabyZombie babyZombie = new BabyZombie(world);
+        babyZombie.setPosition(location.getX(), location.getY(), location.getZ());
+        Zombie zombie = (Zombie) babyZombie.getBukkitEntity();
+        world.addEntity(babyZombie, CreatureSpawnEvent.SpawnReason.CUSTOM);
         zombie.setRemoveWhenFarAway(false);
         return zombie;
     }
@@ -164,6 +164,7 @@ public class CreatureInitializer implements BaseCreatureInitializer {
     public Zombie spawnKnockbackResistantZombies(Location location) {
         World world = getWorld(location);
         TankerZombie tankerZombie = new TankerZombie(world);
+        tankerZombie.getAttributeInstance(GenericAttributes.c).setValue(Double.MAX_VALUE);
         tankerZombie.setPosition(location.getX(), location.getY(), location.getZ());
         Zombie zombie = (Zombie) tankerZombie.getBukkitEntity();
         world.addEntity(tankerZombie, CreatureSpawnEvent.SpawnReason.CUSTOM);

@@ -2,11 +2,12 @@ package plugily.projects.villagedefense.creatures.v1_11_R1;
 
 import net.minecraft.server.v1_11_R1.EntityInsentient;
 import net.minecraft.server.v1_11_R1.EntityTypes;
+import net.minecraft.server.v1_11_R1.GenericAttributes;
 import net.minecraft.server.v1_11_R1.MinecraftKey;
 import net.minecraft.server.v1_11_R1.World;
 import org.bukkit.Location;
 import org.bukkit.craftbukkit.v1_11_R1.CraftWorld;
-import org.bukkit.entity.Golem;
+import org.bukkit.entity.IronGolem;
 import org.bukkit.entity.Villager;
 import org.bukkit.entity.Wolf;
 import org.bukkit.entity.Zombie;
@@ -60,12 +61,12 @@ public class CreatureInitializer implements BaseCreatureInitializer {
     }
 
     @Override
-    public Golem spawnGolem(Location location) {
+    public IronGolem spawnGolem(Location location) {
         RidableIronGolem ironGolem = new RidableIronGolem(location.getWorld());
         ironGolem.setPosition(location.getX(), location.getY(), location.getZ());
         ironGolem.setCustomNameVisible(true);
         getWorld(location).addEntity(ironGolem, CreatureSpawnEvent.SpawnReason.CUSTOM);
-        return (Golem) ironGolem.getBukkitEntity();
+        return (IronGolem) ironGolem.getBukkitEntity();
     }
 
     @Override
@@ -138,6 +139,7 @@ public class CreatureInitializer implements BaseCreatureInitializer {
     public Zombie spawnKnockbackResistantZombies(Location location) {
         World world = getWorld(location);
         TankerZombie tankerZombie = new TankerZombie(world);
+        tankerZombie.getAttributeInstance(GenericAttributes.c).setValue(Double.MAX_VALUE);
         tankerZombie.setPosition(location.getX(), location.getY(), location.getZ());
         Zombie zombie = (Zombie) tankerZombie.getBukkitEntity();
         world.addEntity(tankerZombie, CreatureSpawnEvent.SpawnReason.CUSTOM);

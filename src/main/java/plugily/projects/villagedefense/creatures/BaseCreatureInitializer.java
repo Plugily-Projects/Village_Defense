@@ -2,7 +2,7 @@ package plugily.projects.villagedefense.creatures;
 
 import org.bukkit.Location;
 import org.bukkit.attribute.Attribute;
-import org.bukkit.entity.Golem;
+import org.bukkit.entity.IronGolem;
 import org.bukkit.entity.Villager;
 import org.bukkit.entity.Wolf;
 import org.bukkit.entity.Zombie;
@@ -13,7 +13,7 @@ public interface BaseCreatureInitializer {
 
     Wolf spawnWolf(Location location);
 
-    Golem spawnGolem(Location location);
+    IronGolem spawnGolem(Location location);
 
     Zombie spawnFastZombie(Location location);
 
