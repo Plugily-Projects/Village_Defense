@@ -151,7 +151,7 @@ public class ArenaRegistry {
         continue;
       }
 
-      Arena arena = ArenaUtils.initializeArena(id);
+      Arena arena = new Arena(id);
 
       arena.setMinimumPlayers(section.getInt(id + ".minimumplayers", 1));
       arena.setMaximumPlayers(section.getInt(id + ".maximumplayers", 2));

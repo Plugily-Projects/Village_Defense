@@ -34,7 +34,6 @@ import pl.plajerlair.commonsbox.minecraft.serialization.LocationSerializer;
 import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.arena.Arena;
 import plugily.projects.villagedefense.arena.ArenaRegistry;
-import plugily.projects.villagedefense.arena.ArenaUtils;
 import plugily.projects.villagedefense.handlers.setup.SetupInventory;
 import plugily.projects.villagedefense.handlers.sign.ArenaSign;
 import plugily.projects.villagedefense.utils.constants.Constants;
@@ -115,7 +114,7 @@ public class ArenaRegisterComponent implements SetupComponent {
           signsToUpdate.add(arenaSign.getSign());
         }
       }
-      arena = ArenaUtils.initializeArena(arena.getId());
+      arena = new Arena(arena.getId());
       arena.setReady(true);
       arena.setMinimumPlayers(config.getInt("instances." + arena.getId() + ".minimumplayers"));
       arena.setMaximumPlayers(config.getInt("instances." + arena.getId() + ".maximumplayers"));

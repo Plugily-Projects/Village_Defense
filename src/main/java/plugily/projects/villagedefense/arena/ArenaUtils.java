@@ -115,10 +115,6 @@ public class ArenaUtils {
     }
   }
 
-  public static Arena initializeArena(String id) {
-    return new Arena(id);
-  }
-
   public static void removeSpawnedZombies(Arena arena) {
     boolean eachThree = arena.getZombies().size() > 70;
     int i = 0;
