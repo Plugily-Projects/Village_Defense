@@ -216,6 +216,15 @@ Arena-Selector:
     Ending: RED_wool
     Restarting: RED_wool
 
+# The cooldown in seconds for some kit items
+Kit-Cooldown:
+  Cleaner: 60
+  Shot-Bow: 5
+  Wizard:
+    Essence: 15
+    Staff: 1
+  Zombie-Finder: 30
+
 # Don't modify.
 Version: 18
 

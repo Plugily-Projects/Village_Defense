@@ -20,6 +20,7 @@ That's all, matcher will stop when detects next line started with `###` match
 * Fixed Tornado kit on paper software
 * Fixed some rare cases which did not disable LeaderboardHolograms
 * Added configurable villager amount
+* Added configurable cooldown for some kit items
 
 ### 4.5.9 (28.03.2021 - 13.04.2021)
 * Fix when Splash_potion material not existed on 1.8 servers
