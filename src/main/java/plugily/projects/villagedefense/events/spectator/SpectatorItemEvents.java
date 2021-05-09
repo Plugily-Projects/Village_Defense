@@ -18,8 +18,8 @@
 
 package plugily.projects.villagedefense.events.spectator;
 
-import com.github.stefvanschie.inventoryframework.gui.GuiItem;
-import com.github.stefvanschie.inventoryframework.gui.type.ChestGui;
+import com.github.stefvanschie.inventoryframework.Gui;
+import com.github.stefvanschie.inventoryframework.GuiItem;
 import com.github.stefvanschie.inventoryframework.pane.OutlinePane;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -80,7 +80,7 @@ public class SpectatorItemEvents implements Listener {
 
   private void openSpectatorMenu(Player player, Arena arena) {
     int rows = Utils.serializeInt(arena.getPlayers().size()) / 9;
-    ChestGui gui = new ChestGui(rows, plugin.getChatManager().colorMessage(Messages.SPECTATOR_MENU_NAME));
+    Gui gui = new Gui(plugin, rows, plugin.getChatManager().colorMessage(Messages.SPECTATOR_MENU_NAME));
     OutlinePane pane = new OutlinePane(9, rows);
     gui.addPane(pane);
 

@@ -18,8 +18,8 @@
 
 package plugily.projects.villagedefense.handlers.upgrade;
 
-import com.github.stefvanschie.inventoryframework.gui.GuiItem;
-import com.github.stefvanschie.inventoryframework.gui.type.ChestGui;
+import com.github.stefvanschie.inventoryframework.GuiItem;
+import com.github.stefvanschie.inventoryframework.Gui;
 import com.github.stefvanschie.inventoryframework.pane.StaticPane;
 import net.minecraft.server.v1_8_R3.AttributeInstance;
 import net.minecraft.server.v1_8_R3.AttributeModifier;
@@ -131,7 +131,7 @@ public class EntityUpgradeMenu {
    * @param player player who will see inventory
    */
   public void openUpgradeMenu(LivingEntity en, Player player) {
-    ChestGui gui = new ChestGui(6, color(Messages.UPGRADES_MENU_TITLE));
+    Gui gui = new Gui(plugin,6, color(Messages.UPGRADES_MENU_TITLE));
     StaticPane pane = new StaticPane(9, 6);
     User user = plugin.getUserManager().getUser(player);
 

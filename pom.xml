@@ -24,7 +24,7 @@
 
     <groupId>plugily.projects</groupId>
     <artifactId>villagedefense</artifactId>
-    <version>4.5.9-b0-debug</version>
+    <version>4.6.0</version>
     <name>VillageDefense</name>
 
     <properties>
@@ -217,7 +217,7 @@
         <dependency>
             <groupId>com.github.stefvanschie.inventoryframework</groupId>
             <artifactId>IF</artifactId>
-            <version>0.9.5</version>
+            <version>0.5.19</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
