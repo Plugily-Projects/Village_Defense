@@ -24,7 +24,7 @@
 
     <groupId>plugily.projects</groupId>
     <artifactId>villagedefense</artifactId>
-    <version>4.6.0</version>
+    <version>4.5.9-dev2-debug</version>
     <name>VillageDefense</name>
 
     <properties>

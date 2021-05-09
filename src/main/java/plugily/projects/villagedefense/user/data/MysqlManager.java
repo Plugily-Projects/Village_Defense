@@ -18,7 +18,6 @@
 
 package plugily.projects.villagedefense.user.data;
 
-import com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException;
 import org.bukkit.Bukkit;
 import pl.plajerlair.commonsbox.database.MysqlDatabase;
 import pl.plajerlair.commonsbox.minecraft.configuration.ConfigUtils;
@@ -65,7 +64,7 @@ public class MysqlManager implements UserDatabase {
         //temporary workaround
         try {
           statement.executeUpdate("ALTER TABLE " + getTableName() + " ADD `name` text NOT NULL");
-        } catch(MySQLSyntaxErrorException e) {
+        } catch(SQLException e) {
           if(!e.getMessage().contains("Duplicate column name")) {
             plugin.getLogger().log(Level.WARNING, "Could not connect to MySQL database! Cause: {0} ({1})", new Object[]{e.getSQLState(), e.getErrorCode()});
           }
