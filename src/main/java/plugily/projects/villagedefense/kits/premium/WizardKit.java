@@ -154,13 +154,13 @@ public class WizardKit extends PremiumKit implements Listener {
         VersionUtils.setGlowing(player, false);
         wizardsOnDuty.remove(player);
       }, 20L * 15);
-      user.setCooldown("essence", 15);
+      user.setCooldown("essence", getPlugin().getConfig().getInt("Kit-Cooldown.Wizard.Essence", 15));
     } else if(ComplementAccessor.getComplement().getDisplayName(stack.getItemMeta()).equals(getPlugin().getChatManager().colorMessage(Messages.KITS_WIZARD_STAFF_ITEM_NAME))) {
       if(!user.checkCanCastCooldownAndMessage("wizard_staff")) {
         return;
       }
       applyMagicAttack(player);
-      user.setCooldown("wizard_staff", 1);
+      user.setCooldown("wizard_staff", getPlugin().getConfig().getInt("Kit-Cooldown.Wizard.Staff", 1));
     }
   }
 
