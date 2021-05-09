@@ -18,9 +18,9 @@
 
 package plugily.projects.villagedefense.kits;
 
-import com.github.stefvanschie.inventoryframework.gui.GuiItem;
-import com.github.stefvanschie.inventoryframework.gui.type.ChestGui;
 import com.github.stefvanschie.inventoryframework.pane.StaticPane;
+import com.github.stefvanschie.inventoryframework.Gui;
+import com.github.stefvanschie.inventoryframework.GuiItem;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -62,7 +62,7 @@ public class KitMenuHandler implements Listener {
   }
 
   public void createMenu(Player player) {
-    ChestGui gui = new ChestGui(Utils.serializeInt(KitRegistry.getKits().size()) / 9, plugin.getChatManager().colorMessage(Messages.KITS_OPEN_KIT_MENU));
+    Gui gui = new Gui(plugin,Utils.serializeInt(KitRegistry.getKits().size()) / 9, plugin.getChatManager().colorMessage(Messages.KITS_OPEN_KIT_MENU));
     StaticPane pane = new StaticPane(9, gui.getRows());
     gui.addPane(pane);
     int x = 0;

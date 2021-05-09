@@ -18,8 +18,8 @@
 
 package plugily.projects.villagedefense.arena.managers;
 
-import com.github.stefvanschie.inventoryframework.gui.GuiItem;
-import com.github.stefvanschie.inventoryframework.gui.type.ChestGui;
+import com.github.stefvanschie.inventoryframework.Gui;
+import com.github.stefvanschie.inventoryframework.GuiItem;
 import com.github.stefvanschie.inventoryframework.pane.StaticPane;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -61,7 +61,7 @@ public class ShopManager {
 
   private final Main plugin;
   private final FileConfiguration config;
-  private ChestGui gui;
+  private Gui gui;
   private final Arena arena;
 
   public ShopManager(Arena arena) {
@@ -76,7 +76,7 @@ public class ShopManager {
     }
   }
 
-  public ChestGui getShop() {
+  public Gui getShop() {
     return gui;
   }
 
@@ -117,7 +117,7 @@ public class ShopManager {
     ItemStack[] contents = ((Chest) LocationSerializer.getLocation(config.getString("instances." + arena.getId() + ".shop"))
         .getBlock().getState()).getInventory().getContents();
     int size = Utils.serializeInt(contents.length) / 9;
-    ChestGui gui = new ChestGui(size, plugin.getChatManager().colorMessage(Messages.SHOP_MESSAGES_SHOP_GUI_NAME));
+    Gui gui = new Gui(plugin, size, plugin.getChatManager().colorMessage(Messages.SHOP_MESSAGES_SHOP_GUI_NAME));
     StaticPane pane = new StaticPane(9, size);
     int x = 0;
     int y = 0;

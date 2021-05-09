@@ -100,7 +100,7 @@ public class KitRegistry {
    *
    * @param defaultKit default kit to set, must be FreeKit
    */
-  public static void setDefaultKit(FreeKit defaultKit) {
+  public static void setDefaultKit(Kit defaultKit) {
     KitRegistry.defaultKit = defaultKit;
   }
 
@@ -142,7 +142,6 @@ public class KitRegistry {
         }
       }
     }
-
     setDefaultKit(knightkit);
   }
 
