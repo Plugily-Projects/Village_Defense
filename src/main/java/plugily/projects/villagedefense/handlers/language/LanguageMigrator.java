@@ -66,6 +66,7 @@ public class LanguageMigrator {
     Debugger.sendConsoleMsg("&e[Village Defense] System notify >> Your config file is outdated! Updating...");
     File file = new File(plugin.getDataFolder() + "/config.yml");
     File bungeefile = new File(plugin.getDataFolder() + "/bungee.yml");
+    File kitsfile = new File(plugin.getDataFolder() + "/kits.yml");
 
     int version = plugin.getConfig().getInt("Version", CONFIG_FILE_VERSION - 1);
 
@@ -205,6 +206,15 @@ public class LanguageMigrator {
           MigratorUtils.addNewLines(file, "\r\n" +
               "# How many villagers will be spawned in a arena?\r\n" +
               "Villager-Amount: 10\r\n");
+          MigratorUtils.addNewLines(kitsfile, "\r\n" +
+              "# The cooldown in seconds for some kit items\r\n" +
+              "Kit-Cooldown:\r\n" +
+              "  Cleaner: 60\r\n" +
+              "  Shot-Bow: 5\r\n" +
+              "  Wizard:\r\n" +
+              "    Essence: 15\r\n" +
+              "    Staff: 1\r\n" +
+              "  Zombie-Finder: 30\r\n");
           break;
         default:
           break;
