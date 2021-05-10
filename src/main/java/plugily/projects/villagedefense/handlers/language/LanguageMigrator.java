@@ -205,15 +205,6 @@ public class LanguageMigrator {
           MigratorUtils.addNewLines(file, "\r\n" +
               "# How many villagers will be spawned in a arena?\r\n" +
               "Villager-Amount: 10\r\n");
-          MigratorUtils.addNewLines(file, "\r\n" +
-              "# The cooldown in seconds for some kit items\r\n" +
-              "Kit-Cooldown:\r\n" +
-              "  Cleaner: 60\r\n" +
-              "  Shot-Bow: 5\r\n" +
-              "  Wizard:\r\n" +
-              "    Essence: 15\r\n" +
-              "    Staff: 1\r\n" +
-              "  Zombie-Finder: 30\r\n");
           break;
         default:
           break;

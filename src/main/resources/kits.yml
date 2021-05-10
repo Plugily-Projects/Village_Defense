@@ -48,3 +48,12 @@ Enabled-Game-Kits:
   Wizard: true
   Worker: true
   ZombieFinder: true
+
+# The cooldown in seconds for some kit items
+Kit-Cooldown:
+  Cleaner: 60
+  ShotBow: 5
+  Wizard:
+    Essence: 15
+    Staff: 1
+  ZombieFinder: 30

@@ -109,6 +109,6 @@ public class CleanerKit extends PremiumKit implements Listener {
     Utils.playSound(e.getPlayer().getLocation(), "ENTITY_ZOMBIE_DEATH", "ENTITY_ZOMBIE_DEATH");
     getPlugin().getChatManager().broadcastMessage(arena, getPlugin().getChatManager()
         .formatMessage(arena, getPlugin().getChatManager().colorMessage(Messages.KITS_CLEANER_CLEANED_MAP), e.getPlayer()));
-    user.setCooldown("clean", getPlugin().getConfig().getInt("Kit-Cooldown.Cleaner", 60));
+    user.setCooldown("clean", getKitsConfig().getInt("Kit-Cooldown.Cleaner", 60));
   }
 }
