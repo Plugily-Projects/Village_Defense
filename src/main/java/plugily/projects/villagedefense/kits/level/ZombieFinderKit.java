@@ -110,6 +110,6 @@ public class ZombieFinderKit extends LevelKit implements Listener {
     zombie.addPotionEffect(new PotionEffect(PotionEffectType.WEAKNESS, 20 * 30, 0));
     event.getPlayer().sendMessage(getPlugin().getChatManager().colorMessage(Messages.KITS_ZOMBIE_TELEPORTER_ZOMBIE_TELEPORTED));
     Utils.playSound(event.getPlayer().getLocation(), "ENTITY_ZOMBIE_DEATH", "ENTITY_ZOMBIE_DEATH");
-    user.setCooldown("zombie", getKitsConfig().getInt("Kit-Cooldown.ZombieFinder", 30));
+    user.setCooldown("zombie", getKitsConfig().getInt("Kit-Cooldown.Zombie-Finder", 30));
   }
 }

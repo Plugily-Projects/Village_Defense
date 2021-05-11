@@ -210,11 +210,11 @@ public class LanguageMigrator {
               "# The cooldown in seconds for some kit items\r\n" +
               "Kit-Cooldown:\r\n" +
               "  Cleaner: 60\r\n" +
-              "  ShotBow: 5\r\n" +
+              "  Shot-Bow: 5\r\n" +
               "  Wizard:\r\n" +
               "    Essence: 15\r\n" +
               "    Staff: 1\r\n" +
-              "  ZombieFinder: 30\r\n");
+              "  Zombie-Finder: 30\r\n");
           break;
         default:
           break;
