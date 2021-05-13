@@ -46,7 +46,6 @@ import plugily.projects.villagedefense.arena.managers.BungeeManager;
 import plugily.projects.villagedefense.commands.arguments.ArgumentsRegistry;
 import plugily.projects.villagedefense.creatures.CreatureUtils;
 import plugily.projects.villagedefense.creatures.DoorBreakListener;
-import plugily.projects.villagedefense.creatures.EntityRegistry;
 import plugily.projects.villagedefense.events.ChatEvents;
 import plugily.projects.villagedefense.events.Events;
 import plugily.projects.villagedefense.events.JoinEvent;
@@ -209,7 +208,6 @@ public class Main extends JavaPlugin {
 
     ScoreboardLib.setPluginInstance(this);
     registry = new ArgumentsRegistry(this);
-    new EntityRegistry(this);
     new ArenaEvents(this);
     new SpectatorEvents(this);
     new QuitEvent(this);
