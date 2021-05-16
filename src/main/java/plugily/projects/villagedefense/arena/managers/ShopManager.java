@@ -233,7 +233,7 @@ public class ShopManager {
 
   private boolean validateShop() {
     String shop = config.getString("instances." + arena.getId() + ".shop", "");
-    if(shop.isEmpty() || shop.split(",").length == 0) {
+    if(shop.isEmpty() || !shop.contains(",")) {
       Debugger.debug(Level.WARNING, "There is no shop for arena {0}! Aborting registering shop!", arena.getId());
       return false;
     }

@@ -18,7 +18,6 @@
 
 package plugily.projects.villagedefense.arena;
 
-import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
@@ -84,7 +83,7 @@ public class ArenaEvents implements Listener {
         //check villagerbuster
         if(zombie.getEquipment().getHelmet().getType().isBlock() && zombie.getEquipment().getChestplate().getType() == Material.LEATHER_CHESTPLATE) {
           zombie.damage(zombie.getHealth() * 2);
-          Bukkit.getServer().getPluginManager().callEvent(new EntityDeathEvent(zombie, new ArrayList<>(Arrays.asList(new ItemStack(Material.ROTTEN_FLESH))), 6));
+          plugin.getServer().getPluginManager().callEvent(new EntityDeathEvent(zombie, new ArrayList<>(Arrays.asList(new ItemStack(Material.ROTTEN_FLESH))), 6));
           zombie.getWorld().spawnEntity(zombie.getLocation(), EntityType.PRIMED_TNT);
           e.setCancelled(true);
         } else {
@@ -161,7 +160,7 @@ public class ArenaEvents implements Listener {
             Wolf wolf = ((Wolf) event.getEntity());
             java.util.UUID ownerUUID = VersionUtils.isPaper() ? wolf.getOwnerUniqueId()
                 : (wolf.getOwner() != null) ? wolf.getOwner().getUniqueId() : null;
-            Player playerOwner = ownerUUID != null ? Bukkit.getPlayer(ownerUUID) : null;
+            Player playerOwner = ownerUUID != null ? plugin.getServer().getPlayer(ownerUUID) : null;
             if(playerOwner != null) {
               playerOwner.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage(Messages.WOLF_DIED));
             }
@@ -230,7 +229,7 @@ public class ArenaEvents implements Listener {
     e.setDroppedExp(0);
     plugin.getHolidayManager().applyHolidayDeathEffects(player);
 
-    Bukkit.getScheduler().runTaskLater(plugin, () -> {
+    plugin.getServer().getScheduler().runTaskLater(plugin, () -> {
       player.spigot().respawn();
       User user = plugin.getUserManager().getUser(player);
       if(arena.getArenaState() == ArenaState.STARTING) {
@@ -258,7 +257,7 @@ public class ArenaEvents implements Listener {
       plugin.getChatManager().broadcastAction(arena, player, ChatManager.ActionType.DEATH);
 
       //running in a scheduler of 1 tick due to respawn bug
-      Bukkit.getScheduler().runTaskLater(plugin, () -> {
+      plugin.getServer().getScheduler().runTaskLater(plugin, () -> {
         for(SpecialItem item : plugin.getSpecialItemManager().getSpecialItems()) {
           if(item.getDisplayStage() == SpecialItem.DisplayStage.SPECTATOR) {
             player.getInventory().setItem(item.getSlot(), item.getItemStack());
