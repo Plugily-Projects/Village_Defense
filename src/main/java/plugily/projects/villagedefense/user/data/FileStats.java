@@ -26,6 +26,7 @@ import pl.plajerlair.commonsbox.sorter.SortUtils;
 import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.api.StatsStorage;
 import plugily.projects.villagedefense.user.User;
+import plugily.projects.villagedefense.utils.LegacyDataFixer;
 import plugily.projects.villagedefense.utils.constants.Constants;
 
 import java.util.Map;
@@ -42,6 +43,7 @@ public class FileStats implements UserDatabase {
 
   public FileStats(Main plugin) {
     this.plugin = plugin;
+    new LegacyDataFixer(plugin);
     config = ConfigUtils.getConfig(plugin, Constants.Files.STATS.getName());
   }
 

@@ -76,11 +76,9 @@ import plugily.projects.villagedefense.user.User;
 import plugily.projects.villagedefense.user.UserManager;
 import plugily.projects.villagedefense.utils.Debugger;
 import plugily.projects.villagedefense.utils.ExceptionLogHandler;
-import plugily.projects.villagedefense.utils.LegacyDataFixer;
 import plugily.projects.villagedefense.utils.MessageUtils;
 import plugily.projects.villagedefense.utils.UpdateChecker;
 import plugily.projects.villagedefense.utils.Utils;
-import plugily.projects.villagedefense.utils.constants.Constants;
 import plugily.projects.villagedefense.utils.services.ServiceRegistry;
 
 import java.io.File;
@@ -170,7 +168,6 @@ public class Main extends JavaPlugin {
     chatManager = new ChatManager(LanguageManager.getLanguageMessage("In-Game.Plugin-Prefix"));
     configPreferences = new ConfigPreferences(this);
     setupFiles();
-    new LegacyDataFixer(this);
     languageConfig = ConfigUtils.getConfig(this, "language");
     initializeClasses();
     checkUpdate();
