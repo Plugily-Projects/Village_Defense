@@ -20,10 +20,15 @@ package plugily.projects.villagedefense.user.data;
 
 import org.bukkit.configuration.file.FileConfiguration;
 import pl.plajerlair.commonsbox.minecraft.configuration.ConfigUtils;
+import pl.plajerlair.commonsbox.sorter.SortUtils;
 import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.api.StatsStorage;
 import plugily.projects.villagedefense.user.User;
 import plugily.projects.villagedefense.utils.constants.Constants;
+
+import java.util.Map;
+import java.util.TreeMap;
+import java.util.UUID;
 
 /**
  * Created by Tom on 17/06/2015.
@@ -60,5 +65,17 @@ public class FileStats implements UserDatabase {
     for(StatsStorage.StatisticType stat : StatsStorage.StatisticType.values()) {
       user.setStat(stat, config.getInt(user.getUniqueId().toString() + "." + stat.getName(), 0));
     }
+  }
+
+  @Override
+  public Map<UUID, Integer> getStats(StatsStorage.StatisticType stat) {
+    Map<UUID, Integer> stats = new TreeMap<>();
+    for(String string : config.getKeys(false)) {
+      if(string.equals("data-version")) {
+        continue;
+      }
+      stats.put(UUID.fromString(string), config.getInt(string + "." + stat.getName()));
+    }
+    return SortUtils.sortByValue(stats);
   }
 }

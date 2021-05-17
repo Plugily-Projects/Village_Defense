@@ -31,6 +31,10 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.UUID;
 import java.util.logging.Level;
 
 /**
@@ -133,6 +137,25 @@ public class MysqlManager implements UserDatabase {
         plugin.getLogger().log(Level.WARNING, "Could not connect to MySQL database! Cause: {0} ({1})", new Object[]{e.getSQLState(), e.getErrorCode()});
       }
     });
+  }
+
+  @Override
+  public Map<UUID, Integer> getStats(StatsStorage.StatisticType stat) {
+    try(Connection connection = getDatabase().getConnection();
+        Statement statement = connection.createStatement();
+        ResultSet set = statement.executeQuery("SELECT UUID, " + stat.getName() + " FROM " + getTableName() + " ORDER BY " + stat.getName())) {
+      Map<UUID, java.lang.Integer> column = new LinkedHashMap<>();
+      while(set.next()) {
+        column.put(UUID.fromString(set.getString("UUID")), set.getInt(stat.getName()));
+      }
+      return column;
+    } catch(SQLException e) {
+      plugin.getLogger().log(Level.WARNING, "SQLException occurred! " + e.getSQLState() + " (" + e.getErrorCode() + ")");
+      MessageUtils.errorOccurred();
+      Bukkit.getConsoleSender().sendMessage("Cannot get contents from MySQL database!");
+      Bukkit.getConsoleSender().sendMessage("Check configuration of mysql.yml file or disable mysql option in config.yml");
+      return Collections.emptyMap();
+    }
   }
 
   public String getTableName() {
