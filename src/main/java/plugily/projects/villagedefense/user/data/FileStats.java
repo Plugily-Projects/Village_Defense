@@ -21,6 +21,7 @@ package plugily.projects.villagedefense.user.data;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitTask;
 import pl.plajerlair.commonsbox.minecraft.configuration.ConfigUtils;
 import pl.plajerlair.commonsbox.sorter.SortUtils;
 import plugily.projects.villagedefense.Main;
@@ -32,31 +33,35 @@ import plugily.projects.villagedefense.utils.constants.Constants;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Created by Tom on 17/06/2015.
  */
-public class FileStats implements UserDatabase {
+public class FileStats implements UserDatabase, Runnable {
 
   private final Main plugin;
   private final FileConfiguration config;
+  private final BukkitTask updateTask;
+  private final AtomicBoolean updateRequired = new AtomicBoolean(false);
 
   public FileStats(Main plugin) {
     this.plugin = plugin;
     new LegacyDataFixer(plugin);
-    config = ConfigUtils.getConfig(plugin, Constants.Files.STATS.getName());
+    this.config = ConfigUtils.getConfig(plugin, Constants.Files.STATS.getName());
+    this.updateTask = Bukkit.getScheduler().runTaskTimerAsynchronously(plugin, this, 40, 40);
   }
 
   @Override
   public void saveStatistic(User user, StatsStorage.StatisticType stat) {
     config.set(user.getUniqueId().toString() + "." + stat.getName(), user.getStat(stat));
-    ConfigUtils.saveConfig(plugin, config, Constants.Files.STATS.getName());
+    updateRequired.set(true);
   }
 
   @Override
   public void saveAllStatistic(User user) {
     updateStats(user);
-    ConfigUtils.saveConfig(plugin, config, Constants.Files.STATS.getName());
+    updateRequired.set(true);
   }
 
   @Override
@@ -84,7 +89,9 @@ public class FileStats implements UserDatabase {
       User user = plugin.getUserManager().getUser(player);
       updateStats(user);
     }
-    ConfigUtils.saveConfig(plugin, config, Constants.Files.STATS.getName());
+    updateTask.cancel();
+    // Save the last time before disabling
+    run();
   }
 
   @Override
@@ -98,6 +105,15 @@ public class FileStats implements UserDatabase {
         continue;
       }
       config.set(user.getUniqueId().toString() + "." + stat.getName(), user.getStat(stat));
+    }
+  }
+
+  // Save the config to the file
+  @Override
+  public void run() {
+    if (updateRequired.get()) {
+      ConfigUtils.saveConfig(plugin, config, Constants.Files.STATS.getName());
+      updateRequired.set(false);
     }
   }
 }
