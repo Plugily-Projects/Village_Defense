@@ -19,15 +19,16 @@
 package plugily.projects.villagedefense.user.data;
 
 import org.bukkit.Bukkit;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import pl.plajerlair.commonsbox.database.MysqlDatabase;
 import pl.plajerlair.commonsbox.minecraft.configuration.ConfigUtils;
 import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.api.StatsStorage;
-import plugily.projects.villagedefense.handlers.hologram.messages.LanguageMessage;
 import plugily.projects.villagedefense.user.User;
 import plugily.projects.villagedefense.utils.Debugger;
 import plugily.projects.villagedefense.utils.MessageUtils;
+import plugily.projects.villagedefense.utils.constants.Constants;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -51,7 +52,9 @@ public class MysqlManager implements UserDatabase {
 
   public MysqlManager(Main plugin) {
     this.plugin = plugin;
-    database = plugin.getMysqlDatabase();
+    Debugger.debug("Database enabled");
+    FileConfiguration config = ConfigUtils.getConfig(plugin, Constants.Files.MYSQL.getName());
+    database = new MysqlDatabase(config.getString("user"), config.getString("password"), config.getString("address"), config.getLong("maxLifeTime", 1800000));
     Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
       try(Connection connection = database.getConnection();
           Statement statement = connection.createStatement()) {
@@ -157,16 +160,17 @@ public class MysqlManager implements UserDatabase {
   }
 
   @Override
-  public void saveAll() {
+  public void disable() {
     for(Player player : plugin.getServer().getOnlinePlayers()) {
       User user = plugin.getUserManager().getUser(player);
       database.executeUpdate(getUpdateQuery(user));
     }
+    database.shutdownConnPool();
   }
 
   @Override
   public String getPlayerName(UUID uuid) {
-    try(Connection connection = plugin.getMysqlDatabase().getConnection()) {
+    try(Connection connection = database.getConnection()) {
       Statement statement = connection.createStatement();
       return statement.executeQuery("Select `name` FROM " + getTableName() + " WHERE UUID='" + uuid.toString() + "'").toString();
     } catch(SQLException | NullPointerException e) {

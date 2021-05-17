@@ -63,9 +63,9 @@ public interface UserDatabase {
   Map<UUID, Integer> getStats(StatsStorage.StatisticType stat);
 
   /**
-   * Save all stats for all players
+   * Disable the database
    */
-  void saveAll();
+  void disable();
 
   /**
    * Get the name of the player providing the UUID

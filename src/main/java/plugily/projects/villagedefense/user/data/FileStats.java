@@ -77,7 +77,7 @@ public class FileStats implements UserDatabase {
   }
 
   @Override
-  public void saveAll() {
+  public void disable() {
     for(Player player : plugin.getServer().getOnlinePlayers()) {
       User user = plugin.getUserManager().getUser(player);
       updateStats(user);

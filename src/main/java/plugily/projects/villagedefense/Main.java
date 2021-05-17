@@ -30,7 +30,6 @@ import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.java.JavaPluginLoader;
 import org.jetbrains.annotations.TestOnly;
-import pl.plajerlair.commonsbox.database.MysqlDatabase;
 import pl.plajerlair.commonsbox.minecraft.compat.ServerVersion;
 import pl.plajerlair.commonsbox.minecraft.compat.events.EventsInitializer;
 import pl.plajerlair.commonsbox.minecraft.configuration.ConfigUtils;
@@ -98,7 +97,6 @@ public class Main extends JavaPlugin {
   private ChatManager chatManager;
   private UserManager userManager;
   private ConfigPreferences configPreferences;
-  private MysqlDatabase database;
   private ArgumentsRegistry registry;
   private SignManager signManager;
   private SpecialItemManager specialItemManager;
@@ -229,11 +227,6 @@ public class Main extends JavaPlugin {
     partyHandler = new PartySupportInitializer().initialize(this);
     KitRegistry.init(this);
     User.cooldownHandlerTask();
-    if(configPreferences.getOption(ConfigPreferences.Option.DATABASE_ENABLED)) {
-      Debugger.debug("Database enabled");
-      FileConfiguration config = ConfigUtils.getConfig(this, Constants.Files.MYSQL.getName());
-      database = new MysqlDatabase(config.getString("user"), config.getString("password"), config.getString("address"), config.getLong("maxLifeTime", 1800000));
-    }
     if(configPreferences.getOption(ConfigPreferences.Option.BUNGEE_ENABLED)) {
       Debugger.debug("Bungee enabled");
       bungeeManager = new BungeeManager(this);
@@ -358,10 +351,6 @@ public class Main extends JavaPlugin {
     return holidayManager;
   }
 
-  public MysqlDatabase getMysqlDatabase() {
-    return database;
-  }
-
   public PartyHandler getPartyHandler() {
     return partyHandler;
   }
@@ -404,15 +393,12 @@ public class Main extends JavaPlugin {
 
       arena.getMapRestorerManager().fullyRestoreArena();
     }
-    userManager.getDatabase().saveAll();
+    userManager.getDatabase().disable();
     if(holographicEnabled) {
       if(configPreferences.getOption(ConfigPreferences.Option.HOLOGRAMS_ENABLED)) {
         hologramsRegistry.disableHolograms();
       }
       HologramsAPI.getHolograms(this).forEach(Hologram::delete);
-    }
-    if(configPreferences.getOption(ConfigPreferences.Option.DATABASE_ENABLED)) {
-      getMysqlDatabase().shutdownConnPool();
     }
     Debugger.debug("System disable finished took {0}ms", System.currentTimeMillis() - start);
   }
