@@ -18,6 +18,7 @@
 
 package plugily.projects.villagedefense.user.data;
 
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import pl.plajerlair.commonsbox.minecraft.configuration.ConfigUtils;
@@ -82,6 +83,11 @@ public class FileStats implements UserDatabase {
       updateStats(user);
     }
     ConfigUtils.saveConfig(plugin, config, Constants.Files.STATS.getName());
+  }
+
+  @Override
+  public String getPlayerName(UUID uuid) {
+    return Bukkit.getOfflinePlayer(uuid).getName();
   }
 
   private void updateStats(User user) {

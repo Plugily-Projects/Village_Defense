@@ -24,6 +24,7 @@ import pl.plajerlair.commonsbox.database.MysqlDatabase;
 import pl.plajerlair.commonsbox.minecraft.configuration.ConfigUtils;
 import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.api.StatsStorage;
+import plugily.projects.villagedefense.handlers.hologram.messages.LanguageMessage;
 import plugily.projects.villagedefense.user.User;
 import plugily.projects.villagedefense.utils.Debugger;
 import plugily.projects.villagedefense.utils.MessageUtils;
@@ -160,6 +161,16 @@ public class MysqlManager implements UserDatabase {
     for(Player player : plugin.getServer().getOnlinePlayers()) {
       User user = plugin.getUserManager().getUser(player);
       database.executeUpdate(getUpdateQuery(user));
+    }
+  }
+
+  @Override
+  public String getPlayerName(UUID uuid) {
+    try(Connection connection = plugin.getMysqlDatabase().getConnection()) {
+      Statement statement = connection.createStatement();
+      return statement.executeQuery("Select `name` FROM " + getTableName() + " WHERE UUID='" + uuid.toString() + "'").toString();
+    } catch(SQLException | NullPointerException e) {
+      return null;
     }
   }
 

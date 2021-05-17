@@ -65,4 +65,12 @@ public interface UserDatabase {
    * Save all stats for all players
    */
   void saveAll();
+
+  /**
+   * Get the name of the player providing the UUID
+   *
+   * @param uuid the UUID
+   * @return the player's name
+   */
+  String getPlayerName(UUID uuid);
 }
