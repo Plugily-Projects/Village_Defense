@@ -60,4 +60,9 @@ public interface UserDatabase {
    * @return Map of UUID keys and Integer values sorted in ascending order of requested statistic type
    */
   Map<UUID, Integer> getStats(StatsStorage.StatisticType stat);
+
+  /**
+   * Save all stats for all players
+   */
+  void saveAll();
 }

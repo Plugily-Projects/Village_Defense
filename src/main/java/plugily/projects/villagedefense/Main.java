@@ -75,7 +75,6 @@ import plugily.projects.villagedefense.kits.KitMenuHandler;
 import plugily.projects.villagedefense.kits.KitRegistry;
 import plugily.projects.villagedefense.user.User;
 import plugily.projects.villagedefense.user.UserManager;
-import plugily.projects.villagedefense.user.data.MysqlManager;
 import plugily.projects.villagedefense.utils.Debugger;
 import plugily.projects.villagedefense.utils.ExceptionLogHandler;
 import plugily.projects.villagedefense.utils.LegacyDataFixer;
@@ -405,7 +404,7 @@ public class Main extends JavaPlugin {
 
       arena.getMapRestorerManager().fullyRestoreArena();
     }
-    saveAllUserStatistics();
+    userManager.getDatabase().saveAll();
     if(holographicEnabled) {
       if(configPreferences.getOption(ConfigPreferences.Option.HOLOGRAMS_ENABLED)) {
         hologramsRegistry.disableHolograms();
@@ -416,28 +415,5 @@ public class Main extends JavaPlugin {
       getMysqlDatabase().shutdownConnPool();
     }
     Debugger.debug("System disable finished took {0}ms", System.currentTimeMillis() - start);
-  }
-
-  private void saveAllUserStatistics() {
-    for(Player player : getServer().getOnlinePlayers()) {
-      User user = userManager.getUser(player);
-      if(userManager.getDatabase() instanceof MysqlManager) {
-        StringBuilder update = new StringBuilder(" SET ");
-        for(StatsStorage.StatisticType stat : StatsStorage.StatisticType.values()) {
-          if(!stat.isPersistent()) continue;
-          if(update.toString().equalsIgnoreCase(" SET ")) {
-            update.append(stat.getName()).append('=').append(user.getStat(stat));
-          }
-          update.append(", ").append(stat.getName()).append('=').append(user.getStat(stat));
-        }
-        //copy of userManager#saveStatistic but without async database call that's not allowed in onDisable method.
-        ((MysqlManager) userManager.getDatabase()).getDatabase().executeUpdate("UPDATE " + ((MysqlManager) getUserManager().getDatabase()).getTableName()
-            + update.toString() + " WHERE UUID='" + user.getUniqueId().toString() + "';");
-        continue;
-      }
-      for(StatsStorage.StatisticType stat : StatsStorage.StatisticType.values()) {
-        userManager.getDatabase().saveStatistic(user, stat);
-      }
-    }
   }
 }

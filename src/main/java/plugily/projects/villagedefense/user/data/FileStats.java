@@ -19,6 +19,7 @@
 package plugily.projects.villagedefense.user.data;
 
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Player;
 import pl.plajerlair.commonsbox.minecraft.configuration.ConfigUtils;
 import pl.plajerlair.commonsbox.sorter.SortUtils;
 import plugily.projects.villagedefense.Main;
@@ -51,12 +52,7 @@ public class FileStats implements UserDatabase {
 
   @Override
   public void saveAllStatistic(User user) {
-    for(StatsStorage.StatisticType stat : StatsStorage.StatisticType.values()) {
-      if(!stat.isPersistent()) {
-        continue;
-      }
-      config.set(user.getUniqueId().toString() + "." + stat.getName(), user.getStat(stat));
-    }
+    updateStats(user);
     ConfigUtils.saveConfig(plugin, config, Constants.Files.STATS.getName());
   }
 
@@ -77,5 +73,23 @@ public class FileStats implements UserDatabase {
       stats.put(UUID.fromString(string), config.getInt(string + "." + stat.getName()));
     }
     return SortUtils.sortByValue(stats);
+  }
+
+  @Override
+  public void saveAll() {
+    for(Player player : plugin.getServer().getOnlinePlayers()) {
+      User user = plugin.getUserManager().getUser(player);
+      updateStats(user);
+    }
+    ConfigUtils.saveConfig(plugin, config, Constants.Files.STATS.getName());
+  }
+
+  private void updateStats(User user) {
+    for(StatsStorage.StatisticType stat : StatsStorage.StatisticType.values()) {
+      if(!stat.isPersistent()) {
+        continue;
+      }
+      config.set(user.getUniqueId().toString() + "." + stat.getName(), user.getStat(stat));
+    }
   }
 }

@@ -19,6 +19,7 @@
 package plugily.projects.villagedefense.user.data;
 
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import pl.plajerlair.commonsbox.database.MysqlDatabase;
 import pl.plajerlair.commonsbox.minecraft.configuration.ConfigUtils;
 import plugily.projects.villagedefense.Main;
@@ -82,6 +83,14 @@ public class MysqlManager implements UserDatabase {
     });
   }
 
+  public String getTableName() {
+    return ConfigUtils.getConfig(plugin, "mysql").getString("table", "playerstats");
+  }
+
+  public MysqlDatabase getDatabase() {
+    return database;
+  }
+
   @Override
   public void saveStatistic(User user, StatsStorage.StatisticType stat) {
     Bukkit.getScheduler().runTaskAsynchronously(plugin, () ->
@@ -90,20 +99,8 @@ public class MysqlManager implements UserDatabase {
 
   @Override
   public void saveAllStatistic(User user) {
-    StringBuilder update = new StringBuilder(" SET ");
-    for(StatsStorage.StatisticType stat : StatsStorage.StatisticType.values()) {
-      if(!stat.isPersistent()) {
-        continue;
-      }
-      if(update.toString().equalsIgnoreCase(" SET ")) {
-        update.append(stat.getName()).append('=').append(user.getStat(stat));
-      }
-      update.append(", ").append(stat.getName()).append('=').append(user.getStat(stat));
-    }
-    String finalUpdate = update.toString();
-
-    Bukkit.getScheduler().runTaskAsynchronously(plugin, () ->
-        database.executeUpdate("UPDATE " + getTableName() + finalUpdate + " WHERE UUID='" + user.getUniqueId().toString() + "';"));
+    String updateQuery = getUpdateQuery(user);
+    Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> database.executeUpdate(updateQuery));
   }
 
   @Override
@@ -158,11 +155,25 @@ public class MysqlManager implements UserDatabase {
     }
   }
 
-  public String getTableName() {
-    return ConfigUtils.getConfig(plugin, "mysql").getString("table", "playerstats");
+  @Override
+  public void saveAll() {
+    for(Player player : plugin.getServer().getOnlinePlayers()) {
+      User user = plugin.getUserManager().getUser(player);
+      database.executeUpdate(getUpdateQuery(user));
+    }
   }
 
-  public MysqlDatabase getDatabase() {
-    return database;
+  private String getUpdateQuery(User user) {
+    StringBuilder update = new StringBuilder(" SET ");
+    for(StatsStorage.StatisticType stat : StatsStorage.StatisticType.values()) {
+      if(!stat.isPersistent()) {
+        continue;
+      }
+      if(update.toString().equalsIgnoreCase(" SET ")) {
+        update.append(stat.getName()).append('=').append(user.getStat(stat));
+      }
+      update.append(", ").append(stat.getName()).append('=').append(user.getStat(stat));
+    }
+    return "UPDATE " + getTableName() + update + " WHERE UUID='" + user.getUniqueId().toString() + "';";
   }
 }
