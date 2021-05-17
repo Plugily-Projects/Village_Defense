@@ -18,6 +18,7 @@
 
 package plugily.projects.villagedefense.user.data;
 
+import org.jetbrains.annotations.Nullable;
 import plugily.projects.villagedefense.api.StatsStorage;
 import plugily.projects.villagedefense.user.User;
 
@@ -72,5 +73,6 @@ public interface UserDatabase {
    * @param uuid the UUID
    * @return the player's name
    */
+  @Nullable
   String getPlayerName(UUID uuid);
 }
