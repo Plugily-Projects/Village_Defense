@@ -95,23 +95,27 @@ public class TeleporterKit extends PremiumKit implements Listener {
     if(!(e.getAction() == Action.RIGHT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_BLOCK)) {
       return;
     }
-    Arena arena = ArenaRegistry.getArena(e.getPlayer());
-    ItemStack stack = VersionUtils.getItemInHand(e.getPlayer());
+    Player player = e.getPlayer();
+    Arena arena = ArenaRegistry.getArena(player);
+    ItemStack stack = VersionUtils.getItemInHand(player);
     if(arena == null || !ItemUtils.isItemStackNamed(stack)) {
       return;
     }
     if(!ChatColor.stripColor(ComplementAccessor.getComplement().getDisplayName(stack.getItemMeta())).equalsIgnoreCase(ChatColor.stripColor(getPlugin().getChatManager().colorMessage(Messages.KITS_TELEPORTER_GAME_ITEM_NAME)))) {
       return;
     }
+    if (!(getPlugin().getUserManager().getUser(player).getKit() instanceof TeleporterKit)) {
+      return;
+    }
     int rows = arena.getVillagers().size();
-    for(Player player : arena.getPlayers()) {
-      if(getPlugin().getUserManager().getUser(player).isSpectator()) {
+    for(Player arenaPlayer : arena.getPlayers()) {
+      if(getPlugin().getUserManager().getUser(arenaPlayer).isSpectator()) {
         continue;
       }
       rows++;
     }
     rows = Utils.serializeInt(rows) / 9;
-    prepareTeleporterGui(e.getPlayer(), arena, rows);
+    prepareTeleporterGui(player, arena, rows);
   }
 
   private void prepareTeleporterGui(Player player, Arena arena, int rows) {

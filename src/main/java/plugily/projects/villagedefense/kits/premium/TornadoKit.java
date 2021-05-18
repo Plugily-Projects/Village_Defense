@@ -106,6 +106,9 @@ public class TornadoKit extends PremiumKit implements Listener {
         || !ComplementAccessor.getComplement().getDisplayName(stack.getItemMeta()).equalsIgnoreCase(getPlugin().getChatManager().colorMessage(Messages.KITS_TORNADO_GAME_ITEM_NAME))) {
       return;
     }
+    if (!(getPlugin().getUserManager().getUser(player).getKit() instanceof TornadoKit)) {
+      return;
+    }
     if(active >= 2) {
       return;
     }
