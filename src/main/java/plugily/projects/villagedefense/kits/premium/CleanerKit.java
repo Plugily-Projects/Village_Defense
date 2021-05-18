@@ -97,9 +97,10 @@ public class CleanerKit extends PremiumKit implements Listener {
       e.getPlayer().sendMessage(getPlugin().getChatManager().colorMessage(Messages.SPECTATOR_WARNING));
       return;
     }
-    if(user.getCooldown("clean") > 0 && !user.isSpectator()) {
+    long cooldown = user.getCooldown("clean");
+    if(cooldown > 0 && !user.isSpectator()) {
       String message = getPlugin().getChatManager().colorMessage(Messages.KITS_ABILITY_STILL_ON_COOLDOWN);
-      message = message.replaceFirst("%COOLDOWN%", Long.toString(user.getCooldown("clean")));
+      message = message.replaceFirst("%COOLDOWN%", Long.toString(cooldown));
       e.getPlayer().sendMessage(message);
       return;
     }

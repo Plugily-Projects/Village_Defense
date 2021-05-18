@@ -126,11 +126,14 @@ public class User {
   }
 
   public boolean checkCanCastCooldownAndMessage(String cooldown) {
-    if(getCooldown(cooldown) <= 0) {
+    long time = getCooldown(cooldown);
+
+    if(time <= 0) {
       return true;
     }
+
     String message = plugin.getChatManager().colorMessage(Messages.KITS_ABILITY_STILL_ON_COOLDOWN);
-    message = message.replaceFirst("%COOLDOWN%", Long.toString(getCooldown(cooldown)));
+    message = message.replaceFirst("%COOLDOWN%", Long.toString(time));
     getPlayer().sendMessage(message);
     return false;
   }
