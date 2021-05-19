@@ -28,7 +28,6 @@ import plugily.projects.villagedefense.handlers.language.Messages;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -72,7 +71,7 @@ public class LeaderboardArgument {
   }
 
   private void printLeaderboard(CommandSender sender, StatsStorage.StatisticType statisticType) {
-    Map<UUID, Integer> stats = StatsStorage.getStats(statisticType);
+    java.util.Map<UUID, Integer> stats = StatsStorage.getStats(statisticType);
     sender.sendMessage(registry.getPlugin().getChatManager().colorMessage(Messages.LEADERBOARD_HEADER));
     String statistic = StringUtils.capitalize(statisticType.toString().toLowerCase().replace('_', ' '));
     UUID[] array = stats.keySet().toArray(new UUID[0]);
