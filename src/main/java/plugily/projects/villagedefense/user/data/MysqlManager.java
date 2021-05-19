@@ -104,8 +104,7 @@ public class MysqlManager implements UserDatabase {
 
   @Override
   public void saveAllStatistic(User user) {
-    String updateQuery = getUpdateQuery(user);
-    Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> database.executeUpdate(updateQuery));
+    Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> database.executeUpdate(getUpdateQuery(user)));
   }
 
   @Override
