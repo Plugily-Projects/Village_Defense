@@ -21,6 +21,7 @@ package plugily.projects.villagedefense.user.data;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 import pl.plajerlair.commonsbox.database.MysqlDatabase;
 import pl.plajerlair.commonsbox.minecraft.configuration.ConfigUtils;
 import plugily.projects.villagedefense.Main;
@@ -140,6 +141,7 @@ public class MysqlManager implements UserDatabase {
     });
   }
 
+  @NotNull
   @Override
   public Map<UUID, Integer> getStats(StatsStorage.StatisticType stat) {
     try(Connection connection = getDatabase().getConnection();

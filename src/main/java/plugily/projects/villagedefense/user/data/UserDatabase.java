@@ -18,6 +18,7 @@
 
 package plugily.projects.villagedefense.user.data;
 
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import plugily.projects.villagedefense.api.StatsStorage;
 import plugily.projects.villagedefense.user.User;
@@ -60,6 +61,7 @@ public interface UserDatabase {
    * @param stat Statistic type to get (kills, deaths etc.)
    * @return Map of UUID keys and Integer values sorted in ascending order of requested statistic type
    */
+  @NotNull
   Map<UUID, Integer> getStats(StatsStorage.StatisticType stat);
 
   /**

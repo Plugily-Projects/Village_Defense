@@ -22,6 +22,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitTask;
+import org.jetbrains.annotations.NotNull;
 import pl.plajerlair.commonsbox.minecraft.configuration.ConfigUtils;
 import pl.plajerlair.commonsbox.sorter.SortUtils;
 import plugily.projects.villagedefense.Main;
@@ -71,6 +72,7 @@ public class FileStats implements UserDatabase, Runnable {
     }
   }
 
+  @NotNull
   @Override
   public Map<UUID, Integer> getStats(StatsStorage.StatisticType stat) {
     Map<UUID, Integer> stats = new TreeMap<>();
