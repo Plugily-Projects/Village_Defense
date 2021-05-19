@@ -112,8 +112,7 @@ public class MysqlManager implements UserDatabase {
   public void loadStatistics(User user) {
     Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
       String uuid = user.getUniqueId().toString();
-      try(Connection connection = database.getConnection()) {
-        Statement statement = connection.createStatement();
+      try(Connection connection = database.getConnection(); Statement statement = connection.createStatement()) {
         database.executeUpdate("UPDATE " + getTableName() + " SET " + "name" + "=" + user.getPlayer().getName() + " WHERE UUID='" + uuid + "';");
         ResultSet rs = statement.executeQuery("SELECT * from " + getTableName() + " WHERE UUID='" + uuid + "'");
         if(rs.next()) {
@@ -172,8 +171,7 @@ public class MysqlManager implements UserDatabase {
 
   @Override
   public String getPlayerName(UUID uuid) {
-    try(Connection connection = database.getConnection()) {
-      Statement statement = connection.createStatement();
+    try(Connection connection = database.getConnection(); Statement statement = connection.createStatement()) {
       return statement.executeQuery("Select `name` FROM " + getTableName() + " WHERE UUID='" + uuid.toString() + "'").toString();
     } catch(SQLException | NullPointerException e) {
       return null;
