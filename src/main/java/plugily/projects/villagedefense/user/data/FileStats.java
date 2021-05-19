@@ -35,6 +35,7 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.logging.Level;
 
 /**
  * Created by Tom on 17/06/2015.
@@ -81,7 +82,11 @@ public class FileStats implements UserDatabase, Runnable {
       if(string.equals("data-version")) {
         continue;
       }
-      stats.put(UUID.fromString(string), config.getInt(string + "." + stat.getName()));
+      try {
+        stats.put(UUID.fromString(string), config.getInt(string + "." + stat.getName()));
+      } catch (IllegalArgumentException ex) {
+        plugin.getLogger().log(Level.WARNING, "Cannot load the UUID for {0}", string);
+      }
     }
     return SortUtils.sortByValue(stats);
   }
