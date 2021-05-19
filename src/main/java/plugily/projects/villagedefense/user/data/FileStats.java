@@ -67,8 +67,9 @@ public class FileStats implements UserDatabase, Runnable {
 
   @Override
   public void loadStatistics(User user) {
+    String uuid = user.getUniqueId().toString();
     for(StatsStorage.StatisticType stat : StatsStorage.StatisticType.values()) {
-      user.setStat(stat, config.getInt(user.getUniqueId().toString() + "." + stat.getName(), 0));
+      user.setStat(stat, config.getInt(uuid + "." + stat.getName(), 0));
     }
   }
 
