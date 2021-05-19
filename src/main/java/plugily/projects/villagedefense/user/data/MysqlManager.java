@@ -147,7 +147,12 @@ public class MysqlManager implements UserDatabase {
         ResultSet set = statement.executeQuery("SELECT UUID, " + stat.getName() + " FROM " + getTableName() + " ORDER BY " + stat.getName())) {
       Map<UUID, java.lang.Integer> column = new LinkedHashMap<>();
       while(set.next()) {
-        column.put(UUID.fromString(set.getString("UUID")), set.getInt(stat.getName()));
+        String uuid = set.getString("UUID");
+        try {
+          column.put(UUID.fromString(uuid), set.getInt(stat.getName()));
+        } catch (IllegalArgumentException ex) {
+          plugin.getLogger().log(Level.WARNING, "Cannot load the UUID for {0}", uuid);
+        }
       }
       return column;
     } catch(SQLException e) {
