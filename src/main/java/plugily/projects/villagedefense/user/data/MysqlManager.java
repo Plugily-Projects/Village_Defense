@@ -19,6 +19,9 @@
 package plugily.projects.villagedefense.user.data;
 
 import org.bukkit.Bukkit;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 import pl.plajerlair.commonsbox.database.MysqlDatabase;
 import pl.plajerlair.commonsbox.minecraft.configuration.ConfigUtils;
 import plugily.projects.villagedefense.Main;
@@ -26,11 +29,16 @@ import plugily.projects.villagedefense.api.StatsStorage;
 import plugily.projects.villagedefense.user.User;
 import plugily.projects.villagedefense.utils.Debugger;
 import plugily.projects.villagedefense.utils.MessageUtils;
+import plugily.projects.villagedefense.utils.constants.Constants;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.UUID;
 import java.util.logging.Level;
 
 /**
@@ -45,10 +53,14 @@ public class MysqlManager implements UserDatabase {
 
   public MysqlManager(Main plugin) {
     this.plugin = plugin;
-    database = plugin.getMysqlDatabase();
+
+    FileConfiguration config = ConfigUtils.getConfig(plugin, Constants.Files.MYSQL.getName());
+    database = new MysqlDatabase(config.getString("user"), config.getString("password"), config.getString("address"), config.getLong("maxLifeTime", 1800000));
     Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
       try(Connection connection = database.getConnection();
           Statement statement = connection.createStatement()) {
+        Debugger.debug("Database enabled");
+
         statement.executeUpdate("CREATE TABLE IF NOT EXISTS `" + getTableName() + "` (\n"
             + "  `UUID` char(36) NOT NULL PRIMARY KEY,\n"
             + "  `name` varchar(32) NOT NULL,\n"
@@ -78,6 +90,14 @@ public class MysqlManager implements UserDatabase {
     });
   }
 
+  public String getTableName() {
+    return ConfigUtils.getConfig(plugin, "mysql").getString("table", "playerstats");
+  }
+
+  public MysqlDatabase getDatabase() {
+    return database;
+  }
+
   @Override
   public void saveStatistic(User user, StatsStorage.StatisticType stat) {
     Bukkit.getScheduler().runTaskAsynchronously(plugin, () ->
@@ -86,28 +106,14 @@ public class MysqlManager implements UserDatabase {
 
   @Override
   public void saveAllStatistic(User user) {
-    StringBuilder update = new StringBuilder(" SET ");
-    for(StatsStorage.StatisticType stat : StatsStorage.StatisticType.values()) {
-      if(!stat.isPersistent()) {
-        continue;
-      }
-      if(update.toString().equalsIgnoreCase(" SET ")) {
-        update.append(stat.getName()).append('=').append(user.getStat(stat));
-      }
-      update.append(", ").append(stat.getName()).append('=').append(user.getStat(stat));
-    }
-    String finalUpdate = update.toString();
-
-    Bukkit.getScheduler().runTaskAsynchronously(plugin, () ->
-        database.executeUpdate("UPDATE " + getTableName() + finalUpdate + " WHERE UUID='" + user.getUniqueId().toString() + "';"));
+    Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> database.executeUpdate(getUpdateQuery(user)));
   }
 
   @Override
   public void loadStatistics(User user) {
     Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
       String uuid = user.getUniqueId().toString();
-      try(Connection connection = database.getConnection()) {
-        Statement statement = connection.createStatement();
+      try(Connection connection = database.getConnection(); Statement statement = connection.createStatement()) {
         database.executeUpdate("UPDATE " + getTableName() + " SET " + "name" + "=" + user.getPlayer().getName() + " WHERE UUID='" + uuid + "';");
         ResultSet rs = statement.executeQuery("SELECT * from " + getTableName() + " WHERE UUID='" + uuid + "'");
         if(rs.next()) {
@@ -135,11 +141,59 @@ public class MysqlManager implements UserDatabase {
     });
   }
 
-  public String getTableName() {
-    return ConfigUtils.getConfig(plugin, "mysql").getString("table", "playerstats");
+  @NotNull
+  @Override
+  public Map<UUID, Integer> getStats(StatsStorage.StatisticType stat) {
+    try(Connection connection = getDatabase().getConnection();
+        Statement statement = connection.createStatement();
+        ResultSet set = statement.executeQuery("SELECT UUID, " + stat.getName() + " FROM " + getTableName() + " ORDER BY " + stat.getName())) {
+      Map<UUID, java.lang.Integer> column = new LinkedHashMap<>();
+      while(set.next()) {
+        String uuid = set.getString("UUID");
+        try {
+          column.put(UUID.fromString(uuid), set.getInt(stat.getName()));
+        } catch (IllegalArgumentException ex) {
+          plugin.getLogger().log(Level.WARNING, "Cannot load the UUID for {0}", uuid);
+        }
+      }
+      return column;
+    } catch(SQLException e) {
+      plugin.getLogger().log(Level.WARNING, "SQLException occurred! " + e.getSQLState() + " (" + e.getErrorCode() + ")");
+      MessageUtils.errorOccurred();
+      Bukkit.getConsoleSender().sendMessage("Cannot get contents from MySQL database!");
+      Bukkit.getConsoleSender().sendMessage("Check configuration of mysql.yml file or disable mysql option in config.yml");
+      return Collections.emptyMap();
+    }
   }
 
-  public MysqlDatabase getDatabase() {
-    return database;
+  @Override
+  public void disable() {
+    for(Player player : plugin.getServer().getOnlinePlayers()) {
+      database.executeUpdate(getUpdateQuery(plugin.getUserManager().getUser(player)));
+    }
+    database.shutdownConnPool();
+  }
+
+  @Override
+  public String getPlayerName(UUID uuid) {
+    try(Connection connection = database.getConnection(); Statement statement = connection.createStatement()) {
+      return statement.executeQuery("Select `name` FROM " + getTableName() + " WHERE UUID='" + uuid.toString() + "'").toString();
+    } catch(SQLException | NullPointerException e) {
+      return null;
+    }
+  }
+
+  private String getUpdateQuery(User user) {
+    StringBuilder update = new StringBuilder(" SET ");
+    for(StatsStorage.StatisticType stat : StatsStorage.StatisticType.values()) {
+      if(!stat.isPersistent()) {
+        continue;
+      }
+      if(update.toString().equalsIgnoreCase(" SET ")) {
+        update.append(stat.getName()).append('=').append(user.getStat(stat));
+      }
+      update.append(", ").append(stat.getName()).append('=').append(user.getStat(stat));
+    }
+    return "UPDATE " + getTableName() + update + " WHERE UUID='" + user.getUniqueId().toString() + "';";
   }
 }

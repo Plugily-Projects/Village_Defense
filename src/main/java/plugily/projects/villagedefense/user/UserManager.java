@@ -43,10 +43,10 @@ public class UserManager {
 
   private final UserDatabase database;
   private final List<User> users = new ArrayList<>();
-  private static Main plugin;
+  private final Main plugin;
 
   public UserManager(Main main) {
-    plugin = main;
+    this.plugin = main;
     if(plugin.getConfigPreferences().getOption(ConfigPreferences.Option.DATABASE_ENABLED)) {
       database = new MysqlManager(plugin);
     } else {

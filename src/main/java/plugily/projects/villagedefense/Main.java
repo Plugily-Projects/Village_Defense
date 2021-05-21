@@ -30,7 +30,6 @@ import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.java.JavaPluginLoader;
 import org.jetbrains.annotations.TestOnly;
-import pl.plajerlair.commonsbox.database.MysqlDatabase;
 import pl.plajerlair.commonsbox.minecraft.compat.ServerVersion;
 import pl.plajerlair.commonsbox.minecraft.compat.events.EventsInitializer;
 import pl.plajerlair.commonsbox.minecraft.configuration.ConfigUtils;
@@ -75,14 +74,11 @@ import plugily.projects.villagedefense.kits.KitMenuHandler;
 import plugily.projects.villagedefense.kits.KitRegistry;
 import plugily.projects.villagedefense.user.User;
 import plugily.projects.villagedefense.user.UserManager;
-import plugily.projects.villagedefense.user.data.MysqlManager;
 import plugily.projects.villagedefense.utils.Debugger;
 import plugily.projects.villagedefense.utils.ExceptionLogHandler;
-import plugily.projects.villagedefense.utils.LegacyDataFixer;
 import plugily.projects.villagedefense.utils.MessageUtils;
 import plugily.projects.villagedefense.utils.UpdateChecker;
 import plugily.projects.villagedefense.utils.Utils;
-import plugily.projects.villagedefense.utils.constants.Constants;
 import plugily.projects.villagedefense.utils.services.ServiceRegistry;
 
 import java.io.File;
@@ -99,7 +95,6 @@ public class Main extends JavaPlugin {
   private ChatManager chatManager;
   private UserManager userManager;
   private ConfigPreferences configPreferences;
-  private MysqlDatabase database;
   private ArgumentsRegistry registry;
   private SignManager signManager;
   private SpecialItemManager specialItemManager;
@@ -173,7 +168,6 @@ public class Main extends JavaPlugin {
     chatManager = new ChatManager(LanguageManager.getLanguageMessage("In-Game.Plugin-Prefix"));
     configPreferences = new ConfigPreferences(this);
     setupFiles();
-    new LegacyDataFixer(this);
     languageConfig = ConfigUtils.getConfig(this, "language");
     initializeClasses();
     checkUpdate();
@@ -230,11 +224,6 @@ public class Main extends JavaPlugin {
     partyHandler = new PartySupportInitializer().initialize(this);
     KitRegistry.init(this);
     User.cooldownHandlerTask();
-    if(configPreferences.getOption(ConfigPreferences.Option.DATABASE_ENABLED)) {
-      Debugger.debug("Database enabled");
-      FileConfiguration config = ConfigUtils.getConfig(this, Constants.Files.MYSQL.getName());
-      database = new MysqlDatabase(config.getString("user"), config.getString("password"), config.getString("address"), config.getLong("maxLifeTime", 1800000));
-    }
     if(configPreferences.getOption(ConfigPreferences.Option.BUNGEE_ENABLED)) {
       Debugger.debug("Bungee enabled");
       bungeeManager = new BungeeManager(this);
@@ -359,10 +348,6 @@ public class Main extends JavaPlugin {
     return holidayManager;
   }
 
-  public MysqlDatabase getMysqlDatabase() {
-    return database;
-  }
-
   public PartyHandler getPartyHandler() {
     return partyHandler;
   }
@@ -405,39 +390,13 @@ public class Main extends JavaPlugin {
 
       arena.getMapRestorerManager().fullyRestoreArena();
     }
-    saveAllUserStatistics();
+    userManager.getDatabase().disable();
     if(holographicEnabled) {
       if(configPreferences.getOption(ConfigPreferences.Option.HOLOGRAMS_ENABLED)) {
         hologramsRegistry.disableHolograms();
       }
       HologramsAPI.getHolograms(this).forEach(Hologram::delete);
     }
-    if(configPreferences.getOption(ConfigPreferences.Option.DATABASE_ENABLED)) {
-      getMysqlDatabase().shutdownConnPool();
-    }
     Debugger.debug("System disable finished took {0}ms", System.currentTimeMillis() - start);
-  }
-
-  private void saveAllUserStatistics() {
-    for(Player player : getServer().getOnlinePlayers()) {
-      User user = userManager.getUser(player);
-      if(userManager.getDatabase() instanceof MysqlManager) {
-        StringBuilder update = new StringBuilder(" SET ");
-        for(StatsStorage.StatisticType stat : StatsStorage.StatisticType.values()) {
-          if(!stat.isPersistent()) continue;
-          if(update.toString().equalsIgnoreCase(" SET ")) {
-            update.append(stat.getName()).append('=').append(user.getStat(stat));
-          }
-          update.append(", ").append(stat.getName()).append('=').append(user.getStat(stat));
-        }
-        //copy of userManager#saveStatistic but without async database call that's not allowed in onDisable method.
-        ((MysqlManager) userManager.getDatabase()).getDatabase().executeUpdate("UPDATE " + ((MysqlManager) getUserManager().getDatabase()).getTableName()
-            + update.toString() + " WHERE UUID='" + user.getUniqueId().toString() + "';");
-        continue;
-      }
-      for(StatsStorage.StatisticType stat : StatsStorage.StatisticType.values()) {
-        userManager.getDatabase().saveStatistic(user, stat);
-      }
-    }
   }
 }
