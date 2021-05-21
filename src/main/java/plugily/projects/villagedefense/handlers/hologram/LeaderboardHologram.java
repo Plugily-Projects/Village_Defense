@@ -108,11 +108,7 @@ public class LeaderboardHologram extends BukkitRunnable {
 
   private String getPlayerNameSafely(UUID uuid) {
     String name = plugin.getUserManager().getDatabase().getPlayerName(uuid);
-    if (name == null) {
-      return color(plugin.getLanguageConfig().getString(LanguageMessage.HOLOGRAMS_UNKNOWN_PLAYER.getAccessor()));
-    } else {
-      return name;
-    }
+    return name != null ? name : color(plugin.getLanguageConfig().getString(LanguageMessage.HOLOGRAMS_UNKNOWN_PLAYER.getAccessor()));
   }
 
   private LanguageMessage statisticToMessage() {

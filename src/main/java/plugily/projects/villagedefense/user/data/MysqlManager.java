@@ -53,12 +53,14 @@ public class MysqlManager implements UserDatabase {
 
   public MysqlManager(Main plugin) {
     this.plugin = plugin;
-    Debugger.debug("Database enabled");
+
     FileConfiguration config = ConfigUtils.getConfig(plugin, Constants.Files.MYSQL.getName());
     database = new MysqlDatabase(config.getString("user"), config.getString("password"), config.getString("address"), config.getLong("maxLifeTime", 1800000));
     Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
       try(Connection connection = database.getConnection();
           Statement statement = connection.createStatement()) {
+        Debugger.debug("Database enabled");
+
         statement.executeUpdate("CREATE TABLE IF NOT EXISTS `" + getTableName() + "` (\n"
             + "  `UUID` char(36) NOT NULL PRIMARY KEY,\n"
             + "  `name` varchar(32) NOT NULL,\n"
@@ -167,8 +169,7 @@ public class MysqlManager implements UserDatabase {
   @Override
   public void disable() {
     for(Player player : plugin.getServer().getOnlinePlayers()) {
-      User user = plugin.getUserManager().getUser(player);
-      database.executeUpdate(getUpdateQuery(user));
+      database.executeUpdate(getUpdateQuery(plugin.getUserManager().getUser(player)));
     }
     database.shutdownConnPool();
   }

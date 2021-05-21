@@ -94,8 +94,7 @@ public class FileStats implements UserDatabase, Runnable {
   @Override
   public void disable() {
     for(Player player : plugin.getServer().getOnlinePlayers()) {
-      User user = plugin.getUserManager().getUser(player);
-      updateStats(user);
+      updateStats(plugin.getUserManager().getUser(player));
     }
     updateTask.cancel();
     // Save the last time before disabling
