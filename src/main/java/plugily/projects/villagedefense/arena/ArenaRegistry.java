@@ -151,7 +151,7 @@ public class ArenaRegistry {
         continue;
       }
 
-      Arena arena = ArenaUtils.initializeArena(id);
+      Arena arena = new Arena(id);
 
       arena.setMinimumPlayers(section.getInt(id + ".minimumplayers", 1));
       arena.setMaximumPlayers(section.getInt(id + ".maximumplayers", 2));
@@ -167,7 +167,6 @@ public class ArenaRegistry {
         arena.setLobbyLocation(lobbyLoc);
         arena.setStartLocation(startLoc);
         arena.setEndLocation(endLoc);
-        ArenaUtils.setWorld(arena);
       }
 
       if(!section.getBoolean(id + ".isdone")) {

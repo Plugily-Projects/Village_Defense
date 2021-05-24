@@ -98,7 +98,7 @@ public class BungeeManager implements Listener {
   @EventHandler(priority = EventPriority.HIGHEST)
   public void onQuit(PlayerQuitEvent event) {
     ComplementAccessor.getComplement().setQuitMessage(event, "");
-    if(ArenaRegistry.isInArena(event.getPlayer()) && !ArenaRegistry.getArenas().isEmpty()) {
+    if(!ArenaRegistry.getArenas().isEmpty() && ArenaRegistry.isInArena(event.getPlayer())) {
       ArenaManager.leaveAttempt(event.getPlayer(), ArenaRegistry.getArenas().get(ArenaRegistry.getBungeeArena()));
     }
 

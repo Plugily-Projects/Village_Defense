@@ -90,13 +90,17 @@ public class CleanerKit extends PremiumKit implements Listener {
       return;
     }
     User user = getPlugin().getUserManager().getUser(e.getPlayer());
+    if (!(user.getKit() instanceof CleanerKit)) {
+      return;
+    }
     if(user.isSpectator()) {
       e.getPlayer().sendMessage(getPlugin().getChatManager().colorMessage(Messages.SPECTATOR_WARNING));
       return;
     }
-    if(user.getCooldown("clean") > 0 && !user.isSpectator()) {
+    long cooldown = user.getCooldown("clean");
+    if(cooldown > 0 && !user.isSpectator()) {
       String message = getPlugin().getChatManager().colorMessage(Messages.KITS_ABILITY_STILL_ON_COOLDOWN);
-      message = message.replaceFirst("%COOLDOWN%", Long.toString(user.getCooldown("clean")));
+      message = message.replaceFirst("%COOLDOWN%", Long.toString(cooldown));
       e.getPlayer().sendMessage(message);
       return;
     }
@@ -109,6 +113,6 @@ public class CleanerKit extends PremiumKit implements Listener {
     Utils.playSound(e.getPlayer().getLocation(), "ENTITY_ZOMBIE_DEATH", "ENTITY_ZOMBIE_DEATH");
     getPlugin().getChatManager().broadcastMessage(arena, getPlugin().getChatManager()
         .formatMessage(arena, getPlugin().getChatManager().colorMessage(Messages.KITS_CLEANER_CLEANED_MAP), e.getPlayer()));
-    user.setCooldown("clean", getPlugin().getConfig().getInt("Kit-Cooldown.Cleaner", 60));
+    user.setCooldown("clean", getKitsConfig().getInt("Kit-Cooldown.Cleaner", 60));
   }
 }

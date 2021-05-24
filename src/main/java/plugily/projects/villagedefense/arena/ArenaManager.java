@@ -270,7 +270,7 @@ public class ArenaManager {
           .forEach(IronGolem::remove);
     }
     arena.doBarAction(Arena.BarAction.REMOVE, player);
-    if(arena.getPlayers().isEmpty() && arena.getArenaState() != ArenaState.WAITING_FOR_PLAYERS && arena.getArenaState() != ArenaState.STARTING) {
+    if(arena.getArenaState() != ArenaState.WAITING_FOR_PLAYERS && arena.getArenaState() != ArenaState.STARTING && arena.getPlayers().isEmpty()) {
       arena.setArenaState(ArenaState.ENDING);
       arena.setTimer(0);
       //needed as no players online and else it is auto canceled
@@ -295,8 +295,10 @@ public class ArenaManager {
 
     Bukkit.getPluginManager().callEvent(new VillageGameStopEvent(arena));
 
+    int wave = arena.getWave();
+
     String summaryEnding;
-    if(plugin.getConfig().getBoolean("Wave-Limit.Enabled") && arena.getWave() >= plugin.getConfig().getInt("Wave-Limit.Limit", 25)) {
+    if(plugin.getConfig().getBoolean("Wave-Limit.Enabled") && wave >= plugin.getConfig().getInt("Wave-Limit.Limit", 25)) {
       summaryEnding = plugin.getChatManager().colorMessage(Messages.END_MESSAGES_SUMMARY_WIN_GAME);
     } else if(!arena.getPlayersLeft().isEmpty()) {
       summaryEnding = plugin.getChatManager().colorMessage(Messages.END_MESSAGES_SUMMARY_VILLAGERS_DIED);
@@ -306,16 +308,16 @@ public class ArenaManager {
     List<String> summaryMessages = LanguageManager.getLanguageList("In-Game.Messages.Game-End-Messages.Summary-Message");
     for(Player player : arena.getPlayers()) {
       User user = plugin.getUserManager().getUser(player);
-      if(user.getStat(StatsStorage.StatisticType.HIGHEST_WAVE) <= arena.getWave()) {
-        if(!plugin.getConfigPreferences().getOption(ConfigPreferences.Option.RESPAWN_AFTER_WAVE) && user.isSpectator()) {
+      if(user.getStat(StatsStorage.StatisticType.HIGHEST_WAVE) <= wave) {
+        if(user.isSpectator() && !plugin.getConfigPreferences().getOption(ConfigPreferences.Option.RESPAWN_AFTER_WAVE)) {
           continue;
         }
-        user.setStat(StatsStorage.StatisticType.HIGHEST_WAVE, arena.getWave());
+        user.setStat(StatsStorage.StatisticType.HIGHEST_WAVE, wave);
       }
       for(String msg : summaryMessages) {
         MiscUtils.sendCenteredMessage(player, formatSummaryPlaceholders(msg, arena, user, summaryEnding));
       }
-      plugin.getUserManager().addExperience(player, arena.getWave());
+      plugin.getUserManager().addExperience(player, wave);
       if(!quickStop) {
         spawnFireworks(arena, player);
       }
@@ -367,7 +369,9 @@ public class ArenaManager {
    * @see VillageWaveEndEvent
    */
   public static void endWave(@NotNull Arena arena) {
-    if(plugin.getConfig().getBoolean("Wave-Limit.Enabled") && arena.getWave() >= plugin.getConfig().getInt("Wave-Limit.Limit", 25)) {
+    int wave = arena.getWave();
+
+    if(plugin.getConfig().getBoolean("Wave-Limit.Enabled") && wave >= plugin.getConfig().getInt("Wave-Limit.Limit", 25)) {
       stopGame(false, arena);
       return;
     }
@@ -382,8 +386,9 @@ public class ArenaManager {
     String title = Messages.WAVE_TITLE_END_TITLE.getMessage();
     String subTitle = Messages.WAVE_TITLE_END_SUBTITLE.getMessage();
 
-    title = title.replace("%wave%", Integer.toString(arena.getWave()));
-    subTitle = subTitle.replace("%wave%", Integer.toString(arena.getWave()));
+    String strWave = Integer.toString(wave);
+    title = title.replace("%wave%", strWave);
+    subTitle = subTitle.replace("%wave%", strWave);
 
     for(User user : plugin.getUserManager().getUsers(arena)) {
       if (!user.isSpectator() && !user.isPermanentSpectator()) {
@@ -395,7 +400,7 @@ public class ArenaManager {
 
     arena.setTimer(plugin.getConfig().getInt("Cooldown-Before-Next-Wave", 25));
     arena.getZombieSpawnManager().getZombieCheckerLocations().clear();
-    arena.setWave(arena.getWave() + 1);
+    arena.setWave(wave + 1);
 
     Bukkit.getPluginManager().callEvent(new VillageWaveEndEvent(arena, arena.getWave()));
 
@@ -411,11 +416,15 @@ public class ArenaManager {
   }
 
   private static void refreshAllPlayers(Arena arena) {
+    int wave = arena.getWave();
+    int timer = arena.getTimer();
+
     for(Player player : arena.getPlayers()) {
-      player.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().formatMessage(arena, plugin.getChatManager().colorMessage(Messages.NEXT_WAVE_IN), arena.getTimer()));
+      player.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().formatMessage(arena, plugin.getChatManager().colorMessage(Messages.NEXT_WAVE_IN), timer));
       player.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage(Messages.YOU_FEEL_REFRESHED));
       player.setHealth(VersionUtils.getMaxHealth(player));
-      plugin.getUserManager().getUser(player).addStat(StatsStorage.StatisticType.ORBS, arena.getWave() * 10);
+
+      plugin.getUserManager().getUser(player).addStat(StatsStorage.StatisticType.ORBS, wave * 10);
     }
   }
 
@@ -430,24 +439,33 @@ public class ArenaManager {
     Debugger.debug("[{0}] Wave start event called", arena.getId());
     long start = System.currentTimeMillis();
 
-    Bukkit.getPluginManager().callEvent(new VillageWaveStartEvent(arena, arena.getWave()));
+    int wave = arena.getWave();
 
-    int zombiesAmount = (int) Math.ceil((arena.getPlayers().size() * 0.5) * (arena.getWave() * arena.getWave()) / 2);
+    Bukkit.getPluginManager().callEvent(new VillageWaveStartEvent(arena, wave));
+
+    int zombiesAmount = (int) Math.ceil((arena.getPlayers().size() * 0.5) * (wave * wave) / 2);
     int maxzombies = plugin.getConfig().getInt("Zombies-Limit", 75);
+
     if(zombiesAmount > maxzombies) {
       int multiplier = (int) Math.ceil((zombiesAmount - (double) maxzombies) / plugin.getConfig().getInt("Zombie-Multiplier-Divider", 18));
+
       if(multiplier < 2) multiplier = 2;
+
       arena.setOptionValue(ArenaOption.ZOMBIE_DIFFICULTY_MULTIPLIER, multiplier);
+
       Debugger.debug("[{0}] Detected abnormal wave ({1})! Applying zombie limit and difficulty multiplier to {2} | ZombiesAmount: {3} | MaxZombies: {4}",
-          arena.getId(), arena.getWave(), arena.getOption(ArenaOption.ZOMBIE_DIFFICULTY_MULTIPLIER), zombiesAmount, maxzombies);
+          arena.getId(), wave, arena.getOption(ArenaOption.ZOMBIE_DIFFICULTY_MULTIPLIER), zombiesAmount, maxzombies);
+
       zombiesAmount = maxzombies;
     }
 
+    int zombieIdle = (int) Math.floor((double) wave / 15);
+
     arena.setOptionValue(ArenaOption.ZOMBIES_TO_SPAWN, zombiesAmount);
-    arena.setOptionValue(ArenaOption.ZOMBIE_IDLE_PROCESS, (int) Math.floor((double) arena.getWave() / 15));
-    int zombieIdeProcess = arena.getOption(ArenaOption.ZOMBIE_IDLE_PROCESS);
-    if(zombieIdeProcess > 0) {
-      Debugger.debug("[{0}] Spawn idle process initiated to prevent server overload! Value: {1}", arena.getId(), zombieIdeProcess);
+    arena.setOptionValue(ArenaOption.ZOMBIE_IDLE_PROCESS, zombieIdle);
+
+    if(zombieIdle > 0) {
+      Debugger.debug("[{0}] Spawn idle process initiated to prevent server overload! Value: {1}", arena.getId(), zombieIdle);
     }
 
     if(plugin.getConfigPreferences().getOption(ConfigPreferences.Option.RESPAWN_AFTER_WAVE)) {
@@ -464,8 +482,9 @@ public class ArenaManager {
     String title = Messages.WAVE_TITLE_START_TITLE.getMessage();
     String subTitle = Messages.WAVE_TITLE_START_SUBTITLE.getMessage();
 
-    title = title.replace("%wave%", Integer.toString(arena.getWave()));
-    subTitle = subTitle.replace("%wave%", Integer.toString(arena.getWave()));
+    String waveStr = Integer.toString(wave);
+    title = title.replace("%wave%", waveStr);
+    subTitle = subTitle.replace("%wave%", waveStr);
 
     for(User user : plugin.getUserManager().getUsers(arena)) {
       Player player = user.getPlayer();
@@ -473,7 +492,7 @@ public class ArenaManager {
       VersionUtils.sendTitles(player, title, subTitle, fadeIn, stay, fadeOut);
     }
 
-    plugin.getChatManager().broadcastMessage(arena, plugin.getChatManager().formatMessage(arena, plugin.getChatManager().colorMessage(Messages.WAVE_STARTED), arena.getWave()));
+    plugin.getChatManager().broadcastMessage(arena, plugin.getChatManager().formatMessage(arena, plugin.getChatManager().colorMessage(Messages.WAVE_STARTED), wave));
     Debugger.debug("[{0}] Wave start event finished took {1}ms", arena.getId(), System.currentTimeMillis() - start);
   }
 

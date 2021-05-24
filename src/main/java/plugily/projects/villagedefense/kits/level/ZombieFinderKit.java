@@ -94,9 +94,13 @@ public class ZombieFinderKit extends LevelKit implements Listener {
       event.getPlayer().sendMessage(getPlugin().getChatManager().colorMessage(Messages.SPECTATOR_WARNING));
       return;
     }
-    if(user.getCooldown("zombie") > 0 && !user.isSpectator()) {
+    if (!(user.getKit() instanceof ZombieFinderKit)) {
+      return;
+    }
+    long zombieCooldown = user.getCooldown("zombie");
+    if(zombieCooldown > 0 && !user.isSpectator()) {
       String message = getPlugin().getChatManager().colorMessage(Messages.KITS_ABILITY_STILL_ON_COOLDOWN);
-      message = message.replaceFirst("%COOLDOWN%", Long.toString(user.getCooldown("zombie")));
+      message = message.replaceFirst("%COOLDOWN%", Long.toString(zombieCooldown));
       event.getPlayer().sendMessage(message);
       return;
     }
@@ -110,6 +114,6 @@ public class ZombieFinderKit extends LevelKit implements Listener {
     zombie.addPotionEffect(new PotionEffect(PotionEffectType.WEAKNESS, 20 * 30, 0));
     event.getPlayer().sendMessage(getPlugin().getChatManager().colorMessage(Messages.KITS_ZOMBIE_TELEPORTER_ZOMBIE_TELEPORTED));
     Utils.playSound(event.getPlayer().getLocation(), "ENTITY_ZOMBIE_DEATH", "ENTITY_ZOMBIE_DEATH");
-    user.setCooldown("zombie", getPlugin().getConfig().getInt("Kit-Cooldown.Zombie-Finder", 30));
+    user.setCooldown("zombie", getKitsConfig().getInt("Kit-Cooldown.Zombie-Finder", 30));
   }
 }

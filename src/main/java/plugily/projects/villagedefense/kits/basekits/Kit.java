@@ -77,7 +77,8 @@ public abstract class Kit {
   }
 
   public void setName(String name) {
-    this.name = name == null ? "" : name;
+    if (name != null)
+      this.name = name;
   }
 
   public String[] getDescription() {
@@ -85,7 +86,8 @@ public abstract class Kit {
   }
 
   public void setDescription(String[] description) {
-    this.description = description.clone();
+    if (description != null)
+      this.description = description.clone();
   }
 
   public ItemStack getItemStack() {

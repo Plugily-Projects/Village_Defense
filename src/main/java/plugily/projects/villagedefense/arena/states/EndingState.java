@@ -47,7 +47,10 @@ public class EndingState implements ArenaStateHandler {
   @Override
   public void handleCall(Arena arena) {
     arena.getScoreboardManager().stopAllScoreboards();
-    if(arena.getTimer() <= 0) {
+
+    int timer = arena.getTimer();
+
+    if(timer <= 0) {
       if(ServerVersion.Version.isCurrentEqualOrHigher(ServerVersion.Version.v1_9_R1) && plugin.getConfigPreferences().getOption(ConfigPreferences.Option.BOSSBAR_ENABLED)) {
         arena.getGameBar().setTitle(plugin.getChatManager().colorMessage(Messages.BOSSBAR_GAME_ENDED));
       }
@@ -66,7 +69,7 @@ public class EndingState implements ArenaStateHandler {
 
       arena.setArenaState(ArenaState.RESTARTING);
     }
-    arena.setTimer(arena.getTimer() - 1);
+    arena.setTimer(timer - 1);
   }
 
 }

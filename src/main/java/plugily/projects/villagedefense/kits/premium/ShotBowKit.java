@@ -107,7 +107,7 @@ public class ShotBowKit extends PremiumKit implements Listener {
       }, 2L * (2 * i));
     }
     e.setCancelled(true);
-    user.setCooldown("shotbow", getPlugin().getConfig().getInt("Kit-Cooldown.Shot-Bow", 5));
+    user.setCooldown("shotbow", getKitsConfig().getInt("Kit-Cooldown.Shot-Bow", 5));
   }
 
 }

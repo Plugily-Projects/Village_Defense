@@ -18,17 +18,10 @@
 
 package plugily.projects.villagedefense.creatures;
 
-import net.minecraft.server.v1_8_R3.AttributeInstance;
-import net.minecraft.server.v1_8_R3.AttributeModifier;
-import net.minecraft.server.v1_8_R3.EntityInsentient;
-import net.minecraft.server.v1_8_R3.GenericAttributes;
 import org.bukkit.ChatColor;
-import org.bukkit.attribute.Attribute;
-import org.bukkit.craftbukkit.v1_8_R3.entity.CraftLivingEntity;
 import org.bukkit.entity.Zombie;
 import pl.plajerlair.commonsbox.minecraft.compat.ServerVersion;
 import pl.plajerlair.commonsbox.minecraft.compat.VersionUtils;
-import pl.plajerlair.commonsbox.minecraft.misc.MiscUtils;
 import pl.plajerlair.commonsbox.string.StringFormatUtils;
 import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.arena.Arena;
@@ -40,7 +33,6 @@ import java.security.AccessController;
 import java.security.PrivilegedAction;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 import java.util.logging.Level;
 
 /**
@@ -55,9 +47,8 @@ public class CreatureUtils {
   private static String[] villagerNames = ("Jagger,Kelsey,Kelton,Haylie,Harlow,Howard,Wulffric,Winfred,Ashley,Bailey,Beckett,Alfredo,Alfred,Adair,Edgar,ED,Eadwig,Edgaras,Buckley,Stanley,Nuffley,"
       + "Mary,Jeffry,Rosaly,Elliot,Harry,Sam,Rosaline,Tom,Ivan,Kevin,Adam").split(",");
   private static Main plugin;
+  private static BaseCreatureInitializer creatureInitializer;
   private static final List<CachedObject> cachedObjects = new ArrayList<>();
-
-  private static final UUID uId = UUID.fromString("206a89dc-ae78-4c4d-b42c-3b31db3f5a7e");
 
   private CreatureUtils() {
   }
@@ -67,6 +58,38 @@ public class CreatureUtils {
     zombieSpeed = (float) plugin.getConfig().getDouble("Zombie-Speed", 1.3);
     babyZombieSpeed = (float) plugin.getConfig().getDouble("Mini-Zombie-Speed", 2.0);
     villagerNames = LanguageManager.getLanguageMessage("In-Game.Villager-Names").split(",");
+    creatureInitializer = initCreatureInitializer();
+  }
+
+  public static BaseCreatureInitializer initCreatureInitializer() {
+    switch (ServerVersion.Version.getCurrent()) {
+      case v1_8_R3:
+        return new plugily.projects.villagedefense.creatures.v1_8_R3.CreatureInitializer();
+      case v1_9_R1:
+        return new plugily.projects.villagedefense.creatures.v1_9_R1.CreatureInitializer();
+      case v1_9_R2:
+        return new plugily.projects.villagedefense.creatures.v1_9_R2.CreatureInitializer();
+      case v1_10_R1:
+        return new plugily.projects.villagedefense.creatures.v1_10_R1.CreatureInitializer();
+      case v1_11_R1:
+        return new plugily.projects.villagedefense.creatures.v1_11_R1.CreatureInitializer();
+      case v1_12_R1:
+        return new plugily.projects.villagedefense.creatures.v1_12_R1.CreatureInitializer();
+      case v1_13_R1:
+        return new plugily.projects.villagedefense.creatures.v1_13_R1.CreatureInitializer();
+      case v1_13_R2:
+        return new plugily.projects.villagedefense.creatures.v1_13_R2.CreatureInitializer();
+      case v1_14_R1:
+        return new plugily.projects.villagedefense.creatures.v1_14_R1.CreatureInitializer();
+      case v1_15_R1:
+        return new plugily.projects.villagedefense.creatures.v1_15_R1.CreatureInitializer();
+      case v1_16_R1:
+        return new plugily.projects.villagedefense.creatures.v1_16_R1.CreatureInitializer();
+      case v1_16_R2:
+        return new plugily.projects.villagedefense.creatures.v1_16_R2.CreatureInitializer();
+      default:
+        return new plugily.projects.villagedefense.creatures.v1_16_R3.CreatureInitializer();
+    }
   }
 
   public static Object getPrivateField(String fieldName, Class<?> clazz, Object object) {
@@ -101,15 +124,7 @@ public class CreatureUtils {
    * @param arena  arena to get health multiplier from
    */
   public static void applyAttributes(Zombie zombie, Arena arena) {
-    if(ServerVersion.Version.isCurrentEqualOrHigher(ServerVersion.Version.v1_9_R1)) {
-      MiscUtils.getEntityAttribute(zombie, Attribute.GENERIC_FOLLOW_RANGE).ifPresent(ai -> ai.setBaseValue(200.0D));
-    } else {
-      EntityInsentient nmsEntity = (EntityInsentient) ((CraftLivingEntity) zombie).getHandle();
-      AttributeInstance attributes = nmsEntity.getAttributeInstance(GenericAttributes.FOLLOW_RANGE);
-      if (attributes.a(uId) == null) { // Check if the attribute is not set
-        attributes.b(new AttributeModifier(uId, "follow range multiplier", 200.0D, 1));
-      }
-    }
+    creatureInitializer.applyFollowRange(zombie);
     VersionUtils.setMaxHealth(zombie, VersionUtils.getMaxHealth(zombie) + arena.getOption(ArenaOption.ZOMBIE_DIFFICULTY_MULTIPLIER));
     zombie.setHealth(VersionUtils.getMaxHealth(zombie));
     if(plugin.getConfig().getBoolean("Simple-Zombie-Health-Bar-Enabled", true)) {
@@ -133,5 +148,9 @@ public class CreatureUtils {
 
   public static Main getPlugin() {
     return plugin;
+  }
+
+  public static BaseCreatureInitializer getCreatureInitializer() {
+    return creatureInitializer;
   }
 }

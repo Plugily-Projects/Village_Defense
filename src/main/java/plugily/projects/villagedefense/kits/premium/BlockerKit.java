@@ -103,6 +103,9 @@ public class BlockerKit extends PremiumKit implements Listener {
         .equalsIgnoreCase(getPlugin().getChatManager().colorMessage(Messages.KITS_BLOCKER_GAME_ITEM_NAME))) {
       return;
     }
+    if (!(getPlugin().getUserManager().getUser(player).getKit() instanceof BlockerKit)) {
+      return;
+    }
     Block block = null;
     for(Block blocks : player.getLastTwoTargetBlocks(null, 5)) {
       if(blocks.getType() == Material.AIR) {

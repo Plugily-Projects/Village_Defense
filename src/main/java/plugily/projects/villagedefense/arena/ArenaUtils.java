@@ -23,25 +23,11 @@ import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Zombie;
 import org.bukkit.potion.PotionEffectType;
-import pl.plajerlair.commonsbox.minecraft.compat.ServerVersion;
 import pl.plajerlair.commonsbox.minecraft.compat.VersionUtils;
 import pl.plajerlair.commonsbox.minecraft.serialization.InventorySerializer;
 import plugily.projects.villagedefense.ConfigPreferences;
 import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.api.event.player.VillagePlayerRespawnEvent;
-import plugily.projects.villagedefense.arena.initializers.ArenaInitializer1_10_R1;
-import plugily.projects.villagedefense.arena.initializers.ArenaInitializer1_11_R1;
-import plugily.projects.villagedefense.arena.initializers.ArenaInitializer1_12_R1;
-import plugily.projects.villagedefense.arena.initializers.ArenaInitializer1_13_R1;
-import plugily.projects.villagedefense.arena.initializers.ArenaInitializer1_13_R2;
-import plugily.projects.villagedefense.arena.initializers.ArenaInitializer1_14_R1;
-import plugily.projects.villagedefense.arena.initializers.ArenaInitializer1_15_R1;
-import plugily.projects.villagedefense.arena.initializers.ArenaInitializer1_16_R1;
-import plugily.projects.villagedefense.arena.initializers.ArenaInitializer1_16_R2;
-import plugily.projects.villagedefense.arena.initializers.ArenaInitializer1_16_R3;
-import plugily.projects.villagedefense.arena.initializers.ArenaInitializer1_8_R3;
-import plugily.projects.villagedefense.arena.initializers.ArenaInitializer1_9_R1;
-import plugily.projects.villagedefense.arena.initializers.ArenaInitializer1_9_R2;
 import plugily.projects.villagedefense.handlers.language.Messages;
 import plugily.projects.villagedefense.user.User;
 
@@ -127,42 +113,6 @@ public class ArenaUtils {
       player.updateInventory();
       player.sendMessage(plugin.getChatManager().colorMessage(Messages.BACK_IN_GAME));
     }
-  }
-
-  public static Arena initializeArena(String id) {
-    if(ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_8_R3)) {
-      return  new ArenaInitializer1_8_R3(id, plugin);
-    } else if(ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_9_R1)) {
-      return  new ArenaInitializer1_9_R1(id, plugin);
-    } else if(ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_9_R2)) {
-      return  new ArenaInitializer1_9_R2(id, plugin);
-    } else if(ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_10_R1)) {
-      return  new ArenaInitializer1_10_R1(id, plugin);
-    } else if(ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_11_R1)) {
-      return  new ArenaInitializer1_11_R1(id, plugin);
-    } else if(ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_12_R1)) {
-      return  new ArenaInitializer1_12_R1(id, plugin);
-    } else if(ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_13_R1)) {
-      return  new ArenaInitializer1_13_R1(id, plugin);
-    } else if(ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_13_R2)) {
-      return  new ArenaInitializer1_13_R2(id, plugin);
-    } else if(ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_14_R1)) {
-      return  new ArenaInitializer1_14_R1(id, plugin);
-    } else if(ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_15_R1)) {
-      return  new ArenaInitializer1_15_R1(id, plugin);
-    } else if(ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_16_R1)) {
-      return  new ArenaInitializer1_16_R1(id, plugin);
-    } else if(ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_16_R2)) {
-      return  new ArenaInitializer1_16_R2(id, plugin);
-    }
-
-    return  new ArenaInitializer1_16_R3(id, plugin);
-  }
-
-  public static void setWorld(Arena arena) {
-    org.bukkit.Location start = arena.getStartLocation();
-    if (start.getWorld() != null)
-      arena.setWorld(start);
   }
 
   public static void removeSpawnedZombies(Arena arena) {

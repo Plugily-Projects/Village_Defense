@@ -110,9 +110,4 @@ public class ArenaMock extends Arena {
   public void spawnVillagerSlayer(Random random) {
     throw new UnimplementedOperationException();
   }
-
-  @Override
-  public void setWorld(Location loc) {
-    throw new UnimplementedOperationException();
-  }
 }
