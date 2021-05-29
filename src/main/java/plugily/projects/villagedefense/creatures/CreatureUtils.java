@@ -33,6 +33,7 @@ import java.security.AccessController;
 import java.security.PrivilegedAction;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.logging.Level;
 
 /**
@@ -144,6 +145,10 @@ public class CreatureUtils {
 
   public static String[] getVillagerNames() {
     return villagerNames.clone();
+  }
+
+  public static String getRandomVillagerName() {
+    return villagerNames[ThreadLocalRandom.current().nextInt(villagerNames.length)];
   }
 
   public static Main getPlugin() {

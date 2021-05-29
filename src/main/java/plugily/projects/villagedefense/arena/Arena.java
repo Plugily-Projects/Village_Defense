@@ -454,7 +454,10 @@ public class Arena extends BukkitRunnable {
   }
 
   public void spawnVillager(Location location) {
-    addVillager(CreatureUtils.getCreatureInitializer().spawnVillager(location));
+    Villager villager = CreatureUtils.getCreatureInitializer().spawnVillager(location);
+    villager.setCustomNameVisible(true);
+    villager.setCustomName(CreatureUtils.getRandomVillagerName());
+    addVillager(villager);
   }
 
   public void spawnWolf(Location location, Player player) {
