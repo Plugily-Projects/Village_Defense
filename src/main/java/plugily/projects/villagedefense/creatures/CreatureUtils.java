@@ -148,7 +148,7 @@ public class CreatureUtils {
   }
 
   public static String getRandomVillagerName() {
-    return villagerNames[ThreadLocalRandom.current().nextInt(villagerNames.length)];
+    return villagerNames[villagerNames.length == 1 ? 0 : ThreadLocalRandom.current().nextInt(villagerNames.length)];
   }
 
   public static Main getPlugin() {
