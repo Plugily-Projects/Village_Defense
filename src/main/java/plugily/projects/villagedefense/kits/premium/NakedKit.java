@@ -103,7 +103,7 @@ public class NakedKit extends PremiumKit implements Listener {
     if(!(getPlugin().getUserManager().getUser(who).getKit() instanceof NakedKit)) {
       return;
     }
-    if (event.getClickedInventory() == null) {
+    if(event.getClickedInventory() == null) {
       return;
     }
     InventoryType type = event.getClickedInventory().getType();
@@ -111,7 +111,7 @@ public class NakedKit extends PremiumKit implements Listener {
       return;
     }
     ItemStack itemStack = event.getCurrentItem();
-    if (itemStack == null || !armorTypes.contains(itemStack.getType())) {
+    if(itemStack == null || !armorTypes.contains(itemStack.getType())) {
       return;
     }
     who.sendMessage(getPlugin().getChatManager().colorMessage(Messages.KITS_WILD_NAKED_CANNOT_WEAR_ARMOR));
