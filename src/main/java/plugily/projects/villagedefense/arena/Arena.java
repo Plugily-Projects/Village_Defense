@@ -464,6 +464,7 @@ public class Arena extends BukkitRunnable {
 
     Wolf wolf = CreatureUtils.getCreatureInitializer().spawnWolf(location);
     wolf.setOwner(player);
+    wolf.setCustomNameVisible(true);
     wolf.setCustomName(plugin.getChatManager().colorMessage(Messages.SPAWNED_WOLF_NAME).replace("%player%", player.getName()));
     addWolf(wolf);
   }
@@ -474,6 +475,7 @@ public class Arena extends BukkitRunnable {
     }
 
     IronGolem ironGolem = CreatureUtils.getCreatureInitializer().spawnGolem(location);
+    ironGolem.setCustomNameVisible(true);
     ironGolem.setCustomName(plugin.getChatManager().colorMessage(Messages.SPAWNED_GOLEM_NAME).replace("%player%", player.getName()));
     addIronGolem(ironGolem);
   }
