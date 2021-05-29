@@ -25,6 +25,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionType;
 import pl.plajerlair.commonsbox.minecraft.compat.events.api.CBPlayerInteractEvent;
@@ -103,10 +104,11 @@ public class NakedKit extends PremiumKit implements Listener {
     if(!(getPlugin().getUserManager().getUser(who).getKit() instanceof NakedKit)) {
       return;
     }
-    if(event.getClickedInventory() == null) {
+    Inventory inventory = event.getClickedInventory();
+    if(inventory == null) {
       return;
     }
-    InventoryType type = event.getClickedInventory().getType();
+    InventoryType type = inventory.getType();
     if(type != InventoryType.PLAYER) {
       return;
     }
