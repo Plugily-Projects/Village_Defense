@@ -78,7 +78,7 @@ public class BungeeManager implements Listener {
 
   @EventHandler(priority = EventPriority.HIGHEST)
   public void onServerListPing(ServerListPingEvent event) {
-    if(!config.getBoolean("MOTD.Manager") || ArenaRegistry.getArenas().isEmpty()) {
+    if(ArenaRegistry.getArenas().isEmpty() || !config.getBoolean("MOTD.Manager")) {
       return;
     }
     Arena arena = ArenaRegistry.getArenas().get(ArenaRegistry.getBungeeArena());

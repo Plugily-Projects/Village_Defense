@@ -35,7 +35,7 @@ class GoalSelectorCleaner {
   static void clearSelectors(EntityCreature creature) {
     Set<?> goalD = (Set<?>) CreatureUtils.getPrivateField("d", PathfinderGoalSelector.class, creature.goalSelector);
     goalD.clear();
-    Set<?>targetD = (Set<?>) CreatureUtils.getPrivateField("d", PathfinderGoalSelector.class, creature.targetSelector);
+    Set<?> targetD = (Set<?>) CreatureUtils.getPrivateField("d", PathfinderGoalSelector.class, creature.targetSelector);
     targetD.clear();
   }
 

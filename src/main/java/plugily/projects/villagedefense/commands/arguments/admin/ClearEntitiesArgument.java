@@ -65,7 +65,7 @@ public class ClearEntitiesArgument {
         String clearMessage;
         switch(args[1].toLowerCase()) {
           case "villager":
-            if(arena.getVillagers() == null || arena.getVillagers().isEmpty()) {
+            if(arena.getVillagers().isEmpty()) {
               sender.sendMessage(registry.getPlugin().getChatManager().colorMessage(Messages.KITS_CLEANER_NOTHING_TO_CLEAN));
               return;
             }
@@ -78,7 +78,7 @@ public class ClearEntitiesArgument {
             clearMessage = registry.getPlugin().getChatManager().colorMessage(Messages.ADMIN_MESSAGES_REMOVED_VILLAGERS);
             break;
           case "zombie":
-            if(arena.getZombies() == null || arena.getZombies().isEmpty()) {
+            if(arena.getZombies().isEmpty()) {
               sender.sendMessage(registry.getPlugin().getChatManager().colorMessage(Messages.KITS_CLEANER_NOTHING_TO_CLEAN));
               return;
             }
@@ -89,7 +89,7 @@ public class ClearEntitiesArgument {
             clearMessage = registry.getPlugin().getChatManager().colorMessage(Messages.ADMIN_MESSAGES_REMOVED_ZOMBIES);
             break;
           case "golem":
-            if(arena.getIronGolems() == null || arena.getIronGolems().isEmpty()) {
+            if(arena.getIronGolems().isEmpty()) {
               sender.sendMessage(registry.getPlugin().getChatManager().colorMessage(Messages.KITS_CLEANER_NOTHING_TO_CLEAN));
               return;
             }
@@ -102,7 +102,7 @@ public class ClearEntitiesArgument {
             clearMessage = registry.getPlugin().getChatManager().colorMessage(Messages.ADMIN_MESSAGES_REMOVED_GOLEMS);
             break;
           case "wolf":
-            if(arena.getWolves() == null || arena.getWolves().isEmpty()) {
+            if(arena.getWolves().isEmpty()) {
               sender.sendMessage(registry.getPlugin().getChatManager().colorMessage(Messages.KITS_CLEANER_NOTHING_TO_CLEAN));
               return;
             }

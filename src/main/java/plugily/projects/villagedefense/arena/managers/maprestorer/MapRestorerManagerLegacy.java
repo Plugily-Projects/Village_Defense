@@ -51,7 +51,7 @@ public class MapRestorerManagerLegacy extends MapRestorerManager {
     for(Map.Entry<Location, Byte> entry : doorBlocks.entrySet()) {
       Block block = entry.getKey().getBlock();
       Byte doorData = entry.getValue();
-      if(ServerVersion.Version.isCurrentEqualOrLower(ServerVersion.Version.v1_11_R1)) {
+      if(ServerVersion.Version.isCurrentEqualOrLower(ServerVersion.Version.v1_11_R1) && block.getType() != org.bukkit.Material.AIR) {
         Material mat = Utils.getCachedDoor(block);
         try {
           int id = (int) mat.getClass().getDeclaredMethod("getId").invoke(mat);
@@ -101,7 +101,6 @@ public class MapRestorerManagerLegacy extends MapRestorerManager {
     block.setType(Utils.getCachedDoor(block));
     BlockState doorBlockState = block.getState();
     Door doorBlockData = new Door(TreeSpecies.GENERIC, Utils.getFacingByByte(doorData));
-    doorBlockData.setTopHalf(false);
     doorBlockData.setFacingDirection(doorBlockData.getFacing());
     doorBlockState.setType(doorBlockData.getItemType());
     doorBlockState.setData(doorBlockData);

@@ -131,7 +131,7 @@ public class EntityUpgradeMenu {
    * @param player player who will see inventory
    */
   public void openUpgradeMenu(LivingEntity en, Player player) {
-    Gui gui = new Gui(plugin,6, color(Messages.UPGRADES_MENU_TITLE));
+    Gui gui = new Gui(plugin, 6, color(Messages.UPGRADES_MENU_TITLE));
     StaticPane pane = new StaticPane(9, 6);
     User user = plugin.getUserManager().getUser(player);
 
@@ -147,11 +147,14 @@ public class EntityUpgradeMenu {
           player.sendMessage(pluginPrefix + color(Messages.UPGRADES_MAX_TIER));
           return;
         }
-        if(user.getStat(StatsStorage.StatisticType.ORBS) < cost) {
+
+        int orbs = user.getStat(StatsStorage.StatisticType.ORBS);
+        if(orbs < cost) {
           player.sendMessage(pluginPrefix + color(Messages.UPGRADES_CANNOT_AFFORD));
           return;
         }
-        user.setStat(StatsStorage.StatisticType.ORBS, user.getStat(StatsStorage.StatisticType.ORBS) - cost);
+
+        user.setStat(StatsStorage.StatisticType.ORBS, orbs - cost);
         player.sendMessage(pluginPrefix + color(Messages.UPGRADES_UPGRADED_ENTITY).replace("%tier%", Integer.toString(nextTier)));
         applyUpgrade(en, upgrade);
 

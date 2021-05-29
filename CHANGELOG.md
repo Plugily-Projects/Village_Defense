@@ -22,6 +22,7 @@ That's all, matcher will stop when detects next line started with `###` match
 * Added configurable villager amount
 * Added new RewardType scoreboard_add
 * Added configurable cooldown for some kit items
+* Fixed restoring door blocks on legacy versions
 * Added configurable name visibility for Golem, Wolf and Villager
 
 ### 4.5.9 (28.03.2021 - 13.04.2021)
