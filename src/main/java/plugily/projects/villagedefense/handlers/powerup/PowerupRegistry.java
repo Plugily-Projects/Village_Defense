@@ -93,13 +93,14 @@ public class PowerupRegistry {
     if (plugin.getConfig().getBoolean("Powerups.List.Double-Damage-For-Players.Enabled", true)) {
       registerPowerup(new Powerup("DOUBLE_DAMAGE", chatManager.colorMessage(Messages.POWERUPS_DOUBLE_DAMAGE_NAME),
               chatManager.colorMessage(Messages.POWERUPS_DOUBLE_DAMAGE_DESCRIPTION), XMaterial.REDSTONE, pickup -> {
+        int damageTime = plugin.getConfig().getInt("Powerups.List.Double-Damage-For-Players.Time", 15);
+
         for (Player p : pickup.getArena().getPlayers()) {
-          p.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 20
-                  * plugin.getConfig().getInt("Powerups.List.Double-Damage-For-Players.Time", 15), 0, false, false));
+          p.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 20 * damageTime, 0, false, false));
         }
 
         String subTitle = pickup.getPowerup().getDescription();
-        subTitle = StringUtils.replace(subTitle, "%time%", plugin.getConfig().getString("Powerups.List.Double-Damage-For-Players.Time", "15"));
+        subTitle = StringUtils.replace(subTitle, "%time%", Integer.toString(damageTime));
 
         for (Player p : pickup.getArena().getPlayers()) {
           VersionUtils.sendTitles(p, pickup.getPowerup().getName(), subTitle, 5, 30, 5);
@@ -123,12 +124,13 @@ public class PowerupRegistry {
     if (plugin.getConfig().getBoolean("Powerups.List.Healing-For-Players.Enabled", true)) {
       registerPowerup(new Powerup("HEALING", chatManager.colorMessage(Messages.POWERUPS_HEALING_NAME),
               chatManager.colorMessage(Messages.POWERUPS_HEALING_DESCRIPTION), XMaterial.IRON_INGOT, pickup -> {
+        int timeHealing = plugin.getConfig().getInt("Powerups.List.Healing-For-Players.Time-Of-Healing", 10);
+
         for (Player p : pickup.getArena().getPlayers()) {
-          p.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 20 * plugin.getConfig()
-                  .getInt("Powerups.List.Healing-For-Players.Time-Of-Healing", 10), 0, false, false));
+          p.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 20 * timeHealing, 0, false, false));
         }
         String subTitle = pickup.getPowerup().getDescription();
-        subTitle = StringUtils.replace(subTitle, "%time%", plugin.getConfig().getString("Powerups.List.Healing-For-Players.Time-Of-Healing", "10"));
+        subTitle = StringUtils.replace(subTitle, "%time%", Integer.toString(timeHealing));
 
         for (Player p : pickup.getArena().getPlayers()) {
           VersionUtils.sendTitles(p, pickup.getPowerup().getName(), subTitle, 5, 30, 5);
@@ -139,12 +141,13 @@ public class PowerupRegistry {
     if (plugin.getConfig().getBoolean("Powerups.List.One-Shot-One-Kill.Enabled", true)) {
       registerPowerup(new Powerup("ONE_SHOT_ONE_KILL", chatManager.colorMessage(Messages.POWERUPS_ONE_SHOT_ONE_KILL_NAME),
               chatManager.colorMessage(Messages.POWERUPS_ONE_SHOT_ONE_KILL_DESCRIPTION), XMaterial.DIAMOND_SWORD, pickup -> {
+        int oneShotKillTime = plugin.getConfig().getInt("Powerups.List.One-Shot-One-Kill.Time", 15);
+
         for (Player p : pickup.getArena().getPlayers()) {
-          p.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 20
-                  * plugin.getConfig().getInt("Powerups.List.One-Shot-One-Kill.Time", 15), 1000, false, false));
+          p.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 20 * oneShotKillTime, 1000, false, false));
         }
         String subTitle = pickup.getPowerup().getDescription();
-        subTitle = StringUtils.replace(subTitle, "%time%", plugin.getConfig().getString("Powerups.List.One-Shot-One-Kill.Time", "15"));
+        subTitle = StringUtils.replace(subTitle, "%time%", Integer.toString(oneShotKillTime));
 
         for (Player p : pickup.getArena().getPlayers()) {
           VersionUtils.sendTitles(p, pickup.getPowerup().getName(), subTitle, 5, 30, 5);
@@ -159,7 +162,7 @@ public class PowerupRegistry {
    * @return random powerup from list of registered ones
    */
   public BasePowerup getRandomPowerup() {
-    return registeredPowerups.get(random.nextInt(registeredPowerups.size()));
+    return registeredPowerups.get(registeredPowerups.size() == 1 ? 0 : random.nextInt(registeredPowerups.size()));
   }
 
   public void spawnPowerup(Location loc, Arena arena) {

@@ -217,10 +217,15 @@ public class Events implements Listener {
     if(arena == null || !plugin.getConfig().getBoolean("Block-Commands-In-Game", true)) {
       return;
     }
+
     String command = event.getMessage().substring(1);
-    command = (command.indexOf(' ') >= 0 ? command.substring(0, command.indexOf(' ')) : command);
+    int index = command.indexOf(' ');
+
+    if (index >= 0)
+      command = command.substring(0, index);
+
     for(String msg : plugin.getConfig().getStringList("Whitelisted-Commands")) {
-      if(command.equalsIgnoreCase(msg.toLowerCase())) {
+      if(command.equalsIgnoreCase(msg)) {
         return;
       }
     }
@@ -413,7 +418,6 @@ public class Events implements Listener {
   }
 
   @EventHandler(priority = EventPriority.HIGH)
-  //highest priority to fully protect our game (i didn't set it because my test server was destroyed, n-no......)
   public void onBlockBreakEvent(BlockBreakEvent event) {
     if(ArenaRegistry.isInArena(event.getPlayer())) {
       event.setCancelled(true);
@@ -421,7 +425,6 @@ public class Events implements Listener {
   }
 
   @EventHandler(priority = EventPriority.HIGH)
-  //highest priority to fully protect our game (i didn't set it because my test server was destroyed, n-no......)
   public void onBuild(BlockPlaceEvent event) {
     if(ArenaRegistry.isInArena(event.getPlayer()) && event.getBlock().getType() != Utils.getCachedDoor(event.getBlock())) {
       event.setCancelled(true);

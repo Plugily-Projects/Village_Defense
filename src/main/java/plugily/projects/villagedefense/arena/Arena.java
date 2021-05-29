@@ -479,7 +479,8 @@ public class Arena extends BukkitRunnable {
   }
 
   public void spawnFastZombie(Random random) {
-    Location location = getZombieSpawns().get(random.nextInt(getZombieSpawns().size()));
+    List<Location> spawns = getZombieSpawns();
+    Location location = spawns.get(random.nextInt(spawns.size()));
     Zombie fastZombie = CreatureUtils.getCreatureInitializer().spawnFastZombie(location);
     CreatureUtils.applyAttributes(fastZombie, this);
     plugin.getHolidayManager().applyHolidayZombieEffects(fastZombie);
@@ -488,7 +489,8 @@ public class Arena extends BukkitRunnable {
   }
 
   public void spawnBabyZombie(Random random) {
-    Location location = getZombieSpawns().get(random.nextInt(getZombieSpawns().size()));
+    List<Location> spawns = getZombieSpawns();
+    Location location = spawns.get(random.nextInt(spawns.size()));
     Zombie babyZombie = CreatureUtils.getCreatureInitializer().spawnBabyZombie(location);
     CreatureUtils.applyAttributes(babyZombie, this);
     plugin.getHolidayManager().applyHolidayZombieEffects(babyZombie);
@@ -497,7 +499,8 @@ public class Arena extends BukkitRunnable {
   }
 
   public void spawnHardZombie(Random random) {
-    Location location = getZombieSpawns().get(random.nextInt(getZombieSpawns().size()));
+    List<Location> spawns = getZombieSpawns();
+    Location location = spawns.get(random.nextInt(spawns.size()));
     Zombie hardZombie = CreatureUtils.getCreatureInitializer().spawnHardZombie(location);
     hardZombie.getEquipment().setBoots(new ItemStack(Material.DIAMOND_BOOTS));
     hardZombie.getEquipment().setLeggings(new ItemStack(Material.DIAMOND_LEGGINGS));
@@ -509,7 +512,8 @@ public class Arena extends BukkitRunnable {
   }
 
   public void spawnPlayerBuster(Random random) {
-    Location location = getZombieSpawns().get(random.nextInt(getZombieSpawns().size()));
+    List<Location> spawns = getZombieSpawns();
+    Location location = spawns.get(random.nextInt(spawns.size()));
     Zombie playerBuster = CreatureUtils.getCreatureInitializer().spawnPlayerBuster(location);
     playerBuster.getEquipment().setHelmet(new ItemStack(Material.TNT));
     playerBuster.getEquipment().setHelmetDropChance(0.0F);
@@ -523,7 +527,8 @@ public class Arena extends BukkitRunnable {
   }
 
   public void spawnGolemBuster(Random random) {
-    Location location = getZombieSpawns().get(random.nextInt(getZombieSpawns().size()));
+    List<Location> spawns = getZombieSpawns();
+    Location location = spawns.get(random.nextInt(spawns.size()));
     Zombie golemBuster = CreatureUtils.getCreatureInitializer().spawnGolemBuster(location);
     golemBuster.getEquipment().setHelmet(new ItemStack(Material.TNT));
     golemBuster.getEquipment().setHelmetDropChance(0.0F);
@@ -537,7 +542,8 @@ public class Arena extends BukkitRunnable {
   }
 
   public void spawnVillagerBuster(Random random) {
-    Location location = getZombieSpawns().get(random.nextInt(getZombieSpawns().size()));
+    List<Location> spawns = getZombieSpawns();
+    Location location = spawns.get(random.nextInt(spawns.size()));
     Zombie villagerBuster = CreatureUtils.getCreatureInitializer().spawnVillagerBuster(location);
     villagerBuster.getEquipment().setHelmet(new ItemStack(Material.TNT));
     villagerBuster.getEquipment().setHelmetDropChance(0.0F);
@@ -551,7 +557,8 @@ public class Arena extends BukkitRunnable {
   }
 
   public void spawnSoftHardZombie(Random random) {
-    Location location = getZombieSpawns().get(random.nextInt(getZombieSpawns().size()));
+    List<Location> spawns = getZombieSpawns();
+    Location location = spawns.get(random.nextInt(spawns.size()));
     Zombie hardBuster = CreatureUtils.getCreatureInitializer().spawnHardZombie(location);
     hardBuster.getEquipment().setBoots(new ItemStack(Material.IRON_BOOTS));
     hardBuster.getEquipment().setLeggings(new ItemStack(Material.IRON_LEGGINGS));
@@ -563,7 +570,8 @@ public class Arena extends BukkitRunnable {
   }
 
   public void spawnHalfInvisibleZombie(Random random) {
-    Location location = getZombieSpawns().get(random.nextInt(getZombieSpawns().size()));
+    List<Location> spawns = getZombieSpawns();
+    Location location = spawns.get(random.nextInt(spawns.size()));
     Zombie fastZombie = CreatureUtils.getCreatureInitializer().spawnFastZombie(location);
     fastZombie.getEquipment().setBoots(new ItemStack(Material.CHAINMAIL_BOOTS));
     fastZombie.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, Integer.MAX_VALUE, 1));
@@ -573,7 +581,8 @@ public class Arena extends BukkitRunnable {
   }
 
   public void spawnKnockbackResistantZombies(Random random) {
-    Location location = getZombieSpawns().get(random.nextInt(getZombieSpawns().size()));
+    List<Location> spawns = getZombieSpawns();
+    Location location = spawns.get(random.nextInt(spawns.size()));
     Zombie tankerZombie = CreatureUtils.getCreatureInitializer().spawnKnockbackResistantZombies(location);
     VersionUtils.setItemInHand(tankerZombie, XMaterial.GOLDEN_AXE.parseItem());
     tankerZombie.getEquipment().setBoots(new ItemStack(Material.DIAMOND_BOOTS));
@@ -586,7 +595,8 @@ public class Arena extends BukkitRunnable {
   }
 
   public void spawnVillagerSlayer(Random random) {
-    Location location = getZombieSpawns().get(random.nextInt(getZombieSpawns().size()));
+    List<Location> spawns = getZombieSpawns();
+    Location location = spawns.get(random.nextInt(spawns.size()));
     Zombie villagerSlayer = CreatureUtils.getCreatureInitializer().spawnVillagerSlayer(location);
     VersionUtils.setItemInHand(villagerSlayer, XMaterial.EMERALD.parseItem());
     VersionUtils.setItemInHandDropChance(villagerSlayer, 0F);
@@ -674,14 +684,19 @@ public class Arena extends BukkitRunnable {
   }
 
   public boolean checkLevelUpRottenFlesh() {
-    if(getOption(ArenaOption.ROTTEN_FLESH_LEVEL) == 0 && getOption(ArenaOption.ROTTEN_FLESH_AMOUNT) > 50) {
+    int rottenFleshLevel = getOption(ArenaOption.ROTTEN_FLESH_LEVEL);
+    int rottenFleshAmount = getOption(ArenaOption.ROTTEN_FLESH_AMOUNT);
+
+    if(rottenFleshLevel == 0 && rottenFleshAmount > 50) {
       setOptionValue(ArenaOption.ROTTEN_FLESH_LEVEL, 1);
       return true;
     }
-    if(getOption(ArenaOption.ROTTEN_FLESH_LEVEL) * 10 * players.size() + 10 < getOption(ArenaOption.ROTTEN_FLESH_AMOUNT)) {
+
+    if(rottenFleshLevel * 10 * players.size() + 10 < rottenFleshAmount) {
       addOptionValue(ArenaOption.ROTTEN_FLESH_LEVEL, 1);
       return true;
     }
+
     return false;
   }
 
