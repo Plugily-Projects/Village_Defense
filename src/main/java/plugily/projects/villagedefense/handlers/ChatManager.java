@@ -18,12 +18,14 @@
 
 package plugily.projects.villagedefense.handlers;
 
+import me.clip.placeholderapi.PlaceholderAPI;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import pl.plajerlair.commonsbox.minecraft.compat.ServerVersion;
 import pl.plajerlair.commonsbox.minecraft.misc.MiscUtils;
 import pl.plajerlair.commonsbox.string.StringFormatUtils;
+import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.arena.Arena;
 import plugily.projects.villagedefense.handlers.language.LanguageManager;
 import plugily.projects.villagedefense.handlers.language.Messages;
@@ -33,17 +35,23 @@ import plugily.projects.villagedefense.handlers.language.Messages;
  */
 public class ChatManager {
 
-  private final String prefix;
+  private final String pluginPrefix;
+  private final Main plugin;
 
-  public ChatManager(String prefix) {
-    this.prefix = colorRawMessage(prefix);
+  public ChatManager(Main plugin) {
+    this.plugin = plugin;
+    this.pluginPrefix = colorMessage(Messages.PLUGIN_PREFIX);
   }
 
   /**
    * @return game prefix
    */
   public String getPrefix() {
-    return prefix;
+    return pluginPrefix;
+  }
+
+  public String colorMessage(Messages message) {
+    return colorRawMessage(LanguageManager.getLanguageMessage(message.getAccessor()));
   }
 
   public String colorRawMessage(String message) {
@@ -66,8 +74,10 @@ public class ChatManager {
    * @param message constant message to broadcast
    */
   public void broadcast(Arena arena, Messages message) {
-    for(Player p : arena.getPlayers()) {
-      p.sendMessage(prefix + message.getMessage());
+    if (message != null && !message.getMessage().isEmpty()) {
+      for(Player p : arena.getPlayers()) {
+        p.sendMessage(pluginPrefix + message.getMessage());
+      }
     }
   }
 
@@ -79,13 +89,11 @@ public class ChatManager {
    * @param message message to broadcast
    */
   public void broadcastMessage(Arena arena, String message) {
-    for(Player p : arena.getPlayers()) {
-      p.sendMessage(prefix + message);
+    if (message != null && !message.isEmpty()) {
+      for(Player p : arena.getPlayers()) {
+        p.sendMessage(pluginPrefix + message);
+      }
     }
-  }
-
-  public String colorMessage(Messages message) {
-    return colorRawMessage(LanguageManager.getLanguageMessage(message.getAccessor()));
   }
 
   public String formatMessage(Arena arena, String message, int integer) {
@@ -101,6 +109,9 @@ public class ChatManager {
     returnString = StringUtils.replace(returnString, "%ARENANAME%", arena.getMapName());
     returnString = StringUtils.replace(returnString, "%PLAYER%", player.getName());
     returnString = colorRawMessage(formatPlaceholders(returnString, arena));
+    if(plugin.getServer().getPluginManager().isPluginEnabled("PlaceholderAPI")) {
+      returnString = PlaceholderAPI.setPlaceholders(player, returnString);
+    }
     return returnString;
   }
 
@@ -117,20 +128,22 @@ public class ChatManager {
     return returnString;
   }
 
-  public void broadcastAction(Arena a, Player p, ActionType action) {
+  public void broadcastAction(Arena arena, Player player, ActionType action) {
+    Messages message;
     switch(action) {
       case JOIN:
-        broadcastMessage(a, formatMessage(a, colorMessage(Messages.JOIN), p));
+        message = Messages.JOIN;
         break;
       case LEAVE:
-        broadcastMessage(a, formatMessage(a, colorMessage(Messages.LEAVE), p));
+        message = Messages.LEAVE;
         break;
       case DEATH:
-        broadcastMessage(a, formatMessage(a, colorMessage(Messages.DEATH), p));
+        message = Messages.DEATH;
         break;
       default:
-        break;
+        return; //likely won't ever happen
     }
+    broadcastMessage(arena, formatMessage(arena, colorMessage(message), player));
   }
 
   public enum ActionType {

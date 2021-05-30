@@ -86,7 +86,7 @@ public class MainMock extends Main {
     this.configPreferences = new ConfigPreferences(this);
     this.userManager = new UserManager(this);
     this.rewardsFactory = new RewardsFactory(this);
-    this.chatManager = new ChatManager("[Village Defense] ");
+    this.chatManager = new ChatManager(this);
     this.specialItemManager = new SpecialItemManager(this);
 
     this.testArena = new ArenaMock();
@@ -118,11 +118,6 @@ public class MainMock extends Main {
 
   @Override
   public HolidayManager getHolidayManager() {
-    throw new UnimplementedOperationException();
-  }
-
-  @Override
-  public MysqlDatabase getMysqlDatabase() {
     throw new UnimplementedOperationException();
   }
 

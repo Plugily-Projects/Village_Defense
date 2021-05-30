@@ -214,9 +214,9 @@ public class LanguageManager {
 
   private static List<String> getStrings(String path) {
     if(!languageConfig.isSet(path)) {
-      Debugger.sendConsoleMsg("&c[VillageDefense] Game message not found in your locale!");
-      Debugger.sendConsoleMsg("&c[VillageDefense] Please regenerate your language.yml file! If error still occurs report it to the developer on discord!");
-      Debugger.sendConsoleMsg("&c[VillageDefense] Path: " + path);
+      Debugger.sendConsoleMsg("&c[Village Defense] Game message not found in your locale!");
+      Debugger.sendConsoleMsg("&c[Village Defense] Please regenerate your language.yml file! If error still occurs report it to the developer on discord!");
+      Debugger.sendConsoleMsg("&c[Village Defense] Path: " + path);
       return Collections.singletonList("ERR_MESSAGE_" + path + "_NOT_FOUND");
     }
     return languageConfig.getStringList(path).stream().map(string -> plugin.getChatManager().colorRawMessage(string)).collect(Collectors.toList());
@@ -225,9 +225,9 @@ public class LanguageManager {
 
   private static String getString(String path) {
     if(!languageConfig.isSet(path)) {
-      Debugger.sendConsoleMsg("&c[VillageDefense] Game message not found in your locale!");
-      Debugger.sendConsoleMsg("&c[VillageDefense] Please regenerate your language.yml file! If error still occurs report it to the developer on discord!");
-      Debugger.sendConsoleMsg("&c[VillageDefense] Path: " + path);
+      Debugger.sendConsoleMsg("&c[Village Defense] Game message not found in your locale!");
+      Debugger.sendConsoleMsg("&c[Village Defense] Please regenerate your language.yml file! If error still occurs report it to the developer on discord!");
+      Debugger.sendConsoleMsg("&c[Village Defense] Path: " + path);
       return "ERR_MESSAGE_" + path + "_NOT_FOUND";
     }
     return languageConfig.getString(path, "not found");

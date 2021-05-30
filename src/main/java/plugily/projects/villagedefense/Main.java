@@ -165,7 +165,7 @@ public class Main extends JavaPlugin {
       getConfig().getStringList("Performance-Listenable").forEach(Debugger::monitorPerformance);
     }
 
-    chatManager = new ChatManager(LanguageManager.getLanguageMessage("In-Game.Plugin-Prefix"));
+    chatManager = new ChatManager(this);
     configPreferences = new ConfigPreferences(this);
     setupFiles();
     languageConfig = ConfigUtils.getConfig(this, "language");
@@ -306,8 +306,8 @@ public class Main extends JavaPlugin {
       }
       if(result.getNewestVersion().contains("b")) {
         if(getConfig().getBoolean("Update-Notifier.Notify-Beta-Versions", true)) {
-          Debugger.sendConsoleMsg("&c[VillageDefense] Your software is ready for update! However it's a BETA VERSION. Proceed with caution.");
-          Debugger.sendConsoleMsg("&c[VillageDefense] Current version %old%, latest version %new%".replace("%old%", getDescription().getVersion()).replace("%new%",
+          Debugger.sendConsoleMsg("&c[Village Defense] Your software is ready for update! However it's a BETA VERSION. Proceed with caution.");
+          Debugger.sendConsoleMsg("&c[Village Defense] Current version %old%, latest version %new%".replace("%old%", getDescription().getVersion()).replace("%new%",
               result.getNewestVersion()));
         }
         return;
