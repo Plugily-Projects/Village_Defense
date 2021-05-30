@@ -225,7 +225,7 @@ public class Arena extends BukkitRunnable {
       spawnVillager(villagerSpawns.get(i % spawnSize));
     }
 
-    if(getVillagers().isEmpty()) {
+    if(villagers.isEmpty()) {
       Debugger.debug(Level.WARNING, "Spawning villagers for {0} failed! Are villager spawns set in safe and valid locations?", id);
     }
   }
@@ -484,8 +484,7 @@ public class Arena extends BukkitRunnable {
   }
 
   public void spawnFastZombie(Random random) {
-    List<Location> spawns = getZombieSpawns();
-    Location location = spawns.get(random.nextInt(spawns.size()));
+    Location location = getRandomZombieSpawn(random);
     Zombie fastZombie = CreatureUtils.getCreatureInitializer().spawnFastZombie(location);
     CreatureUtils.applyAttributes(fastZombie, this);
     plugin.getHolidayManager().applyHolidayZombieEffects(fastZombie);
@@ -494,8 +493,7 @@ public class Arena extends BukkitRunnable {
   }
 
   public void spawnBabyZombie(Random random) {
-    List<Location> spawns = getZombieSpawns();
-    Location location = spawns.get(random.nextInt(spawns.size()));
+    Location location = getRandomZombieSpawn(random);
     Zombie babyZombie = CreatureUtils.getCreatureInitializer().spawnBabyZombie(location);
     CreatureUtils.applyAttributes(babyZombie, this);
     plugin.getHolidayManager().applyHolidayZombieEffects(babyZombie);
@@ -504,8 +502,7 @@ public class Arena extends BukkitRunnable {
   }
 
   public void spawnHardZombie(Random random) {
-    List<Location> spawns = getZombieSpawns();
-    Location location = spawns.get(random.nextInt(spawns.size()));
+    Location location = getRandomZombieSpawn(random);
     Zombie hardZombie = CreatureUtils.getCreatureInitializer().spawnHardZombie(location);
     hardZombie.getEquipment().setBoots(new ItemStack(Material.DIAMOND_BOOTS));
     hardZombie.getEquipment().setLeggings(new ItemStack(Material.DIAMOND_LEGGINGS));
@@ -517,8 +514,7 @@ public class Arena extends BukkitRunnable {
   }
 
   public void spawnPlayerBuster(Random random) {
-    List<Location> spawns = getZombieSpawns();
-    Location location = spawns.get(random.nextInt(spawns.size()));
+    Location location = getRandomZombieSpawn(random);
     Zombie playerBuster = CreatureUtils.getCreatureInitializer().spawnPlayerBuster(location);
     playerBuster.getEquipment().setHelmet(new ItemStack(Material.TNT));
     playerBuster.getEquipment().setHelmetDropChance(0.0F);
@@ -532,8 +528,7 @@ public class Arena extends BukkitRunnable {
   }
 
   public void spawnGolemBuster(Random random) {
-    List<Location> spawns = getZombieSpawns();
-    Location location = spawns.get(random.nextInt(spawns.size()));
+    Location location = getRandomZombieSpawn(random);
     Zombie golemBuster = CreatureUtils.getCreatureInitializer().spawnGolemBuster(location);
     golemBuster.getEquipment().setHelmet(new ItemStack(Material.TNT));
     golemBuster.getEquipment().setHelmetDropChance(0.0F);
@@ -547,8 +542,7 @@ public class Arena extends BukkitRunnable {
   }
 
   public void spawnVillagerBuster(Random random) {
-    List<Location> spawns = getZombieSpawns();
-    Location location = spawns.get(random.nextInt(spawns.size()));
+    Location location = getRandomZombieSpawn(random);
     Zombie villagerBuster = CreatureUtils.getCreatureInitializer().spawnVillagerBuster(location);
     villagerBuster.getEquipment().setHelmet(new ItemStack(Material.TNT));
     villagerBuster.getEquipment().setHelmetDropChance(0.0F);
@@ -562,8 +556,7 @@ public class Arena extends BukkitRunnable {
   }
 
   public void spawnSoftHardZombie(Random random) {
-    List<Location> spawns = getZombieSpawns();
-    Location location = spawns.get(random.nextInt(spawns.size()));
+    Location location = getRandomZombieSpawn(random);
     Zombie hardBuster = CreatureUtils.getCreatureInitializer().spawnHardZombie(location);
     hardBuster.getEquipment().setBoots(new ItemStack(Material.IRON_BOOTS));
     hardBuster.getEquipment().setLeggings(new ItemStack(Material.IRON_LEGGINGS));
@@ -575,8 +568,7 @@ public class Arena extends BukkitRunnable {
   }
 
   public void spawnHalfInvisibleZombie(Random random) {
-    List<Location> spawns = getZombieSpawns();
-    Location location = spawns.get(random.nextInt(spawns.size()));
+    Location location = getRandomZombieSpawn(random);
     Zombie fastZombie = CreatureUtils.getCreatureInitializer().spawnFastZombie(location);
     fastZombie.getEquipment().setBoots(new ItemStack(Material.CHAINMAIL_BOOTS));
     fastZombie.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, Integer.MAX_VALUE, 1));
@@ -586,8 +578,7 @@ public class Arena extends BukkitRunnable {
   }
 
   public void spawnKnockbackResistantZombies(Random random) {
-    List<Location> spawns = getZombieSpawns();
-    Location location = spawns.get(random.nextInt(spawns.size()));
+    Location location = getRandomZombieSpawn(random);
     Zombie tankerZombie = CreatureUtils.getCreatureInitializer().spawnKnockbackResistantZombies(location);
     VersionUtils.setItemInHand(tankerZombie, XMaterial.GOLDEN_AXE.parseItem());
     tankerZombie.getEquipment().setBoots(new ItemStack(Material.DIAMOND_BOOTS));
@@ -600,8 +591,7 @@ public class Arena extends BukkitRunnable {
   }
 
   public void spawnVillagerSlayer(Random random) {
-    List<Location> spawns = getZombieSpawns();
-    Location location = spawns.get(random.nextInt(spawns.size()));
+    Location location = getRandomZombieSpawn(random);
     Zombie villagerSlayer = CreatureUtils.getCreatureInitializer().spawnVillagerSlayer(location);
     VersionUtils.setItemInHand(villagerSlayer, XMaterial.EMERALD.parseItem());
     VersionUtils.setItemInHandDropChance(villagerSlayer, 0F);
@@ -740,6 +730,11 @@ public class Arena extends BukkitRunnable {
   @NotNull
   public List<Location> getZombieSpawns() {
     return spawnPoints.getOrDefault(SpawnPoint.ZOMBIE, new ArrayList<>());
+  }
+
+  public final Location getRandomZombieSpawn(Random random) {
+    List<Location> spawns = getZombieSpawns();
+    return spawns.get(spawns.size() == 1 ? 0 : random.nextInt(spawns.size()));
   }
 
   protected void addIronGolem(IronGolem ironGolem) {
