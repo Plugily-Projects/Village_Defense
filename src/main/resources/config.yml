@@ -208,6 +208,12 @@ Disable-Drowning-Damage: false
 # How many villagers will be spawned in a arena?
 Villager-Amount: 10
 
+# Should the name tag of these mobs always visible?
+Name-Visible:
+  Golem: true
+  Wolf: true
+  Villager: true
+
 Arena-Selector:
   # Change items of arena selector
   State-Item:

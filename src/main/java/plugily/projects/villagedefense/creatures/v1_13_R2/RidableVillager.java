@@ -41,9 +41,6 @@ import net.minecraft.server.v1_13_R2.PathfinderGoalRestrictOpenDoor;
 import net.minecraft.server.v1_13_R2.PathfinderGoalTradeWithPlayer;
 import net.minecraft.server.v1_13_R2.World;
 import org.bukkit.craftbukkit.v1_13_R2.CraftWorld;
-import plugily.projects.villagedefense.creatures.CreatureUtils;
-
-import java.util.Random;
 
 /**
  * Created by Tom on 15/08/2014.
@@ -80,8 +77,6 @@ public class RidableVillager extends EntityVillager {
     goalSelector.a(9, new PathfinderGoalRandomStroll(this, 0.6D));
     goalSelector.a(10, new PathfinderGoalLookAtPlayer(this,
         EntityInsentient.class, 8.0F));
-    getBukkitEntity().setCustomName(CreatureUtils.getVillagerNames()[new Random().nextInt(CreatureUtils.getVillagerNames().length)]);
-    setCustomNameVisible(true);
   }
 
   @Override

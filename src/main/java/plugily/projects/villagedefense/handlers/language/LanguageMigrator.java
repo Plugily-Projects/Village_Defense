@@ -206,6 +206,12 @@ public class LanguageMigrator {
           MigratorUtils.addNewLines(file, "\r\n" +
               "# How many villagers will be spawned in a arena?\r\n" +
               "Villager-Amount: 10\r\n");
+          MigratorUtils.addNewLines(file, "\r\n" +
+              "# Should the name tag of these mobs always visible?\r\n" +
+              "Name-Visible:\r\n" +
+              "  Golem: true\r\n" +
+              "  Wolf: true\r\n" +
+              "  Villager: true\r\n");
           MigratorUtils.addNewLines(kitsfile, "\r\n" +
               "# The cooldown in seconds for some kit items\r\n" +
               "Kit-Cooldown:\r\n" +

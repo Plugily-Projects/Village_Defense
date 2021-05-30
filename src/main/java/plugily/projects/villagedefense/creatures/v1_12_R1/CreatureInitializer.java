@@ -55,7 +55,6 @@ public class CreatureInitializer implements BaseCreatureInitializer {
         WorkingWolf wolf = new WorkingWolf(location.getWorld());
         wolf.setPosition(location.getX(), location.getY(), location.getZ());
         getWorld(location).addEntity(wolf, CreatureSpawnEvent.SpawnReason.CUSTOM);
-        wolf.setCustomNameVisible(true);
         wolf.setInvisible(false);
         return (Wolf) wolf.getBukkitEntity();
     }
@@ -64,7 +63,6 @@ public class CreatureInitializer implements BaseCreatureInitializer {
     public IronGolem spawnGolem(Location location) {
         RidableIronGolem ironGolem = new RidableIronGolem(location.getWorld());
         ironGolem.setPosition(location.getX(), location.getY(), location.getZ());
-        ironGolem.setCustomNameVisible(true);
         getWorld(location).addEntity(ironGolem, CreatureSpawnEvent.SpawnReason.CUSTOM);
         return (IronGolem) ironGolem.getBukkitEntity();
     }

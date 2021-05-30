@@ -454,7 +454,10 @@ public class Arena extends BukkitRunnable {
   }
 
   public void spawnVillager(Location location) {
-    addVillager(CreatureUtils.getCreatureInitializer().spawnVillager(location));
+    Villager villager = CreatureUtils.getCreatureInitializer().spawnVillager(location);
+    villager.setCustomNameVisible(plugin.getConfigPreferences().getOption(ConfigPreferences.Option.NAME_VISIBLE_VILLAGER));
+    villager.setCustomName(CreatureUtils.getRandomVillagerName());
+    addVillager(villager);
   }
 
   public void spawnWolf(Location location, Player player) {
@@ -464,6 +467,7 @@ public class Arena extends BukkitRunnable {
 
     Wolf wolf = CreatureUtils.getCreatureInitializer().spawnWolf(location);
     wolf.setOwner(player);
+    wolf.setCustomNameVisible(plugin.getConfigPreferences().getOption(ConfigPreferences.Option.NAME_VISIBLE_WOLF));
     wolf.setCustomName(plugin.getChatManager().colorMessage(Messages.SPAWNED_WOLF_NAME).replace("%player%", player.getName()));
     addWolf(wolf);
   }
@@ -474,6 +478,7 @@ public class Arena extends BukkitRunnable {
     }
 
     IronGolem ironGolem = CreatureUtils.getCreatureInitializer().spawnGolem(location);
+    ironGolem.setCustomNameVisible(plugin.getConfigPreferences().getOption(ConfigPreferences.Option.NAME_VISIBLE_GOLEM));
     ironGolem.setCustomName(plugin.getChatManager().colorMessage(Messages.SPAWNED_GOLEM_NAME).replace("%player%", player.getName()));
     addIronGolem(ironGolem);
   }
