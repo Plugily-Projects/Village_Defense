@@ -61,7 +61,7 @@ public class Reward {
       int loc = processedCode.indexOf(')');
       //modifier is invalid
       if(loc == -1) {
-        Bukkit.getLogger().log(Level.WARNING, "[VillageDefense] rewards.yml configuration is broken! Make sure you did not forget using ) character in chance condition! Command: {0}", rawCode);
+        Bukkit.getLogger().log(Level.WARNING, "[Village Defense] rewards.yml configuration is broken! Make sure you did not forget using ) character in chance condition! Command: {0}", rawCode);
         //invalid code, 0% chance to execute
         chance = 0.0;
         return;

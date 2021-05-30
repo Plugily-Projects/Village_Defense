@@ -50,8 +50,8 @@ public class CreatureInitializer implements BaseCreatureInitializer {
         } catch (Exception e) {
             e.printStackTrace();
             MessageUtils.errorOccurred();
-            Bukkit.getConsoleSender().sendMessage("[VillageDefense] Entities has failed to register!");
-            Bukkit.getConsoleSender().sendMessage("[VillageDefense] Restart server or change your server version!");
+            Bukkit.getConsoleSender().sendMessage("[Village Defense] Entities has failed to register!");
+            Bukkit.getConsoleSender().sendMessage("[Village Defense] Restart server or change your server version!");
         }
     }
 
