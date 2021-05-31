@@ -176,7 +176,7 @@ public class MiscComponents implements SetupComponent {
       }
       LocationSerializer.saveLoc(plugin, config, "arenas", "instances." + arena.getId() + ".shop", targetBlock.getLocation());
       player.sendMessage(ChatColor.GREEN + "Shop for chest set!");
-      player.sendMessage(plugin.getChatManager().colorRawMessage("&e&lTIP: &7You can use special items in shops! Check out https://bit.ly/2T2GhA9"));
+      player.sendMessage(plugin.getChatManager().colorRawMessage("&e&lTIP: &7You can use special items in shops! Check out https://wiki.plugily.xyz/villagedefense/support/faq#special-shop-items"));
       ConfigUtils.saveConfig(plugin, config, Constants.Files.ARENAS.getName());
     }), 7, 0);
 
