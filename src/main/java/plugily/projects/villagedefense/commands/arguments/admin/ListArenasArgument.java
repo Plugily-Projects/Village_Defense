@@ -44,7 +44,7 @@ public class ListArenasArgument {
 
         if(ArenaRegistry.getArenas().isEmpty()) {
           sender.sendMessage(registry.getPlugin().getChatManager().colorMessage(Messages.COMMANDS_ADMIN_LIST_NO_ARENAS));
-          sender.sendMessage(registry.getPlugin().getChatManager().colorRawMessage("&e&lTIP: &7You can get free maps with configs at our wiki! Just head to https://wiki.plugily.xyz/minecraft/villagedefense/free_maps.php"));
+          sender.sendMessage(registry.getPlugin().getChatManager().colorRawMessage("&e&lTIP: &7You can get free maps with configs at our wiki! Just head to https://wiki.plugily.xyz/villagedefense/setup/maps"));
           return;
         }
 

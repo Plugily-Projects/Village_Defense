@@ -303,7 +303,7 @@ public class MiscComponents implements SetupComponent {
         .lore(ChatColor.GRAY + "Click to get link for patron program!")
         .build(), e -> {
       e.getWhoClicked().closeInventory();
-      player.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorRawMessage("&6Check patron program here: https://patreon.plugily.xyz/"));
+      player.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorRawMessage("&6Check patron program here: https://wiki.plugily.xyz/villagedefense/addon/overview"));
     }), 7, 1);
 
     pane.addItem(new GuiItem(new ItemBuilder(XMaterial.FILLED_MAP.parseItem())

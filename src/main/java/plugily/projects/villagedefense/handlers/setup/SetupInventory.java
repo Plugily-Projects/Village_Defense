@@ -107,7 +107,7 @@ public class SetupInventory {
         p.sendMessage(plugin.getChatManager().colorRawMessage("&e&lTIP: &7We are open source! You can always help us by contributing! Check https://github.com/Plugily-Projects/Village_Defense"));
         break;
       case 6:
-        p.sendMessage(plugin.getChatManager().colorRawMessage("&e&lTIP: &7Need help? Check wiki &8https://wiki.plugily.xyz/minecraft/villagedefense &7or discord https://discord.gg/UXzUdTP"));
+        p.sendMessage(plugin.getChatManager().colorRawMessage("&e&lTIP: &7Need help? Check wiki &8https://wiki.plugily.xyz/villagedefense &7or discord https://discord.gg/UXzUdTP"));
         break;
       case 7:
         p.sendMessage(plugin.getChatManager().colorRawMessage("&e&lTIP: &7Install HolographicDisplays plugin to access power-ups in game! (configure them in config.yml)"));
