@@ -18,7 +18,9 @@
 
 package plugily.projects.villagedefense.events;
 
+import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.ItemFrame;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -26,6 +28,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
+import org.bukkit.event.hanging.HangingBreakByEntityEvent;
+import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.inventory.ItemStack;
 import pl.plajerlair.commonsbox.minecraft.compat.VersionUtils;
 import pl.plajerlair.commonsbox.minecraft.compat.events.api.CBPlayerInteractEvent;
@@ -91,6 +95,31 @@ public class LobbyEvents implements Listener {
       e.setCancelled(true);
       ArenaManager.leaveAttempt(e.getPlayer(), arena);
     }
+  }
+
+  @EventHandler
+  public void onItemFrameRotate(PlayerInteractEntityEvent event) {
+    Player player = event.getPlayer();
+    Arena arena = ArenaRegistry.getArena(player);
+    if(arena == null || arena.getArenaState() == ArenaState.IN_GAME) {
+      return;
+    }
+    if(event.getRightClicked() instanceof ItemFrame && !((ItemFrame) event.getRightClicked()).getItem().getType().equals(Material.AIR)) {
+      event.setCancelled(true);
+    }
+  }
+
+  @EventHandler
+  public void onHangingBreak(HangingBreakByEntityEvent event) {
+    if(event.getEntity().getType() != EntityType.PLAYER) {
+      return;
+    }
+    Player player = (Player) event.getEntity();
+    Arena arena = ArenaRegistry.getArena(player);
+    if(arena == null || arena.getArenaState() == ArenaState.IN_GAME) {
+      return;
+    }
+    event.setCancelled(true);
   }
 
 }
