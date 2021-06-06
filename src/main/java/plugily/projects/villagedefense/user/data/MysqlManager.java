@@ -94,7 +94,8 @@ public class MysqlManager implements UserDatabase {
     return ConfigUtils.getConfig(plugin, "mysql").getString("table", "playerstats");
   }
 
-  public MysqlDatabase getDatabase() {
+  @Override
+  public MysqlDatabase getMySQLDatabase() {
     return database;
   }
 
@@ -144,7 +145,7 @@ public class MysqlManager implements UserDatabase {
   @NotNull
   @Override
   public Map<UUID, Integer> getStats(StatsStorage.StatisticType stat) {
-    try(Connection connection = getDatabase().getConnection();
+    try(Connection connection = database.getConnection();
         Statement statement = connection.createStatement();
         ResultSet set = statement.executeQuery("SELECT UUID, " + stat.getName() + " FROM " + getTableName() + " ORDER BY " + stat.getName())) {
       Map<UUID, java.lang.Integer> column = new LinkedHashMap<>();

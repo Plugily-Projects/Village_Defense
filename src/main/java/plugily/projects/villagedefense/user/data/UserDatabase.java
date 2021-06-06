@@ -20,6 +20,7 @@ package plugily.projects.villagedefense.user.data;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import pl.plajerlair.commonsbox.database.MysqlDatabase;
 import plugily.projects.villagedefense.api.StatsStorage;
 import plugily.projects.villagedefense.user.User;
 
@@ -68,6 +69,14 @@ public interface UserDatabase {
    * Disable the database
    */
   void disable();
+
+
+  /**
+   * Get the MySQL Database if there is any
+   * @return MySQL database
+   */
+  MysqlDatabase getMySQLDatabase();
+
 
   /**
    * Get the name of the player providing the UUID

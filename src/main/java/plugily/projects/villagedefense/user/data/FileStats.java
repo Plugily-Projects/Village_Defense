@@ -23,6 +23,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.NotNull;
+import pl.plajerlair.commonsbox.database.MysqlDatabase;
 import pl.plajerlair.commonsbox.minecraft.configuration.ConfigUtils;
 import pl.plajerlair.commonsbox.sorter.SortUtils;
 import plugily.projects.villagedefense.Main;
@@ -99,6 +100,11 @@ public class FileStats implements UserDatabase, Runnable {
     updateTask.cancel();
     // Save the last time before disabling
     run();
+  }
+
+  @Override
+  public MysqlDatabase getMySQLDatabase() {
+    return null;
   }
 
   @Override

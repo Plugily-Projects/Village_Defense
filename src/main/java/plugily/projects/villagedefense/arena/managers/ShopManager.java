@@ -146,7 +146,7 @@ public class ShopManager {
       int cost;
       try {
         cost = Integer.parseInt(costString);
-      } catch (NumberFormatException e) {
+      } catch(NumberFormatException e) {
         Debugger.debug(Level.WARNING, "No price set for shop item in arena {0} skipping item!", arena.getId());
         continue;
       }
