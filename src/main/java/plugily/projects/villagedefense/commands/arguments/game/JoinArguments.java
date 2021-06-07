@@ -29,12 +29,13 @@ import plugily.projects.villagedefense.commands.arguments.ArgumentsRegistry;
 import plugily.projects.villagedefense.commands.arguments.data.CommandArgument;
 import plugily.projects.villagedefense.handlers.language.Messages;
 
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * @author Plajer
@@ -52,7 +53,7 @@ public class JoinArguments {
           sender.sendMessage(registry.getPlugin().getChatManager().getPrefix() + registry.getPlugin().getChatManager().colorMessage(Messages.COMMANDS_TYPE_ARENA_NAME));
           return;
         }
-        if(args[1].equalsIgnoreCase("maxplayers") && ArenaRegistry.getArena("maxplayers") == null) {
+        if(!ArenaRegistry.getArenas().isEmpty() && args[1].equalsIgnoreCase("maxplayers") && ArenaRegistry.getArena("maxplayers") == null) {
           Map<Arena, Integer> arenas = new HashMap<>();
           for(Arena arena : ArenaRegistry.getArenas()) {
             arenas.put(arena, arena.getPlayers().size());
@@ -61,12 +62,18 @@ public class JoinArguments {
             ArenaManager.joinAttempt((Player) sender, ArenaRegistry.getArenas().get(ThreadLocalRandom.current().nextInt(ArenaRegistry.getArenas().size())));
             return;
           }
-          Stream<Map.Entry<Arena, Integer>> sorted = arenas.entrySet().stream().sorted(Map.Entry.comparingByValue());
-          if(sorted.findFirst().isPresent()) {
-            Arena arena = sorted.findFirst().get().getKey();
+          LinkedHashMap<Arena, Integer> orderedArenas = new LinkedHashMap<>();
+          arenas.entrySet()
+              .stream()
+              .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
+              .forEachOrdered(x -> orderedArenas.put(x.getKey(), x.getValue()));
+
+          if(!orderedArenas.isEmpty()) {
+            Arena arena = orderedArenas.keySet().stream().findFirst().get();
             ArenaManager.joinAttempt((Player) sender, arena);
             return;
           }
+          return;
         }
         for(Arena arena : ArenaRegistry.getArenas()) {
           if(args[1].equalsIgnoreCase(arena.getId())) {
