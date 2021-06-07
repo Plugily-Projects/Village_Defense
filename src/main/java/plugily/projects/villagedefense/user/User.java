@@ -20,6 +20,7 @@ package plugily.projects.villagedefense.user;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.scoreboard.Scoreboard;
 import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.api.StatsStorage;
 import plugily.projects.villagedefense.api.event.player.VillagePlayerStatisticChangeEvent;
@@ -47,6 +48,7 @@ public class User {
   private Kit kit = KitRegistry.getDefaultKit();
   private final Map<StatsStorage.StatisticType, Integer> stats = new EnumMap<>(StatsStorage.StatisticType.class);
   private final Map<String, Long> cooldowns = new HashMap<>();
+  public Scoreboard lastBoard;
 
   @Deprecated
   public User(Player player) {
@@ -108,7 +110,15 @@ public class User {
       return 0;
     }
 
-    return stat.intValue();
+    return stat;
+  }
+
+  public void removeScoreboard(Arena arena) {
+    arena.getScoreboardManager().removeScoreboard(this);
+    if(lastBoard != null) {
+      getPlayer().setScoreboard(lastBoard);
+      lastBoard = null;
+    }
   }
 
   public void setStat(StatsStorage.StatisticType s, int i) {

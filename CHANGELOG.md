@@ -20,13 +20,14 @@ That's all, matcher will stop when detects next line started with `###` match
 * Fixed Tornado kit on paper software
 * Fixed some rare cases which did not disable LeaderboardHolograms
 * Added configurable villager amount
-* Added new RewardType scoreboard_add
 * Added configurable cooldown for some kit items
 * Fixed restoring door blocks on legacy versions
 * Changed empty message is no longer sent
 * Added Thai and Turkish locale (Thanks to PoEditor Contributors)
 * Added configurable name visibility for Golem, Wolf and Villager
 * Fixed party (parties v3.1.0) not working anymore
+* Fixed when plugins scoreboards not re-appeared after game end
+* Removed temp added scoreboard rewards
 
 ### 4.5.9 (28.03.2021 - 13.04.2021)
 * Fix when Splash_potion material not existed on 1.8 servers

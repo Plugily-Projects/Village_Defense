@@ -20,7 +20,6 @@ package plugily.projects.villagedefense;
 
 import com.gmail.filoghost.holographicdisplays.api.Hologram;
 import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
-
 import me.tigerhix.lib.scoreboard.ScoreboardLib;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
@@ -256,7 +255,7 @@ public class Main extends JavaPlugin {
     signManager.loadSigns();
     signManager.updateSigns();
     new EventsInitializer().initialize(this);
-    MiscUtils.sendStartUpMessage(this, "VillageDefense", getDescription(),true, true);
+    MiscUtils.sendStartUpMessage(this, "VillageDefense", getDescription(), true, true);
   }
 
   private void startInitiableClasses() {

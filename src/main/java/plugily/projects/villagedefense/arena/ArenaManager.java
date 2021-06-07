@@ -29,7 +29,6 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
-
 import pl.plajerlair.commonsbox.minecraft.compat.VersionUtils;
 import pl.plajerlair.commonsbox.minecraft.misc.MiscUtils;
 import pl.plajerlair.commonsbox.minecraft.serialization.InventorySerializer;
@@ -119,7 +118,10 @@ public class ArenaManager {
     }
     arena.getPlayers().add(player);
     User user = plugin.getUserManager().getUser(player);
+    user.lastBoard = player.getScoreboard();
+
     arena.getScoreboardManager().createScoreboard(user);
+
     if((arena.getArenaState() == ArenaState.IN_GAME || (arena.getArenaState() == ArenaState.STARTING && arena.getTimer() <= 3) || arena.getArenaState() == ArenaState.ENDING)) {
       if(!plugin.getConfigPreferences().getOption(ConfigPreferences.Option.INGAME_JOIN_RESPAWN)) {
         user.setPermanentSpectator(true);
@@ -257,7 +259,7 @@ public class ArenaManager {
 
     User user = plugin.getUserManager().getUser(player);
     user.setStat(StatsStorage.StatisticType.ORBS, 0);
-    arena.getScoreboardManager().removeScoreboard(user);
+    user.removeScoreboard(arena);
     arena.getPlayers().remove(player);
     if(!user.isSpectator()) {
       plugin.getChatManager().broadcastAction(arena, player, ChatManager.ActionType.LEAVE);
@@ -308,6 +310,7 @@ public class ArenaManager {
     List<String> summaryMessages = LanguageManager.getLanguageList("In-Game.Messages.Game-End-Messages.Summary-Message");
     for(Player player : arena.getPlayers()) {
       User user = plugin.getUserManager().getUser(player);
+      user.removeScoreboard(arena);
       if(user.getStat(StatsStorage.StatisticType.HIGHEST_WAVE) <= wave) {
         if(user.isSpectator() && !plugin.getConfigPreferences().getOption(ConfigPreferences.Option.RESPAWN_AFTER_WAVE)) {
           continue;
@@ -391,7 +394,7 @@ public class ArenaManager {
     subTitle = subTitle.replace("%wave%", strWave);
 
     for(User user : plugin.getUserManager().getUsers(arena)) {
-      if (!user.isSpectator() && !user.isPermanentSpectator()) {
+      if(!user.isSpectator() && !user.isPermanentSpectator()) {
         Player player = user.getPlayer();
         VersionUtils.sendTitles(player, title, subTitle, fadeIn, stay, fadeOut);
         plugin.getRewardsHandler().performReward(player, arena, Reward.RewardType.END_WAVE);

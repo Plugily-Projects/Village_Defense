@@ -32,7 +32,6 @@ import plugily.projects.villagedefense.arena.Arena;
 import plugily.projects.villagedefense.arena.ArenaState;
 import plugily.projects.villagedefense.arena.options.ArenaOption;
 import plugily.projects.villagedefense.handlers.language.LanguageManager;
-import plugily.projects.villagedefense.handlers.reward.Reward;
 import plugily.projects.villagedefense.user.User;
 
 import java.util.ArrayList;
@@ -63,7 +62,6 @@ public class ScoreboardManager {
    * @see User
    */
   public void createScoreboard(User user) {
-    plugin.getRewardsHandler().performReward(user.getPlayer(), Reward.RewardType.SCOREBOARD_ADD);
     Scoreboard scoreboard = ScoreboardLib.createScoreboard(user.getPlayer()).setHandler(new ScoreboardHandler() {
       @Override
       public String getTitle(Player player) {
@@ -91,7 +89,6 @@ public class ScoreboardManager {
       if(board.getHolder().equals(player)) {
         scoreboards.remove(board);
         board.deactivate();
-        plugin.getRewardsHandler().performReward(player, Reward.RewardType.SCOREBOARD_REMOVED);
         return;
       }
     }
