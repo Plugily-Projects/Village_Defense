@@ -18,6 +18,7 @@
 
 package plugily.projects.villagedefense.handlers.items;
 
+import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
@@ -76,12 +77,16 @@ public class SpecialItemManager {
       if("Version".equals(key)) {
         continue;
       }
-      XMaterial mat;
+      Material mat;
       String name;
       List<String> lore;
       int slot;
       try {
-        mat = XMaterial.matchXMaterial(config.getString(key + ".material-name", "bedrock").toUpperCase()).orElse(XMaterial.BEDROCK);
+        try {
+          mat = Material.valueOf(config.getString(key + ".material-name", "BEDROCK").toUpperCase());
+        } catch(IllegalArgumentException e) {
+          mat = Material.BEDROCK;
+        }
         name = plugin.getChatManager().colorRawMessage(config.getString(key + ".displayname"));
         lore = config.getStringList(key + ".lore").stream()
             .map(itemLore -> itemLore = plugin.getChatManager().colorRawMessage(itemLore))
@@ -98,7 +103,7 @@ public class SpecialItemManager {
         Debugger.debug(Level.WARNING, "Invalid display stage of special item " + key + " in special_items.yml! Please use lobby or spectator!");
         stage = SpecialItem.DisplayStage.LOBBY;
       }
-      SpecialItem item = new SpecialItem(key, new ItemBuilder(mat.parseItem()).name(name).lore(lore).build(), slot, stage);
+      SpecialItem item = new SpecialItem(key, new ItemBuilder(mat).name(name).lore(lore).build(), slot, stage);
       addItem(item);
     }
   }
