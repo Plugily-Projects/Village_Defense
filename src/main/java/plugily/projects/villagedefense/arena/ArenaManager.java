@@ -119,6 +119,8 @@ public class ArenaManager {
     arena.getPlayers().add(player);
     User user = plugin.getUserManager().getUser(player);
     user.lastBoard = player.getScoreboard();
+    //reset scoreboard
+    player.setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
 
     arena.getScoreboardManager().createScoreboard(user);
 
