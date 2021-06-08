@@ -29,7 +29,10 @@ import plugily.projects.villagedefense.commands.arguments.ArgumentsRegistry;
 import plugily.projects.villagedefense.commands.arguments.data.CommandArgument;
 import plugily.projects.villagedefense.handlers.language.Messages;
 
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
@@ -56,9 +59,14 @@ public class JoinArguments {
             return;
           }
 
-          Optional<Arena> optionalArena = ArenaRegistry.getArenas()
+          Map<Arena, Integer> arenas = new HashMap<>();
+          for(Arena arena : ArenaRegistry.getArenas()) {
+            arenas.put(arena, arena.getPlayers().size());
+          }
+          Optional<Arena> optionalArena = arenas.entrySet()
               .stream()
-              .max((arena1, arena2) -> Integer.compare(arena2.getPlayers().size(), arena1.getPlayers().size()));
+              .max(Map.Entry.comparingByValue(Comparator.reverseOrder()))
+              .map(Map.Entry::getKey);
           if(optionalArena.isPresent()) {
             Arena arena = optionalArena.get();
             ArenaManager.joinAttempt((Player) sender, arena);
