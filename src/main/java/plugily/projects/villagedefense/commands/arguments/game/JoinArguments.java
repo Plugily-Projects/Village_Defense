@@ -29,11 +29,8 @@ import plugily.projects.villagedefense.commands.arguments.ArgumentsRegistry;
 import plugily.projects.villagedefense.commands.arguments.data.CommandArgument;
 import plugily.projects.villagedefense.handlers.language.Messages;
 
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 
@@ -54,24 +51,17 @@ public class JoinArguments {
           return;
         }
         if(!ArenaRegistry.getArenas().isEmpty() && args[1].equalsIgnoreCase("maxplayers") && ArenaRegistry.getArena("maxplayers") == null) {
-          Map<Arena, Integer> arenas = new HashMap<>();
-          for(Arena arena : ArenaRegistry.getArenas()) {
-            arenas.put(arena, arena.getPlayers().size());
-          }
           if(ArenaRegistry.getArenaPlayersOnline() == 0) {
             ArenaManager.joinAttempt((Player) sender, ArenaRegistry.getArenas().get(ThreadLocalRandom.current().nextInt(ArenaRegistry.getArenas().size())));
             return;
           }
-          LinkedHashMap<Arena, Integer> orderedArenas = new LinkedHashMap<>();
-          arenas.entrySet()
-              .stream()
-              .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
-              .forEachOrdered(x -> orderedArenas.put(x.getKey(), x.getValue()));
 
-          if(!orderedArenas.isEmpty()) {
-            Arena arena = orderedArenas.keySet().stream().findFirst().get();
+          Optional<Arena> optionalArena = ArenaRegistry.getArenas()
+              .stream()
+              .max((arena1, arena2) -> Integer.compare(arena2.getPlayers().size(), arena1.getPlayers().size()));
+          if(optionalArena.isPresent()) {
+            Arena arena = optionalArena.get();
             ArenaManager.joinAttempt((Player) sender, arena);
-            return;
           }
           return;
         }
