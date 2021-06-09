@@ -87,8 +87,24 @@ public class MapRestorerManagerLegacy extends MapRestorerManager {
   @Override
   public void restoreTopHalfDoorPart(Block block) {
     block.setType(Utils.getCachedDoor(block));
+
+    Door doorBlockData = null;
+    try {
+      doorBlockData = new Door(TreeSpecies.GENERIC, Utils.getFacingByByte((byte) 8));
+    } catch (NoSuchMethodError e) {
+      try {
+        doorBlockData = Door.class.getDeclaredConstructor(Material.class, byte.class)
+            .newInstance(XMaterial.OAK_DOOR, Utils.getFacingByByte((byte) 8));
+      } catch (Exception ex) {
+        ex.printStackTrace();
+      }
+    }
+
+    if (doorBlockData == null)
+      return;
+
     BlockState doorBlockState = block.getState();
-    Door doorBlockData = new Door(TreeSpecies.GENERIC, Utils.getFacingByByte((byte) 8));
+
     doorBlockData.setTopHalf(true);
     doorBlockData.setFacingDirection(doorBlockData.getFacing());
     doorBlockState.setType(doorBlockData.getItemType());
@@ -99,8 +115,25 @@ public class MapRestorerManagerLegacy extends MapRestorerManager {
   @Override
   public void restoreBottomHalfDoorPart(Block block, byte doorData) {
     block.setType(Utils.getCachedDoor(block));
+
+    Door doorBlockData = null;
+    try {
+      doorBlockData = new Door(TreeSpecies.GENERIC, Utils.getFacingByByte(doorData));
+    } catch (NoSuchMethodError e) {
+      try {
+        doorBlockData = Door.class.getDeclaredConstructor(Material.class, byte.class)
+            .newInstance(XMaterial.OAK_DOOR, Utils.getFacingByByte(doorData));
+      } catch (Exception ex) {
+        ex.printStackTrace();
+      }
+    }
+
+    if (doorBlockData == null)
+      return;
+
     BlockState doorBlockState = block.getState();
-    Door doorBlockData = new Door(TreeSpecies.GENERIC, Utils.getFacingByByte(doorData));
+
+    doorBlockData.setTopHalf(false);
     doorBlockData.setFacingDirection(doorBlockData.getFacing());
     doorBlockState.setType(doorBlockData.getItemType());
     doorBlockState.setData(doorBlockData);
