@@ -63,14 +63,11 @@ public class JoinArguments {
           for(Arena arena : ArenaRegistry.getArenas()) {
             arenas.put(arena, arena.getPlayers().size());
           }
-          Optional<Arena> optionalArena = arenas.entrySet()
+          arenas.entrySet()
               .stream()
               .max(Map.Entry.comparingByValue(Comparator.reverseOrder()))
-              .map(Map.Entry::getKey);
-          if(optionalArena.isPresent()) {
-            Arena arena = optionalArena.get();
-            ArenaManager.joinAttempt((Player) sender, arena);
-          }
+              .map(Map.Entry::getKey)
+              .ifPresent(arena -> ArenaManager.joinAttempt((Player) sender, arena));
           return;
         }
         for(Arena arena : ArenaRegistry.getArenas()) {
