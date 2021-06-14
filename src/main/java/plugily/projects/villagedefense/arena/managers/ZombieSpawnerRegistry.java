@@ -9,6 +9,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * The registry for all {@link ZombieSpawner}
+ */
 public class ZombieSpawnerRegistry {
     private final List<ZombieSpawner> zombieSpawnerList = new ArrayList<>();
     private final Main plugin;
@@ -28,11 +31,17 @@ public class ZombieSpawnerRegistry {
         zombieSpawnerList.add(new HalfInvisibleZombieSpawner());
     }
 
+    /**
+     * Spawn the zombies at the arena
+     *
+     * @param random the random instance
+     * @param arena  the arena
+     */
     public void spawnZombies(Random random, Arena arena) {
         int wave = arena.getWave();
         int spawn = arena.getWave();
         int zombiesLimit = plugin.getConfig().getInt("Zombies-Limit", 75);
-        if(zombiesLimit < wave) {
+        if (zombiesLimit < wave) {
             spawn = (int) Math.ceil(zombiesLimit / 2.0);
         }
 
@@ -41,11 +50,16 @@ public class ZombieSpawnerRegistry {
         }
 
         arena.addOptionValue(ArenaOption.ZOMBIE_SPAWN_COUNTER, 1);
-        if(arena.getOption(ArenaOption.ZOMBIE_SPAWN_COUNTER) == 20) {
+        if (arena.getOption(ArenaOption.ZOMBIE_SPAWN_COUNTER) == 20) {
             arena.setOptionValue(ArenaOption.ZOMBIE_SPAWN_COUNTER, 0);
         }
     }
 
+    /**
+     * Get the list of zombie spawners
+     *
+     * @return the list of zombie spawners
+     */
     public List<ZombieSpawner> getZombieSpawnerList() {
         return zombieSpawnerList;
     }
