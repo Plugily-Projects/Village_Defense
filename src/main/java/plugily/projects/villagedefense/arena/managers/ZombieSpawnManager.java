@@ -39,11 +39,6 @@ import java.util.Random;
  */
 public class ZombieSpawnManager {
 
-  /**
-   * The list of custom zombie spawn managers
-   */
-  public static final List<CustomZombieSpawnManager> CUSTOM_ZOMBIE_SPAWN_MANAGERS = new ArrayList<>();
-
   private final Random random;
   private final Arena arena;
   private int localIdleProcess = 0;
@@ -141,10 +136,6 @@ public class ZombieSpawnManager {
     arena.addOptionValue(ArenaOption.ZOMBIE_SPAWN_COUNTER, 1);
     if(arena.getOption(ArenaOption.ZOMBIE_SPAWN_COUNTER) == 20) {
       arena.setOptionValue(ArenaOption.ZOMBIE_SPAWN_COUNTER, 0);
-    }
-
-    for(CustomZombieSpawnManager customZombieSpawnManager : CUSTOM_ZOMBIE_SPAWN_MANAGERS) {
-      customZombieSpawnManager.spawnZombie(random, arena, spawn);
     }
 
     if(arena.getOption(ArenaOption.ZOMBIES_TO_SPAWN) < 5 && arena.getOption(ArenaOption.ZOMBIES_TO_SPAWN) > 0) {
