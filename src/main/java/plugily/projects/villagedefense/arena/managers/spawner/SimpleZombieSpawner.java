@@ -6,21 +6,12 @@ import plugily.projects.villagedefense.arena.Arena;
 import plugily.projects.villagedefense.arena.options.ArenaOption;
 import plugily.projects.villagedefense.creatures.CreatureUtils;
 
-import java.util.List;
 import java.util.Random;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 /**
  * The interface for simple zombie spawner
  */
 public interface SimpleZombieSpawner extends ZombieSpawner {
-    /**
-     * The list of all phases in zombie spawners.
-     * When using this with {@link #getSpawnPhases()}, the zombies will be spawned on every phases.
-     */
-    List<Integer> ALL_PHASES = IntStream.range(0, 20).boxed().collect(Collectors.toList());
-
     /**
      * Get the name of the spawner
      *
@@ -47,9 +38,12 @@ public interface SimpleZombieSpawner extends ZombieSpawner {
     /**
      * How often the zombies will be spawned? Amount between 0.0 and 1.0
      *
+     * @param arena the arena
+     * @param wave  the current wave
+     * @param phase the current phase
      * @return the spawn rate in double
      */
-    double getSpawnRate();
+    double getSpawnRate(Arena arena, int wave, int phase);
 
     /**
      * Get the final amount of zombies to spawn, after some workaround
@@ -65,11 +59,14 @@ public interface SimpleZombieSpawner extends ZombieSpawner {
     }
 
     /**
-     * Get the phases where the zombies can be spawned
+     * Check if the zombies can be spawned on this phase
      *
-     * @return the spawn phases
+     * @param arena the arena
+     * @param wave  the current wave
+     * @param phase the current phase
+     * @return true if they can
      */
-    List<Integer> getSpawnPhases();
+    boolean checkPhase(Arena arena, int wave, int phase);
 
     /**
      * Spawn the zombie at the location
@@ -105,7 +102,7 @@ public interface SimpleZombieSpawner extends ZombieSpawner {
     default void spawnZombie(Random random, Arena arena, int spawn) {
         int wave = arena.getWave();
         int phase = arena.getOption(ArenaOption.ZOMBIE_SPAWN_COUNTER);
-        if (!getSpawnPhases().contains(phase)) {
+        if (!checkPhase(arena, wave, phase)) {
             return;
         }
         int minWave = getMinWave();
@@ -114,10 +111,11 @@ public interface SimpleZombieSpawner extends ZombieSpawner {
             return;
         }
         int spawnAmount = getFinalAmount(arena, wave, phase, spawn);
+        double spawnRate = getSpawnRate(arena, wave, phase);
         for (int i = 0; i < spawnAmount; i++) {
             int weight = getSpawnWeight();
             int zombiesToSpawn = arena.getOption(ArenaOption.ZOMBIES_TO_SPAWN);
-            if (zombiesToSpawn >= weight && random.nextDouble() <= getSpawnRate()) {
+            if (zombiesToSpawn >= weight && random.nextDouble() <= spawnRate) {
                 Location location = arena.getRandomZombieSpawn(random);
                 spawnZombie(location, arena);
                 arena.setOptionValue(ArenaOption.ZOMBIES_TO_SPAWN, zombiesToSpawn - weight);
