@@ -23,13 +23,15 @@ public class FastZombieSpawner implements SimpleZombieSpawner {
 
     @Override
     public double getSpawnRate(Arena arena, int wave, int phase, int spawnAmount) {
-        if (arena.getZombies().isEmpty() || spawnAmount < 5) {
+        if (spawnAmount < 5 || arena.getZombies().isEmpty()) {
             return 1;
-        } else if (phase == 5 && wave <= 7) {
-            return 2d / 3;
-        } else {
-            return 0;
         }
+
+        if (phase == 5 && wave <= 7) {
+            return 2d / 3;
+        }
+
+        return 0;
     }
 
     @Override
