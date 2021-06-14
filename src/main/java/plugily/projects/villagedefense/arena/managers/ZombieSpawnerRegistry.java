@@ -51,7 +51,6 @@ public class ZombieSpawnerRegistry {
         }
 
         for (ZombieSpawner zombieSpawner : zombieSpawnerList) {
-            System.out.println(arena.getMapName() + ": " + zombieSpawner.getClass().getSimpleName());
             zombieSpawner.spawnZombie(random, arena, spawn);
         }
     }
