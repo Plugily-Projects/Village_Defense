@@ -20,7 +20,6 @@ package plugily.projects.villagedefense.arena;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
@@ -31,16 +30,11 @@ import org.bukkit.entity.Player;
 import org.bukkit.entity.Villager;
 import org.bukkit.entity.Wolf;
 import org.bukkit.entity.Zombie;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.permissions.PermissionAttachmentInfo;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.TestOnly;
 import pl.plajerlair.commonsbox.minecraft.compat.ServerVersion;
-import pl.plajerlair.commonsbox.minecraft.compat.VersionUtils;
-import pl.plajerlair.commonsbox.minecraft.compat.xseries.XMaterial;
 import pl.plajerlair.commonsbox.minecraft.configuration.ConfigUtils;
 import plugily.projects.villagedefense.ConfigPreferences;
 import plugily.projects.villagedefense.Main;
@@ -481,127 +475,6 @@ public class Arena extends BukkitRunnable {
     ironGolem.setCustomNameVisible(plugin.getConfigPreferences().getOption(ConfigPreferences.Option.NAME_VISIBLE_GOLEM));
     ironGolem.setCustomName(plugin.getChatManager().colorMessage(Messages.SPAWNED_GOLEM_NAME).replace("%player%", player.getName()));
     addIronGolem(ironGolem);
-  }
-
-  public void spawnFastZombie(Random random) {
-    Location location = getRandomZombieSpawn(random);
-    Zombie fastZombie = CreatureUtils.getCreatureInitializer().spawnFastZombie(location);
-    CreatureUtils.applyAttributes(fastZombie, this);
-    plugin.getHolidayManager().applyHolidayZombieEffects(fastZombie);
-    addZombie(fastZombie);
-    setOptionValue(ArenaOption.ZOMBIES_TO_SPAWN, getOption(ArenaOption.ZOMBIES_TO_SPAWN) - 1);
-  }
-
-  public void spawnBabyZombie(Random random) {
-    Location location = getRandomZombieSpawn(random);
-    Zombie babyZombie = CreatureUtils.getCreatureInitializer().spawnBabyZombie(location);
-    CreatureUtils.applyAttributes(babyZombie, this);
-    plugin.getHolidayManager().applyHolidayZombieEffects(babyZombie);
-    addZombie(babyZombie);
-    setOptionValue(ArenaOption.ZOMBIES_TO_SPAWN, getOption(ArenaOption.ZOMBIES_TO_SPAWN) - 1);
-  }
-
-  public void spawnHardZombie(Random random) {
-    Location location = getRandomZombieSpawn(random);
-    Zombie hardZombie = CreatureUtils.getCreatureInitializer().spawnHardZombie(location);
-    hardZombie.getEquipment().setBoots(new ItemStack(Material.DIAMOND_BOOTS));
-    hardZombie.getEquipment().setLeggings(new ItemStack(Material.DIAMOND_LEGGINGS));
-    hardZombie.getEquipment().setChestplate(new ItemStack(Material.DIAMOND_CHESTPLATE));
-    hardZombie.getEquipment().setHelmet(new ItemStack(Material.DIAMOND_HELMET));
-    CreatureUtils.applyAttributes(hardZombie, this);
-    addZombie(hardZombie);
-    setOptionValue(ArenaOption.ZOMBIES_TO_SPAWN, getOption(ArenaOption.ZOMBIES_TO_SPAWN) - 1);
-  }
-
-  public void spawnPlayerBuster(Random random) {
-    Location location = getRandomZombieSpawn(random);
-    Zombie playerBuster = CreatureUtils.getCreatureInitializer().spawnPlayerBuster(location);
-    playerBuster.getEquipment().setHelmet(new ItemStack(Material.TNT));
-    playerBuster.getEquipment().setHelmetDropChance(0.0F);
-    VersionUtils.setItemInHandDropChance(playerBuster, 0F);
-    playerBuster.getEquipment().setBoots(XMaterial.GOLDEN_BOOTS.parseItem());
-    playerBuster.getEquipment().setLeggings(XMaterial.GOLDEN_LEGGINGS.parseItem());
-    playerBuster.getEquipment().setChestplate(XMaterial.GOLDEN_CHESTPLATE.parseItem());
-    CreatureUtils.applyAttributes(playerBuster, this);
-    addZombie(playerBuster);
-    setOptionValue(ArenaOption.ZOMBIES_TO_SPAWN, getOption(ArenaOption.ZOMBIES_TO_SPAWN) - 1);
-  }
-
-  public void spawnGolemBuster(Random random) {
-    Location location = getRandomZombieSpawn(random);
-    Zombie golemBuster = CreatureUtils.getCreatureInitializer().spawnGolemBuster(location);
-    golemBuster.getEquipment().setHelmet(new ItemStack(Material.TNT));
-    golemBuster.getEquipment().setHelmetDropChance(0.0F);
-    VersionUtils.setItemInHandDropChance(golemBuster, 0F);
-    golemBuster.getEquipment().setBoots(XMaterial.IRON_BOOTS.parseItem());
-    golemBuster.getEquipment().setLeggings(XMaterial.IRON_LEGGINGS.parseItem());
-    golemBuster.getEquipment().setChestplate(XMaterial.IRON_CHESTPLATE.parseItem());
-    CreatureUtils.applyAttributes(golemBuster, this);
-    addZombie(golemBuster);
-    setOptionValue(ArenaOption.ZOMBIES_TO_SPAWN, getOption(ArenaOption.ZOMBIES_TO_SPAWN) - 1);
-  }
-
-  public void spawnVillagerBuster(Random random) {
-    Location location = getRandomZombieSpawn(random);
-    Zombie villagerBuster = CreatureUtils.getCreatureInitializer().spawnVillagerBuster(location);
-    villagerBuster.getEquipment().setHelmet(new ItemStack(Material.TNT));
-    villagerBuster.getEquipment().setHelmetDropChance(0.0F);
-    VersionUtils.setItemInHandDropChance(villagerBuster, 0F);
-    villagerBuster.getEquipment().setBoots(XMaterial.LEATHER_BOOTS.parseItem());
-    villagerBuster.getEquipment().setLeggings(XMaterial.LEATHER_LEGGINGS.parseItem());
-    villagerBuster.getEquipment().setChestplate(XMaterial.LEATHER_CHESTPLATE.parseItem());
-    CreatureUtils.applyAttributes(villagerBuster, this);
-    addZombie(villagerBuster);
-    setOptionValue(ArenaOption.ZOMBIES_TO_SPAWN, getOption(ArenaOption.ZOMBIES_TO_SPAWN) - 1);
-  }
-
-  public void spawnSoftHardZombie(Random random) {
-    Location location = getRandomZombieSpawn(random);
-    Zombie hardBuster = CreatureUtils.getCreatureInitializer().spawnHardZombie(location);
-    hardBuster.getEquipment().setBoots(new ItemStack(Material.IRON_BOOTS));
-    hardBuster.getEquipment().setLeggings(new ItemStack(Material.IRON_LEGGINGS));
-    hardBuster.getEquipment().setChestplate(new ItemStack(Material.IRON_CHESTPLATE));
-    hardBuster.getEquipment().setHelmet(new ItemStack(Material.IRON_HELMET));
-    CreatureUtils.applyAttributes(hardBuster, this);
-    addZombie(hardBuster);
-    setOptionValue(ArenaOption.ZOMBIES_TO_SPAWN, getOption(ArenaOption.ZOMBIES_TO_SPAWN) - 1);
-  }
-
-  public void spawnHalfInvisibleZombie(Random random) {
-    Location location = getRandomZombieSpawn(random);
-    Zombie fastZombie = CreatureUtils.getCreatureInitializer().spawnFastZombie(location);
-    fastZombie.getEquipment().setBoots(new ItemStack(Material.CHAINMAIL_BOOTS));
-    fastZombie.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, Integer.MAX_VALUE, 1));
-    CreatureUtils.applyAttributes(fastZombie, this);
-    addZombie(fastZombie);
-    setOptionValue(ArenaOption.ZOMBIES_TO_SPAWN, getOption(ArenaOption.ZOMBIES_TO_SPAWN) - 1);
-  }
-
-  public void spawnKnockbackResistantZombies(Random random) {
-    Location location = getRandomZombieSpawn(random);
-    Zombie tankerZombie = CreatureUtils.getCreatureInitializer().spawnKnockbackResistantZombies(location);
-    VersionUtils.setItemInHand(tankerZombie, XMaterial.GOLDEN_AXE.parseItem());
-    tankerZombie.getEquipment().setBoots(new ItemStack(Material.DIAMOND_BOOTS));
-    tankerZombie.getEquipment().setLeggings(new ItemStack(Material.DIAMOND_LEGGINGS));
-    tankerZombie.getEquipment().setChestplate(new ItemStack(Material.DIAMOND_CHESTPLATE));
-    tankerZombie.getEquipment().setHelmet(new ItemStack(Material.DIAMOND_HELMET));
-    CreatureUtils.applyAttributes(tankerZombie, this);
-    addZombie(tankerZombie);
-    setOptionValue(ArenaOption.ZOMBIES_TO_SPAWN, getOption(ArenaOption.ZOMBIES_TO_SPAWN) - 1);
-  }
-
-  public void spawnVillagerSlayer(Random random) {
-    Location location = getRandomZombieSpawn(random);
-    Zombie villagerSlayer = CreatureUtils.getCreatureInitializer().spawnVillagerSlayer(location);
-    VersionUtils.setItemInHand(villagerSlayer, XMaterial.EMERALD.parseItem());
-    VersionUtils.setItemInHandDropChance(villagerSlayer, 0F);
-    villagerSlayer.getEquipment().setBoots(new ItemStack(Material.CHAINMAIL_BOOTS));
-    villagerSlayer.getEquipment().setLeggings(new ItemStack(Material.CHAINMAIL_LEGGINGS));
-    villagerSlayer.getEquipment().setChestplate(new ItemStack(Material.CHAINMAIL_CHESTPLATE));
-    villagerSlayer.getEquipment().setHelmet(new ItemStack(Material.CHAINMAIL_HELMET));
-    CreatureUtils.applyAttributes(villagerSlayer, this);
-    addZombie(villagerSlayer);
-    setOptionValue(ArenaOption.ZOMBIES_TO_SPAWN, getOption(ArenaOption.ZOMBIES_TO_SPAWN) - 1);
   }
 
   protected void addWolf(Wolf wolf) {

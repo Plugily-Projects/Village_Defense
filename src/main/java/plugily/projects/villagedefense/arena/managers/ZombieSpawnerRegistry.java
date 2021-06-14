@@ -45,13 +45,14 @@ public class ZombieSpawnerRegistry {
             spawn = (int) Math.ceil(zombiesLimit / 2.0);
         }
 
-        for (ZombieSpawner zombieSpawner : zombieSpawnerList) {
-            zombieSpawner.spawnZombie(random, arena, spawn);
-        }
-
         arena.addOptionValue(ArenaOption.ZOMBIE_SPAWN_COUNTER, 1);
         if (arena.getOption(ArenaOption.ZOMBIE_SPAWN_COUNTER) == 20) {
             arena.setOptionValue(ArenaOption.ZOMBIE_SPAWN_COUNTER, 0);
+        }
+
+        for (ZombieSpawner zombieSpawner : zombieSpawnerList) {
+            System.out.println(arena.getMapName() + ": " + zombieSpawner.getClass().getSimpleName());
+            zombieSpawner.spawnZombie(random, arena, spawn);
         }
     }
 
