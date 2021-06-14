@@ -131,9 +131,9 @@ public class ZombieSpawnManager {
       arena.setOptionValue(ArenaOption.ZOMBIE_SPAWN_COUNTER, 0);
     }
 
-    if(arena.getOption(ArenaOption.ZOMBIE_SPAWN_COUNTER) == 5) {
-      if(random.nextInt(3) == 2) {
-        for(int i = 0; i <= spawn; i++) {
+//    if(arena.getOption(ArenaOption.ZOMBIE_SPAWN_COUNTER) == 5) {
+//      if(random.nextInt(3) == 2) {
+//        for(int i = 0; i <= spawn; i++) {
 //          if(arena.getOption(ArenaOption.ZOMBIES_TO_SPAWN) > 0) {
 //            arena.spawnPlayerBuster(random);
 //          }
@@ -143,12 +143,12 @@ public class ZombieSpawnManager {
 //          if(arena.getOption(ArenaOption.ZOMBIES_TO_SPAWN) > 0) {
 //            arena.spawnVillagerBuster(random);
 //          }
-          if(arena.getOption(ArenaOption.ZOMBIES_TO_SPAWN) > 0) {
-            arena.spawnBabyZombie(random);
-          }
-        }
-      }
-    }
+//          if(arena.getOption(ArenaOption.ZOMBIES_TO_SPAWN) > 0) {
+//            arena.spawnBabyZombie(random);
+//          }
+//        }
+//      }
+//    }
 //    if(random.nextInt(8) == 0 && wave > 10) {
 //      for(int i = 0; i < (spawn - 8); i++) {
 //        if(arena.getOption(ArenaOption.ZOMBIES_TO_SPAWN) > 0) {
