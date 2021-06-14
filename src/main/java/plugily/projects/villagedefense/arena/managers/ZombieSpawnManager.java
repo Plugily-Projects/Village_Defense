@@ -140,9 +140,9 @@ public class ZombieSpawnManager {
 //          if(arena.getOption(ArenaOption.ZOMBIES_TO_SPAWN) > 0) {
 //            arena.spawnGolemBuster(random);
 //          }
-          if(arena.getOption(ArenaOption.ZOMBIES_TO_SPAWN) > 0) {
-            arena.spawnVillagerBuster(random);
-          }
+//          if(arena.getOption(ArenaOption.ZOMBIES_TO_SPAWN) > 0) {
+//            arena.spawnVillagerBuster(random);
+//          }
           if(arena.getOption(ArenaOption.ZOMBIES_TO_SPAWN) > 0) {
             arena.spawnBabyZombie(random);
           }
@@ -182,13 +182,13 @@ public class ZombieSpawnManager {
 //        }
 //      }
 //    }
-    if(random.nextInt(8) == 0 && !arena.getVillagers().isEmpty() && wave >= 15) {
-      for(int i = 0; i < (spawn - 13); i++) {
-        if(arena.getOption(ArenaOption.ZOMBIES_TO_SPAWN) > 0) {
-          arena.spawnVillagerBuster(random);
-        }
-      }
-    }
+//    if(random.nextInt(8) == 0 && !arena.getVillagers().isEmpty() && wave >= 15) {
+//      for(int i = 0; i < (spawn - 13); i++) {
+//        if(arena.getOption(ArenaOption.ZOMBIES_TO_SPAWN) > 0) {
+//          arena.spawnVillagerBuster(random);
+//        }
+//      }
+//    }
   }
 
   private boolean checkForIdle() {

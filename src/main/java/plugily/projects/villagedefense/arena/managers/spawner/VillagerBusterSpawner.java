@@ -9,7 +9,7 @@ import pl.plajerlair.commonsbox.minecraft.compat.xseries.XMaterial;
 import plugily.projects.villagedefense.arena.Arena;
 import plugily.projects.villagedefense.creatures.CreatureUtils;
 
-public class GolemBusterSpawner implements SimpleZombieSpawner {
+public class VillagerBusterSpawner implements SimpleZombieSpawner {
     @Override
     public int getMinWave() {
         return 1;
@@ -20,7 +20,7 @@ public class GolemBusterSpawner implements SimpleZombieSpawner {
         if (phase == 5) {
             return 1D / 3;
         }
-        if (wave >= 6) {
+        if (wave >= 15) {
             return 1D / 8;
         }
         return 0;
@@ -31,26 +31,26 @@ public class GolemBusterSpawner implements SimpleZombieSpawner {
         if (phase == 5) {
             return spawnAmount / 4;
         }
-        if (wave >= 6 && !arena.getIronGolems().isEmpty()) {
-            return spawnAmount - 4;
+        if (wave >= 15 && !arena.getVillagers().isEmpty()) {
+            return spawnAmount - 13;
         }
         return 0;
     }
 
     @Override
     public boolean checkPhase(Arena arena, int wave, int phase, int spawnAmount) {
-        return phase == 5 || wave >= 6;
+        return phase == 5 || wave >= 15;
     }
 
     @Override
     public Zombie spawnZombie(Location location) {
-        Zombie golemBuster = CreatureUtils.getCreatureInitializer().spawnGolemBuster(location);
-        golemBuster.getEquipment().setHelmet(new ItemStack(Material.TNT));
-        golemBuster.getEquipment().setHelmetDropChance(0.0F);
-        VersionUtils.setItemInHandDropChance(golemBuster, 0F);
-        golemBuster.getEquipment().setBoots(XMaterial.IRON_BOOTS.parseItem());
-        golemBuster.getEquipment().setLeggings(XMaterial.IRON_LEGGINGS.parseItem());
-        golemBuster.getEquipment().setChestplate(XMaterial.IRON_CHESTPLATE.parseItem());
-        return golemBuster;
+        Zombie villagerBuster = CreatureUtils.getCreatureInitializer().spawnVillagerBuster(location);
+        villagerBuster.getEquipment().setHelmet(new ItemStack(Material.TNT));
+        villagerBuster.getEquipment().setHelmetDropChance(0.0F);
+        VersionUtils.setItemInHandDropChance(villagerBuster, 0F);
+        villagerBuster.getEquipment().setBoots(XMaterial.LEATHER_BOOTS.parseItem());
+        villagerBuster.getEquipment().setLeggings(XMaterial.LEATHER_LEGGINGS.parseItem());
+        villagerBuster.getEquipment().setChestplate(XMaterial.LEATHER_CHESTPLATE.parseItem());
+        return villagerBuster;
     }
 }
