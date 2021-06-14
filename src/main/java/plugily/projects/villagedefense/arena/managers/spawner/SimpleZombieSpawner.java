@@ -114,7 +114,7 @@ public interface SimpleZombieSpawner extends ZombieSpawner {
         for (int i = 0; i < spawnAmount; i++) {
             int weight = getSpawnWeight();
             if (arena.getOption(ArenaOption.ZOMBIES_TO_SPAWN) >= weight && random.nextDouble() <= getSpawnRate()) {
-                Location location = arena.getZombieSpawns().get(random.nextInt(arena.getZombieSpawns().size()));
+                Location location = arena.getRandomZombieSpawn(random);
                 spawnZombie(location, arena);
                 arena.setOptionValue(ArenaOption.ZOMBIES_TO_SPAWN, arena.getOption(ArenaOption.ZOMBIES_TO_SPAWN) - weight);
             }
