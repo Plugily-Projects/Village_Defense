@@ -155,10 +155,10 @@ public class ZombieSpawnManager {
               if(random.nextInt(3) == 1) {
                 arena.spawnKnockbackResistantZombies(random);
               }
-            } else if(wave > 14) {
-              if(random.nextInt(2) == 1) {
-                arena.spawnHardZombie(random);
-              }
+//            } else if(wave > 14) {
+//              if(random.nextInt(2) == 1) {
+//                arena.spawnHardZombie(random);
+//              }
 //            } else if(wave > 7) {
 //              if (random.nextInt(2) == 1) {
 //                arena.spawnSoftHardZombie(random);
@@ -185,21 +185,21 @@ public class ZombieSpawnManager {
         }
       }
     }
-    if(arena.getOption(ArenaOption.ZOMBIE_SPAWN_COUNTER) == 15 && wave > 4) {
-      if(wave > 8) {
-        for(int i = 0; i < (spawn - 7); i++) {
-          if(arena.getOption(ArenaOption.ZOMBIES_TO_SPAWN) > 0) {
-            arena.spawnHardZombie(random);
-          }
-        }
+//    if(arena.getOption(ArenaOption.ZOMBIE_SPAWN_COUNTER) == 15 && wave > 4) {
+//      if(wave > 8) {
+//        for(int i = 0; i < (spawn - 7); i++) {
+//          if(arena.getOption(ArenaOption.ZOMBIES_TO_SPAWN) > 0) {
+//            arena.spawnHardZombie(random);
+//          }
+//        }
 //      } else {
 //        for(int i = 0; i < (spawn - 3); i++) {
 //          if(arena.getOption(ArenaOption.ZOMBIES_TO_SPAWN) > 0) {
 //            arena.spawnSoftHardZombie(random);
 //          }
 //        }
-      }
-    }
+//      }
+//    }
     if(random.nextInt(8) == 0 && wave > 10) {
       for(int i = 0; i < (spawn - 8); i++) {
         if(arena.getOption(ArenaOption.ZOMBIES_TO_SPAWN) > 0) {
