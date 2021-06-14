@@ -2,7 +2,7 @@ package plugily.projects.villagedefense.arena.managers;
 
 import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.arena.Arena;
-import plugily.projects.villagedefense.arena.managers.spawner.ZombieSpawner;
+import plugily.projects.villagedefense.arena.managers.spawner.*;
 import plugily.projects.villagedefense.arena.options.ArenaOption;
 
 import java.util.ArrayList;
@@ -15,6 +15,17 @@ public class ZombieSpawnerRegistry {
 
     public ZombieSpawnerRegistry(Main plugin) {
         this.plugin = plugin;
+
+        zombieSpawnerList.add(new FastZombieSpawner());
+        zombieSpawnerList.add(new VillagerSlayerSpawner());
+        zombieSpawnerList.add(new KnockbackResistantZombieSpawner());
+        zombieSpawnerList.add(new HardZombieSpawner());
+        zombieSpawnerList.add(new SoftHardZombieSpawner());
+        zombieSpawnerList.add(new PlayerBusterSpawner());
+        zombieSpawnerList.add(new GolemBusterSpawner());
+        zombieSpawnerList.add(new VillagerBusterSpawner());
+        zombieSpawnerList.add(new BabyZombieSpawner());
+        zombieSpawnerList.add(new HalfInvisibleZombieSpawner());
     }
 
     public void spawnZombies(Random random, Arena arena) {
