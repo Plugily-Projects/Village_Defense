@@ -9,11 +9,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class ZombieSpawnerManager {
+public class ZombieSpawnerRegistry {
     private final List<ZombieSpawner> zombieSpawnerList = new ArrayList<>();
     private final Main plugin;
 
-    public ZombieSpawnerManager(Main plugin) {
+    public ZombieSpawnerRegistry(Main plugin) {
         this.plugin = plugin;
     }
 

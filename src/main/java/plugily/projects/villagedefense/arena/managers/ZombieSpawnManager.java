@@ -116,7 +116,7 @@ public class ZombieSpawnManager {
       return;
     }
 
-    arena.getPlugin().getZombieSpawnerManager().spawnZombies(random, arena);
+    arena.getPlugin().getZombieSpawnerRegistry().spawnZombies(random, arena);
   }
 
   private boolean checkForIdle() {
