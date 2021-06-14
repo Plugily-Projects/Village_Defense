@@ -36,14 +36,24 @@ public interface SimpleZombieSpawner extends ZombieSpawner {
     }
 
     /**
+     * Can the zombies be applied some holiday effects?
+     *
+     * @return true if they can
+     */
+    default boolean canApplyHolidayEffect() {
+        return false;
+    }
+
+    /**
      * How often the zombies will be spawned? Amount between 0.0 and 1.0
      *
-     * @param arena the arena
-     * @param wave  the current wave
-     * @param phase the current phase
+     * @param arena       the arena
+     * @param wave        the current wave
+     * @param phase       the current phase
+     * @param spawnAmount the raw amount that the arena suggests
      * @return the spawn rate in double
      */
-    double getSpawnRate(Arena arena, int wave, int phase);
+    double getSpawnRate(Arena arena, int wave, int phase, int spawnAmount);
 
     /**
      * Get the final amount of zombies to spawn, after some workaround
@@ -61,12 +71,13 @@ public interface SimpleZombieSpawner extends ZombieSpawner {
     /**
      * Check if the zombies can be spawned on this phase
      *
-     * @param arena the arena
-     * @param wave  the current wave
-     * @param phase the current phase
+     * @param arena       the arena
+     * @param wave        the current wave
+     * @param phase       the current phase
+     * @param spawnAmount the raw amount that the arena suggests
      * @return true if they can
      */
-    boolean checkPhase(Arena arena, int wave, int phase);
+    boolean checkPhase(Arena arena, int wave, int phase, int spawnAmount);
 
     /**
      * Spawn the zombie at the location
@@ -95,6 +106,9 @@ public interface SimpleZombieSpawner extends ZombieSpawner {
     default void spawnZombie(Location location, Arena arena) {
         Zombie zombie = spawnZombie(location);
         CreatureUtils.applyAttributes(zombie, arena);
+        if (canApplyHolidayEffect()) {
+            arena.getPlugin().getHolidayManager().applyHolidayZombieEffects(zombie);
+        }
         arena.getZombies().add(zombie);
     }
 
@@ -102,7 +116,7 @@ public interface SimpleZombieSpawner extends ZombieSpawner {
     default void spawnZombie(Random random, Arena arena, int spawn) {
         int wave = arena.getWave();
         int phase = arena.getOption(ArenaOption.ZOMBIE_SPAWN_COUNTER);
-        if (!checkPhase(arena, wave, phase)) {
+        if (!checkPhase(arena, wave, phase, spawn)) {
             return;
         }
         int minWave = getMinWave();
@@ -111,11 +125,11 @@ public interface SimpleZombieSpawner extends ZombieSpawner {
             return;
         }
         int spawnAmount = getFinalAmount(arena, wave, phase, spawn);
-        double spawnRate = getSpawnRate(arena, wave, phase);
+        double spawnRate = getSpawnRate(arena, wave, phase, spawn);
         for (int i = 0; i < spawnAmount; i++) {
             int weight = getSpawnWeight();
             int zombiesToSpawn = arena.getOption(ArenaOption.ZOMBIES_TO_SPAWN);
-            if (zombiesToSpawn >= weight && random.nextDouble() <= spawnRate) {
+            if (zombiesToSpawn >= weight && spawnRate != 0 && (spawnRate == 1 || random.nextDouble() <= spawnRate)) {
                 Location location = arena.getRandomZombieSpawn(random);
                 spawnZombie(location, arena);
                 arena.setOptionValue(ArenaOption.ZOMBIES_TO_SPAWN, zombiesToSpawn - weight);
