@@ -13,13 +13,6 @@ import java.util.Random;
  */
 public interface SimpleZombieSpawner extends ZombieSpawner {
     /**
-     * Get the name of the spawner
-     *
-     * @return the name
-     */
-    String getName();
-
-    /**
      * Get the minimum wave to spawn the zombies
      *
      * @return the wave

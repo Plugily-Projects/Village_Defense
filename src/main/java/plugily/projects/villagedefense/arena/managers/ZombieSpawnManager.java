@@ -159,10 +159,10 @@ public class ZombieSpawnManager {
               if(random.nextInt(2) == 1) {
                 arena.spawnHardZombie(random);
               }
-            } else if(wave > 7) {
-              if (random.nextInt(2) == 1) {
-                arena.spawnSoftHardZombie(random);
-              }
+//            } else if(wave > 7) {
+//              if (random.nextInt(2) == 1) {
+//                arena.spawnSoftHardZombie(random);
+//              }
 //            } else {
 //              arena.spawnFastZombie(random);
             }
@@ -192,12 +192,12 @@ public class ZombieSpawnManager {
             arena.spawnHardZombie(random);
           }
         }
-      } else {
-        for(int i = 0; i < (spawn - 3); i++) {
-          if(arena.getOption(ArenaOption.ZOMBIES_TO_SPAWN) > 0) {
-            arena.spawnSoftHardZombie(random);
-          }
-        }
+//      } else {
+//        for(int i = 0; i < (spawn - 3); i++) {
+//          if(arena.getOption(ArenaOption.ZOMBIES_TO_SPAWN) > 0) {
+//            arena.spawnSoftHardZombie(random);
+//          }
+//        }
       }
     }
     if(random.nextInt(8) == 0 && wave > 10) {

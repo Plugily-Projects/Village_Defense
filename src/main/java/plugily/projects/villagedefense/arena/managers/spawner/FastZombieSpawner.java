@@ -7,11 +7,6 @@ import plugily.projects.villagedefense.creatures.CreatureUtils;
 
 public class FastZombieSpawner implements SimpleZombieSpawner {
     @Override
-    public String getName() {
-        return "FAST_ZOMBIE";
-    }
-
-    @Override
     public int getMinWave() {
         return 1;
     }
