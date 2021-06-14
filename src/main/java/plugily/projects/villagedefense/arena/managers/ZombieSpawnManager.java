@@ -151,10 +151,10 @@ public class ZombieSpawnManager {
               if(random.nextInt(4) == 1) {
                 arena.spawnVillagerSlayer(random);
               }
-            } else if(wave > 20) {
-              if(random.nextInt(3) == 1) {
-                arena.spawnKnockbackResistantZombies(random);
-              }
+//            } else if(wave > 20) {
+//              if(random.nextInt(3) == 1) {
+//                arena.spawnKnockbackResistantZombies(random);
+//              }
 //            } else if(wave > 14) {
 //              if(random.nextInt(2) == 1) {
 //                arena.spawnHardZombie(random);
