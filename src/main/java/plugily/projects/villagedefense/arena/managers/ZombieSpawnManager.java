@@ -163,10 +163,9 @@ public class ZombieSpawnManager {
               if (random.nextInt(2) == 1) {
                 arena.spawnSoftHardZombie(random);
               }
-            }
 //            } else {
 //              arena.spawnFastZombie(random);
-//            }
+            }
           }
         }
       } else {
