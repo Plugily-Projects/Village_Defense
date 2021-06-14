@@ -21,7 +21,6 @@ package plugily.projects.villagedefense.arena.managers;
 import org.bukkit.Location;
 import org.bukkit.entity.Villager;
 import org.bukkit.entity.Zombie;
-import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.arena.Arena;
 import plugily.projects.villagedefense.arena.options.ArenaOption;
 
@@ -44,12 +43,10 @@ public class ZombieSpawnManager {
   private int localIdleProcess = 0;
   private final List<Zombie> glitchedZombies = new ArrayList<>();
   private final Map<Zombie, Location> zombieCheckerLocations = new HashMap<>();
-  private final Main plugin;
 
   public ZombieSpawnManager(Arena arena) {
     this.arena = arena;
     this.random = new Random();
-    plugin = arena.getPlugin();
   }
 
   public void applyIdle(int idle) {
@@ -119,17 +116,7 @@ public class ZombieSpawnManager {
       return;
     }
 
-    int wave = arena.getOption(ArenaOption.WAVE);
-    int spawn = arena.getOption(ArenaOption.WAVE);
-    int zombiesLimit = plugin.getConfig().getInt("Zombies-Limit", 75);
-    if(zombiesLimit < wave) {
-      spawn = (int) Math.ceil(zombiesLimit / 2.0);
-    }
-
-    arena.addOptionValue(ArenaOption.ZOMBIE_SPAWN_COUNTER, 1);
-    if(arena.getOption(ArenaOption.ZOMBIE_SPAWN_COUNTER) == 20) {
-      arena.setOptionValue(ArenaOption.ZOMBIE_SPAWN_COUNTER, 0);
-    }
+    arena.getPlugin().getZombieSpawnerManager().spawnZombies(random, arena);
   }
 
   private boolean checkForIdle() {
