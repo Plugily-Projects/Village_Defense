@@ -33,6 +33,19 @@ public class FastZombieSpawner implements SimpleZombieSpawner {
     }
 
     @Override
+    public int getFinalAmount(Arena arena, int wave, int phase, int spawnAmount) {
+        if (arena.getZombies().isEmpty()) {
+            return spawnAmount;
+        } else if (spawnAmount < 5) {
+            return spawnAmount;
+        } else if (phase == 5 && wave <= 7) {
+            return spawnAmount;
+        } else {
+            return 0;
+        }
+    }
+
+    @Override
     public boolean checkPhase(Arena arena, int wave, int phase, int spawnAmount) {
         return arena.getZombies().isEmpty() || spawnAmount < 5 || (phase == 5 && wave <= 7);
     }

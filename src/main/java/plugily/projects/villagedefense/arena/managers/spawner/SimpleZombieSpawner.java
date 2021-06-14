@@ -64,9 +64,7 @@ public interface SimpleZombieSpawner extends ZombieSpawner {
      * @param spawnAmount the raw amount that the arena suggests
      * @return the final amount
      */
-    default int getFinalAmount(Arena arena, int wave, int phase, int spawnAmount) {
-        return spawnAmount;
-    }
+    int getFinalAmount(Arena arena, int wave, int phase, int spawnAmount);
 
     /**
      * Check if the zombies can be spawned on this phase
