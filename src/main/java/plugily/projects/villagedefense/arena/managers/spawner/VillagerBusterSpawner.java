@@ -31,7 +31,7 @@ public class VillagerBusterSpawner implements SimpleZombieSpawner {
         if (phase == 5) {
             return spawnAmount / 4;
         }
-        if (wave >= 15 && !arena.getVillagers().isEmpty()) {
+        if (wave >= 15) {
             return spawnAmount - 13;
         }
         return 0;
@@ -39,7 +39,7 @@ public class VillagerBusterSpawner implements SimpleZombieSpawner {
 
     @Override
     public boolean checkPhase(Arena arena, int wave, int phase, int spawnAmount) {
-        return phase == 5 || wave >= 15;
+        return phase == 5 || (wave >= 15 && !arena.getVillagers().isEmpty());
     }
 
     @Override

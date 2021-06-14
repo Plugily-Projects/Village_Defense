@@ -31,7 +31,7 @@ public class GolemBusterSpawner implements SimpleZombieSpawner {
         if (phase == 5) {
             return spawnAmount / 4;
         }
-        if (wave >= 6 && !arena.getIronGolems().isEmpty()) {
+        if (wave >= 6) {
             return spawnAmount - 4;
         }
         return 0;
@@ -39,7 +39,7 @@ public class GolemBusterSpawner implements SimpleZombieSpawner {
 
     @Override
     public boolean checkPhase(Arena arena, int wave, int phase, int spawnAmount) {
-        return phase == 5 || wave >= 6;
+        return phase == 5 || (wave >= 6 && !arena.getIronGolems().isEmpty());
     }
 
     @Override
