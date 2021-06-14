@@ -54,10 +54,12 @@ public interface SimpleZombieSpawner extends ZombieSpawner {
     /**
      * Get the final amount of zombies to spawn, after some workaround
      *
+     * @param arena       the arena
+     * @param wave        the current wave
      * @param spawnAmount the raw amount that the arena suggests
      * @return the final amount
      */
-    default int getFinalAmount(int spawnAmount) {
+    default int getFinalAmount(Arena arena, int wave, int spawnAmount) {
         return spawnAmount;
     }
 
@@ -110,7 +112,7 @@ public interface SimpleZombieSpawner extends ZombieSpawner {
         if (wave < minWave || (maxWave > 0 || wave > maxWave)) {
             return;
         }
-        int spawnAmount = getFinalAmount(spawn);
+        int spawnAmount = getFinalAmount(arena, wave, spawn);
         for (int i = 0; i < spawnAmount; i++) {
             int weight = getSpawnWeight();
             if (arena.getOption(ArenaOption.ZOMBIES_TO_SPAWN) >= weight && random.nextDouble() <= getSpawnRate()) {
