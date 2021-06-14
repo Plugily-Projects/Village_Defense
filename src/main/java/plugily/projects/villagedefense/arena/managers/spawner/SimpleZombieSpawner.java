@@ -112,7 +112,7 @@ public interface SimpleZombieSpawner extends ZombieSpawner {
         }
         int minWave = getMinWave();
         int maxWave = getMaxWave();
-        if (wave < minWave || (maxWave > 0 || wave > maxWave)) {
+        if (wave < minWave || (maxWave > 0 && wave > maxWave)) {
             return;
         }
         int spawnAmount = getFinalAmount(arena, wave, phase, spawn);
@@ -120,7 +120,7 @@ public interface SimpleZombieSpawner extends ZombieSpawner {
         for (int i = 0; i < spawnAmount; i++) {
             int weight = getSpawnWeight();
             int zombiesToSpawn = arena.getOption(ArenaOption.ZOMBIES_TO_SPAWN);
-            if (zombiesToSpawn >= weight && spawnRate != 0 && (spawnRate == 1 || random.nextDouble() <= spawnRate)) {
+            if (zombiesToSpawn >= weight && (spawnRate == 1 || random.nextDouble() < spawnRate)) {
                 Location location = arena.getRandomZombieSpawn(random);
                 spawnZombie(location, arena);
                 arena.setOptionValue(ArenaOption.ZOMBIES_TO_SPAWN, zombiesToSpawn - weight);
