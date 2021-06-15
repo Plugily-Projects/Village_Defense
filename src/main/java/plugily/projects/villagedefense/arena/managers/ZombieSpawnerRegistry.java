@@ -81,7 +81,7 @@ public class ZombieSpawnerRegistry {
    * @return the zombie spawner
    */
   public Optional<ZombieSpawner> getSpawnerByName(String name) {
-    return zombieSpawnerList.parallelStream()
+    return zombieSpawnerList.stream()
         .filter(zombieSpawner -> zombieSpawner.getName().equals(name))
         .findFirst();
   }
