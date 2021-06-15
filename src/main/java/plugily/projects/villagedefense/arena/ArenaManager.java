@@ -356,7 +356,7 @@ public class ArenaManager {
 
       @Override
       public void run() {
-        if(i == 4 || !arena.getPlayers().contains(player) || arena.getArenaState() == ArenaState.RESTARTING) {
+        if(i == 4 || arena.getArenaState() == ArenaState.RESTARTING || !arena.getPlayers().contains(player)) {
           cancel();
           return;
         }

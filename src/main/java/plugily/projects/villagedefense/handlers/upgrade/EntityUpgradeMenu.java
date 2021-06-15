@@ -53,11 +53,9 @@ import plugily.projects.villagedefense.user.User;
 import plugily.projects.villagedefense.utils.Utils;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 
 /**
@@ -182,14 +180,22 @@ public class EntityUpgradeMenu {
   }
 
   private void applyStatisticsBookOfEntityToPane(StaticPane pane, LivingEntity en) {
+    String[] lore = color(Messages.UPGRADES_STATS_ITEM_DESCRIPTION).split(";");
+
+    for (int a = 0; a < lore.length; a++) {
+      Upgrade speed = getUpgrade("Speed");
+      Upgrade damage = getUpgrade("Damage");
+      Upgrade health = getUpgrade("Health");
+
+      lore[a] = lore[a].replace("%speed%", Double.toString(speed.getValueForTier(getTier(en, speed))))
+          .replace("%damage%", Double.toString(damage.getValueForTier(getTier(en, damage))))
+          .replace("%max_hp%", Double.toString(health.getValueForTier(getTier(en, health))))
+          .replace("%current_hp%", Double.toString(en.getHealth()));
+    }
+
     pane.addItem(new GuiItem(new ItemBuilder(new ItemStack(Material.BOOK))
         .name(color(Messages.UPGRADES_STATS_ITEM_NAME))
-        .lore(Arrays.stream(color(Messages.UPGRADES_STATS_ITEM_DESCRIPTION).split(";"))
-            .map(lore -> lore = plugin.getChatManager().colorRawMessage(lore)
-                .replace("%speed%", Double.toString(getUpgrade("Speed").getValueForTier(getTier(en, getUpgrade("Speed")))))
-                .replace("%damage%", Double.toString(getUpgrade("Damage").getValueForTier(getTier(en, getUpgrade("Damage")))))
-                .replace("%max_hp%", Double.toString(getUpgrade("Health").getValueForTier(getTier(en, getUpgrade("Health")))))
-                .replace("%current_hp%", Double.toString(en.getHealth()))).collect(Collectors.toList()))
+        .lore(lore)
         .build(), e -> e.setCancelled(true)), 4, 0);
   }
 
@@ -202,14 +208,18 @@ public class EntityUpgradeMenu {
    * @return true if applied successfully, false if tier is max and cannot be applied more
    */
   public boolean applyUpgrade(Entity en, Upgrade upgrade) {
-    if(!en.hasMetadata(upgrade.getMetadataAccessor())) {
+    List<org.bukkit.metadata.MetadataValue> meta = en.getMetadata(upgrade.getMetadataAccessor());
+
+    if(meta.isEmpty()) {
       en.setMetadata(upgrade.getMetadataAccessor(), new FixedMetadataValue(plugin, 1));
       applyUpgradeEffect(en, upgrade, 1);
       return true;
     }
-    if(en.getMetadata(upgrade.getMetadataAccessor()).get(0).asInt() == upgrade.getMaxTier()) {
+
+    if(meta.get(0).asInt() == upgrade.getMaxTier()) {
       return false;
     }
+
     int tier = getTier(en, upgrade) + 1;
     en.setMetadata(upgrade.getMetadataAccessor(), new FixedMetadataValue(plugin, tier));
     applyUpgradeEffect(en, upgrade, tier);
@@ -297,7 +307,8 @@ public class EntityUpgradeMenu {
    * @return current tier of upgrade for target entity
    */
   public int getTier(Entity en, Upgrade upgrade) {
-    return !en.hasMetadata(upgrade.getMetadataAccessor()) ? 0 : en.getMetadata(upgrade.getMetadataAccessor()).get(0).asInt();
+    List<org.bukkit.metadata.MetadataValue> meta = en.getMetadata(upgrade.getMetadataAccessor());
+    return meta.isEmpty() ? 0 : meta.get(0).asInt();
   }
 
   public Main getPlugin() {

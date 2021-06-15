@@ -28,7 +28,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 
 /**
@@ -130,14 +129,23 @@ public class Upgrade {
 
   public ItemStack asItemStack(int currentTier) {
     double valCurrent = tieredValues.get(currentTier);
-    double valNext = tieredValues.getOrDefault(currentTier + 1, valCurrent);
-    return new ItemBuilder(XMaterial.BLACK_STAINED_GLASS_PANE.parseItem())
-        .name(getName())
-        .lore(getDescription().stream().map(lore -> lore = plugin.getChatManager().colorRawMessage(lore)
-            .replace("%cost%", Integer.toString(getCost(currentTier + 1)))
-            .replace("%tier%", Integer.toString(currentTier + 1))
-            .replace("%from%", Double.toString(valCurrent))
-            .replace("%to%", Double.toString(valNext))).collect(Collectors.toList())).build();
+    int ct = currentTier + 1;
+
+    double valNext = tieredValues.getOrDefault(ct, valCurrent);
+    String cost = Integer.toString(getCost(ct)),
+        currentTierStr = Integer.toString(ct),
+        vc = Double.toString(valCurrent),
+        vn = Double.toString(valNext);
+
+    List<String> desc = description;
+
+    for (int b = 0; b < desc.size(); b++) {
+      String d = plugin.getChatManager().colorRawMessage(desc.get(b));
+
+      desc.set(b, d.replace("%cost%", cost).replace("%tier%", currentTierStr).replace("%from%", vc).replace("%to%", vn));
+    }
+
+    return new ItemBuilder(XMaterial.BLACK_STAINED_GLASS_PANE.parseItem()).name(name).lore(desc).build();
   }
 
   public enum EntityType {

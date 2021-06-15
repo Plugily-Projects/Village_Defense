@@ -455,7 +455,7 @@ public class Arena extends BukkitRunnable {
   }
 
   public void spawnWolf(Location location, Player player) {
-    if(!canSpawnMobForPlayer(player, org.bukkit.entity.EntityType.WOLF)) {
+    if(!canSpawnMobForPlayer(player, EntityType.WOLF)) {
       return;
     }
 
@@ -467,7 +467,7 @@ public class Arena extends BukkitRunnable {
   }
 
   public void spawnGolem(Location location, Player player) {
-    if(!canSpawnMobForPlayer(player, org.bukkit.entity.EntityType.IRON_GOLEM)) {
+    if(!canSpawnMobForPlayer(player, EntityType.IRON_GOLEM)) {
       return;
     }
 

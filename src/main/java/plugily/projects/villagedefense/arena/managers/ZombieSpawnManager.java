@@ -92,8 +92,7 @@ public class ZombieSpawnManager {
         if(checkerLoc == null) {
           zombieCheckerLocations.put(zombie, zombie.getLocation());
         } else if(zombie.getLocation().distance(checkerLoc) <= 1) {
-          List<Location> spawns = arena.getZombieSpawns();
-          zombie.teleport(spawns.get(random.nextInt(spawns.size() - 1)));
+          zombie.teleport(arena.getRandomZombieSpawn(random));
           zombieCheckerLocations.put(zombie, zombie.getLocation());
           glitchedZombies.add(zombie);
         }
@@ -112,11 +111,9 @@ public class ZombieSpawnManager {
    * on random value and current wave
    */
   public void spawnZombies() {
-    if(!checkForIdle()) {
-      return;
+    if(checkForIdle()) {
+      arena.getPlugin().getZombieSpawnerRegistry().spawnZombies(random, arena);
     }
-
-    arena.getPlugin().getZombieSpawnerRegistry().spawnZombies(random, arena);
   }
 
   private boolean checkForIdle() {
