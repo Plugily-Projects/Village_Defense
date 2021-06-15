@@ -43,4 +43,9 @@ public class FastZombieSpawner implements SimpleZombieSpawner {
     public Zombie spawnZombie(Location location) {
         return CreatureUtils.getCreatureInitializer().spawnFastZombie(location);
     }
+
+    @Override
+    public String getName() {
+        return "FastZombie";
+    }
 }

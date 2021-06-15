@@ -49,4 +49,9 @@ public class HardZombieSpawner implements SimpleZombieSpawner {
         hardZombie.getEquipment().setHelmet(new ItemStack(Material.DIAMOND_HELMET));
         return hardZombie;
     }
+
+    @Override
+    public String getName() {
+        return "HardZombie";
+    }
 }

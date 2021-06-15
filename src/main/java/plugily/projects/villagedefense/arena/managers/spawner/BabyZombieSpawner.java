@@ -35,4 +35,9 @@ public class BabyZombieSpawner implements SimpleZombieSpawner {
     public Zombie spawnZombie(Location location) {
         return CreatureUtils.getCreatureInitializer().spawnBabyZombie(location);
     }
+
+    @Override
+    public String getName() {
+        return "BabyZombie";
+    }
 }

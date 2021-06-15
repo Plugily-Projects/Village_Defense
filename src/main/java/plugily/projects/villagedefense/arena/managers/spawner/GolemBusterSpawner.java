@@ -53,4 +53,9 @@ public class GolemBusterSpawner implements SimpleZombieSpawner {
         golemBuster.getEquipment().setChestplate(XMaterial.IRON_CHESTPLATE.parseItem());
         return golemBuster;
     }
+
+    @Override
+    public String getName() {
+        return "GolemBuster";
+    }
 }

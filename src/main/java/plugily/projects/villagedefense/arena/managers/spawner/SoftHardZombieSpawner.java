@@ -49,4 +49,9 @@ public class SoftHardZombieSpawner implements SimpleZombieSpawner {
         hardBuster.getEquipment().setHelmet(new ItemStack(Material.IRON_HELMET));
         return hardBuster;
     }
+
+    @Override
+    public String getName() {
+        return "SoftHardZombie";
+    }
 }

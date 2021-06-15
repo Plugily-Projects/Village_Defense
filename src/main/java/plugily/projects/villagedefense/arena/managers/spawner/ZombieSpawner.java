@@ -9,6 +9,13 @@ import java.util.Random;
  */
 public interface ZombieSpawner {
     /**
+     * Get the name of the spawner
+     *
+     * @return the name
+     */
+    String getName();
+
+    /**
      * Handle the zombie spawn
      *
      * @param random the random number generator

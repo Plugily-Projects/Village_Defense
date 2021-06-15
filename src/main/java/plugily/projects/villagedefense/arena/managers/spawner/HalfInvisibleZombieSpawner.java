@@ -46,4 +46,9 @@ public class HalfInvisibleZombieSpawner implements SimpleZombieSpawner {
         fastZombie.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, Integer.MAX_VALUE, 1));
         return fastZombie;
     }
+
+    @Override
+    public String getName() {
+        return "HalfInvisibleZombie";
+    }
 }

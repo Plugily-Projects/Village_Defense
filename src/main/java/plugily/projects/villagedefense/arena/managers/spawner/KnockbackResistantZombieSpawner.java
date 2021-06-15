@@ -40,4 +40,9 @@ public class KnockbackResistantZombieSpawner implements SimpleZombieSpawner {
         tankerZombie.getEquipment().setHelmet(new ItemStack(Material.DIAMOND_HELMET));
         return tankerZombie;
     }
+
+    @Override
+    public String getName() {
+        return "KnockbackResistantZombie";
+    }
 }

@@ -53,4 +53,9 @@ public class VillagerBusterSpawner implements SimpleZombieSpawner {
         villagerBuster.getEquipment().setChestplate(XMaterial.LEATHER_CHESTPLATE.parseItem());
         return villagerBuster;
     }
+
+    @Override
+    public String getName() {
+        return "VillagerBuster";
+    }
 }

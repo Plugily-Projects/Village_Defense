@@ -53,4 +53,9 @@ public class PlayerBusterSpawner implements SimpleZombieSpawner {
         playerBuster.getEquipment().setChestplate(XMaterial.GOLDEN_CHESTPLATE.parseItem());
         return playerBuster;
     }
+
+    @Override
+    public String getName() {
+        return "PlayerBuster";
+    }
 }

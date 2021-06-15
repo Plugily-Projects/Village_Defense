@@ -7,6 +7,7 @@ import plugily.projects.villagedefense.arena.options.ArenaOption;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 
 /**
@@ -62,5 +63,17 @@ public class ZombieSpawnerRegistry {
      */
     public List<ZombieSpawner> getZombieSpawnerList() {
         return zombieSpawnerList;
+    }
+
+    /**
+     * Get the zombie spawner by its name
+     *
+     * @param name the name
+     * @return the zombie spawner
+     */
+    public Optional<ZombieSpawner> getSpawnerByName(String name) {
+        return zombieSpawnerList.parallelStream()
+                .filter(zombieSpawner -> zombieSpawner.getName().equals(name))
+                .findFirst();
     }
 }

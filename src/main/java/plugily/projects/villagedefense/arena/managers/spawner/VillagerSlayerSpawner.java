@@ -41,4 +41,9 @@ public class VillagerSlayerSpawner implements SimpleZombieSpawner {
         villagerSlayer.getEquipment().setHelmet(new ItemStack(Material.CHAINMAIL_HELMET));
         return villagerSlayer;
     }
+
+    @Override
+    public String getName() {
+        return "VillagerSlayer";
+    }
 }
