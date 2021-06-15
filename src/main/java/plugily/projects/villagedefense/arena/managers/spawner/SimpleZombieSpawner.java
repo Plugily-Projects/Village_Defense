@@ -38,6 +38,15 @@ public interface SimpleZombieSpawner extends ZombieSpawner {
     }
 
     /**
+     * Can the zombies be applied arena attributes?
+     *
+     * @return true if they can
+     */
+    default boolean canApplyAttributes() {
+        return true;
+    }
+
+    /**
      * How often the zombies will be spawned? Amount between 0.0 and 1.0
      *
      * @param arena       the arena
@@ -100,7 +109,9 @@ public interface SimpleZombieSpawner extends ZombieSpawner {
      */
     default void spawnZombie(Location location, Arena arena) {
         Zombie zombie = spawnZombie(location);
-        CreatureUtils.applyAttributes(zombie, arena);
+        if (canApplyAttributes()) {
+            CreatureUtils.applyAttributes(zombie, arena);
+        }
         if (canApplyHolidayEffect()) {
             arena.getPlugin().getHolidayManager().applyHolidayZombieEffects(zombie);
         }
