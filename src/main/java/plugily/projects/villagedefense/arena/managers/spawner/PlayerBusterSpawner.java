@@ -11,11 +11,6 @@ import plugily.projects.villagedefense.creatures.CreatureUtils;
 
 public class PlayerBusterSpawner implements SimpleZombieSpawner {
   @Override
-  public int getMinWave() {
-    return 1;
-  }
-
-  @Override
   public double getSpawnRate(Arena arena, int wave, int phase, int spawnAmount) {
     if (phase == 5) {
       return 1D / 3;

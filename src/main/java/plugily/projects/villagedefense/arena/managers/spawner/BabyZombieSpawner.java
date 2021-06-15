@@ -7,11 +7,6 @@ import plugily.projects.villagedefense.creatures.CreatureUtils;
 
 public class BabyZombieSpawner implements SimpleZombieSpawner {
   @Override
-  public int getMinWave() {
-    return 1;
-  }
-
-  @Override
   public boolean canApplyHolidayEffect() {
     return true;
   }

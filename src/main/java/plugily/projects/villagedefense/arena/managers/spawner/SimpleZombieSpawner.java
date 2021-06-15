@@ -16,7 +16,9 @@ public interface SimpleZombieSpawner extends ZombieSpawner {
    *
    * @return the wave
    */
-  int getMinWave();
+  default int getMinWave() {
+    return 1;
+  }
 
   /**
    * Get the maximum wave to spawn the zombies (stop spawning when exceeding this value)
