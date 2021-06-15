@@ -119,15 +119,9 @@ public class ShopManager {
     int size = Utils.serializeInt(contents.length) / 9;
     ChestGui gui = new ChestGui(size, plugin.getChatManager().colorMessage(Messages.SHOP_MESSAGES_SHOP_GUI_NAME));
     StaticPane pane = new StaticPane(9, size);
-    int x = 0;
-    int y = 0;
-    for(ItemStack itemStack : contents) {
+    for (int slot = 0; slot < contents.length; slot++) {
+      ItemStack itemStack = contents[slot];
       if(itemStack == null || itemStack.getType() == Material.REDSTONE_BLOCK) {
-        x++;
-        if(x == 9) {
-          x = 0;
-          y++;
-        }
         continue;
       }
 
@@ -249,12 +243,7 @@ public class ShopManager {
         player.getInventory().addItem(stack);
         user.setStat(StatsStorage.StatisticType.ORBS, orbs - cost);
         arena.addOptionValue(ArenaOption.TOTAL_ORBS_SPENT, cost);
-      }), x, y);
-      x++;
-      if(x == 9) {
-        x = 0;
-        y++;
-      }
+      }), slot % 9, slot / 9);
     }
     gui.addPane(pane);
     this.gui = gui;
