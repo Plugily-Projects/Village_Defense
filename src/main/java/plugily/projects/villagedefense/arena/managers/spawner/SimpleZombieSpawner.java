@@ -82,9 +82,13 @@ public interface SimpleZombieSpawner extends ZombieSpawner {
      * Get the weight of the zombie in the arena.
      * Basically mean this zombie is worth how many normal zombies in the arena.
      *
+     * @param arena       the arena
+     * @param wave        the current wave
+     * @param phase       the current phase
+     * @param spawnAmount the raw amount that the arena suggests
      * @return the weight of the zombie
      */
-    default int getSpawnWeight() {
+    default int getSpawnWeight(Arena arena, int wave, int phase, int spawnAmount) {
         return 1;
     }
 
@@ -117,8 +121,8 @@ public interface SimpleZombieSpawner extends ZombieSpawner {
         }
         int spawnAmount = getFinalAmount(arena, wave, phase, spawn);
         double spawnRate = getSpawnRate(arena, wave, phase, spawn);
+        int weight = getSpawnWeight(arena, wave, phase, spawn);
         for (int i = 0; i < spawnAmount; i++) {
-            int weight = getSpawnWeight();
             int zombiesToSpawn = arena.getOption(ArenaOption.ZOMBIES_TO_SPAWN);
             if (zombiesToSpawn >= weight && spawnRate != 0 && (spawnRate == 1 || random.nextDouble() < spawnRate)) {
                 Location location = arena.getRandomZombieSpawn(random);
