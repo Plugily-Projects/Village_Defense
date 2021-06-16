@@ -299,7 +299,7 @@ public class ArenaEvents implements Listener {
     }
   }
 
-  @EventHandler
+  @EventHandler(priority = EventPriority.HIGHEST)
   public void onRespawn(PlayerRespawnEvent e) {
     Arena arena = ArenaRegistry.getArena(e.getPlayer());
     if(arena == null) {
