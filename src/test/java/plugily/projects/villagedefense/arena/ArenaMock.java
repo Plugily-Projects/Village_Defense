@@ -24,8 +24,6 @@ import org.bukkit.entity.Player;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.util.Random;
-
 /**
  * @author Plajer
  * <p>
@@ -61,53 +59,4 @@ public class ArenaMock extends Arena {
     throw new UnimplementedOperationException();
   }
 
-  @Override
-  public void spawnFastZombie(Random random) {
-    throw new UnimplementedOperationException();
-  }
-
-  @Override
-  public void spawnBabyZombie(Random random) {
-    throw new UnimplementedOperationException();
-  }
-
-  @Override
-  public void spawnHardZombie(Random random) {
-    throw new UnimplementedOperationException();
-  }
-
-  @Override
-  public void spawnPlayerBuster(Random random) {
-    throw new UnimplementedOperationException();
-  }
-
-  @Override
-  public void spawnGolemBuster(Random random) {
-    throw new UnimplementedOperationException();
-  }
-
-  @Override
-  public void spawnVillagerBuster(Random random) {
-    throw new UnimplementedOperationException();
-  }
-
-  @Override
-  public void spawnSoftHardZombie(Random random) {
-    throw new UnimplementedOperationException();
-  }
-
-  @Override
-  public void spawnHalfInvisibleZombie(Random random) {
-    throw new UnimplementedOperationException();
-  }
-
-  @Override
-  public void spawnKnockbackResistantZombies(Random random) {
-    throw new UnimplementedOperationException();
-  }
-
-  @Override
-  public void spawnVillagerSlayer(Random random) {
-    throw new UnimplementedOperationException();
-  }
 }
