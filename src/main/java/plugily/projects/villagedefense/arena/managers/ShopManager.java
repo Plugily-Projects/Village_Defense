@@ -18,9 +18,9 @@
 
 package plugily.projects.villagedefense.arena.managers;
 
-import com.github.stefvanschie.inventoryframework.gui.GuiItem;
-import com.github.stefvanschie.inventoryframework.gui.type.ChestGui;
-import com.github.stefvanschie.inventoryframework.pane.StaticPane;
+import plugily.projects.inventoryframework.gui.GuiItem;
+import plugily.projects.inventoryframework.gui.type.ChestGui;
+import plugily.projects.inventoryframework.pane.StaticPane;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;

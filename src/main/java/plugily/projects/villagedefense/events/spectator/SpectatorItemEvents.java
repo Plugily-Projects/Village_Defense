@@ -18,25 +18,23 @@
 
 package plugily.projects.villagedefense.events.spectator;
 
-import com.github.stefvanschie.inventoryframework.gui.GuiItem;
-import com.github.stefvanschie.inventoryframework.gui.type.ChestGui;
-import com.github.stefvanschie.inventoryframework.pane.OutlinePane;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
-
 import pl.plajerlair.commonsbox.minecraft.compat.VersionUtils;
 import pl.plajerlair.commonsbox.minecraft.compat.events.api.CBPlayerInteractEvent;
 import pl.plajerlair.commonsbox.minecraft.compat.xseries.XMaterial;
 import pl.plajerlair.commonsbox.minecraft.item.ItemUtils;
 import pl.plajerlair.commonsbox.minecraft.misc.stuff.ComplementAccessor;
 import pl.plajerlair.commonsbox.number.NumberUtils;
+import plugily.projects.inventoryframework.gui.GuiItem;
+import plugily.projects.inventoryframework.gui.type.ChestGui;
+import plugily.projects.inventoryframework.pane.OutlinePane;
 import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.arena.Arena;
-import plugily.projects.villagedefense.arena.ArenaManager;
 import plugily.projects.villagedefense.arena.ArenaRegistry;
 import plugily.projects.villagedefense.handlers.items.SpecialItemManager;
 import plugily.projects.villagedefense.handlers.language.Messages;
@@ -57,7 +55,7 @@ public class SpectatorItemEvents implements Listener {
   }
 
   @EventHandler
-  public void onSpectatorItemClick(CBPlayerInteractEvent e) {
+  public void onSpecialItem(CBPlayerInteractEvent e) {
     if(e.getAction() == Action.LEFT_CLICK_AIR || e.getAction() == Action.LEFT_CLICK_BLOCK || e.getAction() == Action.PHYSICAL) {
       return;
     }
@@ -66,15 +64,16 @@ public class SpectatorItemEvents implements Listener {
     if(arena == null || !ItemUtils.isItemStackNamed(stack)) {
       return;
     }
+    String key = plugin.getSpecialItemManager().getRelatedSpecialItem(stack).getName();
+    if(key == null) {
+      return;
+    }
     if(plugin.getSpecialItemManager().getRelatedSpecialItem(stack).getName().equals(SpecialItemManager.SpecialItems.PLAYERS_LIST.getName())) {
       e.setCancelled(true);
       openSpectatorMenu(e.getPlayer(), arena);
     } else if(plugin.getSpecialItemManager().getRelatedSpecialItem(stack).getName().equals(SpecialItemManager.SpecialItems.SPECTATOR_OPTIONS.getName())) {
       e.setCancelled(true);
       spectatorSettingsMenu.openSpectatorSettingsMenu(e.getPlayer());
-    } else if(plugin.getSpecialItemManager().getRelatedSpecialItem(stack).getName().equals(SpecialItemManager.SpecialItems.SPECTATOR_LEAVE_ITEM.getName())) {
-      e.setCancelled(true);
-      ArenaManager.leaveAttempt(e.getPlayer(), arena);
     }
   }
 
@@ -94,7 +93,7 @@ public class SpectatorItemEvents implements Listener {
       SkullMeta meta = VersionUtils.setPlayerHead(arenaPlayer, (SkullMeta) cloneSkull.getItemMeta());
       ComplementAccessor.getComplement().setDisplayName(meta, arenaPlayer.getName());
       ComplementAccessor.getComplement().setLore(meta, Collections.singletonList(plugin.getChatManager().colorMessage(Messages.SPECTATOR_TARGET_PLAYER_HEALTH)
-              .replace("%health%", Double.toString(NumberUtils.round(arenaPlayer.getHealth(), 2)))));
+          .replace("%health%", Double.toString(NumberUtils.round(arenaPlayer.getHealth(), 2)))));
       cloneSkull.setItemMeta(meta);
       pane.addItem(new GuiItem(cloneSkull, e -> {
         e.setCancelled(true);

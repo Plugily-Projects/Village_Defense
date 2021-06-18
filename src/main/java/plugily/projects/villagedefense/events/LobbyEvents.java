@@ -82,22 +82,6 @@ public class LobbyEvents implements Listener {
   }
 
   @EventHandler
-  public void onLobbyItemClick(CBPlayerInteractEvent e) {
-    if(e.getAction() == Action.LEFT_CLICK_AIR || e.getAction() == Action.LEFT_CLICK_BLOCK || e.getAction() == Action.PHYSICAL) {
-      return;
-    }
-    Arena arena = ArenaRegistry.getArena(e.getPlayer());
-    ItemStack stack = VersionUtils.getItemInHand(e.getPlayer());
-    if(arena == null || !ItemUtils.isItemStackNamed(stack)) {
-      return;
-    }
-    if(plugin.getSpecialItemManager().getRelatedSpecialItem(stack).getName().equals(SpecialItemManager.SpecialItems.LOBBY_LEAVE_ITEM.getName())) {
-      e.setCancelled(true);
-      ArenaManager.leaveAttempt(e.getPlayer(), arena);
-    }
-  }
-
-  @EventHandler
   public void onItemFrameRotate(PlayerInteractEntityEvent event) {
     Player player = event.getPlayer();
     Arena arena = ArenaRegistry.getArena(player);

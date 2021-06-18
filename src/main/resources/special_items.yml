@@ -1,7 +1,7 @@
 # Custom in-game lobby items.
 # Probably you will only translate displayname and lore so don't mess with it.
 #
-# Please don't modify 'Kit-Menu', 'Leave-Lobby', 'Leave-Spectator', 'Player-List' and 'Spectator-Options'
+# Please don't modify 'Kit-Menu', 'Leave-Lobby', 'Leave-Spectator', 'Player-List' and 'Spectator-Options', 'Forcestart'
 # nodes as they are hardcoded in code!
 
 Kit-Menu:
@@ -45,5 +45,15 @@ Spectator-Options:
   slot: 4
   stage: spectator
 
+Forcestart:
+  displayname: "&c&lClick to start the game &7(Right Click)"
+  lore:
+    - "&7You need the following permission for it"
+    - "&7villagedefense.admin.forcestart"
+  material-name: EMERALD
+  slot: 0
+  stage: lobby
+
+
 # Don't touch this
-Version: 1
+Version: 2

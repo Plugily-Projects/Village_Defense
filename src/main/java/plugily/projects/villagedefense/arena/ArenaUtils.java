@@ -30,6 +30,7 @@ import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.api.event.player.VillagePlayerRespawnEvent;
 import plugily.projects.villagedefense.handlers.language.Messages;
 import plugily.projects.villagedefense.user.User;
+import plugily.projects.villagedefense.utils.Utils;
 
 /**
  * @author Plajer
@@ -93,7 +94,7 @@ public class ArenaUtils {
 
       VillagePlayerRespawnEvent event = new VillagePlayerRespawnEvent(player, arena);
       Bukkit.getPluginManager().callEvent(event);
-      if (event.isCancelled()) {
+      if(event.isCancelled()) {
         continue;
       }
 
@@ -124,6 +125,24 @@ public class ArenaUtils {
       }
       zombie.remove();
       i++;
+    }
+  }
+
+  public static void arenaForceStart(Player player) {
+    if(!Utils.hasPermission(player, "villagedefense.admin.forcestart")) {
+      player.sendMessage(plugin.getChatManager().colorMessage(Messages.COMMANDS_NO_PERMISSION));
+      return;
+    }
+    if(!Utils.checkIsInGameInstance(player)) {
+      player.sendMessage(plugin.getChatManager().colorMessage(Messages.COMMANDS_NOT_PLAYING));
+      return;
+    }
+    Arena arena = ArenaRegistry.getArena(player);
+    if(arena.getArenaState() == ArenaState.WAITING_FOR_PLAYERS || arena.getArenaState() == ArenaState.STARTING) {
+      arena.setArenaState(ArenaState.STARTING);
+      arena.setForceStart(true);
+      arena.setTimer(0);
+      plugin.getChatManager().broadcast(arena, Messages.ADMIN_MESSAGES_SET_STARTING_IN_TO_0);
     }
   }
 

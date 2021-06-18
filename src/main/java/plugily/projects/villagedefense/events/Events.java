@@ -68,7 +68,6 @@ import pl.plajerlair.commonsbox.minecraft.compat.events.api.CBPlayerInteractEven
 import pl.plajerlair.commonsbox.minecraft.compat.events.api.CBPlayerSwapHandItemsEvent;
 import pl.plajerlair.commonsbox.minecraft.compat.xseries.XMaterial;
 import pl.plajerlair.commonsbox.minecraft.item.ItemUtils;
-import pl.plajerlair.commonsbox.minecraft.misc.stuff.ComplementAccessor;
 import pl.plajerlair.commonsbox.string.StringFormatUtils;
 import plugily.projects.villagedefense.ConfigPreferences;
 import plugily.projects.villagedefense.Main;
@@ -78,16 +77,17 @@ import plugily.projects.villagedefense.arena.Arena;
 import plugily.projects.villagedefense.arena.ArenaManager;
 import plugily.projects.villagedefense.arena.ArenaRegistry;
 import plugily.projects.villagedefense.arena.ArenaState;
+import plugily.projects.villagedefense.arena.ArenaUtils;
 import plugily.projects.villagedefense.arena.options.ArenaOption;
 import plugily.projects.villagedefense.handlers.PermissionsManager;
 import plugily.projects.villagedefense.handlers.items.SpecialItem;
 import plugily.projects.villagedefense.handlers.items.SpecialItemManager;
 import plugily.projects.villagedefense.handlers.language.Messages;
 import plugily.projects.villagedefense.user.User;
-import plugily.projects.villagedefense.utils.Debugger;
 import plugily.projects.villagedefense.utils.Utils;
 
 import java.util.Map;
+
 
 /**
  * Created by Tom on 16/08/2014.
@@ -106,8 +106,8 @@ public class Events implements Listener {
     for(Arena arena : ArenaRegistry.getArenas()) {
       Location startLoc = arena.getStartLocation();
 
-      if (startLoc != null && event.getSpawnReason() != CreatureSpawnEvent.SpawnReason.CUSTOM && event.getEntity().getWorld().equals(startLoc.getWorld())
-		  && event.getEntity().getLocation().distance(startLoc) < 150) {
+      if(startLoc != null && event.getSpawnReason() != CreatureSpawnEvent.SpawnReason.CUSTOM && event.getEntity().getWorld().equals(startLoc.getWorld())
+          && event.getEntity().getLocation().distance(startLoc) < 150) {
         event.setCancelled(true);
         break;
       }
@@ -221,7 +221,7 @@ public class Events implements Listener {
     String command = event.getMessage().substring(1);
     int index = command.indexOf(' ');
 
-    if (index >= 0)
+    if(index >= 0)
       command = command.substring(0, index);
 
     for(String msg : plugin.getConfig().getStringList("Whitelisted-Commands")) {
@@ -250,29 +250,29 @@ public class Events implements Listener {
     }
   }
 
-  @EventHandler(priority = EventPriority.LOWEST)
-  public void onLeave(CBPlayerInteractEvent event) {
+  @EventHandler
+  public void onSpecialItem(CBPlayerInteractEvent event) {
     if(event.getAction() == Action.LEFT_CLICK_AIR || event.getAction() == Action.LEFT_CLICK_BLOCK || event.getAction() == Action.PHYSICAL) {
       return;
     }
     Arena arena = ArenaRegistry.getArena(event.getPlayer());
-    if(arena == null) {
-      return;
-    }
     ItemStack itemStack = VersionUtils.getItemInHand(event.getPlayer());
-    if (!ItemUtils.isItemStackNamed(itemStack)) {
+    if(arena == null || !ItemUtils.isItemStackNamed(itemStack)) {
       return;
     }
-    SpecialItem key = plugin.getSpecialItemManager().getSpecialItem(SpecialItemManager.SpecialItems.LOBBY_LEAVE_ITEM.getName());
-    if(key == SpecialItem.INVALID_ITEM) {
+    String key = plugin.getSpecialItemManager().getRelatedSpecialItem(itemStack).getName();
+    if(key == null) {
       return;
     }
-    if(ComplementAccessor.getComplement().getDisplayName(key.getItemStack().getItemMeta())
-        .equalsIgnoreCase(ComplementAccessor.getComplement().getDisplayName(itemStack.getItemMeta()))) {
+    if(key.equalsIgnoreCase(SpecialItemManager.SpecialItems.FORCESTART.getName())) {
+      event.setCancelled(true);
+      ArenaUtils.arenaForceStart(event.getPlayer());
+      return;
+    }
+    if(key.equals(SpecialItemManager.SpecialItems.LOBBY_LEAVE_ITEM.getName()) || key.equals(SpecialItemManager.SpecialItems.SPECTATOR_LEAVE_ITEM.getName())) {
       event.setCancelled(true);
       if(plugin.getConfigPreferences().getOption(ConfigPreferences.Option.BUNGEE_ENABLED)) {
         plugin.getBungeeManager().connectToHub(event.getPlayer());
-        Debugger.debug("{0} has left the arena {1}! Teleported to the Hub server.", event.getPlayer().getName(), arena.getId());
       } else {
         ArenaManager.leaveAttempt(event.getPlayer(), arena);
       }
@@ -280,7 +280,7 @@ public class Events implements Listener {
   }
 
   private boolean checkSpecialItem(ItemStack itemStack, Player player) {
-    if (!ItemUtils.isItemStackNamed(itemStack)) {
+    if(!ItemUtils.isItemStackNamed(itemStack)) {
       return false;
     }
     Arena arena = ArenaRegistry.getArena(player);
@@ -288,11 +288,11 @@ public class Events implements Listener {
       return false;
     }
     SpecialItem key = plugin.getSpecialItemManager().getRelatedSpecialItem(itemStack);
-    if (key == SpecialItem.INVALID_ITEM) {
+    if(key == SpecialItem.INVALID_ITEM) {
       return false;
     }
-    for (SpecialItemManager.SpecialItems specialItem : SpecialItemManager.SpecialItems.values()) {
-      if (specialItem.getName().equalsIgnoreCase(key.getName())) {
+    for(SpecialItemManager.SpecialItems specialItem : SpecialItemManager.SpecialItems.values()) {
+      if(specialItem.getName().equalsIgnoreCase(key.getName())) {
         return true;
       }
     }
@@ -301,24 +301,24 @@ public class Events implements Listener {
 
   @EventHandler
   public void onClick(InventoryClickEvent event) {
-    if (event.getWhoClicked() instanceof Player && event.getClickedInventory() instanceof PlayerInventory && checkSpecialItem(event.getCurrentItem(), (Player) event.getWhoClicked())) {
+    if(event.getWhoClicked() instanceof Player && event.getClickedInventory() instanceof PlayerInventory && checkSpecialItem(event.getCurrentItem(), (Player) event.getWhoClicked())) {
       event.setCancelled(true);
     }
   }
 
   @EventHandler
   public void onSwap(CBPlayerSwapHandItemsEvent event) {
-    if (checkSpecialItem(event.getOffHandItem(), event.getPlayer())) {
+    if(checkSpecialItem(event.getOffHandItem(), event.getPlayer())) {
       event.setCancelled(true);
     }
   }
 
   @EventHandler
   public void onDecay(LeavesDecayEvent event) {
-    for (Arena arena : ArenaRegistry.getArenas()) {
+    for(Arena arena : ArenaRegistry.getArenas()) {
       Location startLoc = arena.getStartLocation();
 
-      if (startLoc != null && event.getBlock().getWorld().equals(startLoc.getWorld()) && event.getBlock().getLocation().distance(startLoc) < 150) {
+      if(startLoc != null && event.getBlock().getWorld().equals(startLoc.getWorld()) && event.getBlock().getLocation().distance(startLoc) < 150) {
         event.setCancelled(true);
         break;
       }
@@ -458,13 +458,13 @@ public class Events implements Listener {
         break;
       }
     }
-    if (currentArena == null) {
+    if(currentArena == null) {
       return;
     }
 
     VillageGameSecretWellEvent villageGameSecretWellEvent = new VillageGameSecretWellEvent(currentArena, itemStack, location);
     Bukkit.getPluginManager().callEvent(villageGameSecretWellEvent);
-    if (villageGameSecretWellEvent.isCancelled()) {
+    if(villageGameSecretWellEvent.isCancelled()) {
       return;
     }
 
