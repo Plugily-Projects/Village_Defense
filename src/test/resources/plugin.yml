@@ -1,4 +1,0 @@
-name: VillageDefense
-main: plugily.projects.villagedefense.MainMock
-authors: [TailsTheCoverageProvider]
-version: ${project.version}
