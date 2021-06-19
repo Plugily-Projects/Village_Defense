@@ -20,7 +20,7 @@
 #    - chance(50):eco give %PLAYER% 10                # Console has 10% chance to give player 10$
 #
 #  Performed rewards:
-#  villagerDeath, endgame, playerDeath, zombieKill, endwave
+#  villagerDeath, endgame, playerDeath, zombieKill, endwave, startwave
 #
 #   You can unlock full potential of rewards using our script engine! (since 4.0.0)
 #    Just add example reward:

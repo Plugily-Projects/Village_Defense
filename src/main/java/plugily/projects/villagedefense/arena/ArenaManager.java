@@ -495,6 +495,7 @@ public class ArenaManager {
       Player player = user.getPlayer();
       user.getKit().reStock(player);
       VersionUtils.sendTitles(player, title, subTitle, fadeIn, stay, fadeOut);
+      plugin.getRewardsHandler().performReward(player, arena, Reward.RewardType.START_WAVE);
     }
 
     plugin.getChatManager().broadcastMessage(arena, plugin.getChatManager().formatMessage(arena, plugin.getChatManager().colorMessage(Messages.WAVE_STARTED), wave));

@@ -97,7 +97,7 @@ public class Reward {
   }
 
   public enum RewardType {
-    END_GAME("endgame"), END_WAVE("endwave"), ZOMBIE_KILL("zombiekill"),
+    END_GAME("endgame"), END_WAVE("endwave"), START_WAVE("startwave"), ZOMBIE_KILL("zombiekill"),
     PLAYER_DEATH("playerDeath"), VILLAGER_DEATH("villagerDeath");
 
     private final String path;
