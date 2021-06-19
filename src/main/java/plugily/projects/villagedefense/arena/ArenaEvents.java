@@ -243,11 +243,19 @@ public class ArenaEvents implements Listener {
         player.teleport(arena.getEndLocation());
         return;
       }
-      plugin.getUserManager().addStat(player, StatsStorage.StatisticType.DEATHS);
+      plugin.getUserManager().addStat(user, StatsStorage.StatisticType.DEATHS);
       player.teleport(arena.getStartLocation());
       user.setSpectator(true);
       player.setGameMode(GameMode.SURVIVAL);
-      user.setStat(StatsStorage.StatisticType.ORBS, 0);
+
+      int orbsToLose = plugin.getConfig().getInt("Orbs-To-Lose-After-Death", 0);
+      if (orbsToLose <= 0) {
+        user.setStat(StatsStorage.StatisticType.ORBS, 0);
+      } else {
+        int current = user.getStat(StatsStorage.StatisticType.ORBS);
+        user.setStat(StatsStorage.StatisticType.ORBS, (current - orbsToLose < 0 ? 0 : current - orbsToLose));
+      }
+
       ArenaUtils.hidePlayer(player, arena);
       player.setAllowFlight(true);
       player.setFlying(true);
@@ -314,7 +322,14 @@ public class ArenaEvents implements Listener {
       player.setGameMode(GameMode.SURVIVAL);
       player.removePotionEffect(PotionEffectType.NIGHT_VISION);
       player.removePotionEffect(PotionEffectType.SPEED);
-      user.setStat(StatsStorage.StatisticType.ORBS, 0);
+
+      int orbsToLose = plugin.getConfig().getInt("Orbs-To-Lose-After-Death", 0);
+      if (orbsToLose <= 0) {
+        user.setStat(StatsStorage.StatisticType.ORBS, 0);
+      } else {
+        int current = user.getStat(StatsStorage.StatisticType.ORBS);
+        user.setStat(StatsStorage.StatisticType.ORBS, (current - orbsToLose < 0 ? 0 : current - orbsToLose));
+      }
     }
     e.setRespawnLocation(arena.getStartLocation());
   }

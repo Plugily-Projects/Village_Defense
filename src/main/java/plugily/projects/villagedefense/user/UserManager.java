@@ -93,21 +93,24 @@ public class UserManager {
     if(player.hasPermission(PermissionsManager.getElite())) {
       user.addStat(StatsStorage.StatisticType.XP, (int) Math.ceil(i / 2.0));
     }
-    updateLevelStat(player, ArenaRegistry.getArena(player));
+    updateLevelStat(user, ArenaRegistry.getArena(player));
   }
 
   public void addStat(Player player, StatsStorage.StatisticType stat) {
-    getUser(player).addStat(stat, 1);
-    updateLevelStat(player, ArenaRegistry.getArena(player));
+    addStat(getUser(player), stat);
   }
 
-  public void updateLevelStat(Player player, Arena arena) {
-    User user = getUser(player);
+  public void addStat(User user, StatsStorage.StatisticType stat) {
+    user.addStat(stat, 1);
+    updateLevelStat(user, user.getArena());
+  }
+
+  public void updateLevelStat(User user, Arena arena) {
     if(Math.pow(50.0 * user.getStat(StatsStorage.StatisticType.LEVEL), 1.5) < user.getStat(StatsStorage.StatisticType.XP)) {
       user.addStat(StatsStorage.StatisticType.LEVEL, 1);
       //Arena can be null when player has left the arena before this message the arean is retrieved.
       if(arena != null)
-        player.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().formatMessage(arena, plugin.getChatManager().colorMessage(Messages.YOU_LEVELED_UP), user.getStat(StatsStorage.StatisticType.LEVEL)));
+        user.getPlayer().sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().formatMessage(arena, plugin.getChatManager().colorMessage(Messages.YOU_LEVELED_UP), user.getStat(StatsStorage.StatisticType.LEVEL)));
     }
   }
 

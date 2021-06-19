@@ -208,6 +208,11 @@ Disable-Drowning-Damage: false
 # How many villagers will be spawned in a arena?
 Villager-Amount: 10
 
+# How many orbs should the players lose after they dead?
+# The default is 0, so their orbs will be set to 0.
+# The value should be 1 or higher.
+Orbs-To-Lose-After-Death: 0
+
 # Should the name tag of these mobs always visible?
 Name-Visible:
   Golem: true

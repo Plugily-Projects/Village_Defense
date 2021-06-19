@@ -125,14 +125,20 @@ public class User {
     stats.put(s, i);
 
     //statistics manipulation events are called async when using mysql
-    Bukkit.getScheduler().runTask(plugin, () -> Bukkit.getPluginManager().callEvent(new VillagePlayerStatisticChangeEvent(getArena(), getPlayer(), s, i)));
+    Bukkit.getScheduler().runTask(plugin, () -> {
+      Player player = getPlayer();
+      Bukkit.getPluginManager().callEvent(new VillagePlayerStatisticChangeEvent(ArenaRegistry.getArena(player), player, s, i));
+    });
   }
 
   public void addStat(StatsStorage.StatisticType s, int i) {
     stats.put(s, getStat(s) + i);
 
     //statistics manipulation events are called async when using mysql
-    Bukkit.getScheduler().runTask(plugin, () -> Bukkit.getPluginManager().callEvent(new VillagePlayerStatisticChangeEvent(getArena(), getPlayer(), s, getStat(s))));
+    Bukkit.getScheduler().runTask(plugin, () -> {
+      Player player = getPlayer();
+      Bukkit.getPluginManager().callEvent(new VillagePlayerStatisticChangeEvent(ArenaRegistry.getArena(player), player, s, getStat(s)));
+    });
   }
 
   public boolean checkCanCastCooldownAndMessage(String cooldown) {

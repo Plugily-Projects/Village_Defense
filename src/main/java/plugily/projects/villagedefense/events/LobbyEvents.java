@@ -25,30 +25,22 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.hanging.HangingBreakByEntityEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
-import org.bukkit.inventory.ItemStack;
 import pl.plajerlair.commonsbox.minecraft.compat.VersionUtils;
-import pl.plajerlair.commonsbox.minecraft.compat.events.api.CBPlayerInteractEvent;
-import pl.plajerlair.commonsbox.minecraft.item.ItemUtils;
 import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.arena.Arena;
-import plugily.projects.villagedefense.arena.ArenaManager;
 import plugily.projects.villagedefense.arena.ArenaRegistry;
 import plugily.projects.villagedefense.arena.ArenaState;
-import plugily.projects.villagedefense.handlers.items.SpecialItemManager;
 
 /**
  * Created by Tom on 16/06/2015.
  */
-public class LobbyEvents implements Listener {
-  private final Main plugin;
+public final class LobbyEvents implements Listener {
 
   public LobbyEvents(Main plugin) {
-    this.plugin = plugin;
     plugin.getServer().getPluginManager().registerEvents(this, plugin);
   }
 
@@ -88,7 +80,7 @@ public class LobbyEvents implements Listener {
     if(arena == null || arena.getArenaState() == ArenaState.IN_GAME) {
       return;
     }
-    if(event.getRightClicked() instanceof ItemFrame && !((ItemFrame) event.getRightClicked()).getItem().getType().equals(Material.AIR)) {
+    if(event.getRightClicked() instanceof ItemFrame && ((ItemFrame) event.getRightClicked()).getItem().getType() != Material.AIR) {
       event.setCancelled(true);
     }
   }

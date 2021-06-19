@@ -58,9 +58,11 @@ public class EndingState implements ArenaStateHandler {
       for(Player player : arena.getPlayers()) {
         ArenaUtils.resetPlayerAfterGame(player);
         arena.doBarAction(Arena.BarAction.REMOVE, player);
-        plugin.getUserManager().addStat(player, StatsStorage.StatisticType.GAMES_PLAYED);
         arena.teleportToEndLocation(player);
+
         User user = plugin.getUserManager().getUser(player);
+
+        plugin.getUserManager().addStat(user, StatsStorage.StatisticType.GAMES_PLAYED);
         user.setSpectator(false);
         user.setStat(StatsStorage.StatisticType.ORBS, 0);
         user.removeScoreboard(arena);

@@ -38,7 +38,7 @@ import java.util.List;
 public class LanguageMigrator {
 
   public static final int LANGUAGE_FILE_VERSION = 19;
-  public static final int CONFIG_FILE_VERSION = 18;
+  public static final int CONFIG_FILE_VERSION = 19;
   private final Main plugin;
   private final List<String> migratable = Arrays.asList(Constants.Files.CONFIG.getName(), Constants.Files.KITS.getName(),
       Constants.Files.KITS.getName(), Constants.Files.LANGUAGE.getName(), Constants.Files.SPECIAL_ITEMS.getName(), Constants.Files.MYSQL.getName());
@@ -221,6 +221,13 @@ public class LanguageMigrator {
               "    Essence: 15\r\n" +
               "    Staff: 1\r\n" +
               "  Zombie-Finder: 30\r\n");
+          break;
+        case 18:
+          MigratorUtils.addNewLines(file, "\r\n" +
+              "# How many orbs should the players lose after they dead?\r\n" +
+              "# The default is 0, so their orbs will be set to 0.\r\n" +
+              "# The value should be 1 or higher.\r\n" +
+              "Orbs-To-Lose-After-Death: 0");
           break;
         default:
           break;
