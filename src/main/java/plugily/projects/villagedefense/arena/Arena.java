@@ -196,7 +196,7 @@ public class Arena extends BukkitRunnable {
   @Override
   public void run() {
     //idle task
-    if(players.isEmpty() && arenaState == ArenaState.WAITING_FOR_PLAYERS) {
+    if(arenaState == ArenaState.WAITING_FOR_PLAYERS && players.isEmpty()) {
       return;
     }
     Debugger.performance("ArenaTask", "[PerformanceMonitor] [{0}] Running game task", id);

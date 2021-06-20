@@ -116,13 +116,19 @@ public class ArenaRegistry {
   public static void registerArena(Arena arena) {
     Debugger.debug("[{0}] Instance registered", arena.getId());
     arenas.add(arena);
-    arenaIngameWorlds.add(arena.getStartLocation().getWorld());
+
+    World startLocWorld = arena.getStartLocation().getWorld();
+    if (startLocWorld != null)
+      arenaIngameWorlds.add(startLocWorld);
   }
 
   public static void unregisterArena(Arena arena) {
     Debugger.debug("[{0}] Instance unregistered", arena.getId());
     arenas.remove(arena);
-    arenaIngameWorlds.remove(arena.getStartLocation().getWorld());
+
+    World startLocWorld = arena.getStartLocation().getWorld();
+    if (startLocWorld != null)
+      arenaIngameWorlds.remove(startLocWorld);
   }
 
   public static void registerArenas() {
@@ -176,9 +182,10 @@ public class ArenaRegistry {
         continue;
       }
 
-      if(section.isConfigurationSection(id + ".zombiespawns")) {
-        for(String string : section.getConfigurationSection(id + ".zombiespawns").getKeys(false)) {
-          arena.addZombieSpawn(LocationSerializer.getLocation(section.getString(id + ".zombiespawns." + string)));
+      ConfigurationSection zombieSection = section.getConfigurationSection(id + ".zombiespawns");
+      if(zombieSection != null) {
+        for(String string : zombieSection.getKeys(false)) {
+          arena.addZombieSpawn(LocationSerializer.getLocation(zombieSection.getString(string)));
         }
       } else {
         Debugger.sendConsoleMsg(plugin.getChatManager().colorMessage(Messages.VALIDATOR_INVALID_ARENA_CONFIGURATION).replace("%arena%", id).replace("%error%", "ZOMBIE SPAWNS"));
@@ -187,9 +194,10 @@ public class ArenaRegistry {
         continue;
       }
 
-      if(section.isConfigurationSection(id + ".villagerspawns")) {
-        for(String string : section.getConfigurationSection(id + ".villagerspawns").getKeys(false)) {
-          arena.addVillagerSpawn(LocationSerializer.getLocation(section.getString(id + ".villagerspawns." + string)));
+      ConfigurationSection villagerSection = section.getConfigurationSection(id + ".villagerspawns");
+      if(villagerSection != null) {
+        for(String string : villagerSection.getKeys(false)) {
+          arena.addVillagerSpawn(LocationSerializer.getLocation(villagerSection.getString(string)));
         }
       } else {
         Debugger.sendConsoleMsg(plugin.getChatManager().colorMessage(Messages.VALIDATOR_INVALID_ARENA_CONFIGURATION).replace("%arena%", id).replace("%error%", "VILLAGER SPAWNS"));
@@ -197,11 +205,12 @@ public class ArenaRegistry {
         registerArena(arena);
         continue;
       }
-      if(section.isConfigurationSection(id + ".doors")) {
-        for(String string : section.getConfigurationSection(id + ".doors").getKeys(false)) {
-          String path = id + ".doors." + string + ".";
-          arena.getMapRestorerManager().addDoor(LocationSerializer.getLocation(section.getString(path + "location")),
-              (byte) section.getInt(path + "byte"));
+
+      ConfigurationSection doorSection = section.getConfigurationSection(id + ".doors");
+      if(doorSection != null) {
+        for(String string : doorSection.getKeys(false)) {
+          arena.getMapRestorerManager().addDoor(LocationSerializer.getLocation(doorSection.getString(string + ".location")),
+              (byte) doorSection.getInt(string + ".byte"));
         }
       } else {
         Debugger.sendConsoleMsg(plugin.getChatManager().colorMessage(Messages.VALIDATOR_INVALID_ARENA_CONFIGURATION).replace("%arena%", id).replace("%error%", "DOORS"));
@@ -209,13 +218,21 @@ public class ArenaRegistry {
         registerArena(arena);
         continue;
       }
-      if(arena.getStartLocation().getWorld().getDifficulty() == Difficulty.PEACEFUL) {
+
+      World startLocWorld = arena.getStartLocation().getWorld();
+      if (startLocWorld == null) {
+        Debugger.sendConsoleMsg("Arena world of " + id + " does not exist or not loaded.");
+        continue;
+      }
+
+      if(startLocWorld.getDifficulty() == Difficulty.PEACEFUL) {
         Debugger.sendConsoleMsg(plugin.getChatManager().colorMessage(Messages.VALIDATOR_INVALID_ARENA_CONFIGURATION).replace("%arena%", id).replace("%error%", "THERE IS A WRONG " +
             "DIFFICULTY -> SET IT TO ANOTHER ONE THAN PEACEFUL"));
         arena.setReady(false);
         registerArena(arena);
         continue;
       }
+
       registerArena(arena);
       arena.start();
       Debugger.sendConsoleMsg(plugin.getChatManager().colorMessage(Messages.VALIDATOR_INSTANCE_STARTED).replace("%arena%", id));

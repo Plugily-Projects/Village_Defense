@@ -105,11 +105,7 @@ public class NakedKit extends PremiumKit implements Listener {
       return;
     }
     Inventory inventory = event.getClickedInventory();
-    if(inventory == null) {
-      return;
-    }
-    InventoryType type = inventory.getType();
-    if(type != InventoryType.PLAYER) {
+    if(inventory == null || inventory.getType() != InventoryType.PLAYER) {
       return;
     }
     ItemStack itemStack = event.getCurrentItem();

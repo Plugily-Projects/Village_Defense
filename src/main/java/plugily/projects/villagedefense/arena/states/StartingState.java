@@ -59,7 +59,7 @@ public class StartingState implements ArenaStateHandler {
       player.setExp((float) (timer / startWaiting));
       player.setLevel(timer);
     }
-    if(arena.getPlayers().size() < arena.getMinimumPlayers() && !arena.isForceStart()) {
+    if(!arena.isForceStart() && arena.getPlayers().size() < arena.getMinimumPlayers()) {
       if(bossBarEnabled) {
         arena.getGameBar().setTitle(plugin.getChatManager().colorMessage(Messages.BOSSBAR_WAITING_FOR_PLAYERS));
         arena.getGameBar().setProgress(1.0);
