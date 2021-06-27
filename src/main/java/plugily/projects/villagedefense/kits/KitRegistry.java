@@ -134,8 +134,8 @@ public class KitRegistry {
     for(Class<?> kitClass : classKitNames) {
       if(config.getBoolean("Enabled-Game-Kits." + kitClass.getSimpleName().replace("Kit", ""))) {
         try {
-          Class.forName(kitClass.getName()).newInstance();
-        } catch(ClassNotFoundException | IllegalAccessException | InstantiationException e) {
+          Class.forName(kitClass.getName()).getDeclaredConstructor().newInstance();
+        } catch(Exception e) {
           plugin.getLogger().log(Level.SEVERE, "Fatal error while registering existing game kit! Report this error to the developer!");
           plugin.getLogger().log(Level.SEVERE, "Cause: " + e.getMessage() + " (kitClass " + kitClass.getName() + ")");
         }

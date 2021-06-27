@@ -12,6 +12,7 @@ That's all, matcher will stop when detects next line started with `###` match
 ### 4.6.0 (15.04.2021 - XX.XX.2021)
 * Fix when doors is not found in legacy versions like 1.8.3, so it caused to throw exception
 * Added forcestart item
+* Added 1.17 support
 >>> b1
 * Now players who's in a game can't swap items to off hand
 * Players now can't drag special items in theirs inventory
