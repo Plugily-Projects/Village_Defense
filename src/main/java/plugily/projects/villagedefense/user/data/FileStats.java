@@ -117,7 +117,11 @@ public class FileStats implements UserDatabase, Runnable {
       if(!stat.isPersistent()) {
         continue;
       }
-      config.set(user.getUniqueId().toString() + "." + stat.getName(), user.getStat(stat));
+      String path = user.getUniqueId().toString() + "." + stat.getName();
+      int value = user.getStat(stat);
+      if (value > 0 || config.contains(path)) {
+        config.set(path, value);
+      }
     }
   }
 
