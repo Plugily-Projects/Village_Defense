@@ -122,7 +122,7 @@ public class MapRestorerManagerLegacy extends MapRestorerManager {
     } catch (NoSuchMethodError e) {
       try {
         doorBlockData = Door.class.getDeclaredConstructor(Material.class, byte.class)
-            .newInstance(XMaterial.OAK_DOOR, Utils.getFacingByByte(doorData));
+            .newInstance(XMaterial.OAK_DOOR.parseMaterial(), Utils.getFacingByByte(doorData));
       } catch (Exception ex) {
         ex.printStackTrace();
       }
