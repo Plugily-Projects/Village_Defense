@@ -23,9 +23,10 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.NotNull;
-import pl.plajerlair.commonsbox.database.MysqlDatabase;
-import pl.plajerlair.commonsbox.minecraft.configuration.ConfigUtils;
-import pl.plajerlair.commonsbox.sorter.SortUtils;
+
+import plugily.projects.commonsbox.database.MysqlDatabase;
+import plugily.projects.commonsbox.minecraft.configuration.ConfigUtils;
+import plugily.projects.commonsbox.sorter.SortUtils;
 import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.api.StatsStorage;
 import plugily.projects.villagedefense.user.User;
@@ -113,11 +114,12 @@ public class FileStats implements UserDatabase, Runnable {
   }
 
   private void updateStats(User user) {
+    String uuid = user.getUniqueId().toString();
+
     for(StatsStorage.StatisticType stat : StatsStorage.StatisticType.values()) {
-      if(!stat.isPersistent()) {
-        continue;
+      if(stat.isPersistent()) {
+        config.set(uuid + "." + stat.getName(), user.getStat(stat));
       }
-      config.set(user.getUniqueId().toString() + "." + stat.getName(), user.getStat(stat));
     }
   }
 

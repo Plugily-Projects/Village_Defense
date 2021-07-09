@@ -19,8 +19,8 @@
 package plugily.projects.villagedefense.handlers.hologram;
 
 import org.bukkit.configuration.file.FileConfiguration;
-import pl.plajerlair.commonsbox.minecraft.configuration.ConfigUtils;
-import pl.plajerlair.commonsbox.minecraft.serialization.LocationSerializer;
+import plugily.projects.commonsbox.minecraft.configuration.ConfigUtils;
+import plugily.projects.commonsbox.minecraft.serialization.LocationSerializer;
 import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.api.StatsStorage;
 
@@ -44,14 +44,21 @@ public class HologramsRegistry {
 
   private void registerHolograms() {
     FileConfiguration config = ConfigUtils.getConfig(plugin, "internal/holograms_data");
-    if (!config.isConfigurationSection("holograms")) {
+    org.bukkit.configuration.ConfigurationSection section = config.getConfigurationSection("holograms");
+    if (section == null) {
       return;
     }
 
-    for(String key : config.getConfigurationSection("holograms").getKeys(false)) {
-      String accessor = "holograms." + key + ".";
-      LeaderboardHologram hologram = new LeaderboardHologram(plugin, Integer.parseInt(key), StatsStorage.StatisticType.valueOf(config.getString(accessor + "statistics")),
-          config.getInt(accessor + "top-amount"), LocationSerializer.getLocation(config.getString(accessor + "location", "")));
+    for(String key : section.getKeys(false)) {
+      LeaderboardHologram hologram;
+
+      try {
+        hologram = new LeaderboardHologram(plugin, Integer.parseInt(key), StatsStorage.StatisticType.valueOf(section.getString(key + ".statistics")),
+          section.getInt(key + ".top-amount"), LocationSerializer.getLocation(section.getString(key + ".location", "")));
+      } catch (IllegalArgumentException ex) {
+        continue;
+      }
+
       hologram.initUpdateTask();
       registerHologram(hologram);
     }

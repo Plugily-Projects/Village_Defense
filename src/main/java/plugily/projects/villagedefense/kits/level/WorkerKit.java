@@ -27,10 +27,11 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.inventory.ItemStack;
-import pl.plajerlair.commonsbox.minecraft.compat.VersionUtils;
-import pl.plajerlair.commonsbox.minecraft.compat.xseries.XMaterial;
-import pl.plajerlair.commonsbox.minecraft.helper.ArmorHelper;
-import pl.plajerlair.commonsbox.minecraft.helper.WeaponHelper;
+
+import plugily.projects.commonsbox.minecraft.compat.VersionUtils;
+import plugily.projects.commonsbox.minecraft.compat.xseries.XMaterial;
+import plugily.projects.commonsbox.minecraft.helper.ArmorHelper;
+import plugily.projects.commonsbox.minecraft.helper.WeaponHelper;
 import plugily.projects.villagedefense.api.StatsStorage;
 import plugily.projects.villagedefense.arena.Arena;
 import plugily.projects.villagedefense.arena.ArenaRegistry;
@@ -54,7 +55,6 @@ public class WorkerKit extends LevelKit implements Listener {
     KitRegistry.registerKit(this);
     getPlugin().getServer().getPluginManager().registerEvents(this, getPlugin());
   }
-
 
   @Override
   public boolean isUnlockedByPlayer(Player player) {

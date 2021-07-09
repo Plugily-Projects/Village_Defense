@@ -22,8 +22,9 @@ import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import pl.plajerlair.commonsbox.database.MysqlDatabase;
-import pl.plajerlair.commonsbox.minecraft.configuration.ConfigUtils;
+
+import plugily.projects.commonsbox.database.MysqlDatabase;
+import plugily.projects.commonsbox.minecraft.configuration.ConfigUtils;
 import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.api.StatsStorage;
 import plugily.projects.villagedefense.user.User;
@@ -115,7 +116,9 @@ public class MysqlManager implements UserDatabase {
     Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
       String uuid = user.getUniqueId().toString();
       try(Connection connection = database.getConnection(); Statement statement = connection.createStatement()) {
-        database.executeUpdate("UPDATE " + getTableName() + " SET " + "name" + "=" + user.getPlayer().getName() + " WHERE UUID='" + uuid + "';");
+        String playerName = user.getPlayer().getName();
+
+        database.executeUpdate("UPDATE " + getTableName() + " SET " + "name" + "=" + playerName + " WHERE UUID='" + uuid + "';");
         ResultSet rs = statement.executeQuery("SELECT * from " + getTableName() + " WHERE UUID='" + uuid + "'");
         if(rs.next()) {
           //player already exists - get the stats
@@ -128,12 +131,11 @@ public class MysqlManager implements UserDatabase {
           }
         } else {
           //player doesn't exist - make a new record
-          statement.executeUpdate("INSERT INTO " + getTableName() + " (UUID,name) VALUES ('" + uuid + "','" + user.getPlayer().getName() + "')");
+          statement.executeUpdate("INSERT INTO " + getTableName() + " (UUID,name) VALUES ('" + uuid + "','" + playerName + "')");
           for(StatsStorage.StatisticType stat : StatsStorage.StatisticType.values()) {
-            if(!stat.isPersistent()) {
-              continue;
+            if(stat.isPersistent()) {
+              user.setStat(stat, 0);
             }
-            user.setStat(stat, 0);
           }
         }
       } catch(SQLException e) {
@@ -148,9 +150,13 @@ public class MysqlManager implements UserDatabase {
     try(Connection connection = database.getConnection();
         Statement statement = connection.createStatement();
         ResultSet set = statement.executeQuery("SELECT UUID, " + stat.getName() + " FROM " + getTableName() + " ORDER BY " + stat.getName())) {
-      Map<UUID, java.lang.Integer> column = new LinkedHashMap<>();
+      Map<UUID, Integer> column = new LinkedHashMap<>();
       while(set.next()) {
         String uuid = set.getString("UUID");
+
+        if (uuid == null)
+          continue;
+
         try {
           column.put(UUID.fromString(uuid), set.getInt(stat.getName()));
         } catch (IllegalArgumentException ex) {
@@ -190,11 +196,16 @@ public class MysqlManager implements UserDatabase {
       if(!stat.isPersistent()) {
         continue;
       }
+
+      int userStat = user.getStat(stat);
+
       if(update.toString().equalsIgnoreCase(" SET ")) {
-        update.append(stat.getName()).append('=').append(user.getStat(stat));
+        update.append(stat.getName()).append('=').append(userStat);
       }
-      update.append(", ").append(stat.getName()).append('=').append(user.getStat(stat));
+
+      update.append(", ").append(stat.getName()).append('=').append(userStat);
     }
+
     return "UPDATE " + getTableName() + update + " WHERE UUID='" + user.getUniqueId().toString() + "';";
   }
 }

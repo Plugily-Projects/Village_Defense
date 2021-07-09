@@ -21,10 +21,11 @@ package plugily.projects.villagedefense.kits.level;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import pl.plajerlair.commonsbox.minecraft.compat.VersionUtils;
-import pl.plajerlair.commonsbox.minecraft.compat.xseries.XMaterial;
-import pl.plajerlair.commonsbox.minecraft.helper.ArmorHelper;
-import pl.plajerlair.commonsbox.minecraft.helper.WeaponHelper;
+
+import plugily.projects.commonsbox.minecraft.compat.VersionUtils;
+import plugily.projects.commonsbox.minecraft.compat.xseries.XMaterial;
+import plugily.projects.commonsbox.minecraft.helper.ArmorHelper;
+import plugily.projects.commonsbox.minecraft.helper.WeaponHelper;
 import plugily.projects.villagedefense.api.StatsStorage;
 import plugily.projects.villagedefense.handlers.language.Messages;
 import plugily.projects.villagedefense.kits.KitRegistry;
@@ -58,7 +59,6 @@ public class MediumTankKit extends LevelKit {
     ArmorHelper.setArmor(player, ArmorHelper.ArmorType.IRON);
     VersionUtils.setMaxHealth(player, 32.0);
     player.setHealth(32.0);
-
   }
 
   @Override

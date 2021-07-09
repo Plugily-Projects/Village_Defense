@@ -23,8 +23,8 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
-import pl.plajerlair.commonsbox.minecraft.configuration.ConfigUtils;
-import pl.plajerlair.commonsbox.minecraft.item.ItemBuilder;
+import plugily.projects.commonsbox.minecraft.configuration.ConfigUtils;
+import plugily.projects.commonsbox.minecraft.item.ItemBuilder;
 import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.utils.constants.Constants;
 
@@ -92,7 +92,7 @@ public abstract class Kit {
 
   public ItemStack getItemStack() {
     return new ItemBuilder(getMaterial())
-        .name(getName())
+        .name(name)
         .lore(getDescription())
         .build();
   }

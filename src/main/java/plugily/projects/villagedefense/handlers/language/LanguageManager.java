@@ -19,7 +19,7 @@
 package plugily.projects.villagedefense.handlers.language;
 
 import org.bukkit.configuration.file.FileConfiguration;
-import pl.plajerlair.commonsbox.minecraft.configuration.ConfigUtils;
+import plugily.projects.commonsbox.minecraft.configuration.ConfigUtils;
 import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.utils.Debugger;
 import plugily.projects.villagedefense.utils.constants.Constants;

@@ -23,7 +23,7 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.Sign;
 import org.jetbrains.annotations.Nullable;
-import pl.plajerlair.commonsbox.minecraft.compat.ServerVersion;
+import plugily.projects.commonsbox.minecraft.compat.ServerVersion;
 import plugily.projects.villagedefense.arena.Arena;
 import plugily.projects.villagedefense.utils.MaterialUtil;
 

@@ -19,7 +19,8 @@
 package plugily.projects.villagedefense.kits.basekits;
 
 import org.bukkit.inventory.ItemStack;
-import pl.plajerlair.commonsbox.minecraft.item.ItemBuilder;
+
+import plugily.projects.commonsbox.minecraft.item.ItemBuilder;
 import plugily.projects.villagedefense.handlers.language.Messages;
 
 /**
