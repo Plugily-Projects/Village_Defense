@@ -90,6 +90,8 @@ public class CreatureUtils {
         return new plugily.projects.villagedefense.creatures.v1_16_R2.CreatureInitializer();
       case v1_17_R1:
         return new plugily.projects.villagedefense.creatures.v1_17_R1.CreatureInitializer();
+      case v1_17_R2:
+        return new plugily.projects.villagedefense.creatures.v1_17_R2.CreatureInitializer();
       default:
         return new plugily.projects.villagedefense.creatures.v1_16_R3.CreatureInitializer();
     }
