@@ -18,7 +18,7 @@
 
 package plugily.projects.villagedefense.handlers.setup.components;
 
-import plugily.projects.inventoryframework.pane.StaticPane;
+import com.github.stefvanschie.inventoryframework.pane.StaticPane;
 import plugily.projects.villagedefense.handlers.setup.SetupInventory;
 
 /**

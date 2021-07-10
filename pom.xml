@@ -218,9 +218,10 @@
             <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>plugily.projects.inventoryframework</groupId>
+            <groupId>com.github.stefvanschie.inventoryframework</groupId>
             <artifactId>IF</artifactId>
-            <version>0.9.8</version>
+            <version>0.10.0</version>
+            <classifier>legacy-jar-with-dependencies</classifier>
             <scope>compile</scope>
         </dependency>
         <dependency>
@@ -360,7 +361,7 @@
                         <configuration>
                             <relocations>
                                 <relocation>
-                                    <pattern>plugily.projects.inventoryframework</pattern>
+                                    <pattern>com.github.stefvanschie.inventoryframework</pattern>
                                     <shadedPattern>plugily.projects.villagedefense.utils.inventoryframework
                                     </shadedPattern>
                                 </relocation>
