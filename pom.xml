@@ -222,6 +222,12 @@
             <artifactId>IF</artifactId>
             <version>0.10.0</version>
             <classifier>legacy-jar-with-dependencies</classifier>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.github.stefvanschie.inventoryframework</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
             <scope>compile</scope>
         </dependency>
         <dependency>
