@@ -20,7 +20,7 @@ package plugily.projects.villagedefense.utils.services.locale;
 
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
-import pl.plajerlair.commonsbox.minecraft.configuration.ConfigUtils;
+import plugily.projects.commonsbox.minecraft.configuration.ConfigUtils;
 import plugily.projects.villagedefense.utils.services.ServiceRegistry;
 
 import javax.net.ssl.HttpsURLConnection;

@@ -21,7 +21,7 @@ package plugily.projects.villagedefense.commands.arguments.admin.arena;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import pl.plajerlair.commonsbox.number.NumberUtils;
+import plugily.projects.commonsbox.number.NumberUtils;
 import plugily.projects.villagedefense.arena.Arena;
 import plugily.projects.villagedefense.arena.ArenaManager;
 import plugily.projects.villagedefense.arena.ArenaRegistry;
@@ -54,12 +54,13 @@ public class SetWaveArgument {
           sender.sendMessage(registry.getPlugin().getChatManager().getPrefix() + ChatColor.RED + "Please type number of wave to set!");
           return;
         }
-        Arena arena = ArenaRegistry.getArena((Player) sender);
-        if(!NumberUtils.isInteger(args[1])) {
+        java.util.Optional<Integer> opt = NumberUtils.parseInt(args[1]);
+        if(!opt.isPresent()) {
           sender.sendMessage(registry.getPlugin().getChatManager().getPrefix() + registry.getPlugin().getChatManager().colorMessage(Messages.COMMANDS_INVALID_NUMBER).replace("%correct%", "/vda setwave <number>"));
           return;
         }
-        arena.setWave(Integer.parseInt(args[1]) - 1);
+        Arena arena = ArenaRegistry.getArena((Player) sender);
+        arena.setWave(opt.get() - 1);
         ArenaManager.endWave(arena);
         String message = registry.getPlugin().getChatManager().formatMessage(arena, registry.getPlugin().getChatManager().colorMessage(Messages.ADMIN_MESSAGES_CHANGED_WAVE), arena.getWave());
         for(Player player : arena.getPlayers()) {

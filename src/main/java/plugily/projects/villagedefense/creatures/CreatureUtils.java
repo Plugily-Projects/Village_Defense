@@ -20,9 +20,9 @@ package plugily.projects.villagedefense.creatures;
 
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Zombie;
-import pl.plajerlair.commonsbox.minecraft.compat.ServerVersion;
-import pl.plajerlair.commonsbox.minecraft.compat.VersionUtils;
-import pl.plajerlair.commonsbox.string.StringFormatUtils;
+import plugily.projects.commonsbox.minecraft.compat.ServerVersion;
+import plugily.projects.commonsbox.minecraft.compat.VersionUtils;
+import plugily.projects.commonsbox.string.StringFormatUtils;
 import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.arena.Arena;
 import plugily.projects.villagedefense.arena.options.ArenaOption;
@@ -90,6 +90,8 @@ public class CreatureUtils {
         return new plugily.projects.villagedefense.creatures.v1_16_R2.CreatureInitializer();
       case v1_17_R1:
         return new plugily.projects.villagedefense.creatures.v1_17_R1.CreatureInitializer();
+      case v1_17_R2:
+        return new plugily.projects.villagedefense.creatures.v1_17_R2.CreatureInitializer();
       default:
         return new plugily.projects.villagedefense.creatures.v1_16_R3.CreatureInitializer();
     }

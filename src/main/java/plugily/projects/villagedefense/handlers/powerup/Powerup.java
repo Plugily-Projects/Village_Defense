@@ -18,7 +18,7 @@
 
 package plugily.projects.villagedefense.handlers.powerup;
 
-import pl.plajerlair.commonsbox.minecraft.compat.xseries.XMaterial;
+import plugily.projects.commonsbox.minecraft.compat.xseries.XMaterial;
 
 import java.util.function.Consumer;
 

@@ -22,9 +22,9 @@ import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
-import pl.plajerlair.commonsbox.minecraft.configuration.ConfigUtils;
-import pl.plajerlair.commonsbox.minecraft.serialization.LocationSerializer;
-import pl.plajerlair.commonsbox.number.NumberUtils;
+import plugily.projects.commonsbox.minecraft.configuration.ConfigUtils;
+import plugily.projects.commonsbox.minecraft.serialization.LocationSerializer;
+import plugily.projects.commonsbox.number.NumberUtils;
 import plugily.projects.villagedefense.api.StatsStorage;
 import plugily.projects.villagedefense.commands.arguments.ArgumentsRegistry;
 import plugily.projects.villagedefense.commands.arguments.data.CommandArgument;
@@ -82,11 +82,12 @@ public class HologramArgument {
       player.sendMessage(registry.getPlugin().getChatManager().colorRawMessage("&cToo few arguments! Please type /vda hologram add <statistic type> <amount>"));
       return;
     }
-    if(!NumberUtils.isInteger(args[3])) {
+    java.util.Optional<Integer> opt = NumberUtils.parseInt(args[3]);
+    if(!opt.isPresent()) {
       player.sendMessage(registry.getPlugin().getChatManager().colorRawMessage("&cLeaderboard amount entries must be a number!"));
       return;
     }
-    int amount = Integer.parseInt(args[3]);
+    int amount = opt.get();
     if(amount <= 0 || amount > 20) {
       player.sendMessage(registry.getPlugin().getChatManager().colorRawMessage("&cLeaderboard amount entries amount are limited to 20 and minimum of 0!"));
       return;
@@ -133,7 +134,8 @@ public class HologramArgument {
       sender.sendMessage(registry.getPlugin().getChatManager().colorRawMessage("&cPlease type leaderboard ID to remove it!"));
       return;
     }
-    if(!NumberUtils.isInteger(args[2])) {
+    java.util.Optional<Integer> opt = NumberUtils.parseInt(args[2]);
+    if(!opt.isPresent()) {
       sender.sendMessage(registry.getPlugin().getChatManager().colorRawMessage("&cLeaderboard ID must be a number!"));
       return;
     }
@@ -144,7 +146,7 @@ public class HologramArgument {
     }
     config.set("holograms." + args[2], null);
     ConfigUtils.saveConfig(registry.getPlugin(), config, "internal/holograms_data");
-    registry.getPlugin().getHologramsRegistry().disableHologram(Integer.parseInt(args[2]));
+    registry.getPlugin().getHologramsRegistry().disableHologram(opt.get());
     sender.sendMessage(registry.getPlugin().getChatManager().colorRawMessage("&aLeaderboard with ID " + args[2] + " sucessfully deleted!"));
   }
 

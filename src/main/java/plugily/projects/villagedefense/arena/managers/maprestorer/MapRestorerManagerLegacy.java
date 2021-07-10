@@ -24,8 +24,8 @@ import org.bukkit.TreeSpecies;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.material.Door;
-import pl.plajerlair.commonsbox.minecraft.compat.ServerVersion;
-import pl.plajerlair.commonsbox.minecraft.compat.xseries.XMaterial;
+import plugily.projects.commonsbox.minecraft.compat.ServerVersion;
+import plugily.projects.commonsbox.minecraft.compat.xseries.XMaterial;
 import plugily.projects.villagedefense.arena.Arena;
 import plugily.projects.villagedefense.utils.Debugger;
 import plugily.projects.villagedefense.utils.Utils;
@@ -122,7 +122,7 @@ public class MapRestorerManagerLegacy extends MapRestorerManager {
     } catch (NoSuchMethodError e) {
       try {
         doorBlockData = Door.class.getDeclaredConstructor(Material.class, byte.class)
-            .newInstance(XMaterial.OAK_DOOR, Utils.getFacingByByte(doorData));
+            .newInstance(XMaterial.OAK_DOOR.parseMaterial(), Utils.getFacingByByte(doorData));
       } catch (Exception ex) {
         ex.printStackTrace();
       }

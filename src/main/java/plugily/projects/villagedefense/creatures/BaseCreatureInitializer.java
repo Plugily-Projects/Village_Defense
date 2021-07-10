@@ -6,7 +6,7 @@ import org.bukkit.entity.IronGolem;
 import org.bukkit.entity.Villager;
 import org.bukkit.entity.Wolf;
 import org.bukkit.entity.Zombie;
-import pl.plajerlair.commonsbox.minecraft.misc.MiscUtils;
+import plugily.projects.commonsbox.minecraft.misc.MiscUtils;
 
 public interface BaseCreatureInitializer {
     Villager spawnVillager(Location location);

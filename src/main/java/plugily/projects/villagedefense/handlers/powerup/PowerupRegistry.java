@@ -26,8 +26,8 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
-import pl.plajerlair.commonsbox.minecraft.compat.VersionUtils;
-import pl.plajerlair.commonsbox.minecraft.compat.xseries.XMaterial;
+import plugily.projects.commonsbox.minecraft.compat.VersionUtils;
+import plugily.projects.commonsbox.minecraft.compat.xseries.XMaterial;
 import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.api.event.player.VillagePlayerPowerupPickupEvent;
 import plugily.projects.villagedefense.arena.Arena;
@@ -126,13 +126,11 @@ public class PowerupRegistry {
               chatManager.colorMessage(Messages.POWERUPS_HEALING_DESCRIPTION), XMaterial.IRON_INGOT, pickup -> {
         int timeHealing = plugin.getConfig().getInt("Powerups.List.Healing-For-Players.Time-Of-Healing", 10);
 
-        for (Player p : pickup.getArena().getPlayers()) {
-          p.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 20 * timeHealing, 0, false, false));
-        }
         String subTitle = pickup.getPowerup().getDescription();
         subTitle = StringUtils.replace(subTitle, "%time%", Integer.toString(timeHealing));
 
         for (Player p : pickup.getArena().getPlayers()) {
+          p.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 20 * timeHealing, 0, false, false));
           VersionUtils.sendTitles(p, pickup.getPowerup().getName(), subTitle, 5, 30, 5);
         }
       }));
@@ -143,13 +141,11 @@ public class PowerupRegistry {
               chatManager.colorMessage(Messages.POWERUPS_ONE_SHOT_ONE_KILL_DESCRIPTION), XMaterial.DIAMOND_SWORD, pickup -> {
         int oneShotKillTime = plugin.getConfig().getInt("Powerups.List.One-Shot-One-Kill.Time", 15);
 
-        for (Player p : pickup.getArena().getPlayers()) {
-          p.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 20 * oneShotKillTime, 1000, false, false));
-        }
         String subTitle = pickup.getPowerup().getDescription();
         subTitle = StringUtils.replace(subTitle, "%time%", Integer.toString(oneShotKillTime));
 
         for (Player p : pickup.getArena().getPlayers()) {
+          p.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 20 * oneShotKillTime, 1000, false, false));
           VersionUtils.sendTitles(p, pickup.getPowerup().getName(), subTitle, 5, 30, 5);
         }
       }));

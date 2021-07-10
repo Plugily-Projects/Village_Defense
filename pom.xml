@@ -24,7 +24,7 @@
 
     <groupId>plugily.projects</groupId>
     <artifactId>villagedefense</artifactId>
-    <version>4.5.9-dev19</version>
+    <version>4.5.9-dev24</version>
     <name>VillageDefense</name>
 
     <properties>
@@ -78,7 +78,7 @@
         <dependency>
             <groupId>io.papermc.paper</groupId>
             <artifactId>paper-api</artifactId>
-            <version>1.17-R0.1-SNAPSHOT</version>
+            <version>1.17.1-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <!-- Spigot APIs -->
@@ -180,6 +180,13 @@
             <scope>system</scope>
             <systemPath>${project.basedir}/lib/spigot/1.17-R0.1.jar</systemPath>
         </dependency>
+        <dependency>
+            <groupId>1.17_R2</groupId>
+            <artifactId>spigot_1_17_R2</artifactId>
+            <version>1.17.1</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/lib/spigot/1.17.1-R0.1.jar</systemPath>
+        </dependency>
         <!-- Spigot APIs -->
         <dependency>
             <groupId>com.gmail.filoghost.holographicdisplays</groupId>
@@ -188,27 +195,27 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>pl.plajer</groupId>
+            <groupId>plugily.projects</groupId>
             <artifactId>commons-box-classic</artifactId>
-            <version>1.3.0</version>
+            <version>1.3.2</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>pl.plajer</groupId>
+            <groupId>plugily.projects</groupId>
             <artifactId>commons-box-database</artifactId>
-            <version>1.3.0</version>
+            <version>1.3.2</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>pl.plajer</groupId>
+            <groupId>plugily.projects</groupId>
             <artifactId>commons-box-minecraft</artifactId>
-            <version>1.3.0</version>
+            <version>1.3.2</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>me.tigerhix.lib</groupId>
             <artifactId>scoreboard</artifactId>
-            <version>1.0.8</version>
+            <version>1.0.9</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
@@ -282,7 +289,7 @@
         <dependency>
             <groupId>org.jetbrains</groupId>
             <artifactId>annotations</artifactId>
-            <version>20.1.0</version>
+            <version>21.0.1</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>
@@ -309,7 +316,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
-                <version>3.2.0</version>
+                <version>3.3.0</version>
                 <configuration>
                     <windowtitle>Village Defense API docs for v${project.version}</windowtitle>
                     <description>Minecraft cooperation minigame.
@@ -397,34 +404,6 @@
                 </configuration>
             </plugin>
             <!-- External beta versions discord deployer plugin -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.0.0-M5</version>
-            </plugin>
-            <plugin>
-                <groupId>org.jacoco</groupId>
-                <artifactId>jacoco-maven-plugin</artifactId>
-                <version>0.7.2.201409121644</version>
-                <configuration>
-                    <append>true</append>
-                </configuration>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>prepare-agent</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>post-unit-test</id>
-                        <phase>test</phase>
-                        <goals>
-                            <goal>report</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-
         </plugins>
         <extensions>
             <extension>
