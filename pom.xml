@@ -174,13 +174,6 @@
             <systemPath>${project.basedir}/lib/spigot/1.16.4-R0.1.jar</systemPath>
         </dependency>
         <dependency>
-            <groupId>1.17_R1</groupId>
-            <artifactId>spigot_1_17_R1</artifactId>
-            <version>1.17</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/lib/spigot/1.17-R0.1.jar</systemPath>
-        </dependency>
-        <dependency>
             <groupId>1.17_R2</groupId>
             <artifactId>spigot_1_17_R2</artifactId>
             <version>1.17.1</version>
