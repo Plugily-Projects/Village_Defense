@@ -18,8 +18,8 @@
 
 package plugily.projects.villagedefense.kits.basekits;
 
+import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
-
 import plugily.projects.commonsbox.minecraft.item.ItemBuilder;
 import plugily.projects.villagedefense.handlers.language.Messages;
 
@@ -37,6 +37,8 @@ public abstract class LevelKit extends Kit {
   public void setLevel(int level) {
     this.level = level;
   }
+
+  public abstract Material getMaterial();
 
   @Override
   public ItemStack getItemStack() {
