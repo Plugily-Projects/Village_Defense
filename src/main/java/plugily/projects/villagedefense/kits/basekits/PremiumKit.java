@@ -18,8 +18,8 @@
 
 package plugily.projects.villagedefense.kits.basekits;
 
+import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
-
 import plugily.projects.commonsbox.minecraft.item.ItemBuilder;
 import plugily.projects.villagedefense.handlers.language.Messages;
 
@@ -28,9 +28,11 @@ import plugily.projects.villagedefense.handlers.language.Messages;
  */
 public abstract class PremiumKit extends Kit {
 
+  public abstract Material getMaterial();
+
   @Override
   public ItemStack getItemStack() {
-    return new ItemBuilder(new ItemStack(getMaterial()))
+    return new ItemBuilder(getMaterial())
         .name(getName())
         .lore(getDescription())
         .lore(getPlugin().getChatManager().colorMessage(Messages.KITS_MENU_LOCKED_UNLOCK_IN_STORE))

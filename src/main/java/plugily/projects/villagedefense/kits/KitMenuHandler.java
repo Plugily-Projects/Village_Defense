@@ -21,6 +21,7 @@ package plugily.projects.villagedefense.kits;
 import com.github.stefvanschie.inventoryframework.gui.GuiItem;
 import com.github.stefvanschie.inventoryframework.gui.type.ChestGui;
 import com.github.stefvanschie.inventoryframework.pane.StaticPane;
+import java.util.List;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -65,15 +66,13 @@ public class KitMenuHandler implements Listener {
     ChestGui gui = new ChestGui(Utils.serializeInt(KitRegistry.getKits().size()) / 9, plugin.getChatManager().colorMessage(Messages.KITS_OPEN_KIT_MENU));
     StaticPane pane = new StaticPane(9, gui.getRows());
     gui.addPane(pane);
-    int x = 0;
-    int y = 0;
-    for(Kit kit : KitRegistry.getKits()) {
+    List<Kit> kits = KitRegistry.getKits();
+    for(int i = 0; i < kits.size(); i++) {
+      Kit kit = kits.get(i);
       ItemStack itemStack = kit.getItemStack();
-      if(kit.isUnlockedByPlayer(player)) {
-        itemStack = new ItemBuilder(itemStack).lore(unlockedString).build();
-      } else {
-        itemStack = new ItemBuilder(itemStack).lore(lockedString).build();
-      }
+      itemStack = new ItemBuilder(itemStack)
+          .lore(kit.isUnlockedByPlayer(player) ? unlockedString : lockedString)
+          .build();
 
       pane.addItem(new GuiItem(itemStack, e -> {
         e.setCancelled(true);
@@ -84,7 +83,7 @@ public class KitMenuHandler implements Listener {
         if(arena == null) {
           return;
         }
-        VillagePlayerChooseKitEvent event = new VillagePlayerChooseKitEvent(player, KitRegistry.getKit(e.getCurrentItem()), arena);
+        VillagePlayerChooseKitEvent event = new VillagePlayerChooseKitEvent(player, kit, arena);
         Bukkit.getPluginManager().callEvent(event);
         if(event.isCancelled()) {
           return;
@@ -95,12 +94,7 @@ public class KitMenuHandler implements Listener {
         }
         plugin.getUserManager().getUser(player).setKit(kit);
         player.sendMessage(plugin.getChatManager().colorMessage(Messages.KITS_CHOOSE_MESSAGE).replace("%KIT%", kit.getName()));
-      }), x, y);
-      x++;
-      if(x == 9) {
-        x = 0;
-        y++;
-      }
+      }), i % 9, i / 9);
     }
     gui.show(player);
   }

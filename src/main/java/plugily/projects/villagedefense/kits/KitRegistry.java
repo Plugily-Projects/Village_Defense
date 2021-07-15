@@ -18,8 +18,11 @@
 
 package plugily.projects.villagedefense.kits;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.logging.Level;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.inventory.ItemStack;
 import plugily.projects.commonsbox.minecraft.configuration.ConfigUtils;
 import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.kits.basekits.Kit;
@@ -48,11 +51,6 @@ import plugily.projects.villagedefense.kits.premium.TeleporterKit;
 import plugily.projects.villagedefense.kits.premium.TornadoKit;
 import plugily.projects.villagedefense.kits.premium.WizardKit;
 import plugily.projects.villagedefense.utils.constants.Constants;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.logging.Level;
 
 /**
  * Kit registry class for registering new kits.
@@ -110,22 +108,6 @@ public class KitRegistry {
    */
   public static List<Kit> getKits() {
     return kits;
-  }
-
-  /**
-   * Get registered kit by it's represented item stack
-   *
-   * @param itemStack itemstack that kit represents
-   * @return Registered kit or default if not found
-   */
-  public static Kit getKit(ItemStack itemStack) {
-    for(Kit kit : kits) {
-      if(itemStack.getType() == kit.getMaterial()) {
-        return kit;
-      }
-    }
-
-    return getDefaultKit();
   }
 
   private static void setupGameKits() {
