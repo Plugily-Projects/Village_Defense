@@ -229,7 +229,7 @@ public class SpectatorEvents implements Listener {
   public void onInventoryClick(InventoryClickEvent event) {
     org.bukkit.inventory.Inventory clicked = event.getClickedInventory();
     Player who = (Player) event.getWhoClicked();
-    if(clicked != null && clicked.getType() == InventoryType.PLAYER && ArenaRegistry.getArena(who) != null && plugin.getUserManager().getUser(who).isSpectator()) {
+    if(clicked != null && clicked.getType() == InventoryType.PLAYER && clicked.getType() == InventoryType.CRAFTING && ArenaRegistry.getArena(who) != null && plugin.getUserManager().getUser(who).isSpectator()) {
       event.setCancelled(true);
     }
   }

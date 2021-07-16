@@ -22,6 +22,7 @@ import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
+import plugily.projects.commonsbox.minecraft.compat.xseries.XMaterial;
 import plugily.projects.commonsbox.minecraft.configuration.ConfigUtils;
 import plugily.projects.commonsbox.minecraft.item.ItemBuilder;
 import plugily.projects.villagedefense.Main;
@@ -81,11 +82,7 @@ public class SpecialItemManager {
       List<String> lore;
       int slot;
       try {
-        try {
-          mat = Material.valueOf(config.getString(key + ".material-name", "BEDROCK").toUpperCase());
-        } catch(IllegalArgumentException e) {
-          mat = Material.BEDROCK;
-        }
+        mat = XMaterial.matchXMaterial(config.getString(key + ".material-name", "BEDROCK").toUpperCase()).orElse(XMaterial.BEDROCK).parseMaterial();
         name = plugin.getChatManager().colorRawMessage(config.getString(key + ".displayname"));
         lore = config.getStringList(key + ".lore").stream()
             .map(itemLore -> itemLore = plugin.getChatManager().colorRawMessage(itemLore))

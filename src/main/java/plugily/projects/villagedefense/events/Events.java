@@ -35,6 +35,7 @@ import org.bukkit.entity.Projectile;
 import org.bukkit.entity.Villager;
 import org.bukkit.entity.Wolf;
 import org.bukkit.entity.Zombie;
+import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -299,9 +300,15 @@ public class Events implements Listener {
   }
 
   @EventHandler
-  public void onClick(InventoryClickEvent event) {
-    if(event.getWhoClicked() instanceof Player && event.getClickedInventory() instanceof PlayerInventory && checkSpecialItem(event.getCurrentItem(), (Player) event.getWhoClicked())) {
-      event.setCancelled(true);
+  public void onItemMove(InventoryClickEvent e) {
+    if(e.getWhoClicked() instanceof Player && ArenaRegistry.isInArena((Player) e.getWhoClicked())) {
+      if(ArenaRegistry.getArena(((Player) e.getWhoClicked())).getArenaState() != ArenaState.IN_GAME) {
+        if(e.getClickedInventory() == e.getWhoClicked().getInventory()) {
+          if(e.getView().getType() == InventoryType.CRAFTING || e.getView().getType() == InventoryType.PLAYER) {
+            e.setResult(Event.Result.DENY);
+          }
+        }
+      }
     }
   }
 
