@@ -120,7 +120,7 @@ public class FileStats implements UserDatabase, Runnable {
       if(!stat.isPersistent()) {
         continue;
       }
-      String path = user.getUniqueId().toString() + "." + stat.getName();
+      String path = uuid + "." + stat.getName();
       int value = user.getStat(stat);
       if (value > 0 || config.contains(path)) {
         config.set(path, value);
