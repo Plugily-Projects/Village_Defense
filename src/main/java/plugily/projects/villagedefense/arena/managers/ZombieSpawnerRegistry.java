@@ -1,9 +1,10 @@
 package plugily.projects.villagedefense.arena.managers;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Collections;
 import java.util.Optional;
 import java.util.Random;
+import java.util.Set;
+import java.util.TreeSet;
 import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.arena.Arena;
 import plugily.projects.villagedefense.arena.managers.spawner.BabyZombieSpawner;
@@ -23,22 +24,22 @@ import plugily.projects.villagedefense.arena.options.ArenaOption;
  * The registry for all {@link ZombieSpawner}
  */
 public class ZombieSpawnerRegistry {
-  private final List<ZombieSpawner> zombieSpawnerList = new ArrayList<>();
+  private final Set<ZombieSpawner> zombieSpawnerSet = new TreeSet<>(Collections.reverseOrder());
   private final Main plugin;
 
   public ZombieSpawnerRegistry(Main plugin) {
     this.plugin = plugin;
 
-    zombieSpawnerList.add(new FastZombieSpawner());
-    zombieSpawnerList.add(new VillagerSlayerSpawner());
-    zombieSpawnerList.add(new KnockbackResistantZombieSpawner());
-    zombieSpawnerList.add(new HardZombieSpawner());
-    zombieSpawnerList.add(new SoftHardZombieSpawner());
-    zombieSpawnerList.add(new PlayerBusterSpawner());
-    zombieSpawnerList.add(new GolemBusterSpawner());
-    zombieSpawnerList.add(new VillagerBusterSpawner());
-    zombieSpawnerList.add(new BabyZombieSpawner());
-    zombieSpawnerList.add(new HalfInvisibleZombieSpawner());
+    zombieSpawnerSet.add(new FastZombieSpawner());
+    zombieSpawnerSet.add(new VillagerSlayerSpawner());
+    zombieSpawnerSet.add(new KnockbackResistantZombieSpawner());
+    zombieSpawnerSet.add(new HardZombieSpawner());
+    zombieSpawnerSet.add(new SoftHardZombieSpawner());
+    zombieSpawnerSet.add(new PlayerBusterSpawner());
+    zombieSpawnerSet.add(new GolemBusterSpawner());
+    zombieSpawnerSet.add(new VillagerBusterSpawner());
+    zombieSpawnerSet.add(new BabyZombieSpawner());
+    zombieSpawnerSet.add(new HalfInvisibleZombieSpawner());
   }
 
   /**
@@ -60,18 +61,18 @@ public class ZombieSpawnerRegistry {
       arena.setOptionValue(ArenaOption.ZOMBIE_SPAWN_COUNTER, 0);
     }
 
-    for (ZombieSpawner zombieSpawner : zombieSpawnerList) {
+    for (ZombieSpawner zombieSpawner : zombieSpawnerSet) {
       zombieSpawner.spawnZombie(random, arena, spawn);
     }
   }
 
   /**
-   * Get the list of zombie spawners
+   * Get the set of zombie spawners
    *
-   * @return the list of zombie spawners
+   * @return the set of zombie spawners
    */
-  public List<ZombieSpawner> getZombieSpawnerList() {
-    return zombieSpawnerList;
+  public Set<ZombieSpawner> getZombieSpawnerSet() {
+    return zombieSpawnerSet;
   }
 
   /**
@@ -81,7 +82,7 @@ public class ZombieSpawnerRegistry {
    * @return the zombie spawner
    */
   public Optional<ZombieSpawner> getSpawnerByName(String name) {
-    return zombieSpawnerList.stream()
+    return zombieSpawnerSet.stream()
         .filter(zombieSpawner -> zombieSpawner.getName().equals(name))
         .findFirst();
   }
