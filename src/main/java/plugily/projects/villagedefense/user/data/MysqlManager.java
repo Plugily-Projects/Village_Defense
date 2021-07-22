@@ -196,14 +196,10 @@ public class MysqlManager implements UserDatabase {
       if(!stat.isPersistent()) {
         continue;
       }
-
-      int userStat = user.getStat(stat);
-
-      if(update.toString().equalsIgnoreCase(" SET ")) {
-        update.append(stat.getName()).append('=').append(userStat);
+      if (!update.toString().equalsIgnoreCase(" SET ")) {
+        update.append(", ");
       }
-
-      update.append(", ").append(stat.getName()).append('=').append(userStat);
+      update.append(stat.getName()).append('=').append(user.getStat(stat));
     }
 
     return "UPDATE " + getTableName() + update + " WHERE UUID='" + user.getUniqueId().toString() + "';";
