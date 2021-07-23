@@ -43,4 +43,9 @@ public class FastZombieSpawner implements SimpleZombieSpawner {
   public String getName() {
     return "FastZombie";
   }
+
+  @Override
+  public int getPriority() {
+    return -1;
+  }
 }

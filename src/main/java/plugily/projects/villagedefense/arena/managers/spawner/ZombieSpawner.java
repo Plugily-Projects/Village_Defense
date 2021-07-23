@@ -32,6 +32,10 @@ public interface ZombieSpawner extends Comparable<ZombieSpawner> {
 
   @Override
   default int compareTo(ZombieSpawner spawner) {
-    return Integer.compare(this.getPriority(), spawner.getPriority());
+    int compareValue = Integer.compare(this.getPriority(), spawner.getPriority());
+    if (compareValue == 0) {
+      compareValue = this.getName().compareTo(spawner.getName());
+    }
+    return compareValue;
   }
 }
