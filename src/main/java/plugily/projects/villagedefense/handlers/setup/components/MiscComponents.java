@@ -18,8 +18,8 @@
 
 package plugily.projects.villagedefense.handlers.setup.components;
 
-import plugily.projects.inventoryframework.gui.GuiItem;
-import plugily.projects.inventoryframework.pane.StaticPane;
+import fr.mrmicky.fastinv.FastInv;
+import java.util.List;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -53,8 +53,6 @@ import plugily.projects.villagedefense.utils.Utils;
 import plugily.projects.villagedefense.utils.constants.Constants;
 import plugily.projects.villagedefense.utils.conversation.SimpleConversationBuilder;
 
-import java.util.List;
-
 /**
  * @author Plajer
  * <p>
@@ -70,7 +68,7 @@ public class MiscComponents implements SetupComponent {
   }
 
   @Override
-  public void injectComponents(StaticPane pane) {
+  public void injectComponents(FastInv gui) {
     Arena arena = setupInventory.getArena();
     if(arena == null) {
       return;
@@ -93,7 +91,7 @@ public class MiscComponents implements SetupComponent {
           .lore(ChatColor.DARK_GRAY + "If you wish to have multi arena, disable bungee in config!")
           .build();
     }
-    pane.addItem(new GuiItem(bungeeItem, e -> {
+    gui.setItem(5, bungeeItem, e -> {
       if(plugin.getConfigPreferences().getOption(ConfigPreferences.Option.BUNGEE_ENABLED)) {
         return;
       }
@@ -117,9 +115,9 @@ public class MiscComponents implements SetupComponent {
       locs.add(signLoc);
       config.set("instances." + arena.getId() + ".signs", locs);
       ConfigUtils.saveConfig(plugin, config, Constants.Files.ARENAS.getName());
-    }), 5, 0);
+    });
 
-    pane.addItem(new GuiItem(new ItemBuilder(Material.NAME_TAG)
+    gui.setItem(6, new ItemBuilder(Material.NAME_TAG)
         .name(plugin.getChatManager().colorRawMessage("&e&lSet Map Name"))
         .lore(ChatColor.GRAY + "Click to set arena map name")
         .lore("", plugin.getChatManager().colorRawMessage("&a&lCurrently: &e" + config.getString("instances." + arena.getId() + ".mapname")))
@@ -143,9 +141,9 @@ public class MiscComponents implements SetupComponent {
           return Prompt.END_OF_CONVERSATION;
         }
       }).buildFor(player);
-    }), 6, 0);
+    });
 
-    pane.addItem(new GuiItem(new ItemBuilder(Material.CHEST)
+    gui.setItem(7, new ItemBuilder(Material.CHEST)
         .name(plugin.getChatManager().colorRawMessage("&e&lSet Game Shop"))
         .lore(ChatColor.GRAY + "Look at chest with items")
         .lore(ChatColor.GRAY + "and click it to set it as game shop.")
@@ -178,9 +176,9 @@ public class MiscComponents implements SetupComponent {
       player.sendMessage(ChatColor.GREEN + "Shop for chest set!");
       player.sendMessage(plugin.getChatManager().colorRawMessage("&e&lTIP: &7You can use special items in shops! Check out https://wiki.plugily.xyz/villagedefense/support/faq#special-shop-items"));
       ConfigUtils.saveConfig(plugin, config, Constants.Files.ARENAS.getName());
-    }), 7, 0);
+    });
 
-    pane.addItem(new GuiItem(new ItemBuilder(Material.EMERALD_BLOCK)
+    gui.setItem(8, new ItemBuilder(Material.EMERALD_BLOCK)
         .name(plugin.getChatManager().colorRawMessage("&e&lAdd Villager Location"))
         .lore(ChatColor.GRAY + "Click add new villager spawn")
         .lore(ChatColor.GRAY + "on the place you're standing at.")
@@ -206,9 +204,9 @@ public class MiscComponents implements SetupComponent {
       }
       arena.getVillagerSpawns().add(player.getLocation());
       ConfigUtils.saveConfig(plugin, config, Constants.Files.ARENAS.getName());
-    }), 8, 0);
+    });
 
-    pane.addItem(new GuiItem(new ItemBuilder(Material.ROTTEN_FLESH)
+    gui.setItem(9, new ItemBuilder(Material.ROTTEN_FLESH)
         .name(plugin.getChatManager().colorRawMessage("&e&lAdd Zombie Location"))
         .lore(ChatColor.GRAY + "Click add new zombie spawn")
         .lore(ChatColor.GRAY + "on the place you're standing at.")
@@ -234,9 +232,9 @@ public class MiscComponents implements SetupComponent {
       }
       arena.getZombieSpawns().add(player.getLocation());
       ConfigUtils.saveConfig(plugin, config, Constants.Files.ARENAS.getName());
-    }), 0, 1);
+    });
 
-    pane.addItem(new GuiItem(new ItemBuilder(XMaterial.OAK_DOOR.parseItem())
+    gui.setItem(10, new ItemBuilder(XMaterial.OAK_DOOR.parseItem())
         .name(plugin.getChatManager().colorRawMessage("&e&lAdd Game Door"))
         .lore(ChatColor.GRAY + "Target arena door and click this.")
         .lore(ChatColor.DARK_GRAY + "(doors are required and will be")
@@ -293,9 +291,9 @@ public class MiscComponents implements SetupComponent {
       }
       player.sendMessage(plugin.getChatManager().colorRawMessage("&a&l✔ &aDoor successfully added! To apply door changes you must either re-register arena or reload plugin via /vda reload"));
       ConfigUtils.saveConfig(plugin, config, Constants.Files.ARENAS.getName());
-    }), 1, 1);
+    });
 
-    pane.addItem(new GuiItem(new ItemBuilder(XMaterial.GOLD_INGOT.parseItem())
+    gui.setItem(16, new ItemBuilder(XMaterial.GOLD_INGOT.parseItem())
         .name(plugin.getChatManager().colorRawMessage("&6&l► Enhancements Addon ◄ &8(AD)"))
         .lore(ChatColor.GRAY + "Enhance Village Defense gameplay with paid addon!")
         .lore(ChatColor.GOLD + "Features of this addon:")
@@ -304,16 +302,16 @@ public class MiscComponents implements SetupComponent {
         .build(), e -> {
       e.getWhoClicked().closeInventory();
       player.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorRawMessage("&6Check patron program here: https://wiki.plugily.xyz/villagedefense/addon/overview"));
-    }), 7, 1);
+    });
 
-    pane.addItem(new GuiItem(new ItemBuilder(XMaterial.FILLED_MAP.parseItem())
+    gui.setItem(17, new ItemBuilder(XMaterial.FILLED_MAP.parseItem())
         .name(plugin.getChatManager().colorRawMessage("&e&lView Setup Video"))
         .lore(ChatColor.GRAY + "Having problems with setup or wanna")
         .lore(ChatColor.GRAY + "know some useful tips? Click to get video link!")
         .build(), e -> {
       e.getWhoClicked().closeInventory();
       player.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorRawMessage("&6Check out this video: " + SetupInventory.VIDEO_LINK));
-    }), 8, 1);
+    });
   }
 
 }
