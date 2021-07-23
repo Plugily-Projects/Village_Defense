@@ -18,6 +18,7 @@
 
 package plugily.projects.villagedefense.events.spectator;
 
+import fr.mrmicky.fastinv.FastInv;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -30,9 +31,6 @@ import plugily.projects.commonsbox.minecraft.compat.xseries.XMaterial;
 import plugily.projects.commonsbox.minecraft.item.ItemUtils;
 import plugily.projects.commonsbox.minecraft.misc.stuff.ComplementAccessor;
 import plugily.projects.commonsbox.number.NumberUtils;
-import plugily.projects.inventoryframework.gui.GuiItem;
-import plugily.projects.inventoryframework.gui.type.ChestGui;
-import plugily.projects.inventoryframework.pane.OutlinePane;
 import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.arena.Arena;
 import plugily.projects.villagedefense.arena.ArenaRegistry;
@@ -78,10 +76,7 @@ public class SpectatorItemEvents implements Listener {
   }
 
   private void openSpectatorMenu(Player player, Arena arena) {
-    int rows = Utils.serializeInt(arena.getPlayers().size()) / 9;
-    ChestGui gui = new ChestGui(rows, plugin.getChatManager().colorMessage(Messages.SPECTATOR_MENU_NAME));
-    OutlinePane pane = new OutlinePane(9, rows);
-    gui.addPane(pane);
+    FastInv gui = new FastInv(Utils.serializeInt(arena.getPlayers().size()), plugin.getChatManager().colorMessage(Messages.SPECTATOR_MENU_NAME));
 
     ItemStack skull = XMaterial.PLAYER_HEAD.parseItem();
 
@@ -95,13 +90,12 @@ public class SpectatorItemEvents implements Listener {
       ComplementAccessor.getComplement().setLore(meta, Collections.singletonList(plugin.getChatManager().colorMessage(Messages.SPECTATOR_TARGET_PLAYER_HEALTH)
           .replace("%health%", Double.toString(NumberUtils.round(arenaPlayer.getHealth(), 2)))));
       cloneSkull.setItemMeta(meta);
-      pane.addItem(new GuiItem(cloneSkull, e -> {
-        e.setCancelled(true);
+      gui.addItem(cloneSkull, e -> {
         e.getWhoClicked().sendMessage(plugin.getChatManager().formatMessage(arena, plugin.getChatManager().colorMessage(Messages.KITS_TELEPORTER_TELEPORTED_TO_PLAYER), arenaPlayer));
         e.getWhoClicked().closeInventory();
         e.getWhoClicked().teleport(arenaPlayer);
-      }));
+      });
     }
-    gui.show(player);
+    gui.open(player);
   }
 }

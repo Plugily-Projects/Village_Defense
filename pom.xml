@@ -72,6 +72,10 @@
             <id>alessiodp-repo</id>
             <url>https://repo.alessiodp.com/releases/</url>
         </repository>
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -218,11 +222,10 @@
             <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>plugily.projects.inventoryframework</groupId>
-            <artifactId>IF</artifactId>
-            <version>0.10.0</version>
+            <groupId>fr.mrmicky</groupId>
+            <artifactId>FastInv</artifactId>
+            <version>3.0.3</version>
             <scope>compile</scope>
-            <classifier>legacy-jar-with-dependencies</classifier>
         </dependency>
         <dependency>
             <groupId>me.clip</groupId>
@@ -361,9 +364,8 @@
                         <configuration>
                             <relocations>
                                 <relocation>
-                                    <pattern>plugily.projects.inventoryframework</pattern>
-                                    <shadedPattern>plugily.projects.villagedefense.utils.inventoryframework
-                                    </shadedPattern>
+                                    <pattern>fr.mrmicky.fastinv</pattern>
+                                    <shadedPattern>plugily.projects.villagedefense.utils.fastinv</shadedPattern>
                                 </relocation>
                                 <relocation>
                                     <pattern>com.zaxxer.hikari</pattern>
