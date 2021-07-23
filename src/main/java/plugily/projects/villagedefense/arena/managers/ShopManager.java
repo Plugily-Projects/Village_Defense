@@ -118,6 +118,7 @@ public class ShopManager {
         .getBlock().getState()).getInventory().getContents();
     int size = Utils.serializeInt(contents.length) / 9;
     ChestGui gui = new ChestGui(size, plugin.getChatManager().colorMessage(Messages.SHOP_MESSAGES_SHOP_GUI_NAME));
+    gui.setOnGlobalClick(event -> event.setCancelled(true));
     StaticPane pane = new StaticPane(9, size);
     for (int slot = 0; slot < contents.length; slot++) {
       ItemStack itemStack = contents[slot];
@@ -151,8 +152,6 @@ public class ShopManager {
         if(!arena.getPlayers().contains(player)) {
           return;
         }
-
-        e.setCancelled(true);
 
         User user = plugin.getUserManager().getUser(player);
         int orbs = user.getStat(StatsStorage.StatisticType.ORBS);

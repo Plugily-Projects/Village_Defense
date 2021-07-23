@@ -129,6 +129,7 @@ public class EntityUpgradeMenu {
    */
   public void openUpgradeMenu(LivingEntity en, Player player) {
     ChestGui gui = new ChestGui(6, color(Messages.UPGRADES_MENU_TITLE));
+    gui.setOnGlobalClick(event -> event.setCancelled(true));
     StaticPane pane = new StaticPane(9, 6);
     User user = plugin.getUserManager().getUser(player);
 
@@ -137,7 +138,6 @@ public class EntityUpgradeMenu {
         continue;
       }
       pane.addItem(new GuiItem(upgrade.asItemStack(getTier(en, upgrade)), e -> {
-        e.setCancelled(true);
         int nextTier = getTier(en, upgrade) + 1;
         int cost = upgrade.getCost(nextTier);
         if(nextTier > upgrade.getMaxTier()) {
