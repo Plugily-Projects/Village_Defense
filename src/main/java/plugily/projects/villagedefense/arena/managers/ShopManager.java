@@ -78,6 +78,10 @@ public class ShopManager {
     return gui;
   }
 
+  public void setShop(FastInv gui) {
+    this.gui = gui;
+  }
+
   /**
    * Default name of golem spawn item from language.yml
    *
