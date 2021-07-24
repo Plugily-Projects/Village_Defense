@@ -118,8 +118,7 @@ public class NakedKit extends PremiumKit implements Listener {
     ItemStack itemStack = event.getCurrentItem();
     if(itemStack != null && armorTypes.contains(itemStack.getType())) {
       hasArmor = true;
-    }
-    if (clickType == ClickType.NUMBER_KEY) {
+    } else if (clickType == ClickType.NUMBER_KEY) {
       ItemStack hotbarItem = who.getInventory().getItem(event.getHotbarButton());
       if(hotbarItem != null && armorTypes.contains(hotbarItem.getType())) {
         hasArmor = true;
