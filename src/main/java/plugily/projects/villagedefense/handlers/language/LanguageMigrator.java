@@ -228,6 +228,11 @@ public class LanguageMigrator {
               "# The default is 0, so their orbs will be set to 0.\r\n" +
               "# The value should be 1 or higher.\r\n" +
               "Orbs-To-Lose-After-Death: 0");
+          MigratorUtils.addNewLines(file, "\r\n" +
+              "# Should the orbs kept after player death?\r\n" +
+              "# true - player's orbs will be kept after death\r\n" +
+              "# false - player's orbs will be set according to the above option.\r\n" +
+              "Keep-Orbs-After-Death: false");
           break;
         default:
           break;

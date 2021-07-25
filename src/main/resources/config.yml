@@ -213,6 +213,11 @@ Villager-Amount: 10
 # The value should be 1 or higher.
 Orbs-To-Lose-After-Death: 0
 
+# Should the orbs kept after player death?
+# true - player's orbs will be kept after death
+# false - player's orbs will be set according to the above option.
+Keep-Orbs-After-Death: false
+
 # Should the name tag of these mobs always visible?
 Name-Visible:
   Golem: true
