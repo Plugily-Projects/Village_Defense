@@ -585,10 +585,6 @@ public class Arena extends BukkitRunnable {
     return plugin;
   }
 
-  protected void addZombie(Creature zombie) {
-    zombies.add(zombie);
-  }
-
   protected void addVillager(Villager villager) {
     villagers.add(villager);
   }
