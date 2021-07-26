@@ -18,16 +18,6 @@
 
 package plugily.projects.villagedefense.creatures;
 
-import org.bukkit.ChatColor;
-import org.bukkit.entity.Zombie;
-import plugily.projects.commonsbox.minecraft.compat.ServerVersion;
-import plugily.projects.commonsbox.minecraft.compat.VersionUtils;
-import plugily.projects.commonsbox.string.StringFormatUtils;
-import plugily.projects.villagedefense.Main;
-import plugily.projects.villagedefense.arena.Arena;
-import plugily.projects.villagedefense.arena.options.ArenaOption;
-import plugily.projects.villagedefense.handlers.language.LanguageManager;
-
 import java.lang.reflect.Field;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
@@ -35,6 +25,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.logging.Level;
+import org.bukkit.ChatColor;
+import org.bukkit.entity.Creature;
+import plugily.projects.commonsbox.minecraft.compat.ServerVersion;
+import plugily.projects.commonsbox.minecraft.compat.VersionUtils;
+import plugily.projects.commonsbox.string.StringFormatUtils;
+import plugily.projects.villagedefense.Main;
+import plugily.projects.villagedefense.arena.Arena;
+import plugily.projects.villagedefense.arena.options.ArenaOption;
+import plugily.projects.villagedefense.handlers.language.LanguageManager;
 
 /**
  * @author Plajer
@@ -126,7 +125,7 @@ public class CreatureUtils {
    * @param zombie zombie to apply attributes for
    * @param arena  arena to get health multiplier from
    */
-  public static void applyAttributes(Zombie zombie, Arena arena) {
+  public static void applyAttributes(Creature zombie, Arena arena) {
     creatureInitializer.applyFollowRange(zombie);
     VersionUtils.setMaxHealth(zombie, VersionUtils.getMaxHealth(zombie) + arena.getOption(ArenaOption.ZOMBIE_DIFFICULTY_MULTIPLIER));
     zombie.setHealth(VersionUtils.getMaxHealth(zombie));

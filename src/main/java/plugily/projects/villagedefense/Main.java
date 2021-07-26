@@ -20,6 +20,9 @@ package plugily.projects.villagedefense;
 
 import com.gmail.filoghost.holographicdisplays.api.Hologram;
 import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
+import java.io.File;
+import java.util.Arrays;
+import java.util.logging.Level;
 import me.tigerhix.lib.scoreboard.ScoreboardLib;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
@@ -29,10 +32,9 @@ import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.java.JavaPluginLoader;
 import org.jetbrains.annotations.TestOnly;
-
-import plugily.projects.commonsbox.minecraft.configuration.ConfigUtils;
 import plugily.projects.commonsbox.minecraft.compat.ServerVersion;
 import plugily.projects.commonsbox.minecraft.compat.events.EventsInitializer;
+import plugily.projects.commonsbox.minecraft.configuration.ConfigUtils;
 import plugily.projects.commonsbox.minecraft.misc.MiscUtils;
 import plugily.projects.commonsbox.minecraft.serialization.InventorySerializer;
 import plugily.projects.villagedefense.api.StatsStorage;
@@ -81,10 +83,6 @@ import plugily.projects.villagedefense.utils.MessageUtils;
 import plugily.projects.villagedefense.utils.UpdateChecker;
 import plugily.projects.villagedefense.utils.Utils;
 import plugily.projects.villagedefense.utils.services.ServiceRegistry;
-
-import java.io.File;
-import java.util.Arrays;
-import java.util.logging.Level;
 
 /**
  * Created by Tom on 12/08/2014.

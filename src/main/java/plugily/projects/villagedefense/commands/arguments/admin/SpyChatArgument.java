@@ -18,6 +18,8 @@
 
 package plugily.projects.villagedefense.commands.arguments.admin;
 
+import java.util.HashSet;
+import java.util.Set;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import plugily.projects.villagedefense.commands.arguments.ArgumentsRegistry;
@@ -25,9 +27,6 @@ import plugily.projects.villagedefense.commands.arguments.data.CommandArgument;
 import plugily.projects.villagedefense.commands.arguments.data.LabelData;
 import plugily.projects.villagedefense.commands.arguments.data.LabeledCommandArgument;
 import plugily.projects.villagedefense.handlers.language.Messages;
-
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * @author Plajer

@@ -18,11 +18,12 @@
 
 package plugily.projects.villagedefense.kits.premium;
 
+import java.util.List;
 import org.bukkit.Color;
 import org.bukkit.Material;
+import org.bukkit.entity.Creature;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-import org.bukkit.entity.Zombie;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -38,8 +39,6 @@ import plugily.projects.villagedefense.kits.KitRegistry;
 import plugily.projects.villagedefense.kits.basekits.PremiumKit;
 import plugily.projects.villagedefense.user.User;
 import plugily.projects.villagedefense.utils.Utils;
-
-import java.util.List;
 
 /**
  * Created by Tom on 1/12/2015.
@@ -79,7 +78,7 @@ public class MedicKit extends PremiumKit implements Listener {
 
   @EventHandler
   public void onZombieHit(EntityDamageByEntityEvent e) {
-    if(!(e.getEntity() instanceof Zombie) || !(e.getDamager() instanceof Player)) {
+    if(!(e.getEntity() instanceof Creature) || !(e.getDamager() instanceof Player)) {
       return;
     }
     User user = getPlugin().getUserManager().getUser((Player) e.getDamager());

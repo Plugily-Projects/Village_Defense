@@ -18,12 +18,10 @@
 
 package plugily.projects.villagedefense.creatures.v1_17_R2;
 
-import plugily.projects.villagedefense.creatures.CreatureUtils;
-
 import java.util.Set;
-
 import net.minecraft.world.entity.EntityCreature;
 import net.minecraft.world.entity.ai.goal.PathfinderGoalSelector;
+import plugily.projects.villagedefense.creatures.CreatureUtils;
 
 /**
  * Internal helper class

@@ -18,11 +18,12 @@
 
 package plugily.projects.villagedefense.handlers.setup;
 
-import plugily.projects.inventoryframework.gui.type.ChestGui;
-import plugily.projects.inventoryframework.pane.StaticPane;
+import java.util.Random;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import plugily.projects.commonsbox.minecraft.configuration.ConfigUtils;
+import plugily.projects.inventoryframework.gui.type.ChestGui;
+import plugily.projects.inventoryframework.pane.StaticPane;
 import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.arena.Arena;
 import plugily.projects.villagedefense.handlers.setup.components.ArenaRegisterComponent;
@@ -30,8 +31,6 @@ import plugily.projects.villagedefense.handlers.setup.components.MiscComponents;
 import plugily.projects.villagedefense.handlers.setup.components.PlayerAmountComponents;
 import plugily.projects.villagedefense.handlers.setup.components.SpawnComponents;
 import plugily.projects.villagedefense.utils.constants.Constants;
-
-import java.util.Random;
 
 /**
  * Created by Tom on 15/06/2015.

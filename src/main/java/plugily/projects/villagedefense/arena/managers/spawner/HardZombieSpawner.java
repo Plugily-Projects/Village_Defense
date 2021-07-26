@@ -2,7 +2,7 @@ package plugily.projects.villagedefense.arena.managers.spawner;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.entity.Zombie;
+import org.bukkit.entity.Creature;
 import org.bukkit.inventory.ItemStack;
 import plugily.projects.villagedefense.arena.Arena;
 import plugily.projects.villagedefense.creatures.CreatureUtils;
@@ -41,8 +41,8 @@ public class HardZombieSpawner implements SimpleZombieSpawner {
   }
 
   @Override
-  public Zombie spawnZombie(Location location) {
-    Zombie hardZombie = CreatureUtils.getCreatureInitializer().spawnHardZombie(location);
+  public Creature spawnZombie(Location location) {
+    Creature hardZombie = CreatureUtils.getCreatureInitializer().spawnHardZombie(location);
     hardZombie.getEquipment().setBoots(new ItemStack(Material.DIAMOND_BOOTS));
     hardZombie.getEquipment().setLeggings(new ItemStack(Material.DIAMOND_LEGGINGS));
     hardZombie.getEquipment().setChestplate(new ItemStack(Material.DIAMOND_CHESTPLATE));

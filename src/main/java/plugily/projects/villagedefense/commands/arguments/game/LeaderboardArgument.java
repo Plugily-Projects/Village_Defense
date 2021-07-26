@@ -18,6 +18,9 @@
 
 package plugily.projects.villagedefense.commands.arguments.game;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.command.CommandSender;
 import plugily.projects.villagedefense.api.StatsStorage;
@@ -25,10 +28,6 @@ import plugily.projects.villagedefense.commands.arguments.ArgumentsRegistry;
 import plugily.projects.villagedefense.commands.arguments.data.CommandArgument;
 import plugily.projects.villagedefense.commands.completion.CompletableArgument;
 import plugily.projects.villagedefense.handlers.language.Messages;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
 
 /**
  * @author Plajer

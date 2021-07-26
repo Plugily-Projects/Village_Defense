@@ -18,6 +18,7 @@
 
 package plugily.projects.villagedefense.commands.arguments.game;
 
+import java.util.logging.Level;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import plugily.projects.villagedefense.ConfigPreferences;
@@ -29,8 +30,6 @@ import plugily.projects.villagedefense.commands.arguments.data.CommandArgument;
 import plugily.projects.villagedefense.handlers.language.Messages;
 import plugily.projects.villagedefense.utils.Debugger;
 import plugily.projects.villagedefense.utils.Utils;
-
-import java.util.logging.Level;
 
 /**
  * @author Plajer

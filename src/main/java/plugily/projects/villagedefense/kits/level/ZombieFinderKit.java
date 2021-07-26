@@ -18,21 +18,23 @@
 
 package plugily.projects.villagedefense.kits.level;
 
+import java.util.List;
+import java.util.Random;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Creature;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
-
-import plugily.projects.commonsbox.minecraft.item.ItemBuilder;
-import plugily.projects.commonsbox.minecraft.item.ItemUtils;
-import plugily.projects.commonsbox.minecraft.misc.stuff.ComplementAccessor;
 import plugily.projects.commonsbox.minecraft.compat.events.api.CBPlayerInteractEvent;
 import plugily.projects.commonsbox.minecraft.compat.xseries.XMaterial;
 import plugily.projects.commonsbox.minecraft.helper.WeaponHelper;
+import plugily.projects.commonsbox.minecraft.item.ItemBuilder;
+import plugily.projects.commonsbox.minecraft.item.ItemUtils;
+import plugily.projects.commonsbox.minecraft.misc.stuff.ComplementAccessor;
 import plugily.projects.villagedefense.arena.Arena;
 import plugily.projects.villagedefense.arena.ArenaRegistry;
 import plugily.projects.villagedefense.handlers.language.Messages;
@@ -40,9 +42,6 @@ import plugily.projects.villagedefense.kits.KitRegistry;
 import plugily.projects.villagedefense.kits.basekits.LevelKit;
 import plugily.projects.villagedefense.user.User;
 import plugily.projects.villagedefense.utils.Utils;
-
-import java.util.List;
-import java.util.Random;
 
 /**
  * Created by Tom on 21/07/2015.
@@ -110,7 +109,7 @@ public class ZombieFinderKit extends LevelKit implements Listener {
       return;
     }
 
-    org.bukkit.entity.Zombie zombie = arena.getZombies().get(arena.getZombies().size() == 1 ? 0 : new Random().nextInt(arena.getZombies().size()));
+    Creature zombie = arena.getZombies().get(arena.getZombies().size() == 1 ? 0 : new Random().nextInt(arena.getZombies().size()));
     zombie.teleport(event.getPlayer());
     zombie.addPotionEffect(new PotionEffect(PotionEffectType.WEAKNESS, 20 * 30, 0));
     event.getPlayer().sendMessage(getPlugin().getChatManager().colorMessage(Messages.KITS_ZOMBIE_TELEPORTER_ZOMBIE_TELEPORTED));

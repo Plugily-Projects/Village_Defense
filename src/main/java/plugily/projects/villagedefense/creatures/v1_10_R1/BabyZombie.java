@@ -34,7 +34,6 @@ import net.minecraft.server.v1_10_R1.PathfinderGoalNearestAttackableTarget;
 import net.minecraft.server.v1_10_R1.PathfinderGoalRandomLookaround;
 import net.minecraft.server.v1_10_R1.PathfinderGoalZombieAttack;
 import net.minecraft.server.v1_10_R1.World;
-
 import org.bukkit.craftbukkit.v1_10_R1.CraftWorld;
 import plugily.projects.villagedefense.creatures.CreatureUtils;
 

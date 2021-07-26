@@ -18,6 +18,7 @@
 
 package plugily.projects.villagedefense.creatures;
 
+import java.util.concurrent.ThreadLocalRandom;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
@@ -29,8 +30,6 @@ import plugily.projects.commonsbox.minecraft.compat.VersionUtils;
 import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.arena.ArenaRegistry;
 import plugily.projects.villagedefense.utils.Utils;
-
-import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * Created by Tom on 14/08/2014.

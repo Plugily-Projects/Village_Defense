@@ -18,14 +18,16 @@
 
 package plugily.projects.villagedefense.kits.premium;
 
+import java.util.ArrayList;
+import java.util.List;
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.entity.Creature;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.entity.Zombie;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -47,9 +49,6 @@ import plugily.projects.villagedefense.kits.KitRegistry;
 import plugily.projects.villagedefense.kits.basekits.PremiumKit;
 import plugily.projects.villagedefense.user.User;
 import plugily.projects.villagedefense.utils.Utils;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author Plajer
@@ -109,13 +108,13 @@ public class WizardKit extends PremiumKit implements Listener {
 
   @EventHandler
   public void onWizardDamage(EntityDamageByEntityEvent e) {
-    if(!(e.getDamager() instanceof Zombie && e.getEntity() instanceof Player)) {
+    if(!(e.getDamager() instanceof Creature && e.getEntity() instanceof Player)) {
       return;
     }
     if(!wizardsOnDuty.contains(e.getEntity()) || ArenaRegistry.getArena((Player) e.getEntity()) == null) {
       return;
     }
-    ((Zombie) e.getDamager()).damage(2.0, e.getEntity());
+    ((Creature) e.getDamager()).damage(2.0, e.getEntity());
   }
 
   @EventHandler
@@ -146,8 +145,8 @@ public class WizardKit extends PremiumKit implements Listener {
       VersionUtils.setGlowing(player, true);
       applyRageParticles(player);
       for(Entity en : player.getNearbyEntities(2, 2, 2)) {
-        if(en instanceof Zombie) {
-          ((Zombie) en).damage(9.0, player);
+        if(en instanceof Creature) {
+          ((Creature) en).damage(9.0, player);
         }
       }
       Bukkit.getScheduler().runTaskLater(getPlugin(), () -> {
@@ -193,7 +192,7 @@ public class WizardKit extends PremiumKit implements Listener {
         loc.add(x, y, z);
         VersionUtils.sendParticles("TOWN_AURA", null, loc, 5, 0, 0, 0);
         for(Entity en : loc.getChunk().getEntities()) {
-          if(!(en instanceof Zombie) || en.getLocation().distance(loc) >= 1.5 || en.equals(player)) {
+          if(!(en instanceof Creature) || en.getLocation().distance(loc) >= 1.5 || en.equals(player)) {
             continue;
           }
           ((LivingEntity) en).damage(6.0, player);

@@ -1,14 +1,13 @@
 package plugily.projects.villagedefense.creatures.v1_17_R2;
 
+import net.minecraft.world.entity.ai.attributes.GenericAttributes;
+import net.minecraft.world.level.World;
 import org.bukkit.Location;
 import org.bukkit.entity.IronGolem;
 import org.bukkit.entity.Villager;
 import org.bukkit.entity.Wolf;
 import org.bukkit.entity.Zombie;
 import org.bukkit.event.entity.CreatureSpawnEvent;
-
-import net.minecraft.world.entity.ai.attributes.GenericAttributes;
-import net.minecraft.world.level.World;
 import plugily.projects.villagedefense.creatures.BaseCreatureInitializer;
 
 public class CreatureInitializer implements BaseCreatureInitializer {

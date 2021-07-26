@@ -18,18 +18,27 @@
 
 package plugily.projects.villagedefense.arena;
 
+import java.util.ArrayList;
+import java.util.EnumMap;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
+import java.util.Set;
+import java.util.logging.Level;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
+import org.bukkit.entity.Creature;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.IronGolem;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Villager;
 import org.bukkit.entity.Wolf;
-import org.bukkit.entity.Zombie;
 import org.bukkit.permissions.PermissionAttachmentInfo;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
@@ -56,16 +65,6 @@ import plugily.projects.villagedefense.handlers.language.Messages;
 import plugily.projects.villagedefense.user.User;
 import plugily.projects.villagedefense.utils.Debugger;
 
-import java.util.ArrayList;
-import java.util.EnumMap;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
-import java.util.Set;
-import java.util.logging.Level;
-
 /**
  * Created by Tom on 12/08/2014.
  */
@@ -75,7 +74,7 @@ public class Arena extends BukkitRunnable {
   private final String id;
 
   private final Set<Player> players = new HashSet<>();
-  private final List<Zombie> zombies = new ArrayList<>();
+  private final List<Creature> zombies = new ArrayList<>();
   private final List<Wolf> wolves = new ArrayList<>();
   private final List<Villager> villagers = new ArrayList<>();
   private final List<IronGolem> ironGolems = new ArrayList<>();
@@ -395,11 +394,11 @@ public class Arena extends BukkitRunnable {
    * @return list of spawned zombies in arena
    */
   @NotNull
-  public List<Zombie> getZombies() {
+  public List<Creature> getZombies() {
     return zombies;
   }
 
-  public void removeZombie(Zombie zombie) {
+  public void removeZombie(Creature zombie) {
     zombies.remove(zombie);
   }
 
@@ -586,7 +585,7 @@ public class Arena extends BukkitRunnable {
     return plugin;
   }
 
-  protected void addZombie(Zombie zombie) {
+  protected void addZombie(Creature zombie) {
     zombies.add(zombie);
   }
 

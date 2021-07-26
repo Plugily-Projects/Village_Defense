@@ -2,7 +2,7 @@ package plugily.projects.villagedefense.arena.managers.spawner;
 
 import java.util.Random;
 import org.bukkit.Location;
-import org.bukkit.entity.Zombie;
+import org.bukkit.entity.Creature;
 import plugily.projects.villagedefense.arena.Arena;
 import plugily.projects.villagedefense.arena.options.ArenaOption;
 import plugily.projects.villagedefense.creatures.CreatureUtils;
@@ -86,7 +86,7 @@ public interface SimpleZombieSpawner extends ZombieSpawner {
    * @param location the location
    * @return the spawned zombie
    */
-  Zombie spawnZombie(Location location);
+  Creature spawnZombie(Location location);
 
   /**
    * Get the weight of the zombie in the arena.
@@ -109,7 +109,10 @@ public interface SimpleZombieSpawner extends ZombieSpawner {
    * @param arena    the arena
    */
   default void spawnZombie(Location location, Arena arena) {
-    Zombie zombie = spawnZombie(location);
+    Creature zombie = spawnZombie(location);
+    if (zombie == null) {
+      return;
+    }
     if (canApplyAttributes()) {
       CreatureUtils.applyAttributes(zombie, arena);
     }

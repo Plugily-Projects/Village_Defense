@@ -1,7 +1,7 @@
 package plugily.projects.villagedefense.arena.managers.spawner;
 
 import org.bukkit.Location;
-import org.bukkit.entity.Zombie;
+import org.bukkit.entity.Creature;
 import plugily.projects.villagedefense.arena.Arena;
 import plugily.projects.villagedefense.creatures.CreatureUtils;
 
@@ -35,7 +35,7 @@ public class FastZombieSpawner implements SimpleZombieSpawner {
   }
 
   @Override
-  public Zombie spawnZombie(Location location) {
+  public Creature spawnZombie(Location location) {
     return CreatureUtils.getCreatureInitializer().spawnFastZombie(location);
   }
 

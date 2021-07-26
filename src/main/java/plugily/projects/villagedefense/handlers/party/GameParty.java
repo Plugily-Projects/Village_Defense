@@ -18,9 +18,8 @@
 
 package plugily.projects.villagedefense.handlers.party;
 
-import org.bukkit.entity.Player;
-
 import java.util.List;
+import org.bukkit.entity.Player;
 
 /**
  * @author Plajer

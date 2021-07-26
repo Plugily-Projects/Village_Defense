@@ -18,18 +18,17 @@
 
 package plugily.projects.villagedefense.arena.managers;
 
-import org.bukkit.Location;
-import org.bukkit.entity.Villager;
-import org.bukkit.entity.Zombie;
-import plugily.projects.villagedefense.arena.Arena;
-import plugily.projects.villagedefense.arena.options.ArenaOption;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import org.bukkit.Location;
+import org.bukkit.entity.Creature;
+import org.bukkit.entity.Villager;
+import plugily.projects.villagedefense.arena.Arena;
+import plugily.projects.villagedefense.arena.options.ArenaOption;
 
 /**
  * @author Plajer
@@ -41,8 +40,8 @@ public class ZombieSpawnManager {
   private final Random random;
   private final Arena arena;
   private int localIdleProcess = 0;
-  private final List<Zombie> glitchedZombies = new ArrayList<>();
-  private final Map<Zombie, Location> zombieCheckerLocations = new HashMap<>();
+  private final List<Creature> glitchedZombies = new ArrayList<>();
+  private final Map<Creature, Location> zombieCheckerLocations = new HashMap<>();
 
   public ZombieSpawnManager(Arena arena) {
     this.arena = arena;
@@ -73,9 +72,9 @@ public class ZombieSpawnManager {
       }
       arena.setOptionValue(ArenaOption.ZOMBIE_GLITCH_CHECKER, 0);
 
-      Iterator<Zombie> zombieIterator = arena.getZombies().iterator();
+      Iterator<Creature> zombieIterator = arena.getZombies().iterator();
       while(zombieIterator.hasNext()) {
-        Zombie zombie = zombieIterator.next();
+        Creature zombie = zombieIterator.next();
         if(zombie.isDead()) {
           zombieIterator.remove();
           arena.removeZombie(zombie);
@@ -100,7 +99,7 @@ public class ZombieSpawnManager {
     }
   }
 
-  public Map<Zombie, Location> getZombieCheckerLocations() {
+  public Map<Creature, Location> getZombieCheckerLocations() {
     return zombieCheckerLocations;
   }
 

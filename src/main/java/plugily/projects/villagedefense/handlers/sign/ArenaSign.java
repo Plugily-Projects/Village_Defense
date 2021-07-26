@@ -18,6 +18,7 @@
 
 package plugily.projects.villagedefense.handlers.sign;
 
+import java.lang.reflect.InvocationTargetException;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -26,8 +27,6 @@ import org.jetbrains.annotations.Nullable;
 import plugily.projects.commonsbox.minecraft.compat.ServerVersion;
 import plugily.projects.villagedefense.arena.Arena;
 import plugily.projects.villagedefense.utils.MaterialUtil;
-
-import java.lang.reflect.InvocationTargetException;
 
 /**
  * Created for 1.14 compatibility purposes, it will cache block behind sign that will be

@@ -2,7 +2,7 @@ package plugily.projects.villagedefense.arena.managers.spawner;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.entity.Zombie;
+import org.bukkit.entity.Creature;
 import org.bukkit.inventory.ItemStack;
 import plugily.projects.commonsbox.minecraft.compat.VersionUtils;
 import plugily.projects.commonsbox.minecraft.compat.xseries.XMaterial;
@@ -31,8 +31,8 @@ public class KnockbackResistantZombieSpawner implements SimpleZombieSpawner {
   }
 
   @Override
-  public Zombie spawnZombie(Location location) {
-    Zombie tankerZombie = CreatureUtils.getCreatureInitializer().spawnKnockbackResistantZombies(location);
+  public Creature spawnZombie(Location location) {
+    Creature tankerZombie = CreatureUtils.getCreatureInitializer().spawnKnockbackResistantZombies(location);
     VersionUtils.setItemInHand(tankerZombie, XMaterial.GOLDEN_AXE.parseItem());
     tankerZombie.getEquipment().setBoots(new ItemStack(Material.DIAMOND_BOOTS));
     tankerZombie.getEquipment().setLeggings(new ItemStack(Material.DIAMOND_LEGGINGS));

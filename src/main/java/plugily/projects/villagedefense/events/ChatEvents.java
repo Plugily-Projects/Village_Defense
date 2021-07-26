@@ -18,6 +18,8 @@
 
 package plugily.projects.villagedefense.events;
 
+import java.util.ArrayList;
+import java.util.regex.Pattern;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
@@ -33,9 +35,6 @@ import plugily.projects.villagedefense.arena.ArenaRegistry;
 import plugily.projects.villagedefense.handlers.language.LanguageManager;
 import plugily.projects.villagedefense.handlers.language.Messages;
 import plugily.projects.villagedefense.user.User;
-
-import java.util.ArrayList;
-import java.util.regex.Pattern;
 
 /**
  * Created by Tom on 13/08/2014.
