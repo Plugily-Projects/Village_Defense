@@ -18,18 +18,27 @@
 
 package plugily.projects.villagedefense.arena;
 
+import java.util.ArrayList;
+import java.util.EnumMap;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
+import java.util.Set;
+import java.util.logging.Level;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
+import org.bukkit.entity.Creature;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.IronGolem;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Villager;
 import org.bukkit.entity.Wolf;
-import org.bukkit.entity.Zombie;
 import org.bukkit.permissions.PermissionAttachmentInfo;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
@@ -41,7 +50,7 @@ import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.api.event.game.VillageGameStateChangeEvent;
 import plugily.projects.villagedefense.arena.managers.ScoreboardManager;
 import plugily.projects.villagedefense.arena.managers.ShopManager;
-import plugily.projects.villagedefense.arena.managers.ZombieSpawnManager;
+import plugily.projects.villagedefense.arena.managers.EnemySpawnManager;
 import plugily.projects.villagedefense.arena.managers.maprestorer.MapRestorerManager;
 import plugily.projects.villagedefense.arena.managers.maprestorer.MapRestorerManagerLegacy;
 import plugily.projects.villagedefense.arena.options.ArenaOption;
@@ -56,16 +65,6 @@ import plugily.projects.villagedefense.handlers.language.Messages;
 import plugily.projects.villagedefense.user.User;
 import plugily.projects.villagedefense.utils.Debugger;
 
-import java.util.ArrayList;
-import java.util.EnumMap;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
-import java.util.Set;
-import java.util.logging.Level;
-
 /**
  * Created by Tom on 12/08/2014.
  */
@@ -75,7 +74,7 @@ public class Arena extends BukkitRunnable {
   private final String id;
 
   private final Set<Player> players = new HashSet<>();
-  private final List<Zombie> zombies = new ArrayList<>();
+  private final List<Creature> enemies = new ArrayList<>();
   private final List<Wolf> wolves = new ArrayList<>();
   private final List<Villager> villagers = new ArrayList<>();
   private final List<IronGolem> ironGolems = new ArrayList<>();
@@ -92,7 +91,7 @@ public class Arena extends BukkitRunnable {
   private ScoreboardManager scoreboardManager;
   private MapRestorerManager mapRestorerManager;
   private ShopManager shopManager;
-  private ZombieSpawnManager zombieSpawnManager;
+  private EnemySpawnManager enemySpawnManager;
 
   private ArenaState arenaState = ArenaState.WAITING_FOR_PLAYERS;
   private BossBar gameBar;
@@ -121,7 +120,7 @@ public class Arena extends BukkitRunnable {
       gameBar = Bukkit.createBossBar(plugin.getChatManager().colorMessage(Messages.BOSSBAR_MAIN_TITLE), BarColor.BLUE, BarStyle.SOLID);
     }
     shopManager = new ShopManager(this);
-    zombieSpawnManager = new ZombieSpawnManager(this);
+    enemySpawnManager = new EnemySpawnManager(this);
     scoreboardManager = new ScoreboardManager(this);
     if(ServerVersion.Version.isCurrentEqualOrLower(ServerVersion.Version.v1_16_R1)) {
       mapRestorerManager = new MapRestorerManagerLegacy(this);
@@ -166,8 +165,8 @@ public class Arena extends BukkitRunnable {
     return shopManager;
   }
 
-  public ZombieSpawnManager getZombieSpawnManager() {
-    return zombieSpawnManager;
+  public EnemySpawnManager getEnemySpawnManager() {
+    return enemySpawnManager;
   }
 
   /**
@@ -389,18 +388,18 @@ public class Arena extends BukkitRunnable {
   }
 
   /**
-   * Get list of already spawned zombies.
-   * This will only return alive zombies not total zombies in current wave.
+   * Get list of already spawned enemies.
+   * This will only return alive enemies not total enemies in current wave.
    *
-   * @return list of spawned zombies in arena
+   * @return list of spawned enemies in arena
    */
   @NotNull
-  public List<Zombie> getZombies() {
-    return zombies;
+  public List<Creature> getEnemies() {
+    return enemies;
   }
 
-  public void removeZombie(Zombie zombie) {
-    zombies.remove(zombie);
+  public void removeEnemy(Creature enemy) {
+    enemies.remove(enemy);
   }
 
   @NotNull
@@ -430,7 +429,7 @@ public class Arena extends BukkitRunnable {
   }
 
   public int getZombiesLeft() {
-    return getOption(ArenaOption.ZOMBIES_TO_SPAWN) + zombies.size();
+    return getOption(ArenaOption.ZOMBIES_TO_SPAWN) + enemies.size();
   }
 
   public int getWave() {
@@ -586,10 +585,6 @@ public class Arena extends BukkitRunnable {
     return plugin;
   }
 
-  protected void addZombie(Zombie zombie) {
-    zombies.add(zombie);
-  }
-
   protected void addVillager(Villager villager) {
     villagers.add(villager);
   }
@@ -630,7 +625,7 @@ public class Arena extends BukkitRunnable {
     setOptionValue(ArenaOption.TOTAL_ORBS_SPENT, 0);
     setOptionValue(ArenaOption.ZOMBIE_DIFFICULTY_MULTIPLIER, 1);
     setOptionValue(ArenaOption.ZOMBIE_IDLE_PROCESS, 0);
-    zombieSpawnManager.applyIdle(0);
+    enemySpawnManager.applyIdle(0);
   }
 
   public int getOption(ArenaOption option) {

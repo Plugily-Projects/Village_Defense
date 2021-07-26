@@ -18,6 +18,7 @@
 
 package plugily.projects.villagedefense.events.spectator;
 
+import java.util.Collections;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -39,8 +40,6 @@ import plugily.projects.villagedefense.arena.ArenaRegistry;
 import plugily.projects.villagedefense.handlers.items.SpecialItemManager;
 import plugily.projects.villagedefense.handlers.language.Messages;
 import plugily.projects.villagedefense.utils.Utils;
-
-import java.util.Collections;
 
 public class SpectatorItemEvents implements Listener {
 

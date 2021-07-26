@@ -18,10 +18,10 @@
 
 package plugily.projects.villagedefense.kits.premium;
 
+import java.util.List;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -38,13 +38,12 @@ import plugily.projects.commonsbox.minecraft.item.ItemBuilder;
 import plugily.projects.commonsbox.minecraft.item.ItemUtils;
 import plugily.projects.commonsbox.minecraft.misc.stuff.ComplementAccessor;
 import plugily.projects.villagedefense.arena.ArenaRegistry;
+import plugily.projects.villagedefense.creatures.CreatureUtils;
 import plugily.projects.villagedefense.handlers.PermissionsManager;
 import plugily.projects.villagedefense.handlers.language.Messages;
 import plugily.projects.villagedefense.kits.KitRegistry;
 import plugily.projects.villagedefense.kits.basekits.PremiumKit;
 import plugily.projects.villagedefense.utils.Utils;
-
-import java.util.List;
 
 /**
  * Created by Tom on 30/12/2015.
@@ -160,15 +159,15 @@ public class TornadoKit extends PremiumKit implements Listener {
           VersionUtils.sendParticles("CLOUD", null, location.clone().add(x, y, z), 1, 0, 0, 0);
         }
       }
-      pushNearbyZombies();
+      pushNearbyEnemies();
       setLocation(location.add(vector.getX() / (3 + Math.random() / 2), 0, vector.getZ() / (3 + Math.random() / 2)));
 
       angle += 50;
     }
 
-    private void pushNearbyZombies() {
+    private void pushNearbyEnemies() {
       for(Entity entity : location.getWorld().getNearbyEntities(location, 2, 2, 2)) {
-        if(entity.getType() == EntityType.ZOMBIE) {
+        if(CreatureUtils.isEnemy(entity)) {
           entities++;
 
           Vector velocityVec = vector.multiply(2).setY(0).add(new Vector(0, 1, 0));

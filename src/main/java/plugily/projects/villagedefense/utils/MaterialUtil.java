@@ -18,10 +18,9 @@
 
 package plugily.projects.villagedefense.utils;
 
-import org.bukkit.Material;
-
 import java.util.HashSet;
 import java.util.Set;
+import org.bukkit.Material;
 
 @SuppressWarnings("serial")
 public class MaterialUtil {

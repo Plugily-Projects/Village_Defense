@@ -2,14 +2,14 @@ package plugily.projects.villagedefense.arena.managers.spawner;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.entity.Zombie;
+import org.bukkit.entity.Creature;
 import org.bukkit.inventory.ItemStack;
 import plugily.projects.commonsbox.minecraft.compat.VersionUtils;
 import plugily.projects.commonsbox.minecraft.compat.xseries.XMaterial;
 import plugily.projects.villagedefense.arena.Arena;
 import plugily.projects.villagedefense.creatures.CreatureUtils;
 
-public class VillagerSlayerSpawner implements SimpleZombieSpawner {
+public class VillagerSlayerSpawner implements SimpleEnemySpawner {
   @Override
   public int getMinWave() {
     return 23;
@@ -31,8 +31,8 @@ public class VillagerSlayerSpawner implements SimpleZombieSpawner {
   }
 
   @Override
-  public Zombie spawnZombie(Location location) {
-    Zombie villagerSlayer = CreatureUtils.getCreatureInitializer().spawnVillagerSlayer(location);
+  public Creature spawn(Location location) {
+    Creature villagerSlayer = CreatureUtils.getCreatureInitializer().spawnVillagerSlayer(location);
     VersionUtils.setItemInHand(villagerSlayer, XMaterial.EMERALD.parseItem());
     VersionUtils.setItemInHandDropChance(villagerSlayer, 0F);
     villagerSlayer.getEquipment().setBoots(new ItemStack(Material.CHAINMAIL_BOOTS));

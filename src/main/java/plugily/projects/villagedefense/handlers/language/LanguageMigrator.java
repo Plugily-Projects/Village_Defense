@@ -18,6 +18,9 @@
 
 package plugily.projects.villagedefense.handlers.language;
 
+import java.io.File;
+import java.util.Arrays;
+import java.util.List;
 import org.apache.commons.lang.math.NumberUtils;
 import org.bukkit.configuration.file.FileConfiguration;
 import plugily.projects.commonsbox.minecraft.configuration.ConfigUtils;
@@ -26,10 +29,6 @@ import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.utils.Debugger;
 import plugily.projects.villagedefense.utils.MessageUtils;
 import plugily.projects.villagedefense.utils.constants.Constants;
-
-import java.io.File;
-import java.util.Arrays;
-import java.util.List;
 
 /*
   NOTE FOR CONTRIBUTORS - Please do not touch this class if you don't now how it works! You can break migrator modyfing these values!

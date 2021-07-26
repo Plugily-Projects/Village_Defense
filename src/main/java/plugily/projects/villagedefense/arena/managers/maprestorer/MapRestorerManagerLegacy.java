@@ -18,6 +18,8 @@
 
 package plugily.projects.villagedefense.arena.managers.maprestorer;
 
+import java.util.Map;
+import java.util.logging.Level;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.TreeSpecies;
@@ -29,9 +31,6 @@ import plugily.projects.commonsbox.minecraft.compat.xseries.XMaterial;
 import plugily.projects.villagedefense.arena.Arena;
 import plugily.projects.villagedefense.utils.Debugger;
 import plugily.projects.villagedefense.utils.Utils;
-
-import java.util.Map;
-import java.util.logging.Level;
 
 /**
  * @author Tigerpanzer_02

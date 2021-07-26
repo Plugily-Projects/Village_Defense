@@ -18,11 +18,10 @@
 
 package plugily.projects.villagedefense;
 
-import plugily.projects.villagedefense.utils.Debugger;
-
 import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
+import plugily.projects.villagedefense.utils.Debugger;
 
 /**
  * @author Plajer

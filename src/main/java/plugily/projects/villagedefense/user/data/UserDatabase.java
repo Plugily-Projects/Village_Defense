@@ -18,15 +18,13 @@
 
 package plugily.projects.villagedefense.user.data;
 
+import java.util.Map;
+import java.util.UUID;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
 import plugily.projects.commonsbox.database.MysqlDatabase;
 import plugily.projects.villagedefense.api.StatsStorage;
 import plugily.projects.villagedefense.user.User;
-
-import java.util.Map;
-import java.util.UUID;
 
 /**
  * @author Plajer

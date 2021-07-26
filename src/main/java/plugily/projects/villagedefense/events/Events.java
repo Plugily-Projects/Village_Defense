@@ -18,11 +18,13 @@
 
 package plugily.projects.villagedefense.events;
 
+import java.util.Map;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.entity.Creature;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.IronGolem;
@@ -34,7 +36,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.entity.Villager;
 import org.bukkit.entity.Wolf;
-import org.bukkit.entity.Zombie;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -62,7 +63,6 @@ import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerExpChangeEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.PlayerInventory;
 import plugily.projects.commonsbox.minecraft.compat.VersionUtils;
 import plugily.projects.commonsbox.minecraft.compat.events.api.CBPlayerInteractEntityEvent;
 import plugily.projects.commonsbox.minecraft.compat.events.api.CBPlayerInteractEvent;
@@ -86,8 +86,6 @@ import plugily.projects.villagedefense.handlers.items.SpecialItemManager;
 import plugily.projects.villagedefense.handlers.language.Messages;
 import plugily.projects.villagedefense.user.User;
 import plugily.projects.villagedefense.utils.Utils;
-
-import java.util.Map;
 
 /**
  * Created by Tom on 16/08/2014.
@@ -371,16 +369,16 @@ public class Events implements Listener {
   }
 
   @EventHandler(priority = EventPriority.HIGH)
-  public void onZombieHurt(EntityDamageEvent e) {
-    if(!(e.getEntity() instanceof Zombie) || !plugin.getConfig().getBoolean("Simple-Zombie-Health-Bar-Enabled", true)) {
+  public void onCreatureHurt(EntityDamageEvent e) {
+    if(!(e.getEntity() instanceof Creature) || !plugin.getConfig().getBoolean("Simple-Zombie-Health-Bar-Enabled", true)) {
       return;
     }
     for(Arena arena : ArenaRegistry.getArenas()) {
-      if(!arena.getZombies().contains(e.getEntity())) {
+      if(!arena.getEnemies().contains(e.getEntity())) {
         continue;
       }
-      Zombie zombie = (Zombie) e.getEntity();
-      zombie.setCustomName(StringFormatUtils.getProgressBar((int) zombie.getHealth(), (int) VersionUtils.getMaxHealth(zombie),
+      Creature creature = (Creature) e.getEntity();
+      creature.setCustomName(StringFormatUtils.getProgressBar((int) creature.getHealth(), (int) VersionUtils.getMaxHealth(creature),
           50, "|", ChatColor.YELLOW + "", ChatColor.GRAY + ""));
     }
   }
@@ -504,15 +502,15 @@ public class Events implements Listener {
   public void onCombust(EntityCombustEvent e) {
     // Ignore if this is caused by an event lower down the chain.
     if(e instanceof EntityCombustByEntityEvent || e instanceof EntityCombustByBlockEvent
-        || !(e.getEntity() instanceof Zombie)
+        || !(e.getEntity() instanceof Creature)
         || e.getEntity().getWorld().getEnvironment() != World.Environment.NORMAL) {
       return;
     }
 
     for(Arena arena : ArenaRegistry.getArenas()) {
-      if(arena.getZombies().contains(e.getEntity())) {
+      if(arena.getEnemies().contains(e.getEntity())) {
         e.setCancelled(true);
-        return;
+        break;
       }
     }
   }

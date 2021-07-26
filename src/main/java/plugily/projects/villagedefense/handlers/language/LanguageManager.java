@@ -18,16 +18,6 @@
 
 package plugily.projects.villagedefense.handlers.language;
 
-import org.bukkit.configuration.file.FileConfiguration;
-import plugily.projects.commonsbox.minecraft.configuration.ConfigUtils;
-import plugily.projects.villagedefense.Main;
-import plugily.projects.villagedefense.utils.Debugger;
-import plugily.projects.villagedefense.utils.constants.Constants;
-import plugily.projects.villagedefense.utils.services.ServiceRegistry;
-import plugily.projects.villagedefense.utils.services.locale.Locale;
-import plugily.projects.villagedefense.utils.services.locale.LocaleRegistry;
-import plugily.projects.villagedefense.utils.services.locale.LocaleService;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -39,6 +29,15 @@ import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
+import org.bukkit.configuration.file.FileConfiguration;
+import plugily.projects.commonsbox.minecraft.configuration.ConfigUtils;
+import plugily.projects.villagedefense.Main;
+import plugily.projects.villagedefense.utils.Debugger;
+import plugily.projects.villagedefense.utils.constants.Constants;
+import plugily.projects.villagedefense.utils.services.ServiceRegistry;
+import plugily.projects.villagedefense.utils.services.locale.Locale;
+import plugily.projects.villagedefense.utils.services.locale.LocaleRegistry;
+import plugily.projects.villagedefense.utils.services.locale.LocaleService;
 
 public class LanguageManager {
 

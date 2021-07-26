@@ -21,10 +21,9 @@ package plugily.projects.villagedefense.handlers.party;
 
 import de.simonsator.partyandfriends.api.party.PartyManager;
 import de.simonsator.partyandfriends.api.party.PlayerParty;
+import java.util.stream.Collectors;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-
-import java.util.stream.Collectors;
 
 /**
  * @author Plajer

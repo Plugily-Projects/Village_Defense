@@ -2,14 +2,14 @@ package plugily.projects.villagedefense.arena.managers.spawner;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.entity.Zombie;
+import org.bukkit.entity.Creature;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import plugily.projects.villagedefense.arena.Arena;
 import plugily.projects.villagedefense.creatures.CreatureUtils;
 
-public class HalfInvisibleZombieSpawner implements SimpleZombieSpawner {
+public class HalfInvisibleZombieSpawner implements SimpleEnemySpawner {
   @Override
   public int getMinWave() {
     return 7;
@@ -40,8 +40,8 @@ public class HalfInvisibleZombieSpawner implements SimpleZombieSpawner {
   }
 
   @Override
-  public Zombie spawnZombie(Location location) {
-    Zombie fastZombie = CreatureUtils.getCreatureInitializer().spawnFastZombie(location);
+  public Creature spawn(Location location) {
+    Creature fastZombie = CreatureUtils.getCreatureInitializer().spawnFastZombie(location);
     fastZombie.getEquipment().setBoots(new ItemStack(Material.CHAINMAIL_BOOTS));
     fastZombie.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, Integer.MAX_VALUE, 1));
     return fastZombie;

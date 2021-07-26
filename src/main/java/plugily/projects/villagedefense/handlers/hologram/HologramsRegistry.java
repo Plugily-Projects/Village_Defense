@@ -18,14 +18,13 @@
 
 package plugily.projects.villagedefense.handlers.hologram;
 
+import java.util.ArrayList;
+import java.util.List;
 import org.bukkit.configuration.file.FileConfiguration;
 import plugily.projects.commonsbox.minecraft.configuration.ConfigUtils;
 import plugily.projects.commonsbox.minecraft.serialization.LocationSerializer;
 import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.api.StatsStorage;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author Plajer

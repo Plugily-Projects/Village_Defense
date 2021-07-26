@@ -1,8 +1,7 @@
 package plugily.projects.villagedefense.handlers.powerup;
 
-import plugily.projects.commonsbox.minecraft.compat.xseries.XMaterial;
-
 import java.util.function.Consumer;
+import plugily.projects.commonsbox.minecraft.compat.xseries.XMaterial;
 
 /**
  * The interface for power-ups

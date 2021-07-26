@@ -18,6 +18,8 @@
 
 package plugily.projects.villagedefense.creatures.v1_16_R3;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import net.minecraft.server.v1_16_R3.DamageSource;
 import net.minecraft.server.v1_16_R3.EntityHuman;
 import net.minecraft.server.v1_16_R3.EntityIronGolem;
@@ -43,9 +45,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.inventory.ItemStack;
 import plugily.projects.villagedefense.creatures.CreatureUtils;
-
-import java.util.ArrayList;
-import java.util.Arrays;
 
 /**
  * Created by Tigerpanzer_02 on 05/11/2020.
