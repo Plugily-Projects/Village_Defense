@@ -369,7 +369,7 @@ public class Events implements Listener {
   }
 
   @EventHandler(priority = EventPriority.HIGH)
-  public void onZombieHurt(EntityDamageEvent e) {
+  public void onCreatureHurt(EntityDamageEvent e) {
     if(!(e.getEntity() instanceof Creature) || !plugin.getConfig().getBoolean("Simple-Zombie-Health-Bar-Enabled", true)) {
       return;
     }
