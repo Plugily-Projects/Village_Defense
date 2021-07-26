@@ -18,7 +18,10 @@
 
 package plugily.projects.villagedefense.creatures.v1_17_R2;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import net.minecraft.server.level.EntityPlayer;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.ai.attributes.GenericAttributes;
 import net.minecraft.world.entity.ai.goal.PathfinderGoalBreakDoor;
 import net.minecraft.world.entity.ai.goal.PathfinderGoalFloat;
@@ -32,6 +35,12 @@ import net.minecraft.world.entity.monster.EntityZombie;
 import net.minecraft.world.entity.npc.EntityVillager;
 import net.minecraft.world.entity.player.EntityHuman;
 import net.minecraft.world.level.World;
+import org.bukkit.Bukkit;
+import org.bukkit.Material;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.inventory.ItemStack;
 import plugily.projects.villagedefense.creatures.CreatureUtils;
 
 /**
@@ -69,4 +78,15 @@ public class VillagerBuster extends EntityZombie {
     w().a(GenericAttributes.b, 200.0D);
   }
 
+  @Override
+  public boolean attackEntity(Entity entity) {
+    if(entity.getBukkitEntity().getType() == EntityType.VILLAGER) {
+      this.die();
+      Bukkit.getServer().getPluginManager().callEvent(new EntityDeathEvent((LivingEntity) getBukkitEntity(), new ArrayList<>(Collections.singletonList(new ItemStack(Material.ROTTEN_FLESH))), 6));
+      org.bukkit.entity.Entity bukkitEntity = entity.getBukkitEntity();
+      bukkitEntity.getWorld().spawnEntity(bukkitEntity.getLocation(), EntityType.PRIMED_TNT);
+      return false;
+    }
+    return super.attackEntity(entity);
+  }
 }
