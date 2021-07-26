@@ -11,6 +11,7 @@ import org.bukkit.Location;
 import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftLivingEntity;
 import org.bukkit.entity.IronGolem;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Villager;
 import org.bukkit.entity.Wolf;
 import org.bukkit.entity.Zombie;
@@ -27,6 +28,8 @@ import java.util.UUID;
 public class CreatureInitializer implements BaseCreatureInitializer {
 
     private static final UUID uId = UUID.fromString("206a89dc-ae78-4c4d-b42c-3b31db3f5a7e");
+    private static final UUID movementSpeedUuId = UUID.fromString("206a89dc-ae78-4c4d-b42c-3b31db3f5a7c");
+    private static final UUID attackDamageUuId = UUID.fromString("206a89dc-ae78-4c4d-b42c-3b31db3f5a7d");
 
     public CreatureInitializer() {
         registerEntity("VillageZombie", 54, FastZombie.class);
@@ -187,6 +190,24 @@ public class CreatureInitializer implements BaseCreatureInitializer {
         AttributeInstance attributes = nmsEntity.getAttributeInstance(GenericAttributes.FOLLOW_RANGE);
         if (attributes.a(uId) == null) { // Check if the attribute is not set
             attributes.b(new AttributeModifier(uId, "follow range multiplier", 200.0D, 1));
+        }
+    }
+
+    @Override
+    public void applyDamageModifier(LivingEntity entity, double value) {
+        EntityInsentient nmsEntity = (EntityInsentient) ((CraftLivingEntity) entity).getHandle();
+        AttributeInstance attributes = nmsEntity.getAttributeInstance(GenericAttributes.ATTACK_DAMAGE);
+        if (attributes.a(attackDamageUuId) == null) {
+            attributes.b(new AttributeModifier(attackDamageUuId, "attack damage multiplier", value, 1));
+        }
+    }
+
+    @Override
+    public void applySpeedModifier(LivingEntity entity, double value) {
+        EntityInsentient nmsEntity = (EntityInsentient) ((CraftLivingEntity) entity).getHandle();
+        AttributeInstance attributes = nmsEntity.getAttributeInstance(GenericAttributes.MOVEMENT_SPEED);
+        if (attributes.a(movementSpeedUuId) == null) {
+            attributes.b(new AttributeModifier(movementSpeedUuId, "movement speed multiplier", value, 1));
         }
     }
 }

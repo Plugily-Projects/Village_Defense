@@ -3,6 +3,7 @@ package plugily.projects.villagedefense.creatures;
 import org.bukkit.Location;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.IronGolem;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Villager;
 import org.bukkit.entity.Wolf;
 import org.bukkit.entity.Zombie;
@@ -33,5 +34,13 @@ public interface BaseCreatureInitializer {
 
     default void applyFollowRange(Zombie zombie) {
         MiscUtils.getEntityAttribute(zombie, Attribute.GENERIC_FOLLOW_RANGE).ifPresent(ai -> ai.setBaseValue(200.0D));
+    }
+
+    default void applyDamageModifier(LivingEntity entity, double value) {
+        MiscUtils.getEntityAttribute(entity, Attribute.GENERIC_ATTACK_DAMAGE).ifPresent(ai -> ai.setBaseValue(value));
+    }
+
+    default void applySpeedModifier(LivingEntity entity, double value) {
+        MiscUtils.getEntityAttribute(entity, Attribute.GENERIC_MOVEMENT_SPEED).ifPresent(ai -> ai.setBaseValue(value));
     }
 }
