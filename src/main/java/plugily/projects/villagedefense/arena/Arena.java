@@ -398,8 +398,8 @@ public class Arena extends BukkitRunnable {
     return enemies;
   }
 
-  public void removeEnemy(Creature zombie) {
-    enemies.remove(zombie);
+  public void removeEnemy(Creature enemy) {
+    enemies.remove(enemy);
   }
 
   @NotNull
