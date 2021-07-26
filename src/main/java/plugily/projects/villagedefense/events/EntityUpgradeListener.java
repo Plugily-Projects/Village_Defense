@@ -24,8 +24,6 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.IronGolem;
 import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
-import org.bukkit.entity.Villager;
 import org.bukkit.entity.Wolf;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -37,6 +35,7 @@ import plugily.projects.commonsbox.minecraft.compat.VersionUtils;
 import plugily.projects.commonsbox.minecraft.compat.events.api.CBPlayerInteractEntityEvent;
 import plugily.projects.villagedefense.arena.Arena;
 import plugily.projects.villagedefense.arena.ArenaRegistry;
+import plugily.projects.villagedefense.creatures.CreatureUtils;
 import plugily.projects.villagedefense.handlers.upgrade.EntityUpgradeMenu;
 import plugily.projects.villagedefense.utils.Utils;
 
@@ -107,7 +106,7 @@ public class EntityUpgradeListener implements Listener {
       }
       VersionUtils.sendParticles("EXPLOSION_HUGE", arena.getPlayers(), entity.getLocation(), 5);
       for(Entity en : Utils.getNearbyEntities(entity.getLocation(), tier * 5)) {
-        if(en instanceof Creature && !(en instanceof Player || en instanceof Villager || en instanceof Wolf || en instanceof IronGolem)) {
+        if(CreatureUtils.isZombie(en)) {
           ((Creature) en).damage(10000.0, entity);
         }
       }

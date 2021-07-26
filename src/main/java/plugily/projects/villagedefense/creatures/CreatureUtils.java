@@ -27,6 +27,12 @@ import java.util.concurrent.ThreadLocalRandom;
 import java.util.logging.Level;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Creature;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.IronGolem;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
+import org.bukkit.entity.Villager;
+import org.bukkit.entity.Wolf;
 import plugily.projects.commonsbox.minecraft.compat.ServerVersion;
 import plugily.projects.commonsbox.minecraft.compat.VersionUtils;
 import plugily.projects.commonsbox.string.StringFormatUtils;
@@ -116,6 +122,17 @@ public class CreatureUtils {
       plugin.getLogger().log(Level.WARNING, e.getMessage() + " (fieldName " + fieldName + ", class " + clazz.getName() + ")");
     }
     return null;
+  }
+
+  /**
+   * Check if the given entity is a arena's zombie.
+   * We define the zombie as it's not the player, the villager, the wolf and the iron golem
+   *
+   * @param entity the entity
+   * @return true if it is
+   */
+  public static boolean isZombie(Entity entity) {
+    return entity instanceof Creature && !(entity instanceof Player || entity instanceof Villager || entity instanceof Wolf || entity instanceof IronGolem);
   }
 
   /**

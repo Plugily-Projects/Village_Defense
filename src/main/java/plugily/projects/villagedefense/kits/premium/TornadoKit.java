@@ -21,12 +21,8 @@ package plugily.projects.villagedefense.kits.premium;
 import java.util.List;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.entity.Creature;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.IronGolem;
 import org.bukkit.entity.Player;
-import org.bukkit.entity.Villager;
-import org.bukkit.entity.Wolf;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
@@ -42,6 +38,7 @@ import plugily.projects.commonsbox.minecraft.item.ItemBuilder;
 import plugily.projects.commonsbox.minecraft.item.ItemUtils;
 import plugily.projects.commonsbox.minecraft.misc.stuff.ComplementAccessor;
 import plugily.projects.villagedefense.arena.ArenaRegistry;
+import plugily.projects.villagedefense.creatures.CreatureUtils;
 import plugily.projects.villagedefense.handlers.PermissionsManager;
 import plugily.projects.villagedefense.handlers.language.Messages;
 import plugily.projects.villagedefense.kits.KitRegistry;
@@ -170,7 +167,7 @@ public class TornadoKit extends PremiumKit implements Listener {
 
     private void pushNearbyZombies() {
       for(Entity entity : location.getWorld().getNearbyEntities(location, 2, 2, 2)) {
-        if(entity instanceof Creature && !(entity instanceof Player || entity instanceof Villager || entity instanceof Wolf || entity instanceof IronGolem)) {
+        if(CreatureUtils.isZombie(entity)) {
           entities++;
 
           Vector velocityVec = vector.multiply(2).setY(0).add(new Vector(0, 1, 0));
