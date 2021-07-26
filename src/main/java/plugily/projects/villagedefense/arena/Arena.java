@@ -389,9 +389,9 @@ public class Arena extends BukkitRunnable {
 
   /**
    * Get list of already spawned enemies.
-   * This will only return alive zombies not total zombies in current wave.
+   * This will only return alive enemies not total enemies in current wave.
    *
-   * @return list of spawned zombies in arena
+   * @return list of spawned enemies in arena
    */
   @NotNull
   public List<Creature> getEnemies() {
