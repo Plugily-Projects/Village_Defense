@@ -19,6 +19,7 @@
 package plugily.projects.villagedefense.kits;
 
 import java.util.List;
+import fr.mrmicky.fastinv.FastInv;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -63,19 +64,15 @@ public class KitMenuHandler implements Listener {
   }
 
   public void createMenu(Player player) {
-    ChestGui gui = new ChestGui(Utils.serializeInt(KitRegistry.getKits().size()) / 9, plugin.getChatManager().colorMessage(Messages.KITS_OPEN_KIT_MENU));
-    gui.setOnGlobalClick(event -> event.setCancelled(true));
-    StaticPane pane = new StaticPane(9, gui.getRows());
-    gui.addPane(pane);
-    List<Kit> kits = KitRegistry.getKits();
-    for(int i = 0; i < kits.size(); i++) {
-      Kit kit = kits.get(i);
+    FastInv gui = new FastInv(Utils.serializeInt(KitRegistry.getKits().size()), plugin.getChatManager().colorMessage(Messages.KITS_OPEN_KIT_MENU));
+    for(Kit kit : KitRegistry.getKits()) {
       ItemStack itemStack = kit.getItemStack();
       itemStack = new ItemBuilder(itemStack)
           .lore(kit.isUnlockedByPlayer(player) ? unlockedString : lockedString)
           .build();
 
-      pane.addItem(new GuiItem(itemStack, e -> {
+      gui.addItem(itemStack, e -> {
+        e.setCancelled(true);
         if(!(e.isLeftClick() || e.isRightClick()) || !(e.getWhoClicked() instanceof Player) || !ItemUtils.isItemStackNamed(e.getCurrentItem())) {
           return;
         }
@@ -94,9 +91,9 @@ public class KitMenuHandler implements Listener {
         }
         plugin.getUserManager().getUser(player).setKit(kit);
         player.sendMessage(plugin.getChatManager().colorMessage(Messages.KITS_CHOOSE_MESSAGE).replace("%KIT%", kit.getName()));
-      }), i % 9, i / 9);
+      });
     }
-    gui.show(player);
+    gui.open(player);
   }
 
   @EventHandler

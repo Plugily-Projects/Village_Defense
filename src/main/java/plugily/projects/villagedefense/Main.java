@@ -23,6 +23,7 @@ import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
 import java.io.File;
 import java.util.Arrays;
 import java.util.logging.Level;
+import fr.mrmicky.fastinv.FastInvManager;
 import me.tigerhix.lib.scoreboard.ScoreboardLib;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
@@ -200,6 +201,7 @@ public class Main extends JavaPlugin {
   private void initializeClasses() {
     startInitiableClasses();
 
+    FastInvManager.register(this);
     ScoreboardLib.setPluginInstance(this);
     registry = new ArgumentsRegistry(this);
     new ArenaEvents(this);

@@ -243,12 +243,14 @@ public class ArenaEvents implements Listener {
       user.setSpectator(true);
       player.setGameMode(GameMode.SURVIVAL);
 
-      int orbsToLose = plugin.getConfig().getInt("Orbs-To-Lose-After-Death", 0);
-      if (orbsToLose <= 0) {
-        user.setStat(StatsStorage.StatisticType.ORBS, 0);
-      } else {
-        int current = user.getStat(StatsStorage.StatisticType.ORBS);
-        user.setStat(StatsStorage.StatisticType.ORBS, (current - orbsToLose < 0 ? 0 : current - orbsToLose));
+      if (!plugin.getConfig().getBoolean("Keep-Orbs-After-Death")) {
+        int orbsToLose = plugin.getConfig().getInt("Orbs-To-Lose-After-Death", 0);
+        if (orbsToLose <= 0) {
+          user.setStat(StatsStorage.StatisticType.ORBS, 0);
+        } else {
+          int current = user.getStat(StatsStorage.StatisticType.ORBS);
+          user.setStat(StatsStorage.StatisticType.ORBS, (current - orbsToLose < 0 ? 0 : current - orbsToLose));
+        }
       }
 
       ArenaUtils.hidePlayer(player, arena);
@@ -318,12 +320,15 @@ public class ArenaEvents implements Listener {
       player.removePotionEffect(PotionEffectType.NIGHT_VISION);
       player.removePotionEffect(PotionEffectType.SPEED);
 
-      int orbsToLose = plugin.getConfig().getInt("Orbs-To-Lose-After-Death", 0);
-      if (orbsToLose <= 0) {
-        user.setStat(StatsStorage.StatisticType.ORBS, 0);
-      } else {
-        int current = user.getStat(StatsStorage.StatisticType.ORBS);
-        user.setStat(StatsStorage.StatisticType.ORBS, (current - orbsToLose < 0 ? 0 : current - orbsToLose));
+      if (!plugin.getConfig().getBoolean("Keep-Orbs-After-Death")) {
+        int orbsToLose = plugin.getConfig().getInt("Orbs-To-Lose-After-Death", 0);
+
+        if (orbsToLose <= 0) {
+          user.setStat(StatsStorage.StatisticType.ORBS, 0);
+        } else {
+          int current = user.getStat(StatsStorage.StatisticType.ORBS);
+          user.setStat(StatsStorage.StatisticType.ORBS, (current - orbsToLose < 0 ? 0 : current - orbsToLose));
+        }
       }
     }
     e.setRespawnLocation(arena.getStartLocation());

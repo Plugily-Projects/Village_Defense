@@ -24,7 +24,7 @@
 
     <groupId>plugily.projects</groupId>
     <artifactId>villagedefense</artifactId>
-    <version>4.5.9-dev30</version>
+    <version>4.5.9-dev32</version>
     <name>VillageDefense</name>
 
     <properties>
@@ -71,6 +71,10 @@
         <repository>
             <id>alessiodp-repo</id>
             <url>https://repo.alessiodp.com/releases/</url>
+        </repository>
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
         </repository>
     </repositories>
 
@@ -218,23 +222,16 @@
             <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>plugily.projects.inventoryframework</groupId>
-            <artifactId>IF</artifactId>
-            <version>0.10.0</version>
+            <groupId>fr.mrmicky</groupId>
+            <artifactId>FastInv</artifactId>
+            <version>3.0.3</version>
             <scope>compile</scope>
-            <classifier>legacy-jar-with-dependencies</classifier>
         </dependency>
         <dependency>
             <groupId>me.clip</groupId>
             <artifactId>placeholderapi</artifactId>
-            <version>2.10.9</version>
+            <version>2.10.10</version>
             <scope>provided</scope>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.jetbrains</groupId>
-                    <artifactId>annotations</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
         <dependency>
             <groupId>com.google.code.findbugs</groupId>
@@ -284,7 +281,7 @@
             <groupId>org.jetbrains</groupId>
             <artifactId>annotations</artifactId>
             <version>21.0.1</version>
-            <scope>compile</scope>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 
@@ -361,9 +358,8 @@
                         <configuration>
                             <relocations>
                                 <relocation>
-                                    <pattern>plugily.projects.inventoryframework</pattern>
-                                    <shadedPattern>plugily.projects.villagedefense.utils.inventoryframework
-                                    </shadedPattern>
+                                    <pattern>fr.mrmicky.fastinv</pattern>
+                                    <shadedPattern>plugily.projects.villagedefense.utils.fastinv</shadedPattern>
                                 </relocation>
                                 <relocation>
                                     <pattern>com.zaxxer.hikari</pattern>

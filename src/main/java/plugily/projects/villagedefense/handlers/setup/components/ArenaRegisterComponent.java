@@ -18,6 +18,7 @@
 
 package plugily.projects.villagedefense.handlers.setup.components;
 
+import fr.mrmicky.fastinv.FastInv;
 import java.util.ArrayList;
 import java.util.List;
 import org.bukkit.Bukkit;
@@ -54,7 +55,7 @@ public class ArenaRegisterComponent implements SetupComponent {
   }
 
   @Override
-  public void injectComponents(StaticPane pane) {
+  public void injectComponents(FastInv gui) {
     FileConfiguration config = setupInventory.getConfig();
     Main plugin = setupInventory.getPlugin();
     ItemStack registeredItem;
@@ -72,7 +73,7 @@ public class ArenaRegisterComponent implements SetupComponent {
           .lore(ChatColor.GRAY + "You can play on this arena now!")
           .build();
     }
-    pane.addItem(new GuiItem(registeredItem, e -> {
+    gui.setItem(11, registeredItem, e -> {
       Arena arena = setupInventory.getArena();
       if(arena == null) {
         return;
@@ -136,7 +137,7 @@ public class ArenaRegisterComponent implements SetupComponent {
       for(Sign s : signsToUpdate) {
         plugin.getSignManager().getArenaSigns().add(new ArenaSign(s, arena));
       }
-    }), 2, 1);
+    });
   }
 
 }

@@ -492,7 +492,9 @@ public class ArenaManager {
 
     for(User user : plugin.getUserManager().getUsers(arena)) {
       Player player = user.getPlayer();
-      user.getKit().reStock(player);
+      if (!user.isSpectator()) {
+        user.getKit().reStock(player);
+      }
       VersionUtils.sendTitles(player, title, subTitle, fadeIn, stay, fadeOut);
       plugin.getRewardsHandler().performReward(player, arena, Reward.RewardType.START_WAVE);
     }

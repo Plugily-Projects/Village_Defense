@@ -26,6 +26,7 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
@@ -103,17 +104,29 @@ public class NakedKit extends PremiumKit implements Listener {
     if(!(getPlugin().getUserManager().getUser(who).getKit() instanceof NakedKit)) {
       return;
     }
+    ClickType clickType = event.getClick();
+    if (clickType == ClickType.DROP || clickType == ClickType.CONTROL_DROP) {
+      return;
+    }
     Inventory inventory = event.getClickedInventory();
     if(inventory == null || inventory.getType() != InventoryType.PLAYER) {
       return;
     }
+
+    boolean hasArmor = false;
     ItemStack itemStack = event.getCurrentItem();
-    if(itemStack == null || !armorTypes.contains(itemStack.getType())) {
-      return;
+    if(itemStack != null && armorTypes.contains(itemStack.getType())) {
+      hasArmor = true;
+    } else if (clickType == ClickType.NUMBER_KEY) {
+      ItemStack hotbarItem = who.getInventory().getItem(event.getHotbarButton());
+      if(hotbarItem != null && armorTypes.contains(hotbarItem.getType())) {
+        hasArmor = true;
+      }
     }
-    who.sendMessage(getPlugin().getChatManager().colorMessage(Messages.KITS_WILD_NAKED_CANNOT_WEAR_ARMOR));
-    event.setCancelled(true);
-    event.setCurrentItem(new ItemStack(Material.AIR));
+    if (hasArmor) {
+      who.sendMessage(getPlugin().getChatManager().colorMessage(Messages.KITS_WILD_NAKED_CANNOT_WEAR_ARMOR));
+      event.setCancelled(true);
+    }
   }
 
   @EventHandler
