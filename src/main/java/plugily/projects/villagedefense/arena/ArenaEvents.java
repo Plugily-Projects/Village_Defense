@@ -77,7 +77,7 @@ public class ArenaEvents implements Listener {
       return;
     }
     for (Arena a : ArenaRegistry.getArenas()) {
-      if (a.getVillagers().contains(e.getEntity()) && a.getZombies().contains(e.getDamager())) {
+      if (a.getVillagers().contains(e.getEntity()) && a.getEnemies().contains(e.getDamager())) {
         Creature zombie = (Creature) e.getDamager();
         //check villagerbuster
         if (zombie.getEquipment().getHelmet().getType().isBlock() && zombie.getEquipment().getChestplate().getType() == Material.LEATHER_CHESTPLATE) {
@@ -99,7 +99,7 @@ public class ArenaEvents implements Listener {
     }
     //trick to get non player killer of zombie
     for (Arena arena : ArenaRegistry.getArenas()) {
-      if (!arena.getZombies().contains(e.getEntity())) {
+      if (!arena.getEnemies().contains(e.getEntity())) {
         continue;
       }
       if (e.getDamage() >= ((Creature) e.getEntity()).getHealth()) {
@@ -189,10 +189,10 @@ public class ArenaEvents implements Listener {
         plugin.getHolidayManager().applyHolidayDeathEffects(entity);
         plugin.getChatManager().broadcast(arena, Messages.VILLAGER_DIED);
       } else {
-        if (!arena.getZombies().contains(entity)) {
+        if (!arena.getEnemies().contains(entity)) {
           continue;
         }
-        arena.removeZombie((Creature) entity);
+        arena.removeEnemy((Creature) entity);
         arena.addOptionValue(ArenaOption.TOTAL_KILLED_ZOMBIES, 1);
         Arena killerArena = ArenaRegistry.getArena(entity.getKiller());
         if (killerArena != null) {
@@ -202,7 +202,7 @@ public class ArenaEvents implements Listener {
           plugin.getPowerupRegistry().spawnPowerup(entity.getLocation(), killerArena);
         }
       }
-      return;
+      break;
     }
   }
 
@@ -291,7 +291,7 @@ public class ArenaEvents implements Listener {
   }
 
   private void untargetPlayerFromZombies(Player player, Arena arena) {
-    for (Creature zombie : arena.getZombies()) {
+    for (Creature zombie : arena.getEnemies()) {
       if (zombie.getTarget() == null || !zombie.getTarget().equals(player)) {
         continue;
       }

@@ -13,7 +13,7 @@ public class FastZombieSpawner implements SimpleZombieSpawner {
 
   @Override
   public double getSpawnRate(Arena arena, int wave, int phase, int spawnAmount) {
-    if (spawnAmount < 5 || arena.getZombies().isEmpty()) {
+    if (spawnAmount < 5 || arena.getEnemies().isEmpty()) {
       return 1;
     }
 
@@ -26,12 +26,12 @@ public class FastZombieSpawner implements SimpleZombieSpawner {
 
   @Override
   public int getFinalAmount(Arena arena, int wave, int phase, int spawnAmount) {
-    return (spawnAmount < 5 || (phase == 5 && wave <= 7) || arena.getZombies().isEmpty()) ? spawnAmount : 0;
+    return (spawnAmount < 5 || (phase == 5 && wave <= 7) || arena.getEnemies().isEmpty()) ? spawnAmount : 0;
   }
 
   @Override
   public boolean checkPhase(Arena arena, int wave, int phase, int spawnAmount) {
-    return arena.getZombies().isEmpty() || spawnAmount < 5 || (phase == 5 && wave <= 7);
+    return arena.getEnemies().isEmpty() || spawnAmount < 5 || (phase == 5 && wave <= 7);
   }
 
   @Override

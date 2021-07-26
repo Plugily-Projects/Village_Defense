@@ -117,9 +117,9 @@ public class ArenaUtils {
   }
 
   public static void removeSpawnedZombies(Arena arena) {
-    boolean eachThree = arena.getZombies().size() > 70;
+    boolean eachThree = arena.getEnemies().size() > 70;
     int i = 0;
-    for(Creature zombie : arena.getZombies()) {
+    for(Creature zombie : arena.getEnemies()) {
       if(eachThree && (i % 3) == 0) {
         VersionUtils.sendParticles("LAVA", arena.getPlayers(), zombie.getLocation(), 20);
       }

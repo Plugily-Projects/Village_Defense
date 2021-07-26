@@ -58,7 +58,7 @@ public class InGameState implements ArenaStateHandler {
         arena.getZombieSpawnManager().spawnZombies();
         arena.setTimer(500);
       } else if(arena.getTimer() == 0) {
-        arena.getMapRestorerManager().clearZombiesFromArena();
+        arena.getMapRestorerManager().clearEnemiesFromArena();
         if(arena.getZombiesLeft() > 0) {
           plugin.getChatManager().broadcast(arena, Messages.ZOMBIE_GOT_STUCK_IN_THE_MAP);
         }

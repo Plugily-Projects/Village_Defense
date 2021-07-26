@@ -72,17 +72,17 @@ public class ZombieSpawnManager {
       }
       arena.setOptionValue(ArenaOption.ZOMBIE_GLITCH_CHECKER, 0);
 
-      Iterator<Creature> zombieIterator = arena.getZombies().iterator();
+      Iterator<Creature> zombieIterator = arena.getEnemies().iterator();
       while(zombieIterator.hasNext()) {
         Creature zombie = zombieIterator.next();
         if(zombie.isDead()) {
           zombieIterator.remove();
-          arena.removeZombie(zombie);
+          arena.removeEnemy(zombie);
           continue;
         }
         if(glitchedZombies.contains(zombie) && zombie.getLocation().distance(zombieCheckerLocations.get(zombie)) <= 1) {
           zombieIterator.remove();
-          arena.removeZombie(zombie);
+          arena.removeEnemy(zombie);
           zombieCheckerLocations.remove(zombie);
           zombie.remove();
         }

@@ -104,12 +104,12 @@ public class ZombieFinderKit extends LevelKit implements Listener {
       event.getPlayer().sendMessage(message);
       return;
     }
-    if(arena.getZombies().isEmpty()) {
+    if(arena.getEnemies().isEmpty()) {
       event.getPlayer().sendMessage(getPlugin().getChatManager().colorMessage(Messages.KITS_ZOMBIE_TELEPORTER_NO_AVAILABLE_ZOMBIES));
       return;
     }
 
-    Creature zombie = arena.getZombies().get(arena.getZombies().size() == 1 ? 0 : new Random().nextInt(arena.getZombies().size()));
+    Creature zombie = arena.getEnemies().get(arena.getEnemies().size() == 1 ? 0 : new Random().nextInt(arena.getEnemies().size()));
     zombie.teleport(event.getPlayer());
     zombie.addPotionEffect(new PotionEffect(PotionEffectType.WEAKNESS, 20 * 30, 0));
     event.getPlayer().sendMessage(getPlugin().getChatManager().colorMessage(Messages.KITS_ZOMBIE_TELEPORTER_ZOMBIE_TELEPORTED));

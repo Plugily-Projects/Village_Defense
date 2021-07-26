@@ -3,6 +3,7 @@ package plugily.projects.villagedefense.arena.managers.spawner;
 import java.util.Random;
 import org.bukkit.Location;
 import org.bukkit.entity.Creature;
+import org.jetbrains.annotations.Nullable;
 import plugily.projects.villagedefense.arena.Arena;
 import plugily.projects.villagedefense.arena.options.ArenaOption;
 import plugily.projects.villagedefense.creatures.CreatureUtils;
@@ -86,6 +87,7 @@ public interface SimpleZombieSpawner extends ZombieSpawner {
    * @param location the location
    * @return the spawned zombie
    */
+  @Nullable
   Creature spawnZombie(Location location);
 
   /**
@@ -119,7 +121,7 @@ public interface SimpleZombieSpawner extends ZombieSpawner {
     if (canApplyHolidayEffect()) {
       arena.getPlugin().getHolidayManager().applyHolidayZombieEffects(zombie);
     }
-    arena.getZombies().add(zombie);
+    arena.getEnemies().add(zombie);
   }
 
   @Override

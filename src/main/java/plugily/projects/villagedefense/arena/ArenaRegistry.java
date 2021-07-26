@@ -136,7 +136,7 @@ public class ArenaRegistry {
 
     if(!arenas.isEmpty()) {
       for(Arena arena : new ArrayList<>(arenas)) {
-        arena.getMapRestorerManager().clearZombiesFromArena();
+        arena.getMapRestorerManager().clearEnemiesFromArena();
         arena.getMapRestorerManager().clearVillagersFromArena();
         arena.getMapRestorerManager().clearWolvesFromArena();
         arena.getMapRestorerManager().clearGolemsFromArena();

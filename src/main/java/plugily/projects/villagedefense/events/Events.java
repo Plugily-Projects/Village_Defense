@@ -374,7 +374,7 @@ public class Events implements Listener {
       return;
     }
     for(Arena arena : ArenaRegistry.getArenas()) {
-      if(!arena.getZombies().contains(e.getEntity())) {
+      if(!arena.getEnemies().contains(e.getEntity())) {
         continue;
       }
       Creature zombie = (Creature) e.getEntity();
@@ -508,7 +508,7 @@ public class Events implements Listener {
     }
 
     for(Arena arena : ArenaRegistry.getArenas()) {
-      if(arena.getZombies().contains(e.getEntity())) {
+      if(arena.getEnemies().contains(e.getEntity())) {
         e.setCancelled(true);
         break;
       }

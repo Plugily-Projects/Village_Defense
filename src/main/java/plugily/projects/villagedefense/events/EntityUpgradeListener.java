@@ -110,7 +110,7 @@ public class EntityUpgradeListener implements Listener {
           ((Creature) en).damage(10000.0, entity);
         }
       }
-      for(Creature zombie : new ArrayList<>(arena.getZombies())) {
+      for(Creature zombie : new ArrayList<>(arena.getEnemies())) {
         zombie.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 5, 0));
         zombie.damage(0.5, entity);
       }

@@ -39,6 +39,7 @@ import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Villager;
 import org.bukkit.entity.Wolf;
+import org.bukkit.entity.Zombie;
 import org.bukkit.permissions.PermissionAttachmentInfo;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
@@ -74,7 +75,7 @@ public class Arena extends BukkitRunnable {
   private final String id;
 
   private final Set<Player> players = new HashSet<>();
-  private final List<Creature> zombies = new ArrayList<>();
+  private final List<Creature> enemies = new ArrayList<>();
   private final List<Wolf> wolves = new ArrayList<>();
   private final List<Villager> villagers = new ArrayList<>();
   private final List<IronGolem> ironGolems = new ArrayList<>();
@@ -387,19 +388,30 @@ public class Arena extends BukkitRunnable {
     return scoreboardManager;
   }
 
+  @Deprecated
+  @NotNull
+  public List<Creature> getZombies() {
+    return getEnemies();
+  }
+
   /**
-   * Get list of already spawned zombies.
+   * Get list of already spawned enemies.
    * This will only return alive zombies not total zombies in current wave.
    *
    * @return list of spawned zombies in arena
    */
   @NotNull
-  public List<Creature> getZombies() {
-    return zombies;
+  public List<Creature> getEnemies() {
+    return enemies;
   }
 
-  public void removeZombie(Creature zombie) {
-    zombies.remove(zombie);
+  @Deprecated
+  public void removeZombie(Zombie zombie) {
+    removeEnemy(zombie);
+  }
+
+  public void removeEnemy(Creature zombie) {
+    enemies.remove(zombie);
   }
 
   @NotNull
@@ -429,7 +441,7 @@ public class Arena extends BukkitRunnable {
   }
 
   public int getZombiesLeft() {
-    return getOption(ArenaOption.ZOMBIES_TO_SPAWN) + zombies.size();
+    return getOption(ArenaOption.ZOMBIES_TO_SPAWN) + enemies.size();
   }
 
   public int getWave() {

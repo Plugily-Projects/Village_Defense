@@ -57,16 +57,21 @@ public class MapRestorerManager {
 
   public final void fullyRestoreArena() {
     restoreDoors();
-    clearZombiesFromArena();
+    clearEnemiesFromArena();
     clearGolemsFromArena();
     clearVillagersFromArena();
     clearWolvesFromArena();
     clearDroppedEntities();
   }
 
+  @Deprecated
   public final void clearZombiesFromArena() {
-    arena.getZombies().forEach(org.bukkit.entity.Creature::remove);
-    arena.getZombies().clear();
+    clearEnemiesFromArena();
+  }
+
+  public final void clearEnemiesFromArena() {
+    arena.getEnemies().forEach(org.bukkit.entity.Creature::remove);
+    arena.getEnemies().clear();
   }
 
   public final void clearDroppedEntities() {
