@@ -21,9 +21,12 @@ package plugily.projects.villagedefense.kits.premium;
 import java.util.List;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.entity.Creature;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
+import org.bukkit.entity.IronGolem;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Villager;
+import org.bukkit.entity.Wolf;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
@@ -167,7 +170,7 @@ public class TornadoKit extends PremiumKit implements Listener {
 
     private void pushNearbyZombies() {
       for(Entity entity : location.getWorld().getNearbyEntities(location, 2, 2, 2)) {
-        if(entity.getType() == EntityType.ZOMBIE) {
+        if(entity instanceof Creature && !(entity instanceof Player || entity instanceof Villager || entity instanceof Wolf || entity instanceof IronGolem)) {
           entities++;
 
           Vector velocityVec = vector.multiply(2).setY(0).add(new Vector(0, 1, 0));

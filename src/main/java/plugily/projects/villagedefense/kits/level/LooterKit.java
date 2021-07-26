@@ -21,7 +21,7 @@ package plugily.projects.villagedefense.kits.level;
 import java.util.List;
 import org.bukkit.Color;
 import org.bukkit.Material;
-import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Creature;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -76,7 +76,7 @@ public class LooterKit extends LevelKit implements Listener {
   @EventHandler
   public void onDeath(EntityDeathEvent event) {
     org.bukkit.entity.LivingEntity entity = event.getEntity();
-    if(entity.getType() != EntityType.ZOMBIE || entity.getKiller() == null) {
+    if(!(entity instanceof Creature) || entity.getKiller() == null) {
       return;
     }
     Player player = entity.getKiller();
