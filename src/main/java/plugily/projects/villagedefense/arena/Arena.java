@@ -39,7 +39,6 @@ import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Villager;
 import org.bukkit.entity.Wolf;
-import org.bukkit.entity.Zombie;
 import org.bukkit.permissions.PermissionAttachmentInfo;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
@@ -388,12 +387,6 @@ public class Arena extends BukkitRunnable {
     return scoreboardManager;
   }
 
-  @Deprecated
-  @NotNull
-  public List<Creature> getZombies() {
-    return getEnemies();
-  }
-
   /**
    * Get list of already spawned enemies.
    * This will only return alive zombies not total zombies in current wave.
@@ -403,11 +396,6 @@ public class Arena extends BukkitRunnable {
   @NotNull
   public List<Creature> getEnemies() {
     return enemies;
-  }
-
-  @Deprecated
-  public void removeZombie(Zombie zombie) {
-    removeEnemy(zombie);
   }
 
   public void removeEnemy(Creature zombie) {

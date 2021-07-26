@@ -64,11 +64,6 @@ public class MapRestorerManager {
     clearDroppedEntities();
   }
 
-  @Deprecated
-  public final void clearZombiesFromArena() {
-    clearEnemiesFromArena();
-  }
-
   public final void clearEnemiesFromArena() {
     arena.getEnemies().forEach(org.bukkit.entity.Creature::remove);
     arena.getEnemies().clear();
