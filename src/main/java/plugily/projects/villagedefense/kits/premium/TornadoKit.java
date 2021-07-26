@@ -159,15 +159,15 @@ public class TornadoKit extends PremiumKit implements Listener {
           VersionUtils.sendParticles("CLOUD", null, location.clone().add(x, y, z), 1, 0, 0, 0);
         }
       }
-      pushNearbyZombies();
+      pushNearbyEnemies();
       setLocation(location.add(vector.getX() / (3 + Math.random() / 2), 0, vector.getZ() / (3 + Math.random() / 2)));
 
       angle += 50;
     }
 
-    private void pushNearbyZombies() {
+    private void pushNearbyEnemies() {
       for(Entity entity : location.getWorld().getNearbyEntities(location, 2, 2, 2)) {
-        if(CreatureUtils.isZombie(entity)) {
+        if(CreatureUtils.isEnemy(entity)) {
           entities++;
 
           Vector velocityVec = vector.multiply(2).setY(0).add(new Vector(0, 1, 0));

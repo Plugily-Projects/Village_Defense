@@ -106,7 +106,7 @@ public class EntityUpgradeListener implements Listener {
       }
       VersionUtils.sendParticles("EXPLOSION_HUGE", arena.getPlayers(), entity.getLocation(), 5);
       for(Entity en : Utils.getNearbyEntities(entity.getLocation(), tier * 5)) {
-        if(CreatureUtils.isZombie(en)) {
+        if(CreatureUtils.isEnemy(en)) {
           ((Creature) en).damage(10000.0, entity);
         }
       }

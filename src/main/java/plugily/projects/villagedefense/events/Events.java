@@ -377,8 +377,8 @@ public class Events implements Listener {
       if(!arena.getEnemies().contains(e.getEntity())) {
         continue;
       }
-      Creature zombie = (Creature) e.getEntity();
-      zombie.setCustomName(StringFormatUtils.getProgressBar((int) zombie.getHealth(), (int) VersionUtils.getMaxHealth(zombie),
+      Creature creature = (Creature) e.getEntity();
+      creature.setCustomName(StringFormatUtils.getProgressBar((int) creature.getHealth(), (int) VersionUtils.getMaxHealth(creature),
           50, "|", ChatColor.YELLOW + "", ChatColor.GRAY + ""));
     }
   }

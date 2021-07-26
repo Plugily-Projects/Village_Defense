@@ -146,7 +146,7 @@ public class WizardKit extends PremiumKit implements Listener {
       VersionUtils.setGlowing(player, true);
       applyRageParticles(player);
       for(Entity en : player.getNearbyEntities(2, 2, 2)) {
-        if(CreatureUtils.isZombie(en)) {
+        if(CreatureUtils.isEnemy(en)) {
           ((Creature) en).damage(9.0, player);
         }
       }
@@ -193,7 +193,7 @@ public class WizardKit extends PremiumKit implements Listener {
         loc.add(x, y, z);
         VersionUtils.sendParticles("TOWN_AURA", null, loc, 5, 0, 0, 0);
         for(Entity en : loc.getChunk().getEntities()) {
-          if(!(CreatureUtils.isZombie(en)) || en.getLocation().distance(loc) >= 1.5 || en.equals(player)) {
+          if(!(CreatureUtils.isEnemy(en)) || en.getLocation().distance(loc) >= 1.5 || en.equals(player)) {
             continue;
           }
           ((LivingEntity) en).damage(6.0, player);

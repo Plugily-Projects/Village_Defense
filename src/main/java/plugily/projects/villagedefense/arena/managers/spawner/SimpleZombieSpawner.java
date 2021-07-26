@@ -119,7 +119,7 @@ public interface SimpleZombieSpawner extends ZombieSpawner {
       CreatureUtils.applyAttributes(zombie, arena);
     }
     if (canApplyHolidayEffect()) {
-      arena.getPlugin().getHolidayManager().applyHolidayZombieEffects(zombie);
+      arena.getPlugin().getHolidayManager().applyHolidayCreatureEffects(zombie);
     }
     arena.getEnemies().add(zombie);
   }

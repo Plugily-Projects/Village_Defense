@@ -77,7 +77,7 @@ public class MedicKit extends PremiumKit implements Listener {
   }
 
   @EventHandler
-  public void onZombieHit(EntityDamageByEntityEvent e) {
+  public void onCreatureHit(EntityDamageByEntityEvent e) {
     if(!(e.getEntity() instanceof Creature) || !(e.getDamager() instanceof Player)) {
       return;
     }

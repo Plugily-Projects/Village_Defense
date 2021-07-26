@@ -126,23 +126,23 @@ public class HolidayManager implements Listener {
   }
 
   /**
-   * Applies holiday effects for zombies based on current holiday
+   * Applies holiday effects for creatures based on current holiday
    * eg. pumpkin heads on halloween
    *
-   * @param zombie entity to apply effects for
+   * @param creature entity to apply effects for
    */
-  public void applyHolidayZombieEffects(Creature zombie) {
+  public void applyHolidayCreatureEffects(Creature creature) {
     if(!enabled) {
       return;
     }
     switch(currentHoliday) {
       case HALLOWEEN:
-        if(zombie.getEquipment().getHelmet() == null) {
+        if(creature.getEquipment().getHelmet() == null) {
           //randomizing head type
           if(rand.nextBoolean()) {
-            zombie.getEquipment().setHelmet(new ItemStack(Material.JACK_O_LANTERN, 1));
+            creature.getEquipment().setHelmet(new ItemStack(Material.JACK_O_LANTERN, 1));
           } else {
-            zombie.getEquipment().setHelmet(new ItemStack(Material.PUMPKIN, 1));
+            creature.getEquipment().setHelmet(new ItemStack(Material.PUMPKIN, 1));
           }
         }
         break;

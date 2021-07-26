@@ -76,7 +76,7 @@ public class LooterKit extends LevelKit implements Listener {
   @EventHandler
   public void onDeath(EntityDeathEvent event) {
     org.bukkit.entity.LivingEntity entity = event.getEntity();
-    if(!(CreatureUtils.isZombie(entity)) || entity.getKiller() == null) {
+    if(!(CreatureUtils.isEnemy(entity)) || entity.getKiller() == null) {
       return;
     }
     Player player = entity.getKiller();

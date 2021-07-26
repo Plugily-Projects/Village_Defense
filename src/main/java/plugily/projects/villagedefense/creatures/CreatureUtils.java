@@ -125,13 +125,13 @@ public class CreatureUtils {
   }
 
   /**
-   * Check if the given entity is a arena's zombie.
-   * We define the zombie as it's not the player, the villager, the wolf and the iron golem
+   * Check if the given entity is a arena's enemy.
+   * We define the enemy as it's not the player, the villager, the wolf and the iron golem
    *
    * @param entity the entity
    * @return true if it is
    */
-  public static boolean isZombie(Entity entity) {
+  public static boolean isEnemy(Entity entity) {
     return entity instanceof Creature && !(entity instanceof Player || entity instanceof Villager || entity instanceof Wolf || entity instanceof IronGolem);
   }
 
