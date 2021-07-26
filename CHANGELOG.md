@@ -15,6 +15,7 @@ That's all, matcher will stop when detects next line started with `###` match
 * Added 1.17 support
 * Reuse XMaterial for specialitems
 * Added option to determine if player's orbs should be kept or not
+* Added possibility to spawn creatures with commands on vd arena
 >>> b1
 * Now players who's in a game can't swap items to off hand
 * Players now can't drag special items in theirs inventory

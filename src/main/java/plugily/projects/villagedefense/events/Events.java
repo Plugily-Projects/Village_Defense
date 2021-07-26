@@ -104,7 +104,7 @@ public class Events implements Listener {
     for(Arena arena : ArenaRegistry.getArenas()) {
       Location startLoc = arena.getStartLocation();
 
-      if(startLoc != null && event.getSpawnReason() != CreatureSpawnEvent.SpawnReason.CUSTOM && event.getEntity().getWorld().equals(startLoc.getWorld())
+      if(startLoc != null && event.getSpawnReason() != CreatureSpawnEvent.SpawnReason.CUSTOM && event.getSpawnReason() != CreatureSpawnEvent.SpawnReason.COMMAND && event.getEntity().getWorld().equals(startLoc.getWorld())
           && event.getEntity().getLocation().distance(startLoc) < 150) {
         event.setCancelled(true);
         break;
