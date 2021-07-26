@@ -9,11 +9,11 @@ import plugily.projects.villagedefense.arena.options.ArenaOption;
 import plugily.projects.villagedefense.creatures.CreatureUtils;
 
 /**
- * The interface for simple zombie spawner
+ * The interface for simple enemy spawner
  */
-public interface SimpleZombieSpawner extends ZombieSpawner {
+public interface SimpleEnemySpawner extends EnemySpawner {
   /**
-   * Get the minimum wave to spawn the zombies
+   * Get the minimum wave to spawn the enemies
    *
    * @return the wave
    */
@@ -22,7 +22,7 @@ public interface SimpleZombieSpawner extends ZombieSpawner {
   }
 
   /**
-   * Get the maximum wave to spawn the zombies (stop spawning when exceeding this value)
+   * Get the maximum wave to spawn the enemies (stop spawning when exceeding this value)
    *
    * @return the wave
    */
@@ -31,7 +31,7 @@ public interface SimpleZombieSpawner extends ZombieSpawner {
   }
 
   /**
-   * Can the zombies be applied some holiday effects?
+   * Can the enemies be applied some holiday effects?
    *
    * @return true if they can
    */
@@ -40,7 +40,7 @@ public interface SimpleZombieSpawner extends ZombieSpawner {
   }
 
   /**
-   * Can the zombies be applied arena attributes?
+   * Can the enemies be applied arena attributes?
    *
    * @return true if they can
    */
@@ -49,7 +49,7 @@ public interface SimpleZombieSpawner extends ZombieSpawner {
   }
 
   /**
-   * How often the zombies will be spawned? Amount between 0.0 and 1.0
+   * How often the enemies will be spawned? Amount between 0.0 and 1.0
    *
    * @param arena       the arena
    * @param wave        the current wave
@@ -60,7 +60,7 @@ public interface SimpleZombieSpawner extends ZombieSpawner {
   double getSpawnRate(Arena arena, int wave, int phase, int spawnAmount);
 
   /**
-   * Get the final amount of zombies to spawn, after some workaround
+   * Get the final amount of enemies to spawn, after some workaround
    *
    * @param arena       the arena
    * @param wave        the current wave
@@ -71,7 +71,7 @@ public interface SimpleZombieSpawner extends ZombieSpawner {
   int getFinalAmount(Arena arena, int wave, int phase, int spawnAmount);
 
   /**
-   * Check if the zombies can be spawned on this phase
+   * Check if the enemies can be spawned on this phase
    *
    * @param arena       the arena
    * @param wave        the current wave
@@ -82,50 +82,50 @@ public interface SimpleZombieSpawner extends ZombieSpawner {
   boolean checkPhase(Arena arena, int wave, int phase, int spawnAmount);
 
   /**
-   * Spawn the zombie at the location
+   * Spawn the enemy at the location
    *
    * @param location the location
-   * @return the spawned zombie
+   * @return the spawned enemy
    */
   @Nullable
-  Creature spawnZombie(Location location);
+  Creature spawn(Location location);
 
   /**
-   * Get the weight of the zombie in the arena.
-   * Basically mean this zombie is worth how many normal zombies in the arena.
+   * Get the weight of the enemy in the arena.
+   * Basically mean this enemy is worth how many normal enemies in the arena.
    *
    * @param arena       the arena
    * @param wave        the current wave
    * @param phase       the current phase
    * @param spawnAmount the raw amount that the arena suggests
-   * @return the weight of the zombie
+   * @return the weight of the enemy
    */
   default int getSpawnWeight(Arena arena, int wave, int phase, int spawnAmount) {
     return 1;
   }
 
   /**
-   * Spawn the zombie at the location of the arena.
+   * Spawn the enemy at the location of the arena.
    *
    * @param location the location
    * @param arena    the arena
    */
-  default void spawnZombie(Location location, Arena arena) {
-    Creature zombie = spawnZombie(location);
-    if (zombie == null) {
+  default void spawn(Location location, Arena arena) {
+    Creature creature = spawn(location);
+    if (creature == null) {
       return;
     }
     if (canApplyAttributes()) {
-      CreatureUtils.applyAttributes(zombie, arena);
+      CreatureUtils.applyAttributes(creature, arena);
     }
     if (canApplyHolidayEffect()) {
-      arena.getPlugin().getHolidayManager().applyHolidayCreatureEffects(zombie);
+      arena.getPlugin().getHolidayManager().applyHolidayCreatureEffects(creature);
     }
-    arena.getEnemies().add(zombie);
+    arena.getEnemies().add(creature);
   }
 
   @Override
-  default void spawnZombie(Random random, Arena arena, int spawn) {
+  default void spawn(Random random, Arena arena, int spawn) {
     int wave = arena.getWave();
     int phase = arena.getOption(ArenaOption.ZOMBIE_SPAWN_COUNTER);
     if (!checkPhase(arena, wave, phase, spawn)) {
@@ -143,7 +143,7 @@ public interface SimpleZombieSpawner extends ZombieSpawner {
       int zombiesToSpawn = arena.getOption(ArenaOption.ZOMBIES_TO_SPAWN);
       if (zombiesToSpawn >= weight && spawnRate != 0 && (spawnRate == 1 || random.nextDouble() < spawnRate)) {
         Location location = arena.getRandomZombieSpawn(random);
-        spawnZombie(location, arena);
+        spawn(location, arena);
         arena.setOptionValue(ArenaOption.ZOMBIES_TO_SPAWN, zombiesToSpawn - weight);
       }
     }

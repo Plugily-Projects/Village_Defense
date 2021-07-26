@@ -403,7 +403,7 @@ public class ArenaManager {
     }
 
     arena.setTimer(plugin.getConfig().getInt("Cooldown-Before-Next-Wave", 25));
-    arena.getZombieSpawnManager().getZombieCheckerLocations().clear();
+    arena.getEnemySpawnManager().getEnemyCheckerLocations().clear();
     arena.setWave(wave + 1);
 
     Bukkit.getPluginManager().callEvent(new VillageWaveEndEvent(arena, arena.getWave()));

@@ -44,7 +44,7 @@ import plugily.projects.villagedefense.arena.ArenaManager;
 import plugily.projects.villagedefense.arena.ArenaRegistry;
 import plugily.projects.villagedefense.arena.ArenaUtils;
 import plugily.projects.villagedefense.arena.managers.BungeeManager;
-import plugily.projects.villagedefense.arena.managers.ZombieSpawnerRegistry;
+import plugily.projects.villagedefense.arena.managers.EnemySpawnerRegistry;
 import plugily.projects.villagedefense.commands.arguments.ArgumentsRegistry;
 import plugily.projects.villagedefense.creatures.CreatureUtils;
 import plugily.projects.villagedefense.creatures.DoorBreakListener;
@@ -105,7 +105,7 @@ public class Main extends JavaPlugin {
   private FileConfiguration languageConfig;
   private HologramsRegistry hologramsRegistry;
   private FileConfiguration entityUpgradesConfig;
-  private ZombieSpawnerRegistry zombieSpawnerRegistry;
+  private EnemySpawnerRegistry enemySpawnerRegistry;
 
   private boolean forceDisable = false, holographicEnabled = false;
 
@@ -222,7 +222,7 @@ public class Main extends JavaPlugin {
     specialItemManager.registerItems();
     kitMenuHandler = new KitMenuHandler(this);
     partyHandler = new PartySupportInitializer().initialize(this);
-    zombieSpawnerRegistry = new ZombieSpawnerRegistry(this);
+    enemySpawnerRegistry = new EnemySpawnerRegistry(this);
     KitRegistry.init(this);
     User.cooldownHandlerTask();
     if(configPreferences.getOption(ConfigPreferences.Option.BUNGEE_ENABLED)) {
@@ -365,8 +365,8 @@ public class Main extends JavaPlugin {
     return registry;
   }
 
-  public ZombieSpawnerRegistry getZombieSpawnerRegistry() {
-    return zombieSpawnerRegistry;
+  public EnemySpawnerRegistry getEnemySpawnerRegistry() {
+    return enemySpawnerRegistry;
   }
 
   @Override

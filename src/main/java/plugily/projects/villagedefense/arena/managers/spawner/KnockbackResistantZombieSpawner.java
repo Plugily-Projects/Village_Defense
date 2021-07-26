@@ -9,7 +9,7 @@ import plugily.projects.commonsbox.minecraft.compat.xseries.XMaterial;
 import plugily.projects.villagedefense.arena.Arena;
 import plugily.projects.villagedefense.creatures.CreatureUtils;
 
-public class KnockbackResistantZombieSpawner implements SimpleZombieSpawner {
+public class KnockbackResistantZombieSpawner implements SimpleEnemySpawner {
   @Override
   public int getMinWave() {
     return 20;
@@ -31,7 +31,7 @@ public class KnockbackResistantZombieSpawner implements SimpleZombieSpawner {
   }
 
   @Override
-  public Creature spawnZombie(Location location) {
+  public Creature spawn(Location location) {
     Creature tankerZombie = CreatureUtils.getCreatureInitializer().spawnKnockbackResistantZombies(location);
     VersionUtils.setItemInHand(tankerZombie, XMaterial.GOLDEN_AXE.parseItem());
     tankerZombie.getEquipment().setBoots(new ItemStack(Material.DIAMOND_BOOTS));

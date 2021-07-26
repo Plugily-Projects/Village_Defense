@@ -5,7 +5,7 @@ import org.bukkit.entity.Creature;
 import plugily.projects.villagedefense.arena.Arena;
 import plugily.projects.villagedefense.creatures.CreatureUtils;
 
-public class BabyZombieSpawner implements SimpleZombieSpawner {
+public class BabyZombieSpawner implements SimpleEnemySpawner {
   @Override
   public boolean canApplyHolidayEffect() {
     return true;
@@ -27,7 +27,7 @@ public class BabyZombieSpawner implements SimpleZombieSpawner {
   }
 
   @Override
-  public Creature spawnZombie(Location location) {
+  public Creature spawn(Location location) {
     return CreatureUtils.getCreatureInitializer().spawnBabyZombie(location);
   }
 

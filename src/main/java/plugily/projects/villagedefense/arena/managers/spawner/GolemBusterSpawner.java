@@ -9,7 +9,7 @@ import plugily.projects.commonsbox.minecraft.compat.xseries.XMaterial;
 import plugily.projects.villagedefense.arena.Arena;
 import plugily.projects.villagedefense.creatures.CreatureUtils;
 
-public class GolemBusterSpawner implements SimpleZombieSpawner {
+public class GolemBusterSpawner implements SimpleEnemySpawner {
   @Override
   public double getSpawnRate(Arena arena, int wave, int phase, int spawnAmount) {
     if (phase == 5) {
@@ -38,7 +38,7 @@ public class GolemBusterSpawner implements SimpleZombieSpawner {
   }
 
   @Override
-  public Creature spawnZombie(Location location) {
+  public Creature spawn(Location location) {
     Creature golemBuster = CreatureUtils.getCreatureInitializer().spawnGolemBuster(location);
     golemBuster.getEquipment().setHelmet(new ItemStack(Material.TNT));
     golemBuster.getEquipment().setHelmetDropChance(0.0F);

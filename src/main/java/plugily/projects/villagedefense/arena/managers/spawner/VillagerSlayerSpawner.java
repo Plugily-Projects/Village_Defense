@@ -9,7 +9,7 @@ import plugily.projects.commonsbox.minecraft.compat.xseries.XMaterial;
 import plugily.projects.villagedefense.arena.Arena;
 import plugily.projects.villagedefense.creatures.CreatureUtils;
 
-public class VillagerSlayerSpawner implements SimpleZombieSpawner {
+public class VillagerSlayerSpawner implements SimpleEnemySpawner {
   @Override
   public int getMinWave() {
     return 23;
@@ -31,7 +31,7 @@ public class VillagerSlayerSpawner implements SimpleZombieSpawner {
   }
 
   @Override
-  public Creature spawnZombie(Location location) {
+  public Creature spawn(Location location) {
     Creature villagerSlayer = CreatureUtils.getCreatureInitializer().spawnVillagerSlayer(location);
     VersionUtils.setItemInHand(villagerSlayer, XMaterial.EMERALD.parseItem());
     VersionUtils.setItemInHandDropChance(villagerSlayer, 0F);

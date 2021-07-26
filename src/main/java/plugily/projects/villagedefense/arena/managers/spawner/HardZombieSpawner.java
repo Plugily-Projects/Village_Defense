@@ -7,7 +7,7 @@ import org.bukkit.inventory.ItemStack;
 import plugily.projects.villagedefense.arena.Arena;
 import plugily.projects.villagedefense.creatures.CreatureUtils;
 
-public class HardZombieSpawner implements SimpleZombieSpawner {
+public class HardZombieSpawner implements SimpleEnemySpawner {
   @Override
   public int getMinWave() {
     return 4;
@@ -41,7 +41,7 @@ public class HardZombieSpawner implements SimpleZombieSpawner {
   }
 
   @Override
-  public Creature spawnZombie(Location location) {
+  public Creature spawn(Location location) {
     Creature hardZombie = CreatureUtils.getCreatureInitializer().spawnHardZombie(location);
     hardZombie.getEquipment().setBoots(new ItemStack(Material.DIAMOND_BOOTS));
     hardZombie.getEquipment().setLeggings(new ItemStack(Material.DIAMOND_LEGGINGS));

@@ -50,7 +50,7 @@ import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.api.event.game.VillageGameStateChangeEvent;
 import plugily.projects.villagedefense.arena.managers.ScoreboardManager;
 import plugily.projects.villagedefense.arena.managers.ShopManager;
-import plugily.projects.villagedefense.arena.managers.ZombieSpawnManager;
+import plugily.projects.villagedefense.arena.managers.EnemySpawnManager;
 import plugily.projects.villagedefense.arena.managers.maprestorer.MapRestorerManager;
 import plugily.projects.villagedefense.arena.managers.maprestorer.MapRestorerManagerLegacy;
 import plugily.projects.villagedefense.arena.options.ArenaOption;
@@ -91,7 +91,7 @@ public class Arena extends BukkitRunnable {
   private ScoreboardManager scoreboardManager;
   private MapRestorerManager mapRestorerManager;
   private ShopManager shopManager;
-  private ZombieSpawnManager zombieSpawnManager;
+  private EnemySpawnManager enemySpawnManager;
 
   private ArenaState arenaState = ArenaState.WAITING_FOR_PLAYERS;
   private BossBar gameBar;
@@ -120,7 +120,7 @@ public class Arena extends BukkitRunnable {
       gameBar = Bukkit.createBossBar(plugin.getChatManager().colorMessage(Messages.BOSSBAR_MAIN_TITLE), BarColor.BLUE, BarStyle.SOLID);
     }
     shopManager = new ShopManager(this);
-    zombieSpawnManager = new ZombieSpawnManager(this);
+    enemySpawnManager = new EnemySpawnManager(this);
     scoreboardManager = new ScoreboardManager(this);
     if(ServerVersion.Version.isCurrentEqualOrLower(ServerVersion.Version.v1_16_R1)) {
       mapRestorerManager = new MapRestorerManagerLegacy(this);
@@ -165,8 +165,8 @@ public class Arena extends BukkitRunnable {
     return shopManager;
   }
 
-  public ZombieSpawnManager getZombieSpawnManager() {
-    return zombieSpawnManager;
+  public EnemySpawnManager getEnemySpawnManager() {
+    return enemySpawnManager;
   }
 
   /**
@@ -625,7 +625,7 @@ public class Arena extends BukkitRunnable {
     setOptionValue(ArenaOption.TOTAL_ORBS_SPENT, 0);
     setOptionValue(ArenaOption.ZOMBIE_DIFFICULTY_MULTIPLIER, 1);
     setOptionValue(ArenaOption.ZOMBIE_IDLE_PROCESS, 0);
-    zombieSpawnManager.applyIdle(0);
+    enemySpawnManager.applyIdle(0);
   }
 
   public int getOption(ArenaOption option) {

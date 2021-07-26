@@ -4,9 +4,9 @@ import java.util.Random;
 import plugily.projects.villagedefense.arena.Arena;
 
 /**
- * The interface for zombie spawner
+ * The interface for enemy spawner
  */
-public interface ZombieSpawner extends Comparable<ZombieSpawner> {
+public interface EnemySpawner extends Comparable<EnemySpawner> {
   /**
    * Get the name of the spawner
    *
@@ -22,16 +22,16 @@ public interface ZombieSpawner extends Comparable<ZombieSpawner> {
   }
 
   /**
-   * Handle the zombie spawn
+   * Handle the spawn
    *
    * @param random the random number generator
-   * @param arena  the arena the manager is trying to spawn zombies
+   * @param arena  the arena the manager is trying to spawn enemies
    * @param spawn  the amount to spawn
    */
-  void spawnZombie(Random random, Arena arena, int spawn);
+  void spawn(Random random, Arena arena, int spawn);
 
   @Override
-  default int compareTo(ZombieSpawner spawner) {
+  default int compareTo(EnemySpawner spawner) {
     int compareValue = Integer.compare(this.getPriority(), spawner.getPriority());
     if (compareValue == 0) {
       compareValue = this.getName().compareTo(spawner.getName());

@@ -44,7 +44,7 @@ public class InGameState implements ArenaStateHandler {
   @Override
   public void handleCall(Arena arena) {
     bossBarUpdate(arena);
-    arena.getZombieSpawnManager().spawnGlitchCheck();
+    arena.getEnemySpawnManager().spawnGlitchCheck();
     if(arena.getVillagers().isEmpty() || arena.getPlayersLeft().isEmpty() && arena.getArenaState() != ArenaState.ENDING) {
       ArenaManager.stopGame(false, arena);
       return;
@@ -55,7 +55,7 @@ public class InGameState implements ArenaStateHandler {
         ArenaManager.endWave(arena);
       }
       if(arena.getOption(ArenaOption.ZOMBIES_TO_SPAWN) > 0) {
-        arena.getZombieSpawnManager().spawnZombies();
+        arena.getEnemySpawnManager().spawnEnemies();
         arena.setTimer(500);
       } else if(arena.getTimer() == 0) {
         arena.getMapRestorerManager().clearEnemiesFromArena();
