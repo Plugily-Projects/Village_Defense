@@ -18,8 +18,7 @@
 
 package plugily.projects.villagedefense.handlers.setup.components;
 
-import plugily.projects.inventoryframework.gui.GuiItem;
-import plugily.projects.inventoryframework.pane.StaticPane;
+import fr.mrmicky.fastinv.FastInv;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -46,7 +45,7 @@ public class PlayerAmountComponents implements SetupComponent {
   }
 
   @Override
-  public void injectComponents(StaticPane pane) {
+  public void injectComponents(FastInv gui) {
     Arena arena = setupInventory.getArena();
     if(arena == null) {
       return;
@@ -56,7 +55,7 @@ public class PlayerAmountComponents implements SetupComponent {
       return;
     }
     Main plugin = setupInventory.getPlugin();
-    pane.addItem(new GuiItem(new ItemBuilder(Material.COAL).amount(setupInventory.getSetupUtilities().getMinimumValueHigherThanZero("minimumplayers"))
+    gui.setItem(3, new ItemBuilder(Material.COAL).amount(setupInventory.getSetupUtilities().getMinimumValueHigherThanZero("minimumplayers"))
         .name(plugin.getChatManager().colorRawMessage("&e&lSet Minimum Players Amount"))
         .lore(ChatColor.GRAY + "LEFT click to decrease")
         .lore(ChatColor.GRAY + "RIGHT click to increase")
@@ -82,9 +81,9 @@ public class PlayerAmountComponents implements SetupComponent {
       arena.setMinimumPlayers(currentItem.getAmount());
       ConfigUtils.saveConfig(plugin, config, Constants.Files.ARENAS.getName());
       new SetupInventory(arena, setupInventory.getPlayer()).openInventory();
-    }), 3, 0);
+    });
 
-    pane.addItem(new GuiItem(new ItemBuilder(Material.REDSTONE)
+    gui.setItem(4, new ItemBuilder(Material.REDSTONE)
         .amount(setupInventory.getSetupUtilities().getMinimumValueHigherThanZero("maximumplayers"))
         .name(plugin.getChatManager().colorRawMessage("&e&lSet Maximum Players Amount"))
         .lore(ChatColor.GRAY + "LEFT click to decrease")
@@ -110,7 +109,7 @@ public class PlayerAmountComponents implements SetupComponent {
       arena.setMaximumPlayers(currentItem.getAmount());
       ConfigUtils.saveConfig(plugin, config, Constants.Files.ARENAS.getName());
       new SetupInventory(arena, setupInventory.getPlayer()).openInventory();
-    }), 4, 0);
+    });
   }
 
 }

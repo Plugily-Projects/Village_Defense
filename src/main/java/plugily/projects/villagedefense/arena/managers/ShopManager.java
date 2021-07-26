@@ -18,9 +18,7 @@
 
 package plugily.projects.villagedefense.arena.managers;
 
-import plugily.projects.inventoryframework.gui.GuiItem;
-import plugily.projects.inventoryframework.gui.type.ChestGui;
-import plugily.projects.inventoryframework.pane.StaticPane;
+import fr.mrmicky.fastinv.FastInv;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -61,7 +59,7 @@ public class ShopManager {
 
   private final Main plugin;
   private final FileConfiguration config;
-  private ChestGui gui;
+  private FastInv gui;
   private final Arena arena;
 
   public ShopManager(Arena arena) {
@@ -76,8 +74,12 @@ public class ShopManager {
     }
   }
 
-  public ChestGui getShop() {
+  public FastInv getShop() {
     return gui;
+  }
+
+  public void setShop(FastInv gui) {
+    this.gui = gui;
   }
 
   /**
@@ -107,7 +109,7 @@ public class ShopManager {
       player.sendMessage(plugin.getChatManager().colorMessage(Messages.SHOP_MESSAGES_NO_SHOP_DEFINED));
       return;
     }
-    gui.show(player);
+    gui.open(player);
   }
 
   private void registerShop() {
@@ -116,10 +118,7 @@ public class ShopManager {
     }
     ItemStack[] contents = ((Chest) LocationSerializer.getLocation(config.getString("instances." + arena.getId() + ".shop"))
         .getBlock().getState()).getInventory().getContents();
-    int size = Utils.serializeInt(contents.length) / 9;
-    ChestGui gui = new ChestGui(size, plugin.getChatManager().colorMessage(Messages.SHOP_MESSAGES_SHOP_GUI_NAME));
-    gui.setOnGlobalClick(event -> event.setCancelled(true));
-    StaticPane pane = new StaticPane(9, size);
+    gui = new FastInv(Utils.serializeInt(contents.length), plugin.getChatManager().colorMessage(Messages.SHOP_MESSAGES_SHOP_GUI_NAME));
     for (int slot = 0; slot < contents.length; slot++) {
       ItemStack itemStack = contents[slot];
       if(itemStack == null || itemStack.getType() == Material.REDSTONE_BLOCK) {
@@ -146,7 +145,7 @@ public class ShopManager {
         continue;
       }
 
-      pane.addItem(new GuiItem(itemStack, e -> {
+      gui.setItem(slot, itemStack, e -> {
         Player player = (Player) e.getWhoClicked();
 
         if(!arena.getPlayers().contains(player)) {
@@ -242,10 +241,8 @@ public class ShopManager {
         player.getInventory().addItem(stack);
         user.setStat(StatsStorage.StatisticType.ORBS, orbs - cost);
         arena.addOptionValue(ArenaOption.TOTAL_ORBS_SPENT, cost);
-      }), slot % 9, slot / 9);
+      });
     }
-    gui.addPane(pane);
-    this.gui = gui;
   }
 
   private boolean validateShop() {
