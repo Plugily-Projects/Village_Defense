@@ -107,8 +107,14 @@ public class CleanerKit extends PremiumKit implements Listener {
       e.getPlayer().sendMessage(getPlugin().getChatManager().colorMessage(Messages.KITS_CLEANER_NOTHING_TO_CLEAN));
       return;
     }
-    ArenaUtils.removeSpawnedZombies(arena);
-    arena.getEnemies().clear();
+    double maxHealth = getKitsConfig().getDouble("Kit-Settings.Cleaner.Max-Health-To-Clean", 2048);
+    int amount = getKitsConfig().getInt("Kit-Settings.Cleaner.Base-Amount", 10);
+    if (amount < arena.getEnemies().size()) {
+      int increaseUnit = arena.getWave() / Math.max(1, getKitsConfig().getInt("Kit-Settings.Cleaner.Base-Amount", 10));
+      amount += increaseUnit * Math.max(0, getKitsConfig().getInt("Kit-Settings.Cleaner.Increase-Amount", 10));
+    }
+    ArenaUtils.removeSpawnedEnemies(arena, amount, maxHealth);
+
     Utils.playSound(e.getPlayer().getLocation(), "ENTITY_ZOMBIE_DEATH", "ENTITY_ZOMBIE_DEATH");
     getPlugin().getChatManager().broadcastMessage(arena, getPlugin().getChatManager()
         .formatMessage(arena, getPlugin().getChatManager().colorMessage(Messages.KITS_CLEANER_CLEANED_MAP), e.getPlayer()));

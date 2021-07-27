@@ -232,6 +232,18 @@ public class LanguageMigrator {
               "# true - player's orbs will be kept after death\r\n" +
               "# false - player's orbs will be set according to the above option.\r\n" +
               "Keep-Orbs-After-Death: false");
+          MigratorUtils.addNewLines(kitsfile, "\r\n" +
+              "# The settings for some kits\r\n" +
+              "Kit-Settings:\r\n" +
+              "  Cleaner:\r\n" +
+              "    # The maximum health for the enemies to be removed\r\n" +
+              "    Max-Health-To-Clean: 2048\r\n" +
+              "    # From the start, how many enemies can this kit remove?\r\n" +
+              "    Base-Amount: 10\r\n" +
+              "    # The amount of the removed enemies will be increased after how many waves?\r\n" +
+              "    Increase-After-Wave: 5\r\n" +
+              "    # How many amount will be added to the base amount\r\n" +
+              "    Increase-Amount: 5\r\n");
           break;
         default:
           break;

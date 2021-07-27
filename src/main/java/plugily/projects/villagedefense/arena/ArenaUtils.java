@@ -18,6 +18,10 @@
 
 package plugily.projects.villagedefense.arena;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Creature;
@@ -116,15 +120,28 @@ public class ArenaUtils {
     }
   }
 
-  public static void removeSpawnedZombies(Arena arena) {
-    boolean eachThree = arena.getEnemies().size() > 70;
-    int i = 0;
-    for(Creature zombie : arena.getEnemies()) {
-      if(eachThree && (i % 3) == 0) {
-        VersionUtils.sendParticles("LAVA", arena.getPlayers(), zombie.getLocation(), 20);
+  public static void removeSpawnedEnemies(Arena arena) {
+    removeSpawnedEnemies(arena, arena.getEnemies().size(), Double.MAX_VALUE);
+  }
+
+  public static void removeSpawnedEnemies(Arena arena, int amount, double maxHealthToRemove) {
+    List<Creature> toRemove = new ArrayList<>(arena.getEnemies());
+    toRemove.removeIf(creature -> creature.getHealth() > maxHealthToRemove);
+    if (toRemove.size() > amount) {
+      Collections.shuffle(toRemove, ThreadLocalRandom.current());
+      while (toRemove.size() > amount && !toRemove.isEmpty()) {
+        toRemove.remove(0);
       }
-      zombie.remove();
-      i++;
+    }
+    arena.getEnemies().removeAll(toRemove);
+
+    boolean eachThree = toRemove.size() > 70;
+    for(int i = 0; i < toRemove.size(); i++) {
+      Creature creature = toRemove.get(i);
+      if(eachThree && (i % 3) == 0) {
+        VersionUtils.sendParticles("LAVA", arena.getPlayers(), creature.getLocation(), 20);
+      }
+      creature.remove();
     }
   }
 
