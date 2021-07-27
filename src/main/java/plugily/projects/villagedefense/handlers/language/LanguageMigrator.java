@@ -18,6 +18,9 @@
 
 package plugily.projects.villagedefense.handlers.language;
 
+import java.io.File;
+import java.util.Arrays;
+import java.util.List;
 import org.apache.commons.lang.math.NumberUtils;
 import org.bukkit.configuration.file.FileConfiguration;
 import plugily.projects.commonsbox.minecraft.configuration.ConfigUtils;
@@ -26,10 +29,6 @@ import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.utils.Debugger;
 import plugily.projects.villagedefense.utils.MessageUtils;
 import plugily.projects.villagedefense.utils.constants.Constants;
-
-import java.io.File;
-import java.util.Arrays;
-import java.util.List;
 
 /*
   NOTE FOR CONTRIBUTORS - Please do not touch this class if you don't now how it works! You can break migrator modyfing these values!
@@ -228,6 +227,11 @@ public class LanguageMigrator {
               "# The default is 0, so their orbs will be set to 0.\r\n" +
               "# The value should be 1 or higher.\r\n" +
               "Orbs-To-Lose-After-Death: 0");
+          MigratorUtils.addNewLines(file, "\r\n" +
+              "# Should the orbs kept after player death?\r\n" +
+              "# true - player's orbs will be kept after death\r\n" +
+              "# false - player's orbs will be set according to the above option.\r\n" +
+              "Keep-Orbs-After-Death: false");
           break;
         default:
           break;

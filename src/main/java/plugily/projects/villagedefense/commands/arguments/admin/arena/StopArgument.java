@@ -20,7 +20,6 @@ package plugily.projects.villagedefense.commands.arguments.admin.arena;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-
 import plugily.projects.villagedefense.arena.Arena;
 import plugily.projects.villagedefense.arena.ArenaManager;
 import plugily.projects.villagedefense.arena.ArenaRegistry;

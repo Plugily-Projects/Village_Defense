@@ -18,13 +18,12 @@
 
 package plugily.projects.villagedefense.utils;
 
+import java.util.logging.Level;
 import org.bukkit.configuration.file.FileConfiguration;
 import plugily.projects.commonsbox.minecraft.configuration.ConfigUtils;
 import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.api.StatsStorage;
 import plugily.projects.villagedefense.utils.constants.Constants;
-
-import java.util.logging.Level;
 
 /**
  * @author Plajer

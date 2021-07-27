@@ -18,11 +18,6 @@
 
 package plugily.projects.villagedefense.utils.services.metrics;
 
-import org.bukkit.Bukkit;
-import org.bukkit.plugin.java.JavaPlugin;
-import plugily.projects.villagedefense.utils.services.ServiceRegistry;
-
-import javax.net.ssl.HttpsURLConnection;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -33,6 +28,10 @@ import java.nio.charset.StandardCharsets;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.logging.Level;
+import javax.net.ssl.HttpsURLConnection;
+import org.bukkit.Bukkit;
+import org.bukkit.plugin.java.JavaPlugin;
+import plugily.projects.villagedefense.utils.services.ServiceRegistry;
 
 /**
  * Metrics service for sending usage data

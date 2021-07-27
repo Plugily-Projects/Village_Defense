@@ -18,12 +18,13 @@
 
 package plugily.projects.villagedefense.events;
 
+import java.util.ArrayList;
+import org.bukkit.entity.Creature;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.IronGolem;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Wolf;
-import org.bukkit.entity.Zombie;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -34,10 +35,9 @@ import plugily.projects.commonsbox.minecraft.compat.VersionUtils;
 import plugily.projects.commonsbox.minecraft.compat.events.api.CBPlayerInteractEntityEvent;
 import plugily.projects.villagedefense.arena.Arena;
 import plugily.projects.villagedefense.arena.ArenaRegistry;
+import plugily.projects.villagedefense.creatures.CreatureUtils;
 import plugily.projects.villagedefense.handlers.upgrade.EntityUpgradeMenu;
 import plugily.projects.villagedefense.utils.Utils;
-
-import java.util.ArrayList;
 
 /**
  * @author Plajer
@@ -106,11 +106,11 @@ public class EntityUpgradeListener implements Listener {
       }
       VersionUtils.sendParticles("EXPLOSION_HUGE", arena.getPlayers(), entity.getLocation(), 5);
       for(Entity en : Utils.getNearbyEntities(entity.getLocation(), tier * 5)) {
-        if(en instanceof Zombie) {
-          ((Zombie) en).damage(10000.0, entity);
+        if(CreatureUtils.isEnemy(en)) {
+          ((Creature) en).damage(10000.0, entity);
         }
       }
-      for(Zombie zombie : new ArrayList<>(arena.getZombies())) {
+      for(Creature zombie : new ArrayList<>(arena.getEnemies())) {
         zombie.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 5, 0));
         zombie.damage(0.5, entity);
       }

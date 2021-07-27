@@ -20,6 +20,11 @@ package plugily.projects.villagedefense.handlers.powerup;
 
 import com.gmail.filoghost.holographicdisplays.api.Hologram;
 import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
+import java.util.logging.Level;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -36,12 +41,6 @@ import plugily.projects.villagedefense.arena.ArenaUtils;
 import plugily.projects.villagedefense.handlers.ChatManager;
 import plugily.projects.villagedefense.handlers.language.Messages;
 import plugily.projects.villagedefense.utils.Debugger;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-import java.util.concurrent.ThreadLocalRandom;
-import java.util.logging.Level;
 
 /**
  * @author Plajer
@@ -82,7 +81,7 @@ public class PowerupRegistry {
       registerPowerup(new Powerup("MAP_CLEAN", chatManager.colorMessage(Messages.POWERUPS_MAP_CLEAN_NAME),
               chatManager.colorMessage(Messages.POWERUPS_MAP_CLEAN_DESCRIPTION), XMaterial.BLAZE_POWDER, pickup -> {
         ArenaUtils.removeSpawnedZombies(pickup.getArena());
-        pickup.getArena().getZombies().clear();
+        pickup.getArena().getEnemies().clear();
 
         for (Player p : pickup.getArena().getPlayers()) {
           VersionUtils.sendTitles(p, pickup.getPowerup().getName(), pickup.getPowerup().getDescription(), 5, 30, 5);

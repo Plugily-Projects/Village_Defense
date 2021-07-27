@@ -18,33 +18,32 @@
 
 package plugily.projects.villagedefense.arena.managers;
 
-import org.bukkit.Location;
-import org.bukkit.entity.Villager;
-import org.bukkit.entity.Zombie;
-import plugily.projects.villagedefense.arena.Arena;
-import plugily.projects.villagedefense.arena.options.ArenaOption;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import org.bukkit.Location;
+import org.bukkit.entity.Creature;
+import org.bukkit.entity.Villager;
+import plugily.projects.villagedefense.arena.Arena;
+import plugily.projects.villagedefense.arena.options.ArenaOption;
 
 /**
  * @author Plajer
  * <p>
  * Created at 06.01.2019
  */
-public class ZombieSpawnManager {
+public class EnemySpawnManager {
 
   private final Random random;
   private final Arena arena;
   private int localIdleProcess = 0;
-  private final List<Zombie> glitchedZombies = new ArrayList<>();
-  private final Map<Zombie, Location> zombieCheckerLocations = new HashMap<>();
+  private final List<Creature> glitchedEnemies = new ArrayList<>();
+  private final Map<Creature, Location> enemyCheckerLocations = new HashMap<>();
 
-  public ZombieSpawnManager(Arena arena) {
+  public EnemySpawnManager(Arena arena) {
     this.arena = arena;
     this.random = new Random();
   }
@@ -55,10 +54,10 @@ public class ZombieSpawnManager {
 
   /**
    * Increments ZOMBIE_GLITCH_CHECKER value and attempts to check
-   * whether any zombies are glitched on spawn point when
+   * whether any enemies are glitched on spawn point when
    * ZOMBIE_GLITCH_CHECKER value is higher or equal than 60
    * <p>
-   * Glitch checker also clean ups dead zombies and villagers from the arena
+   * Glitch checker also clean ups dead enemies and villagers from the arena
    */
   public void spawnGlitchCheck() {
     arena.addOptionValue(ArenaOption.ZOMBIE_GLITCH_CHECKER, 1);
@@ -73,51 +72,51 @@ public class ZombieSpawnManager {
       }
       arena.setOptionValue(ArenaOption.ZOMBIE_GLITCH_CHECKER, 0);
 
-      Iterator<Zombie> zombieIterator = arena.getZombies().iterator();
-      while(zombieIterator.hasNext()) {
-        Zombie zombie = zombieIterator.next();
-        if(zombie.isDead()) {
-          zombieIterator.remove();
-          arena.removeZombie(zombie);
+      Iterator<Creature> creatureIterator = arena.getEnemies().iterator();
+      while(creatureIterator.hasNext()) {
+        Creature creature = creatureIterator.next();
+        if(creature.isDead()) {
+          creatureIterator.remove();
+          arena.removeEnemy(creature);
           continue;
         }
-        if(glitchedZombies.contains(zombie) && zombie.getLocation().distance(zombieCheckerLocations.get(zombie)) <= 1) {
-          zombieIterator.remove();
-          arena.removeZombie(zombie);
-          zombieCheckerLocations.remove(zombie);
-          zombie.remove();
+        if(glitchedEnemies.contains(creature) && creature.getLocation().distance(enemyCheckerLocations.get(creature)) <= 1) {
+          creatureIterator.remove();
+          arena.removeEnemy(creature);
+          enemyCheckerLocations.remove(creature);
+          creature.remove();
         }
 
-        Location checkerLoc = zombieCheckerLocations.get(zombie);
+        Location checkerLoc = enemyCheckerLocations.get(creature);
         if(checkerLoc == null) {
-          zombieCheckerLocations.put(zombie, zombie.getLocation());
-        } else if(zombie.getLocation().distance(checkerLoc) <= 1) {
-          zombie.teleport(arena.getRandomZombieSpawn(random));
-          zombieCheckerLocations.put(zombie, zombie.getLocation());
-          glitchedZombies.add(zombie);
+          enemyCheckerLocations.put(creature, creature.getLocation());
+        } else if(creature.getLocation().distance(checkerLoc) <= 1) {
+          creature.teleport(arena.getRandomZombieSpawn(random));
+          enemyCheckerLocations.put(creature, creature.getLocation());
+          glitchedEnemies.add(creature);
         }
       }
     }
   }
 
-  public Map<Zombie, Location> getZombieCheckerLocations() {
-    return zombieCheckerLocations;
+  public Map<Creature, Location> getEnemyCheckerLocations() {
+    return enemyCheckerLocations;
   }
 
   /**
-   * Spawns some zombies in arena.
+   * Spawns some enemies in arena.
    * <p>
-   * Variety and amount of zombies depends
+   * Variety and amount of enemies depends
    * on random value and current wave
    */
-  public void spawnZombies() {
+  public void spawnEnemies() {
     if(checkForIdle()) {
-      arena.getPlugin().getZombieSpawnerRegistry().spawnZombies(random, arena);
+      arena.getPlugin().getEnemySpawnerRegistry().spawnEnemies(random, arena);
     }
   }
 
   private boolean checkForIdle() {
-    //Idling to ~~save server stability~~ protect against hordes of zombies
+    //Idling to ~~save server stability~~ protect against hordes of enemies
     if(localIdleProcess > 0) {
       localIdleProcess--;
       return false;

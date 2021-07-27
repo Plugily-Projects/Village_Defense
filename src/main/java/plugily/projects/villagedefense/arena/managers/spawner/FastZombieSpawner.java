@@ -1,11 +1,11 @@
 package plugily.projects.villagedefense.arena.managers.spawner;
 
 import org.bukkit.Location;
-import org.bukkit.entity.Zombie;
+import org.bukkit.entity.Creature;
 import plugily.projects.villagedefense.arena.Arena;
 import plugily.projects.villagedefense.creatures.CreatureUtils;
 
-public class FastZombieSpawner implements SimpleZombieSpawner {
+public class FastZombieSpawner implements SimpleEnemySpawner {
   @Override
   public boolean canApplyHolidayEffect() {
     return true;
@@ -13,7 +13,7 @@ public class FastZombieSpawner implements SimpleZombieSpawner {
 
   @Override
   public double getSpawnRate(Arena arena, int wave, int phase, int spawnAmount) {
-    if (spawnAmount < 5 || arena.getZombies().isEmpty()) {
+    if (spawnAmount < 5 || arena.getEnemies().isEmpty()) {
       return 1;
     }
 
@@ -26,16 +26,16 @@ public class FastZombieSpawner implements SimpleZombieSpawner {
 
   @Override
   public int getFinalAmount(Arena arena, int wave, int phase, int spawnAmount) {
-    return (spawnAmount < 5 || (phase == 5 && wave <= 7) || arena.getZombies().isEmpty()) ? spawnAmount : 0;
+    return (spawnAmount < 5 || (phase == 5 && wave <= 7) || arena.getEnemies().isEmpty()) ? spawnAmount : 0;
   }
 
   @Override
   public boolean checkPhase(Arena arena, int wave, int phase, int spawnAmount) {
-    return arena.getZombies().isEmpty() || spawnAmount < 5 || (phase == 5 && wave <= 7);
+    return arena.getEnemies().isEmpty() || spawnAmount < 5 || (phase == 5 && wave <= 7);
   }
 
   @Override
-  public Zombie spawnZombie(Location location) {
+  public Creature spawn(Location location) {
     return CreatureUtils.getCreatureInitializer().spawnFastZombie(location);
   }
 

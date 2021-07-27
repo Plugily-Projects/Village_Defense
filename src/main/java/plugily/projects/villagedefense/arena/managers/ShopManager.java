@@ -19,6 +19,9 @@
 package plugily.projects.villagedefense.arena.managers;
 
 import fr.mrmicky.fastinv.FastInv;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.stream.Collectors;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -33,6 +36,9 @@ import plugily.projects.commonsbox.minecraft.configuration.ConfigUtils;
 import plugily.projects.commonsbox.minecraft.item.ItemUtils;
 import plugily.projects.commonsbox.minecraft.misc.stuff.ComplementAccessor;
 import plugily.projects.commonsbox.minecraft.serialization.LocationSerializer;
+import plugily.projects.inventoryframework.gui.GuiItem;
+import plugily.projects.inventoryframework.gui.type.ChestGui;
+import plugily.projects.inventoryframework.pane.StaticPane;
 import plugily.projects.villagedefense.ConfigPreferences.Option;
 import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.api.StatsStorage;
@@ -44,10 +50,6 @@ import plugily.projects.villagedefense.user.User;
 import plugily.projects.villagedefense.utils.Debugger;
 import plugily.projects.villagedefense.utils.Utils;
 import plugily.projects.villagedefense.utils.constants.Constants;
-
-import java.util.List;
-import java.util.logging.Level;
-import java.util.stream.Collectors;
 
 /**
  * Created by Tom on 16/08/2014.

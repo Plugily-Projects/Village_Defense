@@ -18,6 +18,7 @@
 
 package plugily.projects.villagedefense.arena.states;
 
+import java.util.Objects;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -30,8 +31,6 @@ import plugily.projects.villagedefense.arena.ArenaManager;
 import plugily.projects.villagedefense.arena.ArenaRegistry;
 import plugily.projects.villagedefense.arena.ArenaState;
 import plugily.projects.villagedefense.handlers.language.Messages;
-
-import java.util.Objects;
 
 /**
  * @author Plajer

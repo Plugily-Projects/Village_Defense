@@ -18,14 +18,19 @@
 
 package plugily.projects.villagedefense.handlers;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+import java.util.Set;
 import org.bukkit.Bukkit;
 import org.bukkit.Effect;
 import org.bukkit.Material;
+import org.bukkit.entity.Creature;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
-import org.bukkit.entity.Zombie;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -33,19 +38,12 @@ import org.bukkit.event.entity.EntityShootBowEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
-
 import plugily.projects.commonsbox.minecraft.compat.VersionUtils;
 import plugily.projects.commonsbox.minecraft.compat.xseries.XMaterial;
 import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.arena.ArenaRegistry;
 import plugily.projects.villagedefense.handlers.powerup.Powerup;
 import plugily.projects.villagedefense.utils.Utils;
-
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-import java.util.Set;
 
 /**
  * @author Plajer
@@ -128,23 +126,23 @@ public class HolidayManager implements Listener {
   }
 
   /**
-   * Applies holiday effects for zombies based on current holiday
+   * Applies holiday effects for creatures based on current holiday
    * eg. pumpkin heads on halloween
    *
-   * @param zombie entity to apply effects for
+   * @param creature entity to apply effects for
    */
-  public void applyHolidayZombieEffects(Zombie zombie) {
+  public void applyHolidayCreatureEffects(Creature creature) {
     if(!enabled) {
       return;
     }
     switch(currentHoliday) {
       case HALLOWEEN:
-        if(zombie.getEquipment().getHelmet() == null) {
+        if(creature.getEquipment().getHelmet() == null) {
           //randomizing head type
           if(rand.nextBoolean()) {
-            zombie.getEquipment().setHelmet(new ItemStack(Material.JACK_O_LANTERN, 1));
+            creature.getEquipment().setHelmet(new ItemStack(Material.JACK_O_LANTERN, 1));
           } else {
-            zombie.getEquipment().setHelmet(new ItemStack(Material.PUMPKIN, 1));
+            creature.getEquipment().setHelmet(new ItemStack(Material.PUMPKIN, 1));
           }
         }
         break;

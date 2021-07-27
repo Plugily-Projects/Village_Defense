@@ -18,14 +18,13 @@
 
 package plugily.projects.villagedefense.utils;
 
-import org.bukkit.Bukkit;
-import plugily.projects.villagedefense.Main;
-import plugily.projects.villagedefense.utils.services.exception.ReportedException;
-
 import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Handler;
 import java.util.logging.LogRecord;
+import org.bukkit.Bukkit;
+import plugily.projects.villagedefense.Main;
+import plugily.projects.villagedefense.utils.services.exception.ReportedException;
 
 /**
  * @author Plajer

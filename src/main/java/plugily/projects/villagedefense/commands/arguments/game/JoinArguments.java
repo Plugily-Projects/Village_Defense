@@ -18,6 +18,12 @@
 
 package plugily.projects.villagedefense.commands.arguments.game;
 
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ThreadLocalRandom;
+import java.util.stream.Collectors;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import plugily.projects.villagedefense.ConfigPreferences;
@@ -28,13 +34,6 @@ import plugily.projects.villagedefense.arena.ArenaState;
 import plugily.projects.villagedefense.commands.arguments.ArgumentsRegistry;
 import plugily.projects.villagedefense.commands.arguments.data.CommandArgument;
 import plugily.projects.villagedefense.handlers.language.Messages;
-
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ThreadLocalRandom;
-import java.util.stream.Collectors;
 
 /**
  * @author Plajer

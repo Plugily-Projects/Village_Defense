@@ -2,12 +2,12 @@ package plugily.projects.villagedefense.arena.managers.spawner;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.entity.Zombie;
+import org.bukkit.entity.Creature;
 import org.bukkit.inventory.ItemStack;
 import plugily.projects.villagedefense.arena.Arena;
 import plugily.projects.villagedefense.creatures.CreatureUtils;
 
-public class SoftHardZombieSpawner implements SimpleZombieSpawner {
+public class SoftHardZombieSpawner implements SimpleEnemySpawner {
   @Override
   public int getMinWave() {
     return 4;
@@ -41,8 +41,8 @@ public class SoftHardZombieSpawner implements SimpleZombieSpawner {
   }
 
   @Override
-  public Zombie spawnZombie(Location location) {
-    Zombie hardBuster = CreatureUtils.getCreatureInitializer().spawnHardZombie(location);
+  public Creature spawn(Location location) {
+    Creature hardBuster = CreatureUtils.getCreatureInitializer().spawnHardZombie(location);
     hardBuster.getEquipment().setBoots(new ItemStack(Material.IRON_BOOTS));
     hardBuster.getEquipment().setLeggings(new ItemStack(Material.IRON_LEGGINGS));
     hardBuster.getEquipment().setChestplate(new ItemStack(Material.IRON_CHESTPLATE));

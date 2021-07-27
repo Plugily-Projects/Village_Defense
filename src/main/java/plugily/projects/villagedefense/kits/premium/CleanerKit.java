@@ -18,6 +18,7 @@
 
 package plugily.projects.villagedefense.kits.premium;
 
+import java.util.List;
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -39,8 +40,6 @@ import plugily.projects.villagedefense.kits.KitRegistry;
 import plugily.projects.villagedefense.kits.basekits.PremiumKit;
 import plugily.projects.villagedefense.user.User;
 import plugily.projects.villagedefense.utils.Utils;
-
-import java.util.List;
 
 /**
  * Created by Tom on 18/08/2014.
@@ -104,12 +103,12 @@ public class CleanerKit extends PremiumKit implements Listener {
       e.getPlayer().sendMessage(message);
       return;
     }
-    if(arena.getZombies().isEmpty()) {
+    if(arena.getEnemies().isEmpty()) {
       e.getPlayer().sendMessage(getPlugin().getChatManager().colorMessage(Messages.KITS_CLEANER_NOTHING_TO_CLEAN));
       return;
     }
     ArenaUtils.removeSpawnedZombies(arena);
-    arena.getZombies().clear();
+    arena.getEnemies().clear();
     Utils.playSound(e.getPlayer().getLocation(), "ENTITY_ZOMBIE_DEATH", "ENTITY_ZOMBIE_DEATH");
     getPlugin().getChatManager().broadcastMessage(arena, getPlugin().getChatManager()
         .formatMessage(arena, getPlugin().getChatManager().colorMessage(Messages.KITS_CLEANER_CLEANED_MAP), e.getPlayer()));

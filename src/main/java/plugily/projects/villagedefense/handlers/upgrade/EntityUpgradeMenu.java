@@ -19,6 +19,10 @@
 package plugily.projects.villagedefense.handlers.upgrade;
 
 import fr.mrmicky.fastinv.FastInv;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+import java.util.UUID;
 import net.minecraft.server.v1_8_R3.AttributeInstance;
 import net.minecraft.server.v1_8_R3.AttributeModifier;
 import net.minecraft.server.v1_8_R3.EntityInsentient;
@@ -39,6 +43,9 @@ import plugily.projects.commonsbox.minecraft.compat.VersionUtils;
 import plugily.projects.commonsbox.minecraft.compat.xseries.XMaterial;
 import plugily.projects.commonsbox.minecraft.item.ItemBuilder;
 import plugily.projects.commonsbox.minecraft.misc.MiscUtils;
+import plugily.projects.inventoryframework.gui.GuiItem;
+import plugily.projects.inventoryframework.gui.type.ChestGui;
+import plugily.projects.inventoryframework.pane.StaticPane;
 import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.api.StatsStorage;
 import plugily.projects.villagedefense.api.event.player.VillagePlayerEntityUpgradeEvent;
@@ -49,11 +56,6 @@ import plugily.projects.villagedefense.handlers.upgrade.upgrades.Upgrade;
 import plugily.projects.villagedefense.handlers.upgrade.upgrades.UpgradeBuilder;
 import plugily.projects.villagedefense.user.User;
 import plugily.projects.villagedefense.utils.Utils;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
 
 /**
  * @author Plajer

@@ -18,6 +18,9 @@
 
 package plugily.projects.villagedefense.user;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import plugily.projects.villagedefense.ConfigPreferences;
@@ -31,10 +34,6 @@ import plugily.projects.villagedefense.user.data.FileStats;
 import plugily.projects.villagedefense.user.data.MysqlManager;
 import plugily.projects.villagedefense.user.data.UserDatabase;
 import plugily.projects.villagedefense.utils.Debugger;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Created by Tom on 27/07/2014.

@@ -19,7 +19,6 @@
 package plugily.projects.villagedefense.arena;
 
 import org.bukkit.plugin.java.JavaPlugin;
-
 import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.handlers.language.LanguageManager;
 

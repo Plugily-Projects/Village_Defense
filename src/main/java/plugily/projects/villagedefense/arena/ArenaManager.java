@@ -18,6 +18,7 @@
 
 package plugily.projects.villagedefense.arena;
 
+import java.util.List;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
@@ -52,8 +53,6 @@ import plugily.projects.villagedefense.kits.KitRegistry;
 import plugily.projects.villagedefense.kits.level.GolemFriendKit;
 import plugily.projects.villagedefense.user.User;
 import plugily.projects.villagedefense.utils.Debugger;
-
-import java.util.List;
 
 /**
  * @author Plajer
@@ -404,7 +403,7 @@ public class ArenaManager {
     }
 
     arena.setTimer(plugin.getConfig().getInt("Cooldown-Before-Next-Wave", 25));
-    arena.getZombieSpawnManager().getZombieCheckerLocations().clear();
+    arena.getEnemySpawnManager().getEnemyCheckerLocations().clear();
     arena.setWave(wave + 1);
 
     Bukkit.getPluginManager().callEvent(new VillageWaveEndEvent(arena, arena.getWave()));
@@ -493,7 +492,9 @@ public class ArenaManager {
 
     for(User user : plugin.getUserManager().getUsers(arena)) {
       Player player = user.getPlayer();
-      user.getKit().reStock(player);
+      if (!user.isSpectator()) {
+        user.getKit().reStock(player);
+      }
       VersionUtils.sendTitles(player, title, subTitle, fadeIn, stay, fadeOut);
       plugin.getRewardsHandler().performReward(player, arena, Reward.RewardType.START_WAVE);
     }

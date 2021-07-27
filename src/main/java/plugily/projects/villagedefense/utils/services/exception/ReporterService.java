@@ -18,15 +18,14 @@
 
 package plugily.projects.villagedefense.utils.services.exception;
 
-import org.bukkit.plugin.java.JavaPlugin;
-import plugily.projects.villagedefense.utils.Debugger;
-
-import javax.net.ssl.HttpsURLConnection;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.logging.Level;
+import javax.net.ssl.HttpsURLConnection;
+import org.bukkit.plugin.java.JavaPlugin;
+import plugily.projects.villagedefense.utils.Debugger;
 
 /**
  * Reporter service for reporting exceptions directly to website reporter panel

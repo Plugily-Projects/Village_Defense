@@ -42,6 +42,8 @@ import plugily.projects.commonsbox.minecraft.configuration.ConfigUtils;
 import plugily.projects.commonsbox.minecraft.item.ItemBuilder;
 import plugily.projects.commonsbox.minecraft.misc.stuff.ComplementAccessor;
 import plugily.projects.commonsbox.minecraft.serialization.LocationSerializer;
+import plugily.projects.inventoryframework.gui.GuiItem;
+import plugily.projects.inventoryframework.pane.StaticPane;
 import plugily.projects.villagedefense.ConfigPreferences;
 import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.arena.Arena;

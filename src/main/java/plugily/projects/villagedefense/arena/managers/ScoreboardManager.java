@@ -18,6 +18,8 @@
 
 package plugily.projects.villagedefense.arena.managers;
 
+import java.util.ArrayList;
+import java.util.List;
 import me.clip.placeholderapi.PlaceholderAPI;
 import me.tigerhix.lib.scoreboard.ScoreboardLib;
 import me.tigerhix.lib.scoreboard.common.EntryBuilder;
@@ -33,9 +35,6 @@ import plugily.projects.villagedefense.arena.ArenaState;
 import plugily.projects.villagedefense.arena.options.ArenaOption;
 import plugily.projects.villagedefense.handlers.language.LanguageManager;
 import plugily.projects.villagedefense.user.User;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author Plajer

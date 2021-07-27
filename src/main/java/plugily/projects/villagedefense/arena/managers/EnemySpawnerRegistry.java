@@ -17,38 +17,38 @@ import plugily.projects.villagedefense.arena.managers.spawner.PlayerBusterSpawne
 import plugily.projects.villagedefense.arena.managers.spawner.SoftHardZombieSpawner;
 import plugily.projects.villagedefense.arena.managers.spawner.VillagerBusterSpawner;
 import plugily.projects.villagedefense.arena.managers.spawner.VillagerSlayerSpawner;
-import plugily.projects.villagedefense.arena.managers.spawner.ZombieSpawner;
+import plugily.projects.villagedefense.arena.managers.spawner.EnemySpawner;
 import plugily.projects.villagedefense.arena.options.ArenaOption;
 
 /**
- * The registry for all {@link ZombieSpawner}
+ * The registry for all {@link EnemySpawner}
  */
-public class ZombieSpawnerRegistry {
-  private final Set<ZombieSpawner> zombieSpawnerSet = new TreeSet<>(Collections.reverseOrder());
+public class EnemySpawnerRegistry {
+  private final Set<EnemySpawner> enemySpawnerSet = new TreeSet<>(Collections.reverseOrder());
   private final Main plugin;
 
-  public ZombieSpawnerRegistry(Main plugin) {
+  public EnemySpawnerRegistry(Main plugin) {
     this.plugin = plugin;
 
-    zombieSpawnerSet.add(new FastZombieSpawner());
-    zombieSpawnerSet.add(new VillagerSlayerSpawner());
-    zombieSpawnerSet.add(new KnockbackResistantZombieSpawner());
-    zombieSpawnerSet.add(new HardZombieSpawner());
-    zombieSpawnerSet.add(new SoftHardZombieSpawner());
-    zombieSpawnerSet.add(new PlayerBusterSpawner());
-    zombieSpawnerSet.add(new GolemBusterSpawner());
-    zombieSpawnerSet.add(new VillagerBusterSpawner());
-    zombieSpawnerSet.add(new BabyZombieSpawner());
-    zombieSpawnerSet.add(new HalfInvisibleZombieSpawner());
+    enemySpawnerSet.add(new FastZombieSpawner());
+    enemySpawnerSet.add(new VillagerSlayerSpawner());
+    enemySpawnerSet.add(new KnockbackResistantZombieSpawner());
+    enemySpawnerSet.add(new HardZombieSpawner());
+    enemySpawnerSet.add(new SoftHardZombieSpawner());
+    enemySpawnerSet.add(new PlayerBusterSpawner());
+    enemySpawnerSet.add(new GolemBusterSpawner());
+    enemySpawnerSet.add(new VillagerBusterSpawner());
+    enemySpawnerSet.add(new BabyZombieSpawner());
+    enemySpawnerSet.add(new HalfInvisibleZombieSpawner());
   }
 
   /**
-   * Spawn the zombies at the arena
+   * Spawn the enemies at the arena
    *
    * @param random the random instance
    * @param arena  the arena
    */
-  public void spawnZombies(Random random, Arena arena) {
+  public void spawnEnemies(Random random, Arena arena) {
     int wave = arena.getWave();
     int spawn = arena.getWave();
     int zombiesLimit = plugin.getConfig().getInt("Zombies-Limit", 75);
@@ -61,29 +61,29 @@ public class ZombieSpawnerRegistry {
       arena.setOptionValue(ArenaOption.ZOMBIE_SPAWN_COUNTER, 0);
     }
 
-    for (ZombieSpawner zombieSpawner : zombieSpawnerSet) {
-      zombieSpawner.spawnZombie(random, arena, spawn);
+    for (EnemySpawner enemySpawner : enemySpawnerSet) {
+      enemySpawner.spawn(random, arena, spawn);
     }
   }
 
   /**
-   * Get the set of zombie spawners
+   * Get the set of enemy spawners
    *
-   * @return the set of zombie spawners
+   * @return the set of enemy spawners
    */
-  public Set<ZombieSpawner> getZombieSpawnerSet() {
-    return zombieSpawnerSet;
+  public Set<EnemySpawner> getEnemySpawnerSet() {
+    return enemySpawnerSet;
   }
 
   /**
-   * Get the zombie spawner by its name
+   * Get the enemy spawner by its name
    *
    * @param name the name
-   * @return the zombie spawner
+   * @return the enemy spawner
    */
-  public Optional<ZombieSpawner> getSpawnerByName(String name) {
-    return zombieSpawnerSet.stream()
-        .filter(zombieSpawner -> zombieSpawner.getName().equals(name))
+  public Optional<EnemySpawner> getSpawnerByName(String name) {
+    return enemySpawnerSet.stream()
+        .filter(enemySpawner -> enemySpawner.getName().equals(name))
         .findFirst();
   }
 }
