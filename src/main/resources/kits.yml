@@ -69,5 +69,6 @@ Kit-Settings:
     Base-Amount: 10
     # The amount of the removed enemies will be increased after how many waves?
     Increase-After-Wave: 5
-    # How many amount will be added to the base amount
+    # How many amount will be added to the base amount?
+    # Set to 0 to disable
     Increase-Amount: 5

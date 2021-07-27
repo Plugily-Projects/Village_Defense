@@ -245,6 +245,7 @@ public class LanguageMigrator {
               "    # The amount of the removed enemies will be increased after how many waves?\r\n" +
               "    Increase-After-Wave: 5\r\n" +
               "    # How many amount will be added to the base amount\r\n" +
+              "    # Set to 0 to disable" +
               "    Increase-Amount: 5\r\n");
           break;
         default:
