@@ -18,6 +18,11 @@
 
 package plugily.projects.villagedefense.handlers.sign;
 
+import java.util.ArrayList;
+import java.util.EnumMap;
+import java.util.List;
+import java.util.Map;
+import java.util.logging.Level;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -46,12 +51,6 @@ import plugily.projects.villagedefense.handlers.language.LanguageManager;
 import plugily.projects.villagedefense.handlers.language.Messages;
 import plugily.projects.villagedefense.utils.Debugger;
 import plugily.projects.villagedefense.utils.constants.Constants;
-
-import java.util.ArrayList;
-import java.util.EnumMap;
-import java.util.List;
-import java.util.Map;
-import java.util.logging.Level;
 
 public class SignManager implements Listener {
 

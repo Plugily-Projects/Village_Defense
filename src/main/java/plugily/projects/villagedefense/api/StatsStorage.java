@@ -18,11 +18,10 @@
 
 package plugily.projects.villagedefense.api;
 
-import org.bukkit.entity.Player;
-import plugily.projects.villagedefense.Main;
-
 import java.util.Map;
 import java.util.UUID;
+import org.bukkit.entity.Player;
+import plugily.projects.villagedefense.Main;
 
 /**
  * @author Plajer, TomTheDeveloper

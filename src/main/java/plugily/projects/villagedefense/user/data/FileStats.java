@@ -18,12 +18,16 @@
 
 package plugily.projects.villagedefense.user.data;
 
+import java.util.Map;
+import java.util.TreeMap;
+import java.util.UUID;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.logging.Level;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.NotNull;
-
 import plugily.projects.commonsbox.database.MysqlDatabase;
 import plugily.projects.commonsbox.minecraft.configuration.ConfigUtils;
 import plugily.projects.commonsbox.sorter.SortUtils;
@@ -32,12 +36,6 @@ import plugily.projects.villagedefense.api.StatsStorage;
 import plugily.projects.villagedefense.user.User;
 import plugily.projects.villagedefense.utils.LegacyDataFixer;
 import plugily.projects.villagedefense.utils.constants.Constants;
-
-import java.util.Map;
-import java.util.TreeMap;
-import java.util.UUID;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.logging.Level;
 
 /**
  * Created by Tom on 17/06/2015.

@@ -18,20 +18,6 @@
 
 package plugily.projects.villagedefense.user.data;
 
-import org.bukkit.Bukkit;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
-
-import plugily.projects.commonsbox.database.MysqlDatabase;
-import plugily.projects.commonsbox.minecraft.configuration.ConfigUtils;
-import plugily.projects.villagedefense.Main;
-import plugily.projects.villagedefense.api.StatsStorage;
-import plugily.projects.villagedefense.user.User;
-import plugily.projects.villagedefense.utils.Debugger;
-import plugily.projects.villagedefense.utils.MessageUtils;
-import plugily.projects.villagedefense.utils.constants.Constants;
-
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -41,6 +27,18 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.UUID;
 import java.util.logging.Level;
+import org.bukkit.Bukkit;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
+import plugily.projects.commonsbox.database.MysqlDatabase;
+import plugily.projects.commonsbox.minecraft.configuration.ConfigUtils;
+import plugily.projects.villagedefense.Main;
+import plugily.projects.villagedefense.api.StatsStorage;
+import plugily.projects.villagedefense.user.User;
+import plugily.projects.villagedefense.utils.Debugger;
+import plugily.projects.villagedefense.utils.MessageUtils;
+import plugily.projects.villagedefense.utils.constants.Constants;
 
 /**
  * @author Plajer

@@ -18,6 +18,9 @@
 
 package plugily.projects.villagedefense.arena;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 import org.bukkit.Difficulty;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -32,10 +35,6 @@ import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.handlers.language.Messages;
 import plugily.projects.villagedefense.utils.Debugger;
 import plugily.projects.villagedefense.utils.constants.Constants;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * Created by Tom on 27/07/2014.
@@ -137,7 +136,7 @@ public class ArenaRegistry {
 
     if(!arenas.isEmpty()) {
       for(Arena arena : new ArrayList<>(arenas)) {
-        arena.getMapRestorerManager().clearZombiesFromArena();
+        arena.getMapRestorerManager().clearEnemiesFromArena();
         arena.getMapRestorerManager().clearVillagersFromArena();
         arena.getMapRestorerManager().clearWolvesFromArena();
         arena.getMapRestorerManager().clearGolemsFromArena();

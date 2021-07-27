@@ -18,28 +18,26 @@
 
 package plugily.projects.villagedefense.handlers.setup.components;
 
-import plugily.projects.inventoryframework.gui.GuiItem;
-import plugily.projects.inventoryframework.pane.StaticPane;
+import java.util.ArrayList;
+import java.util.List;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.Sign;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.inventory.ItemStack;
-
 import plugily.projects.commonsbox.minecraft.compat.xseries.XMaterial;
 import plugily.projects.commonsbox.minecraft.configuration.ConfigUtils;
 import plugily.projects.commonsbox.minecraft.item.ItemBuilder;
 import plugily.projects.commonsbox.minecraft.serialization.LocationSerializer;
+import plugily.projects.inventoryframework.gui.GuiItem;
+import plugily.projects.inventoryframework.pane.StaticPane;
 import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.arena.Arena;
 import plugily.projects.villagedefense.arena.ArenaRegistry;
 import plugily.projects.villagedefense.handlers.setup.SetupInventory;
 import plugily.projects.villagedefense.handlers.sign.ArenaSign;
 import plugily.projects.villagedefense.utils.constants.Constants;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author Plajer

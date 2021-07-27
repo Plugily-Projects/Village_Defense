@@ -1,5 +1,10 @@
 package plugily.projects.villagedefense.creatures.v1_8_R3;
 
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 import net.minecraft.server.v1_8_R3.AttributeInstance;
 import net.minecraft.server.v1_8_R3.AttributeModifier;
 import net.minecraft.server.v1_8_R3.EntityInsentient;
@@ -10,6 +15,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftLivingEntity;
+import org.bukkit.entity.Creature;
 import org.bukkit.entity.IronGolem;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Villager;
@@ -18,12 +24,6 @@ import org.bukkit.entity.Zombie;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import plugily.projects.villagedefense.creatures.BaseCreatureInitializer;
 import plugily.projects.villagedefense.utils.MessageUtils;
-
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
 
 public class CreatureInitializer implements BaseCreatureInitializer {
 
@@ -185,7 +185,7 @@ public class CreatureInitializer implements BaseCreatureInitializer {
     }
 
     @Override
-    public void applyFollowRange(Zombie zombie) {
+    public void applyFollowRange(Creature zombie) {
         EntityInsentient nmsEntity = (EntityInsentient) ((CraftLivingEntity) zombie).getHandle();
         AttributeInstance attributes = nmsEntity.getAttributeInstance(GenericAttributes.FOLLOW_RANGE);
         if (attributes.a(uId) == null) { // Check if the attribute is not set

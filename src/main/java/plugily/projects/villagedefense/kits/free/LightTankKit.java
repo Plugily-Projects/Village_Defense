@@ -18,10 +18,10 @@
 
 package plugily.projects.villagedefense.kits.free;
 
+import java.util.List;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-
 import plugily.projects.commonsbox.minecraft.compat.VersionUtils;
 import plugily.projects.commonsbox.minecraft.compat.xseries.XMaterial;
 import plugily.projects.commonsbox.minecraft.helper.ArmorHelper;
@@ -30,8 +30,6 @@ import plugily.projects.villagedefense.handlers.language.Messages;
 import plugily.projects.villagedefense.kits.KitRegistry;
 import plugily.projects.villagedefense.kits.basekits.FreeKit;
 import plugily.projects.villagedefense.utils.Utils;
-
-import java.util.List;
 
 /**
  * Created by Tom on 18/08/2014.

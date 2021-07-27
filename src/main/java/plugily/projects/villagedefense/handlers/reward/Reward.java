@@ -18,10 +18,9 @@
 
 package plugily.projects.villagedefense.handlers.reward;
 
+import java.util.logging.Level;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
-
-import java.util.logging.Level;
 
 /**
  * @author Plajer

@@ -18,12 +18,11 @@
 
 package plugily.projects.villagedefense.utils;
 
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-
 import java.util.HashSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 
 /**
  * @author Plajer

@@ -1,5 +1,9 @@
 package plugily.projects.villagedefense.creatures.v1_10_R1;
 
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import net.minecraft.server.v1_10_R1.EntityInsentient;
 import net.minecraft.server.v1_10_R1.EntityTypes;
 import net.minecraft.server.v1_10_R1.GenericAttributes;
@@ -14,11 +18,6 @@ import org.bukkit.entity.Zombie;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import plugily.projects.villagedefense.creatures.BaseCreatureInitializer;
 import plugily.projects.villagedefense.utils.MessageUtils;
-
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 public class CreatureInitializer implements BaseCreatureInitializer {
 

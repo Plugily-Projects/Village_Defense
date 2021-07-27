@@ -20,6 +20,9 @@ package plugily.projects.villagedefense;
 
 import com.gmail.filoghost.holographicdisplays.api.Hologram;
 import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
+import java.io.File;
+import java.util.Arrays;
+import java.util.logging.Level;
 import me.tigerhix.lib.scoreboard.ScoreboardLib;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
@@ -29,10 +32,9 @@ import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.java.JavaPluginLoader;
 import org.jetbrains.annotations.TestOnly;
-
-import plugily.projects.commonsbox.minecraft.configuration.ConfigUtils;
 import plugily.projects.commonsbox.minecraft.compat.ServerVersion;
 import plugily.projects.commonsbox.minecraft.compat.events.EventsInitializer;
+import plugily.projects.commonsbox.minecraft.configuration.ConfigUtils;
 import plugily.projects.commonsbox.minecraft.misc.MiscUtils;
 import plugily.projects.commonsbox.minecraft.serialization.InventorySerializer;
 import plugily.projects.villagedefense.api.StatsStorage;
@@ -42,7 +44,7 @@ import plugily.projects.villagedefense.arena.ArenaManager;
 import plugily.projects.villagedefense.arena.ArenaRegistry;
 import plugily.projects.villagedefense.arena.ArenaUtils;
 import plugily.projects.villagedefense.arena.managers.BungeeManager;
-import plugily.projects.villagedefense.arena.managers.ZombieSpawnerRegistry;
+import plugily.projects.villagedefense.arena.managers.EnemySpawnerRegistry;
 import plugily.projects.villagedefense.commands.arguments.ArgumentsRegistry;
 import plugily.projects.villagedefense.creatures.CreatureUtils;
 import plugily.projects.villagedefense.creatures.DoorBreakListener;
@@ -82,10 +84,6 @@ import plugily.projects.villagedefense.utils.UpdateChecker;
 import plugily.projects.villagedefense.utils.Utils;
 import plugily.projects.villagedefense.utils.services.ServiceRegistry;
 
-import java.io.File;
-import java.util.Arrays;
-import java.util.logging.Level;
-
 /**
  * Created by Tom on 12/08/2014.
  */
@@ -107,7 +105,7 @@ public class Main extends JavaPlugin {
   private FileConfiguration languageConfig;
   private HologramsRegistry hologramsRegistry;
   private FileConfiguration entityUpgradesConfig;
-  private ZombieSpawnerRegistry zombieSpawnerRegistry;
+  private EnemySpawnerRegistry enemySpawnerRegistry;
 
   private boolean forceDisable = false, holographicEnabled = false;
 
@@ -224,7 +222,7 @@ public class Main extends JavaPlugin {
     specialItemManager.registerItems();
     kitMenuHandler = new KitMenuHandler(this);
     partyHandler = new PartySupportInitializer().initialize(this);
-    zombieSpawnerRegistry = new ZombieSpawnerRegistry(this);
+    enemySpawnerRegistry = new EnemySpawnerRegistry(this);
     KitRegistry.init(this);
     User.cooldownHandlerTask();
     if(configPreferences.getOption(ConfigPreferences.Option.BUNGEE_ENABLED)) {
@@ -367,8 +365,8 @@ public class Main extends JavaPlugin {
     return registry;
   }
 
-  public ZombieSpawnerRegistry getZombieSpawnerRegistry() {
-    return zombieSpawnerRegistry;
+  public EnemySpawnerRegistry getEnemySpawnerRegistry() {
+    return enemySpawnerRegistry;
   }
 
   @Override

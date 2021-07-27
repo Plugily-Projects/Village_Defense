@@ -18,6 +18,7 @@
 
 package plugily.projects.villagedefense.commands.arguments.admin;
 
+import java.util.List;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
@@ -32,8 +33,6 @@ import plugily.projects.villagedefense.commands.arguments.data.CommandArgument;
 import plugily.projects.villagedefense.commands.arguments.data.LabelData;
 import plugily.projects.villagedefense.commands.arguments.data.LabeledCommandArgument;
 import plugily.projects.villagedefense.handlers.language.Messages;
-
-import java.util.List;
 
 /**
  * @author Plajer

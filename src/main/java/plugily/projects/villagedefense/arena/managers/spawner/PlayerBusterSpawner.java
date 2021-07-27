@@ -2,14 +2,14 @@ package plugily.projects.villagedefense.arena.managers.spawner;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.entity.Zombie;
+import org.bukkit.entity.Creature;
 import org.bukkit.inventory.ItemStack;
 import plugily.projects.commonsbox.minecraft.compat.VersionUtils;
 import plugily.projects.commonsbox.minecraft.compat.xseries.XMaterial;
 import plugily.projects.villagedefense.arena.Arena;
 import plugily.projects.villagedefense.creatures.CreatureUtils;
 
-public class PlayerBusterSpawner implements SimpleZombieSpawner {
+public class PlayerBusterSpawner implements SimpleEnemySpawner {
   @Override
   public double getSpawnRate(Arena arena, int wave, int phase, int spawnAmount) {
     if (phase == 5) {
@@ -38,8 +38,8 @@ public class PlayerBusterSpawner implements SimpleZombieSpawner {
   }
 
   @Override
-  public Zombie spawnZombie(Location location) {
-    Zombie playerBuster = CreatureUtils.getCreatureInitializer().spawnPlayerBuster(location);
+  public Creature spawn(Location location) {
+    Creature playerBuster = CreatureUtils.getCreatureInitializer().spawnPlayerBuster(location);
     playerBuster.getEquipment().setHelmet(new ItemStack(Material.TNT));
     playerBuster.getEquipment().setHelmetDropChance(0.0F);
     VersionUtils.setItemInHandDropChance(playerBuster, 0F);
