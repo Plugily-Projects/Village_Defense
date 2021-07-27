@@ -8,6 +8,7 @@ import java.util.TreeSet;
 import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.arena.Arena;
 import plugily.projects.villagedefense.arena.managers.spawner.BabyZombieSpawner;
+import plugily.projects.villagedefense.arena.managers.spawner.EnemySpawner;
 import plugily.projects.villagedefense.arena.managers.spawner.FastZombieSpawner;
 import plugily.projects.villagedefense.arena.managers.spawner.GolemBusterSpawner;
 import plugily.projects.villagedefense.arena.managers.spawner.HalfInvisibleZombieSpawner;
@@ -17,7 +18,6 @@ import plugily.projects.villagedefense.arena.managers.spawner.PlayerBusterSpawne
 import plugily.projects.villagedefense.arena.managers.spawner.SoftHardZombieSpawner;
 import plugily.projects.villagedefense.arena.managers.spawner.VillagerBusterSpawner;
 import plugily.projects.villagedefense.arena.managers.spawner.VillagerSlayerSpawner;
-import plugily.projects.villagedefense.arena.managers.spawner.EnemySpawner;
 import plugily.projects.villagedefense.arena.options.ArenaOption;
 
 /**

@@ -18,8 +18,6 @@
 
 package plugily.projects.villagedefense.arena;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.entity.Creature;
@@ -39,7 +37,6 @@ import org.bukkit.event.entity.ItemSpawnEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import plugily.projects.commonsbox.minecraft.compat.ServerVersion;
@@ -77,7 +74,7 @@ public class ArenaEvents implements Listener {
       return;
     }
     for(Arena a : ArenaRegistry.getArenas()) {
-      if(a.getVillagers().contains(e.getEntity()) && a.getZombies().contains(e.getDamager())) {
+      if(a.getVillagers().contains(e.getEntity()) && a.getEnemies().contains(e.getDamager())) {
         e.setCancelled(false);
         break;
       }
