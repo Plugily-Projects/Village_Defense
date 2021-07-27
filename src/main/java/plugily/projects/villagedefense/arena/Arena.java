@@ -74,11 +74,11 @@ public class Arena extends BukkitRunnable {
   private final String id;
 
   private final Set<Player> players = new HashSet<>();
-  private final List<Creature> enemies = new ArrayList<>();
-  private final List<Wolf> wolves = new ArrayList<>();
-  private final List<Villager> villagers = new ArrayList<>();
-  private final List<IronGolem> ironGolems = new ArrayList<>();
-  private final List<Item> droppedFleshes = new ArrayList<>();
+  private final Set<Creature> enemies = new HashSet<>();
+  private final Set<Wolf> wolves = new HashSet<>();
+  private final Set<Villager> villagers = new HashSet<>();
+  private final Set<IronGolem> ironGolems = new HashSet<>();
+  private final Set<Item> droppedFleshes = new HashSet<>();
 
   //all arena values that are integers, contains constant and floating values
   private final Map<ArenaOption, Integer> arenaOptions = new EnumMap<>(ArenaOption.class);
@@ -394,7 +394,7 @@ public class Arena extends BukkitRunnable {
    * @return list of spawned enemies in arena
    */
   @NotNull
-  public List<Creature> getEnemies() {
+  public Set<Creature> getEnemies() {
     return enemies;
   }
 
@@ -416,7 +416,7 @@ public class Arena extends BukkitRunnable {
   }
 
   @NotNull
-  public List<Item> getDroppedFleshes() {
+  public Set<Item> getDroppedFleshes() {
     return droppedFleshes;
   }
 
@@ -526,7 +526,7 @@ public class Arena extends BukkitRunnable {
    * @return alive wolves in game
    */
   @NotNull
-  public List<Wolf> getWolves() {
+  public Set<Wolf> getWolves() {
     return wolves;
   }
 
@@ -536,7 +536,7 @@ public class Arena extends BukkitRunnable {
    * @return alive iron golems in game
    */
   @NotNull
-  public List<IronGolem> getIronGolems() {
+  public Set<IronGolem> getIronGolems() {
     return ironGolems;
   }
 
@@ -546,7 +546,7 @@ public class Arena extends BukkitRunnable {
    * @return alive villagers in game
    */
   @NotNull
-  public List<Villager> getVillagers() {
+  public Set<Villager> getVillagers() {
     return villagers;
   }
 

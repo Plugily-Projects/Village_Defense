@@ -18,7 +18,7 @@
 
 package plugily.projects.villagedefense.arena.managers;
 
-import java.util.List;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
 import org.bukkit.ChatColor;
@@ -166,10 +166,10 @@ public class ShopManager {
 
           if(name.contains(plugin.getChatManager().colorMessage(Messages.SHOP_MESSAGES_GOLEM_ITEM_NAME))
               || name.contains(defaultGolemItemName)) {
-            List<IronGolem> golems = arena.getIronGolems();
+            Set<IronGolem> golems = arena.getIronGolems();
 
             if(plugin.getConfigPreferences().getOption(Option.CAN_BUY_GOLEMSWOLVES_IF_THEY_DIED)) {
-              golems = golems.stream().filter(IronGolem::isDead).collect(Collectors.toList());
+              golems = golems.stream().filter(IronGolem::isDead).collect(Collectors.toSet());
             }
 
             String spawnedName = plugin.getChatManager().colorMessage(Messages.SPAWNED_GOLEM_NAME).replace("%player%", player.getName());
@@ -196,10 +196,10 @@ public class ShopManager {
 
           if(name.contains(plugin.getChatManager().colorMessage(Messages.SHOP_MESSAGES_WOLF_ITEM_NAME))
               || name.contains(defaultWolfItemName)) {
-            List<Wolf> wolves = arena.getWolves();
+            Set<Wolf> wolves = arena.getWolves();
 
             if(plugin.getConfigPreferences().getOption(Option.CAN_BUY_GOLEMSWOLVES_IF_THEY_DIED)) {
-              wolves = wolves.stream().filter(Wolf::isDead).collect(Collectors.toList());
+              wolves = wolves.stream().filter(Wolf::isDead).collect(Collectors.toSet());
             }
 
             String spawnedName = plugin.getChatManager().colorMessage(Messages.SPAWNED_WOLF_NAME).replace("%player%", player.getName());
