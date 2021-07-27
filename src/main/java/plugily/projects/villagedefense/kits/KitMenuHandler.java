@@ -19,7 +19,6 @@
 package plugily.projects.villagedefense.kits;
 
 import fr.mrmicky.fastinv.FastInv;
-import java.util.List;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -30,9 +29,6 @@ import plugily.projects.commonsbox.minecraft.compat.VersionUtils;
 import plugily.projects.commonsbox.minecraft.compat.events.api.CBPlayerInteractEvent;
 import plugily.projects.commonsbox.minecraft.item.ItemBuilder;
 import plugily.projects.commonsbox.minecraft.item.ItemUtils;
-import plugily.projects.inventoryframework.gui.GuiItem;
-import plugily.projects.inventoryframework.gui.type.ChestGui;
-import plugily.projects.inventoryframework.pane.StaticPane;
 import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.api.event.player.VillagePlayerChooseKitEvent;
 import plugily.projects.villagedefense.arena.Arena;

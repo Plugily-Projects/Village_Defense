@@ -23,8 +23,6 @@ import java.util.Random;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import plugily.projects.commonsbox.minecraft.configuration.ConfigUtils;
-import plugily.projects.inventoryframework.gui.type.ChestGui;
-import plugily.projects.inventoryframework.pane.StaticPane;
 import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.arena.Arena;
 import plugily.projects.villagedefense.handlers.setup.components.ArenaRegisterComponent;
