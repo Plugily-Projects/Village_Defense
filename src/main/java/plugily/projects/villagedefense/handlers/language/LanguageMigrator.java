@@ -237,7 +237,9 @@ public class LanguageMigrator {
               "Kit-Settings:\r\n" +
               "  Cleaner:\r\n" +
               "    # The maximum health for the enemies to be removed\r\n" +
-              "    Max-Health-To-Clean: 2048\r\n" +
+              "    Max-Health: 2048\r\n" +
+              "    # The maximum amount of enemies that this kit can clean\r\n" +
+              "    Max-Amount: 50\r\n" +
               "    # From the start, how many enemies can this kit remove?\r\n" +
               "    Base-Amount: 10\r\n" +
               "    # The amount of the removed enemies will be increased after how many waves?\r\n" +

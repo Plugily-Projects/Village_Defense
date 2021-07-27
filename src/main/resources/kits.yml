@@ -62,7 +62,9 @@ Kit-Cooldown:
 Kit-Settings:
   Cleaner:
     # The maximum health for the enemies to be removed
-    Max-Health-To-Clean: 2048
+    Max-Health: 2048
+    # The maximum amount of enemies that this kit can remove
+    Max-Amount: 50
     # From the start, how many enemies can this kit remove?
     Base-Amount: 10
     # The amount of the removed enemies will be increased after how many waves?
