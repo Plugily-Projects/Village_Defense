@@ -138,7 +138,7 @@ public class ArenaUtils {
     boolean eachThree = toRemove.size() > 70;
     for(int i = 0; i < toRemove.size(); i++) {
       Creature creature = toRemove.get(i);
-      if(eachThree && (i % 3) == 0) {
+      if(!eachThree || (i % 3) == 0) {
         VersionUtils.sendParticles("LAVA", arena.getPlayers(), creature.getLocation(), 20);
       }
       creature.remove();
