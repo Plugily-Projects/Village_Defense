@@ -21,15 +21,8 @@ package plugily.projects.villagedefense.handlers.upgrade;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-import java.util.UUID;
-import net.minecraft.server.v1_8_R3.AttributeInstance;
-import net.minecraft.server.v1_8_R3.AttributeModifier;
-import net.minecraft.server.v1_8_R3.EntityInsentient;
-import net.minecraft.server.v1_8_R3.GenericAttributes;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.attribute.Attribute;
-import org.bukkit.craftbukkit.v1_8_R3.entity.CraftLivingEntity;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
@@ -37,11 +30,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.jetbrains.annotations.Nullable;
-import plugily.projects.commonsbox.minecraft.compat.ServerVersion;
 import plugily.projects.commonsbox.minecraft.compat.VersionUtils;
 import plugily.projects.commonsbox.minecraft.compat.xseries.XMaterial;
 import plugily.projects.commonsbox.minecraft.item.ItemBuilder;
-import plugily.projects.commonsbox.minecraft.misc.MiscUtils;
 import plugily.projects.inventoryframework.gui.GuiItem;
 import plugily.projects.inventoryframework.gui.type.ChestGui;
 import plugily.projects.inventoryframework.pane.StaticPane;
@@ -49,6 +40,7 @@ import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.api.StatsStorage;
 import plugily.projects.villagedefense.api.event.player.VillagePlayerEntityUpgradeEvent;
 import plugily.projects.villagedefense.arena.ArenaRegistry;
+import plugily.projects.villagedefense.creatures.CreatureUtils;
 import plugily.projects.villagedefense.events.EntityUpgradeListener;
 import plugily.projects.villagedefense.handlers.language.Messages;
 import plugily.projects.villagedefense.handlers.upgrade.upgrades.Upgrade;
@@ -66,9 +58,6 @@ public class EntityUpgradeMenu {
   private final String pluginPrefix;
   private final List<Upgrade> upgrades = new ArrayList<>();
   private final Main plugin;
-
-  private final UUID movementSpeedUuId = UUID.fromString("206a89dc-ae78-4c4d-b42c-3b31db3f5a7c"),
-      attackDamageUuId = UUID.fromString("206a89dc-ae78-4c4d-b42c-3b31db3f5a7d");
 
   public EntityUpgradeMenu(Main plugin) {
     this.plugin = plugin;
@@ -240,32 +229,16 @@ public class EntityUpgradeMenu {
     switch(upgrade.getId()) {
       case "Damage":
         if(en.getType() == EntityType.WOLF) {
-          if(ServerVersion.Version.isCurrentEqualOrHigher(ServerVersion.Version.v1_9_R1)) {
-            MiscUtils.getEntityAttribute((LivingEntity) en, Attribute.GENERIC_ATTACK_DAMAGE).ifPresent(ai -> ai.setBaseValue(2.0 + (tier * 3)));
-            break;
-          }
-          EntityInsentient nmsEntity = (EntityInsentient) ((CraftLivingEntity) en).getHandle();
-          AttributeInstance attributes = nmsEntity.getAttributeInstance(GenericAttributes.ATTACK_DAMAGE);
-          if (attributes.a(attackDamageUuId) == null) {
-            attributes.b(new AttributeModifier(attackDamageUuId, "attack damage multiplier", 2.0 + (tier * 3), 1));
-          }
+          CreatureUtils.getCreatureInitializer().applyDamageModifier((LivingEntity) en, 2.0 + (tier * 3));
         }
         //attribute damage doesn't exist for golems
         break;
       case "Health":
-        VersionUtils.setMaxHealth((LivingEntity) en, 100.0 + (100.0 * ((double) tier / 2.0)));
+        VersionUtils.setMaxHealth((LivingEntity) en, 100.0 + (100.0 * (tier / 2.0)));
         ((LivingEntity) en).setHealth(VersionUtils.getMaxHealth((LivingEntity) en));
         break;
       case "Speed":
-        if(ServerVersion.Version.isCurrentEqualOrHigher(ServerVersion.Version.v1_9_R1)) {
-          MiscUtils.getEntityAttribute((LivingEntity) en, Attribute.GENERIC_MOVEMENT_SPEED).ifPresent(ai -> ai.setBaseValue(0.25 + (0.25 * ((double) tier / 5.0))));
-          break;
-        }
-        EntityInsentient nmsEntity = (EntityInsentient) ((CraftLivingEntity) en).getHandle();
-        AttributeInstance attributes = nmsEntity.getAttributeInstance(GenericAttributes.MOVEMENT_SPEED);
-        if (attributes.a(movementSpeedUuId) == null) {
-          attributes.b(new AttributeModifier(movementSpeedUuId, "movement speed multiplier", 0.25 + (0.25 * ((double) tier / 5.0)), 1));
-        }
+        CreatureUtils.getCreatureInitializer().applySpeedModifier((LivingEntity) en, 0.25 + (0.25 * (tier / 5.0)));
         break;
       case "Swarm-Awareness":
       case "Final-Defense":
