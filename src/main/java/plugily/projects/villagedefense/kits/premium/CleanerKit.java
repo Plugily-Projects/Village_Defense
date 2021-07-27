@@ -111,7 +111,7 @@ public class CleanerKit extends PremiumKit implements Listener {
     int amount = getKitsConfig().getInt("Kit-Settings.Cleaner.Base-Amount", 10);
     if (amount < arena.getEnemies().size()) {
       int increaseUnit = arena.getWave() / Math.max(1, getKitsConfig().getInt("Kit-Settings.Cleaner.Base-Amount", 10));
-      amount += increaseUnit * Math.max(0, getKitsConfig().getInt("Kit-Settings.Cleaner.Increase-Amount", 10));
+      amount += increaseUnit * Math.max(0, getKitsConfig().getInt("Kit-Settings.Cleaner.Increase-Amount", 5));
     }
     ArenaUtils.removeSpawnedEnemies(arena, amount, maxHealth);
 
