@@ -57,3 +57,18 @@ Kit-Cooldown:
     Essence: 15
     Staff: 1
   Zombie-Finder: 30
+
+# The settings for some kits
+Kit-Settings:
+  Cleaner:
+    # The maximum health for the enemies to be removed
+    Max-Health: 2048
+    # The maximum amount of enemies that this kit can remove
+    Max-Amount: 50
+    # From the start, how many enemies can this kit remove?
+    Base-Amount: 10
+    # The amount of the removed enemies will be increased after how many waves?
+    Increase-After-Wave: 5
+    # How many amount will be added to the base amount?
+    # Set to 0 to disable
+    Increase-Amount: 5
