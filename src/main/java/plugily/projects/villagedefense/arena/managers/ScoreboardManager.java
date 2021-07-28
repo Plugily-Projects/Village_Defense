@@ -18,8 +18,11 @@
 
 package plugily.projects.villagedefense.arena.managers;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 import me.clip.placeholderapi.PlaceholderAPI;
 import me.tigerhix.lib.scoreboard.ScoreboardLib;
 import me.tigerhix.lib.scoreboard.common.EntryBuilder;
@@ -27,6 +30,7 @@ import me.tigerhix.lib.scoreboard.type.Entry;
 import me.tigerhix.lib.scoreboard.type.Scoreboard;
 import me.tigerhix.lib.scoreboard.type.ScoreboardHandler;
 import org.apache.commons.lang.StringUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.api.StatsStorage;
@@ -43,7 +47,9 @@ import plugily.projects.villagedefense.user.User;
  */
 public class ScoreboardManager {
 
-  private final List<Scoreboard> scoreboards = new ArrayList<>();
+  private final Map<UUID, Scoreboard> boardMap = new ConcurrentHashMap<>();
+  private final Map<UUID, org.bukkit.scoreboard.Scoreboard> lastBoardMap = new ConcurrentHashMap<>();
+  private final org.bukkit.scoreboard.Scoreboard dummyScoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
   private final Main plugin;
   private final String boardTitle;
   private final Arena arena;
@@ -61,7 +67,11 @@ public class ScoreboardManager {
    * @see User
    */
   public void createScoreboard(User user) {
-    Scoreboard scoreboard = ScoreboardLib.createScoreboard(user.getPlayer()).setHandler(new ScoreboardHandler() {
+    Player player = user.getPlayer();
+    lastBoardMap.put(player.getUniqueId(), player.getScoreboard());
+    player.setScoreboard(dummyScoreboard);
+
+    Scoreboard scoreboard = ScoreboardLib.createScoreboard(player).setHandler(new ScoreboardHandler() {
       @Override
       public String getTitle(Player player) {
         return boardTitle;
@@ -73,7 +83,7 @@ public class ScoreboardManager {
       }
     });
     scoreboard.activate();
-    scoreboards.add(scoreboard);
+    boardMap.put(player.getUniqueId(), scoreboard);
   }
 
   /**
@@ -83,21 +93,16 @@ public class ScoreboardManager {
    * @see User
    */
   public void removeScoreboard(User user) {
-    for(Scoreboard board : new ArrayList<>(scoreboards)) {
-      if(board.getHolder().equals(user.getPlayer())) {
-        scoreboards.remove(board);
-        board.deactivate();
-        return;
-      }
-    }
+    Optional.ofNullable(boardMap.remove(user.getUniqueId())).ifPresent(Scoreboard::deactivate);
+    Optional.ofNullable(lastBoardMap.remove(user.getUniqueId())).ifPresent(user.getPlayer()::setScoreboard);
   }
 
   /**
    * Forces all scoreboards to deactivate.
    */
   public void stopAllScoreboards() {
-    scoreboards.forEach(Scoreboard::deactivate);
-    scoreboards.clear();
+    boardMap.values().forEach(Scoreboard::deactivate);
+    boardMap.clear();
   }
 
   private List<Entry> formatScoreboard(User user) {

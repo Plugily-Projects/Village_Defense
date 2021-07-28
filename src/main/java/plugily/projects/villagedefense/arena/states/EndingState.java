@@ -65,7 +65,7 @@ public class EndingState implements ArenaStateHandler {
         plugin.getUserManager().addStat(user, StatsStorage.StatisticType.GAMES_PLAYED);
         user.setSpectator(false);
         user.setStat(StatsStorage.StatisticType.ORBS, 0);
-        user.removeScoreboard(arena);
+        arena.getScoreboardManager().removeScoreboard(user);
         plugin.getRewardsHandler().performReward(player, arena, Reward.RewardType.END_GAME);
       }
       plugin.getChatManager().broadcast(arena, Messages.COMMANDS_TELEPORTED_TO_THE_LOBBY);

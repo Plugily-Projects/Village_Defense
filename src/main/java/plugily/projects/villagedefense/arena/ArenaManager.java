@@ -117,9 +117,6 @@ public class ArenaManager {
     }
     arena.getPlayers().add(player);
     User user = plugin.getUserManager().getUser(player);
-    user.lastBoard = player.getScoreboard();
-    //reset scoreboard
-    player.setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
 
     arena.getScoreboardManager().createScoreboard(user);
 
@@ -260,7 +257,7 @@ public class ArenaManager {
 
     User user = plugin.getUserManager().getUser(player);
     user.setStat(StatsStorage.StatisticType.ORBS, 0);
-    user.removeScoreboard(arena);
+    arena.getScoreboardManager().removeScoreboard(user);
     arena.getPlayers().remove(player);
     if(!user.isSpectator()) {
       plugin.getChatManager().broadcastAction(arena, player, ChatManager.ActionType.LEAVE);
@@ -311,7 +308,7 @@ public class ArenaManager {
     List<String> summaryMessages = LanguageManager.getLanguageList("In-Game.Messages.Game-End-Messages.Summary-Message");
     for(Player player : arena.getPlayers()) {
       User user = plugin.getUserManager().getUser(player);
-      user.removeScoreboard(arena);
+      arena.getScoreboardManager().removeScoreboard(user);
       if(user.getStat(StatsStorage.StatisticType.HIGHEST_WAVE) <= wave) {
         if(user.isSpectator() && !plugin.getConfigPreferences().getOption(ConfigPreferences.Option.RESPAWN_AFTER_WAVE)) {
           continue;
