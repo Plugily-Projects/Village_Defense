@@ -66,8 +66,7 @@ public class SetWaveArgument {
         for(Player player : arena.getPlayers()) {
           player.sendMessage(registry.getPlugin().getChatManager().getPrefix() + message);
         }
-        ArenaUtils.removeSpawnedZombies(arena);
-        arena.getEnemies().clear();
+        ArenaUtils.removeSpawnedEnemies(arena);
         arena.setOptionValue(ArenaOption.ZOMBIES_TO_SPAWN, 0);
       }
     });

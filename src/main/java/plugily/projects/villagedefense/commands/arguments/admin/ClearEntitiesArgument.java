@@ -81,8 +81,7 @@ public class ClearEntitiesArgument {
               sender.sendMessage(registry.getPlugin().getChatManager().colorMessage(Messages.KITS_CLEANER_NOTHING_TO_CLEAN));
               return;
             }
-            ArenaUtils.removeSpawnedZombies(arena);
-            arena.getEnemies().clear();
+            ArenaUtils.removeSpawnedEnemies(arena);
             arena.setOptionValue(ArenaOption.ZOMBIES_TO_SPAWN, 0);
             Utils.playSound(((Player) sender).getLocation(), "ENTITY_ZOMBIE_DEATH", "ENTITY_ZOMBIE_DEATH");
             clearMessage = registry.getPlugin().getChatManager().colorMessage(Messages.ADMIN_MESSAGES_REMOVED_ZOMBIES);
