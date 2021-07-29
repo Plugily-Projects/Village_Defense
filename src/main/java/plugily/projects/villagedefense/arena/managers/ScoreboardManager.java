@@ -49,6 +49,7 @@ public class ScoreboardManager {
 
   private final Map<UUID, Scoreboard> boardMap = new ConcurrentHashMap<>();
   private final Map<UUID, org.bukkit.scoreboard.Scoreboard> lastBoardMap = new ConcurrentHashMap<>();
+  private final org.bukkit.scoreboard.Scoreboard dummyBoard = Bukkit.getScoreboardManager().getNewScoreboard();
   private final Main plugin;
   private final String boardTitle;
   private final Arena arena;
@@ -68,6 +69,7 @@ public class ScoreboardManager {
   public void createScoreboard(User user) {
     Player player = user.getPlayer();
     lastBoardMap.put(player.getUniqueId(), player.getScoreboard());
+    player.setScoreboard(dummyBoard);
 
     Scoreboard scoreboard = ScoreboardLib.createScoreboard(player).setHandler(new ScoreboardHandler() {
       @Override
