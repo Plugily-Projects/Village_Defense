@@ -63,11 +63,12 @@ public class KitMenuHandler implements Listener {
   }
 
   public void createMenu(Player player) {
-    ChestGui gui = new ChestGui(Utils.serializeInt(KitRegistry.getKits().size()) / 9, plugin.getChatManager().colorMessage(Messages.KITS_OPEN_KIT_MENU));
+    List<Kit> kits = KitRegistry.getKits();
+    ChestGui gui = new ChestGui(Utils.serializeInt(kits.size()) / 9, plugin.getChatManager().colorMessage(Messages.KITS_OPEN_KIT_MENU));
     gui.setOnGlobalClick(event -> event.setCancelled(true));
     StaticPane pane = new StaticPane(9, gui.getRows());
     gui.addPane(pane);
-    List<Kit> kits = KitRegistry.getKits();
+
     for(int i = 0; i < kits.size(); i++) {
       Kit kit = kits.get(i);
       ItemStack itemStack = kit.getItemStack();

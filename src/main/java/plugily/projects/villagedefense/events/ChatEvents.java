@@ -56,7 +56,7 @@ public class ChatEvents implements Listener {
       if(!plugin.getConfigPreferences().getOption(ConfigPreferences.Option.DISABLE_SEPARATE_CHAT)) {
         for(Arena loopArena : ArenaRegistry.getArenas()) {
           for(Player player : loopArena.getPlayers()) {
-            if(event.getRecipients().contains(player) && !plugin.getArgumentsRegistry().getSpyChat().isSpyChatEnabled(player)) {
+            if(!plugin.getArgumentsRegistry().getSpyChat().isSpyChatEnabled(player)) {
               event.getRecipients().remove(player);
             }
           }
@@ -91,10 +91,13 @@ public class ChatEvents implements Listener {
     } else {
       formatted = StringUtils.replace(formatted, "%kit%", user.getKit().getName());
     }
-    formatted = StringUtils.replace(formatted, "%player%", user.getPlayer().getName());
+
+    Player player = user.getPlayer();
+
+    formatted = StringUtils.replace(formatted, "%player%", player.getName());
     formatted = StringUtils.replace(formatted, "%message%", "%2$s");
-    if(plugin.getServer().getPluginManager().isPluginEnabled("PlaceholderAPI") && PlaceholderAPI.containsPlaceholders(formatted)) {
-      formatted = PlaceholderAPI.setPlaceholders(user.getPlayer(), formatted);
+    if(plugin.getServer().getPluginManager().isPluginEnabled("PlaceholderAPI")) {
+      formatted = PlaceholderAPI.setPlaceholders(player, formatted);
     }
     return formatted;
   }
