@@ -193,6 +193,15 @@ public class Main extends JavaPlugin {
       getServer().getPluginManager().disablePlugin(this);
       return false;
     }
+    if(ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_17_R1)) {
+      MessageUtils.thisVersionIsNotSupported();
+      Debugger.sendConsoleMsg("&cYour server version is not supported by Village Defense!");
+      Debugger.sendConsoleMsg("&cSadly, we must shut off. Maybe you consider changing your server version?");
+      Debugger.sendConsoleMsg("&cWe only support the latest build of 1.17! Use a newer version!");
+      forceDisable = true;
+      getServer().getPluginManager().disablePlugin(this);
+      return false;
+    }
     return true;
   }
 
