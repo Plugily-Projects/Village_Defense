@@ -18,6 +18,11 @@
 
 package plugily.projects.villagedefense.user.data;
 
+import java.util.Map;
+import java.util.UUID;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import plugily.projects.commonsbox.database.MysqlDatabase;
 import plugily.projects.villagedefense.api.StatsStorage;
 import plugily.projects.villagedefense.user.User;
 
@@ -50,4 +55,33 @@ public interface UserDatabase {
    */
   void loadStatistics(User user);
 
+  /**
+   * Get all UUID's sorted ascending by Statistic Type
+   *
+   * @param stat Statistic type to get (kills, deaths etc.)
+   * @return Map of UUID keys and Integer values sorted in ascending order of requested statistic type
+   */
+  @NotNull
+  Map<UUID, Integer> getStats(StatsStorage.StatisticType stat);
+
+  /**
+   * Disable the database
+   */
+  void disable();
+
+
+  /**
+   * Get the MySQL Database if there is any
+   * @return MySQL database
+   */
+  MysqlDatabase getMySQLDatabase();
+
+  /**
+   * Get the name of the player providing the UUID
+   *
+   * @param uuid the UUID
+   * @return the player's name
+   */
+  @Nullable
+  String getPlayerName(UUID uuid);
 }

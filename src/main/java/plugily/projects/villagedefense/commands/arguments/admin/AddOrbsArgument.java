@@ -18,11 +18,12 @@
 
 package plugily.projects.villagedefense.commands.arguments.admin;
 
+import java.util.Arrays;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import pl.plajerlair.commonsbox.number.NumberUtils;
+import plugily.projects.commonsbox.number.NumberUtils;
 import plugily.projects.villagedefense.api.StatsStorage;
 import plugily.projects.villagedefense.arena.ArenaRegistry;
 import plugily.projects.villagedefense.commands.arguments.ArgumentsRegistry;
@@ -31,8 +32,6 @@ import plugily.projects.villagedefense.commands.arguments.data.LabelData;
 import plugily.projects.villagedefense.commands.arguments.data.LabeledCommandArgument;
 import plugily.projects.villagedefense.handlers.language.Messages;
 import plugily.projects.villagedefense.user.User;
-
-import java.util.Arrays;
 
 /**
  * @author Plajer
@@ -68,9 +67,11 @@ public class AddOrbsArgument {
           target = (Player) sender;
         }
 
-        if(NumberUtils.isInteger(args[1])) {
+        java.util.Optional<Integer> opt = NumberUtils.parseInt(args[1]);
+
+        if(opt.isPresent()) {
           User user = registry.getPlugin().getUserManager().getUser(target);
-          user.setStat(StatsStorage.StatisticType.ORBS, user.getStat(StatsStorage.StatisticType.ORBS) + Integer.parseInt(args[1]));
+          user.setStat(StatsStorage.StatisticType.ORBS, user.getStat(StatsStorage.StatisticType.ORBS) + opt.get());
           sender.sendMessage(registry.getPlugin().getChatManager().getPrefix() + registry.getPlugin().getChatManager().colorMessage(Messages.COMMANDS_ADMIN_ADDED_ORBS));
           target.sendMessage(registry.getPlugin().getChatManager().getPrefix() + registry.getPlugin().getChatManager().colorMessage(Messages.COMMANDS_ADMIN_RECEIVED_ORBS).replace("%orbs%", args[1]));
         } else {

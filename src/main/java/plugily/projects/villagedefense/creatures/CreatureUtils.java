@@ -18,30 +18,27 @@
 
 package plugily.projects.villagedefense.creatures;
 
-import net.minecraft.server.v1_8_R3.AttributeInstance;
-import net.minecraft.server.v1_8_R3.AttributeModifier;
-import net.minecraft.server.v1_8_R3.EntityInsentient;
-import net.minecraft.server.v1_8_R3.GenericAttributes;
-import org.bukkit.ChatColor;
-import org.bukkit.attribute.Attribute;
-import org.bukkit.craftbukkit.v1_8_R3.entity.CraftLivingEntity;
-import org.bukkit.entity.Zombie;
-import pl.plajerlair.commonsbox.minecraft.compat.ServerVersion;
-import pl.plajerlair.commonsbox.minecraft.compat.VersionUtils;
-import pl.plajerlair.commonsbox.minecraft.misc.MiscUtils;
-import pl.plajerlair.commonsbox.string.StringFormatUtils;
-import plugily.projects.villagedefense.Main;
-import plugily.projects.villagedefense.arena.Arena;
-import plugily.projects.villagedefense.arena.options.ArenaOption;
-import plugily.projects.villagedefense.handlers.language.LanguageManager;
-
 import java.lang.reflect.Field;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.logging.Level;
+import org.bukkit.ChatColor;
+import org.bukkit.entity.Creature;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.IronGolem;
+import org.bukkit.entity.Player;
+import org.bukkit.entity.Villager;
+import org.bukkit.entity.Wolf;
+import plugily.projects.commonsbox.minecraft.compat.ServerVersion;
+import plugily.projects.commonsbox.minecraft.compat.VersionUtils;
+import plugily.projects.commonsbox.string.StringFormatUtils;
+import plugily.projects.villagedefense.Main;
+import plugily.projects.villagedefense.arena.Arena;
+import plugily.projects.villagedefense.arena.options.ArenaOption;
+import plugily.projects.villagedefense.handlers.language.LanguageManager;
 
 /**
  * @author Plajer
@@ -55,9 +52,8 @@ public class CreatureUtils {
   private static String[] villagerNames = ("Jagger,Kelsey,Kelton,Haylie,Harlow,Howard,Wulffric,Winfred,Ashley,Bailey,Beckett,Alfredo,Alfred,Adair,Edgar,ED,Eadwig,Edgaras,Buckley,Stanley,Nuffley,"
       + "Mary,Jeffry,Rosaly,Elliot,Harry,Sam,Rosaline,Tom,Ivan,Kevin,Adam").split(",");
   private static Main plugin;
+  private static BaseCreatureInitializer creatureInitializer;
   private static final List<CachedObject> cachedObjects = new ArrayList<>();
-
-  private static final UUID uId = UUID.fromString("206a89dc-ae78-4c4d-b42c-3b31db3f5a7e");
 
   private CreatureUtils() {
   }
@@ -67,6 +63,40 @@ public class CreatureUtils {
     zombieSpeed = (float) plugin.getConfig().getDouble("Zombie-Speed", 1.3);
     babyZombieSpeed = (float) plugin.getConfig().getDouble("Mini-Zombie-Speed", 2.0);
     villagerNames = LanguageManager.getLanguageMessage("In-Game.Villager-Names").split(",");
+    creatureInitializer = initCreatureInitializer();
+  }
+
+  public static BaseCreatureInitializer initCreatureInitializer() {
+    switch (ServerVersion.Version.getCurrent()) {
+      case v1_8_R3:
+        return new plugily.projects.villagedefense.creatures.v1_8_R3.CreatureInitializer();
+      case v1_9_R1:
+        return new plugily.projects.villagedefense.creatures.v1_9_R1.CreatureInitializer();
+      case v1_9_R2:
+        return new plugily.projects.villagedefense.creatures.v1_9_R2.CreatureInitializer();
+      case v1_10_R1:
+        return new plugily.projects.villagedefense.creatures.v1_10_R1.CreatureInitializer();
+      case v1_11_R1:
+        return new plugily.projects.villagedefense.creatures.v1_11_R1.CreatureInitializer();
+      case v1_12_R1:
+        return new plugily.projects.villagedefense.creatures.v1_12_R1.CreatureInitializer();
+      case v1_13_R1:
+        return new plugily.projects.villagedefense.creatures.v1_13_R1.CreatureInitializer();
+      case v1_13_R2:
+        return new plugily.projects.villagedefense.creatures.v1_13_R2.CreatureInitializer();
+      case v1_14_R1:
+        return new plugily.projects.villagedefense.creatures.v1_14_R1.CreatureInitializer();
+      case v1_15_R1:
+        return new plugily.projects.villagedefense.creatures.v1_15_R1.CreatureInitializer();
+      case v1_16_R1:
+        return new plugily.projects.villagedefense.creatures.v1_16_R1.CreatureInitializer();
+      case v1_16_R2:
+        return new plugily.projects.villagedefense.creatures.v1_16_R2.CreatureInitializer();
+      case v1_16_R3:
+        return new plugily.projects.villagedefense.creatures.v1_16_R3.CreatureInitializer();
+      default:
+        return new plugily.projects.villagedefense.creatures.v1_17_R2.CreatureInitializer();
+    }
   }
 
   public static Object getPrivateField(String fieldName, Class<?> clazz, Object object) {
@@ -75,23 +105,33 @@ public class CreatureUtils {
         return cachedObject.getObject();
       }
     }
-    Field field;
-    Object o = null;
     try {
-      field = clazz.getDeclaredField(fieldName);
+      Field field = clazz.getDeclaredField(fieldName);
 
       AccessController.doPrivileged((PrivilegedAction<Object>) () -> {
         field.setAccessible(true);
         return null;
       });
 
-      o = field.get(object);
+      Object o = field.get(object);
       cachedObjects.add(new CachedObject(fieldName, clazz, o));
+      return o;
     } catch(NoSuchFieldException | IllegalAccessException e) {
       plugin.getLogger().log(Level.WARNING, "Failed to retrieve private field of object " + object.getClass() + "!");
       plugin.getLogger().log(Level.WARNING, e.getMessage() + " (fieldName " + fieldName + ", class " + clazz.getName() + ")");
     }
-    return o;
+    return null;
+  }
+
+  /**
+   * Check if the given entity is a arena's enemy.
+   * We define the enemy as it's not the player, the villager, the wolf and the iron golem
+   *
+   * @param entity the entity
+   * @return true if it is
+   */
+  public static boolean isEnemy(Entity entity) {
+    return entity instanceof Creature && !(entity instanceof Player || entity instanceof Villager || entity instanceof Wolf || entity instanceof IronGolem);
   }
 
   /**
@@ -101,16 +141,8 @@ public class CreatureUtils {
    * @param zombie zombie to apply attributes for
    * @param arena  arena to get health multiplier from
    */
-  public static void applyAttributes(Zombie zombie, Arena arena) {
-    if(ServerVersion.Version.isCurrentEqualOrHigher(ServerVersion.Version.v1_9_R1)) {
-      MiscUtils.getEntityAttribute(zombie, Attribute.GENERIC_FOLLOW_RANGE).ifPresent(ai -> ai.setBaseValue(200.0D));
-    } else {
-      EntityInsentient nmsEntity = (EntityInsentient) ((CraftLivingEntity) zombie).getHandle();
-      AttributeInstance attributes = nmsEntity.getAttributeInstance(GenericAttributes.FOLLOW_RANGE);
-      if (attributes.a(uId) == null) { // Check if the attribute is not set
-        attributes.b(new AttributeModifier(uId, "follow range multiplier", 200.0D, 1));
-      }
-    }
+  public static void applyAttributes(Creature zombie, Arena arena) {
+    creatureInitializer.applyFollowRange(zombie);
     VersionUtils.setMaxHealth(zombie, VersionUtils.getMaxHealth(zombie) + arena.getOption(ArenaOption.ZOMBIE_DIFFICULTY_MULTIPLIER));
     zombie.setHealth(VersionUtils.getMaxHealth(zombie));
     if(plugin.getConfig().getBoolean("Simple-Zombie-Health-Bar-Enabled", true)) {
@@ -132,7 +164,15 @@ public class CreatureUtils {
     return villagerNames.clone();
   }
 
+  public static String getRandomVillagerName() {
+    return villagerNames[villagerNames.length == 1 ? 0 : ThreadLocalRandom.current().nextInt(villagerNames.length)];
+  }
+
   public static Main getPlugin() {
     return plugin;
+  }
+
+  public static BaseCreatureInitializer getCreatureInitializer() {
+    return creatureInitializer;
   }
 }

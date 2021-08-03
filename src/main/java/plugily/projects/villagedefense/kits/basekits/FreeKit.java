@@ -18,10 +18,22 @@
 
 package plugily.projects.villagedefense.kits.basekits;
 
+import org.bukkit.Material;
+import org.bukkit.inventory.ItemStack;
+import plugily.projects.commonsbox.minecraft.item.ItemBuilder;
+
 /**
  * Created by Tom on 25/07/2014.
  */
 public abstract class FreeKit extends Kit {
 
+  public abstract Material getMaterial();
 
+  @Override
+  public ItemStack getItemStack() {
+    return new ItemBuilder(getMaterial())
+        .name(getName())
+        .lore(getDescription())
+        .build();
+  }
 }

@@ -18,6 +18,8 @@
 
 package plugily.projects.villagedefense.commands.arguments.admin;
 
+import java.util.HashSet;
+import java.util.Set;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import plugily.projects.villagedefense.commands.arguments.ArgumentsRegistry;
@@ -25,9 +27,6 @@ import plugily.projects.villagedefense.commands.arguments.data.CommandArgument;
 import plugily.projects.villagedefense.commands.arguments.data.LabelData;
 import plugily.projects.villagedefense.commands.arguments.data.LabeledCommandArgument;
 import plugily.projects.villagedefense.handlers.language.Messages;
-
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * @author Plajer
@@ -45,9 +44,7 @@ public class SpyChatArgument {
       @Override
       public void execute(CommandSender sender, String[] args) {
         Player player = (Player) sender;
-        if(isSpyChatEnabled(player)) {
-          disableSpyChat(player);
-        } else {
+        if(!disableSpyChat(player)) {
           spyChatters.add(player);
         }
         sender.sendMessage(registry.getPlugin().getChatManager().getPrefix() +
@@ -61,8 +58,7 @@ public class SpyChatArgument {
     return spyChatters.contains(player);
   }
 
-  public void disableSpyChat(Player player) {
-    spyChatters.remove(player);
+  public boolean disableSpyChat(Player player) {
+    return spyChatters.remove(player);
   }
-
 }

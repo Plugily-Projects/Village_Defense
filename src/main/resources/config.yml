@@ -16,7 +16,8 @@
 #    pt_br - Português Brasileiro   lt - Lietuvių kalba
 #    it - Lingua italiana           ru - Русский язык
 #    kr - Korean                    nl - Dutch
-#    zh - Chinese (Traditional)
+#    zh - Chinese (Traditional)     tr - Türk dili
+#    th - Thai
 locale: default
 
 # Enable bossbar support?
@@ -24,7 +25,7 @@ Bossbar-Enabled: true
 
 # Should we hook into bungee cord? (If you wanna use arena per server option)
 # You STILL need to use external addon for HUB server game signs
-# Check here for more info: https://wiki.plugily.xyz/minecraft/villagedefense/addons.php#bungee-signs-not-official
+# Check here for more info: https://wiki.plugily.xyz/villagedefense/support/servertips#bungeecord-lobby-signs
 BungeeActivated: false
 
 # Should we hook into Holograpic Displays? (If you wanna use (leaderboard)holograms)
@@ -50,13 +51,13 @@ InGame-Join-Respawn: true
 # You can create custom players permissions here.
 # Player with your custom permission will get % bonus orbs
 # when he lift up experience from killed zombie.
-# More here: https://wiki.plugily.xyz/minecraft/villagedefense/cmds_and_perms.php#custom-permissions
+# More here: https://wiki.plugily.xyz/villagedefense/setup/cmdsandperms#custom-permissions
 CustomPermissions:
   # Player with permission my-permission-one get 10% more orbs
   # Do not use dots (.), they won't work.
   my-permission-one: 10
 
-# Basic permissions for game, permissions explained here: https://wiki.plugily.xyz/minecraft/villagedefense/cmds_and_perms.php#basic-permissions
+# Basic permissions for game, permissions explained here: https://wiki.plugily.xyz/villagedefense/setup/cmdsandperms#basic-permissions
 Basic-Permissions:
   Full-Games-Permission: "villagedefense.fullgames"
   Vip-Permission: "villagedefense.vip"
@@ -178,18 +179,6 @@ Wave-Limit:
   # Limit of waves, if this wave ends game will end
   Limit: 25
 
-Wave-Title-Messages:
-  # Title times specified in game ticks: fade in, stay, fade out
-
-  StartWave:
-    Times: "20, 30, 20"
-    Title: ""
-    SubTitle: ""
-
-  EndWave:
-    Times: "20, 30, 20"
-    Title: ""
-    SubTitle: ""
 
 #After how many zombies should we limit them?
 #Once limit is reached zombies get more health so it's still harder each wave
@@ -216,6 +205,25 @@ Disable-Fall-Damage: false
 # Should players get no drowning damage?
 Disable-Drowning-Damage: false
 
+# How many villagers will be spawned in a arena?
+Villager-Amount: 10
+
+# How many orbs should the players lose after they dead?
+# The default is 0, so their orbs will be set to 0.
+# The value should be 1 or higher.
+Orbs-To-Lose-After-Death: 0
+
+# Should the orbs kept after player death?
+# true - player's orbs will be kept after death
+# false - player's orbs will be set according to the above option.
+Keep-Orbs-After-Death: false
+
+# Should the name tag of these mobs always visible?
+Name-Visible:
+  Golem: true
+  Wolf: true
+  Villager: true
+
 Arena-Selector:
   # Change items of arena selector
   State-Item:
@@ -226,6 +234,6 @@ Arena-Selector:
     Restarting: RED_wool
 
 # Don't modify.
-Version: 17
+Version: 18
 
 # No way! You've reached the end! But... where's the dragon!?

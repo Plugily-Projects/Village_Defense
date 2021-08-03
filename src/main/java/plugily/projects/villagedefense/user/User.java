@@ -18,6 +18,10 @@
 
 package plugily.projects.villagedefense.user;
 
+import java.util.EnumMap;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import plugily.projects.villagedefense.Main;
@@ -28,11 +32,6 @@ import plugily.projects.villagedefense.arena.ArenaRegistry;
 import plugily.projects.villagedefense.handlers.language.Messages;
 import plugily.projects.villagedefense.kits.KitRegistry;
 import plugily.projects.villagedefense.kits.basekits.Kit;
-
-import java.util.EnumMap;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
 
 /**
  * Created by Tom on 27/07/2014.
@@ -102,34 +101,38 @@ public class User {
   }
 
   public int getStat(StatsStorage.StatisticType s) {
-    if(!stats.containsKey(s)) {
-      stats.put(s, 0);
-      return 0;
-    }
-
-    return stats.getOrDefault(s, 0);
+    return stats.computeIfAbsent(s, t -> 0);
   }
 
   public void setStat(StatsStorage.StatisticType s, int i) {
     stats.put(s, i);
 
     //statistics manipulation events are called async when using mysql
-    Bukkit.getScheduler().runTask(plugin, () -> Bukkit.getPluginManager().callEvent(new VillagePlayerStatisticChangeEvent(getArena(), getPlayer(), s, i)));
+    Bukkit.getScheduler().runTask(plugin, () -> {
+      Player player = getPlayer();
+      Bukkit.getPluginManager().callEvent(new VillagePlayerStatisticChangeEvent(ArenaRegistry.getArena(player), player, s, i));
+    });
   }
 
   public void addStat(StatsStorage.StatisticType s, int i) {
     stats.put(s, getStat(s) + i);
 
     //statistics manipulation events are called async when using mysql
-    Bukkit.getScheduler().runTask(plugin, () -> Bukkit.getPluginManager().callEvent(new VillagePlayerStatisticChangeEvent(getArena(), getPlayer(), s, getStat(s))));
+    Bukkit.getScheduler().runTask(plugin, () -> {
+      Player player = getPlayer();
+      Bukkit.getPluginManager().callEvent(new VillagePlayerStatisticChangeEvent(ArenaRegistry.getArena(player), player, s, getStat(s)));
+    });
   }
 
   public boolean checkCanCastCooldownAndMessage(String cooldown) {
-    if(getCooldown(cooldown) <= 0) {
+    long time = getCooldown(cooldown);
+
+    if(time <= 0) {
       return true;
     }
+
     String message = plugin.getChatManager().colorMessage(Messages.KITS_ABILITY_STILL_ON_COOLDOWN);
-    message = message.replaceFirst("%COOLDOWN%", Long.toString(getCooldown(cooldown)));
+    message = message.replaceFirst("%COOLDOWN%", Long.toString(time));
     getPlayer().sendMessage(message);
     return false;
   }
@@ -139,7 +142,8 @@ public class User {
   }
 
   public long getCooldown(String s) {
-    return (!cooldowns.containsKey(s) || cooldowns.get(s) <= cooldownCounter) ? 0 : cooldowns.get(s) - cooldownCounter;
+    long coold = cooldowns.getOrDefault(s, 0L);
+    return coold <= cooldownCounter ? 0 : coold - cooldownCounter;
   }
 
 }

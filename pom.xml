@@ -24,15 +24,15 @@
 
     <groupId>plugily.projects</groupId>
     <artifactId>villagedefense</artifactId>
-    <version>4.5.9</version>
+    <version>4.6.0</version>
     <name>VillageDefense</name>
 
     <properties>
         <java.version>1.8</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <sonar.core.codeCoveragePlugin>jacoco</sonar.core.codeCoveragePlugin>
-        <sonar.jacoco.reportPath>${project.basedir}/../target/jacoco.exec</sonar.jacoco.reportPath>
-        <sonar.language>java</sonar.language>
+        <sonar.projectKey>Plugily-Projects_Village_Defense</sonar.projectKey>
+        <sonar.organization>plugily-projects</sonar.organization>
+        <sonar.host.url>https://sonarcloud.io</sonar.host.url>
     </properties>
 
     <licenses>
@@ -54,38 +54,34 @@
         </repository>
         <repository>
             <id>papi-repo</id>
-            <url>http://repo.extendedclip.com/content/repositories/placeholderapi/</url>
+            <url>https://repo.extendedclip.com/content/repositories/placeholderapi/</url>
         </repository>
         <repository>
             <id>plugilyprojects-repo</id>
             <url>https://maven.plugily.xyz/</url>
         </repository>
         <repository>
-            <id>bstats-repo</id>
-            <url>https://repo.codemc.org/repository/maven-public</url>
-        </repository>
-        <repository>
-            <id>filoghost-repo</id>
-            <url>https://ci.filoghost.me/plugin/repository/everything/</url>
-        </repository>
-        <repository>
             <id>simonsators-repo</id>
-            <url>http://simonsator.de/repo/</url>
+            <url>https://simonsator.de/repo/</url>
         </repository>
         <repository>
             <id>codemc-repo</id>
             <url>https://repo.codemc.org/repository/maven-public/</url>
         </repository>
+        <repository>
+            <id>alessiodp-repo</id>
+            <url>https://repo.alessiodp.com/releases/</url>
+        </repository>
     </repositories>
 
     <dependencies>
-        <!-- Spigot APIs -->
         <dependency>
-            <groupId>com.destroystokyo.paper</groupId>
+            <groupId>io.papermc.paper</groupId>
             <artifactId>paper-api</artifactId>
-            <version>1.16.5-R0.1-SNAPSHOT</version>
+            <version>1.17.1-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
+        <!-- Spigot APIs -->
         <dependency>
             <groupId>1.8_R1</groupId>
             <artifactId>spigot_1_8_R1</artifactId>
@@ -177,48 +173,56 @@
             <scope>system</scope>
             <systemPath>${project.basedir}/lib/spigot/1.16.4-R0.1.jar</systemPath>
         </dependency>
+        <dependency>
+            <groupId>1.17_R2</groupId>
+            <artifactId>spigot_1_17_R2</artifactId>
+            <version>1.17.1</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/lib/spigot/1.17.1-R0.1.jar</systemPath>
+        </dependency>
         <!-- Spigot APIs -->
         <dependency>
             <groupId>com.gmail.filoghost.holographicdisplays</groupId>
             <artifactId>holographicdisplays-api</artifactId>
-            <version>2.3.1</version>
+            <version>2.4.0</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>pl.plajer</groupId>
+            <groupId>plugily.projects</groupId>
             <artifactId>commons-box-classic</artifactId>
-            <version>1.2.7</version>
+            <version>1.3.3</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>pl.plajer</groupId>
+            <groupId>plugily.projects</groupId>
             <artifactId>commons-box-database</artifactId>
-            <version>1.2.7</version>
+            <version>1.3.3</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>pl.plajer</groupId>
+            <groupId>plugily.projects</groupId>
             <artifactId>commons-box-minecraft</artifactId>
-            <version>1.2.7</version>
+            <version>1.3.3</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>me.tigerhix.lib</groupId>
             <artifactId>scoreboard</artifactId>
-            <version>1.0.6</version>
+            <version>1.0.9</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>org.bstats</groupId>
             <artifactId>bstats-bukkit</artifactId>
-            <version>2.1.0</version>
+            <version>2.2.1</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>com.github.stefvanschie.inventoryframework</groupId>
+            <groupId>plugily.projects.inventoryframework</groupId>
             <artifactId>IF</artifactId>
-            <version>0.5.19</version>
+            <version>0.10.0</version>
             <scope>compile</scope>
+            <classifier>legacy-jar-with-dependencies</classifier>
         </dependency>
         <dependency>
             <groupId>me.clip</groupId>
@@ -237,23 +241,6 @@
             <artifactId>jsr305</artifactId>
             <version>3.0.2</version>
             <scope>provided</scope>
-        </dependency>
-        <!-- https://mvnrepository.com/artifact/junit/junit -->
-        <dependency>
-            <groupId>com.github.seeseemelk</groupId>
-            <artifactId>MockBukkit-v1.13</artifactId>
-            <version>0.1.1</version>
-            <scope>test</scope>
-            <exclusions>
-            	<exclusion>
-            		<groupId>commons-io</groupId>
-            		<artifactId>commons-io</artifactId>
-            	</exclusion>
-            	<exclusion>
-            		<groupId>org.bukkit</groupId>
-            		<artifactId>bukkit</artifactId>
-            	</exclusion>
-            </exclusions>
         </dependency>
         <dependency>
             <groupId>de.simonsator</groupId>
@@ -280,23 +267,23 @@
             <version>1.0-SNAPSHOT</version>
             <scope>provided</scope>
             <exclusions>
-            	<exclusion>
-            		<groupId>redis.clients</groupId>
-            		<artifactId>jedis</artifactId>
-            	</exclusion>
+                <exclusion>
+                    <groupId>redis.clients</groupId>
+                    <artifactId>jedis</artifactId>
+                </exclusion>
             </exclusions>
         </dependency>
         <dependency>
             <groupId>com.alessiodp.parties</groupId>
             <artifactId>parties-api</artifactId>
-            <version>2.6.14</version>
+            <version>3.1.0</version>
             <scope>provided</scope>
         </dependency>
         <!-- https://mvnrepository.com/artifact/org.jetbrains/annotations -->
         <dependency>
             <groupId>org.jetbrains</groupId>
             <artifactId>annotations</artifactId>
-            <version>20.1.0</version>
+            <version>21.0.1</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>
@@ -323,7 +310,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
-                <version>3.2.0</version>
+                <version>3.3.0</version>
                 <configuration>
                     <windowtitle>Village Defense API docs for v${project.version}</windowtitle>
                     <description>Minecraft cooperation minigame.
@@ -374,7 +361,7 @@
                         <configuration>
                             <relocations>
                                 <relocation>
-                                    <pattern>com.github.stefvanschie.inventoryframework</pattern>
+                                    <pattern>plugily.projects.inventoryframework</pattern>
                                     <shadedPattern>plugily.projects.villagedefense.utils.inventoryframework
                                     </shadedPattern>
                                 </relocation>
@@ -387,8 +374,8 @@
                                     <shadedPattern>plugily.projects.villagedefense.utils.scoreboard</shadedPattern>
                                 </relocation>
                                 <relocation>
-                                    <pattern>pl.plajerlair.commonsbox</pattern>
-                                    <shadedPattern>plugily.projects.villagedefense.plajerlair.commonsbox</shadedPattern>
+                                    <pattern>plugily.projects.commonsbox</pattern>
+                                    <shadedPattern>plugily.projects.villagedefense.commonsbox</shadedPattern>
                                 </relocation>
                                 <relocation>
                                     <pattern>org.bstats</pattern>
@@ -411,34 +398,6 @@
                 </configuration>
             </plugin>
             <!-- External beta versions discord deployer plugin -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.0.0-M5</version>
-            </plugin>
-            <plugin>
-                <groupId>org.jacoco</groupId>
-                <artifactId>jacoco-maven-plugin</artifactId>
-                <version>0.7.2.201409121644</version>
-                <configuration>
-                    <append>true</append>
-                </configuration>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>prepare-agent</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>post-unit-test</id>
-                        <phase>test</phase>
-                        <goals>
-                            <goal>report</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-
         </plugins>
         <extensions>
             <extension>

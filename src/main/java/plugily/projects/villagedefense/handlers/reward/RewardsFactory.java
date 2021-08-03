@@ -18,25 +18,24 @@
 
 package plugily.projects.villagedefense.handlers.reward;
 
-import org.apache.commons.lang.StringUtils;
-import org.bukkit.Bukkit;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.entity.Player;
-import pl.plajerlair.commonsbox.minecraft.configuration.ConfigUtils;
-import pl.plajerlair.commonsbox.minecraft.engine.ScriptEngine;
-import plugily.projects.villagedefense.Main;
-import plugily.projects.villagedefense.arena.Arena;
-import plugily.projects.villagedefense.arena.ArenaRegistry;
-import plugily.projects.villagedefense.utils.Debugger;
-import plugily.projects.villagedefense.utils.constants.Constants;
-
 import java.util.EnumMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.logging.Level;
+import org.apache.commons.lang.StringUtils;
+import org.bukkit.Bukkit;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Player;
+import plugily.projects.commonsbox.minecraft.configuration.ConfigUtils;
+import plugily.projects.commonsbox.minecraft.engine.ScriptEngine;
+import plugily.projects.villagedefense.Main;
+import plugily.projects.villagedefense.arena.Arena;
+import plugily.projects.villagedefense.arena.ArenaRegistry;
+import plugily.projects.villagedefense.utils.Debugger;
+import plugily.projects.villagedefense.utils.constants.Constants;
 
 /**
  * Created by Tom on 30/01/2016.
@@ -128,8 +127,8 @@ public class RewardsFactory {
     String formatted = command;
     formatted = StringUtils.replace(formatted, "%ARENA-ID%", arena.getId());
     formatted = StringUtils.replace(formatted, "%MAPNAME%", arena.getMapName());
-    formatted = StringUtils.replace(formatted, "%PLAYERAMOUNT%", String.valueOf(arena.getPlayers().size()));
-    formatted = StringUtils.replace(formatted, "%WAVE%", String.valueOf(arena.getWave()));
+    formatted = StringUtils.replace(formatted, "%PLAYERAMOUNT%", Integer.toString(arena.getPlayers().size()));
+    formatted = StringUtils.replace(formatted, "%WAVE%", Integer.toString(arena.getWave()));
     return formatted;
   }
 
@@ -149,7 +148,7 @@ public class RewardsFactory {
           continue;
         }
         for(String key : section.getKeys(false)) {
-          for(String reward : config.getStringList("rewards." + rewardType.getPath() + "." + key)) {
+          for(String reward : section.getStringList(key)) {
             rewards.add(new Reward(rewardType, reward, Integer.parseInt(key)));
             registeredRewards.put(rewardType, registeredRewards.getOrDefault(rewardType, 0) + 1);
           }

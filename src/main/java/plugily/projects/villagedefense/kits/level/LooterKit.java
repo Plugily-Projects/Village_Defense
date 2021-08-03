@@ -18,25 +18,24 @@
 
 package plugily.projects.villagedefense.kits.level;
 
+import java.util.List;
 import org.bukkit.Color;
 import org.bukkit.Material;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.inventory.ItemStack;
-import pl.plajerlair.commonsbox.minecraft.compat.xseries.XMaterial;
-import pl.plajerlair.commonsbox.minecraft.helper.ArmorHelper;
-import pl.plajerlair.commonsbox.minecraft.helper.WeaponHelper;
+import plugily.projects.commonsbox.minecraft.compat.xseries.XMaterial;
+import plugily.projects.commonsbox.minecraft.helper.ArmorHelper;
+import plugily.projects.commonsbox.minecraft.helper.WeaponHelper;
 import plugily.projects.villagedefense.api.StatsStorage;
 import plugily.projects.villagedefense.arena.ArenaRegistry;
+import plugily.projects.villagedefense.creatures.CreatureUtils;
 import plugily.projects.villagedefense.handlers.language.Messages;
 import plugily.projects.villagedefense.kits.KitRegistry;
 import plugily.projects.villagedefense.kits.basekits.LevelKit;
 import plugily.projects.villagedefense.utils.Utils;
-
-import java.util.List;
 
 /**
  * Created by Tom on 21/07/2015.
@@ -77,7 +76,7 @@ public class LooterKit extends LevelKit implements Listener {
   @EventHandler
   public void onDeath(EntityDeathEvent event) {
     org.bukkit.entity.LivingEntity entity = event.getEntity();
-    if(entity.getType() != EntityType.ZOMBIE || entity.getKiller() == null) {
+    if(!(CreatureUtils.isEnemy(entity)) || entity.getKiller() == null) {
       return;
     }
     Player player = entity.getKiller();

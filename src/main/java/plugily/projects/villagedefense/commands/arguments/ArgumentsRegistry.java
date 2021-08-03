@@ -18,6 +18,12 @@
 
 package plugily.projects.villagedefense.commands.arguments;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -28,8 +34,8 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
-import pl.plajerlair.commonsbox.minecraft.compat.ServerVersion;
-import pl.plajerlair.commonsbox.string.StringMatcher;
+import plugily.projects.commonsbox.minecraft.compat.ServerVersion;
+import plugily.projects.commonsbox.string.StringMatcher;
 import plugily.projects.villagedefense.ConfigPreferences;
 import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.arena.Arena;
@@ -57,7 +63,6 @@ import plugily.projects.villagedefense.commands.arguments.game.CreateArgument;
 import plugily.projects.villagedefense.commands.arguments.game.JoinArguments;
 import plugily.projects.villagedefense.commands.arguments.game.LeaderboardArgument;
 import plugily.projects.villagedefense.commands.arguments.game.LeaveArgument;
-import plugily.projects.villagedefense.commands.arguments.game.RandomJoinArgument;
 import plugily.projects.villagedefense.commands.arguments.game.SelectKitArgument;
 import plugily.projects.villagedefense.commands.arguments.game.StatsArgument;
 import plugily.projects.villagedefense.commands.completion.TabCompletion;
@@ -65,13 +70,6 @@ import plugily.projects.villagedefense.handlers.language.Messages;
 import plugily.projects.villagedefense.handlers.setup.SetupInventory;
 import plugily.projects.villagedefense.utils.Debugger;
 import plugily.projects.villagedefense.utils.Utils;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 /**
  * @author Plajer
@@ -100,8 +98,7 @@ public class ArgumentsRegistry implements CommandExecutor {
     //register Village Defense basic arguments
     new CreateArgument(this);
     new JoinArguments(this);
-    new RandomJoinArgument(this);
-    new ArenaSelectorArgument(this, plugin.getChatManager());
+    new ArenaSelectorArgument(this);
     new LeaderboardArgument(this);
     new LeaveArgument(this);
     new SelectKitArgument(this);

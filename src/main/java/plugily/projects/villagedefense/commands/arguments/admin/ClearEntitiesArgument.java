@@ -18,13 +18,14 @@
 
 package plugily.projects.villagedefense.commands.arguments.admin;
 
+import java.util.Arrays;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.IronGolem;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Villager;
 import org.bukkit.entity.Wolf;
-import pl.plajerlair.commonsbox.minecraft.compat.VersionUtils;
+import plugily.projects.commonsbox.minecraft.compat.VersionUtils;
 import plugily.projects.villagedefense.arena.Arena;
 import plugily.projects.villagedefense.arena.ArenaRegistry;
 import plugily.projects.villagedefense.arena.ArenaUtils;
@@ -36,8 +37,6 @@ import plugily.projects.villagedefense.commands.arguments.data.LabeledCommandArg
 import plugily.projects.villagedefense.commands.completion.CompletableArgument;
 import plugily.projects.villagedefense.handlers.language.Messages;
 import plugily.projects.villagedefense.utils.Utils;
-
-import java.util.Arrays;
 
 /**
  * @author Plajer
@@ -65,7 +64,7 @@ public class ClearEntitiesArgument {
         String clearMessage;
         switch(args[1].toLowerCase()) {
           case "villager":
-            if(arena.getVillagers() == null || arena.getVillagers().isEmpty()) {
+            if(arena.getVillagers().isEmpty()) {
               sender.sendMessage(registry.getPlugin().getChatManager().colorMessage(Messages.KITS_CLEANER_NOTHING_TO_CLEAN));
               return;
             }
@@ -78,18 +77,17 @@ public class ClearEntitiesArgument {
             clearMessage = registry.getPlugin().getChatManager().colorMessage(Messages.ADMIN_MESSAGES_REMOVED_VILLAGERS);
             break;
           case "zombie":
-            if(arena.getZombies() == null || arena.getZombies().isEmpty()) {
+            if(arena.getEnemies().isEmpty()) {
               sender.sendMessage(registry.getPlugin().getChatManager().colorMessage(Messages.KITS_CLEANER_NOTHING_TO_CLEAN));
               return;
             }
-            ArenaUtils.removeSpawnedZombies(arena);
-            arena.getZombies().clear();
+            ArenaUtils.removeSpawnedEnemies(arena);
             arena.setOptionValue(ArenaOption.ZOMBIES_TO_SPAWN, 0);
             Utils.playSound(((Player) sender).getLocation(), "ENTITY_ZOMBIE_DEATH", "ENTITY_ZOMBIE_DEATH");
             clearMessage = registry.getPlugin().getChatManager().colorMessage(Messages.ADMIN_MESSAGES_REMOVED_ZOMBIES);
             break;
           case "golem":
-            if(arena.getIronGolems() == null || arena.getIronGolems().isEmpty()) {
+            if(arena.getIronGolems().isEmpty()) {
               sender.sendMessage(registry.getPlugin().getChatManager().colorMessage(Messages.KITS_CLEANER_NOTHING_TO_CLEAN));
               return;
             }
@@ -102,7 +100,7 @@ public class ClearEntitiesArgument {
             clearMessage = registry.getPlugin().getChatManager().colorMessage(Messages.ADMIN_MESSAGES_REMOVED_GOLEMS);
             break;
           case "wolf":
-            if(arena.getWolves() == null || arena.getWolves().isEmpty()) {
+            if(arena.getWolves().isEmpty()) {
               sender.sendMessage(registry.getPlugin().getChatManager().colorMessage(Messages.KITS_CLEANER_NOTHING_TO_CLEAN));
               return;
             }

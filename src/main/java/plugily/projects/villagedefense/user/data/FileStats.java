@@ -18,47 +18,120 @@
 
 package plugily.projects.villagedefense.user.data;
 
+import java.util.Map;
+import java.util.TreeMap;
+import java.util.UUID;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.logging.Level;
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
-import pl.plajerlair.commonsbox.minecraft.configuration.ConfigUtils;
+import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitTask;
+import org.jetbrains.annotations.NotNull;
+import plugily.projects.commonsbox.database.MysqlDatabase;
+import plugily.projects.commonsbox.minecraft.configuration.ConfigUtils;
+import plugily.projects.commonsbox.sorter.SortUtils;
 import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.api.StatsStorage;
 import plugily.projects.villagedefense.user.User;
+import plugily.projects.villagedefense.utils.LegacyDataFixer;
 import plugily.projects.villagedefense.utils.constants.Constants;
 
 /**
  * Created by Tom on 17/06/2015.
  */
-public class FileStats implements UserDatabase {
+public class FileStats implements UserDatabase, Runnable {
 
   private final Main plugin;
   private final FileConfiguration config;
+  private final BukkitTask updateTask;
+  private final AtomicBoolean updateRequired = new AtomicBoolean(false);
 
   public FileStats(Main plugin) {
     this.plugin = plugin;
-    config = ConfigUtils.getConfig(plugin, Constants.Files.STATS.getName());
+    new LegacyDataFixer(plugin);
+    this.config = ConfigUtils.getConfig(plugin, Constants.Files.STATS.getName());
+    this.updateTask = Bukkit.getScheduler().runTaskTimerAsynchronously(plugin, this, 40, 40);
   }
 
   @Override
   public void saveStatistic(User user, StatsStorage.StatisticType stat) {
     config.set(user.getUniqueId().toString() + "." + stat.getName(), user.getStat(stat));
-    ConfigUtils.saveConfig(plugin, config, Constants.Files.STATS.getName());
+    updateRequired.set(true);
   }
 
   @Override
   public void saveAllStatistic(User user) {
-    for(StatsStorage.StatisticType stat : StatsStorage.StatisticType.values()) {
-      if(!stat.isPersistent()) {
-        continue;
-      }
-      config.set(user.getUniqueId().toString() + "." + stat.getName(), user.getStat(stat));
-    }
-    ConfigUtils.saveConfig(plugin, config, Constants.Files.STATS.getName());
+    updateStats(user);
+    updateRequired.set(true);
   }
 
   @Override
   public void loadStatistics(User user) {
+    String uuid = user.getUniqueId().toString();
     for(StatsStorage.StatisticType stat : StatsStorage.StatisticType.values()) {
-      user.setStat(stat, config.getInt(user.getUniqueId().toString() + "." + stat.getName(), 0));
+      user.setStat(stat, config.getInt(uuid + "." + stat.getName(), 0));
+    }
+  }
+
+  @NotNull
+  @Override
+  public Map<UUID, Integer> getStats(StatsStorage.StatisticType stat) {
+    Map<UUID, Integer> stats = new TreeMap<>();
+    for(String string : config.getKeys(false)) {
+      if(string.equals("data-version")) {
+        continue;
+      }
+      try {
+        stats.put(UUID.fromString(string), config.getInt(string + "." + stat.getName()));
+      } catch (IllegalArgumentException ex) {
+        plugin.getLogger().log(Level.WARNING, "Cannot load the UUID for {0}", string);
+      }
+    }
+    return SortUtils.sortByValue(stats);
+  }
+
+  @Override
+  public void disable() {
+    for(Player player : plugin.getServer().getOnlinePlayers()) {
+      updateStats(plugin.getUserManager().getUser(player));
+    }
+    updateTask.cancel();
+    // Save the last time before disabling
+    run();
+  }
+
+  @Override
+  public MysqlDatabase getMySQLDatabase() {
+    return null;
+  }
+
+  @Override
+  public String getPlayerName(UUID uuid) {
+    return Bukkit.getOfflinePlayer(uuid).getName();
+  }
+
+  private void updateStats(User user) {
+    String uuid = user.getUniqueId().toString();
+
+    for(StatsStorage.StatisticType stat : StatsStorage.StatisticType.values()) {
+      if(!stat.isPersistent()) {
+        continue;
+      }
+      String path = uuid + "." + stat.getName();
+      int value = user.getStat(stat);
+      if (value > 0 || config.contains(path)) {
+        config.set(path, value);
+      }
+    }
+  }
+
+  // Save the config to the file
+  @Override
+  public void run() {
+    if (updateRequired.get()) {
+      ConfigUtils.saveConfig(plugin, config, Constants.Files.STATS.getName());
+      updateRequired.set(false);
     }
   }
 }

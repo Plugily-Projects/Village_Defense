@@ -21,7 +21,7 @@ package plugily.projects.villagedefense.arena.states;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
-import pl.plajerlair.commonsbox.minecraft.compat.ServerVersion;
+import plugily.projects.commonsbox.minecraft.compat.ServerVersion;
 import plugily.projects.villagedefense.ConfigPreferences;
 import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.api.StatsStorage;
@@ -47,16 +47,19 @@ public class StartingState implements ArenaStateHandler {
 
   @Override
   public void handleCall(Arena arena) {
+    double startWaiting = plugin.getConfig().getDouble("Starting-Waiting-Time", 60);
     boolean bossBarEnabled = ServerVersion.Version.isCurrentEqualOrHigher(ServerVersion.Version.v1_9_R1) && plugin.getConfigPreferences().getOption(ConfigPreferences.Option.BOSSBAR_ENABLED);
+    int timer = arena.getTimer();
+
     if(bossBarEnabled) {
-      arena.getGameBar().setTitle(plugin.getChatManager().colorMessage(Messages.BOSSBAR_STARTING_IN).replace("%time%", Integer.toString(arena.getTimer())));
-      arena.getGameBar().setProgress(arena.getTimer() / plugin.getConfig().getDouble("Starting-Waiting-Time", 60));
+      arena.getGameBar().setTitle(plugin.getChatManager().colorMessage(Messages.BOSSBAR_STARTING_IN).replace("%time%", Integer.toString(timer)));
+      arena.getGameBar().setProgress(timer / startWaiting);
     }
     for(Player player : arena.getPlayers()) {
-      player.setExp((float) (arena.getTimer() / plugin.getConfig().getDouble("Starting-Waiting-Time", 60)));
-      player.setLevel(arena.getTimer());
+      player.setExp((float) (timer / startWaiting));
+      player.setLevel(timer);
     }
-    if(arena.getPlayers().size() < arena.getMinimumPlayers() && !arena.isForceStart()) {
+    if(!arena.isForceStart() && arena.getPlayers().size() < arena.getMinimumPlayers()) {
       if(bossBarEnabled) {
         arena.getGameBar().setTitle(plugin.getChatManager().colorMessage(Messages.BOSSBAR_WAITING_FOR_PLAYERS));
         arena.getGameBar().setProgress(1.0);

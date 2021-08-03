@@ -18,13 +18,11 @@
 
 package plugily.projects.villagedefense.kits.basekits;
 
-import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
-import pl.plajerlair.commonsbox.minecraft.configuration.ConfigUtils;
-import pl.plajerlair.commonsbox.minecraft.item.ItemBuilder;
+import plugily.projects.commonsbox.minecraft.configuration.ConfigUtils;
 import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.utils.constants.Constants;
 
@@ -77,7 +75,9 @@ public abstract class Kit {
   }
 
   public void setName(String name) {
-    this.name = name == null ? "" : name;
+    if (name != null) {
+      this.name = name;
+    }
   }
 
   public String[] getDescription() {
@@ -85,19 +85,14 @@ public abstract class Kit {
   }
 
   public void setDescription(String[] description) {
-    this.description = description.clone();
+    if (description != null) {
+      this.description = description.clone();
+    }
   }
 
-  public ItemStack getItemStack() {
-    return new ItemBuilder(getMaterial())
-        .name(getName())
-        .lore(getDescription())
-        .build();
-  }
+  public abstract ItemStack getItemStack();
 
   public abstract void giveKitItems(Player player);
-
-  public abstract Material getMaterial();
 
   public abstract void reStock(Player player);
 

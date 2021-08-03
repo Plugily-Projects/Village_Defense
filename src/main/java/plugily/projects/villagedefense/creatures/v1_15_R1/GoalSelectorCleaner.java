@@ -18,11 +18,10 @@
 
 package plugily.projects.villagedefense.creatures.v1_15_R1;
 
+import java.util.Set;
 import net.minecraft.server.v1_15_R1.EntityCreature;
 import net.minecraft.server.v1_15_R1.PathfinderGoalSelector;
 import plugily.projects.villagedefense.creatures.CreatureUtils;
-
-import java.util.LinkedHashSet;
 
 /**
  * Internal helper class
@@ -33,9 +32,9 @@ class GoalSelectorCleaner {
   }
 
   static void clearSelectors(EntityCreature creature) {
-    LinkedHashSet<?> goalD = (LinkedHashSet<?>) CreatureUtils.getPrivateField("d", PathfinderGoalSelector.class, creature.goalSelector);
+    Set<?> goalD = (Set<?>) CreatureUtils.getPrivateField("d", PathfinderGoalSelector.class, creature.goalSelector);
     goalD.clear();
-    LinkedHashSet<?> targetD = (LinkedHashSet<?>) CreatureUtils.getPrivateField("d", PathfinderGoalSelector.class, creature.targetSelector);
+    Set<?> targetD = (Set<?>) CreatureUtils.getPrivateField("d", PathfinderGoalSelector.class, creature.targetSelector);
     targetD.clear();
   }
 

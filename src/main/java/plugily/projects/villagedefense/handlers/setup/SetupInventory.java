@@ -18,11 +18,12 @@
 
 package plugily.projects.villagedefense.handlers.setup;
 
-import com.github.stefvanschie.inventoryframework.Gui;
-import com.github.stefvanschie.inventoryframework.pane.StaticPane;
+import java.util.Random;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
-import pl.plajerlair.commonsbox.minecraft.configuration.ConfigUtils;
+import plugily.projects.commonsbox.minecraft.configuration.ConfigUtils;
+import plugily.projects.inventoryframework.gui.type.ChestGui;
+import plugily.projects.inventoryframework.pane.StaticPane;
 import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.arena.Arena;
 import plugily.projects.villagedefense.handlers.setup.components.ArenaRegisterComponent;
@@ -30,8 +31,6 @@ import plugily.projects.villagedefense.handlers.setup.components.MiscComponents;
 import plugily.projects.villagedefense.handlers.setup.components.PlayerAmountComponents;
 import plugily.projects.villagedefense.handlers.setup.components.SpawnComponents;
 import plugily.projects.villagedefense.utils.constants.Constants;
-
-import java.util.Random;
 
 /**
  * Created by Tom on 15/06/2015.
@@ -44,7 +43,7 @@ public class SetupInventory {
   private final FileConfiguration config;
   private final Arena arena;
   private final Player player;
-  private Gui gui;
+  private ChestGui gui;
   private final SetupUtilities setupUtilities;
 
   public SetupInventory(Arena arena, Player player) {
@@ -60,7 +59,7 @@ public class SetupInventory {
   }
 
   private void prepareGui() {
-    gui = new Gui(plugin, 2, "Village Defense Arena Setup");
+    gui = new ChestGui(2, "Village Defense Arena Setup");
     gui.setOnGlobalClick(e -> e.setCancelled(true));
     StaticPane pane = new StaticPane(9, 4);
     gui.addPane(pane);
@@ -92,13 +91,13 @@ public class SetupInventory {
         p.sendMessage(plugin.getChatManager().colorRawMessage("&e&lTIP: &7Console can execute /vda addorbs [amount] (player) command! Add game orbs via console!"));
         break;
       case 1:
-        p.sendMessage(plugin.getChatManager().colorRawMessage("&e&lTIP: &7Build Secret Well for your arena! Check how: https://bit.ly/2DTYxZc"));
+        p.sendMessage(plugin.getChatManager().colorRawMessage("&e&lTIP: &7Build Secret Well for your arena! Check how: https://wiki.plugily.xyz/villagedefense/setup/simple#how-can-i-set-up-secret-well"));
         break;
       case 2:
         p.sendMessage(plugin.getChatManager().colorRawMessage("&e&lTIP: &7Help us translating plugin to your language here: https://translate.plugily.xyz"));
         break;
       case 3:
-        p.sendMessage(plugin.getChatManager().colorRawMessage("&e&lTIP: &7LeaderHeads leaderboard plugin is supported with our plugin! Check here: https://bit.ly/2Riu5L0"));
+        p.sendMessage(plugin.getChatManager().colorRawMessage("&e&lTIP: &7PlaceholderApi plugin is supported with our plugin! Check here: https://wiki.plugily.xyz/villagedefense/placeholders/placeholderapi"));
         break;
       case 4:
         p.sendMessage(plugin.getChatManager().colorRawMessage("&e&lTIP: &7Achievements, custom kits and replay ability are things available in our paid addon for this minigame!"));
@@ -107,7 +106,7 @@ public class SetupInventory {
         p.sendMessage(plugin.getChatManager().colorRawMessage("&e&lTIP: &7We are open source! You can always help us by contributing! Check https://github.com/Plugily-Projects/Village_Defense"));
         break;
       case 6:
-        p.sendMessage(plugin.getChatManager().colorRawMessage("&e&lTIP: &7Need help? Check wiki &8https://wiki.plugily.xyz/minecraft/villagedefense &7or discord https://discord.gg/UXzUdTP"));
+        p.sendMessage(plugin.getChatManager().colorRawMessage("&e&lTIP: &7Need help? Check wiki &8https://wiki.plugily.xyz/villagedefense &7or discord https://discord.gg/UXzUdTP"));
         break;
       case 7:
         p.sendMessage(plugin.getChatManager().colorRawMessage("&e&lTIP: &7Install HolographicDisplays plugin to access power-ups in game! (configure them in config.yml)"));
@@ -141,7 +140,7 @@ public class SetupInventory {
     return player;
   }
 
-  public Gui getGui() {
+  public ChestGui getGui() {
     return gui;
   }
 

@@ -18,29 +18,26 @@
 
 package plugily.projects.villagedefense.handlers.setup.components;
 
-import com.github.stefvanschie.inventoryframework.GuiItem;
-import com.github.stefvanschie.inventoryframework.pane.StaticPane;
+import java.util.ArrayList;
+import java.util.List;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.Sign;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.inventory.ItemStack;
-
-import pl.plajerlair.commonsbox.minecraft.compat.xseries.XMaterial;
-import pl.plajerlair.commonsbox.minecraft.configuration.ConfigUtils;
-import pl.plajerlair.commonsbox.minecraft.item.ItemBuilder;
-import pl.plajerlair.commonsbox.minecraft.serialization.LocationSerializer;
+import plugily.projects.commonsbox.minecraft.compat.xseries.XMaterial;
+import plugily.projects.commonsbox.minecraft.configuration.ConfigUtils;
+import plugily.projects.commonsbox.minecraft.item.ItemBuilder;
+import plugily.projects.commonsbox.minecraft.serialization.LocationSerializer;
+import plugily.projects.inventoryframework.gui.GuiItem;
+import plugily.projects.inventoryframework.pane.StaticPane;
 import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.arena.Arena;
 import plugily.projects.villagedefense.arena.ArenaRegistry;
-import plugily.projects.villagedefense.arena.ArenaUtils;
 import plugily.projects.villagedefense.handlers.setup.SetupInventory;
 import plugily.projects.villagedefense.handlers.sign.ArenaSign;
 import plugily.projects.villagedefense.utils.constants.Constants;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author Plajer
@@ -115,7 +112,7 @@ public class ArenaRegisterComponent implements SetupComponent {
           signsToUpdate.add(arenaSign.getSign());
         }
       }
-      arena = ArenaUtils.initializeArena(arena.getId());
+      arena = new Arena(arena.getId());
       arena.setReady(true);
       arena.setMinimumPlayers(config.getInt("instances." + arena.getId() + ".minimumplayers"));
       arena.setMaximumPlayers(config.getInt("instances." + arena.getId() + ".maximumplayers"));
@@ -123,7 +120,6 @@ public class ArenaRegisterComponent implements SetupComponent {
       arena.setLobbyLocation(LocationSerializer.getLocation(config.getString("instances." + arena.getId() + ".lobbylocation")));
       arena.setStartLocation(LocationSerializer.getLocation(config.getString("instances." + arena.getId() + ".Startlocation")));
       arena.setEndLocation(LocationSerializer.getLocation(config.getString("instances." + arena.getId() + ".Endlocation")));
-      ArenaUtils.setWorld(arena);
       for(String string : config.getConfigurationSection("instances." + arena.getId() + ".zombiespawns").getKeys(false)) {
         arena.addZombieSpawn(LocationSerializer.getLocation(config.getString("instances." + arena.getId() + ".zombiespawns." + string)));
       }

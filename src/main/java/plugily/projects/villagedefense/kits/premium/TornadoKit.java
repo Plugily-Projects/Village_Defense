@@ -18,10 +18,10 @@
 
 package plugily.projects.villagedefense.kits.premium;
 
+import java.util.List;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -29,22 +29,21 @@ import org.bukkit.event.block.Action;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
-import pl.plajerlair.commonsbox.minecraft.compat.VersionUtils;
-import pl.plajerlair.commonsbox.minecraft.compat.events.api.CBPlayerInteractEvent;
-import pl.plajerlair.commonsbox.minecraft.compat.xseries.XMaterial;
-import pl.plajerlair.commonsbox.minecraft.helper.ArmorHelper;
-import pl.plajerlair.commonsbox.minecraft.helper.WeaponHelper;
-import pl.plajerlair.commonsbox.minecraft.item.ItemBuilder;
-import pl.plajerlair.commonsbox.minecraft.item.ItemUtils;
-import pl.plajerlair.commonsbox.minecraft.misc.stuff.ComplementAccessor;
+import plugily.projects.commonsbox.minecraft.compat.VersionUtils;
+import plugily.projects.commonsbox.minecraft.compat.events.api.CBPlayerInteractEvent;
+import plugily.projects.commonsbox.minecraft.compat.xseries.XMaterial;
+import plugily.projects.commonsbox.minecraft.helper.ArmorHelper;
+import plugily.projects.commonsbox.minecraft.helper.WeaponHelper;
+import plugily.projects.commonsbox.minecraft.item.ItemBuilder;
+import plugily.projects.commonsbox.minecraft.item.ItemUtils;
+import plugily.projects.commonsbox.minecraft.misc.stuff.ComplementAccessor;
 import plugily.projects.villagedefense.arena.ArenaRegistry;
+import plugily.projects.villagedefense.creatures.CreatureUtils;
 import plugily.projects.villagedefense.handlers.PermissionsManager;
 import plugily.projects.villagedefense.handlers.language.Messages;
 import plugily.projects.villagedefense.kits.KitRegistry;
 import plugily.projects.villagedefense.kits.basekits.PremiumKit;
 import plugily.projects.villagedefense.utils.Utils;
-
-import java.util.List;
 
 /**
  * Created by Tom on 30/12/2015.
@@ -106,6 +105,9 @@ public class TornadoKit extends PremiumKit implements Listener {
         || !ComplementAccessor.getComplement().getDisplayName(stack.getItemMeta()).equalsIgnoreCase(getPlugin().getChatManager().colorMessage(Messages.KITS_TORNADO_GAME_ITEM_NAME))) {
       return;
     }
+    if (!(getPlugin().getUserManager().getUser(player).getKit() instanceof TornadoKit)) {
+      return;
+    }
     if(active >= 2) {
       return;
     }
@@ -149,8 +151,7 @@ public class TornadoKit extends PremiumKit implements Listener {
       times++;
       int lines = 3;
       for(int l = 0; l < lines; l++) {
-        double heightIncrease = 0.5;
-        for(double y = 0; y < maxHeight; y += heightIncrease) {
+        for(double y = 0; y < maxHeight; y += 0.5) {
           double radius = y * radiusIncrement,
               radians = Math.toRadians(360.0 / lines * l + y * 25 - angle),
               x = Math.cos(radians) * radius,
@@ -158,17 +159,23 @@ public class TornadoKit extends PremiumKit implements Listener {
           VersionUtils.sendParticles("CLOUD", null, location.clone().add(x, y, z), 1, 0, 0, 0);
         }
       }
-      pushNearbyZombies();
+      pushNearbyEnemies();
       setLocation(location.add(vector.getX() / (3 + Math.random() / 2), 0, vector.getZ() / (3 + Math.random() / 2)));
 
       angle += 50;
     }
 
-    private void pushNearbyZombies() {
+    private void pushNearbyEnemies() {
       for(Entity entity : location.getWorld().getNearbyEntities(location, 2, 2, 2)) {
-        if(entity.getType() == EntityType.ZOMBIE) {
+        if(CreatureUtils.isEnemy(entity)) {
           entities++;
-          entity.setVelocity(vector.multiply(2).setY(0).add(new Vector(0, 1, 0)));
+
+          Vector velocityVec = vector.multiply(2).setY(0).add(new Vector(0, 1, 0));
+          if (VersionUtils.isPaper() && (vector.getX() > 4.0 || vector.getZ() > 4.0)) {
+            velocityVec = vector.setX(2.0).setZ(1.0); // Paper's sh*t
+          }
+
+          entity.setVelocity(velocityVec);
         }
       }
     }

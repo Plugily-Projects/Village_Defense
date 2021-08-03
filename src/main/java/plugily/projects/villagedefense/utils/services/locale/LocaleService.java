@@ -18,12 +18,6 @@
 
 package plugily.projects.villagedefense.utils.services.locale;
 
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.plugin.java.JavaPlugin;
-import pl.plajerlair.commonsbox.minecraft.configuration.ConfigUtils;
-import plugily.projects.villagedefense.utils.services.ServiceRegistry;
-
-import javax.net.ssl.HttpsURLConnection;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -36,6 +30,11 @@ import java.nio.file.Files;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.regex.Pattern;
+import javax.net.ssl.HttpsURLConnection;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.plugin.java.JavaPlugin;
+import plugily.projects.commonsbox.minecraft.configuration.ConfigUtils;
+import plugily.projects.villagedefense.utils.services.ServiceRegistry;
 
 /**
  * Localization service used for fetching latest locales for minigames

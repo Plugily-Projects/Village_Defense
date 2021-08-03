@@ -18,27 +18,10 @@
 
 package plugily.projects.villagedefense.api;
 
-import org.bukkit.Bukkit;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.entity.Player;
-import pl.plajerlair.commonsbox.minecraft.configuration.ConfigUtils;
-import pl.plajerlair.commonsbox.sorter.SortUtils;
-import plugily.projects.villagedefense.ConfigPreferences;
-import plugily.projects.villagedefense.Main;
-import plugily.projects.villagedefense.user.data.MysqlManager;
-import plugily.projects.villagedefense.utils.MessageUtils;
-import plugily.projects.villagedefense.utils.constants.Constants;
-
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.Collections;
-import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.TreeMap;
 import java.util.UUID;
-import java.util.logging.Level;
+import org.bukkit.entity.Player;
+import plugily.projects.villagedefense.Main;
 
 /**
  * @author Plajer, TomTheDeveloper
@@ -64,32 +47,7 @@ public class StatsStorage {
    * @return Map of UUID keys and Integer values sorted in ascending order of requested statistic type
    */
   public static Map<UUID, Integer> getStats(StatisticType stat) {
-    if(plugin.getConfigPreferences().getOption(ConfigPreferences.Option.DATABASE_ENABLED)) {
-      try(Connection connection = plugin.getMysqlDatabase().getConnection();
-          Statement statement = connection.createStatement();
-          ResultSet set = statement.executeQuery("SELECT UUID, " + stat.getName() + " FROM " + ((MysqlManager) plugin.getUserManager().getDatabase()).getTableName() + " ORDER BY " + stat.getName())) {
-        Map<UUID, java.lang.Integer> column = new LinkedHashMap<>();
-        while(set.next()) {
-          column.put(UUID.fromString(set.getString("UUID")), set.getInt(stat.getName()));
-        }
-        return column;
-      } catch(SQLException e) {
-        plugin.getLogger().log(Level.WARNING, "SQLException occurred! " + e.getSQLState() + " (" + e.getErrorCode() + ")");
-        MessageUtils.errorOccurred();
-        Bukkit.getConsoleSender().sendMessage("Cannot get contents from MySQL database!");
-        Bukkit.getConsoleSender().sendMessage("Check configuration of mysql.yml file or disable mysql option in config.yml");
-        return Collections.emptyMap();
-      }
-    }
-    FileConfiguration config = ConfigUtils.getConfig(plugin, Constants.Files.STATS.getName());
-    Map<UUID, Integer> stats = new TreeMap<>();
-    for(String string : config.getKeys(false)) {
-      if(string.equals("data-version")) {
-        continue;
-      }
-      stats.put(UUID.fromString(string), config.getInt(string + "." + stat.getName()));
-    }
-    return SortUtils.sortByValue(stats);
+    return plugin.getUserManager().getDatabase().getStats(stat);
   }
 
   /**

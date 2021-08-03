@@ -18,6 +18,7 @@
 
 package plugily.projects.villagedefense.creatures;
 
+import java.util.concurrent.ThreadLocalRandom;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
@@ -25,12 +26,10 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.scheduler.BukkitRunnable;
-import pl.plajerlair.commonsbox.minecraft.compat.VersionUtils;
+import plugily.projects.commonsbox.minecraft.compat.VersionUtils;
 import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.arena.ArenaRegistry;
 import plugily.projects.villagedefense.utils.Utils;
-
-import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * Created by Tom on 14/08/2014.
@@ -48,22 +47,33 @@ public class DoorBreakListener extends BukkitRunnable {
         if(entity.getType() != EntityType.ZOMBIE) {
           continue;
         }
+
         for(Block block : Utils.getNearbyBlocks(entity, 1)) {
-          if(block.getType() != Utils.getCachedDoor(block)) {
+          Material door = Utils.getCachedDoor(block);
+
+          if(block.getType() != door) {
             continue;
           }
-          VersionUtils.sendParticles("SMOKE_LARGE", null, block.getLocation(), 5, 0.1,0.1,0.1);
-          Utils.playSound(block.getLocation(), "ENTITY_ZOMBIE_ATTACK_DOOR_WOOD", "ENTITY_ZOMBIE_ATTACK_WOODEN_DOOR");
+
+          org.bukkit.Location blockLoc = block.getLocation();
+
+          VersionUtils.sendParticles("SMOKE_LARGE", null, blockLoc, 5, 0.1,0.1,0.1);
+          Utils.playSound(blockLoc, "ENTITY_ZOMBIE_ATTACK_DOOR_WOOD", "ENTITY_ZOMBIE_ATTACK_WOODEN_DOOR");
+
           if(ThreadLocalRandom.current().nextInt(20) == 5) {
-            VersionUtils.sendParticles("SMOKE_LARGE", null, block.getLocation(), 15, 0.1,0.1,0.1);
-            VersionUtils.sendParticles("EXPLOSION_HUGE", null, block.getLocation(), 1, 0.1,0.1,0.1);
-            if(block.getRelative(BlockFace.UP).getType() == Utils.getCachedDoor(block)) {
-              block.getRelative(BlockFace.UP).setType(Material.AIR);
-            } else if(block.getRelative(BlockFace.DOWN).getType() == Utils.getCachedDoor(block)) {
-              block.getRelative(BlockFace.DOWN).setType(Material.AIR);
+            VersionUtils.sendParticles("SMOKE_LARGE", null, blockLoc, 15, 0.1,0.1,0.1);
+            VersionUtils.sendParticles("EXPLOSION_HUGE", null, blockLoc, 1, 0.1,0.1,0.1);
+
+            Block b = block.getRelative(BlockFace.UP);
+
+            if(b.getType() == door) {
+              b.setType(Material.AIR);
+            } else if((b = block.getRelative(BlockFace.DOWN)).getType() == door) {
+              b.setType(Material.AIR);
             }
+
             block.setType(Material.AIR);
-            Utils.playSound(block.getLocation(), "ENTITY_ZOMBIE_BREAK_DOOR_WOOD", "ENTITY_ZOMBIE_BREAK_WOODEN_DOOR");
+            Utils.playSound(blockLoc, "ENTITY_ZOMBIE_BREAK_DOOR_WOOD", "ENTITY_ZOMBIE_BREAK_WOODEN_DOOR");
           }
         }
       }

@@ -19,10 +19,11 @@
 package plugily.projects.villagedefense.api.event.player;
 
 import org.bukkit.entity.Player;
+import org.bukkit.event.Cancellable;
 import org.bukkit.event.HandlerList;
 import plugily.projects.villagedefense.api.event.VillageEvent;
 import plugily.projects.villagedefense.arena.Arena;
-import plugily.projects.villagedefense.handlers.powerup.Powerup;
+import plugily.projects.villagedefense.handlers.powerup.BasePowerup;
 import plugily.projects.villagedefense.handlers.powerup.PowerupRegistry;
 
 /**
@@ -32,13 +33,14 @@ import plugily.projects.villagedefense.handlers.powerup.PowerupRegistry;
  * <p>
  * Called when player pick up a power-up.
  */
-public class VillagePlayerPowerupPickupEvent extends VillageEvent {
+public class VillagePlayerPowerupPickupEvent extends VillageEvent implements Cancellable {
 
   private static final HandlerList HANDLERS = new HandlerList();
   private final Player player;
-  private final Powerup powerup;
+  private final BasePowerup powerup;
+  private boolean isCancelled = false;
 
-  public VillagePlayerPowerupPickupEvent(Arena eventArena, Player player, Powerup powerup) {
+  public VillagePlayerPowerupPickupEvent(Arena eventArena, Player player, BasePowerup powerup) {
     super(eventArena);
     this.player = player;
     this.powerup = powerup;
@@ -52,12 +54,22 @@ public class VillagePlayerPowerupPickupEvent extends VillageEvent {
     return player;
   }
 
-  public Powerup getPowerup() {
+  public BasePowerup getPowerup() {
     return powerup;
   }
 
   @Override
   public HandlerList getHandlers() {
     return HANDLERS;
+  }
+
+  @Override
+  public boolean isCancelled() {
+    return isCancelled;
+  }
+
+  @Override
+  public void setCancelled(boolean cancelled) {
+    isCancelled = cancelled;
   }
 }

@@ -18,6 +18,11 @@
 
 package plugily.projects.villagedefense.handlers.sign;
 
+import java.util.ArrayList;
+import java.util.EnumMap;
+import java.util.List;
+import java.util.Map;
+import java.util.logging.Level;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -31,12 +36,12 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.SignChangeEvent;
 import org.jetbrains.annotations.Nullable;
-import pl.plajerlair.commonsbox.minecraft.compat.ServerVersion;
-import pl.plajerlair.commonsbox.minecraft.compat.events.api.CBPlayerInteractEvent;
-import pl.plajerlair.commonsbox.minecraft.compat.xseries.XMaterial;
-import pl.plajerlair.commonsbox.minecraft.configuration.ConfigUtils;
-import pl.plajerlair.commonsbox.minecraft.misc.stuff.ComplementAccessor;
-import pl.plajerlair.commonsbox.minecraft.serialization.LocationSerializer;
+import plugily.projects.commonsbox.minecraft.compat.ServerVersion;
+import plugily.projects.commonsbox.minecraft.compat.events.api.CBPlayerInteractEvent;
+import plugily.projects.commonsbox.minecraft.compat.xseries.XMaterial;
+import plugily.projects.commonsbox.minecraft.configuration.ConfigUtils;
+import plugily.projects.commonsbox.minecraft.misc.stuff.ComplementAccessor;
+import plugily.projects.commonsbox.minecraft.serialization.LocationSerializer;
 import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.arena.Arena;
 import plugily.projects.villagedefense.arena.ArenaManager;
@@ -46,12 +51,6 @@ import plugily.projects.villagedefense.handlers.language.LanguageManager;
 import plugily.projects.villagedefense.handlers.language.Messages;
 import plugily.projects.villagedefense.utils.Debugger;
 import plugily.projects.villagedefense.utils.constants.Constants;
-
-import java.util.ArrayList;
-import java.util.EnumMap;
-import java.util.List;
-import java.util.Map;
-import java.util.logging.Level;
 
 public class SignManager implements Listener {
 
@@ -178,13 +177,14 @@ public class SignManager implements Listener {
 
     arenaSigns.clear();
     FileConfiguration config = ConfigUtils.getConfig(plugin, Constants.Files.ARENAS.getName());
-    if(!config.isConfigurationSection("instances")) {
+    org.bukkit.configuration.ConfigurationSection section = config.getConfigurationSection("instances");
+    if(section == null) {
       Debugger.debug(Level.WARNING, "No arena instances found. Signs won't be loaded");
       return;
     }
 
-    for(String path : config.getConfigurationSection("instances").getKeys(false)) {
-      for(String sign : config.getStringList("instances." + path + ".signs")) {
+    for(String path : section.getKeys(false)) {
+      for(String sign : section.getStringList(path + ".signs")) {
         Location loc = LocationSerializer.getLocation(sign);
         if(loc.getBlock().getState() instanceof Sign) {
           arenaSigns.add(new ArenaSign((Sign) loc.getBlock().getState(), ArenaRegistry.getArena(path)));

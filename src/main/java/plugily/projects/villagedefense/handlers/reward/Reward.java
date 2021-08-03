@@ -18,10 +18,9 @@
 
 package plugily.projects.villagedefense.handlers.reward;
 
+import java.util.logging.Level;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
-
-import java.util.logging.Level;
 
 /**
  * @author Plajer
@@ -61,7 +60,7 @@ public class Reward {
       int loc = processedCode.indexOf(')');
       //modifier is invalid
       if(loc == -1) {
-        Bukkit.getLogger().log(Level.WARNING, "[VillageDefense] rewards.yml configuration is broken! Make sure you did not forget using ) character in chance condition! Command: {0}", rawCode);
+        Bukkit.getLogger().log(Level.WARNING, "[Village Defense] rewards.yml configuration is broken! Make sure you did not forget using ) character in chance condition! Command: {0}", rawCode);
         //invalid code, 0% chance to execute
         chance = 0.0;
         return;
@@ -97,7 +96,8 @@ public class Reward {
   }
 
   public enum RewardType {
-    END_GAME("endgame"), END_WAVE("endwave"), ZOMBIE_KILL("zombiekill"), PLAYER_DEATH("playerDeath"), VILLAGER_DEATH("villagerDeath"), SCOREBOARD_REMOVED("scoreboard_remove");
+    END_GAME("endgame"), END_WAVE("endwave"), START_WAVE("startwave"), ZOMBIE_KILL("zombiekill"),
+    PLAYER_DEATH("playerDeath"), VILLAGER_DEATH("villagerDeath");
 
     private final String path;
 

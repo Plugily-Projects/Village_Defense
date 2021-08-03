@@ -18,12 +18,17 @@
 
 package plugily.projects.villagedefense.events;
 
+import java.util.Map;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.entity.Creature;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.IronGolem;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.ItemFrame;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Painting;
@@ -31,13 +36,14 @@ import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.entity.Villager;
 import org.bukkit.entity.Wolf;
-import org.bukkit.entity.Zombie;
+import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.block.LeavesDecayEvent;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityCombustByBlockEvent;
 import org.bukkit.event.entity.EntityCombustByEntityEvent;
@@ -49,6 +55,7 @@ import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.entity.ItemSpawnEvent;
 import org.bukkit.event.entity.PlayerLeashEntityEvent;
 import org.bukkit.event.hanging.HangingBreakByEntityEvent;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryPickupItemEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerArmorStandManipulateEvent;
@@ -56,29 +63,29 @@ import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerExpChangeEvent;
 import org.bukkit.inventory.ItemStack;
-import pl.plajerlair.commonsbox.minecraft.compat.VersionUtils;
-import pl.plajerlair.commonsbox.minecraft.compat.events.api.CBPlayerInteractEntityEvent;
-import pl.plajerlair.commonsbox.minecraft.compat.events.api.CBPlayerInteractEvent;
-import pl.plajerlair.commonsbox.minecraft.compat.xseries.XMaterial;
-import pl.plajerlair.commonsbox.minecraft.misc.stuff.ComplementAccessor;
-import pl.plajerlair.commonsbox.string.StringFormatUtils;
+import plugily.projects.commonsbox.minecraft.compat.VersionUtils;
+import plugily.projects.commonsbox.minecraft.compat.events.api.CBPlayerInteractEntityEvent;
+import plugily.projects.commonsbox.minecraft.compat.events.api.CBPlayerInteractEvent;
+import plugily.projects.commonsbox.minecraft.compat.events.api.CBPlayerSwapHandItemsEvent;
+import plugily.projects.commonsbox.minecraft.compat.xseries.XMaterial;
+import plugily.projects.commonsbox.minecraft.item.ItemUtils;
+import plugily.projects.commonsbox.string.StringFormatUtils;
 import plugily.projects.villagedefense.ConfigPreferences;
 import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.api.StatsStorage;
+import plugily.projects.villagedefense.api.event.game.VillageGameSecretWellEvent;
 import plugily.projects.villagedefense.arena.Arena;
 import plugily.projects.villagedefense.arena.ArenaManager;
 import plugily.projects.villagedefense.arena.ArenaRegistry;
 import plugily.projects.villagedefense.arena.ArenaState;
+import plugily.projects.villagedefense.arena.ArenaUtils;
 import plugily.projects.villagedefense.arena.options.ArenaOption;
 import plugily.projects.villagedefense.handlers.PermissionsManager;
 import plugily.projects.villagedefense.handlers.items.SpecialItem;
 import plugily.projects.villagedefense.handlers.items.SpecialItemManager;
 import plugily.projects.villagedefense.handlers.language.Messages;
 import plugily.projects.villagedefense.user.User;
-import plugily.projects.villagedefense.utils.Debugger;
 import plugily.projects.villagedefense.utils.Utils;
-
-import java.util.Map;
 
 /**
  * Created by Tom on 16/08/2014.
@@ -95,10 +102,13 @@ public class Events implements Listener {
   @EventHandler
   public void onSpawn(CreatureSpawnEvent event) {
     for(Arena arena : ArenaRegistry.getArenas()) {
-      if(!event.getEntity().getWorld().equals(arena.getStartLocation().getWorld()) || event.getSpawnReason() == CreatureSpawnEvent.SpawnReason.CUSTOM) {
-        continue;
+      Location startLoc = arena.getStartLocation();
+
+      if(startLoc != null && event.getSpawnReason() != CreatureSpawnEvent.SpawnReason.CUSTOM && event.getSpawnReason() != CreatureSpawnEvent.SpawnReason.COMMAND && event.getEntity().getWorld().equals(startLoc.getWorld())
+          && event.getEntity().getLocation().distance(startLoc) < 150) {
+        event.setCancelled(true);
+        break;
       }
-      event.setCancelled(true);
     }
   }
 
@@ -205,10 +215,15 @@ public class Events implements Listener {
     if(arena == null || !plugin.getConfig().getBoolean("Block-Commands-In-Game", true)) {
       return;
     }
+
     String command = event.getMessage().substring(1);
-    command = (command.indexOf(' ') >= 0 ? command.substring(0, command.indexOf(' ')) : command);
+    int index = command.indexOf(' ');
+
+    if(index >= 0)
+      command = command.substring(0, index);
+
     for(String msg : plugin.getConfig().getStringList("Whitelisted-Commands")) {
-      if(command.equalsIgnoreCase(msg.toLowerCase())) {
+      if(command.equalsIgnoreCase(msg)) {
         return;
       }
     }
@@ -233,31 +248,83 @@ public class Events implements Listener {
     }
   }
 
-  @EventHandler(priority = EventPriority.LOWEST)
-  public void onLeave(CBPlayerInteractEvent event) {
+  @EventHandler
+  public void onSpecialItem(CBPlayerInteractEvent event) {
     if(event.getAction() == Action.LEFT_CLICK_AIR || event.getAction() == Action.LEFT_CLICK_BLOCK || event.getAction() == Action.PHYSICAL) {
       return;
     }
     Arena arena = ArenaRegistry.getArena(event.getPlayer());
-    if(arena == null) {
-      return;
-    }
     ItemStack itemStack = VersionUtils.getItemInHand(event.getPlayer());
-    if(!itemStack.hasItemMeta() || !itemStack.getItemMeta().hasDisplayName()) {
+    if(arena == null || !ItemUtils.isItemStackNamed(itemStack)) {
       return;
     }
-    SpecialItem key = plugin.getSpecialItemManager().getSpecialItem(SpecialItemManager.SpecialItems.LOBBY_LEAVE_ITEM.getName());
-    if(key == SpecialItem.INVALID_ITEM) {
+    String key = plugin.getSpecialItemManager().getRelatedSpecialItem(itemStack).getName();
+    if(key == null) {
       return;
     }
-    if(ComplementAccessor.getComplement().getDisplayName(key.getItemStack().getItemMeta())
-        .equalsIgnoreCase(ComplementAccessor.getComplement().getDisplayName(itemStack.getItemMeta()))) {
+    if(key.equalsIgnoreCase(SpecialItemManager.SpecialItems.FORCESTART.getName())) {
+      event.setCancelled(true);
+      ArenaUtils.arenaForceStart(event.getPlayer());
+      return;
+    }
+    if(key.equals(SpecialItemManager.SpecialItems.LOBBY_LEAVE_ITEM.getName()) || key.equals(SpecialItemManager.SpecialItems.SPECTATOR_LEAVE_ITEM.getName())) {
       event.setCancelled(true);
       if(plugin.getConfigPreferences().getOption(ConfigPreferences.Option.BUNGEE_ENABLED)) {
         plugin.getBungeeManager().connectToHub(event.getPlayer());
-        Debugger.debug("{0} has left the arena {1}! Teleported to the Hub server.", event.getPlayer().getName(), arena.getId());
       } else {
         ArenaManager.leaveAttempt(event.getPlayer(), arena);
+      }
+    }
+  }
+
+  private boolean checkSpecialItem(ItemStack itemStack, Player player) {
+    if(!ItemUtils.isItemStackNamed(itemStack)) {
+      return false;
+    }
+    Arena arena = ArenaRegistry.getArena(player);
+    if(arena == null) {
+      return false;
+    }
+    SpecialItem key = plugin.getSpecialItemManager().getRelatedSpecialItem(itemStack);
+    if(key == SpecialItem.INVALID_ITEM) {
+      return false;
+    }
+    for(SpecialItemManager.SpecialItems specialItem : SpecialItemManager.SpecialItems.values()) {
+      if(specialItem.getName().equalsIgnoreCase(key.getName())) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  @EventHandler
+  public void onItemMove(InventoryClickEvent e) {
+    if(e.getWhoClicked() instanceof Player && ArenaRegistry.isInArena((Player) e.getWhoClicked())) {
+      if(ArenaRegistry.getArena(((Player) e.getWhoClicked())).getArenaState() != ArenaState.IN_GAME) {
+        if(e.getClickedInventory() == e.getWhoClicked().getInventory()) {
+          if(e.getView().getType() == InventoryType.CRAFTING || e.getView().getType() == InventoryType.PLAYER) {
+            e.setResult(Event.Result.DENY);
+          }
+        }
+      }
+    }
+  }
+
+  @EventHandler
+  public void onSwap(CBPlayerSwapHandItemsEvent event) {
+    if(checkSpecialItem(event.getOffHandItem(), event.getPlayer())) {
+      event.setCancelled(true);
+    }
+  }
+
+  @EventHandler
+  public void onDecay(LeavesDecayEvent event) {
+    for(Arena arena : ArenaRegistry.getArenas()) {
+      Location startLoc = arena.getStartLocation();
+
+      if(startLoc != null && event.getBlock().getWorld().equals(startLoc.getWorld()) && event.getBlock().getLocation().distance(startLoc) < 150) {
+        event.setCancelled(true);
+        break;
       }
     }
   }
@@ -302,16 +369,16 @@ public class Events implements Listener {
   }
 
   @EventHandler(priority = EventPriority.HIGH)
-  public void onZombieHurt(EntityDamageEvent e) {
-    if(!(e.getEntity() instanceof Zombie) || !plugin.getConfig().getBoolean("Simple-Zombie-Health-Bar-Enabled", true)) {
+  public void onCreatureHurt(EntityDamageEvent e) {
+    if(!(e.getEntity() instanceof Creature) || !plugin.getConfig().getBoolean("Simple-Zombie-Health-Bar-Enabled", true)) {
       return;
     }
     for(Arena arena : ArenaRegistry.getArenas()) {
-      if(!arena.getZombies().contains(e.getEntity())) {
+      if(!arena.getEnemies().contains(e.getEntity())) {
         continue;
       }
-      Zombie zombie = (Zombie) e.getEntity();
-      zombie.setCustomName(StringFormatUtils.getProgressBar((int) zombie.getHealth(), (int) VersionUtils.getMaxHealth(zombie),
+      Creature creature = (Creature) e.getEntity();
+      creature.setCustomName(StringFormatUtils.getProgressBar((int) creature.getHealth(), (int) VersionUtils.getMaxHealth(creature),
           50, "|", ChatColor.YELLOW + "", ChatColor.GRAY + ""));
     }
   }
@@ -355,7 +422,6 @@ public class Events implements Listener {
   }
 
   @EventHandler(priority = EventPriority.HIGH)
-  //highest priority to fully protect our game (i didn't set it because my test server was destroyed, n-no......)
   public void onBlockBreakEvent(BlockBreakEvent event) {
     if(ArenaRegistry.isInArena(event.getPlayer())) {
       event.setCancelled(true);
@@ -363,7 +429,6 @@ public class Events implements Listener {
   }
 
   @EventHandler(priority = EventPriority.HIGH)
-  //highest priority to fully protect our game (i didn't set it because my test server was destroyed, n-no......)
   public void onBuild(BlockPlaceEvent event) {
     if(ArenaRegistry.isInArena(event.getPlayer()) && event.getBlock().getType() != Utils.getCachedDoor(event.getBlock())) {
       event.setCancelled(true);
@@ -378,39 +443,53 @@ public class Events implements Listener {
   }
 
   @EventHandler
-  public void onRottenFleshDrop(InventoryPickupItemEvent e) {
+  public void onSecretWellDrop(InventoryPickupItemEvent e) {
     if(e.getInventory().getType() != InventoryType.HOPPER) {
       return;
     }
-    if(e.getItem().getItemStack().getType() != Material.ROTTEN_FLESH) {
-      for(Arena arena : ArenaRegistry.getArenas()) {
-        if(e.getItem().getWorld().equals(arena.getStartLocation().getWorld())) {
-          e.getItem().remove();
-          e.getInventory().clear();
-          return;
-        }
+
+    Item item = e.getItem();
+    ItemStack itemStack = item.getItemStack();
+    Location location = item.getLocation();
+
+    Arena currentArena = null;
+    for(Arena arena : ArenaRegistry.getArenas()) {
+      if(item.getWorld().equals(arena.getStartLocation().getWorld())) {
+        currentArena = arena;
+        item.remove();
+        e.setCancelled(true);
+        e.getInventory().clear();
+        break;
       }
+    }
+    if(currentArena == null) {
       return;
     }
-    for(Entity entity : Utils.getNearbyEntities(e.getItem().getLocation(), 20)) {
-      if(!(entity instanceof Player)) {
-        continue;
-      }
-      Arena arena = ArenaRegistry.getArena((Player) entity);
-      if(arena == null) {
-        continue;
-      }
-      arena.addOptionValue(ArenaOption.ROTTEN_FLESH_AMOUNT, e.getItem().getItemStack().getAmount());
-      e.getItem().remove();
-      e.setCancelled(true);
-      e.getInventory().clear();
-      VersionUtils.sendParticles("CLOUD", arena.getPlayers(), e.getItem().getLocation(), 50, 2, 2, 2);
-      if(!arena.checkLevelUpRottenFlesh() || arena.getOption(ArenaOption.ROTTEN_FLESH_LEVEL) >= 30) {
-        return;
-      }
-      for(Player p : arena.getPlayers()) {
-        VersionUtils.setMaxHealth(p, VersionUtils.getMaxHealth(p) + 2.0);
-        p.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage(Messages.ROTTEN_FLESH_LEVEL_UP));
+
+    VillageGameSecretWellEvent villageGameSecretWellEvent = new VillageGameSecretWellEvent(currentArena, itemStack, location);
+    Bukkit.getPluginManager().callEvent(villageGameSecretWellEvent);
+    if(villageGameSecretWellEvent.isCancelled()) {
+      return;
+    }
+
+    if(itemStack.getType() == Material.ROTTEN_FLESH) {
+      for(Entity entity : Utils.getNearbyEntities(location, 20)) {
+        if(!(entity instanceof Player)) {
+          continue;
+        }
+        Arena arena = ArenaRegistry.getArena((Player) entity);
+        if(arena == null) {
+          continue;
+        }
+        arena.addOptionValue(ArenaOption.ROTTEN_FLESH_AMOUNT, itemStack.getAmount());
+        VersionUtils.sendParticles("CLOUD", arena.getPlayers(), location, 50, 2, 2, 2);
+        if(!arena.checkLevelUpRottenFlesh() || arena.getOption(ArenaOption.ROTTEN_FLESH_LEVEL) >= 30) {
+          return;
+        }
+        for(Player p : arena.getPlayers()) {
+          VersionUtils.setMaxHealth(p, VersionUtils.getMaxHealth(p) + 2.0);
+          p.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage(Messages.ROTTEN_FLESH_LEVEL_UP));
+        }
       }
     }
   }
@@ -423,15 +502,15 @@ public class Events implements Listener {
   public void onCombust(EntityCombustEvent e) {
     // Ignore if this is caused by an event lower down the chain.
     if(e instanceof EntityCombustByEntityEvent || e instanceof EntityCombustByBlockEvent
-        || !(e.getEntity() instanceof Zombie)
+        || !(e.getEntity() instanceof Creature)
         || e.getEntity().getWorld().getEnvironment() != World.Environment.NORMAL) {
       return;
     }
 
     for(Arena arena : ArenaRegistry.getArenas()) {
-      if(arena.getZombies().contains(e.getEntity())) {
+      if(arena.getEnemies().contains(e.getEntity())) {
         e.setCancelled(true);
-        return;
+        break;
       }
     }
   }

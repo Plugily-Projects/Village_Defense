@@ -18,19 +18,20 @@
 
 package plugily.projects.villagedefense.kits;
 
-import com.github.stefvanschie.inventoryframework.Gui;
-import com.github.stefvanschie.inventoryframework.GuiItem;
-import com.github.stefvanschie.inventoryframework.pane.StaticPane;
+import java.util.List;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.inventory.ItemStack;
-import pl.plajerlair.commonsbox.minecraft.compat.VersionUtils;
-import pl.plajerlair.commonsbox.minecraft.compat.events.api.CBPlayerInteractEvent;
-import pl.plajerlair.commonsbox.minecraft.item.ItemBuilder;
-import pl.plajerlair.commonsbox.minecraft.item.ItemUtils;
+import plugily.projects.commonsbox.minecraft.compat.VersionUtils;
+import plugily.projects.commonsbox.minecraft.compat.events.api.CBPlayerInteractEvent;
+import plugily.projects.commonsbox.minecraft.item.ItemBuilder;
+import plugily.projects.commonsbox.minecraft.item.ItemUtils;
+import plugily.projects.inventoryframework.gui.GuiItem;
+import plugily.projects.inventoryframework.gui.type.ChestGui;
+import plugily.projects.inventoryframework.pane.StaticPane;
 import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.api.event.player.VillagePlayerChooseKitEvent;
 import plugily.projects.villagedefense.arena.Arena;
@@ -62,29 +63,28 @@ public class KitMenuHandler implements Listener {
   }
 
   public void createMenu(Player player) {
-    Gui gui = new Gui(plugin, Utils.serializeInt(KitRegistry.getKits().size()) / 9, plugin.getChatManager().colorMessage(Messages.KITS_OPEN_KIT_MENU));
+    List<Kit> kits = KitRegistry.getKits();
+    ChestGui gui = new ChestGui(Utils.serializeInt(kits.size()) / 9, plugin.getChatManager().colorMessage(Messages.KITS_OPEN_KIT_MENU));
+    gui.setOnGlobalClick(event -> event.setCancelled(true));
     StaticPane pane = new StaticPane(9, gui.getRows());
     gui.addPane(pane);
-    int x = 0;
-    int y = 0;
-    for(Kit kit : KitRegistry.getKits()) {
+
+    for(int i = 0; i < kits.size(); i++) {
+      Kit kit = kits.get(i);
       ItemStack itemStack = kit.getItemStack();
-      if(kit.isUnlockedByPlayer(player)) {
-        itemStack = new ItemBuilder(itemStack).lore(unlockedString).build();
-      } else {
-        itemStack = new ItemBuilder(itemStack).lore(lockedString).build();
-      }
+      itemStack = new ItemBuilder(itemStack)
+          .lore(kit.isUnlockedByPlayer(player) ? unlockedString : lockedString)
+          .build();
 
       pane.addItem(new GuiItem(itemStack, e -> {
-        e.setCancelled(true);
-        if(!(e.getWhoClicked() instanceof Player) || !(e.isLeftClick() || e.isRightClick()) || !ItemUtils.isItemStackNamed(e.getCurrentItem())) {
+        if(!(e.isLeftClick() || e.isRightClick()) || !(e.getWhoClicked() instanceof Player) || !ItemUtils.isItemStackNamed(e.getCurrentItem())) {
           return;
         }
         Arena arena = ArenaRegistry.getArena(player);
         if(arena == null) {
           return;
         }
-        VillagePlayerChooseKitEvent event = new VillagePlayerChooseKitEvent(player, KitRegistry.getKit(e.getCurrentItem()), arena);
+        VillagePlayerChooseKitEvent event = new VillagePlayerChooseKitEvent(player, kit, arena);
         Bukkit.getPluginManager().callEvent(event);
         if(event.isCancelled()) {
           return;
@@ -95,12 +95,7 @@ public class KitMenuHandler implements Listener {
         }
         plugin.getUserManager().getUser(player).setKit(kit);
         player.sendMessage(plugin.getChatManager().colorMessage(Messages.KITS_CHOOSE_MESSAGE).replace("%KIT%", kit.getName()));
-      }), x, y);
-      x++;
-      if(x == 9) {
-        x = 0;
-        y++;
-      }
+      }), i % 9, i / 9);
     }
     gui.show(player);
   }

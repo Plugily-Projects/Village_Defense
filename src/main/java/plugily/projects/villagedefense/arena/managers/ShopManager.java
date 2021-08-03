@@ -18,9 +18,9 @@
 
 package plugily.projects.villagedefense.arena.managers;
 
-import com.github.stefvanschie.inventoryframework.Gui;
-import com.github.stefvanschie.inventoryframework.GuiItem;
-import com.github.stefvanschie.inventoryframework.pane.StaticPane;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.stream.Collectors;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -31,10 +31,13 @@ import org.bukkit.entity.Player;
 import org.bukkit.entity.Wolf;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import pl.plajerlair.commonsbox.minecraft.configuration.ConfigUtils;
-import pl.plajerlair.commonsbox.minecraft.item.ItemUtils;
-import pl.plajerlair.commonsbox.minecraft.misc.stuff.ComplementAccessor;
-import pl.plajerlair.commonsbox.minecraft.serialization.LocationSerializer;
+import plugily.projects.commonsbox.minecraft.configuration.ConfigUtils;
+import plugily.projects.commonsbox.minecraft.item.ItemUtils;
+import plugily.projects.commonsbox.minecraft.misc.stuff.ComplementAccessor;
+import plugily.projects.commonsbox.minecraft.serialization.LocationSerializer;
+import plugily.projects.inventoryframework.gui.GuiItem;
+import plugily.projects.inventoryframework.gui.type.ChestGui;
+import plugily.projects.inventoryframework.pane.StaticPane;
 import plugily.projects.villagedefense.ConfigPreferences.Option;
 import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.api.StatsStorage;
@@ -47,10 +50,6 @@ import plugily.projects.villagedefense.utils.Debugger;
 import plugily.projects.villagedefense.utils.Utils;
 import plugily.projects.villagedefense.utils.constants.Constants;
 
-import java.util.List;
-import java.util.logging.Level;
-import java.util.stream.Collectors;
-
 /**
  * Created by Tom on 16/08/2014.
  */
@@ -61,7 +60,7 @@ public class ShopManager {
 
   private final Main plugin;
   private final FileConfiguration config;
-  private Gui gui;
+  private ChestGui gui;
   private final Arena arena;
 
   public ShopManager(Arena arena) {
@@ -76,7 +75,7 @@ public class ShopManager {
     }
   }
 
-  public Gui getShop() {
+  public ChestGui getShop() {
     return gui;
   }
 
@@ -117,91 +116,110 @@ public class ShopManager {
     ItemStack[] contents = ((Chest) LocationSerializer.getLocation(config.getString("instances." + arena.getId() + ".shop"))
         .getBlock().getState()).getInventory().getContents();
     int size = Utils.serializeInt(contents.length) / 9;
-    Gui gui = new Gui(plugin, size, plugin.getChatManager().colorMessage(Messages.SHOP_MESSAGES_SHOP_GUI_NAME));
+    ChestGui gui = new ChestGui(size, plugin.getChatManager().colorMessage(Messages.SHOP_MESSAGES_SHOP_GUI_NAME));
+    gui.setOnGlobalClick(event -> event.setCancelled(true));
     StaticPane pane = new StaticPane(9, size);
-    int x = 0;
-    int y = 0;
-    for(ItemStack itemStack : contents) {
+    for (int slot = 0; slot < contents.length; slot++) {
+      ItemStack itemStack = contents[slot];
       if(itemStack == null || itemStack.getType() == Material.REDSTONE_BLOCK) {
-        x++;
-        if(x == 9) {
-          x = 0;
-          y++;
-        }
         continue;
       }
 
       String costString = "";
+      ItemMeta meta = itemStack.getItemMeta();
       //seek for item price
-      if(itemStack.hasItemMeta() && itemStack.getItemMeta().hasLore()) {
-        for(String s : ComplementAccessor.getComplement().getLore(itemStack.getItemMeta())) {
+      if(meta != null && meta.hasLore()) {
+        for(String s : ComplementAccessor.getComplement().getLore(meta)) {
           if(s.contains(plugin.getChatManager().colorMessage(Messages.SHOP_MESSAGES_CURRENCY_IN_SHOP)) || s.contains("orbs")) {
-            costString = ChatColor.stripColor(s).replaceAll("[^0-9]", "");
+            costString = ChatColor.stripColor(s).replaceAll("&[0-9a-zA-Z]", "").replaceAll("[^0-9]", "");
             break;
           }
         }
       }
-      if(costString.isEmpty()) {
+
+      int cost;
+      try {
+        cost = Integer.parseInt(costString);
+      } catch(NumberFormatException e) {
         Debugger.debug(Level.WARNING, "No price set for shop item in arena {0} skipping item!", arena.getId());
         continue;
       }
-      final int cost = Integer.parseInt(costString);
 
       pane.addItem(new GuiItem(itemStack, e -> {
         Player player = (Player) e.getWhoClicked();
+
         if(!arena.getPlayers().contains(player)) {
           return;
         }
-        e.setCancelled(true);
+
         User user = plugin.getUserManager().getUser(player);
-        if(cost > user.getStat(StatsStorage.StatisticType.ORBS)) {
+        int orbs = user.getStat(StatsStorage.StatisticType.ORBS);
+
+        if(cost > orbs) {
           player.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage(Messages.SHOP_MESSAGES_NOT_ENOUGH_ORBS));
           return;
         }
+
         if(ItemUtils.isItemStackNamed(itemStack)) {
           String name = ComplementAccessor.getComplement().getDisplayName(itemStack.getItemMeta());
           int spawnedAmount = 0;
+
           if(name.contains(plugin.getChatManager().colorMessage(Messages.SHOP_MESSAGES_GOLEM_ITEM_NAME))
               || name.contains(defaultGolemItemName)) {
             List<IronGolem> golems = arena.getIronGolems();
+
             if(plugin.getConfigPreferences().getOption(Option.CAN_BUY_GOLEMSWOLVES_IF_THEY_DIED)) {
               golems = golems.stream().filter(IronGolem::isDead).collect(Collectors.toList());
             }
+
+            String spawnedName = plugin.getChatManager().colorMessage(Messages.SPAWNED_GOLEM_NAME).replace("%player%", player.getName());
+
             for(IronGolem golem : golems) {
-              if(plugin.getChatManager().colorMessage(Messages.SPAWNED_GOLEM_NAME).replace("%player%", player.getName()).equals(golem.getCustomName())) {
+              if(spawnedName.equals(golem.getCustomName())) {
                 spawnedAmount++;
               }
             }
-            if(spawnedAmount >= plugin.getConfig().getInt("Golems-Spawn-Limit", 15)) {
+
+            int spawnLimit = plugin.getConfig().getInt("Golems-Spawn-Limit", 15);
+            if(spawnedAmount >= spawnLimit) {
               player.sendMessage(plugin.getChatManager().colorMessage(Messages.SHOP_MESSAGES_MOB_LIMIT_REACHED)
-                  .replace("%amount%", String.valueOf(plugin.getConfig().getInt("Golems-Spawn-Limit", 15))));
+                  .replace("%amount%", Integer.toString(spawnLimit)));
               return;
             }
+
             arena.spawnGolem(arena.getStartLocation(), player);
             player.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage(Messages.GOLEM_SPAWNED));
-            user.setStat(StatsStorage.StatisticType.ORBS, user.getStat(StatsStorage.StatisticType.ORBS) - cost);
+            user.setStat(StatsStorage.StatisticType.ORBS, orbs - cost);
             arena.addOptionValue(ArenaOption.TOTAL_ORBS_SPENT, cost);
             return;
           }
+
           if(name.contains(plugin.getChatManager().colorMessage(Messages.SHOP_MESSAGES_WOLF_ITEM_NAME))
               || name.contains(defaultWolfItemName)) {
             List<Wolf> wolves = arena.getWolves();
+
             if(plugin.getConfigPreferences().getOption(Option.CAN_BUY_GOLEMSWOLVES_IF_THEY_DIED)) {
               wolves = wolves.stream().filter(Wolf::isDead).collect(Collectors.toList());
             }
+
+            String spawnedName = plugin.getChatManager().colorMessage(Messages.SPAWNED_WOLF_NAME).replace("%player%", player.getName());
+
             for(Wolf wolf : wolves) {
-              if(plugin.getChatManager().colorMessage(Messages.SPAWNED_WOLF_NAME).replace("%player%", player.getName()).equals(wolf.getCustomName())) {
+              if(spawnedName.equals(wolf.getCustomName())) {
                 spawnedAmount++;
               }
             }
-            if(spawnedAmount >= plugin.getConfig().getInt("Wolves-Spawn-Limit", 20)) {
+
+            int spawnLimit = plugin.getConfig().getInt("Wolves-Spawn-Limit", 20);
+            if(spawnedAmount >= spawnLimit) {
               player.sendMessage(plugin.getChatManager().colorMessage(Messages.SHOP_MESSAGES_MOB_LIMIT_REACHED)
-                  .replace("%amount%", String.valueOf(plugin.getConfig().getInt("Wolves-Spawn-Limit", 20))));
+                  .replace("%amount%", Integer.toString(spawnLimit)));
               return;
             }
+
             arena.spawnWolf(arena.getStartLocation(), player);
             player.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage(Messages.WOLF_SPAWNED));
-            user.setStat(StatsStorage.StatisticType.ORBS, user.getStat(StatsStorage.StatisticType.ORBS) - cost);
+            user.setStat(StatsStorage.StatisticType.ORBS, orbs - cost);
             arena.addOptionValue(ArenaOption.TOTAL_ORBS_SPENT, cost);
             return;
           }
@@ -209,23 +227,21 @@ public class ShopManager {
 
         ItemStack stack = itemStack.clone();
         ItemMeta itemMeta = stack.getItemMeta();
+
         if(itemMeta != null) {
           if(itemMeta.hasLore()) {
             ComplementAccessor.getComplement().setLore(itemMeta, ComplementAccessor.getComplement().getLore(itemMeta).stream().filter(lore ->
                 !lore.contains(plugin.getChatManager().colorMessage(Messages.SHOP_MESSAGES_CURRENCY_IN_SHOP)))
                 .collect(Collectors.toList()));
           }
+
           stack.setItemMeta(itemMeta);
         }
+
         player.getInventory().addItem(stack);
-        user.setStat(StatsStorage.StatisticType.ORBS, user.getStat(StatsStorage.StatisticType.ORBS) - cost);
+        user.setStat(StatsStorage.StatisticType.ORBS, orbs - cost);
         arena.addOptionValue(ArenaOption.TOTAL_ORBS_SPENT, cost);
-      }), x, y);
-      x++;
-      if(x == 9) {
-        x = 0;
-        y++;
-      }
+      }), slot % 9, slot / 9);
     }
     gui.addPane(pane);
     this.gui = gui;
@@ -233,7 +249,7 @@ public class ShopManager {
 
   private boolean validateShop() {
     String shop = config.getString("instances." + arena.getId() + ".shop", "");
-    if(shop.isEmpty() || shop.split(",").length == 0) {
+    if(shop.isEmpty() || !shop.contains(",")) {
       Debugger.debug(Level.WARNING, "There is no shop for arena {0}! Aborting registering shop!", arena.getId());
       return false;
     }

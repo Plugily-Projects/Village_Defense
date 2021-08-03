@@ -18,6 +18,9 @@
 
 package plugily.projects.villagedefense.user;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import plugily.projects.villagedefense.ConfigPreferences;
@@ -32,10 +35,6 @@ import plugily.projects.villagedefense.user.data.MysqlManager;
 import plugily.projects.villagedefense.user.data.UserDatabase;
 import plugily.projects.villagedefense.utils.Debugger;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
-
 /**
  * Created by Tom on 27/07/2014.
  */
@@ -43,10 +42,10 @@ public class UserManager {
 
   private final UserDatabase database;
   private final List<User> users = new ArrayList<>();
-  private static Main plugin;
+  private final Main plugin;
 
   public UserManager(Main main) {
-    plugin = main;
+    this.plugin = main;
     if(plugin.getConfigPreferences().getOption(ConfigPreferences.Option.DATABASE_ENABLED)) {
       database = new MysqlManager(plugin);
     } else {
@@ -93,21 +92,24 @@ public class UserManager {
     if(player.hasPermission(PermissionsManager.getElite())) {
       user.addStat(StatsStorage.StatisticType.XP, (int) Math.ceil(i / 2.0));
     }
-    updateLevelStat(player, ArenaRegistry.getArena(player));
+    updateLevelStat(user, ArenaRegistry.getArena(player));
   }
 
   public void addStat(Player player, StatsStorage.StatisticType stat) {
-    getUser(player).addStat(stat, 1);
-    updateLevelStat(player, ArenaRegistry.getArena(player));
+    addStat(getUser(player), stat);
   }
 
-  public void updateLevelStat(Player player, Arena arena) {
-    User user = getUser(player);
+  public void addStat(User user, StatsStorage.StatisticType stat) {
+    user.addStat(stat, 1);
+    updateLevelStat(user, user.getArena());
+  }
+
+  public void updateLevelStat(User user, Arena arena) {
     if(Math.pow(50.0 * user.getStat(StatsStorage.StatisticType.LEVEL), 1.5) < user.getStat(StatsStorage.StatisticType.XP)) {
       user.addStat(StatsStorage.StatisticType.LEVEL, 1);
       //Arena can be null when player has left the arena before this message the arean is retrieved.
       if(arena != null)
-        player.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().formatMessage(arena, plugin.getChatManager().colorMessage(Messages.YOU_LEVELED_UP), user.getStat(StatsStorage.StatisticType.LEVEL)));
+        user.getPlayer().sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().formatMessage(arena, plugin.getChatManager().colorMessage(Messages.YOU_LEVELED_UP), user.getStat(StatsStorage.StatisticType.LEVEL)));
     }
   }
 

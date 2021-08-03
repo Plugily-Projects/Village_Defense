@@ -20,6 +20,9 @@ package plugily.projects.villagedefense.arena.managers;
 
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
+import java.util.EnumMap;
+import java.util.Map;
+import java.util.logging.Level;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -28,18 +31,14 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.server.ServerListPingEvent;
-import pl.plajerlair.commonsbox.minecraft.configuration.ConfigUtils;
-import pl.plajerlair.commonsbox.minecraft.misc.stuff.ComplementAccessor;
+import plugily.projects.commonsbox.minecraft.configuration.ConfigUtils;
+import plugily.projects.commonsbox.minecraft.misc.stuff.ComplementAccessor;
 import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.arena.Arena;
 import plugily.projects.villagedefense.arena.ArenaManager;
 import plugily.projects.villagedefense.arena.ArenaRegistry;
 import plugily.projects.villagedefense.arena.ArenaState;
 import plugily.projects.villagedefense.utils.Debugger;
-
-import java.util.EnumMap;
-import java.util.Map;
-import java.util.logging.Level;
 
 /**
  * Created by Tom on 31/08/2014.
@@ -78,7 +77,7 @@ public class BungeeManager implements Listener {
 
   @EventHandler(priority = EventPriority.HIGHEST)
   public void onServerListPing(ServerListPingEvent event) {
-    if(!config.getBoolean("MOTD.Manager") || ArenaRegistry.getArenas().isEmpty()) {
+    if(ArenaRegistry.getArenas().isEmpty() || !config.getBoolean("MOTD.Manager")) {
       return;
     }
     Arena arena = ArenaRegistry.getArenas().get(ArenaRegistry.getBungeeArena());
@@ -98,7 +97,7 @@ public class BungeeManager implements Listener {
   @EventHandler(priority = EventPriority.HIGHEST)
   public void onQuit(PlayerQuitEvent event) {
     ComplementAccessor.getComplement().setQuitMessage(event, "");
-    if(ArenaRegistry.isInArena(event.getPlayer()) && !ArenaRegistry.getArenas().isEmpty()) {
+    if(!ArenaRegistry.getArenas().isEmpty() && ArenaRegistry.isInArena(event.getPlayer())) {
       ArenaManager.leaveAttempt(event.getPlayer(), ArenaRegistry.getArenas().get(ArenaRegistry.getBungeeArena()));
     }
 

@@ -18,8 +18,9 @@
 
 package plugily.projects.villagedefense.kits.basekits;
 
+import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
-import pl.plajerlair.commonsbox.minecraft.item.ItemBuilder;
+import plugily.projects.commonsbox.minecraft.item.ItemBuilder;
 import plugily.projects.villagedefense.handlers.language.Messages;
 
 /**
@@ -37,13 +38,15 @@ public abstract class LevelKit extends Kit {
     this.level = level;
   }
 
+  public abstract Material getMaterial();
+
   @Override
   public ItemStack getItemStack() {
     return new ItemBuilder(getMaterial())
         .name(getName())
         .lore(getDescription())
         .lore(getPlugin().getChatManager().colorMessage(Messages.KITS_MENU_LOCKED_UNLOCK_AT_LEVEL)
-            .replace("%NUMBER%", Integer.toString(getLevel())))
+            .replace("%NUMBER%", Integer.toString(level)))
         .build();
   }
 }

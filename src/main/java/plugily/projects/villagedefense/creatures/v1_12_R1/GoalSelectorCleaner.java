@@ -18,11 +18,10 @@
 
 package plugily.projects.villagedefense.creatures.v1_12_R1;
 
+import java.util.Set;
 import net.minecraft.server.v1_12_R1.EntityCreature;
 import net.minecraft.server.v1_12_R1.PathfinderGoalSelector;
 import plugily.projects.villagedefense.creatures.CreatureUtils;
-
-import java.util.LinkedHashSet;
 
 /**
  * Internal helper class
@@ -33,13 +32,13 @@ class GoalSelectorCleaner {
   }
 
   static void clearSelectors(EntityCreature creature) {
-    LinkedHashSet<?> goalB = (LinkedHashSet<?>) CreatureUtils.getPrivateField("b", PathfinderGoalSelector.class, creature.goalSelector);
+    Set<?> goalB = (Set<?>) CreatureUtils.getPrivateField("b", PathfinderGoalSelector.class, creature.goalSelector);
     goalB.clear();
-    LinkedHashSet<?> goalC = (LinkedHashSet<?>) CreatureUtils.getPrivateField("c", PathfinderGoalSelector.class, creature.goalSelector);
+    Set<?> goalC = (Set<?>) CreatureUtils.getPrivateField("c", PathfinderGoalSelector.class, creature.goalSelector);
     goalC.clear();
-    LinkedHashSet<?> targetB = (LinkedHashSet<?>) CreatureUtils.getPrivateField("b", PathfinderGoalSelector.class, creature.targetSelector);
+    Set<?> targetB = (Set<?>) CreatureUtils.getPrivateField("b", PathfinderGoalSelector.class, creature.targetSelector);
     targetB.clear();
-    LinkedHashSet<?> targetC = (LinkedHashSet<?>) CreatureUtils.getPrivateField("c", PathfinderGoalSelector.class, creature.targetSelector);
+    Set<?> targetC = (Set<?>) CreatureUtils.getPrivateField("c", PathfinderGoalSelector.class, creature.targetSelector);
     targetC.clear();
   }
 

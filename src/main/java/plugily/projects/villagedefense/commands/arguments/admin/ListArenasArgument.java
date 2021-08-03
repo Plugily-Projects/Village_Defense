@@ -44,14 +44,14 @@ public class ListArenasArgument {
 
         if(ArenaRegistry.getArenas().isEmpty()) {
           sender.sendMessage(registry.getPlugin().getChatManager().colorMessage(Messages.COMMANDS_ADMIN_LIST_NO_ARENAS));
-          sender.sendMessage(registry.getPlugin().getChatManager().colorRawMessage("&e&lTIP: &7You can get free maps with configs at our wiki! Just head to https://wiki.plugily.xyz/minecraft/villagedefense/free_maps.php"));
+          sender.sendMessage(registry.getPlugin().getChatManager().colorRawMessage("&e&lTIP: &7You can get free maps with configs at our wiki! Just head to https://wiki.plugily.xyz/villagedefense/setup/maps"));
           return;
         }
 
         for(Arena arena : ArenaRegistry.getArenas()) {
           sender.sendMessage(registry.getPlugin().getChatManager().colorMessage(Messages.COMMANDS_ADMIN_LIST_FORMAT).replace("%arena%", arena.getId())
-              .replace("%status%", arena.getArenaState().getFormattedName()).replace("%players%", String.valueOf(arena.getPlayers().size()))
-              .replace("%maxplayers%", String.valueOf(arena.getMaximumPlayers())));
+              .replace("%status%", arena.getArenaState().getFormattedName()).replace("%players%", Integer.toString(arena.getPlayers().size()))
+              .replace("%maxplayers%", Integer.toString(arena.getMaximumPlayers())));
         }
       }
     });

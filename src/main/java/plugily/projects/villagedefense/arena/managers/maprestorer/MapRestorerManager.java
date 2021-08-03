@@ -18,21 +18,19 @@
 
 package plugily.projects.villagedefense.arena.managers.maprestorer;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.logging.Level;
 import org.bukkit.Location;
 import org.bukkit.TreeSpecies;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.entity.EntityType;
 import org.bukkit.material.Door;
-
-import pl.plajerlair.commonsbox.minecraft.compat.xseries.XMaterial;
+import plugily.projects.commonsbox.minecraft.compat.xseries.XMaterial;
 import plugily.projects.villagedefense.arena.Arena;
 import plugily.projects.villagedefense.utils.Debugger;
 import plugily.projects.villagedefense.utils.Utils;
-
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.logging.Level;
 
 /**
  * @author Plajer
@@ -59,16 +57,16 @@ public class MapRestorerManager {
 
   public final void fullyRestoreArena() {
     restoreDoors();
-    clearZombiesFromArena();
+    clearEnemiesFromArena();
     clearGolemsFromArena();
     clearVillagersFromArena();
     clearWolvesFromArena();
     clearDroppedEntities();
   }
 
-  public final void clearZombiesFromArena() {
-    arena.getZombies().forEach(org.bukkit.entity.Zombie::remove);
-    arena.getZombies().clear();
+  public final void clearEnemiesFromArena() {
+    arena.getEnemies().forEach(org.bukkit.entity.Creature::remove);
+    arena.getEnemies().clear();
   }
 
   public final void clearDroppedEntities() {

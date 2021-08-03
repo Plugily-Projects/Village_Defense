@@ -20,15 +20,11 @@ package plugily.projects.villagedefense.commands.arguments.admin.arena;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import plugily.projects.villagedefense.arena.Arena;
-import plugily.projects.villagedefense.arena.ArenaRegistry;
-import plugily.projects.villagedefense.arena.ArenaState;
+import plugily.projects.villagedefense.arena.ArenaUtils;
 import plugily.projects.villagedefense.commands.arguments.ArgumentsRegistry;
 import plugily.projects.villagedefense.commands.arguments.data.CommandArgument;
 import plugily.projects.villagedefense.commands.arguments.data.LabelData;
 import plugily.projects.villagedefense.commands.arguments.data.LabeledCommandArgument;
-import plugily.projects.villagedefense.handlers.language.Messages;
-import plugily.projects.villagedefense.utils.Utils;
 
 /**
  * @author Plajer
@@ -43,16 +39,7 @@ public class ForceStartArgument {
             "&7Force starts arena you're in\n&6Permission: &7villagedefense.admin.forcestart")) {
       @Override
       public void execute(CommandSender sender, String[] args) {
-        if(!Utils.checkIsInGameInstance((Player) sender)) {
-          return;
-        }
-        Arena arena = ArenaRegistry.getArena((Player) sender);
-        if(arena.getArenaState() == ArenaState.WAITING_FOR_PLAYERS || arena.getArenaState() == ArenaState.STARTING) {
-          arena.setArenaState(ArenaState.STARTING);
-          arena.setForceStart(true);
-          arena.setTimer(0);
-          registry.getPlugin().getChatManager().broadcast(arena, Messages.ADMIN_MESSAGES_SET_STARTING_IN_TO_0);
-        }
+        ArenaUtils.arenaForceStart((Player) sender);
       }
     });
   }

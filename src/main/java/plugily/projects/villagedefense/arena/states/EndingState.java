@@ -19,7 +19,7 @@
 package plugily.projects.villagedefense.arena.states;
 
 import org.bukkit.entity.Player;
-import pl.plajerlair.commonsbox.minecraft.compat.ServerVersion;
+import plugily.projects.commonsbox.minecraft.compat.ServerVersion;
 import plugily.projects.villagedefense.ConfigPreferences;
 import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.api.StatsStorage;
@@ -47,7 +47,10 @@ public class EndingState implements ArenaStateHandler {
   @Override
   public void handleCall(Arena arena) {
     arena.getScoreboardManager().stopAllScoreboards();
-    if(arena.getTimer() <= 0) {
+
+    int timer = arena.getTimer();
+
+    if(timer <= 0) {
       if(ServerVersion.Version.isCurrentEqualOrHigher(ServerVersion.Version.v1_9_R1) && plugin.getConfigPreferences().getOption(ConfigPreferences.Option.BOSSBAR_ENABLED)) {
         arena.getGameBar().setTitle(plugin.getChatManager().colorMessage(Messages.BOSSBAR_GAME_ENDED));
       }
@@ -55,18 +58,21 @@ public class EndingState implements ArenaStateHandler {
       for(Player player : arena.getPlayers()) {
         ArenaUtils.resetPlayerAfterGame(player);
         arena.doBarAction(Arena.BarAction.REMOVE, player);
-        plugin.getUserManager().addStat(player, StatsStorage.StatisticType.GAMES_PLAYED);
         arena.teleportToEndLocation(player);
+
         User user = plugin.getUserManager().getUser(player);
+
+        plugin.getUserManager().addStat(user, StatsStorage.StatisticType.GAMES_PLAYED);
         user.setSpectator(false);
         user.setStat(StatsStorage.StatisticType.ORBS, 0);
+        arena.getScoreboardManager().removeScoreboard(user);
         plugin.getRewardsHandler().performReward(player, arena, Reward.RewardType.END_GAME);
       }
       plugin.getChatManager().broadcast(arena, Messages.COMMANDS_TELEPORTED_TO_THE_LOBBY);
 
       arena.setArenaState(ArenaState.RESTARTING);
     }
-    arena.setTimer(arena.getTimer() - 1);
+    arena.setTimer(timer - 1);
   }
 
 }

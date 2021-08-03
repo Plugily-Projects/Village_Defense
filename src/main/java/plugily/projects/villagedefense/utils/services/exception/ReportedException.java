@@ -18,11 +18,10 @@
 
 package plugily.projects.villagedefense.utils.services.exception;
 
+import java.util.logging.Level;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import plugily.projects.villagedefense.utils.services.ServiceRegistry;
-
-import java.util.logging.Level;
 
 /**
  * Create reported exception with data sent to plugily.xyz reporter service
@@ -31,9 +30,8 @@ public class ReportedException {
 
   private ReporterService reporterService;
 
-  public ReportedException(JavaPlugin plugin, Exception e) {
-
-    Exception exception = e.getCause() != null ? (Exception) e.getCause() : e;
+  public ReportedException(JavaPlugin plugin, Throwable e) {
+    Throwable exception = e.getCause() != null ? e.getCause() : e;
     StringBuilder stacktrace = new StringBuilder(exception.getClass().getSimpleName());
     if(exception.getMessage() != null) {
       stacktrace.append(" (").append(exception.getMessage()).append(')');

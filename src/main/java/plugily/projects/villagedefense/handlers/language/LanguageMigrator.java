@@ -18,18 +18,17 @@
 
 package plugily.projects.villagedefense.handlers.language;
 
+import java.io.File;
+import java.util.Arrays;
+import java.util.List;
 import org.apache.commons.lang.math.NumberUtils;
 import org.bukkit.configuration.file.FileConfiguration;
-import pl.plajerlair.commonsbox.minecraft.configuration.ConfigUtils;
-import pl.plajerlair.commonsbox.minecraft.migrator.MigratorUtils;
+import plugily.projects.commonsbox.minecraft.configuration.ConfigUtils;
+import plugily.projects.commonsbox.minecraft.migrator.MigratorUtils;
 import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.utils.Debugger;
 import plugily.projects.villagedefense.utils.MessageUtils;
 import plugily.projects.villagedefense.utils.constants.Constants;
-
-import java.io.File;
-import java.util.Arrays;
-import java.util.List;
 
 /*
   NOTE FOR CONTRIBUTORS - Please do not touch this class if you don't now how it works! You can break migrator modyfing these values!
@@ -37,8 +36,8 @@ import java.util.List;
 @SuppressWarnings("deprecation")
 public class LanguageMigrator {
 
-  public static final int LANGUAGE_FILE_VERSION = 18;
-  public static final int CONFIG_FILE_VERSION = 17;
+  public static final int LANGUAGE_FILE_VERSION = 19;
+  public static final int CONFIG_FILE_VERSION = 19;
   private final Main plugin;
   private final List<String> migratable = Arrays.asList(Constants.Files.CONFIG.getName(), Constants.Files.KITS.getName(),
       Constants.Files.KITS.getName(), Constants.Files.LANGUAGE.getName(), Constants.Files.SPECIAL_ITEMS.getName(), Constants.Files.MYSQL.getName());
@@ -66,6 +65,7 @@ public class LanguageMigrator {
     Debugger.sendConsoleMsg("&e[Village Defense] System notify >> Your config file is outdated! Updating...");
     File file = new File(plugin.getDataFolder() + "/config.yml");
     File bungeefile = new File(plugin.getDataFolder() + "/bungee.yml");
+    File kitsfile = new File(plugin.getDataFolder() + "/kits.yml");
 
     int version = plugin.getConfig().getInt("Version", CONFIG_FILE_VERSION - 1);
 
@@ -201,6 +201,53 @@ public class LanguageMigrator {
               "    Ending: RED_wool\r\n" +
               "    Restarting: RED_wool\r\n");
           break;
+        case 17:
+          MigratorUtils.addNewLines(file, "\r\n" +
+              "# How many villagers will be spawned in a arena?\r\n" +
+              "Villager-Amount: 10\r\n");
+          MigratorUtils.addNewLines(file, "\r\n" +
+              "# Should the name tag of these mobs always visible?\r\n" +
+              "Name-Visible:\r\n" +
+              "  Golem: true\r\n" +
+              "  Wolf: true\r\n" +
+              "  Villager: true\r\n");
+          MigratorUtils.addNewLines(kitsfile, "\r\n" +
+              "# The cooldown in seconds for some kit items\r\n" +
+              "Kit-Cooldown:\r\n" +
+              "  Cleaner: 60\r\n" +
+              "  Shot-Bow: 5\r\n" +
+              "  Wizard:\r\n" +
+              "    Essence: 15\r\n" +
+              "    Staff: 1\r\n" +
+              "  Zombie-Finder: 30\r\n");
+          break;
+        case 18:
+          MigratorUtils.addNewLines(file, "\r\n" +
+              "# How many orbs should the players lose after they dead?\r\n" +
+              "# The default is 0, so their orbs will be set to 0.\r\n" +
+              "# The value should be 1 or higher.\r\n" +
+              "Orbs-To-Lose-After-Death: 0");
+          MigratorUtils.addNewLines(file, "\r\n" +
+              "# Should the orbs kept after player death?\r\n" +
+              "# true - player's orbs will be kept after death\r\n" +
+              "# false - player's orbs will be set according to the above option.\r\n" +
+              "Keep-Orbs-After-Death: false");
+          MigratorUtils.addNewLines(kitsfile, "\r\n" +
+              "# The settings for some kits\r\n" +
+              "Kit-Settings:\r\n" +
+              "  Cleaner:\r\n" +
+              "    # The maximum health for the enemies to be removed\r\n" +
+              "    Max-Health: 2048\r\n" +
+              "    # The maximum amount of enemies that this kit can clean\r\n" +
+              "    Max-Amount: 50\r\n" +
+              "    # From the start, how many enemies can this kit remove?\r\n" +
+              "    Base-Amount: 10\r\n" +
+              "    # The amount of the removed enemies will be increased after how many waves?\r\n" +
+              "    Increase-After-Wave: 5\r\n" +
+              "    # How many amount will be added to the base amount\r\n" +
+              "    # Set to 0 to disable" +
+              "    Increase-Amount: 5\r\n");
+          break;
         default:
           break;
       }
@@ -213,7 +260,7 @@ public class LanguageMigrator {
 
   private void languageFileUpdate() {
     FileConfiguration config = ConfigUtils.getConfig(plugin, Constants.Files.LANGUAGE.getName());
-    if(config.getString("File-Version-Do-Not-Edit", "").equals(String.valueOf(LANGUAGE_FILE_VERSION))) {
+    if(config.getString("File-Version-Do-Not-Edit", "").equals(Integer.toString(LANGUAGE_FILE_VERSION))) {
       return;
     }
     Debugger.sendConsoleMsg("&e[Village Defense] [System notify] Your language file is outdated! Updating...");
@@ -405,6 +452,19 @@ public class LanguageMigrator {
               "    Ending: \"&lEnding\"\r\n" +
               "    Restarting: \"&c&lRestarting\"\r\n");
           break;
+        case 18:
+          MigratorUtils.insertAfterLine(file, "  Messages:", "\r\n" +
+              "    Wave-Title:\r\n" +
+              "      # Title times specified in game ticks: fade in, stay, fade out\r\n" +
+              "      # %wave%\r\n" +
+              "      Start:\r\n" +
+              "        Times: \"20, 30, 20\"\r\n" +
+              "        Title: \"Wave %wave%\"\r\n" +
+              "        SubTitle: \"\"\r\n" +
+              "      End:\r\n" +
+              "        Times: \"20, 30, 20\"\r\n" +
+              "        Title: \"Wave %wave% ended\"\r\n" +
+              "        SubTitle: \"\"\r\n");
         default:
           break;
       }

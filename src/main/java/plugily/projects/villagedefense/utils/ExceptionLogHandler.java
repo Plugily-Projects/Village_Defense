@@ -18,14 +18,13 @@
 
 package plugily.projects.villagedefense.utils;
 
-import org.bukkit.Bukkit;
-import plugily.projects.villagedefense.Main;
-import plugily.projects.villagedefense.utils.services.exception.ReportedException;
-
 import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Handler;
 import java.util.logging.LogRecord;
+import org.bukkit.Bukkit;
+import plugily.projects.villagedefense.Main;
+import plugily.projects.villagedefense.utils.services.exception.ReportedException;
 
 /**
  * @author Plajer
@@ -58,7 +57,7 @@ public class ExceptionLogHandler extends Handler {
   public void publish(LogRecord record) {
     try {
       Throwable throwable = record.getThrown();
-      if(!(throwable instanceof Exception) || !throwable.getClass().getSimpleName().contains("Exception") || throwable.getCause() == null) {
+      if(throwable == null || throwable.getCause() == null) {
         return;
       }
       StackTraceElement[] element = throwable.getCause().getStackTrace();
@@ -68,9 +67,9 @@ public class ExceptionLogHandler extends Handler {
       if(containsBlacklistedClass(throwable)) {
         return;
       }
-      new ReportedException(plugin, (Exception) throwable);
+      new ReportedException(plugin, throwable);
       record.setThrown(null);
-      record.setMessage("[VillageDefense] We have found a bug in the code. Contact us at our official discord server (Invite link: https://discordapp.com/invite/UXzUdTP) with the following error given above!");
+      record.setMessage("[Village Defense] We have found a bug in the code. Contact us at our official discord server (Invite link: https://discordapp.com/invite/UXzUdTP) with the following error given above!");
     } catch(ArrayIndexOutOfBoundsException ignored) {
       //ignored
     }

@@ -18,16 +18,16 @@
 
 package plugily.projects.villagedefense.commands.arguments.game;
 
+import java.util.ArrayList;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
-import pl.plajerlair.commonsbox.minecraft.configuration.ConfigUtils;
-import pl.plajerlair.commonsbox.minecraft.serialization.LocationSerializer;
+import plugily.projects.commonsbox.minecraft.configuration.ConfigUtils;
+import plugily.projects.commonsbox.minecraft.serialization.LocationSerializer;
 import plugily.projects.villagedefense.arena.Arena;
 import plugily.projects.villagedefense.arena.ArenaRegistry;
-import plugily.projects.villagedefense.arena.ArenaUtils;
 import plugily.projects.villagedefense.commands.arguments.ArgumentsRegistry;
 import plugily.projects.villagedefense.commands.arguments.data.CommandArgument;
 import plugily.projects.villagedefense.commands.arguments.data.LabelData;
@@ -35,8 +35,6 @@ import plugily.projects.villagedefense.commands.arguments.data.LabeledCommandArg
 import plugily.projects.villagedefense.handlers.language.Messages;
 import plugily.projects.villagedefense.handlers.setup.SetupInventory;
 import plugily.projects.villagedefense.utils.constants.Constants;
-
-import java.util.ArrayList;
 
 /**
  * @author Plajer
@@ -97,7 +95,7 @@ public class CreateArgument {
     config.set(path + "world", worldName);
     ConfigUtils.saveConfig(registry.getPlugin(), config, Constants.Files.ARENAS.getName());
 
-    Arena arena = ArenaUtils.initializeArena(id);
+    Arena arena = new Arena(id);
 
     arena.setMinimumPlayers(config.getInt(path + "minimumplayers"));
     arena.setMaximumPlayers(config.getInt(path + "maximumplayers"));
@@ -105,7 +103,6 @@ public class CreateArgument {
     arena.setLobbyLocation(LocationSerializer.getLocation(config.getString(path + "lobbylocation")));
     arena.setStartLocation(LocationSerializer.getLocation(config.getString(path + "Startlocation")));
     arena.setEndLocation(LocationSerializer.getLocation(config.getString(path + "Endlocation")));
-    ArenaUtils.setWorld(arena);
     arena.setReady(false);
 
     ArenaRegistry.registerArena(arena);

@@ -21,6 +21,7 @@ package plugily.projects.villagedefense.creatures.v1_9_R2;
 import net.minecraft.server.v1_9_R2.Entity;
 import net.minecraft.server.v1_9_R2.EntityHuman;
 import net.minecraft.server.v1_9_R2.EntityLiving;
+import net.minecraft.server.v1_9_R2.EntityWolf;
 import net.minecraft.server.v1_9_R2.EntityZombie;
 import net.minecraft.server.v1_9_R2.GenericAttributes;
 import net.minecraft.server.v1_9_R2.Navigation;
@@ -35,7 +36,6 @@ import net.minecraft.server.v1_9_R2.PathfinderGoalNearestAttackableTarget;
 import net.minecraft.server.v1_9_R2.PathfinderGoalRandomLookaround;
 import net.minecraft.server.v1_9_R2.PathfinderGoalRandomStroll;
 import net.minecraft.server.v1_9_R2.World;
-import net.minecraft.server.v1_9_R2.EntityWolf;
 import org.bukkit.craftbukkit.v1_9_R2.CraftWorld;
 
 /**

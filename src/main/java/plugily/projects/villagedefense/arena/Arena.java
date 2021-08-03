@@ -18,44 +18,6 @@
 
 package plugily.projects.villagedefense.arena;
 
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.boss.BarColor;
-import org.bukkit.boss.BarStyle;
-import org.bukkit.boss.BossBar;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.IronGolem;
-import org.bukkit.entity.Item;
-import org.bukkit.entity.Player;
-import org.bukkit.entity.Villager;
-import org.bukkit.entity.Wolf;
-import org.bukkit.entity.Zombie;
-import org.bukkit.permissions.PermissionAttachmentInfo;
-import org.bukkit.scheduler.BukkitRunnable;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-import org.jetbrains.annotations.TestOnly;
-import pl.plajerlair.commonsbox.minecraft.compat.ServerVersion;
-import pl.plajerlair.commonsbox.minecraft.configuration.ConfigUtils;
-import plugily.projects.villagedefense.ConfigPreferences;
-import plugily.projects.villagedefense.Main;
-import plugily.projects.villagedefense.api.event.game.VillageGameStateChangeEvent;
-import plugily.projects.villagedefense.arena.managers.ScoreboardManager;
-import plugily.projects.villagedefense.arena.managers.ShopManager;
-import plugily.projects.villagedefense.arena.managers.ZombieSpawnManager;
-import plugily.projects.villagedefense.arena.managers.maprestorer.MapRestorerManager;
-import plugily.projects.villagedefense.arena.managers.maprestorer.MapRestorerManagerLegacy;
-import plugily.projects.villagedefense.arena.options.ArenaOption;
-import plugily.projects.villagedefense.arena.states.ArenaStateHandler;
-import plugily.projects.villagedefense.arena.states.EndingState;
-import plugily.projects.villagedefense.arena.states.InGameState;
-import plugily.projects.villagedefense.arena.states.RestartingState;
-import plugily.projects.villagedefense.arena.states.StartingState;
-import plugily.projects.villagedefense.arena.states.WaitingState;
-import plugily.projects.villagedefense.handlers.language.Messages;
-import plugily.projects.villagedefense.user.User;
-import plugily.projects.villagedefense.utils.Debugger;
-
 import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.HashMap;
@@ -65,17 +27,54 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 import java.util.logging.Level;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.boss.BarColor;
+import org.bukkit.boss.BarStyle;
+import org.bukkit.boss.BossBar;
+import org.bukkit.entity.Creature;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.IronGolem;
+import org.bukkit.entity.Item;
+import org.bukkit.entity.Player;
+import org.bukkit.entity.Villager;
+import org.bukkit.entity.Wolf;
+import org.bukkit.permissions.PermissionAttachmentInfo;
+import org.bukkit.scheduler.BukkitRunnable;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.TestOnly;
+import plugily.projects.commonsbox.minecraft.compat.ServerVersion;
+import plugily.projects.commonsbox.minecraft.configuration.ConfigUtils;
+import plugily.projects.villagedefense.ConfigPreferences;
+import plugily.projects.villagedefense.Main;
+import plugily.projects.villagedefense.api.event.game.VillageGameStateChangeEvent;
+import plugily.projects.villagedefense.arena.managers.EnemySpawnManager;
+import plugily.projects.villagedefense.arena.managers.ScoreboardManager;
+import plugily.projects.villagedefense.arena.managers.ShopManager;
+import plugily.projects.villagedefense.arena.managers.maprestorer.MapRestorerManager;
+import plugily.projects.villagedefense.arena.managers.maprestorer.MapRestorerManagerLegacy;
+import plugily.projects.villagedefense.arena.options.ArenaOption;
+import plugily.projects.villagedefense.arena.states.ArenaStateHandler;
+import plugily.projects.villagedefense.arena.states.EndingState;
+import plugily.projects.villagedefense.arena.states.InGameState;
+import plugily.projects.villagedefense.arena.states.RestartingState;
+import plugily.projects.villagedefense.arena.states.StartingState;
+import plugily.projects.villagedefense.arena.states.WaitingState;
+import plugily.projects.villagedefense.creatures.CreatureUtils;
+import plugily.projects.villagedefense.handlers.language.Messages;
+import plugily.projects.villagedefense.user.User;
+import plugily.projects.villagedefense.utils.Debugger;
 
 /**
  * Created by Tom on 12/08/2014.
  */
-public abstract class Arena extends BukkitRunnable {
+public class Arena extends BukkitRunnable {
 
   private static Main plugin;
   private final String id;
 
   private final Set<Player> players = new HashSet<>();
-  private final List<Zombie> zombies = new ArrayList<>();
+  private final List<Creature> enemies = new ArrayList<>();
   private final List<Wolf> wolves = new ArrayList<>();
   private final List<Villager> villagers = new ArrayList<>();
   private final List<IronGolem> ironGolems = new ArrayList<>();
@@ -92,7 +91,7 @@ public abstract class Arena extends BukkitRunnable {
   private ScoreboardManager scoreboardManager;
   private MapRestorerManager mapRestorerManager;
   private ShopManager shopManager;
-  private ZombieSpawnManager zombieSpawnManager;
+  private EnemySpawnManager enemySpawnManager;
 
   private ArenaState arenaState = ArenaState.WAITING_FOR_PLAYERS;
   private BossBar gameBar;
@@ -121,7 +120,7 @@ public abstract class Arena extends BukkitRunnable {
       gameBar = Bukkit.createBossBar(plugin.getChatManager().colorMessage(Messages.BOSSBAR_MAIN_TITLE), BarColor.BLUE, BarStyle.SOLID);
     }
     shopManager = new ShopManager(this);
-    zombieSpawnManager = new ZombieSpawnManager(this);
+    enemySpawnManager = new EnemySpawnManager(this);
     scoreboardManager = new ScoreboardManager(this);
     if(ServerVersion.Version.isCurrentEqualOrLower(ServerVersion.Version.v1_16_R1)) {
       mapRestorerManager = new MapRestorerManagerLegacy(this);
@@ -166,8 +165,8 @@ public abstract class Arena extends BukkitRunnable {
     return shopManager;
   }
 
-  public ZombieSpawnManager getZombieSpawnManager() {
-    return zombieSpawnManager;
+  public EnemySpawnManager getEnemySpawnManager() {
+    return enemySpawnManager;
   }
 
   /**
@@ -196,7 +195,7 @@ public abstract class Arena extends BukkitRunnable {
   @Override
   public void run() {
     //idle task
-    if(players.isEmpty() && arenaState == ArenaState.WAITING_FOR_PLAYERS) {
+    if(arenaState == ArenaState.WAITING_FOR_PLAYERS && players.isEmpty()) {
       return;
     }
     Debugger.performance("ArenaTask", "[PerformanceMonitor] [{0}] Running game task", id);
@@ -207,20 +206,21 @@ public abstract class Arena extends BukkitRunnable {
   }
 
   public void spawnVillagers() {
-    if(getVillagers().size() > 10) {
-      return;
-    }
     List<Location> villagerSpawns = getVillagerSpawns();
     if(villagerSpawns.isEmpty()) {
       Debugger.debug(Level.WARNING, "No villager spawns set for {0} game won't start", id);
       return;
     }
-    villagerSpawns.forEach(this::spawnVillager);
-    if(getVillagers().isEmpty()) {
-      Debugger.debug(Level.WARNING, "Spawning villagers for {0} failed! Are villager spawns set in safe and valid locations?", id);
-      return;
+
+    int amount = plugin.getConfig().getInt("Villager-Amount", 10);
+    int spawnSize = villagerSpawns.size();
+    for (int i = 0; i < amount; i++) {
+      spawnVillager(villagerSpawns.get(i % spawnSize));
     }
-    spawnVillagers();
+
+    if(villagers.isEmpty()) {
+      Debugger.debug(Level.WARNING, "Spawning villagers for {0} failed! Are villager spawns set in safe and valid locations?", id);
+    }
   }
 
   public boolean isForceStart() {
@@ -388,18 +388,18 @@ public abstract class Arena extends BukkitRunnable {
   }
 
   /**
-   * Get list of already spawned zombies.
-   * This will only return alive zombies not total zombies in current wave.
+   * Get list of already spawned enemies.
+   * This will only return alive enemies not total enemies in current wave.
    *
-   * @return list of spawned zombies in arena
+   * @return list of spawned enemies in arena
    */
   @NotNull
-  public List<Zombie> getZombies() {
-    return zombies;
+  public List<Creature> getEnemies() {
+    return enemies;
   }
 
-  public void removeZombie(Zombie zombie) {
-    zombies.remove(zombie);
+  public void removeEnemy(Creature enemy) {
+    enemies.remove(enemy);
   }
 
   @NotNull
@@ -429,7 +429,7 @@ public abstract class Arena extends BukkitRunnable {
   }
 
   public int getZombiesLeft() {
-    return getOption(ArenaOption.ZOMBIES_TO_SPAWN) + zombies.size();
+    return getOption(ArenaOption.ZOMBIES_TO_SPAWN) + enemies.size();
   }
 
   public int getWave() {
@@ -446,33 +446,35 @@ public abstract class Arena extends BukkitRunnable {
     setOptionValue(ArenaOption.WAVE, wave);
   }
 
-  public abstract void spawnVillager(Location location);
+  public void spawnVillager(Location location) {
+    Villager villager = CreatureUtils.getCreatureInitializer().spawnVillager(location);
+    villager.setCustomNameVisible(plugin.getConfigPreferences().getOption(ConfigPreferences.Option.NAME_VISIBLE_VILLAGER));
+    villager.setCustomName(CreatureUtils.getRandomVillagerName());
+    addVillager(villager);
+  }
 
-  public abstract void spawnWolf(Location location, Player player);
+  public void spawnWolf(Location location, Player player) {
+    if(!canSpawnMobForPlayer(player, EntityType.WOLF)) {
+      return;
+    }
 
-  public abstract void spawnGolem(Location location, Player player);
+    Wolf wolf = CreatureUtils.getCreatureInitializer().spawnWolf(location);
+    wolf.setOwner(player);
+    wolf.setCustomNameVisible(plugin.getConfigPreferences().getOption(ConfigPreferences.Option.NAME_VISIBLE_WOLF));
+    wolf.setCustomName(plugin.getChatManager().colorMessage(Messages.SPAWNED_WOLF_NAME).replace("%player%", player.getName()));
+    addWolf(wolf);
+  }
 
-  public abstract void spawnFastZombie(Random random);
+  public void spawnGolem(Location location, Player player) {
+    if(!canSpawnMobForPlayer(player, EntityType.IRON_GOLEM)) {
+      return;
+    }
 
-  public abstract void spawnBabyZombie(Random random);
-
-  public abstract void spawnHardZombie(Random random);
-
-  public abstract void spawnPlayerBuster(Random random);
-
-  public abstract void spawnGolemBuster(Random random);
-
-  public abstract void spawnVillagerBuster(Random random);
-
-  public abstract void spawnSoftHardZombie(Random random);
-
-  public abstract void spawnHalfInvisibleZombie(Random random);
-
-  public abstract void spawnKnockbackResistantZombies(Random random);
-
-  public abstract void spawnVillagerSlayer(Random random);
-
-  public abstract void setWorld(Location loc);
+    IronGolem ironGolem = CreatureUtils.getCreatureInitializer().spawnGolem(location);
+    ironGolem.setCustomNameVisible(plugin.getConfigPreferences().getOption(ConfigPreferences.Option.NAME_VISIBLE_GOLEM));
+    ironGolem.setCustomName(plugin.getChatManager().colorMessage(Messages.SPAWNED_GOLEM_NAME).replace("%player%", player.getName()));
+    addIronGolem(ironGolem);
+  }
 
   protected void addWolf(Wolf wolf) {
     wolves.add(wolf);
@@ -549,14 +551,19 @@ public abstract class Arena extends BukkitRunnable {
   }
 
   public boolean checkLevelUpRottenFlesh() {
-    if(getOption(ArenaOption.ROTTEN_FLESH_LEVEL) == 0 && getOption(ArenaOption.ROTTEN_FLESH_AMOUNT) > 50) {
+    int rottenFleshLevel = getOption(ArenaOption.ROTTEN_FLESH_LEVEL);
+    int rottenFleshAmount = getOption(ArenaOption.ROTTEN_FLESH_AMOUNT);
+
+    if(rottenFleshLevel == 0 && rottenFleshAmount > 50) {
       setOptionValue(ArenaOption.ROTTEN_FLESH_LEVEL, 1);
       return true;
     }
-    if(getOption(ArenaOption.ROTTEN_FLESH_LEVEL) * 10 * players.size() + 10 < getOption(ArenaOption.ROTTEN_FLESH_AMOUNT)) {
+
+    if(rottenFleshLevel * 10 * players.size() + 10 < rottenFleshAmount) {
       addOptionValue(ArenaOption.ROTTEN_FLESH_LEVEL, 1);
       return true;
     }
+
     return false;
   }
 
@@ -578,10 +585,6 @@ public abstract class Arena extends BukkitRunnable {
     return plugin;
   }
 
-  protected void addZombie(Zombie zombie) {
-    zombies.add(zombie);
-  }
-
   protected void addVillager(Villager villager) {
     villagers.add(villager);
   }
@@ -595,6 +598,11 @@ public abstract class Arena extends BukkitRunnable {
   @NotNull
   public List<Location> getZombieSpawns() {
     return spawnPoints.getOrDefault(SpawnPoint.ZOMBIE, new ArrayList<>());
+  }
+
+  public final Location getRandomZombieSpawn(Random random) {
+    List<Location> spawns = getZombieSpawns();
+    return spawns.get(spawns.size() == 1 ? 0 : random.nextInt(spawns.size()));
   }
 
   protected void addIronGolem(IronGolem ironGolem) {
@@ -617,12 +625,11 @@ public abstract class Arena extends BukkitRunnable {
     setOptionValue(ArenaOption.TOTAL_ORBS_SPENT, 0);
     setOptionValue(ArenaOption.ZOMBIE_DIFFICULTY_MULTIPLIER, 1);
     setOptionValue(ArenaOption.ZOMBIE_IDLE_PROCESS, 0);
-    zombieSpawnManager.applyIdle(0);
+    enemySpawnManager.applyIdle(0);
   }
 
-  @Nullable
   public int getOption(ArenaOption option) {
-    return arenaOptions.get(option);
+    return arenaOptions.getOrDefault(option, 0);
   }
 
   public void setOptionValue(ArenaOption option, int value) {
@@ -630,7 +637,7 @@ public abstract class Arena extends BukkitRunnable {
   }
 
   public void addOptionValue(ArenaOption option, int value) {
-    arenaOptions.put(option, arenaOptions.get(option) + value);
+    arenaOptions.put(option, getOption(option) + value);
   }
 
   public enum BarAction {

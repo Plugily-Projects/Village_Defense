@@ -18,9 +18,8 @@
 
 package plugily.projects.villagedefense.kits.premium;
 
-import com.github.stefvanschie.inventoryframework.Gui;
-import com.github.stefvanschie.inventoryframework.GuiItem;
-import com.github.stefvanschie.inventoryframework.pane.OutlinePane;
+import java.util.Collections;
+import java.util.List;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -30,14 +29,17 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
-import pl.plajerlair.commonsbox.minecraft.compat.VersionUtils;
-import pl.plajerlair.commonsbox.minecraft.compat.events.api.CBPlayerInteractEvent;
-import pl.plajerlair.commonsbox.minecraft.compat.xseries.XMaterial;
-import pl.plajerlair.commonsbox.minecraft.helper.ArmorHelper;
-import pl.plajerlair.commonsbox.minecraft.helper.WeaponHelper;
-import pl.plajerlair.commonsbox.minecraft.item.ItemBuilder;
-import pl.plajerlair.commonsbox.minecraft.item.ItemUtils;
-import pl.plajerlair.commonsbox.minecraft.misc.stuff.ComplementAccessor;
+import plugily.projects.commonsbox.minecraft.compat.VersionUtils;
+import plugily.projects.commonsbox.minecraft.compat.events.api.CBPlayerInteractEvent;
+import plugily.projects.commonsbox.minecraft.compat.xseries.XMaterial;
+import plugily.projects.commonsbox.minecraft.helper.ArmorHelper;
+import plugily.projects.commonsbox.minecraft.helper.WeaponHelper;
+import plugily.projects.commonsbox.minecraft.item.ItemBuilder;
+import plugily.projects.commonsbox.minecraft.item.ItemUtils;
+import plugily.projects.commonsbox.minecraft.misc.stuff.ComplementAccessor;
+import plugily.projects.inventoryframework.gui.GuiItem;
+import plugily.projects.inventoryframework.gui.type.ChestGui;
+import plugily.projects.inventoryframework.pane.OutlinePane;
 import plugily.projects.villagedefense.arena.Arena;
 import plugily.projects.villagedefense.arena.ArenaRegistry;
 import plugily.projects.villagedefense.handlers.PermissionsManager;
@@ -45,9 +47,6 @@ import plugily.projects.villagedefense.handlers.language.Messages;
 import plugily.projects.villagedefense.kits.KitRegistry;
 import plugily.projects.villagedefense.kits.basekits.PremiumKit;
 import plugily.projects.villagedefense.utils.Utils;
-
-import java.util.Collections;
-import java.util.List;
 
 /**
  * Created by Tom on 18/08/2014.
@@ -95,27 +94,31 @@ public class TeleporterKit extends PremiumKit implements Listener {
     if(!(e.getAction() == Action.RIGHT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_BLOCK)) {
       return;
     }
-    Arena arena = ArenaRegistry.getArena(e.getPlayer());
-    ItemStack stack = VersionUtils.getItemInHand(e.getPlayer());
+    Player player = e.getPlayer();
+    Arena arena = ArenaRegistry.getArena(player);
+    ItemStack stack = VersionUtils.getItemInHand(player);
     if(arena == null || !ItemUtils.isItemStackNamed(stack)) {
       return;
     }
     if(!ChatColor.stripColor(ComplementAccessor.getComplement().getDisplayName(stack.getItemMeta())).equalsIgnoreCase(ChatColor.stripColor(getPlugin().getChatManager().colorMessage(Messages.KITS_TELEPORTER_GAME_ITEM_NAME)))) {
       return;
     }
+    if (!(getPlugin().getUserManager().getUser(player).getKit() instanceof TeleporterKit)) {
+      return;
+    }
     int rows = arena.getVillagers().size();
-    for(Player player : arena.getPlayers()) {
-      if(getPlugin().getUserManager().getUser(player).isSpectator()) {
+    for(Player arenaPlayer : arena.getPlayers()) {
+      if(getPlugin().getUserManager().getUser(arenaPlayer).isSpectator()) {
         continue;
       }
       rows++;
     }
     rows = Utils.serializeInt(rows) / 9;
-    prepareTeleporterGui(e.getPlayer(), arena, rows);
+    prepareTeleporterGui(player, arena, rows);
   }
 
   private void prepareTeleporterGui(Player player, Arena arena, int rows) {
-    Gui gui = new Gui(getPlugin(), rows, getPlugin().getChatManager().colorMessage(Messages.KITS_TELEPORTER_GAME_ITEM_MENU_NAME));
+    ChestGui gui = new ChestGui(rows, getPlugin().getChatManager().colorMessage(Messages.KITS_TELEPORTER_GAME_ITEM_MENU_NAME));
     gui.setOnGlobalClick(onClick -> onClick.setCancelled(true));
     OutlinePane pane = new OutlinePane(9, rows);
     gui.addPane(pane);

@@ -20,11 +20,10 @@ package plugily.projects.villagedefense.events.spectator;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.entity.Creature;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.ExperienceOrb;
 import org.bukkit.entity.Player;
-import org.bukkit.entity.Wolf;
-import org.bukkit.entity.Zombie;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -43,9 +42,10 @@ import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerExpChangeEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.event.player.PlayerShearEntityEvent;
-import pl.plajerlair.commonsbox.minecraft.compat.events.api.CBEntityPickupItemEvent;
-import pl.plajerlair.commonsbox.minecraft.compat.events.api.CBPlayerInteractEntityEvent;
-import pl.plajerlair.commonsbox.minecraft.compat.events.api.CBPlayerInteractEvent;
+import plugily.projects.commonsbox.minecraft.compat.events.api.CBEntityPickupItemEvent;
+import plugily.projects.commonsbox.minecraft.compat.events.api.CBPlayerInteractEntityEvent;
+import plugily.projects.commonsbox.minecraft.compat.events.api.CBPlayerInteractEvent;
+import plugily.projects.commonsbox.minecraft.compat.events.api.CBPlayerPickupArrow;
 import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.arena.Arena;
 import plugily.projects.villagedefense.arena.ArenaRegistry;
@@ -176,6 +176,13 @@ public class SpectatorEvents implements Listener {
     }
   }
 
+  @EventHandler(priority = EventPriority.HIGHEST)
+  public void onArrowPickup(CBPlayerPickupArrow event) {
+    if (plugin.getUserManager().getUser(event.getPlayer()).isSpectator()) {
+      event.setCancelled(true);
+    }
+  }
+
   //this will spawn orb at spec location when it's taken by spectator
   @EventHandler
   public void onPlayerExpChange(PlayerExpChangeEvent e) {
@@ -189,7 +196,7 @@ public class SpectatorEvents implements Listener {
   @EventHandler(priority = EventPriority.HIGHEST)
   public void onTarget(EntityTargetEvent e) {
     if(e.getTarget() instanceof Player && plugin.getUserManager().getUser((Player) e.getTarget()).isSpectator()
-        && (e.getEntity() instanceof ExperienceOrb || e.getEntity() instanceof Zombie || e.getEntity() instanceof Wolf)) {
+        && (e.getEntity() instanceof ExperienceOrb || e.getEntity() instanceof Creature)) {
       e.setCancelled(true);
       e.setTarget(null);
     }
@@ -221,7 +228,7 @@ public class SpectatorEvents implements Listener {
   public void onInventoryClick(InventoryClickEvent event) {
     org.bukkit.inventory.Inventory clicked = event.getClickedInventory();
     Player who = (Player) event.getWhoClicked();
-    if(clicked != null && clicked.getType() == InventoryType.PLAYER && ArenaRegistry.getArena(who) != null && plugin.getUserManager().getUser(who).isSpectator()) {
+    if(clicked != null && clicked.getType() == InventoryType.PLAYER && clicked.getType() == InventoryType.CRAFTING && ArenaRegistry.getArena(who) != null && plugin.getUserManager().getUser(who).isSpectator()) {
       event.setCancelled(true);
     }
   }

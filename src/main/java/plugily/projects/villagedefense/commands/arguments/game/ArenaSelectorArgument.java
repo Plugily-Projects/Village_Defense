@@ -18,6 +18,8 @@
 
 package plugily.projects.villagedefense.commands.arguments.game;
 
+import java.util.HashMap;
+import java.util.Map;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -27,9 +29,8 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-
-import pl.plajerlair.commonsbox.minecraft.compat.xseries.XMaterial;
-import pl.plajerlair.commonsbox.minecraft.misc.stuff.ComplementAccessor;
+import plugily.projects.commonsbox.minecraft.compat.xseries.XMaterial;
+import plugily.projects.commonsbox.minecraft.misc.stuff.ComplementAccessor;
 import plugily.projects.villagedefense.arena.Arena;
 import plugily.projects.villagedefense.arena.ArenaManager;
 import plugily.projects.villagedefense.arena.ArenaRegistry;
@@ -42,11 +43,6 @@ import plugily.projects.villagedefense.handlers.language.LanguageManager;
 import plugily.projects.villagedefense.handlers.language.Messages;
 import plugily.projects.villagedefense.utils.Utils;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-
-
 /**
  * @author 2Wild4You
  * <p>
@@ -57,8 +53,9 @@ public class ArenaSelectorArgument implements Listener {
   private final ChatManager chatManager;
   private final Map<Integer, Arena> arenas = new HashMap<>();
 
-  public ArenaSelectorArgument(ArgumentsRegistry registry, ChatManager chatManager) {
-    this.chatManager = chatManager;
+  public ArenaSelectorArgument(ArgumentsRegistry registry) {
+    this.chatManager = registry.getPlugin().getChatManager();
+
     registry.getPlugin().getServer().getPluginManager().registerEvents(this, registry.getPlugin());
     registry.mapArgument("villagedefense", new LabeledCommandArgument("arenas", "villagedefense.arenas", CommandArgument.ExecutorType.PLAYER,
         new LabelData("/vd arenas", "/vd arenas", "&7Select an arena\n&6Permission: &7villagedefense.arenas")) {
@@ -85,9 +82,9 @@ public class ArenaSelectorArgument implements Listener {
           if(itemMeta != null) {
             ComplementAccessor.getComplement().setDisplayName(itemMeta, formatItem(LanguageManager.getLanguageMessage("Arena-Selector.Item.Name"), arena));
 
-            java.util.List<String> lore = new ArrayList<>();
-            for(String string : LanguageManager.getLanguageList(Messages.ARENA_SELECTOR_ITEM_LORE.getAccessor())) {
-              lore.add(formatItem(string, arena));
+            java.util.List<String> lore = LanguageManager.getLanguageList(Messages.ARENA_SELECTOR_ITEM_LORE.getAccessor());
+            for(int e = 0; e < lore.size(); e++) {
+              lore.set(e, formatItem(lore.get(e), arena));
             }
 
             ComplementAccessor.getComplement().setLore(itemMeta, lore);

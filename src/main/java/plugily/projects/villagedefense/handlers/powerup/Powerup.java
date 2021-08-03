@@ -18,16 +18,15 @@
 
 package plugily.projects.villagedefense.handlers.powerup;
 
-import pl.plajerlair.commonsbox.minecraft.compat.xseries.XMaterial;
-
 import java.util.function.Consumer;
+import plugily.projects.commonsbox.minecraft.compat.xseries.XMaterial;
 
 /**
  * @author Plajer
  * <p>
  * Created at 15.01.2019
  */
-public class Powerup {
+public class Powerup implements BasePowerup {
 
   private final String id;
   private final String name;
@@ -43,22 +42,27 @@ public class Powerup {
     onPickup = pickup;
   }
 
+  @Override
   public String getId() {
     return id;
   }
 
+  @Override
   public String getName() {
     return name;
   }
 
+  @Override
   public String getDescription() {
     return description;
   }
 
+  @Override
   public XMaterial getMaterial() {
     return material;
   }
 
+  @Override
   public Consumer<PowerupPickupHandler> getOnPickup() {
     return onPickup;
   }

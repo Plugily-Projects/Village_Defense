@@ -18,14 +18,12 @@
 
 package plugily.projects.villagedefense.utils;
 
+import java.util.logging.Level;
 import org.bukkit.configuration.file.FileConfiguration;
-import pl.plajerlair.commonsbox.minecraft.configuration.ConfigUtils;
-import plugily.projects.villagedefense.ConfigPreferences;
+import plugily.projects.commonsbox.minecraft.configuration.ConfigUtils;
 import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.api.StatsStorage;
 import plugily.projects.villagedefense.utils.constants.Constants;
-
-import java.util.logging.Level;
 
 /**
  * @author Plajer
@@ -44,7 +42,7 @@ public class LegacyDataFixer {
 
   private void initiate() {
     FileConfiguration config = ConfigUtils.getConfig(plugin, Constants.Files.STATS.getName());
-    if(config.getInt("data-version", 0) >= DATA_VERSION || plugin.getConfigPreferences().getOption(ConfigPreferences.Option.DATABASE_ENABLED)) {
+    if(config.getInt("data-version", 0) >= DATA_VERSION) {
       return;
     }
     Debugger.debug(Level.WARNING, "Legacy fixer started, fixing player data for yaml storage...");

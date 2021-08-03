@@ -18,11 +18,12 @@
 
 package plugily.projects.villagedefense;
 
-import plugily.projects.villagedefense.utils.Debugger;
-
 import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
+import plugily.projects.villagedefense.utils.Debugger;
+
+import org.bukkit.configuration.ConfigurationSection;
 
 /**
  * @author Plajer
@@ -40,9 +41,12 @@ public class ConfigPreferences {
     loadOptions();
 
     //load custom permissions
-    for(String key : plugin.getConfig().getConfigurationSection("CustomPermissions").getKeys(false)) {
-      customPermissions.put(key, plugin.getConfig().getInt("CustomPermissions." + key));
-      Debugger.debug("Loaded custom permission {0}", key);
+    ConfigurationSection section = plugin.getConfig().getConfigurationSection("CustomPermissions");
+    if (section != null) {
+      for(String key : section.getKeys(false)) {
+        customPermissions.put(key, section.getInt(key));
+        Debugger.debug("Loaded custom permission {0}", key);
+      }
     }
   }
 
@@ -74,7 +78,9 @@ public class ConfigPreferences {
     DISABLE_SEPARATE_CHAT("Disable-Separate-Chat", false), DISABLE_PARTIES("Disable-Parties", true),
     RESPAWN_AFTER_WAVE("Respawn-After-Wave", true), INGAME_JOIN_RESPAWN("InGame-Join-Respawn", true),
     CAN_BUY_GOLEMSWOLVES_IF_THEY_DIED("Players-Can-Buy-GolemsWolves-If-They-Died", false),
-    DISABLE_FALL_DAMAGE("Disable-Fall-Damage", false), DISABLE_DROWNING_DAMAGE("Disable-Drowning-Damage", false);
+    DISABLE_FALL_DAMAGE("Disable-Fall-Damage", false), DISABLE_DROWNING_DAMAGE("Disable-Drowning-Damage", false),
+    NAME_VISIBLE_GOLEM("Name-Visible.Golem", true), NAME_VISIBLE_WOLF("Name-Visible.Wolf", true),
+    NAME_VISIBLE_VILLAGER("Name-Visible.Villager", true);
 
     private final String path;
     private final boolean def;
