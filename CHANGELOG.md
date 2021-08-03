@@ -9,6 +9,9 @@ deploy webhooks to print changelog successfully
 
 That's all, matcher will stop when detects next line started with `###` match
 
+### 4.7.0 (03.08.2021 - )
+* Fixed NoSuchFieldError when COMMAND spawn reason is added in 1.17
+
 ### 4.6.0 (15.04.2021 - 03.08.2021)
 * Added forcestart item
 * Added 1.17 support
