@@ -21,8 +21,6 @@ package plugily.projects.villagedefense.arena.states;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
-import plugily.projects.commonsbox.minecraft.compat.ServerVersion;
-import plugily.projects.villagedefense.ConfigPreferences;
 import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.api.StatsStorage;
 import plugily.projects.villagedefense.api.event.game.VillageGameStartEvent;
@@ -48,10 +46,9 @@ public class StartingState implements ArenaStateHandler {
   @Override
   public void handleCall(Arena arena) {
     double startWaiting = plugin.getConfig().getDouble("Starting-Waiting-Time", 60);
-    boolean bossBarEnabled = ServerVersion.Version.isCurrentEqualOrHigher(ServerVersion.Version.v1_9_R1) && plugin.getConfigPreferences().getOption(ConfigPreferences.Option.BOSSBAR_ENABLED);
     int timer = arena.getTimer();
 
-    if(bossBarEnabled) {
+    if(arena.getGameBar() != null) {
       arena.getGameBar().setTitle(plugin.getChatManager().colorMessage(Messages.BOSSBAR_STARTING_IN).replace("%time%", Integer.toString(timer)));
       arena.getGameBar().setProgress(timer / startWaiting);
     }
@@ -59,12 +56,15 @@ public class StartingState implements ArenaStateHandler {
       player.setExp((float) (timer / startWaiting));
       player.setLevel(timer);
     }
-    if(!arena.isForceStart() && arena.getPlayers().size() < arena.getMinimumPlayers()) {
-      if(bossBarEnabled) {
+
+    int minPlayers = arena.getMinimumPlayers();
+
+    if(!arena.isForceStart() && arena.getPlayers().size() < minPlayers) {
+      if(arena.getGameBar() != null) {
         arena.getGameBar().setTitle(plugin.getChatManager().colorMessage(Messages.BOSSBAR_WAITING_FOR_PLAYERS));
         arena.getGameBar().setProgress(1.0);
       }
-      plugin.getChatManager().broadcastMessage(arena, plugin.getChatManager().formatMessage(arena, plugin.getChatManager().colorMessage(Messages.LOBBY_MESSAGES_WAITING_FOR_PLAYERS), arena.getMinimumPlayers()));
+      plugin.getChatManager().broadcastMessage(arena, plugin.getChatManager().formatMessage(arena, plugin.getChatManager().colorMessage(Messages.LOBBY_MESSAGES_WAITING_FOR_PLAYERS), minPlayers));
       arena.setArenaState(ArenaState.WAITING_FOR_PLAYERS);
       Bukkit.getPluginManager().callEvent(new VillageGameStartEvent(arena));
       arena.setTimer(15);
@@ -78,24 +78,28 @@ public class StartingState implements ArenaStateHandler {
       arena.spawnVillagers();
       Bukkit.getPluginManager().callEvent(new VillageGameStartEvent(arena));
       arena.setArenaState(ArenaState.IN_GAME);
-      if(bossBarEnabled) {
+      if(arena.getGameBar() != null) {
         arena.getGameBar().setProgress(1.0);
       }
       arena.setTimer(5);
+
+      org.bukkit.Location arenaLoc = arena.getStartLocation();
+      int orbsStartingAmount = plugin.getConfig().getInt("Orbs-Starting-Amount", 20);
+
       for(Player player : arena.getPlayers()) {
-        player.teleport(arena.getStartLocation());
+        player.teleport(arenaLoc);
         player.setExp(0);
         player.setLevel(0);
         player.getInventory().clear();
         player.setGameMode(GameMode.SURVIVAL);
         User user = plugin.getUserManager().getUser(player);
-        user.setStat(StatsStorage.StatisticType.ORBS, plugin.getConfig().getInt("Orbs-Starting-Amount", 20));
+        user.setStat(StatsStorage.StatisticType.ORBS, orbsStartingAmount);
         user.getKit().giveKitItems(player);
         player.updateInventory();
         plugin.getUserManager().addExperience(player, 10);
-        arena.setTimer(plugin.getConfig().getInt("Cooldown-Before-Next-Wave", 25));
         player.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage(Messages.LOBBY_MESSAGES_GAME_STARTED));
       }
+      arena.setTimer(plugin.getConfig().getInt("Cooldown-Before-Next-Wave", 25));
       arena.setFighting(false);
     }
     if(arena.isForceStart()) {

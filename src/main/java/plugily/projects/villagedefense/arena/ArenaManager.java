@@ -494,9 +494,13 @@ public class ArenaManager {
       }
       VersionUtils.sendTitles(player, title, subTitle, fadeIn, stay, fadeOut);
       plugin.getRewardsHandler().performReward(player, arena, Reward.RewardType.START_WAVE);
+
+      String msg = plugin.getChatManager().formatMessage(arena, plugin.getChatManager().colorMessage(Messages.WAVE_STARTED), wave);
+      if (!msg.isEmpty()) {
+        player.sendMessage(msg);
+      }
     }
 
-    plugin.getChatManager().broadcastMessage(arena, plugin.getChatManager().formatMessage(arena, plugin.getChatManager().colorMessage(Messages.WAVE_STARTED), wave));
     Debugger.debug("[{0}] Wave start event finished took {1}ms", arena.getId(), System.currentTimeMillis() - start);
   }
 
