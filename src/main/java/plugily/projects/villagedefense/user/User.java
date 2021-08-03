@@ -24,7 +24,6 @@ import java.util.Map;
 import java.util.UUID;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.bukkit.scoreboard.Scoreboard;
 import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.api.StatsStorage;
 import plugily.projects.villagedefense.api.event.player.VillagePlayerStatisticChangeEvent;
@@ -47,7 +46,6 @@ public class User {
   private Kit kit = KitRegistry.getDefaultKit();
   private final Map<StatsStorage.StatisticType, Integer> stats = new EnumMap<>(StatsStorage.StatisticType.class);
   private final Map<String, Long> cooldowns = new HashMap<>();
-  public Scoreboard lastBoard;
 
   @Deprecated
   public User(Player player) {
@@ -103,21 +101,7 @@ public class User {
   }
 
   public int getStat(StatsStorage.StatisticType s) {
-    Integer stat = stats.get(s);
-    if(stat == null) {
-      stats.put(s, 0);
-      return 0;
-    }
-
-    return stat;
-  }
-
-  public void removeScoreboard(Arena arena) {
-    arena.getScoreboardManager().removeScoreboard(this);
-    if(lastBoard != null) {
-      getPlayer().setScoreboard(lastBoard);
-      lastBoard = null;
-    }
+    return stats.computeIfAbsent(s, t -> 0);
   }
 
   public void setStat(StatsStorage.StatisticType s, int i) {
@@ -158,8 +142,8 @@ public class User {
   }
 
   public long getCooldown(String s) {
-    Long coold = cooldowns.get(s);
-    return (coold == null || coold.longValue() <= cooldownCounter) ? 0 : coold.longValue() - cooldownCounter;
+    long coold = cooldowns.getOrDefault(s, 0L);
+    return coold <= cooldownCounter ? 0 : coold - cooldownCounter;
   }
 
 }
