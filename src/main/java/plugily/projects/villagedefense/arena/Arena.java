@@ -408,11 +408,11 @@ public class Arena extends BukkitRunnable {
   }
 
   public void addVillagerSpawn(Location location) {
-    spawnPoints.getOrDefault(SpawnPoint.VILLAGER, new ArrayList<>()).add(location);
+    getVillagerSpawns().add(location);
   }
 
   public void addZombieSpawn(Location location) {
-    spawnPoints.getOrDefault(SpawnPoint.ZOMBIE, new ArrayList<>()).add(location);
+    getZombieSpawns().add(location);
   }
 
   @NotNull

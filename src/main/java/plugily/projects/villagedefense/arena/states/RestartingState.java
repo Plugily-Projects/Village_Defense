@@ -22,7 +22,6 @@ import java.util.Objects;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-import plugily.projects.commonsbox.minecraft.compat.ServerVersion;
 import plugily.projects.commonsbox.minecraft.configuration.ConfigUtils;
 import plugily.projects.villagedefense.ConfigPreferences;
 import plugily.projects.villagedefense.Main;
@@ -64,7 +63,7 @@ public class RestartingState implements ArenaStateHandler {
         ArenaManager.joinAttempt(player, ArenaRegistry.getArenas().get(ArenaRegistry.getBungeeArena()));
       }
     }
-    if(ServerVersion.Version.isCurrentEqualOrHigher(ServerVersion.Version.v1_9_R1) && plugin.getConfigPreferences().getOption(ConfigPreferences.Option.BOSSBAR_ENABLED)) {
+    if(arena.getGameBar() != null) {
       arena.getGameBar().setTitle(plugin.getChatManager().colorMessage(Messages.BOSSBAR_WAITING_FOR_PLAYERS));
     }
   }

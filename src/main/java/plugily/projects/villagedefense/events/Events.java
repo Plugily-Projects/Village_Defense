@@ -63,6 +63,8 @@ import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerExpChangeEvent;
 import org.bukkit.inventory.ItemStack;
+
+import plugily.projects.commonsbox.minecraft.compat.ServerVersion;
 import plugily.projects.commonsbox.minecraft.compat.VersionUtils;
 import plugily.projects.commonsbox.minecraft.compat.events.api.CBPlayerInteractEntityEvent;
 import plugily.projects.commonsbox.minecraft.compat.events.api.CBPlayerInteractEvent;
@@ -101,10 +103,15 @@ public class Events implements Listener {
 
   @EventHandler
   public void onSpawn(CreatureSpawnEvent event) {
+    if (event.getSpawnReason() == CreatureSpawnEvent.SpawnReason.CUSTOM
+      || (ServerVersion.Version.isCurrentEqualOrHigher(ServerVersion.Version.v1_17_R1) && event.getSpawnReason() == CreatureSpawnEvent.SpawnReason.COMMAND)) {
+      return;
+    }
+
     for(Arena arena : ArenaRegistry.getArenas()) {
       Location startLoc = arena.getStartLocation();
 
-      if(startLoc != null && event.getSpawnReason() != CreatureSpawnEvent.SpawnReason.CUSTOM && event.getSpawnReason() != CreatureSpawnEvent.SpawnReason.COMMAND && event.getEntity().getWorld().equals(startLoc.getWorld())
+      if(startLoc != null && event.getEntity().getWorld().equals(startLoc.getWorld())
           && event.getEntity().getLocation().distance(startLoc) < 150) {
         event.setCancelled(true);
         break;

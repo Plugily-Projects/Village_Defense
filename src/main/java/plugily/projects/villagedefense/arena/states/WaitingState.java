@@ -18,8 +18,6 @@
 
 package plugily.projects.villagedefense.arena.states;
 
-import plugily.projects.commonsbox.minecraft.compat.ServerVersion;
-import plugily.projects.villagedefense.ConfigPreferences;
 import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.arena.Arena;
 import plugily.projects.villagedefense.arena.ArenaState;
@@ -50,7 +48,7 @@ public class WaitingState implements ArenaStateHandler {
         return;
       }
     } else {
-      if(ServerVersion.Version.isCurrentEqualOrHigher(ServerVersion.Version.v1_9_R1) && plugin.getConfigPreferences().getOption(ConfigPreferences.Option.BOSSBAR_ENABLED)) {
+      if(arena.getGameBar() != null) {
         arena.getGameBar().setTitle(plugin.getChatManager().colorMessage(Messages.BOSSBAR_WAITING_FOR_PLAYERS));
       }
       plugin.getChatManager().broadcast(arena, Messages.LOBBY_MESSAGES_ENOUGH_PLAYERS_TO_START);
