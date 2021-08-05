@@ -32,9 +32,9 @@ public interface EnemySpawner extends Comparable<EnemySpawner> {
 
   @Override
   default int compareTo(EnemySpawner spawner) {
-    int compareValue = Integer.compare(this.getPriority(), spawner.getPriority());
+    int compareValue = Integer.compare(getPriority(), spawner.getPriority());
     if (compareValue == 0) {
-      compareValue = this.getName().compareTo(spawner.getName());
+      return getName().compareTo(spawner.getName());
     }
     return compareValue;
   }

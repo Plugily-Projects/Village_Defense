@@ -9,34 +9,38 @@ deploy webhooks to print changelog successfully
 
 That's all, matcher will stop when detects next line started with `###` match
 
-### 4.6.0 (15.04.2021 - XX.XX.2021)
-* Fix when doors is not found in legacy versions like 1.8.3, so it caused to throw exception
+### 4.6.1 (03.08.2021 - 04.08.2021)
+* Fixed NoSuchFieldError as COMMAND spawn reason was added in 1.17
+* Fixed 1.17.1 startup issue
+
+### 4.6.0 (15.04.2021 - 03.08.2021)
 * Added forcestart item
 * Added 1.17 support
-* Reuse XMaterial for specialitems
 * Added option to determine if player's orbs should be kept or not
 * Added possibility to spawn creatures with commands on vd arena
 * Nerfed Cleaner Kit so that it can be configurable
+* Reuse XMaterial for specialitems
+* Fix when doors is not found in legacy versions like 1.8.3, so it caused to throw exception
 >>> b1
-* Now players who's in a game can't swap items to off hand
-* Players now can't drag special items in theirs inventory
-* Leaves will no longer be decayed if this is within an arena.
-* Changed randomjoin mechanics -> Searches for starting -> random join -> Searches for waiting -> random join
 * Added /vd join maxplayers which tries to get the arena with the highest amount of players
 * Added placeholder arena_players_online
+* Added configurable villager amount
+* Added configurable cooldown for some kit items
+* Added Thai and Turkish locale (Thanks to PoEditor Contributors)
+* Added configurable name visibility for Golem, Wolf and Villager
 * Fixed Upgrade Health option does not set health to new max health
 * Fixed Tornado kit on paper software
 * Fixed some rare cases which did not disable LeaderboardHolograms
-* Added configurable villager amount
-* Added configurable cooldown for some kit items
 * Fixed restoring door blocks on legacy versions
-* Changed empty message is no longer sent
-* Added Thai and Turkish locale (Thanks to PoEditor Contributors)
-* Added configurable name visibility for Golem, Wolf and Villager
 * Fixed party (parties v3.1.0) not working anymore
 * Fixed when plugins scoreboards not re-appeared after game end
-* Removed temp added scoreboard rewards
 * Fixed join maxplayers did not match the arena with highest player amount
+* Removed temp added scoreboard rewards
+* Changed empty message is no longer sent
+* Changed Now players who's in a game can't swap items to off hand
+* Changed Players now can't drag special items in theirs inventory
+* Changed Leaves will no longer be decayed if this is within an arena.
+* Changed randomjoin mechanics -> Searches for starting -> random join -> Searches for waiting -> random join
 
 ### 4.5.9 (28.03.2021 - 13.04.2021)
 * Fix when Splash_potion material not existed on 1.8 servers

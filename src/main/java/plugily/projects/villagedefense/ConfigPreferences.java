@@ -23,6 +23,8 @@ import java.util.HashMap;
 import java.util.Map;
 import plugily.projects.villagedefense.utils.Debugger;
 
+import org.bukkit.configuration.ConfigurationSection;
+
 /**
  * @author Plajer
  * <p>
@@ -39,9 +41,12 @@ public class ConfigPreferences {
     loadOptions();
 
     //load custom permissions
-    for(String key : plugin.getConfig().getConfigurationSection("CustomPermissions").getKeys(false)) {
-      customPermissions.put(key, plugin.getConfig().getInt("CustomPermissions." + key));
-      Debugger.debug("Loaded custom permission {0}", key);
+    ConfigurationSection section = plugin.getConfig().getConfigurationSection("CustomPermissions");
+    if (section != null) {
+      for(String key : section.getKeys(false)) {
+        customPermissions.put(key, section.getInt(key));
+        Debugger.debug("Loaded custom permission {0}", key);
+      }
     }
   }
 

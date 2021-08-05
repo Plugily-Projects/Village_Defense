@@ -18,8 +18,6 @@
 
 package plugily.projects.villagedefense.arena.states;
 
-import plugily.projects.commonsbox.minecraft.compat.ServerVersion;
-import plugily.projects.villagedefense.ConfigPreferences;
 import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.arena.Arena;
 import plugily.projects.villagedefense.arena.ArenaManager;
@@ -77,7 +75,7 @@ public class InGameState implements ArenaStateHandler {
 
   private void bossBarUpdate(Arena arena) {
     if(arena.getOption(ArenaOption.BAR_TOGGLE_VALUE) > 5) {
-      if(ServerVersion.Version.isCurrentEqualOrHigher(ServerVersion.Version.v1_9_R1) && plugin.getConfigPreferences().getOption(ConfigPreferences.Option.BOSSBAR_ENABLED)) {
+      if(arena.getGameBar() != null) {
         arena.getGameBar().setTitle(plugin.getChatManager().colorMessage(Messages.BOSSBAR_IN_GAME_WAVE).replace("%wave%", Integer.toString(arena.getWave())));
       }
       arena.addOptionValue(ArenaOption.BAR_TOGGLE_VALUE, 1);
@@ -85,7 +83,7 @@ public class InGameState implements ArenaStateHandler {
         arena.setOptionValue(ArenaOption.BAR_TOGGLE_VALUE, 0);
       }
     } else {
-      if(ServerVersion.Version.isCurrentEqualOrHigher(ServerVersion.Version.v1_9_R1) && plugin.getConfigPreferences().getOption(ConfigPreferences.Option.BOSSBAR_ENABLED)) {
+      if(arena.getGameBar() != null) {
         arena.getGameBar().setTitle(plugin.getChatManager().colorMessage(Messages.BOSSBAR_IN_GAME_INFO).replace("%wave%", Integer.toString(arena.getWave())));
       }
       arena.addOptionValue(ArenaOption.BAR_TOGGLE_VALUE, 1);

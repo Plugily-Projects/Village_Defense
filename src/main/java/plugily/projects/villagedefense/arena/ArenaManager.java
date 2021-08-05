@@ -117,9 +117,6 @@ public class ArenaManager {
     }
     arena.getPlayers().add(player);
     User user = plugin.getUserManager().getUser(player);
-    user.lastBoard = player.getScoreboard();
-    //reset scoreboard
-    player.setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
 
     arena.getScoreboardManager().createScoreboard(user);
 
@@ -260,7 +257,7 @@ public class ArenaManager {
 
     User user = plugin.getUserManager().getUser(player);
     user.setStat(StatsStorage.StatisticType.ORBS, 0);
-    user.removeScoreboard(arena);
+    arena.getScoreboardManager().removeScoreboard(user);
     arena.getPlayers().remove(player);
     if(!user.isSpectator()) {
       plugin.getChatManager().broadcastAction(arena, player, ChatManager.ActionType.LEAVE);
@@ -311,7 +308,7 @@ public class ArenaManager {
     List<String> summaryMessages = LanguageManager.getLanguageList("In-Game.Messages.Game-End-Messages.Summary-Message");
     for(Player player : arena.getPlayers()) {
       User user = plugin.getUserManager().getUser(player);
-      user.removeScoreboard(arena);
+      arena.getScoreboardManager().removeScoreboard(user);
       if(user.getStat(StatsStorage.StatisticType.HIGHEST_WAVE) <= wave) {
         if(user.isSpectator() && !plugin.getConfigPreferences().getOption(ConfigPreferences.Option.RESPAWN_AFTER_WAVE)) {
           continue;
@@ -497,9 +494,13 @@ public class ArenaManager {
       }
       VersionUtils.sendTitles(player, title, subTitle, fadeIn, stay, fadeOut);
       plugin.getRewardsHandler().performReward(player, arena, Reward.RewardType.START_WAVE);
+
+      String msg = plugin.getChatManager().formatMessage(arena, plugin.getChatManager().colorMessage(Messages.WAVE_STARTED), wave);
+      if (!msg.isEmpty()) {
+        player.sendMessage(msg);
+      }
     }
 
-    plugin.getChatManager().broadcastMessage(arena, plugin.getChatManager().formatMessage(arena, plugin.getChatManager().colorMessage(Messages.WAVE_STARTED), wave));
     Debugger.debug("[{0}] Wave start event finished took {1}ms", arena.getId(), System.currentTimeMillis() - start);
   }
 
