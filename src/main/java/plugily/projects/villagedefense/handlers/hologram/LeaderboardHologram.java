@@ -62,7 +62,7 @@ public class LeaderboardHologram extends BukkitRunnable {
     hologram.appendTextLine(header);
 
     for (int i = 0; i < topAmount; i++) {
-      lines.add(hologram.appendTextLine(""));
+      lines.add(hologram.appendTextLine(null));
     }
   }
 
