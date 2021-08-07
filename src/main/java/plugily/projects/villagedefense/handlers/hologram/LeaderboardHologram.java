@@ -20,13 +20,11 @@ package plugily.projects.villagedefense.handlers.hologram;
 
 import com.gmail.filoghost.holographicdisplays.api.Hologram;
 import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
+import com.gmail.filoghost.holographicdisplays.api.line.TextLine;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
-import java.util.concurrent.ExecutionException;
-import java.util.function.Supplier;
-
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Location;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -47,6 +45,7 @@ public class LeaderboardHologram extends BukkitRunnable {
   private final int topAmount;
   private final Hologram hologram;
   private final Location location;
+  private final List<TextLine> lines;
 
   public LeaderboardHologram(Main plugin, int id, StatsStorage.StatisticType statistic, int amount, Location location) {
     this.plugin = plugin;
@@ -55,6 +54,16 @@ public class LeaderboardHologram extends BukkitRunnable {
     this.topAmount = amount;
     this.location = location;
     this.hologram = HologramsAPI.createHologram(plugin, location);
+    this.lines = new ArrayList<>();
+
+    String header = color(plugin.getLanguageConfig().getString(LanguageMessage.HOLOGRAMS_HEADER.getAccessor()));
+    header = StringUtils.replace(header, "%amount%", Integer.toString(topAmount));
+    header = StringUtils.replace(header, "%statistic%", statisticToMessage() != null ? color(plugin.getLanguageConfig().getString(statisticToMessage().getAccessor())) : "null");
+    hologram.appendTextLine(header);
+
+    for (int i = 0; i < topAmount; i++) {
+      lines.add(hologram.appendTextLine(null));
+    }
   }
 
   public void initUpdateTask() {
@@ -68,74 +77,31 @@ public class LeaderboardHologram extends BukkitRunnable {
       return;
     }
 
-    submitSync(() -> {
-      hologram.clearLines();
-      return 1;
-    });
-
-    String header = color(plugin.getLanguageConfig().getString(LanguageMessage.HOLOGRAMS_HEADER.getAccessor()));
-    header = StringUtils.replace(header, "%amount%", Integer.toString(topAmount));
-    header = StringUtils.replace(header, "%statistic%", statisticToMessage() != null ? color(plugin.getLanguageConfig().getString(statisticToMessage().getAccessor())) : "null");
-    appendHoloText(header);
-
-    int limit = topAmount;
     java.util.Map<UUID, Integer> values = StatsStorage.getStats(statistic);
     List<UUID> reverseKeys = new ArrayList<>(values.keySet());
-
     Collections.reverse(reverseKeys);
 
-    for(UUID key : reverseKeys) {
-      if(limit == 0) {
-        break;
+    for (int i = 0; i < lines.size(); i++) {
+      TextLine textLine = lines.get(i);
+      String text;
+      if (i < reverseKeys.size()) {
+        UUID uuid = reverseKeys.get(i);
+        text = color(plugin.getLanguageConfig().getString(LanguageMessage.HOLOGRAMS_FORMAT.getAccessor()));
+        text = StringUtils.replace(text, "%nickname%", getPlayerNameSafely(uuid));
+        text = StringUtils.replace(text, "%value%", String.valueOf(values.get(uuid)));
+      } else {
+        text = color(plugin.getLanguageConfig().getString(LanguageMessage.HOLOGRAMS_FORMAT_EMPTY.getAccessor()));
       }
-
-      String format = color(plugin.getLanguageConfig().getString(LanguageMessage.HOLOGRAMS_FORMAT.getAccessor()));
-      format = StringUtils.replace(format, "%place%", Integer.toString((topAmount - limit) + 1));
-      format = StringUtils.replace(format, "%nickname%", getPlayerNameSafely(key));
-      format = StringUtils.replace(format, "%value%", String.valueOf(values.get(key)));
-      appendHoloText(format);
-      limit--;
-    }
-
-    if(limit > 0) {
-      for(int i = 0; i < limit; limit--) {
-        String format = color(plugin.getLanguageConfig().getString(LanguageMessage.HOLOGRAMS_FORMAT_EMPTY.getAccessor()));
-        format = StringUtils.replace(format, "%place%", Integer.toString((topAmount - limit) + 1));
-        appendHoloText(format);
-      }
+      text = StringUtils.replace(text, "%place%", Integer.toString(i + 1));
+      textLine.setText(text);
     }
   }
 
   @Override
-  public void cancel() {
+  public synchronized void cancel() {
     super.cancel();
-
-    submitSync(() -> {
-      hologram.delete();
-      return 1;
-    });
-  }
-
-  // We should perform hologram api in synchronous thread to do not cause "async catchop" problems
-  // See this method:
-  // github.com/filoghost/HolographicDisplays/blob/af038ac93f7a0d5c1d5a7abfa4a08176b9765d16/Plugin/src/main/java/com/gmail/filoghost/holographicdisplays/object/CraftHologram.java#L179
-  private void appendHoloText(final String text) {
-    submitSync(() -> {
-      hologram.appendTextLine(text);
-      return 1;
-    });
-  }
-
-  private Integer submitSync(Supplier<Integer> sup) {
-    if (!plugin.getServer().isPrimaryThread()) { // Check if current thread is async
-      try {
-        return plugin.getServer().getScheduler().callSyncMethod(plugin, () -> sup.get()).get();
-      } catch (InterruptedException | ExecutionException e) {
-        e.printStackTrace();
-      }
-    }
-
-    return sup.get();
+    lines.clear();
+    hologram.delete();
   }
 
   private String getPlayerNameSafely(UUID uuid) {
