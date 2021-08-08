@@ -18,7 +18,7 @@
 
 package plugily.projects.villagedefense.handlers.setup.components;
 
-import plugily.projects.inventoryframework.pane.StaticPane;
+import plugily.projects.minigamesbox.inventory.normal.FastInv;
 import plugily.projects.villagedefense.handlers.setup.SetupInventory;
 
 /**
@@ -30,6 +30,6 @@ public interface SetupComponent {
 
   void prepare(SetupInventory inventory);
 
-  void injectComponents(StaticPane pane);
+  void injectComponents(FastInv pane);
 
 }

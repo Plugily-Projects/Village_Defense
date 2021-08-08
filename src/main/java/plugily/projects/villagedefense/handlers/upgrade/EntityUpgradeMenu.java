@@ -18,9 +18,6 @@
 
 package plugily.projects.villagedefense.handlers.upgrade;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
@@ -33,9 +30,7 @@ import org.jetbrains.annotations.Nullable;
 import plugily.projects.commonsbox.minecraft.compat.VersionUtils;
 import plugily.projects.commonsbox.minecraft.compat.xseries.XMaterial;
 import plugily.projects.commonsbox.minecraft.item.ItemBuilder;
-import plugily.projects.inventoryframework.gui.GuiItem;
-import plugily.projects.inventoryframework.gui.type.ChestGui;
-import plugily.projects.inventoryframework.pane.StaticPane;
+import plugily.projects.minigamesbox.inventory.normal.FastInv;
 import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.api.StatsStorage;
 import plugily.projects.villagedefense.api.event.player.VillagePlayerEntityUpgradeEvent;
@@ -47,6 +42,10 @@ import plugily.projects.villagedefense.handlers.upgrade.upgrades.Upgrade;
 import plugily.projects.villagedefense.handlers.upgrade.upgrades.UpgradeBuilder;
 import plugily.projects.villagedefense.user.User;
 import plugily.projects.villagedefense.utils.Utils;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 /**
  * @author Plajer
@@ -116,16 +115,16 @@ public class EntityUpgradeMenu {
    * @param player player who will see inventory
    */
   public void openUpgradeMenu(LivingEntity en, Player player) {
-    ChestGui gui = new ChestGui(6, color(Messages.UPGRADES_MENU_TITLE));
-    gui.setOnGlobalClick(event -> event.setCancelled(true));
-    StaticPane pane = new StaticPane(9, 6);
+    FastInv gui = new FastInv(6 * 9, color(Messages.UPGRADES_MENU_TITLE));
     User user = plugin.getUserManager().getUser(player);
 
     for(Upgrade upgrade : upgrades) {
       if(upgrade.getApplicableFor() != Upgrade.EntityType.BOTH && !en.getType().toString().equals(upgrade.getApplicableFor().toString())) {
         continue;
       }
-      pane.addItem(new GuiItem(upgrade.asItemStack(getTier(en, upgrade)), e -> {
+      int x = upgrade.getSlotX();
+      int y = upgrade.getSlotY();
+      gui.setItem(x + y * 9, upgrade.asItemStack(getTier(en, upgrade)), e -> {
         int nextTier = getTier(en, upgrade) + 1;
         int cost = upgrade.getCost(nextTier);
         if(nextTier > upgrade.getMaxTier()) {
@@ -145,31 +144,27 @@ public class EntityUpgradeMenu {
 
         Bukkit.getPluginManager().callEvent(new VillagePlayerEntityUpgradeEvent(ArenaRegistry.getArena(player), en, player, upgrade, nextTier));
         player.closeInventory();
-      }), upgrade.getSlotX(), upgrade.getSlotY());
+      });
       for(int i = 0; i < upgrade.getMaxTier(); i++) {
         if(i < getTier(en, upgrade)) {
-          pane.addItem(new GuiItem(new ItemBuilder(XMaterial.YELLOW_STAINED_GLASS_PANE.parseItem())
-              .name(" ").build(), e -> e.setCancelled(true)), upgrade.getSlotX() + 1 + i, upgrade.getSlotY());
+          gui.setItem((x + 1 + i) + y * 9, new ItemBuilder(XMaterial.YELLOW_STAINED_GLASS_PANE.parseItem()).name(" ").build());
         } else {
-          pane.addItem(new GuiItem(new ItemBuilder(XMaterial.WHITE_STAINED_GLASS_PANE.parseItem())
-              .name(" ").build(), e -> e.setCancelled(true)), upgrade.getSlotX() + 1 + i, upgrade.getSlotY());
+          gui.setItem((x + 1 + i) + y * 9, new ItemBuilder(XMaterial.WHITE_STAINED_GLASS_PANE.parseItem()).name(" ").build());
         }
       }
     }
-    applyStatisticsBookOfEntityToPane(pane, en);
-
-    gui.addPane(pane);
-    gui.show(player);
+    applyStatisticsBookOfEntityToGui(gui, en);
+    gui.open(player);
   }
 
   private String color(Messages value) {
     return plugin.getChatManager().colorRawMessage(plugin.getLanguageConfig().getString(value.getAccessor()));
   }
 
-  private void applyStatisticsBookOfEntityToPane(StaticPane pane, LivingEntity en) {
+  private void applyStatisticsBookOfEntityToGui(FastInv gui, LivingEntity en) {
     String[] lore = color(Messages.UPGRADES_STATS_ITEM_DESCRIPTION).split(";");
 
-    for (int a = 0; a < lore.length; a++) {
+    for(int a = 0; a < lore.length; a++) {
       Upgrade speed = getUpgrade("Speed");
       Upgrade damage = getUpgrade("Damage");
       Upgrade health = getUpgrade("Health");
@@ -180,10 +175,10 @@ public class EntityUpgradeMenu {
           .replace("%current_hp%", Double.toString(en.getHealth()));
     }
 
-    pane.addItem(new GuiItem(new ItemBuilder(new ItemStack(Material.BOOK))
+    gui.setItem(4, new ItemBuilder(new ItemStack(Material.BOOK))
         .name(color(Messages.UPGRADES_STATS_ITEM_NAME))
         .lore(lore)
-        .build(), e -> e.setCancelled(true)), 4, 0);
+        .build());
   }
 
   /**

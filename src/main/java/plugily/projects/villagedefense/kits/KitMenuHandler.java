@@ -18,7 +18,6 @@
 
 package plugily.projects.villagedefense.kits;
 
-import java.util.List;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -29,9 +28,7 @@ import plugily.projects.commonsbox.minecraft.compat.VersionUtils;
 import plugily.projects.commonsbox.minecraft.compat.events.api.CBPlayerInteractEvent;
 import plugily.projects.commonsbox.minecraft.item.ItemBuilder;
 import plugily.projects.commonsbox.minecraft.item.ItemUtils;
-import plugily.projects.inventoryframework.gui.GuiItem;
-import plugily.projects.inventoryframework.gui.type.ChestGui;
-import plugily.projects.inventoryframework.pane.StaticPane;
+import plugily.projects.minigamesbox.inventory.normal.FastInv;
 import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.api.event.player.VillagePlayerChooseKitEvent;
 import plugily.projects.villagedefense.arena.Arena;
@@ -63,20 +60,15 @@ public class KitMenuHandler implements Listener {
   }
 
   public void createMenu(Player player) {
-    List<Kit> kits = KitRegistry.getKits();
-    ChestGui gui = new ChestGui(Utils.serializeInt(kits.size()) / 9, plugin.getChatManager().colorMessage(Messages.KITS_OPEN_KIT_MENU));
-    gui.setOnGlobalClick(event -> event.setCancelled(true));
-    StaticPane pane = new StaticPane(9, gui.getRows());
-    gui.addPane(pane);
-
-    for(int i = 0; i < kits.size(); i++) {
-      Kit kit = kits.get(i);
+    FastInv gui = new FastInv(Utils.serializeInt(KitRegistry.getKits().size()), plugin.getChatManager().colorMessage(Messages.KITS_OPEN_KIT_MENU));
+    for(Kit kit : KitRegistry.getKits()) {
       ItemStack itemStack = kit.getItemStack();
       itemStack = new ItemBuilder(itemStack)
           .lore(kit.isUnlockedByPlayer(player) ? unlockedString : lockedString)
           .build();
 
-      pane.addItem(new GuiItem(itemStack, e -> {
+      gui.addItem(itemStack, e -> {
+        e.setCancelled(true);
         if(!(e.isLeftClick() || e.isRightClick()) || !(e.getWhoClicked() instanceof Player) || !ItemUtils.isItemStackNamed(e.getCurrentItem())) {
           return;
         }
@@ -95,9 +87,9 @@ public class KitMenuHandler implements Listener {
         }
         plugin.getUserManager().getUser(player).setKit(kit);
         player.sendMessage(plugin.getChatManager().colorMessage(Messages.KITS_CHOOSE_MESSAGE).replace("%KIT%", kit.getName()));
-      }), i % 9, i / 9);
+      });
     }
-    gui.show(player);
+    gui.open(player);
   }
 
   @EventHandler

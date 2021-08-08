@@ -22,8 +22,7 @@ import java.util.Random;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import plugily.projects.commonsbox.minecraft.configuration.ConfigUtils;
-import plugily.projects.inventoryframework.gui.type.ChestGui;
-import plugily.projects.inventoryframework.pane.StaticPane;
+import plugily.projects.minigamesbox.inventory.normal.FastInv;
 import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.arena.Arena;
 import plugily.projects.villagedefense.handlers.setup.components.ArenaRegisterComponent;
@@ -43,7 +42,7 @@ public class SetupInventory {
   private final FileConfiguration config;
   private final Arena arena;
   private final Player player;
-  private ChestGui gui;
+  private FastInv gui;
   private final SetupUtilities setupUtilities;
 
   public SetupInventory(Arena arena, Player player) {
@@ -59,30 +58,27 @@ public class SetupInventory {
   }
 
   private void prepareGui() {
-    gui = new ChestGui(2, "Village Defense Arena Setup");
-    gui.setOnGlobalClick(e -> e.setCancelled(true));
-    StaticPane pane = new StaticPane(9, 4);
-    gui.addPane(pane);
+    gui = new FastInv(18, "Village Defense Arena Setup");
 
-    prepareComponents(pane);
+    prepareComponents(gui);
   }
 
-  private void prepareComponents(StaticPane pane) {
+  private void prepareComponents(FastInv gui) {
     SpawnComponents spawnComponents = new SpawnComponents();
     spawnComponents.prepare(this);
-    spawnComponents.injectComponents(pane);
+    spawnComponents.injectComponents(gui);
 
     PlayerAmountComponents playerAmountComponents = new PlayerAmountComponents();
     playerAmountComponents.prepare(this);
-    playerAmountComponents.injectComponents(pane);
+    playerAmountComponents.injectComponents(gui);
 
     MiscComponents miscComponents = new MiscComponents();
     miscComponents.prepare(this);
-    miscComponents.injectComponents(pane);
+    miscComponents.injectComponents(gui);
 
     ArenaRegisterComponent arenaRegisterComponent = new ArenaRegisterComponent();
     arenaRegisterComponent.prepare(this);
-    arenaRegisterComponent.injectComponents(pane);
+    arenaRegisterComponent.injectComponents(gui);
   }
 
   private void sendProTip(Player p) {
@@ -121,7 +117,7 @@ public class SetupInventory {
 
   public void openInventory() {
     sendProTip(player);
-    gui.show(player);
+    gui.open(player);
   }
 
   public Main getPlugin() {
@@ -140,7 +136,7 @@ public class SetupInventory {
     return player;
   }
 
-  public ChestGui getGui() {
+  public FastInv getGui() {
     return gui;
   }
 

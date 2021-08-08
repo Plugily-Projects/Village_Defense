@@ -18,8 +18,6 @@
 
 package plugily.projects.villagedefense.handlers.setup.components;
 
-import java.util.ArrayList;
-import java.util.List;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -30,14 +28,16 @@ import plugily.projects.commonsbox.minecraft.compat.xseries.XMaterial;
 import plugily.projects.commonsbox.minecraft.configuration.ConfigUtils;
 import plugily.projects.commonsbox.minecraft.item.ItemBuilder;
 import plugily.projects.commonsbox.minecraft.serialization.LocationSerializer;
-import plugily.projects.inventoryframework.gui.GuiItem;
-import plugily.projects.inventoryframework.pane.StaticPane;
+import plugily.projects.minigamesbox.inventory.normal.FastInv;
 import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.arena.Arena;
 import plugily.projects.villagedefense.arena.ArenaRegistry;
 import plugily.projects.villagedefense.handlers.setup.SetupInventory;
 import plugily.projects.villagedefense.handlers.sign.ArenaSign;
 import plugily.projects.villagedefense.utils.constants.Constants;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Plajer
@@ -54,7 +54,7 @@ public class ArenaRegisterComponent implements SetupComponent {
   }
 
   @Override
-  public void injectComponents(StaticPane pane) {
+  public void injectComponents(FastInv gui) {
     FileConfiguration config = setupInventory.getConfig();
     Main plugin = setupInventory.getPlugin();
     ItemStack registeredItem;
@@ -72,7 +72,7 @@ public class ArenaRegisterComponent implements SetupComponent {
           .lore(ChatColor.GRAY + "You can play on this arena now!")
           .build();
     }
-    pane.addItem(new GuiItem(registeredItem, e -> {
+    gui.setItem(11, registeredItem, e -> {
       Arena arena = setupInventory.getArena();
       if(arena == null) {
         return;
@@ -136,7 +136,7 @@ public class ArenaRegisterComponent implements SetupComponent {
       for(Sign s : signsToUpdate) {
         plugin.getSignManager().getArenaSigns().add(new ArenaSign(s, arena));
       }
-    }), 2, 1);
+    });
   }
 
 }

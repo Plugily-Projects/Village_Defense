@@ -24,8 +24,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.inventory.ItemStack;
 import plugily.projects.commonsbox.minecraft.configuration.ConfigUtils;
 import plugily.projects.commonsbox.minecraft.item.ItemBuilder;
-import plugily.projects.inventoryframework.gui.GuiItem;
-import plugily.projects.inventoryframework.pane.StaticPane;
+import plugily.projects.minigamesbox.inventory.normal.FastInv;
 import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.arena.Arena;
 import plugily.projects.villagedefense.handlers.setup.SetupInventory;
@@ -46,7 +45,7 @@ public class PlayerAmountComponents implements SetupComponent {
   }
 
   @Override
-  public void injectComponents(StaticPane pane) {
+  public void injectComponents(FastInv pane) {
     Arena arena = setupInventory.getArena();
     if(arena == null) {
       return;
@@ -56,7 +55,7 @@ public class PlayerAmountComponents implements SetupComponent {
       return;
     }
     Main plugin = setupInventory.getPlugin();
-    pane.addItem(new GuiItem(new ItemBuilder(Material.COAL).amount(setupInventory.getSetupUtilities().getMinimumValueHigherThanZero("minimumplayers"))
+    pane.setItem(3, new ItemBuilder(Material.COAL).amount(setupInventory.getSetupUtilities().getMinimumValueHigherThanZero("minimumplayers"))
         .name(plugin.getChatManager().colorRawMessage("&e&lSet Minimum Players Amount"))
         .lore(ChatColor.GRAY + "LEFT click to decrease")
         .lore(ChatColor.GRAY + "RIGHT click to increase")
@@ -82,9 +81,9 @@ public class PlayerAmountComponents implements SetupComponent {
       arena.setMinimumPlayers(currentItem.getAmount());
       ConfigUtils.saveConfig(plugin, config, Constants.Files.ARENAS.getName());
       new SetupInventory(arena, setupInventory.getPlayer()).openInventory();
-    }), 3, 0);
+    });
 
-    pane.addItem(new GuiItem(new ItemBuilder(Material.REDSTONE)
+    pane.setItem(4, new ItemBuilder(Material.REDSTONE)
         .amount(setupInventory.getSetupUtilities().getMinimumValueHigherThanZero("maximumplayers"))
         .name(plugin.getChatManager().colorRawMessage("&e&lSet Maximum Players Amount"))
         .lore(ChatColor.GRAY + "LEFT click to decrease")
@@ -110,7 +109,7 @@ public class PlayerAmountComponents implements SetupComponent {
       arena.setMaximumPlayers(currentItem.getAmount());
       ConfigUtils.saveConfig(plugin, config, Constants.Files.ARENAS.getName());
       new SetupInventory(arena, setupInventory.getPlayer()).openInventory();
-    }), 4, 0);
+    });
   }
 
 }

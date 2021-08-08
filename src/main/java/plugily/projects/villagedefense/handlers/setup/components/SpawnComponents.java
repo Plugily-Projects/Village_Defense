@@ -24,8 +24,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import plugily.projects.commonsbox.minecraft.configuration.ConfigUtils;
 import plugily.projects.commonsbox.minecraft.item.ItemBuilder;
-import plugily.projects.inventoryframework.gui.GuiItem;
-import plugily.projects.inventoryframework.pane.StaticPane;
+import plugily.projects.minigamesbox.inventory.normal.FastInv;
 import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.arena.Arena;
 import plugily.projects.villagedefense.handlers.setup.SetupInventory;
@@ -46,7 +45,7 @@ public class SpawnComponents implements SetupComponent {
   }
 
   @Override
-  public void injectComponents(StaticPane pane) {
+  public void injectComponents(FastInv pane) {
     Arena arena = setupInventory.getArena();
     if(arena == null) {
       return;
@@ -56,7 +55,7 @@ public class SpawnComponents implements SetupComponent {
     Main plugin = setupInventory.getPlugin();
     String serializedLocation = player.getLocation().getWorld().getName() + "," + player.getLocation().getX() + "," + player.getLocation().getY() + ","
         + player.getLocation().getZ() + "," + player.getLocation().getYaw() + ",0.0";
-    pane.addItem(new GuiItem(new ItemBuilder(Material.REDSTONE_BLOCK)
+    pane.setItem(0, new ItemBuilder(Material.REDSTONE_BLOCK)
         .name(plugin.getChatManager().colorRawMessage("&e&lSet Ending Location"))
         .lore(ChatColor.GRAY + "Click to set the ending location")
         .lore(ChatColor.GRAY + "on the place where you are standing.")
@@ -69,9 +68,9 @@ public class SpawnComponents implements SetupComponent {
       arena.setEndLocation(player.getLocation());
       player.sendMessage(plugin.getChatManager().colorRawMessage("&e✔ Completed | &aEnding location for arena " + arena.getId() + " set at your location!"));
       ConfigUtils.saveConfig(plugin, config, Constants.Files.ARENAS.getName());
-    }), 0, 0);
+    });
 
-    pane.addItem(new GuiItem(new ItemBuilder(Material.LAPIS_BLOCK)
+    pane.setItem(1, new ItemBuilder(Material.LAPIS_BLOCK)
         .name(plugin.getChatManager().colorRawMessage("&e&lSet Lobby Location"))
         .lore(ChatColor.GRAY + "Click to set the lobby location")
         .lore(ChatColor.GRAY + "on the place where you are standing")
@@ -82,9 +81,9 @@ public class SpawnComponents implements SetupComponent {
       arena.setLobbyLocation(player.getLocation());
       player.sendMessage(plugin.getChatManager().colorRawMessage("&e✔ Completed | &aLobby location for arena " + arena.getId() + " set at your location!"));
       ConfigUtils.saveConfig(plugin, config, Constants.Files.ARENAS.getName());
-    }), 1, 0);
+    });
 
-    pane.addItem(new GuiItem(new ItemBuilder(Material.EMERALD_BLOCK)
+    pane.setItem(2, new ItemBuilder(Material.EMERALD_BLOCK)
         .name(plugin.getChatManager().colorRawMessage("&e&lSet Starting Location"))
         .lore(ChatColor.GRAY + "Click to SET the starting location")
         .lore(ChatColor.GRAY + "on the place where you are standing.")
@@ -97,7 +96,7 @@ public class SpawnComponents implements SetupComponent {
       arena.setStartLocation(player.getLocation());
       player.sendMessage(plugin.getChatManager().colorRawMessage("&e✔ Completed | &aStarting location for arena " + arena.getId() + " set at your location!"));
       ConfigUtils.saveConfig(plugin, config, Constants.Files.ARENAS.getName());
-    }), 2, 0);
+    });
   }
 
 }
