@@ -37,6 +37,7 @@ import plugily.projects.commonsbox.minecraft.compat.events.EventsInitializer;
 import plugily.projects.commonsbox.minecraft.configuration.ConfigUtils;
 import plugily.projects.commonsbox.minecraft.misc.MiscUtils;
 import plugily.projects.commonsbox.minecraft.serialization.InventorySerializer;
+import plugily.projects.minigamesbox.inventory.normal.FastInvManager;
 import plugily.projects.villagedefense.api.StatsStorage;
 import plugily.projects.villagedefense.arena.Arena;
 import plugily.projects.villagedefense.arena.ArenaEvents;
@@ -257,6 +258,7 @@ public class Main extends JavaPlugin {
     signManager.loadSigns();
     signManager.updateSigns();
     new EventsInitializer().initialize(this);
+    FastInvManager.register(this);
     MiscUtils.sendStartUpMessage(this, "VillageDefense", getDescription(), true, true);
   }
 
