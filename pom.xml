@@ -242,12 +242,6 @@
             </exclusions>
         </dependency>
         <dependency>
-            <groupId>com.google.code.findbugs</groupId>
-            <artifactId>jsr305</artifactId>
-            <version>3.0.2</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
             <groupId>de.simonsator</groupId>
             <artifactId>partyandfriends</artifactId>
             <version>1.0.52</version>
@@ -281,7 +275,7 @@
         <dependency>
             <groupId>com.alessiodp.parties</groupId>
             <artifactId>parties-api</artifactId>
-            <version>3.1.0</version>
+            <version>3.1.9</version>
             <scope>provided</scope>
         </dependency>
         <!-- https://mvnrepository.com/artifact/org.jetbrains/annotations -->
