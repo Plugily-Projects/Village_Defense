@@ -52,8 +52,11 @@ public class StartingState implements ArenaStateHandler {
       arena.getGameBar().setTitle(plugin.getChatManager().colorMessage(Messages.BOSSBAR_STARTING_IN).replace("%time%", Integer.toString(timer)));
       arena.getGameBar().setProgress(timer / startWaiting);
     }
+
+    float exp = (float) (timer / startWaiting);
+
     for(Player player : arena.getPlayers()) {
-      player.setExp((float) (timer / startWaiting));
+      player.setExp(exp);
       player.setLevel(timer);
     }
 

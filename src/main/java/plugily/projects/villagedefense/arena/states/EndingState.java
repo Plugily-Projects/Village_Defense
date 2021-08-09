@@ -53,6 +53,8 @@ public class EndingState implements ArenaStateHandler {
         arena.getGameBar().setTitle(plugin.getChatManager().colorMessage(Messages.BOSSBAR_GAME_ENDED));
       }
 
+      String teleportedToLobby = plugin.getChatManager().getPrefix() + Messages.COMMANDS_TELEPORTED_TO_THE_LOBBY.getMessage();
+
       for(Player player : arena.getPlayers()) {
         ArenaUtils.resetPlayerAfterGame(player);
         arena.doBarAction(Arena.BarAction.REMOVE, player);
@@ -66,9 +68,8 @@ public class EndingState implements ArenaStateHandler {
         arena.getScoreboardManager().removeScoreboard(user);
         plugin.getRewardsHandler().performReward(player, arena, Reward.RewardType.END_GAME);
 
-        String msg = Messages.COMMANDS_TELEPORTED_TO_THE_LOBBY.getMessage();
-        if (!msg.isEmpty()) {
-          player.sendMessage(plugin.getChatManager().getPrefix() + msg);
+        if (!teleportedToLobby.isEmpty()) {
+          player.sendMessage(teleportedToLobby);
         }
       }
 

@@ -266,7 +266,7 @@ public class ArenaManager {
     user.setPermanentSpectator(false);
 
     if(user.getKit() instanceof GolemFriendKit) {
-      arena.getIronGolems().stream().filter(ironGolem -> ironGolem.getCustomName().contains(user.getPlayer().getName()))
+      arena.getIronGolems().stream().filter(ironGolem -> ironGolem.getCustomName().contains(player.getName()))
           .forEach(IronGolem::remove);
     }
     arena.doBarAction(Arena.BarAction.REMOVE, player);
@@ -420,9 +420,13 @@ public class ArenaManager {
     int wave = arena.getWave();
     int timer = arena.getTimer();
 
+    String nextWaveIn = plugin.getChatManager().colorMessage(Messages.NEXT_WAVE_IN);
+    String feelRefreshed = plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage(Messages.YOU_FEEL_REFRESHED);
+    String formatted = plugin.getChatManager().getPrefix() + plugin.getChatManager().formatMessage(arena, nextWaveIn, timer);
+
     for(Player player : arena.getPlayers()) {
-      player.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().formatMessage(arena, plugin.getChatManager().colorMessage(Messages.NEXT_WAVE_IN), timer));
-      player.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage(Messages.YOU_FEEL_REFRESHED));
+      player.sendMessage(formatted);
+      player.sendMessage(feelRefreshed);
       player.setHealth(VersionUtils.getMaxHealth(player));
 
       plugin.getUserManager().getUser(player).addStat(StatsStorage.StatisticType.ORBS, wave * 10);
@@ -487,17 +491,20 @@ public class ArenaManager {
     title = title.replace("%wave%", waveStr);
     subTitle = subTitle.replace("%wave%", waveStr);
 
+    String waveStarted = plugin.getChatManager().formatMessage(arena, plugin.getChatManager().colorMessage(Messages.WAVE_STARTED), wave);
+
     for(User user : plugin.getUserManager().getUsers(arena)) {
       Player player = user.getPlayer();
+
       if (!user.isSpectator()) {
         user.getKit().reStock(player);
       }
+
       VersionUtils.sendTitles(player, title, subTitle, fadeIn, stay, fadeOut);
       plugin.getRewardsHandler().performReward(player, arena, Reward.RewardType.START_WAVE);
 
-      String msg = plugin.getChatManager().formatMessage(arena, plugin.getChatManager().colorMessage(Messages.WAVE_STARTED), wave);
-      if (!msg.isEmpty()) {
-        player.sendMessage(msg);
+      if (!waveStarted.isEmpty()) {
+        player.sendMessage(waveStarted);
       }
     }
 

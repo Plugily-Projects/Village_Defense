@@ -73,13 +73,15 @@ public class ArenaRegistry {
    */
   @Nullable
   public static Arena getArena(Player player) {
-    if(player == null || !player.isOnline()) {
+    if(player == null) {
       return null;
     }
 
+    java.util.UUID playerId = player.getUniqueId();
+
     for(Arena loopArena : arenas) {
       for(Player arenaPlayer : loopArena.getPlayers()) {
-        if(arenaPlayer.getUniqueId().equals(player.getUniqueId())) {
+        if(arenaPlayer.getUniqueId().equals(playerId)) {
           return loopArena;
         }
       }
