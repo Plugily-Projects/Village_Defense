@@ -58,7 +58,6 @@ public class VillagerBuster extends EntityZombie {
     GoalSelectorCleaner.clearSelectors(this);
     getNavigation().q().b(true);
 
-
     bQ.a(0, new PathfinderGoalFloat(this));
     bQ.a(1, new PathfinderGoalBreakDoor(this, enumDifficulty -> true));
 
@@ -73,9 +72,8 @@ public class VillagerBuster extends EntityZombie {
     bP.a(2, new PathfinderGoalNearestAttackableTarget<>(this, EntityVillager.class, true));// this one to target
     bP.a(2, new PathfinderGoalNearestAttackableTarget<>(this, EntityIronGolem.class, false));
 
-
     setHealth(10);
-    w().a(GenericAttributes.b, 200.0D);
+    w().a(GenericAttributes.b, 200.0D).a();
   }
 
   @Override

@@ -64,7 +64,7 @@ public class RidableIronGolem extends EntityIronGolem {
     bP.a(2, new PathfinderGoalHurtByTarget(this));
     bP.a(3, new PathfinderGoalNearestAttackableTarget<>(this, EntityHuman.class, 0, false, true, (entity) -> entity instanceof IMonster && !entity.isInvisible()));
     setHealth(500);
-    w().a(GenericAttributes.b, 200.0D);
+    w().a(GenericAttributes.b, 200.0D).a();
   }
 
   /*@Override

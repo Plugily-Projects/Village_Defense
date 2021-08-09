@@ -57,7 +57,7 @@ public class FastZombie extends EntityZombie {
     bP.a(2, new PathfinderGoalNearestAttackableTarget<>(this, EntityHuman.class, true)); // this one to target human
     bP.a(2, new PathfinderGoalNearestAttackableTarget<>(this, EntityVillager.class, false));
     bP.a(2, new PathfinderGoalNearestAttackableTarget<>(this, EntityIronGolem.class, false));
-    w().a(GenericAttributes.b, 200.0D);
+    w().a(GenericAttributes.b, 200.0D).a();
   }
 
 

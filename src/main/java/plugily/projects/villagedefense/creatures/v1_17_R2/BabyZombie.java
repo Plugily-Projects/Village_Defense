@@ -61,6 +61,6 @@ public class BabyZombie extends EntityZombie {
     bP.a(2, new PathfinderGoalNearestAttackableTarget<>(this, EntityIronGolem.class, false));
     setBaby(true);
     setHealth(2);
-    w().a(GenericAttributes.b, 200.0D);
+    w().a(GenericAttributes.b, 200.0D).a();
   }
 }

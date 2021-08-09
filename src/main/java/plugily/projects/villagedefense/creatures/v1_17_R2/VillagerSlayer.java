@@ -51,7 +51,7 @@ public class VillagerSlayer extends EntityZombie {
     bQ.a(7, new PathfinderGoalRandomLookaround(this));
     bP.a(2, new PathfinderGoalNearestAttackableTarget<>(this, EntityVillager.class, true));
     setHealth(70);
-    w().a(GenericAttributes.b, 200.0D).a(GenericAttributes.c, 0D);
+    w().a(GenericAttributes.b, 200.0D).a(GenericAttributes.c, 0D).a();
   }
 
 }

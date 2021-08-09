@@ -70,7 +70,7 @@ public class GolemBuster extends EntityZombie {
     bP.a(2, new PathfinderGoalNearestAttackableTarget<>(this, EntityVillager.class, false));
     bP.a(2, new PathfinderGoalNearestAttackableTarget<>(this, EntityIronGolem.class, true)); // this one to target
     setHealth(5);
-    w().a(GenericAttributes.b, 200.0D);
+    w().a(GenericAttributes.b, 200.0D).a();
   }
 
 

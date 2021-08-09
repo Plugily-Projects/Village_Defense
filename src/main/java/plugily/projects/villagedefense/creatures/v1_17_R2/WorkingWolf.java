@@ -63,7 +63,7 @@ public class WorkingWolf extends EntityWolf {
     bQ.a(8, new PathfinderGoalRandomLookaround(this));
     bP.a(2, new PathfinderGoalNearestAttackableTarget<>(this, EntityZombie.class, true));
     bP.a(1, new PathfinderGoalHurtByTarget(this));
-    w().a(GenericAttributes.b, 200.0D);
+    w().a(GenericAttributes.b, 200.0D).a();
   }
 
 }
