@@ -52,17 +52,17 @@ public class RidableIronGolem extends EntityIronGolem {
 
     this.a(1.4F, 2.9F);
     getNavigation().q().b(true);
-    bQ.a(0, new PathfinderGoalFloat(this));
-    bQ.a(1, new PathfinderGoalMeleeAttack(this, 1.0D, true));
-    bQ.a(2, new PathfinderGoalMoveTowardsTarget(this, 0.9D, 32.0F));
-    bQ.a(3, new PathfinderGoalMoveThroughVillage(this, 0.6D, false, 4, () -> false));
-    bQ.a(4, new PathfinderGoalMoveTowardsRestriction(this, 1.0D));
-    bQ.a(5, new PathfinderGoalRandomStroll(this, 0.6D));
-    bQ.a(6, new PathfinderGoalLookAtPlayer(this, EntityHuman.class, 6.0F));
-    bQ.a(7, new PathfinderGoalRandomLookaround(this));
-    bP.a(1, new PathfinderGoalDefendVillage(this));
-    bP.a(2, new PathfinderGoalHurtByTarget(this));
-    bP.a(3, new PathfinderGoalNearestAttackableTarget<>(this, EntityHuman.class, 0, false, true, (entity) -> entity instanceof IMonster && !entity.isInvisible()));
+    bP.a(0, new PathfinderGoalFloat(this));
+    bP.a(1, new PathfinderGoalMeleeAttack(this, 1.0D, true));
+    bP.a(2, new PathfinderGoalMoveTowardsTarget(this, 0.9D, 32.0F));
+    bP.a(3, new PathfinderGoalMoveThroughVillage(this, 0.6D, false, 4, () -> false));
+    bP.a(4, new PathfinderGoalMoveTowardsRestriction(this, 1.0D));
+    bP.a(5, new PathfinderGoalRandomStroll(this, 0.6D));
+    bP.a(6, new PathfinderGoalLookAtPlayer(this, EntityHuman.class, 6.0F));
+    bP.a(7, new PathfinderGoalRandomLookaround(this));
+    bQ.a(1, new PathfinderGoalDefendVillage(this));
+    bQ.a(2, new PathfinderGoalHurtByTarget(this));
+    bQ.a(3, new PathfinderGoalNearestAttackableTarget<>(this, EntityHuman.class, 0, false, true, (entity) -> entity instanceof IMonster && !entity.isInvisible()));
     setHealth(500);
     w().a(GenericAttributes.b, 200.0D).a();
   }

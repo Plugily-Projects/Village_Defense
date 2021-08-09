@@ -58,19 +58,19 @@ public class VillagerBuster extends EntityZombie {
     GoalSelectorCleaner.clearSelectors(this);
     getNavigation().q().b(true);
 
-    bQ.a(0, new PathfinderGoalFloat(this));
-    bQ.a(1, new PathfinderGoalBreakDoor(this, enumDifficulty -> true));
+    bP.a(0, new PathfinderGoalFloat(this));
+    bP.a(1, new PathfinderGoalBreakDoor(this, enumDifficulty -> true));
 
-    bQ.a(2, new PathfinderGoalZombieAttack(this, CreatureUtils.getZombieSpeed(), false));
-    bQ.a(4, new PathfinderGoalMoveTowardsRestriction(this, CreatureUtils.getZombieSpeed()));
-    bQ.a(5, new PathfinderGoalBreakDoorFaster(this));
-    bQ.a(7, new PathfinderGoalLookAtPlayer(this, EntityVillager.class, 8.0F)); // this one to look at human
-    bQ.a(7, new PathfinderGoalRandomLookaround(this));
-    //bP.a(1, new PathfinderGoalHurtByTarget(this));
-    bP.a(2, new PathfinderGoalNearestAttackableTarget<>(this, EntityPlayer.class, false));
-    bP.a(2, new PathfinderGoalNearestAttackableTarget<>(this, EntityHuman.class, false));
-    bP.a(2, new PathfinderGoalNearestAttackableTarget<>(this, EntityVillager.class, true));// this one to target
-    bP.a(2, new PathfinderGoalNearestAttackableTarget<>(this, EntityIronGolem.class, false));
+    bP.a(2, new PathfinderGoalZombieAttack(this, CreatureUtils.getZombieSpeed(), false));
+    bP.a(4, new PathfinderGoalMoveTowardsRestriction(this, CreatureUtils.getZombieSpeed()));
+    bP.a(5, new PathfinderGoalBreakDoorFaster(this));
+    bP.a(7, new PathfinderGoalLookAtPlayer(this, EntityVillager.class, 8.0F)); // this one to look at human
+    bP.a(7, new PathfinderGoalRandomLookaround(this));
+    //bQ.a(1, new PathfinderGoalHurtByTarget(this));
+    bQ.a(2, new PathfinderGoalNearestAttackableTarget<>(this, EntityPlayer.class, false));
+    bQ.a(2, new PathfinderGoalNearestAttackableTarget<>(this, EntityHuman.class, false));
+    bQ.a(2, new PathfinderGoalNearestAttackableTarget<>(this, EntityVillager.class, true));// this one to target
+    bQ.a(2, new PathfinderGoalNearestAttackableTarget<>(this, EntityIronGolem.class, false));
 
     setHealth(10);
     w().a(GenericAttributes.b, 200.0D).a();

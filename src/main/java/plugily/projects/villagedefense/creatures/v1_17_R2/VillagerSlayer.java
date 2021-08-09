@@ -44,12 +44,12 @@ public class VillagerSlayer extends EntityZombie {
     GoalSelectorCleaner.clearSelectors(this);
     getNavigation().q().b(true);
 
-    bQ.a(0, new PathfinderGoalFloat(this));
-    bQ.a(1, new PathfinderGoalBreakDoor(this, enumDifficulty -> true));
-    bQ.a(2, new PathfinderGoalMeleeAttack(this, 1.0f, false));
-    bQ.a(4, new PathfinderGoalMoveTowardsRestriction(this, 1.0f));
-    bQ.a(7, new PathfinderGoalRandomLookaround(this));
-    bP.a(2, new PathfinderGoalNearestAttackableTarget<>(this, EntityVillager.class, true));
+    bP.a(0, new PathfinderGoalFloat(this));
+    bP.a(1, new PathfinderGoalBreakDoor(this, enumDifficulty -> true));
+    bP.a(2, new PathfinderGoalMeleeAttack(this, 1.0f, false));
+    bP.a(4, new PathfinderGoalMoveTowardsRestriction(this, 1.0f));
+    bP.a(7, new PathfinderGoalRandomLookaround(this));
+    bQ.a(2, new PathfinderGoalNearestAttackableTarget<>(this, EntityVillager.class, true));
     setHealth(70);
     w().a(GenericAttributes.b, 200.0D).a(GenericAttributes.c, 0D).a();
   }
