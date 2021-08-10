@@ -31,8 +31,10 @@ import net.minecraft.world.entity.ai.goal.PathfinderGoalRandomStroll;
 import net.minecraft.world.entity.ai.goal.target.PathfinderGoalHurtByTarget;
 import net.minecraft.world.entity.ai.goal.target.PathfinderGoalNearestAttackableTarget;
 import net.minecraft.world.entity.ai.navigation.Navigation;
+import net.minecraft.world.entity.animal.EntityIronGolem;
 import net.minecraft.world.entity.animal.EntityWolf;
 import net.minecraft.world.entity.monster.EntityZombie;
+import net.minecraft.world.entity.npc.EntityVillager;
 import net.minecraft.world.entity.player.EntityHuman;
 import net.minecraft.world.level.World;
 
@@ -50,7 +52,7 @@ public class WorkingWolf extends EntityWolf {
 
     GoalSelectorCleaner.clearSelectors(this);
 
-    this.a(1.4F, 2.9F);
+    a(1.4F, 2.9F);
     ((Navigation) getNavigation()).a(true);
     bP.a(0, new PathfinderGoalFloat(this));
     bP.a(3, new PathfinderGoalLeapAtTarget(this, 0.4F));
@@ -62,7 +64,7 @@ public class WorkingWolf extends EntityWolf {
     bP.a(7, new PathfinderGoalLookAtPlayer(this, EntityHuman.class, 6.0F));
     bP.a(8, new PathfinderGoalRandomLookaround(this));
     bQ.a(2, new PathfinderGoalNearestAttackableTarget<>(this, EntityZombie.class, true));
-    bQ.a(1, new PathfinderGoalHurtByTarget(this));
+    bQ.a(1, new PathfinderGoalHurtByTarget(this, EntityVillager.class, EntityIronGolem.class, EntityHuman.class));
     w().a(GenericAttributes.b, 200.0D).a();
   }
 

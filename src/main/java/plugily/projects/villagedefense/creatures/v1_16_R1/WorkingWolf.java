@@ -19,7 +19,9 @@
 package plugily.projects.villagedefense.creatures.v1_16_R1;
 
 import net.minecraft.server.v1_16_R1.EntityHuman;
+import net.minecraft.server.v1_16_R1.EntityIronGolem;
 import net.minecraft.server.v1_16_R1.EntityTypes;
+import net.minecraft.server.v1_16_R1.EntityVillager;
 import net.minecraft.server.v1_16_R1.EntityWolf;
 import net.minecraft.server.v1_16_R1.EntityZombie;
 import net.minecraft.server.v1_16_R1.GenericAttributes;
@@ -35,6 +37,7 @@ import net.minecraft.server.v1_16_R1.PathfinderGoalNearestAttackableTarget;
 import net.minecraft.server.v1_16_R1.PathfinderGoalRandomLookaround;
 import net.minecraft.server.v1_16_R1.PathfinderGoalRandomStroll;
 import net.minecraft.server.v1_16_R1.World;
+
 import org.bukkit.craftbukkit.v1_16_R1.CraftWorld;
 
 /**
@@ -63,7 +66,7 @@ public class WorkingWolf extends EntityWolf {
     goalSelector.a(7, new PathfinderGoalLookAtPlayer(this, EntityHuman.class, 6.0F));
     goalSelector.a(8, new PathfinderGoalRandomLookaround(this));
     targetSelector.a(2, new PathfinderGoalNearestAttackableTarget<>(this, EntityZombie.class, true));
-    targetSelector.a(1, new PathfinderGoalHurtByTarget(this));
+    targetSelector.a(1, new PathfinderGoalHurtByTarget(this, EntityVillager.class, EntityIronGolem.class, EntityHuman.class));
     p().a(GenericAttributes.FOLLOW_RANGE, 200.0D);
   }
 
