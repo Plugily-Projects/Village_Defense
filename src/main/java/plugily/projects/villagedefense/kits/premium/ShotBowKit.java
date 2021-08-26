@@ -83,10 +83,16 @@ public class ShotBowKit extends PremiumKit implements Listener {
     if(!(e.getAction() == Action.LEFT_CLICK_AIR || e.getAction() == Action.LEFT_CLICK_BLOCK || e.getAction() == Action.PHYSICAL)) {
       return;
     }
+
     ItemStack stack = VersionUtils.getItemInHand(e.getPlayer());
+    if(stack == null || stack.getType() != Material.BOW)
+      return;
+
+    if(!e.getPlayer().getInventory().contains(getMaterial()))
+      return;
+
     User user = getPlugin().getUserManager().getUser(e.getPlayer());
-    if(stack == null || stack.getType() != Material.BOW || !e.getPlayer().getInventory().contains(getMaterial())
-        || !(user.getKit() instanceof ShotBowKit) || user.isSpectator()) {
+    if(user.isSpectator() || !(user.getKit() instanceof ShotBowKit)) {
       return;
     }
     if(!user.checkCanCastCooldownAndMessage("shotbow")) {
@@ -100,8 +106,10 @@ public class ShotBowKit extends PremiumKit implements Listener {
         pr.setShooter(e.getPlayer());
         pr.setCritical(true);
 
-        if(e.getPlayer().getInventory().contains(getMaterial())) {
-          e.getPlayer().getInventory().removeItem(new ItemStack(getMaterial(), 1));
+        org.bukkit.inventory.PlayerInventory inv = e.getPlayer().getInventory();
+
+        if(inv.contains(getMaterial())) {
+          inv.removeItem(new ItemStack(getMaterial(), 1));
         }
       }, 2L * (2 * i));
     }

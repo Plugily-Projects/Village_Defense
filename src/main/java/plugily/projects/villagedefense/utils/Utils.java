@@ -96,18 +96,23 @@ public class Utils {
   }
 
   public static Entity[] getNearbyEntities(Location loc, int radius) {
+    org.bukkit.World world = loc.getWorld();
+    Block locBlock = world.getBlockAt(loc);
+
+    int x = (int) loc.getX();
+    int y = (int) loc.getY();
+    int z = (int) loc.getZ();
+
     int chunkRadius = radius < 16 ? 1 : radius / 16;
     Set<Entity> radiusEntities = new HashSet<>();
+
     for(int chunkX = 0 - chunkRadius; chunkX <= chunkRadius; chunkX++) {
       for(int chunkZ = 0 - chunkRadius; chunkZ <= chunkRadius; chunkZ++) {
-        int x = (int) loc.getX(),
-            y = (int) loc.getY(),
-            z = (int) loc.getZ();
-        for(Entity e : new Location(loc.getWorld(), x + chunkX * 16, y, z + chunkZ * 16).getChunk().getEntities()) {
-          if(!(loc.getWorld().getName().equalsIgnoreCase(e.getWorld().getName()))) {
+        for(Entity e : new Location(world, x + chunkX * 16, y, z + chunkZ * 16).getChunk().getEntities()) {
+          if(!world.getName().equalsIgnoreCase(e.getWorld().getName())) {
             continue;
           }
-          if(e.getLocation().distanceSquared(loc) <= radius * radius && e.getLocation().getBlock() != loc.getBlock()) {
+          if(e.getLocation().distanceSquared(loc) <= radius * radius && e.getLocation().getBlock() != locBlock) {
             radiusEntities.add(e);
           }
         }
@@ -118,11 +123,14 @@ public class Utils {
 
   public static List<String> splitString(String string, int max) {
     List<String> matchList = new ArrayList<>();
-    Pattern regex = Pattern.compile(".{1," + max + "}(?:\\s|$)", Pattern.DOTALL);
-    Matcher regexMatcher = regex.matcher(string);
+    Matcher regexMatcher = Pattern.compile(".{1," + max + "}(?:\\s|$)", Pattern.DOTALL).matcher(string);
+
+    String r = plugin.getChatManager().colorRawMessage("&7");
+
     while(regexMatcher.find()) {
-      matchList.add(plugin.getChatManager().colorRawMessage("&7") + regexMatcher.group());
+      matchList.add(r + regexMatcher.group());
     }
+
     return matchList;
   }
 

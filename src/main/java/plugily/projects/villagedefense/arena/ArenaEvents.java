@@ -123,9 +123,9 @@ public class ArenaEvents implements Listener {
 
   @EventHandler
   public void onEntityDamage(EntityDamageEvent event) {
-    if (!(event.getEntity() instanceof IronGolem || event.getEntity() instanceof Wolf)) {
+    if (event.getEntityType() != EntityType.IRON_GOLEM && event.getEntityType() != EntityType.WOLF)
       return;
-    }
+
     for (Arena arena : ArenaRegistry.getArenas()) {
       switch (event.getEntityType()) {
         case IRON_GOLEM:
@@ -145,13 +145,18 @@ public class ArenaEvents implements Listener {
           if (((org.bukkit.entity.Creature) event.getEntity()).getHealth() <= event.getDamage()) {
             event.setCancelled(true);
             event.setDamage(0);
-            Wolf wolf = ((Wolf) event.getEntity());
+
+            Wolf wolf = (Wolf) event.getEntity();
             java.util.UUID ownerUUID = VersionUtils.isPaper() ? wolf.getOwnerUniqueId()
                 : (wolf.getOwner() != null) ? wolf.getOwner().getUniqueId() : null;
-            Player playerOwner = ownerUUID != null ? plugin.getServer().getPlayer(ownerUUID) : null;
-            if (playerOwner != null) {
-              playerOwner.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage(Messages.WOLF_DIED));
+
+            if (ownerUUID != null) {
+              Player playerOwner = plugin.getServer().getPlayer(ownerUUID);
+
+              if (playerOwner != null)
+                playerOwner.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage(Messages.WOLF_DIED));
             }
+
             arena.removeWolf(wolf);
           }
           return;
@@ -183,11 +188,14 @@ public class ArenaEvents implements Listener {
         }
         arena.removeEnemy((Creature) entity);
         arena.addOptionValue(ArenaOption.TOTAL_KILLED_ZOMBIES, 1);
-        Arena killerArena = ArenaRegistry.getArena(entity.getKiller());
+
+        Player killer = entity.getKiller();
+        Arena killerArena = ArenaRegistry.getArena(killer);
+
         if (killerArena != null) {
-          plugin.getUserManager().addStat(entity.getKiller(), StatsStorage.StatisticType.KILLS);
-          plugin.getUserManager().addExperience(entity.getKiller(), 2 * arena.getOption(ArenaOption.ZOMBIE_DIFFICULTY_MULTIPLIER));
-          plugin.getRewardsHandler().performReward(entity.getKiller(), Reward.RewardType.ZOMBIE_KILL);
+          plugin.getUserManager().addStat(killer, StatsStorage.StatisticType.KILLS);
+          plugin.getUserManager().addExperience(killer, 2 * arena.getOption(ArenaOption.ZOMBIE_DIFFICULTY_MULTIPLIER));
+          plugin.getRewardsHandler().performReward(killer, Reward.RewardType.ZOMBIE_KILL);
           plugin.getPowerupRegistry().spawnPowerup(entity.getLocation(), killerArena);
         }
       }
@@ -215,32 +223,29 @@ public class ArenaEvents implements Listener {
 
     plugin.getServer().getScheduler().runTaskLater(plugin, () -> {
       player.spigot().respawn();
-      User user = plugin.getUserManager().getUser(player);
+
       if (arena.getArenaState() == ArenaState.STARTING) {
         player.teleport(arena.getStartLocation());
         return;
-      } else if (arena.getArenaState() == ArenaState.ENDING || arena.getArenaState() == ArenaState.RESTARTING) {
+      }
+
+      if (arena.getArenaState() == ArenaState.ENDING || arena.getArenaState() == ArenaState.RESTARTING) {
         player.getInventory().clear();
         player.setFlying(false);
         player.setAllowFlight(false);
-        user.setStat(StatsStorage.StatisticType.ORBS, 0);
+        plugin.getUserManager().getUser(player).setStat(StatsStorage.StatisticType.ORBS, 0);
         player.teleport(arena.getEndLocation());
         return;
       }
+
+      User user = plugin.getUserManager().getUser(player);
+
       plugin.getUserManager().addStat(user, StatsStorage.StatisticType.DEATHS);
       player.teleport(arena.getStartLocation());
       user.setSpectator(true);
       player.setGameMode(GameMode.SURVIVAL);
 
-      if (!plugin.getConfig().getBoolean("Keep-Orbs-After-Death")) {
-        int orbsToLose = plugin.getConfig().getInt("Orbs-To-Lose-After-Death", 0);
-        if (orbsToLose <= 0) {
-          user.setStat(StatsStorage.StatisticType.ORBS, 0);
-        } else {
-          int current = user.getStat(StatsStorage.StatisticType.ORBS);
-          user.setStat(StatsStorage.StatisticType.ORBS, (current - orbsToLose < 0 ? 0 : current - orbsToLose));
-        }
-      }
+      modifyUserOrbs(user);
 
       ArenaUtils.hidePlayer(player, arena);
       player.setAllowFlight(true);
@@ -264,15 +269,18 @@ public class ArenaEvents implements Listener {
   }
 
   private void sendSpectatorActionBar(User user, Arena arena) {
+    if (ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_11_R1))
+      return;
+
     new BukkitRunnable() {
       @Override
       public void run() {
-        if (ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_11_R1) || arena.getArenaState() == ArenaState.ENDING) {
+        if (arena.getArenaState() == ArenaState.ENDING || !user.isSpectator()) {
           cancel();
           return;
         }
         Player player = user.getPlayer();
-        if (player == null || !user.isSpectator()) {
+        if (player == null) {
           cancel();
         } else {
           VersionUtils.sendActionBar(player, plugin.getChatManager().colorMessage(Messages.DIED_RESPAWN_IN_NEXT_WAVE));
@@ -283,9 +291,12 @@ public class ArenaEvents implements Listener {
 
   private void untargetPlayerFromZombies(Player player, Arena arena) {
     for (Creature zombie : arena.getEnemies()) {
-      if (zombie.getTarget() == null || !zombie.getTarget().equals(player)) {
+      LivingEntity target = zombie.getTarget();
+
+      if (target == null || !target.equals(player)) {
         continue;
       }
+
       //set new target as villager so zombies won't stay still waiting for nothing
       for (Villager villager : arena.getVillagers()) {
         zombie.setTarget(villager);
@@ -309,18 +320,24 @@ public class ArenaEvents implements Listener {
       player.removePotionEffect(PotionEffectType.NIGHT_VISION);
       player.removePotionEffect(PotionEffectType.SPEED);
 
-      if (!plugin.getConfig().getBoolean("Keep-Orbs-After-Death")) {
-        int orbsToLose = plugin.getConfig().getInt("Orbs-To-Lose-After-Death", 0);
-
-        if (orbsToLose <= 0) {
-          user.setStat(StatsStorage.StatisticType.ORBS, 0);
-        } else {
-          int current = user.getStat(StatsStorage.StatisticType.ORBS);
-          user.setStat(StatsStorage.StatisticType.ORBS, (current - orbsToLose < 0 ? 0 : current - orbsToLose));
-        }
-      }
+      modifyUserOrbs(user);
     }
     e.setRespawnLocation(arena.getStartLocation());
+  }
+
+  private void modifyUserOrbs(User user) {
+    if (plugin.getConfig().getBoolean("Keep-Orbs-After-Death")) {
+      return;
+    }
+
+    int orbsToLose = plugin.getConfig().getInt("Orbs-To-Lose-After-Death", 0);
+
+    if (orbsToLose <= 0) {
+      user.setStat(StatsStorage.StatisticType.ORBS, 0);
+    } else {
+      int current = user.getStat(StatsStorage.StatisticType.ORBS);
+      user.setStat(StatsStorage.StatisticType.ORBS, (current - orbsToLose < 0 ? 0 : current - orbsToLose));
+    }
   }
 
   @EventHandler
@@ -343,11 +360,12 @@ public class ArenaEvents implements Listener {
     if (e.getEntity().getType() != EntityType.PLAYER) {
       return;
     }
-    Arena arena = ArenaRegistry.getArena((Player) e.getEntity());
+    Player player = (Player) e.getEntity();
+    Arena arena = ArenaRegistry.getArena(player);
     if (arena == null) {
       return;
     }
-    if (plugin.getUserManager().getUser((Player) e.getEntity()).isSpectator()) {
+    if (plugin.getUserManager().getUser(player).isSpectator()) {
       e.setCancelled(true);
     }
     arena.removeDroppedFlesh(e.getItem());
@@ -355,7 +373,7 @@ public class ArenaEvents implements Listener {
 
   @EventHandler
   public void onEntityDamageEvent(EntityDamageEvent e) {
-    if (!(e.getEntity() instanceof Player)) {
+    if (e.getEntityType() != EntityType.PLAYER) {
       return;
     }
     Player victim = (Player) e.getEntity();

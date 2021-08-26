@@ -61,7 +61,7 @@ public class LegacyDataFixer {
           continue;
         }
         int value = config.getInt(key + "." + stat);
-        config.set(key + "." + stat.getName(), config.getInt(key + "." + stat.getName(), 0) + value);
+        config.set(key + "." + stat.getName(), config.getInt(key + "." + stat.getName()) + value);
         config.set(key + "." + stat, null);
         migratedLocal++;
       }

@@ -50,7 +50,7 @@ public class SetLevelArgument {
           return;
         }
         Player target;
-        if(args.length == 2) {
+        if(args.length == 2 && sender instanceof Player) {
           target = (Player) sender;
         } else {
           target = Bukkit.getPlayerExact(args[2]);

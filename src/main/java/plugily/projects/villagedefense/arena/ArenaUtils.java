@@ -86,8 +86,11 @@ public class ArenaUtils {
   }
 
   public static void bringDeathPlayersBack(Arena arena) {
+    List<Player> left = arena.getPlayersLeft();
+    org.bukkit.Location startLoc = arena.getStartLocation();
+
     for(Player player : arena.getPlayers()) {
-      if(arena.getPlayersLeft().contains(player)) {
+      if(left.contains(player)) {
         continue;
       }
 
@@ -104,7 +107,7 @@ public class ArenaUtils {
 
       user.setSpectator(false);
 
-      player.teleport(arena.getStartLocation());
+      player.teleport(startLoc);
       player.setFlying(false);
       player.setAllowFlight(false);
       //the default fly speed
@@ -150,11 +153,13 @@ public class ArenaUtils {
       player.sendMessage(plugin.getChatManager().colorMessage(Messages.COMMANDS_NO_PERMISSION));
       return;
     }
-    if(!Utils.checkIsInGameInstance(player)) {
+
+    Arena arena = ArenaRegistry.getArena(player);
+    if(arena == null) {
       player.sendMessage(plugin.getChatManager().colorMessage(Messages.COMMANDS_NOT_PLAYING));
       return;
     }
-    Arena arena = ArenaRegistry.getArena(player);
+
     if(arena.getArenaState() == ArenaState.WAITING_FOR_PLAYERS || arena.getArenaState() == ArenaState.STARTING) {
       arena.setArenaState(ArenaState.STARTING);
       arena.setForceStart(true);

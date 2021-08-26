@@ -76,30 +76,21 @@ public class SpecialItemManager {
       if("Version".equals(key)) {
         continue;
       }
-      Material mat;
-      String name;
-      List<String> lore;
-      int slot;
-      try {
-        mat = XMaterial.matchXMaterial(config.getString(key + ".material-name", "BEDROCK").toUpperCase()).orElse(XMaterial.BEDROCK).parseMaterial();
-        name = plugin.getChatManager().colorRawMessage(config.getString(key + ".displayname"));
-        lore = config.getStringList(key + ".lore").stream()
-            .map(itemLore -> itemLore = plugin.getChatManager().colorRawMessage(itemLore))
-            .collect(Collectors.toList());
-        slot = config.getInt(key + ".slot");
-      } catch(Exception ex) {
-        plugin.getLogger().log(Level.WARNING, "Configuration of " + key + "is missing a value. (material-name, displayname, lore or slot)");
-        continue;
-      }
-      SpecialItem.DisplayStage stage;
+
+      Material mat = XMaterial.matchXMaterial(config.getString(key + ".material-name", "BEDROCK").toUpperCase()).orElse(XMaterial.BEDROCK).parseMaterial();
+      String name = plugin.getChatManager().colorRawMessage(config.getString(key + ".displayname"));
+      List<String> lore = config.getStringList(key + ".lore").stream()
+          .map(itemLore -> itemLore = plugin.getChatManager().colorRawMessage(itemLore))
+          .collect(Collectors.toList());
+
+      SpecialItem.DisplayStage stage = SpecialItem.DisplayStage.LOBBY;
       try {
         stage = SpecialItem.DisplayStage.valueOf(config.getString(key + ".stage").toUpperCase());
       } catch(Exception ex) {
         Debugger.debug(Level.WARNING, "Invalid display stage of special item " + key + " in special_items.yml! Please use lobby or spectator!");
-        stage = SpecialItem.DisplayStage.LOBBY;
       }
-      SpecialItem item = new SpecialItem(key, new ItemBuilder(mat).name(name).lore(lore).build(), slot, stage);
-      addItem(item);
+
+      addItem(new SpecialItem(key, new ItemBuilder(mat).name(name).lore(lore).build(), config.getInt(key + ".slot"), stage));
     }
   }
 

@@ -93,12 +93,17 @@ public class MedicKit extends PremiumKit implements Listener {
       if(!(entity instanceof Player)) {
         continue;
       }
+
       Player player = (Player) entity;
-      if(VersionUtils.getMaxHealth(player) > (player.getHealth() + 1)) {
-        player.setHealth(player.getHealth() + 1);
+      double newHealth = player.getHealth() + 1;
+      double maxHealth = VersionUtils.getMaxHealth(player);
+
+      if(maxHealth > newHealth) {
+        player.setHealth(newHealth);
       } else {
-        player.setHealth(VersionUtils.getMaxHealth(player));
+        player.setHealth(maxHealth);
       }
+
       VersionUtils.sendParticles("HEART", player, player.getLocation(), 20);
     }
   }

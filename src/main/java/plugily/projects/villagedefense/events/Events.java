@@ -125,14 +125,17 @@ public class Events implements Listener {
     if(arena == null) {
       return;
     }
-    int multiplier = arena.getOption(ArenaOption.ZOMBIE_DIFFICULTY_MULTIPLIER);
-    int amount = (int) Math.ceil(event.getAmount() * 1.6 * multiplier);
+
     User user = plugin.getUserManager().getUser(event.getPlayer());
-    event.setAmount(amount);
     if(user.isSpectator()) {
       event.setAmount(0);
       return;
     }
+
+    int amount = (int) Math.ceil(event.getAmount() * 1.6 * arena.getOption(ArenaOption.ZOMBIE_DIFFICULTY_MULTIPLIER));
+
+    event.setAmount(amount);
+
     //bonus orbs with custom permissions
     for(Map.Entry<String, Integer> perm : plugin.getConfigPreferences().getCustomPermissions().entrySet()) {
       if(event.getPlayer().hasPermission(perm.getKey())) {
@@ -178,10 +181,15 @@ public class Events implements Listener {
 
   @EventHandler
   public void onEntityInteractEntity(CBPlayerInteractEntityEvent event) {
-    Arena arena = ArenaRegistry.getArena(event.getPlayer());
-    if(VersionUtils.checkOffHand(event.getHand()) || arena == null) {
+    if(VersionUtils.checkOffHand(event.getHand())) {
       return;
     }
+
+    Arena arena = ArenaRegistry.getArena(event.getPlayer());
+    if (arena == null) {
+      return;
+    }
+
     if(plugin.getUserManager().getUser(event.getPlayer()).isSpectator()) {
       event.setCancelled(true);
       return;
@@ -261,10 +269,15 @@ public class Events implements Listener {
       return;
     }
     Arena arena = ArenaRegistry.getArena(event.getPlayer());
-    ItemStack itemStack = VersionUtils.getItemInHand(event.getPlayer());
-    if(arena == null || !ItemUtils.isItemStackNamed(itemStack)) {
+    if(arena == null) {
       return;
     }
+
+    ItemStack itemStack = VersionUtils.getItemInHand(event.getPlayer());
+    if(!ItemUtils.isItemStackNamed(itemStack)) {
+      return;
+    }
+
     String key = plugin.getSpecialItemManager().getRelatedSpecialItem(itemStack).getName();
     if(key == null) {
       return;

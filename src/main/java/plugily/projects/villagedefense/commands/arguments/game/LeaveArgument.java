@@ -49,8 +49,6 @@ public class LeaveArgument {
           }
           player.sendMessage(registry.getPlugin().getChatManager().getPrefix() + registry.getPlugin().getChatManager().colorMessage(Messages.COMMANDS_TELEPORTED_TO_THE_LOBBY));
           Arena arena = ArenaRegistry.getArena(player);
-          if (arena == null)
-            return;
 
           if(registry.getPlugin().getConfigPreferences().getOption(ConfigPreferences.Option.BUNGEE_ENABLED)) {
             registry.getPlugin().getBungeeManager().connectToHub(player);

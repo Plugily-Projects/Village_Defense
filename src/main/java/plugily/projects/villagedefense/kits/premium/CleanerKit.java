@@ -82,10 +82,13 @@ public class CleanerKit extends PremiumKit implements Listener {
 
   @EventHandler
   public void onClean(CBPlayerInteractEvent e) {
+    if (e.getItem().getType() != Material.BLAZE_ROD)
+      return;
+
     Arena arena = ArenaRegistry.getArena(e.getPlayer());
-    if(!ItemUtils.isItemStackNamed(e.getItem()) || e.getItem().getType() != Material.BLAZE_ROD
+    if(arena == null || !ItemUtils.isItemStackNamed(e.getItem())
         || !ComplementAccessor.getComplement().getDisplayName(e.getItem().getItemMeta())
-        .contains(getPlugin().getChatManager().colorMessage(Messages.KITS_CLEANER_GAME_ITEM_NAME)) || arena == null) {
+        .contains(getPlugin().getChatManager().colorMessage(Messages.KITS_CLEANER_GAME_ITEM_NAME))) {
       return;
     }
     User user = getPlugin().getUserManager().getUser(e.getPlayer());

@@ -131,9 +131,9 @@ public interface SimpleEnemySpawner extends EnemySpawner {
     if (!checkPhase(arena, wave, phase, spawn)) {
       return;
     }
-    int minWave = getMinWave();
+
     int maxWave = getMaxWave();
-    if (wave < minWave || (maxWave > 0 && wave > maxWave)) {
+    if (wave < getMinWave() || (maxWave > 0 && wave > maxWave)) {
       return;
     }
     int spawnAmount = getFinalAmount(arena, wave, phase, spawn);

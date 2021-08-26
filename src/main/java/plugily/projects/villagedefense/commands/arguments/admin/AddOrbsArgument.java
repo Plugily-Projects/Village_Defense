@@ -63,7 +63,7 @@ public class AddOrbsArgument {
             return;
           }
           target = p;
-        } else {
+        } else if (sender instanceof Player) {
           target = (Player) sender;
         }
 

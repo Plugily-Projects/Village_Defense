@@ -120,13 +120,15 @@ public class WizardKit extends PremiumKit implements Listener {
 
   @EventHandler
   public void onStaffUse(CBPlayerInteractEvent e) {
-    User user = getPlugin().getUserManager().getUser(e.getPlayer());
     if(ArenaRegistry.getArena(e.getPlayer()) == null) {
       return;
     }
-    if(!(user.getKit() instanceof WizardKit) || user.isSpectator()) {
+
+    User user = getPlugin().getUserManager().getUser(e.getPlayer());
+    if(user.isSpectator() || !(user.getKit() instanceof WizardKit)) {
       return;
     }
+
     ItemStack stack = VersionUtils.getItemInHand(e.getPlayer());
     if(!ItemUtils.isItemStackNamed(stack)) {
       return;

@@ -124,8 +124,8 @@ public class MysqlManager implements UserDatabase {
             if(!stat.isPersistent()) {
               continue;
             }
-            int val = rs.getInt(stat.getName());
-            user.setStat(stat, val);
+
+            user.setStat(stat, rs.getInt(stat.getName()));
           }
         } else {
           //player doesn't exist - make a new record

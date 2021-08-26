@@ -99,9 +99,13 @@ public class TornadoKit extends PremiumKit implements Listener {
     if(e.getAction() != Action.RIGHT_CLICK_AIR && e.getAction() != Action.RIGHT_CLICK_BLOCK) {
       return;
     }
+
     Player player = e.getPlayer();
+    if(!ArenaRegistry.isInArena(player))
+      return;
+
     ItemStack stack = VersionUtils.getItemInHand(player);
-    if(!ArenaRegistry.isInArena(player) || !ItemUtils.isItemStackNamed(stack)
+    if(!ItemUtils.isItemStackNamed(stack)
         || !ComplementAccessor.getComplement().getDisplayName(stack.getItemMeta()).equalsIgnoreCase(getPlugin().getChatManager().colorMessage(Messages.KITS_TORNADO_GAME_ITEM_NAME))) {
       return;
     }

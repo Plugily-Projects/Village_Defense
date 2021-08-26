@@ -97,8 +97,8 @@ public class KitMenuHandler implements Listener {
     if(!(e.getAction() == Action.RIGHT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_BLOCK)) {
       return;
     }
-    ItemStack stack = VersionUtils.getItemInHand(e.getPlayer());
-    if(!stack.equals(kitItem.getItemStack())) {
+
+    if(!VersionUtils.getItemInHand(e.getPlayer()).equals(kitItem.getItemStack())) {
       return;
     }
     e.setCancelled(true);

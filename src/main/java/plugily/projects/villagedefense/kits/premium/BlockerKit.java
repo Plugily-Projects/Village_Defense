@@ -95,10 +95,14 @@ public class BlockerKit extends PremiumKit implements Listener {
     if(event.getAction() != Action.RIGHT_CLICK_AIR && event.getAction() != Action.RIGHT_CLICK_BLOCK) {
       return;
     }
+
     Player player = event.getPlayer();
+    Arena arena = ArenaRegistry.getArena(player);
+    if(arena == null)
+      return;
+
     ItemStack stack = VersionUtils.getItemInHand(player);
-    if(!ArenaRegistry.isInArena(player) || !ItemUtils.isItemStackNamed(stack)
-        || !ComplementAccessor.getComplement().getDisplayName(stack.getItemMeta())
+    if(!ItemUtils.isItemStackNamed(stack) || !ComplementAccessor.getComplement().getDisplayName(stack.getItemMeta())
         .equalsIgnoreCase(getPlugin().getChatManager().colorMessage(Messages.KITS_BLOCKER_GAME_ITEM_NAME))) {
       return;
     }
@@ -121,7 +125,7 @@ public class BlockerKit extends PremiumKit implements Listener {
     event.getPlayer().sendMessage(getPlugin().getChatManager().colorMessage(Messages.KITS_BLOCKER_GAME_ITEM_PLACE_MESSAGE));
     ZombieBarrier zombieBarrier = new ZombieBarrier();
     zombieBarrier.setLocation(block.getLocation());
-    Arena arena = ArenaRegistry.getArena(player);
+
     VersionUtils.sendParticles("FIREWORKS_SPARK", arena.getPlayers(), zombieBarrier.location, 20);
     removeBarrierLater(zombieBarrier, arena);
     block.setType(XMaterial.OAK_FENCE.parseMaterial());
@@ -132,6 +136,7 @@ public class BlockerKit extends PremiumKit implements Listener {
       @Override
       public void run() {
         zombieBarrier.decrementSeconds();
+
         if(zombieBarrier.seconds <= 0) {
           zombieBarrier.location.getBlock().setType(Material.AIR);
           VersionUtils.sendParticles("FIREWORKS_SPARK", arena.getPlayers(), zombieBarrier.location, 20);
