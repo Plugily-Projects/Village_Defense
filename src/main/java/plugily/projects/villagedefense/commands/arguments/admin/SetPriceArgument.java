@@ -51,20 +51,23 @@ public class SetPriceArgument {
           sender.sendMessage(registry.getPlugin().getChatManager().getPrefix() + ChatColor.RED + "Please type price of item!");
           return;
         }
+
         Player player = (Player) sender;
         ItemStack item = VersionUtils.getItemInHand(player);
-        if(item == null || item.getType().equals(Material.AIR)) {
+        if(item == null || item.getType() == Material.AIR) {
           player.sendMessage(registry.getPlugin().getChatManager().getPrefix() + registry.getPlugin().getChatManager().colorMessage(Messages.COMMANDS_HOLD_ANY_ITEM));
           return;
         }
-        if(!item.hasItemMeta() || !item.getItemMeta().hasLore()) {
+
+        ItemMeta meta = item.getItemMeta();
+        if(meta == null || !meta.hasLore()) {
           VersionUtils.setItemInHand(player, new ItemBuilder(item)
               .lore(ChatColor.GOLD + args[1] + " " + registry.getPlugin().getChatManager().colorMessage(Messages.SHOP_MESSAGES_CURRENCY_IN_SHOP)).build());
           player.sendMessage(registry.getPlugin().getChatManager().getPrefix() + registry.getPlugin().getChatManager().colorMessage(Messages.COMMANDS_COMMAND_EXECUTED));
           return;
         }
+
         //check any price from lore
-        ItemMeta meta = item.getItemMeta();
         List<String> lore = ComplementAccessor.getComplement().getLore(meta);
         for(String search : lore) {
           if(search.contains(registry.getPlugin().getChatManager().colorMessage(Messages.SHOP_MESSAGES_CURRENCY_IN_SHOP))) {

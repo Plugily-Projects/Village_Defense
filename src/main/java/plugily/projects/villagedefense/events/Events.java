@@ -146,14 +146,20 @@ public class Events implements Listener {
     }
 
     if(event.getPlayer().hasPermission(PermissionsManager.getElite())) {
-      amount += (int) Math.ceil(event.getAmount() * 1.5);
-      user.addStat(StatsStorage.StatisticType.ORBS, (int) Math.ceil(event.getAmount() * 1.5));
+      int elite = (int) Math.ceil(event.getAmount() * 1.5);
+
+      amount += elite;
+      user.addStat(StatsStorage.StatisticType.ORBS, elite);
     } else if(event.getPlayer().hasPermission(PermissionsManager.getMvp())) {
-      amount += (int) Math.ceil(event.getAmount() * 1.0);
-      user.addStat(StatsStorage.StatisticType.ORBS, (int) Math.ceil(event.getAmount() * 1.0));
+      int mvp = (int) Math.ceil(event.getAmount() * 1.0);
+
+      amount += mvp;
+      user.addStat(StatsStorage.StatisticType.ORBS, mvp);
     } else if(event.getPlayer().hasPermission(PermissionsManager.getVip())) {
-      amount += (int) Math.ceil(event.getAmount() * 0.5);
-      user.addStat(StatsStorage.StatisticType.ORBS, (int) Math.ceil(event.getAmount() * 0.5));
+      int vip = (int) Math.ceil(event.getAmount() * 0.5);
+
+      amount += vip;
+      user.addStat(StatsStorage.StatisticType.ORBS, vip);
     } else {
       amount += event.getAmount();
       user.addStat(StatsStorage.StatisticType.ORBS, event.getAmount());

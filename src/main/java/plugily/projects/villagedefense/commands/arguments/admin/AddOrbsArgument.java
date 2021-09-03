@@ -52,20 +52,22 @@ public class AddOrbsArgument {
           return;
         }
 
-        Player target;
+        Player target = null;
         if(args.length == 3) {
           if(!sender.hasPermission("villagedefense.admin.addorbs.others")) {
             return;
           }
-          Player p = Bukkit.getPlayerExact(args[2]);
-          if(p == null || !ArenaRegistry.isInArena(p)) {
+
+          if((target = Bukkit.getPlayerExact(args[2])) == null || !ArenaRegistry.isInArena(target)) {
             sender.sendMessage(registry.getPlugin().getChatManager().colorMessage(Messages.COMMANDS_TARGET_PLAYER_NOT_FOUND));
             return;
           }
-          target = p;
         } else if (sender instanceof Player) {
           target = (Player) sender;
         }
+
+        if (target == null)
+          return;
 
         java.util.Optional<Integer> opt = NumberUtils.parseInt(args[1]);
 

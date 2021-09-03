@@ -90,31 +90,36 @@ public class ArenaManager {
       player.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage(Messages.ALREADY_PLAYING));
       return;
     }
+
     //check if player is in party and send party members to the game
-    if(plugin.getPartyHandler().isPlayerInParty(player)) {
-      GameParty party = plugin.getPartyHandler().getParty(player);
-      if(player.getUniqueId().equals(party.getLeader().getUniqueId())) {
-        if(arena.getMaximumPlayers() - arena.getPlayers().size() >= party.getPlayers().size()) {
-          for(Player partyPlayer : party.getPlayers()) {
-            if(player.getUniqueId().equals(partyPlayer.getUniqueId())) {
+    GameParty party = plugin.getPartyHandler().getParty(player);
+
+    if(party != null && player.getUniqueId().equals(party.getLeader().getUniqueId())) {
+      if(arena.getMaximumPlayers() - arena.getPlayers().size() >= party.getPlayers().size()) {
+        for(Player partyPlayer : party.getPlayers()) {
+          if(player.getUniqueId().equals(partyPlayer.getUniqueId())) {
+            continue;
+          }
+
+          Arena partyPlayerGame = ArenaRegistry.getArena(partyPlayer);
+
+          if(partyPlayerGame != null) {
+            if(partyPlayerGame.getArenaState() == ArenaState.IN_GAME) {
               continue;
             }
-            Arena partyPlayerGame = ArenaRegistry.getArena(partyPlayer);
-            if(partyPlayerGame != null) {
-              if(partyPlayerGame.getArenaState() == ArenaState.IN_GAME) {
-                continue;
-              }
-              leaveAttempt(partyPlayer, partyPlayerGame);
-            }
-            partyPlayer.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().formatMessage(arena, plugin.getChatManager().colorMessage(Messages.JOIN_AS_PARTY_MEMBER), partyPlayer));
-            joinAttempt(partyPlayer, arena);
+
+            leaveAttempt(partyPlayer, partyPlayerGame);
           }
-        } else {
-          player.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().formatMessage(arena, plugin.getChatManager().colorMessage(Messages.NOT_ENOUGH_SPACE_FOR_PARTY), player));
-          return;
+
+          partyPlayer.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().formatMessage(arena, plugin.getChatManager().colorMessage(Messages.JOIN_AS_PARTY_MEMBER), partyPlayer));
+          joinAttempt(partyPlayer, arena);
         }
+      } else {
+        player.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().formatMessage(arena, plugin.getChatManager().colorMessage(Messages.NOT_ENOUGH_SPACE_FOR_PARTY), player));
+        return;
       }
     }
+
     arena.getPlayers().add(player);
     User user = plugin.getUserManager().getUser(player);
 
@@ -417,19 +422,18 @@ public class ArenaManager {
   }
 
   private static void refreshAllPlayers(Arena arena) {
-    int wave = arena.getWave();
-    int timer = arena.getTimer();
+    int waveStat = arena.getWave() * 10;
 
     String nextWaveIn = plugin.getChatManager().colorMessage(Messages.NEXT_WAVE_IN);
     String feelRefreshed = plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage(Messages.YOU_FEEL_REFRESHED);
-    String formatted = plugin.getChatManager().getPrefix() + plugin.getChatManager().formatMessage(arena, nextWaveIn, timer);
+    String formatted = plugin.getChatManager().getPrefix() + plugin.getChatManager().formatMessage(arena, nextWaveIn, arena.getTimer());
 
     for(Player player : arena.getPlayers()) {
       player.sendMessage(formatted);
       player.sendMessage(feelRefreshed);
       player.setHealth(VersionUtils.getMaxHealth(player));
 
-      plugin.getUserManager().getUser(player).addStat(StatsStorage.StatisticType.ORBS, wave * 10);
+      plugin.getUserManager().getUser(player).addStat(StatsStorage.StatisticType.ORBS, waveStat);
     }
   }
 

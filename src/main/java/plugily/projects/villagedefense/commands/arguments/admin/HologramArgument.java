@@ -70,14 +70,16 @@ public class HologramArgument {
     StatsStorage.StatisticType statistic;
     try {
       statistic = StatsStorage.StatisticType.valueOf(args[2].toUpperCase());
-      if(!statistic.isPersistent()) {
-        sendInvalidStatisticMessage(player);
-        return;
-      }
-    } catch(Exception ex) {
+    } catch(IllegalArgumentException ex) {
       sendInvalidStatisticMessage(player);
       return;
     }
+
+    if(!statistic.isPersistent()) {
+      sendInvalidStatisticMessage(player);
+      return;
+    }
+
     if(args.length != 4) {
       player.sendMessage(registry.getPlugin().getChatManager().colorRawMessage("&cToo few arguments! Please type /vda hologram add <statistic type> <amount>"));
       return;

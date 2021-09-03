@@ -223,6 +223,7 @@ public class ArenaRegistry {
       World startLocWorld = arena.getStartLocation().getWorld();
       if (startLocWorld == null) {
         Debugger.sendConsoleMsg("Arena world of " + id + " does not exist or not loaded.");
+        arena.setReady(false);
         continue;
       }
 

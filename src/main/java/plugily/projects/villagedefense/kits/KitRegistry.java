@@ -18,8 +18,6 @@
 
 package plugily.projects.villagedefense.kits;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -59,12 +57,12 @@ import plugily.projects.villagedefense.utils.constants.Constants;
  */
 public class KitRegistry {
 
-  private static final List<Kit> kits = new ArrayList<>();
+  private static final List<Kit> kits = new java.util.ArrayList<>();
   private static Kit defaultKit;
   private static Main plugin;
-  private static final List<Class<?>> classKitNames = Arrays.asList(LightTankKit.class, ZombieFinderKit.class, ArcherKit.class, PuncherKit.class, HealerKit.class, LooterKit.class, RunnerKit.class,
+  private static final Class<?>[] classKitNames = new Class[] { LightTankKit.class, ZombieFinderKit.class, ArcherKit.class, PuncherKit.class, HealerKit.class, LooterKit.class, RunnerKit.class,
       MediumTankKit.class, WorkerKit.class, GolemFriendKit.class, TerminatorKit.class, HardcoreKit.class, CleanerKit.class, TeleporterKit.class, HeavyTankKit.class, ShotBowKit.class,
-      DogFriendKit.class, PremiumHardcoreKit.class, TornadoKit.class, BlockerKit.class, MedicKit.class, NakedKit.class, WizardKit.class);
+      DogFriendKit.class, PremiumHardcoreKit.class, TornadoKit.class, BlockerKit.class, MedicKit.class, NakedKit.class, WizardKit.class };
 
   private KitRegistry() {
   }
@@ -111,19 +109,18 @@ public class KitRegistry {
   }
 
   private static void setupGameKits() {
-    KnightKit knightkit = new KnightKit();
     FileConfiguration config = ConfigUtils.getConfig(plugin, Constants.Files.KITS.getName());
     for(Class<?> kitClass : classKitNames) {
       if(config.getBoolean("Enabled-Game-Kits." + kitClass.getSimpleName().replace("Kit", ""))) {
         try {
-          Class.forName(kitClass.getName()).getDeclaredConstructor().newInstance();
+          kitClass.getDeclaredConstructor().newInstance();
         } catch(Exception e) {
           plugin.getLogger().log(Level.SEVERE, "Fatal error while registering existing game kit! Report this error to the developer!");
           plugin.getLogger().log(Level.SEVERE, "Cause: " + e.getMessage() + " (kitClass " + kitClass.getName() + ")");
         }
       }
     }
-    setDefaultKit(knightkit);
+    setDefaultKit(new KnightKit());
   }
 
 }

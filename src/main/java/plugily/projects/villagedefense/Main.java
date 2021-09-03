@@ -232,12 +232,12 @@ public class Main extends JavaPlugin {
       new MiscEvents(this);
     }
     if(configPreferences.getOption(ConfigPreferences.Option.HOLOGRAMS_ENABLED)) {
-      if(holographicEnabled = Bukkit.getServer().getPluginManager().isPluginEnabled("HolographicDisplays")) {
+      if(Bukkit.getServer().getPluginManager().isPluginEnabled("HolographicDisplays")) {
         Debugger.debug("Hooking into HolographicDisplays");
         if(!new File(getDataFolder(), "internal/holograms_data.yml").exists()) {
           new File(getDataFolder().getPath() + "/internal").mkdir();
         }
-        languageConfig = ConfigUtils.getConfig(this, "language");
+        holographicEnabled = true;
         hologramsRegistry = new HologramsRegistry(this);
       } else {
         Debugger.sendConsoleMsg("&cYou need to install HolographicDisplays to use holograms!");
@@ -245,7 +245,6 @@ public class Main extends JavaPlugin {
     }
     if(configPreferences.getOption(ConfigPreferences.Option.UPGRADES_ENABLED)) {
       entityUpgradesConfig = ConfigUtils.getConfig(this, "entity_upgrades");
-      languageConfig = ConfigUtils.getConfig(this, "language");
       Upgrade.init(this);
       UpgradeBuilder.init(this);
       new EntityUpgradeMenu(this);

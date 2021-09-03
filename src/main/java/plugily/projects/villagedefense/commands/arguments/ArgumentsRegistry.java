@@ -193,32 +193,40 @@ public class ArgumentsRegistry implements CommandExecutor {
   private void sendHelpCommand(CommandSender sender) {
     sender.sendMessage(plugin.getChatManager().colorMessage(Messages.COMMANDS_MAIN_HEADER));
     sender.sendMessage(plugin.getChatManager().colorMessage(Messages.COMMANDS_MAIN_DESCRIPTION));
+
     if(sender.hasPermission("villagedefense.admin")) {
       sender.sendMessage(plugin.getChatManager().colorMessage(Messages.COMMANDS_MAIN_ADMIN_BONUS_DESCRIPTION));
     }
+
     sender.sendMessage(plugin.getChatManager().colorMessage(Messages.COMMANDS_MAIN_FOOTER));
   }
 
   private void sendAdminHelpCommand(CommandSender sender) {
     sender.sendMessage(ChatColor.GREEN + "  " + ChatColor.BOLD + "Village Defense " + ChatColor.GRAY + plugin.getDescription().getVersion());
     sender.sendMessage(ChatColor.RED + " []" + ChatColor.GRAY + " = optional  " + ChatColor.GOLD + "<>" + ChatColor.GRAY + " = required");
-    if(sender instanceof Player) {
+
+    boolean senderIsPlayer = sender instanceof Player;
+
+    if(senderIsPlayer) {
       sender.sendMessage(ChatColor.GRAY + "Hover command to see more, click command to suggest it.");
     }
+
     List<LabelData> data = mappedArguments.get("villagedefenseadmin").stream().filter(arg -> arg instanceof LabeledCommandArgument)
         .map(arg -> ((LabeledCommandArgument) arg).getLabelData()).collect(Collectors.toList());
     data.add(new LabelData("/vd &6<arena>&f edit", "/vd <arena> edit",
         "&7Edit existing arena\n&6Permission: &7villagedefense.admin.edit"));
     data.addAll(mappedArguments.get("villagedefense").stream().filter(arg -> arg instanceof LabeledCommandArgument)
         .map(arg -> ((LabeledCommandArgument) arg).getLabelData()).collect(Collectors.toList()));
+
     if(ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_11_R1)) {
       for(LabelData labelData : data) {
-        sender.sendMessage(labelData.getText() + " - " + labelData.getDescription().split("\n")[0]);
+        sender.sendMessage(labelData.getText() + " - " + labelData.getDescription().split("\n", 2)[0]);
       }
       return;
     }
+
     for(LabelData labelData : data) {
-      if(sender instanceof Player) {
+      if(senderIsPlayer) {
         TextComponent component = new TextComponent(labelData.getText());
         component.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, labelData.getCommand()));
 
@@ -232,7 +240,7 @@ public class ArgumentsRegistry implements CommandExecutor {
         ((Player) sender).spigot().sendMessage(component);
       } else {
         //more descriptive for console - split at \n to show only basic description
-        Debugger.sendConsoleMsg(labelData.getText() + " - " + labelData.getDescription().split("\n")[0]);
+        Debugger.sendConsoleMsg(labelData.getText() + " - " + labelData.getDescription().split("\n", 2)[0]);
       }
     }
   }

@@ -22,7 +22,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ThreadLocalRandom;
+import java.util.Random;
 import java.util.stream.Collectors;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -42,6 +42,8 @@ import plugily.projects.villagedefense.handlers.language.Messages;
  */
 public class JoinArguments {
 
+  private final Random random = new Random();
+
   public JoinArguments(ArgumentsRegistry registry) {
     //join argument
     registry.mapArgument("villagedefense", new CommandArgument("join", "", CommandArgument.ExecutorType.PLAYER) {
@@ -53,7 +55,7 @@ public class JoinArguments {
         }
         if(!ArenaRegistry.getArenas().isEmpty() && args[1].equalsIgnoreCase("maxplayers") && ArenaRegistry.getArena("maxplayers") == null) {
           if(ArenaRegistry.getArenaPlayersOnline() == 0) {
-            ArenaManager.joinAttempt((Player) sender, ArenaRegistry.getArenas().get(ThreadLocalRandom.current().nextInt(ArenaRegistry.getArenas().size())));
+            ArenaManager.joinAttempt((Player) sender, ArenaRegistry.getArenas().get(random.nextInt(ArenaRegistry.getArenas().size())));
             return;
           }
 
@@ -87,16 +89,14 @@ public class JoinArguments {
           //check starting arenas -> random
           List<Arena> arenas = ArenaRegistry.getArenas().stream().filter(arena -> arena.getArenaState() == ArenaState.STARTING && arena.getPlayers().size() < arena.getMaximumPlayers()).collect(Collectors.toList());
           if(!arenas.isEmpty()) {
-            Arena arena = arenas.get(ThreadLocalRandom.current().nextInt(arenas.size()));
-            ArenaManager.joinAttempt((Player) sender, arena);
+            ArenaManager.joinAttempt((Player) sender, arenas.get(random.nextInt(arenas.size())));
             return;
           }
           //check waiting arenas -> random
           arenas = ArenaRegistry.getArenas().stream().filter(arena -> (arena.getArenaState() == ArenaState.WAITING_FOR_PLAYERS || arena.getArenaState() == ArenaState.STARTING)
               && arena.getPlayers().size() < arena.getMaximumPlayers()).collect(Collectors.toList());
           if(!arenas.isEmpty()) {
-            Arena arena = arenas.get(ThreadLocalRandom.current().nextInt(arenas.size()));
-            ArenaManager.joinAttempt((Player) sender, arena);
+            ArenaManager.joinAttempt((Player) sender, arenas.get(random.nextInt(arenas.size())));
             return;
           }
           sender.sendMessage(registry.getPlugin().getChatManager().getPrefix() + registry.getPlugin().getChatManager().colorMessage(Messages.COMMANDS_NO_FREE_ARENAS));

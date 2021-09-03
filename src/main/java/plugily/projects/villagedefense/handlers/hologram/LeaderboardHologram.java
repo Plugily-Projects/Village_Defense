@@ -58,7 +58,9 @@ public class LeaderboardHologram extends BukkitRunnable {
 
     String header = color(plugin.getLanguageConfig().getString(LanguageMessage.HOLOGRAMS_HEADER.getAccessor()));
     header = StringUtils.replace(header, "%amount%", Integer.toString(topAmount));
-    header = StringUtils.replace(header, "%statistic%", statisticToMessage() != null ? color(plugin.getLanguageConfig().getString(statisticToMessage().getAccessor())) : "null");
+
+    LanguageMessage lm = statisticToMessage();
+    header = StringUtils.replace(header, "%statistic%", lm != null ? color(plugin.getLanguageConfig().getString(lm.getAccessor())) : "null");
     hologram.appendTextLine(header);
 
     for (int i = 0; i < topAmount; i++) {
