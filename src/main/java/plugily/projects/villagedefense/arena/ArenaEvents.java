@@ -70,9 +70,10 @@ public class ArenaEvents implements Listener {
   //override WorldGuard build deny flag where villagers cannot be damaged
   @EventHandler(priority = EventPriority.HIGHEST)
   public void onVillagerDamage(EntityDamageByEntityEvent e) {
-    if (!(e.getEntity() instanceof Villager && e.getDamager() instanceof Creature)) {
+    if (e.getEntityType() != EntityType.VILLAGER || !(e.getDamager() instanceof Creature)) {
       return;
     }
+
     for(Arena a : ArenaRegistry.getArenas()) {
       if(a.getVillagers().contains(e.getEntity()) && a.getEnemies().contains(e.getDamager())) {
         e.setCancelled(false);
@@ -86,22 +87,29 @@ public class ArenaEvents implements Listener {
     if (!(e.getDamager() instanceof Wolf && e.getEntity() instanceof Creature)) {
       return;
     }
-    //trick to get non player killer of zombie
-    for (Arena arena : ArenaRegistry.getArenas()) {
-      if (!arena.getEnemies().contains(e.getEntity())) {
-        continue;
-      }
-      if (e.getDamage() >= ((Creature) e.getEntity()).getHealth()) {
-        //prevent offline player cast error
-        if (!(((Wolf) e.getDamager()).getOwner() instanceof Player)) {
-          return;
+
+    if (e.getDamage() >= ((Creature) e.getEntity()).getHealth()) {
+
+      //trick to get non player killer of zombie
+      for (Arena arena : ArenaRegistry.getArenas()) {
+        if (arena.getEnemies().contains(e.getEntity())) {
+          Wolf damager = (Wolf) e.getDamager();
+          org.bukkit.entity.AnimalTamer owner = damager.getOwner();
+
+          //prevent offline player cast error
+          if (!(owner instanceof Player)) {
+            break;
+          }
+
+          Player player = (Player) owner;
+
+          if (ArenaRegistry.getArena(player) != null) {
+            plugin.getUserManager().addStat(player, StatsStorage.StatisticType.KILLS);
+            plugin.getUserManager().addExperience(player, 2 * arena.getOption(ArenaOption.ZOMBIE_DIFFICULTY_MULTIPLIER));
+          }
+
+          break;
         }
-        Player player = (Player) ((Wolf) e.getDamager()).getOwner();
-        if (ArenaRegistry.getArena(player) != null) {
-          plugin.getUserManager().addStat(player, StatsStorage.StatisticType.KILLS);
-          plugin.getUserManager().addExperience(player, 2 * arena.getOption(ArenaOption.ZOMBIE_DIFFICULTY_MULTIPLIER));
-        }
-        return;
       }
     }
   }
@@ -293,7 +301,7 @@ public class ArenaEvents implements Listener {
     for (Creature zombie : arena.getEnemies()) {
       LivingEntity target = zombie.getTarget();
 
-      if (target == null || !target.equals(player)) {
+      if (!player.equals(target)) {
         continue;
       }
 

@@ -37,7 +37,7 @@ import plugily.projects.villagedefense.arena.options.ArenaOption;
  */
 public class EnemySpawnManager {
 
-  private final Random random;
+  private final Random random = new Random();
   private final Arena arena;
   private int localIdleProcess = 0;
   private final List<Creature> glitchedEnemies = new ArrayList<>();
@@ -45,7 +45,6 @@ public class EnemySpawnManager {
 
   public EnemySpawnManager(Arena arena) {
     this.arena = arena;
-    this.random = new Random();
   }
 
   public void applyIdle(int idle) {

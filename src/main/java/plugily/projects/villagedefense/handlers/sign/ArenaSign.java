@@ -58,7 +58,7 @@ public class ArenaSign {
       BlockFace face = (BlockFace) blockData.getClass().getMethod("getFacing").invoke(blockData);
 
       Location loc = sign.getLocation();
-      return new Location(sign.getWorld(), loc.getBlockX() - face.getModX(), loc.getBlockY() - face.getModY(),
+      return new Location(loc.getWorld(), loc.getBlockX() - face.getModX(), loc.getBlockY() - face.getModY(),
               loc.getBlockZ() - face.getModZ()).getBlock();
     } catch(NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
       e.printStackTrace();

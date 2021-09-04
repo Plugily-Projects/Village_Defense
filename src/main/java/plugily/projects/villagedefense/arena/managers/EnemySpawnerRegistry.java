@@ -49,10 +49,9 @@ public class EnemySpawnerRegistry {
    * @param arena  the arena
    */
   public void spawnEnemies(Random random, Arena arena) {
-    int wave = arena.getWave();
     int spawn = arena.getWave();
     int zombiesLimit = plugin.getConfig().getInt("Zombies-Limit", 75);
-    if (zombiesLimit < wave) {
+    if (zombiesLimit < spawn) {
       spawn = (int) Math.ceil(zombiesLimit / 2.0);
     }
 

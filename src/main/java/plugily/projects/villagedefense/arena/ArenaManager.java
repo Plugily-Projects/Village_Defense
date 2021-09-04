@@ -210,7 +210,6 @@ public class ArenaManager {
         leaveAttempt(players, arena);
         players.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage(Messages.LOBBY_MESSAGES_YOU_WERE_KICKED_FOR_PREMIUM_SLOT));
         plugin.getChatManager().broadcastMessage(arena, plugin.getChatManager().formatMessage(arena, plugin.getChatManager().colorMessage(Messages.LOBBY_MESSAGES_KICKED_FOR_PREMIUM_SLOT), players));
-        return true;
       }
       return true;
     }
@@ -424,9 +423,9 @@ public class ArenaManager {
   private static void refreshAllPlayers(Arena arena) {
     int waveStat = arena.getWave() * 10;
 
-    String nextWaveIn = plugin.getChatManager().colorMessage(Messages.NEXT_WAVE_IN);
     String feelRefreshed = plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage(Messages.YOU_FEEL_REFRESHED);
-    String formatted = plugin.getChatManager().getPrefix() + plugin.getChatManager().formatMessage(arena, nextWaveIn, arena.getTimer());
+    String formatted = plugin.getChatManager().getPrefix() + plugin.getChatManager().formatMessage(arena,
+        plugin.getChatManager().colorMessage(Messages.NEXT_WAVE_IN), arena.getTimer());
 
     for(Player player : arena.getPlayers()) {
       player.sendMessage(formatted);

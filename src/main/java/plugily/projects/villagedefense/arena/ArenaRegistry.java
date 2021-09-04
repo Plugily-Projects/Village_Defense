@@ -160,21 +160,25 @@ public class ArenaRegistry {
 
       Arena arena = new Arena(id);
 
-      arena.setMinimumPlayers(section.getInt(id + ".minimumplayers", 1));
-      arena.setMaximumPlayers(section.getInt(id + ".maximumplayers", 2));
-      arena.setMapName(section.getString(id + ".mapname", "none"));
-
       Location startLoc = LocationSerializer.getLocation(section.getString(id + ".Startlocation", "world,364.0,63.0,-72.0,0.0,0.0"));
       Location lobbyLoc = LocationSerializer.getLocation(section.getString(id + ".lobbylocation", "world,364.0,63.0,-72.0,0.0,0.0"));
       Location endLoc = LocationSerializer.getLocation(section.getString(id + ".Endlocation", "world,364.0,63.0,-72.0,0.0,0.0"));
+
       if(lobbyLoc == null || lobbyLoc.getWorld() == null || startLoc == null || startLoc.getWorld() == null
           || endLoc == null || endLoc.getWorld() == null) {
         section.set(id + ".isdone", false);
-      } else {
-        arena.setLobbyLocation(lobbyLoc);
-        arena.setStartLocation(startLoc);
-        arena.setEndLocation(endLoc);
+        Debugger.sendConsoleMsg(plugin.getChatManager().colorMessage(Messages.VALIDATOR_INVALID_ARENA_CONFIGURATION).replace("%arena%", id).replace("%error%", "Location world is invalid"));
+        arena.setReady(false);
+        registerArena(arena);
+        continue;
       }
+
+      arena.setMapName(section.getString(id + ".mapname", "none"));
+      arena.setMinimumPlayers(section.getInt(id + ".minimumplayers", 1));
+      arena.setMaximumPlayers(section.getInt(id + ".maximumplayers", 2));
+      arena.setLobbyLocation(lobbyLoc);
+      arena.setStartLocation(startLoc);
+      arena.setEndLocation(endLoc);
 
       if(!section.getBoolean(id + ".isdone")) {
         Debugger.sendConsoleMsg(plugin.getChatManager().colorMessage(Messages.VALIDATOR_INVALID_ARENA_CONFIGURATION).replace("%arena%", id).replace("%error%", "NOT VALIDATED"));
