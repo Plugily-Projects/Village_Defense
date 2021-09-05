@@ -93,19 +93,15 @@ public class ArenaEvents implements Listener {
       //trick to get non player killer of zombie
       for (Arena arena : ArenaRegistry.getArenas()) {
         if (arena.getEnemies().contains(e.getEntity())) {
-          Wolf damager = (Wolf) e.getDamager();
-          org.bukkit.entity.AnimalTamer owner = damager.getOwner();
+          org.bukkit.entity.AnimalTamer owner = ((Wolf) e.getDamager()).getOwner();
 
-          //prevent offline player cast error
-          if (!(owner instanceof Player)) {
-            break;
-          }
+          if (owner instanceof Player) { //prevent offline player cast error
+            Player player = (Player) owner;
 
-          Player player = (Player) owner;
-
-          if (ArenaRegistry.getArena(player) != null) {
-            plugin.getUserManager().addStat(player, StatsStorage.StatisticType.KILLS);
-            plugin.getUserManager().addExperience(player, 2 * arena.getOption(ArenaOption.ZOMBIE_DIFFICULTY_MULTIPLIER));
+            if (ArenaRegistry.getArena(player) != null) {
+              plugin.getUserManager().addStat(player, StatsStorage.StatisticType.KILLS);
+              plugin.getUserManager().addExperience(player, 2 * arena.getOption(ArenaOption.ZOMBIE_DIFFICULTY_MULTIPLIER));
+            }
           }
 
           break;
