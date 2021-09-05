@@ -57,10 +57,7 @@ public class RidableVillager extends EntityVillager {
         8.0F, 0.6D, 0.6D));
     goalSelector.a(1, new PathfinderGoalTradeWithPlayer(this));
     goalSelector.a(1, new PathfinderGoalLookAtTradingPlayer(this));
-    //todo
-    //this.goalSelector.a(2, new PathfinderGoalMoveIndoors(this));
-    //this.goalSelector.a(3, new PathfinderGoalRestrictOpenDoor(this));
-    //this.goalSelector.a(4, new PathfinderGoalOpenDoor(this, true));
+    goalSelector.a(4, new net.minecraft.server.v1_16_R1.PathfinderGoalDoorOpen(this, true));
     goalSelector.a(5, new PathfinderGoalMoveTowardsRestriction(this, 0.6D));
     //this.goalSelector.a(6, new PathfinderGoalMakeLove(this));
     //this.goalSelector.a(8, new PathfinderGoalPlay(this, 0.32D));

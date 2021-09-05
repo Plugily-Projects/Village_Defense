@@ -21,6 +21,7 @@ package plugily.projects.villagedefense.creatures.v1_17_R2;
 import net.minecraft.world.entity.EntityInsentient;
 import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.entity.ai.goal.PathfinderGoalAvoidTarget;
+import net.minecraft.world.entity.ai.goal.PathfinderGoalDoorOpen;
 import net.minecraft.world.entity.ai.goal.PathfinderGoalFloat;
 import net.minecraft.world.entity.ai.goal.PathfinderGoalInteract;
 import net.minecraft.world.entity.ai.goal.PathfinderGoalLookAtPlayer;
@@ -28,7 +29,6 @@ import net.minecraft.world.entity.ai.goal.PathfinderGoalLookAtTradingPlayer;
 import net.minecraft.world.entity.ai.goal.PathfinderGoalMoveTowardsRestriction;
 import net.minecraft.world.entity.ai.goal.PathfinderGoalRandomStroll;
 import net.minecraft.world.entity.ai.goal.PathfinderGoalTradeWithPlayer;
-import net.minecraft.world.entity.ai.navigation.Navigation;
 import net.minecraft.world.entity.monster.EntityZombie;
 import net.minecraft.world.entity.npc.EntityVillager;
 import net.minecraft.world.entity.player.EntityHuman;
@@ -48,20 +48,15 @@ public class RidableVillager extends EntityVillager {
 
     GoalSelectorCleaner.clearSelectors(this);
 
-    //todo this.setSize(0.6F, 1.8F);
     getNavigation().q().b(true);
-    ((Navigation) getNavigation()).a(true);
+    ((net.minecraft.world.entity.ai.navigation.Navigation) getNavigation()).a(true);
+
     bP.a(0, new PathfinderGoalFloat(this));
     bP.a(1, new PathfinderGoalAvoidTarget<>(this, EntityZombie.class, 8.0F, 0.6D, 0.6D));
     bP.a(1, new PathfinderGoalTradeWithPlayer(this));
     bP.a(1, new PathfinderGoalLookAtTradingPlayer(this));
-    //todo
-    //bP.a(2, new PathfinderGoalMoveIndoors(this));
-    //bP.a(3, new PathfinderGoalRestrictOpenDoor(this));
-    //bP.a(4, new PathfinderGoalOpenDoor(this, true));
+    bP.a(3, new PathfinderGoalDoorOpen(this, true));
     bP.a(5, new PathfinderGoalMoveTowardsRestriction(this, 0.6D));
-    //this.bP.a(6, new PathfinderGoalMakeLove(this));
-    //this.bP.a(8, new PathfinderGoalPlay(this, 0.32D));
     bP.a(9, new PathfinderGoalInteract(this, EntityHuman.class, 3.0F, 1.0F));
     bP.a(9, new PathfinderGoalInteract(this, EntityVillager.class, 5.0F, 0.02F));
     bP.a(9, new PathfinderGoalRandomStroll(this, 0.6D));
