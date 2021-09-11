@@ -43,7 +43,7 @@ public class PAFSPartyHandlerImpl implements PartyHandler {
 
     java.util.List<Player> allMembers = party.getAllPlayers().stream()
         .map(localPlayer -> Bukkit.getPlayer(localPlayer.getUniqueId()))
-        .filter(java.util.Objects::isNull).collect(Collectors.toList());
+        .filter(java.util.Objects::nonNull).collect(Collectors.toList());
 
     return new GameParty(allMembers, leader);
   }

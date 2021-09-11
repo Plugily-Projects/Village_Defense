@@ -50,7 +50,7 @@ public class PartiesPartyHandlerImpl implements PartyHandler {
 
     java.util.List<Player> members = party.getOnlineMembers(true).stream()
         .map(localPlayer -> Bukkit.getPlayer(localPlayer.getPlayerUUID()))
-        .filter(java.util.Objects::isNull).collect(java.util.stream.Collectors.toList());
+        .filter(java.util.Objects::nonNull).collect(java.util.stream.Collectors.toList());
 
     return new GameParty(members, leader);
   }
