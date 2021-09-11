@@ -19,6 +19,7 @@
 package plugily.projects.villagedefense.arena;
 
 import org.bukkit.GameMode;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Creature;
 import org.bukkit.entity.EntityType;
@@ -113,14 +114,20 @@ public class ArenaEvents implements Listener {
   @EventHandler
   public void onItemDrop(ItemSpawnEvent e) {
     org.bukkit.entity.Item item = e.getEntity();
+
     if (item.getItemStack().getType() != Material.ROTTEN_FLESH) {
       return;
     }
+
+    Location itemLoc = item.getLocation();
+
     for (Arena arena : ArenaRegistry.getArenas()) {
-      org.bukkit.Location start = arena.getStartLocation();
-      if (!item.getWorld().equals(start.getWorld()) || item.getLocation().distance(start) > 150) {
+      Location start = arena.getStartLocation();
+
+      if (itemLoc.getWorld() != start.getWorld() || itemLoc.distance(start) > 150) {
         continue;
       }
+
       arena.addDroppedFlesh(item);
     }
   }

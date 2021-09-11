@@ -475,12 +475,11 @@ public class Events implements Listener {
     }
 
     Item item = e.getItem();
-    ItemStack itemStack = item.getItemStack();
     Location location = item.getLocation();
 
     Arena currentArena = null;
     for(Arena arena : ArenaRegistry.getArenas()) {
-      if(item.getWorld().equals(arena.getStartLocation().getWorld())) {
+      if(location.getWorld() == arena.getStartLocation().getWorld()) {
         currentArena = arena;
         item.remove();
         e.setCancelled(true);
@@ -488,9 +487,12 @@ public class Events implements Listener {
         break;
       }
     }
+
     if(currentArena == null) {
       return;
     }
+
+    ItemStack itemStack = item.getItemStack();
 
     VillageGameSecretWellEvent villageGameSecretWellEvent = new VillageGameSecretWellEvent(currentArena, itemStack, location);
     Bukkit.getPluginManager().callEvent(villageGameSecretWellEvent);

@@ -92,10 +92,12 @@ public class EntityUpgradeListener implements Listener {
 
   @EventHandler
   public void onFinalDefense(EntityDeathEvent e) {
-    LivingEntity entity = e.getEntity();
-    if(!(entity instanceof IronGolem)) {
+    if(e.getEntityType() != EntityType.IRON_GOLEM) {
       return;
     }
+
+    LivingEntity entity = e.getEntity();
+
     for(Arena arena : ArenaRegistry.getArenas()) {
       if(!arena.getIronGolems().contains(entity)) {
         continue;
@@ -119,14 +121,15 @@ public class EntityUpgradeListener implements Listener {
 
   @EventHandler
   public void onEntityClick(CBPlayerInteractEntityEvent e) {
-    if(ArenaRegistry.getArena(e.getPlayer()) == null || upgradeMenu.getPlugin().getUserManager().getUser(e.getPlayer()).isSpectator()
-        || (e.getRightClicked().getType() != EntityType.IRON_GOLEM && e.getRightClicked().getType() != EntityType.WOLF) || e.getRightClicked().getCustomName() == null) {
+    if((e.getRightClicked().getType() != EntityType.IRON_GOLEM && e.getRightClicked().getType() != EntityType.WOLF)
+        || VersionUtils.checkOffHand(e.getHand()) || !e.getPlayer().isSneaking()
+        || e.getRightClicked().getCustomName() == null) {
       return;
     }
-    if(VersionUtils.checkOffHand(e.getHand()) || !e.getPlayer().isSneaking()) {
-      return;
+
+    if (ArenaRegistry.getArena(e.getPlayer()) != null && !upgradeMenu.getPlugin().getUserManager().getUser(e.getPlayer()).isSpectator()) {
+      upgradeMenu.openUpgradeMenu((LivingEntity) e.getRightClicked(), e.getPlayer());
     }
-    upgradeMenu.openUpgradeMenu((LivingEntity) e.getRightClicked(), e.getPlayer());
   }
 
 }

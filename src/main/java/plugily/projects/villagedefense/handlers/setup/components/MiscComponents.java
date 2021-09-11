@@ -97,11 +97,15 @@ public class MiscComponents implements SetupComponent {
         return;
       }
       e.getWhoClicked().closeInventory();
+
       Location location = player.getTargetBlock(null, 10).getLocation();
-      if(!(location.getBlock().getState() instanceof Sign)) {
+      Block block = location.getBlock();
+
+      if(!(block.getState() instanceof Sign)) {
         player.sendMessage(plugin.getChatManager().colorRawMessage("&c&l✘ &cPlease look at sign to add as a game sign!"));
         return;
       }
+
       if(location.distance(e.getWhoClicked().getWorld().getSpawnLocation()) <= Bukkit.getServer().getSpawnRadius()
           && e.getClick() != ClickType.SHIFT_LEFT) {
         e.getWhoClicked().sendMessage(plugin.getChatManager().colorRawMessage("&c&l✖ &cWarning | Server spawn protection is set to &6" + Bukkit.getServer().getSpawnRadius()
@@ -109,11 +113,12 @@ public class MiscComponents implements SetupComponent {
         e.getWhoClicked().sendMessage(plugin.getChatManager().colorRawMessage("&cYou can ignore this warning and add sign with Shift + Left Click, but for now &c&loperation is cancelled"));
         return;
       }
-      plugin.getSignManager().getArenaSigns().add(new ArenaSign((Sign) location.getBlock().getState(), arena));
+
+      plugin.getSignManager().getArenaSigns().add(new ArenaSign((Sign) block.getState(), arena));
       player.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage(Messages.SIGNS_SIGN_CREATED));
-      String signLoc = location.getBlock().getWorld().getName() + "," + location.getBlock().getX() + "," + location.getBlock().getY() + "," + location.getBlock().getZ() + ",0.0,0.0";
+
       List<String> locs = config.getStringList("instances." + arena.getId() + ".signs");
-      locs.add(signLoc);
+      locs.add(location.getWorld().getName() + "," + block.getX() + "," + block.getY() + "," + block.getZ() + ",0.0,0.0");
       config.set("instances." + arena.getId() + ".signs", locs);
       ConfigUtils.saveConfig(plugin, config, Constants.Files.ARENAS.getName());
     });
@@ -163,8 +168,11 @@ public class MiscComponents implements SetupComponent {
         if(stack == null) {
           continue;
         }
-        if(stack.hasItemMeta() && stack.getItemMeta().hasLore()
-            && ComplementAccessor.getComplement().getLore(stack.getItemMeta()).get(ComplementAccessor.getComplement().getLore(stack.getItemMeta()).size() - 1)
+
+        org.bukkit.inventory.meta.ItemMeta meta = stack.getItemMeta();
+        List<String> lore;
+
+        if(meta != null && meta.hasLore() && (lore = ComplementAccessor.getComplement().getLore(meta)).get(lore.size() - 1)
             .contains(plugin.getChatManager().colorMessage(Messages.SHOP_MESSAGES_CURRENCY_IN_SHOP))) {
           found = true;
           break;
@@ -195,8 +203,10 @@ public class MiscComponents implements SetupComponent {
         ConfigUtils.saveConfig(plugin, config, Constants.Files.ARENAS.getName());
         return;
       }
-      int villagers = (config.isSet("instances." + arena.getId() + ".villagerspawns")
-          ? config.getConfigurationSection("instances." + arena.getId() + ".villagerspawns").getKeys(false).size() : 0) + 1;
+
+      org.bukkit.configuration.ConfigurationSection villagerSection = config.getConfigurationSection("instances." + arena.getId() + ".villagerspawns");
+      int villagers = (villagerSection != null ? villagerSection.getKeys(false).size() : 0) + 1;
+
       LocationSerializer.saveLoc(plugin, config, "arenas", "instances." + arena.getId() + ".villagerspawns." + villagers, player.getLocation());
       String progress = villagers >= 2 ? "&e✔ Completed | " : "&c✘ Not completed | ";
       player.sendMessage(plugin.getChatManager().colorRawMessage(progress + "&aVillager spawn added! &8(&7" + villagers + "/2&8)"));
@@ -223,8 +233,10 @@ public class MiscComponents implements SetupComponent {
         ConfigUtils.saveConfig(plugin, config, Constants.Files.ARENAS.getName());
         return;
       }
-      int zombies = (config.isSet("instances." + arena.getId() + ".zombiespawns")
-          ? config.getConfigurationSection("instances." + arena.getId() + ".zombiespawns").getKeys(false).size() : 0) + 1;
+
+      org.bukkit.configuration.ConfigurationSection zombieSection = config.getConfigurationSection("instances." + arena.getId() + ".zombiespawns");
+      int zombies = (zombieSection != null ? zombieSection.getKeys(false).size() : 0) + 1;
+
       LocationSerializer.saveLoc(plugin, config, "arenas", "instances." + arena.getId() + ".zombiespawns." + zombies, player.getLocation());
       String progress = zombies >= 2 ? "&e✔ Completed | " : "&c✘ Not completed | ";
       player.sendMessage(plugin.getChatManager().colorRawMessage(progress + "&aZombie spawn added! &8(&7" + zombies + "/2&8)"));
@@ -259,20 +271,25 @@ public class MiscComponents implements SetupComponent {
         player.sendMessage(plugin.getChatManager().colorRawMessage("&c&l✘ &cTarget block is not an wood door!"));
         return;
       }
-      int doors = (config.isSet("instances." + arena.getId() + ".doors")
-          ? config.getConfigurationSection("instances." + arena.getId() + ".doors").getKeys(false).size() : 0) + 1;
+
+      org.bukkit.configuration.ConfigurationSection doorSection = config.getConfigurationSection("instances." + arena.getId() + ".doors");
+      int doors = (doorSection != null ? doorSection.getKeys(false).size() : 0) + 1;
 
       Block relativeBlock = null;
-      if(block.getRelative(BlockFace.DOWN).getType() == door) {
+      Block faceBlock;
+
+      if((faceBlock = block.getRelative(BlockFace.DOWN)).getType() == door) {
         relativeBlock = block;
-        block = block.getRelative(BlockFace.DOWN);
-      } else if(block.getRelative(BlockFace.UP).getType() == door) {
-        relativeBlock = block.getRelative(BlockFace.UP);
+        block = faceBlock;
+      } else if((faceBlock = block.getRelative(BlockFace.UP)).getType() == door) {
+        relativeBlock = faceBlock;
       }
+
       if(relativeBlock == null) {
         player.sendMessage(plugin.getChatManager().colorRawMessage("&c&l✘ &cThis door doesn't have 2 blocks? Maybe it's bugged? Try placing it again."));
         return;
       }
+
       String relativeLocation = relativeBlock.getWorld().getName() + "," + relativeBlock.getX() + "," + relativeBlock.getY() + "," + relativeBlock.getZ() + ",0.0" + ",0.0";
       config.set("instances." + arena.getId() + ".doors." + doors + ".location", relativeLocation);
       config.set("instances." + arena.getId() + ".doors." + doors + ".byte", 8);

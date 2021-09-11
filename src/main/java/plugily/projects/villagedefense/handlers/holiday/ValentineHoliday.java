@@ -38,7 +38,7 @@ public class ValentineHoliday implements Holiday, Listener {
 
   @EventHandler
   public void onArrowShoot(EntityShootBowEvent e) {
-    if (!(e.getEntity() instanceof Player) || ArenaRegistry.getArena((Player) e.getEntity()) == null) {
+    if (e.getEntityType() != org.bukkit.entity.EntityType.PLAYER || ArenaRegistry.getArena((Player) e.getEntity()) == null) {
       return;
     }
     Entity en = e.getProjectile();
@@ -46,7 +46,7 @@ public class ValentineHoliday implements Holiday, Listener {
       @Override
       public void run() {
         if (en.isOnGround() || en.isDead()) {
-          this.cancel();
+          cancel();
           return;
         }
         VersionUtils.sendParticles("HEART", (Set<Player>) null, en.getLocation(), 1);

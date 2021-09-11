@@ -91,10 +91,12 @@ public class PlayerAmountComponents implements SetupComponent {
         .lore(ChatColor.DARK_GRAY + "(how many players arena can hold)")
         .lore("", setupInventory.getSetupUtilities().isOptionDone("instances." + arena.getId() + ".maximumplayers"))
         .build(), e -> {
-      ItemStack itemStack = e.getInventory().getItem(e.getSlot()), currentItem = e.getCurrentItem();
-      if(itemStack == null || currentItem == null) {
+      ItemStack currentItem = e.getCurrentItem();
+
+      if (currentItem == null || e.getInventory().getItem(e.getSlot()) == null) {
         return;
       }
+
       if(e.getClick().isRightClick()) {
         currentItem.setAmount(currentItem.getAmount() + 1);
       }

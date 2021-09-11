@@ -62,7 +62,7 @@ public class AprilFoolsHoliday implements Holiday, Listener {
 
   @EventHandler
   public void onArrowShoot(EntityShootBowEvent e) {
-    if (!(e.getEntity() instanceof Player) || ArenaRegistry.getArena((Player) e.getEntity()) == null) {
+    if (e.getEntityType() != org.bukkit.entity.EntityType.PLAYER || ArenaRegistry.getArena((Player) e.getEntity()) == null) {
       return;
     }
     if (random.nextInt(4) == 0) {

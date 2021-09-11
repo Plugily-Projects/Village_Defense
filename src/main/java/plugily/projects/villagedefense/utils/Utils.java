@@ -125,10 +125,8 @@ public class Utils {
     List<String> matchList = new ArrayList<>();
     Matcher regexMatcher = Pattern.compile(".{1," + max + "}(?:\\s|$)", Pattern.DOTALL).matcher(string);
 
-    String r = plugin.getChatManager().colorRawMessage("&7");
-
     while(regexMatcher.find()) {
-      matchList.add(r + regexMatcher.group());
+      matchList.add(org.bukkit.ChatColor.GRAY + regexMatcher.group());
     }
 
     return matchList;

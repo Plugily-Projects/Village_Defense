@@ -83,16 +83,18 @@ public class ArenaRegisterComponent implements SetupComponent {
       }
 
       for(String s : new String[]{"lobbylocation", "Startlocation", "Endlocation"}) {
-        if(!config.isSet("instances." + arena.getId() + "." + s) || config.getString("instances." + arena.getId() + "." + s)
-            .equals(LocationSerializer.locationToString(Bukkit.getWorlds().get(0).getSpawnLocation()))) {
+        String loc = config.getString("instances." + arena.getId() + "." + s);
+
+        if(loc == null || loc.equals(LocationSerializer.locationToString(Bukkit.getWorlds().get(0).getSpawnLocation()))) {
           e.getWhoClicked().sendMessage(plugin.getChatManager().colorRawMessage("&c&l✘ &cArena validation failed! Please configure following spawns properly: " + s + " (cannot be world spawn location)"));
           return;
         }
       }
 
       for(String s : new String[]{"zombiespawns", "villagerspawns"}) {
-        if(!config.isSet("instances." + arena.getId() + "." + s)
-            || config.getConfigurationSection("instances." + arena.getId() + "." + s).getKeys(false).size() < 2) {
+        org.bukkit.configuration.ConfigurationSection spawnSection = config.getConfigurationSection("instances." + arena.getId() + "." + s);
+
+        if(spawnSection == null || spawnSection.getKeys(false).size() < 2) {
           e.getWhoClicked().sendMessage(plugin.getChatManager().colorRawMessage("&c&l✘ &cArena validation failed! Please configure following spawns properly: " + s + " (must be minimum 2 spawns)"));
           return;
         }

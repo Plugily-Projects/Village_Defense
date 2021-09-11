@@ -49,7 +49,7 @@ public class SetupInventory {
     config = ConfigUtils.getConfig(plugin, Constants.Files.ARENAS.getName());
     this.arena = arena;
     this.player = player;
-    setupUtilities = new SetupUtilities(config, arena);
+    setupUtilities = new SetupUtilities(plugin, config, arena);
     prepareGui();
   }
 

@@ -20,7 +20,6 @@ package plugily.projects.villagedefense.handlers.setup;
 
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.plugin.java.JavaPlugin;
 import plugily.projects.commonsbox.minecraft.serialization.LocationSerializer;
 import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.arena.Arena;
@@ -32,38 +31,53 @@ import plugily.projects.villagedefense.arena.Arena;
  */
 public class SetupUtilities {
 
+  private final Main plugin;
   private final FileConfiguration config;
   private final Arena arena;
 
-  SetupUtilities(FileConfiguration config, Arena arena) {
+  SetupUtilities(Main plugin, FileConfiguration config, Arena arena) {
+    this.plugin = plugin;
     this.config = config;
     this.arena = arena;
   }
 
   public String isOptionDone(String path) {
-    if(config.isSet(path)) {
-      return color("&a&l✔ Completed &7(value: &8" + config.getString(path) + "&7)");
+    String option = config.getString(path);
+
+    if(option != null) {
+      return color("&a&l✔ Completed &7(value: &8" + option + "&7)");
     }
+
     return color("&c&l✘ Not Completed");
   }
 
   public String isOptionDoneSection(String path, int minimum) {
-    if(config.isSet(path)) {
-      if(config.getConfigurationSection(path).getKeys(false).size() < minimum) {
+    org.bukkit.configuration.ConfigurationSection section = config.getConfigurationSection(path);
+
+    if(section != null) {
+      int keysSize = section.getKeys(false).size();
+
+      if(keysSize < minimum) {
         return color("&c&l✘ Not Completed | &cPlease add more locations");
       }
-      return color("&a&l✔ Completed &7(value: &8" + config.getConfigurationSection(path).getKeys(false).size() + "&7)");
+
+      return color("&a&l✔ Completed &7(value: &8" + keysSize + "&7)");
     }
+
     return color("&c&l✘ Not Completed");
   }
 
   public String isOptionDoneBool(String path) {
-    if(config.isSet(path)) {
-      if(Bukkit.getServer().getWorlds().get(0).getSpawnLocation().equals(LocationSerializer.getLocation(config.getString(path)))) {
+    String option = config.getString(path);
+
+    if(option != null) {
+      if(Bukkit.getServer().getWorlds().get(0).getSpawnLocation().equals(LocationSerializer.getLocation(option))) {
         return color("&c&l✘ Not Completed");
       }
+
       return color("&a&l✔ Completed");
     }
+
     return color("&c&l✘ Not Completed");
   }
 
@@ -73,7 +87,7 @@ public class SetupUtilities {
   }
 
   private String color(String msg) {
-    return JavaPlugin.getPlugin(Main.class).getChatManager().colorRawMessage(msg);
+    return plugin.getChatManager().colorRawMessage(msg);
   }
 
 }
