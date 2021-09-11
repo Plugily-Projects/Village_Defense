@@ -1,6 +1,6 @@
 /*
  * Village Defense - Protect villagers from hordes of zombies
- * Copyright (C) 2021  Plugily Projects - maintained by 2Wild4You, Tigerpanzer_02 and contributors
+ * Copyright (C) 2021  Plajer's Lair - maintained by Plajer and contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,10 +27,12 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.UUID;
 import java.util.logging.Level;
+
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+
 import plugily.projects.commonsbox.database.MysqlDatabase;
 import plugily.projects.commonsbox.minecraft.configuration.ConfigUtils;
 import plugily.projects.villagedefense.Main;
@@ -116,7 +118,7 @@ public class MysqlManager implements UserDatabase {
       try(Connection connection = database.getConnection(); Statement statement = connection.createStatement()) {
         String playerName = user.getPlayer().getName();
 
-        database.executeUpdate("UPDATE " + getTableName() + " SET " + "name" + "=" + playerName + " WHERE UUID='" + uuid + "';");
+        database.executeUpdate("UPDATE " + getTableName() + " SET name='" + playerName + "' WHERE UUID='" + uuid + "';");
         ResultSet rs = statement.executeQuery("SELECT * from " + getTableName() + " WHERE UUID='" + uuid + "'");
         if(rs.next()) {
           //player already exists - get the stats
@@ -182,7 +184,7 @@ public class MysqlManager implements UserDatabase {
   @Override
   public String getPlayerName(UUID uuid) {
     try(Connection connection = database.getConnection(); Statement statement = connection.createStatement()) {
-      return statement.executeQuery("Select `name` FROM " + getTableName() + " WHERE UUID='" + uuid.toString() + "'").toString();
+      return statement.executeQuery("SELECT `name` FROM " + getTableName() + " WHERE UUID='" + uuid.toString() + "'").toString();
     } catch(SQLException | NullPointerException e) {
       return null;
     }
