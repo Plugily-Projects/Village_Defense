@@ -373,7 +373,7 @@ public class ArenaEvents implements Listener {
 
   @EventHandler
   public void onPickup(CBEntityPickupItemEvent e) {
-    if (e.getEntity().getType() != EntityType.PLAYER) {
+    if (e.getEntity().getType() != EntityType.PLAYER || e.getItem().getItemStack().getType() != Material.ROTTEN_FLESH) {
       return;
     }
     Player player = (Player) e.getEntity();
