@@ -9,6 +9,9 @@ deploy webhooks to print changelog successfully
 
 That's all, matcher will stop when detects next line started with `###` match
 
+### 4.6.2 (22.09.2021 - 00.00.202x)
+* Added option to set glowing for remaining zombies from a specific wave
+
 ### 4.6.1 (03.08.2021 - 04.08.2021)
 * Fixed NoSuchFieldError as COMMAND spawn reason was added in 1.17
 * Fixed 1.17.1 startup issue
