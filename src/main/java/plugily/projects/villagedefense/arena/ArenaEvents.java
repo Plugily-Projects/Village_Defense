@@ -143,21 +143,26 @@ public class ArenaEvents implements Listener {
           if (!arena.getIronGolems().contains(event.getEntity())) {
             continue;
           }
-          if (((org.bukkit.entity.Creature) event.getEntity()).getHealth() <= event.getDamage()) {
+
+          IronGolem ironGolem = (IronGolem) event.getEntity();
+
+          if (ironGolem.getHealth() <= event.getDamage()) {
             event.setCancelled(true);
             event.setDamage(0);
-            arena.removeIronGolem((IronGolem) event.getEntity());
+            arena.removeIronGolem(ironGolem);
           }
           return;
         case WOLF:
           if (!arena.getWolves().contains(event.getEntity())) {
             continue;
           }
-          if (((org.bukkit.entity.Creature) event.getEntity()).getHealth() <= event.getDamage()) {
+
+          Wolf wolf = (Wolf) event.getEntity();
+
+          if (wolf.getHealth() <= event.getDamage()) {
             event.setCancelled(true);
             event.setDamage(0);
 
-            Wolf wolf = (Wolf) event.getEntity();
             java.util.UUID ownerUUID = VersionUtils.isPaper() ? wolf.getOwnerUniqueId()
                 : (wolf.getOwner() != null) ? wolf.getOwner().getUniqueId() : null;
 

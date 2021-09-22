@@ -95,6 +95,15 @@ Mini-Zombie-Speed: 2.0
 # Speed of normal zombies. Suggested: between 1.2 and 1.4
 Zombie-Speed: 1.3
 
+# Zombie glow to make it visible to players.
+Glowing-Status:
+  # From which wave should the glowing be activated?
+  Starting-Wave: 6
+
+  # How many zombies should the glow be activated from?
+  # Set to 0 to disable
+  Zombies-Left: 0
+
 # Enable in game rewards? See rewards.yml for more...
 Rewards-Enabled: false
 

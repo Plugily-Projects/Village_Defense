@@ -181,8 +181,8 @@ public class LanguageMigrator {
         case 14:
           MigratorUtils.addNewLines(file, "\r\n" +
               "# Can the players buy again iron golems or wolves if these\r\n" +
-              "# entities died? The config limit and permission will be ignored." +
-              "Players-Can-Buy-GolemsWolves-If-They-Died: false\r\n\r\n");
+              "# entities died? The config limit and permission will be ignored.\r\n" +
+              "Players-Can-Buy-GolemsWolves-If-They-Died: false\r\n");
           break;
         case 15:
           MigratorUtils.addNewLines(file, "\r\n# Should players get no fall damage?\r\n" +
@@ -247,6 +247,14 @@ public class LanguageMigrator {
               "    # How many amount will be added to the base amount\r\n" +
               "    # Set to 0 to disable" +
               "    Increase-Amount: 5\r\n");
+          MigratorUtils.addNewLines(file, "\r\n" +
+              "# Zombie glow to make it visible to players.\r\n" +
+              "Glowing-Status:\r\n" +
+              "  # From which wave should the glowing be activated?\r\n" +
+              "  Starting-Wave: 6\r\n\r\n" +
+              "  # How many zombies should the glow be activated from?\r\n" +
+              "  # Set to 0 to disable\r\n" +
+              "  Zombies-Left: 0\r\n");
           break;
         default:
           break;

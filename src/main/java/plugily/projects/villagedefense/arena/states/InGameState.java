@@ -43,15 +43,33 @@ public class InGameState implements ArenaStateHandler {
   public void handleCall(Arena arena) {
     bossBarUpdate(arena);
     arena.getEnemySpawnManager().spawnGlitchCheck();
+
     if(arena.getVillagers().isEmpty() || arena.getPlayersLeft().isEmpty() && arena.getArenaState() != ArenaState.ENDING) {
       ArenaManager.stopGame(false, arena);
       return;
     }
+
     if(arena.isFighting()) {
-      if(arena.getZombiesLeft() <= 0) {
+      int zombiesLeft = arena.getZombiesLeft();
+
+      if(zombiesLeft <= 0) {
         arena.setFighting(false);
         ArenaManager.endWave(arena);
+      } else {
+        int zombiesLeftFrom = plugin.getConfig().getInt("Glowing-Status.Zombies-Left");
+        int startingWave;
+
+        if (zombiesLeftFrom > 0 && zombiesLeft <= zombiesLeftFrom
+            && (startingWave = plugin.getConfig().getInt("Glowing-Status.Starting-Wave")) > 0
+            && arena.getWave() >= startingWave) {
+          for (org.bukkit.entity.Creature remaining : arena.getEnemies()) {
+            if (!remaining.isGlowing()) { // To avoid setting glowing property every time
+              remaining.setGlowing(true);
+            }
+          }
+        }
       }
+
       if(arena.getOption(ArenaOption.ZOMBIES_TO_SPAWN) > 0) {
         arena.getEnemySpawnManager().spawnEnemies();
         arena.setTimer(500);
