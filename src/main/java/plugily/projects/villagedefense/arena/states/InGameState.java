@@ -18,6 +18,7 @@
 
 package plugily.projects.villagedefense.arena.states;
 
+import plugily.projects.commonsbox.minecraft.compat.ServerVersion;
 import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.arena.Arena;
 import plugily.projects.villagedefense.arena.ArenaManager;
@@ -55,7 +56,7 @@ public class InGameState implements ArenaStateHandler {
       if(zombiesLeft <= 0) {
         arena.setFighting(false);
         ArenaManager.endWave(arena);
-      } else {
+      } else if(ServerVersion.Version.isCurrentEqualOrHigher(ServerVersion.Version.v1_9_R1)) {
         int zombiesLeftFrom = plugin.getConfig().getInt("Glowing-Status.Zombies-Left");
         int startingWave;
 

@@ -9,7 +9,7 @@ Kit-Menu:
   lore:
     - "&7Right-click to select in-game kit"
   material-name: NETHER_STAR
-  slot: 0
+  slot: 5
   # stage can be: 'lobby' or 'spectator'
   stage: lobby
 
@@ -18,7 +18,7 @@ Leave-Lobby:
   lore:
     - "&7Right-click to leave to the lobby"
   material-name: BED
-  slot: 8
+  slot: 6
   stage: lobby
 
 Leave-Spectator:
@@ -34,7 +34,7 @@ Player-List:
   lore:
     - "&7Right-click to see alive players list"
   material-name: COMPASS
-  slot: 0
+  slot: 1
   stage: spectator
 
 Spectator-Options:
