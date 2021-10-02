@@ -18,6 +18,10 @@
 
 package plugily.projects.villagedefense.arena.managers;
 
+import java.util.List;
+import java.util.function.Consumer;
+import java.util.logging.Level;
+import java.util.stream.Collectors;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -28,6 +32,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.entity.Wolf;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.jetbrains.annotations.NotNull;
 import plugily.projects.commonsbox.minecraft.configuration.ConfigUtils;
 import plugily.projects.commonsbox.minecraft.item.ItemUtils;
 import plugily.projects.commonsbox.minecraft.misc.stuff.ComplementAccessor;
@@ -45,10 +50,6 @@ import plugily.projects.villagedefense.utils.Debugger;
 import plugily.projects.villagedefense.utils.Utils;
 import plugily.projects.villagedefense.utils.constants.Constants;
 
-import java.util.List;
-import java.util.logging.Level;
-import java.util.stream.Collectors;
-
 /**
  * Created by Tom on 16/08/2014.
  */
@@ -59,19 +60,32 @@ public class ShopManager {
 
   private final Main plugin;
   private final FileConfiguration config;
-  private FastInv gui;
   private final Arena arena;
+  private FastInv gui;
+  private Consumer<Player> openMenuConsumer;
 
   public ShopManager(Arena arena) {
-    plugin = arena.getPlugin();
-    config = ConfigUtils.getConfig(plugin, Constants.Files.ARENAS.getName());
+    this.plugin = arena.getPlugin();
+    this.config = ConfigUtils.getConfig(plugin, Constants.Files.ARENAS.getName());
     this.arena = arena;
+
     FileConfiguration languageConfig = ConfigUtils.getConfig(plugin, Constants.Files.LANGUAGE.getName());
-    defaultGolemItemName = languageConfig.getString("In-Game.Messages.Shop-Messages.Golem-Item-Name");
-    defaultWolfItemName = languageConfig.getString("In-Game.Messages.Shop-Messages.Wolf-Item-Name");
-    if(config.isSet("instances." + arena.getId() + ".shop")) {
+    this.defaultGolemItemName = languageConfig.getString("In-Game.Messages.Shop-Messages.Golem-Item-Name");
+    this.defaultWolfItemName = languageConfig.getString("In-Game.Messages.Shop-Messages.Wolf-Item-Name");
+
+    if (config.isSet("instances." + arena.getId() + ".shop")) {
       registerShop();
     }
+    openMenuConsumer = player -> {
+      if (ArenaRegistry.getArena(player) == null) {
+        return;
+      }
+      if (gui == null) {
+        player.sendMessage(plugin.getChatManager().colorMessage(Messages.SHOP_MESSAGES_NO_SHOP_DEFINED));
+        return;
+      }
+      gui.open(player);
+    };
   }
 
   public FastInv getShop() {
@@ -80,6 +94,10 @@ public class ShopManager {
 
   public void setShop(FastInv gui) {
     this.gui = gui;
+  }
+
+  public void setOpenMenuConsumer(@NotNull Consumer<Player> openMenuConsumer) {
+    this.openMenuConsumer = openMenuConsumer;
   }
 
   /**
@@ -101,36 +119,28 @@ public class ShopManager {
   }
 
   public void openShop(Player player) {
-    Arena arena = ArenaRegistry.getArena(player);
-    if(arena == null) {
-      return;
-    }
-    if(gui == null) {
-      player.sendMessage(plugin.getChatManager().colorMessage(Messages.SHOP_MESSAGES_NO_SHOP_DEFINED));
-      return;
-    }
-    gui.open(player);
+    openMenuConsumer.accept(player);
   }
 
   private void registerShop() {
-    if(!validateShop()) {
+    if (!validateShop()) {
       return;
     }
     ItemStack[] contents = ((Chest) LocationSerializer.getLocation(config.getString("instances." + arena.getId() + ".shop"))
         .getBlock().getState()).getInventory().getContents();
     gui = new FastInv(Utils.serializeInt(contents.length), plugin.getChatManager().colorMessage(Messages.SHOP_MESSAGES_SHOP_GUI_NAME));
-    for(int slot = 0; slot < contents.length; slot++) {
+    for (int slot = 0; slot < contents.length; slot++) {
       ItemStack itemStack = contents[slot];
-      if(itemStack == null || itemStack.getType() == Material.REDSTONE_BLOCK) {
+      if (itemStack == null || itemStack.getType() == Material.REDSTONE_BLOCK) {
         continue;
       }
 
       String costString = "";
       ItemMeta meta = itemStack.getItemMeta();
       //seek for item price
-      if(meta != null && meta.hasLore()) {
-        for(String s : ComplementAccessor.getComplement().getLore(meta)) {
-          if(s.contains(plugin.getChatManager().colorMessage(Messages.SHOP_MESSAGES_CURRENCY_IN_SHOP)) || s.contains("orbs")) {
+      if (meta != null && meta.hasLore()) {
+        for (String s : ComplementAccessor.getComplement().getLore(meta)) {
+          if (s.contains(plugin.getChatManager().colorMessage(Messages.SHOP_MESSAGES_CURRENCY_IN_SHOP)) || s.contains("orbs")) {
             costString = ChatColor.stripColor(s).replaceAll("&[0-9a-zA-Z]", "").replaceAll("[^0-9]", "");
             break;
           }
@@ -140,7 +150,7 @@ public class ShopManager {
       int cost;
       try {
         cost = Integer.parseInt(costString);
-      } catch(NumberFormatException e) {
+      } catch (NumberFormatException e) {
         Debugger.debug(Level.WARNING, "No price set for shop item in arena {0} skipping item!", arena.getId());
         continue;
       }
@@ -148,40 +158,40 @@ public class ShopManager {
       gui.setItem(slot, itemStack, e -> {
         Player player = (Player) e.getWhoClicked();
 
-        if(!arena.getPlayers().contains(player)) {
+        if (!arena.getPlayers().contains(player)) {
           return;
         }
 
         User user = plugin.getUserManager().getUser(player);
         int orbs = user.getStat(StatsStorage.StatisticType.ORBS);
 
-        if(cost > orbs) {
+        if (cost > orbs) {
           player.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage(Messages.SHOP_MESSAGES_NOT_ENOUGH_ORBS));
           return;
         }
 
-        if(ItemUtils.isItemStackNamed(itemStack)) {
+        if (ItemUtils.isItemStackNamed(itemStack)) {
           String name = ComplementAccessor.getComplement().getDisplayName(itemStack.getItemMeta());
           int spawnedAmount = 0;
 
-          if(name.contains(plugin.getChatManager().colorMessage(Messages.SHOP_MESSAGES_GOLEM_ITEM_NAME))
+          if (name.contains(plugin.getChatManager().colorMessage(Messages.SHOP_MESSAGES_GOLEM_ITEM_NAME))
               || name.contains(defaultGolemItemName)) {
             List<IronGolem> golems = arena.getIronGolems();
 
-            if(plugin.getConfigPreferences().getOption(Option.CAN_BUY_GOLEMSWOLVES_IF_THEY_DIED)) {
+            if (plugin.getConfigPreferences().getOption(Option.CAN_BUY_GOLEMSWOLVES_IF_THEY_DIED)) {
               golems = golems.stream().filter(IronGolem::isDead).collect(Collectors.toList());
             }
 
             String spawnedName = plugin.getChatManager().colorMessage(Messages.SPAWNED_GOLEM_NAME).replace("%player%", player.getName());
 
-            for(IronGolem golem : golems) {
-              if(spawnedName.equals(golem.getCustomName())) {
+            for (IronGolem golem : golems) {
+              if (spawnedName.equals(golem.getCustomName())) {
                 spawnedAmount++;
               }
             }
 
             int spawnLimit = plugin.getConfig().getInt("Golems-Spawn-Limit", 15);
-            if(spawnedAmount >= spawnLimit) {
+            if (spawnedAmount >= spawnLimit) {
               player.sendMessage(plugin.getChatManager().colorMessage(Messages.SHOP_MESSAGES_MOB_LIMIT_REACHED)
                   .replace("%amount%", Integer.toString(spawnLimit)));
               return;
@@ -194,24 +204,24 @@ public class ShopManager {
             return;
           }
 
-          if(name.contains(plugin.getChatManager().colorMessage(Messages.SHOP_MESSAGES_WOLF_ITEM_NAME))
+          if (name.contains(plugin.getChatManager().colorMessage(Messages.SHOP_MESSAGES_WOLF_ITEM_NAME))
               || name.contains(defaultWolfItemName)) {
             List<Wolf> wolves = arena.getWolves();
 
-            if(plugin.getConfigPreferences().getOption(Option.CAN_BUY_GOLEMSWOLVES_IF_THEY_DIED)) {
+            if (plugin.getConfigPreferences().getOption(Option.CAN_BUY_GOLEMSWOLVES_IF_THEY_DIED)) {
               wolves = wolves.stream().filter(Wolf::isDead).collect(Collectors.toList());
             }
 
             String spawnedName = plugin.getChatManager().colorMessage(Messages.SPAWNED_WOLF_NAME).replace("%player%", player.getName());
 
-            for(Wolf wolf : wolves) {
-              if(spawnedName.equals(wolf.getCustomName())) {
+            for (Wolf wolf : wolves) {
+              if (spawnedName.equals(wolf.getCustomName())) {
                 spawnedAmount++;
               }
             }
 
             int spawnLimit = plugin.getConfig().getInt("Wolves-Spawn-Limit", 20);
-            if(spawnedAmount >= spawnLimit) {
+            if (spawnedAmount >= spawnLimit) {
               player.sendMessage(plugin.getChatManager().colorMessage(Messages.SHOP_MESSAGES_MOB_LIMIT_REACHED)
                   .replace("%amount%", Integer.toString(spawnLimit)));
               return;
@@ -228,8 +238,8 @@ public class ShopManager {
         ItemStack stack = itemStack.clone();
         ItemMeta itemMeta = stack.getItemMeta();
 
-        if(itemMeta != null) {
-          if(itemMeta.hasLore()) {
+        if (itemMeta != null) {
+          if (itemMeta.hasLore()) {
             ComplementAccessor.getComplement().setLore(itemMeta, ComplementAccessor.getComplement().getLore(itemMeta).stream().filter(lore ->
                     !lore.contains(plugin.getChatManager().colorMessage(Messages.SHOP_MESSAGES_CURRENCY_IN_SHOP)))
                 .collect(Collectors.toList()));
@@ -247,13 +257,13 @@ public class ShopManager {
 
   private boolean validateShop() {
     String shop = config.getString("instances." + arena.getId() + ".shop", "");
-    if(shop.isEmpty() || !shop.contains(",")) {
+    if (!shop.contains(",")) {
       Debugger.debug(Level.WARNING, "There is no shop for arena {0}! Aborting registering shop!", arena.getId());
       return false;
     }
     Location location = LocationSerializer.getLocation(shop);
     //todo are these still revelant checks
-    if(location.getWorld() == null || !(location.getBlock().getState() instanceof Chest)) {
+    if (location.getWorld() == null || !(location.getBlock().getState() instanceof Chest)) {
       Debugger.debug(Level.WARNING, "Shop failed to load, invalid location for location {0}", LocationSerializer.locationToString(location));
       return false;
     }
