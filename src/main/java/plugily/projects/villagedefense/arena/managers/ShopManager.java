@@ -65,13 +65,13 @@ public class ShopManager {
   private Consumer<Player> openMenuConsumer;
 
   public ShopManager(Arena arena) {
-    this.plugin = arena.getPlugin();
-    this.config = ConfigUtils.getConfig(plugin, Constants.Files.ARENAS.getName());
+    plugin = arena.getPlugin();
+    config = ConfigUtils.getConfig(plugin, Constants.Files.ARENAS.getName());
     this.arena = arena;
 
     FileConfiguration languageConfig = ConfigUtils.getConfig(plugin, Constants.Files.LANGUAGE.getName());
-    this.defaultGolemItemName = languageConfig.getString("In-Game.Messages.Shop-Messages.Golem-Item-Name");
-    this.defaultWolfItemName = languageConfig.getString("In-Game.Messages.Shop-Messages.Wolf-Item-Name");
+    defaultGolemItemName = languageConfig.getString("In-Game.Messages.Shop-Messages.Golem-Item-Name");
+    defaultWolfItemName = languageConfig.getString("In-Game.Messages.Shop-Messages.Wolf-Item-Name");
 
     if (config.isSet("instances." + arena.getId() + ".shop")) {
       registerShop();
@@ -119,7 +119,9 @@ public class ShopManager {
   }
 
   public void openShop(Player player) {
-    openMenuConsumer.accept(player);
+    if (openMenuConsumer != null) {
+      openMenuConsumer.accept(player);
+    }
   }
 
   private void registerShop() {
