@@ -130,8 +130,8 @@ public class FileStats implements UserDatabase, Runnable {
   @Override
   public void run() {
     if (updateRequired.get()) {
-      ConfigUtils.saveConfig(plugin, config, Constants.Files.STATS.getName());
       updateRequired.set(false);
+      Bukkit.getScheduler().runTask(plugin, () -> ConfigUtils.saveConfig(plugin, config, Constants.Files.STATS.getName()));
     }
   }
 }
