@@ -57,13 +57,13 @@ public class FileStats implements UserDatabase, Runnable {
   @Override
   public void saveStatistic(User user, StatsStorage.StatisticType stat) {
     config.set(user.getUniqueId().toString() + "." + stat.getName(), user.getStat(stat));
-    updateRequired.set(true);
+    updateRequired.lazySet(true);
   }
 
   @Override
   public void saveAllStatistic(User user) {
     updateStats(user);
-    updateRequired.set(true);
+    updateRequired.lazySet(true);
   }
 
   @Override
