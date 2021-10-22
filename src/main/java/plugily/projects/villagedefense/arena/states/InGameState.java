@@ -111,7 +111,8 @@ public class InGameState implements ArenaStateHandler {
   
   private String translatePlaceholders(Arena arena, String bar) {
 	bar = bar.replace("%wave%", Integer.toString(arena.getWave()));
-  	bar = bar.replace("%zombies%", Integer.toString(arena.getZombiesLeft()));
+  	int zombiesLeft = arena.getZombiesLeft();
+  	bar = bar.replace("%zombies%", zombiesLeft == 0 ? "0" : Integer.toString(zombiesLeft));
   	bar = bar.replace("%mapname%", arena.getMapName());
   	bar = bar.replaceAll("%villagers%", Integer.toString(arena.getVillagers().size()));
   	return bar;
