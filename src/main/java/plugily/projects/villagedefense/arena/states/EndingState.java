@@ -50,7 +50,7 @@ public class EndingState implements ArenaStateHandler {
 
     if(timer <= 0) {
       if(arena.getGameBar() != null) {
-        arena.getGameBar().setTitle(plugin.getChatManager().colorMessage(Messages.BOSSBAR_GAME_ENDED));
+        arena.getGameBar().setTitle(plugin.getChatManager().colorMessage(Messages.BOSSBAR_GAME_ENDED).replace("%mapname%", arena.getMapName()));
       }
 
       String teleportedToLobby = plugin.getChatManager().getPrefix() + Messages.COMMANDS_TELEPORTED_TO_THE_LOBBY.getMessage();

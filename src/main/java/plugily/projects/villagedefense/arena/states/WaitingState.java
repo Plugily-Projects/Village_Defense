@@ -49,7 +49,7 @@ public class WaitingState implements ArenaStateHandler {
       }
     } else {
       if(arena.getGameBar() != null) {
-        arena.getGameBar().setTitle(plugin.getChatManager().colorMessage(Messages.BOSSBAR_WAITING_FOR_PLAYERS));
+        arena.getGameBar().setTitle(plugin.getChatManager().colorMessage(Messages.BOSSBAR_WAITING_FOR_PLAYERS).replace("%mapname%", arena.getMapName()));
       }
       plugin.getChatManager().broadcast(arena, Messages.LOBBY_MESSAGES_ENOUGH_PLAYERS_TO_START);
       arena.setArenaState(ArenaState.STARTING);
