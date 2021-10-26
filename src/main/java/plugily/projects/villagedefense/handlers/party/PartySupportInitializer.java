@@ -18,8 +18,8 @@
 
 package plugily.projects.villagedefense.handlers.party;
 
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+
 import plugily.projects.villagedefense.ConfigPreferences;
 import plugily.projects.villagedefense.Main;
 
@@ -28,21 +28,24 @@ import plugily.projects.villagedefense.Main;
  * <p>
  * Created at 09.02.2020
  */
-public class PartySupportInitializer {
+public final class PartySupportInitializer {
 
   public PartyHandler initialize(Main plugin) {
-    PartyHandler partyHandler;
     if(!plugin.getConfigPreferences().getOption(ConfigPreferences.Option.DISABLE_PARTIES)) {
-      if(Bukkit.getServer().getPluginManager().getPlugin("Parties") != null) {
+      org.bukkit.plugin.PluginManager pm = plugin.getServer().getPluginManager();
+
+      if(pm.isPluginEnabled("Parties")) {
         return new PartiesPartyHandlerImpl();
       }
-      if(Bukkit.getServer().getPluginManager().getPlugin("Spigot-Party-API-PAF") != null) {
+      if(pm.isPluginEnabled("Spigot-Party-API-PAF")) {
         return new PAFBPartyHandlerImpl();
-      } else if(Bukkit.getServer().getPluginManager().getPlugin("PartyAndFriends") != null) {
+      }
+      if(pm.isPluginEnabled("PartyAndFriends")) {
         return new PAFSPartyHandlerImpl();
       }
     }
-    partyHandler = new PartyHandler() {
+
+    return new PartyHandler() {
       @Override
       public GameParty getParty(Player player) {
         return null;
@@ -58,7 +61,6 @@ public class PartySupportInitializer {
         return PartyPluginType.NONE;
       }
     };
-    return partyHandler;
   }
 
 }
