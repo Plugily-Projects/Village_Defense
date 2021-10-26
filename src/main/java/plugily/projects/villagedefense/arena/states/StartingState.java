@@ -112,12 +112,12 @@ public class StartingState implements ArenaStateHandler {
   }
   
   private String translatePlaceholders(Arena arena, String bar) {
-	bar = bar.replace("%time%", Integer.toString(arena.getTimer()));
-	bar = bar.replace("%players%", Integer.toString(arena.getPlayers().size()));
-	bar = bar.replace("%min_players%", Integer.toString(arena.getMinimumPlayers()));
-	bar = bar.replaceAll("%max_players%", Integer.toString(arena.getMaximumPlayers()));
-	bar = bar.replace("%mapname%", arena.getMapName());	  	
-	return bar;
+    bar = bar.replace("%time%", Integer.toString(arena.getTimer()));
+    bar = bar.replace("%players%", Integer.toString(arena.getPlayers().size()));
+    bar = bar.replace("%min_players%", Integer.toString(arena.getMinimumPlayers()));
+    bar = bar.replace("%max_players%", Integer.toString(arena.getMaximumPlayers()));
+    bar = bar.replace("%mapname%", arena.getMapName());
+    return bar;
   }
 
 }

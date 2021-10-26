@@ -94,8 +94,8 @@ public class InGameState implements ArenaStateHandler {
 
   private void bossBarUpdate(Arena arena) {
     if(arena.getOption(ArenaOption.BAR_TOGGLE_VALUE) > 5) {
-      if(arena.getGameBar() != null) {	
-        arena.getGameBar().setTitle(translatePlaceholders(arena, plugin.getChatManager().colorMessage(Messages.BOSSBAR_IN_GAME_WAVE)));       
+      if(arena.getGameBar() != null) {
+        arena.getGameBar().setTitle(translatePlaceholders(arena, plugin.getChatManager().colorMessage(Messages.BOSSBAR_IN_GAME_WAVE))); 
       }
       arena.addOptionValue(ArenaOption.BAR_TOGGLE_VALUE, 1);
       if(arena.getOption(ArenaOption.BAR_TOGGLE_VALUE) > 10) {
@@ -110,12 +110,11 @@ public class InGameState implements ArenaStateHandler {
   }
   
   private String translatePlaceholders(Arena arena, String bar) {
-	bar = bar.replace("%wave%", Integer.toString(arena.getWave()));
-  	int zombiesLeft = arena.getZombiesLeft();
-  	bar = bar.replace("%zombies%", zombiesLeft == 0 ? "0" : Integer.toString(zombiesLeft));
-  	bar = bar.replace("%mapname%", arena.getMapName());
-  	bar = bar.replaceAll("%villagers%", Integer.toString(arena.getVillagers().size()));
-  	return bar;
+    bar = bar.replace("%wave%", Integer.toString(arena.getWave()));
+    bar = bar.replace("%zombies%", Integer.toString(arena.getZombiesLeft()));
+    bar = bar.replace("%mapname%", arena.getMapName());
+    bar = bar.replace("%villagers%", Integer.toString(arena.getVillagers().size()));
+    return bar;
   }
   
 }
