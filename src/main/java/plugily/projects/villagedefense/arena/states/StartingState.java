@@ -49,7 +49,7 @@ public class StartingState implements ArenaStateHandler {
     int timer = arena.getTimer();
 
     if(arena.getGameBar() != null) {
-      arena.getGameBar().setTitle(plugin.getChatManager().colorMessage(Messages.BOSSBAR_STARTING_IN).replace("%time%", Integer.toString(timer)));
+      arena.getGameBar().setTitle(translatePlaceholders(arena, plugin.getChatManager().colorMessage(Messages.BOSSBAR_STARTING_IN)));
       arena.getGameBar().setProgress(timer / startWaiting);
     }
 
@@ -64,7 +64,7 @@ public class StartingState implements ArenaStateHandler {
 
     if(!arena.isForceStart() && arena.getPlayers().size() < (minPlayers = arena.getMinimumPlayers())) {
       if(arena.getGameBar() != null) {
-        arena.getGameBar().setTitle(plugin.getChatManager().colorMessage(Messages.BOSSBAR_WAITING_FOR_PLAYERS));
+        arena.getGameBar().setTitle(translatePlaceholders(arena, plugin.getChatManager().colorMessage(Messages.BOSSBAR_WAITING_FOR_PLAYERS)));
         arena.getGameBar().setProgress(1.0);
       }
       plugin.getChatManager().broadcastMessage(arena, plugin.getChatManager().formatMessage(arena, plugin.getChatManager().colorMessage(Messages.LOBBY_MESSAGES_WAITING_FOR_PLAYERS), minPlayers));
@@ -109,6 +109,15 @@ public class StartingState implements ArenaStateHandler {
       arena.setForceStart(false);
     }
     arena.setTimer(arena.getTimer() - 1);
+  }
+  
+  private String translatePlaceholders(Arena arena, String bar) {
+    bar = bar.replace("%time%", Integer.toString(arena.getTimer()));
+    bar = bar.replace("%players%", Integer.toString(arena.getPlayers().size()));
+    bar = bar.replace("%min_players%", Integer.toString(arena.getMinimumPlayers()));
+    bar = bar.replace("%max_players%", Integer.toString(arena.getMaximumPlayers()));
+    bar = bar.replace("%mapname%", arena.getMapName());
+    return bar;
   }
 
 }
