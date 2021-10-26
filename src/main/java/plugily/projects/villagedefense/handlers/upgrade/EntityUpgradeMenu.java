@@ -213,14 +213,19 @@ public class EntityUpgradeMenu {
   }
 
   private void applyUpgradeEffect(Entity en, Upgrade upgrade, int tier) {
-    VersionUtils.sendParticles("FIREWORKS_SPARK", null, en.getLocation().add(0, 1, 0), 30, 0.7, 0.7, 0.7);
-    VersionUtils.sendParticles("HEART", (Set<Player>) null, en.getLocation().add(0, 1.6, 0), 5);
-    Utils.playSound(en.getLocation(), "ENTITY_PLAYER_LEVELUP", "ENTITY_PLAYER_LEVELUP");
+    org.bukkit.Location entityLocation = en.getLocation();
+
+    VersionUtils.sendParticles("FIREWORKS_SPARK", null, entityLocation.add(0, 1, 0), 30, 0.7, 0.7, 0.7);
+    VersionUtils.sendParticles("HEART", (Set<Player>) null, entityLocation.add(0, 1.6, 0), 5);
+    Utils.playSound(entityLocation, "ENTITY_PLAYER_LEVELUP", "ENTITY_PLAYER_LEVELUP");
+
     int[] baseValues = new int[]{getTier(en, getUpgrade("Health")), getTier(en, getUpgrade("Speed")), getTier(en, getUpgrade("Damage"))};
+
     if(areAllEqualOrHigher(baseValues) && getMinValue(baseValues) == 4) {
       //final mode! rage!!!
       VersionUtils.setGlowing(en, true);
     }
+
     switch(upgrade.getId()) {
       case "Damage":
         if(en.getType() == EntityType.WOLF) {
@@ -229,8 +234,10 @@ public class EntityUpgradeMenu {
         //attribute damage doesn't exist for golems
         break;
       case "Health":
-        VersionUtils.setMaxHealth((LivingEntity) en, 100.0 + (100.0 * (tier / 2.0)));
-        ((LivingEntity) en).setHealth(VersionUtils.getMaxHealth((LivingEntity) en));
+        LivingEntity living = (LivingEntity) en;
+
+        VersionUtils.setMaxHealth(living, 100.0 + (100.0 * (tier / 2.0)));
+        living.setHealth(VersionUtils.getMaxHealth(living));
         break;
       case "Speed":
         CreatureUtils.getCreatureInitializer().applySpeedModifier((LivingEntity) en, 0.25 + (0.25 * (tier / 5.0)));

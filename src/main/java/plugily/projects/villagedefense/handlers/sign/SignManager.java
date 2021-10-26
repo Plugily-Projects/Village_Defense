@@ -119,7 +119,7 @@ public class SignManager implements Listener {
   @EventHandler
   public void onSignDestroy(BlockBreakEvent e) {
     ArenaSign arenaSign = getArenaSignByBlock(e.getBlock());
-    if(!e.getPlayer().hasPermission("villagedefense.admin.sign.break") || arenaSign == null) {
+    if(arenaSign == null || !e.getPlayer().hasPermission("villagedefense.admin.sign.break")) {
       return;
     }
     arenaSigns.remove(arenaSign);
@@ -147,9 +147,14 @@ public class SignManager implements Listener {
 
   @EventHandler(priority = EventPriority.HIGH)
   public void onJoinAttempt(CBPlayerInteractEvent e) {
+    if (e.getAction() != Action.RIGHT_CLICK_BLOCK || !(e.getClickedBlock().getState() instanceof Sign))
+      return;
+
     ArenaSign arenaSign = getArenaSignByBlock(e.getClickedBlock());
-    if(e.getAction() == Action.RIGHT_CLICK_BLOCK && e.getClickedBlock().getState() instanceof Sign && arenaSign != null) {
+
+    if(arenaSign != null) {
       Arena arena = arenaSign.getArena();
+
       if(arena != null) {
         ArenaManager.joinAttempt(e.getPlayer(), arena);
       }
@@ -185,12 +190,14 @@ public class SignManager implements Listener {
 
     for(String path : section.getKeys(false)) {
       for(String sign : section.getStringList(path + ".signs")) {
-        Location loc = LocationSerializer.getLocation(sign);
-        if(loc.getBlock().getState() instanceof Sign) {
-          arenaSigns.add(new ArenaSign((Sign) loc.getBlock().getState(), ArenaRegistry.getArena(path)));
+        org.bukkit.block.BlockState state = LocationSerializer.getLocation(sign).getBlock().getState();
+
+        if(state instanceof Sign) {
+          arenaSigns.add(new ArenaSign((Sign) state, ArenaRegistry.getArena(path)));
           continue;
         }
-        Debugger.debug(Level.WARNING, "Block at location {0} for arena {1} is not a sign!", LocationSerializer.locationToString(loc), path);
+
+        Debugger.debug(Level.WARNING, "Block at location {0} for arena {1} is not a sign!", sign, path);
       }
     }
     Debugger.debug("Sign load event finished took {0}ms", System.currentTimeMillis() - start);
