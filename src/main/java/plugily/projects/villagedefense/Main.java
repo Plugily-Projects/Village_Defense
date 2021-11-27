@@ -203,19 +203,12 @@ public class Main extends JavaPlugin {
 
     ScoreboardLib.setPluginInstance(this);
     registry = new ArgumentsRegistry(this);
-    new ArenaEvents(this);
-    new SpectatorEvents(this);
-    new QuitEvent(this);
-    new JoinEvent(this);
-    new ChatEvents(this);
     setupPluginMetrics();
     if(Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
       Debugger.debug("Hooking into PlaceholderAPI");
       new PlaceholderManager().register();
     }
-    new Events(this);
-    new LobbyEvents(this);
-    new SpectatorItemEvents(this);
+
     powerupRegistry = new PowerupRegistry(this);
     rewardsHandler = new RewardsFactory(this);
     holidayManager = new HolidayManager(this);
@@ -249,7 +242,17 @@ public class Main extends JavaPlugin {
       UpgradeBuilder.init(this);
       new EntityUpgradeMenu(this);
     }
+
     userManager = new UserManager(this);
+
+    new ArenaEvents(this);
+    new SpectatorEvents(this);
+    new QuitEvent(this);
+    new JoinEvent(this);
+    new ChatEvents(this);
+    new Events(this);
+    new LobbyEvents(this);
+    new SpectatorItemEvents(this);
     new DoorBreakListener(this);
 
     signManager = new SignManager(this);
