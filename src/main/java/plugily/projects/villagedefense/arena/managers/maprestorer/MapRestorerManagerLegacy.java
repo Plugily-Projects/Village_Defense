@@ -26,10 +26,9 @@ import org.bukkit.TreeSpecies;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.material.Door;
-import plugily.projects.commonsbox.minecraft.compat.ServerVersion;
-import plugily.projects.commonsbox.minecraft.compat.xseries.XMaterial;
+import plugily.projects.minigamesbox.classic.utils.version.ServerVersion;
+import plugily.projects.minigamesbox.classic.utils.version.xseries.XMaterial;
 import plugily.projects.villagedefense.arena.Arena;
-import plugily.projects.villagedefense.utils.Debugger;
 import plugily.projects.villagedefense.utils.Utils;
 
 /**
@@ -74,12 +73,12 @@ public class MapRestorerManagerLegacy extends MapRestorerManager {
           restoreBottomHalfDoorPart(block, doorData);
           i++;
         } catch(Exception ex) {
-          Debugger.debug(Level.WARNING, "Door has failed to load for arena {0} message {1} type {2} skipping!", arena.getId(), ex.getMessage(), ex.getCause());
+          arena.getPlugin().getDebugger().debug(Level.WARNING, "Door has failed to load for arena {0} message {1} type {2} skipping!", arena.getId(), ex.getMessage(), ex.getCause());
         }
       }
     }
     if(i != doorBlocks.size()) {
-      Debugger.debug(Level.WARNING, "Failed to load doors for {0}! Expected {1} got {2}", arena.getId(), doorBlocks.size(), i);
+      arena.getPlugin().getDebugger().debug(Level.WARNING, "Failed to load doors for {0}! Expected {1} got {2}", arena.getId(), doorBlocks.size(), i);
     }
   }
 
@@ -89,11 +88,11 @@ public class MapRestorerManagerLegacy extends MapRestorerManager {
 
     Door doorBlockData = null;
     try {
-      doorBlockData = new Door(TreeSpecies.GENERIC, Utils.getFacingByByte((byte) 8));
+      doorBlockData = new Door(TreeSpecies.GENERIC, arena.getPlugin().getBukkitHelper().getFacingByByte((byte) 8));
     } catch (NoSuchMethodError e) {
       try {
         doorBlockData = Door.class.getDeclaredConstructor(Material.class, byte.class)
-            .newInstance(XMaterial.OAK_DOOR, Utils.getFacingByByte((byte) 8));
+            .newInstance(XMaterial.OAK_DOOR, arena.getPlugin().getBukkitHelper().getFacingByByte((byte) 8));
       } catch (Exception ex) {
         ex.printStackTrace();
       }
@@ -117,11 +116,11 @@ public class MapRestorerManagerLegacy extends MapRestorerManager {
 
     Door doorBlockData = null;
     try {
-      doorBlockData = new Door(TreeSpecies.GENERIC, Utils.getFacingByByte(doorData));
+      doorBlockData = new Door(TreeSpecies.GENERIC, arena.getPlugin().getBukkitHelper().getFacingByByte(doorData));
     } catch (NoSuchMethodError e) {
       try {
         doorBlockData = Door.class.getDeclaredConstructor(Material.class, byte.class)
-            .newInstance(XMaterial.OAK_DOOR.parseMaterial(), Utils.getFacingByByte(doorData));
+            .newInstance(XMaterial.OAK_DOOR.parseMaterial(), arena.getPlugin().getBukkitHelper().getFacingByByte(doorData));
       } catch (Exception ex) {
         ex.printStackTrace();
       }

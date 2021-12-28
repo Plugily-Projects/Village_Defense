@@ -18,20 +18,18 @@
 
 package plugily.projects.villagedefense.kits.level;
 
-import java.util.List;
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionType;
-import plugily.projects.commonsbox.minecraft.compat.xseries.XMaterial;
-import plugily.projects.commonsbox.minecraft.helper.ArmorHelper;
-import plugily.projects.commonsbox.minecraft.helper.WeaponHelper;
-import plugily.projects.villagedefense.api.StatsStorage;
-import plugily.projects.villagedefense.handlers.language.Messages;
-import plugily.projects.villagedefense.kits.KitRegistry;
-import plugily.projects.villagedefense.kits.basekits.LevelKit;
-import plugily.projects.villagedefense.utils.Utils;
+import plugily.projects.minigamesbox.classic.kits.basekits.LevelKit;
+import plugily.projects.minigamesbox.classic.utils.helper.ArmorHelper;
+import plugily.projects.minigamesbox.classic.utils.helper.WeaponHelper;
+import plugily.projects.minigamesbox.classic.utils.version.VersionUtils;
+import plugily.projects.minigamesbox.classic.utils.version.xseries.XMaterial;
+
+import java.util.List;
 
 /**
  * Created by Tom on 18/08/2014.
@@ -39,16 +37,16 @@ import plugily.projects.villagedefense.utils.Utils;
 public class HealerKit extends LevelKit {
 
   public HealerKit() {
-    setName(getPlugin().getChatManager().colorMessage(Messages.KITS_HEALER_NAME));
-    List<String> description = Utils.splitString(getPlugin().getChatManager().colorMessage(Messages.KITS_HEALER_DESCRIPTION), 40);
-    setDescription(description.toArray(new String[0]));
+    setName(getPlugin().getChatManager().colorMessage("KIT_CONTENT_HEALER_NAME"));
+    List<String> description = getPlugin().getLanguageManager().getLanguageListFromKey("KIT_CONTENT_HEALER_DESCRIPTION");
+    setDescription(description);
     setLevel(getKitsConfig().getInt("Required-Level.Healer"));
-    KitRegistry.registerKit(this);
+    getPlugin().getKitRegistry().registerKit(this);
   }
 
   @Override
   public boolean isUnlockedByPlayer(Player player) {
-    return getPlugin().getUserManager().getUser(player).getStat(StatsStorage.StatisticType.LEVEL) >= getLevel() || player.hasPermission("villagedefense.kit.healer");
+    return getPlugin().getUserManager().getUser(player).getStat("LEVEL") >= getLevel() || player.hasPermission("villagedefense.kit.healer");
   }
 
   @Override
@@ -56,8 +54,8 @@ public class HealerKit extends LevelKit {
     player.getInventory().addItem(WeaponHelper.getUnBreakingSword(WeaponHelper.ResourceType.WOOD, 10));
     ArmorHelper.setColouredArmor(Color.WHITE, player);
     player.getInventory().addItem(new ItemStack(XMaterial.COOKED_PORKCHOP.parseMaterial(), 8));
-    player.getInventory().addItem(Utils.getPotion(PotionType.INSTANT_HEAL, 2, true));
-    player.getInventory().addItem(Utils.getPotion(PotionType.REGEN, 1, true));
+    player.getInventory().addItem(VersionUtils.getPotion(PotionType.INSTANT_HEAL, 2, true));
+    player.getInventory().addItem(VersionUtils.getPotion(PotionType.REGEN, 1, true));
   }
 
   @Override
@@ -68,10 +66,10 @@ public class HealerKit extends LevelKit {
   @Override
   public void reStock(Player player) {
     for(int i = 0; i < 2; i++) {
-      player.getInventory().addItem(Utils.getPotion(PotionType.INSTANT_HEAL, 2, true));
+      player.getInventory().addItem(VersionUtils.getPotion(PotionType.INSTANT_HEAL, 2, true));
     }
     for(int i = 0; i < 2; i++) {
-      player.getInventory().addItem(Utils.getPotion(PotionType.REGEN, 1, true));
+      player.getInventory().addItem(VersionUtils.getPotion(PotionType.REGEN, 1, true));
     }
   }
 }

@@ -18,7 +18,6 @@
 
 package plugily.projects.villagedefense.kits.premium;
 
-import java.util.List;
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.Material;
@@ -29,16 +28,15 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.inventory.ItemStack;
-import plugily.projects.commonsbox.minecraft.compat.VersionUtils;
-import plugily.projects.commonsbox.minecraft.compat.events.api.CBPlayerInteractEvent;
-import plugily.projects.commonsbox.minecraft.helper.ArmorHelper;
-import plugily.projects.commonsbox.minecraft.helper.WeaponHelper;
-import plugily.projects.villagedefense.handlers.PermissionsManager;
-import plugily.projects.villagedefense.handlers.language.Messages;
-import plugily.projects.villagedefense.kits.KitRegistry;
-import plugily.projects.villagedefense.kits.basekits.PremiumKit;
-import plugily.projects.villagedefense.user.User;
-import plugily.projects.villagedefense.utils.Utils;
+import plugily.projects.minigamesbox.classic.kits.basekits.PremiumKit;
+import plugily.projects.minigamesbox.classic.user.User;
+import plugily.projects.minigamesbox.classic.utils.helper.ArmorHelper;
+import plugily.projects.minigamesbox.classic.utils.helper.WeaponHelper;
+import plugily.projects.minigamesbox.classic.utils.version.VersionUtils;
+import plugily.projects.minigamesbox.classic.utils.version.events.api.CBPlayerInteractEvent;
+
+import java.util.List;
+
 
 /**
  * Created by Tom on 27/08/2014.
@@ -46,16 +44,16 @@ import plugily.projects.villagedefense.utils.Utils;
 public class ShotBowKit extends PremiumKit implements Listener {
 
   public ShotBowKit() {
-    setName(getPlugin().getChatManager().colorMessage(Messages.KITS_SHOT_BOW_NAME));
-    List<String> description = Utils.splitString(getPlugin().getChatManager().colorMessage(Messages.KITS_SHOT_BOW_DESCRIPTION), 40);
-    setDescription(description.toArray(new String[0]));
+    setName(getPlugin().getChatManager().colorMessage("KIT_CONTENT_SHOT_BOW_NAME"));
+    List<String> description = getPlugin().getLanguageManager().getLanguageListFromKey("KIT_CONTENT_SHOT_BOW_DESCRIPTION");
+    setDescription(description);
     getPlugin().getServer().getPluginManager().registerEvents(this, getPlugin());
-    KitRegistry.registerKit(this);
+    getPlugin().getKitRegistry().registerKit(this);
   }
 
   @Override
   public boolean isUnlockedByPlayer(Player player) {
-    return PermissionsManager.isPremium(player) || player.hasPermission("villagedefense.kit.shotbow");
+    return getPlugin().getPermissionsManager().hasPermissionString("KIT_PREMIUM_UNLOCK", player) || player.hasPermission("villagedefense.kit.shotbow");
   }
 
   @Override

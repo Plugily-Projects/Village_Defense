@@ -1,4 +1,4 @@
-# MySQL database configuration, you no need to touch this unless you enabled MySQL support.
+# MySQL database configuration, you don't need to touch this unless you enabled MySQL support.
 # To enable MySQL support go to > config.yml and set 'DatabaseEnabled' to true
 
 # Replace <databasename> with your database
@@ -11,7 +11,7 @@ user: <user>
 password: <password>
 
 # MySQL tablename
-table: playerstats
+table: vd_playerstats
 
 # Maximum life time for HikariCP database.
 # For documentation, see https://github.com/brettwooldridge/HikariCP#frequently-used

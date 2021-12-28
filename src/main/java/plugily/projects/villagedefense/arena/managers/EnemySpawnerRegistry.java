@@ -1,10 +1,5 @@
 package plugily.projects.villagedefense.arena.managers;
 
-import java.util.Collections;
-import java.util.Optional;
-import java.util.Random;
-import java.util.Set;
-import java.util.TreeSet;
 import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.arena.Arena;
 import plugily.projects.villagedefense.arena.managers.spawner.BabyZombieSpawner;
@@ -18,7 +13,12 @@ import plugily.projects.villagedefense.arena.managers.spawner.PlayerBusterSpawne
 import plugily.projects.villagedefense.arena.managers.spawner.SoftHardZombieSpawner;
 import plugily.projects.villagedefense.arena.managers.spawner.VillagerBusterSpawner;
 import plugily.projects.villagedefense.arena.managers.spawner.VillagerSlayerSpawner;
-import plugily.projects.villagedefense.arena.options.ArenaOption;
+
+import java.util.Collections;
+import java.util.Optional;
+import java.util.Random;
+import java.util.Set;
+import java.util.TreeSet;
 
 /**
  * The registry for all {@link EnemySpawner}
@@ -51,16 +51,16 @@ public class EnemySpawnerRegistry {
   public void spawnEnemies(Random random, Arena arena) {
     int spawn = arena.getWave();
     int zombiesLimit = plugin.getConfig().getInt("Zombies-Limit", 75);
-    if (zombiesLimit < spawn) {
+    if(zombiesLimit < spawn) {
       spawn = (int) Math.ceil(zombiesLimit / 2.0);
     }
 
-    arena.addOptionValue(ArenaOption.ZOMBIE_SPAWN_COUNTER, 1);
-    if (arena.getOption(ArenaOption.ZOMBIE_SPAWN_COUNTER) == 20) {
-      arena.setOptionValue(ArenaOption.ZOMBIE_SPAWN_COUNTER, 0);
+    arena.changeArenaOptionBy("ZOMBIE_SPAWN_COUNTER", 1);
+    if(arena.getArenaOption("ZOMBIE_SPAWN_COUNTER") == 20) {
+      arena.setArenaOption("ZOMBIE_SPAWN_COUNTER", 0);
     }
 
-    for (EnemySpawner enemySpawner : enemySpawnerSet) {
+    for(EnemySpawner enemySpawner : enemySpawnerSet) {
       enemySpawner.spawn(random, arena, spawn);
     }
   }

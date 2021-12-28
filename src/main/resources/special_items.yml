@@ -1,59 +1,93 @@
-# Custom in-game lobby items.
-# Probably you will only translate displayname and lore so don't mess with it.
+# Custom special items.
+# You can also add your own special items!
+#
+# Stage: SERVER_JOIN, WAITING_FOR_PLAYERS, ENOUGH_PLAYERS_TO_START, LOBBY, IN_GAME, SPECTATOR, ENDING
 #
 # Please don't modify 'Kit-Menu', 'Leave-Lobby', 'Leave-Spectator', 'Player-List' and 'Spectator-Options', 'Forcestart'
 # nodes as they are hardcoded in code!
-
+#
+# Also see the wiki for further reference!
 Kit-Menu:
+  permission: ""
+  execute:
+    - ""
   displayname: "&b&lKit Menu &7(Right Click)"
   lore:
     - "&7Right-click to select in-game kit"
   material-name: NETHER_STAR
-  slot: 5
-  # stage can be: 'lobby' or 'spectator'
-  stage: lobby
+  slot: 0
+  stage: LOBBY
 
-Leave-Lobby:
+Lobby-Leave:
+  permission: ""
+  execute:
+    - ""
   displayname: "&c&lReturn to Lobby &7(Right Click)"
   lore:
     - "&7Right-click to leave to the lobby"
-  material-name: BED
-  slot: 6
-  stage: lobby
+  material: BED
+  slot: 8
+  stage: LOBBY
 
-Leave-Spectator:
+Spectator-Leave:
+  permission: ""
+  execute:
+    - ""
   displayname: "&c&lLeave the Game &7(Right Click)"
   lore:
     - "&7Right-click to leave to the lobby"
-  material-name: BED
+  material: BED
   slot: 8
-  stage: spectator
+  stage: SPECTATOR
 
 Player-List:
+  permission: ""
+  execute:
+    - ""
   displayname: "&a&lAlive Players &7(Right Click)"
   lore:
     - "&7Right-click to see alive players list"
-  material-name: COMPASS
-  slot: 1
-  stage: spectator
+  material: COMPASS
+  slot: 0
+  stage: SPECTATOR
 
-Spectator-Options:
+Spectator-Settings:
+  permission: ""
+  execute:
+    - ""
   displayname: "&b&lSpectator Settings &7(Right Click)"
   lore:
     - "&7Right-click to adjust spectator settings"
-  material-name: COMPASS
+  material: COMPASS
   slot: 4
-  stage: spectator
+  stage: SPECTATOR
 
 Forcestart:
+  permission: "plugily.projects.forcestart"
+  execute:
+    - ""
   displayname: "&c&lClick to start the game &7(Right Click)"
   lore:
     - "&7You need the following permission for it"
-    - "&7villagedefense.admin.forcestart"
-  material-name: EMERALD
+    - "&7plugily.projects.forcestart"
+  material: EMERALD
   slot: 0
-  stage: lobby
+  stage: ENOUGH_PLAYERS_TO_START
 
+Arena-Selector:
+  permission: ""
+  execute:
+    - ""
+  displayname: "&c&lClick to open the arena selector &7(Right Click)"
+  lore:
+    - "&7Right-click to see all arenas"
+  material: EMERALD
+  slot: 0
+  stage: SERVER_JOIN
 
-# Don't touch this
-Version: 2
+# Don't edit it. But who's stopping you? It's your server!
+# Really, don't edit ;p
+# You edited it, huh? Next time hurt yourself!
+Do-Not-Edit:
+  File-Version: 1
+  Core-Version: 1

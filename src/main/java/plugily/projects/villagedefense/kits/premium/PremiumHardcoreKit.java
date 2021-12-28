@@ -18,18 +18,15 @@
 
 package plugily.projects.villagedefense.kits.premium;
 
-import java.util.List;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import plugily.projects.commonsbox.minecraft.compat.VersionUtils;
-import plugily.projects.commonsbox.minecraft.helper.WeaponHelper;
-import plugily.projects.villagedefense.handlers.PermissionsManager;
-import plugily.projects.villagedefense.handlers.language.Messages;
-import plugily.projects.villagedefense.kits.KitRegistry;
-import plugily.projects.villagedefense.kits.basekits.PremiumKit;
-import plugily.projects.villagedefense.utils.Utils;
+import plugily.projects.minigamesbox.classic.kits.basekits.PremiumKit;
+import plugily.projects.minigamesbox.classic.utils.helper.WeaponHelper;
+import plugily.projects.minigamesbox.classic.utils.version.VersionUtils;
+
+import java.util.List;
 
 /**
  * Created by Tom on 28/07/2015.
@@ -37,15 +34,15 @@ import plugily.projects.villagedefense.utils.Utils;
 public class PremiumHardcoreKit extends PremiumKit {
 
   public PremiumHardcoreKit() {
-    setName(getPlugin().getChatManager().colorMessage(Messages.KITS_PREMIUM_HARDCORE_NAME));
-    List<String> description = Utils.splitString(getPlugin().getChatManager().colorMessage(Messages.KITS_PREMIUM_HARDCORE_DESCRIPTION), 40);
-    setDescription(description.toArray(new String[0]));
-    KitRegistry.registerKit(this);
+    setName(getPlugin().getChatManager().colorMessage("KIT_CONTENT_PREMIUM_HARDCORE_NAME"));
+    List<String> description = getPlugin().getLanguageManager().getLanguageListFromKey("KIT_CONTENT_PREMIUM_HARDCORE_DESCRIPTION");
+    setDescription(description);
+    getPlugin().getKitRegistry().registerKit(this);
   }
 
   @Override
   public boolean isUnlockedByPlayer(Player player) {
-    return PermissionsManager.isPremium(player) || player.hasPermission("villagedefense.kit.premiumhardcore");
+    return getPlugin().getPermissionsManager().hasPermissionString("KIT_PREMIUM_UNLOCK", player) || player.hasPermission("villagedefense.kit.premiumhardcore");
   }
 
   @Override

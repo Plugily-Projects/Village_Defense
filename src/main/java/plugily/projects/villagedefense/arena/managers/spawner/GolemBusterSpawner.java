@@ -4,18 +4,18 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Creature;
 import org.bukkit.inventory.ItemStack;
-import plugily.projects.commonsbox.minecraft.compat.VersionUtils;
-import plugily.projects.commonsbox.minecraft.compat.xseries.XMaterial;
+import plugily.projects.minigamesbox.classic.utils.version.VersionUtils;
+import plugily.projects.minigamesbox.classic.utils.version.xseries.XMaterial;
 import plugily.projects.villagedefense.arena.Arena;
 import plugily.projects.villagedefense.creatures.CreatureUtils;
 
 public class GolemBusterSpawner implements SimpleEnemySpawner {
   @Override
   public double getSpawnRate(Arena arena, int wave, int phase, int spawnAmount) {
-    if (phase == 5) {
+    if(phase == 5) {
       return 1D / 3;
     }
-    if (wave >= 6) {
+    if(wave >= 6) {
       return 1D / 8;
     }
     return 0;
@@ -23,10 +23,10 @@ public class GolemBusterSpawner implements SimpleEnemySpawner {
 
   @Override
   public int getFinalAmount(Arena arena, int wave, int phase, int spawnAmount) {
-    if (phase == 5) {
+    if(phase == 5) {
       return spawnAmount / 4;
     }
-    if (wave >= 6) {
+    if(wave >= 6) {
       return spawnAmount - 4;
     }
     return 0;

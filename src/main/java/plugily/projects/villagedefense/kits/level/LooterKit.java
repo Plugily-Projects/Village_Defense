@@ -18,7 +18,6 @@
 
 package plugily.projects.villagedefense.kits.level;
 
-import java.util.List;
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -26,16 +25,13 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.inventory.ItemStack;
-import plugily.projects.commonsbox.minecraft.compat.xseries.XMaterial;
-import plugily.projects.commonsbox.minecraft.helper.ArmorHelper;
-import plugily.projects.commonsbox.minecraft.helper.WeaponHelper;
-import plugily.projects.villagedefense.api.StatsStorage;
-import plugily.projects.villagedefense.arena.ArenaRegistry;
+import plugily.projects.minigamesbox.classic.kits.basekits.LevelKit;
+import plugily.projects.minigamesbox.classic.utils.helper.ArmorHelper;
+import plugily.projects.minigamesbox.classic.utils.helper.WeaponHelper;
+import plugily.projects.minigamesbox.classic.utils.version.xseries.XMaterial;
 import plugily.projects.villagedefense.creatures.CreatureUtils;
-import plugily.projects.villagedefense.handlers.language.Messages;
-import plugily.projects.villagedefense.kits.KitRegistry;
-import plugily.projects.villagedefense.kits.basekits.LevelKit;
-import plugily.projects.villagedefense.utils.Utils;
+
+import java.util.List;
 
 /**
  * Created by Tom on 21/07/2015.
@@ -43,17 +39,17 @@ import plugily.projects.villagedefense.utils.Utils;
 public class LooterKit extends LevelKit implements Listener {
 
   public LooterKit() {
-    setName(getPlugin().getChatManager().colorMessage(Messages.KITS_LOOTER_NAME));
-    List<String> description = Utils.splitString(getPlugin().getChatManager().colorMessage(Messages.KITS_LOOTER_DESCRIPTION), 40);
-    setDescription(description.toArray(new String[0]));
+    setName(getPlugin().getChatManager().colorMessage("KIT_CONTENT_LOOTER_NAME"));
+    List<String> description = getPlugin().getLanguageManager().getLanguageListFromKey("KIT_CONTENT_LOOTER_DESCRIPTION");
+    setDescription(description);
     setLevel(getKitsConfig().getInt("Required-Level.Looter"));
     getPlugin().getServer().getPluginManager().registerEvents(this, getPlugin());
-    KitRegistry.registerKit(this);
+    getPlugin().getKitRegistry().registerKit(this);
   }
 
   @Override
   public boolean isUnlockedByPlayer(Player player) {
-    return getPlugin().getUserManager().getUser(player).getStat(StatsStorage.StatisticType.LEVEL) >= getLevel() || player.hasPermission("villagedefense.kit.looter");
+    return getPlugin().getUserManager().getUser(player).getStat("LEVEL") >= getLevel() || player.hasPermission("villagedefense.kit.looter");
   }
 
   @Override
@@ -80,7 +76,7 @@ public class LooterKit extends LevelKit implements Listener {
       return;
     }
     Player player = entity.getKiller();
-    if(ArenaRegistry.getArena(player) == null) {
+    if(getPlugin().getArenaRegistry().getArena(player) == null) {
       return;
     }
     if(getPlugin().getUserManager().getUser(player).getKit() instanceof LooterKit) {

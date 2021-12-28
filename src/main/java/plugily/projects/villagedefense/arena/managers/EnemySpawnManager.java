@@ -27,8 +27,8 @@ import java.util.Random;
 import org.bukkit.Location;
 import org.bukkit.entity.Creature;
 import org.bukkit.entity.Villager;
+import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.arena.Arena;
-import plugily.projects.villagedefense.arena.options.ArenaOption;
 
 /**
  * @author Plajer
@@ -59,8 +59,8 @@ public class EnemySpawnManager {
    * Glitch checker also clean ups dead enemies and villagers from the arena
    */
   public void spawnGlitchCheck() {
-    arena.addOptionValue(ArenaOption.ZOMBIE_GLITCH_CHECKER, 1);
-    if(arena.getOption(ArenaOption.ZOMBIE_GLITCH_CHECKER) >= 60) {
+    arena.changeArenaOptionBy("ZOMBIE_GLITCH_CHECKER", 1);
+    if(arena.getArenaOption("ZOMBIE_GLITCH_CHECKER") >= 60) {
       Iterator<Villager> villagerIterator = arena.getVillagers().iterator();
       while(villagerIterator.hasNext()) {
         Villager villager = villagerIterator.next();
@@ -69,7 +69,7 @@ public class EnemySpawnManager {
           arena.removeVillager(villager);
         }
       }
-      arena.setOptionValue(ArenaOption.ZOMBIE_GLITCH_CHECKER, 0);
+      arena.setArenaOption("ZOMBIE_GLITCH_CHECKER", 0);
 
       Iterator<Creature> creatureIterator = arena.getEnemies().iterator();
       while(creatureIterator.hasNext()) {
@@ -121,7 +121,7 @@ public class EnemySpawnManager {
       return false;
     }
 
-    applyIdle(arena.getOption(ArenaOption.ZOMBIE_IDLE_PROCESS));
+    applyIdle(arena.getArenaOption("ZOMBIE_IDLE_PROCESS"));
     //continue spawning
     return true;
   }

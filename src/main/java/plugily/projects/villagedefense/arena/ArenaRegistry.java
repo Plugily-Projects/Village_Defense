@@ -18,254 +18,102 @@
 
 package plugily.projects.villagedefense.arena;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.ThreadLocalRandom;
 import org.bukkit.Difficulty;
-import org.bukkit.Location;
-import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import plugily.projects.commonsbox.minecraft.configuration.ConfigUtils;
-import plugily.projects.commonsbox.minecraft.serialization.LocationSerializer;
+import plugily.projects.minigamesbox.classic.arena.PluginArena;
+import plugily.projects.minigamesbox.classic.arena.PluginArenaRegistry;
+import plugily.projects.minigamesbox.classic.utils.serialization.LocationSerializer;
 import plugily.projects.villagedefense.Main;
-import plugily.projects.villagedefense.handlers.language.Messages;
-import plugily.projects.villagedefense.utils.Debugger;
-import plugily.projects.villagedefense.utils.constants.Constants;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Tom on 27/07/2014.
  */
-public class ArenaRegistry {
+public class ArenaRegistry extends PluginArenaRegistry {
 
-  private static final List<Arena> arenas = new ArrayList<>();
-  private static Main plugin;
-  private static final List<World> arenaIngameWorlds = new ArrayList<>();
+  private final Main plugin;
 
-  private static int bungeeArena = -999;
-
-  private ArenaRegistry() {
+  public ArenaRegistry(Main plugin) {
+    super(plugin);
+    this.plugin = plugin;
   }
 
-  public static void init(Main plugin) {
-    ArenaRegistry.plugin = plugin;
+
+  @Override
+  public PluginArena getNewArena(String id) {
+    return new Arena(id);
   }
 
-  /**
-   * Checks if player is in any arena
-   *
-   * @param player player to check
-   * @return true when player is in arena, false if otherwise
-   */
-  public static boolean isInArena(@NotNull Player player) {
-    return getArena(player) != null;
-  }
+  @Override
+  public boolean additionalValidatorChecks(ConfigurationSection section, PluginArena arena, String id) {
+    boolean checks = super.additionalValidatorChecks(section, arena, id);
+    if(!checks) return false;
 
-  /**
-   * Returns arena where the player is
-   *
-   * @param player target player
-   * @return Arena or null if not playing
-   * @see #isInArena(Player) to check if player is playing
-   */
-  @Nullable
-  public static Arena getArena(Player player) {
-    if(player == null) {
-      return null;
+    if(!section.getBoolean(id + ".isdone")) {
+      plugin.getDebugger().sendConsoleMsg(plugin.getChatManager().colorMessage("VALIDATOR_INVALID_ARENA_CONFIGURATION").replace("%arena%", id).replace("%error%", "NOT VALIDATED"));
+      return false;
     }
 
-    java.util.UUID playerId = player.getUniqueId();
-
-    for(Arena loopArena : arenas) {
-      for(Player arenaPlayer : loopArena.getPlayers()) {
-        if(arenaPlayer.getUniqueId().equals(playerId)) {
-          return loopArena;
-        }
+    ConfigurationSection zombieSection = section.getConfigurationSection(id + ".zombiespawns");
+    if(zombieSection != null) {
+      for(String string : zombieSection.getKeys(false)) {
+        ((Arena) arena).addZombieSpawn(LocationSerializer.getLocation(zombieSection.getString(string)));
       }
+    } else {
+      plugin.getDebugger().sendConsoleMsg(plugin.getChatManager().colorMessage("VALIDATOR_INVALID_ARENA_CONFIGURATION").replace("%arena%", id).replace("%error%", "ZOMBIE SPAWNS"));
+      return false;
     }
 
-    return null;
-  }
-
-  /**
-   * Returns arena based by ID
-   *
-   * @param id name of arena
-   * @return Arena or null if not found
-   */
-  @Nullable
-  public static Arena getArena(String id) {
-    for(Arena loopArena : arenas) {
-      if(loopArena.getId().equalsIgnoreCase(id)) {
-        return loopArena;
+    ConfigurationSection villagerSection = section.getConfigurationSection(id + ".villagerspawns");
+    if(villagerSection != null) {
+      for(String string : villagerSection.getKeys(false)) {
+        ((Arena) arena).addVillagerSpawn(LocationSerializer.getLocation(villagerSection.getString(string)));
       }
-    }
-    return null;
-  }
-
-  public static int getArenaPlayersOnline() {
-    int players = 0;
-    for(Arena arena : arenas) {
-      players += arena.getPlayers().size();
-    }
-    return players;
-  }
-
-  public static void registerArena(Arena arena) {
-    Debugger.debug("[{0}] Instance registered", arena.getId());
-    arenas.add(arena);
-
-    World startLocWorld = arena.getStartLocation().getWorld();
-    if (startLocWorld != null)
-      arenaIngameWorlds.add(startLocWorld);
-  }
-
-  public static void unregisterArena(Arena arena) {
-    Debugger.debug("[{0}] Instance unregistered", arena.getId());
-    arenas.remove(arena);
-
-    World startLocWorld = arena.getStartLocation().getWorld();
-    if (startLocWorld != null)
-      arenaIngameWorlds.remove(startLocWorld);
-  }
-
-  public static void registerArenas() {
-    Debugger.debug("[ArenaRegistry] Initial arenas registration");
-    long start = System.currentTimeMillis();
-
-    if(!arenas.isEmpty()) {
-      for(Arena arena : new ArrayList<>(arenas)) {
-        arena.getMapRestorerManager().clearEnemiesFromArena();
-        arena.getMapRestorerManager().clearVillagersFromArena();
-        arena.getMapRestorerManager().clearWolvesFromArena();
-        arena.getMapRestorerManager().clearGolemsFromArena();
-        unregisterArena(arena);
-      }
+    } else {
+      plugin.getDebugger().sendConsoleMsg(plugin.getChatManager().colorMessage("VALIDATOR_INVALID_ARENA_CONFIGURATION").replace("%arena%", id).replace("%error%", "VILLAGER SPAWNS"));
+      return false;
     }
 
-    FileConfiguration config = ConfigUtils.getConfig(plugin, Constants.Files.ARENAS.getName());
-    ConfigurationSection section = config.getConfigurationSection("instances");
-    if(section == null) {
-      Debugger.sendConsoleMsg(plugin.getChatManager().colorMessage(Messages.VALIDATOR_NO_INSTANCES_CREATED));
-      return;
+    ConfigurationSection doorSection = section.getConfigurationSection(id + ".doors");
+    if(doorSection != null) {
+      for(String string : doorSection.getKeys(false)) {
+        ((Arena) arena).getMapRestorerManager().addDoor(LocationSerializer.getLocation(doorSection.getString(string + ".location")),
+            (byte) doorSection.getInt(string + ".byte"));
+      }
+    } else {
+      plugin.getDebugger().sendConsoleMsg(plugin.getChatManager().colorMessage("VALIDATOR_INVALID_ARENA_CONFIGURATION").replace("%arena%", id).replace("%error%", "DOORS"));
+      return false;
     }
 
-    for(String id : section.getKeys(false)) {
-      if(id.equalsIgnoreCase("default")) {
-        continue;
-      }
 
-      Arena arena = new Arena(id);
-
-      Location startLoc = LocationSerializer.getLocation(section.getString(id + ".Startlocation", "world,364.0,63.0,-72.0,0.0,0.0"));
-      Location lobbyLoc = LocationSerializer.getLocation(section.getString(id + ".lobbylocation", "world,364.0,63.0,-72.0,0.0,0.0"));
-      Location endLoc = LocationSerializer.getLocation(section.getString(id + ".Endlocation", "world,364.0,63.0,-72.0,0.0,0.0"));
-
-      if(lobbyLoc == null || lobbyLoc.getWorld() == null || startLoc == null || startLoc.getWorld() == null
-          || endLoc == null || endLoc.getWorld() == null) {
-        section.set(id + ".isdone", false);
-        Debugger.sendConsoleMsg(plugin.getChatManager().colorMessage(Messages.VALIDATOR_INVALID_ARENA_CONFIGURATION).replace("%arena%", id).replace("%error%", "Location world is invalid"));
-        arena.setReady(false);
-        registerArena(arena);
-        continue;
-      }
-
-      arena.setMapName(section.getString(id + ".mapname", "none"));
-      arena.setMinimumPlayers(section.getInt(id + ".minimumplayers", 1));
-      arena.setMaximumPlayers(section.getInt(id + ".maximumplayers", 2));
-      arena.setLobbyLocation(lobbyLoc);
-      arena.setStartLocation(startLoc);
-      arena.setEndLocation(endLoc);
-
-      if(!section.getBoolean(id + ".isdone")) {
-        Debugger.sendConsoleMsg(plugin.getChatManager().colorMessage(Messages.VALIDATOR_INVALID_ARENA_CONFIGURATION).replace("%arena%", id).replace("%error%", "NOT VALIDATED"));
-        arena.setReady(false);
-        registerArena(arena);
-        continue;
-      }
-
-      ConfigurationSection zombieSection = section.getConfigurationSection(id + ".zombiespawns");
-      if(zombieSection != null) {
-        for(String string : zombieSection.getKeys(false)) {
-          arena.addZombieSpawn(LocationSerializer.getLocation(zombieSection.getString(string)));
-        }
-      } else {
-        Debugger.sendConsoleMsg(plugin.getChatManager().colorMessage(Messages.VALIDATOR_INVALID_ARENA_CONFIGURATION).replace("%arena%", id).replace("%error%", "ZOMBIE SPAWNS"));
-        arena.setReady(false);
-        registerArena(arena);
-        continue;
-      }
-
-      ConfigurationSection villagerSection = section.getConfigurationSection(id + ".villagerspawns");
-      if(villagerSection != null) {
-        for(String string : villagerSection.getKeys(false)) {
-          arena.addVillagerSpawn(LocationSerializer.getLocation(villagerSection.getString(string)));
-        }
-      } else {
-        Debugger.sendConsoleMsg(plugin.getChatManager().colorMessage(Messages.VALIDATOR_INVALID_ARENA_CONFIGURATION).replace("%arena%", id).replace("%error%", "VILLAGER SPAWNS"));
-        arena.setReady(false);
-        registerArena(arena);
-        continue;
-      }
-
-      ConfigurationSection doorSection = section.getConfigurationSection(id + ".doors");
-      if(doorSection != null) {
-        for(String string : doorSection.getKeys(false)) {
-          arena.getMapRestorerManager().addDoor(LocationSerializer.getLocation(doorSection.getString(string + ".location")),
-              (byte) doorSection.getInt(string + ".byte"));
-        }
-      } else {
-        Debugger.sendConsoleMsg(plugin.getChatManager().colorMessage(Messages.VALIDATOR_INVALID_ARENA_CONFIGURATION).replace("%arena%", id).replace("%error%", "DOORS"));
-        arena.setReady(false);
-        registerArena(arena);
-        continue;
-      }
-
-      World startLocWorld = arena.getStartLocation().getWorld();
-      if (startLocWorld == null) {
-        Debugger.sendConsoleMsg("Arena world of " + id + " does not exist or not loaded.");
-        arena.setReady(false);
-        continue;
-      }
-
-      if(startLocWorld.getDifficulty() == Difficulty.PEACEFUL) {
-        Debugger.sendConsoleMsg(plugin.getChatManager().colorMessage(Messages.VALIDATOR_INVALID_ARENA_CONFIGURATION).replace("%arena%", id).replace("%error%", "THERE IS A WRONG " +
-            "DIFFICULTY -> SET IT TO ANOTHER ONE THAN PEACEFUL"));
-        arena.setReady(false);
-        registerArena(arena);
-        continue;
-      }
-
-      registerArena(arena);
-      arena.start();
-      Debugger.sendConsoleMsg(plugin.getChatManager().colorMessage(Messages.VALIDATOR_INSTANCE_STARTED).replace("%arena%", id));
+    if(arena.getStartLocation().getWorld().getDifficulty() == Difficulty.PEACEFUL) {
+      plugin.getDebugger().sendConsoleMsg(plugin.getChatManager().colorMessage("VALIDATOR_INVALID_ARENA_CONFIGURATION").replace("%arena%", id).replace("%error%", "THERE IS A WRONG " +
+          "DIFFICULTY -> SET IT TO ANOTHER ONE THAN PEACEFUL"));
+      return false;
     }
-    ConfigUtils.saveConfig(plugin, config, Constants.Files.ARENAS.getName());
-    Debugger.debug("[ArenaRegistry] Arenas registration completed took {0}ms", System.currentTimeMillis() - start);
+    return true;
   }
 
-  @NotNull
-  public static List<Arena> getArenas() {
+  @Override
+  public @Nullable Arena getArena(Player player) {
+    return (Arena) super.getArena(player);
+  }
+
+  @Override
+  public @Nullable Arena getArena(String id) {
+    return (Arena) super.getArena(id);
+  }
+
+  public @NotNull List<Arena> getPluginArenas() {
+    List<Arena> arenas = new ArrayList<>();
+    for(PluginArena pluginArena : super.getArenas()) {
+      arenas.add((Arena) pluginArena);
+    }
     return arenas;
-  }
-
-  public static List<World> getArenaIngameWorlds() {
-    return arenaIngameWorlds;
-  }
-
-  public static void shuffleBungeeArena() {
-    if(!arenas.isEmpty()) {
-      bungeeArena = ThreadLocalRandom.current().nextInt(arenas.size());
-    }
-  }
-
-  public static int getBungeeArena() {
-    if(bungeeArena == -999 && !arenas.isEmpty()) {
-      bungeeArena = ThreadLocalRandom.current().nextInt(arenas.size());
-    }
-    return bungeeArena;
   }
 }

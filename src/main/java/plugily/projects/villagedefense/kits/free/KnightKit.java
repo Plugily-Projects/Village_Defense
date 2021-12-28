@@ -18,17 +18,15 @@
 
 package plugily.projects.villagedefense.kits.free;
 
-import java.util.List;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import plugily.projects.commonsbox.minecraft.compat.xseries.XMaterial;
-import plugily.projects.commonsbox.minecraft.helper.ArmorHelper;
-import plugily.projects.commonsbox.minecraft.helper.WeaponHelper;
-import plugily.projects.villagedefense.handlers.language.Messages;
-import plugily.projects.villagedefense.kits.KitRegistry;
-import plugily.projects.villagedefense.kits.basekits.FreeKit;
-import plugily.projects.villagedefense.utils.Utils;
+import plugily.projects.minigamesbox.classic.kits.basekits.FreeKit;
+import plugily.projects.minigamesbox.classic.utils.helper.ArmorHelper;
+import plugily.projects.minigamesbox.classic.utils.helper.WeaponHelper;
+import plugily.projects.minigamesbox.classic.utils.version.xseries.XMaterial;
+
+import java.util.List;
 
 /**
  * Created by Tom on 14/08/2014.
@@ -36,10 +34,10 @@ import plugily.projects.villagedefense.utils.Utils;
 public class KnightKit extends FreeKit {
 
   public KnightKit() {
-    setName(getPlugin().getChatManager().colorMessage(Messages.KITS_KNIGHT_NAME));
-    List<String> description = Utils.splitString(getPlugin().getChatManager().colorMessage(Messages.KITS_KNIGHT_DESCRIPTION), 40);
-    setDescription(description.toArray(new String[0]));
-    KitRegistry.registerKit(this);
+    setName(getPlugin().getChatManager().colorMessage("KIT_CONTENT_KNIGHT_NAME"));
+    List<String> description = getPlugin().getLanguageManager().getLanguageListFromKey("KIT_CONTENT_KNIGHT_DESCRIPTION");
+    setDescription(description);
+    getPlugin().getKitRegistry().registerKit(this);
   }
 
   @Override

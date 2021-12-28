@@ -18,13 +18,6 @@
 
 package plugily.projects.villagedefense.creatures;
 
-import java.lang.reflect.Field;
-import java.security.AccessController;
-import java.security.PrivilegedAction;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.ThreadLocalRandom;
-import java.util.logging.Level;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Creature;
 import org.bukkit.entity.Entity;
@@ -32,18 +25,24 @@ import org.bukkit.entity.IronGolem;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Villager;
 import org.bukkit.entity.Wolf;
-import plugily.projects.commonsbox.minecraft.compat.ServerVersion;
-import plugily.projects.commonsbox.minecraft.compat.VersionUtils;
 import plugily.projects.commonsbox.string.StringFormatUtils;
+import plugily.projects.minigamesbox.classic.utils.version.ServerVersion;
+import plugily.projects.minigamesbox.classic.utils.version.VersionUtils;
 import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.arena.Arena;
-import plugily.projects.villagedefense.arena.options.ArenaOption;
-import plugily.projects.villagedefense.handlers.language.LanguageManager;
+
+import java.lang.reflect.Field;
+import java.security.AccessController;
+import java.security.PrivilegedAction;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
+import java.util.logging.Level;
 
 /**
  * @author Plajer
  * <p>
- * Created at 17 lis 2017
+ * Created at 2017
  */
 public class CreatureUtils {
 
@@ -62,12 +61,12 @@ public class CreatureUtils {
     CreatureUtils.plugin = plugin;
     zombieSpeed = (float) plugin.getConfig().getDouble("Zombie-Speed", 1.3);
     babyZombieSpeed = (float) plugin.getConfig().getDouble("Mini-Zombie-Speed", 2.0);
-    villagerNames = LanguageManager.getLanguageMessage("In-Game.Villager-Names").split(",");
+    villagerNames = plugin.getChatManager().colorMessage("IN_GAME_MESSAGES_VILLAGE_VILLAGER_NAMES").split(",");
     creatureInitializer = initCreatureInitializer();
   }
 
   public static BaseCreatureInitializer initCreatureInitializer() {
-    switch (ServerVersion.Version.getCurrent()) {
+    switch(ServerVersion.Version.getCurrent()) {
       case v1_8_R3:
         return new plugily.projects.villagedefense.creatures.v1_8_R3.CreatureInitializer();
       case v1_9_R1:
@@ -143,9 +142,9 @@ public class CreatureUtils {
    */
   public static void applyAttributes(Creature zombie, Arena arena) {
     creatureInitializer.applyFollowRange(zombie);
-    VersionUtils.setMaxHealth(zombie, VersionUtils.getMaxHealth(zombie) + arena.getOption(ArenaOption.ZOMBIE_DIFFICULTY_MULTIPLIER));
+    VersionUtils.setMaxHealth(zombie, VersionUtils.getMaxHealth(zombie) + arena.getArenaOption("ZOMBIE_DIFFICULTY_MULTIPLIER"));
     zombie.setHealth(VersionUtils.getMaxHealth(zombie));
-    if(plugin.getConfig().getBoolean("Simple-Zombie-Health-Bar-Enabled", true)) {
+    if(plugin.getConfig().getBoolean("Zombies.Health-Bar", true)) {
       zombie.setCustomNameVisible(true);
       zombie.setCustomName(StringFormatUtils.getProgressBar((int) zombie.getHealth(), (int) VersionUtils.getMaxHealth(zombie), 50, "|",
           ChatColor.YELLOW + "", ChatColor.GRAY + ""));

@@ -18,54 +18,29 @@
 
 package plugily.projects.villagedefense.arena.states;
 
-import java.util.Objects;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.Player;
-import plugily.projects.commonsbox.minecraft.configuration.ConfigUtils;
-import plugily.projects.villagedefense.ConfigPreferences;
-import plugily.projects.villagedefense.Main;
+import plugily.projects.minigamesbox.classic.arena.PluginArena;
+import plugily.projects.minigamesbox.classic.arena.states.PluginRestartingState;
 import plugily.projects.villagedefense.arena.Arena;
-import plugily.projects.villagedefense.arena.ArenaManager;
-import plugily.projects.villagedefense.arena.ArenaRegistry;
-import plugily.projects.villagedefense.arena.ArenaState;
-import plugily.projects.villagedefense.handlers.language.Messages;
+
+import java.util.Objects;
 
 /**
  * @author Plajer
  * <p>
  * Created at 03.06.2019
  */
-public class RestartingState implements ArenaStateHandler {
-
-  private Main plugin;
+public class RestartingState extends PluginRestartingState {
 
   @Override
-  public void init(Main plugin) {
-    this.plugin = plugin;
-  }
-
-  @Override
-  public void handleCall(Arena arena) {
-    arena.getMapRestorerManager().fullyRestoreArena();
-    arena.getPlayers().clear();
-    arena.setArenaState(ArenaState.WAITING_FOR_PLAYERS);
-
-    arena.resetOptionValues();
-    arena.getDroppedFleshes().stream().filter(Objects::nonNull).forEach(Entity::remove);
-    arena.getDroppedFleshes().clear();
-    if(plugin.getConfigPreferences().getOption(ConfigPreferences.Option.BUNGEE_ENABLED)) {
-      if(ConfigUtils.getConfig(plugin, "bungee").getBoolean("Shutdown-When-Game-Ends")) {
-        plugin.getServer().shutdown();
-      }
-      ArenaRegistry.shuffleBungeeArena();
-      for(Player player : Bukkit.getOnlinePlayers()) {
-        ArenaManager.joinAttempt(player, ArenaRegistry.getArenas().get(ArenaRegistry.getBungeeArena()));
-      }
+  public void handleCall(PluginArena arena) {
+    super.handleCall(arena);
+    Arena pluginArena = (Arena) getPlugin().getArenaRegistry().getArena(arena.getId());
+    if(pluginArena == null) {
+      return;
     }
-    if(arena.getGameBar() != null) {
-      arena.getGameBar().setTitle(plugin.getChatManager().colorMessage(Messages.BOSSBAR_WAITING_FOR_PLAYERS));
-    }
+    pluginArena.getDroppedFleshes().stream().filter(Objects::nonNull).forEach(Entity::remove);
+    pluginArena.getDroppedFleshes().clear();
   }
 
 }

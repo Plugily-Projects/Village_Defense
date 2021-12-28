@@ -18,8 +18,6 @@
 
 package plugily.projects.villagedefense.kits.level;
 
-import java.util.List;
-import java.util.Random;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Creature;
@@ -29,19 +27,19 @@ import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
-import plugily.projects.commonsbox.minecraft.compat.events.api.CBPlayerInteractEvent;
-import plugily.projects.commonsbox.minecraft.compat.xseries.XMaterial;
-import plugily.projects.commonsbox.minecraft.helper.WeaponHelper;
-import plugily.projects.commonsbox.minecraft.item.ItemBuilder;
-import plugily.projects.commonsbox.minecraft.item.ItemUtils;
-import plugily.projects.commonsbox.minecraft.misc.stuff.ComplementAccessor;
+import plugily.projects.minigamesbox.classic.kits.basekits.LevelKit;
+import plugily.projects.minigamesbox.classic.user.User;
+import plugily.projects.minigamesbox.classic.utils.helper.ItemBuilder;
+import plugily.projects.minigamesbox.classic.utils.helper.ItemUtils;
+import plugily.projects.minigamesbox.classic.utils.helper.WeaponHelper;
+import plugily.projects.minigamesbox.classic.utils.misc.complement.ComplementAccessor;
+import plugily.projects.minigamesbox.classic.utils.version.VersionUtils;
+import plugily.projects.minigamesbox.classic.utils.version.events.api.CBPlayerInteractEvent;
+import plugily.projects.minigamesbox.classic.utils.version.xseries.XMaterial;
 import plugily.projects.villagedefense.arena.Arena;
-import plugily.projects.villagedefense.arena.ArenaRegistry;
-import plugily.projects.villagedefense.handlers.language.Messages;
-import plugily.projects.villagedefense.kits.KitRegistry;
-import plugily.projects.villagedefense.kits.basekits.LevelKit;
-import plugily.projects.villagedefense.user.User;
-import plugily.projects.villagedefense.utils.Utils;
+
+import java.util.List;
+import java.util.Random;
 
 /**
  * Created by Tom on 21/07/2015.
@@ -49,12 +47,12 @@ import plugily.projects.villagedefense.utils.Utils;
 public class ZombieFinderKit extends LevelKit implements Listener {
 
   public ZombieFinderKit() {
-    setName(getPlugin().getChatManager().colorMessage(Messages.KITS_ZOMBIE_TELEPORTER_NAME));
-    List<String> description = Utils.splitString(getPlugin().getChatManager().colorMessage(Messages.KITS_ZOMBIE_TELEPORTER_DESCRIPTION), 40);
-    setDescription(description.toArray(new String[0]));
+    setName(getPlugin().getChatManager().colorMessage("KIT_CONTENT_ZOMBIE_TELEPORTER_NAME"));
+    List<String> description = getPlugin().getLanguageManager().getLanguageListFromKey("KIT_CONTENT_ZOMBIE_TELEPORTER_DESCRIPTION");
+    setDescription(description);
     setLevel(getKitsConfig().getInt("Required-Level.ZombieFinder"));
     getPlugin().getServer().getPluginManager().registerEvents(this, getPlugin());
-    KitRegistry.registerKit(this);
+    getPlugin().getKitRegistry().registerKit(this);
   }
 
   @Override
@@ -67,8 +65,8 @@ public class ZombieFinderKit extends LevelKit implements Listener {
     player.getInventory().addItem(WeaponHelper.getUnBreakingSword(WeaponHelper.ResourceType.WOOD, 10));
     player.getInventory().addItem(new ItemStack(XMaterial.COOKED_PORKCHOP.parseMaterial(), 8));
     player.getInventory().addItem(new ItemBuilder(WeaponHelper.getEnchanted(new ItemStack(Material.BOOK), new Enchantment[]{Enchantment.DAMAGE_ALL}, new int[]{1}))
-        .name(getPlugin().getChatManager().colorMessage(Messages.KITS_ZOMBIE_TELEPORTER_GAME_ITEM_NAME))
-        .lore(Utils.splitString(getPlugin().getChatManager().colorMessage(Messages.KITS_ZOMBIE_TELEPORTER_GAME_ITEM_LORE), 40))
+        .name(getPlugin().getChatManager().colorMessage("KIT_CONTENT_ZOMBIE_TELEPORTER_GAME_ITEM_NAME"))
+        .lore(getPlugin().getLanguageManager().getLanguageListFromKey("KIT_CONTENT_ZOMBIE_TELEPORTER_GAME_ITEM_DESCRIPTION"))
         .build());
   }
 
@@ -84,36 +82,36 @@ public class ZombieFinderKit extends LevelKit implements Listener {
 
   @EventHandler
   public void onTeleport(CBPlayerInteractEvent event) {
-    Arena arena = ArenaRegistry.getArena(event.getPlayer());
+    Arena arena = (Arena) getPlugin().getArenaRegistry().getArena(event.getPlayer());
     if(arena == null || !ItemUtils.isItemStackNamed(event.getItem()) || event.getItem().getType() != Material.BOOK
-        || !ComplementAccessor.getComplement().getDisplayName(event.getItem().getItemMeta()).equals(getPlugin().getChatManager().colorMessage(Messages.KITS_ZOMBIE_TELEPORTER_GAME_ITEM_NAME))) {
+        || !ComplementAccessor.getComplement().getDisplayName(event.getItem().getItemMeta()).equals(getPlugin().getChatManager().colorMessage("KIT_CONTENT_ZOMBIE_TELEPORTER_GAME_ITEM_GUI"))) {
       return;
     }
     User user = getPlugin().getUserManager().getUser(event.getPlayer());
     if(user.isSpectator()) {
-      event.getPlayer().sendMessage(getPlugin().getChatManager().colorMessage(Messages.SPECTATOR_WARNING));
+      event.getPlayer().sendMessage(getPlugin().getChatManager().colorMessage("IN_GAME_SPECTATOR_SPECTATOR_WARNING"));
       return;
     }
-    if (!(user.getKit() instanceof ZombieFinderKit)) {
+    if(!(user.getKit() instanceof ZombieFinderKit)) {
       return;
     }
     long zombieCooldown = user.getCooldown("zombie");
     if(zombieCooldown > 0 && !user.isSpectator()) {
-      String message = getPlugin().getChatManager().colorMessage(Messages.KITS_ABILITY_STILL_ON_COOLDOWN);
-      message = message.replaceFirst("%COOLDOWN%", Long.toString(zombieCooldown));
+      String message = getPlugin().getChatManager().colorMessage("KIT_COOLDOWN");
+      message = message.replaceFirst("%number%", Long.toString(zombieCooldown));
       event.getPlayer().sendMessage(message);
       return;
     }
     if(arena.getEnemies().isEmpty()) {
-      event.getPlayer().sendMessage(getPlugin().getChatManager().colorMessage(Messages.KITS_ZOMBIE_TELEPORTER_NO_AVAILABLE_ZOMBIES));
+      event.getPlayer().sendMessage(getPlugin().getChatManager().colorMessage("KIT_CONTENT_ZOMBIE_TELEPORTER_TELEPORT_NOT_FOUND"));
       return;
     }
 
     Creature creature = arena.getEnemies().get(arena.getEnemies().size() == 1 ? 0 : new Random().nextInt(arena.getEnemies().size()));
     creature.teleport(event.getPlayer());
     creature.addPotionEffect(new PotionEffect(PotionEffectType.WEAKNESS, 20 * 30, 0));
-    event.getPlayer().sendMessage(getPlugin().getChatManager().colorMessage(Messages.KITS_ZOMBIE_TELEPORTER_ZOMBIE_TELEPORTED));
-    Utils.playSound(event.getPlayer().getLocation(), "ENTITY_ZOMBIE_DEATH", "ENTITY_ZOMBIE_DEATH");
+    event.getPlayer().sendMessage(getPlugin().getChatManager().colorMessage("KIT_CONTENT_ZOMBIE_TELEPORTER_TELEPORT_ZOMBIE"));
+    VersionUtils.playSound(event.getPlayer().getLocation(), "ENTITY_ZOMBIE_DEATH");
     user.setCooldown("zombie", getKitsConfig().getInt("Kit-Cooldown.Zombie-Finder", 30));
   }
 }

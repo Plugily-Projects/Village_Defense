@@ -18,7 +18,6 @@
 
 package plugily.projects.villagedefense.kits.level;
 
-import java.util.List;
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -28,17 +27,15 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.inventory.ItemStack;
-import plugily.projects.commonsbox.minecraft.compat.VersionUtils;
-import plugily.projects.commonsbox.minecraft.compat.xseries.XMaterial;
-import plugily.projects.commonsbox.minecraft.helper.ArmorHelper;
-import plugily.projects.commonsbox.minecraft.helper.WeaponHelper;
-import plugily.projects.villagedefense.api.StatsStorage;
+import plugily.projects.minigamesbox.classic.kits.basekits.LevelKit;
+import plugily.projects.minigamesbox.classic.utils.helper.ArmorHelper;
+import plugily.projects.minigamesbox.classic.utils.helper.WeaponHelper;
+import plugily.projects.minigamesbox.classic.utils.version.VersionUtils;
+import plugily.projects.minigamesbox.classic.utils.version.xseries.XMaterial;
 import plugily.projects.villagedefense.arena.Arena;
-import plugily.projects.villagedefense.arena.ArenaRegistry;
-import plugily.projects.villagedefense.handlers.language.Messages;
-import plugily.projects.villagedefense.kits.KitRegistry;
-import plugily.projects.villagedefense.kits.basekits.LevelKit;
 import plugily.projects.villagedefense.utils.Utils;
+
+import java.util.List;
 
 /**
  * Created by Tom on 19/07/2015.
@@ -47,16 +44,16 @@ public class WorkerKit extends LevelKit implements Listener {
 
   public WorkerKit() {
     setLevel(getKitsConfig().getInt("Required-Level.Worker"));
-    setName(getPlugin().getChatManager().colorMessage(Messages.KITS_WORKER_NAME));
-    List<String> description = Utils.splitString(getPlugin().getChatManager().colorMessage(Messages.KITS_WORKER_DESCRIPTION), 40);
-    setDescription(description.toArray(new String[0]));
-    KitRegistry.registerKit(this);
+    setName(getPlugin().getChatManager().colorMessage("KIT_CONTENT_WORKER_NAME"));
+    List<String> description = getPlugin().getLanguageManager().getLanguageListFromKey("KIT_CONTENT_WORKER_DESCRIPTION");
+    setDescription(description);
+    getPlugin().getKitRegistry().registerKit(this);
     getPlugin().getServer().getPluginManager().registerEvents(this, getPlugin());
   }
 
   @Override
   public boolean isUnlockedByPlayer(Player player) {
-    return getPlugin().getUserManager().getUser(player).getStat(StatsStorage.StatisticType.LEVEL) >= getLevel() || player.hasPermission("villagedefense.kit.worker");
+    return getPlugin().getUserManager().getUser(player).getStat("LEVEL") >= getLevel() || player.hasPermission("villagedefense.kit.worker");
   }
 
   @Override
@@ -81,7 +78,7 @@ public class WorkerKit extends LevelKit implements Listener {
 
   @EventHandler(priority = EventPriority.HIGHEST)
   public void onDoorPlace(BlockPlaceEvent e) {
-    Arena arena = ArenaRegistry.getArena(e.getPlayer());
+    Arena arena = (Arena) getPlugin().getArenaRegistry().getArena(e.getPlayer());
     if(arena == null) {
       return;
     }
@@ -96,7 +93,7 @@ public class WorkerKit extends LevelKit implements Listener {
     }
     //to override world guard protection
     e.setCancelled(false);
-    e.getPlayer().sendMessage(getPlugin().getChatManager().colorMessage(Messages.KITS_WORKER_GAME_ITEM_PLACE_MESSAGE));
+    e.getPlayer().sendMessage(getPlugin().getChatManager().colorMessage("KIT_CONTENT_WORKER_GAME_ITEM_CHAT"));
   }
 
 }

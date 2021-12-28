@@ -18,19 +18,16 @@
 
 package plugily.projects.villagedefense.kits.level;
 
-import java.util.List;
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import plugily.projects.commonsbox.minecraft.helper.ArmorHelper;
-import plugily.projects.commonsbox.minecraft.helper.WeaponHelper;
-import plugily.projects.villagedefense.api.StatsStorage;
-import plugily.projects.villagedefense.handlers.language.Messages;
-import plugily.projects.villagedefense.kits.KitRegistry;
-import plugily.projects.villagedefense.kits.basekits.LevelKit;
-import plugily.projects.villagedefense.utils.Utils;
+import plugily.projects.minigamesbox.classic.kits.basekits.LevelKit;
+import plugily.projects.minigamesbox.classic.utils.helper.ArmorHelper;
+import plugily.projects.minigamesbox.classic.utils.helper.WeaponHelper;
+
+import java.util.List;
 
 /**
  * Created by Tom on 14/08/2014.
@@ -39,15 +36,15 @@ public class ArcherKit extends LevelKit {
 
   public ArcherKit() {
     setLevel(getKitsConfig().getInt("Required-Level.Archer"));
-    setName(getPlugin().getChatManager().colorMessage(Messages.KITS_ARCHER_NAME));
-    List<String> description = Utils.splitString(getPlugin().getChatManager().colorMessage(Messages.KITS_ARCHER_DESCRIPTION), 40);
-    setDescription(description.toArray(new String[0]));
-    KitRegistry.registerKit(this);
+    setName(getPlugin().getChatManager().colorMessage("KIT_CONTENT_ARCHER_NAME"));
+    List<String> description = getPlugin().getLanguageManager().getLanguageListFromKey("KIT_CONTENT_ARCHER_DESCRIPTION");
+    setDescription(description);
+    getPlugin().getKitRegistry().registerKit(this);
   }
 
   @Override
   public boolean isUnlockedByPlayer(Player player) {
-    return getPlugin().getUserManager().getUser(player).getStat(StatsStorage.StatisticType.LEVEL) >= getLevel() || player.hasPermission("villagedefense.kit.archer");
+    return getPlugin().getUserManager().getUser(player).getStat("LEVEL") >= getLevel() || player.hasPermission("villagedefense.kit.archer");
   }
 
   @Override

@@ -1,5 +1,5 @@
 #
-#           Village Defense rewards configuration
+#           Plugily Projects rewards configuration
 #
 #                          Placeholders list:
 #                   %PLAYER% - Current player name
@@ -20,19 +20,18 @@
 #    - chance(50):eco give %PLAYER% 10                # Console has 10% chance to give player 10$
 #
 #  Performed rewards:
-#  villagerDeath, endgame, playerDeath, zombieKill, endwave, startwave
+#  endgame, playerDeath
 #
 #   You can unlock full potential of rewards using our script engine! (since 4.0.0)
 #    Just add example reward:
 #    - script:player.sendMessage("oh, hi %PLAYER%");      # It will send "oh, hi <player name>" to player! 100% plain java!
-#    - script:arena.setWave(1);                           # Sets the wave to 1!
 #    - script:server.broadcastMessage("hello everyone");  # Broadcasts "hello everyone" to whole server
 #    - script:player.getInventory().addItem(new org.bukkit.inventory.ItemStack(org.bukkit.Material.DIRT));
 #         ^ Gives player dirt item (you must always use direct package names for not provided objects)
 #
 #                               All script provided objects:
 #            player - Player object (API methods https://hub.spigotmc.org/javadocs/spigot/org/bukkit/entity/Player.html)
-#    arena - Village Defense arena (API methods https://jd.plugily.xyz/apidocs/minecraft/villagedefense/plugily/projects/villagedefense/arena/Arena.html)
+#    arena - Plugin arena (API methods https://jd.plugily.xyz/apidocs/minecraft/PLUGILYPROJECTS/plugily/projects/PLUGILYPROJECTS/arena/Arena.html)
 #            server - Bukkit server object (API methods https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Server.html)
 #
 #                            Whole documentation of scripts soon!
@@ -62,3 +61,10 @@ rewards:
   zombiekill:
     - eco give %PLAYER% 2
     - chance(10):eco give %PLAYER% 8
+
+# Don't edit it. But who's stopping you? It's your server!
+# Really, don't edit ;p
+# You edited it, huh? Next time hurt yourself!
+Do-Not-Edit:
+  File-Version: 1
+  Core-Version: 1

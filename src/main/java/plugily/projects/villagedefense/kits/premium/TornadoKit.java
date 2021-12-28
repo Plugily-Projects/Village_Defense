@@ -18,7 +18,6 @@
 
 package plugily.projects.villagedefense.kits.premium;
 
-import java.util.List;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
@@ -29,21 +28,18 @@ import org.bukkit.event.block.Action;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
-import plugily.projects.commonsbox.minecraft.compat.VersionUtils;
-import plugily.projects.commonsbox.minecraft.compat.events.api.CBPlayerInteractEvent;
-import plugily.projects.commonsbox.minecraft.compat.xseries.XMaterial;
-import plugily.projects.commonsbox.minecraft.helper.ArmorHelper;
-import plugily.projects.commonsbox.minecraft.helper.WeaponHelper;
-import plugily.projects.commonsbox.minecraft.item.ItemBuilder;
-import plugily.projects.commonsbox.minecraft.item.ItemUtils;
-import plugily.projects.commonsbox.minecraft.misc.stuff.ComplementAccessor;
-import plugily.projects.villagedefense.arena.ArenaRegistry;
+import plugily.projects.minigamesbox.classic.kits.basekits.PremiumKit;
+import plugily.projects.minigamesbox.classic.utils.helper.ArmorHelper;
+import plugily.projects.minigamesbox.classic.utils.helper.ItemBuilder;
+import plugily.projects.minigamesbox.classic.utils.helper.ItemUtils;
+import plugily.projects.minigamesbox.classic.utils.helper.WeaponHelper;
+import plugily.projects.minigamesbox.classic.utils.misc.complement.ComplementAccessor;
+import plugily.projects.minigamesbox.classic.utils.version.VersionUtils;
+import plugily.projects.minigamesbox.classic.utils.version.events.api.CBPlayerInteractEvent;
+import plugily.projects.minigamesbox.classic.utils.version.xseries.XMaterial;
 import plugily.projects.villagedefense.creatures.CreatureUtils;
-import plugily.projects.villagedefense.handlers.PermissionsManager;
-import plugily.projects.villagedefense.handlers.language.Messages;
-import plugily.projects.villagedefense.kits.KitRegistry;
-import plugily.projects.villagedefense.kits.basekits.PremiumKit;
-import plugily.projects.villagedefense.utils.Utils;
+
+import java.util.List;
 
 /**
  * Created by Tom on 30/12/2015.
@@ -56,16 +52,16 @@ public class TornadoKit extends PremiumKit implements Listener {
   private int active = 0;
 
   public TornadoKit() {
-    setName(getPlugin().getChatManager().colorMessage(Messages.KITS_TORNADO_NAME));
-    List<String> description = Utils.splitString(getPlugin().getChatManager().colorMessage(Messages.KITS_TORNADO_DESCRIPTION), 40);
-    setDescription(description.toArray(new String[0]));
+    setName(getPlugin().getChatManager().colorMessage("KIT_CONTENT_TORNADO_NAME"));
+    List<String> description = getPlugin().getLanguageManager().getLanguageListFromKey("KIT_CONTENT_TORNADO_DESCRIPTION");
+    setDescription(description);
     getPlugin().getServer().getPluginManager().registerEvents(this, getPlugin());
-    KitRegistry.registerKit(this);
+    getPlugin().getKitRegistry().registerKit(this);
   }
 
   @Override
   public boolean isUnlockedByPlayer(Player player) {
-    return player.hasPermission("villagedefense.kit.tornado") || PermissionsManager.isPremium(player);
+    return player.hasPermission("villagedefense.kit.tornado") || getPlugin().getPermissionsManager().hasPermissionString("KIT_PREMIUM_UNLOCK", player);
   }
 
   @Override
@@ -76,8 +72,8 @@ public class TornadoKit extends PremiumKit implements Listener {
     player.getInventory().addItem(new ItemStack(Material.COOKED_BEEF, 10));
     player.getInventory().addItem(new ItemStack(Material.SADDLE));
     player.getInventory().addItem(new ItemBuilder(new ItemStack(getMaterial(), 5))
-        .name(getPlugin().getChatManager().colorMessage(Messages.KITS_TORNADO_GAME_ITEM_NAME))
-        .lore(Utils.splitString(getPlugin().getChatManager().colorMessage(Messages.KITS_TORNADO_GAME_ITEM_LORE), 40))
+        .name(getPlugin().getChatManager().colorMessage("KIT_CONTENT_TORNADO_GAME_ITEM_NAME"))
+        .lore(getPlugin().getLanguageManager().getLanguageListFromKey("KIT_CONTENT_TORNADO_GAME_ITEM_DESCRIPTION"))
         .build());
   }
 
@@ -89,8 +85,8 @@ public class TornadoKit extends PremiumKit implements Listener {
   @Override
   public void reStock(Player player) {
     player.getInventory().addItem(new ItemBuilder(new ItemStack(getMaterial(), 5))
-        .name(getPlugin().getChatManager().colorMessage(Messages.KITS_TORNADO_GAME_ITEM_NAME))
-        .lore(Utils.splitString(getPlugin().getChatManager().colorMessage(Messages.KITS_TORNADO_GAME_ITEM_LORE), 40))
+        .name(getPlugin().getChatManager().colorMessage("KIT_CONTENT_TORNADO_GAME_ITEM_NAME"))
+        .lore(getPlugin().getLanguageManager().getLanguageListFromKey("KIT_CONTENT_TORNADO_GAME_ITEM_DESCRIPTION"))
         .build());
   }
 
@@ -101,21 +97,21 @@ public class TornadoKit extends PremiumKit implements Listener {
     }
 
     Player player = e.getPlayer();
-    if(!ArenaRegistry.isInArena(player))
+    if(!getPlugin().getArenaRegistry().isInArena(player))
       return;
 
     ItemStack stack = VersionUtils.getItemInHand(player);
     if(!ItemUtils.isItemStackNamed(stack)
-        || !ComplementAccessor.getComplement().getDisplayName(stack.getItemMeta()).equalsIgnoreCase(getPlugin().getChatManager().colorMessage(Messages.KITS_TORNADO_GAME_ITEM_NAME))) {
+        || !ComplementAccessor.getComplement().getDisplayName(stack.getItemMeta()).equalsIgnoreCase(getPlugin().getChatManager().colorMessage("KIT_CONTENT_TORNADO_GAME_ITEM_NAME"))) {
       return;
     }
-    if (!(getPlugin().getUserManager().getUser(player).getKit() instanceof TornadoKit)) {
+    if(!(getPlugin().getUserManager().getUser(player).getKit() instanceof TornadoKit)) {
       return;
     }
     if(active >= 2) {
       return;
     }
-    Utils.takeOneItem(player, stack);
+    getPlugin().getBukkitHelper().takeOneItem(player, stack);
     e.setCancelled(true);
     prepareTornado(player.getLocation());
   }
@@ -175,7 +171,7 @@ public class TornadoKit extends PremiumKit implements Listener {
           entities++;
 
           Vector velocityVec = vector.multiply(2).setY(0).add(new Vector(0, 1, 0));
-          if (VersionUtils.isPaper() && (vector.getX() > 4.0 || vector.getZ() > 4.0)) {
+          if(VersionUtils.isPaper() && (vector.getX() > 4.0 || vector.getZ() > 4.0)) {
             velocityVec = vector.setX(2.0).setZ(1.0); // Paper's sh*t
           }
 

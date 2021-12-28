@@ -22,8 +22,8 @@ import org.bukkit.entity.Villager;
 import org.bukkit.entity.Wolf;
 import org.bukkit.entity.Zombie;
 import org.bukkit.event.entity.CreatureSpawnEvent;
+import plugily.projects.minigamesbox.classic.utils.misc.MessageUtils;
 import plugily.projects.villagedefense.creatures.BaseCreatureInitializer;
-import plugily.projects.villagedefense.utils.MessageUtils;
 
 public class CreatureInitializer implements BaseCreatureInitializer {
 
@@ -58,7 +58,6 @@ public class CreatureInitializer implements BaseCreatureInitializer {
             ((Map<Class<? extends EntityInsentient>, Integer>) dataMaps.get(3)).put(customClass, id);
         } catch (Exception e) {
             e.printStackTrace();
-            MessageUtils.errorOccurred();
             Bukkit.getConsoleSender().sendMessage("[Village Defense] Entities has failed to register!");
             Bukkit.getConsoleSender().sendMessage("[Village Defense] Restart server or change your server version!");
         }

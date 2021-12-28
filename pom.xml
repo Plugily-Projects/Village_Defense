@@ -203,14 +203,14 @@
         </dependency>
         <dependency>
             <groupId>plugily.projects</groupId>
-            <artifactId>commons-box-database</artifactId>
-            <version>1.3.3</version>
+            <artifactId>MiniGamesBox-Classic</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
             <scope>compile</scope>
             <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>plugily.projects</groupId>
-            <artifactId>commons-box-minecraft</artifactId>
+            <artifactId>commons-box-database</artifactId>
             <version>1.3.3</version>
             <scope>compile</scope>
             <optional>true</optional>
@@ -282,7 +282,7 @@
         <dependency>
             <groupId>org.jetbrains</groupId>
             <artifactId>annotations</artifactId>
-            <version>21.0.1</version>
+            <version>22.0.0</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>
@@ -359,6 +359,10 @@
                         </goals>
                         <configuration>
                             <relocations>
+                                <relocation>
+                                    <pattern>plugily.projects.minigamesbox.classic</pattern>
+                                    <shadedPattern>plugily.projects.villagedefense.classic</shadedPattern>
+                                </relocation>
                                 <relocation>
                                     <pattern>plugily.projects.minigamesbox.inventory</pattern>
                                     <shadedPattern>plugily.projects.villagedefense.inventory</shadedPattern>

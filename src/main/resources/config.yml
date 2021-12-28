@@ -1,11 +1,13 @@
-#      VillageDefense configuration file
+### Initial config.yml for all plugily projects
+## Thanks for using our plugins! ~Tigerpanzer_02 from Plugily Projects
+#      PlugilyProjects configuration file
 #
-#    You can edit here the basic things of VD
+#    You can edit here the basic things of PlugilyProjects
 #      Please read everything CAREFULLY!
 #   You don't want to break anything, do you?
 #
 
-# Select locale of VillageDefense, default it's English.
+# Select locale of PlugilyProjects, default it's English.
 # Available locales:
 #    default - English language. Uses 'language.yml'.
 #    de - Deutsche sprache          pl - Język polski
@@ -20,55 +22,25 @@
 #    th - Thai
 locale: default
 
-# Enable bossbar support?
-Bossbar-Enabled: true
+# Should we display a boss bar with additional arena information?
+Bossbar:
+  Display: true
+  # Interval in seconds between messages
+  Interval: 10
 
-# Should we hook into bungee cord? (If you wanna use arena per server option)
+# Should we hook into bungeecord? (If you wanna use arena per server option)
+# This option will let you access bungee.yml and its options.
 # You STILL need to use external addon for HUB server game signs
-# Check here for more info: https://wiki.plugily.xyz/villagedefense/support/servertips#bungeecord-lobby-signs
-BungeeActivated: false
-
-# Should we hook into Holograpic Displays? (If you wanna use (leaderboard)holograms)
-# You will be able to create holograms
-HologramsActivated: false
-
-# Should we add support for upgradeable Wolves and Golems in game?
-# Configure upgrades pricing in entity_upgrades.yml after enabling it.
-UpgradesActivated: false
+# Check here for more info: https://wiki.plugily.xyz/
+Bungee-Mode: false
 
 # Enable Inventory Manager for your games? (VERY USEFUL feature for MULTI ARENA)
 # This saves inventory of players and restores it after player leaves arena.
 # Saved elements: max health, health, food, experience, full inventory, armor contents, fire ticks, active potions
-InventoryManager: true
+Inventory-Manager: true
 
-# Respawn players when wave ends/starts?
-Respawn-After-Wave: true
-
-# Should player be able that join on ingame stage to respawn after wave?
-# Default: true
-InGame-Join-Respawn: true
-
-# You can create custom players permissions here.
-# Player with your custom permission will get % bonus orbs
-# when he lift up experience from killed zombie.
-# More here: https://wiki.plugily.xyz/villagedefense/setup/cmdsandperms#custom-permissions
-CustomPermissions:
-  # Player with permission my-permission-one get 10% more orbs
-  # Do not use dots (.), they won't work.
-  my-permission-one: 10
-
-# Basic permissions for game, permissions explained here: https://wiki.plugily.xyz/villagedefense/setup/cmdsandperms#basic-permissions
-Basic-Permissions:
-  Full-Games-Permission: "villagedefense.fullgames"
-  Vip-Permission: "villagedefense.vip"
-  Mvp-Permission: "villagedefense.mvp"
-  Elite-Permission: "villagedefense.elite"
-  # <arena> represents arena name (NOT MAP NAME!), for example: 'villagedefense.join.VD02'
-  # use 'villagedefense.join.*' to enable access to all arenas
-  Join-Permission: "villagedefense.join.<arena>"
-
-# Should /vd leave command be blocked?
-Disable-Leave-Command: false
+# Should the leave command be blocked inside arena?
+Leave-Command: false
 
 # Commands which can be used in game, remove all of them to disable
 Whitelisted-Commands:
@@ -76,54 +48,32 @@ Whitelisted-Commands:
   - help
 
 # Should we enable short commands such as /start and /leave
-Enable-Short-Commands: false
+Short-Commands: true
+
+# Should we block every not plugin associated commands in game?
+Block-In-Game-Commands: true
 
 # Enable this option when you're using MySQL, otherwise it won't work.
 # Be careful when changing this because there is NO migrator between
 # flat file and MySQL for player stats.
-DatabaseActivated: false
+# If this option is disabled it means all stats will be saved as flat file!
+Database: false
 
-# How many seconds game should take to start.
-Starting-Waiting-Time: 60
+# Should we enable in game rewards? See rewards.yml for more...
+# You should also check out our script engine tutorial for rewards! https://tutorial.plugily.xyz
+Rewards: true
 
-# Time before next wave starts
-Cooldown-Before-Next-Wave: 25
-
-# Speed of baby zombie. Suggested: between 1.8 and 2.0
-Mini-Zombie-Speed: 2.0
-
-# Speed of normal zombies. Suggested: between 1.2 and 1.4
-Zombie-Speed: 1.3
-
-# Zombie glow to make it visible to players.
-Glowing-Status:
-  # From which wave should the glowing be activated?
-  Starting-Wave: 6
-
-  # How many zombies should the glow be activated from?
-  # Set to 0 to disable
-  Zombies-Left: 0
-
-# Enable in game rewards? See rewards.yml for more...
-Rewards-Enabled: false
-
-# Enable in game (eg. '[KIT][LEVEL] Plajer: hey') special formatting?
+# Enable in game (eg. '[KIT][LEVEL] Tigerpanzer_02: hey') special formatting?
 # Formatting is configurable in language.yml
 # You can use PlaceholderAPI placeholders in chat format!
-ChatFormat-Enabled: true
+Plugin-Chat-Format: true
 
-# Should we disable all chat related stuff?
-# It will disable the separated chat, for example
-Disable-Separate-Chat: false
+# Should we enable a separate arena chat for players inside a arena
+# Useful on multi arena servers that don't want the same chat for all players on the server
+Separate-Arena-Chat: true
 
-# Amount of orbs given to player when game starts
-Orbs-Starting-Amount: 20
-
-# Should we block every not Village Defense associated commands in game?
-Block-Commands-In-Game: true
-
-# Should we fire some cool fireworks at location of every player after the game ends?
-Firework-When-Game-Ends: true
+# Should we fire some cool fireworks at locations of every player at special events such as the game end?
+Firework: true
 
 # Should blocks behind game signs change their color based on game state?
 # They will change color to:
@@ -132,70 +82,145 @@ Firework-When-Game-Ends: true
 # - orange (in game) stained glass
 # - gray (ending) stained glass
 # - black (restarting) stained glass
-Signs-Block-States-Enabled: true
+# or define your own at signs.yml!
+Sign-Block-States: true
 
-# Limit of mobs can be spawned per player in-game
-# Will affect only buying them in in-game shop
-Wolves-Spawn-Limit: 20
-Golems-Spawn-Limit: 15
 
-# Can the players buy again iron golems or wolves if these
-# entities died? The config limit and permission will be ignored.
-Players-Can-Buy-GolemsWolves-If-They-Died: false
-
-# Should holiday events for Village Defense be enabled?
+# Should holiday events for the plugin be enabled?
 # Eg. 4 days before and 4 days after Halloween special effects
-# for death and zombies will be applied, spooky!
-Holidays-Enabled: true
-
-# Enable very simple health bar for zombies?
-# They will have health instead of their names
-# It will show percentage of health left.
-# It's kinda buggy, you should use external plugin if you got one.
-Simple-Zombie-Health-Bar-Enabled: true
-
-# Power ups section. If you want to have classic Village Defense game mode I recommend to disable this.
-Powerups:
-  # Do you want to enable in-game power ups?
-  # This will make zombies drop some power ups when they're killed
-  # REQUIRES Holographic Displays otherwise it won't be enabled!
-  Enabled: true
-  # Modify powerup drop chance here
-  Drop-Chance: 1.0 # 1% chance by default
-  # Enable or disable specific power ups here.
-  List:
-    Map-Clean: true
-    Double-Damage-For-Players:
-      Enabled: true
-      Time: 15 # seconds
-    Healing-For-Players:
-      Enabled: true
-      Amplifier: 1
-      Time-Of-Healing: 10 # seconds
-    # Spawns X golems in village
-    # Owner of golems is person who picked up power up
-    Golem-Raid:
-      Enabled: true
-      Golems-Amount: 3
-    # Every zombie can be killed for one hit
-    One-Shot-One-Kill:
-      Enabled: true
-      Time: 15 # seconds
-
-Wave-Limit:
-  # Should game have finite amount of waves
-  Enabled: false
-  # Limit of waves, if this wave ends game will end
-  Limit: 25
+# for death, spooky! There are more holiday events! Check wiki!
+# Wiki: -
+Holidays: true
 
 
-#After how many zombies should we limit them?
-#Once limit is reached zombies get more health so it's still harder each wave
-Zombies-Limit: 75
+# Should the plugin enable special powerups which can be found in powerups.yml
+Powerups: false
 
-#Active after zombies limit is reached
-#Higher value means weaker zombies
-Zombie-Multiplier-Divider: 18
+
+# Should the plugin enable kits which can be found in kits.yml
+Kits: false
+
+
+# Should we create leaderboards out of the stats?
+Leaderboard: true
+
+
+Parties:
+  # Should we try to hook into your current party plugin? (Supports well know party plugins, see wiki!)
+  # It will group up all players with the party leader. The party leader can join with the whole party!
+  External: true
+  # Should we enable our own party system that can be only used for this plugin?
+  # Check the wiki for commands
+  Own: false
+
+
+Damage:
+  # Should players get fall damage?
+  Fall: false
+  # Should players get drowning damage?
+  Drowning: false
+  # Should players get fire damage?
+  Fire: false
+
+
+Cycle:
+  # Should we make permanent clear weather on all worlds where our arenas are?
+  Weather: false
+  # Should the time on the world your arenas are modified to stay at the same time?
+  Daylight: false
+
+
+# How many seconds game should take to start.
+Time-Manager:
+  Waiting: 20
+  Starting: 60
+  Shorten-Waiting: 5
+  In-Game: 270
+  # Time before next wave starts
+  Cooldown-Before-Next-Wave: 25
+  Ending: 10
+  Restarting: 5
+
+
+# Should we add support for upgradeable Wolves and Golems in game?
+# Configure upgrades pricing in entity_upgrades.yml after enabling it.
+Entity-Upgrades: false
+
+
+Respawn:
+  # Respawn players when wave ends/starts?
+  After-Wave: true
+  # Should player be able to join on in-game stage with respawn after wave?
+  In-Game-Join: true
+
+
+Limit:
+  Wave:
+    # Should game have finite amount of waves
+    Unlimited: true
+    # Limit of waves, if this wave ends game will end
+    Game-End: 25
+  Spawn:
+    # Limit of mobs can be spawned per player in-game
+    # Will affect only buying them in in-game shop
+    Wolves: 20
+    Golems: 15
+    # How many villagers will be spawned in an arena?
+    Villager: 10
+  # After how many zombies should we limit them?
+  # Once limit is reached zombies get more health so it's still harder each wave
+  Zombies: 75
+  # Can the players buy again iron golems or wolves if these
+  # entities died? The config limit and permission will be ignored.
+  Entity-Buy-After-Death: false
+
+
+Zombies:
+  # Active after zombies limit is reached
+  # Higher value means weaker zombies
+  Multiplier-Divider: 18
+  # Enable very simple health bar for zombies?
+  # They will have health instead of their names
+  # It will show percentage of health left.
+  Health-Bar: true
+  Speed:
+    # Speed of normal zombies. Suggested: between 1.2 and 1.4
+    Normal: 1.3
+    # Speed of baby zombie. Suggested: between 1.8 and 2.0
+    Mini: 2.0
+
+
+Orbs:
+  Start:
+    # Amount of orbs given to player when game starts
+    Amount: 20
+  Death:
+    # How many orbs should the players lose after they dead?
+    # The default is 0, so their orbs will be set to 0.
+    # The value should be 1 or higher.
+    Lose: 0
+    # Should the orbs kept after player death?
+    # true - player's orbs will be kept after death
+    # false - player's orbs will be set according to the above option.
+    Keep: true
+
+
+
+# Should the name tag of these mobs always visible?
+Name-Visibility:
+  Golem: true
+  Wolf: true
+  Villager: true
+
+
+# Zombie glow to make it visible to players.
+Glowing-Status:
+  # From which wave should the glowing be activated?
+  Starting-Wave: 6
+  # How many zombies should the glow be activated from?
+  # Set to 0 to disable
+  Zombies-Left: 0
+
 
 Update-Notifier:
   # Should we check for updates on plugin start/after admin join?
@@ -205,44 +230,10 @@ Update-Notifier:
   # BETA IS NOT ALWAYS AS STABLE AS NORMAL RELEASE!
   Notify-Beta-Versions: true
 
-#Disable Party features of external party plugins (such as PAF, Parties ...)
-Disable-Parties: true
 
-# Should players get no fall damage?
-Disable-Fall-Damage: false
-
-# Should players get no drowning damage?
-Disable-Drowning-Damage: false
-
-# How many villagers will be spawned in a arena?
-Villager-Amount: 10
-
-# How many orbs should the players lose after they dead?
-# The default is 0, so their orbs will be set to 0.
-# The value should be 1 or higher.
-Orbs-To-Lose-After-Death: 0
-
-# Should the orbs kept after player death?
-# true - player's orbs will be kept after death
-# false - player's orbs will be set according to the above option.
-Keep-Orbs-After-Death: false
-
-# Should the name tag of these mobs always visible?
-Name-Visible:
-  Golem: true
-  Wolf: true
-  Villager: true
-
-Arena-Selector:
-  # Change items of arena selector
-  State-Item:
-    Waiting: LIME_wool
-    Starting: YELLOW_wool
-    In-Game: RED_wool
-    Ending: RED_wool
-    Restarting: RED_wool
-
-# Don't modify.
-Version: 19
-
-# No way! You've reached the end! But... where's the dragon!?
+# Don't edit it. But who's stopping you? It's your server!
+# Really, don't edit ;p
+# You edited it, huh? Next time hurt yourself!
+Do-Not-Edit:
+  File-Version: 1
+  Core-Version: 1

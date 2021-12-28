@@ -19,7 +19,7 @@
 package plugily.projects.villagedefense.api.event.wave;
 
 import org.bukkit.event.HandlerList;
-import plugily.projects.villagedefense.api.event.VillageEvent;
+import plugily.projects.minigamesbox.classic.api.event.PlugilyEvent;
 import plugily.projects.villagedefense.arena.Arena;
 
 /**
@@ -28,7 +28,7 @@ import plugily.projects.villagedefense.arena.Arena;
  * <p>
  * Called when wave in arena has ended.
  */
-public class VillageWaveEndEvent extends VillageEvent {
+public class VillageWaveEndEvent extends PlugilyEvent {
 
   private static final HandlerList HANDLERS = new HandlerList();
   private final Integer waveNumber;

@@ -18,106 +18,39 @@
 
 package plugily.projects.villagedefense.arena.states;
 
-import org.bukkit.Bukkit;
-import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
-import plugily.projects.villagedefense.Main;
-import plugily.projects.villagedefense.api.StatsStorage;
-import plugily.projects.villagedefense.api.event.game.VillageGameStartEvent;
+import plugily.projects.minigamesbox.classic.arena.PluginArena;
+import plugily.projects.minigamesbox.classic.arena.states.PluginStartingState;
+import plugily.projects.minigamesbox.classic.user.User;
 import plugily.projects.villagedefense.arena.Arena;
-import plugily.projects.villagedefense.arena.ArenaState;
-import plugily.projects.villagedefense.handlers.language.Messages;
-import plugily.projects.villagedefense.user.User;
 
 /**
  * @author Plajer
  * <p>
  * Created at 03.06.2019
  */
-public class StartingState implements ArenaStateHandler {
-
-  private Main plugin;
+public class StartingState extends PluginStartingState {
 
   @Override
-  public void init(Main plugin) {
-    this.plugin = plugin;
-  }
-
-  @Override
-  public void handleCall(Arena arena) {
-    double startWaiting = plugin.getConfig().getDouble("Starting-Waiting-Time", 60);
-    int timer = arena.getTimer();
-
-    if(arena.getGameBar() != null) {
-      arena.getGameBar().setTitle(translatePlaceholders(arena, plugin.getChatManager().colorMessage(Messages.BOSSBAR_STARTING_IN)));
-      arena.getGameBar().setProgress(timer / startWaiting);
-    }
-
-    float exp = (float) (timer / startWaiting);
-
-    for(Player player : arena.getPlayers()) {
-      player.setExp(exp);
-      player.setLevel(timer);
-    }
-
-    int minPlayers;
-
-    if(!arena.isForceStart() && arena.getPlayers().size() < (minPlayers = arena.getMinimumPlayers())) {
-      if(arena.getGameBar() != null) {
-        arena.getGameBar().setTitle(translatePlaceholders(arena, plugin.getChatManager().colorMessage(Messages.BOSSBAR_WAITING_FOR_PLAYERS)));
-        arena.getGameBar().setProgress(1.0);
-      }
-      plugin.getChatManager().broadcastMessage(arena, plugin.getChatManager().formatMessage(arena, plugin.getChatManager().colorMessage(Messages.LOBBY_MESSAGES_WAITING_FOR_PLAYERS), minPlayers));
-      arena.setArenaState(ArenaState.WAITING_FOR_PLAYERS);
-      Bukkit.getPluginManager().callEvent(new VillageGameStartEvent(arena));
-      arena.setTimer(15);
-      for(Player player : arena.getPlayers()) {
-        player.setExp(1);
-        player.setLevel(0);
-      }
+  public void handleCall(PluginArena arena) {
+    Arena pluginArena = (Arena) getPlugin().getArenaRegistry().getArena(arena.getId());
+    if(pluginArena == null) {
       return;
     }
+    super.handleCall(pluginArena);
     if(arena.getTimer() == 0 || arena.isForceStart()) {
-      arena.spawnVillagers();
-      Bukkit.getPluginManager().callEvent(new VillageGameStartEvent(arena));
-      arena.setArenaState(ArenaState.IN_GAME);
-      if(arena.getGameBar() != null) {
-        arena.getGameBar().setProgress(1.0);
-      }
-      arena.setTimer(5);
+      pluginArena.spawnVillagers();
 
-      org.bukkit.Location arenaLoc = arena.getStartLocation();
-      int orbsStartingAmount = plugin.getConfig().getInt("Orbs-Starting-Amount", 20);
+      int orbsStartingAmount = getPlugin().getConfig().getInt("Orbs.Start.Amount", 20);
 
       for(Player player : arena.getPlayers()) {
-        player.teleport(arenaLoc);
-        player.setExp(0);
-        player.setLevel(0);
-        player.getInventory().clear();
-        player.setGameMode(GameMode.SURVIVAL);
-        User user = plugin.getUserManager().getUser(player);
-        user.setStat(StatsStorage.StatisticType.ORBS, orbsStartingAmount);
-        user.getKit().giveKitItems(player);
-        player.updateInventory();
-        plugin.getUserManager().addExperience(player, 10);
-        player.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage(Messages.LOBBY_MESSAGES_GAME_STARTED));
+        User user = getPlugin().getUserManager().getUser(player);
+        user.setStat("ORBS", orbsStartingAmount);
       }
-      arena.setTimer(plugin.getConfig().getInt("Cooldown-Before-Next-Wave", 25));
-      arena.setFighting(false);
+      arena.setTimer(getPlugin().getConfig().getInt("Cooldown-Before-Next-Wave", 25));
+      pluginArena.setFighting(false);
     }
-    if(arena.isForceStart()) {
-      arena.setForceStart(false);
-    }
-    arena.setTimer(arena.getTimer() - 1);
   }
-  
-  private String translatePlaceholders(Arena arena, String bar) {
-    bar = bar.replace("%time%", Integer.toString(arena.getTimer()));
-    bar = bar.replace("%players%", Integer.toString(arena.getPlayers().size()));
-    bar = bar.replace("%min_players%", Integer.toString(arena.getMinimumPlayers()));
-    bar = bar.replace("%max_players%", Integer.toString(arena.getMaximumPlayers()));
-    bar = bar.replace("%mapname%", arena.getMapName());
-    return bar;
-  }
+
 
 }

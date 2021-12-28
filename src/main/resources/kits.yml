@@ -19,7 +19,7 @@ Required-Level:
   Terminator: 20
   Hardcore: 100
 
-# Here you can disable Village Defense preconfigured kits.
+# Here you can disable plugily projects preconfigured kits.
 # Set 'false' to disable.
 Enabled-Game-Kits:
   Archer: true
@@ -72,3 +72,11 @@ Kit-Settings:
     # How many amount will be added to the base amount?
     # Set to 0 to disable
     Increase-Amount: 5
+
+
+# Don't edit it. But who's stopping you? It's your server!
+# Really, don't edit ;p
+# You edited it, huh? Next time hurt yourself!
+Do-Not-Edit:
+  File-Version: 1
+  Core-Version: 1

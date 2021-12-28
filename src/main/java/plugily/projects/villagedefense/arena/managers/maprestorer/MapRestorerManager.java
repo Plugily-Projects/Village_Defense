@@ -18,19 +18,20 @@
 
 package plugily.projects.villagedefense.arena.managers.maprestorer;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.logging.Level;
 import org.bukkit.Location;
 import org.bukkit.TreeSpecies;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.entity.EntityType;
 import org.bukkit.material.Door;
-import plugily.projects.commonsbox.minecraft.compat.xseries.XMaterial;
+import plugily.projects.minigamesbox.classic.arena.managers.PluginMapRestorerManager;
+import plugily.projects.minigamesbox.classic.utils.version.xseries.XMaterial;
 import plugily.projects.villagedefense.arena.Arena;
-import plugily.projects.villagedefense.utils.Debugger;
 import plugily.projects.villagedefense.utils.Utils;
+
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.logging.Level;
 
 /**
  * @author Plajer
@@ -38,12 +39,13 @@ import plugily.projects.villagedefense.utils.Utils;
  * Created at 14.02.2019
  */
 @SuppressWarnings("deprecation")
-public class MapRestorerManager {
+public class MapRestorerManager extends PluginMapRestorerManager {
 
   protected final Map<Location, Byte> doorBlocks = new LinkedHashMap<>();
   public final Arena arena;
 
   public MapRestorerManager(Arena arena) {
+    super(arena);
     this.arena = arena;
   }
 
@@ -55,7 +57,9 @@ public class MapRestorerManager {
     return doorBlocks;
   }
 
-  public final void fullyRestoreArena() {
+  @Override
+  public void fullyRestoreArena() {
+    super.fullyRestoreArena();
     restoreDoors();
     clearEnemiesFromArena();
     clearGolemsFromArena();
@@ -65,12 +69,13 @@ public class MapRestorerManager {
   }
 
   public final void clearEnemiesFromArena() {
+    arena.getEnemySpawnManager().applyIdle(0);
     arena.getEnemies().forEach(org.bukkit.entity.Creature::remove);
     arena.getEnemies().clear();
   }
 
   public final void clearDroppedEntities() {
-    for(org.bukkit.entity.Entity entity : Utils.getNearbyEntities(arena.getStartLocation(), 200)) {
+    for(org.bukkit.entity.Entity entity : arena.getPlugin().getBukkitHelper().getNearbyEntities(arena.getStartLocation(), 200)) {
       if(entity.getType() == EntityType.EXPERIENCE_ORB || entity.getType() == EntityType.DROPPED_ITEM) {
         entity.remove();
       }
@@ -110,18 +115,18 @@ public class MapRestorerManager {
         restoreBottomHalfDoorPart(block, doorData);
         i++;
       } catch(Exception ex) {
-        Debugger.debug(Level.WARNING, "Door has failed to load for arena {0} message {1} type {2} skipping!", arena.getId(), ex.getMessage(), ex.getCause());
+        arena.getPlugin().getDebugger().debug(Level.WARNING, "Door has failed to load for arena {0} message {1} type {2} skipping!", arena.getId(), ex.getMessage(), ex.getCause());
       }
     }
     if(i != doorBlocks.size()) {
-      Debugger.debug(Level.WARNING, "Failed to load doors for {0}! Expected {1} got {2}", arena.getId(), doorBlocks.size(), i);
+      arena.getPlugin().getDebugger().debug(Level.WARNING, "Failed to load doors for {0}! Expected {1} got {2}", arena.getId(), doorBlocks.size(), i);
     }
   }
 
   public void restoreTopHalfDoorPart(Block block) {
     block.setType(Utils.getCachedDoor(block));
     BlockState doorBlockState = block.getState();
-    Door doorBlockData = new Door(TreeSpecies.GENERIC, Utils.getFacingByByte((byte) 8));
+    Door doorBlockData = new Door(TreeSpecies.GENERIC, arena.getPlugin().getBukkitHelper().getFacingByByte((byte) 8));
 
     doorBlockData.setTopHalf(true);
     doorBlockData.setFacingDirection(doorBlockData.getFacing());
@@ -135,7 +140,7 @@ public class MapRestorerManager {
   public void restoreBottomHalfDoorPart(Block block, byte doorData) {
     block.setType(Utils.getCachedDoor(block));
     BlockState doorBlockState = block.getState();
-    Door doorBlockData = new Door(TreeSpecies.GENERIC, Utils.getFacingByByte(doorData));
+    Door doorBlockData = new Door(TreeSpecies.GENERIC, arena.getPlugin().getBukkitHelper().getFacingByByte(doorData));
 
     doorBlockData.setTopHalf(false);
     doorBlockData.setFacingDirection(doorBlockData.getFacing());

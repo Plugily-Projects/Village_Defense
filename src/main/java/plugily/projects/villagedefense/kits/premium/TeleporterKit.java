@@ -27,22 +27,17 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
-import plugily.projects.commonsbox.minecraft.compat.VersionUtils;
-import plugily.projects.commonsbox.minecraft.compat.events.api.CBPlayerInteractEvent;
-import plugily.projects.commonsbox.minecraft.compat.xseries.XMaterial;
-import plugily.projects.commonsbox.minecraft.helper.ArmorHelper;
-import plugily.projects.commonsbox.minecraft.helper.WeaponHelper;
-import plugily.projects.commonsbox.minecraft.item.ItemBuilder;
-import plugily.projects.commonsbox.minecraft.item.ItemUtils;
-import plugily.projects.commonsbox.minecraft.misc.stuff.ComplementAccessor;
+import plugily.projects.minigamesbox.classic.kits.basekits.PremiumKit;
+import plugily.projects.minigamesbox.classic.utils.helper.ArmorHelper;
+import plugily.projects.minigamesbox.classic.utils.helper.ItemBuilder;
+import plugily.projects.minigamesbox.classic.utils.helper.ItemUtils;
+import plugily.projects.minigamesbox.classic.utils.helper.WeaponHelper;
+import plugily.projects.minigamesbox.classic.utils.misc.complement.ComplementAccessor;
+import plugily.projects.minigamesbox.classic.utils.version.VersionUtils;
+import plugily.projects.minigamesbox.classic.utils.version.events.api.CBPlayerInteractEvent;
+import plugily.projects.minigamesbox.classic.utils.version.xseries.XMaterial;
 import plugily.projects.minigamesbox.inventory.normal.FastInv;
 import plugily.projects.villagedefense.arena.Arena;
-import plugily.projects.villagedefense.arena.ArenaRegistry;
-import plugily.projects.villagedefense.handlers.PermissionsManager;
-import plugily.projects.villagedefense.handlers.language.Messages;
-import plugily.projects.villagedefense.kits.KitRegistry;
-import plugily.projects.villagedefense.kits.basekits.PremiumKit;
-import plugily.projects.villagedefense.utils.Utils;
 
 import java.util.Collections;
 import java.util.List;
@@ -53,16 +48,16 @@ import java.util.List;
 public class TeleporterKit extends PremiumKit implements Listener {
 
   public TeleporterKit() {
-    setName(getPlugin().getChatManager().colorMessage(Messages.KITS_TELEPORTER_NAME));
-    List<String> description = Utils.splitString(getPlugin().getChatManager().colorMessage(Messages.KITS_TELEPORTER_DESCRIPTION), 40);
-    setDescription(description.toArray(new String[0]));
+    setName(getPlugin().getChatManager().colorMessage("KIT_CONTENT_TELEPORTER_NAME"));
+    List<String> description = getPlugin().getLanguageManager().getLanguageListFromKey("KIT_CONTENT_TELEPORTER_DESCRIPTION");
+    setDescription(description);
     getPlugin().getServer().getPluginManager().registerEvents(this, getPlugin());
-    KitRegistry.registerKit(this);
+    getPlugin().getKitRegistry().registerKit(this);
   }
 
   @Override
   public boolean isUnlockedByPlayer(Player player) {
-    return PermissionsManager.isPremium(player) || player.hasPermission("villagedefense.kit.teleporter");
+    return getPlugin().getPermissionsManager().hasPermissionString("KIT_PREMIUM_UNLOCK", player) || player.hasPermission("villagedefense.kit.teleporter");
   }
 
   @Override
@@ -73,8 +68,8 @@ public class TeleporterKit extends PremiumKit implements Listener {
     player.getInventory().addItem(new ItemStack(Material.COOKED_BEEF, 10));
     player.getInventory().addItem(new ItemStack(Material.SADDLE));
     player.getInventory().addItem(new ItemBuilder(Material.GHAST_TEAR)
-        .name(getPlugin().getChatManager().colorMessage(Messages.KITS_TELEPORTER_GAME_ITEM_NAME))
-        .lore(Utils.splitString(getPlugin().getChatManager().colorMessage(Messages.KITS_TELEPORTER_GAME_ITEM_LORE), 40))
+        .name(getPlugin().getChatManager().colorMessage("KIT_CONTENT_TELEPORTER_GAME_ITEM_NAME"))
+        .lore(getPlugin().getLanguageManager().getLanguageListFromKey("KIT_CONTENT_TELEPORTER_GAME_ITEM_DESCRIPTION"))
         .build());
   }
 
@@ -94,16 +89,16 @@ public class TeleporterKit extends PremiumKit implements Listener {
       return;
     }
     Player player = e.getPlayer();
-    Arena arena = ArenaRegistry.getArena(player);
+    Arena arena = (Arena) getPlugin().getArenaRegistry().getArena(player);
     if(arena == null) {
       return;
     }
 
     ItemStack stack = VersionUtils.getItemInHand(player);
-    if (!ItemUtils.isItemStackNamed(stack))
+    if(!ItemUtils.isItemStackNamed(stack))
       return;
 
-    if(!ChatColor.stripColor(ComplementAccessor.getComplement().getDisplayName(stack.getItemMeta())).equalsIgnoreCase(ChatColor.stripColor(getPlugin().getChatManager().colorMessage(Messages.KITS_TELEPORTER_GAME_ITEM_NAME)))) {
+    if(!ChatColor.stripColor(ComplementAccessor.getComplement().getDisplayName(stack.getItemMeta())).equalsIgnoreCase(ChatColor.stripColor(getPlugin().getChatManager().colorMessage("KIT_CONTENT_TELEPORTER_GAME_ITEM_NAME")))) {
       return;
     }
     if(!(getPlugin().getUserManager().getUser(player).getKit() instanceof TeleporterKit)) {
@@ -116,12 +111,13 @@ public class TeleporterKit extends PremiumKit implements Listener {
       }
       slots++;
     }
-    slots = Utils.serializeInt(slots);
+    slots = getPlugin().getBukkitHelper().serializeInt(slots);
     prepareTeleporterGui(player, arena, slots);
   }
 
   private void prepareTeleporterGui(Player player, Arena arena, int slots) {
-    FastInv gui = new FastInv(slots, getPlugin().getChatManager().colorMessage(Messages.KITS_TELEPORTER_GAME_ITEM_MENU_NAME));
+    FastInv gui = new FastInv(slots, getPlugin().getChatManager().colorMessage("KIT_CONTENT_TELEPORTER_GAME_ITEM_GUI"));
+    gui.addClickHandler(inventoryClickEvent -> inventoryClickEvent.setCancelled(true));
     for(Player arenaPlayer : arena.getPlayers()) {
       if(getPlugin().getUserManager().getUser(arenaPlayer).isSpectator()) {
         continue;
@@ -133,9 +129,9 @@ public class TeleporterKit extends PremiumKit implements Listener {
       ComplementAccessor.getComplement().setLore(meta, Collections.singletonList(""));
       skull.setItemMeta(meta);
       gui.addItem(skull, onClick -> {
-        player.sendMessage(getPlugin().getChatManager().formatMessage(arena, getPlugin().getChatManager().colorMessage(Messages.KITS_TELEPORTER_TELEPORTED_TO_PLAYER), arenaPlayer));
+        player.sendMessage(getPlugin().getChatManager().formatMessage(arena, getPlugin().getChatManager().colorMessage("KIT_CONTENT_TELEPORTER_TELEPORT_PLAYER"), arenaPlayer));
         player.teleport(arenaPlayer);
-        Utils.playSound(player.getLocation(), "ENTITY_ENDERMEN_TELEPORT", "ENTITY_ENDERMAN_TELEPORT");
+        VersionUtils.playSound(player.getLocation(), "ENTITY_ENDERMAN_TELEPORT");
         VersionUtils.sendParticles("PORTAL", arena.getPlayers(), player.getLocation(), 30);
         player.closeInventory();
       });
@@ -146,9 +142,9 @@ public class TeleporterKit extends PremiumKit implements Listener {
           .lore(villager.getUniqueId().toString())
           .build(), onClick -> {
         player.teleport(villager.getLocation());
-        Utils.playSound(player.getLocation(), "ENTITY_ENDERMEN_TELEPORT", "ENTITY_ENDERMAN_TELEPORT");
+        VersionUtils.playSound(player.getLocation(), "ENTITY_ENDERMAN_TELEPORT");
         VersionUtils.sendParticles("PORTAL", arena.getPlayers(), player.getLocation(), 30);
-        player.sendMessage(getPlugin().getChatManager().colorMessage(Messages.KITS_TELEPORTER_TELEPORTED_TO_VILLAGER));
+        player.sendMessage(getPlugin().getChatManager().colorMessage("KIT_CONTENT_TELEPORTER_TELEPORT_VILLAGER"));
       });
     }
     gui.open(player);

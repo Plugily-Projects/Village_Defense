@@ -18,9 +18,10 @@
 
 package plugily.projects.villagedefense.handlers.upgrade.upgrades;
 
+import plugily.projects.villagedefense.Main;
+
 import java.util.Arrays;
 import java.util.List;
-import plugily.projects.villagedefense.Main;
 
 /**
  * @author Plajer

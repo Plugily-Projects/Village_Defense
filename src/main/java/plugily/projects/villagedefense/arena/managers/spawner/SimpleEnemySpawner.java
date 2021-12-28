@@ -1,12 +1,12 @@
 package plugily.projects.villagedefense.arena.managers.spawner;
 
-import java.util.Random;
 import org.bukkit.Location;
 import org.bukkit.entity.Creature;
 import org.jetbrains.annotations.Nullable;
 import plugily.projects.villagedefense.arena.Arena;
-import plugily.projects.villagedefense.arena.options.ArenaOption;
 import plugily.projects.villagedefense.creatures.CreatureUtils;
+
+import java.util.Random;
 
 /**
  * The interface for simple enemy spawner
@@ -112,13 +112,13 @@ public interface SimpleEnemySpawner extends EnemySpawner {
    */
   default void spawn(Location location, Arena arena) {
     Creature creature = spawn(location);
-    if (creature == null) {
+    if(creature == null) {
       return;
     }
-    if (canApplyAttributes()) {
+    if(canApplyAttributes()) {
       CreatureUtils.applyAttributes(creature, arena);
     }
-    if (canApplyHolidayEffect()) {
+    if(canApplyHolidayEffect()) {
       arena.getPlugin().getHolidayManager().applyHolidayCreatureEffects(creature);
     }
     arena.getEnemies().add(creature);
@@ -127,24 +127,24 @@ public interface SimpleEnemySpawner extends EnemySpawner {
   @Override
   default void spawn(Random random, Arena arena, int spawn) {
     int wave = arena.getWave();
-    int phase = arena.getOption(ArenaOption.ZOMBIE_SPAWN_COUNTER);
-    if (!checkPhase(arena, wave, phase, spawn)) {
+    int phase = arena.getArenaOption("ZOMBIE_SPAWN_COUNTER");
+    if(!checkPhase(arena, wave, phase, spawn)) {
       return;
     }
 
     int maxWave = getMaxWave();
-    if (wave < getMinWave() || (maxWave > 0 && wave > maxWave)) {
+    if(wave < getMinWave() || (maxWave > 0 && wave > maxWave)) {
       return;
     }
     int spawnAmount = getFinalAmount(arena, wave, phase, spawn);
     double spawnRate = getSpawnRate(arena, wave, phase, spawn);
     int weight = getSpawnWeight(arena, wave, phase, spawn);
-    for (int i = 0; i < spawnAmount; i++) {
-      int zombiesToSpawn = arena.getOption(ArenaOption.ZOMBIES_TO_SPAWN);
-      if (zombiesToSpawn >= weight && spawnRate != 0 && (spawnRate == 1 || random.nextDouble() < spawnRate)) {
+    for(int i = 0; i < spawnAmount; i++) {
+      int zombiesToSpawn = arena.getArenaOption("ZOMBIES_TO_SPAWN");
+      if(zombiesToSpawn >= weight && spawnRate != 0 && (spawnRate == 1 || random.nextDouble() < spawnRate)) {
         Location location = arena.getRandomZombieSpawn(random);
         spawn(location, arena);
-        arena.setOptionValue(ArenaOption.ZOMBIES_TO_SPAWN, zombiesToSpawn - weight);
+        arena.setArenaOption("ZOMBIES_TO_SPAWN", zombiesToSpawn - weight);
       }
     }
   }

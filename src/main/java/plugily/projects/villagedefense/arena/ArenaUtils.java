@@ -18,71 +18,33 @@
 
 package plugily.projects.villagedefense.arena;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.concurrent.ThreadLocalRandom;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Creature;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffectType;
-import plugily.projects.commonsbox.minecraft.compat.VersionUtils;
-import plugily.projects.commonsbox.minecraft.serialization.InventorySerializer;
-import plugily.projects.villagedefense.ConfigPreferences;
+import plugily.projects.minigamesbox.classic.arena.PluginArenaUtils;
+import plugily.projects.minigamesbox.classic.user.User;
+import plugily.projects.minigamesbox.classic.utils.version.VersionUtils;
 import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.api.event.player.VillagePlayerRespawnEvent;
-import plugily.projects.villagedefense.handlers.language.Messages;
-import plugily.projects.villagedefense.user.User;
-import plugily.projects.villagedefense.utils.Utils;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * @author Plajer
  * <p>
  * Created at 13.03.2018
  */
-public class ArenaUtils {
+public class ArenaUtils extends PluginArenaUtils {
 
   private static Main plugin;
 
   private ArenaUtils() {
-  }
-
-  public static void init(Main plugin) {
-    ArenaUtils.plugin = plugin;
-  }
-
-  public static void hidePlayer(Player p, Arena arena) {
-    for(Player player : arena.getPlayers()) {
-      VersionUtils.hidePlayer(plugin, player, p);
-    }
-  }
-
-  public static void showPlayer(Player p, Arena arena) {
-    for(Player player : arena.getPlayers()) {
-      VersionUtils.showPlayer(plugin, player, p);
-    }
-  }
-
-  public static void resetPlayerAfterGame(Player player) {
-    for(Player players : plugin.getServer().getOnlinePlayers()) {
-      VersionUtils.showPlayer(plugin, players, player);
-      VersionUtils.showPlayer(plugin, player, players);
-    }
-    VersionUtils.setGlowing(player, false);
-    player.setGameMode(GameMode.SURVIVAL);
-    player.getActivePotionEffects().forEach(effect -> player.removePotionEffect(effect.getType()));
-    player.setFlying(false);
-    player.setAllowFlight(false);
-    player.getInventory().clear();
-    player.getInventory().setArmorContents(null);
-    VersionUtils.setMaxHealth(player, 20);
-    player.setHealth(VersionUtils.getMaxHealth(player));
-    player.setFireTicks(0);
-    player.setFoodLevel(20);
-    if(plugin.getConfigPreferences().getOption(ConfigPreferences.Option.INVENTORY_MANAGER_ENABLED)) {
-      InventorySerializer.loadInventory(plugin, player);
-    }
+    super();
   }
 
   public static void bringDeathPlayersBack(Arena arena) {
@@ -95,7 +57,7 @@ public class ArenaUtils {
       }
 
       User user = plugin.getUserManager().getUser(player);
-      if(user.isPermanentSpectator() && !plugin.getConfigPreferences().getOption(ConfigPreferences.Option.INGAME_JOIN_RESPAWN)) {
+      if(user.isPermanentSpectator() && !plugin.getConfigPreferences().getOption("RESPAWN_IN_GAME_JOIN")) {
         continue;
       }
 
@@ -119,7 +81,7 @@ public class ArenaUtils {
       ArenaUtils.showPlayer(player, arena);
       user.getKit().giveKitItems(player);
       player.updateInventory();
-      player.sendMessage(plugin.getChatManager().colorMessage(Messages.BACK_IN_GAME));
+      player.sendMessage(plugin.getChatManager().colorMessage("IN_GAME_MESSAGES_VILLAGE_WAVE_RESPAWNED"));
     }
   }
 
@@ -130,9 +92,9 @@ public class ArenaUtils {
   public static void removeSpawnedEnemies(Arena arena, int amount, double maxHealthToRemove) {
     List<Creature> toRemove = new ArrayList<>(arena.getEnemies());
     toRemove.removeIf(creature -> creature.getHealth() > maxHealthToRemove);
-    if (toRemove.size() > amount) {
+    if(toRemove.size() > amount) {
       Collections.shuffle(toRemove, ThreadLocalRandom.current());
-      while (toRemove.size() > amount && !toRemove.isEmpty()) {
+      while(toRemove.size() > amount && !toRemove.isEmpty()) {
         toRemove.remove(0);
       }
     }
@@ -145,26 +107,6 @@ public class ArenaUtils {
         VersionUtils.sendParticles("LAVA", arena.getPlayers(), creature.getLocation(), 20);
       }
       creature.remove();
-    }
-  }
-
-  public static void arenaForceStart(Player player) {
-    if(!Utils.hasPermission(player, "villagedefense.admin.forcestart")) {
-      player.sendMessage(plugin.getChatManager().colorMessage(Messages.COMMANDS_NO_PERMISSION));
-      return;
-    }
-
-    Arena arena = ArenaRegistry.getArena(player);
-    if(arena == null) {
-      player.sendMessage(plugin.getChatManager().colorMessage(Messages.COMMANDS_NOT_PLAYING));
-      return;
-    }
-
-    if(arena.getArenaState() == ArenaState.WAITING_FOR_PLAYERS || arena.getArenaState() == ArenaState.STARTING) {
-      arena.setArenaState(ArenaState.STARTING);
-      arena.setForceStart(true);
-      arena.setTimer(0);
-      plugin.getChatManager().broadcast(arena, Messages.ADMIN_MESSAGES_SET_STARTING_IN_TO_0);
     }
   }
 

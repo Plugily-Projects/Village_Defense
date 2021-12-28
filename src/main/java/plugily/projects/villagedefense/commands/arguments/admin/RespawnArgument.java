@@ -18,21 +18,19 @@
 
 package plugily.projects.villagedefense.commands.arguments.admin;
 
-import java.util.Arrays;
 import org.bukkit.GameMode;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffectType;
+import plugily.projects.minigamesbox.classic.commands.arguments.data.CommandArgument;
+import plugily.projects.minigamesbox.classic.commands.arguments.data.LabelData;
+import plugily.projects.minigamesbox.classic.commands.arguments.data.LabeledCommandArgument;
+import plugily.projects.minigamesbox.classic.user.User;
 import plugily.projects.villagedefense.arena.Arena;
-import plugily.projects.villagedefense.arena.ArenaRegistry;
 import plugily.projects.villagedefense.arena.ArenaUtils;
 import plugily.projects.villagedefense.commands.arguments.ArgumentsRegistry;
-import plugily.projects.villagedefense.commands.arguments.data.CommandArgument;
-import plugily.projects.villagedefense.commands.arguments.data.LabelData;
-import plugily.projects.villagedefense.commands.arguments.data.LabeledCommandArgument;
-import plugily.projects.villagedefense.handlers.language.Messages;
-import plugily.projects.villagedefense.user.User;
-import plugily.projects.villagedefense.utils.Utils;
+
+import java.util.Arrays;
 
 /**
  * @author Plajer
@@ -49,14 +47,14 @@ public class RespawnArgument {
       @Override
       public void execute(CommandSender sender, String[] args) {
         Player player = (Player) sender;
-        if(!Utils.checkIsInGameInstance(player)) {
+        if(!registry.getPlugin().getBukkitHelper().checkIsInGameInstance(player)) {
           return;
         }
-        Arena arena = ArenaRegistry.getArena(player);
+        Arena arena = (Arena) registry.getPlugin().getArenaRegistry().getArena(player);
 
         Player target = null;
         if(args.length == 2) {
-          if(!Utils.hasPermission(sender, "villagedefense.admin.respawn.others")) {
+          if(!registry.getPlugin().getBukkitHelper().hasPermission(sender, "villagedefense.admin.respawn.others")) {
             return;
           }
           for(Player loopPlayer : arena.getPlayers()) {
@@ -66,7 +64,7 @@ public class RespawnArgument {
             }
           }
           if(target == null) {
-            sender.sendMessage(registry.getPlugin().getChatManager().getPrefix() + registry.getPlugin().getChatManager().colorMessage(Messages.COMMANDS_TARGET_PLAYER_NOT_FOUND));
+            sender.sendMessage(registry.getPlugin().getChatManager().getPrefix() + registry.getPlugin().getChatManager().colorMessage("COMMANDS_PLAYER_NOT_FOUND"));
             return;
           }
         } else {
@@ -88,7 +86,7 @@ public class RespawnArgument {
         ArenaUtils.showPlayer(target, arena);
         target.getInventory().clear();
         user.getKit().giveKitItems(target);
-        target.sendMessage(registry.getPlugin().getChatManager().getPrefix() + registry.getPlugin().getChatManager().colorMessage(Messages.BACK_IN_GAME));
+        target.sendMessage(registry.getPlugin().getChatManager().getPrefix() + registry.getPlugin().getChatManager().colorMessage("IN_GAME_MESSAGES_VILLAGE_WAVE_RESPAWNED"));
       }
     });
   }

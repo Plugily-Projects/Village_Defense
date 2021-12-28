@@ -21,7 +21,7 @@ package plugily.projects.villagedefense.api.event.player;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
-import plugily.projects.villagedefense.api.event.VillageEvent;
+import plugily.projects.minigamesbox.classic.api.event.PlugilyEvent;
 import plugily.projects.villagedefense.arena.Arena;
 import plugily.projects.villagedefense.handlers.upgrade.upgrades.Upgrade;
 
@@ -31,7 +31,7 @@ import plugily.projects.villagedefense.handlers.upgrade.upgrades.Upgrade;
  * <p>
  * Called when player upgrades an entity.
  */
-public class VillagePlayerEntityUpgradeEvent extends VillageEvent {
+public class VillagePlayerEntityUpgradeEvent extends PlugilyEvent {
 
   private static final HandlerList HANDLERS = new HandlerList();
   private final Entity entity;

@@ -18,7 +18,6 @@
 
 package plugily.projects.villagedefense.events;
 
-import java.util.ArrayList;
 import org.bukkit.entity.Creature;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -31,13 +30,14 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
-import plugily.projects.commonsbox.minecraft.compat.VersionUtils;
-import plugily.projects.commonsbox.minecraft.compat.events.api.CBPlayerInteractEntityEvent;
+import plugily.projects.minigamesbox.classic.utils.version.VersionUtils;
+import plugily.projects.minigamesbox.classic.utils.version.events.api.CBPlayerInteractEntityEvent;
+import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.arena.Arena;
-import plugily.projects.villagedefense.arena.ArenaRegistry;
 import plugily.projects.villagedefense.creatures.CreatureUtils;
 import plugily.projects.villagedefense.handlers.upgrade.EntityUpgradeMenu;
-import plugily.projects.villagedefense.utils.Utils;
+
+import java.util.ArrayList;
 
 /**
  * @author Plajer
@@ -47,9 +47,12 @@ import plugily.projects.villagedefense.utils.Utils;
 public class EntityUpgradeListener implements Listener {
 
   private final EntityUpgradeMenu upgradeMenu;
+  private final Main plugin;
+
 
   public EntityUpgradeListener(EntityUpgradeMenu upgradeMenu) {
     this.upgradeMenu = upgradeMenu;
+    this.plugin = upgradeMenu.getPlugin();
     upgradeMenu.getPlugin().getServer().getPluginManager().registerEvents(this, upgradeMenu.getPlugin());
   }
 
@@ -60,7 +63,7 @@ public class EntityUpgradeListener implements Listener {
     }
     switch(e.getDamager().getType()) {
       case IRON_GOLEM:
-        for(Arena arena : ArenaRegistry.getArenas()) {
+        for(Arena arena : plugin.getArenaRegistry().getPluginArenas()) {
           if(!arena.getIronGolems().contains(e.getDamager())) {
             continue;
           }
@@ -68,7 +71,7 @@ public class EntityUpgradeListener implements Listener {
         }
         break;
       case WOLF:
-        for(Arena arena : ArenaRegistry.getArenas()) {
+        for(Arena arena : plugin.getArenaRegistry().getPluginArenas()) {
           if(!arena.getWolves().contains(e.getDamager())) {
             continue;
           }
@@ -77,7 +80,7 @@ public class EntityUpgradeListener implements Listener {
             return;
           }
           double multiplier = 1;
-          for(Entity en : Utils.getNearbyEntities(e.getDamager().getLocation(), 3)) {
+          for(Entity en : plugin.getBukkitHelper().getNearbyEntities(e.getDamager().getLocation(), 3)) {
             if(en instanceof Wolf) {
               multiplier += tier * 0.2;
             }
@@ -98,7 +101,7 @@ public class EntityUpgradeListener implements Listener {
 
     LivingEntity entity = e.getEntity();
 
-    for(Arena arena : ArenaRegistry.getArenas()) {
+    for(Arena arena : plugin.getArenaRegistry().getPluginArenas()) {
       if(!arena.getIronGolems().contains(entity)) {
         continue;
       }
@@ -107,7 +110,7 @@ public class EntityUpgradeListener implements Listener {
         return;
       }
       VersionUtils.sendParticles("EXPLOSION_HUGE", arena.getPlayers(), entity.getLocation(), 5);
-      for(Entity en : Utils.getNearbyEntities(entity.getLocation(), tier * 5)) {
+      for(Entity en : plugin.getBukkitHelper().getNearbyEntities(entity.getLocation(), tier * 5)) {
         if(CreatureUtils.isEnemy(en)) {
           ((Creature) en).damage(10000.0, entity);
         }
@@ -127,7 +130,7 @@ public class EntityUpgradeListener implements Listener {
       return;
     }
 
-    if (ArenaRegistry.getArena(e.getPlayer()) != null && !upgradeMenu.getPlugin().getUserManager().getUser(e.getPlayer()).isSpectator()) {
+    if(plugin.getArenaRegistry().getArena(e.getPlayer()) != null && !upgradeMenu.getPlugin().getUserManager().getUser(e.getPlayer()).isSpectator()) {
       upgradeMenu.openUpgradeMenu((LivingEntity) e.getRightClicked(), e.getPlayer());
     }
   }

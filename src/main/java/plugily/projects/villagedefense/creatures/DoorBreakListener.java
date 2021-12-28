@@ -26,7 +26,7 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.scheduler.BukkitRunnable;
-import plugily.projects.commonsbox.minecraft.compat.VersionUtils;
+import plugily.projects.minigamesbox.classic.utils.version.VersionUtils;
 import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.arena.ArenaRegistry;
 import plugily.projects.villagedefense.utils.Utils;
@@ -36,19 +36,22 @@ import plugily.projects.villagedefense.utils.Utils;
  */
 public class DoorBreakListener extends BukkitRunnable {
 
+  private final Main plugin;
+
   public DoorBreakListener(Main plugin) {
+    this.plugin = plugin;
     runTaskTimer(plugin, 1, 20);
   }
 
   @Override
   public void run() {
-    for(World world : ArenaRegistry.getArenaIngameWorlds()) {
+    for(World world : plugin.getArenaRegistry().getArenaIngameWorlds()) {
       for(LivingEntity entity : world.getLivingEntities()) {
         if(entity.getType() != EntityType.ZOMBIE) {
           continue;
         }
 
-        for(Block block : Utils.getNearbyBlocks(entity, 1)) {
+        for(Block block : plugin.getBukkitHelper().getNearbyBlocks(entity, 1)) {
           Material door = Utils.getCachedDoor(block);
 
           if(block.getType() != door) {
@@ -58,7 +61,7 @@ public class DoorBreakListener extends BukkitRunnable {
           org.bukkit.Location blockLoc = block.getLocation();
 
           VersionUtils.sendParticles("SMOKE_LARGE", null, blockLoc, 5, 0.1,0.1,0.1);
-          Utils.playSound(blockLoc, "ENTITY_ZOMBIE_ATTACK_DOOR_WOOD", "ENTITY_ZOMBIE_ATTACK_WOODEN_DOOR");
+          VersionUtils.playSound(blockLoc, "ENTITY_ZOMBIE_ATTACK_WOODEN_DOOR");
 
           if(ThreadLocalRandom.current().nextInt(20) == 5) {
             VersionUtils.sendParticles("SMOKE_LARGE", null, blockLoc, 15, 0.1,0.1,0.1);
@@ -73,7 +76,7 @@ public class DoorBreakListener extends BukkitRunnable {
             }
 
             block.setType(Material.AIR);
-            Utils.playSound(blockLoc, "ENTITY_ZOMBIE_BREAK_DOOR_WOOD", "ENTITY_ZOMBIE_BREAK_WOODEN_DOOR");
+            VersionUtils.playSound(blockLoc, "ENTITY_ZOMBIE_BREAK_WOODEN_DOOR");
           }
         }
       }

@@ -1,0 +1,7 @@
+Plugin:
+  Prefix:
+    Default: vd
+    Default-Long: villagedefense
+  Id:
+    Spigot: 41869
+    BStats: 1781

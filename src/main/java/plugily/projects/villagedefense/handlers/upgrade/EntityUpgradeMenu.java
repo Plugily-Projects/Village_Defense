@@ -27,21 +27,17 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.jetbrains.annotations.Nullable;
-import plugily.projects.commonsbox.minecraft.compat.VersionUtils;
-import plugily.projects.commonsbox.minecraft.compat.xseries.XMaterial;
-import plugily.projects.commonsbox.minecraft.item.ItemBuilder;
+import plugily.projects.minigamesbox.classic.user.User;
+import plugily.projects.minigamesbox.classic.utils.helper.ItemBuilder;
+import plugily.projects.minigamesbox.classic.utils.version.VersionUtils;
+import plugily.projects.minigamesbox.classic.utils.version.xseries.XMaterial;
 import plugily.projects.minigamesbox.inventory.normal.FastInv;
 import plugily.projects.villagedefense.Main;
-import plugily.projects.villagedefense.api.StatsStorage;
 import plugily.projects.villagedefense.api.event.player.VillagePlayerEntityUpgradeEvent;
-import plugily.projects.villagedefense.arena.ArenaRegistry;
 import plugily.projects.villagedefense.creatures.CreatureUtils;
 import plugily.projects.villagedefense.events.EntityUpgradeListener;
-import plugily.projects.villagedefense.handlers.language.Messages;
 import plugily.projects.villagedefense.handlers.upgrade.upgrades.Upgrade;
 import plugily.projects.villagedefense.handlers.upgrade.upgrades.UpgradeBuilder;
-import plugily.projects.villagedefense.user.User;
-import plugily.projects.villagedefense.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -60,7 +56,7 @@ public class EntityUpgradeMenu {
 
   public EntityUpgradeMenu(Main plugin) {
     this.plugin = plugin;
-    this.pluginPrefix = plugin.getChatManager().colorMessage(Messages.PLUGIN_PREFIX);
+    this.pluginPrefix = plugin.getChatManager().colorMessage("IN_GAME_PLUGIN_PREFIX");
     new EntityUpgradeListener(this);
     registerUpgrade(new UpgradeBuilder("Damage")
         .entity(Upgrade.EntityType.BOTH).slot(2, 1).maxTier(4).metadata("VD_Damage")
@@ -115,7 +111,8 @@ public class EntityUpgradeMenu {
    * @param player player who will see inventory
    */
   public void openUpgradeMenu(LivingEntity en, Player player) {
-    FastInv gui = new FastInv(6 * 9, color(Messages.UPGRADES_MENU_TITLE));
+    FastInv gui = new FastInv(6 * 9, color("UPGRADE_MENU_TITLE"));
+    gui.addClickHandler(inventoryClickEvent -> inventoryClickEvent.setCancelled(true));
     User user = plugin.getUserManager().getUser(player);
 
     for(Upgrade upgrade : upgrades) {
@@ -128,21 +125,21 @@ public class EntityUpgradeMenu {
         int nextTier = getTier(en, upgrade) + 1;
         int cost = upgrade.getCost(nextTier);
         if(nextTier > upgrade.getMaxTier()) {
-          player.sendMessage(pluginPrefix + color(Messages.UPGRADES_MAX_TIER));
+          player.sendMessage(pluginPrefix + color("UPGRADE_MENU_MAX_TIER"));
           return;
         }
 
-        int orbs = user.getStat(StatsStorage.StatisticType.ORBS);
+        int orbs = user.getStat("ORBS");
         if(orbs < cost) {
-          player.sendMessage(pluginPrefix + color(Messages.UPGRADES_CANNOT_AFFORD));
+          player.sendMessage(pluginPrefix + color("UPGRADE_MENU_CANNOT_AFFORD"));
           return;
         }
 
-        user.setStat(StatsStorage.StatisticType.ORBS, orbs - cost);
-        player.sendMessage(pluginPrefix + color(Messages.UPGRADES_UPGRADED_ENTITY).replace("%tier%", Integer.toString(nextTier)));
+        user.setStat("ORBS", orbs - cost);
+        player.sendMessage(pluginPrefix + color("UPGRADE_MENU_UPGRADED_ENTITY").replace("%tier%", Integer.toString(nextTier)));
         applyUpgrade(en, upgrade);
 
-        Bukkit.getPluginManager().callEvent(new VillagePlayerEntityUpgradeEvent(ArenaRegistry.getArena(player), en, player, upgrade, nextTier));
+        Bukkit.getPluginManager().callEvent(new VillagePlayerEntityUpgradeEvent(plugin.getArenaRegistry().getArena(player), en, player, upgrade, nextTier));
         player.closeInventory();
       });
       for(int i = 0; i < upgrade.getMaxTier(); i++) {
@@ -157,12 +154,12 @@ public class EntityUpgradeMenu {
     gui.open(player);
   }
 
-  private String color(Messages value) {
-    return plugin.getChatManager().colorRawMessage(plugin.getLanguageConfig().getString(value.getAccessor()));
+  private String color(String key) {
+    return plugin.getChatManager().colorMessage(key);
   }
 
   private void applyStatisticsBookOfEntityToGui(FastInv gui, LivingEntity en) {
-    String[] lore = color(Messages.UPGRADES_STATS_ITEM_DESCRIPTION).split(";");
+    String[] lore = color("UPGRADE_MENU_STATS_ITEM_DESCRIPTION").split(";");
 
     for(int a = 0; a < lore.length; a++) {
       Upgrade speed = getUpgrade("Speed");
@@ -176,7 +173,7 @@ public class EntityUpgradeMenu {
     }
 
     gui.setItem(4, new ItemBuilder(new ItemStack(Material.BOOK))
-        .name(color(Messages.UPGRADES_STATS_ITEM_NAME))
+        .name(color("UPGRADE_MENU_STATS_ITEM_NAME"))
         .lore(lore)
         .build());
   }
@@ -206,7 +203,7 @@ public class EntityUpgradeMenu {
     en.setMetadata(upgrade.getMetadataAccessor(), new FixedMetadataValue(plugin, tier));
     applyUpgradeEffect(en, upgrade, tier);
     if(upgrade.getMaxTier() == tier) {
-      Utils.playSound(en.getLocation(), "BLOCK_ANVIL_USE", "BLOCK_ANVIL_USE");
+      VersionUtils.playSound(en.getLocation(), "BLOCK_ANVIL_USE");
       VersionUtils.sendParticles("EXPLOSION_LARGE", (Set<Player>) null, en.getLocation(), 5);
     }
     return true;
@@ -217,7 +214,7 @@ public class EntityUpgradeMenu {
 
     VersionUtils.sendParticles("FIREWORKS_SPARK", null, entityLocation.add(0, 1, 0), 30, 0.7, 0.7, 0.7);
     VersionUtils.sendParticles("HEART", (Set<Player>) null, entityLocation.add(0, 1.6, 0), 5);
-    Utils.playSound(entityLocation, "ENTITY_PLAYER_LEVELUP", "ENTITY_PLAYER_LEVELUP");
+    VersionUtils.playSound(entityLocation, "ENTITY_PLAYER_LEVELUP");
 
     int[] baseValues = new int[]{getTier(en, getUpgrade("Health")), getTier(en, getUpgrade("Speed")), getTier(en, getUpgrade("Damage"))};
 

@@ -1,6 +1,6 @@
 name: VillageDefense
 main: plugily.projects.villagedefense.Main
-authors: [2Wild4You, TomTheDeveloper, Plajer, Tigerpanzer, montlikadani]
+authors: [PlugilyProjects, Tigerpanzer_02, 2Wild4You, TomTheDeveloper, Plajer, montlikadani]
 version: ${project.version}
 softdepend: [HolographicDisplays, PlaceholderAPI, Parties, Spigot-Party-API-PAF, PartyAndFriends]
 api-version: 1.13

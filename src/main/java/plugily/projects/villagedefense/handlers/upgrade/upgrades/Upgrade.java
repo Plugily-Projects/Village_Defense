@@ -18,14 +18,15 @@
 
 package plugily.projects.villagedefense.handlers.upgrade.upgrades;
 
+import org.bukkit.inventory.ItemStack;
+import plugily.projects.minigamesbox.classic.utils.helper.ItemBuilder;
+import plugily.projects.minigamesbox.classic.utils.version.xseries.XMaterial;
+import plugily.projects.villagedefense.Main;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.bukkit.inventory.ItemStack;
-import plugily.projects.commonsbox.minecraft.compat.xseries.XMaterial;
-import plugily.projects.commonsbox.minecraft.item.ItemBuilder;
-import plugily.projects.villagedefense.Main;
 
 /**
  * @author Plajer
@@ -136,7 +137,7 @@ public class Upgrade {
 
     List<String> desc = description;
 
-    for (int b = 0; b < desc.size(); b++) {
+    for(int b = 0; b < desc.size(); b++) {
       String d = plugin.getChatManager().colorRawMessage(desc.get(b));
 
       desc.set(b, d.replace("%cost%", cost).replace("%tier%", currentTierStr).replace("%from%", vc).replace("%to%", vn));
