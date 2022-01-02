@@ -28,6 +28,7 @@ import org.bukkit.event.block.Action;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
 import plugily.projects.minigamesbox.classic.kits.basekits.PremiumKit;
+import plugily.projects.minigamesbox.classic.utils.fastinv.FastInv;
 import plugily.projects.minigamesbox.classic.utils.helper.ArmorHelper;
 import plugily.projects.minigamesbox.classic.utils.helper.ItemBuilder;
 import plugily.projects.minigamesbox.classic.utils.helper.ItemUtils;
@@ -36,7 +37,6 @@ import plugily.projects.minigamesbox.classic.utils.misc.complement.ComplementAcc
 import plugily.projects.minigamesbox.classic.utils.version.VersionUtils;
 import plugily.projects.minigamesbox.classic.utils.version.events.api.CBPlayerInteractEvent;
 import plugily.projects.minigamesbox.classic.utils.version.xseries.XMaterial;
-import plugily.projects.minigamesbox.inventory.normal.FastInv;
 import plugily.projects.villagedefense.arena.Arena;
 
 import java.util.Collections;

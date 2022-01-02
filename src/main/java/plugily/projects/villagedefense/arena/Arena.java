@@ -91,6 +91,10 @@ public class Arena extends PluginArena {
     addGameStateHandler(ArenaState.STARTING, new StartingState());
   }
 
+  public void reloadShopManager() {
+    shopManager = new ShopManager(this);
+  }
+
   public static void init(Main plugin) {
     Arena.plugin = plugin;
   }

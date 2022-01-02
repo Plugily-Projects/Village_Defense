@@ -48,7 +48,7 @@ Commands:
       - "&b/%plugin_short_command% join <arena>: &7Joins specified arena!"
       - "&b/%plugin_short_command% top <statistic>: &7Shows top 10 players!"
       - "&b/%plugin_short_command% randomjoin: &7Join random arena!"
-    Admin-Bonus-Description: "\n&b&7Shows all the admin commands"
+    Admin-Bonus-Description: "&b/%plugin_short_command%a: &7Shows all the admin commands"
     Footer: "&6-------------------------------------------------"
 
 

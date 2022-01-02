@@ -66,7 +66,7 @@ Forcestart:
   permission: "plugily.projects.forcestart"
   execute:
     - ""
-  displayname: "&c&lClick to start the game &7(Right Click)"
+  displayname: "&c&lStart the game &7(Right Click)"
   lore:
     - "&7You need the following permission for it"
     - "&7plugily.projects.forcestart"
@@ -77,8 +77,8 @@ Forcestart:
 Arena-Selector:
   permission: ""
   execute:
-    - ""
-  displayname: "&c&lClick to open the arena selector &7(Right Click)"
+    - "p:vd arenas"
+  displayname: "&c&lArena selector &7(Right Click)"
   lore:
     - "&7Right-click to see all arenas"
   material: EMERALD

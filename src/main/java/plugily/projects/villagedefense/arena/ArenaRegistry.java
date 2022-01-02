@@ -101,18 +101,28 @@ public class ArenaRegistry extends PluginArenaRegistry {
 
   @Override
   public @Nullable Arena getArena(Player player) {
-    return (Arena) super.getArena(player);
+    PluginArena pluginArena = super.getArena(player);
+    if(pluginArena instanceof Arena) {
+      return (Arena) pluginArena;
+    }
+    return null;
   }
 
   @Override
   public @Nullable Arena getArena(String id) {
-    return (Arena) super.getArena(id);
+    PluginArena pluginArena = super.getArena(id);
+    if(pluginArena instanceof Arena) {
+      return (Arena) pluginArena;
+    }
+    return null;
   }
 
   public @NotNull List<Arena> getPluginArenas() {
     List<Arena> arenas = new ArrayList<>();
     for(PluginArena pluginArena : super.getArenas()) {
-      arenas.add((Arena) pluginArena);
+      if(pluginArena instanceof Arena) {
+        arenas.add((Arena) pluginArena);
+      }
     }
     return arenas;
   }
