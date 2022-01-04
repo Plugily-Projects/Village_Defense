@@ -18,6 +18,7 @@
 
 package plugily.projects.villagedefense;
 
+import fr.mrmicky.fastinv.FastInvManager;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginDescriptionFile;
@@ -34,6 +35,7 @@ import plugily.projects.minigamesbox.classic.handlers.permissions.PermissionCate
 import plugily.projects.minigamesbox.classic.handlers.placeholder.Placeholder;
 import plugily.projects.minigamesbox.classic.handlers.reward.RewardType;
 import plugily.projects.minigamesbox.classic.handlers.setup.PluginSetupInventory;
+import plugily.projects.minigamesbox.classic.handlers.setup.SetupUtilities;
 import plugily.projects.minigamesbox.classic.preferences.ConfigOption;
 import plugily.projects.minigamesbox.classic.user.User;
 import plugily.projects.minigamesbox.classic.utils.configuration.ConfigUtils;
@@ -141,6 +143,7 @@ public class Main extends PluginMain {
     new DoorBreakListener(this);
     CreatureUtils.init(this);
     addPluginMetrics();
+    FastInvManager.register(this);
   }
 
   public void addAdditionalValues() {
@@ -661,7 +664,12 @@ public class Main extends PluginMain {
   }
 
   @Override
-  public PluginSetupInventory getSetupInventory(PluginArena arena, Player player) {
+  public PluginSetupInventory openSetupInventory(PluginArena arena, Player player) {
     return new SetupInventory(this, arena, player);
+  }
+
+  @Override
+  public PluginSetupInventory openSetupInventory(PluginArena arena, Player player, SetupUtilities.InventoryStage inventoryStage) {
+    return new SetupInventory(this, arena, player, inventoryStage);
   }
 }

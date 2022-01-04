@@ -13,6 +13,7 @@ import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.Door;
+import org.jetbrains.annotations.Nullable;
 import plugily.projects.minigamesbox.classic.PluginMain;
 import plugily.projects.minigamesbox.classic.arena.PluginArena;
 import plugily.projects.minigamesbox.classic.handlers.setup.PluginSetupInventory;
@@ -25,6 +26,7 @@ import plugily.projects.minigamesbox.classic.utils.misc.complement.ComplementAcc
 import plugily.projects.minigamesbox.classic.utils.serialization.LocationSerializer;
 import plugily.projects.minigamesbox.classic.utils.version.ServerVersion;
 import plugily.projects.minigamesbox.classic.utils.version.xseries.XMaterial;
+import plugily.projects.minigamesbox.inventory.normal.NormalFastInv;
 import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.arena.Arena;
 
@@ -33,144 +35,181 @@ import java.util.List;
 /**
  * @author Tigerpanzer_02
  * <p>
- * Created at 02.01.2022
+ * Created at 04.01.2022
  */
 public class SetupInventory extends PluginSetupInventory {
 
   private final Main plugin;
-  private final Arena arena;
+  private Arena arena;
   private final Player player;
 
-  public SetupInventory(Main plugin, PluginArena arena, Player player) {
+
+  public SetupInventory(Main plugin, @Nullable PluginArena arena, Player player) {
     super(plugin, arena, player);
     this.plugin = plugin;
-    this.arena = plugin.getArenaRegistry().getArena(arena.getId());
     this.player = player;
-    init();
+    setArena(player, arena);
+    open();
+  }
+
+  public SetupInventory(Main plugin, @Nullable PluginArena arena, Player player, SetupUtilities.InventoryStage inventoryStage) {
+    super(plugin, arena, player, inventoryStage);
+    this.plugin = plugin;
+    this.player = player;
+    setArena(player, arena);
+    open();
   }
 
   @Override
-  public void addLocationItems() {
-    super.addLocationItems();
-    plugin.getSetupUtilities().getPagedItemMapOf(SetupUtilities.InventoryStage.PAGED_LOCATIONS).setItem(21, new LocationItem(new ItemBuilder(Material.ROTTEN_FLESH)
-        .name(plugin.getChatManager().colorRawMessage("&e&lAdd Zombie Location"))
-        .lore(ChatColor.GRAY + "Click add new zombie spawn")
-        .lore(ChatColor.GRAY + "on the place you're standing at.")
-        .lore("", plugin.getSetupUtilities().isOptionDoneSection("zombiespawns", 2, this))
-        .lore("", plugin.getChatManager().colorRawMessage("&8Right Click to remove all spawns"))
-        .build(), e -> {
-      e.getWhoClicked().closeInventory();
-      if(e.getClick() == ClickType.RIGHT) {
-        removeSection(SectionType.ZOMBIE_SPAWN);
-        return;
-      }
+  public void setArena(Player player, PluginArena arena) {
+    if(arena == null && plugin.getSetupUtilities().getArena(player) != null) {
+      this.arena = plugin.getArenaRegistry().getArena(plugin.getSetupUtilities().getArena(player).getId());
+    } else if(arena != null) {
+      this.arena = plugin.getArenaRegistry().getArena(arena.getId());
+    } else {
+      this.arena = null;
+    }
+    setArena(this.arena);
+  }
 
-      addSection(player.getLocation(), SectionType.ZOMBIE_SPAWN);
-    }, event -> {
-      switch(event.getAction()) {
-        case LEFT_CLICK_AIR:
-          addSection(event.getPlayer().getLocation(), SectionType.ZOMBIE_SPAWN);
-          break;
-        case LEFT_CLICK_BLOCK:
-          addSection(event.getClickedBlock().getRelative(0, 1, 0).getLocation(), SectionType.ZOMBIE_SPAWN);
-          break;
-        case RIGHT_CLICK_AIR:
-        case RIGHT_CLICK_BLOCK:
-          removeSection(SectionType.ZOMBIE_SPAWN);
-          break;
-      }
-    }, true, true, false));
+  @Override
+  public void addExternalItems(NormalFastInv inv) {
+    switch(getInventoryStage()) {
+      case SETUP_GUI:
+        break;
+      case ARENA_LIST:
+        break;
+      case PAGED_GUI:
+        break;
+      case PAGED_VALUES:
+        break;
+      case PAGED_BOOLEAN:
+        break;
+      case PAGED_COUNTABLE:
+        break;
+      case PAGED_LOCATIONS:
+        inv.setItem(21, new LocationItem(new ItemBuilder(Material.ROTTEN_FLESH)
+            .name(plugin.getChatManager().colorRawMessage("&e&lAdd Zombie Location"))
+            .lore(ChatColor.GRAY + "Click add new zombie spawn")
+            .lore(ChatColor.GRAY + "on the place you're standing at.")
+            .lore("", plugin.getSetupUtilities().isOptionDoneSection("zombiespawns", 2, this))
+            .lore("", plugin.getChatManager().colorRawMessage("&8Right Click to remove all spawns"))
+            .build(), e -> {
+          e.getWhoClicked().closeInventory();
+          if(e.getClick() == ClickType.RIGHT) {
+            removeSection(SectionType.ZOMBIE_SPAWN);
+            return;
+          }
+
+          addSection(player.getLocation(), SectionType.ZOMBIE_SPAWN);
+        }, event -> {
+          switch(event.getAction()) {
+            case LEFT_CLICK_AIR:
+              addSection(event.getPlayer().getLocation(), SectionType.ZOMBIE_SPAWN);
+              break;
+            case LEFT_CLICK_BLOCK:
+              addSection(event.getClickedBlock().getRelative(0, 1, 0).getLocation(), SectionType.ZOMBIE_SPAWN);
+              break;
+            case RIGHT_CLICK_AIR:
+            case RIGHT_CLICK_BLOCK:
+              removeSection(SectionType.ZOMBIE_SPAWN);
+              break;
+          }
+        }, true, true, false));
 
 
-    plugin.getSetupUtilities().getPagedItemMapOf(SetupUtilities.InventoryStage.PAGED_LOCATIONS).setItem(23, new LocationItem(new ItemBuilder(Material.EMERALD_BLOCK)
-        .name(plugin.getChatManager().colorRawMessage("&e&lAdd Villager Location"))
-        .lore(ChatColor.GRAY + "Click add new villager spawn")
-        .lore(ChatColor.GRAY + "on the place you're standing at.")
-        .lore("", plugin.getSetupUtilities().isOptionDoneSection("villagerspawns", 2, this))
-        .lore("", plugin.getChatManager().colorRawMessage("&8Right Click to remove all spawns"))
-        .build(), e -> {
-      e.getWhoClicked().closeInventory();
-      if(e.getClick() == ClickType.RIGHT) {
-        removeSection(SectionType.VILLAGER_SPAWN);
-        return;
-      }
+        inv.setItem(23, new LocationItem(new ItemBuilder(Material.EMERALD_BLOCK)
+            .name(plugin.getChatManager().colorRawMessage("&e&lAdd Villager Location"))
+            .lore(ChatColor.GRAY + "Click add new villager spawn")
+            .lore(ChatColor.GRAY + "on the place you're standing at.")
+            .lore("", plugin.getSetupUtilities().isOptionDoneSection("villagerspawns", 2, this))
+            .lore("", plugin.getChatManager().colorRawMessage("&8Right Click to remove all spawns"))
+            .build(), e -> {
+          e.getWhoClicked().closeInventory();
+          if(e.getClick() == ClickType.RIGHT) {
+            removeSection(SectionType.VILLAGER_SPAWN);
+            return;
+          }
 
-      addSection(player.getLocation(), SectionType.VILLAGER_SPAWN);
-    }, event -> {
-      switch(event.getAction()) {
-        case LEFT_CLICK_AIR:
-          addSection(event.getPlayer().getLocation(), SectionType.VILLAGER_SPAWN);
-          break;
-        case LEFT_CLICK_BLOCK:
-          addSection(event.getClickedBlock().getRelative(0, 1, 0).getLocation(), SectionType.VILLAGER_SPAWN);
-          break;
-        case RIGHT_CLICK_AIR:
-        case RIGHT_CLICK_BLOCK:
-          removeSection(SectionType.VILLAGER_SPAWN);
-          break;
-      }
-    }, true, true, false));
+          addSection(player.getLocation(), SectionType.VILLAGER_SPAWN);
+        }, event -> {
+          switch(event.getAction()) {
+            case LEFT_CLICK_AIR:
+              addSection(event.getPlayer().getLocation(), SectionType.VILLAGER_SPAWN);
+              break;
+            case LEFT_CLICK_BLOCK:
+              addSection(event.getClickedBlock().getRelative(0, 1, 0).getLocation(), SectionType.VILLAGER_SPAWN);
+              break;
+            case RIGHT_CLICK_AIR:
+            case RIGHT_CLICK_BLOCK:
+              removeSection(SectionType.VILLAGER_SPAWN);
+              break;
+          }
+        }, true, true, false));
 
-    plugin.getSetupUtilities().getPagedItemMapOf(SetupUtilities.InventoryStage.PAGED_LOCATIONS).setItem(28, new LocationItem(new ItemBuilder(XMaterial.OAK_DOOR.parseItem())
-        .name(plugin.getChatManager().colorRawMessage("&e&lAdd Game Door"))
-        .lore(ChatColor.GRAY + "Target arena door and click this.")
-        .lore(ChatColor.DARK_GRAY + "(doors are required and will be")
-        .lore(ChatColor.DARK_GRAY + "regenerated each game, villagers will hide")
-        .lore(ChatColor.DARK_GRAY + "in houses so you can put doors there)")
-        .lore("", plugin.getSetupUtilities().isOptionDoneSection("doors", 1, this))
-        .lore("", plugin.getChatManager().colorRawMessage("&8Right Click to remove all locations"))
-        .build(), e -> {
-      e.getWhoClicked().closeInventory();
-      if(e.getClick() == ClickType.RIGHT) {
-        removeDoors();
-        return;
-      }
-      addDoors(player.getTargetBlock(null, 10));
-    }, event -> {
-      switch(event.getAction()) {
-        case LEFT_CLICK_AIR:
-          player.sendMessage(plugin.getChatManager().colorRawMessage("&c&l✘ &cYou need to break a door!"));
-          break;
-        case LEFT_CLICK_BLOCK:
-          addDoors(event.getClickedBlock());
-          break;
-        case RIGHT_CLICK_AIR:
-        case RIGHT_CLICK_BLOCK:
-          removeDoors();
-          break;
-      }
-    }, true, true, false));
+        inv.setItem(28, new LocationItem(new ItemBuilder(XMaterial.OAK_DOOR.parseItem())
+            .name(plugin.getChatManager().colorRawMessage("&e&lAdd Game Door"))
+            .lore(ChatColor.GRAY + "Target arena door and click this.")
+            .lore(ChatColor.DARK_GRAY + "(doors are required and will be")
+            .lore(ChatColor.DARK_GRAY + "regenerated each game, villagers will hide")
+            .lore(ChatColor.DARK_GRAY + "in houses so you can put doors there)")
+            .lore("", plugin.getSetupUtilities().isOptionDoneSection("doors", 1, this))
+            .lore("", plugin.getChatManager().colorRawMessage("&8Right Click to remove all locations"))
+            .build(), e -> {
+          e.getWhoClicked().closeInventory();
+          if(e.getClick() == ClickType.RIGHT) {
+            removeDoors();
+            return;
+          }
+          addDoors(player.getTargetBlock(null, 10));
+        }, event -> {
+          switch(event.getAction()) {
+            case LEFT_CLICK_AIR:
+              player.sendMessage(plugin.getChatManager().colorRawMessage("&c&l✘ &cYou need to break a door!"));
+              break;
+            case LEFT_CLICK_BLOCK:
+              addDoors(event.getClickedBlock());
+              break;
+            case RIGHT_CLICK_AIR:
+            case RIGHT_CLICK_BLOCK:
+              removeDoors();
+              break;
+          }
+        }, true, true, false));
 
-    plugin.getSetupUtilities().getPagedItemMapOf(SetupUtilities.InventoryStage.PAGED_LOCATIONS).setItem(30, new LocationItem(new ItemBuilder(Material.CHEST)
-        .name(plugin.getChatManager().colorRawMessage("&e&lSet Game Shop"))
-        .lore(ChatColor.GRAY + "Look at (double-) chest with items")
-        .lore(ChatColor.GRAY + "and click it to set it as game shop.")
-        .lore(ChatColor.DARK_GRAY + "(it allows to click villagers to buy game items)")
-        .lore(ChatColor.RED + "Remember to set item prices for the game")
-        .lore(ChatColor.RED + "using /vda setprice command!")
-        .build(), e -> {
-      e.getWhoClicked().closeInventory();
-      if(e.getClick() == ClickType.RIGHT) {
-        //todo
-        return;
-      }
-      addGameShop();
-    }, event -> {
-      switch(event.getAction()) {
-        case LEFT_CLICK_AIR:
-          player.sendMessage(plugin.getChatManager().colorRawMessage("&c&l✘ &cYou need to break a game shop!"));
-          break;
-        case LEFT_CLICK_BLOCK:
+        inv.setItem(30, new LocationItem(new ItemBuilder(Material.CHEST)
+            .name(plugin.getChatManager().colorRawMessage("&e&lSet Game Shop"))
+            .lore(ChatColor.GRAY + "Look at (double-) chest with items")
+            .lore(ChatColor.GRAY + "and click it to set it as game shop.")
+            .lore(ChatColor.DARK_GRAY + "(it allows to click villagers to buy game items)")
+            .lore(ChatColor.RED + "Remember to set item prices for the game")
+            .lore(ChatColor.RED + "using /vda setprice command!")
+            .build(), e -> {
+          e.getWhoClicked().closeInventory();
+          if(e.getClick() == ClickType.RIGHT) {
+            removeGameShop();
+            return;
+          }
           addGameShop();
-          break;
-        case RIGHT_CLICK_AIR:
-        case RIGHT_CLICK_BLOCK:
-          //todo
-          break;
-      }
-    }, true, true, false));
-
-
+        }, event -> {
+          switch(event.getAction()) {
+            case LEFT_CLICK_AIR:
+              player.sendMessage(plugin.getChatManager().colorRawMessage("&c&l✘ &cYou need to break a game shop!"));
+              break;
+            case LEFT_CLICK_BLOCK:
+              addGameShop();
+              break;
+            case RIGHT_CLICK_AIR:
+            case RIGHT_CLICK_BLOCK:
+              removeGameShop();
+              break;
+          }
+        }, true, true, false));
+        break;
+      default:
+        break;
+    }
+    inv.refresh();
   }
 
   private void removeGameShop() {
@@ -360,5 +399,4 @@ public class SetupInventory extends PluginSetupInventory {
           (byte) config.getInt(path + "byte"));
     }
   }
-
 }

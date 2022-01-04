@@ -35,7 +35,7 @@ Commands:
     Reload-Success: "&aArenas reloaded!"
     List:
       Header: "&a%plugin_name% &6arenas:"
-      Format: "&a%arena_name% &e%arena_formatted_state% &6%arena_players_size%/%arena_max_players%"
+      Format: "&a%arena_name% &e%arena_state_placeholder% &6%arena_players_size%/%arena_max_players%"
       No-Arenas: "&cThere are no game instances!"
     Spychat:
       Toggled: "&aGame spy chat toggled to&c %value%"
@@ -274,8 +274,8 @@ Signs:
   Removed: "&aSign successfully removed!"
   Lines:
     - "&a&l%plugin_name%"
-    - "%arena_state%"
-    - "%mapname%"
+    - "%arena_state_placeholder%"
+    - "%arena_name%"
     - "&5[%arena_players_size%/%max_players%]"
 
 
@@ -285,13 +285,13 @@ Signs:
 Arena-Selector:
   Inventory-Title: "%plugin_short_command% > Arena selector"
   Item:
-    Name: "&f%mapname%"
+    Name: "&f%arena_name%"
     Lore:
-      - "&a%plugin_name% &f- &e%mapname%"
+      - "&a%plugin_name% &f- &e%arena_name%"
       - " "
       - " "
       - "  &fOnline: %arena_players_size%/%arena_max_players%"
-      - "  &fState: %arena_pretty_state%"
+      - "  &fState: %arena_state_placeholder%"
       - " "
       - " "
       - "&eClick to join this arena"
