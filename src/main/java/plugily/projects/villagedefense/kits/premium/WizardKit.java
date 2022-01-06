@@ -40,7 +40,7 @@ import plugily.projects.minigamesbox.classic.utils.helper.ItemBuilder;
 import plugily.projects.minigamesbox.classic.utils.helper.ItemUtils;
 import plugily.projects.minigamesbox.classic.utils.misc.complement.ComplementAccessor;
 import plugily.projects.minigamesbox.classic.utils.version.VersionUtils;
-import plugily.projects.minigamesbox.classic.utils.version.events.api.CBPlayerInteractEvent;
+import plugily.projects.minigamesbox.classic.utils.version.events.api.PlugilyPlayerInteractEvent;
 import plugily.projects.minigamesbox.classic.utils.version.xseries.XMaterial;
 import plugily.projects.villagedefense.creatures.CreatureUtils;
 
@@ -115,7 +115,7 @@ public class WizardKit extends PremiumKit implements Listener {
   }
 
   @EventHandler
-  public void onStaffUse(CBPlayerInteractEvent e) {
+  public void onStaffUse(PlugilyPlayerInteractEvent e) {
     if(getPlugin().getArenaRegistry().getArena(e.getPlayer()) == null) {
       return;
     }

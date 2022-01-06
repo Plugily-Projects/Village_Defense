@@ -33,7 +33,7 @@ import plugily.projects.minigamesbox.classic.user.User;
 import plugily.projects.minigamesbox.classic.utils.helper.ArmorHelper;
 import plugily.projects.minigamesbox.classic.utils.helper.WeaponHelper;
 import plugily.projects.minigamesbox.classic.utils.version.VersionUtils;
-import plugily.projects.minigamesbox.classic.utils.version.events.api.CBPlayerInteractEvent;
+import plugily.projects.minigamesbox.classic.utils.version.events.api.PlugilyPlayerInteractEvent;
 
 import java.util.List;
 
@@ -77,7 +77,7 @@ public class ShotBowKit extends PremiumKit implements Listener {
   }
 
   @EventHandler
-  public void onBowInteract(CBPlayerInteractEvent e) {
+  public void onBowInteract(PlugilyPlayerInteractEvent e) {
     if(!(e.getAction() == Action.LEFT_CLICK_AIR || e.getAction() == Action.LEFT_CLICK_BLOCK || e.getAction() == Action.PHYSICAL)) {
       return;
     }

@@ -34,7 +34,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionType;
 import plugily.projects.minigamesbox.classic.kits.basekits.PremiumKit;
 import plugily.projects.minigamesbox.classic.utils.version.VersionUtils;
-import plugily.projects.minigamesbox.classic.utils.version.events.api.CBPlayerInteractEvent;
+import plugily.projects.minigamesbox.classic.utils.version.events.api.PlugilyPlayerInteractEvent;
 import plugily.projects.minigamesbox.classic.utils.version.xseries.XMaterial;
 
 /**
@@ -126,7 +126,7 @@ public class NakedKit extends PremiumKit implements Listener {
   }
 
   @EventHandler
-  public void onArmorClick(CBPlayerInteractEvent event) {
+  public void onArmorClick(PlugilyPlayerInteractEvent event) {
     if(!getPlugin().getArenaRegistry().isInArena(event.getPlayer())) {
       return;
     }

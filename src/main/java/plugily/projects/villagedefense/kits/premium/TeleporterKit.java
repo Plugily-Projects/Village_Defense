@@ -28,15 +28,15 @@ import org.bukkit.event.block.Action;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
 import plugily.projects.minigamesbox.classic.kits.basekits.PremiumKit;
-import plugily.projects.minigamesbox.classic.utils.fastinv.FastInv;
 import plugily.projects.minigamesbox.classic.utils.helper.ArmorHelper;
 import plugily.projects.minigamesbox.classic.utils.helper.ItemBuilder;
 import plugily.projects.minigamesbox.classic.utils.helper.ItemUtils;
 import plugily.projects.minigamesbox.classic.utils.helper.WeaponHelper;
 import plugily.projects.minigamesbox.classic.utils.misc.complement.ComplementAccessor;
 import plugily.projects.minigamesbox.classic.utils.version.VersionUtils;
-import plugily.projects.minigamesbox.classic.utils.version.events.api.CBPlayerInteractEvent;
+import plugily.projects.minigamesbox.classic.utils.version.events.api.PlugilyPlayerInteractEvent;
 import plugily.projects.minigamesbox.classic.utils.version.xseries.XMaterial;
+import plugily.projects.minigamesbox.inventory.normal.NormalFastInv;
 import plugily.projects.villagedefense.arena.Arena;
 
 import java.util.Collections;
@@ -84,7 +84,7 @@ public class TeleporterKit extends PremiumKit implements Listener {
   }
 
   @EventHandler
-  public void onRightClick(CBPlayerInteractEvent e) {
+  public void onRightClick(PlugilyPlayerInteractEvent e) {
     if(!(e.getAction() == Action.RIGHT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_BLOCK)) {
       return;
     }
@@ -116,7 +116,7 @@ public class TeleporterKit extends PremiumKit implements Listener {
   }
 
   private void prepareTeleporterGui(Player player, Arena arena, int slots) {
-    FastInv gui = new FastInv(slots, getPlugin().getChatManager().colorMessage("KIT_CONTENT_TELEPORTER_GAME_ITEM_GUI"));
+    NormalFastInv gui = new NormalFastInv(slots, getPlugin().getChatManager().colorMessage("KIT_CONTENT_TELEPORTER_GAME_ITEM_GUI"));
     gui.addClickHandler(inventoryClickEvent -> inventoryClickEvent.setCancelled(true));
     for(Player arenaPlayer : arena.getPlayers()) {
       if(getPlugin().getUserManager().getUser(arenaPlayer).isSpectator()) {

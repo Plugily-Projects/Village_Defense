@@ -46,7 +46,7 @@ import plugily.projects.minigamesbox.classic.user.User;
 import plugily.projects.minigamesbox.classic.utils.misc.complement.ComplementAccessor;
 import plugily.projects.minigamesbox.classic.utils.version.ServerVersion;
 import plugily.projects.minigamesbox.classic.utils.version.VersionUtils;
-import plugily.projects.minigamesbox.classic.utils.version.events.api.CBEntityPickupItemEvent;
+import plugily.projects.minigamesbox.classic.utils.version.events.api.PlugilyEntityPickupItemEvent;
 import plugily.projects.villagedefense.Main;
 
 /**
@@ -348,7 +348,7 @@ public class ArenaEvents implements Listener {
   }
 
   @EventHandler
-  public void onPickup(CBEntityPickupItemEvent e) {
+  public void onPickup(PlugilyEntityPickupItemEvent e) {
     if(e.getEntity().getType() != EntityType.PLAYER || e.getItem().getItemStack().getType() != Material.ROTTEN_FLESH) {
       return;
     }

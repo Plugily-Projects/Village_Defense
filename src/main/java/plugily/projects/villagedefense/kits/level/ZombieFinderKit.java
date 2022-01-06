@@ -34,7 +34,7 @@ import plugily.projects.minigamesbox.classic.utils.helper.ItemUtils;
 import plugily.projects.minigamesbox.classic.utils.helper.WeaponHelper;
 import plugily.projects.minigamesbox.classic.utils.misc.complement.ComplementAccessor;
 import plugily.projects.minigamesbox.classic.utils.version.VersionUtils;
-import plugily.projects.minigamesbox.classic.utils.version.events.api.CBPlayerInteractEvent;
+import plugily.projects.minigamesbox.classic.utils.version.events.api.PlugilyPlayerInteractEvent;
 import plugily.projects.minigamesbox.classic.utils.version.xseries.XMaterial;
 import plugily.projects.villagedefense.arena.Arena;
 
@@ -81,7 +81,7 @@ public class ZombieFinderKit extends LevelKit implements Listener {
   }
 
   @EventHandler
-  public void onTeleport(CBPlayerInteractEvent event) {
+  public void onTeleport(PlugilyPlayerInteractEvent event) {
     Arena arena = (Arena) getPlugin().getArenaRegistry().getArena(event.getPlayer());
     if(arena == null || !ItemUtils.isItemStackNamed(event.getItem()) || event.getItem().getType() != Material.BOOK
         || !ComplementAccessor.getComplement().getDisplayName(event.getItem().getItemMeta()).equals(getPlugin().getChatManager().colorMessage("KIT_CONTENT_ZOMBIE_TELEPORTER_GAME_ITEM_GUI"))) {

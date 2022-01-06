@@ -37,7 +37,7 @@ import plugily.projects.minigamesbox.classic.utils.helper.ItemUtils;
 import plugily.projects.minigamesbox.classic.utils.helper.WeaponHelper;
 import plugily.projects.minigamesbox.classic.utils.misc.complement.ComplementAccessor;
 import plugily.projects.minigamesbox.classic.utils.version.VersionUtils;
-import plugily.projects.minigamesbox.classic.utils.version.events.api.CBPlayerInteractEvent;
+import plugily.projects.minigamesbox.classic.utils.version.events.api.PlugilyPlayerInteractEvent;
 import plugily.projects.minigamesbox.classic.utils.version.xseries.XMaterial;
 import plugily.projects.villagedefense.arena.Arena;
 
@@ -88,7 +88,7 @@ public class BlockerKit extends PremiumKit implements Listener {
   }
 
   @EventHandler(priority = EventPriority.HIGHEST)
-  public void onBarrierPlace(CBPlayerInteractEvent event) {
+  public void onBarrierPlace(PlugilyPlayerInteractEvent event) {
     if(event.getAction() != Action.RIGHT_CLICK_AIR && event.getAction() != Action.RIGHT_CLICK_BLOCK) {
       return;
     }

@@ -32,7 +32,7 @@ import plugily.projects.minigamesbox.classic.utils.helper.ItemUtils;
 import plugily.projects.minigamesbox.classic.utils.helper.WeaponHelper;
 import plugily.projects.minigamesbox.classic.utils.misc.complement.ComplementAccessor;
 import plugily.projects.minigamesbox.classic.utils.version.VersionUtils;
-import plugily.projects.minigamesbox.classic.utils.version.events.api.CBPlayerInteractEvent;
+import plugily.projects.minigamesbox.classic.utils.version.events.api.PlugilyPlayerInteractEvent;
 import plugily.projects.villagedefense.arena.Arena;
 import plugily.projects.villagedefense.arena.ArenaUtils;
 
@@ -78,7 +78,7 @@ public class CleanerKit extends PremiumKit implements Listener {
   }
 
   @EventHandler
-  public void onClean(CBPlayerInteractEvent event) {
+  public void onClean(PlugilyPlayerInteractEvent event) {
     ItemStack itemStack = event.getItem();
     if(itemStack == null || itemStack.getType() != Material.BLAZE_ROD)
       return;

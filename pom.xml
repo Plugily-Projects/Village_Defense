@@ -196,13 +196,6 @@
         </dependency>
         <dependency>
             <groupId>plugily.projects</groupId>
-            <artifactId>MiniGamesBox-Inventory</artifactId>
-            <version>1.0.0-SNAPSHOT</version>
-            <scope>compile</scope>
-            <optional>true</optional>
-        </dependency>
-        <dependency>
-            <groupId>plugily.projects</groupId>
             <artifactId>MiniGamesBox-Classic</artifactId>
             <version>1.0.0-SNAPSHOT</version>
             <scope>compile</scope>
@@ -361,11 +354,11 @@
                             <relocations>
                                 <relocation>
                                     <pattern>plugily.projects.minigamesbox.classic</pattern>
-                                    <shadedPattern>plugily.projects.villagedefense.classic</shadedPattern>
+                                    <shadedPattern>plugily.projects.villagedefense.minigamesbox.classic</shadedPattern>
                                 </relocation>
                                 <relocation>
                                     <pattern>plugily.projects.minigamesbox.inventory</pattern>
-                                    <shadedPattern>plugily.projects.villagedefense.inventory</shadedPattern>
+                                    <shadedPattern>plugily.projects.villagedefense.minigamesbox.inventory</shadedPattern>
                                 </relocation>
                                 <relocation>
                                     <pattern>com.zaxxer.hikari</pattern>

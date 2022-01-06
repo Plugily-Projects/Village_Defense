@@ -28,10 +28,10 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.jetbrains.annotations.Nullable;
 import plugily.projects.minigamesbox.classic.user.User;
-import plugily.projects.minigamesbox.classic.utils.fastinv.FastInv;
 import plugily.projects.minigamesbox.classic.utils.helper.ItemBuilder;
 import plugily.projects.minigamesbox.classic.utils.version.VersionUtils;
 import plugily.projects.minigamesbox.classic.utils.version.xseries.XMaterial;
+import plugily.projects.minigamesbox.inventory.normal.NormalFastInv;
 import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.api.event.player.VillagePlayerEntityUpgradeEvent;
 import plugily.projects.villagedefense.creatures.CreatureUtils;
@@ -111,7 +111,7 @@ public class EntityUpgradeMenu {
    * @param player player who will see inventory
    */
   public void openUpgradeMenu(LivingEntity en, Player player) {
-    FastInv gui = new FastInv(6 * 9, color("UPGRADE_MENU_TITLE"));
+    NormalFastInv gui = new NormalFastInv(6 * 9, color("UPGRADE_MENU_TITLE"));
     gui.addClickHandler(inventoryClickEvent -> inventoryClickEvent.setCancelled(true));
     User user = plugin.getUserManager().getUser(player);
 
@@ -158,7 +158,7 @@ public class EntityUpgradeMenu {
     return plugin.getChatManager().colorMessage(key);
   }
 
-  private void applyStatisticsBookOfEntityToGui(FastInv gui, LivingEntity en) {
+  private void applyStatisticsBookOfEntityToGui(NormalFastInv gui, LivingEntity en) {
     String[] lore = color("UPGRADE_MENU_STATS_ITEM_DESCRIPTION").split(";");
 
     for(int a = 0; a < lore.length; a++) {

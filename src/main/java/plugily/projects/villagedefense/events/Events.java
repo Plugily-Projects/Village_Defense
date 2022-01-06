@@ -54,7 +54,7 @@ import plugily.projects.commonsbox.string.StringFormatUtils;
 import plugily.projects.minigamesbox.classic.arena.ArenaState;
 import plugily.projects.minigamesbox.classic.user.User;
 import plugily.projects.minigamesbox.classic.utils.version.VersionUtils;
-import plugily.projects.minigamesbox.classic.utils.version.events.api.CBPlayerInteractEntityEvent;
+import plugily.projects.minigamesbox.classic.utils.version.events.api.PlugilyPlayerInteractEntityEvent;
 import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.api.event.game.VillageGameSecretWellEvent;
 import plugily.projects.villagedefense.arena.Arena;
@@ -101,7 +101,7 @@ public class Events implements Listener {
 
 
   @EventHandler
-  public void onEntityInteractEntity(CBPlayerInteractEntityEvent event) {
+  public void onEntityInteractEntity(PlugilyPlayerInteractEntityEvent event) {
     if(VersionUtils.checkOffHand(event.getHand())) {
       return;
     }

@@ -31,7 +31,7 @@ import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import plugily.projects.minigamesbox.classic.utils.version.VersionUtils;
-import plugily.projects.minigamesbox.classic.utils.version.events.api.CBPlayerInteractEntityEvent;
+import plugily.projects.minigamesbox.classic.utils.version.events.api.PlugilyPlayerInteractEntityEvent;
 import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.arena.Arena;
 import plugily.projects.villagedefense.creatures.CreatureUtils;
@@ -123,7 +123,7 @@ public class EntityUpgradeListener implements Listener {
   }
 
   @EventHandler
-  public void onEntityClick(CBPlayerInteractEntityEvent e) {
+  public void onEntityClick(PlugilyPlayerInteractEntityEvent e) {
     if((e.getRightClicked().getType() != EntityType.IRON_GOLEM && e.getRightClicked().getType() != EntityType.WOLF)
         || VersionUtils.checkOffHand(e.getHand()) || !e.getPlayer().isSneaking()
         || e.getRightClicked().getCustomName() == null) {

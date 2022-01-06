@@ -31,10 +31,10 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 import plugily.projects.minigamesbox.classic.user.User;
 import plugily.projects.minigamesbox.classic.utils.configuration.ConfigUtils;
-import plugily.projects.minigamesbox.classic.utils.fastinv.FastInv;
 import plugily.projects.minigamesbox.classic.utils.helper.ItemUtils;
 import plugily.projects.minigamesbox.classic.utils.misc.complement.ComplementAccessor;
 import plugily.projects.minigamesbox.classic.utils.serialization.LocationSerializer;
+import plugily.projects.minigamesbox.inventory.normal.NormalFastInv;
 import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.arena.Arena;
 
@@ -54,7 +54,7 @@ public class ShopManager {
   private final Main plugin;
   private final FileConfiguration config;
   private final Arena arena;
-  private FastInv gui;
+  private NormalFastInv gui;
   private Consumer<Player> openMenuConsumer;
 
   public ShopManager(Arena arena) {
@@ -80,11 +80,11 @@ public class ShopManager {
     };
   }
 
-  public FastInv getShop() {
+  public NormalFastInv getShop() {
     return gui;
   }
 
-  public void setShop(FastInv gui) {
+  public void setShop(NormalFastInv gui) {
     this.gui = gui;
   }
 
@@ -122,7 +122,7 @@ public class ShopManager {
     }
     ItemStack[] contents = ((Chest) LocationSerializer.getLocation(config.getString("instances." + arena.getId() + ".shop"))
         .getBlock().getState()).getInventory().getContents();
-    gui = new FastInv(plugin.getBukkitHelper().serializeInt(contents.length), plugin.getChatManager().colorMessage("IN_GAME_MESSAGES_VILLAGE_SHOP_GUI"));
+    gui = new NormalFastInv(plugin.getBukkitHelper().serializeInt(contents.length), plugin.getChatManager().colorMessage("IN_GAME_MESSAGES_VILLAGE_SHOP_GUI"));
     gui.addClickHandler(inventoryClickEvent -> inventoryClickEvent.setCancelled(true));
     for(int slot = 0; slot < contents.length; slot++) {
       ItemStack itemStack = contents[slot];

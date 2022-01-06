@@ -35,7 +35,7 @@ import plugily.projects.minigamesbox.classic.utils.helper.ItemUtils;
 import plugily.projects.minigamesbox.classic.utils.helper.WeaponHelper;
 import plugily.projects.minigamesbox.classic.utils.misc.complement.ComplementAccessor;
 import plugily.projects.minigamesbox.classic.utils.version.VersionUtils;
-import plugily.projects.minigamesbox.classic.utils.version.events.api.CBPlayerInteractEvent;
+import plugily.projects.minigamesbox.classic.utils.version.events.api.PlugilyPlayerInteractEvent;
 import plugily.projects.minigamesbox.classic.utils.version.xseries.XMaterial;
 import plugily.projects.villagedefense.creatures.CreatureUtils;
 
@@ -91,7 +91,7 @@ public class TornadoKit extends PremiumKit implements Listener {
   }
 
   @EventHandler
-  public void onTornadoSpawn(CBPlayerInteractEvent e) {
+  public void onTornadoSpawn(PlugilyPlayerInteractEvent e) {
     if(e.getAction() != Action.RIGHT_CLICK_AIR && e.getAction() != Action.RIGHT_CLICK_BLOCK) {
       return;
     }
