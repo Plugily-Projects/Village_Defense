@@ -18,7 +18,6 @@
 
 package plugily.projects.villagedefense;
 
-import fr.mrmicky.fastinv.FastInvManager;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginDescriptionFile;
@@ -143,7 +142,6 @@ public class Main extends PluginMain {
     new DoorBreakListener(this);
     CreatureUtils.init(this);
     addPluginMetrics();
-    FastInvManager.register(this);
   }
 
   public void addAdditionalValues() {
