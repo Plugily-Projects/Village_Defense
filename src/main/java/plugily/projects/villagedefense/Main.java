@@ -18,7 +18,6 @@
 
 package plugily.projects.villagedefense;
 
-import fr.mrmicky.fastinv.FastInvManager;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginDescriptionFile;
@@ -143,7 +142,6 @@ public class Main extends PluginMain {
     new DoorBreakListener(this);
     CreatureUtils.init(this);
     addPluginMetrics();
-    FastInvManager.register(this);
   }
 
   public void addAdditionalValues() {
@@ -454,7 +452,11 @@ public class Main extends PluginMain {
 
       @Override
       public String getValue(PluginArena arena) {
-        return Integer.toString(((Arena) arena).getWave());
+        Arena pluginArena = getArenaRegistry().getArena(arena.getId());
+        if(pluginArena == null) {
+          return null;
+        }
+        return Integer.toString(pluginArena.getWave());
       }
     });
     getPlaceholderManager().registerPlaceholder(new Placeholder("summary_player", Placeholder.PlaceholderType.ARENA, Placeholder.PlaceholderExecutor.ALL) {
@@ -525,7 +527,11 @@ public class Main extends PluginMain {
 
       @Override
       public String getValue(PluginArena arena) {
-        return Integer.toString(((Arena) arena).getVillagers().size());
+        Arena pluginArena = getArenaRegistry().getArena(arena.getId());
+        if(pluginArena == null) {
+          return null;
+        }
+        return Integer.toString(pluginArena.getVillagers().size());
       }
     });
     getPlaceholderManager().registerPlaceholder(new Placeholder("orbs_amount", Placeholder.PlaceholderType.ARENA, Placeholder.PlaceholderExecutor.ALL) {
@@ -547,7 +553,11 @@ public class Main extends PluginMain {
 
       @Override
       public String getValue(PluginArena arena) {
-        return Integer.toString(((Arena) arena).getZombiesLeft());
+        Arena pluginArena = getArenaRegistry().getArena(arena.getId());
+        if(pluginArena == null) {
+          return null;
+        }
+        return Integer.toString(pluginArena.getZombiesLeft());
       }
     });
     getPlaceholderManager().registerPlaceholder(new Placeholder("rotten_flesh_amount", Placeholder.PlaceholderType.ARENA, Placeholder.PlaceholderExecutor.ALL) {
