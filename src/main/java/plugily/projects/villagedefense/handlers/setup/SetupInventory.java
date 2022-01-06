@@ -64,6 +64,7 @@ public class SetupInventory extends PluginSetupInventory {
   public void setArena(Player player, PluginArena arena) {
     if(arena == null && plugin.getSetupUtilities().getArena(player) != null) {
       this.arena = plugin.getArenaRegistry().getArena(plugin.getSetupUtilities().getArena(player).getId());
+      setInventoryStage(SetupUtilities.InventoryStage.PAGED_GUI);
     } else if(arena != null) {
       this.arena = plugin.getArenaRegistry().getArena(arena.getId());
     } else {
