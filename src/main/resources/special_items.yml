@@ -71,7 +71,7 @@ Forcestart:
     - "&7You need the following permission for it"
     - "&7plugily.projects.forcestart"
   material: EMERALD
-  slot: 0
+  slot: 2
   stage: ENOUGH_PLAYERS_TO_START
 
 Arena-Selector:
