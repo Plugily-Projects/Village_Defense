@@ -276,7 +276,7 @@ Signs:
     - "&a&l%plugin_name%"
     - "%arena_state_placeholder%"
     - "%arena_name%"
-    - "&5[%arena_players_size%/%max_players%]"
+    - "&5[%arena_players_size%/%arena_max_players%]"
 
 
 #
