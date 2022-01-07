@@ -38,6 +38,7 @@ public class KnightKit extends FreeKit {
     List<String> description = getPlugin().getLanguageManager().getLanguageListFromKey("KIT_CONTENT_KNIGHT_DESCRIPTION");
     setDescription(description);
     getPlugin().getKitRegistry().registerKit(this);
+    getPlugin().getKitRegistry().setDefaultKit(this);
   }
 
   @Override
