@@ -98,7 +98,7 @@ Powerups: false
 
 
 # Should the plugin enable kits which can be found in kits.yml
-Kits: false
+Kits: true
 
 
 # Should we create leaderboards out of the stats?
