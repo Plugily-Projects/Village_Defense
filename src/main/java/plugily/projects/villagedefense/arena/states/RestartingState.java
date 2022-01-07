@@ -34,13 +34,13 @@ public class RestartingState extends PluginRestartingState {
 
   @Override
   public void handleCall(PluginArena arena) {
-    super.handleCall(arena);
     Arena pluginArena = (Arena) getPlugin().getArenaRegistry().getArena(arena.getId());
     if(pluginArena == null) {
       return;
     }
     pluginArena.getDroppedFleshes().stream().filter(Objects::nonNull).forEach(Entity::remove);
     pluginArena.getDroppedFleshes().clear();
+    super.handleCall(arena);
   }
 
 }

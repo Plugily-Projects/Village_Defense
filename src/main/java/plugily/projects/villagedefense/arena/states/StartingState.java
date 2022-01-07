@@ -37,7 +37,6 @@ public class StartingState extends PluginStartingState {
     if(pluginArena == null) {
       return;
     }
-    super.handleCall(pluginArena);
     if(arena.getTimer() == 0 || arena.isForceStart()) {
       pluginArena.spawnVillagers();
 
@@ -50,6 +49,7 @@ public class StartingState extends PluginStartingState {
       arena.setTimer(getPlugin().getConfig().getInt("Cooldown-Before-Next-Wave", 25));
       pluginArena.setFighting(false);
     }
+    super.handleCall(pluginArena);
   }
 
 

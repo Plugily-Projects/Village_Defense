@@ -37,7 +37,6 @@ public class InGameState extends PluginInGameState {
     if(pluginArena == null) {
       return;
     }
-    super.handleCall(pluginArena);
     pluginArena.getEnemySpawnManager().spawnGlitchCheck();
 
     if(pluginArena.getVillagers().isEmpty() || arena.getPlayersLeft().isEmpty() && arena.getArenaState() != ArenaState.ENDING) {
@@ -79,12 +78,11 @@ public class InGameState extends PluginInGameState {
       if(arena.getArenaOption("ZOMBIES_TO_SPAWN") < 0) {
         arena.setArenaOption("ZOMBIES_TO_SPAWN", 0);
       }
-      arena.setTimer(arena.getTimer() - 1);
     } else if(arena.getTimer() <= 0) {
       pluginArena.setFighting(true);
       pluginArena.getPlugin().getArenaManager().startWave(pluginArena);
     }
-    arena.setTimer(arena.getTimer() - 1);
+    super.handleCall(pluginArena);
   }
 
 }
