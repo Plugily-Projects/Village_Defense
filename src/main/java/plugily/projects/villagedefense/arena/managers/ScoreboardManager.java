@@ -25,7 +25,9 @@ public class ScoreboardManager extends PluginScoreboardManager {
     EntryBuilder builder = new EntryBuilder();
     List<String> lines;
     if(user.getArena().getArenaState() == ArenaState.FULL_GAME) {
-      lines = user.getArena().getPlugin().getLanguageManager().getLanguageList("Scoreboard.Content.In-Game" + (((Arena) user.getArena()).isFighting() ? "" : "-Waiting"));
+      lines = user.getArena().getPlugin().getLanguageManager().getLanguageList("Scoreboard.Content.Starting");
+    } else if(user.getArena().getArenaState() == ArenaState.IN_GAME) {
+      lines = user.getArena().getPlugin().getLanguageManager().getLanguageList("Scoreboard.Content." + user.getArena().getArenaState().getFormattedName() + (((Arena) user.getArena()).isFighting() ? "" : "-Waiting"));
     } else {
       lines = user.getArena().getPlugin().getLanguageManager().getLanguageList("Scoreboard.Content." + user.getArena().getArenaState().getFormattedName());
     }
