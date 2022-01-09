@@ -36,7 +36,6 @@ import plugily.projects.minigamesbox.classic.handlers.reward.RewardType;
 import plugily.projects.minigamesbox.classic.handlers.setup.PluginSetupInventory;
 import plugily.projects.minigamesbox.classic.handlers.setup.SetupUtilities;
 import plugily.projects.minigamesbox.classic.preferences.ConfigOption;
-import plugily.projects.minigamesbox.classic.user.User;
 import plugily.projects.minigamesbox.classic.utils.configuration.ConfigUtils;
 import plugily.projects.minigamesbox.classic.utils.services.locale.Locale;
 import plugily.projects.minigamesbox.classic.utils.services.locale.LocaleRegistry;
@@ -50,6 +49,8 @@ import plugily.projects.villagedefense.arena.managers.EnemySpawnerRegistry;
 import plugily.projects.villagedefense.commands.arguments.ArgumentsRegistry;
 import plugily.projects.villagedefense.creatures.CreatureUtils;
 import plugily.projects.villagedefense.creatures.DoorBreakListener;
+import plugily.projects.villagedefense.events.PluginEvents;
+import plugily.projects.villagedefense.handlers.powerup.PowerupHandler;
 import plugily.projects.villagedefense.handlers.setup.SetupInventory;
 import plugily.projects.villagedefense.handlers.upgrade.EntityUpgradeMenu;
 import plugily.projects.villagedefense.handlers.upgrade.upgrades.Upgrade;
@@ -142,6 +143,8 @@ public class Main extends PluginMain {
     }
     new DoorBreakListener(this);
     CreatureUtils.init(this);
+    new PowerupHandler(this);
+    new PluginEvents(this);
     addPluginMetrics();
   }
 

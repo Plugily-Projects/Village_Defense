@@ -63,11 +63,11 @@ import plugily.projects.villagedefense.utils.Utils;
 /**
  * Created by Tom on 16/08/2014.
  */
-public class Events implements Listener {
+public class PluginEvents implements Listener {
 
   private final Main plugin;
 
-  public Events(Main plugin) {
+  public PluginEvents(Main plugin) {
     this.plugin = plugin;
     plugin.getServer().getPluginManager().registerEvents(this, plugin);
   }
@@ -106,7 +106,7 @@ public class Events implements Listener {
       return;
     }
 
-    Arena arena = (Arena) plugin.getArenaRegistry().getArena(event.getPlayer());
+    Arena arena = plugin.getArenaRegistry().getArena(event.getPlayer());
     if(arena == null) {
       return;
     }
@@ -212,7 +212,7 @@ public class Events implements Listener {
 
   @EventHandler(priority = EventPriority.HIGH)
   public void onCreatureHurt(EntityDamageEvent e) {
-    if(!(e.getEntity() instanceof Creature) || !plugin.getConfig().getBoolean("Zombies.Health-Bar", true)) {
+    if(!(e.getEntity() instanceof Creature) || !plugin.getConfigPreferences().getOption("ZOMBIE_HEALTHBAR")) {
       return;
     }
     for(Arena arena : plugin.getArenaRegistry().getPluginArenas()) {
