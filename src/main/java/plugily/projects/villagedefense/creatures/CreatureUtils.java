@@ -144,7 +144,7 @@ public class CreatureUtils {
     creatureInitializer.applyFollowRange(zombie);
     VersionUtils.setMaxHealth(zombie, VersionUtils.getMaxHealth(zombie) + arena.getArenaOption("ZOMBIE_DIFFICULTY_MULTIPLIER"));
     zombie.setHealth(VersionUtils.getMaxHealth(zombie));
-    if(plugin.getConfig().getBoolean("Zombies.Health-Bar", true)) {
+    if(plugin.getConfigPreferences().getOption("ZOMBIE_HEALTHBAR")) {
       zombie.setCustomNameVisible(true);
       zombie.setCustomName(StringFormatUtils.getProgressBar((int) zombie.getHealth(), (int) VersionUtils.getMaxHealth(zombie), 50, "|",
           ChatColor.YELLOW + "", ChatColor.GRAY + ""));
