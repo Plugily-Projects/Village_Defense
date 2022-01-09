@@ -168,12 +168,18 @@ public class Arena extends PluginArena {
 
   public void addVillagerSpawn(Location location) {
     plugin.getDebugger().debug("Arena {0} Adding villager spawn on location {1}", getId(), location.toString());
-    getVillagerSpawns().add(location);
+    List<Location> villagers = getVillagerSpawns();
+    villagers.add(location);
+    spawnPoints.put(SpawnPoint.VILLAGER, villagers);
+    plugin.getDebugger().debug("Arena {0} VillagerSpawns {1}", getId(), getVillagerSpawns());
   }
 
   public void addZombieSpawn(Location location) {
     plugin.getDebugger().debug("Arena {0} Adding zombie spawn on location {1}", getId(), location.toString());
-    getZombieSpawns().add(location);
+    List<Location> zombies = getZombieSpawns();
+    zombies.add(location);
+    spawnPoints.put(SpawnPoint.ZOMBIE, zombies);
+    plugin.getDebugger().debug("Arena {0} ZombieSpawns {1}", getId(), getZombieSpawns());
   }
 
   @NotNull
