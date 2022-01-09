@@ -41,8 +41,6 @@ import java.util.concurrent.ThreadLocalRandom;
  */
 public class ArenaUtils extends PluginArenaUtils {
 
-  private static Main plugin;
-
   private ArenaUtils() {
     super();
   }
@@ -56,8 +54,8 @@ public class ArenaUtils extends PluginArenaUtils {
         continue;
       }
 
-      User user = plugin.getUserManager().getUser(player);
-      if(user.isPermanentSpectator() && !plugin.getConfigPreferences().getOption("RESPAWN_IN_GAME_JOIN")) {
+      User user = getPlugin().getUserManager().getUser(player);
+      if(user.isPermanentSpectator() && !getPlugin().getConfigPreferences().getOption("RESPAWN_IN_GAME_JOIN")) {
         continue;
       }
 
@@ -81,7 +79,7 @@ public class ArenaUtils extends PluginArenaUtils {
       ArenaUtils.showPlayer(player, arena);
       user.getKit().giveKitItems(player);
       player.updateInventory();
-      player.sendMessage(plugin.getChatManager().colorMessage("IN_GAME_MESSAGES_VILLAGE_WAVE_RESPAWNED"));
+      player.sendMessage(getPlugin().getChatManager().colorMessage("IN_GAME_MESSAGES_VILLAGE_WAVE_RESPAWNED"));
     }
   }
 
