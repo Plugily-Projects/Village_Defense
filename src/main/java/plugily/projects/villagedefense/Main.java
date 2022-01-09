@@ -538,13 +538,6 @@ public class Main extends PluginMain {
         return Integer.toString(pluginArena.getVillagers().size());
       }
     });
-    getPlaceholderManager().registerPlaceholder(new Placeholder("orbs_amount", Placeholder.PlaceholderType.ARENA, Placeholder.PlaceholderExecutor.ALL) {
-      @Override
-      public String getValue(Player player, PluginArena arena) {
-        User user = getUserManager().getUser(player);
-        return Integer.toString(user.getStat("ORBS"));
-      }
-    });
     getPlaceholderManager().registerPlaceholder(new Placeholder("zombie_size_left", Placeholder.PlaceholderType.ARENA, Placeholder.PlaceholderExecutor.ALL) {
       @Override
       public String getValue(Player player, PluginArena arena) {
