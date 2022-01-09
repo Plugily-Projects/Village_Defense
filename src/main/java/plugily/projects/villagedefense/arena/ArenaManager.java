@@ -18,7 +18,6 @@
 
 package plugily.projects.villagedefense.arena;
 
-import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.IronGolem;
 import org.bukkit.entity.Player;
@@ -94,19 +93,15 @@ public class ArenaManager extends PluginArenaManager {
       return;
     }
 
-    String titleTimes = plugin.getChatManager().colorMessage("IN_GAME_MESSAGES_VILLAGE_WAVE_END_TIMES");
+    String titleTimes = plugin.getChatManager().colorMessage("IN_GAME_MESSAGES_VILLAGE_WAVE_END_TIMES", arena);
     String[] split = titleTimes.split(", ", 3);
 
     int fadeIn = split.length > 1 ? Integer.parseInt(split[0]) : 20,
         stay = split.length > 2 ? Integer.parseInt(split[1]) : 30,
         fadeOut = split.length > 3 ? Integer.parseInt(split[2]) : 20;
 
-    String title = plugin.getChatManager().colorMessage("IN_GAME_MESSAGES_VILLAGE_WAVE_END_TITLE");
-    String subTitle = plugin.getChatManager().colorMessage("IN_GAME_MESSAGES_VILLAGE_WAVE_END_SUBTITLE");
-
-    String strWave = Integer.toString(wave);
-    title = title.replace("%wave%", strWave);
-    subTitle = subTitle.replace("%wave%", strWave);
+    String title = plugin.getChatManager().colorMessage("IN_GAME_MESSAGES_VILLAGE_WAVE_END_TITLE", arena, wave);
+    String subTitle = plugin.getChatManager().colorMessage("IN_GAME_MESSAGES_VILLAGE_WAVE_END_SUBTITLE", arena, wave);
 
     for(User user : plugin.getUserManager().getUsers(arena)) {
       if(!user.isSpectator() && !user.isPermanentSpectator()) {
@@ -116,7 +111,7 @@ public class ArenaManager extends PluginArenaManager {
       }
     }
 
-    arena.setTimer(plugin.getConfig().getInt("Cooldown-Before-Next-Wave", 25));
+    arena.setTimer(plugin.getConfig().getInt("Time-Manager.Cooldown-Before-Next-Wave", 25));
     arena.getEnemySpawnManager().getEnemyCheckerLocations().clear();
     arena.setWave(wave + 1);
 
@@ -193,19 +188,15 @@ public class ArenaManager extends PluginArenaManager {
       ArenaUtils.bringDeathPlayersBack(arena);
     }
 
-    String titleTimes = plugin.getChatManager().colorMessage("IN_GAME_MESSAGES_VILLAGE_WAVE_START_TIMES");
+    String titleTimes = plugin.getChatManager().colorMessage("IN_GAME_MESSAGES_VILLAGE_WAVE_START_TIMES", arena);
     String[] split = titleTimes.split(", ", 3);
 
     int fadeIn = split.length > 1 ? Integer.parseInt(split[0]) : 20,
         stay = split.length > 2 ? Integer.parseInt(split[1]) : 30,
         fadeOut = split.length > 3 ? Integer.parseInt(split[2]) : 20;
 
-    String title = plugin.getChatManager().colorMessage("IN_GAME_MESSAGES_VILLAGE_WAVE_START_TITLE");
-    String subTitle = plugin.getChatManager().colorMessage("IN_GAME_MESSAGES_VILLAGE_WAVE_START_SUBTITLE");
-
-    String waveStr = Integer.toString(wave);
-    title = title.replace("%wave%", waveStr);
-    subTitle = subTitle.replace("%wave%", waveStr);
+    String title = plugin.getChatManager().colorMessage("IN_GAME_MESSAGES_VILLAGE_WAVE_START_TITLE", arena, wave);
+    String subTitle = plugin.getChatManager().colorMessage("IN_GAME_MESSAGES_VILLAGE_WAVE_START_SUBTITLE", arena, wave);
 
     String waveStarted = plugin.getChatManager().formatMessage(arena, plugin.getChatManager().colorMessage("IN_GAME_MESSAGES_VILLAGE_WAVE_STARTED"), wave);
 
