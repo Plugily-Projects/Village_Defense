@@ -33,6 +33,7 @@ public class InGameState extends PluginInGameState {
 
   @Override
   public void handleCall(PluginArena arena) {
+    super.handleCall(arena);
     Arena pluginArena = (Arena) getPlugin().getArenaRegistry().getArena(arena.getId());
     if(pluginArena == null) {
       return;
@@ -43,17 +44,19 @@ public class InGameState extends PluginInGameState {
       getPlugin().getArenaManager().stopGame(false, arena);
       return;
     }
+    int zombiesLeft = pluginArena.getZombiesLeft();
 
     if(pluginArena.isFighting()) {
-      int zombiesLeft = pluginArena.getZombiesLeft();
-
       if(zombiesLeft <= 0) {
         pluginArena.setFighting(false);
         pluginArena.getPlugin().getArenaManager().endWave(pluginArena);
-      } else if(ServerVersion.Version.isCurrentEqualOrHigher(ServerVersion.Version.v1_9_R1)) {
+      } else if(arena.getArenaOption("ZOMBIES_TO_SPAWN") > 0) {
+        pluginArena.getEnemySpawnManager().spawnEnemies();
+        setArenaTimer(500);
+      }
+      if(ServerVersion.Version.isCurrentEqualOrHigher(ServerVersion.Version.v1_9_R1)) {
         int zombiesLeftFrom = getPlugin().getConfig().getInt("Glowing-Status.Zombies-Left");
         int startingWave;
-
         if(zombiesLeftFrom > 0 && zombiesLeft <= zombiesLeftFrom
             && (startingWave = getPlugin().getConfig().getInt("Glowing-Status.Starting-Wave")) > 0
             && pluginArena.getWave() >= startingWave) {
@@ -64,11 +67,7 @@ public class InGameState extends PluginInGameState {
           }
         }
       }
-
-      if(arena.getArenaOption("ZOMBIES_TO_SPAWN") > 0) {
-        pluginArena.getEnemySpawnManager().spawnEnemies();
-        arena.setTimer(500);
-      } else if(arena.getTimer() == 0) {
+      if(arena.getTimer() == 0) {
         pluginArena.getMapRestorerManager().clearEnemiesFromArena();
         if(pluginArena.getZombiesLeft() > 0) {
           getPlugin().getChatManager().broadcast(arena, "IN_GAME_MESSAGES_VILLAGE_WAVE_STUCK_ZOMBIES");
@@ -82,7 +81,6 @@ public class InGameState extends PluginInGameState {
       pluginArena.setFighting(true);
       pluginArena.getPlugin().getArenaManager().startWave(pluginArena);
     }
-    super.handleCall(pluginArena);
   }
 
 }

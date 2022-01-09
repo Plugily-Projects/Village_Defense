@@ -33,6 +33,7 @@ public class StartingState extends PluginStartingState {
 
   @Override
   public void handleCall(PluginArena arena) {
+    super.handleCall(arena);
     Arena pluginArena = (Arena) getPlugin().getArenaRegistry().getArena(arena.getId());
     if(pluginArena == null) {
       return;
@@ -46,10 +47,9 @@ public class StartingState extends PluginStartingState {
         User user = getPlugin().getUserManager().getUser(player);
         user.setStat("ORBS", orbsStartingAmount);
       }
-      arena.setTimer(getPlugin().getConfig().getInt("Cooldown-Before-Next-Wave", 25));
+      setArenaTimer(getPlugin().getConfig().getInt("Time-Manager.Cooldown-Before-Next-Wave", 25));
       pluginArena.setFighting(false);
     }
-    super.handleCall(pluginArena);
   }
 
 

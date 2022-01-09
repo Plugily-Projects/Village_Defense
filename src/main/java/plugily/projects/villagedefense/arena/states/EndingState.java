@@ -32,12 +32,12 @@ public class EndingState extends PluginEndingState {
 
   @Override
   public void handleCall(PluginArena arena) {
+    super.handleCall(arena);
     if(arena.getTimer() <= 0) {
       for(Player player : arena.getPlayers()) {
         User user = getPlugin().getUserManager().getUser(player);
         user.setStat("ORBS", 0);
       }
     }
-    super.handleCall(arena);
   }
 }
