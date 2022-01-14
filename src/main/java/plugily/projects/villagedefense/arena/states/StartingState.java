@@ -39,6 +39,7 @@ public class StartingState extends PluginStartingState {
       return;
     }
     if(arena.getTimer() == 0 || arena.isForceStart()) {
+      pluginArena.clearVillagers();
       pluginArena.spawnVillagers();
 
       int orbsStartingAmount = getPlugin().getConfig().getInt("Orbs.Start.Amount", 20);

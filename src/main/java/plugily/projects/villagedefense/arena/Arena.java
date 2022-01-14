@@ -20,6 +20,7 @@ package plugily.projects.villagedefense.arena;
 
 import org.bukkit.Location;
 import org.bukkit.entity.Creature;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.IronGolem;
 import org.bukkit.entity.Item;
@@ -118,6 +119,14 @@ public class Arena extends PluginArena {
     return enemySpawnManager;
   }
 
+  public void clearVillagers() {
+    for(Entity entity : plugin.getBukkitHelper().getNearbyEntities(getStartLocation(), 50)) {
+      if(!(entity instanceof Villager)) {
+        continue;
+      }
+      removeVillager((Villager) entity);
+    }
+  }
 
   public void spawnVillagers() {
     List<Location> villagerSpawns = getVillagerSpawns();
