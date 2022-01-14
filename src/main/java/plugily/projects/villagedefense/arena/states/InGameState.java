@@ -45,7 +45,7 @@ public class InGameState extends PluginInGameState {
       return;
     }
     int zombiesLeft = pluginArena.getZombiesLeft();
-
+    getPlugin().getDebugger().debug("Arena {0} Zombies to spawn {1} Zombies left {2} Fighting {3}", arena.getId(), arena.getArenaOption("ZOMBIES_TO_SPAWN"), zombiesLeft, pluginArena.isFighting());
     if(pluginArena.isFighting()) {
       if(zombiesLeft <= 0) {
         pluginArena.setFighting(false);

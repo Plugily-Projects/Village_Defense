@@ -110,8 +110,7 @@ public class ClearEntitiesArgument {
             clearMessage = registry.getPlugin().getChatManager().colorMessage("IN_GAME_MESSAGES_ADMIN_REMOVED_WOLVES");
             break;
           default:
-            sender.sendMessage(registry.getPlugin().getChatManager().getPrefix() + registry.getPlugin().getChatManager().colorMessage("COMMANDS_WRONG_USAGE")
-                .replace("%correct%", "VILLAGER, ZOMBIE, GOLEM, WOLF"));
+            sender.sendMessage(registry.getPlugin().getChatManager().getPrefix() + registry.getPlugin().getChatManager().colorMessage("COMMANDS_WRONG_USAGE", "VILLAGER, ZOMBIE, GOLEM, WOLF"));
             return;
         }
         String message = registry.getPlugin().getChatManager().formatMessage(arena, clearMessage, (Player) sender);

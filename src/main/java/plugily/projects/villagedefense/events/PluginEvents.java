@@ -91,7 +91,9 @@ public class PluginEvents implements Listener {
 
     event.setAmount(amount);
 
-    amount += (amount * (plugin.getPermissionsManager().getPermissionCategoryValue("ORBS_BOOSTER", player) / 100));
+    int orbsBoost = plugin.getPermissionsManager().getPermissionCategoryValue("ORBS_BOOSTER", player);
+
+    amount += (amount * (orbsBoost / 100));
 
     amount += event.getAmount();
     user.addStat(plugin.getStatsStorage().getStatisticType("ORBS"), event.getAmount());
