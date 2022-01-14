@@ -186,6 +186,7 @@ In-Game:
       Start-In: "&7The game starts in &b%arena_time%&7 seconds!"
       Waiting-For-Players: "&7Waiting for players... We need at least &b%arena_min_players%&7 players to start."
       Enough-Players-To-Start: "&7We now have enough players. The game is starting soon!"
+      Reduced-Time: "&7The time got reduced to %number% seconds"
       Max-Players: "&7We reached max players for this round. Let's shorten the time!"
       Game-Started: "&7The game has started!"
       Kicked-For-Premium-Slot: "&c%player% got removed from the game to make a place for premium players!"
