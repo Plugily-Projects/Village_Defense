@@ -39,8 +39,9 @@ public class RestartingState extends PluginRestartingState {
     if(pluginArena == null) {
       return;
     }
-    pluginArena.getDroppedFleshes().stream().filter(Objects::nonNull).forEach(Entity::remove);
-    pluginArena.getDroppedFleshes().clear();
+    if(arena.getTimer() <= 0) {
+      pluginArena.getDroppedFleshes().stream().filter(Objects::nonNull).forEach(Entity::remove);
+      pluginArena.getDroppedFleshes().clear();
+    }
   }
-
 }
