@@ -9,6 +9,12 @@ deploy webhooks to print changelog successfully
 
 That's all, matcher will stop when detects next line started with `###` match
 
+### -
+* Added CustomCreature(s) / Possibility to add own creatures (creatures.yml)
+* Removed nms / craftbukkit code for 1.9+
+* 1.18 ready
+* Core updates... (todo)
+
 ### 4.6.2 (22.09.2021 - 00.00.202x)
 * Added option to set glowing for remaining zombies from a specific wave
 

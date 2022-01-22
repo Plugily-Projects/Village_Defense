@@ -49,6 +49,8 @@ import plugily.projects.minigamesbox.classic.utils.version.VersionUtils;
 import plugily.projects.minigamesbox.classic.utils.version.events.api.PlugilyEntityPickupItemEvent;
 import plugily.projects.villagedefense.Main;
 
+import java.util.Random;
+
 /**
  * @author Plajer
  * <p>
@@ -178,13 +180,13 @@ public class ArenaEvents implements Listener {
   }
 
   @EventHandler
-  public void onDieEntity(EntityDeathEvent e) {
-    LivingEntity entity = e.getEntity();
+  public void onDieEntity(EntityDeathEvent event) {
+    LivingEntity entity = event.getEntity();
     if(!(entity instanceof Creature)) {
       return;
     }
     for(Arena arena : plugin.getArenaRegistry().getPluginArenas()) {
-      if(e.getEntityType() == EntityType.VILLAGER) {
+      if(event.getEntityType() == EntityType.VILLAGER) {
         if(!arena.getVillagers().contains(entity)) {
           continue;
         }
@@ -271,7 +273,7 @@ public class ArenaEvents implements Listener {
         plugin.getSpecialItemManager().addSpecialItemsOfStage(player, SpecialItem.DisplayStage.SPECTATOR);
       }, 1);
 
-      untargetPlayerFromZombies(player, arena);
+      arena.getCreatureTargetManager().unTargetPlayerFromZombies(player, arena);
     }, 10);
   }
 
@@ -296,20 +298,7 @@ public class ArenaEvents implements Listener {
     }.runTaskTimer(plugin, 30, 30);
   }
 
-  private void untargetPlayerFromZombies(Player player, Arena arena) {
-    for(Creature zombie : arena.getEnemies()) {
-      LivingEntity target = zombie.getTarget();
 
-      if(!player.equals(target)) {
-        continue;
-      }
-
-      //set new target as villager so zombies won't stay still waiting for nothing
-      for(Villager villager : arena.getVillagers()) {
-        zombie.setTarget(villager);
-      }
-    }
-  }
 
   @EventHandler(priority = EventPriority.HIGHEST)
   public void onRespawn(PlayerRespawnEvent e) {

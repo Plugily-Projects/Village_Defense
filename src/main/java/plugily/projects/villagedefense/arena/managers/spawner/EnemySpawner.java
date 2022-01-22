@@ -1,6 +1,8 @@
 package plugily.projects.villagedefense.arena.managers.spawner;
 
 import java.util.Random;
+
+import org.bukkit.inventory.ItemStack;
 import plugily.projects.villagedefense.arena.Arena;
 
 /**
@@ -29,6 +31,13 @@ public interface EnemySpawner extends Comparable<EnemySpawner> {
    * @param spawn  the amount to spawn
    */
   void spawn(Random random, Arena arena, int spawn);
+
+  /**
+   * Get the defined itemstack for drop reasons
+   * does NOT work on 1.8.8 or lower
+   * @return ItemStack that gets dropped on enemey death
+   */
+  ItemStack getDropItem();
 
   @Override
   default int compareTo(EnemySpawner spawner) {

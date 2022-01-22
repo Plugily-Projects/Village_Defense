@@ -124,6 +124,7 @@ public class Main extends PluginMain {
   public void initializePluginClasses() {
     addFileName("kits");
     addFileName("powerups");
+    addFileName("creatures");
     addArenaOptions();
     Arena.init(this);
     ArenaUtils.init(this);

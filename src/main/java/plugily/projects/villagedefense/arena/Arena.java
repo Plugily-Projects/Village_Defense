@@ -33,6 +33,7 @@ import plugily.projects.minigamesbox.classic.arena.ArenaState;
 import plugily.projects.minigamesbox.classic.arena.PluginArena;
 import plugily.projects.minigamesbox.classic.utils.version.ServerVersion;
 import plugily.projects.villagedefense.Main;
+import plugily.projects.villagedefense.arena.managers.CreatureTargetManager;
 import plugily.projects.villagedefense.arena.managers.EnemySpawnManager;
 import plugily.projects.villagedefense.arena.managers.ScoreboardManager;
 import plugily.projects.villagedefense.arena.managers.ShopManager;
@@ -71,6 +72,7 @@ public class Arena extends PluginArena {
 
   private ShopManager shopManager;
   private EnemySpawnManager enemySpawnManager;
+  private CreatureTargetManager creatureTargetManager;
 
   private boolean fighting = false;
 
@@ -78,6 +80,7 @@ public class Arena extends PluginArena {
     super(id);
     shopManager = new ShopManager(this);
     enemySpawnManager = new EnemySpawnManager(this);
+    creatureTargetManager = new CreatureTargetManager(this);
     if(ServerVersion.Version.isCurrentEqualOrLower(ServerVersion.Version.v1_16_R1)) {
       mapRestorerManager = new MapRestorerManagerLegacy(this);
     } else {
@@ -117,6 +120,10 @@ public class Arena extends PluginArena {
 
   public EnemySpawnManager getEnemySpawnManager() {
     return enemySpawnManager;
+  }
+
+  public CreatureTargetManager getCreatureTargetManager() {
+    return creatureTargetManager;
   }
 
   public void clearVillagers() {
@@ -270,6 +277,7 @@ public class Arena extends PluginArena {
       try {
         limit = Integer.parseInt(map.getKey().split("\\.", 2)[1]);
       } catch(NumberFormatException ex) {
+        ex.printStackTrace();
       }
 
       if(limit < 1) {
