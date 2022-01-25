@@ -159,17 +159,17 @@ Limit:
     # Should game have finite amount of waves
     Unlimited: true
     # Limit of waves, if this wave ends game will end
-    Game-End: 25
+    Game-End: 200
   Spawn:
-    # Limit of mobs can be spawned per player in-game
+    # Limit of mobs can be spawned globally in-game
     # Will affect only buying them in in-game shop
     Wolves: 20
     Golems: 15
     # How many villagers will be spawned in an arena?
-    Villager: 10
-  # After how many zombies should we limit them?
-  # Once limit is reached zombies get more health so it's still harder each wave
-  Zombies: 75
+    Villagers: 10
+    # After how many zombies should we limit them?
+    # Once limit is reached zombies get more health so it's still harder each wave
+    Zombies: 75
   # Can the players buy again iron golems or wolves if these
   # entities died? The config limit and permission will be ignored.
   Entity-Buy-After-Death: false

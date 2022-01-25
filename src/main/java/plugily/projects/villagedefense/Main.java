@@ -167,6 +167,8 @@ public class Main extends PluginMain {
     getStatsStorage().registerStatistic("ORBS", new StatisticType("orbs", true, "int(11) NOT NULL DEFAULT '0'"));
 
     getPermissionsManager().registerPermissionCategory("ORBS_BOOSTER", new PermissionCategory("Orbs-Boost", null));
+    getPermissionsManager().registerPermissionCategory("PLAYER_SPAWN_LIMIT_WOLVES", new PermissionCategory("Spawn-Limit.Wolves", null));
+    getPermissionsManager().registerPermissionCategory("PLAYER_SPAWN_LIMIT_GOLEMS", new PermissionCategory("Spawn-Limit.Golems", null));
     getPermissionsManager().registerPermission("KIT_PREMIUM_UNLOCK", new Permission("Basic.Premium-Kits", "villagedefense.kits.premium"));
 
     getRewardsHandler().registerRewardType("START_WAVE", new RewardType("start-wave"));

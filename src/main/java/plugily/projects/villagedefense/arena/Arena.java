@@ -27,7 +27,6 @@ import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Villager;
 import org.bukkit.entity.Wolf;
-import org.bukkit.permissions.PermissionAttachmentInfo;
 import org.jetbrains.annotations.NotNull;
 import plugily.projects.minigamesbox.classic.arena.ArenaState;
 import plugily.projects.minigamesbox.classic.arena.PluginArena;
@@ -47,11 +46,12 @@ import plugily.projects.villagedefense.creatures.CreatureUtils;
 
 import java.util.ArrayList;
 import java.util.EnumMap;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Random;
 import java.util.logging.Level;
+import java.util.stream.Collectors;
 
 /**
  * @author Tigerpanzer_02
@@ -66,6 +66,7 @@ public class Arena extends PluginArena {
   private final List<Villager> villagers = new ArrayList<>();
   private final List<IronGolem> ironGolems = new ArrayList<>();
   private final List<Item> droppedFleshes = new ArrayList<>();
+  private final List<Entity> spawnedEntities = new ArrayList<>();
   private MapRestorerManager mapRestorerManager;
 
   private final Map<SpawnPoint, List<Location>> spawnPoints = new EnumMap<>(SpawnPoint.class);
@@ -142,7 +143,7 @@ public class Arena extends PluginArena {
       return;
     }
 
-    int amount = getPlugin().getConfig().getInt("Villager-Amount", 10);
+    int amount = getPlugin().getConfig().getInt("Limit.Spawn.Villagers", 10);
     int spawnSize = villagerSpawns.size();
     for(int i = 0; i < amount; i++) {
       spawnVillager(villagerSpawns.get(i % spawnSize));
@@ -245,6 +246,7 @@ public class Arena extends PluginArena {
     wolf.setOwner(player);
     wolf.setCustomNameVisible(getPlugin().getConfigPreferences().getOption("NAME_VISIBILITY_WOLF"));
     wolf.setCustomName(getPlugin().getChatManager().colorMessage("IN_GAME_MESSAGES_VILLAGE_WAVE_ENTITIES_WOLF_NAME").replace("%player%", player.getName()));
+    player.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage("IN_GAME_MESSAGES_VILLAGE_WAVE_ENTITIES_WOLF_SPAWN"));
     addWolf(wolf);
   }
 
@@ -256,52 +258,55 @@ public class Arena extends PluginArena {
     IronGolem ironGolem = CreatureUtils.getCreatureInitializer().spawnGolem(location);
     ironGolem.setCustomNameVisible(getPlugin().getConfigPreferences().getOption("NAME_VISIBILITY_GOLEM"));
     ironGolem.setCustomName(getPlugin().getChatManager().colorMessage("IN_GAME_MESSAGES_VILLAGE_WAVE_ENTITIES_GOLEM_NAME").replace("%player%", player.getName()));
+    player.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage("IN_GAME_MESSAGES_VILLAGE_WAVE_ENTITIES_GOLEM_SPAWN"));
     addIronGolem(ironGolem);
   }
 
   protected void addWolf(Wolf wolf) {
     wolves.add(wolf);
+    spawnedEntities.add(wolf);
   }
 
   protected boolean canSpawnMobForPlayer(Player player, EntityType type) {
     if(type != EntityType.IRON_GOLEM && type != EntityType.WOLF) {
-      return true;
+      return false;
     }
+    int globalEntityLimit = 0;
+    int entityLimit = 0;
+    String spawnedName = "";
+    switch(type) {
+      case WOLF:
+        entityLimit = plugin.getPermissionsManager().getPermissionCategoryValue("PLAYER_SPAWN_LIMIT_WOLVES", player);
+        spawnedName = plugin.getChatManager().colorMessage("IN_GAME_MESSAGES_VILLAGE_WAVE_ENTITIES_WOLF_NAME").replace("%player%", player.getName());
+        globalEntityLimit = plugin.getConfig().getInt("Limit.Spawn.Wolves", 20);
+        break;
+      case IRON_GOLEM:
+        entityLimit = plugin.getPermissionsManager().getPermissionCategoryValue("PLAYER_SPAWN_LIMIT_GOLEMS", player);
+        spawnedName = plugin.getChatManager().colorMessage("IN_GAME_MESSAGES_VILLAGE_WAVE_ENTITIES_GOLEM_NAME").replace("%player%", player.getName());
+        globalEntityLimit = plugin.getConfig().getInt("Limit.Spawn.Golems", 15);
+        break;
+    }
+    String finalSpawnedName = spawnedName;
+    List<Entity> entities = new ArrayList<>(spawnedEntities);
+    if(plugin.getConfigPreferences().getOption("LIMIT_ENTITY_BUY_AFTER_DEATH")) {
+      List<Entity> entityList = entities.stream().filter(entity -> entity.getType() == type).collect(Collectors.toList());
+      entityList = entityList.stream().filter(Entity::isDead).collect(Collectors.toList());
 
-    for(Map.Entry<String, Boolean> map : getAllEffectivePermissions(player).entrySet()) {
-      if(!map.getValue()) {
-        continue;
+      long spawnedAmount = entityList.size();
+      if(spawnedAmount >= globalEntityLimit) {
+        player.sendMessage(plugin.getChatManager().colorMessage("IN_GAME_MESSAGES_VILLAGE_SHOP_MOB_LIMIT_REACHED")
+            .replace("%amount%", Integer.toString(globalEntityLimit)));
+        return false;
       }
 
-      int limit = 0;
-      try {
-        limit = Integer.parseInt(map.getKey().split("\\.", 2)[1]);
-      } catch(NumberFormatException ex) {
-        ex.printStackTrace();
-      }
-
-      if(limit < 1) {
-        continue;
-      }
-
-      if((type == EntityType.IRON_GOLEM && map.getKey().endsWith("limit.golem." + limit) && ironGolems.size() + 1 < limit)
-          || (type == EntityType.WOLF && map.getKey().endsWith("limit.wolf." + limit) && wolves.size() + 1 < limit)) {
+      long spawnedPlayerAmount = entityList.stream().filter(entity -> Objects.equals(entity.getCustomName(), finalSpawnedName)).count();
+      if(spawnedPlayerAmount >= entityLimit) {
+        player.sendMessage(plugin.getChatManager().colorMessage("IN_GAME_MESSAGES_VILLAGE_SHOP_MOB_LIMIT_REACHED")
+            .replace("%amount%", Integer.toString(entityLimit)));
         return false;
       }
     }
-
-    return true;
-  }
-
-  private Map<String, Boolean> getAllEffectivePermissions(Player player) {
-    Map<String, Boolean> permLimits = new HashMap<>();
-    for(PermissionAttachmentInfo permission : player.getEffectivePermissions()) {
-      if(permission.getPermission().startsWith("villagedefense.limit.")) {
-        permLimits.put(permission.getPermission(), permission.getValue());
-      }
-    }
-
-    return permLimits;
+    return entityLimit > 0 && ironGolems.size() < entityLimit;
   }
 
   /**
@@ -378,6 +383,7 @@ public class Arena extends PluginArena {
 
   protected void addIronGolem(IronGolem ironGolem) {
     ironGolems.add(ironGolem);
+    spawnedEntities.add(ironGolem);
   }
 
   public void removeIronGolem(IronGolem ironGolem) {

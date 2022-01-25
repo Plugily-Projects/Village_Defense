@@ -23,9 +23,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Chest;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.entity.IronGolem;
 import org.bukkit.entity.Player;
-import org.bukkit.entity.Wolf;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
@@ -38,7 +36,6 @@ import plugily.projects.minigamesbox.inventory.normal.NormalFastInv;
 import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.arena.Arena;
 
-import java.util.List;
 import java.util.function.Consumer;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
@@ -165,69 +162,19 @@ public class ShopManager {
           return;
         }
 
-        if(ItemUtils.isItemStackNamed(itemStack)) {
-          String name = ComplementAccessor.getComplement().getDisplayName(itemStack.getItemMeta());
-          int spawnedAmount = 0;
+        if(!ItemUtils.isItemStackNamed(itemStack)) {
+          return;
+        }
+        String name = ComplementAccessor.getComplement().getDisplayName(itemStack.getItemMeta());
 
-          if(name.contains(plugin.getChatManager().colorMessage("IN_GAME_MESSAGES_VILLAGE_SHOP_GOLEM_ITEM"))
-              || name.contains(defaultGolemItemName)) {
-            List<IronGolem> golems = arena.getIronGolems();
+        if(name.contains(plugin.getChatManager().colorMessage("IN_GAME_MESSAGES_VILLAGE_SHOP_GOLEM_ITEM"))
+            || name.contains(defaultGolemItemName)) {
+          arena.spawnGolem(arena.getStartLocation(), player);
+        }
 
-            if(plugin.getConfigPreferences().getOption("LIMIT_ENTITY_BUY_AFTER_DEATH")) {
-              golems = golems.stream().filter(IronGolem::isDead).collect(Collectors.toList());
-            }
-
-            String spawnedName = plugin.getChatManager().colorMessage("IN_GAME_MESSAGES_VILLAGE_WAVE_ENTITIES_GOLEM_NAME").replace("%player%", player.getName());
-
-            for(IronGolem golem : golems) {
-              if(spawnedName.equals(golem.getCustomName())) {
-                spawnedAmount++;
-              }
-            }
-
-            int spawnLimit = plugin.getConfig().getInt("Golems-Spawn-Limit", 15);
-            if(spawnedAmount >= spawnLimit) {
-              player.sendMessage(plugin.getChatManager().colorMessage("IN_GAME_MESSAGES_VILLAGE_SHOP_MOB_LIMIT_REACHED")
-                  .replace("%amount%", Integer.toString(spawnLimit)));
-              return;
-            }
-
-            arena.spawnGolem(arena.getStartLocation(), player);
-            player.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage("IN_GAME_MESSAGES_VILLAGE_WAVE_ENTITIES_GOLEM_SPAWN"));
-            user.setStat("ORBS", orbs - cost);
-            arena.changeArenaOptionBy("TOTAL_ORBS_SPENT", cost);
-            return;
-          }
-
-          if(name.contains(plugin.getChatManager().colorMessage("IN_GAME_MESSAGES_VILLAGE_SHOP_WOLF_ITEM"))
-              || name.contains(defaultWolfItemName)) {
-            List<Wolf> wolves = arena.getWolves();
-
-            if(plugin.getConfigPreferences().getOption("LIMIT_ENTITY_BUY_AFTER_DEATH")) {
-              wolves = wolves.stream().filter(Wolf::isDead).collect(Collectors.toList());
-            }
-
-            String spawnedName = plugin.getChatManager().colorMessage("IN_GAME_MESSAGES_VILLAGE_WAVE_ENTITIES_WOLF_NAME").replace("%player%", player.getName());
-
-            for(Wolf wolf : wolves) {
-              if(spawnedName.equals(wolf.getCustomName())) {
-                spawnedAmount++;
-              }
-            }
-
-            int spawnLimit = plugin.getConfig().getInt("Wolves-Spawn-Limit", 20);
-            if(spawnedAmount >= spawnLimit) {
-              player.sendMessage(plugin.getChatManager().colorMessage("IN_GAME_MESSAGES_VILLAGE_SHOP_MOB_LIMIT_REACHED")
-                  .replace("%amount%", Integer.toString(spawnLimit)));
-              return;
-            }
-
-            arena.spawnWolf(arena.getStartLocation(), player);
-            player.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage("IN_GAME_MESSAGES_VILLAGE_WAVE_ENTITIES_WOLF_SPAWN"));
-            user.setStat("ORBS", orbs - cost);
-            arena.changeArenaOptionBy("TOTAL_ORBS_SPENT", cost);
-            return;
-          }
+        if(name.contains(plugin.getChatManager().colorMessage("IN_GAME_MESSAGES_VILLAGE_SHOP_WOLF_ITEM"))
+            || name.contains(defaultWolfItemName)) {
+          arena.spawnWolf(arena.getStartLocation(), player);
         }
 
         ItemStack stack = itemStack.clone();

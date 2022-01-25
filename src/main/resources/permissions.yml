@@ -19,6 +19,13 @@ Exp-Boost:
   # Increase exp by 300 percent
   admin-boost: 300
 
+# Per player spawn limit for entities
+Spawn-Limit:
+  Wolves:
+    limit-golem-10: 10
+  Golems:
+    limit-wolve-10: 10
+
 # Basic permissions for game, permissions explained here: https://wiki.plugily.xyz/
 Basic:
   Full-Games: "villagedefense.fullgames"
