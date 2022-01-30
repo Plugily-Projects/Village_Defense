@@ -301,8 +301,8 @@ Arena-Selector:
 # Validator messages
 #
 Validator:
-  Invalid-Arena-Configuration: "Arena %arena% has invalid configuration! Missing node: %value%"
-  Instance-Started: "Arena %arena% instance successfully started!"
+  Invalid-Arena-Configuration: "Arena %arena_name% has invalid configuration! Missing node: %value%"
+  Instance-Started: "Arena %arena_name% instance successfully started!"
   No-Instances-Created: "There are no arena instances created in configuration!"
 
 

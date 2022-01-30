@@ -55,7 +55,7 @@ public class ArenaRegistry extends PluginArenaRegistry {
     if(!checks) return false;
 
     if(!section.getBoolean(id + ".isdone")) {
-      plugin.getDebugger().sendConsoleMsg(plugin.getChatManager().colorMessage("VALIDATOR_INVALID_ARENA_CONFIGURATION").replace("%arena%", id).replace("%error%", "NOT VALIDATED"));
+      plugin.getDebugger().sendConsoleMsg(plugin.getChatManager().colorMessage("VALIDATOR_INVALID_ARENA_CONFIGURATION", "NOT VALIDATED", arena));
       return false;
     }
 
@@ -65,7 +65,7 @@ public class ArenaRegistry extends PluginArenaRegistry {
         ((Arena) arena).addZombieSpawn(LocationSerializer.getLocation(zombieSection.getString(string)));
       }
     } else {
-      plugin.getDebugger().sendConsoleMsg(plugin.getChatManager().colorMessage("VALIDATOR_INVALID_ARENA_CONFIGURATION").replace("%arena%", id).replace("%error%", "ZOMBIE SPAWNS"));
+      plugin.getDebugger().sendConsoleMsg(plugin.getChatManager().colorMessage("VALIDATOR_INVALID_ARENA_CONFIGURATION", "ZOMBIE SPAWNS", arena));
       return false;
     }
 
@@ -75,7 +75,7 @@ public class ArenaRegistry extends PluginArenaRegistry {
         ((Arena) arena).addVillagerSpawn(LocationSerializer.getLocation(villagerSection.getString(string)));
       }
     } else {
-      plugin.getDebugger().sendConsoleMsg(plugin.getChatManager().colorMessage("VALIDATOR_INVALID_ARENA_CONFIGURATION").replace("%arena%", id).replace("%error%", "VILLAGER SPAWNS"));
+      plugin.getDebugger().sendConsoleMsg(plugin.getChatManager().colorMessage("VALIDATOR_INVALID_ARENA_CONFIGURATION", "VILLAGER SPAWNS", arena));
       return false;
     }
 
@@ -86,14 +86,14 @@ public class ArenaRegistry extends PluginArenaRegistry {
             (byte) doorSection.getInt(string + ".byte"));
       }
     } else {
-      plugin.getDebugger().sendConsoleMsg(plugin.getChatManager().colorMessage("VALIDATOR_INVALID_ARENA_CONFIGURATION").replace("%arena%", id).replace("%error%", "DOORS"));
+      plugin.getDebugger().sendConsoleMsg(plugin.getChatManager().colorMessage("VALIDATOR_INVALID_ARENA_CONFIGURATION", "DOORS", arena));
       return false;
     }
 
 
     if(arena.getStartLocation().getWorld().getDifficulty() == Difficulty.PEACEFUL) {
-      plugin.getDebugger().sendConsoleMsg(plugin.getChatManager().colorMessage("VALIDATOR_INVALID_ARENA_CONFIGURATION").replace("%arena%", id).replace("%error%", "THERE IS A WRONG " +
-          "DIFFICULTY -> SET IT TO ANOTHER ONE THAN PEACEFUL"));
+      plugin.getDebugger().sendConsoleMsg(plugin.getChatManager().colorMessage("VALIDATOR_INVALID_ARENA_CONFIGURATION", "THERE IS A WRONG " +
+          "DIFFICULTY -> SET IT TO ANOTHER ONE THAN PEACEFUL", arena));
       return false;
     }
     return true;
