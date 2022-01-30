@@ -17,6 +17,7 @@ Kit-Menu:
   material-name: NETHER_STAR
   slot: 0
   stage: LOBBY
+  force: true
 
 Lobby-Leave:
   permission: ""
@@ -28,6 +29,7 @@ Lobby-Leave:
   material: BED
   slot: 8
   stage: LOBBY
+  force: true
 
 Spectator-Leave:
   permission: ""
@@ -39,6 +41,7 @@ Spectator-Leave:
   material: BED
   slot: 8
   stage: SPECTATOR
+  force: true
 
 Player-List:
   permission: ""
@@ -50,6 +53,7 @@ Player-List:
   material: COMPASS
   slot: 0
   stage: SPECTATOR
+  force: true
 
 Spectator-Settings:
   permission: ""
@@ -61,6 +65,7 @@ Spectator-Settings:
   material: COMPASS
   slot: 4
   stage: SPECTATOR
+  force: true
 
 Forcestart:
   permission: "plugily.projects.forcestart"
@@ -73,6 +78,7 @@ Forcestart:
   material: EMERALD
   slot: 2
   stage: ENOUGH_PLAYERS_TO_START
+  force: true
 
 Arena-Selector:
   permission: ""
@@ -84,6 +90,7 @@ Arena-Selector:
   material: EMERALD
   slot: 0
   stage: SERVER_JOIN
+  force: false
 
 # Don't edit it. But who's stopping you? It's your server!
 # Really, don't edit ;p
