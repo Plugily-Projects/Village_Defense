@@ -92,7 +92,7 @@ Scoreboard:
       - "&fPlayers Left: &e%arena_players_left_size%"
       - "&fZombies Left: &e%arena_zombie_size_left%"
       - ""
-      - "&fNext Wave In: %arena_time%"
+      - "&fNext Wave In: &e%arena_time%"
       - ""
       - "&fRotten Flesh: &e%arena_rotten_flesh_amount%"
       - "&fOrbs: &e%user_statistic_orbs%"
