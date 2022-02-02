@@ -147,8 +147,8 @@ public class ShopManager {
         continue;
       }
 
-      gui.setItem(slot, itemStack, e -> {
-        Player player = (Player) e.getWhoClicked();
+      gui.setItem(slot, itemStack, event -> {
+        Player player = (Player) event.getWhoClicked();
 
         if(!arena.getPlayers().contains(player)) {
           return;
@@ -162,19 +162,20 @@ public class ShopManager {
           return;
         }
 
-        if(!ItemUtils.isItemStackNamed(itemStack)) {
-          return;
-        }
-        String name = ComplementAccessor.getComplement().getDisplayName(itemStack.getItemMeta());
-
-        if(name.contains(plugin.getChatManager().colorMessage("IN_GAME_MESSAGES_VILLAGE_SHOP_GOLEM_ITEM"))
-            || name.contains(defaultGolemItemName)) {
-          arena.spawnGolem(arena.getStartLocation(), player);
-        }
-
-        if(name.contains(plugin.getChatManager().colorMessage("IN_GAME_MESSAGES_VILLAGE_SHOP_WOLF_ITEM"))
-            || name.contains(defaultWolfItemName)) {
-          arena.spawnWolf(arena.getStartLocation(), player);
+        if(ItemUtils.isItemStackNamed(itemStack)) {
+          String name = ComplementAccessor.getComplement().getDisplayName(itemStack.getItemMeta());
+          if(name.contains(plugin.getChatManager().colorMessage("IN_GAME_MESSAGES_VILLAGE_SHOP_GOLEM_ITEM"))
+              || name.contains(defaultGolemItemName)) {
+            arena.spawnGolem(arena.getStartLocation(), player);
+            adjustOrbs(user, cost);
+            return;
+          }
+          if(name.contains(plugin.getChatManager().colorMessage("IN_GAME_MESSAGES_VILLAGE_SHOP_WOLF_ITEM"))
+              || name.contains(defaultWolfItemName)) {
+            arena.spawnWolf(arena.getStartLocation(), player);
+            adjustOrbs(user, cost);
+            return;
+          }
         }
 
         ItemStack stack = itemStack.clone();
@@ -191,10 +192,14 @@ public class ShopManager {
         }
 
         player.getInventory().addItem(stack);
-        user.setStat("ORBS", orbs - cost);
-        arena.changeArenaOptionBy("TOTAL_ORBS_SPENT", cost);
+        adjustOrbs(user, cost);
       });
     }
+  }
+
+  private void adjustOrbs(User user, int cost) {
+    user.addStat("ORBS", -cost);
+    arena.changeArenaOptionBy("TOTAL_ORBS_SPENT", cost);
   }
 
   private boolean validateShop() {
