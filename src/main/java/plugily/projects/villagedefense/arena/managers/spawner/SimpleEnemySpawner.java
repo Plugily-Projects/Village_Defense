@@ -128,21 +128,28 @@ public interface SimpleEnemySpawner extends EnemySpawner {
   default void spawn(Random random, Arena arena, int spawn) {
     int wave = arena.getWave();
     int phase = arena.getArenaOption("ZOMBIE_SPAWN_COUNTER");
+    arena.getPlugin().getDebugger().debug("Current Wave: " + wave + " Current Phase: " + phase + " Current spawn: " + spawn + " CHECK PHASE: " + checkPhase(arena, wave, phase, spawn));
     if(!checkPhase(arena, wave, phase, spawn)) {
       return;
     }
 
+
     int maxWave = getMaxWave();
+    arena.getPlugin().getDebugger().debug("Current Wave: " + wave + " Max wave: " + maxWave + " CHECK WAVE: " + (wave < getMinWave() || (maxWave > 0 && wave > maxWave)));
+
     if(wave < getMinWave() || (maxWave > 0 && wave > maxWave)) {
       return;
     }
     int spawnAmount = getFinalAmount(arena, wave, phase, spawn);
     double spawnRate = getSpawnRate(arena, wave, phase, spawn);
     int weight = getSpawnWeight(arena, wave, phase, spawn);
+    arena.getPlugin().getDebugger().debug("Current Wave: " + wave + " Current Spawn amount: " + spawnAmount + " Current spawnRate: " + spawnRate + " Current Spawn Weight: " + weight);
+
     for(int i = 0; i < spawnAmount; i++) {
       int zombiesToSpawn = arena.getArenaOption("ZOMBIES_TO_SPAWN");
+      arena.getPlugin().getDebugger().debug("Current Wave: " + wave + " Current Spawn amount: " + spawnAmount + " Current i: " + i + " CHECK SPAWN: " + (zombiesToSpawn >= weight && spawnRate != 0 && (spawnRate == 1 || random.nextDouble() < spawnRate)));
       if(zombiesToSpawn >= weight && spawnRate != 0 && (spawnRate == 1 || random.nextDouble() < spawnRate)) {
-        Location location = arena.getRandomZombieSpawn(random);
+        Location location = arena.getRandomZombieSpawnLocation(random);
         spawn(location, arena);
         arena.setArenaOption("ZOMBIES_TO_SPAWN", zombiesToSpawn - weight);
       }
