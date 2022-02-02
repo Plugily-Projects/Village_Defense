@@ -213,7 +213,10 @@ public class EnemySpawnerRegistry {
       arena.setArenaOption("ZOMBIE_SPAWN_COUNTER", 0);
     }
 
-    for(EnemySpawner enemySpawner : enemySpawnerSet) {
+    List<EnemySpawner> enemySpawners = new ArrayList<>(enemySpawnerSet);
+    Collections.shuffle(enemySpawners);
+    for(EnemySpawner enemySpawner : enemySpawners) {
+      plugin.getDebugger().debug("Trying enemy spawn for " + enemySpawner.getName());
       enemySpawner.spawn(random, arena, spawn);
     }
   }
