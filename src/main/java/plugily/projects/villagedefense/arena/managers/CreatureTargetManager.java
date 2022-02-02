@@ -50,6 +50,9 @@ public class CreatureTargetManager {
     creatures.addAll(arena.getWolves());
     creatures.addAll(arena.getIronGolems());
     for(Creature creature : creatures) {
+      if(arena.getEnemies().isEmpty() || !arena.isFighting()) {
+        return;
+      }
       LivingEntity creatureTarget = creature.getTarget();
       if(creatureTarget == null) {
         creature.setTarget(arena.getEnemies().get(new Random().nextInt(arena.getEnemies().size() - 1)));
