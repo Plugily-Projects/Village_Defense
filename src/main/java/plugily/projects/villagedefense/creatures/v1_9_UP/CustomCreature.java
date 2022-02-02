@@ -87,7 +87,7 @@ public class CustomCreature implements SimpleEnemySpawner {
 
   @Override
   public int getMaxWave() {
-    return getWaveMin();
+    return getWaveMax();
   }
 
   @Override
