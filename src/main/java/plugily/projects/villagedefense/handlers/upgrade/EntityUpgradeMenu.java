@@ -107,22 +107,22 @@ public class EntityUpgradeMenu {
   /**
    * Opens menu with upgrades for wolf or golem
    *
-   * @param en     entity to check upgrades for
+   * @param livingEntity     entity to check upgrades for
    * @param player player who will see inventory
    */
-  public void openUpgradeMenu(LivingEntity en, Player player) {
+  public void openUpgradeMenu(LivingEntity livingEntity, Player player) {
     NormalFastInv gui = new NormalFastInv(6 * 9, color("UPGRADE_MENU_TITLE"));
     gui.addClickHandler(inventoryClickEvent -> inventoryClickEvent.setCancelled(true));
     User user = plugin.getUserManager().getUser(player);
 
     for(Upgrade upgrade : upgrades) {
-      if(upgrade.getApplicableFor() != Upgrade.EntityType.BOTH && !en.getType().toString().equals(upgrade.getApplicableFor().toString())) {
+      if(upgrade.getApplicableFor() != Upgrade.EntityType.BOTH && !livingEntity.getType().toString().equals(upgrade.getApplicableFor().toString())) {
         continue;
       }
       int x = upgrade.getSlotX();
       int y = upgrade.getSlotY();
-      gui.setItem(x + y * 9, upgrade.asItemStack(getTier(en, upgrade)), e -> {
-        int nextTier = getTier(en, upgrade) + 1;
+      gui.setItem(x + y * 9, upgrade.asItemStack(getTier(livingEntity, upgrade)), event -> {
+        int nextTier = getTier(livingEntity, upgrade) + 1;
         int cost = upgrade.getCost(nextTier);
         if(nextTier > upgrade.getMaxTier()) {
           player.sendMessage(pluginPrefix + color("UPGRADE_MENU_MAX_TIER"));
@@ -137,20 +137,20 @@ public class EntityUpgradeMenu {
 
         user.setStat("ORBS", orbs - cost);
         player.sendMessage(pluginPrefix + color("UPGRADE_MENU_UPGRADED_ENTITY").replace("%tier%", Integer.toString(nextTier)));
-        applyUpgrade(en, upgrade);
+        applyUpgrade(livingEntity, upgrade);
 
-        Bukkit.getPluginManager().callEvent(new VillagePlayerEntityUpgradeEvent(plugin.getArenaRegistry().getArena(player), en, player, upgrade, nextTier));
+        Bukkit.getPluginManager().callEvent(new VillagePlayerEntityUpgradeEvent(plugin.getArenaRegistry().getArena(player), livingEntity, player, upgrade, nextTier));
         player.closeInventory();
       });
       for(int i = 0; i < upgrade.getMaxTier(); i++) {
-        if(i < getTier(en, upgrade)) {
+        if(i < getTier(livingEntity, upgrade)) {
           gui.setItem((x + 1 + i) + y * 9, new ItemBuilder(XMaterial.YELLOW_STAINED_GLASS_PANE.parseItem()).name(" ").build());
         } else {
           gui.setItem((x + 1 + i) + y * 9, new ItemBuilder(XMaterial.WHITE_STAINED_GLASS_PANE.parseItem()).name(" ").build());
         }
       }
     }
-    applyStatisticsBookOfEntityToGui(gui, en);
+    applyStatisticsBookOfEntityToGui(gui, livingEntity);
     gui.open(player);
   }
 
@@ -158,7 +158,7 @@ public class EntityUpgradeMenu {
     return plugin.getChatManager().colorMessage(key);
   }
 
-  private void applyStatisticsBookOfEntityToGui(NormalFastInv gui, LivingEntity en) {
+  private void applyStatisticsBookOfEntityToGui(NormalFastInv gui, LivingEntity livingEntity) {
     String[] lore = color("UPGRADE_MENU_STATS_ITEM_DESCRIPTION").split(";");
 
     for(int a = 0; a < lore.length; a++) {
@@ -166,10 +166,10 @@ public class EntityUpgradeMenu {
       Upgrade damage = getUpgrade("Damage");
       Upgrade health = getUpgrade("Health");
 
-      lore[a] = lore[a].replace("%speed%", Double.toString(speed.getValueForTier(getTier(en, speed))))
-          .replace("%damage%", Double.toString(damage.getValueForTier(getTier(en, damage))))
-          .replace("%max_hp%", Double.toString(health.getValueForTier(getTier(en, health))))
-          .replace("%current_hp%", Double.toString(en.getHealth()));
+      lore[a] = lore[a].replace("%speed%", Double.toString(speed.getValueForTier(getTier(livingEntity, speed))))
+          .replace("%damage%", Double.toString(damage.getValueForTier(getTier(livingEntity, damage))))
+          .replace("%max_hp%", Double.toString(health.getValueForTier(getTier(livingEntity, health))))
+          .replace("%current_hp%", Double.toString(livingEntity.getHealth()));
     }
 
     gui.setItem(4, new ItemBuilder(new ItemStack(Material.BOOK))
@@ -182,16 +182,16 @@ public class EntityUpgradeMenu {
    * Applies upgrade for target entity
    * automatically increments current tier
    *
-   * @param en      target entity
+   * @param entity      target entity
    * @param upgrade upgrade to apply
    * @return true if applied successfully, false if tier is max and cannot be applied more
    */
-  public boolean applyUpgrade(Entity en, Upgrade upgrade) {
-    List<org.bukkit.metadata.MetadataValue> meta = en.getMetadata(upgrade.getMetadataAccessor());
+  public boolean applyUpgrade(Entity entity, Upgrade upgrade) {
+    List<org.bukkit.metadata.MetadataValue> meta = entity.getMetadata(upgrade.getMetadataAccessor());
 
     if(meta.isEmpty()) {
-      en.setMetadata(upgrade.getMetadataAccessor(), new FixedMetadataValue(plugin, 1));
-      applyUpgradeEffect(en, upgrade, 1);
+      entity.setMetadata(upgrade.getMetadataAccessor(), new FixedMetadataValue(plugin, 1));
+      applyUpgradeEffect(entity, upgrade, 1);
       return true;
     }
 
@@ -199,45 +199,45 @@ public class EntityUpgradeMenu {
       return false;
     }
 
-    int tier = getTier(en, upgrade) + 1;
-    en.setMetadata(upgrade.getMetadataAccessor(), new FixedMetadataValue(plugin, tier));
-    applyUpgradeEffect(en, upgrade, tier);
+    int tier = getTier(entity, upgrade) + 1;
+    entity.setMetadata(upgrade.getMetadataAccessor(), new FixedMetadataValue(plugin, tier));
+    applyUpgradeEffect(entity, upgrade, tier);
     if(upgrade.getMaxTier() == tier) {
-      VersionUtils.playSound(en.getLocation(), "BLOCK_ANVIL_USE");
-      VersionUtils.sendParticles("EXPLOSION_LARGE", (Set<Player>) null, en.getLocation(), 5);
+      VersionUtils.playSound(entity.getLocation(), "BLOCK_ANVIL_USE");
+      VersionUtils.sendParticles("EXPLOSION_LARGE", (Set<Player>) null, entity.getLocation(), 5);
     }
     return true;
   }
 
-  private void applyUpgradeEffect(Entity en, Upgrade upgrade, int tier) {
-    org.bukkit.Location entityLocation = en.getLocation();
+  private void applyUpgradeEffect(Entity entity, Upgrade upgrade, int tier) {
+    org.bukkit.Location entityLocation = entity.getLocation();
 
     VersionUtils.sendParticles("FIREWORKS_SPARK", null, entityLocation.add(0, 1, 0), 30, 0.7, 0.7, 0.7);
     VersionUtils.sendParticles("HEART", (Set<Player>) null, entityLocation.add(0, 1.6, 0), 5);
     VersionUtils.playSound(entityLocation, "ENTITY_PLAYER_LEVELUP");
 
-    int[] baseValues = new int[]{getTier(en, getUpgrade("Health")), getTier(en, getUpgrade("Speed")), getTier(en, getUpgrade("Damage"))};
+    int[] baseValues = new int[]{getTier(entity, getUpgrade("Health")), getTier(entity, getUpgrade("Speed")), getTier(entity, getUpgrade("Damage"))};
 
     if(areAllEqualOrHigher(baseValues) && getMinValue(baseValues) == 4) {
       //final mode! rage!!!
-      VersionUtils.setGlowing(en, true);
+      VersionUtils.setGlowing(entity, true);
     }
 
     switch(upgrade.getId()) {
       case "Damage":
-        if(en.getType() == EntityType.WOLF) {
-          CreatureUtils.getCreatureInitializer().applyDamageModifier((LivingEntity) en, 2.0 + (tier * 3));
+        if(entity.getType() == EntityType.WOLF) {
+          CreatureUtils.getCreatureInitializer().applyDamageModifier((LivingEntity) entity, 2.0 + (tier * 3));
         }
         //attribute damage doesn't exist for golems
         break;
       case "Health":
-        LivingEntity living = (LivingEntity) en;
+        LivingEntity living = (LivingEntity) entity;
 
         VersionUtils.setMaxHealth(living, 100.0 + (100.0 * (tier / 2.0)));
         living.setHealth(VersionUtils.getMaxHealth(living));
         break;
       case "Speed":
-        CreatureUtils.getCreatureInitializer().applySpeedModifier((LivingEntity) en, 0.25 + (0.25 * (tier / 5.0)));
+        CreatureUtils.getCreatureInitializer().applySpeedModifier((LivingEntity) entity, 0.25 + (0.25 * (tier / 5.0)));
         break;
       case "Swarm-Awareness":
       case "Final-Defense":
@@ -252,9 +252,9 @@ public class EntityUpgradeMenu {
     return upgrades;
   }
 
-  private boolean areAllEqualOrHigher(int[] a) {
-    for(int i = 1; i < a.length; i++) {
-      if(a[0] < a[i]) {
+  private boolean areAllEqualOrHigher(int[] numbers) {
+    for(int i = 1; i < numbers.length; i++) {
+      if(numbers[0] < numbers[i]) {
         return false;
       }
     }
@@ -272,12 +272,12 @@ public class EntityUpgradeMenu {
   }
 
   /**
-   * @param en      entity to check
+   * @param entity      entity to check
    * @param upgrade upgrade type
    * @return current tier of upgrade for target entity
    */
-  public int getTier(Entity en, Upgrade upgrade) {
-    List<org.bukkit.metadata.MetadataValue> meta = en.getMetadata(upgrade.getMetadataAccessor());
+  public int getTier(Entity entity, Upgrade upgrade) {
+    List<org.bukkit.metadata.MetadataValue> meta = entity.getMetadata(upgrade.getMetadataAccessor());
     return meta.isEmpty() ? 0 : meta.get(0).asInt();
   }
 
