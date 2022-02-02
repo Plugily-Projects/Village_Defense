@@ -1,6 +1,5 @@
 package plugily.projects.villagedefense.creatures.v1_9_UP;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.attribute.Attribute;
@@ -248,7 +247,6 @@ public class CustomCreature implements SimpleEnemySpawner {
         ageable.setAdult();
       }
       if(getAge() > 0) ageable.setAge(getAge());
-
       ageable.setAgeLock(isAgeLook());
     }
     if(entity instanceof Creature) {
@@ -287,12 +285,6 @@ public class CustomCreature implements SimpleEnemySpawner {
       }
       creature.setRemoveWhenFarAway(false);
       creature.setMetadata("PlugilyProjects-VillageDefense-Name", new FixedMetadataValue(plugin, key));
-      Bukkit.getScheduler().runTaskTimer(plugin, () -> {
-        if(entity.isDead()) {
-          return;
-        }
-        Bukkit.broadcastMessage("" + creature.getTarget() + " of " + creature.getLocation());
-      }, 20L, 20L);
       return creature;
     } else {
       entity.remove();
