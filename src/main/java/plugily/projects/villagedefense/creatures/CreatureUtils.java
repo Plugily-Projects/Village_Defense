@@ -46,8 +46,6 @@ import java.util.logging.Level;
  */
 public class CreatureUtils {
 
-  private static float zombieSpeed = 1.3f;
-  private static float babyZombieSpeed = 2.0f;
   private static String[] villagerNames = ("Jagger,Kelsey,Kelton,Haylie,Harlow,Howard,Wulffric,Winfred,Ashley,Bailey,Beckett,Alfredo,Alfred,Adair,Edgar,ED,Eadwig,Edgaras,Buckley,Stanley,Nuffley,"
       + "Mary,Jeffry,Rosaly,Elliot,Harry,Sam,Rosaline,Tom,Ivan,Kevin,Adam").split(",");
   private static Main plugin;
@@ -59,8 +57,6 @@ public class CreatureUtils {
 
   public static void init(Main plugin) {
     CreatureUtils.plugin = plugin;
-    zombieSpeed = (float) plugin.getConfig().getDouble("Zombie-Speed", 1.3);
-    babyZombieSpeed = (float) plugin.getConfig().getDouble("Mini-Zombie-Speed", 2.0);
     villagerNames = plugin.getChatManager().colorMessage("IN_GAME_MESSAGES_VILLAGE_VILLAGER_NAMES").split(",");
     creatureInitializer = initCreatureInitializer();
   }
@@ -128,11 +124,11 @@ public class CreatureUtils {
   }
 
   public static float getZombieSpeed() {
-    return zombieSpeed;
+    return 1.3f;
   }
 
   public static float getBabyZombieSpeed() {
-    return babyZombieSpeed;
+    return 2.0f;
   }
 
   public static String[] getVillagerNames() {
