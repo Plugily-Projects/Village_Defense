@@ -376,7 +376,7 @@ public class Arena extends PluginArena {
     return spawnPoints.getOrDefault(SpawnPoint.ZOMBIE, new ArrayList<>());
   }
 
-  public final Location getRandomZombieSpawn(Random random) {
+  public final Location getRandomZombieSpawnLocation(Random random) {
     List<Location> spawns = getZombieSpawns();
     return spawns.get(spawns.size() == 1 ? 0 : random.nextInt(spawns.size()));
   }
