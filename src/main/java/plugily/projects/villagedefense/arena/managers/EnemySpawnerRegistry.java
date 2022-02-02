@@ -121,9 +121,9 @@ public class EnemySpawnerRegistry {
       int waveMin = content.getInt(creature + ".wave.min", 0);
       int waveMax = content.getInt(creature + ".wave.max", 0);
 
-      CustomCreature.PriorityTarget priorityTarget = CustomCreature.PriorityTarget.valueOf(content.getString(".priority_type", "ANY"));
+      CustomCreature.PriorityTarget priorityTarget = CustomCreature.PriorityTarget.valueOf(content.getString(creature + ".priority_type", "ANY"));
 
-      boolean explodeTarget = content.getBoolean(".explosive_hit", false);
+      boolean explodeTarget = content.getBoolean(creature + ".explosive_hit", false);
 
       String key = creature.toUpperCase();
 
