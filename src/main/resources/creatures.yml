@@ -3,29 +3,29 @@ Creatures:
     RIDEABLE_VILLAGER:
       holiday_effects: true
       attributes:
-        GENERIC_MOVEMENT_SPEED: 0.4
+        GENERIC_MOVEMENT_SPEED: 0.3
         GENERIC_MAX_HEALTH: 25.0
         GENERIC_FOLLOW_RANGE: 200.0
       drop_item: null
     RIDEABLE_IRON_GOLEM:
       holiday_effects: true
       attributes:
-        GENERIC_MOVEMENT_SPEED: 0.2
+        GENERIC_MOVEMENT_SPEED: 0.1
         GENERIC_MAX_HEALTH: 100.0
         GENERIC_FOLLOW_RANGE: 200.0
       drop_item: null
     RIDEABLE_WOLF:
       holiday_effects: true
       attributes:
-        GENERIC_MOVEMENT_SPEED: 0.5
-        GENERIC_MAX_HEALTH: 50.0
+        GENERIC_MOVEMENT_SPEED: 0.2
+        GENERIC_MAX_HEALTH: 30.0
         GENERIC_FOLLOW_RANGE: 200.0
       drop_item: null
   Content:
     BABY_ZOMBIE:
       enabled: true
       wave:
-        min: 0
+        min: 3
         max: 0
       priority_type: ANY
       explosive_hit: false
@@ -68,7 +68,7 @@ Creatures:
             spawn_lower: 0
       # https://hub.spigotmc.org/javadocs/spigot/org/bukkit/attribute/Attribute.html
       attributes:
-        GENERIC_MOVEMENT_SPEED: 0.5
+        GENERIC_MOVEMENT_SPEED: 0.3
         GENERIC_MAX_HEALTH: 2.0
         GENERIC_KNOCKBACK_RESISTANCE: 2.0
         GENERIC_ATTACK_DAMAGE: 5.0
@@ -171,7 +171,7 @@ Creatures:
     GOLEM_BUSTER:
       enabled: true
       wave:
-        min: 0
+        min: 8
         max: 0
       priority_type: IRON_GOLEM
       explosive_hit: true
@@ -235,13 +235,13 @@ Creatures:
           drop_chance: 0
         chestplate:
           item: IRON_CHESTPLATE
-          drop_chance: 5
+          drop_chance: 0.1
         leggings:
           item: IRON_LEGGINGS
-          drop_chance: 10
+          drop_chance: 0.3
         boots:
           item: IRON_BOOTS
-          drop_chance: 20
+          drop_chance: 0.2
         hand:
           item: TNT
           drop_chance: 0
@@ -310,7 +310,7 @@ Creatures:
       equipment:
         helmet:
           item: DIAMOND_HELMET
-          drop_chance: 0
+          drop_chance: 0.01
         chestplate:
           item: DIAMOND_CHESTPLATE
           drop_chance: 0
@@ -451,10 +451,10 @@ Creatures:
             drop_chance: 0
           chestplate:
             item: DIAMOND_CHESTPLATE
-            drop_chance: 0
+            drop_chance: 0.3
           leggings:
             item: DIAMOND_LEGGINGS
-            drop_chance: 0
+            drop_chance: 0.4
           boots:
             item: DIAMOND_BOOTS
             drop_chance: 0
@@ -527,16 +527,16 @@ Creatures:
       equipment:
         helmet:
           item: IRON_HELMET
-          drop_chance: 0
+          drop_chance: 0.1
         chestplate:
           item: IRON_CHESTPLATE
-          drop_chance: 0
+          drop_chance: 0.1
         leggings:
           item: IRON_LEGGINGS
-          drop_chance: 0
+          drop_chance: 0.1
         boots:
           item: IRON_BOOTS
-          drop_chance: 0
+          drop_chance: 0.2
         hand:
           item: null
           drop_chance: 0
@@ -544,7 +544,7 @@ Creatures:
     VILLAGER_BUSTER:
       enabled: true
       wave:
-        min: 0
+        min: 10
         max: 0
       priority_type: VILLAGER
       explosive_hit: true
@@ -609,13 +609,13 @@ Creatures:
           drop_chance: 0
         chestplate:
           item: LEATHER_CHESTPLATE
-          drop_chance: 90
+          drop_chance: 0.5
         leggings:
           item: LEATHER_LEGGINGS
-          drop_chance: 90
+          drop_chance: 0.5
         boots:
           item: LEATHER_BOOTS
-          drop_chance: 90
+          drop_chance: 0.5
         hand:
           item: TNT
           drop_chance: 0
@@ -659,7 +659,7 @@ Creatures:
             spawn_lower: 0
       # https://hub.spigotmc.org/javadocs/spigot/org/bukkit/attribute/Attribute.html
       attributes:
-        GENERIC_MOVEMENT_SPEED: 0.2
+        GENERIC_MOVEMENT_SPEED: 0.25
         GENERIC_MAX_HEALTH: 70.0
         GENERIC_FOLLOW_RANGE: 200.0
       equipment:
@@ -668,13 +668,13 @@ Creatures:
           drop_chance: 0
         chestplate:
           item: CHAINMAIL_CHESTPLATE
-          drop_chance: 10
+          drop_chance: 0.1
         leggings:
           item: CHAINMAIL_LEGGINGS
-          drop_chance: 20
+          drop_chance: 0.2
         boots:
           item: CHAINMAIL_BOOTS
-          drop_chance: 40
+          drop_chance: 0.4
         hand:
           item: EMERALD
           drop_chance: 0
