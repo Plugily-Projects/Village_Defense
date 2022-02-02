@@ -1,19 +1,19 @@
 name: VillageDefense
 main: plugily.projects.villagedefense.Main
-authors: [PlugilyProjects, Tigerpanzer_02, 2Wild4You, TomTheDeveloper, Plajer, montlikadani]
+authors: [ PlugilyProjects, Tigerpanzer_02, TomTheDeveloper, Plajer, montlikadani ]
 version: ${project.version}
-softdepend: [HolographicDisplays, PlaceholderAPI, Parties, Spigot-Party-API-PAF, PartyAndFriends]
+softdepend: [ HolographicDisplays, PlaceholderAPI, Parties, Spigot-Party-API-PAF, PartyAndFriends ]
 api-version: 1.13
 
 commands:
   VillageDefense:
     description: VillageDefense Commands
     usage: "\u00A76Correct usage: /vd [option]"
-    aliases: [vd, villaged]
+    aliases: [ vd, villaged ]
   VillageDefenseAdmin:
     description:
     usage: "\u00A76Correct usage: /vda [option]"
-    aliases: [vda, villageadmin]
+    aliases: [ vda, villageadmin ]
 
 permissions:
   villagedefense.admin.*:
