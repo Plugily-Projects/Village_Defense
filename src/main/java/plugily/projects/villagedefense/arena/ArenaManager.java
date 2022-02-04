@@ -67,11 +67,11 @@ public class ArenaManager extends PluginArenaManager {
     int wave = ((Arena) arena).getWave();
     for(Player player : arena.getPlayers()) {
       User user = plugin.getUserManager().getUser(player);
-      if(user.getStat("HIGHEST_WAVE") <= wave) {
+      if(user.getStatistic("HIGHEST_WAVE") <= wave) {
         if(user.isSpectator() && !plugin.getConfigPreferences().getOption("RESPAWN_AFTER_WAVE")) {
           continue;
         }
-        user.setStat("HIGHEST_WAVE", wave);
+        user.setStatistic("HIGHEST_WAVE", wave);
       }
       plugin.getUserManager().addExperience(player, wave);
     }
@@ -140,7 +140,7 @@ public class ArenaManager extends PluginArenaManager {
       player.sendMessage(feelRefreshed);
       player.setHealth(VersionUtils.getMaxHealth(player));
 
-      plugin.getUserManager().getUser(player).addStat(plugin.getStatsStorage().getStatisticType("ORBS"), waveStat);
+      plugin.getUserManager().getUser(player).adjustStatistic(plugin.getStatsStorage().getStatisticType("ORBS"), waveStat);
     }
   }
 

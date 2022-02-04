@@ -46,7 +46,7 @@ public class StartingState extends PluginStartingState {
 
       for(Player player : arena.getPlayers()) {
         User user = getPlugin().getUserManager().getUser(player);
-        user.setStat("ORBS", orbsStartingAmount);
+        user.setStatistic("ORBS", orbsStartingAmount);
       }
       setArenaTimer(getPlugin().getConfig().getInt("Time-Manager.Cooldown-Before-Next-Wave", 25));
       pluginArena.setFighting(false);

@@ -27,7 +27,6 @@ import plugily.projects.minigamesbox.classic.utils.helper.ArmorHelper;
 import plugily.projects.minigamesbox.classic.utils.helper.WeaponHelper;
 import plugily.projects.minigamesbox.classic.utils.version.xseries.XMaterial;
 import plugily.projects.villagedefense.arena.Arena;
-import plugily.projects.villagedefense.arena.ArenaRegistry;
 
 import java.util.List;
 
@@ -46,7 +45,7 @@ public class GolemFriendKit extends LevelKit {
 
   @Override
   public boolean isUnlockedByPlayer(Player player) {
-    return getPlugin().getUserManager().getUser(player).getStat("LEVEL") >= getLevel() || player.hasPermission("villagedefense.kit.golemfriend");
+    return getPlugin().getUserManager().getUser(player).getStatistic("LEVEL") >= getLevel() || player.hasPermission("villagedefense.kit.golemfriend");
   }
 
   @Override

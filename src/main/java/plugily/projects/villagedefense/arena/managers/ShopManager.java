@@ -155,7 +155,7 @@ public class ShopManager {
         }
 
         User user = plugin.getUserManager().getUser(player);
-        int orbs = user.getStat("ORBS");
+        int orbs = user.getStatistic("ORBS");
 
         if(cost > orbs) {
           player.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage("IN_GAME_MESSAGES_VILLAGE_SHOP_NOT_ENOUGH_CURRENCY"));
@@ -198,7 +198,7 @@ public class ShopManager {
   }
 
   private void adjustOrbs(User user, int cost) {
-    user.addStat("ORBS", -cost);
+    user.adjustStatistic("ORBS", -cost);
     arena.changeArenaOptionBy("TOTAL_ORBS_SPENT", cost);
   }
 

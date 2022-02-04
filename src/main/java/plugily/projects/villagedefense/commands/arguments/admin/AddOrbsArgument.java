@@ -71,7 +71,7 @@ public class AddOrbsArgument {
 
         if(opt.isPresent()) {
           User user = registry.getPlugin().getUserManager().getUser(target);
-          user.setStat(registry.getPlugin().getStatsStorage().getStatisticType("ORBS"), user.getStat("ORBS") + opt.get());
+          user.setStatistic(registry.getPlugin().getStatsStorage().getStatisticType("ORBS"), user.getStatistic("ORBS") + opt.get());
           sender.sendMessage(registry.getPlugin().getChatManager().getPrefix() + registry.getPlugin().getChatManager().colorMessage("COMMANDS_ADMIN_ADDED_ORBS"));
           target.sendMessage(registry.getPlugin().getChatManager().getPrefix() + registry.getPlugin().getChatManager().colorMessage("COMMANDS_ADMIN_RECEIVED_ORBS", opt.get()));
         } else {

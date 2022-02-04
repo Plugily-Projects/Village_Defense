@@ -18,7 +18,6 @@
 
 package plugily.projects.villagedefense.kits.level;
 
-import java.util.List;
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -30,6 +29,8 @@ import plugily.projects.minigamesbox.classic.utils.helper.ArmorHelper;
 import plugily.projects.minigamesbox.classic.utils.helper.WeaponHelper;
 import plugily.projects.minigamesbox.classic.utils.version.VersionUtils;
 import plugily.projects.minigamesbox.classic.utils.version.xseries.XMaterial;
+
+import java.util.List;
 
 /**
  * Created by Tom on 18/07/2015.
@@ -46,7 +47,7 @@ public class TerminatorKit extends LevelKit {
 
   @Override
   public boolean isUnlockedByPlayer(Player player) {
-    return getPlugin().getUserManager().getUser(player).getStat("LEVEL") >= getLevel() || player.hasPermission("villagedefense.kit.terminator");
+    return getPlugin().getUserManager().getUser(player).getStatistic("LEVEL") >= getLevel() || player.hasPermission("villagedefense.kit.terminator");
   }
 
   @Override

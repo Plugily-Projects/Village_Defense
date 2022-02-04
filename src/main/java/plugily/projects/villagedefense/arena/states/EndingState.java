@@ -36,7 +36,7 @@ public class EndingState extends PluginEndingState {
     if(arena.getTimer() <= 0) {
       for(Player player : arena.getPlayers()) {
         User user = getPlugin().getUserManager().getUser(player);
-        user.setStat("ORBS", 0);
+        user.setStatistic("ORBS", 0);
       }
     }
   }

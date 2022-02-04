@@ -49,8 +49,6 @@ import plugily.projects.minigamesbox.classic.utils.version.VersionUtils;
 import plugily.projects.minigamesbox.classic.utils.version.events.api.PlugilyEntityPickupItemEvent;
 import plugily.projects.villagedefense.Main;
 
-import java.util.Random;
-
 /**
  * @author Plajer
  * <p>
@@ -246,7 +244,7 @@ public class ArenaEvents implements Listener {
         player.getInventory().clear();
         player.setFlying(false);
         player.setAllowFlight(false);
-        plugin.getUserManager().getUser(player).setStat("ORBS", 0);
+        plugin.getUserManager().getUser(player).setStatistic("ORBS", 0);
         player.teleport(arena.getEndLocation());
         return;
       }
@@ -299,7 +297,6 @@ public class ArenaEvents implements Listener {
   }
 
 
-
   @EventHandler(priority = EventPriority.HIGHEST)
   public void onRespawn(PlayerRespawnEvent e) {
     Arena arena = plugin.getArenaRegistry().getArena(e.getPlayer());
@@ -329,10 +326,10 @@ public class ArenaEvents implements Listener {
     int orbsToLose = plugin.getConfig().getInt("Orbs-To-Lose-After-Death", 0);
 
     if(orbsToLose <= 0) {
-      user.setStat("ORBS", 0);
+      user.setStatistic("ORBS", 0);
     } else {
-      int current = user.getStat("ORBS");
-      user.setStat("ORBS", (current - orbsToLose < 0 ? 0 : current - orbsToLose));
+      int current = user.getStatistic("ORBS");
+      user.setStatistic("ORBS", (Math.max(current - orbsToLose, 0)));
     }
   }
 

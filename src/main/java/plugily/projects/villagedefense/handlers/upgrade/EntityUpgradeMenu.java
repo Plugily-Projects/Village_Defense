@@ -107,8 +107,8 @@ public class EntityUpgradeMenu {
   /**
    * Opens menu with upgrades for wolf or golem
    *
-   * @param livingEntity     entity to check upgrades for
-   * @param player player who will see inventory
+   * @param livingEntity entity to check upgrades for
+   * @param player       player who will see inventory
    */
   public void openUpgradeMenu(LivingEntity livingEntity, Player player) {
     NormalFastInv gui = new NormalFastInv(6 * 9, color("UPGRADE_MENU_TITLE"));
@@ -129,13 +129,13 @@ public class EntityUpgradeMenu {
           return;
         }
 
-        int orbs = user.getStat("ORBS");
+        int orbs = user.getStatistic("ORBS");
         if(orbs < cost) {
           player.sendMessage(pluginPrefix + color("UPGRADE_MENU_CANNOT_AFFORD"));
           return;
         }
 
-        user.setStat("ORBS", orbs - cost);
+        user.setStatistic("ORBS", orbs - cost);
         player.sendMessage(pluginPrefix + color("UPGRADE_MENU_UPGRADED_ENTITY").replace("%tier%", Integer.toString(nextTier)));
         applyUpgrade(livingEntity, upgrade);
 
@@ -182,7 +182,7 @@ public class EntityUpgradeMenu {
    * Applies upgrade for target entity
    * automatically increments current tier
    *
-   * @param entity      target entity
+   * @param entity  target entity
    * @param upgrade upgrade to apply
    * @return true if applied successfully, false if tier is max and cannot be applied more
    */
@@ -272,7 +272,7 @@ public class EntityUpgradeMenu {
   }
 
   /**
-   * @param entity      entity to check
+   * @param entity  entity to check
    * @param upgrade upgrade type
    * @return current tier of upgrade for target entity
    */

@@ -46,7 +46,7 @@ public class HealerKit extends LevelKit {
 
   @Override
   public boolean isUnlockedByPlayer(Player player) {
-    return getPlugin().getUserManager().getUser(player).getStat("LEVEL") >= getLevel() || player.hasPermission("villagedefense.kit.healer");
+    return getPlugin().getUserManager().getUser(player).getStatistic("LEVEL") >= getLevel() || player.hasPermission("villagedefense.kit.healer");
   }
 
   @Override

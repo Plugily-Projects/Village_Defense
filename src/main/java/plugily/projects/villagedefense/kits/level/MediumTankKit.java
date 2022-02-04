@@ -44,7 +44,7 @@ public class MediumTankKit extends LevelKit {
 
   @Override
   public boolean isUnlockedByPlayer(Player player) {
-    return getPlugin().getUserManager().getUser(player).getStat("LEVEL") >= this.getLevel() || player.hasPermission("villagedefense.kit.mediumtank");
+    return getPlugin().getUserManager().getUser(player).getStatistic("LEVEL") >= this.getLevel() || player.hasPermission("villagedefense.kit.mediumtank");
   }
 
   @Override
