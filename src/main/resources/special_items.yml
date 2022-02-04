@@ -95,7 +95,7 @@ Arena-Selector:
 Stats:
   permission: ""
   execute:
-    - "p:plugilyprojects stats"
+    - "p:vd stats"
   displayname: "&c&lStats &7(Right Click)"
   lore:
     - "&7Right-click to see your Stats"
