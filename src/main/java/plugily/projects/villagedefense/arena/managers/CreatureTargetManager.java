@@ -74,11 +74,11 @@ public class CreatureTargetManager {
       }
       LivingEntity creatureTarget = creature.getTarget();
       if(creatureTarget == null) {
-        creature.setTarget(arena.getEnemies().get(new Random().nextInt(arena.getEnemies().size() - 1)));
+        creature.setTarget(arena.getEnemies().get(arena.getEnemies().size() > 1 ? new Random().nextInt(arena.getEnemies().size() - 1) : 0));
         continue;
       }
       if(creatureTarget instanceof Player) {
-        creature.setTarget(arena.getEnemies().get(new Random().nextInt(arena.getEnemies().size() - 1)));
+        creature.setTarget(arena.getEnemies().get(arena.getEnemies().size() > 1 ? new Random().nextInt(arena.getEnemies().size() - 1) : 0));
         continue;
       }
     }
