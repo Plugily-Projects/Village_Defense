@@ -27,6 +27,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.jetbrains.annotations.Nullable;
+import plugily.projects.minigamesbox.classic.handlers.language.MessageBuilder;
 import plugily.projects.minigamesbox.classic.user.User;
 import plugily.projects.minigamesbox.classic.utils.helper.ItemBuilder;
 import plugily.projects.minigamesbox.classic.utils.version.VersionUtils;
@@ -56,7 +57,7 @@ public class EntityUpgradeMenu {
 
   public EntityUpgradeMenu(Main plugin) {
     this.plugin = plugin;
-    this.pluginPrefix = plugin.getChatManager().colorMessage("IN_GAME_PLUGIN_PREFIX");
+    this.pluginPrefix = new MessageBuilder("IN_GAME_PLUGIN_PREFIX").build();
     new EntityUpgradeListener(this);
     registerUpgrade(new UpgradeBuilder("Damage")
         .entity(Upgrade.EntityType.BOTH).slot(2, 1).maxTier(4).metadata("VD_Damage")
@@ -155,7 +156,7 @@ public class EntityUpgradeMenu {
   }
 
   private String color(String key) {
-    return plugin.getChatManager().colorMessage(key);
+    return new MessageBuilder(key).asKey().build();
   }
 
   private void applyStatisticsBookOfEntityToGui(NormalFastInv gui, LivingEntity livingEntity) {

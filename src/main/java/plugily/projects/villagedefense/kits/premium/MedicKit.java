@@ -28,6 +28,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionType;
+import plugily.projects.minigamesbox.classic.handlers.language.MessageBuilder;
 import plugily.projects.minigamesbox.classic.kits.basekits.PremiumKit;
 import plugily.projects.minigamesbox.classic.user.User;
 import plugily.projects.minigamesbox.classic.utils.helper.ArmorHelper;
@@ -43,7 +44,7 @@ import java.util.List;
 public class MedicKit extends PremiumKit implements Listener {
 
   public MedicKit() {
-    setName(getPlugin().getChatManager().colorMessage("KIT_CONTENT_MEDIC_NAME"));
+    setName(new MessageBuilder("KIT_CONTENT_MEDIC_NAME").asKey().build());
     List<String> description = getPlugin().getLanguageManager().getLanguageListFromKey("KIT_CONTENT_MEDIC_DESCRIPTION");
     setDescription(description);
     getPlugin().getServer().getPluginManager().registerEvents(this, getPlugin());

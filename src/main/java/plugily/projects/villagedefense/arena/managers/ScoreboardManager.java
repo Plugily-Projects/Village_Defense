@@ -22,6 +22,7 @@ package plugily.projects.villagedefense.arena.managers;
 import plugily.projects.minigamesbox.classic.arena.ArenaState;
 import plugily.projects.minigamesbox.classic.arena.PluginArena;
 import plugily.projects.minigamesbox.classic.arena.managers.PluginScoreboardManager;
+import plugily.projects.minigamesbox.classic.handlers.language.MessageBuilder;
 import plugily.projects.minigamesbox.classic.user.User;
 import plugily.projects.minigamesbox.classic.utils.scoreboard.common.EntryBuilder;
 import plugily.projects.minigamesbox.classic.utils.scoreboard.type.Entry;
@@ -51,7 +52,7 @@ public class ScoreboardManager extends PluginScoreboardManager {
       lines = user.getArena().getPlugin().getLanguageManager().getLanguageList("Scoreboard.Content." + user.getArena().getArenaState().getFormattedName());
     }
     for(String line : lines) {
-      builder.next(formatScoreboardLine(line, user));
+      builder.next(new MessageBuilder(line).player(user.getPlayer()).build());
     }
     return builder.build();
   }

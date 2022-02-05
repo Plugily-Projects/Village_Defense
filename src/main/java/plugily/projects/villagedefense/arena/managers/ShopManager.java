@@ -27,6 +27,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
+import plugily.projects.minigamesbox.classic.handlers.language.MessageBuilder;
 import plugily.projects.minigamesbox.classic.user.User;
 import plugily.projects.minigamesbox.classic.utils.configuration.ConfigUtils;
 import plugily.projects.minigamesbox.classic.utils.helper.ItemUtils;
@@ -59,8 +60,8 @@ public class ShopManager {
     config = ConfigUtils.getConfig(plugin, "arenas");
     this.arena = arena;
 
-    defaultGolemItemName = plugin.getChatManager().colorMessage("IN_GAME_MESSAGES_VILLAGE_SHOP_GOLEM_ITEM");
-    defaultWolfItemName = plugin.getChatManager().colorMessage("IN_GAME_MESSAGES_VILLAGE_SHOP_WOLF_ITEM");
+    defaultGolemItemName = new MessageBuilder("IN_GAME_MESSAGES_VILLAGE_SHOP_GOLEM_ITEM").asKey().build();
+    defaultWolfItemName = new MessageBuilder("IN_GAME_MESSAGES_VILLAGE_SHOP_WOLF_ITEM").asKey().build();
 
     if(config.isSet("instances." + arena.getId() + ".shop")) {
       registerShop();
@@ -70,7 +71,7 @@ public class ShopManager {
         return;
       }
       if(gui == null) {
-        player.sendMessage(plugin.getChatManager().colorMessage("IN_GAME_MESSAGES_VILLAGE_SHOP_NOT_DEFINED"));
+        new MessageBuilder("IN_GAME_MESSAGES_VILLAGE_SHOP_NOT_DEFINED").asKey().player(player).sendPlayer();
         return;
       }
       gui.open(player);
@@ -119,7 +120,7 @@ public class ShopManager {
     }
     ItemStack[] contents = ((Chest) LocationSerializer.getLocation(config.getString("instances." + arena.getId() + ".shop"))
         .getBlock().getState()).getInventory().getContents();
-    gui = new NormalFastInv(plugin.getBukkitHelper().serializeInt(contents.length), plugin.getChatManager().colorMessage("IN_GAME_MESSAGES_VILLAGE_SHOP_GUI"));
+    gui = new NormalFastInv(plugin.getBukkitHelper().serializeInt(contents.length), new MessageBuilder("IN_GAME_MESSAGES_VILLAGE_SHOP_GUI").asKey().build());
     gui.addClickHandler(inventoryClickEvent -> inventoryClickEvent.setCancelled(true));
     for(int slot = 0; slot < contents.length; slot++) {
       ItemStack itemStack = contents[slot];
@@ -132,7 +133,7 @@ public class ShopManager {
       //seek for item price
       if(meta != null && meta.hasLore()) {
         for(String s : ComplementAccessor.getComplement().getLore(meta)) {
-          if(s.contains(plugin.getChatManager().colorMessage("IN_GAME_MESSAGES_VILLAGE_SHOP_CURRENCY")) || s.contains("orbs")) {
+          if(s.contains(new MessageBuilder("IN_GAME_MESSAGES_VILLAGE_SHOP_CURRENCY").asKey().build()) || s.contains("orbs")) {
             costString = ChatColor.stripColor(s).replaceAll("&[0-9a-zA-Z]", "").replaceAll("[^0-9]", "");
             break;
           }
@@ -158,19 +159,19 @@ public class ShopManager {
         int orbs = user.getStatistic("ORBS");
 
         if(cost > orbs) {
-          player.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage("IN_GAME_MESSAGES_VILLAGE_SHOP_NOT_ENOUGH_CURRENCY"));
+          new MessageBuilder("IN_GAME_MESSAGES_VILLAGE_SHOP_NOT_ENOUGH_CURRENCY").asKey().prefix().player(player).sendPlayer();
           return;
         }
 
         if(ItemUtils.isItemStackNamed(itemStack)) {
           String name = ComplementAccessor.getComplement().getDisplayName(itemStack.getItemMeta());
-          if(name.contains(plugin.getChatManager().colorMessage("IN_GAME_MESSAGES_VILLAGE_SHOP_GOLEM_ITEM"))
+          if(name.contains(new MessageBuilder("IN_GAME_MESSAGES_VILLAGE_SHOP_GOLEM_ITEM").asKey().build())
               || name.contains(defaultGolemItemName)) {
             arena.spawnGolem(arena.getStartLocation(), player);
             adjustOrbs(user, cost);
             return;
           }
-          if(name.contains(plugin.getChatManager().colorMessage("IN_GAME_MESSAGES_VILLAGE_SHOP_WOLF_ITEM"))
+          if(name.contains(new MessageBuilder("IN_GAME_MESSAGES_VILLAGE_SHOP_WOLF_ITEM").asKey().build())
               || name.contains(defaultWolfItemName)) {
             arena.spawnWolf(arena.getStartLocation(), player);
             adjustOrbs(user, cost);
@@ -184,7 +185,7 @@ public class ShopManager {
         if(itemMeta != null) {
           if(itemMeta.hasLore()) {
             ComplementAccessor.getComplement().setLore(itemMeta, ComplementAccessor.getComplement().getLore(itemMeta).stream().filter(lore ->
-                    !lore.contains(plugin.getChatManager().colorMessage("IN_GAME_MESSAGES_VILLAGE_SHOP_CURRENCY")))
+                    !lore.contains(new MessageBuilder("IN_GAME_MESSAGES_VILLAGE_SHOP_CURRENCY").asKey().build()))
                 .collect(Collectors.toList()));
           }
 

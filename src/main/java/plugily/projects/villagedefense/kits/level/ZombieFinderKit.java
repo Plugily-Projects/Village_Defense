@@ -27,6 +27,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import plugily.projects.minigamesbox.classic.handlers.language.MessageBuilder;
 import plugily.projects.minigamesbox.classic.kits.basekits.LevelKit;
 import plugily.projects.minigamesbox.classic.user.User;
 import plugily.projects.minigamesbox.classic.utils.helper.ItemBuilder;
@@ -47,7 +48,7 @@ import java.util.Random;
 public class ZombieFinderKit extends LevelKit implements Listener {
 
   public ZombieFinderKit() {
-    setName(getPlugin().getChatManager().colorMessage("KIT_CONTENT_ZOMBIE_TELEPORTER_NAME"));
+    setName(new MessageBuilder("KIT_CONTENT_ZOMBIE_TELEPORTER_NAME").asKey().build());
     List<String> description = getPlugin().getLanguageManager().getLanguageListFromKey("KIT_CONTENT_ZOMBIE_TELEPORTER_DESCRIPTION");
     setDescription(description);
     setLevel(getKitsConfig().getInt("Required-Level.ZombieFinder"));
@@ -65,7 +66,7 @@ public class ZombieFinderKit extends LevelKit implements Listener {
     player.getInventory().addItem(WeaponHelper.getUnBreakingSword(WeaponHelper.ResourceType.WOOD, 10));
     player.getInventory().addItem(new ItemStack(XMaterial.COOKED_PORKCHOP.parseMaterial(), 8));
     player.getInventory().addItem(new ItemBuilder(WeaponHelper.getEnchanted(new ItemStack(Material.BOOK), new Enchantment[]{Enchantment.DAMAGE_ALL}, new int[]{1}))
-        .name(getPlugin().getChatManager().colorMessage("KIT_CONTENT_ZOMBIE_TELEPORTER_GAME_ITEM_NAME"))
+        .name(new MessageBuilder("KIT_CONTENT_ZOMBIE_TELEPORTER_GAME_ITEM_NAME").asKey().build())
         .lore(getPlugin().getLanguageManager().getLanguageListFromKey("KIT_CONTENT_ZOMBIE_TELEPORTER_GAME_ITEM_DESCRIPTION"))
         .build());
   }
@@ -84,12 +85,12 @@ public class ZombieFinderKit extends LevelKit implements Listener {
   public void onTeleport(PlugilyPlayerInteractEvent event) {
     Arena arena = (Arena) getPlugin().getArenaRegistry().getArena(event.getPlayer());
     if(arena == null || !ItemUtils.isItemStackNamed(event.getItem()) || event.getItem().getType() != Material.BOOK
-        || !ComplementAccessor.getComplement().getDisplayName(event.getItem().getItemMeta()).equals(getPlugin().getChatManager().colorMessage("KIT_CONTENT_ZOMBIE_TELEPORTER_GAME_ITEM_GUI"))) {
+        || !ComplementAccessor.getComplement().getDisplayName(event.getItem().getItemMeta()).equals(new MessageBuilder("KIT_CONTENT_ZOMBIE_TELEPORTER_GAME_ITEM_GUI").asKey().build())) {
       return;
     }
     User user = getPlugin().getUserManager().getUser(event.getPlayer());
     if(user.isSpectator()) {
-      event.getPlayer().sendMessage(getPlugin().getChatManager().colorMessage("IN_GAME_SPECTATOR_SPECTATOR_WARNING"));
+      new MessageBuilder("IN_GAME_SPECTATOR_SPECTATOR_WARNING").asKey().player(user.getPlayer()).sendPlayer();
       return;
     }
     if(!(user.getKit() instanceof ZombieFinderKit)) {
@@ -97,20 +98,18 @@ public class ZombieFinderKit extends LevelKit implements Listener {
     }
     long zombieCooldown = user.getCooldown("zombie");
     if(zombieCooldown > 0 && !user.isSpectator()) {
-      String message = getPlugin().getChatManager().colorMessage("KIT_COOLDOWN");
-      message = message.replaceFirst("%number%", Long.toString(zombieCooldown));
-      event.getPlayer().sendMessage(message);
+      new MessageBuilder("KIT_COOLDOWN").asKey().integer((int) zombieCooldown).player(user.getPlayer()).sendPlayer();
       return;
     }
     if(arena.getEnemies().isEmpty()) {
-      event.getPlayer().sendMessage(getPlugin().getChatManager().colorMessage("KIT_CONTENT_ZOMBIE_TELEPORTER_TELEPORT_NOT_FOUND"));
+      new MessageBuilder("KIT_CONTENT_ZOMBIE_TELEPORTER_TELEPORT_NOT_FOUND").asKey().player(user.getPlayer()).sendPlayer();
       return;
     }
 
     Creature creature = arena.getEnemies().get(arena.getEnemies().size() == 1 ? 0 : new Random().nextInt(arena.getEnemies().size()));
     creature.teleport(event.getPlayer());
     creature.addPotionEffect(new PotionEffect(PotionEffectType.WEAKNESS, 20 * 30, 0));
-    event.getPlayer().sendMessage(getPlugin().getChatManager().colorMessage("KIT_CONTENT_ZOMBIE_TELEPORTER_TELEPORT_ZOMBIE"));
+    new MessageBuilder("KIT_CONTENT_ZOMBIE_TELEPORTER_TELEPORT_ZOMBIE").asKey().player(user.getPlayer()).sendPlayer();
     VersionUtils.playSound(event.getPlayer().getLocation(), "ENTITY_ZOMBIE_DEATH");
     user.setCooldown("zombie", getKitsConfig().getInt("Kit-Cooldown.Zombie-Finder", 30));
   }

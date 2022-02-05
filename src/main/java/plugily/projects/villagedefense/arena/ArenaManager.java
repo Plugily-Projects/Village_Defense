@@ -24,6 +24,7 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import plugily.projects.minigamesbox.classic.arena.PluginArena;
 import plugily.projects.minigamesbox.classic.arena.PluginArenaManager;
+import plugily.projects.minigamesbox.classic.handlers.language.MessageBuilder;
 import plugily.projects.minigamesbox.classic.user.User;
 import plugily.projects.minigamesbox.classic.utils.version.VersionUtils;
 import plugily.projects.villagedefense.Main;
@@ -93,15 +94,15 @@ public class ArenaManager extends PluginArenaManager {
       return;
     }
 
-    String titleTimes = plugin.getChatManager().colorMessage("IN_GAME_MESSAGES_VILLAGE_WAVE_END_TIMES", arena);
+    String titleTimes = new MessageBuilder("IN_GAME_MESSAGES_VILLAGE_WAVE_END_TIMES").asKey().arena(arena).build();
     String[] split = titleTimes.split(", ", 3);
 
     int fadeIn = split.length > 1 ? Integer.parseInt(split[0]) : 20,
         stay = split.length > 2 ? Integer.parseInt(split[1]) : 30,
         fadeOut = split.length > 3 ? Integer.parseInt(split[2]) : 20;
 
-    String title = plugin.getChatManager().colorMessage("IN_GAME_MESSAGES_VILLAGE_WAVE_END_TITLE", arena, wave);
-    String subTitle = plugin.getChatManager().colorMessage("IN_GAME_MESSAGES_VILLAGE_WAVE_END_SUBTITLE", arena, wave);
+    String title = new MessageBuilder("IN_GAME_MESSAGES_VILLAGE_WAVE_END_TITLE").asKey().arena(arena).integer(wave).build();
+    String subTitle = new MessageBuilder("IN_GAME_MESSAGES_VILLAGE_WAVE_END_SUBTITLE").asKey().arena(arena).integer(wave).build();
 
     for(User user : plugin.getUserManager().getUsers(arena)) {
       if(!user.isSpectator() && !user.isPermanentSpectator()) {
@@ -131,9 +132,8 @@ public class ArenaManager extends PluginArenaManager {
   private void refreshAllPlayers(Arena arena) {
     int waveStat = arena.getWave() * 10;
 
-    String feelRefreshed = plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage("IN_GAME_MESSAGES_VILLAGE_FEEL_REFRESHED");
-    String formatted = plugin.getChatManager().getPrefix() + plugin.getChatManager().formatMessage(arena,
-        plugin.getChatManager().colorMessage("IN_GAME_MESSAGES_VILLAGE_WAVE_NEXT_IN"), arena.getTimer());
+    String feelRefreshed = new MessageBuilder("IN_GAME_MESSAGES_VILLAGE_FEEL_REFRESHED").asKey().prefix().build();
+    String formatted = new MessageBuilder("IN_GAME_MESSAGES_VILLAGE_WAVE_NEXT_IN").asKey().arena(arena).integer(arena.getTimer()).build();
 
     for(Player player : arena.getPlayers()) {
       player.sendMessage(formatted);
@@ -188,17 +188,15 @@ public class ArenaManager extends PluginArenaManager {
       ArenaUtils.bringDeathPlayersBack(arena);
     }
 
-    String titleTimes = plugin.getChatManager().colorMessage("IN_GAME_MESSAGES_VILLAGE_WAVE_START_TIMES", arena);
+    String titleTimes = new MessageBuilder("IN_GAME_MESSAGES_VILLAGE_WAVE_START_TIMES").asKey().arena(arena).build();
     String[] split = titleTimes.split(", ", 3);
 
     int fadeIn = split.length > 1 ? Integer.parseInt(split[0]) : 20,
         stay = split.length > 2 ? Integer.parseInt(split[1]) : 30,
         fadeOut = split.length > 3 ? Integer.parseInt(split[2]) : 20;
 
-    String title = plugin.getChatManager().colorMessage("IN_GAME_MESSAGES_VILLAGE_WAVE_START_TITLE", arena, wave);
-    String subTitle = plugin.getChatManager().colorMessage("IN_GAME_MESSAGES_VILLAGE_WAVE_START_SUBTITLE", arena, wave);
-
-    String waveStarted = plugin.getChatManager().formatMessage(arena, plugin.getChatManager().colorMessage("IN_GAME_MESSAGES_VILLAGE_WAVE_STARTED"), wave);
+    String title = new MessageBuilder("IN_GAME_MESSAGES_VILLAGE_WAVE_START_TITLE").asKey().arena(arena).integer(wave).build();
+    String subTitle = new MessageBuilder("IN_GAME_MESSAGES_VILLAGE_WAVE_START_SUBTITLE").asKey().arena(arena).integer(wave).build();
 
     for(User user : plugin.getUserManager().getUsers(arena)) {
       Player player = user.getPlayer();
@@ -210,9 +208,7 @@ public class ArenaManager extends PluginArenaManager {
       VersionUtils.sendTitles(player, title, subTitle, fadeIn, stay, fadeOut);
       plugin.getRewardsHandler().performReward(player, arena, plugin.getRewardsHandler().getRewardType("START_WAVE"));
 
-      if(!waveStarted.isEmpty()) {
-        player.sendMessage(waveStarted);
-      }
+      new MessageBuilder("IN_GAME_MESSAGES_VILLAGE_WAVE_STARTED").asKey().arena(arena).integer(wave).player(player).sendPlayer();
     }
 
     plugin.getDebugger().debug("[{0}] Wave start event finished took {1}ms", arena.getId(), System.currentTimeMillis() - start);

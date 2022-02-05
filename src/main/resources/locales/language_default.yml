@@ -32,7 +32,7 @@ Commands:
   Admin:
     Added-Orbs: "&7Added orbs to the player!"
     Received-Orbs: "&7You received &a%number% orbs&7!"
-    Added-Level: "&7Added level to the player!"
+    Adjust-Statistic: "&eStatistic %value% of %player% is now %value%!"
     Reload-Success: "&aArenas reloaded!"
     List:
       Header: "&a%plugin_name% &6arenas:"
@@ -588,15 +588,15 @@ Leaderboard:
         Header: "&8&m-------------------[&6 Top 10 &8&m]-------------------"
         Format: "&e#%number% %player% - %value% &7%user_statistic%"
   Statistics:
-    Games-Played: "&aGames Played"
-    Level: "&aLevel"
-    Exp: "&aExperience"
-    Orbs: "&aOrbs"
-    Highest-Wave: "&aHighest Wave"
-    Kills: "&aZombie Kills"
-    Deaths: "&aDeaths"
-    Next-Level-Exp: "&aExp to Level Up &e"
-  Invalid-Name: "&cName of statistic is invalid! Type: games_played, level"
+    Games-Played: "&aGames Played &e%number%"
+    Level: "&aLevel &e%number%"
+    Exp: "&aExperience &e%number%"
+    Orbs: "&aOrbs &e%number%"
+    Highest-Wave: "&aHighest Wave &e%number%"
+    Kills: "&aZombie Kills &e%number%"
+    Deaths: "&aDeaths &e%number%"
+    Next-Level-Exp: "&aExp to Level Up &e%number%"
+  Invalid-Name: "&cName of statistic is invalid! Type: %value%"
   Unknown-Player: "&fUnknown Player"
 
 

@@ -25,6 +25,7 @@ import org.bukkit.potion.PotionEffectType;
 import plugily.projects.minigamesbox.classic.commands.arguments.data.CommandArgument;
 import plugily.projects.minigamesbox.classic.commands.arguments.data.LabelData;
 import plugily.projects.minigamesbox.classic.commands.arguments.data.LabeledCommandArgument;
+import plugily.projects.minigamesbox.classic.handlers.language.MessageBuilder;
 import plugily.projects.minigamesbox.classic.user.User;
 import plugily.projects.villagedefense.arena.Arena;
 import plugily.projects.villagedefense.arena.ArenaUtils;
@@ -64,7 +65,7 @@ public class RespawnArgument {
             }
           }
           if(target == null) {
-            sender.sendMessage(registry.getPlugin().getChatManager().getPrefix() + registry.getPlugin().getChatManager().colorMessage("COMMANDS_PLAYER_NOT_FOUND"));
+            new MessageBuilder("COMMANDS_PLAYER_NOT_FOUND").asKey().prefix().send(sender);
             return;
           }
         } else {
@@ -86,7 +87,7 @@ public class RespawnArgument {
         ArenaUtils.showPlayer(target, arena);
         target.getInventory().clear();
         user.getKit().giveKitItems(target);
-        target.sendMessage(registry.getPlugin().getChatManager().getPrefix() + registry.getPlugin().getChatManager().colorMessage("IN_GAME_MESSAGES_VILLAGE_WAVE_RESPAWNED"));
+        new MessageBuilder("IN_GAME_MESSAGES_VILLAGE_WAVE_RESPAWNED").asKey().prefix().player(player).arena(arena).send(target);
       }
     });
   }

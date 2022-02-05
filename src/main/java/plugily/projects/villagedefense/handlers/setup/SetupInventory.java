@@ -35,6 +35,7 @@ import org.bukkit.material.Door;
 import org.jetbrains.annotations.Nullable;
 import plugily.projects.minigamesbox.classic.PluginMain;
 import plugily.projects.minigamesbox.classic.arena.PluginArena;
+import plugily.projects.minigamesbox.classic.handlers.language.MessageBuilder;
 import plugily.projects.minigamesbox.classic.handlers.setup.PluginSetupInventory;
 import plugily.projects.minigamesbox.classic.handlers.setup.SetupUtilities;
 import plugily.projects.minigamesbox.classic.handlers.setup.items.LocationItem;
@@ -109,11 +110,11 @@ public class SetupInventory extends PluginSetupInventory {
         break;
       case PAGED_LOCATIONS:
         inv.setItem(21, new LocationItem(new ItemBuilder(Material.ROTTEN_FLESH)
-            .name(plugin.getChatManager().colorRawMessage("&e&lAdd Zombie Location"))
+            .name(new MessageBuilder("&e&lAdd Zombie Location").build())
             .lore(ChatColor.GRAY + "Click add new zombie spawn")
             .lore(ChatColor.GRAY + "on the place you're standing at.")
             .lore("", plugin.getSetupUtilities().isOptionDoneSection("zombiespawns", 2, this))
-            .lore("", plugin.getChatManager().colorRawMessage("&8Right Click to remove all spawns"))
+            .lore("", new MessageBuilder("&8Right Click to remove all spawns").build())
             .build(), e -> {
           e.getWhoClicked().closeInventory();
           if(e.getClick() == ClickType.RIGHT) {
@@ -139,11 +140,11 @@ public class SetupInventory extends PluginSetupInventory {
 
 
         inv.setItem(23, new LocationItem(new ItemBuilder(Material.EMERALD_BLOCK)
-            .name(plugin.getChatManager().colorRawMessage("&e&lAdd Villager Location"))
+            .name(new MessageBuilder("&e&lAdd Villager Location").build())
             .lore(ChatColor.GRAY + "Click add new villager spawn")
             .lore(ChatColor.GRAY + "on the place you're standing at.")
             .lore("", plugin.getSetupUtilities().isOptionDoneSection("villagerspawns", 2, this))
-            .lore("", plugin.getChatManager().colorRawMessage("&8Right Click to remove all spawns"))
+            .lore("", new MessageBuilder("&8Right Click to remove all spawns").build())
             .build(), e -> {
           e.getWhoClicked().closeInventory();
           if(e.getClick() == ClickType.RIGHT) {
@@ -168,13 +169,13 @@ public class SetupInventory extends PluginSetupInventory {
         }, true, true, false));
 
         inv.setItem(28, new LocationItem(new ItemBuilder(XMaterial.OAK_DOOR.parseItem())
-            .name(plugin.getChatManager().colorRawMessage("&e&lAdd Game Door"))
+            .name(new MessageBuilder("&e&lAdd Game Door").build())
             .lore(ChatColor.GRAY + "Target arena door and click this.")
             .lore(ChatColor.DARK_GRAY + "(doors are required and will be")
             .lore(ChatColor.DARK_GRAY + "regenerated each game, villagers will hide")
             .lore(ChatColor.DARK_GRAY + "in houses so you can put doors there)")
             .lore("", plugin.getSetupUtilities().isOptionDoneSection("doors", 1, this))
-            .lore("", plugin.getChatManager().colorRawMessage("&8Right Click to remove all locations"))
+            .lore("", new MessageBuilder("&8Right Click to remove all locations").build())
             .build(), e -> {
           e.getWhoClicked().closeInventory();
           if(e.getClick() == ClickType.RIGHT) {
@@ -185,7 +186,7 @@ public class SetupInventory extends PluginSetupInventory {
         }, event -> {
           switch(event.getAction()) {
             case LEFT_CLICK_AIR:
-              player.sendMessage(plugin.getChatManager().colorRawMessage("&c&l✘ &cYou need to break a door!"));
+              new MessageBuilder("&c&l✘ &cYou need to break a door!").player(player).sendPlayer();
               break;
             case LEFT_CLICK_BLOCK:
               addDoors(event.getClickedBlock());
@@ -198,7 +199,7 @@ public class SetupInventory extends PluginSetupInventory {
         }, true, true, false));
 
         inv.setItem(30, new LocationItem(new ItemBuilder(Material.CHEST)
-            .name(plugin.getChatManager().colorRawMessage("&e&lSet Game Shop"))
+            .name(new MessageBuilder("&e&lSet Game Shop").build())
             .lore(ChatColor.GRAY + "Look at (double-) chest with items")
             .lore(ChatColor.GRAY + "and click it to set it as game shop.")
             .lore(ChatColor.DARK_GRAY + "(it allows to click villagers to buy game items)")
@@ -214,7 +215,7 @@ public class SetupInventory extends PluginSetupInventory {
         }, event -> {
           switch(event.getAction()) {
             case LEFT_CLICK_AIR:
-              player.sendMessage(plugin.getChatManager().colorRawMessage("&c&l✘ &cYou need to break a game shop!"));
+              new MessageBuilder("&c&l✘ &cYou need to break a game shop!").player(player).sendPlayer();
               break;
             case LEFT_CLICK_BLOCK:
               addGameShop();
@@ -235,7 +236,7 @@ public class SetupInventory extends PluginSetupInventory {
   private void removeGameShop() {
     plugin.getSetupUtilities().getConfig().set("instances." + arena.getId() + ".shop", null);
     arena.setReady(false);
-    player.sendMessage(plugin.getChatManager().colorRawMessage("&e✔ Removed | &aGame Shop location for arena " + arena.getId() + "!"));
+    new MessageBuilder("&e✔ Removed | &aGame Shop location for arena " + arena.getId() + "!").player(player).sendPlayer();
     ConfigUtils.saveConfig(plugin, plugin.getSetupUtilities().getConfig(), "arenas");
     arena.reloadShopManager();
   }
@@ -243,7 +244,7 @@ public class SetupInventory extends PluginSetupInventory {
   private void addGameShop() {
     Block targetBlock = player.getTargetBlock(null, 10);
     if(targetBlock.getType() != Material.CHEST) {
-      player.sendMessage(plugin.getChatManager().colorRawMessage("&c&l✘ &cLook at the chest! You are targeting something else!"));
+      new MessageBuilder("&c&l✘ &cLook at the chest! You are targeting something else!").player(player).sendPlayer();
       return;
     }
     boolean found = false;
@@ -256,17 +257,17 @@ public class SetupInventory extends PluginSetupInventory {
       List<String> lore;
 
       if(meta != null && meta.hasLore() && (lore = ComplementAccessor.getComplement().getLore(meta)).get(lore.size() - 1)
-          .contains(plugin.getChatManager().colorMessage("IN_GAME_MESSAGES_VILLAGE_SHOP_CURRENCY"))) {
+          .contains(new MessageBuilder("IN_GAME_MESSAGES_VILLAGE_SHOP_CURRENCY").build())) {
         found = true;
         break;
       }
     }
     if(!found) {
-      player.sendMessage(plugin.getChatManager().colorRawMessage("&c&l✖ &cWarning | No items in shop have price set! Set their prices using &6/vda setprice&c!"));
+      new MessageBuilder("&c&l✖ &cWarning | No items in shop have price set! Set their prices using &6/vda setprice&c!").player(player).sendPlayer();
     }
     LocationSerializer.saveLoc(plugin, plugin.getSetupUtilities().getConfig(), "arenas", "instances." + arena.getId() + ".shop", targetBlock.getLocation());
     player.sendMessage(ChatColor.GREEN + "Shop for chest set!");
-    player.sendMessage(plugin.getChatManager().colorRawMessage("&e&lTIP: &7You can use special items in shops! Check out https://wiki.plugily.xyz/villagedefense/support/faq#special-shop-items"));
+    new MessageBuilder("&e&lTIP: &7You can use special items in shops! Check out https://wiki.plugily.xyz/villagedefense/support/faq#special-shop-items").player(player).sendPlayer();
     ConfigUtils.saveConfig(plugin, plugin.getSetupUtilities().getConfig(), "arenas");
     arena.reloadShopManager();
   }
@@ -274,7 +275,7 @@ public class SetupInventory extends PluginSetupInventory {
   private void addDoors(Block block) {
     Material door = block.getType();
     if(!MaterialUtils.isDoor(door)) {
-      player.sendMessage(plugin.getChatManager().colorRawMessage("&c&l✘ &cTarget block is not an wood door!"));
+      new MessageBuilder("&c&l✘ &cTarget block is not an wood door!").player(player).sendPlayer();
       return;
     }
 
@@ -292,7 +293,7 @@ public class SetupInventory extends PluginSetupInventory {
     }
 
     if(relativeBlock == null) {
-      player.sendMessage(plugin.getChatManager().colorRawMessage("&c&l✘ &cThis door doesn't have 2 blocks? Maybe it's bugged? Try placing it again."));
+      new MessageBuilder("&c&l✘ &cThis door doesn't have 2 blocks? Maybe it's bugged? Try placing it again.").player(player).sendPlayer();
       return;
     }
 
@@ -313,14 +314,14 @@ public class SetupInventory extends PluginSetupInventory {
         e1.printStackTrace();
       }
     }
-    player.sendMessage(plugin.getChatManager().colorRawMessage("&a&l✔ &aDoor successfully added! To apply door changes you must restart your server!"));
+    new MessageBuilder("&a&l✔ &aDoor successfully added! To apply door changes you must restart your server!").player(player).sendPlayer();
     ConfigUtils.saveConfig(plugin, plugin.getSetupUtilities().getConfig(), "arenas");
   }
 
   private void removeDoors() {
     plugin.getSetupUtilities().getConfig().set("instances." + arena.getId() + ".doors", null);
     arena.getMapRestorerManager().getGameDoorLocations().clear();
-    player.sendMessage(plugin.getChatManager().colorRawMessage("&e✔ Removed | &aDoor locations deleted, you can add them again now!"));
+    new MessageBuilder("&e✔ Removed | &aDoor locations deleted, you can add them again now!").player(player).sendPlayer();
     arena.setReady(false);
     ConfigUtils.saveConfig(plugin, plugin.getSetupUtilities().getConfig(), "arenas");
   }
@@ -335,7 +336,7 @@ public class SetupInventory extends PluginSetupInventory {
         arena.getVillagerSpawns().clear();
         break;
     }
-    getPlayer().sendMessage(plugin.getChatManager().colorRawMessage("&e✔ Removed | &a" + sectionType.getName() + " spawn points deleted, you can add them again now!"));
+    new MessageBuilder("&e✔ Removed | &a" + sectionType.getName() + " spawn points deleted, you can add them again now!").player(getPlayer()).sendPlayer();
     getArena().setReady(false);
     ConfigUtils.saveConfig(plugin, plugin.getSetupUtilities().getConfig(), "arenas");
   }
@@ -346,9 +347,9 @@ public class SetupInventory extends PluginSetupInventory {
 
     LocationSerializer.saveLoc(plugin, plugin.getSetupUtilities().getConfig(), "arenas", "instances." + arena.getId() + "." + sectionType.getPath() + "." + value, location);
     String progress = value >= 2 ? "&e✔ Completed | " : "&c✘ Not completed | ";
-    player.sendMessage(plugin.getChatManager().colorRawMessage(progress + "&a" + sectionType.getName() + " spawn added! &8(&7" + value + "/2&8)"));
+    new MessageBuilder(progress + "&a" + sectionType.getName() + " spawn added! &8(&7" + value + "/2&8)").player(player).sendPlayer();
     if(value == 2) {
-      player.sendMessage(plugin.getChatManager().colorRawMessage("&eInfo | &aYou can add more than 2 " + sectionType.getName() + " spawns! Two is just a minimum!"));
+      new MessageBuilder("&eInfo | &aYou can add more than 2 " + sectionType.getName() + " spawns! Two is just a minimum!").player(player).sendPlayer();
     }
     switch(sectionType) {
       case ZOMBIE_SPAWN:
@@ -388,13 +389,13 @@ public class SetupInventory extends PluginSetupInventory {
       org.bukkit.configuration.ConfigurationSection spawnSection = config.getConfigurationSection("instances." + arena.getId() + "." + s);
 
       if(spawnSection == null || spawnSection.getKeys(false).size() < 2) {
-        event.getWhoClicked().sendMessage(plugin.getChatManager().colorRawMessage("&c&l✘ &cArena validation failed! Please configure following spawns properly: " + s + " (must be minimum 2 spawns)"));
+        new MessageBuilder("&c&l✘ &cArena validation failed! Please configure following spawns properly: " + s + " (must be minimum 2 spawns)").send(event.getWhoClicked());
         return false;
       }
     }
 
     if(config.getConfigurationSection("instances." + arena.getId() + ".doors") == null) {
-      event.getWhoClicked().sendMessage(plugin.getChatManager().colorRawMessage("&c&l✘ &cArena validation failed! Please configure doors properly!"));
+      new MessageBuilder("&c&l✘ &cArena validation failed! Please configure doors properly!").send(event.getWhoClicked());
       return false;
     }
 

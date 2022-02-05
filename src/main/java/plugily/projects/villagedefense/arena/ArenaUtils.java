@@ -24,9 +24,9 @@ import org.bukkit.entity.Creature;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffectType;
 import plugily.projects.minigamesbox.classic.arena.PluginArenaUtils;
+import plugily.projects.minigamesbox.classic.handlers.language.MessageBuilder;
 import plugily.projects.minigamesbox.classic.user.User;
 import plugily.projects.minigamesbox.classic.utils.version.VersionUtils;
-import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.api.event.player.VillagePlayerRespawnEvent;
 
 import java.util.ArrayList;
@@ -79,7 +79,7 @@ public class ArenaUtils extends PluginArenaUtils {
       ArenaUtils.showPlayer(player, arena);
       user.getKit().giveKitItems(player);
       player.updateInventory();
-      player.sendMessage(getPlugin().getChatManager().colorMessage("IN_GAME_MESSAGES_VILLAGE_WAVE_RESPAWNED"));
+      new MessageBuilder("IN_GAME_MESSAGES_VILLAGE_WAVE_RESPAWNED").asKey().player(player).arena(arena).sendPlayer();
     }
   }
 

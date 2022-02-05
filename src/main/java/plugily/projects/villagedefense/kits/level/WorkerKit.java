@@ -27,6 +27,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.inventory.ItemStack;
+import plugily.projects.minigamesbox.classic.handlers.language.MessageBuilder;
 import plugily.projects.minigamesbox.classic.kits.basekits.LevelKit;
 import plugily.projects.minigamesbox.classic.utils.helper.ArmorHelper;
 import plugily.projects.minigamesbox.classic.utils.helper.WeaponHelper;
@@ -44,7 +45,7 @@ public class WorkerKit extends LevelKit implements Listener {
 
   public WorkerKit() {
     setLevel(getKitsConfig().getInt("Required-Level.Worker"));
-    setName(getPlugin().getChatManager().colorMessage("KIT_CONTENT_WORKER_NAME"));
+    setName(new MessageBuilder("KIT_CONTENT_WORKER_NAME").asKey().build());
     List<String> description = getPlugin().getLanguageManager().getLanguageListFromKey("KIT_CONTENT_WORKER_DESCRIPTION");
     setDescription(description);
     getPlugin().getKitRegistry().registerKit(this);
@@ -77,23 +78,23 @@ public class WorkerKit extends LevelKit implements Listener {
   }
 
   @EventHandler(priority = EventPriority.HIGHEST)
-  public void onDoorPlace(BlockPlaceEvent e) {
-    Arena arena = (Arena) getPlugin().getArenaRegistry().getArena(e.getPlayer());
+  public void onDoorPlace(BlockPlaceEvent event) {
+    Arena arena = (Arena) getPlugin().getArenaRegistry().getArena(event.getPlayer());
     if(arena == null) {
       return;
     }
-    if(getPlugin().getUserManager().getUser(e.getPlayer()).isSpectator() || !arena.getMapRestorerManager().getGameDoorLocations()
-        .containsKey(e.getBlock().getLocation())) {
-      e.setCancelled(true);
+    if(getPlugin().getUserManager().getUser(event.getPlayer()).isSpectator() || !arena.getMapRestorerManager().getGameDoorLocations()
+        .containsKey(event.getBlock().getLocation())) {
+      event.setCancelled(true);
       return;
     }
-    if(VersionUtils.getItemInHand(e.getPlayer()).getType() != Utils.getCachedDoor(e.getBlock())) {
-      e.setCancelled(true);
+    if(VersionUtils.getItemInHand(event.getPlayer()).getType() != Utils.getCachedDoor(event.getBlock())) {
+      event.setCancelled(true);
       return;
     }
     //to override world guard protection
-    e.setCancelled(false);
-    e.getPlayer().sendMessage(getPlugin().getChatManager().colorMessage("KIT_CONTENT_WORKER_GAME_ITEM_CHAT"));
+    event.setCancelled(false);
+    new MessageBuilder("KIT_CONTENT_WORKER_GAME_ITEM_CHAT").asKey().player(event.getPlayer()).sendPlayer();
   }
 
 }

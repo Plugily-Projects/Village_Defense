@@ -33,6 +33,7 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
+import plugily.projects.minigamesbox.classic.handlers.language.MessageBuilder;
 import plugily.projects.minigamesbox.classic.kits.basekits.PremiumKit;
 import plugily.projects.minigamesbox.classic.user.User;
 import plugily.projects.minigamesbox.classic.utils.helper.ArmorHelper;
@@ -57,7 +58,7 @@ public class WizardKit extends PremiumKit implements Listener {
   private final List<Player> wizardsOnDuty = new ArrayList<>();
 
   public WizardKit() {
-    setName(getPlugin().getChatManager().colorMessage("KIT_CONTENT_WIZARD_NAME"));
+    setName(new MessageBuilder("KIT_CONTENT_WIZARD_NAME").asKey().build());
     List<String> description = getPlugin().getLanguageManager().getLanguageListFromKey("KIT_CONTENT_WIZARD_DESCRIPTION");
     setDescription(description);
     getPlugin().getKitRegistry().registerKit(this);
@@ -72,11 +73,11 @@ public class WizardKit extends PremiumKit implements Listener {
   @Override
   public void giveKitItems(Player player) {
     player.getInventory().addItem(new ItemBuilder(getMaterial())
-        .name(getPlugin().getChatManager().colorMessage("KIT_CONTENT_WIZARD_GAME_ITEM_WAND_NAME"))
+        .name(new MessageBuilder("KIT_CONTENT_WIZARD_GAME_ITEM_WAND_NAME").asKey().build())
         .lore(getPlugin().getLanguageManager().getLanguageListFromKey("KIT_CONTENT_WIZARD_GAME_ITEM_WAND_DESCRIPTION"))
         .build());
     player.getInventory().addItem(new ItemBuilder(new ItemStack(XMaterial.INK_SAC.parseMaterial(), 4))
-        .name(getPlugin().getChatManager().colorMessage("KIT_CONTENT_WIZARD_GAME_ITEM_ESSENCE_NAME"))
+        .name(new MessageBuilder("KIT_CONTENT_WIZARD_GAME_ITEM_ESSENCE_NAME").asKey().build())
         .lore(getPlugin().getLanguageManager().getLanguageListFromKey("KIT_CONTENT_WIZARD_GAME_ITEM_ESSENCE_DESCRIPTION"))
         .build());
 
@@ -93,7 +94,7 @@ public class WizardKit extends PremiumKit implements Listener {
   @Override
   public void reStock(Player player) {
     player.getInventory().addItem(new ItemBuilder(new ItemStack(XMaterial.INK_SAC.parseMaterial()))
-        .name(getPlugin().getChatManager().colorMessage("KIT_CONTENT_WIZARD_GAME_ITEM_ESSENCE_NAME"))
+        .name(new MessageBuilder("KIT_CONTENT_WIZARD_GAME_ITEM_ESSENCE_NAME").asKey().build())
         .lore(getPlugin().getLanguageManager().getLanguageListFromKey("KIT_CONTENT_WIZARD_GAME_ITEM_ESSENCE_DESCRIPTION"))
         .build());
   }
@@ -130,7 +131,7 @@ public class WizardKit extends PremiumKit implements Listener {
       return;
     }
     Player player = e.getPlayer();
-    if(ComplementAccessor.getComplement().getDisplayName(stack.getItemMeta()).equals(getPlugin().getChatManager().colorMessage("KIT_CONTENT_WIZARD_GAME_ITEM_ESSENCE_NAME"))) {
+    if(ComplementAccessor.getComplement().getDisplayName(stack.getItemMeta()).equals(new MessageBuilder("KIT_CONTENT_WIZARD_GAME_ITEM_ESSENCE_NAME").asKey().build())) {
       if(!user.checkCanCastCooldownAndMessage("essence")) {
         return;
       }
@@ -153,7 +154,7 @@ public class WizardKit extends PremiumKit implements Listener {
         wizardsOnDuty.remove(player);
       }, 20L * 15);
       user.setCooldown("essence", getKitsConfig().getInt("Kit-Cooldown.Wizard.Essence", 15));
-    } else if(ComplementAccessor.getComplement().getDisplayName(stack.getItemMeta()).equals(getPlugin().getChatManager().colorMessage("KIT_CONTENT_WIZARD_GAME_ITEM_WAND_NAME"))) {
+    } else if(ComplementAccessor.getComplement().getDisplayName(stack.getItemMeta()).equals(new MessageBuilder("KIT_CONTENT_WIZARD_GAME_ITEM_WAND_NAME").asKey().build())) {
       if(!user.checkCanCastCooldownAndMessage("wizard_staff")) {
         return;
       }

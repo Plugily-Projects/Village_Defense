@@ -21,6 +21,7 @@ package plugily.projects.villagedefense.kits.premium;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import plugily.projects.minigamesbox.classic.handlers.language.MessageBuilder;
 import plugily.projects.minigamesbox.classic.kits.basekits.PremiumKit;
 import plugily.projects.minigamesbox.classic.utils.helper.ArmorHelper;
 import plugily.projects.minigamesbox.classic.utils.helper.WeaponHelper;
@@ -35,7 +36,7 @@ import java.util.List;
 public class DogFriendKit extends PremiumKit {
 
   public DogFriendKit() {
-    setName(getPlugin().getChatManager().colorMessage("KIT_CONTENT_DOG_FRIEND_NAME"));
+    setName(new MessageBuilder("KIT_CONTENT_DOG_FRIEND_NAME").asKey().build());
     List<String> description = getPlugin().getLanguageManager().getLanguageListFromKey("KIT_CONTENT_DOG_FRIEND_DESCRIPTION");
     setDescription(description);
     getPlugin().getKitRegistry().registerKit(this);

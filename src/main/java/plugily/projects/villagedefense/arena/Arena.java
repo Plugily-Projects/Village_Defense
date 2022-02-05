@@ -30,6 +30,7 @@ import org.bukkit.entity.Wolf;
 import org.jetbrains.annotations.NotNull;
 import plugily.projects.minigamesbox.classic.arena.ArenaState;
 import plugily.projects.minigamesbox.classic.arena.PluginArena;
+import plugily.projects.minigamesbox.classic.handlers.language.MessageBuilder;
 import plugily.projects.minigamesbox.classic.utils.version.ServerVersion;
 import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.arena.managers.CreatureTargetManager;
@@ -245,8 +246,8 @@ public class Arena extends PluginArena {
     Wolf wolf = CreatureUtils.getCreatureInitializer().spawnWolf(location);
     wolf.setOwner(player);
     wolf.setCustomNameVisible(getPlugin().getConfigPreferences().getOption("NAME_VISIBILITY_WOLF"));
-    wolf.setCustomName(getPlugin().getChatManager().colorMessage("IN_GAME_MESSAGES_VILLAGE_WAVE_ENTITIES_WOLF_NAME").replace("%player%", player.getName()));
-    player.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage("IN_GAME_MESSAGES_VILLAGE_WAVE_ENTITIES_WOLF_SPAWN"));
+    wolf.setCustomName(new MessageBuilder("IN_GAME_MESSAGES_VILLAGE_WAVE_ENTITIES_WOLF_NAME").asKey().player(player).build());
+    new MessageBuilder("IN_GAME_MESSAGES_VILLAGE_WAVE_ENTITIES_WOLF_SPAWN").asKey().prefix().player(player).sendPlayer();
     addWolf(wolf);
   }
 
@@ -257,8 +258,8 @@ public class Arena extends PluginArena {
 
     IronGolem ironGolem = CreatureUtils.getCreatureInitializer().spawnGolem(location);
     ironGolem.setCustomNameVisible(getPlugin().getConfigPreferences().getOption("NAME_VISIBILITY_GOLEM"));
-    ironGolem.setCustomName(getPlugin().getChatManager().colorMessage("IN_GAME_MESSAGES_VILLAGE_WAVE_ENTITIES_GOLEM_NAME").replace("%player%", player.getName()));
-    player.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage("IN_GAME_MESSAGES_VILLAGE_WAVE_ENTITIES_GOLEM_SPAWN"));
+    ironGolem.setCustomName(new MessageBuilder("IN_GAME_MESSAGES_VILLAGE_WAVE_ENTITIES_GOLEM_NAME").asKey().player(player).build());
+    new MessageBuilder("IN_GAME_MESSAGES_VILLAGE_WAVE_ENTITIES_GOLEM_SPAWN").asKey().prefix().player(player).sendPlayer();
     addIronGolem(ironGolem);
   }
 
@@ -277,12 +278,12 @@ public class Arena extends PluginArena {
     switch(type) {
       case WOLF:
         entityLimit = plugin.getPermissionsManager().getPermissionCategoryValue("PLAYER_SPAWN_LIMIT_WOLVES", player);
-        spawnedName = plugin.getChatManager().colorMessage("IN_GAME_MESSAGES_VILLAGE_WAVE_ENTITIES_WOLF_NAME").replace("%player%", player.getName());
+        spawnedName = new MessageBuilder("IN_GAME_MESSAGES_VILLAGE_WAVE_ENTITIES_WOLF_NAME").asKey().player(player).build();
         globalEntityLimit = plugin.getConfig().getInt("Limit.Spawn.Wolves", 20);
         break;
       case IRON_GOLEM:
         entityLimit = plugin.getPermissionsManager().getPermissionCategoryValue("PLAYER_SPAWN_LIMIT_GOLEMS", player);
-        spawnedName = plugin.getChatManager().colorMessage("IN_GAME_MESSAGES_VILLAGE_WAVE_ENTITIES_GOLEM_NAME").replace("%player%", player.getName());
+        spawnedName = new MessageBuilder("IN_GAME_MESSAGES_VILLAGE_WAVE_ENTITIES_GOLEM_NAME").asKey().player(player).build();
         globalEntityLimit = plugin.getConfig().getInt("Limit.Spawn.Golems", 15);
         break;
     }
@@ -294,15 +295,13 @@ public class Arena extends PluginArena {
 
       long spawnedAmount = entityList.size();
       if(spawnedAmount >= globalEntityLimit) {
-        player.sendMessage(plugin.getChatManager().colorMessage("IN_GAME_MESSAGES_VILLAGE_SHOP_MOB_LIMIT_REACHED")
-            .replace("%amount%", Integer.toString(globalEntityLimit)));
+        new MessageBuilder("IN_GAME_MESSAGES_VILLAGE_SHOP_MOB_LIMIT_REACHED").asKey().player(player).integer(globalEntityLimit).sendPlayer();
         return false;
       }
 
       long spawnedPlayerAmount = entityList.stream().filter(entity -> Objects.equals(entity.getCustomName(), finalSpawnedName)).count();
       if(spawnedPlayerAmount >= entityLimit) {
-        player.sendMessage(plugin.getChatManager().colorMessage("IN_GAME_MESSAGES_VILLAGE_SHOP_MOB_LIMIT_REACHED")
-            .replace("%amount%", Integer.toString(entityLimit)));
+        new MessageBuilder("IN_GAME_MESSAGES_VILLAGE_SHOP_MOB_LIMIT_REACHED").asKey().player(player).integer(entityLimit).sendPlayer();
         return false;
       }
     }

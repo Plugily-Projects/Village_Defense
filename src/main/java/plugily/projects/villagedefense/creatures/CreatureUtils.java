@@ -26,6 +26,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.entity.Villager;
 import org.bukkit.entity.Wolf;
 import plugily.projects.commonsbox.string.StringFormatUtils;
+import plugily.projects.minigamesbox.classic.handlers.language.MessageBuilder;
 import plugily.projects.minigamesbox.classic.utils.version.ServerVersion;
 import plugily.projects.minigamesbox.classic.utils.version.VersionUtils;
 import plugily.projects.villagedefense.Main;
@@ -57,7 +58,7 @@ public class CreatureUtils {
 
   public static void init(Main plugin) {
     CreatureUtils.plugin = plugin;
-    villagerNames = plugin.getChatManager().colorMessage("IN_GAME_MESSAGES_VILLAGE_VILLAGER_NAMES").split(",");
+    villagerNames = new MessageBuilder("IN_GAME_MESSAGES_VILLAGE_VILLAGER_NAMES").asKey().build().split(",");
     creatureInitializer = initCreatureInitializer();
   }
 

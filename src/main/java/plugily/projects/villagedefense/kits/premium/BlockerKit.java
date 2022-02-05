@@ -30,6 +30,7 @@ import org.bukkit.event.block.Action;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import plugily.projects.minigamesbox.classic.arena.PluginArena;
+import plugily.projects.minigamesbox.classic.handlers.language.MessageBuilder;
 import plugily.projects.minigamesbox.classic.kits.basekits.PremiumKit;
 import plugily.projects.minigamesbox.classic.utils.helper.ArmorHelper;
 import plugily.projects.minigamesbox.classic.utils.helper.ItemBuilder;
@@ -49,7 +50,7 @@ import java.util.List;
 public class BlockerKit extends PremiumKit implements Listener {
 
   public BlockerKit() {
-    setName(getPlugin().getChatManager().colorMessage("KIT_CONTENT_BLOCKER_NAME"));
+    setName(new MessageBuilder("KIT_CONTENT_BLOCKER_NAME").asKey().build());
     List<String> description = getPlugin().getLanguageManager().getLanguageListFromKey("KIT_CONTENT_BLOCKER_DESCRIPTION");
     setDescription(description);
     getPlugin().getServer().getPluginManager().registerEvents(this, getPlugin());
@@ -67,7 +68,7 @@ public class BlockerKit extends PremiumKit implements Listener {
     player.getInventory().addItem(WeaponHelper.getEnchanted(new ItemStack(Material.STONE_SWORD), new org.bukkit.enchantments.Enchantment[]{org.bukkit.enchantments.Enchantment.DURABILITY}, new int[]{10}));
     player.getInventory().addItem(new ItemStack(Material.COOKED_BEEF, 10));
     player.getInventory().addItem(new ItemBuilder(new ItemStack(XMaterial.OAK_FENCE.parseMaterial(), 3))
-        .name(getPlugin().getChatManager().colorMessage("KIT_CONTENT_BLOCKER_GAME_ITEM_NAME"))
+        .name(new MessageBuilder("KIT_CONTENT_BLOCKER_GAME_ITEM_NAME").asKey().build())
         .lore(getPlugin().getLanguageManager().getLanguageListFromKey("KIT_CONTENT_BLOCKER_GAME_ITEM_DESCRIPTION"))
         .build());
     player.getInventory().addItem(new ItemStack(Material.SADDLE));
@@ -82,7 +83,7 @@ public class BlockerKit extends PremiumKit implements Listener {
   @Override
   public void reStock(Player player) {
     player.getInventory().addItem(new ItemBuilder(new ItemStack(XMaterial.OAK_FENCE.parseMaterial(), 3))
-        .name(getPlugin().getChatManager().colorMessage("KIT_CONTENT_BLOCKER_GAME_ITEM_NAME"))
+        .name(new MessageBuilder("KIT_CONTENT_BLOCKER_GAME_ITEM_NAME").asKey().build())
         .lore(getPlugin().getLanguageManager().getLanguageListFromKey("KIT_CONTENT_BLOCKER_GAME_ITEM_DESCRIPTION"))
         .build());
   }
@@ -100,7 +101,7 @@ public class BlockerKit extends PremiumKit implements Listener {
 
     ItemStack stack = VersionUtils.getItemInHand(player);
     if(!ItemUtils.isItemStackNamed(stack) || !ComplementAccessor.getComplement().getDisplayName(stack.getItemMeta())
-        .equalsIgnoreCase(getPlugin().getChatManager().colorMessage("KIT_CONTENT_BLOCKER_GAME_ITEM_NAME"))) {
+        .equalsIgnoreCase(new MessageBuilder("KIT_CONTENT_BLOCKER_GAME_ITEM_NAME").asKey().build())) {
       return;
     }
     if(!(getPlugin().getUserManager().getUser(player).getKit() instanceof BlockerKit)) {
@@ -113,13 +114,13 @@ public class BlockerKit extends PremiumKit implements Listener {
       }
     }
     if(block == null) {
-      event.getPlayer().sendMessage(getPlugin().getChatManager().colorMessage("KIT_CONTENT_BLOCKER_PLACE_FAIL"));
+      new MessageBuilder("KIT_CONTENT_BLOCKER_PLACE_FAIL").asKey().player(player).sendPlayer();
       return;
     }
     getPlugin().getBukkitHelper().takeOneItem(player, stack);
     event.setCancelled(false);
 
-    event.getPlayer().sendMessage(getPlugin().getChatManager().colorMessage("KIT_CONTENT_BLOCKER_PLACE_SUCCESS"));
+    new MessageBuilder("KIT_CONTENT_BLOCKER_PLACE_SUCCESS").asKey().player(player).sendPlayer();
     ZombieBarrier zombieBarrier = new ZombieBarrier();
     zombieBarrier.setLocation(block.getLocation());
 

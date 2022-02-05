@@ -25,6 +25,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import plugily.projects.minigamesbox.classic.arena.PluginArena;
 import plugily.projects.minigamesbox.classic.arena.PluginArenaRegistry;
+import plugily.projects.minigamesbox.classic.handlers.language.MessageBuilder;
 import plugily.projects.minigamesbox.classic.utils.serialization.LocationSerializer;
 import plugily.projects.villagedefense.Main;
 
@@ -55,7 +56,7 @@ public class ArenaRegistry extends PluginArenaRegistry {
     if(!checks) return false;
 
     if(!section.getBoolean(id + ".isdone")) {
-      plugin.getDebugger().sendConsoleMsg(plugin.getChatManager().colorMessage("VALIDATOR_INVALID_ARENA_CONFIGURATION", "NOT VALIDATED", arena));
+      plugin.getDebugger().sendConsoleMsg(new MessageBuilder("VALIDATOR_INVALID_ARENA_CONFIGURATION").asKey().value("NOT VALIDATED").arena(arena).build());
       return false;
     }
 
@@ -65,7 +66,7 @@ public class ArenaRegistry extends PluginArenaRegistry {
         ((Arena) arena).addZombieSpawn(LocationSerializer.getLocation(zombieSection.getString(string)));
       }
     } else {
-      plugin.getDebugger().sendConsoleMsg(plugin.getChatManager().colorMessage("VALIDATOR_INVALID_ARENA_CONFIGURATION", "ZOMBIE SPAWNS", arena));
+      plugin.getDebugger().sendConsoleMsg(new MessageBuilder("VALIDATOR_INVALID_ARENA_CONFIGURATION").asKey().value("ZOMBIE SPAWNS").arena(arena).build());
       return false;
     }
 
@@ -75,7 +76,7 @@ public class ArenaRegistry extends PluginArenaRegistry {
         ((Arena) arena).addVillagerSpawn(LocationSerializer.getLocation(villagerSection.getString(string)));
       }
     } else {
-      plugin.getDebugger().sendConsoleMsg(plugin.getChatManager().colorMessage("VALIDATOR_INVALID_ARENA_CONFIGURATION", "VILLAGER SPAWNS", arena));
+      plugin.getDebugger().sendConsoleMsg(new MessageBuilder("VALIDATOR_INVALID_ARENA_CONFIGURATION").asKey().value("VILLAGER SPAWNS").arena(arena).build());
       return false;
     }
 
@@ -86,14 +87,14 @@ public class ArenaRegistry extends PluginArenaRegistry {
             (byte) doorSection.getInt(string + ".byte"));
       }
     } else {
-      plugin.getDebugger().sendConsoleMsg(plugin.getChatManager().colorMessage("VALIDATOR_INVALID_ARENA_CONFIGURATION", "DOORS", arena));
+      plugin.getDebugger().sendConsoleMsg(new MessageBuilder("VALIDATOR_INVALID_ARENA_CONFIGURATION").value("DOORS").arena(arena).build());
       return false;
     }
 
 
     if(arena.getStartLocation().getWorld().getDifficulty() == Difficulty.PEACEFUL) {
-      plugin.getDebugger().sendConsoleMsg(plugin.getChatManager().colorMessage("VALIDATOR_INVALID_ARENA_CONFIGURATION", "THERE IS A WRONG " +
-          "DIFFICULTY -> SET IT TO ANOTHER ONE THAN PEACEFUL", arena));
+      plugin.getDebugger().sendConsoleMsg(new MessageBuilder("VALIDATOR_INVALID_ARENA_CONFIGURATION").asKey().value("THERE IS A WRONG " +
+          "DIFFICULTY -> SET IT TO ANOTHER ONE THAN PEACEFUL").arena(arena).build());
       return false;
     }
     return true;

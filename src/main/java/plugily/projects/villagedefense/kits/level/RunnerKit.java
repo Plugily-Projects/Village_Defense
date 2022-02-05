@@ -25,6 +25,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import plugily.projects.minigamesbox.classic.handlers.language.MessageBuilder;
 import plugily.projects.minigamesbox.classic.kits.basekits.LevelKit;
 import plugily.projects.minigamesbox.classic.utils.helper.ArmorHelper;
 import plugily.projects.minigamesbox.classic.utils.helper.WeaponHelper;
@@ -39,7 +40,7 @@ public class RunnerKit extends LevelKit {
 
   public RunnerKit() {
     setLevel(getKitsConfig().getInt("Required-Level.Runner"));
-    setName(getPlugin().getChatManager().colorMessage("KIT_CONTENT_RUNNER_NAME"));
+    setName(new MessageBuilder("KIT_CONTENT_RUNNER_NAME").asKey().build());
     List<String> description = getPlugin().getLanguageManager().getLanguageListFromKey("KIT_CONTENT_RUNNER_DESCRIPTION");
     setDescription(description);
     getPlugin().getKitRegistry().registerKit(this);

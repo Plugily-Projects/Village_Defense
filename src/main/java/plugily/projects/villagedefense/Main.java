@@ -29,6 +29,7 @@ import plugily.projects.minigamesbox.classic.api.StatisticType;
 import plugily.projects.minigamesbox.classic.arena.PluginArena;
 import plugily.projects.minigamesbox.classic.arena.options.ArenaOption;
 import plugily.projects.minigamesbox.classic.handlers.language.Message;
+import plugily.projects.minigamesbox.classic.handlers.language.MessageBuilder;
 import plugily.projects.minigamesbox.classic.handlers.permissions.Permission;
 import plugily.projects.minigamesbox.classic.handlers.permissions.PermissionCategory;
 import plugily.projects.minigamesbox.classic.handlers.placeholder.Placeholder;
@@ -273,7 +274,7 @@ public class Main extends PluginMain {
 
 
     getMessageManager().registerMessage("LEADERBOARD_STATISTICS_ORBS", new Message("Leaderboard.Statistics.Orbs", ""));
-    getMessageManager().registerMessage("LEADERBOARD_STATISTICS_HIGHES_WAVE", new Message("Leaderboard.Statistics.Highest-Wave", ""));
+    getMessageManager().registerMessage("LEADERBOARD_STATISTICS_HIGHEST_WAVE", new Message("Leaderboard.Statistics.Highest-Wave", ""));
     getMessageManager().registerMessage("LEADERBOARD_STATISTICS_KILLS", new Message("Leaderboard.Statistics.Kills", ""));
     getMessageManager().registerMessage("LEADERBOARD_STATISTICS_DEATHS", new Message("Leaderboard.Statistics.Deaths", ""));
 
@@ -486,9 +487,9 @@ public class Main extends PluginMain {
         int wave = pluginArena.getWave();
         String summaryEnding;
         if(pluginArena.getPlugin().getConfigPreferences().getOption("LIMIT_WAVE_UNLIMITED") && wave >= pluginArena.getPlugin().getConfig().getInt("Limit.Wave.Game-End", 25)) {
-          summaryEnding = pluginArena.getPlugin().getChatManager().colorMessage("IN_GAME_MESSAGES_GAME_END_PLACEHOLDERS_WIN");
+          summaryEnding = new MessageBuilder("IN_GAME_MESSAGES_GAME_END_PLACEHOLDERS_WIN").asKey().arena(pluginArena).build();
         } else {
-          summaryEnding = pluginArena.getPlugin().getChatManager().colorMessage("IN_GAME_MESSAGES_GAME_END_PLACEHOLDERS_LOSE");
+          summaryEnding = new MessageBuilder("IN_GAME_MESSAGES_GAME_END_PLACEHOLDERS_LOSE").asKey().arena(pluginArena).build();
         }
         return summaryEnding;
       }
@@ -513,11 +514,11 @@ public class Main extends PluginMain {
         int wave = pluginArena.getWave();
         String summaryEnding;
         if(pluginArena.getPlugin().getConfigPreferences().getOption("LIMIT_WAVE_UNLIMITED") && wave >= pluginArena.getPlugin().getConfig().getInt("Limit.Wave.Game-End", 25)) {
-          summaryEnding = pluginArena.getPlugin().getChatManager().colorMessage("IN_GAME_MESSAGES_GAME_END_PLACEHOLDERS_SURVIVED");
+          summaryEnding = new MessageBuilder("IN_GAME_MESSAGES_GAME_END_PLACEHOLDERS_SURVIVED").asKey().arena(pluginArena).build();
         } else if(!arena.getPlayersLeft().isEmpty()) {
-          summaryEnding = pluginArena.getPlugin().getChatManager().colorMessage("IN_GAME_MESSAGES_GAME_END_PLACEHOLDERS_DIED_VILLAGERS");
+          summaryEnding = new MessageBuilder("IN_GAME_MESSAGES_GAME_END_PLACEHOLDERS_DIED_VILLAGERS").asKey().arena(pluginArena).build();
         } else {
-          summaryEnding = pluginArena.getPlugin().getChatManager().colorMessage("IN_GAME_MESSAGES_GAME_END_PLACEHOLDERS_DIED_PLAYERS");
+          summaryEnding = new MessageBuilder("IN_GAME_MESSAGES_GAME_END_PLACEHOLDERS_DIED_PLAYERS").asKey().arena(pluginArena).build();
         }
         return summaryEnding;
       }

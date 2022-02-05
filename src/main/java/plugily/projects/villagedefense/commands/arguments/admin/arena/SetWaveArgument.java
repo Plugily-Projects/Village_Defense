@@ -25,6 +25,7 @@ import plugily.projects.commonsbox.number.NumberUtils;
 import plugily.projects.minigamesbox.classic.commands.arguments.data.CommandArgument;
 import plugily.projects.minigamesbox.classic.commands.arguments.data.LabelData;
 import plugily.projects.minigamesbox.classic.commands.arguments.data.LabeledCommandArgument;
+import plugily.projects.minigamesbox.classic.handlers.language.MessageBuilder;
 import plugily.projects.villagedefense.arena.Arena;
 import plugily.projects.villagedefense.arena.ArenaManager;
 import plugily.projects.villagedefense.arena.ArenaUtils;
@@ -47,12 +48,12 @@ public class SetWaveArgument {
           return;
         }
         if(args.length == 1) {
-          sender.sendMessage(registry.getPlugin().getChatManager().getPrefix() + ChatColor.RED + "Please type number of wave to set!");
+          new MessageBuilder(ChatColor.RED + "Please type number of wave to set!").prefix().send(sender);
           return;
         }
         java.util.Optional<Integer> opt = NumberUtils.parseInt(args[1]);
         if(!opt.isPresent()) {
-          sender.sendMessage(registry.getPlugin().getChatManager().getPrefix() + registry.getPlugin().getChatManager().colorMessage("COMMANDS_WRONG_USAGE", "/vda setwave <number>"));
+          new MessageBuilder("COMMANDS_WRONG_USAGE").asKey().prefix().value("/vda setwave <number>").send(sender);
           return;
         }
         Arena arena = (Arena) registry.getPlugin().getArenaRegistry().getArena((Player) sender);
@@ -61,10 +62,7 @@ public class SetWaveArgument {
         }
         arena.setWave(opt.get() - 1);
         ((ArenaManager) registry.getPlugin().getArenaManager()).endWave(arena);
-        String message = registry.getPlugin().getChatManager().formatMessage(arena, registry.getPlugin().getChatManager().colorMessage("IN_GAME_MESSAGES_ADMIN_CHANGED_WAVE"), arena.getWave());
-        for(Player player : arena.getPlayers()) {
-          player.sendMessage(registry.getPlugin().getChatManager().getPrefix() + message);
-        }
+        new MessageBuilder("IN_GAME_MESSAGES_ADMIN_CHANGED_WAVE").asKey().arena(arena).integer(arena.getWave()).sendArena();
         ArenaUtils.removeSpawnedEnemies(arena);
         arena.setArenaOption("ZOMBIES_TO_SPAWN", 0);
       }

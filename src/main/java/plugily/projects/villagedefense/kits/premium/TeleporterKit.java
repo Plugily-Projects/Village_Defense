@@ -27,6 +27,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
+import plugily.projects.minigamesbox.classic.handlers.language.MessageBuilder;
 import plugily.projects.minigamesbox.classic.kits.basekits.PremiumKit;
 import plugily.projects.minigamesbox.classic.utils.helper.ArmorHelper;
 import plugily.projects.minigamesbox.classic.utils.helper.ItemBuilder;
@@ -48,7 +49,7 @@ import java.util.List;
 public class TeleporterKit extends PremiumKit implements Listener {
 
   public TeleporterKit() {
-    setName(getPlugin().getChatManager().colorMessage("KIT_CONTENT_TELEPORTER_NAME"));
+    setName(new MessageBuilder("KIT_CONTENT_TELEPORTER_NAME").asKey().build());
     List<String> description = getPlugin().getLanguageManager().getLanguageListFromKey("KIT_CONTENT_TELEPORTER_DESCRIPTION");
     setDescription(description);
     getPlugin().getServer().getPluginManager().registerEvents(this, getPlugin());
@@ -68,7 +69,7 @@ public class TeleporterKit extends PremiumKit implements Listener {
     player.getInventory().addItem(new ItemStack(Material.COOKED_BEEF, 10));
     player.getInventory().addItem(new ItemStack(Material.SADDLE));
     player.getInventory().addItem(new ItemBuilder(Material.GHAST_TEAR)
-        .name(getPlugin().getChatManager().colorMessage("KIT_CONTENT_TELEPORTER_GAME_ITEM_NAME"))
+        .name(new MessageBuilder("KIT_CONTENT_TELEPORTER_GAME_ITEM_NAME").asKey().build())
         .lore(getPlugin().getLanguageManager().getLanguageListFromKey("KIT_CONTENT_TELEPORTER_GAME_ITEM_DESCRIPTION"))
         .build());
   }
@@ -98,7 +99,7 @@ public class TeleporterKit extends PremiumKit implements Listener {
     if(!ItemUtils.isItemStackNamed(stack))
       return;
 
-    if(!ChatColor.stripColor(ComplementAccessor.getComplement().getDisplayName(stack.getItemMeta())).equalsIgnoreCase(ChatColor.stripColor(getPlugin().getChatManager().colorMessage("KIT_CONTENT_TELEPORTER_GAME_ITEM_NAME")))) {
+    if(!ChatColor.stripColor(ComplementAccessor.getComplement().getDisplayName(stack.getItemMeta())).equalsIgnoreCase(ChatColor.stripColor(new MessageBuilder("KIT_CONTENT_TELEPORTER_GAME_ITEM_NAME").asKey().build()))) {
       return;
     }
     if(!(getPlugin().getUserManager().getUser(player).getKit() instanceof TeleporterKit)) {
@@ -116,7 +117,7 @@ public class TeleporterKit extends PremiumKit implements Listener {
   }
 
   private void prepareTeleporterGui(Player player, Arena arena, int slots) {
-    NormalFastInv gui = new NormalFastInv(slots, getPlugin().getChatManager().colorMessage("KIT_CONTENT_TELEPORTER_GAME_ITEM_GUI"));
+    NormalFastInv gui = new NormalFastInv(slots, new MessageBuilder("KIT_CONTENT_TELEPORTER_GAME_ITEM_GUI").asKey().build());
     gui.addClickHandler(inventoryClickEvent -> inventoryClickEvent.setCancelled(true));
     for(Player arenaPlayer : arena.getPlayers()) {
       if(getPlugin().getUserManager().getUser(arenaPlayer).isSpectator()) {
@@ -129,7 +130,7 @@ public class TeleporterKit extends PremiumKit implements Listener {
       ComplementAccessor.getComplement().setLore(meta, Collections.singletonList(""));
       skull.setItemMeta(meta);
       gui.addItem(skull, onClick -> {
-        player.sendMessage(getPlugin().getChatManager().formatMessage(arena, getPlugin().getChatManager().colorMessage("KIT_CONTENT_TELEPORTER_TELEPORT_PLAYER"), arenaPlayer));
+        new MessageBuilder("KIT_CONTENT_TELEPORTER_TELEPORT_PLAYER").asKey().arena(arena).player(arenaPlayer).sendPlayer();
         player.teleport(arenaPlayer);
         VersionUtils.playSound(player.getLocation(), "ENTITY_ENDERMAN_TELEPORT");
         VersionUtils.sendParticles("PORTAL", arena.getPlayers(), player.getLocation(), 30);
@@ -144,7 +145,7 @@ public class TeleporterKit extends PremiumKit implements Listener {
         player.teleport(villager.getLocation());
         VersionUtils.playSound(player.getLocation(), "ENTITY_ENDERMAN_TELEPORT");
         VersionUtils.sendParticles("PORTAL", arena.getPlayers(), player.getLocation(), 30);
-        player.sendMessage(getPlugin().getChatManager().colorMessage("KIT_CONTENT_TELEPORTER_TELEPORT_VILLAGER"));
+        new MessageBuilder("KIT_CONTENT_TELEPORTER_TELEPORT_VILLAGER").asKey().player(player).sendPlayer();
       });
     }
     gui.open(player);

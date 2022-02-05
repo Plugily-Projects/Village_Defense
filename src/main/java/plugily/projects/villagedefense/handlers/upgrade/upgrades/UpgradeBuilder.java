@@ -18,6 +18,7 @@
 
 package plugily.projects.villagedefense.handlers.upgrade.upgrades;
 
+import plugily.projects.minigamesbox.classic.handlers.language.MessageBuilder;
 import plugily.projects.villagedefense.Main;
 
 import java.util.Arrays;
@@ -35,8 +36,8 @@ public class UpgradeBuilder {
 
   public UpgradeBuilder(String id) {
     upgrade = new Upgrade(id);
-    upgrade.setName(plugin.getChatManager().colorRawMessage(plugin.getLanguageConfig().getString("Upgrade-Menu.Upgrades." + id + ".Name")));
-    upgrade.setDescription(Arrays.asList(plugin.getChatManager().colorRawMessage(plugin.getLanguageConfig().getString("Upgrade-Menu.Upgrades." + id + ".Description")).split(";")));
+    upgrade.setName(new MessageBuilder(plugin.getLanguageConfig().getString("Upgrade-Menu.Upgrades." + id + ".Name")).build());
+    upgrade.setDescription(Arrays.asList(new MessageBuilder(plugin.getLanguageConfig().getString("Upgrade-Menu.Upgrades." + id + ".Description")).build().split(";")));
   }
 
   public static void init(Main plugin) {
@@ -45,7 +46,7 @@ public class UpgradeBuilder {
 
   //for other usages
   public UpgradeBuilder name(String name) {
-    upgrade.setName(plugin.getChatManager().colorRawMessage(name));
+    upgrade.setName(new MessageBuilder(name).build());
     return this;
   }
 

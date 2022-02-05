@@ -28,6 +28,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.inventory.ItemStack;
+import plugily.projects.minigamesbox.classic.handlers.language.MessageBuilder;
 import plugily.projects.minigamesbox.classic.kits.basekits.PremiumKit;
 import plugily.projects.minigamesbox.classic.user.User;
 import plugily.projects.minigamesbox.classic.utils.helper.ArmorHelper;
@@ -44,7 +45,7 @@ import java.util.List;
 public class ShotBowKit extends PremiumKit implements Listener {
 
   public ShotBowKit() {
-    setName(getPlugin().getChatManager().colorMessage("KIT_CONTENT_SHOT_BOW_NAME"));
+    setName(new MessageBuilder("KIT_CONTENT_SHOT_BOW_NAME").asKey().build());
     List<String> description = getPlugin().getLanguageManager().getLanguageListFromKey("KIT_CONTENT_SHOT_BOW_DESCRIPTION");
     setDescription(description);
     getPlugin().getServer().getPluginManager().registerEvents(this, getPlugin());

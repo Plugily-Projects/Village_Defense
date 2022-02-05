@@ -28,6 +28,7 @@ import org.bukkit.event.block.Action;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
+import plugily.projects.minigamesbox.classic.handlers.language.MessageBuilder;
 import plugily.projects.minigamesbox.classic.kits.basekits.PremiumKit;
 import plugily.projects.minigamesbox.classic.utils.helper.ArmorHelper;
 import plugily.projects.minigamesbox.classic.utils.helper.ItemBuilder;
@@ -52,7 +53,7 @@ public class TornadoKit extends PremiumKit implements Listener {
   private int active = 0;
 
   public TornadoKit() {
-    setName(getPlugin().getChatManager().colorMessage("KIT_CONTENT_TORNADO_NAME"));
+    setName(new MessageBuilder("KIT_CONTENT_TORNADO_NAME").asKey().build());
     List<String> description = getPlugin().getLanguageManager().getLanguageListFromKey("KIT_CONTENT_TORNADO_DESCRIPTION");
     setDescription(description);
     getPlugin().getServer().getPluginManager().registerEvents(this, getPlugin());
@@ -72,7 +73,7 @@ public class TornadoKit extends PremiumKit implements Listener {
     player.getInventory().addItem(new ItemStack(Material.COOKED_BEEF, 10));
     player.getInventory().addItem(new ItemStack(Material.SADDLE));
     player.getInventory().addItem(new ItemBuilder(new ItemStack(getMaterial(), 5))
-        .name(getPlugin().getChatManager().colorMessage("KIT_CONTENT_TORNADO_GAME_ITEM_NAME"))
+        .name(new MessageBuilder("KIT_CONTENT_TORNADO_GAME_ITEM_NAME").asKey().build())
         .lore(getPlugin().getLanguageManager().getLanguageListFromKey("KIT_CONTENT_TORNADO_GAME_ITEM_DESCRIPTION"))
         .build());
   }
@@ -85,7 +86,7 @@ public class TornadoKit extends PremiumKit implements Listener {
   @Override
   public void reStock(Player player) {
     player.getInventory().addItem(new ItemBuilder(new ItemStack(getMaterial(), 5))
-        .name(getPlugin().getChatManager().colorMessage("KIT_CONTENT_TORNADO_GAME_ITEM_NAME"))
+        .name(new MessageBuilder("KIT_CONTENT_TORNADO_GAME_ITEM_NAME").asKey().build())
         .lore(getPlugin().getLanguageManager().getLanguageListFromKey("KIT_CONTENT_TORNADO_GAME_ITEM_DESCRIPTION"))
         .build());
   }
@@ -102,7 +103,7 @@ public class TornadoKit extends PremiumKit implements Listener {
 
     ItemStack stack = VersionUtils.getItemInHand(player);
     if(!ItemUtils.isItemStackNamed(stack)
-        || !ComplementAccessor.getComplement().getDisplayName(stack.getItemMeta()).equalsIgnoreCase(getPlugin().getChatManager().colorMessage("KIT_CONTENT_TORNADO_GAME_ITEM_NAME"))) {
+        || !ComplementAccessor.getComplement().getDisplayName(stack.getItemMeta()).equalsIgnoreCase(new MessageBuilder("KIT_CONTENT_TORNADO_GAME_ITEM_NAME").asKey().build())) {
       return;
     }
     if(!(getPlugin().getUserManager().getUser(player).getKit() instanceof TornadoKit)) {

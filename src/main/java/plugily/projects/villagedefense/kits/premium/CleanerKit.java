@@ -24,6 +24,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
+import plugily.projects.minigamesbox.classic.handlers.language.MessageBuilder;
 import plugily.projects.minigamesbox.classic.kits.basekits.PremiumKit;
 import plugily.projects.minigamesbox.classic.user.User;
 import plugily.projects.minigamesbox.classic.utils.helper.ArmorHelper;
@@ -44,7 +45,7 @@ import java.util.List;
 public class CleanerKit extends PremiumKit implements Listener {
 
   public CleanerKit() {
-    setName(getPlugin().getChatManager().colorMessage("KIT_CONTENT_CLEANER_NAME"));
+    setName(new MessageBuilder("KIT_CONTENT_CLEANER_NAME").asKey().build());
     List<String> description = getPlugin().getLanguageManager().getLanguageListFromKey("KIT_CONTENT_CLEANER_DESCRIPTION");
     setDescription(description);
     getPlugin().getServer().getPluginManager().registerEvents(this, getPlugin());
@@ -61,7 +62,7 @@ public class CleanerKit extends PremiumKit implements Listener {
     ArmorHelper.setColouredArmor(Color.YELLOW, player);
     player.getInventory().addItem(WeaponHelper.getUnBreakingSword(WeaponHelper.ResourceType.WOOD, 10));
     player.getInventory().addItem(new ItemBuilder(Material.BLAZE_ROD)
-        .name(getPlugin().getChatManager().colorMessage("KIT_CONTENT_CLEANER_GAME_ITEM_NAME"))
+        .name(new MessageBuilder("KIT_CONTENT_CLEANER_GAME_ITEM_NAME").asKey().build())
         .lore(getPlugin().getLanguageManager().getLanguageListFromKey("KIT_CONTENT_CLEANER_GAME_ITEM_DESCRIPTION"))
         .build());
     player.getInventory().addItem(new ItemStack(Material.COOKED_BEEF, 10));
@@ -86,7 +87,7 @@ public class CleanerKit extends PremiumKit implements Listener {
     Arena arena = (Arena) getPlugin().getArenaRegistry().getArena(event.getPlayer());
     if(arena == null || !ItemUtils.isItemStackNamed(itemStack)
         || !ComplementAccessor.getComplement().getDisplayName(itemStack.getItemMeta())
-        .contains(getPlugin().getChatManager().colorMessage("KIT_CONTENT_CLEANER_GAME_ITEM_NAME"))) {
+        .contains(new MessageBuilder("KIT_CONTENT_CLEANER_GAME_ITEM_NAME").asKey().build())) {
       return;
     }
     User user = getPlugin().getUserManager().getUser(event.getPlayer());
@@ -94,18 +95,16 @@ public class CleanerKit extends PremiumKit implements Listener {
       return;
     }
     if(user.isSpectator()) {
-      event.getPlayer().sendMessage(getPlugin().getChatManager().colorMessage("IN_GAME_SPECTATOR_SPECTATOR_WARNING"));
+      new MessageBuilder("IN_GAME_SPECTATOR_SPECTATOR_WARNING").asKey().player(user.getPlayer()).sendPlayer();
       return;
     }
     long cooldown = user.getCooldown("clean");
     if(cooldown > 0 && !user.isSpectator()) {
-      String message = getPlugin().getChatManager().colorMessage("KIT_COOLDOWN");
-      message = message.replaceFirst("%number%", Long.toString(cooldown));
-      event.getPlayer().sendMessage(message);
+      new MessageBuilder("KIT_COOLDOWN").asKey().integer((int) cooldown).player(user.getPlayer()).sendPlayer();
       return;
     }
     if(arena.getEnemies().isEmpty()) {
-      event.getPlayer().sendMessage(getPlugin().getChatManager().colorMessage("KIT_CONTENT_CLEANER_CLEANED_NOTHING"));
+      new MessageBuilder("KIT_CONTENT_CLEANER_CLEANED_NOTHING").asKey().player(user.getPlayer()).sendPlayer();
       return;
     }
     int amount = getKitsConfig().getInt("Kit-Settings.Cleaner.Base-Amount", 10);
@@ -117,8 +116,7 @@ public class CleanerKit extends PremiumKit implements Listener {
     ArenaUtils.removeSpawnedEnemies(arena, amount, getKitsConfig().getDouble("Kit-Settings.Cleaner.Max-Health", 2048));
 
     VersionUtils.playSound(event.getPlayer().getLocation(), "ENTITY_ZOMBIE_DEATH");
-    getPlugin().getChatManager().broadcastMessage(arena, getPlugin().getChatManager()
-        .formatMessage(arena, getPlugin().getChatManager().colorMessage("KIT_CONTENT_CLEANER_CLEANED_MAP"), event.getPlayer()));
+    new MessageBuilder("KIT_CONTENT_CLEANER_CLEANED_MAP").asKey().arena(arena).player(user.getPlayer()).sendArena();
     user.setCooldown("clean", getKitsConfig().getInt("Kit-Cooldown.Cleaner", 60));
   }
 }

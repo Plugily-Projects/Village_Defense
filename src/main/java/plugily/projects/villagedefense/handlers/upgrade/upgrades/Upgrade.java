@@ -19,6 +19,7 @@
 package plugily.projects.villagedefense.handlers.upgrade.upgrades;
 
 import org.bukkit.inventory.ItemStack;
+import plugily.projects.minigamesbox.classic.handlers.language.MessageBuilder;
 import plugily.projects.minigamesbox.classic.utils.helper.ItemBuilder;
 import plugily.projects.minigamesbox.classic.utils.version.xseries.XMaterial;
 import plugily.projects.villagedefense.Main;
@@ -132,7 +133,7 @@ public class Upgrade {
     double valNext = tieredValues.getOrDefault(nextTier, valCurrent);
     return new ItemBuilder(XMaterial.BLACK_STAINED_GLASS_PANE.parseItem())
         .name(getName())
-        .lore(getDescription().stream().map(lore -> lore = plugin.getChatManager().colorRawMessage(lore)
+        .lore(getDescription().stream().map(lore -> lore = new MessageBuilder(lore).build()
             .replace("%cost%", Integer.toString(getCost(nextTier)))
             .replace("%tier%", Integer.toString(nextTier))
             .replace("%from%", Double.toString(valCurrent))

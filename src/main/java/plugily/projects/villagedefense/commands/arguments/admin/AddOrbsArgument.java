@@ -26,6 +26,7 @@ import plugily.projects.commonsbox.number.NumberUtils;
 import plugily.projects.minigamesbox.classic.commands.arguments.data.CommandArgument;
 import plugily.projects.minigamesbox.classic.commands.arguments.data.LabelData;
 import plugily.projects.minigamesbox.classic.commands.arguments.data.LabeledCommandArgument;
+import plugily.projects.minigamesbox.classic.handlers.language.MessageBuilder;
 import plugily.projects.minigamesbox.classic.user.User;
 import plugily.projects.villagedefense.commands.arguments.ArgumentsRegistry;
 
@@ -38,6 +39,7 @@ import java.util.Arrays;
  */
 public class AddOrbsArgument {
 
+  //could be removed as adjuststatistic argument would also handle it
   public AddOrbsArgument(ArgumentsRegistry registry) {
     registry.mapArgument("villagedefenseadmin", new LabeledCommandArgument("addorbs", Arrays.asList("villagedefense.admin.addorbs", "villagedefense.admin.addorbs.others"),
         CommandArgument.ExecutorType.BOTH, new LabelData("/vda addorbs &6<amount> &c[player]",
@@ -46,7 +48,7 @@ public class AddOrbsArgument {
       @Override
       public void execute(CommandSender sender, String[] args) {
         if(args.length == 1) {
-          sender.sendMessage(registry.getPlugin().getChatManager().getPrefix() + ChatColor.RED + "Please type number of orbs to give!");
+          new MessageBuilder(ChatColor.RED + "Please type number of orbs to give!").prefix().send(sender);
           return;
         }
 
@@ -57,7 +59,7 @@ public class AddOrbsArgument {
           }
 
           if((target = Bukkit.getPlayerExact(args[2])) == null || !registry.getPlugin().getArenaRegistry().isInArena(target)) {
-            sender.sendMessage(registry.getPlugin().getChatManager().colorMessage("COMMANDS_PLAYER_NOT_FOUND"));
+            new MessageBuilder("COMMANDS_PLAYER_NOT_FOUND").asKey().prefix().send(sender);
             return;
           }
         } else if(sender instanceof Player) {
@@ -72,10 +74,10 @@ public class AddOrbsArgument {
         if(opt.isPresent()) {
           User user = registry.getPlugin().getUserManager().getUser(target);
           user.setStatistic(registry.getPlugin().getStatsStorage().getStatisticType("ORBS"), user.getStatistic("ORBS") + opt.get());
-          sender.sendMessage(registry.getPlugin().getChatManager().getPrefix() + registry.getPlugin().getChatManager().colorMessage("COMMANDS_ADMIN_ADDED_ORBS"));
-          target.sendMessage(registry.getPlugin().getChatManager().getPrefix() + registry.getPlugin().getChatManager().colorMessage("COMMANDS_ADMIN_RECEIVED_ORBS", opt.get()));
+          new MessageBuilder("COMMANDS_ADMIN_ADDED_ORBS").asKey().prefix().send(sender);
+          new MessageBuilder("COMMANDS_ADMIN_RECEIVED_ORBS").asKey().prefix().integer(opt.get()).send(target);
         } else {
-          sender.sendMessage(registry.getPlugin().getChatManager().getPrefix() + registry.getPlugin().getChatManager().colorMessage("COMMANDS_WRONG_USAGE", "/vda addorbs <amount> (player)"));
+          new MessageBuilder("COMMANDS_WRONG_USAGE").asKey().prefix().value("/vda addorbs <amount> (player)").send(sender);
         }
       }
     });

@@ -21,6 +21,7 @@ package plugily.projects.villagedefense.arena.states;
 import plugily.projects.minigamesbox.classic.arena.ArenaState;
 import plugily.projects.minigamesbox.classic.arena.PluginArena;
 import plugily.projects.minigamesbox.classic.arena.states.PluginInGameState;
+import plugily.projects.minigamesbox.classic.handlers.language.MessageBuilder;
 import plugily.projects.minigamesbox.classic.utils.version.ServerVersion;
 import plugily.projects.villagedefense.arena.Arena;
 
@@ -74,7 +75,7 @@ public class InGameState extends PluginInGameState {
       if(arena.getTimer() == 0) {
         pluginArena.getMapRestorerManager().clearEnemiesFromArena();
         if(pluginArena.getZombiesLeft() > 0) {
-          getPlugin().getChatManager().broadcast(arena, "IN_GAME_MESSAGES_VILLAGE_WAVE_STUCK_ZOMBIES");
+          new MessageBuilder("IN_GAME_MESSAGES_VILLAGE_WAVE_STUCK_ZOMBIES").asKey().arena(arena).sendArena();
         }
         arena.setArenaOption("ZOMBIES_TO_SPAWN", 0);
       }

@@ -57,35 +57,35 @@ public class EntityUpgradeListener implements Listener {
   }
 
   @EventHandler
-  public void onDamage(EntityDamageByEntityEvent e) {
-    if(!(e.getDamager() instanceof LivingEntity) || !(e.getDamager() instanceof IronGolem)) {
+  public void onDamage(EntityDamageByEntityEvent event) {
+    if(!(event.getDamager() instanceof LivingEntity) || !(event.getDamager() instanceof IronGolem)) {
       return;
     }
-    switch(e.getDamager().getType()) {
+    switch(event.getDamager().getType()) {
       case IRON_GOLEM:
         for(Arena arena : plugin.getArenaRegistry().getPluginArenas()) {
-          if(!arena.getIronGolems().contains(e.getDamager())) {
+          if(!arena.getIronGolems().contains(event.getDamager())) {
             continue;
           }
-          e.setDamage(e.getDamage() + upgradeMenu.getTier(e.getDamager(), upgradeMenu.getUpgrade("Damage")) * 2);
+          event.setDamage(event.getDamage() + upgradeMenu.getTier(event.getDamager(), upgradeMenu.getUpgrade("Damage")) * 2);
         }
         break;
       case WOLF:
         for(Arena arena : plugin.getArenaRegistry().getPluginArenas()) {
-          if(!arena.getWolves().contains(e.getDamager())) {
+          if(!arena.getWolves().contains(event.getDamager())) {
             continue;
           }
-          int tier = upgradeMenu.getTier(e.getDamager(), upgradeMenu.getUpgrade("Swarm-Awareness"));
+          int tier = upgradeMenu.getTier(event.getDamager(), upgradeMenu.getUpgrade("Swarm-Awareness"));
           if(tier == 0) {
             return;
           }
           double multiplier = 1;
-          for(Entity en : plugin.getBukkitHelper().getNearbyEntities(e.getDamager().getLocation(), 3)) {
-            if(en instanceof Wolf) {
+          for(Entity entity : plugin.getBukkitHelper().getNearbyEntities(event.getDamager().getLocation(), 3)) {
+            if(entity instanceof Wolf) {
               multiplier += tier * 0.2;
             }
           }
-          e.setDamage(e.getDamage() * multiplier);
+          event.setDamage(event.getDamage() * multiplier);
         }
         break;
       default:
@@ -94,44 +94,44 @@ public class EntityUpgradeListener implements Listener {
   }
 
   @EventHandler
-  public void onFinalDefense(EntityDeathEvent e) {
-    if(e.getEntityType() != EntityType.IRON_GOLEM) {
+  public void onFinalDefense(EntityDeathEvent event) {
+    if(event.getEntityType() != EntityType.IRON_GOLEM) {
       return;
     }
 
-    LivingEntity entity = e.getEntity();
+    LivingEntity livingEntity = event.getEntity();
 
     for(Arena arena : plugin.getArenaRegistry().getPluginArenas()) {
-      if(!arena.getIronGolems().contains(entity)) {
+      if(!arena.getIronGolems().contains(livingEntity)) {
         continue;
       }
-      int tier = upgradeMenu.getTier(entity, upgradeMenu.getUpgrade("Final-Defense"));
+      int tier = upgradeMenu.getTier(livingEntity, upgradeMenu.getUpgrade("Final-Defense"));
       if(tier == 0) {
         return;
       }
-      VersionUtils.sendParticles("EXPLOSION_HUGE", arena.getPlayers(), entity.getLocation(), 5);
-      for(Entity en : plugin.getBukkitHelper().getNearbyEntities(entity.getLocation(), tier * 5)) {
+      VersionUtils.sendParticles("EXPLOSION_HUGE", arena.getPlayers(), livingEntity.getLocation(), 5);
+      for(Entity en : plugin.getBukkitHelper().getNearbyEntities(livingEntity.getLocation(), tier * 5)) {
         if(CreatureUtils.isEnemy(en)) {
-          ((Creature) en).damage(10000.0, entity);
+          ((Creature) en).damage(10000.0, livingEntity);
         }
       }
       for(Creature zombie : new ArrayList<>(arena.getEnemies())) {
         zombie.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 5, 0));
-        zombie.damage(0.5, entity);
+        zombie.damage(0.5, livingEntity);
       }
     }
   }
 
   @EventHandler
-  public void onEntityClick(PlugilyPlayerInteractEntityEvent e) {
-    if((e.getRightClicked().getType() != EntityType.IRON_GOLEM && e.getRightClicked().getType() != EntityType.WOLF)
-        || VersionUtils.checkOffHand(e.getHand()) || !e.getPlayer().isSneaking()
-        || e.getRightClicked().getCustomName() == null) {
+  public void onEntityClick(PlugilyPlayerInteractEntityEvent event) {
+    if((event.getRightClicked().getType() != EntityType.IRON_GOLEM && event.getRightClicked().getType() != EntityType.WOLF)
+        || VersionUtils.checkOffHand(event.getHand()) || !event.getPlayer().isSneaking()
+        || event.getRightClicked().getCustomName() == null) {
       return;
     }
 
-    if(plugin.getArenaRegistry().getArena(e.getPlayer()) != null && !upgradeMenu.getPlugin().getUserManager().getUser(e.getPlayer()).isSpectator()) {
-      upgradeMenu.openUpgradeMenu((LivingEntity) e.getRightClicked(), e.getPlayer());
+    if(plugin.getArenaRegistry().getArena(event.getPlayer()) != null && !upgradeMenu.getPlugin().getUserManager().getUser(event.getPlayer()).isSpectator()) {
+      upgradeMenu.openUpgradeMenu((LivingEntity) event.getRightClicked(), event.getPlayer());
     }
   }
 

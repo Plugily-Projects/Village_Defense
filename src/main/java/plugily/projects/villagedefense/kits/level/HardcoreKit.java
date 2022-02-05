@@ -23,6 +23,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionType;
+import plugily.projects.minigamesbox.classic.handlers.language.MessageBuilder;
 import plugily.projects.minigamesbox.classic.kits.basekits.LevelKit;
 import plugily.projects.minigamesbox.classic.utils.helper.ArmorHelper;
 import plugily.projects.minigamesbox.classic.utils.helper.WeaponHelper;
@@ -37,7 +38,7 @@ import java.util.List;
 public class HardcoreKit extends LevelKit {
 
   public HardcoreKit() {
-    setName(getPlugin().getChatManager().colorMessage("KIT_CONTENT_HARDCORE_NAME"));
+    setName(new MessageBuilder("KIT_CONTENT_HARDCORE_NAME").asKey().build());
     List<String> description = getPlugin().getLanguageManager().getLanguageListFromKey("KIT_CONTENT_HARDCORE_DESCRIPTION");
     setDescription(description);
     setLevel(getKitsConfig().getInt("Required-Level.Hardcore"));

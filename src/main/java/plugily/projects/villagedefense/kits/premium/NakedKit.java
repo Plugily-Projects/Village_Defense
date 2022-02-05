@@ -18,9 +18,6 @@
 
 package plugily.projects.villagedefense.kits.premium;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
@@ -32,10 +29,15 @@ import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionType;
+import plugily.projects.minigamesbox.classic.handlers.language.MessageBuilder;
 import plugily.projects.minigamesbox.classic.kits.basekits.PremiumKit;
 import plugily.projects.minigamesbox.classic.utils.version.VersionUtils;
 import plugily.projects.minigamesbox.classic.utils.version.events.api.PlugilyPlayerInteractEvent;
 import plugily.projects.minigamesbox.classic.utils.version.xseries.XMaterial;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Created by Tom on 8/02/2015.
@@ -45,7 +47,7 @@ public class NakedKit extends PremiumKit implements Listener {
   private final List<Material> armorTypes = new ArrayList<>();
 
   public NakedKit() {
-    setName(getPlugin().getChatManager().colorMessage("KIT_CONTENT_WILD_NAKED_NAME"));
+    setName(new MessageBuilder("KIT_CONTENT_WILD_NAKED_NAME").asKey().build());
     List<String> description = getPlugin().getLanguageManager().getLanguageListFromKey("KIT_CONTENT_WILD_NAKED_DESCRIPTION");
     setDescription(description);
     getPlugin().getServer().getPluginManager().registerEvents(this, getPlugin());
@@ -55,11 +57,11 @@ public class NakedKit extends PremiumKit implements Listener {
 
   private void setupArmorTypes() {
     armorTypes.addAll(Arrays.asList(
-            Material.LEATHER_BOOTS, Material.LEATHER_CHESTPLATE, Material.LEATHER_LEGGINGS, Material.LEATHER_HELMET,
-            XMaterial.GOLDEN_BOOTS.parseMaterial(), XMaterial.GOLDEN_CHESTPLATE.parseMaterial(), XMaterial.GOLDEN_LEGGINGS.parseMaterial(), XMaterial.GOLDEN_HELMET.parseMaterial(),
-            Material.DIAMOND_BOOTS, Material.DIAMOND_LEGGINGS, Material.DIAMOND_CHESTPLATE, Material.DIAMOND_HELMET,
-            Material.IRON_CHESTPLATE, Material.IRON_BOOTS, Material.IRON_HELMET, Material.IRON_LEGGINGS,
-            Material.CHAINMAIL_BOOTS, Material.CHAINMAIL_LEGGINGS, Material.CHAINMAIL_CHESTPLATE, Material.CHAINMAIL_HELMET)
+        Material.LEATHER_BOOTS, Material.LEATHER_CHESTPLATE, Material.LEATHER_LEGGINGS, Material.LEATHER_HELMET,
+        XMaterial.GOLDEN_BOOTS.parseMaterial(), XMaterial.GOLDEN_CHESTPLATE.parseMaterial(), XMaterial.GOLDEN_LEGGINGS.parseMaterial(), XMaterial.GOLDEN_HELMET.parseMaterial(),
+        Material.DIAMOND_BOOTS, Material.DIAMOND_LEGGINGS, Material.DIAMOND_CHESTPLATE, Material.DIAMOND_HELMET,
+        Material.IRON_CHESTPLATE, Material.IRON_BOOTS, Material.IRON_HELMET, Material.IRON_LEGGINGS,
+        Material.CHAINMAIL_BOOTS, Material.CHAINMAIL_LEGGINGS, Material.CHAINMAIL_CHESTPLATE, Material.CHAINMAIL_HELMET)
     );
   }
 
@@ -101,7 +103,7 @@ public class NakedKit extends PremiumKit implements Listener {
       return;
     }
     ClickType clickType = event.getClick();
-    if (clickType == ClickType.DROP || clickType == ClickType.CONTROL_DROP) {
+    if(clickType == ClickType.DROP || clickType == ClickType.CONTROL_DROP) {
       return;
     }
     Inventory inventory = event.getClickedInventory();
@@ -113,14 +115,14 @@ public class NakedKit extends PremiumKit implements Listener {
     ItemStack itemStack = event.getCurrentItem();
     if(itemStack != null && armorTypes.contains(itemStack.getType())) {
       hasArmor = true;
-    } else if (clickType == ClickType.NUMBER_KEY) {
+    } else if(clickType == ClickType.NUMBER_KEY) {
       ItemStack hotbarItem = who.getInventory().getItem(event.getHotbarButton());
       if(hotbarItem != null && armorTypes.contains(hotbarItem.getType())) {
         hasArmor = true;
       }
     }
-    if (hasArmor) {
-      who.sendMessage(getPlugin().getChatManager().colorMessage("KIT_CONTENT_WILD_NAKED_CANNOT_WEAR_ARMOR"));
+    if(hasArmor) {
+      new MessageBuilder("KIT_CONTENT_WILD_NAKED_CANNOT_WEAR_ARMOR").asKey().send(who);
       event.setCancelled(true);
     }
   }
@@ -135,7 +137,7 @@ public class NakedKit extends PremiumKit implements Listener {
     }
     if(armorTypes.contains(event.getItem().getType())) {
       event.setCancelled(true);
-      event.getPlayer().sendMessage(getPlugin().getChatManager().colorMessage("KIT_CONTENT_WILD_NAKED_CANNOT_WEAR_ARMOR"));
+      new MessageBuilder("KIT_CONTENT_WILD_NAKED_CANNOT_WEAR_ARMOR").asKey().player(event.getPlayer()).sendPlayer();
     }
   }
 }
