@@ -287,6 +287,7 @@ public class Arena extends PluginArena {
         globalEntityLimit = plugin.getConfig().getInt("Limit.Spawn.Golems", 15);
         break;
     }
+    plugin.getDebugger().debug("SpawnMobCheck for {0} and mob {1}, globalLimit {2}, playerLimit {3}", player.getName(), type, globalEntityLimit, entityLimit);
     String finalSpawnedName = spawnedName;
     List<Entity> entities = new ArrayList<>(spawnedEntities);
     if(plugin.getConfigPreferences().getOption("LIMIT_ENTITY_BUY_AFTER_DEATH")) {
@@ -305,7 +306,19 @@ public class Arena extends PluginArena {
         return false;
       }
     }
-    return entityLimit > 0 && ironGolems.size() < entityLimit;
+    boolean finalReturn = false;
+    switch(type) {
+      case WOLF:
+        finalReturn = entityLimit > 0 && wolves.size() < entityLimit;
+        break;
+      case IRON_GOLEM:
+        finalReturn = entityLimit > 0 && ironGolems.size() < entityLimit;
+        break;
+    }
+    if(!finalReturn) {
+      new MessageBuilder("IN_GAME_MESSAGES_VILLAGE_SHOP_MOB_LIMIT_REACHED").asKey().player(player).integer(entityLimit).sendPlayer();
+    }
+    return finalReturn;
   }
 
   /**
