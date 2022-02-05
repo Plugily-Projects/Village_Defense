@@ -142,6 +142,7 @@ public class EntityUpgradeMenu {
 
         Bukkit.getPluginManager().callEvent(new VillagePlayerEntityUpgradeEvent(plugin.getArenaRegistry().getArena(player), livingEntity, player, upgrade, nextTier));
         player.closeInventory();
+        openUpgradeMenu(livingEntity, player);
       });
       for(int i = 0; i < upgrade.getMaxTier(); i++) {
         if(i < getTier(livingEntity, upgrade)) {
