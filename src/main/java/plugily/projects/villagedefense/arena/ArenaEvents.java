@@ -41,7 +41,7 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import plugily.projects.minigamesbox.classic.arena.ArenaState;
 import plugily.projects.minigamesbox.classic.handlers.items.SpecialItem;
-import plugily.projects.minigamesbox.classic.handlers.language.ChatManager;
+import plugily.projects.minigamesbox.classic.handlers.language.MessageBuilder;
 import plugily.projects.minigamesbox.classic.user.User;
 import plugily.projects.minigamesbox.classic.utils.misc.complement.ComplementAccessor;
 import plugily.projects.minigamesbox.classic.utils.version.ServerVersion;
@@ -165,7 +165,7 @@ public class ArenaEvents implements Listener {
               Player playerOwner = plugin.getServer().getPlayer(ownerUUID);
 
               if(playerOwner != null)
-                playerOwner.sendMessage(plugin.getChatManager().getPrefix() + plugin.getChatManager().colorMessage("IN_GAME_MESSAGES_VILLAGE_WAVE_ENTITIES_WOLF_DEATH"));
+                new MessageBuilder("IN_GAME_MESSAGES_VILLAGE_WAVE_ENTITIES_WOLF_DEATH").asKey().player(playerOwner).sendPlayer();
             }
 
             arena.removeWolf(wolf);
@@ -192,7 +192,7 @@ public class ArenaEvents implements Listener {
         arena.removeVillager((Villager) entity);
         plugin.getRewardsHandler().performReward(null, arena, plugin.getRewardsHandler().getRewardType("VILLAGER_DEATH"));
         plugin.getHolidayManager().applyHolidayDeathEffects(entity);
-        plugin.getChatManager().broadcast(arena, "IN_GAME_MESSAGES_VILLAGE_VILLAGER_DIED");
+        new MessageBuilder("IN_GAME_MESSAGES_VILLAGE_VILLAGER_DIED").asKey().arena(arena).sendArena();
       } else {
         if(!arena.getEnemies().contains(entity)) {
           continue;
@@ -231,10 +231,8 @@ public class ArenaEvents implements Listener {
     e.getDrops().clear();
     e.setDroppedExp(0);
     plugin.getHolidayManager().applyHolidayDeathEffects(player);
-
-    plugin.getServer().getScheduler().runTaskLater(plugin, () -> {
-      player.spigot().respawn();
-
+    player.spigot().respawn();
+    plugin.getServer().getScheduler().runTask(plugin, () -> {
       if(arena.getArenaState() == ArenaState.STARTING) {
         player.teleport(arena.getStartLocation());
         return;
@@ -262,17 +260,14 @@ public class ArenaEvents implements Listener {
       player.setAllowFlight(true);
       player.setFlying(true);
       player.getInventory().clear();
-      VersionUtils.sendTitle(player, plugin.getChatManager().colorMessage("IN_GAME_DEATH_SCREEN"), 0, 5 * 20, 0);
+      VersionUtils.sendTitle(player, new MessageBuilder("IN_GAME_DEATH_SCREEN").asKey().build(), 0, 5 * 20, 0);
       sendSpectatorActionBar(user, arena);
-      plugin.getChatManager().broadcastAction(arena, player, ChatManager.ActionType.DEATH);
+      new MessageBuilder(MessageBuilder.ActionType.DEATH).arena(arena).player(player).sendArena();
 
-      //running in a scheduler of 1 tick due to respawn bug
-      plugin.getServer().getScheduler().runTaskLater(plugin, () -> {
-        plugin.getSpecialItemManager().addSpecialItemsOfStage(player, SpecialItem.DisplayStage.SPECTATOR);
-      }, 1);
+      plugin.getSpecialItemManager().addSpecialItemsOfStage(player, SpecialItem.DisplayStage.SPECTATOR);
 
       arena.getCreatureTargetManager().unTargetPlayerFromZombies(player, arena);
-    }, 10);
+    });
   }
 
   private void sendSpectatorActionBar(User user, Arena arena) {
@@ -290,7 +285,7 @@ public class ArenaEvents implements Listener {
         if(player == null) {
           cancel();
         } else {
-          VersionUtils.sendActionBar(player, plugin.getChatManager().colorMessage("IN_GAME_MESSAGES_VILLAGE_WAVE_RESPAWN_ON_NEXT"));
+          VersionUtils.sendActionBar(player, new MessageBuilder("IN_GAME_MESSAGES_VILLAGE_WAVE_RESPAWN_ON_NEXT").asKey().player(player).arena(arena).build());
         }
       }
     }.runTaskTimer(plugin, 30, 30);
