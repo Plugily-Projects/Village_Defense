@@ -23,6 +23,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Chest;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -167,12 +168,18 @@ public class ShopManager {
           String name = ComplementAccessor.getComplement().getDisplayName(itemStack.getItemMeta());
           if(name.contains(new MessageBuilder("IN_GAME_MESSAGES_VILLAGE_SHOP_GOLEM_ITEM").asKey().build())
               || name.contains(defaultGolemItemName)) {
+            if(!arena.canSpawnMobForPlayer(player, EntityType.IRON_GOLEM)) {
+              return;
+            }
             arena.spawnGolem(arena.getStartLocation(), player);
             adjustOrbs(user, cost);
             return;
           }
           if(name.contains(new MessageBuilder("IN_GAME_MESSAGES_VILLAGE_SHOP_WOLF_ITEM").asKey().build())
               || name.contains(defaultWolfItemName)) {
+            if(!arena.canSpawnMobForPlayer(player, EntityType.WOLF)) {
+              return;
+            }
             arena.spawnWolf(arena.getStartLocation(), player);
             adjustOrbs(user, cost);
             return;
