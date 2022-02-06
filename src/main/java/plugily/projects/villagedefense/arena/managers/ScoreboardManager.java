@@ -36,8 +36,12 @@ import java.util.List;
  * Created at 19.12.2021
  */
 public class ScoreboardManager extends PluginScoreboardManager {
+
+  private final PluginArena arena;
+
   public ScoreboardManager(PluginArena arena) {
     super(arena);
+    this.arena = arena;
   }
 
   @Override
@@ -52,7 +56,7 @@ public class ScoreboardManager extends PluginScoreboardManager {
       lines = user.getArena().getPlugin().getLanguageManager().getLanguageList("Scoreboard.Content." + user.getArena().getArenaState().getFormattedName());
     }
     for(String line : lines) {
-      builder.next(new MessageBuilder(line).player(user.getPlayer()).build());
+      builder.next(new MessageBuilder(line).player(user.getPlayer()).arena(arena).build());
     }
     return builder.build();
   }
