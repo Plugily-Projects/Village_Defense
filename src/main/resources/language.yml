@@ -31,7 +31,7 @@ Commands:
   Admin:
     Added-Orbs: "&7Added orbs to the player!"
     Received-Orbs: "&7You received &a%number% orbs&7!"
-    Adjust-Statistic: "&eStatistic %value% of %player% is now %value%!"
+    Adjust-Statistic: "&eStatistic %value% of %player% is now %number%!"
     Reload-Success: "&aArenas reloaded!"
     List:
       Header: "&a%plugin_name% &6arenas:"
@@ -132,6 +132,7 @@ Bossbar:
     In-Game:
       - "&e&lPlaying &f&l%plugin_name_uppercase% &e&lon &b&lPLUGILY.XYZ"
       - "&e&lCheck the plugin creator out &e&lon &b&lPLUGILY.XYZ"
+      - "&e&lCurrent wave %arena_option_wave%"
     Ending:
       - "&c&lGame has ended! You were playing on &b&lPLUGILY.XYZ"
     Restarting:

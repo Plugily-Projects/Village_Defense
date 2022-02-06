@@ -32,7 +32,7 @@ Commands:
   Admin:
     Added-Orbs: "&7Added orbs to the player!"
     Received-Orbs: "&7You received &a%number% orbs&7!"
-    Adjust-Statistic: "&eStatistic %value% of %player% is now %value%!"
+    Adjust-Statistic: "&eStatistic %value% of %player% is now %number%!"
     Reload-Success: "&aArenas reloaded!"
     List:
       Header: "&a%plugin_name% &6arenas:"
