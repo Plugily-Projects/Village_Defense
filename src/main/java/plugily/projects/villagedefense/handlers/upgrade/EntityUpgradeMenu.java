@@ -57,7 +57,7 @@ public class EntityUpgradeMenu {
 
   public EntityUpgradeMenu(Main plugin) {
     this.plugin = plugin;
-    this.pluginPrefix = new MessageBuilder("IN_GAME_PLUGIN_PREFIX").build();
+    this.pluginPrefix = new MessageBuilder("IN_GAME_PLUGIN_PREFIX").asKey().build();
     new EntityUpgradeListener(this);
     registerUpgrade(new UpgradeBuilder("Damage")
         .entity(Upgrade.EntityType.BOTH).slot(2, 1).maxTier(4).metadata("VD_Damage")
