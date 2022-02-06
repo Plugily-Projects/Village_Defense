@@ -61,6 +61,7 @@ public class MapRestorerManager extends PluginMapRestorerManager {
   @Override
   public void fullyRestoreArena() {
     super.fullyRestoreArena();
+    arena.setWave(1);
     restoreDoors();
     clearEnemiesFromArena();
     clearGolemsFromArena();
