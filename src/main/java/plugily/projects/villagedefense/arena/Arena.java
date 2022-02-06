@@ -80,6 +80,7 @@ public class Arena extends PluginArena {
 
   public Arena(String id) {
     super(id);
+    setDefaultValues();
     shopManager = new ShopManager(this);
     enemySpawnManager = new EnemySpawnManager(this);
     creatureTargetManager = new CreatureTargetManager(this);
@@ -268,7 +269,7 @@ public class Arena extends PluginArena {
     spawnedEntities.add(wolf);
   }
 
-  protected boolean canSpawnMobForPlayer(Player player, EntityType type) {
+  public boolean canSpawnMobForPlayer(Player player, EntityType type) {
     if(type != EntityType.IRON_GOLEM && type != EntityType.WOLF) {
       return false;
     }
