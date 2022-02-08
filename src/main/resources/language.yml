@@ -143,28 +143,28 @@ Bossbar:
 #
 In-Game:
   #Used in most game messages.
-  Plugin-Prefix: "&a[%plugin_name%] "
+  Plugin-Prefix: "&8(&a%plugin_name%&8)"
   Game-Chat-Format: "&6[&5%user_statistic_level%&6]&6[%user_kit%&6] %player%: &f%message%"
-  You-Leveled-Up: "&7You leveled up! You're now level %number%!"
-  Commands-Blocked: "&cYou have to leave the game first to perform commands. The only command that works is /%plugin_short_command% leave!"
+  You-Leveled-Up: "%plugin_prefix% &7You leveled up! You're now level %number%!"
+  Commands-Blocked: "%plugin_prefix% &cYou have to leave the game first to perform commands. The only command that works is /%plugin_short_command% leave!"
   Join:
-    Already-Playing: "&cYou are already queued for a game! You can leave a game with /%plugin_short_command% leave."
-    No-Permission: "&cYou don't have &6%value% &cpermission to join this arena!"
-    Full-Game: "&cYou don't have the permission to join full games!"
-    No-Slots-For-Premium: "&cThis game is already full of premium players! Sorry"
+    Already-Playing: "%plugin_prefix% &cYou are already queued for a game! You can leave a game with /%plugin_short_command% leave."
+    No-Permission: "%plugin_prefix% &cYou don't have &6%value% &cpermission to join this arena!"
+    Full-Game: "%plugin_prefix% &cYou don't have the permission to join full games!"
+    No-Slots-For-Premium: "%plugin_prefix% &cThis game is already full of premium players! Sorry"
     # Join cancelled via external plugin that uses the API of our plugin.
-    Cancelled-Via-API: "&cYou can't join this game!"
-    As-Party-Member: "&cYou joined %arena_name% because the party leader joined it!"
-    Arena-Not-Configured: "&cArena is not configured yet! Contact staff!"
+    Cancelled-Via-API: "%plugin_prefix% &cYou can't join this game!"
+    As-Party-Member: "%plugin_prefix% &cYou joined %arena_name% because the party leader joined it!"
+    Arena-Not-Configured: "%plugin_prefix% &cArena is not configured yet! Contact staff!"
   Death:
     Tag: "&8Dead"
     Screen: "&cYou died!"
   Spectator:
-    You-Are-Spectator: "&cYou're now a spectator! You can fly now!"
+    You-Are-Spectator: "%plugin_prefix% &cYou're now a spectator! You can fly now!"
     Spectator-Menu-Name: "Alive players list"
     Target-Player-Health: "&cHealth: &7%number%"
-    Spectator-Warning: "&cYou are a spectator!"
-    Teleport: "&cTeleported to %player%"
+    Spectator-Warning: "%plugin_prefix% &cYou are a spectator!"
+    Teleport: "%plugin_prefix% &cTeleported to %player%"
     Menu:
       Settings:
         Status:
@@ -180,19 +180,19 @@ In-Game:
           Title: "&eSNEAK &cto leave!"
         Visibility: "%value% other spectator players"
   Messages:
-    Join: "&b%player%&7 joined the game (%arena_players_size%/%arena_max_players%)!"
-    Leave: "&b%player% &7left the game (%arena_players_size%/%arena_max_players%)!"
-    Death: "&b%player% &7died!"
+    Join: "%plugin_prefix% &b%player%&7 joined the game (%arena_players_size%/%arena_max_players%)!"
+    Leave: "%plugin_prefix% &b%player% &7left the game (%arena_players_size%/%arena_max_players%)!"
+    Death: "%plugin_prefix% &b%player% &7died!"
     Lobby:
-      Start-In: "&7The game starts in &b%arena_time%&7 seconds!"
-      Waiting-For-Players: "&7Waiting for players... We need at least &b%arena_min_players%&7 players to start."
-      Enough-Players-To-Start: "&7We now have enough players. The game is starting soon!"
-      Reduced-Time: "&7The time got reduced to %number% seconds"
-      Max-Players: "&7We reached max players for this round. Let's shorten the time!"
-      Game-Started: "&7The game has started!"
-      Kicked-For-Premium-Slot: "&c%player% got removed from the game to make a place for premium players!"
-      You-Were-Kicked-For-Premium-Slot: "&cYou got kicked out of the game to make a place for a premium player!"
-      Not-Enough-Space-For-Party: "&cYour party is bigger than free places on the arena %arena_name%"
+      Start-In: "%plugin_prefix% &7The game starts in &b%arena_time%&7 seconds!"
+      Waiting-For-Players: "%plugin_prefix% &7Waiting for players... We need at least &b%arena_min_players%&7 players to start."
+      Enough-Players-To-Start: "%plugin_prefix% &7We now have enough players. The game is starting soon!"
+      Reduced-Time: "%plugin_prefix% &7The time got reduced to %number% seconds"
+      Max-Players: "%plugin_prefix% &7We reached max players for this round. Let's shorten the time!"
+      Game-Started: "%plugin_prefix% &7The game has started!"
+      Kicked-For-Premium-Slot: "%plugin_prefix% &c%player% got removed from the game to make a place for premium players!"
+      You-Were-Kicked-For-Premium-Slot: "%plugin_prefix% &cYou got kicked out of the game to make a place for a premium player!"
+      Not-Enough-Space-For-Party: "%plugin_prefix% &cYour party is bigger than free places on the arena %arena_name%"
     Game-End:
       Summary:
         - "&a&m--------------------------------------------------"
@@ -214,28 +214,28 @@ In-Game:
           Villagers: "&7All villagers died!"
         Survived: "&7You survived all the waves"
     Admin:
-      Set-Starting-In-To-0: "&bAn admin set waiting time to 0. The game starts now!"
+      Set-Starting-In-To-0: "%plugin_prefix% &bAn admin set waiting time to 0. The game starts now!"
       Removed:
-        Villagers: "&b%player% has removed all the villagers!"
-        Golems: "&b%player% has removed all the golems!"
-        Zombies: "&b%player% has cleared the zombies!"
-        Wolves: "&b%player% has cleared the wolves!"
+        Villagers: "%plugin_prefix% &b%player% has removed all the villagers!"
+        Golems: "%plugin_prefix% &b%player% has removed all the golems!"
+        Zombies: "%plugin_prefix% &b%player% has cleared the zombies!"
+        Wolves: "%plugin_prefix% &b%player% has cleared the wolves!"
       Changed:
-        Wave: "&bAdmin changed the wave to %number%"
+        Wave: "%plugin_prefix% &bAdmin changed the wave to %number%"
     Village:
-      Rotten-Flesh-Level-Up: "&bThe gods were happy with the rotten flesh! &bTherefor they gave you an extra heart!"
-      You-Feel-Refreshed: "&aYou feel refreshed!"
+      Rotten-Flesh-Level-Up: "%plugin_prefix% &bThe gods were happy with the rotten flesh! &bTherefor they gave you an extra heart!"
+      You-Feel-Refreshed: "%plugin_prefix% &aYou feel refreshed!"
       # Do not use spaces between villager names. No limit in names size and amount :)
       Villager:
-        Died: "&cA villager has died!"
+        Died: "%plugin_prefix% &cA villager has died!"
         Names: "Jagger,Kelsey,Kelton,Haylie,Harlow,Howard,Wulffric,Winfred,Ashley,Bailey,Beckett,Alfredo,Alfred,Adair,Edgar,ED,Eadwig,Edgaras,Buckley,Stanley,Nuffley,Mary,Jeffry,Rosaly,Elliot,Harry,Sam,Rosaline,Tom,Ivan,Kevin,Adam"
       Wave:
-        Stuck-Zombies: "&cIt seems like the last zombie got stuck somewhere. No worries! The gods killed him for you!"
-        Spectator-Warning: "&cYou are a spectator! You can't do anything until you'd respawned at the start of the next wave!"
-        Respawn-On-Next: "&e&lDON'T LEAVE! &aYou'll respawn once the next wave ends!"
-        Respawned: "&aYou're not a spectator anymore! You're back in the game!"
-        Next-In: "&7Next wave starts in &b%number%&7 seconds!"
-        Started: "&7Wave &b%number%&7 started!"
+        Stuck-Zombies: "%plugin_prefix% &cIt seems like the last zombie got stuck somewhere. No worries! The gods killed him for you!"
+        Spectator-Warning: "%plugin_prefix% &cYou are a spectator! You can't do anything until you'd respawned at the start of the next wave!"
+        Respawn-On-Next: "%plugin_prefix% &e&lDON'T LEAVE! &aYou'll respawn once the next wave ends!"
+        Respawned: "%plugin_prefix% &aYou're not a spectator anymore! You're back in the game!"
+        Next-In: "%plugin_prefix% &7Next wave starts in &b%number%&7 seconds!"
+        Started: "%plugin_prefix% &7Wave &b%number%&7 started!"
         Title:
           # Title times specified in game ticks: fade in, stay, fade out
           Start:
@@ -250,30 +250,30 @@ In-Game:
         Pickup: "&6+ %number% orbs"
       Entities:
         Wolf:
-          Spawn: "&aWolf spawned in the village!"
+          Spawn: "%plugin_prefix% &aWolf spawned in the village!"
           Name: "%player%'s Wolf"
-          Death: "One of your wolves were killed!"
+          Death: "%plugin_prefix% One of your wolves were killed!"
         Golem:
-          Spawn: "&aGolem spawned in the village!"
+          Spawn: "%plugin_prefix% &aGolem spawned in the village!"
           Name: "%player%'s Golem"
-          Cant-Ride-Other: "&cYou can't ride the golem of somebody else!"
+          Cant-Ride-Other: "%plugin_prefix% &cYou can't ride the golem of somebody else!"
       Shop:
         GUI: "&lShop"
         Golem-Item-Name: "Spawn Golem"
         Wolf-Item-Name: "Spawn Wolf"
-        Mob-Limit-Reached: "&cYou can't buy mobs! You've reached the limit of %number% mobs!"
-        Not-Enough-Currency: "&cYou need more orbs to buy this item!"
+        Mob-Limit-Reached: "%plugin_prefix% &cYou can't buy mobs! You've reached the limit of %number% mobs!"
+        Not-Enough-Currency: "%plugin_prefix% &cYou need more orbs to buy this item!"
         Currency: "orbs"
-        Not-Defined: "&cShop wasn't set up! Contact staff!"
+        Not-Defined: "%plugin_prefix% &cShop wasn't set up! Contact staff!"
 
 #
 # Sign messages
 #
 Signs:
-  Please-Type-Arena-Name: "&cPlease type arena name in second line!"
-  Arena-Doesnt-Exists: "&cArena with that name doesn't exists!"
-  Created: "&aSign created successfully!"
-  Removed: "&aSign successfully removed!"
+  Please-Type-Arena-Name: "%plugin_prefix% &cPlease type arena name in second line!"
+  Arena-Doesnt-Exists: "%plugin_prefix% &cArena with that name doesn't exists!"
+  Created: "%plugin_prefix% &aSign created successfully!"
+  Removed: "%plugin_prefix% &aSign successfully removed!"
   Lines:
     - "&a&l%plugin_name%"
     - "%arena_state_placeholder%"
@@ -302,9 +302,9 @@ Arena-Selector:
 # Validator messages
 #
 Validator:
-  Invalid-Arena-Configuration: "Arena %arena_name% has invalid configuration! Missing node: %value%"
-  Instance-Started: "Arena %arena_name% instance successfully started!"
-  No-Instances-Created: "There are no arena instances created in configuration!"
+  Invalid-Arena-Configuration: "%plugin_prefix% Arena %arena_name% has invalid configuration! Missing node: %value%"
+  Instance-Started: "%plugin_prefix% Arena %arena_name% instance successfully started!"
+  No-Instances-Created: "%plugin_prefix% There are no arena instances created in configuration!"
 
 
 #
@@ -331,10 +331,10 @@ Placeholders:
 # Kit messages
 #
 Kit:
-  Not-Unlocked: "&cYou haven't unlocked &b%value%&c yet!"
-  Choose: "&aYou have chosen: &b%value%&a!"
+  Not-Unlocked: "%plugin_prefix% &cYou haven't unlocked &b%value%&c yet!"
+  Choose: "%plugin_prefix% &aYou have chosen: &b%value%&a!"
   Open-Menu: "Open Kit Menu"
-  Cooldown: "&cKit ability still on cooldown (%number%)!"
+  Cooldown: "%plugin_prefix% &cKit ability still on cooldown (%number%)!"
   Menu:
     Title: "Kit Menu"
     Lore:
@@ -356,8 +356,8 @@ Kit:
           - "&7Right click to kill all zombies!"
           - "Cooldown: 60 seconds"
       Cleaned:
-        Map: "&b%player% has cleaned the map!"
-        Nothing: "&aThe map is already empty!" #WARNING: used for admin clean commands too!!!
+        Map: "%plugin_prefix% &b%player% has cleaned the map!"
+        Nothing: "%plugin_prefix% &aThe map is already empty!" #WARNING: used for admin clean commands too!!!
     Zombie-Teleporter:
       Name: "&2Zombie Teleporter"
       Description:
@@ -370,8 +370,8 @@ Kit:
         Description:
           - "&7Teleport zombies to you!"
     Teleport:
-      Zombie: "&aTeleported weakened zombie to you!"
-      Not-Found: "&cThere are no zombies to teleport!"
+      Zombie: "%plugin_prefix% &aTeleported weakened zombie to you!"
+      Not-Found: "%plugin_prefix% &cThere are no zombies to teleport!"
     Knight:
       Name: "&2Knight"
       Description:
@@ -422,7 +422,7 @@ Kit:
         - "with 2 additional doors. This way you"
         - "can replace the doors!"
       Game-Item:
-        Chat: "&aDoor placed!"
+        Chat: "%plugin_prefix% &aDoor placed!"
     Dog-Friend:
       Name: "&bDog Friend"
       Description:
@@ -465,10 +465,10 @@ Kit:
           - "&7Right click to open teleportation menu!"
         GUI: "Teleporter Menu"
       Teleport:
-        Villager: "&aTeleported to the villager!"
-        Warning: "&4Village defense didn't found that villager! That villager is probably already dead!"
-        Player: "&aTeleported to %player%"
-        Not-Found: "&cPlayer not found! Try again!"
+        Villager: "%plugin_prefix% &aTeleported to the villager!"
+        Warning: "%plugin_prefix% &cVillager not found ! That villager is probably already dead!"
+        Player: "%plugin_prefix% &aTeleported to %player%"
+        Not-Found: "%plugin_prefix% &cPlayer not found! Try again!"
     Heavy-Tank:
       Name: "&bHeavy Tank"
       Description:
@@ -491,8 +491,8 @@ Kit:
           - "&7Place this barrier to hold back"
           - "zombies! These barriers last for 10 seconds"
       Place:
-        Success: "&aBarrier placed!"
-        Fail: "&cUnable to place barrier here"
+        Success: "%plugin_prefix% &aBarrier placed!"
+        Fail: "%plugin_prefix% &cUnable to place barrier here"
     Premium-Hardcore:
       Name: "&bPremium Hardcore Master"
       Description:
@@ -512,7 +512,7 @@ Kit:
         - "&7You are the ultimate master!"
         - "You start off with a iron Sharpness"
         - "VI and Smite II sword!"
-      Cannot-Wear-Armor: "&cYou can't wear armor with the Wild Naked kit!"
+      Cannot-Wear-Armor: "%plugin_prefix% &cYou can't wear armor with the Wild Naked kit!"
     Wizard:
       Name: "&bWizard"
       Description:
@@ -537,9 +537,9 @@ Kit:
 # Upgrade-Menu function need to be enabled on config.yml
 Upgrade-Menu:
   Title: "&3&lUpgrade entity"
-  Upgraded-Entity: "&3Upgraded entity to tier &8%tier%&3!"
-  Cannot-Afford: "&3You don't have enough orbs to apply that upgrade!"
-  Max-Tier: "&3Entity is at max tier of this upgrade!"
+  Upgraded-Entity: "%plugin_prefix% &3Upgraded entity to tier &8%tier%&3!"
+  Cannot-Afford: "%plugin_prefix% &3You don't have enough orbs to apply that upgrade!"
+  Max-Tier: "%plugin_prefix% &3Entity is at max tier of this upgrade!"
   Stats-Item:
     Name: "&3&lCurrent Stats"
     Description: "&3Movement speed: &8%speed%; &3Attack Damage: &8%damage%; &3Health:
@@ -596,8 +596,8 @@ Leaderboard:
     Kills: "&aZombie Kills &e%number%"
     Deaths: "&aDeaths &e%number%"
     Next-Level-Exp: "&aExp to Level Up &e%number%"
-  Invalid-Name: "&cName of statistic is invalid! Type: %value%"
-  Unknown-Player: "&fUnknown Player"
+  Invalid-Name: "%plugin_prefix% &cName of statistic is invalid! Type: %value%"
+  Unknown-Player: "%plugin_prefix% &fUnknown Player"
 
 
 # Don't edit it. But who's stopping you? It's your server!
