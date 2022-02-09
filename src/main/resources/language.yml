@@ -35,7 +35,7 @@ Commands:
     Reload-Success: "%plugin_prefix% &7Arenas reloaded!"
     List:
       Header: "&a%plugin_name% &6arenas:"
-      Format: "&a%arena_name% &e%arena_state_placeholder% &6%arena_players_size%/%arena_max_players%"
+      Format: "&a%arena_name% &6%arena_state_placeholder% &6%arena_players_size%/%arena_max_players%"
       No-Arenas: "%plugin_prefix% &cThere are no game instances!"
     Spychat:
       Toggled: "%plugin_prefix% &7Game spy chat toggled to&c %value%"
@@ -160,11 +160,11 @@ In-Game:
     Tag: "&8Dead"
     Screen: "&cYou died!"
   Spectator:
-    You-Are-Spectator: "%plugin_prefix% &cYou're now a spectator! You can fly now!"
+    You-Are-Spectator: "%plugin_prefix% &7You're now a spectator! You can fly now!"
     Spectator-Menu-Name: "Alive players list"
     Target-Player-Health: "&cHealth: &7%number%"
-    Spectator-Warning: "%plugin_prefix% &cYou are a spectator!"
-    Teleport: "%plugin_prefix% &cTeleported to %player%"
+    Spectator-Warning: "%plugin_prefix% &7You are a spectator!"
+    Teleport: "%plugin_prefix% &7Teleported to %player%"
     Menu:
       Settings:
         Status:
@@ -180,7 +180,7 @@ In-Game:
           Title: "&eSNEAK &cto leave!"
         Visibility: "%value% other spectator players"
   Messages:
-    Join: "%plugin_prefix% &b%player%&7 joined the game (%arena_players_size%/%arena_max_players%)!"
+    Join:  "%plugin_prefix% &b%player% &7joined the game (%arena_players_size%/%arena_max_players%)!"
     Leave: "%plugin_prefix% &b%player% &7left the game (%arena_players_size%/%arena_max_players%)!"
     Death: "%plugin_prefix% &b%player% &7died!"
     Lobby:
@@ -214,17 +214,17 @@ In-Game:
           Villagers: "&7All villagers died!"
         Survived: "&7You survived all the waves"
     Admin:
-      Set-Starting-In-To-0: "%plugin_prefix% &bAn admin set waiting time to 0. The game starts now!"
+      Set-Starting-In-To-0: "%plugin_prefix% &7An admin set waiting time to 0. The game starts now!"
       Removed:
-        Villagers: "%plugin_prefix% &b%player% has removed all the villagers!"
-        Golems: "%plugin_prefix% &b%player% has removed all the golems!"
-        Zombies: "%plugin_prefix% &b%player% has cleared the zombies!"
-        Wolves: "%plugin_prefix% &b%player% has cleared the wolves!"
+        Villagers: "%plugin_prefix% &7%player% has removed all the villagers!"
+        Golems: "%plugin_prefix% &7%player% has removed all the golems!"
+        Zombies: "%plugin_prefix% &7%player% has cleared the zombies!"
+        Wolves: "%plugin_prefix% &7%player% has cleared the wolves!"
       Changed:
-        Wave: "%plugin_prefix% &bAdmin changed the wave to %number%"
+        Wave: "%plugin_prefix% &7Admin changed the wave to %number%"
     Village:
-      Rotten-Flesh-Level-Up: "%plugin_prefix% &bThe gods were happy with the rotten flesh! &bTherefor they gave you an extra heart!"
-      You-Feel-Refreshed: "%plugin_prefix% &aYou feel refreshed!"
+      Rotten-Flesh-Level-Up: "%plugin_prefix% &7The gods were happy with the rotten flesh! &bTherefor they gave you an extra heart!"
+      You-Feel-Refreshed: "%plugin_prefix% &7You feel refreshed!"
       # Do not use spaces between villager names. No limit in names size and amount :)
       Villager:
         Died: "%plugin_prefix% &cA villager has died!"
@@ -232,8 +232,8 @@ In-Game:
       Wave:
         Stuck-Zombies: "%plugin_prefix% &cIt seems like the last zombie got stuck somewhere. No worries! The gods killed him for you!"
         Spectator-Warning: "%plugin_prefix% &cYou are a spectator! You can't do anything until you'd respawned at the start of the next wave!"
-        Respawn-On-Next: "%plugin_prefix% &e&lDON'T LEAVE! &aYou'll respawn once the next wave ends!"
-        Respawned: "%plugin_prefix% &aYou're not a spectator anymore! You're back in the game!"
+        Respawn-On-Next: "%plugin_prefix% &e&lDON'T LEAVE! &7You'll respawn once the next wave ends!"
+        Respawned: "%plugin_prefix% &7You're not a spectator anymore! You're back in the game!"
         Next-In: "%plugin_prefix% &7Next wave starts in &b%number%&7 seconds!"
         Started: "%plugin_prefix% &7Wave &b%number%&7 started!"
         Title:
@@ -250,11 +250,11 @@ In-Game:
         Pickup: "&6+ %number% orbs"
       Entities:
         Wolf:
-          Spawn: "%plugin_prefix% &aWolf spawned in the village!"
+          Spawn: "%plugin_prefix% &7Wolf spawned in the village!"
           Name: "%player%'s Wolf"
           Death: "%plugin_prefix% One of your wolves were killed!"
         Golem:
-          Spawn: "%plugin_prefix% &aGolem spawned in the village!"
+          Spawn: "%plugin_prefix% &7Golem spawned in the village!"
           Name: "%player%'s Golem"
           Cant-Ride-Other: "%plugin_prefix% &cYou can't ride the golem of somebody else!"
       Shop:
@@ -272,8 +272,8 @@ In-Game:
 Signs:
   Please-Type-Arena-Name: "%plugin_prefix% &cPlease type arena name in second line!"
   Arena-Doesnt-Exists: "%plugin_prefix% &cArena with that name doesn't exists!"
-  Created: "%plugin_prefix% &aSign created successfully!"
-  Removed: "%plugin_prefix% &aSign successfully removed!"
+  Created: "%plugin_prefix% &7Sign created successfully!"
+  Removed: "%plugin_prefix% &7Sign successfully removed!"
   Lines:
     - "&a&l%plugin_name%"
     - "%arena_state_placeholder%"
@@ -302,9 +302,9 @@ Arena-Selector:
 # Validator messages
 #
 Validator:
-  Invalid-Arena-Configuration: "%plugin_prefix% Arena %arena_name% has invalid configuration! Missing node: %value%"
-  Instance-Started: "%plugin_prefix% Arena %arena_name% instance successfully started!"
-  No-Instances-Created: "%plugin_prefix% There are no arena instances created in configuration!"
+  Invalid-Arena-Configuration: "%plugin_prefix% &cArena %arena_name% has invalid configuration! Missing node: %value%"
+  Instance-Started: "%plugin_prefix% &cArena %arena_name% instance successfully started!"
+  No-Instances-Created: "%plugin_prefix% &cThere are no arena instances created in configuration!"
 
 
 #
@@ -332,7 +332,7 @@ Placeholders:
 #
 Kit:
   Not-Unlocked: "%plugin_prefix% &cYou haven't unlocked &b%value%&c yet!"
-  Choose: "%plugin_prefix% &aYou have chosen: &b%value%&a!"
+  Choose: "%plugin_prefix% &cYou have chosen: &b%value%&a!"
   Open-Menu: "Open Kit Menu"
   Cooldown: "%plugin_prefix% &cKit ability still on cooldown (%number%)!"
   Menu:
