@@ -13,9 +13,9 @@
 # Command messages
 #
 Commands:
-  Did-You-Mean: "%plugin_prefix% &6Did you mean &e/%value%&6?"
-  Command-Executed: "%plugin_prefix% &aCommand successfully executed!"
-  Teleported-To-Lobby: "%plugin_prefix% &aTeleported to lobby!"
+  Did-You-Mean: "%plugin_prefix% &7Did you mean &a/%value%&7?"
+  Command-Executed: "%plugin_prefix% &7Command successfully executed!"
+  Teleported-To-Lobby: "%plugin_prefix% &7Teleported to lobby!"
   Removed-Game-Instance: "%plugin_prefix% &cSuccessfully removed game instance!"
   No-Arena-Like-That: "%plugin_prefix% &cNo arena with that ID!"
   Look-At-Sign: "%plugin_prefix% &cYou have to look at a sign to perform this command!"
@@ -31,14 +31,14 @@ Commands:
   Admin:
     Added-Orbs: "%plugin_prefix% &7Added orbs to the player!"
     Received-Orbs: "%plugin_prefix% &7You received &a%number% orbs&7!"
-    Adjust-Statistic: "%plugin_prefix% &eStatistic %value% of %player% is now %number%!"
-    Reload-Success: "%plugin_prefix% &aArenas reloaded!"
+    Adjust-Statistic: "%plugin_prefix% &7Statistic %value% of %player% is now %number%!"
+    Reload-Success: "%plugin_prefix% &7Arenas reloaded!"
     List:
       Header: "&a%plugin_name% &6arenas:"
       Format: "&a%arena_name% &e%arena_state_placeholder% &6%arena_players_size%/%arena_max_players%"
       No-Arenas: "%plugin_prefix% &cThere are no game instances!"
     Spychat:
-      Toggled: "%plugin_prefix% &aGame spy chat toggled to&c %value%"
+      Toggled: "%plugin_prefix% &7Game spy chat toggled to&c %value%"
   Main:
     Header: "&6----------------{%plugin_name% commands}----------"
     Description:
