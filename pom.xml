@@ -24,7 +24,7 @@
 
     <groupId>plugily.projects</groupId>
     <artifactId>villagedefense</artifactId>
-    <version>4.6.1-dev40</version>
+    <version>4.6.1-dev40-debug</version>
     <name>VillageDefense</name>
 
     <properties>
@@ -268,7 +268,8 @@
                                 </relocation>
                                 <relocation>
                                     <pattern>plugily.projects.minigamesbox.inventory</pattern>
-                                    <shadedPattern>plugily.projects.villagedefense.minigamesbox.inventory</shadedPattern>
+                                    <shadedPattern>plugily.projects.villagedefense.minigamesbox.inventory
+                                    </shadedPattern>
                                 </relocation>
                                 <relocation>
                                     <pattern>com.zaxxer.hikari</pattern>

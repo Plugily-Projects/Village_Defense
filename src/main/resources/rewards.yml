@@ -39,15 +39,18 @@
 # Rewards must be enabled via config.yml first!
 rewards:
   # Commands performed when game is finished
-  endgame:
+  game-end:
     - say %MAPNAME% has ended, reached wave %WAVE%
     - say Ooh and there were playing %PLAYERAMOUNT% players
   playerDeath:
-  - script:player.sendMessage("Hey, you died");
+    - script:player.sendMessage("Hey, you died");
+  start-wave:
+    - say Wave started
   # Commands performed every wave end
   # Use "WAVE NUMBER:" to execute command in specific wave (ex. 1:)
+  # wave number can be also deleted to have code executed on any end wave
   # Delete everything if you don't want to use this section
-  endwave:
+  end-wave:
     1:
       - say You reached wave %WAVE%, nice!
     5:
@@ -58,9 +61,15 @@ rewards:
     99:
       - say Nice try %PLAYER%...
   # Commands executed when zombie is killed
-  zombiekill:
+  zombie-kill:
     - eco give %PLAYER% 2
     - chance(10):eco give %PLAYER% 8
+  # Commands executed when villager is death
+  villager-death:
+    - say Protect the villager better next time!
+  # Commands executed when player is death
+  player-death:
+    - say You got some nice spectator tools
 
 # Don't edit it. But who's stopping you? It's your server!
 # Really, don't edit ;p
