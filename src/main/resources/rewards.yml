@@ -42,8 +42,6 @@ rewards:
   game-end:
     - say %MAPNAME% has ended, reached wave %WAVE%
     - say Ooh and there were playing %PLAYERAMOUNT% players
-  playerDeath:
-    - script:player.sendMessage("Hey, you died");
   start-wave:
     - say Wave started
   # Commands performed every wave end
@@ -69,7 +67,7 @@ rewards:
     - say Protect the villager better next time!
   # Commands executed when player is death
   player-death:
-    - say You got some nice spectator tools
+    - script:player.sendMessage("Hey, you died");
 
 # Don't edit it. But who's stopping you? It's your server!
 # Really, don't edit ;p
