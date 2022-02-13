@@ -180,8 +180,8 @@ In-Game:
           Title: "&eSNEAK &cto leave!"
         Visibility: "%value% other spectator players"
   Messages:
-    Join: "&b%player%&7 joined the game &8(&a%arena_players_size%&8/&a%arena_max_players%&8)&7!"
-    Leave: "&b%player% &7left the game &8(&a%arena_players_size%&8/&a%arena_max_players%&8)&7!"
+    Join: "%plugin_prefix% &b%player%&7 joined the game &8(&a%arena_players_size%&8/&a%arena_max_players%&8)&7!"
+    Leave: "%plugin_prefix% &b%player% &7left the game &8(&a%arena_players_size%&8/&a%arena_max_players%&8)&7!"
     Death: "%plugin_prefix% &b%player% &7died!"
     Lobby:
       Start-In: "%plugin_prefix% &7The game starts in &a%arena_time% &7seconds!"
