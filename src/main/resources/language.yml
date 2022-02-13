@@ -7,7 +7,7 @@
 # they are wrapped every 40 characters automatically
 #
 #     Some messages support their own placeholders
-#            like %player%, %kit% etc.
+#            like &b%player%, %kit% etc.
 
 #
 # Command messages
@@ -25,13 +25,13 @@ Commands:
   Only-By-Player: "%plugin_prefix% &cYou can execute this command only as player!"
   Not-Playing: "%plugin_prefix% &cYou must play to execute this command!"
   No-Permission: "%plugin_prefix% &cYou don't have permission to use this command!"
-  Player-Not-Found: "%plugin_prefix% &cTarget player %player% doesn't exist!"
+  Player-Not-Found: "%plugin_prefix% &cTarget player &b%player% &cdoesn't exist!"
   Invalid-Location-Teleport: "%plugin_prefix% &cLocation to teleport is invalid!"
-  Wrong-Usage: "%plugin_prefix% &cWrong usage. Do %value%"
+  Wrong-Usage: "%plugin_prefix% &cWrong usage. Do &a%value%"
   Admin:
     Added-Orbs: "%plugin_prefix% &7Added orbs to the player!"
     Received-Orbs: "%plugin_prefix% &7You received &a%number% orbs&7!"
-    Adjust-Statistic: "%plugin_prefix% &7Statistic %value% of %player% is now %number%!"
+    Adjust-Statistic: "%plugin_prefix% &7Statistic &a%value% &7of &b%player% &7is now &a%number%!"
     Reload-Success: "%plugin_prefix% &7Arenas reloaded!"
     List:
       Header: "&a%plugin_name% &6arenas:"
@@ -144,7 +144,7 @@ Bossbar:
 In-Game:
   #Used in most game messages.
   Plugin-Prefix: "&8(&a%plugin_name%&8)"
-  Game-Chat-Format: "&6[&5%user_statistic_level%&6]&6[%user_kit%&6] %player%: &f%message%"
+  Game-Chat-Format: "&8[&5%user_statistic_level%&8]&8[%user_kit%&8] &b%player%&: &f%message%"
   You-Leveled-Up: "%plugin_prefix% &7You leveled up! You're now level %number%!"
   Commands-Blocked: "%plugin_prefix% &cYou have to leave the game first to perform commands. The only command that works is /%plugin_short_command% leave!"
   Join:
@@ -164,7 +164,7 @@ In-Game:
     Spectator-Menu-Name: "Alive players list"
     Target-Player-Health: "&cHealth: &7%number%"
     Spectator-Warning: "%plugin_prefix% &7You are a spectator!"
-    Teleport: "%plugin_prefix% &7Teleported to %player%"
+    Teleport: "%plugin_prefix% &7Teleported to &b%player%"
     Menu:
       Settings:
         Status:
@@ -173,10 +173,10 @@ In-Game:
         Changed-Speed: "Changed Speed to %number%"
         Auto-Teleport: "%value% auto teleport"
         Target-Player:
-          Action-Bar: "%number% blocks away | Target %player%"
+          Action-Bar: "%number% blocks away | Target &b%player%"
         Night-Vision: "%value% night vision"
         First-Person-Mode:
-          Action-Bar: "&eSNEAK &cto leave! | Target %player%"
+          Action-Bar: "&eSNEAK &cto leave! | Target &b%player%"
           Title: "&eSNEAK &cto leave!"
         Visibility: "%value% other spectator players"
   Messages:
@@ -190,7 +190,7 @@ In-Game:
       Reduced-Time: "%plugin_prefix% &7The time got reduced to %number% seconds"
       Max-Players: "%plugin_prefix% &7We reached max players for this round. Let's shorten the time!"
       Game-Started: "%plugin_prefix% &7The game has started!"
-      Kicked-For-Premium-Slot: "%plugin_prefix% &c%player% got removed from the game to make a place for premium players!"
+      Kicked-For-Premium-Slot: "%plugin_prefix% &c&b%player% got removed from the game to make a place for premium players!"
       You-Were-Kicked-For-Premium-Slot: "%plugin_prefix% &cYou got kicked out of the game to make a place for a premium player!"
       Not-Enough-Space-For-Party: "%plugin_prefix% &cYour party is bigger than free places on the arena %arena_name%"
     Game-End:
@@ -219,7 +219,7 @@ In-Game:
         Villagers: "%plugin_prefix% &b%player% &7has removed all the villagers!"
         Golems: "%plugin_prefix% &b%player% &7has removed all the golems!"
         Zombies: "%plugin_prefix% &b%player%&7has cleared the zombies!"
-        Wolves: "%plugin_prefix% &a%player% &7has cleared the wolves!"
+        Wolves: "%plugin_prefix% &b%player% &7has cleared the wolves!"
       Changed:
         Wave: "%plugin_prefix% &7Admin changed the wave to &a%number%"
     Village:
@@ -251,11 +251,11 @@ In-Game:
       Entities:
         Wolf:
           Spawn: "%plugin_prefix% &7Wolf spawned in the village!"
-          Name: "%player%'s Wolf"
+          Name: "&b%player%'s Wolf"
           Death: "%plugin_prefix% One of your wolves were killed!"
         Golem:
           Spawn: "%plugin_prefix% &7Golem spawned in the village!"
-          Name: "%player%'s Golem"
+          Name: "&b%player%'s Golem"
           Cant-Ride-Other: "%plugin_prefix% &cYou can't ride the golem of somebody else!"
       Shop:
         GUI: "&lShop"
@@ -467,7 +467,7 @@ Kit:
       Teleport:
         Villager: "%plugin_prefix% &aTeleported to the villager!"
         Warning: "%plugin_prefix% &cVillager not found ! That villager is probably already dead!"
-        Player: "%plugin_prefix% &aTeleported to %player%"
+        Player: "%plugin_prefix% &aTeleported to &b%player%"
         Not-Found: "%plugin_prefix% &cPlayer not found! Try again!"
     Heavy-Tank:
       Name: "&bHeavy Tank"
@@ -576,17 +576,17 @@ Leaderboard:
   Type:
     Hologram:
       Header: "&6&lTop %number% in %value%"
-      Format: "&e%number%. &f%player% (%value%)"
+      Format: "&e%number%. &f&b%player% (%value%)"
       Empty-Format: "&e%number%. &fEmpty (0)"
     Chat:
       Header: "&l-----YOUR STATS-----"
-      Header-Other: "&l-----STATS FOR %player%-----"
+      Header-Other: "&l-----STATS FOR &b%player%-----"
       Footer: "&l--------------------"
       Format: "&a%value%: &e%number%"
       Top:
         Type-Name: "&cPlease type statistic name to view!"
         Header: "&8&m-------------------[&6 Top 10 &8&m]-------------------"
-        Format: "&e#%number% %player% - %value% &7%user_statistic%"
+        Format: "&e#%number% &b%player% - %value% &7%user_statistic%"
   Statistics:
     Games-Played: "&aGames Played &e%number%"
     Level: "&aLevel &e%number%"
