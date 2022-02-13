@@ -149,7 +149,7 @@ In-Game:
   Commands-Blocked: "%plugin_prefix% &cYou have to leave the game first to perform commands. The only command that works is /%plugin_short_command% leave!"
   Join:
     Already-Playing: "%plugin_prefix% &cYou are already queued for a game! You can leave a game with /%plugin_short_command% leave."
-    No-Permission: "%plugin_prefix% &cYou don't have &6%value% &cpermission to join this arena!"
+    No-Permission: "%plugin_prefix% &cYou don't have &a%value% &cpermission to join this arena!"
     Full-Game: "%plugin_prefix% &cYou don't have the permission to join full games!"
     No-Slots-For-Premium: "%plugin_prefix% &cThis game is already full of premium players! Sorry"
     # Join cancelled via external plugin that uses the API of our plugin.
@@ -196,7 +196,7 @@ In-Game:
     Game-End:
       Summary:
         - "&a&m--------------------------------------------------"
-        - "&f&l%plugin_name%"
+        - "&a&l%plugin_name%"
         - ""
         - "%arena_summary%"
         - "%arena_summary_player%"
@@ -216,14 +216,14 @@ In-Game:
     Admin:
       Set-Starting-In-To-0: "%plugin_prefix% &7An admin set waiting time to 0. The game starts now!"
       Removed:
-        Villagers: "%plugin_prefix% &7%player% has removed all the villagers!"
-        Golems: "%plugin_prefix% &7%player% has removed all the golems!"
-        Zombies: "%plugin_prefix% &7%player% has cleared the zombies!"
-        Wolves: "%plugin_prefix% &7%player% has cleared the wolves!"
+        Villagers: "%plugin_prefix% &b%player% &7has removed all the villagers!"
+        Golems: "%plugin_prefix% &b%player% &7has removed all the golems!"
+        Zombies: "%plugin_prefix% &b%player%&7has cleared the zombies!"
+        Wolves: "%plugin_prefix% &a%player% &7has cleared the wolves!"
       Changed:
-        Wave: "%plugin_prefix% &7Admin changed the wave to %number%"
+        Wave: "%plugin_prefix% &7Admin changed the wave to &a%number%"
     Village:
-      Rotten-Flesh-Level-Up: "%plugin_prefix% &7The gods were happy with the rotten flesh! &bTherefor they gave you an extra heart!"
+      Rotten-Flesh-Level-Up: "%plugin_prefix% &7The gods were happy with the rotten flesh! &aTherefor they gave you an extra heart!"
       You-Feel-Refreshed: "%plugin_prefix% &7You feel refreshed!"
       # Do not use spaces between villager names. No limit in names size and amount :)
       Villager:
@@ -232,10 +232,10 @@ In-Game:
       Wave:
         Stuck-Zombies: "%plugin_prefix% &cIt seems like the last zombie got stuck somewhere. No worries! The gods killed him for you!"
         Spectator-Warning: "%plugin_prefix% &cYou are a spectator! You can't do anything until you'd respawned at the start of the next wave!"
-        Respawn-On-Next: "%plugin_prefix% &e&lDON'T LEAVE! &7You'll respawn once the next wave ends!"
+        Respawn-On-Next: "&e&lDON'T LEAVE! &eYou'll respawn once the next wave ends!"
         Respawned: "%plugin_prefix% &7You're not a spectator anymore! You're back in the game!"
-        Next-In: "%plugin_prefix% &7Next wave starts in &b%number%&7 seconds!"
-        Started: "%plugin_prefix% &7Wave &b%number%&7 started!"
+        Next-In: "%plugin_prefix% &7Next wave starts in &a%number%&7 seconds!"
+        Started: "%plugin_prefix% &7Wave &a%number%&7 started!"
         Title:
           # Title times specified in game ticks: fade in, stay, fade out
           Start:
