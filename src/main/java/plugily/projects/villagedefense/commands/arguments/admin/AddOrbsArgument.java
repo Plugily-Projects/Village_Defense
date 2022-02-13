@@ -59,7 +59,7 @@ public class AddOrbsArgument {
           }
 
           if((target = Bukkit.getPlayerExact(args[2])) == null || !registry.getPlugin().getArenaRegistry().isInArena(target)) {
-            new MessageBuilder("COMMANDS_PLAYER_NOT_FOUND").asKey().prefix().send(sender);
+            new MessageBuilder("COMMANDS_PLAYER_NOT_FOUND").asKey().send(sender);
             return;
           }
         } else if(sender instanceof Player) {
@@ -74,10 +74,10 @@ public class AddOrbsArgument {
         if(opt.isPresent()) {
           User user = registry.getPlugin().getUserManager().getUser(target);
           user.setStatistic(registry.getPlugin().getStatsStorage().getStatisticType("ORBS"), user.getStatistic("ORBS") + opt.get());
-          new MessageBuilder("COMMANDS_ADMIN_ADDED_ORBS").asKey().prefix().send(sender);
-          new MessageBuilder("COMMANDS_ADMIN_RECEIVED_ORBS").asKey().prefix().integer(opt.get()).send(target);
+          new MessageBuilder("COMMANDS_ADMIN_ADDED_ORBS").asKey().send(sender);
+          new MessageBuilder("COMMANDS_ADMIN_RECEIVED_ORBS").asKey().integer(opt.get()).send(target);
         } else {
-          new MessageBuilder("COMMANDS_WRONG_USAGE").asKey().prefix().value("/vda addorbs <amount> (player)").send(sender);
+          new MessageBuilder("COMMANDS_WRONG_USAGE").asKey().value("/vda addorbs <amount> (player)").send(sender);
         }
       }
     });

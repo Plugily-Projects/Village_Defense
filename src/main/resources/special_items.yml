@@ -18,7 +18,9 @@ Kit-Menu:
   slot: 0
   stage: LOBBY
   force: true
+  move: false
 
+# Uses bungee.yml configuration - if enabled it tries to connect to your hub
 Lobby-Leave:
   permission: ""
   execute:
@@ -30,7 +32,9 @@ Lobby-Leave:
   slot: 8
   stage: LOBBY
   force: true
+  move: false
 
+# Uses bungee.yml configuration - if enabled it tries to connect to your hub
 Spectator-Leave:
   permission: ""
   execute:
@@ -42,6 +46,7 @@ Spectator-Leave:
   slot: 8
   stage: SPECTATOR
   force: true
+  move: false
 
 Player-List:
   permission: ""
@@ -54,6 +59,7 @@ Player-List:
   slot: 0
   stage: SPECTATOR
   force: true
+  move: false
 
 Spectator-Settings:
   permission: ""
@@ -66,6 +72,7 @@ Spectator-Settings:
   slot: 4
   stage: SPECTATOR
   force: true
+  move: false
 
 Forcestart:
   permission: "plugily.projects.forcestart"
@@ -79,6 +86,7 @@ Forcestart:
   slot: 2
   stage: ENOUGH_PLAYERS_TO_START
   force: true
+  move: false
 
 Arena-Selector:
   permission: ""
@@ -88,9 +96,10 @@ Arena-Selector:
   lore:
     - "&7Right-click to see all arenas"
   material: EMERALD
-  slot: 0
+  slot: 4
   stage: SERVER_JOIN
   force: false
+  move: true
 
 Stats:
   permission: ""
@@ -103,8 +112,9 @@ Stats:
   slot: 0
   stage: SERVER_JOIN
   force: false
+  move: false
 
-# Uses bungee.yml configuration if enabled and overwrites commands with the defined hub
+# Uses bungee.yml configuration - if enabled it tries to connect to your hub
 Back-To-Hub:
   permission: ""
   execute:
@@ -116,6 +126,7 @@ Back-To-Hub:
   slot: 8
   stage: SERVER_JOIN
   force: false
+  move: false
 
 # Don't edit it. But who's stopping you? It's your server!
 # Really, don't edit ;p

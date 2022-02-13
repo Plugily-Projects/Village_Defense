@@ -132,7 +132,7 @@ public class ArenaManager extends PluginArenaManager {
   private void refreshAllPlayers(Arena arena) {
     int waveStat = arena.getWave() * 10;
 
-    String feelRefreshed = new MessageBuilder("IN_GAME_MESSAGES_VILLAGE_FEEL_REFRESHED").asKey().prefix().build();
+    String feelRefreshed = new MessageBuilder("IN_GAME_MESSAGES_VILLAGE_FEEL_REFRESHED").asKey().build();
     String formatted = new MessageBuilder("IN_GAME_MESSAGES_VILLAGE_WAVE_NEXT_IN").asKey().arena(arena).integer(arena.getTimer()).build();
 
     for(Player player : arena.getPlayers()) {

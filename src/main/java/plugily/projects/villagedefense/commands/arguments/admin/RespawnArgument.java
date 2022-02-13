@@ -65,7 +65,7 @@ public class RespawnArgument {
             }
           }
           if(target == null) {
-            new MessageBuilder("COMMANDS_PLAYER_NOT_FOUND").asKey().prefix().send(sender);
+            new MessageBuilder("COMMANDS_PLAYER_NOT_FOUND").asKey().send(sender);
             return;
           }
         } else {
@@ -87,7 +87,7 @@ public class RespawnArgument {
         ArenaUtils.showPlayer(target, arena);
         target.getInventory().clear();
         user.getKit().giveKitItems(target);
-        new MessageBuilder("IN_GAME_MESSAGES_VILLAGE_WAVE_RESPAWNED").asKey().prefix().player(player).arena(arena).send(target);
+        new MessageBuilder("IN_GAME_MESSAGES_VILLAGE_WAVE_RESPAWNED").asKey().player(player).arena(arena).send(target);
       }
     });
   }

@@ -53,7 +53,7 @@ public class SetWaveArgument {
         }
         java.util.Optional<Integer> opt = NumberUtils.parseInt(args[1]);
         if(!opt.isPresent()) {
-          new MessageBuilder("COMMANDS_WRONG_USAGE").asKey().prefix().value("/vda setwave <number>").send(sender);
+          new MessageBuilder("COMMANDS_WRONG_USAGE").asKey().value("/vda setwave <number>").send(sender);
           return;
         }
         Arena arena = (Arena) registry.getPlugin().getArenaRegistry().getArena((Player) sender);

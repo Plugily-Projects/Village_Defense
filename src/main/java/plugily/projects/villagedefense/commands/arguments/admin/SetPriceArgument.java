@@ -56,7 +56,7 @@ public class SetPriceArgument {
         Player player = (Player) sender;
         ItemStack item = VersionUtils.getItemInHand(player);
         if(item == null || item.getType() == Material.AIR) {
-          new MessageBuilder("COMMANDS_HOLD_ANY_ITEM").asKey().prefix().player(player).sendPlayer();
+          new MessageBuilder("COMMANDS_HOLD_ANY_ITEM").asKey().player(player).sendPlayer();
           return;
         }
 
@@ -64,7 +64,7 @@ public class SetPriceArgument {
         if(meta == null || !meta.hasLore()) {
           VersionUtils.setItemInHand(player, new ItemBuilder(item)
               .lore(ChatColor.GOLD + args[1] + " " + new MessageBuilder("IN_GAME_MESSAGES_VILLAGE_SHOP_CURRENCY").asKey().build()).build());
-          new MessageBuilder("COMMANDS_COMMAND_EXECUTED").asKey().player(player).prefix().sendPlayer();
+          new MessageBuilder("COMMANDS_COMMAND_EXECUTED").asKey().player(player).sendPlayer();
           return;
         }
 
@@ -79,7 +79,7 @@ public class SetPriceArgument {
         lore.add(0, ChatColor.GOLD + args[1] + " " + new MessageBuilder("IN_GAME_MESSAGES_VILLAGE_SHOP_CURRENCY").asKey().build());
         ComplementAccessor.getComplement().setLore(meta, lore);
         item.setItemMeta(meta);
-        new MessageBuilder("COMMANDS_COMMAND_EXECUTED").asKey().prefix().player(player).sendPlayer();
+        new MessageBuilder("COMMANDS_COMMAND_EXECUTED").asKey().player(player).sendPlayer();
       }
     });
   }

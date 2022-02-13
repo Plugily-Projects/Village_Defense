@@ -44,7 +44,6 @@ import plugily.projects.minigamesbox.classic.handlers.items.SpecialItem;
 import plugily.projects.minigamesbox.classic.handlers.language.MessageBuilder;
 import plugily.projects.minigamesbox.classic.user.User;
 import plugily.projects.minigamesbox.classic.utils.misc.complement.ComplementAccessor;
-import plugily.projects.minigamesbox.classic.utils.version.ServerVersion;
 import plugily.projects.minigamesbox.classic.utils.version.VersionUtils;
 import plugily.projects.minigamesbox.classic.utils.version.events.api.PlugilyEntityPickupItemEvent;
 import plugily.projects.villagedefense.Main;
@@ -271,9 +270,6 @@ public class ArenaEvents implements Listener {
   }
 
   private void sendSpectatorActionBar(User user, Arena arena) {
-    if(ServerVersion.Version.isCurrentEqual(ServerVersion.Version.v1_11_R1))
-      return;
-
     new BukkitRunnable() {
       @Override
       public void run() {

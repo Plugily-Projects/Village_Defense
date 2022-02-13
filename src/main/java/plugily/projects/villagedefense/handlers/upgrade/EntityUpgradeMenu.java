@@ -51,13 +51,11 @@ import java.util.Set;
  */
 public class EntityUpgradeMenu {
 
-  private final String pluginPrefix;
   private final List<Upgrade> upgrades = new ArrayList<>();
   private final Main plugin;
 
   public EntityUpgradeMenu(Main plugin) {
     this.plugin = plugin;
-    this.pluginPrefix = new MessageBuilder("IN_GAME_PLUGIN_PREFIX").asKey().build();
     new EntityUpgradeListener(this);
     registerUpgrade(new UpgradeBuilder("Damage")
         .entity(Upgrade.EntityType.BOTH).slot(2, 1).maxTier(4).metadata("VD_Damage")
@@ -126,18 +124,18 @@ public class EntityUpgradeMenu {
         int nextTier = getTier(livingEntity, upgrade) + 1;
         int cost = upgrade.getCost(nextTier);
         if(nextTier > upgrade.getMaxTier()) {
-          player.sendMessage(pluginPrefix + color("UPGRADE_MENU_MAX_TIER"));
+          player.sendMessage(color("UPGRADE_MENU_MAX_TIER"));
           return;
         }
 
         int orbs = user.getStatistic("ORBS");
         if(orbs < cost) {
-          player.sendMessage(pluginPrefix + color("UPGRADE_MENU_CANNOT_AFFORD"));
+          player.sendMessage(color("UPGRADE_MENU_CANNOT_AFFORD"));
           return;
         }
 
         user.setStatistic("ORBS", orbs - cost);
-        player.sendMessage(pluginPrefix + color("UPGRADE_MENU_UPGRADED_ENTITY").replace("%tier%", Integer.toString(nextTier)));
+        player.sendMessage(color("UPGRADE_MENU_UPGRADED_ENTITY").replace("%tier%", Integer.toString(nextTier)));
         applyUpgrade(livingEntity, upgrade);
 
         Bukkit.getPluginManager().callEvent(new VillagePlayerEntityUpgradeEvent(plugin.getArenaRegistry().getArena(player), livingEntity, player, upgrade, nextTier));

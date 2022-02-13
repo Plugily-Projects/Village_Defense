@@ -136,7 +136,7 @@ public class PluginEvents implements Listener {
       if(ironGolem.getCustomName() != null && ironGolem.getCustomName().contains(event.getPlayer().getName())) {
         VersionUtils.setPassenger(event.getRightClicked(), event.getPlayer());
       } else {
-        new MessageBuilder("IN_GAME_MESSAGES_VILLAGE_WAVE_ENTITIES_GOLEM_CANT_RIDE_OTHER").asKey().prefix().player(event.getPlayer()).sendPlayer();
+        new MessageBuilder("IN_GAME_MESSAGES_VILLAGE_WAVE_ENTITIES_GOLEM_CANT_RIDE_OTHER").asKey().player(event.getPlayer()).sendPlayer();
       }
     } else if(event.getRightClicked().getType() == EntityType.WOLF) {
       Wolf wolf = (Wolf) event.getRightClicked();
@@ -315,7 +315,7 @@ public class PluginEvents implements Listener {
         }
         for(Player player : arena.getPlayers()) {
           VersionUtils.setMaxHealth(player, VersionUtils.getMaxHealth(player) + 2.0);
-          new MessageBuilder("IN_GAME_MESSAGES_VILLAGE_ROTTEN_FLESH_LEVEL_UP").asKey().prefix().player(player).sendPlayer();
+          new MessageBuilder("IN_GAME_MESSAGES_VILLAGE_ROTTEN_FLESH_LEVEL_UP").asKey().player(player).sendPlayer();
         }
       }
     }

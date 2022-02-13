@@ -63,7 +63,7 @@ public class ClearEntitiesArgument {
         switch(args[1].toLowerCase()) {
           case "villager":
             if(arena.getVillagers().isEmpty()) {
-              new MessageBuilder("KIT_CONTENT_CLEANER_CLEANED_NOTHING").asKey().prefix().send(sender);
+              new MessageBuilder("KIT_CONTENT_CLEANER_CLEANED_NOTHING").asKey().send(sender);
               return;
             }
             for(Villager villager : arena.getVillagers()) {
@@ -76,7 +76,7 @@ public class ClearEntitiesArgument {
             break;
           case "zombie":
             if(arena.getEnemies().isEmpty()) {
-              new MessageBuilder("KIT_CONTENT_CLEANER_CLEANED_NOTHING").asKey().prefix().send(sender);
+              new MessageBuilder("KIT_CONTENT_CLEANER_CLEANED_NOTHING").asKey().send(sender);
               return;
             }
             ArenaUtils.removeSpawnedEnemies(arena);
@@ -86,7 +86,7 @@ public class ClearEntitiesArgument {
             break;
           case "golem":
             if(arena.getIronGolems().isEmpty()) {
-              new MessageBuilder("KIT_CONTENT_CLEANER_CLEANED_NOTHING").asKey().prefix().send(sender);
+              new MessageBuilder("KIT_CONTENT_CLEANER_CLEANED_NOTHING").asKey().send(sender);
               return;
             }
             for(IronGolem golem : arena.getIronGolems()) {
@@ -99,7 +99,7 @@ public class ClearEntitiesArgument {
             break;
           case "wolf":
             if(arena.getWolves().isEmpty()) {
-              new MessageBuilder("KIT_CONTENT_CLEANER_CLEANED_NOTHING").asKey().prefix().send(sender);
+              new MessageBuilder("KIT_CONTENT_CLEANER_CLEANED_NOTHING").asKey().send(sender);
               return;
             }
             for(Wolf wolf : arena.getWolves()) {
@@ -108,10 +108,10 @@ public class ClearEntitiesArgument {
             }
             arena.getWolves().clear();
             VersionUtils.playSound(((Player) sender).getLocation(), "ENTITY_WOLF_DEATH");
-            clearMessage = new MessageBuilder("IN_GAME_MESSAGES_ADMIN_REMOVED_WOLVES").asKey().prefix().build();
+            clearMessage = new MessageBuilder("IN_GAME_MESSAGES_ADMIN_REMOVED_WOLVES").asKey().build();
             break;
           default:
-            new MessageBuilder("COMMANDS_WRONG_USAGE").asKey().prefix().value("VILLAGER, ZOMBIE, GOLEM, WOLF").send(sender);
+            new MessageBuilder("COMMANDS_WRONG_USAGE").asKey().value("VILLAGER, ZOMBIE, GOLEM, WOLF").send(sender);
             return;
         }
         new MessageBuilder(clearMessage).player((Player) sender).arena(arena).sendArena();
