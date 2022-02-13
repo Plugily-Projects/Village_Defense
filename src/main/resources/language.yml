@@ -7,7 +7,7 @@
 # they are wrapped every 40 characters automatically
 #
 #     Some messages support their own placeholders
-#            like &b%player%, %kit% etc.
+#            like %player%, %kit% etc.
 
 #
 # Command messages
@@ -144,8 +144,8 @@ Bossbar:
 In-Game:
   #Used in most game messages.
   Plugin-Prefix: "&8(&a%plugin_name%&8)"
-  Game-Chat-Format: "&8[&5%user_statistic_level%&8]&8[%user_kit%&8] &b%player%&: &f%message%"
-  You-Leveled-Up: "%plugin_prefix% &7You leveled up! You're now level %number%!"
+  Game-Chat-Format: "&8[&5%user_statistic_level%&8]&8[%user_kit%&8] &b%player%&7: &f%message%"
+  You-Leveled-Up: "%plugin_prefix% &7You leveled up! You're now level &a%number%!"
   Commands-Blocked: "%plugin_prefix% &cYou have to leave the game first to perform commands. The only command that works is /%plugin_short_command% leave!"
   Join:
     Already-Playing: "%plugin_prefix% &cYou are already queued for a game! You can leave a game with /%plugin_short_command% leave."
@@ -154,7 +154,7 @@ In-Game:
     No-Slots-For-Premium: "%plugin_prefix% &cThis game is already full of premium players! Sorry"
     # Join cancelled via external plugin that uses the API of our plugin.
     Cancelled-Via-API: "%plugin_prefix% &cYou can't join this game!"
-    As-Party-Member: "%plugin_prefix% &cYou joined %arena_name% because the party leader joined it!"
+    As-Party-Member: "%plugin_prefix% &cYou joined &a%arena_name% &cbecause the party leader joined it!"
     Arena-Not-Configured: "%plugin_prefix% &cArena is not configured yet! Contact staff!"
   Death:
     Tag: "&8Dead"
@@ -180,19 +180,19 @@ In-Game:
           Title: "&eSNEAK &cto leave!"
         Visibility: "%value% other spectator players"
   Messages:
-    Join: "&b%player%&7 joined the game &e(&6%arena_players_size%&e/&6%arena_max_players%&e)&7!"
-    Leave: "&b%player% &7left the game &e(&6%arena_players_size%&e/&6%arena_max_players%&e)&7!"
+    Join: "&b%player%&7 joined the game &8(&a%arena_players_size%&8/&a%arena_max_players%&8)&7!"
+    Leave: "&b%player% &7left the game &8(&a%arena_players_size%&8/&a%arena_max_players%&8)&7!"
     Death: "%plugin_prefix% &b%player% &7died!"
     Lobby:
-      Start-In: "%plugin_prefix% &7The game starts in &b%arena_time%&7 seconds!"
-      Waiting-For-Players: "%plugin_prefix% &7Waiting for players... We need at least &b%arena_min_players%&7 players to start."
+      Start-In: "%plugin_prefix% &7The game starts in &a%arena_time% &7seconds!"
+      Waiting-For-Players: "%plugin_prefix% &7Waiting for players... We need at least &a%arena_min_players%&7 players to start."
       Enough-Players-To-Start: "%plugin_prefix% &7We now have enough players. The game is starting soon!"
-      Reduced-Time: "%plugin_prefix% &7The time got reduced to %number% seconds"
+      Reduced-Time: "%plugin_prefix% &7The time got reduced to &a%number% &7seconds"
       Max-Players: "%plugin_prefix% &7We reached max players for this round. Let's shorten the time!"
       Game-Started: "%plugin_prefix% &7The game has started!"
-      Kicked-For-Premium-Slot: "%plugin_prefix% &c&b%player% got removed from the game to make a place for premium players!"
+      Kicked-For-Premium-Slot: "%plugin_prefix% &b%player% &cgot removed from the game to make a place for premium players!"
       You-Were-Kicked-For-Premium-Slot: "%plugin_prefix% &cYou got kicked out of the game to make a place for a premium player!"
-      Not-Enough-Space-For-Party: "%plugin_prefix% &cYour party is bigger than free places on the arena %arena_name%"
+      Not-Enough-Space-For-Party: "%plugin_prefix% &cYour party is bigger than free places on the arena &a%arena_name%"
     Game-End:
       Summary:
         - "&a&m--------------------------------------------------"
@@ -232,7 +232,7 @@ In-Game:
       Wave:
         Stuck-Zombies: "%plugin_prefix% &cIt seems like the last zombie got stuck somewhere. No worries! The gods killed him for you!"
         Spectator-Warning: "%plugin_prefix% &cYou are a spectator! You can't do anything until you'd respawned at the start of the next wave!"
-        Respawn-On-Next: "&e&lDON'T LEAVE! &eYou'll respawn once the next wave ends!"
+        Respawn-On-Next: "&e&lDON'T LEAVE! &aYou'll respawn once the next wave ends!"
         Respawned: "%plugin_prefix% &7You're not a spectator anymore! You're back in the game!"
         Next-In: "%plugin_prefix% &7Next wave starts in &a%number%&7 seconds!"
         Started: "%plugin_prefix% &7Wave &a%number%&7 started!"
@@ -278,7 +278,7 @@ Signs:
     - "&a&l%plugin_name%"
     - "%arena_state_placeholder%"
     - "%arena_name%"
-    - "&5[%arena_players_size%/%arena_max_players%]"
+    - "&8[&a%arena_players_size%&8/&a%arena_max_players%&8]"
 
 
 #
@@ -302,8 +302,8 @@ Arena-Selector:
 # Validator messages
 #
 Validator:
-  Invalid-Arena-Configuration: "%plugin_prefix% &cArena %arena_name% has invalid configuration! Missing node: %value%"
-  Instance-Started: "%plugin_prefix% &cArena %arena_name% instance successfully started!"
+  Invalid-Arena-Configuration: "%plugin_prefix% &cArena &a%arena_name% &chas invalid configuration! Missing node: &a%value%"
+  Instance-Started: "%plugin_prefix% &cArena &a%arena_name% &cinstance successfully started!"
   No-Instances-Created: "%plugin_prefix% &cThere are no arena instances created in configuration!"
 
 
@@ -331,10 +331,10 @@ Placeholders:
 # Kit messages
 #
 Kit:
-  Not-Unlocked: "%plugin_prefix% &cYou haven't unlocked &b%value%&c yet!"
-  Choose: "%plugin_prefix% &cYou have chosen: &b%value%&a!"
+  Not-Unlocked: "%plugin_prefix% &cYou haven't unlocked &a%value%&c &cyet!"
+  Choose: "%plugin_prefix% &cYou have chosen: &a%value%&c!"
   Open-Menu: "Open Kit Menu"
-  Cooldown: "%plugin_prefix% &cKit ability still on cooldown (%number%)!"
+  Cooldown: "%plugin_prefix% &cKit ability still on cooldown &8(&a%number%&8)&c!"
   Menu:
     Title: "Kit Menu"
     Lore:
@@ -356,8 +356,8 @@ Kit:
           - "&7Right click to kill all zombies!"
           - "Cooldown: 60 seconds"
       Cleaned:
-        Map: "%plugin_prefix% &b%player% has cleaned the map!"
-        Nothing: "%plugin_prefix% &aThe map is already empty!" #WARNING: used for admin clean commands too!!!
+        Map: "%plugin_prefix% &b%player% &7has cleaned the map!"
+        Nothing: "%plugin_prefix% &7The map is already empty!" #WARNING: used for admin clean commands too!!!
     Zombie-Teleporter:
       Name: "&2Zombie Teleporter"
       Description:
@@ -576,7 +576,7 @@ Leaderboard:
   Type:
     Hologram:
       Header: "&6&lTop %number% in %value%"
-      Format: "&e%number%. &f&b%player% (%value%)"
+      Format: "&e%number%. &b%player% &8(&a%value%&8)"
       Empty-Format: "&e%number%. &fEmpty (0)"
     Chat:
       Header: "&l-----YOUR STATS-----"
@@ -586,7 +586,7 @@ Leaderboard:
       Top:
         Type-Name: "&cPlease type statistic name to view!"
         Header: "&8&m-------------------[&6 Top 10 &8&m]-------------------"
-        Format: "&e#%number% &b%player% - %value% &7%user_statistic%"
+        Format: "&e#%number% &b%player% &7- &a%value% &7%user_statistic%"
   Statistics:
     Games-Played: "&aGames Played &e%number%"
     Level: "&aLevel &e%number%"
