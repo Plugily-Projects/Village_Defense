@@ -140,11 +140,14 @@ public class PluginEvents implements Listener {
       }
     } else if(event.getRightClicked().getType() == EntityType.WOLF) {
       Wolf wolf = (Wolf) event.getRightClicked();
+      Bukkit.getScheduler().runTask(plugin, () -> wolf.setSitting(false));
+      if(event.getPlayer().isSneaking()) {
+        return;
+      }
       //to prevent wolves sitting
       if(wolf.getCustomName() != null && wolf.getCustomName().contains(event.getPlayer().getName())) {
         VersionUtils.setPassenger(event.getRightClicked(), event.getPlayer());
       }
-      wolf.setSitting(false);
     }
   }
 
