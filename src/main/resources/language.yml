@@ -63,42 +63,47 @@ Scoreboard:
   Title: "&a&l%plugin_name%"
   Content:
     Waiting:
-      - "&ePlayers&7: &a%arena_players_size%"
       - ""
-      - "&eMinimum Players&7: &a%arena_min_players%"
+      - "&8&l■ &ePlayers &7: &a%arena_players_size%"
+      - ""
+      - "&8&l■ &eMinimum Players &7: &a%arena_min_players%"
       - ""
       - "&ewww.plugily.xyz"
     Starting:
-      - "&eStarting In&7: &a%arena_time%"
       - ""
-      - "&ePlayers&7: &a%arena_players_size%"
+      - "&8&l■ &eStarting In &7: &a%arena_time%"
       - ""
-      - "&eMinimum Players&7: &a%arena_min_players%"
+      - "&8&l■ &ePlayers &7: &a%arena_players_size%"
+      - ""
+      - "&8&l■ &eMinimum Players &7: &a%arena_min_players%"
       - ""
       - "&ewww.plugily.xyz"
     # Contents of scoreboard while ingame
     In-Game:
-      - "&eVillagers Left&7: &a%arena_villager_size%"
-      - "&ePlayers Left&7: &a%arena_players_left_size%"
-      - "&eZombies Left&7: &a%arena_zombie_size_left%"
       - ""
-      - "&eRotten Flesh&7: &a%arena_rotten_flesh_amount%"
-      - "&eOrbs&7: &a%user_statistic_orbs%"
+      - "&8&l■ &eVillagers Left &7: &a%arena_villager_size%"
+      - "&8&l■ &ePlayers Left &7: &a%arena_players_left_size%"
+      - "&8&l■ &eZombies Left &7: &a%arena_zombie_size_left%"
+      - ""
+      - "&8&l■ &eRotten Flesh &7: &a%arena_rotten_flesh_amount%"
+      - "&8&l■ &eOrbs &7: &a%user_statistic_orbs%"
       - ""
       - "&ewww.plugily.xyz"
     In-Game-Waiting:
-      - "&eVillagers Left&7: &a%arena_villager_size%"
-      - "&ePlayers Left&7: &a%arena_players_left_size%"
-      - "&eZombies Left&7: &a%arena_zombie_size_left%"
       - ""
-      - "&eNext Wave In&7: &a%arena_time%"
+      - "&8&l■ &eVillagers Left &7: &a%arena_villager_size%"
+      - "&8&l■ &ePlayers Left &7: &a%arena_players_left_size%"
+      - "&8&l■ &eZombies Left &7: &a%arena_zombie_size_left%"
       - ""
-      - "&eRotten Flesh&7: &a%arena_rotten_flesh_amount%"
-      - "&eOrbs&7: &a%user_statistic_orbs%"
+      - "&8&l■ &eNext Wave In &7: &a%arena_time%"
+      - ""
+      - "&8&l■ &eRotten Flesh &7: &a%arena_rotten_flesh_amount%"
+      - "&8&l■ &eOrbs &7: &a%user_statistic_orbs%"
       - ""
       - "&ewww.plugily.xyz"
     # Contents of scoreboard while state is ending
     Ending:
+      - ""
       - "&e"
       - "&e"
       - "&cGAME ENDED"
@@ -109,6 +114,7 @@ Scoreboard:
       - "&ewww.plugily.xyz"
     # Contents of scoreboard while state is restarting
     Restarting:
+      - ""
       - "&e"
       - "&e"
       - "&cRESTARTING GAME"
@@ -128,7 +134,7 @@ Bossbar:
     Waiting:
       - "&7&lWaiting for more players..."
     Starting:
-      - "&7&lStarting in: &a&l%arena_time%"
+      - "&7&lStarting in &a&l%arena_time%"
     In-Game:
       - "&7&lPlaying &a&l%plugin_name_uppercase% &7&lon &b&lPLUGILY.XYZ"
       - "&7&lCheck the plugin creator out on &b&lPLUGILY.XYZ"
@@ -144,7 +150,7 @@ Bossbar:
 In-Game:
   #Used in most game messages.
   Plugin-Prefix: "&8(&a%plugin_name%&8)"
-  Game-Chat-Format: "&8[&5%user_statistic_level%&8]&8[%user_kit%&8] &b%player%&7: &f%message%"
+  Game-Chat-Format: "&8[&5%user_statistic_level%&8]&8[%user_kit%&8] &b%player% &7▸ &f%message%"
   You-Leveled-Up: "%plugin_prefix% &7You leveled up! You're now level &a%number%!"
   Commands-Blocked: "%plugin_prefix% &cYou have to leave the game first to perform commands. The only command that works is /%plugin_short_command% leave!"
   Join:
@@ -223,7 +229,7 @@ In-Game:
       Changed:
         Wave: "%plugin_prefix% &7Admin changed the wave to &a%number%"
     Village:
-      Rotten-Flesh-Level-Up: "%plugin_prefix% &7The gods were happy with the rotten flesh! &aTherefor they gave you an extra heart!"
+      Rotten-Flesh-Level-Up: "%plugin_prefix% &7The gods were happy with the rotten flesh! Therefor they gave you an extra heart!"
       You-Feel-Refreshed: "%plugin_prefix% &7You feel refreshed!"
       # Do not use spaces between villager names. No limit in names size and amount :)
       Villager:
@@ -247,7 +253,7 @@ In-Game:
             Title: "Wave %number% ended"
             SubTitle: ""
       Orbs:
-        Pickup: "&6+ %number% orbs"
+        Pickup: "&7+ &a%number% &7orbs"
       Entities:
         Wolf:
           Spawn: "%plugin_prefix% &7Wolf spawned in the village!"
@@ -579,23 +585,23 @@ Leaderboard:
       Format: "&e%number%. &b%player% &8(&a%value%&8)"
       Empty-Format: "&e%number%. &fEmpty (0)"
     Chat:
-      Header: "&l-----YOUR STATS-----"
-      Header-Other: "&l-----STATS FOR &b%player%-----"
-      Footer: "&l--------------------"
-      Format: "&a%value%: &e%number%"
+      Header: "&8+---------+ &a&lYOUR STATS &8+---------+"
+      Header-Other: "&8+---------+ &aSTATS FOR &b%player% &8+---------+"
+      Footer: "+--------------------+"
+      Format: "&e%value% &7▸ &a%number%"
       Top:
         Type-Name: "&cPlease type statistic name to view!"
         Header: "&8&m-------------------[&6 Top 10 &8&m]-------------------"
         Format: "&e#%number% &b%player% &7- &a%value% &7%user_statistic%"
   Statistics:
-    Games-Played: "&aGames Played &e%number%"
-    Level: "&aLevel &e%number%"
-    Exp: "&aExperience &e%number%"
-    Orbs: "&aOrbs &e%number%"
-    Highest-Wave: "&aHighest Wave &e%number%"
-    Kills: "&aZombie Kills &e%number%"
-    Deaths: "&aDeaths &e%number%"
-    Next-Level-Exp: "&aExp to Level Up &e%number%"
+    Games-Played: "&eGames Played &7▸ &a%number%"
+    Level: "&eLevel &7▸ &a%number%"
+    Exp: "&eExperience &7▸ &a%number%"
+    Orbs: "&eOrbs &7▸ &a%number%"
+    Highest-Wave: "&eHighest Wave &7▸ &a%number%"
+    Kills: "&eZombie Kills &7▸ &a%number%"
+    Deaths: "&eDeaths &7▸ &a%number%"
+    Next-Level-Exp: "&eExp to Level Up &7▸ &a%number%"
   Invalid-Name: "%plugin_prefix% &cName of statistic is invalid! Type: &a%value%"
   Unknown-Player: "%plugin_prefix% &cUnknown Player"
 
