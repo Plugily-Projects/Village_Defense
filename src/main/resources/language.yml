@@ -38,7 +38,7 @@ Commands:
       Format: "&a%arena_name% &6%arena_state_placeholder% &6%arena_players_size%/%arena_max_players%"
       No-Arenas: "%plugin_prefix% &cThere are no game instances!"
     Spychat:
-      Toggled: "%plugin_prefix% &7Game spy chat toggled to&c %value%"
+      Toggled: "%plugin_prefix% &7Game spy chat toggled to &a%value%"
   Main:
     Header: "&6----------------{%plugin_name% commands}----------"
     Description:
@@ -331,7 +331,7 @@ Placeholders:
 # Kit messages
 #
 Kit:
-  Not-Unlocked: "%plugin_prefix% &cYou haven't unlocked &a%value%&c &cyet!"
+  Not-Unlocked: "%plugin_prefix% &cYou haven't unlocked &a%value% &cyet!"
   Choose: "%plugin_prefix% &cYou have chosen: &a%value%&c!"
   Open-Menu: "Open Kit Menu"
   Cooldown: "%plugin_prefix% &cKit ability still on cooldown &8(&a%number%&8)&c!"
@@ -596,8 +596,8 @@ Leaderboard:
     Kills: "&aZombie Kills &e%number%"
     Deaths: "&aDeaths &e%number%"
     Next-Level-Exp: "&aExp to Level Up &e%number%"
-  Invalid-Name: "%plugin_prefix% &cName of statistic is invalid! Type: %value%"
-  Unknown-Player: "%plugin_prefix% &fUnknown Player"
+  Invalid-Name: "%plugin_prefix% &cName of statistic is invalid! Type: &a%value%"
+  Unknown-Player: "%plugin_prefix% &cUnknown Player"
 
 
 # Don't edit it. But who's stopping you? It's your server!
