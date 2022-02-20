@@ -150,7 +150,7 @@ Bossbar:
 In-Game:
   #Used in most game messages.
   Plugin-Prefix: "&8(&a%plugin_name%&8)"
-  Game-Chat-Format: "&8[&5%user_statistic_level%&8]&8[%user_kit%&8] &b%player% &7▸ &f%message%"
+  Game-Chat-Format: "&8[&5%user_statistic_level%&8]&8[%user_kit%&8] &b%player% &8▸ &f%message%"
   You-Leveled-Up: "%plugin_prefix% &7You leveled up! You're now level &a%number%!"
   Commands-Blocked: "%plugin_prefix% &cYou have to leave the game first to perform commands. The only command that works is /%plugin_short_command% leave!"
   Join:
