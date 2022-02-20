@@ -253,7 +253,7 @@ In-Game:
             Title: "Wave %number% ended"
             SubTitle: ""
       Orbs:
-        Pickup: "&7+ &a%number% &7orbs"
+        Pickup: "%plugin_prefix% &7+ &a%number% &7orbs"
       Entities:
         Wolf:
           Spawn: "%plugin_prefix% &7Wolf spawned in the village!"
@@ -291,7 +291,7 @@ Signs:
 # Arena Selector messages
 #
 Arena-Selector:
-  Inventory-Title: "%plugin_short_command% > Arena selector"
+  Inventory-Title: "&aVD &8▸ &7Arena selector"
   Item:
     Name: "&f%arena_name%"
     Lore:
@@ -587,17 +587,17 @@ Leaderboard:
     Chat:
       Header: "&8+-------+ &a&lYOUR STATS &8+-------+"
       Header-Other: "&8+---------+ &aSTATS FOR &b%player% &8+---------+"
-      Footer: "&8+----------------------------------+"
+      Footer: "&8+-----------------------------+"
       Format: "&7%value% &8▸ &a%number%"
       Top:
         Type-Name: "&cPlease type statistic name to view!"
-        Header: "&8&m-------------------[&6 Top 10 &8&m]-------------------"
+        Header: "&8&m+----------------+ [&6 Top 10 &8&m] +----------------+"
         Format: "&e#%number% &b%player% &7- &a%value% &7%user_statistic%"
   Statistics:
     Games-Played: "&7Games Played &8▸ &a%number%"
     Level: "&7Level &8▸ &a%number%"
     Exp: "&7Experience &8▸ &a%number%"
-    Orbs: "%plugin_prefix% &7Orbs &8▸ &a%number%"
+    Orbs: "&7Orbs &8▸ &a%number%"
     Highest-Wave: "&7Highest Wave &8▸ &a%number%"
     Kills: "&7Zombie Kills &8▸ &a%number%"
     Deaths: "&7Deaths &8▸ &a%number%"
