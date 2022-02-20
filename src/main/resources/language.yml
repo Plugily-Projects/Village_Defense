@@ -597,7 +597,7 @@ Leaderboard:
     Games-Played: "&7Games Played &8▸ &a%number%"
     Level: "&7Level &8▸ &a%number%"
     Exp: "&7Experience &8▸ &a%number%"
-    Orbs: "&7Orbs &8▸ &a%number%"
+    Orbs: "%plugin_prefix% &7Orbs &8▸ &a%number%"
     Highest-Wave: "&7Highest Wave &8▸ &a%number%"
     Kills: "&7Zombie Kills &8▸ &a%number%"
     Deaths: "&7Deaths &8▸ &a%number%"
