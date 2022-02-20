@@ -2,11 +2,11 @@
 #Example
 Powerups:
   Pickup:
-    Chat: "&a%player% picked the &4Powerup %powerup% up"
+    Chat: "&a%player% picked the &4Powerup %value% up"
   Ended:
-    Title: "&4Powerup %powerup% from %player%"
+    Title: "&4Powerup %value% from %player%"
     Subtitle: "&chas ended"
-    Chat: "&4Powerup %powerup% from %player% has ended%"
+    Chat: "&4Powerup %value% from %player% has ended%"
   Drop:
     Chance: 1
   Content:
