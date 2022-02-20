@@ -64,43 +64,43 @@ Scoreboard:
   Content:
     Waiting:
       - ""
-      - "&8&l■ &ePlayers &7: &a%arena_players_size%"
+      - "&8&l■ &7Players &8: &a%arena_players_size%"
       - ""
-      - "&8&l■ &eMinimum Players &7: &a%arena_min_players%"
+      - "&8&l■ &7Minimum Players &8: &a%arena_min_players%"
       - ""
-      - "&ewww.plugily.xyz"
+      - "   &awww.plugily.xyz"
     Starting:
       - ""
-      - "&8&l■ &eStarting In &7: &a%arena_time%"
+      - "&8&l■ &7Starting In &8: &a%arena_time%"
       - ""
-      - "&8&l■ &ePlayers &7: &a%arena_players_size%"
+      - "&8&l■ &7Players &8: &a%arena_players_size%"
       - ""
-      - "&8&l■ &eMinimum Players &7: &a%arena_min_players%"
+      - "&8&l■ &7Minimum Players &8: &a%arena_min_players%"
       - ""
-      - "&ewww.plugily.xyz"
+      - "   &awww.plugily.xyz"
     # Contents of scoreboard while ingame
     In-Game:
       - ""
-      - "&8&l■ &eVillagers Left &7: &a%arena_villager_size%"
-      - "&8&l■ &ePlayers Left &7: &a%arena_players_left_size%"
-      - "&8&l■ &eZombies Left &7: &a%arena_zombie_size_left%"
+      - "&8&l■ &7Villagers Left &8: &a%arena_villager_size%"
+      - "&8&l■ &7Players Left &8: &a%arena_players_left_size%"
+      - "&8&l■ &7Zombies Left &8: &a%arena_zombie_size_left%"
       - ""
-      - "&8&l■ &eRotten Flesh &7: &a%arena_rotten_flesh_amount%"
-      - "&8&l■ &eOrbs &7: &a%user_statistic_orbs%"
+      - "&8&l■ &7Rotten Flesh &8: &a%arena_rotten_flesh_amount%"
+      - "&8&l■ &7Orbs &8: &a%user_statistic_orbs%"
       - ""
-      - "&ewww.plugily.xyz"
+      - "   &awww.plugily.xyz"
     In-Game-Waiting:
       - ""
-      - "&8&l■ &eVillagers Left &7: &a%arena_villager_size%"
-      - "&8&l■ &ePlayers Left &7: &a%arena_players_left_size%"
-      - "&8&l■ &eZombies Left &7: &a%arena_zombie_size_left%"
+      - "&8&l■ &7Villagers Left &8: &a%arena_villager_size%"
+      - "&8&l■ &7Players Left &8: &a%arena_players_left_size%"
+      - "&8&l■ &7Zombies Left &8: &a%arena_zombie_size_left%"
       - ""
-      - "&8&l■ &eNext Wave In &7: &a%arena_time%"
+      - "&8&l■ &7Next Wave In &8: &a%arena_time%"
       - ""
-      - "&8&l■ &eRotten Flesh &7: &a%arena_rotten_flesh_amount%"
-      - "&8&l■ &eOrbs &7: &a%user_statistic_orbs%"
+      - "&8&l■ &7Rotten Flesh &8: &a%arena_rotten_flesh_amount%"
+      - "&8&l■ &7Orbs &8: &a%user_statistic_orbs%"
       - ""
-      - "&ewww.plugily.xyz"
+      - "   &awww.plugily.xyz"
     # Contents of scoreboard while state is ending
     Ending:
       - ""
@@ -111,7 +111,7 @@ Scoreboard:
       - "&e"
       - "&e"
       - ""
-      - "&ewww.plugily.xyz"
+      - "   &awww.plugily.xyz"
     # Contents of scoreboard while state is restarting
     Restarting:
       - ""
@@ -122,7 +122,7 @@ Scoreboard:
       - "&e"
       - "&e"
       - ""
-      - "&ewww.plugily.xyz"
+      - "   &awww.plugily.xyz"
 
 #
 # Bossbar messages
@@ -585,10 +585,10 @@ Leaderboard:
       Format: "&e%number%. &b%player% &8(&a%value%&8)"
       Empty-Format: "&e%number%. &fEmpty (0)"
     Chat:
-      Header: "&8+---------+ &a&lYOUR STATS &8+---------+"
+      Header: "&8+-------+ &a&lYOUR STATS &8+-------+"
       Header-Other: "&8+---------+ &aSTATS FOR &b%player% &8+---------+"
-      Footer: "+--------------------+"
-      Format: "&e%value% &7▸ &a%number%"
+      Footer: "&8+----------------------------------+"
+      Format: "&7%value% &8▸ &a%number%"
       Top:
         Type-Name: "&cPlease type statistic name to view!"
         Header: "&8&m-------------------[&6 Top 10 &8&m]-------------------"
