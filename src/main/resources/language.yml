@@ -123,16 +123,16 @@ Scoreboard:
 #
 # Bossbar needs to be enabled on config.yml
 Bossbar:
-  Title: "&a&l%plugin_name% &6- www.plugily.xyz"
+  Title: "&a&l%plugin_name% &8- &ewww.plugily.xyz"
   Content:
     Waiting:
-      - "&4&lWaiting for more players..."
+      - "&7&lWaiting for more players..."
     Starting:
-      - "&f&lStarting in: &e&l%arena_time%"
+      - "&7&lStarting in: &a&l%arena_time%"
     In-Game:
-      - "&e&lPlaying &f&l%plugin_name_uppercase% &e&lon &b&lPLUGILY.XYZ"
-      - "&e&lCheck the plugin creator out &e&lon &b&lPLUGILY.XYZ"
-      - "&e&lCurrent wave %arena_option_wave%"
+      - "&7&lPlaying &a&l%plugin_name_uppercase% &7&lon &b&lPLUGILY.XYZ"
+      - "&7&lCheck the plugin creator out on &b&lPLUGILY.XYZ"
+      - "&7&lCurrent wave &a%arena_option_wave%"
     Ending:
       - "&c&lGame has ended! You were playing on &b&lPLUGILY.XYZ"
     Restarting:
