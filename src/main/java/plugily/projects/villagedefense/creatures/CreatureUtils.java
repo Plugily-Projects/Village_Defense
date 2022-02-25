@@ -25,7 +25,7 @@ import org.bukkit.entity.IronGolem;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Villager;
 import org.bukkit.entity.Wolf;
-import plugily.projects.commonsbox.string.StringFormatUtils;
+import plugily.projects.minigamesbox.classic.commonsbox.string.StringFormatUtils;
 import plugily.projects.minigamesbox.classic.handlers.language.MessageBuilder;
 import plugily.projects.minigamesbox.classic.utils.version.ServerVersion;
 import plugily.projects.minigamesbox.classic.utils.version.VersionUtils;

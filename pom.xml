@@ -99,13 +99,6 @@
         </dependency>
         <dependency>
             <groupId>plugily.projects</groupId>
-            <artifactId>commons-box-classic</artifactId>
-            <version>1.3.3</version>
-            <scope>compile</scope>
-            <optional>true</optional>
-        </dependency>
-        <dependency>
-            <groupId>plugily.projects</groupId>
             <artifactId>MiniGamesBox-Classic</artifactId>
             <version>1.0.0-SNAPSHOT</version>
             <scope>compile</scope>
