@@ -32,6 +32,13 @@ jobs:
           fileName: 'javadocs.key'
           fileDir: './temporary/secrets/key/'
           encodedString: ${{ secrets.PLUGILY_JAVADOCS_PRIVATE_KEY }}
+          
+      - name: Validate SSH Connection
+        id: ssh-validation
+        uses: kielabokkie/ssh-key-and-known-hosts-action@v1.2.0
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+          ssh-host: 91.229.245.16
 
       - name: Bump Version
         id: bump
