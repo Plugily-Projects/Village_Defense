@@ -7,6 +7,13 @@ instances:
     maximumplayers: 10
     mapname: mapname
     world: worldname
-    signs: []
+    signs: [ ]
     isdone: false
     shop: world,364.0,63.0,-72.0,0.0,0.0
+
+# Don't edit it. But who's stopping you? It's your server!
+# Really, don't edit ;p
+# You edited it, huh? Next time hurt yourself!
+Do-Not-Edit:
+  File-Version: 1
+  Core-Version: 1
