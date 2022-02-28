@@ -48,10 +48,9 @@ import plugily.projects.villagedefense.creatures.v1_9_UP.Rate;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
+import java.util.EnumMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.Random;
 import java.util.Set;
@@ -65,6 +64,7 @@ public class EnemySpawnerRegistry {
   private final Set<EnemySpawner> enemySpawnerSet = new TreeSet<>(Collections.reverseOrder());
   private final Set<CustomRideableCreature> rideableCreatures = new HashSet<>();
   private final Main plugin;
+  private static final String CREATURES_MISSING_SECTION = "Creatures section {0} is missing! Was it manually removed?";
 
   public EnemySpawnerRegistry(Main plugin) {
     this.plugin = plugin;
@@ -79,16 +79,16 @@ public class EnemySpawnerRegistry {
     FileConfiguration config = ConfigUtils.getConfig(plugin, "creatures");
     ConfigurationSection village = config.getConfigurationSection("Creatures.Village");
     if(village == null) {
-      plugin.getDebugger().debug(Level.WARNING, "Creatures section {0} is missing! Was it manually removed?", "Creatures.Village");
+      plugin.getDebugger().debug(Level.WARNING, CREATURES_MISSING_SECTION, "Creatures.Village");
       return;
     }
     for(String rideable : village.getKeys(false)) {
       CustomRideableCreature.RideableType rideableType = CustomRideableCreature.RideableType.valueOf(rideable.toUpperCase().replace("RIDEABLE_", ""));
       boolean holidayEffects = village.getBoolean(rideable + ".holiday_effects", false);
-      Map<Attribute, Double> attributes = new HashMap<>();
+      EnumMap<Attribute, Double> attributes = new EnumMap<>(Attribute.class);
       ConfigurationSection attributeSection = village.getConfigurationSection(rideable + ".attributes");
       if(attributeSection == null) {
-        plugin.getDebugger().debug(Level.WARNING, "Creatures section {0} is missing! Was it manually removed?", "Creatures.Village." + rideable + ".attributes");
+        plugin.getDebugger().debug(Level.WARNING, CREATURES_MISSING_SECTION, "Creatures.Village." + rideable + ".attributes");
         continue;
       }
       for(String attribute : attributeSection.getKeys(false)) {
@@ -102,7 +102,7 @@ public class EnemySpawnerRegistry {
       String item = village.getString(rideable + ".drop_item", null);
       ItemStack dropItem = null;
       if(item != null) {
-        dropItem = XMaterial.matchXMaterial(item).get().parseItem();
+        dropItem = XMaterial.matchXMaterial(item).orElse(XMaterial.BEDROCK).parseItem();
       }
       plugin.getDebugger().debug("Registered CustomRideableCreature of type {0}", rideableType);
       rideableCreatures.add(new CustomRideableCreature(rideableType, holidayEffects, attributes, dropItem));
@@ -128,7 +128,7 @@ public class EnemySpawnerRegistry {
 
     ConfigurationSection content = config.getConfigurationSection("Creatures.Content");
     if(content == null) {
-      plugin.getDebugger().debug(Level.WARNING, "Creatures section {0} is missing! Was it manually removed?", "Creatures.Content");
+      plugin.getDebugger().debug(Level.WARNING, CREATURES_MISSING_SECTION, "Creatures.Content");
       return;
     }
     for(String creature : content.getKeys(false)) {
@@ -158,7 +158,7 @@ public class EnemySpawnerRegistry {
       List<Rate> rates = new ArrayList<>();
       ConfigurationSection rate = content.getConfigurationSection(creature + ".rates");
       if(rate == null) {
-        plugin.getDebugger().debug(Level.WARNING, "Creatures section {0} is missing! Was it manually removed?", "Creatures.Content." + creature + ".rates");
+        plugin.getDebugger().debug(Level.WARNING, CREATURES_MISSING_SECTION, "Creatures.Content." + creature + ".rates");
         continue;
       }
       for(String rateType : rate.getKeys(false)) {
@@ -173,10 +173,10 @@ public class EnemySpawnerRegistry {
         rates.add(new Rate(phase, waveHigher, waveLower, spawnLower, rateInt, division, reduce, rateTypeValue));
       }
 
-      Map<Attribute, Double> attributes = new HashMap<>();
+      EnumMap<Attribute, Double> attributes = new EnumMap<>(Attribute.class);
       ConfigurationSection attributeSection = content.getConfigurationSection(creature + ".attributes");
       if(attributeSection == null) {
-        plugin.getDebugger().debug(Level.WARNING, "Creatures section {0} is missing! Was it manually removed?", "Creatures.Content." + creature + ".attributes");
+        plugin.getDebugger().debug(Level.WARNING, CREATURES_MISSING_SECTION, "Creatures.Content." + creature + ".attributes");
         continue;
       }
       for(String attribute : attributeSection.getKeys(false)) {
@@ -190,7 +190,7 @@ public class EnemySpawnerRegistry {
       List<Equipment> equipments = new ArrayList<>();
       ConfigurationSection equipmentSection = content.getConfigurationSection(creature + ".equipment");
       if(equipmentSection == null) {
-        plugin.getDebugger().debug(Level.WARNING, "Creatures section {0} is missing! Was it manually removed?", "Creatures.Content." + creature + ".equipment");
+        plugin.getDebugger().debug(Level.WARNING, CREATURES_MISSING_SECTION, "Creatures.Content." + creature + ".equipment");
         continue;
       }
       for(String equipmentType : equipmentSection.getKeys(false)) {
@@ -198,7 +198,7 @@ public class EnemySpawnerRegistry {
         if(item == null) {
           continue;
         }
-        ItemStack itemStack = XMaterial.matchXMaterial(item).get().parseItem();
+        ItemStack itemStack = XMaterial.matchXMaterial(item).orElse(XMaterial.BEDROCK).parseItem();
         int dropChance = equipmentSection.getInt(equipmentType + ".drop_chance", 0);
         Equipment.EquipmentType equipmentTypeValue = Equipment.EquipmentType.valueOf(equipmentType.toUpperCase());
         equipments.add(new Equipment(itemStack, dropChance, equipmentTypeValue));
@@ -207,7 +207,7 @@ public class EnemySpawnerRegistry {
       String item = content.getString(creature + ".drop_item", null);
       ItemStack dropItem = null;
       if(item != null) {
-        dropItem = XMaterial.matchXMaterial(item).get().parseItem();
+        dropItem = XMaterial.matchXMaterial(item).orElse(XMaterial.BEDROCK).parseItem();
       }
       plugin.getDebugger().debug("Registered CustomCreature named {0}", key);
       enemySpawnerSet.add(new CustomCreature(plugin, waveMin, waveMax, priorityTarget, explodeTarget, key, entityType, baby, breed, age, ageLook, expDrop, holidayEffects, rates, attributes, equipments, dropItem));
@@ -227,10 +227,10 @@ public class EnemySpawnerRegistry {
     if(zombiesLimit < spawn) {
       spawn = (int) Math.ceil(zombiesLimit / 2.0);
     }
-
-    arena.changeArenaOptionBy("ZOMBIE_SPAWN_COUNTER", 1);
-    if(arena.getArenaOption("ZOMBIE_SPAWN_COUNTER") == 20) {
-      arena.setArenaOption("ZOMBIE_SPAWN_COUNTER", 0);
+    String zombieSpawnCounterOption = "ZOMBIE_SPAWN_COUNTER";
+    arena.changeArenaOptionBy(zombieSpawnCounterOption, 1);
+    if(arena.getArenaOption(zombieSpawnCounterOption) == 20) {
+      arena.setArenaOption(zombieSpawnCounterOption, 0);
     }
 
     List<EnemySpawner> enemySpawners = new ArrayList<>(enemySpawnerSet);

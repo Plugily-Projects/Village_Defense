@@ -32,6 +32,7 @@ import plugily.projects.villagedefense.creatures.v1_9_UP.CustomCreature;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 
 /**
@@ -42,6 +43,7 @@ import java.util.Random;
 public class CreatureTargetManager {
   private final Arena arena;
   private final Main plugin;
+  private Random random = new Random();
 
   public CreatureTargetManager(Arena arena) {
     this.arena = arena;
@@ -55,11 +57,8 @@ public class CreatureTargetManager {
         setTarget(creature);
         continue;
       }
-      if(creatureTarget.getLocation().distance(creature.getLocation()) > 10) {
-        if(creatureTarget instanceof Player) {
-          setTarget(creature);
-        }
-        continue;
+      if(creatureTarget.getLocation().distance(creature.getLocation()) > 10 && creatureTarget instanceof Player) {
+        setTarget(creature);
       }
     }
   }
@@ -74,12 +73,11 @@ public class CreatureTargetManager {
       }
       LivingEntity creatureTarget = creature.getTarget();
       if(creatureTarget == null) {
-        creature.setTarget(arena.getEnemies().get(arena.getEnemies().size() > 1 ? new Random().nextInt(arena.getEnemies().size() - 1) : 0));
+        creature.setTarget(arena.getEnemies().get(arena.getEnemies().size() > 1 ? random.nextInt(arena.getEnemies().size() - 1) : 0));
         continue;
       }
       if(creatureTarget instanceof Player) {
-        creature.setTarget(arena.getEnemies().get(arena.getEnemies().size() > 1 ? new Random().nextInt(arena.getEnemies().size() - 1) : 0));
-        continue;
+        creature.setTarget(arena.getEnemies().get(arena.getEnemies().size() > 1 ? random.nextInt(arena.getEnemies().size() - 1) : 0));
       }
     }
   }
@@ -104,11 +102,13 @@ public class CreatureTargetManager {
       return null;
     }
     for(MetadataValue metadataValue : metadataValueList) {
-      if(plugin.getEnemySpawnerRegistry().getSpawnerByName(metadataValue.asString()).isPresent()) {
-        EnemySpawner enemySpawner = plugin.getEnemySpawnerRegistry().getSpawnerByName(metadataValue.asString()).get();
-        if(enemySpawner instanceof CustomCreature) {
-          return (CustomCreature) enemySpawner;
-        }
+      Optional<EnemySpawner> spawnerByName = plugin.getEnemySpawnerRegistry().getSpawnerByName(metadataValue.asString());
+      if(!spawnerByName.isPresent()) {
+        continue;
+      }
+      EnemySpawner enemySpawner = spawnerByName.get();
+      if(enemySpawner instanceof CustomCreature) {
+        return (CustomCreature) enemySpawner;
       }
     }
     plugin.getDebugger().debug("Arena {0} Couldn't find creature spawner", arena.getId());
@@ -171,7 +171,7 @@ public class CreatureTargetManager {
         continue;
       }
       //set new target as villager so zombies won't stay still waiting for nothing
-      zombie.setTarget(arena.getVillagers().get(new Random().nextInt(arena.getVillagers().size() - 1)));
+      zombie.setTarget(arena.getVillagers().get(random.nextInt(arena.getVillagers().size() - 1)));
     }
   }
 

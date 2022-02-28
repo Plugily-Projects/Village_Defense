@@ -187,9 +187,9 @@ public class Arena extends PluginArena {
 
   public void addVillagerSpawn(Location location) {
     plugin.getDebugger().debug("Arena {0} Adding villager spawn on location {1}", getId(), location.toString());
-    List<Location> villagers = getVillagerSpawns();
-    villagers.add(location);
-    spawnPoints.put(SpawnPoint.VILLAGER, villagers);
+    List<Location> villagerSpawns = getVillagerSpawns();
+    villagerSpawns.add(location);
+    spawnPoints.put(SpawnPoint.VILLAGER, villagerSpawns);
     plugin.getDebugger().debug("Arena {0} VillagerSpawns {1}", getId(), getVillagerSpawns());
   }
 
@@ -287,6 +287,8 @@ public class Arena extends PluginArena {
         spawnedName = new MessageBuilder("IN_GAME_MESSAGES_VILLAGE_WAVE_ENTITIES_GOLEM_NAME").asKey().player(player).build();
         globalEntityLimit = plugin.getConfig().getInt("Limit.Spawn.Golems", 15);
         break;
+      default:
+        break;
     }
     plugin.getDebugger().debug("SpawnMobCheck for {0} and mob {1}, globalLimit {2}, playerLimit {3}", player.getName(), type, globalEntityLimit, entityLimit);
     String finalSpawnedName = spawnedName;
@@ -297,13 +299,13 @@ public class Arena extends PluginArena {
 
       long spawnedAmount = entityList.size();
       if(spawnedAmount >= globalEntityLimit) {
-        new MessageBuilder("IN_GAME_MESSAGES_VILLAGE_SHOP_MOB_LIMIT_REACHED").asKey().player(player).integer(globalEntityLimit).sendPlayer();
+        sendMobLimitReached(player, globalEntityLimit);
         return false;
       }
 
       long spawnedPlayerAmount = entityList.stream().filter(entity -> Objects.equals(entity.getCustomName(), finalSpawnedName)).count();
       if(spawnedPlayerAmount >= entityLimit) {
-        new MessageBuilder("IN_GAME_MESSAGES_VILLAGE_SHOP_MOB_LIMIT_REACHED").asKey().player(player).integer(entityLimit).sendPlayer();
+        sendMobLimitReached(player, entityLimit);
         return false;
       }
     }
@@ -315,11 +317,17 @@ public class Arena extends PluginArena {
       case IRON_GOLEM:
         finalReturn = entityLimit > 0 && ironGolems.size() < entityLimit;
         break;
+      default:
+        break;
     }
     if(!finalReturn) {
-      new MessageBuilder("IN_GAME_MESSAGES_VILLAGE_SHOP_MOB_LIMIT_REACHED").asKey().player(player).integer(entityLimit).sendPlayer();
+      sendMobLimitReached(player, entityLimit);
     }
     return finalReturn;
+  }
+
+  private void sendMobLimitReached(Player player, int entityLimit) {
+    new MessageBuilder("IN_GAME_MESSAGES_VILLAGE_SHOP_MOB_LIMIT_REACHED").asKey().player(player).integer(entityLimit).sendPlayer();
   }
 
   /**
@@ -353,16 +361,17 @@ public class Arena extends PluginArena {
   }
 
   public boolean checkLevelUpRottenFlesh() {
-    int rottenFleshLevel = getArenaOption("ROTTEN_FLESH_LEVEL");
+    String rottenFleshLevelOption = "ROTTEN_FLESH_LEVEL";
+    int rottenFleshLevel = getArenaOption(rottenFleshLevelOption);
     int rottenFleshAmount = getArenaOption("ROTTEN_FLESH_AMOUNT");
 
     if(rottenFleshLevel == 0 && rottenFleshAmount > 50) {
-      setArenaOption("ROTTEN_FLESH_LEVEL", 1);
+      setArenaOption(rottenFleshLevelOption, 1);
       return true;
     }
 
     if(rottenFleshLevel * 10 * getPlayers().size() + 10 < rottenFleshAmount) {
-      changeArenaOptionBy("ROTTEN_FLESH_LEVEL", 1);
+      changeArenaOptionBy(rottenFleshLevelOption, 1);
       return true;
     }
 
