@@ -34,6 +34,7 @@ Creatures:
       breed: false
       age: 0
       age_lock: false
+      exp: 10
       holiday_effects: true
       rates:
         spawn:
@@ -102,6 +103,7 @@ Creatures:
       breed: false
       age: 0
       age_lock: false
+      exp: 10
       holiday_effects: true
       rates:
         spawn:
@@ -180,6 +182,7 @@ Creatures:
       breed: false
       age: 0
       age_lock: false
+      exp: 15
       holiday_effects: true
       rates:
         spawn:
@@ -258,6 +261,7 @@ Creatures:
       breed: false
       age: 0
       age_lock: false
+      exp: 20
       holiday_effects: true
       rates:
         spawn:
@@ -336,6 +340,7 @@ Creatures:
       breed: false
       age: 0
       age_lock: false
+      exp: 15
       holiday_effects: true
       rates:
         spawn:
@@ -415,6 +420,7 @@ Creatures:
       breed: false
       age: 0
       age_lock: false
+      exp: 20
       holiday_effects: true
       rates:
         spawn:
@@ -474,6 +480,7 @@ Creatures:
       breed: false
       age: 0
       age_lock: false
+      exp: 15
       holiday_effects: true
       rates:
         spawn:
@@ -553,6 +560,7 @@ Creatures:
       breed: false
       age: 0
       age_lock: false
+      exp: 5
       holiday_effects: true
       rates:
         spawn:
@@ -632,6 +640,7 @@ Creatures:
       breed: false
       age: 0
       age_lock: false
+      exp: 5
       holiday_effects: true
       rates:
         spawn:

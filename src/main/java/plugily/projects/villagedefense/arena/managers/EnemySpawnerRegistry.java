@@ -153,6 +153,7 @@ public class EnemySpawnerRegistry {
       int age = content.getInt(creature + ".age", 0);
       boolean ageLook = content.getBoolean(creature + ".age_lock", false);
       boolean holidayEffects = content.getBoolean(creature + ".holiday_effects", true);
+      int expDrop = content.getInt(creature + ".exp", 0);
 
       List<Rate> rates = new ArrayList<>();
       ConfigurationSection rate = content.getConfigurationSection(creature + ".rates");
@@ -209,7 +210,7 @@ public class EnemySpawnerRegistry {
         dropItem = XMaterial.matchXMaterial(item).get().parseItem();
       }
       plugin.getDebugger().debug("Registered CustomCreature named {0}", key);
-      enemySpawnerSet.add(new CustomCreature(plugin, waveMin, waveMax, priorityTarget, explodeTarget, key, entityType, baby, breed, age, ageLook, holidayEffects, rates, attributes, equipments, dropItem));
+      enemySpawnerSet.add(new CustomCreature(plugin, waveMin, waveMax, priorityTarget, explodeTarget, key, entityType, baby, breed, age, ageLook, expDrop, holidayEffects, rates, attributes, equipments, dropItem));
     }
 
   }

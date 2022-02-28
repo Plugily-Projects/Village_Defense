@@ -57,6 +57,7 @@ public class CustomCreature implements SimpleEnemySpawner {
   private final boolean breed;
   private final int age;
   private final boolean ageLook;
+  private final int expDrop;
   private final boolean holidayEffects;
   private final List<Rate> rates;
   private final List<Rate> spawn = new ArrayList<>();
@@ -67,7 +68,7 @@ public class CustomCreature implements SimpleEnemySpawner {
   private final ItemStack dropItem;
 
 
-  public CustomCreature(Main plugin, int waveMin, int waveMax, PriorityTarget priorityTarget, boolean explodeTarget, String key, EntityType entityType, boolean baby, boolean breed, int age, boolean ageLook, boolean holidayEffects, List<Rate> rates, Map<Attribute, Double> attributes, List<Equipment> equipments, ItemStack dropItem) {
+  public CustomCreature(Main plugin, int waveMin, int waveMax, PriorityTarget priorityTarget, boolean explodeTarget, String key, EntityType entityType, boolean baby, boolean breed, int age, boolean ageLook, int expDrop, boolean holidayEffects, List<Rate> rates, Map<Attribute, Double> attributes, List<Equipment> equipments, ItemStack dropItem) {
     this.priorityTarget = priorityTarget;
     this.explodeTarget = explodeTarget;
     if(ServerVersion.Version.isCurrentEqualOrLower(ServerVersion.Version.v1_8_R3)) {
@@ -82,6 +83,7 @@ public class CustomCreature implements SimpleEnemySpawner {
     this.breed = breed;
     this.age = age;
     this.ageLook = ageLook;
+    this.expDrop = expDrop;
     this.holidayEffects = holidayEffects;
     this.rates = rates;
 
@@ -152,6 +154,10 @@ public class CustomCreature implements SimpleEnemySpawner {
 
   public boolean isAgeLook() {
     return ageLook;
+  }
+
+  public int getExpDrop() {
+    return expDrop;
   }
 
   public boolean isHolidayEffects() {
