@@ -80,7 +80,7 @@ public class Arena extends PluginArena {
 
   public Arena(String id) {
     super(id);
-    setDefaultValues();
+    setPluginValues();
     shopManager = new ShopManager(this);
     enemySpawnManager = new EnemySpawnManager(this);
     creatureTargetManager = new CreatureTargetManager(this);
@@ -111,7 +111,7 @@ public class Arena extends PluginArena {
     return plugin;
   }
 
-  private void setDefaultValues() {
+  private void setPluginValues() {
     for(SpawnPoint point : SpawnPoint.values()) {
       spawnPoints.put(point, new ArrayList<>());
     }
