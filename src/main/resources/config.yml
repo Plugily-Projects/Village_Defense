@@ -196,14 +196,12 @@ Orbs:
     # Amount of orbs given to player when game starts
     Amount: 20
   Death:
-    # How many orbs should the players lose after they dead?
-    # The default is 0, so their orbs will be set to 0.
-    # The value should be 1 or higher.
-    Lose: 0
-    # Should the orbs kept after player death?
-    # true - player's orbs will be kept after death
-    # false - player's orbs will be set according to the above option.
-    Keep: true
+    # PERCENTAGE, calculates the percentage of orbs left from the value
+    # AMOUNT, adjusts the orbs to the value (negative value removes orbs, positive value adds orbs)
+    # SET, sets the orbs to the value
+    # KEEP, will leave the orbs like they are
+    Type: PERCENTAGE
+    Value: 50
 
 
 

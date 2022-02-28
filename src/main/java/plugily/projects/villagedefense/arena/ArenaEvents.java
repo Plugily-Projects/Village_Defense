@@ -310,18 +310,31 @@ public class ArenaEvents implements Listener {
   }
 
   private void modifyUserOrbs(User user) {
-    if(plugin.getConfig().getBoolean("Keep-Orbs-After-Death")) {
-      return;
+    int deathValue = plugin.getConfig().getInt("Orbs.Death.Value", 50);
+    int current = user.getStatistic("ORBS");
+    switch(getOrbDeathType()) {
+      case KEEP:
+        return;
+      case AMOUNT:
+        user.setStatistic("ORBS", (Math.max(current + deathValue, 0)));
+        break;
+      case SET:
+        user.setStatistic("ORBS", deathValue);
+        break;
+      case PERCENTAGE:
+        user.setStatistic("ORBS", current * (deathValue / 10));
+        break;
+      default:
+        break;
     }
+  }
 
-    int orbsToLose = plugin.getConfig().getInt("Orbs-To-Lose-After-Death", 0);
+  private OrbDeathType getOrbDeathType() {
+    return OrbDeathType.valueOf(plugin.getConfig().getString("Orbs.Death.Type", "KEEP"));
+  }
 
-    if(orbsToLose <= 0) {
-      user.setStatistic("ORBS", 0);
-    } else {
-      int current = user.getStatistic("ORBS");
-      user.setStatistic("ORBS", (Math.max(current - orbsToLose, 0)));
-    }
+  private enum OrbDeathType {
+    PERCENTAGE, AMOUNT, SET, KEEP
   }
 
   @EventHandler
