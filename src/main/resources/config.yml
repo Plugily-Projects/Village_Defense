@@ -52,24 +52,24 @@ Commands:
   Shorter:
     '1':
       Short: "start"
-      Executes: "plugilyprojectsadmin forcestart"
+      Executes: "vda forcestart"
       Enabled: true
     '2':
       Short: "leave"
-      Executes: "plugilyprojects leave"
+      Executes: "vd leave"
       Enabled: true
     '3':
       Short: "kit"
-      Executes: "plugilyprojects selectkit"
+      Executes: "vd selectkit"
       Enabled: false
     '4':
       Short: "stats"
-      Executes: "plugilyprojects stats"
+      Executes: "vd stats"
       Enabled: false
     '5':
       Short: "top"
-      Executes: "plugilyprojects top"
-      Enabled: true
+      Executes: "vd top"
+      Enabled: false
 
 
 # Block some functions of your players
