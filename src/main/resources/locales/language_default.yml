@@ -35,7 +35,7 @@ Commands:
     Adjust-Statistic: "&eStatistic %value% of %player% is now %number%!"
     Reload-Success: "&aArenas reloaded!"
     List:
-      Header: "&a%plugin_name% &6arenas:"
+      Header: "&a%plugin_name% &6arenas: &aName &eState &6Players"
       Format: "&a%arena_name% &e%arena_state_placeholder% &6%arena_players_size%/%arena_max_players%"
       No-Arenas: "&cThere are no game instances!"
     Spychat:
@@ -133,6 +133,7 @@ Bossbar:
     In-Game:
       - "&e&lPlaying &f&l%plugin_name_uppercase% &e&lon &b&lPLUGILY.XYZ"
       - "&e&lCheck the plugin creator out &e&lon &b&lPLUGILY.XYZ"
+      - "&e&lCurrent wave %arena_option_wave%"
     Ending:
       - "&c&lGame has ended! You were playing on &b&lPLUGILY.XYZ"
     Restarting:
@@ -208,7 +209,7 @@ In-Game:
         - "&a&m--------------------------------------------------"
       Placeholders:
         Win: "You won the game"
-        Lose: "You lose the game"
+        Lose: "You lost the game"
         Died:
           Players: "&7All players died!"
           Villagers: "&7All villagers died!"
