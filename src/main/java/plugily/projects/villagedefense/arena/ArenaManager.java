@@ -94,7 +94,7 @@ public class ArenaManager extends PluginArenaManager {
       return;
     }
 
-    String titleTimes = new MessageBuilder("IN_GAME_MESSAGES_VILLAGE_WAVE_END_TIMES").asKey().arena(arena).build();
+    String titleTimes = plugin.getLanguageManager().getLanguageMessage(plugin.getMessageManager().getPath("IN_GAME_MESSAGES_VILLAGE_WAVE_END_TIMES"));
     String[] split = titleTimes.split(", ", 3);
 
     int fadeIn = split.length > 1 ? Integer.parseInt(split[0]) : 20,
@@ -188,7 +188,7 @@ public class ArenaManager extends PluginArenaManager {
       ArenaUtils.bringDeathPlayersBack(arena);
     }
 
-    String titleTimes = new MessageBuilder("IN_GAME_MESSAGES_VILLAGE_WAVE_START_TIMES").asKey().arena(arena).build();
+    String titleTimes = plugin.getLanguageManager().getLanguageMessage(plugin.getMessageManager().getPath("IN_GAME_MESSAGES_VILLAGE_WAVE_START_TIMES"));
     String[] split = titleTimes.split(", ", 3);
 
     int fadeIn = split.length > 1 ? Integer.parseInt(split[0]) : 20,

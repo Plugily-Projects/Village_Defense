@@ -2,7 +2,7 @@ name: VillageDefense
 main: plugily.projects.villagedefense.Main
 authors: [ PlugilyProjects, Tigerpanzer_02, TomTheDeveloper, Plajer, montlikadani ]
 version: ${project.version}
-softdepend: [ HolographicDisplays, PlaceholderAPI, Parties, Spigot-Party-API-PAF, PartyAndFriends ]
+softdepend: [ HolographicDisplays, PlaceholderAPI, Parties, Spigot-Party-API-PAF, PartyAndFriends, ViaVersion, ProtocolSupport ]
 api-version: 1.13
 
 commands:

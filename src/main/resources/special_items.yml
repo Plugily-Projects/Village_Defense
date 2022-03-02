@@ -55,7 +55,7 @@ Player-List:
   displayname: "&a&lAlive Players &7(Right Click)"
   lore:
     - "&7Right-click to see alive players list"
-  material: COMPASS
+  material: PLAYER_HEAD
   slot: 0
   stage: SPECTATOR
   force: true
@@ -95,7 +95,7 @@ Arena-Selector:
   displayname: "&c&lArena selector &7(Right Click)"
   lore:
     - "&7Right-click to see all arenas"
-  material: EMERALD
+  material: CHEST
   slot: 4
   stage: SERVER_JOIN
   force: false
@@ -108,7 +108,7 @@ Stats:
   displayname: "&c&lStats &7(Right Click)"
   lore:
     - "&7Right-click to see your Stats"
-  material: HEAD
+  material: PLAYER_HEAD
   slot: 0
   stage: SERVER_JOIN
   force: false
