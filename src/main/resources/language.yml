@@ -259,8 +259,8 @@ In-Game:
         Next-In: "%plugin_prefix% Next wave starts in %number% seconds!"
         Started: "%plugin_prefix% Wave %number% started!"
         Title:
-          Start: "20, 30, 20;Wave %number%;"
-          End: "20, 30, 20;Wave %number% ended;"
+          Start: "20,30,20;Wave %number%;"
+          End: "20,30,20;Wave %number% ended;"
       Orbs:
         Pickup: "+ %number% orbs"
       Entities:
