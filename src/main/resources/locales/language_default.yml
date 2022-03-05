@@ -89,7 +89,7 @@ Scoreboard:
       - "   www.plugily.xyz"
     Starting:
       - ""
-      - "■ Starting In | %arena_time%"
+      - "■ Starting | %arena_time%"
       - ""
       - "■ Players | %arena_players_size%"
       - ""
@@ -99,9 +99,9 @@ Scoreboard:
     # Contents of scoreboard while ingame
     In-Game:
       - ""
-      - "■ Villagers Left | %arena_villager_size%"
-      - "■ Players Left | %arena_players_left_size%"
-      - "■ Zombies Left | %arena_zombie_size_left%"
+      - "■ Villagers | %arena_villager_size%"
+      - "■ Players | %arena_players_left_size%"
+      - "■ Zombies | %arena_zombie_size_left%"
       - ""
       - "■ Rotten Flesh | %arena_rotten_flesh_amount%"
       - "■ Orbs | %user_statistic_orbs%"
@@ -109,11 +109,10 @@ Scoreboard:
       - "   www.plugily.xyz"
     In-Game-Waiting:
       - ""
-      - "■ Villagers Left | %arena_villager_size%"
-      - "■ Players Left | %arena_players_left_size%"
-      - "■ Zombies Left | %arena_zombie_size_left%"
+      - "■ Villagers | %arena_villager_size%"
+      - "■ Players | %arena_players_left_size%"
       - ""
-      - "■ Next Wave In | %arena_time%"
+      - "■ Next Wave | %arena_time%"
       - ""
       - "■ Rotten Flesh | %arena_rotten_flesh_amount%"
       - "■ Orbs | %user_statistic_orbs%"
@@ -123,7 +122,7 @@ Scoreboard:
     Ending:
       - "&f"
       - "&f"
-      - "&cGAME ENDED"
+      - "■ &cGAME ENDED"
       - ""
       - "&f"
       - "&f"
@@ -133,7 +132,7 @@ Scoreboard:
     Restarting:
       - "&f"
       - "&f"
-      - "&cRESTARTING GAME"
+      - "■ &cRESTARTING GAME"
       - ""
       - "&f"
       - "&f"
