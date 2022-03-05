@@ -164,7 +164,7 @@ public class Main extends PluginMain {
     getStatsStorage().registerStatistic("KILLS", new StatisticType("kills", true, "int(11) NOT NULL DEFAULT '0'"));
     getStatsStorage().registerStatistic("DEATHS", new StatisticType("deaths", true, "int(11) NOT NULL DEFAULT '0'"));
     getStatsStorage().registerStatistic("HIGHEST_WAVE", new StatisticType("highest_wave", true, "int(11) NOT NULL DEFAULT '0'"));
-    getStatsStorage().registerStatistic("ORBS", new StatisticType("orbs", true, "int(11) NOT NULL DEFAULT '0'"));
+    getStatsStorage().registerStatistic("ORBS", new StatisticType("orbs", false, "int(11) NOT NULL DEFAULT '0'"));
 
     getPermissionsManager().registerPermissionCategory("ORBS_BOOSTER", new PermissionCategory("Orbs-Boost", null));
     getPermissionsManager().registerPermissionCategory("PLAYER_SPAWN_LIMIT_WOLVES", new PermissionCategory("Spawn-Limit.Wolves", null));

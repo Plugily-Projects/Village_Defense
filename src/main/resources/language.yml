@@ -601,6 +601,8 @@ Leaderboard:
         Header: "&8&m+----------------+ [&6 Top 10 &8&m] +----------------+"
         Format: "&e#%number% %player% - %value% %user_statistic%"
   Statistics:
+    Wins: "Wins ▸ %number%"
+    Loses: "Loses ▸ %number%"
     Games-Played: "Games Played ▸ %number%"
     Level: "Level ▸ %number%"
     Exp: "Experience ▸ %number%"
