@@ -249,12 +249,8 @@ public class Main extends PluginMain {
     getMessageManager().registerMessage("IN_GAME_MESSAGES_VILLAGE_WAVE_RESPAWNED", new Message("In-Game.Messages.Village.Wave.Respawned", ""));
     getMessageManager().registerMessage("IN_GAME_MESSAGES_VILLAGE_WAVE_NEXT_IN", new Message("In-Game.Messages.Village.Wave.Next-In", ""));
     getMessageManager().registerMessage("IN_GAME_MESSAGES_VILLAGE_WAVE_STARTED", new Message("In-Game.Messages.Village.Wave.Started", ""));
-    getMessageManager().registerMessage("IN_GAME_MESSAGES_VILLAGE_WAVE_START_TIMES", new Message("In-Game.Messages.Village.Wave.Title.Start.Times", ""));
-    getMessageManager().registerMessage("IN_GAME_MESSAGES_VILLAGE_WAVE_START_TITLE", new Message("In-Game.Messages.Village.Wave.Title.Start.Title", ""));
-    getMessageManager().registerMessage("IN_GAME_MESSAGES_VILLAGE_WAVE_START_SUBTITLE", new Message("In-Game.Messages.Village.Wave.Title.Start.SubTitle", ""));
-    getMessageManager().registerMessage("IN_GAME_MESSAGES_VILLAGE_WAVE_END_TIMES", new Message("In-Game.Messages.Village.Wave.Title.End.Times", ""));
-    getMessageManager().registerMessage("IN_GAME_MESSAGES_VILLAGE_WAVE_END_TITLE", new Message("In-Game.Messages.Village.Wave.Title.End.Title", ""));
-    getMessageManager().registerMessage("IN_GAME_MESSAGES_VILLAGE_WAVE_END_SUBTITLE", new Message("In-Game.Messages.Village.Wave.Title.End.SubTitle", ""));
+    getMessageManager().registerMessage("IN_GAME_MESSAGES_VILLAGE_WAVE_TITLE_START", new Message("In-Game.Messages.Village.Wave.Title.Start.Title", ""));
+    getMessageManager().registerMessage("IN_GAME_MESSAGES_VILLAGE_WAVE_TITLE_END", new Message("In-Game.Messages.Village.Wave.Title.End.Title", ""));
     getMessageManager().registerMessage("IN_GAME_MESSAGES_VILLAGE_WAVE_ORBS_PICKUP", new Message("In-Game.Messages.Village.Orbs.Pickup", ""));
     getMessageManager().registerMessage("IN_GAME_MESSAGES_VILLAGE_WAVE_ENTITIES_WOLF_SPAWN", new Message("In-Game.Messages.Village.Entities.Wolf.Spawn", ""));
     getMessageManager().registerMessage("IN_GAME_MESSAGES_VILLAGE_WAVE_ENTITIES_WOLF_NAME", new Message("In-Game.Messages.Village.Entities.Wolf.Name", ""));

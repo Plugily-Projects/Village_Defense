@@ -25,6 +25,7 @@ import org.jetbrains.annotations.NotNull;
 import plugily.projects.minigamesbox.classic.arena.PluginArena;
 import plugily.projects.minigamesbox.classic.arena.PluginArenaManager;
 import plugily.projects.minigamesbox.classic.handlers.language.MessageBuilder;
+import plugily.projects.minigamesbox.classic.handlers.language.TitleBuilder;
 import plugily.projects.minigamesbox.classic.user.User;
 import plugily.projects.minigamesbox.classic.utils.version.VersionUtils;
 import plugily.projects.villagedefense.Main;
@@ -94,20 +95,11 @@ public class ArenaManager extends PluginArenaManager {
       return;
     }
 
-    String titleTimes = plugin.getLanguageManager().getLanguageMessage(plugin.getMessageManager().getPath("IN_GAME_MESSAGES_VILLAGE_WAVE_END_TIMES"));
-    String[] split = titleTimes.split(", ", 3);
-
-    int fadeIn = split.length > 1 ? Integer.parseInt(split[0]) : 20,
-        stay = split.length > 2 ? Integer.parseInt(split[1]) : 30,
-        fadeOut = split.length > 3 ? Integer.parseInt(split[2]) : 20;
-
-    String title = new MessageBuilder("IN_GAME_MESSAGES_VILLAGE_WAVE_END_TITLE").asKey().arena(arena).integer(wave).build();
-    String subTitle = new MessageBuilder("IN_GAME_MESSAGES_VILLAGE_WAVE_END_SUBTITLE").asKey().arena(arena).integer(wave).build();
+    new TitleBuilder("IN_GAME_MESSAGES_VILLAGE_WAVE_TITLE_END").asKey().arena(arena).integer(wave).sendArena();
 
     for(User user : plugin.getUserManager().getUsers(arena)) {
       if(!user.isSpectator() && !user.isPermanentSpectator()) {
         Player player = user.getPlayer();
-        VersionUtils.sendTitles(player, title, subTitle, fadeIn, stay, fadeOut);
         plugin.getRewardsHandler().performReward(player, arena, plugin.getRewardsHandler().getRewardType("END_WAVE"));
       }
     }
@@ -188,24 +180,13 @@ public class ArenaManager extends PluginArenaManager {
       ArenaUtils.bringDeathPlayersBack(arena);
     }
 
-    String titleTimes = plugin.getLanguageManager().getLanguageMessage(plugin.getMessageManager().getPath("IN_GAME_MESSAGES_VILLAGE_WAVE_START_TIMES"));
-    String[] split = titleTimes.split(", ", 3);
-
-    int fadeIn = split.length > 1 ? Integer.parseInt(split[0]) : 20,
-        stay = split.length > 2 ? Integer.parseInt(split[1]) : 30,
-        fadeOut = split.length > 3 ? Integer.parseInt(split[2]) : 20;
-
-    String title = new MessageBuilder("IN_GAME_MESSAGES_VILLAGE_WAVE_START_TITLE").asKey().arena(arena).integer(wave).build();
-    String subTitle = new MessageBuilder("IN_GAME_MESSAGES_VILLAGE_WAVE_START_SUBTITLE").asKey().arena(arena).integer(wave).build();
+    new TitleBuilder("IN_GAME_MESSAGES_VILLAGE_WAVE_TITLE_START").asKey().arena(arena).integer(wave).sendArena();
 
     for(User user : plugin.getUserManager().getUsers(arena)) {
       Player player = user.getPlayer();
-
       if(!user.isSpectator()) {
         user.getKit().reStock(player);
       }
-
-      VersionUtils.sendTitles(player, title, subTitle, fadeIn, stay, fadeOut);
       plugin.getRewardsHandler().performReward(player, arena, plugin.getRewardsHandler().getRewardType("START_WAVE"));
 
       new MessageBuilder("IN_GAME_MESSAGES_VILLAGE_WAVE_STARTED").asKey().arena(arena).integer(wave).player(player).sendPlayer();
