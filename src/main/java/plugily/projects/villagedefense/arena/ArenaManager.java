@@ -155,7 +155,7 @@ public class ArenaManager extends PluginArenaManager {
     int maxzombies = plugin.getConfig().getInt("Limit.Spawn.Zombies", 75);
 
     if(zombiesAmount > maxzombies) {
-      int multiplier = (int) Math.ceil((zombiesAmount - (double) maxzombies) / plugin.getConfig().getInt("Zombie-Multiplier-Divider", 18));
+      int multiplier = (int) Math.ceil((zombiesAmount - (double) maxzombies) / plugin.getConfig().getInt("Zombies.Multiplier-Divider", 18));
 
       if(multiplier < 2) multiplier = 2;
 
