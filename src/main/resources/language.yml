@@ -181,6 +181,7 @@ In-Game:
     Tag: "&8Dead"
     Screen: "%color_chat_issue%You died!"
   Spectator:
+    Blocked: "%color_chat_issue%%plugin_prefix% Spectators are disabled for this arena"
     You-Are-Spectator: "%plugin_prefix% You're now a spectator! You can fly now!"
     Spectator-Menu-Name: "%color_chat_issue%Alive players list"
     Target-Player-Health: "%color_chat_issue%Health: %number%"
@@ -230,6 +231,7 @@ In-Game:
       Placeholders:
         Win: "&aYou won the game"
         Lose: "%color_chat_issue%You lost the game"
+        Players: "%color_chat_issue%%plugin_prefix% There are not enough players anymore. Arena got force stopped!"
         Died:
           Players: "%color_chat_issue%All players died!"
           Villagers: "%color_chat_issue%All villagers died!"
