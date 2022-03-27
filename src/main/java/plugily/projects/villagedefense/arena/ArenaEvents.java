@@ -40,6 +40,7 @@ import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import plugily.projects.minigamesbox.classic.arena.ArenaState;
+import plugily.projects.minigamesbox.classic.arena.PluginArenaEvents;
 import plugily.projects.minigamesbox.classic.handlers.items.SpecialItem;
 import plugily.projects.minigamesbox.classic.handlers.language.MessageBuilder;
 import plugily.projects.minigamesbox.classic.user.User;
@@ -53,11 +54,12 @@ import plugily.projects.villagedefense.Main;
  * <p>
  * Created at 13.03.2018
  */
-public class ArenaEvents implements Listener {
+public class ArenaEvents extends PluginArenaEvents {
 
   private final Main plugin;
 
   public ArenaEvents(Main plugin) {
+    super(plugin);
     this.plugin = plugin;
     plugin.getServer().getPluginManager().registerEvents(this, plugin);
   }

@@ -48,6 +48,7 @@ import org.bukkit.event.entity.PlayerLeashEntityEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryPickupItemEvent;
 import org.bukkit.event.inventory.InventoryType;
+import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerExpChangeEvent;
 import org.bukkit.inventory.ItemStack;
 import plugily.projects.minigamesbox.classic.arena.ArenaState;
@@ -159,6 +160,13 @@ public class PluginEvents implements Listener {
           event.getEntity().remove();
         }
       }
+    }
+  }
+
+  @EventHandler
+  public void onDrop(PlayerDropItemEvent event) {
+    if(plugin.getArenaRegistry().isInArena(event.getPlayer()) && event.getItemDrop().getItemStack().getType() == Material.SADDLE) {
+      event.setCancelled(true);
     }
   }
 
