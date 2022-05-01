@@ -1,4 +1,3 @@
-
 /*
  * Village Defense - Protect villagers from hordes of zombies
  * Copyright (c) 2022  Plugily Projects - maintained by Tigerpanzer_02 and contributors
@@ -16,8 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
-package plugily.projects.villagedefense.arena.managers;
+package plugily.projects.villagedefense.arena.managers.enemy.spawner;
 
 import org.bukkit.attribute.Attribute;
 import org.bukkit.configuration.ConfigurationSection;
@@ -28,18 +26,6 @@ import plugily.projects.minigamesbox.classic.utils.configuration.ConfigUtils;
 import plugily.projects.minigamesbox.classic.utils.version.ServerVersion;
 import plugily.projects.minigamesbox.classic.utils.version.xseries.XMaterial;
 import plugily.projects.villagedefense.Main;
-import plugily.projects.villagedefense.arena.Arena;
-import plugily.projects.villagedefense.arena.managers.spawner.EnemySpawner;
-import plugily.projects.villagedefense.creatures.v1_8_R3.spawner.BabyZombieSpawner;
-import plugily.projects.villagedefense.creatures.v1_8_R3.spawner.FastZombieSpawner;
-import plugily.projects.villagedefense.creatures.v1_8_R3.spawner.GolemBusterSpawner;
-import plugily.projects.villagedefense.creatures.v1_8_R3.spawner.HalfInvisibleZombieSpawner;
-import plugily.projects.villagedefense.creatures.v1_8_R3.spawner.HardZombieSpawner;
-import plugily.projects.villagedefense.creatures.v1_8_R3.spawner.KnockbackResistantZombieSpawner;
-import plugily.projects.villagedefense.creatures.v1_8_R3.spawner.PlayerBusterSpawner;
-import plugily.projects.villagedefense.creatures.v1_8_R3.spawner.SoftHardZombieSpawner;
-import plugily.projects.villagedefense.creatures.v1_8_R3.spawner.VillagerBusterSpawner;
-import plugily.projects.villagedefense.creatures.v1_8_R3.spawner.VillagerSlayerSpawner;
 import plugily.projects.villagedefense.creatures.v1_9_UP.CustomCreature;
 import plugily.projects.villagedefense.creatures.v1_9_UP.CustomCreatureEvents;
 import plugily.projects.villagedefense.creatures.v1_9_UP.CustomRideableCreature;
@@ -47,31 +33,23 @@ import plugily.projects.villagedefense.creatures.v1_9_UP.Equipment;
 import plugily.projects.villagedefense.creatures.v1_9_UP.Rate;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.EnumMap;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Optional;
-import java.util.Random;
-import java.util.Set;
-import java.util.TreeSet;
 import java.util.logging.Level;
 
 /**
- * The registry for all {@link EnemySpawner}
+ * @author Tigerpanzer_02
+ * <p>
+ * Created at 01.05.2022
  */
-public class EnemySpawnerRegistry {
-  private final Set<EnemySpawner> enemySpawnerSet = new TreeSet<>(Collections.reverseOrder());
-  private final Set<CustomRideableCreature> rideableCreatures = new HashSet<>();
-  private final Main plugin;
+public class EnemySpawnerRegistry extends EnemySpawnerRegistryLegacy {
   private static final String CREATURES_MISSING_SECTION = "Creatures section {0} is missing! Was it manually removed?";
 
   public EnemySpawnerRegistry(Main plugin) {
-    this.plugin = plugin;
-    registerCreatures();
-    registerRideableCreatures();
+    super(plugin);
   }
 
+  @Override
   public void registerRideableCreatures() {
     if(ServerVersion.Version.isCurrentEqualOrLower(ServerVersion.Version.v1_8_R3)) {
       return;
@@ -109,20 +87,8 @@ public class EnemySpawnerRegistry {
     }
   }
 
+  @Override
   public void registerCreatures() {
-    if(ServerVersion.Version.isCurrentEqualOrLower(ServerVersion.Version.v1_8_R3)) {
-      enemySpawnerSet.add(new BabyZombieSpawner());
-      enemySpawnerSet.add(new FastZombieSpawner());
-      enemySpawnerSet.add(new GolemBusterSpawner());
-      enemySpawnerSet.add(new HalfInvisibleZombieSpawner());
-      enemySpawnerSet.add(new HardZombieSpawner());
-      enemySpawnerSet.add(new KnockbackResistantZombieSpawner());
-      enemySpawnerSet.add(new PlayerBusterSpawner());
-      enemySpawnerSet.add(new SoftHardZombieSpawner());
-      enemySpawnerSet.add(new VillagerBusterSpawner());
-      enemySpawnerSet.add(new VillagerSlayerSpawner());
-      return;
-    }
     new CustomCreatureEvents(plugin);
     FileConfiguration config = ConfigUtils.getConfig(plugin, "creatures");
 
@@ -215,66 +181,5 @@ public class EnemySpawnerRegistry {
 
   }
 
-  /**
-   * Spawn the enemies at the arena
-   *
-   * @param random the random instance
-   * @param arena  the arena
-   */
-  public void spawnEnemies(Random random, Arena arena) {
-    int spawn = arena.getWave();
-    int zombiesLimit = plugin.getConfig().getInt("Limit.Spawn.Zombies", 75);
-    if(zombiesLimit < spawn) {
-      spawn = (int) Math.ceil(zombiesLimit / 2.0);
-    }
-    String zombieSpawnCounterOption = "ZOMBIE_SPAWN_COUNTER";
-    arena.changeArenaOptionBy(zombieSpawnCounterOption, 1);
-    if(arena.getArenaOption(zombieSpawnCounterOption) == 20) {
-      arena.setArenaOption(zombieSpawnCounterOption, 0);
-    }
 
-    List<EnemySpawner> enemySpawners = new ArrayList<>(enemySpawnerSet);
-    Collections.shuffle(enemySpawners);
-    for(EnemySpawner enemySpawner : enemySpawners) {
-      plugin.getDebugger().debug("Trying enemy spawn for " + enemySpawner.getName());
-      enemySpawner.spawn(random, arena, spawn);
-    }
-  }
-
-  /**
-   * Get the set of enemy spawners
-   *
-   * @return the set of enemy spawners
-   */
-  public Set<EnemySpawner> getEnemySpawnerSet() {
-    return enemySpawnerSet;
-  }
-
-  public Set<CustomRideableCreature> getRideableCreatures() {
-    return rideableCreatures;
-  }
-
-  /**
-   * Get the rideable creature by its type
-   *
-   * @param type the tyoe
-   * @return the rideable creature
-   */
-  public Optional<CustomRideableCreature> getRideableCreatureByName(CustomRideableCreature.RideableType type) {
-    return rideableCreatures.stream()
-        .filter(creature -> creature.getRideableType().equals(type))
-        .findFirst();
-  }
-
-  /**
-   * Get the enemy spawner by its name
-   *
-   * @param name the name
-   * @return the enemy spawner
-   */
-  public Optional<EnemySpawner> getSpawnerByName(String name) {
-    return enemySpawnerSet.stream()
-        .filter(enemySpawner -> enemySpawner.getName().equals(name))
-        .findFirst();
-  }
 }

@@ -41,12 +41,14 @@ import plugily.projects.minigamesbox.classic.utils.configuration.ConfigUtils;
 import plugily.projects.minigamesbox.classic.utils.services.locale.Locale;
 import plugily.projects.minigamesbox.classic.utils.services.locale.LocaleRegistry;
 import plugily.projects.minigamesbox.classic.utils.services.metrics.Metrics;
+import plugily.projects.minigamesbox.classic.utils.version.ServerVersion;
 import plugily.projects.villagedefense.arena.Arena;
 import plugily.projects.villagedefense.arena.ArenaEvents;
 import plugily.projects.villagedefense.arena.ArenaManager;
 import plugily.projects.villagedefense.arena.ArenaRegistry;
 import plugily.projects.villagedefense.arena.ArenaUtils;
-import plugily.projects.villagedefense.arena.managers.EnemySpawnerRegistry;
+import plugily.projects.villagedefense.arena.managers.enemy.spawner.EnemySpawnerRegistry;
+import plugily.projects.villagedefense.arena.managers.enemy.spawner.EnemySpawnerRegistryLegacy;
 import plugily.projects.villagedefense.commands.arguments.ArgumentsRegistry;
 import plugily.projects.villagedefense.creatures.CreatureUtils;
 import plugily.projects.villagedefense.creatures.DoorBreakListener;
@@ -92,7 +94,7 @@ import java.util.logging.Level;
 public class Main extends PluginMain {
 
   private FileConfiguration entityUpgradesConfig;
-  private EnemySpawnerRegistry enemySpawnerRegistry;
+  private EnemySpawnerRegistryLegacy enemySpawnerRegistry;
   private ArenaRegistry arenaRegistry;
   private ArenaManager arenaManager;
   private ArgumentsRegistry argumentsRegistry;
@@ -136,7 +138,11 @@ public class Main extends PluginMain {
     getSignManager().loadSigns();
     getSignManager().updateSigns();
     argumentsRegistry = new ArgumentsRegistry(this);
-    enemySpawnerRegistry = new EnemySpawnerRegistry(this);
+    if(ServerVersion.Version.isCurrentEqualOrLower(ServerVersion.Version.v1_8_R3)) {
+      enemySpawnerRegistry = new EnemySpawnerRegistryLegacy(this);
+    } else {
+      enemySpawnerRegistry = new EnemySpawnerRegistry(this);
+    }
     if(getConfigPreferences().getOption("UPGRADES")) {
       entityUpgradesConfig = ConfigUtils.getConfig(this, "entity_upgrades");
       Upgrade.init(this);
@@ -249,8 +255,8 @@ public class Main extends PluginMain {
     getMessageManager().registerMessage("IN_GAME_MESSAGES_VILLAGE_WAVE_RESPAWNED", new Message("In-Game.Messages.Village.Wave.Respawned", ""));
     getMessageManager().registerMessage("IN_GAME_MESSAGES_VILLAGE_WAVE_NEXT_IN", new Message("In-Game.Messages.Village.Wave.Next-In", ""));
     getMessageManager().registerMessage("IN_GAME_MESSAGES_VILLAGE_WAVE_STARTED", new Message("In-Game.Messages.Village.Wave.Started", ""));
-    getMessageManager().registerMessage("IN_GAME_MESSAGES_VILLAGE_WAVE_TITLE_START", new Message("In-Game.Messages.Village.Wave.Title.Start.Title", ""));
-    getMessageManager().registerMessage("IN_GAME_MESSAGES_VILLAGE_WAVE_TITLE_END", new Message("In-Game.Messages.Village.Wave.Title.End.Title", ""));
+    getMessageManager().registerMessage("IN_GAME_MESSAGES_VILLAGE_WAVE_TITLE_START", new Message("In-Game.Messages.Village.Wave.Title.Start", ""));
+    getMessageManager().registerMessage("IN_GAME_MESSAGES_VILLAGE_WAVE_TITLE_END", new Message("In-Game.Messages.Village.Wave.Title.End", ""));
     getMessageManager().registerMessage("IN_GAME_MESSAGES_VILLAGE_WAVE_ORBS_PICKUP", new Message("In-Game.Messages.Village.Orbs.Pickup", ""));
     getMessageManager().registerMessage("IN_GAME_MESSAGES_VILLAGE_WAVE_ENTITIES_WOLF_SPAWN", new Message("In-Game.Messages.Village.Entities.Wolf.Spawn", ""));
     getMessageManager().registerMessage("IN_GAME_MESSAGES_VILLAGE_WAVE_ENTITIES_WOLF_NAME", new Message("In-Game.Messages.Village.Entities.Wolf.Name", ""));
@@ -651,7 +657,7 @@ public class Main extends PluginMain {
     return entityUpgradesConfig;
   }
 
-  public EnemySpawnerRegistry getEnemySpawnerRegistry() {
+  public EnemySpawnerRegistryLegacy getEnemySpawnerRegistry() {
     return enemySpawnerRegistry;
   }
 
