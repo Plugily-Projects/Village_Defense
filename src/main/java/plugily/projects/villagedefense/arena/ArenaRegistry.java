@@ -94,8 +94,8 @@ public class ArenaRegistry extends PluginArenaRegistry {
 
     if(arena.getStartLocation().getWorld().getDifficulty() == Difficulty.PEACEFUL) {
       plugin.getDebugger().sendConsoleMsg(new MessageBuilder("VALIDATOR_INVALID_ARENA_CONFIGURATION").asKey().value("THERE IS A WRONG " +
-          "DIFFICULTY -> SET IT TO ANOTHER ONE THAN PEACEFUL").arena(arena).build());
-      return false;
+          "DIFFICULTY -> SET IT TO ANOTHER ONE THAN PEACEFUL - WE SET IT TO EASY").arena(arena).build());
+      arena.getStartLocation().getWorld().setDifficulty(Difficulty.EASY);
     }
     return true;
   }
