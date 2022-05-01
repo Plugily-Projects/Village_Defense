@@ -3,6 +3,7 @@ instances:
     lobbylocation: world,364.0,63.0,-72.0,0.0,0.0
     startlocation: world,364.0,63.0,-72.0,0.0,0.0
     endlocation: world,364.0,63.0,-72.0,0.0,0.0
+    spectatorlocation: world,364.0,63.0,-72.0,0.0,0.0
     minimumplayers: 2
     maximumplayers: 10
     mapname: mapname
