@@ -168,7 +168,7 @@ public class SetupInventory extends PluginSetupInventory {
           }
         }, true, true, false));
 
-        inv.setItem(28, new LocationItem(new ItemBuilder(XMaterial.OAK_DOOR.parseItem())
+        inv.setItem(37, new LocationItem(new ItemBuilder(XMaterial.OAK_DOOR.parseItem())
             .name(new MessageBuilder("&e&lAdd Game Door").build())
             .lore(ChatColor.GRAY + "Target arena door and click this.")
             .lore(ChatColor.DARK_GRAY + "(doors are required and will be")
