@@ -61,8 +61,8 @@ public class ShopManager {
     config = ConfigUtils.getConfig(plugin, "arenas");
     this.arena = arena;
 
-    defaultGolemItemName = new MessageBuilder("IN_GAME_MESSAGES_VILLAGE_SHOP_GOLEM_ITEM").asKey().build();
-    defaultWolfItemName = new MessageBuilder("IN_GAME_MESSAGES_VILLAGE_SHOP_WOLF_ITEM").asKey().build();
+    defaultGolemItemName = new MessageBuilder("IN_GAME_MESSAGES_VILLAGE_SHOP_GOLEM_ITEM", false).asKey().build();
+    defaultWolfItemName = new MessageBuilder("IN_GAME_MESSAGES_VILLAGE_SHOP_WOLF_ITEM", false).asKey().build();
 
     if(config.isSet("instances." + arena.getId() + ".shop")) {
       registerShop();
@@ -166,7 +166,7 @@ public class ShopManager {
 
         if(ItemUtils.isItemStackNamed(itemStack)) {
           String name = ComplementAccessor.getComplement().getDisplayName(itemStack.getItemMeta());
-          if(name.contains(new MessageBuilder("IN_GAME_MESSAGES_VILLAGE_SHOP_GOLEM_ITEM").asKey().build())
+          if(name.contains(new MessageBuilder("IN_GAME_MESSAGES_VILLAGE_SHOP_GOLEM_ITEM", false).asKey().build())
               || name.contains(defaultGolemItemName)) {
             if(!arena.canSpawnMobForPlayer(player, EntityType.IRON_GOLEM)) {
               return;
@@ -175,7 +175,7 @@ public class ShopManager {
             adjustOrbs(user, cost);
             return;
           }
-          if(name.contains(new MessageBuilder("IN_GAME_MESSAGES_VILLAGE_SHOP_WOLF_ITEM").asKey().build())
+          if(name.contains(new MessageBuilder("IN_GAME_MESSAGES_VILLAGE_SHOP_WOLF_ITEM", false).asKey().build())
               || name.contains(defaultWolfItemName)) {
             if(!arena.canSpawnMobForPlayer(player, EntityType.WOLF)) {
               return;
