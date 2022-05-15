@@ -125,7 +125,6 @@ public class Main extends PluginMain {
   }
 
   public void initializePluginClasses() {
-    addFileName("kits");
     addFileName("powerups");
     addFileName("creatures");
     addArenaOptions();
@@ -189,6 +188,7 @@ public class Main extends PluginMain {
   public void addKits() {
     long start = System.currentTimeMillis();
     getDebugger().debug("Adding kits...");
+    addFileName("kits");
     Class<?>[] classKitNames = new Class[]{KnightKit.class, LightTankKit.class, ZombieFinderKit.class, ArcherKit.class, PuncherKit.class, HealerKit.class, LooterKit.class, RunnerKit.class,
         MediumTankKit.class, WorkerKit.class, GolemFriendKit.class, TerminatorKit.class, HardcoreKit.class, CleanerKit.class, TeleporterKit.class, HeavyTankKit.class, ShotBowKit.class,
         DogFriendKit.class, PremiumHardcoreKit.class, TornadoKit.class, BlockerKit.class, MedicKit.class, NakedKit.class, WizardKit.class};
