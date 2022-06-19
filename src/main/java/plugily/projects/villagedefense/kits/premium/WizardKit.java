@@ -105,32 +105,32 @@ public class WizardKit extends PremiumKit implements Listener {
   }
 
   @EventHandler
-  public void onWizardDamage(EntityDamageByEntityEvent e) {
-    if(!(e.getDamager() instanceof Creature && e.getEntity() instanceof Player)) {
+  public void onWizardDamage(EntityDamageByEntityEvent event) {
+    if(!(event.getDamager() instanceof Creature && event.getEntity() instanceof Player)) {
       return;
     }
-    if(!wizardsOnDuty.contains(e.getEntity()) || getPlugin().getArenaRegistry().getArena((Player) e.getEntity()) == null) {
+    if(!wizardsOnDuty.contains(event.getEntity()) || getPlugin().getArenaRegistry().getArena((Player) event.getEntity()) == null) {
       return;
     }
-    ((Creature) e.getDamager()).damage(2.0, e.getEntity());
+    ((Creature) event.getDamager()).damage(2.0, event.getEntity());
   }
 
   @EventHandler
-  public void onStaffUse(PlugilyPlayerInteractEvent e) {
-    if(getPlugin().getArenaRegistry().getArena(e.getPlayer()) == null) {
+  public void onStaffUse(PlugilyPlayerInteractEvent event) {
+    if(getPlugin().getArenaRegistry().getArena(event.getPlayer()) == null) {
       return;
     }
 
-    User user = getPlugin().getUserManager().getUser(e.getPlayer());
+    User user = getPlugin().getUserManager().getUser(event.getPlayer());
     if(user.isSpectator() || !(user.getKit() instanceof WizardKit)) {
       return;
     }
 
-    ItemStack stack = VersionUtils.getItemInHand(e.getPlayer());
+    ItemStack stack = VersionUtils.getItemInHand(event.getPlayer());
     if(!ItemUtils.isItemStackNamed(stack)) {
       return;
     }
-    Player player = e.getPlayer();
+    Player player = event.getPlayer();
     if(ComplementAccessor.getComplement().getDisplayName(stack.getItemMeta()).equals(new MessageBuilder("KIT_CONTENT_WIZARD_GAME_ITEM_ESSENCE_NAME").asKey().build())) {
       if(!user.checkCanCastCooldownAndMessage("essence")) {
         return;
@@ -144,9 +144,9 @@ public class WizardKit extends PremiumKit implements Listener {
       getPlugin().getBukkitHelper().takeOneItem(player, stack);
       VersionUtils.setGlowing(player, true);
       applyRageParticles(player);
-      for(Entity en : player.getNearbyEntities(2, 2, 2)) {
-        if(CreatureUtils.isEnemy(en)) {
-          ((Creature) en).damage(9.0, player);
+      for(Entity entity : player.getNearbyEntities(2, 2, 2)) {
+        if(CreatureUtils.isEnemy(entity)) {
+          ((Creature) entity).damage(9.0, player);
         }
       }
       Bukkit.getScheduler().runTaskLater(getPlugin(), () -> {
