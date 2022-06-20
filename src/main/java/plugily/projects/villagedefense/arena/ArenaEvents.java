@@ -30,7 +30,6 @@ import org.bukkit.entity.Villager;
 import org.bukkit.entity.Wolf;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
@@ -324,7 +323,7 @@ public class ArenaEvents extends PluginArenaEvents {
         user.setStatistic("ORBS", deathValue);
         break;
       case PERCENTAGE:
-        user.setStatistic("ORBS", current * (deathValue / 10));
+        user.setStatistic("ORBS", current * (deathValue / 100));
         break;
       default:
         break;
