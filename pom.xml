@@ -56,6 +56,10 @@
             <id>plugilyprojects-repo</id>
             <url>https://maven.plugily.xyz/releases</url>
         </repository>
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -104,6 +108,16 @@
             <artifactId>annotations</artifactId>
             <version>22.0.0</version>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.github.GamerCoder215.MobChip</groupId>
+            <artifactId>mobchip-base</artifactId>
+            <version>1.4.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.GamerCoder215.MobChip</groupId>
+            <artifactId>mobchip-bukkit</artifactId>
+            <version>1.4.0</version>
         </dependency>
     </dependencies>
 
