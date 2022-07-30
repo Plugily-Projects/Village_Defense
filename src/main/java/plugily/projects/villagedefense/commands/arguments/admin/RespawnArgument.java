@@ -27,6 +27,7 @@ import plugily.projects.minigamesbox.classic.commands.arguments.data.LabelData;
 import plugily.projects.minigamesbox.classic.commands.arguments.data.LabeledCommandArgument;
 import plugily.projects.minigamesbox.classic.handlers.language.MessageBuilder;
 import plugily.projects.minigamesbox.classic.user.User;
+import plugily.projects.minigamesbox.classic.utils.version.VersionUtils;
 import plugily.projects.villagedefense.arena.Arena;
 import plugily.projects.villagedefense.arena.ArenaUtils;
 import plugily.projects.villagedefense.commands.arguments.ArgumentsRegistry;
@@ -81,7 +82,7 @@ public class RespawnArgument {
         //the default fly speed
         target.setFlySpeed(0.1f);
         user.setSpectator(false);
-        target.teleport(arena.getStartLocation());
+        VersionUtils.teleport(target, arena.getStartLocation());
         target.setFlying(false);
         target.setAllowFlight(false);
         ArenaUtils.showPlayer(target, arena);
