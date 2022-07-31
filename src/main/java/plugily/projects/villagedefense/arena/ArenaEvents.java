@@ -234,7 +234,7 @@ public class ArenaEvents extends PluginArenaEvents {
     player.spigot().respawn();
     plugin.getServer().getScheduler().runTask(plugin, () -> {
       if(arena.getArenaState() == ArenaState.STARTING) {
-        player.teleport(arena.getStartLocation());
+        VersionUtils.teleport(player, arena.getStartLocation());
         return;
       }
 
@@ -243,14 +243,14 @@ public class ArenaEvents extends PluginArenaEvents {
         player.setFlying(false);
         player.setAllowFlight(false);
         plugin.getUserManager().getUser(player).setStatistic("ORBS", 0);
-        player.teleport(arena.getEndLocation());
+        VersionUtils.teleport(player, arena.getEndLocation());
         return;
       }
 
       User user = plugin.getUserManager().getUser(player);
 
       plugin.getUserManager().addStat(user, plugin.getStatsStorage().getStatisticType("DEATHS"));
-      player.teleport(arena.getStartLocation());
+      VersionUtils.teleport(player, arena.getStartLocation());
       user.setSpectator(true);
       player.setGameMode(GameMode.SURVIVAL);
 

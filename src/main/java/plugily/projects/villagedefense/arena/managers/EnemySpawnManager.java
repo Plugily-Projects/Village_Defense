@@ -27,6 +27,7 @@ import java.util.Random;
 import org.bukkit.Location;
 import org.bukkit.entity.Creature;
 import org.bukkit.entity.Villager;
+import plugily.projects.minigamesbox.classic.utils.version.VersionUtils;
 import plugily.projects.villagedefense.arena.Arena;
 
 /**
@@ -89,7 +90,7 @@ public class EnemySpawnManager {
         if(checkerLoc == null) {
           enemyCheckerLocations.put(creature, creature.getLocation());
         } else if(creature.getLocation().distance(checkerLoc) <= 1) {
-          creature.teleport(arena.getRandomZombieSpawnLocation(random));
+          VersionUtils.teleport(creature, arena.getRandomZombieSpawnLocation(random));
           enemyCheckerLocations.put(creature, creature.getLocation());
           glitchedEnemies.add(creature);
         }

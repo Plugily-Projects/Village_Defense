@@ -131,7 +131,7 @@ public class TeleporterKit extends PremiumKit implements Listener {
       skull.setItemMeta(meta);
       gui.addItem(skull, onClick -> {
         new MessageBuilder("KIT_CONTENT_TELEPORTER_TELEPORT_PLAYER").asKey().arena(arena).player(arenaPlayer).sendPlayer();
-        player.teleport(arenaPlayer);
+        VersionUtils.teleport(player, arenaPlayer);
         VersionUtils.playSound(player.getLocation(), "ENTITY_ENDERMAN_TELEPORT");
         VersionUtils.sendParticles("PORTAL", arena.getPlayers(), player.getLocation(), 30);
         player.closeInventory();
@@ -142,7 +142,7 @@ public class TeleporterKit extends PremiumKit implements Listener {
           .name(villager.getCustomName())
           .lore(villager.getUniqueId().toString())
           .build(), onClick -> {
-        player.teleport(villager.getLocation());
+        VersionUtils.teleport(player, villager.getLocation());
         VersionUtils.playSound(player.getLocation(), "ENTITY_ENDERMAN_TELEPORT");
         VersionUtils.sendParticles("PORTAL", arena.getPlayers(), player.getLocation(), 30);
         new MessageBuilder("KIT_CONTENT_TELEPORTER_TELEPORT_VILLAGER").asKey().player(player).sendPlayer();

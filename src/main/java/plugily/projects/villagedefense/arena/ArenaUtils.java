@@ -67,7 +67,7 @@ public class ArenaUtils extends PluginArenaUtils {
 
       user.setSpectator(false);
 
-      player.teleport(startLoc);
+      VersionUtils.teleport(player, startLoc);
       player.setFlying(false);
       player.setAllowFlight(false);
       //the default fly speed
