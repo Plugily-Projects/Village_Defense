@@ -20,12 +20,10 @@
 package plugily.projects.villagedefense.creatures.v1_9_UP;
 
 import org.bukkit.Location;
-import org.bukkit.World;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Creature;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
-import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.inventory.ItemStack;
 import plugily.projects.minigamesbox.classic.utils.version.VersionUtils;
 
@@ -51,7 +49,6 @@ public class CustomRideableCreature {
   }
 
   public Creature spawn(Location location) {
-    World world = location.getWorld();
     EntityType entityType = EntityType.VILLAGER;
     switch(rideableType) {
       case VILLAGER:
@@ -64,7 +61,7 @@ public class CustomRideableCreature {
         entityType = EntityType.IRON_GOLEM;
         break;
     }
-    Entity entity = world.spawnEntity(location, entityType, CreatureSpawnEvent.SpawnReason.CUSTOM);
+    Entity entity = VersionUtils.spawnEntity(location, entityType);
     if(entity instanceof Creature) {
       Creature creature = (Creature) entity;
       creature.getAttribute(Attribute.GENERIC_FOLLOW_RANGE).setBaseValue(200D);

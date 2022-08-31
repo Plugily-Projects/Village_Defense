@@ -20,13 +20,11 @@
 package plugily.projects.villagedefense.creatures.v1_9_UP;
 
 import org.bukkit.Location;
-import org.bukkit.World;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Ageable;
 import org.bukkit.entity.Creature;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
-import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
 import plugily.projects.minigamesbox.classic.utils.version.ServerVersion;
@@ -261,8 +259,7 @@ public class CustomCreature implements SimpleEnemySpawner {
   }
 
   public Creature spawn(Location location) {
-    World world = location.getWorld();
-    Entity entity = world.spawnEntity(location, getEntityType(), CreatureSpawnEvent.SpawnReason.CUSTOM);
+    Entity entity = VersionUtils.spawnEntity(location, entityType);
     if(entity instanceof Ageable) {
       Ageable ageable = (Ageable) entity;
       ageable.setBreed(isBreed());
