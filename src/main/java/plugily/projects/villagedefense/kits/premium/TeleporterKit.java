@@ -131,7 +131,7 @@ public class TeleporterKit extends PremiumKit implements Listener {
       skull.setItemMeta(meta);
       gui.addItem(skull, onClick -> {
         new MessageBuilder("KIT_CONTENT_TELEPORTER_TELEPORT_PLAYER").asKey().arena(arena).player(arenaPlayer).sendPlayer();
-        VersionUtils.teleport(player, arenaPlayer);
+        VersionUtils.teleport(player, arenaPlayer.getLocation());
         VersionUtils.playSound(player.getLocation(), "ENTITY_ENDERMAN_TELEPORT");
         VersionUtils.sendParticles("PORTAL", arena.getPlayers(), player.getLocation(), 30);
         player.closeInventory();
