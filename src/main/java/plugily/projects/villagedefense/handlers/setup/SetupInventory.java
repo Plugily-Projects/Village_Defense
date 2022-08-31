@@ -19,45 +19,13 @@
 
 package plugily.projects.villagedefense.handlers.setup;
 
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
-import org.bukkit.block.Chest;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.entity.Player;
-import org.bukkit.event.inventory.ClickType;
-import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.material.Door;
-import org.jetbrains.annotations.Nullable;
-import plugily.projects.minigamesbox.classic.PluginMain;
-import plugily.projects.minigamesbox.classic.arena.PluginArena;
-import plugily.projects.minigamesbox.classic.handlers.language.MessageBuilder;
-import plugily.projects.minigamesbox.classic.handlers.setup.PluginSetupInventory;
-import plugily.projects.minigamesbox.classic.handlers.setup.SetupUtilities;
-import plugily.projects.minigamesbox.classic.handlers.setup.items.LocationItem;
-import plugily.projects.minigamesbox.classic.utils.configuration.ConfigUtils;
-import plugily.projects.minigamesbox.classic.utils.helper.ItemBuilder;
-import plugily.projects.minigamesbox.classic.utils.helper.MaterialUtils;
-import plugily.projects.minigamesbox.classic.utils.misc.complement.ComplementAccessor;
-import plugily.projects.minigamesbox.classic.utils.serialization.LocationSerializer;
-import plugily.projects.minigamesbox.classic.utils.version.ServerVersion;
-import plugily.projects.minigamesbox.classic.utils.version.xseries.XMaterial;
-import plugily.projects.minigamesbox.inventory.normal.NormalFastInv;
-import plugily.projects.villagedefense.Main;
-import plugily.projects.villagedefense.arena.Arena;
-
-import java.util.List;
-
 /**
  * @author Tigerpanzer_02
  * <p>
  * Created at 04.01.2022
  */
-public class SetupInventory extends PluginSetupInventory {
+public class SetupInventory {
+}/* extends PluginSetupInventory {
 
   private final Main plugin;
   private Arena arena;
@@ -420,4 +388,4 @@ public class SetupInventory extends PluginSetupInventory {
           (byte) config.getInt(path + "byte"));
     }
   }
-}
+}*/
