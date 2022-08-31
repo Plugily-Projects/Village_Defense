@@ -25,6 +25,7 @@ import org.bukkit.entity.Creature;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemStack;
+import plugily.projects.minigamesbox.classic.utils.version.ServerVersion;
 import plugily.projects.minigamesbox.classic.utils.version.VersionUtils;
 
 import java.util.Map;
@@ -73,7 +74,9 @@ public class CustomRideableCreature {
         }
       }
       creature.setRemoveWhenFarAway(false);
-      creature.setInvisible(false);
+      if(ServerVersion.Version.isCurrentEqualOrHigher(ServerVersion.Version.v1_16_R3)) {
+        creature.setInvisible(false);
+      }
       return creature;
     } else {
       entity.remove();
