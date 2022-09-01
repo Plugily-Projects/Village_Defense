@@ -1,6 +1,6 @@
 /*
  * Village Defense - Protect villagers from hordes of zombies
- * Copyright (c) 2022  Plugily Projects - maintained by Tigerpanzer_02 and contributors
+ * Copyright (C) 2022  Plugily Projects - maintained by 2Wild4You, Tigerpanzer_02 and contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,6 +18,15 @@
 
 package plugily.projects.villagedefense.arena;
 
+import java.util.ArrayList;
+import java.util.EnumMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Random;
+import java.util.logging.Level;
+import java.util.stream.Collectors;
+
 import org.bukkit.Location;
 import org.bukkit.entity.Creature;
 import org.bukkit.entity.Entity;
@@ -28,6 +37,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.entity.Villager;
 import org.bukkit.entity.Wolf;
 import org.jetbrains.annotations.NotNull;
+
 import plugily.projects.minigamesbox.classic.arena.ArenaState;
 import plugily.projects.minigamesbox.classic.arena.PluginArena;
 import plugily.projects.minigamesbox.classic.handlers.language.MessageBuilder;
@@ -44,15 +54,6 @@ import plugily.projects.villagedefense.arena.states.InGameState;
 import plugily.projects.villagedefense.arena.states.RestartingState;
 import plugily.projects.villagedefense.arena.states.StartingState;
 import plugily.projects.villagedefense.creatures.CreatureUtils;
-
-import java.util.ArrayList;
-import java.util.EnumMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Random;
-import java.util.logging.Level;
-import java.util.stream.Collectors;
 
 /**
  * @author Tigerpanzer_02
@@ -247,7 +248,7 @@ public class Arena extends PluginArena {
     Wolf wolf = CreatureUtils.getCreatureInitializer().spawnWolf(location);
     wolf.setOwner(player);
     wolf.setCustomNameVisible(getPlugin().getConfigPreferences().getOption("NAME_VISIBILITY_WOLF"));
-    wolf.setCustomName(new MessageBuilder("IN_GAME_MESSAGES_VILLAGE_WAVE_ENTITIES_WOLF_NAME").asKey().player(player).build());
+    wolf.setCustomName(new MessageBuilder("IN_GAME_MESSAGES_VILLAGE_WAVE_ENTITIES_WOLF_NAME").asKey().integer(0).player(player).build());
     new MessageBuilder("IN_GAME_MESSAGES_VILLAGE_WAVE_ENTITIES_WOLF_SPAWN").asKey().player(player).sendPlayer();
     addWolf(wolf);
   }
@@ -259,7 +260,7 @@ public class Arena extends PluginArena {
 
     IronGolem ironGolem = CreatureUtils.getCreatureInitializer().spawnGolem(location);
     ironGolem.setCustomNameVisible(getPlugin().getConfigPreferences().getOption("NAME_VISIBILITY_GOLEM"));
-    ironGolem.setCustomName(new MessageBuilder("IN_GAME_MESSAGES_VILLAGE_WAVE_ENTITIES_GOLEM_NAME").asKey().player(player).build());
+    ironGolem.setCustomName(new MessageBuilder("IN_GAME_MESSAGES_VILLAGE_WAVE_ENTITIES_GOLEM_NAME").asKey().integer(0).player(player).build());
     new MessageBuilder("IN_GAME_MESSAGES_VILLAGE_WAVE_ENTITIES_GOLEM_SPAWN").asKey().player(player).sendPlayer();
     addIronGolem(ironGolem);
   }

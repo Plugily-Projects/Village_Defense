@@ -267,11 +267,11 @@ In-Game:
       Entities:
         Wolf:
           Spawn: "%plugin_prefix% Wolf spawned in the village!"
-          Name: "%player%'s Wolf"
+          Name: "%player%'s Wolf &8(&7LVL %number%&8)"
           Death: "%color_chat_issue%%plugin_prefix% One of your wolves were killed!"
         Golem:
           Spawn: "%plugin_prefix% Golem spawned in the village!"
-          Name: "%player%'s Golem"
+          Name: "%player%'s Golem &8(&7LVL %number%&8)"
           Cant-Ride-Other: "%color_chat_issue%%plugin_prefix% You can't ride the golem of somebody else!"
       Shop:
         GUI: "&lShop"
