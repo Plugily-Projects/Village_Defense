@@ -58,6 +58,11 @@ Kit-Cooldown:
     Flower: 15
     Bloodlust: 70
   Zombie-Finder: 30
+  Medic:
+    Aura:
+      I: 30
+      II: 15
+    Homecoming: 60
 
 # The settings for some kits
 Kit-Settings:

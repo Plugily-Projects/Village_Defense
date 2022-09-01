@@ -430,6 +430,15 @@ public class Main extends PluginMain {
 
     getMessageManager().registerMessage("KIT_CONTENT_MEDIC_NAME", new Message("Kit.Content.Medic.Name", ""));
     getMessageManager().registerMessage("KIT_CONTENT_MEDIC_DESCRIPTION", new Message("Kit.Content.Medic.Description", ""));
+    getMessageManager().registerMessage("KIT_CONTENT_MEDIC_GAME_ITEM_AURA_NAME", new Message("Kit.Content.Medic.Game-Item.Aura.Name", ""));
+    getMessageManager().registerMessage("KIT_CONTENT_MEDIC_GAME_ITEM_AURA_DESCRIPTION", new Message("Kit.Content.Medic.Game-Item.Aura.Description", ""));
+    getMessageManager().registerMessage("KIT_CONTENT_MEDIC_GAME_ITEM_AURA_ACTIVE_ACTION_BAR", new Message("Kit.Content.Medic.Game-Item.Aura.Active-Action-Bar", ""));
+    getMessageManager().registerMessage("KIT_CONTENT_MEDIC_GAME_ITEM_AURA_HEALED_BY_ACTION_BAR", new Message("Kit.Content.Medic.Game-Item.Aura.Healed-By-Action-Bar", ""));
+    getMessageManager().registerMessage("KIT_CONTENT_MEDIC_GAME_ITEM_HOMECOMING_NAME", new Message("Kit.Content.Medic.Game-Item.Homecoming.Name", ""));
+    getMessageManager().registerMessage("KIT_CONTENT_MEDIC_GAME_ITEM_HOMECOMING_DESCRIPTION", new Message("Kit.Content.Medic.Game-Item.Homecoming.Description", ""));
+    getMessageManager().registerMessage("KIT_CONTENT_MEDIC_GAME_ITEM_HOMECOMING_ACTIVATE", new Message("Kit.Content.Medic.Game-Item.Homecoming.Activate", ""));
+    getMessageManager().registerMessage("KIT_CONTENT_MEDIC_GAME_ITEM_HOMECOMING_RESPAWNED_BY_TITLE", new Message("Kit.Content.Medic.Game-Item.Homecoming.Respawned-By-Title", ""));
+    getMessageManager().registerMessage("KIT_CONTENT_MEDIC_GAME_ITEM_HOMECOMING_RESPAWNED_BY_SUBTITLE", new Message("Kit.Content.Medic.Game-Item.Homecoming.Respawned-By-Subtitle", ""));
 
 //WILD_NAKED
 
