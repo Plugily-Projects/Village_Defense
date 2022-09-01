@@ -1,6 +1,6 @@
 /*
  * Village Defense - Protect villagers from hordes of zombies
- * Copyright (c) 2022  Plugily Projects - maintained by Tigerpanzer_02 and contributors
+ * Copyright (C) 2022  Plugily Projects - maintained by 2Wild4You, Tigerpanzer_02 and contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,12 +18,17 @@
 
 package plugily.projects.villagedefense;
 
+import java.io.File;
+import java.util.Arrays;
+import java.util.logging.Level;
+
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPluginLoader;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.TestOnly;
+
 import plugily.projects.minigamesbox.classic.PluginMain;
 import plugily.projects.minigamesbox.classic.api.StatisticType;
 import plugily.projects.minigamesbox.classic.arena.PluginArena;
@@ -79,10 +84,6 @@ import plugily.projects.villagedefense.kits.premium.ShotBowKit;
 import plugily.projects.villagedefense.kits.premium.TeleporterKit;
 import plugily.projects.villagedefense.kits.premium.TornadoKit;
 import plugily.projects.villagedefense.kits.premium.WizardKit;
-
-import java.io.File;
-import java.util.Arrays;
-import java.util.logging.Level;
 
 /**
  * Created by Tom on 12/08/2014.
@@ -295,6 +296,7 @@ public class Main extends PluginMain {
     getMessageManager().registerMessage("UPGRADE_MENU_UPGRADES_DEFENSE_NAME", new Message("Upgrade-Menu.Upgrades.Final-Defense.Name", ""));
     getMessageManager().registerMessage("UPGRADE_MENU_UPGRADES_DEFENSE_DESCRIPTION", new Message("Upgrade-Menu.Upgrades.Final-Defense.Description", ""));
 
+    getMessageManager().registerMessage("KIT_LOCKED_TILL", new Message("Kit.Locked-Till", ""));
 
     //CLEANER KIT
 
@@ -439,10 +441,15 @@ public class Main extends PluginMain {
 
     getMessageManager().registerMessage("KIT_CONTENT_WIZARD_NAME", new Message("Kit.Content.Wizard.Name", ""));
     getMessageManager().registerMessage("KIT_CONTENT_WIZARD_DESCRIPTION", new Message("Kit.Content.Wizard.Description", ""));
-    getMessageManager().registerMessage("KIT_CONTENT_WIZARD_GAME_ITEM_ESSENCE_NAME", new Message("Kit.Content.Wizard.Game-Item.Essence.Name", ""));
-    getMessageManager().registerMessage("KIT_CONTENT_WIZARD_GAME_ITEM_ESSENCE_DESCRIPTION", new Message("Kit.Content.Wizard.Game-Item.Essence.Description", ""));
     getMessageManager().registerMessage("KIT_CONTENT_WIZARD_GAME_ITEM_WAND_NAME", new Message("Kit.Content.Wizard.Game-Item.Wand.Name", ""));
     getMessageManager().registerMessage("KIT_CONTENT_WIZARD_GAME_ITEM_WAND_DESCRIPTION", new Message("Kit.Content.Wizard.Game-Item.Wand.Description", ""));
+    getMessageManager().registerMessage("KIT_CONTENT_WIZARD_GAME_ITEM_FLOWER_NAME", new Message("Kit.Content.Wizard.Game-Item.Flower.Name", ""));
+    getMessageManager().registerMessage("KIT_CONTENT_WIZARD_GAME_ITEM_FLOWER_DESCRIPTION", new Message("Kit.Content.Wizard.Game-Item.Flower.Description", ""));
+    getMessageManager().registerMessage("KIT_CONTENT_WIZARD_GAME_ITEM_FLOWER_ACTIVATE", new Message("Kit.Content.Wizard.Game-Item.Flower.Activate", ""));
+    getMessageManager().registerMessage("KIT_CONTENT_WIZARD_GAME_ITEM_BLOODLUST_NAME", new Message("Kit.Content.Wizard.Game-Item.Bloodlust.Name", ""));
+    getMessageManager().registerMessage("KIT_CONTENT_WIZARD_GAME_ITEM_BLOODLUST_DESCRIPTION", new Message("Kit.Content.Wizard.Game-Item.Bloodlust.Description", ""));
+    getMessageManager().registerMessage("KIT_CONTENT_WIZARD_GAME_ITEM_BLOODLUST_ACTIVATE", new Message("Kit.Content.Wizard.Game-Item.Bloodlust.Activate", ""));
+    getMessageManager().registerMessage("KIT_CONTENT_WIZARD_GAME_ITEM_BLOODLUST_ACTIVE_ACTION_BAR", new Message("Kit.Content.Wizard.Game-Item.Bloodlust.Active-Action-Bar", ""));
 
   }
 

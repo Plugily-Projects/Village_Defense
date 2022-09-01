@@ -54,8 +54,9 @@ Kit-Cooldown:
   Cleaner: 60
   Shot-Bow: 5
   Wizard:
-    Essence: 15
     Staff: 1
+    Flower: 15
+    Bloodlust: 70
   Zombie-Finder: 30
 
 # The settings for some kits
