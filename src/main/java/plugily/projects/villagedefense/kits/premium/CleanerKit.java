@@ -98,7 +98,7 @@ public class CleanerKit extends PremiumKit implements Listener {
       new MessageBuilder("IN_GAME_SPECTATOR_SPECTATOR_WARNING").asKey().player(user.getPlayer()).sendPlayer();
       return;
     }
-    long cooldown = user.getCooldown("clean");
+    double cooldown = user.getCooldown("clean");
     if(cooldown > 0 && !user.isSpectator()) {
       new MessageBuilder("KIT_COOLDOWN").asKey().integer((int) cooldown).player(user.getPlayer()).sendPlayer();
       return;
