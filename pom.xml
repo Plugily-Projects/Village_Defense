@@ -199,14 +199,7 @@
             </plugin>
 
             <!-- External beta versions discord deployer plugin -->
-            <plugin>
-                <groupId>plugily.projects</groupId>
-                <artifactId>betty-maven-plugin</artifactId>
-                <version>1.0.2</version>
-                <configuration>
-                    <changelogFile>${project.basedir}/CHANGELOG.md</changelogFile>
-                </configuration>
-            </plugin>
+
             <!-- External beta versions discord deployer plugin -->
         </plugins>
         <extensions>

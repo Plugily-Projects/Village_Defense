@@ -25,7 +25,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -278,7 +277,7 @@ public class WizardKit extends PremiumKit implements Listener {
           //wand damage: 30/32/35 scaling % of entity's max health, we use direct health set to override armors etc.
           livingEntity.damage(0, user.getPlayer());
           double maxHealthPercent = getWandPercentageDamage(arena);
-          livingEntity.setHealth(Math.max(0, livingEntity.getHealth() - (livingEntity.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue() / 100.0) * maxHealthPercent));
+          livingEntity.setHealth(Math.max(0, livingEntity.getHealth() - (VersionUtils.getMaxHealth(livingEntity) / 100.0) * maxHealthPercent));
 
           if (livingEntity.isDead()) {
             XSound.ENTITY_ARROW_HIT_PLAYER.play(user.getPlayer());
