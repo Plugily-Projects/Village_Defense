@@ -96,7 +96,7 @@ public class ZombieFinderKit extends LevelKit implements Listener {
     if(!(user.getKit() instanceof ZombieFinderKit)) {
       return;
     }
-    long zombieCooldown = user.getCooldown("zombie");
+    double zombieCooldown = user.getCooldown("zombie");
     if(zombieCooldown > 0 && !user.isSpectator()) {
       new MessageBuilder("KIT_COOLDOWN").asKey().integer((int) zombieCooldown).player(user.getPlayer()).sendPlayer();
       return;
