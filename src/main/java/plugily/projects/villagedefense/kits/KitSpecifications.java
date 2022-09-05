@@ -41,4 +41,19 @@ public class KitSpecifications {
     LATE, MID, EARLY
   }
 
+  public enum ActionBarDisplay {
+    DAMAGE_EFFECT(0), BUFFS(1), HEALING(2), HEALING_AND_BUFFS(3), PASSIVE(4), ULTIMATE(5),
+    LOW_PRIORITY(1), MEDIUM_PRIORITY(4), HIGH_PRIORITY(5), SYSTEM_PRIORITY(99);
+
+    private int priority;
+
+    ActionBarDisplay(int priority) {
+      this.priority = priority;
+    }
+
+    public int getPriority() {
+      return priority;
+    }
+  }
+
 }
