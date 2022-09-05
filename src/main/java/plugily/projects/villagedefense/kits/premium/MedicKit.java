@@ -45,6 +45,7 @@ import plugily.projects.minigamesbox.classic.utils.helper.ItemBuilder;
 import plugily.projects.minigamesbox.classic.utils.helper.ItemUtils;
 import plugily.projects.minigamesbox.classic.utils.helper.WeaponHelper;
 import plugily.projects.minigamesbox.classic.utils.misc.complement.ComplementAccessor;
+import plugily.projects.minigamesbox.classic.utils.version.ServerVersion;
 import plugily.projects.minigamesbox.classic.utils.version.VersionUtils;
 import plugily.projects.minigamesbox.classic.utils.version.events.api.PlugilyPlayerInteractEvent;
 import plugily.projects.minigamesbox.classic.utils.version.xseries.ParticleDisplay;
@@ -248,7 +249,7 @@ public class MedicKit extends PremiumKit implements Listener {
       @Override
       public void run() {
         //apply effects only once per second, particles every 5 ticks
-        if (tick % 5 == 0) {
+        if (tick % 5 == 0 && ServerVersion.Version.isCurrentEqualOrHigher(ServerVersion.Version.v1_9_R1)) {
           XParticle.circle(3.5, 18, ParticleDisplay.simple(player.getLocation().add(0, 0.5, 0), XParticle.getParticle("HEART")));
         }
         if (tick % 10 == 0) {
@@ -265,15 +266,15 @@ public class MedicKit extends PremiumKit implements Listener {
               heal = 0;
               break;
           }
-          for (Entity en : player.getNearbyEntities(3.5, 3.5, 3.5)) {
-            if (!(en instanceof Player || en instanceof Wolf || en instanceof Golem)) {
+          for (Entity entity : player.getNearbyEntities(3.5, 3.5, 3.5)) {
+            if (!(entity instanceof Player || entity instanceof Wolf || entity instanceof Golem)) {
               continue;
             }
-            LivingEntity entity = (LivingEntity) en;
-            entity.setHealth(Math.min(entity.getHealth() + heal, VersionUtils.getMaxHealth(entity)));
-            VersionUtils.sendParticles("HEART", null, entity.getLocation(), 5, 0, 0, 0);
-            if (!en.equals(player) && en instanceof Player) {
-              VersionUtils.sendActionBar((Player) en, healingMessages.get(healingMessageIndex)
+            LivingEntity livingEntity = (LivingEntity) entity;
+            livingEntity.setHealth(Math.min(livingEntity.getHealth() + heal, VersionUtils.getMaxHealth(livingEntity)));
+            VersionUtils.sendParticles("HEART", null, livingEntity.getLocation(), 5, 0, 0, 0);
+            if (!entity.equals(player) && entity instanceof Player) {
+              VersionUtils.sendActionBar((Player) entity, healingMessages.get(healingMessageIndex)
                   .replace("%player%", user.getPlayer().getName()));
             }
           }

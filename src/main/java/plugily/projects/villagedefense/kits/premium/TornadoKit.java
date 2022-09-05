@@ -41,6 +41,7 @@ import plugily.projects.minigamesbox.classic.utils.helper.ItemBuilder;
 import plugily.projects.minigamesbox.classic.utils.helper.ItemUtils;
 import plugily.projects.minigamesbox.classic.utils.helper.WeaponHelper;
 import plugily.projects.minigamesbox.classic.utils.misc.complement.ComplementAccessor;
+import plugily.projects.minigamesbox.classic.utils.version.ServerVersion;
 import plugily.projects.minigamesbox.classic.utils.version.VersionUtils;
 import plugily.projects.minigamesbox.classic.utils.version.events.api.PlugilyPlayerInteractEvent;
 import plugily.projects.minigamesbox.classic.utils.version.xseries.ParticleDisplay;
@@ -172,12 +173,12 @@ public class TornadoKit extends PremiumKit implements Listener {
       if (CreatureUtils.isEnemy(entity)) {
         pierce++;
 
-        Vector velocityVec = vector.multiply(2).setY(0).add(new Vector(0, 1, 0));
+        Vector velocity = vector.multiply(2).setY(0).add(new Vector(0, 1, 0));
         if (VersionUtils.isPaper() && (vector.getX() > 4.0 || vector.getZ() > 4.0)) {
-          velocityVec = vector.setX(2.0).setZ(1.0); // Paper's sh*t
+          velocity = vector.setX(2.0).setZ(1.0); // Paper's sh*t
         }
         ((LivingEntity) entity).damage(5.0);
-        entity.setVelocity(velocityVec);
+        entity.setVelocity(velocity);
       }
     }
     return pierce;
@@ -197,17 +198,19 @@ public class TornadoKit extends PremiumKit implements Listener {
 
       @Override
       public void run() {
-        XParticle.circle(3.5, 28, ParticleDisplay.simple(player.getLocation().add(0, 0.5, 0), XParticle.getParticle("CLOUD")));
+        if (ServerVersion.Version.isCurrentEqualOrHigher(ServerVersion.Version.v1_9_R1)) {
+          XParticle.circle(3.5, 28, ParticleDisplay.simple(player.getLocation().add(0, 0.5, 0), XParticle.getParticle("CLOUD")));
+        }
 
         if (spellTick % 20 == 0) {
-          for (Entity en : player.getNearbyEntities(3.5, 3.5, 3.5)) {
-            if (!CreatureUtils.isEnemy(en) || en.equals(player)) {
+          for (Entity entity : player.getNearbyEntities(3.5, 3.5, 3.5)) {
+            if (!CreatureUtils.isEnemy(entity) || entity.equals(player)) {
               continue;
             }
-            LivingEntity entity = (LivingEntity) en;
+            LivingEntity livingEntity = (LivingEntity) entity;
             //damage for 0 to knock it back, todo vector push here
-            entity.damage(0, user.getPlayer());
-            entity.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 20 * 9999, 2, false, true));
+            livingEntity.damage(0, user.getPlayer());
+            livingEntity.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 20 * 9999, 2, false, true));
           }
         }
         if (spellTick % 10 == 0) {

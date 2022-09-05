@@ -45,6 +45,7 @@ import plugily.projects.minigamesbox.classic.utils.helper.ArmorHelper;
 import plugily.projects.minigamesbox.classic.utils.helper.ItemBuilder;
 import plugily.projects.minigamesbox.classic.utils.helper.ItemUtils;
 import plugily.projects.minigamesbox.classic.utils.misc.complement.ComplementAccessor;
+import plugily.projects.minigamesbox.classic.utils.version.ServerVersion;
 import plugily.projects.minigamesbox.classic.utils.version.VersionUtils;
 import plugily.projects.minigamesbox.classic.utils.version.events.api.PlugilyPlayerInteractEvent;
 import plugily.projects.minigamesbox.classic.utils.version.xseries.ParticleDisplay;
@@ -211,20 +212,22 @@ public class WizardKit extends PremiumKit implements Listener {
       @Override
       public void run() {
         //apply effects only once per second, particles every tick
-        XParticle.circle(3.5, 28, ParticleDisplay.simple(player.getLocation().add(0, 0.5, 0), XParticle.getParticle("SMOKE_NORMAL")));
+        if (ServerVersion.Version.isCurrentEqualOrHigher(ServerVersion.Version.v1_9_R1)) {
+          XParticle.circle(3.5, 28, ParticleDisplay.simple(player.getLocation().add(0, 0.5, 0), XParticle.getParticle("SMOKE_NORMAL")));
+        }
         if (damageTick % 20 == 0) {
           double totalDamage = 0;
-          for (Entity en : player.getNearbyEntities(3.5, 3.5, 3.5)) {
-            if (!CreatureUtils.isEnemy(en) || en.equals(player)) {
+          for (Entity entity : player.getNearbyEntities(3.5, 3.5, 3.5)) {
+            if (!CreatureUtils.isEnemy(entity) || entity.equals(player)) {
               continue;
             }
-            LivingEntity entity = (LivingEntity) en;
+            LivingEntity livingEntity = (LivingEntity) entity;
             //10% of entity's max health, we use direct health set to override armors etc.
-            entity.damage(0, user.getPlayer());
-            double damage = (VersionUtils.getMaxHealth(entity) / 100.0) * 10.0;
-            entity.setHealth(Math.max(0, entity.getHealth() - damage));
-            entity.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 20, 3, false, true));
-            VersionUtils.sendParticles("SUSPENDED", null, en.getLocation(), 1, 0, 0, 0);
+            livingEntity.damage(0, user.getPlayer());
+            double damage = (VersionUtils.getMaxHealth(livingEntity) / 100.0) * 10.0;
+            livingEntity.setHealth(Math.max(0, livingEntity.getHealth() - damage));
+            livingEntity.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 20, 3, false, true));
+            VersionUtils.sendParticles("SUSPENDED", null, entity.getLocation(), 1, 0, 0, 0);
             totalDamage += damage;
           }
           player.setHealth(Math.min(player.getHealth() + (totalDamage * 0.08), VersionUtils.getMaxHealth(player)));
@@ -249,12 +252,14 @@ public class WizardKit extends PremiumKit implements Listener {
   }
 
   private void applyMagicAttack(User user) {
-    XParticle.drawLine(user.getPlayer(), 40, 1, ParticleDisplay.of(XParticle.getParticle("FLAME")));
+    if (ServerVersion.Version.isCurrentEqualOrHigher(ServerVersion.Version.v1_9_R1)) {
+      XParticle.drawLine(user.getPlayer(), 40, 1, ParticleDisplay.of(XParticle.getParticle("FLAME")));
+    }
     Arena arena = (Arena) user.getArena();
     final int finalPierce = getDefaultPierce(arena);
     new BukkitRunnable() {
-      final Location loc = user.getPlayer().getLocation();
-      final Vector direction = loc.getDirection().normalize();
+      final Location location = user.getPlayer().getLocation();
+      final Vector direction = location.getDirection().normalize();
       double positionModifier = 0;
       int pierce = finalPierce;
 
@@ -264,26 +269,26 @@ public class WizardKit extends PremiumKit implements Listener {
         double x = direction.getX() * positionModifier,
             y = direction.getY() * positionModifier + 1.5,
             z = direction.getZ() * positionModifier;
-        loc.add(x, y, z);
-        for (Entity en : loc.getChunk().getEntities()) {
-          if (!CreatureUtils.isEnemy(en) || en.getLocation().distance(loc) >= 1.8 || en.equals(user.getPlayer()) || pierce <= 0) {
+        location.add(x, y, z);
+        for (Entity entity : location.getChunk().getEntities()) {
+          if (!CreatureUtils.isEnemy(entity) || entity.getLocation().distance(location) >= 1.8 || entity.equals(user.getPlayer()) || pierce <= 0) {
             continue;
           }
-          LivingEntity entity = (LivingEntity) en;
+          LivingEntity livingEntity = (LivingEntity) entity;
           //wand damage: 30/32/35 scaling % of entity's max health, we use direct health set to override armors etc.
-          entity.damage(0, user.getPlayer());
+          livingEntity.damage(0, user.getPlayer());
           double maxHealthPercent = getWandPercentageDamage(arena);
-          entity.setHealth(Math.max(0, entity.getHealth() - (entity.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue() / 100.0) * maxHealthPercent));
+          livingEntity.setHealth(Math.max(0, livingEntity.getHealth() - (livingEntity.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue() / 100.0) * maxHealthPercent));
 
-          if (entity.isDead()) {
+          if (livingEntity.isDead()) {
             XSound.ENTITY_ARROW_HIT_PLAYER.play(user.getPlayer());
           } else {
             XSound.BLOCK_NOTE_BLOCK_GUITAR.play(user.getPlayer());
           }
-          VersionUtils.sendParticles("DAMAGE_INDICATOR", null, en.getLocation(), 1, 0, 0, 0);
+          VersionUtils.sendParticles("DAMAGE_INDICATOR", null, entity.getLocation(), 1, 0, 0, 0);
           pierce--;
         }
-        loc.subtract(x, y, z);
+        location.subtract(x, y, z);
         if (positionModifier > 40 || pierce <= 0) {
           cancel();
         }
