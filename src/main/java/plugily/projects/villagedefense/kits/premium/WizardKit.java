@@ -63,7 +63,7 @@ import plugily.projects.villagedefense.kits.KitSpecifications;
  */
 public class WizardKit extends PremiumKit implements Listener {
 
-  private List<Player> corruptedWizards = new ArrayList<>();
+  private final List<Player> corruptedWizards = new ArrayList<>();
 
   public WizardKit() {
     setName(new MessageBuilder("KIT_CONTENT_WIZARD_NAME").asKey().build());
@@ -173,8 +173,7 @@ public class WizardKit extends PremiumKit implements Listener {
       user.setCooldown("wizard_bloodlust_running", 15);
       new MessageBuilder("KIT_CONTENT_WIZARD_GAME_ITEM_BLOODLUST_ACTIVATE").asKey().send(player);
 
-      //todo version validate
-      player.setCooldown(stack.getType(), cooldown * 20);
+      VersionUtils.setMaterialCooldown(player, stack.getType(), cooldown * 20);
     } else if (ComplementAccessor.getComplement().getDisplayName(stack.getItemMeta()).equals(new MessageBuilder("KIT_CONTENT_WIZARD_GAME_ITEM_FLOWER_NAME").asKey().build())) {
       if (!user.checkCanCastCooldownAndMessage("wizard_flower")) {
         return;
@@ -186,8 +185,7 @@ public class WizardKit extends PremiumKit implements Listener {
       user.setCooldown("wizard_flower", cooldown);
       new MessageBuilder("KIT_CONTENT_WIZARD_GAME_ITEM_FLOWER_ACTIVATE").asKey().send(player);
 
-      //todo version validate
-      player.setCooldown(stack.getType(), cooldown * 20);
+      VersionUtils.setMaterialCooldown(player, stack.getType(), cooldown * 20);
     } else if (ComplementAccessor.getComplement().getDisplayName(stack.getItemMeta()).equals(new MessageBuilder("KIT_CONTENT_WIZARD_GAME_ITEM_WAND_NAME").asKey().build())) {
       //no cooldown message, this ability is spammy no need for such message
       if (user.getCooldown("wizard_staff") > 0) {
@@ -197,8 +195,7 @@ public class WizardKit extends PremiumKit implements Listener {
       int cooldown = getKitsConfig().getInt("Kit-Cooldown.Wizard.Staff", 1);
       user.setCooldown("wizard_staff", cooldown);
 
-      //todo version validate
-      player.setCooldown(stack.getType(), cooldown * 20);
+      VersionUtils.setMaterialCooldown(player, stack.getType(), cooldown * 20);
     }
   }
 
@@ -254,20 +251,7 @@ public class WizardKit extends PremiumKit implements Listener {
   private void applyMagicAttack(User user) {
     XParticle.drawLine(user.getPlayer(), 40, 1, ParticleDisplay.of(XParticle.getParticle("FLAME")));
     Arena arena = (Arena) user.getArena();
-    int defaultPierce;
-    switch (KitSpecifications.getTimeState(arena)) {
-      case LATE:
-        defaultPierce = 7;
-        break;
-      case MID:
-        defaultPierce = 6;
-        break;
-      case EARLY:
-      default:
-        defaultPierce = 5;
-        break;
-    }
-    final int finalPierce = defaultPierce;
+    final int finalPierce = getDefaultPierce(arena);
     new BukkitRunnable() {
       final Location loc = user.getPlayer().getLocation();
       final Vector direction = loc.getDirection().normalize();
@@ -288,19 +272,7 @@ public class WizardKit extends PremiumKit implements Listener {
           LivingEntity entity = (LivingEntity) en;
           //wand damage: 30/32/35 scaling % of entity's max health, we use direct health set to override armors etc.
           entity.damage(0, user.getPlayer());
-          double maxHealthPercent;
-          switch (KitSpecifications.getTimeState(arena)) {
-            case LATE:
-              maxHealthPercent = 35.0;
-              break;
-            case MID:
-              maxHealthPercent = 32.0;
-              break;
-            case EARLY:
-            default:
-              maxHealthPercent = 30.0;
-              break;
-          }
+          double maxHealthPercent = getWandPercentageDamage(arena);
           entity.setHealth(Math.max(0, entity.getHealth() - (entity.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue() / 100.0) * maxHealthPercent));
 
           if (entity.isDead()) {
@@ -317,6 +289,30 @@ public class WizardKit extends PremiumKit implements Listener {
         }
       }
     }.runTaskTimer(getPlugin(), 0, 1);
+  }
+
+  private int getDefaultPierce(Arena arena) {
+    switch (KitSpecifications.getTimeState(arena)) {
+      case LATE:
+        return 7;
+      case MID:
+        return 6;
+      case EARLY:
+      default:
+        return 5;
+    }
+  }
+
+  private double getWandPercentageDamage(Arena arena) {
+    switch (KitSpecifications.getTimeState(arena)) {
+      case LATE:
+        return 35.0;
+      case MID:
+        return 32.0;
+      case EARLY:
+      default:
+        return 30.0;
+    }
   }
 
 }
