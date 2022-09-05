@@ -175,8 +175,7 @@ public class MedicKit extends PremiumKit implements Listener {
       user.setCooldown("medic_homecoming", cooldown);
       applyHomecoming(user);
 
-      //todo version validate
-      player.setCooldown(stack.getType(), cooldown * 20);
+      VersionUtils.setMaterialCooldown(player, stack.getType(), cooldown * 20);
     } else if (ComplementAccessor.getComplement().getDisplayName(stack.getItemMeta()).equals(new MessageBuilder("KIT_CONTENT_MEDIC_GAME_ITEM_AURA_NAME").asKey().build())) {
       if (!user.checkCanCastCooldownAndMessage("medic_aura")) {
         return;
@@ -202,8 +201,7 @@ public class MedicKit extends PremiumKit implements Listener {
       user.setCooldown("medic_aura_running", 10);
       applyAura(user);
 
-      //todo version validate
-      player.setCooldown(stack.getType(), cooldown * 20);
+      VersionUtils.setMaterialCooldown(player, stack.getType(), cooldown * 20);
     }
   }
 
