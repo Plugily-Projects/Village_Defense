@@ -382,8 +382,11 @@ public class Main extends PluginMain {
 
     getMessageManager().registerMessage("KIT_CONTENT_TORNADO_NAME", new Message("Kit.Content.Tornado.Name", ""));
     getMessageManager().registerMessage("KIT_CONTENT_TORNADO_DESCRIPTION", new Message("Kit.Content.Tornado.Description", ""));
-    getMessageManager().registerMessage("KIT_CONTENT_TORNADO_GAME_ITEM_NAME", new Message("Kit.Content.Tornado.Game-Item.Name", ""));
-    getMessageManager().registerMessage("KIT_CONTENT_TORNADO_GAME_ITEM_DESCRIPTION", new Message("Kit.Content.Tornado.Game-Item.Description", ""));
+    getMessageManager().registerMessage("KIT_CONTENT_TORNADO_GAME_ITEM_TORNADO_NAME", new Message("Kit.Content.Tornado.Game-Item.Tornado.Name", ""));
+    getMessageManager().registerMessage("KIT_CONTENT_TORNADO_GAME_ITEM_TORNADO_DESCRIPTION", new Message("Kit.Content.Tornado.Game-Item.Tornado.Description", ""));
+    getMessageManager().registerMessage("KIT_CONTENT_TORNADO_GAME_ITEM_MONSOON_NAME", new Message("Kit.Content.Tornado.Game-Item.Monsoon.Name", ""));
+    getMessageManager().registerMessage("KIT_CONTENT_TORNADO_GAME_ITEM_MONSOON_DESCRIPTION", new Message("Kit.Content.Tornado.Game-Item.Monsoon.Description", ""));
+    getMessageManager().registerMessage("KIT_CONTENT_TORNADO_GAME_ITEM_MONSOON_ACTIVE_ACTION_BAR", new Message("Kit.Content.Tornado.Game-Item.Monsoon.Active-Action-Bar", ""));
 
 //TERMINATOR
 
@@ -401,6 +404,7 @@ public class Main extends PluginMain {
     getMessageManager().registerMessage("KIT_CONTENT_TELEPORTER_TELEPORT_WARNING", new Message("Kit.Content.Teleporter.Teleport.Warning", ""));
     getMessageManager().registerMessage("KIT_CONTENT_TELEPORTER_TELEPORT_PLAYER", new Message("Kit.Content.Teleporter.Teleport.Player", ""));
     getMessageManager().registerMessage("KIT_CONTENT_TELEPORTER_TELEPORT_NOT_FOUND", new Message("Kit.Content.Teleporter.Teleport.Not-Found", ""));
+    //todo final flight ability
 
 //HEAVY_TANK
 

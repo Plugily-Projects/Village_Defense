@@ -63,6 +63,8 @@ Kit-Cooldown:
       I: 30
       II: 15
     Homecoming: 60
+  Tornado:
+    Monsoon: 20
 
 # The settings for some kits
 Kit-Settings:

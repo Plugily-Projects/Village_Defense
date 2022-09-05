@@ -457,12 +457,46 @@ Kit:
     Tornado:
       Name: "&bTornado"
       Description:
-        - "Spawn in an awesome tornado!"
+        - "&6&lGAME POWER: &7?/?/?"
+        - "&6&lCLASS: &7mixed, support"
+        - ""
+        - "&6&lABILITIES:"
+        - "&a&l• CALL OF THE WIND (PASSIVE):"
+        - "  &7Each turn you receive 2/3/5 tornadoes,"
+        - "  &7on use they push back and damage enemies"
+        - "&a&l• MONSOON:"
+        - "  &7Creates wind sphere that knocks back"
+        - "  &7and permanently slows all enemies"
+        - "  &c&l(SPELL TIME 4/6/8s, COOLDOWN 20s)"
+        - "&e&l• FINAL FLIGHT (ULTIMATE):"
+        - "  &7On cast your attacks cause enemies"
+        - "  &7to levitate and receive 25% max health"
+        - "  &7damage per second and lasts for 4s"
+        - "  &c&l(SPELL TIME 10s, COOLDOWN 40s)"
+        - "  &c&l(UNLOCKED IN MID GAME)"
       Game-Item:
-        Name: "Tornado Time"
-        Description:
-          - "Right click to spawn a"
-          - "tornado at your location!"
+        Tornado:
+          Name: "&6&lTORNADO TIME"
+          Description:
+            - "Right click to spawn a"
+            - "tornado at your location!"
+        Monsoon:
+          Name: "&6&lMONSOON"
+          Description:
+            - "On cast creates wind sphere that knocks back"
+            - "and permanently slows enemies"
+            - "Cooldown 20s"
+          Active-Action-Bar:
+            - "&e&lMONSOON ACTIVE &7(%number%s)"
+            - "&c&lMONSOON AURA ACTIVE &7(%number%s)"
+        Final-Flight:
+          Name: "&e&lFINAL FLIGHT &7(Ultimate)"
+          Description:
+            - "On cast your attacks cause enemies"
+            - "to levitate and receive 25% max health"
+            - "damage per second and lasts for 4s"
+            - "Lasts for 10 seconds, cooldown 40 seconds"
+          Activate: "&7Arise to the skies!"
     Terminator:
       Name: "&6Terminator"
       Description:
@@ -617,36 +651,35 @@ Kit:
 #
 # Upgrade-Menu function need to be enabled on config.yml
 Upgrade-Menu:
-  Title: "&3&lUpgrade entity"
+  Title: "&6&lUPGRADE ENTITY"
   Upgraded-Entity: "%plugin_prefix% &3Upgraded entity to tier &8%tier%&3!"
   Cannot-Afford: "%plugin_prefix% &3You don't have enough orbs to apply that upgrade!"
   Max-Tier: "%plugin_prefix% &3Entity is at max tier of this upgrade!"
   Stats-Item:
-    Name: "&3&lCurrent Stats"
-    Description: "&3Movement speed: &8%speed%; &3Attack Damage: &8%damage%; &3Health:
-      &8%current_hp%/%max_hp%"
+    Name: "&6&lCURRENT STATS"
+    Description: " &a&lSPEED: &7%speed%; &7&lDAMAGE: &7%damage%; &a&lHEALTH: &7%current_hp%/%max_hp%"
   Upgrades:
     Health:
-      Name: "&3&lUpgrade Health"
-      Description: "&3Upgrade max health to tier &8%tier%&3!;&3From &8%from% &3to
+      Name: "&c&lUPGRADE: &aHealth"
+      Description: "&3Upgrade max health to tier &8%tier% ▲&3!;&3From &8%from% &3to
         &8%to%;&3Cost of upgrade: &8%cost%;;&3Click to purchase"
     Damage:
-      Name: "&3&lUpgrade Damage"
-      Description: "&3Upgrade entity damage to tier &8%tier%&3!;&3From &8%from% &3to
+      Name: "&c&lUPGRADE: &7Damage"
+      Description: "&3Upgrade entity damage to tier &8%tier% ▲&3!;&3From &8%from% &3to
         &8%to%;&3Cost of upgrade: &8%cost%;;&8Click to purchase"
     Speed:
-      Name: "&3&lUpgrade Speed"
-      Description: "&3Upgrade movement speed to tier &8%tier%&3!;&3From &8%from% &3to
+      Name: "&c&lUPGRADE: &6Speed"
+      Description: "&3Upgrade movement speed to tier &8%tier% ▲&3!;&3From &8%from% &3to
         &8%to%;&3Cost of upgrade: &8%cost%;;&8Click to purchase"
     Swarm-Awareness:
-      Name: "&3&lSwarm Awareness"
-      Description: "&3Upgrade swarm awareness to tier &8%tier%&3!;&3From &8%from%
+      Name: "&3&lSWARM AWARENESS"
+      Description: "&3Upgrade swarm awareness to tier &8%tier% ▲&3!;&3From &8%from%
         &8damage multiplier per wolf in radius;&8of 3 blocks &3to %to%;&3The more
         wolves near attacking wolf;&3the more damage wolf deal;&3Cost of upgrade: &8%cost%;;&8Click
         to purchase"
     Final-Defense:
-      Name: "&3&lFinal Defense"
-      Description: "&3Upgrade final defense to tier &8%tier%&3!;&3From &8%from% explosion
+      Name: "&3&lFINAL DEFENSE"
+      Description: "&3Upgrade final defense to tier &8%tier% ▲&3!;&3From &8%from% explosion
         radius &3to &8%to%;&3Golem will explode after death killing nearby;&3zombies
         and stun all alive ones;&3Cost of upgrade: &8%cost%;;&8Click to purchase"
 #

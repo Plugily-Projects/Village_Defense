@@ -1,6 +1,6 @@
 /*
  * Village Defense - Protect villagers from hordes of zombies
- * Copyright (c) 2022  Plugily Projects - maintained by Tigerpanzer_02 and contributors
+ * Copyright (C) 2022  Plugily Projects - maintained by 2Wild4You, Tigerpanzer_02 and contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,18 +18,24 @@
 
 package plugily.projects.villagedefense.kits.premium;
 
+import java.util.List;
+
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.Action;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
+
 import plugily.projects.minigamesbox.classic.handlers.language.MessageBuilder;
 import plugily.projects.minigamesbox.classic.kits.basekits.PremiumKit;
+import plugily.projects.minigamesbox.classic.user.User;
 import plugily.projects.minigamesbox.classic.utils.helper.ArmorHelper;
 import plugily.projects.minigamesbox.classic.utils.helper.ItemBuilder;
 import plugily.projects.minigamesbox.classic.utils.helper.ItemUtils;
@@ -37,20 +43,22 @@ import plugily.projects.minigamesbox.classic.utils.helper.WeaponHelper;
 import plugily.projects.minigamesbox.classic.utils.misc.complement.ComplementAccessor;
 import plugily.projects.minigamesbox.classic.utils.version.VersionUtils;
 import plugily.projects.minigamesbox.classic.utils.version.events.api.PlugilyPlayerInteractEvent;
+import plugily.projects.minigamesbox.classic.utils.version.xseries.ParticleDisplay;
 import plugily.projects.minigamesbox.classic.utils.version.xseries.XMaterial;
+import plugily.projects.minigamesbox.classic.utils.version.xseries.XParticle;
+import plugily.projects.villagedefense.arena.Arena;
 import plugily.projects.villagedefense.creatures.CreatureUtils;
-
-import java.util.List;
+import plugily.projects.villagedefense.kits.KitSpecifications;
 
 /**
  * Created by Tom on 30/12/2015.
  */
+//todo final flight ability
 public class TornadoKit extends PremiumKit implements Listener {
 
-  private final int maxHeight = 5;
-  private final double maxRadius = 4;
-  private final double radiusIncrement = maxRadius / maxHeight;
-  private int active = 0;
+  private static final int TORNADO_MAX_HEIGHT = 5;
+  private static final double TORNADO_MAX_RADIUS = 4;
+  private static final double TORNADO_RADIUS_INCREMENT = TORNADO_MAX_RADIUS / TORNADO_MAX_HEIGHT;
 
   public TornadoKit() {
     setName(new MessageBuilder("KIT_CONTENT_TORNADO_NAME").asKey().build());
@@ -73,8 +81,8 @@ public class TornadoKit extends PremiumKit implements Listener {
     player.getInventory().addItem(new ItemStack(Material.COOKED_BEEF, 10));
     player.getInventory().addItem(new ItemStack(Material.SADDLE));
     player.getInventory().addItem(new ItemBuilder(new ItemStack(getMaterial(), 5))
-        .name(new MessageBuilder("KIT_CONTENT_TORNADO_GAME_ITEM_NAME").asKey().build())
-        .lore(getPlugin().getLanguageManager().getLanguageListFromKey("KIT_CONTENT_TORNADO_GAME_ITEM_DESCRIPTION"))
+        .name(new MessageBuilder("KIT_CONTENT_TORNADO_GAME_ITEM_TORNADO_NAME").asKey().build())
+        .lore(getPlugin().getLanguageManager().getLanguageListFromKey("KIT_CONTENT_TORNADO_GAME_ITEM_TORNADO_DESCRIPTION"))
         .build());
   }
 
@@ -85,100 +93,152 @@ public class TornadoKit extends PremiumKit implements Listener {
 
   @Override
   public void reStock(Player player) {
-    player.getInventory().addItem(new ItemBuilder(new ItemStack(getMaterial(), 5))
-        .name(new MessageBuilder("KIT_CONTENT_TORNADO_GAME_ITEM_NAME").asKey().build())
-        .lore(getPlugin().getLanguageManager().getLanguageListFromKey("KIT_CONTENT_TORNADO_GAME_ITEM_DESCRIPTION"))
+    int amount = 1;
+    switch (KitSpecifications.getTimeState((Arena) getPlugin().getArenaRegistry().getArena(player))) {
+      case LATE:
+        amount = 5;
+        break;
+      case MID:
+        amount = 3;
+        break;
+      case EARLY:
+        amount = 2;
+        break;
+    }
+    player.getInventory().addItem(new ItemBuilder(new ItemStack(getMaterial(), amount))
+        .name(new MessageBuilder("KIT_CONTENT_TORNADO_GAME_ITEM_TORNADO_NAME").asKey().build())
+        .lore(getPlugin().getLanguageManager().getLanguageListFromKey("KIT_CONTENT_TORNADO_GAME_ITEM_TORNADO_DESCRIPTION"))
         .build());
   }
 
   @EventHandler
-  public void onTornadoSpawn(PlugilyPlayerInteractEvent e) {
-    if(e.getAction() != Action.RIGHT_CLICK_AIR && e.getAction() != Action.RIGHT_CLICK_BLOCK) {
+  public void onTornadoSpawn(PlugilyPlayerInteractEvent event) {
+    User user = getPlugin().getUserManager().getUser(event.getPlayer());
+    if (user.isSpectator() || !(user.getKit() instanceof TornadoKit)) {
       return;
     }
-
-    Player player = e.getPlayer();
-    if(!getPlugin().getArenaRegistry().isInArena(player))
+    Player player = event.getPlayer();
+    if (!getPlugin().getArenaRegistry().isInArena(player)) {
       return;
+    }
 
     ItemStack stack = VersionUtils.getItemInHand(player);
-    if(!ItemUtils.isItemStackNamed(stack)
-        || !ComplementAccessor.getComplement().getDisplayName(stack.getItemMeta()).equalsIgnoreCase(new MessageBuilder("KIT_CONTENT_TORNADO_GAME_ITEM_NAME").asKey().build())) {
+    if (!ItemUtils.isItemStackNamed(stack)) {
       return;
     }
-    if(!(getPlugin().getUserManager().getUser(player).getKit() instanceof TornadoKit)) {
-      return;
+    if (ComplementAccessor.getComplement().getDisplayName(stack.getItemMeta()).equalsIgnoreCase(new MessageBuilder("KIT_CONTENT_TORNADO_GAME_ITEM_TORNADO_NAME").asKey().build())) {
+      getPlugin().getBukkitHelper().takeOneItem(player, stack);
+      prepareTornado(player.getLocation());
+    } else if (ComplementAccessor.getComplement().getDisplayName(stack.getItemMeta()).equalsIgnoreCase(new MessageBuilder("KIT_CONTENT_TORNADO_GAME_ITEM_MONSOON_NAME").asKey().build())) {
+      createMonsoon(user);
     }
-    if(active >= 2) {
-      return;
-    }
-    getPlugin().getBukkitHelper().takeOneItem(player, stack);
-    e.setCancelled(true);
-    prepareTornado(player.getLocation());
   }
 
-  private void prepareTornado(Location location) {
-    Tornado tornado = new Tornado(location);
-    active++;
+  private void prepareTornado(final Location loc) {
     new BukkitRunnable() {
+      final Vector vector = loc.getDirection();
+      Location location = loc;
+      int angle;
+      int times = 0;
+      int pierce = 0;
+
       @Override
       public void run() {
-        tornado.update();
-        if(tornado.entities >= 7 || tornado.times > 55) {
+        int lines = 3;
+        for (int l = 0; l < lines; l++) {
+          for (double y = 0; y < TORNADO_MAX_HEIGHT; y += 0.5) {
+            double radius = y * TORNADO_RADIUS_INCREMENT,
+                radians = Math.toRadians(360.0 / lines * l + y * 25 - angle),
+                x = Math.cos(radians) * radius,
+                z = Math.sin(radians) * radius;
+            VersionUtils.sendParticles("CLOUD", null, location.clone().add(x, y, z), 1, 0, 0, 0);
+          }
+        }
+        pierce += pushAndDamageNearbyEnemies(location, vector);
+        location = location.add(vector.getX() / (3 + Math.random() / 2), 0, vector.getZ() / (3 + Math.random() / 2));
+        angle += 50;
+        times++;
+
+        if (pierce >= 10 || times > 55) {
           cancel();
-          active--;
         }
       }
     }.runTaskTimer(getPlugin(), 1, 1);
   }
 
-  private class Tornado {
-    private Location location;
-    private final Vector vector;
-    private int angle;
-    private int times = 0;
-    private int entities = 0;
+  private int pushAndDamageNearbyEnemies(Location location, Vector vector) {
+    int pierce = 0;
+    for (Entity entity : location.getWorld().getNearbyEntities(location, 2, 2, 2)) {
+      if (CreatureUtils.isEnemy(entity)) {
+        pierce++;
 
-    Tornado(Location location) {
-      this.location = location;
-      vector = location.getDirection();
-    }
-
-    void setLocation(Location location) {
-      this.location = location;
-    }
-
-    void update() {
-      times++;
-      int lines = 3;
-      for(int l = 0; l < lines; l++) {
-        for(double y = 0; y < maxHeight; y += 0.5) {
-          double radius = y * radiusIncrement,
-              radians = Math.toRadians(360.0 / lines * l + y * 25 - angle),
-              x = Math.cos(radians) * radius,
-              z = Math.sin(radians) * radius;
-          VersionUtils.sendParticles("CLOUD", null, location.clone().add(x, y, z), 1, 0, 0, 0);
+        Vector velocityVec = vector.multiply(2).setY(0).add(new Vector(0, 1, 0));
+        if (VersionUtils.isPaper() && (vector.getX() > 4.0 || vector.getZ() > 4.0)) {
+          velocityVec = vector.setX(2.0).setZ(1.0); // Paper's sh*t
         }
+        ((LivingEntity) entity).damage(5.0);
+        entity.setVelocity(velocityVec);
       }
-      pushNearbyEnemies();
-      setLocation(location.add(vector.getX() / (3 + Math.random() / 2), 0, vector.getZ() / (3 + Math.random() / 2)));
-
-      angle += 50;
     }
+    return pierce;
+  }
 
-    private void pushNearbyEnemies() {
-      for(Entity entity : location.getWorld().getNearbyEntities(location, 2, 2, 2)) {
-        if(CreatureUtils.isEnemy(entity)) {
-          entities++;
+  private void createMonsoon(User user) {
+    Player player = user.getPlayer();
+    final int spellTime = getMonsoonSpellTime((Arena) user.getArena());
+    int cooldown = getKitsConfig().getInt("Kit-Cooldown.Tornado.Monsoon", 20);
+    user.setCooldown("tornado_monsoon", cooldown);
+    user.setCooldown("tornado_monsoon_running", spellTime);
 
-          Vector velocityVec = vector.multiply(2).setY(0).add(new Vector(0, 1, 0));
-          if(VersionUtils.isPaper() && (vector.getX() > 4.0 || vector.getZ() > 4.0)) {
-            velocityVec = vector.setX(2.0).setZ(1.0); // Paper's sh*t
+    List<String> messages = getPlugin().getLanguageManager().getLanguageListFromKey("KIT_CONTENT_TORNADO_GAME_ITEM_MONSOON_ACTIVE_ACTION_BAR");
+    new BukkitRunnable() {
+      int spellTick = 0;
+      int messageIndex = 0;
+
+      @Override
+      public void run() {
+        XParticle.circle(3.5, 28, ParticleDisplay.simple(player.getLocation().add(0, 0.5, 0), XParticle.getParticle("CLOUD")));
+
+        if (spellTick % 20 == 0) {
+          for (Entity en : player.getNearbyEntities(3.5, 3.5, 3.5)) {
+            if (!CreatureUtils.isEnemy(en) || en.equals(player)) {
+              continue;
+            }
+            LivingEntity entity = (LivingEntity) en;
+            //damage for 0 to knock it back, todo vector push here
+            entity.damage(0, user.getPlayer());
+            entity.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 20 * 9999, 2, false, true));
           }
-
-          entity.setVelocity(velocityVec);
         }
+        if (spellTick % 10 == 0) {
+          VersionUtils.sendActionBar(player, messages.get(messageIndex)
+              .replace("%number%", String.valueOf(user.getCooldown("tornado_monsoon_running"))));
+          messageIndex++;
+          if (messageIndex > messages.size() - 1) {
+            messageIndex = 0;
+          }
+        }
+        if (spellTick >= 20 * spellTime || !getPlugin().getArenaRegistry().isInArena(user.getPlayer()) || user.isSpectator()) {
+          //reset action bar
+          VersionUtils.sendActionBar(player, "");
+          cancel();
+          return;
+        }
+        spellTick++;
       }
+    }.runTaskTimer(getPlugin(), 0, 1);
+  }
+
+  private int getMonsoonSpellTime(Arena arena) {
+    switch (KitSpecifications.getTimeState(arena)) {
+      case LATE:
+        return 8;
+      case MID:
+        return 6;
+      case EARLY:
+      default:
+        return 4;
     }
   }
+
 }
