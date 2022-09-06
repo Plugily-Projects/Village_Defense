@@ -467,7 +467,7 @@ Kit:
         - "&a&l• MONSOON:"
         - "  &7Creates wind sphere that knocks back"
         - "  &7and permanently slows all enemies"
-        - "  &c&l(SPELL TIME 4/6/8s, COOLDOWN 20s)"
+        - "  &c&l(SPELL TIME 6/9/12s, COOLDOWN 20s)"
         - "&e&l• FINAL FLIGHT (ULTIMATE):"
         - "  &7On cast your attacks cause enemies"
         - "  &7to levitate and receive 25% max health"
@@ -488,7 +488,7 @@ Kit:
             - "Cooldown 20s"
           Active-Action-Bar:
             - "&e&lMONSOON ACTIVE &7(%number%s)"
-            - "&c&lMONSOON AURA ACTIVE &7(%number%s)"
+            - "&c&lMONSOON ACTIVE &7(%number%s)"
         Final-Flight:
           Name: "&e&lFINAL FLIGHT &7(Ultimate)"
           Description:

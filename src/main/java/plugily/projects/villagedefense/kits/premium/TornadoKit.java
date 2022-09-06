@@ -20,6 +20,7 @@ package plugily.projects.villagedefense.kits.premium;
 
 import java.util.List;
 
+import org.bukkit.EntityEffect;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
@@ -85,6 +86,10 @@ public class TornadoKit extends PremiumKit implements Listener {
         .name(new MessageBuilder("KIT_CONTENT_TORNADO_GAME_ITEM_TORNADO_NAME").asKey().build())
         .lore(getPlugin().getLanguageManager().getLanguageListFromKey("KIT_CONTENT_TORNADO_GAME_ITEM_TORNADO_DESCRIPTION"))
         .build());
+    player.getInventory().addItem(new ItemBuilder(new ItemStack(XMaterial.OXEYE_DAISY.parseMaterial(), 1))
+        .name(new MessageBuilder("KIT_CONTENT_TORNADO_GAME_ITEM_MONSOON_NAME").asKey().build())
+        .lore(getPlugin().getLanguageManager().getLanguageListFromKey("KIT_CONTENT_TORNADO_GAME_ITEM_MONSOON_DESCRIPTION"))
+        .build());
   }
 
   @Override
@@ -131,7 +136,17 @@ public class TornadoKit extends PremiumKit implements Listener {
       getPlugin().getBukkitHelper().takeOneItem(player, stack);
       prepareTornado(player.getLocation());
     } else if (ComplementAccessor.getComplement().getDisplayName(stack.getItemMeta()).equalsIgnoreCase(new MessageBuilder("KIT_CONTENT_TORNADO_GAME_ITEM_MONSOON_NAME").asKey().build())) {
+      if (!user.checkCanCastCooldownAndMessage("tornado_monsoon")) {
+        return;
+      }
+      final int spellTime = getMonsoonSpellTime((Arena) user.getArena());
+      int cooldown = getKitsConfig().getInt("Kit-Cooldown.Tornado.Monsoon", 20);
+      user.setCooldown("tornado_monsoon", cooldown);
+      user.setCooldown("tornado_monsoon_running", spellTime);
+
       createMonsoon(user);
+
+      VersionUtils.setMaterialCooldown(player, stack.getType(), cooldown * 20);
     }
   }
 
@@ -160,7 +175,7 @@ public class TornadoKit extends PremiumKit implements Listener {
         angle += 50;
         times++;
 
-        if (pierce >= 10 || times > 55) {
+        if (pierce >= 20 || times > 55) {
           cancel();
         }
       }
@@ -173,7 +188,7 @@ public class TornadoKit extends PremiumKit implements Listener {
       if (CreatureUtils.isEnemy(entity)) {
         pierce++;
 
-        Vector velocity = vector.multiply(2).setY(0).add(new Vector(0, 1, 0));
+        Vector velocity = vector.multiply(1.5).setY(0).add(new Vector(0, 1, 0));
         if (VersionUtils.isPaper() && (vector.getX() > 4.0 || vector.getZ() > 4.0)) {
           velocity = vector.setX(2.0).setZ(1.0); // Paper's sh*t
         }
@@ -187,9 +202,6 @@ public class TornadoKit extends PremiumKit implements Listener {
   private void createMonsoon(User user) {
     Player player = user.getPlayer();
     final int spellTime = getMonsoonSpellTime((Arena) user.getArena());
-    int cooldown = getKitsConfig().getInt("Kit-Cooldown.Tornado.Monsoon", 20);
-    user.setCooldown("tornado_monsoon", cooldown);
-    user.setCooldown("tornado_monsoon_running", spellTime);
 
     List<String> messages = getPlugin().getLanguageManager().getLanguageListFromKey("KIT_CONTENT_TORNADO_GAME_ITEM_MONSOON_ACTIVE_ACTION_BAR");
     new BukkitRunnable() {
@@ -199,17 +211,18 @@ public class TornadoKit extends PremiumKit implements Listener {
       @Override
       public void run() {
         if (ServerVersion.Version.isCurrentEqualOrHigher(ServerVersion.Version.v1_9_R1)) {
-          XParticle.circle(3.5, 28, ParticleDisplay.simple(player.getLocation().add(0, 0.5, 0), XParticle.getParticle("CLOUD")));
+          XParticle.circle(4, 15, ParticleDisplay.simple(player.getLocation().add(0, 0.5, 0), XParticle.getParticle("CLOUD")));
         }
-
-        if (spellTick % 20 == 0) {
-          for (Entity entity : player.getNearbyEntities(3.5, 3.5, 3.5)) {
+        if (spellTick % 5 == 0) {
+          for (Entity entity : player.getNearbyEntities(4, 4, 4)) {
             if (!CreatureUtils.isEnemy(entity) || entity.equals(player)) {
               continue;
             }
             LivingEntity livingEntity = (LivingEntity) entity;
-            //damage for 0 to knock it back, todo vector push here
-            livingEntity.damage(0, user.getPlayer());
+            Vector vector = livingEntity.getLocation().toVector().subtract(player.getLocation().toVector()).normalize();
+            vector.add(new Vector(0, 0.1, 0));
+            livingEntity.setVelocity(vector.multiply(1.5));
+            livingEntity.playEffect(EntityEffect.HURT);
             livingEntity.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 20 * 9999, 2, false, true));
           }
         }
@@ -235,12 +248,12 @@ public class TornadoKit extends PremiumKit implements Listener {
   private int getMonsoonSpellTime(Arena arena) {
     switch (KitSpecifications.getTimeState(arena)) {
       case LATE:
-        return 8;
+        return 12;
       case MID:
-        return 6;
+        return 9;
       case EARLY:
       default:
-        return 4;
+        return 6;
     }
   }
 
