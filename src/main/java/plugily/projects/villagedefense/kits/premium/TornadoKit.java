@@ -18,8 +18,10 @@
 
 package plugily.projects.villagedefense.kits.premium;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import org.bukkit.Bukkit;
 import org.bukkit.EntityEffect;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -28,6 +30,7 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -61,6 +64,7 @@ public class TornadoKit extends PremiumKit implements Listener {
   private static final int TORNADO_MAX_HEIGHT = 5;
   private static final double TORNADO_MAX_RADIUS = 4;
   private static final double TORNADO_RADIUS_INCREMENT = TORNADO_MAX_RADIUS / TORNADO_MAX_HEIGHT;
+  private final List<Player> ultimateUsers = new ArrayList<>();
 
   public TornadoKit() {
     setName(new MessageBuilder("KIT_CONTENT_TORNADO_NAME").asKey().build());
@@ -90,6 +94,10 @@ public class TornadoKit extends PremiumKit implements Listener {
         .name(new MessageBuilder("KIT_CONTENT_TORNADO_GAME_ITEM_MONSOON_NAME").asKey().build())
         .lore(getPlugin().getLanguageManager().getLanguageListFromKey("KIT_CONTENT_TORNADO_GAME_ITEM_MONSOON_DESCRIPTION"))
         .build());
+    player.getInventory().addItem(new ItemBuilder(new ItemStack(XMaterial.FEATHER.parseMaterial(), 1))
+        .name(new MessageBuilder("KIT_CONTENT_TORNADO_GAME_ITEM_FINAL_FLIGHT_NAME").asKey().build())
+        .lore(getPlugin().getLanguageManager().getLanguageListFromKey("KIT_CONTENT_TORNADO_GAME_ITEM_FINAL_FLIGHT_DESCRIPTION"))
+        .build());
   }
 
   @Override
@@ -118,7 +126,7 @@ public class TornadoKit extends PremiumKit implements Listener {
   }
 
   @EventHandler
-  public void onTornadoSpawn(PlugilyPlayerInteractEvent event) {
+  public void onCast(PlugilyPlayerInteractEvent event) {
     User user = getPlugin().getUserManager().getUser(event.getPlayer());
     if (user.isSpectator() || !(user.getKit() instanceof TornadoKit)) {
       return;
@@ -139,6 +147,10 @@ public class TornadoKit extends PremiumKit implements Listener {
       if (!user.checkCanCastCooldownAndMessage("tornado_monsoon")) {
         return;
       }
+      if (KitSpecifications.getTimeState((Arena) user.getArena()) == KitSpecifications.GameTimeState.EARLY) {
+        new MessageBuilder("KIT_LOCKED_TILL").asKey().integer(16).send(player);
+        return;
+      }
       final int spellTime = getMonsoonSpellTime((Arena) user.getArena());
       int cooldown = getKitsConfig().getInt("Kit-Cooldown.Tornado.Monsoon", 20);
       user.setCooldown("tornado_monsoon", cooldown);
@@ -147,7 +159,57 @@ public class TornadoKit extends PremiumKit implements Listener {
       createMonsoon(user);
 
       VersionUtils.setMaterialCooldown(player, stack.getType(), cooldown * 20);
+    } else if (ComplementAccessor.getComplement().getDisplayName(stack.getItemMeta()).equalsIgnoreCase(new MessageBuilder("KIT_CONTENT_TORNADO_GAME_ITEM_FINAL_FLIGHT_NAME").asKey().build())) {
+      if (!user.checkCanCastCooldownAndMessage("tornado_final_flight")) {
+        return;
+      }
+      int cooldown = getKitsConfig().getInt("Kit-Cooldown.Tornado.Final-Flight", 40);
+      user.setCooldown("tornado_final_flight", cooldown);
+      user.setCooldown("tornado_final_flight_running", 10);
+
+      prepareFinalFlight(user);
+
+      VersionUtils.setMaterialCooldown(player, stack.getType(), cooldown * 20);
     }
+  }
+
+  @EventHandler
+  public void onDamage(EntityDamageByEntityEvent event) {
+    if (!(event.getDamager() instanceof Player)) {
+      return;
+    }
+    Player damager = (Player) event.getDamager();
+    if (getPlugin().getArenaRegistry().getArena(damager) == null) {
+      return;
+    }
+    User user = getPlugin().getUserManager().getUser(damager);
+    if (user.isSpectator() || !(user.getKit() instanceof TornadoKit)
+        || !ultimateUsers.contains(damager) || !CreatureUtils.isEnemy(event.getEntity())) {
+      return;
+    }
+    LivingEntity livingEntity = (LivingEntity) event.getEntity();
+    new BukkitRunnable() {
+      int tick = 0;
+
+      @Override
+      public void run() {
+        if (tick % 5 == 0) {
+          livingEntity.setVelocity(new Vector(0, 0.5, 0));
+        }
+
+        if (tick % 20 == 0) {
+          //25% of entity's max health, we use direct health set to override armors etc.
+          livingEntity.damage(0, user.getPlayer());
+          double damage = (VersionUtils.getMaxHealth(livingEntity) / 100.0) * 25.0;
+          livingEntity.setHealth(Math.max(0, livingEntity.getHealth() - damage));
+        }
+        if (tick >= 20 * 4 || livingEntity.isDead()) {
+          this.cancel();
+          return;
+        }
+        tick++;
+      }
+    }.runTaskTimer(getPlugin(), 0, 1);
   }
 
   private void prepareTornado(final Location loc) {
@@ -255,6 +317,39 @@ public class TornadoKit extends PremiumKit implements Listener {
       default:
         return 6;
     }
+  }
+
+  private void prepareFinalFlight(User user) {
+    Player player = user.getPlayer();
+    final int spellTime = 10;
+    ultimateUsers.add(user.getPlayer());
+
+    List<String> messages = getPlugin().getLanguageManager().getLanguageListFromKey("KIT_CONTENT_TORNADO_GAME_ITEM_FINAL_FLIGHT_ACTIVE_ACTION_BAR");
+    new BukkitRunnable() {
+      int spellTick = 0;
+      int messageIndex = 0;
+
+      @Override
+      public void run() {
+        if (spellTick % 10 == 0) {
+          VersionUtils.sendActionBar(player, messages.get(messageIndex)
+              .replace("%number%", String.valueOf(user.getCooldown("tornado_final_flight_running"))));
+          messageIndex++;
+          if (messageIndex > messages.size() - 1) {
+            messageIndex = 0;
+          }
+        }
+        if (spellTick >= 20 * spellTime || !getPlugin().getArenaRegistry().isInArena(user.getPlayer()) || user.isSpectator()) {
+          //reset action bar
+          VersionUtils.sendActionBar(player, "");
+          ultimateUsers.remove(user.getPlayer());
+          cancel();
+          return;
+        }
+        spellTick++;
+      }
+    }.runTaskTimer(getPlugin(), 0, 1);
+    Bukkit.getScheduler().runTaskLater(getPlugin(), () -> ultimateUsers.remove(user.getPlayer()), spellTime * 20L);
   }
 
 }

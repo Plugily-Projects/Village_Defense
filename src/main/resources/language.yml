@@ -496,7 +496,9 @@ Kit:
             - "to levitate and receive 25% max health"
             - "damage per second and lasts for 4s"
             - "Lasts for 10 seconds, cooldown 40 seconds"
-          Activate: "&7Arise to the skies!"
+          Active-Action-Bar:
+            - "&e&lFINAL FLIGHT ACTIVE &7(%number%s)"
+            - "&c&lFINAL FLIGHT ACTIVE &7(%number%s)"
     Terminator:
       Name: "&6Terminator"
       Description:

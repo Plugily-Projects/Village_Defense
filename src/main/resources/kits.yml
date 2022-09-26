@@ -65,6 +65,7 @@ Kit-Cooldown:
     Homecoming: 60
   Tornado:
     Monsoon: 20
+    Final-Flight: 40
 
 # The settings for some kits
 Kit-Settings:
