@@ -1,12 +1,30 @@
+/*
+ * Village Defense - Protect villagers from hordes of zombies
+ * Copyright (c) 2022  Plugily Projects - maintained by Tigerpanzer_02 and contributors
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package plugily.projects.villagedefense.boot;
+
+import java.util.Arrays;
 
 import plugily.projects.minigamesbox.classic.handlers.language.Message;
 import plugily.projects.minigamesbox.classic.handlers.language.MessageManager;
 import plugily.projects.minigamesbox.classic.utils.services.locale.Locale;
 import plugily.projects.minigamesbox.classic.utils.services.locale.LocaleRegistry;
 import plugily.projects.villagedefense.Main;
-
-import java.util.Arrays;
 
 /**
  * @author Tigerpanzer_02
@@ -91,6 +109,7 @@ public class MessageInitializer {
     getMessageManager().registerMessage("UPGRADE_MENU_UPGRADES_DEFENSE_NAME", new Message("Upgrade-Menu.Upgrades.Final-Defense.Name", ""));
     getMessageManager().registerMessage("UPGRADE_MENU_UPGRADES_DEFENSE_DESCRIPTION", new Message("Upgrade-Menu.Upgrades.Final-Defense.Description", ""));
 
+    getMessageManager().registerMessage("KIT_LOCKED_TILL", new Message("Kit.Locked-Till", ""));
 
     //CLEANER KIT
 
@@ -176,8 +195,15 @@ public class MessageInitializer {
 
     getMessageManager().registerMessage("KIT_CONTENT_TORNADO_NAME", new Message("Kit.Content.Tornado.Name", ""));
     getMessageManager().registerMessage("KIT_CONTENT_TORNADO_DESCRIPTION", new Message("Kit.Content.Tornado.Description", ""));
-    getMessageManager().registerMessage("KIT_CONTENT_TORNADO_GAME_ITEM_NAME", new Message("Kit.Content.Tornado.Game-Item.Name", ""));
-    getMessageManager().registerMessage("KIT_CONTENT_TORNADO_GAME_ITEM_DESCRIPTION", new Message("Kit.Content.Tornado.Game-Item.Description", ""));
+    getMessageManager().registerMessage("KIT_CONTENT_TORNADO_GAME_ITEM_TORNADO_NAME", new Message("Kit.Content.Tornado.Game-Item.Tornado.Name", ""));
+    getMessageManager().registerMessage("KIT_CONTENT_TORNADO_GAME_ITEM_TORNADO_DESCRIPTION", new Message("Kit.Content.Tornado.Game-Item.Tornado.Description", ""));
+    getMessageManager().registerMessage("KIT_CONTENT_TORNADO_GAME_ITEM_MONSOON_NAME", new Message("Kit.Content.Tornado.Game-Item.Monsoon.Name", ""));
+    getMessageManager().registerMessage("KIT_CONTENT_TORNADO_GAME_ITEM_MONSOON_DESCRIPTION", new Message("Kit.Content.Tornado.Game-Item.Monsoon.Description", ""));
+    getMessageManager().registerMessage("KIT_CONTENT_TORNADO_GAME_ITEM_MONSOON_ACTIVE_ACTION_BAR", new Message("Kit.Content.Tornado.Game-Item.Monsoon.Active-Action-Bar", ""));
+    getMessageManager().registerMessage("KIT_CONTENT_TORNADO_GAME_ITEM_FINAL_FLIGHT_NAME", new Message("Kit.Content.Tornado.Game-Item.Final-Flight.Name", ""));
+    getMessageManager().registerMessage("KIT_CONTENT_TORNADO_GAME_ITEM_FINAL_FLIGHT_DESCRIPTION", new Message("Kit.Content.Tornado.Game-Item.Final-Flight.Description", ""));
+    getMessageManager().registerMessage("KIT_CONTENT_TORNADO_GAME_ITEM_FINAL_FLIGHT_ACTIVE_ACTION_BAR", new Message("Kit.Content.Tornado.Game-Item.Final-Flight.Active-Action-Bar", ""));
+
 
 //TERMINATOR
 
@@ -224,6 +250,15 @@ public class MessageInitializer {
 
     getMessageManager().registerMessage("KIT_CONTENT_MEDIC_NAME", new Message("Kit.Content.Medic.Name", ""));
     getMessageManager().registerMessage("KIT_CONTENT_MEDIC_DESCRIPTION", new Message("Kit.Content.Medic.Description", ""));
+    getMessageManager().registerMessage("KIT_CONTENT_MEDIC_GAME_ITEM_AURA_NAME", new Message("Kit.Content.Medic.Game-Item.Aura.Name", ""));
+    getMessageManager().registerMessage("KIT_CONTENT_MEDIC_GAME_ITEM_AURA_DESCRIPTION", new Message("Kit.Content.Medic.Game-Item.Aura.Description", ""));
+    getMessageManager().registerMessage("KIT_CONTENT_MEDIC_GAME_ITEM_AURA_ACTIVE_ACTION_BAR", new Message("Kit.Content.Medic.Game-Item.Aura.Active-Action-Bar", ""));
+    getMessageManager().registerMessage("KIT_CONTENT_MEDIC_GAME_ITEM_AURA_HEALED_BY_ACTION_BAR", new Message("Kit.Content.Medic.Game-Item.Aura.Healed-By-Action-Bar", ""));
+    getMessageManager().registerMessage("KIT_CONTENT_MEDIC_GAME_ITEM_HOMECOMING_NAME", new Message("Kit.Content.Medic.Game-Item.Homecoming.Name", ""));
+    getMessageManager().registerMessage("KIT_CONTENT_MEDIC_GAME_ITEM_HOMECOMING_DESCRIPTION", new Message("Kit.Content.Medic.Game-Item.Homecoming.Description", ""));
+    getMessageManager().registerMessage("KIT_CONTENT_MEDIC_GAME_ITEM_HOMECOMING_ACTIVATE", new Message("Kit.Content.Medic.Game-Item.Homecoming.Activate", ""));
+    getMessageManager().registerMessage("KIT_CONTENT_MEDIC_GAME_ITEM_HOMECOMING_RESPAWNED_BY_TITLE", new Message("Kit.Content.Medic.Game-Item.Homecoming.Respawned-By-Title", ""));
+    getMessageManager().registerMessage("KIT_CONTENT_MEDIC_GAME_ITEM_HOMECOMING_RESPAWNED_BY_SUBTITLE", new Message("Kit.Content.Medic.Game-Item.Homecoming.Respawned-By-Subtitle", ""));
 
 //WILD_NAKED
 
@@ -235,10 +270,15 @@ public class MessageInitializer {
 
     getMessageManager().registerMessage("KIT_CONTENT_WIZARD_NAME", new Message("Kit.Content.Wizard.Name", ""));
     getMessageManager().registerMessage("KIT_CONTENT_WIZARD_DESCRIPTION", new Message("Kit.Content.Wizard.Description", ""));
-    getMessageManager().registerMessage("KIT_CONTENT_WIZARD_GAME_ITEM_ESSENCE_NAME", new Message("Kit.Content.Wizard.Game-Item.Essence.Name", ""));
-    getMessageManager().registerMessage("KIT_CONTENT_WIZARD_GAME_ITEM_ESSENCE_DESCRIPTION", new Message("Kit.Content.Wizard.Game-Item.Essence.Description", ""));
     getMessageManager().registerMessage("KIT_CONTENT_WIZARD_GAME_ITEM_WAND_NAME", new Message("Kit.Content.Wizard.Game-Item.Wand.Name", ""));
     getMessageManager().registerMessage("KIT_CONTENT_WIZARD_GAME_ITEM_WAND_DESCRIPTION", new Message("Kit.Content.Wizard.Game-Item.Wand.Description", ""));
+    getMessageManager().registerMessage("KIT_CONTENT_WIZARD_GAME_ITEM_FLOWER_NAME", new Message("Kit.Content.Wizard.Game-Item.Flower.Name", ""));
+    getMessageManager().registerMessage("KIT_CONTENT_WIZARD_GAME_ITEM_FLOWER_DESCRIPTION", new Message("Kit.Content.Wizard.Game-Item.Flower.Description", ""));
+    getMessageManager().registerMessage("KIT_CONTENT_WIZARD_GAME_ITEM_FLOWER_ACTIVATE", new Message("Kit.Content.Wizard.Game-Item.Flower.Activate", ""));
+    getMessageManager().registerMessage("KIT_CONTENT_WIZARD_GAME_ITEM_BLOODLUST_NAME", new Message("Kit.Content.Wizard.Game-Item.Bloodlust.Name", ""));
+    getMessageManager().registerMessage("KIT_CONTENT_WIZARD_GAME_ITEM_BLOODLUST_DESCRIPTION", new Message("Kit.Content.Wizard.Game-Item.Bloodlust.Description", ""));
+    getMessageManager().registerMessage("KIT_CONTENT_WIZARD_GAME_ITEM_BLOODLUST_ACTIVATE", new Message("Kit.Content.Wizard.Game-Item.Bloodlust.Activate", ""));
+    getMessageManager().registerMessage("KIT_CONTENT_WIZARD_GAME_ITEM_BLOODLUST_ACTIVE_ACTION_BAR", new Message("Kit.Content.Wizard.Game-Item.Bloodlust.Active-Action-Bar", ""));
 
   }
 
