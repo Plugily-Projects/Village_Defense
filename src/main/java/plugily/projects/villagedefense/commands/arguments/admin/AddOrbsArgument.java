@@ -25,9 +25,9 @@ import org.bukkit.entity.Player;
 import plugily.projects.minigamesbox.classic.commands.arguments.data.CommandArgument;
 import plugily.projects.minigamesbox.classic.commands.arguments.data.LabelData;
 import plugily.projects.minigamesbox.classic.commands.arguments.data.LabeledCommandArgument;
-import plugily.projects.minigamesbox.classic.commonsbox.number.NumberUtils;
 import plugily.projects.minigamesbox.classic.handlers.language.MessageBuilder;
 import plugily.projects.minigamesbox.classic.user.User;
+import plugily.projects.minigamesbox.number.NumberUtils;
 import plugily.projects.villagedefense.commands.arguments.ArgumentsRegistry;
 
 import java.util.Arrays;
