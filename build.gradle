@@ -59,7 +59,7 @@ dependencies {
 }
 
 group = 'plugily.projects'
-version = '4.6.1-SNAPSHOT72'
+version = '4.6.1-SNAPSHOT73'
 description = 'VillageDefense'
 
 java {
