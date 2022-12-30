@@ -55,7 +55,7 @@ dependencies {
         exclude group: 'io.papermc', module: 'paperlib'
     }
     compileOnly 'org.jetbrains:annotations:23.1.0'
-    compileOnly files('/lib/spigot/1.8.8-R0.1.jar')
+    compileOnly files('lib/spigot/1.8.8-R0.1.jar')
 }
 
 group = 'plugily.projects'
