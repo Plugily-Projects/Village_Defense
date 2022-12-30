@@ -43,6 +43,7 @@ repositories {
 }
 
 dependencies {
+    compileOnly 'io.papermc.paper:paper-api:1.19.3-R0.1-SNAPSHOT'
     implementation('plugily.projects:MiniGamesBox-Classic:1.2.0-SNAPSHOT5') {
         exclude group: 'com.google.code.gson', module: 'gson'
         exclude group: 'fr.mrmicky', module: 'FastInv'
@@ -53,9 +54,8 @@ dependencies {
         exclude group: 'plugily.projects', module: 'MiniGamesBox-Utils'
         exclude group: 'io.papermc', module: 'paperlib'
     }
-    compileOnly 'io.papermc.paper:paper-api:1.19.3-R0.1-SNAPSHOT'
     compileOnly 'org.jetbrains:annotations:23.1.0'
-    compileOnly("org.spigotmc:spigot:1.8.8-R0.1-SNAPSHOT")
+    compileOnly files('/lib/spigot/1.8.8-R0.1.jar')
 }
 
 group = 'plugily.projects'
