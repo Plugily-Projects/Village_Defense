@@ -60,24 +60,24 @@ public class ArenaRegistry extends PluginArenaRegistry {
       return false;
     }
 
-    ConfigurationSection zombieSection = section.getConfigurationSection(id + ".zombiespawns");
-    if(zombieSection != null) {
-      for(String string : zombieSection.getKeys(false)) {
-        ((Arena) arena).addZombieSpawn(LocationSerializer.getLocation(zombieSection.getString(string)));
-      }
-    } else {
+    List<String> zombieSection = section.getStringList(id + ".zombiespawns");
+    if(zombieSection.isEmpty()) {
       plugin.getDebugger().sendConsoleMsg(new MessageBuilder("VALIDATOR_INVALID_ARENA_CONFIGURATION").asKey().value("ZOMBIE SPAWNS").arena(arena).build());
       return false;
+    } else {
+      for(String string : zombieSection) {
+        ((Arena) arena).addZombieSpawn(LocationSerializer.getLocation(string));
+      }
     }
 
-    ConfigurationSection villagerSection = section.getConfigurationSection(id + ".villagerspawns");
-    if(villagerSection != null) {
-      for(String string : villagerSection.getKeys(false)) {
-        ((Arena) arena).addVillagerSpawn(LocationSerializer.getLocation(villagerSection.getString(string)));
-      }
-    } else {
+    List<String> villagerSection = section.getStringList(id + ".villagerspawns");
+    if(villagerSection.isEmpty()) {
       plugin.getDebugger().sendConsoleMsg(new MessageBuilder("VALIDATOR_INVALID_ARENA_CONFIGURATION").asKey().value("VILLAGER SPAWNS").arena(arena).build());
       return false;
+    } else {
+      for(String string : villagerSection) {
+        ((Arena) arena).addVillagerSpawn(LocationSerializer.getLocation(string));
+      }
     }
 
     ConfigurationSection doorSection = section.getConfigurationSection(id + ".doors");
