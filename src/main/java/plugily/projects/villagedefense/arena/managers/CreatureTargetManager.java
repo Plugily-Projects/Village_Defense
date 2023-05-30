@@ -43,7 +43,6 @@ import java.util.Random;
 public class CreatureTargetManager {
   private final Arena arena;
   private final Main plugin;
-  private Random random = new Random();
 
   public CreatureTargetManager(Arena arena) {
     this.arena = arena;
@@ -73,11 +72,11 @@ public class CreatureTargetManager {
       }
       LivingEntity creatureTarget = creature.getTarget();
       if(creatureTarget == null) {
-        creature.setTarget(arena.getEnemies().get(arena.getEnemies().size() > 1 ? random.nextInt(arena.getEnemies().size() - 1) : 0));
+        creature.setTarget(arena.getEnemies().get(arena.getEnemies().size() > 1 ? plugin.getRandom().nextInt(arena.getEnemies().size() - 1) : 0));
         continue;
       }
       if(creatureTarget instanceof Player) {
-        creature.setTarget(arena.getEnemies().get(arena.getEnemies().size() > 1 ? random.nextInt(arena.getEnemies().size() - 1) : 0));
+        creature.setTarget(arena.getEnemies().get(arena.getEnemies().size() > 1 ? plugin.getRandom().nextInt(arena.getEnemies().size() - 1) : 0));
       }
     }
   }
@@ -171,7 +170,7 @@ public class CreatureTargetManager {
         continue;
       }
       //set new target as villager so zombies won't stay still waiting for nothing
-      zombie.setTarget(arena.getVillagers().get(random.nextInt(arena.getVillagers().size() - 1)));
+      zombie.setTarget(arena.getVillagers().get(plugin.getRandom().nextInt(arena.getVillagers().size() - 1)));
     }
   }
 

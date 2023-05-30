@@ -48,7 +48,7 @@ import java.util.logging.Level;
 public class CreatureUtils {
 
   private static String[] villagerNames = ("Jagger,Kelsey,Kelton,Haylie,Harlow,Howard,Wulffric,Winfred,Ashley,Bailey,Beckett,Alfredo,Alfred,Adair,Edgar,ED,Eadwig,Edgaras,Buckley,Stanley,Nuffley,"
-      + "Mary,Jeffry,Rosaly,Elliot,Harry,Sam,Rosaline,Tom,Ivan,Kevin,Adam").split(",");
+      + "Mary,Jeffry,Rosaly,Elliot,Harry,Sam,Rosaline,Tom,Ivan,Kevin,Adam,Emma,Mira,Jeff,Isac,Nico").split(",");
   private static Main plugin;
   private static BaseCreatureInitializer creatureInitializer;
   private static final List<CachedObject> cachedObjects = new ArrayList<>();
@@ -137,7 +137,7 @@ public class CreatureUtils {
   }
 
   public static String getRandomVillagerName() {
-    return villagerNames[villagerNames.length == 1 ? 0 : ThreadLocalRandom.current().nextInt(villagerNames.length)];
+    return getVillagerNames()[villagerNames.length == 1 ? 0 : ThreadLocalRandom.current().nextInt(villagerNames.length)];
   }
 
   public static Main getPlugin() {

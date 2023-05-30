@@ -158,8 +158,7 @@ public class ArenaEvents extends PluginArenaEvents {
             event.setCancelled(true);
             event.setDamage(0);
 
-            java.util.UUID ownerUUID = VersionUtils.isPaper() ? wolf.getOwnerUniqueId()
-                : (wolf.getOwner() != null) ? wolf.getOwner().getUniqueId() : null;
+            java.util.UUID ownerUUID = (wolf.getOwner() != null) ? wolf.getOwner().getUniqueId() : null;
 
             if(ownerUUID != null) {
               Player playerOwner = plugin.getServer().getPlayer(ownerUUID);

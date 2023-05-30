@@ -52,7 +52,7 @@ public class SpecificCategory extends PluginSpecificCategory {
     gui.setItem((getInventoryLine() * 9) + 3, door);
     getItemList().add(door);
 
-    MaterialLocationItem chest = new MaterialLocationItem(getSetupInventory(), new ItemBuilder(XMaterial.CHEST.parseMaterial()), "Game Shop", "Look at (double-) chest with items\nand click it to set it as game shop.\n(it allows to click villagers to buy game items)\nRemember to set item prices for the game\nusing /vda setprice command!", "shop", XMaterial.CHEST.parseMaterial(), 0);
+    MaterialLocationItem chest = new MaterialLocationItem(getSetupInventory(), new ItemBuilder(XMaterial.CHEST.parseMaterial()), "Game Shop", "Look at (double-) chest with items\nand click it to set it as game shop.\n(it allows to click villagers to buy game items)\nRemember to set item prices for the game\nusing /vda setprice command!", "shop", XMaterial.CHEST.parseMaterial());
     gui.setItem((getInventoryLine() * 9) + 4, chest);
     getItemList().add(chest);
   }

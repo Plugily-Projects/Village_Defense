@@ -36,8 +36,6 @@ import plugily.projects.villagedefense.arena.Arena;
  * Created at 06.01.2019
  */
 public class EnemySpawnManager {
-
-  private final Random random = new Random();
   private final Arena arena;
   private int localIdleProcess = 0;
   private final List<Creature> glitchedEnemies = new ArrayList<>();
@@ -90,7 +88,7 @@ public class EnemySpawnManager {
         if(checkerLoc == null) {
           enemyCheckerLocations.put(creature, creature.getLocation());
         } else if(creature.getLocation().distance(checkerLoc) <= 1) {
-          VersionUtils.teleport(creature, arena.getRandomZombieSpawnLocation(random));
+          VersionUtils.teleport(creature, arena.getRandomZombieSpawnLocation(arena.getPlugin().getRandom()));
           enemyCheckerLocations.put(creature, creature.getLocation());
           glitchedEnemies.add(creature);
         }
@@ -110,7 +108,7 @@ public class EnemySpawnManager {
    */
   public void spawnEnemies() {
     if(checkForIdle()) {
-      arena.getPlugin().getEnemySpawnerRegistry().spawnEnemies(random, arena);
+      arena.getPlugin().getEnemySpawnerRegistry().spawnEnemies(arena.getPlugin().getRandom(), arena);
     }
   }
 

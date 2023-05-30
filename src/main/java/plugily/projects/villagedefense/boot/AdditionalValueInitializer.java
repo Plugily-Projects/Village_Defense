@@ -116,9 +116,9 @@ public class AdditionalValueInitializer {
      */
     getArenaOptionManager().registerArenaOption("ZOMBIE_SPAWN_COUNTER", new ArenaOption("null", 0));
     /**
-     * Value describes how many seconds zombie spawn system should halt and not spawn any entity.
+     * Value describes how many seconds zombie spawn system should hold and not spawn any entity.
      * This value reduces server load and lag preventing spawning hordes at once.
-     * Example when wave is 30 counter will set value to 2 halting zombies spawn for 2 seconds
+     * Example when wave is 30 counter will set value to 2 holding zombies spawn for 2 seconds
      * Algorithm: floor(wave / 15)
      */
     getArenaOptionManager().registerArenaOption("ZOMBIE_IDLE_PROCESS", new ArenaOption("null", 0));
