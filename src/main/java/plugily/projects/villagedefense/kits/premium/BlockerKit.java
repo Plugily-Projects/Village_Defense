@@ -51,6 +51,7 @@ public class BlockerKit extends PremiumKit implements Listener {
 
   public BlockerKit() {
     setName(new MessageBuilder("KIT_CONTENT_BLOCKER_NAME").asKey().build());
+    setKey("Blocker");
     List<String> description = getPlugin().getLanguageManager().getLanguageListFromKey("KIT_CONTENT_BLOCKER_DESCRIPTION");
     setDescription(description);
     getPlugin().getServer().getPluginManager().registerEvents(this, getPlugin());

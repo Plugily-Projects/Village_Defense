@@ -37,6 +37,7 @@ public class MediumTankKit extends LevelKit {
 
   public MediumTankKit() {
     setName(new MessageBuilder("KIT_CONTENT_MEDIUM_TANK_NAME").asKey().build());
+    setKey("MediumTank");
     List<String> description = getPlugin().getLanguageManager().getLanguageListFromKey("KIT_CONTENT_MEDIUM_TANK_DESCRIPTION");
     setDescription(description);
     setLevel(getKitsConfig().getInt("Required-Level.MediumTank"));

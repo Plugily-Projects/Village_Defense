@@ -46,6 +46,7 @@ public class ShotBowKit extends PremiumKit implements Listener {
 
   public ShotBowKit() {
     setName(new MessageBuilder("KIT_CONTENT_SHOT_BOW_NAME").asKey().build());
+    setKey("ShotBow");
     List<String> description = getPlugin().getLanguageManager().getLanguageListFromKey("KIT_CONTENT_SHOT_BOW_DESCRIPTION");
     setDescription(description);
     getPlugin().getServer().getPluginManager().registerEvents(this, getPlugin());

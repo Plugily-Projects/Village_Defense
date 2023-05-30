@@ -59,6 +59,7 @@ public class WizardKit extends PremiumKit implements Listener {
 
   public WizardKit() {
     setName(new MessageBuilder("KIT_CONTENT_WIZARD_NAME").asKey().build());
+    setKey("Wizard");
     List<String> description = getPlugin().getLanguageManager().getLanguageListFromKey("KIT_CONTENT_WIZARD_DESCRIPTION");
     setDescription(description);
     getPlugin().getKitRegistry().registerKit(this);

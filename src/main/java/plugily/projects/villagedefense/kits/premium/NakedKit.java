@@ -48,6 +48,7 @@ public class NakedKit extends PremiumKit implements Listener {
 
   public NakedKit() {
     setName(new MessageBuilder("KIT_CONTENT_WILD_NAKED_NAME").asKey().build());
+    setKey("Naked");
     List<String> description = getPlugin().getLanguageManager().getLanguageListFromKey("KIT_CONTENT_WILD_NAKED_DESCRIPTION");
     setDescription(description);
     getPlugin().getServer().getPluginManager().registerEvents(this, getPlugin());

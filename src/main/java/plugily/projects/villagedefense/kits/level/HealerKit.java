@@ -39,6 +39,7 @@ public class HealerKit extends LevelKit {
 
   public HealerKit() {
     setName(new MessageBuilder("KIT_CONTENT_HEALER_NAME").asKey().build());
+    setKey("Healer");
     List<String> description = getPlugin().getLanguageManager().getLanguageListFromKey("KIT_CONTENT_HEALER_DESCRIPTION");
     setDescription(description);
     setLevel(getKitsConfig().getInt("Required-Level.Healer"));

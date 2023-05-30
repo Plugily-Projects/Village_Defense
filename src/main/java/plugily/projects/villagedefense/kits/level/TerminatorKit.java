@@ -40,6 +40,7 @@ public class TerminatorKit extends LevelKit {
 
   public TerminatorKit() {
     setName(new MessageBuilder("KIT_CONTENT_TERMINATOR_NAME").asKey().build());
+    setKey("Terminator");
     List<String> description = getPlugin().getLanguageManager().getLanguageListFromKey("KIT_CONTENT_TERMINATOR_DESCRIPTION");
     setDescription(description);
     setLevel(getKitsConfig().getInt("Required-Level.Terminator"));

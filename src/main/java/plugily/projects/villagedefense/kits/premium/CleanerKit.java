@@ -46,6 +46,7 @@ public class CleanerKit extends PremiumKit implements Listener {
 
   public CleanerKit() {
     setName(new MessageBuilder("KIT_CONTENT_CLEANER_NAME").asKey().build());
+    setKey("Cleaner");
     List<String> description = getPlugin().getLanguageManager().getLanguageListFromKey("KIT_CONTENT_CLEANER_DESCRIPTION");
     setDescription(description);
     getPlugin().getServer().getPluginManager().registerEvents(this, getPlugin());

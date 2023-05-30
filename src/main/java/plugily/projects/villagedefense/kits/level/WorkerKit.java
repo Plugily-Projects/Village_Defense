@@ -46,6 +46,7 @@ public class WorkerKit extends LevelKit implements Listener {
   public WorkerKit() {
     setLevel(getKitsConfig().getInt("Required-Level.Worker"));
     setName(new MessageBuilder("KIT_CONTENT_WORKER_NAME").asKey().build());
+    setKey("Worker");
     List<String> description = getPlugin().getLanguageManager().getLanguageListFromKey("KIT_CONTENT_WORKER_DESCRIPTION");
     setDescription(description);
     getPlugin().getKitRegistry().registerKit(this);

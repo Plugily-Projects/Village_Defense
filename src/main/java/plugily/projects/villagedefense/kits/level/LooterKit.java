@@ -41,6 +41,7 @@ public class LooterKit extends LevelKit implements Listener {
 
   public LooterKit() {
     setName(new MessageBuilder("KIT_CONTENT_LOOTER_NAME").asKey().build());
+    setKey("Looter");
     List<String> description = getPlugin().getLanguageManager().getLanguageListFromKey("KIT_CONTENT_LOOTER_DESCRIPTION");
     setDescription(description);
     setLevel(getKitsConfig().getInt("Required-Level.Looter"));

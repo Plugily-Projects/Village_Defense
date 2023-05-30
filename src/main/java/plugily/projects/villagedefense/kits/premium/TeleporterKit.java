@@ -50,6 +50,7 @@ public class TeleporterKit extends PremiumKit implements Listener {
 
   public TeleporterKit() {
     setName(new MessageBuilder("KIT_CONTENT_TELEPORTER_NAME").asKey().build());
+    setKey("Teleporter");
     List<String> description = getPlugin().getLanguageManager().getLanguageListFromKey("KIT_CONTENT_TELEPORTER_DESCRIPTION");
     setDescription(description);
     getPlugin().getServer().getPluginManager().registerEvents(this, getPlugin());

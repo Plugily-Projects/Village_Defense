@@ -38,6 +38,7 @@ public class GolemFriendKit extends LevelKit {
 
   public GolemFriendKit() {
     setName(new MessageBuilder("KIT_CONTENT_GOLEM_FRIEND_NAME").asKey().build());
+    setKey("GolemFriend");
     List<String> description = getPlugin().getLanguageManager().getLanguageListFromKey("KIT_CONTENT_GOLEM_FRIEND_DESCRIPTION");
     setDescription(description);
     setLevel(getKitsConfig().getInt("Required-Level.GolemFriend"));

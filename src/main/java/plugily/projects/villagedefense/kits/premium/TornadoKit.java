@@ -54,6 +54,7 @@ public class TornadoKit extends PremiumKit implements Listener {
 
   public TornadoKit() {
     setName(new MessageBuilder("KIT_CONTENT_TORNADO_NAME").asKey().build());
+    setKey("Tornado");
     List<String> description = getPlugin().getLanguageManager().getLanguageListFromKey("KIT_CONTENT_TORNADO_DESCRIPTION");
     setDescription(description);
     getPlugin().getServer().getPluginManager().registerEvents(this, getPlugin());

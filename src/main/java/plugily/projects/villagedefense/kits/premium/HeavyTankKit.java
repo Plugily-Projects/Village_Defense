@@ -38,6 +38,7 @@ public class HeavyTankKit extends PremiumKit {
 
   public HeavyTankKit() {
     setName(new MessageBuilder("KIT_CONTENT_HEAVY_TANK_NAME").asKey().build());
+    setKey("HeavyTank");
     List<String> description = getPlugin().getLanguageManager().getLanguageListFromKey("KIT_CONTENT_HEAVY_TANK_DESCRIPTION");
     setDescription(description);
     getPlugin().getKitRegistry().registerKit(this);

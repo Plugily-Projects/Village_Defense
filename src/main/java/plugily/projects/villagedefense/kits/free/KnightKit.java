@@ -36,6 +36,7 @@ public class KnightKit extends FreeKit {
 
   public KnightKit() {
     setName(new MessageBuilder("KIT_CONTENT_KNIGHT_NAME").asKey().build());
+    setKey("Knight");
     List<String> description = getPlugin().getLanguageManager().getLanguageListFromKey("KIT_CONTENT_KNIGHT_DESCRIPTION");
     setDescription(description);
     getPlugin().getKitRegistry().registerKit(this);

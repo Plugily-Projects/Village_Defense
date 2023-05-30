@@ -37,6 +37,7 @@ public class DogFriendKit extends PremiumKit {
 
   public DogFriendKit() {
     setName(new MessageBuilder("KIT_CONTENT_DOG_FRIEND_NAME").asKey().build());
+    setKey("DogFriend");
     List<String> description = getPlugin().getLanguageManager().getLanguageListFromKey("KIT_CONTENT_DOG_FRIEND_DESCRIPTION");
     setDescription(description);
     getPlugin().getKitRegistry().registerKit(this);

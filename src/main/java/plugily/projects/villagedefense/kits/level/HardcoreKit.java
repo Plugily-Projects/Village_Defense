@@ -39,6 +39,7 @@ public class HardcoreKit extends LevelKit {
 
   public HardcoreKit() {
     setName(new MessageBuilder("KIT_CONTENT_HARDCORE_NAME").asKey().build());
+    setKey("Hardcore");
     List<String> description = getPlugin().getLanguageManager().getLanguageListFromKey("KIT_CONTENT_HARDCORE_DESCRIPTION");
     setDescription(description);
     setLevel(getKitsConfig().getInt("Required-Level.Hardcore"));

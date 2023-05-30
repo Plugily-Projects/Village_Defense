@@ -36,6 +36,7 @@ public class PremiumHardcoreKit extends PremiumKit {
 
   public PremiumHardcoreKit() {
     setName(new MessageBuilder("KIT_CONTENT_PREMIUM_HARDCORE_NAME").asKey().build());
+    setKey("PremiumHardcore");
     List<String> description = getPlugin().getLanguageManager().getLanguageListFromKey("KIT_CONTENT_PREMIUM_HARDCORE_DESCRIPTION");
     setDescription(description);
     getPlugin().getKitRegistry().registerKit(this);

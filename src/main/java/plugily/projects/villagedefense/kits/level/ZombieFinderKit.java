@@ -49,6 +49,7 @@ public class ZombieFinderKit extends LevelKit implements Listener {
 
   public ZombieFinderKit() {
     setName(new MessageBuilder("KIT_CONTENT_ZOMBIE_TELEPORTER_NAME").asKey().build());
+    setKey("ZombieFinder");
     List<String> description = getPlugin().getLanguageManager().getLanguageListFromKey("KIT_CONTENT_ZOMBIE_TELEPORTER_DESCRIPTION");
     setDescription(description);
     setLevel(getKitsConfig().getInt("Required-Level.ZombieFinder"));

@@ -38,6 +38,7 @@ public class PuncherKit extends LevelKit {
 
   public PuncherKit() {
     setName(new MessageBuilder("KIT_CONTENT_PUNCHER_NAME").asKey().build());
+    setKey("Puncher");
     List<String> description = getPlugin().getLanguageManager().getLanguageListFromKey("KIT_CONTENT_PUNCHER_DESCRIPTION");
     setDescription(description);
     setLevel(getKitsConfig().getInt("Required-Level.Puncher"));

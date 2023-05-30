@@ -45,6 +45,7 @@ public class MedicKit extends PremiumKit implements Listener {
 
   public MedicKit() {
     setName(new MessageBuilder("KIT_CONTENT_MEDIC_NAME").asKey().build());
+    setKey("Medic");
     List<String> description = getPlugin().getLanguageManager().getLanguageListFromKey("KIT_CONTENT_MEDIC_DESCRIPTION");
     setDescription(description);
     getPlugin().getServer().getPluginManager().registerEvents(this, getPlugin());

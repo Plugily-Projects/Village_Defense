@@ -41,6 +41,7 @@ public class RunnerKit extends LevelKit {
   public RunnerKit() {
     setLevel(getKitsConfig().getInt("Required-Level.Runner"));
     setName(new MessageBuilder("KIT_CONTENT_RUNNER_NAME").asKey().build());
+    setKey("Runner");
     List<String> description = getPlugin().getLanguageManager().getLanguageListFromKey("KIT_CONTENT_RUNNER_DESCRIPTION");
     setDescription(description);
     getPlugin().getKitRegistry().registerKit(this);
