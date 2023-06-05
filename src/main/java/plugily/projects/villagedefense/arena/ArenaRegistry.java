@@ -87,7 +87,7 @@ public class ArenaRegistry extends PluginArenaRegistry {
             (byte) doorSection.getInt(string + ".byte"));
       }
     } else {
-      plugin.getDebugger().sendConsoleMsg(new MessageBuilder("VALIDATOR_INVALID_ARENA_CONFIGURATION").value("DOORS").arena(arena).build());
+      plugin.getDebugger().sendConsoleMsg(new MessageBuilder("VALIDATOR_INVALID_ARENA_CONFIGURATION").asKey().value("DOORS").arena(arena).build());
       return false;
     }
 
