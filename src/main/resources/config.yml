@@ -11,15 +11,13 @@
 # Available locales:
 #    default - English language. Uses 'language.yml'.
 #    de - Deutsche sprache          pl - Język polski
-#    es - Idioma español            id - Bhasa Indonesia
+#    es - Idioma español
 #    fr - Langue française          vn - Tiếng việt
-#    hu - Magyar nyelv              cn - 简体中文
-#    ro - Limba română              cs - Český jazyk
-#    pt_br - Português Brasileiro   lt - Lietuvių kalba
+#    cs - Český jazyk               pt_PR - Português
+#    pt_br - Português Brasileiro
 #    it - Lingua italiana           ru - Русский язык
-#    kr - Korean                    nl - Dutch
-#    zh - Chinese (Traditional)     tr - Türk dili
-#    th - Thai
+#    nl - Dutch                     zh_CN - Chinese
+#    zh_HK - Chinese (Traditional)  tr - Türk dili
 locale: default
 
 
