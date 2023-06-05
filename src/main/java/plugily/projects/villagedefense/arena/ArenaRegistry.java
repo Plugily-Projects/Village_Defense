@@ -86,9 +86,6 @@ public class ArenaRegistry extends PluginArenaRegistry {
         ((Arena) arena).getMapRestorerManager().addDoor(LocationSerializer.getLocation(doorSection.getString(string + ".location")),
             (byte) doorSection.getInt(string + ".byte"));
       }
-    } else {
-      plugin.getDebugger().sendConsoleMsg(new MessageBuilder("VALIDATOR_INVALID_ARENA_CONFIGURATION").asKey().value("DOORS").arena(arena).build());
-      return false;
     }
 
 
