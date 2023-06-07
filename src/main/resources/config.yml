@@ -1,25 +1,16 @@
-### Initial config.yml for all plugily projects
 ## Thanks for using our plugins! ~Tigerpanzer_02 from Plugily Projects
-#      PlugilyProjects configuration file
+#      villagedefense configuration file
 #
-#    You can edit here the basic things of PlugilyProjects
+#    You can edit here the basic things of villagedefense
 #      Please read everything CAREFULLY!
 #   You don't want to break anything, do you?
 #
 
-# Select locale of PlugilyProjects, default it's English.
+# Select locale of villagedefense, default it's English.
 # Available locales:
 #    default - English language. Uses 'language.yml'.
-#    de - Deutsche sprache          pl - Język polski
-#    es - Idioma español            id - Bhasa Indonesia
-#    fr - Langue française          vn - Tiếng việt
-#    hu - Magyar nyelv              cn - 简体中文
-#    ro - Limba română              cs - Český jazyk
-#    pt_br - Português Brasileiro   lt - Lietuvių kalba
-#    it - Lingua italiana           ru - Русский язык
-#    kr - Korean                    nl - Dutch
-#    zh - Chinese (Traditional)     tr - Türk dili
-#    th - Thai
+#    See https://github.com/Plugily-Projects/locale_storage/tree/master/plugins/minecraft/villagedefense
+#    Use filename of the language e.g. de_DE.yml -> locale: de_DE
 locale: default
 
 
