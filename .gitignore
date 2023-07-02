@@ -4,3 +4,10 @@
 /target/
 /mvn/
 /minecraft/
+*.lock
+.gradle/8.1.1/checksums/md5-checksums.bin
+.gradle/8.1.1/checksums/sha1-checksums.bin
+.gradle/buildOutputCleanup/cache.properties
+.gradle/buildOutputCleanup/outputFiles.bin
+/build
+/.gradle
