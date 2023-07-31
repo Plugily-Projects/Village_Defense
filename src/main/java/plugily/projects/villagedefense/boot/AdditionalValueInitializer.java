@@ -57,7 +57,7 @@ public class AdditionalValueInitializer {
     getConfigPreferences().registerOption("RESPAWN_IN_GAME_JOIN", new ConfigOption("Respawn.In-Game-Join", true));
     getConfigPreferences().registerOption("LIMIT_WAVE_UNLIMITED", new ConfigOption("Limit.Wave.Unlimited", true));
     getConfigPreferences().registerOption("LIMIT_ENTITY_BUY_AFTER_DEATH", new ConfigOption("Limit.Wave.Entity-Buy-After-Death", true));
-    getConfigPreferences().registerOption("ZOMBIE_HEALTHBAR", new ConfigOption("Zombies.Health-Bar", true));
+    getConfigPreferences().registerOption("ZOMBIE_HEALTHBAR", new ConfigOption("Creatures.Health-Bar", true));
     getConfigPreferences().registerOption("NAME_VISIBILITY_GOLEM", new ConfigOption("Name-Visibility.Golem", true));
     getConfigPreferences().registerOption("NAME_VISIBILITY_WOLF", new ConfigOption("Name-Visibility.Wolf", true));
     getConfigPreferences().registerOption("NAME_VISIBILITY_VILLAGER", new ConfigOption("Name-Visibility.Villager", true));

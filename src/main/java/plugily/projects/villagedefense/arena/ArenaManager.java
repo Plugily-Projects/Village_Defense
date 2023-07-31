@@ -159,10 +159,10 @@ public class ArenaManager extends PluginArenaManager {
     Bukkit.getPluginManager().callEvent(new VillageWaveStartEvent(arena, wave));
 
     int zombiesAmount = (int) Math.ceil((arena.getPlayers().size() * 0.5) * (wave * wave) / 2);
-    int maxzombies = plugin.getConfig().getInt("Limit.Spawn.Zombies", 75);
+    int maxzombies = plugin.getConfig().getInt("Limit.Spawn.Creatures", 75);
 
     if(zombiesAmount > maxzombies) {
-      int multiplier = (int) Math.ceil((zombiesAmount - (double) maxzombies) / plugin.getConfig().getInt("Zombies.Multiplier-Divider", 18));
+      int multiplier = (int) Math.ceil((zombiesAmount - (double) maxzombies) / plugin.getConfig().getInt("Creatures.Multiplier-Divider", 18));
 
       if(multiplier < 2) multiplier = 2;
 

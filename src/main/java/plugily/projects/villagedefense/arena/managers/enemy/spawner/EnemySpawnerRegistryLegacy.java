@@ -88,7 +88,7 @@ public class EnemySpawnerRegistryLegacy {
    */
   public void spawnEnemies(Random random, Arena arena) {
     int spawn = arena.getWave();
-    int zombiesLimit = plugin.getConfig().getInt("Limit.Spawn.Zombies", 75);
+    int zombiesLimit = plugin.getConfig().getInt("Limit.Spawn.Creatures", 75);
     if(zombiesLimit < spawn) {
       spawn = (int) Math.ceil(zombiesLimit / 2.0);
     }

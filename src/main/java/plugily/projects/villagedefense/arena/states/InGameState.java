@@ -60,7 +60,7 @@ public class InGameState extends PluginInGameState {
         setArenaTimer(500);
       }
       if(ServerVersion.Version.isCurrentEqualOrHigher(ServerVersion.Version.v1_9_R1)) {
-        int zombiesLeftFrom = getPlugin().getConfig().getInt("Glowing-Status.Zombies-Left");
+        int zombiesLeftFrom = getPlugin().getConfig().getInt("Glowing-Status.Creatures-Left");
         int startingWave;
         if(zombiesLeftFrom > 0 && zombiesLeft <= zombiesLeftFrom
             && (startingWave = getPlugin().getConfig().getInt("Glowing-Status.Starting-Wave")) > 0

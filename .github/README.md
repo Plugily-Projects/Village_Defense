@@ -5,7 +5,7 @@
 Village Defense is a Minecraft minigame designed for small and big servers. This minigame is unique and very
 configurable, 100% free and open source!
 
-The goal is to protect Villagers from hordes of undead Zombies. However, the game isn't that easy. There are more and
+The goal is to protect Villagers from hordes of undead Creatures. However, the game isn't that easy. There are more and
 more zombies every wave and more types of them come in higher waves. There is no wave limit so try to survive as long as
 you can!
 

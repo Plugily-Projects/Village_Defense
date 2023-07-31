@@ -55,7 +55,7 @@ public class ClearEntitiesArgument {
           return;
         }
         if(args.length == 1) {
-          new MessageBuilder(ChatColor.RED + "Please type valid mob type to clear: VILLAGER, ZOMBIE, IRON_GOLEM").prefix().send(sender);
+          new MessageBuilder(ChatColor.RED + "Please type valid mob type to clear: VILLAGER, ZOMBIE, IRON_GOLEM, WOLF").prefix().send(sender);
           return;
         }
         Arena arena = (Arena) registry.getPlugin().getArenaRegistry().getArena((Player) sender);

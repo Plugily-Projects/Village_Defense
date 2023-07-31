@@ -195,19 +195,19 @@ Limit:
     Golems: 15
     # How many villagers will be spawned in an arena?
     Villagers: 10
-    # After how many zombies should we limit them?
-    # Once limit is reached zombies get more health so it's still harder each wave
-    Zombies: 75
+    # After how many Creatures should we limit them?
+    # Once limit is reached Creatures get more health so it's still harder each wave
+    Creatures: 75
   # Can the players buy again iron golems or wolves if these
   # entities died? The config limit and permission will be ignored.
   Entity-Buy-After-Death: false
 
 
-Zombies:
-  # Active after zombies limit is reached
-  # Higher value means weaker zombies
+Creatures:
+  # Active after Creatures limit is reached
+  # Higher value means weaker Creatures
   Multiplier-Divider: 18
-  # Enable very simple health bar for zombies?
+  # Enable very simple health bar for Creatures?
   # They will have health instead of their names
   # It will show percentage of health left.
   Health-Bar: true
@@ -237,9 +237,9 @@ Name-Visibility:
 Glowing-Status:
   # From which wave should the glowing be activated?
   Starting-Wave: 6
-  # How many zombies should the glow be activated from?
+  # How many creatures should the glow be activated from?
   # Set to 0 to disable
-  Zombies-Left: 0
+  Creatures-Left: 0
 
 
 Update-Notifier:
