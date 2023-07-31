@@ -194,9 +194,14 @@ public class MessageInitializer {
 
     getMessageManager().registerMessage("KIT_CONTENT_TORNADO_NAME", new Message("Kit.Content.Tornado.Name", ""));
     getMessageManager().registerMessage("KIT_CONTENT_TORNADO_DESCRIPTION", new Message("Kit.Content.Tornado.Description", ""));
-    getMessageManager().registerMessage("KIT_CONTENT_TORNADO_GAME_ITEM_NAME", new Message("Kit.Content.Tornado.Game-Item.Name", ""));
-    getMessageManager().registerMessage("KIT_CONTENT_TORNADO_GAME_ITEM_DESCRIPTION", new Message("Kit.Content.Tornado.Game-Item.Description", ""));
-
+    getMessageManager().registerMessage("KIT_CONTENT_TORNADO_GAME_ITEM_TORNADO_NAME", new Message("Kit.Content.Tornado.Game-Item.Tornado.Name", ""));
+    getMessageManager().registerMessage("KIT_CONTENT_TORNADO_GAME_ITEM_TORNADO_DESCRIPTION", new Message("Kit.Content.Tornado.Game-Item.Tornado.Description", ""));
+    getMessageManager().registerMessage("KIT_CONTENT_TORNADO_GAME_ITEM_MONSOON_NAME", new Message("Kit.Content.Tornado.Game-Item.Monsoon.Name", ""));
+    getMessageManager().registerMessage("KIT_CONTENT_TORNADO_GAME_ITEM_MONSOON_DESCRIPTION", new Message("Kit.Content.Tornado.Game-Item.Monsoon.Description", ""));
+    getMessageManager().registerMessage("KIT_CONTENT_TORNADO_GAME_ITEM_MONSOON_ACTIVE_ACTION_BAR", new Message("Kit.Content.Tornado.Game-Item.Monsoon.Active-Action-Bar", ""));
+    getMessageManager().registerMessage("KIT_CONTENT_TORNADO_GAME_ITEM_FINAL_FLIGHT_NAME", new Message("Kit.Content.Tornado.Game-Item.Final-Flight.Name", ""));
+    getMessageManager().registerMessage("KIT_CONTENT_TORNADO_GAME_ITEM_FINAL_FLIGHT_DESCRIPTION", new Message("Kit.Content.Tornado.Game-Item.Final-Flight.Description", ""));
+    getMessageManager().registerMessage("KIT_CONTENT_TORNADO_GAME_ITEM_FINAL_FLIGHT_ACTIVE_ACTION_BAR", new Message("Kit.Content.Tornado.Game-Item.Final-Flight.Active-Action-Bar", ""));
 //TERMINATOR
 
     getMessageManager().registerMessage("KIT_CONTENT_TERMINATOR_NAME", new Message("Kit.Content.Terminator.Name", ""));
@@ -242,7 +247,15 @@ public class MessageInitializer {
 
     getMessageManager().registerMessage("KIT_CONTENT_MEDIC_NAME", new Message("Kit.Content.Medic.Name", ""));
     getMessageManager().registerMessage("KIT_CONTENT_MEDIC_DESCRIPTION", new Message("Kit.Content.Medic.Description", ""));
-
+    getMessageManager().registerMessage("KIT_CONTENT_MEDIC_GAME_ITEM_AURA_NAME", new Message("Kit.Content.Medic.Game-Item.Aura.Name", ""));
+    getMessageManager().registerMessage("KIT_CONTENT_MEDIC_GAME_ITEM_AURA_DESCRIPTION", new Message("Kit.Content.Medic.Game-Item.Aura.Description", ""));
+    getMessageManager().registerMessage("KIT_CONTENT_MEDIC_GAME_ITEM_AURA_ACTIVE_ACTION_BAR", new Message("Kit.Content.Medic.Game-Item.Aura.Active-Action-Bar", ""));
+    getMessageManager().registerMessage("KIT_CONTENT_MEDIC_GAME_ITEM_AURA_HEALED_BY_ACTION_BAR", new Message("Kit.Content.Medic.Game-Item.Aura.Healed-By-Action-Bar", ""));
+    getMessageManager().registerMessage("KIT_CONTENT_MEDIC_GAME_ITEM_HOMECOMING_NAME", new Message("Kit.Content.Medic.Game-Item.Homecoming.Name", ""));
+    getMessageManager().registerMessage("KIT_CONTENT_MEDIC_GAME_ITEM_HOMECOMING_DESCRIPTION", new Message("Kit.Content.Medic.Game-Item.Homecoming.Description", ""));
+    getMessageManager().registerMessage("KIT_CONTENT_MEDIC_GAME_ITEM_HOMECOMING_ACTIVATE", new Message("Kit.Content.Medic.Game-Item.Homecoming.Activate", ""));
+    getMessageManager().registerMessage("KIT_CONTENT_MEDIC_GAME_ITEM_HOMECOMING_RESPAWNED_BY_TITLE", new Message("Kit.Content.Medic.Game-Item.Homecoming.Respawned-By-Title", ""));
+    getMessageManager().registerMessage("KIT_CONTENT_MEDIC_GAME_ITEM_HOMECOMING_RESPAWNED_BY_SUBTITLE", new Message("Kit.Content.Medic.Game-Item.Homecoming.Respawned-By-Subtitle", ""));
 //WILD_NAKED
 
     getMessageManager().registerMessage("KIT_CONTENT_WILD_NAKED_NAME", new Message("Kit.Content.Wild-Naked.Name", ""));
@@ -250,14 +263,17 @@ public class MessageInitializer {
     getMessageManager().registerMessage("KIT_CONTENT_WILD_NAKED_CANNOT_WEAR_ARMOR", new Message("Kit.Content.Wild-Naked.Cannot-Wear-Armor", ""));
 
 //WIZARD
-
     getMessageManager().registerMessage("KIT_CONTENT_WIZARD_NAME", new Message("Kit.Content.Wizard.Name", ""));
     getMessageManager().registerMessage("KIT_CONTENT_WIZARD_DESCRIPTION", new Message("Kit.Content.Wizard.Description", ""));
-    getMessageManager().registerMessage("KIT_CONTENT_WIZARD_GAME_ITEM_ESSENCE_NAME", new Message("Kit.Content.Wizard.Game-Item.Essence.Name", ""));
-    getMessageManager().registerMessage("KIT_CONTENT_WIZARD_GAME_ITEM_ESSENCE_DESCRIPTION", new Message("Kit.Content.Wizard.Game-Item.Essence.Description", ""));
     getMessageManager().registerMessage("KIT_CONTENT_WIZARD_GAME_ITEM_WAND_NAME", new Message("Kit.Content.Wizard.Game-Item.Wand.Name", ""));
     getMessageManager().registerMessage("KIT_CONTENT_WIZARD_GAME_ITEM_WAND_DESCRIPTION", new Message("Kit.Content.Wizard.Game-Item.Wand.Description", ""));
-
+    getMessageManager().registerMessage("KIT_CONTENT_WIZARD_GAME_ITEM_FLOWER_NAME", new Message("Kit.Content.Wizard.Game-Item.Flower.Name", ""));
+    getMessageManager().registerMessage("KIT_CONTENT_WIZARD_GAME_ITEM_FLOWER_DESCRIPTION", new Message("Kit.Content.Wizard.Game-Item.Flower.Description", ""));
+    getMessageManager().registerMessage("KIT_CONTENT_WIZARD_GAME_ITEM_FLOWER_ACTIVATE", new Message("Kit.Content.Wizard.Game-Item.Flower.Activate", ""));
+    getMessageManager().registerMessage("KIT_CONTENT_WIZARD_GAME_ITEM_BLOODLUST_NAME", new Message("Kit.Content.Wizard.Game-Item.Bloodlust.Name", ""));
+    getMessageManager().registerMessage("KIT_CONTENT_WIZARD_GAME_ITEM_BLOODLUST_DESCRIPTION", new Message("Kit.Content.Wizard.Game-Item.Bloodlust.Description", ""));
+    getMessageManager().registerMessage("KIT_CONTENT_WIZARD_GAME_ITEM_BLOODLUST_ACTIVATE", new Message("Kit.Content.Wizard.Game-Item.Bloodlust.Activate", ""));
+    getMessageManager().registerMessage("KIT_CONTENT_WIZARD_GAME_ITEM_BLOODLUST_ACTIVE_ACTION_BAR", new Message("Kit.Content.Wizard.Game-Item.Bloodlust.Active-Action-Bar", ""));
   }
 
   private void registerLocales() {
