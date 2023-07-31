@@ -1,19 +1,19 @@
 /*
- * Village Defense - Protect villagers from hordes of zombies
- * Copyright (c) 2022  Plugily Projects - maintained by Tigerpanzer_02 and contributors
+ *  Village Defense - Protect villagers from hordes of zombies
+ *  Copyright (c) 2023 Plugily Projects - maintained by Tigerpanzer_02 and contributors
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 package plugily.projects.villagedefense.arena;
@@ -60,24 +60,24 @@ public class ArenaRegistry extends PluginArenaRegistry {
       return false;
     }
 
-    ConfigurationSection zombieSection = section.getConfigurationSection(id + ".zombiespawns");
-    if(zombieSection != null) {
-      for(String string : zombieSection.getKeys(false)) {
-        ((Arena) arena).addZombieSpawn(LocationSerializer.getLocation(zombieSection.getString(string)));
-      }
-    } else {
+    List<String> zombieSection = section.getStringList(id + ".zombiespawns");
+    if(zombieSection.isEmpty()) {
       plugin.getDebugger().sendConsoleMsg(new MessageBuilder("VALIDATOR_INVALID_ARENA_CONFIGURATION").asKey().value("ZOMBIE SPAWNS").arena(arena).build());
       return false;
+    } else {
+      for(String string : zombieSection) {
+        ((Arena) arena).addZombieSpawn(LocationSerializer.getLocation(string));
+      }
     }
 
-    ConfigurationSection villagerSection = section.getConfigurationSection(id + ".villagerspawns");
-    if(villagerSection != null) {
-      for(String string : villagerSection.getKeys(false)) {
-        ((Arena) arena).addVillagerSpawn(LocationSerializer.getLocation(villagerSection.getString(string)));
-      }
-    } else {
+    List<String> villagerSection = section.getStringList(id + ".villagerspawns");
+    if(villagerSection.isEmpty()) {
       plugin.getDebugger().sendConsoleMsg(new MessageBuilder("VALIDATOR_INVALID_ARENA_CONFIGURATION").asKey().value("VILLAGER SPAWNS").arena(arena).build());
       return false;
+    } else {
+      for(String string : villagerSection) {
+        ((Arena) arena).addVillagerSpawn(LocationSerializer.getLocation(string));
+      }
     }
 
     ConfigurationSection doorSection = section.getConfigurationSection(id + ".doors");
@@ -86,9 +86,6 @@ public class ArenaRegistry extends PluginArenaRegistry {
         ((Arena) arena).getMapRestorerManager().addDoor(LocationSerializer.getLocation(doorSection.getString(string + ".location")),
             (byte) doorSection.getInt(string + ".byte"));
       }
-    } else {
-      plugin.getDebugger().sendConsoleMsg(new MessageBuilder("VALIDATOR_INVALID_ARENA_CONFIGURATION").value("DOORS").arena(arena).build());
-      return false;
     }
 
 

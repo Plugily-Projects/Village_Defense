@@ -1,25 +1,16 @@
-### Initial config.yml for all plugily projects
 ## Thanks for using our plugins! ~Tigerpanzer_02 from Plugily Projects
-#      PlugilyProjects configuration file
+#      villagedefense configuration file
 #
-#    You can edit here the basic things of PlugilyProjects
+#    You can edit here the basic things of villagedefense
 #      Please read everything CAREFULLY!
 #   You don't want to break anything, do you?
 #
 
-# Select locale of PlugilyProjects, default it's English.
+# Select locale of villagedefense, default it's English.
 # Available locales:
 #    default - English language. Uses 'language.yml'.
-#    de - Deutsche sprache          pl - Język polski
-#    es - Idioma español            id - Bhasa Indonesia
-#    fr - Langue française          vn - Tiếng việt
-#    hu - Magyar nyelv              cn - 简体中文
-#    ro - Limba română              cs - Český jazyk
-#    pt_br - Português Brasileiro   lt - Lietuvių kalba
-#    it - Lingua italiana           ru - Русский язык
-#    kr - Korean                    nl - Dutch
-#    zh - Chinese (Traditional)     tr - Türk dili
-#    th - Thai
+#    See https://github.com/Plugily-Projects/locale_storage/tree/master/plugins/minecraft/villagedefense
+#    Use filename of the language e.g. de_DE.yml -> locale: de_DE
 locale: default
 
 
@@ -204,19 +195,19 @@ Limit:
     Golems: 15
     # How many villagers will be spawned in an arena?
     Villagers: 10
-    # After how many zombies should we limit them?
-    # Once limit is reached zombies get more health so it's still harder each wave
-    Zombies: 75
+    # After how many Creatures should we limit them?
+    # Once limit is reached Creatures get more health so it's still harder each wave
+    Creatures: 75
   # Can the players buy again iron golems or wolves if these
   # entities died? The config limit and permission will be ignored.
   Entity-Buy-After-Death: false
 
 
-Zombies:
-  # Active after zombies limit is reached
-  # Higher value means weaker zombies
+Creatures:
+  # Active after Creatures limit is reached
+  # Higher value means weaker Creatures
   Multiplier-Divider: 18
-  # Enable very simple health bar for zombies?
+  # Enable very simple health bar for Creatures?
   # They will have health instead of their names
   # It will show percentage of health left.
   Health-Bar: true
@@ -246,9 +237,9 @@ Name-Visibility:
 Glowing-Status:
   # From which wave should the glowing be activated?
   Starting-Wave: 6
-  # How many zombies should the glow be activated from?
+  # How many creatures should the glow be activated from?
   # Set to 0 to disable
-  Zombies-Left: 0
+  Creatures-Left: 0
 
 
 Update-Notifier:

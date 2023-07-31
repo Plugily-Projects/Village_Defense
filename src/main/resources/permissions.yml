@@ -26,15 +26,6 @@ Spawn-Limit:
   Golems:
     limit-wolve-10: 10
 
-# Basic permissions for game, permissions explained here: https://wiki.plugily.xyz/
-Basic:
-  Full-Games: "villagedefense.fullgames"
-  # <arena> represents arena name (NOT MAP NAME!), for example: 'villagedefense.join.ARENAnice'
-  # use 'villagedefense.join.*' to enable access to all arenas
-  Join: "villagedefense.join.<arena>"
-  Forcestart: "villagedefense.admin.forcestart"
-  Premium-Kits: "villagedefense.kits.premium"
-
 # Don't edit it. But who's stopping you? It's your server!
 # Really, don't edit ;p
 # You edited it, huh? Next time hurt yourself!
