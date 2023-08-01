@@ -75,6 +75,8 @@ tasks {
 
     compileJava {
         options.encoding = "UTF-8"
+        targetCompatibility = JavaVersion.VERSION_1_8.toString()
+        sourceCompatibility = JavaVersion.VERSION_1_8.toString()
     }
 
 }
