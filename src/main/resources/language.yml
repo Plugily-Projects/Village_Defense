@@ -464,17 +464,17 @@ Kit:
         - "&6&lABILITIES:"
         - "&a&l• CALL OF THE WIND (PASSIVE):"
         - "  &7Each turn you receive 2/3/5 tornadoes,"
-        - "  &7on use they push back and damage enemies"
+        - "  &7which push back and damage enemies"
         - "&a&l• MONSOON:"
         - "  &7Creates wind sphere that knocks back"
         - "  &7and permanently slows all enemies"
-        - "  &c&l(SPELL TIME 6/9/12s, COOLDOWN 20s)"
+        - "  &7(&c&lCAST TIME 6/&c&l9/&c&l12s&7, &c&lCOOLDOWN 20s&7)"
         - "&e&l• FINAL FLIGHT (ULTIMATE):"
         - "  &7On cast your attacks cause enemies"
         - "  &7to levitate and receive 25% max health"
-        - "  &7damage per second and lasts for 4s"
-        - "  &c&l(SPELL TIME 10s, COOLDOWN 40s)"
-        - "  &c&l(UNLOCKED IN MID GAME)"
+        - "  &7damage per second that lasts for 4s"
+        - "  &7(&c&lCAST TIME 10s&7, &c&lCOOLDOWN 40s&7)"
+        - "  &7(&c&lUNLOCKED IN MID GAME&7)"
       Game-Item:
         Tornado:
           Name: "&6&lTORNADO TIME"
@@ -486,7 +486,7 @@ Kit:
           Description:
             - "On cast creates wind sphere that knocks back"
             - "and permanently slows enemies"
-            - "Cooldown 20s"
+            - "&c&lCOOLDOWN: &720s"
           Active-Action-Bar:
             - "&e&lMONSOON ACTIVE &7(%number%s)"
             - "&c&lMONSOON ACTIVE &7(%number%s)"
@@ -495,8 +495,8 @@ Kit:
           Description:
             - "On cast your attacks cause enemies"
             - "to levitate and receive 25% max health"
-            - "damage per second and lasts for 4s"
-            - "Lasts for 10 seconds, cooldown 40 seconds"
+            - "damage per second that lasts for 4s"
+            - "&c&lCAST TIME: &710s, &c&lCOOLDOWN &740s"
           Active-Action-Bar:
             - "&e&lFINAL FLIGHT ACTIVE &7(%number%s)"
             - "&c&lFINAL FLIGHT ACTIVE &7(%number%s)"
@@ -566,12 +566,12 @@ Kit:
         - "&a&l• HEALER AURA:"
         - "  &7Creates healing aura that heals"
         - "  &7allies and pets by 2/4 hearts per sec"
-        - "  &c&l(SPELL TIME 10s, COOLDOWN 30/15s)"
+        - "  &7(&c&lCAST TIME 10s&7, &c&lCOOLDOWN 30/&c&l15s&7)"
         - "&e&l• HOMECOMING (ULTIMATE):"
         - "  &7On cast all spectators are respawned"
         - "  &7and are given Speed Boost I/II and"
         - "  &7Damage Boost I/II for 30 seconds"
-        - "  &c&l(COOLDOWN 60s)"
+        - "  &7(&c&lCOOLDOWN 60s&7)"
       Game-Item:
         Aura:
           Name: "&6&lHEALING AURA"
@@ -579,7 +579,7 @@ Kit:
             - "On cast creates healing aura"
             - "that heals allies, wolves and golems"
             - "2/4 hearts per second"
-            - "Spell time 10s, cooldown 30/15s"
+            - "&c&lCAST TIME &710s, &c&lCOOLDOWN &730/&715s"
           Active-Action-Bar:
             - "&e&lHEALING AURA ACTIVE &7(%number%s)"
             - "&c&lHEALING AURA ACTIVE &7(%number%s)"
@@ -592,7 +592,7 @@ Kit:
             - "On cast all spectators are"
             - "respawned and given Speed Boost I/II"
             - "and Damage Boost I/II for 30s"
-            - "Cooldown 60s"
+            - "&c&lCOOLDOWN &760s"
           Activate: "&7Come back my allies! We will not fall!"
           Respawned-By-Title: "&eIt's not your time yet"
           Respawned-By-Subtitle: "&7Respawned by %player%"
@@ -616,14 +616,14 @@ Kit:
         - "&a&l• CORRUPTING FLOWER:"
         - "  &7Every 3/3/2 waves receive item, on use"
         - "  &7attacks slows and burns enemies for 3s"
-        - "  &c&l(SPELL TIME 15s, COOLDOWN 15s)"
+        - "  &7(&c&lSPELL TIME 15s&7, &c&lCOOLDOWN 15s&7)"
         - "&e&l• BLOODLUST (ULTIMATE):"
         - "  &7Creates deadly aura that deals 10%"
         - "  &7max health to nearby enemies and"
         - "  &7heals you for 8% of damage dealt"
         - "  &7from aura each second"
-        - "  &c&l(SPELL TIME 15 sec, COOLDOWN 70 sec)"
-        - "  &c&l(UNLOCKED IN MID GAME)"
+        - "  &7(&c&lSPELL TIME 15s&7, &c&lCOOLDOWN 70s&7)"
+        - "  &7(&c&lUNLOCKED IN MID GAME&7)"
       Game-Item:
         Wand:
           Name: "&6&lWIZARD WAND"
@@ -636,14 +636,14 @@ Kit:
           Description:
             - "Click to make your attacks deal"
             - "slow and burn for 3 seconds!"
-            - "Lasts for 15 seconds, cooldown 15 seconds"
+            - "&c&lCAST TIME &715s, &c&lCOOLDOWN &715s"
           Activate: "&7Let &0&lCORRUPTION &7arise!"
         Bloodlust:
           Name: "&e&lBLOODLUST &7(Ultimate)"
           Description:
             - "Click to create death aura"
             - "and use it as your personal thorn shield!"
-            - "Lasts for 15 seconds, cooldown 70 seconds"
+            - "&c&lCAST TIME &715s, &c&lCOOLDOWN &770s"
           Activate: "&7Sacrifice your souls to me!"
           Active-Action-Bar:
             - "&e&lBLOODLUST ACTIVE &7(%number%s)"
