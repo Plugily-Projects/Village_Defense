@@ -73,6 +73,10 @@ tasks {
         options.encoding = "UTF-8"
     }
 
+    compileJava {
+        options.encoding = "UTF-8"
+    }
+
 }
 
 publishing {
