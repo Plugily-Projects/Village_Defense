@@ -18,14 +18,13 @@
 
 package plugily.projects.villagedefense.arena.states;
 
-import org.bukkit.entity.Player;
 import plugily.projects.minigamesbox.classic.arena.ArenaState;
 import plugily.projects.minigamesbox.classic.arena.PluginArena;
 import plugily.projects.minigamesbox.classic.arena.states.PluginInGameState;
 import plugily.projects.minigamesbox.classic.handlers.language.MessageBuilder;
 import plugily.projects.minigamesbox.classic.handlers.language.TitleBuilder;
+import plugily.projects.minigamesbox.classic.utils.helper.SoundHelper;
 import plugily.projects.minigamesbox.classic.utils.version.ServerVersion;
-import plugily.projects.minigamesbox.classic.utils.version.xseries.XSound;
 import plugily.projects.villagedefense.arena.Arena;
 
 /**
@@ -86,27 +85,12 @@ public class InGameState extends PluginInGameState {
         arena.setArenaOption("ZOMBIES_TO_SPAWN", 0);
       }
     } else if(arena.getTimer() <= 3) {
-      playStartSound((Arena) arena);
+      SoundHelper.playArenaCountdown(arena);
       if(arena.getTimer() <= 0) {
         pluginArena.setFighting(true);
         pluginArena.getPlugin().getArenaManager().startWave(pluginArena);
       } else if(arena.getTimer() >= 1) {
         new TitleBuilder("IN_GAME_MESSAGES_VILLAGE_WAVE_TITLE_STARTING_" + arena.getTimer()).asKey().arena(arena).sendArena();
-      }
-    }
-  }
-
-  private void playStartSound(Arena arena) {
-    for(Player player : arena.getPlayers()) {
-      switch(arena.getTimer()) {
-        case 3:
-        case 2:
-        case 1:
-          XSound.BLOCK_NOTE_BLOCK_HAT.play(player);
-          break;
-        case 0:
-          XSound.BLOCK_NOTE_BLOCK_FLUTE.play(player);
-          break;
       }
     }
   }
