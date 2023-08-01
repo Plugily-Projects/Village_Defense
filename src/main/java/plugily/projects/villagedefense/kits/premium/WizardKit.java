@@ -49,6 +49,7 @@ import plugily.projects.minigamesbox.classic.utils.version.xseries.XParticle;
 import plugily.projects.minigamesbox.classic.utils.version.xseries.XSound;
 import plugily.projects.villagedefense.arena.Arena;
 import plugily.projects.villagedefense.creatures.CreatureUtils;
+import plugily.projects.villagedefense.kits.KitHelper;
 import plugily.projects.villagedefense.kits.KitSpecifications;
 
 import java.util.ArrayList;
@@ -160,20 +161,21 @@ public class WizardKit extends PremiumKit implements Listener {
     }
     Player player = event.getPlayer();
     if (ComplementAccessor.getComplement().getDisplayName(stack.getItemMeta()).equals(new MessageBuilder("KIT_CONTENT_WIZARD_GAME_ITEM_BLOODLUST_NAME").asKey().build())) {
-      if (!user.checkCanCastCooldownAndMessage("wizard_bloodlust")) {
+      if(!user.checkCanCastCooldownAndMessage("wizard_bloodlust")) {
         return;
       }
-      if (KitSpecifications.getTimeState((Arena) user.getArena()) == KitSpecifications.GameTimeState.EARLY) {
+      if(KitSpecifications.getTimeState((Arena) user.getArena()) == KitSpecifications.GameTimeState.EARLY) {
         new MessageBuilder("KIT_LOCKED_TILL").asKey().integer(16).send(player);
         return;
       }
-      applyBloodlust(user);
       int cooldown = getKitsConfig().getInt("Kit-Cooldown.Wizard.Bloodlust", 70);
       user.setCooldown("wizard_bloodlust", cooldown);
-      user.setCooldown("wizard_bloodlust_running", 15);
+      int castTime = 15;
+      user.setCooldown("wizard_bloodlust_running", castTime);
       new MessageBuilder("KIT_CONTENT_WIZARD_GAME_ITEM_BLOODLUST_ACTIVATE").asKey().send(player);
 
-      VersionUtils.setMaterialCooldown(player, stack.getType(), cooldown * 20);
+      KitHelper.scheduleAbilityCooldown(stack, user.getPlayer(), castTime, cooldown);
+      applyBloodlust(user);
     } else if (ComplementAccessor.getComplement().getDisplayName(stack.getItemMeta()).equals(new MessageBuilder("KIT_CONTENT_WIZARD_GAME_ITEM_FLOWER_NAME").asKey().build())) {
       if (!user.checkCanCastCooldownAndMessage("wizard_flower")) {
         return;
@@ -184,6 +186,7 @@ public class WizardKit extends PremiumKit implements Listener {
       Bukkit.getScheduler().runTaskLater(getPlugin(), () -> corruptedWizards.remove(player), cooldown * 20L);
       user.setCooldown("wizard_flower", cooldown);
       new MessageBuilder("KIT_CONTENT_WIZARD_GAME_ITEM_FLOWER_ACTIVATE").asKey().send(player);
+      XSound.ENCHANT_THORNS_HIT.play(user.getPlayer(), 1f, 0f);
 
       VersionUtils.setMaterialCooldown(player, stack.getType(), cooldown * 20);
     } else if (ComplementAccessor.getComplement().getDisplayName(stack.getItemMeta()).equals(new MessageBuilder("KIT_CONTENT_WIZARD_GAME_ITEM_WAND_NAME").asKey().build())) {
@@ -202,6 +205,7 @@ public class WizardKit extends PremiumKit implements Listener {
   private void applyBloodlust(User user) {
     Player player = user.getPlayer();
     player.getWorld().strikeLightningEffect(player.getLocation());
+    XSound.ENTITY_WITHER_SPAWN.playRepeatedly(getPlugin(), user.getPlayer(), 1f, 2f, 3, 25);
 
     List<String> messages = getPlugin().getLanguageManager().getLanguageListFromKey("KIT_CONTENT_WIZARD_GAME_ITEM_BLOODLUST_ACTIVE_ACTION_BAR");
     new BukkitRunnable() {
@@ -214,6 +218,7 @@ public class WizardKit extends PremiumKit implements Listener {
         if (ServerVersion.Version.isCurrentEqualOrHigher(ServerVersion.Version.v1_9_R1)) {
           XParticle.circle(3.5, 28, ParticleDisplay.simple(player.getLocation().add(0, 0.5, 0), XParticle.getParticle("SMOKE_NORMAL")));
         }
+        int soundLimit = 5;
         if (damageTick % 20 == 0) {
           double totalDamage = 0;
           for (Entity entity : player.getNearbyEntities(3.5, 3.5, 3.5)) {
@@ -228,6 +233,10 @@ public class WizardKit extends PremiumKit implements Listener {
             livingEntity.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 20, 3, false, true));
             VersionUtils.sendParticles("SUSPENDED", null, entity.getLocation(), 1, 0, 0, 0);
             totalDamage += damage;
+            if(soundLimit > 0) {
+              XSound.ENTITY_WITHER_HURT.play(user.getPlayer(), 0.2f, 0f);
+              soundLimit--;
+            }
           }
           player.setHealth(Math.min(player.getHealth() + (totalDamage * 0.08), VersionUtils.getMaxHealth(player)));
         }

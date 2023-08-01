@@ -262,8 +262,9 @@ In-Game:
         Title:
           Start: "20,30,20;Wave %number%;"
           End: "20,30,20;Wave %number% ended;"
-      Orbs:
-        Pickup: "+ %number% orbs"
+          Start-3: "10,20,10;;&a&l3"
+          Start-2: "10,20,10;;&e&l2"
+          Start-1: "10,20,10;;&c&l1"
       Entities:
         Wolf:
           Spawn: "%plugin_prefix% Wolf spawned in the village!"

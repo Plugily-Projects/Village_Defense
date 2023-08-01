@@ -1,26 +1,25 @@
 /*
- *  Village Defense - Protect villagers from hordes of zombies
- *  Copyright (c) 2023 Plugily Projects - maintained by Tigerpanzer_02 and contributors
+ * Village Defense - Protect villagers from hordes of zombies
+ * Copyright (c) 2023  Plugily Projects - maintained by Tigerpanzer_02 and contributors
  *
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- *  You should have received a copy of the GNU General Public License
- *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 package plugily.projects.villagedefense.kits.premium;
 
-import java.util.List;
-
 import org.bukkit.Color;
+import org.bukkit.EntityEffect;
 import org.bukkit.Material;
 import org.bukkit.entity.Creature;
 import org.bukkit.entity.Entity;
@@ -36,7 +35,6 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.potion.PotionType;
 import org.bukkit.scheduler.BukkitRunnable;
-
 import plugily.projects.minigamesbox.classic.handlers.language.MessageBuilder;
 import plugily.projects.minigamesbox.classic.kits.basekits.PremiumKit;
 import plugily.projects.minigamesbox.classic.user.User;
@@ -54,6 +52,8 @@ import plugily.projects.minigamesbox.classic.utils.version.xseries.XParticle;
 import plugily.projects.villagedefense.arena.Arena;
 import plugily.projects.villagedefense.arena.ArenaUtils;
 import plugily.projects.villagedefense.kits.KitSpecifications;
+
+import java.util.List;
 
 /**
  * Created by Tom on 1/12/2015.
@@ -209,15 +209,18 @@ public class MedicKit extends PremiumKit implements Listener {
   public void applyHomecoming(User user) {
     new MessageBuilder("KIT_CONTENT_MEDIC_GAME_ITEM_HOMECOMING_ACTIVATE").asKey().send(user.getPlayer());
     List<Player> left = user.getArena().getPlayersLeft();
-    for (Player arenaPlayer : user.getArena().getPlayers()) {
-      if (left.contains(arenaPlayer)) {
+    //todo totem only for 1.11+
+    user.getPlayer().playEffect(EntityEffect.valueOf("TOTEM_RESURRECT"));
+    for(Player arenaPlayer : user.getArena().getPlayers()) {
+      if(left.contains(arenaPlayer)) {
         continue;
       }
       String title = new MessageBuilder("KIT_CONTENT_MEDIC_GAME_ITEM_HOMECOMING_RESPAWNED_BY_TITLE").asKey().player(user.getPlayer()).build();
       String subTitle = new MessageBuilder("KIT_CONTENT_MEDIC_GAME_ITEM_HOMECOMING_RESPAWNED_BY_SUBTITLE").asKey().player(user.getPlayer()).build();
       VersionUtils.sendTitles(arenaPlayer, title, subTitle, 5, 40, 5);
+      arenaPlayer.playEffect(EntityEffect.valueOf("TOTEM_RESURRECT"));
       int amplifier;
-      switch (KitSpecifications.getTimeState((Arena) user.getArena())) {
+      switch(KitSpecifications.getTimeState((Arena) user.getArena())) {
         case LATE:
           amplifier = 2;
           break;

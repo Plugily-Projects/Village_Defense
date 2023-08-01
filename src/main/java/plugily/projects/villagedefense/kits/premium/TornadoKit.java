@@ -1,25 +1,22 @@
 /*
- *  Village Defense - Protect villagers from hordes of zombies
- *  Copyright (c) 2023 Plugily Projects - maintained by Tigerpanzer_02 and contributors
+ * Village Defense - Protect villagers from hordes of zombies
+ * Copyright (c) 2023  Plugily Projects - maintained by Tigerpanzer_02 and contributors
  *
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- *  You should have received a copy of the GNU General Public License
- *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 package plugily.projects.villagedefense.kits.premium;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import org.bukkit.Bukkit;
 import org.bukkit.EntityEffect;
@@ -36,7 +33,6 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
-
 import plugily.projects.minigamesbox.classic.handlers.language.MessageBuilder;
 import plugily.projects.minigamesbox.classic.kits.basekits.PremiumKit;
 import plugily.projects.minigamesbox.classic.user.User;
@@ -51,9 +47,14 @@ import plugily.projects.minigamesbox.classic.utils.version.events.api.PlugilyPla
 import plugily.projects.minigamesbox.classic.utils.version.xseries.ParticleDisplay;
 import plugily.projects.minigamesbox.classic.utils.version.xseries.XMaterial;
 import plugily.projects.minigamesbox.classic.utils.version.xseries.XParticle;
+import plugily.projects.minigamesbox.classic.utils.version.xseries.XSound;
 import plugily.projects.villagedefense.arena.Arena;
 import plugily.projects.villagedefense.creatures.CreatureUtils;
+import plugily.projects.villagedefense.kits.KitHelper;
 import plugily.projects.villagedefense.kits.KitSpecifications;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Tom on 30/12/2015.
@@ -143,6 +144,7 @@ public class TornadoKit extends PremiumKit implements Listener {
     }
     if (ComplementAccessor.getComplement().getDisplayName(stack.getItemMeta()).equalsIgnoreCase(new MessageBuilder("KIT_CONTENT_TORNADO_GAME_ITEM_TORNADO_NAME").asKey().build())) {
       getPlugin().getBukkitHelper().takeOneItem(player, stack);
+      XSound.ENTITY_FIREWORK_ROCKET_LAUNCH.play(player, 1f, 0f);
       prepareTornado(player.getLocation());
     } else if (ComplementAccessor.getComplement().getDisplayName(stack.getItemMeta()).equalsIgnoreCase(new MessageBuilder("KIT_CONTENT_TORNADO_GAME_ITEM_MONSOON_NAME").asKey().build())) {
       if (!user.checkCanCastCooldownAndMessage("tornado_monsoon")) {
@@ -152,25 +154,24 @@ public class TornadoKit extends PremiumKit implements Listener {
         new MessageBuilder("KIT_LOCKED_TILL").asKey().integer(16).send(player);
         return;
       }
-      final int spellTime = getMonsoonSpellTime((Arena) user.getArena());
+      final int castTime = getMonsoonSpellTime((Arena) user.getArena());
       int cooldown = getKitsConfig().getInt("Kit-Cooldown.Tornado.Monsoon", 20);
       user.setCooldown("tornado_monsoon", cooldown);
-      user.setCooldown("tornado_monsoon_running", spellTime);
+      user.setCooldown("tornado_monsoon_running", castTime);
 
+      KitHelper.scheduleAbilityCooldown(stack, user.getPlayer(), castTime, cooldown);
       createMonsoon(user);
-
-      VersionUtils.setMaterialCooldown(player, stack.getType(), cooldown * 20);
     } else if (ComplementAccessor.getComplement().getDisplayName(stack.getItemMeta()).equalsIgnoreCase(new MessageBuilder("KIT_CONTENT_TORNADO_GAME_ITEM_FINAL_FLIGHT_NAME").asKey().build())) {
-      if (!user.checkCanCastCooldownAndMessage("tornado_final_flight")) {
+      if(!user.checkCanCastCooldownAndMessage("tornado_final_flight")) {
         return;
       }
       int cooldown = getKitsConfig().getInt("Kit-Cooldown.Tornado.Final-Flight", 40);
       user.setCooldown("tornado_final_flight", cooldown);
-      user.setCooldown("tornado_final_flight_running", 10);
+      int castTime = 10;
+      user.setCooldown("tornado_final_flight_running", castTime);
 
+      KitHelper.scheduleAbilityCooldown(stack, user.getPlayer(), castTime, cooldown);
       prepareFinalFlight(user);
-
-      VersionUtils.setMaterialCooldown(player, stack.getType(), cooldown * 20);
     }
   }
 
@@ -288,6 +289,7 @@ public class TornadoKit extends PremiumKit implements Listener {
             livingEntity.playEffect(EntityEffect.HURT);
             livingEntity.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 20 * 9999, 2, false, true));
           }
+          XSound.BLOCK_SNOW_STEP.play(player, 1f, 0f);
         }
         if (spellTick % 10 == 0) {
           VersionUtils.sendActionBar(player, messages.get(messageIndex)
