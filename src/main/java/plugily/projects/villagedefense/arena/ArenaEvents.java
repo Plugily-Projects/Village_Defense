@@ -1,19 +1,19 @@
 /*
- *  Village Defense - Protect villagers from hordes of zombies
- *  Copyright (c) 2023 Plugily Projects - maintained by Tigerpanzer_02 and contributors
+ * Village Defense - Protect villagers from hordes of zombies
+ * Copyright (c) 2023  Plugily Projects - maintained by Tigerpanzer_02 and contributors
  *
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- *  You should have received a copy of the GNU General Public License
- *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 package plugily.projects.villagedefense.arena;
@@ -177,7 +177,7 @@ public class ArenaEvents extends PluginArenaEvents {
   }
 
   @EventHandler
-  public void onDieEntity(EntityDeathEvent event) {
+  public void onVillagerDeath(EntityDeathEvent event) {
     LivingEntity entity = event.getEntity();
     if(!(entity instanceof Creature)) {
       return;
@@ -192,24 +192,7 @@ public class ArenaEvents extends PluginArenaEvents {
         plugin.getRewardsHandler().performReward(null, arena, plugin.getRewardsHandler().getRewardType("VILLAGER_DEATH"));
         plugin.getHolidayManager().applyHolidayDeathEffects(entity);
         new MessageBuilder("IN_GAME_MESSAGES_VILLAGE_VILLAGER_DIED").asKey().arena(arena).sendArena();
-      } else {
-        if(!arena.getEnemies().contains(entity)) {
-          continue;
-        }
-        arena.removeEnemy((Creature) entity);
-        arena.changeArenaOptionBy("TOTAL_KILLED_ZOMBIES", 1);
-
-        Player killer = entity.getKiller();
-        Arena killerArena = plugin.getArenaRegistry().getArena(killer);
-
-        if(killerArena != null) {
-          plugin.getUserManager().addStat(killer, plugin.getStatsStorage().getStatisticType("KILLS"));
-          plugin.getUserManager().addExperience(killer, 2 * arena.getArenaOption("ZOMBIE_DIFFICULTY_MULTIPLIER"));
-          plugin.getRewardsHandler().performReward(killer, plugin.getRewardsHandler().getRewardType("ZOMBIE_KILL"));
-          plugin.getPowerupRegistry().spawnPowerup(entity.getLocation(), killerArena);
-        }
       }
-      break;
     }
   }
 

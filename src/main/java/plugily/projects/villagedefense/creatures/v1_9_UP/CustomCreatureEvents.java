@@ -1,20 +1,20 @@
 
 /*
- *  Village Defense - Protect villagers from hordes of zombies
- *  Copyright (c) 2023 Plugily Projects - maintained by Tigerpanzer_02 and contributors
+ * Village Defense - Protect villagers from hordes of zombies
+ * Copyright (c) 2023  Plugily Projects - maintained by Tigerpanzer_02 and contributors
  *
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- *  You should have received a copy of the GNU General Public License
- *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 package plugily.projects.villagedefense.creatures.v1_9_UP;
@@ -25,6 +25,7 @@ import org.bukkit.entity.Creature;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.IronGolem;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
 import org.bukkit.entity.Villager;
 import org.bukkit.entity.Wolf;
 import org.bukkit.event.EventHandler;
@@ -33,6 +34,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.MetadataValue;
+import plugily.projects.minigamesbox.classic.user.User;
 import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.arena.Arena;
 import plugily.projects.villagedefense.arena.managers.spawner.EnemySpawner;
@@ -57,6 +59,7 @@ public class CustomCreatureEvents implements Listener {
   }
 
 
+  //todo improve the code structure
   @EventHandler
   public void onCreatureDeathEvent(EntityDeathEvent event) {
     LivingEntity entity = event.getEntity();
@@ -78,9 +81,37 @@ public class CustomCreatureEvents implements Listener {
         if(customCreature == null) {
           continue;
         }
+        arena.removeEnemy((Creature) entity);
+        arena.changeArenaOptionBy("TOTAL_KILLED_ZOMBIES", 1);
+
+        Player killer = entity.getKiller();
+        Arena killerArena = plugin.getArenaRegistry().getArena(killer);
+
+        if(killerArena != null) {
+          plugin.getUserManager().addStat(killer, plugin.getStatsStorage().getStatisticType("KILLS"));
+          plugin.getUserManager().addExperience(killer, 2 * arena.getArenaOption("ZOMBIE_DIFFICULTY_MULTIPLIER"));
+          plugin.getRewardsHandler().performReward(killer, plugin.getRewardsHandler().getRewardType("ZOMBIE_KILL"));
+          plugin.getPowerupRegistry().spawnPowerup(entity.getLocation(), killerArena);
+        }
+
         ItemStack itemStack = customCreature.getDropItem();
         event.getDrops().add(itemStack);
-        event.setDroppedExp(customCreature.getExpDrop());
+        event.setDroppedExp(0);
+        if(event.getEntity().getLastDamageCause() instanceof EntityDamageByEntityEvent) {
+          EntityDamageByEntityEvent damageEvent = (EntityDamageByEntityEvent) event.getEntity().getLastDamageCause();
+          if(!(damageEvent.getDamager() instanceof Player)) {
+            continue;
+          }
+          Player player = (Player) damageEvent.getDamager();
+          User user = plugin.getUserManager().getUser(player);
+          if(user == null || !user.getArena().equals(arena)) {
+            continue;
+          }
+          int amount = (int) Math.ceil(customCreature.getExpDrop() * 1.6 * arena.getArenaOption("ZOMBIE_DIFFICULTY_MULTIPLIER"));
+          int orbsBoost = plugin.getPermissionsManager().getPermissionCategoryValue("ORBS_BOOSTER", player);
+          amount += (amount * (orbsBoost / 100));
+          user.adjustStatistic(plugin.getStatsStorage().getStatisticType("ORBS"), amount);
+        }
       }
     }
   }
