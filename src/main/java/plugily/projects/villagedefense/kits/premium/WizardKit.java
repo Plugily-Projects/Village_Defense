@@ -1,25 +1,22 @@
 /*
- *  Village Defense - Protect villagers from hordes of zombies
- *  Copyright (c) 2023 Plugily Projects - maintained by Tigerpanzer_02 and contributors
+ * Village Defense - Protect villagers from hordes of zombies
+ * Copyright (c) 2023  Plugily Projects - maintained by Tigerpanzer_02 and contributors
  *
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- *  You should have received a copy of the GNU General Public License
- *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 package plugily.projects.villagedefense.kits.premium;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
@@ -36,7 +33,6 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
-
 import plugily.projects.minigamesbox.classic.handlers.language.MessageBuilder;
 import plugily.projects.minigamesbox.classic.kits.basekits.PremiumKit;
 import plugily.projects.minigamesbox.classic.user.User;
@@ -54,6 +50,9 @@ import plugily.projects.minigamesbox.classic.utils.version.xseries.XSound;
 import plugily.projects.villagedefense.arena.Arena;
 import plugily.projects.villagedefense.creatures.CreatureUtils;
 import plugily.projects.villagedefense.kits.KitSpecifications;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Plajer
@@ -193,10 +192,10 @@ public class WizardKit extends PremiumKit implements Listener {
         return;
       }
       applyMagicAttack(user);
-      int cooldown = getKitsConfig().getInt("Kit-Cooldown.Wizard.Staff", 1);
+      double cooldown = getWandCooldown((Arena) user.getArena());
       user.setCooldown("wizard_staff", cooldown);
 
-      VersionUtils.setMaterialCooldown(player, stack.getType(), cooldown * 20);
+      VersionUtils.setMaterialCooldown(player, stack.getType(), (int) (cooldown * 20));
     }
   }
 
@@ -262,6 +261,7 @@ public class WizardKit extends PremiumKit implements Listener {
       final Vector direction = location.getDirection().normalize();
       double positionModifier = 0;
       int pierce = finalPierce;
+      boolean soundPlayed = false;
 
       @Override
       public void run() {
@@ -271,7 +271,7 @@ public class WizardKit extends PremiumKit implements Listener {
             z = direction.getZ() * positionModifier;
         location.add(x, y, z);
         for (Entity entity : location.getChunk().getEntities()) {
-          if (!CreatureUtils.isEnemy(entity) || entity.getLocation().distance(location) >= 1.8 || entity.equals(user.getPlayer()) || pierce <= 0) {
+          if(!CreatureUtils.isEnemy(entity) || entity.getLocation().distance(location) >= 1.8 || entity.equals(user.getPlayer()) || pierce <= 0) {
             continue;
           }
           LivingEntity livingEntity = (LivingEntity) entity;
@@ -280,10 +280,9 @@ public class WizardKit extends PremiumKit implements Listener {
           double maxHealthPercent = getWandPercentageDamage(arena);
           livingEntity.setHealth(Math.max(0, livingEntity.getHealth() - (VersionUtils.getMaxHealth(livingEntity) / 100.0) * maxHealthPercent));
 
-          if (livingEntity.isDead()) {
-            XSound.ENTITY_ARROW_HIT_PLAYER.play(user.getPlayer());
-          } else {
-            XSound.BLOCK_NOTE_BLOCK_GUITAR.play(user.getPlayer());
+          if(!soundPlayed) {
+            XSound.BLOCK_NOTE_BLOCK_HARP.play(user.getPlayer());
+            soundPlayed = true;
           }
           VersionUtils.sendParticles("DAMAGE_INDICATOR", null, entity.getLocation(), 1, 0, 0, 0);
           pierce--;
@@ -297,7 +296,7 @@ public class WizardKit extends PremiumKit implements Listener {
   }
 
   private int getDefaultPierce(Arena arena) {
-    switch (KitSpecifications.getTimeState(arena)) {
+    switch(KitSpecifications.getTimeState(arena)) {
       case LATE:
         return 7;
       case MID:
@@ -308,8 +307,20 @@ public class WizardKit extends PremiumKit implements Listener {
     }
   }
 
+  private double getWandCooldown(Arena arena) {
+    switch(KitSpecifications.getTimeState(arena)) {
+      case LATE:
+        return 0.5;
+      case MID:
+        return 0.75;
+      case EARLY:
+      default:
+        return 1;
+    }
+  }
+
   private double getWandPercentageDamage(Arena arena) {
-    switch (KitSpecifications.getTimeState(arena)) {
+    switch(KitSpecifications.getTimeState(arena)) {
       case LATE:
         return 35.0;
       case MID:
