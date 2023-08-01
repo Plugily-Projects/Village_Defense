@@ -35,6 +35,7 @@ import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.MetadataValue;
 import plugily.projects.minigamesbox.classic.user.User;
+import plugily.projects.minigamesbox.classic.utils.version.xseries.XMaterial;
 import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.arena.Arena;
 import plugily.projects.villagedefense.arena.managers.spawner.EnemySpawner;
@@ -42,7 +43,9 @@ import plugily.projects.villagedefense.arena.managers.spawner.EnemySpawner;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * @author Tigerpanzer_02
@@ -60,6 +63,7 @@ public class CustomCreatureEvents implements Listener {
 
 
   //todo improve the code structure
+  //todo test pets giving rewards to owner (wolf/golem)
   @EventHandler
   public void onCreatureDeathEvent(EntityDeathEvent event) {
     LivingEntity entity = event.getEntity();
@@ -111,11 +115,24 @@ public class CustomCreatureEvents implements Listener {
           int orbsBoost = plugin.getPermissionsManager().getPermissionCategoryValue("ORBS_BOOSTER", player);
           amount += (amount * (orbsBoost / 100));
           user.adjustStatistic(plugin.getStatsStorage().getStatisticType("ORBS"), amount);
+          filterRottenFlesh(event, player);
         }
       }
     }
   }
 
+  private void filterRottenFlesh(EntityDeathEvent event, Player player) {
+    List<ItemStack> fleshes = event.getDrops()
+      .stream()
+      .filter(Objects::nonNull)
+      .filter(XMaterial.ROTTEN_FLESH::isSimilar)
+      .collect(Collectors.toList());
+    if(fleshes.isEmpty()) {
+      return;
+    }
+    event.getDrops().removeAll(fleshes);
+    player.getInventory().addItem(fleshes.toArray(new ItemStack[]{}));
+  }
 
   @EventHandler
   public void onExplosiveHit(EntityDamageByEntityEvent event) {
