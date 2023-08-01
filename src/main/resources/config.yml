@@ -236,10 +236,10 @@ Name-Visibility:
 # Zombie glow to make it visible to players.
 Glowing-Status:
   # From which wave should the glowing be activated?
-  Starting-Wave: 6
+  Starting-Wave: 1
   # How many creatures should the glow be activated from?
   # Set to 0 to disable
-  Creatures-Left: 0
+  Creatures-Left: 2
 
 
 Update-Notifier:
