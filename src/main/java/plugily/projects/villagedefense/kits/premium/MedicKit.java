@@ -51,9 +51,11 @@ import plugily.projects.minigamesbox.classic.utils.version.xseries.XMaterial;
 import plugily.projects.minigamesbox.classic.utils.version.xseries.XParticle;
 import plugily.projects.villagedefense.arena.Arena;
 import plugily.projects.villagedefense.arena.ArenaUtils;
+import plugily.projects.villagedefense.kits.KitHelper;
 import plugily.projects.villagedefense.kits.KitSpecifications;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by Tom on 1/12/2015.
@@ -101,26 +103,26 @@ public class MedicKit extends PremiumKit implements Listener {
   public void reStock(Player player) {
     User user = getPlugin().getUserManager().getUser(player);
     for (Player arenaPlayer : user.getArena().getPlayersLeft()) {
-      int heal;
-      switch (KitSpecifications.getTimeState((Arena) user.getArena())) {
-        case LATE:
-          heal = 8;
-          break;
-        case MID:
-          heal = 6;
-          break;
-        case EARLY:
-        default:
-          heal = 4;
-          break;
-      }
+      int heal = getPassiveHealPower((Arena) user.getArena());
       double maxHealth = VersionUtils.getMaxHealth(arenaPlayer);
-      if (arenaPlayer.getHealth() + heal > maxHealth) {
+      if(arenaPlayer.getHealth() + heal > maxHealth) {
         arenaPlayer.setHealth(maxHealth);
         arenaPlayer.setFoodLevel(20);
       } else {
         arenaPlayer.setHealth(arenaPlayer.getHealth() + heal);
       }
+    }
+  }
+
+  private int getPassiveHealPower(Arena arena) {
+    switch(KitSpecifications.getTimeState(arena)) {
+      case LATE:
+        return 8;
+      case MID:
+        return 6;
+      case EARLY:
+      default:
+        return 4;
     }
   }
 
@@ -178,64 +180,68 @@ public class MedicKit extends PremiumKit implements Listener {
 
       VersionUtils.setMaterialCooldown(player, stack.getType(), cooldown * 20);
     } else if (ComplementAccessor.getComplement().getDisplayName(stack.getItemMeta()).equals(new MessageBuilder("KIT_CONTENT_MEDIC_GAME_ITEM_AURA_NAME").asKey().build())) {
-      if (!user.checkCanCastCooldownAndMessage("medic_aura")) {
+      if(!user.checkCanCastCooldownAndMessage("medic_aura")) {
         return;
       }
-      if (KitSpecifications.getTimeState((Arena) user.getArena()) == KitSpecifications.GameTimeState.EARLY) {
+      if(KitSpecifications.getTimeState((Arena) user.getArena()) == KitSpecifications.GameTimeState.EARLY) {
         new MessageBuilder("KIT_LOCKED_TILL").asKey().integer(16).send(player);
         return;
       }
-      int cooldown;
-      switch (KitSpecifications.getTimeState((Arena) user.getArena())) {
-        case LATE:
-          cooldown = getKitsConfig().getInt("Kit-Cooldown.Medic.Aura.II", 15);
-          break;
-        case MID:
-          cooldown = getKitsConfig().getInt("Kit-Cooldown.Medic.Aura.I", 30);
-          break;
-        case EARLY:
-        default:
-          cooldown = 0;
-          break;
-      }
+      int cooldown = getAuraCooldown((Arena) user.getArena());
       user.setCooldown("medic_aura", cooldown);
-      user.setCooldown("medic_aura_running", 10);
+      int castTime = 10;
+      user.setCooldown("medic_aura_running", castTime);
+      KitHelper.scheduleAbilityCooldown(stack, player, castTime, cooldown);
       applyAura(user);
+    }
+  }
 
-      VersionUtils.setMaterialCooldown(player, stack.getType(), cooldown * 20);
+  private int getAuraCooldown(Arena arena) {
+    switch(KitSpecifications.getTimeState(arena)) {
+      case LATE:
+        return getKitsConfig().getInt("Kit-Cooldown.Medic.Aura.II", 15);
+      case MID:
+        return getKitsConfig().getInt("Kit-Cooldown.Medic.Aura.I", 30);
+      case EARLY:
+      default:
+        return 0;
     }
   }
 
   public void applyHomecoming(User user) {
     new MessageBuilder("KIT_CONTENT_MEDIC_GAME_ITEM_HOMECOMING_ACTIVATE").asKey().send(user.getPlayer());
     List<Player> left = user.getArena().getPlayersLeft();
-    //todo totem only for 1.11+
-    user.getPlayer().playEffect(EntityEffect.valueOf("TOTEM_RESURRECT"));
+    if(ServerVersion.Version.isCurrentEqualOrHigher(ServerVersion.Version.v1_11_R1)) {
+      user.getPlayer().playEffect(EntityEffect.valueOf("TOTEM_RESURRECT"));
+    }
+
+    String title = new MessageBuilder("KIT_CONTENT_MEDIC_GAME_ITEM_HOMECOMING_RESPAWNED_BY_TITLE").asKey().player(user.getPlayer()).build();
+    String subTitle = new MessageBuilder("KIT_CONTENT_MEDIC_GAME_ITEM_HOMECOMING_RESPAWNED_BY_SUBTITLE").asKey().player(user.getPlayer()).build();
     for(Player arenaPlayer : user.getArena().getPlayers()) {
       if(left.contains(arenaPlayer)) {
         continue;
       }
-      String title = new MessageBuilder("KIT_CONTENT_MEDIC_GAME_ITEM_HOMECOMING_RESPAWNED_BY_TITLE").asKey().player(user.getPlayer()).build();
-      String subTitle = new MessageBuilder("KIT_CONTENT_MEDIC_GAME_ITEM_HOMECOMING_RESPAWNED_BY_SUBTITLE").asKey().player(user.getPlayer()).build();
       VersionUtils.sendTitles(arenaPlayer, title, subTitle, 5, 40, 5);
-      arenaPlayer.playEffect(EntityEffect.valueOf("TOTEM_RESURRECT"));
-      int amplifier;
-      switch(KitSpecifications.getTimeState((Arena) user.getArena())) {
-        case LATE:
-          amplifier = 2;
-          break;
-        case MID:
-          amplifier = 1;
-          break;
-        case EARLY:
-        default:
-          amplifier = 0;
-          break;
+      if(ServerVersion.Version.isCurrentEqualOrHigher(ServerVersion.Version.v1_11_R1)) {
+        arenaPlayer.playEffect(EntityEffect.valueOf("TOTEM_RESURRECT"));
       }
+      int amplifier = getAmplifierPower((Arena) user.getArena());
       arenaPlayer.addPotionEffect(new PotionEffect(PotionEffectType.HEALTH_BOOST, 30 * 20, amplifier));
       arenaPlayer.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 30 * 20, amplifier));
     }
     ArenaUtils.bringDeathPlayersBack((Arena) user.getArena());
+  }
+
+  private int getAmplifierPower(Arena arena) {
+    switch(KitSpecifications.getTimeState(arena)) {
+      case LATE:
+        return 2;
+      case MID:
+        return 1;
+      case EARLY:
+      default:
+        return 0;
+    }
   }
 
   public void applyAura(User user) {
@@ -255,34 +261,18 @@ public class MedicKit extends PremiumKit implements Listener {
           XParticle.circle(3.5, 18, ParticleDisplay.simple(player.getLocation().add(0, 0.5, 0), XParticle.getParticle("HEART")));
         }
         if (tick % 10 == 0) {
-          int heal;
-          switch (KitSpecifications.getTimeState((Arena) user.getArena())) {
-            case LATE:
-              heal = 4;
-              break;
-            case MID:
-              heal = 2;
-              break;
-            case EARLY:
-            default:
-              heal = 0;
-              break;
-          }
-          for (Entity entity : player.getNearbyEntities(3.5, 3.5, 3.5)) {
-            if (!(entity instanceof Player || entity instanceof Wolf || entity instanceof Golem)) {
-              continue;
-            }
-            LivingEntity livingEntity = (LivingEntity) entity;
-            livingEntity.setHealth(Math.min(livingEntity.getHealth() + heal, VersionUtils.getMaxHealth(livingEntity)));
-            VersionUtils.sendParticles("HEART", null, livingEntity.getLocation(), 5, 0, 0, 0);
-            if (!entity.equals(player) && entity instanceof Player) {
+          int heal = getHealAuraPower((Arena) user.getArena());
+          for(LivingEntity entity : getNearbyAllies(player)) {
+            entity.setHealth(Math.min(entity.getHealth() + heal, VersionUtils.getMaxHealth(entity)));
+            VersionUtils.sendParticles("HEART", null, entity.getLocation(), 5, 0, 0, 0);
+            if(!entity.equals(player) && entity instanceof Player) {
               VersionUtils.sendActionBar((Player) entity, healingMessages.get(healingMessageIndex)
-                  .replace("%player%", user.getPlayer().getName()));
+                .replace("%player%", user.getPlayer().getName()));
             }
           }
           player.setHealth(Math.min(player.getHealth() + heal, VersionUtils.getMaxHealth(player)));
           VersionUtils.sendActionBar(player, messages.get(messageIndex)
-              .replace("%number%", String.valueOf(user.getCooldown("medic_aura_running"))));
+            .replace("%number%", String.valueOf(user.getCooldown("medic_aura_running"))));
           messageIndex++;
           healingMessageIndex++;
           if (messageIndex > messages.size() - 1) {
@@ -292,7 +282,7 @@ public class MedicKit extends PremiumKit implements Listener {
             healingMessageIndex = 0;
           }
         }
-        if (tick >= 20 * 10 || !getPlugin().getArenaRegistry().isInArena(user.getPlayer()) || user.isSpectator()) {
+        if(tick >= 20 * 10 || !getPlugin().getArenaRegistry().isInArena(user.getPlayer()) || user.isSpectator()) {
           //reset action bar
           VersionUtils.sendActionBar(player, "");
           cancel();
@@ -301,6 +291,26 @@ public class MedicKit extends PremiumKit implements Listener {
         tick++;
       }
     }.runTaskTimer(getPlugin(), 0, 1);
+  }
+
+  private List<LivingEntity> getNearbyAllies(Player player) {
+    List<Entity> entities = player.getNearbyEntities(3.5, 3.5, 3.5);
+    return entities.stream()
+      .filter(e -> e instanceof Player || e instanceof Wolf || e instanceof Golem)
+      .map(e -> (LivingEntity) e)
+      .collect(Collectors.toList());
+  }
+
+  private int getHealAuraPower(Arena arena) {
+    switch(KitSpecifications.getTimeState(arena)) {
+      case LATE:
+        return 4;
+      case MID:
+        return 2;
+      case EARLY:
+      default:
+        return 0;
+    }
   }
 
 }
