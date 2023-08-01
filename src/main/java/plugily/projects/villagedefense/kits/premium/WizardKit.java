@@ -33,7 +33,9 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
+import plugily.projects.minigamesbox.classic.handlers.language.Message;
 import plugily.projects.minigamesbox.classic.handlers.language.MessageBuilder;
+import plugily.projects.minigamesbox.classic.handlers.language.MessageManager;
 import plugily.projects.minigamesbox.classic.kits.basekits.PremiumKit;
 import plugily.projects.minigamesbox.classic.user.User;
 import plugily.projects.minigamesbox.classic.utils.helper.ArmorHelper;
@@ -63,15 +65,32 @@ import java.util.List;
  */
 public class WizardKit extends PremiumKit implements Listener {
 
+  private static final String LANGUAGE_ACCESSOR = "KIT_CONTENT_WIZARD_";
   private final List<Player> corruptedWizards = new ArrayList<>();
 
   public WizardKit() {
-    setName(new MessageBuilder("KIT_CONTENT_WIZARD_NAME").asKey().build());
+    registerMessages();
+    setName(new MessageBuilder(LANGUAGE_ACCESSOR + "NAME").asKey().build());
     setKey("Wizard");
-    List<String> description = getPlugin().getLanguageManager().getLanguageListFromKey("KIT_CONTENT_WIZARD_DESCRIPTION");
+    List<String> description = getPlugin().getLanguageManager().getLanguageListFromKey(LANGUAGE_ACCESSOR + "DESCRIPTION");
     setDescription(description);
     getPlugin().getKitRegistry().registerKit(this);
     getPlugin().getServer().getPluginManager().registerEvents(this, getPlugin());
+  }
+
+  private void registerMessages() {
+    MessageManager manager = getPlugin().getMessageManager();
+    manager.registerMessage(LANGUAGE_ACCESSOR + "NAME", new Message("Kit.Content.Wizard.Name", ""));
+    manager.registerMessage(LANGUAGE_ACCESSOR + "DESCRIPTION", new Message("Kit.Content.Wizard.Description", ""));
+    manager.registerMessage(LANGUAGE_ACCESSOR + "GAME_ITEM_WAND_NAME", new Message("Kit.Content.Wizard.Game-Item.Wand.Name", ""));
+    manager.registerMessage(LANGUAGE_ACCESSOR + "GAME_ITEM_WAND_DESCRIPTION", new Message("Kit.Content.Wizard.Game-Item.Wand.Description", ""));
+    manager.registerMessage(LANGUAGE_ACCESSOR + "GAME_ITEM_FLOWER_NAME", new Message("Kit.Content.Wizard.Game-Item.Flower.Name", ""));
+    manager.registerMessage(LANGUAGE_ACCESSOR + "GAME_ITEM_FLOWER_DESCRIPTION", new Message("Kit.Content.Wizard.Game-Item.Flower.Description", ""));
+    manager.registerMessage(LANGUAGE_ACCESSOR + "GAME_ITEM_FLOWER_ACTIVATE", new Message("Kit.Content.Wizard.Game-Item.Flower.Activate", ""));
+    manager.registerMessage(LANGUAGE_ACCESSOR + "GAME_ITEM_BLOODLUST_NAME", new Message("Kit.Content.Wizard.Game-Item.Bloodlust.Name", ""));
+    manager.registerMessage(LANGUAGE_ACCESSOR + "GAME_ITEM_BLOODLUST_DESCRIPTION", new Message("Kit.Content.Wizard.Game-Item.Bloodlust.Description", ""));
+    manager.registerMessage(LANGUAGE_ACCESSOR + "GAME_ITEM_BLOODLUST_ACTIVATE", new Message("Kit.Content.Wizard.Game-Item.Bloodlust.Activate", ""));
+    manager.registerMessage(LANGUAGE_ACCESSOR + "GAME_ITEM_BLOODLUST_ACTIVE_ACTION_BAR", new Message("Kit.Content.Wizard.Game-Item.Bloodlust.Active-Action-Bar", ""));
   }
 
   @Override
@@ -82,16 +101,16 @@ public class WizardKit extends PremiumKit implements Listener {
   @Override
   public void giveKitItems(Player player) {
     player.getInventory().setItem(3, new ItemBuilder(getMaterial())
-        .name(new MessageBuilder("KIT_CONTENT_WIZARD_GAME_ITEM_WAND_NAME").asKey().build())
-        .lore(getPlugin().getLanguageManager().getLanguageListFromKey("KIT_CONTENT_WIZARD_GAME_ITEM_WAND_DESCRIPTION"))
+      .name(new MessageBuilder(LANGUAGE_ACCESSOR + "GAME_ITEM_WAND_NAME").asKey().build())
+      .lore(getPlugin().getLanguageManager().getLanguageListFromKey(LANGUAGE_ACCESSOR + "GAME_ITEM_WAND_DESCRIPTION"))
         .build());
     player.getInventory().setItem(4, new ItemBuilder(new ItemStack(XMaterial.POPPY.parseMaterial(), 1))
-        .name(new MessageBuilder("KIT_CONTENT_WIZARD_GAME_ITEM_FLOWER_NAME").asKey().build())
-        .lore(getPlugin().getLanguageManager().getLanguageListFromKey("KIT_CONTENT_WIZARD_GAME_ITEM_FLOWER_DESCRIPTION"))
+      .name(new MessageBuilder(LANGUAGE_ACCESSOR + "GAME_ITEM_FLOWER_NAME").asKey().build())
+      .lore(getPlugin().getLanguageManager().getLanguageListFromKey(LANGUAGE_ACCESSOR + "GAME_ITEM_FLOWER_DESCRIPTION"))
         .build());
     player.getInventory().setItem(5, new ItemBuilder(new ItemStack(XMaterial.SPIDER_EYE.parseMaterial(), 1))
-        .name(new MessageBuilder("KIT_CONTENT_WIZARD_GAME_ITEM_BLOODLUST_NAME").asKey().build())
-        .lore(getPlugin().getLanguageManager().getLanguageListFromKey("KIT_CONTENT_WIZARD_GAME_ITEM_BLOODLUST_DESCRIPTION"))
+      .name(new MessageBuilder(LANGUAGE_ACCESSOR + "GAME_ITEM_BLOODLUST_NAME").asKey().build())
+      .lore(getPlugin().getLanguageManager().getLanguageListFromKey(LANGUAGE_ACCESSOR + "GAME_ITEM_BLOODLUST_DESCRIPTION"))
         .build());
 
     ArmorHelper.setColouredArmor(Color.fromRGB(100, 149, 237), player);
@@ -119,8 +138,8 @@ public class WizardKit extends PremiumKit implements Listener {
     }
     if (giveItem) {
       player.getInventory().addItem(new ItemBuilder(new ItemStack(XMaterial.POPPY.parseMaterial()))
-          .name(new MessageBuilder("KIT_CONTENT_WIZARD_GAME_ITEM_FLOWER_NAME").asKey().build())
-          .lore(getPlugin().getLanguageManager().getLanguageListFromKey("KIT_CONTENT_WIZARD_GAME_ITEM_FLOWER_DESCRIPTION"))
+        .name(new MessageBuilder(LANGUAGE_ACCESSOR + "GAME_ITEM_FLOWER_NAME").asKey().build())
+        .lore(getPlugin().getLanguageManager().getLanguageListFromKey(LANGUAGE_ACCESSOR + "GAME_ITEM_FLOWER_DESCRIPTION"))
           .build());
     }
   }
@@ -160,7 +179,7 @@ public class WizardKit extends PremiumKit implements Listener {
       return;
     }
     Player player = event.getPlayer();
-    if (ComplementAccessor.getComplement().getDisplayName(stack.getItemMeta()).equals(new MessageBuilder("KIT_CONTENT_WIZARD_GAME_ITEM_BLOODLUST_NAME").asKey().build())) {
+    if(ComplementAccessor.getComplement().getDisplayName(stack.getItemMeta()).equals(new MessageBuilder(LANGUAGE_ACCESSOR + "GAME_ITEM_BLOODLUST_NAME").asKey().build())) {
       if(!user.checkCanCastCooldownAndMessage("wizard_bloodlust")) {
         return;
       }
@@ -172,12 +191,12 @@ public class WizardKit extends PremiumKit implements Listener {
       user.setCooldown("wizard_bloodlust", cooldown);
       int castTime = 15;
       user.setCooldown("wizard_bloodlust_running", castTime);
-      new MessageBuilder("KIT_CONTENT_WIZARD_GAME_ITEM_BLOODLUST_ACTIVATE").asKey().send(player);
+      new MessageBuilder(LANGUAGE_ACCESSOR + "GAME_ITEM_BLOODLUST_ACTIVATE").asKey().send(player);
 
       KitHelper.scheduleAbilityCooldown(stack, user.getPlayer(), castTime, cooldown);
       applyBloodlust(user);
-    } else if (ComplementAccessor.getComplement().getDisplayName(stack.getItemMeta()).equals(new MessageBuilder("KIT_CONTENT_WIZARD_GAME_ITEM_FLOWER_NAME").asKey().build())) {
-      if (!user.checkCanCastCooldownAndMessage("wizard_flower")) {
+    } else if(ComplementAccessor.getComplement().getDisplayName(stack.getItemMeta()).equals(new MessageBuilder(LANGUAGE_ACCESSOR + "GAME_ITEM_FLOWER_NAME").asKey().build())) {
+      if(!user.checkCanCastCooldownAndMessage("wizard_flower")) {
         return;
       }
       getPlugin().getBukkitHelper().takeOneItem(player, stack);
@@ -185,17 +204,17 @@ public class WizardKit extends PremiumKit implements Listener {
       int cooldown = getKitsConfig().getInt("Kit-Cooldown.Wizard.Flower", 15);
       Bukkit.getScheduler().runTaskLater(getPlugin(), () -> corruptedWizards.remove(player), cooldown * 20L);
       user.setCooldown("wizard_flower", cooldown);
-      new MessageBuilder("KIT_CONTENT_WIZARD_GAME_ITEM_FLOWER_ACTIVATE").asKey().send(player);
+      new MessageBuilder(LANGUAGE_ACCESSOR + "GAME_ITEM_FLOWER_ACTIVATE").asKey().send(player);
       XSound.ENCHANT_THORNS_HIT.play(user.getPlayer(), 1f, 0f);
 
       VersionUtils.setMaterialCooldown(player, stack.getType(), cooldown * 20);
-    } else if (ComplementAccessor.getComplement().getDisplayName(stack.getItemMeta()).equals(new MessageBuilder("KIT_CONTENT_WIZARD_GAME_ITEM_WAND_NAME").asKey().build())) {
+    } else if(ComplementAccessor.getComplement().getDisplayName(stack.getItemMeta()).equals(new MessageBuilder(LANGUAGE_ACCESSOR + "GAME_ITEM_WAND_NAME").asKey().build())) {
       //no cooldown message, this ability is spammy no need for such message
-      if (user.getCooldown("wizard_staff") > 0) {
+      if(user.getCooldown("wizard_staff") > 0) {
         return;
       }
       applyMagicAttack(user);
-      double cooldown = getWandCooldown((Arena) user.getArena());
+      double cooldown = Settings.WAND_COOLDOWN.getForArenaState((Arena) user.getArena());
       user.setCooldown("wizard_staff", cooldown);
 
       VersionUtils.setMaterialCooldown(player, stack.getType(), (int) (cooldown * 20));
@@ -207,7 +226,7 @@ public class WizardKit extends PremiumKit implements Listener {
     player.getWorld().strikeLightningEffect(player.getLocation());
     XSound.ENTITY_WITHER_SPAWN.playRepeatedly(getPlugin(), user.getPlayer(), 1f, 2f, 3, 25);
 
-    List<String> messages = getPlugin().getLanguageManager().getLanguageListFromKey("KIT_CONTENT_WIZARD_GAME_ITEM_BLOODLUST_ACTIVE_ACTION_BAR");
+    List<String> messages = getPlugin().getLanguageManager().getLanguageListFromKey(LANGUAGE_ACCESSOR + "GAME_ITEM_BLOODLUST_ACTIVE_ACTION_BAR");
     new BukkitRunnable() {
       int damageTick = 0;
       int messageIndex = 0;
@@ -263,8 +282,7 @@ public class WizardKit extends PremiumKit implements Listener {
     if (ServerVersion.Version.isCurrentEqualOrHigher(ServerVersion.Version.v1_9_R1)) {
       XParticle.drawLine(user.getPlayer(), 40, 1, ParticleDisplay.of(XParticle.getParticle("FLAME")));
     }
-    Arena arena = (Arena) user.getArena();
-    final int finalPierce = getDefaultPierce(arena);
+    final int finalPierce = (int) Settings.DEFAULT_PIERCE.getForArenaState((Arena) user.getArena());
     new BukkitRunnable() {
       final Location location = user.getPlayer().getLocation();
       final Vector direction = location.getDirection().normalize();
@@ -286,7 +304,7 @@ public class WizardKit extends PremiumKit implements Listener {
           LivingEntity livingEntity = (LivingEntity) entity;
           //wand damage: 30/32/35 scaling % of entity's max health, we use direct health set to override armors etc.
           livingEntity.damage(0, user.getPlayer());
-          double maxHealthPercent = getWandPercentageDamage(arena);
+          double maxHealthPercent = Settings.WAND_PERCENT_DAMAGE.getForArenaState((Arena) user.getArena());
           livingEntity.setHealth(Math.max(0, livingEntity.getHealth() - (VersionUtils.getMaxHealth(livingEntity) / 100.0) * maxHealthPercent));
 
           if(!soundPlayed) {
@@ -297,46 +315,36 @@ public class WizardKit extends PremiumKit implements Listener {
           pierce--;
         }
         location.subtract(x, y, z);
-        if (positionModifier > 40 || pierce <= 0) {
+        if(positionModifier > 40 || pierce <= 0) {
           cancel();
         }
       }
     }.runTaskTimer(getPlugin(), 0, 1);
   }
 
-  private int getDefaultPierce(Arena arena) {
-    switch(KitSpecifications.getTimeState(arena)) {
-      case LATE:
-        return 7;
-      case MID:
-        return 6;
-      case EARLY:
-      default:
-        return 5;
-    }
-  }
+  private enum Settings {
+    DEFAULT_PIERCE(5, 6, 7), WAND_COOLDOWN(1, 0.75, 0.5), WAND_PERCENT_DAMAGE(30.0, 32.0, 35.0);
 
-  private double getWandCooldown(Arena arena) {
-    switch(KitSpecifications.getTimeState(arena)) {
-      case LATE:
-        return 0.5;
-      case MID:
-        return 0.75;
-      case EARLY:
-      default:
-        return 1;
-    }
-  }
+    private final double earlyValue;
+    private final double midValue;
+    private final double lateValue;
 
-  private double getWandPercentageDamage(Arena arena) {
-    switch(KitSpecifications.getTimeState(arena)) {
-      case LATE:
-        return 35.0;
-      case MID:
-        return 32.0;
-      case EARLY:
-      default:
-        return 30.0;
+    Settings(double earlyValue, double midValue, double lateValue) {
+      this.earlyValue = earlyValue;
+      this.midValue = midValue;
+      this.lateValue = lateValue;
+    }
+
+    public double getForArenaState(Arena arena) {
+      switch(KitSpecifications.getTimeState(arena)) {
+        case LATE:
+          return earlyValue;
+        case MID:
+          return midValue;
+        case EARLY:
+        default:
+          return lateValue;
+      }
     }
   }
 

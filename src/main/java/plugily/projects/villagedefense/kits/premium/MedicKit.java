@@ -35,7 +35,9 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.potion.PotionType;
 import org.bukkit.scheduler.BukkitRunnable;
+import plugily.projects.minigamesbox.classic.handlers.language.Message;
 import plugily.projects.minigamesbox.classic.handlers.language.MessageBuilder;
+import plugily.projects.minigamesbox.classic.handlers.language.MessageManager;
 import plugily.projects.minigamesbox.classic.kits.basekits.PremiumKit;
 import plugily.projects.minigamesbox.classic.user.User;
 import plugily.projects.minigamesbox.classic.utils.helper.ArmorHelper;
@@ -62,13 +64,31 @@ import java.util.stream.Collectors;
  */
 public class MedicKit extends PremiumKit implements Listener {
 
+  private static final String LANGUAGE_ACCESSOR = "KIT_CONTENT_MEDIC_";
+
   public MedicKit() {
-    setName(new MessageBuilder("KIT_CONTENT_MEDIC_NAME").asKey().build());
+    registerMessages();
+    setName(new MessageBuilder(LANGUAGE_ACCESSOR + "NAME").asKey().build());
     setKey("Medic");
-    List<String> description = getPlugin().getLanguageManager().getLanguageListFromKey("KIT_CONTENT_MEDIC_DESCRIPTION");
+    List<String> description = getPlugin().getLanguageManager().getLanguageListFromKey(LANGUAGE_ACCESSOR + "DESCRIPTION");
     setDescription(description);
     getPlugin().getServer().getPluginManager().registerEvents(this, getPlugin());
     getPlugin().getKitRegistry().registerKit(this);
+  }
+
+  private void registerMessages() {
+    MessageManager manager = getPlugin().getMessageManager();
+    manager.registerMessage(LANGUAGE_ACCESSOR + "NAME", new Message("Kit.Content.Medic.Name", ""));
+    manager.registerMessage(LANGUAGE_ACCESSOR + "DESCRIPTION", new Message("Kit.Content.Medic.Description", ""));
+    manager.registerMessage(LANGUAGE_ACCESSOR + "GAME_ITEM_AURA_NAME", new Message("Kit.Content.Medic.Game-Item.Aura.Name", ""));
+    manager.registerMessage(LANGUAGE_ACCESSOR + "GAME_ITEM_AURA_DESCRIPTION", new Message("Kit.Content.Medic.Game-Item.Aura.Description", ""));
+    manager.registerMessage(LANGUAGE_ACCESSOR + "GAME_ITEM_AURA_ACTIVE_ACTION_BAR", new Message("Kit.Content.Medic.Game-Item.Aura.Active-Action-Bar", ""));
+    manager.registerMessage(LANGUAGE_ACCESSOR + "GAME_ITEM_AURA_HEALED_BY_ACTION_BAR", new Message("Kit.Content.Medic.Game-Item.Aura.Healed-By-Action-Bar", ""));
+    manager.registerMessage(LANGUAGE_ACCESSOR + "GAME_ITEM_HOMECOMING_NAME", new Message("Kit.Content.Medic.Game-Item.Homecoming.Name", ""));
+    manager.registerMessage(LANGUAGE_ACCESSOR + "GAME_ITEM_HOMECOMING_DESCRIPTION", new Message("Kit.Content.Medic.Game-Item.Homecoming.Description", ""));
+    manager.registerMessage(LANGUAGE_ACCESSOR + "GAME_ITEM_HOMECOMING_ACTIVATE", new Message("Kit.Content.Medic.Game-Item.Homecoming.Activate", ""));
+    manager.registerMessage(LANGUAGE_ACCESSOR + "GAME_ITEM_HOMECOMING_RESPAWNED_BY_TITLE", new Message("Kit.Content.Medic.Game-Item.Homecoming.Respawned-By-Title", ""));
+    manager.registerMessage(LANGUAGE_ACCESSOR + "GAME_ITEM_HOMECOMING_RESPAWNED_BY_SUBTITLE", new Message("Kit.Content.Medic.Game-Item.Homecoming.Respawned-By-Subtitle", ""));
   }
 
   @Override
@@ -84,14 +104,13 @@ public class MedicKit extends PremiumKit implements Listener {
     player.getInventory().addItem(VersionUtils.getPotion(PotionType.REGEN, 1, true));
 
     player.getInventory().addItem(new ItemBuilder(new ItemStack(XMaterial.GHAST_TEAR.parseMaterial()))
-        .name(new MessageBuilder("KIT_CONTENT_MEDIC_GAME_ITEM_AURA_NAME").asKey().build())
-        .lore(getPlugin().getLanguageManager().getLanguageListFromKey("KIT_CONTENT_MEDIC_GAME_ITEM_AURA_DESCRIPTION"))
+      .name(new MessageBuilder(LANGUAGE_ACCESSOR + "GAME_ITEM_AURA_NAME").asKey().build())
+      .lore(getPlugin().getLanguageManager().getLanguageListFromKey(LANGUAGE_ACCESSOR + "GAME_ITEM_AURA_DESCRIPTION"))
         .build());
     player.getInventory().addItem(new ItemBuilder(new ItemStack(XMaterial.GOLD_NUGGET.parseMaterial()))
-        .name(new MessageBuilder("KIT_CONTENT_MEDIC_GAME_ITEM_HOMECOMING_NAME").asKey().build())
-        .lore(getPlugin().getLanguageManager().getLanguageListFromKey("KIT_CONTENT_MEDIC_GAME_ITEM_HOMECOMING_DESCRIPTION"))
+      .name(new MessageBuilder(LANGUAGE_ACCESSOR + "GAME_ITEM_HOMECOMING_NAME").asKey().build())
+      .lore(getPlugin().getLanguageManager().getLanguageListFromKey(LANGUAGE_ACCESSOR + "GAME_ITEM_HOMECOMING_DESCRIPTION"))
         .build());
-
   }
 
   @Override
@@ -103,7 +122,7 @@ public class MedicKit extends PremiumKit implements Listener {
   public void reStock(Player player) {
     User user = getPlugin().getUserManager().getUser(player);
     for (Player arenaPlayer : user.getArena().getPlayersLeft()) {
-      int heal = getPassiveHealPower((Arena) user.getArena());
+      int heal = (int) Settings.HEAL_AURA_POWER.getForArenaState((Arena) user.getArena());
       double maxHealth = VersionUtils.getMaxHealth(arenaPlayer);
       if(arenaPlayer.getHealth() + heal > maxHealth) {
         arenaPlayer.setHealth(maxHealth);
@@ -111,18 +130,6 @@ public class MedicKit extends PremiumKit implements Listener {
       } else {
         arenaPlayer.setHealth(arenaPlayer.getHealth() + heal);
       }
-    }
-  }
-
-  private int getPassiveHealPower(Arena arena) {
-    switch(KitSpecifications.getTimeState(arena)) {
-      case LATE:
-        return 8;
-      case MID:
-        return 6;
-      case EARLY:
-      default:
-        return 4;
     }
   }
 
@@ -166,11 +173,11 @@ public class MedicKit extends PremiumKit implements Listener {
       return;
     }
     Player player = event.getPlayer();
-    if (ComplementAccessor.getComplement().getDisplayName(stack.getItemMeta()).equals(new MessageBuilder("KIT_CONTENT_MEDIC_GAME_ITEM_HOMECOMING_NAME").asKey().build())) {
-      if (!user.checkCanCastCooldownAndMessage("medic_homecoming")) {
+    if(ComplementAccessor.getComplement().getDisplayName(stack.getItemMeta()).equals(new MessageBuilder(LANGUAGE_ACCESSOR + "GAME_ITEM_HOMECOMING_NAME").asKey().build())) {
+      if(!user.checkCanCastCooldownAndMessage("medic_homecoming")) {
         return;
       }
-      if (KitSpecifications.getTimeState((Arena) user.getArena()) == KitSpecifications.GameTimeState.EARLY) {
+      if(KitSpecifications.getTimeState((Arena) user.getArena()) == KitSpecifications.GameTimeState.EARLY) {
         new MessageBuilder("KIT_LOCKED_TILL").asKey().integer(16).send(player);
         return;
       }
@@ -179,7 +186,7 @@ public class MedicKit extends PremiumKit implements Listener {
       applyHomecoming(user);
 
       VersionUtils.setMaterialCooldown(player, stack.getType(), cooldown * 20);
-    } else if (ComplementAccessor.getComplement().getDisplayName(stack.getItemMeta()).equals(new MessageBuilder("KIT_CONTENT_MEDIC_GAME_ITEM_AURA_NAME").asKey().build())) {
+    } else if(ComplementAccessor.getComplement().getDisplayName(stack.getItemMeta()).equals(new MessageBuilder(LANGUAGE_ACCESSOR + "GAME_ITEM_AURA_NAME").asKey().build())) {
       if(!user.checkCanCastCooldownAndMessage("medic_aura")) {
         return;
       }
@@ -209,14 +216,14 @@ public class MedicKit extends PremiumKit implements Listener {
   }
 
   public void applyHomecoming(User user) {
-    new MessageBuilder("KIT_CONTENT_MEDIC_GAME_ITEM_HOMECOMING_ACTIVATE").asKey().send(user.getPlayer());
+    new MessageBuilder(LANGUAGE_ACCESSOR + "GAME_ITEM_HOMECOMING_ACTIVATE").asKey().send(user.getPlayer());
     List<Player> left = user.getArena().getPlayersLeft();
     if(ServerVersion.Version.isCurrentEqualOrHigher(ServerVersion.Version.v1_11_R1)) {
       user.getPlayer().playEffect(EntityEffect.valueOf("TOTEM_RESURRECT"));
     }
 
-    String title = new MessageBuilder("KIT_CONTENT_MEDIC_GAME_ITEM_HOMECOMING_RESPAWNED_BY_TITLE").asKey().player(user.getPlayer()).build();
-    String subTitle = new MessageBuilder("KIT_CONTENT_MEDIC_GAME_ITEM_HOMECOMING_RESPAWNED_BY_SUBTITLE").asKey().player(user.getPlayer()).build();
+    String title = new MessageBuilder(LANGUAGE_ACCESSOR + "GAME_ITEM_HOMECOMING_RESPAWNED_BY_TITLE").asKey().player(user.getPlayer()).build();
+    String subTitle = new MessageBuilder(LANGUAGE_ACCESSOR + "GAME_ITEM_HOMECOMING_RESPAWNED_BY_SUBTITLE").asKey().player(user.getPlayer()).build();
     for(Player arenaPlayer : user.getArena().getPlayers()) {
       if(left.contains(arenaPlayer)) {
         continue;
@@ -225,30 +232,18 @@ public class MedicKit extends PremiumKit implements Listener {
       if(ServerVersion.Version.isCurrentEqualOrHigher(ServerVersion.Version.v1_11_R1)) {
         arenaPlayer.playEffect(EntityEffect.valueOf("TOTEM_RESURRECT"));
       }
-      int amplifier = getAmplifierPower((Arena) user.getArena());
+      int amplifier = (int) Settings.HEAL_AURA_POWER.getForArenaState((Arena) user.getArena());
       arenaPlayer.addPotionEffect(new PotionEffect(PotionEffectType.HEALTH_BOOST, 30 * 20, amplifier));
       arenaPlayer.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 30 * 20, amplifier));
     }
     ArenaUtils.bringDeathPlayersBack((Arena) user.getArena());
   }
 
-  private int getAmplifierPower(Arena arena) {
-    switch(KitSpecifications.getTimeState(arena)) {
-      case LATE:
-        return 2;
-      case MID:
-        return 1;
-      case EARLY:
-      default:
-        return 0;
-    }
-  }
-
   public void applyAura(User user) {
     Player player = user.getPlayer();
 
-    List<String> messages = getPlugin().getLanguageManager().getLanguageListFromKey("KIT_CONTENT_MEDIC_GAME_ITEM_AURA_ACTIVE_ACTION_BAR");
-    List<String> healingMessages = getPlugin().getLanguageManager().getLanguageListFromKey("KIT_CONTENT_MEDIC_GAME_ITEM_AURA_HEALED_BY_ACTION_BAR");
+    List<String> messages = getPlugin().getLanguageManager().getLanguageListFromKey(LANGUAGE_ACCESSOR + "GAME_ITEM_AURA_ACTIVE_ACTION_BAR");
+    List<String> healingMessages = getPlugin().getLanguageManager().getLanguageListFromKey(LANGUAGE_ACCESSOR + "GAME_ITEM_AURA_HEALED_BY_ACTION_BAR");
     new BukkitRunnable() {
       int tick = 0;
       int messageIndex = 0;
@@ -257,11 +252,11 @@ public class MedicKit extends PremiumKit implements Listener {
       @Override
       public void run() {
         //apply effects only once per second, particles every 5 ticks
-        if (tick % 5 == 0 && ServerVersion.Version.isCurrentEqualOrHigher(ServerVersion.Version.v1_9_R1)) {
+        if(tick % 5 == 0 && ServerVersion.Version.isCurrentEqualOrHigher(ServerVersion.Version.v1_9_R1)) {
           XParticle.circle(3.5, 18, ParticleDisplay.simple(player.getLocation().add(0, 0.5, 0), XParticle.getParticle("HEART")));
         }
         if (tick % 10 == 0) {
-          int heal = getHealAuraPower((Arena) user.getArena());
+          int heal = (int) Settings.HEAL_AURA_POWER.getForArenaState((Arena) user.getArena());
           for(LivingEntity entity : getNearbyAllies(player)) {
             entity.setHealth(Math.min(entity.getHealth() + heal, VersionUtils.getMaxHealth(entity)));
             VersionUtils.sendParticles("HEART", null, entity.getLocation(), 5, 0, 0, 0);
@@ -301,15 +296,29 @@ public class MedicKit extends PremiumKit implements Listener {
       .collect(Collectors.toList());
   }
 
-  private int getHealAuraPower(Arena arena) {
-    switch(KitSpecifications.getTimeState(arena)) {
-      case LATE:
-        return 4;
-      case MID:
-        return 2;
-      case EARLY:
-      default:
-        return 0;
+  private enum Settings {
+    HEAL_AURA_POWER(0, 2, 4), PASSIVE_HEAL_POWER(4, 6, 8), AMPLIFIER_POWER(0, 1, 2);
+
+    private final double earlyValue;
+    private final double midValue;
+    private final double lateValue;
+
+    Settings(double earlyValue, double midValue, double lateValue) {
+      this.earlyValue = earlyValue;
+      this.midValue = midValue;
+      this.lateValue = lateValue;
+    }
+
+    public double getForArenaState(Arena arena) {
+      switch(KitSpecifications.getTimeState(arena)) {
+        case LATE:
+          return earlyValue;
+        case MID:
+          return midValue;
+        case EARLY:
+        default:
+          return lateValue;
+      }
     }
   }
 
