@@ -22,32 +22,31 @@ Required-Level:
 # Here you can disable plugily projects preconfigured kits.
 # Set 'false' to disable.
 Enabled-Game-Kits:
-  Archer: true
-  Blocker: true
-  Cleaner: true
-  DogFriend: true
-  GolemFriend: true
-  Hardcore: true
-  Healer: true
-  HeavyTank: true
   # Knight is default kit, it cannot be disabled
   #Knight: true
   LightTank: true
+  Archer: true
+  GolemFriend: true
+  Hardcore: true
+  Healer: true
   Looter: true
-  Medic: true
   MediumTank: true
-  Naked: true
-  PremiumHardcore: true
   Puncher: true
   Runner: true
-  ShotBow: true
-  SuperArcher: true
-  Teleporter: true
   Terminator: true
-  Tornado: true
-  Wizard: true
   Worker: true
   ZombieFinder: true
+  Blocker: true
+  Cleaner: true
+  DogFriend: true
+  HeavyTank: true
+  Medic: true
+  Naked: true
+  PremiumHardcore: true
+  ShotBow: true
+  Teleporter: true
+  Tornado: true
+  Wizard: true
 
 # The cooldown in seconds for some kit items
 Kit-Cooldown:

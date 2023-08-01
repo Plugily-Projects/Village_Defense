@@ -1,19 +1,19 @@
 /*
- * Village Defense - Protect villagers from hordes of zombies
- * Copyright (c) 2022  Plugily Projects - maintained by Tigerpanzer_02 and contributors
+ *  Village Defense - Protect villagers from hordes of zombies
+ *  Copyright (c) 2023 Plugily Projects - maintained by Tigerpanzer_02 and contributors
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 package plugily.projects.villagedefense.arena.managers;
@@ -36,8 +36,6 @@ import plugily.projects.villagedefense.arena.Arena;
  * Created at 06.01.2019
  */
 public class EnemySpawnManager {
-
-  private final Random random = new Random();
   private final Arena arena;
   private int localIdleProcess = 0;
   private final List<Creature> glitchedEnemies = new ArrayList<>();
@@ -90,7 +88,7 @@ public class EnemySpawnManager {
         if(checkerLoc == null) {
           enemyCheckerLocations.put(creature, creature.getLocation());
         } else if(creature.getLocation().distance(checkerLoc) <= 1) {
-          VersionUtils.teleport(creature, arena.getRandomZombieSpawnLocation(random));
+          VersionUtils.teleport(creature, arena.getRandomZombieSpawnLocation(arena.getPlugin().getRandom()));
           enemyCheckerLocations.put(creature, creature.getLocation());
           glitchedEnemies.add(creature);
         }
@@ -110,7 +108,7 @@ public class EnemySpawnManager {
    */
   public void spawnEnemies() {
     if(checkForIdle()) {
-      arena.getPlugin().getEnemySpawnerRegistry().spawnEnemies(random, arena);
+      arena.getPlugin().getEnemySpawnerRegistry().spawnEnemies(arena.getPlugin().getRandom(), arena);
     }
   }
 

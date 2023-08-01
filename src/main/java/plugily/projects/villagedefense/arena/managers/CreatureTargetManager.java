@@ -1,20 +1,20 @@
 
 /*
- * Village Defense - Protect villagers from hordes of zombies
- * Copyright (c) 2022  Plugily Projects - maintained by Tigerpanzer_02 and contributors
+ *  Village Defense - Protect villagers from hordes of zombies
+ *  Copyright (c) 2023 Plugily Projects - maintained by Tigerpanzer_02 and contributors
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 package plugily.projects.villagedefense.arena.managers;
@@ -43,7 +43,6 @@ import java.util.Random;
 public class CreatureTargetManager {
   private final Arena arena;
   private final Main plugin;
-  private Random random = new Random();
 
   public CreatureTargetManager(Arena arena) {
     this.arena = arena;
@@ -73,11 +72,11 @@ public class CreatureTargetManager {
       }
       LivingEntity creatureTarget = creature.getTarget();
       if(creatureTarget == null) {
-        creature.setTarget(arena.getEnemies().get(arena.getEnemies().size() > 1 ? random.nextInt(arena.getEnemies().size() - 1) : 0));
+        creature.setTarget(arena.getEnemies().get(arena.getEnemies().size() > 1 ? plugin.getRandom().nextInt(arena.getEnemies().size() - 1) : 0));
         continue;
       }
       if(creatureTarget instanceof Player) {
-        creature.setTarget(arena.getEnemies().get(arena.getEnemies().size() > 1 ? random.nextInt(arena.getEnemies().size() - 1) : 0));
+        creature.setTarget(arena.getEnemies().get(arena.getEnemies().size() > 1 ? plugin.getRandom().nextInt(arena.getEnemies().size() - 1) : 0));
       }
     }
   }
@@ -171,7 +170,7 @@ public class CreatureTargetManager {
         continue;
       }
       //set new target as villager so zombies won't stay still waiting for nothing
-      zombie.setTarget(arena.getVillagers().get(random.nextInt(arena.getVillagers().size() - 1)));
+      zombie.setTarget(arena.getVillagers().get(plugin.getRandom().nextInt(arena.getVillagers().size() - 1)));
     }
   }
 
