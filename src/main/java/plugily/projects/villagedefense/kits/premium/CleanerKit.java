@@ -28,6 +28,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.scheduler.BukkitRunnable;
 import plugily.projects.minigamesbox.classic.arena.ArenaState;
 import plugily.projects.minigamesbox.classic.arena.PluginArena;
@@ -60,6 +61,8 @@ import java.util.Random;
 public class CleanerKit extends PremiumKit implements Listener {
 
   private static final String LANGUAGE_ACCESSOR = "KIT_CONTENT_CLEANER_";
+  //this metadata must be given to every enemy killed by poplust to avoid recursive calls and stack overflow in the listener
+  private static final String KILL_METADATA = "VD_POPLUST_DEATH";
   private static final double POP_DAMAGE = 1000000.0;
   private final List<Arena> poplustActives = new ArrayList<>();
   private final Random random = new Random();
@@ -264,13 +267,15 @@ public class CleanerKit extends PremiumKit implements Listener {
       return;
     }
     User user = getPlugin().getUserManager().getUser(damager);
-    if(!poplustActives.contains((Arena) user.getArena()) || user.isSpectator() || !CreatureUtils.isEnemy(event.getEntity())) {
+    if(!poplustActives.contains((Arena) user.getArena()) || user.isSpectator() || !CreatureUtils.isEnemy(event.getEntity())
+      || event.getEntity().hasMetadata(KILL_METADATA)) {
       return;
     }
     LivingEntity entity = (LivingEntity) event.getEntity();
+    entity.setMetadata(KILL_METADATA, new FixedMetadataValue(getPlugin(), true));
     entity.damage(POP_DAMAGE, damager);
     XSound.BLOCK_LAVA_POP.play(user.getPlayer());
-    VersionUtils.sendParticles("LAVA", user.getArena().getPlayers(), entity.getLocation(), 20);
+    VersionUtils.sendParticles("LAVA", user.getArena().getPlayers(), entity.getLocation(), 15);
   }
 
   private enum Settings {
