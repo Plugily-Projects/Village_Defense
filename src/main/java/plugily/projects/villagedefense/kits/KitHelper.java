@@ -23,8 +23,11 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.plugin.java.JavaPlugin;
+import plugily.projects.minigamesbox.classic.kits.basekits.Kit;
+import plugily.projects.minigamesbox.classic.user.User;
+import plugily.projects.minigamesbox.classic.utils.helper.ItemUtils;
 import plugily.projects.minigamesbox.classic.utils.version.VersionUtils;
+import plugily.projects.villagedefense.Main;
 
 /**
  * @author Plajer
@@ -33,13 +36,26 @@ import plugily.projects.minigamesbox.classic.utils.version.VersionUtils;
  */
 public class KitHelper {
 
-  private static JavaPlugin plugin;
+  private static Main plugin;
 
   private KitHelper() {
   }
 
-  public static void init(JavaPlugin plugin) {
+  public static void init(Main plugin) {
     KitHelper.plugin = plugin;
+  }
+
+  public static boolean isInGameWithKitAndItemInHand(Player player, Class<? extends Kit> instance) {
+    if(plugin.getArenaRegistry().getArena(player) == null) {
+      return false;
+    }
+
+    User user = plugin.getUserManager().getUser(player);
+    if(user.isSpectator() || !instance.isInstance(user.getKit())) {
+      return false;
+    }
+    ItemStack stack = VersionUtils.getItemInHand(player);
+    return ItemUtils.isItemStackNamed(stack);
   }
 
   public static void scheduleAbilityCooldown(ItemStack item, Player player, int castTime, int cooldown) {

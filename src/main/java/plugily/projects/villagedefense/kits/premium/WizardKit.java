@@ -40,7 +40,6 @@ import plugily.projects.minigamesbox.classic.kits.basekits.PremiumKit;
 import plugily.projects.minigamesbox.classic.user.User;
 import plugily.projects.minigamesbox.classic.utils.helper.ArmorHelper;
 import plugily.projects.minigamesbox.classic.utils.helper.ItemBuilder;
-import plugily.projects.minigamesbox.classic.utils.helper.ItemUtils;
 import plugily.projects.minigamesbox.classic.utils.misc.complement.ComplementAccessor;
 import plugily.projects.minigamesbox.classic.utils.version.ServerVersion;
 import plugily.projects.minigamesbox.classic.utils.version.VersionUtils;
@@ -165,19 +164,11 @@ public class WizardKit extends PremiumKit implements Listener {
 
   @EventHandler
   public void onItemUse(PlugilyPlayerInteractEvent event) {
-    if (getPlugin().getArenaRegistry().getArena(event.getPlayer()) == null) {
+    if(!KitHelper.isInGameWithKitAndItemInHand(event.getPlayer(), WizardKit.class)) {
       return;
     }
-
-    User user = getPlugin().getUserManager().getUser(event.getPlayer());
-    if (user.isSpectator() || !(user.getKit() instanceof WizardKit)) {
-      return;
-    }
-
     ItemStack stack = VersionUtils.getItemInHand(event.getPlayer());
-    if (!ItemUtils.isItemStackNamed(stack)) {
-      return;
-    }
+    User user = getPlugin().getUserManager().getUser(event.getPlayer());
     Player player = event.getPlayer();
     if(ComplementAccessor.getComplement().getDisplayName(stack.getItemMeta()).equals(new MessageBuilder(LANGUAGE_ACCESSOR + "GAME_ITEM_BLOODLUST_NAME").asKey().build())) {
       if(!user.checkCanCastCooldownAndMessage("wizard_bloodlust")) {
@@ -338,12 +329,12 @@ public class WizardKit extends PremiumKit implements Listener {
     public double getForArenaState(Arena arena) {
       switch(KitSpecifications.getTimeState(arena)) {
         case LATE:
-          return earlyValue;
+          return lateValue;
         case MID:
           return midValue;
         case EARLY:
         default:
-          return lateValue;
+          return earlyValue;
       }
     }
   }

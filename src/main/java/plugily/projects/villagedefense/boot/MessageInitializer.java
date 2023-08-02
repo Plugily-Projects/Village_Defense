@@ -111,16 +111,6 @@ public class MessageInitializer {
     getMessageManager().registerMessage("UPGRADE_MENU_UPGRADES_DEFENSE_NAME", new Message("Upgrade-Menu.Upgrades.Final-Defense.Name", ""));
     getMessageManager().registerMessage("UPGRADE_MENU_UPGRADES_DEFENSE_DESCRIPTION", new Message("Upgrade-Menu.Upgrades.Final-Defense.Description", ""));
 
-
-    //CLEANER KIT
-
-    getMessageManager().registerMessage("KIT_CONTENT_CLEANER_NAME", new Message("Kit.Content.Cleaner.Name", ""));
-    getMessageManager().registerMessage("KIT_CONTENT_CLEANER_DESCRIPTION", new Message("Kit.Content.Cleaner.Description", ""));
-    getMessageManager().registerMessage("KIT_CONTENT_CLEANER_GAME_ITEM_NAME", new Message("Kit.Content.Cleaner.Game-Item.Name", ""));
-    getMessageManager().registerMessage("KIT_CONTENT_CLEANER_GAME_ITEM_DESCRIPTION", new Message("Kit.Content.Cleaner.Game-Item.Description", ""));
-    getMessageManager().registerMessage("KIT_CONTENT_CLEANER_CLEANED_MAP", new Message("Kit.Content.Cleaner.Cleaned.Map", ""));
-    getMessageManager().registerMessage("KIT_CONTENT_CLEANER_CLEANED_NOTHING", new Message("Kit.Content.Cleaner.Cleaned.Nothing", ""));
-
 //ZOMBIE_TELEPORTER KIT
 
     getMessageManager().registerMessage("KIT_CONTENT_ZOMBIE_TELEPORTER_NAME", new Message("Kit.Content.Zombie-Teleporter.Name", ""));
