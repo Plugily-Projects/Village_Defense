@@ -102,15 +102,15 @@ public class WizardKit extends PremiumKit implements Listener {
     player.getInventory().setItem(3, new ItemBuilder(getMaterial())
       .name(new MessageBuilder(LANGUAGE_ACCESSOR + "GAME_ITEM_WAND_NAME").asKey().build())
       .lore(getPlugin().getLanguageManager().getLanguageListFromKey(LANGUAGE_ACCESSOR + "GAME_ITEM_WAND_DESCRIPTION"))
-        .build());
+      .build());
     player.getInventory().setItem(4, new ItemBuilder(new ItemStack(XMaterial.POPPY.parseMaterial(), 1))
       .name(new MessageBuilder(LANGUAGE_ACCESSOR + "GAME_ITEM_FLOWER_NAME").asKey().build())
       .lore(getPlugin().getLanguageManager().getLanguageListFromKey(LANGUAGE_ACCESSOR + "GAME_ITEM_FLOWER_DESCRIPTION"))
-        .build());
+      .build());
     player.getInventory().setItem(5, new ItemBuilder(new ItemStack(XMaterial.SPIDER_EYE.parseMaterial(), 1))
       .name(new MessageBuilder(LANGUAGE_ACCESSOR + "GAME_ITEM_BLOODLUST_NAME").asKey().build())
       .lore(getPlugin().getLanguageManager().getLanguageListFromKey(LANGUAGE_ACCESSOR + "GAME_ITEM_BLOODLUST_DESCRIPTION"))
-        .build());
+      .build());
 
     ArmorHelper.setColouredArmor(Color.fromRGB(100, 149, 237), player);
     player.getInventory().setItem(8, new ItemStack(Material.SADDLE));
@@ -125,7 +125,7 @@ public class WizardKit extends PremiumKit implements Listener {
   public void reStock(Player player) {
     Arena arena = (Arena) getPlugin().getArenaRegistry().getArena(player);
     boolean giveItem;
-    switch (KitSpecifications.getTimeState(arena)) {
+    switch(KitSpecifications.getTimeState(arena)) {
       case LATE:
         giveItem = arena.getWave() % 2 == 0;
         break;
@@ -151,16 +151,16 @@ public class WizardKit extends PremiumKit implements Listener {
 
   @EventHandler
   public void onDamage(EntityDamageByEntityEvent event) {
-    if (!(event.getDamager() instanceof Player)) {
+    if(!(event.getDamager() instanceof Player)) {
       return;
     }
     Player damager = (Player) event.getDamager();
-    if (getPlugin().getArenaRegistry().getArena(damager) == null) {
+    if(getPlugin().getArenaRegistry().getArena(damager) == null) {
       return;
     }
     User user = getPlugin().getUserManager().getUser(damager);
-    if (user.isSpectator() || !(user.getKit() instanceof WizardKit)
-        || !corruptedWizards.contains(damager) || !CreatureUtils.isEnemy(event.getEntity())) {
+    if(user.isSpectator() || !(user.getKit() instanceof WizardKit)
+      || !corruptedWizards.contains(damager) || !CreatureUtils.isEnemy(event.getEntity())) {
       return;
     }
     LivingEntity entity = (LivingEntity) event.getEntity();
@@ -231,14 +231,14 @@ public class WizardKit extends PremiumKit implements Listener {
       @Override
       public void run() {
         //apply effects only once per second, particles every tick
-        if (ServerVersion.Version.isCurrentEqualOrHigher(ServerVersion.Version.v1_9_R1)) {
+        if(ServerVersion.Version.isCurrentEqualOrHigher(ServerVersion.Version.v1_9_R1)) {
           XParticle.circle(3.5, 28, ParticleDisplay.simple(player.getLocation().add(0, 0.5, 0), XParticle.getParticle("SMOKE_NORMAL")));
         }
         int soundLimit = 5;
-        if (damageTick % 20 == 0) {
+        if(damageTick % 20 == 0) {
           double totalDamage = 0;
-          for (Entity entity : player.getNearbyEntities(3.5, 3.5, 3.5)) {
-            if (!CreatureUtils.isEnemy(entity) || entity.equals(player)) {
+          for(Entity entity : player.getNearbyEntities(3.5, 3.5, 3.5)) {
+            if(!CreatureUtils.isEnemy(entity) || entity.equals(player)) {
               continue;
             }
             LivingEntity livingEntity = (LivingEntity) entity;
@@ -256,15 +256,15 @@ public class WizardKit extends PremiumKit implements Listener {
           }
           player.setHealth(Math.min(player.getHealth() + (totalDamage * 0.08), VersionUtils.getMaxHealth(player)));
         }
-        if (damageTick % 10 == 0) {
+        if(damageTick % 10 == 0) {
           VersionUtils.sendActionBar(player, messages.get(messageIndex)
-              .replace("%number%", String.valueOf(user.getCooldown("wizard_bloodlust_running"))));
+            .replace("%number%", String.valueOf(user.getCooldown("wizard_bloodlust_running"))));
           messageIndex++;
-          if (messageIndex > messages.size() - 1) {
+          if(messageIndex > messages.size() - 1) {
             messageIndex = 0;
           }
         }
-        if (damageTick >= 20 * 15 || !getPlugin().getArenaRegistry().isInArena(user.getPlayer()) || user.isSpectator()) {
+        if(damageTick >= 20 * 15 || !getPlugin().getArenaRegistry().isInArena(user.getPlayer()) || user.isSpectator()) {
           //reset action bar
           VersionUtils.sendActionBar(player, "");
           cancel();
@@ -276,7 +276,7 @@ public class WizardKit extends PremiumKit implements Listener {
   }
 
   private void applyMagicAttack(User user) {
-    if (ServerVersion.Version.isCurrentEqualOrHigher(ServerVersion.Version.v1_9_R1)) {
+    if(ServerVersion.Version.isCurrentEqualOrHigher(ServerVersion.Version.v1_9_R1)) {
       XParticle.drawLine(user.getPlayer(), 40, 1, ParticleDisplay.of(XParticle.getParticle("FLAME")));
     }
     final int finalPierce = (int) Settings.DEFAULT_PIERCE.getForArenaState((Arena) user.getArena());
@@ -289,20 +289,21 @@ public class WizardKit extends PremiumKit implements Listener {
 
       @Override
       public void run() {
-        positionModifier += 3.5;
+        positionModifier += 1.5;
         double x = direction.getX() * positionModifier,
-            y = direction.getY() * positionModifier + 1.5,
-            z = direction.getZ() * positionModifier;
+          y = direction.getY() * positionModifier,
+          z = direction.getZ() * positionModifier;
         location.add(x, y, z);
-        for (Entity entity : location.getChunk().getEntities()) {
-          if(!CreatureUtils.isEnemy(entity) || entity.getLocation().distance(location) >= 1.8 || entity.equals(user.getPlayer()) || pierce <= 0) {
+        for(Entity entity : location.getChunk().getEntities()) {
+          if(pierce <= 0 || !CreatureUtils.isEnemy(entity) || entity.getLocation().distance(location) >= 1.5 || entity.equals(user.getPlayer())) {
             continue;
           }
           LivingEntity livingEntity = (LivingEntity) entity;
           //wand damage: 30/32/35 scaling % of entity's max health, we use direct health set to override armors etc.
           livingEntity.damage(0, user.getPlayer());
           double maxHealthPercent = Settings.WAND_PERCENT_DAMAGE.getForArenaState((Arena) user.getArena());
-          livingEntity.setHealth(Math.max(0, livingEntity.getHealth() - (VersionUtils.getMaxHealth(livingEntity) / 100.0) * maxHealthPercent));
+          double health = Math.max(0, livingEntity.getHealth() - (VersionUtils.getMaxHealth(livingEntity) / 100.0) * maxHealthPercent);
+          livingEntity.setHealth(health);
 
           if(!soundPlayed) {
             XSound.BLOCK_NOTE_BLOCK_HARP.play(user.getPlayer());
