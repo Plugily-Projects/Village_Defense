@@ -8,11 +8,11 @@ api-version: 1.13
 commands:
   villagedefense:
     description: VillageDefense Commands
-    usage: "\u00A76Correct usage: /vd [option]"
+    usage: "Correct usage: /vd [option]"
     aliases: [ vd, villaged ]
   villagedefenseadmin:
     description: VillageDefense Admin Commands
-    usage: "\u00A76Correct usage: /vda [option]"
+    usage: "Correct usage: /vda [option]"
     aliases: [ vda, villageadmin ]
 
 permissions:

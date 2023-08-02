@@ -105,11 +105,11 @@ public class MedicKit extends PremiumKit implements Listener {
     player.getInventory().addItem(new ItemBuilder(new ItemStack(XMaterial.GHAST_TEAR.parseMaterial()))
       .name(new MessageBuilder(LANGUAGE_ACCESSOR + "GAME_ITEM_AURA_NAME").asKey().build())
       .lore(getPlugin().getLanguageManager().getLanguageListFromKey(LANGUAGE_ACCESSOR + "GAME_ITEM_AURA_DESCRIPTION"))
-        .build());
+      .build());
     player.getInventory().addItem(new ItemBuilder(new ItemStack(XMaterial.GOLD_NUGGET.parseMaterial()))
       .name(new MessageBuilder(LANGUAGE_ACCESSOR + "GAME_ITEM_HOMECOMING_NAME").asKey().build())
       .lore(getPlugin().getLanguageManager().getLanguageListFromKey(LANGUAGE_ACCESSOR + "GAME_ITEM_HOMECOMING_DESCRIPTION"))
-        .build());
+      .build());
   }
 
   @Override
@@ -130,9 +130,13 @@ public class MedicKit extends PremiumKit implements Listener {
         arenaPlayer.setHealth(arenaPlayer.getHealth() + heal);
       }
     }
-    if(((Arena) user.getArena()).getWave() == 16) {
+    Arena arena = (Arena) user.getArena();
+    if(arena.getWave() == KitSpecifications.GameTimeState.MID.getStartWave()) {
       new MessageBuilder("KIT_ABILITY_UNLOCKED").asKey().value(new MessageBuilder(LANGUAGE_ACCESSOR + "GAME_ITEM_AURA_NAME").asKey().build()).send(player);
       new MessageBuilder("KIT_ABILITY_UNLOCKED").asKey().value(new MessageBuilder(LANGUAGE_ACCESSOR + "GAME_ITEM_HOMECOMING_NAME").asKey().build()).send(player);
+    } else if(arena.getWave() == KitSpecifications.GameTimeState.LATE.getStartWave()) {
+      new MessageBuilder("KIT_ABILITY_POWER_INCREASED").asKey().value(new MessageBuilder(LANGUAGE_ACCESSOR + "GAME_ITEM_AURA_NAME").asKey().build()).send(player);
+      new MessageBuilder("KIT_ABILITY_POWER_INCREASED").asKey().value(new MessageBuilder(LANGUAGE_ACCESSOR + "GAME_ITEM_HOMECOMING_NAME").asKey().build()).send(player);
     }
   }
 
@@ -149,8 +153,8 @@ public class MedicKit extends PremiumKit implements Listener {
   }
 
   private void healNearbyPlayers(Entity en) {
-    for (Entity entity : en.getNearbyEntities(5, 5, 5)) {
-      if (!(entity instanceof Player)) {
+    for(Entity entity : en.getNearbyEntities(5, 5, 5)) {
+      if(!(entity instanceof Player)) {
         continue;
       }
 
@@ -250,7 +254,7 @@ public class MedicKit extends PremiumKit implements Listener {
         if(tick % 5 == 0 && ServerVersion.Version.isCurrentEqualOrHigher(ServerVersion.Version.v1_9_R1)) {
           XParticle.circle(3.5, 18, ParticleDisplay.simple(player.getLocation().add(0, 0.5, 0), XParticle.getParticle("HEART")));
         }
-        if (tick % 10 == 0) {
+        if(tick % 10 == 0) {
           int heal = (int) Settings.HEAL_AURA_POWER.getForArenaState((Arena) user.getArena());
           for(LivingEntity entity : getNearbyAllies(player)) {
             entity.setHealth(Math.min(entity.getHealth() + heal, VersionUtils.getMaxHealth(entity)));
@@ -265,10 +269,10 @@ public class MedicKit extends PremiumKit implements Listener {
             .replace("%number%", String.valueOf(user.getCooldown("medic_aura_running"))));
           messageIndex++;
           healingMessageIndex++;
-          if (messageIndex > messages.size() - 1) {
+          if(messageIndex > messages.size() - 1) {
             messageIndex = 0;
           }
-          if (healingMessageIndex > healingMessages.size() - 1) {
+          if(healingMessageIndex > healingMessages.size() - 1) {
             healingMessageIndex = 0;
           }
         }

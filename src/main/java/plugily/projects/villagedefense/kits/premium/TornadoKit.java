@@ -133,9 +133,12 @@ public class TornadoKit extends PremiumKit implements Listener {
       .lore(getPlugin().getLanguageManager().getLanguageListFromKey(LANGUAGE_ACCESSOR + "GAME_ITEM_TORNADO_DESCRIPTION"))
       .build());
 
-    User user = getPlugin().getUserManager().getUser(player);
-    if(((Arena) user.getArena()).getWave() == 16) {
+    Arena arena = (Arena) getPlugin().getUserManager().getUser(player).getArena();
+    if(arena.getWave() == KitSpecifications.GameTimeState.MID.getStartWave()) {
       new MessageBuilder("KIT_ABILITY_UNLOCKED").asKey().value(new MessageBuilder(LANGUAGE_ACCESSOR + "GAME_ITEM_FINAL_FLIGHT_NAME").asKey().build()).send(player);
+      new MessageBuilder("KIT_ABILITY_POWER_INCREASED").asKey().value(new MessageBuilder(LANGUAGE_ACCESSOR + "GAME_ITEM_MONSOON_DESCRIPTION").asKey().build()).send(player);
+    } else if(arena.getWave() == KitSpecifications.GameTimeState.LATE.getStartWave()) {
+      new MessageBuilder("KIT_ABILITY_POWER_INCREASED").asKey().value(new MessageBuilder(LANGUAGE_ACCESSOR + "GAME_ITEM_MONSOON_DESCRIPTION").asKey().build()).send(player);
     }
   }
 

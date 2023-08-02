@@ -141,8 +141,11 @@ public class WizardKit extends PremiumKit implements Listener {
         .lore(getPlugin().getLanguageManager().getLanguageListFromKey(LANGUAGE_ACCESSOR + "GAME_ITEM_FLOWER_DESCRIPTION"))
         .build());
     }
-    if(arena.getWave() == 16) {
+    if(arena.getWave() == KitSpecifications.GameTimeState.MID.getStartWave()) {
       new MessageBuilder("KIT_ABILITY_UNLOCKED").asKey().value(new MessageBuilder(LANGUAGE_ACCESSOR + "GAME_ITEM_BLOODLUST").asKey().build()).send(player);
+      new MessageBuilder("KIT_ABILITY_POWER_INCREASED").asKey().value(new MessageBuilder(LANGUAGE_ACCESSOR + "GAME_ITEM_WAND_NAME").asKey().build()).send(player);
+    } else if(arena.getWave() == KitSpecifications.GameTimeState.LATE.getStartWave()) {
+      new MessageBuilder("KIT_ABILITY_POWER_INCREASED").asKey().value(new MessageBuilder(LANGUAGE_ACCESSOR + "GAME_ITEM_WAND_NAME").asKey().build()).send(player);
     }
   }
 

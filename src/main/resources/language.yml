@@ -353,6 +353,8 @@ Kit:
   Cooldown: "%color_chat_issue%%plugin_prefix% Kit ability still on cooldown (%number%)!"
   Locked-Till: "%color_chat_issue%%plugin_prefix% This ability is locked until wave %number%!"
   Ability-Unlocked: "%color_chat_issue%%plugin_prefix% Ability is %value% is now unlocked!"
+  Ability-Power-Increased: "%color_chat_issue%%plugin_prefix% %value% ability power has increased!"
+  Passive-Power-Increased: "%color_chat_issue%%plugin_prefix% Your passive power has increased!"
   Menu:
     Title: "Kit Menu"
     Lore:
@@ -468,14 +470,14 @@ Kit:
             - "On use pop random 10/20/25"
             - "alive zombies with a delay"
             - "of 0.5s every 5 pops"
-            - "&c&lCOOLDOWN: &745/35/30s"
+            - "&c&lCOOLDOWN: &745/&735/&730s"
           Activate: "&7Lets wipe them up!"
         Poplust:
           Name: "&e&lPOPLUST &7(Ultimate)"
           Description:
             - "On use every enemy can be"
             - "oneshot and popped by anyone"
-            - "&c&lCAST TIME: &7-/5/7s, &c&lCOOLDOWN &760s"
+            - "&c&lCAST TIME: &7-/&75/&77s, &c&lCOOLDOWN &760s"
           Activate: "&7Poplust incoming!"
           Active-Title: "0,20,0;;&e&lONESHOT ENEMIES NOW!"
           Active-Action-Bar:
@@ -591,12 +593,12 @@ Kit:
         - "&c&l(BELOW ARE UNLOCKED IN MID GAME)"
         - "&a&l• HEALER AURA:"
         - "  &7Creates healing aura that heals"
-        - "  &7allies and pets by 2/4 hearts per sec"
-        - "  &7(&c&lCAST TIME 10s&7, &c&lCOOLDOWN 30/&c&l15s&7)"
+        - "  &7allies and pets by -/2/4 hearts per sec"
+        - "  &7(&c&lCAST TIME 10s&7, &c&lCOOLDOWN -/&c&l30/&c&l15s&7)"
         - "&e&l• HOMECOMING (ULTIMATE):"
         - "  &7On cast all spectators are respawned"
-        - "  &7and are given Speed Boost I/II and"
-        - "  &7Damage Boost I/II for 30 seconds"
+        - "  &7and are given Speed Boost -/I/II and"
+        - "  &7Damage Boost -/I/II for 30 seconds"
         - "  &7(&c&lCOOLDOWN 60s&7)"
       Game-Item:
         Aura:
@@ -605,7 +607,7 @@ Kit:
             - "On cast creates healing aura"
             - "that heals allies, wolves and golems"
             - "2/4 hearts per second"
-            - "&c&lCAST TIME &710s, &c&lCOOLDOWN &730/&715s"
+            - "&c&lCAST TIME &710s, &c&lCOOLDOWN &7-/&730/&715s"
           Active-Action-Bar:
             - "&e&lHEALING AURA ACTIVE &7(%number%s)"
             - "&c&lHEALING AURA ACTIVE &7(%number%s)"
@@ -616,8 +618,8 @@ Kit:
           Name: "&6&lHOMECOMING &7(Ultimate)"
           Description:
             - "On cast all spectators are"
-            - "respawned and given Speed Boost I/II"
-            - "and Damage Boost I/II for 30s"
+            - "respawned and given Speed Boost -/I/II"
+            - "and Damage Boost -/I/II for 30s"
             - "&c&lCOOLDOWN &760s"
           Activate: "&7Come back my allies! We will not fall!"
           Respawned-By-Title: "&eIt's not your time yet"

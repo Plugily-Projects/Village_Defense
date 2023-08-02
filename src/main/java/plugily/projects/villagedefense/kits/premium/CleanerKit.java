@@ -134,7 +134,6 @@ public class CleanerKit extends PremiumKit implements Listener {
       .lore(getPlugin().getLanguageManager().getLanguageListFromKey(LANGUAGE_ACCESSOR + "GAME_ITEM_POPLUST_DESCRIPTION"))
       .build());
     player.getInventory().setItem(5, new ItemStack(Material.SADDLE));
-
     player.getInventory().setItem(8, new ItemStack(Material.COOKED_BEEF, 10));
   }
 
@@ -145,9 +144,15 @@ public class CleanerKit extends PremiumKit implements Listener {
 
   @Override
   public void reStock(Player player) {
-    User user = getPlugin().getUserManager().getUser(player);
-    if(((Arena) user.getArena()).getWave() == 16) {
+    Arena arena = (Arena) getPlugin().getUserManager().getUser(player).getArena();
+    if(arena.getWave() == KitSpecifications.GameTimeState.MID.getStartWave()) {
       new MessageBuilder("KIT_ABILITY_UNLOCKED").asKey().value(new MessageBuilder(LANGUAGE_ACCESSOR + "GAME_ITEM_POPLUST_NAME").asKey().build()).send(player);
+      new MessageBuilder("KIT_ABILITY_POWER_INCREASED").asKey().value(new MessageBuilder(LANGUAGE_ACCESSOR + "GAME_ITEM_CLEANSING_STICK_NAME").asKey().build()).send(player);
+      new MessageBuilder("KIT_PASSIVE_POWER_INCREASED").asKey().send(player);
+    } else if(arena.getWave() == KitSpecifications.GameTimeState.LATE.getStartWave()) {
+      new MessageBuilder("KIT_ABILITY_POWER_INCREASED").asKey().value(new MessageBuilder(LANGUAGE_ACCESSOR + "GAME_ITEM_POPLUST_NAME").asKey().build()).send(player);
+      new MessageBuilder("KIT_ABILITY_POWER_INCREASED").asKey().value(new MessageBuilder(LANGUAGE_ACCESSOR + "GAME_ITEM_CLEANSING_STICK_NAME").asKey().build()).send(player);
+      new MessageBuilder("KIT_PASSIVE_POWER_INCREASED").asKey().send(player);
     }
   }
 
