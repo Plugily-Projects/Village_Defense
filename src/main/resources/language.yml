@@ -352,6 +352,7 @@ Kit:
   Choose: "%plugin_prefix% You have chosen: %value%!"
   Cooldown: "%color_chat_issue%%plugin_prefix% Kit ability still on cooldown (%number%)!"
   Locked-Till: "%color_chat_issue%%plugin_prefix% This ability is locked until wave %number%!"
+  Ability-Unlocked: "%color_chat_issue%%plugin_prefix% Ability is %value% is now unlocked!"
   Menu:
     Title: "Kit Menu"
     Lore:

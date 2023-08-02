@@ -120,7 +120,7 @@ public class MedicKit extends PremiumKit implements Listener {
   @Override
   public void reStock(Player player) {
     User user = getPlugin().getUserManager().getUser(player);
-    for (Player arenaPlayer : user.getArena().getPlayersLeft()) {
+    for(Player arenaPlayer : user.getArena().getPlayersLeft()) {
       int heal = (int) Settings.HEAL_AURA_POWER.getForArenaState((Arena) user.getArena());
       double maxHealth = VersionUtils.getMaxHealth(arenaPlayer);
       if(arenaPlayer.getHealth() + heal > maxHealth) {
@@ -129,6 +129,10 @@ public class MedicKit extends PremiumKit implements Listener {
       } else {
         arenaPlayer.setHealth(arenaPlayer.getHealth() + heal);
       }
+    }
+    if(((Arena) user.getArena()).getWave() == 16) {
+      new MessageBuilder("KIT_ABILITY_UNLOCKED").asKey().value(new MessageBuilder(LANGUAGE_ACCESSOR + "GAME_ITEM_AURA_NAME").asKey().build()).send(player);
+      new MessageBuilder("KIT_ABILITY_UNLOCKED").asKey().value(new MessageBuilder(LANGUAGE_ACCESSOR + "GAME_ITEM_HOMECOMING_NAME").asKey().build()).send(player);
     }
   }
 

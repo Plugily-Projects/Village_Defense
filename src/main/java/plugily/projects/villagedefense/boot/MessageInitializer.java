@@ -231,6 +231,7 @@ public class MessageInitializer {
 
     //GENERAL FOR KITS
     getMessageManager().registerMessage("KIT_LOCKED_TILL", new Message("Kit.Locked-Till", ""));
+    getMessageManager().registerMessage("KIT_ABILITY_UNLOCKED", new Message("Kit.Ability-Unlocked", ""));
   }
 
   private void registerLocales() {

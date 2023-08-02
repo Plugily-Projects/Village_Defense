@@ -132,6 +132,11 @@ public class TornadoKit extends PremiumKit implements Listener {
       .name(new MessageBuilder(LANGUAGE_ACCESSOR + "GAME_ITEM_TORNADO_NAME").asKey().build())
       .lore(getPlugin().getLanguageManager().getLanguageListFromKey(LANGUAGE_ACCESSOR + "GAME_ITEM_TORNADO_DESCRIPTION"))
       .build());
+
+    User user = getPlugin().getUserManager().getUser(player);
+    if(((Arena) user.getArena()).getWave() == 16) {
+      new MessageBuilder("KIT_ABILITY_UNLOCKED").asKey().value(new MessageBuilder(LANGUAGE_ACCESSOR + "GAME_ITEM_FINAL_FLIGHT_NAME").asKey().build()).send(player);
+    }
   }
 
   @EventHandler
@@ -157,10 +162,6 @@ public class TornadoKit extends PremiumKit implements Listener {
       if(!user.checkCanCastCooldownAndMessage("tornado_monsoon")) {
         return;
       }
-      if(KitSpecifications.getTimeState((Arena) user.getArena()) == KitSpecifications.GameTimeState.EARLY) {
-        new MessageBuilder("KIT_LOCKED_TILL").asKey().integer(16).send(player);
-        return;
-      }
       final int castTime = (int) Settings.MONSOON_CAST_TIME.getForArenaState((Arena) user.getArena());
       int cooldown = getKitsConfig().getInt("Kit-Cooldown.Tornado.Monsoon", 20);
       user.setCooldown("tornado_monsoon", cooldown);
@@ -170,6 +171,10 @@ public class TornadoKit extends PremiumKit implements Listener {
       createMonsoon(user);
     } else if(ComplementAccessor.getComplement().getDisplayName(stack.getItemMeta()).equalsIgnoreCase(new MessageBuilder(LANGUAGE_ACCESSOR + "GAME_ITEM_FINAL_FLIGHT_NAME").asKey().build())) {
       if(!user.checkCanCastCooldownAndMessage("tornado_final_flight")) {
+        return;
+      }
+      if(KitSpecifications.getTimeState((Arena) user.getArena()) == KitSpecifications.GameTimeState.EARLY) {
+        new MessageBuilder("KIT_LOCKED_TILL").asKey().integer(16).send(player);
         return;
       }
       int cooldown = getKitsConfig().getInt("Kit-Cooldown.Tornado.Final-Flight", 40);

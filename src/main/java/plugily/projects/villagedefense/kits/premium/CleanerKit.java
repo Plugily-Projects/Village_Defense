@@ -145,6 +145,10 @@ public class CleanerKit extends PremiumKit implements Listener {
 
   @Override
   public void reStock(Player player) {
+    User user = getPlugin().getUserManager().getUser(player);
+    if(((Arena) user.getArena()).getWave() == 16) {
+      new MessageBuilder("KIT_ABILITY_UNLOCKED").asKey().value(new MessageBuilder(LANGUAGE_ACCESSOR + "GAME_ITEM_POPLUST_NAME").asKey().build()).send(player);
+    }
   }
 
   @EventHandler

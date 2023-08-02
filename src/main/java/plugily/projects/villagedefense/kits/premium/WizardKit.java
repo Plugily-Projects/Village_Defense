@@ -135,11 +135,14 @@ public class WizardKit extends PremiumKit implements Listener {
         giveItem = arena.getWave() % 3 == 0;
         break;
     }
-    if (giveItem) {
+    if(giveItem) {
       player.getInventory().addItem(new ItemBuilder(new ItemStack(XMaterial.POPPY.parseMaterial()))
         .name(new MessageBuilder(LANGUAGE_ACCESSOR + "GAME_ITEM_FLOWER_NAME").asKey().build())
         .lore(getPlugin().getLanguageManager().getLanguageListFromKey(LANGUAGE_ACCESSOR + "GAME_ITEM_FLOWER_DESCRIPTION"))
-          .build());
+        .build());
+    }
+    if(arena.getWave() == 16) {
+      new MessageBuilder("KIT_ABILITY_UNLOCKED").asKey().value(new MessageBuilder(LANGUAGE_ACCESSOR + "GAME_ITEM_BLOODLUST").asKey().build()).send(player);
     }
   }
 
