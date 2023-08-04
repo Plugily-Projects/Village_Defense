@@ -1,19 +1,19 @@
 /*
- *  Village Defense - Protect villagers from hordes of zombies
- *  Copyright (c) 2023 Plugily Projects - maintained by Tigerpanzer_02 and contributors
+ * Village Defense - Protect villagers from hordes of zombies
+ * Copyright (c) 2023  Plugily Projects - maintained by Tigerpanzer_02 and contributors
  *
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- *  You should have received a copy of the GNU General Public License
- *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 package plugily.projects.villagedefense.arena.managers.maprestorer;
@@ -30,8 +30,8 @@ import plugily.projects.minigamesbox.classic.utils.version.xseries.XMaterial;
 import plugily.projects.villagedefense.arena.Arena;
 import plugily.projects.villagedefense.utils.Utils;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 
 /**
@@ -42,7 +42,7 @@ import java.util.logging.Level;
 @SuppressWarnings("deprecation")
 public class MapRestorerManager extends PluginMapRestorerManager {
 
-  protected final Map<Location, Byte> doorBlocks = new LinkedHashMap<>();
+  protected final List<Location> doorBlocks = new ArrayList<>();
   public final Arena arena;
 
   public MapRestorerManager(Arena arena) {
@@ -50,11 +50,11 @@ public class MapRestorerManager extends PluginMapRestorerManager {
     this.arena = arena;
   }
 
-  public final void addDoor(Location location, byte data) {
-    doorBlocks.put(location, data);
+  public final void addDoor(Location location) {
+    doorBlocks.add(location);
   }
 
-  public final Map<Location, Byte> getGameDoorLocations() {
+  public final List<Location> getGameDoorLocations() {
     return doorBlocks;
   }
 
@@ -101,20 +101,23 @@ public class MapRestorerManager extends PluginMapRestorerManager {
 
   public void restoreDoors() {
     int i = 0;
-    for(Map.Entry<Location, Byte> entry : doorBlocks.entrySet()) {
-      Block block = entry.getKey().getBlock();
-      Byte doorData = entry.getValue();
+    for(Location location : doorBlocks) {
+      Block block = location.getBlock();
       try {
         if(block.getType() != XMaterial.AIR.parseMaterial()) {
           i++;
           continue;
         }
-        if(doorData == (byte) 8) {
+        Block below = block.getLocation().subtract(0, 1, 0).getBlock();
+        boolean isAirBelow = below.getType().equals(XMaterial.AIR.parseMaterial());
+        if(isAirBelow) {
+          restoreBottomHalfDoorPart(below);
           restoreTopHalfDoorPart(block);
-          i++;
-          continue;
+        } else {
+          Block above = block.getLocation().add(0, 1, 0).getBlock();
+          restoreBottomHalfDoorPart(block);
+          restoreTopHalfDoorPart(above);
         }
-        restoreBottomHalfDoorPart(block, doorData);
         i++;
       } catch(Exception ex) {
         arena.getPlugin().getDebugger().debug(Level.WARNING, "Door has failed to load for arena {0} message {1} type {2} skipping!", arena.getId(), ex.getMessage(), ex.getCause());
@@ -139,10 +142,10 @@ public class MapRestorerManager extends PluginMapRestorerManager {
     doorBlockState.update(true);
   }
 
-  public void restoreBottomHalfDoorPart(Block block, byte doorData) {
+  public void restoreBottomHalfDoorPart(Block block) {
     block.setType(Utils.getCachedDoor(block));
     BlockState doorBlockState = block.getState();
-    Door doorBlockData = new Door(TreeSpecies.GENERIC, arena.getPlugin().getBukkitHelper().getFacingByByte(doorData));
+    Door doorBlockData = new Door(TreeSpecies.GENERIC, arena.getPlugin().getBukkitHelper().getFacingByByte((byte) 1));
 
     doorBlockData.setTopHalf(false);
     doorBlockData.setFacingDirection(doorBlockData.getFacing());

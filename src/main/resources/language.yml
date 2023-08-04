@@ -262,16 +262,17 @@ In-Game:
         Title:
           Start: "20,30,20;Wave %number%;"
           End: "20,30,20;Wave %number% ended;"
-      Orbs:
-        Pickup: "+ %number% orbs"
+          Start-3: "10,20,10;;&a&l3"
+          Start-2: "10,20,10;;&e&l2"
+          Start-1: "10,20,10;;&c&l1"
       Entities:
         Wolf:
           Spawn: "%plugin_prefix% Wolf spawned in the village!"
-          Name: "%player%'s Wolf"
+          Name: "%player%'s Wolf &8(&7LVL %number%&8)"
           Death: "%color_chat_issue%%plugin_prefix% One of your wolves were killed!"
         Golem:
           Spawn: "%plugin_prefix% Golem spawned in the village!"
-          Name: "%player%'s Golem"
+          Name: "%player%'s Golem &8(&7LVL %number%&8)"
           Cant-Ride-Other: "%color_chat_issue%%plugin_prefix% You can't ride the golem of somebody else!"
       Shop:
         GUI: "&lShop"
@@ -280,6 +281,8 @@ In-Game:
         Mob-Limit-Reached: "%color_chat_issue%%plugin_prefix% You can't buy mobs! You've reached the limit of %number% mobs!"
         Not-Enough-Currency: "%color_chat_issue%%plugin_prefix% You need more orbs to buy this item!"
         Currency: "orbs"
+        Wave-Lock: "&6Locked till wave %number%"
+        Wave-Still-Locked: "%color_chat_issue%%plugin_prefix% This item will be unlocked at wave %number%!"
         Not-Defined: "%color_chat_issue%%plugin_prefix% Shop wasn't set up! Contact staff!"
 
 #
@@ -350,6 +353,10 @@ Kit:
   Not-Unlocked: "%color_chat_issue%%plugin_prefix% You haven't unlocked %value% yet!"
   Choose: "%plugin_prefix% You have chosen: %value%!"
   Cooldown: "%color_chat_issue%%plugin_prefix% Kit ability still on cooldown (%number%)!"
+  Locked-Till: "%color_chat_issue%%plugin_prefix% This ability is locked until wave %number%!"
+  Ability-Unlocked: "%color_chat_issue%%plugin_prefix% &7Ability %value% &7is now unlocked!"
+  Ability-Power-Increased: "%color_chat_issue%%plugin_prefix% %value% &7ability power has increased!"
+  Passive-Power-Increased: "%color_chat_issue%%plugin_prefix% &7Your passive power has increased!"
   Menu:
     Title: "Kit Menu"
     Lore:
@@ -358,21 +365,6 @@ Kit:
       Unlock-At-Level: "Unlocks at level %number%"
       Unlock-In-Store: "&bUnlock this in the store!"
   Content:
-    Cleaner:
-      Name: "&bCleaner"
-      Description:
-        - "The cleaner has a special ability."
-        - "With this ability, he can make all the"
-        - "zombies disappear. However, it takes"
-        - "a lot of effort to do this!"
-      Game-Item:
-        Name: "&6Cleaner Wand!"
-        Description:
-          - "Right click to kill all zombies!"
-          - "Cooldown: 60 seconds"
-      Cleaned:
-        Map: "&b%player% has cleaned the map!"
-        Nothing: "&aThe map is already empty!" #WARNING: used for admin clean commands too!!!
     Zombie-Teleporter:
       Name: "&2Zombie Teleporter"
       Description:
@@ -453,20 +445,91 @@ Kit:
       Description:
         - "Start with a golem and"
         - "get new every 5 waves!"
+    Cleaner:
+      Name: "&bCleaner"
+      Description:
+        - "&6&lGAME POWER: &7poor/strong/mediocre"
+        - "&6&lCLASS: &7mixed, support/damage dealer"
+        - ""
+        - "&6&lABILITIES:"
+        - "&a&l• POP AWE (PASSIVE):"
+        - "  &7Every 5 seconds pop random"
+        - "  &71/2/3 alive zombies"
+        - "&a&l• CLEANSING STICK:"
+        - "  &7On use pop random 10/20/25"
+        - "  &7alive zombies with a delay"
+        - "  &7of 0.5s every 5 pops"
+        - "  &7(&c&lCOOLDOWN 45/&c&l35/&c&l30s&7)"
+        - "&e&l• POPLUST (ULTIMATE)"
+        - "  &7On use every enemy can be"
+        - "  &7oneshot and popped by anyone"
+        - "  &7(&c&lCAST TIME -/&c&l5&7/&c&l7s&7, &c&lCOOLDOWN 60s&7)"
+        - "  &7(&c&lUNLOCKED IN MID GAME&7)"
+      Game-Item:
+        Cleansing-Stick:
+          Name: "&6&lCLEANSING STICK"
+          Description:
+            - "On use pop random 10/20/25"
+            - "alive zombies with a delay"
+            - "of 0.5s every 5 pops"
+            - "&c&lCOOLDOWN: &745/&735/&730s"
+          Activate: "&7Lets wipe them up!"
+        Poplust:
+          Name: "&e&lPOPLUST &7(Ultimate)"
+          Description:
+            - "On use every enemy can be"
+            - "oneshot and popped by anyone"
+            - "&c&lCAST TIME: &7-/&75/&77s, &c&lCOOLDOWN &760s"
+          Activate: "&7Poplust incoming!"
+          Active-Title: "0,20,0;;&e&lONESHOT ENEMIES NOW!"
+          Active-Action-Bar:
+            - "&e&lPOPLUST ACTIVE &7(%number%s)"
+            - "&c&lPOPLUST ACTIVE &7(%number%s)"
     Tornado:
       Name: "&bTornado"
       Description:
-        - "Spawn in an awesome tornado!"
+        - "&6&lGAME POWER: &7?/?/?"
+        - "&6&lCLASS: &7mixed, support"
+        - ""
+        - "&6&lABILITIES:"
+        - "&a&l• CALL OF THE WIND (PASSIVE):"
+        - "  &7Each turn you receive 2/3/5 tornadoes,"
+        - "  &7which push back and damage enemies"
+        - "&a&l• MONSOON:"
+        - "  &7Creates wind sphere that knocks back"
+        - "  &7and permanently slows all enemies"
+        - "  &7(&c&lCAST TIME 6/&c&l9/&c&l12s&7, &c&lCOOLDOWN 20s&7)"
+        - "&e&l• FINAL FLIGHT (ULTIMATE):"
+        - "  &7On cast your attacks cause enemies"
+        - "  &7to levitate and receive 25% max health"
+        - "  &7damage per second that lasts for 4s"
+        - "  &7(&c&lCAST TIME 10s&7, &c&lCOOLDOWN 40s&7)"
+        - "  &7(&c&lUNLOCKED IN MID GAME&7)"
       Game-Item:
-        Name: "Tornado Time"
-        Description:
-          - "Right click to spawn a"
-          - "tornado at your location!"
-    Terminator:
-      Name: "&6Terminator"
-      Description:
-        - "Easily kill those zombies"
-        - "with your strength powers!"
+        Tornado:
+          Name: "&6&lTORNADO TIME"
+          Description:
+            - "Right click to spawn a"
+            - "tornado at your location!"
+        Monsoon:
+          Name: "&6&lMONSOON"
+          Description:
+            - "On cast creates wind sphere that knocks back"
+            - "and permanently slows enemies"
+            - "&c&lCOOLDOWN: &720s"
+          Active-Action-Bar:
+            - "&e&lMONSOON ACTIVE &7(%number%s)"
+            - "&c&lMONSOON ACTIVE &7(%number%s)"
+        Final-Flight:
+          Name: "&e&lFINAL FLIGHT &7(Ultimate)"
+          Description:
+            - "On cast your attacks cause enemies"
+            - "to levitate and receive 25% max health"
+            - "damage per second that lasts for 4s"
+            - "&c&lCAST TIME: &710s, &c&lCOOLDOWN &740s"
+          Active-Action-Bar:
+            - "&e&lFINAL FLIGHT ACTIVE &7(%number%s)"
+            - "&c&lFINAL FLIGHT ACTIVE &7(%number%s)"
     Teleporter:
       Name: "&bTeleporter"
       Description:
@@ -514,13 +577,103 @@ Kit:
         - "One hit most zombies with your OP sword!"
         - "However be careful. this kit is only for"
         - "the pros! Do not use it if you aren't a pro!"
+    Terminator:
+      Name: "&6Terminator"
+      Description:
+        - "&6&lGAME POWER: &7mediocre/strong/strong"
+        - "&6&lCLASS: &7melee, damage dealer"
+        - ""
+        - "&6&lABILITIES:"
+        - "&a&l• BLADE OF TERMINUS (PASSIVE):"
+        - "  &7Receive sword that scales with waves:"
+        - "  &e&lWAVE 5: &720% on-hit burn chance"
+        - "  &e&lWAVE 10: &75% instakill chance"
+        - "  &e&lWAVE 15: &78% lifesteal, 40% on-hit burn"
+        - "  &e&lWAVE 20: &720% shared combust chance"
+        - "  &e&lWAVE 25: &740% large knockback chance"
+        - "  &e&lWAVE 30+: &7+1% dmg each wave (40% cap)"
+        - "&7(&c&lBELOW ARE UNLOCKED IN MID GAME&7)"
+        - "&a&l• NEVERDEATH &7(&c&lCOOLDOWN 20s&7):"
+        - "  &7On use receive absorption for 15s"
+        - "&e&l• MOTORS OVERCHARGE (ULTIMATE)"
+        - "  &7On use pull enemies to you, damage"
+        - "  &7them for 35% of max health per sec, on"
+        - "  &7end knock them away and instakill them"
+        - "  &7(&c&lCAST TIME 10s&7, &c&lCOOLDOWN 50s&7)"
+      Game-Item:
+        Terminus:
+          Name: "&6&lBLADE OF TERMINUS"
+          Description:
+            - "&7Terminus blade scales as game progresses:"
+            - "  &e&lWAVE 5: &720% on-hit burn chance"
+            - "  &e&lWAVE 10: &75% instakill chance"
+            - "  &e&lWAVE 15: &78% lifesteal, 40% on-hit burn"
+            - "  &e&lWAVE 20: &720% shared combust chance"
+            - "  &e&lWAVE 25: &740% large knockback chance"
+            - "  &e&lWAVE 30+: &7+1% dmg each wave (40% cap)"
+        Neverdeath:
+          Name: "&6&lNEVERDEATH"
+          Description:
+            - "On use receive absorption for 15s,"
+            - "the lower your health the higher"
+            - "the absorption effect"
+            - "&c&lCOOLDOWN &720s"
+          Activate: "&7Protocol &6&lNEVERDEATH &7active!"
+        Motors-Overcharge:
+          Name: "&e&lMOTORS OVERCHARGE &7(Ultimate)"
+          Description:
+            - "  &7On use pull enemies to you, damage"
+            - "  &7them for 35% of max health per sec, on"
+            - "  &7end knock them away and instakill them"
+            - "&c&lCAST TIME &710s, &c&lCOOLDOWN &750s"
+          Activate: "&7Engaging kinematic motors, full power reached!"
+          Active-Action-Bar:
+            - "&e&lMOTORS OVERCHARGE ACTIVE &7(%number%s)"
+            - "&c&lMOTORS OVERCHARGE ACTIVE &7(%number%s)"
     Medic:
       Name: "&6Medic"
       Description:
-        - "This kit activates your passive powers."
-        - "Every time you hit a zombie, you have"
-        - "a 1/10 chance to heal the players"
-        - "in a 5 block radius around you."
+        - "&6&lGAME POWER: &7poor/mediocre/strong"
+        - "&6&lCLASS: &7mixed, support"
+        - ""
+        - "&6&lABILITIES:"
+        - "&a&l• FIRST AID (PASSIVE):"
+        - "  &7Each zombie hit you have 10% chance"
+        - "  &7to heal nearby allies by 0.5 heart"
+        - "&7(&c&lBELOW ARE UNLOCKED IN MID GAME&7)"
+        - "&a&l• HEALER AURA:"
+        - "  &7Creates healing aura that heals"
+        - "  &7allies and pets by -/2/4 hearts per sec"
+        - "  &7(&c&lCAST TIME 10s&7, &c&lCOOLDOWN -/&c&l30/&c&l15s&7)"
+        - "&e&l• HOMECOMING (ULTIMATE):"
+        - "  &7On cast all spectators are respawned"
+        - "  &7and are given Speed Boost -/I/II and"
+        - "  &7Damage Boost -/I/II for 30 seconds"
+        - "  &7(&c&lCOOLDOWN 60s&7)"
+      Game-Item:
+        Aura:
+          Name: "&6&lHEALING AURA"
+          Description:
+            - "On cast creates healing aura"
+            - "that heals allies, wolves and golems"
+            - "2/4 hearts per second"
+            - "&c&lCAST TIME &710s, &c&lCOOLDOWN &7-/&730/&715s"
+          Active-Action-Bar:
+            - "&e&lHEALING AURA ACTIVE &7(%number%s)"
+            - "&c&lHEALING AURA ACTIVE &7(%number%s)"
+          Healed-By-Action-Bar:
+            - "&e&lYOU'RE BEING HEALED BY &7%player%"
+            - "&c&lYOU'RE BEING HEALED BY &7%player%"
+        Homecoming:
+          Name: "&6&lHOMECOMING &7(Ultimate)"
+          Description:
+            - "On cast all spectators are"
+            - "respawned and given Speed Boost -/I/II"
+            - "and Damage Boost -/I/II for 30s"
+            - "&c&lCOOLDOWN &760s"
+          Activate: "&7Come back my allies! We will not fall!"
+          Respawned-By-Title: "&eIt's not your time yet"
+          Respawned-By-Subtitle: "&7Respawned by %player%"
     Wild-Naked:
       Name: "&bWild Naked"
       Description:
@@ -531,56 +684,83 @@ Kit:
     Wizard:
       Name: "&bWizard"
       Description:
-        - "You're half blood."
-        - "You've come to the village to protect"
-        - "villagers from hordes of undead."
-        - "Use your dark powers to kill them all!"
+        - "&6&lGAME POWER: &7mediocre/strong/strong"
+        - "&6&lCLASS: &7ranged, damage dealer"
+        - ""
+        - "&6&lABILITIES:"
+        - "&a&l• WIZARD WAND:"
+        - "  &7Flat 30/32/35% max health damage and"
+        - "  &7projectile pierce 5/6/7 per shot"
+        - "&a&l• CORRUPTING FLOWER:"
+        - "  &7Every 3/3/2 waves receive item, on use"
+        - "  &7attacks slows and burns enemies for 3s"
+        - "  &7(&c&lSPELL TIME 15s&7, &c&lCOOLDOWN 15s&7)"
+        - "&e&l• BLOODLUST (ULTIMATE):"
+        - "  &7Creates deadly aura that deals 10%"
+        - "  &7max health to nearby enemies and"
+        - "  &7heals you for 8% of damage dealt"
+        - "  &7from aura each second"
+        - "  &7(&c&lSPELL TIME 15s&7, &c&lCOOLDOWN 70s&7)"
+        - "  &7(&c&lUNLOCKED IN MID GAME&7)"
       Game-Item:
-        Essence:
-          Name: "Dark essence"
-          Description:
-            - "Click to absorb surrounded matter"
-            - "and use it as your personal thorn shield!"
-            - "Lasts for 5 seconds"
         Wand:
-          Name: "Magic wand"
-          Description: "Right click to cast dark matter"
+          Name: "&6&lWIZARD WAND"
+          Description:
+            - "Right click to shoot projectile"
+            - "flat 30/32/35% max health damage"
+            - "and 5/6/7 pierce per shot"
+        Flower:
+          Name: "&c&lCORRUPTING FLOWER"
+          Description:
+            - "Click to make your attacks deal"
+            - "slow and burn for 3 seconds!"
+            - "&c&lCAST TIME &715s, &c&lCOOLDOWN &715s"
+          Activate: "&7Let &0&lCORRUPTION &7arise!"
+        Bloodlust:
+          Name: "&e&lBLOODLUST &7(Ultimate)"
+          Description:
+            - "Click to create death aura"
+            - "and use it as your personal thorn shield!"
+            - "&c&lCAST TIME &715s, &c&lCOOLDOWN &770s"
+          Activate: "&7Sacrifice your souls to me!"
+          Active-Action-Bar:
+            - "&e&lBLOODLUST ACTIVE &7(%number%s)"
+            - "&c&lBLOODLUST ACTIVE &7(%number%s)"
 
 #
 # Upgrade-Menu messages
 #
 # Upgrade-Menu function need to be enabled on config.yml
 Upgrade-Menu:
-  Title: "&3&lUpgrade entity"
+  Title: "&6&lUPGRADE ENTITY"
   Upgraded-Entity: "%plugin_prefix% &3Upgraded entity to tier &8%tier%&3!"
   Cannot-Afford: "%plugin_prefix% &3You don't have enough orbs to apply that upgrade!"
   Max-Tier: "%plugin_prefix% &3Entity is at max tier of this upgrade!"
   Stats-Item:
-    Name: "&3&lCurrent Stats"
-    Description: "&3Movement speed: &8%speed%; &3Attack Damage: &8%damage%; &3Health:
-      &8%current_hp%/%max_hp%"
+    Name: "&6&lCURRENT STATS"
+    Description: " &a&lSPEED: &7%speed%; &7&lDAMAGE: &7%damage%; &a&lHEALTH: &7%current_hp%/%max_hp%"
   Upgrades:
     Health:
-      Name: "&3&lUpgrade Health"
-      Description: "&3Upgrade max health to tier &8%tier%&3!;&3From &8%from% &3to
+      Name: "&c&lUPGRADE: &aHealth"
+      Description: "&3Upgrade max health to tier &8%tier% ▲&3!;&3From &8%from% &3to
         &8%to%;&3Cost of upgrade: &8%cost%;;&3Click to purchase"
     Damage:
-      Name: "&3&lUpgrade Damage"
-      Description: "&3Upgrade entity damage to tier &8%tier%&3!;&3From &8%from% &3to
+      Name: "&c&lUPGRADE: &7Damage"
+      Description: "&3Upgrade entity damage to tier &8%tier% ▲&3!;&3From &8%from% &3to
         &8%to%;&3Cost of upgrade: &8%cost%;;&8Click to purchase"
     Speed:
-      Name: "&3&lUpgrade Speed"
-      Description: "&3Upgrade movement speed to tier &8%tier%&3!;&3From &8%from% &3to
+      Name: "&c&lUPGRADE: &6Speed"
+      Description: "&3Upgrade movement speed to tier &8%tier% ▲&3!;&3From &8%from% &3to
         &8%to%;&3Cost of upgrade: &8%cost%;;&8Click to purchase"
     Swarm-Awareness:
-      Name: "&3&lSwarm Awareness"
-      Description: "&3Upgrade swarm awareness to tier &8%tier%&3!;&3From &8%from%
+      Name: "&3&lSWARM AWARENESS"
+      Description: "&3Upgrade swarm awareness to tier &8%tier% ▲&3!;&3From &8%from%
         &8damage multiplier per wolf in radius;&8of 3 blocks &3to %to%;&3The more
         wolves near attacking wolf;&3the more damage wolf deal;&3Cost of upgrade: &8%cost%;;&8Click
         to purchase"
     Final-Defense:
-      Name: "&3&lFinal Defense"
-      Description: "&3Upgrade final defense to tier &8%tier%&3!;&3From &8%from% explosion
+      Name: "&3&lFINAL DEFENSE"
+      Description: "&3Upgrade final defense to tier &8%tier% ▲&3!;&3From &8%from% explosion
         radius &3to &8%to%;&3Golem will explode after death killing nearby;&3zombies
         and stun all alive ones;&3Cost of upgrade: &8%cost%;;&8Click to purchase"
 #

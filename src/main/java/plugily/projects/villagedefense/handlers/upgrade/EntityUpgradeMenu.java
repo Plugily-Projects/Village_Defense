@@ -18,15 +18,22 @@
 
 package plugily.projects.villagedefense.handlers.upgrade;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Golem;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Wolf;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.jetbrains.annotations.Nullable;
+
 import plugily.projects.minigamesbox.classic.handlers.language.MessageBuilder;
 import plugily.projects.minigamesbox.classic.user.User;
 import plugily.projects.minigamesbox.classic.utils.helper.ItemBuilder;
@@ -39,10 +46,6 @@ import plugily.projects.villagedefense.creatures.CreatureUtils;
 import plugily.projects.villagedefense.events.EntityUpgradeListener;
 import plugily.projects.villagedefense.handlers.upgrade.upgrades.Upgrade;
 import plugily.projects.villagedefense.handlers.upgrade.upgrades.UpgradeBuilder;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
 
 /**
  * @author Plajer
@@ -136,7 +139,7 @@ public class EntityUpgradeMenu {
 
         user.setStatistic("ORBS", orbs - cost);
         player.sendMessage(color("UPGRADE_MENU_UPGRADED_ENTITY").replace("%tier%", Integer.toString(nextTier)));
-        applyUpgrade(livingEntity, upgrade);
+        applyUpgrade(livingEntity, player, upgrade);
 
         Bukkit.getPluginManager().callEvent(new VillagePlayerEntityUpgradeEvent(plugin.getArenaRegistry().getArena(player), livingEntity, player, upgrade, nextTier));
         player.closeInventory();
@@ -183,25 +186,26 @@ public class EntityUpgradeMenu {
    * automatically increments current tier
    *
    * @param entity  target entity
+   * @param player  player which upgraded target
    * @param upgrade upgrade to apply
    * @return true if applied successfully, false if tier is max and cannot be applied more
    */
-  public boolean applyUpgrade(Entity entity, Upgrade upgrade) {
+  public boolean applyUpgrade(Entity entity, Player player, Upgrade upgrade) {
     List<org.bukkit.metadata.MetadataValue> meta = entity.getMetadata(upgrade.getMetadataAccessor());
 
-    if(meta.isEmpty()) {
+    if (meta.isEmpty()) {
       entity.setMetadata(upgrade.getMetadataAccessor(), new FixedMetadataValue(plugin, 1));
-      applyUpgradeEffect(entity, upgrade, 1);
+      applyUpgradeEffect(entity, player, upgrade, 1);
       return true;
     }
 
-    if(meta.get(0).asInt() == upgrade.getMaxTier()) {
+    if (meta.get(0).asInt() == upgrade.getMaxTier()) {
       return false;
     }
 
     int tier = getTier(entity, upgrade) + 1;
     entity.setMetadata(upgrade.getMetadataAccessor(), new FixedMetadataValue(plugin, tier));
-    applyUpgradeEffect(entity, upgrade, tier);
+    applyUpgradeEffect(entity, player, upgrade, tier);
     if(upgrade.getMaxTier() == tier) {
       VersionUtils.playSound(entity.getLocation(), "BLOCK_ANVIL_USE");
       VersionUtils.sendParticles("EXPLOSION_LARGE", (Set<Player>) null, entity.getLocation(), 5);
@@ -209,23 +213,31 @@ public class EntityUpgradeMenu {
     return true;
   }
 
-  private void applyUpgradeEffect(Entity entity, Upgrade upgrade, int tier) {
+  private void applyUpgradeEffect(Entity entity, Player player, Upgrade upgrade, int tier) {
     org.bukkit.Location entityLocation = entity.getLocation();
 
     VersionUtils.sendParticles("FIREWORKS_SPARK", null, entityLocation.add(0, 1, 0), 30, 0.7, 0.7, 0.7);
     VersionUtils.sendParticles("HEART", (Set<Player>) null, entityLocation.add(0, 1.6, 0), 5);
     VersionUtils.playSound(entityLocation, "ENTITY_PLAYER_LEVELUP");
 
-    int[] baseValues = new int[]{getTier(entity, getUpgrade("Health")), getTier(entity, getUpgrade("Speed")), getTier(entity, getUpgrade("Damage"))};
+    int[] baseValues = new int[] {getTier(entity, getUpgrade("Health")), getTier(entity, getUpgrade("Speed")), getTier(entity, getUpgrade("Damage"))};
 
-    if(areAllEqualOrHigher(baseValues) && getMinValue(baseValues) == 4) {
+    //this doesnt count golem and wolf exclusive upgrades
+    int totalUpgrades = getAllUpgradesLevels(baseValues);
+    if (entity instanceof Golem) {
+      entity.setCustomName(new MessageBuilder("IN_GAME_MESSAGES_VILLAGE_WAVE_ENTITIES_GOLEM_NAME").asKey().integer(totalUpgrades).player(player).build());
+    } else if (entity instanceof Wolf) {
+      entity.setCustomName(new MessageBuilder("IN_GAME_MESSAGES_VILLAGE_WAVE_ENTITIES_WOLF_NAME").asKey().integer(totalUpgrades).player(player).build());
+    }
+
+    if (areAllEqualOrHigher(baseValues) && getMinValue(baseValues) == 4) {
       //final mode! rage!!!
       VersionUtils.setGlowing(entity, true);
     }
 
-    switch(upgrade.getId()) {
+    switch (upgrade.getId()) {
       case "Damage":
-        if(entity.getType() == EntityType.WOLF) {
+        if (entity.getType() == EntityType.WOLF) {
           CreatureUtils.getCreatureInitializer().applyDamageModifier((LivingEntity) entity, 2.0 + (tier * 3));
         }
         //attribute damage doesn't exist for golems
@@ -252,9 +264,17 @@ public class EntityUpgradeMenu {
     return upgrades;
   }
 
+  private int getAllUpgradesLevels(int[] numbers) {
+    int value = 0;
+    for (int number : numbers) {
+      value += number;
+    }
+    return value;
+  }
+
   private boolean areAllEqualOrHigher(int[] numbers) {
-    for(int i = 1; i < numbers.length; i++) {
-      if(numbers[0] < numbers[i]) {
+    for (int i = 1; i < numbers.length; i++) {
+      if (numbers[0] < numbers[i]) {
         return false;
       }
     }
