@@ -22,6 +22,7 @@ package plugily.projects.villagedefense.creatures.v1_9_UP;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Creature;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.IronGolem;
 import org.bukkit.entity.LivingEntity;
@@ -31,9 +32,11 @@ import org.bukkit.entity.Wolf;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.MetadataValue;
+import org.jetbrains.annotations.Nullable;
 import plugily.projects.minigamesbox.classic.user.User;
 import plugily.projects.minigamesbox.classic.utils.version.xseries.XMaterial;
 import plugily.projects.villagedefense.Main;
@@ -45,6 +48,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 /**
@@ -89,6 +93,9 @@ public class CustomCreatureEvents implements Listener {
         arena.changeArenaOptionBy("TOTAL_KILLED_ZOMBIES", 1);
 
         Player killer = entity.getKiller();
+        if(killer == null) {
+          killer = performKillerDetection(event);
+        }
         Arena killerArena = plugin.getArenaRegistry().getArena(killer);
 
         if(killerArena != null) {
@@ -101,37 +108,51 @@ public class CustomCreatureEvents implements Listener {
         ItemStack itemStack = customCreature.getDropItem();
         event.getDrops().add(itemStack);
         event.setDroppedExp(0);
-        if(event.getEntity().getLastDamageCause() instanceof EntityDamageByEntityEvent) {
-          EntityDamageByEntityEvent damageEvent = (EntityDamageByEntityEvent) event.getEntity().getLastDamageCause();
-          if(!(damageEvent.getDamager() instanceof Player)) {
-            continue;
-          }
-          Player player = (Player) damageEvent.getDamager();
-          User user = plugin.getUserManager().getUser(player);
+        if(killer != null) {
+          User user = plugin.getUserManager().getUser(killer);
           if(user == null || !user.getArena().equals(arena)) {
             continue;
           }
           int amount = (int) Math.ceil(customCreature.getExpDrop() * 1.6 * arena.getArenaOption("ZOMBIE_DIFFICULTY_MULTIPLIER"));
-          int orbsBoost = plugin.getPermissionsManager().getPermissionCategoryValue("ORBS_BOOSTER", player);
+          int orbsBoost = plugin.getPermissionsManager().getPermissionCategoryValue("ORBS_BOOSTER", killer);
           amount += (amount * (orbsBoost / 100));
           user.adjustStatistic(plugin.getStatsStorage().getStatisticType("ORBS"), amount);
-          filterRottenFlesh(event, player);
+          filterDrops(event, customCreature, killer);
         }
       }
     }
   }
 
-  private void filterRottenFlesh(EntityDeathEvent event, Player player) {
-    List<ItemStack> fleshes = event.getDrops()
+  @Nullable
+  private Player performKillerDetection(EntityDeathEvent event) {
+    EntityDamageEvent cause = event.getEntity().getLastDamageCause();
+    if(!(cause instanceof EntityDamageByEntityEvent)) {
+      return null;
+    }
+    Entity entity = ((EntityDamageByEntityEvent) cause).getDamager();
+    if(entity instanceof Player) {
+      return (Player) entity;
+    } else if(entity instanceof Wolf || entity instanceof IronGolem) {
+      if(!entity.hasMetadata("VD_OWNER_UUID")) {
+        return null;
+      }
+      UUID uuid = UUID.fromString(entity.getMetadata("VD_OWNER_UUID").get(0).asString());
+      return Bukkit.getServer().getPlayer(uuid);
+    }
+    return null;
+  }
+
+  private void filterDrops(EntityDeathEvent event, CustomCreature creature, Player player) {
+    List<ItemStack> filtered = event.getDrops()
       .stream()
       .filter(Objects::nonNull)
-      .filter(XMaterial.ROTTEN_FLESH::isSimilar)
+      .filter(i -> XMaterial.ROTTEN_FLESH.isSimilar(i) || i.getType().equals(creature.getDropItem().getType()))
       .collect(Collectors.toList());
-    if(fleshes.isEmpty()) {
+    if(filtered.isEmpty()) {
       return;
     }
-    event.getDrops().removeAll(fleshes);
-    player.getInventory().addItem(fleshes.toArray(new ItemStack[]{}));
+    event.getDrops().clear();
+    player.getInventory().addItem(filtered.toArray(new ItemStack[]{}));
   }
 
   @EventHandler
