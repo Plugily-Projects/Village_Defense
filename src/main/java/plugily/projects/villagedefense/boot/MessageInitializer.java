@@ -85,6 +85,8 @@ public class MessageInitializer {
     getMessageManager().registerMessage("IN_GAME_MESSAGES_VILLAGE_SHOP_MOB_LIMIT_REACHED", new Message("In-Game.Messages.Village.Shop.Mob-Limit-Reached", ""));
     getMessageManager().registerMessage("IN_GAME_MESSAGES_VILLAGE_SHOP_NOT_ENOUGH_CURRENCY", new Message("In-Game.Messages.Village.Shop.Not-Enough-Currency", ""));
     getMessageManager().registerMessage("IN_GAME_MESSAGES_VILLAGE_SHOP_CURRENCY", new Message("In-Game.Messages.Village.Shop.Currency", ""));
+    getMessageManager().registerMessage("IN_GAME_MESSAGES_VILLAGE_SHOP_WAVE_LOCK", new Message("In-Game.Messages.Village.Shop.Wave-Lock", ""));
+    getMessageManager().registerMessage("IN_GAME_MESSAGES_VILLAGE_SHOP_WAVE_STILL_LOCKED", new Message("In-Game.Messages.Village.Shop.Wave-Still-Locked", ""));
     getMessageManager().registerMessage("IN_GAME_MESSAGES_VILLAGE_SHOP_NOT_DEFINED", new Message("In-Game.Messages.Village.Shop.Not-Defined", ""));
 
 

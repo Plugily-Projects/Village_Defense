@@ -1,19 +1,19 @@
 /*
- *  Village Defense - Protect villagers from hordes of zombies
- *  Copyright (c) 2023 Plugily Projects - maintained by Tigerpanzer_02 and contributors
+ * Village Defense - Protect villagers from hordes of zombies
+ * Copyright (c) 2023  Plugily Projects - maintained by Tigerpanzer_02 and contributors
  *
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- *  You should have received a copy of the GNU General Public License
- *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 package plugily.projects.villagedefense.arena.managers;
@@ -38,6 +38,7 @@ import plugily.projects.minigamesbox.inventory.normal.NormalFastInv;
 import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.arena.Arena;
 
+import java.util.List;
 import java.util.function.Consumer;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
@@ -120,7 +121,7 @@ public class ShopManager {
       return;
     }
     ItemStack[] contents = ((Chest) LocationSerializer.getLocation(config.getString("instances." + arena.getId() + ".shop"))
-        .getBlock().getState()).getInventory().getContents();
+      .getBlock().getState()).getInventory().getContents();
     gui = new NormalFastInv(plugin.getBukkitHelper().serializeInt(contents.length), new MessageBuilder("IN_GAME_MESSAGES_VILLAGE_SHOP_GUI").asKey().build());
     gui.addClickHandler(inventoryClickEvent -> inventoryClickEvent.setCancelled(true));
     for(int slot = 0; slot < contents.length; slot++) {
@@ -129,6 +130,7 @@ public class ShopManager {
         continue;
       }
 
+      String waveLockString = "";
       String costString = "";
       ItemMeta meta = itemStack.getItemMeta();
       //seek for item price
@@ -136,16 +138,25 @@ public class ShopManager {
         for(String s : ComplementAccessor.getComplement().getLore(meta)) {
           if(s.contains(new MessageBuilder("IN_GAME_MESSAGES_VILLAGE_SHOP_CURRENCY").asKey().build()) || s.contains("orbs")) {
             costString = ChatColor.stripColor(s).replaceAll("&[0-9a-zA-Z]", "").replaceAll("[^0-9]", "");
-            break;
+            continue;
+          }
+          if(s.contains(new MessageBuilder("IN_GAME_MESSAGES_VILLAGE_SHOP_WAVE_LOCK").asKey().build().replace("%number%", ""))) {
+            waveLockString = ChatColor.stripColor(s).replaceAll("&[0-9a-zA-Z]", "").replaceAll("[^0-9]", "");
           }
         }
       }
 
       int cost;
+      int waveLock;
       try {
         cost = Integer.parseInt(costString);
+        if(!waveLockString.isEmpty()) {
+          waveLock = Integer.parseInt(waveLockString);
+        } else {
+          waveLock = 0;
+        }
       } catch(NumberFormatException e) {
-        plugin.getDebugger().debug(Level.WARNING, "No price set for shop item in arena {0} skipping item!", arena.getId());
+        plugin.getDebugger().debug(Level.WARNING, "Invalid or no price/wave unlock value set for shop item in arena {0} skipping item!", arena.getId());
         continue;
       }
 
@@ -163,11 +174,15 @@ public class ShopManager {
           new MessageBuilder("IN_GAME_MESSAGES_VILLAGE_SHOP_NOT_ENOUGH_CURRENCY").asKey().player(player).sendPlayer();
           return;
         }
+        if(((Arena) user.getArena()).getWave() < waveLock) {
+          new MessageBuilder("IN_GAME_MESSAGES_VILLAGE_SHOP_WAVE_STILL_LOCKED").asKey().integer(waveLock).player(player).sendPlayer();
+          return;
+        }
 
         if(ItemUtils.isItemStackNamed(itemStack)) {
           String name = ComplementAccessor.getComplement().getDisplayName(itemStack.getItemMeta());
           if(name.contains(new MessageBuilder("IN_GAME_MESSAGES_VILLAGE_SHOP_GOLEM_ITEM", false).asKey().build())
-              || name.contains(defaultGolemItemName)) {
+            || name.contains(defaultGolemItemName)) {
             if(!arena.canSpawnMobForPlayer(player, EntityType.IRON_GOLEM)) {
               return;
             }
@@ -176,7 +191,7 @@ public class ShopManager {
             return;
           }
           if(name.contains(new MessageBuilder("IN_GAME_MESSAGES_VILLAGE_SHOP_WOLF_ITEM", false).asKey().build())
-              || name.contains(defaultWolfItemName)) {
+            || name.contains(defaultWolfItemName)) {
             if(!arena.canSpawnMobForPlayer(player, EntityType.WOLF)) {
               return;
             }
@@ -191,9 +206,13 @@ public class ShopManager {
 
         if(itemMeta != null) {
           if(itemMeta.hasLore()) {
-            ComplementAccessor.getComplement().setLore(itemMeta, ComplementAccessor.getComplement().getLore(itemMeta).stream().filter(lore ->
-                    !lore.contains(new MessageBuilder("IN_GAME_MESSAGES_VILLAGE_SHOP_CURRENCY").asKey().build()))
-                .collect(Collectors.toList()));
+            List<String> updatedLore = ComplementAccessor.getComplement()
+              .getLore(itemMeta)
+              .stream()
+              .filter(lore -> !lore.contains(new MessageBuilder("IN_GAME_MESSAGES_VILLAGE_SHOP_CURRENCY").asKey().build()))
+              .filter(lore -> !lore.contains(new MessageBuilder("IN_GAME_MESSAGES_VILLAGE_SHOP_WAVE_LOCK").asKey().integer(waveLock).build()))
+              .collect(Collectors.toList());
+            ComplementAccessor.getComplement().setLore(itemMeta, updatedLore);
           }
 
           stack.setItemMeta(itemMeta);

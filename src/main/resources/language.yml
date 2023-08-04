@@ -281,6 +281,8 @@ In-Game:
         Mob-Limit-Reached: "%color_chat_issue%%plugin_prefix% You can't buy mobs! You've reached the limit of %number% mobs!"
         Not-Enough-Currency: "%color_chat_issue%%plugin_prefix% You need more orbs to buy this item!"
         Currency: "orbs"
+        Wave-Lock: "&6Locked till wave %number%"
+        Wave-Still-Locked: "%color_chat_issue%%plugin_prefix% This item will be unlocked at wave %number%!"
         Not-Defined: "%color_chat_issue%%plugin_prefix% Shop wasn't set up! Contact staff!"
 
 #
