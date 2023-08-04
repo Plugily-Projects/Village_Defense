@@ -354,9 +354,9 @@ Kit:
   Choose: "%plugin_prefix% You have chosen: %value%!"
   Cooldown: "%color_chat_issue%%plugin_prefix% Kit ability still on cooldown (%number%)!"
   Locked-Till: "%color_chat_issue%%plugin_prefix% This ability is locked until wave %number%!"
-  Ability-Unlocked: "%color_chat_issue%%plugin_prefix% Ability is %value% is now unlocked!"
-  Ability-Power-Increased: "%color_chat_issue%%plugin_prefix% %value% ability power has increased!"
-  Passive-Power-Increased: "%color_chat_issue%%plugin_prefix% Your passive power has increased!"
+  Ability-Unlocked: "%color_chat_issue%%plugin_prefix% &7Ability %value% &7is now unlocked!"
+  Ability-Power-Increased: "%color_chat_issue%%plugin_prefix% %value% &7ability power has increased!"
+  Passive-Power-Increased: "%color_chat_issue%%plugin_prefix% &7Your passive power has increased!"
   Menu:
     Title: "Kit Menu"
     Lore:
@@ -530,11 +530,6 @@ Kit:
           Active-Action-Bar:
             - "&e&lFINAL FLIGHT ACTIVE &7(%number%s)"
             - "&c&lFINAL FLIGHT ACTIVE &7(%number%s)"
-    Terminator:
-      Name: "&6Terminator"
-      Description:
-        - "Easily kill those zombies"
-        - "with your strength powers!"
     Teleporter:
       Name: "&bTeleporter"
       Description:
@@ -582,6 +577,59 @@ Kit:
         - "One hit most zombies with your OP sword!"
         - "However be careful. this kit is only for"
         - "the pros! Do not use it if you aren't a pro!"
+    Terminator:
+      Name: "&6Terminator"
+      Description:
+        - "&6&lGAME POWER: &7mediocre/strong/strong"
+        - "&6&lCLASS: &7melee, damage dealer"
+        - ""
+        - "&6&lABILITIES:"
+        - "&a&l• BLADE OF TERMINUS (PASSIVE):"
+        - "  &7Receive sword that scales with waves:"
+        - "  &e&lWAVE 5: &720% on-hit burn chance"
+        - "  &e&lWAVE 10: &75% instakill chance"
+        - "  &e&lWAVE 15: &78% lifesteal, 40% on-hit burn"
+        - "  &e&lWAVE 20: &720% shared combust chance"
+        - "  &e&lWAVE 25: &740% large knockback chance"
+        - "  &e&lWAVE 30+: &7+1% dmg each wave (40% cap)"
+        - "&7(&c&lBELOW ARE UNLOCKED IN MID GAME&7)"
+        - "&a&l• NEVERDEATH &7(&c&lCOOLDOWN 20s&7):"
+        - "  &7On use receive absorption for 15s"
+        - "&e&l• MOTORS OVERCHARGE (ULTIMATE)"
+        - "  &7On use pull enemies to you, damage"
+        - "  &7them for 35% of max health per sec, on"
+        - "  &7end knock them away and instakill them"
+        - "  &7(&c&lCAST TIME 10s&7, &c&lCOOLDOWN 50s&7)"
+      Game-Item:
+        Terminus:
+          Name: "&6&lBLADE OF TERMINUS"
+          Description:
+            - "&7Terminus blade scales as game progresses:"
+            - "  &e&lWAVE 5: &720% on-hit burn chance"
+            - "  &e&lWAVE 10: &75% instakill chance"
+            - "  &e&lWAVE 15: &78% lifesteal, 40% on-hit burn"
+            - "  &e&lWAVE 20: &720% shared combust chance"
+            - "  &e&lWAVE 25: &740% large knockback chance"
+            - "  &e&lWAVE 30+: &7+1% dmg each wave (40% cap)"
+        Neverdeath:
+          Name: "&6&lNEVERDEATH"
+          Description:
+            - "On use receive absorption for 15s,"
+            - "the lower your health the higher"
+            - "the absorption effect"
+            - "&c&lCOOLDOWN &720s"
+          Activate: "&7Protocol &6&lNEVERDEATH &7active!"
+        Motors-Overcharge:
+          Name: "&e&lMOTORS OVERCHARGE &7(Ultimate)"
+          Description:
+            - "  &7On use pull enemies to you, damage"
+            - "  &7them for 35% of max health per sec, on"
+            - "  &7end knock them away and instakill them"
+            - "&c&lCAST TIME &710s, &c&lCOOLDOWN &750s"
+          Activate: "&7Engaging kinematic motors, full power reached!"
+          Active-Action-Bar:
+            - "&e&lMOTORS OVERCHARGE ACTIVE &7(%number%s)"
+            - "&c&lMOTORS OVERCHARGE ACTIVE &7(%number%s)"
     Medic:
       Name: "&6Medic"
       Description:
@@ -592,7 +640,7 @@ Kit:
         - "&a&l• FIRST AID (PASSIVE):"
         - "  &7Each zombie hit you have 10% chance"
         - "  &7to heal nearby allies by 0.5 heart"
-        - "&c&l(BELOW ARE UNLOCKED IN MID GAME)"
+        - "&7(&c&lBELOW ARE UNLOCKED IN MID GAME&7)"
         - "&a&l• HEALER AURA:"
         - "  &7Creates healing aura that heals"
         - "  &7allies and pets by -/2/4 hearts per sec"

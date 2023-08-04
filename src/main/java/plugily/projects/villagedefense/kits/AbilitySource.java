@@ -16,27 +16,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package plugily.projects.villagedefense.utils;
+package plugily.projects.villagedefense.kits;
 
-import org.bukkit.Material;
-import org.bukkit.block.Block;
-import plugily.projects.minigamesbox.classic.utils.helper.MaterialUtils;
-import plugily.projects.minigamesbox.classic.utils.version.xseries.XMaterial;
+import plugily.projects.minigamesbox.classic.utils.version.events.api.PlugilyPlayerInteractEvent;
 
 /**
- * Created by Tom on 29/07/2014.
+ * @author Plajer
+ * <p>
+ * Created at 04.08.2023
+ * <p>
+ * Interface that aims to unify all kits abilities together in the upcoming future.
  */
-public class Utils {
+public interface AbilitySource {
 
-  private Utils() {
-  }
-
-  public static Material getCachedDoor(Block block) {
-    //material can not be cached as we allow other door types
-    if(block == null) {
-      return XMaterial.OAK_DOOR.parseMaterial();
-    }
-    return (MaterialUtils.isDoor(block.getType()) ? block.getType() : Material.AIR);
-  }
+  void onAbilityCast(PlugilyPlayerInteractEvent event);
 
 }

@@ -51,6 +51,7 @@ import plugily.projects.minigamesbox.classic.utils.version.xseries.XParticle;
 import plugily.projects.minigamesbox.classic.utils.version.xseries.XSound;
 import plugily.projects.villagedefense.arena.Arena;
 import plugily.projects.villagedefense.creatures.CreatureUtils;
+import plugily.projects.villagedefense.kits.AbilitySource;
 import plugily.projects.villagedefense.kits.KitHelper;
 import plugily.projects.villagedefense.kits.KitSpecifications;
 
@@ -61,7 +62,7 @@ import java.util.stream.Collectors;
 /**
  * Created by Tom on 30/12/2015.
  */
-public class TornadoKit extends PremiumKit implements Listener {
+public class TornadoKit extends PremiumKit implements Listener, AbilitySource {
 
   private static final String LANGUAGE_ACCESSOR = "KIT_CONTENT_TORNADO_";
   private static final int TORNADO_MAX_HEIGHT = 5;
@@ -142,8 +143,9 @@ public class TornadoKit extends PremiumKit implements Listener {
     }
   }
 
+  @Override
   @EventHandler
-  public void onCast(PlugilyPlayerInteractEvent event) {
+  public void onAbilityCast(PlugilyPlayerInteractEvent event) {
     User user = getPlugin().getUserManager().getUser(event.getPlayer());
     if(user.isSpectator() || !(user.getKit() instanceof TornadoKit)) {
       return;
@@ -157,36 +159,13 @@ public class TornadoKit extends PremiumKit implements Listener {
     if(!ItemUtils.isItemStackNamed(stack)) {
       return;
     }
-    if(ComplementAccessor.getComplement().getDisplayName(stack.getItemMeta()).equalsIgnoreCase(new MessageBuilder(LANGUAGE_ACCESSOR + "GAME_ITEM_TORNADO_NAME").asKey().build())) {
-      getPlugin().getBukkitHelper().takeOneItem(player, stack);
-      XSound.ENTITY_FIREWORK_ROCKET_LAUNCH.play(player, 1f, 0f);
-      prepareTornado(player.getLocation());
-    } else if(ComplementAccessor.getComplement().getDisplayName(stack.getItemMeta()).equalsIgnoreCase(new MessageBuilder(LANGUAGE_ACCESSOR + "GAME_ITEM_MONSOON_NAME").asKey().build())) {
-      if(!user.checkCanCastCooldownAndMessage("tornado_monsoon")) {
-        return;
-      }
-      final int castTime = (int) Settings.MONSOON_CAST_TIME.getForArenaState((Arena) user.getArena());
-      int cooldown = getKitsConfig().getInt("Kit-Cooldown.Tornado.Monsoon", 20);
-      user.setCooldown("tornado_monsoon", cooldown);
-      user.setCooldown("tornado_monsoon_running", castTime);
-
-      KitHelper.scheduleAbilityCooldown(stack, user.getPlayer(), castTime, cooldown);
-      createMonsoon(user);
-    } else if(ComplementAccessor.getComplement().getDisplayName(stack.getItemMeta()).equalsIgnoreCase(new MessageBuilder(LANGUAGE_ACCESSOR + "GAME_ITEM_FINAL_FLIGHT_NAME").asKey().build())) {
-      if(!user.checkCanCastCooldownAndMessage("tornado_final_flight")) {
-        return;
-      }
-      if(KitSpecifications.getTimeState((Arena) user.getArena()) == KitSpecifications.GameTimeState.EARLY) {
-        new MessageBuilder("KIT_LOCKED_TILL").asKey().integer(16).send(player);
-        return;
-      }
-      int cooldown = getKitsConfig().getInt("Kit-Cooldown.Tornado.Final-Flight", 40);
-      user.setCooldown("tornado_final_flight", cooldown);
-      int castTime = 10;
-      user.setCooldown("tornado_final_flight_running", castTime);
-
-      KitHelper.scheduleAbilityCooldown(stack, user.getPlayer(), castTime, cooldown);
-      prepareFinalFlight(user);
+    String displayName = ComplementAccessor.getComplement().getDisplayName(stack.getItemMeta());
+    if(displayName.equalsIgnoreCase(new MessageBuilder(LANGUAGE_ACCESSOR + "GAME_ITEM_TORNADO_NAME").asKey().build())) {
+      onTornadoCast(stack, user);
+    } else if(displayName.equalsIgnoreCase(new MessageBuilder(LANGUAGE_ACCESSOR + "GAME_ITEM_MONSOON_NAME").asKey().build())) {
+      onMonsoonPreCast(stack, user);
+    } else if(displayName.equalsIgnoreCase(new MessageBuilder(LANGUAGE_ACCESSOR + "GAME_ITEM_FINAL_FLIGHT_NAME").asKey().build())) {
+      onFinalFlightPreCast(stack, user);
     }
   }
 
@@ -215,10 +194,7 @@ public class TornadoKit extends PremiumKit implements Listener {
         }
 
         if(tick % 20 == 0) {
-          //25% of entity's max health, we use direct health set to override armors etc.
-          livingEntity.damage(0, user.getPlayer());
-          double damage = (VersionUtils.getMaxHealth(livingEntity) / 100.0) * 25.0;
-          livingEntity.setHealth(Math.max(0, livingEntity.getHealth() - damage));
+          KitHelper.maxHealthPercentDamage(livingEntity, user.getPlayer(), 25.0);
         }
         if(tick >= 20 * 4 || livingEntity.isDead()) {
           this.cancel();
@@ -229,10 +205,12 @@ public class TornadoKit extends PremiumKit implements Listener {
     }.runTaskTimer(getPlugin(), 0, 1);
   }
 
-  private void prepareTornado(final Location loc) {
+  private void onTornadoCast(ItemStack stack, User user) {
+    getPlugin().getBukkitHelper().takeOneItem(user.getPlayer(), stack);
+    XSound.ENTITY_FIREWORK_ROCKET_LAUNCH.play(user.getPlayer(), 1f, 0f);
     new BukkitRunnable() {
-      final Vector vector = loc.getDirection();
-      Location location = loc;
+      final Vector vector = user.getPlayer().getLocation().getDirection();
+      Location location = user.getPlayer().getLocation();
       int angle;
       int times = 0;
       int pierce = 0;
@@ -276,7 +254,20 @@ public class TornadoKit extends PremiumKit implements Listener {
     return pierce;
   }
 
-  private void createMonsoon(User user) {
+  private void onMonsoonPreCast(ItemStack stack, User user) {
+    if(!user.checkCanCastCooldownAndMessage("tornado_monsoon")) {
+      return;
+    }
+    final int castTime = (int) Settings.MONSOON_CAST_TIME.getForArenaState((Arena) user.getArena());
+    int cooldown = getKitsConfig().getInt("Kit-Cooldown.Tornado.Monsoon", 20);
+    user.setCooldown("tornado_monsoon", cooldown);
+    user.setCooldown("tornado_monsoon_running", castTime);
+
+    KitHelper.scheduleAbilityCooldown(stack, user.getPlayer(), castTime, cooldown);
+    onMonsoonCast(user);
+  }
+
+  private void onMonsoonCast(User user) {
     Player player = user.getPlayer();
     final int spellTime = (int) Settings.MONSOON_CAST_TIME.getForArenaState((Arena) user.getArena());
 
@@ -328,8 +319,24 @@ public class TornadoKit extends PremiumKit implements Listener {
       .collect(Collectors.toList());
   }
 
+  private void onFinalFlightPreCast(ItemStack stack, User user) {
+    if(!user.checkCanCastCooldownAndMessage("tornado_final_flight")) {
+      return;
+    }
+    if(KitSpecifications.getTimeState((Arena) user.getArena()) == KitSpecifications.GameTimeState.EARLY) {
+      new MessageBuilder("KIT_LOCKED_TILL").asKey().integer(16).send(user.getPlayer());
+      return;
+    }
+    int cooldown = getKitsConfig().getInt("Kit-Cooldown.Tornado.Final-Flight", 40);
+    user.setCooldown("tornado_final_flight", cooldown);
+    int castTime = 10;
+    user.setCooldown("tornado_final_flight_running", castTime);
 
-  private void prepareFinalFlight(User user) {
+    KitHelper.scheduleAbilityCooldown(stack, user.getPlayer(), castTime, cooldown);
+    onFinalFlightCast(user);
+  }
+
+  private void onFinalFlightCast(User user) {
     Player player = user.getPlayer();
     final int spellTime = 10;
     ultimateUsers.add(user.getPlayer());

@@ -48,6 +48,7 @@ import plugily.projects.minigamesbox.classic.utils.version.xseries.XMaterial;
 import plugily.projects.minigamesbox.classic.utils.version.xseries.XSound;
 import plugily.projects.villagedefense.arena.Arena;
 import plugily.projects.villagedefense.creatures.CreatureUtils;
+import plugily.projects.villagedefense.kits.AbilitySource;
 import plugily.projects.villagedefense.kits.KitHelper;
 import plugily.projects.villagedefense.kits.KitSpecifications;
 
@@ -58,12 +59,11 @@ import java.util.Random;
 /**
  * Created by Tom on 18/08/2014.
  */
-public class CleanerKit extends PremiumKit implements Listener {
+public class CleanerKit extends PremiumKit implements Listener, AbilitySource {
 
   private static final String LANGUAGE_ACCESSOR = "KIT_CONTENT_CLEANER_";
   //this metadata must be given to every enemy killed by poplust to avoid recursive calls and stack overflow in the listener
   private static final String KILL_METADATA = "VD_POPLUST_DEATH";
-  private static final double POP_DAMAGE = 1000000.0;
   private final List<Arena> poplustActives = new ArrayList<>();
   private final Random random = new Random();
 
@@ -113,8 +113,9 @@ public class CleanerKit extends PremiumKit implements Listener {
   private void executeRandomPops(Arena arena, Player player, int amount) {
     for(int i = 0; i < amount; i++) {
       Creature enemy = arena.getEnemies().get(random.nextInt(arena.getEnemies().size()));
-      VersionUtils.sendParticles("LAVA", arena.getPlayers(), enemy.getLocation(), 20);
-      enemy.damage(POP_DAMAGE, player);
+      if(KitHelper.executeEnemy(enemy, player)) {
+        VersionUtils.sendParticles("LAVA", arena.getPlayers(), enemy.getLocation(), 20);
+      }
     }
   }
 
@@ -159,32 +160,26 @@ public class CleanerKit extends PremiumKit implements Listener {
     }
   }
 
+  @Override
   @EventHandler
-  public void onItemUse(PlugilyPlayerInteractEvent event) {
+  public void onAbilityCast(PlugilyPlayerInteractEvent event) {
     if(!KitHelper.isInGameWithKitAndItemInHand(event.getPlayer(), CleanerKit.class)) {
       return;
     }
     ItemStack stack = VersionUtils.getItemInHand(event.getPlayer());
     User user = getPlugin().getUserManager().getUser(event.getPlayer());
-    Player player = event.getPlayer();
-    if(ComplementAccessor.getComplement().getDisplayName(stack.getItemMeta()).equals(new MessageBuilder(LANGUAGE_ACCESSOR + "GAME_ITEM_CLEANSING_STICK_NAME").asKey().build())) {
-      if(!user.checkCanCastCooldownAndMessage("cleaner_cleansing")) {
-        return;
-      }
-      applyCleansing(user, stack);
-    } else if(ComplementAccessor.getComplement().getDisplayName(stack.getItemMeta()).equals(new MessageBuilder(LANGUAGE_ACCESSOR + "GAME_ITEM_POPLUST_NAME").asKey().build())) {
-      if(!user.checkCanCastCooldownAndMessage("cleaner_poplust")) {
-        return;
-      }
-      if(KitSpecifications.getTimeState((Arena) user.getArena()) == KitSpecifications.GameTimeState.EARLY) {
-        new MessageBuilder("KIT_LOCKED_TILL").asKey().integer(16).send(player);
-        return;
-      }
-      applyPoplust(user, stack);
+    String displayName = ComplementAccessor.getComplement().getDisplayName(stack.getItemMeta());
+    if(displayName.equals(new MessageBuilder(LANGUAGE_ACCESSOR + "GAME_ITEM_CLEANSING_STICK_NAME").asKey().build())) {
+      onCleansingCast(stack, user);
+    } else if(displayName.equals(new MessageBuilder(LANGUAGE_ACCESSOR + "GAME_ITEM_POPLUST_NAME").asKey().build())) {
+      onPoplustPreCast(stack, user);
     }
   }
 
-  private void applyCleansing(User user, ItemStack stack) {
+  private void onCleansingCast(ItemStack stack, User user) {
+    if(!user.checkCanCastCooldownAndMessage("cleaner_cleansing")) {
+      return;
+    }
     int cooldown = getCleansingCooldown((Arena) user.getArena());
     user.setCooldown("cleaner_cleansing", cooldown);
     VersionUtils.setMaterialCooldown(user.getPlayer(), stack.getType(), cooldown * 20);
@@ -212,7 +207,18 @@ public class CleanerKit extends PremiumKit implements Listener {
     }
   }
 
-  private void applyPoplust(User user, ItemStack stack) {
+  private void onPoplustPreCast(ItemStack stack, User user) {
+    if(!user.checkCanCastCooldownAndMessage("cleaner_poplust")) {
+      return;
+    }
+    if(KitSpecifications.getTimeState((Arena) user.getArena()) == KitSpecifications.GameTimeState.EARLY) {
+      new MessageBuilder("KIT_LOCKED_TILL").asKey().integer(16).send(user.getPlayer());
+      return;
+    }
+    onPoplustCast(stack, user);
+  }
+
+  private void onPoplustCast(ItemStack stack, User user) {
     Arena arena = (Arena) user.getArena();
     int cooldown = getKitsConfig().getInt("Kit-Cooldown.Cleaner.Poplust", 60);
     user.setCooldown("cleaner_poplust", cooldown);
@@ -272,10 +278,11 @@ public class CleanerKit extends PremiumKit implements Listener {
       return;
     }
     LivingEntity entity = (LivingEntity) event.getEntity();
-    entity.setMetadata(KILL_METADATA, new FixedMetadataValue(getPlugin(), true));
-    entity.damage(POP_DAMAGE, damager);
-    XSound.BLOCK_LAVA_POP.play(user.getPlayer());
-    VersionUtils.sendParticles("LAVA", user.getArena().getPlayers(), entity.getLocation(), 15);
+    if(KitHelper.executeEnemy(entity, user.getPlayer())) {
+      entity.setMetadata(KILL_METADATA, new FixedMetadataValue(getPlugin(), true));
+      XSound.BLOCK_LAVA_POP.play(user.getPlayer());
+      VersionUtils.sendParticles("LAVA", user.getArena().getPlayers(), entity.getLocation(), 15);
+    }
   }
 
   private enum Settings {

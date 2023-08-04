@@ -18,25 +18,26 @@
 
 package plugily.projects.villagedefense.utils;
 
-import org.bukkit.Material;
-import org.bukkit.block.Block;
-import plugily.projects.minigamesbox.classic.utils.helper.MaterialUtils;
-import plugily.projects.minigamesbox.classic.utils.version.xseries.XMaterial;
-
 /**
- * Created by Tom on 29/07/2014.
+ * @author Plajer
+ * <p>
+ * Created at 04.08.2023
  */
-public class Utils {
+public class NumberUtils {
 
-  private Utils() {
+  private NumberUtils() {
   }
 
-  public static Material getCachedDoor(Block block) {
-    //material can not be cached as we allow other door types
-    if(block == null) {
-      return XMaterial.OAK_DOOR.parseMaterial();
-    }
-    return (MaterialUtils.isDoor(block.getType()) ? block.getType() : Material.AIR);
+  /**
+   * Fit the requested value between minimum and maximum
+   *
+   * @param value the value to clamp
+   * @param min   absolute minimum to return
+   * @param max   absolute maximum to return
+   * @return value clamped between min and max
+   */
+  public static double clamp(double value, double min, double max) {
+    return Math.max(min, Math.min(max, value));
   }
 
 }

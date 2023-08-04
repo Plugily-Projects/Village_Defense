@@ -27,10 +27,12 @@ import plugily.projects.villagedefense.arena.Arena;
  */
 public class KitSpecifications {
 
+  public static final double LETHAL_DAMAGE = 10000000.0;
+
   public static GameTimeState getTimeState(Arena arena) {
-    if (arena.getWave() <= 15) {
+    if(arena.getWave() <= 15) {
       return GameTimeState.EARLY;
-    } else if (arena.getWave() <= 30) {
+    } else if(arena.getWave() <= 30) {
       return GameTimeState.MID;
     } else {
       return GameTimeState.LATE;

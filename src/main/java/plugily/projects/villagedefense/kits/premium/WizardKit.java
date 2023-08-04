@@ -50,6 +50,7 @@ import plugily.projects.minigamesbox.classic.utils.version.xseries.XParticle;
 import plugily.projects.minigamesbox.classic.utils.version.xseries.XSound;
 import plugily.projects.villagedefense.arena.Arena;
 import plugily.projects.villagedefense.creatures.CreatureUtils;
+import plugily.projects.villagedefense.kits.AbilitySource;
 import plugily.projects.villagedefense.kits.KitHelper;
 import plugily.projects.villagedefense.kits.KitSpecifications;
 
@@ -62,10 +63,10 @@ import java.util.List;
  * Created at 01.03.2018
  * <p>
  */
-public class WizardKit extends PremiumKit implements Listener {
+public class WizardKit extends PremiumKit implements Listener, AbilitySource {
 
   private static final String LANGUAGE_ACCESSOR = "KIT_CONTENT_WIZARD_";
-  private final List<Player> corruptedWizards = new ArrayList<>();
+  private final List<Player> abilityUsers = new ArrayList<>();
 
   public WizardKit() {
     registerMessages();
@@ -142,7 +143,7 @@ public class WizardKit extends PremiumKit implements Listener {
         .build());
     }
     if(arena.getWave() == KitSpecifications.GameTimeState.MID.getStartWave()) {
-      new MessageBuilder("KIT_ABILITY_UNLOCKED").asKey().value(new MessageBuilder(LANGUAGE_ACCESSOR + "GAME_ITEM_BLOODLUST").asKey().build()).send(player);
+      new MessageBuilder("KIT_ABILITY_UNLOCKED").asKey().value(new MessageBuilder(LANGUAGE_ACCESSOR + "GAME_ITEM_BLOODLUST_NAME").asKey().build()).send(player);
       new MessageBuilder("KIT_ABILITY_POWER_INCREASED").asKey().value(new MessageBuilder(LANGUAGE_ACCESSOR + "GAME_ITEM_WAND_NAME").asKey().build()).send(player);
     } else if(arena.getWave() == KitSpecifications.GameTimeState.LATE.getStartWave()) {
       new MessageBuilder("KIT_ABILITY_POWER_INCREASED").asKey().value(new MessageBuilder(LANGUAGE_ACCESSOR + "GAME_ITEM_WAND_NAME").asKey().build()).send(player);
@@ -160,7 +161,7 @@ public class WizardKit extends PremiumKit implements Listener {
     }
     User user = getPlugin().getUserManager().getUser(damager);
     if(user.isSpectator() || !(user.getKit() instanceof WizardKit)
-      || !corruptedWizards.contains(damager) || !CreatureUtils.isEnemy(event.getEntity())) {
+      || !abilityUsers.contains(damager) || !CreatureUtils.isEnemy(event.getEntity())) {
       return;
     }
     LivingEntity entity = (LivingEntity) event.getEntity();
@@ -168,57 +169,43 @@ public class WizardKit extends PremiumKit implements Listener {
     entity.setFireTicks(20 * 3);
   }
 
+  @Override
   @EventHandler
-  public void onItemUse(PlugilyPlayerInteractEvent event) {
+  public void onAbilityCast(PlugilyPlayerInteractEvent event) {
     if(!KitHelper.isInGameWithKitAndItemInHand(event.getPlayer(), WizardKit.class)) {
       return;
     }
     ItemStack stack = VersionUtils.getItemInHand(event.getPlayer());
     User user = getPlugin().getUserManager().getUser(event.getPlayer());
-    Player player = event.getPlayer();
-    if(ComplementAccessor.getComplement().getDisplayName(stack.getItemMeta()).equals(new MessageBuilder(LANGUAGE_ACCESSOR + "GAME_ITEM_BLOODLUST_NAME").asKey().build())) {
-      if(!user.checkCanCastCooldownAndMessage("wizard_bloodlust")) {
-        return;
-      }
-      if(KitSpecifications.getTimeState((Arena) user.getArena()) == KitSpecifications.GameTimeState.EARLY) {
-        new MessageBuilder("KIT_LOCKED_TILL").asKey().integer(16).send(player);
-        return;
-      }
-      int cooldown = getKitsConfig().getInt("Kit-Cooldown.Wizard.Bloodlust", 70);
-      user.setCooldown("wizard_bloodlust", cooldown);
-      int castTime = 15;
-      user.setCooldown("wizard_bloodlust_running", castTime);
-      new MessageBuilder(LANGUAGE_ACCESSOR + "GAME_ITEM_BLOODLUST_ACTIVATE").asKey().send(player);
-
-      KitHelper.scheduleAbilityCooldown(stack, user.getPlayer(), castTime, cooldown);
-      applyBloodlust(user);
-    } else if(ComplementAccessor.getComplement().getDisplayName(stack.getItemMeta()).equals(new MessageBuilder(LANGUAGE_ACCESSOR + "GAME_ITEM_FLOWER_NAME").asKey().build())) {
-      if(!user.checkCanCastCooldownAndMessage("wizard_flower")) {
-        return;
-      }
-      getPlugin().getBukkitHelper().takeOneItem(player, stack);
-      corruptedWizards.add(player);
-      int cooldown = getKitsConfig().getInt("Kit-Cooldown.Wizard.Flower", 15);
-      Bukkit.getScheduler().runTaskLater(getPlugin(), () -> corruptedWizards.remove(player), cooldown * 20L);
-      user.setCooldown("wizard_flower", cooldown);
-      new MessageBuilder(LANGUAGE_ACCESSOR + "GAME_ITEM_FLOWER_ACTIVATE").asKey().send(player);
-      XSound.ENCHANT_THORNS_HIT.play(user.getPlayer(), 1f, 0f);
-
-      VersionUtils.setMaterialCooldown(player, stack.getType(), cooldown * 20);
-    } else if(ComplementAccessor.getComplement().getDisplayName(stack.getItemMeta()).equals(new MessageBuilder(LANGUAGE_ACCESSOR + "GAME_ITEM_WAND_NAME").asKey().build())) {
-      //no cooldown message, this ability is spammy no need for such message
-      if(user.getCooldown("wizard_staff") > 0) {
-        return;
-      }
-      applyMagicAttack(user);
-      double cooldown = Settings.WAND_COOLDOWN.getForArenaState((Arena) user.getArena());
-      user.setCooldown("wizard_staff", cooldown);
-
-      VersionUtils.setMaterialCooldown(player, stack.getType(), (int) (cooldown * 20));
+    String displayName = ComplementAccessor.getComplement().getDisplayName(stack.getItemMeta());
+    if(displayName.equals(new MessageBuilder(LANGUAGE_ACCESSOR + "GAME_ITEM_BLOODLUST_NAME").asKey().build())) {
+      onBloodlustPreCast(stack, user);
+    } else if(displayName.equals(new MessageBuilder(LANGUAGE_ACCESSOR + "GAME_ITEM_FLOWER_NAME").asKey().build())) {
+      onCorruptingFlowerCast(stack, user);
+    } else if(displayName.equals(new MessageBuilder(LANGUAGE_ACCESSOR + "GAME_ITEM_WAND_NAME").asKey().build())) {
+      onWandPreCast(stack, user);
     }
   }
 
-  private void applyBloodlust(User user) {
+  private void onBloodlustPreCast(ItemStack stack, User user) {
+    if(!user.checkCanCastCooldownAndMessage("wizard_bloodlust")) {
+      return;
+    }
+    if(KitSpecifications.getTimeState((Arena) user.getArena()) == KitSpecifications.GameTimeState.EARLY) {
+      new MessageBuilder("KIT_LOCKED_TILL").asKey().integer(16).send(user.getPlayer());
+      return;
+    }
+    int cooldown = getKitsConfig().getInt("Kit-Cooldown.Wizard.Bloodlust", 70);
+    user.setCooldown("wizard_bloodlust", cooldown);
+    int castTime = 15;
+    user.setCooldown("wizard_bloodlust_running", castTime);
+    new MessageBuilder(LANGUAGE_ACCESSOR + "GAME_ITEM_BLOODLUST_ACTIVATE").asKey().send(user.getPlayer());
+
+    KitHelper.scheduleAbilityCooldown(stack, user.getPlayer(), castTime, cooldown);
+    onBloodlustCast(user);
+  }
+
+  private void onBloodlustCast(User user) {
     Player player = user.getPlayer();
     player.getWorld().strikeLightningEffect(player.getLocation());
     XSound.ENTITY_WITHER_SPAWN.playRepeatedly(getPlugin(), user.getPlayer(), 1f, 2f, 3, 25);
@@ -242,19 +229,16 @@ public class WizardKit extends PremiumKit implements Listener {
               continue;
             }
             LivingEntity livingEntity = (LivingEntity) entity;
-            //10% of entity's max health, we use direct health set to override armors etc.
-            livingEntity.damage(0, user.getPlayer());
-            double damage = (VersionUtils.getMaxHealth(livingEntity) / 100.0) * 10.0;
-            livingEntity.setHealth(Math.max(0, livingEntity.getHealth() - damage));
+            double damageDone = KitHelper.maxHealthPercentDamage(livingEntity, player, 10.0);
             livingEntity.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 20, 3, false, true));
             VersionUtils.sendParticles("SUSPENDED", null, entity.getLocation(), 1, 0, 0, 0);
-            totalDamage += damage;
+            totalDamage += damageDone;
             if(soundLimit > 0) {
               XSound.ENTITY_WITHER_HURT.play(user.getPlayer(), 0.2f, 0f);
               soundLimit--;
             }
           }
-          player.setHealth(Math.min(player.getHealth() + (totalDamage * 0.08), VersionUtils.getMaxHealth(player)));
+          KitHelper.healPlayer(player, totalDamage * 0.08);
         }
         if(damageTick % 10 == 0) {
           VersionUtils.sendActionBar(player, messages.get(messageIndex)
@@ -275,7 +259,34 @@ public class WizardKit extends PremiumKit implements Listener {
     }.runTaskTimer(getPlugin(), 0, 1);
   }
 
-  private void applyMagicAttack(User user) {
+  private void onCorruptingFlowerCast(ItemStack stack, User user) {
+    if(!user.checkCanCastCooldownAndMessage("wizard_flower")) {
+      return;
+    }
+    getPlugin().getBukkitHelper().takeOneItem(user.getPlayer(), stack);
+    abilityUsers.add(user.getPlayer());
+    int cooldown = getKitsConfig().getInt("Kit-Cooldown.Wizard.Flower", 15);
+    Bukkit.getScheduler().runTaskLater(getPlugin(), () -> abilityUsers.remove(user.getPlayer()), cooldown * 20L);
+    user.setCooldown("wizard_flower", cooldown);
+    new MessageBuilder(LANGUAGE_ACCESSOR + "GAME_ITEM_FLOWER_ACTIVATE").asKey().send(user.getPlayer());
+    XSound.ENCHANT_THORNS_HIT.play(user.getPlayer(), 1f, 0f);
+
+    VersionUtils.setMaterialCooldown(user.getPlayer(), stack.getType(), cooldown * 20);
+  }
+
+  private void onWandPreCast(ItemStack stack, User user) {
+    //no cooldown message, this ability is spammy no need for such message
+    if(user.getCooldown("wizard_staff") > 0) {
+      return;
+    }
+    double cooldown = Settings.WAND_COOLDOWN.getForArenaState((Arena) user.getArena());
+    user.setCooldown("wizard_staff", cooldown);
+
+    VersionUtils.setMaterialCooldown(user.getPlayer(), stack.getType(), (int) (cooldown * 20));
+    onWandCast(user);
+  }
+
+  private void onWandCast(User user) {
     if(ServerVersion.Version.isCurrentEqualOrHigher(ServerVersion.Version.v1_9_R1)) {
       XParticle.drawLine(user.getPlayer(), 40, 1, ParticleDisplay.of(XParticle.getParticle("FLAME")));
     }
@@ -299,11 +310,8 @@ public class WizardKit extends PremiumKit implements Listener {
             continue;
           }
           LivingEntity livingEntity = (LivingEntity) entity;
-          //wand damage: 30/32/35 scaling % of entity's max health, we use direct health set to override armors etc.
-          livingEntity.damage(0, user.getPlayer());
           double maxHealthPercent = Settings.WAND_PERCENT_DAMAGE.getForArenaState((Arena) user.getArena());
-          double health = Math.max(0, livingEntity.getHealth() - (VersionUtils.getMaxHealth(livingEntity) / 100.0) * maxHealthPercent);
-          livingEntity.setHealth(health);
+          KitHelper.maxHealthPercentDamage(livingEntity, user.getPlayer(), maxHealthPercent);
 
           if(!soundPlayed) {
             XSound.BLOCK_NOTE_BLOCK_HARP.play(user.getPlayer());

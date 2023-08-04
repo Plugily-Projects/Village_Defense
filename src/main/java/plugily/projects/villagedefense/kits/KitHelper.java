@@ -20,6 +20,7 @@ package plugily.projects.villagedefense.kits;
 
 import org.bukkit.Bukkit;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -69,6 +70,25 @@ public class KitHelper {
 
       VersionUtils.setMaterialCooldown(player, item.getType(), (cooldown - castTime) * 20);
     }, castTime * 20L);
+  }
+
+  public static void healPlayer(Player player, double healAmount) {
+    player.setHealth(Math.min(player.getHealth() + healAmount, VersionUtils.getMaxHealth(player)));
+    VersionUtils.sendParticles("HEART", player, player.getLocation(), 3);
+  }
+
+  public static boolean executeEnemy(LivingEntity entity, Player damager) {
+    //todo implement execution immunity here (for bosses)
+    entity.damage(KitSpecifications.LETHAL_DAMAGE, damager);
+    return true;
+  }
+
+  public static double maxHealthPercentDamage(LivingEntity entity, Player damager, double percent) {
+    //todo implement max health percentage immunity here (for bosses)
+    entity.damage(0, damager);
+    double damageDone = (VersionUtils.getMaxHealth(entity) / 100.0) * percent;
+    entity.setHealth(Math.max(0, entity.getHealth() - damageDone));
+    return damageDone;
   }
 
 }

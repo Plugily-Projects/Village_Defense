@@ -52,6 +52,7 @@ import plugily.projects.minigamesbox.classic.utils.version.xseries.XMaterial;
 import plugily.projects.minigamesbox.classic.utils.version.xseries.XParticle;
 import plugily.projects.villagedefense.arena.Arena;
 import plugily.projects.villagedefense.arena.ArenaUtils;
+import plugily.projects.villagedefense.kits.AbilitySource;
 import plugily.projects.villagedefense.kits.KitHelper;
 import plugily.projects.villagedefense.kits.KitSpecifications;
 
@@ -61,7 +62,7 @@ import java.util.stream.Collectors;
 /**
  * Created by Tom on 1/12/2015.
  */
-public class MedicKit extends PremiumKit implements Listener {
+public class MedicKit extends PremiumKit implements Listener, AbilitySource {
 
   private static final String LANGUAGE_ACCESSOR = "KIT_CONTENT_MEDIC_";
 
@@ -123,6 +124,7 @@ public class MedicKit extends PremiumKit implements Listener {
     for(Player arenaPlayer : user.getArena().getPlayersLeft()) {
       int heal = (int) Settings.HEAL_AURA_POWER.getForArenaState((Arena) user.getArena());
       double maxHealth = VersionUtils.getMaxHealth(arenaPlayer);
+      //todo useless?? all players are healed before next wave
       if(arenaPlayer.getHealth() + heal > maxHealth) {
         arenaPlayer.setHealth(maxHealth);
         arenaPlayer.setFoodLevel(20);
@@ -157,64 +159,42 @@ public class MedicKit extends PremiumKit implements Listener {
       if(!(entity instanceof Player)) {
         continue;
       }
-
-      Player player = (Player) entity;
-      player.setHealth(Math.min(player.getHealth() + 1.0, VersionUtils.getMaxHealth(player)));
-      VersionUtils.sendParticles("HEART", player, player.getLocation(), 3);
+      KitHelper.healPlayer((Player) entity, 1.0);
     }
   }
 
+  @Override
   @EventHandler
-  public void onItemUse(PlugilyPlayerInteractEvent event) {
+  public void onAbilityCast(PlugilyPlayerInteractEvent event) {
     if(!KitHelper.isInGameWithKitAndItemInHand(event.getPlayer(), MedicKit.class)) {
       return;
     }
     ItemStack stack = VersionUtils.getItemInHand(event.getPlayer());
     User user = getPlugin().getUserManager().getUser(event.getPlayer());
-    Player player = event.getPlayer();
-    if(ComplementAccessor.getComplement().getDisplayName(stack.getItemMeta()).equals(new MessageBuilder(LANGUAGE_ACCESSOR + "GAME_ITEM_HOMECOMING_NAME").asKey().build())) {
-      if(!user.checkCanCastCooldownAndMessage("medic_homecoming")) {
-        return;
-      }
-      if(KitSpecifications.getTimeState((Arena) user.getArena()) == KitSpecifications.GameTimeState.EARLY) {
-        new MessageBuilder("KIT_LOCKED_TILL").asKey().integer(16).send(player);
-        return;
-      }
-      int cooldown = getKitsConfig().getInt("Kit-Cooldown.Medic.Homecoming", 60);
-      user.setCooldown("medic_homecoming", cooldown);
-      applyHomecoming(user);
-
-      VersionUtils.setMaterialCooldown(player, stack.getType(), cooldown * 20);
-    } else if(ComplementAccessor.getComplement().getDisplayName(stack.getItemMeta()).equals(new MessageBuilder(LANGUAGE_ACCESSOR + "GAME_ITEM_AURA_NAME").asKey().build())) {
-      if(!user.checkCanCastCooldownAndMessage("medic_aura")) {
-        return;
-      }
-      if(KitSpecifications.getTimeState((Arena) user.getArena()) == KitSpecifications.GameTimeState.EARLY) {
-        new MessageBuilder("KIT_LOCKED_TILL").asKey().integer(16).send(player);
-        return;
-      }
-      int cooldown = getAuraCooldown((Arena) user.getArena());
-      user.setCooldown("medic_aura", cooldown);
-      int castTime = 10;
-      user.setCooldown("medic_aura_running", castTime);
-      KitHelper.scheduleAbilityCooldown(stack, player, castTime, cooldown);
-      applyAura(user);
+    String displayName = ComplementAccessor.getComplement().getDisplayName(stack.getItemMeta());
+    if(displayName.equals(new MessageBuilder(LANGUAGE_ACCESSOR + "GAME_ITEM_HOMECOMING_NAME").asKey().build())) {
+      onHomecomingPreCast(stack, user);
+    } else if(displayName.equals(new MessageBuilder(LANGUAGE_ACCESSOR + "GAME_ITEM_AURA_NAME").asKey().build())) {
+      onAuraPreCast(stack, user);
     }
   }
 
-  private int getAuraCooldown(Arena arena) {
-    switch(KitSpecifications.getTimeState(arena)) {
-      case LATE:
-        return getKitsConfig().getInt("Kit-Cooldown.Medic.Aura.II", 15);
-      case MID:
-        return getKitsConfig().getInt("Kit-Cooldown.Medic.Aura.I", 30);
-      case EARLY:
-      default:
-        return 0;
+  private void onHomecomingPreCast(ItemStack stack, User user) {
+    if(!user.checkCanCastCooldownAndMessage("medic_homecoming")) {
+      return;
     }
+    if(KitSpecifications.getTimeState((Arena) user.getArena()) == KitSpecifications.GameTimeState.EARLY) {
+      new MessageBuilder("KIT_LOCKED_TILL").asKey().integer(16).send(user.getPlayer());
+      return;
+    }
+    int cooldown = getKitsConfig().getInt("Kit-Cooldown.Medic.Homecoming", 60);
+    user.setCooldown("medic_homecoming", cooldown);
+
+    VersionUtils.setMaterialCooldown(user.getPlayer(), stack.getType(), cooldown * 20);
+    onHomecomingCast(user);
   }
 
-  public void applyHomecoming(User user) {
+  private void onHomecomingCast(User user) {
     new MessageBuilder(LANGUAGE_ACCESSOR + "GAME_ITEM_HOMECOMING_ACTIVATE").asKey().send(user.getPlayer());
     List<Player> left = user.getArena().getPlayersLeft();
     if(ServerVersion.Version.isCurrentEqualOrHigher(ServerVersion.Version.v1_11_R1)) {
@@ -238,7 +218,35 @@ public class MedicKit extends PremiumKit implements Listener {
     ArenaUtils.bringDeathPlayersBack((Arena) user.getArena());
   }
 
-  public void applyAura(User user) {
+  private void onAuraPreCast(ItemStack stack, User user) {
+    if(!user.checkCanCastCooldownAndMessage("medic_aura")) {
+      return;
+    }
+    if(KitSpecifications.getTimeState((Arena) user.getArena()) == KitSpecifications.GameTimeState.EARLY) {
+      new MessageBuilder("KIT_LOCKED_TILL").asKey().integer(16).send(user.getPlayer());
+      return;
+    }
+    int cooldown = getAuraCooldown((Arena) user.getArena());
+    user.setCooldown("medic_aura", cooldown);
+    int castTime = 10;
+    user.setCooldown("medic_aura_running", castTime);
+    KitHelper.scheduleAbilityCooldown(stack, user.getPlayer(), castTime, cooldown);
+    onAuraCast(user);
+  }
+
+  private int getAuraCooldown(Arena arena) {
+    switch(KitSpecifications.getTimeState(arena)) {
+      case LATE:
+        return getKitsConfig().getInt("Kit-Cooldown.Medic.Aura.II", 15);
+      case MID:
+        return getKitsConfig().getInt("Kit-Cooldown.Medic.Aura.I", 30);
+      case EARLY:
+      default:
+        return 0;
+    }
+  }
+
+  public void onAuraCast(User user) {
     Player player = user.getPlayer();
 
     List<String> messages = getPlugin().getLanguageManager().getLanguageListFromKey(LANGUAGE_ACCESSOR + "GAME_ITEM_AURA_ACTIVE_ACTION_BAR");
@@ -288,8 +296,8 @@ public class MedicKit extends PremiumKit implements Listener {
   }
 
   private List<LivingEntity> getNearbyAllies(Player player) {
-    List<Entity> entities = player.getNearbyEntities(3.5, 3.5, 3.5);
-    return entities.stream()
+    return player.getNearbyEntities(3.5, 3.5, 3.5)
+      .stream()
       .filter(e -> e instanceof Player || e instanceof Wolf || e instanceof Golem)
       .map(e -> (LivingEntity) e)
       .collect(Collectors.toList());

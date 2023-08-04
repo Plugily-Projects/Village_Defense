@@ -184,11 +184,6 @@ public class MessageInitializer {
     getMessageManager().registerMessage("KIT_CONTENT_GOLEM_FRIEND_NAME", new Message("Kit.Content.Golem-Friend.Name", ""));
     getMessageManager().registerMessage("KIT_CONTENT_GOLEM_FRIEND_DESCRIPTION", new Message("Kit.Content.Golem-Friend.Description", ""));
 
-    //TERMINATOR
-
-    getMessageManager().registerMessage("KIT_CONTENT_TERMINATOR_NAME", new Message("Kit.Content.Terminator.Name", ""));
-    getMessageManager().registerMessage("KIT_CONTENT_TERMINATOR_DESCRIPTION", new Message("Kit.Content.Terminator.Description", ""));
-
 //TELEPORTER
 
     getMessageManager().registerMessage("KIT_CONTENT_TELEPORTER_NAME", new Message("Kit.Content.Teleporter.Name", ""));
