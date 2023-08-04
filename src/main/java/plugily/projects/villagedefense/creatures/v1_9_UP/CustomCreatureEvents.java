@@ -108,6 +108,7 @@ public class CustomCreatureEvents implements Listener {
         ItemStack itemStack = customCreature.getDropItem();
         event.getDrops().add(itemStack);
         event.setDroppedExp(0);
+        filterDrops(event, customCreature, killer);
         if(killer != null) {
           User user = plugin.getUserManager().getUser(killer);
           if(user == null || !user.getArena().equals(arena)) {
@@ -117,7 +118,6 @@ public class CustomCreatureEvents implements Listener {
           int orbsBoost = plugin.getPermissionsManager().getPermissionCategoryValue("ORBS_BOOSTER", killer);
           amount += (amount * (orbsBoost / 100));
           user.adjustStatistic(plugin.getStatsStorage().getStatisticType("ORBS"), amount);
-          filterDrops(event, customCreature, killer);
         }
       }
     }
@@ -148,10 +148,10 @@ public class CustomCreatureEvents implements Listener {
       .filter(Objects::nonNull)
       .filter(i -> XMaterial.ROTTEN_FLESH.isSimilar(i) || (creature.getDropItem() != null && i.getType().equals(creature.getDropItem().getType())))
       .collect(Collectors.toList());
-    if(filtered.isEmpty()) {
+    event.getDrops().clear();
+    if(filtered.isEmpty() || player == null) {
       return;
     }
-    event.getDrops().clear();
     player.getInventory().addItem(filtered.toArray(new ItemStack[]{}));
   }
 
