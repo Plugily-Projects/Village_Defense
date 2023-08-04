@@ -146,7 +146,7 @@ public class CustomCreatureEvents implements Listener {
     List<ItemStack> filtered = event.getDrops()
       .stream()
       .filter(Objects::nonNull)
-      .filter(i -> XMaterial.ROTTEN_FLESH.isSimilar(i) || i.getType().equals(creature.getDropItem().getType()))
+      .filter(i -> XMaterial.ROTTEN_FLESH.isSimilar(i) || (creature.getDropItem() != null && i.getType().equals(creature.getDropItem().getType())))
       .collect(Collectors.toList());
     if(filtered.isEmpty()) {
       return;
