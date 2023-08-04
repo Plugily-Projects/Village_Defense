@@ -33,6 +33,7 @@ repositories {
     maven(uri("https://maven.plugily.xyz/snapshots"))
     maven(uri("https://repo.citizensnpcs.co/"))
     maven(uri("https://repo.maven.apache.org/maven2/"))
+    maven(uri("https://repo.dmulloy2.net/repository/public/"))
 }
 
 
@@ -41,6 +42,8 @@ dependencies {
     implementation("plugily.projects:MiniGamesBox-Classic:1.2.0-SNAPSHOT40") { isTransitive = false }
     compileOnly("org.spigotmc:spigot-api:1.19.3-R0.1-SNAPSHOT")
     compileOnly("org.jetbrains:annotations:24.0.1")
+
+    compileOnly("com.comphenix.protocol:ProtocolLib:5.0.0")
     compileOnly(files("lib/spigot/1.8.8-R0.1.jar"))
 }
 
