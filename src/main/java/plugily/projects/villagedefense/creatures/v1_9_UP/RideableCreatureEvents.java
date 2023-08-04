@@ -71,9 +71,10 @@ public class RideableCreatureEvents {
   private void handleSteer(PacketEvent event, Entity vehicle) {
     Player player = event.getPlayer();
     PacketContainer packet = event.getPacket();
-    //https://wiki.vg/Protocol#Player_Input, jumping not implemented, ignoring boolean's fieldIndex 0
+    //https://wiki.vg/Protocol#Player_Input
     float sideways = packet.getFloat().read(0);
     float forward = packet.getFloat().read(1);
+    boolean jump = packet.getBooleans().read(0);
     boolean unmount = packet.getBooleans().read(1);
     if(unmount) {
       return;
@@ -82,7 +83,17 @@ public class RideableCreatureEvents {
     double radians = Math.toRadians(location.getYaw());
     double x = -forward * Math.sin(radians) + sideways * Math.cos(radians);
     double z = forward * Math.cos(radians) + sideways * Math.sin(radians);
-    Vector velocity = new Vector(x, vehicle.getVelocity().getY(), z).normalize().multiply(0.5);
+    Vector velocity = new Vector(x, 0.0, z).normalize().multiply(0.5);
+    velocity.setY(vehicle.getVelocity().getY());
+    if(!Double.isFinite(velocity.getX())) {
+      velocity.setX(0);
+    }
+    if(!Double.isFinite(velocity.getZ())) {
+      velocity.setZ(0);
+    }
+    if(jump && vehicle.isOnGround()) {
+      velocity.setY(0.5);
+    }
     try {
       velocity.checkFinite();
       vehicle.setVelocity(velocity);
