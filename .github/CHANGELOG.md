@@ -9,11 +9,13 @@ deploy webhooks to print changelog successfully
 
 That's all, matcher will stop when detects next line started with `###` match
 
-### -
+### 4.7.0 (10.08.2023)
+* Added up to 1.20 compatibility
 * Added CustomCreature(s) / Possibility to add own creatures (creatures.yml)
-* Removed nms / craftbukkit code for 1.9+
-* 1.18 ready
-* Core updates... (todo)
+* Changed nms / craftbukkit code for 1.9+
+* Changed supported languages [https://translate.plugily.xyz]
+* Changed plugin base is based on MinigamesCore [https://github.com/Plugily-Projects/MiniGamesBox]
+* Changed native java building to java17, java 8 downloadable on our discord [https://discord.plugily.xyz]
 
 ### 4.6.2 (22.09.2021 - 00.00.202x)
 * Added option to set glowing for remaining zombies from a specific wave
