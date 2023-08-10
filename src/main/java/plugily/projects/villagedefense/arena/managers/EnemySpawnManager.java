@@ -1,19 +1,19 @@
 /*
- * Village Defense - Protect villagers from hordes of zombies
- * Copyright (C) 2021  Plugily Projects - maintained by 2Wild4You, Tigerpanzer_02 and contributors
+ *  Village Defense - Protect villagers from hordes of zombies
+ *  Copyright (c) 2023 Plugily Projects - maintained by Tigerpanzer_02 and contributors
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 package plugily.projects.villagedefense.arena.managers;
@@ -27,8 +27,8 @@ import java.util.Random;
 import org.bukkit.Location;
 import org.bukkit.entity.Creature;
 import org.bukkit.entity.Villager;
+import plugily.projects.minigamesbox.classic.utils.version.VersionUtils;
 import plugily.projects.villagedefense.arena.Arena;
-import plugily.projects.villagedefense.arena.options.ArenaOption;
 
 /**
  * @author Plajer
@@ -36,8 +36,6 @@ import plugily.projects.villagedefense.arena.options.ArenaOption;
  * Created at 06.01.2019
  */
 public class EnemySpawnManager {
-
-  private final Random random;
   private final Arena arena;
   private int localIdleProcess = 0;
   private final List<Creature> glitchedEnemies = new ArrayList<>();
@@ -45,7 +43,6 @@ public class EnemySpawnManager {
 
   public EnemySpawnManager(Arena arena) {
     this.arena = arena;
-    this.random = new Random();
   }
 
   public void applyIdle(int idle) {
@@ -60,8 +57,8 @@ public class EnemySpawnManager {
    * Glitch checker also clean ups dead enemies and villagers from the arena
    */
   public void spawnGlitchCheck() {
-    arena.addOptionValue(ArenaOption.ZOMBIE_GLITCH_CHECKER, 1);
-    if(arena.getOption(ArenaOption.ZOMBIE_GLITCH_CHECKER) >= 60) {
+    arena.changeArenaOptionBy("ZOMBIE_GLITCH_CHECKER", 1);
+    if(arena.getArenaOption("ZOMBIE_GLITCH_CHECKER") >= 60) {
       Iterator<Villager> villagerIterator = arena.getVillagers().iterator();
       while(villagerIterator.hasNext()) {
         Villager villager = villagerIterator.next();
@@ -70,7 +67,7 @@ public class EnemySpawnManager {
           arena.removeVillager(villager);
         }
       }
-      arena.setOptionValue(ArenaOption.ZOMBIE_GLITCH_CHECKER, 0);
+      arena.setArenaOption("ZOMBIE_GLITCH_CHECKER", 0);
 
       Iterator<Creature> creatureIterator = arena.getEnemies().iterator();
       while(creatureIterator.hasNext()) {
@@ -91,7 +88,7 @@ public class EnemySpawnManager {
         if(checkerLoc == null) {
           enemyCheckerLocations.put(creature, creature.getLocation());
         } else if(creature.getLocation().distance(checkerLoc) <= 1) {
-          creature.teleport(arena.getRandomZombieSpawn(random));
+          VersionUtils.teleport(creature, arena.getRandomZombieSpawnLocation(arena.getPlugin().getRandom()));
           enemyCheckerLocations.put(creature, creature.getLocation());
           glitchedEnemies.add(creature);
         }
@@ -111,7 +108,7 @@ public class EnemySpawnManager {
    */
   public void spawnEnemies() {
     if(checkForIdle()) {
-      arena.getPlugin().getEnemySpawnerRegistry().spawnEnemies(random, arena);
+      arena.getPlugin().getEnemySpawnerRegistry().spawnEnemies(arena.getPlugin().getRandom(), arena);
     }
   }
 
@@ -122,7 +119,7 @@ public class EnemySpawnManager {
       return false;
     }
 
-    applyIdle(arena.getOption(ArenaOption.ZOMBIE_IDLE_PROCESS));
+    applyIdle(arena.getArenaOption("ZOMBIE_IDLE_PROCESS"));
     //continue spawning
     return true;
   }

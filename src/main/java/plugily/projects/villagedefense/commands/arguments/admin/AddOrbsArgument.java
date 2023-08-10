@@ -1,37 +1,36 @@
 /*
- * Village Defense - Protect villagers from hordes of zombies
- * Copyright (C) 2021  Plugily Projects - maintained by 2Wild4You, Tigerpanzer_02 and contributors
+ *  Village Defense - Protect villagers from hordes of zombies
+ *  Copyright (c) 2023 Plugily Projects - maintained by Tigerpanzer_02 and contributors
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 package plugily.projects.villagedefense.commands.arguments.admin;
 
-import java.util.Arrays;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import plugily.projects.commonsbox.number.NumberUtils;
-import plugily.projects.villagedefense.api.StatsStorage;
-import plugily.projects.villagedefense.arena.ArenaRegistry;
+import plugily.projects.minigamesbox.classic.commands.arguments.data.CommandArgument;
+import plugily.projects.minigamesbox.classic.commands.arguments.data.LabelData;
+import plugily.projects.minigamesbox.classic.commands.arguments.data.LabeledCommandArgument;
+import plugily.projects.minigamesbox.classic.handlers.language.MessageBuilder;
+import plugily.projects.minigamesbox.classic.user.User;
+import plugily.projects.minigamesbox.number.NumberUtils;
 import plugily.projects.villagedefense.commands.arguments.ArgumentsRegistry;
-import plugily.projects.villagedefense.commands.arguments.data.CommandArgument;
-import plugily.projects.villagedefense.commands.arguments.data.LabelData;
-import plugily.projects.villagedefense.commands.arguments.data.LabeledCommandArgument;
-import plugily.projects.villagedefense.handlers.language.Messages;
-import plugily.projects.villagedefense.user.User;
+
+import java.util.Arrays;
 
 /**
  * @author Plajer
@@ -40,6 +39,7 @@ import plugily.projects.villagedefense.user.User;
  */
 public class AddOrbsArgument {
 
+  //could be removed as adjuststatistic argument would also handle it
   public AddOrbsArgument(ArgumentsRegistry registry) {
     registry.mapArgument("villagedefenseadmin", new LabeledCommandArgument("addorbs", Arrays.asList("villagedefense.admin.addorbs", "villagedefense.admin.addorbs.others"),
         CommandArgument.ExecutorType.BOTH, new LabelData("/vda addorbs &6<amount> &c[player]",
@@ -48,34 +48,36 @@ public class AddOrbsArgument {
       @Override
       public void execute(CommandSender sender, String[] args) {
         if(args.length == 1) {
-          sender.sendMessage(registry.getPlugin().getChatManager().getPrefix() + ChatColor.RED + "Please type number of orbs to give!");
+          new MessageBuilder(ChatColor.RED + "Please type number of orbs to give!").prefix().send(sender);
           return;
         }
 
-        Player target;
+        Player target = null;
         if(args.length == 3) {
           if(!sender.hasPermission("villagedefense.admin.addorbs.others")) {
             return;
           }
-          Player p = Bukkit.getPlayerExact(args[2]);
-          if(p == null || !ArenaRegistry.isInArena(p)) {
-            sender.sendMessage(registry.getPlugin().getChatManager().colorMessage(Messages.COMMANDS_TARGET_PLAYER_NOT_FOUND));
+
+          if((target = Bukkit.getPlayerExact(args[2])) == null || !registry.getPlugin().getArenaRegistry().isInArena(target)) {
+            new MessageBuilder("COMMANDS_PLAYER_NOT_FOUND").asKey().send(sender);
             return;
           }
-          target = p;
-        } else {
+        } else if(sender instanceof Player) {
           target = (Player) sender;
         }
+
+        if(target == null)
+          return;
 
         java.util.Optional<Integer> opt = NumberUtils.parseInt(args[1]);
 
         if(opt.isPresent()) {
           User user = registry.getPlugin().getUserManager().getUser(target);
-          user.setStat(StatsStorage.StatisticType.ORBS, user.getStat(StatsStorage.StatisticType.ORBS) + opt.get());
-          sender.sendMessage(registry.getPlugin().getChatManager().getPrefix() + registry.getPlugin().getChatManager().colorMessage(Messages.COMMANDS_ADMIN_ADDED_ORBS));
-          target.sendMessage(registry.getPlugin().getChatManager().getPrefix() + registry.getPlugin().getChatManager().colorMessage(Messages.COMMANDS_ADMIN_RECEIVED_ORBS).replace("%orbs%", args[1]));
+          user.setStatistic(registry.getPlugin().getStatsStorage().getStatisticType("ORBS"), user.getStatistic("ORBS") + opt.get());
+          new MessageBuilder("COMMANDS_ADMIN_ADDED_ORBS").asKey().send(sender);
+          new MessageBuilder("COMMANDS_ADMIN_RECEIVED_ORBS").asKey().integer(opt.get()).send(target);
         } else {
-          sender.sendMessage(registry.getPlugin().getChatManager().getPrefix() + registry.getPlugin().getChatManager().colorMessage(Messages.COMMANDS_WRONG_USAGE).replace("%correct%", "/vda addorbs <amount> (player)"));
+          new MessageBuilder("COMMANDS_WRONG_USAGE").asKey().value("/vda addorbs <amount> (player)").send(sender);
         }
       }
     });

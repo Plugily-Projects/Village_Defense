@@ -1,5 +1,5 @@
 #
-#           Village Defense rewards configuration
+#           Plugily Projects rewards configuration
 #
 #                          Placeholders list:
 #                   %PLAYER% - Current player name
@@ -20,35 +20,39 @@
 #    - chance(50):eco give %PLAYER% 10                # Console has 10% chance to give player 10$
 #
 #  Performed rewards:
-#  villagerDeath, endgame, playerDeath, zombieKill, endwave, startwave
+#  endgame, playerDeath
 #
 #   You can unlock full potential of rewards using our script engine! (since 4.0.0)
 #    Just add example reward:
 #    - script:player.sendMessage("oh, hi %PLAYER%");      # It will send "oh, hi <player name>" to player! 100% plain java!
-#    - script:arena.setWave(1);                           # Sets the wave to 1!
 #    - script:server.broadcastMessage("hello everyone");  # Broadcasts "hello everyone" to whole server
 #    - script:player.getInventory().addItem(new org.bukkit.inventory.ItemStack(org.bukkit.Material.DIRT));
 #         ^ Gives player dirt item (you must always use direct package names for not provided objects)
 #
 #                               All script provided objects:
 #            player - Player object (API methods https://hub.spigotmc.org/javadocs/spigot/org/bukkit/entity/Player.html)
-#    arena - Village Defense arena (API methods https://jd.plugily.xyz/apidocs/minecraft/villagedefense/plugily/projects/villagedefense/arena/Arena.html)
+#    arena - Plugin arena (API methods https://jd.plugily.xyz/apidocs/minecraft/PLUGILYPROJECTS/plugily/projects/PLUGILYPROJECTS/arena/Arena.html)
 #            server - Bukkit server object (API methods https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Server.html)
 #
 #                            Whole documentation of scripts soon!
 
 # Rewards must be enabled via config.yml first!
 rewards:
+  # Commands performed when game is started
+  game-start:
+    - say %arena_name% has started
+    - say Ooh and there are playing %arena_players_size% players
   # Commands performed when game is finished
-  endgame:
-    - say %MAPNAME% has ended, reached wave %WAVE%
-    - say Ooh and there were playing %PLAYERAMOUNT% players
-  playerDeath:
-  - script:player.sendMessage("Hey, you died");
+  game-end:
+    - say %arena_name% has ended, reached wave %WAVE%
+    - say Ooh and there were playing %arena_players_size% players
+  start-wave:
+    - say Wave started
   # Commands performed every wave end
   # Use "WAVE NUMBER:" to execute command in specific wave (ex. 1:)
+  # wave number can be also deleted to have code executed on any end wave
   # Delete everything if you don't want to use this section
-  endwave:
+  end-wave:
     1:
       - say You reached wave %WAVE%, nice!
     5:
@@ -59,6 +63,19 @@ rewards:
     99:
       - say Nice try %PLAYER%...
   # Commands executed when zombie is killed
-  zombiekill:
+  zombie-kill:
     - eco give %PLAYER% 2
     - chance(10):eco give %PLAYER% 8
+  # Commands executed when villager is death
+  villager-death:
+    - say Protect the villager better next time!
+  # Commands executed when player is death
+  player-death:
+    - script:player.sendMessage("Hey, you died");
+
+# Don't edit it. But who's stopping you? It's your server!
+# Really, don't edit ;p
+# You edited it, huh? Next time hurt yourself!
+Do-Not-Edit:
+  File-Version: 1
+  Core-Version: 1

@@ -1,19 +1,19 @@
 /*
- * Village Defense - Protect villagers from hordes of zombies
- * Copyright (C) 2021  Plugily Projects - maintained by 2Wild4You, Tigerpanzer_02 and contributors
+ *  Village Defense - Protect villagers from hordes of zombies
+ *  Copyright (c) 2023 Plugily Projects - maintained by Tigerpanzer_02 and contributors
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 package plugily.projects.villagedefense.commands.arguments.admin.arena;
@@ -21,18 +21,15 @@ package plugily.projects.villagedefense.commands.arguments.admin.arena;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import plugily.projects.commonsbox.number.NumberUtils;
+import plugily.projects.minigamesbox.classic.commands.arguments.data.CommandArgument;
+import plugily.projects.minigamesbox.classic.commands.arguments.data.LabelData;
+import plugily.projects.minigamesbox.classic.commands.arguments.data.LabeledCommandArgument;
+import plugily.projects.minigamesbox.classic.handlers.language.MessageBuilder;
+import plugily.projects.minigamesbox.number.NumberUtils;
 import plugily.projects.villagedefense.arena.Arena;
 import plugily.projects.villagedefense.arena.ArenaManager;
-import plugily.projects.villagedefense.arena.ArenaRegistry;
 import plugily.projects.villagedefense.arena.ArenaUtils;
-import plugily.projects.villagedefense.arena.options.ArenaOption;
 import plugily.projects.villagedefense.commands.arguments.ArgumentsRegistry;
-import plugily.projects.villagedefense.commands.arguments.data.CommandArgument;
-import plugily.projects.villagedefense.commands.arguments.data.LabelData;
-import plugily.projects.villagedefense.commands.arguments.data.LabeledCommandArgument;
-import plugily.projects.villagedefense.handlers.language.Messages;
-import plugily.projects.villagedefense.utils.Utils;
 
 /**
  * @author Plajer
@@ -47,27 +44,27 @@ public class SetWaveArgument {
             "&7Set wave number in arena you're in\n&6Permission: &7villagedefense.admin.setwave")) {
       @Override
       public void execute(CommandSender sender, String[] args) {
-        if(!Utils.checkIsInGameInstance((Player) sender)) {
+        if(!registry.getPlugin().getBukkitHelper().checkIsInGameInstance((Player) sender)) {
           return;
         }
         if(args.length == 1) {
-          sender.sendMessage(registry.getPlugin().getChatManager().getPrefix() + ChatColor.RED + "Please type number of wave to set!");
+          new MessageBuilder(ChatColor.RED + "Please type number of wave to set!").prefix().send(sender);
           return;
         }
         java.util.Optional<Integer> opt = NumberUtils.parseInt(args[1]);
         if(!opt.isPresent()) {
-          sender.sendMessage(registry.getPlugin().getChatManager().getPrefix() + registry.getPlugin().getChatManager().colorMessage(Messages.COMMANDS_INVALID_NUMBER).replace("%correct%", "/vda setwave <number>"));
+          new MessageBuilder("COMMANDS_WRONG_USAGE").asKey().value("/vda setwave <number>").send(sender);
           return;
         }
-        Arena arena = ArenaRegistry.getArena((Player) sender);
-        arena.setWave(opt.get() - 1);
-        ArenaManager.endWave(arena);
-        String message = registry.getPlugin().getChatManager().formatMessage(arena, registry.getPlugin().getChatManager().colorMessage(Messages.ADMIN_MESSAGES_CHANGED_WAVE), arena.getWave());
-        for(Player player : arena.getPlayers()) {
-          player.sendMessage(registry.getPlugin().getChatManager().getPrefix() + message);
+        Arena arena = (Arena) registry.getPlugin().getArenaRegistry().getArena((Player) sender);
+        if(arena == null) {
+          return;
         }
+        arena.setWave(opt.get() - 1);
+        ((ArenaManager) registry.getPlugin().getArenaManager()).endWave(arena);
+        new MessageBuilder("IN_GAME_MESSAGES_ADMIN_CHANGED_WAVE").asKey().arena(arena).integer(arena.getWave()).sendArena();
         ArenaUtils.removeSpawnedEnemies(arena);
-        arena.setOptionValue(ArenaOption.ZOMBIES_TO_SPAWN, 0);
+        arena.setArenaOption("ZOMBIES_TO_SPAWN", 0);
       }
     });
   }

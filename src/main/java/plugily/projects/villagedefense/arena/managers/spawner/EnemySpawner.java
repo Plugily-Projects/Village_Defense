@@ -1,6 +1,27 @@
+
+/*
+ *  Village Defense - Protect villagers from hordes of zombies
+ *  Copyright (c) 2023 Plugily Projects - maintained by Tigerpanzer_02 and contributors
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package plugily.projects.villagedefense.arena.managers.spawner;
 
 import java.util.Random;
+
+import org.bukkit.inventory.ItemStack;
 import plugily.projects.villagedefense.arena.Arena;
 
 /**
@@ -29,6 +50,13 @@ public interface EnemySpawner extends Comparable<EnemySpawner> {
    * @param spawn  the amount to spawn
    */
   void spawn(Random random, Arena arena, int spawn);
+
+  /**
+   * Get the defined itemstack for drop reasons
+   * does NOT work on 1.8.8 or lower
+   * @return ItemStack that gets dropped on enemey death
+   */
+  ItemStack getDropItem();
 
   @Override
   default int compareTo(EnemySpawner spawner) {

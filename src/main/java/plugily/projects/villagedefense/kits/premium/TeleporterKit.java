@@ -1,25 +1,23 @@
 /*
- * Village Defense - Protect villagers from hordes of zombies
- * Copyright (C) 2021  Plugily Projects - maintained by 2Wild4You, Tigerpanzer_02 and contributors
+ *  Village Defense - Protect villagers from hordes of zombies
+ *  Copyright (c) 2023 Plugily Projects - maintained by Tigerpanzer_02 and contributors
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 package plugily.projects.villagedefense.kits.premium;
 
-import java.util.Collections;
-import java.util.List;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -29,24 +27,21 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
-import plugily.projects.commonsbox.minecraft.compat.VersionUtils;
-import plugily.projects.commonsbox.minecraft.compat.events.api.CBPlayerInteractEvent;
-import plugily.projects.commonsbox.minecraft.compat.xseries.XMaterial;
-import plugily.projects.commonsbox.minecraft.helper.ArmorHelper;
-import plugily.projects.commonsbox.minecraft.helper.WeaponHelper;
-import plugily.projects.commonsbox.minecraft.item.ItemBuilder;
-import plugily.projects.commonsbox.minecraft.item.ItemUtils;
-import plugily.projects.commonsbox.minecraft.misc.stuff.ComplementAccessor;
-import plugily.projects.inventoryframework.gui.GuiItem;
-import plugily.projects.inventoryframework.gui.type.ChestGui;
-import plugily.projects.inventoryframework.pane.OutlinePane;
+import plugily.projects.minigamesbox.classic.handlers.language.MessageBuilder;
+import plugily.projects.minigamesbox.classic.kits.basekits.PremiumKit;
+import plugily.projects.minigamesbox.classic.utils.helper.ArmorHelper;
+import plugily.projects.minigamesbox.classic.utils.helper.ItemBuilder;
+import plugily.projects.minigamesbox.classic.utils.helper.ItemUtils;
+import plugily.projects.minigamesbox.classic.utils.helper.WeaponHelper;
+import plugily.projects.minigamesbox.classic.utils.misc.complement.ComplementAccessor;
+import plugily.projects.minigamesbox.classic.utils.version.VersionUtils;
+import plugily.projects.minigamesbox.classic.utils.version.events.api.PlugilyPlayerInteractEvent;
+import plugily.projects.minigamesbox.classic.utils.version.xseries.XMaterial;
+import plugily.projects.minigamesbox.inventory.normal.NormalFastInv;
 import plugily.projects.villagedefense.arena.Arena;
-import plugily.projects.villagedefense.arena.ArenaRegistry;
-import plugily.projects.villagedefense.handlers.PermissionsManager;
-import plugily.projects.villagedefense.handlers.language.Messages;
-import plugily.projects.villagedefense.kits.KitRegistry;
-import plugily.projects.villagedefense.kits.basekits.PremiumKit;
-import plugily.projects.villagedefense.utils.Utils;
+
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Created by Tom on 18/08/2014.
@@ -54,16 +49,17 @@ import plugily.projects.villagedefense.utils.Utils;
 public class TeleporterKit extends PremiumKit implements Listener {
 
   public TeleporterKit() {
-    setName(getPlugin().getChatManager().colorMessage(Messages.KITS_TELEPORTER_NAME));
-    List<String> description = Utils.splitString(getPlugin().getChatManager().colorMessage(Messages.KITS_TELEPORTER_DESCRIPTION), 40);
-    setDescription(description.toArray(new String[0]));
+    setName(new MessageBuilder("KIT_CONTENT_TELEPORTER_NAME").asKey().build());
+    setKey("Teleporter");
+    List<String> description = getPlugin().getLanguageManager().getLanguageListFromKey("KIT_CONTENT_TELEPORTER_DESCRIPTION");
+    setDescription(description);
     getPlugin().getServer().getPluginManager().registerEvents(this, getPlugin());
-    KitRegistry.registerKit(this);
+    getPlugin().getKitRegistry().registerKit(this);
   }
 
   @Override
   public boolean isUnlockedByPlayer(Player player) {
-    return PermissionsManager.isPremium(player) || player.hasPermission("villagedefense.kit.teleporter");
+    return getPlugin().getPermissionsManager().hasPermissionString("KIT_PREMIUM_UNLOCK", player) || player.hasPermission("villagedefense.kit.teleporter");
   }
 
   @Override
@@ -74,8 +70,8 @@ public class TeleporterKit extends PremiumKit implements Listener {
     player.getInventory().addItem(new ItemStack(Material.COOKED_BEEF, 10));
     player.getInventory().addItem(new ItemStack(Material.SADDLE));
     player.getInventory().addItem(new ItemBuilder(Material.GHAST_TEAR)
-        .name(getPlugin().getChatManager().colorMessage(Messages.KITS_TELEPORTER_GAME_ITEM_NAME))
-        .lore(Utils.splitString(getPlugin().getChatManager().colorMessage(Messages.KITS_TELEPORTER_GAME_ITEM_LORE), 40))
+        .name(new MessageBuilder("KIT_CONTENT_TELEPORTER_GAME_ITEM_NAME").asKey().build())
+        .lore(getPlugin().getLanguageManager().getLanguageListFromKey("KIT_CONTENT_TELEPORTER_GAME_ITEM_DESCRIPTION"))
         .build());
   }
 
@@ -90,38 +86,40 @@ public class TeleporterKit extends PremiumKit implements Listener {
   }
 
   @EventHandler
-  public void onRightClick(CBPlayerInteractEvent e) {
+  public void onRightClick(PlugilyPlayerInteractEvent e) {
     if(!(e.getAction() == Action.RIGHT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_BLOCK)) {
       return;
     }
     Player player = e.getPlayer();
-    Arena arena = ArenaRegistry.getArena(player);
+    Arena arena = (Arena) getPlugin().getArenaRegistry().getArena(player);
+    if(arena == null) {
+      return;
+    }
+
     ItemStack stack = VersionUtils.getItemInHand(player);
-    if(arena == null || !ItemUtils.isItemStackNamed(stack)) {
+    if(!ItemUtils.isItemStackNamed(stack))
+      return;
+
+    if(!ChatColor.stripColor(ComplementAccessor.getComplement().getDisplayName(stack.getItemMeta())).equalsIgnoreCase(ChatColor.stripColor(new MessageBuilder("KIT_CONTENT_TELEPORTER_GAME_ITEM_NAME").asKey().build()))) {
       return;
     }
-    if(!ChatColor.stripColor(ComplementAccessor.getComplement().getDisplayName(stack.getItemMeta())).equalsIgnoreCase(ChatColor.stripColor(getPlugin().getChatManager().colorMessage(Messages.KITS_TELEPORTER_GAME_ITEM_NAME)))) {
+    if(!(getPlugin().getUserManager().getUser(player).getKit() instanceof TeleporterKit)) {
       return;
     }
-    if (!(getPlugin().getUserManager().getUser(player).getKit() instanceof TeleporterKit)) {
-      return;
-    }
-    int rows = arena.getVillagers().size();
+    int slots = arena.getVillagers().size();
     for(Player arenaPlayer : arena.getPlayers()) {
       if(getPlugin().getUserManager().getUser(arenaPlayer).isSpectator()) {
         continue;
       }
-      rows++;
+      slots++;
     }
-    rows = Utils.serializeInt(rows) / 9;
-    prepareTeleporterGui(player, arena, rows);
+    slots = getPlugin().getBukkitHelper().serializeInt(slots);
+    prepareTeleporterGui(player, arena, slots);
   }
 
-  private void prepareTeleporterGui(Player player, Arena arena, int rows) {
-    ChestGui gui = new ChestGui(rows, getPlugin().getChatManager().colorMessage(Messages.KITS_TELEPORTER_GAME_ITEM_MENU_NAME));
-    gui.setOnGlobalClick(onClick -> onClick.setCancelled(true));
-    OutlinePane pane = new OutlinePane(9, rows);
-    gui.addPane(pane);
+  private void prepareTeleporterGui(Player player, Arena arena, int slots) {
+    NormalFastInv gui = new NormalFastInv(slots, new MessageBuilder("KIT_CONTENT_TELEPORTER_GAME_ITEM_GUI").asKey().build());
+    gui.addClickHandler(inventoryClickEvent -> inventoryClickEvent.setCancelled(true));
     for(Player arenaPlayer : arena.getPlayers()) {
       if(getPlugin().getUserManager().getUser(arenaPlayer).isSpectator()) {
         continue;
@@ -132,26 +130,26 @@ public class TeleporterKit extends PremiumKit implements Listener {
       ComplementAccessor.getComplement().setDisplayName(meta, arenaPlayer.getName());
       ComplementAccessor.getComplement().setLore(meta, Collections.singletonList(""));
       skull.setItemMeta(meta);
-      pane.addItem(new GuiItem(skull, onClick -> {
-        player.sendMessage(getPlugin().getChatManager().formatMessage(arena, getPlugin().getChatManager().colorMessage(Messages.KITS_TELEPORTER_TELEPORTED_TO_PLAYER), arenaPlayer));
-        player.teleport(arenaPlayer);
-        Utils.playSound(player.getLocation(), "ENTITY_ENDERMEN_TELEPORT", "ENTITY_ENDERMAN_TELEPORT");
+      gui.addItem(skull, onClick -> {
+        new MessageBuilder("KIT_CONTENT_TELEPORTER_TELEPORT_PLAYER").asKey().arena(arena).player(arenaPlayer).sendPlayer();
+        VersionUtils.teleport(player, arenaPlayer.getLocation());
+        VersionUtils.playSound(player.getLocation(), "ENTITY_ENDERMAN_TELEPORT");
         VersionUtils.sendParticles("PORTAL", arena.getPlayers(), player.getLocation(), 30);
         player.closeInventory();
-      }));
+      });
     }
     for(Villager villager : arena.getVillagers()) {
-      pane.addItem(new GuiItem(new ItemBuilder(new ItemStack(Material.EMERALD))
+      gui.addItem(new ItemBuilder(new ItemStack(Material.EMERALD))
           .name(villager.getCustomName())
           .lore(villager.getUniqueId().toString())
           .build(), onClick -> {
-        player.teleport(villager.getLocation());
-        Utils.playSound(player.getLocation(), "ENTITY_ENDERMEN_TELEPORT", "ENTITY_ENDERMAN_TELEPORT");
+        VersionUtils.teleport(player, villager.getLocation());
+        VersionUtils.playSound(player.getLocation(), "ENTITY_ENDERMAN_TELEPORT");
         VersionUtils.sendParticles("PORTAL", arena.getPlayers(), player.getLocation(), 30);
-        player.sendMessage(getPlugin().getChatManager().colorMessage(Messages.KITS_TELEPORTER_TELEPORTED_TO_VILLAGER));
-      }));
+        new MessageBuilder("KIT_CONTENT_TELEPORTER_TELEPORT_VILLAGER").asKey().player(player).sendPlayer();
+      });
     }
-    gui.show(player);
+    gui.open(player);
   }
 
 }

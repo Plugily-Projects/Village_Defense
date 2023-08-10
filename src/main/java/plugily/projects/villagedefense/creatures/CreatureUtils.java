@@ -1,22 +1,36 @@
 /*
- * Village Defense - Protect villagers from hordes of zombies
- * Copyright (C) 2021  Plugily Projects - maintained by 2Wild4You, Tigerpanzer_02 and contributors
+ *  Village Defense - Protect villagers from hordes of zombies
+ *  Copyright (c) 2023 Plugily Projects - maintained by Tigerpanzer_02 and contributors
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 package plugily.projects.villagedefense.creatures;
+
+import org.bukkit.ChatColor;
+import org.bukkit.entity.Creature;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.IronGolem;
+import org.bukkit.entity.Player;
+import org.bukkit.entity.Villager;
+import org.bukkit.entity.Wolf;
+import plugily.projects.minigamesbox.classic.handlers.language.MessageBuilder;
+import plugily.projects.minigamesbox.classic.utils.version.ServerVersion;
+import plugily.projects.minigamesbox.classic.utils.version.VersionUtils;
+import plugily.projects.minigamesbox.string.StringFormatUtils;
+import plugily.projects.villagedefense.Main;
+import plugily.projects.villagedefense.arena.Arena;
 
 import java.lang.reflect.Field;
 import java.security.AccessController;
@@ -25,32 +39,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.logging.Level;
-import org.bukkit.ChatColor;
-import org.bukkit.entity.Creature;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.IronGolem;
-import org.bukkit.entity.Player;
-import org.bukkit.entity.Villager;
-import org.bukkit.entity.Wolf;
-import plugily.projects.commonsbox.minecraft.compat.ServerVersion;
-import plugily.projects.commonsbox.minecraft.compat.VersionUtils;
-import plugily.projects.commonsbox.string.StringFormatUtils;
-import plugily.projects.villagedefense.Main;
-import plugily.projects.villagedefense.arena.Arena;
-import plugily.projects.villagedefense.arena.options.ArenaOption;
-import plugily.projects.villagedefense.handlers.language.LanguageManager;
 
 /**
  * @author Plajer
  * <p>
- * Created at 17 lis 2017
+ * Created at 2017
  */
 public class CreatureUtils {
 
-  private static float zombieSpeed = 1.3f;
-  private static float babyZombieSpeed = 2.0f;
   private static String[] villagerNames = ("Jagger,Kelsey,Kelton,Haylie,Harlow,Howard,Wulffric,Winfred,Ashley,Bailey,Beckett,Alfredo,Alfred,Adair,Edgar,ED,Eadwig,Edgaras,Buckley,Stanley,Nuffley,"
-      + "Mary,Jeffry,Rosaly,Elliot,Harry,Sam,Rosaline,Tom,Ivan,Kevin,Adam").split(",");
+      + "Mary,Jeffry,Rosaly,Elliot,Harry,Sam,Rosaline,Tom,Ivan,Kevin,Adam,Emma,Mira,Jeff,Isac,Nico").split(",");
   private static Main plugin;
   private static BaseCreatureInitializer creatureInitializer;
   private static final List<CachedObject> cachedObjects = new ArrayList<>();
@@ -60,42 +58,16 @@ public class CreatureUtils {
 
   public static void init(Main plugin) {
     CreatureUtils.plugin = plugin;
-    zombieSpeed = (float) plugin.getConfig().getDouble("Zombie-Speed", 1.3);
-    babyZombieSpeed = (float) plugin.getConfig().getDouble("Mini-Zombie-Speed", 2.0);
-    villagerNames = LanguageManager.getLanguageMessage("In-Game.Villager-Names").split(",");
+    villagerNames = new MessageBuilder("IN_GAME_MESSAGES_VILLAGE_VILLAGER_NAMES").asKey().build().split(",");
     creatureInitializer = initCreatureInitializer();
   }
 
   public static BaseCreatureInitializer initCreatureInitializer() {
-    switch (ServerVersion.Version.getCurrent()) {
+    switch(ServerVersion.Version.getCurrent()) {
       case v1_8_R3:
         return new plugily.projects.villagedefense.creatures.v1_8_R3.CreatureInitializer();
-      case v1_9_R1:
-        return new plugily.projects.villagedefense.creatures.v1_9_R1.CreatureInitializer();
-      case v1_9_R2:
-        return new plugily.projects.villagedefense.creatures.v1_9_R2.CreatureInitializer();
-      case v1_10_R1:
-        return new plugily.projects.villagedefense.creatures.v1_10_R1.CreatureInitializer();
-      case v1_11_R1:
-        return new plugily.projects.villagedefense.creatures.v1_11_R1.CreatureInitializer();
-      case v1_12_R1:
-        return new plugily.projects.villagedefense.creatures.v1_12_R1.CreatureInitializer();
-      case v1_13_R1:
-        return new plugily.projects.villagedefense.creatures.v1_13_R1.CreatureInitializer();
-      case v1_13_R2:
-        return new plugily.projects.villagedefense.creatures.v1_13_R2.CreatureInitializer();
-      case v1_14_R1:
-        return new plugily.projects.villagedefense.creatures.v1_14_R1.CreatureInitializer();
-      case v1_15_R1:
-        return new plugily.projects.villagedefense.creatures.v1_15_R1.CreatureInitializer();
-      case v1_16_R1:
-        return new plugily.projects.villagedefense.creatures.v1_16_R1.CreatureInitializer();
-      case v1_16_R2:
-        return new plugily.projects.villagedefense.creatures.v1_16_R2.CreatureInitializer();
-      case v1_16_R3:
-        return new plugily.projects.villagedefense.creatures.v1_16_R3.CreatureInitializer();
       default:
-        return new plugily.projects.villagedefense.creatures.v1_17_R2.CreatureInitializer();
+        return new plugily.projects.villagedefense.creatures.v1_9_UP.CreatureInitializer();
     }
   }
 
@@ -143,9 +115,9 @@ public class CreatureUtils {
    */
   public static void applyAttributes(Creature zombie, Arena arena) {
     creatureInitializer.applyFollowRange(zombie);
-    VersionUtils.setMaxHealth(zombie, VersionUtils.getMaxHealth(zombie) + arena.getOption(ArenaOption.ZOMBIE_DIFFICULTY_MULTIPLIER));
+    VersionUtils.setMaxHealth(zombie, VersionUtils.getMaxHealth(zombie) + arena.getArenaOption("ZOMBIE_DIFFICULTY_MULTIPLIER"));
     zombie.setHealth(VersionUtils.getMaxHealth(zombie));
-    if(plugin.getConfig().getBoolean("Simple-Zombie-Health-Bar-Enabled", true)) {
+    if(plugin.getConfigPreferences().getOption("ZOMBIE_HEALTHBAR")) {
       zombie.setCustomNameVisible(true);
       zombie.setCustomName(StringFormatUtils.getProgressBar((int) zombie.getHealth(), (int) VersionUtils.getMaxHealth(zombie), 50, "|",
           ChatColor.YELLOW + "", ChatColor.GRAY + ""));
@@ -153,11 +125,11 @@ public class CreatureUtils {
   }
 
   public static float getZombieSpeed() {
-    return zombieSpeed;
+    return 1.3f;
   }
 
   public static float getBabyZombieSpeed() {
-    return babyZombieSpeed;
+    return 2.0f;
   }
 
   public static String[] getVillagerNames() {
@@ -165,7 +137,7 @@ public class CreatureUtils {
   }
 
   public static String getRandomVillagerName() {
-    return villagerNames[villagerNames.length == 1 ? 0 : ThreadLocalRandom.current().nextInt(villagerNames.length)];
+    return getVillagerNames()[villagerNames.length == 1 ? 0 : ThreadLocalRandom.current().nextInt(villagerNames.length)];
   }
 
   public static Main getPlugin() {

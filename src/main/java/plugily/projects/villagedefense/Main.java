@@ -1,113 +1,92 @@
 /*
- * Village Defense - Protect villagers from hordes of zombies
- * Copyright (C) 2021  Plugily Projects - maintained by 2Wild4You, Tigerpanzer_02 and contributors
+ *  Village Defense - Protect villagers from hordes of zombies
+ *  Copyright (c) 2023 Plugily Projects - maintained by Tigerpanzer_02 and contributors
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 package plugily.projects.villagedefense;
 
-import com.gmail.filoghost.holographicdisplays.api.Hologram;
-import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
-import java.io.File;
-import java.util.Arrays;
-import java.util.logging.Level;
-import me.tigerhix.lib.scoreboard.ScoreboardLib;
-import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginDescriptionFile;
-import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.java.JavaPluginLoader;
 import org.jetbrains.annotations.TestOnly;
-import plugily.projects.commonsbox.minecraft.compat.ServerVersion;
-import plugily.projects.commonsbox.minecraft.compat.events.EventsInitializer;
-import plugily.projects.commonsbox.minecraft.configuration.ConfigUtils;
-import plugily.projects.commonsbox.minecraft.misc.MiscUtils;
-import plugily.projects.commonsbox.minecraft.serialization.InventorySerializer;
-import plugily.projects.villagedefense.api.StatsStorage;
+import plugily.projects.minigamesbox.classic.PluginMain;
+import plugily.projects.minigamesbox.classic.handlers.setup.SetupInventory;
+import plugily.projects.minigamesbox.classic.handlers.setup.categories.PluginSetupCategoryManager;
+import plugily.projects.minigamesbox.classic.utils.configuration.ConfigUtils;
+import plugily.projects.minigamesbox.classic.utils.services.metrics.Metrics;
+import plugily.projects.minigamesbox.classic.utils.version.ServerVersion;
 import plugily.projects.villagedefense.arena.Arena;
 import plugily.projects.villagedefense.arena.ArenaEvents;
 import plugily.projects.villagedefense.arena.ArenaManager;
 import plugily.projects.villagedefense.arena.ArenaRegistry;
 import plugily.projects.villagedefense.arena.ArenaUtils;
-import plugily.projects.villagedefense.arena.managers.BungeeManager;
-import plugily.projects.villagedefense.arena.managers.EnemySpawnerRegistry;
+import plugily.projects.villagedefense.arena.managers.enemy.spawner.EnemySpawnerRegistry;
+import plugily.projects.villagedefense.arena.managers.enemy.spawner.EnemySpawnerRegistryLegacy;
+import plugily.projects.villagedefense.boot.AdditionalValueInitializer;
+import plugily.projects.villagedefense.boot.MessageInitializer;
+import plugily.projects.villagedefense.boot.PlaceholderInitializer;
 import plugily.projects.villagedefense.commands.arguments.ArgumentsRegistry;
 import plugily.projects.villagedefense.creatures.CreatureUtils;
 import plugily.projects.villagedefense.creatures.DoorBreakListener;
-import plugily.projects.villagedefense.events.ChatEvents;
-import plugily.projects.villagedefense.events.Events;
-import plugily.projects.villagedefense.events.JoinEvent;
-import plugily.projects.villagedefense.events.LobbyEvents;
-import plugily.projects.villagedefense.events.QuitEvent;
-import plugily.projects.villagedefense.events.bungee.MiscEvents;
-import plugily.projects.villagedefense.events.spectator.SpectatorEvents;
-import plugily.projects.villagedefense.events.spectator.SpectatorItemEvents;
-import plugily.projects.villagedefense.handlers.ChatManager;
-import plugily.projects.villagedefense.handlers.HolidayManager;
-import plugily.projects.villagedefense.handlers.PermissionsManager;
-import plugily.projects.villagedefense.handlers.PlaceholderManager;
-import plugily.projects.villagedefense.handlers.hologram.HologramsRegistry;
-import plugily.projects.villagedefense.handlers.items.SpecialItemManager;
-import plugily.projects.villagedefense.handlers.language.LanguageManager;
-import plugily.projects.villagedefense.handlers.language.Messages;
-import plugily.projects.villagedefense.handlers.party.PartyHandler;
-import plugily.projects.villagedefense.handlers.party.PartySupportInitializer;
-import plugily.projects.villagedefense.handlers.powerup.PowerupRegistry;
-import plugily.projects.villagedefense.handlers.reward.RewardsFactory;
-import plugily.projects.villagedefense.handlers.setup.SetupInventory;
-import plugily.projects.villagedefense.handlers.sign.SignManager;
+import plugily.projects.villagedefense.events.PluginEvents;
+import plugily.projects.villagedefense.handlers.powerup.PowerupHandler;
+import plugily.projects.villagedefense.handlers.setup.SetupCategoryManager;
 import plugily.projects.villagedefense.handlers.upgrade.EntityUpgradeMenu;
 import plugily.projects.villagedefense.handlers.upgrade.upgrades.Upgrade;
 import plugily.projects.villagedefense.handlers.upgrade.upgrades.UpgradeBuilder;
-import plugily.projects.villagedefense.kits.KitMenuHandler;
-import plugily.projects.villagedefense.kits.KitRegistry;
-import plugily.projects.villagedefense.user.User;
-import plugily.projects.villagedefense.user.UserManager;
-import plugily.projects.villagedefense.utils.Debugger;
-import plugily.projects.villagedefense.utils.ExceptionLogHandler;
-import plugily.projects.villagedefense.utils.MessageUtils;
-import plugily.projects.villagedefense.utils.UpdateChecker;
-import plugily.projects.villagedefense.utils.Utils;
-import plugily.projects.villagedefense.utils.services.ServiceRegistry;
+import plugily.projects.villagedefense.kits.free.KnightKit;
+import plugily.projects.villagedefense.kits.free.LightTankKit;
+import plugily.projects.villagedefense.kits.level.ArcherKit;
+import plugily.projects.villagedefense.kits.level.GolemFriendKit;
+import plugily.projects.villagedefense.kits.level.HardcoreKit;
+import plugily.projects.villagedefense.kits.level.HealerKit;
+import plugily.projects.villagedefense.kits.level.LooterKit;
+import plugily.projects.villagedefense.kits.level.MediumTankKit;
+import plugily.projects.villagedefense.kits.level.PuncherKit;
+import plugily.projects.villagedefense.kits.level.RunnerKit;
+import plugily.projects.villagedefense.kits.level.TerminatorKit;
+import plugily.projects.villagedefense.kits.level.WorkerKit;
+import plugily.projects.villagedefense.kits.level.ZombieFinderKit;
+import plugily.projects.villagedefense.kits.premium.BlockerKit;
+import plugily.projects.villagedefense.kits.premium.CleanerKit;
+import plugily.projects.villagedefense.kits.premium.DogFriendKit;
+import plugily.projects.villagedefense.kits.premium.HeavyTankKit;
+import plugily.projects.villagedefense.kits.premium.MedicKit;
+import plugily.projects.villagedefense.kits.premium.NakedKit;
+import plugily.projects.villagedefense.kits.premium.PremiumHardcoreKit;
+import plugily.projects.villagedefense.kits.premium.ShotBowKit;
+import plugily.projects.villagedefense.kits.premium.TeleporterKit;
+import plugily.projects.villagedefense.kits.premium.TornadoKit;
+import plugily.projects.villagedefense.kits.premium.WizardKit;
+
+import java.io.File;
+import java.util.logging.Level;
 
 /**
  * Created by Tom on 12/08/2014.
+ * Updated by Tigerpanzer_02 on 03.12.2021
  */
-public class Main extends JavaPlugin {
+public class Main extends PluginMain {
 
-  private ExceptionLogHandler exceptionLogHandler;
-  private BungeeManager bungeeManager;
-  private ChatManager chatManager;
-  private UserManager userManager;
-  private ConfigPreferences configPreferences;
-  private ArgumentsRegistry registry;
-  private SignManager signManager;
-  private SpecialItemManager specialItemManager;
-  private KitMenuHandler kitMenuHandler;
-  private PartyHandler partyHandler;
-  private PowerupRegistry powerupRegistry;
-  private RewardsFactory rewardsHandler;
-  private HolidayManager holidayManager;
-  private FileConfiguration languageConfig;
-  private HologramsRegistry hologramsRegistry;
   private FileConfiguration entityUpgradesConfig;
-  private EnemySpawnerRegistry enemySpawnerRegistry;
-
-  private boolean forceDisable = false, holographicEnabled = false;
+  private EnemySpawnerRegistryLegacy enemySpawnerRegistry;
+  private ArenaRegistry arenaRegistry;
+  private ArenaManager arenaManager;
+  private ArgumentsRegistry argumentsRegistry;
 
   @TestOnly
   public Main() {
@@ -119,289 +98,104 @@ public class Main extends JavaPlugin {
     super(loader, description, dataFolder, file);
   }
 
-  public BungeeManager getBungeeManager() {
-    return bungeeManager;
+  @Override
+  public void onEnable() {
+    long start = System.currentTimeMillis();
+    MessageInitializer messageInitializer = new MessageInitializer(this);
+    super.onEnable();
+    getDebugger().debug("[System] [Plugin] Initialization start");
+    new PlaceholderInitializer(this);
+    messageInitializer.registerMessages();
+    new AdditionalValueInitializer(this);
+    initializePluginClasses();
+    addKits();
+    getDebugger().debug("Full {0} plugin enabled", getName());
+    getDebugger().debug("[System] [Plugin] Initialization finished took {0}ms", System.currentTimeMillis() - start);
   }
 
-  public SignManager getSignManager() {
-    return signManager;
+  public void initializePluginClasses() {
+    addFileName("powerups");
+    addFileName("creatures");
+    Arena.init(this);
+    ArenaUtils.init(this);
+    new ArenaEvents(this);
+    arenaManager = new ArenaManager(this);
+    arenaRegistry = new ArenaRegistry(this);
+    arenaRegistry.registerArenas();
+    getSignManager().loadSigns();
+    getSignManager().updateSigns();
+    argumentsRegistry = new ArgumentsRegistry(this);
+    if(ServerVersion.Version.isCurrentEqualOrLower(ServerVersion.Version.v1_8_R3)) {
+      enemySpawnerRegistry = new EnemySpawnerRegistryLegacy(this);
+    } else {
+      enemySpawnerRegistry = new EnemySpawnerRegistry(this);
+    }
+    if(getConfigPreferences().getOption("UPGRADES")) {
+      entityUpgradesConfig = ConfigUtils.getConfig(this, "entity_upgrades");
+      Upgrade.init(this);
+      UpgradeBuilder.init(this);
+      new EntityUpgradeMenu(this);
+    }
+    new DoorBreakListener(this);
+    CreatureUtils.init(this);
+    new PowerupHandler(this);
+    new PluginEvents(this);
+    addPluginMetrics();
   }
 
-  public KitMenuHandler getKitMenuHandler() {
-    return kitMenuHandler;
+  public void addKits() {
+    long start = System.currentTimeMillis();
+    getDebugger().debug("Adding kits...");
+    addFileName("kits");
+    Class<?>[] classKitNames = new Class[]{KnightKit.class, LightTankKit.class, ZombieFinderKit.class, ArcherKit.class, PuncherKit.class, HealerKit.class, LooterKit.class, RunnerKit.class,
+        MediumTankKit.class, WorkerKit.class, GolemFriendKit.class, TerminatorKit.class, HardcoreKit.class, CleanerKit.class, TeleporterKit.class, HeavyTankKit.class, ShotBowKit.class,
+        DogFriendKit.class, PremiumHardcoreKit.class, TornadoKit.class, BlockerKit.class, MedicKit.class, NakedKit.class, WizardKit.class};
+    for(Class<?> kitClass : classKitNames) {
+      try {
+        kitClass.getDeclaredConstructor().newInstance();
+      } catch(Exception e) {
+        getLogger().log(Level.SEVERE, "Fatal error while registering existing game kit! Report this error to the developer!");
+        getLogger().log(Level.SEVERE, "Cause: " + e.getMessage() + " (kitClass " + kitClass.getName() + ")");
+        e.printStackTrace();
+      }
+    }
+    getDebugger().debug("Kit adding finished took {0}ms", System.currentTimeMillis() - start);
   }
 
-  public HologramsRegistry getHologramsRegistry() {
-    return hologramsRegistry;
-  }
-
-  public FileConfiguration getLanguageConfig() {
-    return languageConfig;
+  private void addPluginMetrics() {
+    getMetrics().addCustomChart(new Metrics.SimplePie("hooked_addons", () -> {
+      if(getServer().getPluginManager().getPlugin("VillageDefense-Enhancements") != null) {
+        return "Enhancements";
+      }
+      return "None";
+    }));
   }
 
   public FileConfiguration getEntityUpgradesConfig() {
     return entityUpgradesConfig;
   }
 
-  @Override
-  public void onEnable() {
-    if(!validateIfPluginShouldStart()) {
-      return;
-    }
-
-    long start = System.currentTimeMillis();
-
-    ServiceRegistry.registerService(this);
-    exceptionLogHandler = new ExceptionLogHandler(this);
-    Messages.init(this);
-    LanguageManager.init(this);
-    saveDefaultConfig();
-    Debugger.setEnabled(getDescription().getVersion().contains("debug") || getConfig().getBoolean("Debug"));
-    Debugger.debug("[System] Initialization start");
-    if(getDescription().getVersion().contains("debug") || getConfig().getBoolean("Developer-Mode")) {
-      Debugger.deepDebug(true);
-      Debugger.debug(Level.FINE, "Deep debug enabled");
-
-      getConfig().getStringList("Performance-Listenable").forEach(Debugger::monitorPerformance);
-    }
-
-    chatManager = new ChatManager(this);
-    configPreferences = new ConfigPreferences(this);
-    setupFiles();
-    languageConfig = ConfigUtils.getConfig(this, "language");
-    initializeClasses();
-    checkUpdate();
-    Debugger.debug("[System] Initialization finished took {0}ms", System.currentTimeMillis() - start);
-  }
-
-  private boolean validateIfPluginShouldStart() {
-    try {
-      Class.forName("org.spigotmc.SpigotConfig");
-    } catch(Exception e) {
-      MessageUtils.thisVersionIsNotSupported();
-      Debugger.sendConsoleMsg("&cYour server software is not supported by Village Defense!");
-      Debugger.sendConsoleMsg("&cWe support only Spigot and Spigot forks only! Shutting off...");
-      forceDisable = true;
-      getServer().getPluginManager().disablePlugin(this);
-      return false;
-    }
-    if(ServerVersion.Version.isCurrentLower(ServerVersion.Version.v1_8_R3)) {
-      MessageUtils.thisVersionIsNotSupported();
-      Debugger.sendConsoleMsg("&cYour server version is not supported by Village Defense!");
-      Debugger.sendConsoleMsg("&cSadly, we must shut off. Maybe you consider changing your server version?");
-      forceDisable = true;
-      getServer().getPluginManager().disablePlugin(this);
-      return false;
-    }
-    return true;
-  }
-
-  //order matters
-  private void initializeClasses() {
-    startInitiableClasses();
-
-    ScoreboardLib.setPluginInstance(this);
-    registry = new ArgumentsRegistry(this);
-    new ArenaEvents(this);
-    new SpectatorEvents(this);
-    new QuitEvent(this);
-    new JoinEvent(this);
-    new ChatEvents(this);
-    setupPluginMetrics();
-    if(Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
-      Debugger.debug("Hooking into PlaceholderAPI");
-      new PlaceholderManager().register();
-    }
-    new Events(this);
-    new LobbyEvents(this);
-    new SpectatorItemEvents(this);
-    powerupRegistry = new PowerupRegistry(this);
-    rewardsHandler = new RewardsFactory(this);
-    holidayManager = new HolidayManager(this);
-    specialItemManager = new SpecialItemManager(this);
-    specialItemManager.registerItems();
-    kitMenuHandler = new KitMenuHandler(this);
-    partyHandler = new PartySupportInitializer().initialize(this);
-    enemySpawnerRegistry = new EnemySpawnerRegistry(this);
-    KitRegistry.init(this);
-    User.cooldownHandlerTask();
-    if(configPreferences.getOption(ConfigPreferences.Option.BUNGEE_ENABLED)) {
-      Debugger.debug("Bungee enabled");
-      bungeeManager = new BungeeManager(this);
-      new MiscEvents(this);
-    }
-    if(configPreferences.getOption(ConfigPreferences.Option.HOLOGRAMS_ENABLED)) {
-      if(holographicEnabled = Bukkit.getServer().getPluginManager().isPluginEnabled("HolographicDisplays")) {
-        Debugger.debug("Hooking into HolographicDisplays");
-        if(!new File(getDataFolder(), "internal/holograms_data.yml").exists()) {
-          new File(getDataFolder().getPath() + "/internal").mkdir();
-        }
-        languageConfig = ConfigUtils.getConfig(this, "language");
-        hologramsRegistry = new HologramsRegistry(this);
-      } else {
-        Debugger.sendConsoleMsg("&cYou need to install HolographicDisplays to use holograms!");
-      }
-    }
-    if(configPreferences.getOption(ConfigPreferences.Option.UPGRADES_ENABLED)) {
-      entityUpgradesConfig = ConfigUtils.getConfig(this, "entity_upgrades");
-      languageConfig = ConfigUtils.getConfig(this, "language");
-      Upgrade.init(this);
-      UpgradeBuilder.init(this);
-      new EntityUpgradeMenu(this);
-    }
-    userManager = new UserManager(this);
-    new DoorBreakListener(this);
-
-    signManager = new SignManager(this);
-    ArenaRegistry.registerArenas();
-    signManager.loadSigns();
-    signManager.updateSigns();
-    new EventsInitializer().initialize(this);
-    MiscUtils.sendStartUpMessage(this, "VillageDefense", getDescription(), true, true);
-  }
-
-  private void startInitiableClasses() {
-    StatsStorage.init(this);
-    ArenaRegistry.init(this);
-    Utils.init(this);
-    CreatureUtils.init(this);
-    User.init(this);
-    ArenaManager.init(this);
-    PermissionsManager.init(this);
-    SetupInventory.init(this);
-    ArenaUtils.init(this);
-    Arena.init(this);
-  }
-
-  private void setupPluginMetrics() {
-    Metrics metrics = new Metrics(this, 1781);
-
-    metrics.addCustomChart(new org.bstats.charts.SimplePie("database_enabled", () -> String.valueOf(configPreferences
-        .getOption(ConfigPreferences.Option.DATABASE_ENABLED))));
-    metrics.addCustomChart(new org.bstats.charts.SimplePie("locale_used", () -> LanguageManager.getPluginLocale().getPrefix()));
-    metrics.addCustomChart(new org.bstats.charts.SimplePie("update_notifier", () -> {
-      if(getConfig().getBoolean("Update-Notifier.Enabled", true)) {
-        return getConfig().getBoolean("Update-Notifier.Notify-Beta-Versions", true) ? "Enabled with beta notifier" : "Enabled";
-      }
-
-      return getConfig().getBoolean("Update-Notifier.Notify-Beta-Versions", true) ? "Beta notifier only" : "Disabled";
-    }));
-    metrics.addCustomChart(new org.bstats.charts.SimplePie("hooked_addons", () -> {
-      if(getServer().getPluginManager().getPlugin("VillageDefense-Enhancements") != null) {
-        return "Enhancements";
-      }
-      if(getServer().getPluginManager().getPlugin("VillageDefense-CustomKits") != null) {
-        return "Custom Kits";
-      }
-      return "None";
-    }));
-  }
-
-  private void checkUpdate() {
-    if(!getConfig().getBoolean("Update-Notifier.Enabled", true)) {
-      return;
-    }
-    UpdateChecker.init(this, 41869).requestUpdateCheck().whenComplete((result, exception) -> {
-      if(!result.requiresUpdate()) {
-        return;
-      }
-      if(result.getNewestVersion().contains("b")) {
-        if(getConfig().getBoolean("Update-Notifier.Notify-Beta-Versions", true)) {
-          Debugger.sendConsoleMsg("&c[Village Defense] Your software is ready for update! However it's a BETA VERSION. Proceed with caution.");
-          Debugger.sendConsoleMsg("&c[Village Defense] Current version %old%, latest version %new%".replace("%old%", getDescription().getVersion()).replace("%new%",
-              result.getNewestVersion()));
-        }
-        return;
-      }
-      MessageUtils.updateIsHere();
-      Debugger.sendConsoleMsg("&aYour VillageDefense plugin is outdated! Download it to keep with latest changes and fixes.");
-      Debugger.sendConsoleMsg("&aDisable this option in config.yml if you wish.");
-      Debugger.sendConsoleMsg("&eCurrent version: &c" + getDescription().getVersion() + " &eLatest version: &a" + result.getNewestVersion());
-    });
-  }
-
-  private void setupFiles() {
-    for(String fileName : Arrays.asList("arenas", "rewards", "stats", "special_items", "mysql", "kits")) {
-      File file = new File(getDataFolder() + File.separator + fileName + ".yml");
-      if(!file.exists()) {
-        saveResource(fileName + ".yml", false);
-      }
-    }
-  }
-
-  public ChatManager getChatManager() {
-    return chatManager;
-  }
-
-  public UserManager getUserManager() {
-    return userManager;
-  }
-
-  public SpecialItemManager getSpecialItemManager() {
-    return specialItemManager;
-  }
-
-  public RewardsFactory getRewardsHandler() {
-    return rewardsHandler;
-  }
-
-  public HolidayManager getHolidayManager() {
-    return holidayManager;
-  }
-
-  public PartyHandler getPartyHandler() {
-    return partyHandler;
-  }
-
-  public PowerupRegistry getPowerupRegistry() {
-    return powerupRegistry;
-  }
-
-  public ConfigPreferences getConfigPreferences() {
-    return configPreferences;
-  }
-
-  public ArgumentsRegistry getArgumentsRegistry() {
-    return registry;
-  }
-
-  public EnemySpawnerRegistry getEnemySpawnerRegistry() {
+  public EnemySpawnerRegistryLegacy getEnemySpawnerRegistry() {
     return enemySpawnerRegistry;
   }
 
   @Override
-  public void onDisable() {
-    if(forceDisable) {
-      return;
-    }
-    Debugger.debug("System disable initialized");
-    long start = System.currentTimeMillis();
+  public ArenaRegistry getArenaRegistry() {
+    return arenaRegistry;
+  }
 
-    Bukkit.getLogger().removeHandler(exceptionLogHandler);
-    for(Arena arena : ArenaRegistry.getArenas()) {
-      arena.getScoreboardManager().stopAllScoreboards();
+  @Override
+  public ArgumentsRegistry getArgumentsRegistry() {
+    return argumentsRegistry;
+  }
 
-      for(Player player : arena.getPlayers()) {
-        arena.teleportToEndLocation(player);
-        player.setFlySpeed(0.1f);
-        player.getInventory().clear();
-        player.getInventory().setArmorContents(null);
-        player.getActivePotionEffects().forEach(pe -> player.removePotionEffect(pe.getType()));
-        arena.doBarAction(Arena.BarAction.REMOVE, player);
-        if(configPreferences.getOption(ConfigPreferences.Option.INVENTORY_MANAGER_ENABLED)) {
-          InventorySerializer.loadInventory(this, player);
-        }
-      }
+  @Override
+  public ArenaManager getArenaManager() {
+    return arenaManager;
+  }
 
-      arena.getMapRestorerManager().fullyRestoreArena();
-    }
-    userManager.getDatabase().disable();
-    if(holographicEnabled) {
-      if(configPreferences.getOption(ConfigPreferences.Option.HOLOGRAMS_ENABLED)) {
-        hologramsRegistry.disableHolograms();
-      }
-      HologramsAPI.getHolograms(this).forEach(Hologram::delete);
-    }
-    Debugger.debug("System disable finished took {0}ms", System.currentTimeMillis() - start);
+  @Override
+  public PluginSetupCategoryManager getSetupCategoryManager(SetupInventory setupInventory) {
+    return new SetupCategoryManager(setupInventory);
   }
 }

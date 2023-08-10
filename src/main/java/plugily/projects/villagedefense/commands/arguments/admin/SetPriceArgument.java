@@ -1,38 +1,39 @@
 /*
- * Village Defense - Protect villagers from hordes of zombies
- * Copyright (C) 2021  Plugily Projects - maintained by 2Wild4You, Tigerpanzer_02 and contributors
+ *  Village Defense - Protect villagers from hordes of zombies
+ *  Copyright (c) 2023 Plugily Projects - maintained by Tigerpanzer_02 and contributors
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 package plugily.projects.villagedefense.commands.arguments.admin;
 
-import java.util.List;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import plugily.projects.commonsbox.minecraft.compat.VersionUtils;
-import plugily.projects.commonsbox.minecraft.item.ItemBuilder;
-import plugily.projects.commonsbox.minecraft.misc.stuff.ComplementAccessor;
+import plugily.projects.minigamesbox.classic.commands.arguments.data.CommandArgument;
+import plugily.projects.minigamesbox.classic.commands.arguments.data.LabelData;
+import plugily.projects.minigamesbox.classic.commands.arguments.data.LabeledCommandArgument;
+import plugily.projects.minigamesbox.classic.handlers.language.MessageBuilder;
+import plugily.projects.minigamesbox.classic.utils.helper.ItemBuilder;
+import plugily.projects.minigamesbox.classic.utils.misc.complement.ComplementAccessor;
+import plugily.projects.minigamesbox.classic.utils.version.VersionUtils;
 import plugily.projects.villagedefense.commands.arguments.ArgumentsRegistry;
-import plugily.projects.villagedefense.commands.arguments.data.CommandArgument;
-import plugily.projects.villagedefense.commands.arguments.data.LabelData;
-import plugily.projects.villagedefense.commands.arguments.data.LabeledCommandArgument;
-import plugily.projects.villagedefense.handlers.language.Messages;
+
+import java.util.List;
 
 /**
  * @author Plajer
@@ -48,34 +49,37 @@ public class SetPriceArgument {
       @Override
       public void execute(CommandSender sender, String[] args) {
         if(args.length == 1) {
-          sender.sendMessage(registry.getPlugin().getChatManager().getPrefix() + ChatColor.RED + "Please type price of item!");
+          new MessageBuilder(ChatColor.RED + "Please type price of item!").prefix().send(sender);
           return;
         }
+
         Player player = (Player) sender;
         ItemStack item = VersionUtils.getItemInHand(player);
-        if(item == null || item.getType().equals(Material.AIR)) {
-          player.sendMessage(registry.getPlugin().getChatManager().getPrefix() + registry.getPlugin().getChatManager().colorMessage(Messages.COMMANDS_HOLD_ANY_ITEM));
+        if(item == null || item.getType() == Material.AIR) {
+          new MessageBuilder("COMMANDS_HOLD_ANY_ITEM").asKey().player(player).sendPlayer();
           return;
         }
-        if(!item.hasItemMeta() || !item.getItemMeta().hasLore()) {
-          VersionUtils.setItemInHand(player, new ItemBuilder(item)
-              .lore(ChatColor.GOLD + args[1] + " " + registry.getPlugin().getChatManager().colorMessage(Messages.SHOP_MESSAGES_CURRENCY_IN_SHOP)).build());
-          player.sendMessage(registry.getPlugin().getChatManager().getPrefix() + registry.getPlugin().getChatManager().colorMessage(Messages.COMMANDS_COMMAND_EXECUTED));
-          return;
-        }
-        //check any price from lore
+
         ItemMeta meta = item.getItemMeta();
+        if(meta == null || !meta.hasLore()) {
+          VersionUtils.setItemInHand(player, new ItemBuilder(item)
+              .lore(ChatColor.GOLD + args[1] + " " + new MessageBuilder("IN_GAME_MESSAGES_VILLAGE_SHOP_CURRENCY").asKey().build()).build());
+          new MessageBuilder("COMMANDS_COMMAND_EXECUTED").asKey().player(player).sendPlayer();
+          return;
+        }
+
+        //check any price from lore
         List<String> lore = ComplementAccessor.getComplement().getLore(meta);
         for(String search : lore) {
-          if(search.contains(registry.getPlugin().getChatManager().colorMessage(Messages.SHOP_MESSAGES_CURRENCY_IN_SHOP))) {
+          if(search.contains(new MessageBuilder("IN_GAME_MESSAGES_VILLAGE_SHOP_CURRENCY").asKey().build())) {
             lore.remove(search);
             break;
           }
         }
-        lore.add(0, ChatColor.GOLD + args[1] + " " + registry.getPlugin().getChatManager().colorMessage(Messages.SHOP_MESSAGES_CURRENCY_IN_SHOP));
+        lore.add(0, ChatColor.GOLD + args[1] + " " + new MessageBuilder("IN_GAME_MESSAGES_VILLAGE_SHOP_CURRENCY").asKey().build());
         ComplementAccessor.getComplement().setLore(meta, lore);
         item.setItemMeta(meta);
-        player.sendMessage(registry.getPlugin().getChatManager().getPrefix() + registry.getPlugin().getChatManager().colorMessage(Messages.COMMANDS_COMMAND_EXECUTED));
+        new MessageBuilder("COMMANDS_COMMAND_EXECUTED").asKey().player(player).sendPlayer();
       }
     });
   }

@@ -1,24 +1,23 @@
 /*
- * Village Defense - Protect villagers from hordes of zombies
- * Copyright (C) 2021  Plugily Projects - maintained by 2Wild4You, Tigerpanzer_02 and contributors
+ *  Village Defense - Protect villagers from hordes of zombies
+ *  Copyright (c) 2023 Plugily Projects - maintained by Tigerpanzer_02 and contributors
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 package plugily.projects.villagedefense.events;
 
-import java.util.ArrayList;
 import org.bukkit.entity.Creature;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -31,13 +30,14 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
-import plugily.projects.commonsbox.minecraft.compat.VersionUtils;
-import plugily.projects.commonsbox.minecraft.compat.events.api.CBPlayerInteractEntityEvent;
+import plugily.projects.minigamesbox.classic.utils.version.VersionUtils;
+import plugily.projects.minigamesbox.classic.utils.version.events.api.PlugilyPlayerInteractEntityEvent;
+import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.arena.Arena;
-import plugily.projects.villagedefense.arena.ArenaRegistry;
 import plugily.projects.villagedefense.creatures.CreatureUtils;
 import plugily.projects.villagedefense.handlers.upgrade.EntityUpgradeMenu;
-import plugily.projects.villagedefense.utils.Utils;
+
+import java.util.ArrayList;
 
 /**
  * @author Plajer
@@ -47,42 +47,45 @@ import plugily.projects.villagedefense.utils.Utils;
 public class EntityUpgradeListener implements Listener {
 
   private final EntityUpgradeMenu upgradeMenu;
+  private final Main plugin;
+
 
   public EntityUpgradeListener(EntityUpgradeMenu upgradeMenu) {
     this.upgradeMenu = upgradeMenu;
+    this.plugin = upgradeMenu.getPlugin();
     upgradeMenu.getPlugin().getServer().getPluginManager().registerEvents(this, upgradeMenu.getPlugin());
   }
 
   @EventHandler
-  public void onDamage(EntityDamageByEntityEvent e) {
-    if(!(e.getDamager() instanceof LivingEntity) || !(e.getDamager() instanceof IronGolem)) {
+  public void onDamage(EntityDamageByEntityEvent event) {
+    if(!(event.getDamager() instanceof LivingEntity) || !(event.getDamager() instanceof IronGolem)) {
       return;
     }
-    switch(e.getDamager().getType()) {
+    switch(event.getDamager().getType()) {
       case IRON_GOLEM:
-        for(Arena arena : ArenaRegistry.getArenas()) {
-          if(!arena.getIronGolems().contains(e.getDamager())) {
+        for(Arena arena : plugin.getArenaRegistry().getPluginArenas()) {
+          if(!arena.getIronGolems().contains(event.getDamager())) {
             continue;
           }
-          e.setDamage(e.getDamage() + upgradeMenu.getTier(e.getDamager(), upgradeMenu.getUpgrade("Damage")) * 2);
+          event.setDamage(event.getDamage() + upgradeMenu.getTier(event.getDamager(), upgradeMenu.getUpgrade("Damage")) * 2);
         }
         break;
       case WOLF:
-        for(Arena arena : ArenaRegistry.getArenas()) {
-          if(!arena.getWolves().contains(e.getDamager())) {
+        for(Arena arena : plugin.getArenaRegistry().getPluginArenas()) {
+          if(!arena.getWolves().contains(event.getDamager())) {
             continue;
           }
-          int tier = upgradeMenu.getTier(e.getDamager(), upgradeMenu.getUpgrade("Swarm-Awareness"));
+          int tier = upgradeMenu.getTier(event.getDamager(), upgradeMenu.getUpgrade("Swarm-Awareness"));
           if(tier == 0) {
             return;
           }
           double multiplier = 1;
-          for(Entity en : Utils.getNearbyEntities(e.getDamager().getLocation(), 3)) {
-            if(en instanceof Wolf) {
+          for(Entity entity : plugin.getBukkitHelper().getNearbyEntities(event.getDamager().getLocation(), 3)) {
+            if(entity instanceof Wolf) {
               multiplier += tier * 0.2;
             }
           }
-          e.setDamage(e.getDamage() * multiplier);
+          event.setDamage(event.getDamage() * multiplier);
         }
         break;
       default:
@@ -91,42 +94,45 @@ public class EntityUpgradeListener implements Listener {
   }
 
   @EventHandler
-  public void onFinalDefense(EntityDeathEvent e) {
-    LivingEntity entity = e.getEntity();
-    if(!(entity instanceof IronGolem)) {
+  public void onFinalDefense(EntityDeathEvent event) {
+    if(event.getEntityType() != EntityType.IRON_GOLEM) {
       return;
     }
-    for(Arena arena : ArenaRegistry.getArenas()) {
-      if(!arena.getIronGolems().contains(entity)) {
+
+    LivingEntity livingEntity = event.getEntity();
+
+    for(Arena arena : plugin.getArenaRegistry().getPluginArenas()) {
+      if(!arena.getIronGolems().contains(livingEntity)) {
         continue;
       }
-      int tier = upgradeMenu.getTier(entity, upgradeMenu.getUpgrade("Final-Defense"));
+      int tier = upgradeMenu.getTier(livingEntity, upgradeMenu.getUpgrade("Final-Defense"));
       if(tier == 0) {
         return;
       }
-      VersionUtils.sendParticles("EXPLOSION_HUGE", arena.getPlayers(), entity.getLocation(), 5);
-      for(Entity en : Utils.getNearbyEntities(entity.getLocation(), tier * 5)) {
+      VersionUtils.sendParticles("EXPLOSION_HUGE", arena.getPlayers(), livingEntity.getLocation(), 5);
+      for(Entity en : plugin.getBukkitHelper().getNearbyEntities(livingEntity.getLocation(), tier * 5)) {
         if(CreatureUtils.isEnemy(en)) {
-          ((Creature) en).damage(10000.0, entity);
+          ((Creature) en).damage(10000.0, livingEntity);
         }
       }
       for(Creature zombie : new ArrayList<>(arena.getEnemies())) {
         zombie.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 5, 0));
-        zombie.damage(0.5, entity);
+        zombie.damage(0.5, livingEntity);
       }
     }
   }
 
   @EventHandler
-  public void onEntityClick(CBPlayerInteractEntityEvent e) {
-    if(ArenaRegistry.getArena(e.getPlayer()) == null || upgradeMenu.getPlugin().getUserManager().getUser(e.getPlayer()).isSpectator()
-        || (e.getRightClicked().getType() != EntityType.IRON_GOLEM && e.getRightClicked().getType() != EntityType.WOLF) || e.getRightClicked().getCustomName() == null) {
+  public void onEntityClick(PlugilyPlayerInteractEntityEvent event) {
+    if((event.getRightClicked().getType() != EntityType.IRON_GOLEM && event.getRightClicked().getType() != EntityType.WOLF)
+        || VersionUtils.checkOffHand(event.getHand()) || !event.getPlayer().isSneaking()
+        || event.getRightClicked().getCustomName() == null) {
       return;
     }
-    if(VersionUtils.checkOffHand(e.getHand()) || !e.getPlayer().isSneaking()) {
-      return;
+
+    if(plugin.getArenaRegistry().getArena(event.getPlayer()) != null && !upgradeMenu.getPlugin().getUserManager().getUser(event.getPlayer()).isSpectator()) {
+      upgradeMenu.openUpgradeMenu((LivingEntity) event.getRightClicked(), event.getPlayer());
     }
-    upgradeMenu.openUpgradeMenu((LivingEntity) e.getRightClicked(), e.getPlayer());
   }
 
 }

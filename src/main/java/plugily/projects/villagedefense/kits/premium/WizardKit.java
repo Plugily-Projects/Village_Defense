@@ -1,25 +1,23 @@
 /*
- * Village Defense - Protect villagers from hordes of zombies
- * Copyright (C) 2021  Plugily Projects - maintained by 2Wild4You, Tigerpanzer_02 and contributors
+ *  Village Defense - Protect villagers from hordes of zombies
+ *  Copyright (c) 2023 Plugily Projects - maintained by Tigerpanzer_02 and contributors
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 package plugily.projects.villagedefense.kits.premium;
 
-import java.util.ArrayList;
-import java.util.List;
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.Location;
@@ -35,21 +33,20 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
-import plugily.projects.commonsbox.minecraft.compat.VersionUtils;
-import plugily.projects.commonsbox.minecraft.compat.events.api.CBPlayerInteractEvent;
-import plugily.projects.commonsbox.minecraft.compat.xseries.XMaterial;
-import plugily.projects.commonsbox.minecraft.helper.ArmorHelper;
-import plugily.projects.commonsbox.minecraft.item.ItemBuilder;
-import plugily.projects.commonsbox.minecraft.item.ItemUtils;
-import plugily.projects.commonsbox.minecraft.misc.stuff.ComplementAccessor;
-import plugily.projects.villagedefense.arena.ArenaRegistry;
+import plugily.projects.minigamesbox.classic.handlers.language.MessageBuilder;
+import plugily.projects.minigamesbox.classic.kits.basekits.PremiumKit;
+import plugily.projects.minigamesbox.classic.user.User;
+import plugily.projects.minigamesbox.classic.utils.helper.ArmorHelper;
+import plugily.projects.minigamesbox.classic.utils.helper.ItemBuilder;
+import plugily.projects.minigamesbox.classic.utils.helper.ItemUtils;
+import plugily.projects.minigamesbox.classic.utils.misc.complement.ComplementAccessor;
+import plugily.projects.minigamesbox.classic.utils.version.VersionUtils;
+import plugily.projects.minigamesbox.classic.utils.version.events.api.PlugilyPlayerInteractEvent;
+import plugily.projects.minigamesbox.classic.utils.version.xseries.XMaterial;
 import plugily.projects.villagedefense.creatures.CreatureUtils;
-import plugily.projects.villagedefense.handlers.PermissionsManager;
-import plugily.projects.villagedefense.handlers.language.Messages;
-import plugily.projects.villagedefense.kits.KitRegistry;
-import plugily.projects.villagedefense.kits.basekits.PremiumKit;
-import plugily.projects.villagedefense.user.User;
-import plugily.projects.villagedefense.utils.Utils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Plajer
@@ -61,27 +58,28 @@ public class WizardKit extends PremiumKit implements Listener {
   private final List<Player> wizardsOnDuty = new ArrayList<>();
 
   public WizardKit() {
-    setName(getPlugin().getChatManager().colorMessage(Messages.KITS_WIZARD_NAME));
-    List<String> description = Utils.splitString(getPlugin().getChatManager().colorMessage(Messages.KITS_WIZARD_DESCRIPTION), 40);
-    setDescription(description.toArray(new String[0]));
-    KitRegistry.registerKit(this);
+    setName(new MessageBuilder("KIT_CONTENT_WIZARD_NAME").asKey().build());
+    setKey("Wizard");
+    List<String> description = getPlugin().getLanguageManager().getLanguageListFromKey("KIT_CONTENT_WIZARD_DESCRIPTION");
+    setDescription(description);
+    getPlugin().getKitRegistry().registerKit(this);
     getPlugin().getServer().getPluginManager().registerEvents(this, getPlugin());
   }
 
   @Override
   public boolean isUnlockedByPlayer(Player player) {
-    return PermissionsManager.isPremium(player) || player.hasPermission("villagedefense.kit.wizard");
+    return getPlugin().getPermissionsManager().hasPermissionString("KIT_PREMIUM_UNLOCK", player) || player.hasPermission("villagedefense.kit.wizard");
   }
 
   @Override
   public void giveKitItems(Player player) {
     player.getInventory().addItem(new ItemBuilder(getMaterial())
-        .name(getPlugin().getChatManager().colorMessage(Messages.KITS_WIZARD_STAFF_ITEM_NAME))
-        .lore(Utils.splitString(getPlugin().getChatManager().colorMessage(Messages.KITS_WIZARD_STAFF_ITEM_LORE), 40))
+        .name(new MessageBuilder("KIT_CONTENT_WIZARD_GAME_ITEM_WAND_NAME").asKey().build())
+        .lore(getPlugin().getLanguageManager().getLanguageListFromKey("KIT_CONTENT_WIZARD_GAME_ITEM_WAND_DESCRIPTION"))
         .build());
     player.getInventory().addItem(new ItemBuilder(new ItemStack(XMaterial.INK_SAC.parseMaterial(), 4))
-        .name(getPlugin().getChatManager().colorMessage(Messages.KITS_WIZARD_ESSENCE_ITEM_NAME))
-        .lore(Utils.splitString(getPlugin().getChatManager().colorMessage(Messages.KITS_WIZARD_ESSENCE_ITEM_LORE), 40))
+        .name(new MessageBuilder("KIT_CONTENT_WIZARD_GAME_ITEM_ESSENCE_NAME").asKey().build())
+        .lore(getPlugin().getLanguageManager().getLanguageListFromKey("KIT_CONTENT_WIZARD_GAME_ITEM_ESSENCE_DESCRIPTION"))
         .build());
 
     ArmorHelper.setColouredArmor(Color.GRAY, player);
@@ -97,8 +95,8 @@ public class WizardKit extends PremiumKit implements Listener {
   @Override
   public void reStock(Player player) {
     player.getInventory().addItem(new ItemBuilder(new ItemStack(XMaterial.INK_SAC.parseMaterial()))
-        .name(getPlugin().getChatManager().colorMessage(Messages.KITS_WIZARD_ESSENCE_ITEM_NAME))
-        .lore(Utils.splitString(getPlugin().getChatManager().colorMessage(Messages.KITS_WIZARD_ESSENCE_ITEM_LORE), 40))
+        .name(new MessageBuilder("KIT_CONTENT_WIZARD_GAME_ITEM_ESSENCE_NAME").asKey().build())
+        .lore(getPlugin().getLanguageManager().getLanguageListFromKey("KIT_CONTENT_WIZARD_GAME_ITEM_ESSENCE_DESCRIPTION"))
         .build());
   }
 
@@ -108,31 +106,33 @@ public class WizardKit extends PremiumKit implements Listener {
   }
 
   @EventHandler
-  public void onWizardDamage(EntityDamageByEntityEvent e) {
-    if(!(e.getDamager() instanceof Creature && e.getEntity() instanceof Player)) {
+  public void onWizardDamage(EntityDamageByEntityEvent event) {
+    if(!(event.getDamager() instanceof Creature && event.getEntity() instanceof Player)) {
       return;
     }
-    if(!wizardsOnDuty.contains(e.getEntity()) || ArenaRegistry.getArena((Player) e.getEntity()) == null) {
+    if(!wizardsOnDuty.contains(event.getEntity()) || getPlugin().getArenaRegistry().getArena((Player) event.getEntity()) == null) {
       return;
     }
-    ((Creature) e.getDamager()).damage(2.0, e.getEntity());
+    ((Creature) event.getDamager()).damage(2.0, event.getEntity());
   }
 
   @EventHandler
-  public void onStaffUse(CBPlayerInteractEvent e) {
-    User user = getPlugin().getUserManager().getUser(e.getPlayer());
-    if(ArenaRegistry.getArena(e.getPlayer()) == null) {
+  public void onStaffUse(PlugilyPlayerInteractEvent event) {
+    if(getPlugin().getArenaRegistry().getArena(event.getPlayer()) == null) {
       return;
     }
-    if(!(user.getKit() instanceof WizardKit) || user.isSpectator()) {
+
+    User user = getPlugin().getUserManager().getUser(event.getPlayer());
+    if(user.isSpectator() || !(user.getKit() instanceof WizardKit)) {
       return;
     }
-    ItemStack stack = VersionUtils.getItemInHand(e.getPlayer());
+
+    ItemStack stack = VersionUtils.getItemInHand(event.getPlayer());
     if(!ItemUtils.isItemStackNamed(stack)) {
       return;
     }
-    Player player = e.getPlayer();
-    if(ComplementAccessor.getComplement().getDisplayName(stack.getItemMeta()).equals(getPlugin().getChatManager().colorMessage(Messages.KITS_WIZARD_ESSENCE_ITEM_NAME))) {
+    Player player = event.getPlayer();
+    if(ComplementAccessor.getComplement().getDisplayName(stack.getItemMeta()).equals(new MessageBuilder("KIT_CONTENT_WIZARD_GAME_ITEM_ESSENCE_NAME").asKey().build())) {
       if(!user.checkCanCastCooldownAndMessage("essence")) {
         return;
       }
@@ -142,12 +142,12 @@ public class WizardKit extends PremiumKit implements Listener {
       } else {
         player.setHealth(VersionUtils.getMaxHealth(player));
       }
-      Utils.takeOneItem(player, stack);
+      getPlugin().getBukkitHelper().takeOneItem(player, stack);
       VersionUtils.setGlowing(player, true);
       applyRageParticles(player);
-      for(Entity en : player.getNearbyEntities(2, 2, 2)) {
-        if(CreatureUtils.isEnemy(en)) {
-          ((Creature) en).damage(9.0, player);
+      for(Entity entity : player.getNearbyEntities(2, 2, 2)) {
+        if(CreatureUtils.isEnemy(entity)) {
+          ((Creature) entity).damage(9.0, player);
         }
       }
       Bukkit.getScheduler().runTaskLater(getPlugin(), () -> {
@@ -155,7 +155,7 @@ public class WizardKit extends PremiumKit implements Listener {
         wizardsOnDuty.remove(player);
       }, 20L * 15);
       user.setCooldown("essence", getKitsConfig().getInt("Kit-Cooldown.Wizard.Essence", 15));
-    } else if(ComplementAccessor.getComplement().getDisplayName(stack.getItemMeta()).equals(getPlugin().getChatManager().colorMessage(Messages.KITS_WIZARD_STAFF_ITEM_NAME))) {
+    } else if(ComplementAccessor.getComplement().getDisplayName(stack.getItemMeta()).equals(new MessageBuilder("KIT_CONTENT_WIZARD_GAME_ITEM_WAND_NAME").asKey().build())) {
       if(!user.checkCanCastCooldownAndMessage("wizard_staff")) {
         return;
       }
@@ -171,7 +171,7 @@ public class WizardKit extends PremiumKit implements Listener {
         Location loc = player.getLocation();
         loc.add(0, 0.8, 0);
         VersionUtils.sendParticles("VILLAGER_ANGRY", null, loc, 5, 0, 0, 0);
-        if(!wizardsOnDuty.contains(player) || !ArenaRegistry.isInArena(player)) {
+        if(!wizardsOnDuty.contains(player) || !getPlugin().getArenaRegistry().isInArena(player)) {
           cancel();
         }
       }

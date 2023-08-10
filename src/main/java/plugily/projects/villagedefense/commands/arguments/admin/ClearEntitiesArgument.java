@@ -1,42 +1,40 @@
 /*
- * Village Defense - Protect villagers from hordes of zombies
- * Copyright (C) 2021  Plugily Projects - maintained by 2Wild4You, Tigerpanzer_02 and contributors
+ *  Village Defense - Protect villagers from hordes of zombies
+ *  Copyright (c) 2023 Plugily Projects - maintained by Tigerpanzer_02 and contributors
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 package plugily.projects.villagedefense.commands.arguments.admin;
 
-import java.util.Arrays;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.IronGolem;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Villager;
 import org.bukkit.entity.Wolf;
-import plugily.projects.commonsbox.minecraft.compat.VersionUtils;
+import plugily.projects.minigamesbox.classic.commands.arguments.data.CommandArgument;
+import plugily.projects.minigamesbox.classic.commands.arguments.data.LabelData;
+import plugily.projects.minigamesbox.classic.commands.arguments.data.LabeledCommandArgument;
+import plugily.projects.minigamesbox.classic.commands.completion.CompletableArgument;
+import plugily.projects.minigamesbox.classic.handlers.language.MessageBuilder;
+import plugily.projects.minigamesbox.classic.utils.version.VersionUtils;
 import plugily.projects.villagedefense.arena.Arena;
-import plugily.projects.villagedefense.arena.ArenaRegistry;
 import plugily.projects.villagedefense.arena.ArenaUtils;
-import plugily.projects.villagedefense.arena.options.ArenaOption;
 import plugily.projects.villagedefense.commands.arguments.ArgumentsRegistry;
-import plugily.projects.villagedefense.commands.arguments.data.CommandArgument;
-import plugily.projects.villagedefense.commands.arguments.data.LabelData;
-import plugily.projects.villagedefense.commands.arguments.data.LabeledCommandArgument;
-import plugily.projects.villagedefense.commands.completion.CompletableArgument;
-import plugily.projects.villagedefense.handlers.language.Messages;
-import plugily.projects.villagedefense.utils.Utils;
+
+import java.util.Arrays;
 
 /**
  * @author Plajer
@@ -53,19 +51,19 @@ public class ClearEntitiesArgument {
                 + "&7• VILLAGER - clear alive villagers\n&7• GOLEM - clear spawned golems\n&7• WOLF - clear spawned wolves\n&6Permission: &7villagedefense.admin.clear")) {
       @Override
       public void execute(CommandSender sender, String[] args) {
-        if(!Utils.checkIsInGameInstance((Player) sender)) {
+        if(!registry.getPlugin().getBukkitHelper().checkIsInGameInstance((Player) sender)) {
           return;
         }
         if(args.length == 1) {
-          sender.sendMessage(registry.getPlugin().getChatManager().getPrefix() + ChatColor.RED + "Please type valid mob type to clear: VILLAGER, ZOMBIE, IRON_GOLEM");
+          new MessageBuilder(ChatColor.RED + "Please type valid mob type to clear: VILLAGER, ZOMBIE, IRON_GOLEM, WOLF").prefix().send(sender);
           return;
         }
-        Arena arena = ArenaRegistry.getArena((Player) sender);
+        Arena arena = (Arena) registry.getPlugin().getArenaRegistry().getArena((Player) sender);
         String clearMessage;
         switch(args[1].toLowerCase()) {
           case "villager":
             if(arena.getVillagers().isEmpty()) {
-              sender.sendMessage(registry.getPlugin().getChatManager().colorMessage(Messages.KITS_CLEANER_NOTHING_TO_CLEAN));
+              new MessageBuilder("KIT_CONTENT_CLEANER_CLEANED_NOTHING").asKey().send(sender);
               return;
             }
             for(Villager villager : arena.getVillagers()) {
@@ -73,22 +71,22 @@ public class ClearEntitiesArgument {
               villager.remove();
             }
             arena.getVillagers().clear();
-            Utils.playSound(((Player) sender).getLocation(), "ENTITY_VILLAGER_DEATH", "ENTITY_VILLAGER_DEATH");
-            clearMessage = registry.getPlugin().getChatManager().colorMessage(Messages.ADMIN_MESSAGES_REMOVED_VILLAGERS);
+            VersionUtils.playSound(((Player) sender).getLocation(), "ENTITY_VILLAGER_DEATH");
+            clearMessage = new MessageBuilder("IN_GAME_MESSAGES_ADMIN_REMOVED_VILLAGERS").asKey().build();
             break;
           case "zombie":
             if(arena.getEnemies().isEmpty()) {
-              sender.sendMessage(registry.getPlugin().getChatManager().colorMessage(Messages.KITS_CLEANER_NOTHING_TO_CLEAN));
+              new MessageBuilder("KIT_CONTENT_CLEANER_CLEANED_NOTHING").asKey().send(sender);
               return;
             }
             ArenaUtils.removeSpawnedEnemies(arena);
-            arena.setOptionValue(ArenaOption.ZOMBIES_TO_SPAWN, 0);
-            Utils.playSound(((Player) sender).getLocation(), "ENTITY_ZOMBIE_DEATH", "ENTITY_ZOMBIE_DEATH");
-            clearMessage = registry.getPlugin().getChatManager().colorMessage(Messages.ADMIN_MESSAGES_REMOVED_ZOMBIES);
+            arena.setArenaOption("ZOMBIES_TO_SPAWN", 0);
+            VersionUtils.playSound(((Player) sender).getLocation(), "ENTITY_ZOMBIE_DEATH");
+            clearMessage = new MessageBuilder("IN_GAME_MESSAGES_ADMIN_REMOVED_ZOMBIES").asKey().build();
             break;
           case "golem":
             if(arena.getIronGolems().isEmpty()) {
-              sender.sendMessage(registry.getPlugin().getChatManager().colorMessage(Messages.KITS_CLEANER_NOTHING_TO_CLEAN));
+              new MessageBuilder("KIT_CONTENT_CLEANER_CLEANED_NOTHING").asKey().send(sender);
               return;
             }
             for(IronGolem golem : arena.getIronGolems()) {
@@ -96,12 +94,12 @@ public class ClearEntitiesArgument {
               golem.remove();
             }
             arena.getIronGolems().clear();
-            Utils.playSound(((Player) sender).getLocation(), "ENTITY_IRONGOLEM_DEATH", "ENTITY_IRON_GOLEM_DEATH");
-            clearMessage = registry.getPlugin().getChatManager().colorMessage(Messages.ADMIN_MESSAGES_REMOVED_GOLEMS);
+            VersionUtils.playSound(((Player) sender).getLocation(), "ENTITY_IRONGOLEM_DEATH");
+            clearMessage = new MessageBuilder("IN_GAME_MESSAGES_ADMIN_REMOVED_GOLEMS").asKey().build();
             break;
           case "wolf":
             if(arena.getWolves().isEmpty()) {
-              sender.sendMessage(registry.getPlugin().getChatManager().colorMessage(Messages.KITS_CLEANER_NOTHING_TO_CLEAN));
+              new MessageBuilder("KIT_CONTENT_CLEANER_CLEANED_NOTHING").asKey().send(sender);
               return;
             }
             for(Wolf wolf : arena.getWolves()) {
@@ -109,18 +107,14 @@ public class ClearEntitiesArgument {
               wolf.remove();
             }
             arena.getWolves().clear();
-            Utils.playSound(((Player) sender).getLocation(), "ENTITY_WOLF_DEATH", "ENTITY_WOLF_DEATH");
-            clearMessage = registry.getPlugin().getChatManager().colorMessage(Messages.ADMIN_MESSAGES_REMOVED_WOLVES);
+            VersionUtils.playSound(((Player) sender).getLocation(), "ENTITY_WOLF_DEATH");
+            clearMessage = new MessageBuilder("IN_GAME_MESSAGES_ADMIN_REMOVED_WOLVES").asKey().build();
             break;
           default:
-            sender.sendMessage(registry.getPlugin().getChatManager().getPrefix() + registry.getPlugin().getChatManager().colorMessage(Messages.COMMANDS_WRONG_USAGE)
-                .replace("%correct%", "VILLAGER, ZOMBIE, GOLEM, WOLF"));
+            new MessageBuilder("COMMANDS_WRONG_USAGE").asKey().value("VILLAGER, ZOMBIE, GOLEM, WOLF").send(sender);
             return;
         }
-        String message = registry.getPlugin().getChatManager().formatMessage(arena, clearMessage, (Player) sender);
-        for(Player loopPlayer : arena.getPlayers()) {
-          loopPlayer.sendMessage(registry.getPlugin().getChatManager().getPrefix() + message);
-        }
+        new MessageBuilder(clearMessage).player((Player) sender).arena(arena).sendArena();
       }
     });
   }
