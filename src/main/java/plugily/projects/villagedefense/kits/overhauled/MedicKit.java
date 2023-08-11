@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package plugily.projects.villagedefense.kits.premium;
+package plugily.projects.villagedefense.kits.overhauled;
 
 import org.bukkit.Color;
 import org.bukkit.EntityEffect;
@@ -231,7 +231,7 @@ public class MedicKit extends PremiumKit implements Listener, AbilitySource {
     int castTime = 10;
     user.setCooldown("medic_aura_running", castTime);
     KitHelper.scheduleAbilityCooldown(stack, user.getPlayer(), castTime, cooldown);
-    onAuraCast(user);
+    onAuraCast(user, castTime);
   }
 
   private int getAuraCooldown(Arena arena) {
@@ -246,7 +246,7 @@ public class MedicKit extends PremiumKit implements Listener, AbilitySource {
     }
   }
 
-  public void onAuraCast(User user) {
+  public void onAuraCast(User user, int castTime) {
     Player player = user.getPlayer();
 
     List<String> messages = getPlugin().getLanguageManager().getLanguageListFromKey(LANGUAGE_ACCESSOR + "GAME_ITEM_AURA_ACTIVE_ACTION_BAR");
@@ -284,7 +284,7 @@ public class MedicKit extends PremiumKit implements Listener, AbilitySource {
             healingMessageIndex = 0;
           }
         }
-        if(tick >= 20 * 10 || !getPlugin().getArenaRegistry().isInArena(user.getPlayer()) || user.isSpectator()) {
+        if(tick >= 20 * castTime || !getPlugin().getArenaRegistry().isInArena(user.getPlayer()) || user.isSpectator()) {
           //reset action bar
           VersionUtils.sendActionBar(player, "");
           cancel();

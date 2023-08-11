@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package plugily.projects.villagedefense.kits.premium;
+package plugily.projects.villagedefense.kits.overhauled;
 
 import org.bukkit.Bukkit;
 import org.bukkit.EntityEffect;

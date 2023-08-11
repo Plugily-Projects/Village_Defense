@@ -422,14 +422,6 @@ Kit:
         - "Start off with 6 more hearts!"
         - "Don't be afraid!"
         - "You have plenty hearts left to lose!"
-    Worker:
-      Name: "&6Worker"
-      Description:
-        - "Get each round a door and start off"
-        - "with 2 additional doors. This way you"
-        - "can replace the doors!"
-      Game-Item:
-        Chat: "&aDoor placed!"
     Dog-Friend:
       Name: "&bDog Friend"
       Description:
@@ -557,26 +549,63 @@ Kit:
       Name: "&bShotbow Master"
       Description:
         - "You invented a crazy shotbow!"
-    Blocker:
-      Name: "&bBlocker"
-      Description:
-        - "Hold the zombies back with"
-        - "your special barriers. These"
-        - "barriers last for 10 seconds"
-      Game-Item:
-        Name: "Fence"
-        Description:
-          - "Place this barrier to hold back"
-          - "zombies! These barriers last for 10 seconds"
-      Place:
-        Success: "&aBarrier placed!"
-        Fail: "&cUnable to place barrier here"
     Premium-Hardcore:
       Name: "&bPremium Hardcore Master"
       Description:
         - "One hit most zombies with your OP sword!"
         - "However be careful. this kit is only for"
         - "the pros! Do not use it if you aren't a pro!"
+    Builder:
+      Name: "&6Builder"
+      Description:
+        - "&6&lGAME POWER: &7poor/mediocre/mediocre"
+        - "&6&lCLASS: &7mixed, support"
+        - ""
+        - "&6&lABILITIES:"
+        - "&a&l• RESTOCK (PASSIVE):"
+        - "  &7Receive 1 door every 5/3/2 waves"
+        - "  &7to replace broken ones and receive"
+        - "  &71/2/3 fences every wave to block"
+        - "  &7enemies that last 10/12/14s"
+        - "&a&l• EARTHED:"
+        - "  &7On use every ally cannot be knocked"
+        - "  &7back by any non explosion damage"
+        - "  &7(&c&lCAST TIME 10s&7, &c&lCOOLDOWN 20s&7)"
+        - "&e&l• BLOCKAGE (ULTIMATE)"
+        - "  &7On use enemies cannot damage nor"
+        - "  &7destroy any door on the map"
+        - "  &7(&c&lCAST TIME 15s&7, &c&lCOOLDOWN -/&c&l40/&c&l30s&7)"
+        - "  &7(&c&lUNLOCKED IN MID GAME&7)"
+      Game-Item:
+        Fence:
+          Name: "&6&lBLOCKING FENCE"
+          Description:
+            - "On use block path for enemies"
+            - "that last 10/12/14s"
+        Door:
+          Name: "&6&lREPLACEABLE DOOR"
+          Description:
+            - "Replace a broken door with this one!"
+        Earthed:
+          Name: "&6&lEARTHED"
+          Description:
+            - "On use every ally cannot be knocked"
+            - "back by any non explosion damage"
+            - "&7(&c&lCAST TIME 10s&7, &c&lCOOLDOWN 20s&7)"
+          Activate: "&7Everyone is now unshaken!"
+          Active-Action-Bar:
+            - "&e&lEARTHED ACTIVE &7(%number%s)"
+            - "&c&lEARTHED ACTIVE &7(%number%s)"
+          Knock-Protected-By-Action-Bar:
+            - "&e&lYOU'RE KNOCKBACK PROTECTED BY &7%player%"
+            - "&c&lYOU'RE KNOCKBACK PROTECTED BY &7%player%"
+        Blockage:
+          Name: "&6&lBLOCKAGE &7(Ultimate)"
+          Description:
+            - "On use enemies cannot damage nor"
+            - "destroy any door on the map"
+            - "&c&lCAST TIME 15s&7, &c&lCOOLDOWN -/&c&l40/&c&l30s&7)"
+          Activate: "&7Hardened every door on the map!"
     Terminator:
       Name: "&6Terminator"
       Description:
@@ -622,9 +651,9 @@ Kit:
         Motors-Overcharge:
           Name: "&e&lMOTORS OVERCHARGE &7(Ultimate)"
           Description:
-            - "  &7On use pull enemies to you, damage"
-            - "  &7them for 35% of max health per sec, on"
-            - "  &7end knock them away and instakill them"
+            - "On use pull enemies to you, damage"
+            - "them for 35% of max health per sec, on"
+            - "end knock them away and instakill them"
             - "&c&lCAST TIME &710s, &c&lCOOLDOWN &750s"
           Activate: "&7Engaging kinematic motors, full power reached!"
           Active-Action-Bar:
