@@ -133,9 +133,10 @@ public class ShopManager {
       ItemMeta meta = itemStack.getItemMeta();
       //seek for item price
       if(meta != null && meta.hasLore()) {
+        String currency = new MessageBuilder("IN_GAME_MESSAGES_VILLAGE_SHOP_CURRENCY").asKey().build();
         for(String s : ComplementAccessor.getComplement().getLore(meta)) {
-          if(s.contains(new MessageBuilder("IN_GAME_MESSAGES_VILLAGE_SHOP_CURRENCY").asKey().build()) || s.contains("orbs")) {
-            costString = ChatColor.stripColor(s).replaceAll("&[0-9a-zA-Z]", "").replaceAll("[^0-9]", "");
+          if(s.contains(currency) || s.contains("orbs")) {
+            costString = ChatColor.stripColor(s).replace(currency, "");
             break;
           }
         }
