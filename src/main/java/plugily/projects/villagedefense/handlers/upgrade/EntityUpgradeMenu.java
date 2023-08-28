@@ -205,7 +205,6 @@ public class EntityUpgradeMenu {
    * @param upgrade       upgrade to apply
    * @param increasedTier value to increase tier
    * @return true if applied successfully, false if tier is max and cannot be applied more
-   * @
    */
   public boolean applyUpgrade(Entity entity, Player player, Upgrade upgrade, int increasedTier) {
     List<org.bukkit.metadata.MetadataValue> meta = entity.getMetadata(upgrade.getMetadataAccessor());
