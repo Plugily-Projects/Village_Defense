@@ -27,6 +27,7 @@ import org.bukkit.material.Door;
 import plugily.projects.minigamesbox.classic.utils.version.ServerVersion;
 import plugily.projects.minigamesbox.classic.utils.version.xseries.XMaterial;
 import plugily.projects.villagedefense.arena.Arena;
+import plugily.projects.villagedefense.creatures.DoorBreakListener;
 import plugily.projects.villagedefense.utils.Utils;
 
 import java.util.logging.Level;
@@ -110,6 +111,8 @@ public class MapRestorerManagerLegacy extends MapRestorerManager {
     doorBlockState.setType(doorBlockData.getItemType());
     doorBlockState.setData(doorBlockData);
     doorBlockState.update(true);
+
+    block.removeMetadata(DoorBreakListener.CREATURE_DOOR_BULLDOZER_METADATA, arena.getPlugin());
   }
 
   @Override
@@ -138,6 +141,8 @@ public class MapRestorerManagerLegacy extends MapRestorerManager {
     doorBlockState.setType(doorBlockData.getItemType());
     doorBlockState.setData(doorBlockData);
     doorBlockState.update(true);
+
+    block.removeMetadata(DoorBreakListener.CREATURE_DOOR_BULLDOZER_METADATA, arena.getPlugin());
   }
 
 }

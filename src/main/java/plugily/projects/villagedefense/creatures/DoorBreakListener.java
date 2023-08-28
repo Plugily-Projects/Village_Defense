@@ -79,9 +79,8 @@ public class DoorBreakListener extends BukkitRunnable {
             destroyState++;
           }
           destroyState++;
-          block.removeMetadata(CREATURE_DOOR_BULLDOZER_METADATA, plugin);
           block.setMetadata(CREATURE_DOOR_BULLDOZER_METADATA, new FixedMetadataValue(plugin, destroyState));
-          ProtocolUtils.sendBlockBreakAnimation(block, destroyState);
+          doPerformDoorDamage(block, door, destroyState);
           if(destroyState >= 10) {
             doPerformDoorBreak(block, door);
           }
@@ -104,13 +103,25 @@ public class DoorBreakListener extends BukkitRunnable {
 
   private int getDoorDestroyState(Block block) {
     int destroyState;
-    if(!block.hasMetadata(DESTROY_STATE_METADATA)) {
+    if(!block.hasMetadata(CREATURE_DOOR_BULLDOZER_METADATA)) {
       destroyState = 0;
-      block.setMetadata(DESTROY_STATE_METADATA, new FixedMetadataValue(plugin, destroyState));
+      block.setMetadata(CREATURE_DOOR_BULLDOZER_METADATA, new FixedMetadataValue(plugin, destroyState));
     } else {
-      destroyState = block.getMetadata(DESTROY_STATE_METADATA).get(0).asInt();
+      destroyState = block.getMetadata(CREATURE_DOOR_BULLDOZER_METADATA).get(0).asInt();
     }
     return destroyState;
+  }
+
+  private void doPerformDoorDamage(Block block, Material door, int destroyState) {
+    ProtocolUtils.sendBlockBreakAnimation(block, destroyState);
+
+    Block relative = block.getRelative(BlockFace.UP);
+
+    if(relative.getType() == door) {
+      ProtocolUtils.sendBlockBreakAnimation(relative, destroyState);
+    } else if((relative = block.getRelative(BlockFace.DOWN)).getType() == door) {
+      ProtocolUtils.sendBlockBreakAnimation(relative, destroyState);
+    }
   }
 
   private void doPerformDoorBreak(Block block, Material door) {

@@ -28,6 +28,7 @@ import org.bukkit.material.Door;
 import plugily.projects.minigamesbox.classic.arena.managers.PluginMapRestorerManager;
 import plugily.projects.minigamesbox.classic.utils.version.xseries.XMaterial;
 import plugily.projects.villagedefense.arena.Arena;
+import plugily.projects.villagedefense.creatures.DoorBreakListener;
 import plugily.projects.villagedefense.utils.Utils;
 
 import java.util.ArrayList;
@@ -140,6 +141,8 @@ public class MapRestorerManager extends PluginMapRestorerManager {
     doorBlockState.setData(doorBlockData);
 
     doorBlockState.update(true);
+
+    block.removeMetadata(DoorBreakListener.CREATURE_DOOR_BULLDOZER_METADATA, arena.getPlugin());
   }
 
   public void restoreBottomHalfDoorPart(Block block) {
@@ -154,6 +157,8 @@ public class MapRestorerManager extends PluginMapRestorerManager {
     doorBlockState.setData(doorBlockData);
 
     doorBlockState.update(true);
+
+    block.removeMetadata(DoorBreakListener.CREATURE_DOOR_BULLDOZER_METADATA, arena.getPlugin());
   }
 
 }
