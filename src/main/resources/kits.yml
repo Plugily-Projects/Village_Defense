@@ -26,7 +26,6 @@ Enabled-Game-Kits:
   #Knight: true
   LightTank: true
   Archer: true
-  GolemFriend: true
   Hardcore: true
   Healer: true
   Looter: true
@@ -38,7 +37,6 @@ Enabled-Game-Kits:
   ZombieFinder: true
   Blocker: true
   Cleaner: true
-  DogFriend: true
   HeavyTank: true
   Medic: true
   Naked: true
@@ -47,6 +45,7 @@ Enabled-Game-Kits:
   Teleporter: true
   Tornado: true
   Wizard: true
+  PetsFriend: true
 
 # The cooldown in seconds for some kit items
 Kit-Cooldown:

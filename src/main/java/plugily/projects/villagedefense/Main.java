@@ -51,7 +51,6 @@ import plugily.projects.villagedefense.kits.KitHelper;
 import plugily.projects.villagedefense.kits.free.KnightKit;
 import plugily.projects.villagedefense.kits.free.LightTankKit;
 import plugily.projects.villagedefense.kits.level.ArcherKit;
-import plugily.projects.villagedefense.kits.level.GolemFriendKit;
 import plugily.projects.villagedefense.kits.level.HardcoreKit;
 import plugily.projects.villagedefense.kits.level.HealerKit;
 import plugily.projects.villagedefense.kits.level.LooterKit;
@@ -62,10 +61,10 @@ import plugily.projects.villagedefense.kits.level.ZombieFinderKit;
 import plugily.projects.villagedefense.kits.overhauled.BuilderKit;
 import plugily.projects.villagedefense.kits.overhauled.CleanerKit;
 import plugily.projects.villagedefense.kits.overhauled.MedicKit;
+import plugily.projects.villagedefense.kits.overhauled.PetsFriend;
 import plugily.projects.villagedefense.kits.overhauled.TerminatorKit;
 import plugily.projects.villagedefense.kits.overhauled.TornadoKit;
 import plugily.projects.villagedefense.kits.overhauled.WizardKit;
-import plugily.projects.villagedefense.kits.premium.DogFriendKit;
 import plugily.projects.villagedefense.kits.premium.HeavyTankKit;
 import plugily.projects.villagedefense.kits.premium.NakedKit;
 import plugily.projects.villagedefense.kits.premium.PremiumHardcoreKit;
@@ -86,6 +85,7 @@ public class Main extends PluginMain {
   private ArenaRegistry arenaRegistry;
   private ArenaManager arenaManager;
   private ArgumentsRegistry argumentsRegistry;
+  private EntityUpgradeMenu entityUpgradeMenu;
 
   @TestOnly
   public Main() {
@@ -130,12 +130,10 @@ public class Main extends PluginMain {
     } else {
       enemySpawnerRegistry = new EnemySpawnerRegistry(this);
     }
-    if(getConfigPreferences().getOption("UPGRADES")) {
-      entityUpgradesConfig = ConfigUtils.getConfig(this, "entity_upgrades");
-      Upgrade.init(this);
-      UpgradeBuilder.init(this);
-      new EntityUpgradeMenu(this);
-    }
+    entityUpgradesConfig = ConfigUtils.getConfig(this, "entity_upgrades");
+    Upgrade.init(this);
+    UpgradeBuilder.init(this);
+    entityUpgradeMenu = new EntityUpgradeMenu(this);
     new DoorBreakListener(this);
     CreatureUtils.init(this);
     new PowerupHandler(this);
@@ -147,9 +145,9 @@ public class Main extends PluginMain {
     long start = System.currentTimeMillis();
     getDebugger().debug("Adding kits...");
     addFileName("kits");
-    Class<?>[] classKitNames = new Class[]{KnightKit.class, LightTankKit.class, ZombieFinderKit.class, ArcherKit.class, PuncherKit.class, HealerKit.class, LooterKit.class, RunnerKit.class,
-      MediumTankKit.class, GolemFriendKit.class, TerminatorKit.class, HardcoreKit.class, CleanerKit.class, TeleporterKit.class, HeavyTankKit.class, ShotBowKit.class,
-      DogFriendKit.class, PremiumHardcoreKit.class, TornadoKit.class, BuilderKit.class, MedicKit.class, NakedKit.class, WizardKit.class};
+    Class<?>[] classKitNames = new Class[]{KnightKit.class, LightTankKit.class, ZombieFinderKit.class, ArcherKit.class, PuncherKit.class, HealerKit.class,
+      LooterKit.class, RunnerKit.class, MediumTankKit.class, TerminatorKit.class, HardcoreKit.class, CleanerKit.class, TeleporterKit.class, HeavyTankKit.class,
+      ShotBowKit.class, PremiumHardcoreKit.class, TornadoKit.class, BuilderKit.class, PetsFriend.class, MedicKit.class, NakedKit.class, WizardKit.class};
     for(Class<?> kitClass : classKitNames) {
       try {
         kitClass.getDeclaredConstructor().newInstance();
@@ -193,6 +191,10 @@ public class Main extends PluginMain {
   @Override
   public ArenaManager getArenaManager() {
     return arenaManager;
+  }
+
+  public EntityUpgradeMenu getEntityUpgradeMenu() {
+    return entityUpgradeMenu;
   }
 
   @Override

@@ -29,6 +29,7 @@ import org.bukkit.entity.Villager;
 import org.bukkit.entity.Wolf;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import plugily.projects.minigamesbox.classic.arena.ArenaState;
 import plugily.projects.minigamesbox.classic.arena.PluginArena;
 import plugily.projects.minigamesbox.classic.handlers.language.MessageBuilder;
@@ -239,9 +240,10 @@ public class Arena extends PluginArena {
     addVillager(villager);
   }
 
-  public void spawnWolf(Location location, Player player) {
+  @Nullable
+  public Creature spawnWolf(Location location, Player player) {
     if(!canSpawnMobForPlayer(player, EntityType.WOLF)) {
-      return;
+      return null;
     }
 
     Wolf wolf = CreatureUtils.getCreatureInitializer().spawnWolf(location);
@@ -251,11 +253,13 @@ public class Arena extends PluginArena {
     wolf.setCustomName(new MessageBuilder("IN_GAME_MESSAGES_VILLAGE_WAVE_ENTITIES_WOLF_NAME").asKey().integer(0).player(player).build());
     new MessageBuilder("IN_GAME_MESSAGES_VILLAGE_WAVE_ENTITIES_WOLF_SPAWN").asKey().player(player).sendPlayer();
     addWolf(wolf);
+    return wolf;
   }
 
-  public void spawnGolem(Location location, Player player) {
+  @Nullable
+  public Creature spawnGolem(Location location, Player player) {
     if(!canSpawnMobForPlayer(player, EntityType.IRON_GOLEM)) {
-      return;
+      return null;
     }
 
     IronGolem ironGolem = CreatureUtils.getCreatureInitializer().spawnGolem(location);
@@ -264,6 +268,7 @@ public class Arena extends PluginArena {
     ironGolem.setCustomName(new MessageBuilder("IN_GAME_MESSAGES_VILLAGE_WAVE_ENTITIES_GOLEM_NAME").asKey().integer(0).player(player).build());
     new MessageBuilder("IN_GAME_MESSAGES_VILLAGE_WAVE_ENTITIES_GOLEM_SPAWN").asKey().player(player).sendPlayer();
     addIronGolem(ironGolem);
+    return ironGolem;
   }
 
   protected void addWolf(Wolf wolf) {

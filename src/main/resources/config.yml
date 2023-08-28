@@ -170,11 +170,6 @@ Time-Manager:
   Restarting: 5
 
 
-# Should we add support for upgradeable Wolves and Golems in game?
-# Configure upgrades pricing in entity_upgrades.yml after enabling it.
-Entity-Upgrades: false
-
-
 Respawn:
   # Respawn players when wave ends/starts?
   After-Wave: true

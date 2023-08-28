@@ -1,26 +1,22 @@
 /*
- *  Village Defense - Protect villagers from hordes of zombies
- *  Copyright (c) 2023 Plugily Projects - maintained by Tigerpanzer_02 and contributors
+ * Village Defense - Protect villagers from hordes of zombies
+ * Copyright (c) 2023  Plugily Projects - maintained by Tigerpanzer_02 and contributors
  *
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- *  You should have received a copy of the GNU General Public License
- *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 package plugily.projects.villagedefense.handlers.upgrade;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -33,7 +29,6 @@ import org.bukkit.entity.Wolf;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.jetbrains.annotations.Nullable;
-
 import plugily.projects.minigamesbox.classic.handlers.language.MessageBuilder;
 import plugily.projects.minigamesbox.classic.user.User;
 import plugily.projects.minigamesbox.classic.utils.helper.ItemBuilder;
@@ -46,6 +41,10 @@ import plugily.projects.villagedefense.creatures.CreatureUtils;
 import plugily.projects.villagedefense.events.EntityUpgradeListener;
 import plugily.projects.villagedefense.handlers.upgrade.upgrades.Upgrade;
 import plugily.projects.villagedefense.handlers.upgrade.upgrades.UpgradeBuilder;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 /**
  * @author Plajer
@@ -191,19 +190,40 @@ public class EntityUpgradeMenu {
    * @return true if applied successfully, false if tier is max and cannot be applied more
    */
   public boolean applyUpgrade(Entity entity, Player player, Upgrade upgrade) {
+    return applyUpgrade(entity, player, upgrade, 1);
+  }
+
+  /**
+   * Applies upgrade for target entity which
+   * increments current tier by provided value
+   * <p>
+   * Incremented tier is capped at max tier that
+   * is valid for the upgrade
+   *
+   * @param entity        target entity
+   * @param player        player which upgraded target
+   * @param upgrade       upgrade to apply
+   * @param increasedTier value to increase tier
+   * @return true if applied successfully, false if tier is max and cannot be applied more
+   * @
+   */
+  public boolean applyUpgrade(Entity entity, Player player, Upgrade upgrade, int increasedTier) {
     List<org.bukkit.metadata.MetadataValue> meta = entity.getMetadata(upgrade.getMetadataAccessor());
 
-    if (meta.isEmpty()) {
-      entity.setMetadata(upgrade.getMetadataAccessor(), new FixedMetadataValue(plugin, 1));
-      applyUpgradeEffect(entity, player, upgrade, 1);
+    if(meta.isEmpty()) {
+      entity.setMetadata(upgrade.getMetadataAccessor(), new FixedMetadataValue(plugin, increasedTier));
+      applyUpgradeEffect(entity, player, upgrade, increasedTier);
       return true;
     }
 
-    if (meta.get(0).asInt() == upgrade.getMaxTier()) {
+    if(meta.get(0).asInt() == upgrade.getMaxTier()) {
       return false;
     }
 
-    int tier = getTier(entity, upgrade) + 1;
+    int tier = getTier(entity, upgrade) + increasedTier;
+    if(tier >= upgrade.getMaxTier()) {
+      tier = upgrade.getMaxTier();
+    }
     entity.setMetadata(upgrade.getMetadataAccessor(), new FixedMetadataValue(plugin, tier));
     applyUpgradeEffect(entity, player, upgrade, tier);
     if(upgrade.getMaxTier() == tier) {
@@ -220,7 +240,7 @@ public class EntityUpgradeMenu {
     VersionUtils.sendParticles("HEART", (Set<Player>) null, entityLocation.add(0, 1.6, 0), 5);
     VersionUtils.playSound(entityLocation, "ENTITY_PLAYER_LEVELUP");
 
-    int[] baseValues = new int[] {getTier(entity, getUpgrade("Health")), getTier(entity, getUpgrade("Speed")), getTier(entity, getUpgrade("Damage"))};
+    int[] baseValues = new int[]{getTier(entity, getUpgrade("Health")), getTier(entity, getUpgrade("Speed")), getTier(entity, getUpgrade("Damage"))};
 
     //this doesnt count golem and wolf exclusive upgrades
     int totalUpgrades = getAllUpgradesLevels(baseValues);

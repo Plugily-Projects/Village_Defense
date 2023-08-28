@@ -422,21 +422,11 @@ Kit:
         - "Start off with 6 more hearts!"
         - "Don't be afraid!"
         - "You have plenty hearts left to lose!"
-    Dog-Friend:
-      Name: "&bDog Friend"
-      Description:
-        - "Start off with three dogs and"
-        - "get one extra dog every wave!"
     Hardcore:
       Name: "&6Hardcore"
       Description:
         - "You'll see yourself"
         - "why this is hardcore"
-    Golem-Friend:
-      Name: "&6Golem Friend"
-      Description:
-        - "Start with a golem and"
-        - "get new every 5 waves!"
     Cleaner:
       Name: "&bCleaner"
       Description:
@@ -600,7 +590,7 @@ Kit:
             - "&e&lYOU'RE KNOCKBACK PROTECTED BY &7%player%"
             - "&c&lYOU'RE KNOCKBACK PROTECTED BY &7%player%"
         Blockage:
-          Name: "&6&lBLOCKAGE &7(Ultimate)"
+          Name: "&e&lBLOCKAGE &7(Ultimate)"
           Description:
             - "On use enemies cannot damage nor"
             - "destroy any door on the map"
@@ -694,7 +684,7 @@ Kit:
             - "&e&lYOU'RE BEING HEALED BY &7%player%"
             - "&c&lYOU'RE BEING HEALED BY &7%player%"
         Homecoming:
-          Name: "&6&lHOMECOMING &7(Ultimate)"
+          Name: "&e&lHOMECOMING &7(Ultimate)"
           Description:
             - "On cast all spectators are"
             - "respawned and given Speed Boost -/I/II"
@@ -710,6 +700,44 @@ Kit:
         - "You start off with a iron Sharpness"
         - "VI and Smite II sword!"
       Cannot-Wear-Armor: "&cYou can't wear armor with the Wild Naked kit!"
+    Pets-Friend:
+      Name: "&bPets Friend"
+      Description:
+        - "&6&lGAME POWER: &7strong/mediocre/mediocre"
+        - "&6&lCLASS: &7mixed, support"
+        - ""
+        - "&6&lABILITIES:"
+        - "&a&l• TRUE FRIEND (PASSIVE):"
+        - "  &7Spawn 1 wolf every 3/2/1 waves and 1"
+        - "  &7golem every 4/3/2 waves, all pets"
+        - "  &7receive -/1/2 random tier I"
+        - "  &7upgrades on spawn"
+        - "&a&l• FIGHT OR FLIGHT:"
+        - "  &7On use every spawned pet will have"
+        - "  &7increased damage I/II/III and"
+        - "  &7regeneration I for 10s"
+        - "  &7(&c&lSPELL TIME 10s&7, &c&lCOOLDOWN 25s&7)"
+        - "&e&l• UNSTOPPABLE BEASTS (ULTIMATE):"
+        - "  &7On use spawn a wolf and golem"
+        - "  &7will all maxed upgrades"
+        - "  &7(&c&lCOOLDOWN 70s&7)"
+        - "  &7(&c&lUNLOCKED IN MID GAME&7)"
+      Game-Item:
+        Fight-Or-Flight:
+          Name: "&6&lFIGHT OR FLIGHT"
+          Description:
+            - "On use every spawned pet will have"
+            - "increased damage by 10/15/20% and"
+            - "regeneration I for 10s"
+            - "&c&lSPELL TIME 10s&7, &c&lCOOLDOWN 25s"
+          Activate: "&7Who let the dogs out?!"
+        Unstoppable-Beasts:
+          Name: "&e&lUNSTOPPABLE BEASTS &7(Ultimate)"
+          Description:
+            - "On use spawn a wolf and golem"
+            - "with all maxed upgrades"
+            - "&c&lCOOLDOWN 70s"
+          Activate: "&7Rise and fight my brave pets!"
     Wizard:
       Name: "&bWizard"
       Description:
@@ -723,13 +751,13 @@ Kit:
         - "&a&l• CORRUPTING FLOWER:"
         - "  &7Every 3/3/2 waves receive item, on use"
         - "  &7attacks slows and burns enemies for 3s"
-        - "  &7(&c&lSPELL TIME 15s&7, &c&lCOOLDOWN 15s&7)"
+        - "  &7(&c&lCAST TIME 15s&7, &c&lCOOLDOWN 15s&7)"
         - "&e&l• BLOODLUST (ULTIMATE):"
         - "  &7Creates deadly aura that deals 10%"
         - "  &7max health to nearby enemies and"
         - "  &7heals you for 8% of damage dealt"
         - "  &7from aura each second"
-        - "  &7(&c&lSPELL TIME 15s&7, &c&lCOOLDOWN 70s&7)"
+        - "  &7(&c&lCAST TIME 15s&7, &c&lCOOLDOWN 70s&7)"
         - "  &7(&c&lUNLOCKED IN MID GAME&7)"
       Game-Item:
         Wand:
