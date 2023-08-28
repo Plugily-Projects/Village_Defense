@@ -19,7 +19,10 @@
 package plugily.projects.villagedefense.arena;
 
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Creature;
+import org.bukkit.entity.IronGolem;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Wolf;
 import org.jetbrains.annotations.NotNull;
 import plugily.projects.minigamesbox.classic.arena.PluginArena;
 import plugily.projects.minigamesbox.classic.arena.PluginArenaManager;
@@ -32,6 +35,8 @@ import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.api.event.wave.VillageWaveEndEvent;
 import plugily.projects.villagedefense.api.event.wave.VillageWaveStartEvent;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -60,18 +65,21 @@ public class ArenaManager extends PluginArenaManager {
   @Override
   public void leaveAttempt(@NotNull Player player, @NotNull PluginArena arena) {
     Arena gameArena = (Arena) arena;
-    gameArena.getIronGolems()
+    List<Creature> pets = new ArrayList<>();
+    pets.addAll(gameArena.getIronGolems());
+    pets.addAll(gameArena.getWolves());
+    pets
       .stream()
       .filter(Objects::nonNull)
-      .filter(golem -> golem.hasMetadata("VD_OWNER_UUID"))
-      .filter(golem -> UUID.fromString(golem.getMetadata("VD_OWNER_UUID").get(0).asString()).equals(player.getUniqueId()))
-      .forEach(gameArena::removeIronGolem);
-    gameArena.getWolves()
-      .stream()
-      .filter(Objects::nonNull)
-      .filter(golem -> golem.hasMetadata("VD_OWNER_UUID"))
-      .filter(golem -> UUID.fromString(golem.getMetadata("VD_OWNER_UUID").get(0).asString()).equals(player.getUniqueId()))
-      .forEach(gameArena::removeWolf);
+      .filter(pet -> pet.hasMetadata("VD_OWNER_UUID"))
+      .filter(pet -> UUID.fromString(pet.getMetadata("VD_OWNER_UUID").get(0).asString()).equals(player.getUniqueId()))
+      .forEach(pet -> {
+        if(pet instanceof IronGolem) {
+          gameArena.removeIronGolem((IronGolem) pet);
+        } else {
+          gameArena.removeWolf((Wolf) pet);
+        }
+      });
     super.leaveAttempt(player, arena);
   }
 
