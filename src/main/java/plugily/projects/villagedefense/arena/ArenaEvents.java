@@ -46,6 +46,7 @@ import plugily.projects.minigamesbox.classic.user.User;
 import plugily.projects.minigamesbox.classic.utils.misc.complement.ComplementAccessor;
 import plugily.projects.minigamesbox.classic.utils.version.VersionUtils;
 import plugily.projects.minigamesbox.classic.utils.version.events.api.PlugilyEntityPickupItemEvent;
+import plugily.projects.minigamesbox.classic.utils.version.xseries.XSound;
 import plugily.projects.villagedefense.Main;
 
 /**
@@ -73,6 +74,10 @@ public class ArenaEvents extends PluginArenaEvents {
     for(Arena arena : plugin.getArenaRegistry().getPluginArenas()) {
       if(arena.getVillagers().contains(e.getEntity()) && arena.getEnemies().contains(e.getDamager())) {
         e.setCancelled(false);
+        //global announcement that villager is under attack
+        for(Player player : arena.getPlayersLeft()) {
+          XSound.ENTITY_VILLAGER_HURT.play(player);
+        }
         break;
       }
     }
