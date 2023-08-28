@@ -26,6 +26,7 @@ import plugily.projects.minigamesbox.classic.PluginMain;
 import plugily.projects.minigamesbox.classic.handlers.setup.SetupInventory;
 import plugily.projects.minigamesbox.classic.handlers.setup.categories.PluginSetupCategoryManager;
 import plugily.projects.minigamesbox.classic.utils.configuration.ConfigUtils;
+import plugily.projects.minigamesbox.classic.utils.misc.MiscUtils;
 import plugily.projects.minigamesbox.classic.utils.services.metrics.Metrics;
 import plugily.projects.minigamesbox.classic.utils.version.ServerVersion;
 import plugily.projects.villagedefense.arena.Arena;
@@ -34,7 +35,6 @@ import plugily.projects.villagedefense.arena.ArenaManager;
 import plugily.projects.villagedefense.arena.ArenaRegistry;
 import plugily.projects.villagedefense.arena.ArenaUtils;
 import plugily.projects.villagedefense.arena.managers.enemy.spawner.EnemySpawnerRegistry;
-import plugily.projects.villagedefense.arena.managers.enemy.spawner.EnemySpawnerRegistryLegacy;
 import plugily.projects.villagedefense.boot.AdditionalValueInitializer;
 import plugily.projects.villagedefense.boot.MessageInitializer;
 import plugily.projects.villagedefense.boot.PlaceholderInitializer;
@@ -81,7 +81,7 @@ import java.util.logging.Level;
 public class Main extends PluginMain {
 
   private FileConfiguration entityUpgradesConfig;
-  private EnemySpawnerRegistryLegacy enemySpawnerRegistry;
+  private EnemySpawnerRegistry enemySpawnerRegistry;
   private ArenaRegistry arenaRegistry;
   private ArenaManager arenaManager;
   private ArgumentsRegistry argumentsRegistry;
@@ -99,6 +99,9 @@ public class Main extends PluginMain {
 
   @Override
   public void onEnable() {
+    if(!validateStartup()) {
+      return;
+    }
     long start = System.currentTimeMillis();
     MessageInitializer messageInitializer = new MessageInitializer(this);
     super.onEnable();
@@ -110,6 +113,20 @@ public class Main extends PluginMain {
     addKits();
     getDebugger().debug("Full {0} plugin enabled", getName());
     getDebugger().debug("[System] [Plugin] Initialization finished took {0}ms", System.currentTimeMillis() - start);
+  }
+
+  private boolean validateStartup() {
+    if(ServerVersion.Version.isCurrentEqualOrLower(ServerVersion.Version.v1_12_R1)) {
+      MiscUtils.sendLineBreaker(this.getName());
+      getMessageUtils().thisVersionIsNotSupported();
+      MiscUtils.sendVersionInformation(this, this.getName(), this.getDescription());
+      getDebugger().sendConsoleMsg(getPluginMessagePrefix() + "&cYour server version is not supported by " + this.getDescription().getName() + "!");
+      getDebugger().sendConsoleMsg(getPluginMessagePrefix() + "&cSadly, we must shut off. Maybe you consider changing your server version?");
+      MiscUtils.sendLineBreaker(this.getName());
+      getServer().getPluginManager().disablePlugin(this);
+      return false;
+    }
+    return true;
   }
 
   public void initializePluginClasses() {
@@ -125,11 +142,7 @@ public class Main extends PluginMain {
     getSignManager().loadSigns();
     getSignManager().updateSigns();
     argumentsRegistry = new ArgumentsRegistry(this);
-    if(ServerVersion.Version.isCurrentEqualOrLower(ServerVersion.Version.v1_8_R3)) {
-      enemySpawnerRegistry = new EnemySpawnerRegistryLegacy(this);
-    } else {
-      enemySpawnerRegistry = new EnemySpawnerRegistry(this);
-    }
+    enemySpawnerRegistry = new EnemySpawnerRegistry(this);
     entityUpgradesConfig = ConfigUtils.getConfig(this, "entity_upgrades");
     Upgrade.init(this);
     UpgradeBuilder.init(this);
@@ -174,7 +187,7 @@ public class Main extends PluginMain {
     return entityUpgradesConfig;
   }
 
-  public EnemySpawnerRegistryLegacy getEnemySpawnerRegistry() {
+  public EnemySpawnerRegistry getEnemySpawnerRegistry() {
     return enemySpawnerRegistry;
   }
 

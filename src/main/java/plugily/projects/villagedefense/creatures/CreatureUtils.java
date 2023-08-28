@@ -1,19 +1,19 @@
 /*
- *  Village Defense - Protect villagers from hordes of zombies
- *  Copyright (c) 2023 Plugily Projects - maintained by Tigerpanzer_02 and contributors
+ * Village Defense - Protect villagers from hordes of zombies
+ * Copyright (c) 2023  Plugily Projects - maintained by Tigerpanzer_02 and contributors
  *
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- *  You should have received a copy of the GNU General Public License
- *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 package plugily.projects.villagedefense.creatures;
@@ -26,19 +26,12 @@ import org.bukkit.entity.Player;
 import org.bukkit.entity.Villager;
 import org.bukkit.entity.Wolf;
 import plugily.projects.minigamesbox.classic.handlers.language.MessageBuilder;
-import plugily.projects.minigamesbox.classic.utils.version.ServerVersion;
 import plugily.projects.minigamesbox.classic.utils.version.VersionUtils;
 import plugily.projects.minigamesbox.string.StringFormatUtils;
 import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.arena.Arena;
 
-import java.lang.reflect.Field;
-import java.security.AccessController;
-import java.security.PrivilegedAction;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
-import java.util.logging.Level;
 
 /**
  * @author Plajer
@@ -51,7 +44,6 @@ public class CreatureUtils {
       + "Mary,Jeffry,Rosaly,Elliot,Harry,Sam,Rosaline,Tom,Ivan,Kevin,Adam,Emma,Mira,Jeff,Isac,Nico").split(",");
   private static Main plugin;
   private static BaseCreatureInitializer creatureInitializer;
-  private static final List<CachedObject> cachedObjects = new ArrayList<>();
 
   private CreatureUtils() {
   }
@@ -59,40 +51,7 @@ public class CreatureUtils {
   public static void init(Main plugin) {
     CreatureUtils.plugin = plugin;
     villagerNames = new MessageBuilder("IN_GAME_MESSAGES_VILLAGE_VILLAGER_NAMES").asKey().build().split(",");
-    creatureInitializer = initCreatureInitializer();
-  }
-
-  public static BaseCreatureInitializer initCreatureInitializer() {
-    switch(ServerVersion.Version.getCurrent()) {
-      case v1_8_R3:
-        return new plugily.projects.villagedefense.creatures.v1_8_R3.CreatureInitializer();
-      default:
-        return new plugily.projects.villagedefense.creatures.v1_9_UP.CreatureInitializer();
-    }
-  }
-
-  public static Object getPrivateField(String fieldName, Class<?> clazz, Object object) {
-    for(CachedObject cachedObject : cachedObjects) {
-      if(cachedObject.getClazz().equals(clazz) && cachedObject.getFieldName().equals(fieldName)) {
-        return cachedObject.getObject();
-      }
-    }
-    try {
-      Field field = clazz.getDeclaredField(fieldName);
-
-      AccessController.doPrivileged((PrivilegedAction<Object>) () -> {
-        field.setAccessible(true);
-        return null;
-      });
-
-      Object o = field.get(object);
-      cachedObjects.add(new CachedObject(fieldName, clazz, o));
-      return o;
-    } catch(NoSuchFieldException | IllegalAccessException e) {
-      plugin.getLogger().log(Level.WARNING, "Failed to retrieve private field of object " + object.getClass() + "!");
-      plugin.getLogger().log(Level.WARNING, e.getMessage() + " (fieldName " + fieldName + ", class " + clazz.getName() + ")");
-    }
-    return null;
+    creatureInitializer = new plugily.projects.villagedefense.creatures.v1_9_UP.CreatureInitializer();
   }
 
   /**
@@ -122,14 +81,6 @@ public class CreatureUtils {
       zombie.setCustomName(StringFormatUtils.getProgressBar((int) zombie.getHealth(), (int) VersionUtils.getMaxHealth(zombie), 50, "|",
           ChatColor.YELLOW + "", ChatColor.GRAY + ""));
     }
-  }
-
-  public static float getZombieSpeed() {
-    return 1.3f;
-  }
-
-  public static float getBabyZombieSpeed() {
-    return 2.0f;
   }
 
   public static String[] getVillagerNames() {

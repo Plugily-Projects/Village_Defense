@@ -23,9 +23,10 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemStack;
 import plugily.projects.minigamesbox.classic.utils.configuration.ConfigUtils;
-import plugily.projects.minigamesbox.classic.utils.version.ServerVersion;
 import plugily.projects.minigamesbox.classic.utils.version.xseries.XMaterial;
 import plugily.projects.villagedefense.Main;
+import plugily.projects.villagedefense.arena.Arena;
+import plugily.projects.villagedefense.arena.managers.spawner.EnemySpawner;
 import plugily.projects.villagedefense.creatures.v1_9_UP.CustomCreature;
 import plugily.projects.villagedefense.creatures.v1_9_UP.CustomCreatureEvents;
 import plugily.projects.villagedefense.creatures.v1_9_UP.CustomRideableCreature;
@@ -34,8 +35,14 @@ import plugily.projects.villagedefense.creatures.v1_9_UP.Rate;
 import plugily.projects.villagedefense.creatures.v1_9_UP.RideableCreatureEvents;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.EnumMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
+import java.util.Random;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.logging.Level;
 
 /**
@@ -43,18 +50,20 @@ import java.util.logging.Level;
  * <p>
  * Created at 01.05.2022
  */
-public class EnemySpawnerRegistry extends EnemySpawnerRegistryLegacy {
+public class EnemySpawnerRegistry {
+
   private static final String CREATURES_MISSING_SECTION = "Creatures section {0} is missing! Was it manually removed?";
+  private final Set<EnemySpawner> enemySpawnerSet = new TreeSet<>(Collections.reverseOrder());
+  private final Set<CustomRideableCreature> rideableCreatures = new HashSet<>();
+  private final Main plugin;
 
   public EnemySpawnerRegistry(Main plugin) {
-    super(plugin);
+    this.plugin = plugin;
+    registerCreatures();
+    registerRideableCreatures();
   }
 
-  @Override
   public void registerRideableCreatures() {
-    if(ServerVersion.Version.isCurrentEqualOrLower(ServerVersion.Version.v1_8_R3)) {
-      return;
-    }
     FileConfiguration config = ConfigUtils.getConfig(plugin, "creatures");
     ConfigurationSection village = config.getConfigurationSection("Creatures.Village");
     if(village == null) {
@@ -88,7 +97,6 @@ public class EnemySpawnerRegistry extends EnemySpawnerRegistryLegacy {
     }
   }
 
-  @Override
   public void registerCreatures() {
     new CustomCreatureEvents(plugin);
     new RideableCreatureEvents(plugin);
@@ -180,7 +188,69 @@ public class EnemySpawnerRegistry extends EnemySpawnerRegistryLegacy {
       plugin.getDebugger().debug("Registered CustomCreature named {0}", key);
       enemySpawnerSet.add(new CustomCreature(plugin, waveMin, waveMax, priorityTarget, explodeTarget, key, entityType, baby, breed, age, ageLook, expDrop, holidayEffects, rates, attributes, equipments, dropItem));
     }
+  }
 
+  /**
+   * Spawn the enemies at the arena
+   *
+   * @param random the random instance
+   * @param arena  the arena
+   */
+  public void spawnEnemies(Random random, Arena arena) {
+    int spawn = arena.getWave();
+    int zombiesLimit = plugin.getConfig().getInt("Limit.Spawn.Creatures", 75);
+    if(zombiesLimit < spawn) {
+      spawn = (int) Math.ceil(zombiesLimit / 2.0);
+    }
+    String zombieSpawnCounterOption = "ZOMBIE_SPAWN_COUNTER";
+    arena.changeArenaOptionBy(zombieSpawnCounterOption, 1);
+    if(arena.getArenaOption(zombieSpawnCounterOption) == 20) {
+      arena.setArenaOption(zombieSpawnCounterOption, 0);
+    }
+
+    List<EnemySpawner> enemySpawners = new ArrayList<>(enemySpawnerSet);
+    Collections.shuffle(enemySpawners);
+    for(EnemySpawner enemySpawner : enemySpawners) {
+      plugin.getDebugger().debug("Trying enemy spawn for " + enemySpawner.getName());
+      enemySpawner.spawn(random, arena, spawn);
+    }
+  }
+
+  /**
+   * Get the set of enemy spawners
+   *
+   * @return the set of enemy spawners
+   */
+  public Set<EnemySpawner> getEnemySpawnerSet() {
+    return enemySpawnerSet;
+  }
+
+  public Set<CustomRideableCreature> getRideableCreatures() {
+    return rideableCreatures;
+  }
+
+  /**
+   * Get the rideable creature by its type
+   *
+   * @param type the tyoe
+   * @return the rideable creature
+   */
+  public Optional<CustomRideableCreature> getRideableCreatureByName(CustomRideableCreature.RideableType type) {
+    return rideableCreatures.stream()
+      .filter(creature -> creature.getRideableType().equals(type))
+      .findFirst();
+  }
+
+  /**
+   * Get the enemy spawner by its name
+   *
+   * @param name the name
+   * @return the enemy spawner
+   */
+  public Optional<EnemySpawner> getSpawnerByName(String name) {
+    return enemySpawnerSet.stream()
+      .filter(enemySpawner -> enemySpawner.getName().equals(name))
+      .findFirst();
   }
 
 

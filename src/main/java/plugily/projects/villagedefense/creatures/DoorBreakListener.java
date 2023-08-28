@@ -22,7 +22,6 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.scheduler.BukkitRunnable;
 import plugily.projects.minigamesbox.classic.utils.version.VersionUtils;
@@ -48,7 +47,7 @@ public class DoorBreakListener extends BukkitRunnable {
     for(World world : plugin.getArenaRegistry().getArenaIngameWorlds()) {
       //todo proper entity check via creatureutils isEnemy
       for(LivingEntity entity : world.getLivingEntities()) {
-        if(entity.getType() != EntityType.ZOMBIE) {
+        if(!CreatureUtils.isEnemy(entity)) {
           continue;
         }
         if(entity.hasMetadata("VD_DOOR_BLOCK_BAN")) {
