@@ -34,6 +34,7 @@ import plugily.projects.minigamesbox.classic.utils.configuration.ConfigUtils;
 import plugily.projects.minigamesbox.classic.utils.helper.ItemUtils;
 import plugily.projects.minigamesbox.classic.utils.misc.complement.ComplementAccessor;
 import plugily.projects.minigamesbox.classic.utils.serialization.LocationSerializer;
+import plugily.projects.minigamesbox.classic.utils.version.xseries.XSound;
 import plugily.projects.minigamesbox.inventory.normal.NormalFastInv;
 import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.arena.Arena;
@@ -172,10 +173,12 @@ public class ShopManager {
 
         if(cost > orbs) {
           new MessageBuilder("IN_GAME_MESSAGES_VILLAGE_SHOP_NOT_ENOUGH_CURRENCY").asKey().player(player).sendPlayer();
+          XSound.ENTITY_VILLAGER_NO.play(player);
           return;
         }
         if(((Arena) user.getArena()).getWave() < waveLock) {
           new MessageBuilder("IN_GAME_MESSAGES_VILLAGE_SHOP_WAVE_STILL_LOCKED").asKey().integer(waveLock).player(player).sendPlayer();
+          XSound.ENTITY_VILLAGER_NO.play(player);
           return;
         }
 
@@ -184,6 +187,7 @@ public class ShopManager {
           if(name.contains(new MessageBuilder("IN_GAME_MESSAGES_VILLAGE_SHOP_GOLEM_ITEM", false).asKey().build())
             || name.contains(defaultGolemItemName)) {
             if(!arena.canSpawnMobForPlayer(player, EntityType.IRON_GOLEM)) {
+              XSound.ENTITY_VILLAGER_NO.play(player);
               return;
             }
             arena.spawnGolem(arena.getStartLocation(), player);
@@ -193,6 +197,7 @@ public class ShopManager {
           if(name.contains(new MessageBuilder("IN_GAME_MESSAGES_VILLAGE_SHOP_WOLF_ITEM", false).asKey().build())
             || name.contains(defaultWolfItemName)) {
             if(!arena.canSpawnMobForPlayer(player, EntityType.WOLF)) {
+              XSound.ENTITY_VILLAGER_NO.play(player);
               return;
             }
             arena.spawnWolf(arena.getStartLocation(), player);
@@ -227,6 +232,7 @@ public class ShopManager {
   private void adjustOrbs(User user, int cost) {
     user.adjustStatistic("ORBS", -cost);
     arena.changeArenaOptionBy("TOTAL_ORBS_SPENT", cost);
+    XSound.ENTITY_VILLAGER_YES.play(user.getPlayer());
   }
 
   private boolean validateShop() {
