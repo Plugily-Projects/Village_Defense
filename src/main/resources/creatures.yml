@@ -416,6 +416,7 @@ Creatures:
       priority_type: ANY
       explosive_hit: false
       entity_type: ZOMBIE
+      door_bulldozing: true
       baby: false
       breed: false
       age: 0
@@ -636,6 +637,7 @@ Creatures:
       priority_type: VILLAGER
       explosive_hit: true
       entity_type: ZOMBIE
+      door_bulldozing: true
       baby: false
       breed: false
       age: 0

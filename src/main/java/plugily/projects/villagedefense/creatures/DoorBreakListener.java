@@ -18,23 +18,33 @@
 
 package plugily.projects.villagedefense.creatures;
 
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.scheduler.BukkitRunnable;
 import plugily.projects.minigamesbox.classic.utils.version.VersionUtils;
+import plugily.projects.minigamesbox.classic.utils.version.xseries.XMaterial;
 import plugily.projects.villagedefense.Main;
+import plugily.projects.villagedefense.utils.ProtocolUtils;
 import plugily.projects.villagedefense.utils.Utils;
 
+import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.stream.Collectors;
 
 /**
  * Created by Tom on 14/08/2014.
  */
 public class DoorBreakListener extends BukkitRunnable {
 
+  public static final String CREATURE_DOOR_BULLDOZER_METADATA = "VD_DOOR_BULLDOZER_BUFF";
+
+  private static final String DESTROY_STATE_METADATA = "VD_DOOR_DESTROY_STATE";
   private final Main plugin;
 
   public DoorBreakListener(Main plugin) {
@@ -45,47 +55,81 @@ public class DoorBreakListener extends BukkitRunnable {
   @Override
   public void run() {
     for(World world : plugin.getArenaRegistry().getArenaIngameWorlds()) {
-      //todo proper entity check via creatureutils isEnemy
-      for(LivingEntity entity : world.getLivingEntities()) {
-        if(!CreatureUtils.isEnemy(entity)) {
-          continue;
-        }
-        if(entity.hasMetadata("VD_DOOR_BLOCK_BAN")) {
-          continue;
-        }
-
+      List<LivingEntity> entities = world.getLivingEntities()
+        .stream()
+        .filter(CreatureUtils::isEnemy)
+        .filter(entity -> !entity.hasMetadata("VD_DOOR_BLOCK_BAN"))
+        .collect(Collectors.toList());
+      for(LivingEntity entity : entities) {
         for(Block block : plugin.getBukkitHelper().getNearbyBlocks(entity, 1)) {
           Material door = Utils.getCachedDoor(block);
-
           if(block.getType() != door) {
             continue;
           }
 
-          org.bukkit.Location blockLoc = block.getLocation();
-
-          VersionUtils.sendParticles("SMOKE_LARGE", null, blockLoc, 5, 0.1,0.1,0.1);
-          VersionUtils.playSound(blockLoc, "ENTITY_ZOMBIE_ATTACK_WOODEN_DOOR");
-
-          if(ThreadLocalRandom.current().nextInt(20) == 5) {
-            VersionUtils.sendParticles("SMOKE_LARGE", null, blockLoc, 15, 0.1,0.1,0.1);
-            VersionUtils.sendParticles("EXPLOSION_HUGE", null, blockLoc, 1, 0.1,0.1,0.1);
-
-            Block b = block.getRelative(BlockFace.UP);
-
-            //break order matters
-            if(b.getType() == door) {
-              block.setType(Material.AIR);
-              b.setType(Material.AIR);
-            } else if((b = block.getRelative(BlockFace.DOWN)).getType() == door) {
-              b.setType(Material.AIR);
-              block.setType(Material.AIR);
-            }
-
-            VersionUtils.playSound(blockLoc, "ENTITY_ZOMBIE_BREAK_WOODEN_DOOR");
+          Location location = block.getLocation();
+          VersionUtils.sendParticles("SMOKE_LARGE", null, location, 5, 0.1, 0.1, 0.1);
+          VersionUtils.playSound(location, "ENTITY_ZOMBIE_ATTACK_WOODEN_DOOR");
+          int destroyState = getDoorDestroyState(block);
+          int doubleAttackChance = 15;
+          if(entity.hasMetadata(CREATURE_DOOR_BULLDOZER_METADATA)) {
+            doubleAttackChance = 8;
           }
+          if(ThreadLocalRandom.current().nextInt(20) >= doubleAttackChance) {
+            destroyState++;
+          }
+          destroyState++;
+          block.removeMetadata(CREATURE_DOOR_BULLDOZER_METADATA, plugin);
+          block.setMetadata(CREATURE_DOOR_BULLDOZER_METADATA, new FixedMetadataValue(plugin, destroyState));
+          ProtocolUtils.sendBlockBreakAnimation(block, destroyState);
+          if(destroyState >= 10) {
+            doPerformDoorBreak(block, door);
+          }
+          final int finalState = destroyState;
+          Bukkit.getScheduler().runTaskLater(plugin, () -> {
+            //block was already destroyed
+            if(block.getType() == XMaterial.AIR.parseMaterial() || !block.hasMetadata(CREATURE_DOOR_BULLDOZER_METADATA)) {
+              return;
+            }
+            //block wasn't touched for a while, remove the destruction
+            if(block.getMetadata(CREATURE_DOOR_BULLDOZER_METADATA).get(0).asInt() == finalState) {
+              block.removeMetadata(CREATURE_DOOR_BULLDOZER_METADATA, plugin);
+              ProtocolUtils.removeBlockBreakAnimation(block);
+            }
+          }, 20L * 5);
         }
       }
     }
+  }
+
+  private int getDoorDestroyState(Block block) {
+    int destroyState;
+    if(!block.hasMetadata(DESTROY_STATE_METADATA)) {
+      destroyState = 0;
+      block.setMetadata(DESTROY_STATE_METADATA, new FixedMetadataValue(plugin, destroyState));
+    } else {
+      destroyState = block.getMetadata(DESTROY_STATE_METADATA).get(0).asInt();
+    }
+    return destroyState;
+  }
+
+  private void doPerformDoorBreak(Block block, Material door) {
+    Location location = block.getLocation();
+    VersionUtils.sendParticles("SMOKE_LARGE", null, location, 15, 0.1, 0.1, 0.1);
+    VersionUtils.sendParticles("EXPLOSION_HUGE", null, location, 1, 0.1, 0.1, 0.1);
+
+    Block relative = block.getRelative(BlockFace.UP);
+
+    //break order matters
+    if(relative.getType() == door) {
+      block.setType(Material.AIR);
+      relative.setType(Material.AIR);
+    } else if((relative = block.getRelative(BlockFace.DOWN)).getType() == door) {
+      relative.setType(Material.AIR);
+      block.setType(Material.AIR);
+    }
+
+    VersionUtils.playSound(location, "ENTITY_ZOMBIE_BREAK_WOODEN_DOOR");
   }
 
 }

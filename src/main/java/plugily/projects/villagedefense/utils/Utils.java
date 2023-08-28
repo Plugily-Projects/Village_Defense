@@ -31,6 +31,7 @@ public class Utils {
   private Utils() {
   }
 
+  @Deprecated
   public static Material getCachedDoor(Block block) {
     //material can not be cached as we allow other door types
     if(block == null) {

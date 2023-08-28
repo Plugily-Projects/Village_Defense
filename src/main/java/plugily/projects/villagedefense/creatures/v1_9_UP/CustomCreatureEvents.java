@@ -192,7 +192,7 @@ public class CustomCreatureEvents implements Listener {
   }
 
   public CustomCreature getCustomCreatureFromCreature(Arena arena, Creature creature) {
-    List<MetadataValue> metadataValueList = creature.getMetadata("PlugilyProjects-VillageDefense-Name");
+    List<MetadataValue> metadataValueList = creature.getMetadata(CustomCreature.CREATURE_ID_METADATA);
     if(metadataValueList.isEmpty()) {
       plugin.getDebugger().debug("Arena {0} Couldn't find creature meta data", arena.getId());
       return null;

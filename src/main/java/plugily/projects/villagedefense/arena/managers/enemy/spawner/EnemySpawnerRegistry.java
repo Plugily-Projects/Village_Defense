@@ -124,6 +124,7 @@ public class EnemySpawnerRegistry {
 
       EntityType entityType = EntityType.valueOf(content.getString(creature + ".entity_type", "ZOMBIE").toUpperCase());
 
+      boolean doorBulldozing = content.getBoolean(creature + ".door_bulldozing", false);
       boolean baby = content.getBoolean(creature + ".baby", false);
       boolean breed = content.getBoolean(creature + ".breed", false);
       int age = content.getInt(creature + ".age", 0);
@@ -186,7 +187,7 @@ public class EnemySpawnerRegistry {
         dropItem = XMaterial.matchXMaterial(item).orElse(XMaterial.BEDROCK).parseItem();
       }
       plugin.getDebugger().debug("Registered CustomCreature named {0}", key);
-      enemySpawnerSet.add(new CustomCreature(plugin, waveMin, waveMax, priorityTarget, explodeTarget, key, entityType, baby, breed, age, ageLook, expDrop, holidayEffects, rates, attributes, equipments, dropItem));
+      enemySpawnerSet.add(new CustomCreature(plugin, waveMin, waveMax, priorityTarget, explodeTarget, key, entityType, doorBulldozing, baby, breed, age, ageLook, expDrop, holidayEffects, rates, attributes, equipments, dropItem));
     }
   }
 

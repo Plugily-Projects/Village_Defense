@@ -18,11 +18,6 @@
 
 package plugily.projects.villagedefense.kits.overhauled;
 
-import com.comphenix.protocol.PacketType;
-import com.comphenix.protocol.ProtocolLibrary;
-import com.comphenix.protocol.ProtocolManager;
-import com.comphenix.protocol.events.PacketContainer;
-import com.comphenix.protocol.wrappers.BlockPosition;
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.Location;
@@ -39,7 +34,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
-import plugily.projects.minigamesbox.classic.arena.PluginArena;
 import plugily.projects.minigamesbox.classic.handlers.language.Message;
 import plugily.projects.minigamesbox.classic.handlers.language.MessageBuilder;
 import plugily.projects.minigamesbox.classic.handlers.language.MessageManager;
@@ -59,6 +53,7 @@ import plugily.projects.villagedefense.arena.Arena;
 import plugily.projects.villagedefense.kits.AbilitySource;
 import plugily.projects.villagedefense.kits.KitHelper;
 import plugily.projects.villagedefense.kits.KitSpecifications;
+import plugily.projects.villagedefense.utils.ProtocolUtils;
 import plugily.projects.villagedefense.utils.Utils;
 
 import java.util.ArrayList;
@@ -258,31 +253,28 @@ public class BuilderKit extends PremiumKit implements AbilitySource, Listener {
       return;
     }
     getPlugin().getBukkitHelper().takeOneItem(player, stack);
-    //todo event cancel?
 
     XSound.ENTITY_VILLAGER_YES.play(player);
     ZombieBarrier zombieBarrier = new ZombieBarrier();
     zombieBarrier.setLocation(block.getLocation());
 
     VersionUtils.sendParticles("FIREWORKS_SPARK", user.getArena().getPlayers(), zombieBarrier.location, 20);
-    removeBarrierLater(zombieBarrier, user.getArena());
+    removeBarrierLater(zombieBarrier);
     block.setType(XMaterial.OAK_FENCE.parseMaterial());
   }
 
-  private void removeBarrierLater(ZombieBarrier zombieBarrier, PluginArena arena) {
+  private void removeBarrierLater(ZombieBarrier zombieBarrier) {
     new BukkitRunnable() {
       @Override
       public void run() {
         zombieBarrier.decrementSeconds();
         if(zombieBarrier.seconds <= 9) {
           int stage = 9 - zombieBarrier.seconds;
-          sendBlockBreakAnimation(zombieBarrier.location.getBlock(), stage);
+          ProtocolUtils.sendBlockBreakAnimation(zombieBarrier.location.getBlock(), stage);
         }
 
         if(zombieBarrier.seconds <= 0) {
-          //https://wiki.vg/Protocol#Set_Block_Destroy_Stage
-          //any stage outside 0-9 removes block animation
-          sendBlockBreakAnimation(zombieBarrier.location.getBlock(), 10);
+          ProtocolUtils.removeBlockBreakAnimation(zombieBarrier.location.getBlock());
           zombieBarrier.location.getBlock().setType(Material.AIR);
           XSound.BLOCK_WOOD_BREAK.play(zombieBarrier.location);
           Location location = zombieBarrier.location.clone();
@@ -293,18 +285,6 @@ public class BuilderKit extends PremiumKit implements AbilitySource, Listener {
         }
       }
     }.runTaskTimer(getPlugin(), 20, 20);
-  }
-
-  private void sendBlockBreakAnimation(Block block, int stage) {
-    if(getPlugin().getServer().getPluginManager().getPlugin("ProtocolLib") == null) {
-      return;
-    }
-    ProtocolManager manager = ProtocolLibrary.getProtocolManager();
-    PacketContainer packet = manager.createPacket(PacketType.Play.Server.BLOCK_BREAK_ANIMATION);
-    packet.getBlockPositionModifier().write(0, new BlockPosition(block.getX(), block.getY(), block.getZ()));
-    packet.getIntegers().write(0, block.hashCode());
-    packet.getIntegers().write(1, stage);
-    manager.broadcastServerPacket(packet);
   }
 
   @EventHandler

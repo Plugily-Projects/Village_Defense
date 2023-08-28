@@ -31,6 +31,7 @@ import plugily.projects.minigamesbox.classic.utils.version.VersionUtils;
 import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.arena.Arena;
 import plugily.projects.villagedefense.arena.managers.spawner.SimpleEnemySpawner;
+import plugily.projects.villagedefense.creatures.DoorBreakListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,6 +44,8 @@ import java.util.Map;
  */
 public class CustomCreature implements SimpleEnemySpawner {
 
+  public static final String CREATURE_ID_METADATA = "VD_CREATURE_NAME";
+
   private final Main plugin;
   private final int waveMin;
   private final int waveMax;
@@ -50,6 +53,7 @@ public class CustomCreature implements SimpleEnemySpawner {
   private final boolean explodeTarget;
   private final String key;
   private final EntityType entityType;
+  private final boolean doorBulldozing;
   private final boolean baby;
   private final boolean breed;
   private final int age;
@@ -65,7 +69,8 @@ public class CustomCreature implements SimpleEnemySpawner {
   private final ItemStack dropItem;
 
 
-  public CustomCreature(Main plugin, int waveMin, int waveMax, PriorityTarget priorityTarget, boolean explodeTarget, String key, EntityType entityType, boolean baby, boolean breed, int age, boolean ageLook, int expDrop, boolean holidayEffects, List<Rate> rates, Map<Attribute, Double> attributes, List<Equipment> equipments, ItemStack dropItem) {
+  public CustomCreature(Main plugin, int waveMin, int waveMax, PriorityTarget priorityTarget, boolean explodeTarget, String key, EntityType entityType, boolean doorBulldozing,
+                        boolean baby, boolean breed, int age, boolean ageLook, int expDrop, boolean holidayEffects, List<Rate> rates, Map<Attribute, Double> attributes, List<Equipment> equipments, ItemStack dropItem) {
     this.priorityTarget = priorityTarget;
     this.explodeTarget = explodeTarget;
     this.plugin = plugin;
@@ -73,6 +78,7 @@ public class CustomCreature implements SimpleEnemySpawner {
     this.waveMax = waveMax;
     this.key = key;
     this.entityType = entityType;
+    this.doorBulldozing = doorBulldozing;
     this.baby = baby;
     this.breed = breed;
     this.age = age;
@@ -132,6 +138,10 @@ public class CustomCreature implements SimpleEnemySpawner {
 
   public EntityType getEntityType() {
     return entityType;
+  }
+
+  public boolean isDoorBulldozing() {
+    return doorBulldozing;
   }
 
   public boolean isBaby() {
@@ -302,7 +312,10 @@ public class CustomCreature implements SimpleEnemySpawner {
         }
       }
       creature.setRemoveWhenFarAway(false);
-      creature.setMetadata("PlugilyProjects-VillageDefense-Name", new FixedMetadataValue(plugin, key));
+      creature.setMetadata(CustomCreature.CREATURE_ID_METADATA, new FixedMetadataValue(plugin, key));
+      if(doorBulldozing) {
+        creature.setMetadata(DoorBreakListener.CREATURE_DOOR_BULLDOZER_METADATA, new FixedMetadataValue(plugin, true));
+      }
       return creature;
     } else {
       entity.remove();

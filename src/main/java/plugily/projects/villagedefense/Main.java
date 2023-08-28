@@ -70,6 +70,7 @@ import plugily.projects.villagedefense.kits.premium.NakedKit;
 import plugily.projects.villagedefense.kits.premium.PremiumHardcoreKit;
 import plugily.projects.villagedefense.kits.premium.ShotBowKit;
 import plugily.projects.villagedefense.kits.premium.TeleporterKit;
+import plugily.projects.villagedefense.utils.ProtocolUtils;
 
 import java.io.File;
 import java.util.logging.Level;
@@ -135,6 +136,7 @@ public class Main extends PluginMain {
     Arena.init(this);
     ArenaUtils.init(this);
     KitHelper.init(this);
+    ProtocolUtils.init(this);
     new ArenaEvents(this);
     arenaManager = new ArenaManager(this);
     arenaRegistry = new ArenaRegistry(this);
