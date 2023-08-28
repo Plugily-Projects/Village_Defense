@@ -19,7 +19,6 @@
 package plugily.projects.villagedefense.arena;
 
 import org.bukkit.Bukkit;
-import org.bukkit.entity.IronGolem;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import plugily.projects.minigamesbox.classic.arena.PluginArena;
@@ -32,7 +31,8 @@ import plugily.projects.minigamesbox.classic.utils.version.xseries.XSound;
 import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.api.event.wave.VillageWaveEndEvent;
 import plugily.projects.villagedefense.api.event.wave.VillageWaveStartEvent;
-import plugily.projects.villagedefense.kits.level.GolemFriendKit;
+
+import java.util.UUID;
 
 /**
  * @author Plajer
@@ -58,10 +58,17 @@ public class ArenaManager extends PluginArenaManager {
 
   @Override
   public void leaveAttempt(@NotNull Player player, @NotNull PluginArena arena) {
-    if(plugin.getUserManager().getUser(player).getKit() instanceof GolemFriendKit) {
-      ((Arena) arena).getIronGolems().stream().filter(ironGolem -> ironGolem.getCustomName().contains(player.getName()))
-          .forEach(IronGolem::remove);
-    }
+    Arena gameArena = (Arena) arena;
+    gameArena.getIronGolems()
+      .stream()
+      .filter(golem -> golem.hasMetadata("VD_OWNER_UUID"))
+      .filter(golem -> UUID.fromString(golem.getMetadata("VD_OWNER_UUID").get(0).asString()).equals(player.getUniqueId()))
+      .forEach(gameArena::removeIronGolem);
+    gameArena.getWolves()
+      .stream()
+      .filter(golem -> golem.hasMetadata("VD_OWNER_UUID"))
+      .filter(golem -> UUID.fromString(golem.getMetadata("VD_OWNER_UUID").get(0).asString()).equals(player.getUniqueId()))
+      .forEach(gameArena::removeWolf);
     super.leaveAttempt(player, arena);
   }
 
@@ -173,7 +180,7 @@ public class ArenaManager extends PluginArenaManager {
       arena.setArenaOption("ZOMBIE_DIFFICULTY_MULTIPLIER", multiplier);
 
       plugin.getDebugger().debug("[{0}] Detected abnormal wave ({1})! Applying zombie limit and difficulty multiplier to {2} | ZombiesAmount: {3} | MaxZombies: {4}",
-          arena.getId(), wave, arena.getArenaOption("ZOMBIE_DIFFICULTY_MULTIPLIER"), zombiesAmount, maxzombies);
+        arena.getId(), wave, arena.getArenaOption("ZOMBIE_DIFFICULTY_MULTIPLIER"), zombiesAmount, maxzombies);
 
       zombiesAmount = maxzombies;
     }
