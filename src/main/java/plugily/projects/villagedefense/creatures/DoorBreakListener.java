@@ -72,13 +72,15 @@ public class DoorBreakListener extends BukkitRunnable {
 
             Block b = block.getRelative(BlockFace.UP);
 
+            //break order matters
             if(b.getType() == door) {
+              block.setType(Material.AIR);
               b.setType(Material.AIR);
             } else if((b = block.getRelative(BlockFace.DOWN)).getType() == door) {
               b.setType(Material.AIR);
+              block.setType(Material.AIR);
             }
 
-            block.setType(Material.AIR);
             VersionUtils.playSound(blockLoc, "ENTITY_ZOMBIE_BREAK_WOODEN_DOOR");
           }
         }
