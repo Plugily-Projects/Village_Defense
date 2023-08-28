@@ -18,6 +18,11 @@
 
 package plugily.projects.villagedefense.kits.overhauled;
 
+import com.comphenix.protocol.PacketType;
+import com.comphenix.protocol.ProtocolLibrary;
+import com.comphenix.protocol.ProtocolManager;
+import com.comphenix.protocol.events.PacketContainer;
+import com.comphenix.protocol.wrappers.BlockPosition;
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.Location;
@@ -42,11 +47,13 @@ import plugily.projects.minigamesbox.classic.kits.basekits.PremiumKit;
 import plugily.projects.minigamesbox.classic.user.User;
 import plugily.projects.minigamesbox.classic.utils.helper.ArmorHelper;
 import plugily.projects.minigamesbox.classic.utils.helper.ItemBuilder;
+import plugily.projects.minigamesbox.classic.utils.helper.MaterialUtils;
 import plugily.projects.minigamesbox.classic.utils.helper.WeaponHelper;
 import plugily.projects.minigamesbox.classic.utils.misc.complement.ComplementAccessor;
 import plugily.projects.minigamesbox.classic.utils.version.VersionUtils;
 import plugily.projects.minigamesbox.classic.utils.version.events.api.PlugilyPlayerInteractEvent;
 import plugily.projects.minigamesbox.classic.utils.version.xseries.XMaterial;
+import plugily.projects.minigamesbox.classic.utils.version.xseries.XParticle;
 import plugily.projects.minigamesbox.classic.utils.version.xseries.XSound;
 import plugily.projects.villagedefense.arena.Arena;
 import plugily.projects.villagedefense.kits.AbilitySource;
@@ -127,8 +134,8 @@ public class BuilderKit extends PremiumKit implements AbilitySource, Listener {
     Arena arena = (Arena) getPlugin().getUserManager().getUser(player).getArena();
     int fences = (int) Settings.PASSIVE_FENCE_COUNT.getForArenaState(arena);
     player.getInventory().addItem(new ItemBuilder(new ItemStack(XMaterial.OAK_FENCE.parseMaterial(), fences))
-      .name(new MessageBuilder("GAME_ITEM_FENCE_NAME").asKey().build())
-      .lore(getPlugin().getLanguageManager().getLanguageListFromKey("GAME_ITEM_FENCE_DESCRIPTION"))
+      .name(new MessageBuilder(LANGUAGE_ACCESSOR + "GAME_ITEM_FENCE_NAME").asKey().build())
+      .lore(getPlugin().getLanguageManager().getLanguageListFromKey(LANGUAGE_ACCESSOR + "GAME_ITEM_FENCE_DESCRIPTION"))
       .build());
     if(arena.getWave() % (int) Settings.PASSIVE_DOOR_MODULO.getForArenaState(arena) == 0) {
       player.getInventory().addItem(new ItemBuilder(new ItemStack(getMaterial(), 1))
@@ -267,14 +274,37 @@ public class BuilderKit extends PremiumKit implements AbilitySource, Listener {
       @Override
       public void run() {
         zombieBarrier.decrementSeconds();
+        if(zombieBarrier.seconds <= 9) {
+          int stage = 9 - zombieBarrier.seconds;
+          sendBlockBreakAnimation(zombieBarrier.location.getBlock(), stage);
+        }
 
         if(zombieBarrier.seconds <= 0) {
+          //https://wiki.vg/Protocol#Set_Block_Destroy_Stage
+          //any stage outside 0-9 removes block animation
+          sendBlockBreakAnimation(zombieBarrier.location.getBlock(), 10);
           zombieBarrier.location.getBlock().setType(Material.AIR);
-          VersionUtils.sendParticles("FIREWORKS_SPARK", arena.getPlayers(), zombieBarrier.location, 20);
+          XSound.BLOCK_WOOD_BREAK.play(zombieBarrier.location);
+          Location location = zombieBarrier.location.clone();
+          //centered location, more or less accurate
+          location.add(location.getX() > 0 ? 0.5 : -0.5, 0.0, location.getZ() > 0 ? 0.5 : -0.5);
+          zombieBarrier.location.getWorld().spawnParticle(XParticle.getParticle("EXPLOSION_LARGE"), location, 1);
           cancel();
         }
       }
     }.runTaskTimer(getPlugin(), 20, 20);
+  }
+
+  private void sendBlockBreakAnimation(Block block, int stage) {
+    if(getPlugin().getServer().getPluginManager().getPlugin("ProtocolLib") == null) {
+      return;
+    }
+    ProtocolManager manager = ProtocolLibrary.getProtocolManager();
+    PacketContainer packet = manager.createPacket(PacketType.Play.Server.BLOCK_BREAK_ANIMATION);
+    packet.getBlockPositionModifier().write(0, new BlockPosition(block.getX(), block.getY(), block.getZ()));
+    packet.getIntegers().write(0, block.hashCode());
+    packet.getIntegers().write(1, stage);
+    manager.broadcastServerPacket(packet);
   }
 
   @EventHandler
@@ -309,7 +339,7 @@ public class BuilderKit extends PremiumKit implements AbilitySource, Listener {
     List<Location> locations = arena.getMapRestorerManager().getGameDoorLocations();
     Location above = event.getBlock().getLocation().add(0, 1, 0);
     if((!locations.contains(event.getBlock().getLocation()) && !locations.contains(above))
-      || stack.getType() != Utils.getCachedDoor(event.getBlock())) {
+      || !MaterialUtils.isDoor(stack.getType())) {
       XSound.ENTITY_VILLAGER_NO.play(event.getPlayer());
       event.setCancelled(true);
       return;
