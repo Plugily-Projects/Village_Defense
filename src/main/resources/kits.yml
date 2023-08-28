@@ -33,9 +33,7 @@ Enabled-Game-Kits:
   Puncher: true
   Runner: true
   Terminator: true
-  Worker: true
   ZombieFinder: true
-  Blocker: true
   Cleaner: true
   HeavyTank: true
   Medic: true
@@ -46,6 +44,7 @@ Enabled-Game-Kits:
   Tornado: true
   Wizard: true
   PetsFriend: true
+  Builder: true
 
 # The cooldown in seconds for some kit items
 Kit-Cooldown:

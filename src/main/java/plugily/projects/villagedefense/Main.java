@@ -99,12 +99,12 @@ public class Main extends PluginMain {
 
   @Override
   public void onEnable() {
-    if(!validateStartup()) {
-      return;
-    }
     long start = System.currentTimeMillis();
     MessageInitializer messageInitializer = new MessageInitializer(this);
     super.onEnable();
+    if(!validateStartup()) {
+      return;
+    }
     getDebugger().debug("[System] [Plugin] Initialization start");
     new PlaceholderInitializer(this);
     messageInitializer.registerMessages();
@@ -116,7 +116,7 @@ public class Main extends PluginMain {
   }
 
   private boolean validateStartup() {
-    if(ServerVersion.Version.isCurrentEqualOrLower(ServerVersion.Version.v1_12_R1)) {
+    if(ServerVersion.Version.isCurrentLower(ServerVersion.Version.v1_12_R1)) {
       MiscUtils.sendLineBreaker(this.getName());
       getMessageUtils().thisVersionIsNotSupported();
       MiscUtils.sendVersionInformation(this, this.getName(), this.getDescription());

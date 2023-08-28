@@ -32,6 +32,7 @@ import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.api.event.wave.VillageWaveEndEvent;
 import plugily.projects.villagedefense.api.event.wave.VillageWaveStartEvent;
 
+import java.util.Objects;
 import java.util.UUID;
 
 /**
@@ -61,11 +62,13 @@ public class ArenaManager extends PluginArenaManager {
     Arena gameArena = (Arena) arena;
     gameArena.getIronGolems()
       .stream()
+      .filter(Objects::nonNull)
       .filter(golem -> golem.hasMetadata("VD_OWNER_UUID"))
       .filter(golem -> UUID.fromString(golem.getMetadata("VD_OWNER_UUID").get(0).asString()).equals(player.getUniqueId()))
       .forEach(gameArena::removeIronGolem);
     gameArena.getWolves()
       .stream()
+      .filter(Objects::nonNull)
       .filter(golem -> golem.hasMetadata("VD_OWNER_UUID"))
       .filter(golem -> UUID.fromString(golem.getMetadata("VD_OWNER_UUID").get(0).asString()).equals(player.getUniqueId()))
       .forEach(gameArena::removeWolf);

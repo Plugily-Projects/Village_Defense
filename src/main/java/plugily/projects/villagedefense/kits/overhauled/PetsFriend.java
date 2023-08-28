@@ -93,13 +93,13 @@ public class PetsFriend extends PremiumKit implements AbilitySource, Listener {
     player.getInventory().addItem(WeaponHelper.getUnBreakingSword(WeaponHelper.ResourceType.STONE, 10));
     ArmorHelper.setArmor(player, ArmorHelper.ArmorType.LEATHER);
 
-    player.getInventory().setItem(3, new ItemBuilder(new ItemStack(XMaterial.GHAST_TEAR.parseMaterial()))
-      .name(new MessageBuilder(LANGUAGE_ACCESSOR + "GAME_ITEM_AURA_NAME").asKey().build())
-      .lore(getPlugin().getLanguageManager().getLanguageListFromKey(LANGUAGE_ACCESSOR + "GAME_ITEM_AURA_DESCRIPTION"))
+    player.getInventory().setItem(3, new ItemBuilder(new ItemStack(XMaterial.BONE.parseMaterial()))
+      .name(new MessageBuilder(LANGUAGE_ACCESSOR + "GAME_ITEM_FIGHT_OR_FLIGHT_NAME").asKey().build())
+      .lore(getPlugin().getLanguageManager().getLanguageListFromKey(LANGUAGE_ACCESSOR + "GAME_ITEM_FIGHT_OR_FLIGHT_DESCRIPTION"))
       .build());
-    player.getInventory().setItem(4, new ItemBuilder(new ItemStack(XMaterial.GOLD_NUGGET.parseMaterial()))
-      .name(new MessageBuilder(LANGUAGE_ACCESSOR + "GAME_ITEM_HOMECOMING_NAME").asKey().build())
-      .lore(getPlugin().getLanguageManager().getLanguageListFromKey(LANGUAGE_ACCESSOR + "GAME_ITEM_HOMECOMING_DESCRIPTION"))
+    player.getInventory().setItem(4, new ItemBuilder(new ItemStack(XMaterial.SHEARS.parseMaterial()))
+      .name(new MessageBuilder(LANGUAGE_ACCESSOR + "GAME_ITEM_UNSTOPPABLE_BEASTS_NAME").asKey().build())
+      .lore(getPlugin().getLanguageManager().getLanguageListFromKey(LANGUAGE_ACCESSOR + "GAME_ITEM_UNSTOPPABLE_BEASTS_DESCRIPTION"))
       .build());
 
     player.getInventory().setItem(5, new ItemStack(Material.SADDLE));
@@ -129,7 +129,7 @@ public class PetsFriend extends PremiumKit implements AbilitySource, Listener {
       if(wolf != null) {
         List<Upgrade> wolfUpgrades = upgradeMenu.getUpgrades()
           .stream()
-          .filter(u -> u.getApplicableFor() == Upgrade.EntityType.WOLF)
+          .filter(u -> u.getApplicableFor() == Upgrade.EntityType.BOTH || u.getApplicableFor() == Upgrade.EntityType.WOLF)
           .collect(Collectors.toList());
         Upgrade randomUpgrade = wolfUpgrades.get(random.nextInt(wolfUpgrades.size()));
         upgradeMenu.applyUpgrade(wolf, player, randomUpgrade);
@@ -140,7 +140,7 @@ public class PetsFriend extends PremiumKit implements AbilitySource, Listener {
       if(golem != null) {
         List<Upgrade> golemUpgrades = upgradeMenu.getUpgrades()
           .stream()
-          .filter(u -> u.getApplicableFor() == Upgrade.EntityType.IRON_GOLEM)
+          .filter(u -> u.getApplicableFor() == Upgrade.EntityType.BOTH || u.getApplicableFor() == Upgrade.EntityType.IRON_GOLEM)
           .collect(Collectors.toList());
         Upgrade randomUpgrade = golemUpgrades.get(random.nextInt(golemUpgrades.size()));
         upgradeMenu.applyUpgrade(golem, player, randomUpgrade);
@@ -214,14 +214,14 @@ public class PetsFriend extends PremiumKit implements AbilitySource, Listener {
     if(wolf != null) {
       upgradeMenu.getUpgrades()
         .stream()
-        .filter(u -> u.getApplicableFor() == Upgrade.EntityType.WOLF)
+        .filter(u -> u.getApplicableFor() == Upgrade.EntityType.BOTH || u.getApplicableFor() == Upgrade.EntityType.WOLF)
         .forEach(upgrade -> upgradeMenu.applyUpgrade(wolf, user.getPlayer(), upgrade, upgrade.getMaxTier()));
     }
     Creature golem = arena.spawnGolem(arena.getStartLocation(), user.getPlayer());
     if(golem != null) {
       upgradeMenu.getUpgrades()
         .stream()
-        .filter(u -> u.getApplicableFor() == Upgrade.EntityType.IRON_GOLEM)
+        .filter(u -> u.getApplicableFor() == Upgrade.EntityType.BOTH || u.getApplicableFor() == Upgrade.EntityType.IRON_GOLEM)
         .forEach(upgrade -> upgradeMenu.applyUpgrade(golem, user.getPlayer(), upgrade, upgrade.getMaxTier()));
     }
     new MessageBuilder(LANGUAGE_ACCESSOR + "GAME_ITEM_UNSTOPPABLE_BEASTS_ACTIVATE").asKey().send(user.getPlayer());
