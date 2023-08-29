@@ -19,8 +19,10 @@
 package plugily.projects.villagedefense.arena.managers.maprestorer;
 
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.TreeSpecies;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -36,15 +38,15 @@ import java.util.List;
 import java.util.logging.Level;
 
 /**
- * @author Plajer
+ * @author Tigerpanzer_02
  * <p>
- * Created at 14.02.2019
+ * Created at 13.01.2021
  */
 @SuppressWarnings("deprecation")
 public class MapRestorerManager extends PluginMapRestorerManager {
 
-  protected final List<Location> doorBlocks = new ArrayList<>();
-  public final Arena arena;
+  private final List<Location> doorBlocks = new ArrayList<>();
+  private final Arena arena;
 
   public MapRestorerManager(Arena arena) {
     super(arena);
@@ -109,17 +111,15 @@ public class MapRestorerManager extends PluginMapRestorerManager {
           i++;
           continue;
         }
-        Block below = block.getLocation().subtract(0, 1, 0).getBlock();
-        boolean isAirBelow = below.getType().equals(XMaterial.AIR.parseMaterial());
-        if(isAirBelow) {
-          restoreBottomHalfDoorPart(below);
-          restoreTopHalfDoorPart(block);
-        } else {
-          Block above = block.getLocation().add(0, 1, 0).getBlock();
-          restoreBottomHalfDoorPart(block);
-          restoreTopHalfDoorPart(above);
+        Block relative = block.getRelative(BlockFace.DOWN).getLocation().getBlock();
+        boolean isAirBelow = relative.getType().equals(XMaterial.AIR.parseMaterial());
+        boolean relativeTopHalf = false;
+        if(!isAirBelow) {
+          relative = block.getRelative(BlockFace.UP).getLocation().getBlock();
+          relativeTopHalf = true;
         }
-        i++;
+        restoreDoorPart(block, !relativeTopHalf);
+        restoreDoorPart(relative, relativeTopHalf);
       } catch(Exception ex) {
         arena.getPlugin().getDebugger().debug(Level.WARNING, "Door has failed to load for arena {0} message {1} type {2} skipping!", arena.getId(), ex.getMessage(), ex.getCause());
       }
@@ -129,34 +129,34 @@ public class MapRestorerManager extends PluginMapRestorerManager {
     }
   }
 
-  public void restoreTopHalfDoorPart(Block block) {
+  public void restoreDoorPart(Block block, boolean topHalf) {
+    byte doorByte;
+    if(topHalf) {
+      doorByte = 8;
+    } else {
+      doorByte = 1;
+    }
+
     block.setType(Utils.getCachedDoor(block));
-    BlockState doorBlockState = block.getState();
-    Door doorBlockData = new Door(TreeSpecies.GENERIC, arena.getPlugin().getBukkitHelper().getFacingByByte((byte) 8));
-
-    doorBlockData.setTopHalf(true);
-    doorBlockData.setFacingDirection(doorBlockData.getFacing());
-
-    doorBlockState.setType(doorBlockData.getItemType());
-    doorBlockState.setData(doorBlockData);
-
-    doorBlockState.update(true);
-
-    block.removeMetadata(DoorBreakListener.CREATURE_DOOR_BULLDOZER_METADATA, arena.getPlugin());
-  }
-
-  public void restoreBottomHalfDoorPart(Block block) {
-    block.setType(Utils.getCachedDoor(block));
-    BlockState doorBlockState = block.getState();
-    Door doorBlockData = new Door(TreeSpecies.GENERIC, arena.getPlugin().getBukkitHelper().getFacingByByte((byte) 1));
-
-    doorBlockData.setTopHalf(false);
-    doorBlockData.setFacingDirection(doorBlockData.getFacing());
-
-    doorBlockState.setType(doorBlockData.getItemType());
-    doorBlockState.setData(doorBlockData);
-
-    doorBlockState.update(true);
+    Door doorData = null;
+    try {
+      doorData = new Door(TreeSpecies.GENERIC, arena.getPlugin().getBukkitHelper().getFacingByByte(doorByte));
+    } catch(NoSuchMethodError e) {
+      try {
+        doorData = Door.class.getDeclaredConstructor(Material.class, byte.class).newInstance(XMaterial.OAK_DOOR.parseMaterial(), doorByte);
+      } catch(Exception ex) {
+        ex.printStackTrace();
+      }
+    }
+    if(doorData == null) {
+      return;
+    }
+    BlockState state = block.getState();
+    doorData.setTopHalf(topHalf);
+    doorData.setFacingDirection(doorData.getFacing());
+    state.setType(doorData.getItemType());
+    state.setData(doorData);
+    state.update(true);
 
     block.removeMetadata(DoorBreakListener.CREATURE_DOOR_BULLDOZER_METADATA, arena.getPlugin());
   }

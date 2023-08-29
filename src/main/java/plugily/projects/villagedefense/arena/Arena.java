@@ -33,14 +33,12 @@ import org.jetbrains.annotations.Nullable;
 import plugily.projects.minigamesbox.classic.arena.ArenaState;
 import plugily.projects.minigamesbox.classic.arena.PluginArena;
 import plugily.projects.minigamesbox.classic.handlers.language.MessageBuilder;
-import plugily.projects.minigamesbox.classic.utils.version.ServerVersion;
 import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.arena.managers.CreatureTargetManager;
 import plugily.projects.villagedefense.arena.managers.EnemySpawnManager;
 import plugily.projects.villagedefense.arena.managers.ScoreboardManager;
 import plugily.projects.villagedefense.arena.managers.ShopManager;
 import plugily.projects.villagedefense.arena.managers.maprestorer.MapRestorerManager;
-import plugily.projects.villagedefense.arena.managers.maprestorer.MapRestorerManagerLegacy;
 import plugily.projects.villagedefense.arena.states.EndingState;
 import plugily.projects.villagedefense.arena.states.InGameState;
 import plugily.projects.villagedefense.arena.states.RestartingState;
@@ -85,11 +83,7 @@ public class Arena extends PluginArena {
     shopManager = new ShopManager(this);
     enemySpawnManager = new EnemySpawnManager(this);
     creatureTargetManager = new CreatureTargetManager(this);
-    if(ServerVersion.Version.isCurrentEqualOrLower(ServerVersion.Version.v1_16_R1)) {
-      mapRestorerManager = new MapRestorerManagerLegacy(this);
-    } else {
-      mapRestorerManager = new MapRestorerManager(this);
-    }
+    mapRestorerManager = new MapRestorerManager(this);
     setMapRestorerManager(mapRestorerManager);
     setScoreboardManager(new ScoreboardManager(this));
 
