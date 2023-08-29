@@ -120,6 +120,7 @@ public class EnemySpawnerRegistry {
 
       boolean explodeTarget = content.getBoolean(creature + ".explosive_hit", false);
 
+      String name = content.getString(creature + ".name", "Zombie");
       String key = creature.toUpperCase();
 
       EntityType entityType = EntityType.valueOf(content.getString(creature + ".entity_type", "ZOMBIE").toUpperCase());
@@ -187,7 +188,7 @@ public class EnemySpawnerRegistry {
         dropItem = XMaterial.matchXMaterial(item).orElse(XMaterial.BEDROCK).parseItem();
       }
       plugin.getDebugger().debug("Registered CustomCreature named {0}", key);
-      enemySpawnerSet.add(new CustomCreature(plugin, waveMin, waveMax, priorityTarget, explodeTarget, key, entityType, doorBulldozing, baby, breed, age, ageLook, expDrop, holidayEffects, rates, attributes, equipments, dropItem));
+      enemySpawnerSet.add(new CustomCreature(plugin, name, waveMin, waveMax, priorityTarget, explodeTarget, key, entityType, doorBulldozing, baby, breed, age, ageLook, expDrop, holidayEffects, rates, attributes, equipments, dropItem));
     }
   }
 

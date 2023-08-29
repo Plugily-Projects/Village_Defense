@@ -19,6 +19,7 @@
 package plugily.projects.villagedefense.creatures;
 
 import org.bukkit.ChatColor;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Creature;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.IronGolem;
@@ -27,9 +28,9 @@ import org.bukkit.entity.Villager;
 import org.bukkit.entity.Wolf;
 import plugily.projects.minigamesbox.classic.handlers.language.MessageBuilder;
 import plugily.projects.minigamesbox.classic.utils.version.VersionUtils;
-import plugily.projects.minigamesbox.string.StringFormatUtils;
 import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.arena.Arena;
+import plugily.projects.villagedefense.creatures.v1_9_UP.CustomCreature;
 
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -41,7 +42,7 @@ import java.util.concurrent.ThreadLocalRandom;
 public class CreatureUtils {
 
   private static String[] villagerNames = ("Jagger,Kelsey,Kelton,Haylie,Harlow,Howard,Wulffric,Winfred,Ashley,Bailey,Beckett,Alfredo,Alfred,Adair,Edgar,ED,Eadwig,Edgaras,Buckley,Stanley,Nuffley,"
-      + "Mary,Jeffry,Rosaly,Elliot,Harry,Sam,Rosaline,Tom,Ivan,Kevin,Adam,Emma,Mira,Jeff,Isac,Nico").split(",");
+    + "Mary,Jeffry,Rosaly,Elliot,Harry,Sam,Rosaline,Tom,Ivan,Kevin,Adam,Emma,Mira,Jeff,Isac,Nico").split(",");
   private static Main plugin;
   private static BaseCreatureInitializer creatureInitializer;
 
@@ -66,21 +67,50 @@ public class CreatureUtils {
   }
 
   /**
-   * Applies attributes (i.e. health bar (if enabled),
-   * health multiplier and follow range) to target zombie.
+   * Applies attributes (i.e. health bar,
+   * health multiplier and follow range) to target enemy.
    *
-   * @param zombie zombie to apply attributes for
-   * @param arena  arena to get health multiplier from
+   * @param enemy enemy to apply attributes for
+   * @param arena arena to get health multiplier from
    */
-  public static void applyAttributes(Creature zombie, Arena arena) {
-    creatureInitializer.applyFollowRange(zombie);
-    VersionUtils.setMaxHealth(zombie, VersionUtils.getMaxHealth(zombie) + arena.getArenaOption("ZOMBIE_DIFFICULTY_MULTIPLIER"));
-    zombie.setHealth(VersionUtils.getMaxHealth(zombie));
-    if(plugin.getConfigPreferences().getOption("ZOMBIE_HEALTHBAR")) {
-      zombie.setCustomNameVisible(true);
-      zombie.setCustomName(StringFormatUtils.getProgressBar((int) zombie.getHealth(), (int) VersionUtils.getMaxHealth(zombie), 50, "|",
-          ChatColor.YELLOW + "", ChatColor.GRAY + ""));
+  public static void applyAttributes(Creature enemy, Arena arena) {
+    creatureInitializer.applyFollowRange(enemy);
+    VersionUtils.setMaxHealth(enemy, VersionUtils.getMaxHealth(enemy) + arena.getArenaOption("ZOMBIE_DIFFICULTY_MULTIPLIER"));
+    enemy.setHealth(VersionUtils.getMaxHealth(enemy));
+    enemy.setCustomNameVisible(true);
+    enemy.setCustomName(CreatureUtils.getHealthNameTag(enemy));
+  }
+
+  public static String getHealthNameTag(Creature creature) {
+    return getHealthNameTagPreDamage(creature, 0);
+  }
+
+  /**
+   * In damage events, health is modified after all events are listened to
+   * we must apply health bar change pre damage event
+   *
+   * @param creature target to generate health bar for
+   * @param damage   final damage taken by enemy before all events have finished
+   * @return health bar adjusted to the events' damage
+   */
+  public static String getHealthNameTagPreDamage(Creature creature, double damage) {
+    double health = creature.getHealth() - damage;
+    if(health < 0) {
+      health = 0;
     }
+    double maxHealth = creature.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue();
+    ChatColor hpColor;
+    if(health >= maxHealth * 0.75) {
+      hpColor = ChatColor.GREEN;
+    } else if(health >= maxHealth * 0.5) {
+      hpColor = ChatColor.GOLD;
+    } else if(health >= maxHealth * 0.25) {
+      hpColor = ChatColor.YELLOW;
+    } else {
+      hpColor = ChatColor.RED;
+    }
+    String name = creature.getMetadata(CustomCreature.CREATURE_CUSTOM_NAME_METADATA).get(0).asString();
+    return name + " " + hpColor + "" + ChatColor.BOLD + "" + Math.round(health) + ChatColor.GREEN + "" + ChatColor.BOLD + "/" + Math.round(maxHealth) + " ❤";
   }
 
   public static String[] getVillagerNames() {
@@ -98,4 +128,5 @@ public class CreatureUtils {
   public static BaseCreatureInitializer getCreatureInitializer() {
     return creatureInitializer;
   }
+
 }

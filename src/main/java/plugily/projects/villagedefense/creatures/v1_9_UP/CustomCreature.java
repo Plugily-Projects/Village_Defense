@@ -44,9 +44,11 @@ import java.util.Map;
  */
 public class CustomCreature implements SimpleEnemySpawner {
 
-  public static final String CREATURE_ID_METADATA = "VD_CREATURE_NAME";
+  public static final String CREATURE_ID_METADATA = "VD_CREATURE_ID";
+  public static final String CREATURE_CUSTOM_NAME_METADATA = "VD_CREATURE_CUSTOM_NAME";
 
   private final Main plugin;
+  private final String name;
   private final int waveMin;
   private final int waveMax;
   private final PriorityTarget priorityTarget;
@@ -69,8 +71,9 @@ public class CustomCreature implements SimpleEnemySpawner {
   private final ItemStack dropItem;
 
 
-  public CustomCreature(Main plugin, int waveMin, int waveMax, PriorityTarget priorityTarget, boolean explodeTarget, String key, EntityType entityType, boolean doorBulldozing,
+  public CustomCreature(Main plugin, String name, int waveMin, int waveMax, PriorityTarget priorityTarget, boolean explodeTarget, String key, EntityType entityType, boolean doorBulldozing,
                         boolean baby, boolean breed, int age, boolean ageLook, int expDrop, boolean holidayEffects, List<Rate> rates, Map<Attribute, Double> attributes, List<Equipment> equipments, ItemStack dropItem) {
+    this.name = name;
     this.priorityTarget = priorityTarget;
     this.explodeTarget = explodeTarget;
     this.plugin = plugin;
@@ -312,6 +315,7 @@ public class CustomCreature implements SimpleEnemySpawner {
         }
       }
       creature.setRemoveWhenFarAway(false);
+      creature.setMetadata(CREATURE_CUSTOM_NAME_METADATA, new FixedMetadataValue(plugin, name));
       creature.setMetadata(CustomCreature.CREATURE_ID_METADATA, new FixedMetadataValue(plugin, key));
       if(doorBulldozing) {
         creature.setMetadata(DoorBreakListener.CREATURE_DOOR_BULLDOZER_METADATA, new FixedMetadataValue(plugin, true));

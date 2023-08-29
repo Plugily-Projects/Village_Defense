@@ -48,7 +48,7 @@ dependencies {
 }
 
 group = "plugily.projects"
-version = "4.6.1-SNAPSHOT89"
+version = "5.0.1-SNAPSHOT2"
 description = "VillageDefense"
 java {
     withJavadocJar()
@@ -78,8 +78,8 @@ tasks {
 
     compileJava {
         options.encoding = "UTF-8"
-        targetCompatibility = JavaVersion.VERSION_1_8.toString()
-        sourceCompatibility = JavaVersion.VERSION_1_8.toString()
+        targetCompatibility = JavaVersion.VERSION_17.toString()
+        sourceCompatibility = JavaVersion.VERSION_17.toString()
     }
 
 }

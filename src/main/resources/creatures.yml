@@ -23,6 +23,7 @@ Creatures:
       drop_item: null
   Content:
     BABY_ZOMBIE:
+      name: "Baby Zombie"
       enabled: true
       wave:
         min: 3
@@ -92,6 +93,7 @@ Creatures:
           drop_chance: 0
       drop_item: null
     FAST_ZOMBIE:
+      name: "Fast Zombie"
       enabled: true
       wave:
         min: 0
@@ -171,6 +173,7 @@ Creatures:
           drop_chance: 0
       drop_item: null
     GOLEM_BUSTER:
+      name: "Golem Buster"
       enabled: true
       wave:
         min: 8
@@ -250,6 +253,7 @@ Creatures:
           drop_chance: 0
       drop_item: null
     HARD_ZOMBIE:
+      name: "Hard Zombie"
       enabled: true
       wave:
         min: 4
@@ -329,6 +333,7 @@ Creatures:
           drop_chance: 0
       drop_item: null
     PLAYER_BUSTER:
+      name: "Player Buster"
       enabled: true
       wave:
         min: 4
@@ -409,6 +414,7 @@ Creatures:
           drop_chance: 0
       drop_item: null
     TANKER_ZOMBIE:
+      name: "Tank Zombie"
       enabled: true
       wave:
         min: 20
@@ -470,6 +476,7 @@ Creatures:
           drop_chance: 0
       drop_item: null
     SOFT_HARD_ZOMBIE:
+      name: "Medium Zombie"
       enabled: true
       wave:
         min: 4
@@ -550,6 +557,7 @@ Creatures:
           drop_chance: 0
       drop_item: null
     VILLAGER_BUSTER:
+      name: "Villager Buster"
       enabled: true
       wave:
         min: 10
@@ -630,6 +638,7 @@ Creatures:
           drop_chance: 0
       drop_item: null
     VILLAGER_SLAYER:
+      name: "Villager Slayer"
       enabled: true
       wave:
         min: 23

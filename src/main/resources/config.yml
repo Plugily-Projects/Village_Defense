@@ -202,10 +202,6 @@ Creatures:
   # Active after Creatures limit is reached
   # Higher value means weaker Creatures
   Multiplier-Divider: 18
-  # Enable very simple health bar for Creatures?
-  # They will have health instead of their names
-  # It will show percentage of health left.
-  Health-Bar: true
 
 
 Orbs:
@@ -219,14 +215,6 @@ Orbs:
     # KEEP, will leave the orbs like they are
     Type: PERCENTAGE
     Value: 50
-
-
-# Should the name tag of these mobs always visible?
-Name-Visibility:
-  Golem: true
-  Wolf: true
-  Villager: true
-
 
 # Zombie glow to make it visible to players.
 Glowing-Status:

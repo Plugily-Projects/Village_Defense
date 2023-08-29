@@ -19,7 +19,6 @@
 package plugily.projects.villagedefense.events;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -50,14 +49,16 @@ import org.bukkit.event.inventory.InventoryPickupItemEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.inventory.ItemStack;
+import plugily.projects.minigamesbox.classic.api.event.player.PlugilyPlayerChooseKitEvent;
 import plugily.projects.minigamesbox.classic.arena.ArenaState;
 import plugily.projects.minigamesbox.classic.handlers.language.MessageBuilder;
 import plugily.projects.minigamesbox.classic.utils.version.VersionUtils;
 import plugily.projects.minigamesbox.classic.utils.version.events.api.PlugilyPlayerInteractEntityEvent;
-import plugily.projects.minigamesbox.string.StringFormatUtils;
+import plugily.projects.minigamesbox.classic.utils.version.xseries.XSound;
 import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.api.event.game.VillageGameSecretWellEvent;
 import plugily.projects.villagedefense.arena.Arena;
+import plugily.projects.villagedefense.creatures.CreatureUtils;
 import plugily.projects.villagedefense.utils.Utils;
 
 /**
@@ -70,6 +71,11 @@ public class PluginEvents implements Listener {
   public PluginEvents(Main plugin) {
     this.plugin = plugin;
     plugin.getServer().getPluginManager().registerEvents(this, plugin);
+  }
+
+  @EventHandler
+  public void onKitSelectSound(PlugilyPlayerChooseKitEvent event) {
+    XSound.BLOCK_NOTE_BLOCK_HARP.play(event.getPlayer());
   }
 
   @EventHandler
@@ -192,18 +198,18 @@ public class PluginEvents implements Listener {
     event.setCancelled(true);
   }
 
-  @EventHandler(priority = EventPriority.HIGH)
+  @EventHandler(priority = EventPriority.HIGHEST)
   public void onCreatureHurt(EntityDamageEvent event) {
-    if(!(event.getEntity() instanceof Creature) || !plugin.getConfigPreferences().getOption("ZOMBIE_HEALTHBAR")) {
+    if(!(event.getEntity() instanceof Creature)) {
       return;
     }
     for(Arena arena : plugin.getArenaRegistry().getPluginArenas()) {
       if(!arena.getEnemies().contains(event.getEntity())) {
         continue;
       }
+      event.setCancelled(false);
       Creature creature = (Creature) event.getEntity();
-      creature.setCustomName(StringFormatUtils.getProgressBar((int) creature.getHealth(), (int) VersionUtils.getMaxHealth(creature),
-          50, "|", ChatColor.YELLOW + "", ChatColor.GRAY + ""));
+      creature.setCustomName(CreatureUtils.getHealthNameTagPreDamage(creature, event.getFinalDamage()));
     }
   }
 
@@ -217,7 +223,7 @@ public class PluginEvents implements Listener {
       return;
     }
     if(plugin.getArenaRegistry().getArena((Player) projectile.getShooter()) == null || !(event.getEntity() instanceof Player || event.getEntity() instanceof Wolf
-        || event.getEntity() instanceof IronGolem || event.getEntity() instanceof Villager)) {
+      || event.getEntity() instanceof IronGolem || event.getEntity() instanceof Villager)) {
       return;
     }
     event.setCancelled(true);
@@ -308,8 +314,8 @@ public class PluginEvents implements Listener {
   public void onCombust(EntityCombustEvent event) {
     // Ignore if this is caused by an event lower down the chain.
     if(event instanceof EntityCombustByEntityEvent || event instanceof EntityCombustByBlockEvent
-        || !(event.getEntity() instanceof Creature)
-        || event.getEntity().getWorld().getEnvironment() != World.Environment.NORMAL) {
+      || !(event.getEntity() instanceof Creature)
+      || event.getEntity().getWorld().getEnvironment() != World.Environment.NORMAL) {
       return;
     }
 

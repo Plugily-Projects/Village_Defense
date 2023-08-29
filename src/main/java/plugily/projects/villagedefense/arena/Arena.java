@@ -44,6 +44,7 @@ import plugily.projects.villagedefense.arena.states.InGameState;
 import plugily.projects.villagedefense.arena.states.RestartingState;
 import plugily.projects.villagedefense.arena.states.StartingState;
 import plugily.projects.villagedefense.creatures.CreatureUtils;
+import plugily.projects.villagedefense.creatures.v1_9_UP.CustomCreature;
 
 import java.util.ArrayList;
 import java.util.EnumMap;
@@ -229,8 +230,10 @@ public class Arena extends PluginArena {
 
   public void spawnVillager(Location location) {
     Villager villager = CreatureUtils.getCreatureInitializer().spawnVillager(location);
-    villager.setCustomNameVisible(getPlugin().getConfigPreferences().getOption("NAME_VISIBILITY_VILLAGER"));
-    villager.setCustomName(CreatureUtils.getRandomVillagerName());
+    villager.setCustomNameVisible(true);
+    String name = CreatureUtils.getRandomVillagerName();
+    villager.setMetadata(CustomCreature.CREATURE_CUSTOM_NAME_METADATA, new FixedMetadataValue(plugin, name));
+    villager.setCustomName(CreatureUtils.getHealthNameTag(villager));
     addVillager(villager);
   }
 
@@ -243,7 +246,7 @@ public class Arena extends PluginArena {
     Wolf wolf = CreatureUtils.getCreatureInitializer().spawnWolf(location);
     wolf.setMetadata("VD_OWNER_UUID", new FixedMetadataValue(getPlugin(), player.getUniqueId().toString()));
     wolf.setOwner(player);
-    wolf.setCustomNameVisible(getPlugin().getConfigPreferences().getOption("NAME_VISIBILITY_WOLF"));
+    wolf.setCustomNameVisible(true);
     wolf.setCustomName(new MessageBuilder("IN_GAME_MESSAGES_VILLAGE_WAVE_ENTITIES_WOLF_NAME").asKey().integer(0).player(player).build());
     new MessageBuilder("IN_GAME_MESSAGES_VILLAGE_WAVE_ENTITIES_WOLF_SPAWN").asKey().player(player).sendPlayer();
     addWolf(wolf);
@@ -258,7 +261,7 @@ public class Arena extends PluginArena {
 
     IronGolem ironGolem = CreatureUtils.getCreatureInitializer().spawnGolem(location);
     ironGolem.setMetadata("VD_OWNER_UUID", new FixedMetadataValue(getPlugin(), player.getUniqueId().toString()));
-    ironGolem.setCustomNameVisible(getPlugin().getConfigPreferences().getOption("NAME_VISIBILITY_GOLEM"));
+    ironGolem.setCustomNameVisible(true);
     ironGolem.setCustomName(new MessageBuilder("IN_GAME_MESSAGES_VILLAGE_WAVE_ENTITIES_GOLEM_NAME").asKey().integer(0).player(player).build());
     new MessageBuilder("IN_GAME_MESSAGES_VILLAGE_WAVE_ENTITIES_GOLEM_SPAWN").asKey().player(player).sendPlayer();
     addIronGolem(ironGolem);
