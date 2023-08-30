@@ -52,8 +52,9 @@ import plugily.projects.villagedefense.kits.AbilitySource;
 import plugily.projects.villagedefense.kits.KitHelper;
 import plugily.projects.villagedefense.kits.KitSpecifications;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 /**
@@ -64,7 +65,7 @@ public class CleanerKit extends PremiumKit implements Listener, AbilitySource {
   private static final String LANGUAGE_ACCESSOR = "KIT_CONTENT_CLEANER_";
   //this metadata must be given to every enemy killed by poplust to avoid recursive calls and stack overflow in the listener
   private static final String KILL_METADATA = "VD_POPLUST_DEATH";
-  private final List<Arena> poplustActives = new ArrayList<>();
+  private final Map<Arena, Player> poplustActives = new HashMap<>();
   private final Random random = new Random();
 
   public CleanerKit() {
@@ -224,7 +225,7 @@ public class CleanerKit extends PremiumKit implements Listener, AbilitySource {
     user.setCooldown("cleaner_poplust", cooldown);
     int castTime = (int) Settings.POPLUST_CAST_TIME.getForArenaState(arena);
     user.setCooldown("cleaner_poplust_running", castTime);
-    poplustActives.add(arena);
+    poplustActives.put(arena, user.getPlayer());
     Bukkit.getScheduler().runTaskLater(getPlugin(), () -> poplustActives.remove(arena), (int) Settings.POPLUST_CAST_TIME.getForArenaState(arena) * 20L);
     new MessageBuilder(LANGUAGE_ACCESSOR + "GAME_ITEM_POPLUST_ACTIVATE").asKey().send(user.getPlayer());
 
@@ -273,11 +274,13 @@ public class CleanerKit extends PremiumKit implements Listener, AbilitySource {
       return;
     }
     User user = getPlugin().getUserManager().getUser(damager);
-    if(!poplustActives.contains((Arena) user.getArena()) || user.isSpectator() || !CreatureUtils.isEnemy(event.getEntity())
+    if(!poplustActives.containsKey((Arena) user.getArena()) || user.isSpectator() || !CreatureUtils.isEnemy(event.getEntity())
       || event.getEntity().hasMetadata(KILL_METADATA)) {
       return;
     }
     LivingEntity entity = (LivingEntity) event.getEntity();
+    Arena arena = ((Arena) user.getArena());
+    arena.getAssistHandler().doRegisterBuffOnAlly(poplustActives.get(arena), user.getPlayer());
     if(KitHelper.executeEnemy(entity, user.getPlayer())) {
       entity.setMetadata(KILL_METADATA, new FixedMetadataValue(getPlugin(), true));
       XSound.BLOCK_LAVA_POP.play(user.getPlayer());

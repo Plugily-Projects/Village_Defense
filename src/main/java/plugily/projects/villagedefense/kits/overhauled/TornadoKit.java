@@ -22,6 +22,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.EntityEffect;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.entity.Creature;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -92,7 +93,6 @@ public class TornadoKit extends PremiumKit implements Listener, AbilitySource {
     manager.registerMessage(LANGUAGE_ACCESSOR + "GAME_ITEM_FINAL_FLIGHT_NAME", new Message("Kit.Content.Tornado.Game-Item.Final-Flight.Name", ""));
     manager.registerMessage(LANGUAGE_ACCESSOR + "GAME_ITEM_FINAL_FLIGHT_DESCRIPTION", new Message("Kit.Content.Tornado.Game-Item.Final-Flight.Description", ""));
     manager.registerMessage(LANGUAGE_ACCESSOR + "GAME_ITEM_FINAL_FLIGHT_ACTIVE_ACTION_BAR", new Message("Kit.Content.Tornado.Game-Item.Final-Flight.Active-Action-Bar", ""));
-
   }
 
   @Override
@@ -288,6 +288,7 @@ public class TornadoKit extends PremiumKit implements Listener, AbilitySource {
             entity.setVelocity(vector.multiply(1.5));
             entity.playEffect(EntityEffect.HURT);
             entity.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 20 * 9999, 2, false, true));
+            ((Arena) user.getArena()).getAssistHandler().doRegisterDebuffOnEnemy(player, (Creature) entity);
           }
           XSound.BLOCK_SNOW_STEP.play(player, 1f, 0f);
         }

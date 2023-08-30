@@ -34,6 +34,7 @@ import plugily.projects.minigamesbox.classic.arena.ArenaState;
 import plugily.projects.minigamesbox.classic.arena.PluginArena;
 import plugily.projects.minigamesbox.classic.handlers.language.MessageBuilder;
 import plugily.projects.villagedefense.Main;
+import plugily.projects.villagedefense.arena.assist.AssistHandler;
 import plugily.projects.villagedefense.arena.managers.CreatureTargetManager;
 import plugily.projects.villagedefense.arena.managers.EnemySpawnManager;
 import plugily.projects.villagedefense.arena.managers.ScoreboardManager;
@@ -75,6 +76,7 @@ public class Arena extends PluginArena {
   private ShopManager shopManager;
   private EnemySpawnManager enemySpawnManager;
   private CreatureTargetManager creatureTargetManager;
+  private AssistHandler assistHandler;
 
   private boolean fighting = false;
 
@@ -85,6 +87,7 @@ public class Arena extends PluginArena {
     enemySpawnManager = new EnemySpawnManager(this);
     creatureTargetManager = new CreatureTargetManager(this);
     mapRestorerManager = new MapRestorerManager(this);
+    assistHandler = new AssistHandler(plugin);
     setMapRestorerManager(mapRestorerManager);
     setScoreboardManager(new ScoreboardManager(this));
 
@@ -123,6 +126,10 @@ public class Arena extends PluginArena {
 
   public CreatureTargetManager getCreatureTargetManager() {
     return creatureTargetManager;
+  }
+
+  public AssistHandler getAssistHandler() {
+    return assistHandler;
   }
 
   public void clearVillagers() {

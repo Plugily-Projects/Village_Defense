@@ -131,6 +131,7 @@ public class MedicKit extends PremiumKit implements Listener, AbilitySource {
       } else {
         arenaPlayer.setHealth(arenaPlayer.getHealth() + heal);
       }
+      ((Arena) user.getArena()).getAssistHandler().doRegisterBuffOnAlly(player, arenaPlayer);
     }
     Arena arena = (Arena) user.getArena();
     if(arena.getWave() == KitSpecifications.GameTimeState.MID.getStartWave()) {
@@ -151,15 +152,15 @@ public class MedicKit extends PremiumKit implements Listener, AbilitySource {
     if(!(user.getKit() instanceof MedicKit) || Math.random() > 0.1) {
       return;
     }
-    healNearbyPlayers(e.getDamager());
+    healNearbyPlayers(user.getPlayer(), e.getDamager());
   }
 
-  private void healNearbyPlayers(Entity en) {
+  private void healNearbyPlayers(Player source, Entity en) {
     for(Entity entity : en.getNearbyEntities(5, 5, 5)) {
       if(!(entity instanceof Player)) {
         continue;
       }
-      KitHelper.healPlayer((Player) entity, 1.0);
+      KitHelper.healPlayer(source, (Player) entity, 1.0);
     }
   }
 
@@ -197,9 +198,7 @@ public class MedicKit extends PremiumKit implements Listener, AbilitySource {
   private void onHomecomingCast(User user) {
     new MessageBuilder(LANGUAGE_ACCESSOR + "GAME_ITEM_HOMECOMING_ACTIVATE").asKey().send(user.getPlayer());
     List<Player> left = user.getArena().getPlayersLeft();
-    if(ServerVersion.Version.isCurrentEqualOrHigher(ServerVersion.Version.v1_11_R1)) {
-      user.getPlayer().playEffect(EntityEffect.valueOf("TOTEM_RESURRECT"));
-    }
+    user.getPlayer().playEffect(EntityEffect.valueOf("TOTEM_RESURRECT"));
 
     String title = new MessageBuilder(LANGUAGE_ACCESSOR + "GAME_ITEM_HOMECOMING_RESPAWNED_BY_TITLE").asKey().player(user.getPlayer()).build();
     String subTitle = new MessageBuilder(LANGUAGE_ACCESSOR + "GAME_ITEM_HOMECOMING_RESPAWNED_BY_SUBTITLE").asKey().player(user.getPlayer()).build();
@@ -208,12 +207,11 @@ public class MedicKit extends PremiumKit implements Listener, AbilitySource {
         continue;
       }
       VersionUtils.sendTitles(arenaPlayer, title, subTitle, 5, 40, 5);
-      if(ServerVersion.Version.isCurrentEqualOrHigher(ServerVersion.Version.v1_11_R1)) {
-        arenaPlayer.playEffect(EntityEffect.valueOf("TOTEM_RESURRECT"));
-      }
+      arenaPlayer.playEffect(EntityEffect.valueOf("TOTEM_RESURRECT"));
       int amplifier = (int) Settings.HEAL_AURA_POWER.getForArenaState((Arena) user.getArena());
       arenaPlayer.addPotionEffect(new PotionEffect(PotionEffectType.HEALTH_BOOST, 30 * 20, amplifier));
       arenaPlayer.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 30 * 20, amplifier));
+      ((Arena) user.getArena()).getAssistHandler().doRegisterBuffOnAlly(user.getPlayer(), arenaPlayer);
     }
     ArenaUtils.bringDeathPlayersBack((Arena) user.getArena());
   }
@@ -271,6 +269,7 @@ public class MedicKit extends PremiumKit implements Listener, AbilitySource {
               VersionUtils.sendActionBar((Player) entity, healingMessages.get(healingMessageIndex)
                 .replace("%player%", user.getPlayer().getName()));
             }
+            ((Arena) user.getArena()).getAssistHandler().doRegisterBuffOnAlly(player, entity);
           }
           player.setHealth(Math.min(player.getHealth() + heal, VersionUtils.getMaxHealth(player)));
           VersionUtils.sendActionBar(player, messages.get(messageIndex)

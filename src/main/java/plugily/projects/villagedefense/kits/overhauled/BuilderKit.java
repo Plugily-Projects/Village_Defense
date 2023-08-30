@@ -56,8 +56,9 @@ import plugily.projects.villagedefense.kits.KitSpecifications;
 import plugily.projects.villagedefense.utils.ProtocolUtils;
 import plugily.projects.villagedefense.utils.Utils;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Plajer
@@ -67,7 +68,7 @@ import java.util.List;
 public class BuilderKit extends PremiumKit implements AbilitySource, Listener {
 
   private static final String LANGUAGE_ACCESSOR = "KIT_CONTENT_BUILDER_";
-  private final List<Arena> knockbackResistantArenas = new ArrayList<>();
+  private final Map<Arena, Player> knockbackResistantArenas = new HashMap<>();
 
   public BuilderKit() {
     registerMessages();
@@ -179,7 +180,7 @@ public class BuilderKit extends PremiumKit implements AbilitySource, Listener {
     List<String> messages = getPlugin().getLanguageManager().getLanguageListFromKey(LANGUAGE_ACCESSOR + "GAME_ITEM_EARTHED_ACTIVE_ACTION_BAR");
     List<String> buffMessages = getPlugin().getLanguageManager().getLanguageListFromKey(LANGUAGE_ACCESSOR + "GAME_ITEM_EARTHED_PROTECTED_BY_ACTION_BAR");
     Arena arena = (Arena) user.getArena();
-    knockbackResistantArenas.add(arena);
+    knockbackResistantArenas.put(arena, user.getPlayer());
     new BukkitRunnable() {
       int tick = 0;
       int messageIndex = 0;
@@ -232,10 +233,12 @@ public class BuilderKit extends PremiumKit implements AbilitySource, Listener {
     new MessageBuilder(LANGUAGE_ACCESSOR + "GAME_ITEM_BLOCKAGE_ACTIVATE").asKey().send(user.getPlayer());
     for(Creature enemy : ((Arena) user.getArena()).getEnemies()) {
       enemy.setMetadata("VD_DOOR_BLOCK_BAN", new FixedMetadataValue(getPlugin(), true));
+      enemy.setMetadata("VD_DOOR_BLOCK_BAN_SOURCE", new FixedMetadataValue(getPlugin(), user.getPlayer().getUniqueId()));
     }
     Bukkit.getScheduler().runTaskLater(getPlugin(), () -> {
       for(Creature enemy : ((Arena) user.getArena()).getEnemies()) {
         enemy.removeMetadata("VD_DOOR_BLOCK_BAN", getPlugin());
+        enemy.removeMetadata("VD_DOOR_BLOCK_BAN_SOURCE", getPlugin());
       }
     }, 20L * castTime);
   }
@@ -293,9 +296,10 @@ public class BuilderKit extends PremiumKit implements AbilitySource, Listener {
       return;
     }
     Arena arena = (Arena) getPlugin().getArenaRegistry().getArena((Player) event.getEntity());
-    if(arena == null || !knockbackResistantArenas.contains(arena)) {
+    if(arena == null || !knockbackResistantArenas.containsKey(arena)) {
       return;
     }
+    arena.getAssistHandler().doRegisterBuffOnAlly(knockbackResistantArenas.get(arena), (Player) event.getEntity());
     Vector vector = new Vector();
     event.getEntity().setVelocity(vector);
     Bukkit.getScheduler().runTaskLater(getPlugin(), () -> event.getEntity().setVelocity(vector), 1L);

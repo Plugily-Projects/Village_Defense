@@ -29,6 +29,7 @@ import plugily.projects.minigamesbox.classic.user.User;
 import plugily.projects.minigamesbox.classic.utils.helper.ItemUtils;
 import plugily.projects.minigamesbox.classic.utils.version.VersionUtils;
 import plugily.projects.villagedefense.Main;
+import plugily.projects.villagedefense.arena.Arena;
 
 /**
  * @author Plajer
@@ -72,9 +73,17 @@ public class KitHelper {
     }, castTime * 20L);
   }
 
-  public static void healPlayer(Player player, double healAmount) {
-    player.setHealth(Math.min(player.getHealth() + healAmount, VersionUtils.getMaxHealth(player)));
-    VersionUtils.sendParticles("HEART", player, player.getLocation(), 3);
+  public static void healPlayer(Player target, double healAmount) {
+    healPlayer(target, target, healAmount);
+  }
+
+  public static void healPlayer(Player source, Player target, double healAmount) {
+    target.setHealth(Math.min(target.getHealth() + healAmount, VersionUtils.getMaxHealth(target)));
+    VersionUtils.sendParticles("HEART", target, target.getLocation(), 3);
+    if(!source.equals(target)) {
+      Arena arena = plugin.getArenaRegistry().getArena(target);
+      arena.getAssistHandler().doRegisterBuffOnAlly(source, target);
+    }
   }
 
   public static boolean executeEnemy(LivingEntity entity, Player damager) {
@@ -84,10 +93,10 @@ public class KitHelper {
   }
 
   public static double maxHealthPercentDamage(LivingEntity entity, Player damager, double percent) {
-    //todo implement max health percentage immunity here (for bosses)
-    entity.damage(0, damager);
     double damageDone = (VersionUtils.getMaxHealth(entity) / 100.0) * percent;
     entity.setHealth(Math.max(0, entity.getHealth() - damageDone));
+    //todo implement max health percentage immunity here (for bosses)
+    entity.damage(0, damager);
     return damageDone;
   }
 

@@ -22,6 +22,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.entity.Creature;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -167,6 +168,7 @@ public class WizardKit extends PremiumKit implements Listener, AbilitySource {
     LivingEntity entity = (LivingEntity) event.getEntity();
     entity.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 20 * 3, 3, false, true));
     entity.setFireTicks(20 * 3);
+    ((Arena) user.getArena()).getAssistHandler().doRegisterDebuffOnEnemy(user.getPlayer(), (Creature) entity);
   }
 
   @Override
@@ -218,9 +220,7 @@ public class WizardKit extends PremiumKit implements Listener, AbilitySource {
       @Override
       public void run() {
         //apply effects only once per second, particles every tick
-        if(ServerVersion.Version.isCurrentEqualOrHigher(ServerVersion.Version.v1_9_R1)) {
-          XParticle.circle(3.5, 28, ParticleDisplay.simple(player.getLocation().add(0, 0.5, 0), XParticle.getParticle("SMOKE_NORMAL")));
-        }
+        XParticle.circle(3.5, 28, ParticleDisplay.simple(player.getLocation().add(0, 0.5, 0), XParticle.getParticle("SMOKE_NORMAL")));
         int soundLimit = 5;
         if(damageTick % 20 == 0) {
           double totalDamage = 0;

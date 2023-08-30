@@ -46,6 +46,7 @@ import plugily.projects.villagedefense.arena.managers.spawner.EnemySpawner;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
@@ -114,10 +115,17 @@ public class CustomCreatureEvents implements Listener {
           if(user == null || !user.getArena().equals(arena)) {
             continue;
           }
-          int amount = (int) Math.ceil(customCreature.getExpDrop() * 1.6 * arena.getArenaOption("ZOMBIE_DIFFICULTY_MULTIPLIER"));
-          int orbsBoost = plugin.getPermissionsManager().getPermissionCategoryValue("ORBS_BOOSTER", killer);
-          amount += (amount * (orbsBoost / 100));
-          user.adjustStatistic(plugin.getStatsStorage().getStatisticType("ORBS"), amount);
+          Map<Player, Double> contribution = arena.getAssistHandler().doDistributeAssistRewards(killer, (Creature) entity);
+          double debug = customCreature.getExpDrop() * 1.6 * arena.getArenaOption("ZOMBIE_DIFFICULTY_MULTIPLIER");
+          for(Map.Entry<Player, Double> entry : contribution.entrySet()) {
+            double share = entry.getValue() / 100.0;
+            int amount = (int) Math.ceil(customCreature.getExpDrop() * share * 1.6 * arena.getArenaOption("ZOMBIE_DIFFICULTY_MULTIPLIER"));
+            int orbsBoost = plugin.getPermissionsManager().getPermissionCategoryValue("ORBS_BOOSTER", entry.getKey());
+            amount += (amount * (orbsBoost / 100));
+            User targetUser = plugin.getUserManager().getUser(entry.getKey());
+            Bukkit.broadcastMessage(targetUser.getPlayer().getDisplayName() + "'s assist share " + (share * 100.0) + "%, orbs: " + amount + ", total pool: " + debug);
+            targetUser.adjustStatistic(plugin.getStatsStorage().getStatisticType("ORBS"), amount);
+          }
         }
       }
     }

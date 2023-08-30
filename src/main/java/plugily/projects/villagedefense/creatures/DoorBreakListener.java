@@ -24,16 +24,20 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.entity.Creature;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.scheduler.BukkitRunnable;
 import plugily.projects.minigamesbox.classic.utils.version.VersionUtils;
 import plugily.projects.minigamesbox.classic.utils.version.xseries.XMaterial;
 import plugily.projects.villagedefense.Main;
+import plugily.projects.villagedefense.arena.Arena;
 import plugily.projects.villagedefense.utils.ProtocolUtils;
 import plugily.projects.villagedefense.utils.Utils;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 
@@ -58,13 +62,20 @@ public class DoorBreakListener extends BukkitRunnable {
       List<LivingEntity> entities = world.getLivingEntities()
         .stream()
         .filter(CreatureUtils::isEnemy)
-        .filter(entity -> !entity.hasMetadata("VD_DOOR_BLOCK_BAN"))
         .collect(Collectors.toList());
       for(LivingEntity entity : entities) {
         for(Block block : plugin.getBukkitHelper().getNearbyBlocks(entity, 1)) {
           Material door = Utils.getCachedDoor(block);
           if(block.getType() != door) {
             continue;
+          }
+          if(entity.hasMetadata("VD_DOOR_BLOCK_BAN")) {
+            Arena arena = findArenaForEntity(entity);
+            Player player = Bukkit.getPlayer(UUID.fromString(entity.getMetadata("VD_DOOR_BLOCK_BAN_SOURCE").get(0).asString()));
+            if(arena == null || player == null) {
+              continue;
+            }
+            arena.getAssistHandler().doRegisterDebuffOnEnemy(player, (Creature) entity);
           }
 
           Location location = block.getLocation();
@@ -99,6 +110,15 @@ public class DoorBreakListener extends BukkitRunnable {
         }
       }
     }
+  }
+
+  private Arena findArenaForEntity(LivingEntity entity) {
+    for(Arena arena : plugin.getArenaRegistry().getPluginArenas()) {
+      if(arena.getEnemies().contains(entity)) {
+        return arena;
+      }
+    }
+    return null;
   }
 
   private int getDoorDestroyState(Block block) {

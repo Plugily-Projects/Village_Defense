@@ -27,6 +27,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.IronGolem;
 import org.bukkit.entity.Item;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.entity.Villager;
@@ -214,6 +215,19 @@ public class PluginEvents implements Listener {
   }
 
   @EventHandler(priority = EventPriority.HIGHEST)
+  public void onAssistApply(EntityDamageByEntityEvent event) {
+    if(!(event.getEntity() instanceof Creature) || !(event.getDamager() instanceof LivingEntity)) {
+      return;
+    }
+    for(Arena arena : plugin.getArenaRegistry().getPluginArenas()) {
+      if(!arena.getEnemies().contains(event.getEntity())) {
+        continue;
+      }
+      arena.getAssistHandler().doRegisterDamageOnEnemy((LivingEntity) event.getDamager(), (Creature) event.getEntity(), event.getFinalDamage());
+    }
+  }
+
+  @EventHandler(priority = EventPriority.HIGHEST)
   public void onSecond(EntityDamageByEntityEvent event) {
     if(!(event.getDamager() instanceof Projectile)) {
       return;
@@ -235,7 +249,6 @@ public class PluginEvents implements Listener {
       ((Villager) event.getEntity()).setLeashHolder(event.getPlayer());
     }
   }
-
 
   @EventHandler(priority = EventPriority.HIGH)
   public void onBlockBreakEvent(BlockBreakEvent event) {

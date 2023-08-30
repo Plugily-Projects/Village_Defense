@@ -21,6 +21,7 @@ package plugily.projects.villagedefense.arena;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Creature;
 import org.bukkit.entity.IronGolem;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Wolf;
 import org.jetbrains.annotations.NotNull;
@@ -34,6 +35,7 @@ import plugily.projects.minigamesbox.classic.utils.version.xseries.XSound;
 import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.api.event.wave.VillageWaveEndEvent;
 import plugily.projects.villagedefense.api.event.wave.VillageWaveStartEvent;
+import plugily.projects.villagedefense.arena.assist.AssistHandler;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -64,6 +66,7 @@ public class ArenaManager extends PluginArenaManager {
 
   @Override
   public void leaveAttempt(@NotNull Player player, @NotNull PluginArena arena) {
+    player.removeMetadata(AssistHandler.ASSIST_CONTAINER_METADATA, plugin);
     Arena gameArena = (Arena) arena;
     List<Creature> pets = new ArrayList<>();
     pets.addAll(gameArena.getIronGolems());
@@ -140,6 +143,7 @@ public class ArenaManager extends PluginArenaManager {
     Bukkit.getPluginManager().callEvent(new VillageWaveEndEvent(arena, arena.getWave()));
 
     refreshAllPlayers(arena);
+    removeAllAssists(arena);
 
     if(plugin.getConfigPreferences().getOption("RESPAWN_AFTER_WAVE")) {
       ArenaUtils.bringDeathPlayersBack(arena);
@@ -162,6 +166,16 @@ public class ArenaManager extends PluginArenaManager {
       player.setHealth(VersionUtils.getMaxHealth(player));
 
       plugin.getUserManager().getUser(player).adjustStatistic(plugin.getStatsStorage().getStatisticType("ORBS"), waveStat);
+    }
+  }
+
+  private void removeAllAssists(Arena arena) {
+    List<LivingEntity> allEntities = new ArrayList<>();
+    allEntities.addAll(arena.getPlayers());
+    allEntities.addAll(arena.getWolves());
+    allEntities.addAll(arena.getIronGolems());
+    for(LivingEntity livingEntity : allEntities) {
+      livingEntity.removeMetadata(AssistHandler.ASSIST_CONTAINER_METADATA, plugin);
     }
   }
 
