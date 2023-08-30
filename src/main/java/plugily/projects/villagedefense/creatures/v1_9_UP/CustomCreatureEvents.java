@@ -123,7 +123,6 @@ public class CustomCreatureEvents implements Listener {
             int orbsBoost = plugin.getPermissionsManager().getPermissionCategoryValue("ORBS_BOOSTER", entry.getKey());
             amount += (amount * (orbsBoost / 100));
             User targetUser = plugin.getUserManager().getUser(entry.getKey());
-            Bukkit.broadcastMessage(targetUser.getPlayer().getDisplayName() + "'s assist share " + (share * 100.0) + "%, orbs: " + amount + ", total pool: " + debug);
             targetUser.adjustStatistic(plugin.getStatsStorage().getStatisticType("ORBS"), amount);
           }
         }

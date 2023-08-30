@@ -109,7 +109,6 @@ public class AssistHandler {
     List<Player> otherAssists = new ArrayList<>();
     //enemy was debuffed or attacked by someone, check it
     if(deadEnemy.hasMetadata(ASSIST_CONTAINER_METADATA)) {
-      Bukkit.broadcastMessage("container for enemy found");
       AssistContainer debuffers = AssistContainer.deserialize(deadEnemy.getMetadata(ASSIST_CONTAINER_METADATA).get(0).asString());
       List<AssistContainer.AssistData> assistData = debuffers.getData();
       for(AssistContainer.AssistData data : assistData) {
@@ -130,7 +129,6 @@ public class AssistHandler {
     }
     //check if killer (either pet or player) has any assist buffs
     if(killer.hasMetadata(ASSIST_CONTAINER_METADATA)) {
-      Bukkit.broadcastMessage("killer has container metadata");
       AssistContainer assisters = AssistContainer.deserialize(killer.getMetadata(ASSIST_CONTAINER_METADATA).get(0).asString());
       List<AssistContainer.AssistData> assistData = assisters.getData();
       for(AssistContainer.AssistData data : assistData) {

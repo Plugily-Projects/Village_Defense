@@ -103,8 +103,7 @@ public class DoorBreakListener extends BukkitRunnable {
             }
             //block wasn't touched for a while, remove the destruction
             if(block.getMetadata(CREATURE_DOOR_BULLDOZER_METADATA).get(0).asInt() == finalState) {
-              block.removeMetadata(CREATURE_DOOR_BULLDOZER_METADATA, plugin);
-              ProtocolUtils.removeBlockBreakAnimation(block);
+              doPerformDamageRemoval(block, door);
             }
           }, 20L * 5);
         }
@@ -141,6 +140,21 @@ public class DoorBreakListener extends BukkitRunnable {
       ProtocolUtils.sendBlockBreakAnimation(relative, destroyState);
     } else if((relative = block.getRelative(BlockFace.DOWN)).getType() == door) {
       ProtocolUtils.sendBlockBreakAnimation(relative, destroyState);
+    }
+  }
+
+  private void doPerformDamageRemoval(Block block, Material door) {
+    block.removeMetadata(CREATURE_DOOR_BULLDOZER_METADATA, plugin);
+    ProtocolUtils.removeBlockBreakAnimation(block);
+
+    Block relative = block.getRelative(BlockFace.UP);
+
+    if(relative.getType() == door) {
+      ProtocolUtils.removeBlockBreakAnimation(relative);
+      relative.removeMetadata(CREATURE_DOOR_BULLDOZER_METADATA, plugin);
+    } else if((relative = block.getRelative(BlockFace.DOWN)).getType() == door) {
+      ProtocolUtils.removeBlockBreakAnimation(relative);
+      relative.removeMetadata(CREATURE_DOOR_BULLDOZER_METADATA, plugin);
     }
   }
 
