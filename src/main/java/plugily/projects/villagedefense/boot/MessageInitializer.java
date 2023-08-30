@@ -56,7 +56,6 @@ public class MessageInitializer {
 
 
     getMessageManager().registerMessage("IN_GAME_MESSAGES_VILLAGE_ROTTEN_FLESH_LEVEL_UP", new Message("In-Game.Messages.Village.Rotten-Flesh-Level-Up", ""));
-    getMessageManager().registerMessage("IN_GAME_MESSAGES_VILLAGE_FEEL_REFRESHED", new Message("In-Game.Messages.Village.You-Feel-Refreshed", ""));
     getMessageManager().registerMessage("IN_GAME_MESSAGES_VILLAGE_VILLAGER_DIED", new Message("In-Game.Messages.Village.Villager.Died", ""));
     getMessageManager().registerMessage("IN_GAME_MESSAGES_VILLAGE_VILLAGER_NAMES", new Message("In-Game.Messages.Village.Villager.Names", ""));
     getMessageManager().registerMessage("IN_GAME_MESSAGES_VILLAGE_WAVE_STUCK_ZOMBIES", new Message("In-Game.Messages.Village.Wave.Stuck-Zombies", ""));

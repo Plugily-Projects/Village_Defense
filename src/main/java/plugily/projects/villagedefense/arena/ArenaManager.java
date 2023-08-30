@@ -23,6 +23,7 @@ import org.bukkit.entity.Creature;
 import org.bukkit.entity.IronGolem;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Villager;
 import org.bukkit.entity.Wolf;
 import org.jetbrains.annotations.NotNull;
 import plugily.projects.minigamesbox.classic.arena.PluginArena;
@@ -36,6 +37,7 @@ import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.api.event.wave.VillageWaveEndEvent;
 import plugily.projects.villagedefense.api.event.wave.VillageWaveStartEvent;
 import plugily.projects.villagedefense.arena.assist.AssistHandler;
+import plugily.projects.villagedefense.creatures.CreatureUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -143,6 +145,7 @@ public class ArenaManager extends PluginArenaManager {
     Bukkit.getPluginManager().callEvent(new VillageWaveEndEvent(arena, arena.getWave()));
 
     refreshAllPlayers(arena);
+    refreshVillagers(arena);
     removeAllAssists(arena);
 
     if(plugin.getConfigPreferences().getOption("RESPAWN_AFTER_WAVE")) {
@@ -157,15 +160,21 @@ public class ArenaManager extends PluginArenaManager {
   private void refreshAllPlayers(Arena arena) {
     int waveStat = arena.getWave() * 10;
 
-    String feelRefreshed = new MessageBuilder("IN_GAME_MESSAGES_VILLAGE_FEEL_REFRESHED").asKey().build();
-    String formatted = new MessageBuilder("IN_GAME_MESSAGES_VILLAGE_WAVE_NEXT_IN").asKey().arena(arena).integer(arena.getTimer()).build();
-
+    String nextWave = new MessageBuilder("IN_GAME_MESSAGES_VILLAGE_WAVE_NEXT_IN").asKey().arena(arena).integer(arena.getTimer()).build();
     for(Player player : arena.getPlayers()) {
-      player.sendMessage(formatted);
-      player.sendMessage(feelRefreshed);
-      player.setHealth(VersionUtils.getMaxHealth(player));
+      int healPower = (int) Math.ceil(VersionUtils.getMaxHealth(player) * 0.25); //25% of max health rounded up
+      player.sendMessage(nextWave);
+      player.setHealth(Math.min(player.getHealth() + healPower, VersionUtils.getMaxHealth(player)));
 
       plugin.getUserManager().getUser(player).adjustStatistic(plugin.getStatsStorage().getStatisticType("ORBS"), waveStat);
+    }
+  }
+
+  private void refreshVillagers(Arena arena) {
+    int healPower = 2; //1 heart
+    for(Villager villager : arena.getVillagers()) {
+      villager.setHealth(Math.min(villager.getHealth() + healPower, VersionUtils.getMaxHealth(villager)));
+      villager.setCustomName(CreatureUtils.getHealthNameTag(villager));
     }
   }
 

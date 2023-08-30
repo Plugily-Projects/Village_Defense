@@ -247,7 +247,6 @@ In-Game:
         Wave: "%color_chat_issue%%plugin_prefix% Admin changed the wave to %number%"
     Village:
       Rotten-Flesh-Level-Up: "%plugin_prefix% The gods were happy with the rotten flesh! Therefor they gave you an &aextra heart!"
-      You-Feel-Refreshed: "%plugin_prefix% You feel refreshed!"
       # Do not use spaces between villager names. No limit in names size and amount :)
       Villager:
         Died: "%color_chat_issue%%plugin_prefix% A villager has died!"
