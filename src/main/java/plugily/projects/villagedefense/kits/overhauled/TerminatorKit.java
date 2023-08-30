@@ -172,13 +172,15 @@ public class TerminatorKit extends LevelKit implements Listener, AbilitySource {
       return;
     }
     if(chance <= onHitSharedCombustChance) {
-      List<Entity> enemies = entity.getNearbyEntities(1.5, 1.5, 1.5)
+      List<LivingEntity> enemies = entity.getNearbyEntities(1.5, 1.5, 1.5)
         .stream()
         .filter(e -> !entity.equals(e))
         .filter(CreatureUtils::isEnemy)
+        .map(e -> (LivingEntity) e)
         .collect(Collectors.toList());
-      for(Entity enemy : enemies) {
+      for(LivingEntity enemy : enemies) {
         enemy.setFireTicks(20 * 3);
+        enemy.damage(0, user.getPlayer());
       }
     }
     if(chance <= onHitLargeKnockbackChance) {

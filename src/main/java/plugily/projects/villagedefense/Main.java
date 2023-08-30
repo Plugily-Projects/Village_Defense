@@ -62,13 +62,13 @@ import plugily.projects.villagedefense.kits.overhauled.BuilderKit;
 import plugily.projects.villagedefense.kits.overhauled.CleanerKit;
 import plugily.projects.villagedefense.kits.overhauled.MedicKit;
 import plugily.projects.villagedefense.kits.overhauled.PetsFriend;
+import plugily.projects.villagedefense.kits.overhauled.ShotBowKit;
 import plugily.projects.villagedefense.kits.overhauled.TerminatorKit;
 import plugily.projects.villagedefense.kits.overhauled.TornadoKit;
 import plugily.projects.villagedefense.kits.overhauled.WizardKit;
 import plugily.projects.villagedefense.kits.premium.HeavyTankKit;
 import plugily.projects.villagedefense.kits.premium.NakedKit;
 import plugily.projects.villagedefense.kits.premium.PremiumHardcoreKit;
-import plugily.projects.villagedefense.kits.premium.ShotBowKit;
 import plugily.projects.villagedefense.kits.premium.TeleporterKit;
 import plugily.projects.villagedefense.utils.ProtocolUtils;
 

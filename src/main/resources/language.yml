@@ -534,10 +534,6 @@ Kit:
         - "Start off with iron armor and a double"
         - "amount of hearts! Yup, that's right,"
         - "you'll be the last man standing!"
-    Shot-Bow:
-      Name: "&bShotbow Master"
-      Description:
-        - "You invented a crazy shotbow!"
     Premium-Hardcore:
       Name: "&bPremium Hardcore Master"
       Description:
@@ -648,6 +644,46 @@ Kit:
           Active-Action-Bar:
             - "&e&lMOTORS OVERCHARGE ACTIVE &7(%number%s)"
             - "&c&lMOTORS OVERCHARGE ACTIVE &7(%number%s)"
+    Shot-Bow:
+      Name: "&6Shotbow Master"
+      Description:
+        - "&6&lGAME POWER: &7poor/strong/mediocre"
+        - "&6&lCLASS: &7ranged, damage dealer"
+        - ""
+        - "&6&lABILITIES:"
+        - "&a&l• ONESHOT (PASSIVE):"
+        - "  &7Have 10/20/30% chance to oneshot:"
+        - "  &7enemy with your arrows"
+        - "&a&l• EFFECTIVE ARROWS (PASSIVE):"
+        - "  &7Each arrow applies random effect:"
+        - "  &e&lLIGHTNING: &710% AOE damage"
+        - "  &e&lSLOWNESS: &710s slowness"
+        - "  &e&lWEAKNESS: &710s weakness"
+        - "  &e&lCOMBUST: &710s AOE combust"
+        - "  &7(&c&lUNLOCKED IN MID GAME&7)"
+        - "&e&l• ARROW RAIN (ULTIMATE)"
+        - "  &7On use launch -/8/12 arrows that"
+        - "  &7knock enemies and oneshot them"
+        - "  &7(&c&lCOOLDOWN 20s&7)"
+      Game-Item:
+        Terminus:
+          Name: "&6&lBLADE OF TERMINUS"
+          Description:
+            - "&7Terminus blade scales as game progresses:"
+            - "  &e&lWAVE 5: &720% on-hit burn chance"
+            - "  &e&lWAVE 10: &75% instakill chance"
+            - "  &e&lWAVE 15: &78% lifesteal, 40% on-hit burn"
+            - "  &e&lWAVE 20: &720% shared combust chance"
+            - "  &e&lWAVE 25: &740% large knockback chance"
+            - "  &e&lWAVE 30+: &7+1% dmg each wave (40% cap)"
+        Neverdeath:
+          Name: "&6&lNEVERDEATH"
+          Description:
+            - "On use receive absorption for 15s,"
+            - "the lower your health the higher"
+            - "the absorption effect"
+            - "&c&lCOOLDOWN &720s"
+          Activate: "&7Protocol &6&lNEVERDEATH &7active!"
     Medic:
       Name: "&6Medic"
       Description:

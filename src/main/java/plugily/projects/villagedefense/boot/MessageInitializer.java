@@ -162,26 +162,10 @@ public class MessageInitializer {
     getMessageManager().registerMessage("KIT_CONTENT_MEDIUM_TANK_NAME", new Message("Kit.Content.Medium-Tank.Name", ""));
     getMessageManager().registerMessage("KIT_CONTENT_MEDIUM_TANK_DESCRIPTION", new Message("Kit.Content.Medium-Tank.Description", ""));
 
-//WORKER
-
-    getMessageManager().registerMessage("KIT_CONTENT_WORKER_NAME", new Message("Kit.Content.Worker.Name", ""));
-    getMessageManager().registerMessage("KIT_CONTENT_WORKER_DESCRIPTION", new Message("Kit.Content.Worker.Description", ""));
-    getMessageManager().registerMessage("KIT_CONTENT_WORKER_GAME_ITEM_CHAT", new Message("Kit.Content.Worker.Game-Item.Chat", ""));
-
-//DOG_FRIEND
-
-    getMessageManager().registerMessage("KIT_CONTENT_DOG_FRIEND_NAME", new Message("Kit.Content.Dog-Friend.Name", ""));
-    getMessageManager().registerMessage("KIT_CONTENT_DOG_FRIEND_DESCRIPTION", new Message("Kit.Content.Dog-Friend.Description", ""));
-
 //HARDCORE
 
     getMessageManager().registerMessage("KIT_CONTENT_HARDCORE_NAME", new Message("Kit.Content.Hardcore.Name", ""));
     getMessageManager().registerMessage("KIT_CONTENT_HARDCORE_DESCRIPTION", new Message("Kit.Content.Hardcore.Description", ""));
-
-//GOLEM_FRIEND
-
-    getMessageManager().registerMessage("KIT_CONTENT_GOLEM_FRIEND_NAME", new Message("Kit.Content.Golem-Friend.Name", ""));
-    getMessageManager().registerMessage("KIT_CONTENT_GOLEM_FRIEND_DESCRIPTION", new Message("Kit.Content.Golem-Friend.Description", ""));
 
 //TELEPORTER
 
@@ -199,20 +183,6 @@ public class MessageInitializer {
 
     getMessageManager().registerMessage("KIT_CONTENT_HEAVY_TANK_NAME", new Message("Kit.Content.Heavy-Tank.Name", ""));
     getMessageManager().registerMessage("KIT_CONTENT_HEAVY_TANK_DESCRIPTION", new Message("Kit.Content.Heavy-Tank.Description", ""));
-
-//SHOT_BOW
-
-    getMessageManager().registerMessage("KIT_CONTENT_SHOT_BOW_NAME", new Message("Kit.Content.Shot-Bow.Name", ""));
-    getMessageManager().registerMessage("KIT_CONTENT_SHOT_BOW_DESCRIPTION", new Message("Kit.Content.Shot-Bow.Description", ""));
-
-//BLOCKER
-
-    getMessageManager().registerMessage("KIT_CONTENT_BLOCKER_NAME", new Message("Kit.Content.Blocker.Name", ""));
-    getMessageManager().registerMessage("KIT_CONTENT_BLOCKER_DESCRIPTION", new Message("Kit.Content.Blocker.Description", ""));
-    getMessageManager().registerMessage("KIT_CONTENT_BLOCKER_GAME_ITEM_NAME", new Message("Kit.Content.Blocker.Game-Item.Name", ""));
-    getMessageManager().registerMessage("KIT_CONTENT_BLOCKER_GAME_ITEM_DESCRIPTION", new Message("Kit.Content.Blocker.Game-Item.Description", ""));
-    getMessageManager().registerMessage("KIT_CONTENT_BLOCKER_PLACE_SUCCESS", new Message("Kit.Content.Blocker.Place.Success", ""));
-    getMessageManager().registerMessage("KIT_CONTENT_BLOCKER_PLACE_FAIL", new Message("Kit.Content.Blocker.Place.Fail", ""));
 
 //PREMIUM_HARDCORE
 
