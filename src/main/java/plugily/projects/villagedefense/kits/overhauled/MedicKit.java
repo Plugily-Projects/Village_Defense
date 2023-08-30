@@ -26,6 +26,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Golem;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Villager;
 import org.bukkit.entity.Wolf;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -52,6 +53,7 @@ import plugily.projects.minigamesbox.classic.utils.version.xseries.XMaterial;
 import plugily.projects.minigamesbox.classic.utils.version.xseries.XParticle;
 import plugily.projects.villagedefense.arena.Arena;
 import plugily.projects.villagedefense.arena.ArenaUtils;
+import plugily.projects.villagedefense.creatures.CreatureUtils;
 import plugily.projects.villagedefense.kits.AbilitySource;
 import plugily.projects.villagedefense.kits.KitHelper;
 import plugily.projects.villagedefense.kits.KitSpecifications;
@@ -121,8 +123,9 @@ public class MedicKit extends PremiumKit implements Listener, AbilitySource {
   @Override
   public void reStock(Player player) {
     User user = getPlugin().getUserManager().getUser(player);
-    for(Player arenaPlayer : user.getArena().getPlayersLeft()) {
-      int heal = (int) Settings.HEAL_AURA_POWER.getForArenaState((Arena) user.getArena());
+    Arena arena = (Arena) user.getArena();
+    int heal = (int) Settings.PASSIVE_HEAL_POWER.getForArenaState(arena);
+    for(Player arenaPlayer : arena.getPlayersLeft()) {
       double maxHealth = VersionUtils.getMaxHealth(arenaPlayer);
       //todo useless?? all players are healed before next wave
       if(arenaPlayer.getHealth() + heal > maxHealth) {
@@ -131,9 +134,12 @@ public class MedicKit extends PremiumKit implements Listener, AbilitySource {
       } else {
         arenaPlayer.setHealth(arenaPlayer.getHealth() + heal);
       }
-      ((Arena) user.getArena()).getAssistHandler().doRegisterBuffOnAlly(player, arenaPlayer);
+      arena.getAssistHandler().doRegisterBuffOnAlly(player, arenaPlayer);
     }
-    Arena arena = (Arena) user.getArena();
+    for(Villager villager : arena.getVillagers()) {
+      villager.setHealth(Math.min(villager.getHealth() + heal, VersionUtils.getMaxHealth(villager)));
+      villager.setCustomName(CreatureUtils.getHealthNameTag(villager));
+    }
     if(arena.getWave() == KitSpecifications.GameTimeState.MID.getStartWave()) {
       new MessageBuilder("KIT_ABILITY_UNLOCKED").asKey().value(new MessageBuilder(LANGUAGE_ACCESSOR + "GAME_ITEM_AURA_NAME").asKey().build()).send(player);
       new MessageBuilder("KIT_ABILITY_UNLOCKED").asKey().value(new MessageBuilder(LANGUAGE_ACCESSOR + "GAME_ITEM_HOMECOMING_NAME").asKey().build()).send(player);
@@ -303,7 +309,7 @@ public class MedicKit extends PremiumKit implements Listener, AbilitySource {
   }
 
   private enum Settings {
-    HEAL_AURA_POWER(0, 2, 4), PASSIVE_HEAL_POWER(4, 6, 8), AMPLIFIER_POWER(0, 1, 2);
+    HEAL_AURA_POWER(0, 2, 4), PASSIVE_HEAL_POWER(2, 3, 4), AMPLIFIER_POWER(0, 1, 2);
 
     private final double earlyValue;
     private final double midValue;
