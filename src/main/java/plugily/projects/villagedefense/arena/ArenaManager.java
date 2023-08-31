@@ -134,6 +134,7 @@ public class ArenaManager extends PluginArenaManager {
       if(!user.isSpectator() && !user.isPermanentSpectator()) {
         Player player = user.getPlayer();
         plugin.getRewardsHandler().performReward(player, arena, plugin.getRewardsHandler().getRewardType("END_WAVE"));
+        user.getKit().reStock(player);
       }
       XSound.ENTITY_VILLAGER_YES.play(user.getPlayer());
     }
@@ -145,7 +146,7 @@ public class ArenaManager extends PluginArenaManager {
     Bukkit.getPluginManager().callEvent(new VillageWaveEndEvent(arena, arena.getWave()));
 
     refreshAllPlayers(arena);
-    refreshVillagers(arena);
+    refreshAllies(arena);
     removeAllAssists(arena);
 
     if(plugin.getConfigPreferences().getOption("RESPAWN_AFTER_WAVE")) {
@@ -170,11 +171,20 @@ public class ArenaManager extends PluginArenaManager {
     }
   }
 
-  private void refreshVillagers(Arena arena) {
+  private void refreshAllies(Arena arena) {
     int healPower = 2; //1 heart
     for(Villager villager : arena.getVillagers()) {
       villager.setHealth(Math.min(villager.getHealth() + healPower, VersionUtils.getMaxHealth(villager)));
       villager.setCustomName(CreatureUtils.getHealthNameTag(villager));
+    }
+    healPower = 3; //1.5 hearts
+    List<LivingEntity> pets = new ArrayList<>();
+    pets.addAll(arena.getWolves());
+    pets.addAll(arena.getIronGolems());
+    for(LivingEntity pet : pets) {
+      //double heal for golems
+      double multiplier = pet instanceof IronGolem ? 2.0 : 1.0;
+      pet.setHealth(Math.min(pet.getHealth() + (healPower * multiplier), VersionUtils.getMaxHealth(pet)));
     }
   }
 
@@ -236,9 +246,6 @@ public class ArenaManager extends PluginArenaManager {
 
     for(User user : plugin.getUserManager().getUsers(arena)) {
       Player player = user.getPlayer();
-      if(!user.isSpectator()) {
-        user.getKit().reStock(player);
-      }
       plugin.getRewardsHandler().performReward(player, arena, plugin.getRewardsHandler().getRewardType("START_WAVE"));
 
       new MessageBuilder("IN_GAME_MESSAGES_VILLAGE_WAVE_STARTED").asKey().arena(arena).integer(wave).player(player).sendPlayer();
