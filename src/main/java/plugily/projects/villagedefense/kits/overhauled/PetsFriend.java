@@ -89,7 +89,6 @@ public class PetsFriend extends PremiumKit implements AbilitySource, Listener {
 
   @Override
   public void giveKitItems(Player player) {
-    //todo update
     player.getInventory().addItem(WeaponHelper.getUnBreakingSword(WeaponHelper.ResourceType.STONE, 10));
     ArmorHelper.setArmor(player, ArmorHelper.ArmorType.LEATHER);
 
@@ -110,9 +109,9 @@ public class PetsFriend extends PremiumKit implements AbilitySource, Listener {
     }
     org.bukkit.Location start = arena.getStartLocation();
     for(int i = 0; i < 2; i++) {
-      arena.spawnWolf(start, player);
+      arena.spawnWolfForce(start, player);
     }
-    arena.spawnGolem(start, player);
+    arena.spawnGolemForce(start, player);
   }
 
   @Override
@@ -125,26 +124,22 @@ public class PetsFriend extends PremiumKit implements AbilitySource, Listener {
     Arena arena = (Arena) getPlugin().getArenaRegistry().getArena(player);
     EntityUpgradeMenu upgradeMenu = ((Main) getPlugin()).getEntityUpgradeMenu();
     if(arena.getWave() % (int) Settings.PASSIVE_WOLVES_MODULO.getForArenaState(arena) == 0) {
-      Creature wolf = arena.spawnWolf(arena.getStartLocation(), player);
-      if(wolf != null) {
-        List<Upgrade> wolfUpgrades = upgradeMenu.getUpgrades()
-          .stream()
-          .filter(u -> u.getApplicableFor() == Upgrade.EntityType.BOTH || u.getApplicableFor() == Upgrade.EntityType.WOLF)
-          .collect(Collectors.toList());
-        Upgrade randomUpgrade = wolfUpgrades.get(random.nextInt(wolfUpgrades.size()));
-        upgradeMenu.applyUpgrade(wolf, player, randomUpgrade);
-      }
+      Creature wolf = arena.spawnWolfForce(arena.getStartLocation(), player);
+      List<Upgrade> wolfUpgrades = upgradeMenu.getUpgrades()
+        .stream()
+        .filter(u -> u.getApplicableFor() == Upgrade.EntityType.BOTH || u.getApplicableFor() == Upgrade.EntityType.WOLF)
+        .collect(Collectors.toList());
+      Upgrade randomUpgrade = wolfUpgrades.get(random.nextInt(wolfUpgrades.size()));
+      upgradeMenu.applyUpgrade(wolf, player, randomUpgrade);
     }
     if(arena.getWave() % (int) Settings.PASSIVE_GOLEMS_MODULO.getForArenaState(arena) == 0) {
       Creature golem = arena.spawnGolem(arena.getStartLocation(), player);
-      if(golem != null) {
-        List<Upgrade> golemUpgrades = upgradeMenu.getUpgrades()
-          .stream()
-          .filter(u -> u.getApplicableFor() == Upgrade.EntityType.BOTH || u.getApplicableFor() == Upgrade.EntityType.IRON_GOLEM)
-          .collect(Collectors.toList());
-        Upgrade randomUpgrade = golemUpgrades.get(random.nextInt(golemUpgrades.size()));
-        upgradeMenu.applyUpgrade(golem, player, randomUpgrade);
-      }
+      List<Upgrade> golemUpgrades = upgradeMenu.getUpgrades()
+        .stream()
+        .filter(u -> u.getApplicableFor() == Upgrade.EntityType.BOTH || u.getApplicableFor() == Upgrade.EntityType.IRON_GOLEM)
+        .collect(Collectors.toList());
+      Upgrade randomUpgrade = golemUpgrades.get(random.nextInt(golemUpgrades.size()));
+      upgradeMenu.applyUpgrade(golem, player, randomUpgrade);
     }
   }
 
@@ -210,20 +205,16 @@ public class PetsFriend extends PremiumKit implements AbilitySource, Listener {
 
     EntityUpgradeMenu upgradeMenu = ((Main) getPlugin()).getEntityUpgradeMenu();
     Arena arena = (Arena) user.getArena();
-    Creature wolf = arena.spawnWolf(arena.getStartLocation(), user.getPlayer());
-    if(wolf != null) {
-      upgradeMenu.getUpgrades()
-        .stream()
-        .filter(u -> u.getApplicableFor() == Upgrade.EntityType.BOTH || u.getApplicableFor() == Upgrade.EntityType.WOLF)
-        .forEach(upgrade -> upgradeMenu.applyUpgrade(wolf, user.getPlayer(), upgrade, upgrade.getMaxTier()));
-    }
-    Creature golem = arena.spawnGolem(arena.getStartLocation(), user.getPlayer());
-    if(golem != null) {
-      upgradeMenu.getUpgrades()
-        .stream()
-        .filter(u -> u.getApplicableFor() == Upgrade.EntityType.BOTH || u.getApplicableFor() == Upgrade.EntityType.IRON_GOLEM)
-        .forEach(upgrade -> upgradeMenu.applyUpgrade(golem, user.getPlayer(), upgrade, upgrade.getMaxTier()));
-    }
+    Creature wolf = arena.spawnWolfForce(arena.getStartLocation(), user.getPlayer());
+    upgradeMenu.getUpgrades()
+      .stream()
+      .filter(u -> u.getApplicableFor() == Upgrade.EntityType.BOTH || u.getApplicableFor() == Upgrade.EntityType.WOLF)
+      .forEach(upgrade -> upgradeMenu.applyUpgrade(wolf, user.getPlayer(), upgrade, upgrade.getMaxTier()));
+    Creature golem = arena.spawnGolemForce(arena.getStartLocation(), user.getPlayer());
+    upgradeMenu.getUpgrades()
+      .stream()
+      .filter(u -> u.getApplicableFor() == Upgrade.EntityType.BOTH || u.getApplicableFor() == Upgrade.EntityType.IRON_GOLEM)
+      .forEach(upgrade -> upgradeMenu.applyUpgrade(golem, user.getPlayer(), upgrade, upgrade.getMaxTier()));
     new MessageBuilder(LANGUAGE_ACCESSOR + "GAME_ITEM_UNSTOPPABLE_BEASTS_ACTIVATE").asKey().send(user.getPlayer());
   }
 

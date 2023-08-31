@@ -251,7 +251,11 @@ public class Arena extends PluginArena {
     if(!canSpawnMobForPlayer(player, EntityType.WOLF)) {
       return null;
     }
+    return spawnWolfForce(location, player);
+  }
 
+  @Nullable
+  public Creature spawnWolfForce(Location location, Player player) {
     Wolf wolf = CreatureUtils.getCreatureInitializer().spawnWolf(location);
     wolf.setMetadata("VD_OWNER_UUID", new FixedMetadataValue(getPlugin(), player.getUniqueId().toString()));
     wolf.setOwner(player);
@@ -267,7 +271,11 @@ public class Arena extends PluginArena {
     if(!canSpawnMobForPlayer(player, EntityType.IRON_GOLEM)) {
       return null;
     }
+    return spawnGolemForce(location, player);
+  }
 
+  @Nullable
+  public Creature spawnGolemForce(Location location, Player player) {
     IronGolem ironGolem = CreatureUtils.getCreatureInitializer().spawnGolem(location);
     ironGolem.setMetadata("VD_OWNER_UUID", new FixedMetadataValue(getPlugin(), player.getUniqueId().toString()));
     ironGolem.setCustomNameVisible(true);
@@ -302,19 +310,15 @@ public class Arena extends PluginArena {
     List<Entity> entities = new ArrayList<>(spawnedEntities);
     if(plugin.getConfigPreferences().getOption("LIMIT_ENTITY_BUY_AFTER_DEATH")) {
       List<Entity> entityList = entities.stream().filter(entity -> entity.getType() == type).collect(Collectors.toList());
-      entityList = entityList.stream().filter(Entity::isDead).collect(Collectors.toList());
+      entityList = entityList.stream().filter(en -> !en.isDead()).collect(Collectors.toList());
 
       long spawnedAmount = entityList.size();
       if(spawnedAmount >= globalEntityLimit) {
-        sendMobLimitReached(player, globalEntityLimit);
+        new MessageBuilder("IN_GAME_MESSAGES_VILLAGE_SHOP_MOB_LIMIT_REACHED").asKey().player(player).integer(globalEntityLimit).sendPlayer();
         return false;
       }
     }
     return true;
-  }
-
-  private void sendMobLimitReached(Player player, int entityLimit) {
-    new MessageBuilder("IN_GAME_MESSAGES_VILLAGE_SHOP_MOB_LIMIT_REACHED").asKey().player(player).integer(entityLimit).sendPlayer();
   }
 
   /**
