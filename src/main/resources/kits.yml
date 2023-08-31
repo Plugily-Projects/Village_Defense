@@ -53,7 +53,7 @@ Kit-Cooldown:
       I: 45
       II: 35
       III: 30
-    Poplust: 60
+    Poplust: 70
   Shot-Bow: 5
   Wizard:
     Flower: 15
@@ -66,10 +66,10 @@ Kit-Cooldown:
     Homecoming: 60
   Tornado:
     Monsoon: 20
-    Final-Flight: 40
+    Final-Flight: 45
   Terminator:
     Neverdeath: 20
-    Motors-Overcharge: 50
+    Motors-Overcharge: 60
 
 
 # Don't edit it. But who's stopping you? It's your server!

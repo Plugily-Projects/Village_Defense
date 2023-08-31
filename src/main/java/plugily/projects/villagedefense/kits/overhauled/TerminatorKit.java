@@ -249,7 +249,7 @@ public class TerminatorKit extends LevelKit implements Listener, AbilitySource {
       new MessageBuilder("KIT_LOCKED_TILL").asKey().integer(16).send(user.getPlayer());
       return;
     }
-    int cooldown = getKitsConfig().getInt("Kit-Cooldown.Terminator.Motors-Overcharge", 50);
+    int cooldown = getKitsConfig().getInt("Kit-Cooldown.Terminator.Motors-Overcharge", 60);
     user.setCooldown("terminator_overcharge", cooldown);
     int castTime = 10;
     user.setCooldown("terminator_overcharge_running", castTime);

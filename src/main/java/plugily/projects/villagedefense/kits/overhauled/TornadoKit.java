@@ -328,7 +328,7 @@ public class TornadoKit extends PremiumKit implements Listener, AbilitySource {
       new MessageBuilder("KIT_LOCKED_TILL").asKey().integer(16).send(user.getPlayer());
       return;
     }
-    int cooldown = getKitsConfig().getInt("Kit-Cooldown.Tornado.Final-Flight", 40);
+    int cooldown = getKitsConfig().getInt("Kit-Cooldown.Tornado.Final-Flight", 45);
     user.setCooldown("tornado_final_flight", cooldown);
     int castTime = 10;
     user.setCooldown("tornado_final_flight_running", castTime);

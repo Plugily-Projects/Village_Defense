@@ -445,7 +445,7 @@ Kit:
         - "&e&l• POPLUST (ULTIMATE)"
         - "  &7On use every enemy can be"
         - "  &7oneshot and popped by anyone"
-        - "  &7(&c&lCAST TIME -/&c&l5&7/&c&l7s&7, &c&lCOOLDOWN 60s&7)"
+        - "  &7(&c&lCAST TIME -/&c&l5&7/&c&l7s&7, &c&lCOOLDOWN 70s&7)"
         - "  &7(&c&lUNLOCKED IN MID GAME&7)"
       Game-Item:
         Cleansing-Stick:
@@ -485,7 +485,7 @@ Kit:
         - "  &7On cast your attacks cause enemies"
         - "  &7to levitate and receive 25% max health"
         - "  &7damage per second that lasts for 4s"
-        - "  &7(&c&lCAST TIME 10s&7, &c&lCOOLDOWN 40s&7)"
+        - "  &7(&c&lCAST TIME 10s&7, &c&lCOOLDOWN 45s&7)"
         - "  &7(&c&lUNLOCKED IN MID GAME&7)"
       Game-Item:
         Tornado:
@@ -640,7 +640,7 @@ Kit:
             - "On use pull enemies to you, damage"
             - "them for 35% of max health per sec, on"
             - "end knock them away and instakill them"
-            - "&c&lCAST TIME &710s, &c&lCOOLDOWN &750s"
+            - "&c&lCAST TIME &710s, &c&lCOOLDOWN &760s"
           Activate: "&7Engaging kinematic motors, full power reached!"
           Active-Action-Bar:
             - "&e&lMOTORS OVERCHARGE ACTIVE &7(%number%s)"
@@ -755,11 +755,11 @@ Kit:
         - "  &7On use every spawned pet will have"
         - "  &7increased damage I/II/III and"
         - "  &7regeneration I for 10s"
-        - "  &7(&c&lSPELL TIME 10s&7, &c&lCOOLDOWN 25s&7)"
+        - "  &7(&c&lSPELL TIME 10s&7, &c&lCOOLDOWN 30s&7)"
         - "&e&l• UNSTOPPABLE BEASTS (ULTIMATE):"
         - "  &7On use spawn a wolf and golem"
         - "  &7will all maxed upgrades"
-        - "  &7(&c&lCOOLDOWN 70s&7)"
+        - "  &7(&c&lCOOLDOWN 120s&7)"
         - "  &7(&c&lUNLOCKED IN MID GAME&7)"
       Game-Item:
         Fight-Or-Flight:

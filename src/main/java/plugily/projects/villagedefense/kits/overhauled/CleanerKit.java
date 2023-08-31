@@ -221,7 +221,7 @@ public class CleanerKit extends PremiumKit implements Listener, AbilitySource {
 
   private void onPoplustCast(ItemStack stack, User user) {
     Arena arena = (Arena) user.getArena();
-    int cooldown = getKitsConfig().getInt("Kit-Cooldown.Cleaner.Poplust", 60);
+    int cooldown = getKitsConfig().getInt("Kit-Cooldown.Cleaner.Poplust", 75);
     user.setCooldown("cleaner_poplust", cooldown);
     int castTime = (int) Settings.POPLUST_CAST_TIME.getForArenaState(arena);
     user.setCooldown("cleaner_poplust_running", castTime);

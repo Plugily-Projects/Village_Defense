@@ -129,8 +129,10 @@ public class PetsFriend extends PremiumKit implements AbilitySource, Listener {
         .stream()
         .filter(u -> u.getApplicableFor() == Upgrade.EntityType.BOTH || u.getApplicableFor() == Upgrade.EntityType.WOLF)
         .collect(Collectors.toList());
-      Upgrade randomUpgrade = wolfUpgrades.get(random.nextInt(wolfUpgrades.size()));
-      upgradeMenu.applyUpgrade(wolf, player, randomUpgrade);
+      if(KitSpecifications.getTimeState(arena) != KitSpecifications.GameTimeState.EARLY) {
+        Upgrade randomUpgrade = wolfUpgrades.get(random.nextInt(wolfUpgrades.size()));
+        upgradeMenu.applyUpgrade(wolf, player, randomUpgrade);
+      }
     }
     if(arena.getWave() % (int) Settings.PASSIVE_GOLEMS_MODULO.getForArenaState(arena) == 0) {
       Creature golem = arena.spawnGolem(arena.getStartLocation(), player);
@@ -138,8 +140,10 @@ public class PetsFriend extends PremiumKit implements AbilitySource, Listener {
         .stream()
         .filter(u -> u.getApplicableFor() == Upgrade.EntityType.BOTH || u.getApplicableFor() == Upgrade.EntityType.IRON_GOLEM)
         .collect(Collectors.toList());
-      Upgrade randomUpgrade = golemUpgrades.get(random.nextInt(golemUpgrades.size()));
-      upgradeMenu.applyUpgrade(golem, player, randomUpgrade);
+      if(KitSpecifications.getTimeState(arena) != KitSpecifications.GameTimeState.EARLY) {
+        Upgrade randomUpgrade = golemUpgrades.get(random.nextInt(golemUpgrades.size()));
+        upgradeMenu.applyUpgrade(golem, player, randomUpgrade);
+      }
     }
   }
 
@@ -165,7 +169,7 @@ public class PetsFriend extends PremiumKit implements AbilitySource, Listener {
       return;
     }
     int castTime = 10;
-    int cooldown = 25;
+    int cooldown = 30;
     user.setCooldown(abilityId, cooldown);
 
     KitHelper.scheduleAbilityCooldown(stack, user.getPlayer(), castTime, cooldown);
@@ -199,7 +203,7 @@ public class PetsFriend extends PremiumKit implements AbilitySource, Listener {
       new MessageBuilder("KIT_LOCKED_TILL").asKey().integer(16).send(user.getPlayer());
       return;
     }
-    int cooldown = 70;
+    int cooldown = 120;
     user.setCooldown(abilityId, cooldown);
     VersionUtils.setMaterialCooldown(user.getPlayer(), stack.getType(), cooldown * 20);
 
