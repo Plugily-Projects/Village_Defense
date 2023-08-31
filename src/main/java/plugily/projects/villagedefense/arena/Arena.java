@@ -402,11 +402,13 @@ public class Arena extends PluginArena {
   public void removeIronGolem(IronGolem ironGolem) {
     ironGolem.remove();
     ironGolems.remove(ironGolem);
+    spawnedEntities.remove(ironGolem);
   }
 
   public void removeWolf(Wolf wolf) {
     wolf.remove();
     wolves.remove(wolf);
+    spawnedEntities.remove(wolf);
   }
 
   public enum SpawnPoint {
