@@ -19,6 +19,7 @@
 package plugily.projects.villagedefense.arena;
 
 import org.bukkit.Location;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Creature;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -33,6 +34,7 @@ import org.jetbrains.annotations.Nullable;
 import plugily.projects.minigamesbox.classic.arena.ArenaState;
 import plugily.projects.minigamesbox.classic.arena.PluginArena;
 import plugily.projects.minigamesbox.classic.handlers.language.MessageBuilder;
+import plugily.projects.minigamesbox.classic.utils.misc.MiscUtils;
 import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.arena.assist.AssistHandler;
 import plugily.projects.villagedefense.arena.managers.CreatureTargetManager;
@@ -272,6 +274,7 @@ public class Arena extends PluginArena {
     ironGolem.setCustomName(new MessageBuilder("IN_GAME_MESSAGES_VILLAGE_WAVE_ENTITIES_GOLEM_NAME").asKey().integer(0).player(player).build());
     new MessageBuilder("IN_GAME_MESSAGES_VILLAGE_WAVE_ENTITIES_GOLEM_SPAWN").asKey().player(player).sendPlayer();
     addIronGolem(ironGolem);
+    MiscUtils.getEntityAttribute(ironGolem, Attribute.GENERIC_MOVEMENT_SPEED).ifPresent(ai -> ai.setBaseValue(0.25));
     return ironGolem;
   }
 
