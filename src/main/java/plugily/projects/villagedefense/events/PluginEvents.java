@@ -62,6 +62,8 @@ import plugily.projects.villagedefense.arena.Arena;
 import plugily.projects.villagedefense.creatures.CreatureUtils;
 import plugily.projects.villagedefense.utils.Utils;
 
+import java.util.UUID;
+
 /**
  * Created by Tom on 16/08/2014.
  */
@@ -101,29 +103,24 @@ public class PluginEvents implements Listener {
         return;
       }
     }
-    if(event.getRightClicked().getType() == EntityType.VILLAGER) {
+    Entity target = event.getRightClicked();
+    if(target.getType() == EntityType.VILLAGER) {
       event.setCancelled(true);
       arena.getShopManager().openShop(event.getPlayer());
-    } else if(event.getRightClicked().getType() == EntityType.IRON_GOLEM) {
+    } else if(target.getType() == EntityType.IRON_GOLEM || target.getType() == EntityType.WOLF) {
+      if(target.getType() == EntityType.WOLF) {
+        Wolf wolf = (Wolf) event.getRightClicked();
+        Bukkit.getScheduler().runTask(plugin, () -> wolf.setSitting(false));
+      }
       if(event.getPlayer().isSneaking()) {
         return;
       }
-      IronGolem ironGolem = (IronGolem) event.getRightClicked();
-      if(ironGolem.getCustomName() != null && ironGolem.getCustomName().contains(event.getPlayer().getName())) {
+      if(!target.hasMetadata("VD_OWNER_UUID")
+        || event.getPlayer().getUniqueId().equals(UUID.fromString(target.getMetadata("VD_OWNER_UUID").get(0).asString()))) {
         VersionUtils.setPassenger(event.getRightClicked(), event.getPlayer());
-      } else {
-        new MessageBuilder("IN_GAME_MESSAGES_VILLAGE_WAVE_ENTITIES_GOLEM_CANT_RIDE_OTHER").asKey().player(event.getPlayer()).sendPlayer();
-      }
-    } else if(event.getRightClicked().getType() == EntityType.WOLF) {
-      Wolf wolf = (Wolf) event.getRightClicked();
-      Bukkit.getScheduler().runTask(plugin, () -> wolf.setSitting(false));
-      if(event.getPlayer().isSneaking()) {
         return;
       }
-      //to prevent wolves sitting
-      if(wolf.getCustomName() != null && wolf.getCustomName().contains(event.getPlayer().getName())) {
-        VersionUtils.setPassenger(event.getRightClicked(), event.getPlayer());
-      }
+      new MessageBuilder("IN_GAME_MESSAGES_VILLAGE_WAVE_ENTITIES_CANT_RIDE_OTHER").asKey().player(event.getPlayer()).sendPlayer();
     }
   }
 

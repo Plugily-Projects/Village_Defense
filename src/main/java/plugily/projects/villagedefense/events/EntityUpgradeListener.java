@@ -30,6 +30,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import plugily.projects.minigamesbox.classic.handlers.language.MessageBuilder;
 import plugily.projects.minigamesbox.classic.utils.version.VersionUtils;
 import plugily.projects.minigamesbox.classic.utils.version.events.api.PlugilyPlayerInteractEntityEvent;
 import plugily.projects.villagedefense.Main;
@@ -38,6 +39,7 @@ import plugily.projects.villagedefense.creatures.CreatureUtils;
 import plugily.projects.villagedefense.handlers.upgrade.EntityUpgradeMenu;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 /**
  * @author Plajer
@@ -124,14 +126,21 @@ public class EntityUpgradeListener implements Listener {
   @EventHandler
   public void onEntityClick(PlugilyPlayerInteractEntityEvent event) {
     if((event.getRightClicked().getType() != EntityType.IRON_GOLEM && event.getRightClicked().getType() != EntityType.WOLF)
-        || VersionUtils.checkOffHand(event.getHand()) || !event.getPlayer().isSneaking()
-        || event.getRightClicked().getCustomName() == null) {
+      || VersionUtils.checkOffHand(event.getHand())
+      || !event.getPlayer().isSneaking()
+      || !event.getRightClicked().hasMetadata("VD_OWNER_UUID")
+      || plugin.getArenaRegistry().getArena(event.getPlayer()) == null) {
       return;
     }
-
-    if(plugin.getArenaRegistry().getArena(event.getPlayer()) != null && !upgradeMenu.getPlugin().getUserManager().getUser(event.getPlayer()).isSpectator()) {
-      upgradeMenu.openUpgradeMenu((LivingEntity) event.getRightClicked(), event.getPlayer());
+    if(plugin.getUserManager().getUser(event.getPlayer()).isSpectator()) {
+      return;
     }
+    UUID uuid = UUID.fromString(event.getRightClicked().getMetadata("VD_OWNER_UUID").get(0).asString());
+    if(!event.getPlayer().getUniqueId().equals(uuid)) {
+      new MessageBuilder("IN_GAME_MESSAGES_VILLAGE_WAVE_ENTITIES_CANT_UPGRADE_OTHER").asKey().player(event.getPlayer()).sendPlayer();
+      return;
+    }
+    upgradeMenu.openUpgradeMenu((LivingEntity) event.getRightClicked(), event.getPlayer());
   }
 
 }

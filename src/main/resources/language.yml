@@ -265,6 +265,8 @@ In-Game:
           Start-2: "10,20,10;;&e&l2"
           Start-1: "10,20,10;;&c&l1"
       Entities:
+        Cant-Ride-Other: "%color_chat_issue%%plugin_prefix% You can't ride pet you don't own!"
+        Cant-Upgrade-Other: "%color_chat_issue%%plugin_prefix% You can't upgrade pet you don't own!"
         Wolf:
           Spawn: "%plugin_prefix% Wolf spawned in the village!"
           Name: "%player%'s Wolf &8(&7LVL %number%&8)"
@@ -272,7 +274,6 @@ In-Game:
         Golem:
           Spawn: "%plugin_prefix% Golem spawned in the village!"
           Name: "%player%'s Golem &8(&7LVL %number%&8)"
-          Cant-Ride-Other: "%color_chat_issue%%plugin_prefix% You can't ride the golem of somebody else!"
       Shop:
         GUI: "&lShop"
         Golem-Item-Name: "Spawn Golem"
