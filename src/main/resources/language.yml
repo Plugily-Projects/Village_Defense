@@ -237,6 +237,7 @@ In-Game:
           Villagers: "%color_chat_issue%All villagers died!"
         Survived: "&aYou survived all the waves"
     Admin:
+      Nothing-To-Clean: "%color_chat_issue%%plugin_prefix% No entities to clean!"
       Set-Starting-In-To-0: "%plugin_prefix% An admin set waiting time to 0. The game starts now!"
       Removed:
         Villagers: "%plugin_prefix% %player% has removed all the villagers!"

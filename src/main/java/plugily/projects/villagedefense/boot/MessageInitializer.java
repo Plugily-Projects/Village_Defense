@@ -53,6 +53,7 @@ public class MessageInitializer {
     getMessageManager().registerMessage("IN_GAME_MESSAGES_ADMIN_REMOVED_ZOMBIES", new Message("In-Game.Messages.Admin.Removed.Zombies", ""));
     getMessageManager().registerMessage("IN_GAME_MESSAGES_ADMIN_REMOVED_WOLVES", new Message("In-Game.Messages.Admin.Removed.Wolves", ""));
     getMessageManager().registerMessage("IN_GAME_MESSAGES_ADMIN_CHANGED_WAVE", new Message("In-Game.Messages.Admin.Changed.Wave", ""));
+    getMessageManager().registerMessage("IN_GAME_MESSAGES_ADMIN_NOTHING_T0_CLEAN", new Message("In-Game.Messages.Admin.Nothing-To-Clean", ""));
 
 
     getMessageManager().registerMessage("IN_GAME_MESSAGES_VILLAGE_ROTTEN_FLESH_LEVEL_UP", new Message("In-Game.Messages.Village.Rotten-Flesh-Level-Up", ""));
