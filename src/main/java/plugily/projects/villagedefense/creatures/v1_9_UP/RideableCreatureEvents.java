@@ -61,7 +61,17 @@ public class RideableCreatureEvents {
     if(vehicle == null) {
       return;
     }
-    Optional<CustomRideableCreature> customRideableCreatureOptional = plugin.getEnemySpawnerRegistry().getRideableCreatureByName(CustomRideableCreature.RideableType.valueOf(vehicle.getType().name().toUpperCase()));
+    CustomRideableCreature.RideableType type = null;
+    for(CustomRideableCreature.RideableType rideableType : CustomRideableCreature.RideableType.values()) {
+      if(rideableType.name().equals(vehicle.getType().name().toUpperCase())) {
+        type = rideableType;
+        break;
+      }
+    }
+    if(type == null) {
+      return;
+    }
+    Optional<CustomRideableCreature> customRideableCreatureOptional = plugin.getEnemySpawnerRegistry().getRideableCreatureByName(type);
     if(!customRideableCreatureOptional.isPresent()) {
       return;
     }
