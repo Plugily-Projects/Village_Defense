@@ -76,10 +76,7 @@ public class ArenaEvents extends PluginArenaEvents {
       if(arena.getVillagers().contains(e.getEntity()) && arena.getEnemies().contains(e.getDamager())) {
         e.setCancelled(false);
         e.getEntity().setCustomName(CreatureUtils.getHealthNameTagPreDamage((Creature) e.getEntity(), e.getFinalDamage()));
-        //global announcement that villager is under attack
-        for(Player player : arena.getPlayersLeft()) {
-          XSound.ENTITY_VILLAGER_HURT.play(player);
-        }
+        XSound.ENTITY_VILLAGER_HURT.play(e.getEntity().getLocation(), 30.0f, 1.0f);
         break;
       }
     }
