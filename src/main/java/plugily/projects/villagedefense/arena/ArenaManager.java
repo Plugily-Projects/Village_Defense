@@ -110,6 +110,15 @@ public class ArenaManager extends PluginArenaManager {
         plugin.getUserManager().addExperience(player, wave);
       }
     }
+    List<LivingEntity> allEntities = new ArrayList<>();
+    Arena gameArena = ((Arena) arena);
+    allEntities.addAll(gameArena.getEnemies());
+    allEntities.addAll(gameArena.getIronGolems());
+    allEntities.addAll(gameArena.getWolves());
+    allEntities.addAll(gameArena.getVillagers());
+    for(LivingEntity entity : allEntities) {
+      entity.setAI(false);
+    }
     super.stopGame(quickStop, arena);
   }
 
