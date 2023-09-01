@@ -27,6 +27,7 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.IronGolem;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.TNTPrimed;
 import org.bukkit.entity.Villager;
 import org.bukkit.entity.Wolf;
 import org.bukkit.event.EventHandler;
@@ -35,6 +36,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.metadata.MetadataValue;
 import org.jetbrains.annotations.Nullable;
 import plugily.projects.minigamesbox.classic.user.User;
@@ -42,6 +44,7 @@ import plugily.projects.minigamesbox.classic.utils.version.xseries.XMaterial;
 import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.arena.Arena;
 import plugily.projects.villagedefense.arena.managers.spawner.EnemySpawner;
+import plugily.projects.villagedefense.creatures.CreatureUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -116,7 +119,6 @@ public class CustomCreatureEvents implements Listener {
             continue;
           }
           Map<Player, Double> contribution = arena.getAssistHandler().doDistributeAssistRewards(killer, (Creature) entity);
-          double debug = customCreature.getExpDrop() * 1.6 * arena.getArenaOption("ZOMBIE_DIFFICULTY_MULTIPLIER");
           for(Map.Entry<Player, Double> entry : contribution.entrySet()) {
             double share = entry.getValue() / 100.0;
             int amount = (int) Math.ceil(customCreature.getExpDrop() * share * 1.6 * arena.getArenaOption("ZOMBIE_DIFFICULTY_MULTIPLIER"));
@@ -191,10 +193,34 @@ public class CustomCreatureEvents implements Listener {
         entityTypes.add(EntityType.valueOf(priorityTarget.toString()));
       }
       if(entityTypes.contains(event.getEntity().getType())) {
-        event.getDamager().getLocation().getWorld().spawnEntity(event.getDamager().getLocation(), EntityType.PRIMED_TNT);
+        TNTPrimed primed = (TNTPrimed) event.getDamager().getLocation().getWorld().spawnEntity(event.getDamager().getLocation(), EntityType.PRIMED_TNT);
+        primed.setSource(event.getEntity());
+        primed.setMetadata("VD_PRIMED_TNT", new FixedMetadataValue(arena.getPlugin(), true));
         event.getDamager().remove();
         Bukkit.getServer().getPluginManager().callEvent(new EntityDeathEvent((LivingEntity) event.getDamager(), new ArrayList<>(Collections.singletonList(new ItemStack(Material.ROTTEN_FLESH))), 6));
       }
+    }
+  }
+
+  @EventHandler
+  public void onTntDamage(EntityDamageByEntityEvent event) {
+    if(!(event.getDamager() instanceof TNTPrimed)) {
+      return;
+    }
+    TNTPrimed primed = (TNTPrimed) event.getDamager();
+    if(!primed.hasMetadata("VD_PRIMED_TNT")) {
+      return;
+    }
+    if(event.getEntity() instanceof Player) {
+      User user = plugin.getUserManager().getUser((Player) event.getEntity());
+      if(user == null || user.getArena() == null) {
+        return;
+      }
+      //reduce tnt damage by half for players
+      event.setDamage(event.getDamage() * 0.5);
+    } else if(CreatureUtils.isEnemy(event.getEntity())) {
+      //disable friendly fire
+      event.setCancelled(true);
     }
   }
 
