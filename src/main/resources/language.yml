@@ -653,7 +653,7 @@ Kit:
         - ""
         - "&6&lABILITIES:"
         - "&a&l• ONESHOT (PASSIVE):"
-        - "  &7Have 10/20/30% chance to oneshot:"
+        - "  &7Have 10/20/30% chance to oneshot"
         - "  &7enemy with your arrows"
         - "&a&l• EFFECTIVE ARROWS (PASSIVE):"
         - "  &7Each arrow applies random effect:"
@@ -666,25 +666,14 @@ Kit:
         - "  &7On use launch -/8/12 arrows that"
         - "  &7knock enemies and oneshot them"
         - "  &7(&c&lCOOLDOWN 20s&7)"
+        - "  &7(&c&lUNLOCKED IN MID GAME&7)"
       Game-Item:
-        Terminus:
-          Name: "&6&lBLADE OF TERMINUS"
+        Arrow-Rain:
+          Name: "&6&lARROW RAIN"
           Description:
-            - "&7Terminus blade scales as game progresses:"
-            - "  &e&lWAVE 5: &720% on-hit burn chance"
-            - "  &e&lWAVE 10: &75% instakill chance"
-            - "  &e&lWAVE 15: &78% lifesteal, 40% on-hit burn"
-            - "  &e&lWAVE 20: &720% shared combust chance"
-            - "  &e&lWAVE 25: &740% large knockback chance"
-            - "  &e&lWAVE 30+: &7+1% dmg each wave (40% cap)"
-        Neverdeath:
-          Name: "&6&lNEVERDEATH"
-          Description:
-            - "On use receive absorption for 15s,"
-            - "the lower your health the higher"
-            - "the absorption effect"
+            - "&7On use launch -/8/12 arrows that"
+            - "&7knock enemies and oneshot them"
             - "&c&lCOOLDOWN &720s"
-          Activate: "&7Protocol &6&lNEVERDEATH &7active!"
     Medic:
       Name: "&6Medic"
       Description:

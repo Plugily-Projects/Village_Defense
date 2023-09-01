@@ -45,6 +45,7 @@ import plugily.projects.minigamesbox.classic.utils.misc.complement.ComplementAcc
 import plugily.projects.minigamesbox.classic.utils.version.VersionUtils;
 import plugily.projects.minigamesbox.classic.utils.version.events.api.PlugilyPlayerInteractEvent;
 import plugily.projects.minigamesbox.classic.utils.version.xseries.XMaterial;
+import plugily.projects.minigamesbox.classic.utils.version.xseries.XSound;
 import plugily.projects.villagedefense.arena.Arena;
 import plugily.projects.villagedefense.creatures.CreatureUtils;
 import plugily.projects.villagedefense.kits.AbilitySource;
@@ -102,7 +103,6 @@ public class ShotBowKit extends PremiumKit implements AbilitySource, Listener {
 
     player.getInventory().setItem(5, new ItemStack(Material.SADDLE));
     player.getInventory().setItem(8, new ItemStack(XMaterial.COOKED_BEEF.parseMaterial(), 8));
-    player.getInventory().addItem(new ItemStack(Material.SADDLE));
   }
 
   @Override
@@ -176,6 +176,7 @@ public class ShotBowKit extends PremiumKit implements AbilitySource, Listener {
     double chance = random.nextDouble();
     if(chance <= oneshotChance) {
       KitHelper.executeEnemy((LivingEntity) event.getEntity(), shooter);
+      XSound.BLOCK_NOTE_BLOCK_HARP.play(user.getPlayer());
       return;
     }
     //apply effective arrows passive from mid game
