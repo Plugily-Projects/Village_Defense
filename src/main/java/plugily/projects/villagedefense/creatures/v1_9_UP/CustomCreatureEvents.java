@@ -165,6 +165,10 @@ public class CustomCreatureEvents implements Listener {
     if(filtered.isEmpty() || player == null) {
       return;
     }
+    User user = plugin.getUserManager().getUser(player);
+    if(user.isSpectator()) {
+      return;
+    }
     player.getInventory().addItem(filtered.toArray(new ItemStack[]{}));
   }
 
