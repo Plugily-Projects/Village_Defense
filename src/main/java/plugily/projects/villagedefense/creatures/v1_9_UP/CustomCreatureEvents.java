@@ -121,7 +121,11 @@ public class CustomCreatureEvents implements Listener {
           Map<Player, Double> contribution = arena.getAssistHandler().doDistributeAssistRewards(killer, (Creature) entity);
           for(Map.Entry<Player, Double> entry : contribution.entrySet()) {
             double share = entry.getValue() / 100.0;
-            int amount = (int) Math.ceil(customCreature.getExpDrop() * share * 1.6 * arena.getArenaOption("ZOMBIE_DIFFICULTY_MULTIPLIER"));
+            double multiplier = Math.log(arena.getArenaOption("ZOMBIE_DIFFICULTY_MULTIPLIER"));
+            if(multiplier < 1.0) {
+              multiplier = 1.0;
+            }
+            int amount = (int) Math.ceil(customCreature.getExpDrop() * share * 1.6 * multiplier);
             int orbsBoost = plugin.getPermissionsManager().getPermissionCategoryValue("ORBS_BOOSTER", entry.getKey());
             amount += (amount * (orbsBoost / 100));
             User targetUser = plugin.getUserManager().getUser(entry.getKey());
