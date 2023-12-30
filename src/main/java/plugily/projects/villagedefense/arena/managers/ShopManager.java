@@ -133,15 +133,15 @@ public class ShopManager {
       ItemMeta meta = itemStack.getItemMeta();
       //seek for item price
       if(meta != null && meta.hasLore()) {
-        String currency = new MessageBuilder("IN_GAME_MESSAGES_VILLAGE_SHOP_CURRENCY").asKey().build();
+        String currency = ChatColor.stripColor(new MessageBuilder("IN_GAME_MESSAGES_VILLAGE_SHOP_CURRENCY").asKey().build());
         for(String s : ComplementAccessor.getComplement().getLore(meta)) {
           if(s.contains(currency) || s.contains("orbs")) {
-            costString = ChatColor.stripColor(s).replace(currency, "");
+            costString = ChatColor.stripColor(s).replace(currency, "").replace("orbs", "").trim();
             break;
           }
         }
       }
-
+      plugin.getDebugger().debug(Level.INFO, "{0} Coststring {1} of slot {2} !", arena.getId(), costString, slot);
       int cost;
       try {
         cost = Integer.parseInt(costString);
