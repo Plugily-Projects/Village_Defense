@@ -1,0 +1,30 @@
+name: §7§bWild Naked
+display_item:
+  material: IRON_SWORD
+enabled: true
+unlockedOnDefault: false
+kit_type: premium
+inventory:
+  '0':
+    item:
+      material: DIAMOND_PICKAXE
+      enchants:
+        DIG_SPEED: 4
+        DURABILITY: 10
+    slot: 1
+  '1':
+    item:
+      material: WHITE_TERRACOTTA
+      amount: 64
+    slot: 8
+  '2':
+    item:
+      material: IRON_SWORD
+      enchants:
+        FIRE_ASPECT: 2
+        DAMAGE_ALL: 6
+        DURABILITY: 10
+    slot: 0
+armour: { }
+abilities:
+  - "NO_ARMOUR"

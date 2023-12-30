@@ -1,0 +1,43 @@
+name: §7§2Knight
+display_item:
+  material: WOODEN_SWORD
+enabled: true
+unlockedOnDefault: false
+kit_type: free
+inventory:
+  '0':
+    item:
+      material: WOODEN_SWORD
+      enchants:
+        DURABILITY: 10
+    slot: 0
+  '1':
+    item:
+      material: COOKED_PORKCHOP
+      amount: 8
+    slot: 1
+  '2':
+    item:
+      material: WHITE_TERRACOTTA
+      amount: 64
+    slot: 8
+  '3':
+    item:
+      material: DIAMOND_PICKAXE
+      enchants:
+        DIG_SPEED: 2
+        DURABILITY: 10
+    slot: 2
+armour:
+  helmet:
+    material: LEATHER_HELMET
+    color: 160, 101, 64
+  chestplate:
+    material: LEATHER_CHESTPLATE
+    color: 160, 101, 64
+  leggings:
+    material: LEATHER_LEGGINGS
+    color: 160, 101, 64
+  boots:
+    material: LEATHER_BOOTS
+    color: 160, 101, 64
