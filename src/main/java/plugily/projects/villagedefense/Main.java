@@ -124,9 +124,13 @@ public class Main extends PluginMain {
   public void addKits() {
     long start = System.currentTimeMillis();
     getDebugger().debug("Adding kits...");
+    addFileName("kits/archer");
+    addFileName("kits/knight");
+    addFileName("kits/naked");
 
     List<String> optionalConfigurations = new ArrayList<>();
     //optionalConfigurations.add("vd-ability");
+
 
     getKitRegistry().setHandleItem((player, itemStack) -> {
       //todo

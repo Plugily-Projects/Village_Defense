@@ -8,8 +8,11 @@ deploy webhooks to print changelog successfully
 `<update log line>`
 
 That's all, matcher will stop when detects next line started with `###` match
+
 ### 4.7.2 (30.12.2023)
 * Fixed No price set for shop item on all locales
+* Changed kit loading
+* Added file based kits /kits
 
 ### 4.7.0 (10.08.2023)
 * Added up to 1.20 compatibility
