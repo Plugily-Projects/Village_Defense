@@ -48,32 +48,10 @@ import plugily.projects.villagedefense.handlers.setup.SetupCategoryManager;
 import plugily.projects.villagedefense.handlers.upgrade.EntityUpgradeMenu;
 import plugily.projects.villagedefense.handlers.upgrade.upgrades.Upgrade;
 import plugily.projects.villagedefense.handlers.upgrade.upgrades.UpgradeBuilder;
-import plugily.projects.villagedefense.kits.free.KnightKit;
-import plugily.projects.villagedefense.kits.free.LightTankKit;
-import plugily.projects.villagedefense.kits.level.ArcherKit;
-import plugily.projects.villagedefense.kits.level.GolemFriendKit;
-import plugily.projects.villagedefense.kits.level.HardcoreKit;
-import plugily.projects.villagedefense.kits.level.HealerKit;
-import plugily.projects.villagedefense.kits.level.LooterKit;
-import plugily.projects.villagedefense.kits.level.MediumTankKit;
-import plugily.projects.villagedefense.kits.level.PuncherKit;
-import plugily.projects.villagedefense.kits.level.RunnerKit;
-import plugily.projects.villagedefense.kits.level.TerminatorKit;
-import plugily.projects.villagedefense.kits.level.WorkerKit;
-import plugily.projects.villagedefense.kits.level.ZombieFinderKit;
-import plugily.projects.villagedefense.kits.premium.BlockerKit;
-import plugily.projects.villagedefense.kits.premium.CleanerKit;
-import plugily.projects.villagedefense.kits.premium.DogFriendKit;
-import plugily.projects.villagedefense.kits.premium.HeavyTankKit;
-import plugily.projects.villagedefense.kits.premium.MedicKit;
-import plugily.projects.villagedefense.kits.premium.NakedKit;
-import plugily.projects.villagedefense.kits.premium.PremiumHardcoreKit;
-import plugily.projects.villagedefense.kits.premium.ShotBowKit;
-import plugily.projects.villagedefense.kits.premium.TeleporterKit;
-import plugily.projects.villagedefense.kits.premium.TornadoKit;
-import plugily.projects.villagedefense.kits.premium.WizardKit;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 
 /**
@@ -146,19 +124,15 @@ public class Main extends PluginMain {
   public void addKits() {
     long start = System.currentTimeMillis();
     getDebugger().debug("Adding kits...");
-    addFileName("kits");
-    Class<?>[] classKitNames = new Class[]{KnightKit.class, LightTankKit.class, ZombieFinderKit.class, ArcherKit.class, PuncherKit.class, HealerKit.class, LooterKit.class, RunnerKit.class,
-        MediumTankKit.class, WorkerKit.class, GolemFriendKit.class, TerminatorKit.class, HardcoreKit.class, CleanerKit.class, TeleporterKit.class, HeavyTankKit.class, ShotBowKit.class,
-        DogFriendKit.class, PremiumHardcoreKit.class, TornadoKit.class, BlockerKit.class, MedicKit.class, NakedKit.class, WizardKit.class};
-    for(Class<?> kitClass : classKitNames) {
-      try {
-        kitClass.getDeclaredConstructor().newInstance();
-      } catch(Exception e) {
-        getLogger().log(Level.SEVERE, "Fatal error while registering existing game kit! Report this error to the developer!");
-        getLogger().log(Level.SEVERE, "Cause: " + e.getMessage() + " (kitClass " + kitClass.getName() + ")");
-        e.printStackTrace();
-      }
-    }
+
+    List<String> optionalConfigurations = new ArrayList<>();
+    //optionalConfigurations.add("vd-ability");
+
+    getKitRegistry().setHandleItem((player, itemStack) -> {
+      //todo
+      return itemStack;
+    });
+    getKitRegistry().registerKits(optionalConfigurations);
     getDebugger().debug("Kit adding finished took {0}ms", System.currentTimeMillis() - start);
   }
 

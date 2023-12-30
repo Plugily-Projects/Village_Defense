@@ -31,7 +31,6 @@ import plugily.projects.minigamesbox.classic.utils.version.VersionUtils;
 import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.api.event.wave.VillageWaveEndEvent;
 import plugily.projects.villagedefense.api.event.wave.VillageWaveStartEvent;
-import plugily.projects.villagedefense.kits.level.GolemFriendKit;
 
 /**
  * @author Plajer
@@ -57,10 +56,7 @@ public class ArenaManager extends PluginArenaManager {
 
   @Override
   public void leaveAttempt(@NotNull Player player, @NotNull PluginArena arena) {
-    if(plugin.getUserManager().getUser(player).getKit() instanceof GolemFriendKit) {
-      ((Arena) arena).getIronGolems().stream().filter(ironGolem -> ironGolem.getCustomName().contains(player.getName()))
-          .forEach(IronGolem::remove);
-    }
+    //todo GolemFriend - remove golem if player leaves
     super.leaveAttempt(player, arena);
   }
 
