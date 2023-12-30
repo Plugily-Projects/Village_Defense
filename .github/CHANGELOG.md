@@ -13,6 +13,7 @@ That's all, matcher will stop when detects next line started with `###` match
 * Fixed No price set for shop item on all locales
 * Changed kit loading
 * Added file based kits /kits
+* Fixed spawnEntity NME on spigot upper 1.15
 
 ### 4.7.0 (10.08.2023)
 * Added up to 1.20 compatibility
