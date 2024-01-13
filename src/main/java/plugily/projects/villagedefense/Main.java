@@ -26,6 +26,7 @@ import org.jetbrains.annotations.TestOnly;
 import plugily.projects.minigamesbox.classic.PluginMain;
 import plugily.projects.minigamesbox.classic.handlers.setup.SetupInventory;
 import plugily.projects.minigamesbox.classic.handlers.setup.categories.PluginSetupCategoryManager;
+import plugily.projects.minigamesbox.classic.kits.basekits.Kit;
 import plugily.projects.minigamesbox.classic.utils.configuration.ConfigUtils;
 import plugily.projects.minigamesbox.classic.utils.services.metrics.Metrics;
 import plugily.projects.minigamesbox.classic.utils.version.ServerVersion;
@@ -122,8 +123,12 @@ public class Main extends PluginMain {
   }
 
   public void addKits() {
+    if (!getConfigPreferences().getOption("KITS")) {
+      // Kits are disabled, no kits will be loaded
+      return;
+    }
     long start = System.currentTimeMillis();
-    getDebugger().debug("Adding kits...");
+    getDebugger().performance("Kit", "Adding kits...");
     addFileName("kits/archer");
     addFileName("kits/knight");
     addFileName("kits/naked");
@@ -137,6 +142,11 @@ public class Main extends PluginMain {
       return itemStack;
     });
     getKitRegistry().registerKits(optionalConfigurations);
+    getDebugger().debug(Level.INFO, "Kits loaded: ");
+    for (Kit kit : getKitRegistry().getKits()) {
+      getDebugger().debug(kit.getName());
+    }
+    getKitRegistry().setDefaultKit("knight");
     getDebugger().debug("Kit adding finished took {0}ms", System.currentTimeMillis() - start);
   }
 

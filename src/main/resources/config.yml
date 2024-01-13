@@ -34,6 +34,16 @@ Bungee-Mode: false
 Inventory-Manager: true
 
 
+# Kits configuration
+# A server restart is required for changes to apply
+Kit:
+  # Should we load kits?
+  Enabled: true
+  # What is the default kit for players?
+  # This should be the same name as the file name of the kits file in the kits folder
+  Default: "knight"
+
+
 Commands:
   # Commands which can be used in game, remove all of them to disable (only works if Block.In-Game.Commands = true)
   Whitelist:
@@ -83,16 +93,14 @@ Database: false
 
 # Should we enable in game rewards? See rewards.yml for more...
 # You should also check out our script engine tutorial for rewards! https://tutorial.plugily.xyz
-Rewards: true
-
-
-# Enable in game (eg. '[KIT][LEVEL] Tigerpanzer_02: hey') special formatting?
-# Formatting is configurable in language.yml
-# You can use PlaceholderAPI placeholders in chat format!
-Plugin-Chat-Format: true
+Rewards: false
 
 
 Chat:
+  # Enable in game (eg. '[KIT][LEVEL] Tigerpanzer_02: hey') special formatting?
+  # Formatting is configurable in language.yml
+  # You can use PlaceholderAPI placeholders in chat format!
+  Format: true
   Separate:
     # Should we enable a separate arena chat for players inside a arena
     # Useful on multi arena servers that don't want the same chat for all players on the server
@@ -124,10 +132,6 @@ Holidays: true
 
 # Should the plugin enable special powerups which can be found in powerups.yml
 Powerups: false
-
-
-# Should the plugin enable kits which can be found in kits.yml
-Kits: true
 
 
 # Should we create leaderboards out of the stats?
@@ -259,4 +263,4 @@ Update-Notifier:
 # You edited it, huh? Next time hurt yourself!
 Do-Not-Edit:
   File-Version: 1
-  Core-Version: 2
+  Core-Version: 3
