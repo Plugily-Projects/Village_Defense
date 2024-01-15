@@ -45,7 +45,7 @@ dependencies {
 }
 
 group = "plugily.projects"
-version = "4.7.0-SNAPSHOT3"
+version = "4.7.0-SNAPSHOT4"
 description = "VillageDefense"
 java {
     withJavadocJar()
