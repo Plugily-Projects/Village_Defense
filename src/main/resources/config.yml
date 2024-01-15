@@ -108,6 +108,7 @@ Chat:
     # Should spectators only write with other spectators
     Spectators: true
 
+
 # Should we fire some cool fireworks at locations of every player at special events such as the game end?
 Firework: true
 
@@ -154,6 +155,8 @@ Damage:
   Drowning: false
   # Should players get fire damage?
   Fire: false
+  # Should players lose food ingame & get damage?
+  Hunger: false
 
 
 Cycle:
@@ -263,4 +266,4 @@ Update-Notifier:
 # You edited it, huh? Next time hurt yourself!
 Do-Not-Edit:
   File-Version: 1
-  Core-Version: 3
+  Core-Version: 4
