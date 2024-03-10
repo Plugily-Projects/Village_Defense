@@ -9,6 +9,9 @@ deploy webhooks to print changelog successfully
 
 That's all, matcher will stop when detects next line started with `###` match
 
+### 5.0.0 (10.03.2024)
+* Added ProtocolLib as softdependency for rideable creatures steering (1.9+) [Thanks @Plajer]
+
 ### 4.7.2 (30.12.2023)
 * Fixed No price set for shop item on all locales
 * Changed kit loading

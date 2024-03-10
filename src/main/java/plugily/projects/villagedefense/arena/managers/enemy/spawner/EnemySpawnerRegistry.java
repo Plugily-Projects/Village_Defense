@@ -26,11 +26,7 @@ import plugily.projects.minigamesbox.classic.utils.configuration.ConfigUtils;
 import plugily.projects.minigamesbox.classic.utils.version.ServerVersion;
 import plugily.projects.minigamesbox.classic.utils.version.xseries.XMaterial;
 import plugily.projects.villagedefense.Main;
-import plugily.projects.villagedefense.creatures.v1_9_UP.CustomCreature;
-import plugily.projects.villagedefense.creatures.v1_9_UP.CustomCreatureEvents;
-import plugily.projects.villagedefense.creatures.v1_9_UP.CustomRideableCreature;
-import plugily.projects.villagedefense.creatures.v1_9_UP.Equipment;
-import plugily.projects.villagedefense.creatures.v1_9_UP.Rate;
+import plugily.projects.villagedefense.creatures.v1_9_UP.*;
 
 import java.util.ArrayList;
 import java.util.EnumMap;
@@ -90,6 +86,7 @@ public class EnemySpawnerRegistry extends EnemySpawnerRegistryLegacy {
   @Override
   public void registerCreatures() {
     new CustomCreatureEvents(plugin);
+    new RideableCreatureEvents(plugin);
     FileConfiguration config = ConfigUtils.getConfig(plugin, "creatures");
 
     ConfigurationSection content = config.getConfigurationSection("Creatures.Content");
