@@ -19,6 +19,7 @@
 package plugily.projects.villagedefense.arena.states;
 
 import org.bukkit.entity.Player;
+import plugily.projects.minigamesbox.api.user.IUser;
 import plugily.projects.minigamesbox.classic.arena.PluginArena;
 import plugily.projects.minigamesbox.classic.arena.states.PluginEndingState;
 import plugily.projects.minigamesbox.classic.user.User;
@@ -35,7 +36,7 @@ public class EndingState extends PluginEndingState {
     super.handleCall(arena);
     if(arena.getTimer() <= 0) {
       for(Player player : arena.getPlayers()) {
-        User user = getPlugin().getUserManager().getUser(player);
+        IUser user = getPlugin().getUserManager().getUser(player);
         user.setStatistic("ORBS", 0);
       }
     }

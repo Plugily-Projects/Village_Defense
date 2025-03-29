@@ -49,7 +49,7 @@ public class MapRestorerManagerLegacy extends MapRestorerManager {
     for(Map.Entry<Location, Byte> entry : doorBlocks.entrySet()) {
       Block block = entry.getKey().getBlock();
       Byte doorData = entry.getValue();
-      if(ServerVersion.Version.isCurrentEqualOrLower(ServerVersion.Version.v1_11_R1) && block.getType() != org.bukkit.Material.AIR) {
+      if(ServerVersion.Version.isCurrentEqualOrLower(ServerVersion.Version.v1_11) && block.getType() != org.bukkit.Material.AIR) {
         Material mat = Utils.getCachedDoor(block);
         try {
           int id = (int) mat.getClass().getDeclaredMethod("getId").invoke(mat);

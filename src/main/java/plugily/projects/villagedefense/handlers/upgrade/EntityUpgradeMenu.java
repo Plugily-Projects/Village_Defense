@@ -27,10 +27,12 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.jetbrains.annotations.Nullable;
+import plugily.projects.minigamesbox.api.user.IUser;
 import plugily.projects.minigamesbox.classic.handlers.language.MessageBuilder;
 import plugily.projects.minigamesbox.classic.user.User;
 import plugily.projects.minigamesbox.classic.utils.helper.ItemBuilder;
 import plugily.projects.minigamesbox.classic.utils.version.VersionUtils;
+import plugily.projects.minigamesbox.classic.utils.version.xseries.XEntityType;
 import plugily.projects.minigamesbox.classic.utils.version.xseries.XMaterial;
 import plugily.projects.minigamesbox.inventory.normal.NormalFastInv;
 import plugily.projects.villagedefense.Main;
@@ -112,7 +114,7 @@ public class EntityUpgradeMenu {
   public void openUpgradeMenu(LivingEntity livingEntity, Player player) {
     NormalFastInv gui = new NormalFastInv(6 * 9, color("UPGRADE_MENU_TITLE"));
     gui.addClickHandler(inventoryClickEvent -> inventoryClickEvent.setCancelled(true));
-    User user = plugin.getUserManager().getUser(player);
+    IUser user = plugin.getUserManager().getUser(player);
 
     for(Upgrade upgrade : upgrades) {
       if(upgrade.getApplicableFor() != Upgrade.EntityType.BOTH && !livingEntity.getType().toString().equals(upgrade.getApplicableFor().toString())) {
@@ -225,7 +227,7 @@ public class EntityUpgradeMenu {
 
     switch(upgrade.getId()) {
       case "Damage":
-        if(entity.getType() == EntityType.WOLF) {
+        if(entity.getType() == XEntityType.WOLF.get()) {
           CreatureUtils.getCreatureInitializer().applyDamageModifier((LivingEntity) entity, 2.0 + (tier * 3));
         }
         //attribute damage doesn't exist for golems

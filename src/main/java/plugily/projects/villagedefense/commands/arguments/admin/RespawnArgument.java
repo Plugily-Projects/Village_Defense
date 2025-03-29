@@ -22,6 +22,7 @@ import org.bukkit.GameMode;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffectType;
+import plugily.projects.minigamesbox.api.user.IUser;
 import plugily.projects.minigamesbox.classic.commands.arguments.data.CommandArgument;
 import plugily.projects.minigamesbox.classic.commands.arguments.data.LabelData;
 import plugily.projects.minigamesbox.classic.commands.arguments.data.LabeledCommandArgument;
@@ -72,7 +73,7 @@ public class RespawnArgument {
         } else {
           target = player;
         }
-        User user = registry.getPlugin().getUserManager().getUser(target);
+        IUser user = registry.getPlugin().getUserManager().getUser(target);
         if(!user.isSpectator()) {
           return;
         }

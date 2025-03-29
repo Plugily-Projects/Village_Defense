@@ -11,6 +11,16 @@ That's all, matcher will stop when detects next line started with `###` match
 
 ### 5.0.0 (10.03.2024)
 * Added ProtocolLib as softdependency for rideable creatures steering (1.9+) [Thanks @Plajer]
+* Added new healtbars for villagers, wolf and golem & improved creature healtbar (1.9+) [Thanks @Plajer]
+* Added specific metadata to wolf and golem so we can identify them easily
+* Fixed Golem Movement Speed is by default now 0.25 (1.9+)
+* Added getAliveEntitiesList && getAlivePetsList arena method
+* Added villager hurt sound
+* Added spawned wolves ond golems on leave will also "leave"
+* Changed feel refresh on wave end is now 25% of max health rounded up
+* Changed user kit restock is now on end wave instead of start wave
+* Added villagers, wolves and golems also regenerate health on wave end
+
 
 ### 4.7.2 (30.12.2023)
 * Fixed No price set for shop item on all locales

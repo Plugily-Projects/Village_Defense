@@ -19,19 +19,16 @@
 package plugily.projects.villagedefense.arena;
 
 import org.bukkit.Location;
-import org.bukkit.entity.Creature;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.IronGolem;
-import org.bukkit.entity.Item;
-import org.bukkit.entity.Player;
-import org.bukkit.entity.Villager;
-import org.bukkit.entity.Wolf;
+import org.bukkit.entity.*;
+import org.bukkit.metadata.FixedMetadataValue;
 import org.jetbrains.annotations.NotNull;
-import plugily.projects.minigamesbox.classic.arena.ArenaState;
+import plugily.projects.minigamesbox.api.arena.IArenaState;
 import plugily.projects.minigamesbox.classic.arena.PluginArena;
 import plugily.projects.minigamesbox.classic.handlers.language.MessageBuilder;
+import plugily.projects.minigamesbox.classic.utils.misc.MiscUtils;
 import plugily.projects.minigamesbox.classic.utils.version.ServerVersion;
+import plugily.projects.minigamesbox.classic.utils.version.xseries.XAttribute;
+import plugily.projects.minigamesbox.classic.utils.version.xseries.XEntityType;
 import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.arena.managers.CreatureTargetManager;
 import plugily.projects.villagedefense.arena.managers.EnemySpawnManager;
@@ -84,7 +81,7 @@ public class Arena extends PluginArena {
     shopManager = new ShopManager(this);
     enemySpawnManager = new EnemySpawnManager(this);
     creatureTargetManager = new CreatureTargetManager(this);
-    if(ServerVersion.Version.isCurrentEqualOrLower(ServerVersion.Version.v1_16_R1)) {
+    if(ServerVersion.Version.isCurrentEqualOrLower(ServerVersion.Version.v1_16)) {
       mapRestorerManager = new MapRestorerManagerLegacy(this);
     } else {
       mapRestorerManager = new MapRestorerManager(this);
@@ -92,10 +89,10 @@ public class Arena extends PluginArena {
     setMapRestorerManager(mapRestorerManager);
     setScoreboardManager(new ScoreboardManager(this));
 
-    addGameStateHandler(ArenaState.ENDING, new EndingState());
-    addGameStateHandler(ArenaState.IN_GAME, new InGameState());
-    addGameStateHandler(ArenaState.RESTARTING, new RestartingState());
-    addGameStateHandler(ArenaState.STARTING, new StartingState());
+    addGameStateHandler(IArenaState.ENDING, new EndingState());
+    addGameStateHandler(IArenaState.IN_GAME, new InGameState());
+    addGameStateHandler(IArenaState.RESTARTING, new RestartingState());
+    addGameStateHandler(IArenaState.STARTING, new StartingState());
   }
 
   public void reloadShopManager() {
@@ -235,33 +232,45 @@ public class Arena extends PluginArena {
   public void spawnVillager(Location location) {
     Villager villager = CreatureUtils.getCreatureInitializer().spawnVillager(location);
     villager.setCustomNameVisible(getPlugin().getConfigPreferences().getOption("NAME_VISIBILITY_VILLAGER"));
-    villager.setCustomName(CreatureUtils.getRandomVillagerName());
+    String name = CreatureUtils.getRandomVillagerName();
+    villager.setMetadata(CreatureUtils.getCreatureInitializer().getCreatureCustomNameMetadata(), new FixedMetadataValue(plugin, name));
+    villager.setCustomName(CreatureUtils.getHealthNameTag(villager));
     addVillager(villager);
   }
 
   public void spawnWolf(Location location, Player player) {
-    if(!canSpawnMobForPlayer(player, EntityType.WOLF)) {
+    spawnWolf(location, player, false);
+  }
+
+  public void spawnWolf(Location location, Player player, boolean force) {
+    if(!force && !canSpawnMobForPlayer(player, XEntityType.WOLF.get())) {
       return;
     }
-
     Wolf wolf = CreatureUtils.getCreatureInitializer().spawnWolf(location);
+    wolf.setMetadata("VD_OWNER_UUID", new FixedMetadataValue(getPlugin(), player.getUniqueId().toString()));
     wolf.setOwner(player);
     wolf.setCustomNameVisible(getPlugin().getConfigPreferences().getOption("NAME_VISIBILITY_WOLF"));
-    wolf.setCustomName(new MessageBuilder("IN_GAME_MESSAGES_VILLAGE_WAVE_ENTITIES_WOLF_NAME").asKey().player(player).build());
+    wolf.setCustomName(new MessageBuilder("IN_GAME_MESSAGES_VILLAGE_WAVE_ENTITIES_WOLF_NAME").asKey().integer(0).player(player).build());
     new MessageBuilder("IN_GAME_MESSAGES_VILLAGE_WAVE_ENTITIES_WOLF_SPAWN").asKey().player(player).sendPlayer();
     addWolf(wolf);
   }
 
+
   public void spawnGolem(Location location, Player player) {
-    if(!canSpawnMobForPlayer(player, EntityType.IRON_GOLEM)) {
+    spawnGolem(location, player, false);
+  }
+
+  public void spawnGolem(Location location, Player player, boolean force) {
+    if(!force && !canSpawnMobForPlayer(player, XEntityType.IRON_GOLEM.get())) {
       return;
     }
-
     IronGolem ironGolem = CreatureUtils.getCreatureInitializer().spawnGolem(location);
+    ironGolem.setMetadata("VD_OWNER_UUID", new FixedMetadataValue(getPlugin(), player.getUniqueId().toString()));
     ironGolem.setCustomNameVisible(getPlugin().getConfigPreferences().getOption("NAME_VISIBILITY_GOLEM"));
-    ironGolem.setCustomName(new MessageBuilder("IN_GAME_MESSAGES_VILLAGE_WAVE_ENTITIES_GOLEM_NAME").asKey().player(player).build());
+    ironGolem.setCustomName(new MessageBuilder("IN_GAME_MESSAGES_VILLAGE_WAVE_ENTITIES_GOLEM_NAME").asKey().integer(0).player(player).build());
     new MessageBuilder("IN_GAME_MESSAGES_VILLAGE_WAVE_ENTITIES_GOLEM_SPAWN").asKey().player(player).sendPlayer();
     addIronGolem(ironGolem);
+    MiscUtils.getEntityAttribute(ironGolem, XAttribute.MOVEMENT_SPEED.get()).ifPresent(ai -> ai.setBaseValue(0.25));
   }
 
   protected void addWolf(Wolf wolf) {
@@ -270,7 +279,7 @@ public class Arena extends PluginArena {
   }
 
   public boolean canSpawnMobForPlayer(Player player, EntityType type) {
-    if(type != EntityType.IRON_GOLEM && type != EntityType.WOLF) {
+    if(type != XEntityType.IRON_GOLEM.get() && type != XEntityType.WOLF.get()) {
       return false;
     }
     int globalEntityLimit = 0;
@@ -278,6 +287,7 @@ public class Arena extends PluginArena {
     String spawnedName = "";
     switch(type) {
       case WOLF:
+        //todo consider limit of * / op again
         entityLimit = plugin.getPermissionsManager().getPermissionCategoryValue("PLAYER_SPAWN_LIMIT_WOLVES", player);
         spawnedName = new MessageBuilder("IN_GAME_MESSAGES_VILLAGE_WAVE_ENTITIES_WOLF_NAME").asKey().player(player).build();
         globalEntityLimit = plugin.getConfig().getInt("Limit.Spawn.Wolves", 20);
@@ -401,6 +411,21 @@ public class Arena extends PluginArena {
   public final Location getRandomZombieSpawnLocation(Random random) {
     List<Location> spawns = getZombieSpawns();
     return spawns.get(spawns.size() == 1 ? 0 : random.nextInt(spawns.size()));
+  }
+
+  public List<LivingEntity> getAlivePetsList() {
+    List<LivingEntity> entities = new ArrayList<>();
+    entities.addAll(ironGolems);
+    entities.addAll(wolves);
+    return entities;
+  }
+
+  public List<LivingEntity> getAliveEntitiesList() {
+    List<LivingEntity> entities = new ArrayList<>();
+    entities.addAll(ironGolems);
+    entities.addAll(wolves);
+    entities.addAll(villagers);
+    return entities;
   }
 
   protected void addIronGolem(IronGolem ironGolem) {

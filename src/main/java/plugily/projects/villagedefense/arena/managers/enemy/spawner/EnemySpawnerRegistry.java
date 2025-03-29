@@ -24,13 +24,13 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemStack;
 import plugily.projects.minigamesbox.classic.utils.configuration.ConfigUtils;
 import plugily.projects.minigamesbox.classic.utils.version.ServerVersion;
+import plugily.projects.minigamesbox.classic.utils.version.xseries.XAttribute;
+import plugily.projects.minigamesbox.classic.utils.version.xseries.XEntityType;
 import plugily.projects.minigamesbox.classic.utils.version.xseries.XMaterial;
 import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.creatures.v1_9_UP.*;
 
-import java.util.ArrayList;
-import java.util.EnumMap;
-import java.util.List;
+import java.util.*;
 import java.util.logging.Level;
 
 /**
@@ -47,7 +47,7 @@ public class EnemySpawnerRegistry extends EnemySpawnerRegistryLegacy {
 
   @Override
   public void registerRideableCreatures() {
-    if(ServerVersion.Version.isCurrentEqualOrLower(ServerVersion.Version.v1_8_R3)) {
+    if(ServerVersion.Version.isCurrentEqualOrLower(ServerVersion.Version.v1_8_8)) {
       return;
     }
     FileConfiguration config = ConfigUtils.getConfig(plugin, "creatures");
@@ -59,7 +59,7 @@ public class EnemySpawnerRegistry extends EnemySpawnerRegistryLegacy {
     for(String rideable : village.getKeys(false)) {
       CustomRideableCreature.RideableType rideableType = CustomRideableCreature.RideableType.valueOf(rideable.toUpperCase().replace("RIDEABLE_", ""));
       boolean holidayEffects = village.getBoolean(rideable + ".holiday_effects", false);
-      EnumMap<Attribute, Double> attributes = new EnumMap<>(Attribute.class);
+      Map<XAttribute, Double> attributes = new HashMap<>();
       ConfigurationSection attributeSection = village.getConfigurationSection(rideable + ".attributes");
       if(attributeSection == null) {
         plugin.getDebugger().debug(Level.WARNING, CREATURES_MISSING_SECTION, "Creatures.Village." + rideable + ".attributes");
@@ -67,7 +67,7 @@ public class EnemySpawnerRegistry extends EnemySpawnerRegistryLegacy {
       }
       for(String attribute : attributeSection.getKeys(false)) {
         try {
-          attributes.put(Attribute.valueOf(attribute.toUpperCase()), attributeSection.getDouble(attribute));
+          attributes.put(XAttribute.of(attribute.toUpperCase()).get(), attributeSection.getDouble(attribute));
         } catch(IllegalArgumentException exception) {
           plugin.getDebugger().debug(Level.WARNING, "Creatures attribute {0} not found! Check JavaDocs?", "Creatures.Village." + rideable + ".attributes." + attribute);
         }
@@ -109,7 +109,7 @@ public class EnemySpawnerRegistry extends EnemySpawnerRegistryLegacy {
 
       String key = creature.toUpperCase();
 
-      EntityType entityType = EntityType.valueOf(content.getString(creature + ".entity_type", "ZOMBIE").toUpperCase());
+      EntityType entityType = XEntityType.of(content.getString(creature + ".entity_type", "ZOMBIE").toUpperCase()).orElse(XEntityType.ZOMBIE).get();
 
       boolean baby = content.getBoolean(creature + ".baby", false);
       boolean breed = content.getBoolean(creature + ".breed", false);
@@ -136,7 +136,7 @@ public class EnemySpawnerRegistry extends EnemySpawnerRegistryLegacy {
         rates.add(new Rate(phase, waveHigher, waveLower, spawnLower, rateInt, division, reduce, rateTypeValue));
       }
 
-      EnumMap<Attribute, Double> attributes = new EnumMap<>(Attribute.class);
+      Map<XAttribute, Double> attributes = new HashMap<>();
       ConfigurationSection attributeSection = content.getConfigurationSection(creature + ".attributes");
       if(attributeSection == null) {
         plugin.getDebugger().debug(Level.WARNING, CREATURES_MISSING_SECTION, "Creatures.Content." + creature + ".attributes");
@@ -144,7 +144,7 @@ public class EnemySpawnerRegistry extends EnemySpawnerRegistryLegacy {
       }
       for(String attribute : attributeSection.getKeys(false)) {
         try {
-          attributes.put(Attribute.valueOf(attribute.toUpperCase()), attributeSection.getDouble(attribute));
+          attributes.put(XAttribute.of(attribute.toUpperCase()).get(), attributeSection.getDouble(attribute));
         } catch(IllegalArgumentException exception) {
           plugin.getDebugger().debug(Level.WARNING, "Creatures attribute {0} not found! Check JavaDocs?", "Creatures.Content." + creature + ".attributes" + attribute);
         }

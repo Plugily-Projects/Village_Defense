@@ -41,7 +41,6 @@ import org.bukkit.entity.Villager;
 import org.bukkit.entity.Wolf;
 import org.bukkit.entity.Zombie;
 import org.bukkit.event.entity.CreatureSpawnEvent;
-import plugily.projects.minigamesbox.classic.utils.misc.MessageUtils;
 import plugily.projects.villagedefense.creatures.BaseCreatureInitializer;
 
 public class CreatureInitializer implements BaseCreatureInitializer {

@@ -59,13 +59,13 @@ public class EnemySpawnerRegistryLegacy {
   }
 
   public void registerRideableCreatures() {
-    if(ServerVersion.Version.isCurrentEqualOrLower(ServerVersion.Version.v1_8_R3)) {
+    if(ServerVersion.Version.isCurrentEqualOrLower(ServerVersion.Version.v1_8_8)) {
       return;
     }
   }
 
   public void registerCreatures() {
-    if(ServerVersion.Version.isCurrentEqualOrLower(ServerVersion.Version.v1_8_R3)) {
+    if(ServerVersion.Version.isCurrentEqualOrLower(ServerVersion.Version.v1_8_8)) {
       enemySpawnerSet.add(new BabyZombieSpawner());
       enemySpawnerSet.add(new FastZombieSpawner());
       enemySpawnerSet.add(new GolemBusterSpawner());

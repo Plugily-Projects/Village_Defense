@@ -28,12 +28,14 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
+import plugily.projects.minigamesbox.api.user.IUser;
 import plugily.projects.minigamesbox.classic.handlers.language.MessageBuilder;
 import plugily.projects.minigamesbox.classic.user.User;
 import plugily.projects.minigamesbox.classic.utils.configuration.ConfigUtils;
 import plugily.projects.minigamesbox.classic.utils.helper.ItemUtils;
 import plugily.projects.minigamesbox.classic.utils.misc.complement.ComplementAccessor;
 import plugily.projects.minigamesbox.classic.utils.serialization.LocationSerializer;
+import plugily.projects.minigamesbox.classic.utils.version.xseries.XEntityType;
 import plugily.projects.minigamesbox.inventory.normal.NormalFastInv;
 import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.arena.Arena;
@@ -157,7 +159,7 @@ public class ShopManager {
           return;
         }
 
-        User user = plugin.getUserManager().getUser(player);
+        IUser user = plugin.getUserManager().getUser(player);
         int orbs = user.getStatistic("ORBS");
 
         if(cost > orbs) {
@@ -169,7 +171,7 @@ public class ShopManager {
           String name = ComplementAccessor.getComplement().getDisplayName(itemStack.getItemMeta());
           if(name.contains(new MessageBuilder("IN_GAME_MESSAGES_VILLAGE_SHOP_GOLEM_ITEM", false).asKey().build())
               || name.contains(defaultGolemItemName)) {
-            if(!arena.canSpawnMobForPlayer(player, EntityType.IRON_GOLEM)) {
+            if(!arena.canSpawnMobForPlayer(player, XEntityType.IRON_GOLEM.get())) {
               return;
             }
             arena.spawnGolem(arena.getStartLocation(), player);
@@ -178,7 +180,7 @@ public class ShopManager {
           }
           if(name.contains(new MessageBuilder("IN_GAME_MESSAGES_VILLAGE_SHOP_WOLF_ITEM", false).asKey().build())
               || name.contains(defaultWolfItemName)) {
-            if(!arena.canSpawnMobForPlayer(player, EntityType.WOLF)) {
+            if(!arena.canSpawnMobForPlayer(player, XEntityType.WOLF.get())) {
               return;
             }
             arena.spawnWolf(arena.getStartLocation(), player);
@@ -206,7 +208,7 @@ public class ShopManager {
     }
   }
 
-  private void adjustOrbs(User user, int cost) {
+  private void adjustOrbs(IUser user, int cost) {
     user.adjustStatistic("ORBS", -cost);
     arena.changeArenaOptionBy("TOTAL_ORBS_SPENT", cost);
   }

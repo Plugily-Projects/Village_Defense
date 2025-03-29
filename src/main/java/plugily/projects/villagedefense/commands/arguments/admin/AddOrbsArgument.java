@@ -22,6 +22,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import plugily.projects.minigamesbox.api.user.IUser;
 import plugily.projects.minigamesbox.classic.commands.arguments.data.CommandArgument;
 import plugily.projects.minigamesbox.classic.commands.arguments.data.LabelData;
 import plugily.projects.minigamesbox.classic.commands.arguments.data.LabeledCommandArgument;
@@ -72,7 +73,7 @@ public class AddOrbsArgument {
         java.util.Optional<Integer> opt = NumberUtils.parseInt(args[1]);
 
         if(opt.isPresent()) {
-          User user = registry.getPlugin().getUserManager().getUser(target);
+          IUser user = registry.getPlugin().getUserManager().getUser(target);
           user.setStatistic(registry.getPlugin().getStatsStorage().getStatisticType("ORBS"), user.getStatistic("ORBS") + opt.get());
           new MessageBuilder("COMMANDS_ADMIN_ADDED_ORBS").asKey().send(sender);
           new MessageBuilder("COMMANDS_ADMIN_RECEIVED_ORBS").asKey().integer(opt.get()).send(target);

@@ -19,6 +19,7 @@
 package plugily.projects.villagedefense.arena.states;
 
 import org.bukkit.entity.Player;
+import plugily.projects.minigamesbox.api.user.IUser;
 import plugily.projects.minigamesbox.classic.arena.PluginArena;
 import plugily.projects.minigamesbox.classic.arena.states.PluginStartingState;
 import plugily.projects.minigamesbox.classic.user.User;
@@ -45,7 +46,7 @@ public class StartingState extends PluginStartingState {
       int orbsStartingAmount = getPlugin().getConfig().getInt("Orbs.Start.Amount", 20);
 
       for(Player player : arena.getPlayers()) {
-        User user = getPlugin().getUserManager().getUser(player);
+        IUser user = getPlugin().getUserManager().getUser(player);
         user.setStatistic("ORBS", orbsStartingAmount);
       }
       setArenaTimer(getPlugin().getConfig().getInt("Time-Manager.Cooldown-Before-Next-Wave", 25));

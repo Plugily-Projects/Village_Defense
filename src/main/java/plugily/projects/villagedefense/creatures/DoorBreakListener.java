@@ -19,16 +19,16 @@
 package plugily.projects.villagedefense.creatures;
 
 import java.util.concurrent.ThreadLocalRandom;
+
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.scheduler.BukkitRunnable;
 import plugily.projects.minigamesbox.classic.utils.version.VersionUtils;
+import plugily.projects.minigamesbox.classic.utils.version.xseries.XEntityType;
 import plugily.projects.villagedefense.Main;
-import plugily.projects.villagedefense.arena.ArenaRegistry;
 import plugily.projects.villagedefense.utils.Utils;
 
 /**
@@ -37,17 +37,21 @@ import plugily.projects.villagedefense.utils.Utils;
 public class DoorBreakListener extends BukkitRunnable {
 
   private final Main plugin;
+  public static final String CREATURE_DOOR_BULLDOZER_METADATA = "VD_DOOR_BULLDOZER_BUFF";
 
+  private static final String DESTROY_STATE_METADATA = "VD_DOOR_DESTROY_STATE";
   public DoorBreakListener(Main plugin) {
     this.plugin = plugin;
     runTaskTimer(plugin, 1, 20);
   }
 
+
+  //todo !!MACH HIER WEITER!!
   @Override
   public void run() {
     for(World world : plugin.getArenaRegistry().getArenaIngameWorlds()) {
       for(LivingEntity entity : world.getLivingEntities()) {
-        if(entity.getType() != EntityType.ZOMBIE) {
+        if(entity.getType() != XEntityType.ZOMBIE.get()) {
           continue;
         }
 

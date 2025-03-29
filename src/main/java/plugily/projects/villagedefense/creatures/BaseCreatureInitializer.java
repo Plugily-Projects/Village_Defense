@@ -27,8 +27,18 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Villager;
 import org.bukkit.entity.Wolf;
 import plugily.projects.minigamesbox.classic.utils.misc.MiscUtils;
+import plugily.projects.minigamesbox.classic.utils.version.xseries.XAttribute;
 
 public interface BaseCreatureInitializer {
+
+  default String getCreatureCustomIDMetadata() {
+    return "VD_CREATURE_ID";
+  }
+
+  default String getCreatureCustomNameMetadata() {
+    return "VD_CREATURE_CUSTOM_NAME";
+  }
+
   Villager spawnVillager(Location location);
 
   Wolf spawnWolf(Location location);
@@ -52,14 +62,14 @@ public interface BaseCreatureInitializer {
   Creature spawnVillagerSlayer(Location location);
 
   default void applyFollowRange(Creature zombie) {
-    MiscUtils.getEntityAttribute(zombie, Attribute.GENERIC_FOLLOW_RANGE).ifPresent(ai -> ai.setBaseValue(200.0D));
+    MiscUtils.getEntityAttribute(zombie, XAttribute.FOLLOW_RANGE.get()).ifPresent(ai -> ai.setBaseValue(200.0D));
   }
 
   default void applyDamageModifier(LivingEntity entity, double value) {
-    MiscUtils.getEntityAttribute(entity, Attribute.GENERIC_ATTACK_DAMAGE).ifPresent(ai -> ai.setBaseValue(value));
+    MiscUtils.getEntityAttribute(entity, XAttribute.ATTACK_DAMAGE.get()).ifPresent(ai -> ai.setBaseValue(value));
   }
 
   default void applySpeedModifier(LivingEntity entity, double value) {
-    MiscUtils.getEntityAttribute(entity, Attribute.GENERIC_MOVEMENT_SPEED).ifPresent(ai -> ai.setBaseValue(value));
+    MiscUtils.getEntityAttribute(entity, XAttribute.MOVEMENT_SPEED.get()).ifPresent(ai -> ai.setBaseValue(value));
   }
 }

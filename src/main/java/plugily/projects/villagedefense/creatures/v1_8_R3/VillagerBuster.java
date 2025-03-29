@@ -43,6 +43,8 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.inventory.ItemStack;
+import plugily.projects.minigamesbox.classic.utils.version.xseries.XEntityType;
+import plugily.projects.minigamesbox.classic.utils.version.xseries.XMaterial;
 import plugily.projects.villagedefense.creatures.CreatureUtils;
 
 /**
@@ -88,11 +90,12 @@ public class VillagerBuster extends EntityZombie {
 
   @Override
   public boolean r(Entity entity) {
-    if(entity.getBukkitEntity().getType() == EntityType.VILLAGER) {
+    if(entity.getBukkitEntity().getType() == XEntityType.VILLAGER.get()) {
       this.die();
-      Bukkit.getServer().getPluginManager().callEvent(new EntityDeathEvent((LivingEntity) getBukkitEntity(), new ArrayList<>(Collections.singletonList(new ItemStack(Material.ROTTEN_FLESH))), 6));
+      // not working anymore since 1.21 changed event with DAMAGESOURCE!
+      // Bukkit.getServer().getPluginManager().callEvent(new EntityDeathEvent((LivingEntity) getBukkitEntity(), new ArrayList<>(Collections.singletonList(new ItemStack(XMaterial.ROTTEN_FLESH.get()))), 6));
       org.bukkit.entity.Entity bukkitEntity = entity.getBukkitEntity();
-      bukkitEntity.getWorld().spawnEntity(bukkitEntity.getLocation(), EntityType.PRIMED_TNT);
+      bukkitEntity.getWorld().spawnEntity(bukkitEntity.getLocation(), XEntityType.TNT.get());
       return false;
     }
     return super.r(entity);

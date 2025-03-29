@@ -33,6 +33,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.MetadataValue;
+import plugily.projects.minigamesbox.classic.utils.version.xseries.XEntityType;
 import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.arena.Arena;
 import plugily.projects.villagedefense.arena.managers.spawner.EnemySpawner;
@@ -109,15 +110,16 @@ public class CustomCreatureEvents implements Listener {
           if(priorityTargets == CustomCreature.PriorityTarget.ANY) {
             continue;
           }
-          entityTypes.add(EntityType.valueOf(priorityTargets.toString()));
+          entityTypes.add(XEntityType.of(priorityTargets.toString()).get().get());
         }
       } else {
-        entityTypes.add(EntityType.valueOf(priorityTarget.toString()));
+        entityTypes.add(XEntityType.of(priorityTarget.toString()).get().get());
       }
       if(entityTypes.contains(event.getEntity().getType())) {
-        event.getDamager().getLocation().getWorld().spawnEntity(event.getDamager().getLocation(), EntityType.PRIMED_TNT);
+        event.getDamager().getLocation().getWorld().spawnEntity(event.getDamager().getLocation(), XEntityType.TNT.get());
         event.getDamager().remove();
-        Bukkit.getServer().getPluginManager().callEvent(new EntityDeathEvent((LivingEntity) event.getDamager(), new ArrayList<>(Collections.singletonList(new ItemStack(Material.ROTTEN_FLESH))), 6));
+        // not working anymore since 1.21 changed event with DAMAGESOURCE!
+        // Bukkit.getServer().getPluginManager().callEvent(new EntityDeathEvent((LivingEntity) event.getDamager(), new ArrayList<>(Collections.singletonList(new ItemStack(Material.ROTTEN_FLESH))), 6));
       }
     }
   }

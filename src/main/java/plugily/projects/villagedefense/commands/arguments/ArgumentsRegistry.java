@@ -20,10 +20,7 @@ package plugily.projects.villagedefense.commands.arguments;
 
 import plugily.projects.minigamesbox.classic.commands.arguments.PluginArgumentsRegistry;
 import plugily.projects.villagedefense.Main;
-import plugily.projects.villagedefense.commands.arguments.admin.AddOrbsArgument;
-import plugily.projects.villagedefense.commands.arguments.admin.ClearEntitiesArgument;
-import plugily.projects.villagedefense.commands.arguments.admin.RespawnArgument;
-import plugily.projects.villagedefense.commands.arguments.admin.SetPriceArgument;
+import plugily.projects.villagedefense.commands.arguments.admin.*;
 import plugily.projects.villagedefense.commands.arguments.admin.arena.SetWaveArgument;
 
 /**
@@ -46,5 +43,6 @@ public class ArgumentsRegistry extends PluginArgumentsRegistry {
     new ClearEntitiesArgument(this);
     new RespawnArgument(this);
     new SetPriceArgument(this);
+    new TestArgument(this);
   }
 }

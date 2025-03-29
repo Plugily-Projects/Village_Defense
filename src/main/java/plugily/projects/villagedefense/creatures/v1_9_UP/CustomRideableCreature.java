@@ -27,6 +27,8 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemStack;
 import plugily.projects.minigamesbox.classic.utils.version.ServerVersion;
 import plugily.projects.minigamesbox.classic.utils.version.VersionUtils;
+import plugily.projects.minigamesbox.classic.utils.version.xseries.XAttribute;
+import plugily.projects.minigamesbox.classic.utils.version.xseries.XEntityType;
 
 import java.util.Map;
 
@@ -39,10 +41,10 @@ public class CustomRideableCreature {
 
   private final RideableType rideableType;
   private final boolean holidayEffects;
-  private final Map<Attribute, Double> attributes;
+  private final Map<XAttribute, Double> attributes;
   private final ItemStack dropItem;
 
-  public CustomRideableCreature(RideableType rideableType, boolean holidayEffects, Map<Attribute, Double> attributes, ItemStack dropItem) {
+  public CustomRideableCreature(RideableType rideableType, boolean holidayEffects, Map<XAttribute, Double> attributes, ItemStack dropItem) {
     this.rideableType = rideableType;
     this.holidayEffects = holidayEffects;
     this.attributes = attributes;
@@ -50,31 +52,31 @@ public class CustomRideableCreature {
   }
 
   public Creature spawn(Location location) {
-    EntityType entityType = EntityType.VILLAGER;
+    EntityType entityType = XEntityType.VILLAGER.get();
     switch(rideableType) {
       case VILLAGER:
-        entityType = EntityType.VILLAGER;
+        entityType = XEntityType.VILLAGER.get();
         break;
       case WOLF:
-        entityType = EntityType.WOLF;
+        entityType = XEntityType.WOLF.get();
         break;
       case IRON_GOLEM:
-        entityType = EntityType.IRON_GOLEM;
+        entityType = XEntityType.IRON_GOLEM.get();
         break;
     }
     Entity entity = VersionUtils.spawnEntity(location, entityType);
     if(entity instanceof Creature) {
       Creature creature = (Creature) entity;
-      creature.getAttribute(Attribute.GENERIC_FOLLOW_RANGE).setBaseValue(200D);
-      for(Map.Entry<Attribute, Double> attribute : attributes.entrySet()) {
-        creature.getAttribute(attribute.getKey()).setBaseValue(attribute.getValue());
-        if(attribute.getKey() == Attribute.GENERIC_MAX_HEALTH) {
+      creature.getAttribute(XAttribute.FOLLOW_RANGE.get()).setBaseValue(200D);
+      for(Map.Entry<XAttribute, Double> attribute : attributes.entrySet()) {
+        creature.getAttribute(attribute.getKey().get()).setBaseValue(attribute.getValue());
+        if(attribute.getKey().get() == XAttribute.MAX_HEALTH.get()) {
           VersionUtils.setMaxHealth(creature, attribute.getValue());
           creature.setHealth(attribute.getValue());
         }
       }
       creature.setRemoveWhenFarAway(false);
-      if(ServerVersion.Version.isCurrentEqualOrHigher(ServerVersion.Version.v1_16_R3)) {
+      if(ServerVersion.Version.isCurrentEqualOrHigher(ServerVersion.Version.v1_16)) {
         creature.setInvisible(false);
       }
       return creature;
@@ -92,7 +94,7 @@ public class CustomRideableCreature {
     return holidayEffects;
   }
 
-  public Map<Attribute, Double> getAttributes() {
+  public Map<XAttribute, Double> getAttributes() {
     return attributes;
   }
 

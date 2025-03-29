@@ -1,4 +1,4 @@
-name: ${description}
+name: VillageDefense
 main: plugily.projects.villagedefense.Main
 authors: [ PlugilyProjects, Tigerpanzer_02, TomTheDeveloper, Plajer, montlikadani ]
 version: ${version}

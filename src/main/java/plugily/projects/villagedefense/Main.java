@@ -18,15 +18,12 @@
 
 package plugily.projects.villagedefense;
 
-import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.plugin.PluginDescriptionFile;
-import org.bukkit.plugin.java.JavaPluginLoader;
 import org.jetbrains.annotations.TestOnly;
+import plugily.projects.minigamesbox.api.kit.IKit;
 import plugily.projects.minigamesbox.classic.PluginMain;
 import plugily.projects.minigamesbox.classic.handlers.setup.SetupInventory;
 import plugily.projects.minigamesbox.classic.handlers.setup.categories.PluginSetupCategoryManager;
-import plugily.projects.minigamesbox.classic.kits.basekits.Kit;
 import plugily.projects.minigamesbox.classic.utils.configuration.ConfigUtils;
 import plugily.projects.minigamesbox.classic.utils.services.metrics.Metrics;
 import plugily.projects.minigamesbox.classic.utils.version.ServerVersion;
@@ -49,8 +46,8 @@ import plugily.projects.villagedefense.handlers.setup.SetupCategoryManager;
 import plugily.projects.villagedefense.handlers.upgrade.EntityUpgradeMenu;
 import plugily.projects.villagedefense.handlers.upgrade.upgrades.Upgrade;
 import plugily.projects.villagedefense.handlers.upgrade.upgrades.UpgradeBuilder;
+import plugily.projects.villagedefense.kits.KitUtils;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -66,15 +63,11 @@ public class Main extends PluginMain {
   private ArenaRegistry arenaRegistry;
   private ArenaManager arenaManager;
   private ArgumentsRegistry argumentsRegistry;
+  private EntityUpgradeMenu entityUpgradeMenu;
 
   @TestOnly
   public Main() {
     super();
-  }
-
-  @TestOnly
-  protected Main(JavaPluginLoader loader, PluginDescriptionFile description, File dataFolder, File file) {
-    super(loader, description, dataFolder, file);
   }
 
   @Override
@@ -104,7 +97,7 @@ public class Main extends PluginMain {
     getSignManager().loadSigns();
     getSignManager().updateSigns();
     argumentsRegistry = new ArgumentsRegistry(this);
-    if(ServerVersion.Version.isCurrentEqualOrLower(ServerVersion.Version.v1_8_R3)) {
+    if(ServerVersion.Version.isCurrentEqualOrLower(ServerVersion.Version.v1_8_8)) {
       enemySpawnerRegistry = new EnemySpawnerRegistryLegacy(this);
     } else {
       enemySpawnerRegistry = new EnemySpawnerRegistry(this);
@@ -113,7 +106,7 @@ public class Main extends PluginMain {
       entityUpgradesConfig = ConfigUtils.getConfig(this, "entity_upgrades");
       Upgrade.init(this);
       UpgradeBuilder.init(this);
-      new EntityUpgradeMenu(this);
+      entityUpgradeMenu = new EntityUpgradeMenu(this);
     }
     new DoorBreakListener(this);
     CreatureUtils.init(this);
@@ -137,13 +130,10 @@ public class Main extends PluginMain {
     //optionalConfigurations.add("vd-ability");
 
 
-    getKitRegistry().setHandleItem((player, itemStack) -> {
-      //todo
-      return itemStack;
-    });
+    getKitRegistry().setHandleItem((player, item) -> KitUtils.handleItem(this, player, item));    getKitRegistry().registerKits(optionalConfigurations);
     getKitRegistry().registerKits(optionalConfigurations);
     getDebugger().debug(Level.INFO, "Kits loaded: ");
-    for (Kit kit : getKitRegistry().getKits()) {
+    for (IKit kit : getKitRegistry().getKits()) {
       getDebugger().debug(kit.getName());
     }
     getKitRegistry().setDefaultKit("knight");
@@ -180,6 +170,9 @@ public class Main extends PluginMain {
   @Override
   public ArenaManager getArenaManager() {
     return arenaManager;
+  }
+  public EntityUpgradeMenu getEntityUpgradeMenu() {
+    return entityUpgradeMenu;
   }
 
   @Override

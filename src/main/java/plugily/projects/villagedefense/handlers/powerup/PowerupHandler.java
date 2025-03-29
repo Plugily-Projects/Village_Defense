@@ -21,8 +21,8 @@ package plugily.projects.villagedefense.handlers.powerup;
 
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import plugily.projects.minigamesbox.classic.api.event.player.PlugilyPlayerPowerupPickupEvent;
-import plugily.projects.minigamesbox.classic.handlers.powerup.BasePowerup;
+import plugily.projects.minigamesbox.api.events.player.PlugilyPlayerPowerupPickupEvent;
+import plugily.projects.minigamesbox.api.handlers.powerup.BasePowerup;
 import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.arena.Arena;
 import plugily.projects.villagedefense.arena.ArenaUtils;

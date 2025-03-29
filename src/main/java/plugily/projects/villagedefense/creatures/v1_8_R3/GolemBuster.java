@@ -42,6 +42,8 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.IronGolem;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.entity.EntityDeathEvent;
+import plugily.projects.minigamesbox.classic.utils.version.xseries.XEntityType;
+import plugily.projects.minigamesbox.classic.utils.version.xseries.XMaterial;
 import plugily.projects.villagedefense.creatures.CreatureUtils;
 
 /**
@@ -83,12 +85,13 @@ public class GolemBuster extends EntityZombie {
 
   @Override
   public boolean damageEntity(DamageSource damagesource, float f) {
-    if(damagesource != null && damagesource.getEntity() != null && damagesource.getEntity().getBukkitEntity().getType() == EntityType.IRON_GOLEM) {
+    if(damagesource != null && damagesource.getEntity() != null && damagesource.getEntity().getBukkitEntity().getType() == XEntityType.IRON_GOLEM.get()) {
       this.die();
       org.bukkit.inventory.ItemStack[] itemStack = new org.bukkit.inventory.ItemStack[]{new org.bukkit.inventory.ItemStack(org.bukkit.Material.ROTTEN_FLESH)};
-      Bukkit.getServer().getPluginManager().callEvent(new EntityDeathEvent((LivingEntity) getBukkitEntity(), new ArrayList<>(Arrays.asList(itemStack)), expToDrop));
+      // not working anymore since 1.21 changed event with DAMAGESOURCE!
+      // Bukkit.getServer().getPluginManager().callEvent(new EntityDeathEvent((LivingEntity) getBukkitEntity(), new ArrayList<>(Arrays.asList(itemStack)), expToDrop));
       IronGolem golem = (IronGolem) damagesource.getEntity().getBukkitEntity();
-      golem.getWorld().spawnEntity(golem.getLocation(), EntityType.PRIMED_TNT);
+      golem.getWorld().spawnEntity(golem.getLocation(), XEntityType.TNT.get());
       return true;
     }
     super.damageEntity(damagesource, f);

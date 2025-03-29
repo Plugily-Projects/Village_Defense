@@ -25,6 +25,7 @@ import org.bukkit.entity.Creature;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import plugily.projects.minigamesbox.classic.utils.version.xseries.XPotion;
 import plugily.projects.villagedefense.arena.Arena;
 import plugily.projects.villagedefense.arena.managers.spawner.SimpleEnemySpawner;
 import plugily.projects.villagedefense.creatures.CreatureUtils;
@@ -63,7 +64,7 @@ public class HalfInvisibleZombieSpawner implements SimpleEnemySpawner {
   public Creature spawn(Location location) {
     Creature fastZombie = CreatureUtils.getCreatureInitializer().spawnFastZombie(location);
     fastZombie.getEquipment().setBoots(new ItemStack(Material.CHAINMAIL_BOOTS));
-    fastZombie.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, Integer.MAX_VALUE, 1));
+    fastZombie.addPotionEffect(XPotion.INVISIBILITY.buildPotionEffect(Integer.MAX_VALUE, 1));
     return fastZombie;
   }
 

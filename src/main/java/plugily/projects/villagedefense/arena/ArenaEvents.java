@@ -22,7 +22,6 @@ import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Creature;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.IronGolem;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -38,15 +37,21 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
-import plugily.projects.minigamesbox.classic.arena.ArenaState;
+import plugily.projects.minigamesbox.api.arena.IArenaState;
+import plugily.projects.minigamesbox.api.user.IUser;
 import plugily.projects.minigamesbox.classic.arena.PluginArenaEvents;
 import plugily.projects.minigamesbox.classic.handlers.items.SpecialItem;
 import plugily.projects.minigamesbox.classic.handlers.language.MessageBuilder;
 import plugily.projects.minigamesbox.classic.user.User;
 import plugily.projects.minigamesbox.classic.utils.misc.complement.ComplementAccessor;
+import plugily.projects.minigamesbox.classic.utils.version.ServerVersion;
 import plugily.projects.minigamesbox.classic.utils.version.VersionUtils;
 import plugily.projects.minigamesbox.classic.utils.version.events.api.PlugilyEntityPickupItemEvent;
+import plugily.projects.minigamesbox.classic.utils.version.xseries.XEntityType;
+import plugily.projects.minigamesbox.classic.utils.version.xseries.XMaterial;
+import plugily.projects.minigamesbox.classic.utils.version.xseries.XSound;
 import plugily.projects.villagedefense.Main;
+import plugily.projects.villagedefense.creatures.CreatureUtils;
 
 /**
  * @author Plajer
@@ -66,13 +71,15 @@ public class ArenaEvents extends PluginArenaEvents {
   //override WorldGuard build deny flag where villagers cannot be damaged
   @EventHandler(priority = EventPriority.HIGHEST)
   public void onVillagerDamage(EntityDamageByEntityEvent e) {
-    if(e.getEntityType() != EntityType.VILLAGER || !(e.getDamager() instanceof Creature)) {
+    if(e.getEntityType() != XEntityType.VILLAGER.get() || !(e.getDamager() instanceof Creature)) {
       return;
     }
 
     for(Arena arena : plugin.getArenaRegistry().getPluginArenas()) {
       if(arena.getVillagers().contains(e.getEntity()) && arena.getEnemies().contains(e.getDamager())) {
         e.setCancelled(false);
+        e.getEntity().setCustomName(CreatureUtils.getHealthNameTagPreDamage((Creature) e.getEntity(), e.getFinalDamage()));
+        XSound.ENTITY_VILLAGER_HURT.play(e.getEntity().getLocation(), 30.0f, 1.0f);
         break;
       }
     }
@@ -96,7 +103,7 @@ public class ArenaEvents extends PluginArenaEvents {
 
             if(plugin.getArenaRegistry().getArena(player) != null) {
               plugin.getUserManager().addStat(player, plugin.getStatsStorage().getStatisticType("KILLS"));
-              plugin.getUserManager().addExperience(player, 2 * arena.getArenaOption("ZOMBIE_DIFFICULTY_MULTIPLIER"));
+              plugin.getUserManager().addExperience(player, 2 * arena.getArenaOption("CREATURE_DIFFICULTY_MULTIPLIER"));
             }
           }
 
@@ -129,7 +136,7 @@ public class ArenaEvents extends PluginArenaEvents {
 
   @EventHandler
   public void onEntityDamage(EntityDamageEvent event) {
-    if(event.getEntityType() != EntityType.IRON_GOLEM && event.getEntityType() != EntityType.WOLF)
+    if(event.getEntityType() != XEntityType.IRON_GOLEM.get() && event.getEntityType() != XEntityType.WOLF.get())
       return;
 
     for(Arena arena : plugin.getArenaRegistry().getPluginArenas()) {
@@ -177,13 +184,13 @@ public class ArenaEvents extends PluginArenaEvents {
   }
 
   @EventHandler
-  public void onDieEntity(EntityDeathEvent event) {
+  public void onVillagerDeath(EntityDeathEvent event) {
     LivingEntity entity = event.getEntity();
     if(!(entity instanceof Creature)) {
       return;
     }
     for(Arena arena : plugin.getArenaRegistry().getPluginArenas()) {
-      if(event.getEntityType() == EntityType.VILLAGER) {
+      if(event.getEntityType() == XEntityType.VILLAGER.get()) {
         if(!arena.getVillagers().contains(entity)) {
           continue;
         }
@@ -192,7 +199,7 @@ public class ArenaEvents extends PluginArenaEvents {
         plugin.getRewardsHandler().performReward(null, arena, plugin.getRewardsHandler().getRewardType("VILLAGER_DEATH"));
         plugin.getHolidayManager().applyHolidayDeathEffects(entity);
         new MessageBuilder("IN_GAME_MESSAGES_VILLAGE_VILLAGER_DIED").asKey().arena(arena).sendArena();
-      } else {
+      } else if(ServerVersion.Version.isCurrentEqualOrLower(ServerVersion.Version.v1_8_8)) {
         if(!arena.getEnemies().contains(entity)) {
           continue;
         }
@@ -204,7 +211,7 @@ public class ArenaEvents extends PluginArenaEvents {
 
         if(killerArena != null) {
           plugin.getUserManager().addStat(killer, plugin.getStatsStorage().getStatisticType("KILLS"));
-          plugin.getUserManager().addExperience(killer, 2 * arena.getArenaOption("ZOMBIE_DIFFICULTY_MULTIPLIER"));
+          plugin.getUserManager().addExperience(killer, 2 * arena.getArenaOption("CREATURE_DIFFICULTY_MULTIPLIER"));
           plugin.getRewardsHandler().performReward(killer, plugin.getRewardsHandler().getRewardType("ZOMBIE_KILL"));
           plugin.getPowerupRegistry().spawnPowerup(entity.getLocation(), killerArena);
         }
@@ -232,12 +239,12 @@ public class ArenaEvents extends PluginArenaEvents {
     plugin.getHolidayManager().applyHolidayDeathEffects(player);
     player.spigot().respawn();
     plugin.getServer().getScheduler().runTask(plugin, () -> {
-      if(arena.getArenaState() == ArenaState.STARTING) {
+      if(arena.getArenaState() == IArenaState.STARTING) {
         VersionUtils.teleport(player, arena.getStartLocation());
         return;
       }
 
-      if(arena.getArenaState() == ArenaState.ENDING || arena.getArenaState() == ArenaState.RESTARTING) {
+      if(arena.getArenaState() == IArenaState.ENDING || arena.getArenaState() == IArenaState.RESTARTING) {
         player.getInventory().clear();
         player.setFlying(false);
         player.setAllowFlight(false);
@@ -246,7 +253,7 @@ public class ArenaEvents extends PluginArenaEvents {
         return;
       }
 
-      User user = plugin.getUserManager().getUser(player);
+      IUser user = plugin.getUserManager().getUser(player);
 
       plugin.getUserManager().addStat(user, plugin.getStatsStorage().getStatisticType("DEATHS"));
       VersionUtils.teleport(player, arena.getStartLocation());
@@ -269,11 +276,11 @@ public class ArenaEvents extends PluginArenaEvents {
     });
   }
 
-  private void sendSpectatorActionBar(User user, Arena arena) {
+  private void sendSpectatorActionBar(IUser user, Arena arena) {
     new BukkitRunnable() {
       @Override
       public void run() {
-        if(arena.getArenaState() == ArenaState.ENDING || !user.isSpectator()) {
+        if(arena.getArenaState() == IArenaState.ENDING || !user.isSpectator()) {
           cancel();
           return;
         }
@@ -297,7 +304,7 @@ public class ArenaEvents extends PluginArenaEvents {
     Player player = e.getPlayer();
     player.setAllowFlight(true);
     player.setFlying(true);
-    User user = plugin.getUserManager().getUser(player);
+    IUser user = plugin.getUserManager().getUser(player);
     if(!user.isSpectator()) {
       user.setSpectator(true);
       player.setGameMode(GameMode.SURVIVAL);
@@ -309,7 +316,7 @@ public class ArenaEvents extends PluginArenaEvents {
     e.setRespawnLocation(arena.getStartLocation());
   }
 
-  private void modifyUserOrbs(User user) {
+  private void modifyUserOrbs(IUser user) {
     int deathValue = plugin.getConfig().getInt("Orbs.Death.Value", 50);
     int current = user.getStatistic("ORBS");
     switch(getOrbDeathType()) {
@@ -339,7 +346,7 @@ public class ArenaEvents extends PluginArenaEvents {
 
   @EventHandler
   public void onPickup(PlugilyEntityPickupItemEvent e) {
-    if(e.getEntity().getType() != EntityType.PLAYER || e.getItem().getItemStack().getType() != Material.ROTTEN_FLESH) {
+    if(e.getEntity().getType() != XEntityType.PLAYER.get() || e.getItem().getItemStack().getType() != XMaterial.ROTTEN_FLESH.get()) {
       return;
     }
     Player player = (Player) e.getEntity();

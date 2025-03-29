@@ -32,6 +32,8 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import plugily.projects.minigamesbox.classic.utils.version.VersionUtils;
 import plugily.projects.minigamesbox.classic.utils.version.events.api.PlugilyPlayerInteractEntityEvent;
+import plugily.projects.minigamesbox.classic.utils.version.xseries.XEntityType;
+import plugily.projects.minigamesbox.classic.utils.version.xseries.XPotion;
 import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.arena.Arena;
 import plugily.projects.villagedefense.creatures.CreatureUtils;
@@ -95,7 +97,7 @@ public class EntityUpgradeListener implements Listener {
 
   @EventHandler
   public void onFinalDefense(EntityDeathEvent event) {
-    if(event.getEntityType() != EntityType.IRON_GOLEM) {
+    if(event.getEntityType() != XEntityType.IRON_GOLEM.get()) {
       return;
     }
 
@@ -116,7 +118,7 @@ public class EntityUpgradeListener implements Listener {
         }
       }
       for(Creature zombie : new ArrayList<>(arena.getEnemies())) {
-        zombie.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 5, 0));
+        XPotion.SLOWNESS.buildPotionEffect( 5, 0).apply(zombie);
         zombie.damage(0.5, livingEntity);
       }
     }
@@ -124,7 +126,7 @@ public class EntityUpgradeListener implements Listener {
 
   @EventHandler
   public void onEntityClick(PlugilyPlayerInteractEntityEvent event) {
-    if((event.getRightClicked().getType() != EntityType.IRON_GOLEM && event.getRightClicked().getType() != EntityType.WOLF)
+    if((event.getRightClicked().getType() != XEntityType.IRON_GOLEM.get() && event.getRightClicked().getType() != XEntityType.WOLF.get())
         || VersionUtils.checkOffHand(event.getHand()) || !event.getPlayer().isSneaking()
         || event.getRightClicked().getCustomName() == null) {
       return;

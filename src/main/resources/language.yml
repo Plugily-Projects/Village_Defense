@@ -175,7 +175,7 @@ In-Game:
     # Join cancelled via external plugin that uses the API of our plugin.
     Cancelled-Via-API: "%color_chat_issue%%plugin_prefix% You can't join this game!"
     As-Party-Member: "%color_chat_issue%%plugin_prefix% You joined %arena_name% because the party leader joined it!"
-    Arena-Not-Configured: "%color_chat_issue%%plugin_prefix% Arena is not configured yet! Contact staff!"
+    Arena-Not-Configured: "%color_chat_issue%%plugin_prefix% Arena is not configured yet! Contact your server's  staff!"
     Title: "20,30,20;%arena_name%;%arena_players_size%/%arena_max_players%"
   Death:
     Tag: "&8Dead"
@@ -265,14 +265,14 @@ In-Game:
       Orbs:
         Pickup: "+ %number% orbs"
       Entities:
+        Cant-Ride-Other: "%color_chat_issue%%plugin_prefix% You can't ride pet you don't own!"
         Wolf:
           Spawn: "%plugin_prefix% Wolf spawned in the village!"
-          Name: "%player%'s Wolf"
+          Name: "%player%'s Wolf  &8(&7LVL %number%&8)"
           Death: "%color_chat_issue%%plugin_prefix% One of your wolves were killed!"
         Golem:
           Spawn: "%plugin_prefix% Golem spawned in the village!"
-          Name: "%player%'s Golem"
-          Cant-Ride-Other: "%color_chat_issue%%plugin_prefix% You can't ride the golem of somebody else!"
+          Name: "%player%'s Golem  &8(&7LVL %number%&8)"
       Shop:
         GUI: "&lShop"
         Golem-Item-Name: "Spawn Golem"
@@ -350,6 +350,7 @@ Kit:
   Not-Unlocked: "%color_chat_issue%%plugin_prefix% You haven't unlocked %value% yet!"
   Choose: "%plugin_prefix% You have chosen: %value%!"
   Cooldown: "%color_chat_issue%%plugin_prefix% Kit ability still on cooldown (%number%)!"
+  No-Armor: "%color_chat_issue%%plugin_prefix% You can't wear armor with your kit!"
   Menu:
     Title: "Kit Menu"
     Lore:
@@ -551,36 +552,37 @@ Kit:
 #
 # Upgrade-Menu function need to be enabled on config.yml
 Upgrade-Menu:
-  Title: "&3&lUpgrade entity"
+  Title: "&6&lUPGRADE ENTITY"
   Upgraded-Entity: "%plugin_prefix% &3Upgraded entity to tier &8%tier%&3!"
-  Cannot-Afford: "%plugin_prefix% &3You don't have enough orbs to apply that upgrade!"
+  Cannot:
+    Afford: "%plugin_prefix% &3You don't have enough orbs to apply that upgrade!"
+    Upgrade-Other: "%color_chat_issue%%plugin_prefix% You can't upgrade pet you don't own!"
   Max-Tier: "%plugin_prefix% &3Entity is at max tier of this upgrade!"
   Stats-Item:
-    Name: "&3&lCurrent Stats"
-    Description: "&3Movement speed: &8%speed%; &3Attack Damage: &8%damage%; &3Health:
-      &8%current_hp%/%max_hp%"
+    Name: "&6&lCURRENT STATS"
+    Description: " &a&lSPEED: &7%speed%; &7&lDAMAGE: &7%damage%; &a&lHEALTH: &7%current_hp%/%max_hp%"
   Upgrades:
     Health:
-      Name: "&3&lUpgrade Health"
-      Description: "&3Upgrade max health to tier &8%tier%&3!;&3From &8%from% &3to
+      Name: "&c&lUPGRADE: &aHealth"
+      Description: "&3Upgrade max health to tier &8%tier% ▲&3!;&3From &8%from% &3to
         &8%to%;&3Cost of upgrade: &8%cost%;;&3Click to purchase"
     Damage:
-      Name: "&3&lUpgrade Damage"
-      Description: "&3Upgrade entity damage to tier &8%tier%&3!;&3From &8%from% &3to
+      Name: "&c&lUPGRADE: &7Damage"
+      Description: "&3Upgrade entity damage to tier &8%tier% ▲&3!;&3From &8%from% &3to
         &8%to%;&3Cost of upgrade: &8%cost%;;&8Click to purchase"
     Speed:
-      Name: "&3&lUpgrade Speed"
-      Description: "&3Upgrade movement speed to tier &8%tier%&3!;&3From &8%from% &3to
+      Name: "&c&lUPGRADE: &6Speed"
+      Description: "&3Upgrade movement speed to tier &8%tier% ▲&3!;&3From &8%from% &3to
         &8%to%;&3Cost of upgrade: &8%cost%;;&8Click to purchase"
     Swarm-Awareness:
-      Name: "&3&lSwarm Awareness"
-      Description: "&3Upgrade swarm awareness to tier &8%tier%&3!;&3From &8%from%
+      Name: "&3&lSWARM AWARENESS"
+      Description: "&3Upgrade swarm awareness to tier &8%tier% ▲&3!;&3From &8%from%
         &8damage multiplier per wolf in radius;&8of 3 blocks &3to %to%;&3The more
         wolves near attacking wolf;&3the more damage wolf deal;&3Cost of upgrade: &8%cost%;;&8Click
         to purchase"
     Final-Defense:
-      Name: "&3&lFinal Defense"
-      Description: "&3Upgrade final defense to tier &8%tier%&3!;&3From &8%from% explosion
+      Name: "&3&lFINAL DEFENSE"
+      Description: "&3Upgrade final defense to tier &8%tier% ▲&3!;&3From &8%from% explosion
         radius &3to &8%to%;&3Golem will explode after death killing nearby;&3zombies
         and stun all alive ones;&3Cost of upgrade: &8%cost%;;&8Click to purchase"
 #
