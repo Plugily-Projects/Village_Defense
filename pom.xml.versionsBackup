@@ -7,7 +7,7 @@
 
     <groupId>plugily.projects</groupId>
     <artifactId>villagedefense</artifactId>
-    <version>4.7.0-SNAPSHOT5</version>
+    <version>4.7.0-SNAPSHOT4</version>
     <name>villagedefense</name>
 
     <properties>
