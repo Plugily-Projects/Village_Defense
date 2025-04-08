@@ -43,6 +43,12 @@ public class ArgumentsRegistry extends PluginArgumentsRegistry {
     new ClearEntitiesArgument(this);
     new RespawnArgument(this);
     new SetPriceArgument(this);
-    new TestArgument(this);
+    try {
+      new TestArgument(this);
+    } catch(ClassNotFoundException e) {
+      throw new RuntimeException(e);
+    } catch(NoSuchMethodException e) {
+      throw new RuntimeException(e);
+    }
   }
 }
