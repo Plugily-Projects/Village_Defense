@@ -43,22 +43,18 @@ public class ScoreboardManager extends PluginScoreboardManager {
   }
 
   @Override
-  public List<String> formatScoreboardLines(List<String> lines, Player player) {
-    List<String> changedLines = new ArrayList<>();
+  public List<String> getScoreboardLines(Player player) {
+    List<String> lines = new ArrayList<>();
     switch(arena.getArenaState()) {
       case IN_GAME: {
         lines = arena.getPlugin().getLanguageManager().getLanguageList("Scoreboard.Content." + arena.getArenaState().getFormattedName() + (((Arena) arena).isFighting() ? "" : "-Waiting"));
         break;
       }
       default: {
-        lines = arena.getPlugin().getLanguageManager().getLanguageList(arena.getArenaState() == IArenaState.FULL_GAME ? "Scoreboard.Content.Starting"
-            : "Scoreboard.Content." + arena.getArenaState().getFormattedName());
+        lines = super.getScoreboardLines(player);
 
       }
     }
-    for(String line : lines) {
-      changedLines.add(new MessageBuilder(line).player(player).arena(arena).build());
-    }
-    return changedLines;
+    return lines;
   }
 }
