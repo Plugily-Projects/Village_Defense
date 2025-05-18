@@ -39,7 +39,7 @@ import plugily.projects.villagedefense.boot.MessageInitializer;
 import plugily.projects.villagedefense.boot.PlaceholderInitializer;
 import plugily.projects.villagedefense.commands.arguments.ArgumentsRegistry;
 import plugily.projects.villagedefense.creatures.CreatureUtils;
-import plugily.projects.villagedefense.creatures.DoorBreakListener;
+import plugily.projects.villagedefense.arena.managers.doors.DoorBreakListener;
 import plugily.projects.villagedefense.events.PluginEvents;
 import plugily.projects.villagedefense.handlers.powerup.PowerupHandler;
 import plugily.projects.villagedefense.handlers.setup.SetupCategoryManager;

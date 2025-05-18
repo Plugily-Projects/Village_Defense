@@ -34,8 +34,7 @@ import plugily.projects.villagedefense.arena.managers.CreatureTargetManager;
 import plugily.projects.villagedefense.arena.managers.EnemySpawnManager;
 import plugily.projects.villagedefense.arena.managers.ScoreboardManager;
 import plugily.projects.villagedefense.arena.managers.ShopManager;
-import plugily.projects.villagedefense.arena.managers.maprestorer.MapRestorerManager;
-import plugily.projects.villagedefense.arena.managers.maprestorer.MapRestorerManagerLegacy;
+import plugily.projects.villagedefense.arena.managers.MapRestorerManager;
 import plugily.projects.villagedefense.arena.states.EndingState;
 import plugily.projects.villagedefense.arena.states.InGameState;
 import plugily.projects.villagedefense.arena.states.RestartingState;
@@ -81,11 +80,7 @@ public class Arena extends PluginArena {
     shopManager = new ShopManager(this);
     enemySpawnManager = new EnemySpawnManager(this);
     creatureTargetManager = new CreatureTargetManager(this);
-    if(ServerVersion.Version.isCurrentEqualOrLower(ServerVersion.Version.v1_16)) {
-      mapRestorerManager = new MapRestorerManagerLegacy(this);
-    } else {
-      mapRestorerManager = new MapRestorerManager(this);
-    }
+    mapRestorerManager = new MapRestorerManager(this);
     setMapRestorerManager(mapRestorerManager);
     setScoreboardManager(new ScoreboardManager(this));
 

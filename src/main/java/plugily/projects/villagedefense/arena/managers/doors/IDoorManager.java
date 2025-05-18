@@ -16,32 +16,19 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package plugily.projects.villagedefense.commands.arguments;
+package plugily.projects.villagedefense.arena.managers.doors;
 
-import plugily.projects.minigamesbox.classic.commands.arguments.PluginArgumentsRegistry;
-import plugily.projects.villagedefense.Main;
-import plugily.projects.villagedefense.commands.arguments.admin.*;
-import plugily.projects.villagedefense.commands.arguments.admin.arena.SetWaveArgument;
+import org.bukkit.Material;
+import org.bukkit.block.Block;
 
 /**
- * @author Plajer
+ * @author Tigerpanzer_02
  * <p>
- * Created at 24.11.2018
+ * Created at 18.05.2025
  */
-public class ArgumentsRegistry extends PluginArgumentsRegistry {
+public interface IDoorManager {
 
-  public ArgumentsRegistry(Main plugin) {
-    super(plugin);
+  void rebuildDoors();
 
-    //register Village Defense admin arguments
-    //arena related arguments
-    new SetWaveArgument(this);
-
-
-    //other admin related arguments
-    new AddOrbsArgument(this);
-    new ClearEntitiesArgument(this);
-    new RespawnArgument(this);
-    new SetPriceArgument(this);
-  }
+  void removeDoor(Block block, Material material);
 }

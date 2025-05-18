@@ -82,15 +82,6 @@ public class ArenaRegistry extends PluginArenaRegistry {
       }
     }
 
-    ConfigurationSection doorSection = section.getConfigurationSection(id + ".doors");
-    if(doorSection != null) {
-      for(String string : doorSection.getKeys(false)) {
-        ((Arena) arena).getMapRestorerManager().addDoor(LocationSerializer.getLocation(doorSection.getString(string + ".location")),
-            (byte) doorSection.getInt(string + ".byte"));
-      }
-    }
-
-
     if(arena.getStartLocation().getWorld().getDifficulty() == Difficulty.PEACEFUL) {
       plugin.getDebugger().sendConsoleMsg(new MessageBuilder("VALIDATOR_INVALID_ARENA_CONFIGURATION").asKey().value("THERE IS A WRONG " +
           "DIFFICULTY -> SET IT TO ANOTHER ONE THAN PEACEFUL - WE SET IT TO EASY").arena(arena).build());

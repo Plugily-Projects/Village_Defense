@@ -18,6 +18,7 @@
 
 package plugily.projects.villagedefense.handlers.setup;
 
+import plugily.projects.minigamesbox.classic.handlers.language.MessageBuilder;
 import plugily.projects.minigamesbox.classic.handlers.setup.categories.PluginSpecificCategory;
 import plugily.projects.minigamesbox.classic.handlers.setup.items.category.MaterialLocationItem;
 import plugily.projects.minigamesbox.classic.handlers.setup.items.category.MaterialMultiLocationItem;
@@ -25,6 +26,7 @@ import plugily.projects.minigamesbox.classic.handlers.setup.items.category.Multi
 import plugily.projects.minigamesbox.classic.utils.helper.ItemBuilder;
 import plugily.projects.minigamesbox.classic.utils.helper.MaterialUtils;
 import plugily.projects.minigamesbox.classic.utils.version.xseries.XMaterial;
+import plugily.projects.minigamesbox.inventory.common.item.SimpleClickableItem;
 import plugily.projects.minigamesbox.inventory.normal.NormalFastInv;
 
 
@@ -46,9 +48,8 @@ public class SpecificCategory extends PluginSpecificCategory {
     gui.setItem((getInventoryLine() * 9) + 2, villagerSpawns);
     getItemList().add(villagerSpawns);
 
-    MaterialMultiLocationItem door = new MaterialMultiLocationItem(getSetupInventory(), new ItemBuilder(XMaterial.OAK_DOOR.parseMaterial()), "Game Door", "Doors will be regenerated\n each game, villagers will\n hide in houses so you can put\n doors to keep zombies away!", "doors", MaterialUtils.DOORS, false, 0);
+    SimpleClickableItem door = new SimpleClickableItem(new ItemBuilder(XMaterial.OAK_DOOR.parseMaterial()).name("&7(&7aAutomatically recognized&7) Game Door").lore("&7Doors will be regenerated\n each game, villagers will\n hide in houses so you can put\n doors to keep zombies away!\n No explicit setup needed anymore!").colorizeItem().build(), event -> { event.getWhoClicked().sendMessage(new MessageBuilder("&aDoors on the map will be automatically added. No extra step needed!").build());});
     gui.setItem((getInventoryLine() * 9) + 3, door);
-    getItemList().add(door);
 
     MaterialLocationItem chest = new MaterialLocationItem(getSetupInventory(), new ItemBuilder(XMaterial.CHEST.parseMaterial()), "Game Shop", "Look at (double-) chest with items\nand click it to set it as game shop.\n(it allows to click villagers to buy game items)\nRemember to set item prices for the game\nusing /vda setprice command!", "shop", XMaterial.CHEST.parseMaterial());
     gui.setItem((getInventoryLine() * 9) + 4, chest);

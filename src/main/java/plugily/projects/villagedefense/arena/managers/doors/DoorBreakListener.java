@@ -16,20 +16,26 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package plugily.projects.villagedefense.creatures;
+package plugily.projects.villagedefense.arena.managers.doors;
 
+import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.stream.Collectors;
 
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.scheduler.BukkitRunnable;
+import plugily.projects.minigamesbox.api.arena.IArenaState;
+import plugily.projects.minigamesbox.classic.utils.helper.MaterialUtils;
 import plugily.projects.minigamesbox.classic.utils.version.VersionUtils;
-import plugily.projects.minigamesbox.classic.utils.version.xseries.XEntityType;
+import plugily.projects.minigamesbox.classic.utils.version.xseries.XMaterial;
 import plugily.projects.villagedefense.Main;
-import plugily.projects.villagedefense.utils.Utils;
+import plugily.projects.villagedefense.arena.Arena;
+import plugily.projects.villagedefense.creatures.CreatureUtils;
 
 /**
  * Created by Tom on 14/08/2014.
@@ -37,49 +43,52 @@ import plugily.projects.villagedefense.utils.Utils;
 public class DoorBreakListener extends BukkitRunnable {
 
   private final Main plugin;
-  public static final String CREATURE_DOOR_BULLDOZER_METADATA = "VD_DOOR_BULLDOZER_BUFF";
 
-  private static final String DESTROY_STATE_METADATA = "VD_DOOR_DESTROY_STATE";
   public DoorBreakListener(Main plugin) {
     this.plugin = plugin;
     runTaskTimer(plugin, 1, 20);
   }
 
-
-  //todo !!MACH HIER WEITER!!
   @Override
   public void run() {
-    for(World world : plugin.getArenaRegistry().getArenaIngameWorlds()) {
-      for(LivingEntity entity : world.getLivingEntities()) {
-        if(entity.getType() != XEntityType.ZOMBIE.get()) {
-          continue;
-        }
-
+    for(Arena arena : plugin.getArenaRegistry().getPluginArenas()) {
+      if(arena.getArenaState() != IArenaState.IN_GAME) {
+        continue;
+      }
+      if(!arena.isFighting()) {
+        continue;
+      }
+      World world = arena.getStartLocation().getWorld();
+      List<LivingEntity> entities = world.getLivingEntities().stream().filter(CreatureUtils::isEnemy).collect(Collectors.toList());
+      for(LivingEntity entity : entities) {
         for(Block block : plugin.getBukkitHelper().getNearbyBlocks(entity, 1)) {
-          Material door = Utils.getCachedDoor(block);
-
-          if(block.getType() != door) {
+          if(!MaterialUtils.isDoor(block.getType())) {
             continue;
           }
 
-          org.bukkit.Location blockLoc = block.getLocation();
+          Location blockLoc = block.getLocation();
 
-          VersionUtils.sendParticles("SMOKE_LARGE", null, blockLoc, 5, 0.1,0.1,0.1);
+          VersionUtils.sendParticles("SMOKE_LARGE", null, blockLoc, 5, 0.1, 0.1, 0.1);
           VersionUtils.playSound(blockLoc, "ENTITY_ZOMBIE_ATTACK_WOODEN_DOOR");
 
           if(ThreadLocalRandom.current().nextInt(20) == 5) {
-            VersionUtils.sendParticles("SMOKE_LARGE", null, blockLoc, 15, 0.1,0.1,0.1);
-            VersionUtils.sendParticles("EXPLOSION_HUGE", null, blockLoc, 1, 0.1,0.1,0.1);
+            VersionUtils.sendParticles("SMOKE_LARGE", null, blockLoc, 15, 0.1, 0.1, 0.1);
+            VersionUtils.sendParticles("EXPLOSION_HUGE", null, blockLoc, 1, 0.1, 0.1, 0.1);
 
+
+            Material doorMaterial = XMaterial.matchXMaterial(block.getType()).or(XMaterial.OAK_DOOR).get();
             Block b = block.getRelative(BlockFace.UP);
 
-            if(b.getType() == door) {
+            if(b.getType() == block.getType()) {
               b.setType(Material.AIR);
-            } else if((b = block.getRelative(BlockFace.DOWN)).getType() == door) {
+            } else if((b = block.getRelative(BlockFace.DOWN)).getType() == block.getType()) {
               b.setType(Material.AIR);
             }
 
             block.setType(Material.AIR);
+            arena.getMapRestorerManager().getDoorManager().removeDoor(block, doorMaterial);
+
+
             VersionUtils.playSound(blockLoc, "ENTITY_ZOMBIE_BREAK_WOODEN_DOOR");
           }
         }
