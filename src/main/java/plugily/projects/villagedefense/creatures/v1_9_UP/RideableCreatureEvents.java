@@ -43,9 +43,6 @@ public class RideableCreatureEvents {
   private Main plugin;
 
   public RideableCreatureEvents(Main plugin) {
-    if(plugin.getServer().getPluginManager().getPlugin("ProtocolLib") == null) {
-      return;
-    }
     this.plugin = plugin;
     ProtocolManager manager = ProtocolLibrary.getProtocolManager();
     manager.addPacketListener(new PacketAdapter(plugin, ListenerPriority.NORMAL, PacketType.Play.Client.STEER_VEHICLE) {

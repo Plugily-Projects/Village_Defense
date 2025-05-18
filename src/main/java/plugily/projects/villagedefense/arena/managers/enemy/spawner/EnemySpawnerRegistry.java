@@ -86,7 +86,9 @@ public class EnemySpawnerRegistry extends EnemySpawnerRegistryLegacy {
   @Override
   public void registerCreatures() {
     new CustomCreatureEvents(plugin);
-    new RideableCreatureEvents(plugin);
+    if(plugin.getServer().getPluginManager().getPlugin("ProtocolLib") != null) {
+      new RideableCreatureEvents(plugin);
+    }
     FileConfiguration config = ConfigUtils.getConfig(plugin, "creatures");
 
     ConfigurationSection content = config.getConfigurationSection("Creatures.Content");
