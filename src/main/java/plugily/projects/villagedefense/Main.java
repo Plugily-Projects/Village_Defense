@@ -130,7 +130,7 @@ public class Main extends PluginMain {
     //optionalConfigurations.add("vd-ability");
 
 
-    getKitRegistry().setHandleItem((player, item) -> KitUtils.handleItem(this, player, item));    getKitRegistry().registerKits(optionalConfigurations);
+    getKitRegistry().setHandleItem((player, item) -> KitUtils.handleItem(this, player, item));
     getKitRegistry().registerKits(optionalConfigurations);
     getDebugger().debug(Level.INFO, "Kits loaded: ");
     for (IKit kit : getKitRegistry().getKits()) {
