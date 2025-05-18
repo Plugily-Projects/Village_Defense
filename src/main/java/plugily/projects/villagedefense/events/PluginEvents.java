@@ -53,6 +53,7 @@ import plugily.projects.minigamesbox.string.StringFormatUtils;
 import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.api.event.game.VillageGameSecretWellEvent;
 import plugily.projects.villagedefense.arena.Arena;
+import plugily.projects.villagedefense.creatures.CreatureUtils;
 import plugily.projects.villagedefense.utils.Utils;
 
 /**
@@ -222,13 +223,16 @@ public class PluginEvents implements Listener {
     if(!(event.getEntity() instanceof Creature) || !plugin.getConfigPreferences().getOption("CREATURES_HEALTHBAR")) {
       return;
     }
-    for(Arena arena : plugin.getArenaRegistry().getPluginArenas()) {
-      if(!arena.getEnemies().contains(event.getEntity())) {
+    if (event.isCancelled()) {
+      return;
+    }
+    for (Arena arena : plugin.getArenaRegistry().getPluginArenas()) {
+      if (!arena.getEnemies().contains(event.getEntity())
+          && !arena.getWolves().contains(event.getEntity())) {
         continue;
       }
-      Creature creature = (Creature) event.getEntity();
-      creature.setCustomName(StringFormatUtils.getProgressBar((int) creature.getHealth(), (int) VersionUtils.getMaxHealth(creature),
-          50, "|", ChatColor.YELLOW + "", ChatColor.GRAY + ""));
+      event.setCancelled(false);
+      event.getEntity().setCustomName(CreatureUtils.getHealthNameTagPreDamage((Creature) event.getEntity(), event.getFinalDamage()));
     }
   }
 
