@@ -23,14 +23,12 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Chest;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 import plugily.projects.minigamesbox.api.user.IUser;
 import plugily.projects.minigamesbox.classic.handlers.language.MessageBuilder;
-import plugily.projects.minigamesbox.classic.user.User;
 import plugily.projects.minigamesbox.classic.utils.configuration.ConfigUtils;
 import plugily.projects.minigamesbox.classic.utils.helper.ItemUtils;
 import plugily.projects.minigamesbox.classic.utils.misc.complement.ComplementAccessor;
@@ -136,9 +134,9 @@ public class ShopManager {
       //seek for item price
       if(meta != null && meta.hasLore()) {
         String currency = ChatColor.stripColor(new MessageBuilder("IN_GAME_MESSAGES_VILLAGE_SHOP_CURRENCY").asKey().build());
-        for(String s : ComplementAccessor.getComplement().getLore(meta)) {
-          if(s.contains(currency) || s.contains("orbs")) {
-            costString = ChatColor.stripColor(ChatColor.translateAlternateColorCodes('&', s)).replace(currency, "").replace("orbs", "").trim();
+        for(String itemCurrencyPlaceholder : ComplementAccessor.getComplement().getLore(meta)) {
+          if(itemCurrencyPlaceholder.contains(currency) || itemCurrencyPlaceholder.contains("orbs")) {
+            costString = ChatColor.stripColor(ChatColor.translateAlternateColorCodes('&', itemCurrencyPlaceholder)).replace(currency, "").replace("orbs", "").trim();
             break;
           }
         }
