@@ -143,7 +143,7 @@ public class ArenaEvents extends PluginArenaEvents {
       return;
 
     for(Arena arena : plugin.getArenaRegistry().getPluginArenas()) {
-      switch(event.getEntityType()) {
+      switch(XEntityType.of(event.getEntityType())) {
         case IRON_GOLEM:
           if(!arena.getIronGolems().contains(event.getEntity())) {
             continue;
@@ -163,7 +163,6 @@ public class ArenaEvents extends PluginArenaEvents {
           }
 
           Wolf wolf = (Wolf) event.getEntity();
-
           if(wolf.getHealth() <= event.getDamage()) {
             event.setCancelled(true);
             event.setDamage(0);
@@ -176,7 +175,6 @@ public class ArenaEvents extends PluginArenaEvents {
               if(playerOwner != null)
                 new MessageBuilder("IN_GAME_MESSAGES_VILLAGE_WAVE_ENTITIES_WOLF_DEATH").asKey().player(playerOwner).sendPlayer();
             }
-
             arena.removeWolf(wolf);
           }
           return;

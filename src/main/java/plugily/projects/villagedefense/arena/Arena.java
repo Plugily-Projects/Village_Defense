@@ -299,7 +299,7 @@ public class Arena extends PluginArena {
     List<Entity> entities = new ArrayList<>(spawnedEntities);
     if(plugin.getConfigPreferences().getOption("LIMIT_ENTITY_BUY_AFTER_DEATH")) {
       List<Entity> entityList = entities.stream().filter(entity -> entity.getType() == type).collect(Collectors.toList());
-      entityList = entityList.stream().filter(Entity::isDead).collect(Collectors.toList());
+      entityList = entityList.stream().filter(entity -> !entity.isDead()).collect(Collectors.toList());
 
       long spawnedAmount = entityList.size();
       if(spawnedAmount >= globalEntityLimit) {
@@ -435,6 +435,10 @@ public class Arena extends PluginArena {
   public void removeWolf(Wolf wolf) {
     wolf.remove();
     wolves.remove(wolf);
+  }
+
+  public List<Entity> getSpawnedEntities() {
+    return spawnedEntities;
   }
 
   public enum SpawnPoint {
