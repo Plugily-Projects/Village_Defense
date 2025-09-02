@@ -54,6 +54,7 @@ import plugily.projects.minigamesbox.classic.utils.version.xseries.XMaterial;
 import plugily.projects.minigamesbox.classic.utils.version.xseries.XSound;
 import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.creatures.CreatureUtils;
+import plugily.projects.villagedefense.utils.Utils;
 
 /**
  * @author Plajer
@@ -232,19 +233,12 @@ public class ArenaEvents extends PluginArenaEvents {
     final Player player = e.getEntity();
     PlayerInventory inventory = player.getInventory();
 
-    ItemStack[] armorContents = inventory.getArmorContents();
-    ItemStack[] storageContents = inventory.getStorageContents();
+    for(ItemStack item : player.getInventory().getContents()) {
+      if(item != null && Material.AIR != item.getType() && item.getType().isItem()) {
+        player.getWorld().dropItemNaturally(player.getLocation(), item);
+      }
+    }
 
-    for (ItemStack item : armorContents){
-      if(item != null) {
-        player.getWorld().dropItemNaturally(player.getLocation(), item);
-      }
-    }
-    for(ItemStack item : storageContents) {
-      if(item != null) {
-        player.getWorld().dropItemNaturally(player.getLocation(), item);
-      }
-    }
     if(player.isDead()) {
       player.setHealth(VersionUtils.getMaxHealth(player));
     }
