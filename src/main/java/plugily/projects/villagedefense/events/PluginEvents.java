@@ -49,6 +49,7 @@ import plugily.projects.minigamesbox.classic.handlers.language.MessageBuilder;
 import plugily.projects.minigamesbox.classic.utils.version.VersionUtils;
 import plugily.projects.minigamesbox.classic.utils.version.events.api.PlugilyPlayerInteractEntityEvent;
 import plugily.projects.minigamesbox.classic.utils.version.xseries.XEntityType;
+import plugily.projects.minigamesbox.classic.utils.version.xseries.XMaterial;
 import plugily.projects.minigamesbox.string.StringFormatUtils;
 import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.api.event.game.VillageGameSecretWellEvent;
@@ -299,7 +300,7 @@ public class PluginEvents implements Listener {
       return;
     }
 
-    if(itemStack.getType() == Material.ROTTEN_FLESH) {
+    if(itemStack.getType() == XMaterial.ROTTEN_FLESH.get()) {
       for(Entity entity : plugin.getBukkitHelper().getNearbyEntities(location, 20)) {
         if(!(entity instanceof Player)) {
           continue;
@@ -315,6 +316,7 @@ public class PluginEvents implements Listener {
         }
         for(Player player : arena.getPlayers()) {
           VersionUtils.setMaxHealth(player, VersionUtils.getMaxHealth(player) + 2.0);
+          VersionUtils.sendParticles("HEART", arena.getPlayers(), location, 50, 2, 2, 2);
           new MessageBuilder("IN_GAME_MESSAGES_VILLAGE_ROTTEN_FLESH_LEVEL_UP").asKey().player(player).sendPlayer();
         }
       }
