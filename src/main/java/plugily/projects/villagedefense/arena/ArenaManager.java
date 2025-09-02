@@ -79,6 +79,10 @@ public class ArenaManager extends PluginArenaManager {
             gameArena.removeWolf((Wolf) pet);
           }
         });
+    Entity vehicle = player.getVehicle();
+    if (vehicle != null){
+      vehicle.eject();
+    }
     super.leaveAttempt(player, arena);
   }
 
