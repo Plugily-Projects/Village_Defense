@@ -237,15 +237,14 @@ public class ArenaEvents extends PluginArenaEvents {
       }
     }
 
-    if(player.isDead()) {
-      player.setHealth(VersionUtils.getMaxHealth(player));
-    }
     plugin.getRewardsHandler().performReward(player, arena, plugin.getRewardsHandler().getRewardType("PLAYER_DEATH"));
     ComplementAccessor.getComplement().setDeathMessage(e, "");
     e.getDrops().clear();
     e.setDroppedExp(0);
     plugin.getHolidayManager().applyHolidayDeathEffects(player);
-    player.spigot().respawn();
+
+    plugin.getServer().getScheduler().runTaskLater(plugin, () -> player.spigot().respawn(), 5);
+
     plugin.getServer().getScheduler().runTask(plugin, () -> {
       if(arena.getArenaState() == IArenaState.STARTING) {
         VersionUtils.teleport(player, arena.getStartLocation());
