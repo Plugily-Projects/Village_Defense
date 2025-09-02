@@ -282,7 +282,6 @@ public class Arena extends PluginArena {
     String spawnedName = "";
     switch(type) {
       case WOLF:
-        //todo consider limit of * / op again
         entityLimit = plugin.getPermissionsManager().getPermissionCategoryValue("PLAYER_SPAWN_LIMIT_WOLVES", player);
         spawnedName = new MessageBuilder("IN_GAME_MESSAGES_VILLAGE_WAVE_ENTITIES_WOLF_NAME").asKey().player(player).build();
         globalEntityLimit = plugin.getConfig().getInt("Limit.Spawn.Wolves", 20);

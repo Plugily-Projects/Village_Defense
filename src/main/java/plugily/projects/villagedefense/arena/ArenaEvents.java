@@ -35,6 +35,8 @@ import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.ItemSpawnEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import plugily.projects.minigamesbox.api.arena.IArenaState;
@@ -228,7 +230,21 @@ public class ArenaEvents extends PluginArenaEvents {
     }
 
     final Player player = e.getEntity();
+    PlayerInventory inventory = player.getInventory();
 
+    ItemStack[] armorContents = inventory.getArmorContents();
+    ItemStack[] storageContents = inventory.getStorageContents();
+
+    for (ItemStack item : armorContents){
+      if(item != null) {
+        player.getWorld().dropItemNaturally(player.getLocation(), item);
+      }
+    }
+    for(ItemStack item : storageContents) {
+      if(item != null) {
+        player.getWorld().dropItemNaturally(player.getLocation(), item);
+      }
+    }
     if(player.isDead()) {
       player.setHealth(VersionUtils.getMaxHealth(player));
     }
@@ -245,7 +261,7 @@ public class ArenaEvents extends PluginArenaEvents {
       }
 
       if(arena.getArenaState() == IArenaState.ENDING || arena.getArenaState() == IArenaState.RESTARTING) {
-        player.getInventory().clear();
+        inventory.clear();
         player.setFlying(false);
         player.setAllowFlight(false);
         plugin.getUserManager().getUser(player).setStatistic("ORBS", 0);
@@ -265,7 +281,7 @@ public class ArenaEvents extends PluginArenaEvents {
       ArenaUtils.hidePlayer(player, arena);
       player.setAllowFlight(true);
       player.setFlying(true);
-      player.getInventory().clear();
+      inventory.clear();
       VersionUtils.sendTitle(player, new MessageBuilder("IN_GAME_DEATH_SCREEN").asKey().build(), 0, 5 * 20, 0);
       sendSpectatorActionBar(user, arena);
       new MessageBuilder(MessageBuilder.ActionType.DEATH).arena(arena).player(player).sendArena();
