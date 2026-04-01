@@ -1,22 +1,26 @@
-name: knight
+name: runner
 description:
-  - NICE KIT
-  - NEW
+- NICE KIT
+- NEW
 enabled: false
 display_item:
-  material: WOODEN_SWORD
+  material: STICK
   damage: 0
   enchants:
+    SMITE: 1
     UNBREAKING: 10
+    KNOCKBACK: 2
 kit_type: free
 unlockedOnDefault: true
 inventory:
   '0':
     item:
-      material: WOODEN_SWORD
+      material: STICK
       damage: 0
       enchants:
+        SMITE: 1
         UNBREAKING: 10
+        KNOCKBACK: 2
     slot: 0
   '1':
     item:
@@ -26,28 +30,44 @@ inventory:
   '36':
     item:
       material: LEATHER_BOOTS
+      damage: 0
+      color: 0, 0, 255
     slot: 36
   '37':
     item:
       material: LEATHER_LEGGINGS
+      damage: 0
+      color: 0, 0, 255
     slot: 37
   '38':
     item:
       material: LEATHER_CHESTPLATE
+      damage: 0
+      color: 0, 0, 255
     slot: 38
   '39':
     item:
       material: LEATHER_HELMET
+      damage: 0
+      color: 0, 0, 255
     slot: 39
 armour:
   helmet:
     material: LEATHER_HELMET
+    damage: 0
+    color: 0, 0, 255
   chestplate:
     material: LEATHER_CHESTPLATE
+    damage: 0
+    color: 0, 0, 255
   leggings:
     material: LEATHER_LEGGINGS
+    damage: 0
+    color: 0, 0, 255
   boots:
     material: LEATHER_BOOTS
+    damage: 0
+    color: 0, 0, 255
 Speed:
   Walk: 0.2
 Health:

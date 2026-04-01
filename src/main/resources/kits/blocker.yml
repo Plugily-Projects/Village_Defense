@@ -1,81 +1,88 @@
-name: archer
+name: blocker
 description:
-  - NICE KIT
-  - NEW
+- NICE KIT
+- NEW
 enabled: false
 display_item:
-  material: BOW
+  material: OAK_FENCE
+  amount: 3
   damage: 0
-  enchants:
-    UNBREAKING: 10
+  name: Fence
+  lore:
+  - '§7§7Place this barrier to hold back '
+  - '§7zombies! These barriers last for 10 '
+  - §7seconds
 kit_type: free
 unlockedOnDefault: true
 inventory:
   '0':
     item:
-      material: WOODEN_SWORD
+      material: STONE_SWORD
       damage: 0
       enchants:
         UNBREAKING: 10
     slot: 0
   '1':
     item:
-      material: BOW
-      damage: 0
-      enchants:
-        UNBREAKING: 10
+      material: COOKED_BEEF
+      amount: 10
     slot: 1
   '2':
     item:
-      material: ARROW
-      amount: 64
+      material: OAK_FENCE
+      amount: 3
+      damage: 0
+      name: Fence
+      lore:
+      - '§7§7Place this barrier to hold back '
+      - '§7zombies! These barriers last for 10 '
+      - §7seconds
     slot: 2
   '3':
     item:
-      material: COOKED_BEEF
-      amount: 10
+      material: SADDLE
     slot: 3
   '36':
     item:
       material: LEATHER_BOOTS
       damage: 0
-      color: 0, 128, 0
+      color: 255, 0, 0
     slot: 36
   '37':
     item:
       material: LEATHER_LEGGINGS
       damage: 0
-      color: 0, 128, 0
+      color: 255, 0, 0
     slot: 37
   '38':
     item:
       material: LEATHER_CHESTPLATE
       damage: 0
-      color: 0, 128, 0
+      color: 255, 0, 0
     slot: 38
   '39':
     item:
       material: LEATHER_HELMET
       damage: 0
-      color: 0, 128, 0
+      color: 255, 0, 0
     slot: 39
 armour:
   helmet:
     material: LEATHER_HELMET
     damage: 0
-    color: 0, 128, 0
+    color: 255, 0, 0
   chestplate:
     material: LEATHER_CHESTPLATE
     damage: 0
-    color: 0, 128, 0
+    color: 255, 0, 0
   leggings:
     material: LEATHER_LEGGINGS
     damage: 0
-    color: 0, 128, 0
+    color: 255, 0, 0
   boots:
     material: LEATHER_BOOTS
     damage: 0
-    color: 0, 128, 0
+    color: 255, 0, 0
 Speed:
   Walk: 0.2
 Health:

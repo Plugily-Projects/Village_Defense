@@ -1,10 +1,10 @@
-name: knight
+name: golem_friend
 description:
-  - NICE KIT
-  - NEW
+- NICE KIT
+- NEW
 enabled: false
 display_item:
-  material: WOODEN_SWORD
+  material: STONE_SWORD
   damage: 0
   enchants:
     UNBREAKING: 10
@@ -13,7 +13,7 @@ unlockedOnDefault: true
 inventory:
   '0':
     item:
-      material: WOODEN_SWORD
+      material: STONE_SWORD
       damage: 0
       enchants:
         UNBREAKING: 10
@@ -26,28 +26,44 @@ inventory:
   '36':
     item:
       material: LEATHER_BOOTS
+      damage: 0
+      color: 255, 255, 255
     slot: 36
   '37':
     item:
       material: LEATHER_LEGGINGS
+      damage: 0
+      color: 255, 255, 255
     slot: 37
   '38':
     item:
       material: LEATHER_CHESTPLATE
+      damage: 0
+      color: 255, 255, 255
     slot: 38
   '39':
     item:
       material: LEATHER_HELMET
+      damage: 0
+      color: 255, 255, 255
     slot: 39
 armour:
   helmet:
     material: LEATHER_HELMET
+    damage: 0
+    color: 255, 255, 255
   chestplate:
     material: LEATHER_CHESTPLATE
+    damage: 0
+    color: 255, 255, 255
   leggings:
     material: LEATHER_LEGGINGS
+    damage: 0
+    color: 255, 255, 255
   boots:
     material: LEATHER_BOOTS
+    damage: 0
+    color: 255, 255, 255
 Speed:
   Walk: 0.2
 Health:

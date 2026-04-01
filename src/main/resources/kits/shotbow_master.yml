@@ -1,53 +1,82 @@
-name: knight
+name: shotbow_master
 description:
-  - NICE KIT
-  - NEW
+- NICE KIT
+- NEW
 enabled: false
 display_item:
-  material: WOODEN_SWORD
-  damage: 0
-  enchants:
-    UNBREAKING: 10
+  material: ARROW
+  amount: 64
 kit_type: free
 unlockedOnDefault: true
 inventory:
   '0':
     item:
-      material: WOODEN_SWORD
+      material: BOW
       damage: 0
       enchants:
+        PUNCH: 1
         UNBREAKING: 10
     slot: 0
   '1':
     item:
-      material: COOKED_PORKCHOP
-      amount: 8
+      material: ARROW
+      amount: 64
     slot: 1
+  '2':
+    item:
+      material: ARROW
+      amount: 64
+    slot: 2
+  '3':
+    item:
+      material: COOKED_BEEF
+      amount: 8
+    slot: 3
+  '4':
+    item:
+      material: SADDLE
+    slot: 4
   '36':
     item:
       material: LEATHER_BOOTS
+      damage: 0
+      color: 255, 255, 0
     slot: 36
   '37':
     item:
       material: LEATHER_LEGGINGS
+      damage: 0
+      color: 255, 255, 0
     slot: 37
   '38':
     item:
       material: LEATHER_CHESTPLATE
+      damage: 0
+      color: 255, 255, 0
     slot: 38
   '39':
     item:
       material: LEATHER_HELMET
+      damage: 0
+      color: 255, 255, 0
     slot: 39
 armour:
   helmet:
     material: LEATHER_HELMET
+    damage: 0
+    color: 255, 255, 0
   chestplate:
     material: LEATHER_CHESTPLATE
+    damage: 0
+    color: 255, 255, 0
   leggings:
     material: LEATHER_LEGGINGS
+    damage: 0
+    color: 255, 255, 0
   boots:
     material: LEATHER_BOOTS
+    damage: 0
+    color: 255, 255, 0
 Speed:
   Walk: 0.2
 Health:

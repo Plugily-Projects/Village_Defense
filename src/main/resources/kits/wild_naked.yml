@@ -1,0 +1,36 @@
+name: wild_naked
+description:
+- NICE KIT
+- NEW
+enabled: false
+display_item:
+  material: IRON_SWORD
+  damage: 0
+  enchants:
+    SHARPNESS: 6
+    SMITE: 2
+    UNBREAKING: 10
+kit_type: free
+unlockedOnDefault: true
+inventory:
+  '0':
+    item:
+      material: IRON_SWORD
+      damage: 0
+      enchants:
+        SHARPNESS: 6
+        SMITE: 2
+        UNBREAKING: 10
+    slot: 0
+  '1':
+    item:
+      material: SADDLE
+    slot: 1
+armour: { }
+Speed:
+  Walk: 0.2
+Health:
+  Max: 20.0
+Food: 20
+abilities:
+  - "NO_ARMOUR"

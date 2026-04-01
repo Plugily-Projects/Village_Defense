@@ -1,19 +1,16 @@
-name: knight
+name: dog_friend
 description:
-  - NICE KIT
-  - NEW
+- NICE KIT
+- NEW
 enabled: false
 display_item:
-  material: WOODEN_SWORD
-  damage: 0
-  enchants:
-    UNBREAKING: 10
+  material: SADDLE
 kit_type: free
 unlockedOnDefault: true
 inventory:
   '0':
     item:
-      material: WOODEN_SWORD
+      material: STONE_SWORD
       damage: 0
       enchants:
         UNBREAKING: 10
@@ -23,6 +20,10 @@ inventory:
       material: COOKED_PORKCHOP
       amount: 8
     slot: 1
+  '2':
+    item:
+      material: SADDLE
+    slot: 2
   '36':
     item:
       material: LEATHER_BOOTS

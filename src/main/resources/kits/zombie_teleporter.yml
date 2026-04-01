@@ -1,0 +1,37 @@
+name: zombie_teleporter
+description:
+- NICE KIT
+- NEW
+enabled: false
+display_item:
+  material: BOOK
+kit_type: free
+unlockedOnDefault: true
+inventory:
+  '0':
+    item:
+      material: WOODEN_SWORD
+      damage: 0
+      enchants:
+        UNBREAKING: 10
+    slot: 0
+  '1':
+    item:
+      material: COOKED_PORKCHOP
+      amount: 8
+    slot: 1
+  '2':
+    item:
+      material: BOOK
+      damage: 0
+      name: Zombie Teleporter
+      lore:
+      - §7§7Teleport zombies to you!
+      enchants:
+        SHARPNESS: 1
+    slot: 2
+Speed:
+  Walk: 0.2
+Health:
+  Max: 20.0
+Food: 20

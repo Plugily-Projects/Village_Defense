@@ -1,0 +1,72 @@
+name: tornado
+description:
+- NICE KIT
+- NEW
+enabled: false
+display_item:
+  material: COBWEB
+  amount: 5
+  damage: 0
+  name: Tornado Time
+  lore:
+  - '§7§7Right click to spawn a tornado at your '
+  - §7location!
+kit_type: free
+unlockedOnDefault: true
+inventory:
+  '0':
+    item:
+      material: STONE_SWORD
+      damage: 0
+      enchants:
+        UNBREAKING: 10
+    slot: 0
+  '1':
+    item:
+      material: COOKED_BEEF
+      amount: 10
+    slot: 1
+  '2':
+    item:
+      material: SADDLE
+    slot: 2
+  '3':
+    item:
+      material: COBWEB
+      amount: 5
+      damage: 0
+      name: Tornado Time
+      lore:
+      - '§7§7Right click to spawn a tornado at your '
+      - §7location!
+    slot: 3
+  '36':
+    item:
+      material: GOLDEN_BOOTS
+    slot: 36
+  '37':
+    item:
+      material: GOLDEN_LEGGINGS
+    slot: 37
+  '38':
+    item:
+      material: GOLDEN_CHESTPLATE
+    slot: 38
+  '39':
+    item:
+      material: GOLDEN_HELMET
+    slot: 39
+armour:
+  helmet:
+    material: GOLDEN_HELMET
+  chestplate:
+    material: GOLDEN_CHESTPLATE
+  leggings:
+    material: GOLDEN_LEGGINGS
+  boots:
+    material: GOLDEN_BOOTS
+Speed:
+  Walk: 0.2
+Health:
+  Max: 20.0
+Food: 20

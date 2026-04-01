@@ -1,21 +1,19 @@
-name: knight
+name: heavy_tank
 description:
-  - NICE KIT
-  - NEW
+- NICE KIT
+- NEW
 enabled: false
 display_item:
-  material: WOODEN_SWORD
-  damage: 0
-  enchants:
-    UNBREAKING: 10
+  material: SADDLE
 kit_type: free
 unlockedOnDefault: true
 inventory:
   '0':
     item:
-      material: WOODEN_SWORD
+      material: STICK
       damage: 0
       enchants:
+        SHARPNESS: 2
         UNBREAKING: 10
     slot: 0
   '1':
@@ -23,33 +21,37 @@ inventory:
       material: COOKED_PORKCHOP
       amount: 8
     slot: 1
+  '2':
+    item:
+      material: SADDLE
+    slot: 2
   '36':
     item:
-      material: LEATHER_BOOTS
+      material: IRON_BOOTS
     slot: 36
   '37':
     item:
-      material: LEATHER_LEGGINGS
+      material: IRON_LEGGINGS
     slot: 37
   '38':
     item:
-      material: LEATHER_CHESTPLATE
+      material: IRON_CHESTPLATE
     slot: 38
   '39':
     item:
-      material: LEATHER_HELMET
+      material: IRON_HELMET
     slot: 39
 armour:
   helmet:
-    material: LEATHER_HELMET
+    material: IRON_HELMET
   chestplate:
-    material: LEATHER_CHESTPLATE
+    material: IRON_CHESTPLATE
   leggings:
-    material: LEATHER_LEGGINGS
+    material: IRON_LEGGINGS
   boots:
-    material: LEATHER_BOOTS
+    material: IRON_BOOTS
 Speed:
   Walk: 0.2
 Health:
-  Max: 20.0
+  Max: 40.0
 Food: 20

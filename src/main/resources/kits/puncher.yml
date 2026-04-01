@@ -1,53 +1,85 @@
-name: knight
+name: puncher
 description:
-  - NICE KIT
-  - NEW
+- NICE KIT
+- NEW
 enabled: false
 display_item:
-  material: WOODEN_SWORD
+  material: DIAMOND_SHOVEL
   damage: 0
   enchants:
+    SHARPNESS: 2
     UNBREAKING: 10
+    KNOCKBACK: 5
 kit_type: free
 unlockedOnDefault: true
 inventory:
   '0':
     item:
-      material: WOODEN_SWORD
+      material: DIAMOND_SHOVEL
       damage: 0
       enchants:
+        SHARPNESS: 2
         UNBREAKING: 10
+        KNOCKBACK: 5
     slot: 0
   '1':
     item:
+      material: BOW
+      damage: 0
+      enchants:
+        UNBREAKING: 5
+    slot: 1
+  '2':
+    item:
+      material: ARROW
+      amount: 25
+    slot: 2
+  '3':
+    item:
       material: COOKED_PORKCHOP
       amount: 8
-    slot: 1
+    slot: 3
   '36':
     item:
       material: LEATHER_BOOTS
+      damage: 0
+      color: 0, 0, 0
     slot: 36
   '37':
     item:
       material: LEATHER_LEGGINGS
+      damage: 0
+      color: 0, 0, 0
     slot: 37
   '38':
     item:
       material: LEATHER_CHESTPLATE
+      damage: 0
+      color: 0, 0, 0
     slot: 38
   '39':
     item:
       material: LEATHER_HELMET
+      damage: 0
+      color: 0, 0, 0
     slot: 39
 armour:
   helmet:
     material: LEATHER_HELMET
+    damage: 0
+    color: 0, 0, 0
   chestplate:
     material: LEATHER_CHESTPLATE
+    damage: 0
+    color: 0, 0, 0
   leggings:
     material: LEATHER_LEGGINGS
+    damage: 0
+    color: 0, 0, 0
   boots:
     material: LEATHER_BOOTS
+    damage: 0
+    color: 0, 0, 0
 Speed:
   Walk: 0.2
 Health:

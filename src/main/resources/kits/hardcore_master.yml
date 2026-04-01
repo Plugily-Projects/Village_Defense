@@ -1,0 +1,29 @@
+name: hardcore_master
+description:
+- NICE KIT
+- NEW
+enabled: false
+display_item:
+  material: DIAMOND_SWORD
+  damage: 0
+  enchants:
+    SHARPNESS: 11
+kit_type: free
+unlockedOnDefault: true
+inventory:
+  '0':
+    item:
+      material: DIAMOND_SWORD
+      damage: 0
+      enchants:
+        SHARPNESS: 11
+    slot: 0
+  '1':
+    item:
+      material: SADDLE
+    slot: 1
+Speed:
+  Walk: 0.2
+Health:
+  Max: 6.0
+Food: 20
