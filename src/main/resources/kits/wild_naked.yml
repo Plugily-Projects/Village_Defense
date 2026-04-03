@@ -1,17 +1,13 @@
-name: wild_naked
+name: "&bWild Naked"
 description:
-- NICE KIT
-- NEW
-enabled: false
+  - "You are the ultimate master!"
+  - "You start off with a iron Sharpness"
+  - "VI and Smite II sword!"
+enabled: true
 display_item:
   material: IRON_SWORD
-  damage: 0
-  enchants:
-    SHARPNESS: 6
-    SMITE: 2
-    UNBREAKING: 10
-kit_type: free
-unlockedOnDefault: true
+kit_type: premium
+unlockedOnDefault: false
 inventory:
   '0':
     item:
@@ -34,3 +30,9 @@ Health:
 Food: 20
 abilities:
   - "NO_ARMOUR"
+restock:
+  '1':
+    item:
+      material: SPLASH_POTION
+      damage: 0
+      base-effect: INSTANT_HEAL, false, false

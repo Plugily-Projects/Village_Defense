@@ -1,15 +1,13 @@
-name: archer
+name: "&6Archer"
 description:
-  - NICE KIT
-  - NEW
-enabled: false
+  - "Start with a bow, leather armor and a wooden sword."
+  - "Archers are loved by the villagers, know that!"
+enabled: true
 display_item:
   material: BOW
-  damage: 0
-  enchants:
-    UNBREAKING: 10
-kit_type: free
-unlockedOnDefault: true
+kit_type: level
+required-level: 2
+unlockedOnDefault: false
 inventory:
   '0':
     item:
@@ -35,30 +33,6 @@ inventory:
       material: COOKED_BEEF
       amount: 10
     slot: 3
-  '36':
-    item:
-      material: LEATHER_BOOTS
-      damage: 0
-      color: 0, 128, 0
-    slot: 36
-  '37':
-    item:
-      material: LEATHER_LEGGINGS
-      damage: 0
-      color: 0, 128, 0
-    slot: 37
-  '38':
-    item:
-      material: LEATHER_CHESTPLATE
-      damage: 0
-      color: 0, 128, 0
-    slot: 38
-  '39':
-    item:
-      material: LEATHER_HELMET
-      damage: 0
-      color: 0, 128, 0
-    slot: 39
 armour:
   helmet:
     material: LEATHER_HELMET
@@ -81,3 +55,9 @@ Speed:
 Health:
   Max: 20.0
 Food: 20
+
+restock:
+  '1':
+    item:
+      material: ARROW
+      amount: 15

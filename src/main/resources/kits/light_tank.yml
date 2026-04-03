@@ -1,10 +1,9 @@
-name: light_tank
+name: "&2Light Tank"
 description:
-- NICE KIT
-- NEW
-enabled: false
+  - "You are Junior tank!"
+enabled: true
 display_item:
-  material: WOODEN_SWORD
+  material: LEATHER_CHESTPLATE
 kit_type: free
 unlockedOnDefault: true
 inventory:
@@ -20,22 +19,6 @@ inventory:
       material: COOKED_PORKCHOP
       amount: 8
     slot: 1
-  '36':
-    item:
-      material: IRON_BOOTS
-    slot: 36
-  '37':
-    item:
-      material: IRON_LEGGINGS
-    slot: 37
-  '38':
-    item:
-      material: IRON_CHESTPLATE
-    slot: 38
-  '39':
-    item:
-      material: IRON_HELMET
-    slot: 39
 armour:
   helmet:
     material: IRON_HELMET

@@ -1,12 +1,13 @@
-name: heavy_tank
+name: "&bHeavy Tank"
 description:
-- NICE KIT
-- NEW
-enabled: false
+  - "Start off with iron armor and a double"
+  - "amount of hearts! Yup, that's right,"
+  - "you'll be the last man standing!"
+enabled: true
 display_item:
-  material: SADDLE
-kit_type: free
-unlockedOnDefault: true
+  material: DIAMOND_CHESTPLATE
+kit_type: premium
+unlockedOnDefault: false
 inventory:
   '0':
     item:
@@ -25,22 +26,6 @@ inventory:
     item:
       material: SADDLE
     slot: 2
-  '36':
-    item:
-      material: IRON_BOOTS
-    slot: 36
-  '37':
-    item:
-      material: IRON_LEGGINGS
-    slot: 37
-  '38':
-    item:
-      material: IRON_CHESTPLATE
-    slot: 38
-  '39':
-    item:
-      material: IRON_HELMET
-    slot: 39
 armour:
   helmet:
     material: IRON_HELMET

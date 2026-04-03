@@ -1,12 +1,14 @@
-name: zombie_teleporter
+name: "&2Zombie Teleporter"
 description:
-- NICE KIT
-- NEW
-enabled: false
+  - "Teleport those zombies to you!"
+  - "Many people think this is the worst kit!"
+  - "I must admit they are totally wrong!"
+enabled: true
 display_item:
-  material: BOOK
-kit_type: free
-unlockedOnDefault: true
+  material: FISHING_ROD
+kit_type: level
+required-level: 1
+unlockedOnDefault: false
 inventory:
   '0':
     item:
@@ -24,9 +26,9 @@ inventory:
     item:
       material: BOOK
       damage: 0
-      name: Zombie Teleporter
+      name: "Zombie Teleporter"
       lore:
-      - §7§7Teleport zombies to you!
+      - "Teleport zombies to you!"
       enchants:
         SHARPNESS: 1
     slot: 2
@@ -35,3 +37,6 @@ Speed:
 Health:
   Max: 20.0
 Food: 20
+abilities:
+  - "ZOMBIE_TELEPORT"
+cooldown: 30

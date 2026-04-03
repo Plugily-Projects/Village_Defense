@@ -1,17 +1,14 @@
-name: teleporter
+name: "&bTeleporter"
 description:
-- NICE KIT
-- NEW
-enabled: false
+  - "Everybody is astonished about your teleportation."
+  - "Nobody knows how to do it except you! Due to this,"
+  - "you are able to teleport to villagers"
+  - "that need help in no time!"
+enabled: true
 display_item:
-  material: GHAST_TEAR
-  damage: 0
-  name: §rTeleportation Menu
-  lore:
-  - '§7§7Right click to open teleportation '
-  - §7menu!
-kit_type: free
-unlockedOnDefault: true
+  material: ENDER_PEARL
+kit_type: premium
+unlockedOnDefault: false
 inventory:
   '0':
     item:
@@ -38,22 +35,6 @@ inventory:
       - '§7§7Right click to open teleportation '
       - §7menu!
     slot: 3
-  '36':
-    item:
-      material: GOLDEN_BOOTS
-    slot: 36
-  '37':
-    item:
-      material: GOLDEN_LEGGINGS
-    slot: 37
-  '38':
-    item:
-      material: GOLDEN_CHESTPLATE
-    slot: 38
-  '39':
-    item:
-      material: GOLDEN_HELMET
-    slot: 39
 armour:
   helmet:
     material: GOLDEN_HELMET
@@ -68,3 +49,5 @@ Speed:
 Health:
   Max: 20.0
 Food: 20
+abilities:
+  - "TELEPORTER"

@@ -1,15 +1,14 @@
-name: medium_tank
+name: "&6Medium Tank"
 description:
-- NICE KIT
-- NEW
-enabled: false
+  - "Start off with 6 more hearts!"
+  - "Don't be afraid!"
+  - "You have plenty hearts left to lose!"
+enabled: true
 display_item:
   material: IRON_CHESTPLATE
-  damage: 0
-  enchants:
-    UNBREAKING: 10
-kit_type: free
-unlockedOnDefault: true
+kit_type: level
+required-level: 12
+unlockedOnDefault: false
 inventory:
   '0':
     item:
@@ -23,22 +22,6 @@ inventory:
       material: COOKED_PORKCHOP
       amount: 8
     slot: 1
-  '36':
-    item:
-      material: IRON_BOOTS
-    slot: 36
-  '37':
-    item:
-      material: IRON_LEGGINGS
-    slot: 37
-  '38':
-    item:
-      material: IRON_CHESTPLATE
-    slot: 38
-  '39':
-    item:
-      material: IRON_HELMET
-    slot: 39
 armour:
   helmet:
     material: IRON_HELMET

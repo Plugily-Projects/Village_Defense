@@ -1,12 +1,12 @@
-name: dog_friend
+name: "&bDog Friend"
 description:
-- NICE KIT
-- NEW
-enabled: false
+  - "Start off with three dogs and"
+  - "get one extra dog every wave!"
+enabled: true
 display_item:
-  material: SADDLE
-kit_type: free
-unlockedOnDefault: true
+  material: BONE
+kit_type: premium
+unlockedOnDefault: false
 inventory:
   '0':
     item:
@@ -24,22 +24,6 @@ inventory:
     item:
       material: SADDLE
     slot: 2
-  '36':
-    item:
-      material: LEATHER_BOOTS
-    slot: 36
-  '37':
-    item:
-      material: LEATHER_LEGGINGS
-    slot: 37
-  '38':
-    item:
-      material: LEATHER_CHESTPLATE
-    slot: 38
-  '39':
-    item:
-      material: LEATHER_HELMET
-    slot: 39
 armour:
   helmet:
     material: LEATHER_HELMET
@@ -54,3 +38,5 @@ Speed:
 Health:
   Max: 20.0
 Food: 20
+abilities:
+  - "SPAWN_DOG"

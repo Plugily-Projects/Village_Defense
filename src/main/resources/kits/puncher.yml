@@ -1,17 +1,13 @@
-name: puncher
+name: "&6Puncher"
 description:
-- NICE KIT
-- NEW
-enabled: false
+  - "Punch those zombies back with your epic shovel!"
+  - "Knockback V is not unknown to you!"
+enabled: true
 display_item:
   material: DIAMOND_SHOVEL
-  damage: 0
-  enchants:
-    SHARPNESS: 2
-    UNBREAKING: 10
-    KNOCKBACK: 5
-kit_type: free
-unlockedOnDefault: true
+kit_type: level
+required-level: 4
+unlockedOnDefault: false
 inventory:
   '0':
     item:
@@ -39,30 +35,6 @@ inventory:
       material: COOKED_PORKCHOP
       amount: 8
     slot: 3
-  '36':
-    item:
-      material: LEATHER_BOOTS
-      damage: 0
-      color: 0, 0, 0
-    slot: 36
-  '37':
-    item:
-      material: LEATHER_LEGGINGS
-      damage: 0
-      color: 0, 0, 0
-    slot: 37
-  '38':
-    item:
-      material: LEATHER_CHESTPLATE
-      damage: 0
-      color: 0, 0, 0
-    slot: 38
-  '39':
-    item:
-      material: LEATHER_HELMET
-      damage: 0
-      color: 0, 0, 0
-    slot: 39
 armour:
   helmet:
     material: LEATHER_HELMET

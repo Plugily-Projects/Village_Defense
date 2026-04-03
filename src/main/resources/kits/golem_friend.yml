@@ -1,15 +1,13 @@
-name: golem_friend
+name: "&6Golem Friend"
 description:
-- NICE KIT
-- NEW
-enabled: false
+  - "Start with a golem and"
+  - "get new every 5 waves!"
+enabled: true
 display_item:
-  material: STONE_SWORD
-  damage: 0
-  enchants:
-    UNBREAKING: 10
-kit_type: free
-unlockedOnDefault: true
+  material: IRON_INGOT
+kit_type: level
+required-level: 18
+unlockedOnDefault: false
 inventory:
   '0':
     item:
@@ -23,30 +21,6 @@ inventory:
       material: COOKED_PORKCHOP
       amount: 8
     slot: 1
-  '36':
-    item:
-      material: LEATHER_BOOTS
-      damage: 0
-      color: 255, 255, 255
-    slot: 36
-  '37':
-    item:
-      material: LEATHER_LEGGINGS
-      damage: 0
-      color: 255, 255, 255
-    slot: 37
-  '38':
-    item:
-      material: LEATHER_CHESTPLATE
-      damage: 0
-      color: 255, 255, 255
-    slot: 38
-  '39':
-    item:
-      material: LEATHER_HELMET
-      damage: 0
-      color: 255, 255, 255
-    slot: 39
 armour:
   helmet:
     material: LEATHER_HELMET
@@ -69,3 +43,5 @@ Speed:
 Health:
   Max: 20.0
 Food: 20
+abilities:
+  - "SPAWN_GOLEM"

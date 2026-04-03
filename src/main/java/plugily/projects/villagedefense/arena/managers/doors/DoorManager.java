@@ -25,8 +25,7 @@ import org.bukkit.block.BlockFace;
 import plugily.projects.minigamesbox.classic.utils.version.xseries.XMaterial;
 import plugily.projects.villagedefense.arena.Arena;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author Tigerpanzer_02
@@ -72,6 +71,11 @@ public class DoorManager implements IDoorManager {
   @Override
   public void removeDoor(Block block, Material material) {
     doorBlocks.put(block.getLocation(), material);
+  }
+
+  @Override
+  public List<Location> getDoorLocations() {
+    return new ArrayList<>(doorBlocks.keySet());
   }
 
   private void restoreDoor(Block top, Block bottom, Material material) {

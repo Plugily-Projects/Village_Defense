@@ -1,14 +1,14 @@
-name: healer
+name: "&6Healer"
 description:
-- NICE KIT
-- NEW
-enabled: false
+  - "Being a healer is the same as being loved."
+  - "You are able to heal your teammates and villagers!"
+  - "Gets a restock every wave!"
+enabled: true
 display_item:
-  material: SPLASH_POTION
-  damage: 0
-  base-effect: INSTANT_HEAL, false, false
-kit_type: free
-unlockedOnDefault: true
+  material: POPPY
+kit_type: level
+required-level: 6
+unlockedOnDefault: false
 inventory:
   '0':
     item:
@@ -34,30 +34,6 @@ inventory:
       damage: 0
       base-effect: REGEN, false, false
     slot: 3
-  '36':
-    item:
-      material: LEATHER_BOOTS
-      damage: 0
-      color: 255, 255, 255
-    slot: 36
-  '37':
-    item:
-      material: LEATHER_LEGGINGS
-      damage: 0
-      color: 255, 255, 255
-    slot: 37
-  '38':
-    item:
-      material: LEATHER_CHESTPLATE
-      damage: 0
-      color: 255, 255, 255
-    slot: 38
-  '39':
-    item:
-      material: LEATHER_HELMET
-      damage: 0
-      color: 255, 255, 255
-    slot: 39
 armour:
   helmet:
     material: LEATHER_HELMET
@@ -80,3 +56,15 @@ Speed:
 Health:
   Max: 20.0
 Food: 20
+
+restock:
+  '1':
+    item:
+      material: SPLASH_POTION
+      damage: 0
+      base-effect: INSTANT_HEAL, false, false
+  '2':
+    item:
+      material: SPLASH_POTION
+      damage: 0
+      base-effect: REGEN, false, false

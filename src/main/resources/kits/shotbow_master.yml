@@ -1,13 +1,11 @@
-name: shotbow_master
+name: "&bShotbow Master"
 description:
-- NICE KIT
-- NEW
-enabled: false
+  "You invented a crazy shotbow!"
+enabled: true
 display_item:
   material: ARROW
-  amount: 64
-kit_type: free
-unlockedOnDefault: true
+kit_type: premium
+unlockedOnDefault: false
 inventory:
   '0':
     item:
@@ -36,30 +34,6 @@ inventory:
     item:
       material: SADDLE
     slot: 4
-  '36':
-    item:
-      material: LEATHER_BOOTS
-      damage: 0
-      color: 255, 255, 0
-    slot: 36
-  '37':
-    item:
-      material: LEATHER_LEGGINGS
-      damage: 0
-      color: 255, 255, 0
-    slot: 37
-  '38':
-    item:
-      material: LEATHER_CHESTPLATE
-      damage: 0
-      color: 255, 255, 0
-    slot: 38
-  '39':
-    item:
-      material: LEATHER_HELMET
-      damage: 0
-      color: 255, 255, 0
-    slot: 39
 armour:
   helmet:
     material: LEATHER_HELMET
@@ -82,3 +56,11 @@ Speed:
 Health:
   Max: 20.0
 Food: 20
+abilities:
+  - "BOW_MASTER"
+cooldown: 5
+restock:
+  '0':
+    item:
+      material: ARROW
+      amount: 64

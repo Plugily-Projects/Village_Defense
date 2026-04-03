@@ -1,19 +1,13 @@
-name: blocker
+name: "&bBlocker"
 description:
-- NICE KIT
-- NEW
-enabled: false
+  - "Hold the zombies back with"
+  - "your special barriers. These"
+  - "barriers last for 10 seconds"
+enabled: true
 display_item:
-  material: OAK_FENCE
-  amount: 3
-  damage: 0
-  name: Fence
-  lore:
-  - '§7§7Place this barrier to hold back '
-  - '§7zombies! These barriers last for 10 '
-  - §7seconds
-kit_type: free
-unlockedOnDefault: true
+  material: BARRIER
+kit_type: premium
+unlockedOnDefault: false
 inventory:
   '0':
     item:
@@ -32,40 +26,15 @@ inventory:
       material: OAK_FENCE
       amount: 3
       damage: 0
-      name: Fence
+      name: "Fence"
       lore:
-      - '§7§7Place this barrier to hold back '
-      - '§7zombies! These barriers last for 10 '
-      - §7seconds
+        - "Place this barrier to hold back"
+        - "zombies! These barriers last for 10 seconds"
     slot: 2
   '3':
     item:
       material: SADDLE
     slot: 3
-  '36':
-    item:
-      material: LEATHER_BOOTS
-      damage: 0
-      color: 255, 0, 0
-    slot: 36
-  '37':
-    item:
-      material: LEATHER_LEGGINGS
-      damage: 0
-      color: 255, 0, 0
-    slot: 37
-  '38':
-    item:
-      material: LEATHER_CHESTPLATE
-      damage: 0
-      color: 255, 0, 0
-    slot: 38
-  '39':
-    item:
-      material: LEATHER_HELMET
-      damage: 0
-      color: 255, 0, 0
-    slot: 39
 armour:
   helmet:
     material: LEATHER_HELMET
@@ -88,3 +57,17 @@ Speed:
 Health:
   Max: 20.0
 Food: 20
+
+restock:
+  '1':
+    item:
+      material: OAK_FENCE
+      amount: 3
+      damage: 0
+      name: "Fence"
+      lore:
+        - "Place this barrier to hold back"
+        - "zombies! These barriers last for 10 seconds"
+
+abilities:
+  - "BARRIER"

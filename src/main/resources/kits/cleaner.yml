@@ -1,17 +1,15 @@
-name: cleaner
+name: "&bCleaner"
 description:
-- NICE KIT
-- NEW
-enabled: false
+  - "The cleaner has a special ability."
+  - "With this ability, he can make all the"
+  - "zombies disappear. However, it takes"
+  - "a lot of effort to do this and the"
+  - "magic can be between half and all zombies!"
+enabled: true
 display_item:
-  material: BLAZE_ROD
-  damage: 0
-  name: §6Cleaner Wand!
-  lore:
-  - '§7§7Right click to kill all zombies! '
-  - '§7Cooldown: 60 seconds'
-kit_type: free
-unlockedOnDefault: true
+  material: BLAZE_POWDER
+kit_type: premium
+unlockedOnDefault: false
 inventory:
   '0':
     item:
@@ -24,10 +22,10 @@ inventory:
     item:
       material: BLAZE_ROD
       damage: 0
-      name: §6Cleaner Wand!
+      name: "&6Cleaner Wand!"
       lore:
-      - '§7§7Right click to kill all zombies! '
-      - '§7Cooldown: 60 seconds'
+        - "Right click to kill most (min half) zombies!"
+        - "Cooldown: 60 seconds"
     slot: 1
   '2':
     item:
@@ -38,30 +36,6 @@ inventory:
     item:
       material: SADDLE
     slot: 3
-  '36':
-    item:
-      material: LEATHER_BOOTS
-      damage: 0
-      color: 255, 255, 0
-    slot: 36
-  '37':
-    item:
-      material: LEATHER_LEGGINGS
-      damage: 0
-      color: 255, 255, 0
-    slot: 37
-  '38':
-    item:
-      material: LEATHER_CHESTPLATE
-      damage: 0
-      color: 255, 255, 0
-    slot: 38
-  '39':
-    item:
-      material: LEATHER_HELMET
-      damage: 0
-      color: 255, 255, 0
-    slot: 39
 armour:
   helmet:
     material: LEATHER_HELMET
@@ -84,3 +58,6 @@ Speed:
 Health:
   Max: 20.0
 Food: 20
+abilities:
+  - "CLEANER"
+cooldown: 60

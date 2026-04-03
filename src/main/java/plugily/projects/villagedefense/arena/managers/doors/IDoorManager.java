@@ -18,8 +18,11 @@
 
 package plugily.projects.villagedefense.arena.managers.doors;
 
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+
+import java.util.List;
 
 /**
  * @author Tigerpanzer_02
@@ -31,4 +34,6 @@ public interface IDoorManager {
   void rebuildDoors();
 
   void removeDoor(Block block, Material material);
+
+  List<Location> getDoorLocations();
 }

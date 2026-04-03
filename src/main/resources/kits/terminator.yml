@@ -1,31 +1,29 @@
-name: terminator
+name: "&6Terminator"
 description:
-- NICE KIT
-- NEW
-enabled: false
+  - "Easily kill those zombies"
+  - "with your strength powers!"
+enabled: true
 display_item:
   material: BONE
-  damage: 0
   enchants:
-    SHARPNESS: 3
     KNOCKBACK: 7
-kit_type: free
-unlockedOnDefault: true
+    SHARPNESS: 3
+kit_type: level
+required-level: 20
+unlockedOnDefault: false
 inventory:
   '0':
     item:
       material: STONE_SWORD
-      damage: 0
       enchants:
         UNBREAKING: 10
     slot: 0
   '1':
     item:
       material: BONE
-      damage: 0
       enchants:
-        SHARPNESS: 3
         KNOCKBACK: 7
+        SHARPNESS: 3
     slot: 1
   '2':
     item:
@@ -35,58 +33,37 @@ inventory:
   '3':
     item:
       material: SPLASH_POTION
-      damage: 0
       base-effect: STRENGTH, false, false
     slot: 3
   '4':
     item:
       material: SPLASH_POTION
-      damage: 0
       base-effect: REGEN, false, false
     slot: 4
-  '36':
-    item:
-      material: LEATHER_BOOTS
-      damage: 0
-      color: 0, 0, 0
-    slot: 36
-  '37':
-    item:
-      material: LEATHER_LEGGINGS
-      damage: 0
-      color: 0, 0, 0
-    slot: 37
-  '38':
-    item:
-      material: LEATHER_CHESTPLATE
-      damage: 0
-      color: 0, 0, 0
-    slot: 38
-  '39':
-    item:
-      material: LEATHER_HELMET
-      damage: 0
-      color: 0, 0, 0
-    slot: 39
 armour:
   helmet:
     material: LEATHER_HELMET
-    damage: 0
     color: 0, 0, 0
   chestplate:
     material: LEATHER_CHESTPLATE
-    damage: 0
     color: 0, 0, 0
   leggings:
     material: LEATHER_LEGGINGS
-    damage: 0
     color: 0, 0, 0
   boots:
     material: LEATHER_BOOTS
-    damage: 0
     color: 0, 0, 0
 Speed:
   Walk: 0.2
 Health:
   Max: 20.0
 Food: 20
+restock:
+  '0':
+    item:
+      material: SPLASH_POTION
+      base-effect: STRENGTH, false, false
+  '1':
+    item:
+      material: SPLASH_POTION
+      base-effect: REGEN, false, false

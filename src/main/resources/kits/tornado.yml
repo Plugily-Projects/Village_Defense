@@ -1,18 +1,11 @@
-name: tornado
+name: "&bTornado"
 description:
-- NICE KIT
-- NEW
-enabled: false
+  "Spawn in an awesome tornado!"
+enabled: true
 display_item:
   material: COBWEB
-  amount: 5
-  damage: 0
-  name: Tornado Time
-  lore:
-  - '§7§7Right click to spawn a tornado at your '
-  - §7location!
-kit_type: free
-unlockedOnDefault: true
+kit_type: premium
+unlockedOnDefault: false
 inventory:
   '0':
     item:
@@ -35,27 +28,11 @@ inventory:
       material: COBWEB
       amount: 5
       damage: 0
-      name: Tornado Time
+      name: "Tornado Time"
       lore:
-      - '§7§7Right click to spawn a tornado at your '
-      - §7location!
+        - "Right click to spawn a"
+        - "tornado at your location!"
     slot: 3
-  '36':
-    item:
-      material: GOLDEN_BOOTS
-    slot: 36
-  '37':
-    item:
-      material: GOLDEN_LEGGINGS
-    slot: 37
-  '38':
-    item:
-      material: GOLDEN_CHESTPLATE
-    slot: 38
-  '39':
-    item:
-      material: GOLDEN_HELMET
-    slot: 39
 armour:
   helmet:
     material: GOLDEN_HELMET
@@ -70,3 +47,15 @@ Speed:
 Health:
   Max: 20.0
 Food: 20
+abilities:
+  - "TORNADO"
+restock:
+  '0':
+    item:
+      material: COBWEB
+      amount: 5
+      damage: 0
+      name: "Tornado Time"
+      lore:
+        - "Right click to spawn a"
+        - "tornado at your location!"

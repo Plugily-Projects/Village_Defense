@@ -1,13 +1,11 @@
-name: knight
+name: "&2Knight"
 description:
-  - NICE KIT
-  - NEW
-enabled: false
+  - "This is the one and only knight kit!"
+  - "Many people think this is the worst kit!"
+  - "I must admit they are totally wrong!"
+enabled: true
 display_item:
   material: WOODEN_SWORD
-  damage: 0
-  enchants:
-    UNBREAKING: 10
 kit_type: free
 unlockedOnDefault: true
 inventory:
@@ -23,22 +21,6 @@ inventory:
       material: COOKED_PORKCHOP
       amount: 8
     slot: 1
-  '36':
-    item:
-      material: LEATHER_BOOTS
-    slot: 36
-  '37':
-    item:
-      material: LEATHER_LEGGINGS
-    slot: 37
-  '38':
-    item:
-      material: LEATHER_CHESTPLATE
-    slot: 38
-  '39':
-    item:
-      material: LEATHER_HELMET
-    slot: 39
 armour:
   helmet:
     material: LEATHER_HELMET

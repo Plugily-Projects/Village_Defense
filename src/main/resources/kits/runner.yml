@@ -1,17 +1,14 @@
-name: runner
+name: "&6Runner"
 description:
-- NICE KIT
-- NEW
-enabled: false
+  - "Parkour is your passion!"
+  - "You are able to run faster than everybody else."
+  - "You have also the ability to jump higher."
+enabled: true
 display_item:
-  material: STICK
-  damage: 0
-  enchants:
-    SMITE: 1
-    UNBREAKING: 10
-    KNOCKBACK: 2
-kit_type: free
-unlockedOnDefault: true
+  material: FIREWORK_ROCKET
+kit_type: level
+required-level: 10
+unlockedOnDefault: false
 inventory:
   '0':
     item:
@@ -27,30 +24,6 @@ inventory:
       material: COOKED_PORKCHOP
       amount: 8
     slot: 1
-  '36':
-    item:
-      material: LEATHER_BOOTS
-      damage: 0
-      color: 0, 0, 255
-    slot: 36
-  '37':
-    item:
-      material: LEATHER_LEGGINGS
-      damage: 0
-      color: 0, 0, 255
-    slot: 37
-  '38':
-    item:
-      material: LEATHER_CHESTPLATE
-      damage: 0
-      color: 0, 0, 255
-    slot: 38
-  '39':
-    item:
-      material: LEATHER_HELMET
-      damage: 0
-      color: 0, 0, 255
-    slot: 39
 armour:
   helmet:
     material: LEATHER_HELMET
@@ -69,7 +42,7 @@ armour:
     damage: 0
     color: 0, 0, 255
 Speed:
-  Walk: 0.2
+  Walk: 0.35
 Health:
   Max: 20.0
 Food: 20

@@ -31,7 +31,9 @@ import plugily.projects.villagedefense.arena.Arena;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -210,6 +212,11 @@ public class DoorManagerLegacy implements IDoorManager {
       }
       return equal;
     }
+  }
+
+  @Override
+  public List<Location> getDoorLocations() {
+    return new ArrayList<>(blockLocations.keySet());
   }
 
 }

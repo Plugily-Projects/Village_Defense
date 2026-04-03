@@ -1,13 +1,13 @@
-name: looter
+name: "&6Looter"
 description:
-- NICE KIT
-- NEW
-enabled: false
+  - "Get one additional rotten flesh"
+  - "on every zombie kill!"
+enabled: true
 display_item:
-  material: COOKED_PORKCHOP
-  amount: 8
-kit_type: free
-unlockedOnDefault: true
+  material: ROTTEN_FLESH
+kit_type: level
+required-level: 8
+unlockedOnDefault: false
 inventory:
   '0':
     item:
@@ -21,30 +21,6 @@ inventory:
       material: COOKED_PORKCHOP
       amount: 8
     slot: 1
-  '36':
-    item:
-      material: LEATHER_BOOTS
-      damage: 0
-      color: 255, 165, 0
-    slot: 36
-  '37':
-    item:
-      material: LEATHER_LEGGINGS
-      damage: 0
-      color: 255, 165, 0
-    slot: 37
-  '38':
-    item:
-      material: LEATHER_CHESTPLATE
-      damage: 0
-      color: 255, 165, 0
-    slot: 38
-  '39':
-    item:
-      material: LEATHER_HELMET
-      damage: 0
-      color: 255, 165, 0
-    slot: 39
 armour:
   helmet:
     material: LEATHER_HELMET
@@ -67,3 +43,5 @@ Speed:
 Health:
   Max: 20.0
 Food: 20
+abilities:
+  - "LOOTER"

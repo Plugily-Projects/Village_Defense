@@ -27,6 +27,7 @@ import plugily.projects.minigamesbox.classic.handlers.setup.categories.PluginSet
 import plugily.projects.minigamesbox.classic.utils.configuration.ConfigUtils;
 import plugily.projects.minigamesbox.classic.utils.services.metrics.Metrics;
 import plugily.projects.minigamesbox.classic.utils.version.ServerVersion;
+import plugily.projects.minigamesbox.classic.utils.version.VersionUtils;
 import plugily.projects.villagedefense.arena.Arena;
 import plugily.projects.villagedefense.arena.ArenaEvents;
 import plugily.projects.villagedefense.arena.ArenaManager;
@@ -46,6 +47,7 @@ import plugily.projects.villagedefense.handlers.setup.SetupCategoryManager;
 import plugily.projects.villagedefense.handlers.upgrade.EntityUpgradeMenu;
 import plugily.projects.villagedefense.handlers.upgrade.upgrades.Upgrade;
 import plugily.projects.villagedefense.handlers.upgrade.upgrades.UpgradeBuilder;
+import plugily.projects.villagedefense.kits.KitAbilityInitializer;
 import plugily.projects.villagedefense.kits.KitUtils;
 
 import java.util.ArrayList;
@@ -116,24 +118,45 @@ public class Main extends PluginMain {
   }
 
   public void addKits() {
-    if (!getConfigPreferences().getOption("KITS")) {
+    if(!getConfigPreferences().getOption("KITS")) {
       // Kits are disabled, no kits will be loaded
       return;
     }
     long start = System.currentTimeMillis();
+    new KitAbilityInitializer(this);
     getDebugger().performance("Kit", "Adding kits...");
     addFileName("kits/archer");
+    addFileName("kits/blocker");
+    addFileName("kits/cleaner");
+    addFileName("kits/dog_friend");
+    addFileName("kits/golem_friend");
+    addFileName("kits/hardcore");
+    addFileName("kits/hardcore_master");
+    addFileName("kits/healer");
+    addFileName("kits/heavy_tank");
     addFileName("kits/knight");
-    addFileName("kits/naked");
-
+    addFileName("kits/light_tank");
+    addFileName("kits/looter");
+    addFileName("kits/medic");
+    addFileName("kits/medium_tank");
+    addFileName("kits/puncher");
+    addFileName("kits/runner");
+    addFileName("kits/shotbow_master");
+    addFileName("kits/teleporter");
+    addFileName("kits/terminator");
+    addFileName("kits/tornado");
+    addFileName("kits/wild_naked");
+    addFileName("kits/wizard");
+    addFileName("kits/worker");
+    addFileName("kits/zombie_teleporter");
     List<String> optionalConfigurations = new ArrayList<>();
-    //optionalConfigurations.add("vd-ability");
-
+    optionalConfigurations.add("restock");
+    optionalConfigurations.add("cooldown");
 
     getKitRegistry().setHandleItem((player, item) -> KitUtils.handleItem(this, player, item));
     getKitRegistry().registerKits(optionalConfigurations);
     getDebugger().debug(Level.INFO, "Kits loaded: ");
-    for (IKit kit : getKitRegistry().getKits()) {
+    for(IKit kit : getKitRegistry().getKits()) {
       getDebugger().debug(kit.getName());
     }
     getKitRegistry().setDefaultKit("knight");
@@ -171,6 +194,7 @@ public class Main extends PluginMain {
   public ArenaManager getArenaManager() {
     return arenaManager;
   }
+
   public EntityUpgradeMenu getEntityUpgradeMenu() {
     return entityUpgradeMenu;
   }

@@ -18,12 +18,19 @@
 
 package plugily.projects.villagedefense.kits;
 
+import org.bukkit.Material;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import plugily.projects.minigamesbox.api.kit.IKit;
+import plugily.projects.minigamesbox.api.kit.ability.IKitAbility;
 import plugily.projects.minigamesbox.api.user.IUser;
 import plugily.projects.minigamesbox.classic.PluginMain;
+import plugily.projects.minigamesbox.classic.kits.ability.KitAbility;
+import plugily.projects.minigamesbox.classic.utils.version.xseries.XItemStack;
 import plugily.projects.villagedefense.arena.Arena;
+
+import java.util.logging.Level;
 
 
 public class KitUtils {
@@ -44,6 +51,28 @@ public class KitUtils {
 
   public static void reStock(IUser user) {
     IKit kit = user.getKit();
+    Player player = user.getPlayer();
+
+    //restock items
+    ConfigurationSection restockItems = (ConfigurationSection) kit.getOptionalConfiguration("restock");
+    if(restockItems != null) {
+      restockItems.getKeys(false).forEach((k) -> {
+
+        ConfigurationSection itemConfigurationSection = restockItems.getConfigurationSection(k);
+        assert itemConfigurationSection != null;
+
+        ConfigurationSection itemStackConfigurationSection = itemConfigurationSection.getConfigurationSection("item");
+        assert itemStackConfigurationSection != null;
+        ItemStack item = XItemStack.deserialize(itemStackConfigurationSection);
+        player.getInventory().addItem(item);
+      });
+    }
+    //
+
+    //run custom Abilities on Restock
+    for(IKitAbility kitAbility : user.getKit().getAbilities()) {
+      kitAbility.getCustomPlayerPluginConsumer().accept(player);
+    }
   }
 
 }
