@@ -1,7 +1,7 @@
 
 /*
  *  Village Defense - Protect villagers from hordes of zombies
- *  Copyright (c) 2025 Plugily Projects - maintained by Tigerpanzer_02 and contributors
+ *  Copyright (c) 2026 Plugily Projects - maintained by Tigerpanzer_02 and contributors
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -23,26 +23,10 @@ import plugily.projects.minigamesbox.classic.utils.version.ServerVersion;
 import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.arena.Arena;
 import plugily.projects.villagedefense.arena.managers.spawner.EnemySpawner;
-import plugily.projects.villagedefense.creatures.v1_8_R3.spawner.BabyZombieSpawner;
-import plugily.projects.villagedefense.creatures.v1_8_R3.spawner.FastZombieSpawner;
-import plugily.projects.villagedefense.creatures.v1_8_R3.spawner.GolemBusterSpawner;
-import plugily.projects.villagedefense.creatures.v1_8_R3.spawner.HalfInvisibleZombieSpawner;
-import plugily.projects.villagedefense.creatures.v1_8_R3.spawner.HardZombieSpawner;
-import plugily.projects.villagedefense.creatures.v1_8_R3.spawner.KnockbackResistantZombieSpawner;
-import plugily.projects.villagedefense.creatures.v1_8_R3.spawner.PlayerBusterSpawner;
-import plugily.projects.villagedefense.creatures.v1_8_R3.spawner.SoftHardZombieSpawner;
-import plugily.projects.villagedefense.creatures.v1_8_R3.spawner.VillagerBusterSpawner;
-import plugily.projects.villagedefense.creatures.v1_8_R3.spawner.VillagerSlayerSpawner;
+import plugily.projects.villagedefense.creatures.v1_8_R3.spawner.*;
 import plugily.projects.villagedefense.creatures.v1_9_UP.CustomRideableCreature;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Random;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
 
 /**
  * The registry for all {@link EnemySpawner}
