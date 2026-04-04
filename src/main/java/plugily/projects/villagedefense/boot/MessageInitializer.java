@@ -104,154 +104,29 @@ public class MessageInitializer {
     getMessageManager().registerMessage("UPGRADE_MENU_UPGRADES_DEFENSE_NAME", new Message("Upgrade-Menu.Upgrades.Final-Defense.Name", ""));
     getMessageManager().registerMessage("UPGRADE_MENU_UPGRADES_DEFENSE_DESCRIPTION", new Message("Upgrade-Menu.Upgrades.Final-Defense.Description", ""));
 
-
     //CLEANER KIT
 
-    getMessageManager().registerMessage("KIT_CONTENT_CLEANER_NAME", new Message("Kit.Content.Cleaner.Name", ""));
-    getMessageManager().registerMessage("KIT_CONTENT_CLEANER_DESCRIPTION", new Message("Kit.Content.Cleaner.Description", ""));
-    getMessageManager().registerMessage("KIT_CONTENT_CLEANER_GAME_ITEM_NAME", new Message("Kit.Content.Cleaner.Game-Item.Name", ""));
-    getMessageManager().registerMessage("KIT_CONTENT_CLEANER_GAME_ITEM_DESCRIPTION", new Message("Kit.Content.Cleaner.Game-Item.Description", ""));
     getMessageManager().registerMessage("KIT_CONTENT_CLEANER_CLEANED_MAP", new Message("Kit.Content.Cleaner.Cleaned.Map", ""));
     getMessageManager().registerMessage("KIT_CONTENT_CLEANER_CLEANED_NOTHING", new Message("Kit.Content.Cleaner.Cleaned.Nothing", ""));
 
-//ZOMBIE_TELEPORTER KIT
+    //ZOMBIE_TELEPORTER KIT
 
-    getMessageManager().registerMessage("KIT_CONTENT_ZOMBIE_TELEPORTER_NAME", new Message("Kit.Content.Zombie-Teleporter.Name", ""));
-    getMessageManager().registerMessage("KIT_CONTENT_ZOMBIE_TELEPORTER_DESCRIPTION", new Message("Kit.Content.Zombie-Teleporter.Description", ""));
-    getMessageManager().registerMessage("KIT_CONTENT_ZOMBIE_TELEPORTER_GAME_ITEM_NAME", new Message("Kit.Content.Zombie-Teleporter.Game-Item.Name", ""));
-    getMessageManager().registerMessage("KIT_CONTENT_ZOMBIE_TELEPORTER_GAME_ITEM_DESCRIPTION", new Message("Kit.Content.Zombie-Teleporter.Game-Item.Description", ""));
-    getMessageManager().registerMessage("KIT_CONTENT_ZOMBIE_TELEPORTER_GAME_ITEM_GUI", new Message("Kit.Content.Zombie-Teleporter.Game-Item.GUI", ""));
     getMessageManager().registerMessage("KIT_CONTENT_ZOMBIE_TELEPORTER_TELEPORT_ZOMBIE", new Message("Kit.Content.Teleport.Zombie", ""));
-    getMessageManager().registerMessage("KIT_CONTENT_ZOMBIE_TELEPORTER_TELEPORT_NOT_FOUND", new Message("Kit.Content.Teleport.Not-Found", ""));
 
-//KNIGHT
+    //WORKER
 
-    getMessageManager().registerMessage("KIT_CONTENT_KNIGHT_NAME", new Message("Kit.Content.Knight.Name", ""));
-    getMessageManager().registerMessage("KIT_CONTENT_KNIGHT_DESCRIPTION", new Message("Kit.Content.Knight.Description", ""));
-
-//LIGHT_TANK
-
-    getMessageManager().registerMessage("KIT_CONTENT_LIGHT_TANK_NAME", new Message("Kit.Content.Light-Tank.Name", ""));
-    getMessageManager().registerMessage("KIT_CONTENT_LIGHT_TANK_DESCRIPTION", new Message("Kit.Content.Light-Tank.Description", ""));
-
-//ARCHER
-
-    getMessageManager().registerMessage("KIT_CONTENT_ARCHER_NAME", new Message("Kit.Content.Archer.Name", ""));
-    getMessageManager().registerMessage("KIT_CONTENT_ARCHER_DESCRIPTION", new Message("Kit.Content.Archer.Description", ""));
-
-//PUNCHER
-
-    getMessageManager().registerMessage("KIT_CONTENT_PUNCHER_NAME", new Message("Kit.Content.Puncher.Name", ""));
-    getMessageManager().registerMessage("KIT_CONTENT_PUNCHER_DESCRIPTION", new Message("Kit.Content.Puncher.Description", ""));
-
-//HEALER
-
-    getMessageManager().registerMessage("KIT_CONTENT_HEALER_NAME", new Message("Kit.Content.Healer.Name", ""));
-    getMessageManager().registerMessage("KIT_CONTENT_HEALER_DESCRIPTION", new Message("Kit.Content.Healer.Description", ""));
-
-//LOOTER
-
-    getMessageManager().registerMessage("KIT_CONTENT_LOOTER_NAME", new Message("Kit.Content.Looter.Name", ""));
-    getMessageManager().registerMessage("KIT_CONTENT_LOOTER_DESCRIPTION", new Message("Kit.Content.Looter.Description", ""));
-
-//RUNNER
-
-    getMessageManager().registerMessage("KIT_CONTENT_RUNNER_NAME", new Message("Kit.Content.Runner.Name", ""));
-    getMessageManager().registerMessage("KIT_CONTENT_RUNNER_DESCRIPTION", new Message("Kit.Content.Runner.Description", ""));
-
-//MEDIUM_TANK
-
-    getMessageManager().registerMessage("KIT_CONTENT_MEDIUM_TANK_NAME", new Message("Kit.Content.Medium-Tank.Name", ""));
-    getMessageManager().registerMessage("KIT_CONTENT_MEDIUM_TANK_DESCRIPTION", new Message("Kit.Content.Medium-Tank.Description", ""));
-
-//WORKER
-
-    getMessageManager().registerMessage("KIT_CONTENT_WORKER_NAME", new Message("Kit.Content.Worker.Name", ""));
-    getMessageManager().registerMessage("KIT_CONTENT_WORKER_DESCRIPTION", new Message("Kit.Content.Worker.Description", ""));
     getMessageManager().registerMessage("KIT_CONTENT_WORKER_GAME_ITEM_CHAT", new Message("Kit.Content.Worker.Game-Item.Chat", ""));
 
-//DOG_FRIEND
+    //TELEPORTER
 
-    getMessageManager().registerMessage("KIT_CONTENT_DOG_FRIEND_NAME", new Message("Kit.Content.Dog-Friend.Name", ""));
-    getMessageManager().registerMessage("KIT_CONTENT_DOG_FRIEND_DESCRIPTION", new Message("Kit.Content.Dog-Friend.Description", ""));
-
-//HARDCORE
-
-    getMessageManager().registerMessage("KIT_CONTENT_HARDCORE_NAME", new Message("Kit.Content.Hardcore.Name", ""));
-    getMessageManager().registerMessage("KIT_CONTENT_HARDCORE_DESCRIPTION", new Message("Kit.Content.Hardcore.Description", ""));
-
-//GOLEM_FRIEND
-
-    getMessageManager().registerMessage("KIT_CONTENT_GOLEM_FRIEND_NAME", new Message("Kit.Content.Golem-Friend.Name", ""));
-    getMessageManager().registerMessage("KIT_CONTENT_GOLEM_FRIEND_DESCRIPTION", new Message("Kit.Content.Golem-Friend.Description", ""));
-
-//TORNADO
-
-    getMessageManager().registerMessage("KIT_CONTENT_TORNADO_NAME", new Message("Kit.Content.Tornado.Name", ""));
-    getMessageManager().registerMessage("KIT_CONTENT_TORNADO_DESCRIPTION", new Message("Kit.Content.Tornado.Description", ""));
-    getMessageManager().registerMessage("KIT_CONTENT_TORNADO_GAME_ITEM_NAME", new Message("Kit.Content.Tornado.Game-Item.Name", ""));
-    getMessageManager().registerMessage("KIT_CONTENT_TORNADO_GAME_ITEM_DESCRIPTION", new Message("Kit.Content.Tornado.Game-Item.Description", ""));
-
-//TERMINATOR
-
-    getMessageManager().registerMessage("KIT_CONTENT_TERMINATOR_NAME", new Message("Kit.Content.Terminator.Name", ""));
-    getMessageManager().registerMessage("KIT_CONTENT_TERMINATOR_DESCRIPTION", new Message("Kit.Content.Terminator.Description", ""));
-
-//TELEPORTER
-
-    getMessageManager().registerMessage("KIT_CONTENT_TELEPORTER_NAME", new Message("Kit.Content.Teleporter.Name", ""));
-    getMessageManager().registerMessage("KIT_CONTENT_TELEPORTER_DESCRIPTION", new Message("Kit.Content.Teleporter.Description", ""));
-    getMessageManager().registerMessage("KIT_CONTENT_TELEPORTER_GAME_ITEM_NAME", new Message("Kit.Content.Teleporter.Game-Item.Name", ""));
-    getMessageManager().registerMessage("KIT_CONTENT_TELEPORTER_GAME_ITEM_DESCRIPTION", new Message("Kit.Content.Teleporter.Game-Item.Description", ""));
     getMessageManager().registerMessage("KIT_CONTENT_TELEPORTER_GAME_ITEM_GUI", new Message("Kit.Content.Teleport.Game-Item.GUI", ""));
     getMessageManager().registerMessage("KIT_CONTENT_TELEPORTER_TELEPORT_VILLAGER", new Message("Kit.Content.Teleporter.Teleport.Villager", ""));
-    getMessageManager().registerMessage("KIT_CONTENT_TELEPORTER_TELEPORT_WARNING", new Message("Kit.Content.Teleporter.Teleport.Warning", ""));
     getMessageManager().registerMessage("KIT_CONTENT_TELEPORTER_TELEPORT_PLAYER", new Message("Kit.Content.Teleporter.Teleport.Player", ""));
-    getMessageManager().registerMessage("KIT_CONTENT_TELEPORTER_TELEPORT_NOT_FOUND", new Message("Kit.Content.Teleporter.Teleport.Not-Found", ""));
 
-//HEAVY_TANK
+    //BLOCKER
 
-    getMessageManager().registerMessage("KIT_CONTENT_HEAVY_TANK_NAME", new Message("Kit.Content.Heavy-Tank.Name", ""));
-    getMessageManager().registerMessage("KIT_CONTENT_HEAVY_TANK_DESCRIPTION", new Message("Kit.Content.Heavy-Tank.Description", ""));
-
-//SHOT_BOW
-
-    getMessageManager().registerMessage("KIT_CONTENT_SHOT_BOW_NAME", new Message("Kit.Content.Shot-Bow.Name", ""));
-    getMessageManager().registerMessage("KIT_CONTENT_SHOT_BOW_DESCRIPTION", new Message("Kit.Content.Shot-Bow.Description", ""));
-
-//BLOCKER
-
-    getMessageManager().registerMessage("KIT_CONTENT_BLOCKER_NAME", new Message("Kit.Content.Blocker.Name", ""));
-    getMessageManager().registerMessage("KIT_CONTENT_BLOCKER_DESCRIPTION", new Message("Kit.Content.Blocker.Description", ""));
-    getMessageManager().registerMessage("KIT_CONTENT_BLOCKER_GAME_ITEM_NAME", new Message("Kit.Content.Blocker.Game-Item.Name", ""));
-    getMessageManager().registerMessage("KIT_CONTENT_BLOCKER_GAME_ITEM_DESCRIPTION", new Message("Kit.Content.Blocker.Game-Item.Description", ""));
     getMessageManager().registerMessage("KIT_CONTENT_BLOCKER_PLACE_SUCCESS", new Message("Kit.Content.Blocker.Place.Success", ""));
     getMessageManager().registerMessage("KIT_CONTENT_BLOCKER_PLACE_FAIL", new Message("Kit.Content.Blocker.Place.Fail", ""));
-
-//PREMIUM_HARDCORE
-
-    getMessageManager().registerMessage("KIT_CONTENT_PREMIUM_HARDCORE_NAME", new Message("Kit.Content.Premium-Hardcore.Name", ""));
-    getMessageManager().registerMessage("KIT_CONTENT_PREMIUM_HARDCORE_DESCRIPTION", new Message("Kit.Content.Premium-Hardcore.Description", ""));
-
-//MEDIC
-
-    getMessageManager().registerMessage("KIT_CONTENT_MEDIC_NAME", new Message("Kit.Content.Medic.Name", ""));
-    getMessageManager().registerMessage("KIT_CONTENT_MEDIC_DESCRIPTION", new Message("Kit.Content.Medic.Description", ""));
-
-//WILD_NAKED
-
-    getMessageManager().registerMessage("KIT_CONTENT_WILD_NAKED_NAME", new Message("Kit.Content.Wild-Naked.Name", ""));
-    getMessageManager().registerMessage("KIT_CONTENT_WILD_NAKED_DESCRIPTION", new Message("Kit.Content.Wild-Naked.Description", ""));
-    getMessageManager().registerMessage("KIT_CONTENT_WILD_NAKED_CANNOT_WEAR_ARMOR", new Message("Kit.Content.Wild-Naked.Cannot-Wear-Armor", ""));
-
-//WIZARD
-
-    getMessageManager().registerMessage("KIT_CONTENT_WIZARD_NAME", new Message("Kit.Content.Wizard.Name", ""));
-    getMessageManager().registerMessage("KIT_CONTENT_WIZARD_DESCRIPTION", new Message("Kit.Content.Wizard.Description", ""));
-    getMessageManager().registerMessage("KIT_CONTENT_WIZARD_GAME_ITEM_ESSENCE_NAME", new Message("Kit.Content.Wizard.Game-Item.Essence.Name", ""));
-    getMessageManager().registerMessage("KIT_CONTENT_WIZARD_GAME_ITEM_ESSENCE_DESCRIPTION", new Message("Kit.Content.Wizard.Game-Item.Essence.Description", ""));
-    getMessageManager().registerMessage("KIT_CONTENT_WIZARD_GAME_ITEM_WAND_NAME", new Message("Kit.Content.Wizard.Game-Item.Wand.Name", ""));
-    getMessageManager().registerMessage("KIT_CONTENT_WIZARD_GAME_ITEM_WAND_DESCRIPTION", new Message("Kit.Content.Wizard.Game-Item.Wand.Description", ""));
 
   }
 

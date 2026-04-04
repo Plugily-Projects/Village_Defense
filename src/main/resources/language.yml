@@ -360,192 +360,27 @@ Kit:
       Unlock-In-Store: "&bUnlock this in the store!"
   Content:
     Cleaner:
-      Name: "&bCleaner"
-      Description:
-        - "The cleaner has a special ability."
-        - "With this ability, he can make all the"
-        - "zombies disappear. However, it takes"
-        - "a lot of effort to do this!"
-      Game-Item:
-        Name: "&6Cleaner Wand!"
-        Description:
-          - "Right click to kill all zombies!"
-          - "Cooldown: 60 seconds"
       Cleaned:
-        Map: "&b%player% has cleaned the map!"
-        Nothing: "&aThe map is already empty!" #WARNING: used for admin clean commands too!!!
+        Map: "%plugin_prefix% &b%player% has cleaned the map a bit!"
+        Nothing: "%plugin_prefix% &aThe map is already empty!" #WARNING: used for admin clean commands too!!!
     Zombie-Teleporter:
-      Name: "&2Zombie Teleporter"
-      Description:
-        - "Teleport those zombies to you!"
-        - "Many people think this is the worst kit!"
-        - "I must admit they are totally wrong!"
       Game-Item:
         GUI: "Zombie Teleporter"
-        Name: "Zombie Teleporter"
-        Description:
-          - "Teleport zombies to you!"
     Teleport:
-      Zombie: "&aTeleported weakened zombie to you!"
-      Not-Found: "&cThere are no zombies to teleport!"
-    Knight:
-      Name: "&2Knight"
-      Description:
-        - "This is the one and only knight kit!"
-        - "Many people think this is the worst kit!"
-        - "I must admit they are totally wrong!"
-    Light-Tank:
-      Name: "&2Light Tank"
-      Description:
-        - "You are Junior tank!"
-    Archer:
-      Name: "&6Archer"
-      Description:
-        - "Start with a bow, leather armor and a wooden sword."
-        - "Archers are loved by the villagers, know that!"
-    Puncher:
-      Name: "&6Puncher"
-      Description:
-        - "Punch those zombies back with your epic shovel!"
-        - "Knockback V is not unknown to you!"
-    Healer:
-      Name: "&6Healer"
-      Description:
-        - "Being a healer is the same as being loved."
-        - "You are able to heal your teammates and villagers!"
-        - "Gets a restock every wave!"
-    Looter:
-      Name: "&6Looter"
-      Description:
-        - "Get one additional rotten flesh"
-        - "on every zombie kill!"
-    Runner:
-      Name: "&6Runner"
-      Description:
-        - "Parkour is your passion!"
-        - "You are able to run faster than everybody else."
-        - "You have also the ability to jump higher."
-    Medium-Tank:
-      Name: "&6Medium Tank"
-      Description:
-        - "Start off with 6 more hearts!"
-        - "Don't be afraid!"
-        - "You have plenty hearts left to lose!"
+      Zombie: "%plugin_prefix% &aTeleported weakened zombie to you!"
     Worker:
-      Name: "&6Worker"
-      Description:
-        - "Get each round a door and start off"
-        - "with 2 additional doors. This way you"
-        - "can replace the doors!"
       Game-Item:
-        Chat: "&aDoor placed!"
-    Dog-Friend:
-      Name: "&bDog Friend"
-      Description:
-        - "Start off with three dogs and"
-        - "get one extra dog every wave!"
-    Hardcore:
-      Name: "&6Hardcore"
-      Description:
-        - "You'll see yourself"
-        - "why this is hardcore"
-    Golem-Friend:
-      Name: "&6Golem Friend"
-      Description:
-        - "Start with a golem and"
-        - "get new every 5 waves!"
-    Tornado:
-      Name: "&bTornado"
-      Description:
-        - "Spawn in an awesome tornado!"
-      Game-Item:
-        Name: "Tornado Time"
-        Description:
-          - "Right click to spawn a"
-          - "tornado at your location!"
-    Terminator:
-      Name: "&6Terminator"
-      Description:
-        - "Easily kill those zombies"
-        - "with your strength powers!"
+        Chat: "%plugin_prefix% &aDoor placed!"
     Teleporter:
-      Name: "&bTeleporter"
-      Description:
-        - "Everybody is astonished about your teleportation."
-        - "Nobody knows how to do it except you! Due to this,"
-        - "you are able to teleport to villagers"
-        - "that need help in no time!"
-      Game-Item:
-        Name: "&rTeleportation Menu"
-        Description:
-          - "Right click to open teleportation menu!"
-        GUI: "Teleporter Menu"
+      GUI: "Teleporter Menu"
       Teleport:
-        Villager: "&aTeleported to the villager!"
-        Warning: "&4Village defense didn't found that villager! That villager is probably already dead!"
-        Player: "&aTeleported to %player%"
-        Not-Found: "&cPlayer not found! Try again!"
-    Heavy-Tank:
-      Name: "&bHeavy Tank"
-      Description:
-        - "Start off with iron armor and a double"
-        - "amount of hearts! Yup, that's right,"
-        - "you'll be the last man standing!"
-    Shot-Bow:
-      Name: "&bShotbow Master"
-      Description:
-        - "You invented a crazy shotbow!"
+        Villager: "%plugin_prefix% &aTeleported to the villager!"
+        Player: "%plugin_prefix% &aTeleported to %player%"
     Blocker:
-      Name: "&bBlocker"
-      Description:
-        - "Hold the zombies back with"
-        - "your special barriers. These"
-        - "barriers last for 10 seconds"
-      Game-Item:
-        Name: "Fence"
-        Description:
-          - "Place this barrier to hold back"
-          - "zombies! These barriers last for 10 seconds"
       Place:
-        Success: "&aBarrier placed!"
-        Fail: "&cUnable to place barrier here"
-    Premium-Hardcore:
-      Name: "&bPremium Hardcore Master"
-      Description:
-        - "One hit most zombies with your OP sword!"
-        - "However be careful. this kit is only for"
-        - "the pros! Do not use it if you aren't a pro!"
-    Medic:
-      Name: "&6Medic"
-      Description:
-        - "This kit activates your passive powers."
-        - "Every time you hit a zombie, you have"
-        - "a 1/10 chance to heal the players"
-        - "in a 5 block radius around you."
-    Wild-Naked:
-      Name: "&bWild Naked"
-      Description:
-        - "You are the ultimate master!"
-        - "You start off with a iron Sharpness"
-        - "VI and Smite II sword!"
-      Cannot-Wear-Armor: "&cYou can't wear armor with the Wild Naked kit!"
-    Wizard:
-      Name: "&bWizard"
-      Description:
-        - "You're half blood."
-        - "You've come to the village to protect"
-        - "villagers from hordes of undead."
-        - "Use your dark powers to kill them all!"
-      Game-Item:
-        Essence:
-          Name: "Dark essence"
-          Description:
-            - "Click to absorb surrounded matter"
-            - "and use it as your personal thorn shield!"
-            - "Lasts for 5 seconds"
-        Wand:
-          Name: "Magic wand"
-          Description: "Right click to cast dark matter"
+        Success: "%plugin_prefix% &aBarrier placed!"
+        Fail: "%plugin_prefix% &cUnable to place barrier here"
+
 
 #
 # Upgrade-Menu messages
@@ -585,6 +420,8 @@ Upgrade-Menu:
       Description: "&3Upgrade final defense to tier &8%tier% ▲&3!;&3From &8%from% explosion
         radius &3to &8%to%;&3Golem will explode after death killing nearby;&3zombies
         and stun all alive ones;&3Cost of upgrade: &8%cost%;;&8Click to purchase"
+
+
 #
 # Leaderboard messages
 #

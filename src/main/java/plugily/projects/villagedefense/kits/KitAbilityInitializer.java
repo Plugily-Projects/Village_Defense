@@ -19,7 +19,6 @@
 package plugily.projects.villagedefense.kits;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -149,7 +148,7 @@ public class KitAbilityInitializer {
         inventoryClickEvent -> {
         },
         playerInteractHandler -> {
-          Arena arena = (Arena) plugin.getArenaRegistry().getArena(playerInteractHandler.getPlayer());
+          Arena arena = plugin.getArenaRegistry().getArena(playerInteractHandler.getPlayer());
           if(arena == null || !ItemUtils.isItemStackNamed(playerInteractHandler.getItem()) || playerInteractHandler.getItem().getType() != Material.BOOK
               || !ComplementAccessor.getComplement().getDisplayName(playerInteractHandler.getItem().getItemMeta()).equals(new MessageBuilder("KIT_CONTENT_ZOMBIE_TELEPORTER_GAME_ITEM_GUI").asKey().build())) {
             return;
@@ -163,7 +162,7 @@ public class KitAbilityInitializer {
             return;
           }
           if(arena.getEnemies().isEmpty()) {
-            new MessageBuilder("KIT_CONTENT_ZOMBIE_TELEPORTER_TELEPORT_NOT_FOUND").asKey().player(user.getPlayer()).sendPlayer();
+            new MessageBuilder("IN_GAME_MESSAGES_VILLAGE_WAVE_NEXT_IN").asKey().integer(arena.getTimer()).player(user.getPlayer()).sendPlayer();
             return;
           }
 
@@ -194,8 +193,10 @@ public class KitAbilityInitializer {
           Player player = playerInteractHandler.getPlayer();
           Arena arena = (Arena) plugin.getArenaRegistry().getArena(player);
           ItemStack stack = VersionUtils.getItemInHand(player);
-          if(!ItemUtils.isItemStackNamed(stack) || !ComplementAccessor.getComplement().getDisplayName(stack.getItemMeta())
-              .equalsIgnoreCase(new MessageBuilder("KIT_CONTENT_BLOCKER_GAME_ITEM_NAME").asKey().build())) {
+          if(!ItemUtils.isItemStackNamed(stack)) {
+            return;
+          }
+          if(!XMaterial.OAK_FENCE.isSimilar(stack)) {
             return;
           }
           Block block = null;
@@ -312,8 +313,10 @@ public class KitAbilityInitializer {
             return;
 
           ItemStack stack = VersionUtils.getItemInHand(player);
-          if(!ItemUtils.isItemStackNamed(stack)
-              || !ComplementAccessor.getComplement().getDisplayName(stack.getItemMeta()).equalsIgnoreCase(new MessageBuilder("KIT_CONTENT_TORNADO_GAME_ITEM_NAME").asKey().build())) {
+          if(!ItemUtils.isItemStackNamed(stack)) {
+            return;
+          }
+          if(!XMaterial.COBWEB.isSimilar(stack)) {
             return;
           }
           if(activeTornado >= 2) {
@@ -344,12 +347,11 @@ public class KitAbilityInitializer {
           if(arena == null) {
             return;
           }
-
           ItemStack stack = VersionUtils.getItemInHand(player);
-          if(!ItemUtils.isItemStackNamed(stack))
+          if(!ItemUtils.isItemStackNamed(stack)) {
             return;
-
-          if(!ChatColor.stripColor(ComplementAccessor.getComplement().getDisplayName(stack.getItemMeta())).equalsIgnoreCase(ChatColor.stripColor(new MessageBuilder("KIT_CONTENT_TELEPORTER_GAME_ITEM_NAME").asKey().build()))) {
+          }
+          if(!XMaterial.BOOK.isSimilar(stack)) {
             return;
           }
           int slots = arena.getVillagers().size();
@@ -375,10 +377,9 @@ public class KitAbilityInitializer {
         inventoryClickEvent -> {
         },
         playerInteractHandler -> {
-          if(plugin .getArenaRegistry().getArena(playerInteractHandler.getPlayer()) == null) {
+          if(plugin.getArenaRegistry().getArena(playerInteractHandler.getPlayer()) == null) {
             return;
           }
-
           IUser user = plugin.getUserManager().getUser(playerInteractHandler.getPlayer());
           if(user.isSpectator()) {
             new MessageBuilder("IN_GAME_SPECTATOR_SPECTATOR_WARNING").asKey().player(user.getPlayer()).sendPlayer();
@@ -389,7 +390,7 @@ public class KitAbilityInitializer {
             return;
           }
           Player player = playerInteractHandler.getPlayer();
-          if(ComplementAccessor.getComplement().getDisplayName(stack.getItemMeta()).equals(new MessageBuilder("KIT_CONTENT_WIZARD_GAME_ITEM_ESSENCE_NAME").asKey().build())) {
+          if(XMaterial.BLACK_DYE.isSimilar(stack)) {
             if(!user.checkCanCastCooldownAndMessage("essence")) {
               return;
             }
@@ -411,8 +412,8 @@ public class KitAbilityInitializer {
               VersionUtils.setGlowing(player, false);
               wizardsOnDuty.remove(player);
             }, 20L * 15);
-            user.setCooldown("essence", (double) user.getKit().getOptionalConfiguration("cooldown", 1)+14);
-          } else if(ComplementAccessor.getComplement().getDisplayName(stack.getItemMeta()).equals(new MessageBuilder("KIT_CONTENT_WIZARD_GAME_ITEM_WAND_NAME").asKey().build())) {
+            user.setCooldown("essence", (double) user.getKit().getOptionalConfiguration("cooldown", 1) + 14);
+          } else if(XMaterial.BLAZE_ROD.isSimilar(stack)) {
             if(!user.checkCanCastCooldownAndMessage("wizard_staff")) {
               return;
             }
@@ -441,13 +442,17 @@ public class KitAbilityInitializer {
         },
         playerInteractHandler -> {
           ItemStack itemStack = playerInteractHandler.getItem();
-          if(itemStack == null || itemStack.getType() != Material.BLAZE_ROD)
+          if(itemStack == null) {
             return;
-
+          }
           Arena arena = plugin.getArenaRegistry().getArena(playerInteractHandler.getPlayer());
-          if(arena == null || !ItemUtils.isItemStackNamed(itemStack)
-              || !ComplementAccessor.getComplement().getDisplayName(itemStack.getItemMeta())
-              .contains(new MessageBuilder("KIT_CONTENT_CLEANER_GAME_ITEM_NAME").asKey().build())) {
+          if(arena == null) {
+            return;
+          }
+          if(!ItemUtils.isItemStackNamed(itemStack)) {
+            return;
+          }
+          if(!XMaterial.BLAZE_ROD.isSimilar(itemStack)) {
             return;
           }
           IUser user = plugin.getUserManager().getUser(playerInteractHandler.getPlayer());
@@ -480,7 +485,9 @@ public class KitAbilityInitializer {
     ));
 
   }
+
   private final List<Player> wizardsOnDuty = new ArrayList<>();
+
   private void applyRageParticles(Player player) {
     new BukkitRunnable() {
       @Override
