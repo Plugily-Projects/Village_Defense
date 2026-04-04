@@ -5,9 +5,6 @@ description:
 enabled: true
 display_item:
   material: BONE
-  enchants:
-    KNOCKBACK: 7
-    SHARPNESS: 3
 kit_type: level
 required-level: 20
 unlockedOnDefault: false
