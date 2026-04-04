@@ -79,11 +79,12 @@ public class CustomCreatureEvents implements Listener {
         arena.changeArenaOptionBy("TOTAL_KILLED_ZOMBIES", 1);
 
         Player killer = entity.getKiller();
-
-        plugin.getUserManager().addStat(killer, plugin.getStatsStorage().getStatisticType("KILLS"));
-        plugin.getUserManager().addExperience(killer, 2 * arena.getArenaOption("CREATURE_DIFFICULTY_MULTIPLIER"));
-        plugin.getRewardsHandler().performReward(killer, plugin.getRewardsHandler().getRewardType("ZOMBIE_KILL"));
-        plugin.getPowerupRegistry().spawnPowerup(entity.getLocation(), arena);
+        if(killer != null) {
+          plugin.getUserManager().addStat(killer, plugin.getStatsStorage().getStatisticType("KILLS"));
+          plugin.getUserManager().addExperience(killer, 2 * arena.getArenaOption("CREATURE_DIFFICULTY_MULTIPLIER"));
+          plugin.getRewardsHandler().performReward(killer, plugin.getRewardsHandler().getRewardType("ZOMBIE_KILL"));
+          plugin.getPowerupRegistry().spawnPowerup(entity.getLocation(), arena);
+        }
       }
     }
   }
