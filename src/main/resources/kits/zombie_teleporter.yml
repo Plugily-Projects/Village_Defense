@@ -40,3 +40,4 @@ Food: 20
 abilities:
   - "ZOMBIE_TELEPORT"
 cooldown: 30
+armour: {}
