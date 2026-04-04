@@ -253,7 +253,7 @@ public class PluginEvents implements Listener {
 
   @EventHandler(priority = EventPriority.HIGH)
   public void onBuild(BlockPlaceEvent event) {
-    if(plugin.getArenaRegistry().isInArena(event.getPlayer()) && event.getBlock().getType() != Utils.getCachedDoor(event.getBlock())) {
+    if(plugin.getArenaRegistry().isInArena(event.getPlayer())) {
       event.setCancelled(true);
     }
   }
