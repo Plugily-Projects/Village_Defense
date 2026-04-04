@@ -1,6 +1,6 @@
 name: "&bTornado"
 description:
-  "Spawn in an awesome tornado!"
+  - "Spawn in an awesome tornado!"
 enabled: true
 display_item:
   material: COBWEB

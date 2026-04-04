@@ -1,6 +1,6 @@
 name: "&bShotbow Master"
 description:
-  "You invented a crazy shotbow!"
+  - "You invented a crazy shotbow!"
 enabled: true
 display_item:
   material: ARROW

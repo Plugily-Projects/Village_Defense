@@ -74,6 +74,16 @@ public class CustomCreatureEvents implements Listener {
         ItemStack itemStack = customCreature.getDropItem();
         event.getDrops().add(itemStack);
         event.setDroppedExp(customCreature.getExpDrop());
+
+        arena.removeEnemy((Creature) entity);
+        arena.changeArenaOptionBy("TOTAL_KILLED_ZOMBIES", 1);
+
+        Player killer = entity.getKiller();
+
+        plugin.getUserManager().addStat(killer, plugin.getStatsStorage().getStatisticType("KILLS"));
+        plugin.getUserManager().addExperience(killer, 2 * arena.getArenaOption("CREATURE_DIFFICULTY_MULTIPLIER"));
+        plugin.getRewardsHandler().performReward(killer, plugin.getRewardsHandler().getRewardType("ZOMBIE_KILL"));
+        plugin.getPowerupRegistry().spawnPowerup(entity.getLocation(), arena);
       }
     }
   }
