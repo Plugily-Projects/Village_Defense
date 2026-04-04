@@ -110,7 +110,6 @@ public class MessageInitializer {
     getMessageManager().registerMessage("KIT_CONTENT_CLEANER_CLEANED_NOTHING", new Message("Kit.Content.Cleaner.Cleaned.Nothing", ""));
 
     //ZOMBIE_TELEPORTER KIT
-    getMessageManager().registerMessage("KIT_CONTENT_ZOMBIE_TELEPORTER_GAME_ITEM_GUI", new Message("Kit.Content.Zombie-Teleporter.Game-Item.GUI", ""));
     getMessageManager().registerMessage("KIT_CONTENT_ZOMBIE_TELEPORTER_TELEPORT_ZOMBIE", new Message("Kit.Content.Teleport.Zombie", ""));
 
     //WORKER
@@ -119,7 +118,7 @@ public class MessageInitializer {
 
     //TELEPORTER
 
-    getMessageManager().registerMessage("KIT_CONTENT_TELEPORTER_GAME_ITEM_GUI", new Message("Kit.Content.Teleport.Game-Item.GUI", ""));
+    getMessageManager().registerMessage("KIT_CONTENT_TELEPORTER_GAME_ITEM_GUI", new Message("Kit.Content.Teleporter.GUI", ""));
     getMessageManager().registerMessage("KIT_CONTENT_TELEPORTER_TELEPORT_VILLAGER", new Message("Kit.Content.Teleporter.Teleport.Villager", ""));
     getMessageManager().registerMessage("KIT_CONTENT_TELEPORTER_TELEPORT_PLAYER", new Message("Kit.Content.Teleporter.Teleport.Player", ""));
 

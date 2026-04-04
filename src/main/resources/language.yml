@@ -363,9 +363,6 @@ Kit:
       Cleaned:
         Map: "%plugin_prefix% &b%player% has cleaned the map a bit!"
         Nothing: "%plugin_prefix% &aThe map is already empty!" #WARNING: used for admin clean commands too!!!
-    Zombie-Teleporter:
-      Game-Item:
-        GUI: "Zombie Teleporter"
     Teleport:
       Zombie: "%plugin_prefix% &aTeleported weakened zombie to you!"
     Worker:

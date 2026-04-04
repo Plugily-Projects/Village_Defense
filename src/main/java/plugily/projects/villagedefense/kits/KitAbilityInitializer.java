@@ -131,7 +131,7 @@ public class KitAbilityInitializer {
             blockPlaceEvent.setCancelled(true);
             return;
           }
-          if(VersionUtils.getItemInHand(blockPlaceEvent.getPlayer()).getType() != Utils.getCachedDoor(blockPlaceEvent.getBlock())) {
+          if(!XMaterial.valueOf(Utils.getCachedDoor(blockPlaceEvent.getBlock()).name()).isSimilar(VersionUtils.getItemInHand(blockPlaceEvent.getPlayer()))) {
             blockPlaceEvent.setCancelled(true);
             return;
           }
@@ -149,8 +149,13 @@ public class KitAbilityInitializer {
         },
         playerInteractHandler -> {
           Arena arena = plugin.getArenaRegistry().getArena(playerInteractHandler.getPlayer());
-          if(arena == null || !ItemUtils.isItemStackNamed(playerInteractHandler.getItem()) || playerInteractHandler.getItem().getType() != Material.BOOK
-              || !ComplementAccessor.getComplement().getDisplayName(playerInteractHandler.getItem().getItemMeta()).equals(new MessageBuilder("KIT_CONTENT_ZOMBIE_TELEPORTER_GAME_ITEM_GUI").asKey().build())) {
+          if(arena == null) {
+            return;
+          }
+          if(!ItemUtils.isItemStackNamed(playerInteractHandler.getItem())) {
+            return;
+          }
+          if(!XMaterial.BOOK.isSimilar(playerInteractHandler.getItem())) {
             return;
           }
           IUser user = plugin.getUserManager().getUser(playerInteractHandler.getPlayer());
@@ -171,7 +176,7 @@ public class KitAbilityInitializer {
           creature.addPotionEffect(new PotionEffect(PotionEffectType.WEAKNESS, 20 * 30, 0));
           new MessageBuilder("KIT_CONTENT_ZOMBIE_TELEPORTER_TELEPORT_ZOMBIE").asKey().player(user.getPlayer()).sendPlayer();
           VersionUtils.playSound(playerInteractHandler.getPlayer().getLocation(), "ENTITY_ZOMBIE_DEATH");
-          user.setCooldown("zombie", (Double) user.getKit().getOptionalConfiguration("cooldown", 30));
+          user.setCooldown("zombie", (int) user.getKit().getOptionalConfiguration("cooldown", 30));
         },
         player -> {
         },
@@ -259,8 +264,9 @@ public class KitAbilityInitializer {
           }
 
           ItemStack stack = VersionUtils.getItemInHand(playerInteractHandler.getPlayer());
-          if(stack == null || stack.getType() != Material.BOW)
+          if(!XMaterial.BOW.isSimilar(stack)) {
             return;
+          }
 
           if(!playerInteractHandler.getPlayer().getInventory().contains(XMaterial.ARROW.get()))
             return;
@@ -289,7 +295,7 @@ public class KitAbilityInitializer {
             }, 2L * (2 * i));
           }
           playerInteractHandler.setCancelled(true);
-          user.setCooldown("shotbow", (Double) user.getKit().getOptionalConfiguration("cooldown", 5));
+          user.setCooldown("shotbow", (int) user.getKit().getOptionalConfiguration("cooldown", 5));
         },
         player -> {
         },
@@ -351,7 +357,7 @@ public class KitAbilityInitializer {
           if(!ItemUtils.isItemStackNamed(stack)) {
             return;
           }
-          if(!XMaterial.BOOK.isSimilar(stack)) {
+          if(!XMaterial.GHAST_TEAR.isSimilar(stack)) {
             return;
           }
           int slots = arena.getVillagers().size();
@@ -412,13 +418,13 @@ public class KitAbilityInitializer {
               VersionUtils.setGlowing(player, false);
               wizardsOnDuty.remove(player);
             }, 20L * 15);
-            user.setCooldown("essence", (double) user.getKit().getOptionalConfiguration("cooldown", 1) + 14);
+            user.setCooldown("essence", (int) user.getKit().getOptionalConfiguration("cooldown", 1) + 14);
           } else if(XMaterial.BLAZE_ROD.isSimilar(stack)) {
             if(!user.checkCanCastCooldownAndMessage("wizard_staff")) {
               return;
             }
             applyMagicAttack(player);
-            user.setCooldown("wizard_staff", (double) user.getKit().getOptionalConfiguration("cooldown", 1));
+            user.setCooldown("wizard_staff", (int) user.getKit().getOptionalConfiguration("cooldown", 1));
           }
         },
         player -> {
@@ -472,7 +478,7 @@ public class KitAbilityInitializer {
 
           VersionUtils.playSound(playerInteractHandler.getPlayer().getLocation(), "ENTITY_ZOMBIE_DEATH");
           new MessageBuilder("KIT_CONTENT_CLEANER_CLEANED_MAP").asKey().arena(arena).player(user.getPlayer()).sendArena();
-          user.setCooldown("clean", (double) user.getKit().getOptionalConfiguration("cooldown", 60));
+          user.setCooldown("clean", (int) user.getKit().getOptionalConfiguration("cooldown", 60));
         },
         player -> {
         },
@@ -555,7 +561,6 @@ public class KitAbilityInitializer {
     for(Villager villager : arena.getVillagers()) {
       gui.addItem(new ItemBuilder(new ItemStack(Material.EMERALD))
           .name(villager.getCustomName())
-          .lore(villager.getUniqueId().toString())
           .build(), onClick -> {
         VersionUtils.teleport(player, villager.getLocation());
         VersionUtils.playSound(player.getLocation(), "ENTITY_ENDERMAN_TELEPORT");
