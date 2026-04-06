@@ -20,9 +20,7 @@ package plugily.projects.villagedefense.handlers.upgrade;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
+import org.bukkit.entity.*;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.jetbrains.annotations.Nullable;
@@ -43,6 +41,7 @@ import plugily.projects.villagedefense.handlers.upgrade.upgrades.UpgradeBuilder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 /**
  * @author Plajer
@@ -203,6 +202,12 @@ public class EntityUpgradeMenu {
 
     int tier = getTier(entity, upgrade) + 1;
     entity.setMetadata(upgrade.getMetadataAccessor(), new FixedMetadataValue(plugin, tier));
+    if(entity instanceof IronGolem) {
+      entity.setCustomName(new MessageBuilder("IN_GAME_MESSAGES_VILLAGE_WAVE_ENTITIES_GOLEM_NAME").asKey().integer(tier).player(Bukkit.getPlayer(UUID.fromString(entity.getMetadata("VD_OWNER_UUID").get(0).asString()))).build());
+    } else if(entity instanceof Wolf) {
+      entity.setCustomName(new MessageBuilder("IN_GAME_MESSAGES_VILLAGE_WAVE_ENTITIES_GOLEM_NAME").asKey().integer(tier).player(Bukkit.getPlayer(UUID.fromString(entity.getMetadata("VD_OWNER_UUID").get(0).asString()))).build());
+    }
+
     applyUpgradeEffect(entity, upgrade, tier);
     if(upgrade.getMaxTier() == tier) {
       VersionUtils.playSound(entity.getLocation(), "BLOCK_ANVIL_USE");
