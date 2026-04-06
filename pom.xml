@@ -25,7 +25,7 @@
 
     <groupId>plugily.projects</groupId>
     <artifactId>villagedefense</artifactId>
-    <version>4.7.0-SNAPSHOT11</version>
+    <version>4.7.0-SNAPSHOT12</version>
     <name>villagedefense</name>
 
     <properties>
