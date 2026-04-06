@@ -254,7 +254,7 @@ public class KitAbilityInitializer {
           if(!(entityDamageByEntityEvent.getEntity() instanceof Creature) || !(entityDamageByEntityEvent.getDamager() instanceof Player)) {
             return;
           }
-          if(Math.random() > 0.9) {
+          if(Math.random() > 0.3) {
             return;
           }
           healNearbyPlayers(entityDamageByEntityEvent.getDamager());

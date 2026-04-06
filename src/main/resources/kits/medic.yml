@@ -2,7 +2,7 @@ name: "&6Medic"
 description:
   - "This kit activates your passive powers."
   - "Every time you hit a zombie, you have"
-  - "a 1/10 chance to heal the players"
+  - "a 3/10 chance to heal the players"
   - "in a 5 block radius around you."
 enabled: true
 display_item:
