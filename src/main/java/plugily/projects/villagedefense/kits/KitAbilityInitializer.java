@@ -471,7 +471,7 @@ public class KitAbilityInitializer {
             new MessageBuilder("IN_GAME_SPECTATOR_SPECTATOR_WARNING").asKey().player(user.getPlayer()).sendPlayer();
             return;
           }
-          if(!user.checkCanCastCooldownAndMessage("zombie")) {
+          if(!user.checkCanCastCooldownAndMessage("clean")) {
             return;
           }
           if(arena.getEnemies().isEmpty()) {
