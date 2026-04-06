@@ -146,7 +146,7 @@ public class CreatureUtils {
       hpColor = ChatColor.RED;
     }
     String name = creature.getMetadata(creatureInitializer.getCreatureCustomNameMetadata()).get(0).asString();
-    return name + " " + hpColor + "" + ChatColor.BOLD + "" + Math.round(health) + ChatColor.GREEN + "" + ChatColor.BOLD + "/" + Math.round(maxHealth) + " ❤";
+    return name + " " + hpColor + "" + ChatColor.BOLD + "" + Math.round(health) + ChatColor.GRAY + "" + ChatColor.BOLD + "/"  + ChatColor.GREEN + "" + ChatColor.BOLD + Math.round(maxHealth) + " ❤";
   }
 
   public static String getHealthNameTag(Creature creature) {
