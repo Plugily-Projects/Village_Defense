@@ -367,7 +367,7 @@ Kit:
       Zombie: "%plugin_prefix% &aTeleported weakened zombie to you!"
     Worker:
       Game-Item:
-        Chat: "%plugin_prefix% &aDoor placed!"
+        Chat: "%plugin_prefix% &aDoors regenerated!"
     Teleporter:
       GUI: "Teleporter Menu"
       Teleport:

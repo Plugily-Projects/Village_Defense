@@ -44,7 +44,6 @@ import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.arena.Arena;
 import plugily.projects.villagedefense.arena.ArenaUtils;
 import plugily.projects.villagedefense.creatures.CreatureUtils;
-import plugily.projects.villagedefense.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -119,26 +118,32 @@ public class KitAbilityInitializer {
         inventoryClickEvent -> {
         },
         playerInteractHandler -> {
-        },
-        player -> {
-        },
-        blockPlaceEvent -> {
-          Arena arena = plugin.getArenaRegistry().getArena(blockPlaceEvent.getPlayer());
+          Arena arena = plugin.getArenaRegistry().getArena(playerInteractHandler.getPlayer());
           if(arena == null) {
             return;
           }
-          if(plugin.getUserManager().getUser(blockPlaceEvent.getPlayer()).isSpectator() || !arena.getMapRestorerManager().getDoorManager().getDoorLocations().contains(blockPlaceEvent.getBlock().getLocation())) {
-            blockPlaceEvent.setCancelled(true);
+          if(!ItemUtils.isItemStackNamed(playerInteractHandler.getItem())) {
             return;
           }
-          if(!XMaterial.valueOf(Utils.getCachedDoor(blockPlaceEvent.getBlock()).name()).isSimilar(VersionUtils.getItemInHand(blockPlaceEvent.getPlayer()))) {
-            blockPlaceEvent.setCancelled(true);
+          if(!XMaterial.OAK_DOOR.isSimilar(playerInteractHandler.getItem())) {
             return;
           }
-          //to override world guard protection
-          blockPlaceEvent.setCancelled(false);
-          new MessageBuilder("KIT_CONTENT_WORKER_GAME_ITEM_CHAT").asKey().player(blockPlaceEvent.getPlayer()).sendPlayer();
+          IUser user = plugin.getUserManager().getUser(playerInteractHandler.getPlayer());
+          if(user.isSpectator()) {
+            new MessageBuilder("IN_GAME_SPECTATOR_SPECTATOR_WARNING").asKey().player(user.getPlayer()).sendPlayer();
+            return;
+          }
+          if(!user.checkCanCastCooldownAndMessage("door")) {
+            return;
+          }
+          arena.getMapRestorerManager().getDoorManager().rebuildDoors();
+          new MessageBuilder("KIT_CONTENT_WORKER_GAME_ITEM_CHAT").asKey().player(user.getPlayer()).sendPlayer();
+          VersionUtils.playSound(playerInteractHandler.getPlayer().getLocation(), "BLOCK_WOODEN_DOOR_CLOSE");
+          user.setCooldown("door", (int) user.getKit().getOptionalConfiguration("cooldown", 200));
         },
+        player -> {
+        },
+        blockPlaceEvent -> {},
         entityDeathEvent -> {
         },
         entityDamageByEntityEvent -> {

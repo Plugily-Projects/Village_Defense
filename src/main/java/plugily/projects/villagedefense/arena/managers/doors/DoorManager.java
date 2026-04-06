@@ -69,6 +69,7 @@ public class DoorManager implements IDoorManager {
         ignored.printStackTrace();
       }
     }
+    doorBlocks.clear();
   }
 
   @Override

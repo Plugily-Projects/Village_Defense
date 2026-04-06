@@ -37,7 +37,10 @@ inventory:
   '4':
     item:
       material: OAK_DOOR
-      amount: 2
+      amount: 1
+      name: "Door Regenerator"
+      lore:
+        - "Regenerate the destroyed doors on the map!"
     slot: 4
 armour:
   helmet:
@@ -63,8 +66,4 @@ Health:
 Food: 20
 abilities:
   - "DOOR_PLACE"
-restock:
-  '0':
-    item:
-      material: OAK_DOOR
-      amount: 2
+cooldown: 200
