@@ -134,7 +134,9 @@ public class EntityUpgradeMenu {
           return;
         }
 
-        user.setStatistic("ORBS", orbs - cost);
+        user.adjustStatistic("ORBS", -cost);
+        plugin.getArenaRegistry().getArena(player).changeArenaOptionBy("TOTAL_ORBS_SPENT", cost);
+
         player.sendMessage(color("UPGRADE_MENU_UPGRADED_ENTITY").replace("%tier%", Integer.toString(nextTier)));
         applyUpgrade(livingEntity, upgrade);
 
