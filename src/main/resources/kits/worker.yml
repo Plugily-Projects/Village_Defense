@@ -1,8 +1,8 @@
 name: "&6Worker"
 description:
-  - "Get each round a door and start off"
-  - "with 2 additional doors. This way you"
-  - "can replace the doors!"
+  - "You have the superpower over the doors"
+  - "You can regenerate destroyed doors"
+  - "with your ability!"
 enabled: true
 display_item:
   material: OAK_DOOR
