@@ -21,7 +21,7 @@ inventory:
     item:
       material: SPLASH_POTION
       damage: 0
-      base-effect: INSTANT_HEAL, false, false
+      base-type: INSTANT_HEAL, false, false
     slot: 1
   '2':
     item:
@@ -56,4 +56,4 @@ restock:
     item:
       material: SPLASH_POTION
       damage: 0
-      base-effect: INSTANT_HEAL, false, false
+      base-type: INSTANT_HEAL, false, false

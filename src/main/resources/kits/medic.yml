@@ -26,7 +26,7 @@ inventory:
     item:
       material: SPLASH_POTION
       damage: 0
-      base-effect: REGEN, false, false
+      base-type: REGEN, false, false
     slot: 2
 armour:
   helmet:

@@ -26,13 +26,13 @@ inventory:
     item:
       material: SPLASH_POTION
       damage: 0
-      base-effect: INSTANT_HEAL, false, false
+      base-type: INSTANT_HEAL, false, false
     slot: 2
   '3':
     item:
       material: SPLASH_POTION
       damage: 0
-      base-effect: REGEN, false, false
+      base-type: REGEN, false, false
     slot: 3
 armour:
   helmet:
@@ -62,9 +62,9 @@ restock:
     item:
       material: SPLASH_POTION
       damage: 0
-      base-effect: INSTANT_HEAL, false, false
+      base-type: INSTANT_HEAL, false, false
   '2':
     item:
       material: SPLASH_POTION
       damage: 0
-      base-effect: REGEN, false, false
+      base-type: REGEN, false, false

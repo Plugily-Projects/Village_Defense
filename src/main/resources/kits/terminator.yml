@@ -30,12 +30,12 @@ inventory:
   '3':
     item:
       material: SPLASH_POTION
-      base-effect: STRENGTH, false, false
+      base-type: STRENGTH, false, false
     slot: 3
   '4':
     item:
       material: SPLASH_POTION
-      base-effect: REGEN, false, false
+      base-type: REGEN, false, false
     slot: 4
 armour:
   helmet:
@@ -59,8 +59,8 @@ restock:
   '0':
     item:
       material: SPLASH_POTION
-      base-effect: STRENGTH, false, false
+      base-type: STRENGTH, false, false
   '1':
     item:
       material: SPLASH_POTION
-      base-effect: REGEN, false, false
+      base-type: REGEN, false, false
