@@ -67,7 +67,7 @@ public class KitAbilityInitializer {
         player -> {
           Arena arena = plugin.getArenaRegistry().getArena(player);
           if(arena != null) {
-            arena.spawnWolf(arena.getStartLocation(), player);
+            arena.spawnGolem(arena.getStartLocation(), player);
           }
         },
         blockPlaceEvent -> {
@@ -85,7 +85,7 @@ public class KitAbilityInitializer {
         player -> {
           Arena arena = plugin.getArenaRegistry().getArena(player);
           if(arena != null && (arena.getWave() % 5 == 0 || arena.getWave() == 1)) {
-            arena.spawnGolem(arena.getStartLocation(), player);
+            arena.spawnWolf(arena.getStartLocation(), player);
           }
         },
         blockPlaceEvent -> {
