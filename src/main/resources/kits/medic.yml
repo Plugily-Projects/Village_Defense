@@ -53,3 +53,10 @@ Food: 20
 
 abilities:
   - "HEAL_PLAYERS"
+
+restock:
+  '0':
+    item:
+      material: SPLASH_POTION
+      damage: 0
+      base-type: REGEN, false, false
