@@ -207,12 +207,11 @@ public class PluginEvents implements Listener {
     if(!(event.getEntity() instanceof Creature) || !plugin.getConfigPreferences().getOption("CREATURES_HEALTHBAR")) {
       return;
     }
-    if (event.isCancelled()) {
+    if(event.isCancelled()) {
       return;
     }
-    for (Arena arena : plugin.getArenaRegistry().getPluginArenas()) {
-      if (!arena.getEnemies().contains(event.getEntity())
-          && !arena.getWolves().contains(event.getEntity())) {
+    for(Arena arena : plugin.getArenaRegistry().getPluginArenas()) {
+      if(!arena.getEnemies().contains(event.getEntity())) {
         continue;
       }
       event.setCancelled(false);
