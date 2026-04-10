@@ -25,6 +25,7 @@ import plugily.projects.minigamesbox.api.kit.IKit;
 import plugily.projects.minigamesbox.api.kit.ability.IKitAbility;
 import plugily.projects.minigamesbox.api.user.IUser;
 import plugily.projects.minigamesbox.classic.PluginMain;
+import plugily.projects.minigamesbox.classic.utils.helper.ItemBuilder;
 import plugily.projects.minigamesbox.classic.utils.version.xseries.XItemStack;
 import plugily.projects.villagedefense.arena.Arena;
 
@@ -60,6 +61,7 @@ public class KitUtils {
         ConfigurationSection itemStackConfigurationSection = itemConfigurationSection.getConfigurationSection("item");
         assert itemStackConfigurationSection != null;
         ItemStack item = XItemStack.deserialize(itemStackConfigurationSection);
+        item = new ItemBuilder(item).colorizeItem().build();
         player.getInventory().addItem(item);
       });
     }
