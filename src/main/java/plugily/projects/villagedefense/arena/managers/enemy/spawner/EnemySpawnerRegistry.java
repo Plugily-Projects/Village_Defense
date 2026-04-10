@@ -78,7 +78,7 @@ public class EnemySpawnerRegistry extends EnemySpawnerRegistryLegacy {
       String item = village.getString(rideable + ".drop_item", null);
       ItemStack dropItem = null;
       if(item != null) {
-        dropItem = XMaterial.matchXMaterial(item).orElse(XMaterial.BEDROCK).parseItem();
+        dropItem = XMaterial.matchXMaterial(item).orElse(XMaterial.AIR).parseItem();
       }
       plugin.getDebugger().debug("Registered CustomRideableCreature of type {0}", rideableType);
       rideableCreatures.add(new CustomRideableCreature(rideableType, holidayEffects, attributes, dropItem));
