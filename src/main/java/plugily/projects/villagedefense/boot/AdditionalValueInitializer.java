@@ -79,7 +79,7 @@ public class AdditionalValueInitializer {
 
   private void registerRewards() {
     getRewardsHandler().registerRewardType("START_WAVE", new RewardType("start-wave"));
-    getRewardsHandler().registerRewardType("END_WAVE", new RewardType("end-wave"));
+    getRewardsHandler().registerRewardType("END_WAVE", new RewardType("end-wave", RewardType.ExecutorType.NUMBER, false));
     getRewardsHandler().registerRewardType("ZOMBIE_KILL", new RewardType("zombie-kill"));
     getRewardsHandler().registerRewardType("VILLAGER_DEATH", new RewardType("villager-death"));
     getRewardsHandler().registerRewardType("PLAYER_DEATH", new RewardType("player-death"));

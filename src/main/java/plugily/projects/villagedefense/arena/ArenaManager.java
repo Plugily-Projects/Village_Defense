@@ -138,7 +138,7 @@ public class ArenaManager extends PluginArenaManager {
     for(IUser user : plugin.getUserManager().getUsers(arena)) {
       if(!user.isSpectator() && !user.isPermanentSpectator()) {
         Player player = user.getPlayer();
-        plugin.getRewardsHandler().performReward(player, arena, plugin.getRewardsHandler().getRewardType("END_WAVE"));
+        plugin.getRewardsHandler().performReward(player, arena, plugin.getRewardsHandler().getRewardType("END_WAVE"), arena.getWave());
         KitUtils.reStock(user);
       }
       XSound.ENTITY_VILLAGER_YES.play(user.getPlayer());
