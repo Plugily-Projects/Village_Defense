@@ -144,7 +144,7 @@ Holidays: true
 
 
 # Should the plugin enable special powerups which can be found in powerups.yml
-Powerups: false
+Powerups: true
 
 
 # Should we create leaderboards out of the stats?
