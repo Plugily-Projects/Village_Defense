@@ -185,6 +185,8 @@ public class ArenaEvents extends PluginArenaEvents {
           continue;
         }
         arena.getStartLocation().getWorld().strikeLightningEffect(entity.getLocation());
+        event.getDrops().clear();
+        event.setDroppedExp(0);
         arena.removeVillager((Villager) entity);
         plugin.getRewardsHandler().performReward(null, arena, plugin.getRewardsHandler().getRewardType("VILLAGER_DEATH"));
         plugin.getHolidayManager().applyHolidayDeathEffects(entity);
