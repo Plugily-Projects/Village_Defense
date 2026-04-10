@@ -59,7 +59,7 @@ public class KitAbilityInitializer {
   }
 
   public void registerAbilities() {
-    plugin.getKitAbilityManager().registerKitAbility("SPAWN_GOLEM", new KitAbility("SPAWN_GOLEM",
+    plugin.getKitAbilityManager().registerKitAbility("SPAWN_DOG", new KitAbility("SPAWN_DOG",
         inventoryClickEvent -> {
         },
         playerInteractHandler -> {
@@ -67,7 +67,7 @@ public class KitAbilityInitializer {
         player -> {
           Arena arena = plugin.getArenaRegistry().getArena(player);
           if(arena != null) {
-            arena.spawnGolem(arena.getStartLocation(), player);
+            arena.spawnWolf(arena.getStartLocation(), player);
           }
         },
         blockPlaceEvent -> {
@@ -77,7 +77,7 @@ public class KitAbilityInitializer {
         entityDamageByEntityEvent -> {
         }
     ));
-    plugin.getKitAbilityManager().registerKitAbility("SPAWN_DOG", new KitAbility("SPAWN_DOG",
+    plugin.getKitAbilityManager().registerKitAbility("SPAWN_GOLEM", new KitAbility("SPAWN_GOLEM",
         inventoryClickEvent -> {
         },
         playerInteractHandler -> {
@@ -85,7 +85,7 @@ public class KitAbilityInitializer {
         player -> {
           Arena arena = plugin.getArenaRegistry().getArena(player);
           if(arena != null && (arena.getWave() % 5 == 0 || arena.getWave() == 1)) {
-            arena.spawnWolf(arena.getStartLocation(), player);
+            arena.spawnGolem(arena.getStartLocation(), player);
           }
         },
         blockPlaceEvent -> {
