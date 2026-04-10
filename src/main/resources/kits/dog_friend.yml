@@ -1,7 +1,6 @@
 name: "&bDog Friend"
 description:
-  - "Start off with three dogs and"
-  - "get one extra dog every wave!"
+  - "Get one dog on every wave"
 enabled: true
 display_item:
   material: BONE
