@@ -193,8 +193,8 @@ Time-Manager:
 
 
 # Should we add support for upgradeable Wolves and Golems in game?
-# Configure upgrades pricing in entity_upgrades.yml after enabling it.
-Entity-Upgrades: false
+# Configure upgrades pricing in entity_upgrades.yml
+Entity-Upgrades: true
 
 
 Respawn:
