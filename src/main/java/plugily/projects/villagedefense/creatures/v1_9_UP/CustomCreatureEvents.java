@@ -27,6 +27,7 @@ import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.MetadataValue;
 import plugily.projects.minigamesbox.classic.utils.version.xseries.XEntityType;
+import plugily.projects.minigamesbox.classic.utils.version.xseries.XMaterial;
 import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.arena.Arena;
 import plugily.projects.villagedefense.arena.managers.spawner.EnemySpawner;
@@ -73,6 +74,9 @@ public class CustomCreatureEvents implements Listener {
         }
         ItemStack itemStack = customCreature.getDropItem();
         event.getDrops().add(itemStack);
+        if(customCreature.isExplodeTarget()) {
+          event.getDrops().add(new ItemStack(XMaterial.ROTTEN_FLESH.get(), 5));
+        }
         event.setDroppedExp(customCreature.getExpDrop());
 
         arena.removeEnemy((Creature) entity);
