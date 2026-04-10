@@ -162,13 +162,13 @@ Parties:
 
 Damage:
   # Should players get fall damage?
-  Fall: false
+  Fall: true
   # Should players get drowning damage?
-  Drowning: false
+  Drowning: true
   # Should players get fire damage?
-  Fire: false
+  Fire: true
   # Should players lose food ingame & get damage?
-  Hunger: false
+  Hunger: true
 
 
 Cycle:
