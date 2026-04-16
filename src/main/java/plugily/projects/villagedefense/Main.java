@@ -37,6 +37,7 @@ import plugily.projects.villagedefense.boot.PlaceholderInitializer;
 import plugily.projects.villagedefense.commands.arguments.ArgumentsRegistry;
 import plugily.projects.villagedefense.creatures.CreatureUtils;
 import plugily.projects.villagedefense.events.PluginEvents;
+import plugily.projects.villagedefense.handlers.LanguageMigrator;
 import plugily.projects.villagedefense.handlers.powerup.PowerupHandler;
 import plugily.projects.villagedefense.handlers.setup.SetupCategoryManager;
 import plugily.projects.villagedefense.handlers.upgrade.EntityUpgradeMenu;
@@ -70,6 +71,7 @@ public class Main extends PluginMain {
   @Override
   public void onEnable() {
     long start = System.currentTimeMillis();
+    new LanguageMigrator(this);
     MessageInitializer messageInitializer = new MessageInitializer(this);
     super.onEnable();
     getDebugger().debug("[System] [Plugin] Initialization start");
