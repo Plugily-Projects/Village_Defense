@@ -9,18 +9,44 @@ deploy webhooks to print changelog successfully
 
 That's all, matcher will stop when detects next line started with `###` match
 
-### 5.0.0 (10.03.2024)
+### 5.0.0 (16.04.2026)
+* Added 1.21 compatibility
+* Added kit abilities and changed some kit descriptions/usages
 * Added ProtocolLib as softdependency for rideable creatures steering (1.9+) [Thanks @Plajer]
 * Added new healtbars for villagers, wolf and golem & improved creature healtbar (1.9+) [Thanks @Plajer]
 * Added specific metadata to wolf and golem so we can identify them easily
-* Fixed Golem Movement Speed is by default now 0.25 (1.9+)
 * Added getAliveEntitiesList && getAlivePetsList arena method
 * Added villager hurt sound
 * Added spawned wolves ond golems on leave will also "leave"
+* Added villagers, wolves and golems also regenerate health on wave end
+* Added heart particles on rotten flesh level up
+* Added ProtocolLib as softdependency for rideable creatures steering (1.9+)
+Rideable creatures can be steered via ProtocolLib soft dependency now
+* Fixed Golem Movement Speed is by default now 0.25 (1.9+)
+* Fixed Reward End_Wave wave based execution
+* Fixed Creature kills on 1.9 up
+* Fixed creature death without killer
+* Fixed Upgrades did not add to total orbs spent
+* Fixed message KIT_CONTENT_ZOMBIE_TELEPORTER_GAME_ITEM_GUI
+* Fixed Player Respawn Screen atleast on 1.21 works perfectly
+* Fixed spawnedEntities counting and reset of droppedfleshes
+* Fixed Orbs pickup statistical amount
+* Fixed Door Recreation on all versions
+* Fixed ClassNotFoundException: com.comphenix.protocol.events.PacketListener on newer mc versions
+* Fix color code translation for shop (unicode changes)
+* Changed Door Regeneration - need no setup anymore, they will be restored and removed on the world 
+where the entities break doors. Improved checking to run only on active fighting arenas.
 * Changed feel refresh on wave end is now 25% of max health rounded up
 * Changed user kit restock is now on end wave instead of start wave
-* Added villagers, wolves and golems also regenerate health on wave end
-
+* Changed powerups, entity-upgrades and player damages are enabled by default now
+* Changed Readded from old vd more Rotten Flesh drop on Explode Creatures
+* Changed let the medic also restock splash potion on new wave
+* Changed heal chance from medic
+* Changed Kit Door ability, now uses special item to rebuild broken doors. Fixed doorblocks did not delete on arena restore
+* Changed Doors can only be placed from door kit
+* Changed Remove players from vehicles if any onLeaveAttempt
+* Changed All player items will get dropped on death
+* Updated minigamesbox to 1.4.5-SNAPSHOT13 including all improvements
 
 ### 4.7.2 (30.12.2023)
 * Fixed No price set for shop item on all locales
