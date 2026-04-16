@@ -1,0 +1,53 @@
+name: "&bTeleporter"
+description:
+  - "Everybody is astonished about your teleportation."
+  - "Nobody knows how to do it except you! Due to this,"
+  - "you are able to teleport to villagers"
+  - "that need help in no time!"
+enabled: true
+display_item:
+  material: ENDER_PEARL
+kit_type: premium
+unlockedOnDefault: false
+inventory:
+  '0':
+    item:
+      material: STONE_SWORD
+      damage: 0
+      enchants:
+        UNBREAKING: 10
+    slot: 0
+  '1':
+    item:
+      material: COOKED_BEEF
+      amount: 10
+    slot: 1
+  '2':
+    item:
+      material: SADDLE
+    slot: 2
+  '3':
+    item:
+      material: GHAST_TEAR
+      damage: 0
+      name: §rTeleportation Menu
+      lore:
+      - '§7§7Right click to open teleportation '
+      - §7menu!
+    slot: 3
+armour:
+  helmet:
+    material: GOLDEN_HELMET
+  chestplate:
+    material: GOLDEN_CHESTPLATE
+  leggings:
+    material: GOLDEN_LEGGINGS
+  boots:
+    material: GOLDEN_BOOTS
+Speed:
+  Walk: 0.2
+Health:
+  Max: 20.0
+Food: 20
+abilities:
+  - "TELEPORTER"

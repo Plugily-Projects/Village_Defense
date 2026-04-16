@@ -1,6 +1,6 @@
 /*
  *  Village Defense - Protect villagers from hordes of zombies
- *  Copyright (c) 2023 Plugily Projects - maintained by Tigerpanzer_02 and contributors
+ *  Copyright (c) 2026 Plugily Projects - maintained by Tigerpanzer_02 and contributors
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -18,6 +18,7 @@
 
 package plugily.projects.villagedefense.boot;
 
+import plugily.projects.minigamesbox.api.preferences.IConfigPreferences;
 import plugily.projects.minigamesbox.classic.api.StatisticType;
 import plugily.projects.minigamesbox.classic.api.StatsStorage;
 import plugily.projects.minigamesbox.classic.arena.options.ArenaOption;
@@ -29,7 +30,6 @@ import plugily.projects.minigamesbox.classic.handlers.permissions.PermissionsMan
 import plugily.projects.minigamesbox.classic.handlers.reward.RewardType;
 import plugily.projects.minigamesbox.classic.handlers.reward.RewardsFactory;
 import plugily.projects.minigamesbox.classic.preferences.ConfigOption;
-import plugily.projects.minigamesbox.classic.preferences.ConfigPreferences;
 import plugily.projects.villagedefense.Main;
 
 /**
@@ -57,7 +57,7 @@ public class AdditionalValueInitializer {
     getConfigPreferences().registerOption("RESPAWN_IN_GAME_JOIN", new ConfigOption("Respawn.In-Game-Join", true));
     getConfigPreferences().registerOption("LIMIT_WAVE_UNLIMITED", new ConfigOption("Limit.Wave.Unlimited", true));
     getConfigPreferences().registerOption("LIMIT_ENTITY_BUY_AFTER_DEATH", new ConfigOption("Limit.Wave.Entity-Buy-After-Death", true));
-    getConfigPreferences().registerOption("ZOMBIE_HEALTHBAR", new ConfigOption("Creatures.Health-Bar", true));
+    getConfigPreferences().registerOption("CREATURES_HEALTHBAR", new ConfigOption("Creatures.Health-Bar", true));
     getConfigPreferences().registerOption("NAME_VISIBILITY_GOLEM", new ConfigOption("Name-Visibility.Golem", true));
     getConfigPreferences().registerOption("NAME_VISIBILITY_WOLF", new ConfigOption("Name-Visibility.Wolf", true));
     getConfigPreferences().registerOption("NAME_VISIBILITY_VILLAGER", new ConfigOption("Name-Visibility.Villager", true));
@@ -79,7 +79,7 @@ public class AdditionalValueInitializer {
 
   private void registerRewards() {
     getRewardsHandler().registerRewardType("START_WAVE", new RewardType("start-wave"));
-    getRewardsHandler().registerRewardType("END_WAVE", new RewardType("end-wave"));
+    getRewardsHandler().registerRewardType("END_WAVE", new RewardType("end-wave", RewardType.ExecutorType.NUMBER, false));
     getRewardsHandler().registerRewardType("ZOMBIE_KILL", new RewardType("zombie-kill"));
     getRewardsHandler().registerRewardType("VILLAGER_DEATH", new RewardType("villager-death"));
     getRewardsHandler().registerRewardType("PLAYER_DEATH", new RewardType("player-death"));
@@ -152,10 +152,10 @@ public class AdditionalValueInitializer {
      * Example: 12 players in wave 20 will receive 30 difficulty multiplier.
      * So each zombie will get 30 HP more, harder!
      */
-    getArenaOptionManager().registerArenaOption("ZOMBIE_DIFFICULTY_MULTIPLIER", new ArenaOption("null", 1));
+    getArenaOptionManager().registerArenaOption("CREATURE_DIFFICULTY_MULTIPLIER", new ArenaOption("null", 1));
   }
 
-  private ConfigPreferences getConfigPreferences() {
+  private IConfigPreferences getConfigPreferences() {
     return plugin.getConfigPreferences();
   }
 

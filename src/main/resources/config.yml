@@ -21,6 +21,11 @@ Bossbar:
   Interval: 10
 
 
+# Should we display the scoreboard ingame?
+Scoreboard:
+  Display: true
+
+
 # Should we hook into bungeecord? (If you wanna use arena per server option)
 # This option will let you access bungee.yml and its options.
 # You STILL need to use external addon for HUB server game signs
@@ -32,6 +37,16 @@ Bungee-Mode: false
 # This saves inventory of players and restores it after player leaves arena.
 # Saved elements: max health, health, food, experience, full inventory, armor contents, fire ticks, active potions
 Inventory-Manager: true
+
+
+# Kits configuration
+# A server restart is required for changes to apply
+Kit:
+  # Should we load kits?
+  Enabled: true
+  # What is the default kit for players?
+  # This should be the same name as the file name of the kits file in the kits folder
+  Default: "knight"
 
 
 Commands:
@@ -72,6 +87,18 @@ Block:
     Leave: false
     # Cancels Item Movement into player crafting, enchantment tables, anvils ...
     Item-Move: true
+    ArmorStand:
+      # Should we block armor stand destroy with double click?
+      Destroy: true
+      # Should we block armor stand interaction?
+      Interact: true
+      # Should these only be blocked while ingame and arena state is in_game? (e.g. Lobby and Ending is blocked)
+      # Setting it to false means on all stages of the game the event will be cancelled.
+      # Setting it to true means only while IN_GAME the event will be cancelled.
+      Check: true
+    # Should all interactions with interactive materials such as doors / buttons / fences / redstone be blocked during ingame
+    # Full list see https://github.com/CryptoMorin/XSeries/blob/e84000a2bead7367d893cf8661f8d5432116adaa/core/src/main/java/com/cryptomorin/xseries/XTag.java#L2793
+    Interact: false
 
 
 # Enable this option when you're using MySQL, otherwise it won't work.
@@ -83,18 +110,20 @@ Database: false
 
 # Should we enable in game rewards? See rewards.yml for more...
 # You should also check out our script engine tutorial for rewards! https://tutorial.plugily.xyz
-Rewards: true
+Rewards: false
 
 
-# Enable in game (eg. '[KIT][LEVEL] Tigerpanzer_02: hey') special formatting?
-# Formatting is configurable in language.yml
-# You can use PlaceholderAPI placeholders in chat format!
-Plugin-Chat-Format: true
-
-
-# Should we enable a separate arena chat for players inside a arena
-# Useful on multi arena servers that don't want the same chat for all players on the server
-Separate-Arena-Chat: true
+Chat:
+  # Enable in game (eg. '[KIT][LEVEL] Tigerpanzer_02: hey') special formatting?
+  # Formatting is configurable in language.yml
+  # You can use PlaceholderAPI placeholders in chat format!
+  Format: true
+  Separate:
+    # Should we enable a separate arena chat for players inside a arena
+    # Useful on multi arena servers that don't want the same chat for all players on the server
+    Arena: true
+    # Should spectators only write with other spectators
+    Spectators: true
 
 
 # Should we fire some cool fireworks at locations of every player at special events such as the game end?
@@ -120,11 +149,7 @@ Holidays: true
 
 
 # Should the plugin enable special powerups which can be found in powerups.yml
-Powerups: false
-
-
-# Should the plugin enable kits which can be found in kits.yml
-Kits: true
+Powerups: true
 
 
 # Should we create leaderboards out of the stats?
@@ -142,11 +167,13 @@ Parties:
 
 Damage:
   # Should players get fall damage?
-  Fall: false
+  Fall: true
   # Should players get drowning damage?
-  Drowning: false
+  Drowning: true
   # Should players get fire damage?
-  Fire: false
+  Fire: true
+  # Should players lose food ingame & get damage?
+  Hunger: true
 
 
 Cycle:
@@ -171,8 +198,8 @@ Time-Manager:
 
 
 # Should we add support for upgradeable Wolves and Golems in game?
-# Configure upgrades pricing in entity_upgrades.yml after enabling it.
-Entity-Upgrades: false
+# Configure upgrades pricing in entity_upgrades.yml
+Entity-Upgrades: true
 
 
 Respawn:
@@ -242,6 +269,10 @@ Glowing-Status:
   Creatures-Left: 0
 
 
+# Allow spectators on arena instances
+Spectators: true
+
+
 Update-Notifier:
   # Should we check for updates on plugin start/after admin join?
   # You REALLY should have this true!
@@ -256,4 +287,4 @@ Update-Notifier:
 # You edited it, huh? Next time hurt yourself!
 Do-Not-Edit:
   File-Version: 1
-  Core-Version: 1
+  Core-Version: 7

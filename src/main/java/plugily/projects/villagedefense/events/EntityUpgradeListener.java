@@ -1,6 +1,6 @@
 /*
  *  Village Defense - Protect villagers from hordes of zombies
- *  Copyright (c) 2023 Plugily Projects - maintained by Tigerpanzer_02 and contributors
+ *  Copyright (c) 2026 Plugily Projects - maintained by Tigerpanzer_02 and contributors
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -18,20 +18,15 @@
 
 package plugily.projects.villagedefense.events;
 
-import org.bukkit.entity.Creature;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.IronGolem;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Wolf;
+import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
 import plugily.projects.minigamesbox.classic.utils.version.VersionUtils;
 import plugily.projects.minigamesbox.classic.utils.version.events.api.PlugilyPlayerInteractEntityEvent;
+import plugily.projects.minigamesbox.classic.utils.version.xseries.XEntityType;
+import plugily.projects.minigamesbox.classic.utils.version.xseries.XPotion;
 import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.arena.Arena;
 import plugily.projects.villagedefense.creatures.CreatureUtils;
@@ -95,7 +90,7 @@ public class EntityUpgradeListener implements Listener {
 
   @EventHandler
   public void onFinalDefense(EntityDeathEvent event) {
-    if(event.getEntityType() != EntityType.IRON_GOLEM) {
+    if(event.getEntityType() != XEntityType.IRON_GOLEM.get()) {
       return;
     }
 
@@ -116,7 +111,7 @@ public class EntityUpgradeListener implements Listener {
         }
       }
       for(Creature zombie : new ArrayList<>(arena.getEnemies())) {
-        zombie.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 5, 0));
+        XPotion.SLOWNESS.buildPotionEffect( 5, 0).apply(zombie);
         zombie.damage(0.5, livingEntity);
       }
     }
@@ -124,7 +119,7 @@ public class EntityUpgradeListener implements Listener {
 
   @EventHandler
   public void onEntityClick(PlugilyPlayerInteractEntityEvent event) {
-    if((event.getRightClicked().getType() != EntityType.IRON_GOLEM && event.getRightClicked().getType() != EntityType.WOLF)
+    if((event.getRightClicked().getType() != XEntityType.IRON_GOLEM.get() && event.getRightClicked().getType() != XEntityType.WOLF.get())
         || VersionUtils.checkOffHand(event.getHand()) || !event.getPlayer().isSneaking()
         || event.getRightClicked().getCustomName() == null) {
       return;

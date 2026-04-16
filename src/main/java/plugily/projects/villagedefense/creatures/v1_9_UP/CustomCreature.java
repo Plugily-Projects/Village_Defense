@@ -1,7 +1,7 @@
 
 /*
  *  Village Defense - Protect villagers from hordes of zombies
- *  Copyright (c) 2023 Plugily Projects - maintained by Tigerpanzer_02 and contributors
+ *  Copyright (c) 2026 Plugily Projects - maintained by Tigerpanzer_02 and contributors
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -20,7 +20,6 @@
 package plugily.projects.villagedefense.creatures.v1_9_UP;
 
 import org.bukkit.Location;
-import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Ageable;
 import org.bukkit.entity.Creature;
 import org.bukkit.entity.Entity;
@@ -29,6 +28,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
 import plugily.projects.minigamesbox.classic.utils.version.ServerVersion;
 import plugily.projects.minigamesbox.classic.utils.version.VersionUtils;
+import plugily.projects.minigamesbox.classic.utils.version.xseries.XAttribute;
 import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.arena.Arena;
 import plugily.projects.villagedefense.arena.managers.spawner.SimpleEnemySpawner;
@@ -61,15 +61,15 @@ public class CustomCreature implements SimpleEnemySpawner {
   private final List<Rate> spawn = new ArrayList<>();
   private final List<Rate> amount = new ArrayList<>();
   private final List<Rate> check = new ArrayList<>();
-  private final Map<Attribute, Double> attributes;
+  private final Map<XAttribute, Double> attributes;
   private final List<Equipment> equipments;
   private final ItemStack dropItem;
 
 
-  public CustomCreature(Main plugin, int waveMin, int waveMax, PriorityTarget priorityTarget, boolean explodeTarget, String key, EntityType entityType, boolean baby, boolean breed, int age, boolean ageLook, int expDrop, boolean holidayEffects, List<Rate> rates, Map<Attribute, Double> attributes, List<Equipment> equipments, ItemStack dropItem) {
+  public CustomCreature(Main plugin, int waveMin, int waveMax, PriorityTarget priorityTarget, boolean explodeTarget, String key, EntityType entityType, boolean baby, boolean breed, int age, boolean ageLook, int expDrop, boolean holidayEffects, List<Rate> rates, Map<XAttribute, Double> attributes, List<Equipment> equipments, ItemStack dropItem) {
     this.priorityTarget = priorityTarget;
     this.explodeTarget = explodeTarget;
-    if(ServerVersion.Version.isCurrentEqualOrLower(ServerVersion.Version.v1_8_R3)) {
+    if(ServerVersion.Version.isCurrentEqualOrLower(ServerVersion.Version.v1_8_8)) {
       throw new IllegalStateException("Couldn't create Creature " + key + " as its only for Version 1.9+");
     }
     this.plugin = plugin;
@@ -166,7 +166,7 @@ public class CustomCreature implements SimpleEnemySpawner {
     return rates;
   }
 
-  public Map<Attribute, Double> getAttributes() {
+  public Map<XAttribute, Double> getAttributes() {
     return attributes;
   }
 
@@ -297,10 +297,10 @@ public class CustomCreature implements SimpleEnemySpawner {
             break;
         }
       }
-      creature.getAttribute(Attribute.GENERIC_FOLLOW_RANGE).setBaseValue(200D);
-      for(Map.Entry<Attribute, Double> attribute : attributes.entrySet()) {
-        creature.getAttribute(attribute.getKey()).setBaseValue(attribute.getValue());
-        if(attribute.getKey() == Attribute.GENERIC_MAX_HEALTH) {
+      creature.getAttribute(XAttribute.FOLLOW_RANGE.get()).setBaseValue(200D);
+      for(Map.Entry<XAttribute, Double> attribute : attributes.entrySet()) {
+        creature.getAttribute(attribute.getKey().get()).setBaseValue(attribute.getValue());
+        if(attribute.getKey().get() == XAttribute.MAX_HEALTH.get()) {
           VersionUtils.setMaxHealth(creature, attribute.getValue());
           creature.setHealth(attribute.getValue());
         }

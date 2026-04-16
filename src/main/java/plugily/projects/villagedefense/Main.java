@@ -1,6 +1,6 @@
 /*
  *  Village Defense - Protect villagers from hordes of zombies
- *  Copyright (c) 2023 Plugily Projects - maintained by Tigerpanzer_02 and contributors
+ *  Copyright (c) 2026 Plugily Projects - maintained by Tigerpanzer_02 and contributors
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -18,22 +18,17 @@
 
 package plugily.projects.villagedefense;
 
-import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.plugin.PluginDescriptionFile;
-import org.bukkit.plugin.java.JavaPluginLoader;
 import org.jetbrains.annotations.TestOnly;
+import plugily.projects.minigamesbox.api.kit.IKit;
 import plugily.projects.minigamesbox.classic.PluginMain;
 import plugily.projects.minigamesbox.classic.handlers.setup.SetupInventory;
 import plugily.projects.minigamesbox.classic.handlers.setup.categories.PluginSetupCategoryManager;
 import plugily.projects.minigamesbox.classic.utils.configuration.ConfigUtils;
 import plugily.projects.minigamesbox.classic.utils.services.metrics.Metrics;
 import plugily.projects.minigamesbox.classic.utils.version.ServerVersion;
-import plugily.projects.villagedefense.arena.Arena;
-import plugily.projects.villagedefense.arena.ArenaEvents;
-import plugily.projects.villagedefense.arena.ArenaManager;
-import plugily.projects.villagedefense.arena.ArenaRegistry;
-import plugily.projects.villagedefense.arena.ArenaUtils;
+import plugily.projects.villagedefense.arena.*;
+import plugily.projects.villagedefense.arena.managers.doors.DoorBreakListener;
 import plugily.projects.villagedefense.arena.managers.enemy.spawner.EnemySpawnerRegistry;
 import plugily.projects.villagedefense.arena.managers.enemy.spawner.EnemySpawnerRegistryLegacy;
 import plugily.projects.villagedefense.boot.AdditionalValueInitializer;
@@ -41,39 +36,18 @@ import plugily.projects.villagedefense.boot.MessageInitializer;
 import plugily.projects.villagedefense.boot.PlaceholderInitializer;
 import plugily.projects.villagedefense.commands.arguments.ArgumentsRegistry;
 import plugily.projects.villagedefense.creatures.CreatureUtils;
-import plugily.projects.villagedefense.creatures.DoorBreakListener;
 import plugily.projects.villagedefense.events.PluginEvents;
+import plugily.projects.villagedefense.handlers.LanguageMigrator;
 import plugily.projects.villagedefense.handlers.powerup.PowerupHandler;
 import plugily.projects.villagedefense.handlers.setup.SetupCategoryManager;
 import plugily.projects.villagedefense.handlers.upgrade.EntityUpgradeMenu;
 import plugily.projects.villagedefense.handlers.upgrade.upgrades.Upgrade;
 import plugily.projects.villagedefense.handlers.upgrade.upgrades.UpgradeBuilder;
-import plugily.projects.villagedefense.kits.free.KnightKit;
-import plugily.projects.villagedefense.kits.free.LightTankKit;
-import plugily.projects.villagedefense.kits.level.ArcherKit;
-import plugily.projects.villagedefense.kits.level.GolemFriendKit;
-import plugily.projects.villagedefense.kits.level.HardcoreKit;
-import plugily.projects.villagedefense.kits.level.HealerKit;
-import plugily.projects.villagedefense.kits.level.LooterKit;
-import plugily.projects.villagedefense.kits.level.MediumTankKit;
-import plugily.projects.villagedefense.kits.level.PuncherKit;
-import plugily.projects.villagedefense.kits.level.RunnerKit;
-import plugily.projects.villagedefense.kits.level.TerminatorKit;
-import plugily.projects.villagedefense.kits.level.WorkerKit;
-import plugily.projects.villagedefense.kits.level.ZombieFinderKit;
-import plugily.projects.villagedefense.kits.premium.BlockerKit;
-import plugily.projects.villagedefense.kits.premium.CleanerKit;
-import plugily.projects.villagedefense.kits.premium.DogFriendKit;
-import plugily.projects.villagedefense.kits.premium.HeavyTankKit;
-import plugily.projects.villagedefense.kits.premium.MedicKit;
-import plugily.projects.villagedefense.kits.premium.NakedKit;
-import plugily.projects.villagedefense.kits.premium.PremiumHardcoreKit;
-import plugily.projects.villagedefense.kits.premium.ShotBowKit;
-import plugily.projects.villagedefense.kits.premium.TeleporterKit;
-import plugily.projects.villagedefense.kits.premium.TornadoKit;
-import plugily.projects.villagedefense.kits.premium.WizardKit;
+import plugily.projects.villagedefense.kits.KitAbilityInitializer;
+import plugily.projects.villagedefense.kits.KitUtils;
 
-import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 
 /**
@@ -87,20 +61,17 @@ public class Main extends PluginMain {
   private ArenaRegistry arenaRegistry;
   private ArenaManager arenaManager;
   private ArgumentsRegistry argumentsRegistry;
+  private EntityUpgradeMenu entityUpgradeMenu;
 
   @TestOnly
   public Main() {
     super();
   }
 
-  @TestOnly
-  protected Main(JavaPluginLoader loader, PluginDescriptionFile description, File dataFolder, File file) {
-    super(loader, description, dataFolder, file);
-  }
-
   @Override
   public void onEnable() {
     long start = System.currentTimeMillis();
+    new LanguageMigrator(this);
     MessageInitializer messageInitializer = new MessageInitializer(this);
     super.onEnable();
     getDebugger().debug("[System] [Plugin] Initialization start");
@@ -125,7 +96,7 @@ public class Main extends PluginMain {
     getSignManager().loadSigns();
     getSignManager().updateSigns();
     argumentsRegistry = new ArgumentsRegistry(this);
-    if(ServerVersion.Version.isCurrentEqualOrLower(ServerVersion.Version.v1_8_R3)) {
+    if(ServerVersion.Version.isCurrentEqualOrLower(ServerVersion.Version.v1_8_8)) {
       enemySpawnerRegistry = new EnemySpawnerRegistryLegacy(this);
     } else {
       enemySpawnerRegistry = new EnemySpawnerRegistry(this);
@@ -134,7 +105,7 @@ public class Main extends PluginMain {
       entityUpgradesConfig = ConfigUtils.getConfig(this, "entity_upgrades");
       Upgrade.init(this);
       UpgradeBuilder.init(this);
-      new EntityUpgradeMenu(this);
+      entityUpgradeMenu = new EntityUpgradeMenu(this);
     }
     new DoorBreakListener(this);
     CreatureUtils.init(this);
@@ -144,21 +115,48 @@ public class Main extends PluginMain {
   }
 
   public void addKits() {
-    long start = System.currentTimeMillis();
-    getDebugger().debug("Adding kits...");
-    addFileName("kits");
-    Class<?>[] classKitNames = new Class[]{KnightKit.class, LightTankKit.class, ZombieFinderKit.class, ArcherKit.class, PuncherKit.class, HealerKit.class, LooterKit.class, RunnerKit.class,
-        MediumTankKit.class, WorkerKit.class, GolemFriendKit.class, TerminatorKit.class, HardcoreKit.class, CleanerKit.class, TeleporterKit.class, HeavyTankKit.class, ShotBowKit.class,
-        DogFriendKit.class, PremiumHardcoreKit.class, TornadoKit.class, BlockerKit.class, MedicKit.class, NakedKit.class, WizardKit.class};
-    for(Class<?> kitClass : classKitNames) {
-      try {
-        kitClass.getDeclaredConstructor().newInstance();
-      } catch(Exception e) {
-        getLogger().log(Level.SEVERE, "Fatal error while registering existing game kit! Report this error to the developer!");
-        getLogger().log(Level.SEVERE, "Cause: " + e.getMessage() + " (kitClass " + kitClass.getName() + ")");
-        e.printStackTrace();
-      }
+    if(!getConfigPreferences().getOption("KITS")) {
+      // Kits are disabled, no kits will be loaded
+      return;
     }
+    long start = System.currentTimeMillis();
+    new KitAbilityInitializer(this);
+    getDebugger().performance("Kit", "Adding kits...");
+    addFileName("kits/archer");
+    addFileName("kits/blocker");
+    addFileName("kits/cleaner");
+    addFileName("kits/dog_friend");
+    addFileName("kits/golem_friend");
+    addFileName("kits/hardcore");
+    addFileName("kits/hardcore_master");
+    addFileName("kits/healer");
+    addFileName("kits/heavy_tank");
+    addFileName("kits/knight");
+    addFileName("kits/light_tank");
+    addFileName("kits/looter");
+    addFileName("kits/medic");
+    addFileName("kits/medium_tank");
+    addFileName("kits/puncher");
+    addFileName("kits/runner");
+    addFileName("kits/shotbow_master");
+    addFileName("kits/teleporter");
+    addFileName("kits/terminator");
+    addFileName("kits/tornado");
+    addFileName("kits/wild_naked");
+    addFileName("kits/wizard");
+    addFileName("kits/worker");
+    addFileName("kits/zombie_teleporter");
+    List<String> optionalConfigurations = new ArrayList<>();
+    optionalConfigurations.add("restock");
+    optionalConfigurations.add("cooldown");
+
+    getKitRegistry().setHandleItem((player, item) -> KitUtils.handleItem(this, player, item));
+    getKitRegistry().registerKits(optionalConfigurations);
+    getDebugger().debug(Level.INFO, "Kits loaded: ");
+    for(IKit kit : getKitRegistry().getKits()) {
+      getDebugger().debug(kit.getName());
+    }
+    getKitRegistry().setDefaultKit("knight");
     getDebugger().debug("Kit adding finished took {0}ms", System.currentTimeMillis() - start);
   }
 
@@ -192,6 +190,10 @@ public class Main extends PluginMain {
   @Override
   public ArenaManager getArenaManager() {
     return arenaManager;
+  }
+
+  public EntityUpgradeMenu getEntityUpgradeMenu() {
+    return entityUpgradeMenu;
   }
 
   @Override

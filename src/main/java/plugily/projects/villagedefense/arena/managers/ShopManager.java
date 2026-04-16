@@ -1,6 +1,6 @@
 /*
  *  Village Defense - Protect villagers from hordes of zombies
- *  Copyright (c) 2023 Plugily Projects - maintained by Tigerpanzer_02 and contributors
+ *  Copyright (c) 2026 Plugily Projects - maintained by Tigerpanzer_02 and contributors
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -23,17 +23,17 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Chest;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
+import plugily.projects.minigamesbox.api.user.IUser;
 import plugily.projects.minigamesbox.classic.handlers.language.MessageBuilder;
-import plugily.projects.minigamesbox.classic.user.User;
 import plugily.projects.minigamesbox.classic.utils.configuration.ConfigUtils;
 import plugily.projects.minigamesbox.classic.utils.helper.ItemUtils;
 import plugily.projects.minigamesbox.classic.utils.misc.complement.ComplementAccessor;
 import plugily.projects.minigamesbox.classic.utils.serialization.LocationSerializer;
+import plugily.projects.minigamesbox.classic.utils.version.xseries.XEntityType;
 import plugily.projects.minigamesbox.inventory.normal.NormalFastInv;
 import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.arena.Arena;
@@ -133,14 +133,15 @@ public class ShopManager {
       ItemMeta meta = itemStack.getItemMeta();
       //seek for item price
       if(meta != null && meta.hasLore()) {
-        for(String s : ComplementAccessor.getComplement().getLore(meta)) {
-          if(s.contains(new MessageBuilder("IN_GAME_MESSAGES_VILLAGE_SHOP_CURRENCY").asKey().build()) || s.contains("orbs")) {
-            costString = ChatColor.stripColor(s).replaceAll("&[0-9a-zA-Z]", "").replaceAll("[^0-9]", "");
+        String currency = ChatColor.stripColor(new MessageBuilder("IN_GAME_MESSAGES_VILLAGE_SHOP_CURRENCY").asKey().build());
+        for(String itemCurrencyPlaceholder : ComplementAccessor.getComplement().getLore(meta)) {
+          if(itemCurrencyPlaceholder.contains(currency) || itemCurrencyPlaceholder.contains("orbs")) {
+            costString = ChatColor.stripColor(ChatColor.translateAlternateColorCodes('&', itemCurrencyPlaceholder)).replace(currency, "").replace("orbs", "").trim();
             break;
           }
         }
       }
-
+      plugin.getDebugger().debug(Level.INFO, "{0} Coststring {1} of slot {2} !", arena.getId(), costString, slot);
       int cost;
       try {
         cost = Integer.parseInt(costString);
@@ -156,7 +157,7 @@ public class ShopManager {
           return;
         }
 
-        User user = plugin.getUserManager().getUser(player);
+        IUser user = plugin.getUserManager().getUser(player);
         int orbs = user.getStatistic("ORBS");
 
         if(cost > orbs) {
@@ -168,7 +169,7 @@ public class ShopManager {
           String name = ComplementAccessor.getComplement().getDisplayName(itemStack.getItemMeta());
           if(name.contains(new MessageBuilder("IN_GAME_MESSAGES_VILLAGE_SHOP_GOLEM_ITEM", false).asKey().build())
               || name.contains(defaultGolemItemName)) {
-            if(!arena.canSpawnMobForPlayer(player, EntityType.IRON_GOLEM)) {
+            if(!arena.canSpawnMobForPlayer(player, XEntityType.IRON_GOLEM.get())) {
               return;
             }
             arena.spawnGolem(arena.getStartLocation(), player);
@@ -177,7 +178,7 @@ public class ShopManager {
           }
           if(name.contains(new MessageBuilder("IN_GAME_MESSAGES_VILLAGE_SHOP_WOLF_ITEM", false).asKey().build())
               || name.contains(defaultWolfItemName)) {
-            if(!arena.canSpawnMobForPlayer(player, EntityType.WOLF)) {
+            if(!arena.canSpawnMobForPlayer(player, XEntityType.WOLF.get())) {
               return;
             }
             arena.spawnWolf(arena.getStartLocation(), player);
@@ -205,7 +206,7 @@ public class ShopManager {
     }
   }
 
-  private void adjustOrbs(User user, int cost) {
+  private void adjustOrbs(IUser user, int cost) {
     user.adjustStatistic("ORBS", -cost);
     arena.changeArenaOptionBy("TOTAL_ORBS_SPENT", cost);
   }

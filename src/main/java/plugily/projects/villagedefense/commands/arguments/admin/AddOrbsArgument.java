@@ -1,6 +1,6 @@
 /*
  *  Village Defense - Protect villagers from hordes of zombies
- *  Copyright (c) 2023 Plugily Projects - maintained by Tigerpanzer_02 and contributors
+ *  Copyright (c) 2026 Plugily Projects - maintained by Tigerpanzer_02 and contributors
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -22,11 +22,11 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import plugily.projects.minigamesbox.api.user.IUser;
 import plugily.projects.minigamesbox.classic.commands.arguments.data.CommandArgument;
 import plugily.projects.minigamesbox.classic.commands.arguments.data.LabelData;
 import plugily.projects.minigamesbox.classic.commands.arguments.data.LabeledCommandArgument;
 import plugily.projects.minigamesbox.classic.handlers.language.MessageBuilder;
-import plugily.projects.minigamesbox.classic.user.User;
 import plugily.projects.minigamesbox.number.NumberUtils;
 import plugily.projects.villagedefense.commands.arguments.ArgumentsRegistry;
 
@@ -72,7 +72,7 @@ public class AddOrbsArgument {
         java.util.Optional<Integer> opt = NumberUtils.parseInt(args[1]);
 
         if(opt.isPresent()) {
-          User user = registry.getPlugin().getUserManager().getUser(target);
+          IUser user = registry.getPlugin().getUserManager().getUser(target);
           user.setStatistic(registry.getPlugin().getStatsStorage().getStatisticType("ORBS"), user.getStatistic("ORBS") + opt.get());
           new MessageBuilder("COMMANDS_ADMIN_ADDED_ORBS").asKey().send(sender);
           new MessageBuilder("COMMANDS_ADMIN_RECEIVED_ORBS").asKey().integer(opt.get()).send(target);

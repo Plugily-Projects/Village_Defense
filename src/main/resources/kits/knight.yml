@@ -1,0 +1,37 @@
+name: "&2Knight"
+description:
+  - "This is the one and only knight kit!"
+  - "Many people think this is the worst kit!"
+  - "I must admit they are totally wrong!"
+enabled: true
+display_item:
+  material: WOODEN_SWORD
+kit_type: free
+unlockedOnDefault: true
+inventory:
+  '0':
+    item:
+      material: WOODEN_SWORD
+      damage: 0
+      enchants:
+        UNBREAKING: 10
+    slot: 0
+  '1':
+    item:
+      material: COOKED_PORKCHOP
+      amount: 8
+    slot: 1
+armour:
+  helmet:
+    material: LEATHER_HELMET
+  chestplate:
+    material: LEATHER_CHESTPLATE
+  leggings:
+    material: LEATHER_LEGGINGS
+  boots:
+    material: LEATHER_BOOTS
+Speed:
+  Walk: 0.2
+Health:
+  Max: 20.0
+Food: 20

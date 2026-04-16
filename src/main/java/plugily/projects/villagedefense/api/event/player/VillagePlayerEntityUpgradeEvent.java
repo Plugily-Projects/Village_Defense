@@ -1,6 +1,6 @@
 /*
  *  Village Defense - Protect villagers from hordes of zombies
- *  Copyright (c) 2023 Plugily Projects - maintained by Tigerpanzer_02 and contributors
+ *  Copyright (c) 2026 Plugily Projects - maintained by Tigerpanzer_02 and contributors
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -21,7 +21,7 @@ package plugily.projects.villagedefense.api.event.player;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
-import plugily.projects.minigamesbox.classic.api.event.PlugilyEvent;
+import plugily.projects.minigamesbox.api.events.PlugilyEvent;
 import plugily.projects.villagedefense.arena.Arena;
 import plugily.projects.villagedefense.handlers.upgrade.upgrades.Upgrade;
 

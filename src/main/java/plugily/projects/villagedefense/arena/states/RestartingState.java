@@ -1,6 +1,6 @@
 /*
  *  Village Defense - Protect villagers from hordes of zombies
- *  Copyright (c) 2023 Plugily Projects - maintained by Tigerpanzer_02 and contributors
+ *  Copyright (c) 2026 Plugily Projects - maintained by Tigerpanzer_02 and contributors
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -22,6 +22,7 @@ import org.bukkit.entity.Entity;
 import plugily.projects.minigamesbox.classic.arena.PluginArena;
 import plugily.projects.minigamesbox.classic.arena.states.PluginRestartingState;
 import plugily.projects.villagedefense.arena.Arena;
+import plugily.projects.villagedefense.arena.ArenaUtils;
 
 import java.util.Objects;
 
@@ -39,6 +40,7 @@ public class RestartingState extends PluginRestartingState {
     if(pluginArena == null) {
       return;
     }
+    ArenaUtils.removeSpawnedEnemies(pluginArena);
     if(arena.getTimer() <= 0) {
       pluginArena.getDroppedFleshes().stream().filter(Objects::nonNull).forEach(Entity::remove);
       pluginArena.getDroppedFleshes().clear();

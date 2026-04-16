@@ -1,6 +1,6 @@
 /*
  *  Village Defense - Protect villagers from hordes of zombies
- *  Copyright (c) 2023 Plugily Projects - maintained by Tigerpanzer_02 and contributors
+ *  Copyright (c) 2026 Plugily Projects - maintained by Tigerpanzer_02 and contributors
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -19,47 +19,33 @@
 package plugily.projects.villagedefense.events;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
-import org.bukkit.entity.Creature;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.IronGolem;
-import org.bukkit.entity.Item;
-import org.bukkit.entity.Player;
-import org.bukkit.entity.Projectile;
-import org.bukkit.entity.Villager;
-import org.bukkit.entity.Wolf;
+import org.bukkit.entity.*;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
-import org.bukkit.event.entity.EntityCombustByBlockEvent;
-import org.bukkit.event.entity.EntityCombustByEntityEvent;
-import org.bukkit.event.entity.EntityCombustEvent;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.entity.ItemSpawnEvent;
-import org.bukkit.event.entity.PlayerLeashEntityEvent;
+import org.bukkit.event.entity.*;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryPickupItemEvent;
 import org.bukkit.event.inventory.InventoryType;
-import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerExpChangeEvent;
 import org.bukkit.inventory.ItemStack;
-import plugily.projects.minigamesbox.classic.arena.ArenaState;
+import plugily.projects.minigamesbox.api.arena.IArenaState;
+import plugily.projects.minigamesbox.api.user.IUser;
 import plugily.projects.minigamesbox.classic.handlers.language.MessageBuilder;
-import plugily.projects.minigamesbox.classic.user.User;
 import plugily.projects.minigamesbox.classic.utils.version.VersionUtils;
 import plugily.projects.minigamesbox.classic.utils.version.events.api.PlugilyPlayerInteractEntityEvent;
-import plugily.projects.minigamesbox.string.StringFormatUtils;
+import plugily.projects.minigamesbox.classic.utils.version.xseries.XEntityType;
+import plugily.projects.minigamesbox.classic.utils.version.xseries.XMaterial;
 import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.api.event.game.VillageGameSecretWellEvent;
 import plugily.projects.villagedefense.arena.Arena;
+import plugily.projects.villagedefense.creatures.CreatureUtils;
 import plugily.projects.villagedefense.utils.Utils;
 
 /**
@@ -83,13 +69,13 @@ public class PluginEvents implements Listener {
       return;
     }
 
-    User user = plugin.getUserManager().getUser(player);
+    IUser user = plugin.getUserManager().getUser(player);
     if(user.isSpectator()) {
       event.setAmount(0);
       return;
     }
 
-    int amount = (int) Math.ceil(event.getAmount() * 1.6 * arena.getArenaOption("ZOMBIE_DIFFICULTY_MULTIPLIER"));
+    int amount = (int) Math.ceil(event.getAmount() * 1.6 * arena.getArenaOption("CREATURE_DIFFICULTY_MULTIPLIER"));
 
     event.setAmount(amount);
 
@@ -98,7 +84,7 @@ public class PluginEvents implements Listener {
     amount += (amount * (orbsBoost / 100));
 
     amount += event.getAmount();
-    user.adjustStatistic(plugin.getStatsStorage().getStatisticType("ORBS"), event.getAmount());
+    user.adjustStatistic(plugin.getStatsStorage().getStatisticType("ORBS"), amount);
 
     new MessageBuilder("IN_GAME_MESSAGES_VILLAGE_WAVE_ORBS_PICKUP").asKey().integer(amount).player(player).sendPlayer();
   }
@@ -120,16 +106,16 @@ public class PluginEvents implements Listener {
       return;
     }
     if(VersionUtils.getItemInHand(event.getPlayer()).getType() == Material.SADDLE) {
-      if(event.getRightClicked().getType() == EntityType.IRON_GOLEM || event.getRightClicked().getType() == EntityType.VILLAGER || event.getRightClicked().getType() == EntityType.WOLF) {
+      if(event.getRightClicked().getType() == XEntityType.IRON_GOLEM.get() || event.getRightClicked().getType() == XEntityType.VILLAGER.get() || event.getRightClicked().getType() == XEntityType.WOLF.get()) {
         VersionUtils.setPassenger(event.getRightClicked(), event.getPlayer());
         event.setCancelled(true);
         return;
       }
     }
-    if(event.getRightClicked().getType() == EntityType.VILLAGER) {
+    if(event.getRightClicked().getType() == XEntityType.VILLAGER.get()) {
       event.setCancelled(true);
       arena.getShopManager().openShop(event.getPlayer());
-    } else if(event.getRightClicked().getType() == EntityType.IRON_GOLEM) {
+    } else if(event.getRightClicked().getType() == XEntityType.IRON_GOLEM.get()) {
       if(event.getPlayer().isSneaking()) {
         return;
       }
@@ -139,7 +125,7 @@ public class PluginEvents implements Listener {
       } else {
         new MessageBuilder("IN_GAME_MESSAGES_VILLAGE_WAVE_ENTITIES_GOLEM_CANT_RIDE_OTHER").asKey().player(event.getPlayer()).sendPlayer();
       }
-    } else if(event.getRightClicked().getType() == EntityType.WOLF) {
+    } else if(event.getRightClicked().getType() == XEntityType.WOLF.get()) {
       Wolf wolf = (Wolf) event.getRightClicked();
       Bukkit.getScheduler().runTask(plugin, () -> wolf.setSitting(false));
       if(event.getPlayer().isSneaking()) {
@@ -164,17 +150,9 @@ public class PluginEvents implements Listener {
   }
 
   @EventHandler
-  public void onDrop(PlayerDropItemEvent event) {
-    if(plugin.getArenaRegistry().isInArena(event.getPlayer()) && event.getItemDrop().getItemStack().getType() == Material.SADDLE) {
-      event.setCancelled(true);
-    }
-  }
-
-
-  @EventHandler
   public void onItemMove(InventoryClickEvent event) {
     if(event.getWhoClicked() instanceof Player && plugin.getArenaRegistry().isInArena((Player) event.getWhoClicked())) {
-      if(plugin.getArenaRegistry().getArena(((Player) event.getWhoClicked())).getArenaState() != ArenaState.IN_GAME) {
+      if(plugin.getArenaRegistry().getArena(((Player) event.getWhoClicked())).getArenaState() != IArenaState.IN_GAME) {
         if(event.getClickedInventory() == event.getWhoClicked().getInventory()) {
           if(event.getView().getType() == InventoryType.CRAFTING || event.getView().getType() == InventoryType.PLAYER) {
             event.setResult(Event.Result.DENY);
@@ -226,16 +204,18 @@ public class PluginEvents implements Listener {
 
   @EventHandler(priority = EventPriority.HIGH)
   public void onCreatureHurt(EntityDamageEvent event) {
-    if(!(event.getEntity() instanceof Creature) || !plugin.getConfigPreferences().getOption("ZOMBIE_HEALTHBAR")) {
+    if(!(event.getEntity() instanceof Creature) || !plugin.getConfigPreferences().getOption("CREATURES_HEALTHBAR")) {
+      return;
+    }
+    if(event.isCancelled()) {
       return;
     }
     for(Arena arena : plugin.getArenaRegistry().getPluginArenas()) {
       if(!arena.getEnemies().contains(event.getEntity())) {
         continue;
       }
-      Creature creature = (Creature) event.getEntity();
-      creature.setCustomName(StringFormatUtils.getProgressBar((int) creature.getHealth(), (int) VersionUtils.getMaxHealth(creature),
-          50, "|", ChatColor.YELLOW + "", ChatColor.GRAY + ""));
+      event.setCancelled(false);
+      event.getEntity().setCustomName(CreatureUtils.getHealthNameTagPreDamage((Creature) event.getEntity(), event.getFinalDamage()));
     }
   }
 
@@ -272,7 +252,7 @@ public class PluginEvents implements Listener {
 
   @EventHandler(priority = EventPriority.HIGH)
   public void onBuild(BlockPlaceEvent event) {
-    if(plugin.getArenaRegistry().isInArena(event.getPlayer()) && event.getBlock().getType() != Utils.getCachedDoor(event.getBlock())) {
+    if(plugin.getArenaRegistry().isInArena(event.getPlayer())) {
       event.setCancelled(true);
     }
   }
@@ -310,7 +290,7 @@ public class PluginEvents implements Listener {
       return;
     }
 
-    if(itemStack.getType() == Material.ROTTEN_FLESH) {
+    if(itemStack.getType() == XMaterial.ROTTEN_FLESH.get()) {
       for(Entity entity : plugin.getBukkitHelper().getNearbyEntities(location, 20)) {
         if(!(entity instanceof Player)) {
           continue;
@@ -326,6 +306,7 @@ public class PluginEvents implements Listener {
         }
         for(Player player : arena.getPlayers()) {
           VersionUtils.setMaxHealth(player, VersionUtils.getMaxHealth(player) + 2.0);
+          VersionUtils.sendParticles("HEART", arena.getPlayers(), location, 50, 2, 2, 2);
           new MessageBuilder("IN_GAME_MESSAGES_VILLAGE_ROTTEN_FLESH_LEVEL_UP").asKey().player(player).sendPlayer();
         }
       }

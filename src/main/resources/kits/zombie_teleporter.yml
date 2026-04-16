@@ -1,0 +1,43 @@
+name: "&2Zombie Teleporter"
+description:
+  - "Teleport those zombies to you!"
+  - "Many people think this is the worst kit!"
+  - "I must admit they are totally wrong!"
+enabled: true
+display_item:
+  material: FISHING_ROD
+kit_type: level
+required-level: 1
+unlockedOnDefault: false
+inventory:
+  '0':
+    item:
+      material: WOODEN_SWORD
+      damage: 0
+      enchants:
+        UNBREAKING: 10
+    slot: 0
+  '1':
+    item:
+      material: COOKED_PORKCHOP
+      amount: 8
+    slot: 1
+  '2':
+    item:
+      material: BOOK
+      damage: 0
+      name: "Zombie Teleporter"
+      lore:
+      - "Teleport zombies to you!"
+      enchants:
+        SHARPNESS: 1
+    slot: 2
+Speed:
+  Walk: 0.2
+Health:
+  Max: 20.0
+Food: 20
+abilities:
+  - "ZOMBIE_TELEPORT"
+cooldown: 30
+armour: {}

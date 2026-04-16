@@ -1,6 +1,6 @@
 /*
  *  Village Defense - Protect villagers from hordes of zombies
- *  Copyright (c) 2023 Plugily Projects - maintained by Tigerpanzer_02 and contributors
+ *  Copyright (c) 2026 Plugily Projects - maintained by Tigerpanzer_02 and contributors
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -20,7 +20,7 @@ package plugily.projects.villagedefense.boot;
 
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
-import plugily.projects.minigamesbox.classic.arena.PluginArena;
+import plugily.projects.minigamesbox.api.arena.IPluginArena;
 import plugily.projects.minigamesbox.classic.handlers.language.MessageBuilder;
 import plugily.projects.minigamesbox.classic.handlers.placeholder.Placeholder;
 import plugily.projects.minigamesbox.classic.handlers.placeholder.PlaceholderManager;
@@ -45,7 +45,7 @@ public class PlaceholderInitializer {
   private void registerPlaceholders() {
     getPlaceholderManager().registerPlaceholder(new Placeholder("wave", Placeholder.PlaceholderType.ARENA, Placeholder.PlaceholderExecutor.ALL) {
       @Override
-      public String getValue(Player player, PluginArena arena) {
+      public String getValue(Player player, IPluginArena arena) {
         Arena pluginArena = getArenaRegistry().getArena(arena.getId());
         if(pluginArena == null) {
           return null;
@@ -54,7 +54,7 @@ public class PlaceholderInitializer {
       }
 
       @Override
-      public String getValue(PluginArena arena) {
+      public String getValue(IPluginArena arena) {
         Arena pluginArena = getArenaRegistry().getArena(arena.getId());
         if(pluginArena == null) {
           return null;
@@ -64,17 +64,17 @@ public class PlaceholderInitializer {
     });
     getPlaceholderManager().registerPlaceholder(new Placeholder("summary_player", Placeholder.PlaceholderType.ARENA, Placeholder.PlaceholderExecutor.ALL) {
       @Override
-      public String getValue(Player player, PluginArena arena) {
+      public String getValue(Player player, IPluginArena arena) {
         return getSummary(arena);
       }
 
       @Override
-      public String getValue(PluginArena arena) {
+      public String getValue(IPluginArena arena) {
         return getSummary(arena);
       }
 
       @Nullable
-      private String getSummary(PluginArena arena) {
+      private String getSummary(IPluginArena arena) {
         Arena pluginArena = getArenaRegistry().getArena(arena.getId());
         if(pluginArena == null) {
           return null;
@@ -91,17 +91,17 @@ public class PlaceholderInitializer {
     });
     getPlaceholderManager().registerPlaceholder(new Placeholder("summary", Placeholder.PlaceholderType.ARENA, Placeholder.PlaceholderExecutor.ALL) {
       @Override
-      public String getValue(Player player, PluginArena arena) {
+      public String getValue(Player player, IPluginArena arena) {
         return getSummary(arena);
       }
 
       @Override
-      public String getValue(PluginArena arena) {
+      public String getValue(IPluginArena arena) {
         return getSummary(arena);
       }
 
       @Nullable
-      private String getSummary(PluginArena arena) {
+      private String getSummary(IPluginArena arena) {
         Arena pluginArena = getArenaRegistry().getArena(arena.getId());
         if(pluginArena == null) {
           return null;
@@ -120,7 +120,7 @@ public class PlaceholderInitializer {
     });
     getPlaceholderManager().registerPlaceholder(new Placeholder("villager_size", Placeholder.PlaceholderType.ARENA, Placeholder.PlaceholderExecutor.ALL) {
       @Override
-      public String getValue(Player player, PluginArena arena) {
+      public String getValue(Player player, IPluginArena arena) {
         Arena pluginArena = getArenaRegistry().getArena(arena.getId());
         if(pluginArena == null) {
           return null;
@@ -129,7 +129,7 @@ public class PlaceholderInitializer {
       }
 
       @Override
-      public String getValue(PluginArena arena) {
+      public String getValue(IPluginArena arena) {
         Arena pluginArena = getArenaRegistry().getArena(arena.getId());
         if(pluginArena == null) {
           return null;
@@ -139,7 +139,7 @@ public class PlaceholderInitializer {
     });
     getPlaceholderManager().registerPlaceholder(new Placeholder("zombie_size_left", Placeholder.PlaceholderType.ARENA, Placeholder.PlaceholderExecutor.ALL) {
       @Override
-      public String getValue(Player player, PluginArena arena) {
+      public String getValue(Player player, IPluginArena arena) {
         Arena pluginArena = getArenaRegistry().getArena(arena.getId());
         if(pluginArena == null) {
           return null;
@@ -148,7 +148,7 @@ public class PlaceholderInitializer {
       }
 
       @Override
-      public String getValue(PluginArena arena) {
+      public String getValue(IPluginArena arena) {
         Arena pluginArena = getArenaRegistry().getArena(arena.getId());
         if(pluginArena == null) {
           return null;
@@ -158,12 +158,12 @@ public class PlaceholderInitializer {
     });
     getPlaceholderManager().registerPlaceholder(new Placeholder("rotten_flesh_amount", Placeholder.PlaceholderType.ARENA, Placeholder.PlaceholderExecutor.ALL) {
       @Override
-      public String getValue(Player player, PluginArena arena) {
+      public String getValue(Player player, IPluginArena arena) {
         return Integer.toString(arena.getArenaOption("ROTTEN_FLESH_AMOUNT"));
       }
 
       @Override
-      public String getValue(PluginArena arena) {
+      public String getValue(IPluginArena arena) {
         return Integer.toString(arena.getArenaOption("ROTTEN_FLESH_AMOUNT"));
       }
     });

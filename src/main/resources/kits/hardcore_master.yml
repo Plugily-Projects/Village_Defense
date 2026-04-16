@@ -1,0 +1,28 @@
+name: "&bHardcore Master"
+description:
+  - "One hit most zombies with your OP sword!"
+  - "However be careful. this kit is only for"
+  - "the pros! Do not use it if you aren't a pro!"
+enabled: true
+display_item:
+  material: DIAMOND_SWORD
+kit_type: premium
+unlockedOnDefault: false
+inventory:
+  '0':
+    item:
+      material: DIAMOND_SWORD
+      damage: 0
+      enchants:
+        SHARPNESS: 11
+    slot: 0
+  '1':
+    item:
+      material: SADDLE
+    slot: 1
+armour: {}
+Speed:
+  Walk: 0.2
+Health:
+  Max: 6.0
+Food: 20

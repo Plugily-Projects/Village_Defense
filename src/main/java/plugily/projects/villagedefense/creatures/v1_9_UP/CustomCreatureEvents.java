@@ -1,7 +1,7 @@
 
 /*
  *  Village Defense - Protect villagers from hordes of zombies
- *  Copyright (c) 2023 Plugily Projects - maintained by Tigerpanzer_02 and contributors
+ *  Copyright (c) 2026 Plugily Projects - maintained by Tigerpanzer_02 and contributors
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -19,26 +19,20 @@
 
 package plugily.projects.villagedefense.creatures.v1_9_UP;
 
-import org.bukkit.Bukkit;
-import org.bukkit.Material;
-import org.bukkit.entity.Creature;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.IronGolem;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Villager;
-import org.bukkit.entity.Wolf;
+import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.MetadataValue;
+import plugily.projects.minigamesbox.classic.utils.version.xseries.XEntityType;
+import plugily.projects.minigamesbox.classic.utils.version.xseries.XMaterial;
 import plugily.projects.villagedefense.Main;
 import plugily.projects.villagedefense.arena.Arena;
 import plugily.projects.villagedefense.arena.managers.spawner.EnemySpawner;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -80,7 +74,21 @@ public class CustomCreatureEvents implements Listener {
         }
         ItemStack itemStack = customCreature.getDropItem();
         event.getDrops().add(itemStack);
+        if(customCreature.isExplodeTarget()) {
+          event.getDrops().add(new ItemStack(XMaterial.ROTTEN_FLESH.get(), 5));
+        }
         event.setDroppedExp(customCreature.getExpDrop());
+
+        arena.removeEnemy((Creature) entity);
+        arena.changeArenaOptionBy("TOTAL_KILLED_ZOMBIES", 1);
+
+        Player killer = entity.getKiller();
+        if(killer != null) {
+          plugin.getUserManager().addStat(killer, plugin.getStatsStorage().getStatisticType("KILLS"));
+          plugin.getUserManager().addExperience(killer, 2 * arena.getArenaOption("CREATURE_DIFFICULTY_MULTIPLIER"));
+          plugin.getRewardsHandler().performReward(killer, plugin.getRewardsHandler().getRewardType("ZOMBIE_KILL"));
+          plugin.getPowerupRegistry().spawnPowerup(entity.getLocation(), arena);
+        }
       }
     }
   }
@@ -109,15 +117,16 @@ public class CustomCreatureEvents implements Listener {
           if(priorityTargets == CustomCreature.PriorityTarget.ANY) {
             continue;
           }
-          entityTypes.add(EntityType.valueOf(priorityTargets.toString()));
+          entityTypes.add(XEntityType.of(priorityTargets.toString()).get().get());
         }
       } else {
-        entityTypes.add(EntityType.valueOf(priorityTarget.toString()));
+        entityTypes.add(XEntityType.of(priorityTarget.toString()).get().get());
       }
       if(entityTypes.contains(event.getEntity().getType())) {
-        event.getDamager().getLocation().getWorld().spawnEntity(event.getDamager().getLocation(), EntityType.PRIMED_TNT);
+        event.getDamager().getLocation().getWorld().spawnEntity(event.getDamager().getLocation(), XEntityType.TNT.get());
         event.getDamager().remove();
-        Bukkit.getServer().getPluginManager().callEvent(new EntityDeathEvent((LivingEntity) event.getDamager(), new ArrayList<>(Collections.singletonList(new ItemStack(Material.ROTTEN_FLESH))), 6));
+        // not working anymore since 1.21 changed event with DAMAGESOURCE!
+        // Bukkit.getServer().getPluginManager().callEvent(new EntityDeathEvent((LivingEntity) event.getDamager(), new ArrayList<>(Collections.singletonList(new ItemStack(Material.ROTTEN_FLESH))), 6));
       }
     }
   }

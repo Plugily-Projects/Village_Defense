@@ -1,0 +1,61 @@
+name: "&bTornado"
+description:
+  - "Spawn in an awesome tornado!"
+enabled: true
+display_item:
+  material: COBWEB
+kit_type: premium
+unlockedOnDefault: false
+inventory:
+  '0':
+    item:
+      material: STONE_SWORD
+      damage: 0
+      enchants:
+        UNBREAKING: 10
+    slot: 0
+  '1':
+    item:
+      material: COOKED_BEEF
+      amount: 10
+    slot: 1
+  '2':
+    item:
+      material: SADDLE
+    slot: 2
+  '3':
+    item:
+      material: COBWEB
+      amount: 5
+      damage: 0
+      name: "Tornado Time"
+      lore:
+        - "Right click to spawn a"
+        - "tornado at your location!"
+    slot: 3
+armour:
+  helmet:
+    material: GOLDEN_HELMET
+  chestplate:
+    material: GOLDEN_CHESTPLATE
+  leggings:
+    material: GOLDEN_LEGGINGS
+  boots:
+    material: GOLDEN_BOOTS
+Speed:
+  Walk: 0.2
+Health:
+  Max: 20.0
+Food: 20
+abilities:
+  - "TORNADO"
+restock:
+  '0':
+    item:
+      material: COBWEB
+      amount: 5
+      damage: 0
+      name: "Tornado Time"
+      lore:
+        - "Right click to spawn a"
+        - "tornado at your location!"

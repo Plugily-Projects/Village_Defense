@@ -1,7 +1,6 @@
-
 /*
  *  Village Defense - Protect villagers from hordes of zombies
- *  Copyright (c) 2023 Plugily Projects - maintained by Tigerpanzer_02 and contributors
+ *  Copyright (c) 2026 Plugily Projects - maintained by Tigerpanzer_02 and contributors
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -19,15 +18,12 @@
 
 package plugily.projects.villagedefense.arena.managers;
 
-import plugily.projects.minigamesbox.classic.arena.ArenaState;
+import org.bukkit.entity.Player;
 import plugily.projects.minigamesbox.classic.arena.PluginArena;
 import plugily.projects.minigamesbox.classic.arena.managers.PluginScoreboardManager;
-import plugily.projects.minigamesbox.classic.handlers.language.MessageBuilder;
-import plugily.projects.minigamesbox.classic.user.User;
-import plugily.projects.minigamesbox.classic.utils.scoreboard.common.EntryBuilder;
-import plugily.projects.minigamesbox.classic.utils.scoreboard.type.Entry;
 import plugily.projects.villagedefense.arena.Arena;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -45,19 +41,18 @@ public class ScoreboardManager extends PluginScoreboardManager {
   }
 
   @Override
-  public List<Entry> formatScoreboard(User user) {
-    EntryBuilder builder = new EntryBuilder();
-    List<String> lines;
-    if(user.getArena().getArenaState() == ArenaState.FULL_GAME) {
-      lines = user.getArena().getPlugin().getLanguageManager().getLanguageList("Scoreboard.Content.Starting");
-    } else if(user.getArena().getArenaState() == ArenaState.IN_GAME) {
-      lines = user.getArena().getPlugin().getLanguageManager().getLanguageList("Scoreboard.Content." + user.getArena().getArenaState().getFormattedName() + (((Arena) user.getArena()).isFighting() ? "" : "-Waiting"));
-    } else {
-      lines = user.getArena().getPlugin().getLanguageManager().getLanguageList("Scoreboard.Content." + user.getArena().getArenaState().getFormattedName());
+  public List<String> getScoreboardLines(Player player) {
+    List<String> lines = new ArrayList<>();
+    switch(arena.getArenaState()) {
+      case IN_GAME: {
+        lines = arena.getPlugin().getLanguageManager().getLanguageList("Scoreboard.Content." + arena.getArenaState().getFormattedName() + (((Arena) arena).isFighting() ? "" : "-Waiting"));
+        break;
+      }
+      default: {
+        lines = super.getScoreboardLines(player);
+
+      }
     }
-    for(String line : lines) {
-      builder.next(new MessageBuilder(line).player(user.getPlayer()).arena(arena).build());
-    }
-    return builder.build();
+    return lines;
   }
 }

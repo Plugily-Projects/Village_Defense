@@ -1,7 +1,7 @@
 
 /*
  *  Village Defense - Protect villagers from hordes of zombies
- *  Copyright (c) 2023 Plugily Projects - maintained by Tigerpanzer_02 and contributors
+ *  Copyright (c) 2026 Plugily Projects - maintained by Tigerpanzer_02 and contributors
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -33,7 +33,6 @@ import plugily.projects.villagedefense.creatures.v1_9_UP.CustomCreature;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.Random;
 
 /**
  * @author Tigerpanzer_02
@@ -170,7 +169,7 @@ public class CreatureTargetManager {
         continue;
       }
       //set new target as villager so zombies won't stay still waiting for nothing
-      zombie.setTarget(arena.getVillagers().get(plugin.getRandom().nextInt(arena.getVillagers().size() - 1)));
+      zombie.setTarget(arena.getVillagers().get(arena.getVillagers().size() > 1 ? (plugin.getRandom().nextInt(arena.getVillagers().size() - 1)) : 0));
     }
   }
 

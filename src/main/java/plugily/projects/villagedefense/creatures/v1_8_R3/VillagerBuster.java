@@ -1,6 +1,6 @@
 /*
  *  Village Defense - Protect villagers from hordes of zombies
- *  Copyright (c) 2023 Plugily Projects - maintained by Tigerpanzer_02 and contributors
+ *  Copyright (c) 2026 Plugily Projects - maintained by Tigerpanzer_02 and contributors
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -18,31 +18,9 @@
 
 package plugily.projects.villagedefense.creatures.v1_8_R3;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import net.minecraft.server.v1_8_R3.Entity;
-import net.minecraft.server.v1_8_R3.EntityHuman;
-import net.minecraft.server.v1_8_R3.EntityIronGolem;
-import net.minecraft.server.v1_8_R3.EntityPlayer;
-import net.minecraft.server.v1_8_R3.EntityVillager;
-import net.minecraft.server.v1_8_R3.EntityZombie;
-import net.minecraft.server.v1_8_R3.GenericAttributes;
-import net.minecraft.server.v1_8_R3.Navigation;
-import net.minecraft.server.v1_8_R3.PathfinderGoalBreakDoor;
-import net.minecraft.server.v1_8_R3.PathfinderGoalFloat;
-import net.minecraft.server.v1_8_R3.PathfinderGoalLookAtPlayer;
-import net.minecraft.server.v1_8_R3.PathfinderGoalMeleeAttack;
-import net.minecraft.server.v1_8_R3.PathfinderGoalMoveTowardsRestriction;
-import net.minecraft.server.v1_8_R3.PathfinderGoalNearestAttackableTarget;
-import net.minecraft.server.v1_8_R3.PathfinderGoalRandomLookaround;
-import net.minecraft.server.v1_8_R3.World;
-import org.bukkit.Bukkit;
-import org.bukkit.Material;
+import net.minecraft.server.v1_8_R3.*;
 import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.event.entity.EntityDeathEvent;
-import org.bukkit.inventory.ItemStack;
+import plugily.projects.minigamesbox.classic.utils.version.xseries.XEntityType;
 import plugily.projects.villagedefense.creatures.CreatureUtils;
 
 /**
@@ -88,11 +66,12 @@ public class VillagerBuster extends EntityZombie {
 
   @Override
   public boolean r(Entity entity) {
-    if(entity.getBukkitEntity().getType() == EntityType.VILLAGER) {
+    if(entity.getBukkitEntity().getType() == XEntityType.VILLAGER.get()) {
       this.die();
-      Bukkit.getServer().getPluginManager().callEvent(new EntityDeathEvent((LivingEntity) getBukkitEntity(), new ArrayList<>(Collections.singletonList(new ItemStack(Material.ROTTEN_FLESH))), 6));
+      // not working anymore since 1.21 changed event with DAMAGESOURCE!
+      // Bukkit.getServer().getPluginManager().callEvent(new EntityDeathEvent((LivingEntity) getBukkitEntity(), new ArrayList<>(Collections.singletonList(new ItemStack(XMaterial.ROTTEN_FLESH.get()))), 6));
       org.bukkit.entity.Entity bukkitEntity = entity.getBukkitEntity();
-      bukkitEntity.getWorld().spawnEntity(bukkitEntity.getLocation(), EntityType.PRIMED_TNT);
+      bukkitEntity.getWorld().spawnEntity(bukkitEntity.getLocation(), XEntityType.TNT.get());
       return false;
     }
     return super.r(entity);

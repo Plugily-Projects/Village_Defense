@@ -1,6 +1,6 @@
 /*
  *  Village Defense - Protect villagers from hordes of zombies
- *  Copyright (c) 2023 Plugily Projects - maintained by Tigerpanzer_02 and contributors
+ *  Copyright (c) 2026 Plugily Projects - maintained by Tigerpanzer_02 and contributors
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -23,9 +23,9 @@ import org.bukkit.GameMode;
 import org.bukkit.entity.Creature;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffectType;
+import plugily.projects.minigamesbox.api.user.IUser;
 import plugily.projects.minigamesbox.classic.arena.PluginArenaUtils;
 import plugily.projects.minigamesbox.classic.handlers.language.MessageBuilder;
-import plugily.projects.minigamesbox.classic.user.User;
 import plugily.projects.minigamesbox.classic.utils.version.VersionUtils;
 import plugily.projects.villagedefense.api.event.player.VillagePlayerRespawnEvent;
 
@@ -54,7 +54,7 @@ public class ArenaUtils extends PluginArenaUtils {
         continue;
       }
 
-      User user = getPlugin().getUserManager().getUser(player);
+      IUser user = getPlugin().getUserManager().getUser(player);
       if(user.isPermanentSpectator() && !getPlugin().getConfigPreferences().getOption("RESPAWN_IN_GAME_JOIN")) {
         continue;
       }

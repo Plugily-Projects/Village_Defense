@@ -1,0 +1,66 @@
+name: "&6Terminator"
+description:
+  - "Easily kill those zombies"
+  - "with your strength powers!"
+enabled: true
+display_item:
+  material: BONE
+kit_type: level
+required-level: 20
+unlockedOnDefault: false
+inventory:
+  '0':
+    item:
+      material: STONE_SWORD
+      enchants:
+        UNBREAKING: 10
+    slot: 0
+  '1':
+    item:
+      material: BONE
+      enchants:
+        KNOCKBACK: 7
+        SHARPNESS: 3
+    slot: 1
+  '2':
+    item:
+      material: COOKED_PORKCHOP
+      amount: 8
+    slot: 2
+  '3':
+    item:
+      material: SPLASH_POTION
+      base-type: STRENGTH, false, false
+    slot: 3
+  '4':
+    item:
+      material: SPLASH_POTION
+      base-type: REGEN, false, false
+    slot: 4
+armour:
+  helmet:
+    material: LEATHER_HELMET
+    color: 0, 0, 0
+  chestplate:
+    material: LEATHER_CHESTPLATE
+    color: 0, 0, 0
+  leggings:
+    material: LEATHER_LEGGINGS
+    color: 0, 0, 0
+  boots:
+    material: LEATHER_BOOTS
+    color: 0, 0, 0
+Speed:
+  Walk: 0.2
+Health:
+  Max: 20.0
+Food: 20
+restock:
+  '0':
+    item:
+      material: SPLASH_POTION
+      base-type: STRENGTH, false, false
+  '1':
+    item:
+      material: SPLASH_POTION
+      base-type: REGEN, false, false

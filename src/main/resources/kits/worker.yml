@@ -1,0 +1,69 @@
+name: "&6Worker"
+description:
+  - "You have the superpower over the doors"
+  - "You can regenerate destroyed doors"
+  - "with your ability!"
+enabled: true
+display_item:
+  material: OAK_DOOR
+kit_type: level
+required-level: 15
+unlockedOnDefault: false
+inventory:
+  '0':
+    item:
+      material: WOODEN_SWORD
+      damage: 0
+      enchants:
+        UNBREAKING: 10
+    slot: 0
+  '1':
+    item:
+      material: BOW
+      damage: 0
+      enchants:
+        UNBREAKING: 10
+    slot: 1
+  '2':
+    item:
+      material: ARROW
+      amount: 64
+    slot: 2
+  '3':
+    item:
+      material: COOKED_BEEF
+      amount: 10
+    slot: 3
+  '4':
+    item:
+      material: OAK_DOOR
+      amount: 1
+      name: "Door Regenerator"
+      lore:
+        - "Regenerate the destroyed doors on the map!"
+    slot: 4
+armour:
+  helmet:
+    material: LEATHER_HELMET
+    damage: 0
+    color: 128, 0, 128
+  chestplate:
+    material: LEATHER_CHESTPLATE
+    damage: 0
+    color: 128, 0, 128
+  leggings:
+    material: LEATHER_LEGGINGS
+    damage: 0
+    color: 128, 0, 128
+  boots:
+    material: LEATHER_BOOTS
+    damage: 0
+    color: 128, 0, 128
+Speed:
+  Walk: 0.2
+Health:
+  Max: 20.0
+Food: 20
+abilities:
+  - "DOOR_PLACE"
+cooldown: 200

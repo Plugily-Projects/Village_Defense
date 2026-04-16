@@ -1,6 +1,6 @@
 /*
  *  Village Defense - Protect villagers from hordes of zombies
- *  Copyright (c) 2023 Plugily Projects - maintained by Tigerpanzer_02 and contributors
+ *  Copyright (c) 2026 Plugily Projects - maintained by Tigerpanzer_02 and contributors
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -20,17 +20,15 @@ package plugily.projects.villagedefense.handlers.upgrade;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
+import org.bukkit.entity.*;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.jetbrains.annotations.Nullable;
+import plugily.projects.minigamesbox.api.user.IUser;
 import plugily.projects.minigamesbox.classic.handlers.language.MessageBuilder;
-import plugily.projects.minigamesbox.classic.user.User;
 import plugily.projects.minigamesbox.classic.utils.helper.ItemBuilder;
 import plugily.projects.minigamesbox.classic.utils.version.VersionUtils;
+import plugily.projects.minigamesbox.classic.utils.version.xseries.XEntityType;
 import plugily.projects.minigamesbox.classic.utils.version.xseries.XMaterial;
 import plugily.projects.minigamesbox.inventory.normal.NormalFastInv;
 import plugily.projects.villagedefense.Main;
@@ -43,6 +41,7 @@ import plugily.projects.villagedefense.handlers.upgrade.upgrades.UpgradeBuilder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 /**
  * @author Plajer
@@ -112,7 +111,7 @@ public class EntityUpgradeMenu {
   public void openUpgradeMenu(LivingEntity livingEntity, Player player) {
     NormalFastInv gui = new NormalFastInv(6 * 9, color("UPGRADE_MENU_TITLE"));
     gui.addClickHandler(inventoryClickEvent -> inventoryClickEvent.setCancelled(true));
-    User user = plugin.getUserManager().getUser(player);
+    IUser user = plugin.getUserManager().getUser(player);
 
     for(Upgrade upgrade : upgrades) {
       if(upgrade.getApplicableFor() != Upgrade.EntityType.BOTH && !livingEntity.getType().toString().equals(upgrade.getApplicableFor().toString())) {
@@ -134,7 +133,9 @@ public class EntityUpgradeMenu {
           return;
         }
 
-        user.setStatistic("ORBS", orbs - cost);
+        user.adjustStatistic("ORBS", -cost);
+        plugin.getArenaRegistry().getArena(player).changeArenaOptionBy("TOTAL_ORBS_SPENT", cost);
+
         player.sendMessage(color("UPGRADE_MENU_UPGRADED_ENTITY").replace("%tier%", Integer.toString(nextTier)));
         applyUpgrade(livingEntity, upgrade);
 
@@ -201,6 +202,12 @@ public class EntityUpgradeMenu {
 
     int tier = getTier(entity, upgrade) + 1;
     entity.setMetadata(upgrade.getMetadataAccessor(), new FixedMetadataValue(plugin, tier));
+    if(entity instanceof IronGolem) {
+      entity.setCustomName(new MessageBuilder("IN_GAME_MESSAGES_VILLAGE_WAVE_ENTITIES_GOLEM_NAME").asKey().integer(tier).player(Bukkit.getPlayer(UUID.fromString(entity.getMetadata("VD_OWNER_UUID").get(0).asString()))).build());
+    } else if(entity instanceof Wolf) {
+      entity.setCustomName(new MessageBuilder("IN_GAME_MESSAGES_VILLAGE_WAVE_ENTITIES_GOLEM_NAME").asKey().integer(tier).player(Bukkit.getPlayer(UUID.fromString(entity.getMetadata("VD_OWNER_UUID").get(0).asString()))).build());
+    }
+
     applyUpgradeEffect(entity, upgrade, tier);
     if(upgrade.getMaxTier() == tier) {
       VersionUtils.playSound(entity.getLocation(), "BLOCK_ANVIL_USE");
@@ -225,7 +232,7 @@ public class EntityUpgradeMenu {
 
     switch(upgrade.getId()) {
       case "Damage":
-        if(entity.getType() == EntityType.WOLF) {
+        if(entity.getType() == XEntityType.WOLF.get()) {
           CreatureUtils.getCreatureInitializer().applyDamageModifier((LivingEntity) entity, 2.0 + (tier * 3));
         }
         //attribute damage doesn't exist for golems

@@ -1,0 +1,38 @@
+name: "&bWild Naked"
+description:
+  - "You are the ultimate master!"
+  - "You start off with a iron Sharpness"
+  - "VI and Smite II sword!"
+enabled: true
+display_item:
+  material: IRON_SWORD
+kit_type: premium
+unlockedOnDefault: false
+inventory:
+  '0':
+    item:
+      material: IRON_SWORD
+      damage: 0
+      enchants:
+        SHARPNESS: 6
+        SMITE: 2
+        UNBREAKING: 10
+    slot: 0
+  '1':
+    item:
+      material: SADDLE
+    slot: 1
+armour: { }
+Speed:
+  Walk: 0.2
+Health:
+  Max: 20.0
+Food: 20
+abilities:
+  - "NO_ARMOUR"
+restock:
+  '1':
+    item:
+      material: SPLASH_POTION
+      damage: 0
+      base-type: INSTANT_HEAL, false, false

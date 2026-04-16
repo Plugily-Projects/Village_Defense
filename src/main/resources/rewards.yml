@@ -2,29 +2,25 @@
 #           Plugily Projects rewards configuration
 #
 #                          Placeholders list:
-#                   %PLAYER% - Current player name
-#                    %WAVE% - Current wave number
-#                       %MAPNAME% - Name of map
-#                    %ARENA-ID% - Arena Identifier
-#             %PLAYERAMOUNT% - Number of players in game
+#             https://wiki.plugily.xyz/minigame/placeholders
 #
 #        Commands are executed by default BY CONSOLE, use "p:" to preform command by player
-#  Since 3.6.3 you can use chance to execute command adding "chance(NUMBER):" (ex chance(10):) at the beginning of command
+#  You can use chance to execute command adding "chance(NUMBER):" (ex chance(10):) at the beginning of command
 #
 #  Commands examples:
-#    - p:say Hello everyone in %MAPNAME%!     # Player will say "Hello everyone in <map name here>"
-#    - broadcast Game %ARENA-ID% has ended!   # Will broadcast "Game <arena name here> has ended" message
+#    - p:say Hello everyone in %arena_name%!     # Player will say "Hello everyone in <map name here>"
+#    - broadcast Game %arena_name% has ended!   # Will broadcast "Game <arena name here> has ended" message
 #    - chance(1):p:say I was very lucky!              # Player has 1% chance to say "I was very lucky!"
 #    - p:chance(99):spawn                             # Player has 99% chance to teleport to spawn
 #       ^ YOU CAN EVEN SWAP CHANCE WITH PLAYER!
-#    - chance(50):eco give %PLAYER% 10                # Console has 10% chance to give player 10$
+#    - chance(50):eco give %player% 10                # Console has 10% chance to give player 10$
 #
 #  Performed rewards:
-#  endgame, playerDeath
+#  game-end
 #
 #   You can unlock full potential of rewards using our script engine! (since 4.0.0)
 #    Just add example reward:
-#    - script:player.sendMessage("oh, hi %PLAYER%");      # It will send "oh, hi <player name>" to player! 100% plain java!
+#    - script:player.sendMessage("oh, hi %player%");      # It will send "oh, hi <player name>" to player! 100% plain java!
 #    - script:server.broadcastMessage("hello everyone");  # Broadcasts "hello everyone" to whole server
 #    - script:player.getInventory().addItem(new org.bukkit.inventory.ItemStack(org.bukkit.Material.DIRT));
 #         ^ Gives player dirt item (you must always use direct package names for not provided objects)
@@ -44,7 +40,7 @@ rewards:
     - say Ooh and there are playing %arena_players_size% players
   # Commands performed when game is finished
   game-end:
-    - say %arena_name% has ended, reached wave %WAVE%
+    - say %arena_name% has ended, reached wave %arena_wave%
     - say Ooh and there were playing %arena_players_size% players
   start-wave:
     - say Wave started
@@ -54,18 +50,18 @@ rewards:
   # Delete everything if you don't want to use this section
   end-wave:
     1:
-      - say You reached wave %WAVE%, nice!
+      - say You reached wave %arena_wave%, nice!
     5:
-      - say You reached wave %WAVE%, good job!
-      - eco give %PLAYER% 5
+      - say You reached wave %arena_wave%, good job!
+      - eco give %player% 5
     10:
-      - broadcast Woah! %MAPNAME% reached wave %WAVE%!
+      - broadcast Woah! %arena_name% reached wave %arena_wave%!
     99:
-      - say Nice try %PLAYER%...
+      - say Nice try %player%...
   # Commands executed when zombie is killed
   zombie-kill:
-    - eco give %PLAYER% 2
-    - chance(10):eco give %PLAYER% 8
+    - eco give %player% 2
+    - chance(10):eco give %player% 8
   # Commands executed when villager is death
   villager-death:
     - say Protect the villager better next time!

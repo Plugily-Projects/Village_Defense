@@ -1,0 +1,63 @@
+name: "&bCleaner"
+description:
+  - "The cleaner has a special ability."
+  - "With this ability, he can make all the"
+  - "zombies disappear. However, it takes"
+  - "a lot of effort to do this and the"
+  - "magic can be between half and all zombies!"
+enabled: true
+display_item:
+  material: BLAZE_POWDER
+kit_type: premium
+unlockedOnDefault: false
+inventory:
+  '0':
+    item:
+      material: WOODEN_SWORD
+      damage: 0
+      enchants:
+        UNBREAKING: 10
+    slot: 0
+  '1':
+    item:
+      material: BLAZE_ROD
+      damage: 0
+      name: "&6Cleaner Wand!"
+      lore:
+        - "Right click to kill most (min half) zombies!"
+        - "Cooldown: 60 seconds"
+    slot: 1
+  '2':
+    item:
+      material: COOKED_BEEF
+      amount: 10
+    slot: 2
+  '3':
+    item:
+      material: SADDLE
+    slot: 3
+armour:
+  helmet:
+    material: LEATHER_HELMET
+    damage: 0
+    color: 255, 255, 0
+  chestplate:
+    material: LEATHER_CHESTPLATE
+    damage: 0
+    color: 255, 255, 0
+  leggings:
+    material: LEATHER_LEGGINGS
+    damage: 0
+    color: 255, 255, 0
+  boots:
+    material: LEATHER_BOOTS
+    damage: 0
+    color: 255, 255, 0
+Speed:
+  Walk: 0.2
+Health:
+  Max: 20.0
+Food: 20
+abilities:
+  - "CLEANER"
+cooldown: 60

@@ -1,0 +1,47 @@
+name: "&6Looter"
+description:
+  - "Get one additional rotten flesh"
+  - "on every zombie kill!"
+enabled: true
+display_item:
+  material: ROTTEN_FLESH
+kit_type: level
+required-level: 8
+unlockedOnDefault: false
+inventory:
+  '0':
+    item:
+      material: STONE_SWORD
+      damage: 0
+      enchants:
+        UNBREAKING: 10
+    slot: 0
+  '1':
+    item:
+      material: COOKED_PORKCHOP
+      amount: 8
+    slot: 1
+armour:
+  helmet:
+    material: LEATHER_HELMET
+    damage: 0
+    color: 255, 165, 0
+  chestplate:
+    material: LEATHER_CHESTPLATE
+    damage: 0
+    color: 255, 165, 0
+  leggings:
+    material: LEATHER_LEGGINGS
+    damage: 0
+    color: 255, 165, 0
+  boots:
+    material: LEATHER_BOOTS
+    damage: 0
+    color: 255, 165, 0
+Speed:
+  Walk: 0.2
+Health:
+  Max: 20.0
+Food: 20
+abilities:
+  - "LOOTER"

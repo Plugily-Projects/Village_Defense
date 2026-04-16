@@ -1,0 +1,41 @@
+name: "&bDog Friend"
+description:
+  - "Get one dog on every wave"
+enabled: true
+display_item:
+  material: BONE
+kit_type: premium
+unlockedOnDefault: false
+inventory:
+  '0':
+    item:
+      material: STONE_SWORD
+      damage: 0
+      enchants:
+        UNBREAKING: 10
+    slot: 0
+  '1':
+    item:
+      material: COOKED_PORKCHOP
+      amount: 8
+    slot: 1
+  '2':
+    item:
+      material: SADDLE
+    slot: 2
+armour:
+  helmet:
+    material: LEATHER_HELMET
+  chestplate:
+    material: LEATHER_CHESTPLATE
+  leggings:
+    material: LEATHER_LEGGINGS
+  boots:
+    material: LEATHER_BOOTS
+Speed:
+  Walk: 0.2
+Health:
+  Max: 20.0
+Food: 20
+abilities:
+  - "SPAWN_DOG"

@@ -1,6 +1,6 @@
 /*
  *  Village Defense - Protect villagers from hordes of zombies
- *  Copyright (c) 2023 Plugily Projects - maintained by Tigerpanzer_02 and contributors
+ *  Copyright (c) 2026 Plugily Projects - maintained by Tigerpanzer_02 and contributors
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -23,6 +23,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import plugily.projects.minigamesbox.api.arena.IPluginArena;
 import plugily.projects.minigamesbox.classic.arena.PluginArena;
 import plugily.projects.minigamesbox.classic.arena.PluginArenaRegistry;
 import plugily.projects.minigamesbox.classic.handlers.language.MessageBuilder;
@@ -80,15 +81,6 @@ public class ArenaRegistry extends PluginArenaRegistry {
       }
     }
 
-    ConfigurationSection doorSection = section.getConfigurationSection(id + ".doors");
-    if(doorSection != null) {
-      for(String string : doorSection.getKeys(false)) {
-        ((Arena) arena).getMapRestorerManager().addDoor(LocationSerializer.getLocation(doorSection.getString(string + ".location")),
-            (byte) doorSection.getInt(string + ".byte"));
-      }
-    }
-
-
     if(arena.getStartLocation().getWorld().getDifficulty() == Difficulty.PEACEFUL) {
       plugin.getDebugger().sendConsoleMsg(new MessageBuilder("VALIDATOR_INVALID_ARENA_CONFIGURATION").asKey().value("THERE IS A WRONG " +
           "DIFFICULTY -> SET IT TO ANOTHER ONE THAN PEACEFUL - WE SET IT TO EASY").arena(arena).build());
@@ -99,7 +91,7 @@ public class ArenaRegistry extends PluginArenaRegistry {
 
   @Override
   public @Nullable Arena getArena(Player player) {
-    PluginArena pluginArena = super.getArena(player);
+    IPluginArena pluginArena = super.getArena(player);
     if(pluginArena instanceof Arena) {
       return (Arena) pluginArena;
     }
@@ -108,7 +100,7 @@ public class ArenaRegistry extends PluginArenaRegistry {
 
   @Override
   public @Nullable Arena getArena(String id) {
-    PluginArena pluginArena = super.getArena(id);
+    IPluginArena pluginArena = super.getArena(id);
     if(pluginArena instanceof Arena) {
       return (Arena) pluginArena;
     }
@@ -117,7 +109,7 @@ public class ArenaRegistry extends PluginArenaRegistry {
 
   public @NotNull List<Arena> getPluginArenas() {
     List<Arena> arenas = new ArrayList<>();
-    for(PluginArena pluginArena : super.getArenas()) {
+    for(IPluginArena pluginArena : super.getArenas()) {
       if(pluginArena instanceof Arena) {
         arenas.add((Arena) pluginArena);
       }
