@@ -13,6 +13,7 @@ That's all, matcher will stop when detects next line started with `###` match
 * Added 1.21 compatibility
 * Added kit abilities and changed some kit descriptions/usages
 * Added ProtocolLib as softdependency for rideable creatures steering (1.9+) [Thanks @Plajer]
+Rideable creatures can be steered via ProtocolLib soft dependency now
 * Added new healtbars for villagers, wolf and golem & improved creature healtbar (1.9+) [Thanks @Plajer]
 * Added specific metadata to wolf and golem so we can identify them easily
 * Added getAliveEntitiesList && getAlivePetsList arena method
@@ -20,8 +21,6 @@ That's all, matcher will stop when detects next line started with `###` match
 * Added spawned wolves ond golems on leave will also "leave"
 * Added villagers, wolves and golems also regenerate health on wave end
 * Added heart particles on rotten flesh level up
-* Added ProtocolLib as softdependency for rideable creatures steering (1.9+)
-Rideable creatures can be steered via ProtocolLib soft dependency now
 * Fixed Golem Movement Speed is by default now 0.25 (1.9+)
 * Fixed Reward End_Wave wave based execution
 * Fixed Creature kills on 1.9 up
