@@ -1,3 +1,6 @@
+### 5.0.4 Release (10.10.2026)
+* Changed Minigamesbox to 1.4.11
+
 # Village Defense Changelog
 
 Changelog is followed by special scheme which is required in order to allow automatic discord
